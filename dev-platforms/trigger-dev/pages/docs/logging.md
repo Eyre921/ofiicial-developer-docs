@@ -6,7 +6,7 @@ path: docs/logging
 
 How to use the built-in logging, tracing, and metrics system.
 
-<img alt="The run log" />
+![The run log](https://mintcdn.com/trigger/5SxX7bFjJKRsidSL/images/run-log.png?fit=max\&auto=format\&n=5SxX7bFjJKRsidSL\&q=85\&s=595580c7a9e3e5dcc0e3297f0f6fec68)
 
 The run log shows you exactly what happened in every run of your tasks. It is comprised of logs, traces and spans.
 
@@ -48,7 +48,7 @@ Trigger.dev uses OpenTelemetry tracing under the hood. With automatic tracing fo
 
 ### Adding instrumentations
 
-<img alt="The run log" />
+![The run log](https://mintcdn.com/trigger/uys6iMwf9B_ojh8r/images/auto-instrumentation.png?fit=max\&auto=format\&n=uys6iMwf9B_ojh8r\&q=85\&s=c23b7b3b9b853d52af2850b732e576d7)
 
 You can [add instrumentations](/docs/config/config-file#instrumentations). The Prisma one above will automatically trace all Prisma queries.
 
@@ -161,9 +161,9 @@ Trigger.dev automatically collects the following metrics for deployed tasks. No 
 | `nodejs.heap.used` | gauge | bytes | V8 heap used |
 | `nodejs.heap.total` | gauge | bytes | V8 heap total |
 
-<Note>
-  In dev mode (`trigger dev`), the `process.*` and `nodejs.*` metrics above are collected, along with custom metrics.
-</Note>
+> [!NOTE]
+>
+> In dev mode (`trigger dev`), the `process.*` and `nodejs.*` metrics above are collected, along with custom metrics.
 
 ### Context attributes
 

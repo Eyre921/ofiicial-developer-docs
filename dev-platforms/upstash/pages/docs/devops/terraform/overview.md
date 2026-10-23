@@ -1,5 +1,5 @@
 ---
-title: "Overview"
+title: "Upstash Terraform Provider Overview"
 source: https://upstash.com/docs/devops/terraform/overview
 path: docs/devops/terraform/overview
 ---
@@ -28,7 +28,7 @@ provider "upstash" {
 
 `email` is your registered email in Upstash.
 
-`api_key` can be generated from Upstash Console. For more information please check our [docs](https://docs.upstash.com/howto/developerapi).
+`api_key` can be generated from Upstash Console. For more information please check our [docs](/docs/devops/developer-api/introduction#create-an-api-key).
 
 ## Create Database Using Terraform
 

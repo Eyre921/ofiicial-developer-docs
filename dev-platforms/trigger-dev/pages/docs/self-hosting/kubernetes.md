@@ -42,9 +42,9 @@ Each component maps to a top-level key in `values.yaml`: `webapp`, `supervisor`,
 
 Realtime run subscriptions use the native backend with the configured PostgreSQL, Redis, and ClickHouse services. The chart sets `REALTIME_BACKEND_NATIVE_ENABLED=1` and `REALTIME_BACKEND_DEFAULT=native`; no Electric service is required. These settings are separate from the S2-backed realtime streams configuration.
 
-<Warning>
-  Before upgrading from a chart that deploys Electric, unset the global `realtimeBackend` feature flag and any organization overrides, or set them to `native`. Both take precedence over the environment default. Values of `electric` or `shadow` still select the Electric backend, which this chart no longer deploys.
-</Warning>
+> [!WARNING]
+>
+> Before upgrading from a chart that deploys Electric, unset the global `realtimeBackend` feature flag and any organization overrides, or set them to `native`. Both take precedence over the environment default. Values of `electric` or `shadow` still select the Electric backend, which this chart no longer deploys.
 
 ## Requirements
 
@@ -91,36 +91,34 @@ webapp:
 
 Bundled datastores let you run the whole stack with a single command and no external services. The default values are insecure and are only suitable for testing - for real workloads, follow the [production install](#production-install) instead.
 
-<Steps>
-  <Step title="Install the chart with default values">
-    ```bash theme={"theme":"css-variables"}
-    helm upgrade -n trigger --install trigger \
-      oci://ghcr.io/triggerdotdev/charts/trigger \
-      --version "^4.5.0" \
-      --create-namespace
-    ```
+**1. Install the chart with default values**
 
-    The chart deploys the webapp, supervisor, and bundled Postgres, Redis, ClickHouse, MinIO, and s2-lite. The registry is not deployed by default - configure an external one before deploying tasks.
-  </Step>
+```bash theme={"theme":"css-variables"}
+helm upgrade -n trigger --install trigger \
+  oci://ghcr.io/triggerdotdev/charts/trigger \
+  --version "^4.5.0" \
+  --create-namespace
+```
 
-  <Step title="Port-forward the webapp">
-    ```bash theme={"theme":"css-variables"}
-    kubectl port-forward svc/trigger-webapp 3040:3030 -n trigger
-    ```
+The chart deploys the webapp, supervisor, and bundled Postgres, Redis, ClickHouse, MinIO, and s2-lite. The registry is not deployed by default - configure an external one before deploying tasks.
 
-    The dashboard is now reachable at `http://localhost:3040`.
-  </Step>
+**2. Port-forward the webapp**
 
-  <Step title="Log in with the magic link">
-    Default installs print the login link to the webapp logs instead of sending email.
+```bash theme={"theme":"css-variables"}
+kubectl port-forward svc/trigger-webapp 3040:3030 -n trigger
+```
 
-    ```bash theme={"theme":"css-variables"}
-    kubectl logs -n trigger deployment/trigger-webapp | grep -A1 "magic link"
-    ```
+The dashboard is now reachable at `http://localhost:3040`.
 
-    Open the printed link to sign in.
-  </Step>
-</Steps>
+**3. Log in with the magic link**
+
+Default installs print the login link to the webapp logs instead of sending email.
+
+```bash theme={"theme":"css-variables"}
+kubectl logs -n trigger deployment/trigger-webapp | grep -A1 "magic link"
+```
+
+Open the printed link to sign in.
 
 ### Verify it
 
@@ -171,12 +169,12 @@ kubectl patch secret my-trigger-secrets -n trigger --type merge -p \
 
 There is no clean migration for a compromised `ENCRYPTION_KEY`: changing it makes existing encrypted data unreadable. If a deployment is still running a previously published default and cannot rotate yet, set `ALLOW_INSECURE_DEFAULT_SECRETS=true` on the webapp to keep booting while you plan a migration.
 
-<Warning>
-  GitOps tools that render with `helm template` (e.g. Argo CD) cannot read the existing
-  secret, so they regenerate auto-generated values on every sync - which rotates them. If you
-  deploy via GitOps, always supply your own `secrets.existingSecret` (and datastore
-  credentials) so nothing is generated in-cluster.
-</Warning>
+> [!WARNING]
+>
+> GitOps tools that render with `helm template` (e.g. Argo CD) cannot read the existing
+> secret, so they regenerate auto-generated values on every sync - which rotates them. If you
+> deploy via GitOps, always supply your own `secrets.existingSecret` (and datastore
+> credentials) so nothing is generated in-cluster.
 
 ### Custom values
 
@@ -318,10 +316,10 @@ redis:
 
 Migration from the old Bitnami subchart to the official `clickhouse/clickhouse-server` image is automatic - a normal upgrade moves you across with no manual step. The one exception: if you pinned `clickhouse.image` to a Bitnami tag, switch it to an official `clickhouse/clickhouse-server` tag first, since Bitnami tags don't exist in the official repository.
 
-<Note>
-  Trigger.dev requires ClickHouse 25.8 or newer. The bundled ClickHouse is single-node — run
-  ClickHouse externally for a clustered or replicated setup.
-</Note>
+> [!NOTE]
+>
+> Trigger.dev requires ClickHouse 25.8 or newer. The bundled ClickHouse is single-node — run
+> ClickHouse externally for a clustered or replicated setup.
 
 **Direct configuration:**
 
@@ -335,11 +333,11 @@ clickhouse:
     password: "my-password"
 ```
 
-<Note>
-  An inline external `username`/`password` is percent-encoded into the connection URL for you, so
-  store the **raw** value - special characters like `@ : / %` are handled automatically.
-  (Credentials from `existingSecret` are injected at runtime and are unaffected.)
-</Note>
+> [!NOTE]
+>
+> An inline external `username`/`password` is percent-encoded into the connection URL for you, so
+> store the **raw** value - special characters like `@ : / %` are handled automatically.
+> (Credentials from `existingSecret` are injected at runtime and are unaffected.)
 
 **Using existing secrets (recommended):**
 
@@ -443,10 +441,10 @@ registry:
       password: "your-password"
 ```
 
-<Note>
-  The internal registry (`registry.deploy: true`) is experimental and requires proper TLS setup
-  and additional cluster configuration. Use an external registry for production.
-</Note>
+> [!NOTE]
+>
+> The internal registry (`registry.deploy: true`) is experimental and requires proper TLS setup
+> and additional cluster configuration. Use an external registry for production.
 
 ### DNS performance
 
@@ -508,33 +506,31 @@ webapp:
 
 **Manual:** to set up workers separately or use a custom token:
 
-<Steps>
-  <Step title="Read the worker token from the webapp logs">
-    ```bash theme={"theme":"css-variables"}
-    kubectl logs deployment/trigger-webapp -n trigger | grep -A15 "Worker Token"
-    ```
-  </Step>
+**1. Read the worker token from the webapp logs**
 
-  <Step title="Create a secret with the token">
-    ```bash theme={"theme":"css-variables"}
-    kubectl create secret generic worker-token \
-      --from-literal=token=tr_wgt_your_token_here \
-      -n trigger
-    ```
-  </Step>
+```bash theme={"theme":"css-variables"}
+kubectl logs deployment/trigger-webapp -n trigger | grep -A15 "Worker Token"
+```
 
-  <Step title="Point the supervisor at the secret">
-    ```yaml theme={"theme":"css-variables"}
-    supervisor:
-      bootstrap:
-        enabled: false
-        workerToken:
-          secret:
-            name: "worker-token"
-            key: "token"
-    ```
-  </Step>
-</Steps>
+**2. Create a secret with the token**
+
+```bash theme={"theme":"css-variables"}
+kubectl create secret generic worker-token \
+  --from-literal=token=tr_wgt_your_token_here \
+  -n trigger
+```
+
+**3. Point the supervisor at the secret**
+
+```yaml theme={"theme":"css-variables"}
+supervisor:
+  bootstrap:
+    enabled: false
+    workerToken:
+      secret:
+        name: "worker-token"
+        key: "token"
+```
 
 With external datastores, secrets, registry, and authentication in place, you have a production install. If you only wanted to try Trigger.dev, the [evaluation install](#evaluation-install) gets you there in one command.
 
@@ -544,52 +540,50 @@ With external datastores, secrets, registry, and authentication in place, you ha
 
 Your generated secrets, data volumes, and the bundled ClickHouse are preserved and migrated automatically. Before running `helm upgrade`, complete any prerequisites below that apply to your installation.
 
-<AccordionGroup>
-  <Accordion title="You upgrade from a chart that deploys Electric">
-    Unset the global `realtimeBackend` feature flag and any organization overrides, or set them to `native`, before upgrading. Organization overrides take precedence over the global flag, and the global flag takes precedence over `REALTIME_BACKEND_DEFAULT`.
+> **You upgrade from a chart that deploys Electric**
+>
+> Unset the global `realtimeBackend` feature flag and any organization overrides, or set them to `native`, before upgrading. Organization overrides take precedence over the global flag, and the global flag takes precedence over `REALTIME_BACKEND_DEFAULT`.
+>
+> The chart enables native realtime and removes the Electric service. A remaining `electric` or `shadow` flag value directs run subscriptions to that removed service and breaks realtime updates.
 
-    The chart enables native realtime and removes the Electric service. A remaining `electric` or `shadow` flag value directs run subscriptions to that removed service and breaks realtime updates.
-  </Accordion>
+> **You supply your own secret (secrets.existingSecret)**
+>
+> With `secrets.existingSecret` set, the chart reads every key from your Secret and generates none, so any key the app needs must already be present there.
+>
+> As of chart 4.5.6 the webapp deployment references `PROVIDER_SECRET` and `COORDINATOR_SECRET`, and the pre-upgrade check requires both, so an existing Secret must carry them. Add both before upgrading:
+>
+> ```bash theme={"theme":"css-variables"}
+> kubectl patch secret my-trigger-secrets -n trigger --type merge -p \
+>   "{\"stringData\":{\"PROVIDER_SECRET\":\"$(openssl rand -hex 16)\",\"COORDINATOR_SECRET\":\"$(openssl rand -hex 16)\"}}"
+> ```
+>
+> If a required key is missing, the upgrade stops before touching your running release and tells you which to add.
 
-  <Accordion title="You supply your own secret (secrets.existingSecret)">
-    With `secrets.existingSecret` set, the chart reads every key from your Secret and generates none, so any key the app needs must already be present there.
+> **Something outside the chart reads a datastore password**
+>
+> The bundled datastore passwords live in the `trigger-datastore` Secret. If a maintenance job, a dashboard, or a secret sync reads one directly, point it there:
+>
+> ```bash theme={"theme":"css-variables"}
+> kubectl get secret trigger-datastore -n trigger \
+>   -o jsonpath='{.data.clickhouse-admin-password}' | base64 -d
+> ```
+>
+> The keys are `clickhouse-admin-password`, `postgres-password`, and `minio-root-user` / `minio-root-password`.
 
-    As of chart 4.5.6 the webapp deployment references `PROVIDER_SECRET` and `COORDINATOR_SECRET`, and the pre-upgrade check requires both, so an existing Secret must carry them. Add both before upgrading:
-
-    ```bash theme={"theme":"css-variables"}
-    kubectl patch secret my-trigger-secrets -n trigger --type merge -p \
-      "{\"stringData\":{\"PROVIDER_SECRET\":\"$(openssl rand -hex 16)\",\"COORDINATOR_SECRET\":\"$(openssl rand -hex 16)\"}}"
-    ```
-
-    If a required key is missing, the upgrade stops before touching your running release and tells you which to add.
-  </Accordion>
-
-  <Accordion title="Something outside the chart reads a datastore password">
-    The bundled datastore passwords live in the `trigger-datastore` Secret. If a maintenance job, a dashboard, or a secret sync reads one directly, point it there:
-
-    ```bash theme={"theme":"css-variables"}
-    kubectl get secret trigger-datastore -n trigger \
-      -o jsonpath='{.data.clickhouse-admin-password}' | base64 -d
-    ```
-
-    The keys are `clickhouse-admin-password`, `postgres-password`, and `minio-root-user` / `minio-root-password`.
-  </Accordion>
-
-  <Accordion title="You render manifests without cluster access (Argo CD, plain helm template)">
-    During an upgrade the chart reads the cluster to keep your data and to check your Secret. Renderers that run offline can't do that, so set these yourself:
-
-    * Point `clickhouse.persistence.existingClaim` at your ClickHouse data volume (`data-<release>-clickhouse-shard0-0`) and keep it set on future syncs, so ClickHouse reuses its data instead of starting on an empty volume.
-    * Confirm `PROVIDER_SECRET` and `COORDINATOR_SECRET` are already in your Secret before syncing.
-  </Accordion>
-</AccordionGroup>
+> **You render manifests without cluster access (Argo CD, plain helm template)**
+>
+> During an upgrade the chart reads the cluster to keep your data and to check your Secret. Renderers that run offline can't do that, so set these yourself:
+>
+> * Point `clickhouse.persistence.existingClaim` at your ClickHouse data volume (`data-<release>-clickhouse-shard0-0`) and keep it set on future syncs, so ClickHouse reuses its data instead of starting on an empty volume.
+> * Confirm `PROVIDER_SECRET` and `COORDINATOR_SECRET` are already in your Secret before syncing.
 
 ### Version locking
 
-<Note>
-  Trigger.dev 4.5.0 is the last version we officially support for running v3 (SDK v3) tasks. If
-  you still have v3 tasks, pin to exactly 4.5.0 or [migrate to v4](/docs/migrating-from-v3). 4.5.1 and
-  later reject v3 triggers and deploys with an upgrade message.
-</Note>
+> [!NOTE]
+>
+> Trigger.dev 4.5.0 is the last version we officially support for running v3 (SDK v3) tasks. If
+> you still have v3 tasks, pin to exactly 4.5.0 or [migrate to v4](/docs/migrating-from-v3). 4.5.1 and
+> later reject v3 triggers and deploys with an upgrade message.
 
 Lock versions in two ways.
 

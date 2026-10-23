@@ -6,9 +6,11 @@ path: nexus/harnesses/chatgpt
 
 Connect the ChatGPT desktop app to Fireworks with the Nexus CLI so open models and Nexus Auto appear next to your OpenAI models.
 
-The ChatGPT desktop app and the [Codex CLI](/nexus/harnesses/codex) both read `~/.codex/config.toml`, so connecting one connects the other. **Quit the ChatGPT desktop app and close open Codex sessions before connecting or running `off`.** The app loads its model list only at startup. Nexus CLI waits for both to close, or use `--force` to write anyway.
+The ChatGPT desktop app and the [Codex CLI](/nexus/harnesses/codex) both read `~/.codex/config.toml`, so connecting one connects the other.
 
-Generally availableOpenAI ResponsesNexus AutoNative web searchmacOS only
+**Quit the ChatGPT desktop app and close open Codex sessions before connecting or running `off`.** The app loads its model list only at startup. Nexus CLI waits for both to close. `--force` writes anyway, which isn't recommended.
+
+Generally availableOpenAI ResponsesNexus AutoNative web search
 
 ## Quick start
 
@@ -18,13 +20,13 @@ Generally availableOpenAI ResponsesNexus AutoNative web searchmacOS only
 curl -fsSL https://nexus.fireworks.ai/install.sh | bash
 ```
 
-Requires Node.js 18 or later, `git`, and `bash`. On Windows, run it from Git Bash; PowerShell breaks the script's line endings.
+You need Node.js 22 or later, `git`, and `bash`. On Windows, run the installer from Git Bash. PowerShell breaks the script's line endings.
 
 ```bash wrap theme={null}
 nexus login
 ```
 
-Sign in with your browser, or paste a Fireworks key.
+Sign in with your browser, or paste a Fireworks API key (`fw_...`).
 
 Already set up? Skip to step 2.
 
@@ -51,9 +53,9 @@ The app keeps its own ChatGPT sign-in, which pays for OpenAI model turns. Your F
 
 ## MCP and tools
 
-**MCP servers and plugins** keep working, through Codex's tool search.
+**MCP servers and plugins** keep working through Codex's tool search.
 
-Native web search is supported while connected through Nexus CLI. Fireworks runs the search server-side and returns the results, with no MCP server or search service to set up.
+Native web search is supported while connected through Nexus CLI. Fireworks runs the search server-side and returns the results. You don't need an MCP server or a search service.
 
 ## Troubleshooting
 
@@ -72,15 +74,10 @@ Upgrading from an earlier version? See [Upgrading from earlier versions](/nexus/
 >   `nexus chatgpt off` and turn it back on when you start a new thread.
 > * After `off`, threads started on Fireworks models don't open until you run `nexus chatgpt` again.
 
-> [!NOTE]
->
-> Sign-in billing is tested in the Codex CLI. The ChatGPT desktop app is not
-> tested yet.
-
 ## Manual setup (advanced)
 
 Quit the app, follow the [Codex manual setup](/nexus/harnesses/codex#manual-setup-advanced), then reopen the app and pick the model you set.
 
 ## What the Nexus CLI writes
 
-Nexus CLI writes the same `config.toml` and model catalog as for Codex; see [What the Nexus CLI writes](/nexus/harnesses/codex#what-the-nexus-cli-writes).
+Nexus CLI writes the same `config.toml` and model catalog as for Codex. See [What the Nexus CLI writes](/nexus/harnesses/codex#what-the-nexus-cli-writes).

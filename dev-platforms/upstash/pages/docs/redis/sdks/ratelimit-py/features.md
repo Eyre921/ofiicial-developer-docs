@@ -1,5 +1,5 @@
 ---
-title: "Features"
+title: "Ratelimit Python SDK Features"
 source: https://upstash.com/docs/redis/sdks/ratelimit-py/features
 path: docs/redis/sdks/ratelimit-py/features
 ---

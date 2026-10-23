@@ -32,281 +32,283 @@ It will detect your installed clients and configure them automatically. You can 
 
 Each client has a slightly different config format. Copy the snippet for your client into the appropriate file.
 
-<Tabs>
-  <Tab title="Claude Code">
-    Install using the command line:
+**Claude Code**
 
-    ```bash theme={"theme":"css-variables"}
-    npx trigger.dev@latest install-mcp --client claude-code
-    ```
+Install using the command line:
 
-    Or add this configuration to `~/.claude.json` (user) or `.mcp.json` (project):
+```bash theme={"theme":"css-variables"}
+npx trigger.dev@latest install-mcp --client claude-code
+```
 
-    ```json theme={"theme":"css-variables"}
-    {
-      "mcpServers": {
-        "trigger": {
-          "command": "npx",
-          "args": ["trigger.dev@latest", "mcp"]
-        }
-      }
+Or add this configuration to `~/.claude.json` (user) or `.mcp.json` (project):
+
+```json theme={"theme":"css-variables"}
+{
+  "mcpServers": {
+    "trigger": {
+      "command": "npx",
+      "args": ["trigger.dev@latest", "mcp"]
     }
-    ```
+  }
+}
+```
 
-    [View Claude Code MCP docs ↗](https://code.claude.com/docs/en/mcp)
-  </Tab>
+[View Claude Code MCP docs ↗](https://code.claude.com/docs/en/mcp)
 
-  <Tab title="Cursor">
-    Install using the command line:
+**Cursor**
 
-    ```bash theme={"theme":"css-variables"}
-    npx trigger.dev@latest install-mcp --client cursor
-    ```
+Install using the command line:
 
-    Or add this configuration to `~/.cursor/mcp.json` (user) or `.cursor/mcp.json` (project):
+```bash theme={"theme":"css-variables"}
+npx trigger.dev@latest install-mcp --client cursor
+```
 
-    ```json theme={"theme":"css-variables"}
-    {
-      "mcpServers": {
-        "trigger": {
-          "command": "npx",
-          "args": ["trigger.dev@latest", "mcp"]
-        }
-      }
+Or add this configuration to `~/.cursor/mcp.json` (user) or `.cursor/mcp.json` (project):
+
+```json theme={"theme":"css-variables"}
+{
+  "mcpServers": {
+    "trigger": {
+      "command": "npx",
+      "args": ["trigger.dev@latest", "mcp"]
     }
-    ```
+  }
+}
+```
 
-    [View Cursor MCP docs ↗](https://cursor.com/docs/context/mcp)
-  </Tab>
+[View Cursor MCP docs ↗](https://cursor.com/docs/context/mcp)
 
-  <Tab title="Windsurf">
-    Install using the command line:
+**Windsurf**
 
-    ```bash theme={"theme":"css-variables"}
-    npx trigger.dev@latest install-mcp --client windsurf
-    ```
+Install using the command line:
 
-    Or add this configuration to `~/.codeium/windsurf/mcp_config.json`:
+```bash theme={"theme":"css-variables"}
+npx trigger.dev@latest install-mcp --client windsurf
+```
 
-    ```json theme={"theme":"css-variables"}
-    {
-      "mcpServers": {
-        "trigger": {
-          "command": "npx",
-          "args": ["trigger.dev@latest", "mcp"]
-        }
-      }
+Or add this configuration to `~/.codeium/windsurf/mcp_config.json`:
+
+```json theme={"theme":"css-variables"}
+{
+  "mcpServers": {
+    "trigger": {
+      "command": "npx",
+      "args": ["trigger.dev@latest", "mcp"]
     }
-    ```
+  }
+}
+```
 
-    [View Windsurf MCP docs ↗](https://docs.windsurf.com/windsurf/cascade/mcp)
-  </Tab>
+[View Windsurf MCP docs ↗](https://docs.windsurf.com/windsurf/cascade/mcp)
 
-  <Tab title="VS Code">
-    Install using the command line:
+**VS Code**
 
-    ```bash theme={"theme":"css-variables"}
-    npx trigger.dev@latest install-mcp --client vscode
-    ```
+Install using the command line:
 
-    Or add this configuration to `.vscode/mcp.json` (project) or `~/Library/Application Support/Code/User/mcp.json` (user, macOS):
+```bash theme={"theme":"css-variables"}
+npx trigger.dev@latest install-mcp --client vscode
+```
 
-    ```json theme={"theme":"css-variables"}
-    {
-      "servers": {
-        "trigger": {
-          "command": "npx",
-          "args": ["trigger.dev@latest", "mcp"]
-        }
-      }
+Or add this configuration to `.vscode/mcp.json` (project) or `~/Library/Application Support/Code/User/mcp.json` (user, macOS):
+
+```json theme={"theme":"css-variables"}
+{
+  "servers": {
+    "trigger": {
+      "command": "npx",
+      "args": ["trigger.dev@latest", "mcp"]
     }
-    ```
+  }
+}
+```
 
-    <Note>VS Code uses `servers` instead of `mcpServers`.</Note>
+> [!NOTE]
+>
+> VS Code uses `servers` instead of `mcpServers`.
 
-    [View VS Code MCP docs ↗](https://code.visualstudio.com/docs/copilot/chat/mcp-servers)
-  </Tab>
+[View VS Code MCP docs ↗](https://code.visualstudio.com/docs/copilot/chat/mcp-servers)
 
-  <Tab title="Zed">
-    Install using the command line:
+**Zed**
 
-    ```bash theme={"theme":"css-variables"}
-    npx trigger.dev@latest install-mcp --client zed
-    ```
+Install using the command line:
 
-    Or add this configuration to `~/.config/zed/settings.json`:
+```bash theme={"theme":"css-variables"}
+npx trigger.dev@latest install-mcp --client zed
+```
 
-    ```json theme={"theme":"css-variables"}
-    {
-      "context_servers": {
-        "trigger": {
-          "source": "custom",
-          "command": "npx",
-          "args": ["trigger.dev@latest", "mcp"]
-        }
-      }
+Or add this configuration to `~/.config/zed/settings.json`:
+
+```json theme={"theme":"css-variables"}
+{
+  "context_servers": {
+    "trigger": {
+      "source": "custom",
+      "command": "npx",
+      "args": ["trigger.dev@latest", "mcp"]
     }
-    ```
+  }
+}
+```
 
-    [View Zed context servers docs ↗](https://zed.dev/docs/ai/mcp)
-  </Tab>
+[View Zed context servers docs ↗](https://zed.dev/docs/ai/mcp)
 
-  <Tab title="Cline">
-    Install using the command line:
+**Cline**
 
-    ```bash theme={"theme":"css-variables"}
-    npx trigger.dev@latest install-mcp --client cline
-    ```
+Install using the command line:
 
-    Or add this configuration to `~/Library/Application Support/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json`:
+```bash theme={"theme":"css-variables"}
+npx trigger.dev@latest install-mcp --client cline
+```
 
-    ```json theme={"theme":"css-variables"}
-    {
-      "mcpServers": {
-        "trigger": {
-          "command": "npx",
-          "args": ["trigger.dev@latest", "mcp"]
-        }
-      }
+Or add this configuration to `~/Library/Application Support/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json`:
+
+```json theme={"theme":"css-variables"}
+{
+  "mcpServers": {
+    "trigger": {
+      "command": "npx",
+      "args": ["trigger.dev@latest", "mcp"]
     }
-    ```
+  }
+}
+```
 
-    [View Cline MCP docs ↗](https://docs.cline.bot/mcp/configuring-mcp-servers)
-  </Tab>
+[View Cline MCP docs ↗](https://docs.cline.bot/mcp/configuring-mcp-servers)
 
-  <Tab title="Gemini CLI">
-    Install using the command line:
+**Gemini CLI**
 
-    ```bash theme={"theme":"css-variables"}
-    npx trigger.dev@latest install-mcp --client gemini-cli
-    ```
+Install using the command line:
 
-    Or add this configuration to `~/.gemini/settings.json` (user) or `.gemini/settings.json` (project):
+```bash theme={"theme":"css-variables"}
+npx trigger.dev@latest install-mcp --client gemini-cli
+```
 
-    ```json theme={"theme":"css-variables"}
-    {
-      "mcpServers": {
-        "trigger": {
-          "command": "npx",
-          "args": ["trigger.dev@latest", "mcp"]
-        }
-      }
+Or add this configuration to `~/.gemini/settings.json` (user) or `.gemini/settings.json` (project):
+
+```json theme={"theme":"css-variables"}
+{
+  "mcpServers": {
+    "trigger": {
+      "command": "npx",
+      "args": ["trigger.dev@latest", "mcp"]
     }
-    ```
-  </Tab>
+  }
+}
+```
 
-  <Tab title="AMP">
-    Install using the command line:
+**AMP**
 
-    ```bash theme={"theme":"css-variables"}
-    npx trigger.dev@latest install-mcp --client amp
-    ```
+Install using the command line:
 
-    Or add this configuration to `~/.config/amp/settings.json`:
+```bash theme={"theme":"css-variables"}
+npx trigger.dev@latest install-mcp --client amp
+```
 
-    ```json theme={"theme":"css-variables"}
-    {
-      "amp.mcpServers": {
-        "trigger": {
-          "command": "npx",
-          "args": ["trigger.dev@latest", "mcp"]
-        }
-      }
+Or add this configuration to `~/.config/amp/settings.json`:
+
+```json theme={"theme":"css-variables"}
+{
+  "amp.mcpServers": {
+    "trigger": {
+      "command": "npx",
+      "args": ["trigger.dev@latest", "mcp"]
     }
-    ```
+  }
+}
+```
 
-    [View Sourcegraph AMP MCP docs ↗](https://ampcode.com/manual#mcp)
-  </Tab>
+[View Sourcegraph AMP MCP docs ↗](https://ampcode.com/manual#mcp)
 
-  <Tab title="Codex CLI">
-    Install using the command line:
+**Codex CLI**
 
-    ```bash theme={"theme":"css-variables"}
-    npx trigger.dev@latest install-mcp --client openai-codex
-    ```
+Install using the command line:
 
-    Or add this configuration to `~/.codex/config.toml`:
+```bash theme={"theme":"css-variables"}
+npx trigger.dev@latest install-mcp --client openai-codex
+```
 
-    ```toml theme={"theme":"css-variables"}
-    [mcp_servers.trigger]
-    command = "npx"
-    args = ["trigger.dev@latest", "mcp"]
-    startup_timeout_sec = 30
-    ```
+Or add this configuration to `~/.codex/config.toml`:
 
-    <Note>The `startup_timeout_sec = 30` is recommended. Codex defaults to 10 seconds, which may not be enough for `npx` to download the package on first run.</Note>
-  </Tab>
+```toml theme={"theme":"css-variables"}
+[mcp_servers.trigger]
+command = "npx"
+args = ["trigger.dev@latest", "mcp"]
+startup_timeout_sec = 30
+```
 
-  <Tab title="Crush">
-    Install using the command line:
+> [!NOTE]
+>
+> The `startup_timeout_sec = 30` is recommended. Codex defaults to 10 seconds, which may not be enough for `npx` to download the package on first run.
 
-    ```bash theme={"theme":"css-variables"}
-    npx trigger.dev@latest install-mcp --client crush
-    ```
+**Crush**
 
-    Or add this configuration to `.crush.json` (project), `crush.json`, or `~/.config/crush/crush.json` (user). Files are loaded in priority order: `.crush.json` → `crush.json` → `$HOME/.config/crush/crush.json`.
+Install using the command line:
 
-    ```json theme={"theme":"css-variables"}
-    {
-      "mcp": {
-        "trigger": {
-          "type": "stdio",
-          "command": "npx",
-          "args": ["trigger.dev@latest", "mcp"]
-        }
-      }
+```bash theme={"theme":"css-variables"}
+npx trigger.dev@latest install-mcp --client crush
+```
+
+Or add this configuration to `.crush.json` (project), `crush.json`, or `~/.config/crush/crush.json` (user). Files are loaded in priority order: `.crush.json` → `crush.json` → `$HOME/.config/crush/crush.json`.
+
+```json theme={"theme":"css-variables"}
+{
+  "mcp": {
+    "trigger": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["trigger.dev@latest", "mcp"]
     }
-    ```
+  }
+}
+```
 
-    [View Charm MCP docs ↗](https://github.com/charmbracelet/crush)
-  </Tab>
+[View Charm MCP docs ↗](https://github.com/charmbracelet/crush)
 
-  <Tab title="opencode">
-    Install using the command line:
+**opencode**
 
-    ```bash theme={"theme":"css-variables"}
-    npx trigger.dev@latest install-mcp --client opencode
-    ```
+Install using the command line:
 
-    Or add this configuration to `~/.config/opencode/opencode.json` (user) or `./opencode.json` (project):
+```bash theme={"theme":"css-variables"}
+npx trigger.dev@latest install-mcp --client opencode
+```
 
-    ```json theme={"theme":"css-variables"}
-    {
-      "mcp": {
-        "trigger": {
-          "type": "local",
-          "command": ["npx", "trigger.dev@latest", "mcp"],
-          "enabled": true
-        }
-      }
+Or add this configuration to `~/.config/opencode/opencode.json` (user) or `./opencode.json` (project):
+
+```json theme={"theme":"css-variables"}
+{
+  "mcp": {
+    "trigger": {
+      "type": "local",
+      "command": ["npx", "trigger.dev@latest", "mcp"],
+      "enabled": true
     }
-    ```
+  }
+}
+```
 
-    [View opencode MCP docs ↗](https://opencode.ai/docs/mcp-servers/)
-  </Tab>
+[View opencode MCP docs ↗](https://opencode.ai/docs/mcp-servers/)
 
-  <Tab title="Ruler">
-    Install using the command line:
+**Ruler**
 
-    ```bash theme={"theme":"css-variables"}
-    npx trigger.dev@latest install-mcp --client ruler
-    ```
+Install using the command line:
 
-    Or add this configuration to `.ruler/mcp.json`:
+```bash theme={"theme":"css-variables"}
+npx trigger.dev@latest install-mcp --client ruler
+```
 
-    ```json theme={"theme":"css-variables"}
-    {
-      "mcpServers": {
-        "trigger": {
-          "type": "stdio",
-          "command": "npx",
-          "args": ["trigger.dev@latest", "mcp"]
-        }
-      }
+Or add this configuration to `.ruler/mcp.json`:
+
+```json theme={"theme":"css-variables"}
+{
+  "mcpServers": {
+    "trigger": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["trigger.dev@latest", "mcp"]
     }
-    ```
-  </Tab>
-</Tabs>
+  }
+}
+```
 
 After adding the config, restart your client. You should see a server named **trigger** connect automatically.
 
@@ -314,60 +316,60 @@ After adding the config, restart your client. You should see a server named **tr
 
 The `search_docs` tool works without authentication, and so do the local-only tools `list_profiles`, `dev_server_status` and `stop_dev_server`. All other tools require you to be logged in via the [Trigger.dev CLI](/docs/cli-login-commands). The first time you use an authenticated tool, your MCP client will prompt you to log in.
 
-<Accordion title="CLI Options">
-  The `install-mcp` command supports these options:
-
-  **Core Options**
-
-  * `-p, --project-ref <project ref>` — Scope the MCP server to a specific project
-  * `-t, --tag <package tag>` — CLI package version to use (default: latest)
-  * `--dev-only` — Restrict to the dev environment only
-  * `--yolo` — Install into all supported clients automatically
-  * `--scope <scope>` — `user`, `project`, or `local`
-  * `--client <clients...>` — Install into specific client(s)
-
-  **Configuration Options**
-
-  * `--log-file <log file>` — Write logs to a file
-  * `-a, --api-url <value>` — Custom Trigger.dev API URL
-  * `-l, --log-level <level>` — Log level (debug, info, log, warn, error, none)
-
-  **Examples**
-
-  Install for all supported clients:
-
-  ```bash theme={"theme":"css-variables"}
-  npx trigger.dev@latest install-mcp --yolo
-  ```
-
-  Install for specific clients:
-
-  ```bash theme={"theme":"css-variables"}
-  npx trigger.dev@latest install-mcp --client claude-code cursor --scope user
-  ```
-
-  Restrict to dev environment for a specific project:
-
-  ```bash theme={"theme":"css-variables"}
-  npx trigger.dev@latest install-mcp --dev-only --project-ref proj_abc123
-  ```
-
-  To add these options to a manual config, append them to the `args` array:
-
-  ```json theme={"theme":"css-variables"}
-  {
-    "args": ["trigger.dev@latest", "mcp", "--dev-only", "--project-ref", "proj_abc123"]
-  }
-  ```
-
-  The `mcp` command also accepts `--readonly`, which hides the tools that write to your account (for example `deploy`, `trigger_task` and `cancel_run`) so the AI cannot make changes to it. It is only available as a manual config arg:
-
-  ```json theme={"theme":"css-variables"}
-  {
-    "args": ["trigger.dev@latest", "mcp", "--readonly"]
-  }
-  ```
-</Accordion>
+> **CLI Options**
+>
+> The `install-mcp` command supports these options:
+>
+> **Core Options**
+>
+> * `-p, --project-ref <project ref>` — Scope the MCP server to a specific project
+> * `-t, --tag <package tag>` — CLI package version to use (default: latest)
+> * `--dev-only` — Restrict to the dev environment only
+> * `--yolo` — Install into all supported clients automatically
+> * `--scope <scope>` — `user`, `project`, or `local`
+> * `--client <clients...>` — Install into specific client(s)
+>
+> **Configuration Options**
+>
+> * `--log-file <log file>` — Write logs to a file
+> * `-a, --api-url <value>` — Custom Trigger.dev API URL
+> * `-l, --log-level <level>` — Log level (debug, info, log, warn, error, none)
+>
+> **Examples**
+>
+> Install for all supported clients:
+>
+> ```bash theme={"theme":"css-variables"}
+> npx trigger.dev@latest install-mcp --yolo
+> ```
+>
+> Install for specific clients:
+>
+> ```bash theme={"theme":"css-variables"}
+> npx trigger.dev@latest install-mcp --client claude-code cursor --scope user
+> ```
+>
+> Restrict to dev environment for a specific project:
+>
+> ```bash theme={"theme":"css-variables"}
+> npx trigger.dev@latest install-mcp --dev-only --project-ref proj_abc123
+> ```
+>
+> To add these options to a manual config, append them to the `args` array:
+>
+> ```json theme={"theme":"css-variables"}
+> {
+>   "args": ["trigger.dev@latest", "mcp", "--dev-only", "--project-ref", "proj_abc123"]
+> }
+> ```
+>
+> The `mcp` command also accepts `--readonly`, which hides the tools that write to your account (for example `deploy`, `trigger_task` and `cancel_run`) so the AI cannot make changes to it. It is only available as a manual config arg:
+>
+> ```json theme={"theme":"css-variables"}
+> {
+>   "args": ["trigger.dev@latest", "mcp", "--readonly"]
+> }
+> ```
 
 ## Getting Started
 
@@ -387,12 +389,10 @@ Once installed, you can start using the MCP server by asking your AI assistant q
 
 ## Next Steps
 
-<CardGroup>
-  <Card title="MCP Tools" icon="wrench" href="/docs/mcp-tools">
-    Explore all available MCP tools for managing your projects.
-  </Card>
+> **[MCP Tools](/docs/mcp-tools)**
+>
+> Explore all available MCP tools for managing your projects.
 
-  <Card title="Skills" icon="wand-magic-sparkles" href="/docs/skills">
-    Portable instruction sets that teach AI assistants Trigger.dev patterns.
-  </Card>
-</CardGroup>
+> **[Skills](/docs/skills)**
+>
+> Portable instruction sets that teach AI assistants Trigger.dev patterns.

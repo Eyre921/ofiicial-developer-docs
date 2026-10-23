@@ -1,5 +1,5 @@
 ---
-title: "Overview"
+title: "Upstash Pulumi Provider Overview"
 source: https://upstash.com/docs/devops/pulumi/overview
 path: docs/devops/pulumi/overview
 ---

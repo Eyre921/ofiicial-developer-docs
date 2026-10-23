@@ -12,9 +12,9 @@ Lightpanda is a purpose-built browser for AI and automation workflows. It is 10x
 
 Here are a few examples of how to use Lightpanda with Trigger.dev.
 
-<Warning>
-  **WEB SCRAPING:** When web scraping, you MUST use a proxy to comply with our terms of service. Direct scraping of third-party websites without the site owner's permission using Trigger.dev Cloud is prohibited and will result in account suspension. See [this example](/docs/guides/examples/puppeteer#scrape-content-from-a-web-page) which uses a proxy.
-</Warning>
+> [!WARNING]
+>
+> **WEB SCRAPING:** When web scraping, you MUST use a proxy to comply with our terms of service. Direct scraping of third-party websites without the site owner's permission using Trigger.dev Cloud is prohibited and will result in account suspension. See [this example](/docs/guides/examples/puppeteer#scrape-content-from-a-web-page) which uses a proxy.
 
 ## Limitations
 

@@ -12,19 +12,17 @@ Build complex data pipelines that process large datasets without timeouts. Handl
 
 ## Featured examples
 
-<CardGroup>
-  <Card title="Realtime CSV importer" icon="book" href="/docs/guides/example-projects/realtime-csv-importer">
-    Import CSV files with progress streamed live to frontend.
-  </Card>
+> **[Realtime CSV importer](/docs/guides/example-projects/realtime-csv-importer)**
+>
+> Import CSV files with progress streamed live to frontend.
 
-  <Card title="Web scraper with BrowserBase" icon="book" href="/docs/guides/examples/scrape-hacker-news">
-    Scrape websites using BrowserBase and Puppeteer.
-  </Card>
+> **[Web scraper with BrowserBase](/docs/guides/examples/scrape-hacker-news)**
+>
+> Scrape websites using BrowserBase and Puppeteer.
 
-  <Card title="Supabase database webhooks" icon="book" href="/docs/guides/frameworks/supabase-edge-functions-database-webhooks">
-    Trigger tasks from Supabase database webhooks.
-  </Card>
-</CardGroup>
+> **[Supabase database webhooks](/docs/guides/frameworks/supabase-edge-functions-database-webhooks)**
+>
+> Trigger tasks from Supabase database webhooks.
 
 ## Benefits of using Trigger.dev for data processing & ETL workflows
 
@@ -36,123 +34,109 @@ Build complex data pipelines that process large datasets without timeouts. Handl
 
 ## Production use cases
 
-<CardGroup>
-  <Card title="MagicSchool AI customer story" href="https://trigger.dev/customers/magicschool-ai-customer-story">
-    Read how MagicSchool AI uses Trigger.dev to generate insights from millions of student interactions.
-  </Card>
+> **[MagicSchool AI customer story](https://trigger.dev/customers/magicschool-ai-customer-story)**
+>
+> Read how MagicSchool AI uses Trigger.dev to generate insights from millions of student interactions.
 
-  <Card title="Comp AI customer story" href="https://trigger.dev/customers/comp-ai-customer-story">
-    Read how Comp AI uses Trigger.dev to automate evidence collection at scale, powering their open source, AI-driven compliance platform.
-  </Card>
+> **[Comp AI customer story](https://trigger.dev/customers/comp-ai-customer-story)**
+>
+> Read how Comp AI uses Trigger.dev to automate evidence collection at scale, powering their open source, AI-driven compliance platform.
 
-  <Card title="Midday customer story" href="https://trigger.dev/customers/midday-customer-story">
-    Read how Midday use Trigger.dev to sync large volumes of bank transactions in their financial management platform.
-  </Card>
-</CardGroup>
+> **[Midday customer story](https://trigger.dev/customers/midday-customer-story)**
+>
+> Read how Midday use Trigger.dev to sync large volumes of bank transactions in their financial management platform.
 
 ## Example workflow patterns
 
-<Tabs>
-  <Tab title="CSV file import">
-    Simple CSV import pipeline. Receives file upload, parses CSV rows, validates data, imports to database with progress tracking.
+**CSV file import**
 
-    <div>
-      ```mermaid theme={"theme":"css-variables"}
-      graph TB
-          A[importCSV] --> B[parseCSVFile]
-          B --> C[validateRows]
-          C --> D[bulkInsertToDB]
-          D --> E[notifyCompletion]
-      ```
-    </div>
-  </Tab>
+Simple CSV import pipeline. Receives file upload, parses CSV rows, validates data, imports to database with progress tracking.
 
-  <Tab title="Multi-source ETL pipeline">
-    **Coordinator pattern with parallel extraction**. Batch triggers parallel extraction from multiple sources (APIs, databases, S3), transforms and validates data, loads to data warehouse with monitoring.
+```mermaid theme={"theme":"css-variables"}
+graph TB
+    A[importCSV] --> B[parseCSVFile]
+    B --> C[validateRows]
+    C --> D[bulkInsertToDB]
+    D --> E[notifyCompletion]
+```
 
-    <div>
-      ```mermaid theme={"theme":"css-variables"}
-      graph TB
-          A[runETLPipeline] --> B[coordinateExtraction]
-          B --> C[batchTriggerAndWait]
+**Multi-source ETL pipeline**
 
-          C --> D[extractFromAPI]
-          C --> E[extractFromDatabase]
-          C --> F[extractFromS3]
+**Coordinator pattern with parallel extraction**. Batch triggers parallel extraction from multiple sources (APIs, databases, S3), transforms and validates data, loads to data warehouse with monitoring.
 
-          D --> G[transformData]
-          E --> G
-          F --> G
+```mermaid theme={"theme":"css-variables"}
+graph TB
+    A[runETLPipeline] --> B[coordinateExtraction]
+    B --> C[batchTriggerAndWait]
 
-          G --> H[validateData]
-          H --> I[loadToWarehouse]
-      ```
-    </div>
-  </Tab>
+    C --> D[extractFromAPI]
+    C --> E[extractFromDatabase]
+    C --> F[extractFromS3]
 
-  <Tab title="Parallel web scraping">
-    **Coordinator pattern with browser automation**. Launches headless browsers in parallel to scrape multiple pages, extracts structured data, cleans and normalizes content, stores in database.
+    D --> G[transformData]
+    E --> G
+    F --> G
 
-    <div>
-      ```mermaid theme={"theme":"css-variables"}
-      graph TB
-          A[scrapeSite] --> B[coordinateScraping]
-          B --> C[batchTriggerAndWait]
+    G --> H[validateData]
+    H --> I[loadToWarehouse]
+```
 
-          C --> D[scrapePage1]
-          C --> E[scrapePage2]
-          C --> F[scrapePageN]
+**Parallel web scraping**
 
-          D --> G[cleanData]
-          E --> G
-          F --> G
+**Coordinator pattern with browser automation**. Launches headless browsers in parallel to scrape multiple pages, extracts structured data, cleans and normalizes content, stores in database.
 
-          G --> H[normalizeData]
-          H --> I[storeInDatabase]
-      ```
-    </div>
-  </Tab>
+```mermaid theme={"theme":"css-variables"}
+graph TB
+    A[scrapeSite] --> B[coordinateScraping]
+    B --> C[batchTriggerAndWait]
 
-  <Tab title="Batch data enrichment">
-    **Coordinator pattern with rate limiting**. Fetches records needing enrichment, batch triggers parallel API calls with configurable concurrency to respect rate limits, validates enriched data, updates database.
+    C --> D[scrapePage1]
+    C --> E[scrapePage2]
+    C --> F[scrapePageN]
 
-    <div>
-      ```mermaid theme={"theme":"css-variables"}
-      graph TB
-          A[enrichRecords] --> B[fetchRecordsToEnrich]
-          B --> C[coordinateEnrichment]
-          C --> D[batchTriggerAndWait]
+    D --> G[cleanData]
+    E --> G
+    F --> G
 
-          D --> E[enrichRecord1]
-          D --> F[enrichRecord2]
-          D --> G[enrichRecordN]
+    G --> H[normalizeData]
+    H --> I[storeInDatabase]
+```
 
-          E --> H[validateEnrichedData]
-          F --> H
-          G --> H
+**Batch data enrichment**
 
-          H --> I[updateDatabase]
-      ```
-    </div>
-  </Tab>
-</Tabs>
+**Coordinator pattern with rate limiting**. Fetches records needing enrichment, batch triggers parallel API calls with configurable concurrency to respect rate limits, validates enriched data, updates database.
+
+```mermaid theme={"theme":"css-variables"}
+graph TB
+    A[enrichRecords] --> B[fetchRecordsToEnrich]
+    B --> C[coordinateEnrichment]
+    C --> D[batchTriggerAndWait]
+
+    D --> E[enrichRecord1]
+    D --> F[enrichRecord2]
+    D --> G[enrichRecordN]
+
+    E --> H[validateEnrichedData]
+    F --> H
+    G --> H
+
+    H --> I[updateDatabase]
+```
 
 ## Featured use cases
 
-<CardGroup>
-  <Card title="Data processing & ETL workflows" icon="database" href="/docs/guides/use-cases/data-processing-etl">
-    Build complex data pipelines that process large datasets without timeouts.
-  </Card>
+> **[Data processing & ETL workflows](/docs/guides/use-cases/data-processing-etl)**
+>
+> Build complex data pipelines that process large datasets without timeouts.
 
-  <Card title="Media processing workflows" icon="film" href="/docs/guides/use-cases/media-processing">
-    Batch process videos, images, audio, and documents with no execution time limits.
-  </Card>
+> **[Media processing workflows](/docs/guides/use-cases/media-processing)**
+>
+> Batch process videos, images, audio, and documents with no execution time limits.
 
-  <Card title="AI media generation workflows" icon="wand-magic-sparkles" href="/docs/guides/use-cases/media-generation">
-    Generate images, videos, audio, documents and other media using AI models.
-  </Card>
+> **[AI media generation workflows](/docs/guides/use-cases/media-generation)**
+>
+> Generate images, videos, audio, documents and other media using AI models.
 
-  <Card title="Marketing workflows" icon="bullhorn" href="/docs/guides/use-cases/marketing">
-    Build drip campaigns, create marketing content, and orchestrate multi-channel campaigns.
-  </Card>
-</CardGroup>
+> **[Marketing workflows](/docs/guides/use-cases/marketing)**
+>
+> Build drip campaigns, create marketing content, and orchestrate multi-channel campaigns.

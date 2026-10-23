@@ -1,5 +1,5 @@
 ---
-title: "Changelog"
+title: "Upstash Vector Changelog"
 source: https://upstash.com/docs/vector/overall/changelog
 path: docs/vector/overall/changelog
 ---

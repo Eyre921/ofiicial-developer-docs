@@ -166,148 +166,144 @@ sequenceDiagram
     Note over B,T: Subsequent turns bypass the handler:<br/>browser writes directly to session.in
 ```
 
-<Steps>
-  <Step title="Browser POSTs the first message to your route handler">
-    The transport sees `headStart: "/api/chat"` is set and there's no session yet for this chat. It POSTs the wire payload (messages, chatId, metadata) to your route handler.
-  </Step>
+**1. Browser POSTs the first message to your route handler**
 
-  <Step title="Your handler creates the session and triggers the agent run">
-    A single `apiClient.createSession` round-trip both creates the chat session and triggers an agent run with `trigger: "handover-prepare"`. The agent run boots into a wait state on `session.in`.
-  </Step>
+The transport sees `headStart: "/api/chat"` is set and there's no session yet for this chat. It POSTs the wire payload (messages, chatId, metadata) to your route handler.
 
-  <Step title="Your handler runs streamText step 1">
-    `streamText` runs in your warm process with `stopWhen: stepCountIs(1)`. The output is streamed to the browser as SSE while the agent run boots in parallel. Boot time (\~488ms) overlaps with LLM TTFB (\~389ms), fully hidden.
-  </Step>
+**2. Your handler creates the session and triggers the agent run**
 
-  <Step title="Mid-turn handover">
-    On step 1's `tool-calls` finish, your handler signals the agent and the SDK splices the agent's step-2+ stream into the same SSE response. On pure-text finish, your handler signals `handover-skip` and the agent run exits clean — no LLM call from the trigger side.
-  </Step>
+A single `apiClient.createSession` round-trip both creates the chat session and triggers an agent run with `trigger: "handover-prepare"`. The agent run boots into a wait state on `session.in`.
 
-  <Step title="Subsequent turns bypass the route handler">
-    After turn 1, the transport hydrates the session PAT from response headers and writes turn 2 onward directly to `session.in`. Same direct-trigger path as a regular `chat.agent` setup.
-  </Step>
-</Steps>
+**3. Your handler runs streamText step 1**
+
+`streamText` runs in your warm process with `stopWhen: stepCountIs(1)`. The output is streamed to the browser as SSE while the agent run boots in parallel. Boot time (\~488ms) overlaps with LLM TTFB (\~389ms), fully hidden.
+
+**4. Mid-turn handover**
+
+On step 1's `tool-calls` finish, your handler signals the agent and the SDK splices the agent's step-2+ stream into the same SSE response. On pure-text finish, your handler signals `handover-skip` and the agent run exits clean — no LLM call from the trigger side.
+
+**5. Subsequent turns bypass the route handler**
+
+After turn 1, the transport hydrates the session PAT from response headers and writes turn 2 onward directly to `session.in`. Same direct-trigger path as a regular `chat.agent` setup.
 
 ### Setup
 
-<Warning>
-  **Bundle isolation is the load-bearing constraint.** Head Start only saves time because your route-handler bundle stays lightweight. Anything you import in that handler — and anything those modules import transitively — lands in the bundle. If your tool catalog with heavy `execute` fns (E2B, Puppeteer, native bindings, the trigger SDK runtime, Turndown, image processing, `node:child_process`) ends up in the bundle, you've put cold-start back into a different process.
+> [!WARNING]
+>
+> **Bundle isolation is the load-bearing constraint.** Head Start only saves time because your route-handler bundle stays lightweight. Anything you import in that handler — and anything those modules import transitively — lands in the bundle. If your tool catalog with heavy `execute` fns (E2B, Puppeteer, native bindings, the trigger SDK runtime, Turndown, image processing, `node:child_process`) ends up in the bundle, you've put cold-start back into a different process.
+>
+> This is an **import-chain** problem, not a runtime one. A "we'll strip the executes at runtime" helper would not fix it — bundlers resolve imports at build time. The only correct shape is to keep schemas in their own module that imports `ai` and `zod` only.
 
-  This is an **import-chain** problem, not a runtime one. A "we'll strip the executes at runtime" helper would not fix it — bundlers resolve imports at build time. The only correct shape is to keep schemas in their own module that imports `ai` and `zod` only.
-</Warning>
+**1. Split your tool definitions into schemas + executes**
 
-<Steps>
-  <Step title="Split your tool definitions into schemas + executes">
-    Schemas in one module (light deps), executes in another (heavy deps). The agent task pulls in both; the route handler pulls in schemas only.
+Schemas in one module (light deps), executes in another (heavy deps). The agent task pulls in both; the route handler pulls in schemas only.
 
-    ```ts lib/chat-tools/schemas.ts theme={"theme":"css-variables"}
-    // ⚠️ This file MUST NOT import anything heavier than `ai` and `zod`.
-    // Any import here lands in the route-handler bundle.
-    import { tool } from "ai";
-    import { z } from "zod";
+```ts lib/chat-tools/schemas.ts theme={"theme":"css-variables"}
+// ⚠️ This file MUST NOT import anything heavier than `ai` and `zod`.
+// Any import here lands in the route-handler bundle.
+import { tool } from "ai";
+import { z } from "zod";
 
-    export const fetchPage = tool({
-      description: "Fetch a URL and return text",
-      inputSchema: z.object({ url: z.string().url() }),
-      // No execute — agent task adds it elsewhere.
-    });
+export const fetchPage = tool({
+  description: "Fetch a URL and return text",
+  inputSchema: z.object({ url: z.string().url() }),
+  // No execute — agent task adds it elsewhere.
+});
 
-    export const headStartTools = { fetchPage };
-    ```
+export const headStartTools = { fetchPage };
+```
 
-    ```ts trigger/chat-tools.ts theme={"theme":"css-variables"}
-    // Heavy deps live here. Only the trigger task imports this module.
-    import { tool } from "ai";
-    import TurndownService from "turndown";
-    import { fetchPage as fetchPageSchema } from "@/lib/chat-tools/schemas";
+```ts trigger/chat-tools.ts theme={"theme":"css-variables"}
+// Heavy deps live here. Only the trigger task imports this module.
+import { tool } from "ai";
+import TurndownService from "turndown";
+import { fetchPage as fetchPageSchema } from "@/lib/chat-tools/schemas";
 
-    const turndown = new TurndownService();
+const turndown = new TurndownService();
 
-    export const fetchPage = tool({
-      ...fetchPageSchema,
-      execute: async ({ url }) => {
-        const res = await fetch(url);
-        return { body: turndown.turndown(await res.text()) };
-      },
-    });
+export const fetchPage = tool({
+  ...fetchPageSchema,
+  execute: async ({ url }) => {
+    const res = await fetch(url);
+    return { body: turndown.turndown(await res.text()) };
+  },
+});
 
-    export const chatTools = { fetchPage };
-    ```
-  </Step>
+export const chatTools = { fetchPage };
+```
 
-  <Step title="Define your chat.agent (heavy executes)">
-    The agent uses the full tool set — these are the executes that run when step 2+ needs them.
+**2. Define your chat.agent (heavy executes)**
 
-    ```ts trigger/chat.ts theme={"theme":"css-variables"}
-    import { chat } from "@trigger.dev/sdk/ai";
-    import { streamText, stepCountIs } from "ai";
-    import { anthropic } from "@ai-sdk/anthropic";
-    import { chatTools } from "./chat-tools";
+The agent uses the full tool set — these are the executes that run when step 2+ needs them.
 
-    export const myChat = chat.agent({
-      id: "my-chat",
-      run: async ({ messages, signal, streamText }) =>
-        streamText({
-          model: anthropic("claude-sonnet-4-6"),
-          messages,
-          tools: chatTools,
-          stopWhen: stepCountIs(10),
-          abortSignal: signal,
-        }),
-    });
-    ```
-  </Step>
+```ts trigger/chat.ts theme={"theme":"css-variables"}
+import { chat } from "@trigger.dev/sdk/ai";
+import { streamText, stepCountIs } from "ai";
+import { anthropic } from "@ai-sdk/anthropic";
+import { chatTools } from "./chat-tools";
 
-  <Step title="Build the head-start handler">
-    Call `chat.headStart({ agentId, run })`. It returns a standard Web Fetch handler: `(req: Request) => Promise<Response>`. The `run` callback receives a `streamText` that already carries the SDK-owned wiring: the converted messages, `stopWhen: stepCountIs(1)` and the abort signal. Pass your schema-only tools to it explicitly, and add your own `model` and `system` on top.
+export const myChat = chat.agent({
+  id: "my-chat",
+  run: async ({ messages, signal, streamText }) =>
+    streamText({
+      model: anthropic("claude-sonnet-4-6"),
+      messages,
+      tools: chatTools,
+      stopWhen: stepCountIs(10),
+      abortSignal: signal,
+    }),
+});
+```
 
-    ```ts lib/chat-handler.ts theme={"theme":"css-variables"}
-    import { chat } from "@trigger.dev/sdk/chat-server";
-    import { streamText } from "ai";
-    import { anthropic } from "@ai-sdk/anthropic";
-    import { headStartTools } from "@/lib/chat-tools/schemas";
+**3. Build the head-start handler**
 
-    export const chatHandler = chat.headStart({
-      agentId: "my-chat",
-      run: async ({ streamText }) =>
-        streamText({
-          model: anthropic("claude-sonnet-4-6"),
-          system: "You are a helpful assistant.",
-          tools: headStartTools,
-        }),
-    });
-    ```
+Call `chat.headStart({ agentId, run })`. It returns a standard Web Fetch handler: `(req: Request) => Promise<Response>`. The `run` callback receives a `streamText` that already carries the SDK-owned wiring: the converted messages, `stopWhen: stepCountIs(1)` and the abort signal. Pass your schema-only tools to it explicitly, and add your own `model` and `system` on top.
 
-    <Note>
-      That `streamText` is the SDK's, not the one from `ai`. It pins `messages`,
-      `prompt`, `stopWhen: stepCountIs(1)` and `abortSignal`, which the handover depends on:
-      running past step 1 would splice a stream the agent is supposed to own. Setting
-      any of the four at the call site is a type error, and a throw if you get past
-      the types, rather than breaking the handover quietly. `chat.toStreamTextOptions()` is still there if you want to build the
-      options yourself.
-    </Note>
+```ts lib/chat-handler.ts theme={"theme":"css-variables"}
+import { chat } from "@trigger.dev/sdk/chat-server";
+import { streamText } from "ai";
+import { anthropic } from "@ai-sdk/anthropic";
+import { headStartTools } from "@/lib/chat-tools/schemas";
 
-    <Tip>
-      Use the **same model** on both sides (route handler and `chat.agent`) to avoid a tone or style shift between step 1 and step 2+. Your LLM provider keys stay server-side in your warm process — Trigger.dev never holds them in this design.
-    </Tip>
+export const chatHandler = chat.headStart({
+  agentId: "my-chat",
+  run: async ({ streamText }) =>
+    streamText({
+      model: anthropic("claude-sonnet-4-6"),
+      system: "You are a helpful assistant.",
+      tools: headStartTools,
+    }),
+});
+```
 
-    Mount the handler in whatever framework you use — see [Mounting in your framework](#mounting-in-your-framework) below.
-  </Step>
+> [!NOTE]
+>
+> That `streamText` is the SDK's, not the one from `ai`. It pins `messages`,
+> `prompt`, `stopWhen: stepCountIs(1)` and `abortSignal`, which the handover depends on:
+> running past step 1 would splice a stream the agent is supposed to own. Setting
+> any of the four at the call site is a type error, and a throw if you get past
+> the types, rather than breaking the handover quietly. `chat.toStreamTextOptions()` is still there if you want to build the
+> options yourself.
 
-  <Step title="Opt in on the transport">
-    Add `headStart: "/api/chat"` to `useTriggerChatTransport`. Subsequent turns bypass this URL automatically — `accessToken` and (optionally) `startSession` still run for the direct-trigger path on turn 2 onward.
+> [!TIP]
+>
+> Use the **same model** on both sides (route handler and `chat.agent`) to avoid a tone or style shift between step 1 and step 2+. Your LLM provider keys stay server-side in your warm process — Trigger.dev never holds them in this design.
 
-    ```tsx components/chat.tsx theme={"theme":"css-variables"}
-    const transport = useTriggerChatTransport<typeof myChat>({
-      task: "my-chat",
-      accessToken: ({ chatId }) => mintChatAccessToken(chatId),
-      startSession: ({ chatId, clientData }) =>
-      startChatSession({ chatId, clientData }),
-      headStart: "/api/chat",
-    });
-    ```
-  </Step>
-</Steps>
+Mount the handler in whatever framework you use — see [Mounting in your framework](#mounting-in-your-framework) below.
+
+**4. Opt in on the transport**
+
+Add `headStart: "/api/chat"` to `useTriggerChatTransport`. Subsequent turns bypass this URL automatically — `accessToken` and (optionally) `startSession` still run for the direct-trigger path on turn 2 onward.
+
+```tsx components/chat.tsx theme={"theme":"css-variables"}
+const transport = useTriggerChatTransport<typeof myChat>({
+  task: "my-chat",
+  accessToken: ({ chatId }) => mintChatAccessToken(chatId),
+  startSession: ({ chatId, clientData }) =>
+  startChatSession({ chatId, clientData }),
+  headStart: "/api/chat",
+});
+```
 
 ### Mounting in your framework
 
@@ -315,204 +311,198 @@ sequenceDiagram
 
 #### Web Fetch frameworks (recommended)
 
-<CodeGroup>
-  ```ts Next.js (App Router) theme={"theme":"css-variables"}
-  // app/api/chat/route.ts
-  import { chatHandler } from "@/lib/chat-handler";
+```ts Next.js (App Router) theme={"theme":"css-variables"}
+// app/api/chat/route.ts
+import { chatHandler } from "@/lib/chat-handler";
 
-  export const POST = chatHandler;
-  // Default function timeout on Vercel is 10s. Bump if your turns
-  // run long (multi-step tool use, slow models):
-  // export const maxDuration = 60;
-  ```
+export const POST = chatHandler;
+// Default function timeout on Vercel is 10s. Bump if your turns
+// run long (multi-step tool use, slow models):
+// export const maxDuration = 60;
+```
 
-  ```ts Hono theme={"theme":"css-variables"}
-  // src/index.ts
-  import { Hono } from "hono";
-  import { chatHandler } from "./chat-handler";
+```ts Hono theme={"theme":"css-variables"}
+// src/index.ts
+import { Hono } from "hono";
+import { chatHandler } from "./chat-handler";
 
-  const app = new Hono();
+const app = new Hono();
 
-  app.post("/api/chat", (c) => chatHandler(c.req.raw));
+app.post("/api/chat", (c) => chatHandler(c.req.raw));
 
-  export default app;
-  ```
+export default app;
+```
 
-  ```ts SvelteKit theme={"theme":"css-variables"}
-  // src/routes/api/chat/+server.ts
-  import type { RequestHandler } from "./$types";
-  import { chatHandler } from "$lib/chat-handler";
+```ts SvelteKit theme={"theme":"css-variables"}
+// src/routes/api/chat/+server.ts
+import type { RequestHandler } from "./$types";
+import { chatHandler } from "$lib/chat-handler";
 
-  export const POST: RequestHandler = ({ request }) => chatHandler(request);
-  ```
+export const POST: RequestHandler = ({ request }) => chatHandler(request);
+```
 
-  ```ts Remix / React Router v7 theme={"theme":"css-variables"}
-  // app/routes/api.chat.ts
-  import type { ActionFunctionArgs } from "@remix-run/node";
-  import { chatHandler } from "~/lib/chat-handler";
+```ts Remix / React Router v7 theme={"theme":"css-variables"}
+// app/routes/api.chat.ts
+import type { ActionFunctionArgs } from "@remix-run/node";
+import { chatHandler } from "~/lib/chat-handler";
 
-  export async function action({ request }: ActionFunctionArgs) {
-    return chatHandler(request);
-  }
-  ```
+export async function action({ request }: ActionFunctionArgs) {
+  return chatHandler(request);
+}
+```
 
-  ```ts TanStack Start theme={"theme":"css-variables"}
-  // app/routes/api/chat.ts
-  import { createAPIFileRoute } from "@tanstack/start/api";
-  import { chatHandler } from "~/lib/chat-handler";
+```ts TanStack Start theme={"theme":"css-variables"}
+// app/routes/api/chat.ts
+import { createAPIFileRoute } from "@tanstack/start/api";
+import { chatHandler } from "~/lib/chat-handler";
 
-  export const Route = createAPIFileRoute("/api/chat")({
-    POST: ({ request }) => chatHandler(request),
-  });
-  ```
+export const Route = createAPIFileRoute("/api/chat")({
+  POST: ({ request }) => chatHandler(request),
+});
+```
 
-  ```ts Astro theme={"theme":"css-variables"}
-  // src/pages/api/chat.ts
-  import type { APIRoute } from "astro";
-  import { chatHandler } from "../../lib/chat-handler";
+```ts Astro theme={"theme":"css-variables"}
+// src/pages/api/chat.ts
+import type { APIRoute } from "astro";
+import { chatHandler } from "../../lib/chat-handler";
 
-  export const POST: APIRoute = ({ request }) => chatHandler(request);
-  ```
+export const POST: APIRoute = ({ request }) => chatHandler(request);
+```
 
-  ```ts Nitro / Nuxt theme={"theme":"css-variables"}
-  // server/api/chat.post.ts
-  import { chatHandler } from "~/lib/chat-handler";
+```ts Nitro / Nuxt theme={"theme":"css-variables"}
+// server/api/chat.post.ts
+import { chatHandler } from "~/lib/chat-handler";
 
-  export default defineEventHandler((event) => chatHandler(toWebRequest(event)));
-  ```
+export default defineEventHandler((event) => chatHandler(toWebRequest(event)));
+```
 
-  ```ts Elysia theme={"theme":"css-variables"}
-  // src/index.ts
-  import { Elysia } from "elysia";
-  import { chatHandler } from "./chat-handler";
+```ts Elysia theme={"theme":"css-variables"}
+// src/index.ts
+import { Elysia } from "elysia";
+import { chatHandler } from "./chat-handler";
 
-  new Elysia()
-    .post("/api/chat", ({ request }) => chatHandler(request))
-    .listen(3000);
-  ```
-</CodeGroup>
+new Elysia()
+  .post("/api/chat", ({ request }) => chatHandler(request))
+  .listen(3000);
+```
 
 #### Edge / standalone runtimes
 
-<CodeGroup>
-  ```ts Cloudflare Workers theme={"theme":"css-variables"}
-  // src/index.ts
-  import { chatHandler } from "./chat-handler";
+```ts Cloudflare Workers theme={"theme":"css-variables"}
+// src/index.ts
+import { chatHandler } from "./chat-handler";
 
-  export default {
-    async fetch(req: Request): Promise<Response> {
-      const url = new URL(req.url);
-      if (req.method === "POST" && url.pathname === "/api/chat") {
-        return chatHandler(req);
-      }
-      return new Response("Not found", { status: 404 });
-    },
-  };
-  ```
-
-  ```ts Bun (native server) theme={"theme":"css-variables"}
-  // server.ts
-  import { chatHandler } from "./chat-handler";
-
-  Bun.serve({
-    port: 3000,
-    async fetch(req) {
-      const url = new URL(req.url);
-      if (req.method === "POST" && url.pathname === "/api/chat") {
-        return chatHandler(req);
-      }
-      return new Response("Not found", { status: 404 });
-    },
-  });
-  ```
-
-  ```ts Deno (Deno.serve) theme={"theme":"css-variables"}
-  // server.ts
-  import { chatHandler } from "./chat-handler.ts";
-
-  Deno.serve({ port: 3000 }, async (req) => {
+export default {
+  async fetch(req: Request): Promise<Response> {
     const url = new URL(req.url);
     if (req.method === "POST" && url.pathname === "/api/chat") {
       return chatHandler(req);
     }
     return new Response("Not found", { status: 404 });
-  });
-  ```
-</CodeGroup>
+  },
+};
+```
+
+```ts Bun (native server) theme={"theme":"css-variables"}
+// server.ts
+import { chatHandler } from "./chat-handler";
+
+Bun.serve({
+  port: 3000,
+  async fetch(req) {
+    const url = new URL(req.url);
+    if (req.method === "POST" && url.pathname === "/api/chat") {
+      return chatHandler(req);
+    }
+    return new Response("Not found", { status: 404 });
+  },
+});
+```
+
+```ts Deno (Deno.serve) theme={"theme":"css-variables"}
+// server.ts
+import { chatHandler } from "./chat-handler.ts";
+
+Deno.serve({ port: 3000 }, async (req) => {
+  const url = new URL(req.url);
+  if (req.method === "POST" && url.pathname === "/api/chat") {
+    return chatHandler(req);
+  }
+  return new Response("Not found", { status: 404 });
+});
+```
 
 #### Node-only frameworks
 
 Express, Fastify, and Koa pass Node `IncomingMessage` / `ServerResponse` objects rather than Web `Request` / `Response`. The SDK ships `chat.toNodeListener` that wraps any Web Fetch handler as a Node `(req, res)` listener — body bytes are read upfront, headers translated, the response body streamed chunk-by-chunk, and client disconnect is propagated to the handler via `AbortSignal`.
 
-<CodeGroup>
-  ```ts Express theme={"theme":"css-variables"}
-  import express from "express";
-  import { chat } from "@trigger.dev/sdk/chat-server";
-  import { chatHandler } from "./chat-handler";
+```ts Express theme={"theme":"css-variables"}
+import express from "express";
+import { chat } from "@trigger.dev/sdk/chat-server";
+import { chatHandler } from "./chat-handler";
 
-  const app = express();
-  app.post("/api/chat", chat.toNodeListener(chatHandler));
-  app.listen(3000);
-  ```
+const app = express();
+app.post("/api/chat", chat.toNodeListener(chatHandler));
+app.listen(3000);
+```
 
-  ```ts Fastify theme={"theme":"css-variables"}
-  import Fastify from "fastify";
-  import { chat } from "@trigger.dev/sdk/chat-server";
-  import { chatHandler } from "./chat-handler";
+```ts Fastify theme={"theme":"css-variables"}
+import Fastify from "fastify";
+import { chat } from "@trigger.dev/sdk/chat-server";
+import { chatHandler } from "./chat-handler";
 
-  const fastify = Fastify();
-  const listener = chat.toNodeListener(chatHandler);
+const fastify = Fastify();
+const listener = chat.toNodeListener(chatHandler);
 
-  fastify.post("/api/chat", (req, reply) => {
-    // Hand the raw Node request/response to the adapter and tell
-    // Fastify we'll handle the response ourselves (no auto-reply).
-    reply.hijack();
-    return listener(req.raw, reply.raw);
-  });
+fastify.post("/api/chat", (req, reply) => {
+  // Hand the raw Node request/response to the adapter and tell
+  // Fastify we'll handle the response ourselves (no auto-reply).
+  reply.hijack();
+  return listener(req.raw, reply.raw);
+});
 
-  fastify.listen({ port: 3000 });
-  ```
+fastify.listen({ port: 3000 });
+```
 
-  ```ts Koa theme={"theme":"css-variables"}
-  import Koa from "koa";
-  import Router from "@koa/router";
-  import { chat } from "@trigger.dev/sdk/chat-server";
-  import { chatHandler } from "./chat-handler";
+```ts Koa theme={"theme":"css-variables"}
+import Koa from "koa";
+import Router from "@koa/router";
+import { chat } from "@trigger.dev/sdk/chat-server";
+import { chatHandler } from "./chat-handler";
 
-  const app = new Koa();
-  const router = new Router();
-  const listener = chat.toNodeListener(chatHandler);
+const app = new Koa();
+const router = new Router();
+const listener = chat.toNodeListener(chatHandler);
 
-  router.post("/api/chat", async (ctx) => {
-    ctx.respond = false; // Tell Koa not to send the response itself.
-    await listener(ctx.req, ctx.res);
-  });
+router.post("/api/chat", async (ctx) => {
+  ctx.respond = false; // Tell Koa not to send the response itself.
+  await listener(ctx.req, ctx.res);
+});
 
-  app.use(router.routes()).listen(3000);
-  ```
+app.use(router.routes()).listen(3000);
+```
 
-  ```ts Raw node:http theme={"theme":"css-variables"}
-  import http from "node:http";
-  import { chat } from "@trigger.dev/sdk/chat-server";
-  import { chatHandler } from "./chat-handler";
+```ts Raw node:http theme={"theme":"css-variables"}
+import http from "node:http";
+import { chat } from "@trigger.dev/sdk/chat-server";
+import { chatHandler } from "./chat-handler";
 
-  const listener = chat.toNodeListener(chatHandler);
+const listener = chat.toNodeListener(chatHandler);
 
-  http
-    .createServer((req, res) => {
-      if (req.method === "POST" && req.url === "/api/chat") {
-        return listener(req, res);
-      }
-      res.statusCode = 404;
-      res.end();
-    })
-    .listen(3000);
-  ```
-</CodeGroup>
+http
+  .createServer((req, res) => {
+    if (req.method === "POST" && req.url === "/api/chat") {
+      return listener(req, res);
+    }
+    res.statusCode = 404;
+    res.end();
+  })
+  .listen(3000);
+```
 
-<Warning>
-  Don't run `express.json()` (or any body-parsing middleware) before the head-start route — it consumes the request body before `chat.toNodeListener` can read the raw bytes. Either skip the parser for this route, or scope it to other routes.
-</Warning>
+> [!WARNING]
+>
+> Don't run `express.json()` (or any body-parsing middleware) before the head-start route — it consumes the request body before `chat.toNodeListener` can read the raw bytes. Either skip the parser for this route, or scope it to other routes.
 
 #### Streaming response timeouts
 
@@ -548,9 +538,9 @@ A head-start turn persists exactly like a normal turn — the handover machinery
 
 Head Start composes with [`hydrateMessages`](/docs/ai-chat/lifecycle-hooks#hydratemessages). On the first turn, the hook receives the route handler's first-turn history as `incomingMessages` — the canonical upsert-and-return pattern persists the user message exactly as it would on a direct-trigger turn. The runtime splices the warm handler's partial assistant onto your hydrated chain after the hook returns, deduplicated by the assistant `messageId`, so your hook never needs to include the in-flight partial.
 
-<Warning>
-  **Hydrate hooks must upsert their conversation row, not update it.** Head-start turns skip preload entirely, so row-creating hooks (`onPreload`, or an `onChatStart` create) have not run when `hydrateMessages` first fires. A bare `UPDATE` against a missing row throws and errors the turn.
-</Warning>
+> [!WARNING]
+>
+> **Hydrate hooks must upsert their conversation row, not update it.** Head-start turns skip preload entirely, so row-creating hooks (`onPreload`, or an `onChatStart` create) have not run when `hydrateMessages` first fires. A bare `UPDATE` against a missing row throws and errors the turn.
 
 Your hydrate hook shapes **model context**, not the transcript — dropping reasoning-only entries or unresolved tool rows from the returned chain is fine and does not affect what `onTurnComplete` persists or what the UI renders.
 
@@ -612,9 +602,9 @@ if (turn === 0 && payload.trigger === "handover-prepare") {
 
 Gate the call on `trigger === "handover-prepare"` — `consumeHandover` consumes the warm handover, not a normal first message. See [Custom agents](/docs/ai-chat/custom-agents) for the full loop (continuation seeding, stop handling, persistence). The lower-level `chat.waitForHandover({ payload })` and `accumulator.applyHandover(signal)` are exported if you need to wait and splice in separate steps.
 
-<Note>
-  Always pass `originalMessages: conversation.uiMessages` to `pipeAndCapture` in a custom loop. It keeps assistant message IDs stable across turns and lets a tool-approval or handover resume merge into the trailing assistant — the same threading `chat.agent` does internally.
-</Note>
+> [!NOTE]
+>
+> Always pass `originalMessages: conversation.uiMessages` to `pipeAndCapture` in a custom loop. It keeps assistant message IDs stable across turns and lets a tool-approval or handover resume merge into the trailing assistant — the same threading `chat.agent` does internally.
 
 ### The `chat.headStart` API
 
@@ -721,13 +711,13 @@ const transport = useTriggerChatTransport({
 const { messages } = useChat({ id: chatId, transport, resume: true });
 ```
 
-<Warning>
-  `completion` must run to completion, or step 1 never finishes draining and the turn stalls. On serverless, hand it to the platform's run-after-response primitive (`waitUntil`, Next.js `after`). On a long-lived server you can ignore it; it runs in the background.
-</Warning>
+> [!WARNING]
+>
+> `completion` must run to completion, or step 1 never finishes draining and the turn stalls. On serverless, hand it to the platform's run-after-response primitive (`waitUntil`, Next.js `after`). On a long-lived server you can ignore it; it runs in the background.
 
-<Warning>
-  If you hydrate the transport's session state yourself (the `sessions` option, e.g. so the same page can also resume already-stored chats from your session store), a head-started session is still mid-turn, so mark it `isStreaming: true`. A session hydrated as not streaming is treated as settled: the transport skips reconnecting to `session.out`, so the browser never sees the turn even though the run completed. The minimal example above sidesteps this by not hydrating a session at all (`resume: true` alone reconnects).
-</Warning>
+> [!WARNING]
+>
+> If you hydrate the transport's session state yourself (the `sessions` option, e.g. so the same page can also resume already-stored chats from your session store), a head-started session is still mid-turn, so mark it `isStreaming: true`. A session hydrated as not streaming is treated as settled: the transport skips reconnecting to `session.out`, so the browser never sees the turn even though the run completed. The minimal example above sidesteps this by not hydrating a session at all (`resume: true` alone reconnects).
 
 The `run` callback and bundle-isolation rule are the same as `chat.headStart`. Pass `metadata` to attach auth tokens or context to the run; it never reaches the browser. The cost over the transport-routed handler is one extra round trip: the create request, then the resume.
 

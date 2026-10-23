@@ -1,5 +1,5 @@
 ---
-title: "Getting Started"
+title: "Vector REST API Getting Started"
 source: https://upstash.com/docs/vector/api/get-started
 path: docs/vector/api/get-started
 ---

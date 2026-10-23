@@ -1,5 +1,5 @@
 ---
-title: "Getting Started"
+title: "QStash Python SDK Getting Started"
 source: https://upstash.com/docs/qstash/sdks/py/gettingstarted
 path: docs/qstash/sdks/py/gettingstarted
 ---

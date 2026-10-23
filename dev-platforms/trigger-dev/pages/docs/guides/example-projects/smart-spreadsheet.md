@@ -22,10 +22,10 @@ Smart Spreadsheet is an AI-powered tool that enriches company data on demand. In
 
 ## GitHub repo
 
-<Card title="View the Smart Spreadsheet repo" icon="github" href="https://github.com/triggerdotdev/examples/tree/main/smart-spreadsheet">
-  Click here to view the full code for this project in our examples repository on GitHub. You can
-  fork it and use it as a starting point for your own project.
-</Card>
+> **[View the Smart Spreadsheet repo](https://github.com/triggerdotdev/examples/tree/main/smart-spreadsheet)**
+>
+> Click here to view the full code for this project in our examples repository on GitHub. You can
+> fork it and use it as a starting point for your own project.
 
 ## How it works
 

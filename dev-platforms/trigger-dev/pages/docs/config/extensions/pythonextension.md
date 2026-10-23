@@ -78,10 +78,10 @@ export const myScript = task({
 });
 ```
 
-<Note>
-  The pythonExtension will also take care of moving the scripts to the correct location during `dev`
-  mode, so you can use the same exact path in development as you do in production.
-</Note>
+> [!NOTE]
+>
+> The pythonExtension will also take care of moving the scripts to the correct location during `dev`
+> mode, so you can use the same exact path in development as you do in production.
 
 ## Using requirements files
 
@@ -113,10 +113,10 @@ pythonExtension({
 });
 ```
 
-<Note>
-  The `requirementsFile` option is only available in production mode. In development mode, you can
-  install the required packages manually using the `pip` command.
-</Note>
+> [!NOTE]
+>
+> The `requirementsFile` option is only available in production mode. In development mode, you can
+> install the required packages manually using the `pip` command.
 
 ## Virtual environments
 

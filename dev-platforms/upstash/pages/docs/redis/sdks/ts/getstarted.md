@@ -1,5 +1,5 @@
 ---
-title: "Get Started"
+title: "Redis TypeScript SDK Getting Started"
 source: https://upstash.com/docs/redis/sdks/ts/getstarted
 path: docs/redis/sdks/ts/getstarted
 ---

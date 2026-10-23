@@ -1,5 +1,5 @@
 ---
-title: "Overview"
+title: "Workflow Client Overview"
 source: https://upstash.com/docs/workflow/basics/client
 path: docs/workflow/basics/client
 ---

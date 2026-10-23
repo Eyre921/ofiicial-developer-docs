@@ -6,12 +6,6 @@ path: docs/webhooks/channels
 
 Point Slack (or any chat surface) at an agent: messages become turns and replies post back.
 
-<PrivateBeta>
-  [Request access](https://trigger.dev/webhooks-beta) and we'll turn webhooks on for your
-  organization and send you the prerelease packages. Webhooks are open source, so they work
-  self-hosted too. APIs may change before general availability.
-</PrivateBeta>
-
 A [session route](/docs/webhooks/session-routing) delivers a verified event to an agent as an [action](/docs/ai-chat/actions): the agent reacts, and the response is a side effect. A **channel** is the other half: the webhook IS the chat surface. Inbound messages become **turns** (the normal `run()` loop), and the agent's reply is posted **back** to the surface. A Slack thread becomes a real conversation with the agent, exactly like the browser chat, just a different frontend.
 
 List channels on a [`chat.agent`](/docs/ai-chat/overview) alongside (or instead of) `events`:

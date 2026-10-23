@@ -1,5 +1,5 @@
 ---
-title: "Overview"
+title: "Redis Search Bucket Aggregations"
 source: https://upstash.com/docs/redis/search/aggregation-operators/bucket-aggregations/overview
 path: docs/redis/search/aggregation-operators/bucket-aggregations/overview
 ---

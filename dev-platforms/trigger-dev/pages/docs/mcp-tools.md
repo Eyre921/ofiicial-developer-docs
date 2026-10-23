@@ -285,9 +285,7 @@ Check the status of the dev server and view recent output. Shows whether it is s
 * `"Show me the dev server logs"`
 * `"Are there any build errors?"`
 
-<Callout type="warning">
-  The deploy and list\_preview\_branches tools are not available when the MCP server is running with the `--dev-only` flag. The `--readonly` flag hides deploy, trigger\_task, cancel\_run, replay\_run, create\_dashboard, and set\_dashboard\_widgets.
-</Callout>
+The deploy and list\_preview\_branches tools are not available when the MCP server is running with the `--dev-only` flag. The `--readonly` flag hides deploy, trigger\_task, cancel\_run, replay\_run, create\_dashboard, and set\_dashboard\_widgets.
 
 ## Agent Chat Tools
 
@@ -345,9 +343,7 @@ Close an agent chat conversation. The agent exits its loop gracefully. Without t
 * `"Close the chat"`
 * `"End the conversation"`
 
-<Callout type="warning">
-  The `start_agent_chat`, `send_agent_message`, and `close_agent_chat` tools are write operations and are not available in readonly mode.
-</Callout>
+The `start_agent_chat`, `send_agent_message`, and `close_agent_chat` tools are write operations and are not available in readonly mode.
 
 ## Session Channel Tools
 
@@ -386,16 +382,9 @@ Append one record to a named side channel's `in` stream. Sends control input to 
 * `"Pause the screencast on this session"`
 * `"Send { paused: true } to the viewport channel"`
 
-<Callout type="warning">
-  `write_session_channel` is a write operation and is not available in readonly mode.
-</Callout>
+`write_session_channel` is a write operation and is not available in readonly mode.
 
 ## Webhook Tools
-
-<Note>
-  Webhooks are in private beta. [Request access](https://trigger.dev/webhooks-beta) and we'll turn them on for your
-  organization.
-</Note>
 
 Set up and debug [hosted webhook endpoints](/docs/webhooks/overview). Endpoint ids start with `wh_` and delivery ids with `whd_`; endpoint tools also accept an endpoint's declared id. The same operations are on the [Webhooks API](/docs/management/webhooks/list-endpoints).
 
@@ -478,6 +467,4 @@ Store a signing secret or public key the provider issued, such as Stripe's `whse
 * `endpointId` (required): the endpoint's declared id (such as `payments`) or `wh_` id
 * `secret` (required): the secret or public key
 
-<Callout type="warning">
-  `replay_webhook_delivery`, `generate_webhook_secret` and `set_webhook_secret` are write operations and are not available in readonly mode.
-</Callout>
+`replay_webhook_delivery`, `generate_webhook_secret` and `set_webhook_secret` are write operations and are not available in readonly mode.

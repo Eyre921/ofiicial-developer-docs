@@ -1,5 +1,5 @@
 ---
-title: "Getting Started"
+title: "Search Python SDK Getting Started"
 source: https://upstash.com/docs/search/sdks/py/gettingstarted
 path: docs/search/sdks/py/gettingstarted
 ---

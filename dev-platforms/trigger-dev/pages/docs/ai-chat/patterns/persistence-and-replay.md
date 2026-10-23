@@ -74,38 +74,36 @@ The key is `packets/{projectRef}/{envSlug}/sessions/{sessionId}/snapshot.json` �
 
 A new run boots when the user sends `u2`. Run 1 has long since exited. Run 2 has no in-memory state. The boot sequence:
 
-<Steps>
-  <Step title="Read the snapshot">
-    GET the JSON blob. On 404 (no snapshot yet — first-ever turn) or read error or version mismatch, treat as empty and continue. Snapshot misses are non-fatal — replay alone may still be sufficient.
-  </Step>
+**1. Read the snapshot**
 
-  <Step title="Replay session.out tail">
-    Subscribe to `session.out` with `wait=0` starting from `snapshot.lastOutEventId`. Drain whatever's there and close. Returns:
+GET the JSON blob. On 404 (no snapshot yet — first-ever turn) or read error or version mismatch, treat as empty and continue. Snapshot misses are non-fatal — replay alone may still be sufficient.
 
-    * **Settled messages** — closed assistant turns past the snapshot cursor (the chunks of a turn that completed after the snapshot was written but before the run exited cleanly).
-    * **A partial assistant** — the trailing message if its stream never received a `finish` chunk. The dead run was mid-response when it died. `cleanupAbortedParts` has already stripped streaming-in-progress fragments.
+**2. Replay session.out tail**
 
-    In the steady state this returns empty. In recovery, it returns whatever the dead run was in the middle of.
-  </Step>
+Subscribe to `session.out` with `wait=0` starting from `snapshot.lastOutEventId`. Drain whatever's there and close. Returns:
 
-  <Step title="Replay session.in tail">
-    GET `session.in` records past the last `turn-complete`'s `session-in-event-id` cursor. Returns the user messages the dead run hadn't acknowledged — typically the message that triggered the cancelled / crashed turn, plus anything the customer typed after.
-  </Step>
+* **Settled messages** — closed assistant turns past the snapshot cursor (the chunks of a turn that completed after the snapshot was written but before the run exited cleanly).
+* **A partial assistant** — the trailing message if its stream never received a `finish` chunk. The dead run was mid-response when it died. `cleanupAbortedParts` has already stripped streaming-in-progress fragments.
 
-  <Step title="Reconstruct the chain (smart default)">
-    Snapshot messages merge with the settled replay (replay wins on `id` collision). Then:
+In the steady state this returns empty. In recovery, it returns whatever the dead run was in the middle of.
 
-    * If there's a partial assistant **and** at least one in-flight user message, splice `[firstInFlightUser, partialAssistant]` onto the end of the chain. The model sees the prior turn's incomplete attempt and can continue, abandon, or pivot based on the next user message.
-    * Remaining in-flight users dispatch as fresh turns after the recovered first one.
-    * If there's no partial OR no in-flight users, the chain is just the settled chain and any in-flight users dispatch normally.
+**3. Replay session.in tail**
 
-    Customers can override this entirely via [`onRecoveryBoot`](/docs/ai-chat/patterns/recovery-boot).
-  </Step>
+GET `session.in` records past the last `turn-complete`'s `session-in-event-id` cursor. Returns the user messages the dead run hadn't acknowledged — typically the message that triggered the cancelled / crashed turn, plus anything the customer typed after.
 
-  <Step title="Append the new wire message">
-    Append `u2` from the wire payload, exactly as on turn 1.
-  </Step>
-</Steps>
+**4. Reconstruct the chain (smart default)**
+
+Snapshot messages merge with the settled replay (replay wins on `id` collision). Then:
+
+* If there's a partial assistant **and** at least one in-flight user message, splice `[firstInFlightUser, partialAssistant]` onto the end of the chain. The model sees the prior turn's incomplete attempt and can continue, abandon, or pivot based on the next user message.
+* Remaining in-flight users dispatch as fresh turns after the recovered first one.
+* If there's no partial OR no in-flight users, the chain is just the settled chain and any in-flight users dispatch normally.
+
+Customers can override this entirely via [`onRecoveryBoot`](/docs/ai-chat/patterns/recovery-boot).
+
+**5. Append the new wire message**
+
+Append `u2` from the wire payload, exactly as on turn 1.
 
 The model now sees `[u1, a1, u2]` and produces `a2`. After `onTurnComplete`, the runtime overwrites the snapshot with `[u1, a1, u2, a2]` and the cycle repeats.
 

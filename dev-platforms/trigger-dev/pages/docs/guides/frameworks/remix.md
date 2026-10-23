@@ -8,89 +8,83 @@ This guide will show you how to setup Trigger.dev in your existing Remix project
 
 ## Prerequisites
 
-* Setup a project in&#x20;
+* Setup a project in Remix
 * Ensure TypeScript is installed
 * [Create a Trigger.dev account](https://cloud.trigger.dev)
 * Create a new Trigger.dev project
 
 ## Initial setup
 
-<Steps>
-  <Step title="Run the CLI `init` command">
-    The easiest way to get started is to use the CLI. It will add Trigger.dev to your existing project, create a `/trigger` folder and give you an example task.
+**1. Run the CLI `init` command**
 
-    Run this command in the root of your project to get started:
+The easiest way to get started is to use the CLI. It will add Trigger.dev to your existing project, create a `/trigger` folder and give you an example task.
 
-    <CodeGroup>
-      ```bash npm theme={"theme":"css-variables"}
-      npx trigger.dev@latest init
-      ```
+Run this command in the root of your project to get started:
 
-      ```bash pnpm theme={"theme":"css-variables"}
-      pnpm dlx trigger.dev@latest init
-      ```
+```bash npm theme={"theme":"css-variables"}
+npx trigger.dev@latest init
+```
 
-      ```bash yarn theme={"theme":"css-variables"}
-      yarn dlx trigger.dev@latest init
-      ```
-    </CodeGroup>
+```bash pnpm theme={"theme":"css-variables"}
+pnpm dlx trigger.dev@latest init
+```
 
-    It will do a few things:
+```bash yarn theme={"theme":"css-variables"}
+yarn dlx trigger.dev@latest init
+```
 
-    <Tip title="MCP Server">
-      Our [Trigger.dev MCP server](/docs/mcp-introduction) gives your AI assistant direct access to Trigger.dev tools; search docs, trigger tasks, deploy projects, and monitor runs. We recommend installing it for the best developer experience.
-    </Tip>
+It will do a few things:
 
-    1. Ask if you want to set up AI tooling: the [Trigger.dev MCP server](/docs/mcp-introduction) and/or Trigger.dev agent skills (shown the first time you run init). If you choose either, you can let your AI assistant finish the setup instead of the CLI.
-    2. Log you into the CLI if you're not already logged in.
-    3. Ask you to select your project.
-    4. Install the required SDK packages.
-    5. Ask where you'd like to create the `/trigger` directory and create it with an example task.
-    6. Create a `trigger.config.ts` file in the root of your project.
+> [!TIP]
+>
+> Our [Trigger.dev MCP server](/docs/mcp-introduction) gives your AI assistant direct access to Trigger.dev tools; search docs, trigger tasks, deploy projects, and monitor runs. We recommend installing it for the best developer experience.
 
-    Install the "Hello World" example task when prompted. We'll use this task to test the setup.
-  </Step>
+1. Ask if you want to set up AI tooling: the [Trigger.dev MCP server](/docs/mcp-introduction) and/or Trigger.dev agent skills (shown the first time you run init). If you choose either, you can let your AI assistant finish the setup instead of the CLI.
+2. Log you into the CLI if you're not already logged in.
+3. Ask you to select your project.
+4. Install the required SDK packages.
+5. Ask where you'd like to create the `/trigger` directory and create it with an example task.
+6. Create a `trigger.config.ts` file in the root of your project.
 
-  <Step title="Run the CLI `dev` command">
-    The CLI `dev` command runs a server for your tasks. It watches for changes in your `/trigger` directory and communicates with the Trigger.dev platform to register your tasks, perform runs, and send data back and forth.
+Install the "Hello World" example task when prompted. We'll use this task to test the setup.
 
-    It can also update your `@trigger.dev/*` packages to prevent version mismatches and failed deploys. You will always be prompted first.
+**2. Run the CLI `dev` command**
 
-    <CodeGroup>
-      ```bash npm theme={"theme":"css-variables"}
-      npx trigger.dev@latest dev
-      ```
+The CLI `dev` command runs a server for your tasks. It watches for changes in your `/trigger` directory and communicates with the Trigger.dev platform to register your tasks, perform runs, and send data back and forth.
 
-      ```bash pnpm theme={"theme":"css-variables"}
-      pnpm dlx trigger.dev@latest dev
-      ```
+It can also update your `@trigger.dev/*` packages to prevent version mismatches and failed deploys. You will always be prompted first.
 
-      ```bash yarn theme={"theme":"css-variables"}
-      yarn dlx trigger.dev@latest dev
-      ```
-    </CodeGroup>
-  </Step>
+```bash npm theme={"theme":"css-variables"}
+npx trigger.dev@latest dev
+```
 
-  <Step title="Perform a test run using the dashboard">
-    The CLI `dev` command spits out various useful URLs, including a link to the dashboard. Open it, find your Example task on the Tasks page, and press the "Test" button to open its test page.
+```bash pnpm theme={"theme":"css-variables"}
+pnpm dlx trigger.dev@latest dev
+```
 
-    Most tasks have a "payload" which you enter in the JSON editor, but our example task doesn't need any input. You can also configure run options, pre-populate the form from recent runs, and save run templates.
+```bash yarn theme={"theme":"css-variables"}
+yarn dlx trigger.dev@latest dev
+```
 
-    Press the "Run test" button.
+**3. Perform a test run using the dashboard**
 
-    <img alt="Test page" />
-  </Step>
+The CLI `dev` command spits out various useful URLs, including a link to the dashboard. Open it, find your Example task on the Tasks page, and press the "Test" button to open its test page.
 
-  <Step title="View your run">
-    Congratulations, you should see the run page which will live reload showing you the current state of the run.
+Most tasks have a "payload" which you enter in the JSON editor, but our example task doesn't need any input. You can also configure run options, pre-populate the form from recent runs, and save run templates.
 
-    <img alt="Run page" />
+Press the "Run test" button.
 
-    If you go back to your terminal you'll see that the dev command also shows the task status and links to the run log.
+![Test page](https://mintcdn.com/trigger/2gGDaV8FR4pPhx_f/images/test-dashboard.png?fit=max\&auto=format\&n=2gGDaV8FR4pPhx_f\&q=85\&s=9a7c31f3499500be59e62586763e03d1)
 
-    <img alt="Terminal showing completed run" />
-  </Step>
-</Steps>
+**4. View your run**
+
+Congratulations, you should see the run page which will live reload showing you the current state of the run.
+
+![Run page](https://mintcdn.com/trigger/5SxX7bFjJKRsidSL/images/run-page.png?fit=max\&auto=format\&n=5SxX7bFjJKRsidSL\&q=85\&s=4b0bb5f9b181499cf324cdb8d5d673a8)
+
+If you go back to your terminal you'll see that the dev command also shows the task status and links to the run log.
+
+![Terminal showing completed run](https://mintcdn.com/trigger/0bD0UfsjaINxS6Tw/images/terminal-completed-run.png?fit=max\&auto=format\&n=0bD0UfsjaINxS6Tw\&q=85\&s=a9284c5228343b72d798c6e36f5acb24)
 
 ## Create an API key for local development
 
@@ -100,84 +94,78 @@ For more information on authenticating with Trigger.dev, see the [API keys page]
 
 ## Triggering your task in Remix
 
-<Steps>
-  <Step title="Create an API route">
-    Create a new file called `api.hello-world.ts` (or `api.hello-world.js`) in the `app/routes` directory like this: `app/routes/api.hello-world.ts`.
-  </Step>
+**1. Create an API route**
 
-  <Step title="Add your task">
-    Add this code to your `api.hello-world.ts` file which imports your task:
+Create a new file called `api.hello-world.ts` (or `api.hello-world.js`) in the `app/routes` directory like this: `app/routes/api.hello-world.ts`.
 
-    ```ts app/routes/api.hello-world.ts theme={"theme":"css-variables"}
-    import type { helloWorldTask } from "../../src/trigger/example";
-    import { tasks } from "@trigger.dev/sdk";
+**2. Add your task**
 
-    export async function loader() {
-      const handle = await tasks.trigger<typeof helloWorldTask>("hello-world", "James");
+Add this code to your `api.hello-world.ts` file which imports your task:
 
-      return new Response(JSON.stringify(handle), {
-        headers: { "Content-Type": "application/json" },
-      });
-    }
-    ```
-  </Step>
+```ts app/routes/api.hello-world.ts theme={"theme":"css-variables"}
+import type { helloWorldTask } from "../../src/trigger/example";
+import { tasks } from "@trigger.dev/sdk";
 
-  <Step title="Trigger your task">
-    Run your Remix app:
+export async function loader() {
+  const handle = await tasks.trigger<typeof helloWorldTask>("hello-world", "James");
 
-    <CodeGroup>
-      ```bash npm theme={"theme":"css-variables"}
-      npm run dev
-      ```
+  return new Response(JSON.stringify(handle), {
+    headers: { "Content-Type": "application/json" },
+  });
+}
+```
 
-      ```bash pnpm theme={"theme":"css-variables"}
-      pnpm run dev
-      ```
+**3. Trigger your task**
 
-      ```bash yarn theme={"theme":"css-variables"}
-      yarn dev
-      ```
-    </CodeGroup>
+Run your Remix app:
 
-    Run the dev server from Step 2. of the [Initial Setup](/docs/guides/frameworks/remix#initial-setup) section above if it's not already running:
+```bash npm theme={"theme":"css-variables"}
+npm run dev
+```
 
-    <CodeGroup>
-      ```bash npm theme={"theme":"css-variables"}
-      npx trigger.dev@latest dev
-      ```
+```bash pnpm theme={"theme":"css-variables"}
+pnpm run dev
+```
 
-      ```bash pnpm theme={"theme":"css-variables"}
-      pnpm dlx trigger.dev@latest dev
-      ```
+```bash yarn theme={"theme":"css-variables"}
+yarn dev
+```
 
-      ```bash yarn theme={"theme":"css-variables"}
-      yarn dlx trigger.dev@latest dev
-      ```
-    </CodeGroup>
+Run the dev server from Step 2. of the [Initial Setup](/docs/guides/frameworks/remix#initial-setup) section above if it's not already running:
 
-    Now visit the URL in your browser to trigger the task. Ensure the port number is the same as the one you're running your Remix app on. For example, if you're running your Remix app on port 3000, visit:
+```bash npm theme={"theme":"css-variables"}
+npx trigger.dev@latest dev
+```
 
-    ```bash theme={"theme":"css-variables"}
-    http://localhost:3000/api/trigger
-    ```
+```bash pnpm theme={"theme":"css-variables"}
+pnpm dlx trigger.dev@latest dev
+```
 
-    You should see the CLI log the task run with a link to view the logs in the dashboard.
+```bash yarn theme={"theme":"css-variables"}
+yarn dlx trigger.dev@latest dev
+```
 
-    <img alt="Trigger.dev CLI showing a successful run" />
+Now visit the URL in your browser to trigger the task. Ensure the port number is the same as the one you're running your Remix app on. For example, if you're running your Remix app on port 3000, visit:
 
-    Visit the [Trigger.dev dashboard](https://cloud.trigger.dev) to see your run.
-  </Step>
-</Steps>
+```bash theme={"theme":"css-variables"}
+http://localhost:3000/api/trigger
+```
+
+You should see the CLI log the task run with a link to view the logs in the dashboard.
+
+![Trigger.dev CLI showing a successful run](https://mintcdn.com/trigger/0bD0UfsjaINxS6Tw/images/trigger-cli-run-success.png?fit=max\&auto=format\&n=0bD0UfsjaINxS6Tw\&q=85\&s=75168b271620e7206a50b041224a98b0)
+
+Visit the [Trigger.dev dashboard](https://cloud.trigger.dev) to see your run.
 
 ## Manually add your environment variables (optional)
 
 If you have any environment variables in your tasks, be sure to add them in the dashboard so deployed code runs successfully. In Node.js, these environment variables are accessed in your code using `process.env.MY_ENV_VAR`.
 
 In the sidebar select the "Environment Variables" page, then press the "Add new"
-button. <img alt="Environment variables page" />
+button. ![Environment variables page](https://mintcdn.com/trigger/uys6iMwf9B_ojh8r/images/environment-variables-page.jpg?fit=max\&auto=format\&n=uys6iMwf9B_ojh8r\&q=85\&s=af652254781808a35c2bcefd4b61b59f)
 
-You can add values for your local dev environment, staging and prod. <img alt="Environment variables
-page" />
+You can add values for your local dev environment, staging and prod. ![Environment variables
+page](https://mintcdn.com/trigger/uys6iMwf9B_ojh8r/images/environment-variables-panel.jpg?fit=max\&auto=format\&n=uys6iMwf9B_ojh8r\&q=85\&s=79b5fd91e809cb0c6c9298410922df96)
 
 You can also add environment variables in code by following the steps on the [Environment Variables page](/docs/deploy-environment-variables#in-your-code).
 
@@ -185,31 +173,27 @@ You can also add environment variables in code by following the steps on the [En
 
 For this guide, we'll manually deploy your task by running the [CLI deploy command](/docs/cli-deploy-commands) below. Other ways to deploy are listed in the next section.
 
-<CodeGroup>
-  ```bash npm theme={"theme":"css-variables"}
-  npx trigger.dev@latest deploy
-  ```
+```bash npm theme={"theme":"css-variables"}
+npx trigger.dev@latest deploy
+```
 
-  ```bash pnpm theme={"theme":"css-variables"}
-  pnpm dlx trigger.dev@latest deploy
-  ```
+```bash pnpm theme={"theme":"css-variables"}
+pnpm dlx trigger.dev@latest deploy
+```
 
-  ```bash yarn theme={"theme":"css-variables"}
-  yarn dlx trigger.dev@latest deploy
-  ```
-</CodeGroup>
+```bash yarn theme={"theme":"css-variables"}
+yarn dlx trigger.dev@latest deploy
+```
 
 ### Other ways to deploy
 
-<Tabs>
-  <Tab title="GitHub Actions">
-    Use GitHub Actions to automatically deploy your tasks whenever new code is pushed and when the `trigger` directory has changes in it. Follow [this guide](/docs/github-actions) to set up GitHub Actions.
-  </Tab>
+**GitHub Actions**
 
-  <Tab title="Vercel Integration">
-    Use the official [Vercel integration](/docs/vercel-integration) to deploy your tasks automatically.
-  </Tab>
-</Tabs>
+Use GitHub Actions to automatically deploy your tasks whenever new code is pushed and when the `trigger` directory has changes in it. Follow [this guide](/docs/github-actions) to set up GitHub Actions.
+
+**Vercel Integration**
+
+Use the official [Vercel integration](/docs/vercel-integration) to deploy your tasks automatically.
 
 ## Deploying to Vercel Edge Functions
 
@@ -220,92 +204,90 @@ Before we start, it's important to note that:
 
 There are a few extra steps to follow to deploy your `/api/hello-world` API endpoint to Vercel Edge Functions.
 
-<Steps>
-  <Step title="Update your API route">
-    Update your API route to use the `runtime: "edge"` option and change it to an `action()` so we can trigger the task from a curl request later on.
+**1. Update your API route**
 
-    ```ts app/routes/api.hello-world.ts theme={"theme":"css-variables"}
-    import { tasks } from "@trigger.dev/sdk";
-    import type { helloWorldTask } from "../../src/trigger/example";
-    //      👆 **type-only** import
+Update your API route to use the `runtime: "edge"` option and change it to an `action()` so we can trigger the task from a curl request later on.
 
-    // include this at the top of your API route file
-    export const config = {
-      runtime: "edge",
-    };
-    export async function action({ request }: { request: Request }) {
-      // This is where you'd authenticate the request
-      const payload = await request.json();
-      const handle = await tasks.trigger<typeof helloWorldTask>("hello-world", payload);
-      return new Response(JSON.stringify(handle), {
-        headers: { "Content-Type": "application/json" },
-      });
-    }
-    ```
-  </Step>
+```ts app/routes/api.hello-world.ts theme={"theme":"css-variables"}
+import { tasks } from "@trigger.dev/sdk";
+import type { helloWorldTask } from "../../src/trigger/example";
+//      👆 **type-only** import
 
-  <Step title="Update the Vercel configuration">
-    Create or update the `vercel.json` file with the following:
+// include this at the top of your API route file
+export const config = {
+  runtime: "edge",
+};
+export async function action({ request }: { request: Request }) {
+  // This is where you'd authenticate the request
+  const payload = await request.json();
+  const handle = await tasks.trigger<typeof helloWorldTask>("hello-world", payload);
+  return new Response(JSON.stringify(handle), {
+    headers: { "Content-Type": "application/json" },
+  });
+}
+```
 
-    ```json vercel.json theme={"theme":"css-variables"}
-    {
-      "buildCommand": "npm run vercel-build",
-      "devCommand": "npm run dev",
-      "framework": "remix",
-      "installCommand": "npm install",
-      "outputDirectory": "build/client"
-    }
-    ```
-  </Step>
+**2. Update the Vercel configuration**
 
-  <Step title="Update package.json scripts">
-    Update your `package.json` to include the following scripts:
+Create or update the `vercel.json` file with the following:
 
-    ```json package.json theme={"theme":"css-variables"}
-    "scripts": {
-        "build": "remix vite:build",
-        "dev": "remix vite:dev",
-        "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
-        "start": "remix-serve ./build/server/index.js",
-        "typecheck": "tsc",
-        "vercel-build": "remix vite:build && cp -r ./public ./build/client"
-    },
-    ```
-  </Step>
+```json vercel.json theme={"theme":"css-variables"}
+{
+  "buildCommand": "npm run vercel-build",
+  "devCommand": "npm run dev",
+  "framework": "remix",
+  "installCommand": "npm install",
+  "outputDirectory": "build/client"
+}
+```
 
-  <Step title="Deploy to Vercel">
-    Push your code to a Git repository and create a new project in the Vercel dashboard. Select your repository and follow the prompts to complete the deployment.
-  </Step>
+**3. Update package.json scripts**
 
-  <Step title="Add your Vercel environment variables">
-    Open the Trigger.dev API Keys page for the environment your Vercel deployment uses. Create a named key with **Trigger only** access, then add it to the Vercel project settings:
+Update your `package.json` to include the following scripts:
 
-    ```bash theme={"theme":"css-variables"}
-    TRIGGER_SECRET_KEY=tr_prod_sk_xxxxxxxxxx
-    ```
-  </Step>
+```json package.json theme={"theme":"css-variables"}
+"scripts": {
+    "build": "remix vite:build",
+    "dev": "remix vite:dev",
+    "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
+    "start": "remix-serve ./build/server/index.js",
+    "typecheck": "tsc",
+    "vercel-build": "remix vite:build && cp -r ./public ./build/client"
+},
+```
 
-  <Step title="Deploy your project">
-    Once you've added the environment variable, deploy your project to Vercel.
+**4. Deploy to Vercel**
 
-    <Note>
-      Ensure you have also deployed your Trigger.dev task. See [deploy your task
-      step](/docs/guides/frameworks/remix#deploying-your-task-to-trigger-dev).
-    </Note>
-  </Step>
+Push your code to a Git repository and create a new project in the Vercel dashboard. Select your repository and follow the prompts to complete the deployment.
 
-  <Step title="Test your task in production">
-    After deployment, you can test your task in production by running this curl command:
+**5. Add your Vercel environment variables**
 
-    ```bash theme={"theme":"css-variables"}
-    curl -X POST https://your-app.vercel.app/api/hello-world \
-    -H "Content-Type: application/json" \
-    -d '{"name": "James"}'
-    ```
+Open the Trigger.dev API Keys page for the environment your Vercel deployment uses. Create a named key with **Trigger only** access, then add it to the Vercel project settings:
 
-    This sends a POST request to your API endpoint with a JSON payload.
-  </Step>
-</Steps>
+```bash theme={"theme":"css-variables"}
+TRIGGER_SECRET_KEY=tr_prod_sk_xxxxxxxxxx
+```
+
+**6. Deploy your project**
+
+Once you've added the environment variable, deploy your project to Vercel.
+
+> [!NOTE]
+>
+> Ensure you have also deployed your Trigger.dev task. See [deploy your task
+> step](/docs/guides/frameworks/remix#deploying-your-task-to-trigger-dev).
+
+**7. Test your task in production**
+
+After deployment, you can test your task in production by running this curl command:
+
+```bash theme={"theme":"css-variables"}
+curl -X POST https://your-app.vercel.app/api/hello-world \
+-H "Content-Type: application/json" \
+-d '{"name": "James"}'
+```
+
+This sends a POST request to your API endpoint with a JSON payload.
 
 ### Additional notes
 
@@ -317,38 +299,34 @@ The `runtime: "edge"` configuration in the API route allows for better performan
 
 The `@trigger.dev/react-hooks` package lets you subscribe to task runs from your React components. Show progress bars, stream AI responses, or display run status in real time.
 
-<CardGroup>
-  <Card title="React hooks" icon="react" href="/docs/realtime/react-hooks/overview">
-    Hooks for subscribing to runs, streaming data, and triggering tasks from the frontend.
-  </Card>
+> **[React hooks](/docs/realtime/react-hooks/overview)**
+>
+> Hooks for subscribing to runs, streaming data, and triggering tasks from the frontend.
 
-  <Card title="Streams" icon="wave-pulse" href="/docs/tasks/streams">
-    Pipe continuous data (like AI completions) from your tasks to the client while they run.
-  </Card>
-</CardGroup>
+> **[Streams](/docs/tasks/streams)**
+>
+> Pipe continuous data (like AI completions) from your tasks to the client while they run.
 
 ## Additional resources for Remix
 
-<Card title="Remix - triggering tasks using webhooks" icon="R" href="/docs/guides/frameworks/remix-webhooks">
-  How to create a webhook handler in a Remix app, and trigger a task from it.
-</Card>
+> **[Remix - triggering tasks using webhooks](/docs/guides/frameworks/remix-webhooks)**
+>
+> How to create a webhook handler in a Remix app, and trigger a task from it.
 
 ## Useful next steps
 
-<CardGroup>
-  <Card title="Tasks overview" icon="diagram-subtask" href="/docs/tasks/overview">
-    Learn what tasks are and their options
-  </Card>
+> **[Tasks overview](/docs/tasks/overview)**
+>
+> Learn what tasks are and their options
 
-  <Card title="Writing tasks" icon="pen-nib" href="/docs/writing-tasks-introduction">
-    Learn how to write your own tasks
-  </Card>
+> **[Writing tasks](/docs/writing-tasks-introduction)**
+>
+> Learn how to write your own tasks
 
-  <Card title="Deploy using the CLI" icon="terminal" href="/docs/cli-deploy-commands">
-    Learn how to deploy your task manually using the CLI
-  </Card>
+> **[Deploy using the CLI](/docs/cli-deploy-commands)**
+>
+> Learn how to deploy your task manually using the CLI
 
-  <Card title="Deploy using GitHub actions" icon="github" href="/docs/github-actions">
-    Learn how to deploy your task using GitHub actions
-  </Card>
-</CardGroup>
+> **[Deploy using GitHub actions](/docs/github-actions)**
+>
+> Learn how to deploy your task using GitHub actions

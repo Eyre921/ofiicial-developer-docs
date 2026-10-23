@@ -50,8 +50,8 @@ Options for `chat.agent()`.
 | `hydrateMessages` | `(event: HydrateMessagesEvent) => UIMessage[] \| Promise<UIMessage[]>` | — | **Deprecated.** Load message history from backend, replacing the linear accumulator. Use `loadContext` on a `storage` instead; cannot be combined with `storage`. See [hydrateMessages](/docs/ai-chat/lifecycle-hooks#hydratemessages) |
 | `actionSchema` | `TaskSchema` | — | Schema for validating custom actions sent via `transport.sendAction()`. See [Actions](/docs/ai-chat/actions) |
 | `onAction` | `(event: ActionEvent) => Promise<void \| ActionTurn> \| void \| ActionTurn` | — | Handle custom actions. Actions are state edits: only `hydrateMessages` (or a storage's `loadContext`) + `onAction` fire. Return `chat.turn()` to run a turn on the edited history (`chat.turn(message)` to answer a new user message), or nothing for an edit only. See [Actions](/docs/ai-chat/actions) |
-| `events` | `ChatEvent[]` | — | Webhook event descriptors (from `chat.event()`) whose verified deliveries are routed to this agent as actions and handled in `onAction`. See [session routing](/docs/webhooks/session-routing). Part of the [webhooks private beta](https://trigger.dev/webhooks-beta). |
-| `channels` | `ChannelConnector[]` | — | Channel connectors (for example `slack()`) that turn an external chat surface into a frontend for the agent: inbound messages run as turns and the reply posts back. See [channels](/docs/webhooks/channels). Part of the [webhooks private beta](https://trigger.dev/webhooks-beta). |
+| `events` | `ChatEvent[]` | — | Webhook event descriptors (from `chat.event()`) whose verified deliveries are routed to this agent as actions and handled in `onAction`. See [session routing](/docs/webhooks/session-routing). |
+| `channels` | `ChannelConnector[]` | — | Channel connectors (for example `slack()`) that turn an external chat surface into a frontend for the agent: inbound messages run as turns and the reply posts back. See [channels](/docs/webhooks/channels). |
 | `onTurnStart` | `(event: TurnStartEvent) => Promise<void> \| void` | — | Fires every turn before `run()` |
 | `onBeforeTurnComplete` | `(event: BeforeTurnCompleteEvent) => Promise<void> \| void` | — | Fires after response but before stream closes. Includes `writer`. |
 | `onTurnComplete` | `(event: TurnCompleteEvent) => Promise<void> \| void` | — | Fires after each turn completes (stream closed) |
@@ -83,9 +83,9 @@ Plus most standard [TaskOptions](/docs/tasks/overview) — `queue`, `machine`, `
 
 All **`chat.agent`** lifecycle events (**`onBoot`**, **`onPreload`**, **`onChatStart`**, **`onTurnStart`**, **`onBeforeTurnComplete`**, **`onTurnComplete`**, **`onCompacted`**) and the object passed to **`run`** include **`ctx`**: the same **`TaskRunContext`** shape as the `ctx` in `task({ run: (payload, { ctx }) => ... })`.
 
-<Note>
-  **`onValidateMessages`** does not include `ctx` — it fires before message accumulation and is designed for pure validation/transformation of incoming messages.
-</Note>
+> [!NOTE]
+>
+> **`onValidateMessages`** does not include `ctx` — it fires before message accumulation and is designed for pure validation/transformation of incoming messages.
 
 Use **`ctx`** for run metadata, tags, parent links, or any API that needs the full run record. The chat-specific string **`runId`** on events is always **`ctx.run.id`**; both are provided for convenience.
 
@@ -95,9 +95,9 @@ import type { TaskRunContext } from "@trigger.dev/sdk";
 import type { Context } from "@trigger.dev/sdk";
 ```
 
-<Note>
-  Prefer `import type { TaskRunContext } from "@trigger.dev/sdk"` in application code. Do not depend on `@trigger.dev/core` directly.
-</Note>
+> [!NOTE]
+>
+> Prefer `import type { TaskRunContext } from "@trigger.dev/sdk"` in application code. Do not depend on `@trigger.dev/core` directly.
 
 ## ChatTaskRunPayload
 
@@ -544,8 +544,8 @@ All methods available on the `chat` object from `@trigger.dev/sdk/ai`.
 | Method | Description |
 | - | - |
 | `chat.agent(options)` | Create a chat agent |
-| `chat.event(options)` | Declare an inbound webhook event descriptor an agent claims via `chat.agent({ events })`. See [session routing](/docs/webhooks/session-routing). Part of the [webhooks private beta](https://trigger.dev/webhooks-beta). |
-| `chat.channels.custom(options)` | Create a generic chat-frontend channel over any verified webhook source (you supply the egress). The `slack()` preset ships in `@trigger.dev/slack`. See [channels](/docs/webhooks/channels). Part of the [webhooks private beta](https://trigger.dev/webhooks-beta). |
+| `chat.event(options)` | Declare an inbound webhook event descriptor an agent claims via `chat.agent({ events })`. See [session routing](/docs/webhooks/session-routing). |
+| `chat.channels.custom(options)` | Create a generic chat-frontend channel over any verified webhook source (you supply the egress). The `slack()` preset ships in `@trigger.dev/slack`. See [channels](/docs/webhooks/channels). |
 | `chat.createSession(payload, options)` | Create an async iterator for chat turns |
 | `chat.pipe(source, options?)` | Pipe a stream to the frontend (from anywhere inside a task) |
 | `chat.pipeAndCapture(source, options?)` | Pipe and capture the response; returns `{ message, status, error }` |
@@ -907,9 +907,9 @@ transport.sendAction(
 
 `onSettled` receives `{ inputSeq, sessionInEventId, lastEventId? }`: the action's input append sequence, the committed input cursor, and the output cursor of the completion record. It runs before the returned stream closes, or continues in watch mode. Settlement confirms input processing, not application-level success; read the response chunks for the action's result. Synchronous callback exceptions do not interrupt the stream.
 
-<Note>
-  The callback does not run after cancellation, stream closure without a matching completion, missing or invalid cursors, or an error because a previous stop caused the action's output to be discarded. In that last case, the action's own completion can arrive while its response stream still throws an output-lost error. A missing callback does not prove the action was unprocessed: reconcile persisted state or make the action idempotent before retrying.
-</Note>
+> [!NOTE]
+>
+> The callback does not run after cancellation, stream closure without a matching completion, missing or invalid cursors, or an error because a previous stop caused the action's output to be discarded. In that last case, the action's own completion can arrive while its response stream still throws an output-lost error. A missing callback does not prove the action was unprocessed: reconcile persisted state or make the action idempotent before retrying.
 
 For managed `chat.agent()` tasks, the action payload is validated against the agent's `actionSchema` on the backend. Raw `chat.customAgent()` tasks receive it as `unknown` and must validate it themselves.
 

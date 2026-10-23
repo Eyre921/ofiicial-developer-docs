@@ -1,5 +1,5 @@
 ---
-title: "Features"
+title: "Vector Python SDK Features"
 source: https://upstash.com/docs/vector/sdks/py/features
 path: docs/vector/sdks/py/features
 ---

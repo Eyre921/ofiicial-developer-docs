@@ -19,6 +19,8 @@ Notion offers the ability for developers to add [comments](https://www.notion.co
 
 ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/bec3d37-Screen_Shot_2023-05-22_at_3.38.28_PM.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=81d81afaab9f6101c9949bc6fbb3233e)
 
+The Notion UI with a page and inline/block comment added.
+
 This guide will review how to use the public REST API to add and retrieve comments on a page. It will also look at considerations specific to [connections](https://www.notion.com/help/add-and-manage-connections-with-the-api) when retrieving or adding comments.
 
 ### Permissions
@@ -50,6 +52,8 @@ There are two relevant capabilities when it comes to comments — the ability to
 Edit your connection's capabilities in the [Developer portal](https://app.notion.com/developers/connections). If these capabilities are not added to your connection, REST API requests related to comments will respond with an error.
 
 ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/497c553-Configuring_capabilities_on_the_integration_settings_page.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=e7f94d1dc39268815b010a9373c00e26)
+
+Configuring capabilities on the connection settings page.
 
 See our reference guide on [Capabilities](/reference/capabilities) for more information.
 
@@ -344,6 +348,8 @@ There are two possible ways to get the `discussion_id` for a discussion thread.
 2. You can also get a `discussion_id` manually by navigating to the page with the discussion you’re responding to. Next, click the "Copy link to discussion" menu option next to the discussion.
 
 ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/8536d28-Screen_Shot_2023-05-22_at_7.27.12_PM.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=60a344208b6ad82c124bc7e40c34592d)
+
+"Copy link to discussion" menu option in Notion UI.
 
 This will give you a URL like:
 

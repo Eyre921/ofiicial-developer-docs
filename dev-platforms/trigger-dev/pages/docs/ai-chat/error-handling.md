@@ -45,9 +45,9 @@ export const myChat = chat.agent({
 });
 ```
 
-<Note>
-  Returning a string from `onError` is what gets shown to the user. Do not return raw error messages — they may leak internal details (API keys, stack traces, etc.).
-</Note>
+> [!NOTE]
+>
+> Returning a string from `onError` is what gets shown to the user. Do not return raw error messages — they may leak internal details (API keys, stack traces, etc.).
 
 The frontend receives this as an error chunk that `useChat` exposes via its `error` field:
 
@@ -98,9 +98,9 @@ onValidateMessages: async ({ messages }) => {
 },
 ```
 
-<Tip>
-  The `Error.message` you throw is sent verbatim to the frontend as the error chunk's `errorText`. Use messages safe for end users.
-</Tip>
+> [!TIP]
+>
+> The `Error.message` you throw is sent verbatim to the frontend as the error chunk's `errorText`. Use messages safe for end users.
 
 ### Catching errors inside `run()`
 
@@ -149,9 +149,9 @@ chat.agent({
 });
 ```
 
-<Info>
-  `chat.agent` defaults to one run attempt. Setting `oomMachine` enables one additional attempt on the larger machine after an out-of-memory failure. Recover from a failed turn by sending another message or calling `regenerate()`.
-</Info>
+> [!NOTE]
+>
+> `chat.agent` defaults to one run attempt. Setting `oomMachine` enables one additional attempt on the larger machine after an out-of-memory failure. Recover from a failed turn by sending another message or calling `regenerate()`.
 
 ## Recovery patterns
 
@@ -317,9 +317,9 @@ uiMessageStreamOptions: {
 {error?.message.startsWith("CONTEXT_TOO_LONG") && <NewChatPrompt />}
 ```
 
-<Tip>
-  For richer error structures, use [`chat.response.write()`](/docs/ai-chat/backend#custom-data-parts) with a custom `data-error` part type. This lets you ship structured error metadata (codes, retry hints, etc.) instead of stringly-typed messages.
-</Tip>
+> [!TIP]
+>
+> For richer error structures, use [`chat.response.write()`](/docs/ai-chat/backend#custom-data-parts) with a custom `data-error` part type. This lets you ship structured error metadata (codes, retry hints, etc.) instead of stringly-typed messages.
 
 ### Errors from `accessToken` / `startSession`
 

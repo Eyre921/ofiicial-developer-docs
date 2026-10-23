@@ -109,11 +109,11 @@ for await (const run of runs.subscribeToRunsWithTag<typeof myTask | typeof myOth
 
 The metadata API allows you to update custom metadata on runs and receive real-time updates when metadata changes. This is useful for tracking progress, storing intermediate results, or adding custom status information that can be monitored in real-time.
 
-<Note>
-  For frontend applications using React, see our [React hooks metadata
-  documentation](/docs/realtime/react-hooks/subscribe#using-metadata-to-show-progress-in-your-ui) for
-  consuming metadata updates in your UI.
-</Note>
+> [!NOTE]
+>
+> For frontend applications using React, see our [React hooks metadata
+> documentation](/docs/realtime/react-hooks/subscribe#using-metadata-to-show-progress-in-your-ui) for
+> consuming metadata updates in your UI.
 
 When you update metadata from within a task using `metadata.set()`, `metadata.append()`, or other metadata methods, all subscribers to that run will automatically receive the updated run object containing the new metadata.
 

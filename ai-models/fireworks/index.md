@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 395 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 397 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -286,6 +286,7 @@
 - `nexus/cli` — [Nexus CLI](pages/nexus/cli.md) · [原文](https://docs.fireworks.ai/nexus/cli)
 - `nexus/cli-reference` — [CLI Reference](pages/nexus/cli-reference.md) · [原文](https://docs.fireworks.ai/nexus/cli-reference)
 - `nexus/estimated-savings` — [Estimated Savings](pages/nexus/estimated-savings.md) · [原文](https://docs.fireworks.ai/nexus/estimated-savings)
+- `nexus/harnesses` — [Coding Harnesses](pages/nexus/harnesses.md) · [原文](https://docs.fireworks.ai/nexus/harnesses)
 - `nexus/harnesses/chatgpt` — [ChatGPT desktop app](pages/nexus/harnesses/chatgpt.md) · [原文](https://docs.fireworks.ai/nexus/harnesses/chatgpt)
 - `nexus/harnesses/claude-code` — [Claude Code](pages/nexus/harnesses/claude-code.md) · [原文](https://docs.fireworks.ai/nexus/harnesses/claude-code)
 - `nexus/harnesses/claude-desktop` — [Claude Desktop](pages/nexus/harnesses/claude-desktop.md) · [原文](https://docs.fireworks.ai/nexus/harnesses/claude-desktop)
@@ -306,6 +307,7 @@
 - `nexus/provider-keys` — [Provider Keys](pages/nexus/provider-keys.md) · [原文](https://docs.fireworks.ai/nexus/provider-keys)
 - `nexus/provider-keys/bedrock` — [Amazon Bedrock Setup](pages/nexus/provider-keys/bedrock.md) · [原文](https://docs.fireworks.ai/nexus/provider-keys/bedrock)
 - `nexus/quickstart` — [Quickstart](pages/nexus/quickstart.md) · [原文](https://docs.fireworks.ai/nexus/quickstart)
+- `nexus/release-notes` — [Release Notes](pages/nexus/release-notes.md) · [原文](https://docs.fireworks.ai/nexus/release-notes)
 - `nexus/usage-limits` — [Spend Limits](pages/nexus/usage-limits.md) · [原文](https://docs.fireworks.ai/nexus/usage-limits)
 
 ## serverless

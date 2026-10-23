@@ -13,7 +13,7 @@ You can set a priority when you trigger a run. This allows you to prioritize som
 
 The value for priority is a time offset in seconds that determines the order of dequeuing.
 
-<img alt="Priority runs" />
+![Priority runs](https://mintcdn.com/trigger/5SxX7bFjJKRsidSL/images/priority-runs.png?fit=max\&auto=format\&n=5SxX7bFjJKRsidSL\&q=85\&s=36b348760cb05a1c7af1b8625beddf24)
 
 If you specify a priority of `10` the run will dequeue before runs that were triggered with no priority 8 seconds ago, like in this example:
 
@@ -29,7 +29,7 @@ await myTask.trigger({ foo: "bar" }, { priority: 10 });
 
 If you passed a value of `3600` the run would dequeue before runs that were triggered an hour ago (with no priority).
 
-<Note>
-  Setting a high priority will not allow you to beat runs from other organizations. It will only
-  affect the order of your own runs.
-</Note>
+> [!NOTE]
+>
+> Setting a high priority will not allow you to beat runs from other organizations. It will only
+> affect the order of your own runs.

@@ -53,6 +53,8 @@ request automatically, and the web client asks you to retry the action.
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/auth-connection-info.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=01a8d11058c2d33e0069b8dec98591b5)
 
+Connection Info after a completed OAuth flow: the authorization status, the dynamically registered client, and the granted scopes.
+
 ## Callback URLs
 
 The web app listens for the OAuth callback on its own URL, while the CLI and TUI deliberately share a second one:

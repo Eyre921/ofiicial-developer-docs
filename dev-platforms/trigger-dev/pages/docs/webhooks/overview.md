@@ -6,12 +6,6 @@ path: docs/webhooks/overview
 
 Receive provider webhooks on hosted, verified endpoints and route each event to tasks, agents, and waiting runs.
 
-<PrivateBeta>
-  [Request access](https://trigger.dev/webhooks-beta) and we'll turn webhooks on for your
-  organization and send you the prerelease packages. Webhooks are open source, so they work
-  self-hosted too. APIs may change before general availability.
-</PrivateBeta>
-
 **A webhook endpoint is one hosted URL that you register with a provider.** Trigger.dev verifies every request against the endpoint's [source](/docs/webhooks/sources), records it as a [delivery](/docs/webhooks/deliveries), and hands the event to everything subscribed to the endpoint.
 
 Declare the endpoint once, then subscribe to it:
@@ -95,36 +89,34 @@ A request must pass verification before anything else happens. Provider handshak
 
 Every endpoint can produce a setup prompt for an AI coding agent. It holds the URL, the events your subscribers filter on, and the steps for registering the endpoint and its signing secret with the provider. Copy it from the endpoints list or the endpoint's page, or read it with the MCP server's `get_webhook_endpoint_details` tool. See [Connect a provider](/docs/webhooks/connect).
 
-<CardGroup>
-  <Card title="Connect a provider" icon="plug" href="/docs/webhooks/connect">
-    Register the URL and signing secret, then send a test event.
-  </Card>
+> **[Connect a provider](/docs/webhooks/connect)**
+>
+> Register the URL and signing secret, then send a test event.
 
-  <Card title="Sources and verification" icon="shield-check" href="/docs/webhooks/sources">
-    Choose a provider source or define a custom verification scheme.
-  </Card>
+> **[Sources and verification](/docs/webhooks/sources)**
+>
+> Choose a provider source or define a custom verification scheme.
 
-  <Card title="Filters" icon="filter" href="/docs/webhooks/filters">
-    Choose which events reach each subscriber.
-  </Card>
+> **[Filters](/docs/webhooks/filters)**
+>
+> Choose which events reach each subscriber.
 
-  <Card title="Waiters" icon="hourglass" href="/docs/webhooks/waiters">
-    Pause a run until a matching webhook arrives.
-  </Card>
+> **[Waiters](/docs/webhooks/waiters)**
+>
+> Pause a run until a matching webhook arrives.
 
-  <Card title="Deliveries and endpoints" icon="inbox" href="/docs/webhooks/deliveries">
-    Inspect received events and where each one went.
-  </Card>
+> **[Deliveries and endpoints](/docs/webhooks/deliveries)**
+>
+> Inspect received events and where each one went.
 
-  <Card title="Session routing" icon="arrows-to-dot" href="/docs/webhooks/session-routing">
-    Route deliveries to a durable per-key agent session.
-  </Card>
+> **[Session routing](/docs/webhooks/session-routing)**
+>
+> Route deliveries to a durable per-key agent session.
 
-  <Card title="Channels" icon="comments" href="/docs/webhooks/channels">
-    Turn a webhook into a chat frontend for an agent.
-  </Card>
+> **[Channels](/docs/webhooks/channels)**
+>
+> Turn a webhook into a chat frontend for an agent.
 
-  <Card title="Human-in-the-loop" icon="user-check" href="/docs/webhooks/human-in-the-loop">
-    Approvals and interactive controls over a channel.
-  </Card>
-</CardGroup>
+> **[Human-in-the-loop](/docs/webhooks/human-in-the-loop)**
+>
+> Approvals and interactive controls over a channel.

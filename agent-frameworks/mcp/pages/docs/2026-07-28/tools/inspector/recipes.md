@@ -58,6 +58,8 @@ mcp-inspector --config ~/Library/Application\ Support/Claude/claude_desktop_conf
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/import-config.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=c9f5229c2d827f4bcab37938879f21f2)
 
+Add Servers offers import from an existing client config or from a registry server.json.
+
 ## Reviewing an MCP App
 
 [MCP Apps](/extensions/apps/overview) are tools that carry a UI widget. For an automated reviewer (CI or an agent), use the CLI for every check that returns JSON, and open a browser only to inspect the rendered widget.

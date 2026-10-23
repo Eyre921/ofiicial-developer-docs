@@ -10,7 +10,7 @@ Create an AI agent workflow that generates and translates copy
 
 **Prompt chaining** is an AI workflow pattern that decomposes a complex task into a sequence of steps, where each LLM call processes the output of the previous one. This approach trades off latency for higher accuracy by making each LLM call an easier, more focused task, with the ability to add programmatic checks between steps to ensure the process remains on track.
 
-<img alt="Generating and translating copy" />
+![Generating and translating copy](https://mintcdn.com/trigger/uys6iMwf9B_ojh8r/guides/ai-agents/prompt-chaining.png?fit=max\&auto=format\&n=uys6iMwf9B_ojh8r\&q=85\&s=8bc4a5c5ff644c6b7c675672d5cab313)
 
 ## Example task
 

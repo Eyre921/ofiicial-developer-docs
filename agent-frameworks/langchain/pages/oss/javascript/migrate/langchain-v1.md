@@ -4,6 +4,8 @@ source: https://docs.langchain.com/oss/javascript/migrate/langchain-v1
 path: oss/javascript/migrate/langchain-v1
 ---
 
+Migrate a codebase to LangChain v1.
+
 Migrate this codebase to LangChain v1 (requires `langchain` and `@langchain/core` at v1, and Node.js 22+).
 
 Key changes:

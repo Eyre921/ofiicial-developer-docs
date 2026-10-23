@@ -6,12 +6,12 @@ path: docs/guides/example-projects/grok-ai-teammates
 
 An open-source Grok Bot alternative by Code With Antonio. Each AI teammate gets its own Linux sandbox and desktop, runs durable chat turns on Trigger.dev chat.agent(), hands off work in group chats, and meters usage with a scheduled task.
 
-<iframe title="How I Build AI Teammates With Claude Code" />
+[How I Build AI Teammates With Claude Code](https://www.youtube.com/embed/mQBuZ6Dp0u0)
 
-<Note>
-  This open-source project and video are by [Code With Antonio](https://github.com/code-with-antonio),
-  and are featured here with their permission. The code lives in their GitHub repository.
-</Note>
+> [!NOTE]
+>
+> This open-source project and video are by [Code With Antonio](https://github.com/code-with-antonio),
+> and are featured here with their permission. The code lives in their GitHub repository.
 
 ## Overview
 
@@ -37,10 +37,10 @@ Grok AI Teammates is an open-source, fullstack app where each bot has a name, a 
 
 ## GitHub repo
 
-<Card title="View the AI Teammates repo" icon="GitHub" href="https://github.com/code-with-antonio/ai-teammates">
-  Click here to view the full code for this project on GitHub. It's maintained by Code With Antonio,
-  and you can fork it and use it as a starting point for your own project.
-</Card>
+> **[View the AI Teammates repo](https://github.com/code-with-antonio/ai-teammates)**
+>
+> Click here to view the full code for this project on GitHub. It's maintained by Code With Antonio,
+> and you can fork it and use it as a starting point for your own project.
 
 ## How it works
 
@@ -279,20 +279,18 @@ To deploy, run `npx trigger.dev@latest deploy` and add the tasks' variables (`DA
 
 ## Learn more
 
-<CardGroup>
-  <Card title="AI chat overview" icon="message-bot" href="/docs/ai-chat/overview">
-    How chat agents, sessions, and the turn loop work.
-  </Card>
+> **[AI chat overview](/docs/ai-chat/overview)**
+>
+> How chat agents, sessions, and the turn loop work.
 
-  <Card title="Frontend" icon="browser" href="/docs/ai-chat/frontend">
-    The chat transport, session tokens, and reconnection.
-  </Card>
+> **[Frontend](/docs/ai-chat/frontend)**
+>
+> The chat transport, session tokens, and reconnection.
 
-  <Card title="Tools" icon="wrench" href="/docs/ai-chat/tools">
-    Declaring tools on your agent and how they persist across turns.
-  </Card>
+> **[Tools](/docs/ai-chat/tools)**
+>
+> Declaring tools on your agent and how they persist across turns.
 
-  <Card title="Scheduled tasks" icon="clock" href="/docs/tasks/scheduled">
-    Run tasks on a cron schedule.
-  </Card>
-</CardGroup>
+> **[Scheduled tasks](/docs/tasks/scheduled)**
+>
+> Run tasks on a cron schedule.

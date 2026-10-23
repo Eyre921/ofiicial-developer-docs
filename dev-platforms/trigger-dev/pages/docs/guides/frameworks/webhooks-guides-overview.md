@@ -14,26 +14,24 @@ A webhook handler is code that executes in response to an event. They can be end
 
 ## Webhook guides
 
-<CardGroup>
-  <Card title="Next.js - triggering tasks using webhooks" icon="N" href="/docs/guides/frameworks/nextjs-webhooks">
-    How to create a webhook handler in a Next.js app, and trigger a task from it.
-  </Card>
+> **[Next.js - triggering tasks using webhooks](/docs/guides/frameworks/nextjs-webhooks)**
+>
+> How to create a webhook handler in a Next.js app, and trigger a task from it.
 
-  <Card title="Remix - triggering tasks using webhooks" icon="R" href="/docs/guides/frameworks/remix-webhooks">
-    How to create a webhook handler in a Remix app, and trigger a task from it.
-  </Card>
+> **[Remix - triggering tasks using webhooks](/docs/guides/frameworks/remix-webhooks)**
+>
+> How to create a webhook handler in a Remix app, and trigger a task from it.
 
-  <Card title="Stripe webhooks" icon="webhook" href="/docs/guides/examples/stripe-webhook">
-    How to create a Stripe webhook handler and trigger a task when a 'checkout session completed'
-    event is received.
-  </Card>
+> **[Stripe webhooks](/docs/guides/examples/stripe-webhook)**
+>
+> How to create a Stripe webhook handler and trigger a task when a 'checkout session completed'
+> event is received.
 
-  <Card title="Hookdeck webhooks" icon="webhook" href="/docs/guides/examples/hookdeck-webhook">
-    Use Hookdeck to receive webhooks and forward them to Trigger.dev tasks with logging and replay
-    capabilities.
-  </Card>
+> **[Hookdeck webhooks](/docs/guides/examples/hookdeck-webhook)**
+>
+> Use Hookdeck to receive webhooks and forward them to Trigger.dev tasks with logging and replay
+> capabilities.
 
-  <Card title="Supabase database webhooks guide" icon="webhook" href="/docs/guides/frameworks/supabase-edge-functions-database-webhooks">
-    Learn how to trigger a task from a Supabase edge function when an event occurs in your database.
-  </Card>
-</CardGroup>
+> **[Supabase database webhooks guide](/docs/guides/frameworks/supabase-edge-functions-database-webhooks)**
+>
+> Learn how to trigger a task from a Supabase edge function when an event occurs in your database.

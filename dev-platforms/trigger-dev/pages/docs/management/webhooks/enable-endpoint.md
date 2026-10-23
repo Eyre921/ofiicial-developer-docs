@@ -5,5 +5,4 @@ path: docs/management/webhooks/enable-endpoint
 ---
 
 v3-openapi POST /api/v1/webhooks/endpoints/{endpointId}/enable
-**Private beta:** [request access](https://trigger.dev/webhooks-beta) to use webhooks.
 Resume a disabled endpoint so its URL accepts deliveries again. Returns the updated endpoint.

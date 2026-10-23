@@ -8,12 +8,12 @@ Trigger background tasks from React components and optionally subscribe to their
 
 Trigger tasks directly from your React components. You can fire-and-forget, or trigger and immediately subscribe to the run's progress or streamed output.
 
-<Note>
-  For triggering tasks from your frontend, you need to use “trigger” tokens. These can only be used
-  once to trigger a task and are more secure than regular Public Access Tokens. To learn more about
-  how to create and use these tokens, see our [Trigger
-  Tokens](/docs/realtime/auth#trigger-tokens-for-frontend-triggering-only) documentation.
-</Note>
+> [!NOTE]
+>
+> For triggering tasks from your frontend, you need to use “trigger” tokens. These can only be used
+> once to trigger a task and are more secure than regular Public Access Tokens. To learn more about
+> how to create and use these tokens, see our [Trigger
+> Tokens](/docs/realtime/auth#trigger-tokens-for-frontend-triggering-only) documentation.
 
 ## Hooks
 

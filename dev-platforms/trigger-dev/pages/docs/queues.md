@@ -36,12 +36,12 @@ export const sendDigestEmail = task({
 });
 ```
 
-<Note>
-  If what you want to share is a concurrency cap rather than ordering, you don't need a shared
-  queue: declare a named limit with `concurrencyLimit()` and each task keeps its own queue while
-  drawing from the shared limit. See [sharing a limit between
-  tasks](/docs/concurrency#sharing-a-limit-between-tasks).
-</Note>
+> [!NOTE]
+>
+> If what you want to share is a concurrency cap rather than ordering, you don't need a shared
+> queue: declare a named limit with `concurrencyLimit()` and each task keeps its own queue while
+> drawing from the shared limit. See [sharing a limit between
+> tasks](/docs/concurrency#sharing-a-limit-between-tasks).
 
 Queue names can use letters, numbers, underscores, hyphens and slashes, up to 128 characters. Names starting with `limit/` are reserved for [concurrency limits](/docs/concurrency) and are rejected at deploy time.
 
@@ -99,7 +99,7 @@ You can set a priority when you trigger a run. This allows you to prioritize som
 
 The value for priority is a time offset in seconds that determines the order of dequeuing.
 
-<img alt="Priority runs" />
+![Priority runs](https://mintcdn.com/trigger/5SxX7bFjJKRsidSL/images/priority-runs.png?fit=max\&auto=format\&n=5SxX7bFjJKRsidSL\&q=85\&s=36b348760cb05a1c7af1b8625beddf24)
 
 If you specify a priority of `10` the run will dequeue before runs that were triggered with no priority 8 seconds ago, like in this example:
 
@@ -115,10 +115,10 @@ await myTask.trigger({ foo: "bar" }, { priority: 10 });
 
 If you passed a value of `3600` the run would dequeue before runs that were triggered an hour ago (with no priority).
 
-<Note>
-  Setting a high priority will not allow you to beat runs from other organizations. It will only
-  affect the order of your own runs.
-</Note>
+> [!NOTE]
+>
+> Setting a high priority will not allow you to beat runs from other organizations. It will only
+> affect the order of your own runs.
 
 ## Archiving queues
 
@@ -133,27 +133,27 @@ Archiving only hides the queue in the dashboard, and it doesn't affect runs. Arc
 * If a later deploy declares the queue again, it's unarchived automatically.
 * The SDK and API still list archived queues.
 
-<Note>
-  Some runs belong to a queue without currently sitting in it, so they don't count as activity:
-  delayed runs that haven't reached their start time yet, runs waiting for a deploy of their
-  version, runs that are waiting (for example on `wait.for` or a child task) or have been
-  checkpointed, and, depending on how the engine is configured, runs with a concurrency key that
-  have been handed to a worker but not picked up yet. A queue with only runs like these can be
-  archived, and the warning won't name it until one of them is back in the queue or running. These
-  runs still execute normally and always show on the Runs page.
-</Note>
+> [!NOTE]
+>
+> Some runs belong to a queue without currently sitting in it, so they don't count as activity:
+> delayed runs that haven't reached their start time yet, runs waiting for a deploy of their
+> version, runs that are waiting (for example on `wait.for` or a child task) or have been
+> checkpointed, and, depending on how the engine is configured, runs with a concurrency key that
+> have been handed to a worker but not picked up yet. A queue with only runs like these can be
+> archived, and the warning won't name it until one of them is back in the queue or running. These
+> runs still execute normally and always show on the Runs page.
 
 ## Managing queues with the SDK
 
 The SDK provides a `queues` namespace that allows you to manage queues programmatically. You can list, retrieve, pause, resume, and modify concurrency limits for queues.
 
-<Note>
-  Import from `@trigger.dev/sdk`:
-
-  ```ts theme={"theme":"css-variables"}
-  import { queues } from "@trigger.dev/sdk";
-  ```
-</Note>
+> [!NOTE]
+>
+> Import from `@trigger.dev/sdk`:
+>
+> ```ts theme={"theme":"css-variables"}
+> import { queues } from "@trigger.dev/sdk";
+> ```
 
 ### Listing queues
 
@@ -261,16 +261,16 @@ await queues.resume({ type: "custom", name: "my-custom-queue" });
 
 ### Overriding concurrency limits
 
-<Warning>
-  `queues.overrideConcurrencyLimit` and `queues.resetConcurrencyLimit` are deprecated and only work
-  for queues on the legacy model, where the queue carried its own concurrency limit. On the current
-  model, declare concurrency with the task `concurrency` option and manage it through
-  [`concurrencyLimits`](/docs/concurrency), e.g. `concurrencyLimits.override("task/my-task", { total: 10 })`
-  and `concurrencyLimits.reset("task/my-task")`. A legacy limit on a queue used with
-  `concurrencyKey` maps to `perKey` rather than `total`, and a limit on a custom queue shared by
-  several tasks maps to a named limit declared with `concurrencyLimit()`, again using `perKey`
-  when the queue receives keyed runs.
-</Warning>
+> [!WARNING]
+>
+> `queues.overrideConcurrencyLimit` and `queues.resetConcurrencyLimit` are deprecated and only work
+> for queues on the legacy model, where the queue carried its own concurrency limit. On the current
+> model, declare concurrency with the task `concurrency` option and manage it through
+> [`concurrencyLimits`](/docs/concurrency), e.g. `concurrencyLimits.override("task/my-task", { total: 10 })`
+> and `concurrencyLimits.reset("task/my-task")`. A legacy limit on a queue used with
+> `concurrencyKey` maps to `perKey` rather than `total`, and a limit on a custom queue shared by
+> several tasks maps to a named limit declared with `concurrencyLimit()`, again using `perKey`
+> when the queue receives keyed runs.
 
 You can temporarily override a queue's concurrency limit. This is useful for scaling up or down based on demand:
 

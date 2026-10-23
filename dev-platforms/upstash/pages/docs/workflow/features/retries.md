@@ -1,5 +1,5 @@
 ---
-title: "Overview"
+title: "Workflow Retries Overview"
 source: https://upstash.com/docs/workflow/features/retries
 path: docs/workflow/features/retries
 ---

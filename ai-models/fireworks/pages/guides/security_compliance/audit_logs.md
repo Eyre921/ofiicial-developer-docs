@@ -20,6 +20,8 @@ firectl audit-logs list
 
 ![Audit logs table showing data access activities with columns for timestamp, principal, response code, resource path, and message](https://mintcdn.com/fireworksai/YH2uwOIOrmQeCBpB/images/audit-logs-example.png?fit=max\&auto=format\&n=YH2uwOIOrmQeCBpB\&q=85\&s=fc20415afe3be68dc6d9205cd1075fa9)
 
+Audit logs showing data access activities with timestamps, principals, and resource paths
+
 ### Narrow the range
 
 `--start` and `--end` take `YYYY-MM-DD` dates, which the CLI resolves to midnight UTC. Because `--end` lands on the *start* of the day you name, pass the day after the last one you want:

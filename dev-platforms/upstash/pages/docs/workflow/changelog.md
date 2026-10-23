@@ -1,5 +1,5 @@
 ---
-title: "Changelog"
+title: "Upstash Workflow Changelog"
 source: https://upstash.com/docs/workflow/changelog
 path: docs/workflow/changelog
 ---

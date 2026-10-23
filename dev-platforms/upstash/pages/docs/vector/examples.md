@@ -1,5 +1,5 @@
 ---
-title: "Examples"
+title: "Upstash Vector Examples"
 source: https://upstash.com/docs/vector/examples
 path: docs/vector/examples
 ---

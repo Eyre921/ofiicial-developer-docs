@@ -6,78 +6,70 @@ path: docs/webhooks/sources
 
 Choose an endpoint's source, configure verification, and type the event its subscribers receive.
 
-<PrivateBeta>
-  [Request access](https://trigger.dev/webhooks-beta) and we'll turn webhooks on for your
-  organization and send you the prerelease packages. Webhooks are open source, so they work
-  self-hosted too. APIs may change before general availability.
-</PrivateBeta>
-
 An endpoint's `source` defines how Trigger.dev verifies requests and types the event every subscriber receives. Choose a named provider source or supply a verification configuration with `webhooks.custom()`.
 
 ## Presets
 
 Presets supply the verification configuration, and most also carry the provider's part of the endpoint's [setup prompt](/docs/webhooks/connect#set-it-up-with-an-ai-agent). Set the endpoint's signing secret or public key as described in [Connect a provider](/docs/webhooks/connect).
 
-<CodeGroup>
-  ```ts /trigger/stripe.ts theme={"theme":"css-variables"}
-  import { webhook, webhooks } from "@trigger.dev/sdk";
+```ts /trigger/stripe.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
 
-  export const stripe = webhooks.endpoint.define({ id: "stripe", source: webhooks.stripe() });
+export const stripe = webhooks.endpoint.define({ id: "stripe", source: webhooks.stripe() });
 
-  export const stripeEvents = webhook({
-    id: "stripe-events",
-    endpoint: stripe,
-    onEvent: async ({ event }) => {
-      if (event.type === "payment_intent.succeeded") {
-        console.log(event.id);
-      }
-    },
-  });
-  ```
+export const stripeEvents = webhook({
+  id: "stripe-events",
+  endpoint: stripe,
+  onEvent: async ({ event }) => {
+    if (event.type === "payment_intent.succeeded") {
+      console.log(event.id);
+    }
+  },
+});
+```
 
-  ```ts /trigger/github.ts theme={"theme":"css-variables"}
-  import { webhook, webhooks } from "@trigger.dev/sdk";
+```ts /trigger/github.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
 
-  export const github = webhooks.endpoint.define({ id: "github", source: webhooks.github() });
+export const github = webhooks.endpoint.define({ id: "github", source: webhooks.github() });
 
-  export const githubEvents = webhook({
-    id: "github-events",
-    endpoint: github,
-    onEvent: async ({ headers }) => {
-      // GitHub puts the event type in a header
-      console.log(headers.get("x-github-event"));
-    },
-  });
-  ```
+export const githubEvents = webhook({
+  id: "github-events",
+  endpoint: github,
+  onEvent: async ({ headers }) => {
+    // GitHub puts the event type in a header
+    console.log(headers.get("x-github-event"));
+  },
+});
+```
 
-  ```ts /trigger/svix.ts theme={"theme":"css-variables"}
-  import { webhook, webhooks } from "@trigger.dev/sdk";
+```ts /trigger/svix.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
 
-  export const svix = webhooks.endpoint.define({ id: "svix", source: webhooks.svix() });
+export const svix = webhooks.endpoint.define({ id: "svix", source: webhooks.svix() });
 
-  export const svixEvents = webhook({
-    id: "svix-events",
-    endpoint: svix,
-    onEvent: async ({ event }) => {
-      console.log(event);
-    },
-  });
-  ```
+export const svixEvents = webhook({
+  id: "svix-events",
+  endpoint: svix,
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
 
-  ```ts /trigger/composio.ts theme={"theme":"css-variables"}
-  import { webhook, webhooks } from "@trigger.dev/sdk";
+```ts /trigger/composio.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
 
-  export const composio = webhooks.endpoint.define({ id: "composio", source: webhooks.standardWebhooks() });
+export const composio = webhooks.endpoint.define({ id: "composio", source: webhooks.standardWebhooks() });
 
-  export const composioEvents = webhook({
-    id: "composio-events",
-    endpoint: composio,
-    onEvent: async ({ event }) => {
-      console.log(event);
-    },
-  });
-  ```
-</CodeGroup>
+export const composioEvents = webhook({
+  id: "composio-events",
+  endpoint: composio,
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
 
 The available presets are `stripe()`, `github()`, `svix()`, `standardWebhooks()`, `square()`, and `discord()`.
 
@@ -103,6 +95,7 @@ Each function below returns a source with its provider's verification configurat
 | HMAC-SHA256 with `X-Hub-Signature-256` | `whatsapp()` |
 | Shared secret in `X-Gitlab-Token` | `gitlab()` |
 | Shared secret as `Authorization: Bearer` | `supabase()` |
+| Hookdeck relay (HMAC-SHA256 with `X-Hookdeck-Signature`) | `hookdeck()` |
 | Provider-specific HMAC | `calendly()`, `calCom()`, `sentry()`, `pagerduty()`, `vercel()`, `linear()`, `notion()`, `typeform()`, `docusign()`, `jira()`, `intercom()`, `zendesk()`, `attio()`, `workos()`, `elevenlabs()`, `vapi()`, `retell()`, `shopify()`, `metronome()`, `mux()`, `tailscale()`, `langfuse()`, `infisical()`, `planetscale()`, `plain()`, `firecrawl()` |
 
 Provider IDs containing a hyphen use a camel case function name: the `cal-com` provider is `webhooks.calCom()`.
@@ -110,6 +103,35 @@ Provider IDs containing a hyphen use a camel case function name: the `cal-com` p
 Supabase database webhooks aren't signed, so `supabase()` checks a shared secret instead. Generate the endpoint's secret on Trigger.dev, then add an `Authorization` header with the value `Bearer <secret>` under the webhook's HTTP Headers in Supabase.
 
 Slack also ships as a chat channel in `@trigger.dev/slack`.
+
+### Hookdeck
+
+`hookdeck()` verifies requests that a [Hookdeck](https://hookdeck.com) connection forwards to the endpoint. Hookdeck forwards the original provider's body unchanged, so pass that provider's event type:
+
+```ts /trigger/stripe-via-hookdeck.ts theme={"theme":"css-variables"}
+import type Stripe from "stripe";
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const stripeViaHookdeck = webhooks.endpoint.define({
+  id: "stripe-via-hookdeck",
+  source: webhooks.hookdeck<Stripe.Event>(),
+});
+
+export const paymentSucceeded = webhook({
+  id: "payment-succeeded",
+  endpoint: stripeViaHookdeck,
+  filter: "event.type == 'payment_intent.succeeded'",
+  onEvent: async ({ event }) => {
+    console.log(event.id);
+  },
+});
+```
+
+Use the endpoint URL as the connection's HTTP destination, keep the destination's authentication on Hookdeck Signature (the default for new destinations), and store the Hookdeck project's signing secret from **Settings > Secrets** as the endpoint's signing secret.
+
+* **Secret rotation:** when you roll the signing secret in Hookdeck with an expiry, Hookdeck also signs each request with the previous secret in `X-Hookdeck-Signature-2`, so deliveries keep verifying until you store the new secret.
+* **Deduplication:** retries dedupe on `X-Hookdeck-Eventid`, which is the same on every attempt of a Hookdeck event.
+* **Custom header prefix:** if you changed the header prefix in the Hookdeck project's settings, pass it with `webhooks.hookdeck({ headerPrefix: "x-acme" })`. The prefix renames the event id header; the signature headers keep the `X-Hookdeck-` name.
 
 ## Endpoint validation
 
@@ -202,10 +224,10 @@ export const stripeEvents = webhook({
 
 For `webhooks.custom<T>()`, pass your own event type as `T`. The endpoint's event type flows to every subscriber: `webhook()` handlers, `chat.event` keys and filters, and [waiter](/docs/webhooks/waiters) `match` paths are all checked against it.
 
-<Note>
-  Event types are compile-time annotations. Signature verification doesn't validate the body against
-  a TypeScript type. Validate `event` inside `onEvent` if your handler needs runtime schema checks.
-</Note>
+> [!NOTE]
+>
+> Event types are compile-time annotations. Signature verification doesn't validate the body against
+> a TypeScript type. Validate `event` inside `onEvent` if your handler needs runtime schema checks.
 
 ## Verification schemes
 
@@ -220,7 +242,7 @@ Custom sources support these schemes:
 | `url-secret` | Compares a token in a URL query parameter. Hosted endpoints don't support path placement. |
 | `asymmetric` | Verifies an Ed25519, ECDSA, or RSA signature using the provider's public key. |
 
-<Warning>
-  Query parameters can appear in access logs, proxies, and traces. Prefer a header-based scheme when
-  the provider supports one.
-</Warning>
+> [!WARNING]
+>
+> Query parameters can appear in access logs, proxies, and traces. Prefer a header-based scheme when
+> the provider supports one.

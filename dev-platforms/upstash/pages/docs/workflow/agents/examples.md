@@ -1,5 +1,5 @@
 ---
-title: "Examples"
+title: "Workflow Agents Examples"
 source: https://upstash.com/docs/workflow/agents/examples
 path: docs/workflow/agents/examples
 ---

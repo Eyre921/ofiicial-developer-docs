@@ -28,10 +28,10 @@ const myTask = schemaTask({
 
 `schemaTask` takes all the same options as [task](/docs/tasks/overview), with the addition of a `schema` field. The `schema` field is a schema parser function from a schema library or or a custom parser function.
 
-<Note>
-  We will probably eventually combine `task` and `schemaTask` into a single function, but because
-  that would be a breaking change, we are keeping them separate for now.
-</Note>
+> [!NOTE]
+>
+> We will probably eventually combine `task` and `schemaTask` into a single function, but because
+> that would be a breaking change, we are keeping them separate for now.
 
 When you trigger the task directly, the payload will be validated against the schema before the [run](/docs/runs) is created:
 
@@ -203,9 +203,9 @@ export const myTool = tool({
 
 See the [AI SDK tool execution options](https://sdk.vercel.ai/docs/ai-sdk-core/tools-and-tool-calling#tool-execution-options) for fields passed through the runtime.
 
-<Note>
-  `ai.toolExecute` works with `schemaTask` definitions that use Zod, ArkType, or any schema that provides a JSON schema via `.toJsonSchema()` (same coverage as the legacy `ai.tool` wrapper).
-</Note>
+> [!NOTE]
+>
+> `ai.toolExecute` works with `schemaTask` definitions that use Zod, ArkType, or any schema that provides a JSON schema via `.toJsonSchema()` (same coverage as the legacy `ai.tool` wrapper).
 
 ### Deprecated: `ai.tool`
 

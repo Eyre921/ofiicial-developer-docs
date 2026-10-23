@@ -237,9 +237,9 @@ toModelOutput: ({ output: message }) => {
 
 This is important for token efficiency: the sub-agent might use 100K tokens exploring and reasoning, but the parent LLM only consumes the summary.
 
-<Warning>
-  `toModelOutput` only runs when the SDK has your tools at conversion time. On a multi-turn parent, the SDK re-converts the persisted history at the start of each turn, so you must declare the sub-agent tool on the agent config (`chat.agent({ tools })`) for the compression to survive. Without it, the summary holds on turn 1 but turn 2 onward re-ingests the full sub-agent output. In a `chat.customAgent` loop you own the conversion, so pass the tools to `convertToModelMessages(uiMessages, { tools })` yourself. See [Tools: toModelOutput across turns](/docs/ai-chat/tools#tomodeloutput-across-turns).
-</Warning>
+> [!WARNING]
+>
+> `toModelOutput` only runs when the SDK has your tools at conversion time. On a multi-turn parent, the SDK re-converts the persisted history at the start of each turn, so you must declare the sub-agent tool on the agent config (`chat.agent({ tools })`) for the compression to survive. Without it, the summary holds on turn 1 but turn 2 onward re-ingests the full sub-agent output. In a `chat.customAgent` loop you own the conversion, so pass the tools to `convertToModelMessages(uiMessages, { tools })` yourself. See [Tools: toModelOutput across turns](/docs/ai-chat/tools#tomodeloutput-across-turns).
 
 ## ChatStream.messages()
 
@@ -263,9 +263,9 @@ execute: async function* ({ topic }, { abortSignal }) {
 },
 ```
 
-<Tip>
-  `stream.messages()` consumes the stream. You can't also call `stream.text()` or iterate over chunks on the same stream. Pick one consumption mode.
-</Tip>
+> [!TIP]
+>
+> `stream.messages()` consumes the stream. You can't also call `stream.text()` or iterate over chunks on the same stream. Pick one consumption mode.
 
 ## Combining with chat.agent()
 

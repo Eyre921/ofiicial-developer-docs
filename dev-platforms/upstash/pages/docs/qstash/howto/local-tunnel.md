@@ -1,5 +1,5 @@
 ---
-title: "Local Tunnel"
+title: "Local Tunnel for QStash Development"
 source: https://upstash.com/docs/qstash/howto/local-tunnel
 path: docs/qstash/howto/local-tunnel
 ---

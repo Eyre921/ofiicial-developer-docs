@@ -22,248 +22,248 @@ This guide shows you how to set up and deploy a simple Supabase edge function ex
 
 ## GitHub repo
 
-<Card title="View the project on GitHub" icon="GitHub" href="https://github.com/triggerdotdev/examples/tree/main/supabase-edge-functions">
-  Click here to view the full code for this project in our examples repository on GitHub. You can
-  fork it and use it as a starting point for your own project.
-</Card>
+> **[View the project on GitHub](https://github.com/triggerdotdev/examples/tree/main/supabase-edge-functions)**
+>
+> Click here to view the full code for this project in our examples repository on GitHub. You can
+> fork it and use it as a starting point for your own project.
 
 ## Initial setup
 
-<Steps>
-  <Step title="Optional step 1: create a new Supabase project">
-    <Info> If you already have a Supabase project on your local machine you can skip this step.</Info>
+**1. Optional step 1: create a new Supabase project**
 
-    You can create a new project by running the following command in your terminal using the Supabase CLI:
+> [!NOTE]
+>
+> If you already have a Supabase project on your local machine you can skip this step.
 
-    ```bash theme={"theme":"css-variables"}
-    supabase init
-    ```
+You can create a new project by running the following command in your terminal using the Supabase CLI:
 
-    <Note>
-      If you are using VS Code, ensure to answer 'y' when asked to generate VS Code settings for Deno,
-      and install any recommended extensions.
-    </Note>
-  </Step>
+```bash theme={"theme":"css-variables"}
+supabase init
+```
 
-  <Step title="Optional step 2: create a package.json file">
-    If your project does not already have `package.json` file (e.g. if you are using Deno), create it manually in your project's root folder.
+> [!NOTE]
+>
+> If you are using VS Code, ensure to answer 'y' when asked to generate VS Code settings for Deno,
+> and install any recommended extensions.
 
-    <Info> If your project has a `package.json` file you can skip this step.</Info>
+**2. Optional step 2: create a package.json file**
 
-    This is required for the Trigger.dev SDK to work correctly.
+If your project does not already have `package.json` file (e.g. if you are using Deno), create it manually in your project's root folder.
 
-    ```ts package.json theme={"theme":"css-variables"}
-    {
-      "devDependencies": {
-        "typescript": "^5.6.2"
-      }
-    }
-    ```
+> [!NOTE]
+>
+> If your project has a `package.json` file you can skip this step.
 
-    <Note> Update your Typescript version to the latest version available. </Note>
-  </Step>
+This is required for the Trigger.dev SDK to work correctly.
 
-  <Step title="Run the CLI `init` command">
-    The easiest way to get started is to use the CLI. It will add Trigger.dev to your existing project, create a `/trigger` folder and give you an example task.
+```ts package.json theme={"theme":"css-variables"}
+{
+  "devDependencies": {
+    "typescript": "^5.6.2"
+  }
+}
+```
 
-    Run this command in the root of your project to get started:
+> [!NOTE]
+>
+> Update your Typescript version to the latest version available.
 
-    <CodeGroup>
-      ```bash npm theme={"theme":"css-variables"}
-      npx trigger.dev@latest init
-      ```
+**3. Run the CLI `init` command**
 
-      ```bash pnpm theme={"theme":"css-variables"}
-      pnpm dlx trigger.dev@latest init
-      ```
+The easiest way to get started is to use the CLI. It will add Trigger.dev to your existing project, create a `/trigger` folder and give you an example task.
 
-      ```bash yarn theme={"theme":"css-variables"}
-      yarn dlx trigger.dev@latest init
-      ```
-    </CodeGroup>
+Run this command in the root of your project to get started:
 
-    It will do a few things:
+```bash npm theme={"theme":"css-variables"}
+npx trigger.dev@latest init
+```
 
-    <Tip title="MCP Server">
-      Our [Trigger.dev MCP server](/docs/mcp-introduction) gives your AI assistant direct access to Trigger.dev tools; search docs, trigger tasks, deploy projects, and monitor runs. We recommend installing it for the best developer experience.
-    </Tip>
+```bash pnpm theme={"theme":"css-variables"}
+pnpm dlx trigger.dev@latest init
+```
 
-    1. Ask if you want to set up AI tooling: the [Trigger.dev MCP server](/docs/mcp-introduction) and/or Trigger.dev agent skills (shown the first time you run init). If you choose either, you can let your AI assistant finish the setup instead of the CLI.
-    2. Log you into the CLI if you're not already logged in.
-    3. Ask you to select your project.
-    4. Install the required SDK packages.
-    5. Ask where you'd like to create the `/trigger` directory and create it with an example task.
-    6. Create a `trigger.config.ts` file in the root of your project.
+```bash yarn theme={"theme":"css-variables"}
+yarn dlx trigger.dev@latest init
+```
 
-    Install the "Hello World" example task when prompted. We'll use this task to test the setup.
-  </Step>
+It will do a few things:
 
-  <Step title="Run the CLI `dev` command">
-    The CLI `dev` command runs a server for your tasks. It watches for changes in your `/trigger` directory and communicates with the Trigger.dev platform to register your tasks, perform runs, and send data back and forth.
+> [!TIP]
+>
+> Our [Trigger.dev MCP server](/docs/mcp-introduction) gives your AI assistant direct access to Trigger.dev tools; search docs, trigger tasks, deploy projects, and monitor runs. We recommend installing it for the best developer experience.
 
-    It can also update your `@trigger.dev/*` packages to prevent version mismatches and failed deploys. You will always be prompted first.
+1. Ask if you want to set up AI tooling: the [Trigger.dev MCP server](/docs/mcp-introduction) and/or Trigger.dev agent skills (shown the first time you run init). If you choose either, you can let your AI assistant finish the setup instead of the CLI.
+2. Log you into the CLI if you're not already logged in.
+3. Ask you to select your project.
+4. Install the required SDK packages.
+5. Ask where you'd like to create the `/trigger` directory and create it with an example task.
+6. Create a `trigger.config.ts` file in the root of your project.
 
-    <CodeGroup>
-      ```bash npm theme={"theme":"css-variables"}
-      npx trigger.dev@latest dev
-      ```
+Install the "Hello World" example task when prompted. We'll use this task to test the setup.
 
-      ```bash pnpm theme={"theme":"css-variables"}
-      pnpm dlx trigger.dev@latest dev
-      ```
+**4. Run the CLI `dev` command**
 
-      ```bash yarn theme={"theme":"css-variables"}
-      yarn dlx trigger.dev@latest dev
-      ```
-    </CodeGroup>
-  </Step>
+The CLI `dev` command runs a server for your tasks. It watches for changes in your `/trigger` directory and communicates with the Trigger.dev platform to register your tasks, perform runs, and send data back and forth.
 
-  <Step title="Perform a test run using the dashboard">
-    The CLI `dev` command spits out various useful URLs, including a link to the dashboard. Open it, find your Example task on the Tasks page, and press the "Test" button to open its test page.
+It can also update your `@trigger.dev/*` packages to prevent version mismatches and failed deploys. You will always be prompted first.
 
-    Most tasks have a "payload" which you enter in the JSON editor, but our example task doesn't need any input. You can also configure run options, pre-populate the form from recent runs, and save run templates.
+```bash npm theme={"theme":"css-variables"}
+npx trigger.dev@latest dev
+```
 
-    Press the "Run test" button.
+```bash pnpm theme={"theme":"css-variables"}
+pnpm dlx trigger.dev@latest dev
+```
 
-    <img alt="Test page" />
-  </Step>
+```bash yarn theme={"theme":"css-variables"}
+yarn dlx trigger.dev@latest dev
+```
 
-  <Step title="View your run">
-    Congratulations, you should see the run page which will live reload showing you the current state of the run.
+**5. Perform a test run using the dashboard**
 
-    <img alt="Run page" />
+The CLI `dev` command spits out various useful URLs, including a link to the dashboard. Open it, find your Example task on the Tasks page, and press the "Test" button to open its test page.
 
-    If you go back to your terminal you'll see that the dev command also shows the task status and links to the run log.
+Most tasks have a "payload" which you enter in the JSON editor, but our example task doesn't need any input. You can also configure run options, pre-populate the form from recent runs, and save run templates.
 
-    <img alt="Terminal showing completed run" />
-  </Step>
-</Steps>
+Press the "Run test" button.
+
+![Test page](https://mintcdn.com/trigger/2gGDaV8FR4pPhx_f/images/test-dashboard.png?fit=max\&auto=format\&n=2gGDaV8FR4pPhx_f\&q=85\&s=9a7c31f3499500be59e62586763e03d1)
+
+**6. View your run**
+
+Congratulations, you should see the run page which will live reload showing you the current state of the run.
+
+![Run page](https://mintcdn.com/trigger/5SxX7bFjJKRsidSL/images/run-page.png?fit=max\&auto=format\&n=5SxX7bFjJKRsidSL\&q=85\&s=4b0bb5f9b181499cf324cdb8d5d673a8)
+
+If you go back to your terminal you'll see that the dev command also shows the task status and links to the run log.
+
+![Terminal showing completed run](https://mintcdn.com/trigger/0bD0UfsjaINxS6Tw/images/terminal-completed-run.png?fit=max\&auto=format\&n=0bD0UfsjaINxS6Tw\&q=85\&s=a9284c5228343b72d798c6e36f5acb24)
 
 ## Create a new Supabase edge function and deploy it
 
-<Steps>
-  <Step title="Create a new Supabase edge function">
-    We'll call this example `edge-function-trigger`.
+**1. Create a new Supabase edge function**
 
-    In your project, run the following command in the terminal using the Supabase CLI:
+We'll call this example `edge-function-trigger`.
 
-    ```bash theme={"theme":"css-variables"}
-    supabase functions new edge-function-trigger
-    ```
-  </Step>
+In your project, run the following command in the terminal using the Supabase CLI:
 
-  <Step title="Update the edge function code">
-    Replace the placeholder code in your `edge-function-trigger/index.ts` file with the following:
+```bash theme={"theme":"css-variables"}
+supabase functions new edge-function-trigger
+```
 
-    ```ts functions/edge-function-trigger/index.ts theme={"theme":"css-variables"}
-    // Setup type definitions for built-in Supabase Runtime APIs
-    import "jsr:@supabase/functions-js/edge-runtime.d.ts";
-    // Import the Trigger.dev SDK - replace "<your-sdk-version>" with the version of the SDK you are using, e.g. "3.0.0". You can find this in your package.json file.
-    import { tasks } from "npm:@trigger.dev/sdk@3.0.0";
-    // Import your task type from your /trigger folder
-    import type { helloWorldTask } from "../../../src/trigger/example.ts";
-    //     👆 **type-only** import
+**2. Update the edge function code**
 
-    Deno.serve(async () => {
-      await tasks.trigger<typeof helloWorldTask>(
-        // Your task id
-        "hello-world",
-        // Your task payload
-        "Hello from a Supabase Edge Function!"
-      );
-      return new Response("OK");
-    });
-    ```
+Replace the placeholder code in your `edge-function-trigger/index.ts` file with the following:
 
-    <Note>You can only import the `type` from the task.</Note>
+```ts functions/edge-function-trigger/index.ts theme={"theme":"css-variables"}
+// Setup type definitions for built-in Supabase Runtime APIs
+import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+// Import the Trigger.dev SDK - replace "<your-sdk-version>" with the version of the SDK you are using, e.g. "3.0.0". You can find this in your package.json file.
+import { tasks } from "npm:@trigger.dev/sdk@3.0.0";
+// Import your task type from your /trigger folder
+import type { helloWorldTask } from "../../../src/trigger/example.ts";
+//     👆 **type-only** import
 
-    <Note>
-      Tasks in the `trigger` folder use Node, so they must stay in there or they will not run,
-      especially if you are using a different runtime like Deno. Also do not add "`npm:`" to imports
-      inside your task files, for the same reason.
-    </Note>
-  </Step>
+Deno.serve(async () => {
+  await tasks.trigger<typeof helloWorldTask>(
+    // Your task id
+    "hello-world",
+    // Your task payload
+    "Hello from a Supabase Edge Function!"
+  );
+  return new Response("OK");
+});
+```
 
-  <Step title="Deploy your edge function using the Supabase CLI">
-    You can now deploy your edge function with the following command in your terminal:
+> [!NOTE]
+>
+> You can only import the `type` from the task.
 
-    ```bash theme={"theme":"css-variables"}
-    supabase functions deploy edge-function-trigger --no-verify-jwt
-    ```
+> [!NOTE]
+>
+> Tasks in the `trigger` folder use Node, so they must stay in there or they will not run,
+> especially if you are using a different runtime like Deno. Also do not add "`npm:`" to imports
+> inside your task files, for the same reason.
 
-    <Warning>
-      `--no-verify-jwt` removes the JSON Web Tokens requirement from the authorization header. By
-      default this should be on, but it is not strictly required for this hello world example.
-    </Warning>
+**3. Deploy your edge function using the Supabase CLI**
 
-    <Note>
-      To learn more about how to properly configure Supabase auth for Trigger.dev tasks, please refer to
-      our [Supabase Authentication guide](/docs/guides/frameworks/supabase-authentication). It demonstrates
-      how to use JWT authentication for user-specific operations or your service role key for
-      admin-level access.
-    </Note>
+You can now deploy your edge function with the following command in your terminal:
 
-    Follow the CLI instructions and once complete you should now see your new edge function deployment in your Supabase edge functions dashboard.
+```bash theme={"theme":"css-variables"}
+supabase functions deploy edge-function-trigger --no-verify-jwt
+```
 
-    There will be a link to the dashboard in your terminal output, or you can find it at this URL:
+> [!WARNING]
+>
+> `--no-verify-jwt` removes the JSON Web Tokens requirement from the authorization header. By
+> default this should be on, but it is not strictly required for this hello world example.
 
-    `https://supabase.com/dashboard/project/<your-project-id>/functions`
+> [!NOTE]
+>
+> To learn more about how to properly configure Supabase auth for Trigger.dev tasks, please refer to
+> our [Supabase Authentication guide](/docs/guides/frameworks/supabase-authentication). It demonstrates
+> how to use JWT authentication for user-specific operations or your service role key for
+> admin-level access.
 
-    <Note>Replace `your-project-id` with your actual project ID.</Note>
-  </Step>
-</Steps>
+Follow the CLI instructions and once complete you should now see your new edge function deployment in your Supabase edge functions dashboard.
+
+There will be a link to the dashboard in your terminal output, or you can find it at this URL:
+
+`https://supabase.com/dashboard/project/<your-project-id>/functions`
+
+> [!NOTE]
+>
+> Replace `your-project-id` with your actual project ID.
 
 ## Create a Trigger.dev API key for Supabase
 
 Open the API Keys page for your Production environment in the Trigger.dev [project dashboard](https://cloud.trigger.dev). Create a named key with **Trigger only** access and copy it. Trigger.dev shows the complete value only once.
 
-Then, in [Supabase](https://supabase.com/dashboard/projects), select your project, navigate to 'Project settings' <Icon icon="circle-1" />, click 'Edge functions' <Icon icon="circle-2" /> in the configurations menu, and then click the 'Add new secret' <Icon icon="circle-3" /> button.
+Then, in [Supabase](https://supabase.com/dashboard/projects), select your project, navigate to 'Project settings' , click 'Edge functions'  in the configurations menu, and then click the 'Add new secret'  button.
 
-Add `TRIGGER_SECRET_KEY` <Icon icon="circle-4" /> with the environment API key you created.
+Add `TRIGGER_SECRET_KEY`  with the environment API key you created.
 
-<img alt="Add secret key in Supabase" />
+![Add secret key in Supabase](https://mintcdn.com/trigger/0bD0UfsjaINxS6Tw/images/supabase-keys-1.png?fit=max\&auto=format\&n=0bD0UfsjaINxS6Tw\&q=85\&s=70842bf838bc1ea9e1f195c9926bb746)
 
 ## Deploy your task and trigger it from your edge function
 
-<Steps>
-  <Step title="Deploy your 'Hello World' task">
-    Next, deploy your `hello-world` task to [Trigger.dev cloud](https://cloud.trigger.dev).
+**1. Deploy your 'Hello World' task**
 
-    <CodeGroup>
-      ```bash npm theme={"theme":"css-variables"}
-      npx trigger.dev@latest deploy
-      ```
+Next, deploy your `hello-world` task to [Trigger.dev cloud](https://cloud.trigger.dev).
 
-      ```bash pnpm theme={"theme":"css-variables"}
-      pnpm dlx trigger.dev@latest deploy
-      ```
+```bash npm theme={"theme":"css-variables"}
+npx trigger.dev@latest deploy
+```
 
-      ```bash yarn theme={"theme":"css-variables"}
-      yarn dlx trigger.dev@latest deploy
-      ```
-    </CodeGroup>
-  </Step>
+```bash pnpm theme={"theme":"css-variables"}
+pnpm dlx trigger.dev@latest deploy
+```
 
-  <Step title="Trigger a prod run from your deployed edge function">
-    To do this all you need to do is simply open the `edge-function-trigger` URL.
+```bash yarn theme={"theme":"css-variables"}
+yarn dlx trigger.dev@latest deploy
+```
 
-    `https://supabase.com/dashboard/project/<your-project-id>/functions`
+**2. Trigger a prod run from your deployed edge function**
 
-    <Note>Replace `your-project-id` with your actual project ID.</Note>
+To do this all you need to do is simply open the `edge-function-trigger` URL.
 
-    In your Supabase project, go to your Edge function dashboard, find `edge-function-trigger`, copy the URL, and paste it into a new window in your browser.
+`https://supabase.com/dashboard/project/<your-project-id>/functions`
 
-    Once loaded you should see ‘OK’ on the new screen.
+> [!NOTE]
+>
+> Replace `your-project-id` with your actual project ID.
 
-    <img alt="Edge function URL" />
+In your Supabase project, go to your Edge function dashboard, find `edge-function-trigger`, copy the URL, and paste it into a new window in your browser.
 
-    The task will be triggered when your edge function URL is accessed.
+Once loaded you should see ‘OK’ on the new screen.
 
-    Check your [cloud.trigger.dev](https://cloud.trigger.dev) dashboard and you should see a successful `hello-world` task.
+![Edge function URL](https://mintcdn.com/trigger/0bD0UfsjaINxS6Tw/images/supabase-function-url.png?fit=max\&auto=format\&n=0bD0UfsjaINxS6Tw\&q=85\&s=39bf78f3b0d9fab4d92cc1cda60fbcec)
 
-    **Congratulations, you have run a simple Hello World task from a Supabase edge function!**
-  </Step>
-</Steps>
+The task will be triggered when your edge function URL is accessed.
+
+Check your [cloud.trigger.dev](https://cloud.trigger.dev) dashboard and you should see a successful `hello-world` task.
+
+**Congratulations, you have run a simple Hello World task from a Supabase edge function!**
 
 ### If you see a runtime error when calling tasks.trigger()
 
@@ -289,29 +289,25 @@ See [Trigger task via API](/docs/management/tasks/trigger) for full request/resp
 
 ### Full walkthrough guides from development to deployment
 
-<CardGroup>
-  <Card title="Edge function hello world guide" icon="book" href="/docs/guides/frameworks/supabase-edge-functions-basic">
-    Learn how to trigger a task from a Supabase edge function when a URL is visited.
-  </Card>
+> **[Edge function hello world guide](/docs/guides/frameworks/supabase-edge-functions-basic)**
+>
+> Learn how to trigger a task from a Supabase edge function when a URL is visited.
 
-  <Card title="Database webhooks guide" icon="book" href="/docs/guides/frameworks/supabase-edge-functions-database-webhooks">
-    Learn how to trigger a task from a Supabase edge function when an event occurs in your database.
-  </Card>
+> **[Database webhooks guide](/docs/guides/frameworks/supabase-edge-functions-database-webhooks)**
+>
+> Learn how to trigger a task from a Supabase edge function when an event occurs in your database.
 
-  <Card title="Supabase authentication guide" icon="book" href="/docs/guides/frameworks/supabase-authentication">
-    Learn how to authenticate Supabase tasks using JWTs for Row Level Security (RLS) or service role
-    keys for admin access.
-  </Card>
-</CardGroup>
+> **[Supabase authentication guide](/docs/guides/frameworks/supabase-authentication)**
+>
+> Learn how to authenticate Supabase tasks using JWTs for Row Level Security (RLS) or service role
+> keys for admin access.
 
 ### Task examples with code you can copy and paste
 
-<CardGroup>
-  <Card title="Supabase database operations" icon="bolt" href="/docs/guides/examples/supabase-database-operations">
-    Run basic CRUD operations on a table in a Supabase database using Trigger.dev.
-  </Card>
+> **[Supabase database operations](/docs/guides/examples/supabase-database-operations)**
+>
+> Run basic CRUD operations on a table in a Supabase database using Trigger.dev.
 
-  <Card title="Supabase Storage upload" icon="bolt" href="/docs/guides/examples/supabase-storage-upload">
-    Download a video from a URL and upload it to Supabase Storage using S3.
-  </Card>
-</CardGroup>
+> **[Supabase Storage upload](/docs/guides/examples/supabase-storage-upload)**
+>
+> Download a video from a URL and upload it to Supabase Storage using S3.

@@ -37,4 +37,6 @@ import path from "node:path";
 const interRegularFont = path.join(process.cwd(), "assets/Inter-Regular.ttf");
 ```
 
-<Note>The root of the project is the directory that contains the trigger.config.ts file</Note>
+> [!NOTE]
+>
+> The root of the project is the directory that contains the trigger.config.ts file

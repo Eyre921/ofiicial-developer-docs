@@ -1,5 +1,5 @@
 ---
-title: "Overview"
+title: "Redis Search Metric Aggregations"
 source: https://upstash.com/docs/redis/search/aggregation-operators/metric-aggregations/overview
 path: docs/redis/search/aggregation-operators/metric-aggregations/overview
 ---

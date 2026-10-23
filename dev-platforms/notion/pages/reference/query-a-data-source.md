@@ -27,6 +27,8 @@ Filters operate on data source properties and can be combined. If no filter is p
 
 ![](https://mintcdn.com/notion-demo/S-I3qLQnwRa7HjdK/images/reference/image-6.png?fit=max\&auto=format\&n=S-I3qLQnwRa7HjdK\&q=85\&s=27e3bc94089d8d763ae7de032ded2fa3)
 
+The above filters in the UI can be represented as the following filter object
+
 ```json Filter object expandable theme={null}
 {
   "and": [

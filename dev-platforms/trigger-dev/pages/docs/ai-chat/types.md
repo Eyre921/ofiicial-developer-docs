@@ -46,9 +46,9 @@ type MyChatDataTypes = UIDataTypes & {
 export type MyChatUIMessage = UIMessage<unknown, MyChatDataTypes, MyChatTools>;
 ```
 
-<Tip>
-  If you don't need custom `data-*` parts, [`InferChatUIMessageFromTools<typeof myTools>`](/docs/ai-chat/tools#typing-messages-from-your-tools) from `@trigger.dev/sdk/ai` collapses the tools half into one line (it's shorthand for `UIMessage<unknown, UIDataTypes, InferUITools<typeof myTools>>`).
-</Tip>
+> [!TIP]
+>
+> If you don't need custom `data-*` parts, [`InferChatUIMessageFromTools<typeof myTools>`](/docs/ai-chat/tools#typing-messages-from-your-tools) from `@trigger.dev/sdk/ai` collapses the tools half into one line (it's shorthand for `UIMessage<unknown, UIDataTypes, InferUITools<typeof myTools>>`).
 
 Task-backed tools should use AI SDK [`tool()`](https://sdk.vercel.ai/docs/ai-sdk-core/tools-and-tool-calling) with `execute: ai.toolExecute(schemaTask)` where needed — see [Task-backed AI tools](/docs/tasks/schemaTask#task-backed-ai-tools).
 
@@ -226,9 +226,9 @@ chat
   });
 ```
 
-<Tip>
-  Set types first (`.withUIMessage()`, `.withClientData()`), then hooks. Hook parameters are typed based on the builder's current generics — so hooks registered after `.withClientData()` get typed `clientData`.
-</Tip>
+> [!TIP]
+>
+> Set types first (`.withUIMessage()`, `.withClientData()`), then hooks. Hook parameters are typed based on the builder's current generics — so hooks registered after `.withClientData()` get typed `clientData`.
 
 ### When plain `chat.agent()` is enough
 

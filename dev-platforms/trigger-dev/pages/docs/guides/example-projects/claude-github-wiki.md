@@ -22,10 +22,10 @@ This demo shows how to build an AI agent using the Claude Agent SDK that clones 
 
 ## GitHub repo
 
-<Card title="View the Claude GitHub wiki agent repo" icon="GitHub" href="https://github.com/triggerdotdev/examples/tree/main/claude-agent-github-wiki">
-  Click here to view the full code for this project in our examples repository on GitHub. You can
-  fork it and use it as a starting point for your own project.
-</Card>
+> **[View the Claude GitHub wiki agent repo](https://github.com/triggerdotdev/examples/tree/main/claude-agent-github-wiki)**
+>
+> Click here to view the full code for this project in our examples repository on GitHub. You can
+> fork it and use it as a starting point for your own project.
 
 ## How it works
 
@@ -75,10 +75,10 @@ export default defineConfig({
 });
 ```
 
-<Note>
-  Adding packages to `external` prevents them from being bundled, which is necessary for the Claude
-  Agent SDK. See the [build configuration docs](/docs/config/config-file#external) for more details.
-</Note>
+> [!NOTE]
+>
+> Adding packages to `external` prevents them from being bundled, which is necessary for the Claude
+> Agent SDK. See the [build configuration docs](/docs/config/config-file#external) for more details.
 
 ## Learn more
 

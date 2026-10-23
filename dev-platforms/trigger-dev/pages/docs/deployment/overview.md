@@ -8,19 +8,17 @@ Learn how to deploy your tasks to Trigger.dev.
 
 Before you can run production workloads on Trigger.dev, you need to deploy your tasks. The manual way to do this is the [deploy CLI command](/docs/cli-deploy-commands). You can also deploy automatically with the [GitHub integration](/docs/github-integration) or the [Vercel integration](/docs/vercel-integration):
 
-<CodeGroup>
-  ```bash npm theme={"theme":"css-variables"}
-  npx trigger.dev@latest deploy
-  ```
+```bash npm theme={"theme":"css-variables"}
+npx trigger.dev@latest deploy
+```
 
-  ```bash pnpm theme={"theme":"css-variables"}
-  pnpm dlx trigger.dev@latest deploy
-  ```
+```bash pnpm theme={"theme":"css-variables"}
+pnpm dlx trigger.dev@latest deploy
+```
 
-  ```bash yarn theme={"theme":"css-variables"}
-  yarn dlx trigger.dev@latest deploy
-  ```
-</CodeGroup>
+```bash yarn theme={"theme":"css-variables"}
+yarn dlx trigger.dev@latest deploy
+```
 
 ## Deploying 101
 
@@ -58,12 +56,12 @@ Trigger.dev (3.3.16)
 
 Now if you visit your Trigger.dev dashboard you should see the new version deployed:
 
-<img alt="Trigger.dev dashboard showing the latest version deployed" />
+![Trigger.dev dashboard showing the latest version deployed](https://mintcdn.com/trigger/uys6iMwf9B_ojh8r/deployment/my-first-deployment.png?fit=max\&auto=format\&n=uys6iMwf9B_ojh8r\&q=85\&s=8344be75888505d3036e114a4a15eeeb)
 
-<Note>
-  Deploying consists of building your tasks and uploading them to the Trigger.dev cloud. This
-  process can take a few seconds to a few minutes depending on the size of your project.
-</Note>
+> [!NOTE]
+>
+> Deploying consists of building your tasks and uploading them to the Trigger.dev cloud. This
+> process can take a few seconds to a few minutes depending on the size of your project.
 
 ## Triggering deployed tasks
 
@@ -91,17 +89,17 @@ When you deploy your tasks, Trigger.dev creates a new version of all tasks in yo
 
 When you deploy, the version number is automatically incremented, and the new version is set as the current version for that environment.
 
-<Note>
-  A single environment (prod, staging, etc.) can only have a single "current" version at a time.
-</Note>
+> [!NOTE]
+>
+> A single environment (prod, staging, etc.) can only have a single "current" version at a time.
 
 The current version defines which version of the code new task runs will execute against. When a task run starts, it is locked to the current version. This ensures that the task run is not affected by changes to the code. Retries of the task run will also be locked to the original version.
 
-<Note>
-  When you Replay a run in the dashboard we create a new run that uses the current version by default
-  (in deployed environments you can pick a specific version in the replay dialog), not necessarily
-  the version of the original run.
-</Note>
+> [!NOTE]
+>
+> When you Replay a run in the dashboard we create a new run that uses the current version by default
+> (in deployed environments you can pick a specific version in the replay dialog), not necessarily
+> the version of the original run.
 
 ### Version locking
 
@@ -117,11 +115,11 @@ If you want to set a global version to run all tasks against, you can use the `T
 TRIGGER_VERSION=20250228.1
 ```
 
-<Tip>
-  If what you actually want is for each release of your app to run against the tasks built from the
-  same commit, you don't need to plumb version numbers around by hand. See [version skew
-  protection](/docs/deployment/atomic-deployment).
-</Tip>
+> [!TIP]
+>
+> If what you actually want is for each release of your app to run against the tasks built from the
+> same commit, you don't need to plumb version numbers around by hand. See [version skew
+> protection](/docs/deployment/atomic-deployment).
 
 ### Child tasks and auto-version locking
 
@@ -144,7 +142,7 @@ npx trigger.dev deploy --skip-promotion
 
 This will create a new deployment version but not promote it to the current version:
 
-<img alt="Trigger.dev dashboard showing the latest version deployed but not promoted" />
+![Trigger.dev dashboard showing the latest version deployed but not promoted](https://mintcdn.com/trigger/uys6iMwf9B_ojh8r/deployment/skip-promotion.png?fit=max\&auto=format\&n=uys6iMwf9B_ojh8r\&q=85\&s=bc95f9c6a0ccffb47d3d5026587c3cf4)
 
 This allows you to deploy and test a new version without affecting new task runs. When you want to promote the version, you can do so from the CLI:
 
@@ -154,7 +152,7 @@ npx trigger.dev promote 20250228.1
 
 Or from the dashboard:
 
-<img alt="Trigger.dev dashboard showing the promote button" />
+![Trigger.dev dashboard showing the promote button](https://mintcdn.com/trigger/uys6iMwf9B_ojh8r/deployment/promote-button.png?fit=max\&auto=format\&n=uys6iMwf9B_ojh8r\&q=85\&s=48aaab3ef5f3ef4bc63d2f15566746e2)
 
 To keep your app and tasks in sync without coordinating promotion at all, see [atomic deployments](/docs/deployment/atomic-deployment).
 
@@ -166,14 +164,14 @@ Use the `--env` flag to choose the environment you deploy to. If you don't pass 
 npx trigger.dev deploy --env staging
 ```
 
-<Note>
-  If you are using the Trigger.dev Cloud, staging deploys are only available on the Hobby and Pro
-  plans.
-</Note>
+> [!NOTE]
+>
+> If you are using the Trigger.dev Cloud, staging deploys are only available on the Hobby and Pro
+> plans.
 
 This will create an entirely new version of your tasks for the `staging` environment, with a new version number and an independent current version:
 
-<img alt="Trigger.dev dashboard showing the staging environment" />
+![Trigger.dev dashboard showing the staging environment](https://mintcdn.com/trigger/uys6iMwf9B_ojh8r/deployment/staging-deploy.png?fit=max\&auto=format\&n=uys6iMwf9B_ojh8r\&q=85\&s=1a35a918611faf39246296633c28ba7f)
 
 To trigger tasks against Staging, create a named key in the Staging environment with **Trigger only** access and set it as `TRIGGER_SECRET_KEY`:
 
@@ -191,9 +189,9 @@ By default we use a remote build provider to speed up builds. However, you can a
 npx trigger.dev deploy --local-build
 ```
 
-<Tip>
-  Deploying with local builds can be a useful fallback in cases where our remote build provider is experiencing availability issues.
-</Tip>
+> [!TIP]
+>
+> Deploying with local builds can be a useful fallback in cases where our remote build provider is experiencing availability issues.
 
 ### System requirements
 

@@ -305,7 +305,6 @@ Upload the document that applies to your organization:
 
 - [Documents for business verification of Unincorporated Entities, Partnerships, or Non-profits](https://support.stripe.com/questions/documents-for-business-verification-of-unincorporated-entities-partnerships-or-non-profits)
 - [Onboarding Requirements Updates](https://support.stripe.com/user/questions/onboarding-requirements-updates)
-- [Social Insurance Number (SIN) / Numéro D’Assurance Sociale (NAS) requirement for Canadian businesses](https://support.stripe.com/questions/social-insurance-number-%28sin%29-num%C3%A9ro-dassurance-sociale-%28nas%29-requirement-for-canadian-businesses)
 - [Types of business and structure guidelines in Canada](https://support.stripe.com/questions/types-of-business-and-structure-guidelines-in-canada)
 - [Verifying registered charity status in Canada](https://support.stripe.com/questions/verifying-registered-charity-status-in-canada)
 

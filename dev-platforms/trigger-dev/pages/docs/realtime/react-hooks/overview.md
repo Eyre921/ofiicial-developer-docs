@@ -12,19 +12,17 @@ Subscribe to background task progress, stream AI responses, and trigger tasks fr
 
 Install the `@trigger.dev/react-hooks` package in your project:
 
-<CodeGroup>
-  ```bash npm theme={"theme":"css-variables"}
-  npm add @trigger.dev/react-hooks
-  ```
+```bash npm theme={"theme":"css-variables"}
+npm add @trigger.dev/react-hooks
+```
 
-  ```bash pnpm theme={"theme":"css-variables"}
-  pnpm add @trigger.dev/react-hooks
-  ```
+```bash pnpm theme={"theme":"css-variables"}
+pnpm add @trigger.dev/react-hooks
+```
 
-  ```bash yarn theme={"theme":"css-variables"}
-  yarn add @trigger.dev/react-hooks
-  ```
-</CodeGroup>
+```bash yarn theme={"theme":"css-variables"}
+yarn add @trigger.dev/react-hooks
+```
 
 ## Authentication
 
@@ -64,8 +62,8 @@ Learn more about [generating and managing tokens in our authentication guide](/d
 
 We offer two "styles" of hooks: SWR and Realtime. SWR hooks use the [swr](https://swr.vercel.app/) library to fetch data once and cache it. Realtime hooks use [Trigger.dev Realtime](/docs/realtime) to subscribe to updates as they happen.
 
-<Note>
-  It can be a little confusing which one to use because [swr](https://swr.vercel.app/) can also be
-  configured to poll for updates. But because of rate-limits and the way the Trigger.dev API works,
-  we recommend using the Realtime hooks for most use cases.
-</Note>
+> [!NOTE]
+>
+> It can be a little confusing which one to use because [swr](https://swr.vercel.app/) can also be
+> configured to poll for updates. But because of rate-limits and the way the Trigger.dev API works,
+> we recommend using the Realtime hooks for most use cases.

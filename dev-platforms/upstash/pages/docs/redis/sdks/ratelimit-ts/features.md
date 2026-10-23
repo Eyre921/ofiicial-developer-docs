@@ -1,5 +1,5 @@
 ---
-title: "Features"
+title: "Ratelimit TypeScript SDK Features"
 source: https://upstash.com/docs/redis/sdks/ratelimit-ts/features
 path: docs/redis/sdks/ratelimit-ts/features
 ---

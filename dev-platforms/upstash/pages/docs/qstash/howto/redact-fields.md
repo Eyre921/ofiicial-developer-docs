@@ -1,5 +1,5 @@
 ---
-title: "Redact Private Data"
+title: "Redact Private Data in QStash"
 source: https://upstash.com/docs/qstash/howto/redact-fields
 path: docs/qstash/howto/redact-fields
 ---

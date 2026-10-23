@@ -1,5 +1,5 @@
 ---
-title: "Getting Started"
+title: "Upstash Developer API Getting Started"
 source: https://upstash.com/docs/devops/developer-api/introduction
 path: docs/devops/developer-api/introduction
 ---

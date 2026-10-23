@@ -1,5 +1,5 @@
 ---
-title: "Frequently Asked Questions"
+title: "Upstash Redis FAQ"
 source: https://upstash.com/docs/redis/help/faq
 path: docs/redis/help/faq
 ---

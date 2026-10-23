@@ -228,10 +228,10 @@ sequenceDiagram
     Parent Task->>Trigger.dev: Complete execution
 ```
 
-<Note>
-  This is why, in the Trigger.dev Cloud, we don't charge for the time waiting for subtasks or the
-  time spent in a paused state.
-</Note>
+> [!NOTE]
+>
+> This is why, in the Trigger.dev Cloud, we don't charge for the time waiting for subtasks or the
+> time spent in a paused state.
 
 ## Durable execution
 
@@ -248,122 +248,120 @@ Trigger.dev's Checkpoint-Resume System, combined with idempotency keys, enables 
 
 Let's rewrite the `convert-video` task above to be more durable:
 
-<CodeGroup>
-  ```ts /trigger/video.ts theme={"theme":"css-variables"}
-  import { idempotencyKeys, logger, task } from "@trigger.dev/sdk";
-  import { processVideo, sendUserEmail, uploadToS3 } from "./tasks.js";
-  import { updateVideoUrl } from "../db.js";
+```ts /trigger/video.ts theme={"theme":"css-variables"}
+import { idempotencyKeys, logger, task } from "@trigger.dev/sdk";
+import { processVideo, sendUserEmail, uploadToS3 } from "./tasks.js";
+import { updateVideoUrl } from "../db.js";
 
-  export const convertVideo = task({
-    id: "convert-video",
-    retry: {
-      maxAttempts: 5,
-      minTimeoutInMs: 1000,
-      maxTimeoutInMs: 10000,
-      factor: 2,
-    },
-    run: async ({ videoId }: { videoId: string }) => {
-      // Automatically scope the idempotency key to this run, across retries
-      const idempotencyKey = await idempotencyKeys.create(videoId);
+export const convertVideo = task({
+  id: "convert-video",
+  retry: {
+    maxAttempts: 5,
+    minTimeoutInMs: 1000,
+    maxTimeoutInMs: 10000,
+    factor: 2,
+  },
+  run: async ({ videoId }: { videoId: string }) => {
+    // Automatically scope the idempotency key to this run, across retries
+    const idempotencyKey = await idempotencyKeys.create(videoId);
 
-      // Process video
-      const { processedContent } = await processVideo
-        .triggerAndWait({ videoId }, { idempotencyKey })
-        .unwrap(); // Calling unwrap will return the output of the subtask, or throw an error if the subtask failed
+    // Process video
+    const { processedContent } = await processVideo
+      .triggerAndWait({ videoId }, { idempotencyKey })
+      .unwrap(); // Calling unwrap will return the output of the subtask, or throw an error if the subtask failed
 
-      // Upload to S3
-      const { s3Url } = await uploadToS3
-        .triggerAndWait({ processedContent, videoId }, { idempotencyKey })
-        .unwrap();
+    // Upload to S3
+    const { s3Url } = await uploadToS3
+      .triggerAndWait({ processedContent, videoId }, { idempotencyKey })
+      .unwrap();
 
-      // Update database
-      await updateVideoUrl(videoId, s3Url);
+    // Update database
+    await updateVideoUrl(videoId, s3Url);
 
-      // Send email
-      await sendUserEmail.triggerAndWait({ videoId, s3Url }, { idempotencyKey }).unwrap();
+    // Send email
+    await sendUserEmail.triggerAndWait({ videoId, s3Url }, { idempotencyKey }).unwrap();
 
-      return { success: true, s3Url };
-    },
-  });
-  ```
+    return { success: true, s3Url };
+  },
+});
+```
 
-  ```ts /trigger/tasks.ts theme={"theme":"css-variables"}
-  import { task, logger } from "@trigger.dev/sdk";
-  import ffmpeg from "fluent-ffmpeg";
-  import { Readable } from "node:stream";
-  import type { ReadableStream } from "node:stream/web";
-  import * as fs from "node:fs/promises";
-  import * as path from "node:path";
-  import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-  import { sendEmail } from "../email.js";
-  import { getVideo } from "../db.js";
+```ts /trigger/tasks.ts theme={"theme":"css-variables"}
+import { task, logger } from "@trigger.dev/sdk";
+import ffmpeg from "fluent-ffmpeg";
+import { Readable } from "node:stream";
+import type { ReadableStream } from "node:stream/web";
+import * as fs from "node:fs/promises";
+import * as path from "node:path";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { sendEmail } from "../email.js";
+import { getVideo } from "../db.js";
 
-  // Initialize S3 client
-  const s3Client = new S3Client({
-    region: process.env.AWS_REGION,
-  });
+// Initialize S3 client
+const s3Client = new S3Client({
+  region: process.env.AWS_REGION,
+});
 
-  export const processVideo = task({
-    id: "process-video",
-    run: async ({ videoId }: { videoId: string }) => {
-      const { url } = await getVideo(videoId);
+export const processVideo = task({
+  id: "process-video",
+  run: async ({ videoId }: { videoId: string }) => {
+    const { url } = await getVideo(videoId);
 
-      const outputPath = path.join("/tmp", `output_${videoId}.mp4`);
-      const response = await fetch(url);
+    const outputPath = path.join("/tmp", `output_${videoId}.mp4`);
+    const response = await fetch(url);
 
-      await logger.trace("ffmpeg", async (span) => {
-        await new Promise((resolve, reject) => {
-          ffmpeg(Readable.fromWeb(response.body as ReadableStream))
-            .videoFilters("scale=iw/2:ih/2")
-            .output(outputPath)
-            .on("end", resolve)
-            .on("error", reject)
-            .run();
-        });
+    await logger.trace("ffmpeg", async (span) => {
+      await new Promise((resolve, reject) => {
+        ffmpeg(Readable.fromWeb(response.body as ReadableStream))
+          .videoFilters("scale=iw/2:ih/2")
+          .output(outputPath)
+          .on("end", resolve)
+          .on("error", reject)
+          .run();
       });
+    });
 
-      const processedContent = await fs.readFile(outputPath);
+    const processedContent = await fs.readFile(outputPath);
 
-      await fs.unlink(outputPath);
+    await fs.unlink(outputPath);
 
-      return { processedContent: processedContent.toString("base64") };
-    },
-  });
+    return { processedContent: processedContent.toString("base64") };
+  },
+});
 
-  export const uploadToS3 = task({
-    id: "upload-to-s3",
-    run: async (payload: { processedContent: string; videoId: string }) => {
-      const { processedContent, videoId } = payload;
+export const uploadToS3 = task({
+  id: "upload-to-s3",
+  run: async (payload: { processedContent: string; videoId: string }) => {
+    const { processedContent, videoId } = payload;
 
-      const s3Key = `processed-videos/output_${videoId}.mp4`;
+    const s3Key = `processed-videos/output_${videoId}.mp4`;
 
-      const uploadParams = {
-        Bucket: process.env.S3_BUCKET,
-        Key: s3Key,
-        Body: Buffer.from(processedContent, "base64"),
-      };
+    const uploadParams = {
+      Bucket: process.env.S3_BUCKET,
+      Key: s3Key,
+      Body: Buffer.from(processedContent, "base64"),
+    };
 
-      await s3Client.send(new PutObjectCommand(uploadParams));
-      const s3Url = `https://${process.env.S3_BUCKET}.s3.amazonaws.com/${s3Key}`;
+    await s3Client.send(new PutObjectCommand(uploadParams));
+    const s3Url = `https://${process.env.S3_BUCKET}.s3.amazonaws.com/${s3Key}`;
 
-      return { s3Url };
-    },
-  });
+    return { s3Url };
+  },
+});
 
-  export const sendUserEmail = task({
-    id: "send-user-email",
-    run: async ({ videoId, s3Url }: { videoId: string; s3Url: string }) => {
-      const { userId } = await getVideo(videoId);
+export const sendUserEmail = task({
+  id: "send-user-email",
+  run: async ({ videoId, s3Url }: { videoId: string; s3Url: string }) => {
+    const { userId } = await getVideo(videoId);
 
-      return await sendEmail(
-        userId,
-        "Video Processing Complete",
-        `Your video has been processed and is available at: ${s3Url}`
-      );
-    },
-  });
-  ```
-</CodeGroup>
+    return await sendEmail(
+      userId,
+      "Video Processing Complete",
+      `Your video has been processed and is available at: ${s3Url}`
+    );
+  },
+});
+```
 
 ### How retries work
 
@@ -422,11 +420,11 @@ When you run `npx trigger.dev@latest dev`, we run your task code locally on your
 * Each task is run in a separate process, so you can run multiple tasks in parallel.
 * Stopping the dev server stops your local task processes. If the CLI is killed abruptly (for example by a package manager sending SIGKILL), in-flight runs are cancelled automatically. After a normal Ctrl-C stop, in-flight runs are not cancelled and can end with a `TASK_RUN_STALLED_EXECUTING` error once the 5 minute heartbeat timeout passes.
 
-<Note>
-  Trigger.dev currently does not support "offline" dev mode, where you can run tasks without an
-  internet connection. [Please let us know](https://feedback.trigger.dev/) if this is a feature you
-  want/need.
-</Note>
+> [!NOTE]
+>
+> Trigger.dev currently does not support "offline" dev mode, where you can run tasks without an
+> internet connection. [Please let us know](https://feedback.trigger.dev/) if this is a feature you
+> want/need.
 
 ## Staging and production environments
 
@@ -438,7 +436,7 @@ For additional isolated environments, you can use [preview branches](/docs/deplo
 
 The Trigger.dev logging and task dashboard is powered by OpenTelemetry traces and logs, which allows you to trace your tasks and auto-instrument your code. We also auto-correlate logs from subtasks and parent tasks, making it easy view the entire trace of a task execution. A single run of the video processing task above looks like this in the dashboard:
 
-<img alt="OpenTelemetry trace" />
+![OpenTelemetry trace](https://mintcdn.com/trigger/5SxX7bFjJKRsidSL/images/opentelemetry-trace.png?fit=max\&auto=format\&n=5SxX7bFjJKRsidSL\&q=85\&s=ebea352695140cd16747daf0c02fc49d)
 
 Because we use standard OpenTelemetry, you can instrument your code and OpenTelemetry compatible libraries to get detailed traces and logs of your tasks. The above trace instruments both Prisma and the AWS SDK:
 

@@ -25,9 +25,9 @@ This demo showcases how to use Trigger.dev with Python to build a web crawler th
 
 ## Using Proxies
 
-<Warning>
-  **WEB SCRAPING:** When web scraping, you MUST use a proxy to comply with our terms of service. Direct scraping of third-party websites without the site owner's permission using Trigger.dev Cloud is prohibited and will result in account suspension. See [this example](/docs/guides/examples/puppeteer#scrape-content-from-a-web-page) which uses a proxy.
-</Warning>
+> [!WARNING]
+>
+> **WEB SCRAPING:** When web scraping, you MUST use a proxy to comply with our terms of service. Direct scraping of third-party websites without the site owner's permission using Trigger.dev Cloud is prohibited and will result in account suspension. See [this example](/docs/guides/examples/puppeteer#scrape-content-from-a-web-page) which uses a proxy.
 
 Some popular proxy services are:
 
@@ -45,10 +45,10 @@ Once you have a proxy service, set the following environment variables in your T
 
 ## GitHub repo
 
-<Card title="View the project on GitHub" icon="GitHub" href="https://github.com/triggerdotdev/examples/tree/main/python-crawl4ai">
-  Click here to view the full code for this project in our examples repository on GitHub. You can
-  fork it and use it as a starting point for your own project.
-</Card>
+> **[View the project on GitHub](https://github.com/triggerdotdev/examples/tree/main/python-crawl4ai)**
+>
+> Click here to view the full code for this project in our examples repository on GitHub. You can
+> fork it and use it as a starting point for your own project.
 
 ## The code
 
@@ -110,10 +110,10 @@ export function installPlaywrightChromium(): BuildExtension {
 }
 ```
 
-<Info>
-  Learn more about executing scripts in your Trigger.dev project using our Python build extension
-  [here](/docs/config/extensions/pythonExtension).
-</Info>
+> [!NOTE]
+>
+> Learn more about executing scripts in your Trigger.dev project using our Python build extension
+> [here](/docs/config/extensions/pythonExtension).
 
 ### Task code
 
@@ -216,9 +216,9 @@ if __name__ == "__main__":
 5. Run the Trigger.dev CLI `dev` command (it may ask you to authorize the CLI if you haven't already).
 6. Test the task in the dashboard, using a URL of your choice.
 
-<Warning>
-  **WEB SCRAPING:** When web scraping, you MUST use a proxy to comply with our terms of service. Direct scraping of third-party websites without the site owner's permission using Trigger.dev Cloud is prohibited and will result in account suspension. See [this example](/docs/guides/examples/puppeteer#scrape-content-from-a-web-page) which uses a proxy.
-</Warning>
+> [!WARNING]
+>
+> **WEB SCRAPING:** When web scraping, you MUST use a proxy to comply with our terms of service. Direct scraping of third-party websites without the site owner's permission using Trigger.dev Cloud is prohibited and will result in account suspension. See [this example](/docs/guides/examples/puppeteer#scrape-content-from-a-web-page) which uses a proxy.
 
 ## Deploying your task
 
@@ -226,7 +226,7 @@ Deploy the task to production using the Trigger.dev CLI `deploy` command.
 
 ## Learn more about using Python with Trigger.dev
 
-<Card title="Python build extension" icon="code" href="/docs/config/extensions/pythonExtension">
-  Learn how to use our built-in Python build extension to install dependencies and run your Python
-  code.
-</Card>
+> **[Python build extension](/docs/config/extensions/pythonExtension)**
+>
+> Learn how to use our built-in Python build extension to install dependencies and run your Python
+> code.

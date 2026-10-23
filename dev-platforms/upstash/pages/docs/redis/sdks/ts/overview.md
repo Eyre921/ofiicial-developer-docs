@@ -1,5 +1,5 @@
 ---
-title: "Overview"
+title: "Redis TypeScript SDK Overview"
 source: https://upstash.com/docs/redis/sdks/ts/overview
 path: docs/redis/sdks/ts/overview
 ---

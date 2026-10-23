@@ -1,5 +1,5 @@
 ---
-title: "Redact Private Data"
+title: "Redact Private Data in Upstash Workflow"
 source: https://upstash.com/docs/workflow/howto/redact-fields
 path: docs/workflow/howto/redact-fields
 ---

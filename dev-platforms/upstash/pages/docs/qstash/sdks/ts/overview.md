@@ -1,5 +1,5 @@
 ---
-title: "Overview"
+title: "QStash TypeScript SDK Overview"
 source: https://upstash.com/docs/qstash/sdks/ts/overview
 path: docs/qstash/sdks/ts/overview
 ---

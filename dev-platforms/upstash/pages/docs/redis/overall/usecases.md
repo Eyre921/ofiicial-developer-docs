@@ -1,5 +1,5 @@
 ---
-title: "Use Cases"
+title: "Upstash Redis Use Cases"
 source: https://upstash.com/docs/redis/overall/usecases
 path: docs/redis/overall/usecases
 ---
@@ -100,25 +100,25 @@ We believe that Upstash is the best storage for your Lambda Functions because:
   </Card>
 </CardGroup>
 
-- [AWS Lambda](https://upstash.com/docs/redis/quickstarts/aws-lambda.md)
-- [Azure Functions](https://upstash.com/docs/redis/quickstarts/azure-functions.md)
-- [Cloudflare Workers](https://upstash.com/docs/redis/quickstarts/cloudflareworkers.md)
-- [Deno Deploy](https://upstash.com/docs/redis/quickstarts/deno-deploy.md)
-- [DigitalOcean](https://upstash.com/docs/redis/quickstarts/digitalocean.md)
-- [Django](https://upstash.com/docs/redis/quickstarts/django.md)
-- [Elixir](https://upstash.com/docs/redis/quickstarts/elixir.md): Tutorial on Using Upstash Redis In Your Phoenix App and Deploying it on Fly.
-- [FastAPI](https://upstash.com/docs/redis/quickstarts/fastapi.md)
-- [Fastly](https://upstash.com/docs/redis/quickstarts/fastlycompute.md)
-- [Flask](https://upstash.com/docs/redis/quickstarts/flask.md)
-- [Fly.io](https://upstash.com/docs/redis/quickstarts/fly.md)
-- [Google Cloud Run functions](https://upstash.com/docs/redis/quickstarts/google-cloud-functions.md)
-- [Koyeb](https://upstash.com/docs/redis/quickstarts/koyeb.md)
-- [Laravel](https://upstash.com/docs/redis/quickstarts/laravel.md)
-- [App Router](https://upstash.com/docs/redis/quickstarts/nextjs-app-router.md)
-- [Pages Router](https://upstash.com/docs/redis/quickstarts/nextjs-pages-router.md)
-- [AWS Lambda](https://upstash.com/docs/redis/quickstarts/python-aws-lambda.md)
-- [SST](https://upstash.com/docs/redis/quickstarts/sst.md)
-- [Supabase Functions](https://upstash.com/docs/redis/quickstarts/supabase.md)
-- [App Router](https://upstash.com/docs/redis/quickstarts/vercel-functions-app-router.md)
-- [Pages Router](https://upstash.com/docs/redis/quickstarts/vercel-functions-pages-router.md)
-- [Vercel Python Runtime](https://upstash.com/docs/redis/quickstarts/vercel-python-runtime.md)
+- [Upstash Redis with AWS Lambda (TypeScript)](https://upstash.com/docs/redis/quickstarts/aws-lambda.md): Deploy a TypeScript AWS Lambda function with the AWS CDK that uses Upstash Redis through @upstash/redis to keep a counter.
+- [Upstash Redis with Azure Functions](https://upstash.com/docs/redis/quickstarts/azure-functions.md): Create a TypeScript Azure Functions app that uses Upstash Redis with @upstash/redis, set up resources with the Azure CLI, and deploy with Azure Functions Core Tools.
+- [Upstash Redis with Cloudflare Workers](https://upstash.com/docs/redis/quickstarts/cloudflareworkers.md): Create a Cloudflare Workers app with C3 that connects to Upstash Redis over HTTP with @upstash/redis, then deploy it to Cloudflare.
+- [Upstash Redis with Deno Deploy](https://upstash.com/docs/redis/quickstarts/deno-deploy.md): Build a view counter on Deno Deploy that stores its count in Upstash Redis using @upstash/redis.
+- [Upstash Redis with DigitalOcean](https://upstash.com/docs/redis/quickstarts/digitalocean.md): Upstash Redis on DigitalOcean is deprecated, with an August 31, 2026 shutdown date. How the Marketplace add-on works and how to migrate to a standard Upstash Redis database.
+- [Upstash Redis with Django](https://upstash.com/docs/redis/quickstarts/django.md): Build a Django app that uses Upstash Redis through upstash-redis to count homepage visits.
+- [Upstash Redis with Elixir](https://upstash.com/docs/redis/quickstarts/elixir.md): Tutorial on Using Upstash Redis In Your Phoenix App and Deploying it on Fly.
+- [Upstash Redis with FastAPI](https://upstash.com/docs/redis/quickstarts/fastapi.md): Build a FastAPI app that uses Upstash Redis through upstash-redis to count requests.
+- [Upstash Redis with Fastly Compute](https://upstash.com/docs/redis/quickstarts/fastlycompute.md): Connect a Fastly Compute app to a global Upstash Redis database with @upstash/redis to serve data from the edge.
+- [Upstash Redis with Flask](https://upstash.com/docs/redis/quickstarts/flask.md): Build a Flask app that uses Upstash Redis through upstash-redis to count homepage visits.
+- [Upstash Redis with Fly.io](https://upstash.com/docs/redis/quickstarts/fly.md): Connect an app running on Fly.io to Upstash Redis, either through Fly's native Upstash integration or a standard Upstash database.
+- [Upstash Redis with Google Cloud Run functions](https://upstash.com/docs/redis/quickstarts/google-cloud-functions.md): Deploy a Google Cloud Run function that connects to Upstash Redis with @upstash/redis and increments a counter on every request.
+- [Upstash Redis with Koyeb](https://upstash.com/docs/redis/quickstarts/koyeb.md): Connect a Node.js Express app on Koyeb to Upstash Redis with @upstash/redis, then deploy it from a Git repository or a Docker container.
+- [Upstash Redis with Laravel](https://upstash.com/docs/redis/quickstarts/laravel.md): Use Upstash Redis in a Laravel app with Predis or PhpRedis, including the Redis facade and Laravel's cache, session and queue drivers.
+- [Upstash Redis with Next.js (App Router)](https://upstash.com/docs/redis/quickstarts/nextjs-app-router.md): Use Upstash Redis in a Next.js App Router project with @upstash/redis: add your credentials, create a client, and build a simple counter.
+- [Upstash Redis with Next.js (Pages Router)](https://upstash.com/docs/redis/quickstarts/nextjs-pages-router.md): Use Upstash Redis in a Next.js Pages Router project with @upstash/redis: create a database, connect over HTTP, and build a simple counter.
+- [Upstash Redis with AWS Lambda (Python)](https://upstash.com/docs/redis/quickstarts/python-aws-lambda.md): Deploy a Python AWS Lambda function with the AWS CDK that uses Upstash Redis through upstash-redis to keep a counter.
+- [Upstash Redis with SST](https://upstash.com/docs/redis/quickstarts/sst.md): Deploy an SST app on AWS that connects to Upstash Redis with @upstash/redis and keeps a counter.
+- [Upstash Redis with Supabase Edge Functions](https://upstash.com/docs/redis/quickstarts/supabase.md): Use Upstash Redis from Supabase Edge Functions to keep a hash of function invocation counts per region.
+- [Upstash Redis with Vercel Functions (App Router)](https://upstash.com/docs/redis/quickstarts/vercel-functions-app-router.md): Connect Vercel Functions in a Next.js App Router project to Upstash Redis with @upstash/redis, then deploy the counter example to Vercel.
+- [Upstash Redis with Vercel Functions (Pages Router)](https://upstash.com/docs/redis/quickstarts/vercel-functions-pages-router.md): Connect Vercel Functions in a Next.js Pages Router project to Upstash Redis with @upstash/redis, then deploy the counter example to Vercel.
+- [Upstash Redis with the Vercel Python Runtime](https://upstash.com/docs/redis/quickstarts/vercel-python-runtime.md): Use Upstash Redis from the Vercel Python runtime with upstash-redis, using a Django counter app that you can adapt to Flask or FastAPI.

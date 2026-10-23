@@ -1,5 +1,5 @@
 ---
-title: "Use Cases"
+title: "QStash Use Cases"
 source: https://upstash.com/docs/qstash/overall/usecases
 path: docs/qstash/overall/usecases
 ---
@@ -326,20 +326,20 @@ More posts are on the [QStash blog](https://upstash.com/blog/tag/qstash). If
 there's a use case you'd like documented, tell us on
 [Discord](https://upstash.com/discord) or [X](https://x.com/upstash).
 
-- [AWS Lambda (Node)](https://upstash.com/docs/qstash/quickstarts/aws-lambda/nodejs.md)
-- [AWS Lambda (Python)](https://upstash.com/docs/qstash/quickstarts/aws-lambda/python.md)
-- [Cloudflare Workers](https://upstash.com/docs/qstash/quickstarts/cloudflare-workers.md)
-- [Deno Deploy](https://upstash.com/docs/qstash/quickstarts/deno-deploy.md)
-- [Golang](https://upstash.com/docs/qstash/quickstarts/fly-io/go.md)
-- [Python on Vercel](https://upstash.com/docs/qstash/quickstarts/python-vercel.md)
-- [Next.js](https://upstash.com/docs/qstash/quickstarts/vercel-nextjs.md)
+- [QStash with AWS Lambda (Node.js)](https://upstash.com/docs/qstash/quickstarts/aws-lambda/nodejs.md)
+- [QStash with AWS Lambda (Python)](https://upstash.com/docs/qstash/quickstarts/aws-lambda/python.md)
+- [QStash with Cloudflare Workers](https://upstash.com/docs/qstash/quickstarts/cloudflare-workers.md)
+- [QStash with Deno Deploy](https://upstash.com/docs/qstash/quickstarts/deno-deploy.md)
+- [QStash with Go on Fly.io](https://upstash.com/docs/qstash/quickstarts/fly-io/go.md)
+- [QStash with Python on Vercel](https://upstash.com/docs/qstash/quickstarts/python-vercel.md)
+- [QStash with Next.js](https://upstash.com/docs/qstash/quickstarts/vercel-nextjs.md)
 - [Periodic Data Updates](https://upstash.com/docs/qstash/recipes/periodic-data-updates.md)
 - [DLQ](https://upstash.com/docs/qstash/sdks/py/examples/dlq.md)
 - [Events](https://upstash.com/docs/qstash/sdks/py/examples/events.md)
 - [Flow Control](https://upstash.com/docs/qstash/sdks/py/examples/flow-control.md)
 - [Keys](https://upstash.com/docs/qstash/sdks/py/examples/keys.md)
 - [Messages](https://upstash.com/docs/qstash/sdks/py/examples/messages.md)
-- [Overview](https://upstash.com/docs/qstash/sdks/py/examples/overview.md)
+- [QStash Python SDK Examples Overview](https://upstash.com/docs/qstash/sdks/py/examples/overview.md)
 - [Publish](https://upstash.com/docs/qstash/sdks/py/examples/publish.md)
 - [Queues](https://upstash.com/docs/qstash/sdks/py/examples/queues.md)
 - [Receiver](https://upstash.com/docs/qstash/sdks/py/examples/receiver.md)

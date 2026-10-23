@@ -1,5 +1,5 @@
 ---
-title: "Getting Started"
+title: "Vector Python SDK Getting Started"
 source: https://upstash.com/docs/vector/sdks/py/gettingstarted
 path: docs/vector/sdks/py/gettingstarted
 ---

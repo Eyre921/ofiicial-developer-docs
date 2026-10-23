@@ -1,5 +1,5 @@
 ---
-title: "Background Jobs"
+title: "Background Jobs with QStash"
 source: https://upstash.com/docs/qstash/features/background-jobs
 path: docs/qstash/features/background-jobs
 ---

@@ -32,7 +32,7 @@ A gateway-managed catalog can use Nexus Auto only when that catalog lists `auto`
 
 ## Use a gateway-managed model catalog
 
-These gateways expose their own model catalogs. Fireworks may serve a request, but you are not connecting an arbitrary Fireworks model ID.
+These gateways expose their own model catalogs. Fireworks may serve a request, but you can call only the models the gateway lists.
 
 | Gateway | Fireworks support |
 | - | - |
@@ -43,7 +43,7 @@ These gateways expose their own model catalogs. Fireworks may serve a request, b
 
 ## LiteLLM Proxy
 
-Use LiteLLM as a shared gateway for Fireworks serverless models, Nexus Auto, and deployments. Developers call one OpenAI-compatible **chat completions** API. LiteLLM manages the Fireworks connection and client access. Closed-model credentials can come from Fireworks Provider Keys, when enabled for the account, or from forwarded client headers.
+Use LiteLLM as a shared gateway for Fireworks serverless models, Nexus Auto, and deployments. Developers call one OpenAI-compatible **chat completions** API. LiteLLM manages the Fireworks connection and client access. Closed-model credentials can come from Provider Keys (when enabled for the account), the LiteLLM config, or forwarded client headers.
 
 ### Prerequisites
 
@@ -60,7 +60,7 @@ Add each model you want to expose to `config.yaml`. Keep the client-facing `mode
 
 | Model | `litellm_params.model` |
 | - | - |
-| `auto`, `auto`, and `-latest` aliases, such as `glm-latest` | `fireworks_ai/accounts/fireworks/routers/<id>` |
+| `auto` and `-latest` aliases, such as `glm-latest` | `fireworks_ai/accounts/fireworks/routers/<id>` |
 | Pinned models, such as `glm-5p3` | `fireworks_ai/accounts/fireworks/models/<id>` |
 
 Recent LiteLLM versions expand a short ID to `accounts/fireworks/models/<id>`, so a short router ID such as `fireworks_ai/auto` returns `404 Model not found`. The full path works on every version.
@@ -113,12 +113,11 @@ The gateway sends the `auto` model ID and your Fireworks API key to Fireworks. Y
 
 ### Provide closed-model credentials
 
-`auto` [picks its closed model from your credentials](/nexus/auto#how-auto-picks-its-closed-model):
+`auto` [chooses from the models your credentials allow](/nexus/auto#which-models-auto-can-use):
 
-* With an Anthropic credential, it uses Claude Opus.
-* With an OpenAI credential, it uses GPT Sol.
-* With both, it uses Claude Opus for Chat Completions and GPT Sol for Responses API requests.
-* With neither, it [uses Kimi K3 and the open-model mix](/nexus/auto#how-auto-picks-its-closed-model).
+* With an Anthropic credential, it can also use Anthropic models.
+* With an OpenAI credential, it can also use OpenAI models.
+* With neither, every turn uses Fireworks open models.
 
 An [Amazon Bedrock](/nexus/provider-keys/bedrock) Provider Key covers a closed model you mapped there.
 
@@ -139,10 +138,9 @@ through the gateway.
 
 > [!NOTE]
 >
-> Provider Keys is not yet available on every account. If **Provider Keys**
-> does not appear in [Settings](https://app.fireworks.ai/settings/provider-keys),
-> [contact the Fireworks team](https://fireworks.ai/demo-request) to enable it.
-> Self-serve setup is coming soon.
+> Provider Keys isn't available on every account yet. If **Provider Keys**
+> doesn't appear in [Settings](https://app.fireworks.ai/settings/provider-keys),
+> [contact the Fireworks team](https://fireworks.ai/demo-request) to turn it on.
 
 ```bash wrap theme={null}
 curl http://localhost:4000/chat/completions \
@@ -214,8 +212,8 @@ A provider-key header sent with a request takes precedence over a Provider Key c
 > [!WARNING]
 >
 > Gateways often log request headers. If provider keys travel as headers,
-> whether added by the gateway or sent by clients, check that the gateway
-> redacts them in its logs. Provider Keys keeps provider credentials out of
-> the gateway entirely.
+> check that the gateway redacts them in its logs. This applies whether the
+> gateway adds the headers or clients send them. Provider Keys keeps provider
+> credentials out of the gateway entirely.
 
 LiteLLM returns your `model_name` in the response `model` field, not the model that served the turn. To confirm that closed models are reachable, send a request directly to Fireworks as shown in [Check which model served a turn](/nexus/auto#check-which-model-served-a-turn). For direct API calls, see [APIs and SDKs](/nexus/apis-and-sdks#credentials).

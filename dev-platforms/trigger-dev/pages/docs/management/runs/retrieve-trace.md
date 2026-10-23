@@ -15,7 +15,10 @@ For a finished run, spans that finish more than 7 days after the run are returne
 
 ## Page large traces
 
-<RollingOut />
+> [!WARNING]
+>
+> **Rolling out.** This feature is being enabled gradually and may not be available
+> for your organization yet.
 
 The tree response stops at a size limit. To get every span of a large trace, page it: send `page[size]` (1,000–10,000) on the first request, then pass each response's `pagination.next` back as `page[after]` until it's absent.
 

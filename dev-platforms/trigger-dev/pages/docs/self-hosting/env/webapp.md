@@ -262,42 +262,40 @@ OBJECT_STORE_DEFAULT_PROTOCOL=s3
 
 To migrate from R2 to S3 without breaking existing runs:
 
-<Steps>
-  <Step title="Configure S3 provider">
-    Add S3 credentials as a named provider:
+**1. Configure S3 provider**
 
-    ```bash theme={"theme":"css-variables"}
-    OBJECT_STORE_S3_BASE_URL=https://s3.amazonaws.com
-    OBJECT_STORE_S3_ACCESS_KEY_ID=...
-    OBJECT_STORE_S3_SECRET_ACCESS_KEY=...
-    OBJECT_STORE_S3_REGION=us-east-1
-    ```
+Add S3 credentials as a named provider:
 
-    Keep your existing `OBJECT_STORE_*` variables (R2) as the default provider.
-  </Step>
+```bash theme={"theme":"css-variables"}
+OBJECT_STORE_S3_BASE_URL=https://s3.amazonaws.com
+OBJECT_STORE_S3_ACCESS_KEY_ID=...
+OBJECT_STORE_S3_SECRET_ACCESS_KEY=...
+OBJECT_STORE_S3_REGION=us-east-1
+```
 
-  <Step title="Test the configuration">
-    Restart the webapp and verify both providers work:
+Keep your existing `OBJECT_STORE_*` variables (R2) as the default provider.
 
-    * Old runs (no prefix) should still access R2
-    * New runs with `s3://` prefix should use S3
-  </Step>
+**2. Test the configuration**
 
-  <Step title="Switch to S3 for new uploads">
-    Set the default protocol to use S3 for new uploads:
+Restart the webapp and verify both providers work:
 
-    ```bash theme={"theme":"css-variables"}
-    OBJECT_STORE_DEFAULT_PROTOCOL=s3
-    ```
+* Old runs (no prefix) should still access R2
+* New runs with `s3://` prefix should use S3
 
-    After this change:
+**3. Switch to S3 for new uploads**
 
-    * New data uses `s3://` prefix and goes to S3
-    * Old data (no prefix) still uses R2
-    * Data with explicit protocol uses the corresponding provider
-  </Step>
+Set the default protocol to use S3 for new uploads:
 
-  <Step title="Optionally decommission R2">
-    Once all active runs using R2 data have completed (check your data retention policies), you can remove the R2 credentials. Keep `OBJECT_STORE_DEFAULT_PROTOCOL=s3` to ensure new data continues using S3.
-  </Step>
-</Steps>
+```bash theme={"theme":"css-variables"}
+OBJECT_STORE_DEFAULT_PROTOCOL=s3
+```
+
+After this change:
+
+* New data uses `s3://` prefix and goes to S3
+* Old data (no prefix) still uses R2
+* Data with explicit protocol uses the corresponding provider
+
+**4. Optionally decommission R2**
+
+Once all active runs using R2 data have completed (check your data retention policies), you can remove the R2 credentials. Keep `OBJECT_STORE_DEFAULT_PROTOCOL=s3` to ensure new data continues using S3.

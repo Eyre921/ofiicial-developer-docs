@@ -6,7 +6,7 @@ path: docs/guides/examples/scrape-hacker-news
 
 This example demonstrates how to scrape the top 3 articles from Hacker News using BrowserBase and Puppeteer, summarize them with ChatGPT and send a nicely formatted email summary to yourself every weekday using Resend.
 
-<iframe title="YouTube video player" />
+[YouTube video player](https://www.youtube.com/embed/6azvzrZITKY?si=muKtsBiS9TJGGKWg)
 
 ## Overview
 
@@ -26,9 +26,9 @@ And we'll be using the following tools and features:
 * [OpenAI](https://platform.openai.com/docs/overview) to summarize the articles
 * [Resend](https://resend.com/) to send a nicely formatted email summary
 
-<Warning>
-  **WEB SCRAPING:** When web scraping, you MUST use a proxy to comply with our terms of service. Direct scraping of third-party websites without the site owner's permission using Trigger.dev Cloud is prohibited and will result in account suspension. See [this example](/docs/guides/examples/puppeteer#scrape-content-from-a-web-page) which uses a proxy.
-</Warning>
+> [!WARNING]
+>
+> **WEB SCRAPING:** When web scraping, you MUST use a proxy to comply with our terms of service. Direct scraping of third-party websites without the site owner's permission using Trigger.dev Cloud is prohibited and will result in account suspension. See [this example](/docs/guides/examples/puppeteer#scrape-content-from-a-web-page) which uses a proxy.
 
 ## Prerequisites
 
@@ -240,7 +240,7 @@ export const HNSummaryEmail: React.FC<{ articles: Article[] }> = ({ articles }) 
 
 ## Local development
 
-To test this example task locally, be sure to install any packages from the build extensions you added to your `trigger.config.ts` file to your local machine. In this case, you need to install .
+To test this example task locally, be sure to install any packages from the build extensions you added to your `trigger.config.ts` file to your local machine. In this case, you need to install the Puppeteer library.
 
 ## Testing your task
 

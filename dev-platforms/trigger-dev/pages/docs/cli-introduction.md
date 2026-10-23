@@ -8,13 +8,13 @@ The Trigger.dev CLI has a number of options and commands to help you develop loc
 
 ## Options
 
-<ParamField type="--help | -h">
-  Shows the help information for the command.
-</ParamField>
+**Help** `--help | -h`
 
-<ParamField type="--version | -v">
-  Displays the version number of the CLI.
-</ParamField>
+Shows the help information for the command.
+
+**Version** `--version | -v`
+
+Displays the version number of the CLI.
 
 ## Commands
 

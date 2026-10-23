@@ -12,10 +12,10 @@ We support up to 10 tags per run. Each one must be a string between 1 and 128 ch
 
 We recommend prefixing your tags with their type and then an underscore or colon. For example, `user_123456` or `video:123`.
 
-<Info>
-  Many great APIs, like Stripe, already prefix their IDs with the type and an underscore. Like
-  `cus_123456` for a customer.
-</Info>
+> [!NOTE]
+>
+> Many great APIs, like Stripe, already prefix their IDs with the type and an underscore. Like
+> `cus_123456` for a customer.
 
 We don't enforce prefixes but if you use them you'll find it easier to filter and it will be clearer what the tag represents.
 
@@ -30,31 +30,29 @@ There are two ways to add tags to a run:
 
 You can add tags when triggering a run using the `tags` option. All the different [trigger](/docs/triggering) methods support this.
 
-<CodeGroup>
-  ```ts trigger theme={"theme":"css-variables"}
-  const handle = await myTask.trigger(
-    { message: "hello world" },
-    { tags: ["user_123456", "org_abcdefg"] }
-  );
-  ```
+```ts trigger theme={"theme":"css-variables"}
+const handle = await myTask.trigger(
+  { message: "hello world" },
+  { tags: ["user_123456", "org_abcdefg"] }
+);
+```
 
-  ```ts batchTrigger theme={"theme":"css-variables"}
-  const batch = await myTask.batchTrigger([
-    {
-      payload: { message: "foo" },
-      options: { tags: "product_123456" },
-    },
-    {
-      payload: { message: "bar" },
-      options: { tags: ["user_123456", "product_3456789"] },
-    },
-  ]);
-  ```
-</CodeGroup>
+```ts batchTrigger theme={"theme":"css-variables"}
+const batch = await myTask.batchTrigger([
+  {
+    payload: { message: "foo" },
+    options: { tags: "product_123456" },
+  },
+  {
+    payload: { message: "bar" },
+    options: { tags: ["user_123456", "product_3456789"] },
+  },
+]);
+```
 
 This will create a run with the tags `user_123456` and `org_abcdefg`. They look like this in the runs table:
 
-<img alt="How tags appear in the dashboard" />
+![How tags appear in the dashboard](https://mintcdn.com/trigger/0bD0UfsjaINxS6Tw/images/tags-org-user.png?fit=max\&auto=format\&n=0bD0UfsjaINxS6Tw\&q=85\&s=95300055e21df2ac777716ee826b14a2)
 
 ### 2. Adding tags inside the `run` function
 
@@ -105,7 +103,7 @@ You can filter runs by tags in the dashboard and in the SDK.
 
 On the Runs page open the filter menu, choose "Tags" and then start typing in the name of the tag you want to filter by. You can select it and it will restrict the results to only runs with that tag. You can add multiple tags to filter by more than one.
 
-<img alt="Filter by tags" />
+![Filter by tags](https://mintcdn.com/trigger/0bD0UfsjaINxS6Tw/images/tags-filtering.png?fit=max\&auto=format\&n=0bD0UfsjaINxS6Tw\&q=85\&s=100b923c8d382ca830344a29cccd30ae)
 
 ### Using `runs.list()`
 
@@ -120,8 +118,8 @@ for await (const run of runs.list({ tag: "user_123456", status: ["COMPLETED"] })
 }
 ```
 
-<Tip>
-  To follow runs with a tag as they change, use
-  [`runs.subscribeToRunsWithTag()`](/docs/realtime/backend/subscribe) instead of polling `runs.list()`.
-  See [runs.list() best practices](/docs/runs/list-best-practices).
-</Tip>
+> [!TIP]
+>
+> To follow runs with a tag as they change, use
+> [`runs.subscribeToRunsWithTag()`](/docs/realtime/backend/subscribe) instead of polling `runs.list()`.
+> See [runs.list() best practices](/docs/runs/list-best-practices).

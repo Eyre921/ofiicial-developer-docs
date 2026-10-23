@@ -31,6 +31,8 @@ Once connected, the negotiated era is shown as a badge on the **Protocol** tab's
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/settings-protocol-era.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=34566c45f97c8af0e2c0d9ee0493b572)
 
+Server Settings: the Protocol Era selector, with all three choices.
+
 ## Reproducing each era locally
 
 Every section below ends with a **Reproduce with ...** pointer to a JSON config for one of the **composable test servers** shipped in the Inspector repository. Clone the repo and build the test servers:
@@ -75,7 +77,11 @@ Reproduce with `test-servers/configs/logging-modern-http.json`.
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/logs-legacy.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=ec5fddd86d1fe7ecc1ef83549798f33e)
 
+Legacy: the Logs tab offers a session-scoped Set Active Level control, and a log arrives after calling send\_notification.
+
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/logs-modern.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=85a1d7118a1e693930aefab8ca6b21a3)
+
+Modern: the same tab instead offers Log Level per Request. The level is stamped on every outgoing request, and the log rides that request's stream.
 
 ***
 
@@ -96,6 +102,8 @@ Because the subscription is now a long-lived stream rather than a session flag, 
 Reproduce with `test-servers/configs/subscriptions-modern-http.json`. To see the `Not acknowledged` state, use `test-servers/configs/subscriptions-never-acknowledged-http.json`. That server acknowledges your first subscription, then refuses every later listen, so subscribing to a second resource trips the badge.
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/resources-subscriptions-modern.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=5ca4c64c6783eb210fe54248f03de144)
+
+A modern subscription: the Subscriptions section carries a LISTENING stream-status badge that a legacy subscription has no need for.
 
 ***
 
@@ -121,7 +129,11 @@ Reproduce with `test-servers/configs/tasks-modern-http.json` (tools `modern_task
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/tasks-legacy.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=777729bfc1b58b359808c8120d9597d3)
 
+Legacy: the Tasks tab is populated from tasks/list, and the payload is fetched with a blocking tasks/result.
+
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/tasks-modern.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=8e90d128528463fd672537c79db2e1fe)
+
+Modern: the client polls tasks/get on handles it already holds, and the completed task inlines its result; note resultType: complete in the full task object.
 
 ***
 
@@ -152,7 +164,11 @@ The Inspector drives MRTR **manually**, so each round pauses at the **pending-re
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/mrtr-pending-request.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=99f8acb7f845a12aed42bcea4d310fee)
 
+An MRTR round paused at the pending-request modal, tagged input\_required. Answering it retries the original request.
+
 ![](https://mintcdn.com/mcp/pUebPdrb6PY5_mfH/images/inspector/mrtr-protocol-conversation.png?fit=max\&auto=format\&n=pUebPdrb6PY5_mfH\&q=85\&s=b083d8127a7a67028fcd9702b25aeac1)
+
+The monitoring sidebar's Protocol tab after mrtr\_confirm completes. Both tools/call rounds sit inside one MRTR conversation, Round 1 tagged input\_required and Round 2 complete, while unrelated traffic stays outside it.
 
 ***
 
@@ -175,6 +191,8 @@ Reproduce with `test-servers/configs/xmcpheader-modern-http.json`.
 > request, so they reach the server even though the browser never sends them.
 
 ![](https://mintcdn.com/mcp/pUebPdrb6PY5_mfH/images/inspector/tools-sep2243.png?fit=max\&auto=format\&n=pUebPdrb6PY5_mfH\&q=85\&s=0e011c3012332c0a74d0f57fc84a5cf2)
+
+get\_weather shows its mirrored city -> Mcp-Param-City header, and the Network sidebar confirms the call carried mcp-param-city: Boston. invalid\_header\_tool is struck through under the Excluded (SEP-2243) divider.
 
 ### `-32602` error panels
 
@@ -205,7 +223,11 @@ The modern era standardizes a set of `Mcp-*` HTTP headers and introduces a riche
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/network-modern-headers.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=7df4c01f5ab68aa7632ac3b5a5866b42)
 
+The Network tab shows the HTTP layer; here, the 400 Bad Request the strict server answered with.
+
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/protocol-modern-error.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=d578ea8262ff327e4d61d3697937900b)
+
+The Protocol tab renders the same failure as a typed spec error: -32022 UnsupportedProtocolVersion, with the versions the server does support.
 
 ***
 

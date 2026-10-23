@@ -1,5 +1,5 @@
 ---
-title: "Retries"
+title: "Redis TypeScript SDK Retries"
 source: https://upstash.com/docs/redis/sdks/ts/retries
 path: docs/redis/sdks/ts/retries
 ---

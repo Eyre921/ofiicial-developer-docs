@@ -34,24 +34,24 @@ When you trigger a task from your backend code, create a named API key with **Tr
 
 If a single process needs to trigger across multiple projects, environments, or preview branches, use [`new TriggerClient({...})`](/docs/management/multiple-clients) for each target instead of relying on the global env vars.
 
-<Note>
-  **Which trigger pattern should I use?** If your triggering code can import the task definition (same codebase), use `yourTask.trigger()` for full type safety. Use `tasks.trigger()` with a type-only import when the task runs in a separate service or you need to avoid bundling task code into your app (common in Next.js). Both do the same thing at runtime.
-</Note>
+> [!NOTE]
+>
+> **Which trigger pattern should I use?** If your triggering code can import the task definition (same codebase), use `yourTask.trigger()` for full type safety. Use `tasks.trigger()` with a type-only import when the task runs in a separate service or you need to avoid bundling task code into your app (common in Next.js). Both do the same thing at runtime.
 
-<Note>
-  If you are using Next.js Server Actions [you'll need to be careful with
-  bundling](/docs/guides/frameworks/nextjs#triggering-your-task-in-next-js).
-</Note>
+> [!NOTE]
+>
+> If you are using Next.js Server Actions [you'll need to be careful with
+> bundling](/docs/guides/frameworks/nextjs#triggering-your-task-in-next-js).
 
 ### tasks.trigger()
 
 Triggers a single run of a task with the payload you pass in, and any options you specify, without needing to import the task.
 
-<Note>
-  By using `tasks.trigger()`, you can pass in the task type as a generic argument, giving you full
-  type checking. Make sure you use a `type` import so that your task code is not imported into your
-  application.
-</Note>
+> [!NOTE]
+>
+> By using `tasks.trigger()`, you can pass in the task type as a generic argument, giving you full
+> type checking. Make sure you use a `type` import so that your task code is not imported into your
+> application.
 
 ```ts Your backend theme={"theme":"css-variables"}
 import { tasks } from "@trigger.dev/sdk";
@@ -205,11 +205,11 @@ The following functions should only be used when running inside a task, for one 
 
 Triggers a single run of a task with the payload you pass in, and any options you specify.
 
-<Note>
-  If you need to call `trigger()` on a task in a loop, use
-  [`batchTrigger()`](#yourTask-batchtrigger) instead which will trigger up to 1,000 runs in a single
-  call with SDK 4.3.1+ (500 runs in prior versions).
-</Note>
+> [!NOTE]
+>
+> If you need to call `trigger()` on a task in a loop, use
+> [`batchTrigger()`](#yourTask-batchtrigger) instead which will trigger up to 1,000 runs in a single
+> call with SDK 4.3.1+ (500 runs in prior versions).
 
 ```ts ./trigger/my-task.ts theme={"theme":"css-variables"}
 import { runs } from "@trigger.dev/sdk";
@@ -304,44 +304,42 @@ export const myTask = task({
 
 This is where it gets interesting. You can trigger a task and then wait for the result. This is useful when you need to call a different task and then use the result to continue with your task.
 
-<Accordion title="Don't use this in parallel, e.g. with `Promise.all()`">
-  Instead, use `batchTriggerAndWait()` if you can, or a for loop if you can't.
-
-  To control concurrency using batch triggers, you can set `queue.concurrencyLimit` on the child task.
-
-  <CodeGroup>
-    ```ts /trigger/batch.ts theme={"theme":"css-variables"}
-    export const batchTask = task({
-      id: "batch-task",
-      run: async (payload: string) => {
-        const results = await childTask.batchTriggerAndWait([
-          { payload: "item1" },
-          { payload: "item2" },
-        ]);
-        console.log("Results", results);
-
-        //...do stuff with the results
-      },
-    });
-    ```
-
-    ```ts /trigger/loop.ts theme={"theme":"css-variables"}
-    export const loopTask = task({
-      id: "loop-task",
-      run: async (payload: string) => {
-        //this will be slower than the batch version
-        //as we have to resume the parent after each iteration
-        for (let i = 0; i < 2; i++) {
-          const result = await childTask.triggerAndWait(`item${i}`);
-          console.log("Result", result);
-
-          //...do stuff with the result
-        }
-      },
-    });
-    ```
-  </CodeGroup>
-</Accordion>
+> **Don't use this in parallel, e.g. with `Promise.all()`**
+>
+> Instead, use `batchTriggerAndWait()` if you can, or a for loop if you can't.
+>
+> To control concurrency using batch triggers, you can set `queue.concurrencyLimit` on the child task.
+>
+> ```ts /trigger/batch.ts theme={"theme":"css-variables"}
+> export const batchTask = task({
+>   id: "batch-task",
+>   run: async (payload: string) => {
+>     const results = await childTask.batchTriggerAndWait([
+>       { payload: "item1" },
+>       { payload: "item2" },
+>     ]);
+>     console.log("Results", results);
+>
+>     //...do stuff with the results
+>   },
+> });
+> ```
+>
+> ```ts /trigger/loop.ts theme={"theme":"css-variables"}
+> export const loopTask = task({
+>   id: "loop-task",
+>   run: async (payload: string) => {
+>     //this will be slower than the batch version
+>     //as we have to resume the parent after each iteration
+>     for (let i = 0; i < 2; i++) {
+>       const result = await childTask.triggerAndWait(`item${i}`);
+>       console.log("Result", result);
+>
+>       //...do stuff with the result
+>     }
+>   },
+> });
+> ```
 
 ```ts /trigger/parent.ts theme={"theme":"css-variables"}
 export const parentTask = task({
@@ -407,101 +405,97 @@ export const parentTask = task({
 });
 ```
 
-<Warning>
-  This method should only be used inside a task. If you use it outside a task, it will throw an
-  error.
-</Warning>
+> [!WARNING]
+>
+> This method should only be used inside a task. If you use it outside a task, it will throw an
+> error.
 
 ### yourTask.batchTriggerAndWait()
 
 You can batch trigger a task and wait for all the results. This is useful for the fan-out pattern, where you need to call a task multiple times and then wait for all the results to continue with your task.
 
-<Accordion title="Don't use this in parallel, e.g. with `Promise.all()`">
-  Instead, pass in all items at once and set an appropriate `maxConcurrency`. Alternatively, use sequentially with a for loop.
+> **Don't use this in parallel, e.g. with `Promise.all()`**
+>
+> Instead, pass in all items at once and set an appropriate `maxConcurrency`. Alternatively, use sequentially with a for loop.
+>
+> To control concurrency, you can set `queue.concurrencyLimit` on the child task.
+>
+> ```ts /trigger/batch.ts theme={"theme":"css-variables"}
+> export const batchTask = task({
+>   id: "batch-task",
+>   run: async (payload: string) => {
+>     const results = await childTask.batchTriggerAndWait([
+>       { payload: "item1" },
+>       { payload: "item2" },
+>     ]);
+>     console.log("Results", results);
+>
+>     //...do stuff with the results
+>   },
+> });
+> ```
+>
+> ```ts /trigger/loop.ts theme={"theme":"css-variables"}
+> export const loopTask = task({
+>   id: "loop-task",
+>   run: async (payload: string) => {
+>     //this will be slower than a single batchTriggerAndWait()
+>     //as we have to resume the parent after each iteration
+>     for (let i = 0; i < 2; i++) {
+>       const result = await childTask.batchTriggerAndWait([
+>         { payload: `itemA${i}` },
+>         { payload: `itemB${i}` },
+>       ]);
+>       console.log("Result", result);
+>
+>       //...do stuff with the result
+>     }
+>   },
+> });
+> ```
 
-  To control concurrency, you can set `queue.concurrencyLimit` on the child task.
-
-  <CodeGroup>
-    ```ts /trigger/batch.ts theme={"theme":"css-variables"}
-    export const batchTask = task({
-      id: "batch-task",
-      run: async (payload: string) => {
-        const results = await childTask.batchTriggerAndWait([
-          { payload: "item1" },
-          { payload: "item2" },
-        ]);
-        console.log("Results", results);
-
-        //...do stuff with the results
-      },
-    });
-    ```
-
-    ```ts /trigger/loop.ts theme={"theme":"css-variables"}
-    export const loopTask = task({
-      id: "loop-task",
-      run: async (payload: string) => {
-        //this will be slower than a single batchTriggerAndWait()
-        //as we have to resume the parent after each iteration
-        for (let i = 0; i < 2; i++) {
-          const result = await childTask.batchTriggerAndWait([
-            { payload: `itemA${i}` },
-            { payload: `itemB${i}` },
-          ]);
-          console.log("Result", result);
-
-          //...do stuff with the result
-        }
-      },
-    });
-    ```
-  </CodeGroup>
-</Accordion>
-
-<Accordion title="How to handle run failures">
-  When using `batchTriggerAndWait`, you have full control over how to handle failures within the batch. The method returns an array of run results, allowing you to inspect each run's outcome individually and implement custom error handling.
-
-  Here's how you can manage run failures:
-
-  1. **Inspect individual run results**: Each run in the returned array has an `ok` property indicating success or failure.
-
-  2. **Access error information**: For failed runs, you can examine the `error` property to get details about the failure.
-
-  3. **Choose your failure strategy**: You have two main options:
-
-     * **Fail the entire batch**: Throw an error if any run fails, causing the parent task to reattempt.
-     * **Continue despite failures**: Process the results without throwing an error, allowing the parent task to continue.
-
-  4. **Implement custom logic**: You can create sophisticated handling based on the number of failures, types of errors, or other criteria.
-
-  Here's an example of how you might handle run failures:
-
-  <CodeGroup>
-    ```ts /trigger/batchTriggerAndWait.ts theme={"theme":"css-variables"}
-    const result = await batchChildTask.batchTriggerAndWait([
-      { payload: "item1" },
-      { payload: "item2" },
-      { payload: "item3" },
-    ]);
-
-    // Result will contain the finished runs.
-    // They're only finished if they have succeeded or failed.
-    // "Failed" means all attempts failed
-
-    for (const run of result.runs) {
-      // Check if the run succeeded
-      if (run.ok) {
-        logger.info("Batch task run succeeded", { output: run.output });
-      } else {
-        logger.error("Batch task run error", { error: run.error });
-
-        //You can choose if you want to throw an error and fail the entire run
-        throw new Error(`Fail the entire run because ${run.id} failed`);
-      }
-    }
-    ```
-  </CodeGroup>
-</Accordion>
+> **How to handle run failures**
+>
+> When using `batchTriggerAndWait`, you have full control over how to handle failures within the batch. The method returns an array of run results, allowing you to inspect each run's outcome individually and implement custom error handling.
+>
+> Here's how you can manage run failures:
+>
+> 1. **Inspect individual run results**: Each run in the returned array has an `ok` property indicating success or failure.
+>
+> 2. **Access error information**: For failed runs, you can examine the `error` property to get details about the failure.
+>
+> 3. **Choose your failure strategy**: You have two main options:
+>
+>    * **Fail the entire batch**: Throw an error if any run fails, causing the parent task to reattempt.
+>    * **Continue despite failures**: Process the results without throwing an error, allowing the parent task to continue.
+>
+> 4. **Implement custom logic**: You can create sophisticated handling based on the number of failures, types of errors, or other criteria.
+>
+> Here's an example of how you might handle run failures:
+>
+> ```ts /trigger/batchTriggerAndWait.ts theme={"theme":"css-variables"}
+> const result = await batchChildTask.batchTriggerAndWait([
+>   { payload: "item1" },
+>   { payload: "item2" },
+>   { payload: "item3" },
+> ]);
+>
+> // Result will contain the finished runs.
+> // They're only finished if they have succeeded or failed.
+> // "Failed" means all attempts failed
+>
+> for (const run of result.runs) {
+>   // Check if the run succeeded
+>   if (run.ok) {
+>     logger.info("Batch task run succeeded", { output: run.output });
+>   } else {
+>     logger.error("Batch task run error", { error: run.error });
+>
+>     //You can choose if you want to throw an error and fail the entire run
+>     throw new Error(`Fail the entire run because ${run.id} failed`);
+>   }
+> }
+> ```
 
 ```ts /trigger/nested.ts theme={"theme":"css-variables"}
 export const batchParentTask = task({
@@ -519,10 +513,10 @@ export const batchParentTask = task({
 });
 ```
 
-<Warning>
-  This method should only be used inside a task. If you use it outside a task, it will throw an
-  error.
-</Warning>
+> [!WARNING]
+>
+> This method should only be used inside a task. If you use it outside a task, it will throw an
+> error.
 
 ### batch.triggerAndWait()
 
@@ -702,13 +696,13 @@ await myTask.trigger({ some: "data" }, { delay: new Date("2024-07-23T11:50:00+02
 
 Runs that are delayed and have not been enqueued yet will display in the dashboard with a "Delayed" status:
 
-<img alt="Delayed run in the dashboard" />
+![Delayed run in the dashboard](https://mintcdn.com/trigger/uys6iMwf9B_ojh8r/images/delayed-runs.png?fit=max\&auto=format\&n=uys6iMwf9B_ojh8r\&q=85\&s=38620549a2c6e61c37b4a8101b89f5d7)
 
-<Note>
-  Delayed runs will be enqueued at the time specified, and will run as soon as possible after that
-  time, just as a normally triggered run would. They execute on the currently deployed version when
-  they start, not the version that was active when they were enqueued.
-</Note>
+> [!NOTE]
+>
+> Delayed runs will be enqueued at the time specified, and will run as soon as possible after that
+> time, just as a normally triggered run would. They execute on the currently deployed version when
+> they start, not the version that was active when they were enqueued.
 
 You can cancel a delayed run using the `runs.cancel` SDK function:
 
@@ -733,26 +727,26 @@ The `delay` option is also available when using `batchTrigger`:
 await myTask.batchTrigger([{ payload: { some: "data" }, options: { delay: "1h" } }]);
 ```
 
-<Note>
-  If your payload contains Date objects, pass them directly rather than manually stringifying with
-  `JSON.stringify()`. The SDK handles Date serialization automatically. If you need to stringify
-  manually, convert Dates to ISO strings first (e.g., `date.toISOString()`).
-</Note>
+> [!NOTE]
+>
+> If your payload contains Date objects, pass them directly rather than manually stringifying with
+> `JSON.stringify()`. The SDK handles Date serialization automatically. If you need to stringify
+> manually, convert Dates to ISO strings first (e.g., `date.toISOString()`).
 
-<Tip>
-  A `delay` doesn't merge triggers: each trigger still creates its own run. To collapse a burst of
-  triggers into one run, use [`debounce`](#debounce). See [runs.list() best
-  practices](/docs/runs/list-best-practices#using-a-fixed-delay-to-space-out-triggers).
-</Tip>
+> [!TIP]
+>
+> A `delay` doesn't merge triggers: each trigger still creates its own run. To collapse a burst of
+> triggers into one run, use [`debounce`](#debounce). See [runs.list() best
+> practices](/docs/runs/list-best-practices#using-a-fixed-delay-to-space-out-triggers).
 
 ### `ttl`
 
 You can set a TTL (time to live) when triggering a task, which will automatically expire the run if it hasn't started within the specified time. This is useful for ensuring that a run doesn't get stuck in the queue for too long.
 
-<Note>
-  All runs in development have a default `ttl` of 10 minutes. You can disable this by setting the
-  `ttl` option.
-</Note>
+> [!NOTE]
+>
+> All runs in development have a default `ttl` of 10 minutes. You can disable this by setting the
+> `ttl` option.
 
 ```ts theme={"theme":"css-variables"}
 import { myTask } from "./trigger/myTasks";
@@ -766,7 +760,7 @@ await myTask.trigger({ some: "data" }, { ttl: 3600 }); // 1 hour
 
 When a run is expired, it will be marked as "Expired" in the dashboard:
 
-<img alt="Expired runs in the dashboard" />
+![Expired runs in the dashboard](https://mintcdn.com/trigger/uys6iMwf9B_ojh8r/images/expired-runs.png?fit=max\&auto=format\&n=uys6iMwf9B_ojh8r\&q=85\&s=d984afe341eaacbe47b698dade27e445)
 
 When you use both `delay` and `ttl`, the TTL will start counting down from the time the run is enqueued, not from the time the run is triggered.
 
@@ -785,9 +779,9 @@ The timeline would look like this:
 
 For this reason, the `ttl` option only accepts durations and not absolute timestamps.
 
-<Note>
-  On [Trigger.dev Cloud](https://trigger.dev), there is a maximum TTL of 14 days. If you don't specify a TTL in staging or production, runs automatically get a 14-day TTL. If you specify a TTL longer than 14 days, it is clamped to 14 days. See [Limits — Maximum run TTL](/docs/limits#maximum-run-ttl) for details.
-</Note>
+> [!NOTE]
+>
+> On [Trigger.dev Cloud](https://trigger.dev), there is a maximum TTL of 14 days. If you don't specify a TTL in staging or production, runs automatically get a 14-day TTL. If you specify a TTL longer than 14 days, it is clamped to 14 days. See [Limits — Maximum run TTL](/docs/limits#maximum-run-ttl) for details.
 
 ### `idempotencyKey`
 
@@ -864,10 +858,10 @@ await myTask.trigger({ updated: "data" }, { debounce: { key: "user-123", delay: 
 // Note: The first payload is used (first trigger wins)
 ```
 
-<Note>
-  Debounce keys are scoped to the task identifier, so different tasks can use the same key without
-  conflicts.
-</Note>
+> [!NOTE]
+>
+> Debounce keys are scoped to the task identifier, so different tasks can use the same key without
+> conflicts.
 
 The `debounce` option accepts:
 
@@ -883,14 +877,14 @@ The `debounce` option accepts:
 3. Once no new triggers occur within the delay duration, the run executes
 4. After the run starts executing, a new trigger with the same key will create a new run
 
-<Warning>
-  There is no time limit on step 2. While triggers keep arriving on the same key, the run keeps
-  being pushed back and never executes. A key triggered every 10 seconds with a `delay` of `"30s"`
-  runs 30 seconds after the triggers stop, however long that takes. Set `maxDelay` whenever the
-  work needs to happen eventually. This matters most with `triggerAndWait`: every parent waiting
-  on a debounced run stays blocked, and holds its concurrency, for as long as the run keeps being
-  pushed back.
-</Warning>
+> [!WARNING]
+>
+> There is no time limit on step 2. While triggers keep arriving on the same key, the run keeps
+> being pushed back and never executes. A key triggered every 10 seconds with a `delay` of `"30s"`
+> runs 30 seconds after the triggers stop, however long that takes. Set `maxDelay` whenever the
+> work needs to happen eventually. This matters most with `triggerAndWait`: every parent waiting
+> on a debounced run stays blocked, and holds its concurrency, for as long as the run keeps being
+> pushed back.
 
 **Limiting total delay with `maxDelay`:**
 
@@ -933,13 +927,13 @@ Without `maxDelay`, continuous triggers would prevent the run from ever executin
 
 Keep `delay` well below `maxDelay`. A run is only pushed back while its new execution time stays inside `maxDelay`, so the room you have to push is `maxDelay` minus `delay`. Setting them equal, or setting `delay` higher, leaves no room at all, and the trigger is rejected rather than accepted as a debounce that could never collapse anything.
 
-<Note>
-  The `maxDelay` value is evaluated from each trigger call, not stored with the original run. This
-  means if you pass different `maxDelay` values for the same debounce key, each trigger uses its own
-  `maxDelay` to check against the original run's creation time. A trigger that omits `maxDelay`
-  has no bound at all, so a single call without it can push the run past the limit the other calls
-  set. Use the same `maxDelay` value for every trigger with the same debounce key.
-</Note>
+> [!NOTE]
+>
+> The `maxDelay` value is evaluated from each trigger call, not stored with the original run. This
+> means if you pass different `maxDelay` values for the same debounce key, each trigger uses its own
+> `maxDelay` to check against the original run's creation time. A trigger that omits `maxDelay`
+> has no bound at all, so a single call without it can push the run past the limit the other calls
+> set. Use the same `maxDelay` value for every trigger with the same debounce key.
 
 **Leading vs Trailing mode:**
 
@@ -988,10 +982,10 @@ export const parentTask = task({
 });
 ```
 
-<Note>
-  Idempotency keys take precedence over debounce keys. If both are provided and an idempotency match
-  is found, it wins.
-</Note>
+> [!NOTE]
+>
+> Idempotency keys take precedence over debounce keys. If both are provided and an idempotency match
+> is found, it wins.
 
 ### `queue`
 
@@ -1135,7 +1129,9 @@ If you don't specify a machine it will use the machine preset for your task (or 
 
 ## Streaming batch triggering
 
-<Note>This feature is only available with SDK 4.3.1+</Note>
+> [!NOTE]
+>
+> This feature is only available with SDK 4.3.1+
 
 For large batches, you can pass an `AsyncIterable` or `ReadableStream` instead of an array. This allows you to generate items on-demand without loading them all into memory upfront.
 
@@ -1249,9 +1245,9 @@ export const parentTask = task({
 });
 ```
 
-<Note>
-  For rate limit values and how the token bucket algorithm works, see [Batch trigger rate limits](/docs/limits#batch-trigger-rate-limits).
-</Note>
+> [!NOTE]
+>
+> For rate limit values and how the token bucket algorithm works, see [Batch trigger rate limits](/docs/limits#batch-trigger-rate-limits).
 
 ## Large Payloads
 
@@ -1274,58 +1270,56 @@ if (run.payloadPresignedUrl) {
 }
 ```
 
-<Note>
-  We also use this same system for dealing with large task outputs, and subsequently will return a
-  corresponding `outputPresignedUrl`. Task outputs are limited to 100MB.
-</Note>
+> [!NOTE]
+>
+> We also use this same system for dealing with large task outputs, and subsequently will return a
+> corresponding `outputPresignedUrl`. Task outputs are limited to 100MB.
 
 If you need to pass larger payloads, you'll need to upload the payload to your own storage and pass a URL to the file in the payload instead. For example, uploading to S3 and then sending a presigned URL that expires in URL:
 
-<CodeGroup>
-  ```ts /yourServer.ts theme={"theme":"css-variables"}
-  import { myTask } from "./trigger/myTasks";
-  import { s3Client, getSignedUrl, PutObjectCommand, GetObjectCommand } from "./s3";
-  import { createReadStream } from "node:fs";
+```ts /yourServer.ts theme={"theme":"css-variables"}
+import { myTask } from "./trigger/myTasks";
+import { s3Client, getSignedUrl, PutObjectCommand, GetObjectCommand } from "./s3";
+import { createReadStream } from "node:fs";
 
-  // Upload file to S3
-  await s3Client.send(
-    new PutObjectCommand({
-      Bucket: "my-bucket",
-      Key: "myfile.json",
-      Body: createReadStream("large-payload.json"),
-    })
-  );
+// Upload file to S3
+await s3Client.send(
+  new PutObjectCommand({
+    Bucket: "my-bucket",
+    Key: "myfile.json",
+    Body: createReadStream("large-payload.json"),
+  })
+);
 
-  // Create presigned URL
-  const presignedUrl = await getSignedUrl(
-    s3Client,
-    new GetObjectCommand({
-      Bucket: "my-bucket",
-      Key: "my-file.json",
-    }),
-    {
-      expiresIn: 3600, // expires in 1 hour
-    }
-  );
+// Create presigned URL
+const presignedUrl = await getSignedUrl(
+  s3Client,
+  new GetObjectCommand({
+    Bucket: "my-bucket",
+    Key: "my-file.json",
+  }),
+  {
+    expiresIn: 3600, // expires in 1 hour
+  }
+);
 
-  // Now send the URL to the task
-  const handle = await myTask.trigger({
-    url: presignedUrl,
-  });
-  ```
+// Now send the URL to the task
+const handle = await myTask.trigger({
+  url: presignedUrl,
+});
+```
 
-  ```ts /trigger/myTasks.ts theme={"theme":"css-variables"}
-  import { task } from "@trigger.dev/sdk";
+```ts /trigger/myTasks.ts theme={"theme":"css-variables"}
+import { task } from "@trigger.dev/sdk";
 
-  export const myTask = task({
-    id: "my-task",
-    run: async (payload: { url: string }) => {
-      // Download the file from the URL
-      const response = await fetch(payload.url);
-      const data = await response.json();
+export const myTask = task({
+  id: "my-task",
+  run: async (payload: { url: string }) => {
+    // Download the file from the URL
+    const response = await fetch(payload.url);
+    const data = await response.json();
 
-      // Do something with the data
-    },
-  });
-  ```
-</CodeGroup>
+    // Do something with the data
+  },
+});
+```

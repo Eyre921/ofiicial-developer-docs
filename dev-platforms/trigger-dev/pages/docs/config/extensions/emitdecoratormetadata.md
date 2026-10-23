@@ -23,29 +23,27 @@ export default defineConfig({
 
 This is usually required if you are using certain ORMs, like TypeORM, that require this option to be enabled. It's not enabled by default because there is a performance cost to enabling it.
 
-<Note>
-  `emitDecoratorMetadata` hooks into the esbuild bundle process and uses the TypeScript compiler API
-  to compile files containing decorators. Enable `emitDecoratorMetadata` in your `tsconfig.json` and
-  install `typescript` in your `devDependencies`.
-</Note>
+> [!NOTE]
+>
+> `emitDecoratorMetadata` hooks into the esbuild bundle process and uses the TypeScript compiler API
+> to compile files containing decorators. Enable `emitDecoratorMetadata` in your `tsconfig.json` and
+> install `typescript` in your `devDependencies`.
 
 ## Using with TypeScript 7
 
 TypeScript 7 does not expose the JavaScript compiler API required by this extension. Install the TypeScript 6 compatibility package alongside TypeScript 7:
 
-<CodeGroup>
-  ```bash npm theme={"theme":"css-variables"}
-  npm install --save-dev @typescript/typescript6@latest
-  ```
+```bash npm theme={"theme":"css-variables"}
+npm install --save-dev @typescript/typescript6@latest
+```
 
-  ```bash pnpm theme={"theme":"css-variables"}
-  pnpm add --save-dev @typescript/typescript6@latest
-  ```
+```bash pnpm theme={"theme":"css-variables"}
+pnpm add --save-dev @typescript/typescript6@latest
+```
 
-  ```bash bun theme={"theme":"css-variables"}
-  bun add --dev @typescript/typescript6@latest
-  ```
-</CodeGroup>
+```bash bun theme={"theme":"css-variables"}
+bun add --dev @typescript/typescript6@latest
+```
 
 Your project continues using TypeScript 7 for its normal type checking and compiler commands. The extension loads the compatibility package only when it needs to emit decorator metadata.
 

@@ -8,9 +8,9 @@ End-to-end mechanics of a chat.agent turn: the two durable channels per session,
 
 This page explains how `chat.agent` is put together, what each piece does on a single turn, and how a chat survives across turns. It is not an API tour — for that, see [Backend](/docs/ai-chat/backend), [Frontend](/docs/ai-chat/frontend), and the [Reference](/docs/ai-chat/reference). For the byte-level wire format, see [Client Protocol](/docs/ai-chat/client-protocol).
 
-<Note>
-  **What you don't have to think about**: SSE reconnects, WebSocket backpressure, container cold starts, whether a worker is currently running, or how to re-deliver chunks the client missed during a reload. The platform handles those. **What you do have to think about**: idempotency in your `run()` function, and how much state you keep in memory between turns versus persist in your own database.
-</Note>
+> [!NOTE]
+>
+> **What you don't have to think about**: SSE reconnects, WebSocket backpressure, container cold starts, whether a worker is currently running, or how to re-deliver chunks the client missed during a reload. The platform handles those. **What you do have to think about**: idempotency in your `run()` function, and how much state you keep in memory between turns versus persist in your own database.
 
 ## The primary noun: the chat session
 
@@ -60,55 +60,53 @@ If the run has fully exited (because it hit `maxTurns`, the customer called `cha
 
 Here is a typical cold turn — user opens the page, types "What's the weather?", reads the response — traced through every component.
 
-<Steps>
-  <Step title="Browser: useChat calls transport.sendMessages">
-    The Vercel AI SDK's `useChat` hook serializes the user's message into the slim wire format: `{ chatId, trigger: "submit-message", message, metadata }`. Only the new message goes on the wire, not the full history.
-  </Step>
+**1. Browser: useChat calls transport.sendMessages**
 
-  <Step title="Browser: transport posts to /append">
-    The transport calls `POST /realtime/v1/sessions/:chatId/in/append`, authenticated with the session's public access token. The body is one S2 record.
-  </Step>
+The Vercel AI SDK's `useChat` hook serializes the user's message into the slim wire format: `{ chatId, trigger: "submit-message", message, metadata }`. Only the new message goes on the wire, not the full history.
 
-  <Step title="Server: route ensures a run exists">
-    The append route resolves the session, then calls `ensureRunForSession()`. The session's `currentRunId` is null (cold start), so it triggers a new `chat.agent` run on the project's dev/prod environment and atomically claims the slot via an optimistic version counter.
-  </Step>
+**2. Browser: transport posts to /append**
 
-  <Step title="Server: route appends the record to S2 .in">
-    The route writes the message to `s2://sessions/:chatId/in` as a single record. S2 assigns a sequence number. Any waitpoints registered on this channel fire, which would wake an existing run — but there is no run waiting yet, so this is a no-op for now.
-  </Step>
+The transport calls `POST /realtime/v1/sessions/:chatId/in/append`, authenticated with the session's public access token. The body is one S2 record.
 
-  <Step title="Browser: transport opens an SSE subscription to .out">
-    In parallel with the send, the transport opens `GET /realtime/v1/sessions/:chatId/out` (server-sent events). It passes its `lastEventId` if it has one cached; on a brand-new chat it does not. Any chunks the agent writes from now on will be delivered to this stream.
-  </Step>
+**3. Server: route ensures a run exists**
 
-  <Step title="Task: agent run boots">
-    The newly-triggered run starts. `onBoot` fires once per worker process. Because this is a fresh chat, no snapshot is read.
-  </Step>
+The append route resolves the session, then calls `ensureRunForSession()`. The session's `currentRunId` is null (cold start), so it triggers a new `chat.agent` run on the project's dev/prod environment and atomically claims the slot via an optimistic version counter.
 
-  <Step title="Task: enters the turn loop, reads the message from .in">
-    The agent reads the pending record off `.in` via a waitpoint. `onChatStart` fires (once per chat lifetime). `onTurnStart` fires (every turn).
-  </Step>
+**4. Server: route appends the record to S2 .in**
 
-  <Step title="Task: runs your run() function, streams chunks to .out">
-    Your code calls `streamText({ model, messages })`. Each `UIMessageChunk` it produces is appended to `s2://sessions/:chatId/out` as a record. The browser sees them arrive on the SSE stream and the AI SDK renders them.
-  </Step>
+The route writes the message to `s2://sessions/:chatId/in` as a single record. S2 assigns a sequence number. Any waitpoints registered on this channel fire, which would wake an existing run — but there is no run waiting yet, so this is a no-op for now.
 
-  <Step title="Task: writes the turn-complete control record">
-    When `streamText()` finishes, the agent writes a record with header `trigger:turn-complete` and an empty body. The browser transport sees this header and closes the per-turn readable stream.
-  </Step>
+**5. Browser: transport opens an SSE subscription to .out**
 
-  <Step title="Task: trims .out back to the previous turn-complete">
-    Immediately after writing the new turn-complete marker, the agent issues an S2 trim command targeting the *previous* turn-complete's sequence number. This bounds the stream's storage to roughly one turn of chunks plus the latest control record.
-  </Step>
+In parallel with the send, the transport opens `GET /realtime/v1/sessions/:chatId/out` (server-sent events). It passes its `lastEventId` if it has one cached; on a brand-new chat it does not. Any chunks the agent writes from now on will be delivered to this stream.
 
-  <Step title="Task: fires onTurnComplete, writes snapshot to S3">
-    `onTurnComplete` runs (your hook for persistence). Then the agent writes the transcript to S3 at `sessions/:chatId/snapshot.json`: a header line carrying the stream cursors and the runtime's own state, one line per message, and an index of the messages at the end so a page of history can be read without downloading the whole conversation. Once [compaction](/docs/ai-chat/compaction) has run, only the most recent messages are kept, so the file stops growing with the conversation. If you need the full history, keep your own [transcript storage](/docs/ai-chat/transcript-storage). This write is awaited, not fire-and-forget, so the next run is guaranteed to find it.
-  </Step>
+**6. Task: agent run boots**
 
-  <Step title="Task: goes idle, then suspends">
-    The agent re-enters the waitpoint on `.in`. After `idleTimeoutInSeconds` of nothing arriving, `onChatSuspend` fires and the engine snapshots the run. Compute is freed.
-  </Step>
-</Steps>
+The newly-triggered run starts. `onBoot` fires once per worker process. Because this is a fresh chat, no snapshot is read.
+
+**7. Task: enters the turn loop, reads the message from .in**
+
+The agent reads the pending record off `.in` via a waitpoint. `onChatStart` fires (once per chat lifetime). `onTurnStart` fires (every turn).
+
+**8. Task: runs your run() function, streams chunks to .out**
+
+Your code calls `streamText({ model, messages })`. Each `UIMessageChunk` it produces is appended to `s2://sessions/:chatId/out` as a record. The browser sees them arrive on the SSE stream and the AI SDK renders them.
+
+**9. Task: writes the turn-complete control record**
+
+When `streamText()` finishes, the agent writes a record with header `trigger:turn-complete` and an empty body. The browser transport sees this header and closes the per-turn readable stream.
+
+**10. Task: trims .out back to the previous turn-complete**
+
+Immediately after writing the new turn-complete marker, the agent issues an S2 trim command targeting the *previous* turn-complete's sequence number. This bounds the stream's storage to roughly one turn of chunks plus the latest control record.
+
+**11. Task: fires onTurnComplete, writes snapshot to S3**
+
+`onTurnComplete` runs (your hook for persistence). Then the agent writes the transcript to S3 at `sessions/:chatId/snapshot.json`: a header line carrying the stream cursors and the runtime's own state, one line per message, and an index of the messages at the end so a page of history can be read without downloading the whole conversation. Once [compaction](/docs/ai-chat/compaction) has run, only the most recent messages are kept, so the file stops growing with the conversation. If you need the full history, keep your own [transcript storage](/docs/ai-chat/transcript-storage). This write is awaited, not fire-and-forget, so the next run is guaranteed to find it.
+
+**12. Task: goes idle, then suspends**
+
+The agent re-enters the waitpoint on `.in`. After `idleTimeoutInSeconds` of nothing arriving, `onChatSuspend` fires and the engine snapshots the run. Compute is freed.
 
 ## Three layers of persistence
 

@@ -8,13 +8,13 @@ Read AI/LLM output, file chunks, and other streaming data from your Trigger.dev 
 
 **Read streaming data from your tasks in backend code.** Consume AI completions as they generate, process file chunks, or handle any continuous data your tasks produce.
 
-<Note>
-  To emit streams from your tasks, see [Streaming data from tasks](/docs/tasks/streams). For React components, see [Streaming in React](/docs/realtime/react-hooks/streams).
-</Note>
+> [!NOTE]
+>
+> To emit streams from your tasks, see [Streaming data from tasks](/docs/tasks/streams). For React components, see [Streaming in React](/docs/realtime/react-hooks/streams).
 
-<Tip>
-  Run-scoped streams are the right primitive for ephemeral I/O that lives inside a single run's lifetime. For durable, long-lived channels that outlive a run, see [`chat.agent`](/docs/ai-chat/overview): it's built on a Session row that owns the chat's runs and exposes bidirectional `.in` / `.out` channels addressed by a durable id.
-</Tip>
+> [!TIP]
+>
+> Run-scoped streams are the right primitive for ephemeral I/O that lives inside a single run's lifetime. For durable, long-lived channels that outlive a run, see [`chat.agent`](/docs/ai-chat/overview): it's built on a Session row that owns the chat's runs and exposes bidirectional `.in` / `.out` channels addressed by a durable id.
 
 ## Reading streams
 
@@ -430,6 +430,6 @@ async function subscribeToRunAndStreams(runId: string) {
 }
 ```
 
-<Note>
-  For most use cases, we recommend using `streams.read()` with defined streams for better type safety and clearer code. Use `runs.subscribeToRun().withStreams()` only when you need to track both run status and stream data simultaneously.
-</Note>
+> [!NOTE]
+>
+> For most use cases, we recommend using `streams.read()` with defined streams for better type safety and clearer code. Use `runs.subscribeToRun().withStreams()` only when you need to track both run status and stream data simultaneously.

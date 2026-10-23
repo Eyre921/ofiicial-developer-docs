@@ -8,14 +8,14 @@ How to report security issues in Trigger.dev, our response targets, and how self
 
 We take the security of Trigger.dev seriously, for both Cloud and self-hosted deployments. This page covers how to report a vulnerability, what to expect, and how to stay informed about security releases.
 
-<Note>
-  Unlike Trigger.dev Cloud, the self-hosted setup is optimized for single-tenant use, with code and
-  users you trust. It is not designed to run untrusted code or untrusted payloads.
-</Note>
+> [!NOTE]
+>
+> Unlike Trigger.dev Cloud, the self-hosted setup is optimized for single-tenant use, with code and
+> users you trust. It is not designed to run untrusted code or untrusted payloads.
 
-<Warning>
-  Do not report security vulnerabilities through public GitHub issues, pull requests, or Discord. Use one of the private channels below.
-</Warning>
+> [!WARNING]
+>
+> Do not report security vulnerabilities through public GitHub issues, pull requests, or Discord. Use one of the private channels below.
 
 ## What is in scope
 
@@ -31,20 +31,18 @@ The [security policy](https://github.com/triggerdotdev/trigger.dev/blob/main/SEC
 
 ## Reporting a vulnerability
 
-<Steps>
-  <Step title="Choose a private channel">
-    * **GitHub (preferred):** open a private report from the repository's **Security** tab using **"Report a vulnerability"** ([direct link](https://github.com/triggerdotdev/trigger.dev/security/advisories/new)).
-    * **Email:** `security@trigger.dev`
-  </Step>
+**1. Choose a private channel**
 
-  <Step title="Include the details">
-    A description and impact, steps to reproduce (a proof of concept helps), affected versions/components, and any suggested fix.
-  </Step>
+* **GitHub (preferred):** open a private report from the repository's **Security** tab using **"Report a vulnerability"** ([direct link](https://github.com/triggerdotdev/trigger.dev/security/advisories/new)).
+* **Email:** `security@trigger.dev`
 
-  <Step title="We track it privately">
-    Every report is tracked in a private GitHub Security Advisory. If you email us, we open the advisory on your behalf.
-  </Step>
-</Steps>
+**2. Include the details**
+
+A description and impact, steps to reproduce (a proof of concept helps), affected versions/components, and any suggested fix.
+
+**3. We track it privately**
+
+Every report is tracked in a private GitHub Security Advisory. If you email us, we open the advisory on your behalf.
 
 ## What to expect
 
@@ -62,9 +60,9 @@ We score issues with CVSS 3.1 and prioritise remediation by severity:
 | Medium (4.0–6.9) | 90 days |
 | Low (0.1–3.9) | As needed |
 
-<Note>
-  These are best-effort targets measured from when we validate and accept a report, not guarantees. We follow coordinated disclosure with a default 90-day window, and publish a GitHub Security Advisory (requesting a CVE where applicable) once a fix ships.
-</Note>
+> [!NOTE]
+>
+> These are best-effort targets measured from when we validate and accept a report, not guarantees. We follow coordinated disclosure with a default 90-day window, and publish a GitHub Security Advisory (requesting a CVE where applicable) once a fix ships.
 
 ## Supported versions
 

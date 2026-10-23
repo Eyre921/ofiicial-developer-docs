@@ -23,9 +23,9 @@ export default defineConfig({
 });
 ```
 
-<Note>
-  The minimum maxDuration is 5 seconds. If you want to avoid timeouts, set this value to a very large number of seconds.
-</Note>
+> [!NOTE]
+>
+> The minimum maxDuration is 5 seconds. If you want to avoid timeouts, set this value to a very large number of seconds.
 
 You can set the `maxDuration` for a run in the following ways:
 
@@ -59,7 +59,7 @@ export const maxDurationTask = task({
 
 The above value will be compared to the `maxDuration` you set. If the task exceeds the `maxDuration`, it will be stopped with the following error:
 
-<img alt="Max duration error" />
+![Max duration error](https://mintcdn.com/trigger/0bD0UfsjaINxS6Tw/runs/max-duration-error.png?fit=max\&auto=format\&n=0bD0UfsjaINxS6Tw\&q=85\&s=fb10afcfe6aae4eff9556065464a32c7)
 
 ## Configuring for a task
 

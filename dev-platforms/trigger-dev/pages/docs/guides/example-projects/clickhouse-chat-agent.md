@@ -31,10 +31,10 @@ This example is a fullstack [chat agent](/docs/ai-chat/overview) that answers na
 
 ## GitHub repo
 
-<Card title="View the ClickHouse chat agent repo" icon="GitHub" href="https://github.com/triggerdotdev/examples/tree/main/clickhouse-chat-agent">
-  Click here to view the full code for this project in our examples repository on GitHub. You can
-  fork it and use it as a starting point for your own project.
-</Card>
+> **[View the ClickHouse chat agent repo](https://github.com/triggerdotdev/examples/tree/main/clickhouse-chat-agent)**
+>
+> Click here to view the full code for this project in our examples repository on GitHub. You can
+> fork it and use it as a starting point for your own project.
 
 ## How it works
 
@@ -96,11 +96,11 @@ export const clickhouseAgent = chat.agent({
 });
 ```
 
-<Warning>
-  On AI SDK v5/v6, `experimental_telemetry` comes from the stored prompt via
-  `chat.toStreamTextOptions()` — without `chat.prompt.set()`, model calls don't appear as spans in
-  the run trace.
-</Warning>
+> [!WARNING]
+>
+> On AI SDK v5/v6, `experimental_telemetry` comes from the stored prompt via
+> `chat.toStreamTextOptions()` — without `chat.prompt.set()`, model calls don't appear as spans in
+> the run trace.
 
 ### Generative UI with one shared catalog
 
@@ -275,20 +275,18 @@ With a dataset like [NYC Taxi](https://clickhouse.com/docs/getting-started/examp
 
 ## Learn more
 
-<CardGroup>
-  <Card title="AI chat overview" icon="message-bot" href="/docs/ai-chat/overview">
-    How chat agents, sessions, and the turn loop work.
-  </Card>
+> **[AI chat overview](/docs/ai-chat/overview)**
+>
+> How chat agents, sessions, and the turn loop work.
 
-  <Card title="Frontend" icon="browser" href="/docs/ai-chat/frontend">
-    The chat transport, session tokens, and reconnection.
-  </Card>
+> **[Frontend](/docs/ai-chat/frontend)**
+>
+> The chat transport, session tokens, and reconnection.
 
-  <Card title="AI Prompts" icon="file-lines" href="/docs/ai/prompts">
-    Versioned prompts with dashboard overrides and generation tracking.
-  </Card>
+> **[AI Prompts](/docs/ai/prompts)**
+>
+> Versioned prompts with dashboard overrides and generation tracking.
 
-  <Card title="Tools" icon="wrench" href="/docs/ai-chat/tools">
-    Declaring tools on your agent and how they persist across turns.
-  </Card>
-</CardGroup>
+> **[Tools](/docs/ai-chat/tools)**
+>
+> Declaring tools on your agent and how they persist across turns.

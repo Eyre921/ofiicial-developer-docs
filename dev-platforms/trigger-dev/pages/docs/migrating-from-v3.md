@@ -6,16 +6,16 @@ path: docs/migrating-from-v3
 
 What's new in v4, how to migrate, and breaking changes.
 
-<Warning>
-  **Trigger.dev v3 has been retired**
-
-  Trigger.dev v3 is end of life. v4 is stable, fully supported, and recommended for all users.
-
-  * On Trigger.dev Cloud, v3 has been shut down: v3 triggers and deploys no longer run.
-  * If you self-host, 4.5.0 is the last version we officially support for running v3. Stay on 4.5.0 or upgrade to v4; 4.5.1 and later reject v3 triggers, batch triggers, and deploys with an upgrade message.
-
-  **What you need to do:** Migrate to v4. The migration takes about 2 minutes; follow the steps below. If you have questions or need help, [contact us](https://trigger.dev/contact) or reach out in our [Discord](https://trigger.dev/discord).
-</Warning>
+> [!WARNING]
+>
+> **Trigger.dev v3 has been retired**
+>
+> Trigger.dev v3 is end of life. v4 is stable, fully supported, and recommended for all users.
+>
+> * On Trigger.dev Cloud, v3 has been shut down: v3 triggers and deploys no longer run.
+> * If you self-host, 4.5.0 is the last version we officially support for running v3. Stay on 4.5.0 or upgrade to v4; 4.5.1 and later reject v3 triggers, batch triggers, and deploys with an upgrade message.
+>
+> **What you need to do:** Migrate to v4. The migration takes about 2 minutes; follow the steps below. If you have questions or need help, [contact us](https://trigger.dev/contact) or reach out in our [Discord](https://trigger.dev/discord).
 
 ## What's new in v4?
 
@@ -37,10 +37,10 @@ What's new in v4, how to migrate, and breaking changes.
 
 Trigger.dev runs your deployed tasks on one of these runtimes:
 
-* Node.js `node` — the default, tracks the current Node.js LTS (today `24.18.0`)
-* Node.js `node-22` — `22.16.0`
-* Node.js `node-24` — `24.18.0`
-* Node.js `node-26` — `26.4.0`
+* Node.js `node` — the default, tracks the current Node.js LTS (today `24.22.1`)
+* Node.js `node-22` — `22.23.4`
+* Node.js `node-24` — `24.22.1`
+* Node.js `node-26` — `26.12.1`
 * Bun `bun` — `1.3.3`
 
 If you don't set a `runtime`, or you set `runtime: "node"`, your tasks run on the current Node.js LTS. That version moves forward as new LTS releases land, so set an explicit version — for example `runtime: "node-24"` — if you need it to stay fixed.
@@ -69,260 +69,258 @@ We recommend the following steps to migrate to v4:
 
 Note that between steps 4 and 5, runs triggered with the v4 package will continue using v3, and only new runs triggered after step 5 is complete will use v4.
 
-<Warning>
-  Once v4 is activated in your environment, there will be a period of time where old runs will
-  continue to execute using v3, while new runs will use v4. Because these engines use completely
-  different underlying queues and concurrency models, it's possible you may have up to double the
-  amount of concurrently executing runs. Once the runs drain from the old run engine, the
-  concurrency will return to normal.
-</Warning>
+> [!WARNING]
+>
+> Once v4 is activated in your environment, there will be a period of time where old runs will
+> continue to execute using v3, while new runs will use v4. Because these engines use completely
+> different underlying queues and concurrency models, it's possible you may have up to double the
+> amount of concurrently executing runs. Once the runs drain from the old run engine, the
+> concurrency will return to normal.
 
-<Note>
-  When migrating from v3 to v4, our infrastructure IPs may change. If you use IP allowlisting (e.g. for databases or APIs), [update your allowlists](https://trigger.dev/changelog/static-ips) with the current static IPs before or immediately after switching to v4 to avoid connectivity issues or downtime.
-</Note>
+> [!NOTE]
+>
+> When migrating from v3 to v4, our infrastructure IPs may change. If you use IP allowlisting (e.g. for databases or APIs), [update your allowlists](https://trigger.dev/changelog/static-ips) with the current static IPs before or immediately after switching to v4 to avoid connectivity issues or downtime.
 
 ## Migrate using AI
 
 Use the prompt in the accordion below to help you migrate your v3 tasks to v4. The prompt gives good results when using Claude 4 Sonnet. You’ll need a relatively large token limit.
 
-<Accordion title="Copy paste this prompt in full" icon="sparkles">
-  ```md theme={"theme":"css-variables"}
-
-  I would like you to help me migrate my v3 task code to v4. Here are the important differences:
-
-  We've deprecated the `@trigger.dev/sdk/v3` import path and moved to a new path:
-
-  // This is the old path
-  import { task } from "@trigger.dev/sdk/v3";
-
-  // This is the new path, use this instead
-  import { task } from "@trigger.dev/sdk";
-
-  We've renamed the `handleError` hook to `catchError`. Use this instead of `handleError`.
-
-  `init` was previously used to initialize data used in the run function. This is the old version:
-
-  import { task } from "@trigger.dev/sdk";
-
-  const myTask = task({
-    init: async () => {
-      return {
-        myClient: new MyClient(),
-      };
-    },
-    run: async (payload: any, { ctx, init }) => {
-      const client = init.myClient;
-      await client.doSomething();
-    },
-  });
-
-  This is the new version using middleware and locals:
-
-  import { task, locals, tasks } from "@trigger.dev/sdk";
-
-  // Create a local for your client
-  const MyClientLocal = locals.create<MyClient>("myClient");
-
-  // Set up middleware to initialize the client
-  tasks.middleware("my-client", async ({ next }) => {
-    const client = new MyClient();
-    locals.set(MyClientLocal, client);
-    await next();
-  });
-
-  // Helper function to get the client
-  function getMyClient() {
-    return locals.getOrThrow(MyClientLocal);
-  }
-
-  const myTask = task({
-    run: async (payload: any, { ctx }) => {
-      const client = getMyClient();
-      await client.doSomething();
-    },
-  });
-
-  We’ve deprecated the `toolTask` function. Use `schemaTask` plus AI SDK `tool()` with `execute: ai.toolExecute(task)` (the `ai.tool()` wrapper is deprecated). This is the old version:
-
-  import { toolTask, schemaTask } from "@trigger.dev/sdk";
-  import { z } from "zod";
-  import { generateText } from "ai";
-
-  const myToolTask = toolTask({
-    id: "my-tool-task",
-    run: async (payload: any, { ctx }) => {},
-  });
-
-  export const myAiTask = schemaTask({
-    id: "my-ai-task",
-    schema: z.object({
-      text: z.string(),
-    }),
-    run: async (payload, { ctx }) => {
-      const { text } = await generateText({
-        prompt: payload.text,
-        model: openai("gpt-4o"),
-        tools: {
-          myToolTask,
-        },
-      });
-    },
-  });
-
-  This is the new version:
-
-  import { schemaTask } from "@trigger.dev/sdk";
-  import { ai } from "@trigger.dev/sdk/ai";
-  import { z } from "zod";
-  import { generateText, tool } from "ai";
-  import { openai } from "@ai-sdk/openai";
-
-  // Convert toolTask to schemaTask with a schema
-  const myToolTask = schemaTask({
-    id: "my-tool-task",
-    schema: z.object({
-      // Add appropriate schema for your tool's payload
-      input: z.string(),
-    }),
-    run: async (payload, { ctx }) => {},
-  });
-
-  const myTool = tool({
-    description: myToolTask.description ?? "",
-    inputSchema: myToolTask.schema!,
-    execute: ai.toolExecute(myToolTask),
-  });
-
-  export const myAiTask = schemaTask({
-    id: "my-ai-task",
-    schema: z.object({
-      text: z.string(),
-    }),
-    run: async (payload, { ctx }) => {
-      const { text } = await generateText({
-        prompt: payload.text,
-        model: openai("gpt-4o"),
-        tools: {
-          myTool,
-        },
-      });
-    },
-  });
-
-  We've made several breaking changes that require code updates:
-
-  **Queue changes**: Queues must now be defined ahead of time using the `queue` function. You can no longer create queues "on-demand" when triggering tasks. This is the old version:
-
-
-  // Old v3 way - creating queue on-demand
-  await myTask.trigger({ foo: "bar" }, { queue: { name: "my-queue", concurrencyLimit: 10 } });
-
-
-  This is the new version:
-
-
-  // New v4 way - define queue first
-  import { queue, task } from "@trigger.dev/sdk";
-
-  const myQueue = queue({
-    name: "my-queue",
-    concurrencyLimit: 10,
-  });
-
-  export const myTask = task({
-    id: "my-task",
-    queue: myQueue, // Set queue on task
-    run: async (payload: any, { ctx }) => {},
-  });
-
-  // Now trigger without queue options
-  await myTask.trigger({ foo: "bar" });
-
-  // Or specify queue by name
-  await myTask.trigger({ foo: "bar" }, { queue: "my-queue" });
-
-
-  **Lifecycle hooks**: Function signatures have changed to use a single object parameter instead of separate parameters. Prefer `onStartAttempt` over the deprecated `onStart` when you need code to run before each attempt. This is the old version:
-
-
-  // Old v3 way
-  export const myTask = task({
-    id: "my-task",
-    onStart: (payload, { ctx }) => {},
-    onSuccess: (payload, output, { ctx }) => {},
-    onFailure: (payload, error, { ctx }) => {},
-    catchError: (payload, { ctx, error, retry }) => {},
-    run: async (payload, { ctx }) => {},
-  });
-
-
-  This is the new version:
-
-
-  // New v4 way - single object parameter for hooks
-  export const myTask = task({
-    id: "my-task",
-    onStartAttempt: ({ payload, ctx }) => {},  // prefer over deprecated onStart
-    onSuccess: ({ payload, ctx, task, output }) => {},
-    onFailure: ({ payload, ctx, task, error }) => {},
-    catchError: ({ payload, ctx, task, error, retry, retryAt, retryDelayInMs }) => {},
-    run: async (payload, { ctx }) => {}, // run function unchanged
-  });
-
-
-  **BatchTrigger changes**: The `batchTrigger` function no longer returns runs directly. This is the old version:
-
-
-  // Old v3 way
-  const batchHandle = await tasks.batchTrigger([
-    [myTask, { foo: "bar" }],
-    [myOtherTask, { baz: "qux" }],
-  ]);
-
-  console.log(batchHandle.runs); // Direct access
-
-
-  This is the new version:
-
-
-  // New v4 way
-  const batchHandle = await tasks.batchTrigger([
-    [myTask, { foo: "bar" }],
-    [myOtherTask, { baz: "qux" }],
-  ]);
-
-  const batch = await batch.retrieve(batchHandle.batchId); // Use batch.retrieve()
-  console.log(batch.runs);
-
-
-  **triggerAndWait / batchTriggerAndWait**: In v4 these return a Result object, not the raw output. Use `if (result.ok) { ... result.output }` or call `.unwrap()` to get the output (throws if the run failed). Do not wrap `triggerAndWait` or `batchTriggerAndWait` in `Promise.all` — this is not supported.
-
-
-  **Context (ctx) changes**: `ctx.attempt.id` and `ctx.attempt.status` have been removed; use `ctx.attempt.number` where needed. `ctx.task.exportName` has been removed.
-
-
-  Can you help me convert the following code from v3 to v4? Please include the full converted code in the answer, do not truncate it anywhere.
-
-  ```
-</Accordion>
+> **Copy paste this prompt in full**
+>
+> ```md theme={"theme":"css-variables"}
+>
+> I would like you to help me migrate my v3 task code to v4. Here are the important differences:
+>
+> We've deprecated the `@trigger.dev/sdk/v3` import path and moved to a new path:
+>
+> // This is the old path
+> import { task } from "@trigger.dev/sdk/v3";
+>
+> // This is the new path, use this instead
+> import { task } from "@trigger.dev/sdk";
+>
+> We've renamed the `handleError` hook to `catchError`. Use this instead of `handleError`.
+>
+> `init` was previously used to initialize data used in the run function. This is the old version:
+>
+> import { task } from "@trigger.dev/sdk";
+>
+> const myTask = task({
+>   init: async () => {
+>     return {
+>       myClient: new MyClient(),
+>     };
+>   },
+>   run: async (payload: any, { ctx, init }) => {
+>     const client = init.myClient;
+>     await client.doSomething();
+>   },
+> });
+>
+> This is the new version using middleware and locals:
+>
+> import { task, locals, tasks } from "@trigger.dev/sdk";
+>
+> // Create a local for your client
+> const MyClientLocal = locals.create<MyClient>("myClient");
+>
+> // Set up middleware to initialize the client
+> tasks.middleware("my-client", async ({ next }) => {
+>   const client = new MyClient();
+>   locals.set(MyClientLocal, client);
+>   await next();
+> });
+>
+> // Helper function to get the client
+> function getMyClient() {
+>   return locals.getOrThrow(MyClientLocal);
+> }
+>
+> const myTask = task({
+>   run: async (payload: any, { ctx }) => {
+>     const client = getMyClient();
+>     await client.doSomething();
+>   },
+> });
+>
+> We’ve deprecated the `toolTask` function. Use `schemaTask` plus AI SDK `tool()` with `execute: ai.toolExecute(task)` (the `ai.tool()` wrapper is deprecated). This is the old version:
+>
+> import { toolTask, schemaTask } from "@trigger.dev/sdk";
+> import { z } from "zod";
+> import { generateText } from "ai";
+>
+> const myToolTask = toolTask({
+>   id: "my-tool-task",
+>   run: async (payload: any, { ctx }) => {},
+> });
+>
+> export const myAiTask = schemaTask({
+>   id: "my-ai-task",
+>   schema: z.object({
+>     text: z.string(),
+>   }),
+>   run: async (payload, { ctx }) => {
+>     const { text } = await generateText({
+>       prompt: payload.text,
+>       model: openai("gpt-4o"),
+>       tools: {
+>         myToolTask,
+>       },
+>     });
+>   },
+> });
+>
+> This is the new version:
+>
+> import { schemaTask } from "@trigger.dev/sdk";
+> import { ai } from "@trigger.dev/sdk/ai";
+> import { z } from "zod";
+> import { generateText, tool } from "ai";
+> import { openai } from "@ai-sdk/openai";
+>
+> // Convert toolTask to schemaTask with a schema
+> const myToolTask = schemaTask({
+>   id: "my-tool-task",
+>   schema: z.object({
+>     // Add appropriate schema for your tool's payload
+>     input: z.string(),
+>   }),
+>   run: async (payload, { ctx }) => {},
+> });
+>
+> const myTool = tool({
+>   description: myToolTask.description ?? "",
+>   inputSchema: myToolTask.schema!,
+>   execute: ai.toolExecute(myToolTask),
+> });
+>
+> export const myAiTask = schemaTask({
+>   id: "my-ai-task",
+>   schema: z.object({
+>     text: z.string(),
+>   }),
+>   run: async (payload, { ctx }) => {
+>     const { text } = await generateText({
+>       prompt: payload.text,
+>       model: openai("gpt-4o"),
+>       tools: {
+>         myTool,
+>       },
+>     });
+>   },
+> });
+>
+> We've made several breaking changes that require code updates:
+>
+> **Queue changes**: Queues must now be defined ahead of time using the `queue` function. You can no longer create queues "on-demand" when triggering tasks. This is the old version:
+>
+>
+> // Old v3 way - creating queue on-demand
+> await myTask.trigger({ foo: "bar" }, { queue: { name: "my-queue", concurrencyLimit: 10 } });
+>
+>
+> This is the new version:
+>
+>
+> // New v4 way - define queue first
+> import { queue, task } from "@trigger.dev/sdk";
+>
+> const myQueue = queue({
+>   name: "my-queue",
+>   concurrencyLimit: 10,
+> });
+>
+> export const myTask = task({
+>   id: "my-task",
+>   queue: myQueue, // Set queue on task
+>   run: async (payload: any, { ctx }) => {},
+> });
+>
+> // Now trigger without queue options
+> await myTask.trigger({ foo: "bar" });
+>
+> // Or specify queue by name
+> await myTask.trigger({ foo: "bar" }, { queue: "my-queue" });
+>
+>
+> **Lifecycle hooks**: Function signatures have changed to use a single object parameter instead of separate parameters. Prefer `onStartAttempt` over the deprecated `onStart` when you need code to run before each attempt. This is the old version:
+>
+>
+> // Old v3 way
+> export const myTask = task({
+>   id: "my-task",
+>   onStart: (payload, { ctx }) => {},
+>   onSuccess: (payload, output, { ctx }) => {},
+>   onFailure: (payload, error, { ctx }) => {},
+>   catchError: (payload, { ctx, error, retry }) => {},
+>   run: async (payload, { ctx }) => {},
+> });
+>
+>
+> This is the new version:
+>
+>
+> // New v4 way - single object parameter for hooks
+> export const myTask = task({
+>   id: "my-task",
+>   onStartAttempt: ({ payload, ctx }) => {},  // prefer over deprecated onStart
+>   onSuccess: ({ payload, ctx, task, output }) => {},
+>   onFailure: ({ payload, ctx, task, error }) => {},
+>   catchError: ({ payload, ctx, task, error, retry, retryAt, retryDelayInMs }) => {},
+>   run: async (payload, { ctx }) => {}, // run function unchanged
+> });
+>
+>
+> **BatchTrigger changes**: The `batchTrigger` function no longer returns runs directly. This is the old version:
+>
+>
+> // Old v3 way
+> const batchHandle = await tasks.batchTrigger([
+>   [myTask, { foo: "bar" }],
+>   [myOtherTask, { baz: "qux" }],
+> ]);
+>
+> console.log(batchHandle.runs); // Direct access
+>
+>
+> This is the new version:
+>
+>
+> // New v4 way
+> const batchHandle = await tasks.batchTrigger([
+>   [myTask, { foo: "bar" }],
+>   [myOtherTask, { baz: "qux" }],
+> ]);
+>
+> const batch = await batch.retrieve(batchHandle.batchId); // Use batch.retrieve()
+> console.log(batch.runs);
+>
+>
+> **triggerAndWait / batchTriggerAndWait**: In v4 these return a Result object, not the raw output. Use `if (result.ok) { ... result.output }` or call `.unwrap()` to get the output (throws if the run failed). Do not wrap `triggerAndWait` or `batchTriggerAndWait` in `Promise.all` — this is not supported.
+>
+>
+> **Context (ctx) changes**: `ctx.attempt.id` and `ctx.attempt.status` have been removed; use `ctx.attempt.number` where needed. `ctx.task.exportName` has been removed.
+>
+>
+> Can you help me convert the following code from v3 to v4? Please include the full converted code in the answer, do not truncate it anywhere.
+>
+> ```
 
 ## Installation
 
 To opt-in to using v4, you will need to update your dependencies to the latest version:
 
-<CodeGroup>
-  ```bash npx theme={"theme":"css-variables"}
-  npx trigger.dev@latest update
-  ```
+```bash npx theme={"theme":"css-variables"}
+npx trigger.dev@latest update
+```
 
-  ```bash yarn theme={"theme":"css-variables"}
-  yarn dlx trigger.dev@latest update
-  ```
+```bash yarn theme={"theme":"css-variables"}
+yarn dlx trigger.dev@latest update
+```
 
-  ```bash pnpm theme={"theme":"css-variables"}
-  pnpm dlx trigger.dev@latest update
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":"css-variables"}
+pnpm dlx trigger.dev@latest update
+```
 
 This command should update all of your `@trigger.dev/*` packages to a `4.x` version.
 

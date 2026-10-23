@@ -10,11 +10,11 @@ Pipe continuous data from your Trigger.dev tasks to frontend or backend clients 
 
 For subscribing to **run state changes** (status, metadata, tags) instead, see [Realtime](/docs/realtime/overview).
 
-<Note>
-  Streams require SDK version **4.1.0 or later** (`@trigger.dev/sdk` and `@trigger.dev/react-hooks`).
-  This doc describes the current streams behavior (v2 is the default). For pre-4.1.0 streams, see
-  [Pre-4.1.0 streams (legacy)](#pre-410-streams-legacy) below.
-</Note>
+> [!NOTE]
+>
+> Streams require SDK version **4.1.0 or later** (`@trigger.dev/sdk` and `@trigger.dev/react-hooks`).
+> This doc describes the current streams behavior (v2 is the default). For pre-4.1.0 streams, see
+> [Pre-4.1.0 streams (legacy)](#pre-410-streams-legacy) below.
 
 ## Overview
 
@@ -240,10 +240,10 @@ export function StreamViewer({ accessToken, runId }: { accessToken: string; runI
 
 ## Direct Stream Methods (Without Defining)
 
-<Warning>
-  We strongly recommend using `streams.define()` instead of direct methods. Defined streams provide
-  better organization, full type safety, and make it easier to maintain your codebase as it grows.
-</Warning>
+> [!WARNING]
+>
+> We strongly recommend using `streams.define()` instead of direct methods. Defined streams provide
+> better organization, full type safety, and make it easier to maintain your codebase as it grows.
 
 If you have a specific reason to avoid defined streams, you can use stream methods directly by specifying the stream key each time.
 
@@ -508,9 +508,9 @@ const { parts, error } = useRealtimeStream(streamDef, runId, {
 
 Input Streams let you send data **into** a running task from your backend or frontend. While output streams (above) send data out of tasks, input streams complete the loop — enabling bidirectional communication.
 
-<Note>
-  Input Streams require SDK version **4.4.2 or later** and use the same streams infrastructure (v2 is the default). If you're on an older SDK, calling `.on()` or `.once()` will throw with instructions to enable v2 streams. See [Pre-4.1.0 streams (legacy)](#pre-410-streams-legacy) for the older metadata-based API.
-</Note>
+> [!NOTE]
+>
+> Input Streams require SDK version **4.4.2 or later** and use the same streams infrastructure (v2 is the default). If you're on an older SDK, calling `.on()` or `.once()` will throw with instructions to enable v2 streams. See [Pre-4.1.0 streams (legacy)](#pre-410-streams-legacy) for the older metadata-based API.
 
 ### Input Streams overview
 

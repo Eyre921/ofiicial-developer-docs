@@ -1,5 +1,5 @@
 ---
-title: "Getting Started"
+title: "Workflow Agents Getting Started"
 source: https://upstash.com/docs/workflow/agents/getting-started
 path: docs/workflow/agents/getting-started
 ---

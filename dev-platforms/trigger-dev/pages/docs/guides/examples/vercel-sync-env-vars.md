@@ -6,35 +6,35 @@ path: docs/guides/examples/vercel-sync-env-vars
 
 This example demonstrates how to sync environment variables from your Vercel project to Trigger.dev.
 
-<Warning>
-  **Deprecated when using the Vercel integration.** If you are using the [Vercel
-  integration](/docs/vercel-integration), do not use `syncVercelEnvVars` — the integration handles env
-  var syncing natively and using both together can cause env vars to be incorrectly populated.
-
-  If you are **not** using the Vercel integration, `syncVercelEnvVars` is still supported. Continue
-  with the configuration below.
-</Warning>
+> [!WARNING]
+>
+> **Deprecated when using the Vercel integration.** If you are using the [Vercel
+> integration](/docs/vercel-integration), do not use `syncVercelEnvVars` — the integration handles env
+> var syncing natively and using both together can cause env vars to be incorrectly populated.
+>
+> If you are **not** using the Vercel integration, `syncVercelEnvVars` is still supported. Continue
+> with the configuration below.
 
 ## Build configuration
 
 If you are not using the [Vercel integration](/docs/vercel-integration), you can sync environment variables manually by adding the `syncVercelEnvVars` build extension to your `trigger.config.ts` file. This extension will run automatically every time you deploy your Trigger.dev project.
 
-<Note>
-  You need to set the `VERCEL_ACCESS_TOKEN` and `VERCEL_PROJECT_ID` environment variables, or pass
-  in the token and project ID as arguments to the `syncVercelEnvVars` build extension. If you're
-  working with a team project, you'll also need to set `VERCEL_TEAM_ID`, which can be found in your
-  team settings. You can find / generate the `VERCEL_ACCESS_TOKEN` in your Vercel
-  [dashboard](https://vercel.com/account/settings/tokens). Make sure the scope of the token covers
-  the project with the environment variables you want to sync.
-</Note>
+> [!NOTE]
+>
+> You need to set the `VERCEL_ACCESS_TOKEN` and `VERCEL_PROJECT_ID` environment variables, or pass
+> in the token and project ID as arguments to the `syncVercelEnvVars` build extension. If you're
+> working with a team project, you'll also need to set `VERCEL_TEAM_ID`, which can be found in your
+> team settings. You can find / generate the `VERCEL_ACCESS_TOKEN` in your Vercel
+> [dashboard](https://vercel.com/account/settings/tokens). Make sure the scope of the token covers
+> the project with the environment variables you want to sync.
 
-<Note>
-  When running the build from a Vercel build environment (e.g., during a Vercel deployment), the
-  environment variable values will be read from `process.env` instead of fetching them from the
-  Vercel API. This is determined by checking if the `VERCEL` environment variable is present. The
-  API is still used to determine which environment variables are configured for your project, but
-  the actual values come from the local environment.
-</Note>
+> [!NOTE]
+>
+> When running the build from a Vercel build environment (e.g., during a Vercel deployment), the
+> environment variable values will be read from `process.env` instead of fetching them from the
+> Vercel API. This is determined by checking if the `VERCEL` environment variable is present. The
+> API is still used to determine which environment variables are configured for your project, but
+> the actual values come from the local environment.
 
 ```ts trigger.config.ts theme={"theme":"css-variables"}
 import { defineConfig } from "@trigger.dev/sdk";
@@ -64,11 +64,11 @@ export default defineConfig({
 });
 ```
 
-<Note>
-  [Build extensions](/docs/config/extensions/overview) allow you to hook into the build system and
-  customize the build process or the resulting bundle and container image (in the case of
-  deploying). You can use pre-built extensions or create your own.
-</Note>
+> [!NOTE]
+>
+> [Build extensions](/docs/config/extensions/overview) allow you to hook into the build system and
+> customize the build process or the resulting bundle and container image (in the case of
+> deploying). You can use pre-built extensions or create your own.
 
 ## Running the sync operation
 
@@ -82,33 +82,29 @@ npx trigger.dev@latest deploy
 
 ### Walk-through guides from development to deployment
 
-<CardGroup>
-  <Card title="Next.js - setup guide" icon="N" href="/docs/guides/frameworks/nextjs">
-    Learn how to setup Trigger.dev with Next.js, using either the pages or app router.
-  </Card>
+> **[Next.js - setup guide](/docs/guides/frameworks/nextjs)**
+>
+> Learn how to setup Trigger.dev with Next.js, using either the pages or app router.
 
-  <Card title="Next.js - triggering tasks using webhooks" icon="N" href="/docs/guides/frameworks/nextjs-webhooks">
-    Learn how to create a webhook handler for incoming webhooks in a Next.js app, and trigger a task from it.
-  </Card>
-</CardGroup>
+> **[Next.js - triggering tasks using webhooks](/docs/guides/frameworks/nextjs-webhooks)**
+>
+> Learn how to create a webhook handler for incoming webhooks in a Next.js app, and trigger a task from it.
 
 ### Task examples
 
-<CardGroup>
-  <Card title="Fal.ai with Realtime in Next.js" href="/docs/guides/examples/fal-ai-realtime">
-    Generate an image from a prompt using Fal.ai and Trigger.dev Realtime.
-  </Card>
+> **[Fal.ai with Realtime in Next.js](/docs/guides/examples/fal-ai-realtime)**
+>
+> Generate an image from a prompt using Fal.ai and Trigger.dev Realtime.
 
-  <Card title="Generate a cartoon using Fal.ai in Next.js" href="/docs/guides/examples/fal-ai-image-to-cartoon">
-    Convert an image to a cartoon using Fal.ai.
-  </Card>
+> **[Generate a cartoon using Fal.ai in Next.js](/docs/guides/examples/fal-ai-image-to-cartoon)**
+>
+> Convert an image to a cartoon using Fal.ai.
 
-  <Card title="Vercel sync environment variables" icon="code" href="/docs/guides/examples/vercel-sync-env-vars">
-    Learn how to automatically sync environment variables from your Vercel projects to Trigger.dev.
-  </Card>
+> **[Vercel sync environment variables](/docs/guides/examples/vercel-sync-env-vars)**
+>
+> Learn how to automatically sync environment variables from your Vercel projects to Trigger.dev.
 
-  <Card title="Vercel AI SDK" icon="code" href="/docs/guides/examples/vercel-ai-sdk">
-    Learn how to use the Vercel AI SDK, which is a simple way to use AI models from different
-    providers, including OpenAI, Anthropic, Amazon Bedrock, Groq, Perplexity etc.
-  </Card>
-</CardGroup>
+> **[Vercel AI SDK](/docs/guides/examples/vercel-ai-sdk)**
+>
+> Learn how to use the Vercel AI SDK, which is a simple way to use AI models from different
+> providers, including OpenAI, Anthropic, Amazon Bedrock, Groq, Perplexity etc.

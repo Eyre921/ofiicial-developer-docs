@@ -10,9 +10,9 @@ Use `chat.history.extractNewToolResults(message)` to find incoming tool results 
 
 The helper applies to [human-in-the-loop](/docs/ai-chat/patterns/human-in-the-loop) answers sent with `addToolOutput`. It compares the incoming message with the current history; it doesn't track whether an external write succeeded.
 
-<Note>
-  The `hydrateMessages` examples below apply to existing integrations. That hook is deprecated. For new conversation persistence, use [transcript storage](/docs/ai-chat/transcript-storage).
-</Note>
+> [!NOTE]
+>
+> The `hydrateMessages` examples below apply to existing integrations. That hook is deprecated. For new conversation persistence, use [transcript storage](/docs/ai-chat/transcript-storage).
 
 ## The pattern
 

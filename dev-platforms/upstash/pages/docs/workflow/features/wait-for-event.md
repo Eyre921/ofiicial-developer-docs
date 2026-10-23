@@ -1,5 +1,5 @@
 ---
-title: "Overview"
+title: "Workflow Wait for Event Overview"
 source: https://upstash.com/docs/workflow/features/wait-for-event
 path: docs/workflow/features/wait-for-event
 ---

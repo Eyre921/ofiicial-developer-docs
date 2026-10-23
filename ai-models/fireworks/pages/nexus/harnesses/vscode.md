@@ -18,19 +18,19 @@ PreviewOpenAI Chat CompletionsNexus Auto
 curl -fsSL https://nexus.fireworks.ai/install.sh | bash
 ```
 
-Requires Node.js 18 or later, `git`, and `bash`. On Windows, run it from Git Bash; PowerShell breaks the script's line endings.
+You need Node.js 22 or later, `git`, and `bash`. On Windows, run the installer from Git Bash. PowerShell breaks the script's line endings.
 
 ```bash wrap theme={null}
 nexus login
 ```
 
-Sign in with your browser, or paste a Fireworks key.
+Sign in with your browser, or paste a Fireworks API key (`fw_...`).
 
 Already set up? Skip to step 2.
 
 **2. Quit VS Code**
 
-**Quit VS Code before connecting or running `off`.**
+**Quit VS Code before you connect or run `off`.** A running VS Code overwrites the change from memory. If it's open, Nexus CLI waits until you quit. `--force` writes anyway, which isn't recommended.
 
 **3. Connect VS Code**
 
@@ -41,9 +41,13 @@ nexus vscode status
 
 **4. Restart and pick a model**
 
-Restart VS Code, then pick a model under **Other Models → Fireworks** in Copilot Chat. `glm-latest` and `glm-fast-latest` are text-only; `glm-flash-latest` supports images.
+Restart VS Code, then pick a model under **Other Models → Fireworks** in Copilot Chat. The default is `auto`. To change the default, run `nexus vscode --model glm-latest`.
+
+`glm-latest` and `glm-fast-latest` are text-only; `glm-flash-latest` supports images.
 
 ![VS Code Chat model picker showing the Fireworks provider with Auto selected and DeepSeek, GLM, and Kimi models](https://mintcdn.com/fireworksai/qp-9FYlGs5qTS-0n/images/nexus/vscode-chat-model-picker.png?fit=max\&auto=format\&n=qp-9FYlGs5qTS-0n\&q=85\&s=6a7d65116a2dc1e0d534856c6c394a7c)
+
+VS Code Chat after Nexus CLI, with Auto selected under Fireworks
 
 > [!TIP]
 >
@@ -53,7 +57,8 @@ Restart VS Code, then pick a model under **Other Models → Fireworks** in Copil
 
 Nexus Auto (`auto`) is supported on the Chat Completions API.
 
-* **Anthropic and OpenAI model turns:** connect an Anthropic or OpenAI [Provider Key](/nexus/provider-keys). Nexus CLI doesn't send local keys on `auto`.
+* **Anthropic and OpenAI model turns:** save a key with `nexus auto --anthropic-api-key` or `--openai-api-key` (each prompts for the key), then run `nexus vscode` again. Nexus CLI adds the saved key to the `auto` model's `requestHeaders` only. Or connect a [Provider Key](/nexus/provider-keys), which needs nothing saved locally.
+* **Environment keys:** Nexus CLI never sends `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` from your environment.
 * **Manual setup:** send `x-anthropic-api-key` and `x-openai-api-key` headers yourself. See [Manual setup (advanced)](#manual-setup-advanced).
 
 ## MCP and tools
@@ -62,7 +67,13 @@ Nexus CLI doesn't touch MCP. Set up servers in VS Code as usual.
 
 Nexus CLI does not add web search to VS Code. See [Web Search](/nexus/web-search).
 
+## Microsoft Foundry
+
+Nexus CLI can connect VS Code to Fireworks models deployed in your Azure subscription. See [Nexus for Microsoft Foundry](/nexus/microsoft-foundry). Nexus Auto is not available on Foundry.
+
 ## Troubleshooting
+
+* **401 errors after you rotate your key:** quit VS Code, then run `nexus login`. It saves the new key into every connected harness that keeps its own copy, including VS Code.
 
 See [Nexus Auto](/nexus/auto#troubleshooting) for issues that affect every harness.
 
@@ -93,17 +104,22 @@ See [what changes without the Nexus CLI](/nexus/manual-setup#what-changes-withou
 >         "maxInputTokens": 1048575,
 >         "maxOutputTokens": 131072,
 >         "vision": true,
->         "toolCalling": true
+>         "toolCalling": true,
+>         "requestHeaders": { "x-anthropic-api-key": "sk-ant-..." }
 >       }
 >     ]
 >   }
 > ]
 > ```
 >
-> The key is stored separately in `state.vscdb`, encrypted with Electron `safeStorage`. On Linux, encryption needs `libsecret`; without it, VS Code only obfuscates the key and Nexus CLI warns you.
+> The `x-anthropic-api-key` and `x-openai-api-key` headers appear only on the `auto` row, and only for keys you saved with `nexus auto`. Nexus CLI also adds its own attribution headers to every row.
+>
+> The key is not in `chatLanguageModels.json`. It is stored in `state.vscdb` under a `chat.lm.secret.fw-*` ID, encrypted with Electron `safeStorage`. On Linux, encryption needs `libsecret`. Without it, VS Code only obfuscates the key and Nexus CLI warns you.
 >
 > | Platform | `chatLanguageModels.json` | `state.vscdb` |
 > | - | - | - |
 > | Linux | `~/.config/Code/User/` | `~/.config/Code/User/globalStorage/` |
 > | macOS | `~/Library/Application Support/Code/User/` | `~/Library/Application Support/Code/User/globalStorage/` |
 > | Windows | `%APPDATA%\Code\User\` | `%APPDATA%\Code\User\globalStorage\` |
+>
+> If only VS Code Insiders is installed, Nexus CLI uses its `Code - Insiders` folder instead. `off` restores `chatLanguageModels.json` byte-for-byte and deletes the secret. Providers you set up yourself are untouched. Use `--vscode-path` for a non-default `chatLanguageModels.json`. Nexus CLI then uses the `state.vscdb` next to it.

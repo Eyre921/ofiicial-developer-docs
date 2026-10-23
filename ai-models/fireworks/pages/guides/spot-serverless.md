@@ -23,6 +23,7 @@ Select Spot with its model identifier. `service_tier` does not select Spot.
 | GLM-5.3 | `accounts/fireworks/models/glm-5p3-spot` | `accounts/fireworks/models/glm-5p3` |
 | Kimi K3 | `accounts/fireworks/models/kimi-k3-spot` | `accounts/fireworks/models/kimi-k3` |
 | DeepSeek V4.1 Flash | `accounts/fireworks/models/deepseek-v4p1-flash-spot` | `accounts/fireworks/models/deepseek-v4p1-flash` |
+| DeepSeek V4.1 Flash 1017 | `accounts/fireworks/models/deepseek-v4p1-flash-1017-spot` | `accounts/fireworks/models/deepseek-v4p1-flash-1017` |
 
 ## Make a request
 
@@ -115,6 +116,8 @@ Prices are USD per 1 million tokens. Each Spot rate is 30% below the Standard ra
 | Kimi K3 | Spot | \$0.21 | \$2.10 | \$10.50 |
 | DeepSeek V4.1 Flash | Standard | \$0.006 | \$0.30 | \$1.20 |
 | DeepSeek V4.1 Flash | Spot | \$0.0042 | \$0.21 | \$0.84 |
+| DeepSeek V4.1 Flash 1017 | Standard | \$0.006 | \$0.30 | \$1.20 |
+| DeepSeek V4.1 Flash 1017 | Spot | \$0.0042 | \$0.21 | \$0.84 |
 
 ## Availability, retries, and fallback
 

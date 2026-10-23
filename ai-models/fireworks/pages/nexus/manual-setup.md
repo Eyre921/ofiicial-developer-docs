@@ -6,28 +6,28 @@ path: nexus/manual-setup
 
 Configure a coding harness for Fireworks by hand, without installing the Nexus CLI.
 
-The Nexus CLI writes your harness settings for you and can undo them with one command. Most people should use it. Manual setup is for when you can't or won't install a CLI, or when you need settings the Nexus CLI doesn't write.
+The Nexus CLI writes your harness settings for you and undoes them with one command. Most people should use it. Manual setup is for when you can't install a CLI, or when you need settings the Nexus CLI doesn't write.
 
 ## When to use manual setup
 
-* You can't install the Nexus CLI. It needs Node.js 18 or later, `git`, and `bash`, and runs an install script.
+* You can't install the Nexus CLI. It needs Node.js 22 or later, `git`, and `bash`, and runs an install script.
 * You manage harness configs yourself, through dotfiles or a team rollout.
-* You want Nexus Auto to use Anthropic or OpenAI models without [Provider Keys](/nexus/provider-keys). The Nexus CLI doesn't send `x-anthropic-api-key` or `x-openai-api-key` headers for any harness, so you add them yourself.
+* You want Nexus Auto to use Anthropic or OpenAI models without [Provider Keys](/nexus/provider-keys) or the Nexus CLI. You add the `x-anthropic-api-key` or `x-openai-api-key` header yourself. With the Nexus CLI, `nexus auto --anthropic-api-key` or `--openai-api-key` writes them for you.
 * You want to review every setting that changes.
 
 ## What changes without the Nexus CLI
 
-You point the harness at the same Fireworks endpoints, using your own API key. Some things the Nexus CLI normally handles become your job.
+You point the harness at the same Fireworks endpoints, with your own API key. Some things the Nexus CLI normally handles become your job.
 
 | | With the Nexus CLI | With manual setup |
 | - | - | - |
 | Fireworks models in the picker | Added for you | Set the model ID in your config |
 | Anthropic model turns in Claude Code | Paid by your Claude login | Need an Anthropic [Provider Key](/nexus/provider-keys) or an `x-anthropic-api-key` header |
-| MCP tool search | Turned on | Claude Code: add `ENABLE_TOOL_SEARCH`. Codex: needs the model catalog the Nexus CLI writes |
+| MCP tool search | Turned on | Claude Code: add `ENABLE_TOOL_SEARCH`. Codex: write a model catalog that sets `supports_search_tool` (see [What the Nexus CLI writes](/nexus/harnesses/codex#what-the-nexus-cli-writes)) |
 | Session cost status line (Claude Code) | Installed | Not available |
-| Claude Code telemetry and nonessential traffic | Turned off | Left as you have it |
+| Anthropic and OpenAI keys for Nexus Auto | Saved once with `nexus auto` and written into each harness that can send them | Add `x-anthropic-api-key` or `x-openai-api-key` headers to each config |
 | Undo | `nexus <harness> off` | Restore your own backup |
-| Upgrades | `nexus upgrade` refreshes connected harnesses | Update your configs yourself |
+| Updates | `nexus update` refreshes connected harnesses | Update your configs yourself |
 
 ## Before you start
 
@@ -47,7 +47,7 @@ You point the harness at the same Fireworks endpoints, using your own API key. S
    | OpenAI Chat Completions | `https://api.fireworks.ai/inference/v1` | `https://api.fireworks.ai/inference/v1/chat/completions` | OpenAI SDK, Fireworks SDK, most gateways and harnesses |
    | OpenAI Responses | `https://api.fireworks.ai/inference/v1` | `https://api.fireworks.ai/inference/v1/responses` | OpenAI SDK, Codex |
 
-   Anthropic-style clients add `/v1/messages` to the base URL themselves, so their base URL stops at `/inference`.
+   Anthropic-style clients add `/v1/messages` to the base URL themselves, so their base URL ends at `/inference`.
 
 Use any model ID from [Open Models](/nexus/open-models), such as `glm-latest`, or `auto` for [Nexus Auto](/nexus/auto).
 
@@ -70,8 +70,13 @@ Use any model ID from [Open Models](/nexus/open-models), such as `glm-latest`, o
 
 ## Use Nexus Auto with manual setup
 
-For Nexus Auto to use an Anthropic or OpenAI model, the harness has to send an `x-anthropic-api-key` or `x-openai-api-key` header, or your account needs [Provider Keys](/nexus/provider-keys). The [harness setup builder](/nexus/auto#nexus-cli) generates the config with the headers included. Cursor IDE and the Copilot App can't send extra headers, so they need Provider Keys.
+For Nexus Auto to use an Anthropic or OpenAI model, one of these must be true:
+
+* The harness sends an `x-anthropic-api-key` or `x-openai-api-key` header.
+* Your account has [Provider Keys](/nexus/provider-keys).
+
+The [harness setup builder](/nexus/auto#nexus-cli) generates a config with the headers included. Cursor IDE and the Copilot App can't send extra headers, so they need Provider Keys.
 
 ## Microsoft Foundry
 
-To configure a harness manually against Fireworks on Microsoft Foundry, see [Configure a harness manually](/nexus/microsoft-foundry#configure-a-harness-manually).
+To configure a harness by hand against Fireworks on Microsoft Foundry, see [Configure a harness manually](/nexus/microsoft-foundry#configure-a-harness-manually).

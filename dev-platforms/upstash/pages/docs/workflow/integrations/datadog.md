@@ -1,5 +1,5 @@
 ---
-title: "Datadog - Upstash QStash Integration"
+title: "Datadog - Upstash Workflow & QStash Integration"
 source: https://upstash.com/docs/workflow/integrations/datadog
 path: docs/workflow/integrations/datadog
 ---

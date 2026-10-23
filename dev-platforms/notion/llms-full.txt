@@ -1387,6 +1387,7 @@ Events are split into the following categories:
 * **“People cards” toggled for the organization**: That the people hover card setting was toggled for an organization.
 * **“People directory” toggled for the organization**: That the people directory setting was toggled for an organization.
 * **“Workspace support access consent” toggled for the organization**: That the workspace support access consent setting was toggled for an organization.
+* **“Workspace-managed Custom Block network access” toggled for the organization**: That workspace-managed Custom Block network access was toggled for an organization.
 * **A managed user was logged out by an admin**: That an admin has logged out a single managed user account in the organization.
 * **A managed user’s password was cleared by an admin**: That an admin has cleared a single managed user account's password in the organization.
 * **Ability for managed users to edit their profile information updated**: That the ability for managed users to edit their profile information was updated for an organization.
@@ -2584,6 +2585,8 @@ After Step 1, Notion begins processing the file import asynchronously. To wait f
 
 ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/0413bdbb8e6e8351c9d7fd9c4e855c79f258a643e4a3f51d4468e31810faba5b-image.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=b86cbafc1f843b1e6cbceffc02b5dfd3)
 
+Screenshot of webhook settings in the Notion creator profile connection settings page.
+
 The outcome of the file import is recorded on the [File Upload](/reference/file-upload) object. If the import fails, the status changes to `failed`. If it succeeds, the status changes to `uploaded`.
 
 For example, in response to a `file_upload.upload_failed` webhook, your system can read the `data.file_import_result.error` from the webhook response, or use the [Retrieve a file upload](/reference/retrieve-file-upload) API and check the `file_import_result.error` to debug the import failure:
@@ -2667,7 +2670,7 @@ Other blocks:
 - <page url="..." color="...">Title</page>; represents a subpage on the current page. Warning: an update_content, replace_content, or replace_content_range update that leaves out this tag deletes the subpage when allow_deleting_content is true. Otherwise the update fails with a validation_error. Omit url only when creating a new subpage.
 - <folder url="...">Title</folder>; represents an existing folder. Use the retrieve page markdown endpoint to read its immediate children, then follow nested folder URLs to continue traversing. Preserve the tag unless intentionally moving or deleting the folder; folders cannot be created from Markdown.
 - <database url="..." data-source-url="..." inline="true|false" icon="emoji" wiki="true|false" color="...">Title</database>; same url/title rules. Wiki databases set wiki="true"; their pages use parent type "page" with the wiki page URL, not "dataSource".
-- <synced-block url="...">...</synced-block> is an original synced block; omit url for new. <synced-block-reference url="..." notice="...">...</synced-block-reference> shows an original from elsewhere. Copy its url from an existing <synced-block> or <synced-block-reference>; a page url is never valid, so a whole page cannot be synced. If no such url is available, don't add a reference or a note; tell the user why in your reply. Editing its children edits the original everywhere it appears.
+- <synced-block url="...">...</synced-block> is an original synced block; omit url for new. <synced-block-reference url="..." notice="...">...</synced-block-reference> shows an original from elsewhere. Copy its url from an existing <synced-block> or <synced-block-reference>; a page url is never valid, so a whole page cannot be synced. If no such url is available, don't add a reference (even an empty one) or a note; tell the user why in your reply. To add a reference, leave it empty. Content inside a new reference replaces the original's content everywhere it appears. Only edit the children of a reference that's already on the page, and only to change the original.
 - <meeting-notes attendees="user://id,..." view-url="...">Title<meeting-notes-section-notes>Notes</meeting-notes-section-notes><meeting-notes-section-summary>Summary</meeting-notes-section-summary></meeting-notes>; content outside <meeting-notes-section-notes> is ignored; omit view-url and the summary section for new. An existing <meeting-notes> may also have an optional read-only <meeting-notes-section-transcript> child: a "Transcript omitted" body means the transcript was not loaded, so follow its instructions to load it; never edit its contents, and never add it to new meeting notes.
 - <custom-block definition-id="UUID" url="..." />; places an instance of a custom block definition deployed in this workspace. Use a self-closing tag on its own line; the instance inherits the definition's bindings. Omit url for a new instance; readback adds its instance URL. Preserve that URL when editing, reordering, or moving an existing instance.
 - Columns: <columns><column ratio="50">...</column><column ratio="50">...</column></columns>. ratio is an optional percentage of the column-list width.
@@ -3585,6 +3588,8 @@ Notion offers the ability for developers to add [comments](https://www.notion.co
 
 ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/bec3d37-Screen_Shot_2023-05-22_at_3.38.28_PM.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=81d81afaab9f6101c9949bc6fbb3233e)
 
+The Notion UI with a page and inline/block comment added.
+
 This guide will review how to use the public REST API to add and retrieve comments on a page. It will also look at considerations specific to [connections](https://www.notion.com/help/add-and-manage-connections-with-the-api) when retrieving or adding comments.
 
 ### Permissions
@@ -3616,6 +3621,8 @@ There are two relevant capabilities when it comes to comments — the ability to
 Edit your connection's capabilities in the [Developer portal](https://app.notion.com/developers/connections). If these capabilities are not added to your connection, REST API requests related to comments will respond with an error.
 
 ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/497c553-Configuring_capabilities_on_the_integration_settings_page.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=e7f94d1dc39268815b010a9373c00e26)
+
+Configuring capabilities on the connection settings page.
 
 See our reference guide on [Capabilities](/reference/capabilities) for more information.
 
@@ -3910,6 +3917,8 @@ There are two possible ways to get the `discussion_id` for a discussion thread.
 2. You can also get a `discussion_id` manually by navigating to the page with the discussion you’re responding to. Next, click the "Copy link to discussion" menu option next to the discussion.
 
 ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/8536d28-Screen_Shot_2023-05-22_at_7.27.12_PM.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=60a344208b6ad82c124bc7e40c34592d)
+
+"Copy link to discussion" menu option in Notion UI.
 
 This will give you a URL like:
 
@@ -5126,6 +5135,8 @@ In this guide, you'll learn about how the building blocks of page content are re
 In general, **page properties** are best for capturing structured information such as a due date, a category, or a relationship to another page. **Page content** is best for looser structures or free form content. Page content is where users compose their thoughts or tell a story. Page properties are where users capture data and build systems. Your connection should aim to use each in the way users expect.
 
 ![](https://mintcdn.com/notion-demo/LHm9qfrJYJOPRxs6/images/docs/369b6a5-page-properties-and-content.png?fit=max\&auto=format\&n=LHm9qfrJYJOPRxs6\&q=85\&s=0887fcbaa5537be57e38124ee0fa409c)
+
+Visualizing page properties versus page content
 
 ## Modeling content as blocks
 
@@ -7259,11 +7270,15 @@ The internal connection will be associated with the workspace of your choice. Yo
 
 ![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/docs/fd25d1f-integrations_7.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=6fcebc5334c9c3499b58208b91b798ae)
 
+Create a new connection from the Developer portal.
+
 Once the connection is created, you can update its settings as needed under the `Configuration` tab and retrieve the API token in this tab.
 
 The API token will be used to authenticate REST API requests. The connection sends the same token in every API request.
 
 ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/69c7487-integrations_8.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=34d293a88ef5911ff43aefe4dde91e2d)
+
+Find the API token in the Configuration tab.
 
 ### Connection permissions
 
@@ -7381,6 +7396,8 @@ After creating a public connection in the [Developer portal](https://app.notion.
 
 ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/c535461-integrations_10.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=ef1174a58a78b04444bea74627ede083)
 
+The Authorization URL field populates after a public connection is submitted for review
+
 As an example, your `.env` file using these secrets could look like this:
 
 ```shell Shell theme={null}
@@ -7417,6 +7434,8 @@ In the standard connection permissions flow, a prompt describes the connection [
 
 ![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/docs/ec39f97-Screen_Shot_2021-07-22_at_2.58.28_PM.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=3a82bcb02f006753164c1334e664b500)
 
+Prompt for authorizing a standard connection (no template option)
+
 If the user presses **Cancel**, they will be redirected to the redirect URI with and `error` query param added.
 
 ```
@@ -7432,6 +7451,8 @@ If the user opts to `Select pages`, then a page picker interface opens. A user c
 > The page picker only displays pages or databases to which a user has [full access](https://www.notion.com/help/sharing-and-permissions), because a user needs full access to a resource in order to be able to share it with a connection.
 
 ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/a4009ce-Screen_Shot_2021-07-22_at_3.09.51_PM.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=94186f31f22938dc1c7d850e227e061a)
+
+Page picker interface
 
 Users can select which pages to give the connection access to, including both private and public pages available to them. Parent pages can be selected to quickly provide access to child pages, as giving access to a parent page will provide access to all available child pages. Users can return to this view at a later time to update access settings if circumstances change.
 
@@ -7451,15 +7472,21 @@ To add a template to your workspace, complete the following steps:
 
 ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/b4ae671-integrations11.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=d83bd80077b7fb6bdab6c38cbadb6579)
 
+Notion URL for optional template input in connection settings.
+
 Once this URL is added, your auth flow prompt appearance will be updated.
 
 Going back to your prompt view, if the connection offers a Notion template option, the first step in the permissions flow will describe the connection [capabilities](/reference/capabilities). This is presented to the user as what the connection would be able to do in the workspace, and it prompts the user to click `Next`.
 
 ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/77076c7-template_prompt1.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=bce36d9f1a69a618dc886d1baf46d50f)
 
+Prompt for a connection with a Notion template option
+
 In the next step, a user can either choose to duplicate the template that you provided or to select existing pages to share with the connection.
 
 ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/9788bdb-template_prompt_2.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=d5ff31ef9083f78b60e615758b6f580e)
+
+A user can select to duplicate a template or to share existing pages with the connection
 
 If the user chooses to duplicate the template, then the following happens automatically:
 
@@ -7781,6 +7808,8 @@ For a PAT, you can also revoke the token from [Personal access tokens](https://w
 
 ![The Refresh button for an internal connection in the Developer portal.](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/92575d6725618577cb984d3f6f44c969009f0343b38ad3152b0a73966eef4d30-rotating-api-key.gif?s=ec5229713f03a96eb399fbd937f66337)
 
+Select Refresh to replace the token for an internal connection.
+
 ### 2. Update applications
 
 Replace the old token in every application and environment that used it. Test the new token, and remove the old value from configuration files and documentation.
@@ -8059,6 +8088,8 @@ A Notion [connection](https://www.notion.com/help/add-and-manage-connections-wit
 Connections are added to Notion workspaces and require **explicit permission** from users to access Notion pages and databases.
 
 ![](https://mintcdn.com/notion-demo/LHm9qfrJYJOPRxs6/images/docs/0f06356-notion_overview.jpg?fit=max\&auto=format\&n=LHm9qfrJYJOPRxs6\&q=85\&s=ab31886c0c84514c8db8a2801d4fffe4)
+
+Create Notion connections that unlock new possibilities for teams.
 
 Notion already has a [library](https://www.notion.com/integrations/all) of connections you can browse. For developers who want to build their own, Notion supports internal connections, public connections, and personal access tokens — all powered by the same REST API.
 
@@ -9022,6 +9053,8 @@ Commonly asked questions about migrating to 2025-09-03.
 >
 > ![](https://mintcdn.com/notion-demo/kjidwljTiCgFD8sF/images/docs/acf8104f9bb0b15e37e8f03cef3699eb19cf43c608fa4769ea04fc00468bb069-image.png?fit=max\&auto=format\&n=kjidwljTiCgFD8sF\&q=85\&s=8d4f9e6731559c09bf0f0aadec57d404)
 >
+> Diagram of the new Notion API data model. A database is a parent of one or more data sources, each of which parents zero or more pages. Previously, databases could only have one data source, so the concepts were combined in the API until 2025
+>
 > To learn more about data sources in the Notion app and related features, visit our [help center page](https://www.notion.com/help/data-sources-and-linked-databases).
 
 > **Is a datasource a new concept?**
@@ -9049,6 +9082,8 @@ Commonly asked questions about migrating to 2025-09-03.
 > Here's a diagram of a scenario where a workspace has a top-level page that has a database with two data sources:
 >
 > ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/16252219aa29c1b45f8db4a8a0ecffb7455954075ce15ffd1407388de62a3d1f-image.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=84dc88593a360a864b658849c8a4cd6c)
+>
+> Diagram showing a page in a workspace with a database child. The database has two data sources, each of which have two rows (child pages).
 >
 > Going from top to bottom, here's a simplified run-through of how the API objects connect to one another:
 >
@@ -9080,6 +9115,8 @@ Commonly asked questions about migrating to 2025-09-03.
 > However, for completeness, here's a diagram of how parent/child relationships work in an example wiki scenario:
 >
 > ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/41afb783e9b0060cf2bba81da964c08359100231e43f54fa3a38e98d69c4ce4f-image.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=be6ff0852c38631907b4dff7a5ffb02c)
+>
+> Diagram showing single-source databases nested under one another as part of a wiki structure.
 
 > **Which APIs are & aren't affected?**
 >
@@ -9793,6 +9830,8 @@ When creating, editing, or viewing an [connection webhook subscription](/referen
 
 ![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/docs/dea8af87f7abbb9f51a0cce55aa59a6087fb3641376471a2168d4636c84f8a9e-image.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=888f2764b88466f438b9439807d7e0ad)
 
+Screenshot of the connection webhook "Edit subscription" form, with the new "API version" dropdown menu.
+
 For new webhook endpoints, we recommend starting with the most recent version. For existing webhook subscriptions, you'll need to carefully introduce support for the added and changed webhook types. Ensure your webhook handler can accept *both* old & new event payloads before using the "**Edit subscription**" form to upgrade to the `2025-09-03` API version.
 
 After you've tested your webhook endpoint to ensure the new events are being handled correctly for some period of time (for example, a few hours), you can clean up your system to only expect events with the updated shape. Read on below for specific details on what's changed in `2025-09-03`.
@@ -10166,6 +10205,8 @@ A Link Preview is a real-time excerpt of authenticated content that unfurls in N
 
 <video />
 
+An example Link Preview for a GitHub workflow
+
 Notion supports Link Previews for selected partner services. For example:
 
 * **Trello** links can unfurl information about a linked task.
@@ -10178,6 +10219,8 @@ Notion supports Link Previews for selected partner services. For example:
 A user shares a Link Preview enabled URL. Notion detects supported URLs based on the Link Preview connection settings for that service. If it’s the first time that a user has shared a supported URL, then Notion kicks off an auth flow to authenticate with the source service. After the user authenticates, Notion and the source service exchange tokens that allow Notion to show a Link Preview in the user’s workspace.
 
 ![](https://mintcdn.com/notion-demo/LHm9qfrJYJOPRxs6/images/docs/e121163-lp_overview.png?fit=max\&auto=format\&n=LHm9qfrJYJOPRxs6\&q=85\&s=ca57bf5daad1fda57bb7f369a94f7109)
+
+A diagram of the Link Preview flow
 
 The source service also detects any changes to the data embedded in the Link Preview and alerts Notion when the Link Preview needs to be updated.
 
@@ -13179,6 +13222,8 @@ Notion MCP is a remote MCP server hosted by Notion. After you authorize a connec
 
 ![Diagram showing an MCP client connecting to Notion's remote MCP server, which uses the Notion API.](https://mintcdn.com/notion-demo/LHm9qfrJYJOPRxs6/images/docs/97125b4c4172e71d0a2293523ebf17424f7fec9fab5852d4b6c0eba2eaa0200d-image.png?fit=max\&auto=format\&n=LHm9qfrJYJOPRxs6\&q=85\&s=d562ef536d8a47c8d67111577be2521b)
 
+An MCP client connects to Notion's remote MCP server, which uses the [Notion API](/reference/intro).
+
 ## What you can do
 
 MCP clients can combine Notion MCP tools to:
@@ -13892,6 +13937,8 @@ Keep an eye on this changelog for when the update becomes available in the Publi
 
 ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/c599280-unique_id.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=92437cad7aa45d267c0f0a3d82874be2)
 
+The unique ID in a Notion page's properties
+
 * Workspace Owners can now see *all* internal integrations created in a workspace via the [integration dashboard](https://app.notion.com/developers/connections). This includes integrations created by themselves and other Workspace Owners. We’ve included this information in our [Getting Started](/guides/get-started/overview#connection-types) guide.
 * A [Notion SDK for JavaScript](https://github.com/makenotion/notion-sdk-js) code sample was added to the [Create a database](/reference/create-a-database) endpoint documentation.
 
@@ -14022,6 +14069,8 @@ We don’t have any updates to share right now. Stay tuned for the next changelo
 * Added a token `Refresh` button to the settings page for internal integrations. Click `Refresh` to generate a new token for your internal integration.
 
 ![](https://mintcdn.com/notion-demo/SXcROsTox2NhPn9o/images/docs/b1d6c0c-2023-01-13_10.58.16.gif?s=2a2a1e3671c7b1fec00590b7aba51afd)
+
+You can now refresh an internal integration token from the integration settings page.
 
 **January 3 - 17, 2023**
 
@@ -17316,7 +17365,11 @@ Other OAuth behavior has not changed: only admins can go through OAuth, and only
 
 ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/15c452e-oauth_improvements.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=3279ba235d3640e80fe9a0bac2b9b8ff)
 
+The search bar now lets you search for and select nested pages to share with an integration.
+
 ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/63ac8e6-oauth2.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=73927dbfab4f1b327dd80d5235c4b34f)
+
+Once selected, any nested pages appear in the "Manually Added" section.
 
 **July 21, 2021**
 
@@ -21422,6 +21475,8 @@ To set your connection's capabilities see the [Authorization](/guides/get-starte
 
 ![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/06dcfeb-Screen_Shot_2022-07-15_at_11.48.40_AM.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=39659d0a5b57cb5c43367283263c0565)
 
+A screenshot of the capability configuration screen.
+
 > [!NOTE]
 >
 > **If a connection is added to a page, then the connection can access the page’s children**
@@ -22050,6 +22105,8 @@ Learn more about Notion's data source object.
 
 ![](https://mintcdn.com/notion-demo/Muj7K3D7I6gj-QAA/images/reference/6dc5c7eccb432e908290e2642c84579936d55ee79c6cd60a5b0807e70cdeb55a-image.png?fit=max\&auto=format\&n=Muj7K3D7I6gj-QAA\&q=85\&s=732ada865d8d25def0ba61090c6e9f2e)
 
+Diagram of the new Notion API data model. A database is a parent of one or more data sources, each of which parents zero or more pages. Previously, databases could only have one data source, so the concepts were combined in the API until 2025.
+
 As of API version `2025-09-03`, there's a suite of APIs for managing data sources:
 
 * [Create a data source](/reference/create-a-data-source): add an additional data source for an existing [Database](/reference/database)
@@ -22106,6 +22163,8 @@ Individual data sources don't have permissions settings, so the set of Notion us
 > In September 2025, the [Data source](/reference/data-source) object was introduced, and includes the `properties` that used to exist here at the database level.
 >
 > ![](https://mintcdn.com/notion-demo/Muj7K3D7I6gj-QAA/images/reference/6dc5c7eccb432e908290e2642c84579936d55ee79c6cd60a5b0807e70cdeb55a-image.png?fit=max\&auto=format\&n=Muj7K3D7I6gj-QAA\&q=85\&s=732ada865d8d25def0ba61090c6e9f2e)
+>
+> Diagram of the new Notion API data model. A database is a parent of one or more data sources, each of which parents zero or more pages. Previously, databases could only have one data source, so the concepts were combined in the API until 2025.
 >
 > After [upgrading your API](/guides/get-started/upgrade-guide-2025-09-03) connection to `2025-09-03`, the new database object shape is displayed, including an array of child `data_sources` but **not** the data source `properties`.
 
@@ -23268,6 +23327,8 @@ Use a timestamp filter condition to filter results based on the `unique_id` valu
 You can use a compound filter condition to limit the results of a data source query based on multiple conditions. This mimics filter chaining in the Notion UI.
 
 ![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/14ec7e8-Untitled.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=f7a7a738dcd526d2c1180c7f479fda31)
+
+An example filter chain in the Notion UI
 
 The above filters in the Notion UI are equivalent to the following compound filter condition via the API:
 
@@ -26183,6 +26244,8 @@ Filters operate on database properties and can be combined. If no filter is prov
 
 ![1340](https://mintcdn.com/notion-demo/S-I3qLQnwRa7HjdK/images/reference/image-1.png?fit=max\&auto=format\&n=S-I3qLQnwRa7HjdK\&q=85\&s=00a19b68b92cd013cdc0f8867427eb44)
 
+The above filters in the UI can be represented as the following filter object
+
 ```json Filter Object theme={null}
 {
   "and": [
@@ -26833,6 +26896,8 @@ Use a timestamp filter condition to filter results based on the `unique_id` valu
 You can use a compound filter condition to limit the results of a database query based on multiple conditions. This mimics filter chaining in the Notion UI.
 
 ![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/14ec7e8-Untitled.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=f7a7a738dcd526d2c1180c7f479fda31)
+
+An example filter chain in the Notion UI
 
 The above filters in the Notion UI are equivalent to the following compound filter condition via the API:
 
@@ -29060,6 +29125,8 @@ Filters operate on data source properties and can be combined. If no filter is p
 
 ![](https://mintcdn.com/notion-demo/S-I3qLQnwRa7HjdK/images/reference/image-6.png?fit=max\&auto=format\&n=S-I3qLQnwRa7HjdK\&q=85\&s=27e3bc94089d8d763ae7de032ded2fa3)
 
+The above filters in the UI can be represented as the following filter object
+
 ```json Filter object expandable theme={null}
 {
   "and": [
@@ -29714,11 +29781,15 @@ First, find the containing database's ID in its Notion URL. The database ID is t
 
 ![](https://mintcdn.com/notion-demo/S-I3qLQnwRa7HjdK/images/reference/image-3.png?fit=max\&auto=format\&n=S-I3qLQnwRa7HjdK\&q=85\&s=051ded818c1263e52bb87f66a3d05ce5)
 
+Notion database ID
+
 Use [Retrieve a database](/reference/retrieve-database) with that database ID. Its `data_sources` array lists each data source's ID and name. Use the desired data source ID with this endpoint to retrieve its `properties`.
 
 To get a data source ID from the Notion app directly, the settings menu for a database includes a "Copy data source ID" button under "Manage data sources":
 
 ![](https://mintcdn.com/notion-demo/S-I3qLQnwRa7HjdK/images/reference/image-4.png?fit=max\&auto=format\&n=S-I3qLQnwRa7HjdK\&q=85\&s=292ed34c84b1b7161b282444678c3bc6)
+
+Screenshot of the 'Manage data sources' menu for a database in Notion, with 'Copy data source ID' button.
 
 Refer to the [Working with databases](/guides/data-apis/working-with-databases) guide for more details.
 
@@ -29769,6 +29840,8 @@ To fetch database rows rather than columns, use the [Query a database](/referenc
 To find a database ID, navigate to the database URL in your Notion workspace. The ID is the 32-character alphanumeric string between the slash following the workspace name (if applicable) and the question mark.
 
 ![1340](https://mintcdn.com/notion-demo/S-I3qLQnwRa7HjdK/images/reference/image-1.png?fit=max\&auto=format\&n=S-I3qLQnwRa7HjdK\&q=85\&s=00a19b68b92cd013cdc0f8867427eb44)
+
+Notion database ID
 
 Refer to the [Working with databases](/guides/data-apis/working-with-databases) guide for more details.
 
@@ -30046,6 +30119,8 @@ The most important fields in the database object response to highlight:
 To find a database ID, navigate to the database URL in your Notion workspace. The ID is the 32-character alphanumeric string between the slash following the workspace name (if applicable) and the question mark.
 
 ![Notion database ID](https://mintcdn.com/notion-demo/S-I3qLQnwRa7HjdK/images/reference/image-2.png?fit=max\&auto=format\&n=S-I3qLQnwRa7HjdK\&q=85\&s=3b244159a0dd487845b013fdfab22954)
+
+Notion database ID
 
 Refer to the [Working with databases](/guides/data-apis/working-with-databases) guide for more details.
 
@@ -30824,9 +30899,13 @@ Let's first look at an example of a full-format Link Preview:
 
 ![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/a034247-link_preview.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=ce1abef0ec570f35bd482fdd8c6dc552)
 
+Example Link Preview in a Notion workspace
+
 Here is the same link again but now as a Mention — a miniature version of a Link Preview that uses the same data.
 
 ![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/f588a6f-mention.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=8fb360ddae135021a789f072cc2ba88d)
+
+Example Mention in a Notion workspace
 
 A Link Preview or Mention displays data that is sent to Notion as an array of unfurl attribute objects. There are a number of optional attributes. However, **every array must contain a `title` attribute and a `dev` attribute.**
 
@@ -30948,6 +31027,8 @@ Each unfurl attribute object in this array maps to a different customizable sect
 
 ![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/3d6f5ec-Untitled_1.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=4c9dc387fecc9d2d606377e68d06d9b3)
 
+Anatomy of a Link Preview in Notion
+
 First, let's let at the properties in each individual unfurl attribute object.
 
 ## The unfurl attribute object
@@ -31012,6 +31093,8 @@ The `embed` sub-type object adds rich content like JPGs, GIFs, or iFrames to a L
 
 ![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/d482801-embed.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=23c25fb4d7c3eb461655767f2dffb63a)
 
+An example Link Preview that embeds an image of Kermit the Frog
+
 All embed sub-type objects contain: a `src_url` field that is a link to the embed, and an object whose key is the sub-type of the embed and whose value is an object indicating the `section` of the Link Preview where the value is rendered.
 
 | Sub-type | Description | Example value |
@@ -31031,7 +31114,11 @@ The `section` value of an unfurl attribute object defines where an attribute is 
 
 ![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/121dcba-sections_lp.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=3aeb3186980cfe813930568826de3adf)
 
+The sections of a Link Preview
+
 ![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/1de6886-sections_mention.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=103ce514aa4462c145d50c0ac95653d7)
+
+The sections of a Mention
 
 A `section` is specified in the sub-type object for the attribute. Refer to the table below for details about each `section` and its valid parent sub-types.
 

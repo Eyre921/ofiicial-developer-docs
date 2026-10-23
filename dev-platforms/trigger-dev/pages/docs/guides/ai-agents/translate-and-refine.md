@@ -10,7 +10,7 @@ This guide will show you how to create a task that translates text and refines i
 
 This example is based on the **evaluator-optimizer** pattern, where one LLM generates a response while another provides evaluation and feedback in a loop. This is particularly effective for tasks with clear evaluation criteria where iterative refinement provides better results.
 
-<img alt="Evaluator-optimizer" />
+![Evaluator-optimizer](https://mintcdn.com/trigger/uys6iMwf9B_ojh8r/guides/ai-agents/evaluator-optimizer.png?fit=max\&auto=format\&n=uys6iMwf9B_ojh8r\&q=85\&s=60942bcc65c91600a84882c90eabc016)
 
 ## Example task
 

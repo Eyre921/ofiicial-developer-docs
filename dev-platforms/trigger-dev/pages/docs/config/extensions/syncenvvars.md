@@ -59,20 +59,20 @@ export default defineConfig({
 });
 ```
 
-<Note>
-  `isSecret` is only available when you return the array form (`{ name, value, isSecret }`). The
-  record form (`{ KEY: "value" }`) always creates non-secret variables.
-</Note>
+> [!NOTE]
+>
+> `isSecret` is only available when you return the array form (`{ name, value, isSecret }`). The
+> record form (`{ KEY: "value" }`) always creates non-secret variables.
 
 ### Example: Sync env vars from Infisical
 
 In this example we're using env vars from [Infisical](https://infisical.com).
 
-<Tip>
-  Infisical also offers a native [Secret Sync](/docs/deploy-environment-variables#infisical-secret-sync)
-  that pushes secrets to Trigger.dev without a build extension or a redeploy. Use `syncEnvVars` when
-  you want to resolve secrets at deploy time in code, or for a service without a native sync.
-</Tip>
+> [!TIP]
+>
+> Infisical also offers a native [Secret Sync](/docs/deploy-environment-variables#infisical-secret-sync)
+> that pushes secrets to Trigger.dev without a build extension or a redeploy. Use `syncEnvVars` when
+> you want to resolve secrets at deploy time in code, or for a service without a native sync.
 
 ```ts trigger.config.ts theme={"theme":"css-variables"}
 import { defineConfig } from "@trigger.dev/sdk";
@@ -109,40 +109,38 @@ export default defineConfig({
 
 The `syncVercelEnvVars` build extension syncs environment variables from your Vercel project to Trigger.dev.
 
-<AccordionGroup>
-  <Accordion title="Setting up authentication including team projects">
-    You need to set the `VERCEL_ACCESS_TOKEN` and `VERCEL_PROJECT_ID` environment variables, or pass
-    in the token and project ID as arguments to the `syncVercelEnvVars` build extension. If you're
-    working with a team project, you'll also need to set `VERCEL_TEAM_ID`, which can be found in your
-    team settings.
+> **Setting up authentication including team projects**
+>
+> You need to set the `VERCEL_ACCESS_TOKEN` and `VERCEL_PROJECT_ID` environment variables, or pass
+> in the token and project ID as arguments to the `syncVercelEnvVars` build extension. If you're
+> working with a team project, you'll also need to set `VERCEL_TEAM_ID`, which can be found in your
+> team settings.
+>
+> You can find / generate the `VERCEL_ACCESS_TOKEN` in your Vercel
+> [dashboard](https://vercel.com/account/settings/tokens). Make sure the scope of the token covers
+> the project with the environment variables you want to sync.
 
-    You can find / generate the `VERCEL_ACCESS_TOKEN` in your Vercel
-    [dashboard](https://vercel.com/account/settings/tokens). Make sure the scope of the token covers
-    the project with the environment variables you want to sync.
-  </Accordion>
+> **Running in Vercel build environment**
+>
+> When running the build from a Vercel build environment (e.g., during a Vercel deployment), the
+> environment variable values will be read from `process.env` instead of fetching them from the
+> Vercel API. This is determined by checking if the `VERCEL` environment variable is present.
+>
+> The API is still used to determine which environment variables are configured for your project, but
+> the actual values come from the local environment. Reading values from `process.env` allows the
+> extension to use values that Vercel integrations (such as the Neon integration) set per preview
+> deployment in the "Provisioning Integrations" phase that happens just before the Vercel build
+> starts.
 
-  <Accordion title="Running in Vercel build environment">
-    When running the build from a Vercel build environment (e.g., during a Vercel deployment), the
-    environment variable values will be read from `process.env` instead of fetching them from the
-    Vercel API. This is determined by checking if the `VERCEL` environment variable is present.
-
-    The API is still used to determine which environment variables are configured for your project, but
-    the actual values come from the local environment. Reading values from `process.env` allows the
-    extension to use values that Vercel integrations (such as the Neon integration) set per preview
-    deployment in the "Provisioning Integrations" phase that happens just before the Vercel build
-    starts.
-  </Accordion>
-
-  <Accordion title="Using with Neon database Vercel integration">
-    If you have the Neon database Vercel integration installed and are running builds outside of the
-    Vercel environment, we recommend using `syncNeonEnvVars` in addition to `syncVercelEnvVars` for your
-    database environment variables.
-
-    This ensures that the correct database connection strings are used for your
-    selected environment and current branch, as `syncVercelEnvVars` may not accurately reflect
-    branch-specific database credentials when run locally.
-  </Accordion>
-</AccordionGroup>
+> **Using with Neon database Vercel integration**
+>
+> If you have the Neon database Vercel integration installed and are running builds outside of the
+> Vercel environment, we recommend using `syncNeonEnvVars` in addition to `syncVercelEnvVars` for your
+> database environment variables.
+>
+> This ensures that the correct database connection strings are used for your
+> selected environment and current branch, as `syncVercelEnvVars` may not accurately reflect
+> branch-specific database credentials when run locally.
 
 ```ts theme={"theme":"css-variables"}
 import { defineConfig } from "@trigger.dev/sdk";
@@ -186,34 +184,32 @@ The `branch` option filters branch-specific Vercel variables for preview branche
 
 The `syncNeonEnvVars` build extension syncs environment variables from your Neon database project to Trigger.dev. It automatically detects branches and builds the appropriate database connection strings for your environment.
 
-<AccordionGroup>
-  <Accordion title="Setting up authentication">
-    You need to set the `NEON_ACCESS_TOKEN` and `NEON_PROJECT_ID` environment variables, or pass them
-    as arguments to the `syncNeonEnvVars` build extension.
+> **Setting up authentication**
+>
+> You need to set the `NEON_ACCESS_TOKEN` and `NEON_PROJECT_ID` environment variables, or pass them
+> as arguments to the `syncNeonEnvVars` build extension.
+>
+> You can generate a `NEON_ACCESS_TOKEN` in your Neon [dashboard](https://console.neon.tech/app/settings/api-keys).
 
-    You can generate a `NEON_ACCESS_TOKEN` in your Neon [dashboard](https://console.neon.tech/app/settings/api-keys).
-  </Accordion>
+> **Running in Vercel environment**
+>
+> When running the build from a Vercel environment (determined by checking if the `VERCEL`
+> environment variable is present), this extension is skipped entirely.
+>
+> This is because Neon's Vercel integration already handles environment variable synchronization in Vercel environments.
 
-  <Accordion title="Running in Vercel environment">
-    When running the build from a Vercel environment (determined by checking if the `VERCEL`
-    environment variable is present), this extension is skipped entirely.
+> **Using with Neon database Vercel integration**
+>
+> If you have the Neon database Vercel integration installed and are running builds outside of the
+> Vercel environment, we recommend using `syncNeonEnvVars` in addition to `syncVercelEnvVars` for your
+> database environment variables.
+>
+> This ensures that the correct database connection strings are used for your selected environment and current branch, as `syncVercelEnvVars` may not accurately reflect branch-specific database credentials when run locally.
 
-    This is because Neon's Vercel integration already handles environment variable synchronization in Vercel environments.
-  </Accordion>
-
-  <Accordion title="Using with Neon database Vercel integration">
-    If you have the Neon database Vercel integration installed and are running builds outside of the
-    Vercel environment, we recommend using `syncNeonEnvVars` in addition to `syncVercelEnvVars` for your
-    database environment variables.
-
-    This ensures that the correct database connection strings are used for your selected environment and current branch, as `syncVercelEnvVars` may not accurately reflect branch-specific database credentials when run locally.
-  </Accordion>
-</AccordionGroup>
-
-<Note>
-  This extension is skipped for `prod` environments. It is designed to sync branch-specific
-  database connections for preview/staging environments.
-</Note>
+> [!NOTE]
+>
+> This extension is skipped for `prod` environments. It is designed to sync branch-specific
+> database connections for preview/staging environments.
 
 ```ts theme={"theme":"css-variables"}
 import { defineConfig } from "@trigger.dev/sdk";
@@ -266,25 +262,23 @@ The extension syncs the following environment variables (with optional prefix):
 
 The `syncSupabaseEnvVars` build extension syncs environment variables from your Supabase project to Trigger.dev. It uses [Supabase Branching](https://supabase.com/docs/guides/deployment/branching) to automatically detect branches and build the appropriate database connection strings and API keys for your environment.
 
-<AccordionGroup>
-  <Accordion title="Setting up authentication">
-    You need to set the `SUPABASE_ACCESS_TOKEN` and `SUPABASE_PROJECT_ID` environment variables, or pass them
-    as arguments to the `syncSupabaseEnvVars` build extension.
+> **Setting up authentication**
+>
+> You need to set the `SUPABASE_ACCESS_TOKEN` and `SUPABASE_PROJECT_ID` environment variables, or pass them
+> as arguments to the `syncSupabaseEnvVars` build extension.
+>
+> You can generate a `SUPABASE_ACCESS_TOKEN` in your Supabase [dashboard](https://supabase.com/dashboard/account/tokens).
 
-    You can generate a `SUPABASE_ACCESS_TOKEN` in your Supabase [dashboard](https://supabase.com/dashboard/account/tokens).
-  </Accordion>
+> **Running in Vercel environment**
+>
+> When running the build from a Vercel environment (determined by checking if the `VERCEL`
+> environment variable is present), this extension is skipped entirely.
 
-  <Accordion title="Running in Vercel environment">
-    When running the build from a Vercel environment (determined by checking if the `VERCEL`
-    environment variable is present), this extension is skipped entirely.
-  </Accordion>
-</AccordionGroup>
-
-<Note>
-  For `prod` environments, this extension uses credentials from your default Supabase
-  branch. For `preview` and `staging` environments, it matches the git branch name to a Supabase
-  branch and syncs the corresponding database connection strings and API keys. `dev` environments are skipped.
-</Note>
+> [!NOTE]
+>
+> For `prod` environments, this extension uses credentials from your default Supabase
+> branch. For `preview` and `staging` environments, it matches the git branch name to a Supabase
+> branch and syncs the corresponding database connection strings and API keys. `dev` environments are skipped.
 
 ```ts theme={"theme":"css-variables"}
 import { defineConfig } from "@trigger.dev/sdk";

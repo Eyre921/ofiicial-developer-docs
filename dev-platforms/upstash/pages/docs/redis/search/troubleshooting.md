@@ -1,5 +1,5 @@
 ---
-title: "Troubleshooting"
+title: "Redis Search Troubleshooting"
 source: https://upstash.com/docs/redis/search/troubleshooting
 path: docs/redis/search/troubleshooting
 ---

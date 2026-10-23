@@ -8,19 +8,17 @@ List, get, set, and pull environment variables for a Trigger.dev project.
 
 These commands manage environment variables on a project environment. They default to `prod`. Use `--env staging` or `--env preview` (with `--branch`) for the other environments. There is no `dev` target: local `trigger dev` reads your local `.env`.
 
-<CodeGroup>
-  ```bash npm theme={"theme":"css-variables"}
-  npx trigger.dev@latest env list
-  ```
+```bash npm theme={"theme":"css-variables"}
+npx trigger.dev@latest env list
+```
 
-  ```bash pnpm theme={"theme":"css-variables"}
-  pnpm dlx trigger.dev@latest env list
-  ```
+```bash pnpm theme={"theme":"css-variables"}
+pnpm dlx trigger.dev@latest env list
+```
 
-  ```bash yarn theme={"theme":"css-variables"}
-  yarn dlx trigger.dev@latest env list
-  ```
-</CodeGroup>
+```bash yarn theme={"theme":"css-variables"}
+yarn dlx trigger.dev@latest env list
+```
 
 ## env list
 
@@ -31,9 +29,9 @@ npx trigger.dev@latest env list
 npx trigger.dev@latest env list --show-values
 ```
 
-<ParamField type="--show-values">
-  Print the actual values, including secrets.
-</ParamField>
+**Show values** `--show-values`
+
+Print the actual values, including secrets.
 
 ## env get
 
@@ -44,13 +42,13 @@ npx trigger.dev@latest env get MY_VAR
 npx trigger.dev@latest env get MY_VAR --raw
 ```
 
-<ParamField type="<name>">
-  The name of the environment variable.
-</ParamField>
+**Name** `\<name\>`
 
-<ParamField type="--raw">
-  Print only the value.
-</ParamField>
+The name of the environment variable.
+
+**Raw** `--raw`
+
+Print only the value.
 
 ## env set
 
@@ -63,17 +61,17 @@ npx trigger.dev@latest env set MY_VAR my-value
 npx trigger.dev@latest env set STRIPE_KEY sk_live_abc --secret
 ```
 
-<ParamField type="<name>">
-  The name of the environment variable.
-</ParamField>
+**Name** `\<name\>`
 
-<ParamField type="<value>">
-  The value to set. Cannot be empty.
-</ParamField>
+The name of the environment variable.
 
-<ParamField type="--secret">
-  Store the value as a secret, so it cannot be read back.
-</ParamField>
+**Value** `\<value\>`
+
+The value to set. Cannot be empty.
+
+**Secret** `--secret`
+
+Store the value as a secret, so it cannot be read back.
 
 ## env pull
 
@@ -84,56 +82,56 @@ npx trigger.dev@latest env pull
 npx trigger.dev@latest env pull --output .env.trigger --force
 ```
 
-<ParamField type="-o, --output <file>">
-  The file to write. Defaults to `.env.local`.
-</ParamField>
+**Output** `-o, --output \<file\>`
 
-<ParamField type="--force">
-  Overwrite the output file if it exists, without asking.
-</ParamField>
+The file to write. Defaults to `.env.local`.
+
+**Force** `--force`
+
+Overwrite the output file if it exists, without asking.
 
 ## Options
 
-<ParamField type="--env | -e">
-  The environment to use: `prod`, `staging` or `preview`. Defaults to `prod`.
-</ParamField>
+**Environment** `--env | -e`
 
-<ParamField type="--config | -c">
-  The name of the config file found at the project path. Defaults to `trigger.config.ts`
-</ParamField>
+The environment to use: `prod`, `staging` or `preview`. Defaults to `prod`.
 
-<ParamField type="--project-ref | -p">
-  The project ref. Required if there is no config file.
-</ParamField>
+**Config file** `--config | -c`
 
-<ParamField type="--branch | -b">
-  Required when using `--env preview`. Specify the branch, e.g. `--branch my-branch` or `-b my-branch`.
-</ParamField>
+The name of the config file found at the project path. Defaults to `trigger.config.ts`
+
+**Project ref** `--project-ref | -p`
+
+The project ref. Required if there is no config file.
+
+**Preview branch** `--branch | -b`
+
+Required when using `--env preview`. Specify the branch, e.g. `--branch my-branch` or `-b my-branch`.
 
 ### Common options
 
 These options are available on most commands.
 
-<ParamField type="--profile">
-  The login profile to use. Defaults to the current profile, which is set by your last `login` or `switch` (initially "default").
-</ParamField>
+**Login profile** `--profile`
 
-<ParamField type="--api-url | -a">
-  Override the default API URL. If not specified, it uses `https://api.trigger.dev`. This can also be set via the `TRIGGER_API_URL` environment variable.
-</ParamField>
+The login profile to use. Defaults to the current profile, which is set by your last `login` or `switch` (initially "default").
 
-<ParamField type="--log-level | -l">
-  The CLI log level to use. Options are `debug`, `info`, `log`, `warn`, `error`, and `none`. This does not affect the log level of your trigger.dev tasks. Defaults to `log`.
-</ParamField>
+**API URL** `--api-url | -a`
 
-<ParamField type="--skip-telemetry">
-  Opt-out of sending telemetry data. This can also be done via the `TRIGGER_TELEMETRY_DISABLED` environment variable. Just set it to anything other than an empty string.
-</ParamField>
+Override the default API URL. If not specified, it uses `https://api.trigger.dev`. This can also be set via the `TRIGGER_API_URL` environment variable.
 
-<ParamField type="--help | -h">
-  Shows the help information for the command.
-</ParamField>
+**Log level** `--log-level | -l`
 
-<ParamField type="--version | -v">
-  Displays the version number of the CLI.
-</ParamField>
+The CLI log level to use. Options are `debug`, `info`, `log`, `warn`, `error`, and `none`. This does not affect the log level of your trigger.dev tasks. Defaults to `log`.
+
+**Skip telemetry** `--skip-telemetry`
+
+Opt-out of sending telemetry data. This can also be done via the `TRIGGER_TELEMETRY_DISABLED` environment variable. Just set it to anything other than an empty string.
+
+**Help** `--help | -h`
+
+Shows the help information for the command.
+
+**Version** `--version | -v`
+
+Displays the version number of the CLI.

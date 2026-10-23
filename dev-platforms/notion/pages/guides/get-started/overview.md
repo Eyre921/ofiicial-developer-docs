@@ -20,6 +20,8 @@ Connections are added to Notion workspaces and require **explicit permission** f
 
 ![](https://mintcdn.com/notion-demo/LHm9qfrJYJOPRxs6/images/docs/0f06356-notion_overview.jpg?fit=max\&auto=format\&n=LHm9qfrJYJOPRxs6\&q=85\&s=ab31886c0c84514c8db8a2801d4fffe4)
 
+Create Notion connections that unlock new possibilities for teams.
+
 Notion already has a [library](https://www.notion.com/integrations/all) of connections you can browse. For developers who want to build their own, Notion supports internal connections, public connections, and personal access tokens — all powered by the same REST API.
 
 ## Connection types

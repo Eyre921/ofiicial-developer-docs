@@ -80,10 +80,10 @@ export async function onAccountChanged(accountId: string) {
 }
 ```
 
-<Tip>
-  With debounce, one run handles many changes. Have the task read the pending work from your own
-  database when it starts, instead of relying on a single trigger's payload.
-</Tip>
+> [!TIP]
+>
+> With debounce, one run handles many changes. Have the task read the pending work from your own
+> database when it starts, instead of relying on a single trigger's payload.
 
 **To never run two at once for the same key, use a per-key concurrency limit.** Extra runs wait in the queue instead of running in parallel:
 
@@ -142,11 +142,11 @@ await tasks.trigger("process-change", payload, {
 });
 ```
 
-<Note>
-  Inside a task, a raw string key is scoped to the current run. To dedupe across runs, create it
-  with `idempotencyKeys.create(key, { scope: "global" })`. See [Idempotency](/docs/idempotency) for
-  scopes and TTLs.
-</Note>
+> [!NOTE]
+>
+> Inside a task, a raw string key is scoped to the current run. To dedupe across runs, create it
+> with `idempotencyKeys.create(key, { scope: "global" })`. See [Idempotency](/docs/idempotency) for
+> scopes and TTLs.
 
 ### Polling for a run's status
 
@@ -190,11 +190,11 @@ for await (const run of runs.subscribeToRunsWithTag(tag)) {
 
 This iterator never completes on its own, so break out of the loop when you're done. In a frontend, use the [React hooks](/docs/realtime/react-hooks/overview).
 
-<Note>
-  Tag subscriptions only include runs created in the last 24 hours. You can narrow that with the
-  `createdAt` option, but not extend it. To follow a specific older run, use
-  `runs.subscribeToRun(runId)`.
-</Note>
+> [!NOTE]
+>
+> Tag subscriptions only include runs created in the last 24 hours. You can narrow that with the
+> `createdAt` option, but not extend it. To follow a specific older run, use
+> `runs.subscribeToRun(runId)`.
 
 ### Counting runs to measure a backlog
 
@@ -223,14 +223,14 @@ For a queue shared between tasks, use `{ type: "custom", name: "your-queue-name"
 * **Stop paginating once you have what you need.** Don't page through every result by default.
 * **Keep it off hot paths.** Don't call it per event, per trigger, or in a tight loop inside a task. If several places need the same answer, cache it.
 
-<Warning>
-  If you don't pass `period`, `from`, or `to`, only runs created in the last 7 days are searched.
-  The window applies to every status, so runs created before it aren't returned even if they're
-  still queued or executing. Passing only `to` removes the lower bound, so the search covers every
-  run up to that date.
-</Warning>
+> [!WARNING]
+>
+> If you don't pass `period`, `from`, or `to`, only runs created in the last 7 days are searched.
+> The window applies to every status, so runs created before it aren't returned even if they're
+> still queued or executing. Passing only `to` removes the lower bound, so the search covers every
+> run up to that date.
 
-<Note>
-  If a query would be too expensive to complete, the API returns a `422` asking you to narrow the
-  time window. The SDK doesn't retry it.
-</Note>
+> [!NOTE]
+>
+> If a query would be too expensive to complete, the API returns a `422` asking you to narrow the
+> time window. The SDK doesn't retry it.

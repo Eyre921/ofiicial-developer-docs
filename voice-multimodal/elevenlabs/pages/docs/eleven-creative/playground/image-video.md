@@ -204,11 +204,9 @@ Post-processing models require an existing generated output, though you can also
 > For API requests, ByteDance models are disabled by default and require explicit approval before
 > use. Enterprise customers can contact support to request access.
 
-> **Info**
+> **Note**
 >
-> Every model below is available in the Image & Video app. Models that can also be called from the
-> [Image & Video API](/docs/eleven-api/guides/cookbooks/image-and-video) list their `model_id` under
-> **API**; the rest are app-only.
+> Settings can be toggled to adjust credit consumption.
 
 #### Video generative models
 
@@ -249,14 +247,6 @@ A unified multimodal video model with audio-video joint generation, offering dir
 **Cost:** Varies based on selected settings and duration
 
 **API:** [`bytedance-seedance-v2`](/docs/api-reference/flows/video/create#request.body.bytedance-seedance-v2)
-
-> **Note**
->
-> Settings can be toggled to adjust credit consumption.
-
-> **Warning**
->
-> Seedance 2.0 is not available in the United States.
 
 #### Seedance 2.0 Fast
 
@@ -376,10 +366,6 @@ The successor to Seedance 2.0 with sharper realism, up to 50 combined image, vid
 >
 > Seedance 2.5 does not expose a seed control.
 
-> **Warning**
->
-> Seedance 2.5 is not available in the United States.
-
 #### Seedance 2.5 Video Edit
 
 Edits an existing video by describing the changes. Output length and aspect ratio follow the input video.
@@ -410,10 +396,6 @@ Edits an existing video by describing the changes. Output length and aspect rati
 
 **Cost:** Varies based on selected settings and duration
 
-> **Warning**
->
-> Seedance 2.5 Video Edit is not available in the United States.
-
 #### Seedance 2.5 Video Extend
 
 Continues an existing video from where it ends, guided by a prompt and optional references.
@@ -443,10 +425,6 @@ Continues an existing video from where it ends, guided by a prompt and optional 
 * Chaining several generations into a longer sequence
 
 **Cost:** Varies based on selected settings and duration
-
-> **Warning**
->
-> Seedance 2.5 Video Extend is not available in the United States.
 
 #### Kling 3.0
 
@@ -517,10 +495,6 @@ A high-consistency video model that functions like an AI director, preserving th
 * Professional marketing and brand assets with consistent item rendering
 
 **Cost:** Varies based on selected settings and duration
-
-> **Note**
->
-> Settings can be toggled to adjust credit consumption.
 
 > **Warning**
 >
@@ -807,6 +781,25 @@ Black Forest Labs' video model with natural motion, multi-shot scenes, generated
 
 **Cost:** Varies based on selected settings and duration
 
+#### FLUX 3 Edit
+
+Edits an existing video from a text prompt. Output length and framing follow the source video, up to 15s.
+
+**Generation inputs:**
+
+* Video to edit (required, up to 15s)
+* Text prompt describing the edits
+
+**Output options:**
+
+* Resolution and aspect ratio match the source video
+
+**Ideal for:**
+
+* Prompt-based changes to existing footage
+
+**Cost:** Varies based on selected settings and duration
+
 #### MiniMax H3
 
 MiniMax's flagship video model with multimodal references, generated audio, and output up to 4K.
@@ -880,6 +873,31 @@ A near-instant variant of MiniMax H3 with the same inputs and strong aesthetics,
 > **Warning**
 >
 > MiniMax H3 Max is not available in the United States.
+
+#### MiniMax H3 Max Recast
+
+Recasts people in a source video using 1 to 4 photos. Length follows the source, up to 30s, and the original audio is kept.
+
+**Generation inputs:**
+
+* Source video (up to 30s)
+* Photos of the people to recast (1 to 4)
+
+**Features:**
+
+* Output length follows the source video
+* Keeps the source audio
+
+**Output options:**
+
+* Resolutions: up to 1080p
+* Aspect ratio follows the source video
+
+**Ideal for:**
+
+* Replacing people in existing footage with subjects from reference photos
+
+**Cost:** Varies based on selected settings and duration
 
 #### Kling O1
 
@@ -1626,6 +1644,26 @@ An advanced AI model designed for precise image generation with enhanced text re
 
 **API:** [`gpt-image-2`](/docs/api-reference/flows/image/create#request.body.gpt-image-2)
 
+#### Nano Banana 2.1
+
+An image model with native 4K output and up to 14 image references.
+
+**Generation inputs:**
+
+* Text-to-Image
+* Image References (up to 14)
+
+**Output options:**
+
+* Resolutions: 4K
+* Aspect ratios: 8:1 to 1:8, and auto
+
+**Ideal for:**
+
+* Reference-guided images that need native 4K
+
+**Cost:** Varies based on selected settings and number of variations
+
 #### Nano Banana 2
 
 An advanced AI image generation model combining production-ready quality with ultra-fast processing, featuring improved world knowledge and subject consistency.
@@ -1749,6 +1787,24 @@ A design-focused text-to-image model with strong prompt control and clean compos
 
 * Layout-driven graphics, icons, and posters
 * Clean compositions from text alone
+
+**Cost:** Varies based on selected settings and number of variations
+
+#### Recraft V4.1 Flash
+
+A fast, design-focused text-to-image model.
+
+**Generation inputs:**
+
+* Text-to-Image
+
+**Output options:**
+
+* Aspect ratios: 16 ratios
+
+**Ideal for:**
+
+* Layout-driven graphics from text alone
 
 **Cost:** Varies based on selected settings and number of variations
 
@@ -2134,6 +2190,26 @@ The image variant of Wan 2.5, with strong prompt fidelity and support for refere
 >
 > Wan 2.5 Image is not available in the United States.
 
+#### FLUX 3 Image
+
+An image model with up to 10 image references and 4K output.
+
+**Generation inputs:**
+
+* Text-to-Image
+* Image References (up to 10)
+
+**Output options:**
+
+* Resolutions: 4K
+* Aspect ratios: 16 ratios
+
+**Ideal for:**
+
+* Reference-guided images at 4K
+
+**Cost:** Varies based on selected settings and number of variations
+
 #### FLUX.1 Kontext \[Pro]
 
 A professional model for advanced image generation and editing, offering strong scene coherence and style control.
@@ -2325,6 +2401,25 @@ A dedicated utility model for generating exceptionally realistic, humanlike lip-
 >
 > OmniHuman 1.5 is not available in the United States.
 
+#### MiniMax H3 Max Lip Sync
+
+Animates a still image from a speech clip, with output up to 2K.
+
+**Inputs:**
+
+* Source image
+* Speech audio (5s to 14.8s)
+
+**Features:**
+
+* Lip-sync specific tool, not a full video generation model
+
+**Ideal for:**
+
+* Talking portraits from a still image and a short audio clip
+
+**Cost:** Varies based on input, settings and duration
+
 #### Veed Lipsync
 
 A fast, affordable, and precise utility model for applying realistic lip-sync to videos.
@@ -2379,22 +2474,59 @@ The higher-quality successor to Veed Lipsync for applying realistic lip-sync to 
 
 #### Utility models
 
-#### Topaz Upscale
+#### Topaz Image Upscale
 
-A dedicated utility model for image and video upscaling, designed to enhance resolution and detail up to 4x.
+Increases the resolution of an image. Choose an upscale preset, or use **Tune upscale** to set upscale mode, model, and other settings.
+
+**Inputs:**
+
+* Source image
+
+**Upscale presets:**
+
+* Precise
+* Balanced: precise upscale with face enhancement
+* Sharp product: crisp edges on products, no face changes
+* Generative
+* Realistic skin: rebuilds skin texture on portraits. Costs more
+* Restore photo: recovers detail in small, damaged photos. Costs more
 
 **Features:**
 
-* Enhancement tool that processes existing media
-* Increases media size while preserving natural textures and minimizing artifacts
-* Highly granular upscale factors: 1x, 1.25x, 1.5x, 1.75x, 2x, 3x, 4x
-* Video-specific: Flexible frame rate control (keep source or convert to 24, 25, 30, 48, 50, or 60 fps)
+* Upscale factors: 1.25x, 1.5x, 2x, 3x, 4x
 
 **Ideal for:**
 
-* Improving quality of generated media
-* Restoring legacy footage or photos
-* Preparing assets for high-resolution displays
+* Preparing images for high-resolution displays
+
+**Cost:** Varies depending on input
+
+#### Topaz Video Upscale
+
+Increases the resolution of a video. Choose an upscale preset, or use **Tune upscale** to set upscale mode, model, and framerate.
+
+**Inputs:**
+
+* Source video
+
+**Upscale presets:**
+
+* Precise
+* General: upscales, denoises and sharpens most footage
+* Animation: 2x upscale for animation and motion graphics
+* Generative
+* Fast: quick generative upscale for high-volume work
+* AI video: realistic detail for AI video. Costs more
+* Camera footage: top quality for clean camera footage. Costs more
+
+**Features:**
+
+* Upscale factors: 1.25x, 1.5x, 2x, 3x, 4x
+* Frame rate conversion to 24, 25, 30, 48, 50, or 60 fps
+
+**Ideal for:**
+
+* Preparing video for high-resolution displays
 
 **Cost:** Varies depending on input
 
@@ -2415,6 +2547,26 @@ Removes the background from an image and returns it with alpha transparency.
 
 * Product cutouts and compositing
 * Preparing subjects for use as references in other generations
+
+**Cost:** Varies depending on input
+
+#### Video Background Removal
+
+Removes the background from a video.
+
+**Inputs:**
+
+* Source video
+
+**Features:**
+
+* No prompt required
+* Output background can be transparent, black, or green
+
+**Ideal for:**
+
+* Cutting a subject out of existing footage
+* Preparing video for compositing
 
 **Cost:** Varies depending on input
 
@@ -2466,11 +2618,11 @@ Converts standard dynamic range video into HDR.
     <td>
       #### How much does Image & Video cost?
 
-      The cost of generating depends on the model you're using and the settings you've chosen. For example, the number of variations and the resolution will impact the number of credits you will be charged.
+      The cost of each generation depends on the model and the settings you choose, such as resolution and, for video, duration. You are charged for every generation. Choosing 4 generations costs four times as much as choosing 1 generation.
 
-      Before you submit your generation, you will be shown the cost based on the model and settings you've chosen.
+      Before you submit your generation, you will be shown how many generations you have remaining, based on the model and settings you've chosen. To see how many credits will be deducted for the generations you selected, hover over the remaining generations.
 
-      ![](/docs/_fern-img/3fe581ba3136d4bd464ded06a391f449c15658bf3f11f7a0b69feaf61d4a0904.webp)
+      ![](/docs/_fern-img/05a4697d64f8028a9651d23c5daba1870b6495db111973c3f491ec21bbbe6f5d.webp)
 
       For more details, see our [Image & Video documentation.](/docs/product-guides/playground/image-video)
 

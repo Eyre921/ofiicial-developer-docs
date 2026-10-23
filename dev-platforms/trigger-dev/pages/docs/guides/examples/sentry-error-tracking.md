@@ -22,13 +22,13 @@ This setup involves two files:
 1. **`trigger.config.ts`** - Configures the build to upload source maps to Sentry during deployment
 2. **`trigger/init.ts`** - Initializes Sentry and registers the error tracking hook at runtime
 
-<Note>
-  You will need to set the `SENTRY_AUTH_TOKEN` and `SENTRY_DSN` environment variables. You can find
-  the `SENTRY_AUTH_TOKEN` in your Sentry dashboard, in settings -> developer settings -> auth tokens
-  and the `SENTRY_DSN` in your Sentry dashboard, in settings -> projects -> your project -> client
-  keys (DSN). Add these to your `.env` file, and in your [Trigger.dev
-  dashboard](https://cloud.trigger.dev), under environment variables in your project's sidebar.
-</Note>
+> [!NOTE]
+>
+> You will need to set the `SENTRY_AUTH_TOKEN` and `SENTRY_DSN` environment variables. You can find
+> the `SENTRY_AUTH_TOKEN` in your Sentry dashboard, in settings -> developer settings -> auth tokens
+> and the `SENTRY_DSN` in your Sentry dashboard, in settings -> projects -> your project -> client
+> keys (DSN). Add these to your `.env` file, and in your [Trigger.dev
+> dashboard](https://cloud.trigger.dev), under environment variables in your project's sidebar.
 
 ### Build configuration
 
@@ -58,11 +58,11 @@ export default defineConfig({
 });
 ```
 
-<Note>
-  [Build extensions](/docs/config/extensions/overview) allow you to hook into the build system and
-  customize the build process or the resulting bundle and container image (in the case of
-  deploying). You can use pre-built extensions or create your own.
-</Note>
+> [!NOTE]
+>
+> [Build extensions](/docs/config/extensions/overview) allow you to hook into the build system and
+> customize the build process or the resulting bundle and container image (in the case of
+> deploying). You can use pre-built extensions or create your own.
 
 ### Bun runtime
 
@@ -125,10 +125,10 @@ tasks.onFailure(({ payload, error, ctx }) => {
 });
 ```
 
-<Note>
-  Learn more about [global lifecycle hooks](/docs/tasks/overview#global-lifecycle-hooks) and the
-  [`init.ts` file](/docs/tasks/overview#init-ts).
-</Note>
+> [!NOTE]
+>
+> Learn more about [global lifecycle hooks](/docs/tasks/overview#global-lifecycle-hooks) and the
+> [`init.ts` file](/docs/tasks/overview#init-ts).
 
 ## Testing that errors are being sent to Sentry
 
@@ -155,19 +155,17 @@ export const sentryErrorTest = task({
 
 After creating the task, deploy your project.
 
-<CodeGroup>
-  ```bash npm theme={"theme":"css-variables"}
-  npx trigger.dev@latest deploy
-  ```
+```bash npm theme={"theme":"css-variables"}
+npx trigger.dev@latest deploy
+```
 
-  ```bash pnpm theme={"theme":"css-variables"}
-  pnpm dlx trigger.dev@latest deploy
-  ```
+```bash pnpm theme={"theme":"css-variables"}
+pnpm dlx trigger.dev@latest deploy
+```
 
-  ```bash yarn theme={"theme":"css-variables"}
-  yarn dlx trigger.dev@latest deploy
-  ```
-</CodeGroup>
+```bash yarn theme={"theme":"css-variables"}
+yarn dlx trigger.dev@latest deploy
+```
 
 Once deployed, open the `sentry-error-test` task in your [Trigger.dev dashboard](https://cloud.trigger.dev) (make sure you're in your `prod` environment) and press the "Test" button to open the test page for it.
 

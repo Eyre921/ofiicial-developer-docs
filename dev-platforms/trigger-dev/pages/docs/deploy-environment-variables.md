@@ -14,71 +14,66 @@ We deploy your tasks and scale them up and down when they are triggered. So any 
 
 ### Setting environment variables
 
-<Steps>
-  <Step title="Go to the Environment Variables page">
-    In the sidebar select the "Environment Variables" page, then press the "Add new"
-    button. <img alt="Environment variables page" />
-  </Step>
+**1. Go to the Environment Variables page**
 
-  <Step title="Add your environment variables">
-    You can add values for your local dev environment, staging and prod. <img alt="Environment variables
-    page" />
-  </Step>
-</Steps>
+In the sidebar select the "Environment Variables" page, then press the "Add new"
+button. ![Environment variables page](https://mintcdn.com/trigger/uys6iMwf9B_ojh8r/images/environment-variables-page.jpg?fit=max\&auto=format\&n=uys6iMwf9B_ojh8r\&q=85\&s=af652254781808a35c2bcefd4b61b59f)
 
-<Note>
-  Specifying Dev values is optional. They will be overriden by values in your .env file when running
-  locally.
-</Note>
+**2. Add your environment variables**
+
+You can add values for your local dev environment, staging and prod. ![Environment variables
+page](https://mintcdn.com/trigger/uys6iMwf9B_ojh8r/images/environment-variables-panel.jpg?fit=max\&auto=format\&n=uys6iMwf9B_ojh8r\&q=85\&s=79b5fd91e809cb0c6c9298410922df96)
+
+> [!NOTE]
+>
+> Specifying Dev values is optional. They will be overriden by values in your .env file when running
+> locally.
 
 ### Secret environment variables
 
 When creating an environment variable, you can mark it as a **Secret**. Secret values are hidden in the dashboard and cannot be viewed after creation.
 
-<Warning>
-  Marking a variable as a Secret is irreversible and can only be done when creating the variable. To
-  change this setting, you must delete the variable and create a new one.
-</Warning>
+> [!WARNING]
+>
+> Marking a variable as a Secret is irreversible and can only be done when creating the variable. To
+> change this setting, you must delete the variable and create a new one.
 
 ### Editing environment variables
 
 You can edit an environment variable's values. You cannot edit the key name, you must delete and create a new one.
 
-<RollingOut />
+> [!WARNING]
+>
+> **Rolling out.** This feature is being enabled gradually and may not be available
+> for your organization yet.
 
-<Note>
-  An empty string is a valid value. Saving a variable with an empty value stores it as an empty
-  string (your task sees the variable set to `""`), which is different from deleting the variable
-  (where your task does not see it at all).
-</Note>
+> [!NOTE]
+>
+> An empty string is a valid value. Saving a variable with an empty value stores it as an empty
+> string (your task sees the variable set to `""`), which is different from deleting the variable
+> (where your task does not see it at all).
 
-<Steps>
-  <Step title="Press the action button on a variable">
-    <img alt="Environment variables page" />
-  </Step>
+**1. Press the action button on a variable**
 
-  <Step title="Press edit">
-    <img alt="Environment variables page" />
-  </Step>
-</Steps>
+![Environment variables page](https://mintcdn.com/trigger/uys6iMwf9B_ojh8r/images/environment-variables-actions.png?fit=max\&auto=format\&n=uys6iMwf9B_ojh8r\&q=85\&s=05dd8ce39784065107f6eba1625866d0)
+
+**2. Press edit**
+
+![Environment variables page](https://mintcdn.com/trigger/uys6iMwf9B_ojh8r/images/environment-variables-edit-popover.png?fit=max\&auto=format\&n=uys6iMwf9B_ojh8r\&q=85\&s=e865f9406555034430788bbf98fbc785)
 
 ### Deleting environment variables
 
-<Warn>
-  Environment variables are fetched and injected before a runs begins. So if you delete one you can
-  cause runs to fail that are expecting variables to be set.
-</Warn>
+Environment variables are fetched and injected before a runs begins. So if you delete one you can
+cause runs to fail that are expecting variables to be set.
 
-<Steps>
-  <Step title="Press the action button on a variable">
-    <img alt="Environment variables page" />
-  </Step>
+**1. Press the action button on a variable**
 
-  <Step title="Press delete">
-    This will immediately delete the variable. <img alt="Environment variables
-    page" />
-  </Step>
-</Steps>
+![Environment variables page](https://mintcdn.com/trigger/uys6iMwf9B_ojh8r/images/environment-variables-actions.png?fit=max\&auto=format\&n=uys6iMwf9B_ojh8r\&q=85\&s=05dd8ce39784065107f6eba1625866d0)
+
+**2. Press delete**
+
+This will immediately delete the variable. ![Environment variables
+page](https://mintcdn.com/trigger/uys6iMwf9B_ojh8r/images/environment-variables-delete-popover.png?fit=max\&auto=format\&n=uys6iMwf9B_ojh8r\&q=85\&s=642350946bd75c3c508065a198aaa005)
 
 ## Local development
 
@@ -151,9 +146,9 @@ export const setupEnvVars = task({
 });
 ```
 
-<Note>
-  This is different from `syncEnvVars` which automatically syncs variables during every deploy. Use `envvars.upload()` for one-time initial loads, and `syncEnvVars` for ongoing synchronization.
-</Note>
+> [!NOTE]
+>
+> This is different from `syncEnvVars` which automatically syncs variables during every deploy. Use `envvars.upload()` for one-time initial loads, and `syncEnvVars` for ongoing synchronization.
 
 #### Getting the current environment
 
@@ -188,6 +183,25 @@ The context object provides:
 
 For more information about the context object, see the [Context documentation](/docs/context).
 
+#### Linking to a run in the dashboard
+
+Trigger.dev sets `TRIGGER_DASHBOARD_URL` on every run, in development and deployed environments. Its value is the dashboard's address without a trailing slash, so it also points at your own instance when you self-host. Append `/runs/<runId>` to link to a run:
+
+```ts theme={"theme":"css-variables"}
+import { task } from "@trigger.dev/sdk";
+
+export const reportTask = task({
+  id: "report-task",
+  run: async (payload, { ctx }) => {
+    const runUrl = `${process.env.TRIGGER_DASHBOARD_URL}/runs/${ctx.run.id}`;
+
+    console.log(`View this run: ${runUrl}`);
+  },
+});
+```
+
+The `/runs/<runId>` link checks that the viewer is a member of the run's organization, then redirects to the full run page. If you set your own `TRIGGER_DASHBOARD_URL` environment variable on the project, your value is used instead.
+
 ### Sync env vars from another service
 
 There are two ways to pull secrets from another service into Trigger.dev: a native **Secret Sync** (currently [Infisical](https://infisical.com)), or the `syncEnvVars` build extension for any other service.
@@ -203,20 +217,20 @@ Set it up in Infisical in two steps:
 
 Follow the [Trigger.dev Secret Sync guide](https://infisical.com/docs/integrations/secret-syncs/trigger-dev) in the Infisical docs for the full walkthrough.
 
-<Note>
-  A Secret Sync only overwrites the keys it manages, leaving variables you set manually untouched.
-  Synced variables are marked as [secret](#secret-environment-variables) by default, so they appear
-  redacted on the Environment Variables page.
-</Note>
+> [!NOTE]
+>
+> A Secret Sync only overwrites the keys it manages, leaving variables you set manually untouched.
+> Synced variables are marked as [secret](#secret-environment-variables) by default, so they appear
+> redacted on the Environment Variables page.
 
 #### Using the `syncEnvVars` build extension
 
 For any other service, use our `syncEnvVars` build extension in your `trigger.config` file to resolve secrets at deploy time.
 
-<Note>
-  To use the `syncEnvVars` build extension, you should first install the `@trigger.dev/build`
-  package into your devDependencies.
-</Note>
+> [!NOTE]
+>
+> To use the `syncEnvVars` build extension, you should first install the `@trigger.dev/build`
+> package into your devDependencies.
 
 In this example we're using env vars from [Infisical](https://infisical.com), but you can adapt it to any secrets manager.
 
@@ -261,12 +275,12 @@ When you run the [CLI deploy command](/docs/cli-deploy-commands) directly or usi
 
 This means that you need to redeploy your Trigger.dev tasks if you change the environment variables in [Infisical](https://infisical.com).
 
-<Note>
-  The `process.env.INFISICAL_CLIENT_ID`, `process.env.INFISICAL_CLIENT_SECRET` and
-  `process.env.INFISICAL_PROJECT_ID` will need to be supplied to the `deploy` CLI command. You can
-  do this via the `--env-file .env` flag or by setting them as environment variables in your
-  terminal.
-</Note>
+> [!NOTE]
+>
+> The `process.env.INFISICAL_CLIENT_ID`, `process.env.INFISICAL_CLIENT_SECRET` and
+> `process.env.INFISICAL_PROJECT_ID` will need to be supplied to the `deploy` CLI command. You can
+> do this via the `--env-file .env` flag or by setting them as environment variables in your
+> terminal.
 
 #### Dev
 
@@ -310,46 +324,44 @@ This should mean that for most secret services you won't need to convert the dat
 
 Securely pass a Google credential JSON file to your Trigger.dev task using environment variables.
 
-<Steps>
-  <Step title="Convert the Google credential file to base64">
-    In your terminal, run the following command and copy the resulting base64 string:
+**1. Convert the Google credential file to base64**
 
-    ```
-    base64 -i path/to/your/service-account-file.json
-    ```
-  </Step>
+In your terminal, run the following command and copy the resulting base64 string:
 
-  <Step title="Set up the environment variable in Trigger.dev">
-    Follow [these steps](/docs/deploy-environment-variables) to set a new environment variable using the base64 string as the value.
+```
+base64 -i path/to/your/service-account-file.json
+```
 
-    ```
-    GOOGLE_CREDENTIALS_BASE64="<your base64 string>"
-    ```
-  </Step>
+**2. Set up the environment variable in Trigger.dev**
 
-  <Step title="Use the environment variable in your code">
-    Add the following code to your Trigger.dev task:
+Follow [these steps](/docs/deploy-environment-variables) to set a new environment variable using the base64 string as the value.
 
-    ```ts theme={"theme":"css-variables"}
-    import { google } from "googleapis";
+```
+GOOGLE_CREDENTIALS_BASE64="<your base64 string>"
+```
 
-    const credentials = JSON.parse(
-      Buffer.from(process.env.GOOGLE_CREDENTIALS_BASE64, "base64").toString("utf8")
-    );
+**3. Use the environment variable in your code**
 
-    const auth = new google.auth.GoogleAuth({
-      credentials,
-      scopes: ["https://www.googleapis.com/auth/cloud-platform"],
-    });
+Add the following code to your Trigger.dev task:
 
-    const client = await auth.getClient();
-    ```
-  </Step>
+```ts theme={"theme":"css-variables"}
+import { google } from "googleapis";
 
-  <Step title="Use the client in your code">
-    You can now use the `client` object to make authenticated requests to Google APIs
-  </Step>
-</Steps>
+const credentials = JSON.parse(
+  Buffer.from(process.env.GOOGLE_CREDENTIALS_BASE64, "base64").toString("utf8")
+);
+
+const auth = new google.auth.GoogleAuth({
+  credentials,
+  scopes: ["https://www.googleapis.com/auth/cloud-platform"],
+});
+
+const client = await auth.getClient();
+```
+
+**4. Use the client in your code**
+
+You can now use the `client` object to make authenticated requests to Google APIs
 
 ## Using `.env.production` or dotenvx with Trigger.dev
 
@@ -404,10 +416,10 @@ This will read your .env.production file using dotenvx and sync the variables to
 
 If you're building a multi-tenant application where each tenant needs different environment variables (like tenant-specific API keys or database credentials), you don't need a separate project for each tenant. Instead, use a single project and load tenant-specific secrets at runtime.
 
-<Note>
-  This is different from [syncing environment variables at deploy time](#sync-env-vars-from-another-service).
-  Here, secrets are loaded dynamically during task execution, not synced to Trigger.dev's environment variables.
-</Note>
+> [!NOTE]
+>
+> This is different from [syncing environment variables at deploy time](#sync-env-vars-from-another-service).
+> Here, secrets are loaded dynamically during task execution, not synced to Trigger.dev's environment variables.
 
 ### Recommended approach
 

@@ -20,10 +20,10 @@ Guardrails are safety mechanisms that run alongside AI agents to validate input,
 
 ## GitHub repo
 
-<Card title="View the OpenAI Agent SDK Guardrails repo" icon="GitHub" href="https://github.com/triggerdotdev/examples/tree/main/openai-agent-sdk-guardrails-examples">
-  Click here to view the full code for this project in our examples repository on GitHub. You can
-  fork it and use it as a starting point for your own project.
-</Card>
+> **[View the OpenAI Agent SDK Guardrails repo](https://github.com/triggerdotdev/examples/tree/main/openai-agent-sdk-guardrails-examples)**
+>
+> Click here to view the full code for this project in our examples repository on GitHub. You can
+> fork it and use it as a starting point for your own project.
 
 ## Video
 

@@ -16,35 +16,33 @@ Trigger.dev cannot provision a VPC Endpoint until your endpoint service explicit
 
 ### How to fix it
 
-<Steps>
-  <Step title="Open your endpoint service in the AWS console">
-    Go to **VPC → Endpoint services** in the AWS region where you created the service, and select
-    your service.
-  </Step>
+**1. Open your endpoint service in the AWS console**
 
-  <Step title="Open the Allow principals tab">
-    Click the **Allow principals** tab and check whether Trigger.dev's AWS account is listed.
-  </Step>
+Go to **VPC → Endpoint services** in the AWS region where you created the service, and select
+your service.
 
-  <Step title="Add Trigger.dev's account if it's missing">
-    Click **Allow principals** and add an entry in this format, replacing `<account-id>` with the
-    Trigger.dev AWS account ID shown on the **Add connection** page in your dashboard:
+**2. Open the Allow principals tab**
 
-    ```text theme={"theme":"css-variables"}
-    arn:aws:iam::<account-id>:root
-    ```
+Click the **Allow principals** tab and check whether Trigger.dev's AWS account is listed.
 
-    <Warning>
-      Always copy the account ID from your Trigger.dev dashboard. The correct value differs between
-      environments — don't reuse an ID from another source.
-    </Warning>
-  </Step>
+**3. Add Trigger.dev's account if it's missing**
 
-  <Step title="Retry in the Trigger.dev dashboard">
-    Once the principal is allow-listed, return to the **Add connection** page in Trigger.dev and
-    submit the form again. The wizard should now find your endpoint service and start provisioning.
-  </Step>
-</Steps>
+Click **Allow principals** and add an entry in this format, replacing `<account-id>` with the
+Trigger.dev AWS account ID shown on the **Add connection** page in your dashboard:
+
+```text theme={"theme":"css-variables"}
+arn:aws:iam::<account-id>:root
+```
+
+> [!WARNING]
+>
+> Always copy the account ID from your Trigger.dev dashboard. The correct value differs between
+> environments — don't reuse an ID from another source.
+
+**4. Retry in the Trigger.dev dashboard**
+
+Once the principal is allow-listed, return to the **Add connection** page in Trigger.dev and
+submit the form again. The wizard should now find your endpoint service and start provisioning.
 
 For full setup instructions including this step, see [Setting up PrivateLink in the AWS Console](/docs/private-networking/aws-console-setup).
 
@@ -56,29 +54,27 @@ When a security group is attached to an NLB, AWS exposes a separate setting call
 
 ### How to fix it
 
-<Steps>
-  <Step title="Open your Network Load Balancer in the AWS console">
-    Go to **EC2 → Load balancers** in the region where your NLB lives and select the load balancer
-    backing your endpoint service.
-  </Step>
+**1. Open your Network Load Balancer in the AWS console**
 
-  <Step title="Edit the security group settings">
-    On the **Security** tab, click **Edit**.
-  </Step>
+Go to **EC2 → Load balancers** in the region where your NLB lives and select the load balancer
+backing your endpoint service.
 
-  <Step title="Turn off PrivateLink enforcement">
-    Uncheck **Enforce inbound rules on PrivateLink traffic** and save.
+**2. Edit the security group settings**
 
-    <Note>
-      This only changes how the NLB itself filters traffic. Authorization is still enforced by the
-      endpoint service's **Allow principals** list, so only AWS accounts you've explicitly
-      allow-listed can connect.
-    </Note>
-  </Step>
+On the **Security** tab, click **Edit**.
 
-  <Step title="Retry from your task">
-    Re-run a task that dials the assigned private IP. The connection should now succeed.
-  </Step>
-</Steps>
+**3. Turn off PrivateLink enforcement**
+
+Uncheck **Enforce inbound rules on PrivateLink traffic** and save.
+
+> [!NOTE]
+>
+> This only changes how the NLB itself filters traffic. Authorization is still enforced by the
+> endpoint service's **Allow principals** list, so only AWS accounts you've explicitly
+> allow-listed can connect.
+
+**4. Retry from your task**
+
+Re-run a task that dials the assigned private IP. The connection should now succeed.
 
 If you need to keep the enforcement on for compliance reasons, the alternative is to widen your NLB's security group inbound rule to `0.0.0.0/0` on the listener port. Allow-listing the consumer endpoint's CIDR is not practical because it lives in Trigger.dev's VPC and may change.

@@ -8,10 +8,10 @@ Subscribe to a session's output or input channel from React with useSessionStrea
 
 **`useSessionStream` subscribes to one channel of a [session](/docs/ai-chat/sessions) and updates a `records` array as new records arrive.** It reads the `out` channel by default (the agent's output) or `in` (the input channel). It is read-only; `useSession` is reserved for two-way (read and write) communication.
 
-<Note>
-  Requires a Public Access Token with the `read:sessions:{id}` scope. See [Realtime
-  auth](/docs/realtime/auth) for generating one.
-</Note>
+> [!NOTE]
+>
+> Requires a Public Access Token with the `read:sessions:{id}` scope. See [Realtime
+> auth](/docs/realtime/auth) for generating one.
 
 ## Basic usage
 
@@ -73,10 +73,10 @@ const { records } = useSessionStream<{ url: string }>(sessionId, {
 });
 ```
 
-<Note>
-  `from: "latest"` requires a server that supports it. Against an older server a client that passes
-  it degrades safely to a full replay.
-</Note>
+> [!NOTE]
+>
+> `from: "latest"` requires a server that supports it. Against an older server a client that passes
+> it degrades safely to a full replay.
 
 ## Resume from a cursor
 

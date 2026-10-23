@@ -17,10 +17,10 @@ This demo is a full stack example that uses the following:
 
 ## GitHub repo
 
-<Card title="View the Batch LLM Evaluator repo" icon="GitHub" href="https://github.com/triggerdotdev/examples/tree/main/batch-llm-evaluator">
-  Click here to view the full code for this project in our examples repository on GitHub. You can
-  fork it and use it as a starting point for your own project.
-</Card>
+> **[View the Batch LLM Evaluator repo](https://github.com/triggerdotdev/examples/tree/main/batch-llm-evaluator)**
+>
+> Click here to view the full code for this project in our examples repository on GitHub. You can
+> fork it and use it as a starting point for your own project.
 
 ## Video
 
@@ -38,9 +38,9 @@ This demo is a full stack example that uses the following:
   * The `OpenAIEval` component: [src/components/evals/OpenAI.tsx](https://github.com/triggerdotdev/examples/blob/main/batch-llm-evaluator/src/components/evals/OpenAI.tsx)
 * Each of these components then uses [useRealtimeRunWithStreams](/docs/realtime/react-hooks/streams#userealtimerunwithstreams) to subscribe to the different LLM responses.
 
-<Note>
-  This example uses the older `useRealtimeRunWithStreams` hook. For new projects, consider using the new [`useRealtimeStream`](/docs/realtime/react-hooks/streams#userealtimestream-recommended) hook (SDK 4.1.0+) for a simpler API and better type safety with defined streams.
-</Note>
+> [!NOTE]
+>
+> This example uses the older `useRealtimeRunWithStreams` hook. For new projects, consider using the new [`useRealtimeStream`](/docs/realtime/react-hooks/streams#userealtimestream-recommended) hook (SDK 4.1.0+) for a simpler API and better type safety with defined streams.
 
 ## Learn more about Trigger.dev Realtime
 

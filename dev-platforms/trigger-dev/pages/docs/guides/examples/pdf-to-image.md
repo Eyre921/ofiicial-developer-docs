@@ -101,4 +101,4 @@ To test this task in the dashboard, you can use the following payload:
 
 ## Local development
 
-To test this example task locally, be sure to install any packages from the build extensions you added to your `trigger.config.ts` file to your local machine. In this case, you need to install .
+To test this example task locally, be sure to install any packages from the build extensions you added to your `trigger.config.ts` file to your local machine. In this case, you need to install mupdf-tools from MuPDF.

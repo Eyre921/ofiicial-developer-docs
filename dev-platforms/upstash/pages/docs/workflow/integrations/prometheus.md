@@ -1,5 +1,5 @@
 ---
-title: "Prometheus - Upstash QStash Integration"
+title: "Prometheus - Upstash Workflow & QStash Integration"
 source: https://upstash.com/docs/workflow/integrations/prometheus
 path: docs/workflow/integrations/prometheus
 ---

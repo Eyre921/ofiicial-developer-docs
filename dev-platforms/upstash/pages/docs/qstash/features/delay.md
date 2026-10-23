@@ -1,5 +1,5 @@
 ---
-title: "Delay"
+title: "QStash Delay"
 source: https://upstash.com/docs/qstash/features/delay
 path: docs/qstash/features/delay
 ---

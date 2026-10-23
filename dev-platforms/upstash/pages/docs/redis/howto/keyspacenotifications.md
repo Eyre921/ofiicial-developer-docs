@@ -1,5 +1,5 @@
 ---
-title: "Listen Keyspace Notifications"
+title: "Upstash Redis Keyspace Notifications"
 source: https://upstash.com/docs/redis/howto/keyspacenotifications
 path: docs/redis/howto/keyspacenotifications
 ---

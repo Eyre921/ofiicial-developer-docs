@@ -53,10 +53,10 @@ Using JWTs to authenticate Supabase operations is more secure than using service
 
 ### 2. Using Service Role Key (For Admin-Level Access)
 
-<Warning>
-  The service role key has unlimited access and bypasses all security checks. Only use it when you
-  need admin-level privileges, and never expose it client-side.
-</Warning>
+> [!WARNING]
+>
+> The service role key has unlimited access and bypasses all security checks. Only use it when you
+> need admin-level privileges, and never expose it client-side.
 
 This example code creates a Supabase client with admin-level privileges using a service role key, bypassing all Row Level Security policies to allow unrestricted database access.
 
@@ -76,29 +76,25 @@ const supabase = createClient<Database>(
 
 ### Full walkthrough guides from development to deployment
 
-<CardGroup>
-  <Card title="Edge function hello world guide" icon="book" href="/docs/guides/frameworks/supabase-edge-functions-basic">
-    Learn how to trigger a task from a Supabase edge function when a URL is visited.
-  </Card>
+> **[Edge function hello world guide](/docs/guides/frameworks/supabase-edge-functions-basic)**
+>
+> Learn how to trigger a task from a Supabase edge function when a URL is visited.
 
-  <Card title="Database webhooks guide" icon="book" href="/docs/guides/frameworks/supabase-edge-functions-database-webhooks">
-    Learn how to trigger a task from a Supabase edge function when an event occurs in your database.
-  </Card>
+> **[Database webhooks guide](/docs/guides/frameworks/supabase-edge-functions-database-webhooks)**
+>
+> Learn how to trigger a task from a Supabase edge function when an event occurs in your database.
 
-  <Card title="Supabase authentication guide" icon="book" href="/docs/guides/frameworks/supabase-authentication">
-    Learn how to authenticate Supabase tasks using JWTs for Row Level Security (RLS) or service role
-    keys for admin access.
-  </Card>
-</CardGroup>
+> **[Supabase authentication guide](/docs/guides/frameworks/supabase-authentication)**
+>
+> Learn how to authenticate Supabase tasks using JWTs for Row Level Security (RLS) or service role
+> keys for admin access.
 
 ### Task examples with code you can copy and paste
 
-<CardGroup>
-  <Card title="Supabase database operations" icon="bolt" href="/docs/guides/examples/supabase-database-operations">
-    Run basic CRUD operations on a table in a Supabase database using Trigger.dev.
-  </Card>
+> **[Supabase database operations](/docs/guides/examples/supabase-database-operations)**
+>
+> Run basic CRUD operations on a table in a Supabase database using Trigger.dev.
 
-  <Card title="Supabase Storage upload" icon="bolt" href="/docs/guides/examples/supabase-storage-upload">
-    Download a video from a URL and upload it to Supabase Storage using S3.
-  </Card>
-</CardGroup>
+> **[Supabase Storage upload](/docs/guides/examples/supabase-storage-upload)**
+>
+> Download a video from a URL and upload it to Supabase Storage using S3.

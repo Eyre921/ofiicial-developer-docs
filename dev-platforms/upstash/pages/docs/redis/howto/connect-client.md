@@ -1,5 +1,5 @@
 ---
-title: "Connect Your Client"
+title: "Connect Any Redis Client to Upstash Redis"
 source: https://upstash.com/docs/redis/howto/connect-client
 path: docs/redis/howto/connect-client
 ---

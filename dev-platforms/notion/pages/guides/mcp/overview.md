@@ -14,6 +14,8 @@ Notion MCP is a remote MCP server hosted by Notion. After you authorize a connec
 
 ![Diagram showing an MCP client connecting to Notion's remote MCP server, which uses the Notion API.](https://mintcdn.com/notion-demo/LHm9qfrJYJOPRxs6/images/docs/97125b4c4172e71d0a2293523ebf17424f7fec9fab5852d4b6c0eba2eaa0200d-image.png?fit=max\&auto=format\&n=LHm9qfrJYJOPRxs6\&q=85\&s=d562ef536d8a47c8d67111577be2521b)
 
+An MCP client connects to Notion's remote MCP server, which uses the [Notion API](/reference/intro).
+
 ## What you can do
 
 MCP clients can combine Notion MCP tools to:

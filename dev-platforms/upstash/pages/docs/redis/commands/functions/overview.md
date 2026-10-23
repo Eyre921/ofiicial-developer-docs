@@ -1,5 +1,5 @@
 ---
-title: "Functions commands"
+title: "Redis Functions Commands"
 source: https://upstash.com/docs/redis/commands/functions/overview
 path: docs/redis/commands/functions/overview
 ---

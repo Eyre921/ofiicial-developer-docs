@@ -1056,6 +1056,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Spanish-language Mexican federal law Q\&A with cited articles for LangChain agents.
 
+> **[LFG Alarm](https://github.com/lfg-gm/langchain-lfg#readme)**
+>
+> Tools that set, list and delete alarms that ring on a phone, and ring a phone now, through LFG Alarm.
+
 > **[Lindorm](https://help.aliyun.com/document_detail/174640.html)**
 >
 > Alibaba Cloud's multi-model database service.
@@ -1928,6 +1932,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Data visualization and business intelligence.
 
+> **[TableJourney](https://tablejourney.com/agents/#langchain)**
+>
+> Tools for verified places to eat, food festivals with dates, and bookable food tours and stays in 224 cities, from TableJourney's public MCP server.
+
 > **[Taiga](https://github.com/Shikenso-Analytics/langchain-taiga)**
 >
 > Project management platform for agile teams.
@@ -2155,6 +2163,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > **[Vectorize](https://docs.vectorize.io/rag-pipelines/retrieval-endpoint#access-tokens)**
 >
 > Vector database and semantic search.
+
+> **[VeqenCallbackHandler](https://github.com/Keyveve/veqen-sdks/tree/main/integrations/langchain#readme)**
+>
+> Veqen records token usage and estimated AI costs by customer and feature, with local budget checks before model calls.
 
 > **[Vequil](https://github.com/nxd914/vequil)**
 >

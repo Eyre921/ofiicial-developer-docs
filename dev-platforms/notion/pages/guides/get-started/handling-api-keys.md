@@ -82,6 +82,8 @@ For a PAT, you can also revoke the token from [Personal access tokens](https://w
 
 ![The Refresh button for an internal connection in the Developer portal.](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/92575d6725618577cb984d3f6f44c969009f0343b38ad3152b0a73966eef4d30-rotating-api-key.gif?s=ec5229713f03a96eb399fbd937f66337)
 
+Select Refresh to replace the token for an internal connection.
+
 ### 2. Update applications
 
 Replace the old token in every application and environment that used it. Test the new token, and remove the old value from configuration files and documentation.

@@ -18,11 +18,15 @@ The internal connection will be associated with the workspace of your choice. Yo
 
 ![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/docs/fd25d1f-integrations_7.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=6fcebc5334c9c3499b58208b91b798ae)
 
+Create a new connection from the Developer portal.
+
 Once the connection is created, you can update its settings as needed under the `Configuration` tab and retrieve the API token in this tab.
 
 The API token will be used to authenticate REST API requests. The connection sends the same token in every API request.
 
 ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/69c7487-integrations_8.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=34d293a88ef5911ff43aefe4dde91e2d)
+
+Find the API token in the Configuration tab.
 
 ### Connection permissions
 
@@ -140,6 +144,8 @@ After creating a public connection in the [Developer portal](https://app.notion.
 
 ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/c535461-integrations_10.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=ef1174a58a78b04444bea74627ede083)
 
+The Authorization URL field populates after a public connection is submitted for review
+
 As an example, your `.env` file using these secrets could look like this:
 
 ```shell Shell theme={null}
@@ -176,6 +182,8 @@ In the standard connection permissions flow, a prompt describes the connection [
 
 ![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/docs/ec39f97-Screen_Shot_2021-07-22_at_2.58.28_PM.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=3a82bcb02f006753164c1334e664b500)
 
+Prompt for authorizing a standard connection (no template option)
+
 If the user presses **Cancel**, they will be redirected to the redirect URI with and `error` query param added.
 
 ```
@@ -191,6 +199,8 @@ If the user opts to `Select pages`, then a page picker interface opens. A user c
 > The page picker only displays pages or databases to which a user has [full access](https://www.notion.com/help/sharing-and-permissions), because a user needs full access to a resource in order to be able to share it with a connection.
 
 ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/a4009ce-Screen_Shot_2021-07-22_at_3.09.51_PM.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=94186f31f22938dc1c7d850e227e061a)
+
+Page picker interface
 
 Users can select which pages to give the connection access to, including both private and public pages available to them. Parent pages can be selected to quickly provide access to child pages, as giving access to a parent page will provide access to all available child pages. Users can return to this view at a later time to update access settings if circumstances change.
 
@@ -210,15 +220,21 @@ To add a template to your workspace, complete the following steps:
 
 ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/b4ae671-integrations11.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=d83bd80077b7fb6bdab6c38cbadb6579)
 
+Notion URL for optional template input in connection settings.
+
 Once this URL is added, your auth flow prompt appearance will be updated.
 
 Going back to your prompt view, if the connection offers a Notion template option, the first step in the permissions flow will describe the connection [capabilities](/reference/capabilities). This is presented to the user as what the connection would be able to do in the workspace, and it prompts the user to click `Next`.
 
 ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/77076c7-template_prompt1.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=bce36d9f1a69a618dc886d1baf46d50f)
 
+Prompt for a connection with a Notion template option
+
 In the next step, a user can either choose to duplicate the template that you provided or to select existing pages to share with the connection.
 
 ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/9788bdb-template_prompt_2.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=d5ff31ef9083f78b60e615758b6f580e)
+
+A user can select to duplicate a template or to share existing pages with the connection
 
 If the user chooses to duplicate the template, then the following happens automatically:
 

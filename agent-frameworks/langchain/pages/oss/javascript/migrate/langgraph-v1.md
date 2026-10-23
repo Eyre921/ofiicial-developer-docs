@@ -4,6 +4,8 @@ source: https://docs.langchain.com/oss/javascript/migrate/langgraph-v1
 path: oss/javascript/migrate/langgraph-v1
 ---
 
+Migrate a codebase to LangGraph v1.
+
 Migrate this codebase to LangGraph v1 (requires `@langchain/langgraph` and `@langchain/core` at v1, plus `langchain` at v1 when migrating from `createReactAgent`, and Node.js 22+).
 
 Key changes:

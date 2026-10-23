@@ -8,19 +8,17 @@ The `trigger.dev dev` command is used to run your tasks locally.
 
 This runs a server on your machine that can execute Trigger.dev tasks:
 
-<CodeGroup>
-  ```bash npm theme={"theme":"css-variables"}
-  npx trigger.dev@latest dev
-  ```
+```bash npm theme={"theme":"css-variables"}
+npx trigger.dev@latest dev
+```
 
-  ```bash pnpm theme={"theme":"css-variables"}
-  pnpm dlx trigger.dev@latest dev
-  ```
+```bash pnpm theme={"theme":"css-variables"}
+pnpm dlx trigger.dev@latest dev
+```
 
-  ```bash yarn theme={"theme":"css-variables"}
-  yarn dlx trigger.dev@latest dev
-  ```
-</CodeGroup>
+```bash yarn theme={"theme":"css-variables"}
+yarn dlx trigger.dev@latest dev
+```
 
 It will first perform an update check to prevent version mismatches, failed deploys, and other errors. You will always be prompted first.
 
@@ -45,66 +43,66 @@ To test a task, an agent can trigger it with [`tasks trigger`](/docs/cli-tasks-c
 
 ## Options
 
-<ParamField type="--config | -c">
-  The name of the config file found at the project path. Defaults to `trigger.config.ts`
-</ParamField>
+**Config file** `--config | -c`
 
-<ParamField type="--project-ref | -p">
-  The project ref. Required if there is no config file.
-</ParamField>
+The name of the config file found at the project path. Defaults to `trigger.config.ts`
 
-<ParamField type="--env-file">
-  Load environment variables from a file instead of the default `.env` files. They are available to your tasks in the local dev session.
-</ParamField>
+**Project ref** `--project-ref | -p`
 
-<ParamField type="--skip-update-check">
-  Skip checking for `@trigger.dev` package updates.
-</ParamField>
+The project ref. Required if there is no config file.
 
-<ParamField type="--branch | -b">
-  The dev branch to use. Defaults to the `TRIGGER_DEV_BRANCH` environment variable. See [dev branches](/docs/deployment/dev-branches).
-</ParamField>
+**Env file** `--env-file`
 
-<ParamField type="--max-concurrent-runs">
-  The maximum number of concurrent runs in the dev session. It can only lower your dev environment's concurrency limit, not raise it.
-</ParamField>
+Load environment variables from a file instead of the default `.env` files. They are available to your tasks in the local dev session.
 
-<ParamField type="--keep-tmp-files">
-  Keep temporary files after the dev session ends.
-</ParamField>
+**Skip update check** `--skip-update-check`
 
-<ParamField type="--analyze">
-  Analyzes the build output and displays detailed import timings. This is useful for debugging the
-  start times for your runs which can be caused by importing lots of code or heavy packages.
-</ParamField>
+Skip checking for `@trigger.dev` package updates.
+
+**Branch** `--branch | -b`
+
+The dev branch to use. Defaults to the `TRIGGER_DEV_BRANCH` environment variable. See [dev branches](/docs/deployment/dev-branches).
+
+**Max concurrent runs** `--max-concurrent-runs`
+
+The maximum number of concurrent runs in the dev session. It can only lower your dev environment's concurrency limit, not raise it.
+
+**Keep temporary files** `--keep-tmp-files`
+
+Keep temporary files after the dev session ends.
+
+**Analyze build output** `--analyze`
+
+Analyzes the build output and displays detailed import timings. This is useful for debugging the
+start times for your runs which can be caused by importing lots of code or heavy packages.
 
 ### Common options
 
 These options are available on most commands.
 
-<ParamField type="--profile">
-  The login profile to use. Defaults to the current profile, which is set by your last `login` or `switch` (initially "default").
-</ParamField>
+**Login profile** `--profile`
 
-<ParamField type="--api-url | -a">
-  Override the default API URL. If not specified, it uses `https://api.trigger.dev`. This can also be set via the `TRIGGER_API_URL` environment variable.
-</ParamField>
+The login profile to use. Defaults to the current profile, which is set by your last `login` or `switch` (initially "default").
 
-<ParamField type="--log-level | -l">
-  The CLI log level to use. Options are `debug`, `info`, `log`, `warn`, `error`, and `none`. This does not affect the log level of your trigger.dev tasks. Defaults to `log`.
-</ParamField>
+**API URL** `--api-url | -a`
 
-<ParamField type="--skip-telemetry">
-  Opt-out of sending telemetry data. This can also be done via the `TRIGGER_TELEMETRY_DISABLED` environment variable. Just set it to anything other than an empty string.
-</ParamField>
+Override the default API URL. If not specified, it uses `https://api.trigger.dev`. This can also be set via the `TRIGGER_API_URL` environment variable.
 
-<ParamField type="--help | -h">
-  Shows the help information for the command.
-</ParamField>
+**Log level** `--log-level | -l`
 
-<ParamField type="--version | -v">
-  Displays the version number of the CLI.
-</ParamField>
+The CLI log level to use. Options are `debug`, `info`, `log`, `warn`, `error`, and `none`. This does not affect the log level of your trigger.dev tasks. Defaults to `log`.
+
+**Skip telemetry** `--skip-telemetry`
+
+Opt-out of sending telemetry data. This can also be done via the `TRIGGER_TELEMETRY_DISABLED` environment variable. Just set it to anything other than an empty string.
+
+**Help** `--help | -h`
+
+Shows the help information for the command.
+
+**Version** `--version | -v`
+
+Displays the version number of the CLI.
 
 ## Concurrently running the terminal
 

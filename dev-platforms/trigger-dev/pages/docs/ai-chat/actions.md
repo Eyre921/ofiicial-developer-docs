@@ -137,9 +137,9 @@ const stream = await agentChat.sendAction({ type: "rollback", targetMessageId: "
 
 The action payload is validated against `actionSchema` on the backend; invalid actions throw and surface as a stream error. The `action` parameter in `onAction` is fully typed from the schema.
 
-<Note>
-  For silent state changes that should never appear as a turn (e.g. injecting background context), use [`chat.inject()`](/docs/ai-chat/background-injection) instead. Actions are explicit user-driven mutations; injections are agent-side context updates.
-</Note>
+> [!NOTE]
+>
+> For silent state changes that should never appear as a turn (e.g. injecting background context), use [`chat.inject()`](/docs/ai-chat/background-injection) instead. Actions are explicit user-driven mutations; injections are agent-side context updates.
 
 ## See also
 

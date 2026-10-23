@@ -8,106 +8,98 @@ This guide will show you how to setup Trigger.dev in your existing Node.js proje
 
 ## Prerequisites
 
-* Setup a project in&#x20;
+* Setup a project in Node.js
 * Ensure TypeScript is installed
 * [Create a Trigger.dev account](https://cloud.trigger.dev)
 * Create a new Trigger.dev project
 
 ## Initial setup
 
-<Steps>
-  <Step title="Run the CLI `init` command">
-    The easiest way to get started is to use the CLI. It will add Trigger.dev to your existing project, create a `/trigger` folder and give you an example task.
+**1. Run the CLI `init` command**
 
-    Run this command in the root of your project to get started:
+The easiest way to get started is to use the CLI. It will add Trigger.dev to your existing project, create a `/trigger` folder and give you an example task.
 
-    <CodeGroup>
-      ```bash npm theme={"theme":"css-variables"}
-      npx trigger.dev@latest init
-      ```
+Run this command in the root of your project to get started:
 
-      ```bash pnpm theme={"theme":"css-variables"}
-      pnpm dlx trigger.dev@latest init
-      ```
+```bash npm theme={"theme":"css-variables"}
+npx trigger.dev@latest init
+```
 
-      ```bash yarn theme={"theme":"css-variables"}
-      yarn dlx trigger.dev@latest init
-      ```
-    </CodeGroup>
+```bash pnpm theme={"theme":"css-variables"}
+pnpm dlx trigger.dev@latest init
+```
 
-    It will do a few things:
+```bash yarn theme={"theme":"css-variables"}
+yarn dlx trigger.dev@latest init
+```
 
-    <Tip title="MCP Server">
-      Our [Trigger.dev MCP server](/docs/mcp-introduction) gives your AI assistant direct access to Trigger.dev tools; search docs, trigger tasks, deploy projects, and monitor runs. We recommend installing it for the best developer experience.
-    </Tip>
+It will do a few things:
 
-    1. Ask if you want to set up AI tooling: the [Trigger.dev MCP server](/docs/mcp-introduction) and/or Trigger.dev agent skills (shown the first time you run init). If you choose either, you can let your AI assistant finish the setup instead of the CLI.
-    2. Log you into the CLI if you're not already logged in.
-    3. Ask you to select your project.
-    4. Install the required SDK packages.
-    5. Ask where you'd like to create the `/trigger` directory and create it with an example task.
-    6. Create a `trigger.config.ts` file in the root of your project.
+> [!TIP]
+>
+> Our [Trigger.dev MCP server](/docs/mcp-introduction) gives your AI assistant direct access to Trigger.dev tools; search docs, trigger tasks, deploy projects, and monitor runs. We recommend installing it for the best developer experience.
 
-    Install the "Hello World" example task when prompted. We'll use this task to test the setup.
-  </Step>
+1. Ask if you want to set up AI tooling: the [Trigger.dev MCP server](/docs/mcp-introduction) and/or Trigger.dev agent skills (shown the first time you run init). If you choose either, you can let your AI assistant finish the setup instead of the CLI.
+2. Log you into the CLI if you're not already logged in.
+3. Ask you to select your project.
+4. Install the required SDK packages.
+5. Ask where you'd like to create the `/trigger` directory and create it with an example task.
+6. Create a `trigger.config.ts` file in the root of your project.
 
-  <Step title="Run the CLI `dev` command">
-    The CLI `dev` command runs a server for your tasks. It watches for changes in your `/trigger` directory and communicates with the Trigger.dev platform to register your tasks, perform runs, and send data back and forth.
+Install the "Hello World" example task when prompted. We'll use this task to test the setup.
 
-    It can also update your `@trigger.dev/*` packages to prevent version mismatches and failed deploys. You will always be prompted first.
+**2. Run the CLI `dev` command**
 
-    <CodeGroup>
-      ```bash npm theme={"theme":"css-variables"}
-      npx trigger.dev@latest dev
-      ```
+The CLI `dev` command runs a server for your tasks. It watches for changes in your `/trigger` directory and communicates with the Trigger.dev platform to register your tasks, perform runs, and send data back and forth.
 
-      ```bash pnpm theme={"theme":"css-variables"}
-      pnpm dlx trigger.dev@latest dev
-      ```
+It can also update your `@trigger.dev/*` packages to prevent version mismatches and failed deploys. You will always be prompted first.
 
-      ```bash yarn theme={"theme":"css-variables"}
-      yarn dlx trigger.dev@latest dev
-      ```
-    </CodeGroup>
-  </Step>
+```bash npm theme={"theme":"css-variables"}
+npx trigger.dev@latest dev
+```
 
-  <Step title="Perform a test run using the dashboard">
-    The CLI `dev` command spits out various useful URLs, including a link to the dashboard. Open it, find your Example task on the Tasks page, and press the "Test" button to open its test page.
+```bash pnpm theme={"theme":"css-variables"}
+pnpm dlx trigger.dev@latest dev
+```
 
-    Most tasks have a "payload" which you enter in the JSON editor, but our example task doesn't need any input. You can also configure run options, pre-populate the form from recent runs, and save run templates.
+```bash yarn theme={"theme":"css-variables"}
+yarn dlx trigger.dev@latest dev
+```
 
-    Press the "Run test" button.
+**3. Perform a test run using the dashboard**
 
-    <img alt="Test page" />
-  </Step>
+The CLI `dev` command spits out various useful URLs, including a link to the dashboard. Open it, find your Example task on the Tasks page, and press the "Test" button to open its test page.
 
-  <Step title="View your run">
-    Congratulations, you should see the run page which will live reload showing you the current state of the run.
+Most tasks have a "payload" which you enter in the JSON editor, but our example task doesn't need any input. You can also configure run options, pre-populate the form from recent runs, and save run templates.
 
-    <img alt="Run page" />
+Press the "Run test" button.
 
-    If you go back to your terminal you'll see that the dev command also shows the task status and links to the run log.
+![Test page](https://mintcdn.com/trigger/2gGDaV8FR4pPhx_f/images/test-dashboard.png?fit=max\&auto=format\&n=2gGDaV8FR4pPhx_f\&q=85\&s=9a7c31f3499500be59e62586763e03d1)
 
-    <img alt="Terminal showing completed run" />
-  </Step>
-</Steps>
+**4. View your run**
+
+Congratulations, you should see the run page which will live reload showing you the current state of the run.
+
+![Run page](https://mintcdn.com/trigger/5SxX7bFjJKRsidSL/images/run-page.png?fit=max\&auto=format\&n=5SxX7bFjJKRsidSL\&q=85\&s=4b0bb5f9b181499cf324cdb8d5d673a8)
+
+If you go back to your terminal you'll see that the dev command also shows the task status and links to the run log.
+
+![Terminal showing completed run](https://mintcdn.com/trigger/0bD0UfsjaINxS6Tw/images/terminal-completed-run.png?fit=max\&auto=format\&n=0bD0UfsjaINxS6Tw\&q=85\&s=a9284c5228343b72d798c6e36f5acb24)
 
 ## Useful next steps
 
-<CardGroup>
-  <Card title="Tasks overview" icon="diagram-subtask" href="/docs/tasks/overview">
-    Learn what tasks are and their options
-  </Card>
+> **[Tasks overview](/docs/tasks/overview)**
+>
+> Learn what tasks are and their options
 
-  <Card title="Writing tasks" icon="pen-nib" href="/docs/writing-tasks-introduction">
-    Learn how to write your own tasks
-  </Card>
+> **[Writing tasks](/docs/writing-tasks-introduction)**
+>
+> Learn how to write your own tasks
 
-  <Card title="Deploy using the CLI" icon="terminal" href="/docs/cli-deploy-commands">
-    Learn how to deploy your task manually using the CLI
-  </Card>
+> **[Deploy using the CLI](/docs/cli-deploy-commands)**
+>
+> Learn how to deploy your task manually using the CLI
 
-  <Card title="Deploy using GitHub actions" icon="github" href="/docs/github-actions">
-    Learn how to deploy your task using GitHub actions
-  </Card>
-</CardGroup>
+> **[Deploy using GitHub actions](/docs/github-actions)**
+>
+> Learn how to deploy your task using GitHub actions

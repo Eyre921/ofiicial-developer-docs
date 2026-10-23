@@ -6,12 +6,6 @@ path: docs/webhooks/linear
 
 Turn a chat.agent into a Linear agent: assign it an issue or @mention it, and it works the issue inside Linear's agent session UI.
 
-<PrivateBeta>
-  [Request access](https://trigger.dev/webhooks-beta) and we'll turn webhooks on for your
-  organization and send you the prerelease packages. Webhooks are open source, so they work
-  self-hosted too. APIs may change before general availability.
-</PrivateBeta>
-
 Linear opens an **agent session** when someone @mentions your app in an issue or delegates (assigns) an issue to it. `linear()` from `@trigger.dev/linear` is a [channel](/docs/webhooks/channels) connector for those sessions: each one becomes a durable Trigger.dev [session](/docs/ai-chat/sessions), the user's prompt runs as a turn, and the agent's work shows up in Linear as thoughts, actions, a plan, an approval card when it needs a decision, and a response when it is done.
 
 ```ts theme={"theme":"css-variables"}
@@ -35,23 +29,21 @@ The `run()` loop is the same one a browser chat or a Slack thread uses. Verifica
 
 ## Setup
 
-<Steps>
-  <Step title="Create the OAuth app">
-    In Linear, create an OAuth application under **Settings, API**. Enable **Webhooks** on it and turn on the **Agent session events** category (Inbox notifications and Permission changes are useful too). Copy the webhook **signing secret**.
-  </Step>
+**1. Create the OAuth app**
 
-  <Step title="Install it as an agent">
-    Authorize the app with `actor=app` in the authorization URL and request the `app:assignable` and `app:mentionable` scopes, so members can assign issues to it and @mention it. Installation needs a workspace admin. Keep the resulting access token; pass it as `token`.
-  </Step>
+In Linear, create an OAuth application under **Settings, API**. Enable **Webhooks** on it and turn on the **Agent session events** category (Inbox notifications and Permission changes are useful too). Copy the webhook **signing secret**.
 
-  <Step title="Deploy and connect the endpoint">
-    Declare the endpoint with `webhookSource()` from `@trigger.dev/linear` and pass it to `linear({ endpoint })`. Deploying registers the hosted [endpoint](/docs/webhooks/connect). Paste the app's webhook signing secret as the endpoint's signing secret, and set the app's webhook URL to the endpoint's URL. The endpoint's setup prompt walks an AI coding agent through these settings.
-  </Step>
+**2. Install it as an agent**
 
-  <Step title="Try it">
-    Open an issue and assign it to the app, or write a comment that @mentions it. Linear shows the agent's first thought within a few seconds and then its work.
-  </Step>
-</Steps>
+Authorize the app with `actor=app` in the authorization URL and request the `app:assignable` and `app:mentionable` scopes, so members can assign issues to it and @mention it. Installation needs a workspace admin. Keep the resulting access token; pass it as `token`.
+
+**3. Deploy and connect the endpoint**
+
+Declare the endpoint with `webhookSource()` from `@trigger.dev/linear` and pass it to `linear({ endpoint })`. Deploying registers the hosted [endpoint](/docs/webhooks/connect). Paste the app's webhook signing secret as the endpoint's signing secret, and set the app's webhook URL to the endpoint's URL. The endpoint's setup prompt walks an AI coding agent through these settings.
+
+**4. Try it**
+
+Open an issue and assign it to the app, or write a comment that @mentions it. Linear shows the agent's first thought within a few seconds and then its work.
 
 ## What the agent sees
 
@@ -189,9 +181,9 @@ The first Linear turn binds the session to the agent session ([bound sessions](/
 | `delivery` | `"final"` or `"stream"` | `"final"` (default) posts the response when the turn ends. `"stream"` also posts ephemeral thoughts as the reply streams. |
 | `apiUrl` | `string` | Override the Linear GraphQL URL, for testing against a mock. Files on its origin are treated as Linear uploads. |
 
-<Note>
-  Linear expects the first activity within ten seconds of opening a session. The connector posts it at
-  the top of the run, so on a cold start close to that limit the session can show as unresponsive for a
-  moment; it recovers as soon as the thought lands. Linear retries a failed delivery after one minute,
-  one hour and six hours, and the endpoint deduplicates those retries.
-</Note>
+> [!NOTE]
+>
+> Linear expects the first activity within ten seconds of opening a session. The connector posts it at
+> the top of the run, so on a cold start close to that limit the session can show as unresponsive for a
+> moment; it recovers as soon as the thought lands. Linear retries a failed delivery after one minute,
+> one hour and six hours, and the endpoint deduplicates those retries.

@@ -1,5 +1,5 @@
 ---
-title: "Security"
+title: "Upstash Redis Security"
 source: https://upstash.com/docs/redis/features/security
 path: docs/redis/features/security
 ---

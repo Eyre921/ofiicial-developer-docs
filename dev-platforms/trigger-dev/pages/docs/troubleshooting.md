@@ -271,9 +271,9 @@ This can happen in different situations, for example when using plain strings as
 
 If you see a `TASK_RUN_STALLED_EXECUTING` error it means that we didn't receive a heartbeat from your task before the stall timeout. We automatically heartbeat runs every 30 seconds, and the heartbeat timeout is 5 minutes.
 
-<Note>
-  If this was a dev run, then most likely the `trigger.dev dev` CLI was stopped, and it wasn't an issue with your code.
-</Note>
+> [!NOTE]
+>
+> If this was a dev run, then most likely the `trigger.dev dev` CLI was stopped, and it wasn't an issue with your code.
 
 These errors can happen when code inside your task is blocking the event loop for too long. The most likely cause would be an accidental infinite loop. It could also be a CPU-heavy operation that's blocking the event loop, like nested loops with very large arrays.
 
@@ -293,9 +293,9 @@ for (const row of bigDataset) {
 }
 ```
 
-<Note>
-  You could also offload the CPU-heavy work to a Node.js worker thread, but this is more complex to setup currently. We are planning on adding support for this in the future.
-</Note>
+> [!NOTE]
+>
+> You could also offload the CPU-heavy work to a Node.js worker thread, but this is more complex to setup currently. We are planning on adding support for this in the future.
 
 If the above doesn't work, then we recommend you try increasing the machine size of your task. See our [machines guide](/docs/machines) for more information.
 
@@ -342,9 +342,9 @@ return await client.get("foo");
 
 The same fix applies to any library that emits `"error"` events. As a rule, attach an `.on("error", ...)` listener to every long-lived client you create inside a task.
 
-<Note>
-  Unhandled promise rejections (e.g. `Promise.reject(...)` with no `.catch`) take the same path — Node routes them through `uncaughtException` by default, and the runtime treats them as `TASK_RUN_UNCAUGHT_EXCEPTION` for the same reasons. Make sure every promise either gets `await`ed or has a `.catch(...)` handler.
-</Note>
+> [!NOTE]
+>
+> Unhandled promise rejections (e.g. `Promise.reject(...)` with no `.catch`) take the same path — Node routes them through `uncaughtException` by default, and the runtime treats them as `TASK_RUN_UNCAUGHT_EXCEPTION` for the same reasons. Make sure every promise either gets `await`ed or has a `.catch(...)` handler.
 
 ### Realtime stream error (`sendBatchNonBlocking` / `S2AppendSession`)
 

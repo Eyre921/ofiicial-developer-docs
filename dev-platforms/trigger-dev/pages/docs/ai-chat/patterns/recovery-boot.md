@@ -122,11 +122,11 @@ type RecoveryBootEvent<TUIM extends UIMessage = UIMessage> = {
 };
 ```
 
-<Note>
-  `cause` is currently always `"unknown"` — the run engine doesn't yet plumb the
-  real reason into the continuation payload. The enum is forward-looking; don't
-  branch behavior on it for now.
-</Note>
+> [!NOTE]
+>
+> `cause` is currently always `"unknown"` — the run engine doesn't yet plumb the
+> real reason into the continuation payload. The enum is forward-looking; don't
+> branch behavior on it for now.
 
 ### Return shape
 
@@ -144,12 +144,12 @@ type RecoveryBootResult<TUIM extends UIMessage = UIMessage> = {
 * **`recoveredTurns`** — user messages to dispatch as fresh turns after the chain is restored. Defaults to `inFlightUsers.slice(1)` when the smart default consumed the first user, otherwise `inFlightUsers`.
 * **`beforeBoot`** — runs after the writer flushes and before the first recovered turn fires. Use for blocking persistence (write the partial to your DB so a later turn can reference it). Errors bubble — wrap your own try/catch if you want to soft-fail.
 
-<Note>
-  The splice needs a follow-up user to answer, so it only applies with two or
-  more in-flight users. With exactly one — the plain OOM or crash-mid-answer
-  case — the orphan partial is dropped and that single user is re-dispatched as
-  a fresh turn, so the interrupted question still gets answered.
-</Note>
+> [!NOTE]
+>
+> The splice needs a follow-up user to answer, so it only applies with two or
+> more in-flight users. With exactly one — the plain OOM or crash-mid-answer
+> case — the orphan partial is dropped and that single user is re-dispatched as
+> a fresh turn, so the interrupted question still gets answered.
 
 ## Examples
 

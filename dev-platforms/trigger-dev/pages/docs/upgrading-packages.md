@@ -34,22 +34,20 @@ These commands will also give you the option to upgrade if you are behind on ver
 
 You can deploy using [GitHub Actions](/docs/github-actions). We recommend that you lock your version in the workflow file so make sure to upgrade.
 
-<Warning>
-  The deploy step will fail if version mismatches are detected. It's important that you update the
-  version using the steps below.
-</Warning>
+> [!WARNING]
+>
+> The deploy step will fail if version mismatches are detected. It's important that you update the
+> version using the steps below.
 
-<Steps>
-  <Step title="Find your workflow file">
-    In your `.github/workflows` folder you can find your workflow yml files. You may have a prod
-    and staging one.
-  </Step>
+**1. Find your workflow file**
 
-  <Step title="Update the version for the run command">
-    In the steps you'll see a `run` command. It will run the trigger.dev deploy CLI command. Make
-    sure to update this version to the latest version (e.g. `npx trigger.dev@4.7.3 deploy`).
-  </Step>
-</Steps>
+In your `.github/workflows` folder you can find your workflow yml files. You may have a prod
+and staging one.
+
+**2. Update the version for the run command**
+
+In the steps you'll see a `run` command. It will run the trigger.dev deploy CLI command. Make
+sure to update this version to the latest version (e.g. `npx trigger.dev@4.7.3 deploy`).
 
 ## package.json dev dependency
 

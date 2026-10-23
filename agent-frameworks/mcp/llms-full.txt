@@ -7903,6 +7903,8 @@ The package also installs **`mcpdo`**, an experimental [connection client](/docs
 
 ![](https://mintcdn.com/mcp/pUebPdrb6PY5_mfH/images/inspector/web-monitor-sidebar.png?fit=max\&auto=format\&n=pUebPdrb6PY5_mfH\&q=85\&s=2ced9eeefa020be53fe4fe957b7d07c6)
 
+The MCP Inspector web client after a tool call, with the monitoring sidebar pinned and widened so the JSON-RPC exchange stays readable while you work.
+
 ## Quickstart
 
 The Inspector requires **Node 22.19.0 or newer** and runs directly through `npx`. No installation is required:
@@ -8098,6 +8100,8 @@ challenge](#mid-session-re-authorization), the CLI retries the refused
 request automatically, and the web client asks you to retry the action.
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/auth-connection-info.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=01a8d11058c2d33e0069b8dec98591b5)
+
+Connection Info after a completed OAuth flow: the authorization status, the dynamically registered client, and the granted scopes.
 
 ## Callback URLs
 
@@ -8965,6 +8969,8 @@ Once connected, the negotiated era is shown as a badge on the **Protocol** tab's
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/settings-protocol-era.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=34566c45f97c8af0e2c0d9ee0493b572)
 
+Server Settings: the Protocol Era selector, with all three choices.
+
 ## Reproducing each era locally
 
 Every section below ends with a **Reproduce with ...** pointer to a JSON config for one of the **composable test servers** shipped in the Inspector repository. Clone the repo and build the test servers:
@@ -9009,7 +9015,11 @@ Reproduce with `test-servers/configs/logging-modern-http.json`.
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/logs-legacy.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=ec5fddd86d1fe7ecc1ef83549798f33e)
 
+Legacy: the Logs tab offers a session-scoped Set Active Level control, and a log arrives after calling send\_notification.
+
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/logs-modern.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=85a1d7118a1e693930aefab8ca6b21a3)
+
+Modern: the same tab instead offers Log Level per Request. The level is stamped on every outgoing request, and the log rides that request's stream.
 
 ***
 
@@ -9030,6 +9040,8 @@ Because the subscription is now a long-lived stream rather than a session flag, 
 Reproduce with `test-servers/configs/subscriptions-modern-http.json`. To see the `Not acknowledged` state, use `test-servers/configs/subscriptions-never-acknowledged-http.json`. That server acknowledges your first subscription, then refuses every later listen, so subscribing to a second resource trips the badge.
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/resources-subscriptions-modern.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=5ca4c64c6783eb210fe54248f03de144)
+
+A modern subscription: the Subscriptions section carries a LISTENING stream-status badge that a legacy subscription has no need for.
 
 ***
 
@@ -9055,7 +9067,11 @@ Reproduce with `test-servers/configs/tasks-modern-http.json` (tools `modern_task
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/tasks-legacy.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=777729bfc1b58b359808c8120d9597d3)
 
+Legacy: the Tasks tab is populated from tasks/list, and the payload is fetched with a blocking tasks/result.
+
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/tasks-modern.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=8e90d128528463fd672537c79db2e1fe)
+
+Modern: the client polls tasks/get on handles it already holds, and the completed task inlines its result; note resultType: complete in the full task object.
 
 ***
 
@@ -9086,7 +9102,11 @@ The Inspector drives MRTR **manually**, so each round pauses at the **pending-re
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/mrtr-pending-request.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=99f8acb7f845a12aed42bcea4d310fee)
 
+An MRTR round paused at the pending-request modal, tagged input\_required. Answering it retries the original request.
+
 ![](https://mintcdn.com/mcp/pUebPdrb6PY5_mfH/images/inspector/mrtr-protocol-conversation.png?fit=max\&auto=format\&n=pUebPdrb6PY5_mfH\&q=85\&s=b083d8127a7a67028fcd9702b25aeac1)
+
+The monitoring sidebar's Protocol tab after mrtr\_confirm completes. Both tools/call rounds sit inside one MRTR conversation, Round 1 tagged input\_required and Round 2 complete, while unrelated traffic stays outside it.
 
 ***
 
@@ -9109,6 +9129,8 @@ Reproduce with `test-servers/configs/xmcpheader-modern-http.json`.
 > request, so they reach the server even though the browser never sends them.
 
 ![](https://mintcdn.com/mcp/pUebPdrb6PY5_mfH/images/inspector/tools-sep2243.png?fit=max\&auto=format\&n=pUebPdrb6PY5_mfH\&q=85\&s=0e011c3012332c0a74d0f57fc84a5cf2)
+
+get\_weather shows its mirrored city -> Mcp-Param-City header, and the Network sidebar confirms the call carried mcp-param-city: Boston. invalid\_header\_tool is struck through under the Excluded (SEP-2243) divider.
 
 ### `-32602` error panels
 
@@ -9139,7 +9161,11 @@ The modern era standardizes a set of `Mcp-*` HTTP headers and introduces a riche
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/network-modern-headers.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=7df4c01f5ab68aa7632ac3b5a5866b42)
 
+The Network tab shows the HTTP layer; here, the 400 Bad Request the strict server answered with.
+
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/protocol-modern-error.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=d578ea8262ff327e4d61d3697937900b)
+
+The Protocol tab renders the same failure as a typed spec error: -32022 UnsupportedProtocolVersion, with the versions the server does support.
 
 ***
 
@@ -9216,6 +9242,8 @@ mcp-inspector --config ~/Library/Application\ Support/Claude/claude_desktop_conf
 `--config` guarantees the file is served as-is and never written, seeded, or migrated.
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/import-config.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=c9f5229c2d827f4bcab37938879f21f2)
+
+Add Servers offers import from an existing client config or from a registry server.json.
 
 ## Reviewing an MCP App
 
@@ -9674,6 +9702,8 @@ npx @modelcontextprotocol/inspector --tui node build/index.js   # with an ad-hoc
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/tui-tools.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=5d11d64f4b98df8c26e7ac048f38576f)
 
+The TUI connected to a server, on the Tools tab, showing a tool's input schema.
+
 ## Choosing servers
 
 Unlike the CLI, the TUI has no `--server <name>` flag for picking one entry: it reads its servers from a catalog or config file, loads every server in it, and lets you pick from an on-screen list:
@@ -9747,6 +9777,8 @@ See [Authorization](/docs/2026-07-28/tools/inspector/authorization) for the full
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/tui-auth.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=2e5ef574e80e81c4b49fa2ef0eac0528)
 
+The Auth tab. It shows the same OAuth fields as the web client's Connection Info or, before any authorization has happened, says there is no OAuth information yet.
+
 ## Requirements
 
 The TUI needs a real TTY with raw-mode support. It will not run usefully in a headless CI job; use the [CLI](/docs/2026-07-28/tools/inspector/cli) there.
@@ -9807,11 +9839,15 @@ Production `--web` serves a built bundle. In the published package that bundle a
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/web-tab-bar.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=04bb61c4a45ff12e8337c701e195c386)
 
+The tab bar on a connected server. Which tabs appear depends on the capabilities the server reported.
+
 ### The monitoring sidebar
 
 **Tasks**, **Logs**, **Protocol**, **Network**, and **Console** form a *monitor group*. Pin the group and they leave the tab bar and move into a resizable right-hand column, so you can watch traffic while working in Tools or Resources. Drag the column's edge to resize it, from 320 to 720 pixels wide. The column width and the selected monitor tab persist across reloads.
 
 ![](https://mintcdn.com/mcp/pUebPdrb6PY5_mfH/images/inspector/web-monitor-sidebar.png?fit=max\&auto=format\&n=pUebPdrb6PY5_mfH\&q=85\&s=2ced9eeefa020be53fe4fe957b7d07c6)
+
+The monitoring sidebar pinned beside the Tools screen and dragged to its full width, with the tool call's request and response expanded in the Protocol stream.
 
 ## Servers
 
@@ -9842,6 +9878,8 @@ A footer at the bottom of **Server Settings**, **Client Settings** and the **Add
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/web-server-settings.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=d42be09ee8de7e45e58a8ff1a444ba52)
 
+Server Settings with Advertised Extensions expanded. Unchecking one changes what the Inspector declares at connect.
+
 ## Tools
 
 Select a tool to see its description, its input schema rendered as a form, and its annotations. Fill the form and call it; the result renders below with structured content, embedded resources, and images handled natively.
@@ -9850,17 +9888,23 @@ On modern-era servers this screen also shows mirrored `Mcp-Param-*` headers, exc
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/web-tools.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=7ef469a969f398ac0ec70cf019c133da)
 
+A tool call and its rendered result. The argument form collapses into the result panel once the call returns.
+
 ## Resources
 
 Lists resources and resource templates with their MIME types and descriptions, reads content on selection, and offers **Subscribe** on servers that support subscriptions. The subscription mechanics differ by era; see [Resource subscriptions](/docs/2026-07-28/tools/inspector/protocol-eras#resource-subscriptions).
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/web-resources.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=1a94ea452e1ef8aaf2c9f486ed810b28)
 
+A resource read, with an active subscription listed below the resource list.
+
 ## Prompts
 
 Lists prompt templates with their arguments, and renders the generated messages for the arguments you supply, which is the fastest way to confirm a prompt produces what you intended.
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/web-prompts.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=81b16312b1adff5601622a72444b0f92)
+
+A prompt rendered with the arguments supplied.
 
 ## Apps
 
@@ -9874,6 +9918,8 @@ See [Recipes](/docs/2026-07-28/tools/inspector/recipes#reviewing-an-mcp-app) for
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/web-apps.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=bd311848514f7d251640012986abfc4d)
 
+An MCP App rendered in its sandboxed frame, with the app's own logs below it.
+
 ## Protocol, Network, and Console
 
 The three tabs show the same traffic at different levels of detail:
@@ -9885,6 +9931,8 @@ The three tabs show the same traffic at different levels of detail:
 Secrets in Network headers and bodies are masked, with a control to reveal them; Protocol and Console show traffic as sent. Entries can be cleared or exported.
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/web-protocol.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=f31338c83a389c5588f11c0d5b2b97ed)
+
+The Protocol tab with an entry expanded, showing the full JSON-RPC exchange.
 
 ## Deep links
 
@@ -21992,6 +22040,8 @@ The agent will recognize the `create-mcp-app` skill is relevant, load its instru
 
 ![Creating a new MCP App with Claude Code](https://mintcdn.com/mcp/GU_E-622SLWFdCrP/images/quickstart-apps/create-mcp-app-skill.gif?s=6c3a3b8a7590b5e97b5c3d8480a9ab12)
 
+Creating a new MCP App with Claude Code
+
 **3. Run your app**
 
 ```bash macOS/Linux theme={null}
@@ -22011,6 +22061,8 @@ npm install; npm run build; npm run serve
 Follow the instructions in [Testing your app](#testing-your-app) below. For the color picker example, start a new chat and ask Claude to provide you a color picker.
 
 ![Testing the color picker in Claude](https://mintcdn.com/mcp/GU_E-622SLWFdCrP/images/quickstart-apps/test-color-picker.gif?s=09413b99bc31d7edc7f9aa22df4faa6a)
+
+Testing the color picker in Claude
 
 ### Manual setup
 
@@ -22320,6 +22372,8 @@ finally **Add custom connector**.
 
 ![Adding a custom connector in Claude](https://mintcdn.com/mcp/GU_E-622SLWFdCrP/images/quickstart-apps/add-custom-connector.gif?s=c4ec0750413ff7575c7f9492e2713212)
 
+Adding a custom connector in Claude
+
 ### Testing with the basic-host
 
 The `ext-apps` repository includes a test host for development. Clone the repo and
@@ -22355,6 +22409,8 @@ resource and renders it in a sandboxed iframe. You can then interact with your
 app and verify that tool calls work correctly.
 
 ![Example of the QR code MCP App running with the basic host](https://mintcdn.com/mcp/GU_E-622SLWFdCrP/images/quickstart-apps/qr-code-server.gif?s=48a3b47239b8394017c0949162d63de9)
+
+Testing the QR code MCP App with the basic host
 
 ## Learn more
 
@@ -22393,6 +22449,8 @@ just read about it. MCP Apps let servers return interactive HTML interfaces (dat
 visualizations, forms, dashboards) that render directly in the chat.
 
 ![An Excalidraw MCP App drawing a sequence diagram inside a Claude conversation](https://mintcdn.com/mcp/jbEkS7m9mV8aY_kB/images/apps/excalidraw.gif?s=c783b088f3c687e4dd4cf05c0d20f325)
+
+Excalidraw MCP App, running in Claude
 
 ## Why not just build a web app?
 
@@ -32575,7 +32633,7 @@ of the published extension.
 | Role | Name | Organization | GitHub | Term |
 | - | - | - | - | - |
 | Lead | Ola Hungerford | Nordstrom / MCP Maintainer | [@olaservo](https://github.com/olaservo) | Initial |
-| Lead | Peter Alexander | Anthropic / Core Maintainer | [@pja-ant](https://github.com/pja-ant) | Initial |
+| Lead | Peter Alexander | Core Maintainer | [@poita](https://github.com/poita) | Initial |
 | Lead | Sambhav Kothari | Bloomberg / MCP Maintainer | [@sambhav](https://github.com/sambhav) | Initial |
 
 ## Authority & Decision Rights
@@ -32596,7 +32654,7 @@ of the published extension.
 | Name | Organization | GitHub | Discord | Level |
 | - | - | - | - | - |
 | Ola Hungerford | Nordstrom / MCP Maintainer | [@olaservo](https://github.com/olaservo) | | Lead |
-| Peter Alexander | Anthropic / Core Maintainer | [@pja-ant](https://github.com/pja-ant) | | Lead |
+| Peter Alexander | Core Maintainer | [@poita](https://github.com/poita) | | Lead |
 | Sambhav Kothari | Bloomberg / MCP Maintainer | [@sambhav](https://github.com/sambhav) | | Lead |
 | Yu Yi | Google | [@erain](https://github.com/erain) | | Participant |
 | Sunish Sheth | Databricks | [@sunishsheth2009](https://github.com/sunishsheth2009) | | Participant |
@@ -32709,7 +32767,7 @@ The Tasks and Events Working Group exists to continue the development of Tasks, 
 | Role | Name | Organization | GitHub | Term |
 | - | - | - | - | - |
 | Lead | Clare Liguori | Amazon Web Services | [@clareliguori](https://github.com/clareliguori) | Initial |
-| Lead | Peter Alexander | Anthropic | [@pja-ant](https://github.com/pja-ant) | Initial |
+| Lead | Peter Alexander | - | [@poita](https://github.com/poita) | Initial |
 | Lead | Luca Chang | Amazon Web Services | [@LucaButBoring](https://github.com/LucaButBoring) | Initial |
 | Lead | Caitie McCaffrey | Microsoft | [@CaitieM20](https://github.com/CaitieM20) | Initial |
 
@@ -32731,7 +32789,7 @@ The Tasks and Events Working Group exists to continue the development of Tasks, 
 | Name | Organization | GitHub | Discord | Level |
 | - | - | - | - | - |
 | Clare Liguori | Amazon Web Services | [@clareliguori](https://github.com/clareliguori) | | Lead |
-| Peter Alexander | Anthropic | [@pja-ant](https://github.com/pja-ant) | | Lead |
+| Peter Alexander | - | [@poita](https://github.com/poita) | | Lead |
 | Luca Chang | Amazon Web Services | [@LucaButBoring](https://github.com/LucaButBoring) | | Lead |
 | Caitie McCaffrey | Microsoft | [@CaitieM20](https://github.com/CaitieM20) | | Lead |
 
@@ -33253,7 +33311,7 @@ Each priority area names the Core Maintainers responsible for it, who can be rea
 
 ### 1. Agentic Messaging Primitives
 
-Core Maintainers: [**Caitie McCaffrey**](https://github.com/CaitieM20), [**Clare Liguori**](https://github.com/clareliguori), [**Peter Alexander**](https://github.com/pja-ant)
+Core Maintainers: [**Caitie McCaffrey**](https://github.com/CaitieM20), [**Clare Liguori**](https://github.com/clareliguori), [**Peter Alexander**](https://github.com/poita)
 
 Agentic workloads need [messaging patterns](/specification/2026-07-28/basic/patterns) beyond request and response: work that runs for minutes, servers that push, results that stream, and a way to steer work mid-flight. MCP has grown a set of concepts for this, including [Tasks](/extensions/tasks/overview), [`subscriptions/listen`](/specification/2026-07-28/basic/patterns/subscriptions), and [progress notifications](/specification/2026-07-28/basic/patterns/progress), spread across multiple Working Groups. The risk is three answers to "the server isn't done yet" that don't share a lifecycle, a cancellation model, or an error surface. We want them to compose.
 
@@ -33292,7 +33350,7 @@ Beyond these, several other topics are under discussion and may come into scope 
 
 ### 4. Improved Primitives
 
-Core Maintainers: [**Kurtis Van Gent**](https://github.com/kurtisvg), [**Peter Alexander**](https://github.com/pja-ant), [**Den Delimarsky**](https://github.com/localden)
+Core Maintainers: [**Kurtis Van Gent**](https://github.com/kurtisvg), [**Peter Alexander**](https://github.com/poita), [**Den Delimarsky**](https://github.com/localden)
 
 MCP's tool calling interface has served well. However, `tools/call` allows returning both `content` and `structuredContent` at the same time, which has confused server and client authors alike and produced diverging implementations. We want to spend this roadmap period improving the shape of the `tools/call` interface for more consistent semantics. We also hear repeatedly from the community that servers need more options to guide clients through large sets of tools, resources, and other primitives, so we're starting a dedicated effort around **progressive discovery** to define what an experimental server-side discovery mechanism would look like.
 

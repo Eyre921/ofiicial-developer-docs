@@ -8,272 +8,270 @@ Get the context of a task run.
 
 Context (`ctx`) is a way to get information about a run.
 
-<Note>
-  The context object does not change whilst your code is executing. This means values like
-  `ctx.run.durationMs` will be fixed at the moment the `run()` function is called.
-</Note>
+> [!NOTE]
+>
+> The context object does not change whilst your code is executing. This means values like
+> `ctx.run.durationMs` will be fixed at the moment the `run()` function is called.
 
-<RequestExample>
-  ```typescript Context example theme={"theme":"css-variables"}
-  import { task } from "@trigger.dev/sdk";
+```typescript Context example theme={"theme":"css-variables"}
+import { task } from "@trigger.dev/sdk";
 
-  export const parentTask = task({
-    id: "parent-task",
-    run: async (payload: { message: string }, { ctx }) => {
-      if (ctx.environment.type === "DEVELOPMENT") {
-        return;
-      }
-    },
-  });
-  ```
-</RequestExample>
+export const parentTask = task({
+  id: "parent-task",
+  run: async (payload: { message: string }, { ctx }) => {
+    if (ctx.environment.type === "DEVELOPMENT") {
+      return;
+    }
+  },
+});
+```
 
 ## Context properties
 
-<ResponseField name="task" type="object">
-  <Expandable title="properties">
-    <ResponseField name="exportName" type="string">
-      The exported function name of the task e.g. `myTask` if you defined it like this: `export
-                  const myTask = task(...)`.
-    </ResponseField>
+**task** `object`
 
-    <ResponseField name="id" type="string">
-      The ID of the task.
-    </ResponseField>
+**properties**
 
-    <ResponseField name="filePath" type="string">
-      The file path of the task.
-    </ResponseField>
-  </Expandable>
-</ResponseField>
+**exportName** `string`
 
-<ResponseField name="attempt" type="object">
-  <Expandable title="properties">
-    <ResponseField name="id" type="string">
-      The ID of the execution attempt.
-    </ResponseField>
+The exported function name of the task e.g. `myTask` if you defined it like this: `export
+            const myTask = task(...)`.
 
-    <ResponseField name="number" type="number">
-      The attempt number.
-    </ResponseField>
+**id** `string`
 
-    <ResponseField name="startedAt" type="date">
-      The start time of the attempt.
-    </ResponseField>
+The ID of the task.
 
-    <ResponseField name="backgroundWorkerId" type="string">
-      The ID of the background worker.
-    </ResponseField>
+**filePath** `string`
 
-    <ResponseField name="backgroundWorkerTaskId" type="string">
-      The ID of the background worker task.
-    </ResponseField>
+The file path of the task.
 
-    <ResponseField name="status" type="string">
-      The current status of the attempt.
-    </ResponseField>
-  </Expandable>
-</ResponseField>
+**attempt** `object`
 
-<ResponseField name="run" type="object">
-  <Expandable title="properties">
-    <ResponseField name="id" type="string">
-      The ID of the task run.
-    </ResponseField>
+**properties**
 
-    <ResponseField name="context" type="any">
-      The context of the task run.
-    </ResponseField>
+**id** `string`
 
-    <ResponseField name="tags" type="array">
-      An array of [tags](/docs/tags) associated with the task run.
-    </ResponseField>
+The ID of the execution attempt.
 
-    <ResponseField name="isTest" type="boolean">
-      Whether this is a [test run](/docs/run-tests).
-    </ResponseField>
+**number** `number`
 
-    <ResponseField name="isReplay" type="boolean">
-      Whether this run is a [replay](/docs/replaying) of a previous run.
-    </ResponseField>
+The attempt number.
 
-    <ResponseField name="createdAt" type="date">
-      The creation time of the task run.
-    </ResponseField>
+**startedAt** `date`
 
-    <ResponseField name="startedAt" type="date">
-      The start time of the task run.
-    </ResponseField>
+The start time of the attempt.
 
-    <ResponseField name="idempotencyKey" type="string">
-      An optional [idempotency key](/docs/idempotency) for the task run.
-    </ResponseField>
+**backgroundWorkerId** `string`
 
-    <ResponseField name="maxAttempts" type="number">
-      The [maximum number of attempts](/docs/triggering#maxattempts) allowed for this task run.
-    </ResponseField>
+The ID of the background worker.
 
-    <ResponseField name="durationMs" type="number">
-      The duration of the task run in milliseconds when the `run()` function is called. For live
-      values use the [usage SDK functions](/docs/run-usage).
-    </ResponseField>
+**backgroundWorkerTaskId** `string`
 
-    <ResponseField name="costInCents" type="number">
-      The cost of the task run in cents when the `run()` function is called. For live values use the
-      [usage SDK functions](/docs/run-usage).
-    </ResponseField>
+The ID of the background worker task.
 
-    <ResponseField name="baseCostInCents" type="number">
-      The base cost of the task run in cents when the `run()` function is called. For live values
-      use the [usage SDK functions](/docs/run-usage).
-    </ResponseField>
+**status** `string`
 
-    <ResponseField name="version" type="string">
-      The [version](/docs/versioning) of the task run.
-    </ResponseField>
+The current status of the attempt.
 
-    <ResponseField name="maxDuration" type="number">
-      The [maximum allowed duration](/docs/runs/max-duration) for the task run.
-    </ResponseField>
-  </Expandable>
-</ResponseField>
+**run** `object`
 
-<ResponseField name="queue" type="object">
-  <Expandable title="properties">
-    <ResponseField name="id" type="string">
-      The ID of the queue.
-    </ResponseField>
+**properties**
 
-    <ResponseField name="name" type="string">
-      The name of the queue.
-    </ResponseField>
-  </Expandable>
-</ResponseField>
+**id** `string`
 
-<ResponseField name="environment" type="object">
-  <Expandable title="properties">
-    <ResponseField name="id" type="string">
-      The ID of the environment.
-    </ResponseField>
+The ID of the task run.
 
-    <ResponseField name="slug" type="string">
-      The slug of the environment.
-    </ResponseField>
+**context** `any`
 
-    <ResponseField name="type" type="string">
-      The type of the environment (PRODUCTION, STAGING, DEVELOPMENT, or PREVIEW).
-    </ResponseField>
+The context of the task run.
 
-    <ResponseField name="branchName" type="string">
-      If the environment is `PREVIEW` then this will be the branch name.
-    </ResponseField>
+**tags** `array`
 
-    <ResponseField name="git" type="object">
-      <Expandable title="properties">
-        <ResponseField name="commitAuthorName" type="string">
-          The name of the commit author.
-        </ResponseField>
+An array of [tags](/docs/tags) associated with the task run.
 
-        <ResponseField name="commitMessage" type="string">
-          The message of the commit.
-        </ResponseField>
+**isTest** `boolean`
 
-        <ResponseField name="commitRef" type="string">
-          The ref of the commit.
-        </ResponseField>
+Whether this is a [test run](/docs/run-tests).
 
-        <ResponseField name="commitSha" type="string">
-          The SHA of the commit.
-        </ResponseField>
+**isReplay** `boolean`
 
-        <ResponseField name="dirty" type="boolean">
-          Whether the commit is dirty, i.e. there are uncommitted changes.
-        </ResponseField>
+Whether this run is a [replay](/docs/replaying) of a previous run.
 
-        <ResponseField name="remoteUrl" type="string">
-          The remote URL of the repository.
-        </ResponseField>
+**createdAt** `date`
 
-        <ResponseField name="pullRequestNumber" type="number">
-          The number of the pull request.
-        </ResponseField>
+The creation time of the task run.
 
-        <ResponseField name="pullRequestTitle" type="string">
-          The title of the pull request.
-        </ResponseField>
+**startedAt** `date`
 
-        <ResponseField name="pullRequestState" type="string">
-          The state of the pull request (open, closed, or merged).
-        </ResponseField>
-      </Expandable>
-    </ResponseField>
-  </Expandable>
-</ResponseField>
+The start time of the task run.
 
-<ResponseField name="organization" type="object">
-  <Expandable title="properties">
-    <ResponseField name="id" type="string">
-      The ID of the organization.
-    </ResponseField>
+**idempotencyKey** `string`
 
-    <ResponseField name="slug" type="string">
-      The slug of the organization.
-    </ResponseField>
+An optional [idempotency key](/docs/idempotency) for the task run.
 
-    <ResponseField name="name" type="string">
-      The name of the organization.
-    </ResponseField>
-  </Expandable>
-</ResponseField>
+**maxAttempts** `number`
 
-<ResponseField name="project" type="object">
-  <Expandable title="properties">
-    <ResponseField name="id" type="string">
-      The ID of the project.
-    </ResponseField>
+The [maximum number of attempts](/docs/triggering#maxattempts) allowed for this task run.
 
-    <ResponseField name="ref" type="string">
-      The reference of the project.
-    </ResponseField>
+**durationMs** `number`
 
-    <ResponseField name="slug" type="string">
-      The slug of the project.
-    </ResponseField>
+The duration of the task run in milliseconds when the `run()` function is called. For live
+values use the [usage SDK functions](/docs/run-usage).
 
-    <ResponseField name="name" type="string">
-      The name of the project.
-    </ResponseField>
-  </Expandable>
-</ResponseField>
+**costInCents** `number`
 
-<ResponseField name="batch" type="object">
-  Optional information about the batch, if applicable.
+The cost of the task run in cents when the `run()` function is called. For live values use the
+[usage SDK functions](/docs/run-usage).
 
-  <Expandable title="properties">
-    <ResponseField name="id" type="string">
-      The ID of the batch.
-    </ResponseField>
-  </Expandable>
-</ResponseField>
+**baseCostInCents** `number`
 
-<ResponseField name="machine" type="object">
-  Optional information about the machine preset used for execution.
+The base cost of the task run in cents when the `run()` function is called. For live values
+use the [usage SDK functions](/docs/run-usage).
 
-  <Expandable title="properties">
-    <ResponseField name="name" type="string">
-      The name of the machine preset.
-    </ResponseField>
+**version** `string`
 
-    <ResponseField name="cpu" type="number">
-      The CPU allocation for the machine.
-    </ResponseField>
+The [version](/docs/versioning) of the task run.
 
-    <ResponseField name="memory" type="number">
-      The memory allocation for the machine.
-    </ResponseField>
+**maxDuration** `number`
 
-    <ResponseField name="centsPerMs" type="number">
-      The cost in cents per millisecond for this machine preset.
-    </ResponseField>
-  </Expandable>
-</ResponseField>
+The [maximum allowed duration](/docs/runs/max-duration) for the task run.
+
+**queue** `object`
+
+**properties**
+
+**id** `string`
+
+The ID of the queue.
+
+**name** `string`
+
+The name of the queue.
+
+**environment** `object`
+
+**properties**
+
+**id** `string`
+
+The ID of the environment.
+
+**slug** `string`
+
+The slug of the environment.
+
+**type** `string`
+
+The type of the environment (PRODUCTION, STAGING, DEVELOPMENT, or PREVIEW).
+
+**branchName** `string`
+
+If the environment is `PREVIEW` then this will be the branch name.
+
+**git** `object`
+
+**properties**
+
+**commitAuthorName** `string`
+
+The name of the commit author.
+
+**commitMessage** `string`
+
+The message of the commit.
+
+**commitRef** `string`
+
+The ref of the commit.
+
+**commitSha** `string`
+
+The SHA of the commit.
+
+**dirty** `boolean`
+
+Whether the commit is dirty, i.e. there are uncommitted changes.
+
+**remoteUrl** `string`
+
+The remote URL of the repository.
+
+**pullRequestNumber** `number`
+
+The number of the pull request.
+
+**pullRequestTitle** `string`
+
+The title of the pull request.
+
+**pullRequestState** `string`
+
+The state of the pull request (open, closed, or merged).
+
+**organization** `object`
+
+**properties**
+
+**id** `string`
+
+The ID of the organization.
+
+**slug** `string`
+
+The slug of the organization.
+
+**name** `string`
+
+The name of the organization.
+
+**project** `object`
+
+**properties**
+
+**id** `string`
+
+The ID of the project.
+
+**ref** `string`
+
+The reference of the project.
+
+**slug** `string`
+
+The slug of the project.
+
+**name** `string`
+
+The name of the project.
+
+**batch** `object`
+
+Optional information about the batch, if applicable.
+
+**properties**
+
+**id** `string`
+
+The ID of the batch.
+
+**machine** `object`
+
+Optional information about the machine preset used for execution.
+
+**properties**
+
+**name** `string`
+
+The name of the machine preset.
+
+**cpu** `number`
+
+The CPU allocation for the machine.
+
+**memory** `number`
+
+The memory allocation for the machine.
+
+**centsPerMs** `number`
+
+The cost in cents per millisecond for this machine preset.

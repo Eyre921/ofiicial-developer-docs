@@ -6,10 +6,10 @@ path: docs/tasks/scheduled
 
 A task that is triggered on a recurring schedule using cron syntax.
 
-<Note>
-  Scheduled tasks are only for recurring tasks. If you want to trigger a one-off task at a future
-  time, you should [use the delay option](/docs/triggering#delay).
-</Note>
+> [!NOTE]
+>
+> Scheduled tasks are only for recurring tasks. If you want to trigger a one-off task at a future
+> time, you should [use the delay option](/docs/triggering#delay).
 
 ## Defining a scheduled task
 
@@ -63,10 +63,10 @@ You can see from the comments that the payload has several useful properties:
 * `externalId` - the external id you (optionally) provided when creating the schedule
 * `upcoming` - the next 10 times the task is scheduled to run
 
-<Note>
-  This task will NOT get triggered on a schedule until you attach a schedule to it. Read on for how
-  to do that.
-</Note>
+> [!NOTE]
+>
+> This task will NOT get triggered on a schedule until you attach a schedule to it. Read on for how
+> to do that.
 
 Like all tasks they have a [maxDuration](/docs/runs/max-duration), they should be placed inside a [/trigger folder](/docs/config/config-file), and you [can configure them](/docs/tasks/overview#defining-a-task).
 
@@ -91,10 +91,10 @@ There are two ways of doing this:
 * **Declarative:** defined on your `schedules.task`. They sync when you run the dev command or deploy.
 * **Imperative:** created from the dashboard or by using the imperative SDK functions like `schedules.create()`.
 
-<Info>
-  A scheduled task can have multiple schedules attached to it, including a declarative schedule
-  and/or many imperative schedules.
-</Info>
+> [!NOTE]
+>
+> A scheduled task can have multiple schedules attached to it, including a declarative schedule
+> and/or many imperative schedules.
 
 ### Declarative schedules
 
@@ -181,11 +181,11 @@ const createdSchedule = await schedules.create({
 });
 ```
 
-<Note>
-  The payload `timestamp` and `upcoming` values are always the nominal cron times, not the assigned
-  times. When you retrieve a schedule, `nextRun` is the nominal cron time and `nextRunEffectiveAt`
-  is the assigned time the run will actually start.
-</Note>
+> [!NOTE]
+>
+> The payload `timestamp` and `upcoming` values are always the nominal cron times, not the assigned
+> times. When you retrieve a schedule, `nextRun` is the nominal cron time and `nextRunEffectiveAt`
+> is the assigned time the run will actually start.
 
 ### Default window
 
@@ -245,42 +245,40 @@ There are two situations when a scheduled task won't trigger:
 
 You need to attach a schedule to a task before it will run on a schedule. You can attach imperative schedules in the dashboard:
 
-<Note>
-  **The Schedules page has moved.** There is no longer a standalone "Schedules" page in the
-  sidebar. Schedules now live on the Tasks page: open a scheduled task to create, view, edit,
-  enable/disable, and delete its schedules. The old `/schedules` URL redirects to the Tasks page.
+> [!NOTE]
+>
+> **The Schedules page has moved.** There is no longer a standalone "Schedules" page in the
+> sidebar. Schedules now live on the Tasks page: open a scheduled task to create, view, edit,
+> enable/disable, and delete its schedules. The old `/schedules` URL redirects to the Tasks page.
+>
+> The scheduled task must already exist first — define it in your code with `schedules.task()` and
+> sync it to the environment by running the [dev](/docs/cli-dev-commands) or
+> [deploy](/docs/cli-deploy-commands) command so it appears on the Tasks page. A project with no tasks
+> yet will only show the deploy onboarding.
 
-  The scheduled task must already exist first — define it in your code with `schedules.task()` and
-  sync it to the environment by running the [dev](/docs/cli-dev-commands) or
-  [deploy](/docs/cli-deploy-commands) command so it appears on the Tasks page. A project with no tasks
-  yet will only show the deploy onboarding.
-</Note>
+**1. Open the scheduled task**
 
-<Steps>
-  <Step title="Open the scheduled task">
-    In the sidebar select the "Tasks" page, then select the scheduled task you want to attach a
-    schedule to (scheduled tasks have a clock icon, and you can filter the list to Scheduled).
+In the sidebar select the "Tasks" page, then select the scheduled task you want to attach a
+schedule to (scheduled tasks have a clock icon, and you can filter the list to Scheduled).
 
-    <img alt="Scheduled task page" />
-  </Step>
+![Scheduled task page](https://mintcdn.com/trigger/2gGDaV8FR4pPhx_f/images/schedules-blank.png?fit=max\&auto=format\&n=2gGDaV8FR4pPhx_f\&q=85\&s=cae15f607b11147e919dc483e4f9f13c)
 
-  <Step title="Create your schedule">
-    Press the "Create schedule" button, fill in the form, and press "Create schedule" when you're
-    done. <img alt="Create schedule form" />
+**2. Create your schedule**
 
-    These are the options when creating a schedule:
+Press the "Create schedule" button, fill in the form, and press "Create schedule" when you're
+done. ![Create schedule form](https://mintcdn.com/trigger/2gGDaV8FR4pPhx_f/images/schedules-create.png?fit=max\&auto=format\&n=2gGDaV8FR4pPhx_f\&q=85\&s=c1a7454d750e4c868f9c2f534e6e46da)
 
-    | Name | Description |
-    | - | - |
-    | Task | The id of the task you want to attach to. |
-    | Cron pattern | The schedule in cron format. You can also describe it in natural language and press "Generate" to fill this in. |
-    | Timezone | The timezone the schedule will run in. Defaults to "UTC" |
-    | Window | An optional [window](#spreading-runs-with-windows) to spread runs after their cron time, e.g. `30m`, `2h`, or `50%`. |
-    | External id | An optional external id, usually you'd use a userId. |
-    | Deduplication key | An optional deduplication key. If you pass the same value, it will update rather than create. Scoped per project, not per environment. |
-    | Environments | The environments this schedule will run in. |
-  </Step>
-</Steps>
+These are the options when creating a schedule:
+
+| Name | Description |
+| - | - |
+| Task | The id of the task you want to attach to. |
+| Cron pattern | The schedule in cron format. You can also describe it in natural language and press "Generate" to fill this in. |
+| Timezone | The timezone the schedule will run in. Defaults to "UTC" |
+| Window | An optional [window](#spreading-runs-with-windows) to spread runs after their cron time, e.g. `30m`, `2h`, or `50%`. |
+| External id | An optional external id, usually you'd use a userId. |
+| Deduplication key | An optional deduplication key. If you pass the same value, it will update rather than create. Scoped per project, not per environment. |
+| Environments | The environments this schedule will run in. |
 
 ## Managing schedules in the dashboard
 
@@ -303,13 +301,15 @@ const createdSchedule = await schedules.create({
 });
 ```
 
-<Note>The `task` id must be a task that you defined using `schedules.task()`.</Note>
+> [!NOTE]
+>
+> The `task` id must be a task that you defined using `schedules.task()`.
 
 You can create many schedules with the same `task`, `cron`, and `externalId` but only one with the same `deduplicationKey`.
 
-<Note>
-  The deduplication key is **per project**, not per environment. Using the same key in Production and Staging creates a single schedule; the last create/update decides which environment it appears in. For fixed schedules, prefer **declarative** (cron on the task). If using imperative across environments, use a different deduplication key per environment (e.g. include the env name in the key).
-</Note>
+> [!NOTE]
+>
+> The deduplication key is **per project**, not per environment. Using the same key in Production and Staging creates a single schedule; the last create/update decides which environment it appears in. For fixed schedules, prefer **declarative** (cron on the task). If using imperative across environments, use a different deduplication key per environment (e.g. include the env name in the key).
 
 This means you can have thousands of schedules attached to a single task, but only one schedule per `deduplicationKey`. Here's an example with all the options:
 
@@ -395,23 +395,21 @@ You can also retrieve, list, delete, deactivate and re-activate schedules using 
 
 You can test a scheduled task in the dashboard. Note that the `scheduleId` will always come through as `sched_1234` to the run.
 
-<Note>
-  There is no longer a standalone "Test" page in the sidebar. You test a task from the task itself —
-  open it on the Tasks page and press the "Test schedule" button.
-</Note>
+> [!NOTE]
+>
+> There is no longer a standalone "Test" page in the sidebar. You test a task from the task itself —
+> open it on the Tasks page and press the "Test schedule" button.
 
-<Steps>
-  <Step title="Open the test page for your task">
-    On the "Tasks" page, open your scheduled task and press the "Test schedule" button.
+**1. Open the test page for your task**
 
-    <img alt="Scheduled task page" />
-  </Step>
+On the "Tasks" page, open your scheduled task and press the "Test schedule" button.
 
-  <Step title="Run the test">
-    Fill in the form \[1]. You can select from a recent run \[2] to pre-populate the fields. Press "Run
-    test" when you're ready <img alt="Schedule test form" />
-  </Step>
-</Steps>
+![Scheduled task page](https://mintcdn.com/trigger/2gGDaV8FR4pPhx_f/images/schedules-test.png?fit=max\&auto=format\&n=2gGDaV8FR4pPhx_f\&q=85\&s=d1e7b998a72ac75595224963a46bae9b)
+
+**2. Run the test**
+
+Fill in the form \[1]. You can select from a recent run \[2] to pre-populate the fields. Press "Run
+test" when you're ready ![Schedule test form](https://mintcdn.com/trigger/2gGDaV8FR4pPhx_f/images/schedules-test-form.png?fit=max\&auto=format\&n=2gGDaV8FR4pPhx_f\&q=85\&s=888c68411622d77ede3245f116975b12)
 
 ## Managing schedules with the SDK
 

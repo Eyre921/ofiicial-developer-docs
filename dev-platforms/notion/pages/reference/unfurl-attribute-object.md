@@ -16,9 +16,13 @@ Let's first look at an example of a full-format Link Preview:
 
 ![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/a034247-link_preview.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=ce1abef0ec570f35bd482fdd8c6dc552)
 
+Example Link Preview in a Notion workspace
+
 Here is the same link again but now as a Mention — a miniature version of a Link Preview that uses the same data.
 
 ![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/f588a6f-mention.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=8fb360ddae135021a789f072cc2ba88d)
+
+Example Mention in a Notion workspace
 
 A Link Preview or Mention displays data that is sent to Notion as an array of unfurl attribute objects. There are a number of optional attributes. However, **every array must contain a `title` attribute and a `dev` attribute.**
 
@@ -140,6 +144,8 @@ Each unfurl attribute object in this array maps to a different customizable sect
 
 ![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/3d6f5ec-Untitled_1.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=4c9dc387fecc9d2d606377e68d06d9b3)
 
+Anatomy of a Link Preview in Notion
+
 First, let's let at the properties in each individual unfurl attribute object.
 
 ## The unfurl attribute object
@@ -204,6 +210,8 @@ The `embed` sub-type object adds rich content like JPGs, GIFs, or iFrames to a L
 
 ![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/d482801-embed.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=23c25fb4d7c3eb461655767f2dffb63a)
 
+An example Link Preview that embeds an image of Kermit the Frog
+
 All embed sub-type objects contain: a `src_url` field that is a link to the embed, and an object whose key is the sub-type of the embed and whose value is an object indicating the `section` of the Link Preview where the value is rendered.
 
 | Sub-type | Description | Example value |
@@ -223,7 +231,11 @@ The `section` value of an unfurl attribute object defines where an attribute is 
 
 ![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/121dcba-sections_lp.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=3aeb3186980cfe813930568826de3adf)
 
+The sections of a Link Preview
+
 ![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/1de6886-sections_mention.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=103ce514aa4462c145d50c0ac95653d7)
+
+The sections of a Mention
 
 A `section` is specified in the sub-type object for the attribute. Refer to the table below for details about each `section` and its valid parent sub-types.
 

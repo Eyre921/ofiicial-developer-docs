@@ -16,11 +16,15 @@ First, find the containing database's ID in its Notion URL. The database ID is t
 
 ![](https://mintcdn.com/notion-demo/S-I3qLQnwRa7HjdK/images/reference/image-3.png?fit=max\&auto=format\&n=S-I3qLQnwRa7HjdK\&q=85\&s=051ded818c1263e52bb87f66a3d05ce5)
 
+Notion database ID
+
 Use [Retrieve a database](/reference/retrieve-database) with that database ID. Its `data_sources` array lists each data source's ID and name. Use the desired data source ID with this endpoint to retrieve its `properties`.
 
 To get a data source ID from the Notion app directly, the settings menu for a database includes a "Copy data source ID" button under "Manage data sources":
 
 ![](https://mintcdn.com/notion-demo/S-I3qLQnwRa7HjdK/images/reference/image-4.png?fit=max\&auto=format\&n=S-I3qLQnwRa7HjdK\&q=85\&s=292ed34c84b1b7161b282444678c3bc6)
+
+Screenshot of the 'Manage data sources' menu for a database in Notion, with 'Copy data source ID' button.
 
 Refer to the [Working with databases](/guides/data-apis/working-with-databases) guide for more details.
 

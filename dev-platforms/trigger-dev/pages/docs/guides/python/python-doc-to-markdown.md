@@ -23,10 +23,10 @@ Convert documents to markdown using Microsoft's [MarkItDown](https://github.com/
 
 ## GitHub repo
 
-<Card title="View the project on GitHub" icon="GitHub" href="https://github.com/triggerdotdev/examples/tree/main/python-doc-to-markdown-converter">
-  Click here to view the full code for this project in our examples repository on GitHub. You can
-  fork it and use it as a starting point for your own project.
-</Card>
+> **[View the project on GitHub](https://github.com/triggerdotdev/examples/tree/main/python-doc-to-markdown-converter)**
+>
+> Click here to view the full code for this project in our examples repository on GitHub. You can
+> fork it and use it as a starting point for your own project.
 
 ## The code
 
@@ -57,10 +57,10 @@ export default defineConfig({
 });
 ```
 
-<Info>
-  Learn more about executing scripts in your Trigger.dev project using our Python build extension
-  [here](/docs/config/extensions/pythonExtension).
-</Info>
+> [!NOTE]
+>
+> Learn more about executing scripts in your Trigger.dev project using our Python build extension
+> [here](/docs/config/extensions/pythonExtension).
 
 ### Task code
 
@@ -214,7 +214,7 @@ if __name__ == "__main__":
 
 ## Learn more about using Python with Trigger.dev
 
-<Card title="Python build extension" icon="code" href="/docs/config/extensions/pythonExtension">
-  Learn how to use our built-in Python build extension to install dependencies and run your Python
-  code.
-</Card>
+> **[Python build extension](/docs/config/extensions/pythonExtension)**
+>
+> Learn how to use our built-in Python build extension to install dependencies and run your Python
+> code.

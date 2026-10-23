@@ -39,12 +39,12 @@ The config file handles a lot of things, like:
 * Customizing the build process.
 * Adding global task lifecycle functions.
 
-<Note>
-  The config file is bundled with your project, so code imported in the config file is also bundled,
-  which can have an effect on build times and cold start duration. One important qualification is
-  anything defined in the `build` config is automatically stripped out of the config file, and
-  imports used inside build config with be tree-shaken out.
-</Note>
+> [!NOTE]
+>
+> The config file is bundled with your project, so code imported in the config file is also bundled,
+> which can have an effect on build times and cold start duration. One important qualification is
+> anything defined in the `build` config is automatically stripped out of the config file, and
+> imports used inside build config with be tree-shaken out.
 
 ## Dirs
 
@@ -118,7 +118,7 @@ Read more about task lifecycle functions in the [tasks overview](/docs/tasks/ove
 
 We use OpenTelemetry (OTEL) for our run logs. This means you get a lot of information about your tasks with no effort. But you probably want to add more information to your logs. For example, here's all the Prisma calls automatically logged:
 
-<img alt="The run log" />
+![The run log](https://mintcdn.com/trigger/uys6iMwf9B_ojh8r/images/auto-instrumentation.png?fit=max\&auto=format\&n=uys6iMwf9B_ojh8r\&q=85\&s=c23b7b3b9b853d52af2850b732e576d7)
 
 Here we add Prisma and OpenAI instrumentations to your `trigger.config.ts` file.
 
@@ -146,9 +146,9 @@ Some ones we recommend:
 | `@prisma/instrumentation` | Logs all Prisma calls, you need to [enable tracing](https://github.com/prisma/prisma/tree/main/packages/instrumentation) |
 | `@traceloop/instrumentation-openai` | Logs all OpenAI calls |
 
-<Note>
-  `@opentelemetry/instrumentation-fs` which logs all file system calls is currently not supported.
-</Note>
+> [!NOTE]
+>
+> `@opentelemetry/instrumentation-fs` which logs all file system calls is currently not supported.
 
 ### Telemetry Exporters
 
@@ -162,12 +162,12 @@ You can also configure custom telemetry exporters to send your traces, logs, and
 }
 ```
 
-<Note>
-  Axiom's `/v1/metrics` endpoint only supports protobuf (`application/x-protobuf`), not JSON. Use
-  `@opentelemetry/exporter-metrics-otlp-proto` instead of
-  `@opentelemetry/exporter-metrics-otlp-http` for metrics. Traces and logs work fine with the
-  `-http` (JSON) exporters.
-</Note>
+> [!NOTE]
+>
+> Axiom's `/v1/metrics` endpoint only supports protobuf (`application/x-protobuf`), not JSON. Use
+> `@opentelemetry/exporter-metrics-otlp-proto` instead of
+> `@opentelemetry/exporter-metrics-otlp-http` for metrics. Traces and logs work fine with the
+> `-http` (JSON) exporters.
 
 Then, configure the exporters in your `trigger.config.ts` file:
 
@@ -319,9 +319,9 @@ Your processors run ahead of ours, so they also see the in-progress copy of each
 
 After each call we restore the few attributes we use to link a span to its run, such as the run, task and attempt ids. Everything else can be redacted, including run tags and idempotency keys. If a processor throws, the error is reported and the span is still exported.
 
-<Note>
-  Span processors only change span content. Run payloads and outputs, and the messages on a chat agent's session streams, are stored as sent. For chat agents, see [Redact chat content from traces](/docs/ai-chat/patterns/redacting-telemetry).
-</Note>
+> [!NOTE]
+>
+> Span processors only change span content. Run payloads and outputs, and the messages on a chat agent's session streams, are stored as sent. For chat agents, see [Redact chat content from traces](/docs/ai-chat/patterns/redacting-telemetry).
 
 ## Runtime
 
@@ -345,10 +345,10 @@ See our [Bun guide](/docs/guides/frameworks/bun) for more information.
 
 Trigger.dev runs your deployed tasks on one of these runtimes:
 
-* Node.js `node` — the default, tracks the current Node.js LTS (today `24.18.0`)
-* Node.js `node-22` — `22.16.0`
-* Node.js `node-24` — `24.18.0`
-* Node.js `node-26` — `26.4.0`
+* Node.js `node` — the default, tracks the current Node.js LTS (today `24.22.1`)
+* Node.js `node-22` — `22.23.4`
+* Node.js `node-24` — `24.22.1`
+* Node.js `node-26` — `26.12.1`
 * Bun `bun` — `1.3.3`
 
 If you don't set a `runtime`, or you set `runtime: "node"`, your tasks run on the current Node.js LTS. That version moves forward as new LTS releases land, so set an explicit version — for example `runtime: "node-24"` — if you need it to stay fixed.
@@ -530,11 +530,11 @@ export default defineConfig({
 });
 ```
 
-<Note>
-  The `trigger.config.ts` file is included in the bundle, but with the `build` configuration
-  stripped out. These means any imports only used inside the `build` configuration are also removed
-  from the final bundle.
-</Note>
+> [!NOTE]
+>
+> The `trigger.config.ts` file is included in the bundle, but with the `build` configuration
+> stripped out. These means any imports only used inside the `build` configuration are also removed
+> from the final bundle.
 
 ### External
 
@@ -584,11 +584,11 @@ export default defineConfig({
 });
 ```
 
-<Note>
-  Any packages that install or build a native binary or use WebAssembly (WASM) should be added to
-  external, as they cannot be bundled. For example, `re2`, `sharp`, `sqlite3`, and WASM packages
-  should be added to external.
-</Note>
+> [!NOTE]
+>
+> Any packages that install or build a native binary or use WebAssembly (WASM) should be added to
+> external, as they cannot be bundled. For example, `re2`, `sharp`, `sqlite3`, and WASM packages
+> should be added to external.
 
 ### JSX
 

@@ -1,5 +1,5 @@
 ---
-title: "Deployment"
+title: "Upstash Realtime Serverless Deployment"
 source: https://upstash.com/docs/realtime/features/serverless
 path: docs/realtime/features/serverless
 ---

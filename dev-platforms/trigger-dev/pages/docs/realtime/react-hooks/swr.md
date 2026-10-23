@@ -8,11 +8,11 @@ Fetch and cache data using SWR-based hooks
 
 SWR hooks use the [swr](https://swr.vercel.app/) library to fetch data once and cache it. These hooks are useful when you need to fetch data without real-time updates.
 
-<Note>
-  While SWR can be configured to poll for updates, we recommend using our other [Realtime
-  hooks](/docs/realtime/react-hooks/) for most use-cases due to rate-limits and the way the Trigger.dev
-  API works.
-</Note>
+> [!NOTE]
+>
+> While SWR can be configured to poll for updates, we recommend using our other [Realtime
+> hooks](/docs/realtime/react-hooks/) for most use-cases due to rate-limits and the way the Trigger.dev
+> API works.
 
 ## useRun
 
@@ -57,33 +57,35 @@ export function MyComponent({ runId }: { runId: string }) {
 
 You can pass the following options to the all SWR hooks:
 
-<ParamField type="boolean">
-  Revalidate the data when the window regains focus.
-</ParamField>
+**revalidateOnFocus** `boolean`
 
-<ParamField type="boolean">
-  Revalidate the data when the browser regains a network connection.
-</ParamField>
+Revalidate the data when the window regains focus.
 
-<ParamField type="number">
-  Poll for updates at the specified interval (in milliseconds). Polling is not recommended for most
-  use-cases. Use the Realtime hooks instead.
-</ParamField>
+**revalidateOnReconnect** `boolean`
+
+Revalidate the data when the browser regains a network connection.
+
+**refreshInterval** `number`
+
+Poll for updates at the specified interval (in milliseconds). Polling is not recommended for most
+use-cases. Use the Realtime hooks instead.
 
 ## Common SWR return values
 
-<ResponseField name="error" type="Error">
-  An error object if an error occurred while fetching the data.
-</ResponseField>
+**error** `Error`
 
-<ResponseField name="isLoading" type="boolean">
-  A boolean indicating if the data is currently being fetched.
-</ResponseField>
+An error object if an error occurred while fetching the data.
 
-<ResponseField name="isValidating" type="boolean">
-  A boolean indicating if the data is currently being revalidated.
-</ResponseField>
+**isLoading** `boolean`
 
-<ResponseField name="isError" type="boolean">
-  A boolean indicating if an error occurred while fetching the data.
-</ResponseField>
+A boolean indicating if the data is currently being fetched.
+
+**isValidating** `boolean`
+
+A boolean indicating if the data is currently being revalidated.
+
+**isError** `boolean`
+
+A boolean indicating if an error occurred while fetching the data.
+
+&#x20;

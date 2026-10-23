@@ -119,7 +119,7 @@ export const generateOgImage = schemaTask({
 
 This image was generated using the above task.
 
-<img alt="OG Image" />
+![OG Image](https://mintcdn.com/trigger/5SxX7bFjJKRsidSL/images/react-satori-og.jpg?fit=max\&auto=format\&n=5SxX7bFjJKRsidSL\&q=85\&s=10c7715e00714ea7ef7c27bb7ace5c0c)
 
 ## Testing your task
 

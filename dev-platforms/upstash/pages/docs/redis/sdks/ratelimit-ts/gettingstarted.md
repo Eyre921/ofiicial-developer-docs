@@ -1,5 +1,5 @@
 ---
-title: "Getting Started"
+title: "Ratelimit TypeScript SDK Getting Started"
 source: https://upstash.com/docs/redis/sdks/ratelimit-ts/gettingstarted
 path: docs/redis/sdks/ratelimit-ts/gettingstarted
 ---

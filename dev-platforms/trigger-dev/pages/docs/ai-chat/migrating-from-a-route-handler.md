@@ -24,9 +24,9 @@ This guide assumes a Next.js App Router app with `useChat` on the client and an 
 | **New** | — | Two server actions: mint a token, start a session |
 | **New** | — | `useTriggerChatTransport` in place of the `api` URL |
 
-<Note>
-  One thing gets slower, and it's the thing you'll notice first: the opening response of a brand-new chat. Your route handler answered out of an already-warm process; the agent run has to boot before it reaches the model. [Head Start](#keep-the-first-turn-fast-with-head-start) gives that back — get the migration working first, then add it.
-</Note>
+> [!NOTE]
+>
+> One thing gets slower, and it's the thing you'll notice first: the opening response of a brand-new chat. Your route handler answered out of an already-warm process; the agent run has to boot before it reaches the model. [Head Start](#keep-the-first-turn-fast-with-head-start) gives that back — get the migration working first, then add it.
 
 Before you start, make sure the project has the SDK installed and the CLI authenticated — [Manual setup](/docs/manual-setup), or `npx trigger.dev@latest init` in an existing project.
 
@@ -166,9 +166,9 @@ Four things changed inside the `streamText` call, and `tools` moved onto the age
 * **Return the `StreamTextResult`.** It's piped to the frontend automatically — no `toUIMessageStreamResponse`. If `streamText` is buried in a helper, call `await chat.pipe(result)` from anywhere in the task instead and let `run` resolve `void`.
 * **`streamText` comes from the `run` argument, not from `ai`.** It carries the `prepareStep` behind [compaction](/docs/ai-chat/compaction), [mid-turn steering](/docs/ai-chat/pending-messages) and [background injection](/docs/ai-chat/background-injection), plus the system prompt set via [`chat.prompt()`](/docs/ai-chat/backend#using-prompts) and telemetry.
 
-<Warning>
-  Importing `streamText` from `ai` instead throws no error: compaction, steering and background injection never run. Spreading `chat.toStreamTextOptions()` into the imported one is the equivalent, and is what a custom agent has to do, since it has no `run` argument. A `chat.headStart` route gets a bound `streamText` of its own.
-</Warning>
+> [!WARNING]
+>
+> Importing `streamText` from `ai` instead throws no error: compaction, steering and background injection never run. Spreading `chat.toStreamTextOptions()` into the imported one is the equivalent, and is what a custom agent has to do, since it has no `run` argument. A `chat.headStart` route gets a bound `streamText` of its own.
 
 There's no `maxDuration` equivalent to set. A turn isn't bounded by a function timeout; a run stays alive across turns and suspends when nothing is happening.
 
@@ -243,63 +243,61 @@ export async function mintChatAccessToken(chatId: string) {
 
 Both run on your server, so the browser never sees `TRIGGER_SECRET_KEY`. This is where per-user and per-plan authorization belongs, alongside any database writes you want paired with session creation.
 
-<Warning>
-  Signed in is not the same as entitled to this chat, and `chatId` arrives from the browser. Bind the two yourself: `claimChat` records the owner the first time a chat id is seen and rejects it if someone else already holds it, and `assertChatOwner` requires a row the caller owns. Check only that a session exists and any signed-in user can mint a read/write token for someone else's conversation.
-</Warning>
+> [!WARNING]
+>
+> Signed in is not the same as entitled to this chat, and `chatId` arrives from the browser. Bind the two yourself: `claimChat` records the owner the first time a chat id is seen and rejects it if someone else already holds it, and `assertChatOwner` requires a row the caller owns. Check only that a session exists and any signed-in user can mint a read/write token for someone else's conversation.
 
-<Note>
-  If you'd rather keep REST endpoints than use server actions, both callbacks accept any async function — see [calling a fetch endpoint instead](/docs/ai-chat/frontend#calling-a-fetch-endpoint-instead-of-a-server-action).
-</Note>
+> [!NOTE]
+>
+> If you'd rather keep REST endpoints than use server actions, both callbacks accept any async function — see [calling a fetch endpoint instead](/docs/ai-chat/frontend#calling-a-fetch-endpoint-instead-of-a-server-action).
 
 ## Swap the transport on the client
 
 `useChat` stays. Only the transport changes.
 
-<CodeGroup>
-  ```tsx Before: app/components/chat.tsx theme={"theme":"css-variables"}
-  "use client";
+```tsx Before: app/components/chat.tsx theme={"theme":"css-variables"}
+"use client";
 
-  import { useChat } from "@ai-sdk/react";
-  import { DefaultChatTransport } from "ai";
+import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
 
-  export function Chat({ chatId, initialMessages }) {
-    const { messages, sendMessage, stop, status } = useChat({
-      id: chatId,
-      messages: initialMessages,
-      transport: new DefaultChatTransport({ api: "/api/chat" }),
-    });
+export function Chat({ chatId, initialMessages }) {
+  const { messages, sendMessage, stop, status } = useChat({
+    id: chatId,
+    messages: initialMessages,
+    transport: new DefaultChatTransport({ api: "/api/chat" }),
+  });
 
-    // ... render messages, form, stop button
-  }
-  ```
+  // ... render messages, form, stop button
+}
+```
 
-  ```tsx After: app/components/chat.tsx theme={"theme":"css-variables"}
-  "use client";
+```tsx After: app/components/chat.tsx theme={"theme":"css-variables"}
+"use client";
 
-  import { useChat } from "@ai-sdk/react";
-  import { useTriggerChatTransport } from "@trigger.dev/sdk/chat/react";
-  import type { myChat } from "@/trigger/chat";
-  import { mintChatAccessToken, startChatSession } from "@/app/actions";
+import { useChat } from "@ai-sdk/react";
+import { useTriggerChatTransport } from "@trigger.dev/sdk/chat/react";
+import type { myChat } from "@/trigger/chat";
+import { mintChatAccessToken, startChatSession } from "@/app/actions";
 
-  export function Chat({ chatId, initialMessages, initialSessions }) {
-    const transport = useTriggerChatTransport<typeof myChat>({
-      task: "my-chat",
-      accessToken: ({ chatId }) => mintChatAccessToken(chatId),
-      startSession: ({ chatId, clientData }) => startChatSession({ chatId, clientData }),
-      sessions: initialSessions,
-    });
+export function Chat({ chatId, initialMessages, initialSessions }) {
+  const transport = useTriggerChatTransport<typeof myChat>({
+    task: "my-chat",
+    accessToken: ({ chatId }) => mintChatAccessToken(chatId),
+    startSession: ({ chatId, clientData }) => startChatSession({ chatId, clientData }),
+    sessions: initialSessions,
+  });
 
-    const { messages, sendMessage, stop, status } = useChat({
-      id: chatId,
-      messages: initialMessages,
-      transport,
-      resume: initialMessages.length > 0,
-    });
+  const { messages, sendMessage, stop, status } = useChat({
+    id: chatId,
+    messages: initialMessages,
+    transport,
+    resume: initialMessages.length > 0,
+  });
 
-    // ... render messages, form, stop button — unchanged
-  }
-  ```
-</CodeGroup>
+  // ... render messages, form, stop button — unchanged
+}
+```
 
 Everything downstream of `useChat` is untouched: `messages`, `message.parts`, tool parts, reasoning parts, custom `data-*` parts, `status`, `stop`.
 
@@ -309,9 +307,9 @@ Three things to note in the new version:
 * **`sessions`** hydrates the transport from what you persisted (the session token and `lastEventId`), so a fresh tab reconnects without a round-trip to create a session.
 * **`resume`** reconnects to an in-flight stream on mount. Gate it on there being existing messages, as the snippet does — a brand-new chat has nothing to reconnect to.
 
-<Note>
-  After a resume, `useChat`'s built-in `stop()` doesn't reach the backend, because the AI SDK doesn't thread its abort signal through `reconnectToStream`. Call `transport.stopGeneration(chatId)` instead — see [Stop generation](/docs/ai-chat/frontend#stop-generation).
-</Note>
+> [!NOTE]
+>
+> After a resume, `useChat`'s built-in `stop()` doesn't reach the backend, because the AI SDK doesn't thread its abort signal through `reconnectToStream`. Call `transport.stopGeneration(chatId)` instead — see [Stop generation](/docs/ai-chat/frontend#stop-generation).
 
 ## Move persistence into hooks
 
@@ -372,9 +370,9 @@ Without `hydrateMessages`, persist from `onTurnStart` (the user message, awaited
 
 The `lastEventId` write is what replaces your stream-resumption setup, so it isn't optional polish. [Database persistence](/docs/ai-chat/patterns/database-persistence) has the full per-hook breakdown, the race conditions to avoid, and an end-to-end three-file example.
 
-<Note>
-  Per-process state — `chat.local`, database pools, sandboxes — initializes in [`onBoot`](/docs/ai-chat/lifecycle-hooks#onboot), which fires on every fresh worker. `onChatStart` fires only on a chat's very first message, so a later run that picks the conversation back up would skip it.
-</Note>
+> [!NOTE]
+>
+> Per-process state — `chat.local`, database pools, sandboxes — initializes in [`onBoot`](/docs/ai-chat/lifecycle-hooks#onboot), which fires on every fresh worker. `onChatStart` fires only on a chat's very first message, so a later run that picks the conversation back up would skip it.
 
 ## Delete the stream-resumption plumbing
 
@@ -382,27 +380,25 @@ If you wired up `resumable-stream` with a Redis publisher and a separate `GET /a
 
 Response chunks are written to a durable append-only stream keyed on the chat, and the browser's `lastEventId` is a cursor into it. On reload the transport reopens the subscription from that cursor, so chunks it already rendered aren't redelivered and the remainder of an in-flight turn streams in. There's no Redis to run and no TTL to tune.
 
-<Warning>
-  Don't clear `lastEventId` when a run ends. The cursor is keyed to the session, not the run, and stays valid across run boundaries. Clearing it forces the next subscription to start from the beginning of the stream, where it can hit the previous turn's stale completion marker and close empty.
-</Warning>
+> [!WARNING]
+>
+> Don't clear `lastEventId` when a run ends. The cursor is keyed to the session, not the run, and stays valid across run boundaries. Clearing it forces the next subscription to start from the beginning of the stream, where it can hit the previous turn's stale completion marker and close empty.
 
 ## Verify it
 
 Run the agent locally and send a message through your existing UI.
 
-<CodeGroup>
-  ```bash npm theme={"theme":"css-variables"}
-  npx trigger.dev@latest dev
-  ```
+```bash npm theme={"theme":"css-variables"}
+npx trigger.dev@latest dev
+```
 
-  ```bash pnpm theme={"theme":"css-variables"}
-  pnpm dlx trigger.dev@latest dev
-  ```
+```bash pnpm theme={"theme":"css-variables"}
+pnpm dlx trigger.dev@latest dev
+```
 
-  ```bash bun theme={"theme":"css-variables"}
-  bunx trigger.dev@latest dev
-  ```
-</CodeGroup>
+```bash bun theme={"theme":"css-variables"}
+bunx trigger.dev@latest dev
+```
 
 The turn shows up in the dashboard as a run, with a span per model call and per tool call. Three checks worth doing deliberately, because they're what the migration bought you:
 
@@ -416,126 +412,124 @@ Do this once the migration above works, because it's the regression you're about
 
 Head Start brings the route handler back for exactly that first turn. It runs step 1 in your warm process while the agent boots alongside it, so boot time hides inside the model's own time-to-first-byte instead of stacking in front of it. When step 1 finishes as plain text the agent exits without ever calling a model; when it ends in tool calls the agent executes them and step 2 streams into the same assistant message. The user sees one continuous response.
 
-<Steps>
-  <Step title="Split your tools into schemas and executes">
-    This is the constraint the whole feature rests on. Everything your route handler imports, and everything those modules import, ends up in its bundle — so a tool catalog with Puppeteer or native bindings behind its `execute` puts the cold start straight back, just in a different process. Bundlers resolve this at build time, so stripping executes at runtime doesn't help. Schemas need their own module that imports nothing heavier than `ai` and `zod`.
+**1. Split your tools into schemas and executes**
 
-    ```ts lib/chat-tools/schemas.ts theme={"theme":"css-variables"}
-    import { tool } from "ai";
-    import { z } from "zod";
+This is the constraint the whole feature rests on. Everything your route handler imports, and everything those modules import, ends up in its bundle — so a tool catalog with Puppeteer or native bindings behind its `execute` puts the cold start straight back, just in a different process. Bundlers resolve this at build time, so stripping executes at runtime doesn't help. Schemas need their own module that imports nothing heavier than `ai` and `zod`.
 
-    export const headStartTools = {
-      renderChart: tool({
-        description: "Render a chart and return it as an image.",
-        inputSchema: z.object({ spec: z.string() }),
-        // No execute — the agent's copy carries it.
-      }),
-    };
-    ```
+```ts lib/chat-tools/schemas.ts theme={"theme":"css-variables"}
+import { tool } from "ai";
+import { z } from "zod";
 
-    Your existing `lib/tools.ts` then builds the real tools on top of those schemas, so the two can't drift apart:
+export const headStartTools = {
+  renderChart: tool({
+    description: "Render a chart and return it as an image.",
+    inputSchema: z.object({ spec: z.string() }),
+    // No execute — the agent's copy carries it.
+  }),
+};
+```
 
-    ```ts lib/tools.ts theme={"theme":"css-variables"}
-    import { tool } from "ai";
-    import { headStartTools } from "@/lib/chat-tools/schemas";
-    import { renderToPng } from "@/lib/charts";
+Your existing `lib/tools.ts` then builds the real tools on top of those schemas, so the two can't drift apart:
 
-    export const tools = {
-      renderChart: tool({
-        ...headStartTools.renderChart,
-        execute: async ({ spec }) => renderToPng(spec),
-        toModelOutput: ({ output }) => ({
-          type: "content",
-          value: [{ type: "media", mediaType: "image/png", data: output.base64 }],
-        }),
-      }),
-    };
-    ```
+```ts lib/tools.ts theme={"theme":"css-variables"}
+import { tool } from "ai";
+import { headStartTools } from "@/lib/chat-tools/schemas";
+import { renderToPng } from "@/lib/charts";
 
-    The agent task is unchanged — it still imports the full `tools`.
-  </Step>
+export const tools = {
+  renderChart: tool({
+    ...headStartTools.renderChart,
+    execute: async ({ spec }) => renderToPng(spec),
+    toModelOutput: ({ output }) => ({
+      type: "content",
+      value: [{ type: "media", mediaType: "image/png", data: output.base64 }],
+    }),
+  }),
+};
+```
 
-  <Step title="Build the head-start handler">
-    `chat.headStart` returns a plain Web Fetch handler, `(req: Request) => Promise<Response>`. You call `streamText` inside it much as you did in the original route handler, with the same model and the same system prompt as the agent so there's no tone shift when step 2 takes over.
+The agent task is unchanged — it still imports the full `tools`.
 
-    ```ts lib/chat-handler.ts theme={"theme":"css-variables"}
-    import { chat } from "@trigger.dev/sdk/chat-server";
-    import { anthropic } from "@ai-sdk/anthropic";
-    import { streamText } from "ai";
-    import { headStartTools } from "@/lib/chat-tools/schemas";
+**2. Build the head-start handler**
 
-    export const chatHandler = chat.headStart({
-      agentId: "my-chat",
-      run: async ({ streamText }) =>
-        streamText({
-          model: anthropic("claude-sonnet-4-5"),
-          system: "You are a helpful assistant.",
-          tools: headStartTools,
-        }),
-    });
-    ```
+`chat.headStart` returns a plain Web Fetch handler, `(req: Request) => Promise<Response>`. You call `streamText` inside it much as you did in the original route handler, with the same model and the same system prompt as the agent so there's no tone shift when step 2 takes over.
 
-    <Note>
-      That `streamText` owns `messages`, `prompt`, `abortSignal` and `stopWhen`. Passing one is
-      a type error, and a runtime throw if you get past the types. Unlike the agent side, re-setting one breaks the
-      handover rather than degrading it: `stopWhen` is pinned to `stepCountIs(1)`
-      because the agent, not the handler, runs step 2 onward.
-    </Note>
+```ts lib/chat-handler.ts theme={"theme":"css-variables"}
+import { chat } from "@trigger.dev/sdk/chat-server";
+import { anthropic } from "@ai-sdk/anthropic";
+import { streamText } from "ai";
+import { headStartTools } from "@/lib/chat-tools/schemas";
 
-    Your provider keys never leave your server — the first-turn model call runs in your process, so that environment needs whatever the model requires.
-  </Step>
+export const chatHandler = chat.headStart({
+  agentId: "my-chat",
+  run: async ({ streamText }) =>
+    streamText({
+      model: anthropic("claude-sonnet-4-5"),
+      system: "You are a helpful assistant.",
+      tools: headStartTools,
+    }),
+});
+```
 
-  <Step title="Mount it where the old handler was, auth check and all">
-    The authorization check you moved into the server actions belongs here too, in the same place it always was, ownership check included. Wrap the handler rather than exporting it directly:
+> [!NOTE]
+>
+> That `streamText` owns `messages`, `prompt`, `abortSignal` and `stopWhen`. Passing one is
+> a type error, and a runtime throw if you get past the types. Unlike the agent side, re-setting one breaks the
+> handover rather than degrading it: `stopWhen` is pinned to `stepCountIs(1)`
+> because the agent, not the handler, runs step 2 onward.
 
-    ```ts app/api/chat/route.ts theme={"theme":"css-variables"}
-    import { auth } from "@/lib/auth";
-    import { claimChat } from "@/lib/chat-access";
-    import { chatHandler } from "@/lib/chat-handler";
+Your provider keys never leave your server — the first-turn model call runs in your process, so that environment needs whatever the model requires.
 
-    // The handler holds the SSE response open until the agent signals
-    // turn-complete, so this covers the whole first turn, not just step 1.
-    export const maxDuration = 60;
+**3. Mount it where the old handler was, auth check and all**
 
-    export async function POST(req: Request) {
-      const session = await auth();
-      if (!session) return new Response("Unauthorized", { status: 401 });
+The authorization check you moved into the server actions belongs here too, in the same place it always was, ownership check included. Wrap the handler rather than exporting it directly:
 
-      // Clone so the handler still gets an unread body.
-      const { chatId } = await req.clone().json();
-      await claimChat(chatId, session.user.id);
+```ts app/api/chat/route.ts theme={"theme":"css-variables"}
+import { auth } from "@/lib/auth";
+import { claimChat } from "@/lib/chat-access";
+import { chatHandler } from "@/lib/chat-handler";
 
-      return chatHandler(req);
-    }
-    ```
+// The handler holds the SSE response open until the agent signals
+// turn-complete, so this covers the whole first turn, not just step 1.
+export const maxDuration = 60;
 
-    Any framework that hands you a Web `Request` mounts it the same way — Hono, SvelteKit, Remix, TanStack Start, Astro, Nitro, Elysia, Workers, Bun, Deno. Express, Fastify, and Koa need the `chat.toNodeListener` adapter. [Mounting in your framework](/docs/ai-chat/fast-starts#mounting-in-your-framework) has one for each.
-  </Step>
+export async function POST(req: Request) {
+  const session = await auth();
+  if (!session) return new Response("Unauthorized", { status: 401 });
 
-  <Step title="Point the transport at it">
-    One option on the transport you already wired up. Keep both server actions: Head Start only covers the first turn of a chat that has no session yet, and turns 2 onward go down the direct path that needs `accessToken`.
+  // Clone so the handler still gets an unread body.
+  const { chatId } = await req.clone().json();
+  await claimChat(chatId, session.user.id);
 
-    ```tsx app/components/chat.tsx theme={"theme":"css-variables"}
-    const transport = useTriggerChatTransport<typeof myChat>({
-      task: "my-chat",
-      accessToken: ({ chatId }) => mintChatAccessToken(chatId),
-      startSession: ({ chatId, clientData }) => startChatSession({ chatId, clientData }),
-      headStart: "/api/chat",
-      sessions: initialSessions,
-    });
-    ```
+  return chatHandler(req);
+}
+```
 
-    This isn't a `useChat` `api` URL under a different name. It's the first-turn shortcut only; the transport stops POSTing to it as soon as a session exists.
-  </Step>
-</Steps>
+Any framework that hands you a Web `Request` mounts it the same way — Hono, SvelteKit, Remix, TanStack Start, Astro, Nitro, Elysia, Workers, Bun, Deno. Express, Fastify, and Koa need the `chat.toNodeListener` adapter. [Mounting in your framework](/docs/ai-chat/fast-starts#mounting-in-your-framework) has one for each.
+
+**4. Point the transport at it**
+
+One option on the transport you already wired up. Keep both server actions: Head Start only covers the first turn of a chat that has no session yet, and turns 2 onward go down the direct path that needs `accessToken`.
+
+```tsx app/components/chat.tsx theme={"theme":"css-variables"}
+const transport = useTriggerChatTransport<typeof myChat>({
+  task: "my-chat",
+  accessToken: ({ chatId }) => mintChatAccessToken(chatId),
+  startSession: ({ chatId, clientData }) => startChatSession({ chatId, clientData }),
+  headStart: "/api/chat",
+  sessions: initialSessions,
+});
+```
+
+This isn't a `useChat` `api` URL under a different name. It's the first-turn shortcut only; the transport stops POSTing to it as soon as a session exists.
 
 Persistence doesn't change. The handover carries one stable assistant message id across both halves of the turn, so `onTurnComplete` still fires once with the whole message, and `hydrateMessages` still receives the first-turn history as `incomingMessages` — with one caveat: a head-start turn skips preload entirely, so a hydrate hook that assumes its conversation row already exists has to upsert rather than update.
 
 If the first message gets captured somewhere other than the chat page — a "new chat" prompt box that navigates to `/chats/{id}` — there's no open connection to stream step 1 into. Use [`chat.startHeadStart`](/docs/ai-chat/fast-starts#detached-head-start) instead: it drains step 1 into the durable session stream and the destination page resumes it.
 
-<Note>
-  Head Start and [Preload](/docs/ai-chat/fast-starts#preload) solve the same problem from opposite ends, and running both for one chat is wasted work. Preload is the answer when there's no warm server to run step 1 in — a browser-only chat surface, say. [Picking an approach](/docs/ai-chat/fast-starts#picking-an-approach) compares them.
-</Note>
+> [!NOTE]
+>
+> Head Start and [Preload](/docs/ai-chat/fast-starts#preload) solve the same problem from opposite ends, and running both for one chat is wasted work. Preload is the answer when there's no warm server to run step 1 in — a browser-only chat surface, say. [Picking an approach](/docs/ai-chat/fast-starts#picking-an-approach) compares them.
 
 ## What you get once you're moved over
 
@@ -579,20 +573,18 @@ The shape is identical outside Next.js. The agent task and the React component d
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Backend" icon="server" href="/docs/ai-chat/backend">
-    Every `chat.agent` option, `chat.pipe`, custom data parts, and runtime config.
-  </Card>
+> **[Backend](/docs/ai-chat/backend)**
+>
+> Every `chat.agent` option, `chat.pipe`, custom data parts, and runtime config.
 
-  <Card title="Lifecycle hooks" icon="list-check" href="/docs/ai-chat/lifecycle-hooks">
-    Every hook, its payload, and the exact per-turn firing order.
-  </Card>
+> **[Lifecycle hooks](/docs/ai-chat/lifecycle-hooks)**
+>
+> Every hook, its payload, and the exact per-turn firing order.
 
-  <Card title="Database persistence" icon="database" href="/docs/ai-chat/patterns/database-persistence">
-    The full per-hook persistence mapping and the race conditions to avoid.
-  </Card>
+> **[Database persistence](/docs/ai-chat/patterns/database-persistence)**
+>
+> The full per-hook persistence mapping and the race conditions to avoid.
 
-  <Card title="How it works" icon="diagram-project" href="/docs/ai-chat/how-it-works">
-    Sessions, runs, the durable channels, and what survives which failure.
-  </Card>
-</CardGroup>
+> **[How it works](/docs/ai-chat/how-it-works)**
+>
+> Sessions, runs, the durable channels, and what survives which failure.

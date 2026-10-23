@@ -6,12 +6,6 @@ path: docs/webhooks/waiters
 
 Pause a run until a matching webhook arrives on an endpoint, then resume it with the verified event.
 
-<PrivateBeta>
-  [Request access](https://trigger.dev/webhooks-beta) and we'll turn webhooks on for your
-  organization and send you the prerelease packages. Webhooks are open source, so they work
-  self-hosted too. APIs may change before general availability.
-</PrivateBeta>
-
 **A waiter pauses a run until a matching delivery arrives on an [endpoint](/docs/webhooks/overview).** Use it when your task starts something in another system and needs to know when that system reports back: a payment that settles, a build that finishes, a document that gets signed.
 
 ```ts /trigger/checkout.ts theme={"theme":"css-variables"}

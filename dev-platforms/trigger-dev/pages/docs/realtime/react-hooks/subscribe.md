@@ -247,7 +247,9 @@ See our [Realtime documentation](/docs/realtime) for more information.
 
 All realtime hooks automatically include metadata updates. Whenever your task updates metadata using `metadata.set()`, `metadata.append()`, or other metadata methods, your component will re-render with the updated data.
 
-<Note>To learn how to write tasks using metadata, see our [metadata](/docs/runs/metadata) guide.</Note>
+> [!NOTE]
+>
+> To learn how to write tasks using metadata, see our [metadata](/docs/runs/metadata) guide.
 
 ### Progress monitoring
 

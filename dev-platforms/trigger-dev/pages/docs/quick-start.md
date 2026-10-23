@@ -20,86 +20,80 @@ Your agent guides you through login, choosing or creating an organization and pr
 
 ## Manual setup
 
-<Steps>
-  <Step title="Create a Trigger.dev account">
-    Sign up at [Trigger.dev Cloud](https://cloud.trigger.dev) (or [self-host](/docs/self-hosting/overview)). The onboarding flow will guide you through creating your first organization and project.
-  </Step>
+### 1. Create a Trigger.dev account
 
-  <Step title="Run the CLI `init` command">
-    The easiest way to get started is to use the CLI. It will add Trigger.dev to your existing project, create a `/trigger` folder and give you an example task.
+Sign up at [Trigger.dev Cloud](https://cloud.trigger.dev) (or [self-host](/docs/self-hosting/overview)). The onboarding flow will guide you through creating your first organization and project.
 
-    Run this command in the root of your project to get started:
+### 2. Run the CLI `init` command
 
-    <CodeGroup>
-      ```bash npm theme={"theme":"css-variables"}
-      npx trigger.dev@latest init
-      ```
+The easiest way to get started is to use the CLI. It will add Trigger.dev to your existing project, create a `/trigger` folder and give you an example task.
 
-      ```bash pnpm theme={"theme":"css-variables"}
-      pnpm dlx trigger.dev@latest init
-      ```
+Run this command in the root of your project to get started:
 
-      ```bash yarn theme={"theme":"css-variables"}
-      yarn dlx trigger.dev@latest init
-      ```
-    </CodeGroup>
+```bash npm theme={"theme":"css-variables"}
+npx trigger.dev@latest init
+```
 
-    It will do a few things:
+```bash pnpm theme={"theme":"css-variables"}
+pnpm dlx trigger.dev@latest init
+```
 
-    <Tip title="MCP Server">
-      Our [Trigger.dev MCP server](/docs/mcp-introduction) gives your AI assistant direct access to Trigger.dev tools; search docs, trigger tasks, deploy projects, and monitor runs. We recommend installing it for the best developer experience.
-    </Tip>
+```bash yarn theme={"theme":"css-variables"}
+yarn dlx trigger.dev@latest init
+```
 
-    1. Ask if you want to set up AI tooling: the [Trigger.dev MCP server](/docs/mcp-introduction) and/or Trigger.dev agent skills (shown the first time you run init). If you choose either, you can let your AI assistant finish the setup instead of the CLI.
-    2. Log you into the CLI if you're not already logged in.
-    3. Ask you to select your project.
-    4. Install the required SDK packages.
-    5. Ask where you'd like to create the `/trigger` directory and create it with an example task.
-    6. Create a `trigger.config.ts` file in the root of your project.
+It will do a few things:
 
-    Install the "Hello World" example task when prompted. We'll use this task to test the setup.
-  </Step>
+> [!TIP]
+>
+> Our [Trigger.dev MCP server](/docs/mcp-introduction) gives your AI assistant direct access to Trigger.dev tools; search docs, trigger tasks, deploy projects, and monitor runs. We recommend installing it for the best developer experience.
 
-  <Step title="Run the CLI `dev` command">
-    The CLI `dev` command runs a server for your tasks. It watches for changes in your `/trigger` directory and communicates with the Trigger.dev platform to register your tasks, perform runs, and send data back and forth.
+1. Ask if you want to set up AI tooling: the [Trigger.dev MCP server](/docs/mcp-introduction) and/or Trigger.dev agent skills (shown the first time you run init). If you choose either, you can let your AI assistant finish the setup instead of the CLI.
+2. Log you into the CLI if you're not already logged in.
+3. Ask you to select your project.
+4. Install the required SDK packages.
+5. Ask where you'd like to create the `/trigger` directory and create it with an example task.
+6. Create a `trigger.config.ts` file in the root of your project.
 
-    It can also update your `@trigger.dev/*` packages to prevent version mismatches and failed deploys. You will always be prompted first.
+Install the "Hello World" example task when prompted. We'll use this task to test the setup.
 
-    <CodeGroup>
-      ```bash npm theme={"theme":"css-variables"}
-      npx trigger.dev@latest dev
-      ```
+### 3. Run the CLI `dev` command
 
-      ```bash pnpm theme={"theme":"css-variables"}
-      pnpm dlx trigger.dev@latest dev
-      ```
+The CLI `dev` command runs a server for your tasks. It watches for changes in your `/trigger` directory and communicates with the Trigger.dev platform to register your tasks, perform runs, and send data back and forth.
 
-      ```bash yarn theme={"theme":"css-variables"}
-      yarn dlx trigger.dev@latest dev
-      ```
-    </CodeGroup>
-  </Step>
+It can also update your `@trigger.dev/*` packages to prevent version mismatches and failed deploys. You will always be prompted first.
 
-  <Step title="Perform a test run using the dashboard">
-    The CLI `dev` command spits out various useful URLs, including a link to the dashboard. Open it, find your Example task on the Tasks page, and press the "Test" button to open its test page.
+```bash npm theme={"theme":"css-variables"}
+npx trigger.dev@latest dev
+```
 
-    Most tasks have a "payload" which you enter in the JSON editor, but our example task doesn't need any input. You can also configure run options, pre-populate the form from recent runs, and save run templates.
+```bash pnpm theme={"theme":"css-variables"}
+pnpm dlx trigger.dev@latest dev
+```
 
-    Press the "Run test" button.
+```bash yarn theme={"theme":"css-variables"}
+yarn dlx trigger.dev@latest dev
+```
 
-    <img alt="Test page" />
-  </Step>
+### 4. Perform a test run using the dashboard
 
-  <Step title="View your run">
-    Congratulations, you should see the run page which will live reload showing you the current state of the run.
+The CLI `dev` command spits out various useful URLs, including a link to the dashboard. Open it, find your Example task on the Tasks page, and press the "Test" button to open its test page.
 
-    <img alt="Run page" />
+Most tasks have a "payload" which you enter in the JSON editor, but our example task doesn't need any input. You can also configure run options, pre-populate the form from recent runs, and save run templates.
 
-    If you go back to your terminal you'll see that the dev command also shows the task status and links to the run log.
+Press the "Run test" button.
 
-    <img alt="Terminal showing completed run" />
-  </Step>
-</Steps>
+![Test page](https://mintcdn.com/trigger/2gGDaV8FR4pPhx_f/images/test-dashboard.png?fit=max\&auto=format\&n=2gGDaV8FR4pPhx_f\&q=85\&s=9a7c31f3499500be59e62586763e03d1)
+
+### 5. View your run
+
+Congratulations, you should see the run page which will live reload showing you the current state of the run.
+
+![Run page](https://mintcdn.com/trigger/5SxX7bFjJKRsidSL/images/run-page.png?fit=max\&auto=format\&n=5SxX7bFjJKRsidSL\&q=85\&s=4b0bb5f9b181499cf324cdb8d5d673a8)
+
+If you go back to your terminal you'll see that the dev command also shows the task status and links to the run log.
+
+![Terminal showing completed run](https://mintcdn.com/trigger/0bD0UfsjaINxS6Tw/images/terminal-completed-run.png?fit=max\&auto=format\&n=0bD0UfsjaINxS6Tw\&q=85\&s=a9284c5228343b72d798c6e36f5acb24)
 
 ## Triggering tasks from your app
 
@@ -113,20 +107,18 @@ See [Triggering](/docs/triggering) for the full guide, or jump straight to frame
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Building with AI" icon="brain" href="/docs/building-with-ai">
-    Build Trigger.dev projects using AI coding assistants
-  </Card>
+> **[Building with AI](/docs/building-with-ai)**
+>
+> Build Trigger.dev projects using AI coding assistants
 
-  <Card title="How to trigger your tasks" icon="bolt" href="/docs/triggering">
-    Trigger tasks from your backend code
-  </Card>
+> **[How to trigger your tasks](/docs/triggering)**
+>
+> Trigger tasks from your backend code
 
-  <Card title="Writing tasks" icon="wand-magic-sparkles" href="/docs/tasks/overview">
-    Task options, lifecycle hooks, retries, and queues
-  </Card>
+> **[Writing tasks](/docs/tasks/overview)**
+>
+> Task options, lifecycle hooks, retries, and queues
 
-  <Card title="Guides and example projects" icon="books" href="/docs/guides/introduction">
-    Framework guides and working example repos
-  </Card>
-</CardGroup>
+> **[Guides and example projects](/docs/guides/introduction)**
+>
+> Framework guides and working example repos

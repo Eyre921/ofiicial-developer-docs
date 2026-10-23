@@ -10,142 +10,140 @@ These steps assume you already have a Trigger.dev project with the SDK installed
 
 The chat surface works with Vercel AI SDK **v5, v6, or v7**; install whichever major you want. On **v7**, also install `@ai-sdk/otel` so your model calls are traced (the SDK registers it for you). See [compatibility](/docs/ai-chat/reference#compatibility) for the full matrix.
 
-<Steps>
-  <Step title="Define a chat agent">
-    Use `chat.agent` from `@trigger.dev/sdk/ai` to define an agent that handles chat messages. The `run` function receives `ModelMessage[]` (already converted from the frontend's `UIMessage[]`) — pass them directly to `streamText`.
+**1. Define a chat agent**
 
-    If you return a `StreamTextResult`, it's **automatically piped** to the frontend.
+Use `chat.agent` from `@trigger.dev/sdk/ai` to define an agent that handles chat messages. The `run` function receives `ModelMessage[]` (already converted from the frontend's `UIMessage[]`) — pass them directly to `streamText`.
 
-    ```ts trigger/chat.ts theme={"theme":"css-variables"}
-    import { chat } from "@trigger.dev/sdk/ai";
-    import { stepCountIs } from "ai";
-    import { anthropic } from "@ai-sdk/anthropic";
+If you return a `StreamTextResult`, it's **automatically piped** to the frontend.
 
-    export const myChat = chat.agent({
-      id: "my-chat",
-      run: async ({ messages, signal, streamText }) => {
-        return streamText({
-          model: anthropic("claude-sonnet-4-5"),
-          messages,
-          abortSignal: signal,
-          stopWhen: stepCountIs(15),
-        });
-      },
+```ts trigger/chat.ts theme={"theme":"css-variables"}
+import { chat } from "@trigger.dev/sdk/ai";
+import { stepCountIs } from "ai";
+import { anthropic } from "@ai-sdk/anthropic";
+
+export const myChat = chat.agent({
+  id: "my-chat",
+  run: async ({ messages, signal, streamText }) => {
+    return streamText({
+      model: anthropic("claude-sonnet-4-5"),
+      messages,
+      abortSignal: signal,
+      stopWhen: stepCountIs(15),
     });
-    ```
+  },
+});
+```
 
-    <Note>
-      The `streamText` passed to `run` connects compaction, steering, background
-      injection, and telemetry. If you use an imported `streamText` from `ai`,
-      spread `chat.toStreamTextOptions()` into its options to connect those features.
-    </Note>
+> [!NOTE]
+>
+> The `streamText` passed to `run` connects compaction, steering, background
+> injection, and telemetry. If you use an imported `streamText` from `ai`,
+> spread `chat.toStreamTextOptions()` into its options to connect those features.
 
-    <Tip>
-      For a **custom** [`UIMessage`](https://sdk.vercel.ai/docs/reference/ai-sdk-core/ui-message) subtype (typed `data-*` parts, tool map, etc.), define the agent with [`chat.withUIMessage<...>().agent({...})`](/docs/ai-chat/types) instead of `chat.agent`.
-    </Tip>
-  </Step>
+> [!TIP]
+>
+> For a **custom** [`UIMessage`](https://sdk.vercel.ai/docs/reference/ai-sdk-core/ui-message) subtype (typed `data-*` parts, tool map, etc.), define the agent with [`chat.withUIMessage<...>().agent({...})`](/docs/ai-chat/types) instead of `chat.agent`.
 
-  <Step title="Add two server actions">
-    On your server (e.g. as Next.js server actions), expose two helpers the transport will call: one that creates the chat session, and one that mints a fresh session-scoped access token for refresh.
+**2. Add two server actions**
 
-    ```ts app/actions.ts theme={"theme":"css-variables"}
-    "use server";
+On your server (e.g. as Next.js server actions), expose two helpers the transport will call: one that creates the chat session, and one that mints a fresh session-scoped access token for refresh.
 
-    import { auth } from "@trigger.dev/sdk";
-    import { chat } from "@trigger.dev/sdk/ai";
-    import { requireChatOwner } from "@/lib/chat-access";
+```ts app/actions.ts theme={"theme":"css-variables"}
+"use server";
 
-    const startSession = chat.createStartSessionAction("my-chat");
+import { auth } from "@trigger.dev/sdk";
+import { chat } from "@trigger.dev/sdk/ai";
+import { requireChatOwner } from "@/lib/chat-access";
 
-    export async function startChatSession({ chatId }: { chatId: string }) {
-      await requireChatOwner(chatId);
-      return startSession({ chatId });
-    }
+const startSession = chat.createStartSessionAction("my-chat");
 
-    // The transport calls this on 401/403 to refresh the session token.
-    export async function mintChatAccessToken(chatId: string) {
-      await requireChatOwner(chatId);
-      return auth.createPublicToken({
-        scopes: {
-          read: { sessions: chatId },
-          write: { sessions: chatId },
-        },
-        expirationTime: "1h",
-      });
-    }
-    ```
+export async function startChatSession({ chatId }: { chatId: string }) {
+  await requireChatOwner(chatId);
+  return startSession({ chatId });
+}
 
-    `requireChatOwner` is your application helper: authenticate the request, load the chat by ID and owner, and throw if it doesn't belong to that user. Create the chat record on your server before rendering the frontend, and pass its ID into `Chat`. Check ownership in both actions, including token refresh.
+// The transport calls this on 401/403 to refresh the session token.
+export async function mintChatAccessToken(chatId: string) {
+  await requireChatOwner(chatId);
+  return auth.createPublicToken({
+    scopes: {
+      read: { sessions: chatId },
+      write: { sessions: chatId },
+    },
+    expirationTime: "1h",
+  });
+}
+```
 
-    Set `TRIGGER_SECRET_KEY` and your model provider key in the server and worker environments. Keep both keys out of the browser.
-  </Step>
+`requireChatOwner` is your application helper: authenticate the request, load the chat by ID and owner, and throw if it doesn't belong to that user. Create the chat record on your server before rendering the frontend, and pass its ID into `Chat`. Check ownership in both actions, including token refresh.
 
-  <Step title="Use in the frontend">
-    Use the `useTriggerChatTransport` hook from `@trigger.dev/sdk/chat/react` to create a memoized transport instance, then pass it to `useChat`. Wire both server actions into the transport's `accessToken` and `startSession` callbacks.
+Set `TRIGGER_SECRET_KEY` and your model provider key in the server and worker environments. Keep both keys out of the browser.
 
-    The example below uses the Next.js `@/*` path alias for imports from `@/trigger/chat` and `@/app/actions`. If you're not using Next.js (or haven't configured the alias), swap them for relative imports.
+**3. Use in the frontend**
 
-    ```tsx app/components/chat.tsx theme={"theme":"css-variables"}
-    "use client";
+Use the `useTriggerChatTransport` hook from `@trigger.dev/sdk/chat/react` to create a memoized transport instance, then pass it to `useChat`. Wire both server actions into the transport's `accessToken` and `startSession` callbacks.
 
-    import { useState } from "react";
-    import { useChat } from "@ai-sdk/react";
-    import { useTriggerChatTransport } from "@trigger.dev/sdk/chat/react";
-    import type { myChat } from "@/trigger/chat";
-    import { mintChatAccessToken, startChatSession } from "@/app/actions";
+The example below uses the Next.js `@/*` path alias for imports from `@/trigger/chat` and `@/app/actions`. If you're not using Next.js (or haven't configured the alias), swap them for relative imports.
 
-    export function Chat({ chatId }: { chatId: string }) {
-      const transport = useTriggerChatTransport<typeof myChat>({
-        task: "my-chat",
-        accessToken: ({ chatId }) => mintChatAccessToken(chatId),
-        startSession: ({ chatId }) => startChatSession({ chatId }),
-      });
+```tsx app/components/chat.tsx theme={"theme":"css-variables"}
+"use client";
 
-      const { messages, sendMessage, stop, status, error } = useChat({ id: chatId, transport });
-      const [input, setInput] = useState("");
+import { useState } from "react";
+import { useChat } from "@ai-sdk/react";
+import { useTriggerChatTransport } from "@trigger.dev/sdk/chat/react";
+import type { myChat } from "@/trigger/chat";
+import { mintChatAccessToken, startChatSession } from "@/app/actions";
 
-      return (
-        <div>
-          {messages.map((m) => (
-            <div key={m.id}>
-              <strong>{m.role}:</strong>
-              {m.parts.map((part, i) =>
-                part.type === "text" ? <span key={i}>{part.text}</span> : null
-              )}
-            </div>
-          ))}
+export function Chat({ chatId }: { chatId: string }) {
+  const transport = useTriggerChatTransport<typeof myChat>({
+    task: "my-chat",
+    accessToken: ({ chatId }) => mintChatAccessToken(chatId),
+    startSession: ({ chatId }) => startChatSession({ chatId }),
+  });
 
-          {error && <p role="alert">{error.message}</p>}
+  const { messages, sendMessage, stop, status, error } = useChat({ id: chatId, transport });
+  const [input, setInput] = useState("");
 
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (input.trim()) {
-                sendMessage({ text: input });
-                setInput("");
-              }
-            }}
-          >
-            <input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Type a message..."
-            />
-            <button type="submit" disabled={status === "streaming" || status === "submitted"}>
-              Send
-            </button>
-            {status === "streaming" && (
-              <button type="button" onClick={stop}>
-                Stop
-              </button>
-            )}
-          </form>
+  return (
+    <div>
+      {messages.map((m) => (
+        <div key={m.id}>
+          <strong>{m.role}:</strong>
+          {m.parts.map((part, i) =>
+            part.type === "text" ? <span key={i}>{part.text}</span> : null
+          )}
         </div>
-      );
-    }
-    ```
-  </Step>
-</Steps>
+      ))}
+
+      {error && <p role="alert">{error.message}</p>}
+
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (input.trim()) {
+            sendMessage({ text: input });
+            setInput("");
+          }
+        }}
+      >
+        <input
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Type a message..."
+        />
+        <button type="submit" disabled={status === "streaming" || status === "submitted"}>
+          Send
+        </button>
+        {status === "streaming" && (
+          <button type="button" onClick={stop}>
+            Stop
+          </button>
+        )}
+      </form>
+    </div>
+  );
+}
+```
 
 ## Try it
 

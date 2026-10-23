@@ -16,10 +16,10 @@ The frontend is a Next.js app that allows users to upload a CSV file, which is t
 
 ## GitHub repo
 
-<Card title="View the Realtime CSV Importer repo" icon="GitHub" href="https://github.com/triggerdotdev/examples/blob/main/realtime-csv-importer/README.md">
-  Click here to view the full code for this project in our examples repository on GitHub. You can
-  fork it and use it as a starting point for your own project.
-</Card>
+> **[View the Realtime CSV Importer repo](https://github.com/triggerdotdev/examples/blob/main/realtime-csv-importer/README.md)**
+>
+> Click here to view the full code for this project in our examples repository on GitHub. You can
+> fork it and use it as a starting point for your own project.
 
 ## Video
 

@@ -12,6 +12,8 @@ Commonly asked questions about migrating to 2025-09-03.
 >
 > ![](https://mintcdn.com/notion-demo/kjidwljTiCgFD8sF/images/docs/acf8104f9bb0b15e37e8f03cef3699eb19cf43c608fa4769ea04fc00468bb069-image.png?fit=max\&auto=format\&n=kjidwljTiCgFD8sF\&q=85\&s=8d4f9e6731559c09bf0f0aadec57d404)
 >
+> Diagram of the new Notion API data model. A database is a parent of one or more data sources, each of which parents zero or more pages. Previously, databases could only have one data source, so the concepts were combined in the API until 2025
+>
 > To learn more about data sources in the Notion app and related features, visit our [help center page](https://www.notion.com/help/data-sources-and-linked-databases).
 
 > **Is a datasource a new concept?**
@@ -39,6 +41,8 @@ Commonly asked questions about migrating to 2025-09-03.
 > Here's a diagram of a scenario where a workspace has a top-level page that has a database with two data sources:
 >
 > ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/16252219aa29c1b45f8db4a8a0ecffb7455954075ce15ffd1407388de62a3d1f-image.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=84dc88593a360a864b658849c8a4cd6c)
+>
+> Diagram showing a page in a workspace with a database child. The database has two data sources, each of which have two rows (child pages).
 >
 > Going from top to bottom, here's a simplified run-through of how the API objects connect to one another:
 >
@@ -70,6 +74,8 @@ Commonly asked questions about migrating to 2025-09-03.
 > However, for completeness, here's a diagram of how parent/child relationships work in an example wiki scenario:
 >
 > ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/41afb783e9b0060cf2bba81da964c08359100231e43f54fa3a38e98d69c4ce4f-image.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=be6ff0852c38631907b4dff7a5ffb02c)
+>
+> Diagram showing single-source databases nested under one another as part of a wiki structure.
 
 > **Which APIs are & aren't affected?**
 >

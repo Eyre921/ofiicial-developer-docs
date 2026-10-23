@@ -87,7 +87,7 @@ Navigate to the Query page to write and execute queries. The dashboard provides:
 * **Interactive help** - Built-in documentation for TRQL syntax and functions
 * **Export options** - Download results as JSON or CSV
 
-<img alt="The Query dashboard" />
+![The Query dashboard](https://mintcdn.com/trigger/68rLR7qrtVP2353r/images/query-chart-usage-percentiles.png?fit=max\&auto=format\&n=68rLR7qrtVP2353r\&q=85\&s=92af9ba8eeccf4047356735afa1ab294)
 
 ## Querying from the SDK
 

@@ -33,10 +33,10 @@ export default defineConfig({
 });
 ```
 
-<Note>
-  Any packages that install or build a native binary should be added to external, as native binaries
-  cannot be bundled.
-</Note>
+> [!NOTE]
+>
+> Any packages that install or build a native binary should be added to external, as native binaries
+> cannot be bundled.
 
 ## Key features
 
@@ -129,4 +129,4 @@ To test this task in the dashboard, you can use the following payload:
 
 ## Local development
 
-To test this example task locally, be sure to install any packages from the build extensions you added to your `trigger.config.ts` file to your local machine. In this case, you need to install .
+To test this example task locally, be sure to install any packages from the build extensions you added to your `trigger.config.ts` file to your local machine. In this case, you need to install the Sharp image processing library.

@@ -18,13 +18,13 @@ Generally availableAnthropic MessagesNexus AutoNative web search
 curl -fsSL https://nexus.fireworks.ai/install.sh | bash
 ```
 
-Requires Node.js 18 or later, `git`, and `bash`. On Windows, run it from Git Bash; PowerShell breaks the script's line endings.
+You need Node.js 22 or later, `git`, and `bash`. On Windows, run the installer from Git Bash. PowerShell breaks the script's line endings.
 
 ```bash wrap theme={null}
 nexus login
 ```
 
-Sign in with your browser, or paste a Fireworks key.
+Sign in with your browser, or paste a Fireworks API key (`fw_...`).
 
 Already set up? Skip to step 2.
 
@@ -57,21 +57,27 @@ Start a new session, or exit and run `claude --resume <id>`. Open `/model`:
 
 ![Claude Code model picker showing Auto, DeepSeek, Ember, and GLM Fireworks serverless models](https://mintcdn.com/fireworksai/DBOQdoU3Q63xUkRQ/images/nexus/claude-code-model-picker.png?fit=max\&auto=format\&n=DBOQdoU3Q63xUkRQ\&q=85\&s=44699935bfc797c540976eec4805b11d)
 
+Fireworks models in the Claude Code model picker
+
 > [!TIP]
 >
 > `nexus claude status` shows the provider, where the key comes from, and the configured model.
+
+The Fireworks catalog in `/model` needs Claude Code 2.1.242 or later. On an older version, `nexus claude` says so. Run `claude update`, then `nexus claude` again.
 
 ## Use Nexus Auto
 
 Nexus Auto (`auto`) is supported on the Messages API.
 
 * **Anthropic model turns:** your Claude login (OAuth), or an exported `ANTHROPIC_API_KEY`.
-* **OpenAI model turns:** connect an OpenAI [Provider Key](/nexus/provider-keys). Nexus CLI doesn't send a key from `--openai-api-key` or `nexus configure` on `auto`. See [how `auto` picks its closed model](/nexus/auto#how-auto-picks-its-closed-model).
+* **OpenAI model turns:** connect an OpenAI [Provider Key](/nexus/provider-keys), or save your own key with `nexus auto --openai-api-key` (it prompts for the key) and run `nexus claude` again. Nexus CLI adds the saved key to `ANTHROPIC_CUSTOM_HEADERS`.
+* Nexus CLI never sends an Anthropic key you saved with `nexus auto` to Claude Code. Your Claude login covers Anthropic model turns.
+* See [which models `auto` can use](/nexus/auto#which-models-auto-can-use).
 * **Manual setup:** send `x-anthropic-api-key` and `x-openai-api-key` headers yourself. See [Manual setup (advanced)](#manual-setup-advanced).
 
 ## MCP and tools
 
-Your servers stay in `~/.claude.json`, and Nexus CLI sets `ENABLE_TOOL_SEARCH`.
+Your MCP servers stay in `~/.claude.json`. Nexus CLI sets `ENABLE_TOOL_SEARCH` so MCP tool search stays on.
 
 Add a server with `claude mcp add <name> -- <command>`, and confirm it's configured:
 
@@ -80,7 +86,7 @@ claude mcp list
 # docs: npx -y your-mcp-server - ✔ Connected
 ```
 
-Native web search is supported while connected through Nexus CLI. Fireworks runs the search server-side and returns the results, with no MCP server or search service to set up.
+Native web search and web fetch keep working while connected through Nexus CLI. Fireworks runs the search server-side and returns the results. You don't need an MCP server or a search service.
 
 ## Usage and cost
 
@@ -91,7 +97,8 @@ For the session cost status line, `nexus claude usage`, and how its estimate dif
 * Upgrading from an earlier version? See [Upgrading from earlier versions](/nexus/cli#upgrading-from-earlier-versions).
 * Text-only models fail on pasted images. Use `/rewind`, or switch to a vision model such as `glm-5p3-flash`.
 * Resume or restart the session after changing models.
-* Auto mode says classifier requests are billed: this is expected, once per session, and auto mode keeps working. Its safety checks run on your Sonnet slot and bill to Anthropic. To bill them at Fireworks rates, pin Sonnet with `nexus claude --sonnet <id>`.
+* `/model` doesn't list the Fireworks catalog: update Claude Code to 2.1.242 or later with `claude update`, then run `nexus claude` again.
+* Auto mode says classifier requests are billed: this notice is expected. It appears once per session, and auto mode keeps working. The safety checks run on your Sonnet slot, so they bill to Anthropic. To bill them at Fireworks rates, pin Sonnet with `nexus claude --sonnet <id>`.
 
 ## Manual setup (advanced)
 
@@ -120,7 +127,7 @@ export ANTHROPIC_API_KEY="$FIREWORKS_API_KEY"
 claude --model glm-latest
 ```
 
-`ANTHROPIC_AUTH_TOKEN` sends the key as an `Authorization: Bearer` header, and `ANTHROPIC_API_KEY` sends it as an `x-api-key` header, which is why Claude Code asks you to approve it.
+`ANTHROPIC_AUTH_TOKEN` sends the key as an `Authorization: Bearer` header. `ANTHROPIC_API_KEY` sends it as an `x-api-key` header, so Claude Code asks you to approve it.
 
 **2. Start a session**
 
@@ -155,13 +162,10 @@ See [what changes without the Nexus CLI](/nexus/manual-setup#what-changes-withou
 > {
 >   "env": {
 >     "ANTHROPIC_BASE_URL": "https://api.fireworks.ai/inference",
->     "ANTHROPIC_CUSTOM_HEADERS": "X-Fireworks-Api-Key: fw_...",
->     "DISABLE_TELEMETRY": "1",
->     "DO_NOT_TRACK": "1",
->     "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+>     "ANTHROPIC_CUSTOM_HEADERS": "X-Fireworks-Api-Key: fw_...\nX-Title: Claude Code\nHTTP-Referer: nexus/v<version>",
 >     "CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING": "1",
->     "CLAUDE_CODE_PACKAGE_MANAGER_AUTO_UPDATE": "0",
->     "ENABLE_TOOL_SEARCH": "true"
+>     "ENABLE_TOOL_SEARCH": "true",
+>     "CLAUDE_CODE_DISABLE_EXPLORE_INHERIT_CAP": "1"
 >   },
 >   "modelPicker": {
 >     "options": [
@@ -173,12 +177,14 @@ See [what changes without the Nexus CLI](/nexus/manual-setup#what-changes-withou
 > }
 > ```
 >
-> * The Fireworks key goes in a custom header, so your Claude login stays available for Anthropic model turns.
+> * The Fireworks key goes in a custom header, so your Claude login stays available for Anthropic model turns. The same header names the client (`X-Title`, `HTTP-Referer`).
+> * An OpenAI key saved with `nexus auto --openai-api-key` adds an `x-openai-api-key` line to that header.
 > * `[1m]` marks 1M-context models.
 > * A pinned tier adds `ANTHROPIC_DEFAULT_<TIER>_MODEL` to `env`, such as `ANTHROPIC_DEFAULT_SONNET_MODEL`. A pinned subagent adds `CLAUDE_CODE_SUBAGENT_MODEL`.
-> * The status line shows the estimated session cost. It is added only if you do not already have one.
-> * Nexus CLI also turns off Claude Code telemetry, nonessential traffic, adaptive thinking, and package manager auto-updates, and enables MCP tool search.
-> * `~/.claude.json`: if you export `ANTHROPIC_API_KEY`, Nexus CLI pre-approves it so Claude Code doesn't prompt. Nexus CLI also removes its retired `fireworks-websearch` server here.
+> * The status line shows the estimated session cost and, on `auto`, the model that served the latest turn. Nexus CLI adds it only if you don't already have one.
+> * The other `env` values turn off adaptive thinking, keep MCP tool search on, and let the Explore agent inherit the session model. Exploration then stays on Fireworks rates.
+> * Nexus CLI leaves Claude Code telemetry and auto-updates as you have them. An upgrade removes the telemetry and auto-update settings that earlier versions wrote.
+> * `~/.claude.json`: if you export `ANTHROPIC_API_KEY`, Nexus CLI pre-approves it so Claude Code doesn't prompt. Nexus CLI also removes its retired `fireworks-websearch` server from this file.
 
 ## Claude Agent SDK
 

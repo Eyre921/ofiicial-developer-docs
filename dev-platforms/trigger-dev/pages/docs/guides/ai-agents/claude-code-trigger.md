@@ -10,120 +10,118 @@ The [Claude Agent SDK](https://platform.claude.com/docs/en/agent-sdk/overview) g
 
 ## Setup
 
-<Note>
-  This guide assumes you are working with an existing [Trigger.dev](https://trigger.dev) project.
-  Follow our [quickstart](/docs/quick-start) to get set up if you don't have a project yet.
-</Note>
+> [!NOTE]
+>
+> This guide assumes you are working with an existing [Trigger.dev](https://trigger.dev) project.
+> Follow our [quickstart](/docs/quick-start) to get set up if you don't have a project yet.
 
-<Steps>
-  <Step title="Install the Claude Agent SDK">
-    ```bash npm theme={"theme":"css-variables"}
-    npm install @anthropic-ai/claude-agent-sdk
-    ```
-  </Step>
+**1. Install the Claude Agent SDK**
 
-  <Step title="Configure trigger.config.ts">
-    Add the SDK to the `external` array so it's not bundled:
+```bash npm theme={"theme":"css-variables"}
+npm install @anthropic-ai/claude-agent-sdk
+```
 
-    ```ts trigger.config.ts theme={"theme":"css-variables"}
-    import { defineConfig } from "@trigger.dev/sdk";
+**2. Configure trigger.config.ts**
 
-    export default defineConfig({
-      project: process.env.TRIGGER_PROJECT_REF!,
-      build: {
-        external: ["@anthropic-ai/claude-agent-sdk"],
-      },
-      machine: "small-2x",
-    });
-    ```
+Add the SDK to the `external` array so it's not bundled:
 
-    <Note>
-      Adding packages to `external` prevents them from being bundled, which is necessary for the Claude
-      Agent SDK. See the [build configuration docs](/docs/config/config-file#external) for more details.
-    </Note>
-  </Step>
+```ts trigger.config.ts theme={"theme":"css-variables"}
+import { defineConfig } from "@trigger.dev/sdk";
 
-  <Step title="Set your API key">
-    Add your Anthropic API key to your environment variables. The SDK reads it automatically.
+export default defineConfig({
+  project: process.env.TRIGGER_PROJECT_REF!,
+  build: {
+    external: ["@anthropic-ai/claude-agent-sdk"],
+  },
+  machine: "small-2x",
+});
+```
 
-    ```bash theme={"theme":"css-variables"}
-    ANTHROPIC_API_KEY=sk-ant-...
-    ```
+> [!NOTE]
+>
+> Adding packages to `external` prevents them from being bundled, which is necessary for the Claude
+> Agent SDK. See the [build configuration docs](/docs/config/config-file#external) for more details.
 
-    You can set this in the [Trigger.dev dashboard](https://cloud.trigger.dev) under **Environment Variables**, or in your `.env` file for local development.
-  </Step>
+**3. Set your API key**
 
-  <Step title="Create your first agent task">
-    This example creates a task where Claude generates code in an empty workspace. The agent will create files based on your prompt:
+Add your Anthropic API key to your environment variables. The SDK reads it automatically.
 
-    ```ts trigger/claude-agent.ts theme={"theme":"css-variables"}
-    import { query } from "@anthropic-ai/claude-agent-sdk";
-    import { schemaTask, logger } from "@trigger.dev/sdk";
-    import { mkdtemp, rm, readdir } from "node:fs/promises";
-    import { tmpdir } from "node:os";
-    import { join } from "node:path";
-    import { z } from "zod";
+```bash theme={"theme":"css-variables"}
+ANTHROPIC_API_KEY=sk-ant-...
+```
 
-    export const codeGenerator = schemaTask({
-      id: "code-generator",
-      schema: z.object({
-        prompt: z.string(),
-      }),
-      run: async ({ prompt }, { signal }) => {
-        const abortController = new AbortController();
-        signal.addEventListener("abort", () => abortController.abort());
+You can set this in the [Trigger.dev dashboard](https://cloud.trigger.dev) under **Environment Variables**, or in your `.env` file for local development.
 
-        // Create an empty workspace for the agent
-        // The agent will create files here based on the prompt
-        const workDir = await mkdtemp(join(tmpdir(), "claude-agent-"));
-        logger.info("Created workspace", { workDir });
+**4. Create your first agent task**
 
-        try {
-          const result = query({
-            prompt,
-            options: {
-              model: "claude-sonnet-4-20250514",
-              abortController,
-              cwd: workDir,
-              maxTurns: 10,
-              permissionMode: "acceptEdits",
-              allowedTools: ["Read", "Edit", "Write", "Glob"],
-            },
-          });
+This example creates a task where Claude generates code in an empty workspace. The agent will create files based on your prompt:
 
-          for await (const message of result) {
-            logger.info("Agent message", { type: message.type });
-          }
+```ts trigger/claude-agent.ts theme={"theme":"css-variables"}
+import { query } from "@anthropic-ai/claude-agent-sdk";
+import { schemaTask, logger } from "@trigger.dev/sdk";
+import { mkdtemp, rm, readdir } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { z } from "zod";
 
-          // See what files Claude created
-          const files = await readdir(workDir, { recursive: true });
-          logger.info("Files created", { files });
+export const codeGenerator = schemaTask({
+  id: "code-generator",
+  schema: z.object({
+    prompt: z.string(),
+  }),
+  run: async ({ prompt }, { signal }) => {
+    const abortController = new AbortController();
+    signal.addEventListener("abort", () => abortController.abort());
 
-          return { filesCreated: files };
-        } finally {
-          await rm(workDir, { recursive: true, force: true });
-        }
-      },
-    });
-    ```
-  </Step>
+    // Create an empty workspace for the agent
+    // The agent will create files here based on the prompt
+    const workDir = await mkdtemp(join(tmpdir(), "claude-agent-"));
+    logger.info("Created workspace", { workDir });
 
-  <Step title="Run the dev server">
-    ```bash theme={"theme":"css-variables"}
-    npx trigger.dev@latest dev
-    ```
-  </Step>
+    try {
+      const result = query({
+        prompt,
+        options: {
+          model: "claude-sonnet-4-20250514",
+          abortController,
+          cwd: workDir,
+          maxTurns: 10,
+          permissionMode: "acceptEdits",
+          allowedTools: ["Read", "Edit", "Write", "Glob"],
+        },
+      });
 
-  <Step title="Test your agent">
-    Go to the Trigger.dev dashboard, find your `code-generator` task, and trigger it with a test payload:
+      for await (const message of result) {
+        logger.info("Agent message", { type: message.type });
+      }
 
-    ```json theme={"theme":"css-variables"}
-    {
-      "prompt": "Create a Node.js project with a fibonacci.ts file containing a function to calculate fibonacci numbers, and a fibonacci.test.ts file with tests."
+      // See what files Claude created
+      const files = await readdir(workDir, { recursive: true });
+      logger.info("Files created", { files });
+
+      return { filesCreated: files };
+    } finally {
+      await rm(workDir, { recursive: true, force: true });
     }
-    ```
-  </Step>
-</Steps>
+  },
+});
+```
+
+**5. Run the dev server**
+
+```bash theme={"theme":"css-variables"}
+npx trigger.dev@latest dev
+```
+
+**6. Test your agent**
+
+Go to the Trigger.dev dashboard, find your `code-generator` task, and trigger it with a test payload:
+
+```json theme={"theme":"css-variables"}
+{
+  "prompt": "Create a Node.js project with a fibonacci.ts file containing a function to calculate fibonacci numbers, and a fibonacci.test.ts file with tests."
+}
+```
 
 ## How it works
 
@@ -162,22 +160,20 @@ allowedTools: [
 
 ## GitHub repo
 
-<Card title="View the Claude Agent SDK + Trigger.dev example" icon="GitHub" href="https://github.com/triggerdotdev/examples/tree/main/claude-agent-sdk-trigger">
-  A complete example with two agent patterns: basic safe code generation and advanced with bash
-  execution.
-</Card>
+> **[View the Claude Agent SDK + Trigger.dev example](https://github.com/triggerdotdev/examples/tree/main/claude-agent-sdk-trigger)**
+>
+> A complete example with two agent patterns: basic safe code generation and advanced with bash
+> execution.
 
 ## Example projects using the Claude Agent SDK
 
-<CardGroup>
-  <Card title="Claude changelog generator" icon="scroll" href="/docs/guides/example-projects/claude-changelog-generator">
-    Generate changelogs from git commits using custom MCP tools.
-  </Card>
+> **[Claude changelog generator](/docs/guides/example-projects/claude-changelog-generator)**
+>
+> Generate changelogs from git commits using custom MCP tools.
 
-  <Card title="Claude GitHub wiki agent" icon="book" href="/docs/guides/example-projects/claude-github-wiki">
-    Analyze repositories and answer questions with real-time streaming.
-  </Card>
-</CardGroup>
+> **[Claude GitHub wiki agent](/docs/guides/example-projects/claude-github-wiki)**
+>
+> Analyze repositories and answer questions with real-time streaming.
 
 ## Learn more
 

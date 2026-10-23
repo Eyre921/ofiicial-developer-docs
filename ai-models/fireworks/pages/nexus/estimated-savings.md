@@ -6,13 +6,15 @@ path: nexus/estimated-savings
 
 Compare eligible serverless usage at public list prices with what the same tokens would have cost on Claude Opus 5.5.
 
-The Savings view estimates how much your account saved by using Fireworks models and Nexus Auto instead of serving the same tokens entirely with the baseline model.
+The Savings view estimates how much your account saved by using Fireworks models and Nexus Auto, compared with serving the same tokens entirely on the baseline model.
 
-Savings includes eligible direct Fireworks serverless usage as well as usage sent through Nexus Auto. It is not limited to requests where Nexus Auto selected an open model.
+Savings covers eligible direct Fireworks serverless usage and usage sent through Nexus Auto. It counts Nexus Auto turns that went to a closed model, not only turns that went to an open model.
 
 To view your savings, go to Analytics → [Savings](https://app.fireworks.ai/account/usage?type=savings).
 
 ![Analytics Savings tab showing total saved this month, cache hit rate, and a Spend vs Opus 5.5 chart with per-day stacked bars and a baseline line](https://mintcdn.com/fireworksai/NqCTPiMRl6q7tf99/images/fireworks-nexus/savings/savings-view.png?fit=max\&auto=format\&n=NqCTPiMRl6q7tf99\&q=85\&s=3ced1c7cca9c2bf0d5d6dd6490a4332b)
+
+The Savings view, with example data.
 
 > [!NOTE]
 >
@@ -33,7 +35,7 @@ Savings rate = estimated savings ÷ baseline cost
 | **Baseline cost** | What the same uncached input, cached input, cache-write, and output tokens would have cost on Claude Opus 5.5. |
 | **Estimated savings** | Baseline cost minus actual cost. Positive, zero, and negative values are all shown. |
 
-The Savings view displays the baseline model used for the comparison. The current baseline is Claude Opus 5.5. The baseline may change as the comparison is updated.
+The Savings view names the baseline model it compares against. Today that is Claude Opus 5.5. The baseline can change when the comparison is updated.
 
 ## How to read a result
 
@@ -63,7 +65,7 @@ Savings includes eligible serverless inference usage recorded for the account:
 * Direct eligible Fireworks serverless requests
 * Priced uncached input, cached input, cache-write, and output tokens
 
-When usage is grouped by user or model, usage without recorded attribution appears as unattributed. Fireworks-hosted internal model variants are grouped under their public model where possible.
+When you group usage by user or model, usage without a recorded user or model appears as unattributed. Internal variants of a Fireworks-hosted model are grouped under its public model where possible.
 
 ## What is not included
 
@@ -80,7 +82,7 @@ Groups with no comparable priced usage are omitted.
 
 > [!WARNING]
 >
-> Savings figures are for comparison and are not invoice amounts. Actual cost uses public list prices rather than your account's contracted pricing. Costs from closed-model providers are also estimates and may differ from the provider's invoice. For Fireworks billing totals, use the Costs view or your billing statement. Recent usage may take time to appear in Savings.
+> Savings figures are for comparison, not invoice amounts. Actual cost uses public list prices, not your account's contracted pricing. Closed-model provider costs are estimates too, and can differ from the provider's invoice. For Fireworks billing totals, use the Costs view or your billing statement. Recent usage can take a while to appear in Savings.
 
 ## Related
 

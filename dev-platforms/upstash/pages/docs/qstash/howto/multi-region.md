@@ -1,5 +1,5 @@
 ---
-title: "Select a Region"
+title: "Select a QStash Region"
 source: https://upstash.com/docs/qstash/howto/multi-region
 path: docs/qstash/howto/multi-region
 ---

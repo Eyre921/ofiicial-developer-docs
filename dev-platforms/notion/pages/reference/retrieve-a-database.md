@@ -25,6 +25,8 @@ To find a database ID, navigate to the database URL in your Notion workspace. Th
 
 ![1340](https://mintcdn.com/notion-demo/S-I3qLQnwRa7HjdK/images/reference/image-1.png?fit=max\&auto=format\&n=S-I3qLQnwRa7HjdK\&q=85\&s=00a19b68b92cd013cdc0f8867427eb44)
 
+Notion database ID
+
 Refer to the [Working with databases](/guides/data-apis/working-with-databases) guide for more details.
 
 ### Errors

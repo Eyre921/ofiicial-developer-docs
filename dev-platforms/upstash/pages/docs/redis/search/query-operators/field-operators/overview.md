@@ -1,5 +1,5 @@
 ---
-title: "Overview"
+title: "Redis Search Field Operators"
 source: https://upstash.com/docs/redis/search/query-operators/field-operators/overview
 path: docs/redis/search/query-operators/field-operators/overview
 ---

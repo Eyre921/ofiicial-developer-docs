@@ -8,14 +8,16 @@ Set a monthly compute spend cap for your organization and get email alerts befor
 
 Billing limits let you cap your organization's monthly compute spend so a runaway task or unexpected traffic spike can't blow your budget. Billing alerts notify you by email as you approach thresholds you choose.
 
-<Note>Billing limits and alerts are available to all [Trigger.dev Cloud](https://trigger.dev) organizations. They don't apply to self-hosted instances.</Note>
+> [!NOTE]
+>
+> Billing limits and alerts are available to all [Trigger.dev Cloud](https://trigger.dev) organizations. They don't apply to self-hosted instances.
 
 You can find the settings in the dashboard: open the **Organization** menu in the top left, then **Settings** → **Billing limits**.
 
 <picture>
   <source type="image/webp" />
 
-  <img alt="Billing limit settings" />
+  ![Billing limit settings](https://mintcdn.com/trigger/eIVY32b9Wb54RXmA/images/billing-docs.png?fit=max\&auto=format\&n=eIVY32b9Wb54RXmA\&q=85\&s=5bc9b28062e54c29f5fcdbf29fe38cf6)
 </picture>
 
 ## Setting a billing limit
@@ -40,7 +42,7 @@ Billing alerts are email notifications sent when your monthly spend crosses a th
 <picture>
   <source type="image/webp" />
 
-  <img alt="Billing alerts settings" />
+  ![Billing alerts settings](https://mintcdn.com/trigger/eIVY32b9Wb54RXmA/images/billing-alerts-docs.png?fit=max\&auto=format\&n=eIVY32b9Wb54RXmA\&q=85\&s=998c3fdd74a93501beac853f6bce023e)
 </picture>
 
 Alerts only notify you — they never pause environments or reject runs. Use them on their own for visibility, or alongside a limit to get advance warning before enforcement kicks in.
@@ -55,11 +57,11 @@ When your organization's spend reaches the billing limit, billable environments 
 
 If you don't act before the grace period ends, new triggers are rejected until you increase or remove the limit (limits also reset at the start of each billing cycle). Queued runs stay queued until you resolve the limit and choose to resume or cancel them. If the limit is still in place when a new billing cycle starts, queued runs resume automatically. Runs that have a TTL still expire if they stay queued past it.
 
-<Note>
-  Billing limits are **soft limits**, not instantaneous hard caps. Usage is evaluated on a short
-  delay, so spend can briefly exceed your limit before enforcement applies. See our
-  [terms](https://trigger.dev/terms) for refund policy details.
-</Note>
+> [!NOTE]
+>
+> Billing limits are **soft limits**, not instantaneous hard caps. Usage is evaluated on a short
+> delay, so spend can briefly exceed your limit before enforcement applies. See our
+> [terms](https://trigger.dev/terms) for refund policy details.
 
 ## Resuming after hitting a limit
 

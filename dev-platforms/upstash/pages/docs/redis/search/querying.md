@@ -1,5 +1,5 @@
 ---
-title: "Queries"
+title: "Redis Search Queries"
 source: https://upstash.com/docs/redis/search/querying
 path: docs/redis/search/querying
 ---
@@ -643,5 +643,5 @@ The highlighting feature works with indexed field names, which are the aliases.
 
 - [Blog Search](https://upstash.com/docs/redis/search/recipes/blog-search.md)
 - [E-commerce Search](https://upstash.com/docs/redis/search/recipes/e-commerce-search.md)
-- [Overview](https://upstash.com/docs/redis/search/recipes/overview.md)
+- [Redis Search Recipes Overview](https://upstash.com/docs/redis/search/recipes/overview.md)
 - [User Directory](https://upstash.com/docs/redis/search/recipes/user-directory.md)

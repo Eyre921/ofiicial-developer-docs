@@ -6,12 +6,6 @@ path: docs/webhooks/deliveries
 
 Inspect webhook payloads, where each delivery went, and the runs it started or resumed.
 
-<PrivateBeta>
-  [Request access](https://trigger.dev/webhooks-beta) and we'll turn webhooks on for your
-  organization and send you the prerelease packages. Webhooks are open source, so they work
-  self-hosted too. APIs may change before general availability.
-</PrivateBeta>
-
 **A delivery records a verified webhook event and what happened to it at each subscriber.** Find deliveries on an endpoint's **Deliveries** tab. A run that a delivery triggered links back to it, and to its endpoint, from the run's **Detail** tab.
 
 ## Endpoints
@@ -93,7 +87,7 @@ When the source maps a provider event ID, that ID becomes the key, so the provid
 
 | Key | Sources |
 | - | - |
-| A header | GitHub (`X-GitHub-Delivery`), Svix and Autumn (`svix-id`), Standard Webhooks, Loops and Granola (`webhook-id`), Linear (`Linear-Delivery`), PagerDuty (`X-Webhook-Id`), Jira (`X-Atlassian-Webhook-Identifier`), Zendesk (`X-Zendesk-Webhook-Invocation-Id`), Attio (`Idempotency-Key`), Shopify (`X-Shopify-Webhook-Id`) |
+| A header | GitHub (`X-GitHub-Delivery`), Svix and Autumn (`svix-id`), Standard Webhooks, Loops and Granola (`webhook-id`), Linear (`Linear-Delivery`), PagerDuty (`X-Webhook-Id`), Jira (`X-Atlassian-Webhook-Identifier`), Zendesk (`X-Zendesk-Webhook-Invocation-Id`), Attio (`Idempotency-Key`), Shopify (`X-Shopify-Webhook-Id`), Hookdeck (`X-Hookdeck-Eventid`, or `<prefix>-eventid` with a custom header prefix) |
 | A body field | Stripe, Notion, Vercel, Intercom, WorkOS, Metronome, Mux, Langfuse and Plain (`id`), Square, Slack and Typeform (`event_id`), Firecrawl (`webhookId`) |
 
 The other named sources (Zoom, Calendly, Sentry, DocuSign, ElevenLabs, Vapi, Retell, Tailscale, Infisical, PlanetScale, Supabase, Discord) use the fallback below.

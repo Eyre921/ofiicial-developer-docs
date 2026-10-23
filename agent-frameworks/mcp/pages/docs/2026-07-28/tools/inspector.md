@@ -20,6 +20,8 @@ The package also installs **`mcpdo`**, an experimental [connection client](/docs
 
 ![](https://mintcdn.com/mcp/pUebPdrb6PY5_mfH/images/inspector/web-monitor-sidebar.png?fit=max\&auto=format\&n=pUebPdrb6PY5_mfH\&q=85\&s=2ced9eeefa020be53fe4fe957b7d07c6)
 
+The MCP Inspector web client after a tool call, with the monitoring sidebar pinned and widened so the JSON-RPC exchange stays readable while you work.
+
 ## Quickstart
 
 The Inspector requires **Node 22.19.0 or newer** and runs directly through `npx`. No installation is required:

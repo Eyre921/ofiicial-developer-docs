@@ -31,11 +31,11 @@ The body is the raw record — any text up to 1MiB (records over the per-record 
 
 Set the `X-Part-Id` header to a unique value per record to make the append idempotent: replaying the same `X-Part-Id` does not duplicate the record. Appending to a closed session returns `409` (`code: "session_closed"`); appending to an expired session returns `400` (`code: "session_expired"`).
 
-<Warning>
-  Appending to `.out` requires a **secret key**. A session public token (even one with
-  `write:sessions`) can only append to `.in` — appending to `.out` with a public token returns
-  `403`. The `.out` stream is the task's to write.
-</Warning>
+> [!WARNING]
+>
+> Appending to `.out` requires a **secret key**. A session public token (even one with
+> `write:sessions`) can only append to `.in` — appending to `.out` with a public token returns
+> `403`. The `.out` stream is the task's to write.
 
 ## Read a channel over SSE
 

@@ -13,10 +13,10 @@ Learn how to trigger a task from a webhook in a Next.js app.
 
 ## GitHub repo
 
-<Card title="View the project on GitHub" icon="GitHub" href="https://github.com/triggerdotdev/examples/tree/main/nextjs-webhooks/my-app">
-  Click here to view the full code for this project in our examples repository on GitHub. You can
-  fork it and use it as a starting point for your own project.
-</Card>
+> **[View the project on GitHub](https://github.com/triggerdotdev/examples/tree/main/nextjs-webhooks/my-app)**
+>
+> Click here to view the full code for this project in our examples repository on GitHub. You can
+> fork it and use it as a starting point for your own project.
 
 ## Adding the webhook handler
 
@@ -76,94 +76,84 @@ This code will handle the webhook payload and trigger the 'Hello World' task.
 
 Now that you have your webhook handler set up, you can trigger the 'Hello World' task from it. We will do this locally using cURL.
 
-<Steps>
-  <Step title="Run your Next.js app and the Trigger.dev dev server">
-    First, run your Next.js app.
+**1. Run your Next.js app and the Trigger.dev dev server**
 
-    <CodeGroup>
-      ```bash npm theme={"theme":"css-variables"}
-      npm run dev
-      ```
+First, run your Next.js app.
 
-      ```bash pnpm theme={"theme":"css-variables"}
-      pnpm run dev
-      ```
+```bash npm theme={"theme":"css-variables"}
+npm run dev
+```
 
-      ```bash yarn theme={"theme":"css-variables"}
-      yarn dev
-      ```
-    </CodeGroup>
+```bash pnpm theme={"theme":"css-variables"}
+pnpm run dev
+```
 
-    Then, open up a second terminal window and start the Trigger.dev dev server:
+```bash yarn theme={"theme":"css-variables"}
+yarn dev
+```
 
-    <CodeGroup>
-      ```bash npm theme={"theme":"css-variables"}
-      npx trigger.dev@latest dev
-      ```
+Then, open up a second terminal window and start the Trigger.dev dev server:
 
-      ```bash pnpm theme={"theme":"css-variables"}
-      pnpm dlx trigger.dev@latest dev
-      ```
+```bash npm theme={"theme":"css-variables"}
+npx trigger.dev@latest dev
+```
 
-      ```bash yarn theme={"theme":"css-variables"}
-      yarn dlx trigger.dev@latest dev
-      ```
-    </CodeGroup>
-  </Step>
+```bash pnpm theme={"theme":"css-variables"}
+pnpm dlx trigger.dev@latest dev
+```
 
-  <Step title="Trigger the webhook with some dummy data">
-    To send a POST request to your webhook handler, open up a terminal window on your local machine and run the following command:
+```bash yarn theme={"theme":"css-variables"}
+yarn dlx trigger.dev@latest dev
+```
 
-    <Tip>
-      If `http://localhost:3000` isn't the URL of your locally running Next.js app, replace the URL in
-      the below command with that URL instead.
-    </Tip>
+**2. Trigger the webhook with some dummy data**
 
-    ```bash theme={"theme":"css-variables"}
-    curl -X POST -H "Content-Type: application/json" -d '{"Name": "John Doe", "Age": "87"}' http://localhost:3000/api/webhook-handler
-    ```
+To send a POST request to your webhook handler, open up a terminal window on your local machine and run the following command:
 
-    This will send a POST request to your webhook handler, with a JSON payload.
-  </Step>
+> [!TIP]
+>
+> If `http://localhost:3000` isn't the URL of your locally running Next.js app, replace the URL in
+> the below command with that URL instead.
 
-  <Step title="Check the task ran successfully">
-    After running the command, you should see a successful dev run and a 200 response in your terminals.
+```bash theme={"theme":"css-variables"}
+curl -X POST -H "Content-Type: application/json" -d '{"Name": "John Doe", "Age": "87"}' http://localhost:3000/api/webhook-handler
+```
 
-    If you now go to your [Trigger.dev dashboard](https://cloud.trigger.dev), you should also see a successful run for the 'Hello World' task, with the payload you sent, in this case; `{"name": "John Doe", "age": "87"}`.
-  </Step>
-</Steps>
+This will send a POST request to your webhook handler, with a JSON payload.
+
+**3. Check the task ran successfully**
+
+After running the command, you should see a successful dev run and a 200 response in your terminals.
+
+If you now go to your [Trigger.dev dashboard](https://cloud.trigger.dev), you should also see a successful run for the 'Hello World' task, with the payload you sent, in this case; `{"name": "John Doe", "age": "87"}`.
 
 ## Learn more about Next.js and Trigger.dev
 
 ### Walk-through guides from development to deployment
 
-<CardGroup>
-  <Card title="Next.js - setup guide" icon="N" href="/docs/guides/frameworks/nextjs">
-    Learn how to setup Trigger.dev with Next.js, using either the pages or app router.
-  </Card>
+> **[Next.js - setup guide](/docs/guides/frameworks/nextjs)**
+>
+> Learn how to setup Trigger.dev with Next.js, using either the pages or app router.
 
-  <Card title="Next.js - triggering tasks using webhooks" icon="N" href="/docs/guides/frameworks/nextjs-webhooks">
-    Learn how to create a webhook handler for incoming webhooks in a Next.js app, and trigger a task from it.
-  </Card>
-</CardGroup>
+> **[Next.js - triggering tasks using webhooks](/docs/guides/frameworks/nextjs-webhooks)**
+>
+> Learn how to create a webhook handler for incoming webhooks in a Next.js app, and trigger a task from it.
 
 ### Task examples
 
-<CardGroup>
-  <Card title="Fal.ai with Realtime in Next.js" href="/docs/guides/examples/fal-ai-realtime">
-    Generate an image from a prompt using Fal.ai and Trigger.dev Realtime.
-  </Card>
+> **[Fal.ai with Realtime in Next.js](/docs/guides/examples/fal-ai-realtime)**
+>
+> Generate an image from a prompt using Fal.ai and Trigger.dev Realtime.
 
-  <Card title="Generate a cartoon using Fal.ai in Next.js" href="/docs/guides/examples/fal-ai-image-to-cartoon">
-    Convert an image to a cartoon using Fal.ai.
-  </Card>
+> **[Generate a cartoon using Fal.ai in Next.js](/docs/guides/examples/fal-ai-image-to-cartoon)**
+>
+> Convert an image to a cartoon using Fal.ai.
 
-  <Card title="Vercel sync environment variables" icon="code" href="/docs/guides/examples/vercel-sync-env-vars">
-    Learn how to automatically sync environment variables from your Vercel projects to Trigger.dev.
-  </Card>
+> **[Vercel sync environment variables](/docs/guides/examples/vercel-sync-env-vars)**
+>
+> Learn how to automatically sync environment variables from your Vercel projects to Trigger.dev.
 
-  <Card title="Vercel AI SDK" icon="code" href="/docs/guides/examples/vercel-ai-sdk">
-    Learn how to use the Vercel AI SDK, which is a simple way to use AI models from different
-    providers, including OpenAI, Anthropic, Amazon Bedrock, Groq, Perplexity etc.
-  </Card>
-</CardGroup>
+> **[Vercel AI SDK](/docs/guides/examples/vercel-ai-sdk)**
+>
+> Learn how to use the Vercel AI SDK, which is a simple way to use AI models from different
+> providers, including OpenAI, Anthropic, Amazon Bedrock, Groq, Perplexity etc.

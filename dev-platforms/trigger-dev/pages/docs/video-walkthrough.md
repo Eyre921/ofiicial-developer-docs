@@ -6,7 +6,9 @@ path: docs/video-walkthrough
 
 Go from zero to a working task in your Next.js app in 10 minutes.
 
-<iframe title="Trigger.dev walkthrough" />
+&#x20;
+
+[Trigger.dev walkthrough](https://www.youtube.com/embed/YH_4c0K7fGM?si=5JzZmZseuqI5aciM)
 
 ### In this video we cover the following topics:
 

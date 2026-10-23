@@ -15,25 +15,23 @@ update.
 
 ## TL;DR
 
-<CodeGroup>
-  ```ts before.ts theme={"theme":"css-variables"}
-  // Single accessToken callback, dispatches on purpose
-  accessToken: async ({ chatId, purpose }) => {
-    if (purpose === "trigger") {
-      return chat.createAccessToken<typeof myChat>("my-chat");
-    }
-    // purpose === "preload" — same call, same trigger token
+```ts before.ts theme={"theme":"css-variables"}
+// Single accessToken callback, dispatches on purpose
+accessToken: async ({ chatId, purpose }) => {
+  if (purpose === "trigger") {
     return chat.createAccessToken<typeof myChat>("my-chat");
-  };
-  ```
+  }
+  // purpose === "preload" — same call, same trigger token
+  return chat.createAccessToken<typeof myChat>("my-chat");
+};
+```
 
-  ```ts after.ts theme={"theme":"css-variables"}
-  // Two callbacks: pure refresh + server action that creates the session
-  accessToken: ({ chatId }) => mintChatAccessToken(chatId),
-  startSession: ({ chatId, clientData }) =>
-        startChatSession({ chatId, clientData }),
-  ```
-</CodeGroup>
+```ts after.ts theme={"theme":"css-variables"}
+// Two callbacks: pure refresh + server action that creates the session
+accessToken: ({ chatId }) => mintChatAccessToken(chatId),
+startSession: ({ chatId, clientData }) =>
+      startChatSession({ chatId, clientData }),
+```
 
 What changed:
 
@@ -50,13 +48,13 @@ What changed:
   config (machine, idleTimeoutInSeconds, tags, queue, maxAttempts) lives
   server-side in `chat.createStartSessionAction(taskId, options)`.
 
-<Note>
-  The architectural shift is that `chat.agent` no longer rolls its own
-  per-run streams. It runs on top of a durable **Session** row that owns
-  its current run, persists across run lifecycles, and orchestrates
-  upgrades server-side. The customer-facing surface is similar; the wire
-  path beneath it changed completely.
-</Note>
+> [!NOTE]
+>
+> The architectural shift is that `chat.agent` no longer rolls its own
+> per-run streams. It runs on top of a durable **Session** row that owns
+> its current run, persists across run lifecycles, and orchestrates
+> upgrades server-side. The customer-facing surface is similar; the wire
+> path beneath it changed completely.
 
 ## Step 1: Replace your access-token server action with two server actions
 
@@ -213,13 +211,13 @@ The `clientData` value is live-updated when the option changes (the hook
 calls `setClientData` under the hood), so dynamic values work without
 reconstructing the transport.
 
-<Tip>
-  Server-side authorization can still override or augment the
-  browser-claimed `clientData` inside `startSession` — never trust the
-  browser's identity claim. A typical pattern: the server action looks up
-  the user from the request session, then merges the trusted server fields
-  on top of `params.clientData`.
-</Tip>
+> [!TIP]
+>
+> Server-side authorization can still override or augment the
+> browser-claimed `clientData` inside `startSession` — never trust the
+> browser's identity claim. A typical pattern: the server action looks up
+> the user from the request session, then merges the trusted server fields
+> on top of `params.clientData`.
 
 ## Step 5: Update your `ChatSession` persistence
 
@@ -372,9 +370,9 @@ Snapshot read/write uses Trigger.dev's existing object-store infrastructure — 
 
 Snapshots are written under `packets/{projectRef}/{envSlug}/sessions/{sessionId}/snapshot.json`. Each snapshot is small (typically tens of KB) and overwritten every turn — no append-only growth.
 
-<Warning>
-  **No object store + no `hydrateMessages` = conversations don't survive run boundaries.** With neither piece of state, a continuation boots empty and the agent can't reconstruct prior turns. Either configure an object store or register `hydrateMessages`. The runtime logs a warning at agent registration time when both are missing.
-</Warning>
+> [!WARNING]
+>
+> **No object store + no `hydrateMessages` = conversations don't survive run boundaries.** With neither piece of state, a continuation boots empty and the agent can't reconstruct prior turns. Either configure an object store or register `hydrateMessages`. The runtime logs a warning at agent registration time when both are missing.
 
 ### Custom transports
 

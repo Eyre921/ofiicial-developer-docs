@@ -18,7 +18,7 @@ Trigger.dev automatically collects process metrics (CPU, memory) and Node.js run
 
 All of this data is available in the `metrics` table for use in dashboard widgets. See [Logging, tracing & metrics](/docs/logging#metrics) for the full list of automatic metrics and how to create custom ones, or the [Query page](/docs/observability/query#metrics-table-columns) for the `metrics` table schema.
 
-<img alt="The built-in Metrics dashboard" />
+![The built-in Metrics dashboard](https://mintcdn.com/trigger/68rLR7qrtVP2353r/images/metrics-built-in.png?fit=max\&auto=format\&n=68rLR7qrtVP2353r\&q=85\&s=fd732fbe951b3371145b7b8a2a4549d5)
 
 ### Visualization types
 

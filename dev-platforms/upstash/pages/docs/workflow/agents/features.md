@@ -1,5 +1,5 @@
 ---
-title: "Features"
+title: "Workflow Agents Features"
 source: https://upstash.com/docs/workflow/agents/features
 path: docs/workflow/agents/features
 ---

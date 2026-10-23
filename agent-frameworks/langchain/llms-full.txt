@@ -2994,9 +2994,13 @@ During execution, if authentication is required, the SDK will throw an [interrup
 
 ![](https://mintcdn.com/langchain-5e9cc07a/Xbr8HuVd9jPi6qTU/images/langgraph-auth-interrupt.png?fit=max\&auto=format\&n=Xbr8HuVd9jPi6qTU\&q=85\&s=94f84dd7ec822ca69f9a27b4458dca9f)
 
+Studio interrupt showing OAuth URL
+
 After the user completes OAuth authentication and we receive the callback from the provider, they will see the auth success page.
 
 ![](https://mintcdn.com/langchain-5e9cc07a/Xbr8HuVd9jPi6qTU/images/github-auth-success.png?fit=max\&auto=format\&n=Xbr8HuVd9jPi6qTU\&q=85\&s=72e6492f074507bc8888804066205fcb)
+
+GitHub OAuth success page
 
 The agent then resumes execution from the point it left off at, and the token can be used for any API calls. We store and refresh OAuth tokens so that future uses of the service by either the user or agent do not require an OAuth flow.
 
@@ -36506,7 +36510,11 @@ For LangSmith Intelligence in other clouds or regions, [contact our sales team](
 
 ![Architecture diagram of self-hosted LangSmith in your VPC connected to LangSmith Intelligence and Bedrock in LangChain's AWS environment.](https://mintcdn.com/langchain-5e9cc07a/ry58UzmmALISsnzO/langsmith/images/engine-self-hosted-aws.png?fit=max\&auto=format\&n=ry58UzmmALISsnzO\&q=85\&s=ae209b16e4cf2ad7199e7ea6bb333f84)
 
+LangSmith Intelligence: Engine runs in your VPC; LSI and Bedrock run in LangChain's AWS environment.
+
 ![Architecture diagram of self-hosted LangSmith in your VPC sending model inference to your model providers and usage metadata to LangChain's cloud.](https://mintcdn.com/langchain-5e9cc07a/YV2_h1H0dQOJtIWY/langsmith/images/engine-self-hosted-byok.png?fit=max\&auto=format\&n=YV2_h1H0dQOJtIWY\&q=85\&s=772a34376f553f8a07ce36f96a4b0f81)
+
+Your own model providers: Engine runs in your VPC and calls your providers directly, and only usage metadata goes to LangChain.
 
 ### LangSmith Intelligence
 
@@ -51976,9 +51984,13 @@ You can create a skill two ways:
 
 In [Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-skills), select an agent and prompt it to create a skill:
 
+Create a skill that helps the agent use the web to research a topic.
+
 Create a skill that helps the agent use the web to research a topic. Use when asked to research a topic, person, company, technology, event, or any question that requires gathering and synthesizing information from the web. Covers news lookups, competitive analysis, background research, and fact-finding tasks. Prefer `tavily_web_search` for most queries.
 
 You can also turn a previous conversation into a reusable skill at any time. After completing a task, ask the agent to capture the workflow:
+
+Turn this conversation into a reusable skill.
 
 Turn what we just did into a skill so you can repeat it in the future.
 
@@ -52003,6 +52015,8 @@ Turn what we just did into a skill so you can repeat it in the future.
 The default response to an agent mistake is to correct it in the moment. A skill changes this: it gives the agent explicit rules to follow every time it encounters that class of task, so the same mistake cannot happen again.
 
 When an agent handles a task incorrectly, correct it, then ask it to capture the fix:
+
+Capture this fix as a skill.
 
 Turn this correction into a skill so you always handle it this way.
 
@@ -55706,11 +55720,15 @@ Once your job has completed, you can navigate to the **Insights** tab where you'
 
 ![](https://mintcdn.com/langchain-5e9cc07a/lC4dVnXBXgUXGkP0/langsmith/images/insights-job-results.png?fit=max\&auto=format\&n=lC4dVnXBXgUXGkP0\&q=85\&s=1a95e426b2984bcf417f92d1c4d739b6)
 
+Insights Reports for a single tracing project
+
 Click into your job to see traces organized into a set of auto-generated categories.
 
 You can drill down through categories and subcategories to view the underlying traces, feedback, and run statistics.
 
 ![](https://mintcdn.com/langchain-5e9cc07a/4-kFQm9_42J5OnwH/langsmith/images/insights-nav.gif?s=6a22bfd0d94262b7aa78468a8379ea0f)
+
+Common topics of conversations with the [https://chat.langchain.com](https://chat.langchain.com) chatbot
 
 ### Executive summary
 
@@ -58747,6 +58765,8 @@ When the agent runs through the Slack channel, Slack renders OAuth entries that 
 
 **Screenshot placeholder:** Add the Slack OAuth authorization prompt screenshot here.
 
+Slack OAuth authorization prompt
+
 ## Inspect and delete connections
 
 Use `list` or `get` to inspect connection metadata. `list` shows every connection in the workspace, not only the ones this project uses:
@@ -59202,6 +59222,8 @@ The handoff asks the selected coding agent to install the `eval-engineering` ski
 
 Ask the coding agent to follow the skill's review flow and use the Managed Deep Agents task layout:
 
+Develop Harbor evals with the eval-engineering skill
+
 Use the eval-engineering skill to develop Harbor evals for this Managed
 Deep Agent. Inspect the project and existing evals first. Draft the Task
 Spec and wait for my review before implementing the approved task directly
@@ -59287,7 +59309,7 @@ When `LANGSMITH_API_KEY` is available, the LangSmith plugin records the Harbor r
 # Add identity to Managed Deep Agents
 Source: https://docs.langchain.com/langsmith/javascript/managed-deep-agents-identity
 
-Authenticate callers to a Managed Deep Agents deployment with a LangSmith API key, Supabase, or your own backend.
+Authenticate callers to a Managed Deep Agents deployment with a LangSmith API key, Supabase, another JWT provider, or your own backend.
 
 Identity controls who can invoke your managed deep agent, such as apps and SDK clients that start runs or send messages.
 
@@ -59307,15 +59329,16 @@ For the full project layout, see [Project structure](/langsmith/javascript/manag
 
 ## Choose the identity provider
 
-By default, `mda init` requires callers to present a LangSmith API key. Anyone who has that key can use the same deployment and may see the same threads. To give each signed-in end user private conversations, use Supabase instead:
+By default, `mda init` requires callers to present a LangSmith API key. Anyone who has that key can use the same deployment and may see the same threads. To give each signed-in end user private conversations, use Supabase, another JWT provider, or your own backend instead:
 
 | Goal | Use |
 | - | - |
 | Lock down the deployment for SDK clients, scripts, and services | [LangSmith API key (default)](#configure-identity-with-a-langsmith-api-key) |
 | Signed-in end users with private chats, verified by Managed Deep Agents | [Supabase](#configure-identity-with-supabase) |
+| Signed-in end users from another identity provider, such as Auth0, Okta, Clerk, or Microsoft Entra ID | [Another JWT provider](#configure-identity-with-another-jwt-provider) |
 | Signed-in end users with private chats, already authenticated by your own API | [Your own backend](#configure-identity-with-your-own-backend) |
 
-Supabase and backend identity both give each end user private threads. The difference is who verifies the user. With Supabase, the browser sends its access token and Managed Deep Agents verifies it. With backend identity, your API verifies the user and asserts the resulting user ID.
+Supabase, another JWT provider, and backend identity all give each end user private threads. The difference is who verifies the user. With Supabase or another JWT provider, the browser sends its access token and Managed Deep Agents verifies it. With backend identity, your API verifies the user and asserts the resulting user ID.
 
 For more information, see [Project structure](/langsmith/javascript/managed-deep-agents-project-structure).
 
@@ -59339,7 +59362,7 @@ Clients send the key as `x-api-key`. You do not need to add verification endpoin
 
 > [!WARNING]
 >
-> Anyone with the key can reach the deployment, so treat the key as a secret. This default does not give each end user private threads. If Alice must not see Bob's threads, use [Supabase](#configure-identity-with-supabase) or [your own backend](#configure-identity-with-your-own-backend).
+> Anyone with the key can reach the deployment, so treat the key as a secret. This default does not give each end user private threads. If Alice must not see Bob's threads, use [Supabase](#configure-identity-with-supabase), [another JWT provider](#configure-identity-with-another-jwt-provider), or [your own backend](#configure-identity-with-your-own-backend).
 
 ## Configure identity with Supabase
 
@@ -59389,6 +59412,34 @@ Managed Deep Agents verifies the JWT against the project's JWKS URL derived from
 > [!NOTE]
 >
 > Adding Supabase identity to an existing deployment does not add owner metadata to existing threads. Plan and test a migration before relying on identity-based access for those threads.
+
+## Configure identity with another JWT provider
+
+Use this option when your users sign in with an identity provider that issues JWT access tokens, such as Auth0, Okta, Clerk, or Microsoft Entra ID. Managed Deep Agents checks the token signature against the provider's public keys, then gives each user private threads.
+
+Declare the provider with its issuer, the audience your tokens use, and the claim that identifies the user:
+
+```ts identity.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { defineIdentity } from "managed-deepagents";
+
+export const identity = defineIdentity({
+  auth: {
+    issuer: "https://your-tenant.us.auth0.com/",
+    audience: "https://api.example.com",
+    discover: true,
+    claims: { user: "sub" },
+  },
+});
+```
+
+* **`issuer`**: Must match the `iss` claim in the token.
+* **`audience`**: Must match the `aud` claim in the token.
+* **`discover`**: Finds the public keys from the provider's `/.well-known/openid-configuration`. If your provider does not publish that document, remove `discover` and set `jwks` to the URL of the public keys.
+* **`claims.user`**: Names the claim to use as the user ID. Threads and stored credentials are keyed on this value. You can also set `claims.groups` and `claims.email`.
+
+Clients send the access token as `Authorization: Bearer <access_token>`, the same as in the [Supabase example](#send-the-access-token).
+
+Your tools and middleware can read every verified claim in the token from `principal.claims`. For an example, see [Read the runtime in tools](/langsmith/javascript/managed-deep-agents-runtime#read-the-runtime-in-tools).
 
 ## Configure identity with your own backend
 
@@ -59442,11 +59493,20 @@ Use the same identifier for `x-mda-user-id` that your own system uses for that u
 >
 > `MDA_INGRESS_SECRET` is a server-side secret. Managed Deep Agents accepts whatever `x-mda-user-id` accompanies a valid secret, so any holder of the secret can act as any user. Keep it on your backend, never in browser code, a mobile app, or a client bundle.
 
+## Scope access by organization or tenant
+
+Managed Deep Agents does not accept a [custom LangGraph auth handler](/langsmith/custom-auth). Its own handler keys threads, stored credentials, and user memory on the user ID. A replacement handler would break those features.
+
+To scope access by organization or tenant, choose the user ID based on what users must share:
+
+* If everyone in an organization should share threads and credentials, use the organization ID as the user ID.
+* If each person needs private threads, use the person's ID. Then check the organization in your backend before it calls the deployment, or read an organization claim from `principal.claims` in your tools and middleware.
+
 ## Test and deploy
 
 Test the project locally with [`mda dev`](/langsmith/javascript/managed-deep-agents-cli#develop-locally), then deploy it with [`mda deploy`](/langsmith/javascript/managed-deep-agents-deploy). Open deployment traces in LangSmith to inspect model calls, tool calls, errors, and latency.
 
-Authentication failures return 401. For the LangSmith API-key default, confirm that clients send `x-api-key`. For Supabase, confirm that clients send `Authorization: Bearer <access_token>`, that `project_ref` / `projectRef` matches your Supabase project, and that callers cannot access another user's threads (403). For backend identity, confirm that your API sends both `x-mda-ingress-secret` and `x-mda-user-id`, that the secret matches `MDA_INGRESS_SECRET` on the deployment, and that one user's identifier cannot reach another user's threads (403).
+Authentication failures return 401. For the LangSmith API-key default, confirm that clients send `x-api-key`. For Supabase, confirm that clients send `Authorization: Bearer <access_token>`, that `project_ref` / `projectRef` matches your Supabase project, and that callers cannot access another user's threads (403). For another JWT provider, confirm that `issuer` and `audience` match the `iss` and `aud` claims in the token, and that callers cannot access another user's threads (403). For backend identity, confirm that your API sends both `x-mda-ingress-secret` and `x-mda-user-id`, that the secret matches `MDA_INGRESS_SECRET` on the deployment, and that one user's identifier cannot reach another user's threads (403).
 
 ***
 
@@ -60271,6 +60331,8 @@ Most agents move without changes beyond the entry file. Four cases need a decisi
 
 If none of these apply, the agent logic transfers as written.
 
+Convert a Deep Agents project into a Managed Deep Agents project.
+
 Convert this codebase from a self-hosted Deep Agents agent into a Managed Deep Agents (MDA) project.
 
 ## Step 1: Read the guide
@@ -60745,6 +60807,8 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
 ```
 
 Or paste this prompt into your coding agent:
+
+Build a Managed Deep Agent with the quickstart
 
 Create and deploy a Managed Deep Agent in this working directory by following the Managed Deep Agents quickstart.
 
@@ -81595,7 +81659,7 @@ Cloud, BYOC, and Self-hosted support [LangSmith Deployment](/langsmith/deploymen
 # Model providers
 Source: https://docs.langchain.com/langsmith/playground-model-providers
 
-
+Configure model providers for the LangSmith Playground and LLM-as-a-judge evaluators.
 
 The [Playground](/langsmith/prompt-engineering-concepts#playground) supports a wide range of model providers. You can select a provider, configure your preferred settings, and save these configurations to reuse across multiple prompts.
 
@@ -81618,6 +81682,12 @@ Anthropic
 Azure OpenAI
 
 [Open](#azure-openai)
+
+![](https://mintcdn.com/langchain-5e9cc07a/DZppvehciQnv8nQN/images/providers/light/databricks.svg?fit=max\&auto=format\&n=DZppvehciQnv8nQN\&q=85\&s=7b12c7b8a9564bf7e804f523c2365cc3)
+
+Databricks
+
+[Open](#databricks)
 
 ![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/deepseek.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=5a11e956e2ba24fd746aebd929ee1a5e)
 
@@ -81921,6 +81991,33 @@ Azure OpenAI supports the same parameters as OpenAI:
 
 * **Supported Tool Choices:** `auto`, `required`, `none`, or specific tool name.
 * **Parallel Execution:** Yes.
+
+## Databricks
+
+Before you use this model, ensure you have a Databricks workspace and an [access token](https://docs.databricks.com/aws/en/dev-tools/auth/pat).
+
+### Available models
+
+Databricks provides foundation models including Claude, GPT, Gemini, and Llama.
+
+For the current list of available models, refer to [Databricks' model documentation](https://docs.databricks.com/aws/en/machine-learning/foundation-model-apis/supported-models).
+
+### Configuration parameters
+
+| Parameter | Value | Description |
+| - | - | - |
+| **Databricks workspace URL** | HTTPS URL | Your workspace root URL, without an API path. |
+| **Databricks API route** | See options below | API used to query your endpoint. |
+| **Max Output Tokens** | 1+ | Maximum response length in tokens. |
+| **Stop Sequences** | List of strings | Sequences where the model stops generating. |
+| **Timeout** | Seconds | Request timeout. |
+| **Max Retries** | Integer | Maximum number of retries on failed requests. |
+
+Choose the API route that matches your endpoint:
+
+* **Model Serving endpoints**: Query a Databricks Model Serving endpoint.
+* **AI Gateway (MLflow API)**: Query AI Gateway through the MLflow API.
+* **AI Gateway (native OpenAI API)**: Query AI Gateway through its native OpenAI-compatible API.
 
 ## DeepSeek
 
@@ -87073,6 +87170,8 @@ When the agent runs through the Slack channel, Slack renders OAuth entries that 
 
 **Screenshot placeholder:** Add the Slack OAuth authorization prompt screenshot here.
 
+Slack OAuth authorization prompt
+
 ## Inspect and delete connections
 
 Use `list` or `get` to inspect connection metadata. `list` shows every connection in the workspace, not only the ones this project uses:
@@ -87504,6 +87603,8 @@ The handoff asks the selected coding agent to install the `eval-engineering` ski
 
 Ask the coding agent to follow the skill's review flow and use the Managed Deep Agents task layout:
 
+Develop Harbor evals with the eval-engineering skill
+
 Use the eval-engineering skill to develop Harbor evals for this Managed
 Deep Agent. Inspect the project and existing evals first. Draft the Task
 Spec and wait for my review before implementing the approved task directly
@@ -87589,7 +87690,7 @@ When `LANGSMITH_API_KEY` is available, the LangSmith plugin records the Harbor r
 # Add identity to Managed Deep Agents
 Source: https://docs.langchain.com/langsmith/python/managed-deep-agents-identity
 
-Authenticate callers to a Managed Deep Agents deployment with a LangSmith API key, Supabase, or your own backend.
+Authenticate callers to a Managed Deep Agents deployment with a LangSmith API key, Supabase, another JWT provider, or your own backend.
 
 Identity controls who can invoke your managed deep agent, such as apps and SDK clients that start runs or send messages.
 
@@ -87609,15 +87710,16 @@ For the full project layout, see [Project structure](/langsmith/python/managed-d
 
 ## Choose the identity provider
 
-By default, `mda init` requires callers to present a LangSmith API key. Anyone who has that key can use the same deployment and may see the same threads. To give each signed-in end user private conversations, use Supabase instead:
+By default, `mda init` requires callers to present a LangSmith API key. Anyone who has that key can use the same deployment and may see the same threads. To give each signed-in end user private conversations, use Supabase, another JWT provider, or your own backend instead:
 
 | Goal | Use |
 | - | - |
 | Lock down the deployment for SDK clients, scripts, and services | [LangSmith API key (default)](#configure-identity-with-a-langsmith-api-key) |
 | Signed-in end users with private chats, verified by Managed Deep Agents | [Supabase](#configure-identity-with-supabase) |
+| Signed-in end users from another identity provider, such as Auth0, Okta, Clerk, or Microsoft Entra ID | [Another JWT provider](#configure-identity-with-another-jwt-provider) |
 | Signed-in end users with private chats, already authenticated by your own API | [Your own backend](#configure-identity-with-your-own-backend) |
 
-Supabase and backend identity both give each end user private threads. The difference is who verifies the user. With Supabase, the browser sends its access token and Managed Deep Agents verifies it. With backend identity, your API verifies the user and asserts the resulting user ID.
+Supabase, another JWT provider, and backend identity all give each end user private threads. The difference is who verifies the user. With Supabase or another JWT provider, the browser sends its access token and Managed Deep Agents verifies it. With backend identity, your API verifies the user and asserts the resulting user ID.
 
 For more information, see [Project structure](/langsmith/python/managed-deep-agents-project-structure).
 
@@ -87639,7 +87741,7 @@ Clients send the key as `x-api-key`. You do not need to add verification endpoin
 
 > [!WARNING]
 >
-> Anyone with the key can reach the deployment, so treat the key as a secret. This default does not give each end user private threads. If Alice must not see Bob's threads, use [Supabase](#configure-identity-with-supabase) or [your own backend](#configure-identity-with-your-own-backend).
+> Anyone with the key can reach the deployment, so treat the key as a secret. This default does not give each end user private threads. If Alice must not see Bob's threads, use [Supabase](#configure-identity-with-supabase), [another JWT provider](#configure-identity-with-another-jwt-provider), or [your own backend](#configure-identity-with-your-own-backend).
 
 ## Configure identity with Supabase
 
@@ -87691,6 +87793,34 @@ Managed Deep Agents verifies the JWT against the project's JWKS URL derived from
 > [!NOTE]
 >
 > Adding Supabase identity to an existing deployment does not add owner metadata to existing threads. Plan and test a migration before relying on identity-based access for those threads.
+
+## Configure identity with another JWT provider
+
+Use this option when your users sign in with an identity provider that issues JWT access tokens, such as Auth0, Okta, Clerk, or Microsoft Entra ID. Managed Deep Agents checks the token signature against the provider's public keys, then gives each user private threads.
+
+Declare the provider with its issuer, the audience your tokens use, and the claim that identifies the user:
+
+```python identity.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from managed_deepagents import define_identity
+
+identity = define_identity(
+    auth={
+        "issuer": "https://your-tenant.us.auth0.com/",
+        "audience": "https://api.example.com",
+        "discover": True,
+        "claims": {"user": "sub"},
+    }
+)
+```
+
+* **`issuer`**: Must match the `iss` claim in the token.
+* **`audience`**: Must match the `aud` claim in the token.
+* **`discover`**: Finds the public keys from the provider's `/.well-known/openid-configuration`. If your provider does not publish that document, remove `discover` and set `jwks` to the URL of the public keys.
+* **`claims.user`**: Names the claim to use as the user ID. Threads and stored credentials are keyed on this value. You can also set `claims.groups` and `claims.email`.
+
+Clients send the access token as `Authorization: Bearer <access_token>`, the same as in the [Supabase example](#send-the-access-token).
+
+Your tools and middleware can read every verified claim in the token from `principal.claims`. For an example, see [Read the runtime in tools](/langsmith/python/managed-deep-agents-runtime#read-the-runtime-in-tools).
 
 ## Configure identity with your own backend
 
@@ -87744,11 +87874,20 @@ Use the same identifier for `x-mda-user-id` that your own system uses for that u
 >
 > `MDA_INGRESS_SECRET` is a server-side secret. Managed Deep Agents accepts whatever `x-mda-user-id` accompanies a valid secret, so any holder of the secret can act as any user. Keep it on your backend, never in browser code, a mobile app, or a client bundle.
 
+## Scope access by organization or tenant
+
+Managed Deep Agents does not accept a [custom LangGraph auth handler](/langsmith/custom-auth). Its own handler keys threads, stored credentials, and user memory on the user ID. A replacement handler would break those features.
+
+To scope access by organization or tenant, choose the user ID based on what users must share:
+
+* If everyone in an organization should share threads and credentials, use the organization ID as the user ID.
+* If each person needs private threads, use the person's ID. Then check the organization in your backend before it calls the deployment, or read an organization claim from `principal.claims` in your tools and middleware.
+
 ## Test and deploy
 
 Test the project locally with [`mda dev`](/langsmith/python/managed-deep-agents-cli#develop-locally), then deploy it with [`mda deploy`](/langsmith/python/managed-deep-agents-deploy). Open deployment traces in LangSmith to inspect model calls, tool calls, errors, and latency.
 
-Authentication failures return 401. For the LangSmith API-key default, confirm that clients send `x-api-key`. For Supabase, confirm that clients send `Authorization: Bearer <access_token>`, that `project_ref` / `projectRef` matches your Supabase project, and that callers cannot access another user's threads (403). For backend identity, confirm that your API sends both `x-mda-ingress-secret` and `x-mda-user-id`, that the secret matches `MDA_INGRESS_SECRET` on the deployment, and that one user's identifier cannot reach another user's threads (403).
+Authentication failures return 401. For the LangSmith API-key default, confirm that clients send `x-api-key`. For Supabase, confirm that clients send `Authorization: Bearer <access_token>`, that `project_ref` / `projectRef` matches your Supabase project, and that callers cannot access another user's threads (403). For another JWT provider, confirm that `issuer` and `audience` match the `iss` and `aud` claims in the token, and that callers cannot access another user's threads (403). For backend identity, confirm that your API sends both `x-mda-ingress-secret` and `x-mda-user-id`, that the secret matches `MDA_INGRESS_SECRET` on the deployment, and that one user's identifier cannot reach another user's threads (403).
 
 ***
 
@@ -88588,6 +88727,8 @@ Most agents move without changes beyond the entry file. Four cases need a decisi
 
 If none of these apply, the agent logic transfers as written.
 
+Convert a Deep Agents project into a Managed Deep Agents project.
+
 Convert this codebase from a self-hosted Deep Agents agent into a Managed Deep Agents (MDA) project.
 
 ## Step 1: Read the guide
@@ -89162,6 +89303,8 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
 ```
 
 Or paste this prompt into your coding agent:
+
+Build a Managed Deep Agent with the quickstart
 
 Create and deploy a Managed Deep Agent in this working directory by following the Managed Deep Agents quickstart.
 
@@ -103996,6 +104139,8 @@ The host Deployment uses required pod anti-affinity to place at most one host po
 
 **architecture**
 
+The platform backend manages sandbox placement and traffic. Hosts run microVMs; shared storage keeps persistent state independent of a node.
+
 ### Understand component failure impact
 
 Each component has a different failure scope. Distinguish temporary unavailability from loss of its stored data when planning recovery.
@@ -104020,6 +104165,8 @@ One elected host observes pool health and runs the [host autoscaler](/langsmith/
 A host pod runs the sandbox daemon and Firecracker processes. In deployments with a host-owned JuiceFS mount, it also runs the JuiceFS client. The daemon connects to the agent inside each guest through `vsock`.
 
 **node**
+
+One Kubernetes pod contains multiple microVMs. The host needs KVM access; guest memory and node-local caches consume the node's resources.
 
 The host uses host networking on port `19190`. The platform backend connects to the host's node address; clients use the LangSmith API or [service URLs](/langsmith/sandbox-service-urls), not the host listener directly. Keep host listeners on private networks.
 
@@ -104275,6 +104422,8 @@ The host Deployment uses `maxSurge: 0` and `maxUnavailable: 1`. Kubernetes termi
 
 **rollout**
 
+A healthy four-host pool has three ready hosts during each replacement. The timeline is illustrative; drain and startup durations depend on the workload and storage.
+
 A normal rollout temporarily removes one host's capacity. With a single-host pool, requests to create a sandbox fail until the replacement host is ready. Existing unready hosts or infrastructure failures can reduce capacity further; `maxUnavailable` is not a guarantee against unrelated outages.
 
 For host-owned JuiceFS mounts, startup includes mounting the filesystem and checking storage access before opening the host listener. A replacement that cannot access storage blocks progress instead of accepting sandbox traffic.
@@ -104458,6 +104607,8 @@ The built-in host autoscaler runs on an elected `sandbox-host`. Hosts publish th
 
 **autoscaling**
 
+LangSmith requests host pods. Your infrastructure supplies nodes. A desired replica is not usable capacity until its host is ready.
+
 The host autoscaler does not use an HPA, KEDA, or a Prometheus adapter. Do not configure another controller to manage the same Deployment's replica count.
 
 A new host pod needs an eligible node without another host pod. When none is available, it stays `Pending` until your node autoscaler adds capacity. Configure that autoscaler for the dedicated KVM-capable node pool, including compatible labels, taints, and instance requirements.
@@ -104487,6 +104638,8 @@ The 70% target is not a per-host capacity limit. Placement can exceed it while t
 The replica target can rise before nodes and hosts become ready. Headroom covers some of that delay; it does not make node provisioning instantaneous.
 
 **scaling-behavior**
+
+Illustrative scaling behavior, not a latency benchmark. Scale-up follows demand; scale-down waits through the stabilization window and proceeds gradually.
 
 Choose `minReplicas` and `headroomHosts` for the burst you need to absorb while a node starts. Keep at least two hosts for a pool that must continue accepting work during a one-host rollout. Measure node startup, host readiness, and sandbox creation latency under representative load.
 
@@ -129452,6 +129605,8 @@ The before and after change for each method is documented on the page for its ar
 ## Migrate with an AI agent
 
 This guide is written to be fetched and applied directly by an AI coding agent. Copy the following prompt into your agent to migrate your codebase to the SmithDB-backed methods.
+
+Migrate LangSmith SDK usage to SmithDB methods
 
 Migrate this codebase's LangSmith SDK usage to the new SmithDB-backed methods.
 
@@ -163567,6 +163722,8 @@ Add MCP servers by adding a `.mcp.json` config file to your project for project-
 
 Paste this prompt into your coding agent to connect the servers, or follow the steps below for Deep Agents Code specifically. For other editors, see [Use docs programmatically](/use-these-docs).
 
+Connect LangChain docs MCP servers
+
 Connect both LangChain documentation MCP servers to my coding agent so it can look up current LangChain, LangGraph, and LangSmith docs and API reference.
 
 Servers to add:
@@ -167075,6 +167232,8 @@ Security checklist:
 >
 > * Install the [LangChain Docs MCP servers](/use-these-docs) to give your agent access to up-to-date LangChain documentation and examples.
 >
+>   Connect LangChain docs MCP servers
+>
 >   Connect both LangChain documentation MCP servers to my coding agent so it can look up current LangChain, LangGraph, and LangSmith docs and API reference.
 >
 >   Servers to add:
@@ -167091,6 +167250,8 @@ Security checklist:
 >
 >   Do not invent alternate MCP URLs. After configuring, confirm both servers are listed and reachable.
 > * Install [LangChain Skills](https://github.com/langchain-ai/langchain-skills) to improve your agent's performance on LangChain ecosystem tasks, then click the **Copy page** button on the top right of this page and paste the raw content into your agent to have it set up your environment automatically.
+>
+>   Install LangChain Skills
 >
 >   Install LangChain Skills for my coding agent so it can perform better on LangChain, LangGraph, and Deep Agents tasks.
 >
@@ -167474,6 +167635,8 @@ This starts a development server with hot reload at `http://localhost:3000`. Edi
 >
 > * Install the [LangChain Docs MCP servers](/use-these-docs) to give your agent access to up-to-date LangChain documentation and examples.
 >
+>   Connect LangChain docs MCP servers
+>
 >   Connect both LangChain documentation MCP servers to my coding agent so it can look up current LangChain, LangGraph, and LangSmith docs and API reference.
 >
 >   Servers to add:
@@ -167490,6 +167653,8 @@ This starts a development server with hot reload at `http://localhost:3000`. Edi
 >
 >   Do not invent alternate MCP URLs. After configuring, confirm both servers are listed and reachable.
 > * Install [LangChain Skills](https://github.com/langchain-ai/langchain-skills) to improve your agent's performance on LangChain ecosystem tasks, then click the **Copy page** button on the top right of this page and paste the raw content into your agent to have it set up your environment automatically.
+>
+>   Install LangChain Skills
 >
 >   Install LangChain Skills for my coding agent so it can perform better on LangChain, LangGraph, and Deep Agents tasks.
 >
@@ -184079,6 +184244,8 @@ Build your first deep agent in minutes
 
 This guide walks you through creating your first deep agent with file system tools and subagent capabilities. You will build a research agent that can conduct research and write reports.
 
+Build the Deep Agents research quickstart
+
 Build a Deep Agents research agent in this working directory by following the Deep Agents quickstart.
 
 ## Step 1: Read the guide
@@ -184117,6 +184284,8 @@ Follow the quickstart steps in order:
 >
 > * Install the [LangChain Docs MCP servers](/use-these-docs) to give your agent access to up-to-date LangChain documentation and examples.
 >
+>   Connect LangChain docs MCP servers
+>
 >   Connect both LangChain documentation MCP servers to my coding agent so it can look up current LangChain, LangGraph, and LangSmith docs and API reference.
 >
 >   Servers to add:
@@ -184133,6 +184302,8 @@ Follow the quickstart steps in order:
 >
 >   Do not invent alternate MCP URLs. After configuring, confirm both servers are listed and reachable.
 > * Install [LangChain Skills](https://github.com/langchain-ai/langchain-skills) to improve your agent's performance on LangChain ecosystem tasks.
+>
+>   Install LangChain Skills
 >
 >   Install LangChain Skills for my coding agent so it can perform better on LangChain, LangGraph, and Deep Agents tasks.
 >
@@ -232732,6 +232903,8 @@ Given the constant rate of change in the field, LangChain has also evolved over 
 
 **2022-10-24**
 
+v0.0.1
+
 A month before ChatGPT, **LangChain was launched as a Python package**. It consisted of two main components:
 
 * LLM abstractions
@@ -232777,6 +232950,8 @@ The main issue with building agents is getting them to be reliable, and LangSmit
 
 **2024-01**
 
+v0.1.0
+
 **LangChain releases 0.1.0**, its first non-0.0.x.
 
 The industry matured from prototypes to production, and as such, LangChain increased its focus on stability.
@@ -232809,6 +232984,8 @@ Models started to accept files, images, videos, and more. We updated the `@langc
 
 **2025-10-20**
 
+v1.0.0
+
 **LangChain releases 1.0** with two major changes:
 
 1. Complete revamp of all chains and agents in `langchain`. All chains and agents are now replaced with only one high level abstraction: an agent abstraction built on top of LangGraph. This was the high-level abstraction that was originally created in LangGraph, but just moved to LangChain.
@@ -232818,6 +232995,8 @@ Models started to accept files, images, videos, and more. We updated the `@langc
 2. A standard message content format: Model APIs evolved from returning messages with a simple content string to more complex output types - reasoning blocks, citations, server-side tool calls, etc. LangChain evolved its message formats to standardize these across providers.
 
 **2026-03-15**
+
+v0.5.3
 
 **Deep Agents is released** as an open-source agent harness built on LangGraph.
 
@@ -232836,6 +233015,8 @@ Source: https://docs.langchain.com/oss/javascript/langchain/quickstart
 Build your first agent in minutes
 
 This quickstart shows you how to create a fully functional AI agent in just a few minutes.
+
+Build the LangChain quickstart agent
 
 Build a basic LangChain agent in this working directory by following the LangChain quickstart.
 
@@ -232874,6 +233055,8 @@ Ask the user if they want tracing. If yes, ask them to set `LANGSMITH_TRACING=tr
 >
 > * Install the [LangChain Docs MCP servers](/use-these-docs) to give your agent access to up-to-date LangChain documentation and examples.
 >
+>   Connect LangChain docs MCP servers
+>
 >   Connect both LangChain documentation MCP servers to my coding agent so it can look up current LangChain, LangGraph, and LangSmith docs and API reference.
 >
 >   Servers to add:
@@ -232890,6 +233073,8 @@ Ask the user if they want tracing. If yes, ask them to set `LANGSMITH_TRACING=tr
 >
 >   Do not invent alternate MCP URLs. After configuring, confirm both servers are listed and reachable.
 > * Install [LangChain Skills](https://github.com/langchain-ai/langchain-skills) to improve your agent's performance on LangChain ecosystem tasks.
+>
+>   Install LangChain Skills
 >
 >   Install LangChain Skills for my coding agent so it can perform better on LangChain, LangGraph, and Deep Agents tasks.
 >
@@ -243663,6 +243848,18 @@ The `messages` channel models output as content blocks. The data's `event` field
 
 Content blocks have explicit boundaries: a block starts, emits zero or more deltas, and finishes before the next block in the same message starts. This makes token streaming, reasoning blocks, tool-call blocks, and multimodal content explicit without requiring provider-specific formats. `message-finish` may include token usage; unrecoverable model-call failures arrive as message error events.
 
+Each `content-block-delta` event carries one delta for the block at its `index`:
+
+| Delta `type` | Effect on the block |
+| - | - |
+| `text-delta` | Appends its `text` to the block's `text`. |
+| `reasoning-delta` | Appends its `reasoning` to the block's `reasoning`. |
+| `data-delta` | Appends its `data` to the block's `base64`. |
+| `tool-call-delta` | Appends its `args` to the block's `args`. |
+| `block-delta` | Sets each key in `fields` on the block, replacing the earlier value. |
+
+`content-block-finish` carries the complete block. Ignore any delta type you do not recognize, and keep reading the stream.
+
 To consume raw content-block events directly instead of using the `stream.messages` projection:
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -243677,6 +243874,8 @@ for await (const event of stream) {
     process.stdout.write(block.text ?? "");
   } else if (block.type === "reasoning-delta") {
     process.stdout.write(`[thinking]${block.reasoning ?? ""}`);
+  } else if (block.type === "tool-call-delta") {
+    process.stdout.write(`[args]${block.args ?? ""}`);
   }
 }
 ```
@@ -249407,6 +249606,8 @@ Source: https://docs.langchain.com/oss/javascript/langgraph/quickstart
 
 This quickstart demonstrates how to build a calculator agent using the LangGraph Graph API or the Functional API.
 
+Build the LangGraph calculator quickstart
+
 Build a LangGraph calculator agent in this working directory by following the LangGraph quickstart.
 
 ## Step 1: Read the guide
@@ -249442,6 +249643,8 @@ Implement the selected quickstart path end to end: tools for add, multiply, and 
 >
 > * Install the [LangChain Docs MCP servers](/use-these-docs) to give your agent access to up-to-date LangChain documentation and examples.
 >
+>   Connect LangChain docs MCP servers
+>
 >   Connect both LangChain documentation MCP servers to my coding agent so it can look up current LangChain, LangGraph, and LangSmith docs and API reference.
 >
 >   Servers to add:
@@ -249458,6 +249661,8 @@ Implement the selected quickstart path end to end: tools for add, multiply, and 
 >
 >   Do not invent alternate MCP URLs. After configuring, confirm both servers are listed and reachable.
 > * Install [LangChain Skills](https://github.com/langchain-ai/langchain-skills) to improve your agent's performance on LangChain ecosystem tasks.
+>
+>   Install LangChain Skills
 >
 >   Install LangChain Skills for my coding agent so it can perform better on LangChain, LangGraph, and Deep Agents tasks.
 >
@@ -257705,6 +257910,8 @@ Source: https://docs.langchain.com/oss/javascript/migrate/langchain-mcp-adapters
 
 Upgrade from @langchain/mcp-adapters 1.x to 2.0, covering renamed APIs, stricter configuration, authentication, elicitation, and tool result changes.
 
+Migrate from @langchain/mcp-adapters 1.x to 2.0.
+
 Migrate this codebase from `@langchain/mcp-adapters` 1.x to 2.0 and update its peer dependencies.
 
 Fetch and read the full migration guide at [https://docs.langchain.com/oss/javascript/migrate/langchain-mcp-adapters.md](https://docs.langchain.com/oss/javascript/migrate/langchain-mcp-adapters.md) as the source of truth. Search this codebase and apply all relevant migration changes, including dependency and test updates. Run the relevant checks, then summarize the changes and flag anything that requires a manual decision or could not be verified. If you cannot access the guide, ask for its contents before proceeding.
@@ -257948,6 +258155,8 @@ Only elicitation is answered through these interrupts. Requests for [sampling](h
 Source: https://docs.langchain.com/oss/javascript/migrate/langchain-v1
 
 
+
+Migrate a codebase to LangChain v1.
 
 Migrate this codebase to LangChain v1 (requires `langchain` and `@langchain/core` at v1, and Node.js 22+).
 
@@ -258748,6 +258957,8 @@ Source: https://docs.langchain.com/oss/javascript/migrate/langgraph-v1
 
 
 
+Migrate a codebase to LangGraph v1.
+
 Migrate this codebase to LangGraph v1 (requires `@langchain/langgraph` and `@langchain/core` at v1, plus `langchain` at v1 when migrating from `createReactAgent`, and Node.js 22+).
 
 Key changes:
@@ -259141,6 +259352,25 @@ Source: https://docs.langchain.com/oss/javascript/releases/changelog
 Log of updates and improvements to our JavaScript/TypeScript packages
 
 **Subscribe**: Our changelog includes an [RSS feed](https://docs.langchain.com/oss/javascript/releases/changelog/rss.xml) that can integrate with [Slack](https://slack.com/help/articles/218688467-Add-RSS-feeds-to-Slack), [email](https://zapier.com/apps/email/integrations/rss/1441/send-new-rss-feed-entries-via-email), Discord bots like [Readybot](https://readybot.io/) or [RSS Feeds to Discord Bot](https://rss.app/en/bots/rssfeeds-discord-bot), and other subscription tools.
+
+**Oct 22, 2026**
+
+## `@langchain/core` v1.3.0
+
+In [event streaming](/oss/javascript/langchain/event-streaming), tool-call arguments now stream as `tool-call-delta` events. Each event carries only the new part of the arguments, as `text-delta` does for text. Earlier versions sent `block-delta` events that repeated all of the arguments so far.
+
+### Upgrade clients before the server
+
+Clients older than the versions below do not handle `tool-call-delta`. For example, earlier versions of `@langchain/react` can stop updating a `useMessages` view. The [Agent Server](/langsmith/agent-server) passes events through unchanged, so the package versions on the server decide which events clients receive.
+
+1. In every client that reads the stream, upgrade `@langchain/react`, `@langchain/vue`, `@langchain/svelte`, or `@langchain/angular` to 1.2.6 or later.
+2. Upgrade `@langchain/core` on the server to 1.3.0 or later. Also upgrade each of these provider packages the server uses, because earlier versions still send `block-delta`:
+   * `@langchain/openai` to 1.7.0 or later
+   * `@langchain/anthropic` to 1.6.0 or later
+   * `@langchain/aws` to 1.5.0 or later
+   * `@langchain/xai` to 1.5.0 or later
+
+Upgrading `langchain`, `deepagents`, or a provider package can pull in `@langchain/core` 1.3.0. To hold the server back until you upgrade every client, pin `@langchain/core` to `<1.3.0` in `package.json`. The provider versions in step 2 require `@langchain/core` 1.3.0, so you cannot install them while the pin is in place.
 
 **Oct 15, 2026**
 
@@ -262457,6 +262687,8 @@ Security checklist:
 >
 > * Install the [LangChain Docs MCP servers](/use-these-docs) to give your agent access to up-to-date LangChain documentation and examples.
 >
+>   Connect LangChain docs MCP servers
+>
 >   Connect both LangChain documentation MCP servers to my coding agent so it can look up current LangChain, LangGraph, and LangSmith docs and API reference.
 >
 >   Servers to add:
@@ -262473,6 +262705,8 @@ Security checklist:
 >
 >   Do not invent alternate MCP URLs. After configuring, confirm both servers are listed and reachable.
 > * Install [LangChain Skills](https://github.com/langchain-ai/langchain-skills) to improve your agent's performance on LangChain ecosystem tasks, then click the **Copy page** button on the top right of this page and paste the raw content into your agent to have it set up your environment automatically.
+>
+>   Install LangChain Skills
 >
 >   Install LangChain Skills for my coding agent so it can perform better on LangChain, LangGraph, and Deep Agents tasks.
 >
@@ -262999,6 +263233,8 @@ This starts a development server with hot reload at `http://localhost:3000`. Edi
 >
 > * Install the [LangChain Docs MCP servers](/use-these-docs) to give your agent access to up-to-date LangChain documentation and examples.
 >
+>   Connect LangChain docs MCP servers
+>
 >   Connect both LangChain documentation MCP servers to my coding agent so it can look up current LangChain, LangGraph, and LangSmith docs and API reference.
 >
 >   Servers to add:
@@ -263015,6 +263251,8 @@ This starts a development server with hot reload at `http://localhost:3000`. Edi
 >
 >   Do not invent alternate MCP URLs. After configuring, confirm both servers are listed and reachable.
 > * Install [LangChain Skills](https://github.com/langchain-ai/langchain-skills) to improve your agent's performance on LangChain ecosystem tasks, then click the **Copy page** button on the top right of this page and paste the raw content into your agent to have it set up your environment automatically.
+>
+>   Install LangChain Skills
 >
 >   Install LangChain Skills for my coding agent so it can perform better on LangChain, LangGraph, and Deep Agents tasks.
 >
@@ -273248,6 +273486,8 @@ The agent successfully analyzes the data and shares a comprehensive report with 
 
 ![Sales analysis results in Slack](https://mintcdn.com/langchain-5e9cc07a/7KAsBk-8tguhrRJ6/images/data_analysis_slack_response.png?fit=max\&auto=format\&n=7KAsBk-8tguhrRJ6\&q=85\&s=b0a89738510117d55b35fc7a10265053)
 
+Agent-generated analysis report and visualization dashboard delivered to Slack
+
 > [!TIP]
 >
 > You can download artifacts directly from the backend without using external tools:
@@ -282116,6 +282356,8 @@ Build your first deep agent in minutes
 
 This guide walks you through creating your first deep agent with file system tools and subagent capabilities. You will build a research agent that can conduct research and write reports.
 
+Build the Deep Agents research quickstart
+
 Build a Deep Agents research agent in this working directory by following the Deep Agents quickstart.
 
 ## Step 1: Read the guide
@@ -282154,6 +282396,8 @@ Follow the quickstart steps in order:
 >
 > * Install the [LangChain Docs MCP servers](/use-these-docs) to give your agent access to up-to-date LangChain documentation and examples.
 >
+>   Connect LangChain docs MCP servers
+>
 >   Connect both LangChain documentation MCP servers to my coding agent so it can look up current LangChain, LangGraph, and LangSmith docs and API reference.
 >
 >   Servers to add:
@@ -282170,6 +282414,8 @@ Follow the quickstart steps in order:
 >
 >   Do not invent alternate MCP URLs. After configuring, confirm both servers are listed and reachable.
 > * Install [LangChain Skills](https://github.com/langchain-ai/langchain-skills) to improve your agent's performance on LangChain ecosystem tasks.
+>
+>   Install LangChain Skills
 >
 >   Install LangChain Skills for my coding agent so it can perform better on LangChain, LangGraph, and Deep Agents tasks.
 >
@@ -282815,7 +283061,6 @@ Create `agent.py`:
 import requests
 from langchain_core.documents import Document
 from langchain_core.vectorstores import InMemoryVectorStore
-from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 DOCS_BASE = "https://docs.langchain.com"
@@ -296087,6 +296332,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Spanish-language Mexican federal law Q\&A with cited articles for LangChain agents.
 
+> **[LFG Alarm](https://github.com/lfg-gm/langchain-lfg#readme)**
+>
+> Tools that set, list and delete alarms that ring on a phone, and ring a phone now, through LFG Alarm.
+
 > **[Lindorm](https://help.aliyun.com/document_detail/174640.html)**
 >
 > Alibaba Cloud's multi-model database service.
@@ -296959,6 +297208,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Data visualization and business intelligence.
 
+> **[TableJourney](https://tablejourney.com/agents/#langchain)**
+>
+> Tools for verified places to eat, food festivals with dates, and bookable food tours and stays in 224 cities, from TableJourney's public MCP server.
+
 > **[Taiga](https://github.com/Shikenso-Analytics/langchain-taiga)**
 >
 > Project management platform for agile teams.
@@ -297186,6 +297439,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > **[Vectorize](https://docs.vectorize.io/rag-pipelines/retrieval-endpoint#access-tokens)**
 >
 > Vector database and semantic search.
+
+> **[VeqenCallbackHandler](https://github.com/Keyveve/veqen-sdks/tree/main/integrations/langchain#readme)**
+>
+> Veqen records token usage and estimated AI costs by customer and feature, with local budget checks before model calls.
 
 > **[Vequil](https://github.com/nxd914/vequil)**
 >
@@ -300327,12 +300584,12 @@ The following table shows tools that generate video, image, or audio assets:
 | [`Oracle AI vector search generate summary`](/oss/python/integrations/tools/oracleai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-oracledb/month)](https://pypi.org/project/langchain-oracledb/) |
 | [`Exa search`](/oss/python/integrations/tools/exa_search) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-exa/month)](https://pypi.org/project/langchain-exa/) |
 | [`Azure container apps dynamic sessions`](/oss/python/integrations/tools/azure_dynamic_sessions) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-azure-dynamic-sessions/month)](https://pypi.org/project/langchain-azure-dynamic-sessions/) |
-| [`Scalekit`](https://docs.scalekit.com/agentkit/quickstart/) | [  ![Downloads per month](https://static.pepy.tech/badge/scalekit-sdk-python/month)](https://pypi.org/project/scalekit-sdk-python/) |
 | [`Parallel extract`](/oss/python/integrations/tools/parallel_extract) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-parallel/month)](https://pypi.org/project/langchain-parallel/) |
 | [`Parallel FindAll`](/oss/python/integrations/tools/parallel_findall) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-parallel/month)](https://pypi.org/project/langchain-parallel/) |
 | [`Parallel Monitor`](/oss/python/integrations/tools/parallel_monitor) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-parallel/month)](https://pypi.org/project/langchain-parallel/) |
 | [`Parallel search`](/oss/python/integrations/tools/parallel_search) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-parallel/month)](https://pypi.org/project/langchain-parallel/) |
 | [`Parallel Task API`](/oss/python/integrations/tools/parallel_task) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-parallel/month)](https://pypi.org/project/langchain-parallel/) |
+| [`Scalekit`](https://docs.scalekit.com/agentkit/quickstart/) | [  ![Downloads per month](https://static.pepy.tech/badge/scalekit-sdk-python/month)](https://pypi.org/project/scalekit-sdk-python/) |
 | [`Upstage groundedness check`](/oss/python/integrations/tools/upstage_groundedness_check) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-upstage/month)](https://pypi.org/project/langchain-upstage/) |
 | [`ApifyActorsTool`](https://docs.apify.com/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-apify/month)](https://pypi.org/project/langchain-apify/) |
 | [`Memory`](https://github.com/skynetcmd/m3-memory/blob/main/docs/integrations/LANGCHAIN.md) | [  ![Downloads per month](https://static.pepy.tech/badge/m3-memory/month)](https://pypi.org/project/m3-memory/) |
@@ -300341,9 +300598,9 @@ The following table shows tools that generate video, image, or audio assets:
 | [`StripeAgentToolkit`](/oss/python/integrations/tools/stripe) | [  ![Downloads per month](https://static.pepy.tech/badge/stripe-agent-toolkit/month)](https://pypi.org/project/stripe-agent-toolkit/) |
 | [`MemgraphToolkit`](https://github.com/memgraph/langchain-memgraph) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-memgraph/month)](https://pypi.org/project/langchain-memgraph/) |
 | [`FoliantPaymentTool`](https://github.com/gazoy/langchain-foliant#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-foliant/month)](https://pypi.org/project/langchain-foliant/) |
+| [`Google drive`](/oss/python/integrations/tools/google_drive) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-googledrive/month)](https://pypi.org/project/langchain-googledrive/) |
 | [`MadeOnSol`](https://madeonsol.com/api-docs) | [  ![Downloads per month](https://static.pepy.tech/badge/madeonsol-x402/month)](https://pypi.org/project/madeonsol-x402/) |
 | [`BowmarkToolkit`](https://bowmark.ai/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-bowmark/month)](https://pypi.org/project/langchain-bowmark/) |
-| [`Google drive`](/oss/python/integrations/tools/google_drive) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-googledrive/month)](https://pypi.org/project/langchain-googledrive/) |
 | [`Mcp toolbox for databases`](/oss/python/integrations/tools/mcp_toolbox) | [  ![Downloads per month](https://static.pepy.tech/badge/toolbox-langchain/month)](https://pypi.org/project/toolbox-langchain/) |
 | [`SmartScraperTool`](https://github.com/ScrapeGraphAI/langchain-scrapegraph) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapegraph/month)](https://pypi.org/project/langchain-scrapegraph/) |
 | [`AdeuToolkit`](https://adeu.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-adeu/month)](https://pypi.org/project/langchain-adeu/) |
@@ -300354,47 +300611,55 @@ The following table shows tools that generate video, image, or audio assets:
 | [`Brightdatawebscraperapi`](https://docs.brightdata.com/datasets/scrapers/overview) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-brightdata/month)](https://pypi.org/project/langchain-brightdata/) |
 | [`Compass defi toolkit`](https://pypi.org/project/langchain-compass/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-compass/month)](https://pypi.org/project/langchain-compass/) |
 | [`Fizzl`](https://fizzl.eu/agents/python/) | [  ![Downloads per month](https://static.pepy.tech/badge/fizzl/month)](https://pypi.org/project/fizzl/) |
-| [`LinkupSearchTool`](https://github.com/LinkupPlatform/langchain-linkup) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-linkup/month)](https://pypi.org/project/langchain-linkup/) |
 | [`PexafyToolkit`](https://docs.pexafy.com/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-pexafy/month)](https://pypi.org/project/langchain-pexafy/) |
 | [`Taiga`](https://github.com/Shikenso-Analytics/langchain-taiga) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-taiga/month)](https://pypi.org/project/langchain-taiga/) |
 | [`AtomicMailToolkit`](https://docs.atomicmail.ai/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-atomicmail/month)](https://pypi.org/project/langchain-atomicmail/) |
 | [`Cdp agentkit toolkit`](/oss/python/integrations/tools/cdp_agentkit) | [  ![Downloads per month](https://static.pepy.tech/badge/coinbase-agentkit-langchain/month)](https://pypi.org/project/coinbase-agentkit-langchain/) |
 | [`DecodoSearchTool`](https://github.com/Decodo/langchain/tree/master/libs/partners/decodo) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-decodo/month)](https://pypi.org/project/langchain-decodo/) |
 | [`DecodoWebScrapeTool`](https://github.com/Decodo/langchain/tree/master/libs/partners/decodo) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-decodo/month)](https://pypi.org/project/langchain-decodo/) |
+| [`DexPaprikaToolkit`](https://docs.dexpaprika.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-dexpaprika/month)](https://pypi.org/project/langchain-dexpaprika/) |
 | [`Firecrawl`](https://docs.firecrawl.dev) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-firecrawl/month)](https://pypi.org/project/langchain-firecrawl/) |
 | [`HindsightTools`](https://docs.hindsight.vectorize.io/sdks/integrations/langgraph) | [  ![Downloads per month](https://static.pepy.tech/badge/hindsight-langgraph/month)](https://pypi.org/project/hindsight-langgraph/) |
+| [`LinkupSearchTool`](https://github.com/LinkupPlatform/langchain-linkup) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-linkup/month)](https://pypi.org/project/langchain-linkup/) |
 | [`ReplyLayerToolkit`](https://replylayer.ai/docs/guides/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-replylayer/month)](https://pypi.org/project/langchain-replylayer/) |
 | [`Scavio`](https://scavio.dev/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scavio/month)](https://pypi.org/project/langchain-scavio/) |
-| [`SerpexSearchResults`](https://serpex.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-serpex-python/month)](https://pypi.org/project/langchain-serpex-python/) |
 | [`Ads4gpts`](https://github.com/ADS4GPTs/ads4gpts) | [  ![Downloads per month](https://static.pepy.tech/badge/ads4gpts-langchain/month)](https://pypi.org/project/ads4gpts-langchain/) |
 | [`AlexEvidenceVerifier`](https://pypi.org/project/langchain-alex/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-alex/month)](https://pypi.org/project/langchain-alex/) |
 | [`Algenta`](https://github.com/thyn-ai/algenta-integrations/tree/main/python/langchain-algenta#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-algenta/month)](https://pypi.org/project/langchain-algenta/) |
+| [`Anakin`](https://anakin.io/docs/documentation) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-anakin/month)](https://pypi.org/project/langchain-anakin/) |
 | [`cloro`](https://cloro.dev/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-cloro/month)](https://pypi.org/project/langchain-cloro/) |
-| [`DexPaprikaToolkit`](https://docs.dexpaprika.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-dexpaprika/month)](https://pypi.org/project/langchain-dexpaprika/) |
 | [`DnsDoctorToolkit`](https://github.com/dnsdoctor/langchain-dnsdoctor) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-dnsdoctor/month)](https://pypi.org/project/langchain-dnsdoctor/) |
 | [`e2a`](https://e2a.dev) | [  ![Downloads per month](https://static.pepy.tech/badge/e2a/month)](https://pypi.org/project/e2a/) |
 | [`FlashDataToolkit`](https://github.com/flashdata-dev/langchain-flashdata#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-flashdata/month)](https://pypi.org/project/langchain-flashdata/) |
 | [`GoodMemToolkit`](https://docs.goodmem.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-goodmem/month)](https://pypi.org/project/langchain-goodmem/) |
+| [`GraphTool`](https://dev.writer.com/home/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-writer/month)](https://pypi.org/project/langchain-writer/) |
+| [`HirePulse company data tools`](https://github.com/edtool79-collab/hirepulse-open-source#langchain-and-crewai-gateway-tools-030) | [  ![Downloads per month](https://static.pepy.tech/badge/hirepulse-tools/month)](https://pypi.org/project/hirepulse-tools/) |
 | [`NimbleExtractTool`](https://docs.nimbleway.com/integrations/connectors/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nimble/month)](https://pypi.org/project/langchain-nimble/) |
 | [`NimbleSearchTool`](https://docs.nimbleway.com/integrations/connectors/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nimble/month)](https://pypi.org/project/langchain-nimble/) |
+| [`Prolog`](https://langchain-prolog.readthedocs.io/en/stable/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-prolog/month)](https://pypi.org/project/langchain-prolog/) |
+| [`Send21Toolkit`](https://pypi.org/project/langchain-send21/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-send21/month)](https://pypi.org/project/langchain-send21/) |
+| [`SerpexSearchResults`](https://serpex.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-serpex-python/month)](https://pypi.org/project/langchain-serpex-python/) |
+| [`SwarmMemoToolkit`](https://pypi.org/project/langchain-swarmmemo/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-swarmmemo/month)](https://pypi.org/project/langchain-swarmmemo/) |
+| [`Synap`](https://www.maximem.ai/) | [  ![Downloads per month](https://static.pepy.tech/badge/maximem-synap-langchain/month)](https://pypi.org/project/maximem-synap-langchain/) |
 | [`TanodToolkit`](https://github.com/tanod-labs/integrations/tree/main/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tanod/month)](https://pypi.org/project/langchain-tanod/) |
 | [`ToolGuardLayer`](https://github.com/sriram7737/pramagent) | [  ![Downloads per month](https://static.pepy.tech/badge/pramagent/month)](https://pypi.org/project/pramagent/) |
 | [`UrlpipeToolkit`](https://urlpipe.dev/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-urlpipe/month)](https://pypi.org/project/langchain-urlpipe/) |
 | [`You.com search`](https://you.com/docs/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-youdotcom/month)](https://pypi.org/project/langchain-youdotcom/) |
-| [`Anakin`](https://anakin.io/docs/documentation) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-anakin/month)](https://pypi.org/project/langchain-anakin/) |
-| [`ZeroGPUToolkit`](https://docs.zerogpu.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-zerogpu/month)](https://pypi.org/project/langchain-zerogpu/) |
 | [`ThorDataSearchTool`](https://github.com/Thordata/langchain-thordata) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-thordata/month)](https://pypi.org/project/langchain-thordata/) |
-| [`Prolog`](https://langchain-prolog.readthedocs.io/en/stable/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-prolog/month)](https://pypi.org/project/langchain-prolog/) |
-| [`Send21Toolkit`](https://pypi.org/project/langchain-send21/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-send21/month)](https://pypi.org/project/langchain-send21/) |
-| [`SwarmMemoToolkit`](https://pypi.org/project/langchain-swarmmemo/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-swarmmemo/month)](https://pypi.org/project/langchain-swarmmemo/) |
 | [`VerdixAddressRiskTool`](https://github.com/verdixapi/langchain-verdix#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-verdix/month)](https://pypi.org/project/langchain-verdix/) |
-| [`GateCoreToolkit`](https://gatecoreai.com/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/gatecore-langchain/month)](https://pypi.org/project/gatecore-langchain/) |
-| [`Synap`](https://www.maximem.ai/) | [  ![Downloads per month](https://static.pepy.tech/badge/maximem-synap-langchain/month)](https://pypi.org/project/maximem-synap-langchain/) |
-| [`HirePulse company data tools`](https://github.com/edtool79-collab/hirepulse-open-source#langchain-and-crewai-gateway-tools-030) | [  ![Downloads per month](https://static.pepy.tech/badge/hirepulse-tools/month)](https://pypi.org/project/hirepulse-tools/) |
 | [`SerpKiteSearch`](https://serpkite.com/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-serpkite/month)](https://pypi.org/project/langchain-serpkite/) |
-| [`Opedd`](https://opedd.com/for-ai-agents) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opedd/month)](https://pypi.org/project/langchain-opedd/) |
+| [`GateCoreToolkit`](https://gatecoreai.com/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/gatecore-langchain/month)](https://pypi.org/project/gatecore-langchain/) |
 | [`MachineLibraryToolkit`](https://github.com/SpaceFrontiers/machinelibrary-integrations/tree/main/python/langchain-machinelibrary) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-machinelibrary/month)](https://pypi.org/project/langchain-machinelibrary/) |
+| [`AgentGuardTool`](https://github.com/datumline/datumline-agent-guard#langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/datumline-agent-guard/month)](https://pypi.org/project/datumline-agent-guard/) |
+| [`EconDashToolkit`](https://github.com/econdash/econdash-python/blob/main/packages/langchain-econdash/README.md) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-econdash/month)](https://pypi.org/project/langchain-econdash/) |
+| [`CatchAllTools`](https://www.newscatcherapi.com/docs/web-search-api/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-catchall/month)](https://pypi.org/project/langchain-catchall/) |
+| [`FinancialEvidenceToolkit`](https://github.com/beepboop2025/langchain-financial-evidence#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-financial-evidence/month)](https://pypi.org/project/langchain-financial-evidence/) |
+| [`Opedd`](https://opedd.com/for-ai-agents) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opedd/month)](https://pypi.org/project/langchain-opedd/) |
 | [`Pushary`](https://pushary.com/docs/agents/build/langgraph?utm_source=langchain\&utm_medium=integration-directory\&utm_campaign=pushary-langgraph-py) | [  ![Downloads per month](https://static.pepy.tech/badge/pushary-langgraph/month)](https://pypi.org/project/pushary-langgraph/) |
+| [`MinnsDBMemory`](https://github.com/Minns-ai/langgraph-minnsdb#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-minnsdb/month)](https://pypi.org/project/langgraph-minnsdb/) |
+| [`WaveSpeedImageGeneration`](https://github.com/WaveSpeedAI/langchain-wavespeed) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-wavespeed/month)](https://pypi.org/project/langchain-wavespeed/) |
+| [`WaveSpeedRunModel`](https://github.com/WaveSpeedAI/langchain-wavespeed) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-wavespeed/month)](https://pypi.org/project/langchain-wavespeed/) |
+| [`WaveSpeedVideoGeneration`](https://github.com/WaveSpeedAI/langchain-wavespeed) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-wavespeed/month)](https://pypi.org/project/langchain-wavespeed/) |
 | [`DiffbotAskTool`](https://github.com/diffbot/langchain-diffbot) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-diffbot/month)](https://pypi.org/project/langchain-diffbot/) |
 | [`DiffbotDQLProbeTool`](https://github.com/diffbot/langchain-diffbot) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-diffbot/month)](https://pypi.org/project/langchain-diffbot/) |
 | [`DiffbotEntitiesTool`](https://github.com/diffbot/langchain-diffbot) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-diffbot/month)](https://pypi.org/project/langchain-diffbot/) |
@@ -300402,236 +300667,230 @@ The following table shows tools that generate video, image, or audio assets:
 | [`DiffbotKnowledgeGraphTool`](https://github.com/diffbot/langchain-diffbot) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-diffbot/month)](https://pypi.org/project/langchain-diffbot/) |
 | [`DiffbotOntologyTool`](https://github.com/diffbot/langchain-diffbot) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-diffbot/month)](https://pypi.org/project/langchain-diffbot/) |
 | [`DiffbotWebSearchTool`](https://github.com/diffbot/langchain-diffbot) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-diffbot/month)](https://pypi.org/project/langchain-diffbot/) |
-| [`CatchAllTools`](https://www.newscatcherapi.com/docs/web-search-api/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-catchall/month)](https://pypi.org/project/langchain-catchall/) |
 | [`Salesforce`](https://github.com/colesmcintosh/langchain-salesforce) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-salesforce/month)](https://pypi.org/project/langchain-salesforce/) |
-| [`Ampersend`](https://docs.ampersend.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ampersend/month)](https://pypi.org/project/langchain-ampersend/) |
-| [`Manifest`](https://omfang.io/manifest-docs) | [  ![Downloads per month](https://static.pepy.tech/badge/manifest-api/month)](https://pypi.org/project/manifest-api/) |
-| [`MinnsDBMemory`](https://github.com/Minns-ai/langgraph-minnsdb#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-minnsdb/month)](https://pypi.org/project/langgraph-minnsdb/) |
-| [`Lians`](https://www.lians.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/lians-sdk/month)](https://pypi.org/project/lians-sdk/) |
-| [`WaveSpeedImageGeneration`](https://github.com/WaveSpeedAI/langchain-wavespeed) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-wavespeed/month)](https://pypi.org/project/langchain-wavespeed/) |
-| [`WaveSpeedRunModel`](https://github.com/WaveSpeedAI/langchain-wavespeed) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-wavespeed/month)](https://pypi.org/project/langchain-wavespeed/) |
-| [`WaveSpeedVideoGeneration`](https://github.com/WaveSpeedAI/langchain-wavespeed) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-wavespeed/month)](https://pypi.org/project/langchain-wavespeed/) |
-| [`TwittrAPIToolkit`](https://github.com/twittrapi/langchain-twittrapi#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-twittrapi/month)](https://pypi.org/project/langchain-twittrapi/) |
 | [`OpenpathSearch`](https://openpath.sh/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-openpath/month)](https://pypi.org/project/langchain-openpath/) |
-| [`Robocorp toolkit`](https://github.com/robocorp/robocorp) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-robocorp/month)](https://pypi.org/project/langchain-robocorp/) |
-| [`SnapRender`](https://snap-render.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-snaprender/month)](https://pypi.org/project/langchain-snaprender/) |
-| [`Fmp data`](https://github.com/MehdiZare/langchain-fmp-data) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-fmp-data/month)](https://pypi.org/project/langchain-fmp-data/) |
+| [`TwittrAPIToolkit`](https://github.com/twittrapi/langchain-twittrapi#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-twittrapi/month)](https://pypi.org/project/langchain-twittrapi/) |
+| [`Manifest`](https://omfang.io/manifest-docs) | [  ![Downloads per month](https://static.pepy.tech/badge/manifest-api/month)](https://pypi.org/project/manifest-api/) |
 | [`AgentSearchTool`](https://agentsearchhq.com/blog/add-web-search-to-langchain-agent?utm_source=langchain-docs\&utm_medium=integration-listing\&utm_campaign=promo-oct26) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentsearch/month)](https://pypi.org/project/langchain-agentsearch/) |
+| [`ZeroGPUToolkit`](https://docs.zerogpu.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-zerogpu/month)](https://pypi.org/project/langchain-zerogpu/) |
+| [`Ampersend`](https://docs.ampersend.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ampersend/month)](https://pypi.org/project/langchain-ampersend/) |
+| [`Robocorp toolkit`](https://github.com/robocorp/robocorp) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-robocorp/month)](https://pypi.org/project/langchain-robocorp/) |
+| [`Lians`](https://www.lians.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/lians-sdk/month)](https://pypi.org/project/lians-sdk/) |
+| [`Fmp data`](https://github.com/MehdiZare/langchain-fmp-data) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-fmp-data/month)](https://pypi.org/project/langchain-fmp-data/) |
+| [`SnapRender`](https://snap-render.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-snaprender/month)](https://pypi.org/project/langchain-snaprender/) |
 | [`Hyperbrowser browser agent`](https://www.hyperbrowser.ai/docs/home) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-hyperbrowser/month)](https://pypi.org/project/langchain-hyperbrowser/) |
 | [`Hyperbrowser web scraping`](https://www.hyperbrowser.ai/docs/home) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-hyperbrowser/month)](https://pypi.org/project/langchain-hyperbrowser/) |
-| [`Mixpeek`](https://mixpeek.com/docs/agent-integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mixpeek/month)](https://pypi.org/project/langchain-mixpeek/) |
-| [`AsyntaiToolkit`](https://asyntai.com/documentation/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-asyntai/month)](https://pypi.org/project/langchain-asyntai/) |
-| [`MnkiGuardedTool`](https://mnki.com/docs/integrations#frameworks) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mnki/month)](https://pypi.org/project/langchain-mnki/) |
-| [`Hydrafetch`](https://docs.hydrafetch.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-hydrafetch/month)](https://pypi.org/project/langchain-hydrafetch/) |
+| [`GPTImageToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/gpt-image) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-gpt-image-acedatacloud/month)](https://pypi.org/project/langchain-gpt-image-acedatacloud/) |
+| [`ContextFetchSearch`](https://github.com/lachy3433/langchain-contextfetch#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-contextfetch/month)](https://pypi.org/project/langchain-contextfetch/) |
 | [`ClearsignedVerifyTool`](https://clearsigned.com/integrations#langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-clearsigned/month)](https://pypi.org/project/langchain-clearsigned/) |
+| [`HappyHorseToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/happyhorse) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-happyhorse-acedatacloud/month)](https://pypi.org/project/langchain-happyhorse-acedatacloud/) |
+| [`Hydrafetch`](https://docs.hydrafetch.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-hydrafetch/month)](https://pypi.org/project/langchain-hydrafetch/) |
+| [`NanoBananaToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/nano-banana) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nano-banana-acedatacloud/month)](https://pypi.org/project/langchain-nano-banana-acedatacloud/) |
 | [`Search1API Toolkit`](https://www.search1api.com/docs/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/search1api-langchain/month)](https://pypi.org/project/search1api-langchain/) |
-| [`Synmerco`](https://synmerco.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/synmerco-langchain/month)](https://pypi.org/project/synmerco-langchain/) |
-| [`FeedMyAgentToolkit`](https://github.com/makash/feedmyagent-skill/tree/main/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-feedmyagent/month)](https://pypi.org/project/langchain-feedmyagent/) |
 | [`UploadPostToolkit`](https://docs.upload-post.com/guides/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-upload-post/month)](https://pypi.org/project/langchain-upload-post/) |
 | [`GetYouTubeTranscriptTool`](https://github.com/tubeagentkit/langchain-getyoutubetranscript#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-getyoutubetranscript/month)](https://pypi.org/project/langchain-getyoutubetranscript/) |
+| [`FeedMyAgentToolkit`](https://github.com/makash/feedmyagent-skill/tree/main/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-feedmyagent/month)](https://pypi.org/project/langchain-feedmyagent/) |
+| [`Mixpeek`](https://mixpeek.com/docs/agent-integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mixpeek/month)](https://pypi.org/project/langchain-mixpeek/) |
+| [`Synmerco`](https://synmerco.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/synmerco-langchain/month)](https://pypi.org/project/synmerco-langchain/) |
+| [`KavelImageGenerator`](https://kavel.readthedocs.io/en/latest/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-kavel/month)](https://pypi.org/project/langchain-kavel/) |
 | [`BlopusFetch`](https://blopus.ai/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-blopus/month)](https://pypi.org/project/langchain-blopus/) |
 | [`BlopusSearch`](https://blopus.ai/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-blopus/month)](https://pypi.org/project/langchain-blopus/) |
-| [`UniswapV2Toolkit`](https://github.com/Conrad-sudo/langchain-uniswap-v2) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-uniswap-v2/month)](https://pypi.org/project/langchain-uniswap-v2/) |
-| [`SkimReader`](https://skim402.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-skim/month)](https://pypi.org/project/langchain-skim/) |
-| [`KavelImageGenerator`](https://kavel.readthedocs.io/en/latest/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-kavel/month)](https://pypi.org/project/langchain-kavel/) |
-| [`OptionsAhoy`](https://optionsahoy.com/for-agents) | [  ![Downloads per month](https://static.pepy.tech/badge/optionsahoy-langchain/month)](https://pypi.org/project/optionsahoy-langchain/) |
-| [`GPTImageToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/gpt-image) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-gpt-image-acedatacloud/month)](https://pypi.org/project/langchain-gpt-image-acedatacloud/) |
-| [`HappyHorseToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/happyhorse) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-happyhorse-acedatacloud/month)](https://pypi.org/project/langchain-happyhorse-acedatacloud/) |
-| [`Discord`](/oss/python/integrations/tools/discord) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-discord/month)](https://pypi.org/project/langchain-discord/) |
-| [`DomPrunerFetchTool`](https://github.com/dong7812/dompruner-py) | [  ![Downloads per month](https://static.pepy.tech/badge/dompruner/month)](https://pypi.org/project/dompruner/) |
-| [`Valyucontext`](https://docs.valyu.ai/home) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-valyu/month)](https://pypi.org/project/langchain-valyu/) |
 | [`MartToolkit`](https://github.com/Mart-API/langchain-mart#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mart/month)](https://pypi.org/project/langchain-mart/) |
-| [`NanoBananaToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/nano-banana) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nano-banana-acedatacloud/month)](https://pypi.org/project/langchain-nano-banana-acedatacloud/) |
-| [`SkillLiteTool`](https://github.com/EXboys/langchain-skilllite) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-skilllite/month)](https://pypi.org/project/langchain-skilllite/) |
+| [`MnkiGuardedTool`](https://mnki.com/docs/integrations#frameworks) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mnki/month)](https://pypi.org/project/langchain-mnki/) |
+| [`DomPrunerFetchTool`](https://github.com/dong7812/dompruner-py) | [  ![Downloads per month](https://static.pepy.tech/badge/dompruner/month)](https://pypi.org/project/dompruner/) |
 | [`PinkToolkit`](https://pinkwallet.com/agentic/connect/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-pink/month)](https://pypi.org/project/langchain-pink/) |
-| [`AidressToolkit`](https://aidress.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-aidress/month)](https://pypi.org/project/langchain-aidress/) |
-| [`VeidaImageGenerator`](https://veida.readthedocs.io/en/latest/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-veida/month)](https://pypi.org/project/langchain-veida/) |
-| [`Anchor browser`](https://docs.anchorbrowser.io/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-anchorbrowser/month)](https://pypi.org/project/langchain-anchorbrowser/) |
-| [`1Claw`](https://docs.1claw.xyz/docs/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-1claw/month)](https://pypi.org/project/langchain-1claw/) |
+| [`Discord`](/oss/python/integrations/tools/discord) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-discord/month)](https://pypi.org/project/langchain-discord/) |
+| [`SkimReader`](https://skim402.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-skim/month)](https://pypi.org/project/langchain-skim/) |
+| [`UniswapV2Toolkit`](https://github.com/Conrad-sudo/langchain-uniswap-v2) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-uniswap-v2/month)](https://pypi.org/project/langchain-uniswap-v2/) |
 | [`FoddaContextRetriever`](https://github.com/fodda-ai/langchain-fodda#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-fodda/month)](https://pypi.org/project/langchain-fodda/) |
-| [`scoutwyze_rank`](https://github.com/scoutwyze-max/scoutwyze-compute/blob/main/examples/README.md) | [  ![Downloads per month](https://static.pepy.tech/badge/scoutwyze-compute/month)](https://pypi.org/project/scoutwyze-compute/) |
-| [`ReserpSearchTool`](https://reserp.ai/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-reserp/month)](https://pypi.org/project/langchain-reserp/) |
-| [`MrScraperToolkit`](https://docs.mrscraper.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mrscraper/month)](https://pypi.org/project/langchain-mrscraper/) |
-| [`ERC20Toolkit`](https://github.com/Conrad-sudo/langchain-erc20) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-erc20/month)](https://pypi.org/project/langchain-erc20/) |
+| [`Valyucontext`](https://docs.valyu.ai/home) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-valyu/month)](https://pypi.org/project/langchain-valyu/) |
+| [`OptionsAhoy`](https://optionsahoy.com/for-agents) | [  ![Downloads per month](https://static.pepy.tech/badge/optionsahoy-langchain/month)](https://pypi.org/project/optionsahoy-langchain/) |
+| [`VeidaImageGenerator`](https://veida.readthedocs.io/en/latest/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-veida/month)](https://pypi.org/project/langchain-veida/) |
 | [`TanvoToolkit`](https://github.com/tanvoai/langchain-tanvo#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tanvo/month)](https://pypi.org/project/langchain-tanvo/) |
-| [`ContextFetchSearch`](https://github.com/lachy3433/langchain-contextfetch#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-contextfetch/month)](https://pypi.org/project/langchain-contextfetch/) |
-| [`DaytonaDataAnalysisTool`](https://github.com/daytonaio/daytona) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-daytona-data-analysis/month)](https://pypi.org/project/langchain-daytona-data-analysis/) |
-| [`PaySafe`](https://paysafe-agent.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-paysafe/month)](https://pypi.org/project/langchain-paysafe/) |
-| [`SuperColony`](https://github.com/TheSuperColony/langchain-supercolony) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-supercolony/month)](https://pypi.org/project/langchain-supercolony/) |
+| [`WayzaToolkit`](https://github.com/wayza-protocol/wayza-js/tree/main/packages/langchain-wayza) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-wayza/month)](https://pypi.org/project/langchain-wayza/) |
+| [`SkillLiteTool`](https://github.com/EXboys/langchain-skilllite) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-skilllite/month)](https://pypi.org/project/langchain-skilllite/) |
+| [`scoutwyze_rank`](https://github.com/scoutwyze-max/scoutwyze-compute/blob/main/examples/README.md) | [  ![Downloads per month](https://static.pepy.tech/badge/scoutwyze-compute/month)](https://pypi.org/project/scoutwyze-compute/) |
+| [`MrScraperToolkit`](https://docs.mrscraper.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mrscraper/month)](https://pypi.org/project/langchain-mrscraper/) |
+| [`DDG Agent Services`](https://pypi.org/project/ddg-langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/ddg-langchain/month)](https://pypi.org/project/ddg-langchain/) |
+| [`ERC20Toolkit`](https://github.com/Conrad-sudo/langchain-erc20) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-erc20/month)](https://pypi.org/project/langchain-erc20/) |
+| [`ReserpSearchTool`](https://reserp.ai/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-reserp/month)](https://pypi.org/project/langchain-reserp/) |
+| [`MeshArcScrape`](https://mesharc.dev/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mesharc/month)](https://pypi.org/project/langchain-mesharc/) |
+| [`MeshArcSearch`](https://mesharc.dev/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mesharc/month)](https://pypi.org/project/langchain-mesharc/) |
+| [`1Claw`](https://docs.1claw.xyz/docs/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-1claw/month)](https://pypi.org/project/langchain-1claw/) |
+| [`AidressToolkit`](https://aidress.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-aidress/month)](https://pypi.org/project/langchain-aidress/) |
+| [`Anchor browser`](https://docs.anchorbrowser.io/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-anchorbrowser/month)](https://pypi.org/project/langchain-anchorbrowser/) |
+| [`Pidgeon Toolkit`](https://pidgeon.ai/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-pidgeon/month)](https://pypi.org/project/langchain-pidgeon/) |
+| [`OpenAlexSearch`](https://github.com/ourresearch/langchain-openalex#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-openalex/month)](https://pypi.org/project/langchain-openalex/) |
 | [`GAIP`](https://pypi.org/project/langchain-gaip/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-gaip/month)](https://pypi.org/project/langchain-gaip/) |
+| [`agentsvc`](https://agentsvc.io/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/agentsvc/month)](https://pypi.org/project/agentsvc/) |
+| [`GraciousQuotes`](https://graciousquotes.com/developers/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-graciousquotes/month)](https://pypi.org/project/langchain-graciousquotes/) |
+| [`GNewsSearch`](https://docs.gnews.io/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-gnews/month)](https://pypi.org/project/langchain-gnews/) |
+| [`GNewsTopHeadlines`](https://docs.gnews.io/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-gnews/month)](https://pypi.org/project/langchain-gnews/) |
+| [`PaySafe`](https://paysafe-agent.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-paysafe/month)](https://pypi.org/project/langchain-paysafe/) |
+| [`EmakiVideoGenerator`](https://emaki.readthedocs.io/en/latest/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-emaki/month)](https://pypi.org/project/langchain-emaki/) |
+| [`Capsule`](https://github.com/mavdol/langchain-capsule) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-capsule/month)](https://pypi.org/project/langchain-capsule/) |
+| [`PrintFriendlyReadPage`](https://github.com/printfriendly/langchain-printfriendly#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-printfriendly/month)](https://pypi.org/project/langchain-printfriendly/) |
+| [`SuperColony`](https://github.com/TheSuperColony/langchain-supercolony) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-supercolony/month)](https://pypi.org/project/langchain-supercolony/) |
+| [`Oxylabs`](https://github.com/oxylabs/langchain-oxylabs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-oxylabs/month)](https://pypi.org/project/langchain-oxylabs/) |
+| [`DaytonaDataAnalysisTool`](https://github.com/daytonaio/daytona) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-daytona-data-analysis/month)](https://pypi.org/project/langchain-daytona-data-analysis/) |
+| [`TokPortalToolkit`](https://github.com/tokportal/langchain-tokportal) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tokportal/month)](https://pypi.org/project/langchain-tokportal/) |
+| [`PolarisSearchTool`](https://github.com/Veroq-ai/polaris-sdks/tree/main/python/langchain_polaris) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-polaris/month)](https://pypi.org/project/langchain-polaris/) |
+| [`SerpApi Search Tools`](https://serpapi.github.io/serpapi-search-tools-python/docs/sdk-examples/langchain.html) | [  ![Downloads per month](https://static.pepy.tech/badge/serpapi-search-tools/month)](https://pypi.org/project/serpapi-search-tools/) |
+| [`MemoryRouter`](https://docs.memoryrouter.ai/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-memoryrouter/month)](https://pypi.org/project/langchain-memoryrouter/) |
 | [`AlfrescoToolkit`](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md#alfrescotoolkit) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opendma/month)](https://pypi.org/project/langchain-opendma/) |
 | [`DocumentumToolkit`](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md#documentumtoolkit) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opendma/month)](https://pypi.org/project/langchain-opendma/) |
 | [`FileNetP8Toolkit`](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md#filenetp8toolkit) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opendma/month)](https://pypi.org/project/langchain-opendma/) |
 | [`OnBaseToolkit`](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md#onbasetoolkit) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opendma/month)](https://pypi.org/project/langchain-opendma/) |
 | [`OpenDMAToolkit`](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opendma/month)](https://pypi.org/project/langchain-opendma/) |
-| [`Oxylabs`](https://github.com/oxylabs/langchain-oxylabs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-oxylabs/month)](https://pypi.org/project/langchain-oxylabs/) |
-| [`TalorDataSerpTool`](https://docs.talordata.com/serp-api/integration/sdk-integration/how-to-set-up-talordata-with-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-talordata/month)](https://pypi.org/project/langchain-talordata/) |
-| [`TokPortalToolkit`](https://github.com/tokportal/langchain-tokportal) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tokportal/month)](https://pypi.org/project/langchain-tokportal/) |
-| [`Dappier`](https://docs.dappier.com/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-dappier/month)](https://pypi.org/project/langchain-dappier/) |
 | [`generate_latam_financial_data`](https://github.com/jmendozapuche/langchain-latam-synth) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-latam-synth/month)](https://pypi.org/project/langchain-latam-synth/) |
-| [`GNewsSearch`](https://docs.gnews.io/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-gnews/month)](https://pypi.org/project/langchain-gnews/) |
-| [`GNewsTopHeadlines`](https://docs.gnews.io/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-gnews/month)](https://pypi.org/project/langchain-gnews/) |
-| [`WayzaToolkit`](https://github.com/wayza-protocol/wayza-js/tree/main/packages/langchain-wayza) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-wayza/month)](https://pypi.org/project/langchain-wayza/) |
-| [`Capsule`](https://github.com/mavdol/langchain-capsule) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-capsule/month)](https://pypi.org/project/langchain-capsule/) |
+| [`TalorDataSerpTool`](https://docs.talordata.com/serp-api/integration/sdk-integration/how-to-set-up-talordata-with-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-talordata/month)](https://pypi.org/project/langchain-talordata/) |
 | [`Cosmergon`](https://cosmergon.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-cosmergon/month)](https://pypi.org/project/langchain-cosmergon/) |
-| [`PolarisSearchTool`](https://github.com/Veroq-ai/polaris-sdks/tree/main/python/langchain_polaris) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-polaris/month)](https://pypi.org/project/langchain-polaris/) |
-| [`EmakiVideoGenerator`](https://emaki.readthedocs.io/en/latest/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-emaki/month)](https://pypi.org/project/langchain-emaki/) |
-| [`agentsvc`](https://agentsvc.io/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/agentsvc/month)](https://pypi.org/project/agentsvc/) |
-| [`ICTFaxToolkit`](https://www.ictinnovations.com/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ictfax/month)](https://pypi.org/project/langchain-ictfax/) |
-| [`MeshArcScrape`](https://mesharc.dev/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mesharc/month)](https://pypi.org/project/langchain-mesharc/) |
-| [`MeshArcSearch`](https://mesharc.dev/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mesharc/month)](https://pypi.org/project/langchain-mesharc/) |
-| [`SerpApi Search Tools`](https://serpapi.github.io/serpapi-search-tools-python/docs/sdk-examples/langchain.html) | [  ![Downloads per month](https://static.pepy.tech/badge/serpapi-search-tools/month)](https://pypi.org/project/serpapi-search-tools/) |
-| [`EconDashToolkit`](https://github.com/econdash/econdash-python/blob/main/packages/langchain-econdash/README.md) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-econdash/month)](https://pypi.org/project/langchain-econdash/) |
-| [`MemoryRouter`](https://docs.memoryrouter.ai/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-memoryrouter/month)](https://pypi.org/project/langchain-memoryrouter/) |
+| [`Dappier`](https://docs.dappier.com/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-dappier/month)](https://pypi.org/project/langchain-dappier/) |
+| [`ProxmintFetchTool`](https://proxmint.com/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-proxmint/month)](https://pypi.org/project/langchain-proxmint/) |
+| [`Precleared`](https://precleared.dev/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/precleared/month)](https://pypi.org/project/precleared/) |
 | [`Tableau`](/oss/python/integrations/tools/tableau) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tableau/month)](https://pypi.org/project/langchain-tableau/) |
+| [`ICTFaxToolkit`](https://www.ictinnovations.com/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ictfax/month)](https://pypi.org/project/langchain-ictfax/) |
 | [`AxioraToolkit`](https://axiora.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-axiora/month)](https://pypi.org/project/langchain-axiora/) |
-| [`DDG Agent Services`](https://pypi.org/project/ddg-langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/ddg-langchain/month)](https://pypi.org/project/ddg-langchain/) |
 | [`GreenCalculusToolkit`](https://greencalculus.com/guides/emission-factors-langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-greencalculus/month)](https://pypi.org/project/langchain-greencalculus/) |
 | [`RelayShield`](https://api.relayshield.net/developers) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-relayshield/month)](https://pypi.org/project/langchain-relayshield/) |
 | [`KeenableSearch`](https://docs.keenable.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-keenable/month)](https://pypi.org/project/langchain-keenable/) |
+| [`ERC8004Toolkit`](https://github.com/Conrad-sudo/langchain-erc8004) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-erc8004/month)](https://pypi.org/project/langchain-erc8004/) |
+| [`PlivoToolkit`](https://github.com/plivo-dev/langchain-plivo-tools) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-plivo-tools/month)](https://pypi.org/project/langchain-plivo-tools/) |
 | [`SerpdiveSearch`](https://serpdive.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-serpdive/month)](https://pypi.org/project/langchain-serpdive/) |
-| [`SpidraScrape`](https://docs.spidra.io) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-spidra/month)](https://pypi.org/project/langchain-spidra/) |
+| [`YutoriBrowsingTool`](https://docs.yutori.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-yutori/month)](https://pypi.org/project/langchain-yutori/) |
+| [`Vectara`](https://github.com/vectara/langchain-vectara) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-vectara/month)](https://pypi.org/project/langchain-vectara/) |
+| [`AnyAPIToolkit`](https://github.com/getanyapi-com/integrations/tree/main/langchain-anyapi) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-anyapi/month)](https://pypi.org/project/langchain-anyapi/) |
 | [`AlphaAIInsiderNews`](https://alphai.io/developers) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-alphai/month)](https://pypi.org/project/langchain-alphai/) |
 | [`AlphaAIInsiderSummary`](https://alphai.io/developers) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-alphai/month)](https://pypi.org/project/langchain-alphai/) |
 | [`AlphaAINewsSearch`](https://alphai.io/developers) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-alphai/month)](https://pypi.org/project/langchain-alphai/) |
 | [`AlphaAITickerSentiment`](https://alphai.io/developers) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-alphai/month)](https://pypi.org/project/langchain-alphai/) |
-| [`AnyAPIToolkit`](https://github.com/getanyapi-com/integrations/tree/main/langchain-anyapi) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-anyapi/month)](https://pypi.org/project/langchain-anyapi/) |
 | [`LexMexTool`](https://lex-mex.xyz) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-lexmex/month)](https://pypi.org/project/langchain-lexmex/) |
-| [`OpenAlexSearch`](https://github.com/ourresearch/langchain-openalex#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-openalex/month)](https://pypi.org/project/langchain-openalex/) |
+| [`SpiceDB Permission Tools`](https://github.com/authzed/langchain-spicedb) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-spicedb/month)](https://pypi.org/project/langchain-spicedb/) |
+| [`SpidraScrape`](https://docs.spidra.io) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-spidra/month)](https://pypi.org/project/langchain-spidra/) |
 | [`StraleToolkit`](https://strale.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-strale/month)](https://pypi.org/project/langchain-strale/) |
-| [`X402PaymentTool`](https://www.agentrails.io/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-x402/month)](https://pypi.org/project/langchain-x402/) |
-| [`PrintFriendlyReadPage`](https://github.com/printfriendly/langchain-printfriendly#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-printfriendly/month)](https://pypi.org/project/langchain-printfriendly/) |
+| [`AsyntaiToolkit`](https://asyntai.com/documentation/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-asyntai/month)](https://pypi.org/project/langchain-asyntai/) |
+| [`SailSQLToolkit`](https://docs.lakesail.com/sail/main/guide/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-sail/month)](https://pypi.org/project/langchain-sail/) |
 | [`ScraperAPI`](https://docs.scraperapi.com/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scraperapi/month)](https://pypi.org/project/langchain-scraperapi/) |
+| [`X402PaymentTool`](https://www.agentrails.io/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-x402/month)](https://pypi.org/project/langchain-x402/) |
+| [`URLCheck`](https://preclick.ai/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-urlcheck/month)](https://pypi.org/project/langchain-urlcheck/) |
+| [`SeedanceToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/seedance) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-seedance-acedatacloud/month)](https://pypi.org/project/langchain-seedance-acedatacloud/) |
+| [`GandrText2SpeechTool`](https://gandr.ai/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/gandr-langchain/month)](https://pypi.org/project/gandr-langchain/) |
+| [`Agentql`](https://docs.agentql.com/home) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentql/month)](https://pypi.org/project/langchain-agentql/) |
 | [`AmazonProductTool`](https://www.scrapingbee.com/documentation/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapingbee/month)](https://pypi.org/project/langchain-scrapingbee/) |
 | [`AmazonSearchTool`](https://www.scrapingbee.com/documentation/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapingbee/month)](https://pypi.org/project/langchain-scrapingbee/) |
 | [`ChatGPTTool`](https://www.scrapingbee.com/documentation/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapingbee/month)](https://pypi.org/project/langchain-scrapingbee/) |
 | [`CheckUsageTool`](https://www.scrapingbee.com/documentation/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapingbee/month)](https://pypi.org/project/langchain-scrapingbee/) |
 | [`GoogleSearchTool`](https://www.scrapingbee.com/documentation/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapingbee/month)](https://pypi.org/project/langchain-scrapingbee/) |
 | [`ScrapeUrlTool`](https://www.scrapingbee.com/documentation/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapingbee/month)](https://pypi.org/project/langchain-scrapingbee/) |
+| [`Valthera`](https://github.com/valthera/langchain-valthera) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-valthera/month)](https://pypi.org/project/langchain-valthera/) |
 | [`WalmartProductTool`](https://www.scrapingbee.com/documentation/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapingbee/month)](https://pypi.org/project/langchain-scrapingbee/) |
 | [`WalmartSearchTool`](https://www.scrapingbee.com/documentation/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapingbee/month)](https://pypi.org/project/langchain-scrapingbee/) |
 | [`YouTubeMetadataTool`](https://www.scrapingbee.com/documentation/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapingbee/month)](https://pypi.org/project/langchain-scrapingbee/) |
 | [`YouTubeSearchTool`](https://www.scrapingbee.com/documentation/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapingbee/month)](https://pypi.org/project/langchain-scrapingbee/) |
-| [`ProxmintFetchTool`](https://proxmint.com/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-proxmint/month)](https://pypi.org/project/langchain-proxmint/) |
-| [`PlivoToolkit`](https://github.com/plivo-dev/langchain-plivo-tools) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-plivo-tools/month)](https://pypi.org/project/langchain-plivo-tools/) |
-| [`ERC8004Toolkit`](https://github.com/Conrad-sudo/langchain-erc8004) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-erc8004/month)](https://pypi.org/project/langchain-erc8004/) |
-| [`Valthera`](https://github.com/valthera/langchain-valthera) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-valthera/month)](https://pypi.org/project/langchain-valthera/) |
-| [`Vectara`](https://github.com/vectara/langchain-vectara) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-vectara/month)](https://pypi.org/project/langchain-vectara/) |
-| [`Lumify Sports Intelligence`](https://lumify.ai/docs/ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-lumify/month)](https://pypi.org/project/langchain-lumify/) |
-| [`Xpoz`](https://www.xpoz.ai/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-xpoz/month)](https://pypi.org/project/langchain-xpoz/) |
-| [`YutoriBrowsingTool`](https://docs.yutori.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-yutori/month)](https://pypi.org/project/langchain-yutori/) |
 | [`Naver search`](https://github.com/e7217/langchain-naver-community) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-naver-community/month)](https://pypi.org/project/langchain-naver-community/) |
+| [`ProxyHatFetchTool`](https://docs.proxyhat.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-proxyhat/month)](https://pypi.org/project/langchain-proxyhat/) |
+| [`Xpoz`](https://www.xpoz.ai/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-xpoz/month)](https://pypi.org/project/langchain-xpoz/) |
+| [`Tonic Textual`](https://textual.tonic.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-textual/month)](https://pypi.org/project/langchain-textual/) |
+| [`Lumify Sports Intelligence`](https://lumify.ai/docs/ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-lumify/month)](https://pypi.org/project/langchain-lumify/) |
+| [`NodeProxyMarkdownTool`](https://github.com/pgalyen1987/NodeProxy/tree/main/integrations) | [  ![Downloads per month](https://static.pepy.tech/badge/nodeproxy-tools/month)](https://pypi.org/project/nodeproxy-tools/) |
+| [`pr402`](https://docs.ipay.sh) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-pr402/month)](https://pypi.org/project/langchain-pr402/) |
+| [`LiveTennisToolkit`](https://docs.livetennisapi.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-livetennis/month)](https://pypi.org/project/langchain-livetennis/) |
+| [`Querit`](https://querit.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-querit/month)](https://pypi.org/project/langchain-querit/) |
+| [`WebzNewsSearch`](https://docs.webz.io/docs/webz/news-search-api-mcp) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-webz/month)](https://pypi.org/project/langchain-webz/) |
 | [`GaugeCatalog`](https://github.com/CHANGCHINFU/langchain-truthbear) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-truthbear/month)](https://pypi.org/project/langchain-truthbear/) |
 | [`GaugeCoverage`](https://github.com/CHANGCHINFU/langchain-truthbear) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-truthbear/month)](https://pypi.org/project/langchain-truthbear/) |
 | [`GaugeRecord`](https://github.com/CHANGCHINFU/langchain-truthbear) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-truthbear/month)](https://pypi.org/project/langchain-truthbear/) |
-| [`Precleared`](https://precleared.dev/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/precleared/month)](https://pypi.org/project/precleared/) |
-| [`SpiceDB Permission Tools`](https://github.com/authzed/langchain-spicedb) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-spicedb/month)](https://pypi.org/project/langchain-spicedb/) |
 | [`TruthBearPreview`](https://github.com/CHANGCHINFU/langchain-truthbear) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-truthbear/month)](https://pypi.org/project/langchain-truthbear/) |
+| [`CareJobsToolkit`](https://github.com/yumaheymans/langchain-carejobs#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-carejobs/month)](https://pypi.org/project/langchain-carejobs/) |
 | [`Jenkins`](https://github.com/Amitgb14/langchain_jenkins) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-jenkins/month)](https://pypi.org/project/langchain-jenkins/) |
-| [`GandrText2SpeechTool`](https://gandr.ai/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/gandr-langchain/month)](https://pypi.org/project/gandr-langchain/) |
-| [`LyrenthReadTool`](https://lyrenth.com/docs/integrations) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-lyrenth/month)](https://pypi.org/project/langchain-lyrenth/) |
-| [`WebzNewsSearch`](https://docs.webz.io/docs/webz/news-search-api-mcp) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-webz/month)](https://pypi.org/project/langchain-webz/) |
-| [`NodeProxyMarkdownTool`](https://github.com/pgalyen1987/NodeProxy/tree/main/integrations) | [  ![Downloads per month](https://static.pepy.tech/badge/nodeproxy-tools/month)](https://pypi.org/project/nodeproxy-tools/) |
 | [`iFlow Search`](https://platform.iflow.cn/) | [  ![Downloads per month](https://static.pepy.tech/badge/iflow-search-langchain/month)](https://pypi.org/project/iflow-search-langchain/) |
-| [`SailSQLToolkit`](https://docs.lakesail.com/sail/main/guide/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-sail/month)](https://pypi.org/project/langchain-sail/) |
-| [`Querit`](https://querit.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-querit/month)](https://pypi.org/project/langchain-querit/) |
-| [`CrustAPISearch`](https://crustapi.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-crustapi/month)](https://pypi.org/project/langchain-crustapi/) |
-| [`Agentql`](https://docs.agentql.com/home) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentql/month)](https://pypi.org/project/langchain-agentql/) |
-| [`ProxyHatFetchTool`](https://docs.proxyhat.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-proxyhat/month)](https://pypi.org/project/langchain-proxyhat/) |
-| [`Permit`](https://github.com/permitio/langchain-permit) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-permit/month)](https://pypi.org/project/langchain-permit/) |
-| [`pr402`](https://docs.ipay.sh) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-pr402/month)](https://pypi.org/project/langchain-pr402/) |
-| [`OpenGradientToolkit`](https://docs.opengradient.ai/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opengradient/month)](https://pypi.org/project/langchain-opengradient/) |
-| [`AgentFetch`](https://www.agentfetch.dev) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentfetch/month)](https://pypi.org/project/langchain-agentfetch/) |
-| [`W2A`](https://w2a-protocol.org/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-w2a/month)](https://pypi.org/project/langchain-w2a/) |
-| [`Tonic Textual`](https://textual.tonic.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-textual/month)](https://pypi.org/project/langchain-textual/) |
-| [`URLCheck`](https://preclick.ai/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-urlcheck/month)](https://pypi.org/project/langchain-urlcheck/) |
-| [`DeweyResearchTool`](https://github.com/meetdewey/langchain-dewey) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-dewey/month)](https://pypi.org/project/langchain-dewey/) |
-| [`AgentGuardTool`](https://github.com/datumline/datumline-agent-guard#langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/datumline-agent-guard/month)](https://pypi.org/project/datumline-agent-guard/) |
-| [`FootballChartsToolkit`](https://www.football-charts.com/developers) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-footballcharts/month)](https://pypi.org/project/langchain-footballcharts/) |
-| [`ApprovalRequiredTool`](https://useagentgate.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentgate/month)](https://pypi.org/project/langchain-agentgate/) |
+| [`LayrcakeToolkit`](https://github.com/Layrcake-dev/langchain-layrcake#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-layrcake/month)](https://pypi.org/project/langchain-layrcake/) |
 | [`RustChainToolkit`](https://github.com/Scottcjn/langchain-rustchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-rustchain-tools/month)](https://pypi.org/project/langchain-rustchain-tools/) |
-| [`SearchApiSearch`](https://www.searchapi.io/docs/google) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-searchapi/month)](https://pypi.org/project/langchain-searchapi/) |
+| [`LyrenthReadTool`](https://lyrenth.com/docs/integrations) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-lyrenth/month)](https://pypi.org/project/langchain-lyrenth/) |
+| [`Permit`](https://github.com/permitio/langchain-permit) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-permit/month)](https://pypi.org/project/langchain-permit/) |
+| [`DeweyResearchTool`](https://github.com/meetdewey/langchain-dewey) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-dewey/month)](https://pypi.org/project/langchain-dewey/) |
+| [`Stardog`](https://github.com/stardog-union/stardog-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-stardog/month)](https://pypi.org/project/langchain-stardog/) |
+| [`FootballChartsToolkit`](https://www.football-charts.com/developers) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-footballcharts/month)](https://pypi.org/project/langchain-footballcharts/) |
+| [`CrustAPISearch`](https://crustapi.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-crustapi/month)](https://pypi.org/project/langchain-crustapi/) |
+| [`OpenGradientToolkit`](https://docs.opengradient.ai/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opengradient/month)](https://pypi.org/project/langchain-opengradient/) |
+| [`W2A`](https://w2a-protocol.org/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-w2a/month)](https://pypi.org/project/langchain-w2a/) |
+| [`AgentFetch`](https://www.agentfetch.dev) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentfetch/month)](https://pypi.org/project/langchain-agentfetch/) |
+| [`Claw Messenger`](https://www.clawmessenger.com/blog/langchain-imessage-integration) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-claw-messenger/month)](https://pypi.org/project/langchain-claw-messenger/) |
+| [`SidClawToolkit`](https://docs.sidclaw.com/docs/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-sidclaw/month)](https://pypi.org/project/langchain-sidclaw/) |
+| [`WebExtract`](https://webextract.dev/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-webextract/month)](https://pypi.org/project/langchain-webextract/) |
+| [`ContextToolkit`](https://docs.context.dev) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-context/month)](https://pypi.org/project/langchain-context/) |
 | [`Ausca`](https://github.com/auscahq/ausca/tree/main/python/langchain-ausca) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ausca/month)](https://pypi.org/project/langchain-ausca/) |
+| [`TendemTools`](https://github.com/Toloka/tendem-mcp/tree/main/integrations/langchain-tendem#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tendem/month)](https://pypi.org/project/langchain-tendem/) |
+| [`ApprovalRequiredTool`](https://useagentgate.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentgate/month)](https://pypi.org/project/langchain-agentgate/) |
 | [`KerqTrustTool`](https://kerq.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-kerq/month)](https://pypi.org/project/langchain-kerq/) |
 | [`ModexiaToolkit`](https://modexia.software/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-modexia/month)](https://pypi.org/project/langchain-modexia/) |
-| [`AgenticEmailToolkit`](https://agenticemail.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agenticemail/month)](https://pypi.org/project/langchain-agenticemail/) |
-| [`Stardog`](https://github.com/stardog-union/stardog-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-stardog/month)](https://pypi.org/project/langchain-stardog/) |
-| [`FinancialEvidenceToolkit`](https://github.com/beepboop2025/langchain-financial-evidence#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-financial-evidence/month)](https://pypi.org/project/langchain-financial-evidence/) |
-| [`QuanticData`](https://quanticdata.io/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-quanticdata/month)](https://pypi.org/project/langchain-quanticdata/) |
-| [`OctenSearchResults`](https://docs.octen.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-octen/month)](https://pypi.org/project/langchain-octen/) |
 | [`PinchworkDelegateTaskTool`](https://pinchwork.dev) | [  ![Downloads per month](https://static.pepy.tech/badge/pinchwork/month)](https://pypi.org/project/pinchwork/) |
+| [`NiaToolkit`](https://github.com/nozomio-labs/nia-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nia/month)](https://pypi.org/project/langchain-nia/) |
+| [`SearchApiSearch`](https://www.searchapi.io/docs/google) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-searchapi/month)](https://pypi.org/project/langchain-searchapi/) |
+| [`ILoveVideoEditorTool`](https://ilovevideoeditor.com/docs/api-guide) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ilovevideoeditor/month)](https://pypi.org/project/langchain-ilovevideoeditor/) |
+| [`SunoToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/suno) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-suno-acedatacloud/month)](https://pypi.org/project/langchain-suno-acedatacloud/) |
+| [`MagicHourToolkit`](https://docs.magichour.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-magic-hour/month)](https://pypi.org/project/langchain-magic-hour/) |
+| [`OctenSearchResults`](https://docs.octen.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-octen/month)](https://pypi.org/project/langchain-octen/) |
+| [`QuanticData`](https://quanticdata.io/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-quanticdata/month)](https://pypi.org/project/langchain-quanticdata/) |
+| [`Tilores`](https://github.com/tilotech/tilores-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/tilores-langchain/month)](https://pypi.org/project/tilores-langchain/) |
+| [`AgenticEmailToolkit`](https://agenticemail.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agenticemail/month)](https://pypi.org/project/langchain-agenticemail/) |
+| [`FlipCoinToolkit`](https://github.com/flipcoin-fun/flipcoin-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-flipcoin/month)](https://pypi.org/project/langchain-flipcoin/) |
+| [`ICTExamToolkit`](https://www.ictlms.net) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ictexam/month)](https://pypi.org/project/langchain-ictexam/) |
+| [`SibflyGroundMotion`](https://sibfly.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-sibfly/month)](https://pypi.org/project/langchain-sibfly/) |
+| [`Synoppy`](https://synoppy.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-synoppy/month)](https://pypi.org/project/langchain-synoppy/) |
+| [`Simplepages`](https://simplepages.ai/mcp) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-simplepages/month)](https://pypi.org/project/langchain-simplepages/) |
+| [`TableJourneyToolkit`](https://tablejourney.com/agents/#langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tablejourney/month)](https://pypi.org/project/langchain-tablejourney/) |
+| [`SignatrustGenerateReceiptTool`](https://signatrust.net/docs/api) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-signatrust/month)](https://pypi.org/project/langchain-signatrust/) |
+| [`AproxPayProxyGetTool`](https://github.com/aproxpay/langchain-aproxpay) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-aproxpay/month)](https://pypi.org/project/langchain-aproxpay/) |
 | [`CrawleoCrawler`](https://crawleo.dev/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-crawleo/month)](https://pypi.org/project/langchain-crawleo/) |
 | [`CrawleoSearch`](https://crawleo.dev/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-crawleo/month)](https://pypi.org/project/langchain-crawleo/) |
-| [`Synoppy`](https://synoppy.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-synoppy/month)](https://pypi.org/project/langchain-synoppy/) |
-| [`FidacyActionFirewall`](https://github.com/fidacy/fidacy-open) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-fidacy/month)](https://pypi.org/project/langchain-fidacy/) |
-| [`ICTExamToolkit`](https://www.ictlms.net) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ictexam/month)](https://pypi.org/project/langchain-ictexam/) |
-| [`SidClawToolkit`](https://docs.sidclaw.com/docs/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-sidclaw/month)](https://pypi.org/project/langchain-sidclaw/) |
-| [`Claw Messenger`](https://www.clawmessenger.com/blog/langchain-imessage-integration) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-claw-messenger/month)](https://pypi.org/project/langchain-claw-messenger/) |
-| [`MagicHourToolkit`](https://docs.magichour.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-magic-hour/month)](https://pypi.org/project/langchain-magic-hour/) |
-| [`CambToolkit`](https://docs.camb.ai/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-camb/month)](https://pypi.org/project/langchain-camb/) |
-| [`TendemTools`](https://github.com/Toloka/tendem-mcp/tree/main/integrations/langchain-tendem#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tendem/month)](https://pypi.org/project/langchain-tendem/) |
-| [`ICTContactToolkit`](https://www.ictcontact.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ictcontact/month)](https://pypi.org/project/langchain-ictcontact/) |
-| [`Privy`](/oss/python/integrations/tools/privy) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-privy/month)](https://pypi.org/project/langchain-privy/) |
+| [`GoodSender Toolkit`](https://goodsender.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-goodsender/month)](https://pypi.org/project/langchain-goodsender/) |
+| [`HashlockToolkit`](https://docs.hashlock.markets/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-hashlock/month)](https://pypi.org/project/langchain-hashlock/) |
 | [`ICTPBXToolkit`](https://ictpbx.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ictpbx/month)](https://pypi.org/project/langchain-ictpbx/) |
-| [`NiaToolkit`](https://github.com/nozomio-labs/nia-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nia/month)](https://pypi.org/project/langchain-nia/) |
-| [`ILoveVideoEditorTool`](https://ilovevideoeditor.com/docs/api-guide) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ilovevideoeditor/month)](https://pypi.org/project/langchain-ilovevideoeditor/) |
-| [`Instanode`](https://instanode.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-instanode/month)](https://pypi.org/project/langchain-instanode/) |
-| [`Simplepages`](https://simplepages.ai/mcp) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-simplepages/month)](https://pypi.org/project/langchain-simplepages/) |
-| [`AgentMail Toolkit`](https://docs.agentmail.to/welcome) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentmail/month)](https://pypi.org/project/langchain-agentmail/) |
+| [`Privy`](/oss/python/integrations/tools/privy) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-privy/month)](https://pypi.org/project/langchain-privy/) |
 | [`BiddaComplianceTool`](https://bidda.com/developers) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-bidda/month)](https://pypi.org/project/langchain-bidda/) |
-| [`ContextToolkit`](https://docs.context.dev) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-context/month)](https://pypi.org/project/langchain-context/) |
+| [`FidacyActionFirewall`](https://github.com/fidacy/fidacy-open) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-fidacy/month)](https://pypi.org/project/langchain-fidacy/) |
+| [`CambToolkit`](https://docs.camb.ai/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-camb/month)](https://pypi.org/project/langchain-camb/) |
+| [`KeiroSearchTool`](https://github.com/Keirolabs-API/langchain-keiro) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-keiro/month)](https://pypi.org/project/langchain-keiro/) |
+| [`VeriflyEmailVerifier`](https://verifly.email/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-verifly/month)](https://pypi.org/project/langchain-verifly/) |
+| [`ICTContactToolkit`](https://www.ictcontact.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ictcontact/month)](https://pypi.org/project/langchain-ictcontact/) |
+| [`Drasi`](https://github.com/drasi-project/langchain-drasi) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-drasi/month)](https://pypi.org/project/langchain-drasi/) |
+| [`Toolstem`](https://toolstem.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-toolstem/month)](https://pypi.org/project/langchain-toolstem/) |
+| [`MuAPI`](https://muapi.ai/docs/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/muapi-langchain/month)](https://pypi.org/project/muapi-langchain/) |
 | [`FlowSpeechTextToSpeechTool`](https://flowspeech.io/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-flowspeech/month)](https://pypi.org/project/langchain-flowspeech/) |
+| [`Instanode`](https://instanode.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-instanode/month)](https://pypi.org/project/langchain-instanode/) |
+| [`AgentMail Toolkit`](https://docs.agentmail.to/welcome) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentmail/month)](https://pypi.org/project/langchain-agentmail/) |
+| [`Bodo DataFrames`](https://docs.bodo.ai/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-bodo/month)](https://pypi.org/project/langchain-bodo/) |
+| [`AgentPhone Toolkit`](https://docs.agentphone.ai/welcome) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentphone/month)](https://pypi.org/project/langchain-agentphone/) |
 | [`WebContactsTool`](https://github.com/JosejuX/rapidapi-metadata-extractor/tree/main/langchain-webmetadata-extractor) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-webmetadata-extractor/month)](https://pypi.org/project/langchain-webmetadata-extractor/) |
 | [`WebMarkdownTool`](https://github.com/JosejuX/rapidapi-metadata-extractor/tree/main/langchain-webmetadata-extractor) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-webmetadata-extractor/month)](https://pypi.org/project/langchain-webmetadata-extractor/) |
 | [`WebMetadataExtractTool`](https://github.com/JosejuX/rapidapi-metadata-extractor/tree/main/langchain-webmetadata-extractor) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-webmetadata-extractor/month)](https://pypi.org/project/langchain-webmetadata-extractor/) |
 | [`WebSEOAuditTool`](https://github.com/JosejuX/rapidapi-metadata-extractor/tree/main/langchain-webmetadata-extractor) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-webmetadata-extractor/month)](https://pypi.org/project/langchain-webmetadata-extractor/) |
-| [`AproxPayProxyGetTool`](https://github.com/aproxpay/langchain-aproxpay) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-aproxpay/month)](https://pypi.org/project/langchain-aproxpay/) |
-| [`SibflyGroundMotion`](https://sibfly.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-sibfly/month)](https://pypi.org/project/langchain-sibfly/) |
-| [`KeiroSearchTool`](https://github.com/Keirolabs-API/langchain-keiro) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-keiro/month)](https://pypi.org/project/langchain-keiro/) |
-| [`VeriflyEmailVerifier`](https://verifly.email/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-verifly/month)](https://pypi.org/project/langchain-verifly/) |
-| [`AIIdentityToolkit`](https://ai-identity.co/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ai-identity/month)](https://pypi.org/project/langchain-ai-identity/) |
-| [`Bodo DataFrames`](https://docs.bodo.ai/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-bodo/month)](https://pypi.org/project/langchain-bodo/) |
-| [`AgentLineToolkit`](https://docs.agentline.cloud/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentline/month)](https://pypi.org/project/langchain-agentline/) |
-| [`AgentPhone Toolkit`](https://docs.agentphone.ai/welcome) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentphone/month)](https://pypi.org/project/langchain-agentphone/) |
-| [`FlipCoinToolkit`](https://github.com/flipcoin-fun/flipcoin-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-flipcoin/month)](https://pypi.org/project/langchain-flipcoin/) |
-| [`MuAPI`](https://muapi.ai/docs/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/muapi-langchain/month)](https://pypi.org/project/muapi-langchain/) |
-| [`Tilores`](https://github.com/tilotech/tilores-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/tilores-langchain/month)](https://pypi.org/project/tilores-langchain/) |
-| [`CekiToolkit`](https://ceki.me) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ceki/month)](https://pypi.org/project/langchain-ceki/) |
-| [`GoodSender Toolkit`](https://goodsender.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-goodsender/month)](https://pypi.org/project/langchain-goodsender/) |
-| [`IgptAsk`](https://docs.igpt.ai/docs/sdks/langchain#igpt-ask) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-igpt/month)](https://pypi.org/project/langchain-igpt/) |
-| [`IgptSearch`](https://docs.igpt.ai/docs/sdks/langchain#igpt-search) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-igpt/month)](https://pypi.org/project/langchain-igpt/) |
 | [`Synap DocuAnalyzer`](https://github.com/synapsoft-DA/langchain-synapsoft) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-synapsoft/month)](https://pypi.org/project/langchain-synapsoft/) |
 | [`UnstructuredTransformToolkit`](/oss/python/integrations/tools/unstructured_transform) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-unstructured-transform/month)](https://pypi.org/project/langchain-unstructured-transform/) |
-| [`SignatrustGenerateReceiptTool`](https://signatrust.net/docs/api) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-signatrust/month)](https://pypi.org/project/langchain-signatrust/) |
-| [`SeedanceToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/seedance) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-seedance-acedatacloud/month)](https://pypi.org/project/langchain-seedance-acedatacloud/) |
-| [`Delegare`](https://docs.delegare.dev/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-delegare/month)](https://pypi.org/project/langchain-delegare/) |
+| [`CekiToolkit`](https://ceki.me) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ceki/month)](https://pypi.org/project/langchain-ceki/) |
+| [`IgptAsk`](https://docs.igpt.ai/docs/sdks/langchain#igpt-ask) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-igpt/month)](https://pypi.org/project/langchain-igpt/) |
+| [`IgptSearch`](https://docs.igpt.ai/docs/sdks/langchain#igpt-search) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-igpt/month)](https://pypi.org/project/langchain-igpt/) |
 | [`ProxyClaw`](https://proxyclaw.ai/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-proxyclaw/month)](https://pypi.org/project/langchain-proxyclaw/) |
-| [`UniRate`](https://unirateapi.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-unirate/month)](https://pypi.org/project/langchain-unirate/) |
+| [`AgentLineToolkit`](https://docs.agentline.cloud/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentline/month)](https://pypi.org/project/langchain-agentline/) |
+| [`AIIdentityToolkit`](https://ai-identity.co/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ai-identity/month)](https://pypi.org/project/langchain-ai-identity/) |
 | [`ScrapelessCrawlerScrapeTool`](https://github.com/scrapeless-ai/langchain-scrapeless) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapeless/month)](https://pypi.org/project/langchain-scrapeless/) |
 | [`ScrapelessDeepSerpGoogleSearchTool`](https://github.com/scrapeless-ai/langchain-scrapeless) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapeless/month)](https://pypi.org/project/langchain-scrapeless/) |
 | [`ScrapelessUniversalScrapingTool`](https://github.com/scrapeless-ai/langchain-scrapeless) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapeless/month)](https://pypi.org/project/langchain-scrapeless/) |
+| [`Delegare`](https://docs.delegare.dev/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-delegare/month)](https://pypi.org/project/langchain-delegare/) |
+| [`Geekflare`](https://docs.geekflare.com/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-geekflare/month)](https://pypi.org/project/langchain-geekflare/) |
+| [`UniRate`](https://unirateapi.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-unirate/month)](https://pypi.org/project/langchain-unirate/) |
 | [`Blindfold`](https://docs.blindfold.dev) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-blindfold/month)](https://pypi.org/project/langchain-blindfold/) |
-| [`Drasi`](https://github.com/drasi-project/langchain-drasi) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-drasi/month)](https://pypi.org/project/langchain-drasi/) |
-| [`Toolstem`](https://toolstem.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-toolstem/month)](https://pypi.org/project/langchain-toolstem/) |
 | [`AgentRAMTools`](https://agentram.dev/langchain-agent-memory-tutorial.html) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-agentram/month)](https://pypi.org/project/langgraph-agentram/) |
 | [`GracefulFailTool`](https://selfheal.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/graceful-fail/month)](https://pypi.org/project/graceful-fail/) |
-| [`GraciousQuotes`](https://graciousquotes.com/developers/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-graciousquotes/month)](https://pypi.org/project/langchain-graciousquotes/) |
 | [`Hlido`](https://hlido.eu/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/hlido-trust/month)](https://pypi.org/project/hlido-trust/) |
 | [`TempGuru`](https://tempguru.co/ai-agents) | [  ![Downloads per month](https://static.pepy.tech/badge/tempguru/month)](https://pypi.org/project/tempguru/) |
 | [`DynamicFeed`](https://dynamicfeed.ai/integrations) | [  ![Downloads per month](https://static.pepy.tech/badge/dynamicfeed-tools/month)](https://pypi.org/project/dynamicfeed-tools/) |
-| [`SunoToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/suno) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-suno-acedatacloud/month)](https://pypi.org/project/langchain-suno-acedatacloud/) |
-| [`GraphTool`](https://dev.writer.com/home/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-writer/month)](https://pypi.org/project/langchain-writer/) |
-| [`LiveTennisToolkit`](https://docs.livetennisapi.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-livetennis/month)](https://pypi.org/project/langchain-livetennis/) |
-| [`HashlockToolkit`](https://docs.hashlock.markets/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-hashlock/month)](https://pypi.org/project/langchain-hashlock/) |
 | [`AgentLair`](https://agentlair.dev/docs) | N/A |
 | [`Browserless`](https://browserless.io) | N/A |
-| [`CareJobsToolkit`](https://github.com/yumaheymans/langchain-carejobs#readme) | N/A |
-| [`Geekflare`](https://docs.geekflare.com/integrations/langchain) | N/A |
 | [`HuangtingFlux`](https://huangtingflux.com/integrations/langchain) | N/A |
-| [`LayrcakeToolkit`](https://github.com/Layrcake-dev/langchain-layrcake#readme) | N/A |
-| [`Pidgeon Toolkit`](https://pidgeon.ai/docs/langchain) | N/A |
+| [`LfgAlarmToolkit`](https://github.com/lfg-gm/langchain-lfg#readme) | N/A |
 | [`Stagehand`](/oss/python/integrations/tools/stagehand) | N/A |
-| [`WebExtract`](https://webextract.dev/docs/langchain) | N/A |
 
 > [!NOTE]
 >
@@ -306120,6 +306379,12 @@ for call in stream.tool_calls:
         print(delta, end="", flush=True)
     print(call.output, call.error)
 ```
+
+Each chunk from `message.tool_calls` is a `tool_call_chunk` that holds the call's `id`, its `name`, and only the new part of its `args`. A call's chunks concatenate into its full arguments, and `message.tool_calls.get()` returns the parsed tool calls.
+
+> [!NOTE]
+>
+> Chunks that hold only the new part of the arguments require `langchain-core>=1.6.13`. In earlier versions, each chunk holds all of the arguments so far.
 
 ## Streaming sub-agents
 
@@ -328839,6 +329104,8 @@ Given the constant rate of change in the field, LangChain has also evolved over 
 
 **2022-10-24**
 
+v0.0.1
+
 A month before ChatGPT, **LangChain was launched as a Python package**. It consisted of two main components:
 
 * LLM abstractions
@@ -328884,6 +329151,8 @@ The main issue with building agents is getting them to be reliable, and LangSmit
 
 **2024-01**
 
+v0.1.0
+
 **LangChain releases 0.1.0**, its first non-0.0.x.
 
 The industry matured from prototypes to production, and as such, LangChain increased its focus on stability.
@@ -328916,6 +329185,8 @@ Models started to accept files, images, videos, and more. We updated the `langch
 
 **2025-10-20**
 
+v1.0.0
+
 **LangChain releases 1.0** with two major changes:
 
 1. Complete revamp of all chains and agents in `langchain`. All chains and agents are now replaced with only one high level abstraction: an agent abstraction built on top of LangGraph. This was the high-level abstraction that was originally created in LangGraph, but just moved to LangChain.
@@ -328925,6 +329196,8 @@ Models started to accept files, images, videos, and more. We updated the `langch
 2. A standard message content format: Model APIs evolved from returning messages with a simple content string to more complex output types - reasoning blocks, citations, server-side tool calls, etc. LangChain evolved its message formats to standardize these across providers.
 
 **2026-03-15**
+
+v0.5.3
 
 **Deep Agents is released** as an open-source agent harness built on LangGraph.
 
@@ -328943,6 +329216,8 @@ Source: https://docs.langchain.com/oss/python/langchain/quickstart
 Build your first agent in minutes
 
 This quickstart shows you how to create a fully functional AI agent in just a few minutes.
+
+Build the LangChain quickstart agent
 
 Build a basic LangChain agent in this working directory by following the LangChain quickstart.
 
@@ -328981,6 +329256,8 @@ Ask the user if they want tracing. If yes, ask them to set `LANGSMITH_TRACING=tr
 >
 > * Install the [LangChain Docs MCP servers](/use-these-docs) to give your agent access to up-to-date LangChain documentation and examples.
 >
+>   Connect LangChain docs MCP servers
+>
 >   Connect both LangChain documentation MCP servers to my coding agent so it can look up current LangChain, LangGraph, and LangSmith docs and API reference.
 >
 >   Servers to add:
@@ -328997,6 +329274,8 @@ Ask the user if they want tracing. If yes, ask them to set `LANGSMITH_TRACING=tr
 >
 >   Do not invent alternate MCP URLs. After configuring, confirm both servers are listed and reachable.
 > * Install [LangChain Skills](https://github.com/langchain-ai/langchain-skills) to improve your agent's performance on LangChain ecosystem tasks.
+>
+>   Install LangChain Skills
 >
 >   Install LangChain Skills for my coding agent so it can perform better on LangChain, LangGraph, and Deep Agents tasks.
 >
@@ -340556,7 +340835,7 @@ for message in stream.messages:
 
 `message.text` is iterable in synchronous code. Iterate it for token-by-token output, or call `str(message.text)` for the complete text.
 
-`message.reasoning` exposes reasoning deltas, and `message.tool_calls` exposes tool-call argument chunks. If you need text, reasoning, and tool-call chunks in exact arrival order, iterate the message stream's raw events instead of each projection separately.
+`message.reasoning` exposes reasoning deltas. `message.tool_calls` exposes tool-call chunks. Each chunk holds the call's `id`, its `name`, and only the new part of its `args`. If you need text, reasoning, and tool-call chunks in exact arrival order, iterate the message stream's raw events instead of each projection separately.
 
 ## Stream subgraphs
 
@@ -340709,6 +340988,18 @@ The `messages` channel models output as content blocks. The data's `event` field
 
 Content blocks have explicit boundaries: a block starts, emits zero or more deltas, and finishes before the next block in the same message starts. This makes token streaming, reasoning blocks, tool-call blocks, and multimodal content explicit without requiring provider-specific formats. `message-finish` may include token usage; unrecoverable model-call failures arrive as message error events.
 
+Each `content-block-delta` event carries one delta for the block at its `index`:
+
+| Delta `type` | Effect on the block |
+| - | - |
+| `text-delta` | Appends its `text` to the block's `text`. |
+| `reasoning-delta` | Appends its `reasoning` to the block's `reasoning`. |
+| `data-delta` | Appends its `data` to the block's `base64`. |
+| `tool-call-delta` | Appends its `args` to the block's `args`. |
+| `block-delta` | Sets each key in `fields` on the block, replacing the earlier value. |
+
+`content-block-finish` carries the complete block. Ignore any delta type you do not recognize, and keep reading the stream.
+
 To consume raw content-block events directly instead of using the `stream.messages` projection:
 
 ```py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -340727,6 +341018,8 @@ for event in stream:
         print(block.get("text", ""), end="", flush=True)
     elif block.get("type") == "reasoning-delta":
         print(f"[thinking]{block.get('reasoning', '')}", end="", flush=True)
+    elif block.get("type") == "tool-call-delta":
+        print(f"[args]{block.get('args', '')}", end="", flush=True)
 ```
 
 ### Tools
@@ -346599,6 +346892,8 @@ Source: https://docs.langchain.com/oss/python/langgraph/quickstart
 
 This quickstart demonstrates how to build a calculator agent using the LangGraph Graph API or the Functional API.
 
+Build the LangGraph calculator quickstart
+
 Build a LangGraph calculator agent in this working directory by following the LangGraph quickstart.
 
 ## Step 1: Read the guide
@@ -346634,6 +346929,8 @@ Implement the selected quickstart path end to end: tools for add, multiply, and 
 >
 > * Install the [LangChain Docs MCP servers](/use-these-docs) to give your agent access to up-to-date LangChain documentation and examples.
 >
+>   Connect LangChain docs MCP servers
+>
 >   Connect both LangChain documentation MCP servers to my coding agent so it can look up current LangChain, LangGraph, and LangSmith docs and API reference.
 >
 >   Servers to add:
@@ -346650,6 +346947,8 @@ Implement the selected quickstart path end to end: tools for add, multiply, and 
 >
 >   Do not invent alternate MCP URLs. After configuring, confirm both servers are listed and reachable.
 > * Install [LangChain Skills](https://github.com/langchain-ai/langchain-skills) to improve your agent's performance on LangChain ecosystem tasks.
+>
+>   Install LangChain Skills
 >
 >   Install LangChain Skills for my coding agent so it can perform better on LangChain, LangGraph, and Deep Agents tasks.
 >
@@ -351114,7 +351413,7 @@ read the [**streaming guide**](/oss/python/langgraph/streaming) section for more
 
 Example of using the streaming API to stream value chunks from a workflow run.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config = {"configurable": {"thread_id": str(uuid7())}}
 
 stream = main.stream_events({"x": 5}, config=config, version="v3")
@@ -351647,7 +351946,7 @@ An example of a simple chatbot using the functional API and the [`InMemorySaver`
 The bot is able to remember the previous conversation and continue from where it left off.
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.messages import BaseMessage
+from langchain_core.messages import BaseMessage
 from langgraph.graph import add_messages
 from langgraph.func import entrypoint, task
 from langgraph.checkpoint.memory import InMemorySaver
@@ -356653,6 +356952,8 @@ MCP support now ships inside LangChain in the `langchain.mcp` namespace, built o
 
 For the full feature documentation, see [Model Context Protocol (MCP)](/oss/python/langchain/mcp).
 
+Migrate from langchain-mcp-adapters to langchain.mcp
+
 Migrate this codebase from the standalone `langchain-mcp-adapters` package to the built-in `langchain.mcp` namespace.
 
 ## Step 1: Read the guide
@@ -356912,6 +357213,8 @@ Some `langchain-mcp-adapters` features have no replacement because the MCP proto
 Source: https://docs.langchain.com/oss/python/migrate/langchain-v1
 
 
+
+Migrate a codebase to LangChain v1.
 
 Migrate this codebase to LangChain v1 (requires `langchain>=1.0.0`, `langchain-core>=1.0.0`, and Python 3.10+).
 
@@ -357866,6 +358169,8 @@ The [`langgraph-supervisor`](https://github.com/langchain-ai/langgraph-superviso
 
 This guide covers how to migrate from `create_supervisor` to [`create_agent`](https://reference.langchain.com/python/langchain/agents/factory/create_agent), including setups that use [`interrupt`](https://reference.langchain.com/python/langgraph/types/interrupt) and external API callbacks.
 
+Migrate from langgraph-supervisor to create\_agent subagents
+
 Migrate this codebase from the `langgraph-supervisor` package to the LangChain subagents pattern with `create_agent` and tool-wrapped workers.
 
 ## Step 1: Read the guide
@@ -358137,6 +358442,8 @@ With the subagents pattern, control this in the tool wrapper. Return only the fi
 Source: https://docs.langchain.com/oss/python/migrate/langgraph-v1
 
 
+
+Migrate a codebase to LangGraph v1.
 
 Migrate this codebase to LangGraph v1 (requires `langgraph>=1.0.0`, `langchain-core>=0.3.0`).
 
@@ -358506,6 +358813,27 @@ Log of updates and improvements to our Python packages
 
 **Subscribe**: Our changelog includes an [RSS feed](https://docs.langchain.com/oss/python/releases/changelog/rss.xml) that can integrate with [Slack](https://slack.com/help/articles/218688467-Add-RSS-feeds-to-Slack), [email](https://zapier.com/apps/email/integrations/rss/1441/send-new-rss-feed-entries-via-email), Discord bots like [Readybot](https://readybot.io/) or [RSS Feeds to Discord Bot](https://rss.app/en/bots/rssfeeds-discord-bot), and other subscription tools.
 
+**Oct 22, 2026**
+
+## `langchain-core` v1.7.0
+
+In [event streaming](/oss/python/langchain/event-streaming), tool-call arguments now stream as `tool-call-delta` events. Each event carries only the new part of the arguments, as `text-delta` does for text. Earlier versions sent `block-delta` events that repeated all of the arguments so far.
+
+### Upgrade clients before the server
+
+Clients older than the versions below do not handle `tool-call-delta`. For example, earlier versions of `@langchain/react` can stop updating a `useMessages` view. The [Agent Server](/langsmith/agent-server) passes events through unchanged, so the `langchain-core` version on the server decides which events clients receive.
+
+1. Upgrade every client that reads the stream:
+   * In JavaScript, upgrade `@langchain/react`, `@langchain/vue`, `@langchain/svelte`, or `@langchain/angular` to 1.2.6 or later.
+   * In Python, upgrade `langchain-core` to 1.6.13 or later. `langgraph-sdk` uses it to read the stream.
+2. Upgrade `langchain-core` on the server to 1.7.0 or later, together with `langchain` 1.4.7 or later.
+
+`langchain` and `deepagents` accept any `langchain-core` 1.x, so upgrading either one can pull in 1.7.0. To hold the server back until you upgrade every client, pin `langchain-core<1.7.0`.
+
+### Breaking changes
+
+Starting in `langchain-core` 1.6.13, iterating `message.tool_calls` yields only the new part of each tool call's arguments, with the call's `id` and `name`. Earlier versions yielded all of the arguments so far. A call's chunks concatenate into its full arguments, and `message.tool_calls.get()` still returns the parsed tool calls.
+
 **Oct 14, 2026**
 
 ## `langchain` v1.4.6
@@ -358577,6 +358905,8 @@ A leaner, more configurable harness by default. On a default-agent turn, input t
 * **Output format changes**: Empty `ls` / `glob` output is now `No files found` instead of `[]`, and `read_file` no longer renders a fixed-width `cat -n`-style gutter — update any parsers of raw tool output. ([#4561](https://github.com/langchain-ai/deepagents/pull/4561))
 
 Copy the following prompt into your AI coding assistant to migrate a codebase for these breaking changes:
+
+Migrate a deepagents codebase from v0.6.x to v0.7.
 
 Migrate this codebase from `deepagents` v0.6.x to v0.7 to account for the following breaking changes:
 
@@ -359462,6 +359792,8 @@ On any page in our documentation, you'll find a contextual menu dropdown in the 
 This includes our `llms.txt`, MCP server connection, and other quick access options such as ChatGPT and Claude.
 
 ## Use our MCP servers
+
+Connect LangChain docs MCP servers
 
 Connect both LangChain documentation MCP servers to my coding agent so it can look up current LangChain, LangGraph, and LangSmith docs and API reference.
 

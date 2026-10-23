@@ -1,5 +1,5 @@
 ---
-title: "Deployment"
+title: "Redis TypeScript SDK Deployment"
 source: https://upstash.com/docs/redis/sdks/ts/deployment
 path: docs/redis/sdks/ts/deployment
 ---

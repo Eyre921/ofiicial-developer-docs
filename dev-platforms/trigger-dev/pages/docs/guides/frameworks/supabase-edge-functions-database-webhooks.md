@@ -29,90 +29,92 @@ Supabase and Trigger.dev can be used together to create powerful workflows trigg
 
 ## GitHub repo
 
-<Card title="View the project on GitHub" icon="GitHub" href="https://github.com/triggerdotdev/examples/tree/main/supabase-edge-functions">
-  Click here to view the full code for this project in our examples repository on GitHub. You can
-  fork it and use it as a starting point for your own project.
-</Card>
+> **[View the project on GitHub](https://github.com/triggerdotdev/examples/tree/main/supabase-edge-functions)**
+>
+> Click here to view the full code for this project in our examples repository on GitHub. You can
+> fork it and use it as a starting point for your own project.
 
 ## Initial setup
 
-<Steps>
-  <Step title="Optional step 1: create a new Supabase project">
-    <Info> If you already have a Supabase project on your local machine you can skip this step.</Info>
+**1. Optional step 1: create a new Supabase project**
 
-    You can create a new project by running the following command in your terminal using the Supabase CLI:
+> [!NOTE]
+>
+> If you already have a Supabase project on your local machine you can skip this step.
 
-    ```bash theme={"theme":"css-variables"}
-    supabase init
-    ```
+You can create a new project by running the following command in your terminal using the Supabase CLI:
 
-    <Note>
-      If you are using VS Code, ensure to answer 'y' when asked to generate VS Code settings for Deno,
-      and install any recommended extensions.
-    </Note>
-  </Step>
+```bash theme={"theme":"css-variables"}
+supabase init
+```
 
-  <Step title="Optional step 2: create a package.json file">
-    If your project does not already have `package.json` file (e.g. if you are using Deno), create it manually in your project's root folder.
+> [!NOTE]
+>
+> If you are using VS Code, ensure to answer 'y' when asked to generate VS Code settings for Deno,
+> and install any recommended extensions.
 
-    <Info> If your project has a `package.json` file you can skip this step.</Info>
+**2. Optional step 2: create a package.json file**
 
-    This is required for the Trigger.dev SDK to work correctly.
+If your project does not already have `package.json` file (e.g. if you are using Deno), create it manually in your project's root folder.
 
-    ```ts package.json theme={"theme":"css-variables"}
-    {
-      "devDependencies": {
-        "typescript": "^5.6.2"
-      }
-    }
-    ```
+> [!NOTE]
+>
+> If your project has a `package.json` file you can skip this step.
 
-    <Note> Update your Typescript version to the latest version available. </Note>
-  </Step>
+This is required for the Trigger.dev SDK to work correctly.
 
-  <Step title="Run the CLI `init` command">
-    The easiest way to get started is to use the CLI. It will add Trigger.dev to your existing project, create a `/trigger` folder and give you an example task.
+```ts package.json theme={"theme":"css-variables"}
+{
+  "devDependencies": {
+    "typescript": "^5.6.2"
+  }
+}
+```
 
-    Run this command in the root of your project to get started:
+> [!NOTE]
+>
+> Update your Typescript version to the latest version available.
 
-    <CodeGroup>
-      ```bash npm theme={"theme":"css-variables"}
-      npx trigger.dev@latest init
-      ```
+**3. Run the CLI `init` command**
 
-      ```bash pnpm theme={"theme":"css-variables"}
-      pnpm dlx trigger.dev@latest init
-      ```
+The easiest way to get started is to use the CLI. It will add Trigger.dev to your existing project, create a `/trigger` folder and give you an example task.
 
-      ```bash yarn theme={"theme":"css-variables"}
-      yarn dlx trigger.dev@latest init
-      ```
-    </CodeGroup>
+Run this command in the root of your project to get started:
 
-    It will do a few things:
+```bash npm theme={"theme":"css-variables"}
+npx trigger.dev@latest init
+```
 
-    1. Log you into the CLI if you're not already logged in.
-    2. Create a `trigger.config.ts` file in the root of your project.
-    3. Ask where you'd like to create the `/trigger` directory.
-    4. Create the `/trigger` directory with an example task, `/trigger/example.[ts/js]`.
+```bash pnpm theme={"theme":"css-variables"}
+pnpm dlx trigger.dev@latest init
+```
 
-    Choose "None" when prompted to install an example task. We will create a new task for this guide.
-  </Step>
-</Steps>
+```bash yarn theme={"theme":"css-variables"}
+yarn dlx trigger.dev@latest init
+```
+
+It will do a few things:
+
+1. Log you into the CLI if you're not already logged in.
+2. Create a `trigger.config.ts` file in the root of your project.
+3. Ask where you'd like to create the `/trigger` directory.
+4. Create the `/trigger` directory with an example task, `/trigger/example.[ts/js]`.
+
+Choose "None" when prompted to install an example task. We will create a new task for this guide.
 
 ## Create a new table in your Supabase database
 
 First, in the Supabase project dashboard, you'll need to create a new table to store the video URL and transcription.
 
-To do this, click on 'Table Editor' <Icon icon="circle-1" /> in the left-hand menu and create a new table. <Icon icon="circle-2" />
+To do this, click on 'Table Editor'  in the left-hand menu and create a new table.&#x20;
 
-<img alt="How to create a new Supabase table" />
+![How to create a new Supabase table](https://mintcdn.com/trigger/0bD0UfsjaINxS6Tw/images/supabase-new-table-1.png?fit=max\&auto=format\&n=0bD0UfsjaINxS6Tw\&q=85\&s=4b7630a86b91ac5f942ac31538ad401d)
 
-Call your table `video_transcriptions`. <Icon icon="circle-1" />
+Call your table `video_transcriptions`.&#x20;
 
-Add two new columns, one called `video_url` with the type `text` <Icon icon="circle-2" />, and another called `transcription`, also with the type `text` <Icon icon="circle-3" />.
+Add two new columns, one called `video_url` with the type `text` , and another called `transcription`, also with the type `text` .
 
-<img alt="How to create a new Supabase table 2" />
+![How to create a new Supabase table 2](https://mintcdn.com/trigger/0bD0UfsjaINxS6Tw/images/supabase-new-table-2.png?fit=max\&auto=format\&n=0bD0UfsjaINxS6Tw\&q=85\&s=a1c1f36b91edf8538ae33cc465f9ec47)
 
 ## Create and deploy the Trigger.dev task
 
@@ -124,7 +126,9 @@ To allow you to use TypeScript to interact with your table, you need to [generat
 supabase gen types --lang=typescript --project-id <project-ref> --schema public > database.types.ts
 ```
 
-<Note> Replace `<project-ref>` with your Supabase project reference ID. This can be found in your Supabase project settings under 'General'. </Note>
+> [!NOTE]
+>
+> Replace `<project-ref>` with your Supabase project reference ID. This can be found in your Supabase project settings under 'General'.
 
 ### Create the transcription task
 
@@ -134,27 +138,25 @@ This task takes a video from a public video url, extracts the audio using FFmpeg
 
 You will need to install some additional dependencies for this task:
 
-<CodeGroup>
-  ```bash npm theme={"theme":"css-variables"}
-  npm install @deepgram/sdk @supabase/supabase-js fluent-ffmpeg
-  ```
+```bash npm theme={"theme":"css-variables"}
+npm install @deepgram/sdk @supabase/supabase-js fluent-ffmpeg
+```
 
-  ```bash pnpm theme={"theme":"css-variables"}
-  pnpm install @deepgram/sdk @supabase/supabase-js fluent-ffmpeg
-  ```
+```bash pnpm theme={"theme":"css-variables"}
+pnpm install @deepgram/sdk @supabase/supabase-js fluent-ffmpeg
+```
 
-  ```bash yarn theme={"theme":"css-variables"}
-  yarn install @deepgram/sdk @supabase/supabase-js fluent-ffmpeg
-  ```
-</CodeGroup>
+```bash yarn theme={"theme":"css-variables"}
+yarn install @deepgram/sdk @supabase/supabase-js fluent-ffmpeg
+```
 
 These dependencies will allow you to interact with the Deepgram and Supabase APIs and extract audio from a video using FFmpeg.
 
-<Warning>
-  When updating your tables from a Trigger.dev task which has been triggered by a database change,
-  be extremely careful to not cause an infinite loop. Ensure you have the correct conditions in
-  place to prevent this.
-</Warning>
+> [!WARNING]
+>
+> When updating your tables from a Trigger.dev task which has been triggered by a database change,
+> be extremely careful to not cause an infinite loop. Ensure you have the correct conditions in
+> place to prevent this.
 
 ```ts /trigger/videoProcessAndUpdate.ts theme={"theme":"css-variables"}
 // Install any missing dependencies below
@@ -254,17 +256,17 @@ export const videoProcessAndUpdate = task({
 });
 ```
 
-<Warning>
-  This task uses your service role secret key to bypass Row Level Security. This is not recommended
-  for production use as it has unlimited access and bypasses all security checks.
-</Warning>
+> [!WARNING]
+>
+> This task uses your service role secret key to bypass Row Level Security. This is not recommended
+> for production use as it has unlimited access and bypasses all security checks.
 
-<Note>
-  To learn more about how to properly configure Supabase auth for Trigger.dev tasks, please refer to
-  our [Supabase Authentication guide](/docs/guides/frameworks/supabase-authentication). It demonstrates
-  how to use JWT authentication for user-specific operations or your service role key for
-  admin-level access.
-</Note>
+> [!NOTE]
+>
+> To learn more about how to properly configure Supabase auth for Trigger.dev tasks, please refer to
+> our [Supabase Authentication guide](/docs/guides/frameworks/supabase-authentication). It demonstrates
+> how to use JWT authentication for user-specific operations or your service role key for
+> admin-level access.
 
 ### Adding the FFmpeg build extension
 
@@ -285,16 +287,16 @@ export default defineConfig({
 });
 ```
 
-<Note>
-  [Build extensions](/docs/config/extensions/overview) allow you to hook into the build system and
-  customize the build process or the resulting bundle and container image (in the case of
-  deploying). You can use pre-built extensions or create your own.
-</Note>
+> [!NOTE]
+>
+> [Build extensions](/docs/config/extensions/overview) allow you to hook into the build system and
+> customize the build process or the resulting bundle and container image (in the case of
+> deploying). You can use pre-built extensions or create your own.
 
-<Note>
-  You'll also need to add `@trigger.dev/build` to your `package.json` file under `devDependencies`
-  if you don't already have it there.
-</Note>
+> [!NOTE]
+>
+> You'll also need to add `@trigger.dev/build` to your `package.json` file under `devDependencies`
+> if you don't already have it there.
 
 If you are modifying this example and using popular FFmpeg libraries like `fluent-ffmpeg` you'll also need to add them to [`external`](/docs/config/config-file#external) in your `trigger.config.ts` file.
 
@@ -302,25 +304,23 @@ If you are modifying this example and using popular FFmpeg libraries like `fluen
 
 You will need to add your `DEEPGRAM_SECRET_KEY`, `SUPABASE_PROJECT_URL` and `SUPABASE_SERVICE_ROLE_KEY` as environment variables in your Trigger.dev project. This can be done in the 'Environment Variables' page in your project dashboard.
 
-<img alt="Adding environment variables" />
+![Adding environment variables](https://mintcdn.com/trigger/uys6iMwf9B_ojh8r/images/environment-variables-page.jpg?fit=max\&auto=format\&n=uys6iMwf9B_ojh8r\&q=85\&s=af652254781808a35c2bcefd4b61b59f)
 
 ### Deploying your task
 
 Now you can now deploy your task using the following command:
 
-<CodeGroup>
-  ```bash npm theme={"theme":"css-variables"}
-  npx trigger.dev@latest deploy
-  ```
+```bash npm theme={"theme":"css-variables"}
+npx trigger.dev@latest deploy
+```
 
-  ```bash pnpm theme={"theme":"css-variables"}
-  pnpm dlx trigger.dev@latest deploy
-  ```
+```bash pnpm theme={"theme":"css-variables"}
+pnpm dlx trigger.dev@latest deploy
+```
 
-  ```bash yarn theme={"theme":"css-variables"}
-  yarn dlx trigger.dev@latest deploy
-  ```
-</CodeGroup>
+```bash yarn theme={"theme":"css-variables"}
+yarn dlx trigger.dev@latest deploy
+```
 
 ## Create and deploy the Supabase Edge Function
 
@@ -328,11 +328,11 @@ Now you can now deploy your task using the following command:
 
 Open the API Keys page for your Production environment in the Trigger.dev [project dashboard](https://cloud.trigger.dev). Create a named key with **Trigger only** access and copy it. Trigger.dev shows the complete value only once.
 
-Then, in [Supabase](https://supabase.com/dashboard/projects), select the project you want to use, navigate to 'Project settings' <Icon icon="circle-1" />, click 'Edge Functions' <Icon icon="circle-2" /> in the configurations menu, and then click the 'Add new secret' <Icon icon="circle-3" /> button.
+Then, in [Supabase](https://supabase.com/dashboard/projects), select the project you want to use, navigate to 'Project settings' , click 'Edge Functions'  in the configurations menu, and then click the 'Add new secret'  button.
 
-Add `TRIGGER_SECRET_KEY` <Icon icon="circle-4" /> with the environment API key you created.
+Add `TRIGGER_SECRET_KEY`  with the environment API key you created.
 
-<img alt="Add secret key in Supabase" />
+![Add secret key in Supabase](https://mintcdn.com/trigger/0bD0UfsjaINxS6Tw/images/supabase-keys-1.png?fit=max\&auto=format\&n=0bD0UfsjaINxS6Tw\&q=85\&s=70842bf838bc1ea9e1f195c9926bb746)
 
 ### Create a new Edge Function using the Supabase CLI
 
@@ -366,11 +366,11 @@ Deno.serve(async (req) => {
 });
 ```
 
-<Note>
-  Tasks in the `trigger` folder use Node, so they must stay in there or they will not run,
-  especially if you are using a different runtime like Deno. Also do not add "`npm:`" to imports
-  inside your task files, for the same reason.
-</Note>
+> [!NOTE]
+>
+> Tasks in the `trigger` folder use Node, so they must stay in there or they will not run,
+> especially if you are using a different runtime like Deno. Also do not add "`npm:`" to imports
+> inside your task files, for the same reason.
 
 ### Deploy the Edge Function
 
@@ -386,40 +386,40 @@ There will be a link to the dashboard in your terminal output.
 
 ## Create the Database Webhook
 
-In your Supabase project dashboard, click 'Project settings' <Icon icon="circle-1" />, then the 'API' tab <Icon icon="circle-2" />, and copy the `anon` `public` API key from the table <Icon icon="circle-3" />.
+In your Supabase project dashboard, click 'Project settings' , then the 'API' tab , and copy the `anon` `public` API key from the table .
 
-<img alt="How to find your Supabase API keys" />
+![How to find your Supabase API keys](https://mintcdn.com/trigger/5SxX7bFjJKRsidSL/images/supabase-api-key.png?fit=max\&auto=format\&n=5SxX7bFjJKRsidSL\&q=85\&s=7d842b953497f2819e64abd2497e0f25)
 
-Then, go to 'Database' <Icon icon="circle-1" /> click on 'Webhooks' <Icon icon="circle-2" />, and then click 'Create a new hook' <Icon icon="circle-3" />.
+Then, go to 'Database'  click on 'Webhooks' , and then click 'Create a new hook' .
 
-<img alt="How to create a new webhook" />
+![How to create a new webhook](https://mintcdn.com/trigger/5SxX7bFjJKRsidSL/images/supabase-create-webhook-1.png?fit=max\&auto=format\&n=5SxX7bFjJKRsidSL\&q=85\&s=b14ffc5195561195ba824430fd5b3566)
 
-<Icon icon="circle-1" /> Call the hook `edge-function-hook`.
+&#x20;Call the hook `edge-function-hook`.
 
-<Icon icon="circle-2" /> Select the new table you have created:
+&#x20;Select the new table you have created:
 `public` `video_transcriptions`.
 
-<Icon icon="circle-3" /> Choose the `insert` event.
+&#x20;Choose the `insert` event.
 
-<img alt="How to create a new webhook 2" />
+![How to create a new webhook 2](https://mintcdn.com/trigger/5SxX7bFjJKRsidSL/images/supabase-create-webhook-2.png?fit=max\&auto=format\&n=5SxX7bFjJKRsidSL\&q=85\&s=9e7e86e98234a3bb4a852e7c1f429381)
 
-<Icon icon="circle-4" /> Under 'Webhook configuration', select
-'Supabase Edge Functions'
+&#x20;Under 'Webhook configuration', select
+'Supabase Edge Functions'&#x20;
 
-<Icon icon="circle-5" /> Under 'Edge Function', choose `POST`
-and select the Edge Function you have created: `video-processing-handler`.
+&#x20;Under 'Edge Function', choose `POST`
+and select the Edge Function you have created: `video-processing-handler`.&#x20;
 
-<Icon icon="circle-6" /> Under 'HTTP Headers', add a new header with the key `Authorization` and the value `Bearer <your-api-key>` (replace `<your-api-key>` with the `anon` `public` API key you copied earlier).
+&#x20;Under 'HTTP Headers', add a new header with the key `Authorization` and the value `Bearer <your-api-key>` (replace `<your-api-key>` with the `anon` `public` API key you copied earlier).
 
-<Info>
-  Supabase Edge Functions require a JSON Web Token [JWT](https://supabase.com/docs/guides/auth/jwts)
-  in the authorization header. This is to ensure that only authorized users can access your edge
-  functions.
-</Info>
+> [!NOTE]
+>
+> Supabase Edge Functions require a JSON Web Token [JWT](https://supabase.com/docs/guides/auth/jwts)
+> in the authorization header. This is to ensure that only authorized users can access your edge
+> functions.
 
-<Icon icon="circle-7" /> Click 'Create webhook'.
+&#x20;Click 'Create webhook'.&#x20;
 
-<img alt="How to create a new webhook 3" />
+![How to create a new webhook 3](https://mintcdn.com/trigger/0bD0UfsjaINxS6Tw/images/supabase-create-webhook-3.png?fit=max\&auto=format\&n=0bD0UfsjaINxS6Tw\&q=85\&s=ef4b8d91417d1e923063a9f599537f1f)
 
 Your Database Webhook is now ready to use.
 
@@ -427,23 +427,23 @@ Your Database Webhook is now ready to use.
 
 Your `video-processing-handler` Edge Function is now set up to trigger the `videoProcessAndUpdate` task every time a new row is inserted into your `video_transcriptions` table.
 
-To do this, go back to your Supabase project dashboard, click on 'Table Editor' <Icon icon="circle-1" /> in the left-hand menu, click on the `video_transcriptions` table <Icon icon="circle-2" /> , and then click 'Insert', 'Insert Row' <Icon icon="circle-3" />.
+To do this, go back to your Supabase project dashboard, click on 'Table Editor'  in the left-hand menu, click on the `video_transcriptions` table  , and then click 'Insert', 'Insert Row' .
 
-<img alt="How to insert a new row 1" />
+![How to insert a new row 1](https://mintcdn.com/trigger/0bD0UfsjaINxS6Tw/images/supabase-new-table-3.png?fit=max\&auto=format\&n=0bD0UfsjaINxS6Tw\&q=85\&s=018a4b143a7e610ef85fe630cb5f3942)
 
-Add a new item under `video_url`, with a public video url. <Icon icon="circle-1" />.
+Add a new item under `video_url`, with a public video url. .
 
 You can use the following public video URL for testing: `https://content.trigger.dev/Supabase%20Edge%20Functions%20Quickstart.mp4`.
 
-<img alt="How to insert a new row 2" />
+![How to insert a new row 2](https://mintcdn.com/trigger/0bD0UfsjaINxS6Tw/images/supabase-new-table-4.png?fit=max\&auto=format\&n=0bD0UfsjaINxS6Tw\&q=85\&s=4f12c856f8e921c287e2d3d45c4db397)
 
-Once the new table row has been inserted, check your [cloud.trigger.dev](https://cloud.trigger.dev) project 'Runs' list <Icon icon="circle-1" /> and you should see a processing `videoProcessAndUpdate` task <Icon icon="circle-2" /> which has been triggered when you added a new row with the video url to your `video_transcriptions` table.
+Once the new table row has been inserted, check your [cloud.trigger.dev](https://cloud.trigger.dev) project 'Runs' list  and you should see a processing `videoProcessAndUpdate` task  which has been triggered when you added a new row with the video url to your `video_transcriptions` table.
 
-<img alt="Supabase successful run" />
+![Supabase successful run](https://mintcdn.com/trigger/0bD0UfsjaINxS6Tw/images/supabase-run-result.png?fit=max\&auto=format\&n=0bD0UfsjaINxS6Tw\&q=85\&s=845a8ec72040ad8cdab18b905cf52096)
 
 Once the run has completed successfully, go back to your Supabase `video_transcriptions` table, and you should see that in the row containing the original video URL, the transcription has now been added to the `transcription` column.
 
-<img alt="Supabase successful table update" />
+![Supabase successful table update](https://mintcdn.com/trigger/0bD0UfsjaINxS6Tw/images/supabase-table-result.png?fit=max\&auto=format\&n=0bD0UfsjaINxS6Tw\&q=85\&s=9d53cd6ba016677b7a8ad6eea4f9c58e)
 
 **Congratulations! You have completed the full workflow from Supabase to Trigger.dev and back again.**
 
@@ -451,29 +451,25 @@ Once the run has completed successfully, go back to your Supabase `video_transcr
 
 ### Full walkthrough guides from development to deployment
 
-<CardGroup>
-  <Card title="Edge function hello world guide" icon="book" href="/docs/guides/frameworks/supabase-edge-functions-basic">
-    Learn how to trigger a task from a Supabase edge function when a URL is visited.
-  </Card>
+> **[Edge function hello world guide](/docs/guides/frameworks/supabase-edge-functions-basic)**
+>
+> Learn how to trigger a task from a Supabase edge function when a URL is visited.
 
-  <Card title="Database webhooks guide" icon="book" href="/docs/guides/frameworks/supabase-edge-functions-database-webhooks">
-    Learn how to trigger a task from a Supabase edge function when an event occurs in your database.
-  </Card>
+> **[Database webhooks guide](/docs/guides/frameworks/supabase-edge-functions-database-webhooks)**
+>
+> Learn how to trigger a task from a Supabase edge function when an event occurs in your database.
 
-  <Card title="Supabase authentication guide" icon="book" href="/docs/guides/frameworks/supabase-authentication">
-    Learn how to authenticate Supabase tasks using JWTs for Row Level Security (RLS) or service role
-    keys for admin access.
-  </Card>
-</CardGroup>
+> **[Supabase authentication guide](/docs/guides/frameworks/supabase-authentication)**
+>
+> Learn how to authenticate Supabase tasks using JWTs for Row Level Security (RLS) or service role
+> keys for admin access.
 
 ### Task examples with code you can copy and paste
 
-<CardGroup>
-  <Card title="Supabase database operations" icon="bolt" href="/docs/guides/examples/supabase-database-operations">
-    Run basic CRUD operations on a table in a Supabase database using Trigger.dev.
-  </Card>
+> **[Supabase database operations](/docs/guides/examples/supabase-database-operations)**
+>
+> Run basic CRUD operations on a table in a Supabase database using Trigger.dev.
 
-  <Card title="Supabase Storage upload" icon="bolt" href="/docs/guides/examples/supabase-storage-upload">
-    Download a video from a URL and upload it to Supabase Storage using S3.
-  </Card>
-</CardGroup>
+> **[Supabase Storage upload](/docs/guides/examples/supabase-storage-upload)**
+>
+> Download a video from a URL and upload it to Supabase Storage using S3.

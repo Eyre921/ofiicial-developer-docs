@@ -1,5 +1,5 @@
 ---
-title: "Quickstart"
+title: "Upstash Realtime Quickstart"
 source: https://upstash.com/docs/realtime/overall/quickstart
 path: docs/realtime/overall/quickstart
 ---

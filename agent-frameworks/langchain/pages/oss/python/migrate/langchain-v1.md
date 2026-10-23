@@ -4,6 +4,8 @@ source: https://docs.langchain.com/oss/python/migrate/langchain-v1
 path: oss/python/migrate/langchain-v1
 ---
 
+Migrate a codebase to LangChain v1.
+
 Migrate this codebase to LangChain v1 (requires `langchain>=1.0.0`, `langchain-core>=1.0.0`, and Python 3.10+).
 
 Key changes:

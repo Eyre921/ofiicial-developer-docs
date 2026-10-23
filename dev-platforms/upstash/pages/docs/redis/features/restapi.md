@@ -1,5 +1,5 @@
 ---
-title: "REST API"
+title: "Upstash Redis REST API"
 source: https://upstash.com/docs/redis/features/restapi
 path: docs/redis/features/restapi
 ---

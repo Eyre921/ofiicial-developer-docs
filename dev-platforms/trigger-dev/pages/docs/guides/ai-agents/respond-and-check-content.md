@@ -10,7 +10,7 @@ Create an AI agent workflow that responds to customer inquiries while checking i
 
 **Parallelization** is a workflow pattern where multiple tasks or processes run simultaneously instead of sequentially, allowing for more efficient use of resources and faster overall execution. It's particularly valuable when different parts of a task can be handled independently, such as running content analysis and response generation at the same time.
 
-<img alt="Parallelization" />
+![Parallelization](https://mintcdn.com/trigger/uys6iMwf9B_ojh8r/guides/ai-agents/parallelization.png?fit=max\&auto=format\&n=uys6iMwf9B_ojh8r\&q=85\&s=385b3c71db00c3995cb3de787ef462b4)
 
 ## Example task
 

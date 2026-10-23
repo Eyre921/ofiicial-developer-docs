@@ -31,19 +31,17 @@ Symptoms include missing `zod/v4` or `zod/v4/core` exports, missing Zod types, i
 
 Inspect the resolved dependencies in the package that contains your tasks, not only the version range in `package.json`:
 
-<CodeGroup>
-  ```bash npm theme={"theme":"css-variables"}
-  npm ls zod
-  ```
+```bash npm theme={"theme":"css-variables"}
+npm ls zod
+```
 
-  ```bash pnpm theme={"theme":"css-variables"}
-  pnpm why zod
-  ```
+```bash pnpm theme={"theme":"css-variables"}
+pnpm why zod
+```
 
-  ```bash bun theme={"theme":"css-variables"}
-  bun pm ls --all
-  ```
-</CodeGroup>
+```bash bun theme={"theme":"css-variables"}
+bun pm ls --all
+```
 
 Check the lockfile and any dependency overrides or resolutions as well. An override can keep an old Zod version installed even after you update a direct dependency.
 
@@ -51,47 +49,41 @@ Check the lockfile and any dependency overrides or resolutions as well. An overr
 
 Choose whether to move your application to Zod 4 or keep its existing Zod 3 schemas:
 
-<Tabs>
-  <Tab title="Move to Zod 4">
-    Install the latest Zod 4 release:
+**Move to Zod 4**
 
-    <CodeGroup>
-      ```bash npm theme={"theme":"css-variables"}
-      npm install zod@4
-      ```
+Install the latest Zod 4 release:
 
-      ```bash pnpm theme={"theme":"css-variables"}
-      pnpm add zod@4
-      ```
+```bash npm theme={"theme":"css-variables"}
+npm install zod@4
+```
 
-      ```bash bun theme={"theme":"css-variables"}
-      bun add zod@4
-      ```
-    </CodeGroup>
+```bash pnpm theme={"theme":"css-variables"}
+pnpm add zod@4
+```
 
-    Review [Zod's migration guide](https://zod.dev/v4/changelog) for changes to your own schemas and error handling.
-  </Tab>
+```bash bun theme={"theme":"css-variables"}
+bun add zod@4
+```
 
-  <Tab title="Stay on Zod 3">
-    Install the latest Zod 3 patch rather than pinning the minimum supported version:
+Review [Zod's migration guide](https://zod.dev/v4/changelog) for changes to your own schemas and error handling.
 
-    <CodeGroup>
-      ```bash npm theme={"theme":"css-variables"}
-      npm install zod@3
-      ```
+**Stay on Zod 3**
 
-      ```bash pnpm theme={"theme":"css-variables"}
-      pnpm add zod@3
-      ```
+Install the latest Zod 3 patch rather than pinning the minimum supported version:
 
-      ```bash bun theme={"theme":"css-variables"}
-      bun add zod@3
-      ```
-    </CodeGroup>
+```bash npm theme={"theme":"css-variables"}
+npm install zod@3
+```
 
-    Your existing `import { z } from "zod"` continues to use Zod 3. Trigger.dev's own schemas use the Zod 4 implementation included in the supported Zod 3 package.
-  </Tab>
-</Tabs>
+```bash pnpm theme={"theme":"css-variables"}
+pnpm add zod@3
+```
+
+```bash bun theme={"theme":"css-variables"}
+bun add zod@3
+```
+
+Your existing `import { z } from "zod"` continues to use Zod 3. Trigger.dev's own schemas use the Zod 4 implementation included in the supported Zod 3 package.
 
 Other dependencies can require a higher minimum than Trigger.dev. For example, an AI SDK dependency may require Zod 3.25.76 or Zod 4. Meet those peer requirements too; do not force a lower version across every dependency.
 

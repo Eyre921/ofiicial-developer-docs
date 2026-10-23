@@ -1,5 +1,5 @@
 ---
-title: "Quickstart"
+title: "Redis Search Quickstart"
 source: https://upstash.com/docs/redis/search/getting-started
 path: docs/redis/search/getting-started
 ---

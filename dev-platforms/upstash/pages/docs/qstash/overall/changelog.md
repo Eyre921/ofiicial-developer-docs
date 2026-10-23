@@ -1,5 +1,5 @@
 ---
-title: "Changelog"
+title: "QStash Changelog"
 source: https://upstash.com/docs/qstash/overall/changelog
 path: docs/qstash/overall/changelog
 ---

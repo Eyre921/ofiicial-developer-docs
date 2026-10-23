@@ -16,10 +16,10 @@ This demo is a full stack example that uses the following:
 
 ## GitHub repo
 
-<Card title="View the Vercel AI SDK image generator repo" icon="GitHub" href="https://github.com/triggerdotdev/examples/tree/main/vercel-ai-sdk-image-generator">
-  Click here to view the full code for this project in our examples repository on GitHub. You can
-  fork it and use it as a starting point for your own project.
-</Card>
+> **[View the Vercel AI SDK image generator repo](https://github.com/triggerdotdev/examples/tree/main/vercel-ai-sdk-image-generator)**
+>
+> Click here to view the full code for this project in our examples repository on GitHub. You can
+> fork it and use it as a starting point for your own project.
 
 ## Video
 

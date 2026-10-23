@@ -14,9 +14,9 @@ If you are using [Playwright](https://playwright.dev/), you should use the Playw
 * Lets you specify the Playwright version, or auto-detects it
 * Installs only the dependencies needed for the selected browsers to optimize build time and image size
 
-<Note>
-  This extension only affects the build and deploy process, not the `dev` command.
-</Note>
+> [!NOTE]
+>
+> This extension only affects the build and deploy process, not the `dev` command.
 
 You can use it for a simple Playwright setup like this:
 
@@ -41,9 +41,9 @@ export default defineConfig({
 * `headless`: Run browsers in headless mode. Default: `true`. If set to `false`, a virtual display (Xvfb) will be set up automatically.
 * `version`: Playwright version to install. If not provided, the version will be auto-detected from your dependencies (recommended).
 
-  <Warning>
-    Using a different version in your app than specified here will break things. We recommend not setting this option to automatically detect the version.
-  </Warning>
+  > [!WARNING]
+  >
+  > Using a different version in your app than specified here will break things. We recommend not setting this option to automatically detect the version.
 
 ### Custom browsers and version
 

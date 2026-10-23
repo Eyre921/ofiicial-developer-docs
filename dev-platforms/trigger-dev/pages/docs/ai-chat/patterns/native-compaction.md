@@ -10,9 +10,9 @@ Providers compact a conversation within a single request. Anthropic's [context e
 
 This is the gap this page closes. After each turn, mirror what the provider compacted into the agent's stored history with [`chat.history.set()`](/docs/ai-chat/reference#chat-namespace), so the next turn is derived from the already-reduced conversation. And because a native handle is provider-specific, this page also shows how a provider-agnostic [Trigger.dev compaction](/docs/ai-chat/compaction) summary lets you fall back between providers without re-expanding the context.
 
-<Note>
-  The full runnable example is [`triggerdotdev/resilient-chat-example`](https://github.com/triggerdotdev/resilient-chat-example). See `native-persist.ts` for the Anthropic persistence flow and `resilient-chat.ts` for OpenAI stored responses plus provider fallback.
-</Note>
+> [!NOTE]
+>
+> The full runnable example is [`triggerdotdev/resilient-chat-example`](https://github.com/triggerdotdev/resilient-chat-example). See `native-persist.ts` for the Anthropic persistence flow and `resilient-chat.ts` for OpenAI stored responses plus provider fallback.
 
 ## Two kinds of compaction
 
@@ -124,9 +124,9 @@ export const nativePersist = chat.agent({
 
 Turn 1 sends the user message and accumulates six tool results. Anthropic clears four of them server-side. `onTurnComplete` prunes those four from stored history, so turn 2 re-sends the smaller conversation (one tool result, not six) instead of the full transcript.
 
-<Note>
-  `onTurnComplete` is where persistence happens. Action turns fire `onAction` only, and a `chat.history.set()` inside `run()` is overwritten by the accumulator at turn end. See [Persistence and replay](/docs/ai-chat/patterns/persistence-and-replay#action-turns-no-snapshot-write).
-</Note>
+> [!NOTE]
+>
+> `onTurnComplete` is where persistence happens. Action turns fire `onAction` only, and a `chat.history.set()` inside `run()` is overwritten by the accumulator at turn end. See [Persistence and replay](/docs/ai-chat/patterns/persistence-and-replay#action-turns-no-snapshot-write).
 
 ## Persist OpenAI stored responses
 
@@ -294,9 +294,9 @@ export const resilientChat = chat.agent({
 
 When Anthropic is down, the loop falls through to OpenAI. Because `compaction` has already reduced `messages` to a summary plus the last couple of exchanges, the switch sends the portable baseline, not megabytes of raw transcript.
 
-<Warning>
-  Fallback here retries a turn that hasn't started streaming yet. Once a response is streaming to the client, a mid-stream provider failure can't be swapped transparently. Surface the error and let the frontend regenerate the turn. See [Error handling](/docs/ai-chat/error-handling).
-</Warning>
+> [!WARNING]
+>
+> Fallback here retries a turn that hasn't started streaming yet. Once a response is streaming to the client, a mid-stream provider failure can't be swapped transparently. Surface the error and let the frontend regenerate the turn. See [Error handling](/docs/ai-chat/error-handling).
 
 ## Production notes
 

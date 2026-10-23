@@ -1,5 +1,5 @@
 ---
-title: "Local Development"
+title: "QStash Local Development"
 source: https://upstash.com/docs/qstash/howto/local-development
 path: docs/qstash/howto/local-development
 ---

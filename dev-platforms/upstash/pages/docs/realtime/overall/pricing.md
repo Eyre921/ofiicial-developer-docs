@@ -1,5 +1,5 @@
 ---
-title: "Pricing"
+title: "Upstash Realtime Pricing"
 source: https://upstash.com/docs/realtime/overall/pricing
 path: docs/realtime/overall/pricing
 ---

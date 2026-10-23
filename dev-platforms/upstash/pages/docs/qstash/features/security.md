@@ -1,5 +1,5 @@
 ---
-title: "Security"
+title: "QStash Security"
 source: https://upstash.com/docs/qstash/features/security
 path: docs/qstash/features/security
 ---

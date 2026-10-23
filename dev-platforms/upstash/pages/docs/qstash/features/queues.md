@@ -1,5 +1,5 @@
 ---
-title: "Queues"
+title: "QStash Queues"
 source: https://upstash.com/docs/qstash/features/queues
 path: docs/qstash/features/queues
 ---

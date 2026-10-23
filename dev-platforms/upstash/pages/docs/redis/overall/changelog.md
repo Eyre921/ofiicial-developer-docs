@@ -1,5 +1,5 @@
 ---
-title: "Changelog"
+title: "Upstash Redis Changelog"
 source: https://upstash.com/docs/redis/overall/changelog
 path: docs/redis/overall/changelog
 ---

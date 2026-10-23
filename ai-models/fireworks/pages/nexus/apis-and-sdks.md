@@ -18,7 +18,7 @@ Choose the endpoint your SDK or client already uses:
 | OpenAI Chat Completions | `https://api.fireworks.ai/inference/v1` | `https://api.fireworks.ai/inference/v1/chat/completions` | OpenAI SDK, Fireworks SDK, most gateways and harnesses |
 | OpenAI Responses | `https://api.fireworks.ai/inference/v1` | `https://api.fireworks.ai/inference/v1/responses` | OpenAI SDK, Codex |
 
-Anthropic-style clients add `/v1/messages` to the base URL themselves, so their base URL stops at `/inference`.
+Anthropic-style clients add `/v1/messages` to the base URL themselves, so their base URL ends at `/inference`.
 
 For client setup, see [OpenAI compatibility](/tools-sdks/openai-compatibility), [Anthropic compatibility](/tools-sdks/anthropic-compatibility), or the [Responses API](/guides/response-api).
 
@@ -52,13 +52,13 @@ For a Nexus Auto request, the response `model` field names the model that served
 | Credential | How to provide it | When |
 | - | - | - |
 | Fireworks API key (`fw_...`) | `Authorization` bearer token or `X-Fireworks-Api-Key` header | Every request; bills open-model traffic to your Fireworks account |
-| Anthropic | Connect an Anthropic [Provider Key](/nexus/provider-keys) if enabled, or send `x-anthropic-api-key` | You want `auto` to use Claude Opus |
-| OpenAI | Connect an OpenAI [Provider Key](/nexus/provider-keys) if enabled, or send `x-openai-api-key` | You want `auto` to use GPT Sol |
+| Anthropic | Connect an Anthropic [Provider Key](/nexus/provider-keys) if enabled, or send `x-anthropic-api-key` | You want `auto` to be able to use Anthropic models |
+| OpenAI | Connect an OpenAI [Provider Key](/nexus/provider-keys) if enabled, or send `x-openai-api-key` | You want `auto` to be able to use OpenAI models |
 | Amazon Bedrock | [Amazon Bedrock](/nexus/provider-keys/bedrock) Provider Key | You want `auto` to use a model you mapped there. Usage bills to your AWS account. |
 
 An Anthropic or OpenAI key in a request header applies only to that request. A key connected through Provider Keys is available at the account level, so clients and gateways do not need to send it with every call.
 
-With both credentials, `auto` [picks its closed model by API](/nexus/auto#how-auto-picks-its-closed-model). You can combine an account-level key for one provider with a request header for the other.
+With both credentials, `auto` [can use Anthropic and OpenAI models](/nexus/auto#which-models-auto-can-use) and decides per turn. You can combine an account-level key for one provider with a request header for the other.
 
 Fireworks also accepts Anthropic credentials in `x-api-key` or `Authorization: Bearer`. One `Authorization` header cannot carry both the Fireworks and Anthropic keys. If it carries the Anthropic key, send the Fireworks key in `X-Fireworks-Api-Key`. Prefer `x-anthropic-api-key` for new integrations.
 
@@ -68,7 +68,7 @@ In every SDK, `api_key` is the Fireworks key. Pass provider keys as extra header
 
 * Accounts with data residency enabled must use a residency-compatible pinned serverless model. Nexus Auto requests are rejected.
 * Nexus Auto is not available through Microsoft Foundry.
-* See [What happens without a closed-model credential](/nexus/auto#provide-anthropic-and-openai-credentials).
+* Without an Anthropic or OpenAI credential, `auto` uses Fireworks open models. See [Provide Anthropic and OpenAI credentials](/nexus/auto#provide-anthropic-and-openai-credentials).
 
 ## Errors
 
@@ -76,9 +76,9 @@ In every SDK, `api_key` is the Fireworks key. Pass provider keys as extra header
 | - | - | - |
 | `401` | Fireworks key is missing or invalid | Send a valid `fw_...` key with `Authorization: Bearer` or `X-Fireworks-Api-Key` |
 | Request rejected for data residency | The requested route is not residency-compatible | Pin a residency-compatible serverless model |
-| `404` `Model id not found` | Unknown id, or the account cannot use this router | Check the model id and account access |
+| `404` `Model id not found` | Unknown model ID, or the account cannot use this router | Check the model ID and your account's access |
 | `400` `no_credential` | The closed model you named has no provider key | Connect [Provider Keys](/nexus/provider-keys) where available. For Anthropic or OpenAI, you can instead send the provider header. |
-| Upstream provider authentication failure | The provider credential is wrong, revoked, or lacks permission | Check the Anthropic, OpenAI, or Amazon Bedrock credential and its permissions; exact status and message come from that provider |
+| Upstream provider authentication failure | The provider credential is wrong, revoked, or lacks permission | Check the Anthropic, OpenAI, or Amazon Bedrock credential and its permissions. The status and message come from that provider |
 
 ## Nexus Auto and deployment routers
 

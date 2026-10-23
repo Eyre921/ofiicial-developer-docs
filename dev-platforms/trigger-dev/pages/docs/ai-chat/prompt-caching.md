@@ -28,9 +28,9 @@ A request renders as `tools` → `system` → `messages`. There are three prefix
 
 The system prompt (your `chat.prompt` text plus any skills preamble) is usually the largest stable block, so it's the first thing to cache. `chat.toStreamTextOptions()` returns `system` as a plain string by default; opt into caching and it returns a structured system message carrying the cache breakpoint instead.
 
-<Note>
-  System-prompt caching needs AI SDK v6 or later, where the `system` parameter accepts a structured message. On AI SDK v5 `system` is a plain string, so these options won't apply a breakpoint to the system block — cache the conversation via `prepareMessages` instead.
-</Note>
+> [!NOTE]
+>
+> System-prompt caching needs AI SDK v6 or later, where the `system` parameter accepts a structured message. On AI SDK v5 `system` is a plain string, so these options won't apply a breakpoint to the system block — cache the conversation via `prepareMessages` instead.
 
 Three ways to opt in, depending on where you'd rather express it.
 
@@ -91,9 +91,9 @@ run: async ({ messages, signal, streamText }) => {
 
 If more than one is set, the most specific wins: `systemProviderOptions` overrides `cacheControl`, and both override `chat.prompt.set`'s `providerOptions`. There's no deep merge — the most specific option replaces the rest.
 
-<Note>
-  Use the 1-hour cache for prefixes that sit idle longer than 5 minutes between turns: `cacheControl: { type: "ephemeral", ttl: "1h" }`. Writes cost more (2× vs 1.25×), so it pays off only when reads span the longer window.
-</Note>
+> [!NOTE]
+>
+> Use the 1-hour cache for prefixes that sit idle longer than 5 minutes between turns: `cacheControl: { type: "ephemeral", ttl: "1h" }`. Writes cost more (2× vs 1.25×), so it pays off only when reads span the longer window.
 
 ## Cache the conversation history
 
@@ -129,13 +129,13 @@ export const myChat = chat.agent({
 
 The system breakpoint and the conversation breakpoint compose: the system block is cached once for the life of the chat, and each turn extends the cached message prefix.
 
-<Note>
-  Anthropic allows **at most 4** cache breakpoints per request, and a prefix must be at least \~1024 tokens (model-dependent) to cache at all — shorter prefixes silently don't cache. One system breakpoint plus one rolling message breakpoint is the typical setup and leaves headroom.
-</Note>
+> [!NOTE]
+>
+> Anthropic allows **at most 4** cache breakpoints per request, and a prefix must be at least \~1024 tokens (model-dependent) to cache at all — shorter prefixes silently don't cache. One system breakpoint plus one rolling message breakpoint is the typical setup and leaves headroom.
 
-<Note>
-  This rolling-breakpoint pattern composes with [Head Start](/docs/ai-chat/fast-starts#head-start). On a head-start handover, the first turn's pending tool call is handed to the agent as a tool-approval round whose trailing `tool` message must reach `streamText` untouched for that call to execute. `chat.agent` preserves that tail across `prepareMessages` automatically, so rewriting the last message here is safe: on a resume turn the breakpoint just lands on the next user or assistant message instead of the transient approval row.
-</Note>
+> [!NOTE]
+>
+> This rolling-breakpoint pattern composes with [Head Start](/docs/ai-chat/fast-starts#head-start). On a head-start handover, the first turn's pending tool call is handed to the agent as a tool-approval round whose trailing `tool` message must reach `streamText` untouched for that call to execute. `chat.agent` preserves that tail across `prepareMessages` automatically, so rewriting the last message here is safe: on a resume turn the breakpoint just lands on the next user or assistant message instead of the transient approval row.
 
 ## Caching and compaction
 
@@ -184,26 +184,24 @@ The first turn writes the cache (`cacheWriteTokens > 0`, `cacheReadTokens` is 0)
 
 If `cacheReadTokens` stays 0 across turns with an identical prefix, a silent invalidator is shifting the bytes — see below.
 
-<Warning>
-  Anything that changes the prefix between turns silently kills the cache. Keep the system prompt **byte-stable** — never interpolate a timestamp, request ID, or per-turn value into `chat.prompt`. Don't change the **model** or the **tool set** mid-conversation (tools render at position 0, so adding one invalidates everything after). Inject dynamic per-turn context as a late message via [pending messages](/docs/ai-chat/pending-messages) or [background injection](/docs/ai-chat/background-injection), not into the cached prefix.
-</Warning>
+> [!WARNING]
+>
+> Anything that changes the prefix between turns silently kills the cache. Keep the system prompt **byte-stable** — never interpolate a timestamp, request ID, or per-turn value into `chat.prompt`. Don't change the **model** or the **tool set** mid-conversation (tools render at position 0, so adding one invalidates everything after). Inject dynamic per-turn context as a late message via [pending messages](/docs/ai-chat/pending-messages) or [background injection](/docs/ai-chat/background-injection), not into the cached prefix.
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Compaction" icon="compress" href="/docs/ai-chat/compaction">
-    Keep long conversations within token limits — and re-warm the cache after.
-  </Card>
+> **[Compaction](/docs/ai-chat/compaction)**
+>
+> Keep long conversations within token limits — and re-warm the cache after.
 
-  <Card title="Fast starts" icon="bolt" href="/docs/ai-chat/fast-starts">
-    Cut cold-start latency so a cached prefix is the only thing between a message and a reply.
-  </Card>
+> **[Fast starts](/docs/ai-chat/fast-starts)**
+>
+> Cut cold-start latency so a cached prefix is the only thing between a message and a reply.
 
-  <Card title="chat.agent reference" icon="book" href="/docs/ai-chat/reference#chatagentoptions">
-    Full option surface, including `prepareMessages` and `toStreamTextOptions`.
-  </Card>
+> **[chat.agent reference](/docs/ai-chat/reference#chatagentoptions)**
+>
+> Full option surface, including `prepareMessages` and `toStreamTextOptions`.
 
-  <Card title="Building agents: backend" icon="server" href="/docs/ai-chat/backend">
-    The three ways to build a chat backend and when to reach for each.
-  </Card>
-</CardGroup>
+> **[Building agents: backend](/docs/ai-chat/backend)**
+>
+> The three ways to build a chat backend and when to reach for each.

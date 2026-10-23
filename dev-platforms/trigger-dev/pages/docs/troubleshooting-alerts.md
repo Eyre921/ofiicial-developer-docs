@@ -15,36 +15,34 @@ We support receiving alerts for the following events:
 
 The first three are created from the **Alerts** page. The fourth — an **Error group** alert — is created from the **Errors** page instead, but appears in the same Alerts table once created. It behaves quite differently from a run failure alert; see [Error group alerts](#error-group-alerts) below.
 
-<Note>
-  If you want to be told about **every** run that fails, choose a **run fails** alert. An Error group
-  alert will not do this — it deliberately stays quiet once it has alerted on a given error.
-</Note>
+> [!NOTE]
+>
+> If you want to be told about **every** run that fails, choose a **run fails** alert. An Error group
+> alert will not do this — it deliberately stays quiet once it has alerted on a given error.
 
 ## How to setup alerts
 
-<Steps>
-  <Step title="Create a new alert">
-    Click on "Alerts" in the left hand side menu, then click on "New alert" to open the new alert modal.
+**1. Create a new alert**
 
-    <img alt="Email alerts" />
-  </Step>
+Click on "Alerts" in the left hand side menu, then click on "New alert" to open the new alert modal.
 
-  <Step title="Choose your alert method">
-    Choose to be notified by email, Slack notification or webhook whenever:
+![Email alerts](https://mintcdn.com/trigger/0bD0UfsjaINxS6Tw/images/troubleshooting-alerts-blank.png?fit=max\&auto=format\&n=0bD0UfsjaINxS6Tw\&q=85\&s=66c28b50c37b92057afb4100948a6636)
 
-    * a run fails
-    * a deployment fails
-    * a deployment succeeds
+**2. Choose your alert method**
 
-      <img alt="Email alerts" />
-  </Step>
+Choose to be notified by email, Slack notification or webhook whenever:
 
-  <Step title="Delete or disable alerts">
-    Click on the triple dot menu on the right side of the table row and select "Disable" or "Delete".
+* a run fails
+* a deployment fails
+* a deployment succeeds
 
-    <img alt="Disable and delete alerts" />
-  </Step>
-</Steps>
+  ![Email alerts](https://mintcdn.com/trigger/0bD0UfsjaINxS6Tw/images/troubleshooting-alerts-modal.png?fit=max\&auto=format\&n=0bD0UfsjaINxS6Tw\&q=85\&s=69b2a564572a6b1fb1c5e3ee77d68c4a)
+
+**3. Delete or disable alerts**
+
+Click on the triple dot menu on the right side of the table row and select "Disable" or "Delete".
+
+![Disable and delete alerts](https://mintcdn.com/trigger/0bD0UfsjaINxS6Tw/images/troubleshooting-alerts-disable-delete.png?fit=max\&auto=format\&n=0bD0UfsjaINxS6Tw\&q=85\&s=f3455ed01b0d4c7a66c855a3b7d0cc53)
 
 ## Error group alerts
 
@@ -144,466 +142,466 @@ export async function action({ request }: ActionFunctionArgs) {
 
 When you create a webhook alert, you'll receive different payloads depending on the type of alert. All webhooks share some common properties:
 
-<ParamField type="string">
-  A unique identifier for this webhook event
-</ParamField>
+**id** `string`
 
-<ParamField type="datetime">
-  When this webhook event was created
-</ParamField>
+A unique identifier for this webhook event
 
-<ParamField type="string">
-  The version of the webhook payload format
-</ParamField>
+**created** `datetime`
 
-<ParamField type="string">
-  The type of alert webhook. One of: `alert.run.failed`, `alert.deployment.success`, `alert.deployment.failed`, or `alert.error`
-</ParamField>
+When this webhook event was created
+
+**webhookVersion** `string`
+
+The version of the webhook payload format
+
+**type** `string`
+
+The type of alert webhook. One of: `alert.run.failed`, `alert.deployment.success`, `alert.deployment.failed`, or `alert.error`
 
 ### Run Failed Alert
 
 This webhook is sent when a run fails. The payload is available on the `object` property:
 
-<ParamField type="string">
-  Unique identifier for the task
-</ParamField>
+**object.task.id** `string`
 
-<ParamField type="string">
-  File path where the task is defined
-</ParamField>
+Unique identifier for the task
 
-<ParamField type="string">
-  Name of the exported task function
-</ParamField>
+**object.task.filePath** `string`
 
-<ParamField type="string">
-  Version of the task
-</ParamField>
+File path where the task is defined
 
-<ParamField type="string">
-  Version of the SDK used
-</ParamField>
+**object.task.exportName** `string`
 
-<ParamField type="string">
-  Version of the CLI used
-</ParamField>
+Name of the exported task function
 
-<ParamField type="string">
-  Unique identifier for the run
-</ParamField>
+**object.task.version** `string`
 
-<ParamField type="number">
-  Run number
-</ParamField>
+Version of the task
 
-<ParamField type="string">
-  Current status of the run
-</ParamField>
+**object.task.sdkVersion** `string`
 
-<ParamField type="datetime">
-  When the run was created
-</ParamField>
+Version of the SDK used
 
-<ParamField type="datetime">
-  When the run started executing
-</ParamField>
+**object.task.cliVersion** `string`
 
-<ParamField type="datetime">
-  When the run finished executing
-</ParamField>
+Version of the CLI used
 
-<ParamField type="boolean">
-  Whether this is a test run
-</ParamField>
+**object.run.id** `string`
 
-<ParamField type="string">
-  Idempotency key for the run
-</ParamField>
+Unique identifier for the run
 
-<ParamField type="string[]">
-  Associated tags
-</ParamField>
+**object.run.number** `number`
 
-<ParamField type="object">
-  Error information
-</ParamField>
+Run number
 
-<ParamField type="boolean">
-  Whether the run was an out-of-memory error
-</ParamField>
+**object.run.status** `string`
 
-<ParamField type="string">
-  Machine preset used for the run
-</ParamField>
+Current status of the run
 
-<ParamField type="string">
-  URL to view the run in the dashboard
-</ParamField>
+**object.run.createdAt** `datetime`
 
-<ParamField type="string">
-  Environment ID
-</ParamField>
+When the run was created
 
-<ParamField type="string">
-  Environment type (`PRODUCTION`, `STAGING`, or `PREVIEW`)
-</ParamField>
+**object.run.startedAt** `datetime`
 
-<ParamField type="string">
-  Environment slug
-</ParamField>
+When the run started executing
 
-<ParamField type="string">
-  Environment branch name (optional)
-</ParamField>
+**object.run.completedAt** `datetime`
 
-<ParamField type="string">
-  Organization ID
-</ParamField>
+When the run finished executing
 
-<ParamField type="string">
-  Organization slug
-</ParamField>
+**object.run.isTest** `boolean`
 
-<ParamField type="string">
-  Organization name
-</ParamField>
+Whether this is a test run
 
-<ParamField type="string">
-  Project ID
-</ParamField>
+**object.run.idempotencyKey** `string`
 
-<ParamField type="string">
-  Project reference
-</ParamField>
+Idempotency key for the run
 
-<ParamField type="string">
-  Project slug
-</ParamField>
+**object.run.tags** `string[]`
 
-<ParamField type="string">
-  Project name
-</ParamField>
+Associated tags
+
+**object.run.error** `object`
+
+Error information
+
+**object.run.isOutOfMemoryError** `boolean`
+
+Whether the run was an out-of-memory error
+
+**object.run.machine** `string`
+
+Machine preset used for the run
+
+**object.run.dashboardUrl** `string`
+
+URL to view the run in the dashboard
+
+**object.environment.id** `string`
+
+Environment ID
+
+**object.environment.type** `string`
+
+Environment type (`PRODUCTION`, `STAGING`, or `PREVIEW`)
+
+**object.environment.slug** `string`
+
+Environment slug
+
+**object.environment.branchName** `string`
+
+Environment branch name (optional)
+
+**object.organization.id** `string`
+
+Organization ID
+
+**object.organization.slug** `string`
+
+Organization slug
+
+**object.organization.name** `string`
+
+Organization name
+
+**object.project.id** `string`
+
+Project ID
+
+**object.project.ref** `string`
+
+Project reference
+
+**object.project.slug** `string`
+
+Project slug
+
+**object.project.name** `string`
+
+Project name
 
 ### Deployment Success Alert
 
 This webhook is sent when a deployment succeeds. The payload is available on the `object` property:
 
-<ParamField type="string">
-  Deployment ID
-</ParamField>
+**object.deployment.id** `string`
 
-<ParamField type="string">
-  Deployment status
-</ParamField>
+Deployment ID
 
-<ParamField type="string">
-  Deployment version
-</ParamField>
+**object.deployment.status** `string`
 
-<ParamField type="string">
-  Short code identifier
-</ParamField>
+Deployment status
 
-<ParamField type="datetime">
-  When the deployment completed
-</ParamField>
+**object.deployment.version** `string`
 
-<ParamField type="array">
-  Array of deployed tasks with properties: id, filePath, exportName, and triggerSource
-</ParamField>
+Deployment version
 
-<ParamField type="string">
-  Environment ID
-</ParamField>
+**object.deployment.shortCode** `string`
 
-<ParamField type="string">
-  Environment type (`PRODUCTION`, `STAGING`, or `PREVIEW`)
-</ParamField>
+Short code identifier
 
-<ParamField type="string">
-  Environment slug
-</ParamField>
+**object.deployment.deployedAt** `datetime`
 
-<ParamField type="string">
-  Organization ID
-</ParamField>
+When the deployment completed
 
-<ParamField type="string">
-  Organization slug
-</ParamField>
+**object.tasks** `array`
 
-<ParamField type="string">
-  Organization name
-</ParamField>
+Array of deployed tasks with properties: id, filePath, exportName, and triggerSource
 
-<ParamField type="string">
-  Project ID
-</ParamField>
+**object.environment.id** `string`
 
-<ParamField type="string">
-  Project reference
-</ParamField>
+Environment ID
 
-<ParamField type="string">
-  Project slug
-</ParamField>
+**object.environment.type** `string`
 
-<ParamField type="string">
-  Project name
-</ParamField>
+Environment type (`PRODUCTION`, `STAGING`, or `PREVIEW`)
 
-<ParamField type="object">
-  Git metadata for the deployment (optional). When present, `branch`, `commitSha`, `commitMessage`, `commitUrl` and `branchUrl` are always set.
-</ParamField>
+**object.environment.slug** `string`
 
-<ParamField type="string">
-  Git branch
-</ParamField>
+Environment slug
 
-<ParamField type="string">
-  Short commit SHA (first 7 characters)
-</ParamField>
+**object.organization.id** `string`
 
-<ParamField type="string">
-  Commit message (empty string if unavailable)
-</ParamField>
+Organization ID
 
-<ParamField type="string">
-  URL of the commit
-</ParamField>
+**object.organization.slug** `string`
 
-<ParamField type="string">
-  URL of the branch
-</ParamField>
+Organization slug
 
-<ParamField type="number">
-  Pull request number (optional)
-</ParamField>
+**object.organization.name** `string`
 
-<ParamField type="string">
-  Pull request title (optional)
-</ParamField>
+Organization name
 
-<ParamField type="string">
-  Pull request URL (optional)
-</ParamField>
+**object.project.id** `string`
 
-<ParamField type="string">
-  Git provider (optional)
-</ParamField>
+Project ID
 
-<ParamField type="object">
-  Vercel metadata for the deployment (optional)
-</ParamField>
+**object.project.ref** `string`
 
-<ParamField type="string">
-  URL of the deployment in the Vercel dashboard
-</ParamField>
+Project reference
+
+**object.project.slug** `string`
+
+Project slug
+
+**object.project.name** `string`
+
+Project name
+
+**object.git** `object`
+
+Git metadata for the deployment (optional). When present, `branch`, `commitSha`, `commitMessage`, `commitUrl` and `branchUrl` are always set.
+
+**object.git.branch** `string`
+
+Git branch
+
+**object.git.commitSha** `string`
+
+Short commit SHA (first 7 characters)
+
+**object.git.commitMessage** `string`
+
+Commit message (empty string if unavailable)
+
+**object.git.commitUrl** `string`
+
+URL of the commit
+
+**object.git.branchUrl** `string`
+
+URL of the branch
+
+**object.git.pullRequestNumber** `number`
+
+Pull request number (optional)
+
+**object.git.pullRequestTitle** `string`
+
+Pull request title (optional)
+
+**object.git.pullRequestUrl** `string`
+
+Pull request URL (optional)
+
+**object.git.provider** `string`
+
+Git provider (optional)
+
+**object.vercel** `object`
+
+Vercel metadata for the deployment (optional)
+
+**object.vercel.deploymentUrl** `string`
+
+URL of the deployment in the Vercel dashboard
 
 ### Deployment Failed Alert
 
 This webhook is sent when a deployment fails. The payload is available on the `object` property:
 
-<ParamField type="string">
-  Deployment ID
-</ParamField>
+**object.deployment.id** `string`
 
-<ParamField type="string">
-  Deployment status
-</ParamField>
+Deployment ID
 
-<ParamField type="string">
-  Deployment version
-</ParamField>
+**object.deployment.status** `string`
 
-<ParamField type="string">
-  Short code identifier
-</ParamField>
+Deployment status
 
-<ParamField type="datetime">
-  When the deployment failed
-</ParamField>
+**object.deployment.version** `string`
 
-<ParamField type="string">
-  Error name
-</ParamField>
+Deployment version
 
-<ParamField type="string">
-  Error message
-</ParamField>
+**object.deployment.shortCode** `string`
 
-<ParamField type="string">
-  Error stack trace (optional)
-</ParamField>
+Short code identifier
 
-<ParamField type="string">
-  Standard error output (optional)
-</ParamField>
+**object.deployment.failedAt** `datetime`
 
-<ParamField type="string">
-  Environment ID
-</ParamField>
+When the deployment failed
 
-<ParamField type="string">
-  Environment type (`PRODUCTION`, `STAGING`, or `PREVIEW`)
-</ParamField>
+**object.error.name** `string`
 
-<ParamField type="string">
-  Environment slug
-</ParamField>
+Error name
 
-<ParamField type="string">
-  Organization ID
-</ParamField>
+**object.error.message** `string`
 
-<ParamField type="string">
-  Organization slug
-</ParamField>
+Error message
 
-<ParamField type="string">
-  Organization name
-</ParamField>
+**object.error.stack** `string`
 
-<ParamField type="string">
-  Project ID
-</ParamField>
+Error stack trace (optional)
 
-<ParamField type="string">
-  Project reference
-</ParamField>
+**object.error.stderr** `string`
 
-<ParamField type="string">
-  Project slug
-</ParamField>
+Standard error output (optional)
 
-<ParamField type="string">
-  Project name
-</ParamField>
+**object.environment.id** `string`
 
-<ParamField type="object">
-  Git metadata for the deployment (optional). When present, `branch`, `commitSha`, `commitMessage`, `commitUrl` and `branchUrl` are always set.
-</ParamField>
+Environment ID
 
-<ParamField type="string">
-  Git branch
-</ParamField>
+**object.environment.type** `string`
 
-<ParamField type="string">
-  Short commit SHA (first 7 characters)
-</ParamField>
+Environment type (`PRODUCTION`, `STAGING`, or `PREVIEW`)
 
-<ParamField type="string">
-  Commit message (empty string if unavailable)
-</ParamField>
+**object.environment.slug** `string`
 
-<ParamField type="string">
-  URL of the commit
-</ParamField>
+Environment slug
 
-<ParamField type="string">
-  URL of the branch
-</ParamField>
+**object.organization.id** `string`
 
-<ParamField type="number">
-  Pull request number (optional)
-</ParamField>
+Organization ID
 
-<ParamField type="string">
-  Pull request title (optional)
-</ParamField>
+**object.organization.slug** `string`
 
-<ParamField type="string">
-  Pull request URL (optional)
-</ParamField>
+Organization slug
 
-<ParamField type="string">
-  Git provider (optional)
-</ParamField>
+**object.organization.name** `string`
 
-<ParamField type="object">
-  Vercel metadata for the deployment (optional)
-</ParamField>
+Organization name
 
-<ParamField type="string">
-  URL of the deployment in the Vercel dashboard
-</ParamField>
+**object.project.id** `string`
+
+Project ID
+
+**object.project.ref** `string`
+
+Project reference
+
+**object.project.slug** `string`
+
+Project slug
+
+**object.project.name** `string`
+
+Project name
+
+**object.git** `object`
+
+Git metadata for the deployment (optional). When present, `branch`, `commitSha`, `commitMessage`, `commitUrl` and `branchUrl` are always set.
+
+**object.git.branch** `string`
+
+Git branch
+
+**object.git.commitSha** `string`
+
+Short commit SHA (first 7 characters)
+
+**object.git.commitMessage** `string`
+
+Commit message (empty string if unavailable)
+
+**object.git.commitUrl** `string`
+
+URL of the commit
+
+**object.git.branchUrl** `string`
+
+URL of the branch
+
+**object.git.pullRequestNumber** `number`
+
+Pull request number (optional)
+
+**object.git.pullRequestTitle** `string`
+
+Pull request title (optional)
+
+**object.git.pullRequestUrl** `string`
+
+Pull request URL (optional)
+
+**object.git.provider** `string`
+
+Git provider (optional)
+
+**object.vercel** `object`
+
+Vercel metadata for the deployment (optional)
+
+**object.vercel.deploymentUrl** `string`
+
+URL of the deployment in the Vercel dashboard
 
 ### Error Group Alert
 
 This webhook is sent for an [error group alert](#error-group-alerts). The payload is available on the `object` property:
 
-<ParamField type="string">
-  Why the alert fired. One of: `new_issue`, `regression`, `unignored`
-</ParamField>
+**object.classification** `string`
 
-<ParamField type="string">
-  Identifier for the error group
-</ParamField>
+Why the alert fired. One of: `new_issue`, `regression`, `unignored`
 
-<ParamField type="string">
-  Error type
-</ParamField>
+**object.error.fingerprint** `string`
 
-<ParamField type="string">
-  Error message
-</ParamField>
+Identifier for the error group
 
-<ParamField type="string">
-  Sample stack trace, if available
-</ParamField>
+**object.error.type** `string`
 
-<ParamField type="string">
-  When the error was first seen
-</ParamField>
+Error type
 
-<ParamField type="string">
-  When the error was last seen
-</ParamField>
+**object.error.message** `string`
 
-<ParamField type="number">
-  Number of occurrences
-</ParamField>
+Error message
 
-<ParamField type="string">
-  Task the error occurred in
-</ParamField>
+**object.error.stackTrace** `string`
 
-<ParamField type="string">
-  Environment ID
-</ParamField>
+Sample stack trace, if available
 
-<ParamField type="string">
-  Environment name
-</ParamField>
+**object.error.firstSeen** `string`
 
-<ParamField type="string">
-  Organization ID
-</ParamField>
+When the error was first seen
 
-<ParamField type="string">
-  Organization slug
-</ParamField>
+**object.error.lastSeen** `string`
 
-<ParamField type="string">
-  Organization name
-</ParamField>
+When the error was last seen
 
-<ParamField type="string">
-  Project ID
-</ParamField>
+**object.error.occurrenceCount** `number`
 
-<ParamField type="string">
-  Project reference
-</ParamField>
+Number of occurrences
 
-<ParamField type="string">
-  Project slug
-</ParamField>
+**object.error.taskIdentifier** `string`
 
-<ParamField type="string">
-  Project name
-</ParamField>
+Task the error occurred in
 
-<ParamField type="string">
-  URL to view the error in the dashboard
-</ParamField>
+**object.environment.id** `string`
+
+Environment ID
+
+**object.environment.name** `string`
+
+Environment name
+
+**object.organization.id** `string`
+
+Organization ID
+
+**object.organization.slug** `string`
+
+Organization slug
+
+**object.organization.name** `string`
+
+Organization name
+
+**object.project.id** `string`
+
+Project ID
+
+**object.project.ref** `string`
+
+Project reference
+
+**object.project.slug** `string`
+
+Project slug
+
+**object.project.name** `string`
+
+Project name
+
+**object.dashboardUrl** `string`
+
+URL to view the error in the dashboard

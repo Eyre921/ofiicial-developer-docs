@@ -6,4 +6,4 @@ path: getting-started/nexus
 
 Connect coding tools, agents, applications, and gateways to open models and Nexus Auto.
 
-Open the [Nexus documentation](/nexus).
+See the [Nexus documentation](/nexus).

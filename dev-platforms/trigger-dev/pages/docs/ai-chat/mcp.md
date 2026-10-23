@@ -21,25 +21,23 @@ See the [MCP Tools Reference](/docs/mcp-tools#agent-chat-tools) for full details
 
 ## Typical workflow
 
-<Steps>
-  <Step title="List available agents">
-    Ask your AI assistant to list agents in your project. This calls `list_agents` which returns all tasks created with [`chat.agent()`](/docs/ai-chat/backend#chat-agent) or [`chat.customAgent()`](/docs/ai-chat/custom-agents).
-  </Step>
+**1. List available agents**
 
-  <Step title="Start a chat">
-    Start a conversation with an agent using `start_agent_chat`. This triggers a run and optionally preloads the agent so it's ready to respond immediately.
+Ask your AI assistant to list agents in your project. This calls `list_agents` which returns all tasks created with [`chat.agent()`](/docs/ai-chat/backend#chat-agent) or [`chat.customAgent()`](/docs/ai-chat/custom-agents).
 
-    If the agent uses `withClientData`, pass the required fields via `clientData`.
-  </Step>
+**2. Start a chat**
 
-  <Step title="Send messages">
-    Send messages with `send_agent_message`. The agent processes each message and returns the full response text, including which tools were used. The agent retains full context across messages in the same chat.
-  </Step>
+Start a conversation with an agent using `start_agent_chat`. This triggers a run and optionally preloads the agent so it's ready to respond immediately.
 
-  <Step title="Close the chat">
-    When done, close the conversation with `close_agent_chat`. This signals the agent to exit gracefully. If you skip this step, the agent will close on its own when its idle timeout expires.
-  </Step>
-</Steps>
+If the agent uses `withClientData`, pass the required fields via `clientData`.
+
+**3. Send messages**
+
+Send messages with `send_agent_message`. The agent processes each message and returns the full response text, including which tools were used. The agent retains full context across messages in the same chat.
+
+**4. Close the chat**
+
+When done, close the conversation with `close_agent_chat`. This signals the agent to exit gracefully. If you skip this step, the agent will close on its own when its idle timeout expires.
 
 ## Example conversation
 
@@ -92,9 +90,9 @@ Under the hood, the MCP tools use the same protocol as the [frontend transport](
 
 Sessions are held in-memory within the MCP server process. If the MCP server restarts, active sessions are lost — but the underlying agent runs continue until their idle timeout.
 
-<Note>
-  The `get_current_worker` tool also labels agents with `[agent]` in its output, making it easy to identify which tasks are agents even when listing all tasks.
-</Note>
+> [!NOTE]
+>
+> The `get_current_worker` tool also labels agents with `[agent]` in its output, making it easy to identify which tasks are agents even when listing all tasks.
 
 ## See also
 

@@ -19,9 +19,9 @@ There are 3 example tasks to follow on this page:
 2. [Generate a PDF from a web page](/docs/guides/examples/puppeteer#generate-a-pdf-from-a-web-page)
 3. [Scrape content from a web page](/docs/guides/examples/puppeteer#scrape-content-from-a-web-page)
 
-<Warning>
-  **WEB SCRAPING:** When web scraping, you MUST use a proxy to comply with our terms of service. Direct scraping of third-party websites without the site owner's permission using Trigger.dev Cloud is prohibited and will result in account suspension. See [this example](/docs/guides/examples/puppeteer#scrape-content-from-a-web-page) which uses a proxy.
-</Warning>
+> [!WARNING]
+>
+> **WEB SCRAPING:** When web scraping, you MUST use a proxy to comply with our terms of service. Direct scraping of third-party websites without the site owner's permission using Trigger.dev Cloud is prohibited and will result in account suspension. See [this example](/docs/guides/examples/puppeteer#scrape-content-from-a-web-page) which uses a proxy.
 
 ## Build configuration
 
@@ -147,11 +147,11 @@ There's no payload required for this task so you can just click "Run test" from 
 
 In this example we use [Puppeteer](https://pptr.dev/) with a [BrowserBase](https://www.browserbase.com/) proxy to scrape the GitHub stars count from the [Trigger.dev](https://trigger.dev) landing page and log it out. See [this list](/docs/guides/examples/puppeteer#proxying) for more proxying services we recommend.
 
-<Warning>
-  When web scraping, you MUST use the technique below which uses a proxy with Puppeteer. Direct
-  scraping without using `browserWSEndpoint` is prohibited and will result in account suspension.
-  Screenshots are also prohibited when scraping.
-</Warning>
+> [!WARNING]
+>
+> When web scraping, you MUST use the technique below which uses a proxy with Puppeteer. Direct
+> scraping without using `browserWSEndpoint` is prohibited and will result in account suspension.
+> Screenshots are also prohibited when scraping.
 
 ### Task code
 
@@ -201,7 +201,7 @@ There's no payload required for this task so you can just click "Run test" from 
 
 ## Local development
 
-To test this example task locally, be sure to install any packages from the build extensions you added to your `trigger.config.ts` file to your local machine. In this case, you need to install .
+To test this example task locally, be sure to install any packages from the build extensions you added to your `trigger.config.ts` file to your local machine. In this case, you need to install the Puppeteer library..
 
 ## Proxying
 

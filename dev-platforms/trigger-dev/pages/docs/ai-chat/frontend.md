@@ -50,10 +50,10 @@ The two callbacks have distinct responsibilities:
 
 See [Quick start](/docs/ai-chat/quick-start) for the matching server actions.
 
-<Tip>
-  The hook keeps `onSessionChange` and `clientData` up to date via internal refs, so you don't need
-  to memoize callbacks or worry about stale closures when those options change between renders.
-</Tip>
+> [!TIP]
+>
+> The hook keeps `onSessionChange` and `clientData` up to date via internal refs, so you don't need
+> to memoize callbacks or worry about stale closures when those options change between renders.
 
 ## Typed messages (`chat.withUIMessage`)
 
@@ -215,30 +215,30 @@ function ChatClient({ chatId, initialMessages, initialSessions }) {
 }
 ```
 
-<Info>
-  `resume: true` causes `useChat` to call `reconnectToStream` on the transport when the component
-  mounts. The transport uses the session's `lastEventId` to skip past already-seen stream events, so
-  the frontend only receives new data. Only enable `resume` when there are existing messages — for
-  brand new chats, there's nothing to reconnect to.
-</Info>
+> [!NOTE]
+>
+> `resume: true` causes `useChat` to call `reconnectToStream` on the transport when the component
+> mounts. The transport uses the session's `lastEventId` to skip past already-seen stream events, so
+> the frontend only receives new data. Only enable `resume` when there are existing messages — for
+> brand new chats, there's nothing to reconnect to.
 
-<Note>
-  After resuming, `useChat`'s built-in `stop()` won't send the stop signal to the backend. The
-  transport accepts an abort signal on `reconnectToStream` but doesn't treat it as owning the turn,
-  so aborting a resumed subscription only closes your local stream while the run keeps generating.
-  Use `transport.stopGeneration(chatId)` for reliable stop behavior after resume — see
-  [Stop generation](#stop-generation) for the recommended pattern. Pass `stopOnAbort: true` to
-  `reconnectToStream` only when that subscriber owns the turn.
-</Note>
+> [!NOTE]
+>
+> After resuming, `useChat`'s built-in `stop()` won't send the stop signal to the backend. The
+> transport accepts an abort signal on `reconnectToStream` but doesn't treat it as owning the turn,
+> so aborting a resumed subscription only closes your local stream while the run keeps generating.
+> Use `transport.stopGeneration(chatId)` for reliable stop behavior after resume — see
+> [Stop generation](#stop-generation) for the recommended pattern. Pass `stopOnAbort: true` to
+> `reconnectToStream` only when that subscriber owns the turn.
 
-<Warning>
-  In React strict mode (enabled by default in Next.js dev), you may see a `TypeError: Cannot read
-      properties of undefined (reading 'state')` in the console when using `resume`. This is a [known
-  bug in the AI SDK](https://github.com/vercel/ai/issues/8477) caused by React strict mode
-  double-firing the resume effect. The error is caught internally and **does not affect
-  functionality** — streaming and message display work correctly. It only appears in development and
-  will not occur in production builds.
-</Warning>
+> [!WARNING]
+>
+> In React strict mode (enabled by default in Next.js dev), you may see a `TypeError: Cannot read
+>     properties of undefined (reading 'state')` in the console when using `resume`. This is a [known
+> bug in the AI SDK](https://github.com/vercel/ai/issues/8477) caused by React strict mode
+> double-firing the resume effect. The error is caught internally and **does not affect
+> functionality** — streaming and message display work correctly. It only appears in development and
+> will not occur in production builds.
 
 ### Network resilience
 
@@ -338,18 +338,18 @@ const stop = useCallback(() => {
 }
 ```
 
-<Info>
-  `transport.stopGeneration(chatId)` handles the backend stop signal and closes
-  the SSE connection, while `aiStop()` (from `useChat`) updates the frontend
-  status to `"ready"` and fires the `onFinish` callback.
-</Info>
+> [!NOTE]
+>
+> `transport.stopGeneration(chatId)` handles the backend stop signal and closes
+> the SSE connection, while `aiStop()` (from `useChat`) updates the frontend
+> status to `"ready"` and fires the `onFinish` callback.
 
-<Tip>
-  Aborting a resumed stream never stops the run by itself, so `useChat`'s
-  built-in `stop()` isn't enough after a page refresh. Use the pattern above, or
-  pass `stopOnAbort: true` to `reconnectToStream` when that subscriber owns the
-  turn.
-</Tip>
+> [!TIP]
+>
+> Aborting a resumed stream never stops the run by itself, so `useChat`'s
+> built-in `stop()` isn't enough after a page refresh. Use the pattern above, or
+> pass `stopOnAbort: true` to `reconnectToStream` when that subscriber owns the
+> turn.
 
 See [Stop generation](/docs/ai-chat/backend#stop-generation) in the backend docs for how to handle stop signals in your task.
 
@@ -443,12 +443,12 @@ function Chat({ chatId, transport }: { chatId: string; transport: ChatTransport<
 5. The transport sends the message via input streams — the backend matches it by ID and replaces the existing assistant message in the accumulator
 6. `streamText` sees the approved tool, executes it, and streams the result
 
-<Info>
-  Message IDs are kept in sync between frontend and backend automatically. The backend always
-  includes a `generateMessageId` function when streaming responses, ensuring the `start` chunk
-  carries a `messageId` that the frontend uses. This makes the ID-based matching reliable
-  for tool approval updates.
-</Info>
+> [!NOTE]
+>
+> Message IDs are kept in sync between frontend and backend automatically. The backend always
+> includes a `generateMessageId` function when streaming responses, ensuring the `start` chunk
+> carries a `messageId` that the frontend uses. This makes the ID-based matching reliable
+> for tool approval updates.
 
 ## Sending actions
 
@@ -492,9 +492,9 @@ function ChatControls({ chatId }: { chatId: string }) {
 
 The action payload is validated against the agent's `actionSchema` on the backend; invalid actions are rejected. See [Actions](/docs/ai-chat/actions) for the backend setup.
 
-<Note>
-  `transport.sendAction()` still exists for callers outside `useChat` (server to server, or a custom client). It returns the response as a raw `ReadableStream<UIMessageChunk>` that the caller must read; `useChat` does not consume it.
-</Note>
+> [!NOTE]
+>
+> `transport.sendAction()` still exists for callers outside `useChat` (server to server, or a custom client). It returns the response as a raw `ReadableStream<UIMessageChunk>` that the caller must read; `useChat` does not consume it.
 
 For server-to-server usage, `AgentChat` has the same method:
 
@@ -562,9 +562,9 @@ function Chat({ chatId }: { chatId: string }) {
 * Calls `setMessages` on read-only tabs when messages arrive from the active tab
 * Tracks read-only state via the transport's `BroadcastChannel` coordinator
 
-<Note>
-  Multi-tab coordination is same-browser only (`BroadcastChannel` is a browser API). It gracefully degrades to a no-op in Node.js, SSR, or browsers without `BroadcastChannel` support. Cross-device coordination requires server-side involvement.
-</Note>
+> [!NOTE]
+>
+> Multi-tab coordination is same-browser only (`BroadcastChannel` is a browser API). It gracefully degrades to a no-op in Node.js, SSR, or browsers without `BroadcastChannel` support. Cross-device coordination requires server-side involvement.
 
 ## Self-hosting
 

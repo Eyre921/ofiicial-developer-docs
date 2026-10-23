@@ -1,5 +1,5 @@
 ---
-title: "Overview"
+title: "Ratelimit TypeScript SDK Overview"
 source: https://upstash.com/docs/redis/sdks/ratelimit-ts/overview
 path: docs/redis/sdks/ratelimit-ts/overview
 ---

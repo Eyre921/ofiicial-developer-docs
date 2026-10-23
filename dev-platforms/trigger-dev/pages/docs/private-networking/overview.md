@@ -8,9 +8,9 @@ Connect your tasks to private resources in your AWS account using AWS PrivateLin
 
 Private networking lets your Trigger.dev tasks reach databases, caches, and internal APIs that live inside your own AWS VPC, without exposing them to the public internet. Connectivity is established over [AWS PrivateLink](https://docs.aws.amazon.com/vpc/latest/privatelink/what-is-privatelink.html), so traffic stays on the AWS backbone.
 
-<Info>
-  Private networking is a Pro and Enterprise feature. If you'd like access, [get in touch](/docs/community).
-</Info>
+> [!NOTE]
+>
+> Private networking is a Pro and Enterprise feature. If you'd like access, [get in touch](/docs/community).
 
 ## What is AWS PrivateLink
 
@@ -39,31 +39,29 @@ If your resource is reachable from a Network Load Balancer in the same VPC, it c
 
 When you add a private connection in the dashboard, the following happens:
 
-<Steps>
-  <Step title="You expose your resource">
-    You create an internal NLB in front of your resource and a VPC Endpoint Service that points to it. You add Trigger.dev's AWS account as an allowed principal so we're permitted to connect.
-  </Step>
+**1. You expose your resource**
 
-  <Step title="We provision a VPC Endpoint">
-    Once you submit the endpoint service name in the Trigger.dev dashboard, we provision a VPC Endpoint in our AWS account in the region you chose. The endpoint creates an ENI with a private IP that we wire up to reach your service.
-  </Step>
+You create an internal NLB in front of your resource and a VPC Endpoint Service that points to it. You add Trigger.dev's AWS account as an allowed principal so we're permitted to connect.
 
-  <Step title="Your tasks can reach the endpoint">
-    Once the connection is **Active**, the dashboard shows the assigned IP. Pods running your tasks are network-authorized to connect to it.
-  </Step>
-</Steps>
+**2. We provision a VPC Endpoint**
+
+Once you submit the endpoint service name in the Trigger.dev dashboard, we provision a VPC Endpoint in our AWS account in the region you chose. The endpoint creates an ENI with a private IP that we wire up to reach your service.
+
+**3. Your tasks can reach the endpoint**
+
+Once the connection is **Active**, the dashboard shows the assigned IP. Pods running your tasks are network-authorized to connect to it.
 
 ### Connecting from your task code
 
 When the connection becomes **Active**, the dashboard shows the assigned endpoint IP. Plug it into the connection-string environment variable your task already reads (for example, `DATABASE_URL` set on the **Environment Variables** page):
 
-<Note>
-  A private connection is scoped to your **organization**, not to a single environment. The same
-  assigned IP works from any deployed environment your tasks run in — Preview branches, Staging,
-  and Production — so you can set the connection-string env var per environment and point them
-  all at the same private resource. (Local **Development** runs on your own machine, so it can't
-  reach the endpoint IP — use a regular public connection there.)
-</Note>
+> [!NOTE]
+>
+> A private connection is scoped to your **organization**, not to a single environment. The same
+> assigned IP works from any deployed environment your tasks run in — Preview branches, Staging,
+> and Production — so you can set the connection-string env var per environment and point them
+> all at the same private resource. (Local **Development** runs on your own machine, so it can't
+> reach the endpoint IP — use a regular public connection there.)
 
 ```typescript theme={"theme":"css-variables"}
 import { task } from "@trigger.dev/sdk";
@@ -114,11 +112,11 @@ PrivateLink itself enforces a second layer of authorization. Your VPC Endpoint S
 
 All three conditions must be true. No organization can route traffic to another organization's resources.
 
-<Warning>
-  AWS account IDs are not secrets, but the VPC Endpoint Service name is also not enough on its own —
-  you must explicitly add Trigger.dev's account to your endpoint service's allowed principals before
-  any connection works. We'll never see your service unless you authorize us.
-</Warning>
+> [!WARNING]
+>
+> AWS account IDs are not secrets, but the VPC Endpoint Service name is also not enough on its own —
+> you must explicitly add Trigger.dev's account to your endpoint service's allowed principals before
+> any connection works. We'll never see your service unless you authorize us.
 
 ## Limits
 
@@ -128,13 +126,11 @@ All three conditions must be true. No organization can route traffic to another 
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Create a Private Link in the AWS Console" icon="aws" href="/docs/private-networking/aws-console-setup">
-    Step-by-step instructions for creating the NLB, target group, and VPC Endpoint Service in your
-    AWS account.
-  </Card>
+> **[Create a Private Link in the AWS Console](/docs/private-networking/aws-console-setup)**
+>
+> Step-by-step instructions for creating the NLB, target group, and VPC Endpoint Service in your
+> AWS account.
 
-  <Card title="Troubleshooting" icon="circle-question" href="/docs/private-networking/troubleshooting">
-    Common problems when setting up a private connection and how to resolve them.
-  </Card>
-</CardGroup>
+> **[Troubleshooting](/docs/private-networking/troubleshooting)**
+>
+> Common problems when setting up a private connection and how to resolve them.

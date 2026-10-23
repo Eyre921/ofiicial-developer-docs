@@ -38,27 +38,25 @@ Your task code runs on Trigger.dev's managed infrastructure, so there are no ser
 
 ## Setup
 
-<Steps>
-  <Step title="Create an account">
-    Go to [Trigger.dev Cloud](https://cloud.trigger.dev), create an account, and create a project.
-  </Step>
+**1. Create an account**
 
-  <Step title="Install the CLI and initialize">
-    ```bash theme={"theme":"css-variables"}
-    npx trigger.dev@latest init
-    ```
+Go to [Trigger.dev Cloud](https://cloud.trigger.dev), create an account, and create a project.
 
-    This adds Trigger.dev to your project and creates a `trigger/` directory for your tasks.
-  </Step>
+**2. Install the CLI and initialize**
 
-  <Step title="Run the local dev server">
-    ```bash theme={"theme":"css-variables"}
-    npx trigger.dev@latest dev
-    ```
+```bash theme={"theme":"css-variables"}
+npx trigger.dev@latest init
+```
 
-    You'll get a local server that behaves like production. Your runs appear in the dashboard as you test.
-  </Step>
-</Steps>
+This adds Trigger.dev to your project and creates a `trigger/` directory for your tasks.
+
+**3. Run the local dev server**
+
+```bash theme={"theme":"css-variables"}
+npx trigger.dev@latest dev
+```
+
+You'll get a local server that behaves like production. Your runs appear in the dashboard as you test.
 
 ***
 
@@ -70,34 +68,32 @@ In n8n you use a **Webhook** trigger node, which registers a URL that starts the
 
 In Trigger.dev, your existing route handler receives the webhook and triggers the task:
 
-<CodeGroup>
-  ```ts app/api/webhook/route.ts theme={"theme":"css-variables"}
-  import { processWebhook } from "@/trigger/process-webhook";
+```ts app/api/webhook/route.ts theme={"theme":"css-variables"}
+import { processWebhook } from "@/trigger/process-webhook";
 
-  export async function POST(request: Request) {
-    const body = await request.json();
+export async function POST(request: Request) {
+  const body = await request.json();
 
-    await processWebhook.trigger({
-      event: body.event,
-      data: body.data,
-    });
-
-    return Response.json({ received: true });
-  }
-  ```
-
-  ```ts trigger/process-webhook.ts theme={"theme":"css-variables"}
-  import { task } from "@trigger.dev/sdk";
-
-  export const processWebhook = task({
-    id: "process-webhook",
-    run: async (payload: { event: string; data: Record<string, unknown> }) => {
-      // handle the webhook payload
-      await handleEvent(payload.event, payload.data);
-    },
+  await processWebhook.trigger({
+    event: body.event,
+    data: body.data,
   });
-  ```
-</CodeGroup>
+
+  return Response.json({ received: true });
+}
+```
+
+```ts trigger/process-webhook.ts theme={"theme":"css-variables"}
+import { task } from "@trigger.dev/sdk";
+
+export const processWebhook = task({
+  id: "process-webhook",
+  run: async (payload: { event: string; data: Record<string, unknown> }) => {
+    // handle the webhook payload
+    await handleEvent(payload.event, payload.data);
+  },
+});
+```
 
 ***
 
@@ -107,43 +103,41 @@ In n8n you use the **Execute Sub-workflow** node to call another workflow and wa
 
 In Trigger.dev you use `triggerAndWait()`:
 
-<CodeGroup>
-  ```ts trigger/process-order.ts theme={"theme":"css-variables"}
-  import { task } from "@trigger.dev/sdk";
-  import { sendConfirmationEmail } from "./send-confirmation-email";
+```ts trigger/process-order.ts theme={"theme":"css-variables"}
+import { task } from "@trigger.dev/sdk";
+import { sendConfirmationEmail } from "./send-confirmation-email";
 
-  export const processOrder = task({
-    id: "process-order",
-    run: async (payload: { orderId: string; email: string }) => {
-      const result = await processPayment(payload.orderId);
+export const processOrder = task({
+  id: "process-order",
+  run: async (payload: { orderId: string; email: string }) => {
+    const result = await processPayment(payload.orderId);
 
-      // trigger a subtask and wait for it to complete
-      await sendConfirmationEmail.triggerAndWait({
-        email: payload.email,
-        orderId: payload.orderId,
-        amount: result.amount,
-      });
+    // trigger a subtask and wait for it to complete
+    await sendConfirmationEmail.triggerAndWait({
+      email: payload.email,
+      orderId: payload.orderId,
+      amount: result.amount,
+    });
 
-      return { processed: true };
-    },
-  });
-  ```
+    return { processed: true };
+  },
+});
+```
 
-  ```ts trigger/send-confirmation-email.ts theme={"theme":"css-variables"}
-  import { task } from "@trigger.dev/sdk";
+```ts trigger/send-confirmation-email.ts theme={"theme":"css-variables"}
+import { task } from "@trigger.dev/sdk";
 
-  export const sendConfirmationEmail = task({
-    id: "send-confirmation-email",
-    run: async (payload: { email: string; orderId: string; amount: number }) => {
-      await sendEmail({
-        to: payload.email,
-        subject: `Order ${payload.orderId} confirmed`,
-        body: `Your order for $${payload.amount} has been confirmed.`,
-      });
-    },
-  });
-  ```
-</CodeGroup>
+export const sendConfirmationEmail = task({
+  id: "send-confirmation-email",
+  run: async (payload: { email: string; orderId: string; amount: number }) => {
+    await sendEmail({
+      to: payload.email,
+      subject: `Order ${payload.orderId} confirmed`,
+      body: `Your order for $${payload.amount} has been confirmed.`,
+    });
+  },
+});
+```
 
 To trigger multiple subtasks in parallel and wait for all of them (like the **Merge** node in n8n):
 

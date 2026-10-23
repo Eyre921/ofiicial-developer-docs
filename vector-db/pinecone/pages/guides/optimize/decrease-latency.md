@@ -97,7 +97,7 @@ If you experience slow uploads or high query latencies, it might be because you 
 
 ## Avoid batching queries
 
-If you're batching queries, try reducing the number of queries per call to a single query vector. You can run these [queries in parallel](/guides/search/semantic-search#parallel-queries) and expect roughly the same performance as with batching.
+If you're batching queries, try reducing the number of queries per call to a single query vector. You can run these [queries in parallel](/guides/optimize/increase-throughput#parallel-queries) and expect roughly the same performance as with batching.
 
 ## Avoid including vector values when not needed
 

@@ -13,10 +13,10 @@ Learn how to trigger a task from a webhook in a Remix app.
 
 ## GitHub repo
 
-<Card title="View the project on GitHub" icon="GitHub" href="https://github.com/triggerdotdev/examples/tree/main/remix-webhooks">
-  Click here to view the full code for this project in our examples repository on GitHub. You can
-  fork it and use it as a starting point for your own project.
-</Card>
+> **[View the project on GitHub](https://github.com/triggerdotdev/examples/tree/main/remix-webhooks)**
+>
+> Click here to view the full code for this project in our examples repository on GitHub. You can
+> fork it and use it as a starting point for your own project.
 
 ## Adding the webhook handler
 
@@ -45,59 +45,53 @@ This code will handle the webhook payload and trigger the 'Hello World' task.
 
 Now that you have a webhook handler set up, you can trigger the 'Hello World' task from it. We will do this locally using cURL.
 
-<Steps>
-  <Step title="Run your Remix app and the Trigger.dev dev server">
-    First, run your Remix app.
+**1. Run your Remix app and the Trigger.dev dev server**
 
-    <CodeGroup>
-      ```bash npm theme={"theme":"css-variables"}
-      npm run dev
-      ```
+First, run your Remix app.
 
-      ```bash pnpm theme={"theme":"css-variables"}
-      pnpm run dev
-      ```
+```bash npm theme={"theme":"css-variables"}
+npm run dev
+```
 
-      ```bash yarn theme={"theme":"css-variables"}
-      yarn dev
-      ```
-    </CodeGroup>
+```bash pnpm theme={"theme":"css-variables"}
+pnpm run dev
+```
 
-    Then, open up a second terminal window and start the Trigger.dev dev server:
+```bash yarn theme={"theme":"css-variables"}
+yarn dev
+```
 
-    <CodeGroup>
-      ```bash npm theme={"theme":"css-variables"}
-      npx trigger.dev@latest dev
-      ```
+Then, open up a second terminal window and start the Trigger.dev dev server:
 
-      ```bash pnpm theme={"theme":"css-variables"}
-      pnpm dlx trigger.dev@latest dev
-      ```
+```bash npm theme={"theme":"css-variables"}
+npx trigger.dev@latest dev
+```
 
-      ```bash yarn theme={"theme":"css-variables"}
-      yarn dlx trigger.dev@latest dev
-      ```
-    </CodeGroup>
-  </Step>
+```bash pnpm theme={"theme":"css-variables"}
+pnpm dlx trigger.dev@latest dev
+```
 
-  <Step title="Trigger the webhook with some dummy data">
-    To send a POST request to your webhook handler, open up a terminal window on your local machine and run the following command:
+```bash yarn theme={"theme":"css-variables"}
+yarn dlx trigger.dev@latest dev
+```
 
-    <Tip>
-      If `http://localhost:5173` isn't the URL of your locally running Remix app, replace the URL in the
-      below command with that URL instead.
-    </Tip>
+**2. Trigger the webhook with some dummy data**
 
-    ```bash theme={"theme":"css-variables"}
-    curl -X POST -H "Content-Type: application/json" -d '{"Name": "John Doe", "Age": "87"}' http://localhost:5173/api/webhook-handler
-    ```
+To send a POST request to your webhook handler, open up a terminal window on your local machine and run the following command:
 
-    This will send a POST request to your webhook handler, with a JSON payload.
-  </Step>
+> [!TIP]
+>
+> If `http://localhost:5173` isn't the URL of your locally running Remix app, replace the URL in the
+> below command with that URL instead.
 
-  <Step title="Check the task ran successfully">
-    After running the command, you should see a successful dev run and a 200 response in your terminals.
+```bash theme={"theme":"css-variables"}
+curl -X POST -H "Content-Type: application/json" -d '{"Name": "John Doe", "Age": "87"}' http://localhost:5173/api/webhook-handler
+```
 
-    If you now go to your [Trigger.dev dashboard](https://cloud.trigger.dev), you should also see a successful run for the 'Hello World' task, with the payload you sent, in this case; `{"name": "John Doe", "age": "87"}`.
-  </Step>
-</Steps>
+This will send a POST request to your webhook handler, with a JSON payload.
+
+**3. Check the task ran successfully**
+
+After running the command, you should see a successful dev run and a 200 response in your terminals.
+
+If you now go to your [Trigger.dev dashboard](https://cloud.trigger.dev), you should also see a successful run for the 'Hello World' task, with the payload you sent, in this case; `{"name": "John Doe", "age": "87"}`.

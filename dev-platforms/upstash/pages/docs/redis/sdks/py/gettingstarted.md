@@ -1,5 +1,5 @@
 ---
-title: "Getting Started"
+title: "Redis Python SDK Getting Started"
 source: https://upstash.com/docs/redis/sdks/py/gettingstarted
 path: docs/redis/sdks/py/gettingstarted
 ---

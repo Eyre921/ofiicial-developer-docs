@@ -1,5 +1,5 @@
 ---
-title: "Getting Started"
+title: "Search TypeScript SDK Getting Started"
 source: https://upstash.com/docs/search/sdks/ts/getting-started
 path: docs/search/sdks/ts/getting-started
 ---

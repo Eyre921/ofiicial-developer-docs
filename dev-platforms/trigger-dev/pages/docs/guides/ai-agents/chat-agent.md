@@ -37,11 +37,11 @@ export const myChat = chat.agent({
 });
 ```
 
-<Warning>
-  Always spread `chat.toStreamTextOptions()` into your `streamText` call, and spread it first. It
-  wires up the `prepareStep` callback that drives compaction, mid-turn steering and background
-  injection. Those features silently no-op if the spread is missing.
-</Warning>
+> [!WARNING]
+>
+> Always spread `chat.toStreamTextOptions()` into your `streamText` call, and spread it first. It
+> wires up the `prepareStep` callback that drives compaction, mid-turn steering and background
+> injection. Those features silently no-op if the spread is missing.
 
 ## Add tools
 
@@ -109,21 +109,19 @@ See the [Quick Start](/docs/ai-chat/quick-start) for the complete frontend compo
 
 For a complete, real-world chat agent, see the ClickHouse chat agent example. It builds on everything above with generative UI, a versioned system prompt, and real tools against a live database.
 
-<CardGroup>
-  <Card title="ClickHouse chat agent" icon="chart-column" href="/docs/guides/example-projects/clickhouse-chat-agent">
-    A full example project: a chat agent that answers questions about your data with charts, tables
-    and maps.
-  </Card>
+> **[ClickHouse chat agent](/docs/guides/example-projects/clickhouse-chat-agent)**
+>
+> A full example project: a chat agent that answers questions about your data with charts, tables
+> and maps.
 
-  <Card title="AI chat overview" icon="message-bot" href="/docs/ai-chat/overview">
-    How chat agents, sessions and the turn loop work.
-  </Card>
+> **[AI chat overview](/docs/ai-chat/overview)**
+>
+> How chat agents, sessions and the turn loop work.
 
-  <Card title="Tools" icon="wrench" href="/docs/ai-chat/tools">
-    Declaring tools on your agent and how they persist across turns.
-  </Card>
+> **[Tools](/docs/ai-chat/tools)**
+>
+> Declaring tools on your agent and how they persist across turns.
 
-  <Card title="Fast starts" icon="bolt" href="/docs/ai-chat/fast-starts">
-    Cut first-turn latency with preload and head start.
-  </Card>
-</CardGroup>
+> **[Fast starts](/docs/ai-chat/fast-starts)**
+>
+> Cut first-turn latency with preload and head start.

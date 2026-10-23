@@ -6,12 +6,6 @@ path: docs/webhooks/session-routing
 
 Route verified webhook deliveries to a durable per-key session instead of a fresh run.
 
-<PrivateBeta>
-  [Request access](https://trigger.dev/webhooks-beta) and we'll turn webhooks on for your
-  organization and send you the prerelease packages. Webhooks are open source, so they work
-  self-hosted too. APIs may change before general availability.
-</PrivateBeta>
-
 A plain [`webhook()`](/docs/webhooks/overview) runs a fresh, stateless run for every delivery. Sometimes you want the opposite: deliveries that share a key (a customer, an installation, an issue) should land on **one durable [session](/docs/ai-chat/sessions)** and be handled in order, with state carried across them. That is what session routing does.
 
 Instead of a handler, you declare a `chat.event` on an [endpoint](/docs/webhooks/overview) and list it on an agent. The verified delivery is routed to a find-or-created session and arrives as an [action](/docs/ai-chat/actions).
@@ -121,10 +115,10 @@ export const orderAgent = chat.agent({
 
 A bound turn posts the final answer as a fresh message in the thread (no placeholder, since there is no triggering message to react to). If the session has never had a channel message, there is nothing to post into and the turn's answer stays on the session's stream only.
 
-<Note>
-  The descriptor never names the agent, and the agent references the descriptor, so there is no
-  circular dependency. Whichever agent lists it becomes the routing target.
-</Note>
+> [!NOTE]
+>
+> The descriptor never names the agent, and the agent references the descriptor, so there is no
+> circular dependency. Whichever agent lists it becomes the routing target.
 
 ## Several agents on one endpoint
 

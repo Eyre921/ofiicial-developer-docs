@@ -12,7 +12,9 @@ This example demonstrates how to use Trigger.dev to generate a PDF using [react-
 
 ## Task code
 
-<Info> This example must be a .tsx file to use React components.</Info>
+> [!NOTE]
+>
+> This example must be a .tsx file to use React components.
 
 ```ts trigger/generateResumePDF.tsx theme={"theme":"css-variables"}
 import { logger, task } from "@trigger.dev/sdk";

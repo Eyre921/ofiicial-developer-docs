@@ -8,17 +8,15 @@ A growing list of guides and examples to get the most out of Trigger.dev.
 
 ## Frameworks
 
-<CardGroup>
-  <Card title="Bun" href="/docs/guides/frameworks/bun" />
+> **[Bun](/docs/guides/frameworks/bun)**
 
-  <Card title="Next.js" href="/docs/guides/frameworks/nextjs" />
+> **[Next.js](/docs/guides/frameworks/nextjs)**
 
-  <Card title="Node.js" href="/docs/guides/frameworks/nodejs" />
+> **[Node.js](/docs/guides/frameworks/nodejs)**
 
-  <Card title="Remix" href="/docs/guides/frameworks/remix" />
+> **[Remix](/docs/guides/frameworks/remix)**
 
-  <Card title="SvelteKit" href="/docs/guides/community/sveltekit" />
-</CardGroup>
+> **[SvelteKit](/docs/guides/community/sveltekit)**
 
 ## Guides
 
@@ -49,23 +47,21 @@ Get set up fast using our detailed walk-through guides.
 
 ## Featured use cases
 
-<CardGroup>
-  <Card title="Data processing & ETL workflows" icon="database" href="/docs/guides/use-cases/data-processing-etl">
-    Build complex data pipelines that process large datasets without timeouts.
-  </Card>
+> **[Data processing & ETL workflows](/docs/guides/use-cases/data-processing-etl)**
+>
+> Build complex data pipelines that process large datasets without timeouts.
 
-  <Card title="Media processing workflows" icon="film" href="/docs/guides/use-cases/media-processing">
-    Batch process videos, images, audio, and documents with no execution time limits.
-  </Card>
+> **[Media processing workflows](/docs/guides/use-cases/media-processing)**
+>
+> Batch process videos, images, audio, and documents with no execution time limits.
 
-  <Card title="AI media generation workflows" icon="wand-magic-sparkles" href="/docs/guides/use-cases/media-generation">
-    Generate images, videos, audio, documents and other media using AI models.
-  </Card>
+> **[AI media generation workflows](/docs/guides/use-cases/media-generation)**
+>
+> Generate images, videos, audio, documents and other media using AI models.
 
-  <Card title="Marketing workflows" icon="bullhorn" href="/docs/guides/use-cases/marketing">
-    Build drip campaigns, create marketing content, and orchestrate multi-channel campaigns.
-  </Card>
-</CardGroup>
+> **[Marketing workflows](/docs/guides/use-cases/marketing)**
+>
+> Build drip campaigns, create marketing content, and orchestrate multi-channel campaigns.
 
 ## Example projects
 
@@ -126,7 +122,7 @@ Task code you can copy and paste to use in your project. They can all be extende
 | [Vercel AI SDK](/docs/guides/examples/vercel-ai-sdk) | Use Vercel AI SDK to generate text using OpenAI. |
 | [Vercel sync environment variables](/docs/guides/examples/vercel-sync-env-vars) | Automatically sync environment variables from your Vercel projects to Trigger.dev. |
 
-<Note>
-  If you would like to see a guide for your framework, or an example task for your use case, please
-  request it in our [Discord server](https://trigger.dev/discord) and we'll add it to the list.
-</Note>
+> [!NOTE]
+>
+> If you would like to see a guide for your framework, or an example task for your use case, please
+> request it in our [Discord server](https://trigger.dev/discord) and we'll add it to the list.

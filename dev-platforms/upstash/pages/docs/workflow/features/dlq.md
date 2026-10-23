@@ -1,5 +1,5 @@
 ---
-title: "Overview"
+title: "Workflow DLQ Overview"
 source: https://upstash.com/docs/workflow/features/dlq
 path: docs/workflow/features/dlq
 ---

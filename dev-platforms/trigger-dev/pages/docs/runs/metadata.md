@@ -71,39 +71,37 @@ function doSomeWork() {
 
 This means it's safe to call these methods anywhere in your code, and they will only have an effect when called inside the run function.
 
-<Note>
-  Calling `metadata.current()` or `metadata.get()` outside of the run function will always return
-  undefined.
-</Note>
+> [!NOTE]
+>
+> Calling `metadata.current()` or `metadata.get()` outside of the run function will always return
+> undefined.
 
 These methods also work inside any task lifecycle hook, either attached to the specific task or registered globally with `tasks.*` (for example in your `init.ts` file).
 
-<CodeGroup>
-  ```ts myTasks.ts theme={"theme":"css-variables"}
-  import { task, metadata } from "@trigger.dev/sdk";
+```ts myTasks.ts theme={"theme":"css-variables"}
+import { task, metadata } from "@trigger.dev/sdk";
 
-  export const myTask = task({
-    id: "my-task",
-    run: async (payload: { message: string }) => {
-      // Your run function work here
-    },
-    onStartAttempt: async () => {
-      metadata.set("progress", 0.5);
-    },
-    onSuccess: async () => {
-      metadata.set("progress", 1.0);
-    },
-  });
-  ```
-
-  ```ts init.ts theme={"theme":"css-variables"}
-  import { tasks, metadata } from "@trigger.dev/sdk";
-
-  tasks.onStartAttempt(async () => {
+export const myTask = task({
+  id: "my-task",
+  run: async (payload: { message: string }) => {
+    // Your run function work here
+  },
+  onStartAttempt: async () => {
     metadata.set("progress", 0.5);
-  });
-  ```
-</CodeGroup>
+  },
+  onSuccess: async () => {
+    metadata.set("progress", 1.0);
+  },
+});
+```
+
+```ts init.ts theme={"theme":"css-variables"}
+import { tasks, metadata } from "@trigger.dev/sdk";
+
+tasks.onStartAttempt(async () => {
+  metadata.set("progress", 0.5);
+});
+```
 
 ## Updates API
 
@@ -263,12 +261,12 @@ export const myTask = task({
 
 ### stream
 
-<Note>
-  As of SDK version **4.1.0**, `metadata.stream()` has been replaced by [Realtime Streams
-  v2](/docs/tasks/streams). We recommend using the new `streams.pipe()` API for better reliability,
-  unlimited stream length, and improved developer experience. The examples below are provided for
-  backward compatibility.
-</Note>
+> [!NOTE]
+>
+> As of SDK version **4.1.0**, `metadata.stream()` has been replaced by [Realtime Streams
+> v2](/docs/tasks/streams). We recommend using the new `streams.pipe()` API for better reliability,
+> unlimited stream length, and improved developer experience. The examples below are provided for
+> backward compatibility.
 
 Capture a stream of values and make the stream available when using Realtime. See our [Realtime Streams v2](/docs/tasks/streams) documentation for the recommended approach.
 
@@ -655,12 +653,12 @@ const handle = await myTask.trigger(
 );
 ```
 
-<Note>
-  If you pass in an object like a Date, it will be serialized to a string when stored in the
-  metadata. That also means that when you retrieve it using `metadata.get()` or
-  `metadata.current()`, you will get a string back. You will need to deserialize it back to a Date
-  object if you need to use it as a Date.
-</Note>
+> [!NOTE]
+>
+> If you pass in an object like a Date, it will be serialized to a string when stored in the
+> metadata. That also means that when you retrieve it using `metadata.get()` or
+> `metadata.current()`, you will get a string back. You will need to deserialize it back to a Date
+> object if you need to use it as a Date.
 
 We recommend wrapping the metadata API in a [Zod](https://zod.dev) schema (or your validator library of choice) to provide type safety:
 
@@ -701,7 +699,7 @@ export const myTask = task({
 
 You can view the metadata for a run in the Trigger.dev dashboard. The metadata will be displayed in the run details view:
 
-<img alt="View run metadata dashboard" />
+![View run metadata dashboard](https://mintcdn.com/trigger/5SxX7bFjJKRsidSL/images/run-metadata.png?fit=max\&auto=format\&n=5SxX7bFjJKRsidSL\&q=85\&s=0757a26d7412cfb5601e0d453bf3a8f1)
 
 ### API
 

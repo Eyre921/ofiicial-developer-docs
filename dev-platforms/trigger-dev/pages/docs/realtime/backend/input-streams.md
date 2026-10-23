@@ -8,14 +8,14 @@ Send data into running tasks from your backend code
 
 The Input Streams API allows you to send data into running Trigger.dev tasks from your backend code. This enables bidirectional communication — while [output streams](/docs/realtime/backend/streams) let you read data from tasks, input streams let you push data into them.
 
-<Note>
-  To learn how to receive input stream data inside your tasks, see [Input
-  Streams](/docs/tasks/streams#input-streams) in the Streams doc.
-</Note>
+> [!NOTE]
+>
+> To learn how to receive input stream data inside your tasks, see [Input
+> Streams](/docs/tasks/streams#input-streams) in the Streams doc.
 
-<Tip>
-  Input streams are keyed by `runId` — they're correct for sending data to a specific live run. If you need a bidirectional channel that survives run boundaries (e.g. a chat that resumes tomorrow, an agent coordinated across many runs), look at [`chat.agent`](/docs/ai-chat/overview): it's built on a durable Session row that owns its runs and exposes the same consumer-side API (`on` / `once` / `wait` / `waitWithIdleTimeout`) on its `.in` channel.
-</Tip>
+> [!TIP]
+>
+> Input streams are keyed by `runId` — they're correct for sending data to a specific live run. If you need a bidirectional channel that survives run boundaries (e.g. a chat that resumes tomorrow, an agent coordinated across many runs), look at [`chat.agent`](/docs/ai-chat/overview): it's built on a durable Session row that owns its runs and exposes the same consumer-side API (`on` / `once` / `wait` / `waitWithIdleTimeout`) on its `.in` channel.
 
 ## Sending data to a running task
 
@@ -35,12 +35,12 @@ await approval.send(runId, { approved: true, reviewer: "alice@example.com" });
 
 The `.send()` method is fully typed — the data parameter must match the generic type you defined on the input stream.
 
-<Note>
-  `.send()` works the same regardless of how the task is listening — whether it uses `.wait()`
-  (suspending), `.once()` (non-suspending), or `.on()` (continuous). The sender doesn't need to know
-  how the task is consuming the data. See [Input Streams](/docs/tasks/streams#input-streams) for details on each
-  receiving method.
-</Note>
+> [!NOTE]
+>
+> `.send()` works the same regardless of how the task is listening — whether it uses `.wait()`
+> (suspending), `.once()` (non-suspending), or `.on()` (continuous). The sender doesn't need to know
+> how the task is consuming the data. See [Input Streams](/docs/tasks/streams#input-streams) for details on each
+> receiving method.
 
 ## Practical examples
 

@@ -1,5 +1,5 @@
 ---
-title: "FAQ"
+title: "Upstash Vector FAQ"
 source: https://upstash.com/docs/vector/help/faq
 path: docs/vector/help/faq
 ---

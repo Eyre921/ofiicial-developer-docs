@@ -16,6 +16,8 @@ visualizations, forms, dashboards) that render directly in the chat.
 
 ![An Excalidraw MCP App drawing a sequence diagram inside a Claude conversation](https://mintcdn.com/mcp/jbEkS7m9mV8aY_kB/images/apps/excalidraw.gif?s=c783b088f3c687e4dd4cf05c0d20f325)
 
+Excalidraw MCP App, running in Claude
+
 ## Why not just build a web app?
 
 You could build a standalone web app and send users a link. However, MCP Apps

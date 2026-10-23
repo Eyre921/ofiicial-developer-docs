@@ -32,27 +32,25 @@ This will open your browser to authenticate. Once authenticated, you'll need to 
 
 Install the required packages based on your package manager:
 
-<CodeGroup>
-  ```bash npm theme={"theme":"css-variables"}
-  npm add @trigger.dev/sdk@latest
-  npm add --save-dev @trigger.dev/build@latest
-  ```
+```bash npm theme={"theme":"css-variables"}
+npm add @trigger.dev/sdk@latest
+npm add --save-dev @trigger.dev/build@latest
+```
 
-  ```bash pnpm theme={"theme":"css-variables"}
-  pnpm add @trigger.dev/sdk@latest
-  pnpm add -D @trigger.dev/build@latest
-  ```
+```bash pnpm theme={"theme":"css-variables"}
+pnpm add @trigger.dev/sdk@latest
+pnpm add -D @trigger.dev/build@latest
+```
 
-  ```bash yarn theme={"theme":"css-variables"}
-  yarn add @trigger.dev/sdk@latest
-  yarn add -D @trigger.dev/build@latest
-  ```
+```bash yarn theme={"theme":"css-variables"}
+yarn add @trigger.dev/sdk@latest
+yarn add -D @trigger.dev/build@latest
+```
 
-  ```bash bun theme={"theme":"css-variables"}
-  bun add @trigger.dev/sdk@latest
-  bun add -D @trigger.dev/build@latest
-  ```
-</CodeGroup>
+```bash bun theme={"theme":"css-variables"}
+bun add @trigger.dev/sdk@latest
+bun add -D @trigger.dev/build@latest
+```
 
 ## Environment variables
 

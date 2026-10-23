@@ -1,5 +1,5 @@
 ---
-title: "Prod Pack & Enterprise"
+title: "Upstash Redis Prod Pack & Enterprise"
 source: https://upstash.com/docs/redis/overall/enterprise
 path: docs/redis/overall/enterprise
 ---

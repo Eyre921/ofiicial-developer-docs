@@ -1,5 +1,5 @@
 ---
-title: "Getting Started"
+title: "QStash Getting Started"
 source: https://upstash.com/docs/qstash/overall/getstarted
 path: docs/qstash/overall/getstarted
 ---

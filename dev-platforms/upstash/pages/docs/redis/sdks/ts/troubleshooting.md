@@ -1,5 +1,5 @@
 ---
-title: "Troubleshooting"
+title: "Redis TypeScript SDK Troubleshooting"
 source: https://upstash.com/docs/redis/sdks/ts/troubleshooting
 path: docs/redis/sdks/ts/troubleshooting
 ---

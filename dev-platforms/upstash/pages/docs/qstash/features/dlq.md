@@ -1,5 +1,5 @@
 ---
-title: "Dead Letter Queues"
+title: "QStash Dead Letter Queue (DLQ)"
 source: https://upstash.com/docs/qstash/features/dlq
 path: docs/qstash/features/dlq
 ---

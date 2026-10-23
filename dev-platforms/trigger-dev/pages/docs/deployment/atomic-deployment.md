@@ -12,12 +12,12 @@ Your app and your tasks are deployed separately, so they are never live at exact
 
 Version skew protection closes the window. You give a deployment an **external deployment id**, your app sends the same id when it triggers, and Trigger.dev pins the run to the deployment carrying that id.
 
-<Note>
-  Version skew protection is available from `@trigger.dev/sdk` and the `trigger.dev` CLI
-  [v4.5.12](https://github.com/triggerdotdev/trigger.dev/releases/tag/v4.5.12), the release that
-  introduced external deployment ids. Upgrade both with `npx trigger.dev@latest update`. On an older
-  version no id is sent, and runs execute on the current version with no warning.
-</Note>
+> [!NOTE]
+>
+> Version skew protection is available from `@trigger.dev/sdk` and the `trigger.dev` CLI
+> [v4.5.12](https://github.com/triggerdotdev/trigger.dev/releases/tag/v4.5.12), the release that
+> introduced external deployment ids. Upgrade both with `npx trigger.dev@latest update`. On an older
+> version no id is sent, and runs execute on the current version with no warning.
 
 ## The guarantee
 
@@ -57,26 +57,24 @@ This works identically in production, staging and preview (including per-branch 
 
 The id is free-form and opaque to Trigger.dev — a commit SHA, a release tag, a CI run id, anything up to **128 characters**. The only rule is that both halves carry the **same value**.
 
-<Steps>
-  <Step title="Deploy your tasks with an external id">
-    ```bash theme={"theme":"css-variables"}
-    npx trigger.dev@latest deploy --env prod --external-id "$(git rev-parse HEAD)"
-    ```
-  </Step>
+**1. Deploy your tasks with an external id**
 
-  <Step title="Give your running app the same value">
-    Set this in your hosting platform's runtime environment variables, alongside `TRIGGER_SECRET_KEY`:
+```bash theme={"theme":"css-variables"}
+npx trigger.dev@latest deploy --env prod --external-id "$(git rev-parse HEAD)"
+```
 
-    ```bash theme={"theme":"css-variables"}
-    TRIGGER_EXTERNAL_DEPLOYMENT_ID=<the-same-commit-sha>
-    ```
-  </Step>
-</Steps>
+**2. Give your running app the same value**
 
-<Warning>
-  Whatever you use on both sides, make sure it can't expand to an empty string. An unset shell
-  variable deploys with no id at all, which silently gives you no protection rather than an error.
-</Warning>
+Set this in your hosting platform's runtime environment variables, alongside `TRIGGER_SECRET_KEY`:
+
+```bash theme={"theme":"css-variables"}
+TRIGGER_EXTERNAL_DEPLOYMENT_ID=<the-same-commit-sha>
+```
+
+> [!WARNING]
+>
+> Whatever you use on both sides, make sure it can't expand to an empty string. An unset shell
+> variable deploys with no id at all, which silently gives you no protection rather than an error.
 
 That's it. Every task triggered by that release of your app now runs on the deployment you built for it.
 
@@ -117,21 +115,21 @@ The short-circuit on an already-deployed id makes `--external-id` useful on its 
 
 A second run that starts while the first is still building hits the **Building** row above and errors. Only in the brief window before the first run has registered its build do both see "nothing deployed yet"; then both build, and the higher version wins.
 
-<Tip>
-  In GitHub Actions, the short-circuited run sets the same step outputs (such as
-  `deploymentVersion`) as a real build, so downstream steps work unchanged. One exception:
-  `needsPromotion` is always `false` on a short-circuit, because a reused version is never promoted —
-  so a workflow that gates a promote step on that output will skip promotion on the repeat run.
-</Tip>
+> [!TIP]
+>
+> In GitHub Actions, the short-circuited run sets the same step outputs (such as
+> `deploymentVersion`) as a real build, so downstream steps work unchanged. One exception:
+> `needsPromotion` is always `false` on a short-circuit, because a reused version is never promoted —
+> so a workflow that gates a promote step on that output will skip promotion on the repeat run.
 
 `--force` starts a new build for an id that already has one. It is non-destructive with respect to deployments that already **succeeded** — both remain, and the newer version wins. It *is* destructive to a build still in flight, which it cancels, because one id should not have two live builds racing to define it. It requires `--external-id`: on its own there is no previous deployment for it to build over, so it errors.
 
-<Note>
-  A cancelled deployment can never be deployed, so the build it replaces can't land. The build
-  itself is signalled to stop and usually does within seconds — but one running elsewhere (a
-  `--local-build`, or a deploy from someone else's machine) can keep going for a few minutes before
-  it notices.
-</Note>
+> [!NOTE]
+>
+> A cancelled deployment can never be deployed, so the build it replaces can't land. The build
+> itself is signalled to stop and usually does within seconds — but one running elsewhere (a
+> `--local-build`, or a deploy from someone else's machine) can keep going for a few minutes before
+> it notices.
 
 ### Redeploying the same commit
 
@@ -166,13 +164,13 @@ TRIGGER_AUTOMATIC_SKEW_VERSION_PROTECTION=1
 
 The value is trimmed and matched case-insensitively, so `true`, `TRUE` and `True` are all the same thing. Any other value — including `0`, an empty string, or the variable being absent — leaves automatic discovery off. The variable gates *discovery* only; an id you set explicitly is always honoured either way.
 
-<Warning>
-  **Most platforms expose the commit SHA to the build, not to the running process.** Discovery reads
-  `process.env` inside your live application, so a variable that only exists during the build is a
-  variable the SDK cannot see. On those platforms nothing is discovered and **nothing breaks** — your
-  runs simply execute on the current version, silently, as they do today. If your platform is marked
-  "Build only" below, use the [manual recipe](#the-manual-recipe) instead.
-</Warning>
+> [!WARNING]
+>
+> **Most platforms expose the commit SHA to the build, not to the running process.** Discovery reads
+> `process.env` inside your live application, so a variable that only exists during the build is a
+> variable the SDK cannot see. On those platforms nothing is discovered and **nothing breaks** — your
+> runs simply execute on the current version, silently, as they do today. If your platform is marked
+> "Build only" below, use the [manual recipe](#the-manual-recipe) instead.
 
 ### Hosting platforms
 
@@ -222,11 +220,11 @@ These are the answer for any platform not listed: set one of them and you get pi
 
 Empty and whitespace-only values are skipped rather than treated as a match, and a value longer than 128 characters is skipped rather than sent — so a generic name holding something that isn't a deployment id degrades to "no id discovered" instead of an error.
 
-<Tip>
-  If a generic name means something else in your environment, you have two clean escapes: set
-  `TRIGGER_EXTERNAL_DEPLOYMENT_ID` explicitly (it outranks all discovery), or leave
-  `TRIGGER_AUTOMATIC_SKEW_VERSION_PROTECTION` off and use the manual recipe.
-</Tip>
+> [!TIP]
+>
+> If a generic name means something else in your environment, you have two clean escapes: set
+> `TRIGGER_EXTERNAL_DEPLOYMENT_ID` explicitly (it outranks all discovery), or leave
+> `TRIGGER_AUTOMATIC_SKEW_VERSION_PROTECTION` off and use the manual recipe.
 
 ## The manual recipe
 
@@ -353,21 +351,21 @@ A waiting run shows in the dashboard with the status **Pending version** and the
 
 An unknown id waits too, for the same reason: "we haven't seen this deployment" and "this deployment hasn't been created yet" look identical from the outside, and the second is common — your app often goes live before your deploy pipeline has even claimed a runner.
 
-<Warning>
-  A run waiting on an external deployment id that never arrives **expires after 1 hour**. It moves
-  to `EXPIRED` with a message naming the id it waited for — `Run expired because no deployment with
-      external id 'abc123' became available`. This bounds — but does not diagnose — the configuration
-  mistakes that produce a deployment which never lands. See [When nothing ever
-  lands](#when-nothing-ever-lands).
-</Warning>
+> [!WARNING]
+>
+> A run waiting on an external deployment id that never arrives **expires after 1 hour**. It moves
+> to `EXPIRED` with a message naming the id it waited for — `Run expired because no deployment with
+>     external id 'abc123' became available`. This bounds — but does not diagnose — the configuration
+> mistakes that produce a deployment which never lands. See [When nothing ever
+> lands](#when-nothing-ever-lands).
 
 A shorter [run-level `ttl`](/docs/triggering#ttl) that you set yourself still wins — the one-hour deadline is a backstop, not an extension. Note that the run still expires *as* an external-deployment expiry: the status reason and message name the id it was waiting for, not the `ttl`.
 
-<Note>
-  This deadline applies only to runs waiting on an external deployment id. Runs that wait for the
-  reasons that already exist — such as triggering a task before your first deploy — keep waiting
-  indefinitely, unchanged.
-</Note>
+> [!NOTE]
+>
+> This deadline applies only to runs waiting on an external deployment id. Runs that wait for the
+> reasons that already exist — such as triggering a task before your first deploy — keep waiting
+> indefinitely, unchanged.
 
 ## When nothing ever lands
 
@@ -394,11 +392,11 @@ If two deployables share one Trigger.dev project and only one of them deploys ta
 
 Ids resolve **within a single environment**. An id deployed to a preview branch does not exist in production, so promoting that preview build in your hosting platform — without a production deploy carrying the same id — parks and expires every production run. Deploy to production the normal way rather than promoting a preview artifact.
 
-<Tip>
-  A run that hit one of these shows as `EXPIRED` with `Run expired because no deployment with
-      external id '…' became available`. An environment producing nothing but that message has a
-  configuration problem, not a timing problem.
-</Tip>
+> [!TIP]
+>
+> A run that hit one of these shows as `EXPIRED` with `Run expired because no deployment with
+>     external id '…' became available`. An environment producing nothing but that message has a
+> configuration problem, not a timing problem.
 
 ## Precedence
 
@@ -413,16 +411,16 @@ explicit version (version option, else TRIGGER_VERSION)  >  external deployment 
 * An external deployment id sent alongside an explicit version is **ignored, not an error**.
 * A trigger carrying neither runs on the current version.
 
-<Warning>
-  **Don't leave a stale `TRIGGER_VERSION` behind.** A `TRIGGER_VERSION` naming a version that
-  doesn't exist *in the environment being triggered* is not a soft failure and not a fallback —
-  **every trigger fails** with a `422`, wherever the trigger came from. It also suppresses the
-  external deployment id, so skew protection can't rescue it.
-
-  The usual way to hit this is setting `TRIGGER_VERSION` at the project level on your hosting
-  platform: a version built in production doesn't exist in preview, so every preview trigger fails.
-  Remove the variable once you've confirmed skew protection is working.
-</Warning>
+> [!WARNING]
+>
+> **Don't leave a stale `TRIGGER_VERSION` behind.** A `TRIGGER_VERSION` naming a version that
+> doesn't exist *in the environment being triggered* is not a soft failure and not a fallback —
+> **every trigger fails** with a `422`, wherever the trigger came from. It also suppresses the
+> external deployment id, so skew protection can't rescue it.
+>
+> The usual way to hit this is setting `TRIGGER_VERSION` at the project level on your hosting
+> platform: a version built in production doesn't exist in preview, so every preview trigger fails.
+> Remove the variable once you've confirmed skew protection is working.
 
 ```ts theme={"theme":"css-variables"}
 // Explicit version wins, even if an external deployment id is discovered.
@@ -451,11 +449,11 @@ Opting out only disables automatic *discovery*. You can still pin explicitly at 
 
 Before version skew protection, the [Vercel integration](/docs/vercel-integration#atomic-deployments) kept your app and tasks in sync by gating your Vercel deployment until the Trigger.dev build finished, then creating a **second** Vercel deployment with `TRIGGER_VERSION` set to the new task version and promoting it. This needed two Vercel deployments per release, required `Auto-assign Custom Production Domains` to be disabled, and covered production only. The same pattern could be built by hand with `trigger deploy --skip-promotion` and `TRIGGER_VERSION`.
 
-<Warning>
-  Legacy atomic deployments are **deprecated and not advised** for new setups. The setting still
-  works for projects that already have it enabled, and is off by default for new connections. Use
-  version skew protection instead.
-</Warning>
+> [!WARNING]
+>
+> Legacy atomic deployments are **deprecated and not advised** for new setups. The setting still
+> works for projects that already have it enabled, and is off by default for new connections. Use
+> version skew protection instead.
 
 To migrate:
 

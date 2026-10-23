@@ -10,9 +10,9 @@ Capture Vercel AI SDK calls in a task as spans in the run trace, with model, tok
 
 Everything shows up inline in the run trace you already use to debug runs. There is no separate product and no dashboard to set up.
 
-<Note>
-  Observability is opt-in per call and only covers [Vercel AI SDK](https://ai-sdk.dev) functions (`generateText`, `streamText`, `generateObject`). Calls you make with a raw `fetch`, a provider's own SDK, or any other HTTP client are not captured automatically.
-</Note>
+> [!NOTE]
+>
+> Observability is opt-in per call and only covers [Vercel AI SDK](https://ai-sdk.dev) functions (`generateText`, `streamText`, `generateObject`). Calls you make with a raw `fetch`, a provider's own SDK, or any other HTTP client are not captured automatically.
 
 ## Turn it on
 
@@ -39,18 +39,18 @@ export const summarize = task({
 
 Trigger the task and open the run. The `generateText` call appears as a span in the trace. `streamText` and `generateObject` work the same way: add the same `experimental_telemetry` flag to each call you want captured.
 
-<Note>
-  **AI SDK 7** moved span emission out of `ai` core into the `@ai-sdk/otel` adapter. In a task, install `@ai-sdk/otel` and register it once yourself, for example at the top of your task file:
-
-  ```ts /trigger/summarize.ts theme={"theme":"css-variables"}
-  import { registerTelemetry } from "ai";
-  import { OpenTelemetry } from "@ai-sdk/otel";
-
-  registerTelemetry(new OpenTelemetry());
-  ```
-
-  A [`chat.agent()`](/docs/ai-chat/overview) run registers the adapter for you at run start, so chat agents need only the install. On AI SDK 5 and 6, `ai` core emits spans directly and no adapter is needed.
-</Note>
+> [!NOTE]
+>
+> **AI SDK 7** moved span emission out of `ai` core into the `@ai-sdk/otel` adapter. In a task, install `@ai-sdk/otel` and register it once yourself, for example at the top of your task file:
+>
+> ```ts /trigger/summarize.ts theme={"theme":"css-variables"}
+> import { registerTelemetry } from "ai";
+> import { OpenTelemetry } from "@ai-sdk/otel";
+>
+> registerTelemetry(new OpenTelemetry());
+> ```
+>
+> A [`chat.agent()`](/docs/ai-chat/overview) run registers the adapter for you at run start, so chat agents need only the install. On AI SDK 5 and 6, `ai` core emits spans directly and no adapter is needed.
 
 ## What each span shows
 
@@ -111,9 +111,9 @@ const result = await generateText({
 
 Custom attributes are stored on the span's `metadata`, so you can filter or group by them in TRQL, for example `metadata['task.type']`.
 
-<Note>
-  When you build an agent with `chat.agent()` and store a prompt with `chat.prompt.set()`, `chat.toStreamTextOptions()` sets `experimental_telemetry` for you, so those generations are captured without adding the flag by hand. Without a stored prompt, set `experimental_telemetry` on the call yourself. See [Prompts](/docs/ai/prompts#using-with-chatagent).
-</Note>
+> [!NOTE]
+>
+> When you build an agent with `chat.agent()` and store a prompt with `chat.prompt.set()`, `chat.toStreamTextOptions()` sets `experimental_telemetry` for you, so those generations are captured without adding the flag by hand. Without a stored prompt, set `experimental_telemetry` on the call yourself. See [Prompts](/docs/ai/prompts#using-with-chatagent).
 
 ## Query usage across runs
 
@@ -166,12 +166,10 @@ Set the time window with the query's [period filter](/docs/observability/query#t
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Prompts" icon="message-lines" href="/docs/ai/prompts">
-    Version prompts as code and link generations to the exact prompt version that produced them.
-  </Card>
+> **[Prompts](/docs/ai/prompts)**
+>
+> Version prompts as code and link generations to the exact prompt version that produced them.
 
-  <Card title="Query (TRQL)" icon="magnifying-glass-chart" href="/docs/observability/query">
-    Write custom queries against your runs, metrics, and LLM usage.
-  </Card>
-</CardGroup>
+> **[Query (TRQL)](/docs/observability/query)**
+>
+> Write custom queries against your runs, metrics, and LLM usage.

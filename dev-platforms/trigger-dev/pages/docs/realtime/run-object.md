@@ -14,135 +14,135 @@ Type-safety is supported for the run object, so you can infer the types of the r
 
 ### Properties
 
-<ParamField type="string">
-  The run ID.
-</ParamField>
+**id** `string` *required*
 
-<ParamField type="string">
-  The task identifier.
-</ParamField>
+The run ID.
 
-<ParamField type="object">
-  The input payload for the run.
-</ParamField>
+**taskIdentifier** `string` *required*
 
-<ParamField type="object">
-  The output result of the run.
-</ParamField>
+The task identifier.
 
-<ParamField type="Date">
-  Timestamp when the run was created.
-</ParamField>
+**payload** `object` *required*
 
-<ParamField type="Date">
-  Timestamp when the run was last updated.
-</ParamField>
+The input payload for the run.
 
-<ParamField type="RunStatus">
-  Current status of the run.
+**output** `object`
 
-  <Accordion title="RunStatus enum">
-    | Status | Description |
-    | - | - |
-    | `PENDING_VERSION` | Run is waiting for a version update because it cannot execute without additional information |
-    | `QUEUED` | Run is waiting to be executed by a worker |
-    | `DEQUEUED` | Run has been dequeued and is being sent to a worker to start executing |
-    | `EXECUTING` | Run is currently being executed by a worker |
-    | `WAITING` | Run has been paused by the system, and will be resumed by the system |
-    | `COMPLETED` | Run has been completed successfully |
-    | `CANCELED` | Run has been canceled by the user |
-    | `FAILED` | Run has been completed with errors |
-    | `CRASHED` | Run has crashed and won't be retried, most likely the worker ran out of resources, e.g. memory or storage |
-    | `SYSTEM_FAILURE` | Run has failed to complete, due to an error in the system |
-    | `DELAYED` | Run has been scheduled to run at a specific time |
-    | `EXPIRED` | Run has expired and won't be executed |
-    | `TIMED_OUT` | Run has reached it's maxDuration and has been stopped |
-  </Accordion>
-</ParamField>
+The output result of the run.
 
-<ParamField type="number">
-  Duration of the run in milliseconds.
-</ParamField>
+**createdAt** `Date` *required*
 
-<ParamField type="number">
-  Total cost of the run in cents.
-</ParamField>
+Timestamp when the run was created.
 
-<ParamField type="number">
-  Base cost of the run in cents before any additional charges.
-</ParamField>
+**updatedAt** `Date` *required*
 
-<ParamField type="string[]">
-  Array of tags associated with the run.
-</ParamField>
+Timestamp when the run was last updated.
 
-<ParamField type="string">
-  Key used to ensure idempotent execution.
-</ParamField>
+**status** `RunStatus` *required*
 
-<ParamField type="Date">
-  Timestamp when the run expired.
-</ParamField>
+Current status of the run.
 
-<ParamField type="Date">
-  Timestamp when the run finished.
-</ParamField>
+> **RunStatus enum**
+>
+> | Status | Description |
+> | - | - |
+> | `PENDING_VERSION` | Run is waiting for a version update because it cannot execute without additional information |
+> | `QUEUED` | Run is waiting to be executed by a worker |
+> | `DEQUEUED` | Run has been dequeued and is being sent to a worker to start executing |
+> | `EXECUTING` | Run is currently being executed by a worker |
+> | `WAITING` | Run has been paused by the system, and will be resumed by the system |
+> | `COMPLETED` | Run has been completed successfully |
+> | `CANCELED` | Run has been canceled by the user |
+> | `FAILED` | Run has been completed with errors |
+> | `CRASHED` | Run has crashed and won't be retried, most likely the worker ran out of resources, e.g. memory or storage |
+> | `SYSTEM_FAILURE` | Run has failed to complete, due to an error in the system |
+> | `DELAYED` | Run has been scheduled to run at a specific time |
+> | `EXPIRED` | Run has expired and won't be executed |
+> | `TIMED_OUT` | Run has reached it's maxDuration and has been stopped |
 
-<ParamField type="Date">
-  Timestamp when the run started.
-</ParamField>
+**durationMs** `number` *required*
 
-<ParamField type="Date">
-  Timestamp until which the run is delayed.
-</ParamField>
+Duration of the run in milliseconds.
 
-<ParamField type="Date">
-  Timestamp when the run was queued.
-</ParamField>
+**costInCents** `number` *required*
 
-<ParamField type="Record<string, DeserializedJson>">
-  Additional metadata associated with the run.
-</ParamField>
+Total cost of the run in cents.
 
-<ParamField type="SerializedError">
-  Error information if the run failed.
-</ParamField>
+**baseCostInCents** `number` *required*
 
-<ParamField type="boolean">
-  Indicates whether this is a test run.
-</ParamField>
+Base cost of the run in cents before any additional charges.
 
-<ParamField type="string[]">
-  Names of the Realtime streams on the run.
-</ParamField>
+**tags** `string[]` *required*
 
-<ParamField type="boolean">
-  `true` if the run is queued, delayed or waiting for a version update.
-</ParamField>
+Array of tags associated with the run.
 
-<ParamField type="boolean">
-  `true` if the run is dequeued or executing.
-</ParamField>
+**idempotencyKey** `string`
 
-<ParamField type="boolean">
-  `true` if the run is waiting.
-</ParamField>
+Key used to ensure idempotent execution.
 
-<ParamField type="boolean">
-  `true` if the run has finished, either successfully or with any failure status.
-</ParamField>
+**expiredAt** `Date`
 
-<ParamField type="boolean">
-  `true` if the run failed, crashed, hit a system failure, expired or timed out.
-</ParamField>
+Timestamp when the run expired.
 
-<ParamField type="boolean">
-  `true` if the run completed successfully.
-</ParamField>
+**finishedAt** `Date`
 
-<ParamField type="boolean">
-  `true` if the run was canceled.
-</ParamField>
+Timestamp when the run finished.
+
+**startedAt** `Date`
+
+Timestamp when the run started.
+
+**delayedUntil** `Date`
+
+Timestamp until which the run is delayed.
+
+**queuedAt** `Date`
+
+Timestamp when the run was queued.
+
+**metadata** `Record\<string, DeserializedJson\>`
+
+Additional metadata associated with the run.
+
+**error** `SerializedError`
+
+Error information if the run failed.
+
+**isTest** `boolean` *required*
+
+Indicates whether this is a test run.
+
+**realtimeStreams** `string[]` *required*
+
+Names of the Realtime streams on the run.
+
+**isQueued** `boolean` *required*
+
+`true` if the run is queued, delayed or waiting for a version update.
+
+**isExecuting** `boolean` *required*
+
+`true` if the run is dequeued or executing.
+
+**isWaiting** `boolean` *required*
+
+`true` if the run is waiting.
+
+**isCompleted** `boolean` *required*
+
+`true` if the run has finished, either successfully or with any failure status.
+
+**isFailed** `boolean` *required*
+
+`true` if the run failed, crashed, hit a system failure, expired or timed out.
+
+**isSuccess** `boolean` *required*
+
+`true` if the run completed successfully.
+
+**isCancelled** `boolean` *required*
+
+`true` if the run was canceled.
 
 ## Type-safety
 

@@ -17,16 +17,16 @@ This full stack Next.js project showcases the following:
 
 ## GitHub repo
 
-<Card title="View the project on GitHub" icon="GitHub" href="https://github.com/triggerdotdev/examples/tree/main/realtime-fal-ai-image-generation">
-  Click here to view the full code for this project in our examples repository on GitHub. You can
-  fork it and use it as a starting point for your own project.
-</Card>
+> **[View the project on GitHub](https://github.com/triggerdotdev/examples/tree/main/realtime-fal-ai-image-generation)**
+>
+> Click here to view the full code for this project in our examples repository on GitHub. You can
+> fork it and use it as a starting point for your own project.
 
 ## Walkthrough video
 
 This video walks through the process of creating this task in a Next.js project.
 
-<iframe title="Trigger.dev walkthrough" />
+[Trigger.dev walkthrough](https://www.youtube.com/embed/BWZqYfUaigg?si=XpqVUEIf1j4bsYZ4)
 
 ## Learn more about Trigger.dev Realtime
 

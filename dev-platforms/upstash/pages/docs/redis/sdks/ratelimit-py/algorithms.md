@@ -1,5 +1,5 @@
 ---
-title: "Ratelimiting Algorithms"
+title: "Ratelimit Python SDK Algorithms"
 source: https://upstash.com/docs/redis/sdks/ratelimit-py/algorithms
 path: docs/redis/sdks/ratelimit-py/algorithms
 ---

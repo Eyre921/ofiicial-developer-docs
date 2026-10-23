@@ -630,6 +630,8 @@ When creating, editing, or viewing an [connection webhook subscription](/referen
 
 ![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/docs/dea8af87f7abbb9f51a0cce55aa59a6087fb3641376471a2168d4636c84f8a9e-image.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=888f2764b88466f438b9439807d7e0ad)
 
+Screenshot of the connection webhook "Edit subscription" form, with the new "API version" dropdown menu.
+
 For new webhook endpoints, we recommend starting with the most recent version. For existing webhook subscriptions, you'll need to carefully introduce support for the added and changed webhook types. Ensure your webhook handler can accept *both* old & new event payloads before using the "**Edit subscription**" form to upgrade to the `2025-09-03` API version.
 
 After you've tested your webhook endpoint to ensure the new events are being handled correctly for some period of time (for example, a few hours), you can clean up your system to only expect events with the updated shape. Read on below for specific details on what's changed in `2025-09-03`.

@@ -8,10 +8,10 @@ There are some hard and soft limits that you might hit.
 
 You can view your current limits, quotas, and rate limit usage in real-time by visiting the **Limits** page in the dashboard (accessible from the left sidebar). This page shows current rate limit token availability, quota usage, and plan features for your organization.
 
-<Note>
-  Looking to cap your monthly spend? That's a setting you control, not a platform limit — see
-  [Billing limits and alerts](/docs/billing-limits).
-</Note>
+> [!NOTE]
+>
+> Looking to cap your monthly spend? That's a setting you control, not a platform limit — see
+> [Billing limits and alerts](/docs/billing-limits).
 
 ## Run duration
 
@@ -49,9 +49,9 @@ The most common cause of hitting the API rate limit is if you're calling `trigge
 
 The maximum number of runs that can be queued **per queue** (not across all queues in the environment). Each queue can hold up to its limit independently. When a queue hits its limit, new triggers to that queue are rejected.
 
-<Note>
-  The limits below apply to [Trigger.dev Cloud](https://trigger.dev). If you self-host Trigger.dev, queue size limits are configurable via the `MAXIMUM_DEV_QUEUE_SIZE` and `MAXIMUM_DEPLOYED_QUEUE_SIZE` environment variables — see [Self-hosting environment variables](/docs/self-hosting/env/webapp).
-</Note>
+> [!NOTE]
+>
+> The limits below apply to [Trigger.dev Cloud](https://trigger.dev). If you self-host Trigger.dev, queue size limits are configurable via the `MAXIMUM_DEV_QUEUE_SIZE` and `MAXIMUM_DEPLOYED_QUEUE_SIZE` environment variables — see [Self-hosting environment variables](/docs/self-hosting/env/webapp).
 
 | Pricing tier | Development (per queue) | Staging / Production (per queue) |
 | :- | :- | :- |
@@ -143,11 +143,11 @@ Batch triggering uses a token bucket algorithm to rate limit the number of runs 
 
 **How it works**: You can burst up to your bucket size, then tokens refill at the specified rate. For example, a Free user can trigger 1,200 runs immediately, then must wait for tokens to refill (100 runs become available every 10 seconds).
 
-<Note>
-  When you hit batch rate limits, the SDK throws a `BatchTriggerError` with `isRateLimited: true`.
-  See [Handling batch trigger errors](/docs/triggering#handling-batch-trigger-errors) for how to detect
-  and react to rate limits in your code.
-</Note>
+> [!NOTE]
+>
+> When you hit batch rate limits, the SDK throws a `BatchTriggerError` with `isRateLimited: true`.
+> See [Handling batch trigger errors](/docs/triggering#handling-batch-trigger-errors) for how to detect
+> and react to rate limits in your code.
 
 ## Batch trigger processing concurrency
 
@@ -191,38 +191,38 @@ All of an environment's endpoints also share a per-environment limit, counted in
 
 We limit the size of logs to prevent oversized data potentially causing issues.
 
-<Expandable title="log limits">
-  #### Attribute Limits
+**log limits**
 
-  * Span Attribute Count Limit: 1024
-  * Log Attribute Count Limit: 1024
-  * Span Attribute Value Length Limit: 131072 characters
-  * Log Attribute Value Length Limit: 131072 characters
+#### Attribute Limits
 
-  #### Event and Link Limits
+* Span Attribute Count Limit: 1024
+* Log Attribute Count Limit: 1024
+* Span Attribute Value Length Limit: 131072 characters
+* Log Attribute Value Length Limit: 131072 characters
 
-  * Span Event Count Limit: 10
-  * Link Count Limit: 2
-  * Attributes per Link Limit: 10
-  * Attributes per Event Limit: 10
+#### Event and Link Limits
 
-  #### I/O Packet Length Limit
+* Span Event Count Limit: 10
+* Link Count Limit: 2
+* Attributes per Link Limit: 10
+* Attributes per Event Limit: 10
 
-  128 KB (131,072 bytes)
+#### I/O Packet Length Limit
 
-  #### Attribute Clipping Behavior
+128 KB (131,072 bytes)
 
-  * Attributes exceeding the value length limit (131072 characters) are discarded.
-  * If the total number of attributes exceeds 1024, additional attributes are not included.
+#### Attribute Clipping Behavior
 
-  #### Attribute Value Size Calculation
+* Attributes exceeding the value length limit (131072 characters) are discarded.
+* If the total number of attributes exceeds 1024, additional attributes are not included.
 
-  * Strings: Actual length of the string
-  * Numbers: 8 bytes
-  * Booleans: 4 bytes
-  * Arrays: Sum of the sizes of all elements
-  * Undefined or null: 0 bytes
-</Expandable>
+#### Attribute Value Size Calculation
+
+* Strings: Actual length of the string
+* Numbers: 8 bytes
+* Booleans: 4 bytes
+* Arrays: Sum of the sizes of all elements
+* Undefined or null: 0 bytes
 
 ## Alerts
 

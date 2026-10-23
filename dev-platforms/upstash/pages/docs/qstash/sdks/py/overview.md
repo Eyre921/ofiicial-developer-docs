@@ -1,5 +1,5 @@
 ---
-title: "Overview"
+title: "QStash Python SDK Overview"
 source: https://upstash.com/docs/qstash/sdks/py/overview
 path: docs/qstash/sdks/py/overview
 ---
@@ -23,7 +23,7 @@ You can find the Github Repository [here](https://github.com/upstash/qstash-py).
 - [Flow Control](https://upstash.com/docs/qstash/sdks/ts/examples/flow-control.md)
 - [Logs](https://upstash.com/docs/qstash/sdks/ts/examples/logs.md)
 - [Messages](https://upstash.com/docs/qstash/sdks/ts/examples/messages.md)
-- [Overview](https://upstash.com/docs/qstash/sdks/ts/examples/overview.md)
+- [QStash TypeScript SDK Examples Overview](https://upstash.com/docs/qstash/sdks/ts/examples/overview.md)
 - [Publish](https://upstash.com/docs/qstash/sdks/ts/examples/publish.md)
 - [Queues](https://upstash.com/docs/qstash/sdks/ts/examples/queues.md)
 - [Receiver](https://upstash.com/docs/qstash/sdks/ts/examples/receiver.md)

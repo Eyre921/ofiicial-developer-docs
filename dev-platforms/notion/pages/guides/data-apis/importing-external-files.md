@@ -57,6 +57,8 @@ After Step 1, Notion begins processing the file import asynchronously. To wait f
 
 ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/0413bdbb8e6e8351c9d7fd9c4e855c79f258a643e4a3f51d4468e31810faba5b-image.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=b86cbafc1f843b1e6cbceffc02b5dfd3)
 
+Screenshot of webhook settings in the Notion creator profile connection settings page.
+
 The outcome of the file import is recorded on the [File Upload](/reference/file-upload) object. If the import fails, the status changes to `failed`. If it succeeds, the status changes to `uploaded`.
 
 For example, in response to a `file_upload.upload_failed` webhook, your system can read the `data.file_import_result.error` from the webhook response, or use the [Retrieve a file upload](/reference/retrieve-file-upload) API and check the `file_import_result.error` to debug the import failure:

@@ -10,6 +10,8 @@ A Link Preview is a real-time excerpt of authenticated content that unfurls in N
 
 <video />
 
+An example Link Preview for a GitHub workflow
+
 Notion supports Link Previews for selected partner services. For example:
 
 * **Trello** links can unfurl information about a linked task.
@@ -22,6 +24,8 @@ Notion supports Link Previews for selected partner services. For example:
 A user shares a Link Preview enabled URL. Notion detects supported URLs based on the Link Preview connection settings for that service. If it’s the first time that a user has shared a supported URL, then Notion kicks off an auth flow to authenticate with the source service. After the user authenticates, Notion and the source service exchange tokens that allow Notion to show a Link Preview in the user’s workspace.
 
 ![](https://mintcdn.com/notion-demo/LHm9qfrJYJOPRxs6/images/docs/e121163-lp_overview.png?fit=max\&auto=format\&n=LHm9qfrJYJOPRxs6\&q=85\&s=ca57bf5daad1fda57bb7f369a94f7109)
+
+A diagram of the Link Preview flow
 
 The source service also detects any changes to the data embedded in the Link Preview and alerts Notion when the Link Preview needs to be updated.
 

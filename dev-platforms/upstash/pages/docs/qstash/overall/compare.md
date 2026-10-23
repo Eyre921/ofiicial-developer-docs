@@ -1,5 +1,5 @@
 ---
-title: "Compare"
+title: "Compare QStash to Alternatives"
 source: https://upstash.com/docs/qstash/overall/compare
 path: docs/qstash/overall/compare
 ---

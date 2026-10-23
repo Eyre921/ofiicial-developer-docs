@@ -18,7 +18,7 @@ This is a community developed Vite plugin from [@cptCrunch\_](https://x.com/cptC
 
 ## Prerequisites
 
-* Setup a project in&#x20;
+* Setup a project in SvelteKit
 * Ensure TypeScript is installed
 * [Create a Trigger.dev account](https://cloud.trigger.dev)
 * Create a new Trigger.dev project
@@ -30,5 +30,3 @@ This is a community developed Vite plugin from [@cptCrunch\_](https://x.com/cptC
 ```bash theme={"theme":"css-variables"}
 npm i triggerkit
 ```
-
-<UsefulNextSteps />

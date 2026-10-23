@@ -11,9 +11,9 @@ Durable chat runs can span **hours** and **many turns**. You usually want:
 1. **Conversation state** — full **`UIMessage[]`** (or equivalent) keyed by **`chatId`**, so reloads and history views work.
 2. **Live session state** — a **scoped access token** for the session and optionally **`lastEventId`** for stream resume.
 
-<Note>
-  You can persist the conversation state through a [transcript storage](/docs/ai-chat/transcript-storage) on the agent rather than the hook mapping below. Give `chat.agent` a `storage` that writes to your database and the runtime hands it every change (a new message, an undo, a regenerate, a compaction) as it happens, with the resume cursors, and reads it back when a run continues. Your own database is then the transcript. The hook mapping below still works, and it is the way to persist the live session state (the access token) and anything the transcript does not cover.
-</Note>
+> [!NOTE]
+>
+> You can persist the conversation state through a [transcript storage](/docs/ai-chat/transcript-storage) on the agent rather than the hook mapping below. Give `chat.agent` a `storage` that writes to your database and the runtime hands it every change (a new message, an undo, a regenerate, a compaction) as it happens, with the resume cursors, and reads it back when a run continues. Your own database is then the transcript. The hook mapping below still works, and it is the way to persist the live session state (the access token) and anything the transcript does not cover.
 
 This page describes a **hook mapping** that works with any database. Adapt table and column names to your stack.
 
@@ -30,9 +30,9 @@ The **conversation** row is what your UI lists as "chats." The **session** row i
 
 Storing the current **`runId`** is optional — useful for telemetry / dashboard linking ("View this run") but not required for resume. The Session row owns its current run server-side; the transport reads from `session.out` keyed on `chatId`, so a run swap (continuation, upgrade) is invisible to your DB schema.
 
-<Note>
-  Store **`UIMessage[]`** in a JSON-compatible column, or normalize to a messages table — the pattern is *when* you read/write, not *how* you encode rows.
-</Note>
+> [!NOTE]
+>
+> Store **`UIMessage[]`** in a JSON-compatible column, or normalize to a messages table — the pattern is *when* you read/write, not *how* you encode rows.
 
 ## Where each hook writes
 
@@ -62,31 +62,31 @@ If you skip preload, do the equivalent in **`onChatStart`** when **`preloaded`**
   * **Nothing in the turn reads it back** (the usual case: the row exists for the next page load). Use [**`chat.deferBeforeOutput()`**](/docs/ai-chat/background-injection#chat-deferbeforeoutput). The write runs alongside the model, so it adds nothing to time to first token, and no part of the answer reaches the frontend until it lands. That bounds "user message is durable before anything can render the answer".
   * **A tool, a `prepareStep`, or another service reads it back during the turn.** **`await`** it. `chat.deferBeforeOutput` orders the write against the frontend, not against the model, so the turn's own code can still see pre-write state. Awaiting costs time to first token and is the only thing that bounds "durable before the model starts".
 
-<Warning>
-  **Don't use [`chat.defer()`](/docs/ai-chat/background-injection#chat-defer-standalone) for the message write here.** `chat.defer` is fire-and-forget: the hook resolves, the stream starts immediately, and the write is only guaranteed before `onTurnComplete`. If the user refreshes in between, the next page load reads `[]` from your DB, the resumed SSE stream pushes the assistant into an empty array, and the user's message disappears from the rendered conversation.
-
-  ```ts theme={"theme":"css-variables"}
-  // ❌ Bad: the answer can stream before the write lands.
-  onTurnStart: async ({ chatId, uiMessages }) => {
-    chat.defer(db.chat.update({ where: { id: chatId }, data: { messages: uiMessages } }));
-  },
-
-  // ✅ Good: runs alongside the model, and the answer waits for it.
-  onTurnStart: async ({ chatId, uiMessages }) => {
-    chat.deferBeforeOutput(
-      db.chat.update({ where: { id: chatId }, data: { messages: uiMessages } })
-    );
-  },
-
-  // ✅ Required when a tool or prepareStep in this turn reads the row back.
-  // Slower: awaiting blocks the model call itself.
-  onTurnStart: async ({ chatId, uiMessages }) => {
-    await db.chat.update({ where: { id: chatId }, data: { messages: uiMessages } });
-  },
-  ```
-
-  `chat.defer` is for writes whose timing doesn't matter for resume: analytics, audit logs, search-index updates. Anything the next page load reads belongs on `chat.deferBeforeOutput`.
-</Warning>
+> [!WARNING]
+>
+> **Don't use [`chat.defer()`](/docs/ai-chat/background-injection#chat-defer-standalone) for the message write here.** `chat.defer` is fire-and-forget: the hook resolves, the stream starts immediately, and the write is only guaranteed before `onTurnComplete`. If the user refreshes in between, the next page load reads `[]` from your DB, the resumed SSE stream pushes the assistant into an empty array, and the user's message disappears from the rendered conversation.
+>
+> ```ts theme={"theme":"css-variables"}
+> // ❌ Bad: the answer can stream before the write lands.
+> onTurnStart: async ({ chatId, uiMessages }) => {
+>   chat.defer(db.chat.update({ where: { id: chatId }, data: { messages: uiMessages } }));
+> },
+>
+> // ✅ Good: runs alongside the model, and the answer waits for it.
+> onTurnStart: async ({ chatId, uiMessages }) => {
+>   chat.deferBeforeOutput(
+>     db.chat.update({ where: { id: chatId }, data: { messages: uiMessages } })
+>   );
+> },
+>
+> // ✅ Required when a tool or prepareStep in this turn reads the row back.
+> // Slower: awaiting blocks the model call itself.
+> onTurnStart: async ({ chatId, uiMessages }) => {
+>   await db.chat.update({ where: { id: chatId }, data: { messages: uiMessages } });
+> },
+> ```
+>
+> `chat.defer` is for writes whose timing doesn't matter for resume: analytics, audit logs, search-index updates. Anything the next page load reads belongs on `chat.deferBeforeOutput`.
 
 ### `onTurnComplete`
 
@@ -95,27 +95,27 @@ If you skip preload, do the equivalent in **`onChatStart`** when **`preloaded`**
 
 **`lastEventId`** lets the frontend [resume](/docs/ai-chat/frontend) without replaying SSE events it already applied. Treat it as part of session state, not optional polish, if you care about duplicate chunks after refresh.
 
-<Warning>
-  **Write the messages and `lastEventId` in a single transaction.** Both values are read in parallel on the next page load (one fetches the conversation, the other fetches the session). If a refresh races between the two writes, the page can see the assistant message persisted (full history) but a stale `lastEventId` from the previous turn. The transport then resumes from that stale cursor and replays this turn's chunks on top of the already-persisted assistant message, producing a duplicated render.
-
-  ```ts theme={"theme":"css-variables"}
-  // ✅ Atomic — refresh on the next page load reads both writes consistently.
-  await db.$transaction([
-    db.chat.update({ where: { id: chatId }, data: { messages: uiMessages } }),
-    db.chatSession.upsert({
-      where: { id: chatId },
-      create: { id: chatId, publicAccessToken: chatAccessToken, lastEventId },
-      update: { publicAccessToken: chatAccessToken, lastEventId },
-    }),
-  ]);
-
-  // ❌ Two awaits — narrow race window where messages are post-write but
-  // lastEventId is still pre-write. A page refresh that lands here will
-  // duplicate the assistant message on resume.
-  await db.chat.update({ where: { id: chatId }, data: { messages: uiMessages } });
-  await db.chatSession.upsert({ /* ... */ });
-  ```
-</Warning>
+> [!WARNING]
+>
+> **Write the messages and `lastEventId` in a single transaction.** Both values are read in parallel on the next page load (one fetches the conversation, the other fetches the session). If a refresh races between the two writes, the page can see the assistant message persisted (full history) but a stale `lastEventId` from the previous turn. The transport then resumes from that stale cursor and replays this turn's chunks on top of the already-persisted assistant message, producing a duplicated render.
+>
+> ```ts theme={"theme":"css-variables"}
+> // ✅ Atomic — refresh on the next page load reads both writes consistently.
+> await db.$transaction([
+>   db.chat.update({ where: { id: chatId }, data: { messages: uiMessages } }),
+>   db.chatSession.upsert({
+>     where: { id: chatId },
+>     create: { id: chatId, publicAccessToken: chatAccessToken, lastEventId },
+>     update: { publicAccessToken: chatAccessToken, lastEventId },
+>   }),
+> ]);
+>
+> // ❌ Two awaits — narrow race window where messages are post-write but
+> // lastEventId is still pre-write. A page refresh that lands here will
+> // duplicate the assistant message on resume.
+> await db.chat.update({ where: { id: chatId }, data: { messages: uiMessages } });
+> await db.chatSession.upsert({ /* ... */ });
+> ```
 
 ## Token renewal (app server)
 
@@ -249,174 +249,172 @@ Hydration composes with [Head Start](/docs/ai-chat/fast-starts#with-hydratemessa
 
 End-to-end implementation across the three files involved: agent task, server actions, and React component.
 
-<Warning>
-  The example below trusts raw `chatId` and returns rows without filtering by user. In a real multi-user app, **scope every query by the authenticated user** — read the user from your auth/session in each server action and add `where: { userId }` to all `db.chat.*` and `db.chatSession.*` queries. Without that, one client could read or delete another user's chat state, and `getAllSessions()` would leak other users' `publicAccessToken`s. The snippet keeps auth out of the way to focus on the persistence shape.
-</Warning>
+> [!WARNING]
+>
+> The example below trusts raw `chatId` and returns rows without filtering by user. In a real multi-user app, **scope every query by the authenticated user** — read the user from your auth/session in each server action and add `where: { userId }` to all `db.chat.*` and `db.chatSession.*` queries. Without that, one client could read or delete another user's chat state, and `getAllSessions()` would leak other users' `publicAccessToken`s. The snippet keeps auth out of the way to focus on the persistence shape.
 
-<CodeGroup>
-  ```ts trigger/chat.ts theme={"theme":"css-variables"}
-  import { chat } from "@trigger.dev/sdk/ai";
-  import { streamText, stepCountIs } from "ai";
-  import { anthropic } from "@ai-sdk/anthropic";
-  import { z } from "zod";
-  import { db } from "@/lib/db";
+```ts trigger/chat.ts theme={"theme":"css-variables"}
+import { chat } from "@trigger.dev/sdk/ai";
+import { streamText, stepCountIs } from "ai";
+import { anthropic } from "@ai-sdk/anthropic";
+import { z } from "zod";
+import { db } from "@/lib/db";
 
-  export const myChat = chat.agent({
-    id: "my-chat",
-    clientDataSchema: z.object({
-      userId: z.string(),
-    }),
-    onChatStart: async ({ chatId, clientData }) => {
-      await db.chat.create({
-        data: { id: chatId, userId: clientData.userId, title: "New chat", messages: [] },
-      });
-    },
-    onTurnStart: async ({ chatId, uiMessages, runId, chatAccessToken }) => {
-      // Persist messages + session before streaming
-      await db.chat.update({
+export const myChat = chat.agent({
+  id: "my-chat",
+  clientDataSchema: z.object({
+    userId: z.string(),
+  }),
+  onChatStart: async ({ chatId, clientData }) => {
+    await db.chat.create({
+      data: { id: chatId, userId: clientData.userId, title: "New chat", messages: [] },
+    });
+  },
+  onTurnStart: async ({ chatId, uiMessages, runId, chatAccessToken }) => {
+    // Persist messages + session before streaming
+    await db.chat.update({
+      where: { id: chatId },
+      data: { messages: uiMessages },
+    });
+    await db.chatSession.upsert({
+      where: { id: chatId },
+      create: { id: chatId, runId, publicAccessToken: chatAccessToken },
+      update: { runId, publicAccessToken: chatAccessToken },
+    });
+  },
+  onTurnComplete: async ({ chatId, uiMessages, runId, chatAccessToken, lastEventId }) => {
+    // Persist assistant response + stream position atomically — see the
+    // race-condition warning earlier on this page.
+    await db.$transaction([
+      db.chat.update({
         where: { id: chatId },
         data: { messages: uiMessages },
-      });
-      await db.chatSession.upsert({
+      }),
+      db.chatSession.upsert({
         where: { id: chatId },
-        create: { id: chatId, runId, publicAccessToken: chatAccessToken },
-        update: { runId, publicAccessToken: chatAccessToken },
-      });
-    },
-    onTurnComplete: async ({ chatId, uiMessages, runId, chatAccessToken, lastEventId }) => {
-      // Persist assistant response + stream position atomically — see the
-      // race-condition warning earlier on this page.
-      await db.$transaction([
-        db.chat.update({
-          where: { id: chatId },
-          data: { messages: uiMessages },
-        }),
-        db.chatSession.upsert({
-          where: { id: chatId },
-          create: { id: chatId, runId, publicAccessToken: chatAccessToken, lastEventId },
-          update: { runId, publicAccessToken: chatAccessToken, lastEventId },
-        }),
-      ]);
-    },
-    run: async ({ messages, signal }) => {
-      return streamText({
-        model: anthropic("claude-sonnet-4-5"),
-        messages,
-        abortSignal: signal,
-        stopWhen: stepCountIs(15),
-      });
+        create: { id: chatId, runId, publicAccessToken: chatAccessToken, lastEventId },
+        update: { runId, publicAccessToken: chatAccessToken, lastEventId },
+      }),
+    ]);
+  },
+  run: async ({ messages, signal }) => {
+    return streamText({
+      model: anthropic("claude-sonnet-4-5"),
+      messages,
+      abortSignal: signal,
+      stopWhen: stepCountIs(15),
+    });
+  },
+});
+```
+
+```ts app/actions.ts theme={"theme":"css-variables"}
+"use server";
+
+import { auth } from "@trigger.dev/sdk";
+import { chat } from "@trigger.dev/sdk/ai";
+import { db } from "@/lib/db";
+
+export const startChatSession = chat.createStartSessionAction("my-chat");
+
+export async function mintChatAccessToken(chatId: string) {
+  return auth.createPublicToken({
+    scopes: { read: { sessions: chatId }, write: { sessions: chatId } },
+    expirationTime: "1h",
+  });
+}
+
+export async function getChatMessages(chatId: string) {
+  const found = await db.chat.findUnique({ where: { id: chatId } });
+  return found?.messages ?? [];
+}
+
+export async function getAllSessions() {
+  const sessions = await db.chatSession.findMany();
+  const result: Record<
+    string,
+    {
+      publicAccessToken: string;
+      lastEventId?: string;
+    }
+  > = {};
+  for (const s of sessions) {
+    result[s.id] = {
+      publicAccessToken: s.publicAccessToken,
+      lastEventId: s.lastEventId ?? undefined,
+    };
+  }
+  return result;
+}
+
+export async function deleteSession(chatId: string) {
+  await db.chatSession.delete({ where: { id: chatId } }).catch(() => {});
+}
+```
+
+```tsx app/components/chat.tsx theme={"theme":"css-variables"}
+"use client";
+
+import { useChat } from "@ai-sdk/react";
+import { useTriggerChatTransport } from "@trigger.dev/sdk/chat/react";
+import type { myChat } from "@/trigger/chat";
+import { mintChatAccessToken, startChatSession, deleteSession } from "@/app/actions";
+
+export function Chat({ chatId, initialMessages, initialSessions }) {
+  const transport = useTriggerChatTransport<typeof myChat>({
+    task: "my-chat",
+    accessToken: ({ chatId }) => mintChatAccessToken(chatId),
+    startSession: ({ chatId, clientData }) =>
+      startChatSession({ chatId, clientData }),
+    clientData: { userId: currentUser.id }, // Type-checked against clientDataSchema
+    sessions: initialSessions,
+    onSessionChange: (id, session) => {
+      if (!session) deleteSession(id);
     },
   });
-  ```
 
-  ```ts app/actions.ts theme={"theme":"css-variables"}
-  "use server";
+  const { messages, sendMessage, stop, status } = useChat({
+    id: chatId,
+    messages: initialMessages,
+    transport,
+    resume: initialMessages.length > 0,
+  });
 
-  import { auth } from "@trigger.dev/sdk";
-  import { chat } from "@trigger.dev/sdk/ai";
-  import { db } from "@/lib/db";
-
-  export const startChatSession = chat.createStartSessionAction("my-chat");
-
-  export async function mintChatAccessToken(chatId: string) {
-    return auth.createPublicToken({
-      scopes: { read: { sessions: chatId }, write: { sessions: chatId } },
-      expirationTime: "1h",
-    });
-  }
-
-  export async function getChatMessages(chatId: string) {
-    const found = await db.chat.findUnique({ where: { id: chatId } });
-    return found?.messages ?? [];
-  }
-
-  export async function getAllSessions() {
-    const sessions = await db.chatSession.findMany();
-    const result: Record<
-      string,
-      {
-        publicAccessToken: string;
-        lastEventId?: string;
-      }
-    > = {};
-    for (const s of sessions) {
-      result[s.id] = {
-        publicAccessToken: s.publicAccessToken,
-        lastEventId: s.lastEventId ?? undefined,
-      };
-    }
-    return result;
-  }
-
-  export async function deleteSession(chatId: string) {
-    await db.chatSession.delete({ where: { id: chatId } }).catch(() => {});
-  }
-  ```
-
-  ```tsx app/components/chat.tsx theme={"theme":"css-variables"}
-  "use client";
-
-  import { useChat } from "@ai-sdk/react";
-  import { useTriggerChatTransport } from "@trigger.dev/sdk/chat/react";
-  import type { myChat } from "@/trigger/chat";
-  import { mintChatAccessToken, startChatSession, deleteSession } from "@/app/actions";
-
-  export function Chat({ chatId, initialMessages, initialSessions }) {
-    const transport = useTriggerChatTransport<typeof myChat>({
-      task: "my-chat",
-      accessToken: ({ chatId }) => mintChatAccessToken(chatId),
-      startSession: ({ chatId, clientData }) =>
-        startChatSession({ chatId, clientData }),
-      clientData: { userId: currentUser.id }, // Type-checked against clientDataSchema
-      sessions: initialSessions,
-      onSessionChange: (id, session) => {
-        if (!session) deleteSession(id);
-      },
-    });
-
-    const { messages, sendMessage, stop, status } = useChat({
-      id: chatId,
-      messages: initialMessages,
-      transport,
-      resume: initialMessages.length > 0,
-    });
-
-    return (
-      <div>
-        {messages.map((m) => (
-          <div key={m.id}>
-            <strong>{m.role}:</strong>
-            {m.parts.map((part, i) =>
-              part.type === "text" ? <span key={i}>{part.text}</span> : null
-            )}
-          </div>
-        ))}
-
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            const input = e.currentTarget.querySelector("input");
-            if (input?.value) {
-              sendMessage({ text: input.value });
-              input.value = "";
-            }
-          }}
-        >
-          <input placeholder="Type a message..." />
-          <button type="submit" disabled={status === "streaming"}>
-            Send
-          </button>
-          {status === "streaming" && (
-            <button type="button" onClick={stop}>
-              Stop
-            </button>
+  return (
+    <div>
+      {messages.map((m) => (
+        <div key={m.id}>
+          <strong>{m.role}:</strong>
+          {m.parts.map((part, i) =>
+            part.type === "text" ? <span key={i}>{part.text}</span> : null
           )}
-        </form>
-      </div>
-    );
-  }
-  ```
-</CodeGroup>
+        </div>
+      ))}
+
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          const input = e.currentTarget.querySelector("input");
+          if (input?.value) {
+            sendMessage({ text: input.value });
+            input.value = "";
+          }
+        }}
+      >
+        <input placeholder="Type a message..." />
+        <button type="submit" disabled={status === "streaming"}>
+          Send
+        </button>
+        {status === "streaming" && (
+          <button type="button" onClick={stop}>
+            Stop
+          </button>
+        )}
+      </form>
+    </div>
+  );
+}
+```
 
 ## See also
 

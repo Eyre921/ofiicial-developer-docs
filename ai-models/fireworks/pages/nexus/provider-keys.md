@@ -10,18 +10,13 @@ Connect an Anthropic, OpenAI, or [Amazon Bedrock](/nexus/provider-keys/bedrock) 
 
 > [!NOTE]
 >
-> Provider Keys is not yet available on every account. If **Provider Keys**
-> does not appear in [Settings](https://app.fireworks.ai/settings/provider-keys),
-> [contact the Fireworks team](https://fireworks.ai/demo-request) to enable it.
-> Self-serve setup is coming soon.
+> Provider Keys isn't available on every account yet. If **Provider Keys**
+> doesn't appear in [Settings](https://app.fireworks.ai/settings/provider-keys),
+> [contact the Fireworks team](https://fireworks.ai/demo-request) to turn it on.
 
-Until then, send a per-request Anthropic or
-OpenAI header from [APIs and SDKs](/nexus/apis-and-sdks#credentials) or
-[LLM Gateways](/nexus/llm-gateways#provide-closed-model-credentials). For
-coding harnesses, review local support in
-[Which harnesses can send provider keys](/nexus/auto#nexus-cli).
+Until then, send the Anthropic or OpenAI key with each request. See [APIs and SDKs](/nexus/apis-and-sdks#credentials) or [LLM Gateways](/nexus/llm-gateways#provide-closed-model-credentials). In coding harnesses, save your own key with `nexus auto --anthropic-api-key` or `--openai-api-key`. See [which harnesses send a saved key](/nexus/auto#nexus-cli).
 
-Nexus CLI configures the developer's Fireworks credential through `nexus login`. The provider key stays with the account, so it is never distributed to developers or pasted into a chat. Fireworks encrypts API keys at rest and never shows them in full again. IAM role ARNs are non-secret identifiers.
+Developers sign in to Nexus CLI with `nexus login`, which stores only their Fireworks credential. The provider key stays with the account, so you never hand it to developers or paste it into a chat. Fireworks encrypts API keys at rest and never shows them in full again. IAM role ARNs are non-secret identifiers.
 
 > [!TIP]
 >
@@ -30,8 +25,8 @@ Nexus CLI configures the developer's Fireworks credential through `nexus login`.
 
 > [!NOTE]
 >
-> Nexus Auto support varies by harness. See
-> [Which harnesses can send provider keys](/nexus/auto#nexus-cli) for current support.
+> A connected Provider Key works in every coding harness, including Cursor IDE, the Copilot App, and Claude Desktop. A key a developer saves with `nexus auto` takes precedence for that provider. See
+> [which harnesses send a saved key](/nexus/auto#nexus-cli).
 
 > [!NOTE]
 >
@@ -60,7 +55,19 @@ Each provider is always in one of these states:
 | **Connected** | The key is active for Nexus Auto requests to that provider |
 | **Connecting** | A new binding is propagating |
 | **Disconnecting** | A binding removal is propagating |
-| **Not connected** | No key is set for this provider. |
+| **Not connected** | No key is set for this provider |
+
+Developers can check the Anthropic and OpenAI states from the terminal with `nexus auto`. It lists each Provider Key next to the keys saved on their machine:
+
+| `nexus auto` shows | What it means |
+| - | - |
+| **Connected, covers every harness** | The Provider Key is active. A masked preview may follow **Connected** |
+| **Connecting** or **Disconnecting** | A change is propagating |
+| **Not connected** | No Provider Key is set for this provider |
+| **Not enabled on this account** | Your account can't use Provider Keys yet |
+| **Sign in to see status** | Run `nexus login` first |
+| **Key rejected: sign in again** | The stored Fireworks key was rejected. Run `nexus login` |
+| **Couldn't check just now** | Nexus CLI couldn't read the status. Try again later |
 
 ## Connect a key in the dashboard
 
@@ -76,7 +83,7 @@ Find the provider you want (Anthropic, OpenAI, or Amazon Bedrock) and click **Co
 
 **3. Paste your key**
 
-For Anthropic or OpenAI, paste your key and click **Connect**. You will see a confirmation once it is saved.
+For Anthropic or OpenAI, paste your key and click **Connect**. A confirmation appears once it's saved.
 
 For Amazon Bedrock, choose an IAM role or API key, then select models. After the card connects, fill in each model's Bedrock model ID and region, then click **Save**. Full steps are in [Amazon Bedrock Setup](/nexus/provider-keys/bedrock).
 
@@ -117,7 +124,7 @@ The CLI can also stop using a key for routing without deleting it (`provider-key
 | **Check status** | Check stored keys | `firectl provider-key list` / `firectl provider-key list --provider-type PROVIDER` |
 | | Check keys in routing | `firectl provider-key-binding list` or `firectl provider-key-binding get PROVIDER` |
 | **Remove** | Stop using a key (but keep stored) | `firectl provider-key-binding unbind PROVIDER` |
-| | Delete (needs to stop first) | `firectl provider-key delete KEY_ID` |
+| | Delete (unbind first) | `firectl provider-key delete KEY_ID` |
 
 ### Add or replace a key
 
@@ -165,7 +172,7 @@ firectl provider-key-binding get openai
 
 ### Delete a key
 
-Use the key ID or full resource name from `upload` or `provider-key list`. If that key is live for the provider, unbind it first. Unbind stops routing from using it; the key stays stored until you delete it.
+Use the key ID or full resource name from `upload` or `provider-key list`. If that key is live for the provider, unbind it first. Unbinding stops routing from using the key, and the key stays stored until you delete it.
 
 ```bash wrap theme={null}
 # If this key is currently in use
@@ -177,4 +184,4 @@ firectl provider-key delete KEY_ID
 
 * **Request-level credentials take precedence when supported.** If a request includes a provider key, that key is used and the stored one is skipped.
 * **Changes are not instant.** After you connect, replace, or remove a key, allow 30–60 seconds for the change to reach requests.
-* **Your API key stays private.** The full API key is stored securely and never returned. For API keys, the dashboard and API only show the provider, state, masked preview, and dates. An IAM role ARN is a non-secret identifier and is returned as the credential preview.
+* **Your API key stays private.** The full API key is stored securely and never returned. For API keys, the dashboard and API show only the provider, state, masked preview, and dates. An IAM role ARN is a non-secret identifier and is returned as the credential preview.

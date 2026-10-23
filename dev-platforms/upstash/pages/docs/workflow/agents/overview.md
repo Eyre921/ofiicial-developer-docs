@@ -1,5 +1,5 @@
 ---
-title: "Overview"
+title: "Workflow Agents Overview"
 source: https://upstash.com/docs/workflow/agents/overview
 path: docs/workflow/agents/overview
 ---

@@ -15,7 +15,7 @@ Monitor your usage dashboard to understand your spending patterns. You can see:
 * Number of runs by task
 * Spikes in your daily usage
 
-<img alt="Usage dashboard" />
+![Usage dashboard](https://mintcdn.com/trigger/0bD0UfsjaINxS6Tw/images/usage-dashboard.png?fit=max\&auto=format\&n=0bD0UfsjaINxS6Tw\&q=85\&s=0117c432cfbb809afbcc5698314dc97d)
 
 You can view your usage page by clicking the "Organization" menu in the top left of the dashboard and then clicking "Usage".
 

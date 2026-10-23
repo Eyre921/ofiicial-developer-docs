@@ -583,6 +583,8 @@ You can use a compound filter condition to limit the results of a data source qu
 
 ![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/14ec7e8-Untitled.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=f7a7a738dcd526d2c1180c7f479fda31)
 
+An example filter chain in the Notion UI
+
 The above filters in the Notion UI are equivalent to the following compound filter condition via the API:
 
 ```json JSON theme={null}

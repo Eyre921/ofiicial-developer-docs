@@ -1,5 +1,5 @@
 ---
-title: "Advanced"
+title: "Vector TypeScript SDK Advanced Usage"
 source: https://upstash.com/docs/vector/sdks/ts/advanced
 path: docs/vector/sdks/ts/advanced
 ---

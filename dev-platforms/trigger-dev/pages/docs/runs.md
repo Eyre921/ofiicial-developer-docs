@@ -21,52 +21,52 @@ A run is created when you trigger a task (e.g. calling `yourTask.trigger({ foo: 
 
 A run can go through **various** states during its lifecycle. The following diagram illustrates a typical state transition where a single run is triggered and completes successfully:
 
-<img alt="Run Lifecycle" />
+![Run Lifecycle](https://mintcdn.com/trigger/5SxX7bFjJKRsidSL/images/run-lifecycle.png?fit=max\&auto=format\&n=5SxX7bFjJKRsidSL\&q=85\&s=a8936884740688be9f52dd5d7356fb44)
 
 Runs can also find themselves in lots of other states depending on what's happening at any given time. The following sections describe all the possible states in more detail.
 
 ### Initial states
 
-<Icon icon="rectangle-history" /> **Pending version**:
+&#x20;**Pending version**:
 The task is waiting for a version update because it cannot execute without additional information (task, queue, etc.).
 
-<Icon icon="clock" /> **Delayed**: When a run is triggered
+&#x20;**Delayed**: When a run is triggered
 with a delay, it enters this state until the specified delay period has passed.
 
-<Icon icon="rectangle-history" /> **Queued**: The run is ready
+&#x20;**Queued**: The run is ready
 to be executed and is waiting in the queue.
 
-<Icon icon="rectangle-history" /> **Dequeued**: The task has been dequeued and is being sent to a worker to start executing.
+&#x20;**Dequeued**: The task has been dequeued and is being sent to a worker to start executing.
 
 ### Execution states
 
-<Icon icon="spinner-third" /> **Executing**: The task is
+&#x20;**Executing**: The task is
 currently being executed by a worker.
 
-<Icon icon="hourglass" /> **Waiting**: You have used a
+&#x20;**Waiting**: You have used a
 [triggerAndWait()](/docs/triggering#yourtask-triggerandwait), [batchTriggerAndWait()](/docs/triggering#yourtask-batchtriggerandwait) or a [wait function](/docs/wait). When the wait is complete, the task will resume execution.
 
 ### Final states
 
-<Icon icon="circle-check" /> **Completed**: The task has successfully
+&#x20;**Completed**: The task has successfully
 finished execution.
 
-<Icon icon="ban" /> **Canceled**: The run was manually canceled
+&#x20;**Canceled**: The run was manually canceled
 by the user.
 
-<Icon icon="circle-xmark" /> **Failed**: The task has failed
+&#x20;**Failed**: The task has failed
 to complete successfully due to an error in the task code.
 
-<Icon icon="alarm-exclamation" /> **Timed out**: Task has
+&#x20;**Timed out**: Task has
 failed because it exceeded its `maxDuration`.
 
-<Icon icon="fire" /> **Crashed**: The worker process crashed
+&#x20;**Crashed**: The worker process crashed
 during execution (likely due to an Out of Memory error) and won’t be retried, unless `retry.outOfMemory.machine` is set to retry on a larger machine. See [Machines](/docs/machines#retrying-with-a-larger-machine).
 
-<Icon icon="bug" /> **System failure**: An unrecoverable system
+&#x20;**System failure**: An unrecoverable system
 error has occurred.
 
-<Icon icon="trash-can" /> **Expired**: The run's [Time-to-Live](#time-to-live-ttl)
+&#x20;**Expired**: The run's [Time-to-Live](#time-to-live-ttl)
 (TTL) has passed before it could start executing.
 
 ## Attempts
@@ -79,7 +79,7 @@ An attempt represents a single execution of a task within a run. A run can have 
 
 When a task fails, it will be retried according to its retry settings, creating new attempts until it either succeeds or reaches the retry limit.
 
-<img alt="Run with retries" />
+![Run with retries](https://mintcdn.com/trigger/5SxX7bFjJKRsidSL/images/run-with-retries.png?fit=max\&auto=format\&n=5SxX7bFjJKRsidSL\&q=85\&s=520a05470d031b8117b2780405964153)
 
 ## Run completion
 
@@ -208,15 +208,15 @@ export const longRunningTask = task({
 });
 ```
 
-<Note>
-  Setting `ttl: 0` removes the config-level or task-level TTL, but the platform-level maximum still applies. See [Limits - Maximum run TTL](/docs/limits#maximum-run-ttl) for details.
-</Note>
+> [!NOTE]
+>
+> Setting `ttl: 0` removes the config-level or task-level TTL, but the platform-level maximum still applies. See [Limits - Maximum run TTL](/docs/limits#maximum-run-ttl) for details.
 
 If the run hasn't started within the specified TTL, it will automatically expire, returning the status `Expired`. This is useful for time-sensitive tasks where immediate execution is important. For example, when you queue many runs simultaneously and exceed your concurrency limits, some runs might be delayed - using TTL ensures they only execute if they can start within your specified timeframe.
 
 Dev runs automatically have a 10-minute TTL. On Trigger.dev Cloud, staging and production runs have a maximum TTL of 14 days applied automatically (runs without an explicit TTL get 14 days; longer TTLs are clamped). See [Limits — Maximum run TTL](/docs/limits#maximum-run-ttl) for details.
 
-<img alt="Run with TTL" />
+![Run with TTL](https://mintcdn.com/trigger/5SxX7bFjJKRsidSL/images/run-with-ttl.png?fit=max\&auto=format\&n=5SxX7bFjJKRsidSL\&q=85\&s=2a3663f4cf4d7c4249c5c82f54859a76)
 
 ### Delayed runs
 
@@ -228,7 +228,7 @@ await yourTask.trigger({ foo: "bar" }, { delay: "1h" });
 
 This is useful for tasks that need to be executed at a specific time in the future.
 
-<img alt="Run with delay" />
+![Run with delay](https://mintcdn.com/trigger/5SxX7bFjJKRsidSL/images/run-with-delay.png?fit=max\&auto=format\&n=5SxX7bFjJKRsidSL\&q=85\&s=fe68bf64bab17c12f0c1c532bdb48ab4)
 
 ### Replaying runs
 
@@ -248,23 +248,23 @@ You can also replay runs from the dashboard using the same or different payload.
 
 The `triggerAndWait()` function triggers a task and then lets you wait for the result before continuing. [Learn more about triggerAndWait()](/docs/triggering#yourtask-triggerandwait).
 
-<img alt="Run with triggerAndWait" />
+![Run with triggerAndWait](https://mintcdn.com/trigger/5SxX7bFjJKRsidSL/images/run-with-triggerAndWait\(\).png?fit=max\&auto=format\&n=5SxX7bFjJKRsidSL\&q=85\&s=b7175cd727983b76dc998fa76cdc7279)
 
 #### batchTriggerAndWait()
 
 Similar to `triggerAndWait()`, the `batchTriggerAndWait()` function lets you batch trigger a task and wait for all the results [Learn more about batchTriggerAndWait()](/docs/triggering#yourtask-batchtriggerandwait).
 
-<img alt="Run with batchTriggerAndWait" />
+![Run with batchTriggerAndWait](https://mintcdn.com/trigger/5SxX7bFjJKRsidSL/images/run-with-batchTriggerAndWait\(\).png?fit=max\&auto=format\&n=5SxX7bFjJKRsidSL\&q=85\&s=26974085e23f5dd55ea301234b477655)
 
 ### Runs API
 
 #### runs.list()
 
-<Warning>
-  `runs.list()` is for browsing, reporting, and bulk operations, not for coordinating runs. Don't
-  call it before every trigger or poll it in a loop. See [runs.list() best
-  practices](/docs/runs/list-best-practices) for what to use instead.
-</Warning>
+> [!WARNING]
+>
+> `runs.list()` is for browsing, reporting, and bulk operations, not for coordinating runs. Don't
+> call it before every trigger or poll it in a loop. See [runs.list() best
+> practices](/docs/runs/list-best-practices) for what to use instead.
 
 List runs in a specific environment. You can filter the runs by status, created at, task identifier, version, and more:
 

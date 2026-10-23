@@ -17,14 +17,14 @@ This demo is a full stack example that uses the following:
 
 ## GitHub repo
 
-<Card title="View the meme generator human-in-the-loop example repo" icon="GitHub" href="https://github.com/triggerdotdev/examples/tree/main/meme-generator-human-in-the-loop">
-  Click here to view the full code for this project in our examples repository on GitHub. You can
-  fork it and use it as a starting point for your own project.
-</Card>
+> **[View the meme generator human-in-the-loop example repo](https://github.com/triggerdotdev/examples/tree/main/meme-generator-human-in-the-loop)**
+>
+> Click here to view the full code for this project in our examples repository on GitHub. You can
+> fork it and use it as a starting point for your own project.
 
 ## Post to Slack
 
-<img alt="Meme Generator with Human-in-the-Loop Approval" />
+![Meme Generator with Human-in-the-Loop Approval](https://mintcdn.com/trigger/5SxX7bFjJKRsidSL/images/slack-meme-approval.png?fit=max\&auto=format\&n=5SxX7bFjJKRsidSL\&q=85\&s=b1f4a27701fd8f2899e4454f7bb72e91)
 
 ## Relevant code
 

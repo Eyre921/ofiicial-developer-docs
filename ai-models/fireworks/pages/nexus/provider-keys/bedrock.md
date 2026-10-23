@@ -6,7 +6,7 @@ path: nexus/provider-keys/bedrock
 
 Connect a Bedrock IAM role or API key so Nexus Auto can call supported models through your AWS account.
 
-An Amazon Bedrock Provider Key lets Nexus Auto use an IAM role or API key from your AWS account for supported models. Fireworks stores the credential securely. Bedrock usage and charges remain in your AWS account.
+An Amazon Bedrock Provider Key lets Nexus Auto call supported models with an IAM role or API key from your AWS account. Fireworks stores the credential. Bedrock usage and charges stay in your AWS account.
 
 Bedrock uses the same account-admin workflow as Anthropic and OpenAI, but each model also needs a Bedrock model ID and region. See [Provider Keys](/nexus/provider-keys) for shared states, rotation, and security.
 
@@ -199,11 +199,11 @@ In **Add models to Amazon Bedrock**, select the models that should use this cred
 
 ![Selecting models for an Amazon Bedrock Provider Key](https://mintcdn.com/fireworksai/JD1KCHWcNDNUqemu/images/fireworks-nexus/provider-keys/bedrock/paste-key.gif?s=246b94c64f1430eb0cf535a058160dae)
 
-The card shows **Connecting** for about a minute while we finish setup.
+The card shows **Connecting** for about a minute while Fireworks finishes setup.
 
 **2. Fill in the model routes**
 
-Connecting stores the credential but does not route any traffic yet. Once the card is connected, the models you picked appear as empty rows that you must complete.
+Connecting stores the credential but does not route traffic yet. Once the card is connected, the models you picked appear as empty rows for you to complete.
 
 1. For each row under **Models using Bedrock**, paste the AWS **Model ID** and select a **Region**.
 2. Click **Save**. Save stays disabled until every row has both values.
@@ -226,11 +226,11 @@ In **Add models to Amazon Bedrock**, select the models that should use this cred
 
 ![Selecting models for an Amazon Bedrock Provider Key](https://mintcdn.com/fireworksai/JD1KCHWcNDNUqemu/images/fireworks-nexus/provider-keys/bedrock/paste-key.gif?s=246b94c64f1430eb0cf535a058160dae)
 
-The card shows **Connecting** for about a minute while we finish setup.
+The card shows **Connecting** for about a minute while Fireworks finishes setup.
 
 **2. Fill in the model routes**
 
-Connecting stores the credential but does not route any traffic yet. Once the card is connected, the models you picked appear as empty rows that you must complete.
+Connecting stores the credential but does not route traffic yet. Once the card is connected, the models you picked appear as empty rows for you to complete.
 
 1. For each row under **Models using Bedrock**, paste the AWS **Model ID** and select a **Region**.
 2. Click **Save**. Save stays disabled until every row has both values.
@@ -275,7 +275,7 @@ firectl provider-key upload \
 
 Delete the local file after upload.
 
-Save the returned key ID as `KEY_ID`. `upload` only stores the credential; it does not route traffic.
+Save the returned key ID as `KEY_ID`. `upload` stores the credential but does not route traffic.
 
 ### Write the routes file
 

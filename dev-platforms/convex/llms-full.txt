@@ -344,6 +344,7 @@
 - [Interface: GenericMutationCtx<DataModel>](/api/interfaces/server.GenericMutationCtx.md): server.GenericMutationCtx
 - [Interface: GenericQueryCtx<DataModel>](/api/interfaces/server.GenericQueryCtx.md): server.GenericQueryCtx
 - [Interface: IndexRangeBuilder<Document, IndexFields, FieldNum>](/api/interfaces/server.IndexRangeBuilder.md): server.IndexRangeBuilder
+- [Interface: MutationAuth](/api/interfaces/server.MutationAuth.md): server.MutationAuth
 - [Interface: MutationMeta](/api/interfaces/server.MutationMeta.md): server.MutationMeta
 - [Interface: OrderedQuery<TableInfo>](/api/interfaces/server.OrderedQuery.md): server.OrderedQuery
 - [Interface: PaginationOptions](/api/interfaces/server.PaginationOptions.md): server.PaginationOptions
@@ -5937,7 +5938,7 @@ Enable [ZDR routing](/ai-gateway/api.md#provider-preferences) on each request th
 
 <!-- -->
 
-ZDR endpoint catalog checked: 2026-10-16.
+ZDR endpoint catalog checked: 2026-10-22.
 
 ## OpenAI[​](#openai "Direct link to OpenAI")
 
@@ -6052,10 +6053,10 @@ ZDR endpoint catalog checked: 2026-10-16.
 ## Google[​](#google "Direct link to Google")
 
 * `google/chirp-3` · ZDR
-* `google/gemini-2.5-flash` · ZDR
+* `google/gemini-2.5-flash`
 * `google/gemini-2.5-flash-image` · ZDR
-* `google/gemini-2.5-flash-lite` · ZDR
-* `google/gemini-2.5-pro` · ZDR
+* `google/gemini-2.5-flash-lite`
+* `google/gemini-2.5-pro`
 * `google/gemini-2.5-pro-preview` · ZDR
 * `google/gemini-3-flash-preview` · ZDR
 * `google/gemini-3-pro-image` · ZDR
@@ -6120,7 +6121,6 @@ ZDR endpoint catalog checked: 2026-10-16.
 * `deepseek/deepseek-chat` · ZDR
 * `deepseek/deepseek-chat-v3-0324` · ZDR
 * `deepseek/deepseek-chat-v3.1` · ZDR
-* `deepseek/deepseek-r1` · ZDR
 * `deepseek/deepseek-r1-0528` · ZDR
 * `deepseek/deepseek-v3.1-terminus` · ZDR
 * `deepseek/deepseek-v3.2` · ZDR
@@ -6131,6 +6131,7 @@ ZDR endpoint catalog checked: 2026-10-16.
 * `deepseek/deepseek-v4-pro` · ZDR
 * `deepseek/deepseek-v4-pro-0813` · ZDR
 * `deepseek/deepseek-v4.1-flash` · ZDR
+* `deepseek/deepseek-v4.1-flash-1017` · ZDR
 * `~deepseek/deepseek-flash-latest`
 * `~deepseek/deepseek-pro-latest`
 * `~deepseek/deepseek-v4-flash-latest`
@@ -6181,9 +6182,12 @@ ZDR endpoint catalog checked: 2026-10-16.
 * `mistralai/mixtral-8x22b-instruct` · ZDR
 * `mistralai/voxtral-mini-3b-2507` · ZDR
 * `mistralai/voxtral-mini-transcribe` · ZDR
+* `mistralai/voxtral-mini-transcribe-3-0` · ZDR
 * `mistralai/voxtral-mini-tts-2603` · ZDR
+* `mistralai/voxtral-mini-tts-3-0` · ZDR
 * `mistralai/voxtral-small-24b-2507` · ZDR
 * `mistralai/voxtral-small-24b-2507-stt` · ZDR
+* `mistralai/voxtral-small-transcribe-3-0` · ZDR
 
 ## Moonshot[​](#moonshot "Direct link to Moonshot")
 
@@ -6211,6 +6215,8 @@ ZDR endpoint catalog checked: 2026-10-16.
 * `qwen/qwen-2.5-coder-32b-instruct` · ZDR
 * `qwen/qwen-audio-3.0-tts-flash`
 * `qwen/qwen-audio-3.0-tts-plus`
+* `qwen/qwen-image-2.1-pro`
+* `qwen/qwen-image-2.1-turbo`
 * `qwen/qwen-image-3`
 * `qwen/qwen-image-3-pro`
 * `qwen/qwen-plus`
@@ -6281,7 +6287,8 @@ ZDR endpoint catalog checked: 2026-10-16.
 
 ## Perplexity[​](#perplexity "Direct link to Perplexity")
 
-* `perplexity/pplx-decider-v1.1-27b` · ZDR
+* `perplexity/pplx-decider-flash-v1.2` · ZDR
+* `perplexity/pplx-decider-v1.2` · ZDR
 * `perplexity/pplx-embed-v1-0.6b` · ZDR
 * `perplexity/pplx-embed-v1-4b` · ZDR
 * `perplexity/sonar` · ZDR
@@ -6304,8 +6311,11 @@ ZDR endpoint catalog checked: 2026-10-16.
 * `nvidia/nemotron-3.5-asr-streaming-multilingual-0.6b` · ZDR
 * `nvidia/nemotron-3.5-content-safety` · ZDR
 * `nvidia/nemotron-3.5-content-safety:free`
+* `nvidia/nemotron-3.5-embed-1b:free`
+* `nvidia/nemotron-3.5-embed-8b:free`
 * `nvidia/nemotron-3.5-lightning` · ZDR
 * `nvidia/nemotron-3.5-lightning:free`
+* `nvidia/nemotron-3.5-rerank-8b:free`
 * `nvidia/nemotron-3.5-super-vl` · ZDR
 * `nvidia/nemotron-3.5-super-vl:free`
 * `nvidia/parakeet-tdt-0.6b-v3` · ZDR
@@ -6325,7 +6335,6 @@ ZDR endpoint catalog checked: 2026-10-16.
 * `microsoft/mai-voice-2.1-flash` · ZDR
 * `microsoft/microsoft-decision-1` · ZDR
 * `microsoft/phi-4` · ZDR
-* `microsoft/wizardlm-2-8x22b` · ZDR
 
 ## Cohere[​](#cohere "Direct link to Cohere")
 
@@ -6352,6 +6361,7 @@ ZDR endpoint catalog checked: 2026-10-16.
 * `minimax/minimax-m2.5` · ZDR
 * `minimax/minimax-m2.7` · ZDR
 * `minimax/minimax-m3` · ZDR
+* `minimax/minimax-m3.1-flash`
 * `minimax/speech-2.8-hd`
 * `minimax/speech-2.8-turbo`
 
@@ -6444,6 +6454,7 @@ ZDR endpoint catalog checked: 2026-10-16.
 
 * `inception/mercury-2` · ZDR
 * `inception/mercury-2.5` · ZDR
+* `inception/mercury-3` · ZDR
 * `inception/mercury-decide` · ZDR
 * `inception/mercury-decide:free`
 
@@ -6527,7 +6538,6 @@ ZDR endpoint catalog checked: 2026-10-16.
 
 * `sao10k/l3-lunaris-8b` · ZDR
 * `sao10k/l3.1-euryale-70b` · ZDR
-* `sao10k/l3.3-euryale-70b` · ZDR
 
 ## StepFun[​](#stepfun "Direct link to StepFun")
 
@@ -6550,6 +6560,7 @@ ZDR endpoint catalog checked: 2026-10-16.
 
 ## Unbiased[​](#unbiased "Direct link to Unbiased")
 
+* `unbiased/pareto-26.10` · ZDR
 * `unbiased/pareto-26.9`
 
 ## Undi95[​](#undi95 "Direct link to Undi95")
@@ -6587,6 +6598,11 @@ ZDR endpoint catalog checked: 2026-10-16.
 * `baai/bge-base-en-v1.5` · ZDR
 * `baai/bge-large-en-v1.5` · ZDR
 * `baai/bge-m3` · ZDR
+
+## baseten[​](#baseten "Direct link to baseten")
+
+* `baseten/elephant-1:free` · ZDR
+* `baseten/mammoth-1:free` · ZDR
 
 ## black-forest-labs[​](#black-forest-labs "Direct link to black-forest-labs")
 
@@ -6629,6 +6645,10 @@ ZDR endpoint catalog checked: 2026-10-16.
 * `elevenlabs/eleven-v4-turbo` · ZDR
 * `elevenlabs/scribe-v2` · ZDR
 * `elevenlabs/scribe-v2-medical` · ZDR
+
+## elorian[​](#elorian "Direct link to elorian")
+
+* `elorian/glimpse` · ZDR
 
 ## fireworks[​](#fireworks "Direct link to fireworks")
 
@@ -6685,6 +6705,7 @@ ZDR endpoint catalog checked: 2026-10-16.
 
 ## nace-ai[​](#nace-ai "Direct link to nace-ai")
 
+* `nace-ai/drex-max` · ZDR
 * `nace-ai/drex-v1.5` · ZDR
 * `nace-ai/drex-v2.0` · ZDR
 
@@ -6706,6 +6727,14 @@ ZDR endpoint catalog checked: 2026-10-16.
 * `recraft/recraft-v4.1-utility`
 * `recraft/recraft-v4.1-utility-pro`
 * `recraft/recraft-v4.1-vector`
+
+## recursive[​](#recursive "Direct link to recursive")
+
+* `recursive/flint-v1.0:free`
+
+## reflection[​](#reflection "Direct link to reflection")
+
+* `reflection/beam-1.0-501b-a23b` · ZDR
 
 ## respan[​](#respan "Direct link to respan")
 
@@ -6771,8 +6800,13 @@ ZDR endpoint catalog checked: 2026-10-16.
 * `voyageai/voyage-code-4`
 * `voyageai/voyage-multimodal-3.5`
 
+## xingchen-agi[​](#xingchen-agi "Direct link to xingchen-agi")
+
+* `xingchen-agi/xing4.0-29b-a4b:free` · ZDR
+
 ## \~perplexity[​](#perplexity-1 "Direct link to ~perplexity")
 
+* `~perplexity/pplx-decider-flash-latest`
 * `~perplexity/pplx-decider-latest`
 
 ## \~typesafe[​](#typesafe-1 "Direct link to ~typesafe")
@@ -10386,7 +10420,7 @@ This should be produced by using [defineSchema](/api/modules/server.md#definesch
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[server/schema.ts:895](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L895)
+[server/schema.ts:893](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L893)
 
 ***
 
@@ -10396,7 +10430,7 @@ This should be produced by using [defineSchema](/api/modules/server.md#definesch
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/schema.ts:896](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L896)
+[server/schema.ts:894](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L894)
 
 ***
 
@@ -10406,7 +10440,7 @@ This should be produced by using [defineSchema](/api/modules/server.md#definesch
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[server/schema.ts:897](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L897)
+[server/schema.ts:895](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L895)
 
 ## Methods[​](#methods "Direct link to Methods")
 
@@ -10450,7 +10484,7 @@ A validator matching documents of that table.
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[server/schema.ts:924](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L924)
+[server/schema.ts:922](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L922)
 
 ***
 
@@ -10482,7 +10516,7 @@ A validator matching IDs of that table.
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[server/schema.ts:938](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L938)
+[server/schema.ts:936](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L936)
 
 
 ---
@@ -10541,7 +10575,7 @@ This should be produced by using [defineTable](/api/modules/server.md#definetabl
 
 This API is experimental: it may change or disappear.
 
-Returns indexes defined on this table. Intended for the advanced use cases of dynamically deciding which index to use for a query. If you think you need this, please chime in on ths issue in the Convex JS GitHub repo. <https://github.com/get-convex/convex-js/issues/49>
+Returns indexes defined on this table. Intended for the advanced use cases of dynamically deciding which index to use for a query.
 
 #### Returns[​](#returns "Direct link to Returns")
 
@@ -10549,7 +10583,7 @@ Returns indexes defined on this table. Intended for the advanced use cases of dy
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/schema.ts:232](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L232)
+[server/schema.ts:230](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L230)
 
 ***
 
@@ -10614,7 +10648,7 @@ A [TableDefinition](/api/classes/server.TableDefinition.md) with this index incl
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[server/schema.ts:267](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L267)
+[server/schema.ts:265](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L265)
 
 ▸ **index**<`IndexName`, `FirstFieldPath`, `RestFieldPaths`>(`name`, `fields`): [`TableDefinition`](/api/classes/server.TableDefinition.md)<`DocumentType`, [`Expand`](/api/modules/server.md#expand)<`Indexes` & `Record`<`IndexName`, \[`FirstFieldPath`, ...RestFieldPaths\[], `"_creationTime"`]>>, `SearchIndexes`, `VectorIndexes`>
 
@@ -10645,7 +10679,7 @@ A [TableDefinition](/api/classes/server.TableDefinition.md) with this index incl
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[server/schema.ts:300](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L300)
+[server/schema.ts:298](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L298)
 
 ▸ **index**<`IndexName`, `FirstFieldPath`, `RestFieldPaths`>(`name`, `indexConfig`): [`TableDefinition`](/api/classes/server.TableDefinition.md)<`DocumentType`, `Indexes`, `SearchIndexes`, `VectorIndexes`>
 
@@ -10682,7 +10716,7 @@ A [TableDefinition](/api/classes/server.TableDefinition.md) with this index incl
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[server/schema.ts:336](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L336)
+[server/schema.ts:334](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L334)
 
 ***
 
@@ -10720,7 +10754,7 @@ A [TableDefinition](/api/classes/server.TableDefinition.md) with this search ind
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[server/schema.ts:389](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L389)
+[server/schema.ts:387](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L387)
 
 ▸ **searchIndex**<`IndexName`, `SearchField`, `FilterFields`>(`name`, `indexConfig`): [`TableDefinition`](/api/classes/server.TableDefinition.md)<`DocumentType`, `Indexes`, `SearchIndexes`, `VectorIndexes`>
 
@@ -10758,7 +10792,7 @@ A [TableDefinition](/api/classes/server.TableDefinition.md) with this search ind
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[server/schema.ts:433](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L433)
+[server/schema.ts:431](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L431)
 
 ***
 
@@ -10797,7 +10831,7 @@ A [TableDefinition](/api/classes/server.TableDefinition.md) with this vector ind
 
 #### Defined in[​](#defined-in-7 "Direct link to Defined in")
 
-[server/schema.ts:480](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L480)
+[server/schema.ts:478](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L478)
 
 ▸ **vectorIndex**<`IndexName`, `VectorField`, `FilterFields`>(`name`, `indexConfig`): [`TableDefinition`](/api/classes/server.TableDefinition.md)<`DocumentType`, `Indexes`, `SearchIndexes`, `VectorIndexes`>
 
@@ -10836,7 +10870,7 @@ A [TableDefinition](/api/classes/server.TableDefinition.md) with this vector ind
 
 #### Defined in[​](#defined-in-8 "Direct link to Defined in")
 
-[server/schema.ts:523](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L523)
+[server/schema.ts:521](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L521)
 
 ***
 
@@ -10884,7 +10918,7 @@ A [TableDefinition](/api/classes/server.TableDefinition.md) with the staged vali
 
 #### Defined in[​](#defined-in-9 "Direct link to Defined in")
 
-[server/schema.ts:595](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L595)
+[server/schema.ts:593](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L593)
 
 ***
 
@@ -10900,7 +10934,7 @@ Work around for <https://github.com/microsoft/TypeScript/issues/57035>
 
 #### Defined in[​](#defined-in-10 "Direct link to Defined in")
 
-[server/schema.ts:627](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L627)
+[server/schema.ts:625](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L625)
 
 
 ---
@@ -14456,7 +14490,7 @@ Metadata about the currently executing Convex function.
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[server/meta.ts:220](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L220)
+[server/meta.ts:212](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L212)
 
 ***
 
@@ -14472,7 +14506,7 @@ Metadata about the deployment this function is running on.
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/meta.ts:224](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L224)
+[server/meta.ts:216](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L216)
 
 ***
 
@@ -14492,7 +14526,7 @@ Functions called from within a function (i.e. using `runMutation` or `runAction`
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[server/meta.ts:234](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L234)
+[server/meta.ts:226](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L226)
 
 
 ---
@@ -14513,7 +14547,7 @@ Custom limits for a nested transaction. Each field specifies the absolute maximu
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[server/registration.ts:1242](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L1242)
+[server/registration.ts:1245](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L1245)
 
 ***
 
@@ -14529,7 +14563,7 @@ To determine the snapshot of the nested query, you can call `ctx.meta.getSnapsho
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/registration.ts:1258](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L1258)
+[server/registration.ts:1261](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L1261)
 
 
 ---
@@ -14541,6 +14575,12 @@ To determine the snapshot of the nested query, you can call `ctx.meta.getSnapsho
 [server](/api/modules/server.md).Auth
 
 An interface to access information about the currently authenticated user within Convex query and mutation functions.
+
+## Hierarchy[​](#hierarchy "Direct link to Hierarchy")
+
+* **`Auth`**
+
+  ↳ [`MutationAuth`](/api/interfaces/server.MutationAuth.md)
 
 ## Methods[​](#methods "Direct link to Methods")
 
@@ -14874,7 +14914,7 @@ By default, `schemaValidation` is `true`.
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[server/schema.ts:1003](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L1003)
+[server/schema.ts:1001](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L1001)
 
 ***
 
@@ -14896,7 +14936,7 @@ By default, `strictTableNameTypes` is `true`.
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/schema.ts:1022](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L1022)
+[server/schema.ts:1020](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L1020)
 
 
 ---
@@ -15485,7 +15525,7 @@ A utility for scheduling Convex functions to run in the future.
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[server/registration.ts:401](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L401)
+[server/registration.ts:404](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L404)
 
 ***
 
@@ -15497,7 +15537,7 @@ Information about the currently authenticated user.
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/registration.ts:406](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L406)
+[server/registration.ts:409](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L409)
 
 ***
 
@@ -15509,7 +15549,7 @@ A utility for reading and writing files in storage.
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[server/registration.ts:411](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L411)
+[server/registration.ts:414](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L414)
 
 ***
 
@@ -15519,7 +15559,7 @@ A utility for reading and writing files in storage.
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[server/registration.ts:434](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L434)
+[server/registration.ts:437](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L437)
 
 ## Methods[​](#methods "Direct link to Methods")
 
@@ -15558,7 +15598,7 @@ A promise of the query's result.
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[server/registration.ts:340](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L340)
+[server/registration.ts:343](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L343)
 
 ***
 
@@ -15597,7 +15637,7 @@ A promise of the mutation's result.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[server/registration.ts:364](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L364)
+[server/registration.ts:367](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L367)
 
 ***
 
@@ -15632,7 +15672,7 @@ A promise of the action's result.
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[server/registration.ts:389](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L389)
+[server/registration.ts:392](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L392)
 
 ***
 
@@ -15668,7 +15708,7 @@ A promise of IDs and scores for the documents with the nearest vectors
 
 #### Defined in[​](#defined-in-7 "Direct link to Defined in")
 
-[server/registration.ts:423](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L423)
+[server/registration.ts:426](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L426)
 
 
 ---
@@ -16654,21 +16694,23 @@ Use `ctx.db.insert()`, `ctx.db.patch()`, `ctx.db.replace()`, and `ctx.db.delete(
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[server/registration.ts:87](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L87)
+[server/registration.ts:88](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L88)
 
 ***
 
 ### auth[​](#auth "Direct link to auth")
 
-• **auth**: [`Auth`](/api/interfaces/server.Auth.md)
+• **auth**: [`MutationAuth`](/api/interfaces/server.MutationAuth.md)
 
-Information about the currently authenticated user.
+Auth functionality for mutations.
 
 Call `await ctx.auth.getUserIdentity()` to get the current user's identity, or `null` if the user is not authenticated.
 
+`ctx.auth.signJwt` is available for creating deployment issued JWTs.
+
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/registration.ts:95](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L95)
+[server/registration.ts:98](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L98)
 
 ***
 
@@ -16682,7 +16724,7 @@ Use `ctx.storage.generateUploadUrl()` to create an upload URL for clients, `ctx.
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[server/registration.ts:104](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L104)
+[server/registration.ts:107](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L107)
 
 ***
 
@@ -16708,7 +16750,7 @@ await ctx.scheduler.runAfter(24 * 60 * 60 * 1000, internal.tasks.cleanup, {});
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[server/registration.ts:118](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L118)
+[server/registration.ts:121](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L121)
 
 ***
 
@@ -16751,7 +16793,7 @@ const user = await ctx.runQuery(internal.users.getUser, { userId });
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[server/registration.ts:137](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L137)
+[server/registration.ts:140](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L140)
 
 ***
 
@@ -16788,7 +16830,7 @@ NOTE: Often you can extract shared logic into a helper function instead. `runMut
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[server/registration.ts:156](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L156)
+[server/registration.ts:159](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L159)
 
 ***
 
@@ -16798,7 +16840,7 @@ NOTE: Often you can extract shared logic into a helper function instead. `runMut
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[server/registration.ts:165](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L165)
+[server/registration.ts:168](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L168)
 
 
 ---
@@ -16869,7 +16911,7 @@ Use `ctx.db.get(table, id)` to fetch a single document by ID, or `ctx.db.query("
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[server/registration.ts:225](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L225)
+[server/registration.ts:228](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L228)
 
 ***
 
@@ -16883,7 +16925,7 @@ Call `await ctx.auth.getUserIdentity()` to get the current user's identity, or `
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/registration.ts:233](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L233)
+[server/registration.ts:236](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L236)
 
 ***
 
@@ -16897,7 +16939,7 @@ Use `ctx.storage.getUrl(storageId)` to get a URL for a stored file.
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[server/registration.ts:240](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L240)
+[server/registration.ts:243](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L243)
 
 ***
 
@@ -16934,7 +16976,7 @@ NOTE: Often you can extract shared logic into a helper function instead. `runQue
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[server/registration.ts:253](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L253)
+[server/registration.ts:256](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L256)
 
 ***
 
@@ -16944,7 +16986,7 @@ NOTE: Often you can extract shared logic into a helper function instead. `runQue
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[server/registration.ts:262](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L262)
+[server/registration.ts:265](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L265)
 
 
 ---
@@ -17131,6 +17173,84 @@ LowerBoundIndexRangeBuilder.lte
 
 ---
 
+# Interface: MutationAuth
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
+[server](/api/modules/server.md).MutationAuth
+
+[Auth](/api/interfaces/server.Auth.md) for mutations, which can also sign JWTs with this deployment's key.
+
+## Hierarchy[​](#hierarchy "Direct link to Hierarchy")
+
+* [`Auth`](/api/interfaces/server.Auth.md)
+
+  ↳ **`MutationAuth`**
+
+## Methods[​](#methods "Direct link to Methods")
+
+### getUserIdentity[​](#getuseridentity "Direct link to getUserIdentity")
+
+▸ **getUserIdentity**(): `Promise`<`null` | [`UserIdentity`](/api/interfaces/server.UserIdentity.md)>
+
+Get details about the currently authenticated user.
+
+#### Returns[​](#returns "Direct link to Returns")
+
+`Promise`<`null` | [`UserIdentity`](/api/interfaces/server.UserIdentity.md)>
+
+A promise that resolves to a [UserIdentity](/api/interfaces/server.UserIdentity.md) if the Convex client was configured with a valid ID token, or if not, will:
+
+* returns `null` on Convex queries, mutations, actions.
+* `throw` on HTTP Actions.
+
+#### Inherited from[​](#inherited-from "Direct link to Inherited from")
+
+[Auth](/api/interfaces/server.Auth.md).[getUserIdentity](/api/interfaces/server.Auth.md#getuseridentity)
+
+#### Defined in[​](#defined-in "Direct link to Defined in")
+
+[server/authentication.ts:236](https://github.com/convex/convex-js/blob/main/src/server/authentication.ts#L236)
+
+***
+
+### signJwt[​](#signjwt "Direct link to signJwt")
+
+▸ **signJwt**(`options`): `Promise`<`string`>
+
+Sign an ES256 JWT with this deployment's key.
+
+Pass the `claims` and `expiresInSeconds` values that match your use case.
+
+Convex populates the header and sets the `iss`, `iat` and `exp` claims.
+
+The `iss` is `process.env.CONVEX_CLOUD_URL` for the app and `${process.env.CONVEX_CLOUD_URL}/components/<name>` for a component.
+
+Anyone can verify these tokens against the public keys at `${process.env.CONVEX_CLOUD_URL}/.well-known/jwks.json`.
+
+Claims are signed but not encrypted, so anyone holding the token can read them.
+
+Prefer short token lifetimes: a token can't be revoked individually, and a mutation can always sign a fresh one to reassert the claims. This API allows a token to have a max expiration of 1 hour from issuance.
+
+Claims that start with `convex` or `cvx` (case insensitive) and the `nbf` claim are reserved and may not be set.
+
+#### Parameters[​](#parameters "Direct link to Parameters")
+
+| Name      | Type                                                      |
+| --------- | --------------------------------------------------------- |
+| `options` | [`SignJwtOptions`](/api/modules/server.md#signjwtoptions) |
+
+#### Returns[​](#returns-1 "Direct link to Returns")
+
+`Promise`<`string`>
+
+#### Defined in[​](#defined-in-1 "Direct link to Defined in")
+
+[server/authentication.ts:269](https://github.com/convex/convex-js/blob/main/src/server/authentication.ts#L269)
+
+
+---
+
 # Interface: MutationMeta
 
 > For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
@@ -17163,7 +17283,7 @@ Metadata about the currently executing Convex function.
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[server/meta.ts:152](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L152)
+[server/meta.ts:144](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L144)
 
 ***
 
@@ -17185,7 +17305,7 @@ See <https://docs.convex.dev/production/state/limits>
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/meta.ts:158](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L158)
+[server/meta.ts:150](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L150)
 
 ***
 
@@ -17205,7 +17325,7 @@ Metadata about the deployment this function is running on.
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[server/meta.ts:162](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L162)
+[server/meta.ts:154](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L154)
 
 ***
 
@@ -17235,7 +17355,7 @@ Docs: <https://docs.convex.dev/database/advanced/commit-timestamp>
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[server/meta.ts:190](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L190)
+[server/meta.ts:182](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L182)
 
 ***
 
@@ -17255,7 +17375,7 @@ Functions called from within a function (i.e. using `runMutation`) will have the
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[server/meta.ts:208](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L208)
+[server/meta.ts:200](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L200)
 
 
 ---
@@ -18311,7 +18431,7 @@ Metadata about the currently executing Convex function.
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[server/meta.ts:152](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L152)
+[server/meta.ts:144](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L144)
 
 ***
 
@@ -18329,7 +18449,7 @@ See <https://docs.convex.dev/production/state/limits>
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/meta.ts:158](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L158)
+[server/meta.ts:150](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L150)
 
 ***
 
@@ -18345,7 +18465,7 @@ Metadata about the deployment this function is running on.
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[server/meta.ts:162](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L162)
+[server/meta.ts:154](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L154)
 
 ***
 
@@ -18371,7 +18491,7 @@ Docs: <https://docs.convex.dev/database/advanced/commit-timestamp>
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[server/meta.ts:190](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L190)
+[server/meta.ts:182](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L182)
 
 
 ---
@@ -18759,8 +18879,6 @@ Additional fields to index for fast filtering when running search queries.
 
 An interface to read and write files to storage within Convex actions and HTTP actions.
 
-In actions, `ctx.storage` has additional methods not available in mutations: `get()` to download a file as a Blob, and `store()` to upload a Blob directly.
-
 **`Example`**
 
 ```
@@ -19055,7 +19173,7 @@ Once a file is deleted, any URLs previously generated by [getUrl](/api/interface
 
 Download a file from storage as a Blob.
 
-Only available in actions and HTTP actions (not in mutations or queries).
+In mutations, files read count toward the transaction's `filesRead` and `fileReadBytes` limits. Use `ctx.meta.getTransactionMetrics()` to check the remaining headroom.
 
 #### Parameters[​](#parameters-6 "Direct link to Parameters")
 
@@ -19069,13 +19187,13 @@ Only available in actions and HTTP actions (not in mutations or queries).
 
 A Blob containing the file contents, or `null` if the file doesn't exist.
 
-#### Overrides[​](#overrides "Direct link to Overrides")
+#### Inherited from[​](#inherited-from-7 "Direct link to Inherited from")
 
-StorageWriter.get
+[StorageWriter](/api/interfaces/server.StorageWriter.md).[get](/api/interfaces/server.StorageWriter.md#get)
 
 #### Defined in[​](#defined-in-7 "Direct link to Defined in")
 
-[server/storage.ts:242](https://github.com/convex/convex-js/blob/main/src/server/storage.ts#L242)
+[server/storage.ts:208](https://github.com/convex/convex-js/blob/main/src/server/storage.ts#L208)
 
 ▸ **get**<`T`>(`storageId`): `Promise`<`null` | `Blob`>
 
@@ -19101,13 +19219,13 @@ Get a Blob containing the file associated with the provided [StorageId](/api/mod
 
 `Promise`<`null` | `Blob`>
 
-#### Overrides[​](#overrides-1 "Direct link to Overrides")
+#### Inherited from[​](#inherited-from-8 "Direct link to Inherited from")
 
-StorageWriter.get
+[StorageWriter](/api/interfaces/server.StorageWriter.md).[get](/api/interfaces/server.StorageWriter.md#get)
 
 #### Defined in[​](#defined-in-8 "Direct link to Defined in")
 
-[server/storage.ts:249](https://github.com/convex/convex-js/blob/main/src/server/storage.ts#L249)
+[server/storage.ts:215](https://github.com/convex/convex-js/blob/main/src/server/storage.ts#L215)
 
 ***
 
@@ -19117,14 +19235,16 @@ StorageWriter.get
 
 Upload a Blob directly to storage.
 
-Only available in actions and HTTP actions. For client-side uploads from mutations, use `generateUploadUrl()` instead.
+To upload files from a client, use [generateUploadUrl](/api/interfaces/server.StorageWriter.md#generateuploadurl) instead.
+
+In mutations, files stored count toward the transaction's `filesWritten` and `fileWriteBytes` limits. Use `ctx.meta.getTransactionMetrics()` to check the remaining headroom.
 
 **`Example`**
 
 ```
 const storageId = await ctx.storage.store(blob);
 
-// Save storageId to the database via ctx.runMutation
+// If in an action, save storageId to the database via ctx.runMutation
 ```
 
 #### Parameters[​](#parameters-8 "Direct link to Parameters")
@@ -19141,13 +19261,13 @@ const storageId = await ctx.storage.store(blob);
 
 The `Id<"_storage">` of the newly stored file.
 
-#### Overrides[​](#overrides-2 "Direct link to Overrides")
+#### Inherited from[​](#inherited-from-9 "Direct link to Inherited from")
 
-StorageWriter.store
+[StorageWriter](/api/interfaces/server.StorageWriter.md).[store](/api/interfaces/server.StorageWriter.md#store)
 
 #### Defined in[​](#defined-in-9 "Direct link to Defined in")
 
-[server/storage.ts:268](https://github.com/convex/convex-js/blob/main/src/server/storage.ts#L268)
+[server/storage.ts:239](https://github.com/convex/convex-js/blob/main/src/server/storage.ts#L239)
 
 
 ---
@@ -19331,9 +19451,9 @@ Get metadata for a file.
 
 [server](/api/modules/server.md).StorageWriter
 
-An interface to write files to storage within Convex mutation functions.
+An interface to read and write files to storage within Convex mutation functions.
 
-Available as `ctx.storage` in mutations.
+Available as `ctx.storage` in mutations, actions, and HTTP actions.
 
 **`See`**
 
@@ -19601,6 +19721,98 @@ Once a file is deleted, any URLs previously generated by [getUrl](/api/interface
 
 [server/storage.ts:194](https://github.com/convex/convex-js/blob/main/src/server/storage.ts#L194)
 
+***
+
+### get[​](#get "Direct link to get")
+
+▸ **get**(`storageId`): `Promise`<`null` | `Blob`>
+
+Download a file from storage as a Blob.
+
+In mutations, files read count toward the transaction's `filesRead` and `fileReadBytes` limits. Use `ctx.meta.getTransactionMetrics()` to check the remaining headroom.
+
+#### Parameters[​](#parameters-6 "Direct link to Parameters")
+
+| Name        | Type                                                          | Description                       |
+| ----------- | ------------------------------------------------------------- | --------------------------------- |
+| `storageId` | [`GenericId`](/api/modules/values.md#genericid)<`"_storage"`> | The `Id<"_storage">` of the file. |
+
+#### Returns[​](#returns-7 "Direct link to Returns")
+
+`Promise`<`null` | `Blob`>
+
+A Blob containing the file contents, or `null` if the file doesn't exist.
+
+#### Defined in[​](#defined-in-7 "Direct link to Defined in")
+
+[server/storage.ts:208](https://github.com/convex/convex-js/blob/main/src/server/storage.ts#L208)
+
+▸ **get**<`T`>(`storageId`): `Promise`<`null` | `Blob`>
+
+**`Deprecated`**
+
+Passing a string is deprecated, use `storage.get(Id<"_storage">)` instead.
+
+Get a Blob containing the file associated with the provided [StorageId](/api/modules/server.md#storageid), or `null` if there is no file.
+
+#### Type parameters[​](#type-parameters-3 "Direct link to Type parameters")
+
+| Name | Type             |
+| ---- | ---------------- |
+| `T`  | extends `string` |
+
+#### Parameters[​](#parameters-7 "Direct link to Parameters")
+
+| Name        | Type                                                 |
+| ----------- | ---------------------------------------------------- |
+| `storageId` | `T` extends { `__tableName`: `any` } ? `never` : `T` |
+
+#### Returns[​](#returns-8 "Direct link to Returns")
+
+`Promise`<`null` | `Blob`>
+
+#### Defined in[​](#defined-in-8 "Direct link to Defined in")
+
+[server/storage.ts:215](https://github.com/convex/convex-js/blob/main/src/server/storage.ts#L215)
+
+***
+
+### store[​](#store "Direct link to store")
+
+▸ **store**(`blob`, `options?`): `Promise`<[`GenericId`](/api/modules/values.md#genericid)<`"_storage"`>>
+
+Upload a Blob directly to storage.
+
+To upload files from a client, use [generateUploadUrl](/api/interfaces/server.StorageWriter.md#generateuploadurl) instead.
+
+In mutations, files stored count toward the transaction's `filesWritten` and `fileWriteBytes` limits. Use `ctx.meta.getTransactionMetrics()` to check the remaining headroom.
+
+**`Example`**
+
+```
+const storageId = await ctx.storage.store(blob);
+
+// If in an action, save storageId to the database via ctx.runMutation
+```
+
+#### Parameters[​](#parameters-8 "Direct link to Parameters")
+
+| Name              | Type     | Description                                                    |
+| ----------------- | -------- | -------------------------------------------------------------- |
+| `blob`            | `Blob`   | The Blob to store.                                             |
+| `options?`        | `Object` | Optional settings. Pass `sha256` to verify the file integrity. |
+| `options.sha256?` | `string` | -                                                              |
+
+#### Returns[​](#returns-9 "Direct link to Returns")
+
+`Promise`<[`GenericId`](/api/modules/values.md#genericid)<`"_storage"`>>
+
+The `Id<"_storage">` of the newly stored file.
+
+#### Defined in[​](#defined-in-9 "Direct link to Defined in")
+
+[server/storage.ts:239](https://github.com/convex/convex-js/blob/main/src/server/storage.ts#L239)
+
 
 ---
 
@@ -19695,7 +19907,7 @@ Custom limits for a nested transaction. Each field specifies the absolute maximu
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[server/meta.ts:47](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L47)
+[server/meta.ts:43](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L43)
 
 ***
 
@@ -19705,7 +19917,7 @@ Custom limits for a nested transaction. Each field specifies the absolute maximu
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/meta.ts:48](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L48)
+[server/meta.ts:44](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L44)
 
 ***
 
@@ -19715,7 +19927,7 @@ Custom limits for a nested transaction. Each field specifies the absolute maximu
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[server/meta.ts:49](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L49)
+[server/meta.ts:45](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L45)
 
 ***
 
@@ -19725,7 +19937,7 @@ Custom limits for a nested transaction. Each field specifies the absolute maximu
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[server/meta.ts:50](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L50)
+[server/meta.ts:46](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L46)
 
 ***
 
@@ -19735,7 +19947,7 @@ Custom limits for a nested transaction. Each field specifies the absolute maximu
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[server/meta.ts:51](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L51)
+[server/meta.ts:47](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L47)
 
 ***
 
@@ -19745,7 +19957,7 @@ Custom limits for a nested transaction. Each field specifies the absolute maximu
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[server/meta.ts:52](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L52)
+[server/meta.ts:48](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L48)
 
 ***
 
@@ -19754,6 +19966,46 @@ Custom limits for a nested transaction. Each field specifies the absolute maximu
 • `Optional` **scheduledFunctionArgsBytes**: `number`
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
+
+[server/meta.ts:49](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L49)
+
+***
+
+### filesWritten[​](#fileswritten "Direct link to filesWritten")
+
+• `Optional` **filesWritten**: `number`
+
+#### Defined in[​](#defined-in-7 "Direct link to Defined in")
+
+[server/meta.ts:50](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L50)
+
+***
+
+### fileWriteBytes[​](#filewritebytes "Direct link to fileWriteBytes")
+
+• `Optional` **fileWriteBytes**: `number`
+
+#### Defined in[​](#defined-in-8 "Direct link to Defined in")
+
+[server/meta.ts:51](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L51)
+
+***
+
+### filesRead[​](#filesread "Direct link to filesRead")
+
+• `Optional` **filesRead**: `number`
+
+#### Defined in[​](#defined-in-9 "Direct link to Defined in")
+
+[server/meta.ts:52](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L52)
+
+***
+
+### fileReadBytes[​](#filereadbytes "Direct link to fileReadBytes")
+
+• `Optional` **fileReadBytes**: `number`
+
+#### Defined in[​](#defined-in-10 "Direct link to Defined in")
 
 [server/meta.ts:53](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L53)
 
@@ -20113,7 +20365,7 @@ const args = {
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[server/registration.ts:697](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L697)
+[server/registration.ts:700](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L700)
 
 ***
 
@@ -20142,7 +20394,7 @@ This is a function that takes in the appropriate context and arguments and produ
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/registration.ts:711](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L711)
+[server/registration.ts:714](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L714)
 
 
 ---
@@ -22449,6 +22701,7 @@ export default mutation({
 
 * [UserIdentity](/api/interfaces/server.UserIdentity.md)
 * [Auth](/api/interfaces/server.Auth.md)
+* [MutationAuth](/api/interfaces/server.MutationAuth.md)
 * [CronJob](/api/interfaces/server.CronJob.md)
 * [BaseTableReader](/api/interfaces/server.BaseTableReader.md)
 * [GenericDatabaseReader](/api/interfaces/server.GenericDatabaseReader.md)
@@ -22898,6 +23151,59 @@ See: <https://docs.convex.dev/auth/advanced/custom-auth> and <https://docs.conve
 
 ***
 
+### ReservedJwtClaim[​](#reservedjwtclaim "Direct link to ReservedJwtClaim")
+
+Ƭ **ReservedJwtClaim**: `"iss"` | `"iat"` | `"exp"` | `"nbf"`
+
+Claims that callers may not set on JWTs with [signJwt](/api/interfaces/server.MutationAuth.md#signjwt).
+
+#### Defined in[​](#defined-in-16 "Direct link to Defined in")
+
+[server/authentication.ts:275](https://github.com/convex/convex-js/blob/main/src/server/authentication.ts#L275)
+
+***
+
+### ReservedJwtClaimPrefix[​](#reservedjwtclaimprefix "Direct link to ReservedJwtClaimPrefix")
+
+Ƭ **ReservedJwtClaimPrefix**: `AnyCase`<`"convex"` | `"cvx"`>
+
+Claim names starting with `convex` or `cvx`, in any casing, are reserved for Convex. They may not be set on JWTs with [signJwt](/api/interfaces/server.MutationAuth.md#signjwt).
+
+#### Defined in[​](#defined-in-17 "Direct link to Defined in")
+
+[server/authentication.ts:291](https://github.com/convex/convex-js/blob/main/src/server/authentication.ts#L291)
+
+***
+
+### SignJwtClaims[​](#signjwtclaims "Direct link to SignJwtClaims")
+
+Ƭ **SignJwtClaims**: `Record`<`string`, [`JSONValue`](/api/modules/values.md#jsonvalue)> & { \[K in ReservedJwtClaim]?: never } & `ReservedPrefixJwtClaims`
+
+The claims a caller passes to [signJwt](/api/interfaces/server.MutationAuth.md#signjwt): any JSON value, except for the [ReservedJwtClaim](/api/modules/server.md#reservedjwtclaim)s and names starting with a [ReservedJwtClaimPrefix](/api/modules/server.md#reservedjwtclaimprefix).
+
+#### Defined in[​](#defined-in-18 "Direct link to Defined in")
+
+[server/authentication.ts:308](https://github.com/convex/convex-js/blob/main/src/server/authentication.ts#L308)
+
+***
+
+### SignJwtOptions[​](#signjwtoptions "Direct link to SignJwtOptions")
+
+Ƭ **SignJwtOptions**: `Object`
+
+#### Type declaration[​](#type-declaration-3 "Direct link to Type declaration")
+
+| Name               | Type                                                    | Description                                                           |
+| ------------------ | ------------------------------------------------------- | --------------------------------------------------------------------- |
+| `claims?`          | [`SignJwtClaims`](/api/modules/server.md#signjwtclaims) | -                                                                     |
+| `expiresInSeconds` | `number`                                                | How long the token stays valid, at least 1 second and at most 1 hour. |
+
+#### Defined in[​](#defined-in-19 "Direct link to Defined in")
+
+[server/authentication.ts:312](https://github.com/convex/convex-js/blob/main/src/server/authentication.ts#L312)
+
+***
+
 ### FunctionHandle[​](#functionhandle "Direct link to FunctionHandle")
 
 Ƭ **FunctionHandle**<`Type`, `Args`, `ReturnType`>: `string` & [`FunctionReference`](/api/modules/server.md#functionreference)<`Type`, `"internal"`, `Args`, `ReturnType`>
@@ -22916,9 +23222,29 @@ This is a feature of components, which are in beta. This API is unstable and may
 | `Args`       | extends [`DefaultFunctionArgs`](/api/modules/server.md#defaultfunctionargs) = `any` |
 | `ReturnType` | `any`                                                                               |
 
-#### Defined in[​](#defined-in-16 "Direct link to Defined in")
+#### Defined in[​](#defined-in-20 "Direct link to Defined in")
 
 [server/components/index.ts:46](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L46)
+
+***
+
+### FunctionHandle\_future[​](#functionhandle_future "Direct link to FunctionHandle_future")
+
+Ƭ **FunctionHandle\_future**<`Type`, `Args`, `ReturnType`>: `string` & [`FunctionReference_future`](/api/modules/server.md#functionreference_future)<`Type`, `"internal"`, `Args`, `ReturnType`>
+
+A [FunctionHandle](/api/modules/server.md#functionhandle) with the type semantics of [FunctionReference\_future](/api/modules/server.md#functionreference_future).
+
+#### Type parameters[​](#type-parameters-11 "Direct link to Type parameters")
+
+| Name         | Type                                                                                |
+| ------------ | ----------------------------------------------------------------------------------- |
+| `Type`       | extends [`FunctionType`](/api/modules/server.md#functiontype)                       |
+| `Args`       | extends [`DefaultFunctionArgs`](/api/modules/server.md#defaultfunctionargs) = `any` |
+| `ReturnType` | `any`                                                                               |
+
+#### Defined in[​](#defined-in-21 "Direct link to Defined in")
+
+[server/components/index.ts:57](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L57)
 
 ***
 
@@ -22930,14 +23256,14 @@ An object of this type should be the default export of a convex.config.ts file i
 
 This is a feature of components, which are in beta. This API is unstable and may change in subsequent releases.
 
-#### Type parameters[​](#type-parameters-11 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-12 "Direct link to Type parameters")
 
 | Name      | Type                                                              |
 | --------- | ----------------------------------------------------------------- |
 | `Exports` | extends `ComponentExports` = `any`                                |
 | `Env`     | extends [`EnvDefinition`](/api/modules/server.md#envdefinition) = |
 
-#### Type declaration[​](#type-declaration-3 "Direct link to Type declaration")
+#### Type declaration[​](#type-declaration-4 "Direct link to Type declaration")
 
 | Name        | Type                                                                                                                | Description                                                                                                                                                                                                                                                                                                                |
 | ----------- | ------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -22946,9 +23272,9 @@ This is a feature of components, which are in beta. This API is unstable and may
 | `env`       | `EnvRefFromDefinition`<`Env`>                                                                                       | References to this component's declared env vars. Pass one of these in `app.use(child, { env: { ... } })` to bind a child's env var by reference to this component's env var.                                                                                                                                              |
 | `__env`     | `Env`                                                                                                               | Internal type-only property tracking env definition. **`Deprecated`** This is a type-only property, don't use it.                                                                                                                                                                                                          |
 
-#### Defined in[​](#defined-in-17 "Direct link to Defined in")
+#### Defined in[​](#defined-in-22 "Direct link to Defined in")
 
-[server/components/index.ts:92](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L92)
+[server/components/index.ts:103](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L103)
 
 ***
 
@@ -22982,9 +23308,9 @@ const app = defineApp({
 });
 ```
 
-#### Defined in[​](#defined-in-18 "Direct link to Defined in")
+#### Defined in[​](#defined-in-23 "Direct link to Defined in")
 
-[server/components/index.ts:224](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L224)
+[server/components/index.ts:235](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L235)
 
 ***
 
@@ -22996,15 +23322,15 @@ Compute the typed environment object from an [EnvDefinition](/api/modules/server
 
 Required entries get the validator's inferred string type; optional entries are `T | undefined`.
 
-#### Type parameters[​](#type-parameters-12 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-13 "Direct link to Type parameters")
 
 | Name | Type                                                            |
 | ---- | --------------------------------------------------------------- |
 | `E`  | extends [`EnvDefinition`](/api/modules/server.md#envdefinition) |
 
-#### Defined in[​](#defined-in-19 "Direct link to Defined in")
+#### Defined in[​](#defined-in-24 "Direct link to Defined in")
 
-[server/components/index.ts:237](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L237)
+[server/components/index.ts:248](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L248)
 
 ***
 
@@ -23014,15 +23340,15 @@ Required entries get the validator's inferred string type; optional entries are 
 
 Extract the typed environment from an [AppDefinition](/api/modules/server.md#appdefinition).
 
-#### Type parameters[​](#type-parameters-13 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-14 "Direct link to Type parameters")
 
 | Name |
 | ---- |
 | `A`  |
 
-#### Defined in[​](#defined-in-20 "Direct link to Defined in")
+#### Defined in[​](#defined-in-25 "Direct link to Defined in")
 
-[server/components/index.ts:274](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L274)
+[server/components/index.ts:285](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L285)
 
 ***
 
@@ -23034,13 +23360,13 @@ An object of this type should be the default export of a convex.config.ts file i
 
 This is a feature of components, which are in beta. This API is unstable and may change in subsequent releases.
 
-#### Type parameters[​](#type-parameters-14 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-15 "Direct link to Type parameters")
 
 | Name  | Type                                                                                                                      |
 | ----- | ------------------------------------------------------------------------------------------------------------------------- |
 | `Env` | extends [`EnvDefinition`](/api/modules/server.md#envdefinition) = [`EnvDefinition`](/api/modules/server.md#envdefinition) |
 
-#### Type declaration[​](#type-declaration-4 "Direct link to Type declaration")
+#### Type declaration[​](#type-declaration-5 "Direct link to Type declaration")
 
 | Name    | Type                                                                                                                | Description                                                                                                                                                                                                                                                                                                                |
 | ------- | ------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -23048,9 +23374,9 @@ This is a feature of components, which are in beta. This API is unstable and may
 | `env`   | `EnvRefFromDefinition`<`Env`>                                                                                       | References to this app's declared env vars. Pass one of these in `app.use(child, { env: { ... } })` to bind a child's env var by reference to this app's env var.                                                                                                                                                          |
 | `__env` | `Env`                                                                                                               | Internal type-only property tracking env definition. **`Deprecated`** This is a type-only property, don't use it.                                                                                                                                                                                                          |
 
-#### Defined in[​](#defined-in-21 "Direct link to Defined in")
+#### Defined in[​](#defined-in-26 "Direct link to Defined in")
 
-[server/components/index.ts:286](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L286)
+[server/components/index.ts:297](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L297)
 
 ***
 
@@ -23058,9 +23384,9 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 Ƭ **AnyChildComponents**: `Record`<`string`, `AnyComponentReference`>
 
-#### Defined in[​](#defined-in-22 "Direct link to Defined in")
+#### Defined in[​](#defined-in-27 "Direct link to Defined in")
 
-[server/components/index.ts:777](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L777)
+[server/components/index.ts:788](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L788)
 
 ***
 
@@ -23068,9 +23394,9 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 Ƭ **AnyComponents**: [`AnyChildComponents`](/api/modules/server.md#anychildcomponents)
 
-#### Defined in[​](#defined-in-23 "Direct link to Defined in")
+#### Defined in[​](#defined-in-28 "Direct link to Defined in")
 
-[server/components/index.ts:817](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L817)
+[server/components/index.ts:828](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L828)
 
 ***
 
@@ -23080,7 +23406,7 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 A document stored in Convex.
 
-#### Defined in[​](#defined-in-24 "Direct link to Defined in")
+#### Defined in[​](#defined-in-29 "Direct link to Defined in")
 
 [server/data\_model.ts:10](https://github.com/convex/convex-js/blob/main/src/server/data_model.ts#L10)
 
@@ -23094,7 +23420,7 @@ A type describing all of the document fields in a table.
 
 These can either be field names (like "name") or references to fields on nested objects (like "properties.name").
 
-#### Defined in[​](#defined-in-25 "Direct link to Defined in")
+#### Defined in[​](#defined-in-30 "Direct link to Defined in")
 
 [server/data\_model.ts:19](https://github.com/convex/convex-js/blob/main/src/server/data_model.ts#L19)
 
@@ -23108,7 +23434,7 @@ A type describing the ordered fields in an index.
 
 These can either be field names (like "name") or references to fields on nested objects (like "properties.name").
 
-#### Defined in[​](#defined-in-26 "Direct link to Defined in")
+#### Defined in[​](#defined-in-31 "Direct link to Defined in")
 
 [server/data\_model.ts:30](https://github.com/convex/convex-js/blob/main/src/server/data_model.ts#L30)
 
@@ -23122,7 +23448,7 @@ A type describing the indexes in a table.
 
 It's an object mapping each index name to the fields in the index.
 
-#### Defined in[​](#defined-in-27 "Direct link to Defined in")
+#### Defined in[​](#defined-in-32 "Direct link to Defined in")
 
 [server/data\_model.ts:38](https://github.com/convex/convex-js/blob/main/src/server/data_model.ts#L38)
 
@@ -23134,14 +23460,14 @@ It's an object mapping each index name to the fields in the index.
 
 A type describing the configuration of a search index.
 
-#### Type declaration[​](#type-declaration-5 "Direct link to Type declaration")
+#### Type declaration[​](#type-declaration-6 "Direct link to Type declaration")
 
 | Name           | Type     |
 | -------------- | -------- |
 | `searchField`  | `string` |
 | `filterFields` | `string` |
 
-#### Defined in[​](#defined-in-28 "Direct link to Defined in")
+#### Defined in[​](#defined-in-33 "Direct link to Defined in")
 
 [server/data\_model.ts:44](https://github.com/convex/convex-js/blob/main/src/server/data_model.ts#L44)
 
@@ -23155,7 +23481,7 @@ A type describing all of the search indexes in a table.
 
 This is an object mapping each index name to the config for the index.
 
-#### Defined in[​](#defined-in-29 "Direct link to Defined in")
+#### Defined in[​](#defined-in-34 "Direct link to Defined in")
 
 [server/data\_model.ts:55](https://github.com/convex/convex-js/blob/main/src/server/data_model.ts#L55)
 
@@ -23167,7 +23493,7 @@ This is an object mapping each index name to the config for the index.
 
 A type describing the configuration of a vector index.
 
-#### Type declaration[​](#type-declaration-6 "Direct link to Type declaration")
+#### Type declaration[​](#type-declaration-7 "Direct link to Type declaration")
 
 | Name           | Type     |
 | -------------- | -------- |
@@ -23175,7 +23501,7 @@ A type describing the configuration of a vector index.
 | `dimensions`   | `number` |
 | `filterFields` | `string` |
 
-#### Defined in[​](#defined-in-30 "Direct link to Defined in")
+#### Defined in[​](#defined-in-35 "Direct link to Defined in")
 
 [server/data\_model.ts:64](https://github.com/convex/convex-js/blob/main/src/server/data_model.ts#L64)
 
@@ -23189,7 +23515,7 @@ A type describing all of the vector indexes in a table.
 
 This is an object mapping each index name to the config for the index.
 
-#### Defined in[​](#defined-in-31 "Direct link to Defined in")
+#### Defined in[​](#defined-in-36 "Direct link to Defined in")
 
 [server/data\_model.ts:76](https://github.com/convex/convex-js/blob/main/src/server/data_model.ts#L76)
 
@@ -23205,14 +23531,14 @@ Note that this supports both simple fields like "name" and nested fields like "p
 
 If the field is not present in the document it is considered to be `undefined`.
 
-#### Type parameters[​](#type-parameters-15 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-16 "Direct link to Type parameters")
 
 | Name        | Type                                                                |
 | ----------- | ------------------------------------------------------------------- |
 | `Document`  | extends [`GenericDocument`](/api/modules/server.md#genericdocument) |
 | `FieldPath` | extends `string`                                                    |
 
-#### Defined in[​](#defined-in-32 "Direct link to Defined in")
+#### Defined in[​](#defined-in-37 "Direct link to Defined in")
 
 [server/data\_model.ts:105](https://github.com/convex/convex-js/blob/main/src/server/data_model.ts#L105)
 
@@ -23226,14 +23552,14 @@ The inner type of [FieldTypeFromFieldPath](/api/modules/server.md#fieldtypefromf
 
 It's wrapped in a helper to coerce the type to `Value | undefined` since some versions of TypeScript fail to infer this type correctly.
 
-#### Type parameters[​](#type-parameters-16 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-17 "Direct link to Type parameters")
 
 | Name        | Type                                                                |
 | ----------- | ------------------------------------------------------------------- |
 | `Document`  | extends [`GenericDocument`](/api/modules/server.md#genericdocument) |
 | `FieldPath` | extends `string`                                                    |
 
-#### Defined in[​](#defined-in-33 "Direct link to Defined in")
+#### Defined in[​](#defined-in-38 "Direct link to Defined in")
 
 [server/data\_model.ts:121](https://github.com/convex/convex-js/blob/main/src/server/data_model.ts#L121)
 
@@ -23245,7 +23571,7 @@ It's wrapped in a helper to coerce the type to `Value | undefined` since some ve
 
 A type describing the document type and indexes in a table.
 
-#### Type declaration[​](#type-declaration-7 "Direct link to Type declaration")
+#### Type declaration[​](#type-declaration-8 "Direct link to Type declaration")
 
 | Name            | Type                                                                            |
 | --------------- | ------------------------------------------------------------------------------- |
@@ -23255,7 +23581,7 @@ A type describing the document type and indexes in a table.
 | `searchIndexes` | [`GenericTableSearchIndexes`](/api/modules/server.md#generictablesearchindexes) |
 | `vectorIndexes` | [`GenericTableVectorIndexes`](/api/modules/server.md#generictablevectorindexes) |
 
-#### Defined in[​](#defined-in-34 "Direct link to Defined in")
+#### Defined in[​](#defined-in-39 "Direct link to Defined in")
 
 [server/data\_model.ts:146](https://github.com/convex/convex-js/blob/main/src/server/data_model.ts#L146)
 
@@ -23267,13 +23593,13 @@ A type describing the document type and indexes in a table.
 
 The type of a document in a table for a given [GenericTableInfo](/api/modules/server.md#generictableinfo).
 
-#### Type parameters[​](#type-parameters-17 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-18 "Direct link to Type parameters")
 
 | Name        | Type                                                                  |
 | ----------- | --------------------------------------------------------------------- |
 | `TableInfo` | extends [`GenericTableInfo`](/api/modules/server.md#generictableinfo) |
 
-#### Defined in[​](#defined-in-35 "Direct link to Defined in")
+#### Defined in[​](#defined-in-40 "Direct link to Defined in")
 
 [server/data\_model.ts:158](https://github.com/convex/convex-js/blob/main/src/server/data_model.ts#L158)
 
@@ -23287,13 +23613,13 @@ The field paths in a table for a given [GenericTableInfo](/api/modules/server.md
 
 These can either be field names (like "name") or references to fields on nested objects (like "properties.name").
 
-#### Type parameters[​](#type-parameters-18 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-19 "Direct link to Type parameters")
 
 | Name        | Type                                                                  |
 | ----------- | --------------------------------------------------------------------- |
 | `TableInfo` | extends [`GenericTableInfo`](/api/modules/server.md#generictableinfo) |
 
-#### Defined in[​](#defined-in-36 "Direct link to Defined in")
+#### Defined in[​](#defined-in-41 "Direct link to Defined in")
 
 [server/data\_model.ts:168](https://github.com/convex/convex-js/blob/main/src/server/data_model.ts#L168)
 
@@ -23307,13 +23633,13 @@ The database indexes in a table for a given [GenericTableInfo](/api/modules/serv
 
 This will be an object mapping index names to the fields in the index.
 
-#### Type parameters[​](#type-parameters-19 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-20 "Direct link to Type parameters")
 
 | Name        | Type                                                                  |
 | ----------- | --------------------------------------------------------------------- |
 | `TableInfo` | extends [`GenericTableInfo`](/api/modules/server.md#generictableinfo) |
 
-#### Defined in[​](#defined-in-37 "Direct link to Defined in")
+#### Defined in[​](#defined-in-42 "Direct link to Defined in")
 
 [server/data\_model.ts:177](https://github.com/convex/convex-js/blob/main/src/server/data_model.ts#L177)
 
@@ -23325,13 +23651,13 @@ This will be an object mapping index names to the fields in the index.
 
 The names of indexes in a table for a given [GenericTableInfo](/api/modules/server.md#generictableinfo).
 
-#### Type parameters[​](#type-parameters-20 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-21 "Direct link to Type parameters")
 
 | Name        | Type                                                                  |
 | ----------- | --------------------------------------------------------------------- |
 | `TableInfo` | extends [`GenericTableInfo`](/api/modules/server.md#generictableinfo) |
 
-#### Defined in[​](#defined-in-38 "Direct link to Defined in")
+#### Defined in[​](#defined-in-43 "Direct link to Defined in")
 
 [server/data\_model.ts:183](https://github.com/convex/convex-js/blob/main/src/server/data_model.ts#L183)
 
@@ -23343,14 +23669,14 @@ The names of indexes in a table for a given [GenericTableInfo](/api/modules/serv
 
 Extract the fields of an index from a [GenericTableInfo](/api/modules/server.md#generictableinfo) by name.
 
-#### Type parameters[​](#type-parameters-21 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-22 "Direct link to Type parameters")
 
 | Name        | Type                                                                   |
 | ----------- | ---------------------------------------------------------------------- |
 | `TableInfo` | extends [`GenericTableInfo`](/api/modules/server.md#generictableinfo)  |
 | `IndexName` | extends [`IndexNames`](/api/modules/server.md#indexnames)<`TableInfo`> |
 
-#### Defined in[​](#defined-in-39 "Direct link to Defined in")
+#### Defined in[​](#defined-in-44 "Direct link to Defined in")
 
 [server/data\_model.ts:190](https://github.com/convex/convex-js/blob/main/src/server/data_model.ts#L190)
 
@@ -23364,13 +23690,13 @@ The search indexes in a table for a given [GenericTableInfo](/api/modules/server
 
 This will be an object mapping index names to the search index config.
 
-#### Type parameters[​](#type-parameters-22 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-23 "Direct link to Type parameters")
 
 | Name        | Type                                                                  |
 | ----------- | --------------------------------------------------------------------- |
 | `TableInfo` | extends [`GenericTableInfo`](/api/modules/server.md#generictableinfo) |
 
-#### Defined in[​](#defined-in-40 "Direct link to Defined in")
+#### Defined in[​](#defined-in-45 "Direct link to Defined in")
 
 [server/data\_model.ts:201](https://github.com/convex/convex-js/blob/main/src/server/data_model.ts#L201)
 
@@ -23382,13 +23708,13 @@ This will be an object mapping index names to the search index config.
 
 The names of search indexes in a table for a given [GenericTableInfo](/api/modules/server.md#generictableinfo).
 
-#### Type parameters[​](#type-parameters-23 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-24 "Direct link to Type parameters")
 
 | Name        | Type                                                                  |
 | ----------- | --------------------------------------------------------------------- |
 | `TableInfo` | extends [`GenericTableInfo`](/api/modules/server.md#generictableinfo) |
 
-#### Defined in[​](#defined-in-41 "Direct link to Defined in")
+#### Defined in[​](#defined-in-46 "Direct link to Defined in")
 
 [server/data\_model.ts:208](https://github.com/convex/convex-js/blob/main/src/server/data_model.ts#L208)
 
@@ -23400,14 +23726,14 @@ The names of search indexes in a table for a given [GenericTableInfo](/api/modul
 
 Extract the config of a search index from a [GenericTableInfo](/api/modules/server.md#generictableinfo) by name.
 
-#### Type parameters[​](#type-parameters-24 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-25 "Direct link to Type parameters")
 
 | Name        | Type                                                                               |
 | ----------- | ---------------------------------------------------------------------------------- |
 | `TableInfo` | extends [`GenericTableInfo`](/api/modules/server.md#generictableinfo)              |
 | `IndexName` | extends [`SearchIndexNames`](/api/modules/server.md#searchindexnames)<`TableInfo`> |
 
-#### Defined in[​](#defined-in-42 "Direct link to Defined in")
+#### Defined in[​](#defined-in-47 "Direct link to Defined in")
 
 [server/data\_model.ts:215](https://github.com/convex/convex-js/blob/main/src/server/data_model.ts#L215)
 
@@ -23421,13 +23747,13 @@ The vector indexes in a table for a given [GenericTableInfo](/api/modules/server
 
 This will be an object mapping index names to the vector index config.
 
-#### Type parameters[​](#type-parameters-25 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-26 "Direct link to Type parameters")
 
 | Name        | Type                                                                  |
 | ----------- | --------------------------------------------------------------------- |
 | `TableInfo` | extends [`GenericTableInfo`](/api/modules/server.md#generictableinfo) |
 
-#### Defined in[​](#defined-in-43 "Direct link to Defined in")
+#### Defined in[​](#defined-in-48 "Direct link to Defined in")
 
 [server/data\_model.ts:226](https://github.com/convex/convex-js/blob/main/src/server/data_model.ts#L226)
 
@@ -23439,13 +23765,13 @@ This will be an object mapping index names to the vector index config.
 
 The names of vector indexes in a table for a given [GenericTableInfo](/api/modules/server.md#generictableinfo).
 
-#### Type parameters[​](#type-parameters-26 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-27 "Direct link to Type parameters")
 
 | Name        | Type                                                                  |
 | ----------- | --------------------------------------------------------------------- |
 | `TableInfo` | extends [`GenericTableInfo`](/api/modules/server.md#generictableinfo) |
 
-#### Defined in[​](#defined-in-44 "Direct link to Defined in")
+#### Defined in[​](#defined-in-49 "Direct link to Defined in")
 
 [server/data\_model.ts:233](https://github.com/convex/convex-js/blob/main/src/server/data_model.ts#L233)
 
@@ -23457,14 +23783,14 @@ The names of vector indexes in a table for a given [GenericTableInfo](/api/modul
 
 Extract the config of a vector index from a [GenericTableInfo](/api/modules/server.md#generictableinfo) by name.
 
-#### Type parameters[​](#type-parameters-27 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-28 "Direct link to Type parameters")
 
 | Name        | Type                                                                               |
 | ----------- | ---------------------------------------------------------------------------------- |
 | `TableInfo` | extends [`GenericTableInfo`](/api/modules/server.md#generictableinfo)              |
 | `IndexName` | extends [`VectorIndexNames`](/api/modules/server.md#vectorindexnames)<`TableInfo`> |
 
-#### Defined in[​](#defined-in-45 "Direct link to Defined in")
+#### Defined in[​](#defined-in-50 "Direct link to Defined in")
 
 [server/data\_model.ts:240](https://github.com/convex/convex-js/blob/main/src/server/data_model.ts#L240)
 
@@ -23478,7 +23804,7 @@ A type describing the tables in a Convex project.
 
 This is designed to be code generated with `npx convex dev`.
 
-#### Defined in[​](#defined-in-46 "Direct link to Defined in")
+#### Defined in[​](#defined-in-51 "Direct link to Defined in")
 
 [server/data\_model.ts:253](https://github.com/convex/convex-js/blob/main/src/server/data_model.ts#L253)
 
@@ -23496,7 +23822,7 @@ This is the default before a schema is defined.
 
 ▪ \[tableName: `string`]: { `document`: `any` ; `fieldPaths`: [`GenericFieldPaths`](/api/modules/server.md#genericfieldpaths) ; `indexes`: [`SystemIndexes`](/api/modules/server.md#systemindexes) ; `searchIndexes`: <!-- -->; `vectorIndexes`: <!-- -->}
 
-#### Defined in[​](#defined-in-47 "Direct link to Defined in")
+#### Defined in[​](#defined-in-52 "Direct link to Defined in")
 
 [server/data\_model.ts:262](https://github.com/convex/convex-js/blob/main/src/server/data_model.ts#L262)
 
@@ -23508,13 +23834,13 @@ This is the default before a schema is defined.
 
 A type of all of the table names defined in a [GenericDataModel](/api/modules/server.md#genericdatamodel).
 
-#### Type parameters[​](#type-parameters-28 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-29 "Direct link to Type parameters")
 
 | Name        | Type                                                                  |
 | ----------- | --------------------------------------------------------------------- |
 | `DataModel` | extends [`GenericDataModel`](/api/modules/server.md#genericdatamodel) |
 
-#### Defined in[​](#defined-in-48 "Direct link to Defined in")
+#### Defined in[​](#defined-in-53 "Direct link to Defined in")
 
 [server/data\_model.ts:276](https://github.com/convex/convex-js/blob/main/src/server/data_model.ts#L276)
 
@@ -23526,14 +23852,14 @@ A type of all of the table names defined in a [GenericDataModel](/api/modules/se
 
 Extract the `TableInfo` for a table in a [GenericDataModel](/api/modules/server.md#genericdatamodel) by table name.
 
-#### Type parameters[​](#type-parameters-29 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-30 "Direct link to Type parameters")
 
 | Name        | Type                                                                  |
 | ----------- | --------------------------------------------------------------------- |
 | `DataModel` | extends [`GenericDataModel`](/api/modules/server.md#genericdatamodel) |
 | `TableName` | extends keyof `DataModel`                                             |
 
-#### Defined in[​](#defined-in-49 "Direct link to Defined in")
+#### Defined in[​](#defined-in-54 "Direct link to Defined in")
 
 [server/data\_model.ts:285](https://github.com/convex/convex-js/blob/main/src/server/data_model.ts#L285)
 
@@ -23545,14 +23871,14 @@ Extract the `TableInfo` for a table in a [GenericDataModel](/api/modules/server.
 
 The type of a document in a [GenericDataModel](/api/modules/server.md#genericdatamodel) by table name.
 
-#### Type parameters[​](#type-parameters-30 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-31 "Direct link to Type parameters")
 
 | Name        | Type                                                                                         |
 | ----------- | -------------------------------------------------------------------------------------------- |
 | `DataModel` | extends [`GenericDataModel`](/api/modules/server.md#genericdatamodel)                        |
 | `TableName` | extends [`TableNamesInDataModel`](/api/modules/server.md#tablenamesindatamodel)<`DataModel`> |
 
-#### Defined in[​](#defined-in-50 "Direct link to Defined in")
+#### Defined in[​](#defined-in-55 "Direct link to Defined in")
 
 [server/data\_model.ts:294](https://github.com/convex/convex-js/blob/main/src/server/data_model.ts#L294)
 
@@ -23564,13 +23890,13 @@ The type of a document in a [GenericDataModel](/api/modules/server.md#genericdat
 
 An [Expression](/api/classes/server.Expression.md) or a constant [Value](/api/modules/values.md#value)
 
-#### Type parameters[​](#type-parameters-31 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-32 "Direct link to Type parameters")
 
 | Name | Type                                                           |
 | ---- | -------------------------------------------------------------- |
 | `T`  | extends [`Value`](/api/modules/values.md#value) \| `undefined` |
 
-#### Defined in[​](#defined-in-51 "Direct link to Defined in")
+#### Defined in[​](#defined-in-56 "Direct link to Defined in")
 
 [server/filter\_builder.ts:38](https://github.com/convex/convex-js/blob/main/src/server/filter_builder.ts#L38)
 
@@ -23582,7 +23908,7 @@ An [Expression](/api/classes/server.Expression.md) or a constant [Value](/api/mo
 
 A Convex-managed service. The backend decides which names it accepts; this type lists the ones the current release knows about.
 
-#### Defined in[​](#defined-in-52 "Direct link to Defined in")
+#### Defined in[​](#defined-in-57 "Direct link to Defined in")
 
 [server/impl/actions\_impl.ts:71](https://github.com/convex/convex-js/blob/main/src/server/impl/actions_impl.ts#L71)
 
@@ -23594,14 +23920,14 @@ A Convex-managed service. The backend decides which names it accepts; this type 
 
 Used and remaining amounts for a single transaction limit.
 
-#### Type declaration[​](#type-declaration-8 "Direct link to Type declaration")
+#### Type declaration[​](#type-declaration-9 "Direct link to Type declaration")
 
 | Name        | Type     |
 | ----------- | -------- |
 | `used`      | `number` |
 | `remaining` | `number` |
 
-#### Defined in[​](#defined-in-53 "Direct link to Defined in")
+#### Defined in[​](#defined-in-58 "Direct link to Defined in")
 
 [server/meta.ts:9](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L9)
 
@@ -23615,7 +23941,7 @@ The remaining headroom for a transaction before hitting limits.
 
 See <https://docs.convex.dev/production/state/limits>
 
-#### Type declaration[​](#type-declaration-9 "Direct link to Type declaration")
+#### Type declaration[​](#type-declaration-10 "Direct link to Type declaration")
 
 | Name                         | Type                                                            |
 | ---------------------------- | --------------------------------------------------------------- |
@@ -23626,8 +23952,12 @@ See <https://docs.convex.dev/production/state/limits>
 | `documentsWritten`           | [`TransactionMetric`](/api/modules/server.md#transactionmetric) |
 | `functionsScheduled`         | [`TransactionMetric`](/api/modules/server.md#transactionmetric) |
 | `scheduledFunctionArgsBytes` | [`TransactionMetric`](/api/modules/server.md#transactionmetric) |
+| `filesWritten`               | [`TransactionMetric`](/api/modules/server.md#transactionmetric) |
+| `fileWriteBytes`             | [`TransactionMetric`](/api/modules/server.md#transactionmetric) |
+| `filesRead`                  | [`TransactionMetric`](/api/modules/server.md#transactionmetric) |
+| `fileReadBytes`              | [`TransactionMetric`](/api/modules/server.md#transactionmetric) |
 
-#### Defined in[​](#defined-in-54 "Direct link to Defined in")
+#### Defined in[​](#defined-in-59 "Direct link to Defined in")
 
 [server/meta.ts:21](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L21)
 
@@ -23639,7 +23969,7 @@ See <https://docs.convex.dev/production/state/limits>
 
 Metadata about the currently executing Convex function.
 
-#### Type declaration[​](#type-declaration-10 "Direct link to Type declaration")
+#### Type declaration[​](#type-declaration-11 "Direct link to Type declaration")
 
 | Name            | Type                                                              | Description                                                                                   |
 | --------------- | ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
@@ -23648,9 +23978,9 @@ Metadata about the currently executing Convex function.
 | `type`          | [`FunctionType`](/api/modules/server.md#functiontype)             | Whether it's a query, mutation, or action.                                                    |
 | `visibility`    | [`FunctionVisibility`](/api/modules/server.md#functionvisibility) | Whether the function is public or internal.                                                   |
 
-#### Defined in[​](#defined-in-55 "Direct link to Defined in")
+#### Defined in[​](#defined-in-60 "Direct link to Defined in")
 
-[server/meta.ts:69](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L69)
+[server/meta.ts:61](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L61)
 
 ***
 
@@ -23660,7 +23990,7 @@ Metadata about the currently executing Convex function.
 
 Metadata about the deployment this function is running on.
 
-#### Type declaration[​](#type-declaration-11 "Direct link to Type declaration")
+#### Type declaration[​](#type-declaration-12 "Direct link to Type declaration")
 
 | Name     | Type                                          | Description                                                                                                                                                           |
 | -------- | --------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -23668,9 +23998,9 @@ Metadata about the deployment this function is running on.
 | `region` | `string` \| `null`                            | The deployment region, e.g. `"aws-us-east-1"`. `null` for local and self-hosted deployments.                                                                          |
 | `class`  | `"s16"` \| `"s256"` \| `"d1024"` \| `"d2048"` | The deployment class, e.g. `"s16"`, `"s256"`, `"d1024"`, or `"d2048"`.                                                                                                |
 
-#### Defined in[​](#defined-in-56 "Direct link to Defined in")
+#### Defined in[​](#defined-in-61 "Direct link to Defined in")
 
-[server/meta.ts:90](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L90)
+[server/meta.ts:82](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L82)
 
 ***
 
@@ -23684,7 +24014,7 @@ Metadata about the HTTP request that triggered the current function execution.
 
 Functions called from within a function (i.e. using `runMutation` or `runAction`) will have the same request metadata as the parent function.
 
-#### Type declaration[​](#type-declaration-12 "Direct link to Type declaration")
+#### Type declaration[​](#type-declaration-13 "Direct link to Type declaration")
 
 | Name                  | Type               | Description                                                                                                                                                                                                                                                                                                                                                                                        |
 | --------------------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -23694,9 +24024,9 @@ Functions called from within a function (i.e. using `runMutation` or `runAction`
 | `scheduledFunctionId` | `string` \| `null` | The ID of the scheduled function document (in `_scheduled_functions`) that this execution belongs to, or `null` otherwise. This is set for the scheduled function itself and for any functions it calls (e.g. a mutation invoked via `runMutation` by a scheduled action), propagating the top-level scheduled function's ID down the call tree. It is `null` when the function was not scheduled. |
 | `authToken`           | `string` \| `null` | The raw auth token (a JWT) the request was authenticated with, or `null` when the request was unauthenticated or authenticated with an admin key. This is the same token that `ctx.auth.getUserIdentity()` derives its attributes from.                                                                                                                                                            |
 
-#### Defined in[​](#defined-in-57 "Direct link to Defined in")
+#### Defined in[​](#defined-in-62 "Direct link to Defined in")
 
-[server/meta.ts:119](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L119)
+[server/meta.ts:111](https://github.com/convex/convex-js/blob/main/src/server/meta.ts#L111)
 
 ***
 
@@ -23712,7 +24042,7 @@ To continue paginating, pass the cursor back into [paginate](/api/interfaces/ser
 
 Note: Cursors can only be passed to *exactly* the same database query that they were generated from. You may not reuse a cursor between different database queries.
 
-#### Defined in[​](#defined-in-58 "Direct link to Defined in")
+#### Defined in[​](#defined-in-63 "Direct link to Defined in")
 
 [server/pagination.ts:21](https://github.com/convex/convex-js/blob/main/src/server/pagination.ts#L21)
 
@@ -23728,15 +24058,15 @@ The mutation context is passed as the first argument to any Convex mutation func
 
 You should generally use the `MutationCtx` type from `"./_generated/server"`.
 
-#### Type parameters[​](#type-parameters-32 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-33 "Direct link to Type parameters")
 
 | Name        | Type                                                                  |
 | ----------- | --------------------------------------------------------------------- |
 | `DataModel` | extends [`GenericDataModel`](/api/modules/server.md#genericdatamodel) |
 
-#### Defined in[​](#defined-in-59 "Direct link to Defined in")
+#### Defined in[​](#defined-in-64 "Direct link to Defined in")
 
-[server/registration.ts:179](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L179)
+[server/registration.ts:182](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L182)
 
 ***
 
@@ -23750,15 +24080,15 @@ The query context is passed as the first argument to any Convex query function r
 
 This differs from the MutationCtx because all of the services are read-only.
 
-#### Type parameters[​](#type-parameters-33 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-34 "Direct link to Type parameters")
 
 | Name        | Type                                                                  |
 | ----------- | --------------------------------------------------------------------- |
 | `DataModel` | extends [`GenericDataModel`](/api/modules/server.md#genericdatamodel) |
 
-#### Defined in[​](#defined-in-60 "Direct link to Defined in")
+#### Defined in[​](#defined-in-65 "Direct link to Defined in")
 
-[server/registration.ts:277](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L277)
+[server/registration.ts:280](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L280)
 
 ***
 
@@ -23770,9 +24100,9 @@ The default arguments type for a Convex query, mutation, or action function.
 
 Convex functions always take an arguments object that maps the argument names to their values.
 
-#### Defined in[​](#defined-in-61 "Direct link to Defined in")
+#### Defined in[​](#defined-in-66 "Direct link to Defined in")
 
-[server/registration.ts:445](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L445)
+[server/registration.ts:448](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L448)
 
 ***
 
@@ -23784,9 +24114,9 @@ An array of arguments to a Convex function.
 
 Convex functions can take either a single [DefaultFunctionArgs](/api/modules/server.md#defaultfunctionargs) object or no args at all.
 
-#### Defined in[​](#defined-in-62 "Direct link to Defined in")
+#### Defined in[​](#defined-in-67 "Direct link to Defined in")
 
-[server/registration.ts:468](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L468)
+[server/registration.ts:471](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L471)
 
 ***
 
@@ -23798,15 +24128,15 @@ Convert an [ArgsArray](/api/modules/server.md#argsarray) into a single object ty
 
 Empty arguments arrays are converted to EmptyObject.
 
-#### Type parameters[​](#type-parameters-34 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-35 "Direct link to Type parameters")
 
 | Name   | Type                                                    |
 | ------ | ------------------------------------------------------- |
 | `Args` | extends [`ArgsArray`](/api/modules/server.md#argsarray) |
 
-#### Defined in[​](#defined-in-63 "Direct link to Defined in")
+#### Defined in[​](#defined-in-68 "Direct link to Defined in")
 
-[server/registration.ts:483](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L483)
+[server/registration.ts:486](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L486)
 
 ***
 
@@ -23816,9 +24146,9 @@ Empty arguments arrays are converted to EmptyObject.
 
 A type representing the visibility of a Convex function.
 
-#### Defined in[​](#defined-in-64 "Direct link to Defined in")
+#### Defined in[​](#defined-in-69 "Direct link to Defined in")
 
-[server/registration.ts:491](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L491)
+[server/registration.ts:494](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L494)
 
 ***
 
@@ -23830,7 +24160,7 @@ A mutation function that is part of this app.
 
 You can create a mutation by wrapping your function in [mutationGeneric](/api/modules/server.md#mutationgeneric) or [internalMutationGeneric](/api/modules/server.md#internalmutationgeneric) and exporting it.
 
-#### Type parameters[​](#type-parameters-35 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-36 "Direct link to Type parameters")
 
 | Name         | Type                                                                        |
 | ------------ | --------------------------------------------------------------------------- |
@@ -23838,9 +24168,9 @@ You can create a mutation by wrapping your function in [mutationGeneric](/api/mo
 | `Args`       | extends [`DefaultFunctionArgs`](/api/modules/server.md#defaultfunctionargs) |
 | `Returns`    | `Returns`                                                                   |
 
-#### Defined in[​](#defined-in-65 "Direct link to Defined in")
+#### Defined in[​](#defined-in-70 "Direct link to Defined in")
 
-[server/registration.ts:516](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L516)
+[server/registration.ts:519](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L519)
 
 ***
 
@@ -23852,7 +24182,7 @@ A query function that is part of this app.
 
 You can create a query by wrapping your function in [queryGeneric](/api/modules/server.md#querygeneric) or [internalQueryGeneric](/api/modules/server.md#internalquerygeneric) and exporting it.
 
-#### Type parameters[​](#type-parameters-36 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-37 "Direct link to Type parameters")
 
 | Name         | Type                                                                        |
 | ------------ | --------------------------------------------------------------------------- |
@@ -23860,9 +24190,9 @@ You can create a query by wrapping your function in [queryGeneric](/api/modules/
 | `Args`       | extends [`DefaultFunctionArgs`](/api/modules/server.md#defaultfunctionargs) |
 | `Returns`    | `Returns`                                                                   |
 
-#### Defined in[​](#defined-in-66 "Direct link to Defined in")
+#### Defined in[​](#defined-in-71 "Direct link to Defined in")
 
-[server/registration.ts:545](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L545)
+[server/registration.ts:548](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L548)
 
 ***
 
@@ -23874,7 +24204,7 @@ An action that is part of this app.
 
 You can create an action by wrapping your function in [actionGeneric](/api/modules/server.md#actiongeneric) or [internalActionGeneric](/api/modules/server.md#internalactiongeneric) and exporting it.
 
-#### Type parameters[​](#type-parameters-37 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-38 "Direct link to Type parameters")
 
 | Name         | Type                                                                        |
 | ------------ | --------------------------------------------------------------------------- |
@@ -23882,9 +24212,9 @@ You can create an action by wrapping your function in [actionGeneric](/api/modul
 | `Args`       | extends [`DefaultFunctionArgs`](/api/modules/server.md#defaultfunctionargs) |
 | `Returns`    | `Returns`                                                                   |
 
-#### Defined in[​](#defined-in-67 "Direct link to Defined in")
+#### Defined in[​](#defined-in-72 "Direct link to Defined in")
 
-[server/registration.ts:574](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L574)
+[server/registration.ts:577](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L577)
 
 ***
 
@@ -23896,15 +24226,15 @@ An HTTP action that is part of this app's public API.
 
 You can create public HTTP actions by wrapping your function in [httpActionGeneric](/api/modules/server.md#httpactiongeneric) and exporting it.
 
-#### Type declaration[​](#type-declaration-13 "Direct link to Type declaration")
+#### Type declaration[​](#type-declaration-14 "Direct link to Type declaration")
 
 | Name     | Type   |
 | -------- | ------ |
 | `isHttp` | `true` |
 
-#### Defined in[​](#defined-in-68 "Direct link to Defined in")
+#### Defined in[​](#defined-in-73 "Direct link to Defined in")
 
-[server/registration.ts:603](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L603)
+[server/registration.ts:606](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L606)
 
 ***
 
@@ -23946,7 +24276,7 @@ export const func = query({
 
 See [ValidatedFunction](/api/interfaces/server.ValidatedFunction.md) to add argument validation.
 
-#### Type parameters[​](#type-parameters-38 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-39 "Direct link to Type parameters")
 
 | Name      | Type                                                    |
 | --------- | ------------------------------------------------------- |
@@ -23954,9 +24284,9 @@ See [ValidatedFunction](/api/interfaces/server.ValidatedFunction.md) to add argu
 | `Args`    | extends [`ArgsArray`](/api/modules/server.md#argsarray) |
 | `Returns` | `Returns`                                               |
 
-#### Defined in[​](#defined-in-69 "Direct link to Defined in")
+#### Defined in[​](#defined-in-74 "Direct link to Defined in")
 
-[server/registration.ts:641](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L641)
+[server/registration.ts:644](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L644)
 
 ***
 
@@ -23989,15 +24319,15 @@ Additional tricks:
 * We use Validator | void instead of Validator | undefined because the latter does not work with `strictNullChecks` since it's equivalent to just `Validator`.
 * We use a tuple type of length 1 to avoid distribution over the union <https://github.com/microsoft/TypeScript/issues/29368#issuecomment-453529532>
 
-#### Type parameters[​](#type-parameters-39 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-40 "Direct link to Type parameters")
 
 | Name               | Type                                                                                                                                                        |
 | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `ReturnsValidator` | extends [`Validator`](/api/modules/values.md#validator)<`any`, `any`, `any`> \| [`PropertyValidators`](/api/modules/values.md#propertyvalidators) \| `void` |
 
-#### Defined in[​](#defined-in-70 "Direct link to Defined in")
+#### Defined in[​](#defined-in-75 "Direct link to Defined in")
 
-[server/registration.ts:743](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L743)
+[server/registration.ts:746](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L746)
 
 ***
 
@@ -24005,15 +24335,15 @@ Additional tricks:
 
 Ƭ **ArgsArrayForOptionalValidator**<`ArgsValidator`>: \[`ArgsValidator`] extends \[[`Validator`](/api/modules/values.md#validator)<`any`, `any`, `any`>] ? `OneArgArray`<[`Infer`](/api/modules/values.md#infer)<`ArgsValidator`>> : \[`ArgsValidator`] extends \[[`PropertyValidators`](/api/modules/values.md#propertyvalidators)] ? `OneArgArray`<[`ObjectType`](/api/modules/values.md#objecttype)<`ArgsValidator`>> : [`ArgsArray`](/api/modules/server.md#argsarray)
 
-#### Type parameters[​](#type-parameters-40 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-41 "Direct link to Type parameters")
 
 | Name            | Type                                                                                                                                                 |
 | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `ArgsValidator` | extends [`GenericValidator`](/api/modules/values.md#genericvalidator) \| [`PropertyValidators`](/api/modules/values.md#propertyvalidators) \| `void` |
 
-#### Defined in[​](#defined-in-71 "Direct link to Defined in")
+#### Defined in[​](#defined-in-76 "Direct link to Defined in")
 
-[server/registration.ts:751](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L751)
+[server/registration.ts:754](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L754)
 
 ***
 
@@ -24021,15 +24351,15 @@ Additional tricks:
 
 Ƭ **DefaultArgsForOptionalValidator**<`ArgsValidator`>: \[`ArgsValidator`] extends \[[`Validator`](/api/modules/values.md#validator)<`any`, `any`, `any`>] ? \[[`Infer`](/api/modules/values.md#infer)<`ArgsValidator`>] : \[`ArgsValidator`] extends \[[`PropertyValidators`](/api/modules/values.md#propertyvalidators)] ? \[[`ObjectType`](/api/modules/values.md#objecttype)<`ArgsValidator`>] : `OneArgArray`
 
-#### Type parameters[​](#type-parameters-41 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-42 "Direct link to Type parameters")
 
 | Name            | Type                                                                                                                                                 |
 | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `ArgsValidator` | extends [`GenericValidator`](/api/modules/values.md#genericvalidator) \| [`PropertyValidators`](/api/modules/values.md#propertyvalidators) \| `void` |
 
-#### Defined in[​](#defined-in-72 "Direct link to Defined in")
+#### Defined in[​](#defined-in-77 "Direct link to Defined in")
 
-[server/registration.ts:759](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L759)
+[server/registration.ts:762](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L762)
 
 ***
 
@@ -24037,14 +24367,14 @@ Additional tricks:
 
 Ƭ **MutationBuilder**<`DataModel`, `Visibility`>: \<ArgsValidator, ReturnsValidator, ReturnValue, OneOrZeroArgs>(`mutation`: { `args?`: `ArgsValidator` ; `returns?`: `ReturnsValidator` ; `handler`: (`ctx`: [`GenericMutationCtx`](/api/interfaces/server.GenericMutationCtx.md)<`DataModel`>, ...`args`: `OneOrZeroArgs`) => `ReturnValue` } | (`ctx`: [`GenericMutationCtx`](/api/interfaces/server.GenericMutationCtx.md)<`DataModel`>, ...`args`: `OneOrZeroArgs`) => `ReturnValue`) => [`RegisteredMutation`](/api/modules/server.md#registeredmutation)<`Visibility`, [`ArgsArrayToObject`](/api/modules/server.md#argsarraytoobject)<`OneOrZeroArgs`>, `ReturnValue`>
 
-#### Type parameters[​](#type-parameters-42 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-43 "Direct link to Type parameters")
 
 | Name         | Type                                                                      |
 | ------------ | ------------------------------------------------------------------------- |
 | `DataModel`  | extends [`GenericDataModel`](/api/modules/server.md#genericdatamodel)     |
 | `Visibility` | extends [`FunctionVisibility`](/api/modules/server.md#functionvisibility) |
 
-#### Type declaration[​](#type-declaration-14 "Direct link to Type declaration")
+#### Type declaration[​](#type-declaration-15 "Direct link to Type declaration")
 
 ▸ <`ArgsValidator`, `ReturnsValidator`, `ReturnValue`, `OneOrZeroArgs`>(`mutation`): [`RegisteredMutation`](/api/modules/server.md#registeredmutation)<`Visibility`, [`ArgsArrayToObject`](/api/modules/server.md#argsarraytoobject)<`OneOrZeroArgs`>, `ReturnValue`>
 
@@ -24052,7 +24382,7 @@ Internal type helper used by Convex code generation.
 
 Used to give [mutationGeneric](/api/modules/server.md#mutationgeneric) a type specific to your data model.
 
-##### Type parameters[​](#type-parameters-43 "Direct link to Type parameters")
+##### Type parameters[​](#type-parameters-44 "Direct link to Type parameters")
 
 | Name               | Type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -24071,9 +24401,9 @@ Used to give [mutationGeneric](/api/modules/server.md#mutationgeneric) a type sp
 
 [`RegisteredMutation`](/api/modules/server.md#registeredmutation)<`Visibility`, [`ArgsArrayToObject`](/api/modules/server.md#argsarraytoobject)<`OneOrZeroArgs`>, `ReturnValue`>
 
-#### Defined in[​](#defined-in-73 "Direct link to Defined in")
+#### Defined in[​](#defined-in-78 "Direct link to Defined in")
 
-[server/registration.ts:773](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L773)
+[server/registration.ts:776](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L776)
 
 ***
 
@@ -24081,14 +24411,14 @@ Used to give [mutationGeneric](/api/modules/server.md#mutationgeneric) a type sp
 
 Ƭ **MutationBuilderWithTable**<`DataModel`, `Visibility`>: \<ArgsValidator, ReturnsValidator, ReturnValue, OneOrZeroArgs>(`mutation`: { `args?`: `ArgsValidator` ; `returns?`: `ReturnsValidator` ; `handler`: (`ctx`: [`GenericMutationCtxWithTable`](/api/modules/server.md#genericmutationctxwithtable)<`DataModel`>, ...`args`: `OneOrZeroArgs`) => `ReturnValue` } | (`ctx`: [`GenericMutationCtxWithTable`](/api/modules/server.md#genericmutationctxwithtable)<`DataModel`>, ...`args`: `OneOrZeroArgs`) => `ReturnValue`) => [`RegisteredMutation`](/api/modules/server.md#registeredmutation)<`Visibility`, [`ArgsArrayToObject`](/api/modules/server.md#argsarraytoobject)<`OneOrZeroArgs`>, `ReturnValue`>
 
-#### Type parameters[​](#type-parameters-44 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-45 "Direct link to Type parameters")
 
 | Name         | Type                                                                      |
 | ------------ | ------------------------------------------------------------------------- |
 | `DataModel`  | extends [`GenericDataModel`](/api/modules/server.md#genericdatamodel)     |
 | `Visibility` | extends [`FunctionVisibility`](/api/modules/server.md#functionvisibility) |
 
-#### Type declaration[​](#type-declaration-15 "Direct link to Type declaration")
+#### Type declaration[​](#type-declaration-16 "Direct link to Type declaration")
 
 ▸ <`ArgsValidator`, `ReturnsValidator`, `ReturnValue`, `OneOrZeroArgs`>(`mutation`): [`RegisteredMutation`](/api/modules/server.md#registeredmutation)<`Visibility`, [`ArgsArrayToObject`](/api/modules/server.md#argsarraytoobject)<`OneOrZeroArgs`>, `ReturnValue`>
 
@@ -24096,7 +24426,7 @@ Internal type helper used by Convex code generation.
 
 Used to give [mutationGeneric](/api/modules/server.md#mutationgeneric) a type specific to your data model.
 
-##### Type parameters[​](#type-parameters-45 "Direct link to Type parameters")
+##### Type parameters[​](#type-parameters-46 "Direct link to Type parameters")
 
 | Name               | Type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -24115,9 +24445,9 @@ Used to give [mutationGeneric](/api/modules/server.md#mutationgeneric) a type sp
 
 [`RegisteredMutation`](/api/modules/server.md#registeredmutation)<`Visibility`, [`ArgsArrayToObject`](/api/modules/server.md#argsarraytoobject)<`OneOrZeroArgs`>, `ReturnValue`>
 
-#### Defined in[​](#defined-in-74 "Direct link to Defined in")
+#### Defined in[​](#defined-in-79 "Direct link to Defined in")
 
-[server/registration.ts:866](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L866)
+[server/registration.ts:869](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L869)
 
 ***
 
@@ -24125,14 +24455,14 @@ Used to give [mutationGeneric](/api/modules/server.md#mutationgeneric) a type sp
 
 Ƭ **QueryBuilder**<`DataModel`, `Visibility`>: \<ArgsValidator, ReturnsValidator, ReturnValue, OneOrZeroArgs>(`query`: { `args?`: `ArgsValidator` ; `returns?`: `ReturnsValidator` ; `handler`: (`ctx`: [`GenericQueryCtx`](/api/interfaces/server.GenericQueryCtx.md)<`DataModel`>, ...`args`: `OneOrZeroArgs`) => `ReturnValue` } | (`ctx`: [`GenericQueryCtx`](/api/interfaces/server.GenericQueryCtx.md)<`DataModel`>, ...`args`: `OneOrZeroArgs`) => `ReturnValue`) => [`RegisteredQuery`](/api/modules/server.md#registeredquery)<`Visibility`, [`ArgsArrayToObject`](/api/modules/server.md#argsarraytoobject)<`OneOrZeroArgs`>, `ReturnValue`>
 
-#### Type parameters[​](#type-parameters-46 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-47 "Direct link to Type parameters")
 
 | Name         | Type                                                                      |
 | ------------ | ------------------------------------------------------------------------- |
 | `DataModel`  | extends [`GenericDataModel`](/api/modules/server.md#genericdatamodel)     |
 | `Visibility` | extends [`FunctionVisibility`](/api/modules/server.md#functionvisibility) |
 
-#### Type declaration[​](#type-declaration-16 "Direct link to Type declaration")
+#### Type declaration[​](#type-declaration-17 "Direct link to Type declaration")
 
 ▸ <`ArgsValidator`, `ReturnsValidator`, `ReturnValue`, `OneOrZeroArgs`>(`query`): [`RegisteredQuery`](/api/modules/server.md#registeredquery)<`Visibility`, [`ArgsArrayToObject`](/api/modules/server.md#argsarraytoobject)<`OneOrZeroArgs`>, `ReturnValue`>
 
@@ -24140,7 +24470,7 @@ Internal type helper used by Convex code generation.
 
 Used to give [queryGeneric](/api/modules/server.md#querygeneric) a type specific to your data model.
 
-##### Type parameters[​](#type-parameters-47 "Direct link to Type parameters")
+##### Type parameters[​](#type-parameters-48 "Direct link to Type parameters")
 
 | Name               | Type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -24159,9 +24489,9 @@ Used to give [queryGeneric](/api/modules/server.md#querygeneric) a type specific
 
 [`RegisteredQuery`](/api/modules/server.md#registeredquery)<`Visibility`, [`ArgsArrayToObject`](/api/modules/server.md#argsarraytoobject)<`OneOrZeroArgs`>, `ReturnValue`>
 
-#### Defined in[​](#defined-in-75 "Direct link to Defined in")
+#### Defined in[​](#defined-in-80 "Direct link to Defined in")
 
-[server/registration.ts:959](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L959)
+[server/registration.ts:962](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L962)
 
 ***
 
@@ -24169,14 +24499,14 @@ Used to give [queryGeneric](/api/modules/server.md#querygeneric) a type specific
 
 Ƭ **QueryBuilderWithTable**<`DataModel`, `Visibility`>: \<ArgsValidator, ReturnsValidator, ReturnValue, OneOrZeroArgs>(`query`: { `args?`: `ArgsValidator` ; `returns?`: `ReturnsValidator` ; `handler`: (`ctx`: [`GenericQueryCtxWithTable`](/api/modules/server.md#genericqueryctxwithtable)<`DataModel`>, ...`args`: `OneOrZeroArgs`) => `ReturnValue` } | (`ctx`: [`GenericQueryCtxWithTable`](/api/modules/server.md#genericqueryctxwithtable)<`DataModel`>, ...`args`: `OneOrZeroArgs`) => `ReturnValue`) => [`RegisteredQuery`](/api/modules/server.md#registeredquery)<`Visibility`, [`ArgsArrayToObject`](/api/modules/server.md#argsarraytoobject)<`OneOrZeroArgs`>, `ReturnValue`>
 
-#### Type parameters[​](#type-parameters-48 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-49 "Direct link to Type parameters")
 
 | Name         | Type                                                                      |
 | ------------ | ------------------------------------------------------------------------- |
 | `DataModel`  | extends [`GenericDataModel`](/api/modules/server.md#genericdatamodel)     |
 | `Visibility` | extends [`FunctionVisibility`](/api/modules/server.md#functionvisibility) |
 
-#### Type declaration[​](#type-declaration-17 "Direct link to Type declaration")
+#### Type declaration[​](#type-declaration-18 "Direct link to Type declaration")
 
 ▸ <`ArgsValidator`, `ReturnsValidator`, `ReturnValue`, `OneOrZeroArgs`>(`query`): [`RegisteredQuery`](/api/modules/server.md#registeredquery)<`Visibility`, [`ArgsArrayToObject`](/api/modules/server.md#argsarraytoobject)<`OneOrZeroArgs`>, `ReturnValue`>
 
@@ -24184,7 +24514,7 @@ Internal type helper used by Convex code generation.
 
 Used to give [queryGeneric](/api/modules/server.md#querygeneric) a type specific to your data model.
 
-##### Type parameters[​](#type-parameters-49 "Direct link to Type parameters")
+##### Type parameters[​](#type-parameters-50 "Direct link to Type parameters")
 
 | Name               | Type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -24203,9 +24533,9 @@ Used to give [queryGeneric](/api/modules/server.md#querygeneric) a type specific
 
 [`RegisteredQuery`](/api/modules/server.md#registeredquery)<`Visibility`, [`ArgsArrayToObject`](/api/modules/server.md#argsarraytoobject)<`OneOrZeroArgs`>, `ReturnValue`>
 
-#### Defined in[​](#defined-in-76 "Direct link to Defined in")
+#### Defined in[​](#defined-in-81 "Direct link to Defined in")
 
-[server/registration.ts:1048](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L1048)
+[server/registration.ts:1051](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L1051)
 
 ***
 
@@ -24213,14 +24543,14 @@ Used to give [queryGeneric](/api/modules/server.md#querygeneric) a type specific
 
 Ƭ **ActionBuilder**<`DataModel`, `Visibility`>: \<ArgsValidator, ReturnsValidator, ReturnValue, OneOrZeroArgs>(`func`: { `args?`: `ArgsValidator` ; `returns?`: `ReturnsValidator` ; `handler`: (`ctx`: [`GenericActionCtx`](/api/interfaces/server.GenericActionCtx.md)<`DataModel`>, ...`args`: `OneOrZeroArgs`) => `ReturnValue` } | (`ctx`: [`GenericActionCtx`](/api/interfaces/server.GenericActionCtx.md)<`DataModel`>, ...`args`: `OneOrZeroArgs`) => `ReturnValue`) => [`RegisteredAction`](/api/modules/server.md#registeredaction)<`Visibility`, [`ArgsArrayToObject`](/api/modules/server.md#argsarraytoobject)<`OneOrZeroArgs`>, `ReturnValue`>
 
-#### Type parameters[​](#type-parameters-50 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-51 "Direct link to Type parameters")
 
 | Name         | Type                                                                      |
 | ------------ | ------------------------------------------------------------------------- |
 | `DataModel`  | extends [`GenericDataModel`](/api/modules/server.md#genericdatamodel)     |
 | `Visibility` | extends [`FunctionVisibility`](/api/modules/server.md#functionvisibility) |
 
-#### Type declaration[​](#type-declaration-18 "Direct link to Type declaration")
+#### Type declaration[​](#type-declaration-19 "Direct link to Type declaration")
 
 ▸ <`ArgsValidator`, `ReturnsValidator`, `ReturnValue`, `OneOrZeroArgs`>(`func`): [`RegisteredAction`](/api/modules/server.md#registeredaction)<`Visibility`, [`ArgsArrayToObject`](/api/modules/server.md#argsarraytoobject)<`OneOrZeroArgs`>, `ReturnValue`>
 
@@ -24228,7 +24558,7 @@ Internal type helper used by Convex code generation.
 
 Used to give [actionGeneric](/api/modules/server.md#actiongeneric) a type specific to your data model.
 
-##### Type parameters[​](#type-parameters-51 "Direct link to Type parameters")
+##### Type parameters[​](#type-parameters-52 "Direct link to Type parameters")
 
 | Name               | Type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -24247,9 +24577,9 @@ Used to give [actionGeneric](/api/modules/server.md#actiongeneric) a type specif
 
 [`RegisteredAction`](/api/modules/server.md#registeredaction)<`Visibility`, [`ArgsArrayToObject`](/api/modules/server.md#argsarraytoobject)<`OneOrZeroArgs`>, `ReturnValue`>
 
-#### Defined in[​](#defined-in-77 "Direct link to Defined in")
+#### Defined in[​](#defined-in-82 "Direct link to Defined in")
 
-[server/registration.ts:1137](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L1137)
+[server/registration.ts:1140](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L1140)
 
 ***
 
@@ -24257,7 +24587,7 @@ Used to give [actionGeneric](/api/modules/server.md#actiongeneric) a type specif
 
 Ƭ **HttpActionBuilder**: (`func`: (`ctx`: [`GenericActionCtx`](/api/interfaces/server.GenericActionCtx.md)<`any`>, `request`: `Request`) => `Promise`<`Response`>) => [`PublicHttpAction`](/api/modules/server.md#publichttpaction)
 
-#### Type declaration[​](#type-declaration-19 "Direct link to Type declaration")
+#### Type declaration[​](#type-declaration-20 "Direct link to Type declaration")
 
 ▸ (`func`): [`PublicHttpAction`](/api/modules/server.md#publichttpaction)
 
@@ -24275,9 +24605,9 @@ Used to give [httpActionGeneric](/api/modules/server.md#httpactiongeneric) a typ
 
 [`PublicHttpAction`](/api/modules/server.md#publichttpaction)
 
-#### Defined in[​](#defined-in-78 "Direct link to Defined in")
+#### Defined in[​](#defined-in-83 "Direct link to Defined in")
 
-[server/registration.ts:1232](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L1232)
+[server/registration.ts:1235](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L1235)
 
 ***
 
@@ -24289,7 +24619,7 @@ A type representing the methods supported by Convex HTTP actions.
 
 HEAD is handled by Convex by running GET and stripping the body. CONNECT is not supported and will not be supported. TRACE is not supported and will not be supported.
 
-#### Defined in[​](#defined-in-79 "Direct link to Defined in")
+#### Defined in[​](#defined-in-84 "Direct link to Defined in")
 
 [server/router.ts:31](https://github.com/convex/convex-js/blob/main/src/server/router.ts#L31)
 
@@ -24303,7 +24633,7 @@ A type representing a route to an HTTP action using an exact request URL path ma
 
 Used by [HttpRouter](/api/classes/server.HttpRouter.md) to route requests to HTTP actions.
 
-#### Type declaration[​](#type-declaration-20 "Direct link to Type declaration")
+#### Type declaration[​](#type-declaration-21 "Direct link to Type declaration")
 
 | Name      | Type                                                          | Description                                |
 | --------- | ------------------------------------------------------------- | ------------------------------------------ |
@@ -24311,7 +24641,7 @@ Used by [HttpRouter](/api/classes/server.HttpRouter.md) to route requests to HTT
 | `method`  | [`RoutableMethod`](/api/modules/server.md#routablemethod)     | HTTP method ("GET", "POST", ...) to route. |
 | `handler` | [`PublicHttpAction`](/api/modules/server.md#publichttpaction) | The HTTP action to execute.                |
 
-#### Defined in[​](#defined-in-80 "Direct link to Defined in")
+#### Defined in[​](#defined-in-85 "Direct link to Defined in")
 
 [server/router.ts:56](https://github.com/convex/convex-js/blob/main/src/server/router.ts#L56)
 
@@ -24325,7 +24655,7 @@ A type representing a route to an HTTP action using a request URL path prefix ma
 
 Used by [HttpRouter](/api/classes/server.HttpRouter.md) to route requests to HTTP actions.
 
-#### Type declaration[​](#type-declaration-21 "Direct link to Type declaration")
+#### Type declaration[​](#type-declaration-22 "Direct link to Type declaration")
 
 | Name         | Type                                                          | Description                                                                                                            |
 | ------------ | ------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
@@ -24333,7 +24663,7 @@ Used by [HttpRouter](/api/classes/server.HttpRouter.md) to route requests to HTT
 | `method`     | [`RoutableMethod`](/api/modules/server.md#routablemethod)     | HTTP method ("GET", "POST", ...) to route.                                                                             |
 | `handler`    | [`PublicHttpAction`](/api/modules/server.md#publichttpaction) | The HTTP action to execute.                                                                                            |
 
-#### Defined in[​](#defined-in-81 "Direct link to Defined in")
+#### Defined in[​](#defined-in-86 "Direct link to Defined in")
 
 [server/router.ts:78](https://github.com/convex/convex-js/blob/main/src/server/router.ts#L78)
 
@@ -24347,7 +24677,7 @@ A type representing a route to an HTTP action.
 
 Used by [HttpRouter](/api/classes/server.HttpRouter.md) to route requests to HTTP actions.
 
-#### Defined in[​](#defined-in-82 "Direct link to Defined in")
+#### Defined in[​](#defined-in-87 "Direct link to Defined in")
 
 [server/router.ts:101](https://github.com/convex/convex-js/blob/main/src/server/router.ts#L101)
 
@@ -24361,7 +24691,7 @@ A [FunctionReference](/api/modules/server.md#functionreference) that can be sche
 
 Schedulable functions are mutations and actions that are public or internal.
 
-#### Defined in[​](#defined-in-83 "Direct link to Defined in")
+#### Defined in[​](#defined-in-88 "Direct link to Defined in")
 
 [server/scheduler.ts:15](https://github.com/convex/convex-js/blob/main/src/server/scheduler.ts#L15)
 
@@ -24373,22 +24703,22 @@ Schedulable functions are mutations and actions that are public or internal.
 
 The validators for the system fields Convex adds to every document.
 
-#### Type parameters[​](#type-parameters-52 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-53 "Direct link to Type parameters")
 
 | Name        | Type             |
 | ----------- | ---------------- |
 | `TableName` | extends `string` |
 
-#### Type declaration[​](#type-declaration-22 "Direct link to Type declaration")
+#### Type declaration[​](#type-declaration-23 "Direct link to Type declaration")
 
 | Name            | Type                                                                                              |
 | --------------- | ------------------------------------------------------------------------------------------------- |
 | `_id`           | [`VId`](/api/classes/values.VId.md)<[`GenericId`](/api/modules/values.md#genericid)<`TableName`>> |
 | `_creationTime` | [`VFloat64`](/api/classes/values.VFloat64.md)<`number`>                                           |
 
-#### Defined in[​](#defined-in-84 "Direct link to Defined in")
+#### Defined in[​](#defined-in-89 "Direct link to Defined in")
 
-[server/schema.ts:747](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L747)
+[server/schema.ts:745](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L745)
 
 ***
 
@@ -24400,16 +24730,16 @@ The validator for whole documents of a table: the table's own validator with the
 
 For a table defined with a union, the system fields are added to each member of the union.
 
-#### Type parameters[​](#type-parameters-53 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-54 "Direct link to Type parameters")
 
 | Name           | Type                                                                         |
 | -------------- | ---------------------------------------------------------------------------- |
 | `TableName`    | extends `string`                                                             |
 | `DocumentType` | extends [`Validator`](/api/modules/values.md#validator)<`any`, `any`, `any`> |
 
-#### Defined in[​](#defined-in-85 "Direct link to Defined in")
+#### Defined in[​](#defined-in-90 "Direct link to Defined in")
 
-[server/schema.ts:776](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L776)
+[server/schema.ts:774](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L774)
 
 ***
 
@@ -24421,9 +24751,9 @@ A type describing the schema of a Convex project.
 
 This should be constructed using [defineSchema](/api/modules/server.md#defineschema), [defineTable](/api/modules/server.md#definetable), and [v](/api/modules/values.md#v).
 
-#### Defined in[​](#defined-in-86 "Direct link to Defined in")
+#### Defined in[​](#defined-in-91 "Direct link to Defined in")
 
-[server/schema.ts:864](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L864)
+[server/schema.ts:862](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L862)
 
 ***
 
@@ -24435,15 +24765,15 @@ Internal type used in Convex code generation!
 
 Convert a [SchemaDefinition](/api/classes/server.SchemaDefinition.md) into a [GenericDataModel](/api/modules/server.md#genericdatamodel).
 
-#### Type parameters[​](#type-parameters-54 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-55 "Direct link to Type parameters")
 
 | Name        | Type                                                                                    |
 | ----------- | --------------------------------------------------------------------------------------- |
 | `SchemaDef` | extends [`SchemaDefinition`](/api/classes/server.SchemaDefinition.md)<`any`, `boolean`> |
 
-#### Defined in[​](#defined-in-87 "Direct link to Defined in")
+#### Defined in[​](#defined-in-92 "Direct link to Defined in")
 
-[server/schema.ts:1101](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L1101)
+[server/schema.ts:1099](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L1099)
 
 ***
 
@@ -24451,9 +24781,9 @@ Convert a [SchemaDefinition](/api/classes/server.SchemaDefinition.md) into a [Ge
 
 Ƭ **SystemTableNames**: [`TableNamesInDataModel`](/api/modules/server.md#tablenamesindatamodel)<[`SystemDataModel`](/api/interfaces/server.SystemDataModel.md)>
 
-#### Defined in[​](#defined-in-88 "Direct link to Defined in")
+#### Defined in[​](#defined-in-93 "Direct link to Defined in")
 
-[server/schema.ts:1160](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L1160)
+[server/schema.ts:1158](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L1158)
 
 ***
 
@@ -24469,7 +24799,7 @@ The old ID format used by Convex file storage.
 
 ⚠️ Security warning: Anyone that has knows to this ID can download the underlying file from `https://<deployment>.convex.cloud/api/storage/<storageId>`. (Note that it’s safe to share the new ID format, `Id<"_storage">`, to anyone).
 
-#### Defined in[​](#defined-in-89 "Direct link to Defined in")
+#### Defined in[​](#defined-in-94 "Direct link to Defined in")
 
 [server/storage.ts:14](https://github.com/convex/convex-js/blob/main/src/server/storage.ts#L14)
 
@@ -24483,7 +24813,7 @@ The old ID format used by Convex file storage.
 
 This type is only necessary for backwards compatibility with Convex versions that pre-date `convex@1.6.0`. Use `Id<"_storage">` instead.
 
-#### Defined in[​](#defined-in-90 "Direct link to Defined in")
+#### Defined in[​](#defined-in-95 "Direct link to Defined in")
 
 [server/storage.ts:20](https://github.com/convex/convex-js/blob/main/src/server/storage.ts#L20)
 
@@ -24499,7 +24829,7 @@ This type is only returned by [storage.getUrl](/api/interfaces/server.StorageRea
 
 Metadata for a single file as returned by [storage.getMetadata](/api/interfaces/server.StorageReader.md#getmetadata).
 
-#### Type declaration[​](#type-declaration-23 "Direct link to Type declaration")
+#### Type declaration[​](#type-declaration-24 "Direct link to Type declaration")
 
 | Name          | Type                                            | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | ------------- | ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -24508,7 +24838,7 @@ Metadata for a single file as returned by [storage.getMetadata](/api/interfaces/
 | `size`        | `number`                                        | Size of the file in bytes                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | `contentType` | `string` \| `null`                              | ContentType of the file if it was provided on upload                                                                                                                                                                                                                                                                                                                                                                                                                       |
 
-#### Defined in[​](#defined-in-91 "Direct link to Defined in")
+#### Defined in[​](#defined-in-96 "Direct link to Defined in")
 
 [server/storage.ts:30](https://github.com/convex/convex-js/blob/main/src/server/storage.ts#L30)
 
@@ -24522,13 +24852,13 @@ The fields that Convex automatically adds to documents, not including `_id`.
 
 This is an object type mapping field name to field type.
 
-#### Type declaration[​](#type-declaration-24 "Direct link to Type declaration")
+#### Type declaration[​](#type-declaration-25 "Direct link to Type declaration")
 
 | Name            | Type     |
 | --------------- | -------- |
 | `_creationTime` | `number` |
 
-#### Defined in[​](#defined-in-92 "Direct link to Defined in")
+#### Defined in[​](#defined-in-97 "Direct link to Defined in")
 
 [server/system\_fields.ts:11](https://github.com/convex/convex-js/blob/main/src/server/system_fields.ts#L11)
 
@@ -24540,19 +24870,19 @@ This is an object type mapping field name to field type.
 
 The `_id` field that Convex automatically adds to documents.
 
-#### Type parameters[​](#type-parameters-55 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-56 "Direct link to Type parameters")
 
 | Name        | Type             |
 | ----------- | ---------------- |
 | `TableName` | extends `string` |
 
-#### Type declaration[​](#type-declaration-25 "Direct link to Type declaration")
+#### Type declaration[​](#type-declaration-26 "Direct link to Type declaration")
 
 | Name  | Type                                                         |
 | ----- | ------------------------------------------------------------ |
 | `_id` | [`GenericId`](/api/modules/values.md#genericid)<`TableName`> |
 
-#### Defined in[​](#defined-in-93 "Direct link to Defined in")
+#### Defined in[​](#defined-in-98 "Direct link to Defined in")
 
 [server/system\_fields.ts:19](https://github.com/convex/convex-js/blob/main/src/server/system_fields.ts#L19)
 
@@ -24564,13 +24894,13 @@ The `_id` field that Convex automatically adds to documents.
 
 A Convex document with the system fields like `_id` and `_creationTime` omitted.
 
-#### Type parameters[​](#type-parameters-56 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-57 "Direct link to Type parameters")
 
 | Name       | Type                                                                |
 | ---------- | ------------------------------------------------------------------- |
 | `Document` | extends [`GenericDocument`](/api/modules/server.md#genericdocument) |
 
-#### Defined in[​](#defined-in-94 "Direct link to Defined in")
+#### Defined in[​](#defined-in-99 "Direct link to Defined in")
 
 [server/system\_fields.ts:28](https://github.com/convex/convex-js/blob/main/src/server/system_fields.ts#L28)
 
@@ -24582,13 +24912,13 @@ A Convex document with the system fields like `_id` and `_creationTime` omitted.
 
 A Convex document with the system fields like `_id` and `_creationTime` optional.
 
-#### Type parameters[​](#type-parameters-57 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-58 "Direct link to Type parameters")
 
 | Name       | Type                                                                |
 | ---------- | ------------------------------------------------------------------- |
 | `Document` | extends [`GenericDocument`](/api/modules/server.md#genericdocument) |
 
-#### Defined in[​](#defined-in-95 "Direct link to Defined in")
+#### Defined in[​](#defined-in-100 "Direct link to Defined in")
 
 [server/system\_fields.ts:37](https://github.com/convex/convex-js/blob/main/src/server/system_fields.ts#L37)
 
@@ -24602,14 +24932,14 @@ The indexes that Convex automatically adds to every table.
 
 This is an object mapping index names to index field paths.
 
-#### Type declaration[​](#type-declaration-26 "Direct link to Type declaration")
+#### Type declaration[​](#type-declaration-27 "Direct link to Type declaration")
 
 | Name               | Type                 |
 | ------------------ | -------------------- |
 | `by_id`            | \[`"_id"`]           |
 | `by_creation_time` | \[`"_creationTime"`] |
 
-#### Defined in[​](#defined-in-96 "Direct link to Defined in")
+#### Defined in[​](#defined-in-101 "Direct link to Defined in")
 
 [server/system\_fields.ts:48](https://github.com/convex/convex-js/blob/main/src/server/system_fields.ts#L48)
 
@@ -24621,7 +24951,7 @@ This is an object mapping index names to index field paths.
 
 Convex automatically appends "\_creationTime" to the end of every index to break ties if all of the other fields are identical.
 
-#### Defined in[​](#defined-in-97 "Direct link to Defined in")
+#### Defined in[​](#defined-in-102 "Direct link to Defined in")
 
 [server/system\_fields.ts:61](https://github.com/convex/convex-js/blob/main/src/server/system_fields.ts#L61)
 
@@ -24631,7 +24961,7 @@ Convex automatically appends "\_creationTime" to the end of every index to break
 
 Ƭ **VectorSearch**<`DataModel`, `TableName`, `IndexName`>: (`tableName`: `TableName`, `indexName`: `IndexName`, `query`: [`VectorSearchQuery`](/api/interfaces/server.VectorSearchQuery.md)<[`NamedTableInfo`](/api/modules/server.md#namedtableinfo)<`DataModel`, `TableName`>, `IndexName`>) => `Promise`<{ `_id`: [`GenericId`](/api/modules/values.md#genericid)<`TableName`> ; `_score`: `number` }\[]>
 
-#### Type parameters[​](#type-parameters-58 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-59 "Direct link to Type parameters")
 
 | Name        | Type                                                                                                                                                       |
 | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -24639,7 +24969,7 @@ Convex automatically appends "\_creationTime" to the end of every index to break
 | `TableName` | extends [`TableNamesInDataModel`](/api/modules/server.md#tablenamesindatamodel)<`DataModel`>                                                               |
 | `IndexName` | extends [`VectorIndexNames`](/api/modules/server.md#vectorindexnames)<[`NamedTableInfo`](/api/modules/server.md#namedtableinfo)<`DataModel`, `TableName`>> |
 
-#### Type declaration[​](#type-declaration-27 "Direct link to Type declaration")
+#### Type declaration[​](#type-declaration-28 "Direct link to Type declaration")
 
 ▸ (`tableName`, `indexName`, `query`): `Promise`<{ `_id`: [`GenericId`](/api/modules/values.md#genericid)<`TableName`> ; `_score`: `number` }\[]>
 
@@ -24655,7 +24985,7 @@ Convex automatically appends "\_creationTime" to the end of every index to break
 
 `Promise`<{ `_id`: [`GenericId`](/api/modules/values.md#genericid)<`TableName`> ; `_score`: `number` }\[]>
 
-#### Defined in[​](#defined-in-98 "Direct link to Defined in")
+#### Defined in[​](#defined-in-103 "Direct link to Defined in")
 
 [server/vector\_search.ts:55](https://github.com/convex/convex-js/blob/main/src/server/vector_search.ts#L55)
 
@@ -24669,13 +24999,13 @@ Hack! This type causes TypeScript to simplify how it renders object types.
 
 It is functionally the identity for object types, but in practice it can simplify expressions like `A & B`.
 
-#### Type parameters[​](#type-parameters-59 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-60 "Direct link to Type parameters")
 
 | Name         | Type                           |
 | ------------ | ------------------------------ |
 | `ObjectType` | extends `Record`<`any`, `any`> |
 
-#### Defined in[​](#defined-in-99 "Direct link to Defined in")
+#### Defined in[​](#defined-in-104 "Direct link to Defined in")
 
 [type\_utils.ts:12](https://github.com/convex/convex-js/blob/main/src/type_utils.ts#L12)
 
@@ -24690,14 +25020,14 @@ An `Omit<>` type that:
 1. Applies to each element of a union.
 2. Preserves the index signature of the underlying type.
 
-#### Type parameters[​](#type-parameters-60 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-61 "Direct link to Type parameters")
 
 | Name | Type              |
 | ---- | ----------------- |
 | `T`  | `T`               |
 | `K`  | extends keyof `T` |
 
-#### Defined in[​](#defined-in-100 "Direct link to Defined in")
+#### Defined in[​](#defined-in-105 "Direct link to Defined in")
 
 [type\_utils.ts:24](https://github.com/convex/convex-js/blob/main/src/type_utils.ts#L24)
 
@@ -24719,7 +25049,7 @@ This supports accessing any path regardless of what directories and modules are 
 
 If you're using code generation, use `api` from `convex/_generated/api` instead. It will be more type-safe and produce better auto-complete in your editor.
 
-#### Defined in[​](#defined-in-101 "Direct link to Defined in")
+#### Defined in[​](#defined-in-106 "Direct link to Defined in")
 
 [server/api.ts:606](https://github.com/convex/convex-js/blob/main/src/server/api.ts#L606)
 
@@ -24729,7 +25059,7 @@ If you're using code generation, use `api` from `convex/_generated/api` instead.
 
 • `Const` **log**: `Log`
 
-#### Defined in[​](#defined-in-102 "Direct link to Defined in")
+#### Defined in[​](#defined-in-107 "Direct link to Defined in")
 
 [server/log.ts:31](https://github.com/convex/convex-js/blob/main/src/server/log.ts#L31)
 
@@ -24799,7 +25129,7 @@ const { results, status, loadMore } = usePaginatedQuery(
 
 <https://docs.convex.dev/database/pagination>
 
-#### Defined in[​](#defined-in-103 "Direct link to Defined in")
+#### Defined in[​](#defined-in-108 "Direct link to Defined in")
 
 [server/pagination.ts:163](https://github.com/convex/convex-js/blob/main/src/server/pagination.ts#L163)
 
@@ -24813,7 +25143,7 @@ A list of the methods supported by Convex HTTP actions.
 
 HEAD is handled by Convex by running GET and stripping the body. CONNECT is not supported and will not be supported. TRACE is not supported and will not be supported.
 
-#### Defined in[​](#defined-in-104 "Direct link to Defined in")
+#### Defined in[​](#defined-in-109 "Direct link to Defined in")
 
 [server/router.ts:14](https://github.com/convex/convex-js/blob/main/src/server/router.ts#L14)
 
@@ -24839,7 +25169,7 @@ The name is a string like "myDir/myModule<!-- -->:myFunction<!-- -->". If the ex
 
 A string of the function's name.
 
-#### Defined in[​](#defined-in-105 "Direct link to Defined in")
+#### Defined in[​](#defined-in-110 "Direct link to Defined in")
 
 [server/api.ts:251](https://github.com/convex/convex-js/blob/main/src/server/api.ts#L251)
 
@@ -24853,7 +25183,7 @@ FunctionReferences generally come from generated code, but in custom clients it 
 
 Real function references are empty objects at runtime, but the same interface can be implemented with an object for tests and clients which don't use code generation.
 
-#### Type parameters[​](#type-parameters-61 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-62 "Direct link to Type parameters")
 
 | Name   | Type                                                                                |
 | ------ | ----------------------------------------------------------------------------------- |
@@ -24871,7 +25201,7 @@ Real function references are empty objects at runtime, but the same interface ca
 
 [`FunctionReference`](/api/modules/server.md#functionreference)<`type`, `"public"`, `args`, `ret`>
 
-#### Defined in[​](#defined-in-106 "Direct link to Defined in")
+#### Defined in[​](#defined-in-111 "Direct link to Defined in")
 
 [server/api.ts:297](https://github.com/convex/convex-js/blob/main/src/server/api.ts#L297)
 
@@ -24887,7 +25217,7 @@ Given an api of type API and a FunctionReference subtype, return an api object c
 const q = filterApi<typeof api, FunctionReference<"query">>(api)
 ```
 
-#### Type parameters[​](#type-parameters-62 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-63 "Direct link to Type parameters")
 
 | Name        |
 | ----------- |
@@ -24904,7 +25234,7 @@ const q = filterApi<typeof api, FunctionReference<"query">>(api)
 
 [`FilterApi`](/api/modules/server.md#filterapi)<`API`, `Predicate`>
 
-#### Defined in[​](#defined-in-107 "Direct link to Defined in")
+#### Defined in[​](#defined-in-112 "Direct link to Defined in")
 
 [server/api.ts:480](https://github.com/convex/convex-js/blob/main/src/server/api.ts#L480)
 
@@ -24920,7 +25250,7 @@ A function reference is stable across code pushes but it's possible the Convex f
 
 This is a feature of components, which are in beta. This API is unstable and may change in subsequent releases.
 
-#### Type parameters[​](#type-parameters-63 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-64 "Direct link to Type parameters")
 
 | Name         | Type                                                                        |
 | ------------ | --------------------------------------------------------------------------- |
@@ -24938,9 +25268,9 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 `Promise`<[`FunctionHandle`](/api/modules/server.md#functionhandle)<`Type`, `Args`, `ReturnType`>>
 
-#### Defined in[​](#defined-in-108 "Direct link to Defined in")
+#### Defined in[​](#defined-in-113 "Direct link to Defined in")
 
-[server/components/index.ts:65](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L65)
+[server/components/index.ts:76](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L76)
 
 ***
 
@@ -24952,7 +25282,7 @@ Define a component, a piece of a Convex deployment with namespaced resources.
 
 Optionally define typed environment variables that will be available via the `env` export from `_generated/server` in all Convex functions within this component. Values are passed by the parent via `app.use(component, { env: { ... } })`.
 
-#### Type parameters[​](#type-parameters-64 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-65 "Direct link to Type parameters")
 
 | Name      | Type                                                              |
 | --------- | ----------------------------------------------------------------- |
@@ -24971,9 +25301,9 @@ Optionally define typed environment variables that will be available via the `en
 
 [`ComponentDefinition`](/api/modules/server.md#componentdefinition)<`Exports`, `Env`>
 
-#### Defined in[​](#defined-in-109 "Direct link to Defined in")
+#### Defined in[​](#defined-in-114 "Direct link to Defined in")
 
-[server/components/index.ts:674](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L674)
+[server/components/index.ts:685](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L685)
 
 ***
 
@@ -25011,7 +25341,7 @@ export default app;
 
 This is a feature of components, which are in beta. This API is unstable and may change in subsequent releases.
 
-#### Type parameters[​](#type-parameters-65 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-66 "Direct link to Type parameters")
 
 | Name  | Type                                                                                                                      |
 | ----- | ------------------------------------------------------------------------------------------------------------------------- |
@@ -25029,9 +25359,9 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 [`AppDefinition`](/api/modules/server.md#appdefinition)<`Env`>
 
-#### Defined in[​](#defined-in-110 "Direct link to Defined in")
+#### Defined in[​](#defined-in-115 "Direct link to Defined in")
 
-[server/components/index.ts:737](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L737)
+[server/components/index.ts:748](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L748)
 
 ***
 
@@ -25043,9 +25373,9 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 [`AnyChildComponents`](/api/modules/server.md#anychildcomponents)
 
-#### Defined in[​](#defined-in-111 "Direct link to Defined in")
+#### Defined in[​](#defined-in-116 "Direct link to Defined in")
 
-[server/components/index.ts:815](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L815)
+[server/components/index.ts:826](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L826)
 
 ***
 
@@ -25063,7 +25393,7 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 { `functionHandle`: `string` = functionReference; `name?`: `undefined` ; `reference?`: `undefined` = referencePath } | { `functionHandle?`: `undefined` = functionReference; `name`: `any` ; `reference?`: `undefined` = referencePath } | { `functionHandle?`: `undefined` = functionReference; `name?`: `undefined` ; `reference`: `string` = referencePath }
 
-#### Defined in[​](#defined-in-112 "Direct link to Defined in")
+#### Defined in[​](#defined-in-117 "Direct link to Defined in")
 
 [server/components/paths.ts:20](https://github.com/convex/convex-js/blob/main/src/server/components/paths.ts#L20)
 
@@ -25109,7 +25439,7 @@ export default crons;
 
 [`Crons`](/api/classes/server.Crons.md)
 
-#### Defined in[​](#defined-in-113 "Direct link to Defined in")
+#### Defined in[​](#defined-in-118 "Direct link to Defined in")
 
 [server/cron.ts:198](https://github.com/convex/convex-js/blob/main/src/server/cron.ts#L198)
 
@@ -25135,7 +25465,7 @@ This function can only be called while an action is running. The credential is s
 
 A JWT to send as `Authorization: Bearer <token>`. Keep it inside the action: don't return it to clients or store it in environment variables.
 
-#### Defined in[​](#defined-in-114 "Direct link to Defined in")
+#### Defined in[​](#defined-in-119 "Direct link to Defined in")
 
 [server/impl/actions\_impl.ts:86](https://github.com/convex/convex-js/blob/main/src/server/impl/actions_impl.ts#L86)
 
@@ -25161,7 +25491,7 @@ This function can only be called while an action is running. Pair it with [getSe
 
 The service's origin, without a trailing slash.
 
-#### Defined in[​](#defined-in-115 "Direct link to Defined in")
+#### Defined in[​](#defined-in-120 "Direct link to Defined in")
 
 [server/impl/actions\_impl.ts:103](https://github.com/convex/convex-js/blob/main/src/server/impl/actions_impl.ts#L103)
 
@@ -25219,7 +25549,7 @@ export const createTask = mutation({
 
 <https://docs.convex.dev/functions/mutation-functions>
 
-#### Type parameters[​](#type-parameters-66 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-67 "Direct link to Type parameters")
 
 | Name               | Type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -25240,9 +25570,9 @@ export const createTask = mutation({
 
 The wrapped mutation. Include this as an `export` to name it and make it accessible.
 
-#### Defined in[​](#defined-in-116 "Direct link to Defined in")
+#### Defined in[​](#defined-in-121 "Direct link to Defined in")
 
-[server/registration.ts:777](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L777)
+[server/registration.ts:780](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L780)
 
 ***
 
@@ -25290,7 +25620,7 @@ export const markTaskCompleted = internalMutation({
 
 <https://docs.convex.dev/functions/internal-functions>
 
-#### Type parameters[​](#type-parameters-67 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-68 "Direct link to Type parameters")
 
 | Name               | Type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -25311,9 +25641,9 @@ export const markTaskCompleted = internalMutation({
 
 The wrapped mutation. Include this as an `export` to name it and make it accessible.
 
-#### Defined in[​](#defined-in-117 "Direct link to Defined in")
+#### Defined in[​](#defined-in-122 "Direct link to Defined in")
 
-[server/registration.ts:777](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L777)
+[server/registration.ts:780](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L780)
 
 ***
 
@@ -25381,7 +25711,7 @@ export const listTasks = query({
 
 <https://docs.convex.dev/functions/query-functions>
 
-#### Type parameters[​](#type-parameters-68 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-69 "Direct link to Type parameters")
 
 | Name               | Type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -25402,9 +25732,9 @@ export const listTasks = query({
 
 The wrapped query. Include this as an `export` to name it and make it accessible.
 
-#### Defined in[​](#defined-in-118 "Direct link to Defined in")
+#### Defined in[​](#defined-in-123 "Direct link to Defined in")
 
-[server/registration.ts:963](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L963)
+[server/registration.ts:966](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L966)
 
 ***
 
@@ -25466,7 +25796,7 @@ export const getUser = internalQuery({
 
 <https://docs.convex.dev/functions/internal-functions>
 
-#### Type parameters[​](#type-parameters-69 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-70 "Direct link to Type parameters")
 
 | Name               | Type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -25487,9 +25817,9 @@ export const getUser = internalQuery({
 
 The wrapped query. Include this as an `export` to name it and make it accessible.
 
-#### Defined in[​](#defined-in-119 "Direct link to Defined in")
+#### Defined in[​](#defined-in-124 "Direct link to Defined in")
 
-[server/registration.ts:963](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L963)
+[server/registration.ts:966](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L966)
 
 ***
 
@@ -25569,7 +25899,7 @@ export const generateSummary = action({
 
 <https://docs.convex.dev/functions/actions>
 
-#### Type parameters[​](#type-parameters-70 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-71 "Direct link to Type parameters")
 
 | Name               | Type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -25590,9 +25920,9 @@ export const generateSummary = action({
 
 The wrapped function. Include this as an `export` to name it and make it accessible.
 
-#### Defined in[​](#defined-in-120 "Direct link to Defined in")
+#### Defined in[​](#defined-in-125 "Direct link to Defined in")
 
-[server/registration.ts:1141](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L1141)
+[server/registration.ts:1144](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L1144)
 
 ***
 
@@ -25650,7 +25980,7 @@ export const sendEmail = internalAction({
 
 <https://docs.convex.dev/functions/internal-functions>
 
-#### Type parameters[​](#type-parameters-71 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-72 "Direct link to Type parameters")
 
 | Name               | Type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -25671,9 +26001,9 @@ export const sendEmail = internalAction({
 
 The wrapped function. Include this as an `export` to name it and make it accessible.
 
-#### Defined in[​](#defined-in-121 "Direct link to Defined in")
+#### Defined in[​](#defined-in-126 "Direct link to Defined in")
 
-[server/registration.ts:1141](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L1141)
+[server/registration.ts:1144](https://github.com/convex/convex-js/blob/main/src/server/registration.ts#L1144)
 
 ***
 
@@ -25747,7 +26077,7 @@ export default http;
 
 The wrapped function. Route a URL path to this function in `convex/http.ts`.
 
-#### Defined in[​](#defined-in-122 "Direct link to Defined in")
+#### Defined in[​](#defined-in-127 "Direct link to Defined in")
 
 [server/impl/registration\_impl.ts:741](https://github.com/convex/convex-js/blob/main/src/server/impl/registration_impl.ts#L741)
 
@@ -25775,7 +26105,7 @@ const paginationResultValidator = paginationResultValidator(v.object({
 }));
 ```
 
-#### Type parameters[​](#type-parameters-72 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-73 "Direct link to Type parameters")
 
 | Name | Type                                                                                                                     |
 | ---- | ------------------------------------------------------------------------------------------------------------------------ |
@@ -25793,7 +26123,7 @@ const paginationResultValidator = paginationResultValidator(v.object({
 
 A validator for the pagination result
 
-#### Defined in[​](#defined-in-123 "Direct link to Defined in")
+#### Defined in[​](#defined-in-128 "Direct link to Defined in")
 
 [server/pagination.ts:192](https://github.com/convex/convex-js/blob/main/src/server/pagination.ts#L192)
 
@@ -25809,7 +26139,7 @@ Return a new [HttpRouter](/api/classes/server.HttpRouter.md) object.
 
 [`HttpRouter`](/api/classes/server.HttpRouter.md)
 
-#### Defined in[​](#defined-in-124 "Direct link to Defined in")
+#### Defined in[​](#defined-in-129 "Direct link to Defined in")
 
 [server/router.ts:47](https://github.com/convex/convex-js/blob/main/src/server/router.ts#L47)
 
@@ -25847,7 +26177,7 @@ defineTable(
 );
 ```
 
-#### Type parameters[​](#type-parameters-73 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-74 "Direct link to Type parameters")
 
 | Name             | Type                                                                                                    |
 | ---------------- | ------------------------------------------------------------------------------------------------------- |
@@ -25865,9 +26195,9 @@ defineTable(
 
 A [TableDefinition](/api/classes/server.TableDefinition.md) for the table.
 
-#### Defined in[​](#defined-in-125 "Direct link to Defined in")
+#### Defined in[​](#defined-in-130 "Direct link to Defined in")
 
-[server/schema.ts:697](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L697)
+[server/schema.ts:695](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L695)
 
 ▸ **defineTable**<`DocumentSchema`>(`documentSchema`): [`TableDefinition`](/api/classes/server.TableDefinition.md)<[`VObject`](/api/classes/values.VObject.md)<[`ObjectType`](/api/modules/values.md#objecttype)<`DocumentSchema`>, `DocumentSchema`>>
 
@@ -25899,7 +26229,7 @@ defineTable(
 );
 ```
 
-#### Type parameters[​](#type-parameters-74 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-75 "Direct link to Type parameters")
 
 | Name             | Type                                                                                      |
 | ---------------- | ----------------------------------------------------------------------------------------- |
@@ -25917,9 +26247,9 @@ defineTable(
 
 A [TableDefinition](/api/classes/server.TableDefinition.md) for the table.
 
-#### Defined in[​](#defined-in-126 "Direct link to Defined in")
+#### Defined in[​](#defined-in-131 "Direct link to Defined in")
 
-[server/schema.ts:725](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L725)
+[server/schema.ts:723](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L723)
 
 ***
 
@@ -25949,7 +26279,7 @@ export const get = query({
 });
 ```
 
-#### Type parameters[​](#type-parameters-75 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-76 "Direct link to Type parameters")
 
 | Name        | Type                                                                                                     |
 | ----------- | -------------------------------------------------------------------------------------------------------- |
@@ -25969,9 +26299,9 @@ export const get = query({
 
 A validator matching documents of the table.
 
-#### Defined in[​](#defined-in-127 "Direct link to Defined in")
+#### Defined in[​](#defined-in-132 "Direct link to Defined in")
 
-[server/schema.ts:844](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L844)
+[server/schema.ts:842](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L842)
 
 ***
 
@@ -26056,7 +26386,7 @@ export default defineSchema({
 
 <https://docs.convex.dev/database/schemas>
 
-#### Type parameters[​](#type-parameters-76 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-77 "Direct link to Type parameters")
 
 | Name                   | Type                                                            |
 | ---------------------- | --------------------------------------------------------------- |
@@ -26076,9 +26406,9 @@ export default defineSchema({
 
 The schema.
 
-#### Defined in[​](#defined-in-128 "Direct link to Defined in")
+#### Defined in[​](#defined-in-133 "Direct link to Defined in")
 
-[server/schema.ts:1084](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L1084)
+[server/schema.ts:1082](https://github.com/convex/convex-js/blob/main/src/server/schema.ts#L1082)
 
 
 ---
@@ -32156,7 +32486,7 @@ Alternatively, you can self-host a production deployment using the [open source 
 
 * **No Public URL** - Cloud deployments have public URL to receive incoming HTTP requests from services like Twilio, but local deployments listen for HTTP requests on your own computer. Similarly, you can't power websites with Convex WebSocket connections unless your users browsers know how to reach your computer. Set up a proxy like ngrok or use a cloud deployment for these uses cases.
 
-* **Node actions require specific Node.js versions** - Running Node.js actions (actions defined in files with `"use node;"`) requires having the same version of Node.js as your project is [configured for](/config/convex.json.md#configuring-the-nodejs-version). By default this is Node.js 20 today, though this may change in the future. To resolve this you can install and set up [nvm](https://github.com/nvm-sh/nvm) and then install the required Node.js version. You don't need to use this version for the rest of your project.
+* **Node actions use your installed Node.js version** - Local deployments run Node.js actions (actions defined in files with `"use node;"`) with the `node` on your `PATH` instead of the version your project is [configured for](/config/convex.json.md#configuring-the-nodejs-version), so they may behave differently than in a cloud deployment. This must be one of the [supported Node.js versions](/config/convex.json.md#configuring-the-nodejs-version). If your default Node.js version isn't supported, you can install and set up [nvm](https://github.com/nvm-sh/nvm) to switch to a supported version.
 
 * **Node.js actions run directly on your computer** - Like a normal Node.js server, code running in Node.js actions has unrestricted filesystem access. Queries, mutations, and Convex runtime actions still run in isolated environments.
 
@@ -33513,6 +33843,8 @@ npx convex env remove [options] <name>
 * Save all variables to a file: `npx convex env list --include-values > .env.convex`
 * Append to a file: `npx convex env list --include-values >> .env.convex`
 
+When an AI agent runs this command (detected from environment variables like AI\_AGENT or CLAUDECODE), only names are listed unless --include-values is passed.
+
 ### Syntax[​](#syntax-4 "Direct link to Syntax")
 
 ```
@@ -33527,7 +33859,7 @@ npx convex env list [options]
 
 * `--include-values`
 
-  Print each variable's value alongside its name, in .env format (the default). Pass it explicitly in scripts that rely on the values.
+  Print each variable's value alongside its name, in .env format. This is the default unless an AI agent is detected, so pass it explicitly in scripts that rely on the values.
 
 ## `npx convex env default`[​](#default "Direct link to default")
 
@@ -33662,6 +33994,8 @@ npx convex env default remove [options] <name>
 * List only default variable names (no values): `npx convex env default list --names-only`
 * List all default variables and their values: `npx convex env default list --include-values`
 
+When an AI agent runs this command (detected from environment variables like AI\_AGENT or CLAUDECODE), only names are listed unless --include-values is passed.
+
 The deployment type is determined by the current deployment (local maps to dev), or by --type if provided.
 
 #### Syntax[​](#syntax-9 "Direct link to Syntax")
@@ -33678,7 +34012,7 @@ npx convex env default list [options]
 
 * `--include-values`
 
-  Print each variable's value alongside its name, in .env format (the default). Pass it explicitly in scripts that rely on the values.
+  Print each variable's value alongside its name, in .env format. This is the default unless an AI agent is detected, so pass it explicitly in scripts that rely on the values.
 
 * `--type <type>`
 
@@ -40025,9 +40359,9 @@ await ctx.scheduler.runAfter(0, handle, args);
 
 ### Pagination[​](#pagination "Direct link to Pagination")
 
-The built-in `.paginate()` doesn't work in components, because of how Convex keeps track of reactive pagination. Therefore we recommend you use `paginator` from [`convex-helpers`](https://npmjs.com/package/convex-helpers) if you need pagination within your component.
+The built-in `.paginate()` works in components and supports reactive pagination with `usePaginatedQuery` from `convex/react`. Note: a query can only make one paginated call across all app and component `runQuery` calls. The second call will throw an exception.
 
-If you expose a pagination API that wants to be used with `usePaginatedQuery`, in a React context, use the `usePaginatedQuery` from `convex-helpers` instead of the default one from `convex/react`. It will have a fixed first page size until you hit “load more,” at which point the first page will grow if anything before the second page is added.
+If you need multiple paginated database queries within one query, use `stream` from [`convex-helpers`](https://npmjs.com/package/convex-helpers). If you expose a `stream`-based API that wants to be used with `usePaginatedQuery`, in a React context, use the `usePaginatedQuery` from `convex-helpers` instead of the default one from `convex/react`. It will have a fixed first page size until you hit “load more,” at which point the first page will grow if anything before the second page is added.
 
 [Here](https://github.com/convex/rag/blob/23fb22d593682e23d9134304e823f7532cbc7e67/src/component/chunks.ts#L437-L462) is an example of pagination in the [RAG](https://www.convex.dev/components/rag) component.
 
@@ -41214,7 +41548,7 @@ The Convex code generation can be configured to generate a CommonJS-version of t
 
 ## Configuring the Node.js version[​](#configuring-the-nodejs-version "Direct link to Configuring the Node.js version")
 
-You can specify which Node.js version is used by Node actions via the `node.nodeVersion` field. The currently supported values are `"20"`, `"22"`, and `"24"`. [Read more](/functions/runtimes.md#nodejs-version-configuration).
+You can specify which Node.js version is used by Node actions via the `node.nodeVersion` field. The currently supported values are `"22"` and `"24"`. [Read more](/functions/runtimes.md#nodejs-version-configuration).
 
 Convex version requirement
 
@@ -43039,6 +43373,12 @@ npx convex import <path>.zip
 Import from a [Backup](/database/backup-restore.md) into a Convex deployment, where the backup is a ZIP file that has been downloaded on the dashboard. Documents will retain their `_id` and `_creationTime` fields so references between tables are maintained.
 
 Imports where tables have existing data will fail by default, but you can specify `--replace` to replace existing data in tables mentioned in the ZIP file.
+
+## Limits[​](#limits "Direct link to Limits")
+
+CSV and JSONLines imports have a 16 MiB line limit, including line endings and CSV headers. Quoted multiline CSV values count as a single logical line. For ZIP imports, the limit applies to decompressed lines in `documents.jsonl` and `generated_schema.jsonl` files.
+
+Imported documents must also meet the [1 MiB document size limit](/database/types.md#limits).
 
 ## Use cases[​](#use-cases "Direct link to Use cases")
 
@@ -48089,12 +48429,7 @@ The nature of bundling comes with a few limitations.
 
 ### Code size limits[​](#code-size-limits "Direct link to Code size limits")
 
-The total size of your source code and [external packages](/functions/bundling.md#external-packages) cannot exceed the following:
-
-* 90MB (after compression)
-* 230MB (before compression)
-
-Your code bundle is automatically compressed as part of the code push process.
+The total size of your source code and [external packages](/functions/bundling.md#external-packages) cannot exceed 230MB.
 
 Other platform limits can be found [here](/production/state/limits.md).
 
@@ -50076,7 +50411,7 @@ Note that argument size limits are lower (5MiB instead of 16MiB).
 
 ### Node.js version configuration[​](#nodejs-version-configuration "Direct link to Node.js version configuration")
 
-By default, all actions ran in the Node.js environment are executed in Node.js 20. This version is configurable in the [convex.json](/config/convex.json.md#configuring-the-nodejs-version) file. We currently support Node.js 20, 22, and 24.
+By default, all actions ran in the Node.js environment are executed in Node.js 24. This version is configurable in the [convex.json](/config/convex.json.md#configuring-the-nodejs-version) file. We currently support Node.js 22 and 24.
 
 When pushing a new Node.js version to the server, the new code for your functions may be executed in the old Node.js version for up a few minutes.
 
@@ -54609,7 +54944,7 @@ Any queries or mutations called in an action (using `ctx.runMutation` or `ctx.ru
 
 ## Billing[​](#billing "Direct link to Billing")
 
-Audit logs are rounded up to the nearest 5KB when calculating bandwidth for billing. See more information about billing on our [pricing page](https://www.convex.dev/enterprise/pricing).
+The size of each audit log line is rounded up to the nearest 5KB when calculating bandwidth for billing. See more information about billing on our [pricing page](https://www.convex.dev/enterprise/pricing).
 
 ## Development[​](#development "Direct link to Development")
 
@@ -56248,7 +56583,7 @@ Applied to every [Convex value](/database/types.md), including values in documen
 | Function calls                                                   | Free: 1,000,000/month total<br />Starter: 1,000,000/month included;<br />$2.20 per additional 1,000,000 | 25,000,000/month included;<br />$2 per additional 1,000,000 | Serverless: $2 per 1,000,000<br />Dedicated: $0.20 per 1,000,000           | Serverless: $2 per 1,000,000<br />Dedicated: $0.20 per 1,000,000           | Explicit client calls, scheduled executions, subscription updates, and file accesses count as function calls. |
 | Query / mutation compute                                         | Free                                                                                                    | Free                                                        | Serverless: Free<br />Dedicated: $0.45/GB-hour                             | Serverless: Free<br />Dedicated: $0.45/GB-hour                             | Query and mutation compute is only billed on dedicated deployments.                                           |
 | Action compute                                                   | Free: 20 GB-hours/month total<br />Starter: 20 GB-hours/month included;<br />$0.33/GB-hour additional   | 250 GB-hours included;<br />$0.30/GB-hour additional        | Convex runtime: $0.16/GB-hour CPU time<br />Node.js runtime: $0.32/GB-hour | Convex runtime: $0.16/GB-hour CPU time<br />Node.js runtime: $0.32/GB-hour | Convex runtime: 64 MiB RAM.<br />Node.js runtime: 512 MiB RAM.                                                |
-| Code size                                                        | 90 MB compressed<br />230 MB uncompressed                                                               | 90 MB compressed<br />230 MB uncompressed                   | 90 MB compressed<br />230 MB uncompressed                                  | 90 MB compressed<br />230 MB uncompressed                                  | Per deployment. See [bundling limits](/functions/bundling.md#code-size-limits).                               |
+| Code size                                                        | 230 MB                                                                                                  | 230 MB                                                      | 230 MB                                                                     | 230 MB                                                                     | Per deployment. See [bundling limits](/functions/bundling.md#code-size-limits).                               |
 | Function argument size                                           | 16 MiB                                                                                                  | 16 MiB                                                      | 16 MiB                                                                     | 16 MiB                                                                     | Node actions only support arguments up to 5MiB.                                                               |
 | Function return value size                                       | 16 MiB                                                                                                  | 16 MiB                                                      | 16 MiB                                                                     | 16 MiB                                                                     |                                                                                                               |
 | HTTP action response size                                        | 100 MiB                                                                                                 | 100 MiB                                                     | 100 MiB                                                                    | 100 MiB                                                                    | There is no specific limit on request size                                                                    |

@@ -1,5 +1,5 @@
 ---
-title: "Schedules"
+title: "Upstash Box Schedules"
 source: https://upstash.com/docs/box/overall/schedules
 path: docs/box/overall/schedules
 ---

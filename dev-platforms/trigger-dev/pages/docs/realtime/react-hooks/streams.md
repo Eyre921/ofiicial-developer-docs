@@ -8,16 +8,16 @@ Display AI/LLM output token by token, stream file chunks, or pipe any continuous
 
 **Display AI responses as they generate, stream file processing results, or pipe any continuous data from a running task into your React components.** Unlike [progress and status hooks](/docs/realtime/react-hooks/subscribe) (which track run state), streaming hooks give you the raw data your task produces while it runs.
 
-<Note>
-  To learn how to emit streams from your tasks, see [Streaming data from tasks](/docs/tasks/streams).
-</Note>
+> [!NOTE]
+>
+> To learn how to emit streams from your tasks, see [Streaming data from tasks](/docs/tasks/streams).
 
 ## useRealtimeStream (Recommended)
 
-<Note>
-  Available in SDK version **4.1.0 or later**. This is the recommended way to consume streams in
-  your React components.
-</Note>
+> [!NOTE]
+>
+> Available in SDK version **4.1.0 or later**. This is the recommended way to consume streams in
+> your React components.
 
 The `useRealtimeStream` hook allows you to subscribe to a specific stream by its run ID and stream key. This hook is designed to work seamlessly with [defined streams](/docs/tasks/streams#defining-typed-streams-recommended) for full type safety.
 
@@ -170,10 +170,10 @@ export function LatestFrame({ runId, accessToken }: { runId: string; accessToken
 }
 ```
 
-<Note>
-  `from: "latest"` requires a server that supports it. Against an older server a client that passes
-  it degrades safely to a full replay.
-</Note>
+> [!NOTE]
+>
+> `from: "latest"` requires a server that supports it. Against an older server a client that passes
+> it degrades safely to a full replay.
 
 ### Resume across a page reload
 
@@ -287,11 +287,11 @@ For receiving input stream data inside a task (`.wait()`, `.once()`, `.on()`), s
 
 ## useRealtimeRunWithStreams
 
-<Note>
-  For new projects, we recommend using `useRealtimeStream` instead (available in SDK 4.1.0+). This
-  hook is still supported for backward compatibility and use cases where you need to subscribe to
-  both the run and all its streams at once.
-</Note>
+> [!NOTE]
+>
+> For new projects, we recommend using `useRealtimeStream` instead (available in SDK 4.1.0+). This
+> hook is still supported for backward compatibility and use cases where you need to subscribe to
+> both the run and all its streams at once.
 
 The `useRealtimeRunWithStreams` hook allows you to subscribe to a run by its ID and also receive any streams that are emitted by the task. This is useful when you need to access both the run metadata and multiple streams simultaneously.
 

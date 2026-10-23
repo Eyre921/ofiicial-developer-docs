@@ -112,6 +112,8 @@ Keep an eye on this changelog for when the update becomes available in the Publi
 
 ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/c599280-unique_id.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=92437cad7aa45d267c0f0a3d82874be2)
 
+The unique ID in a Notion page's properties
+
 * Workspace Owners can now see *all* internal integrations created in a workspace via the [integration dashboard](https://app.notion.com/developers/connections). This includes integrations created by themselves and other Workspace Owners. We’ve included this information in our [Getting Started](/guides/get-started/overview#connection-types) guide.
 * A [Notion SDK for JavaScript](https://github.com/makenotion/notion-sdk-js) code sample was added to the [Create a database](/reference/create-a-database) endpoint documentation.
 
@@ -242,6 +244,8 @@ We don’t have any updates to share right now. Stay tuned for the next changelo
 * Added a token `Refresh` button to the settings page for internal integrations. Click `Refresh` to generate a new token for your internal integration.
 
 ![](https://mintcdn.com/notion-demo/SXcROsTox2NhPn9o/images/docs/b1d6c0c-2023-01-13_10.58.16.gif?s=2a2a1e3671c7b1fec00590b7aba51afd)
+
+You can now refresh an internal integration token from the integration settings page.
 
 **January 3 - 17, 2023**
 
@@ -3536,7 +3540,11 @@ Other OAuth behavior has not changed: only admins can go through OAuth, and only
 
 ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/15c452e-oauth_improvements.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=3279ba235d3640e80fe9a0bac2b9b8ff)
 
+The search bar now lets you search for and select nested pages to share with an integration.
+
 ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/63ac8e6-oauth2.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=73927dbfab4f1b327dd80d5235c4b34f)
+
+Once selected, any nested pages appear in the "Manually Added" section.
 
 **July 21, 2021**
 

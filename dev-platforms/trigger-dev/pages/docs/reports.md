@@ -73,9 +73,9 @@ Every surface carries meaning in glyphs, never color alone, so the report is leg
 | `⚑` | The data behind the report can't be trusted |
 | `↑` `↓` `→` | Above, below, or flat against the baseline |
 
-<Note>
-  The markdown surface swaps the status glyphs for traffic-light emoji (`🟢` `🟡` `🔴` `⚪` `🚩`) — the one color cue a chat host that renders neither ANSI nor HTML can show. The glyph and the emoji mean the same thing.
-</Note>
+> [!NOTE]
+>
+> The markdown surface swaps the status glyphs for traffic-light emoji (`🟢` `🟡` `🔴` `⚪` `🚩`) — the one color cue a chat host that renders neither ANSI nor HTML can show. The glyph and the emoji mean the same thing.
 
 ## Surfaces
 
@@ -145,20 +145,18 @@ An unknown report key returns `404` with the list of available keys.
 
 ## Next steps
 
-<CardGroup>
-  <Card title="MCP server" icon="plug" href="/docs/mcp-introduction">
-    Connect your AI coding tool to Trigger.dev.
-  </Card>
+> **[MCP server](/docs/mcp-introduction)**
+>
+> Connect your AI coding tool to Trigger.dev.
 
-  <Card title="MCP tools" icon="wrench" href="/docs/mcp-tools">
-    Every tool the MCP server exposes, including `get_report`.
-  </Card>
+> **[MCP tools](/docs/mcp-tools)**
+>
+> Every tool the MCP server exposes, including `get_report`.
 
-  <Card title="Concurrency" icon="layer-group" href="/docs/concurrency">
-    Configure the concurrency limits the Flow verdict checks against.
-  </Card>
+> **[Concurrency](/docs/concurrency)**
+>
+> Configure the concurrency limits the Flow verdict checks against.
 
-  <Card title="Query your data" icon="magnifying-glass" href="/docs/observability/query">
-    Run TRQL queries against the same telemetry the report reads.
-  </Card>
-</CardGroup>
+> **[Query your data](/docs/observability/query)**
+>
+> Run TRQL queries against the same telemetry the report reads.

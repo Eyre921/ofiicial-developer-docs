@@ -19,59 +19,53 @@ When you're done with a branch, you can archive it to free up a slot or just re-
 
 Log in with the CLI first:
 
-<CodeGroup>
-  ```bash npm theme={"theme":"css-variables"}
-  npx trigger.dev@latest login
-  ```
+```bash npm theme={"theme":"css-variables"}
+npx trigger.dev@latest login
+```
 
-  ```bash pnpm theme={"theme":"css-variables"}
-  pnpm dlx trigger.dev@latest login
-  ```
+```bash pnpm theme={"theme":"css-variables"}
+pnpm dlx trigger.dev@latest login
+```
 
-  ```bash bun theme={"theme":"css-variables"}
-  bunx trigger.dev@latest login
-  ```
-</CodeGroup>
+```bash bun theme={"theme":"css-variables"}
+bunx trigger.dev@latest login
+```
 
 Then start a dev session on a branch with the `--branch` flag. If the branch doesn't exist yet, it's created:
 
-<CodeGroup>
-  ```bash npm theme={"theme":"css-variables"}
-  npx trigger.dev@latest dev --branch my-feature
-  ```
+```bash npm theme={"theme":"css-variables"}
+npx trigger.dev@latest dev --branch my-feature
+```
 
-  ```bash pnpm theme={"theme":"css-variables"}
-  pnpm dlx trigger.dev@latest dev --branch my-feature
-  ```
+```bash pnpm theme={"theme":"css-variables"}
+pnpm dlx trigger.dev@latest dev --branch my-feature
+```
 
-  ```bash bun theme={"theme":"css-variables"}
-  bunx trigger.dev@latest dev --branch my-feature
-  ```
-</CodeGroup>
+```bash bun theme={"theme":"css-variables"}
+bunx trigger.dev@latest dev --branch my-feature
+```
 
 Without `--branch`, the session runs on the `default` branch.
 
-<Tip>
-  You can also set the branch with the `TRIGGER_DEV_BRANCH` environment variable instead of the flag.
-</Tip>
+> [!TIP]
+>
+> You can also set the branch with the `TRIGGER_DEV_BRANCH` environment variable instead of the flag.
 
 ## Archive a branch
 
 Archive a branch from the CLI when you no longer need it. Pass the branch with `--branch` (or set `TRIGGER_DEV_BRANCH`); it's required, and the `default` branch can't be archived:
 
-<CodeGroup>
-  ```bash npm theme={"theme":"css-variables"}
-  npx trigger.dev@latest dev archive --branch my-feature
-  ```
+```bash npm theme={"theme":"css-variables"}
+npx trigger.dev@latest dev archive --branch my-feature
+```
 
-  ```bash pnpm theme={"theme":"css-variables"}
-  pnpm dlx trigger.dev@latest dev archive --branch my-feature
-  ```
+```bash pnpm theme={"theme":"css-variables"}
+pnpm dlx trigger.dev@latest dev archive --branch my-feature
+```
 
-  ```bash bun theme={"theme":"css-variables"}
-  bunx trigger.dev@latest dev archive --branch my-feature
-  ```
-</CodeGroup>
+```bash bun theme={"theme":"css-variables"}
+bunx trigger.dev@latest dev archive --branch my-feature
+```
 
 You can also create and archive branches from the **Dev branches** page in the dashboard.
 

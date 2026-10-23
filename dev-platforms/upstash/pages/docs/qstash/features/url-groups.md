@@ -1,5 +1,5 @@
 ---
-title: "URL Groups"
+title: "QStash URL Groups"
 source: https://upstash.com/docs/qstash/features/url-groups
 path: docs/qstash/features/url-groups
 ---

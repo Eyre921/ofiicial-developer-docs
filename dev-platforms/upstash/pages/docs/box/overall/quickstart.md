@@ -1,5 +1,5 @@
 ---
-title: "Quickstart"
+title: "Upstash Box Quickstart"
 source: https://upstash.com/docs/box/overall/quickstart
 path: docs/box/overall/quickstart
 ---

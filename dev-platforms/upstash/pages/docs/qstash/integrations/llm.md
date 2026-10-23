@@ -1,5 +1,5 @@
 ---
-title: "LLM - OpenAI"
+title: "Call OpenAI and Other LLM APIs with QStash"
 source: https://upstash.com/docs/qstash/integrations/llm
 path: docs/qstash/integrations/llm
 ---

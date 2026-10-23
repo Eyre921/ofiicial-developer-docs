@@ -37,9 +37,9 @@ Fires **once per worker process picking up the chat** — for the initial run, f
 
 This is the right place to initialize anything that lives in the JS process for the lifetime of the run: [`chat.local`](/docs/ai-chat/chat-local) state, [DB connections](/docs/database-connections), sandboxes, in-memory caches. It runs before `onPreload`, `onChatStart`, the continuation-wait branch, and any turn — so anything you set up here is available everywhere downstream.
 
-<Warning>
-  If you initialize `chat.local` only in `onChatStart`, your `run()` will crash on continuation runs with `chat.local can only be modified after initialization`. `onChatStart` is once-per-chat by contract; `chat.local` is per-process and needs `onBoot`.
-</Warning>
+> [!WARNING]
+>
+> If you initialize `chat.local` only in `onChatStart`, your `run()` will crash on continuation runs with `chat.local can only be modified after initialization`. `onChatStart` is once-per-chat by contract; `chat.local` is per-process and needs `onBoot`.
 
 Branch on `continuation` to decide whether to load existing state from your DB or start fresh:
 
@@ -80,9 +80,9 @@ export const myChat = chat.agent({
 | `previousRunId` | `string \| undefined` | Public id of the prior run when `continuation` is true |
 | `preloaded` | `boolean` | Whether this run was triggered as a preload |
 
-<Tip>
-  `onBoot` and `onChatStart` are complementary — keep DB-row creation in `onChatStart` (it only needs to happen once per chat) and put process-level setup (`chat.local`, connections, caches) in `onBoot` (it needs to happen on every fresh worker).
-</Tip>
+> [!TIP]
+>
+> `onBoot` and `onChatStart` are complementary — keep DB-row creation in `onChatStart` (it only needs to happen once per chat) and put process-level setup (`chat.local`, connections, caches) in `onBoot` (it needs to happen on every fresh worker).
 
 ## onRecoveryBoot
 
@@ -122,9 +122,9 @@ export const myChat = chat.agent({
 
 Returns `{ chain?, recoveredTurns?, beforeBoot? }` — every field optional. Omitted fields fall through to the smart default. See [Recovery boot](/docs/ai-chat/patterns/recovery-boot) for the full guide, examples (drop partial, synthesize tool results, persist before boot), and interaction notes.
 
-<Tip>
-  Don't put `chat.local` initialization in `onRecoveryBoot` — use [`onBoot`](#onboot). `onRecoveryBoot` is for recovery decisions, not per-process setup. `onBoot` fires first.
-</Tip>
+> [!TIP]
+>
+> Don't put `chat.local` initialization in `onRecoveryBoot` — use [`onBoot`](#onboot). `onRecoveryBoot` is for recovery decisions, not per-process setup. `onBoot` fires first.
 
 ## onPreload
 
@@ -186,15 +186,15 @@ Fires **exactly once per chat**, on the very first user message of the chat's li
 
 For per-process state that has to be initialized on every fresh worker (including continuation runs), use [`onBoot`](#onboot). For per-turn setup, use [`onTurnStart`](#onturnstart).
 
-<Warning>
-  Do not initialize [`chat.local`](/docs/ai-chat/chat-local) here. `chat.local` is per-process state that must survive continuation runs, but `onChatStart` only fires on the chat's very first message. Use [`onBoot`](#onboot) instead.
-</Warning>
+> [!WARNING]
+>
+> Do not initialize [`chat.local`](/docs/ai-chat/chat-local) here. `chat.local` is per-process state that must survive continuation runs, but `onChatStart` only fires on the chat's very first message. Use [`onBoot`](#onboot) instead.
 
 The `preloaded` field tells you whether [`onPreload`](#onpreload) already ran for this chat — useful for skipping setup work that's already done.
 
-<Note>
-  Because `onChatStart` fires only on the chat's first ever message, `messages` is either empty (when no message exists yet — e.g. a preloaded run that hasn't received its first turn) or contains just the first user message. There's no prior history to load here.
-</Note>
+> [!NOTE]
+>
+> Because `onChatStart` fires only on the chat's first ever message, `messages` is either empty (when no message exists yet — e.g. a preloaded run that hasn't received its first turn) or contains just the first user message. There's no prior history to load here.
 
 ```ts theme={"theme":"css-variables"}
 export const myChat = chat.agent({
@@ -213,11 +213,11 @@ export const myChat = chat.agent({
 });
 ```
 
-<Tip>
-  `clientData` contains custom data from the frontend: either the `clientData` option on the
-  transport constructor (sent with every message) or the `metadata` option on `sendMessage()`
-  (per-message). See [Client data and metadata](/docs/ai-chat/frontend#client-data-and-metadata).
-</Tip>
+> [!TIP]
+>
+> `clientData` contains custom data from the frontend: either the `clientData` option on the
+> transport constructor (sent with every message) or the `metadata` option on `sendMessage()`
+> (per-message). See [Client data and metadata](/docs/ai-chat/frontend#client-data-and-metadata).
 
 ## onValidateMessages
 
@@ -252,19 +252,19 @@ export const myChat = chat.agent({
 });
 ```
 
-<Warning>
-  On HITL continuations (`addToolOutput` / `addToolApproveResponse`) the assistant entry in `messages` is **slim** — `state` + `output` / `errorText` / `approval` only, no `input` or other parts. `validateUIMessages` against the AI SDK schema rejects that shape (the schema requires `input` on resolved tool parts), so filter to user messages first (or skip validation entirely on those turns). The example above does the filter.
-</Warning>
+> [!WARNING]
+>
+> On HITL continuations (`addToolOutput` / `addToolApproveResponse`) the assistant entry in `messages` is **slim** — `state` + `output` / `errorText` / `approval` only, no `input` or other parts. `validateUIMessages` against the AI SDK schema rejects that shape (the schema requires `input` on resolved tool parts), so filter to user messages first (or skip validation entirely on those turns). The example above does the filter.
 
-<Note>
-  `onValidateMessages` fires **before** `onTurnStart` and message accumulation. If you need to validate messages loaded from a database, do the loading in `onChatStart` or `onPreload` and let `onValidateMessages` validate the full incoming set each turn.
-</Note>
+> [!NOTE]
+>
+> `onValidateMessages` fires **before** `onTurnStart` and message accumulation. If you need to validate messages loaded from a database, do the loading in `onChatStart` or `onPreload` and let `onValidateMessages` validate the full incoming set each turn.
 
 ## hydrateMessages
 
-<Warning>
-  `hydrateMessages` is deprecated. Give the agent a [transcript storage](/docs/ai-chat/transcript-storage) instead: `loadContext` on the storage decides the model's context, and `save` persists every change, so crash recovery and durable compaction cover it. Existing agents keep working with a one-time warning. Setting `hydrateMessages` together with `storage` is an error.
-</Warning>
+> [!WARNING]
+>
+> `hydrateMessages` is deprecated. Give the agent a [transcript storage](/docs/ai-chat/transcript-storage) instead: `loadContext` on the storage decides the model's context, and `save` persists every change, so crash recovery and durable compaction cover it. Existing agents keep working with a one-time warning. Setting `hydrateMessages` together with `storage` is an error.
 
 Load the full message history from your backend on every turn, replacing the built-in linear accumulator. When set, the hook's return value becomes the accumulated state; the normal accumulation logic (append for submit, replace for regenerate) is skipped entirely.
 
@@ -316,17 +316,17 @@ If you need branching, rollback, or other custom hydrate logic, you can still wr
 
 After the hook returns, the runtime overlays the wire's tool-state advances (`output-available` / `output-error` / `approval-responded` / `output-denied`) onto matching hydrated entries by id. Everything else on the hydrated entry — text, reasoning, tool `input`, providerMetadata — stays put. This makes [tool approvals](/docs/ai-chat/frontend#tool-approvals) and HITL `addToolOutput` continuations work transparently: ship a slim resolution on the wire, the agent merges the new state onto your DB-backed copy.
 
-<Note>
-  `hydrateMessages` also fires for [action](/docs/ai-chat/actions) turns (`trigger: "action"`) with empty `incomingMessages`. This lets the action handler work with the latest DB state.
-</Note>
+> [!NOTE]
+>
+> `hydrateMessages` also fires for [action](/docs/ai-chat/actions) turns (`trigger: "action"`) with empty `incomingMessages`. This lets the action handler work with the latest DB state.
 
-<Tip>
-  Registering `hydrateMessages` turns off the runtime's transcript reads and writes: your hook is the source of truth for history, and the runtime does not read or write its [snapshot](/docs/ai-chat/patterns/persistence-and-replay). Crash recovery still runs. When a new run boots, the dead run's unfinished answer and unacknowledged messages are replayed from the session streams, `onRecoveryBoot` fires, and the hook receives the recovered tail in `previousMessages`. Persisting that tail is yours to do; a [transcript storage](/docs/ai-chat/transcript-storage) does it for you.
-</Tip>
+> [!TIP]
+>
+> Registering `hydrateMessages` turns off the runtime's transcript reads and writes: your hook is the source of truth for history, and the runtime does not read or write its [snapshot](/docs/ai-chat/patterns/persistence-and-replay). Crash recovery still runs. When a new run boots, the dead run's unfinished answer and unacknowledged messages are replayed from the session streams, `onRecoveryBoot` fires, and the hook receives the recovered tail in `previousMessages`. Persisting that tail is yours to do; a [transcript storage](/docs/ai-chat/transcript-storage) does it for you.
 
-<Note>
-  `incomingMessages` is **usually 0-or-1-length**. `submit-message` and tool-approval responses ship a single message; `regenerate-message`, continuations, and actions ship none. The exception is a [Head Start](/docs/ai-chat/fast-starts#with-hydratemessages) first turn, where it carries the route handler's first-turn history. Patterns like [tool-result auditing](/docs/ai-chat/patterns/tool-result-auditing) work the same regardless — iterate the array rather than assuming a single element.
-</Note>
+> [!NOTE]
+>
+> `incomingMessages` is **usually 0-or-1-length**. `submit-message` and tool-approval responses ship a single message; `regenerate-message`, continuations, and actions ship none. The exception is a [Head Start](/docs/ai-chat/fast-starts#with-hydratemessages) first turn, where it carries the route handler's first-turn history. Patterns like [tool-result auditing](/docs/ai-chat/patterns/tool-result-auditing) work the same regardless — iterate the array rather than assuming a single element.
 
 ## onTurnStart
 
@@ -366,10 +366,10 @@ export const myChat = chat.agent({
 });
 ```
 
-<Tip>
-  By persisting in `onTurnStart`, the user's message is saved to your database before the AI starts
-  streaming. If the user refreshes mid-stream, the message is already there.
-</Tip>
+> [!TIP]
+>
+> By persisting in `onTurnStart`, the user's message is saved to your database before the AI starts
+> streaming. If the user refreshes mid-stream, the message is already there.
 
 ## onBeforeTurnComplete
 
@@ -449,19 +449,19 @@ export const myChat = chat.agent({
 });
 ```
 
-<Tip>
-  Use `uiMessages` to overwrite the full conversation each turn (simplest). Use `newUIMessages` if
-  you prefer to store messages individually, e.g. one database row per message.
-</Tip>
+> [!TIP]
+>
+> Use `uiMessages` to overwrite the full conversation each turn (simplest). Use `newUIMessages` if
+> you prefer to store messages individually, e.g. one database row per message.
 
-<Tip>
-  Persist `lastEventId` alongside the session. When the transport reconnects after a page refresh,
-  it uses this to skip past already-seen events, preventing duplicate messages.
-</Tip>
+> [!TIP]
+>
+> Persist `lastEventId` alongside the session. When the transport reconnects after a page refresh,
+> it uses this to skip past already-seen events, preventing duplicate messages.
 
-<Tip>
-  For a full **conversation + session** persistence pattern (including preload, continuation, and token renewal), see [Database persistence](/docs/ai-chat/patterns/database-persistence).
-</Tip>
+> [!TIP]
+>
+> For a full **conversation + session** persistence pattern (including preload, continuation, and token renewal), see [Database persistence](/docs/ai-chat/patterns/database-persistence).
 
 ## onChatSuspend / onChatResume
 
@@ -503,9 +503,9 @@ export const myChat = chat.agent({
 | `messages` | `ModelMessage[]` | Accumulated model messages (**`"turn"` phase only**) |
 | `uiMessages` | `UIMessage[]` | Accumulated UI messages (**`"turn"` phase only**) |
 
-<Tip>
-  Unlike `onWait` (which fires for all wait types: duration, task, batch, token), `onChatSuspend` fires only at chat suspension points with full chat context. No need to filter on `wait.type`.
-</Tip>
+> [!TIP]
+>
+> Unlike `onWait` (which fires for all wait types: duration, task, batch, token), `onChatSuspend` fires only at chat suspension points with full chat context. No need to filter on `wait.type`.
 
 ## exitAfterPreloadIdle
 

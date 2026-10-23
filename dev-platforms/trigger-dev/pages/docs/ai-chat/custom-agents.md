@@ -130,9 +130,9 @@ export const myChat = chat
   });
 ```
 
-<Warning>
-  If you pass `compaction` or `pendingMessages` to `chat.createSession()`, you must also pass `prepareStep: turn.prepareStep()` to `streamText` (or spread `chat.toStreamTextOptions()`, which wires it automatically). Without it, both features silently no-op.
-</Warning>
+> [!WARNING]
+>
+> If you pass `compaction` or `pendingMessages` to `chat.createSession()`, you must also pass `prepareStep: turn.prepareStep()` to `streamText` (or spread `chat.toStreamTextOptions()`, which wires it automatically). Without it, both features silently no-op.
 
 ### ChatSessionOptions
 
@@ -219,9 +219,9 @@ The server starts a continuation run using the Session's existing trigger config
 
 If input has been dispatched to the old run but should be processed by the continuation, detach the listeners and do not write another turn-complete boundary before handing off. `chat.writeTurnComplete()` acknowledges the latest input dispatched to the old run; writing it after that dispatch would make the continuation resume after the input.
 
-<Warning>
-  `chat.endAndContinue()` starts the new run but does not stop the caller. Await it and return from `run()` immediately; continuing to read or write can race the new run on the same Session. If the handoff fails, the promise rejects.
-</Warning>
+> [!WARNING]
+>
+> `chat.endAndContinue()` starts the new run but does not stop the caller. Await it and return from `run()` immediately; continuing to read or write can race the new run on the same Session. If the handoff fails, the promise rejects.
 
 ### turn.complete() vs manual control
 
@@ -534,20 +534,18 @@ Things the managed levels do for you that a raw loop has to get right:
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Backend overview" icon="layer-group" href="/docs/ai-chat/backend">
-    The three abstraction levels compared, and everything chat.agent() adds on top.
-  </Card>
+> **[Backend overview](/docs/ai-chat/backend)**
+>
+> The three abstraction levels compared, and everything chat.agent() adds on top.
 
-  <Card title="Sessions" icon="wave-pulse" href="/docs/ai-chat/sessions">
-    The durable stream pair every agent — managed or custom — is built on.
-  </Card>
+> **[Sessions](/docs/ai-chat/sessions)**
+>
+> The durable stream pair every agent — managed or custom — is built on.
 
-  <Card title="Compaction" icon="compress" href="/docs/ai-chat/compaction">
-    Automatic context compression — works with createSession and MessageAccumulator.
-  </Card>
+> **[Compaction](/docs/ai-chat/compaction)**
+>
+> Automatic context compression — works with createSession and MessageAccumulator.
 
-  <Card title="Client protocol" icon="plug" href="/docs/ai-chat/client-protocol">
-    The wire format your loop is speaking, chunk by chunk.
-  </Card>
-</CardGroup>
+> **[Client protocol](/docs/ai-chat/client-protocol)**
+>
+> The wire format your loop is speaking, chunk by chunk.

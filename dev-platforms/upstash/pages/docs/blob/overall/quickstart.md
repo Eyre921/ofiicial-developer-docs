@@ -1,5 +1,5 @@
 ---
-title: "Quickstart"
+title: "Upstash Blob Quickstart"
 source: https://upstash.com/docs/blob/overall/quickstart
 path: docs/blob/overall/quickstart
 ---
@@ -186,7 +186,7 @@ You get these without more code:
 - [File Attachments](https://upstash.com/docs/blob/recipes/attachments.md): Several files per thread, uploaded from the browser as multipart, one row per attachment.
 - [Profile Pictures](https://upstash.com/docs/blob/recipes/avatars.md): One picture per user, overwritten in place, uploaded from the browser, with the old one out of the cache.
 - [Generated Exports](https://upstash.com/docs/blob/recipes/exports.md): A background job builds the file, and the download link stops working after a day.
-- [Overview](https://upstash.com/docs/blob/recipes/overview.md): Pick a recipe by the shape of your data, and the three rules that run under all of them.
+- [Blob Recipes Overview](https://upstash.com/docs/blob/recipes/overview.md): Pick a recipe by the shape of your data, and the three rules that run under all of them.
 - [Private Documents](https://upstash.com/docs/blob/recipes/private-documents.md): One document per owner on a private bucket, handed out through short-lived signed URLs.
 - [Product Images](https://upstash.com/docs/blob/recipes/product-images.md): Several ordered images per product, uploaded from the browser and rendered from your own rows.
 - [Site Assets and CMS Media](https://upstash.com/docs/blob/recipes/site-assets.md): Editor uploads for a CMS, and site assets written by a deploy script.

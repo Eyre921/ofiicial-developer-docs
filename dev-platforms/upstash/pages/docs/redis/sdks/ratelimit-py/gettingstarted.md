@@ -1,5 +1,5 @@
 ---
-title: "Getting Started"
+title: "Ratelimit Python SDK Getting Started"
 source: https://upstash.com/docs/redis/sdks/ratelimit-py/gettingstarted
 path: docs/redis/sdks/ratelimit-py/gettingstarted
 ---

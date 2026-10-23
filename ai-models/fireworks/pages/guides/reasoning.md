@@ -153,6 +153,8 @@ assistant turns in subsequent requests. This enables the model to think between 
 
 ![Diagram showing interleaved thinking where reasoning is preserved within Turn 1 across multiple steps but starts fresh in Turn 2](https://mintcdn.com/fireworksai/YH2uwOIOrmQeCBpB/images/interleaved-thinking.png?fit=max\&auto=format\&n=YH2uwOIOrmQeCBpB\&q=85\&s=f7755029148537652af1904607fb8c48)
 
+Interleaved thinking: the model reasons between tool calls within a single turn. Source: [Z.AI](https://docs.z.ai/guides/capabilities/thinking-mode)
+
 You can preserve reasoning context in two ways:
 
 1. **Pass the `Message` object directly** (recommended) - The SDK message object
@@ -583,6 +585,8 @@ This is a straightforward request that aligns perfectly with the calculator tool
 While interleaved thinking preserves reasoning within a single turn (across tool calls), **preserved thinking** extends this concept across multiple user turns. This allows the model to retain reasoning content from previous assistant turns in the conversation context, enabling more coherent multi-turn reasoning.
 
 ![Diagram showing preserved thinking where reasoning from Turn 1 is included in the input context for Turn 2](https://mintcdn.com/fireworksai/YH2uwOIOrmQeCBpB/images/preserved-thinking.png?fit=max\&auto=format\&n=YH2uwOIOrmQeCBpB\&q=85\&s=bab229ba94450c52b8b9695310487681)
+
+Preserved thinking: reasoning from previous turns is retained and passed to subsequent turns. Source: [Z.AI](https://docs.z.ai/guides/capabilities/thinking-mode)
 
 #### Controlling reasoning history
 

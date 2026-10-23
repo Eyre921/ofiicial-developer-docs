@@ -1,5 +1,5 @@
 ---
-title: "Read-only Token"
+title: "QStash Read-only Token"
 source: https://upstash.com/docs/qstash/howto/readonly-token
 path: docs/qstash/howto/readonly-token
 ---

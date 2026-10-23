@@ -1,5 +1,5 @@
 ---
-title: "Select a Region"
+title: "Select an Upstash Workflow Region"
 source: https://upstash.com/docs/workflow/howto/multi-region
 path: docs/workflow/howto/multi-region
 ---

@@ -10,19 +10,17 @@ Use these commands to trigger tasks from your terminal.
 
 Triggers a task and prints the run ID and its dashboard URL. It runs in the `dev` environment unless you pass `--env`, so start the [dev command](/docs/cli-dev-commands) first.
 
-<CodeGroup>
-  ```bash npm theme={"theme":"css-variables"}
-  npx trigger.dev@latest tasks trigger hello-world --payload '{"name":"Ada"}'
-  ```
+```bash npm theme={"theme":"css-variables"}
+npx trigger.dev@latest tasks trigger hello-world --payload '{"name":"Ada"}'
+```
 
-  ```bash pnpm theme={"theme":"css-variables"}
-  pnpm dlx trigger.dev@latest tasks trigger hello-world --payload '{"name":"Ada"}'
-  ```
+```bash pnpm theme={"theme":"css-variables"}
+pnpm dlx trigger.dev@latest tasks trigger hello-world --payload '{"name":"Ada"}'
+```
 
-  ```bash yarn theme={"theme":"css-variables"}
-  yarn dlx trigger.dev@latest tasks trigger hello-world --payload '{"name":"Ada"}'
-  ```
-</CodeGroup>
+```bash yarn theme={"theme":"css-variables"}
+yarn dlx trigger.dev@latest tasks trigger hello-world --payload '{"name":"Ada"}'
+```
 
 Add `--wait` to wait for the run to finish. It prints the run's output, or its error and exits with code 1 if the run failed, which makes it useful in scripts and for coding agents testing a task:
 
@@ -32,88 +30,88 @@ npx trigger.dev@latest tasks trigger hello-world --payload '{"name":"Ada"}' --wa
 
 The command fails without creating a run if the current version has no task with that ID. In `dev`, it warns you when the dev command isn't running, because the run waits in the queue until it starts.
 
-<ParamField type="--payload">
-  The payload as JSON, e.g. `--payload '{"name":"Ada"}'`. Without it, the task gets no payload.
-</ParamField>
+**Payload** `--payload`
 
-<ParamField type="--payload-file">
-  Read the payload from a JSON file instead.
-</ParamField>
+The payload as JSON, e.g. `--payload '{"name":"Ada"}'`. Without it, the task gets no payload.
 
-<ParamField type="--wait">
-  Wait for the run to finish, then print its output or error.
-</ParamField>
+**Payload file** `--payload-file`
 
-<ParamField type="--timeout">
-  With `--wait`, stop waiting after this many seconds and exit with code 1.
-</ParamField>
+Read the payload from a JSON file instead.
 
-<ParamField type="--tag">
-  A tag to add to the run. Repeat it to add more than one, e.g. `--tag cli --tag test`.
-</ParamField>
+**Wait** `--wait`
 
-<ParamField type="--idempotency-key">
-  If a run with this key already exists, return it instead of creating a new one. See [idempotency](/docs/idempotency).
-</ParamField>
+Wait for the run to finish, then print its output or error.
 
-<ParamField type="--delay">
-  Wait before running, e.g. `30s`, `5m` or an ISO 8601 date.
-</ParamField>
+**Timeout** `--timeout`
 
-<ParamField type="--ttl">
-  Expire the run if it hasn't started within this time, e.g. `10m`.
-</ParamField>
+With `--wait`, stop waiting after this many seconds and exit with code 1.
 
-<ParamField type="--queue">
-  The queue to run in, instead of the queue set on the task.
-</ParamField>
+**Tag** `--tag`
 
-<ParamField type="--machine">
-  The machine to run on, e.g. `small-2x`. See [machines](/docs/machines). Has no effect in `dev`.
-</ParamField>
+A tag to add to the run. Repeat it to add more than one, e.g. `--tag cli --tag test`.
+
+**Idempotency key** `--idempotency-key`
+
+If a run with this key already exists, return it instead of creating a new one. See [idempotency](/docs/idempotency).
+
+**Delay** `--delay`
+
+Wait before running, e.g. `30s`, `5m` or an ISO 8601 date.
+
+**TTL** `--ttl`
+
+Expire the run if it hasn't started within this time, e.g. `10m`.
+
+**Queue** `--queue`
+
+The queue to run in, instead of the queue set on the task.
+
+**Machine** `--machine`
+
+The machine to run on, e.g. `small-2x`. See [machines](/docs/machines). Has no effect in `dev`.
 
 ## Options
 
-<ParamField type="--env | -e">
-  The environment to use: `dev`, `prod`, `staging` or `preview`. Defaults to `dev`.
-</ParamField>
+**Environment** `--env | -e`
 
-<ParamField type="--config | -c">
-  The name of the config file found at the project path. Defaults to `trigger.config.ts`
-</ParamField>
+The environment to use: `dev`, `prod`, `staging` or `preview`. Defaults to `dev`.
 
-<ParamField type="--project-ref | -p">
-  The project ref. Required if there is no config file.
-</ParamField>
+**Config file** `--config | -c`
 
-<ParamField type="--branch | -b">
-  The branch to use. Required with `--env preview`. In `dev`, it defaults to the same [dev branch](/docs/deployment/dev-branches) as the dev command.
-</ParamField>
+The name of the config file found at the project path. Defaults to `trigger.config.ts`
+
+**Project ref** `--project-ref | -p`
+
+The project ref. Required if there is no config file.
+
+**Branch** `--branch | -b`
+
+The branch to use. Required with `--env preview`. In `dev`, it defaults to the same [dev branch](/docs/deployment/dev-branches) as the dev command.
 
 ### Common options
 
 These options are available on most commands.
 
-<ParamField type="--profile">
-  The login profile to use. Defaults to the current profile, which is set by your last `login` or `switch` (initially "default").
-</ParamField>
+**Login profile** `--profile`
 
-<ParamField type="--api-url | -a">
-  Override the default API URL. If not specified, it uses `https://api.trigger.dev`. This can also be set via the `TRIGGER_API_URL` environment variable.
-</ParamField>
+The login profile to use. Defaults to the current profile, which is set by your last `login` or `switch` (initially "default").
 
-<ParamField type="--log-level | -l">
-  The CLI log level to use. Options are `debug`, `info`, `log`, `warn`, `error`, and `none`. This does not affect the log level of your trigger.dev tasks. Defaults to `log`.
-</ParamField>
+**API URL** `--api-url | -a`
 
-<ParamField type="--skip-telemetry">
-  Opt-out of sending telemetry data. This can also be done via the `TRIGGER_TELEMETRY_DISABLED` environment variable. Just set it to anything other than an empty string.
-</ParamField>
+Override the default API URL. If not specified, it uses `https://api.trigger.dev`. This can also be set via the `TRIGGER_API_URL` environment variable.
 
-<ParamField type="--help | -h">
-  Shows the help information for the command.
-</ParamField>
+**Log level** `--log-level | -l`
 
-<ParamField type="--version | -v">
-  Displays the version number of the CLI.
-</ParamField>
+The CLI log level to use. Options are `debug`, `info`, `log`, `warn`, `error`, and `none`. This does not affect the log level of your trigger.dev tasks. Defaults to `log`.
+
+**Skip telemetry** `--skip-telemetry`
+
+Opt-out of sending telemetry data. This can also be done via the `TRIGGER_TELEMETRY_DISABLED` environment variable. Just set it to anything other than an empty string.
+
+**Help** `--help | -h`
+
+Shows the help information for the command.
+
+**Version** `--version | -v`
+
+Displays the version number of the CLI.

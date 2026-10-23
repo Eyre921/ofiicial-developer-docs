@@ -1,5 +1,5 @@
 ---
-title: "Getting Started"
+title: "Upstash Redis Getting Started"
 source: https://upstash.com/docs/redis/overall/getstarted
 path: docs/redis/overall/getstarted
 ---

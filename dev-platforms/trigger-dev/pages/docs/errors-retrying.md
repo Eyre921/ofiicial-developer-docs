@@ -13,12 +13,14 @@ You can configure retrying in two ways:
 1. In your [trigger.config file](/docs/config/config-file) you can set the default retrying behavior for all tasks.
 2. On each task you can set the retrying behavior.
 
-<Note>Task-level retry settings override the defaults in your `trigger.config` file.</Note>
+> [!NOTE]
+>
+> Task-level retry settings override the defaults in your `trigger.config` file.
 
-<Note>
-  By default when you create your project using the CLI init command, retrying is enabled in the DEV
-  environment. You can disable it by setting `enabledInDev: false` in your [trigger.config file](/docs/config/config-file).
-</Note>
+> [!NOTE]
+>
+> By default when you create your project using the CLI init command, retrying is enabled in the DEV
+> environment. You can disable it by setting `enabledInDev: false` in your [trigger.config file](/docs/config/config-file).
 
 ## A simple example with OpenAI
 
@@ -130,10 +132,10 @@ export const retryOnThrow = task({
 });
 ```
 
-<Note>
-  If all of the attempts with `retry.onThrow` fail, an error will be thrown. You can catch this or
-  let it cause a retry of the entire task.
-</Note>
+> [!NOTE]
+>
+> If all of the attempts with `retry.onThrow` fail, an error will be thrown. You can catch this or
+> let it cause a retry of the entire task.
 
 ### retry.fetch()
 
@@ -209,10 +211,10 @@ export const taskWithFetchRetries = task({
 });
 ```
 
-<Note>
-  If all of the attempts with `retry.fetch` fail, an error will be thrown. You can catch this or let
-  it cause a retry of the entire task.
-</Note>
+> [!NOTE]
+>
+> If all of the attempts with `retry.fetch` fail, an error will be thrown. You can catch this or let
+> it cause a retry of the entire task.
 
 ## Advanced error handling and retrying
 
@@ -236,105 +238,103 @@ In this complicated example:
 * If there are no Response headers we let the normal retrying logic handle it (return undefined).
 * If we've run out of requests or tokens we retry at the time specified in the headers.
 
-<CodeGroup>
-  ```ts tasks.ts theme={"theme":"css-variables"}
-  import { task } from "@trigger.dev/sdk";
-  import { calculateISO8601DurationOpenAIVariantResetAt, openai } from "./openai.js";
+```ts tasks.ts theme={"theme":"css-variables"}
+import { task } from "@trigger.dev/sdk";
+import { calculateISO8601DurationOpenAIVariantResetAt, openai } from "./openai.js";
 
-  export const openaiTask = task({
-    id: "openai-task",
-    retry: {
-      maxAttempts: 1,
-    },
-    run: async (payload: { prompt: string }) => {
-      const chatCompletion = await openai.chat.completions.create({
-        messages: [{ role: "user", content: payload.prompt }],
-        model: "gpt-3.5-turbo",
-      });
+export const openaiTask = task({
+  id: "openai-task",
+  retry: {
+    maxAttempts: 1,
+  },
+  run: async (payload: { prompt: string }) => {
+    const chatCompletion = await openai.chat.completions.create({
+      messages: [{ role: "user", content: payload.prompt }],
+      model: "gpt-3.5-turbo",
+    });
 
-      return chatCompletion.choices[0].message.content;
-    },
-    catchError: async ({ payload, error, ctx, retryAt }) => {
-      if (error instanceof OpenAI.APIError) {
-        if (!error.status) {
-          return {
-            skipRetrying: true,
-          };
-        }
-
-        if (error.status === 429 && error.type === "insufficient_quota") {
-          return {
-            skipRetrying: true,
-          };
-        }
-
-        if (!error.headers) {
-          //returning undefined means the normal retrying logic will be used
-          return;
-        }
-
-        const remainingRequests = error.headers["x-ratelimit-remaining-requests"];
-        const requestResets = error.headers["x-ratelimit-reset-requests"];
-
-        if (typeof remainingRequests === "string" && Number(remainingRequests) === 0) {
-          return {
-            retryAt: calculateISO8601DurationOpenAIVariantResetAt(requestResets),
-          };
-        }
-
-        const remainingTokens = error.headers["x-ratelimit-remaining-tokens"];
-        const tokensResets = error.headers["x-ratelimit-reset-tokens"];
-
-        if (typeof remainingTokens === "string" && Number(remainingTokens) === 0) {
-          return {
-            retryAt: calculateISO8601DurationOpenAIVariantResetAt(tokensResets),
-          };
-        }
+    return chatCompletion.choices[0].message.content;
+  },
+  catchError: async ({ payload, error, ctx, retryAt }) => {
+    if (error instanceof OpenAI.APIError) {
+      if (!error.status) {
+        return {
+          skipRetrying: true,
+        };
       }
-    },
-  });
-  ```
 
-  ```ts openai.ts theme={"theme":"css-variables"}
-  import { OpenAI } from "openai";
+      if (error.status === 429 && error.type === "insufficient_quota") {
+        return {
+          skipRetrying: true,
+        };
+      }
 
-  export const openai = new OpenAI({ apiKey: env.OPENAI_API_KEY });
+      if (!error.headers) {
+        //returning undefined means the normal retrying logic will be used
+        return;
+      }
 
-  export function calculateISO8601DurationOpenAIVariantResetAt(
-    resets: string,
-    now: Date = new Date()
-  ): Date | undefined {
-    // Check if the input is null or undefined
-    if (!resets) return undefined;
+      const remainingRequests = error.headers["x-ratelimit-remaining-requests"];
+      const requestResets = error.headers["x-ratelimit-reset-requests"];
 
-    // Regular expression to match the duration string pattern
-    const pattern = /^(?:(\d+)d)?(?:(\d+)h)?(?:(\d+)m)?(?:(\d+(?:\.\d+)?)s)?(?:(\d+)ms)?$/;
-    const match = resets.match(pattern);
+      if (typeof remainingRequests === "string" && Number(remainingRequests) === 0) {
+        return {
+          retryAt: calculateISO8601DurationOpenAIVariantResetAt(requestResets),
+        };
+      }
 
-    // If the string doesn't match the expected format, return undefined
-    if (!match) return undefined;
+      const remainingTokens = error.headers["x-ratelimit-remaining-tokens"];
+      const tokensResets = error.headers["x-ratelimit-reset-tokens"];
 
-    // Extract days, hours, minutes, seconds, and milliseconds from the string
-    const days = parseInt(match[1] ?? "0", 10) || 0;
-    const hours = parseInt(match[2] ?? "0", 10) || 0;
-    const minutes = parseInt(match[3] ?? "0", 10) || 0;
-    const seconds = parseFloat(match[4] ?? "0") || 0;
-    const milliseconds = parseInt(match[5] ?? "0", 10) || 0;
+      if (typeof remainingTokens === "string" && Number(remainingTokens) === 0) {
+        return {
+          retryAt: calculateISO8601DurationOpenAIVariantResetAt(tokensResets),
+        };
+      }
+    }
+  },
+});
+```
 
-    // Calculate the future date based on the current date plus the extracted time
-    const resetAt = new Date(now);
-    resetAt.setDate(resetAt.getDate() + days);
-    resetAt.setHours(resetAt.getHours() + hours);
-    resetAt.setMinutes(resetAt.getMinutes() + minutes);
-    resetAt.setSeconds(resetAt.getSeconds() + Math.floor(seconds));
-    resetAt.setMilliseconds(
-      resetAt.getMilliseconds() + (seconds - Math.floor(seconds)) * 1000 + milliseconds
-    );
+```ts openai.ts theme={"theme":"css-variables"}
+import { OpenAI } from "openai";
 
-    return resetAt;
-  }
-  ```
-</CodeGroup>
+export const openai = new OpenAI({ apiKey: env.OPENAI_API_KEY });
+
+export function calculateISO8601DurationOpenAIVariantResetAt(
+  resets: string,
+  now: Date = new Date()
+): Date | undefined {
+  // Check if the input is null or undefined
+  if (!resets) return undefined;
+
+  // Regular expression to match the duration string pattern
+  const pattern = /^(?:(\d+)d)?(?:(\d+)h)?(?:(\d+)m)?(?:(\d+(?:\.\d+)?)s)?(?:(\d+)ms)?$/;
+  const match = resets.match(pattern);
+
+  // If the string doesn't match the expected format, return undefined
+  if (!match) return undefined;
+
+  // Extract days, hours, minutes, seconds, and milliseconds from the string
+  const days = parseInt(match[1] ?? "0", 10) || 0;
+  const hours = parseInt(match[2] ?? "0", 10) || 0;
+  const minutes = parseInt(match[3] ?? "0", 10) || 0;
+  const seconds = parseFloat(match[4] ?? "0") || 0;
+  const milliseconds = parseInt(match[5] ?? "0", 10) || 0;
+
+  // Calculate the future date based on the current date plus the extracted time
+  const resetAt = new Date(now);
+  resetAt.setDate(resetAt.getDate() + days);
+  resetAt.setHours(resetAt.getHours() + hours);
+  resetAt.setMinutes(resetAt.getMinutes() + minutes);
+  resetAt.setSeconds(resetAt.getSeconds() + Math.floor(seconds));
+  resetAt.setMilliseconds(
+    resetAt.getMilliseconds() + (seconds - Math.floor(seconds)) * 1000 + milliseconds
+  );
+
+  return resetAt;
+}
+```
 
 ## Preventing retries
 

@@ -14,6 +14,8 @@ npx @modelcontextprotocol/inspector --tui node build/index.js   # with an ad-hoc
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/tui-tools.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=5d11d64f4b98df8c26e7ac048f38576f)
 
+The TUI connected to a server, on the Tools tab, showing a tool's input schema.
+
 ## Choosing servers
 
 Unlike the CLI, the TUI has no `--server <name>` flag for picking one entry: it reads its servers from a catalog or config file, loads every server in it, and lets you pick from an on-screen list:
@@ -86,6 +88,8 @@ Per-server OAuth fields in the catalog (static client id/secret, scopes, the ent
 See [Authorization](/docs/2026-07-28/tools/inspector/authorization) for the full picture.
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/tui-auth.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=2e5ef574e80e81c4b49fa2ef0eac0528)
+
+The Auth tab. It shows the same OAuth fields as the web client's Connection Info or, before any authorization has happened, says there is no OAuth information yet.
 
 ## Requirements
 

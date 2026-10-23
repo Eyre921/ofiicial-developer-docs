@@ -14,9 +14,9 @@ Under the hood the harness drives the agent's backing Session channels — `.in`
 
 The harness exercises the real turn loop, lifecycle hooks, validation, hydration, and action routing — only the language model and the surrounding Trigger.dev runtime are replaced. Pair it with [`MockLanguageModelV3`](https://sdk.vercel.ai/docs/reference/ai-sdk-core/mock-language-model-v3) and `simulateReadableStream` from `ai` to control LLM responses.
 
-<Note>
-  Import `@trigger.dev/sdk/ai/test` **before** your agent module. It installs the resource catalog so `chat.agent({ id, ... })` can register tasks during testing.
-</Note>
+> [!NOTE]
+>
+> Import `@trigger.dev/sdk/ai/test` **before** your agent module. It installs the resource catalog so `chat.agent({ id, ... })` can register tasks during testing.
 
 ## Quick start
 
@@ -585,9 +585,9 @@ export function getDb(): Db {
 }
 ```
 
-<Tip>
-  The same `setupLocals` pattern works for any server-side dependency: feature flag clients, Stripe SDK, internal HTTP clients, Sentry. Anything you'd normally inject via constructor parameters in a class-based design.
-</Tip>
+> [!TIP]
+>
+> The same `setupLocals` pattern works for any server-side dependency: feature flag clients, Stripe SDK, internal HTTP clients, Sentry. Anything you'd normally inject via constructor parameters in a class-based design.
 
 ## API reference
 

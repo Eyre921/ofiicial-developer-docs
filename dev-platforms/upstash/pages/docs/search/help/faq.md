@@ -1,5 +1,5 @@
 ---
-title: "FAQ"
+title: "Upstash Search FAQ"
 source: https://upstash.com/docs/search/help/faq
 path: docs/search/help/faq
 ---

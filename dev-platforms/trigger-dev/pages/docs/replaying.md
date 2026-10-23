@@ -8,39 +8,29 @@ A replay is a copy of a run with the same payload but against the latest version
 
 ### Replaying from the UI
 
-<Tabs>
-  <Tab title="From a run">
-    <Steps>
-      <Step title="Click the Replay button in the top right">
-        <img
-          alt="Select a task, then in the bottom right
-click &#x22;Replay&#x22;"
-        />
-      </Step>
+**From a run**
 
-      <Step title="Confirm replay settings">
-        You can edit the payload <Icon icon="circle-1" /> (if available) and choose the environment <Icon icon="circle-2" /> to replay the run in.
+**1. Click the Replay button in the top right**
 
-        <img
-          alt="Select a task, then in the bottom right
-click &#x22;Replay&#x22;"
-        />
-      </Step>
-    </Steps>
-  </Tab>
+![Select a task, then in the bottom right
+click "Replay"](https://mintcdn.com/trigger/5SxX7bFjJKRsidSL/images/replay-run-action.png?fit=max\&auto=format\&n=5SxX7bFjJKRsidSL\&q=85\&s=64e19da4dca5b249adee459a1eeb62e1)
 
-  <Tab title="Runs list">
-    <Steps>
-      <Step title="Click the action button on a run">
-        <img alt="On the runs page, press the triple dot button" />
-      </Step>
+**2. Confirm replay settings**
 
-      <Step title="Click replay">
-        <img alt="Click replay" />
-      </Step>
-    </Steps>
-  </Tab>
-</Tabs>
+You can edit the payload  (if available) and choose the environment  to replay the run in.
+
+![Select a task, then in the bottom right
+click "Replay"](https://mintcdn.com/trigger/5SxX7bFjJKRsidSL/images/replay-run-modal.png?fit=max\&auto=format\&n=5SxX7bFjJKRsidSL\&q=85\&s=9891cc5d05792c57d3e58a06171113f4)
+
+**Runs list**
+
+**1. Click the action button on a run**
+
+![On the runs page, press the triple dot button](https://mintcdn.com/trigger/5SxX7bFjJKRsidSL/images/replay-runs-list.png?fit=max\&auto=format\&n=5SxX7bFjJKRsidSL\&q=85\&s=a9dc0c82c7053753ab620237be1fc63d)
+
+**2. Click replay**
+
+![Click replay](https://mintcdn.com/trigger/5SxX7bFjJKRsidSL/images/replay-runs-list-popover.png?fit=max\&auto=format\&n=5SxX7bFjJKRsidSL\&q=85\&s=41ea417523f3a85b6dfbe0946911ee98)
 
 ### Detecting replays in your task
 

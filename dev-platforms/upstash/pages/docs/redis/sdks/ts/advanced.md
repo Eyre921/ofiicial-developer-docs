@@ -1,5 +1,5 @@
 ---
-title: "Advanced"
+title: "Redis TypeScript SDK Advanced Usage"
 source: https://upstash.com/docs/redis/sdks/ts/advanced
 path: docs/redis/sdks/ts/advanced
 ---
@@ -197,7 +197,7 @@ const redis = new Redis({
 - [RPOP](https://upstash.com/docs/redis/sdks/ts/commands/list/rpop.md): Remove and return the last element(s) of a list
 - [RPUSH](https://upstash.com/docs/redis/sdks/ts/commands/list/rpush.md): Push an element at the end of the list.
 - [RPUSHX](https://upstash.com/docs/redis/sdks/ts/commands/list/rpushx.md): Push an element at the end of the list only if the list exists.
-- [Overview](https://upstash.com/docs/redis/sdks/ts/commands/overview.md): Available Commands in @upstash/redis
+- [Redis TypeScript SDK Commands Overview](https://upstash.com/docs/redis/sdks/ts/commands/overview.md): Available Commands in @upstash/redis
 - [PSUBSCRIBE](https://upstash.com/docs/redis/sdks/ts/commands/pubsub/psubscribe.md): Subscribe to a channel by patterns/wildcards
 - [PUBLISH](https://upstash.com/docs/redis/sdks/ts/commands/pubsub/publish.md): Publish a message to a channel
 - [SUBSCRIBE](https://upstash.com/docs/redis/sdks/ts/commands/pubsub/subscribe.md): Subscribe to a channel

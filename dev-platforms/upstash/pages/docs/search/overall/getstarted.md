@@ -1,5 +1,5 @@
 ---
-title: "Getting Started"
+title: "Upstash Search Getting Started"
 source: https://upstash.com/docs/search/overall/getstarted
 path: docs/search/overall/getstarted
 ---

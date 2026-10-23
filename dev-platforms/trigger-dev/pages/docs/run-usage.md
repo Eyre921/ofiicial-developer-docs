@@ -58,10 +58,10 @@ export const heavyTask = task({
 });
 ```
 
-<Note>
-  In Trigger.dev cloud we do not include time between attempts, before your code executes, or waits
-  longer than 5 seconds towards the compute cost or duration. Waits of 5 seconds or less still count.
-</Note>
+> [!NOTE]
+>
+> In Trigger.dev cloud we do not include time between attempts, before your code executes, or waits
+> longer than 5 seconds towards the compute cost or duration. Waits of 5 seconds or less still count.
 
 ## Getting the run cost and duration from your backend
 

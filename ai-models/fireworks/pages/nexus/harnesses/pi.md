@@ -18,13 +18,13 @@ Generally availableOpenAI Chat CompletionsNexus Auto
 curl -fsSL https://nexus.fireworks.ai/install.sh | bash
 ```
 
-Requires Node.js 18 or later, `git`, and `bash`. On Windows, run it from Git Bash; PowerShell breaks the script's line endings.
+You need Node.js 22 or later, `git`, and `bash`. On Windows, run the installer from Git Bash. PowerShell breaks the script's line endings.
 
 ```bash wrap theme={null}
 nexus login
 ```
 
-Sign in with your browser, or paste a Fireworks key.
+Sign in with your browser, or paste a Fireworks API key (`fw_...`).
 
 Already set up? Skip to step 2.
 
@@ -35,9 +35,11 @@ nexus pi
 nexus pi status
 ```
 
-**3. Restart Pi**
+**3. Restart and pick a model**
 
-Restart Pi if it was running. The default model is `auto`.
+Restart Pi if it was running. The default is `auto`. To change the default, run `nexus pi --model glm-latest`.
+
+Pi stores other models under their full ID, such as `accounts/fireworks/routers/glm-latest`, so they line up with Pi's built-in `fireworks` rows.
 
 > [!TIP]
 >
@@ -47,7 +49,8 @@ Restart Pi if it was running. The default model is `auto`.
 
 Nexus Auto (`auto`) is supported on the Chat Completions API.
 
-* **Anthropic and OpenAI model turns:** connect an Anthropic or OpenAI [Provider Key](/nexus/provider-keys). Nexus CLI doesn't send local keys on `auto`.
+* **Anthropic and OpenAI model turns:** save a key with `nexus auto --anthropic-api-key` or `--openai-api-key` (each prompts for the key), then run `nexus pi` again. Nexus CLI adds the saved key to the provider headers in `models.json`. Or connect a [Provider Key](/nexus/provider-keys), which needs nothing saved locally.
+* **Environment keys:** Nexus CLI never sends `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` from your environment.
 * **Manual setup:** send `x-anthropic-api-key` and `x-openai-api-key` headers yourself. See [Manual setup (advanced)](#manual-setup-advanced).
 
 ## MCP and tools
@@ -55,6 +58,10 @@ Nexus Auto (`auto`) is supported on the Chat Completions API.
 Nexus CLI doesn't touch MCP. Set up servers in Pi as usual.
 
 Nexus CLI does not add web search to Pi. See [Web Search](/nexus/web-search).
+
+## Microsoft Foundry
+
+Nexus CLI can connect Pi to Fireworks models deployed in your Azure subscription. See [Nexus for Microsoft Foundry](/nexus/microsoft-foundry). Nexus Auto is not available on Foundry.
 
 ## Troubleshooting
 
@@ -102,4 +109,6 @@ See [what changes without the Nexus CLI](/nexus/manual-setup#what-changes-withou
 >
 > If your `settings.json` already has an `enabledModels` list, Nexus CLI appends `fireworks/**` to it. Otherwise it leaves `enabledModels` out.
 >
-> `models.json` adds a `providers.fireworks` entry with rows for models Pi's built-in `fireworks` catalog lacks, such as `auto`. `off` restores the whole `providers.fireworks` entry to what it was before you connected. Use `--settings-path` for a settings file stored elsewhere.
+> `models.json` gets a `providers.fireworks` entry with rows for models Pi's built-in `fireworks` catalog lacks, such as `auto`. Its `headers` carry any keys you saved with `nexus auto`.
+>
+> `auth.json` and `models.json` are saved with mode `0600`. `off` restores all three files byte-for-byte from the snapshots under `~/.nexus/pi/`. If you or Pi changed a file while connected, `off` reverts only the entries Nexus CLI owns and keeps everything else. Use `--settings-path` for a settings file stored elsewhere.

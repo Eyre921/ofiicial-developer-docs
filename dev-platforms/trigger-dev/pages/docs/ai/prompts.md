@@ -129,9 +129,9 @@ const current = await supportPrompt.resolve(variables, { label: "current" });
 
 By default, `resolve()` returns the **override** version if one is active, otherwise the **current** (latest deployed) version.
 
-<Note>
-  Both `promptHandle.resolve()` and `prompts.resolve()` call the Trigger.dev API when a client is configured. During local dev with `trigger dev`, this means you'll always get the server version (including overrides).
-</Note>
+> [!NOTE]
+>
+> Both `promptHandle.resolve()` and `prompts.resolve()` call the Trigger.dev API when a client is configured. During local dev with `trigger dev`, this means you'll always get the server version (including overrides).
 
 ## Using with the AI SDK
 
@@ -270,9 +270,9 @@ const options = chat.toStreamTextOptions();
 // { system: "...", temperature: 0.7, experimental_telemetry: { ... } }
 ```
 
-<Tip>
-  When the user provides a `registry` and the prompt has a `model` string (e.g. `"anthropic:claude-sonnet-4-5"`), the model is resolved via `registry.languageModel()` and included in the returned options. This means `streamText` uses the prompt's model by default — no manual model selection needed.
-</Tip>
+> [!TIP]
+>
+> When the user provides a `registry` and the prompt has a `model` string (e.g. `"anthropic:claude-sonnet-4-5"`), the model is resolved via `registry.languageModel()` and included in the returned options. This means `streamText` uses the prompt's model by default — no manual model selection needed.
 
 ### Reading the prompt
 

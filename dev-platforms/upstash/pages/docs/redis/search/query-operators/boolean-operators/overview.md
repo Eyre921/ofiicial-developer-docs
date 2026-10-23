@@ -1,5 +1,5 @@
 ---
-title: "Overview"
+title: "Redis Search Boolean Operators"
 source: https://upstash.com/docs/redis/search/query-operators/boolean-operators/overview
 path: docs/redis/search/query-operators/boolean-operators/overview
 ---

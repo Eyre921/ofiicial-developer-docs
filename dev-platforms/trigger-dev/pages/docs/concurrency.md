@@ -28,13 +28,13 @@ It's important to note that only actively executing runs count towards concurren
 
 By default, all tasks have an unbounded concurrency limit, limited only by the overall concurrency limits of your environment.
 
-<Note>
-  Your environment has a base concurrency limit and a burstable limit (default burst factor of 2.0x
-  the base limit). Individual tasks and limits are capped by the base concurrency limit, not the
-  burstable limit. For example, if your base limit is 10, your environment can burst up to 20
-  concurrent runs, but any single limit can allow at most 10 concurrent runs. If you're a paying
-  customer you can request higher burst limits by [contacting us](https://www.trigger.dev/contact).
-</Note>
+> [!NOTE]
+>
+> Your environment has a base concurrency limit and a burstable limit (default burst factor of 2.0x
+> the base limit). Individual tasks and limits are capped by the base concurrency limit, not the
+> burstable limit. For example, if your base limit is 10, your environment can burst up to 20
+> concurrent runs, but any single limit can allow at most 10 concurrent runs. If you're a paying
+> customer you can request higher burst limits by [contacting us](https://www.trigger.dev/contact).
 
 ## Setting task concurrency
 
@@ -73,11 +73,11 @@ export const generateReport = task({
 });
 ```
 
-<Note>
-  The `queue: {"{ concurrencyLimit: n }"}` option keeps working but is deprecated in favor of
-  `concurrency`. Its single number means "per key when runs pass a `concurrencyKey`, whole queue
-  when they don't" — the `concurrency` shape says which you mean explicitly.
-</Note>
+> [!NOTE]
+>
+> The `queue: {"{ concurrencyLimit: n }"}` option keeps working but is deprecated in favor of
+> `concurrency`. Its single number means "per key when runs pass a `concurrencyKey`, whole queue
+> when they don't" — the `concurrency` shape says which you mean explicitly.
 
 ## Sharing a limit between tasks
 
@@ -123,10 +123,10 @@ export const summarizeThread = task({
 });
 ```
 
-<Note>
-  Names you declare with `concurrencyLimit()` are 1-122 characters using only letters, numbers,
-  underscores and hyphens.
-</Note>
+> [!NOTE]
+>
+> Names you declare with `concurrencyLimit()` are 1-122 characters using only letters, numbers,
+> underscores and hyphens.
 
 ## Setting limits when you trigger a run
 

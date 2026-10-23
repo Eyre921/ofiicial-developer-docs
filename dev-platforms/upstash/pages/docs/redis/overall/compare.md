@@ -1,5 +1,5 @@
 ---
-title: "Compare"
+title: "Compare Upstash Redis to Alternatives"
 source: https://upstash.com/docs/redis/overall/compare
 path: docs/redis/overall/compare
 ---

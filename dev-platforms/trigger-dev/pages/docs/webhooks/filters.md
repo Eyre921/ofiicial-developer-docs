@@ -6,12 +6,6 @@ path: docs/webhooks/filters
 
 Choose which verified webhook events reach each subscriber, by payload fields, request headers, or endpoint metadata.
 
-<PrivateBeta>
-  [Request access](https://trigger.dev/webhooks-beta) and we'll turn webhooks on for your
-  organization and send you the prerelease packages. Webhooks are open source, so they work
-  self-hosted too. APIs may change before general availability.
-</PrivateBeta>
-
 **A filter selects which verified deliveries reach a subscriber.** Each subscriber on an [endpoint](/docs/webhooks/overview) has its own filter, so one delivery can start one task and skip another. A delivery no subscriber takes is recorded with status `FILTERED`, so you can inspect it in the dashboard.
 
 ## Add a filter
@@ -70,10 +64,10 @@ export const checkouts = webhook({
 
 Send an event and open its [delivery](/docs/webhooks/deliveries) in the dashboard. Each subscriber's row shows whether it took the event, and a filtered subscriber shows the failed clause and its value. The provider receives the source's accepted HTTP status (`200` by default) either way.
 
-<Note>
-  If filter evaluation throws an exception, Trigger.dev routes the event. Filters aren't a substitute
-  for signature verification or validation inside your handler.
-</Note>
+> [!NOTE]
+>
+> If filter evaluation throws an exception, Trigger.dev routes the event. Filters aren't a substitute
+> for signature verification or validation inside your handler.
 
 ## The expression language
 

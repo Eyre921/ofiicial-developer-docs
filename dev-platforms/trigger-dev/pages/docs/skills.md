@@ -12,11 +12,11 @@ Skills are portable instruction sets that teach AI coding assistants how to use 
 
 Each skill is a directory containing a `SKILL.md` file: YAML frontmatter (name, description) plus markdown instructions with patterns, examples, and common mistakes that AI assistants discover on demand and follow.
 
-<Note>
-  Skills pair with the [MCP Server](/docs/mcp-introduction), which gives your assistant live access to
-  your project (deploy, trigger, monitor). Skills teach it how to write the code; the MCP server
-  lets it act on your project. See [how they fit together](/docs/building-with-ai#skills-and-the-mcp-server).
-</Note>
+> [!NOTE]
+>
+> Skills pair with the [MCP Server](/docs/mcp-introduction), which gives your assistant live access to
+> your project (deploy, trigger, monitor). Skills teach it how to write the code; the MCP server
+> lets it act on your project. See [how they fit together](/docs/building-with-ai#skills-and-the-mcp-server).
 
 ## Installation
 
@@ -71,20 +71,18 @@ The API guidance updates on its own: it lives in `@trigger.dev/sdk` and is read 
 
 ## Next steps
 
-<CardGroup>
-  <Card title="MCP Server" icon="sparkles" href="/docs/mcp-introduction">
-    Give your AI assistant direct access to Trigger.dev tools and APIs.
-  </Card>
+> **[MCP Server](/docs/mcp-introduction)**
+>
+> Give your AI assistant direct access to Trigger.dev tools and APIs.
 
-  <Card title="Building with AI" icon="layer-group" href="/docs/building-with-ai">
-    See how skills and the MCP server compare, plus a copy-paste context snippet.
-  </Card>
+> **[Building with AI](/docs/building-with-ai)**
+>
+> See how skills and the MCP server compare, plus a copy-paste context snippet.
 
-  <Card title="Writing tasks" icon="code" href="/docs/tasks/overview">
-    Learn the task patterns that skills teach your AI assistant.
-  </Card>
+> **[Writing tasks](/docs/tasks/overview)**
+>
+> Learn the task patterns that skills teach your AI assistant.
 
-  <Card title="AI agents" icon="robot" href="/docs/ai-chat/overview">
-    Build durable chat agents with chat.agent, the focus of two of the skills.
-  </Card>
-</CardGroup>
+> **[AI agents](/docs/ai-chat/overview)**
+>
+> Build durable chat agents with chat.agent, the focus of two of the skills.

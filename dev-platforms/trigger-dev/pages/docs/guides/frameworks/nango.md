@@ -54,91 +54,89 @@ sequenceDiagram
 
 ## Step 1: Connect GitHub in Nango
 
-<Steps>
-  <Step title="Create a GitHub integration in Nango">
-    1. In your [Nango dashboard](https://app.nango.dev/), go to **Integrations** and click **Set up new integration**.
-    2. Search for **GitHub** and select GitHub (User OAuth).
-    3. Create and add a test connection
-  </Step>
+### 1. Create a GitHub integration in Nango
 
-  <Step title="Add the Nango frontend SDK">
-    Install the Nango frontend SDK in your Next.js project:
+1. In your [Nango dashboard](https://app.nango.dev/), go to **Integrations** and click **Set up new integration**.
+2. Search for **GitHub** and select GitHub (User OAuth).
+3. Create and add a test connection
 
-    ```bash theme={"theme":"css-variables"}
-    npm install @nangohq/frontend
-    ```
+### 2. Add the Nango frontend SDK
 
-    The frontend SDK requires a short-lived **connect session token** issued by your backend. Add an API route that creates the session:
+Install the Nango frontend SDK in your Next.js project:
 
-    ```ts app/api/nango-session/route.ts theme={"theme":"css-variables"}
-    import { NextResponse } from "next/server";
+```bash theme={"theme":"css-variables"}
+npm install @nangohq/frontend
+```
 
-    export async function POST(req: Request) {
-      const { userId } = await req.json();
+The frontend SDK requires a short-lived **connect session token** issued by your backend. Add an API route that creates the session:
 
-      if (!userId || typeof userId !== "string") {
-        return NextResponse.json({ error: "Missing or invalid userId" }, { status: 400 });
-      }
+```ts app/api/nango-session/route.ts theme={"theme":"css-variables"}
+import { NextResponse } from "next/server";
 
-      const response = await fetch("https://api.nango.dev/connect/sessions", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${process.env.NANGO_SECRET_KEY}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          end_user: { id: userId },
-        }),
-      });
+export async function POST(req: Request) {
+  const { userId } = await req.json();
 
-      if (!response.ok) {
-        const text = await response.text();
-        console.error("Nango error:", response.status, text);
-        return NextResponse.json({ error: text }, { status: response.status });
-      }
+  if (!userId || typeof userId !== "string") {
+    return NextResponse.json({ error: "Missing or invalid userId" }, { status: 400 });
+  }
 
-      const { data } = await response.json();
-      return NextResponse.json({ token: data.token });
-    }
-    ```
+  const response = await fetch("https://api.nango.dev/connect/sessions", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${process.env.NANGO_SECRET_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      end_user: { id: userId },
+    }),
+  });
 
-    Then add a connect button to your UI that fetches the token and opens the Nango OAuth flow:
+  if (!response.ok) {
+    const text = await response.text();
+    console.error("Nango error:", response.status, text);
+    return NextResponse.json({ error: text }, { status: response.status });
+  }
 
-    ```tsx app/page.tsx theme={"theme":"css-variables"}
-    "use client";
+  const { data } = await response.json();
+  return NextResponse.json({ token: data.token });
+}
+```
 
-    import Nango from "@nangohq/frontend";
+Then add a connect button to your UI that fetches the token and opens the Nango OAuth flow:
 
-    export default function Page() {
-      async function connectGitHub() {
-        // Get a short-lived session token from your backend
-        const sessionRes = await fetch("/api/nango-session", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId: "user_123" }), // replace with your actual user ID
-        });
-        const { token } = await sessionRes.json();
+```tsx app/page.tsx theme={"theme":"css-variables"}
+"use client";
 
-        const nango = new Nango({ connectSessionToken: token });
-        // Use the exact integration slug from your Nango dashboard
-        const result = await nango.auth("<your-integration-slug>");
+import Nango from "@nangohq/frontend";
 
-        // result.connectionId is what you pass to your task
-        await fetch("/api/analyze-prs", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            connectionId: result.connectionId,
-            repo: "triggerdotdev/trigger.dev",
-          }),
-        });
-      }
+export default function Page() {
+  async function connectGitHub() {
+    // Get a short-lived session token from your backend
+    const sessionRes = await fetch("/api/nango-session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId: "user_123" }), // replace with your actual user ID
+    });
+    const { token } = await sessionRes.json();
 
-      return <button onClick={connectGitHub}>Analyze my PRs</button>;
-    }
-    ```
-  </Step>
-</Steps>
+    const nango = new Nango({ connectSessionToken: token });
+    // Use the exact integration slug from your Nango dashboard
+    const result = await nango.auth("<your-integration-slug>");
+
+    // result.connectionId is what you pass to your task
+    await fetch("/api/analyze-prs", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        connectionId: result.connectionId,
+        repo: "triggerdotdev/trigger.dev",
+      }),
+    });
+  }
+
+  return <button onClick={connectGitHub}>Analyze my PRs</button>;
+}
+```
 
 ## Step 2: Create the Trigger.dev task
 
@@ -150,76 +148,74 @@ npm install @nangohq/node @anthropic-ai/sdk
 
 Create the task:
 
-<CodeGroup>
-  ```ts trigger/analyze-prs.ts theme={"theme":"css-variables"}
-  import { task } from "@trigger.dev/sdk";
-  import { Nango } from "@nangohq/node";
-  import Anthropic from "@anthropic-ai/sdk";
+```ts trigger/analyze-prs.ts theme={"theme":"css-variables"}
+import { task } from "@trigger.dev/sdk";
+import { Nango } from "@nangohq/node";
+import Anthropic from "@anthropic-ai/sdk";
 
-  const nango = new Nango({ secretKey: process.env.NANGO_SECRET_KEY! });
-  const anthropic = new Anthropic();
+const nango = new Nango({ secretKey: process.env.NANGO_SECRET_KEY! });
+const anthropic = new Anthropic();
 
-  export const analyzePRs = task({
-    id: "analyze-prs",
-    run: async (payload: { connectionId: string; repo: string }) => {
-      const { connectionId, repo } = payload;
+export const analyzePRs = task({
+  id: "analyze-prs",
+  run: async (payload: { connectionId: string; repo: string }) => {
+    const { connectionId, repo } = payload;
 
-      // Fetch a fresh access token from Nango. It handles refresh automatically.
-      // Use the exact integration slug from your Nango dashboard, e.g. "github-getting-started"
-      const connection = await nango.getConnection("<your-integration-slug>", connectionId);
+    // Fetch a fresh access token from Nango. It handles refresh automatically.
+    // Use the exact integration slug from your Nango dashboard, e.g. "github-getting-started"
+    const connection = await nango.getConnection("<your-integration-slug>", connectionId);
 
-      if (connection.credentials.type !== "OAUTH2") {
-        throw new Error(`Unexpected credentials type: ${connection.credentials.type}`);
+    if (connection.credentials.type !== "OAUTH2") {
+      throw new Error(`Unexpected credentials type: ${connection.credentials.type}`);
+    }
+
+    const accessToken = connection.credentials.access_token;
+    // Call the GitHub API on behalf of the user
+    const response = await fetch(
+      `https://api.github.com/repos/${repo}/pulls?state=open&per_page=20`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Accept: "application/vnd.github.v3+json",
+        },
       }
+    );
 
-      const accessToken = connection.credentials.access_token;
-      // Call the GitHub API on behalf of the user
-      const response = await fetch(
-        `https://api.github.com/repos/${repo}/pulls?state=open&per_page=20`,
+    if (!response.ok) {
+      throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);
+    }
+
+    const prs = await response.json();
+
+    if (prs.length === 0) {
+      return { summary: "No open pull requests found.", prCount: 0 };
+    }
+
+    // Use Claude to summarize what's being worked on
+    const prList = prs
+      .map(
+        (pr: { number: number; title: string; user: { login: string }; body: string | null }) =>
+          `#${pr.number} by @${pr.user.login}: ${pr.title}\n${pr.body?.slice(0, 200) ?? ""}`
+      )
+      .join("\n\n");
+
+    const message = await anthropic.messages.create({
+      model: "claude-opus-4-6",
+      max_tokens: 1024,
+      messages: [
         {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            Accept: "application/vnd.github.v3+json",
-          },
-        }
-      );
+          role: "user",
+          content: `Here are the open pull requests for ${repo}. Give a concise summary of what's being worked on, grouped by theme where possible.\n\n${prList}`,
+        },
+      ],
+    });
 
-      if (!response.ok) {
-        throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);
-      }
+    const summary = message.content[0].type === "text" ? message.content[0].text : "";
 
-      const prs = await response.json();
-
-      if (prs.length === 0) {
-        return { summary: "No open pull requests found.", prCount: 0 };
-      }
-
-      // Use Claude to summarize what's being worked on
-      const prList = prs
-        .map(
-          (pr: { number: number; title: string; user: { login: string }; body: string | null }) =>
-            `#${pr.number} by @${pr.user.login}: ${pr.title}\n${pr.body?.slice(0, 200) ?? ""}`
-        )
-        .join("\n\n");
-
-      const message = await anthropic.messages.create({
-        model: "claude-opus-4-6",
-        max_tokens: 1024,
-        messages: [
-          {
-            role: "user",
-            content: `Here are the open pull requests for ${repo}. Give a concise summary of what's being worked on, grouped by theme where possible.\n\n${prList}`,
-          },
-        ],
-      });
-
-      const summary = message.content[0].type === "text" ? message.content[0].text : "";
-
-      return { summary, prCount: prs.length };
-    },
-  });
-  ```
-</CodeGroup>
+    return { summary, prCount: prs.length };
+  },
+});
+```
 
 ## Step 3: Create the API route
 
@@ -256,27 +252,25 @@ Add `NANGO_SECRET_KEY` and `ANTHROPIC_API_KEY` as [environment variables](/docs/
 
 ## Test it
 
-<Steps>
-  <Step title="Start your dev servers">
-    ```bash theme={"theme":"css-variables"}
-    npm run dev
-    npx trigger.dev@latest dev
-    ```
-  </Step>
+### 1. Start your dev servers
 
-  <Step title="Connect GitHub and trigger the task">
-    Open your app, click **Analyze my PRs**, and complete the GitHub OAuth flow. The task will be triggered automatically.
-  </Step>
+```bash theme={"theme":"css-variables"}
+npm run dev
+npx trigger.dev@latest dev
+```
 
-  <Step title="Watch the run in Trigger.dev">
-    Open your [Trigger.dev dashboard](https://cloud.trigger.dev/) and navigate to **Runs** to see the task execute. You'll see the PR count and Claude's summary in the output.
-  </Step>
-</Steps>
+### 2. Connect GitHub and trigger the task
 
-<Check>
-  Your task is now fetching a fresh GitHub token from Nango, calling the GitHub API on behalf of the
-  user, and using Claude to summarize their open PRs. No token storage or refresh logic required.
-</Check>
+Open your app, click **Analyze my PRs**, and complete the GitHub OAuth flow. The task will be triggered automatically.
+
+### 3. Watch the run in Trigger.dev
+
+Open your [Trigger.dev dashboard](https://cloud.trigger.dev/) and navigate to **Runs** to see the task execute. You'll see the PR count and Claude's summary in the output.
+
+> [!TIP]
+>
+> Your task is now fetching a fresh GitHub token from Nango, calling the GitHub API on behalf of the
+> user, and using Claude to summarize their open PRs. No token storage or refresh logic required.
 
 ## Next steps
 

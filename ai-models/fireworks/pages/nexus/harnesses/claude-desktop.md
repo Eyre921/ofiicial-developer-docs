@@ -6,7 +6,11 @@ path: nexus/harnesses/claude-desktop
 
 Run Claude Desktop's Chat, Cowork, and Code on Fireworks models with the Nexus CLI, and manage connectors in third-party mode.
 
-Nexus CLI runs Claude Desktop's Chat, Cowork, and Code on Fireworks models. It runs on macOS and Linux and needs a stored credential from `nexus login`. Linux support is unofficial: Anthropic documents third-party mode for macOS and Windows, but the Linux build uses the same mechanism. On Linux, `on` needs a systemd user session. **Quit and reopen Claude Desktop after `on` or `off`.**
+Nexus CLI runs Claude Desktop's Chat, Cowork, and Code on Fireworks models. **Quit and reopen Claude Desktop after `on` or `off`.**
+
+* Works on macOS and Linux, and needs a stored credential from `nexus login`.
+* Linux support is unofficial. Anthropic documents third-party mode for macOS and Windows, but the Linux build uses the same mechanism.
+* On Linux, `on` needs a systemd user session. A normal desktop login has one.
 
 PreviewAnthropic MessagesNative web searchmacOS and Linux
 
@@ -20,13 +24,13 @@ Claude Desktop has no manual setup. Use the Nexus CLI.
 curl -fsSL https://nexus.fireworks.ai/install.sh | bash
 ```
 
-Requires Node.js 18 or later, `git`, and `bash`. On Windows, run it from Git Bash; PowerShell breaks the script's line endings.
+You need Node.js 22 or later, `git`, and `bash`. On Windows, run the installer from Git Bash. PowerShell breaks the script's line endings.
 
 ```bash wrap theme={null}
 nexus login
 ```
 
-Sign in with your browser, or paste a Fireworks key.
+Sign in with your browser, or paste a Fireworks API key (`fw_...`).
 
 Already set up? Skip to step 2.
 
@@ -43,6 +47,8 @@ Reopen Claude Desktop. The picker starts on `auto`, followed by the Fireworks mo
 
 ![Claude Desktop model picker in Cowork showing Auto selected, then Kimi K3 Fast, Kimi K3, MiniMax M3, GLM 5.3 Fast, GLM 5.3, and DeepSeek V4.1 Flash](https://mintcdn.com/fireworksai/DBOQdoU3Q63xUkRQ/images/nexus/claude-desktop-model-picker.png?fit=max\&auto=format\&n=DBOQdoU3Q63xUkRQ\&q=85\&s=2246cd8dd91fd185679de3ad756f9009)
 
+Claude Desktop after Nexus CLI, with Auto selected
+
 > [!TIP]
 >
 > The picker starts on `auto`, followed by the Fireworks models.
@@ -51,25 +57,37 @@ Reopen Claude Desktop. The picker starts on `auto`, followed by the Fireworks mo
 
 ## Use Nexus Auto
 
-The picker lists `auto` and the Fireworks models. In Claude Desktop, `auto` uses Fireworks open models only, and there's no local provider key to set. To pick between Anthropic models and open models for each turn, use Nexus Auto in [Claude Code](/nexus/harnesses/claude-code).
+The picker lists `auto` and the Fireworks models. Claude Desktop's model families start on `auto` for Opus and Fable, `glm-latest` for Sonnet, and `glm-flash-latest` for Haiku.
+
+Without an Anthropic or OpenAI credential, `auto` uses Fireworks open models. To let it also use Anthropic or OpenAI models, connect a [Provider Key](/nexus/provider-keys) on your account, or save your own key:
+
+```bash wrap theme={null}
+nexus auto --anthropic-api-key   # prompts for the key (or --openai-api-key)
+```
+
+* The local gateway adds a saved key to `auto` turns from the next request. You don't need to run `nexus claude-desktop on` again or restart the app.
+* Pinned Fireworks models never get the key.
+* `nexus auto --unset anthropic-api-key` stops sending it on the next request.
+* After `nexus update`, the local gateway restarts on its own so it runs the new version.
 
 ## MCP and tools
 
 Third-party mode hides the in-app connector browser, so you manage connectors with Nexus CLI. See [Connectors](#connectors).
 
-Native web search is supported while connected through Nexus CLI. Fireworks runs the search server-side and returns the results, with no MCP server or search service to set up.
+Native web search is supported while connected through Nexus CLI. Fireworks runs the search server-side and returns the results. You don't need an MCP server or a search service.
 
 ## Connectors
 
-Claude Desktop's third-party mode hides the in-app connector browser. Manage connectors with Nexus CLI instead:
+Manage connectors with Nexus CLI:
 
-* `on` imports the connectors you already use, from Desktop session history, your previous Desktop config, and your claude.ai organization's connector registry.
-* `mcp sync` also adds connectors from your claude.ai organization when the Claude Code CLI is installed and signed in, plus any you added later. Run `nexus claude-desktop mcp sync` when you add a connector later and want it in third-party mode too.
+* `on` imports the connectors you already use. It reads Desktop session history and your previous Desktop config. When the Claude Code CLI is installed and signed in to claude.ai, it also reads your organization's connector registry.
+* `nexus claude-desktop mcp sync` imports again from the same sources. Run it after you add a connector outside third-party mode.
 * `nexus claude-desktop mcp add <name> <url>` and `mcp remove <name>` manage entries by hand. Removals stick across syncs.
-* Each connector asks you to sign in once the first time you use it after `on`.
-* Connector OAuth clients you register are saved in `~/.nexus/claude-desktop/oauth-clients.json`, readable only by you. They survive `off` and `on`.
+* `nexus claude-desktop mcp list` shows what is set up.
+* Each connector asks you to sign in once, the first time you use it after `on`.
+* Your connector setup survives `off` and `on`. OAuth clients you register are saved in `~/.nexus/claude-desktop/oauth-clients.json`, readable only by you.
 
-MCPs that need an OAuth client ID and secret do not move. If you need one of these connectors, [reach out to the team](https://fireworks.ai/contact).
+Connectors hosted by Anthropic or Google sign in through claude.ai, so Nexus CLI skips them unless you register your own OAuth client. If you need one that has no recipe on this page, [reach out to the team](https://fireworks.ai/contact).
 
 Google-hosted connectors (Gmail, Google Drive, Google Calendar, BigQuery) need a Google OAuth client you own, created as a **Desktop app** client in Google Cloud. One client covers all four:
 
@@ -116,6 +134,8 @@ Anthropic lists these limits in its [third-party feature matrix](https://claude.
 
 > **See what Nexus CLI writes**
 >
-> * `on` writes a third-party inference provider profile, Claude Desktop's own supported mechanism. The profile points at a small local gateway that Nexus CLI runs as a background service: a launchd agent on macOS, or a systemd user unit on Linux. It starts at login and restarts after a crash.
+> * `on` writes a third-party inference provider profile, Claude Desktop's own supported mechanism. The profile points at a small local gateway that Nexus CLI runs as a background service. It starts at login and restarts after a crash.
+> * The service is a launchd agent on macOS (`~/Library/LaunchAgents/ai.fireworks.nexus.claude-desktop-shim.plist`) or a systemd user unit on Linux (`~/.config/systemd/user/ai.fireworks.nexus.claude-desktop-shim.service`).
+> * Nexus CLI keeps its Claude Desktop state, connector list, and OAuth clients in `~/.nexus/claude-desktop/`.
 > * `on` copies your custom skills and plugins into third-party mode. It never overwrites a file that is already there. Conversations stay in the mode they were made in.
 > * `off` restores your previous provider profile and the device settings Nexus CLI changed, then removes the local gateway service. Nothing of yours is deleted.

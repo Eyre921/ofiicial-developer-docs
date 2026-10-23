@@ -33,25 +33,25 @@ console.log(completed.status, completed.counts);
 
 `filter` accepts the SDK run-list filter fields, excluding pagination fields such as `limit`, `after`, and `before`. This is the TypeScript SDK shape used by `runs.list()` (`from`, `to`, and `period` are top-level fields), not the nested `filter[createdAt]` query shape shown in the raw HTTP list-runs endpoint. Provide at least one filter field; use `runIds` when you want to target specific runs. Relative time filters such as `period` are resolved when the bulk action is created, so later batches process the same fixed time range.
 
-<Warning>
-  Filters inherit the same time semantics as `runs.list()`: when you don't pass `from`, `to`, or `period`, the action defaults to the **last 7 days** and won't target older matching runs. To cover a wider range, pass an explicit `period` (such as `"30d"`), a `from` timestamp, or a `from`/`to` pair. This default only applies to `filter` selections; `runIds` selections are never time-bounded.
-</Warning>
+> [!WARNING]
+>
+> Filters inherit the same time semantics as `runs.list()`: when you don't pass `from`, `to`, or `period`, the action defaults to the **last 7 days** and won't target older matching runs. To cover a wider range, pass an explicit `period` (such as `"30d"`), a `from` timestamp, or a `from`/`to` pair. This default only applies to `filter` selections; `runIds` selections are never time-bounded.
 
-<ParamField type="BulkActionFilter">
-  Selects runs using the SDK run-list filter shape, excluding `limit`, `after`, and `before`. In raw HTTP requests these fields are sent as JSON body properties, so time fields are top-level (`from`, `to`, `period`) instead of nested under `createdAt`.
-</ParamField>
+**filter** `BulkActionFilter`
 
-<ParamField type="string[]">
-  Selects specific run IDs. Provide either `filter` or `runIds`, not both.
-</ParamField>
+Selects runs using the SDK run-list filter shape, excluding `limit`, `after`, and `before`. In raw HTTP requests these fields are sent as JSON body properties, so time fields are top-level (`from`, `to`, `period`) instead of nested under `createdAt`.
 
-<ParamField type="string">
-  A name for the bulk action.
-</ParamField>
+**runIds** `string[]`
 
-<ParamField type="string">
-  Replays matching runs in a specific region. When omitted, each replay keeps the original run's region. This option is only available for `runs.bulk.replay()`.
-</ParamField>
+Selects specific run IDs. Provide either `filter` or `runIds`, not both.
+
+**name** `string`
+
+A name for the bulk action.
+
+**targetRegion** `string`
+
+Replays matching runs in a specific region. When omitted, each replay keeps the original run's region. This option is only available for `runs.bulk.replay()`.
 
 ## Create a bulk cancel
 
@@ -85,43 +85,43 @@ console.log(action.counts.total, action.counts.success, action.counts.failure);
 
 The returned bulk action object has these fields:
 
-<ResponseField name="id" type="string">
-  The bulk action ID, starting with `bulk_`.
-</ResponseField>
+**id** `string`
 
-<ResponseField name="type" type="'CANCEL' | 'REPLAY'">
-  The action being performed.
-</ResponseField>
+The bulk action ID, starting with `bulk_`.
 
-<ResponseField name="status" type="'PENDING' | 'COMPLETED' | 'ABORTED'">
-  The current bulk action status.
-</ResponseField>
+**type** `'CANCEL' | 'REPLAY'`
 
-<ResponseField name="counts" type="object">
-  Aggregate processing counts.
+The action being performed.
 
-  <Expandable title="properties">
-    <ResponseField name="total" type="number">
-      The number of runs selected when the bulk action was created.
-    </ResponseField>
+**status** `'PENDING' | 'COMPLETED' | 'ABORTED'`
 
-    <ResponseField name="success" type="number">
-      The number of runs processed successfully.
-    </ResponseField>
+The current bulk action status.
 
-    <ResponseField name="failure" type="number">
-      The number of runs that could not be processed.
-    </ResponseField>
-  </Expandable>
-</ResponseField>
+**counts** `object`
 
-<ResponseField name="createdAt" type="Date">
-  The date and time the bulk action was created.
-</ResponseField>
+Aggregate processing counts.
 
-<ResponseField name="completedAt" type="Date">
-  The date and time the bulk action completed.
-</ResponseField>
+**properties**
+
+**total** `number`
+
+The number of runs selected when the bulk action was created.
+
+**success** `number`
+
+The number of runs processed successfully.
+
+**failure** `number`
+
+The number of runs that could not be processed.
+
+**createdAt** `Date`
+
+The date and time the bulk action was created.
+
+**completedAt** `Date`
+
+The date and time the bulk action completed.
 
 ## Poll for completion
 
@@ -149,9 +149,9 @@ await runs.bulk.abort("bulk_1234");
 
 Abort is best effort. Runs already being processed in the current batch may still finish.
 
-<Note>
-  Each environment can only run a limited number of bulk replays at the same time. If you start a replay while too many are still in progress, the call fails and returns an error. Wait for an in-progress replay to finish or abort one before starting another. Bulk cancels are not subject to this limit.
-</Note>
+> [!NOTE]
+>
+> Each environment can only run a limited number of bulk replays at the same time. If you start a replay while too many are still in progress, the call fails and returns an error. Wait for an in-progress replay to finish or abort one before starting another. Bulk cancels are not subject to this limit.
 
 ## List bulk actions
 

@@ -15,38 +15,36 @@ This eliminates the need to manually run the `trigger.dev deploy` command or set
 
 ## Setup
 
-<Steps>
-  <Step title="Install our GitHub app">
-    Go to your project's settings page and click `Install GitHub app`.
-    This will take you to GitHub to authorize the Trigger.dev app for your organization or personal account.
-  </Step>
+**1. Install our GitHub app**
 
-  <Step title="Connect your repository">
-    Select a repository to connect to your project.
-  </Step>
+Go to your project's settings page and click `Install GitHub app`.
+This will take you to GitHub to authorize the Trigger.dev app for your organization or personal account.
 
-  <Step title="Configure branch tracking">
-    Choose which branches should trigger automatic deployments:
+**2. Connect your repository**
 
-    * **Production**: The branch that deploys to your production environment, e.g., `main`.
-    * **Staging**: The branch that deploys to your staging environment.
-    * **Preview**: Toggle to enable preview deployments for pull requests
-  </Step>
+Select a repository to connect to your project.
 
-  <Step title="Customize build settings (optional)">
-    Configure how your project is built:
+**3. Configure branch tracking**
 
-    * **Trigger config file**: Auto-detected by default — we find your `trigger.config.ts` anywhere in your repository. Set a path relative to the root of your repository to override it, e.g., `apps/tasks/trigger.config.ts`. If your repository contains more than one config file, set the path of the one to use.
-    * **Install command**: Auto-detected by default, but you can override it if necessary. The command will be run from the root of your repository.
-    * **Pre-build command**: Run any commands before building and deploying your project, e.g., `pnpm run prisma:generate`. The command will be run from the root of your repository.
-  </Step>
-</Steps>
+Choose which branches should trigger automatic deployments:
+
+* **Production**: The branch that deploys to your production environment, e.g., `main`.
+* **Staging**: The branch that deploys to your staging environment.
+* **Preview**: Toggle to enable preview deployments for pull requests
+
+**4. Customize build settings (optional)**
+
+Configure how your project is built:
+
+* **Trigger config file**: Auto-detected by default — we find your `trigger.config.ts` anywhere in your repository. Set a path relative to the root of your repository to override it, e.g., `apps/tasks/trigger.config.ts`. If your repository contains more than one config file, set the path of the one to use.
+* **Install command**: Auto-detected by default, but you can override it if necessary. The command will be run from the root of your repository.
+* **Pre-build command**: Run any commands before building and deploying your project, e.g., `pnpm run prisma:generate`. The command will be run from the root of your repository.
 
 ## Branch tracking
 
 Our GitHub integration uses branch tracking to determine when and where to deploy your code.
 
-<img alt="Trigger.dev project git settings" />
+![Trigger.dev project git settings](https://mintcdn.com/trigger/rYmvd2BT_CpeAo5i/deployment/git-settings.png?fit=max\&auto=format\&n=rYmvd2BT_CpeAo5i\&q=85\&s=22539316605344f0d461e9132b365161)
 
 ### Production and staging branches
 
@@ -57,10 +55,10 @@ Our build server will install the project dependencies, build your project, and 
 
 If there are multiple consecutive pushes to a tracked branch, the later deployments will be queued until the previous deployment completes.
 
-<Note>
-  When you connect a repository, the default branch of your repository will be used as the production tracking branch by default.
-  You can change this in the git settings of your project.
-</Note>
+> [!NOTE]
+>
+> When you connect a repository, the default branch of your repository will be used as the production tracking branch by default.
+> You can change this in the git settings of your project.
 
 ### Pull requests
 
@@ -69,9 +67,9 @@ When the pull request is merged or closed, the preview branch is automatically a
 
 The name of the preview branch matches the branch name of the pull request.
 
-<Note>
-  Preview branch deployments require the preview environment to be enabled on your project. Learn more about [preview branches](/docs/deployment/preview-branches).
-</Note>
+> [!NOTE]
+>
+> Preview branch deployments require the preview environment to be enabled on your project. Learn more about [preview branches](/docs/deployment/preview-branches).
 
 ## Version skew protection
 
@@ -93,7 +91,7 @@ You can disconnect a repository at any time from your project git settings. This
 
 To add or remove repository access for the Trigger.dev GitHub app, follow the link in the `Connect GitHub repository` modal:
 
-<img alt="Trigger.dev prompt to connect a GitHub repository" />
+![Trigger.dev prompt to connect a GitHub repository](https://mintcdn.com/trigger/rYmvd2BT_CpeAo5i/deployment/connect-repo.png?fit=max\&auto=format\&n=rYmvd2BT_CpeAo5i\&q=85\&s=60a5382c08d707000e907b292242f388)
 
 Alternatively, you can follow these steps on GitHub:
 
@@ -111,9 +109,9 @@ In the build server, the `TRIGGER_BUILD_` prefix is stripped from the variable n
 
 Build extensions will also have access to these variables.
 
-<Note>
-  Build environment variables only apply to deployments in the environment you set them in.
-</Note>
+> [!NOTE]
+>
+> Build environment variables only apply to deployments in the environment you set them in.
 
 Learn more about managing [environment variables](/docs/deploy-environment-variables).
 
@@ -143,7 +141,7 @@ cat .npmrc | base64
 
 Then, set the `TRIGGER_BUILD_NPM_RC` environment variable in your project settings with the encoded value.
 
-<Note>
-  The build server will automatically create a `.npmrc` file in the installation directory based on the content of the `TRIGGER_BUILD_NPM_RC` environment variable.
-  This enables the build server to authenticate to your private npm registry.
-</Note>
+> [!NOTE]
+>
+> The build server will automatically create a `.npmrc` file in the installation directory based on the content of the `TRIGGER_BUILD_NPM_RC` environment variable.
+> This enables the build server to authenticate to your private npm registry.

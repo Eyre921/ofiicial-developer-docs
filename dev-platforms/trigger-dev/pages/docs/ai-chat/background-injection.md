@@ -180,9 +180,9 @@ export const myChat = chat.agent({
 
 `chat.defer()` can be called from anywhere during a turn: hooks, `run()`, or nested helpers. All deferred promises are collected and awaited together before `onTurnComplete`.
 
-<Warning>
-  **Don't use `chat.defer()` for the message-history write in `onTurnStart`.** `chat.defer` only promises the work finished before `onTurnComplete`, which is long after the answer started streaming. A page refresh in between reads `[]` from your DB and loses the user's message from the rendered conversation. Use [`chat.deferBeforeOutput()`](#chat-deferbeforeoutput) for that write instead, and reserve `chat.defer` for writes whose timing has no resume implication.
-</Warning>
+> [!WARNING]
+>
+> **Don't use `chat.defer()` for the message-history write in `onTurnStart`.** `chat.defer` only promises the work finished before `onTurnComplete`, which is long after the answer started streaming. A page refresh in between reads `[]` from your DB and loses the user's message from the rendered conversation. Use [`chat.deferBeforeOutput()`](#chat-deferbeforeoutput) for that write instead, and reserve `chat.defer` for writes whose timing has no resume implication.
 
 ## `chat.deferBeforeOutput`
 
@@ -207,20 +207,20 @@ export const myChat = chat.agent({
 
 Use it for the conversation write, a message insert, or anything else the frontend reads back on reload. Keep analytics, audit logs and search-index updates on `chat.defer`.
 
-<Warning>
-  **This is not a consistency barrier for the turn.** It orders the write against what the frontend can see, and nothing else. The work is still in flight while the model runs, so a tool, a `prepareStep`, or another service reading the same row during the turn can still see the state as it was before the write.
-
-  If the turn's own code reads the write back, `await` it instead:
-
-  ```ts theme={"theme":"css-variables"}
-  onTurnStart: async ({ chatId, uiMessages }) => {
-    // A tool later in this turn reads this row, so the turn has to wait for it.
-    await db.chat.update({ where: { id: chatId }, data: { messages: uiMessages } });
-  },
-  ```
-
-  That costs time to first token, which is the price of the stronger guarantee. `chat.deferBeforeOutput` is for writes whose only reader is the next page load.
-</Warning>
+> [!WARNING]
+>
+> **This is not a consistency barrier for the turn.** It orders the write against what the frontend can see, and nothing else. The work is still in flight while the model runs, so a tool, a `prepareStep`, or another service reading the same row during the turn can still see the state as it was before the write.
+>
+> If the turn's own code reads the write back, `await` it instead:
+>
+> ```ts theme={"theme":"css-variables"}
+> onTurnStart: async ({ chatId, uiMessages }) => {
+>   // A tool later in this turn reads this row, so the turn has to wait for it.
+>   await db.chat.update({ where: { id: chatId }, data: { messages: uiMessages } });
+> },
+> ```
+>
+> That costs time to first token, which is the price of the stronger guarantee. `chat.deferBeforeOutput` is for writes whose only reader is the next page load.
 
 A registered promise that rejects, or that runs longer than the internal timeout, lets the answer through rather than stalling the conversation. It is a best-effort ordering guarantee, not a lock.
 
@@ -233,9 +233,9 @@ A registered promise that rejects, or that runs longer than the internal timeout
 | **Read back by tools in the same turn** | No | No |
 | **Use for** | Analytics, audit logs, index writes | Conversation and message writes the frontend reads back |
 
-<Note>
-  If your agent persists through a [transcript storage](/docs/ai-chat/transcript-storage), the runtime already does this for the incoming message on your behalf. `chat.deferBeforeOutput` is for writes your app owns on top of that.
-</Note>
+> [!NOTE]
+>
+> If your agent persists through a [transcript storage](/docs/ai-chat/transcript-storage), the runtime already does this for the incoming message on your behalf. `chat.deferBeforeOutput` is for writes your app owns on top of that.
 
 ## How it differs from pending messages
 
@@ -262,14 +262,14 @@ for every provider. `standardizePrompt` throws before any provider is called, an
 its own advice is to use the instructions option, so the injected block goes there
 rather than into the transcript.
 
-<Warning>
-  The instructions lane is delivered by `chat.toStreamTextOptions()`, because that
-  is the only place the SDK can set `streamText`'s instructions for you. If your
-  `run()` calls `streamText({ model, messages, abortSignal })` without spreading
-  `chat.toStreamTextOptions()`, a `role: "system"` injection never reaches the
-  model. The conversational lane has no such requirement: it arrives through
-  `messages` either way.
-</Warning>
+> [!WARNING]
+>
+> The instructions lane is delivered by `chat.toStreamTextOptions()`, because that
+> is the only place the SDK can set `streamText`'s instructions for you. If your
+> `run()` calls `streamText({ model, messages, abortSignal })` without spreading
+> `chat.toStreamTextOptions()`, a `role: "system"` injection never reaches the
+> model. The conversational lane has no such requirement: it arrives through
+> `messages` either way.
 
 * An injection applies to the next turn only. A block injected in `onTurnComplete`
   shapes the following turn and is cleared after it, so it is not repeated on every
@@ -318,6 +318,6 @@ Messages are drained (consumed) when:
 1. A new turn starts, before `run()` executes
 2. A `prepareStep` boundary is reached, between tool-call steps during streaming
 
-<Note>
-  `chat.inject()` writes to an in-memory queue in the current process. It works from any code running in the same task: lifecycle hooks, deferred work, tool execute functions, etc. It does not work from subtasks or other runs.
-</Note>
+> [!NOTE]
+>
+> `chat.inject()` writes to an in-memory queue in the current process. It works from any code running in the same task: lifecycle hooks, deferred work, tool execute functions, etc. It does not work from subtasks or other runs.

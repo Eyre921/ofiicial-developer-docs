@@ -6,12 +6,6 @@ path: docs/webhooks/human-in-the-loop
 
 Pause an agent mid-turn to get a human decision from the channel (Slack approve/deny), then resume with the answer.
 
-<PrivateBeta>
-  [Request access](https://trigger.dev/webhooks-beta) and we'll turn webhooks on for your
-  organization and send you the prerelease packages. Webhooks are open source, so they work
-  self-hosted too. APIs may change before general availability.
-</PrivateBeta>
-
 **An agent on a [channel](/docs/webhooks/channels) can pause a turn to get a human decision, then resume once someone answers in the thread.** It posts controls into the conversation and picks up where it left off once someone clicks, with the decision merged into the turn. This is the channel counterpart of browser [human-in-the-loop](/docs/ai-chat/patterns/human-in-the-loop): the same no-`execute` tool, but the controls live in Slack (or your own surface) instead of a React component. The [`slack()`](/docs/webhooks/slack) connector ships Approve and Deny buttons out of the box.
 
 ## How it works
@@ -93,21 +87,21 @@ When the model calls `requestApproval`, the bot posts "Approval needed" with the
 
 For [`chat.channels.custom`](/docs/webhooks/channels), four hooks own the interaction round-trip:
 
-<ParamField type="(pending, ctx) => ChannelMessage | null">
-  Map the pending tool call(s) to the controls you post. `pending` is a list of `{ toolCallId, toolName, input }`, and `ctx` carries the `event` and `deliveryId` that started the turn (both absent on a bound turn, such as a `chat.turn()` action answering into the thread). Return `null` to skip posting controls.
-</ParamField>
+**renderInteraction** `(pending, ctx) =\> ChannelMessage | null`
 
-<ParamField type="(event) => { toolCallId, output } | null">
-  Map a verified callback event to a resolution. The `output` is stitched onto the pending tool call matched by `toolCallId` and the run resumes. Return `null` to treat the event as a normal message instead (a new turn).
-</ParamField>
+Map the pending tool call(s) to the controls you post. `pending` is a list of `{ toolCallId, toolName, input }`, and `ctx` carries the `event` and `deliveryId` that started the turn (both absent on a bound turn, such as a `chat.turn()` action answering into the thread). Return `null` to skip posting controls.
 
-<ParamField type="(event, resolution) => void">
-  Collapse the controls after a decision so they cannot be clicked again. Best effort: a failure here is logged and the run still resumes.
-</ParamField>
+**onInteraction** `(event) =\> \{ toolCallId, output \} | null`
 
-<ParamField type="(cancelled, ctx) => void">
-  Take the controls down when a stop (`onControl` returning `{ kind: "stop", whenIdle: "drop" }`) arrives while the session waits on them. Each cancelled call carries the `ref` its controls were posted with. The calls are already resolved as stopped. Best effort: a failure is logged.
-</ParamField>
+Map a verified callback event to a resolution. The `output` is stitched onto the pending tool call matched by `toolCallId` and the run resumes. Return `null` to treat the event as a normal message instead (a new turn).
+
+**finalizeInteraction** `(event, resolution) =\> void`
+
+Collapse the controls after a decision so they cannot be clicked again. Best effort: a failure here is logged and the run still resumes.
+
+**cancelInteraction** `(cancelled, ctx) =\> void`
+
+Take the controls down when a stop (`onControl` returning `{ kind: "stop", whenIdle: "drop" }`) arrives while the session waits on them. Each cancelled call carries the `ref` its controls were posted with. The calls are already resolved as stopped. Best effort: a failure is logged.
 
 Slack encodes the tool call id and the click's output in each button's `value` so `onInteraction` can resolve the exact call (see [Approvals and buttons](/docs/webhooks/slack#approvals-and-buttons) to customize the buttons or give a tool its own UI), and `finalizeInteraction` posts to the interaction's `response_url` with `replace_original` to swap the buttons for the outcome. On a custom surface you choose the encoding and how you edit the controls away.
 
@@ -150,20 +144,18 @@ When the turn resumes, the channel reply shows the agent's answer, not the text 
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Channels" icon="comments" href="/docs/webhooks/channels">
-    Point Slack or any surface at an agent so messages become turns.
-  </Card>
+> **[Channels](/docs/webhooks/channels)**
+>
+> Point Slack or any surface at an agent so messages become turns.
 
-  <Card title="Browser human-in-the-loop" icon="hand" href="/docs/ai-chat/patterns/human-in-the-loop">
-    The same no-execute pause, rendered in a React frontend.
-  </Card>
+> **[Browser human-in-the-loop](/docs/ai-chat/patterns/human-in-the-loop)**
+>
+> The same no-execute pause, rendered in a React frontend.
 
-  <Card title="Sessions" icon="layer-group" href="/docs/ai-chat/sessions">
-    The durable per-conversation state a channel turn runs on.
-  </Card>
+> **[Sessions](/docs/ai-chat/sessions)**
+>
+> The durable per-conversation state a channel turn runs on.
 
-  <Card title="Filters" icon="filter" href="/docs/webhooks/filters">
-    Gate which verified deliveries reach the agent.
-  </Card>
-</CardGroup>
+> **[Filters](/docs/webhooks/filters)**
+>
+> Gate which verified deliveries reach the agent.

@@ -12,6 +12,8 @@ To set your connection's capabilities see the [Authorization](/guides/get-starte
 
 ![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/06dcfeb-Screen_Shot_2022-07-15_at_11.48.40_AM.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=39659d0a5b57cb5c43367283263c0565)
 
+A screenshot of the capability configuration screen.
+
 > [!NOTE]
 >
 > **If a connection is added to a page, then the connection can access the page’s children**

@@ -66,28 +66,26 @@ Three primitives, related but distinct:
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Quick Start" icon="rocket" href="/docs/ai-chat/quick-start">
-    Get a working chat in three steps — agent, token, frontend.
-  </Card>
+> **[Quick Start](/docs/ai-chat/quick-start)**
+>
+> Get a working chat in three steps — agent, token, frontend.
 
-  <Card title="How it works" icon="diagram-project" href="/docs/ai-chat/how-it-works">
-    Sessions, the turn loop, durable streams, and what survives a refresh.
-  </Card>
+> **[How it works](/docs/ai-chat/how-it-works)**
+>
+> Sessions, the turn loop, durable streams, and what survives a refresh.
 
-  <Card title="Backend" icon="server" href="/docs/ai-chat/backend">
-    `chat.agent` options, lifecycle hooks, and the raw-task primitives.
-  </Card>
+> **[Backend](/docs/ai-chat/backend)**
+>
+> `chat.agent` options, lifecycle hooks, and the raw-task primitives.
 
-  <Card title="Tools" icon="wrench" href="/docs/ai-chat/tools">
-    Declare tools so `toModelOutput` survives across turns, typed in `run()`.
-  </Card>
+> **[Tools](/docs/ai-chat/tools)**
+>
+> Declare tools so `toModelOutput` survives across turns, typed in `run()`.
 
-  <Card title="Patterns" icon="puzzle-piece" href="/docs/ai-chat/patterns/sub-agents">
-    HITL approvals, branching, sub-agents, OOM/crash recovery.
-  </Card>
+> **[Patterns](/docs/ai-chat/patterns/sub-agents)**
+>
+> HITL approvals, branching, sub-agents, OOM/crash recovery.
 
-  <Card title="Database connections" icon="database" href="/docs/database-connections">
-    Size and release connection pools so agents don't exhaust your database.
-  </Card>
-</CardGroup>
+> **[Database connections](/docs/database-connections)**
+>
+> Size and release connection pools so agents don't exhaust your database.

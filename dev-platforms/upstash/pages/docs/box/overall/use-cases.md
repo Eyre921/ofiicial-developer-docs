@@ -1,5 +1,5 @@
 ---
-title: "Use Cases"
+title: "Upstash Box Use Cases"
 source: https://upstash.com/docs/box/overall/use-cases
 path: docs/box/overall/use-cases
 ---

@@ -10,7 +10,7 @@ This example task generates an image from a URL using Fal.ai and uploads it to C
 
 This video walks through the process of creating this task in a Next.js project.
 
-<iframe title="Trigger.dev walkthrough" />
+[Trigger.dev walkthrough](https://www.youtube.com/embed/AyRT4X8dHK0?si=ugA172V_3TMjik9h)
 
 ## Prerequisites
 

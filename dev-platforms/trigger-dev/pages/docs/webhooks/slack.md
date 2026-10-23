@@ -6,12 +6,6 @@ path: docs/webhooks/slack
 
 Turn a chat.agent into a Slack agent: users message it in Slack, it shows its status while it works, streams its reply with its tool calls as a plan, asks for approvals, and stops on Slack's stop button.
 
-<PrivateBeta>
-  [Request access](https://trigger.dev/webhooks-beta) and we'll turn webhooks on for your
-  organization and send you the prerelease packages. Webhooks are open source, so they work
-  self-hosted too. APIs may change before general availability.
-</PrivateBeta>
-
 **`slack()` from `@trigger.dev/slack` turns a `chat.agent` into a native Slack agent.** Each Slack agent session (a conversation with the agent, or a thread in a channel) becomes a durable Trigger.dev [session](/docs/ai-chat/sessions). A message runs as a turn, the session shows the agent working, the reply streams into the thread as the model writes it, and Slack's stop button stops the turn.
 
 ```ts /trigger/support.ts theme={"theme":"css-variables"}
@@ -42,62 +36,60 @@ export const support = chat.agent({
 
 ## Setup
 
-<Steps>
-  <Step title="Deploy the agent">
-    Declare the endpoint with `webhookSource()` from `@trigger.dev/slack` and pass it to `slack({ endpoint })`. Deploying registers the hosted [endpoint](/docs/webhooks/connect) and gives you its URL.
-  </Step>
+**1. Deploy the agent**
 
-  <Step title="Create the Slack app from a manifest">
-    At [api.slack.com/apps](https://api.slack.com/apps), create an app **From a manifest** and paste this, with the endpoint's URL in both request URLs:
+Declare the endpoint with `webhookSource()` from `@trigger.dev/slack` and pass it to `slack({ endpoint })`. Deploying registers the hosted [endpoint](/docs/webhooks/connect) and gives you its URL.
 
-    ```yaml manifest.yaml theme={"theme":"css-variables"}
-    display_information:
-      name: Support Agent
-    features:
-      bot_user:
-        display_name: Support Agent
-        always_online: true
-      app_home:
-        messages_tab_enabled: true
-        messages_tab_read_only_enabled: false
-      agent_view:
-        agent_description: Answers support questions and handles refunds.
-    oauth_config:
-      scopes:
-        bot:
-          - assistant:write
-          - chat:write
-          - files:read
-          - reactions:write
-          - im:history
-          - app_mentions:read
-          - channels:history
-          - groups:history
-    settings:
-      event_subscriptions:
-        request_url: https://your-endpoint-url
-        bot_events:
-          - message.im
-          - app_mention
-          - message.channels
-          - message.groups
-          - agent_session_stopped
-      interactivity:
-        is_enabled: true
-        request_url: https://your-endpoint-url
-    ```
+**2. Create the Slack app from a manifest**
 
-    `agent_view` makes the app an agent, `agent_session_stopped` turns on the stop button, interactivity delivers clicks on the agent's buttons, `files:read` lets the agent read the images and PDFs users share with it, `reactions:write` lets it mark a message it picked up mid-reply, and `app_mention` with `app_mentions:read` lets an @mention start a session in a channel (see [Channel threads](#channel-threads)). Drop `app_mention`, `message.channels`, `message.groups` and their scopes if the agent should only answer in its own conversations.
-  </Step>
+At [api.slack.com/apps](https://api.slack.com/apps), create an app **From a manifest** and paste this, with the endpoint's URL in both request URLs:
 
-  <Step title="Connect the endpoint">
-    Paste the app's **Signing Secret** (Basic Information, App Credentials) as the endpoint's signing secret. Until it is set the endpoint rejects Slack's signed requests, so Slack shows the request URL as not verified: once the secret is in, click **Verify** on the app's Event Subscriptions page (or **Click here to verify** on the App Manifest page). Install the app to your workspace and pass the bot token (`xoxb-...`) as `token`. The endpoint's setup prompt walks an AI coding agent through these settings.
-  </Step>
+```yaml manifest.yaml theme={"theme":"css-variables"}
+display_information:
+  name: Support Agent
+features:
+  bot_user:
+    display_name: Support Agent
+    always_online: true
+  app_home:
+    messages_tab_enabled: true
+    messages_tab_read_only_enabled: false
+  agent_view:
+    agent_description: Answers support questions and handles refunds.
+oauth_config:
+  scopes:
+    bot:
+      - assistant:write
+      - chat:write
+      - files:read
+      - reactions:write
+      - im:history
+      - app_mentions:read
+      - channels:history
+      - groups:history
+settings:
+  event_subscriptions:
+    request_url: https://your-endpoint-url
+    bot_events:
+      - message.im
+      - app_mention
+      - message.channels
+      - message.groups
+      - agent_session_stopped
+  interactivity:
+    is_enabled: true
+    request_url: https://your-endpoint-url
+```
 
-  <Step title="Try it">
-    Open the agent in Slack and send it a message. The session shows it working within a second, and the reply streams in. In a channel, invite the bot (`/invite @Support Agent`) and message it in a thread.
-  </Step>
-</Steps>
+`agent_view` makes the app an agent, `agent_session_stopped` turns on the stop button, interactivity delivers clicks on the agent's buttons, `files:read` lets the agent read the images and PDFs users share with it, `reactions:write` lets it mark a message it picked up mid-reply, and `app_mention` with `app_mentions:read` lets an @mention start a session in a channel (see [Channel threads](#channel-threads)). Drop `app_mention`, `message.channels`, `message.groups` and their scopes if the agent should only answer in its own conversations.
+
+**3. Connect the endpoint**
+
+Paste the app's **Signing Secret** (Basic Information, App Credentials) as the endpoint's signing secret. Until it is set the endpoint rejects Slack's signed requests, so Slack shows the request URL as not verified: once the secret is in, click **Verify** on the app's Event Subscriptions page (or **Click here to verify** on the App Manifest page). Install the app to your workspace and pass the bot token (`xoxb-...`) as `token`. The endpoint's setup prompt walks an AI coding agent through these settings.
+
+**4. Try it**
+
+Open the agent in Slack and send it a message. The session shows it working within a second, and the reply streams in. In a channel, invite the bot (`/invite @Support Agent`) and message it in a thread.
 
 ## What Slack shows
 

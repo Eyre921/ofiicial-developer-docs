@@ -1,5 +1,5 @@
 ---
-title: "Skills"
+title: "Upstash Agent Skills"
 source: https://upstash.com/docs/agent-resources/skills
 path: docs/agent-resources/skills
 ---

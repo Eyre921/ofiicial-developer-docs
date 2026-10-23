@@ -33,11 +33,11 @@ export default defineConfig({
 });
 ```
 
-<Note>
-  [Build extensions](/docs/config/extensions/overview) allow you to hook into the build system and
-  customize the build process or the resulting bundle and container image (in the case of
-  deploying). You can use pre-built extensions or create your own.
-</Note>
+> [!NOTE]
+>
+> [Build extensions](/docs/config/extensions/overview) allow you to hook into the build system and
+> customize the build process or the resulting bundle and container image (in the case of
+> deploying). You can use pre-built extensions or create your own.
 
 You'll also need to add `@trigger.dev/build` to your `package.json` file under `devDependencies` if you don't already have it there.
 
@@ -132,4 +132,4 @@ To test this task, use this payload structure:
 
 ## Local development
 
-To test this example task locally, be sure to install any packages from the build extensions you added to your `trigger.config.ts` file to your local machine. In this case, you need to install .
+To test this example task locally, be sure to install any packages from the build extensions you added to your `trigger.config.ts` file to your local machine. In this case, you need to install libreoffice.

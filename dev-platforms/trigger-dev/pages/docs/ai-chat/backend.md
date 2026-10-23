@@ -49,12 +49,12 @@ export const simpleChat = chat.agent({
 });
 ```
 
-<Note>
-  The `streamText` destructured from `run`'s argument is the SDK's, not the one
-  imported from `ai`. It carries the agent's managed options, so nothing has to be
-  spread in. [The managed streamText](#the-managed-streamtext) covers what those
-  options are and what happens when yours collide with them.
-</Note>
+> [!NOTE]
+>
+> The `streamText` destructured from `run`'s argument is the SDK's, not the one
+> imported from `ai`. It carries the agent's managed options, so nothing has to be
+> spread in. [The managed streamText](#the-managed-streamtext) covers what those
+> options are and what happens when yours collide with them.
 
 ### The managed streamText
 
@@ -162,13 +162,13 @@ writer.write({
 });
 ```
 
-<Info>
-  This matches the AI SDK's semantics: `data-*` chunks persist to `message.parts` by default. Only `transient: true` chunks are ephemeral. Non-data chunks (`text-delta`, `tool-*`, etc.) are handled by `streamText` and captured via `onFinish` — they don't need `chat.response`.
-</Info>
+> [!NOTE]
+>
+> This matches the AI SDK's semantics: `data-*` chunks persist to `message.parts` by default. Only `transient: true` chunks are ephemeral. Non-data chunks (`text-delta`, `tool-*`, etc.) are handled by `streamText` and captured via `onFinish` — they don't need `chat.response`.
 
-<Note>
-  `chat.response` and the `writer` accumulation behavior work with `chat.agent` and `chat.createSession`. If you're using [`chat.customAgent`](/docs/ai-chat/custom-agents), you own the accumulator — see the raw-task example for the manual pattern.
-</Note>
+> [!NOTE]
+>
+> `chat.response` and the `writer` accumulation behavior work with `chat.agent` and `chat.createSession`. If you're using [`chat.customAgent`](/docs/ai-chat/custom-agents), you own the accumulator — see the raw-task example for the manual pattern.
 
 ### Raw streaming with `chat.stream`
 
@@ -184,9 +184,9 @@ const { waitUntilComplete } = chat.stream.writer({
 await waitUntilComplete();
 ```
 
-<Tip>
-  Use `data-*` chunk types (e.g. `data-status`, `data-progress`) for custom data. The AI SDK processes these into `DataUIPart` objects in `message.parts` on the frontend. Writing the same `type` + `id` again updates the existing part instead of creating a new one — useful for live progress.
-</Tip>
+> [!TIP]
+>
+> Use `data-*` chunk types (e.g. `data-status`, `data-progress`) for custom data. The AI SDK processes these into `DataUIPart` objects in `message.parts` on the frontend. Writing the same `type` + `id` again updates the existing part instead of creating a new one — useful for live progress.
 
 `chat.stream` exposes the full stream API:
 
@@ -274,14 +274,14 @@ export const myChat = chat.agent({
 });
 ```
 
-The managed `streamText` carries the stored prompt's `system`, `model` (resolved through the agent's `registry`), sampling config, and `experimental_telemetry`. Options you pass at the call site win, apart from `system`, which throws when the prompt already set one.
+The managed `streamText` carries the stored prompt's `system`, `model` (resolved through the agent's `registry`), sampling config, and `experimental_telemetry`. AI SDK telemetry is on even without a stored prompt, so model steps and tool calls show in the run trace. Options you pass at the call site win, apart from `system`, which throws when the prompt already set one.
 
 `chat.toStreamTextOptions()` remains available for the same job, and is the only option in a [custom agent](#custom-agents), which has no `run` argument to take a bound `streamText` from. A `chat.headStart` route does get one, and there it also owns `messages`, `stopWhen` and `abortSignal`, since the handover depends on them. Pass `{ registry }` when a prompt names a provider-prefixed model, and `{ tools }` when you want HITL tool approvals, so the SDK knows which calls pause on `needsApproval`.
 
-<Tip>
-  See [Prompts](/docs/ai/prompts) for the full guide — defining templates, variable schemas, dashboard
-  overrides, and the management SDK.
-</Tip>
+> [!TIP]
+>
+> See [Prompts](/docs/ai/prompts) for the full guide — defining templates, variable schemas, dashboard
+> overrides, and the management SDK.
 
 ### Stop generation
 
@@ -313,10 +313,10 @@ export const myChat = chat.agent({
 });
 ```
 
-<Tip>
-  Use `signal` (the combined signal) in most cases. The separate `stopSignal` and `cancelSignal` are
-  only needed if you want different behavior for stop vs cancel.
-</Tip>
+> [!TIP]
+>
+> Use `signal` (the combined signal) in most cases. The separate `stopSignal` and `cancelSignal` are
+> only needed if you want different behavior for stop vs cancel.
 
 #### Detecting stop in callbacks
 
@@ -374,11 +374,11 @@ const cleaned = chat.cleanupAbortedParts(rawResponseMessage);
 
 This removes tool invocation parts stuck in `partial-call` state and marks any `streaming` text or reasoning parts as `done`.
 
-<Note>
-  Stop signal delivery is best-effort. There is a small race window where the model may finish
-  before the stop signal arrives, in which case the turn completes normally with `stopped: false`.
-  This is expected and does not require special handling.
-</Note>
+> [!NOTE]
+>
+> Stop signal delivery is best-effort. There is a small race window where the model may finish
+> before the stop signal arrives, in which case the turn completes normally with `stopped: false`.
+> This is expected and does not require special handling.
 
 ### Tool approvals
 
@@ -420,9 +420,9 @@ To build a chat app that survives page refreshes you persist two things, both se
 1. **Conversation state.** Full `UIMessage[]` keyed by `chatId`. Written from `onTurnStart` (so the user message is durable before streaming begins) and `onTurnComplete` (so the assistant reply lands).
 2. **Session state.** The transport's reconnect metadata: `publicAccessToken` and `lastEventId`. Written alongside the messages from the same hooks.
 
-<Note>
-  Sessions let the transport reconnect to an existing run after a page refresh. Without them, every page load would start a new run, losing the conversation context that was accumulated in the previous run.
-</Note>
+> [!NOTE]
+>
+> Sessions let the transport reconnect to an existing run after a page refresh. Without them, every page load would start a new run, losing the conversation context that was accumulated in the previous run.
 
 For the full per-hook breakdown, race-condition warnings (atomic `lastEventId` writes, why not to use `chat.defer` in `onTurnStart`), token renewal via the `accessToken` callback, and an end-to-end three-file example, see [Database persistence](/docs/ai-chat/patterns/database-persistence).
 
@@ -452,10 +452,10 @@ export const myChat = chat.agent({
 
 On the frontend, the `usePendingMessages` hook handles sending, tracking, and rendering injection points.
 
-<Tip>
-  See [Pending Messages](/docs/ai-chat/pending-messages) for the full guide — backend configuration,
-  frontend hook, queuing vs steering, and how injection works with all three chat variants.
-</Tip>
+> [!TIP]
+>
+> See [Pending Messages](/docs/ai-chat/pending-messages) for the full guide — backend configuration,
+> frontend hook, queuing vs steering, and how injection works with all three chat variants.
 
 ### Background injection
 
@@ -488,10 +488,10 @@ export const myChat = chat.agent({
 });
 ```
 
-<Tip>
-  See [Background Injection](/docs/ai-chat/background-injection) for the full guide — timing, self-review
-  example, and how it differs from pending messages.
-</Tip>
+> [!TIP]
+>
+> See [Background Injection](/docs/ai-chat/background-injection) for the full guide — timing, self-review
+> example, and how it differs from pending messages.
 
 ### Actions
 
@@ -500,11 +500,6 @@ Custom actions let the frontend send structured commands (undo, rollback, edit, 
 See [Actions](/docs/ai-chat/actions).
 
 ### Webhook events and channels
-
-<Note>
-  Webhooks are in private beta. [Request access](https://trigger.dev/webhooks-beta) and we'll turn them on for your
-  organization.
-</Note>
 
 Two `chat.agent()` options wire an agent to verified inbound webhooks. `events` claims [`chat.event(...)`](/docs/webhooks/session-routing) descriptors: each verified delivery is routed to this agent's session and arrives at `onAction` as an action (not a turn), so [session routing](/docs/webhooks/session-routing) decides which conversation it lands on. `channels` claims channel connectors that turn an external chat surface into a frontend for the agent: an inbound message runs as a turn through `run()` and the reply is posted back. `slack()` ships in `@trigger.dev/slack`, and `chat.channels.custom(...)` builds a connector for any endpoint without a preset.
 
@@ -551,9 +546,9 @@ See [session routing](/docs/webhooks/session-routing) and [channels](/docs/webho
 
 Imperative API for reading and modifying the accumulated message history. Works from any hook (`onAction`, `onTurnStart`, `onBeforeTurnComplete`, `onTurnComplete`, `hydrateMessages`) or from `run()` and AI SDK tools.
 
-<Note>
-  The agent's accumulator — not `session.out` — is the source of truth for the full conversation. The `.out` stream is a bounded sliding window (roughly one turn at steady state, see [Records on `session.out`](/docs/ai-chat/client-protocol#records-on-session-out)); the durable history lives in the agent's accumulator and is persisted to S3 between turns for fast next-run boots. `chat.history` reads and mutates that accumulator directly.
-</Note>
+> [!NOTE]
+>
+> The agent's accumulator — not `session.out` — is the source of truth for the full conversation. The `.out` stream is a bounded sliding window (roughly one turn at steady state, see [Records on `session.out`](/docs/ai-chat/client-protocol#records-on-session-out)); the durable history lives in the agent's accumulator and is persisted to S3 between turns for fast next-run boots. `chat.history` reads and mutates that accumulator directly.
 
 **Reads.** Synchronous against the current accumulator state.
 
@@ -679,9 +674,9 @@ The current turn streams through normally, `onBeforeTurnComplete` / `onTurnCompl
 
 Use this when the agent knows its work is done (budget exhausted, goal achieved, one-shot response) rather than relying on the idle timeout. Unlike `chat.requestUpgrade()`, no `upgrade-required` signal is sent to the client, so there's no version-migration semantics.
 
-<Warning>
-  If you persist `lastEventId` to your own storage for cross-page-load resume, **don't clear it on `chat.endRun()`**. The cursor is sessionId-keyed and stays valid across Run boundaries — clearing it forces the next `sendMessages` to subscribe from `seq_num=0`, where it may hit the prior turn's stale `turn-complete` record and close the stream empty before the new Run's chunks arrive.
-</Warning>
+> [!WARNING]
+>
+> If you persist `lastEventId` to your own storage for cross-page-load resume, **don't clear it on `chat.endRun()`**. The cursor is sessionId-keyed and stays valid across Run boundaries — clearing it forces the next `sendMessages` to subscribe from `seq_num=0`, where it may hit the prior turn's stale `turn-complete` record and close the stream empty before the new Run's chunks arrive.
 
 ### Ending the conversation
 
@@ -704,9 +699,9 @@ chat.agent({
 
 The current turn finishes and streams through normally. Called mid-step, `chat.close()` aborts the in-flight `streamText` the same way the stop signal does, so the partial response is still captured and delivered. The transport then flips to a closed state, carrying `reason` so you can render why the conversation ended.
 
-<Warning>
-  **Decide before the turn ends, not in `onTurnComplete`.** The closed state reaches the browser on the turn's final `turn-complete` record. `onTurnComplete` runs after that record is written and after the response stream has closed, so a close decided there does not reach a reader that is already done with the turn: the user sees a normal answer and learns the conversation ended only when their next message is refused. Use `onBeforeTurnComplete` for the same information one step earlier, and the user sees the closed state as soon as the answer finishes.
-</Warning>
+> [!WARNING]
+>
+> **Decide before the turn ends, not in `onTurnComplete`.** The closed state reaches the browser on the turn's final `turn-complete` record. `onTurnComplete` runs after that record is written and after the response stream has closed, so a close decided there does not reach a reader that is already done with the turn: the user sees a normal answer and learns the conversation ended only when their next message is refused. Use `onBeforeTurnComplete` for the same information one step earlier, and the user sees the closed state as soon as the answer finishes.
 
 Closing is one-way. A closed session cannot be reopened, and its transcript stays readable. Start a new conversation under a different `chatId` to continue.
 
@@ -758,10 +753,10 @@ run: async ({ messages, signal, streamText }) => {
 },
 ```
 
-<Info>
-  Longer idle timeout means faster responses but more compute usage. Set to `0` to suspend
-  immediately after each turn (minimum latency cost, slight delay on next message).
-</Info>
+> [!NOTE]
+>
+> Longer idle timeout means faster responses but more compute usage. Set to `0` to suspend
+> immediately after each turn (minimum latency cost, slight delay on next message).
 
 #### Stream options
 
@@ -862,12 +857,12 @@ export const myChat = chat
   });
 ```
 
-<Info>
-  The generated ID is sent to the frontend in the stream's `start` chunk, so frontend and backend
-  always reference the same ID for each message. This is important for features like tool
-  approvals, where the frontend resends an assistant message and the backend needs to match it
-  by ID in the conversation accumulator.
-</Info>
+> [!NOTE]
+>
+> The generated ID is sent to the frontend in the stream's `start` chunk, so frontend and backend
+> always reference the same ID for each message. This is important for features like tool
+> approvals, where the frontend resends an assistant message and the backend needs to match it
+> by ID in the conversation accumulator.
 
 ##### Per-turn overrides
 
@@ -887,11 +882,11 @@ run: async ({ messages, clientData, signal, streamText }) => {
 
 See [ChatUIMessageStreamOptions](/docs/ai-chat/reference#chatuimessagestreamoptions) for the full reference.
 
-<Note>
-  `onFinish` is managed internally for response capture and cannot be overridden here. Use
-  `streamText`'s `onFinish` callback for custom finish handling, or use [raw task
-  mode](/docs/ai-chat/custom-agents) for full control over `toUIMessageStream()`.
-</Note>
+> [!NOTE]
+>
+> `onFinish` is managed internally for response capture and cannot be overridden here. Use
+> `streamText`'s `onFinish` callback for custom finish handling, or use [raw task
+> mode](/docs/ai-chat/custom-agents) for full control over `toUIMessageStream()`.
 
 ### Manual mode with task()
 
@@ -918,11 +913,11 @@ export const manualChat = task({
 });
 ```
 
-<Warning>
-  Manual mode does not get automatic message accumulation or the `onTurnComplete`/`onChatStart`
-  lifecycle hooks. The `responseMessage` field in `onTurnComplete` will be `undefined` when using
-  `chat.pipe()` directly. Use `chat.agent()` for the full multi-turn experience.
-</Warning>
+> [!WARNING]
+>
+> Manual mode does not get automatic message accumulation or the `onTurnComplete`/`onChatStart`
+> lifecycle hooks. The `responseMessage` field in `onTurnComplete` will be `undefined` when using
+> `chat.pipe()` directly. Use `chat.agent()` for the full multi-turn experience.
 
 ***
 
@@ -930,6 +925,6 @@ export const manualChat = task({
 
 Both lower levels — `chat.createSession()` (managed turn iterator, your turn body) and `chat.customAgent()` with raw primitives (hand-rolled loop, full stream-conversion control) — are covered together on the Custom agents page, including the `ChatTurn` surface, the continuation-seeding pattern, and the hand-rolled-loop checklist:
 
-<Card title="Custom agents" icon="screwdriver-wrench" href="/docs/ai-chat/custom-agents">
-  Build agents without the managed lifecycle — createSession or raw primitives.
-</Card>
+> **[Custom agents](/docs/ai-chat/custom-agents)**
+>
+> Build agents without the managed lifecycle — createSession or raw primitives.

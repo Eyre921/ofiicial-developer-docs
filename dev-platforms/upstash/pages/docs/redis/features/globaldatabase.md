@@ -1,5 +1,5 @@
 ---
-title: "Global Database"
+title: "Upstash Redis Global Database"
 source: https://upstash.com/docs/redis/features/globaldatabase
 path: docs/redis/features/globaldatabase
 ---

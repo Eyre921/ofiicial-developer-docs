@@ -8,79 +8,77 @@ Deploy your tasks from GitHub Actions and other CI environments using an environ
 
 The instructions below are specific to GitHub Actions, but the same concepts apply to other CI systems. Use an environment API key rather than a Personal Access Token so deployments are not tied to an individual team member's account or permissions.
 
-<Tip>
-  Check out our new [GitHub integration](/docs/github-integration) for automatic deployments, without adding any GitHub Actions workflows.
-</Tip>
+> [!TIP]
+>
+> Check out our new [GitHub integration](/docs/github-integration) for automatic deployments, without adding any GitHub Actions workflows.
 
 ## GitHub Actions example
 
 This simple GitHub action workflow will deploy your Trigger.dev tasks when new code is pushed to the `main` branch.
 
-<Warning>
-  The deploy step will fail if any version mismatches are detected. Please see the [version
-  pinning](/docs/github-actions#cli-version-pinning) section for more details.
-</Warning>
+> [!WARNING]
+>
+> The deploy step will fail if any version mismatches are detected. Please see the [version
+> pinning](/docs/github-actions#cli-version-pinning) section for more details.
 
-<CodeGroup>
-  ```yaml .github/workflows/release-trigger-prod.yml theme={"theme":"css-variables"}
-  name: Deploy to Trigger.dev (prod)
+```yaml .github/workflows/release-trigger-prod.yml theme={"theme":"css-variables"}
+name: Deploy to Trigger.dev (prod)
 
-  on:
-    push:
-      branches:
-        - main
+on:
+  push:
+    branches:
+      - main
 
-  jobs:
-    deploy:
-      runs-on: ubuntu-latest
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
 
-      steps:
-        - uses: actions/checkout@v4
+    steps:
+      - uses: actions/checkout@v4
 
-        - name: Use Node.js 20.x
-          uses: actions/setup-node@v4
-          with:
-            node-version: "20.x"
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
 
-        - name: Install dependencies
-          run: npm install
+      - name: Install dependencies
+        run: npm install
 
-        - name: 🚀 Deploy Trigger.dev
-          env:
-            TRIGGER_ACCESS_TOKEN: ${{ secrets.TRIGGER_ACCESS_TOKEN }}
-          run: |
-            npx trigger.dev@latest deploy --env prod --external-id ${{ github.sha }}
-  ```
+      - name: 🚀 Deploy Trigger.dev
+        env:
+          TRIGGER_ACCESS_TOKEN: ${{ secrets.TRIGGER_ACCESS_TOKEN }}
+        run: |
+          npx trigger.dev@latest deploy --env prod --external-id ${{ github.sha }}
+```
 
-  ```yaml .github/workflows/release-trigger-staging.yml theme={"theme":"css-variables"}
-  name: Deploy to Trigger.dev (staging)
+```yaml .github/workflows/release-trigger-staging.yml theme={"theme":"css-variables"}
+name: Deploy to Trigger.dev (staging)
 
-  # Requires manually calling the workflow from a branch / commit to deploy to staging
-  on:
-    workflow_dispatch:
+# Requires manually calling the workflow from a branch / commit to deploy to staging
+on:
+  workflow_dispatch:
 
-  jobs:
-    deploy:
-      runs-on: ubuntu-latest
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
 
-      steps:
-        - uses: actions/checkout@v4
+    steps:
+      - uses: actions/checkout@v4
 
-        - name: Use Node.js 20.x
-          uses: actions/setup-node@v4
-          with:
-            node-version: "20.x"
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
 
-        - name: Install dependencies
-          run: npm install
+      - name: Install dependencies
+        run: npm install
 
-        - name: 🚀 Deploy Trigger.dev
-          env:
-            TRIGGER_ACCESS_TOKEN: ${{ secrets.TRIGGER_STAGING_ACCESS_TOKEN }}
-          run: |
-            npx trigger.dev@latest deploy --env staging --external-id ${{ github.sha }}
-  ```
-</CodeGroup>
+      - name: 🚀 Deploy Trigger.dev
+        env:
+          TRIGGER_ACCESS_TOKEN: ${{ secrets.TRIGGER_STAGING_ACCESS_TOKEN }}
+        run: |
+          npx trigger.dev@latest deploy --env staging --external-id ${{ github.sha }}
+```
 
 If you already have a GitHub action file, you can just add the final step "🚀 Deploy Trigger.dev" to your existing file.
 
@@ -95,18 +93,18 @@ TRIGGER_EXTERNAL_DEPLOYMENT_ID=<the-same-commit-sha>
 
 Every task triggered by that release is then pinned to the deployment built from the same commit — and runs triggered before the task build finishes wait for it rather than executing on the previous version.
 
-<Note>
-  Tagging the deployment is harmless on its own: if nothing sends a matching id, runs behave exactly
-  as they do today. `--external-id` also makes repeat deploys idempotent — re-running the workflow
-  for a commit that is already deployed reports the existing version instead of building again.
-
-  Two things follow from that. Because no build runs, a re-run after changing a synced environment
-  variable won't pick the new value up — make an empty commit, or pass `--force`. And if you add a
-  `paths:` filter to this workflow, `${{ github.sha }}` stops being a safe id: commits that don't
-  touch your tasks never produce a deployment carrying that SHA, so every run from those releases
-  expires. See [when nothing ever
-  lands](/docs/deployment/atomic-deployment#when-nothing-ever-lands).
-</Note>
+> [!NOTE]
+>
+> Tagging the deployment is harmless on its own: if nothing sends a matching id, runs behave exactly
+> as they do today. `--external-id` also makes repeat deploys idempotent — re-running the workflow
+> for a commit that is already deployed reports the existing version instead of building again.
+>
+> Two things follow from that. Because no build runs, a re-run after changing a synced environment
+> variable won't pick the new value up — make an empty commit, or pass `--force`. And if you add a
+> `paths:` filter to this workflow, `${{ github.sha }}` stops being a safe id: commits that don't
+> touch your tasks never produce a deployment carrying that SHA, so every run from those releases
+> expires. See [when nothing ever
+> lands](/docs/deployment/atomic-deployment#when-nothing-ever-lands).
 
 ## Preview branches
 
@@ -143,35 +141,33 @@ On `pull_request`, `github.sha` is the merge commit GitHub creates for the PR, n
 app was built from. Use `github.event.pull_request.head.sha` so the id matches the one your preview
 deployment sends.
 
-<Note>
-  **Include `closed`** in the `pull_request.types` list. Without it, preview branches won't be archived when PRs are merged or closed, and you may hit the limit on active preview branches. See [Preview branches](/docs/deployment/preview-branches#preview-branches-with-github-actions-recommended) for more details.
-</Note>
+> [!NOTE]
+>
+> **Include `closed`** in the `pull_request.types` list. Without it, preview branches won't be archived when PRs are merged or closed, and you may hit the limit on active preview branches. See [Preview branches](/docs/deployment/preview-branches#preview-branches-with-github-actions-recommended) for more details.
 
 ## Create a deployment API key
 
 Create a separate API key for each environment that your CI workflows deploy to. The key remains valid when team membership or permissions change.
 
-<Steps>
-  <Step title="Open the API keys page">
-    Select the project and target environment, then open [**API keys**](https://cloud.trigger.dev/_/apikeys).
-  </Step>
+**1. Open the API keys page**
 
-  <Step title="Create an API key">
-    Click **New API key**, give the key a name that identifies the workflow, and choose **Deploy
-    only** access.
-  </Step>
+Select the project and target environment, then open [**API keys**](https://cloud.trigger.dev/_/apikeys).
 
-  <Step title="Copy the API key">
-    Create the key and copy its value. Trigger.dev shows the complete value only once.
-  </Step>
+**2. Create an API key**
 
-  <Step title="Add the TRIGGER_ACCESS_TOKEN secret to GitHub">
-    Open the repository's **Settings**, then select **Secrets and variables** → **Actions** → **New
-    repository secret**. Add the name `TRIGGER_ACCESS_TOKEN` and paste the API key as its value.
+Click **New API key**, give the key a name that identifies the workflow, and choose **Deploy
+only** access.
 
-    <img alt="Add TRIGGER_ACCESS_TOKEN in GitHub" />
-  </Step>
-</Steps>
+**3. Copy the API key**
+
+Create the key and copy its value. Trigger.dev shows the complete value only once.
+
+**4. Add the TRIGGER\_ACCESS\_TOKEN secret to GitHub**
+
+Open the repository's **Settings**, then select **Secrets and variables** → **Actions** → **New
+repository secret**. Add the name `TRIGGER_ACCESS_TOKEN` and paste the API key as its value.
+
+![Add TRIGGER\_ACCESS\_TOKEN in GitHub](https://mintcdn.com/trigger/uys6iMwf9B_ojh8r/images/github-access-token.png?fit=max\&auto=format\&n=uys6iMwf9B_ojh8r\&q=85\&s=6c516d32254c19937c0e7104753316a7)
 
 The API key must belong to the environment targeted by the deploy command. If the repository deploys to multiple environments, store each environment's key in a separate GitHub secret and map the appropriate secret to `TRIGGER_ACCESS_TOKEN` in each workflow.
 
@@ -212,46 +208,44 @@ When self-hosting, you need to:
 * Add your registry credentials to the GitHub secrets.
 * Specify the `TRIGGER_API_URL` environment variable pointing to your webapp domain, for example: `https://trigger.example.com`
 
-<CodeGroup>
-  ```yaml .github/workflows/release-trigger-self-hosted.yml theme={"theme":"css-variables"}
-  name: Deploy to Trigger.dev (self-hosted)
+```yaml .github/workflows/release-trigger-self-hosted.yml theme={"theme":"css-variables"}
+name: Deploy to Trigger.dev (self-hosted)
 
-  on:
-    push:
-      branches:
-        - main
+on:
+  push:
+    branches:
+      - main
 
-  jobs:
-    deploy:
-      runs-on: ubuntu-latest
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
 
-      steps:
-        - uses: actions/checkout@v4
+    steps:
+      - uses: actions/checkout@v4
 
-        - name: Use Node.js 20.x
-          uses: actions/setup-node@v4
-          with:
-            node-version: "20.x"
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
 
-        - name: Install dependencies
-          run: npm install
+      - name: Install dependencies
+        run: npm install
 
-        - name: Set up Docker Buildx
-          uses: docker/setup-buildx-action@v3
-          with:
-            version: latest
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          version: latest
 
-        - name: Login to DockerHub
-          uses: docker/login-action@v3
-          with:
-            username: ${{ secrets.DOCKERHUB_USERNAME }}
-            password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-        - name: 🚀 Deploy Trigger.dev
-          env:
-            TRIGGER_ACCESS_TOKEN: ${{ secrets.TRIGGER_ACCESS_TOKEN }}
-            TRIGGER_API_URL: ${{ secrets.TRIGGER_API_URL }}
-          run: |
-            npx trigger.dev@latest deploy --env prod
-  ```
-</CodeGroup>
+      - name: 🚀 Deploy Trigger.dev
+        env:
+          TRIGGER_ACCESS_TOKEN: ${{ secrets.TRIGGER_ACCESS_TOKEN }}
+          TRIGGER_API_URL: ${{ secrets.TRIGGER_API_URL }}
+        run: |
+          npx trigger.dev@latest deploy --env prod
+```

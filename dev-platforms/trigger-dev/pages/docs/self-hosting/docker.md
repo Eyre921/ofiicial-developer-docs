@@ -88,12 +88,12 @@ cp .env.example .env
 ./generate-secrets.sh
 ```
 
-<Note>
-  The stack ships no working default credentials. `generate-secrets.sh` fills the
-  application secrets and the bundled datastore passwords with strong, unique values.
-  Keep them safe - rotating the encryption key or session secret later will invalidate
-  existing sessions and encrypted data.
-</Note>
+> [!NOTE]
+>
+> The stack ships no working default credentials. `generate-secrets.sh` fills the
+> application secrets and the bundled datastore passwords with strong, unique values.
+> Keep them safe - rotating the encryption key or session secret later will invalidate
+> existing sessions and encrypted data.
 
 3. Start the webapp
 
@@ -144,12 +144,12 @@ docker compose up -d
 
 4. Configure the supervisor using the [environment variables](/docs/self-hosting/env/supervisor) in your `.env` file, including the [worker token](#worker-token).
 
-<Warning>
-  For a split webapp/worker setup, set `MANAGED_WORKER_SECRET` on the worker to
-  the **same** value as the webapp's `MANAGED_WORKER_SECRET`. Don't run
-  `generate-secrets.sh` on the worker host - it would create a mismatched value
-  and the worker would fail to authenticate.
-</Warning>
+> [!WARNING]
+>
+> For a split webapp/worker setup, set `MANAGED_WORKER_SECRET` on the worker to
+> the **same** value as the webapp's `MANAGED_WORKER_SECRET`. Don't run
+> `generate-secrets.sh` on the worker host - it would create a mismatched value
+> and the worker would fail to authenticate.
 
 5. Apply the changes:
 
@@ -274,9 +274,9 @@ You should change these before deploying to production, especially the password.
 
 ### Setup
 
-<Note>
-  The `packets` bucket is created by default. In case this doesn't work, you can create it manually.
-</Note>
+> [!NOTE]
+>
+> The `packets` bucket is created by default. In case this doesn't work, you can create it manually.
 
 1. Login to the dashboard: `http://localhost:9001`
 
@@ -367,18 +367,18 @@ We patch the latest released version line only, so keep an eye on new releases t
 
 You can also lock the versions of the bundled services, for example with `CLICKHOUSE_IMAGE_TAG`. If you do, or if you bring your own ClickHouse via `CLICKHOUSE_URL`, note that Trigger.dev requires ClickHouse 25.8 or newer.
 
-<Note>
-  The bundled ClickHouse uses the official `clickhouse/clickhouse-server` image, and your existing
-  data volume carries over automatically on upgrade. If you pinned `CLICKHOUSE_IMAGE_TAG` to a
-  Bitnami tag, switch it to an official tag (for example `26.2`) — Bitnami tags don't exist in the
-  official repository.
-</Note>
+> [!NOTE]
+>
+> The bundled ClickHouse uses the official `clickhouse/clickhouse-server` image, and your existing
+> data volume carries over automatically on upgrade. If you pinned `CLICKHOUSE_IMAGE_TAG` to a
+> Bitnami tag, switch it to an official tag (for example `26.2`) — Bitnami tags don't exist in the
+> official repository.
 
-<Note>
-  Trigger.dev 4.5.0 is the last version we officially support for running v3 (SDK v3) tasks. If
-  you still have v3 tasks, pin `TRIGGER_IMAGE_TAG` to exactly `v4.5.0` or [migrate to
-  v4](/docs/migrating-from-v3). 4.5.1 and later reject v3 triggers and deploys with an upgrade message.
-</Note>
+> [!NOTE]
+>
+> Trigger.dev 4.5.0 is the last version we officially support for running v3 (SDK v3) tasks. If
+> you still have v3 tasks, pin `TRIGGER_IMAGE_TAG` to exactly `v4.5.0` or [migrate to
+> v4](/docs/migrating-from-v3). 4.5.1 and later reject v3 triggers and deploys with an upgrade message.
 
 ## Task events
 
@@ -428,11 +428,11 @@ See the [webapp environment variables](/docs/self-hosting/env/webapp) for the fu
 
 * **ClickHouse migrations say "no migrations to run" but schema is missing.** The goose migration tracker is out of sync. Exec into the webapp container, set the GOOSE env vars (from webapp startup logs), and run `goose reset && goose up`.
 
-  <Warning>
-    **Data Loss Warning:** The `goose reset` command is destructive and will drop the entire schema.
-    Make sure to backup your data and confirm you are running this in a non-production environment
-    before executing this command.
-  </Warning>
+  > [!WARNING]
+  >
+  > **Data Loss Warning:** The `goose reset` command is destructive and will drop the entire schema.
+  > Make sure to backup your data and confirm you are running this in a non-production environment
+  > before executing this command.
 
 ## CLI usage
 

@@ -6,9 +6,9 @@ path: docs/guides/example-projects/anchor-browser-web-scraper
 
 Automated web monitoring using Trigger.dev's task scheduling and Anchor Browser's AI-powered browser automation.
 
-<Warning>
-  **WEB SCRAPING:** When web scraping, you MUST use a proxy to comply with our terms of service. Direct scraping of third-party websites without the site owner's permission using Trigger.dev Cloud is prohibited and will result in account suspension. See [this example](/docs/guides/examples/puppeteer#scrape-content-from-a-web-page) which uses a proxy.
-</Warning>
+> [!WARNING]
+>
+> **WEB SCRAPING:** When web scraping, you MUST use a proxy to comply with our terms of service. Direct scraping of third-party websites without the site owner's permission using Trigger.dev Cloud is prohibited and will result in account suspension. See [this example](/docs/guides/examples/puppeteer#scrape-content-from-a-web-page) which uses a proxy.
 
 ## Overview
 
@@ -32,10 +32,10 @@ The task runs daily at 5pm ET to find the cheapest Broadway tickets available fo
 
 ## GitHub repo
 
-<Card title="View the Anchor Browser web scraper repo" icon="GitHub" href="https://github.com/triggerdotdev/examples/tree/main/anchor-browser-web-scraper">
-  Click here to view the full code for this project in our examples repository on GitHub. You can
-  fork it and use it as a starting point for your own project.
-</Card>
+> **[View the Anchor Browser web scraper repo](https://github.com/triggerdotdev/examples/tree/main/anchor-browser-web-scraper)**
+>
+> Click here to view the full code for this project in our examples repository on GitHub. You can
+> fork it and use it as a starting point for your own project.
 
 ## Relevant code
 

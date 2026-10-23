@@ -10,18 +10,18 @@ Learn how to send beautiful emails using React Email and Trigger.dev.
 
 This example demonstrates how to use Trigger.dev to send emails using [React Email](https://react.email/).
 
-<Note>
-  This example uses [Resend](https://resend.com) as the email provider. You can use other email
-  providers like [Loops](https://loops.so) or [SendGrid](https://sendgrid.com) etc. Full list of
-  their integrations can be found [here](https://react.email/docs/introduction#integrations).
-</Note>
+> [!NOTE]
+>
+> This example uses [Resend](https://resend.com) as the email provider. You can use other email
+> providers like [Loops](https://loops.so) or [SendGrid](https://sendgrid.com) etc. Full list of
+> their integrations can be found [here](https://react.email/docs/introduction#integrations).
 
 ## Task code
 
-<Warning>
-  This email is built using React components. To use React components in your task, it must be a
-  .tsx file.
-</Warning>
+> [!WARNING]
+>
+> This email is built using React components. To use React components in your task, it must be a
+> .tsx file.
 
 ```tsx trigger/sendReactEmail.tsx theme={"theme":"css-variables"}
 import { Body, Button, Container, Head, Heading, Html, Preview } from "@react-email/components";
@@ -104,7 +104,7 @@ export const sendEmail = task({
 
 This example email should look like this:
 
-<img alt="React Email" />
+![React Email](https://mintcdn.com/trigger/5SxX7bFjJKRsidSL/images/react-email.png?fit=max\&auto=format\&n=5SxX7bFjJKRsidSL\&q=85\&s=89d3a9eb719a46bfdbe445157260dbc7)
 
 This is just a simple implementation, you can customize the email to be as complex as you want. Check out the [React email templates](https://react.email/templates) for more inspiration.
 
@@ -137,7 +137,7 @@ We recommend using our [Cursor rules](https://trigger.dev/changelog/cursor-rules
 
 #### The generated email template
 
-<img alt="Cursor" />
+![Cursor](https://mintcdn.com/trigger/5SxX7bFjJKRsidSL/images/react-email-welcome.png?fit=max\&auto=format\&n=5SxX7bFjJKRsidSL\&q=85\&s=a6f143fe952bc0a93a2a50c96970b863)
 
 #### The generated code
 
@@ -347,12 +347,10 @@ See our [common problems guide](/docs/troubleshooting#reactdomserver-rendertopip
 
 Check out the [React Email docs](https://react.email/docs) and learn how to set up and use React Email, including how to preview your emails locally.
 
-<CardGroup>
-  <Card title="Components" icon="puzzle-piece" href="https://react.email/components">
-    Pre-built components you can copy and paste into your emails.
-  </Card>
+> **[Components](https://react.email/components)**
+>
+> Pre-built components you can copy and paste into your emails.
 
-  <Card title="Templates" icon="rectangle-list" href="https://react.email/templates">
-    Extensive pre-built templates ready to use.
-  </Card>
-</CardGroup>
+> **[Templates](https://react.email/templates)**
+>
+> Extensive pre-built templates ready to use.

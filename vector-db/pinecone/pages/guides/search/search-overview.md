@@ -46,4 +46,4 @@ Once you've chosen an approach, see [Data modeling](/guides/index-data/data-mode
 
 * [Filter by metadata](/guides/search/filter-by-metadata)
 * [Rerank results](/guides/search/rerank-results)
-* [Parallel queries](/guides/search/semantic-search#parallel-queries)
+* [Parallel queries](/guides/optimize/increase-throughput#parallel-queries)

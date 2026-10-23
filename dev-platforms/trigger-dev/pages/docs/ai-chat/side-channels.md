@@ -60,10 +60,10 @@ export const browserAgent = chat.agent({
 });
 ```
 
-<Note>
-  A side channel's `.in` is subscribe-only from the run's side (`.on` / `.once` / `.peek`). `.wait()`
-  is not supported on a named channel, because a side channel never suspends or wakes a run.
-</Note>
+> [!NOTE]
+>
+> A side channel's `.in` is subscribe-only from the run's side (`.on` / `.once` / `.peek`). `.wait()`
+> is not supported on a named channel, because a side channel never suspends or wakes a run.
 
 ## From a task or your backend
 
@@ -132,11 +132,11 @@ An MCP client can read and write a session's channels with two [MCP tools](/docs
 
 A side channel's streams are bounded by the same retention as the rest of your realtime streams: streams are created on demand when first written and age out on your plan's retention window, with empty streams cleaned up automatically. A channel needs no separate setup or trimming.
 
-<Warning>
-  Records are capped at \~1 MiB each. Stream a pointer, not bytes: write large payloads (a screenshot
-  PNG) to object storage and put the URL on the channel. A base64 image inflates \~33% and will exceed
-  the cap. Pointers also keep the channel small.
-</Warning>
+> [!WARNING]
+>
+> Records are capped at \~1 MiB each. Stream a pointer, not bytes: write large payloads (a screenshot
+> PNG) to object storage and put the URL on the channel. A base64 image inflates \~33% and will exceed
+> the cap. Pointers also keep the channel small.
 
 ## Auth
 
@@ -157,19 +157,17 @@ const token = await auth.createPublicToken({
 });
 ```
 
-<Note>
-  A session's `externalId` cannot contain `:channels:`, since that is the delimiter the channel scope
-  uses. `sessions.start` rejects it. Any other string, including single colons, is fine.
-</Note>
+> [!NOTE]
+>
+> A session's `externalId` cannot contain `:channels:`, since that is the delimiter the channel scope
+> uses. `sessions.start` rejects it. Any other string, including single colons, is fine.
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Sessions" icon="layer-group" href="/docs/ai-chat/sessions">
-    The durable, cross-run primitive side channels are built on.
-  </Card>
+> **[Sessions](/docs/ai-chat/sessions)**
+>
+> The durable, cross-run primitive side channels are built on.
 
-  <Card title="Read a session channel in React" icon="react" href="/docs/realtime/react-hooks/session-stream">
-    The `useSessionStream` hook `useSessionStreamChannel` mirrors.
-  </Card>
-</CardGroup>
+> **[Read a session channel in React](/docs/realtime/react-hooks/session-stream)**
+>
+> The `useSessionStream` hook `useSessionStreamChannel` mirrors.

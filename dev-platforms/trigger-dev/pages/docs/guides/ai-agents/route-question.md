@@ -10,7 +10,7 @@ Create an AI agent workflow that routes a question to a different AI model depen
 
 **Routing** is a workflow pattern that classifies an input and directs it to a specialized followup task. This pattern allows for separation of concerns and building more specialized prompts, which is particularly effective when there are distinct categories that are better handled separately. Without routing, optimizing for one kind of input can hurt performance on other inputs.
 
-<img alt="Routing" />
+![Routing](https://mintcdn.com/trigger/uys6iMwf9B_ojh8r/guides/ai-agents/routing.png?fit=max\&auto=format\&n=uys6iMwf9B_ojh8r\&q=85\&s=2f586095b267c7d969afdc0a1e167071)
 
 ## Example task
 

@@ -4,11 +4,11 @@ source: https://docs.fireworks.ai/nexus/quickstart
 path: nexus/quickstart
 ---
 
-Connect Nexus to Claude Code, ChatGPT, or the AI tools you already use, in a few minutes.
+Connect Nexus to Claude Code, ChatGPT, or another AI tool you already use, in a few minutes.
 
-Nexus works inside the coding harness or AI workspace you already use. It picks between open and closed models for each turn, for the best balance of performance and cost.
+Nexus works inside the coding harness or AI workspace you already use. You install Nexus CLI, sign in, and connect your tool with one command.
 
-Choose **Nexus Auto** as your model, and it picks the right model for each task.
+Every connected harness starts on **Nexus Auto** (`auto`). It picks an open or closed model for each turn to balance performance and cost.
 
 ## Install the Nexus CLI
 
@@ -16,25 +16,25 @@ Choose **Nexus Auto** as your model, and it picks the right model for each task.
 curl -fsSL https://nexus.fireworks.ai/install.sh | bash
 ```
 
-Requires Node.js 18 or later, `git`, and `bash`. On Windows, run it from Git Bash; PowerShell breaks the script's line endings.
+You need Node.js 22 or later, `git`, and `bash`. On Windows, run the installer from Git Bash. PowerShell breaks the script's line endings.
 
 ```bash wrap theme={null}
 nexus login
 ```
 
-Sign in with your browser, or paste a Fireworks key.
+Sign in with your browser, or paste a Fireworks API key (`fw_...`).
 
-Then pick your tool and follow its setup.
+Next, pick your tool and follow its setup.
 
 ## Featured connections
 
 > **[Claude Code CLI](/nexus/harnesses/claude-code)**
 >
-> Nexus Auto sends each turn to an open model or to an Anthropic model, and you pay for the model that answered.
+> Nexus Auto sends each turn to an open model or an Anthropic model. Anthropic turns use your Claude login.
 
 > **[ChatGPT](/nexus/harnesses/chatgpt)**
 >
-> Open models appear next to your OpenAI models, and the same connection sets up the Codex CLI.
+> Open models appear next to your OpenAI models. The same connection sets up the Codex CLI.
 
 ### Code
 

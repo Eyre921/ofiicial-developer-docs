@@ -6,10 +6,10 @@ path: docs/mcp-agent-rules
 
 Trigger.dev agent rules are now agent skills, installed with the trigger.dev CLI.
 
-<Note>
-  Agent rules are now **agent skills**. The standalone rule files have been replaced by skills that
-  work across every major AI assistant from a single install. See [Skills](/docs/skills).
-</Note>
+> [!NOTE]
+>
+> Agent rules are now **agent skills**. The standalone rule files have been replaced by skills that
+> work across every major AI assistant from a single install. See [Skills](/docs/skills).
 
 ## What changed
 
@@ -27,20 +27,18 @@ The old task and realtime guidance now lives in the `trigger-authoring-tasks` an
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Skills" icon="wand-magic-sparkles" href="/docs/skills">
-    Install Trigger.dev agent skills into your AI coding assistant.
-  </Card>
+> **[Skills](/docs/skills)**
+>
+> Install Trigger.dev agent skills into your AI coding assistant.
 
-  <Card title="MCP Server" icon="sparkles" href="/docs/mcp-introduction">
-    Give your AI assistant direct access to Trigger.dev tools and APIs.
-  </Card>
+> **[MCP Server](/docs/mcp-introduction)**
+>
+> Give your AI assistant direct access to Trigger.dev tools and APIs.
 
-  <Card title="Building with AI" icon="layer-group" href="/docs/building-with-ai">
-    See how skills and the MCP server compare.
-  </Card>
+> **[Building with AI](/docs/building-with-ai)**
+>
+> See how skills and the MCP server compare.
 
-  <Card title="Writing tasks" icon="code" href="/docs/tasks/overview">
-    Learn the task patterns that skills teach your AI assistant.
-  </Card>
-</CardGroup>
+> **[Writing tasks](/docs/tasks/overview)**
+>
+> Learn the task patterns that skills teach your AI assistant.

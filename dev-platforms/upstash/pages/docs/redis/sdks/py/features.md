@@ -1,5 +1,5 @@
 ---
-title: "Features"
+title: "Redis Python SDK Features"
 source: https://upstash.com/docs/redis/sdks/py/features
 path: docs/redis/sdks/py/features
 ---

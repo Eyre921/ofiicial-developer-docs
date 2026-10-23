@@ -60,9 +60,9 @@ export const myChat = chat.agent({
 });
 ```
 
-<Warning>
-  Initialize `chat.local` in [`onBoot`](/docs/ai-chat/lifecycle-hooks#onboot), not `onChatStart`. `onBoot` fires on every fresh worker — including continuation runs (post-cancel, crash, `endRun`, `requestUpgrade`, OOM retry) — whereas `onChatStart` only fires on the chat's very first message. Initializing in `onChatStart` means `run()` will crash on continuation runs with `chat.local can only be modified after initialization`.
-</Warning>
+> [!WARNING]
+>
+> Initialize `chat.local` in [`onBoot`](/docs/ai-chat/lifecycle-hooks#onboot), not `onChatStart`. `onBoot` fires on every fresh worker — including continuation runs (post-cancel, crash, `endRun`, `requestUpgrade`, OOM retry) — whereas `onChatStart` only fires on the chat's very first message. Initializing in `onChatStart` means `run()` will crash on continuation runs with `chat.local can only be modified after initialization`.
 
 ## Accessing from tools
 
@@ -129,9 +129,9 @@ export const myChat = chat.agent({
 });
 ```
 
-<Note>
-  Values must be JSON-serializable for subtask access. Non-serializable values (functions, class instances, etc.) will be lost during transfer.
-</Note>
+> [!NOTE]
+>
+> Values must be JSON-serializable for subtask access. Non-serializable values (functions, class instances, etc.) will be lost during transfer.
 
 ## Dirty tracking and persistence
 
@@ -160,9 +160,9 @@ onTurnComplete: async ({ chatId }) => {
 | `local.get()` | Returns a plain object copy (for serialization) |
 | `local.property` | Direct property access (read/write via Proxy) |
 
-<Note>
-  Locals use shallow proxying. Nested object mutations like `local.prefs.theme = "dark"` won't trigger the dirty flag. Instead, replace the whole property: `local.prefs = { ...local.prefs, theme: "dark" }`.
-</Note>
+> [!NOTE]
+>
+> Locals use shallow proxying. Nested object mutations like `local.prefs.theme = "dark"` won't trigger the dirty flag. Instead, replace the whole property: `local.prefs = { ...local.prefs, theme: "dark" }`.
 
 ## See also
 

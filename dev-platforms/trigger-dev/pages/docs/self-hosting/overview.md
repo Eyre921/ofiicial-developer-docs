@@ -12,12 +12,12 @@ You are responsible for provisioning resources, handling updates, and managing a
 
 We provide version-tagged releases for self-hosted deployments. It's highly advised to use these tags exclusively and keep them locked with your CLI version.
 
-<Warning>
-  **v3 is end of life.** Trigger.dev 4.5.0 is the last version we officially support for running
-  v3 (SDK v3) tasks. If you still have v3 tasks, stay on 4.5.0 or [migrate to
-  v4](/docs/migrating-from-v3). 4.5.1 and later reject v3 triggers, batch triggers, and deploys with an
-  upgrade message; v4 workloads are unaffected.
-</Warning>
+> [!WARNING]
+>
+> **v3 is end of life.** Trigger.dev 4.5.0 is the last version we officially support for running
+> v3 (SDK v3) tasks. If you still have v3 tasks, stay on 4.5.0 or [migrate to
+> v4](/docs/migrating-from-v3). 4.5.1 and later reject v3 triggers, batch triggers, and deploys with an
+> upgrade message; v4 workloads are unaffected.
 
 ## Should you self-host?
 
@@ -36,7 +36,7 @@ The self-hosted version is a set of containers running on your own infrastructur
 * **Webapp**: includes the dashboard and other services like Redis and Postgres.
 * **Worker**: includes the supervisor and the runners that execute your tasks.
 
-<img alt="Self-hosting architecture" />
+![Self-hosting architecture](https://mintcdn.com/trigger/0bD0UfsjaINxS6Tw/self-hosting/architecture.png?fit=max\&auto=format\&n=0bD0UfsjaINxS6Tw\&q=85\&s=360a56141f8d28bc92c8e1a490771b05)
 
 ## Feature comparison
 
@@ -122,10 +122,10 @@ You own a custom base image. It must provide:
 
 A `DEPLOY_BUILD_BASE_IMAGES` image needs everything the base image provides, plus `python3`, `make` and `g++`. Build extensions that add image instructions are replayed on it. Without an entry, the build stage uses the published build image, except for projects whose build extensions add image instructions: those build from your base image and install the toolchain with `apt-get`, so that base must be Debian-based. To avoid the published images entirely, set both variables.
 
-<Warning>
-  `image.pkgs` and build extensions that run `apt-get` (such as `aptGet` and `playwright`) assume a
-  Debian base. On other distributions, install those packages in your base image instead.
-</Warning>
+> [!WARNING]
+>
+> `image.pkgs` and build extensions that run `apt-get` (such as `aptGet` and `playwright`) assume a
+> Debian base. On other distributions, install those packages in your base image instead.
 
 ## Community support
 
@@ -133,16 +133,14 @@ It's dangerous to go alone! Join the self-hosting channel on our [Discord server
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Docker compose" icon="docker" href="/docs/self-hosting/docker">
-    Learn how to self-host Trigger.dev with Docker compose.
-  </Card>
+> **[Docker compose](/docs/self-hosting/docker)**
+>
+> Learn how to self-host Trigger.dev with Docker compose.
 
-  <Card title="Kubernetes" icon="dharmachakra" href="/docs/self-hosting/kubernetes">
-    Learn how to self-host Trigger.dev with Kubernetes.
-  </Card>
+> **[Kubernetes](/docs/self-hosting/kubernetes)**
+>
+> Learn how to self-host Trigger.dev with Kubernetes.
 
-  <Card title="Security" icon="shield-halved" href="/docs/self-hosting/security">
-    Report vulnerabilities and stay informed about security releases.
-  </Card>
-</CardGroup>
+> **[Security](/docs/self-hosting/security)**
+>
+> Report vulnerabilities and stay informed about security releases.

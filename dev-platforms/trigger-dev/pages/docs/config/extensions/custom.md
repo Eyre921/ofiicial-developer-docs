@@ -41,10 +41,10 @@ export default defineConfig({
 
 You can also extract that out into a function instead of defining it inline, in which case you will need to import the `BuildExtension` type from the `@trigger.dev/build` package:
 
-<Note>
-  You'll need to add the `@trigger.dev/build` package to your `devDependencies` before the below
-  code will work. Make sure it's version matches that of the installed `@trigger.dev/sdk` package.
-</Note>
+> [!NOTE]
+>
+> You'll need to add the `@trigger.dev/build` package to your `devDependencies` before the below
+> code will work. Make sure it's version matches that of the installed `@trigger.dev/sdk` package.
 
 ```ts theme={"theme":"css-variables"}
 import { defineConfig } from "@trigger.dev/sdk";
@@ -220,38 +220,38 @@ npx trigger.dev@latest deploy # BuildTarget is "deploy"
 
 ### addLayer()
 
-<ParamField type="BuildLayer">
-  The layer to add to the build context. See the [BuildLayer](#buildlayer) documentation for more
-  information.
-</ParamField>
+**layer** `BuildLayer`
+
+The layer to add to the build context. See the [BuildLayer](#buildlayer) documentation for more
+information.
 
 ### registerPlugin()
 
-<ParamField type="esbuild.Plugin">
-  The esbuild plugin to register.
-</ParamField>
+**plugin** `esbuild.Plugin` *required*
 
-<ParamField type="object">
-  <Expandable title="properties">
-    <ResponseField name="target" type="BuildTarget">
-      An optional target to register the plugin for. If not provided, the plugin will be registered
-      for all targets.
-    </ResponseField>
+The esbuild plugin to register.
 
-    <ResponseField name="placement" type="first | last">
-      An optional placement for the plugin. If not provided, the plugin will be registered in place.
-      This allows you to control the order of plugins.
-    </ResponseField>
-  </Expandable>
-</ParamField>
+**options** `object`
+
+**properties**
+
+**target** `BuildTarget`
+
+An optional target to register the plugin for. If not provided, the plugin will be registered
+for all targets.
+
+**placement** `first | last`
+
+An optional placement for the plugin. If not provided, the plugin will be registered in place.
+This allows you to control the order of plugins.
 
 ### resolvePath()
 
 Resolves a path relative to the project's working directory.
 
-<ParamField type="string">
-  The path to resolve.
-</ParamField>
+**path** `string`
+
+The path to resolve.
 
 ```ts theme={"theme":"css-variables"}
 const resolvedPath = context.resolvePath("my-other-dependency");
@@ -259,116 +259,116 @@ const resolvedPath = context.resolvePath("my-other-dependency");
 
 ### properties
 
-<ParamField type="BuildTarget">
-  The target of the build, either `dev` or `deploy`.
-</ParamField>
+**target** `BuildTarget`
 
-<ParamField type="ResolvedConfig">
-  <Expandable title="properties">
-    <ResponseField name="runtime" type="string">
-      The runtime of the project (either node or bun)
-    </ResponseField>
+The target of the build, either `dev` or `deploy`.
 
-    <ResponseField name="project" type="string">
-      The project ref
-    </ResponseField>
+**config** `ResolvedConfig`
 
-    <ResponseField name="dirs" type="string[]">
-      The trigger directories to search for tasks
-    </ResponseField>
+**properties**
 
-    <ResponseField name="build" type="object">
-      The build configuration object
-    </ResponseField>
+**runtime** `string`
 
-    <ResponseField name="workingDir" type="string">
-      The working directory of the project
-    </ResponseField>
+The runtime of the project (either node or bun)
 
-    <ResponseField name="workspaceDir" type="string">
-      The root workspace directory of the project
-    </ResponseField>
+**project** `string`
 
-    <ResponseField name="packageJsonPath" type="string">
-      The path to the package.json file
-    </ResponseField>
+The project ref
 
-    <ResponseField name="lockfilePath" type="string">
-      The path to the lockfile (package-lock.json, yarn.lock, or pnpm-lock.yaml)
-    </ResponseField>
+**dirs** `string[]`
 
-    <ResponseField name="configFile" type="string">
-      The path to the trigger.config.ts file
-    </ResponseField>
+The trigger directories to search for tasks
 
-    <ResponseField name="tsconfigPath" type="string">
-      The path to the tsconfig.json file
-    </ResponseField>
-  </Expandable>
-</ParamField>
+**build** `object`
 
-<ParamField type="BuildLogger">
-  A logger object that can be used to log messages to the console.
-</ParamField>
+The build configuration object
+
+**workingDir** `string`
+
+The working directory of the project
+
+**workspaceDir** `string`
+
+The root workspace directory of the project
+
+**packageJsonPath** `string`
+
+The path to the package.json file
+
+**lockfilePath** `string`
+
+The path to the lockfile (package-lock.json, yarn.lock, or pnpm-lock.yaml)
+
+**configFile** `string`
+
+The path to the trigger.config.ts file
+
+**tsconfigPath** `string`
+
+The path to the tsconfig.json file
+
+**logger** `BuildLogger`
+
+A logger object that can be used to log messages to the console.
 
 ## BuildLayer
 
-<ParamField type="string">
-  A unique identifier for the layer.
-</ParamField>
+**id** `string`
 
-<ParamField type="string[]">
-  An array of commands to run in the image build container.
+A unique identifier for the layer.
 
-  ```ts theme={"theme":"css-variables"}
-  commands: ["echo 'Hello, world!'"];
-  ```
+**commands** `string[]`
 
-  These commands are run after packages have been installed and the code copied into the container in the "build" stage of the Dockerfile. This means you cannot install system packages in these commands because they won't be available in the final stage. To do that, please use the `pkgs` property of the `image` object.
-</ParamField>
+An array of commands to run in the image build container.
 
-<ParamField type="object">
-  <Expandable title="properties">
-    <ResponseField name="pkgs" type="string[]">
-      An array of system packages to install in the image build container.
-    </ResponseField>
+```ts theme={"theme":"css-variables"}
+commands: ["echo 'Hello, world!'"];
+```
 
-    <ResponseField name="instructions" type="string[]">
-      An array of instructions to add to the Dockerfile.
-    </ResponseField>
-  </Expandable>
-</ParamField>
+These commands are run after packages have been installed and the code copied into the container in the "build" stage of the Dockerfile. This means you cannot install system packages in these commands because they won't be available in the final stage. To do that, please use the `pkgs` property of the `image` object.
 
-<ParamField type="object">
-  <Expandable title="properties">
-    <ResponseField name="env" type="Record<string, string>">
-      Environment variables to add to the image build container, but only during the "build" stage
-      of the Dockerfile. This is where you'd put environment variables that are needed when running
-      any of the commands in the `commands` array.
-    </ResponseField>
-  </Expandable>
-</ParamField>
+**image** `object`
 
-<ParamField type="object">
-  <Expandable title="properties">
-    <ResponseField name="env" type="Record<string, string>">
-      Environment variables that should sync to the Trigger.dev project, which will then be avalable
-      in your tasks at runtime. Importantly, these are NOT added to the image build container, but
-      are instead added to the Trigger.dev project and stored securely.
-    </ResponseField>
-  </Expandable>
-</ParamField>
+**properties**
 
-<ParamField type="Record<string, string>">
-  An object of dependencies to add to the build. The key is the package name and the value is the
-  version.
+**pkgs** `string[]`
 
-  ```ts theme={"theme":"css-variables"}
-  dependencies: {
-    "my-dependency": "^1.0.0",
-  };
-  ```
-</ParamField>
+An array of system packages to install in the image build container.
+
+**instructions** `string[]`
+
+An array of instructions to add to the Dockerfile.
+
+**build** `object`
+
+**properties**
+
+**env** `Record\<string, string\>`
+
+Environment variables to add to the image build container, but only during the "build" stage
+of the Dockerfile. This is where you'd put environment variables that are needed when running
+any of the commands in the `commands` array.
+
+**deploy** `object`
+
+**properties**
+
+**env** `Record\<string, string\>`
+
+Environment variables that should sync to the Trigger.dev project, which will then be avalable
+in your tasks at runtime. Importantly, these are NOT added to the image build container, but
+are instead added to the Trigger.dev project and stored securely.
+
+**dependencies** `Record\<string, string\>`
+
+An object of dependencies to add to the build. The key is the package name and the value is the
+version.
+
+```ts theme={"theme":"css-variables"}
+dependencies: {
+  "my-dependency": "^1.0.0",
+};
+```
 
 ### examples
 

@@ -1,5 +1,5 @@
 ---
-title: "Getting Started"
+title: "QStash TypeScript SDK Getting Started"
 source: https://upstash.com/docs/qstash/sdks/ts/gettingstarted
 path: docs/qstash/sdks/ts/gettingstarted
 ---

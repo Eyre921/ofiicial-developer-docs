@@ -207,7 +207,7 @@ Any MCP-compatible client works. If yours isn't listed, add a stdio server that 
 - [RPOP](https://upstash.com/docs/redis/sdks/py/commands/list/rpop.md): Remove and return the last element(s) of a list
 - [RPUSH](https://upstash.com/docs/redis/sdks/py/commands/list/rpush.md): Push an element at the end of the list.
 - [RPUSHX](https://upstash.com/docs/redis/sdks/py/commands/list/rpushx.md): Push an element at the end of the list only if the list exists.
-- [Overview](https://upstash.com/docs/redis/sdks/py/commands/overview.md): Available Commands in upstash-redis
+- [Redis Python SDK Commands Overview](https://upstash.com/docs/redis/sdks/py/commands/overview.md): Available Commands in upstash-redis
 - [PUBLISH](https://upstash.com/docs/redis/sdks/py/commands/pubsub/publish.md): Publish a message to a channel
 - [EVAL](https://upstash.com/docs/redis/sdks/py/commands/scripts/eval.md): Evaluate a Lua script server side.
 - [EVAL_RO](https://upstash.com/docs/redis/sdks/py/commands/scripts/eval_ro.md): Evaluate a read-only Lua script server side.

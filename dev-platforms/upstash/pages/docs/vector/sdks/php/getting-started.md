@@ -1,5 +1,5 @@
 ---
-title: "Getting Started"
+title: "Vector PHP SDK Getting Started"
 source: https://upstash.com/docs/vector/sdks/php/getting-started
 path: docs/vector/sdks/php/getting-started
 ---

@@ -37,10 +37,10 @@ The agent is a single [`chat.agent()`](/docs/ai-chat/overview) task that holds t
 
 ## GitHub repo
 
-<Card title="View the ElevenLabs Voice agent repo" icon="GitHub" href="https://github.com/triggerdotdev/examples/tree/main/voice-agent-demo">
-  Click here to view the full code for this project in our examples repository on GitHub. You can
-  fork it and use it as a starting point for your own project.
-</Card>
+> **[View the ElevenLabs Voice agent repo](https://github.com/triggerdotdev/examples/tree/main/voice-agent-demo)**
+>
+> Click here to view the full code for this project in our examples repository on GitHub. You can
+> fork it and use it as a starting point for your own project.
 
 ## How it works
 
@@ -85,11 +85,11 @@ export const voiceChat = chat.agent({
 });
 ```
 
-<Note>
-  Because the trimmed prefix changes every turn, byte-exact prompt caching can never hit; the
-  sliding window and prompt caching are mutually exclusive. Raise `HISTORY_TURNS` if you need
-  memory more than you need flat latency.
-</Note>
+> [!NOTE]
+>
+> Because the trimmed prefix changes every turn, byte-exact prompt caching can never hit; the
+> sliding window and prompt caching are mutually exclusive. Raise `HISTORY_TURNS` if you need
+> memory more than you need flat latency.
 
 ### Head Start for a fast first reply
 
@@ -176,11 +176,11 @@ const transport = useTriggerChatTransport<typeof voiceChat>({
 const { messages, sendMessage, status } = useChat({ transport });
 ```
 
-<Warning>
-  The server actions in `app/actions.ts` have no caller checks. That's fine on localhost, but before
-  exposing the app to anyone else, add authorization. As written, anyone who can reach the app can
-  mint session and speech tokens and spend against your provider quotas.
-</Warning>
+> [!WARNING]
+>
+> The server actions in `app/actions.ts` have no caller checks. That's fine on localhost, but before
+> exposing the app to anyone else, add authorization. As written, anyone who can reach the app can
+> mint session and speech tokens and spend against your provider quotas.
 
 ### One config file
 
@@ -206,11 +206,11 @@ VOICE_ANTHROPIC_API_KEY=sk-ant-xxxxxxxxxxxxxxxxxxxx
 ELEVENLABS_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
-<Note>
-  The Anthropic key is named `VOICE_ANTHROPIC_API_KEY`, not `ANTHROPIC_API_KEY`, because the
-  standard name gets picked up by other tooling that can silently bill against it. The project reads
-  its own prefixed name via `lib/model.ts`.
-</Note>
+> [!NOTE]
+>
+> The Anthropic key is named `VOICE_ANTHROPIC_API_KEY`, not `ANTHROPIC_API_KEY`, because the
+> standard name gets picked up by other tooling that can silently bill against it. The project reads
+> its own prefixed name via `lib/model.ts`.
 
 Run the agent and the app in two terminals, then open [http://localhost:4000](http://localhost:4000), tap the mic, and start talking:
 
@@ -231,20 +231,18 @@ pnpm dev           # the Next.js app
 
 ## Learn more
 
-<CardGroup>
-  <Card title="AI chat overview" icon="message-bot" href="/docs/ai-chat/overview">
-    How chat agents, sessions, and the turn loop work.
-  </Card>
+> **[AI chat overview](/docs/ai-chat/overview)**
+>
+> How chat agents, sessions, and the turn loop work.
 
-  <Card title="Fast starts" icon="bolt" href="/docs/ai-chat/fast-starts">
-    Head Start: run turn 1 in your web server while the agent boots.
-  </Card>
+> **[Fast starts](/docs/ai-chat/fast-starts)**
+>
+> Head Start: run turn 1 in your web server while the agent boots.
 
-  <Card title="Frontend" icon="browser" href="/docs/ai-chat/frontend">
-    The chat transport, session tokens, and reconnection.
-  </Card>
+> **[Frontend](/docs/ai-chat/frontend)**
+>
+> The chat transport, session tokens, and reconnection.
 
-  <Card title="Sessions" icon="clock-rotate-left" href="/docs/ai-chat/sessions">
-    Durable sessions, idle timeouts, and checkpoint/resume between turns.
-  </Card>
-</CardGroup>
+> **[Sessions](/docs/ai-chat/sessions)**
+>
+> Durable sessions, idle timeouts, and checkpoint/resume between turns.

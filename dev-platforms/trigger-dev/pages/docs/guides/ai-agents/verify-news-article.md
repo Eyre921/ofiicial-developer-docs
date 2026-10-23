@@ -10,7 +10,7 @@ Create an AI agent workflow that verifies the facts in a news article
 
 This example demonstrates the **orchestrator-workers** pattern, where a central AI agent dynamically breaks down complex tasks and delegates them to specialized worker agents. This pattern is particularly effective when tasks require multiple perspectives or parallel processing streams, with the orchestrator synthesizing the results into a cohesive output.
 
-<img alt="Orchestrator" />
+![Orchestrator](https://mintcdn.com/trigger/uys6iMwf9B_ojh8r/guides/ai-agents/orchestrator-workers.png?fit=max\&auto=format\&n=uys6iMwf9B_ojh8r\&q=85\&s=05a71d4ef13664e4e73ed32bfd2a942c)
 
 ## Example task
 

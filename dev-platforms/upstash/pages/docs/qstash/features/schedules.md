@@ -1,5 +1,5 @@
 ---
-title: "Schedules"
+title: "QStash Schedules"
 source: https://upstash.com/docs/qstash/features/schedules
 path: docs/qstash/features/schedules
 ---

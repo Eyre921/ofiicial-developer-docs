@@ -32,246 +32,242 @@ With `hydrateMessages`, your hook was the source of truth and the runtime wrote 
 * Add somewhere to keep an opaque JSON blob per chat (the runtime's `state`) and two opaque string cursors per chat.
 * If you have a `final`, `status` or `partial` flag already, keep it. If not, add one; it is how a cut-short answer stays marked across a continuation.
 
-<Steps>
-  <Step title="Implement load">
-    `load` returns the conversation in order, the `state` blob, the cursors, and the ids of any rows you stored as partial. Scope the read by `clientData` where your backend enforces tenancy.
+**1. Implement load**
 
-    ```ts lib/transcript-storage.ts theme={"theme":"css-variables"}
-    import type { TranscriptStorage } from "@trigger.dev/sdk/ai";
-    import { db } from "@/lib/db";
+`load` returns the conversation in order, the `state` blob, the cursors, and the ids of any rows you stored as partial. Scope the read by `clientData` where your backend enforces tenancy.
 
-    type Scope = { userId: string };
+```ts lib/transcript-storage.ts theme={"theme":"css-variables"}
+import type { TranscriptStorage } from "@trigger.dev/sdk/ai";
+import { db } from "@/lib/db";
 
-    export const transcriptStorage: TranscriptStorage<Scope> = {
-      async load({ chatId, clientData }, opts) {
-        const chat = await db.chat.findUnique({
-          where: { id: chatId },
-          include: { session: true },
-        });
-        if (chat && chat.userId !== clientData.userId) {
-          throw new Error("This conversation could not be loaded.");
-        }
-        if (!chat) return { messages: [], state: null };
+type Scope = { userId: string };
 
-        const cursors = {
-          lastOutEventId: chat.session?.lastEventId ?? undefined,
-          lastInEventId: chat.session?.lastInEventId ?? undefined,
-        };
+export const transcriptStorage: TranscriptStorage<Scope> = {
+  async load({ chatId, clientData }, opts) {
+    const chat = await db.chat.findUnique({
+      where: { id: chatId },
+      include: { session: true },
+    });
+    if (chat && chat.userId !== clientData.userId) {
+      throw new Error("This conversation could not be loaded.");
+    }
+    if (!chat) return { messages: [], state: null };
 
-        let before: number | undefined;
-        if (opts?.before) {
-          const anchor = await db.message.findUnique({
-            where: { chatId_id: { chatId, id: opts.before } },
-          });
-          if (!anchor) return { messages: [], state: chat.transcriptState, cursors };
-          before = anchor.position;
-        }
-        const where = { chatId, ...(before !== undefined ? { position: { lt: before } } : {}) };
-
-        let rows;
-        let nextCursor: string | undefined;
-        if (opts?.limit) {
-          const page = await db.message.findMany({
-            where,
-            orderBy: { position: "desc" },
-            take: opts.limit + 1,
-          });
-          rows = page.slice(0, opts.limit).reverse();
-          if (page.length > opts.limit) nextCursor = rows[0]?.id;
-        } else {
-          rows = await db.message.findMany({ where, orderBy: { position: "asc" } });
-        }
-
-        return {
-          messages: rows.map((row) => row.message),
-          state: chat.transcriptState,
-          cursors,
-          nextCursor,
-          nonFinalIds: rows.filter((row) => row.status === "partial").map((row) => row.id),
-        };
-      },
-
-      async save(ctx, changeset) {
-        // next step
-      },
+    const cursors = {
+      lastOutEventId: chat.session?.lastEventId ?? undefined,
+      lastInEventId: chat.session?.lastInEventId ?? undefined,
     };
-    ```
 
-    The runtime calls `load` with no options and wants the whole conversation. Your frontend's [history read](/docs/ai-chat/transcript-storage#reading-the-transcript) passes `limit` (and later `before`), so the example fetches one extra row to tell whether earlier messages exist and returns the oldest included id as `nextCursor`.
-  </Step>
+    let before: number | undefined;
+    if (opts?.before) {
+      const anchor = await db.message.findUnique({
+        where: { chatId_id: { chatId, id: opts.before } },
+      });
+      if (!anchor) return { messages: [], state: chat.transcriptState, cursors };
+      before = anchor.position;
+    }
+    const where = { chatId, ...(before !== undefined ? { position: { lt: before } } : {}) };
 
-  <Step title="Implement save">
-    Apply the changeset's `changes` to your rows and write the `cursors`, in one transaction. The cursor tells a reconnecting client what it has already seen; a cursor that lands ahead of the rows it accounts for makes that client skip chunks stored nowhere.
+    let rows;
+    let nextCursor: string | undefined;
+    if (opts?.limit) {
+      const page = await db.message.findMany({
+        where,
+        orderBy: { position: "desc" },
+        take: opts.limit + 1,
+      });
+      rows = page.slice(0, opts.limit).reverse();
+      if (page.length > opts.limit) nextCursor = rows[0]?.id;
+    } else {
+      rows = await db.message.findMany({ where, orderBy: { position: "asc" } });
+    }
 
-    ```ts lib/transcript-storage.ts theme={"theme":"css-variables"}
-    async save({ chatId, clientData }, changeset) {
-      await db.$transaction(async (tx) => {
-        const chat = await tx.chat.findUnique({ where: { id: chatId } });
-        if (chat && chat.userId !== clientData.userId) {
-          throw new Error("This conversation could not be saved.");
-        }
-        if (!chat) await tx.chat.create({ data: { id: chatId, userId: clientData.userId } });
+    return {
+      messages: rows.map((row) => row.message),
+      state: chat.transcriptState,
+      cursors,
+      nextCursor,
+      nonFinalIds: rows.filter((row) => row.status === "partial").map((row) => row.id),
+    };
+  },
 
-        let next = (await lastPosition(tx, chatId)) + 1;
+  async save(ctx, changeset) {
+    // next step
+  },
+};
+```
 
-        for (const change of changeset.changes) {
-          switch (change.op) {
-            case "put": {
-              const status = change.final === false ? "partial" : "complete";
-              const existing = await tx.message.findUnique({
-                where: { chatId_id: { chatId, id: change.message.id } },
-              });
-              if (existing) {
-                await tx.message.update({
-                  where: { chatId_id: { chatId, id: change.message.id } },
-                  data: { message: change.message, status },
-                });
-              } else {
-                await tx.message.create({
-                  data: { chatId, id: change.message.id, position: next++, message: change.message, status },
-                });
-              }
-              break;
-            }
-            case "remove":
-              await tx.message.deleteMany({ where: { chatId, id: change.id } });
-              break;
-            case "truncateAfter": {
-              const anchor = await tx.message.findUnique({
-                where: { chatId_id: { chatId, id: change.afterId } },
-              });
-              if (anchor) {
-                await tx.message.deleteMany({ where: { chatId, position: { gt: anchor.position } } });
-                next = anchor.position + 1;
-              }
-              break;
-            }
-            case "state":
-              await tx.chat.update({ where: { id: chatId }, data: { transcriptState: change.value } });
-              break;
-          }
-        }
+The runtime calls `load` with no options and wants the whole conversation. Your frontend's [history read](/docs/ai-chat/transcript-storage#reading-the-transcript) passes `limit` (and later `before`), so the example fetches one extra row to tell whether earlier messages exist and returns the oldest included id as `nextCursor`.
 
-        if (changeset.cursors) {
-          await tx.chatSession.upsert({
-            where: { chatId },
-            create: { chatId, ...cursorColumns(changeset.cursors) },
-            update: cursorColumns(changeset.cursors),
+**2. Implement save**
+
+Apply the changeset's `changes` to your rows and write the `cursors`, in one transaction. The cursor tells a reconnecting client what it has already seen; a cursor that lands ahead of the rows it accounts for makes that client skip chunks stored nowhere.
+
+```ts lib/transcript-storage.ts theme={"theme":"css-variables"}
+async save({ chatId, clientData }, changeset) {
+  await db.$transaction(async (tx) => {
+    const chat = await tx.chat.findUnique({ where: { id: chatId } });
+    if (chat && chat.userId !== clientData.userId) {
+      throw new Error("This conversation could not be saved.");
+    }
+    if (!chat) await tx.chat.create({ data: { id: chatId, userId: clientData.userId } });
+
+    let next = (await lastPosition(tx, chatId)) + 1;
+
+    for (const change of changeset.changes) {
+      switch (change.op) {
+        case "put": {
+          const status = change.final === false ? "partial" : "complete";
+          const existing = await tx.message.findUnique({
+            where: { chatId_id: { chatId, id: change.message.id } },
           });
+          if (existing) {
+            await tx.message.update({
+              where: { chatId_id: { chatId, id: change.message.id } },
+              data: { message: change.message, status },
+            });
+          } else {
+            await tx.message.create({
+              data: { chatId, id: change.message.id, position: next++, message: change.message, status },
+            });
+          }
+          break;
         }
+        case "remove":
+          await tx.message.deleteMany({ where: { chatId, id: change.id } });
+          break;
+        case "truncateAfter": {
+          const anchor = await tx.message.findUnique({
+            where: { chatId_id: { chatId, id: change.afterId } },
+          });
+          if (anchor) {
+            await tx.message.deleteMany({ where: { chatId, position: { gt: anchor.position } } });
+            next = anchor.position + 1;
+          }
+          break;
+        }
+        case "state":
+          await tx.chat.update({ where: { id: chatId }, data: { transcriptState: change.value } });
+          break;
+      }
+    }
+
+    if (changeset.cursors) {
+      await tx.chatSession.upsert({
+        where: { chatId },
+        create: { chatId, ...cursorColumns(changeset.cursors) },
+        update: cursorColumns(changeset.cursors),
       });
     }
-    ```
+  });
+}
+```
 
-    Three rules keep the rows in the runtime's order:
+Three rules keep the rows in the runtime's order:
 
-    * Assign a position only when a row is first inserted, in the order the `put`s arrive. Within one changeset that is conversation order, so a steer sent mid-answer lands before the answer it shaped.
-    * Leave the position alone on a `put` for a known id. A tool approval, a settled partial and a compaction all replace a message in place.
-    * Do not order by a write timestamp. A replaced message would jump to the end, and a steer written after the answer would sort after it.
+* Assign a position only when a row is first inserted, in the order the `put`s arrive. Within one changeset that is conversation order, so a steer sent mid-answer lands before the answer it shaped.
+* Leave the position alone on a `put` for a known id. A tool approval, a settled partial and a compaction all replace a message in place.
+* Do not order by a write timestamp. A replaced message would jump to the end, and a steer written after the answer would sort after it.
 
-    If you keep the whole conversation as one document instead of rows, ignore `changes` and write `changeset.transcript` as-is. Pick one of the two and stay with it.
-  </Step>
+If you keep the whole conversation as one document instead of rows, ignore `changes` and write `changeset.transcript` as-is. Pick one of the two and stay with it.
 
-  <Step title="Decide whether you need loadContext">
-    Most `hydrateMessages` hooks did two jobs: they persisted the incoming message and they returned the history. `save` and `load` cover both, so most agents need nothing more.
+**3. Decide whether you need loadContext**
 
-    Add `loadContext` only when your database decides what the model sees each turn: a branching conversation where only the active branch is context, or a trust boundary where the browser's history is not to be believed. The runtime calls it on every turn and action with the incoming messages and the transcript it had, and uses what you return as the conversation. `save` keeps receiving every change and crash recovery keeps running.
+Most `hydrateMessages` hooks did two jobs: they persisted the incoming message and they returned the history. `save` and `load` cover both, so most agents need nothing more.
 
-    ```ts lib/transcript-storage.ts theme={"theme":"css-variables"}
-    loadContext: async ({ chatId, clientData }, { incomingMessages }) => {
-      const branch = await db.activeBranch(chatId, clientData.userId);
-      return [...branch, ...incomingMessages];
-    },
-    ```
+Add `loadContext` only when your database decides what the model sees each turn: a branching conversation where only the active branch is context, or a trust boundary where the browser's history is not to be believed. The runtime calls it on every turn and action with the incoming messages and the transcript it had, and uses what you return as the conversation. `save` keeps receiving every change and crash recovery keeps running.
 
-    Do not port the body of your `hydrateMessages` hook into `loadContext` wholesale. The writes in it belong in `save`, and the recovery and compaction logic in it is gone.
-  </Step>
+```ts lib/transcript-storage.ts theme={"theme":"css-variables"}
+loadContext: async ({ chatId, clientData }, { incomingMessages }) => {
+  const branch = await db.activeBranch(chatId, clientData.userId);
+  return [...branch, ...incomingMessages];
+},
+```
 
-  <Step title="Swap the option">
-    Set `storage`, remove `hydrateMessages`, and let the agent boot. It throws on start if both are still present.
+Do not port the body of your `hydrateMessages` hook into `loadContext` wholesale. The writes in it belong in `save`, and the recovery and compaction logic in it is gone.
 
-    ```ts trigger/chat.ts theme={"theme":"css-variables"}
-    export const myChat = chat.agent({
-      id: "my-chat",
-      storage: transcriptStorage,
-      clientDataSchema: z.object({ userId: z.string() }),
-      run: async ({ messages, signal, streamText }) =>
-        streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal }),
-    });
-    ```
-  </Step>
+**4. Swap the option**
 
-  <Step title="Delete what the runtime now owns">
-    Work through your hooks and remove every write that duplicates a change the storage receives:
+Set `storage`, remove `hydrateMessages`, and let the agent boot. It throws on start if both are still present.
 
-    * Message writes in `onTurnStart` and `onTurnComplete`, including the steering messages you filed from `newUIMessages` or `pendingMessages.onReceived`.
-    * The `lastEventId` write in `onTurnComplete`. The cursor now arrives on the changeset.
-    * Row writes paired with `chat.history` calls in `onAction`. An undo is a `truncateAfter`, an edit is a `put` and a `truncateAfter`. To answer after an edit, return `chat.turn()`; returning a model response from `onAction` is no longer supported.
-    * Per-step partial writes in `onStepFinish`, and any run-state or "still streaming" flag. A crash is recovered from the durable session stream, and a partial that survives reaches `save` with `final: false`.
-    * Dangling tool-call repair. The runtime cleans a partial before it saves it.
-    * Your compaction summary column, its watermark, and the invalidation you ran on every rollback path. The summary travels in `state`, and the runtime discards it when a rollback crosses the point it covers.
-    * Any filter that dropped an empty assistant message. A turn that fails before the model writes anything is not handed to `save`.
+```ts trigger/chat.ts theme={"theme":"css-variables"}
+export const myChat = chat.agent({
+  id: "my-chat",
+  storage: transcriptStorage,
+  clientDataSchema: z.object({ userId: z.string() }),
+  run: async ({ messages, signal, streamText }) =>
+    streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal }),
+});
+```
 
-    Keep `onTurnStart` for the session token if your frontend hydrates from your own table, and keep `onTurnComplete` for side work such as naming the conversation.
-  </Step>
+**5. Delete what the runtime now owns**
 
-  <Step title="Update the history read on your frontend">
-    Your page most likely reads history from your tables directly. That keeps working. To use the same read the runtime uses, and to seed the live subscription's cursor so a reload does not replay what it just loaded, wrap the storage in a server action and load it with the hook:
+Work through your hooks and remove every write that duplicates a change the storage receives:
 
-    <CodeGroup>
-      ```ts app/actions.ts theme={"theme":"css-variables"}
-      "use server";
-      import { chat } from "@trigger.dev/sdk/ai";
-      import { transcriptStorage } from "@/lib/transcript-storage";
+* Message writes in `onTurnStart` and `onTurnComplete`, including the steering messages you filed from `newUIMessages` or `pendingMessages.onReceived`.
+* The `lastEventId` write in `onTurnComplete`. The cursor now arrives on the changeset.
+* Row writes paired with `chat.history` calls in `onAction`. An undo is a `truncateAfter`, an edit is a `put` and a `truncateAfter`. To answer after an edit, return `chat.turn()`; returning a model response from `onAction` is no longer supported.
+* Per-step partial writes in `onStepFinish`, and any run-state or "still streaming" flag. A crash is recovered from the durable session stream, and a partial that survives reaches `save` with `final: false`.
+* Dangling tool-call repair. The runtime cleans a partial before it saves it.
+* Your compaction summary column, its watermark, and the invalidation you ran on every rollback path. The summary travels in `state`, and the runtime discards it when a rollback crosses the point it covers.
+* Any filter that dropped an empty assistant message. A turn that fails before the model writes anything is not handed to `save`.
 
-      const load = chat.createLoadTranscriptAction(transcriptStorage);
+Keep `onTurnStart` for the session token if your frontend hydrates from your own table, and keep `onTurnComplete` for side work such as naming the conversation.
 
-      export async function loadTranscript(params: { chatId: string; limit?: number; before?: string }) {
-        const userId = await getUserId();
-        await assertOwnsChat(userId, params.chatId);
-        return load({ ...params, clientData: { userId } });
-      }
-      ```
+**6. Update the history read on your frontend**
 
-      ```tsx app/c/[chatId]/ChatPage.tsx theme={"theme":"css-variables"}
-      "use client";
-      import { useLoadTranscript, useTriggerChatTransport } from "@trigger.dev/sdk/chat/react";
-      import { loadTranscript } from "@/app/actions";
+Your page most likely reads history from your tables directly. That keeps working. To use the same read the runtime uses, and to seed the live subscription's cursor so a reload does not replay what it just loaded, wrap the storage in a server action and load it with the hook:
 
-      export function ChatPage({ chatId }: { chatId: string }) {
-        const transport = useTriggerChatTransport({ task: "my-chat", accessToken, startSession });
-        const { messages, isLoading, nextCursor } = useLoadTranscript(chatId, loadTranscript, {
-          transport,
-          limit: 50,
-        });
-        if (isLoading) return <Spinner />;
-        return <Chat chatId={chatId} initialMessages={messages} transport={transport} olderPage={nextCursor} />;
-      }
-      ```
-    </CodeGroup>
+```ts app/actions.ts theme={"theme":"css-variables"}
+"use server";
+import { chat } from "@trigger.dev/sdk/ai";
+import { transcriptStorage } from "@/lib/transcript-storage";
 
-    <Warning>
-      The action receives `chatId` from the browser. Authorize it there, before calling the storage. The storage's own `clientData` check is a backstop, not the boundary.
-    </Warning>
-  </Step>
+const load = chat.createLoadTranscriptAction(transcriptStorage);
 
-  <Step title="Run the conformance suite">
-    Point `runTranscriptStorageTests` at your storage. It checks appends and in-place replacement, idempotent `remove` and `truncateAfter`, `state` round-trips, cursors, replaying the same changeset twice, paging, and chat isolation, against whatever database you give it.
+export async function loadTranscript(params: { chatId: string; limit?: number; before?: string }) {
+  const userId = await getUserId();
+  await assertOwnsChat(userId, params.chatId);
+  return load({ ...params, clientData: { userId } });
+}
+```
 
-    ```ts lib/transcript-storage.test.ts theme={"theme":"css-variables"}
-    import { runTranscriptStorageTests } from "@trigger.dev/sdk/ai/test";
-    import { describe, expect, it } from "vitest";
-    import { transcriptStorage } from "./transcript-storage";
+```tsx app/c/[chatId]/ChatPage.tsx theme={"theme":"css-variables"}
+"use client";
+import { useLoadTranscript, useTriggerChatTransport } from "@trigger.dev/sdk/chat/react";
+import { loadTranscript } from "@/app/actions";
 
-    runTranscriptStorageTests(() => transcriptStorage, {
-      api: { describe, it, expect },
-      clientData: { userId: "user_test" },
-    });
-    ```
+export function ChatPage({ chatId }: { chatId: string }) {
+  const transport = useTriggerChatTransport({ task: "my-chat", accessToken, startSession });
+  const { messages, isLoading, nextCursor } = useLoadTranscript(chatId, loadTranscript, {
+    transport,
+    limit: 50,
+  });
+  if (isLoading) return <Spinner />;
+  return <Chat chatId={chatId} initialMessages={messages} transport={transport} olderPage={nextCursor} />;
+}
+```
 
-    `memoryTranscriptStorage()` is the reference implementation. Use it in your agent tests to see exactly which changes the runtime hands a storage for a given turn.
-  </Step>
-</Steps>
+> [!WARNING]
+>
+> The action receives `chatId` from the browser. Authorize it there, before calling the storage. The storage's own `clientData` check is a backstop, not the boundary.
+
+**7. Run the conformance suite**
+
+Point `runTranscriptStorageTests` at your storage. It checks appends and in-place replacement, idempotent `remove` and `truncateAfter`, `state` round-trips, cursors, replaying the same changeset twice, paging, and chat isolation, against whatever database you give it.
+
+```ts lib/transcript-storage.test.ts theme={"theme":"css-variables"}
+import { runTranscriptStorageTests } from "@trigger.dev/sdk/ai/test";
+import { describe, expect, it } from "vitest";
+import { transcriptStorage } from "./transcript-storage";
+
+runTranscriptStorageTests(() => transcriptStorage, {
+  api: { describe, it, expect },
+  clientData: { userId: "user_test" },
+});
+```
+
+`memoryTranscriptStorage()` is the reference implementation. Use it in your agent tests to see exactly which changes the runtime hands a storage for a given turn.
 
 ## Behaviour that changes
 

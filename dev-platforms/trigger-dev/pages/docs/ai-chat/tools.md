@@ -58,9 +58,9 @@ run: async ({ messages, tools, signal, streamText }) =>
   streamText({ model, messages, tools, abortSignal: signal }),
 ```
 
-<Tip>
-  Conversion only reads each tool's `inputSchema` and `toModelOutput`, never `execute`. If you keep heavy `execute` dependencies out of a module (for bundle reasons), you can declare a lightweight schema-only tool map on the config and add the executes where you call `streamText`.
-</Tip>
+> [!TIP]
+>
+> Conversion only reads each tool's `inputSchema` and `toModelOutput`, never `execute`. If you keep heavy `execute` dependencies out of a module (for bundle reasons), you can declare a lightweight schema-only tool map on the config and add the executes where you call `streamText`.
 
 ## `toModelOutput` across turns
 

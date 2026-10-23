@@ -143,15 +143,17 @@ import { myTask } from "./trigger/myTasks";
 await myTask.trigger({ some: "data" }, { idempotencyKey: myUser.id });
 ```
 
-<Note>
-  When you pass a raw string, it defaults to `"run"` scope (scoped to the parent run). See [Default behavior](#default-behavior) for details on how scopes work and how to use global scope instead.
-</Note>
+> [!NOTE]
+>
+> When you pass a raw string, it defaults to `"run"` scope (scoped to the parent run). See [Default behavior](#default-behavior) for details on how scopes work and how to use global scope instead.
 
-<Note>Make sure you provide sufficiently unique keys to avoid collisions.</Note>
+> [!NOTE]
+>
+> Make sure you provide sufficiently unique keys to avoid collisions.
 
-<Note>
-  Idempotency keys are limited to 2048 characters. Keys produced by `idempotencyKeys.create()` are 64-character hashes and always fit; this limit only matters if you pass a long raw string. Requests above the limit return `400`.
-</Note>
+> [!NOTE]
+>
+> Idempotency keys are limited to 2048 characters. Keys produced by `idempotencyKeys.create()` are 64-character hashes and always fit; this limit only matters if you pass a long raw string. Requests above the limit return `400`.
 
 You can pass the `idempotencyKey` when calling `batchTrigger` as well:
 
@@ -257,9 +259,9 @@ export const onboardUser = task({
 });
 ```
 
-<Note>
-  Even with `global` scope, idempotency keys are still isolated to the specific task and environment. Using the same key to trigger *different* tasks will not deduplicate - both tasks will run. See [Environment and task scoping](#environment-and-task-scoping) for more details.
-</Note>
+> [!NOTE]
+>
+> Even with `global` scope, idempotency keys are still isolated to the specific task and environment. Using the same key to trigger *different* tasks will not deduplicate - both tasks will run. See [Environment and task scoping](#environment-and-task-scoping) for more details.
 
 ## Default behavior
 
@@ -275,9 +277,9 @@ await childTask.trigger(payload, { idempotencyKey: "my-key" });
 await childTask.trigger(payload, { idempotencyKey: await idempotencyKeys.create("my-key") });
 ```
 
-<Warning>
-  **Breaking change in v4.3.1:** In v4.3.0 and earlier, raw strings defaulted to `global` scope. Starting in v4.3.1, raw strings now default to `run` scope. If you're upgrading and relied on the previous global behavior, you must now explicitly use `idempotencyKeys.create("key", { scope: "global" })`.
-</Warning>
+> [!WARNING]
+>
+> **Breaking change in v4.3.1:** In v4.3.0 and earlier, raw strings defaulted to `global` scope. Starting in v4.3.1, raw strings now default to `run` scope. If you're upgrading and relied on the previous global behavior, you must now explicitly use `idempotencyKeys.create("key", { scope: "global" })`.
 
 This means raw strings are scoped to the parent run by default. If you want global behavior, you must explicitly create the key with `scope: "global"`:
 
@@ -305,9 +307,9 @@ await tasks.trigger("my-task", payload, {
 });
 ```
 
-<Note>
-  When triggering from backend code, the scope doesn't matter since there's no task context. All scopes effectively behave as global.
-</Note>
+> [!NOTE]
+>
+> When triggering from backend code, the scope doesn't matter since there's no task context. All scopes effectively behave as global.
 
 ## `idempotencyKeyTTL` option
 
@@ -317,7 +319,7 @@ The `idempotencyKeyTTL` option defines a time window during which a task with th
 2. During this window, any subsequent triggers with the same idempotency key will return the original task run instead of creating a new one.
 3. Once the TTL window expires, the next trigger with that idempotency key will create a new task run and start a new time window.
 
-<img alt="idempotency-key-ttl" />
+![idempotency-key-ttl](https://mintcdn.com/trigger/uys6iMwf9B_ojh8r/images/idempotency-key-ttl.png?fit=max\&auto=format\&n=uys6iMwf9B_ojh8r\&q=85\&s=ed13a5a2782dceb10e62483dd0ad6417)
 
 By default idempotency keys are stored for 30 days. You can change this by passing the `idempotencyKeyTTL` option when triggering a task:
 
@@ -485,9 +487,9 @@ await idempotencyKeys.reset("my-task", "my-key", {
 });
 ```
 
-<Note>
-  If you triggered the task from backend code, all scopes behave as global (see [Triggering from backend code](#triggering-from-backend-code)). Use `scope: "global"` when resetting.
-</Note>
+> [!NOTE]
+>
+> If you triggered the task from backend code, all scopes behave as global (see [Triggering from backend code](#triggering-from-backend-code)). Use `scope: "global"` when resetting.
 
 ### Resetting attempt-scoped keys
 
@@ -504,9 +506,9 @@ await idempotencyKeys.reset("my-task", "my-key", {
 });
 ```
 
-<Warning>
-  If you try to reset a `"run"` or `"attempt"` scoped key from outside a task without providing the required `parentRunId` (and `attemptNumber` for attempt scope), it will throw an error.
-</Warning>
+> [!WARNING]
+>
+> If you try to reset a `"run"` or `"attempt"` scoped key from outside a task without providing the required `parentRunId` (and `attemptNumber` for attempt scope), it will throw an error.
 
 ### Resetting from the dashboard
 
@@ -518,11 +520,11 @@ You can also reset idempotency keys directly from the Trigger.dev dashboard:
 
 This is useful when you need to manually allow a task to be re-triggered without writing code.
 
-<img alt="Idempotency section in the run details pane showing the key, scope, and expiration time" />
+![Idempotency section in the run details pane showing the key, scope, and expiration time](https://mintcdn.com/trigger/ZdW-AgQGBQJjNstH/images/idempotency-key-dashboard.png?fit=max\&auto=format\&n=ZdW-AgQGBQJjNstH\&q=85\&s=934981678afef81b76520ae806b42db0)
 
-<Note>
-  Resetting an idempotency key only affects runs in the current environment. The reset is scoped to the specific task identifier and idempotency key combination.
-</Note>
+> [!NOTE]
+>
+> Resetting an idempotency key only affects runs in the current environment. The reset is scoped to the specific task identifier and idempotency key combination.
 
 ## Important notes
 

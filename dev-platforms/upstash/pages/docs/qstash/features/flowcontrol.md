@@ -1,5 +1,5 @@
 ---
-title: "Flow Control"
+title: "QStash Flow Control"
 source: https://upstash.com/docs/qstash/features/flowcontrol
 path: docs/qstash/features/flowcontrol
 ---

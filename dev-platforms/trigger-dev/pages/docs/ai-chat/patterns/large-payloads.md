@@ -69,59 +69,57 @@ Store the large value in your own database (or object store) and emit only an id
 
 This keeps the chat stream small, predictable, and resumable, and lets you reuse the value across turns or sessions without re-streaming it.
 
-<CodeGroup>
-  ```ts task.ts theme={"theme":"css-variables"}
-  import { chat } from "@trigger.dev/sdk/ai";
-  import { tool } from "ai";
-  import { z } from "zod";
+```ts task.ts theme={"theme":"css-variables"}
+import { chat } from "@trigger.dev/sdk/ai";
+import { tool } from "ai";
+import { z } from "zod";
 
-  const fetchPage = tool({
-    description: "Fetch a URL and store the HTML for later inspection.",
-    inputSchema: z.object({ url: z.string().url() }),
-    execute: async ({ url }) => {
-      const html = await (await fetch(url)).text();
-      const docId = await db.documents.create({
-        data: { url, html, byteSize: html.length },
-      });
-
-      // Tool result is small — just an id and metadata.
-      // The model and the UI both work with this lightweight handle.
-      return {
-        docId,
-        url,
-        byteSize: html.length,
-        preview: html.slice(0, 500),
-      };
-    },
-  });
-  ```
-
-  ```ts api/document/[id]/route.ts theme={"theme":"css-variables"}
-  // Frontend fetches the full document on demand.
-  import { auth, currentUser } from "@/lib/auth";
-
-  export async function GET(_req: Request, { params }: { params: { id: string } }) {
-    const user = await currentUser();
-    const doc = await db.documents.findUniqueOrThrow({
-      where: { id: params.id, userId: user.id },
+const fetchPage = tool({
+  description: "Fetch a URL and store the HTML for later inspection.",
+  inputSchema: z.object({ url: z.string().url() }),
+  execute: async ({ url }) => {
+    const html = await (await fetch(url)).text();
+    const docId = await db.documents.create({
+      data: { url, html, byteSize: html.length },
     });
-    return new Response(doc.html, { headers: { "content-type": "text/html" } });
-  }
-  ```
 
-  ```tsx component.tsx theme={"theme":"css-variables"}
-  function ToolResultCard({ part }: { part: ToolUIPart<"fetchPage"> }) {
-    const { docId, url, byteSize, preview } = part.output;
-    return (
-      <div>
-        <p>{url} — {(byteSize / 1024).toFixed(0)} KB</p>
-        <pre>{preview}…</pre>
-        <a href={`/api/document/${docId}`}>Open full HTML</a>
-      </div>
-    );
-  }
-  ```
-</CodeGroup>
+    // Tool result is small — just an id and metadata.
+    // The model and the UI both work with this lightweight handle.
+    return {
+      docId,
+      url,
+      byteSize: html.length,
+      preview: html.slice(0, 500),
+    };
+  },
+});
+```
+
+```ts api/document/[id]/route.ts theme={"theme":"css-variables"}
+// Frontend fetches the full document on demand.
+import { auth, currentUser } from "@/lib/auth";
+
+export async function GET(_req: Request, { params }: { params: { id: string } }) {
+  const user = await currentUser();
+  const doc = await db.documents.findUniqueOrThrow({
+    where: { id: params.id, userId: user.id },
+  });
+  return new Response(doc.html, { headers: { "content-type": "text/html" } });
+}
+```
+
+```tsx component.tsx theme={"theme":"css-variables"}
+function ToolResultCard({ part }: { part: ToolUIPart<"fetchPage"> }) {
+  const { docId, url, byteSize, preview } = part.output;
+  return (
+    <div>
+      <p>{url} — {(byteSize / 1024).toFixed(0)} KB</p>
+      <pre>{preview}…</pre>
+      <a href={`/api/document/${docId}`}>Open full HTML</a>
+    </div>
+  );
+}
+```
 
 The same pattern works for `chat.response.write` — push the heavy value to your DB, then emit a small data part with the id:
 
@@ -130,9 +128,9 @@ const id = await db.attachments.create({ data: { content: hugeReport } });
 chat.response.write({ type: "data-report", data: { id, summary: shortSummary } });
 ```
 
-<Tip>
-  Persist the large value **before** you emit the id chunk. If the chunk reaches the UI before the row is written, the frontend gets a 404 on the follow-up fetch.
-</Tip>
+> [!TIP]
+>
+> Persist the large value **before** you emit the id chunk. If the chunk reaches the UI before the row is written, the frontend gets a 404 on the follow-up fetch.
 
 ## Transient UI parts
 

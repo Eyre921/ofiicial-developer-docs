@@ -8,9 +8,9 @@ The wire protocol for building custom chat transports — how clients communicat
 
 This page documents the protocol that chat clients use to communicate with `chat.agent()` tasks. Use this if you're building a custom transport (e.g., for a Slack bot, CLI tool, or native app) instead of using the built-in `TriggerChatTransport` or `AgentChat`.
 
-<Note>
-  Most users don't need this. Use [`TriggerChatTransport`](/docs/ai-chat/frontend) for browser apps or [`AgentChat`](/docs/ai-chat/server-chat) for server-side code. This page is for building your own from scratch.
-</Note>
+> [!NOTE]
+>
+> Most users don't need this. Use [`TriggerChatTransport`](/docs/ai-chat/frontend) for browser apps or [`AgentChat`](/docs/ai-chat/server-chat) for server-side code. This page is for building your own from scratch.
 
 ## Overview
 
@@ -38,17 +38,17 @@ sequenceDiagram
   Agent-->>Client: turn-complete control record
 ```
 
-<Note>
-  **Stream lifetime.** `session.out` is bounded. After each turn-complete control record, the agent appends an S2 `trim` command record back to the previous turn-complete's seq\_num — the stream stays roughly one turn long forever at steady state. Full conversation history lives in a durable S3 snapshot, not on the stream. The transport's `lastEventId` bookmark plus S2's eventually-consistent trim window (10-60s) keeps single-turn-boundary resume working; multi-turn-away resume falls back to the snapshot. See [Resuming a stream](#resuming-a-stream) and [How history is rebuilt](#how-history-is-rebuilt).
-</Note>
+> [!NOTE]
+>
+> **Stream lifetime.** `session.out` is bounded. After each turn-complete control record, the agent appends an S2 `trim` command record back to the previous turn-complete's seq\_num — the stream stays roughly one turn long forever at steady state. Full conversation history lives in a durable S3 snapshot, not on the stream. The transport's `lastEventId` bookmark plus S2's eventually-consistent trim window (10-60s) keeps single-turn-boundary resume working; multi-turn-away resume falls back to the snapshot. See [Resuming a stream](#resuming-a-stream) and [How history is rebuilt](#how-history-is-rebuilt).
 
-<Note>
-  **Session create triggers a run.** Unlike `POST /api/v1/tasks/{taskId}/trigger`, `POST /api/v1/sessions` is the **only** entry point for chat-agent runs. The session row is task-bound and the first run is triggered atomically as part of the create call. Don't call `/tasks/{taskId}/trigger` directly for `chat.agent` tasks — the resulting run won't be bound to a session and `.in`/`.out` won't reach it.
-</Note>
+> [!NOTE]
+>
+> **Session create triggers a run.** Unlike `POST /api/v1/tasks/{taskId}/trigger`, `POST /api/v1/sessions` is the **only** entry point for chat-agent runs. The session row is task-bound and the first run is triggered atomically as part of the create call. Don't call `/tasks/{taskId}/trigger` directly for `chat.agent` tasks — the resulting run won't be bound to a session and `.in`/`.out` won't reach it.
 
-<Note>
-  **One message per record.** Each `.in/append` carries at most one new `UIMessage` — the new user turn or a tool-approval response. The agent rebuilds prior history at run boot from a durable object-store snapshot plus a replay of the `session.out` tail; clients never ship full conversation history on the wire. See [How history is rebuilt](#how-history-is-rebuilt).
-</Note>
+> [!NOTE]
+>
+> **One message per record.** Each `.in/append` carries at most one new `UIMessage` — the new user turn or a tool-approval response. The agent rebuilds prior history at run boot from a durable object-store snapshot plus a replay of the `session.out` tail; clients never ship full conversation history on the wire. See [How history is rebuilt](#how-history-is-rebuilt).
 
 ## End-to-end curl recipe
 
@@ -141,52 +141,50 @@ The rest of this page details each step.
 
 The `trigger` value inside `basePayload` decides what the first run does:
 
-<CodeGroup>
-  ```bash trigger: "preload" — warm the agent, no message yet theme={"theme":"css-variables"}
-  POST /api/v1/sessions
-  Authorization: Bearer <secret-key-or-jwt>
-  Content-Type: application/json
+```bash trigger: "preload" — warm the agent, no message yet theme={"theme":"css-variables"}
+POST /api/v1/sessions
+Authorization: Bearer <secret-key-or-jwt>
+Content-Type: application/json
 
-  {
-    "type": "chat.agent",
-    "externalId": "conversation-123",
-    "taskIdentifier": "ai-chat",
-    "triggerConfig": {
-      "basePayload": {
-        "chatId": "conversation-123",
-        "trigger": "preload",
-        "metadata": { "userId": "user-456" }
-      }
-    },
-    "tags": ["chat:conversation-123"]
-  }
-  ```
+{
+  "type": "chat.agent",
+  "externalId": "conversation-123",
+  "taskIdentifier": "ai-chat",
+  "triggerConfig": {
+    "basePayload": {
+      "chatId": "conversation-123",
+      "trigger": "preload",
+      "metadata": { "userId": "user-456" }
+    }
+  },
+  "tags": ["chat:conversation-123"]
+}
+```
 
-  ```bash trigger: "submit-message" — process first user message immediately theme={"theme":"css-variables"}
-  POST /api/v1/sessions
-  Authorization: Bearer <secret-key-or-jwt>
-  Content-Type: application/json
+```bash trigger: "submit-message" — process first user message immediately theme={"theme":"css-variables"}
+POST /api/v1/sessions
+Authorization: Bearer <secret-key-or-jwt>
+Content-Type: application/json
 
-  {
-    "type": "chat.agent",
-    "externalId": "conversation-123",
-    "taskIdentifier": "ai-chat",
-    "triggerConfig": {
-      "basePayload": {
-        "chatId": "conversation-123",
-        "trigger": "submit-message",
-        "message": {
-          "id": "msg-1",
-          "role": "user",
-          "parts": [{ "type": "text", "text": "Hello!" }]
-        },
-        "metadata": { "userId": "user-456" }
-      }
-    },
-    "tags": ["chat:conversation-123"]
-  }
-  ```
-</CodeGroup>
+{
+  "type": "chat.agent",
+  "externalId": "conversation-123",
+  "taskIdentifier": "ai-chat",
+  "triggerConfig": {
+    "basePayload": {
+      "chatId": "conversation-123",
+      "trigger": "submit-message",
+      "message": {
+        "id": "msg-1",
+        "role": "user",
+        "parts": [{ "type": "text", "text": "Hello!" }]
+      },
+      "metadata": { "userId": "user-456" }
+    }
+  },
+  "tags": ["chat:conversation-123"]
+}
+```
 
 Pick `"preload"` when the UI has rendered but the user hasn't typed (warms the agent so the first response is fast); pick `"submit-message"` when you already have the first message and want it processed in the same call.
 
@@ -262,9 +260,9 @@ x-trigger-jwt-claims: {"sub":"...","scopes":["read:runs:run_abc123","write:input
 | `publicAccessToken` | Session-scoped JWT carrying `read:sessions:{externalId}` + `write:sessions:{externalId}`. **This is the token you use for every subsequent `.in`/`.out` call.** Persist it. Lifetime is 60 minutes — see [Refreshing the token](#refreshing-the-token). |
 | `isCached` | `true` if the session existed already (idempotent re-create). HTTP status is 200 in that case, 201 on a fresh create. |
 
-<Warning>
-  **Use `publicAccessToken` from the body, not the `x-trigger-jwt` response header.** The header is included by the underlying run-trigger machinery and carries **run-scoped** scopes (`read:runs:{runId}` + `write:inputStreams:{runId}`) — it cannot subscribe to `.out` or append to `.in`. The body's `publicAccessToken` is the only token with the correct session-level scopes.
-</Warning>
+> [!WARNING]
+>
+> **Use `publicAccessToken` from the body, not the `x-trigger-jwt` response header.** The header is included by the underlying run-trigger machinery and carries **run-scoped** scopes (`read:runs:{runId}` + `write:inputStreams:{runId}`) — it cannot subscribe to `.out` or append to `.in`. The body's `publicAccessToken` is the only token with the correct session-level scopes.
 
 ### Idempotency
 
@@ -274,9 +272,9 @@ Re-calling `POST /api/v1/sessions` with the same `(taskIdentifier, externalId)` 
 * If the session has been closed (`POST /api/v1/sessions/{id}/close`, or `chat.close()` from inside the agent): returns **HTTP 409**. Closed is one-way; reuse a different `externalId` to start a new conversation.
 * Any tags / metadata / expiresAt / triggerConfig fields you send on the cached path are written through to the row, so you can update e.g. `triggerConfig.basePayload.metadata` mid-conversation. The new fields apply to **future** runs (continuations); the currently-live run keeps its original config.
 
-<Warning>
-  **A cached re-POST does not deliver a new `basePayload.message`.** `basePayload` is run-trigger config, not a message channel — the existing run keeps streaming and your message is silently dropped. To send a follow-up message, use `POST /realtime/v1/sessions/{sessionId}/in/append` (Step 3).
-</Warning>
+> [!WARNING]
+>
+> **A cached re-POST does not deliver a new `basePayload.message`.** `basePayload` is run-trigger config, not a message channel — the existing run keeps streaming and your message is silently dropped. To send a follow-up message, use `POST /realtime/v1/sessions/{sessionId}/in/append` (Step 3).
 
 ### Refreshing the token
 
@@ -285,9 +283,9 @@ The `publicAccessToken` returned by `POST /api/v1/sessions` is valid for 60 minu
 1. **Take refreshed tokens from the stream.** Most `turn-complete` control records on `.out` carry a `public-access-token` header with a refreshed JWT (see [`turn-complete` control record](#turn-complete-control-record)). The header is optional and may be absent on some turns (for example an errored turn), so replace your stored token whenever the header is present rather than expecting it every turn. For active conversations it rolls on its own.
 2. **Re-call `POST /api/v1/sessions`.** Idempotent, returns `isCached: true` and a brand-new 60-minute token. Use this if a chat goes idle long enough that the SSE stream has closed and you need to resume.
 
-<Note>
-  The built-in SDK clients (`TriggerChatTransport` from `@trigger.dev/sdk`, `AgentChat` from `@trigger.dev/sdk/chat`) call this endpoint and persist the refreshed `publicAccessToken` automatically, refreshing on every `turn-complete` control record.
-</Note>
+> [!NOTE]
+>
+> The built-in SDK clients (`TriggerChatTransport` from `@trigger.dev/sdk`, `AgentChat` from `@trigger.dev/sdk/chat`) call this endpoint and persist the refreshed `publicAccessToken` automatically, refreshing on every `turn-complete` control record.
 
 ## Step 2: Subscribe to `.out`
 
@@ -320,12 +318,13 @@ If nothing arrives by the deadline, the server sends `data: [DONE]` and closes. 
 
 ### Stream format (S2)
 
-The output stream uses [S2](https://s2.dev) under the hood and follows the standard SSE wire format ([WHATWG spec](https://html.spec.whatwg.org/multipage/server-sent-events.html#parsing-an-event-stream)). Three event types arrive on the wire:
+The output stream uses [S2](https://s2.dev) under the hood and follows the standard SSE wire format ([WHATWG spec](https://html.spec.whatwg.org/multipage/server-sent-events.html#parsing-an-event-stream)). Four event types arrive on the wire:
 
 | Event | Meaning |
 | - | - |
 | `batch` | One or more records. The records you actually care about. |
 | `ping` | Keepalive (\~every 5s on idle). Body is `{"timestamp": <ms>}`, and on backends that report it a `tail` (same `{seq_num, timestamp}` shape as a batch tail). The tail is what lets you tell you have caught up to the live edge; if you don't need caught-up detection, ignore the ping. |
+| `error` | The read failed after the stream started, for example while the stream backend restarts. Body is a plain-text reason. The connection then closes **without** `[DONE]`. Treat it like a dropped connection and [resume](#resuming-a-stream) from the last `seq_num` you processed. |
 | *(no `event:`, just `data: [DONE]`)* | Stream is closing — server sends this once before EOF. |
 
 A `batch` event in raw SSE format looks like this — note the `data` is a single line of JSON, no embedded newlines (per the SSE spec):
@@ -406,9 +405,9 @@ const { data: chunk } = JSON.parse(record.body);
 
 Built-in SDK transports (`TriggerChatTransport`, `AgentChat`) handle all of this for you — control records surface via `onTurnComplete({ chatId, lastEventId, publicAccessToken })` and the upgrade flow. Custom transports need the routing above.
 
-<Note>
-  **Prior wire shape.** Earlier SDK versions emitted `trigger:turn-complete` and `trigger:upgrade-required` as `UIMessageChunk`-shaped data records with `chunk.type === "trigger:turn-complete"`. Current versions use the header-form control records described above. Built-in SDK transports handle the new shape transparently; custom transports filtering on `chunk.type` need to switch to the `trigger-control` header check.
-</Note>
+> [!NOTE]
+>
+> **Prior wire shape.** Earlier SDK versions emitted `trigger:turn-complete` and `trigger:upgrade-required` as `UIMessageChunk`-shaped data records with `chunk.type === "trigger:turn-complete"`. Current versions use the header-form control records described above. Built-in SDK transports handle the new shape transparently; custom transports filtering on `chunk.type` need to switch to the `trigger-control` header check.
 
 ### Built-in parser (recommended for SDK users)
 
@@ -448,7 +447,7 @@ while (true) {
 
 ### Self-contained parser (for custom transports)
 
-If you're building a transport in another language or don't want the dependency, here's a complete reader. It handles the SSE framing, the comma-separated `id:` line, batch unwrapping, the inner `body` string, and `ping` / `[DONE]` events:
+If you're building a transport in another language or don't want the dependency, here's a complete reader. It handles the SSE framing, the comma-separated `id:` line, batch unwrapping, the inner `body` string, and `ping` / `error` / `[DONE]` events:
 
 ```ts theme={"theme":"css-variables"}
 async function* readSessionOut(
@@ -491,6 +490,8 @@ async function* readSessionOut(
       if (!data) continue;
 
       if (eventType === "ping") continue;
+      // The read failed mid-stream. Reconnect from your last seq_num.
+      if (eventType === "error") throw new Error(`Stream read failed: ${data}`);
       if (data === "[DONE]") return;
 
       if (eventType === "batch") {
@@ -604,9 +605,9 @@ When you receive this record:
 2. Close the stream reader (unless you want to keep it open across turns — see [Resuming a stream](#resuming-a-stream)).
 3. Wait for the next user message before sending on `.in`.
 
-<Warning>
-  **Correlate turn-completes to your send.** A `turn-complete` on `.out` can belong to an *earlier* turn than the message you just sent, for example a concurrent action (an undo) whose completion lands on the stream first. Only treat a `turn-complete` as terminal for your send if its `session-in-event-id` is greater than or equal to the `seq` returned by that send's `.in/append`; skip any lower one and keep reading. Closing on the wrong turn drops your response until the next reload. The built-in `TriggerChatTransport` does this correlation for you.
-</Warning>
+> [!WARNING]
+>
+> **Correlate turn-completes to your send.** A `turn-complete` on `.out` can belong to an *earlier* turn than the message you just sent, for example a concurrent action (an undo) whose completion lands on the stream first. Only treat a `turn-complete` as terminal for your send if its `session-in-event-id` is greater than or equal to the `seq` returned by that send's `.in/append`; skip any lower one and keep reading. Closing on the wrong turn drops your response until the next reload. The built-in `TriggerChatTransport` does this correlation for you.
 
 ### `upgrade-required` control record
 
@@ -629,7 +630,7 @@ The built-in clients handle this transparently.
 
 ### Resuming a stream
 
-If the SSE connection drops, reconnect with the `Last-Event-ID` header set to the **last `record.seq_num` you successfully processed** (decoded from the batch body — not the SSE `id:` line, which is a comma-list internal to S2):
+If the SSE connection drops, or the server sends an `error` event, reconnect with the `Last-Event-ID` header set to the **last `record.seq_num` you successfully processed** (decoded from the batch body, not the SSE `id:` line, which is a comma-list internal to S2):
 
 ```
 GET /realtime/v1/sessions/{sessionId}/out
@@ -642,13 +643,13 @@ The server resumes streaming from `seq_num = 43` onward. `Last-Event-ID` is a si
 
 `SSEStreamSubscription` tracks this automatically via its `lastEventId` option.
 
-<Note>
-  **What "resumable" means.** `session.out` is trimmed back to the previous `turn-complete` control record after each turn finishes. In practice:
-
-  * **Resume across a single turn boundary always works** — your bookmark is the last turn's `turn-complete` record, which is still on the stream.
-  * **The S2 trim is eventually consistent** (10-60s typical), so close-then-reload-quickly cases reliably still see records that are about to be trimmed.
-  * **Resume across multiple turns of inactivity** may find your bookmark trimmed. The S2 read silently clamps forward to the first surviving record; the cleanest recovery is to fetch the latest snapshot and treat the SSE as fresh from there (or rehydrate via your own DB if you use `hydrateMessages`). See [How history is rebuilt](#how-history-is-rebuilt).
-</Note>
+> [!NOTE]
+>
+> **What "resumable" means.** `session.out` is trimmed back to the previous `turn-complete` control record after each turn finishes. In practice:
+>
+> * **Resume across a single turn boundary always works** — your bookmark is the last turn's `turn-complete` record, which is still on the stream.
+> * **The S2 trim is eventually consistent** (10-60s typical), so close-then-reload-quickly cases reliably still see records that are about to be trimmed.
+> * **Resume across multiple turns of inactivity** may find your bookmark trimmed. The S2 read silently clamps forward to the first surviving record; the cleanest recovery is to fetch the latest snapshot and treat the SSE as fresh from there (or rehydrate via your own DB if you use `hydrateMessages`). See [How history is rebuilt](#how-history-is-rebuilt).
 
 ### `X-Peek-Settled` / `X-Session-Settled` — opt-in fast close on idle reconnects
 
@@ -704,11 +705,11 @@ The body is a JSON-serialized [`ChatInputChunk`](#chatinputchunk), a tagged unio
 | `413` | Body exceeds 1 MiB **or** the wrapped record would exceed S2's \~1 MiB per-record metered ceiling. A normal `kind: "message"` payload is a few KB; if you hit this you're shipping more than one message per record or pushing a single tool output that's itself oversized. Carries CORS headers so browser fetches can read the status. |
 | `500` | Transient backend failure on the durable stream. Safe to retry — appends are idempotent on `(externalId, X-Part-Id)` if you set the optional `X-Part-Id` request header (the built-in clients set it from a UUID). |
 
-<Warning>
-  **Schema validation of `metadata` happens inside the agent, not at this endpoint.** A `kind: "message"` with bad or missing metadata returns `200 OK` here, but the agent rejects the turn at run time. From the wire the failure looks like a `turn-complete` control record with no preceding `text-delta` — i.e. an empty assistant response.
-
-  **How to detect from the client:** treat "received `turn-complete` after sending a `submit-message` with no `text-delta`/`tool-input-*` chunks in between" as a schema-validation suspect, and surface a sensible error to your user. **How to confirm from the dashboard / Trigger MCP:** the run trace includes a `chat turn N [ERROR]` span followed by `waiting for next message (after error)`; the `[ERROR]` span carries the validation error message in its events. Use `mcp__trigger__get_run_details` (or open the run in the dashboard) on the run ID surfaced in the `runId` field of session-create.
-</Warning>
+> [!WARNING]
+>
+> **Schema validation of `metadata` happens inside the agent, not at this endpoint.** A `kind: "message"` with bad or missing metadata returns `200 OK` here, but the agent rejects the turn at run time. From the wire the failure looks like a `turn-complete` control record with no preceding `text-delta` — i.e. an empty assistant response.
+>
+> **How to detect from the client:** treat "received `turn-complete` after sending a `submit-message` with no `text-delta`/`tool-input-*` chunks in between" as a schema-validation suspect, and surface a sensible error to your user. **How to confirm from the dashboard / Trigger MCP:** the run trace includes a `chat turn N [ERROR]` span followed by `waiting for next message (after error)`; the `[ERROR]` span carries the validation error message in its events. Use `mcp__trigger__get_run_details` (or open the run in the dashboard) on the run ID surfaced in the `runId` field of session-create.
 
 ### `ChatInputChunk`
 
@@ -777,9 +778,9 @@ type ChatTaskWirePayload<TMessage extends UIMessage = UIMessage, TMetadata = unk
 };
 ```
 
-<Note>
-  **`metadata` is the wire envelope for `clientData`.** The agent's `clientData` (typed via `chat.withClientData({ schema })`) is read from this field at run boot. If the agent declares e.g. `{ userId: string, model?: string }`, then the `triggerConfig.basePayload` you sent at session create and every non-close `kind: "message"` payload must carry a matching `metadata.userId`. Invalid metadata is not passed to agent code. Async reads produce an error chunk followed by `turn-complete`; raw `chat.messages.on()` subscriptions use `onClientDataValidationError` and the task log so they do not end an active response.
-</Note>
+> [!NOTE]
+>
+> **`metadata` is the wire envelope for `clientData`.** The agent's `clientData` (typed via `chat.withClientData({ schema })`) is read from this field at run boot. If the agent declares e.g. `{ userId: string, model?: string }`, then the `triggerConfig.basePayload` you sent at session create and every non-close `kind: "message"` payload must carry a matching `metadata.userId`. Invalid metadata is not passed to agent code. Async reads produce an error chunk followed by `turn-complete`; raw `chat.messages.on()` subscriptions use `onClientDataValidationError` and the task log so they do not end an active response.
 
 ### Sending a message
 
@@ -805,9 +806,9 @@ Content-Type: application/json
 
 After sending, subscribe to `.out` (if you closed the stream after the previous turn's `turn-complete`) to receive the response.
 
-<Note>
-  Send only the **new** user message — never the full history. The agent rebuilds prior history from a durable S3 snapshot plus a `session.out` replay at run boot. See [How history is rebuilt](#how-history-is-rebuilt).
-</Note>
+> [!NOTE]
+>
+> Send only the **new** user message — never the full history. The agent rebuilds prior history from a durable S3 snapshot plus a `session.out` replay at run boot. See [How history is rebuilt](#how-history-is-rebuilt).
 
 ### Sending a stop
 
@@ -893,9 +894,9 @@ The same shape applies to HITL `addToolOutput` answers — substitute `state: "o
 
 The built-in transports (`TriggerChatTransport`, `AgentChat`) ship the slim shape by default on `submit-message` continuations. Custom transports can ship a fuller `UIMessage` — the agent still only reads the resolved tool-part fields — but the slim shape is the most efficient and avoids brushing the per-record cap on reasoning-heavy turns.
 
-<Note>
-  The message `id` must match the one the agent assigned during streaming. `TriggerChatTransport` keeps IDs in sync automatically. Custom transports should use the `messageId` from the stream's `start` chunk.
-</Note>
+> [!NOTE]
+>
+> The message `id` must match the one the agent assigned during streaming. `TriggerChatTransport` keeps IDs in sync automatically. Custom transports should use the `messageId` from the stream's `start` chunk.
 
 ## How history is rebuilt
 
@@ -909,23 +910,21 @@ If the agent declares a [`hydrateMessages`](/docs/ai-chat/lifecycle-hooks#hydrat
 
 When `hydrateMessages` is not registered, the runtime reconstructs history from durable infrastructure on every run boot:
 
-<Steps>
-  <Step title="Read the latest snapshot">
-    The runtime fetches a per-session JSON snapshot from object storage (S3 or compatible). The snapshot stores `{ messages, lastOutEventId, lastOutTimestamp, savedAt }` — what was true at the moment the previous turn finished. A 404 (no snapshot yet) is fine — treated as empty.
-  </Step>
+**1. Read the latest snapshot**
 
-  <Step title="Replay session.out tail">
-    The runtime subscribes to `session.out` with `wait=0` starting from the snapshot's `lastOutEventId` (or seq 0 if there is no snapshot). Any chunks since that cursor are fed through the AI SDK's `processUIMessageStream` reducer to materialize fresh `UIMessage[]`. This catches turns whose snapshot write didn't make it before a crash.
-  </Step>
+The runtime fetches a per-session JSON snapshot from object storage (S3 or compatible). The snapshot stores `{ messages, lastOutEventId, lastOutTimestamp, savedAt }` — what was true at the moment the previous turn finished. A 404 (no snapshot yet) is fine — treated as empty.
 
-  <Step title="Merge by id, replay wins">
-    Snapshot messages and replayed messages are merged by `id`. On collision, replay wins — `session.out` is the freshest representation of any assistant message. Partial trailing assistant work from a crashed turn is cleaned up via `cleanupAbortedParts`.
-  </Step>
+**2. Replay session.out tail**
 
-  <Step title="Write a fresh snapshot after every turn">
-    When `onTurnComplete` fires, the runtime serializes the accumulator and writes it back to object storage. The write is **awaited** — the run may suspend immediately after, and fire-and-forget would lose the snapshot.
-  </Step>
-</Steps>
+The runtime subscribes to `session.out` with `wait=0` starting from the snapshot's `lastOutEventId` (or seq 0 if there is no snapshot). Any chunks since that cursor are fed through the AI SDK's `processUIMessageStream` reducer to materialize fresh `UIMessage[]`. This catches turns whose snapshot write didn't make it before a crash.
+
+**3. Merge by id, replay wins**
+
+Snapshot messages and replayed messages are merged by `id`. On collision, replay wins — `session.out` is the freshest representation of any assistant message. Partial trailing assistant work from a crashed turn is cleaned up via `cleanupAbortedParts`.
+
+**4. Write a fresh snapshot after every turn**
+
+When `onTurnComplete` fires, the runtime serializes the accumulator and writes it back to object storage. The write is **awaited** — the run may suspend immediately after, and fire-and-forget would lose the snapshot.
 
 Object-store configuration is the same as the rest of Trigger.dev — set `OBJECT_STORE_*` env vars. With no object store configured and no `hydrateMessages` hook, conversations don't survive run boundaries; the runtime logs a warning at registration time.
 
@@ -973,9 +972,9 @@ In every case the message is answered. A declined message keeps its place in the
 
 See [Pending Messages](/docs/ai-chat/pending-messages) for how to configure the agent side.
 
-<Note>
-  Unlike a normal `sendMessage`, pending messages should **not** cancel the active stream subscription. Keep reading — the agent incorporates the message into the same turn or queues it for the next one.
-</Note>
+> [!NOTE]
+>
+> Unlike a normal `sendMessage`, pending messages should **not** cancel the active stream subscription. Keep reading — the agent incorporates the message into the same turn or queues it for the next one.
 
 ## Continuations
 
@@ -1001,17 +1000,17 @@ A run can end for several reasons: idle timeout, max turns reached, `chat.reques
 
 POST to the same `/realtime/v1/sessions/{sessionId}/in/append` URL with the same `publicAccessToken` you've been using — both stay valid across runs. The server detects the absent run, triggers a new one on the session's `triggerConfig`, and the agent boots, reads the snapshot from the prior run's last turn, replays any tail, and continues. Only `runId` changes — the new run's id is encoded in the next refreshed `publicAccessToken`'s `read:runs:{runId}` scope.
 
-<Note>
-  **You don't need to track `runId` or set `continuation: true` / `previousRunId` yourself.** The server detects continuation when the prior run is in a terminal state and sets those fields on the new run's boot payload automatically. The `continuation` and `previousRunId` fields on `ChatTaskWirePayload` are informational — used internally by the agent's boot path, never required from the client.
-</Note>
+> [!NOTE]
+>
+> **You don't need to track `runId` or set `continuation: true` / `previousRunId` yourself.** The server detects continuation when the prior run is in a terminal state and sets those fields on the new run's boot payload automatically. The `continuation` and `previousRunId` fields on `ChatTaskWirePayload` are informational — used internally by the agent's boot path, never required from the client.
 
-<Note>
-  **`onChatStart` does NOT fire on continuation runs.** The hook is once-per-chat — it fires only on the chat's very first user message. Customers who want per-turn setup that also runs on continuation turns should use `onTurnStart` instead.
-</Note>
+> [!NOTE]
+>
+> **`onChatStart` does NOT fire on continuation runs.** The hook is once-per-chat — it fires only on the chat's very first user message. Customers who want per-turn setup that also runs on continuation turns should use `onTurnStart` instead.
 
-<Tip>
-  This is how [version upgrades](/docs/ai-chat/patterns/version-upgrades) work transparently — the agent calls `chat.requestUpgrade()`, the run exits, and the client's next message triggers a continuation on the new version. Same session, new run, same snapshot.
-</Tip>
+> [!TIP]
+>
+> This is how [version upgrades](/docs/ai-chat/patterns/version-upgrades) work transparently — the agent calls `chat.requestUpgrade()`, the run exits, and the client's next message triggers a continuation on the new version. Same session, new run, same snapshot.
 
 ## Closing the conversation
 
@@ -1054,40 +1053,40 @@ A client needs to track per-conversation:
 
 The `publicAccessToken` returned in the body of `POST /api/v1/sessions` carries both `read:sessions:{externalId}` and `write:sessions:{externalId}` and is **the only token you need** for every `.in`/`.out` operation thereafter. A token minted on the externalId form authorizes both the externalId and the friendlyId URL forms on every read and write route, so use whichever URL form your client already has on hand.
 
-<Warning>
-  **Don't use the `x-trigger-jwt` header from `POST /api/v1/tasks/{taskId}/trigger`.** That header carries `read:runs:{runId}` + `write:inputStreams:{runId}` — run-scoped scopes, not session-scoped. It cannot subscribe to `.out` or append to `.in`. Always use the `publicAccessToken` from the session-create response body.
-</Warning>
+> [!WARNING]
+>
+> **Don't use the `x-trigger-jwt` header from `POST /api/v1/tasks/{taskId}/trigger`.** That header carries `read:runs:{runId}` + `write:inputStreams:{runId}` — run-scoped scopes, not session-scoped. It cannot subscribe to `.out` or append to `.in`. Always use the `publicAccessToken` from the session-create response body.
 
 ## FAQ
 
-<Expandable title="After sending `kind: stop`, can I immediately send the next message?">
-  Yes. `.in` records are processed in arrival order — the agent's stop handler aborts the in-flight `streamText`, emits a `turn-complete` control record, and reads the next record. You don't have to wait for `turn-complete` on the wire before posting the next `.in/append`. In practice you usually do anyway, because your UI is gated on the stream coming back to ready.
-</Expandable>
+**After sending `kind: stop`, can I immediately send the next message?**
 
-<Expandable title="What's the format of the optional `X-Part-Id` header?">
-  Any opaque ASCII string up to \~64 characters. The built-in clients generate a high-entropy id per logical send (a UUID in the browser, a `nanoid` server-side) and reuse it across auth retries of that send. The server uses it as a per-record idempotency key — re-POSTing the same body with the same `X-Part-Id` produces a single S2 record. If you don't send the header, the server generates one for you and idempotency is per-request only.
-</Expandable>
+Yes. `.in` records are processed in arrival order — the agent's stop handler aborts the in-flight `streamText`, emits a `turn-complete` control record, and reads the next record. You don't have to wait for `turn-complete` on the wire before posting the next `.in/append`. In practice you usually do anyway, because your UI is gated on the stream coming back to ready.
 
-<Expandable title="What happens on rate-limit (429)?">
-  The `.in/append` route returns standard rate-limit response headers (`x-ratelimit-limit`, `x-ratelimit-remaining`, `x-ratelimit-reset` — Unix ms epoch when the bucket refills). On `429`, back off until `x-ratelimit-reset` and retry with the same `X-Part-Id` to remain idempotent. Default per-environment limits are generous (millions of requests/window); you'll typically only hit this with runaway client loops.
-</Expandable>
+**What's the format of the optional `X-Part-Id` header?**
 
-<Expandable title="How do I tell from the `.out` stream that a run has ended (vs idled between turns)?">
-  You don't need to. There's no `trigger:run-ended` chunk. The protocol is designed so the client doesn't track run lifecycle:
+Any opaque ASCII string up to \~64 characters. The built-in clients generate a high-entropy id per logical send (a UUID in the browser, a `nanoid` server-side) and reuse it across auth retries of that send. The server uses it as a per-record idempotency key — re-POSTing the same body with the same `X-Part-Id` produces a single S2 record. If you don't send the header, the server generates one for you and idempotency is per-request only.
 
-  * A `turn-complete` control record means **the turn finished**, not that the run is gone. The run may still be alive, idle-waiting for the next `.in` record, or it may have suspended / exited shortly after.
-  * When you POST the next message to `.in/append`, the server figures out whether the existing run can pick it up or whether to spawn a continuation. Either way you get streamed responses on the same `.out` URL.
+**What happens on rate-limit (429)?**
 
-  If you genuinely need the live `runId` (for displaying the dashboard link, say), read it from the latest `turn-complete` control record's refreshed `public-access-token` header — the JWT's `read:runs:{runId}` scope encodes it. Or call `GET /api/v1/sessions/{sessionId}` (omitted from this page; see the Sessions API reference) to read `currentRunId`.
-</Expandable>
+The `.in/append` route returns standard rate-limit response headers (`x-ratelimit-limit`, `x-ratelimit-remaining`, `x-ratelimit-reset` — Unix ms epoch when the bucket refills). On `429`, back off until `x-ratelimit-reset` and retry with the same `X-Part-Id` to remain idempotent. Default per-environment limits are generous (millions of requests/window); you'll typically only hit this with runaway client loops.
 
-<Expandable title="Does the `seq_num` reset across continuations or runs?">
-  No. `seq_num` is monotonic across the entire session — turn 1 might emit seq 0–9, turn 2 picks up at seq 10+, and a continuation run on the same session continues numbering from where the prior run left off. A single `Last-Event-ID` cursor is sufficient to resume across turns and runs.
-</Expandable>
+**How do I tell from the `.out` stream that a run has ended (vs idled between turns)?**
 
-<Expandable title="What's the maximum size of a single `.in/append` body?">
-  The HTTP body is capped at 1 MiB as a DoS guard. The actual ceiling is at the storage layer: each `.in/append` becomes a single S2 record, metered as `8 + body_bytes_after_JSON_wrap`, capped at 1 MiB. So the practical limit on the raw HTTP body sits around \~1023 KiB for content with low JSON-escape overhead (ASCII, base64) and \~512 KiB for content that escapes heavily (all quotes / backslashes). A typical `kind: "message"` is a few KiB. If you're brushing the cap you're either shipping a single tool output that's itself oversized — see [Large payloads](/docs/ai-chat/patterns/large-payloads) — or you're shipping more than one message per record, which the protocol forbids. The 413 response carries CORS headers so browser fetches can read the status. The headStart path (`trigger: "handover-prepare"`) sends through the customer's own HTTP route handler, not `.in/append`, so the cap doesn't apply there.
-</Expandable>
+You don't need to. There's no `trigger:run-ended` chunk. The protocol is designed so the client doesn't track run lifecycle:
+
+* A `turn-complete` control record means **the turn finished**, not that the run is gone. The run may still be alive, idle-waiting for the next `.in` record, or it may have suspended / exited shortly after.
+* When you POST the next message to `.in/append`, the server figures out whether the existing run can pick it up or whether to spawn a continuation. Either way you get streamed responses on the same `.out` URL.
+
+If you genuinely need the live `runId` (for displaying the dashboard link, say), read it from the latest `turn-complete` control record's refreshed `public-access-token` header — the JWT's `read:runs:{runId}` scope encodes it. Or call `GET /api/v1/sessions/{sessionId}` (omitted from this page; see the Sessions API reference) to read `currentRunId`.
+
+**Does the `seq_num` reset across continuations or runs?**
+
+No. `seq_num` is monotonic across the entire session — turn 1 might emit seq 0–9, turn 2 picks up at seq 10+, and a continuation run on the same session continues numbering from where the prior run left off. A single `Last-Event-ID` cursor is sufficient to resume across turns and runs.
+
+**What's the maximum size of a single `.in/append` body?**
+
+The HTTP body is capped at 1 MiB as a DoS guard. The actual ceiling is at the storage layer: each `.in/append` becomes a single S2 record, metered as `8 + body_bytes_after_JSON_wrap`, capped at 1 MiB. So the practical limit on the raw HTTP body sits around \~1023 KiB for content with low JSON-escape overhead (ASCII, base64) and \~512 KiB for content that escapes heavily (all quotes / backslashes). A typical `kind: "message"` is a few KiB. If you're brushing the cap you're either shipping a single tool output that's itself oversized — see [Large payloads](/docs/ai-chat/patterns/large-payloads) — or you're shipping more than one message per record, which the protocol forbids. The 413 response carries CORS headers so browser fetches can read the status. The headStart path (`trigger: "handover-prepare"`) sends through the customer's own HTTP route handler, not `.in/append`, so the cap doesn't apply there.
 
 ## See also
 

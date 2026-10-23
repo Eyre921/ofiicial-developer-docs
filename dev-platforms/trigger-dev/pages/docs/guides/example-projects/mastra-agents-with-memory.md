@@ -26,10 +26,10 @@ By combining Mastra's persistent memory system and agent orchestration with Trig
 
 ## GitHub repo
 
-<Card title="View the Mastra agents with memory repo" icon="GitHub" href="https://github.com/triggerdotdev/examples/tree/main/mastra-agents">
-  Click here to view the full code for this project in our examples repository on GitHub. You can
-  fork it and use it as a starting point for your own project.
-</Card>
+> **[View the Mastra agents with memory repo](https://github.com/triggerdotdev/examples/tree/main/mastra-agents)**
+>
+> Click here to view the full code for this project in our examples repository on GitHub. You can
+> fork it and use it as a starting point for your own project.
 
 ## Featured patterns
 

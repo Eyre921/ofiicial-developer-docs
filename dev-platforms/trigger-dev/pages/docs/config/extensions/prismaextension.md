@@ -8,10 +8,10 @@ Use the prismaExtension build extension to use Prisma with Trigger.dev
 
 The `prismaExtension` supports multiple Prisma versions and deployment strategies through **three distinct modes** that handle the evolving Prisma ecosystem, from legacy setups to Prisma 7.
 
-<Note>
-  The `prismaExtension` requires an explicit `mode` parameter. All configurations must specify a
-  mode.
-</Note>
+> [!NOTE]
+>
+> The `prismaExtension` requires an explicit `mode` parameter. All configurations must specify a
+> mode.
 
 ## Migration from previous versions
 
@@ -342,7 +342,7 @@ steps:
 
 If you are using the [Trigger.dev Github integration](/docs/github-integration), you can configure a pre-build command to run `prisma generate` before deploying your project. Navigate to your project's settings page and configure the pre-build command to run `prisma generate`, for example:
 
-<img alt="Pre-build command" />
+![Pre-build command](https://mintcdn.com/trigger/PR7oeDZ5OgpFfsfL/images/pre-build-command-prisma-generate.png?fit=max\&auto=format\&n=PR7oeDZ5OgpFfsfL\&q=85\&s=499e5106fb97d2c1fb74d7c3fcb11aeb)
 
 ***
 

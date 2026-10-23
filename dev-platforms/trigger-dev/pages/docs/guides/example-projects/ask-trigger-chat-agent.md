@@ -34,10 +34,10 @@ The agent writes a sentence or two, then calls a `renderVisualization` tool with
 
 ## GitHub repo
 
-<Card title="View the Ask Trigger chat agent repo" icon="GitHub" href="https://github.com/triggerdotdev/examples/tree/main/trigger-chat-agent">
-  Click here to view the full code for this project in our examples repository on GitHub. You can
-  fork it and use it as a starting point for your own project.
-</Card>
+> **[View the Ask Trigger chat agent repo](https://github.com/triggerdotdev/examples/tree/main/trigger-chat-agent)**
+>
+> Click here to view the full code for this project in our examples repository on GitHub. You can
+> fork it and use it as a starting point for your own project.
 
 ## How it works
 
@@ -107,11 +107,11 @@ export const triggerChatAgent = chat.agent({
 });
 ```
 
-<Warning>
-  On AI SDK v5/v6, `experimental_telemetry` comes from the stored prompt via
-  `chat.toStreamTextOptions()` — without `chat.prompt.set()`, model calls don't appear as spans in
-  the run trace.
-</Warning>
+> [!WARNING]
+>
+> On AI SDK v5/v6, `experimental_telemetry` comes from the stored prompt via
+> `chat.toStreamTextOptions()` — without `chat.prompt.set()`, model calls don't appear as spans in
+> the run trace.
 
 ### Grounding answers on live docs with MCP
 
@@ -256,12 +256,12 @@ export async function mintChatAccessToken(chatId: string) {
 }
 ```
 
-<Warning>
-  These session actions are unauthenticated, so anyone with a chat URL can start a session. That's
-  fine for a personal or gated deploy, but for real multi-user use add an ownership check in
-  `mintChatAccessToken` and set an org spend limit in the dashboard (Billing). The agent's
-  `queue.concurrencyLimit` throttles throughput, not total spend.
-</Warning>
+> [!WARNING]
+>
+> These session actions are unauthenticated, so anyone with a chat URL can start a session. That's
+> fine for a personal or gated deploy, but for real multi-user use add an ownership check in
+> `mintChatAccessToken` and set an org spend limit in the dashboard (Billing). The agent's
+> `queue.concurrencyLimit` throttles throughput, not total spend.
 
 ### Running it
 
@@ -293,20 +293,18 @@ Try asking "How does a fan-out with retries work?" for an interactive FlowGraph,
 
 ## Learn more
 
-<CardGroup>
-  <Card title="AI chat overview" icon="message-bot" href="/docs/ai-chat/overview">
-    How chat agents, sessions, and the turn loop work.
-  </Card>
+> **[AI chat overview](/docs/ai-chat/overview)**
+>
+> How chat agents, sessions, and the turn loop work.
 
-  <Card title="Frontend" icon="browser" href="/docs/ai-chat/frontend">
-    The chat transport, session tokens, and reconnection.
-  </Card>
+> **[Frontend](/docs/ai-chat/frontend)**
+>
+> The chat transport, session tokens, and reconnection.
 
-  <Card title="AI Prompts" icon="file-lines" href="/docs/ai/prompts">
-    Versioned prompts with dashboard overrides and generation tracking.
-  </Card>
+> **[AI Prompts](/docs/ai/prompts)**
+>
+> Versioned prompts with dashboard overrides and generation tracking.
 
-  <Card title="Tools" icon="wrench" href="/docs/ai-chat/tools">
-    Declaring tools on your agent and how they persist across turns.
-  </Card>
-</CardGroup>
+> **[Tools](/docs/ai-chat/tools)**
+>
+> Declaring tools on your agent and how they persist across turns.

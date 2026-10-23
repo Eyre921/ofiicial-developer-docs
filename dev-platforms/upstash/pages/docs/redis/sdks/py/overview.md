@@ -1,5 +1,5 @@
 ---
-title: "Overview"
+title: "Redis Python SDK Overview"
 source: https://upstash.com/docs/redis/sdks/py/overview
 path: docs/redis/sdks/py/overview
 ---

@@ -25,10 +25,10 @@ By combining the OpenAI Agents SDK with Trigger.dev, you can create durable agen
 
 ## GitHub repo
 
-<Card title="View the OpenAI Agents SDK TypeScript playground repo" icon="GitHub" href="https://github.com/triggerdotdev/examples/tree/main/openai-agents-sdk-with-trigger-playground">
-  Click here to view the full code for this project in our examples repository on GitHub. You can
-  fork it and use it as a starting point for your own project.
-</Card>
+> **[View the OpenAI Agents SDK TypeScript playground repo](https://github.com/triggerdotdev/examples/tree/main/openai-agents-sdk-with-trigger-playground)**
+>
+> Click here to view the full code for this project in our examples repository on GitHub. You can
+> fork it and use it as a starting point for your own project.
 
 ## Agent tasks
 

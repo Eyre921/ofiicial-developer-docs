@@ -1,5 +1,5 @@
 ---
-title: "Introduction"
+title: "Redis Search Introduction"
 source: https://upstash.com/docs/redis/search/introduction
 path: docs/redis/search/introduction
 ---

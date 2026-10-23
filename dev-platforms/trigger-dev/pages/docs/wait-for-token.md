@@ -10,12 +10,12 @@ Waitpoint tokens pause task runs until you complete the token. They're commonly 
 
 You can complete a token using the SDK or by making a POST request to the token's URL.
 
-<Note>
-  If you're waiting for data from an [input stream](/docs/tasks/streams#input-streams), use
-  [`inputStream.wait()`](/docs/tasks/streams#wait--suspend-until-data-arrives) instead — it uses
-  waitpoint tokens internally but provides a simpler API with full type safety from your stream
-  definition.
-</Note>
+> [!NOTE]
+>
+> If you're waiting for data from an [input stream](/docs/tasks/streams#input-streams), use
+> [`inputStream.wait()`](/docs/tasks/streams#wait--suspend-until-data-arrives) instead — it uses
+> waitpoint tokens internally but provides a simpler API with full type safety from your stream
+> definition.
 
 ## Usage
 
@@ -64,48 +64,46 @@ await wait.completeToken<ApprovalToken>(tokenId, {
 
 The `publicAccessToken` returned by `wait.createToken()` is scoped to that specific waitpoint and intended for client-side completion. The completion endpoint has CORS enabled, so you can call it directly from client-side code without proxying through your backend.
 
-<Steps>
-  <Step title="Create the token in your backend">
-    ```typescript theme={"theme":"css-variables"}
-    import { wait } from "@trigger.dev/sdk";
+**1. Create the token in your backend**
 
-    const token = await wait.createToken({ timeout: "10m" });
-    // Pass token.id and token.publicAccessToken to your frontend
-    ```
-  </Step>
+```typescript theme={"theme":"css-variables"}
+import { wait } from "@trigger.dev/sdk";
 
-  <Step title="Complete the token from the browser">
-    ```typescript theme={"theme":"css-variables"}
-    // tokenId and publicAccessToken passed from your backend
-    const tokenId = token.id;
-    const publicAccessToken = token.publicAccessToken;
+const token = await wait.createToken({ timeout: "10m" });
+// Pass token.id and token.publicAccessToken to your frontend
+```
 
-    const response = await fetch(
-      `https://api.trigger.dev/api/v1/waitpoints/tokens/${tokenId}/complete`,
-      {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${publicAccessToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ data: { status: "approved" } }),
-      }
-    );
+**2. Complete the token from the browser**
 
-    if (!response.ok) {
-      throw new Error(`Failed to complete token: ${response.statusText}`);
-    }
-    ```
-  </Step>
-</Steps>
+```typescript theme={"theme":"css-variables"}
+// tokenId and publicAccessToken passed from your backend
+const tokenId = token.id;
+const publicAccessToken = token.publicAccessToken;
+
+const response = await fetch(
+  `https://api.trigger.dev/api/v1/waitpoints/tokens/${tokenId}/complete`,
+  {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${publicAccessToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ data: { status: "approved" } }),
+  }
+);
+
+if (!response.ok) {
+  throw new Error(`Failed to complete token: ${response.statusText}`);
+}
+```
 
 ## Completing via webhook callback
 
-<Warning>
-  The `token.url` webhook callback URL is designed for server-to-server use and does **not** have
-  CORS headers. Don't call it from the browser, use the [Completing from the
-  browser](#completing-from-the-browser) pattern instead.
-</Warning>
+> [!WARNING]
+>
+> The `token.url` webhook callback URL is designed for server-to-server use and does **not** have
+> CORS headers. Don't call it from the browser, use the [Completing from the
+> browser](#completing-from-the-browser) pattern instead.
 
 Or you can make an HTTP POST request to the `url` it returns. This is an HTTP callback:
 
@@ -138,46 +136,46 @@ Create a waitpoint token.
 
 The `createToken` function accepts an object with the following properties:
 
-<ParamField type="string">
-  The maximum amount of time to wait for the token to be completed. If omitted, the token has no timeout. Accepts a duration string like `"30s"` or `"4w"`, or a `Date`.
-</ParamField>
+**timeout** `string`
 
-<ParamField type="string">
-  An idempotency key for the token. If provided, the token will be completed with the same payload
-  if the same idempotency key is used again.
-</ParamField>
+The maximum amount of time to wait for the token to be completed. If omitted, the token has no timeout. Accepts a duration string like `"30s"` or `"4w"`, or a `Date`.
 
-<ParamField type="string">
-  The time to live for the idempotency key. If omitted, the key does not expire.
-</ParamField>
+**idempotencyKey** `string`
 
-<ParamField type="string[]">
-  Tags to attach to the token. Tags can be used to filter waitpoints in the dashboard.
-</ParamField>
+An idempotency key for the token. If provided, the token will be completed with the same payload
+if the same idempotency key is used again.
+
+**idempotencyKeyTTL** `string`
+
+The time to live for the idempotency key. If omitted, the key does not expire.
+
+**tags** `string[]`
+
+Tags to attach to the token. Tags can be used to filter waitpoints in the dashboard.
 
 ### returns
 
 The `createToken` function returns a token object with the following properties:
 
-<ParamField type="string">
-  The ID of the token. Starts with `waitpoint_`.
-</ParamField>
+**id** `string`
 
-<ParamField type="string">
-  The URL of the token. This is the URL you can make a POST request to in order to complete the token.
+The ID of the token. Starts with `waitpoint_`.
 
-  The JSON body of the POST request will be used as the output of the token. If there's no body the output will be an empty object `{}`.
-</ParamField>
+**url** `string`
 
-<ParamField type="boolean">
-  Whether the token is cached. Will return true if the token was created with an idempotency key and
-  the same idempotency key was used again.
-</ParamField>
+The URL of the token. This is the URL you can make a POST request to in order to complete the token.
 
-<ParamField type="string">
-  A Public Access Token that can be used to complete the token from a client-side application (or
-  another backend). See our [Realtime docs](/docs/realtime/auth) for more details.
-</ParamField>
+The JSON body of the POST request will be used as the output of the token. If there's no body the output will be an empty object `{}`.
+
+**isCached** `boolean`
+
+Whether the token is cached. Will return true if the token was created with an idempotency key and
+the same idempotency key was used again.
+
+**publicAccessToken** `string`
+
+A Public Access Token that can be used to complete the token from a client-side application (or
+another backend). See our [Realtime docs](/docs/realtime/auth) for more details.
 
 ### Example
 
@@ -197,21 +195,21 @@ Complete a waitpoint token.
 
 ### parameters
 
-<ParamField type="string">
-  The ID of the token to complete.
-</ParamField>
+**id** `string`
 
-<ParamField type="any">
-  The data to complete the token with.
-</ParamField>
+The ID of the token to complete.
+
+**output** `any`
+
+The data to complete the token with.
 
 ### returns
 
 The `completeToken` function returns an object with the following properties:
 
-<ParamField type="boolean">
-  Whether the token was completed successfully.
-</ParamField>
+**success** `boolean`
+
+Whether the token was completed successfully.
 
 ### Example
 
@@ -227,85 +225,83 @@ await wait.completeToken<ApprovalToken>(tokenId, {
 
 You can complete a token using a raw HTTP request or from another language.
 
-<CodeGroup>
-  ```bash curl theme={"theme":"css-variables"}
-  curl -X POST "https://api.trigger.dev/api/v1/waitpoints/tokens/{tokenId}/complete" \
-    -H "Authorization: Bearer {token}" \
-    -H "Content-Type: application/json" \
-    -d '{"data": { "status": "approved"}}'
-  ```
+```bash curl theme={"theme":"css-variables"}
+curl -X POST "https://api.trigger.dev/api/v1/waitpoints/tokens/{tokenId}/complete" \
+  -H "Authorization: Bearer {token}" \
+  -H "Content-Type: application/json" \
+  -d '{"data": { "status": "approved"}}'
+```
 
-  ```python python theme={"theme":"css-variables"}
-  import requests
+```python python theme={"theme":"css-variables"}
+import requests
 
-  response = requests.post(
-    "https://api.trigger.dev/api/v1/waitpoints/tokens/{tokenId}/complete",
-    headers={"Authorization": f"Bearer {token}"},
-    json={"data": { "status": "approved"}}
-  )
-  ```
+response = requests.post(
+  "https://api.trigger.dev/api/v1/waitpoints/tokens/{tokenId}/complete",
+  headers={"Authorization": f"Bearer {token}"},
+  json={"data": { "status": "approved"}}
+)
+```
 
-  ```ruby ruby theme={"theme":"css-variables"}
-  require "net/http"
+```ruby ruby theme={"theme":"css-variables"}
+require "net/http"
 
-  uri = URI("https://api.trigger.dev/api/v1/waitpoints/tokens/{tokenId}/complete")
+uri = URI("https://api.trigger.dev/api/v1/waitpoints/tokens/{tokenId}/complete")
 
-  http = Net::HTTP.new(uri.host, uri.port)
-  request = Net::HTTP::Post.new(uri)
-  request["Authorization"] = "Bearer {token}"
-  request["Content-Type"] = "application/json"
-  request.body = JSON.generate({ data: { status: "approved" } })
+http = Net::HTTP.new(uri.host, uri.port)
+request = Net::HTTP::Post.new(uri)
+request["Authorization"] = "Bearer {token}"
+request["Content-Type"] = "application/json"
+request.body = JSON.generate({ data: { status: "approved" } })
 
-  response = http.request(request)
-  ```
+response = http.request(request)
+```
 
-  ```go go theme={"theme":"css-variables"}
-  package main
+```go go theme={"theme":"css-variables"}
+package main
 
-  import (
-  	"bytes"
-  	"encoding/json"
-  	"fmt"
-  	"net/http"
-  )
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+)
 
-  func main() {
-  	url := "https://api.trigger.dev/api/v1/waitpoints/tokens/{tokenId}/complete"
+func main() {
+	url := "https://api.trigger.dev/api/v1/waitpoints/tokens/{tokenId}/complete"
 
-  	payload := map[string]interface{}{
-  		"data": map[string]interface{}{
-  			"status": "approved",
-  		},
-  	}
+	payload := map[string]interface{}{
+		"data": map[string]interface{}{
+			"status": "approved",
+		},
+	}
 
-  	jsonData, err := json.Marshal(payload)
-  	if err != nil {
-  		fmt.Println("Error marshalling payload:", err)
-  		return
-  	}
+	jsonData, err := json.Marshal(payload)
+	if err != nil {
+		fmt.Println("Error marshalling payload:", err)
+		return
+	}
 
-  	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
-  	if err != nil {
-  		fmt.Println("Error creating request:", err)
-  		return
-  	}
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println("Error creating request:", err)
+		return
+	}
 
-  	req.Header.Set("Authorization", "Bearer {token}")
-  	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer {token}")
+	req.Header.Set("Content-Type", "application/json")
 
-  	client := &http.Client{}
-  	resp, err := client.Do(req)
-  	if err != nil {
-  		fmt.Println("Error sending request:", err)
-  		return
-  	}
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Println("Error sending request:", err)
+		return
+	}
 
-  	defer resp.Body.Close()
+	defer resp.Body.Close()
 
-  	fmt.Println("Response status:", resp.Status)
-  }
-  ```
-</CodeGroup>
+	fmt.Println("Response status:", resp.Status)
+}
+```
 
 ## wait.forToken
 
@@ -313,26 +309,26 @@ Wait for a token to be completed.
 
 ### parameters
 
-<ParamField type="string | { id: string }">
-  The token to wait for.
-</ParamField>
+**token** `string | \{ id: string \}`
+
+The token to wait for.
 
 ### returns
 
 The `forToken` function returns a result object with the following properties:
 
-<ParamField type="boolean">
-  Whether the token was completed successfully.
-</ParamField>
+**ok** `boolean`
 
-<ParamField type="any">
-  If `ok` is `true`, this will be the output of the token.
-</ParamField>
+Whether the token was completed successfully.
 
-<ParamField type="Error">
-  If `ok` is `false`, this will be the error that occurred. The only error that can occur is a
-  timeout error.
-</ParamField>
+**output** `any`
+
+If `ok` is `true`, this will be the output of the token.
+
+**error** `Error`
+
+If `ok` is `false`, this will be the error that occurred. The only error that can occur is a
+timeout error.
 
 ### unwrap()
 
@@ -368,29 +364,29 @@ List all tokens for an environment.
 
 The `listTokens` function accepts an object with the following properties:
 
-<ParamField type="string | string[]">
-  Statuses to filter by. Can be one or more of: `WAITING`, `COMPLETED`, `TIMED_OUT`.
-</ParamField>
+**status** `string | string[]`
 
-<ParamField type="string">
-  The idempotency key to filter by.
-</ParamField>
+Statuses to filter by. Can be one or more of: `WAITING`, `COMPLETED`, `TIMED_OUT`.
 
-<ParamField type="string | string[]">
-  Tags to filter by.
-</ParamField>
+**idempotencyKey** `string`
 
-<ParamField type="string">
-  The period to filter by, as a duration string such as `1h`, `1d`, `7d` or `30d`.
-</ParamField>
+The idempotency key to filter by.
 
-<ParamField type="Date | number">
-  The start date to filter by.
-</ParamField>
+**tags** `string | string[]`
 
-<ParamField type="Date | number">
-  The end date to filter by.
-</ParamField>
+Tags to filter by.
+
+**period** `string`
+
+The period to filter by, as a duration string such as `1h`, `1d`, `7d` or `30d`.
+
+**from** `Date | number`
+
+The start date to filter by.
+
+**to** `Date | number`
+
+The end date to filter by.
 
 ### returns
 
@@ -398,48 +394,48 @@ The `listTokens` function returns a list of tokens that can be iterated over usi
 
 Each token is an object with the following properties:
 
-<ParamField type="string">
-  The ID of the token.
-</ParamField>
+**id** `string`
 
-<ParamField type="string">
-  The URL of the token. This is the URL you can make a POST request to in order to complete the token.
+The ID of the token.
 
-  The JSON body of the POST request will be used as the output of the token. If there's no body the output will be an empty object `{}`.
-</ParamField>
+**url** `string`
 
-<ParamField type="string">
-  The status of the token.
-</ParamField>
+The URL of the token. This is the URL you can make a POST request to in order to complete the token.
 
-<ParamField type="Date">
-  The date and time the token was completed.
-</ParamField>
+The JSON body of the POST request will be used as the output of the token. If there's no body the output will be an empty object `{}`.
 
-<ParamField type="Date">
-  The date and time the token will timeout.
-</ParamField>
+**status** `string`
 
-<ParamField type="string">
-  The idempotency key of the token.
-</ParamField>
+The status of the token.
 
-<ParamField type="Date">
-  The date and time the idempotency key will expire.
-</ParamField>
+**completedAt** `Date`
 
-<ParamField type="string[]">
-  The tags of the token.
-</ParamField>
+The date and time the token was completed.
 
-<ParamField type="Date">
-  The date and time the token was created.
-</ParamField>
+**timeoutAt** `Date`
 
-<Note>
-  The output of the token is not included in the list. To get the output, you need to retrieve the
-  token using the `wait.retrieveToken` function.
-</Note>
+The date and time the token will timeout.
+
+**idempotencyKey** `string`
+
+The idempotency key of the token.
+
+**idempotencyKeyExpiresAt** `Date`
+
+The date and time the idempotency key will expire.
+
+**tags** `string[]`
+
+The tags of the token.
+
+**createdAt** `Date`
+
+The date and time the token was created.
+
+> [!NOTE]
+>
+> The output of the token is not included in the list. To get the output, you need to retrieve the
+> token using the `wait.retrieveToken` function.
 
 ### Example
 
@@ -462,59 +458,59 @@ Retrieve a token by ID.
 
 ### parameters
 
-<ParamField type="string">
-  The ID of the token to retrieve.
-</ParamField>
+**id** `string`
+
+The ID of the token to retrieve.
 
 ### returns
 
 The `retrieveToken` function returns a token object with the following properties:
 
-<ParamField type="string">
-  The ID of the token.
-</ParamField>
+**id** `string`
 
-<ParamField type="string">
-  The URL of the token. This is the URL you can make a POST request to in order to complete the token.
+The ID of the token.
 
-  The JSON body of the POST request will be used as the output of the token. If there's no body the output will be an empty object `{}`.
-</ParamField>
+**url** `string`
 
-<ParamField type="string">
-  The status of the token.
-</ParamField>
+The URL of the token. This is the URL you can make a POST request to in order to complete the token.
 
-<ParamField type="Date">
-  The date and time the token was completed.
-</ParamField>
+The JSON body of the POST request will be used as the output of the token. If there's no body the output will be an empty object `{}`.
 
-<ParamField type="Date">
-  The date and time the token will timeout.
-</ParamField>
+**status** `string`
 
-<ParamField type="string">
-  The idempotency key of the token.
-</ParamField>
+The status of the token.
 
-<ParamField type="Date">
-  The date and time the idempotency key will expire.
-</ParamField>
+**completedAt** `Date`
 
-<ParamField type="string[]">
-  The tags of the token.
-</ParamField>
+The date and time the token was completed.
 
-<ParamField type="Date">
-  The date and time the token was created.
-</ParamField>
+**timeoutAt** `Date`
 
-<ParamField type="any">
-  The output of the token.
-</ParamField>
+The date and time the token will timeout.
 
-<ParamField type="Error">
-  The error that occurred.
-</ParamField>
+**idempotencyKey** `string`
+
+The idempotency key of the token.
+
+**idempotencyKeyExpiresAt** `Date`
+
+The date and time the idempotency key will expire.
+
+**tags** `string[]`
+
+The tags of the token.
+
+**createdAt** `Date`
+
+The date and time the token was created.
+
+**output** `any`
+
+The output of the token.
+
+**error** `Error`
+
+The error that occurred.
 
 ### Example
 

@@ -1,5 +1,5 @@
 ---
-title: "Local Tunnel"
+title: "Local Tunnel for Upstash Workflow Development"
 source: https://upstash.com/docs/workflow/howto/local-development/local-tunnel
 path: docs/workflow/howto/local-development/local-tunnel
 ---

@@ -12,47 +12,45 @@ Tasks connect to your database from their own process. This guide covers the rec
 
 Create the client at module scope and import it wherever you query. The worker loads the module once per process, so every run on that worker reuses the same pool. Keep the pool small (see [Size the pool](#size-the-pool)) and attach an error handler, since an idle connection can error asynchronously and an unhandled `error` event crashes the worker.
 
-<CodeGroup>
-  ```ts lib/db.ts (node-postgres) theme={"theme":"css-variables"}
-  import { Pool } from "pg";
+```ts lib/db.ts (node-postgres) theme={"theme":"css-variables"}
+import { Pool } from "pg";
 
-  export const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    max: 1, // one connection per run; raise only for in-run parallel queries
-  });
+export const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  max: 1, // one connection per run; raise only for in-run parallel queries
+});
 
-  pool.on("error", (err) => console.error("pg pool error", err));
-  ```
+pool.on("error", (err) => console.error("pg pool error", err));
+```
 
-  ```ts lib/db.ts (Prisma) theme={"theme":"css-variables"}
-  import { PrismaPg } from "@prisma/adapter-pg";
-  import { PrismaClient } from "./generated/prisma/client";
+```ts lib/db.ts (Prisma) theme={"theme":"css-variables"}
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from "./generated/prisma/client";
 
-  const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL, max: 1 });
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL, max: 1 });
 
-  export const prisma = new PrismaClient({ adapter });
-  ```
+export const prisma = new PrismaClient({ adapter });
+```
 
-  ```ts lib/db.ts (Drizzle) theme={"theme":"css-variables"}
-  import { drizzle } from "drizzle-orm/node-postgres";
-  import { Pool } from "pg";
+```ts lib/db.ts (Drizzle) theme={"theme":"css-variables"}
+import { drizzle } from "drizzle-orm/node-postgres";
+import { Pool } from "pg";
 
-  const pool = new Pool({ connectionString: process.env.DATABASE_URL, max: 1 });
-  pool.on("error", (err) => console.error("pg pool error", err));
+const pool = new Pool({ connectionString: process.env.DATABASE_URL, max: 1 });
+pool.on("error", (err) => console.error("pg pool error", err));
 
-  export const db = drizzle({ client: pool });
-  ```
+export const db = drizzle({ client: pool });
+```
 
-  ```ts lib/db.ts (MongoDB) theme={"theme":"css-variables"}
-  import { MongoClient } from "mongodb";
+```ts lib/db.ts (MongoDB) theme={"theme":"css-variables"}
+import { MongoClient } from "mongodb";
 
-  export const client = new MongoClient(process.env.DATABASE_URL!, { maxPoolSize: 5 });
-  ```
-</CodeGroup>
+export const client = new MongoClient(process.env.DATABASE_URL!, { maxPoolSize: 5 });
+```
 
-<Note>
-  Import this one client everywhere. Don't create a client inside `run()` or a lifecycle hook, which opens a new pool on every run, and don't store one in [`chat.local`](/docs/ai-chat/chat-local), which is per-run state that gets serialized into subtasks.
-</Note>
+> [!NOTE]
+>
+> Import this one client everywhere. Don't create a client inside `run()` or a lifecycle hook, which opens a new pool on every run, and don't store one in [`chat.local`](/docs/ai-chat/chat-local), which is per-run state that gets serialized into subtasks.
 
 ## Size the pool
 
@@ -118,54 +116,52 @@ A run holds its connections while it is paused at a wait until the process is to
 * Prisma reconnects lazily, so disconnect it from a global [`tasks.onWait`](/docs/tasks/overview#onwait-and-onresume-functions) handler colocated with the client. One handler covers every task.
 * A `pg` Pool (node-postgres and Drizzle) and the MongoDB client can't be reused after a full close, so give them a short idle timeout instead. Idle connections close themselves during the wait while the pool stays usable.
 
-<CodeGroup>
-  ```ts lib/db.ts (node-postgres) theme={"theme":"css-variables"}
-  import { Pool } from "pg";
+```ts lib/db.ts (node-postgres) theme={"theme":"css-variables"}
+import { Pool } from "pg";
 
-  export const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    max: 1,
-    idleTimeoutMillis: 10_000, // idle connections close during a wait; the pool stays usable
-  });
+export const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  max: 1,
+  idleTimeoutMillis: 10_000, // idle connections close during a wait; the pool stays usable
+});
 
-  pool.on("error", (err) => console.error("pg pool error", err));
-  ```
+pool.on("error", (err) => console.error("pg pool error", err));
+```
 
-  ```ts lib/db.ts (Prisma) theme={"theme":"css-variables"}
-  import { tasks } from "@trigger.dev/sdk";
-  import { PrismaPg } from "@prisma/adapter-pg";
-  import { PrismaClient } from "./generated/prisma/client";
+```ts lib/db.ts (Prisma) theme={"theme":"css-variables"}
+import { tasks } from "@trigger.dev/sdk";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from "./generated/prisma/client";
 
-  const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL, max: 1 });
-  export const prisma = new PrismaClient({ adapter });
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL, max: 1 });
+export const prisma = new PrismaClient({ adapter });
 
-  // Disconnect when any run pauses; Prisma reconnects on the next query.
-  tasks.onWait("db", () => prisma.$disconnect());
-  ```
+// Disconnect when any run pauses; Prisma reconnects on the next query.
+tasks.onWait("db", () => prisma.$disconnect());
+```
 
-  ```ts lib/db.ts (Drizzle) theme={"theme":"css-variables"}
-  import { drizzle } from "drizzle-orm/node-postgres";
-  import { Pool } from "pg";
+```ts lib/db.ts (Drizzle) theme={"theme":"css-variables"}
+import { drizzle } from "drizzle-orm/node-postgres";
+import { Pool } from "pg";
 
-  const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    max: 1,
-    idleTimeoutMillis: 10_000,
-  });
-  pool.on("error", (err) => console.error("pg pool error", err));
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  max: 1,
+  idleTimeoutMillis: 10_000,
+});
+pool.on("error", (err) => console.error("pg pool error", err));
 
-  export const db = drizzle({ client: pool });
-  ```
+export const db = drizzle({ client: pool });
+```
 
-  ```ts lib/db.ts (MongoDB) theme={"theme":"css-variables"}
-  import { MongoClient } from "mongodb";
+```ts lib/db.ts (MongoDB) theme={"theme":"css-variables"}
+import { MongoClient } from "mongodb";
 
-  export const client = new MongoClient(process.env.DATABASE_URL!, {
-    maxPoolSize: 5,
-    maxIdleTimeMS: 10_000, // idle sockets close during a wait; the client stays usable
-  });
-  ```
-</CodeGroup>
+export const client = new MongoClient(process.env.DATABASE_URL!, {
+  maxPoolSize: 5,
+  maxIdleTimeMS: 10_000, // idle sockets close during a wait; the client stays usable
+});
+```
 
 Don't hold a client across a slow await, either. `pool.query()` checks a connection out and returns it in one call. If you `pool.connect()` and keep the client across an external HTTP call or a model stream, you pin that connection for the whole operation. Query, release, then do the slow work.
 

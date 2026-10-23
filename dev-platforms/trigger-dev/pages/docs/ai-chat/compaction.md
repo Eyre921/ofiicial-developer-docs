@@ -47,9 +47,9 @@ export const myChat = chat.agent({
 });
 ```
 
-<Note>
-  The `prepareStep` for inner-loop compaction is automatically injected when you spread `chat.toStreamTextOptions()` into your `streamText` call. If you provide your own `prepareStep` after the spread, it overrides the auto-injected one.
-</Note>
+> [!NOTE]
+>
+> The `prepareStep` for inner-loop compaction is automatically injected when you spread `chat.toStreamTextOptions()` into your `streamText` call. If you provide your own `prepareStep` after the spread, it overrides the auto-injected one.
 
 ## How it works
 
@@ -65,9 +65,9 @@ On the next turn, the LLM receives the compact summary instead of the full histo
 
 The compacted context is durable. The runtime writes it to the [transcript storage](/docs/ai-chat/transcript-storage)'s `state` alongside the messages, so a new run that boots to continue the conversation starts from the summary rather than re-reading the whole transcript and summarising it again. An undo or edit that reaches into the summarised part of the conversation clears the stored summary, and compaction runs again from the edited history when the threshold is next crossed.
 
-<Note>
-  This is Trigger.dev's provider-agnostic compaction. To persist a **provider's own** compaction across turns instead (Anthropic context editing or OpenAI stored responses), and to fall back between providers without re-sending history, see [Native compaction & provider fallback](/docs/ai-chat/patterns/native-compaction).
-</Note>
+> [!NOTE]
+>
+> This is Trigger.dev's provider-agnostic compaction. To persist a **provider's own** compaction across turns instead (Anthropic context editing or OpenAI stored responses), and to fall back between providers without re-sending history, see [Native compaction & provider fallback](/docs/ai-chat/patterns/native-compaction).
 
 ## Customizing what gets persisted
 
@@ -410,6 +410,6 @@ prepareStep: chat.compactionStep({
 }),
 ```
 
-<Note>
-  The fully manual APIs only handle inner-loop compaction (between tool-call steps). For outer-loop coverage, use the `compaction` option on `chat.agent()`, `chat.createSession()`, or `MessageAccumulator`.
-</Note>
+> [!NOTE]
+>
+> The fully manual APIs only handle inner-loop compaction (between tool-call steps). For outer-loop coverage, use the `compaction` option on `chat.agent()`, `chat.createSession()`, or `MessageAccumulator`.

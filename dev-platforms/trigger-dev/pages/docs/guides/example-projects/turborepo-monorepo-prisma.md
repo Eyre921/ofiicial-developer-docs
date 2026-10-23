@@ -13,9 +13,9 @@ These examples demonstrate two different ways of using Prisma and Trigger.dev in
 * Example 1: Turborepo monorepo demo with Trigger.dev and Prisma packages
 * Example 2: Turborepo monorepo demo with a Prisma package and Trigger.dev installed in a Next.js app
 
-<Note>
-  You can either fork the repos below, or simply check out the project structures and code to get an idea of how to set up Trigger.dev in your own monorepos.
-</Note>
+> [!NOTE]
+>
+> You can either fork the repos below, or simply check out the project structures and code to get an idea of how to set up Trigger.dev in your own monorepos.
 
 ## Example 1: Turborepo monorepo demo with Trigger.dev and Prisma packages
 
@@ -25,10 +25,10 @@ This simple example demonstrates how to use Trigger.dev and Prisma as packages i
 
 Fork the GitHub repo below to get started with this example project.
 
-<Card title="Check out the Turborepo monorepo demo with Trigger.dev and Prisma packages" icon="GitHub" href="https://github.com/triggerdotdev/examples/tree/main/monorepos/turborepo-prisma-tasks-package">
-  Click here to view the full code for this project in our examples repository on GitHub. You can
-  fork it and use it as a starting point for your own project.
-</Card>
+> **[Check out the Turborepo monorepo demo with Trigger.dev and Prisma packages](https://github.com/triggerdotdev/examples/tree/main/monorepos/turborepo-prisma-tasks-package)**
+>
+> Click here to view the full code for this project in our examples repository on GitHub. You can
+> fork it and use it as a starting point for your own project.
 
 ### Features
 
@@ -88,9 +88,9 @@ Simplified project structure for this example:
 
 #### Tasks package
 
-<Note>
-  to run `pnpm dlx trigger.dev@latest init` in a blank packages folder, you have to add a `package.json` file first, otherwise it will attempt to add Trigger.dev files in the root of your monorepo.
-</Note>
+> [!NOTE]
+>
+> to run `pnpm dlx trigger.dev@latest init` in a blank packages folder, you have to add a `package.json` file first, otherwise it will attempt to add Trigger.dev files in the root of your monorepo.
 
 * Trigger.dev is added as a package in [`/packages/tasks`](https://github.com/triggerdotdev/examples/tree/main/monorepos/turborepo-prisma-tasks-package/packages/tasks) and exported as `@repo/tasks` in the [`package.json`](https://github.com/triggerdotdev/examples/tree/main/monorepos/turborepo-prisma-tasks-package/packages/tasks/package.json) file.
 * The [`addNewUser.ts`](https://github.com/triggerdotdev/examples/tree/main/monorepos/turborepo-prisma-tasks-package/packages/tasks/src/trigger/addNewUser.ts) task adds a new user to the database.
@@ -98,9 +98,9 @@ Simplified project structure for this example:
 * The [`packages/tasks/src/trigger/index.ts`](https://github.com/triggerdotdev/examples/tree/main/monorepos/turborepo-prisma-tasks-package/packages/tasks/src/trigger/index.ts) file exports the task from the package. Every task must be exported from the package like this.
 * The [`trigger.config.ts`](https://github.com/triggerdotdev/examples/tree/main/monorepos/turborepo-prisma-tasks-package/packages/tasks/trigger.config.ts) file configures the Trigger.dev project settings. This is where the Trigger.dev [Prisma build extension](https://trigger.dev/docs/config/extensions/prismaExtension) is added, which is required to use Prisma in the Trigger.dev task.
 
-<Info>
-  You must include the version of Prisma you are using in the `trigger.config.ts` file, otherwise the Prisma build extension will not work. Learn more about our [Prisma build extension](/docs/config/extensions/prismaExtension).
-</Info>
+> [!NOTE]
+>
+> You must include the version of Prisma you are using in the `trigger.config.ts` file, otherwise the Prisma build extension will not work. Learn more about our [Prisma build extension](/docs/config/extensions/prismaExtension).
 
 #### The Next.js app `apps/web`
 
@@ -119,10 +119,10 @@ This example demonstrates how to use Trigger.dev and Prisma in a monorepo create
 
 Fork the GitHub repo below to get started with this example project.
 
-<Card title="Check out the Turborepo monorepo demo with a Prisma package and Trigger.dev installed in a Next.js app" icon="GitHub" href="https://github.com/triggerdotdev/examples/tree/main/monorepos/turborepo-prisma-tasks-trigger">
-  Click here to view the full code for this project in our examples repository on GitHub. You can
-  fork it and use it as a starting point for your own project.
-</Card>
+> **[Check out the Turborepo monorepo demo with a Prisma package and Trigger.dev installed in a Next.js app](https://github.com/triggerdotdev/examples/tree/main/monorepos/turborepo-prisma-tasks-trigger)**
+>
+> Click here to view the full code for this project in our examples repository on GitHub. You can
+> fork it and use it as a starting point for your own project.
 
 ### Features
 

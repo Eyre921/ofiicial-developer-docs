@@ -6,17 +6,17 @@ path: nexus/open-models
 
 Use auto, version-tracking aliases, fast tiers, or pinned Fireworks open models in coding workflows.
 
-Use a Fireworks open model directly when you want Fireworks to serve every turn. Nexus CLI automatically registers the coding-ready catalog when you connect a harness.
+Use a Fireworks open model directly when you want Fireworks to serve every turn. When you connect a harness, Nexus CLI adds the coding-ready catalog to its model picker.
 
 ## Start with `auto`
 
-`auto` chooses from frontier open models for each new user turn. Nexus CLI uses it by default in every harness. Claude Code keeps Anthropic models in its Opus, Sonnet, and Haiku slots, and also lists `auto` and Fireworks models in `/model`.
+`auto` picks a model for each new user turn. Nexus CLI makes it the default in every harness. In Claude Code, the Opus, Sonnet, and Haiku slots keep Claude's own models, and `/model` also lists **Auto** and the Fireworks models.
 
 ```bash wrap theme={null}
 nexus claude
 ```
 
-Restart Claude Code, open `/model`, and select **Auto**. No `--model` flag is required.
+Restart Claude Code. **Auto** is the default model in `/model`, so you don't need a `--model` flag.
 
 ## Choose a family, tier, or version
 
@@ -36,7 +36,7 @@ Prefer `*-latest` unless you need a pinned version.
 
 ### Current aliases
 
-These are all serverless aliases as of September 27, 2026. Aliases can move to newer models or be retired, so treat this list as a snapshot. The [serverless models endpoint](#find-a-model-id) always shows the current set, and `nexus model list` shows the current coding aliases.
+These are all serverless aliases as of September 27, 2026. Aliases can move to newer models or be retired, so treat this list as a snapshot. The [serverless models endpoint](#find-a-model-id) shows the current set, and `nexus model list` shows the current coding aliases.
 
 | Alias | Current model | Tier | Input |
 | - | - | - | - |
@@ -67,7 +67,7 @@ nexus model list --search glm
 nexus model list --refresh
 ```
 
-The catalog is cached for one hour. `--refresh` fetches the latest copy.
+The catalog is cached for one hour. `--refresh` fetches the latest copy. Offline, `nexus model list` shows the last cached list.
 
 Without Nexus CLI, call the serverless models endpoint:
 
@@ -78,14 +78,13 @@ curl "https://api.fireworks.ai/v1/serverless/models?use_cases=coding" \
 
 Each entry's `aliases` field lists the aliases that point to that model, such as `accounts/fireworks/routers/glm-latest` for `glm-5p3`. Use the last part, `glm-latest`, as the model ID. Remove `use_cases=coding` to list every serverless model.
 
-This command lists models for Nexus CLI. To choose the models
-Nexus Auto uses yourself, see [Nexus Auto](/nexus/auto).
+To control which models Nexus Auto can use, see [Nexus Auto](/nexus/auto).
 
 ## Check image support
 
-`glm-latest` and `glm-fast-latest` are text-only. Image support for other aliases depends on the model currently behind each alias. See the Input column in [Current aliases](#current-aliases), and check `nexus model list` before sending images.
+`glm-latest` and `glm-fast-latest` are text-only. Image support for other aliases depends on the model currently behind each alias. See the Input column in [Current aliases](#current-aliases), and check `nexus model list` before sending images. In Claude Code, `nexus claude status` marks each model `vision` or `text-only`.
 
-If an image reaches a text-only model in Claude Code, use `/rewind` or switch to a vision-capable model such as Kimi or `glm-5p3-flash`.
+If an image reaches a text-only model in Claude Code, the session can break. Use `/rewind`, then switch to a vision-capable model such as Kimi or `glm-5p3-flash`.
 
 ## Use US-only models
 

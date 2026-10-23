@@ -152,14 +152,14 @@ export async function POST(req: Request) {
 }
 ```
 
-<Info>
-  The Session row is the run manager — a chat that was active yesterday
-  resumes against the same chatId today, even if the original run has
-  long since exited. `AgentChat` (server-side) and `TriggerChatTransport`
-  (browser) both rely on this: send a new message and the server
-  triggers a fresh continuation run on the same session, carrying the
-  conversation forward without losing history or identity.
-</Info>
+> [!NOTE]
+>
+> The Session row is the run manager — a chat that was active yesterday
+> resumes against the same chatId today, even if the original run has
+> long since exited. `AgentChat` (server-side) and `TriggerChatTransport`
+> (browser) both rely on this: send a new message and the server
+> triggers a fresh continuation run on the same session, carrying the
+> conversation forward without losing history or identity.
 
 ## Sub-agent tool pattern
 

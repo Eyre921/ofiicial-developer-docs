@@ -10,6 +10,8 @@ Learn more about Notion's data source object.
 
 ![](https://mintcdn.com/notion-demo/Muj7K3D7I6gj-QAA/images/reference/6dc5c7eccb432e908290e2642c84579936d55ee79c6cd60a5b0807e70cdeb55a-image.png?fit=max\&auto=format\&n=Muj7K3D7I6gj-QAA\&q=85\&s=732ada865d8d25def0ba61090c6e9f2e)
 
+Diagram of the new Notion API data model. A database is a parent of one or more data sources, each of which parents zero or more pages. Previously, databases could only have one data source, so the concepts were combined in the API until 2025.
+
 As of API version `2025-09-03`, there's a suite of APIs for managing data sources:
 
 * [Create a data source](/reference/create-a-data-source): add an additional data source for an existing [Database](/reference/database)

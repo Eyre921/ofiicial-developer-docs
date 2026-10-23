@@ -12,7 +12,7 @@ Manage limits on the [User Limits](#manage-limits-and-monitor-spend) page under 
 
 > [!NOTE]
 >
-> Per-user usage limits are available on request — contact Fireworks to enable them. Only admins can change limits, and group limits additionally require [SCIM group sync](/accounts/sso#group-provisioning).
+> Per-user spend limits are available on request. Contact Fireworks to enable them. Only admins can change limits. Group limits also require [SCIM group sync](/accounts/sso#group-provisioning).
 
 ## Set defaults, group limits, and exceptions
 
@@ -22,7 +22,7 @@ Manage limits on the [User Limits](#manage-limits-and-monitor-spend) page under 
 | **Group limit** | A reusable per-user ceiling for SCIM-synced teams |
 | **User override** | An exception for one person |
 
-A user override takes precedence. If there is no override, the highest limit among the user's assigned groups applies. If there are no group limits, the account default applies.
+When a user has more than one of these, [limit precedence](#limit-precedence) decides which one applies.
 
 ![Setting a custom usage limit for one user](https://mintcdn.com/fireworksai/3Wytiu2ff7ypB2uB/images/usage-limits/override-user-limit.gif?s=2a632a07599097895d6746764c74f198)
 
@@ -31,10 +31,10 @@ A user override takes precedence. If there is no override, the highest limit amo
 A user's effective limit is resolved in this order:
 
 1. Their **per-user override**, if they have one.
-2. Otherwise, the **highest** cap among the group limits assigned to their groups. A group limit *below* the account default still wins: a group cap replaces the default rather than competing with it.
+2. Otherwise, the **highest** cap among the group limits assigned to their groups. A group limit *below* the account default still wins, because a group cap replaces the default.
 3. Otherwise, the **account default cap**.
 
-A user with no override, no group limit, and no account default has no cap. Use a per-user override when someone needs a cap their group membership won't produce.
+A user with no override, no group limit, and no account default has no cap. Use a per-user override when someone needs a cap that their groups don't give them.
 
 ## Group limits
 
@@ -48,7 +48,7 @@ A group limit is a reusable per-user cap. It does not create a shared group budg
 
 ### Where groups come from
 
-Groups come from your identity provider through the group provisioning described in [Custom SSO](/accounts/sso#group-provisioning); that is the only way to create one. Groups and their membership are read-only in Fireworks; add, rename, delete, and populate them in your directory. The limit assignment is the one part you set in Fireworks.
+Groups come from your identity provider through [group provisioning](/accounts/sso#group-provisioning) in Custom SSO. You cannot create a group any other way. Groups and their members are read-only in Fireworks, so add, rename, delete, and populate them in your directory. In Fireworks, you set only the group's limit assignment.
 
 ### Group-limit constraints
 
@@ -71,10 +71,7 @@ The User Limits page shows current-period spend, effective limit, and limit sour
 
 ## What happens when a user reaches the limit
 
-* Spend counted toward the limit resets at the start of each billing period.
-* After a user reaches their effective limit, requests to supported Fireworks serverless models return HTTP `402`.
-* Raising the limit or starting a new billing period allows requests to supported Fireworks serverless models again after enforcement refreshes.
-* Enforcement refreshes about once per minute, so changes can take 1–2 minutes in practice.
+After a user reaches their effective limit, requests to supported serverless models return HTTP `402`. Raising the limit or starting a new billing period allows requests again after enforcement refreshes.
 
 | Condition | Result |
 | - | - |
@@ -84,9 +81,7 @@ The User Limits page shows current-period spend, effective limit, and limit sour
 | **A limit or group membership changes** | The change takes effect during the next enforcement refresh |
 | **A productivity-only account is still being created and has no default** | Serverless requests return HTTP `412` until provisioning creates the \$100 default |
 
-Enforcement refreshes about once per minute. Blocking, unblocking, cap changes, group assignments, and directory membership changes can therefore take 1–2 minutes.
-
-Limits count a user's supported serverless usage across the account. Dedicated deployment usage is not included.
+Enforcement refreshes about once per minute. Blocking, unblocking, cap changes, group assignments, and directory membership changes can take 1–2 minutes.
 
 ## Permissions
 

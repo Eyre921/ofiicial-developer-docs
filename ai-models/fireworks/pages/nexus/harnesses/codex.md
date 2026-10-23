@@ -6,7 +6,9 @@ path: nexus/harnesses/codex
 
 Connect the Codex CLI to Fireworks with the Nexus CLI or manual setup, and see who pays for OpenAI model turns with Nexus Auto.
 
-The Codex CLI and the [ChatGPT desktop app](/nexus/harnesses/chatgpt) both read `~/.codex/config.toml`, so connecting one connects the other. **Close open Codex sessions and quit the ChatGPT desktop app** before connecting or running `off`. In a terminal, Nexus CLI waits for them to close; in a script, it exits with an error. `--force` writes anyway, which isn't recommended.
+The Codex CLI and the [ChatGPT desktop app](/nexus/harnesses/chatgpt) both read `~/.codex/config.toml`, so connecting one connects the other.
+
+**Close open Codex sessions and quit the ChatGPT desktop app** before connecting or running `off`. In a terminal, Nexus CLI waits for them to close. In a script, it exits with an error. `--force` writes anyway, which isn't recommended.
 
 Generally availableOpenAI ResponsesNexus AutoNative web search
 
@@ -18,13 +20,13 @@ Generally availableOpenAI ResponsesNexus AutoNative web search
 curl -fsSL https://nexus.fireworks.ai/install.sh | bash
 ```
 
-Requires Node.js 18 or later, `git`, and `bash`. On Windows, run it from Git Bash; PowerShell breaks the script's line endings.
+You need Node.js 22 or later, `git`, and `bash`. On Windows, run the installer from Git Bash. PowerShell breaks the script's line endings.
 
 ```bash wrap theme={null}
 nexus login
 ```
 
-Sign in with your browser, or paste a Fireworks key.
+Sign in with your browser, or paste a Fireworks API key (`fw_...`).
 
 Already set up? Skip to step 2.
 
@@ -45,12 +47,13 @@ Start a new Codex session. Codex opens on Nexus Auto (`auto`). Run `nexus codex`
 
 ## Use Nexus Auto
 
-**Codex keeps its own sign-in.** Pick ChatGPT, a device code, or an API key when it asks, or run `codex login`. Your Fireworks key pays for Fireworks models. Your Codex sign-in pays for OpenAI models; see [Who pays for OpenAI model turns](#who-pays-for-openai-model-turns) for the details.
+**Codex keeps its own sign-in.** When Codex asks, pick ChatGPT, a device code, or an API key, or run `codex login`. Your Fireworks key pays for Fireworks models. Your Codex sign-in pays for OpenAI models. See [Who pays for OpenAI model turns](#who-pays-for-openai-model-turns).
 
 * Nexus Auto (`auto`) is supported on the Responses API, and Codex defaults to it.
-* On Codex, `auto` picks between GPT Sol and Fireworks open models for each turn. See [how `auto` picks its closed model](/nexus/auto#how-auto-picks-its-closed-model).
-* With only a Fireworks key, `auto` uses GPT Sol if you have an OpenAI Provider Key, otherwise Claude Opus if you have an Anthropic Provider Key, otherwise open models.
-* Codex doesn't send an Anthropic key, so Anthropic model turns need an Anthropic [Provider Key](/nexus/provider-keys).
+* On Codex, `auto` picks a model for each turn from Fireworks open models and the closed models your Codex sign-in and keys allow. See [which models `auto` can use](/nexus/auto#which-models-auto-can-use).
+* With only a Fireworks key (no ChatGPT or OpenAI sign-in), `auto` can still use OpenAI models through an OpenAI Provider Key, and Anthropic models through an Anthropic key. Without either key, it uses open models.
+* **Anthropic model turns:** connect an Anthropic [Provider Key](/nexus/provider-keys), or save your own key with `nexus auto --anthropic-api-key` (it prompts for the key) and run `nexus codex` again. Nexus CLI adds the saved key to Codex's `http_headers`.
+* Nexus CLI never sends an OpenAI key you saved with `nexus auto` to Codex. Your Codex sign-in covers OpenAI model turns.
 * With [manual setup](#manual-setup-advanced), Codex can send `x-anthropic-api-key` and `x-openai-api-key` headers.
 
 ### Who pays for OpenAI model turns
@@ -79,7 +82,7 @@ command = "npx"
 args = ["-y", "your-mcp-server"]
 ```
 
-Native web search is supported while connected through Nexus CLI. Fireworks runs the search server-side and returns the results, with no MCP server or search service to set up.
+Native web search is supported while connected through Nexus CLI. Fireworks runs the search server-side and returns the results. You don't need an MCP server or a search service.
 
 ## Troubleshooting
 
@@ -158,6 +161,7 @@ See [what changes without the Nexus CLI](/nexus/manual-setup#what-changes-withou
 > http_headers = { "X-Title" = "Codex", "HTTP-Referer" = "nexus/v<version>", "x-fireworks-api-key" = "fw_..." }
 > ```
 >
-> `requires_openai_auth = true` makes Codex send its own sign-in, and the Fireworks key travels in `x-fireworks-api-key`. Nexus CLI writes the same provider table for every model and sends no Anthropic or OpenAI key.
->
-> Nexus CLI keeps your other TOML settings, including `[mcp_servers]`, saves the file with mode `0600`, and writes a model catalog so Codex knows each model's context window and capabilities. The catalog also turns on Codex's MCP tool search for every model, so MCP and app connector tools load on demand, and makes Codex auto-review run on the model you picked.
+> * `requires_openai_auth = true` makes Codex send its own sign-in. The Fireworks key travels in `x-fireworks-api-key`.
+> * Nexus CLI writes the same provider table for every model. It never adds an OpenAI key. An Anthropic key saved with `nexus auto --anthropic-api-key` adds an `x-anthropic-api-key` entry to `http_headers`.
+> * Nexus CLI keeps your other TOML settings, including `[mcp_servers]`, and saves `config.toml` and the catalog with mode `0600`.
+> * `fireworks-model-catalog.json` tells Codex each model's context window and capabilities. It also turns on MCP tool search for the Fireworks models, so MCP and app connector tools load on demand, and makes Codex auto-review run on the model you picked.

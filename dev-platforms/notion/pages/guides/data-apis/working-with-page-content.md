@@ -18,6 +18,8 @@ In general, **page properties** are best for capturing structured information su
 
 ![](https://mintcdn.com/notion-demo/LHm9qfrJYJOPRxs6/images/docs/369b6a5-page-properties-and-content.png?fit=max\&auto=format\&n=LHm9qfrJYJOPRxs6\&q=85\&s=0887fcbaa5537be57e38124ee0fa409c)
 
+Visualizing page properties versus page content
+
 ## Modeling content as blocks
 
 A page's content is represented by a list of [block objects](/reference/block). These blocks are referred to as the page's children. Each block has a type, such as a paragraph, a heading, or an image. Some types of blocks, such as a toggle list, have children of their own.

@@ -1,5 +1,5 @@
 ---
-title: "Read-only Token"
+title: "Upstash Workflow Read-only Token"
 source: https://upstash.com/docs/workflow/howto/readonly-token
 path: docs/workflow/howto/readonly-token
 ---

@@ -1,5 +1,5 @@
 ---
-title: "Ratelimiting Algorithms"
+title: "Ratelimit TypeScript SDK Algorithms"
 source: https://upstash.com/docs/redis/sdks/ratelimit-ts/algorithms
 path: docs/redis/sdks/ratelimit-ts/algorithms
 ---

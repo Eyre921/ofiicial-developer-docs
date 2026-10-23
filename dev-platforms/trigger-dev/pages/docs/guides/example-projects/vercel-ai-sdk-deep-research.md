@@ -6,11 +6,11 @@ path: docs/guides/example-projects/vercel-ai-sdk-deep-research
 
 Deep research agent which generates comprehensive PDF reports using Vercel's AI SDK.
 
-<Info title="Acknowledgements">
-  Acknowledgements: This example project is derived from the brilliant [deep research
-  guide](https://aie-feb-25.vercel.app/docs/deep-research) by [Nico
-  Albanese](https://x.com/nicoalbanese10).
-</Info>
+> [!NOTE]
+>
+> Acknowledgements: This example project is derived from the brilliant [deep research
+> guide](https://aie-feb-25.vercel.app/docs/deep-research) by [Nico
+> Albanese](https://x.com/nicoalbanese10).
 
 ## Overview
 
@@ -38,10 +38,10 @@ This full-stack project is an intelligent deep research agent that autonomously 
 
 ## GitHub repo
 
-<Card title="View the Vercel AI SDK deep research agent repo" icon="GitHub" href="https://github.com/triggerdotdev/examples/tree/main/vercel-ai-sdk-deep-research-agent">
-  Click here to view the full code for this project in our examples repository on GitHub. You can
-  fork it and use it as a starting point for your own project.
-</Card>
+> **[View the Vercel AI SDK deep research agent repo](https://github.com/triggerdotdev/examples/tree/main/vercel-ai-sdk-deep-research-agent)**
+>
+> Click here to view the full code for this project in our examples repository on GitHub. You can
+> fork it and use it as a starting point for your own project.
 
 ## How the deep research agent works
 

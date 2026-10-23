@@ -1,5 +1,5 @@
 ---
-title: "Prod Pack & Enterprise"
+title: "QStash Prod Pack & Enterprise"
 source: https://upstash.com/docs/qstash/overall/enterprise
 path: docs/qstash/overall/enterprise
 ---

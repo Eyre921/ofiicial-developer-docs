@@ -94,7 +94,9 @@ export const taskWithRetries = task({
 | `maxTimeoutInMs` | Cap on the delay between retries |
 | `randomize` | Add jitter to retry delays to prevent multiple failing tasks from retrying in lockstep |
 
-<Note>Task-level retry settings override the defaults in your `trigger.config` file.</Note>
+> [!NOTE]
+>
+> Task-level retry settings override the defaults in your `trigger.config` file.
 
 For more information read [the retrying guide](/docs/errors-retrying).
 
@@ -164,7 +166,9 @@ You can override this per-trigger by passing `ttl` in the trigger options, or se
 
 ## Global lifecycle hooks
 
-<Note>When specifying global lifecycle hooks, we recommend using the `init.ts` file.</Note>
+> [!NOTE]
+>
+> When specifying global lifecycle hooks, we recommend using the `init.ts` file.
 
 You can register global lifecycle hooks that are executed for all runs, regardless of the task. While you can still define these in the `trigger.config.ts` file, you can also register them anywhere in your codebase:
 
@@ -198,17 +202,17 @@ tasks.onStartAttempt(({ ctx, payload, task }) => {
 
 ## Lifecycle functions
 
-<img alt="Lifecycle functions" />
+![Lifecycle functions](https://mintcdn.com/trigger/GRVvL72gYSoZFvP1/images/lifecycle-functions.png?fit=max\&auto=format\&n=GRVvL72gYSoZFvP1\&q=85\&s=6196168935d136c5440fea7793918591)
 
 ### `middleware` and `locals` functions
 
 Our task middleware system runs at the top level, executing before and after all lifecycle hooks. This allows you to wrap the entire task execution lifecycle with custom logic.
 
-<Info>
-  An error thrown in `middleware` is just like an uncaught error in the run function: it will
-  propagate through to `catchError()` function and then will fail the attempt (either causing a
-  retry or failing the run).
-</Info>
+> [!NOTE]
+>
+> An error thrown in `middleware` is just like an uncaught error in the run function: it will
+> propagate through to `catchError()` function and then will fail the attempt (either causing a
+> retry or failing the run).
 
 The `locals` API allows you to share data between middleware and hooks.
 
@@ -297,7 +301,9 @@ export const myTask = task({
 
 ### `onStartAttempt` function
 
-<Info>The `onStartAttempt` function was introduced in v4.1.0</Info>
+> [!NOTE]
+>
+> The `onStartAttempt` function was introduced in v4.1.0
 
 Before a task run attempt starts, the `onStartAttempt` function is called. It's useful for sending notifications, logging, and other side effects.
 
@@ -326,7 +332,9 @@ tasks.onStartAttempt(({ ctx, payload, task }) => {
 });
 ```
 
-<Info>Errors thrown in the `onStartAttempt` function will cause the attempt to fail.</Info>
+> [!NOTE]
+>
+> Errors thrown in the `onStartAttempt` function will cause the attempt to fail.
 
 If you want to execute code before just the first attempt, you can use the `onStartAttempt` function and check `ctx.run.attempt.number === 1`:
 
@@ -404,10 +412,10 @@ tasks.onSuccess(({ ctx, payload, output }) => {
 });
 ```
 
-<Info>
-  Errors thrown in the `onSuccess` function will be ignored, but you will still be able to see them
-  in the dashboard.
-</Info>
+> [!NOTE]
+>
+> Errors thrown in the `onSuccess` function will be ignored, but you will still be able to see them
+> in the dashboard.
 
 ### `onComplete` function
 
@@ -435,10 +443,10 @@ tasks.onComplete(({ ctx, payload, output }) => {
 });
 ```
 
-<Info>
-  Errors thrown in the `onComplete` function will be ignored, but you will still be able to see them
-  in the dashboard.
-</Info>
+> [!NOTE]
+>
+> Errors thrown in the `onComplete` function will be ignored, but you will still be able to see them
+> in the dashboard.
 
 ### `onFailure` function
 
@@ -466,15 +474,15 @@ tasks.onFailure(({ ctx, payload, error }) => {
 });
 ```
 
-<Info>
-  Errors thrown in the `onFailure` function will be ignored, but you will still be able to see them
-  in the dashboard.
-</Info>
+> [!NOTE]
+>
+> Errors thrown in the `onFailure` function will be ignored, but you will still be able to see them
+> in the dashboard.
 
-<Note>
-  `onFailure` doesn’t fire for some of the run statuses like `Crashed`, `System failures`, and
-  `Canceled`.
-</Note>
+> [!NOTE]
+>
+> `onFailure` doesn’t fire for some of the run statuses like `Crashed`, `System failures`, and
+> `Canceled`.
 
 ### `catchError` functions
 
@@ -482,7 +490,9 @@ You can define a function that will be called when an error is thrown in the `ru
 
 Read more about `catchError` in our [Errors and Retrying guide](/docs/errors-retrying).
 
-<Info>Uncaught errors will throw a special internal error of the type `HANDLE_ERROR_ERROR`.</Info>
+> [!NOTE]
+>
+> Uncaught errors will throw a special internal error of the type `HANDLE_ERROR_ERROR`.
 
 ### `onCancel` function
 
@@ -578,28 +588,30 @@ export const cancelExampleTask = task({
 });
 ```
 
-<Note>
-  You will have up to 30 seconds to complete the `runPromise` in the `onCancel` hook. After that
-  point the process will be killed.
-</Note>
+> [!NOTE]
+>
+> You will have up to 30 seconds to complete the `runPromise` in the `onCancel` hook. After that
+> point the process will be killed.
 
-<Warning>
-  `onCancel` only runs if the run is actively executing. If a run is cancelled while queued or
-  suspended (e.g. waiting for a token), no machine is spun up and `onCancel` will not be called.
-  This is a known limitation we're planning to address. Follow the progress on our [feedback
-  board](https://feedback.trigger.dev/p/call-the-onfailure-hook-for-runs-that-were-canceled-expired).
-</Warning>
+> [!WARNING]
+>
+> `onCancel` only runs if the run is actively executing. If a run is cancelled while queued or
+> suspended (e.g. waiting for a token), no machine is spun up and `onCancel` will not be called.
+> This is a known limitation we're planning to address. Follow the progress on our [feedback
+> board](https://feedback.trigger.dev/p/call-the-onfailure-hook-for-runs-that-were-canceled-expired).
 
 ### `onStart` function (deprecated)
 
-<Info>The `onStart` function was deprecated in v4.1.0. Use `onStartAttempt` instead.</Info>
+> [!NOTE]
+>
+> The `onStart` function was deprecated in v4.1.0. Use `onStartAttempt` instead.
 
 When a task run starts, the `onStart` function is called. It's useful for sending notifications, logging, and other side effects.
 
-<Warning>
-  This function will only be called once per run (not per attempt). If you want to run code before
-  each attempt, use a middleware function or the `onStartAttempt` function.
-</Warning>
+> [!WARNING]
+>
+> This function will only be called once per run (not per attempt). If you want to run code before
+> each attempt, use a middleware function or the `onStartAttempt` function.
 
 ```ts /trigger/on-start.ts theme={"theme":"css-variables"}
 export const taskWithOnStart = task({
@@ -623,14 +635,16 @@ tasks.onStart(({ ctx, payload, task }) => {
 });
 ```
 
-<Info>Errors thrown in the `onStart` function will cause the attempt to fail.</Info>
+> [!NOTE]
+>
+> Errors thrown in the `onStart` function will cause the attempt to fail.
 
 ### `init` function (deprecated)
 
-<Warning>
-  The `init` hook is deprecated and will be removed in the future. Use
-  [middleware](/docs/tasks/overview#middleware-and-locals-functions) instead.
-</Warning>
+> [!WARNING]
+>
+> The `init` hook is deprecated and will be removed in the future. Use
+> [middleware](/docs/tasks/overview#middleware-and-locals-functions) instead.
 
 This function is called before a run attempt:
 
@@ -660,14 +674,16 @@ export const taskWithInitReturn = task({
 });
 ```
 
-<Info>Errors thrown in the `init` function will cause the attempt to fail.</Info>
+> [!NOTE]
+>
+> Errors thrown in the `init` function will cause the attempt to fail.
 
 ### `cleanup` function (deprecated)
 
-<Warning>
-  The `cleanup` hook is deprecated and will be removed in the future. Use
-  [middleware](/docs/tasks/overview#middleware-and-locals-functions) instead.
-</Warning>
+> [!WARNING]
+>
+> The `cleanup` hook is deprecated and will be removed in the future. Use
+> [middleware](/docs/tasks/overview#middleware-and-locals-functions) instead.
 
 This function is called after the `run` function is executed, regardless of whether the run was successful or not. It's useful for cleaning up resources, logging, or other side effects.
 
@@ -683,16 +699,16 @@ export const taskWithCleanup = task({
 });
 ```
 
-<Info>Errors thrown in the `cleanup` function will cause the attempt to fail.</Info>
+> [!NOTE]
+>
+> Errors thrown in the `cleanup` function will cause the attempt to fail.
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Triggering" icon="bolt" href="/docs/triggering">
-    Learn how to trigger your tasks from your code.
-  </Card>
+> **[Triggering](/docs/triggering)**
+>
+> Learn how to trigger your tasks from your code.
 
-  <Card title="Writing tasks" icon="wand-magic-sparkles" href="/docs/writing-tasks-introduction">
-    Tasks are the core of Trigger.dev. Learn how to write them.
-  </Card>
-</CardGroup>
+> **[Writing tasks](/docs/writing-tasks-introduction)**
+>
+> Tasks are the core of Trigger.dev. Learn how to write them.

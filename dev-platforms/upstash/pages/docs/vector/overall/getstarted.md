@@ -1,5 +1,5 @@
 ---
-title: "Getting Started"
+title: "Upstash Vector Getting Started"
 source: https://upstash.com/docs/vector/overall/getstarted
 path: docs/vector/overall/getstarted
 ---
