@@ -13,5 +13,5 @@ Accept orders for no-cost line items or apply 100% off discounts for one-time pa
 This article has multiple variants. Fetch one of the following URLs to view specific content for your use case:
 
 - [Full page](https://docs.stripe.com/payments/checkout/no-cost-orders.md?ui=full-page)
-- [Embedded form](https://docs.stripe.com/payments/checkout/no-cost-orders.md?platform=web&payment-ui=checkout-form)
+- [Embedded form](https://docs.stripe.com/payments/checkout/no-cost-orders.md?ui=checkout-form)
 

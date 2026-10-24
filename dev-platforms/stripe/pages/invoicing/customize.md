@@ -44,7 +44,7 @@ Brand settings apply to your whole account and take effect in many places.
 | Setting | Emails | Checkout & Payment Links | Customer portal | Hosted invoice page | Invoice PDFs |
 | --- | --- | --- | --- | --- | --- |
 | **Icon** | Yes | Yes | Yes | Yes | Yes |
-| **Logo** | No | Yes | No | No | Yes |
+| **Logo** | No | Yes | Yes | No | Yes |
 | **Brand color** | Yes | No | Yes | Yes | Yes |
 | **Accent color** | Yes (background color) | Yes | Yes | Yes | No |
 

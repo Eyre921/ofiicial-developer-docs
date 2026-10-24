@@ -13,5 +13,5 @@ Accept tips and donations, or sell pay-what-you-want products and services.
 This article has multiple variants. Fetch one of the following URLs to view specific content for your use case:
 
 - [Full page](https://docs.stripe.com/payments/checkout/pay-what-you-want.md?ui=full-page)
-- [Embedded form](https://docs.stripe.com/payments/checkout/pay-what-you-want.md?payment-ui=checkout-form)
+- [Embedded form](https://docs.stripe.com/payments/checkout/pay-what-you-want.md?ui=checkout-form)
 

@@ -29,7 +29,7 @@ path: docs/flux/feature-overview
 | Feature                                    | Language(s)                                                                      |
 | ------------------------------------------ | -------------------------------------------------------------------------------- |
 | [Profanity Filter](/docs/profanity-filter) | [All available](/docs/model#flux)                                                |
-| [Numerals](/docs/numerals)                 | English + Multilingual (excludes Hindi & Japanese)                               |
+| [Numerals](/docs/numerals)                 | English + Multilingual (excludes Hindi)                                          |
 | [Redaction](/docs/redaction)               | Number redaction only (`numbers`, `aggressive_numbers`) — English + Multilingual |
 
 ## Transcription

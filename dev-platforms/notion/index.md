@@ -1,6 +1,6 @@
 # dev-platforms/notion 文档索引
 
-> 共 252 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 253 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## cli
@@ -103,6 +103,7 @@
 - `reference/admin/list-permission-group-members` — [List group members](pages/reference/admin/list-permission-group-members.md) · [原文](https://developers.notion.com/reference/admin/list-permission-group-members)
 - `reference/admin/list-permission-groups` — [List groups](pages/reference/admin/list-permission-groups.md) · [原文](https://developers.notion.com/reference/admin/list-permission-groups)
 - `reference/admin/list-personal-access-tokens` — [List personal access tokens in a workspace](pages/reference/admin/list-personal-access-tokens.md) · [原文](https://developers.notion.com/reference/admin/list-personal-access-tokens)
+- `reference/admin/list-spaces` — [List workspaces in the organization](pages/reference/admin/list-spaces.md) · [原文](https://developers.notion.com/reference/admin/list-spaces)
 - `reference/admin/list-users` — [List users](pages/reference/admin/list-users.md) · [原文](https://developers.notion.com/reference/admin/list-users)
 - `reference/admin/release-legal-hold` — [Release a legal hold](pages/reference/admin/release-legal-hold.md) · [原文](https://developers.notion.com/reference/admin/release-legal-hold)
 - `reference/admin/remove-legal-hold-user` — [Remove a user from a legal hold](pages/reference/admin/remove-legal-hold-user.md) · [原文](https://developers.notion.com/reference/admin/remove-legal-hold-user)

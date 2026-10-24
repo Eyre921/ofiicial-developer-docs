@@ -41,14 +41,14 @@ Supported languages include:
 
 > **Info**
 >
-> When using Nova-3 Multilingual (`model=nova-3`, `language=multi`) or Nova-3 Medical multilingual (`model=nova-3-medical`, `language=multi`), numeral formatting is supported for: English, Spanish, French, German, Russian, Portuguese, Italian, and Dutch. Numeral formatting is not currently supported for Hindi or Japanese.
+> Numerals works the same in monolingual and multilingual requests. A multilingual model, such as Nova-3 Multilingual (`model=nova-3`, `language=multi`) or Nova-3 Medical multilingual (`model=nova-3-medical`, `language=multi`), formats numerals only in the languages listed above. It leaves numbers as words in every other language it transcribes, including Hindi.
 
 ### Flux support
 
 Numerals are supported on both Flux models:
 
 * **Flux English** (`model=flux-general-en`) — full numeral formatting.
-* **Flux Multilingual** (`model=flux-general-multi`) — numeral formatting for English, Spanish, French, German, Russian, Portuguese, Italian, and Dutch. Numeral formatting is not currently supported for Hindi or Japanese.
+* **Flux Multilingual** (`model=flux-general-multi`) — numeral formatting for English, Spanish, French, German, Russian, Portuguese, Italian, Dutch, and Japanese. Hindi isn't supported.
 
 On Flux STT, set the initial value with the `numerals` query parameter when you open the connection. To change it mid-stream, send a [`Configure`](/docs/flux/configure) message.
 

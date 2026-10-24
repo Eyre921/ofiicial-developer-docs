@@ -2728,6 +2728,48 @@ This page is generated from the [CHANGELOG.md on GitHub](https://github.com/anth
 
 Run `claude --version` to check your installed version.
 
+**2.1.310**
+
+October 23, 2026
+
+**Added**
+
+* Added the Monitor tool and plugin monitors on Bedrock, Vertex, and Foundry, and when telemetry or nonessential traffic is disabled; long foreground sleeps are now blocked there too
+* \[Cloud sessions] Added Claude Code cloud sessions and Remote Control permissions to Enterprise custom roles, so Owners can control access to each by role
+* \[Cloud sessions] Added a Choose file button to load a cloud environment's setup script from a file
+
+**Changed**
+
+* Changed the error for an MCP tool call that times out in a non-interactive session while the server's elicitation is unanswered: it now tells Claude that no answer came and not to repeat the call
+* \[Cloud sessions] Changed turning on Cloud sessions or Remote Control in admin settings to ask for confirmation and list the custom roles that have that permission
+* \[Cloud sessions] Changed the cloud environment dialog to open network access, setup script and environment variables from rows instead of listing every editor at once
+
+**6 improvements**
+
+* Improved auto mode's prompt before the first read outside the working directories: it now says when blocking those reads makes shell commands ask for permission
+* Improved memory use of non-interactive sessions (`-p`, Agent SDK) during compaction when the transcript file is very large
+* Improved a mod's `Image` to draw inside tmux with `allow-passthrough` and `focus-events` on, in kitty, Ghostty, and iTerm2 3.5+ with fullscreen rendering, where it showed only its `alt` text
+* Linux: Improved `/sandbox` and the sandbox startup warning to name Ubuntu's AppArmor restriction on user namespaces, and how to lift it, when it keeps bubblewrap from starting the sandbox
+* \[Cloud sessions] Improved the session start checklist to show a cloud environment's setup script output in a scrolling box
+* \[Code Review] Improved the Code Review admin section to retry the first load and show one Try again banner when it still fails
+
+**14 bug fixes**
+
+* Fixed requests failing behind some gateways and compatible servers that reject the `effort-2025-11-24` beta value or mid-conversation system messages; Claude Code now retries without them
+* Fixed background cleanup deleting some recent files, such as pasted images, when `cleanupPeriodDays` is set to a very large value
+* Fixed compaction after a "Prompt is too long" error keeping too much of a conversation with dense text, such as base64 or SVG, so the next request could fail again
+* Fixed file read permission prompts not showing where a symbolic link leads
+* Fixed a question's auto-continue timeout firing the moment the external editor closed after a long edit
+* Windows: Fixed PreToolUse and PermissionRequest hooks letting a tool call through when Git Bash is missing and the hook's command is only quoted strings, such as a quoted path
+* \[VSCode] Fixed pressing Enter on the plan review card's "Send feedback and keep planning" button approving the plan instead of sending your comments back
+* \[VSCode] Fixed the panel showing "Something went wrong" after "Switch branch & continue" on a cloud session opened from Session history's Web tab
+* \[Cloud sessions] Fixed failed saves and archives in the cloud environment edit dialog showing no error inside the dialog
+* \[Cloud sessions] Fixed failed routine API token actions showing only a toast; the error now appears in the routine edit dialog
+* \[Claude Tag] Fixed Claude Tag treating `!` commands such as `!restart` and `!help` as ordinary messages when sent in bold, italic or strikethrough
+* \[Claude Tag] Fixed Claude Tag admin channel and workspace pages being replaced by a load error when a background refresh of the bundle list fails
+* \[Claude Tag] Fixed Claude Tag's spend limits page in admin settings reporting that no channels match a filter while channel names are still loading
+* \[Code Review] Fixed the Code Review admin section hiding its repositories and switches after a failed refresh of the repository list
+
 **2.1.309**
 
 October 22, 2026
@@ -20273,9 +20315,20 @@ Find the environment's entry in the [environment selector](#start-a-session):
 * **Edit or delete**: hover over the entry and click the gear icon. To delete a local or SSH environment, click **Delete environment** in **Edit environment**.
 * **Archive cloud environments**: see [Archive an environment](/docs/en/cloud-environments#archive-an-environment).
 
-### Local sessions
+### Environment variables in local sessions
 
-The desktop app does not always inherit your full shell environment. On macOS, when you launch the app from the Dock or Finder, it reads your shell profile, such as `~/.zshrc` or `~/.bashrc`, to give Claude Code `PATH` and a fixed set of Claude Code variables, but not other variables you export there. On Windows, the app inherits user and system environment variables but does not read PowerShell profiles.
+To set an environment variable for a local session, [add it to a saved local environment](#set-environment-variables-for-local-sessions), then start a new session from that environment.
+
+Variables such as `PATH` and `CLAUDE_CONFIG_DIR` have their own instructions:
+
+| Variable | What to do instead |
+| :- | :- |
+| `PATH`, the folders your system searches for programs such as `npm` | See [Session not finding installed tools](#session-not-finding-installed-tools). On Windows, Desktop doesn't read PowerShell profiles, so set `PATH` in your user or system environment variables, then quit and reopen Desktop. |
+| A variable for an MCP server from [`claude_desktop_config.json`](#mcp-servers-from-the-claude-desktop-chat-app) | Quit Desktop, set it in that server's `env` block, then reopen Desktop |
+| [`CLAUDE_CONFIG_DIR`](/docs/en/env-vars#variables) or [`CLAUDE_CODE_TMPDIR`](/docs/en/env-vars#variables) | Set it in [one of the places you'd set a variable for dev servers](#set-environment-variables-for-dev-servers), then quit and reopen Desktop |
+| `API_TIMEOUT_MS`, `ANTHROPIC_BASE_URL`, or another variable Desktop sets itself | See [Environment variables Desktop sets itself](#environment-variables-desktop-sets-itself) |
+
+On macOS or Linux, if you already set your variable with `export` in `~/.zshrc` or `~/.bashrc`, see [Exported variable missing or wrong in commands Claude runs](#exported-variable-missing-or-wrong-in-commands-claude-runs).
 
 #### Set environment variables for local sessions
 
@@ -20285,9 +20338,10 @@ Add the variables to a saved local environment and start your sessions from it. 
 >
 > If your environment selector is above the prompt box, you have the [earlier layout](#check-which-layout-you-have), which has no saved local environments. Use the [local environment editor](#use-the-local-environment-editor) instead.
 
-**1. Open the environment's form**
+**1. Open a local environment's form**
 
-Open [**New environment**](#create-a-saved-environment) or [**Edit environment**](#use-edit-or-remove-a-saved-environment).
+* **To create a saved local environment**: select [**New environment**](#create-a-saved-environment) at the bottom of the environment selector's menu, then the **Local** tab
+* **To change one you already have**: in the environment selector, hover over a saved environment under **Local** and click the gear icon to open [**Edit environment**](#use-edit-or-remove-a-saved-environment)
 
 **2. Enter the variables**
 
@@ -20320,6 +20374,28 @@ To open the local environment editor, click the gear icon on the entry for your 
 
 Enter one `KEY=value` per line and select **Save changes**. Variables you save here are stored encrypted on your machine. Local sessions get them, except any variable that [Desktop sets itself](#environment-variables-desktop-sets-itself), such as `API_TIMEOUT_MS`. Restart Desktop to give your variables to dev servers.
 
+#### Exported variable missing or wrong in commands Claude runs
+
+If a command Claude runs on macOS or Linux doesn't get a variable you set with `export` in `~/.zshrc` or `~/.bashrc`, or gets the wrong value, try these in order:
+
+**1. Start a new session**
+
+Ask Claude to run the command again.
+
+**2. Quit and reopen Desktop**
+
+Then start a new session.
+
+**3. Check your saved variables**
+
+If a command gets the wrong value, check whether you also set the variable in a [saved environment](#use-edit-or-remove-a-saved-environment) or the [local environment editor](#use-the-local-environment-editor). If so, change the value there and start a new session.
+
+**4. Use a saved environment**
+
+Add the variable to a [saved local environment](#set-environment-variables-for-local-sessions), then start a new session from that environment. For a variable such as `PATH` or `CLAUDE_CONFIG_DIR`, follow [its own instructions](#environment-variables-in-local-sessions) instead.
+
+Before v2.1.304, Claude Code doesn't pass exported variables to commands, so [check which version the session runs](#claude-code-version-in-the-code-tab).
+
 #### Environment variables Desktop sets itself
 
 If you set `API_TIMEOUT_MS` or `ANTHROPIC_BASE_URL` and nothing changed in your local sessions, it's because Desktop sets those [variables](/docs/en/env-vars#variables), among others, itself. A local session gets Desktop's value whether you set yours in your shell profile, your Windows user or system variables, the local environment editor, or a saved environment. Moving yours to a settings file doesn't help, because Claude Code [ignores that value](/docs/en/settings-reference#how-env-values-interact-with-your-shell) in a local session.
@@ -20337,7 +20413,7 @@ On Opus 5, also select effort `high` or lower before you start the session. In t
 
 On models with [adaptive reasoning](/docs/en/model-config#adjust-effort-level), Claude Code ignores the number itself in a positive `MAX_THINKING_TOKENS` value because adaptive reasoning controls thinking depth instead. On Opus 4.6 and Sonnet 4.6, set `CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING` to `1` to use a fixed thinking budget; Fable models, Sonnet 5 and later, Haiku 5.5, and Opus 4.7 and later always use adaptive reasoning and have no fixed-budget mode.
 
-#### Local sessions on managed devices
+### Local sessions on managed devices
 
 If the entry for your computer is grayed out in the environment selector, with the tooltip **Disabled by your organization**, your administrator has [turned off local sessions](#managed-settings). On Windows the [WSL](/docs/en/desktop-wsl) entry, whose availability on managed devices is [governed separately](/docs/en/admin-setup#wsl-sessions-in-claude-code-desktop), is grayed out the same way.
 

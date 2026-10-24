@@ -14,13 +14,16 @@ In general, most people won't reach these limits, but there are a few limitation
 * Each chapter can have up to 400 paragraphs
 * Each paragraph can have a maximum of 5000 characters
 
-Additionally, each subscription plan includes a limit on the total number of projects you can have. If you exceed this limit prior to downgrading or canceling your plan, you will retain access to your existing projects. However, you will not be able to create new projects until the total number falls within the limits of your current plan.\
-**\
-Project Limits by Plan:**
+## Project limits by plan
 
-* **Free:** 5 projects
-* **Starter:** 20 projects
-* **Creator:** 1,000 projects
-* **Pro:** 3,000 projects
-* **Scale:** 20,000 projects
-* **Business:** 20,000 projects
+Each subscription plan includes a limit on the total number of projects you can have. If you exceed this limit before downgrading or canceling your plan, you keep access to your existing projects. You cannot create new projects until the total falls within the limit of your current plan.
+
+| Plan       | Maximum projects |
+| ---------- | ---------------- |
+| Free       | 500              |
+| Starter    | 750              |
+| Creator    | 1,000            |
+| Pro        | 3,000            |
+| Scale      | 20,000           |
+| Business   | 20,000           |
+| Enterprise | Unlimited        |

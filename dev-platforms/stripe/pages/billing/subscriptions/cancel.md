@@ -6,7 +6,7 @@ path: billing/subscriptions/cancel
 
 # Cancel subscriptions
 
-Learn how to cancel existing subscriptions.
+Cancel subscriptions immediately, at the end of a billing period, or on a custom date, and control prorations and final invoices.
 
 Customers can also manage their subscriptions, invoices, and billing information through the Stripe-hosted [customer portal cancellation page](https://docs.stripe.com/customer-management/cancellation-page.md).
 
@@ -20,14 +20,14 @@ If you want to keep a subscription active but temporarily stop collecting paymen
 
 You can cancel customer subscriptions manually with the [Cancel a Subscription method](https://docs.stripe.com/api/subscriptions/cancel.md) or in the [Dashboard](https://dashboard.stripe.com/test/subscriptions). By default, cancellation takes effect immediately and *invoices* (Invoices are statements of amounts owed by a customer. They track the status of payments from draft through paid or otherwise finalized. Subscriptions automatically generate invoices, or you can manually create a one-off invoice) are no longer generated for canceled subscriptions. After it’s canceled, you can no longer update the subscription except for its [metadata](https://docs.stripe.com/metadata.md) and `cancellation_details`.
 
-> If you set a custom cancellation date, you can’t provide a refund. You can also only prevent the credit proration from generating if the `cancel_at` date is within the current billing period. If you cancel the subscription for a date outside the current period, you can’t disable the proration.
+> If you set a custom cancel date, you can’t provide a refund. You can also only prevent the credit proration from generating if the `cancel_at` date is within the current billing period. If you cancel the subscription for a date outside the current period, you can’t disable the proration.
 
 #### Dashboard
 
 To cancel a subscription in the Dashboard:
 
 1. On the [Subscriptions](https://dashboard.stripe.com/subscriptions) page, find the applicable subscription, click the overflow menu (⋯), and select **Cancel subscription**.
-2. Choose when to end the subscription: immediately, at the end of the period, or on a custom day.
+2. Choose when to end the subscription: immediately, at the end of the period, or on a custom date.
 3. Choose to provide a refund for a [prorated](https://docs.stripe.com/billing/subscriptions/prorations.md) amount, refund the last payment in full, or provide no [refund](https://docs.stripe.com/refunds.md).
 4. After finalizing all settings, click **Cancel subscription**.
 
@@ -42,7 +42,7 @@ curl -X DELETE https://api.stripe.com/v1/subscriptions/{{SUBSCRIPTION_ID}} \
 
 ### Prorate for usage-based billing
 
-If a subscription is part of the way through a paid billing period, you can prorate the cancellation by passing the [prorate](https://docs.stripe.com/api/subscriptions/cancel.md#cancel_subscription-prorate) parameter.
+If a subscription is partway through a paid billing period, you can prorate the cancellation by passing the [prorate](https://docs.stripe.com/api/subscriptions/cancel.md#cancel_subscription-prorate) parameter.
 
 When you prorate a cancellation, you can optionally invoice for:
 
@@ -67,9 +67,9 @@ This allows the subscription to complete the duration of time the customer has a
 
 ### Cancel after scheduled changes or future billing periods 
 
-To schedule a subscription to end after a specified number of billing periods, [create a subscription schedule](https://docs.stripe.com/billing/subscriptions/subscription-schedules.md). Set the schedule length by specifying one or more phases and intervals, and set its [end_behavior](https://docs.stripe.com/api/subscription_schedules/create.md#create_subscription_schedule-end_behavior) attribute to `cancel`.
+To schedule a subscription to end after a specified number of billing periods, [create a subscription schedule](https://docs.stripe.com/billing/subscriptions/subscription-schedules.md). Set the schedule length by specifying one or more phases and intervals, and set its [end_behavior](https://docs.stripe.com/api/subscription_schedules/create.md#create_subscription_schedule-end_behavior) parameter to `cancel`.
 
-With an end behavior of `cancel`, subscription schedules automatically manage the subscription’s [cancel_at](https://docs.stripe.com/billing/subscriptions/cancel.md#custom-cancel-date) attribute. When the schedule is in its last phase, the subscription’s cancel date is set to the phase’s end date, otherwise, the cancel date isn’t set on the subscription.
+With an end behavior of `cancel`, subscription schedules automatically manage the subscription’s [cancel_at](https://docs.stripe.com/billing/subscriptions/cancel.md#custom-cancel-date) attribute. When the schedule is in its last phase, the subscription’s cancel date is set to the phase’s end date. Otherwise, the cancel date isn’t set on the subscription.
 
 As a result, adding a new phase to a schedule that’s currently in its last phase removes the cancel date. If the subscription is in its last billing period when extending or removing the cancel date, this might update the period end and billing cycle anchor. See how to [set a custom cancel date](https://docs.stripe.com/billing/subscriptions/cancel.md#custom-cancel-date) for more details.
 
@@ -77,15 +77,15 @@ As a result, adding a new phase to a schedule that’s currently in its last pha
 
 > #### Limited support
 > 
-> This feature is only supported for disputed credit and debit card payments opened in the *full amount*. The delay for any automatic cancellation isn’t compatible with [test clocks](https://docs.stripe.com/billing/testing.md#simulate-subscriptions).
+> This feature supports only credit and debit card payments disputed for the full amount. Automatic cancellation after a dispute doesn’t work with [test clocks](https://docs.stripe.com/billing/testing.md#simulate-subscriptions).
 
 When a customer [disputes](https://docs.stripe.com/disputes.md) a charge for a subscription, the subscription continues to cycle, which can create more disputed charges. You can change this behavior in the [Dashboard](https://dashboard.stripe.com/settings/billing/automatic) to cancel subscriptions instead. Changes to the subscription take effect after approximately one hour.
 
 Under [Manage disputed payments](https://dashboard.stripe.com/settings/billing/automatic), select one of the following:
 
-- **cancel the subscription immediately without prorating** – The subscription cancels immediately without any prorating. You can’t restart a canceled subscription. You must create a new subscription for the customer if you want to continue billing them.
+- **Cancel the subscription immediately without prorating**: The subscription cancels immediately without any prorating. You can’t restart a canceled subscription. You must create a new subscription for the customer if you want to continue billing them.
 
-- **cancel the subscription at the end of the period** – The subscription cancels at the end of the current billing period and [cancel_at_period_end](https://docs.stripe.com/api/subscriptions/object.md#subscription_object-cancel_at_period_end) is set to `true`. This allows you time to work through the dispute process before the cancellation occurs.
+- **Cancel the subscription at the end of the period**: The subscription cancels at the end of the current billing period and [cancel_at_period_end](https://docs.stripe.com/api/subscriptions/object.md#subscription_object-cancel_at_period_end) is set to `true`. This allows you time to work through the dispute process before the cancellation occurs.
 
 For subscriptions managed with [schedules](https://docs.stripe.com/billing/subscriptions/subscription-schedules.md), the subscription is first released from the schedule and then canceled. This means the rest of the scheduled changes won’t take effect.
 
@@ -165,17 +165,15 @@ If you schedule a cancel date that occurs more than one period away, the subscri
 
 For example, your customer subscribes to a 120 USD per year licensed subscription that renews on January 1, 2024. They set the subscription to cancel on July 1, 2024. The final invoice subtotal on January 1 calculates as 60 USD and the `items.current_period_end` is July 1.
 
-Changing, adding, or removing a scheduled cancel date within the current period updates the `items.current_period_end` and creates prorations. In the above example, on February 15 you update the cancel date to October 1. The current period end becomes October 1, and Stripe creates prorations for 30 USD for the additional quarter. To invoice the prorated items immediately instead of in a final invoice on October 1, pass a [proration_behavior](https://docs.stripe.com/api/subscriptions/update.md#update_subscription-proration_behavior) of `always_invoice` in the update, or separately [create a one-off invoice](https://docs.stripe.com/billing/invoices/subscription.md#generating-invoices).
+Changing, adding, or removing a scheduled cancel date within the current period updates the `items.current_period_end` and creates prorations. In the previous example, on February 15 you update the cancel date to October 1. The current period end becomes October 1, and Stripe creates prorations for 30 USD for the additional quarter. To invoice the prorated items immediately instead of in a final invoice on October 1, pass a [proration_behavior](https://docs.stripe.com/api/subscriptions/update.md#update_subscription-proration_behavior) of `always_invoice` in the update, or separately [create a one-off invoice](https://docs.stripe.com/billing/invoices/subscription.md#generating-invoices).
 
 ## Cancellation with billing cycle anchor
 
 The subscription’s [billing cycle anchor](https://docs.stripe.com/api/subscriptions/object.md#subscription_object-billing_cycle_anchor) property might change if it tracked the previous cancel date. During the first period, Stripe preserves any anchor you [originally set](https://docs.stripe.com/billing/subscriptions/billing-cycle.md#new-subscriptions) on the subscription. When the first period finishes, or if you didn’t provide a custom anchor when creating the subscription, the anchor resets to the [current period start](https://docs.stripe.com/api/subscription_items/object.md#subscription_item_object-current_period_start). This reset behavior for the billing cycle anchor is only guaranteed for subscriptions created after June 2024. Subscriptions created before this date might exhibit the legacy behavior where the [billing cycle anchor](https://docs.stripe.com/api/subscriptions/object.md#subscription_object-billing_cycle_anchor) property remains unchanged after cancellation removal or extension.
 
-Adding a cancel date or moving an existing one closer to the current time shortens the [billing cycle anchor](https://docs.stripe.com/api/subscriptions/object.md#subscription_object-billing_cycle_anchor) to match the new cancel date. In the above example, on February 15 you update the cancel date to April 1. The period end and billing anchor become April 1, and Stripe creates prorations for -30 USD to credit your customer for unused time for April 1 to July 1.
+Adding a cancel date or moving an existing one earlier sets the [billing cycle anchor](https://docs.stripe.com/api/subscriptions/object.md#subscription_object-billing_cycle_anchor) to the new cancel date. In the example in [Set a custom cancel date](https://docs.stripe.com/billing/subscriptions/cancel.md#custom-cancel-date), on February 15 you update the cancel date to April 1. The period end and billing anchor become April 1, and Stripe creates prorations for -30 USD to credit your customer for unused time from April 1 to July 1.
 
 ## See also
 
 - [Use trial periods](https://docs.stripe.com/billing/subscriptions/trials.md)
-- [Update subscription](https://docs.stripe.com/api.md#update_subscription)
-- [Cancel subscription](https://docs.stripe.com/api.md#cancel_subscription)
 

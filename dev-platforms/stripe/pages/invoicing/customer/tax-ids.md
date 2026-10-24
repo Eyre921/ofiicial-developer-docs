@@ -94,7 +94,7 @@ Currently, Stripe supports the following Tax ID types in the following regions:
 | HR | hr_oib | Croatian Personal Identification Number | 12345678901 | No |
 | HU | eu_vat | European VAT number | HU12345678 | Yes |
 | HU | hu_tin | Hungary tax number (adószám) | 12345678-1-23 | No |
-| IC | ic_nif | Canary Islands NIF number (Número de Identificación Fiscal) | A12345678 | No |
+| IC | ic_nif | Canary Islands NIF number (Número de Identificación Fiscal) | A12345678 | Yes |
 | ID | id_npwp | Indonesian NPWP number | 012.345.678.9-012.345 | No |
 | IE | eu_vat | European VAT number | IE1234567AB | Yes |
 | IL | il_vat | Israel VAT | 000012345 | No |
