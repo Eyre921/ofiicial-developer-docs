@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1397 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1398 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -48,6 +48,7 @@
 - `docs/api-reference/agents/versions/get` — [Get agent version metadata](pages/docs/api-reference/agents/versions/get.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/versions/get.md)
 - `docs/api-reference/analytics/get` — [Get live count](pages/docs/api-reference/analytics/get.md) · [原文](https://elevenlabs.io/docs/api-reference/analytics/get.md)
 - `docs/api-reference/analytics/workspace/requests` — [List API requests](pages/docs/api-reference/analytics/workspace/requests.md) · [原文](https://elevenlabs.io/docs/api-reference/analytics/workspace/requests.md)
+- `docs/api-reference/analytics/workspace/usage` — [Get workspace usage](pages/docs/api-reference/analytics/workspace/usage.md) · [原文](https://elevenlabs.io/docs/api-reference/analytics/workspace/usage.md)
 - `docs/api-reference/api-keys/disable` — [Disable API key](pages/docs/api-reference/api-keys/disable.md) · [原文](https://elevenlabs.io/docs/api-reference/api-keys/disable.md)
 - `docs/api-reference/api-keys/set-third-party-disabling-policy` — [Set workspace third-party disabling policy](pages/docs/api-reference/api-keys/set-third-party-disabling-policy.md) · [原文](https://elevenlabs.io/docs/api-reference/api-keys/set-third-party-disabling-policy.md)
 - `docs/api-reference/assets/create` — [Upload Asset](pages/docs/api-reference/assets/create.md) · [原文](https://elevenlabs.io/docs/api-reference/assets/create.md)

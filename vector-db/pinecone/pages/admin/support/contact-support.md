@@ -1,5 +1,5 @@
 ---
-title: "Get help"
+title: "Get help with Pinecone"
 source: https://docs.pinecone.io/admin/support/contact-support
 path: admin/support/contact-support
 ---

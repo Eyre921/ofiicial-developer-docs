@@ -198,51 +198,33 @@ Pinecone's filtering language supports the following operators:
 | `$gte` | Matches records or documents with metadata values that are greater than or equal to a specified value. Example:`{"year": {"$gte": 2020}}` | Number |
 | `$lt` | Matches records or documents with metadata values that are less than a specified value. Example: `{"year": {"$lt": 2020}}` | Number |
 | `$lte` | Matches records or documents with metadata values that are less than or equal to a specified value. Example: `{"year": {"$lte": 2020}}` | Number |
-| `$in` | Matches records or documents with metadata values that are in a specified array. Example: `{"genre": {"$in": ["comedy", "documentary"]}}` | String, number |
-| `$nin` | Matches records or documents with metadata values that aren't in a specified array. Example: `{"genre": {"$nin": ["comedy", "documentary"]}}` | String, number |
+| `$in` | Matches records or documents with metadata values that are in a specified array. The array can hold up to [10,000 values](/reference/api/database-limits/operation-limits#metadata-filter-limits). Example: `{"genre": {"$in": ["comedy", "documentary"]}}` | String, number |
+| `$nin` | Matches records or documents with metadata values that aren't in a specified array. The array can hold up to [10,000 values](/reference/api/database-limits/operation-limits#metadata-filter-limits). Example: `{"genre": {"$nin": ["comedy", "documentary"]}}` | String, number |
 | `$exists` | Matches records or documents with the specified metadata field. Example: `{"genre": {"$exists": true}}` | Number, string, boolean |
 | `$and` | Joins query clauses with a logical `AND`. Example: `{"$and": [{"genre": {"$eq": "drama"}}, {"year": {"$gte": 2020}}]}` | - |
 | `$or` | Joins query clauses with a logical `OR`. Example: `{"$or": [{"genre": {"$eq": "drama"}}, {"year": {"$gte": 2020}}]}` | - |
 | `$not` | Matches records or documents that don't match the wrapped clause. Example: `{"genre": {"$not": {"$eq": "drama"}}}` | - |
 
-> [!NOTE]
->
-> At the top level, list one or more fields (combined with implicit AND) or combine clauses with the logical operators `$and` and `$or`. Use `$not` to negate a clause, as shown in the table. A bare comparison operator (like `$gt`) can't appear at the top level; nest it under a field.
+At the top level, list one or more fields (combined with implicit AND) or combine clauses with the logical operators `$and` and `$or`. Use `$not` to negate a clause, as shown in the table. A bare comparison operator (like `$gt`) can't appear at the top level. Nest it under a field.
 
-> [!NOTE]
->
-> Each `$in` or `$nin` operator accepts a maximum of 10,000 values. Exceeding this limit will cause the request to fail. For more information, see [Metadata filter limits](/reference/api/database-limits/operation-limits#metadata-filter-limits).
-
-For example, the following has a `"genre"` metadata field with a list of strings:
-
-```JSON JSON theme={null}
-{ "genre": ["comedy", "documentary"] }
-```
-
-This means `"genre"` takes on both values, and requests with the following filters will match:
-
-```JSON JSON theme={null}
-{"genre":"comedy"}
-
-{"genre": {"$in":["documentary","action"]}}
-
-{"$and": [{"genre": "comedy"}, {"genre":"documentary"}]}
-```
-
-However, requests with the following filter will **not** match:
-
-```JSON JSON theme={null}
-{ "$and": [{ "genre": "comedy" }, { "genre": "drama" }] }
-```
-
-Additionally, requests with the following filters will **not** match because they're invalid. They will result in a compilation error:
+A metadata field can hold an array of strings, such as `{"genre": ["comedy", "documentary"]}`. A filter on that field matches when any value in the array satisfies it, so each of these filters matches:
 
 ```json JSON theme={null}
-# INVALID QUERY:
+{"genre": "comedy"}
+{"genre": {"$in": ["documentary", "action"]}}
+{"$and": [{"genre": "comedy"}, {"genre": "documentary"}]}
+```
+
+These filters don't match, because the array has no `"drama"` value and because `$ne` and `$nin` exclude an item when any of its values matches:
+
+```json JSON theme={null}
+{"$and": [{"genre": "comedy"}, {"genre": "drama"}]}
+{"genre": {"$ne": "comedy"}}
+```
+
+A filter value can't be an array. To match several values, use `$in`. These filters are invalid and return a `400` error:
+
+```json JSON theme={null}
 {"genre": ["comedy", "documentary"]}
-```
-
-```json JSON theme={null}
-# INVALID QUERY:
 {"genre": {"$eq": ["comedy", "documentary"]}}
 ```

@@ -1,5 +1,5 @@
 ---
-title: "Authentication"
+title: "Pinecone Nexus API authentication"
 source: https://docs.pinecone.io/reference/api/nexus/authentication
 path: reference/api/nexus/authentication
 ---

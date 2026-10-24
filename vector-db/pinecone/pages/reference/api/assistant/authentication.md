@@ -1,5 +1,5 @@
 ---
-title: "Authentication"
+title: "Pinecone Assistant API authentication"
 source: https://docs.pinecone.io/reference/api/assistant/authentication
 path: reference/api/assistant/authentication
 ---

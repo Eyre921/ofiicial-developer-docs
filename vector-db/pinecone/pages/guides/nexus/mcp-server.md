@@ -1,5 +1,5 @@
 ---
-title: "MCP server"
+title: "Pinecone Nexus MCP server"
 source: https://docs.pinecone.io/guides/nexus/mcp-server
 path: guides/nexus/mcp-server
 ---

@@ -4,19 +4,298 @@ source: https://docs.pinecone.io/guides/search/filter-by-metadata
 path: guides/search/filter-by-metadata
 ---
 
-Narrow Pinecone search results by adding metadata filter expressions to your query, using operators like $eq, $in, $gt, and $and for precise retrieval.
+Narrow Pinecone search results with metadata filter expressions such as $eq, $in, $gt, and $and, and with text-match filters on document indexes.
 
-Every [record](/guides/core-concepts/key-terms#record) in an index must contain an ID and a dense or sparse vector. In addition, you can include [metadata key-value pairs](/guides/index-data/indexing-overview#metadata) to store related information or context. When you search the index, you can then include a metadata filter to limit the search to records matching the filter expression. Metadata filtering works the same way on [indexes with a document schema](/guides/index-data/data-modeling#documents), which also support [text-match filters](#text-match-filters) on full-text fields.
+[Documents](/guides/core-concepts/key-terms#document) and [records](/guides/core-concepts/key-terms#record) can carry [metadata](/guides/index-data/indexing-overview#metadata), key-value pairs that store related information. When you search, add a metadata filter to limit results to the documents or records that match it. Document indexes also support [text-match filters](#text-match-filters) on full-text fields.
 
 ## Search with a metadata filter
 
-The following code searches for the 3 records that are most semantically similar to a query and that have a `category` metadata field with the value `digestive system`.
+The following code searches for the 3 documents or records that are most semantically similar to a query and that have a `category` metadata field with the value `digestive system`.
 
-**Search with text**
+**Document index**
+
+On a document index with [integrated embedding](/guides/search/integrated-embedding), you search with query text, and Pinecone embeds it with the model declared on the field. This example assumes a `chunk_text` field declared with `embed`.
+
+```python Python theme={null}
+from pinecone import Pinecone
+
+pc = Pinecone(api_key="YOUR_API_KEY")
+
+# To get the unique host for an index,
+# see https://docs.pinecone.io/guides/manage-data/target-an-index
+index = pc.Index(host="INDEX_HOST")
+
+filtered_results = index.documents.search(
+    namespace="example-namespace",
+    top_k=3,
+    score_by=[
+        {"type": "embed", "fields": ["chunk_text"], "query": "Disease prevention"}
+    ],
+    filter={"category": {"$eq": "digestive system"}},
+    include_fields=["category", "chunk_text"],
+)
+
+print(filtered_results)
+```
+
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
+
+const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+
+// To get the unique host for an index,
+// see https://docs.pinecone.io/guides/manage-data/target-an-index
+const index = pc.index({ host: 'INDEX_HOST', namespace: 'example-namespace' });
+
+const response = await index.documents.search({
+  topK: 3,
+  scoreBy: [
+    { type: 'embed', fields: ['chunk_text'], query: 'Disease prevention' },
+  ],
+  filter: { category: { $eq: 'digestive system' } },
+  includeFields: ['category', 'chunk_text'],
+});
+
+console.log(response);
+```
+
+```go Go theme={null}
+package main
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"log"
+
+	"github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
+
+func prettifyStruct(obj interface{}) string {
+	bytes, _ := json.MarshalIndent(obj, "", "  ")
+	return string(bytes)
+}
+
+func main() {
+	ctx := context.Background()
+
+	pc, err := pinecone.NewClient(pinecone.NewClientParams{
+		ApiKey: "YOUR_API_KEY",
+	})
+	if err != nil {
+		log.Fatalf("Failed to create Client: %v", err)
+	}
+
+	// To get the unique host for an index,
+	// see https://docs.pinecone.io/guides/manage-data/target-an-index
+	idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST", Namespace: "example-namespace"})
+	if err != nil {
+		log.Fatalf("Failed to create IndexConnection for Host: %v", err)
+	}
+
+	query := "Disease prevention"
+	res, err := idxConnection.SearchDocuments(ctx, &pinecone.SearchDocumentsRequest{
+		TopK: 3,
+		ScoreBy: []pinecone.DocumentScoringMethod{
+			{Type: pinecone.DocumentScoringTypeEmbed, Fields: []string{"chunk_text"}, Query: &query},
+		},
+		Filter: map[string]interface{}{
+			"category": map[string]interface{}{"$eq": "digestive system"},
+		},
+		IncludeFields: []string{"category", "chunk_text"},
+	})
+	if err != nil {
+		log.Fatalf("Failed to search documents: %v", err)
+	}
+	fmt.Println(prettifyStruct(res))
+}
+```
+
+```bash curl theme={null}
+INDEX_HOST="INDEX_HOST"
+NAMESPACE="example-namespace"
+PINECONE_API_KEY="YOUR_API_KEY"
+
+curl "https://$INDEX_HOST/namespaces/$NAMESPACE/documents/search" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+    "top_k": 3,
+    "score_by": [
+      { "type": "embed", "fields": ["chunk_text"], "query": "Disease prevention" }
+    ],
+    "filter": { "category": { "$eq": "digestive system" } },
+    "include_fields": ["category", "chunk_text"]
+  }'
+```
+
+**Vector index**
+
+```Python Python theme={null}
+from pinecone.grpc import PineconeGRPC as Pinecone
+
+pc = Pinecone(api_key="YOUR_API_KEY")
+
+# To get the unique host for an index, 
+# see https://docs.pinecone.io/guides/manage-data/target-an-index
+index = pc.Index(host="INDEX_HOST")
+
+index.query(
+    namespace="example-namespace",
+    vector=[0.0236663818359375,-0.032989501953125, ..., -0.01041412353515625,0.0086669921875], 
+    top_k=3,
+    filter={
+        "category": {"$eq": "digestive system"}
+    },
+    include_metadata=True,
+    include_values=False
+)
+```
+
+```JavaScript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone'
+
+const pc = new Pinecone({ apiKey: "YOUR_API_KEY" })
+
+// To get the unique host for an index, 
+// see https://docs.pinecone.io/guides/manage-data/target-an-index
+const index = pc.index("INDEX_NAME", "INDEX_HOST")
+
+const queryResponse = await index.namespace('example-namespace').query({
+    vector: [0.0236663818359375,-0.032989501953125,...,-0.01041412353515625,0.0086669921875],
+    topK: 3,
+    filter: {
+        "category": { "$eq": "digestive system" }
+    },
+    includeValues: false,
+    includeMetadata: true,
+});
+```
+
+```java Java theme={null}
+import com.google.protobuf.Struct;
+import com.google.protobuf.Value;
+import io.pinecone.clients.Index;
+import io.pinecone.configs.PineconeConfig;
+import io.pinecone.configs.PineconeConnection;
+import io.pinecone.unsigned_indices_model.QueryResponseWithUnsignedIndices;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class QueryExample {
+    public static void main(String[] args) {
+        PineconeConfig config = new PineconeConfig("YOUR_API_KEY");
+        // To get the unique host for an index, 
+        // see https://docs.pinecone.io/guides/manage-data/target-an-index
+        config.setHost("INDEX_HOST");
+        PineconeConnection connection = new PineconeConnection(config);
+        Index index = new Index(config, connection, "INDEX_NAME");
+        List<Float> query = Arrays.asList(0.0236663818359375f, -0.032989501953125f, ..., -0.01041412353515625f, 0.0086669921875f);
+        Struct filter = Struct.newBuilder()
+                .putFields("category", Value.newBuilder()
+                        .setStructValue(Struct.newBuilder()
+                                .putFields("$eq", Value.newBuilder()
+                                        .setStringValue("digestive system")
+                                        .build()))
+                        .build())
+                .build();
+
+        QueryResponseWithUnsignedIndices queryResponse = index.query(3, query, null, null, null, "example-namespace", filter, false, true);
+        System.out.println(queryResponse);
+    }
+}
+```
+
+```go Go theme={null}
+package main
+
+import (
+    "context"
+    "encoding/json"
+    "fmt"
+    "log"
+
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+    "google.golang.org/protobuf/types/known/structpb"
+)
+
+func prettifyStruct(obj interface{}) string {
+	bytes, _ := json.MarshalIndent(obj, "", "  ")
+	return string(bytes)
+}
+
+func main() {
+    ctx := context.Background()
+
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
+
+    // To get the unique host for an index, 
+    // see https://docs.pinecone.io/guides/manage-data/target-an-index
+    idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST", Namespace: "example-namespace"})
+    if err != nil {
+        log.Fatalf("Failed to create IndexConnection for Host: %v", err)
+  	}
+
+    queryVector := []float32{0.0236663818359375,-0.032989501953125,...,-0.01041412353515625,0.0086669921875}
+
+    metadataMap := map[string]interface{}{
+        "category": map[string]interface{}{
+            "$eq": "digestive system",
+        },
+    }
+
+    metadataFilter, err := structpb.NewStruct(metadataMap)
+    if err != nil {
+        log.Fatalf("Failed to create metadata map: %v", err)
+    }
+
+    res, err := idxConnection.QueryByVectorValues(ctx, &pinecone.QueryByVectorValuesRequest{
+        Vector:          queryVector,
+        TopK:            3,
+        MetadataFilter: metadataFilter,
+        IncludeValues:   false,
+        IncludeMetadata: true,
+    })
+    if err != nil {
+        log.Fatalf("Error encountered when querying by vector: %v", err)
+    } else {
+        fmt.Printf(prettifyStruct(res))
+    }
+}
+```
+
+```bash curl theme={null}
+# To get the unique host for an index,
+# see https://docs.pinecone.io/guides/manage-data/target-an-index
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_HOST="INDEX_HOST"
+
+curl "https://$INDEX_HOST/query" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H 'Content-Type: application/json' \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+        "vector": [0.0236663818359375,-0.032989501953125,...,-0.01041412353515625,0.0086669921875],
+        "namespace": "example-namespace",
+        "topK": 3,
+        "filter": {"category": {"$eq": "digestive system"}},
+        "includeMetadata": true,
+        "includeValues": false
+    }'
+```
+
+**Legacy integrated index**
 
 > [!NOTE]
 >
-> Searching with text is supported only for [indexes with integrated embedding](/guides/index-data/indexing-overview#integrated-embedding).
+> This example uses the legacy Records API, which works only with [legacy integrated indexes](/guides/index-data/create-an-index#integrated-embedding-legacy) created with `create_index_for_model`. For new projects, use a document index with [integrated embedding](/guides/search/integrated-embedding) instead, which you can combine with full-text search on the same field.
 
 ```python Python theme={null}
 from pinecone import Pinecone
@@ -173,230 +452,52 @@ curl "https://$INDEX_HOST/records/namespaces/$NAMESPACE/search" \
      }'
 ```
 
-**Search with a vector**
-
-```Python Python theme={null}
-from pinecone.grpc import PineconeGRPC as Pinecone
-
-pc = Pinecone(api_key="YOUR_API_KEY")
-
-# To get the unique host for an index, 
-# see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
-
-index.query(
-    namespace="example-namespace",
-    vector=[0.0236663818359375,-0.032989501953125, ..., -0.01041412353515625,0.0086669921875], 
-    top_k=3,
-    filter={
-        "category": {"$eq": "digestive system"}
-    },
-    include_metadata=True,
-    include_values=False
-)
-```
-
-```JavaScript JavaScript theme={null}
-import { Pinecone } from '@pinecone-database/pinecone'
-
-const pc = new Pinecone({ apiKey: "YOUR_API_KEY" })
-
-// To get the unique host for an index, 
-// see https://docs.pinecone.io/guides/manage-data/target-an-index
-const index = pc.index("INDEX_NAME", "INDEX_HOST")
-
-const queryResponse = await index.namespace('example-namespace').query({
-    vector: [0.0236663818359375,-0.032989501953125,...,-0.01041412353515625,0.0086669921875],
-    topK: 3,
-    filter: {
-        "category": { "$eq": "digestive system" }
-    },
-    includeValues: false,
-    includeMetadata: true,
-});
-```
-
-```java Java theme={null}
-import com.google.protobuf.Struct;
-import com.google.protobuf.Value;
-import io.pinecone.clients.Index;
-import io.pinecone.configs.PineconeConfig;
-import io.pinecone.configs.PineconeConnection;
-import io.pinecone.unsigned_indices_model.QueryResponseWithUnsignedIndices;
-
-import java.util.Arrays;
-import java.util.List;
-
-public class QueryExample {
-    public static void main(String[] args) {
-        PineconeConfig config = new PineconeConfig("YOUR_API_KEY");
-        // To get the unique host for an index, 
-        // see https://docs.pinecone.io/guides/manage-data/target-an-index
-        config.setHost("INDEX_HOST");
-        PineconeConnection connection = new PineconeConnection(config);
-        Index index = new Index(connection, "INDEX_NAME");
-        List<Float> query = Arrays.asList(0.0236663818359375f, -0.032989501953125f, ..., -0.01041412353515625f, 0.0086669921875f);
-        Struct filter = Struct.newBuilder()
-                .putFields("category", Value.newBuilder()
-                        .setStructValue(Struct.newBuilder()
-                                .putFields("$eq", Value.newBuilder()
-                                        .setStringValue("digestive system")
-                                        .build()))
-                        .build())
-                .build();
-
-        QueryResponseWithUnsignedIndices queryResponse = index.query(1, query, null, null, null, "example-namespace", filter, false, true);
-        System.out.println(queryResponse);
-    }
-}
-```
-
-```go Go theme={null}
-package main
-
-import (
-    "context"
-    "encoding/json"
-    "fmt"
-    "log"
-
-    "github.com/pinecone-io/go-pinecone/v7/pinecone"
-)
-
-func prettifyStruct(obj interface{}) string {
-	bytes, _ := json.MarshalIndent(obj, "", "  ")
-	return string(bytes)
-}
-
-func main() {
-    ctx := context.Background()
-
-    pc, err := pinecone.NewClient(pinecone.NewClientParams{
-        ApiKey: "YOUR_API_KEY",
-    })
-    if err != nil {
-        log.Fatalf("Failed to create Client: %v", err)
-    }
-
-    // To get the unique host for an index, 
-    // see https://docs.pinecone.io/guides/manage-data/target-an-index
-    idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST", Namespace: "example-namespace"})
-    if err != nil {
-        log.Fatalf("Failed to create IndexConnection for Host: %v", err)
-  	}
-
-    queryVector := []float32{0.0236663818359375,-0.032989501953125,...,-0.01041412353515625,0.0086669921875}
-
-    metadataMap := map[string]interface{}{
-        "category": map[string]interface{}{
-            "$eq": "digestive system",
-        },
-    }
-
-    metadataFilter, err := structpb.NewStruct(metadataMap)
-    if err != nil {
-        log.Fatalf("Failed to create metadata map: %v", err)
-    }
-
-    res, err := idxConnection.QueryByVectorValues(ctx, &pinecone.QueryByVectorValuesRequest{
-        Vector:          queryVector,
-        TopK:            3,
-        MetadataFilter: metadataFilter,
-        IncludeValues:   false,
-        IncludeMetadata: true,
-    })
-    if err != nil {
-        log.Fatalf("Error encountered when querying by vector: %v", err)
-    } else {
-        fmt.Printf(prettifyStruct(res))
-    }
-}
-```
-
-```bash curl theme={null}
-# To get the unique host for an index,
-# see https://docs.pinecone.io/guides/manage-data/target-an-index
-PINECONE_API_KEY="YOUR_API_KEY"
-INDEX_HOST="INDEX_HOST"
-
-curl "https://$INDEX_HOST/query" \
-  -H "Api-Key: $PINECONE_API_KEY" \
-  -H 'Content-Type: application/json' \
-  -H "X-Pinecone-Api-Version: 2026-07" \
-  -d '{
-        "vector": [0.0236663818359375,-0.032989501953125,...,-0.01041412353515625,0.0086669921875],
-        "namespace": "example-namespace",
-        "topK": 3,
-        "filter": {"category": {"$eq": "digestive system"}},
-        "includeMetadata": true,
-        "includeValues": false
-    }'
-```
-
 ## Metadata filter expressions
 
 Pinecone's filtering language supports the following operators:
 
 | Operator | Function | Supported types |
 | :- | :- | :- |
-| `$eq` | Matches vectors with metadata values that are equal to a specified value. Example: `{"genre": {"$eq": "documentary"}}` | Number, string, boolean |
-| `$ne` | Matches vectors with metadata values that aren't equal to a specified value. Example: `{"genre": {"$ne": "drama"}}` | Number, string, boolean |
-| `$gt` | Matches vectors with metadata values that are greater than a specified value. Example: `{"year": {"$gt": 2019}}` | Number |
-| `$gte` | Matches vectors with metadata values that are greater than or equal to a specified value. Example:`{"year": {"$gte": 2020}}` | Number |
-| `$lt` | Matches vectors with metadata values that are less than a specified value. Example: `{"year": {"$lt": 2020}}` | Number |
-| `$lte` | Matches vectors with metadata values that are less than or equal to a specified value. Example: `{"year": {"$lte": 2020}}` | Number |
-| `$in` | Matches vectors with metadata values that are in a specified array. Example: `{"genre": {"$in": ["comedy", "documentary"]}}` | String, number |
-| `$nin` | Matches vectors with metadata values that aren't in a specified array. Example: `{"genre": {"$nin": ["comedy", "documentary"]}}` | String, number |
-| `$exists` | Matches vectors with the specified metadata field. Example: `{"genre": {"$exists": true}}` | Number, string, boolean |
+| `$eq` | Matches records or documents with metadata values that are equal to a specified value. Example: `{"genre": {"$eq": "documentary"}}` | Number, string, boolean |
+| `$ne` | Matches records or documents with metadata values that aren't equal to a specified value. Example: `{"genre": {"$ne": "drama"}}` | Number, string, boolean |
+| `$gt` | Matches records or documents with metadata values that are greater than a specified value. Example: `{"year": {"$gt": 2019}}` | Number |
+| `$gte` | Matches records or documents with metadata values that are greater than or equal to a specified value. Example:`{"year": {"$gte": 2020}}` | Number |
+| `$lt` | Matches records or documents with metadata values that are less than a specified value. Example: `{"year": {"$lt": 2020}}` | Number |
+| `$lte` | Matches records or documents with metadata values that are less than or equal to a specified value. Example: `{"year": {"$lte": 2020}}` | Number |
+| `$in` | Matches records or documents with metadata values that are in a specified array. The array can hold up to [10,000 values](/reference/api/database-limits/operation-limits#metadata-filter-limits). Example: `{"genre": {"$in": ["comedy", "documentary"]}}` | String, number |
+| `$nin` | Matches records or documents with metadata values that aren't in a specified array. The array can hold up to [10,000 values](/reference/api/database-limits/operation-limits#metadata-filter-limits). Example: `{"genre": {"$nin": ["comedy", "documentary"]}}` | String, number |
+| `$exists` | Matches records or documents with the specified metadata field. Example: `{"genre": {"$exists": true}}` | Number, string, boolean |
 | `$and` | Joins query clauses with a logical `AND`. Example: `{"$and": [{"genre": {"$eq": "drama"}}, {"year": {"$gte": 2020}}]}` | - |
 | `$or` | Joins query clauses with a logical `OR`. Example: `{"$or": [{"genre": {"$eq": "drama"}}, {"year": {"$gte": 2020}}]}` | - |
-| `$not` | Matches vectors that don't match the wrapped clause. Example: `{"genre": {"$not": {"$eq": "drama"}}}` | - |
+| `$not` | Matches records or documents that don't match the wrapped clause. Example: `{"genre": {"$not": {"$eq": "drama"}}}` | - |
 
-> [!NOTE]
->
-> At the top level, list one or more fields (combined with implicit AND) or combine clauses with the logical operators `$and` and `$or`. Use `$not` to negate a clause, as shown in the table. A bare comparison operator (like `$gt`) can't appear at the top level; nest it under a field.
+At the top level, list one or more fields (combined with implicit AND) or combine clauses with the logical operators `$and` and `$or`. Use `$not` to negate a clause, as shown in the table. A bare comparison operator (like `$gt`) can't appear at the top level. Nest it under a field.
 
-> [!NOTE]
->
-> Each `$in` or `$nin` operator accepts a maximum of 10,000 values. Exceeding this limit will cause the request to fail. For more information, see [Metadata filter limits](/reference/api/database-limits/operation-limits#metadata-filter-limits).
-
-For example, the following has a `"genre"` metadata field with a list of strings:
-
-```JSON JSON theme={null}
-{ "genre": ["comedy", "documentary"] }
-```
-
-This means `"genre"` takes on both values, and requests with the following filters will match:
-
-```JSON JSON theme={null}
-{"genre":"comedy"}
-
-{"genre": {"$in":["documentary","action"]}}
-
-{"$and": [{"genre": "comedy"}, {"genre":"documentary"}]}
-```
-
-However, requests with the following filter will **not** match:
-
-```JSON JSON theme={null}
-{ "$and": [{ "genre": "comedy" }, { "genre": "drama" }] }
-```
-
-Additionally, requests with the following filters will **not** match because they're invalid. They will result in a compilation error:
+A metadata field can hold an array of strings, such as `{"genre": ["comedy", "documentary"]}`. A filter on that field matches when any value in the array satisfies it, so each of these filters matches:
 
 ```json JSON theme={null}
-# INVALID QUERY:
+{"genre": "comedy"}
+{"genre": {"$in": ["documentary", "action"]}}
+{"$and": [{"genre": "comedy"}, {"genre": "documentary"}]}
+```
+
+These filters don't match, because the array has no `"drama"` value and because `$ne` and `$nin` exclude an item when any of its values matches:
+
+```json JSON theme={null}
+{"$and": [{"genre": "comedy"}, {"genre": "drama"}]}
+{"genre": {"$ne": "comedy"}}
+```
+
+A filter value can't be an array. To match several values, use `$in`. These filters are invalid and return a `400` error:
+
+```json JSON theme={null}
 {"genre": ["comedy", "documentary"]}
-```
-
-```json JSON theme={null}
-# INVALID QUERY:
 {"genre": {"$eq": ["comedy", "documentary"]}}
 ```
 
 ## Text-match filters
 
-On [indexes with a document schema](/guides/index-data/data-modeling#documents), three additional operators match text on `string` fields that have `full_text_search` enabled. They narrow the candidate set before scoring, the same way metadata operators do.
+On a [document index](/guides/index-data/data-modeling#documents), three more operators match text in `string` fields that have `full_text_search` enabled. Like metadata operators, they narrow the candidates before scoring.
 
 | Operator | Example | Description |
 | - | - | - |
@@ -404,12 +505,9 @@ On [indexes with a document schema](/guides/index-data/data-modeling#documents),
 | `$match_all` | `{"body": {"$match_all": "machine learning"}}` | All tokens present, in any order. |
 | `$match_any` | `{"body": {"$match_any": "AI robotics"}}` | At least one token present. |
 
-These operators share a few rules:
+Text-match operators use the field's tokenizer and stemmer, so a token that matches in BM25 scoring also matches in a filter. Filter values are literal text. Lucene syntax such as phrase slop (`"phrase"~N`), term boosting (`^N`), and phrase prefix (`"phrase pre"*`) isn't parsed. To use it, score with `query_string` instead.
 
-* **Where they apply.** Fields declared with a `full_text_search` config object.
-* **Tokenization.** They reuse the field's configured tokenizer and stemmer, so a token that matches in BM25 scoring will match in a text-match filter.
-* **Lucene-style operators.** Phrase slop (`"phrase"~N`), term boosting (`^N`), and phrase prefix (`"phrase pre"*`) aren't parsed. Values are literal text and match semantics come from the operator name. To use those operators, score with `query_string` instead.
-* **Composition.** They compose freely with metadata operators under `$and`, `$or`, and `$not` at any nesting level:
+You can combine text-match operators with metadata operators under `$and`, `$or`, and `$not`, at any nesting level:
 
 ```json theme={null}
 {
@@ -423,4 +521,4 @@ These operators share a few rules:
 
 > [!WARNING]
 >
-> Text-match operators (`$match_phrase`, `$match_all`, `$match_any`) are supported on `documents/search` and on [`documents/fetch`](/guides/manage-data/fetch-data#fetch-documents). A filtered [`documents/update`](/guides/manage-data/update-data#update-documents) or [`documents/delete`](/guides/manage-data/delete-data#delete-documents) rejects them with a `400` and takes plain metadata filters only. To update or delete by text match, search or fetch to retrieve the matching IDs first, then act on those IDs.
+> Text-match operators work on `documents/search` and [`documents/fetch`](/guides/manage-data/fetch-data#fetch-documents). A filtered [`documents/update`](/guides/manage-data/update-data#update-documents) or [`documents/delete`](/guides/manage-data/delete-data#delete-documents) rejects them with a `400`. To update or delete by text match, first search or fetch to get the matching IDs, then update or delete by ID.

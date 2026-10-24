@@ -1,5 +1,5 @@
 ---
-title: "Errors"
+title: "Pinecone API errors"
 source: https://docs.pinecone.io/reference/api/errors
 path: reference/api/errors
 ---
