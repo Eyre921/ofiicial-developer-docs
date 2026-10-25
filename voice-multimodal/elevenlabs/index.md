@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1398 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1396 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -1352,7 +1352,6 @@
 - `docs/overview/capabilities/private-deployment` — [Private deployments](pages/docs/overview/capabilities/private-deployment.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/private-deployment.md)
 - `docs/overview/capabilities/sound-effects` — [Sound effects](pages/docs/overview/capabilities/sound-effects.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/sound-effects.md)
 - `docs/overview/capabilities/speech-engine` — [Speech Engine](pages/docs/overview/capabilities/speech-engine.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/speech-engine.md)
-- `docs/overview/capabilities/speech-to-text` — [Transcription](pages/docs/overview/capabilities/speech-to-text.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/speech-to-text.md)
 - `docs/overview/capabilities/text-to-dialogue` — [Text to Dialogue](pages/docs/overview/capabilities/text-to-dialogue.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/text-to-dialogue.md)
 - `docs/overview/capabilities/text-to-speech` — [Text to Speech](pages/docs/overview/capabilities/text-to-speech.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/text-to-speech.md)
 - `docs/overview/capabilities/text-to-speech/best-practices` — [Best practices](pages/docs/overview/capabilities/text-to-speech/best-practices.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/text-to-speech/best-practices.md)
@@ -1362,7 +1361,6 @@
 - `docs/overview/capabilities/voice-remixing` — [Voice remixing](pages/docs/overview/capabilities/voice-remixing.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/voice-remixing.md)
 - `docs/overview/capabilities/voices` — [Voices](pages/docs/overview/capabilities/voices.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/voices.md)
 - `docs/overview/intro` — [ElevenLabs Documentation](pages/docs/overview/intro.md) · [原文](https://elevenlabs.io/docs/overview/intro.md)
-- `docs/overview/models` — [Models](pages/docs/overview/models.md) · [原文](https://elevenlabs.io/docs/overview/models.md)
 - `docs/reception-ai/billing/plans-and-pricing` — [Plans and pricing](pages/docs/reception-ai/billing/plans-and-pricing.md) · [原文](https://elevenlabs.io/docs/reception-ai/billing/plans-and-pricing.md)
 - `docs/reception-ai/billing/referral-program` — [Referral program](pages/docs/reception-ai/billing/referral-program.md) · [原文](https://elevenlabs.io/docs/reception-ai/billing/referral-program.md)
 - `docs/reception-ai/billing/usage-and-limits` — [Usage and limits](pages/docs/reception-ai/billing/usage-and-limits.md) · [原文](https://elevenlabs.io/docs/reception-ai/billing/usage-and-limits.md)
