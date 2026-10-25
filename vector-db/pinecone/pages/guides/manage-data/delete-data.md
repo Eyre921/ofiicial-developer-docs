@@ -161,7 +161,7 @@ public class DeleteExample {
         // see https://docs.pinecone.io/guides/manage-data/target-an-index
         config.setHost("INDEX_HOST");
         PineconeConnection connection = new PineconeConnection(config);
-        Index index = new Index(connection, "INDEX_NAME");
+        Index index = new Index(config, connection, "INDEX_NAME");
         List<String> ids = Arrays.asList("id-1", "id-2");
         index.deleteByIds(ids, "example-namespace");
     }
@@ -282,7 +282,7 @@ public class DeleteExample {
         // see https://docs.pinecone.io/guides/manage-data/target-an-index
         config.setHost("INDEX_HOST");
         PineconeConnection connection = new PineconeConnection(config);
-        Index index = new Index(connection, "INDEX_NAME");
+        Index index = new Index(config, connection, "INDEX_NAME");
         Struct filter = Struct.newBuilder()
                 .putFields("genre", Value.newBuilder()
                         .setStructValue(Struct.newBuilder()
@@ -402,7 +402,7 @@ public class DeleteExample {
         // see https://docs.pinecone.io/guides/manage-data/target-an-index
         config.setHost("INDEX_HOST");
         PineconeConnection connection = new PineconeConnection(config);
-        Index index = new Index(connection, "INDEX_NAME");
+        Index index = new Index(config, connection, "INDEX_NAME");
         index.deleteAll("example-namespace");
     }
 }

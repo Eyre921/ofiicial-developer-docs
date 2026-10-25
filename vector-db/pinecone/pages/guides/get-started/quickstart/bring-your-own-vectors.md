@@ -50,15 +50,14 @@ index = pc.Index(name="byo-vectors")
 
 **3. Upsert your vectors**
 
-Each document carries its `embedding` (a list of floats matching the schema's `dimension`) plus any fields you want to store. Replace the truncated vectors below with your real embeddings.
+Each document carries its `embedding` (a list of floats matching the schema's `dimension`) plus any fields you want to store. The vectors below are stand-ins with the right dimension. Replace them with your real embeddings.
 
 ```python theme={null}
 index.documents.upsert(
     namespace="__default__",
     documents=[
-        # each `embedding` is a full list of 1024 floats (shown truncated)
-        {"_id": "1", "embedding": [0.12, 0.04, ...], "text": "Refund requests must be submitted within 30 days."},
-        {"_id": "2", "embedding": [0.08, 0.21, ...], "text": "Enterprise support responds within 4 hours."},
+        {"_id": "1", "embedding": [0.1, 0.2] * 512, "text": "Refund requests must be submitted within 30 days."},
+        {"_id": "2", "embedding": [0.2, 0.1] * 512, "text": "Enterprise support responds within 4 hours."},
     ],
 )
 
@@ -70,7 +69,7 @@ time.sleep(5)  # documents are indexed asynchronously, so wait a moment
 Embed your query with the **same model** you used for the documents, then rank by the dense-vector field (`embedding`).
 
 ```python theme={null}
-query_embedding = [0.10, 0.05, ...]  # embed your query text with the same model
+query_embedding = [0.1, 0.2] * 512  # replace with your query's embedding from the same model
 
 resp = index.documents.search(
     namespace="__default__",

@@ -1,6 +1,6 @@
 # dev-platforms/upstash 文档索引
 
-> 共 986 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 987 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -52,6 +52,7 @@
 - `docs/box/guides/claude-managed-agents` — [Self-Hosted Sandboxes for Claude Managed Agents](pages/docs/box/guides/claude-managed-agents.md) · [原文](https://upstash.com/docs/box/guides/claude-managed-agents)
 - `docs/box/guides/code-review-agent` — [Build an AI Code Review Agent for Pull Requests](pages/docs/box/guides/code-review-agent.md) · [原文](https://upstash.com/docs/box/guides/code-review-agent)
 - `docs/box/guides/copilotkit` — [In-App Coding Agent with CopilotKit](pages/docs/box/guides/copilotkit.md) · [原文](https://upstash.com/docs/box/guides/copilotkit)
+- `docs/box/guides/crabbox-setup` — [Run Your Test Suite in a Cloud Sandbox with Crabbox](pages/docs/box/guides/crabbox-setup.md) · [原文](https://upstash.com/docs/box/guides/crabbox-setup)
 - `docs/box/guides/eve-setup` — [Vercel Eve Sandbox for Isolated Code Execution](pages/docs/box/guides/eve-setup.md) · [原文](https://upstash.com/docs/box/guides/eve-setup)
 - `docs/box/guides/herdr-setup` — [Run Herdr Coding Agents in Isolated Cloud Sandboxes](pages/docs/box/guides/herdr-setup.md) · [原文](https://upstash.com/docs/box/guides/herdr-setup)
 - `docs/box/guides/hermes-setup` — [Host Hermes Agent in a Cloud Sandbox and Connect from Hermes Desktop](pages/docs/box/guides/hermes-setup.md) · [原文](https://upstash.com/docs/box/guides/hermes-setup)

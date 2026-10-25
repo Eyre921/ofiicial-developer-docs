@@ -1,6 +1,6 @@
 # vector-db/pinecone 文档索引
 
-> 共 553 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 555 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## admin
@@ -172,6 +172,7 @@
 - `guides/manage-data/delete-data` — [Delete data](pages/guides/manage-data/delete-data.md) · [原文](https://docs.pinecone.io/guides/manage-data/delete-data)
 - `guides/manage-data/fetch-data` — [Fetch data](pages/guides/manage-data/fetch-data.md) · [原文](https://docs.pinecone.io/guides/manage-data/fetch-data)
 - `guides/manage-data/list-record-ids` — [List IDs](pages/guides/manage-data/list-record-ids.md) · [原文](https://docs.pinecone.io/guides/manage-data/list-record-ids)
+- `guides/manage-data/manage-document-chunks` — [Manage document chunks](pages/guides/manage-data/manage-document-chunks.md) · [原文](https://docs.pinecone.io/guides/manage-data/manage-document-chunks)
 - `guides/manage-data/manage-indexes` — [Manage serverless indexes](pages/guides/manage-data/manage-indexes.md) · [原文](https://docs.pinecone.io/guides/manage-data/manage-indexes)
 - `guides/manage-data/manage-namespaces` — [Manage namespaces](pages/guides/manage-data/manage-namespaces.md) · [原文](https://docs.pinecone.io/guides/manage-data/manage-namespaces)
 - `guides/manage-data/namespace-aliases/manage-aliases` — [Manage namespace aliases](pages/guides/manage-data/namespace-aliases/manage-aliases.md) · [原文](https://docs.pinecone.io/guides/manage-data/namespace-aliases/manage-aliases)
@@ -301,6 +302,7 @@
 - `reference/api/2026-04/admin-assistant/create_project` — [Create a new project](pages/reference/api/2026-04/admin-assistant/create_project.md) · [原文](https://docs.pinecone.io/reference/api/2026-04/admin-assistant/create_project)
 - `reference/api/2026-04/admin-assistant/create_project` — [Create a new project](pages/reference/api/2026-04/admin-assistant/create_project-2.md) · [原文](https://docs.pinecone.io/reference/api/2026-04/admin-assistant/create_project)
 - `reference/api/2026-04/admin-assistant/delete_api_key` — [Delete an API key](pages/reference/api/2026-04/admin-assistant/delete_api_key.md) · [原文](https://docs.pinecone.io/reference/api/2026-04/admin-assistant/delete_api_key)
+- `reference/api/2026-04/admin-assistant/delete_api_key` — [Delete an API key](pages/reference/api/2026-04/admin-assistant/delete_api_key-2.md) · [原文](https://docs.pinecone.io/reference/api/2026-04/admin-assistant/delete_api_key)
 - `reference/api/2026-04/admin-assistant/delete_project` — [Delete a project](pages/reference/api/2026-04/admin-assistant/delete_project.md) · [原文](https://docs.pinecone.io/reference/api/2026-04/admin-assistant/delete_project)
 - `reference/api/2026-04/admin-assistant/delete_project` — [Delete a project](pages/reference/api/2026-04/admin-assistant/delete_project-2.md) · [原文](https://docs.pinecone.io/reference/api/2026-04/admin-assistant/delete_project)
 - `reference/api/2026-04/admin-assistant/fetch_api_key` — [Get API key details](pages/reference/api/2026-04/admin-assistant/fetch_api_key.md) · [原文](https://docs.pinecone.io/reference/api/2026-04/admin-assistant/fetch_api_key)
@@ -461,6 +463,7 @@
 - `reference/api/database-limits/rate-limits` — [Rate limits](pages/reference/api/database-limits/rate-limits-3.md) · [原文](https://docs.pinecone.io/reference/api/database-limits/rate-limits)
 - `reference/api/database-limits/rate-limits` — [Rate limits](pages/reference/api/database-limits/rate-limits-4.md) · [原文](https://docs.pinecone.io/reference/api/database-limits/rate-limits)
 - `reference/api/database-limits/rate-limits` — [Rate limits](pages/reference/api/database-limits/rate-limits-5.md) · [原文](https://docs.pinecone.io/reference/api/database-limits/rate-limits)
+- `reference/api/database-limits/rate-limits` — [Rate limits](pages/reference/api/database-limits/rate-limits-6.md) · [原文](https://docs.pinecone.io/reference/api/database-limits/rate-limits)
 - `reference/api/errors` — [Pinecone API errors](pages/reference/api/errors.md) · [原文](https://docs.pinecone.io/reference/api/errors)
 - `reference/api/errors` — [Pinecone API errors](pages/reference/api/errors-2.md) · [原文](https://docs.pinecone.io/reference/api/errors)
 - `reference/api/errors` — [Pinecone API errors](pages/reference/api/errors-3.md) · [原文](https://docs.pinecone.io/reference/api/errors)
@@ -528,7 +531,6 @@
 - `reference/sdks/java/open-telemetry` — [OpenTelemetry support](pages/reference/sdks/java/open-telemetry-3.md) · [原文](https://docs.pinecone.io/reference/sdks/java/open-telemetry)
 - `reference/sdks/java/open-telemetry` — [OpenTelemetry support](pages/reference/sdks/java/open-telemetry-4.md) · [原文](https://docs.pinecone.io/reference/sdks/java/open-telemetry)
 - `reference/sdks/java/open-telemetry` — [OpenTelemetry support](pages/reference/sdks/java/open-telemetry-5.md) · [原文](https://docs.pinecone.io/reference/sdks/java/open-telemetry)
-- `reference/sdks/java/open-telemetry` — [OpenTelemetry support](pages/reference/sdks/java/open-telemetry-6.md) · [原文](https://docs.pinecone.io/reference/sdks/java/open-telemetry)
 - `reference/sdks/java/overview` — [Pinecone Java SDK](pages/reference/sdks/java/overview.md) · [原文](https://docs.pinecone.io/reference/sdks/java/overview)
 - `reference/sdks/java/overview` — [Pinecone Java SDK](pages/reference/sdks/java/overview-2.md) · [原文](https://docs.pinecone.io/reference/sdks/java/overview)
 - `reference/sdks/java/overview` — [Pinecone Java SDK](pages/reference/sdks/java/overview-3.md) · [原文](https://docs.pinecone.io/reference/sdks/java/overview)

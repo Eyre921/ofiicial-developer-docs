@@ -77,10 +77,10 @@ On a vector index, run `index.query` with query vectors instead, using the same 
 def run_query(vector):
     return index.query(namespace="example-namespace", vector=vector, top_k=3)
 
-# Each query vector is a list of floats matching the index's dimension
+# Replace with your query embeddings, which must match the index's dimension (1536 in this example)
 query_vectors = [
-    [0.0236663818359375, -0.032989501953125, ..., 0.0086669921875],
-    [0.0161590576171875, 0.0084228515625, ..., -0.0213775634765625],
+    [0.1, 0.2] * 768,
+    [0.2, 0.1] * 768,
 ]
 
 with ThreadPoolExecutor(max_workers=4) as executor:

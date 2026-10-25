@@ -26,8 +26,11 @@ from pinecone.grpc import PineconeGRPC as Pinecone
 pc = Pinecone(api_key="YOUR_API_KEY")
 index = pc.Index("example-index")
 
+# Replace with your query embedding, which must match the index's dimension (1536 in this example)
+query_vector = [0.1] * 1536
+
 response = index.query(
-    vector=[0.22,0.43,0.16,1,...], 
+    vector=query_vector,
     namespace='example-namespace', 
     top_k=3,
     include_values=False,
@@ -43,8 +46,11 @@ import { Pinecone } from '@pinecone-database/pinecone'
 const pc = new Pinecone({ apiKey: "YOUR_API_KEY" })
 const index = pc.index("example-index")
 
+// Replace with your query embedding, which must match the index's dimension (1536 in this example)
+const queryVector = new Array(1536).fill(0.1);
+
 const queryResponse = await index.namespace('example-namespace').query({
-    vector: [0.22,0.43,0.16,1,...],
+    vector: queryVector,
     topK: 3,
     includeValues: false,
     includeMetadata: false,
@@ -59,7 +65,7 @@ import io.pinecone.configs.PineconeConfig;
 import io.pinecone.configs.PineconeConnection;
 import io.pinecone.unsigned_indices_model.QueryResponseWithUnsignedIndices;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class QueryByVector {
@@ -71,7 +77,8 @@ public class QueryByVector {
         PineconeConnection connection = new PineconeConnection(config);
         Index index = new Index(config, connection, "example-index");
 
-        List<Float> query = Arrays.asList(0.22f,0.43f,0.16f,1f,...);
+        // Replace with your query embedding, which must match the index's dimension (1536 in this example)
+        List<Float> query = Collections.nCopies(1536, 0.1f);
         QueryResponseWithUnsignedIndices queryResponse = index.query(3, query, null, null, null, "example-namespace", null, false, false);
         System.out.println(queryResponse);
     }
@@ -112,7 +119,11 @@ func main() {
 		log.Fatalf("Failed to create IndexConnection for Host: %v", err)
 	}
 
-	queryVector := []float32{0.22, 0.43, 0.16, 1, ...}
+	// Replace with your query embedding, which must match the index's dimension (1536 in this example)
+	queryVector := make([]float32, 1536)
+	for i := range queryVector {
+		queryVector[i] = 0.1
+	}
 
 	res, err := idxConnection.QueryByVectorValues(ctx, &pinecone.QueryByVectorValuesRequest{
 		Vector:        queryVector,
@@ -124,6 +135,7 @@ func main() {
 	} else {
 		fmt.Printf(prettifyStruct(res))
 	}
+}
 ```
 
 The response looks like this:
@@ -238,7 +250,7 @@ Requests to one of [Pinecone's hosted embedding models](/guides/index-data/index
 
 For example, this request uses the `multilingual-e5-large` model to embed sentences related to the word “apple”:
 
-```python Python theme={null}
+```python Python theme={null} theme={null}
 # Import the Pinecone library
 from pinecone.grpc import PineconeGRPC as Pinecone
 from pinecone import ServerlessSpec
@@ -267,7 +279,7 @@ embeddings = pc.inference.embed(
 print(embeddings)
 ```
 
-```javascript JavaScript theme={null}
+```javascript JavaScript theme={null} theme={null}
 // Import the Pinecone library
 import { Pinecone } from '@pinecone-database/pinecone';
 
@@ -296,7 +308,7 @@ const embeddings = await pc.inference.embed(
 console.log(embeddings);
 ```
 
-```java Java theme={null}
+```java Java theme={null} theme={null}
 // Import the required classes
 import io.pinecone.clients.Index;
 import io.pinecone.clients.Inference;
@@ -368,7 +380,7 @@ class DataObject {
 }
 ```
 
-```go Go theme={null}
+```go Go theme={null} theme={null}
 package main
 
 // Import the required packages
@@ -443,7 +455,7 @@ func main() {
 }
 ```
 
-```shell curl theme={null}
+```shell curl theme={null} theme={null}
 PINECONE_API_KEY="YOUR_API_KEY"
 
 curl https://api.pinecone.io/embed \
@@ -469,7 +481,7 @@ curl https://api.pinecone.io/embed \
 
 The response looks like this:
 
-```python Python theme={null}
+```python Python theme={null} theme={null}
 EmbeddingsList(
     model='llama-text-embed-v2',
     data=[
@@ -480,7 +492,7 @@ EmbeddingsList(
 )
 ```
 
-```javascript JavaScript theme={null}
+```javascript JavaScript theme={null} theme={null}
 EmbeddingsList(1) [
   {
     values: [
@@ -497,7 +509,7 @@ EmbeddingsList(1) [
 ]
 ```
 
-```java Java theme={null}
+```java Java theme={null} theme={null}
 class EmbeddingsList {
     model: llama-text-embed-v2
     data: [class Embedding {
@@ -512,7 +524,7 @@ class EmbeddingsList {
 }
 ```
 
-```go Go theme={null}
+```go Go theme={null} theme={null}
 {
   "data": [
     {
@@ -532,7 +544,7 @@ class EmbeddingsList {
 }
 ```
 
-```json curl theme={null}
+```json curl theme={null} theme={null}
 {
   "data": [
     {

@@ -26,7 +26,7 @@ RRF is a fusion method, not a synonym for hybrid search. It's one way to merge r
 
 ## Choose an approach
 
-For a new document or text workload, use the Documents API. Declare a `dense_vector` field and one or more full-text `string` fields in one schema, then either filter a dense search with a text-match filter or run a keyword search and a dense search and fuse them with RRF. See [Full-text search](/guides/search/full-text-search) and the [multi-signal schema example](/guides/index-data/data-modeling#schema-patterns).
+For a new document or text workload, use the Documents API. Declare a `dense_vector` field and one or more full-text `string` fields in one schema, then either filter a dense search with a text-match filter or run a keyword search and a dense search and fuse them with RRF. See [Full-text search](/guides/search/full-text-search) and its [example schemas](/guides/search/full-text-search#example-schemas).
 
 For an existing vector or records workload, use the Vectors API.
 

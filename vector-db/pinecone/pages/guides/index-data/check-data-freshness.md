@@ -178,7 +178,7 @@ public class DescribeIndexStatsExample {
         // see https://docs.pinecone.io/guides/manage-data/target-an-index
         config.setHost("INDEX_HOST");
         PineconeConnection connection = new PineconeConnection(config);
-        Index index = new Index(connection, "INDEX_NAME");
+        Index index = new Index(config, connection, "INDEX_NAME");
         DescribeIndexStatsResponse indexStatsResponse = index.describeIndexStats();
         System.out.println(indexStatsResponse);
     }

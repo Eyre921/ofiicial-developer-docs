@@ -156,7 +156,7 @@ public class ListExample {
         // see https://docs.pinecone.io/guides/manage-data/target-an-index
         config.setHost("INDEX_HOST");
         PineconeConnection connection = new PineconeConnection(config);
-        Index index = new Index(connection, "INDEX_NAME");
+        Index index = new Index(config, connection, "INDEX_NAME");
         // get the pagination token
         String paginationToken = index.list("example-namespace", 3).getPagination().getNext();
         // get vectors with limit 3 with the paginationToken obtained from the previous step
@@ -374,8 +374,8 @@ public class ListExample {
         // see https://docs.pinecone.io/guides/manage-data/target-an-index
         config.setHost("INDEX_HOST");
         PineconeConnection connection = new PineconeConnection(config);
-        Index index = new Index(connection, "INDEX_NAME");
-        ListResponse listResponse = index.list("example-namespace", "doc1#" 2); /* Note: You must include an ID prefix to list vector IDs. */
+        Index index = new Index(config, connection, "INDEX_NAME");
+        ListResponse listResponse = index.list("example-namespace", "doc1#", 2); /* Note: You must include an ID prefix to list vector IDs. */
         System.out.println(listResponse.getVectorsList());
         System.out.println(listResponse.getPagination());
     }

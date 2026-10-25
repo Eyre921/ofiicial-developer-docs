@@ -73748,6 +73748,42 @@ if (error instanceof FunctionsHttpError) {
 }
 ```
 
+## Sending Realtime messages
+
+To send a [Broadcast](https://supabase.com/docs/guides/realtime/broadcast) message from an Edge Function, call `httpSend()` without subscribing to the channel. `httpSend()` sends the message in a single HTTP request, so no connection stays open:
+
+```ts
+import { createClient } from 'npm:@supabase/supabase-js@2'
+
+const SUPABASE_SECRET_KEYS = JSON.parse(Deno.env.get('SUPABASE_SECRET_KEYS')!)
+const supabase = createClient(Deno.env.get('SUPABASE_URL')!, SUPABASE_SECRET_KEYS['default'])
+
+Deno.serve(async (req) => {
+  const { roomId, message } = await req.json()
+
+  // Verify the caller is allowed to post to this room before sending
+  const channel = supabase.channel(`room:${roomId}`)
+  try {
+    await channel.httpSend('new-message', { message })
+  } finally {
+    await supabase.removeChannel(channel)
+  }
+
+  return new Response(null, { status: 204 })
+})
+```
+
+`httpSend()` requires `supabase-js` 2.76.0 or later. For other languages, call the [Broadcast REST API](https://supabase.com/docs/guides/realtime/broadcast#broadcast-using-the-rest-api) directly.
+
+### Why not subscribe to the channel
+
+Subscribing from an Edge Function opens more connections than you might expect, and you're billed for each one:
+
+- Each worker that subscribes opens its own WebSocket connection and keeps it until the worker shuts down.
+- Under load, a function can run many workers at once.
+- Every connection counts toward [Realtime Peak Connections](https://supabase.com/docs/guides/platform/manage-your-usage/realtime-peak-connections).
+- Every subscribed worker counts as a recipient of each message on the channel, which adds to [Realtime Messages](https://supabase.com/docs/guides/platform/manage-your-usage/realtime-messages).
+
 ## Database Functions vs Edge Functions
 
 For data-intensive operations we recommend using [Database Functions](https://supabase.com/docs/guides/database/functions), which are executed within your database and can be called remotely using the [REST and GraphQL API](https://supabase.com/docs/guides/api).
@@ -111801,10 +111837,12 @@ No, Compute Credits do not apply to Read Replica Compute.
 You are charged for the number of messages going through Supabase Realtime throughout the billing cycle. Includes database changes, Broadcast and Presence.
 
 **Database changes**
-Each database change counts as one message per client that listens to the event. For example, if a database change occurs and 5 clients listen to that database event, it counts as 5 messages.
+Each database change counts as one message per client that listens to the event. For example, if a database change occurs and five clients listen to that database event, it counts as five messages.
 
 **Broadcast**
-Each broadcast message counts as one message sent plus one message per subscribed client that receives it. For example, if you broadcast a message and 4 clients listen to it, it counts as 5 messages—1 sent and 4 received.
+Each broadcast message counts as one message sent plus one message per subscribed client that receives it. For example, if you broadcast a message and four clients listen to it, it counts as five messages: one sent and four received. The sender isn't counted as a recipient unless it enabled [self-send](https://supabase.com/docs/guides/realtime/broadcast#self-send-messages).
+
+Every subscribed client counts as a recipient, including server-side clients such as Edge Function workers. If a server subscribes to a channel only to send messages, it's billed for receiving every message on that channel. To send from a server, use the [Broadcast REST API](https://supabase.com/docs/guides/realtime/broadcast#broadcast-using-the-rest-api) instead.
 
 ## How charges are calculated
 
@@ -111889,6 +111927,8 @@ When you are exceeding your quotas while being on a Free Plan or having [Spend C
 ## What you are charged for
 
 Realtime Peak Connections are measured by tracking the highest number of concurrent connections for each project during the billing cycle. Regardless of fluctuations, only the peak count per project is used for billing, and the totals from all projects are summed. Only successful connections are counted, connection attempts are not included.
+
+Every WebSocket connection to Realtime counts, including connections from your own servers. In Edge Functions and other serverless runtimes, each worker that subscribes to a channel opens its own connection, so peak connections can far exceed your number of users. To send messages from a server without opening a connection, use the [Broadcast REST API](https://supabase.com/docs/guides/realtime/broadcast#broadcast-using-the-rest-api).
 
 ### Example
 
@@ -122329,6 +122369,10 @@ await myChannel.Subscribe();
 
 ## Send messages
 
+Caution: Subscribing to a channel only to send messages from a server can multiply your Realtime bill. Each subscribed process holds its own connection, and in Edge Functions every worker is a separate process. Each connection counts toward [Peak Connections](https://supabase.com/docs/guides/platform/manage-your-usage/realtime-peak-connections) and is billed as a recipient of every message on the channel until it closes.
+
+To send from a server, use `channel.httpSend()` (`supabase-js` 2.76.0 or later) or the [REST API](#broadcast-using-the-rest-api), which don't open a connection. Subscribe only in code that needs to receive messages.
+
 ### Broadcast using the client libraries
 
 You can use the Supabase client libraries to send Broadcast messages.
@@ -122577,6 +122621,8 @@ curl -v \
 You can pass configuration options while initializing the Supabase Client.
 
 ### Self-send messages
+
+With self-send enabled, each message delivered back to the sender is billed as a received message. To confirm that the server received a message, use [acknowledgements](#acknowledge-messages) instead.
 
 **JavaScript**
 
@@ -122833,7 +122879,7 @@ You can also send a Broadcast message by making an HTTP request to Realtime serv
 
 **JavaScript**
 
-Note: `channel.httpSend()` always uses the REST API regardless of WebSocket connection state, and is available from the Supabase JavaScript client version 2.107.0 and later. `ArrayBuffer` and `ArrayBufferView` (e.g. `Uint8Array`) payloads are sent as `application/octet-stream`; all other payloads are JSON-encoded.
+Note: `channel.httpSend()` always uses the REST API regardless of WebSocket connection state, and is available from the Supabase JavaScript client version 2.76.0 and later. `ArrayBuffer` and `ArrayBufferView` (e.g. `Uint8Array`) payloads require version 2.107.0 or later and are sent as `application/octet-stream`; all other payloads are JSON-encoded.
 
 ```js
 const channel = supabase.channel('test-channel')

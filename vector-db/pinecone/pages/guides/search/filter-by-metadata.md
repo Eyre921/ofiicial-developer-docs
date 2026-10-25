@@ -141,9 +141,12 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
 index = pc.Index(host="INDEX_HOST")
 
+# Replace with your query embedding, which must match the index's dimension (1536 in this example)
+query_vector = [0.1] * 1536
+
 index.query(
     namespace="example-namespace",
-    vector=[0.0236663818359375,-0.032989501953125, ..., -0.01041412353515625,0.0086669921875], 
+    vector=query_vector,
     top_k=3,
     filter={
         "category": {"$eq": "digestive system"}
@@ -162,8 +165,11 @@ const pc = new Pinecone({ apiKey: "YOUR_API_KEY" })
 // see https://docs.pinecone.io/guides/manage-data/target-an-index
 const index = pc.index("INDEX_NAME", "INDEX_HOST")
 
+// Replace with your query embedding, which must match the index's dimension (1536 in this example)
+const queryVector = new Array(1536).fill(0.1);
+
 const queryResponse = await index.namespace('example-namespace').query({
-    vector: [0.0236663818359375,-0.032989501953125,...,-0.01041412353515625,0.0086669921875],
+    vector: queryVector,
     topK: 3,
     filter: {
         "category": { "$eq": "digestive system" }
@@ -181,7 +187,7 @@ import io.pinecone.configs.PineconeConfig;
 import io.pinecone.configs.PineconeConnection;
 import io.pinecone.unsigned_indices_model.QueryResponseWithUnsignedIndices;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class QueryExample {
@@ -192,7 +198,8 @@ public class QueryExample {
         config.setHost("INDEX_HOST");
         PineconeConnection connection = new PineconeConnection(config);
         Index index = new Index(config, connection, "INDEX_NAME");
-        List<Float> query = Arrays.asList(0.0236663818359375f, -0.032989501953125f, ..., -0.01041412353515625f, 0.0086669921875f);
+        // Replace with your query embedding, which must match the index's dimension (1536 in this example)
+        List<Float> query = Collections.nCopies(1536, 0.1f);
         Struct filter = Struct.newBuilder()
                 .putFields("category", Value.newBuilder()
                         .setStructValue(Struct.newBuilder()
@@ -243,7 +250,11 @@ func main() {
         log.Fatalf("Failed to create IndexConnection for Host: %v", err)
   	}
 
-    queryVector := []float32{0.0236663818359375,-0.032989501953125,...,-0.01041412353515625,0.0086669921875}
+    // Replace with your query embedding, which must match the index's dimension (1536 in this example)
+    queryVector := make([]float32, 1536)
+    for i := range queryVector {
+        queryVector[i] = 0.1
+    }
 
     metadataMap := map[string]interface{}{
         "category": map[string]interface{}{
@@ -277,12 +288,15 @@ func main() {
 PINECONE_API_KEY="YOUR_API_KEY"
 INDEX_HOST="INDEX_HOST"
 
+# Stand-in built with jq. Replace with your query embedding, which must match the index's dimension (1536 in this example)
+QUERY_VECTOR=$(jq -nc '[range(1536) | 0.1]')
+
 curl "https://$INDEX_HOST/query" \
   -H "Api-Key: $PINECONE_API_KEY" \
   -H 'Content-Type: application/json' \
   -H "X-Pinecone-Api-Version: 2026-07" \
   -d '{
-        "vector": [0.0236663818359375,-0.032989501953125,...,-0.01041412353515625,0.0086669921875],
+        "vector": '"$QUERY_VECTOR"',
         "namespace": "example-namespace",
         "topK": 3,
         "filter": {"category": {"$eq": "digestive system"}},
@@ -475,7 +489,7 @@ At the top level, list one or more fields (combined with implicit AND) or combin
 
 A metadata field can hold an array of strings, such as `{"genre": ["comedy", "documentary"]}`. A filter on that field matches when any value in the array satisfies it, so each of these filters matches:
 
-```json JSON theme={null}
+```json JSON theme={null} theme={null}
 {"genre": "comedy"}
 {"genre": {"$in": ["documentary", "action"]}}
 {"$and": [{"genre": "comedy"}, {"genre": "documentary"}]}
@@ -483,21 +497,21 @@ A metadata field can hold an array of strings, such as `{"genre": ["comedy", "do
 
 These filters don't match, because the array has no `"drama"` value and because `$ne` and `$nin` exclude an item when any of its values matches:
 
-```json JSON theme={null}
+```json JSON theme={null} theme={null}
 {"$and": [{"genre": "comedy"}, {"genre": "drama"}]}
 {"genre": {"$ne": "comedy"}}
 ```
 
 A filter value can't be an array. To match several values, use `$in`. These filters are invalid and return a `400` error:
 
-```json JSON theme={null}
+```json JSON theme={null} theme={null}
 {"genre": ["comedy", "documentary"]}
 {"genre": {"$eq": ["comedy", "documentary"]}}
 ```
 
 ## Text-match filters
 
-On a [document index](/guides/index-data/data-modeling#documents), three more operators match text in `string` fields that have `full_text_search` enabled. Like metadata operators, they narrow the candidates before scoring.
+On a [document index](/guides/index-data/data-modeling#documents), three more operators match text in `string` fields that have `full_text_search` enabled, or that declare `embed` or `sparse_embed` without setting `store_text: false`. Like metadata operators, they narrow the candidates before scoring.
 
 | Operator | Example | Description |
 | - | - | - |

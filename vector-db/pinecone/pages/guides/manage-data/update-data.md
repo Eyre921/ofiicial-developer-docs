@@ -182,7 +182,7 @@ public class UpdateExample {
         // see https://docs.pinecone.io/guides/manage-data/target-an-index
         config.setHost("INDEX_HOST");
         PineconeConnection connection = new PineconeConnection(config);
-        Index index = new Index(connection, "INDEX_NAME");
+        Index index = new Index(config, connection, "INDEX_NAME");
         List<Float> values = Arrays.asList(5.0f, 3.0f);
 		Struct metaData = Struct.newBuilder()
 			.putFields("genre",
@@ -372,7 +372,7 @@ public class UpdateByMetadataExample {
         // see https://docs.pinecone.io/guides/manage-data/target-an-index
         config.setHost("INDEX_HOST");
         PineconeConnection connection = new PineconeConnection(config);
-        Index index = new Index(connection, "INDEX_NAME");
+        Index index = new Index(config, connection, "INDEX_NAME");
 
         Struct filter = Struct.newBuilder()
             .putFields("document_title", Value.newBuilder()
@@ -690,4 +690,4 @@ Pinecone is eventually consistent, so there can be a slight delay before updates
 
 ## See also
 
-* [Update an entire document](/guides/index-data/data-modeling#update-an-entire-document)
+* [Replace a chunked document](/guides/manage-data/manage-document-chunks#replace-a-chunked-document)

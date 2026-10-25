@@ -140,6 +140,9 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
 index = pc.Index(host="INDEX_HOST")
 
+# Replace with your query embedding, which must match the index's dimension (1536 in this example)
+query_vector = [0.1] * 1536
+
 results = index.documents.search(
     namespace="articles",
     top_k=3,
@@ -147,7 +150,7 @@ results = index.documents.search(
         {
             "type": "dense_vector",
             "fields": ["embedding"],
-            "values": [0.0236663818359375, -0.032989501953125, ..., 0.0086669921875],
+            "values": query_vector,
         }
     ],
     include_fields=["title"],
@@ -163,10 +166,13 @@ const pc = new Pinecone({ apiKey: "YOUR_API_KEY" })
 // see https://docs.pinecone.io/guides/manage-data/target-an-index
 const index = pc.index({ host: "INDEX_HOST", namespace: "articles" })
 
+// Replace with your query embedding, which must match the index's dimension (1536 in this example)
+const queryVector = new Array(1536).fill(0.1)
+
 const results = await index.documents.search({
   topK: 3,
   scoreBy: [
-    { type: 'dense_vector', fields: ['embedding'], values: [0.0236663818359375, -0.032989501953125, ..., 0.0086669921875] },
+    { type: 'dense_vector', fields: ['embedding'], values: queryVector },
   ],
   includeFields: ['title'],
 })
@@ -208,7 +214,11 @@ func main() {
         log.Fatalf("Failed to create IndexConnection for Host: %v", err)
     }
 
-    queryVector := []float32{0.0236663818359375, -0.032989501953125, ..., 0.0086669921875}
+    // Replace with your query embedding, which must match the index's dimension (1536 in this example)
+    queryVector := make([]float32, 1536)
+    for i := range queryVector {
+        queryVector[i] = 0.1
+    }
     res, err := idxConnection.SearchDocuments(ctx, &pinecone.SearchDocumentsRequest{
         TopK: 3,
         ScoreBy: []pinecone.DocumentScoringMethod{
@@ -227,6 +237,9 @@ func main() {
 PINECONE_API_KEY="YOUR_API_KEY"
 INDEX_HOST="INDEX_HOST"
 
+# Stand-in built with jq. Replace with your query embedding, which must match the index's dimension (1536 in this example)
+QUERY_VECTOR=$(jq -nc '[range(1536) | 0.1]')
+
 curl "https://$INDEX_HOST/namespaces/articles/documents/search" \
     -H "Api-Key: $PINECONE_API_KEY" \
     -H "Content-Type: application/json" \
@@ -237,7 +250,7 @@ curl "https://$INDEX_HOST/namespaces/articles/documents/search" \
                 {
                     "type": "dense_vector",
                     "fields": ["embedding"],
-                    "values": [0.0236663818359375, -0.032989501953125, ..., 0.0086669921875]
+                    "values": '"$QUERY_VECTOR"'
                 }
             ],
             "include_fields": ["title"]
@@ -268,9 +281,12 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
 index = pc.Index(host="INDEX_HOST")
 
+# Replace with your query embedding, which must match the index's dimension (1536 in this example)
+query_vector = [0.1] * 1536
+
 index.query(
     namespace="example-namespace",
-    vector=[0.0236663818359375,-0.032989501953125, ..., -0.01041412353515625,0.0086669921875], 
+    vector=query_vector,
     top_k=3,
     include_metadata=True,
     include_values=False
@@ -286,8 +302,11 @@ const pc = new Pinecone({ apiKey: "YOUR_API_KEY" })
 // see https://docs.pinecone.io/guides/manage-data/target-an-index
 const index = pc.index("INDEX_NAME", "INDEX_HOST")
 
+// Replace with your query embedding, which must match the index's dimension (1536 in this example)
+const queryVector = new Array(1536).fill(0.1);
+
 const queryResponse = await index.namespace('example-namespace').query({
-    vector: [0.0236663818359375,-0.032989501953125,...,-0.01041412353515625,0.0086669921875],
+    vector: queryVector,
     topK: 3,
     includeValues: false,
     includeMetadata: true,
@@ -300,7 +319,7 @@ import io.pinecone.configs.PineconeConfig;
 import io.pinecone.configs.PineconeConnection;
 import io.pinecone.unsigned_indices_model.QueryResponseWithUnsignedIndices;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class QueryExample {
@@ -310,8 +329,9 @@ public class QueryExample {
         // see https://docs.pinecone.io/guides/manage-data/target-an-index
         config.setHost("INDEX_HOST");
         PineconeConnection connection = new PineconeConnection(config);
-        Index index = new Index(connection, "INDEX_NAME");
-        List<Float> query = Arrays.asList(0.0236663818359375f, -0.032989501953125f, ..., -0.01041412353515625f, 0.0086669921875f);
+        Index index = new Index(config, connection, "INDEX_NAME");
+        // Replace with your query embedding, which must match the index's dimension (1536 in this example)
+        List<Float> query = Collections.nCopies(1536, 0.1f);
         QueryResponseWithUnsignedIndices queryResponse = index.query(3, query, null, null, null, "example-namespace", null, false, true);
         System.out.println(queryResponse);
     }
@@ -352,7 +372,11 @@ func main() {
         log.Fatalf("Failed to create IndexConnection for Host: %v", err)
   	}
 
-    queryVector := []float32{0.0236663818359375,-0.032989501953125,...,-0.01041412353515625,0.0086669921875}
+    // Replace with your query embedding, which must match the index's dimension (1536 in this example)
+    queryVector := make([]float32, 1536)
+    for i := range queryVector {
+        queryVector[i] = 0.1
+    }
 
     res, err := idxConnection.QueryByVectorValues(ctx, &pinecone.QueryByVectorValuesRequest{
         Vector:          queryVector,
@@ -374,12 +398,15 @@ func main() {
 PINECONE_API_KEY="YOUR_API_KEY"
 INDEX_HOST="INDEX_HOST"
 
+# Stand-in built with jq. Replace with your query embedding, which must match the index's dimension (1536 in this example)
+QUERY_VECTOR=$(jq -nc '[range(1536) | 0.1]')
+
 curl "https://$INDEX_HOST/query" \
   -H "Api-Key: $PINECONE_API_KEY" \
   -H 'Content-Type: application/json' \
   -H "X-Pinecone-Api-Version: 2026-07" \
   -d '{
-        "vector": [0.0236663818359375,-0.032989501953125,...,-0.01041412353515625,0.0086669921875],
+        "vector": '"$QUERY_VECTOR"',
         "namespace": "example-namespace",
         "topK": 3,
         "includeMetadata": true,
@@ -659,7 +686,7 @@ public class QueryExample {
         // see https://docs.pinecone.io/guides/manage-data/target-an-index
         config.setHost("INDEX_HOST");
         PineconeConnection connection = new PineconeConnection(config);
-        Index index = new Index(connection, "INDEX_NAME");
+        Index index = new Index(config, connection, "INDEX_NAME");
         QueryResponseWithUnsignedIndices queryResponse = index.queryByVectorId(3, "rec2", "example-namespace", null, false, true);
         System.out.println(queryResponse);
     }

@@ -61,13 +61,16 @@ Point your application's reads at the alias name. Pass it wherever you'd pass a 
 PINECONE_API_KEY="YOUR_API_KEY"
 INDEX_HOST="INDEX_HOST"
 
+# Stand-in built with jq. Replace with your query embedding, which must match the index's dimension (1536 in this example)
+QUERY_VECTOR=$(jq -nc '[range(1536) | 0.1]')
+
 curl "https://$INDEX_HOST/query" \
   -H "Content-Type: application/json" \
   -H "Api-Key: $PINECONE_API_KEY" \
   -H "X-Pinecone-Api-Version: 2026-07" \
   -d '{
         "namespace": "example-alias",
-        "vector": [0.1, 0.2, 0.3, ...],
+        "vector": '"$QUERY_VECTOR"',
         "topK": 3,
         "includeMetadata": true
       }'
@@ -83,6 +86,9 @@ Ingest the refreshed data into a new namespace. Writes never use the alias, so l
 PINECONE_API_KEY="YOUR_API_KEY"
 INDEX_HOST="INDEX_HOST"
 
+# Stand-in built with jq. Replace with your record's embedding, which must match the index's dimension (1536 in this example)
+VECTOR=$(jq -nc '[range(1536) | 0.1]')
+
 curl "https://$INDEX_HOST/vectors/upsert" \
   -H "Content-Type: application/json" \
   -H "Api-Key: $PINECONE_API_KEY" \
@@ -90,7 +96,7 @@ curl "https://$INDEX_HOST/vectors/upsert" \
   -d '{
         "namespace": "example-namespace-v2",
         "vectors": [
-          { "id": "vec1", "values": [0.1, 0.2, 0.3, ...] }
+          { "id": "vec1", "values": '"$VECTOR"' }
         ]
       }'
 ```

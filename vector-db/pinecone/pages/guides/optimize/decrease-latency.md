@@ -54,7 +54,7 @@ public class TargetIndexByHostExample {
         config.setHost("INDEX_HOST");
         PineconeConnection connection = new PineconeConnection(config);
         // For the Java SDK, you must specify both the index host and name.
-        Index index = new Index(connection, "INDEX_NAME");
+        Index index = new Index(config, connection, "INDEX_NAME");
     }
 }
 ```
