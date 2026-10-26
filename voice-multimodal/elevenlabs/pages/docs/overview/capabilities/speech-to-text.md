@@ -488,7 +488,7 @@ For example, a 15 minute audio file will be transcribed with a concurrency of 2,
 
 > **Warning**
 >
-> Keyterm prompting and transcript editing come at an additional cost. See the [API pricing page](https://elevenlabs.io/pricing?price.section=speech_to_text\&price.sections=speech_to_text,speech_to_text#pricing-table)
+> Keyterm prompting and transcript editing come at an additional cost. See the [API pricing page](https://elevenlabs.io/pricing/api?price.section=speech_to_text\&price.sections=speech_to_text,speech_to_text#pricing-table)
 > for detailed pricing information.
 
 ### Keyterm prompting

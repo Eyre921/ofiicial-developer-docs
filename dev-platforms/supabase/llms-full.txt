@@ -260,6 +260,10 @@ Yes, you can use the [Docker setup](https://supabase.com/docs/guides/hosting/doc
 
 Yes, you can pause a project at any time. Our Free Plan gives you 2 free projects, but you can have as many paused projects as you want. Just pause and unpause them as needed.
 
+### Can I purchase Supabase through AWS Marketplace?
+
+Yes. If your organization has an AWS spend commitment (such as a PPA or EDP), you can buy Pro or Team through AWS Marketplace so eligible Supabase spend counts toward that commitment. Billing details and plan management then run through AWS, and Spend Cap is unavailable for AWS-managed organizations. Learn more on our [AWS Marketplace page](/aws-marketplace), or go straight to the [public listing](https://aws.amazon.com/marketplace/pp/prodview-zjciuce2qsb3q).
+
 ## Links
 
 - Pricing page: https://supabase.com/pricing
@@ -2492,7 +2496,7 @@ The number of dimensions in your embeddings is the most important factor in choo
 
 ## HNSW
 
-### 384 dimensions \[#hnsw-384-dimensions]
+### 384 dimensions
 
 This benchmark uses the dbpedia-entities-openai-1M dataset containing 1,000,000 embeddings of text, regenerated for 384 dimension embeddings. Each embedding is generated using [gte-small](https://huggingface.co/Supabase/gte-small).
 
@@ -2513,7 +2517,7 @@ This benchmark uses the dbpedia-entities-openai-1M dataset containing 1,000,000 
 
 Accuracy was 0.99 for benchmarks.
 
-### 960 dimensions \[#hnsw-960-dimensions]
+### 960 dimensions
 
 This benchmark uses the [gist-960](http://corpus-texmex.irisa.fr/) dataset, which contains 1,000,000 embeddings of images. Each embedding is 960 dimensions.
 
@@ -2536,7 +2540,7 @@ Accuracy was 0.99 for benchmarks.
 
 QPS can also be improved by increasing [`m` and `ef_construction`](https://supabase.com/docs/guides/ai/going-to-prod#hnsw-understanding-efconstruction--efsearch--and-m). This will allow you to use a smaller value for `ef_search` and increase QPS.
 
-### 1536 dimensions \[#hnsw-1536-dimensions]
+### 1536 dimensions
 
 This benchmark uses the [dbpedia-entities-openai-1M](https://huggingface.co/datasets/KShivendu/dbpedia-entities-openai-1M) dataset, which contains 1,000,000 embeddings of text. And 224,482 embeddings from [Wikipedia articles](https://huggingface.co/datasets/Supabase/wikipedia-en-embeddings) for compute add-ons `large` and below. Each embedding is 1536 dimensions created with the [OpenAI Embeddings API](https://platform.openai.com/docs/guides/embeddings).
 
@@ -2567,7 +2571,7 @@ The chart below compares HNSW queries-per-second across compute sizes for differ
 
 ## IVFFlat
 
-### 384 dimensions \[#ivfflat-384-dimensions]
+### 384 dimensions
 
 This benchmark uses the dbpedia-entities-openai-1M dataset containing 1,000,000 embeddings of text, regenerated for 384 dimension embeddings. Each embedding is generated using [gte-small](https://huggingface.co/Supabase/gte-small).
 
@@ -2601,7 +2605,7 @@ This benchmark uses the dbpedia-entities-openai-1M dataset containing 1,000,000 
 | 12XL         | 1,000,000 | 5000  | 250    | 1000 | 0.043 sec    | 0.055 sec   | 13 GB         | 192 GB |
 | 16XL         | 1,000,000 | 5000  | 250    | 1200 | 0.043 sec    | 0.055 sec   | 16 GB         | 256 GB |
 
-### 960 dimensions \[#ivfflat-960-dimensions]
+### 960 dimensions
 
 This benchmark uses the [gist-960](http://corpus-texmex.irisa.fr/) dataset, which contains 1,000,000 embeddings of images. Each embedding is 960 dimensions.
 
@@ -2620,7 +2624,7 @@ This benchmark uses the [gist-960](http://corpus-texmex.irisa.fr/) dataset, whic
 | 12XL         | 1,000,000 | 1000  | 1150 | 0.052 sec    | 0.078 sec   | 15.5 GB       | 192 GB |
 | 16XL         | 1,000,000 | 1000  | 1345 | 0.072 sec    | 0.106 sec   | 17.5 GB       | 256 GB |
 
-### 1536 dimensions \[#ivfflat-1536-dimensions]
+### 1536 dimensions
 
 This benchmark uses the [dbpedia-entities-openai-1M](https://huggingface.co/datasets/KShivendu/dbpedia-entities-openai-1M) dataset, which contains 1,000,000 embeddings of text. Each embedding is 1536 dimensions created with the [OpenAI Embeddings API](https://platform.openai.com/docs/guides/embeddings).
 
@@ -2777,7 +2781,7 @@ Building an enterprise-grade vector architecture
 
 Content sources for vectors can be extremely large. As you grow you should run your Vector workloads across several secondary databases (sometimes called "pods"), which allows each collection to scale independently.
 
-## Small workloads \[#simple-workloads]
+## Small workloads
 
 For small workloads, you can typically store your data in a single database.
 
@@ -4380,7 +4384,7 @@ On the other hand, if you need to scale your application, you will need to [crea
 
 ![dbpedia embeddings comparing ivfflat and hnsw queries-per-second using the 4XL compute add-on](https://supabase.com/docs/img/ai/going-prod/dbpedia-ivfflat-vs-hnsw-4xl--dark.png)
 
-## HNSW, understanding `ef_construction`, `ef_search`, and `m` \[#hnsw-understanding-efconstruction--efsearch--and-m]
+## HNSW, understanding `ef_construction`, `ef_search`, and `m`
 
 Index build parameters:
 
@@ -5532,7 +5536,7 @@ export const run = async () => {
 }
 ```
 
-### Basic metadata filtering \[#simple-metadata-filtering]
+### Basic metadata filtering
 
 Given the above `match_documents` Postgres function, you can also pass a filter parameter to only return documents with a specific metadata field value. This filter parameter is a JSON object, and the `match_documents` function will use the Postgres JSONB Containment operator `@>` to filter documents by the metadata field values you specify. See details on the [Postgres JSONB Containment operator](https://www.postgresql.org/docs/current/datatype-json.html#JSON-CONTAINMENT) for more information.
 
@@ -7618,7 +7622,7 @@ You can use them directly from the browser (two-tier architecture), or as a comp
 Note: - You can find the API URL in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/overview) section of the Dashboard.
 - You can find the API Keys in the [**Settings > API Keys**](https://supabase.com/dashboard/project/_/settings/api-keys/) section of the Dashboard.
 
-## Features \[#rest-api-overview]
+## Features
 
 Supabase provides a RESTful API using [PostgREST](https://postgrest.org/), a thin API layer on top of Postgres.
 It exposes everything you need from a CRUD API at the URL `https://<project_ref>.supabase.co/rest/v1/`.
@@ -24510,7 +24514,7 @@ Before you write code that checks who the user is, see [Choosing an auth method]
 
 **Next.js**
 
-### Write utility functions to create Supabase clients \[#nextjs-utility-functions]
+### Write utility functions to create Supabase clients
 
 To access Supabase from a Next.js app, you need 2 types of Supabase clients:
 
@@ -24580,7 +24584,7 @@ Danger: Anyone can forge the session cookie, so trusting it without verification
 
 
 
-### Congratulations \[#nextjs-congratulations]
+### Congratulations
 
 To recap, you've:
 
@@ -24615,7 +24619,7 @@ Page components can access the Supabase client from the `data` object using the 
 
 
 
-### Congratulations \[#sveltekit-congratulations]
+### Congratulations
 
 To recap, you've:
 
@@ -24638,7 +24642,7 @@ export default defineConfig({
 })
 ```
 
-### Create the Supabase clients \[#astro-create-clients]
+### Create the Supabase clients
 
 **Server**
 
@@ -24742,7 +24746,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
 })
 ```
 
-### Congratulations \[#astro-congratulations]
+### Congratulations
 
 To recap, you've:
 
@@ -24753,7 +24757,7 @@ You can now use any Supabase feature from your client or server code.
 
 **Remix**
 
-### Create the Supabase clients \[#remix-create-clients]
+### Create the Supabase clients
 
 With Remix, in a route module such as `_index.tsx`, you can export a `loader`, an `action`, and a default component.
 
@@ -24846,7 +24850,7 @@ export default function Index() {
 }
 ```
 
-### Congratulations \[#remix-congratulations]
+### Congratulations
 
 To recap, you've:
 
@@ -24858,7 +24862,7 @@ You can now use any Supabase feature from your client or server code.
 
 **Nuxt**
 
-### Create the Supabase clients \[#nuxt-create-clients]
+### Create the Supabase clients
 
 **Server route**
 
@@ -24914,7 +24918,7 @@ export default defineNuxtPlugin(() => {
 })
 ```
 
-### Congratulations \[#nuxt-congratulations]
+### Congratulations
 
 To recap, you've:
 
@@ -24925,7 +24929,7 @@ You can now use any Supabase feature from your client or server code.
 
 **React Router**
 
-### Create the Supabase clients \[#react-router-create-clients]
+### Create the Supabase clients
 
 In React Router, a route module such as `_index.tsx` can export a `loader`, an `action`, and a default component. Create a server client inside the `loader` and `action`, and a browser client inside the component, passing the env vars through the `loader`.
 
@@ -25010,7 +25014,7 @@ export default function Index() {
 }
 ```
 
-### Congratulations \[#react-router-congratulations]
+### Congratulations
 
 To recap, you've:
 
@@ -25021,7 +25025,7 @@ You can now use any Supabase feature from your client or server code.
 
 **Express**
 
-### Create the Supabase clients \[#express-create-clients]
+### Create the Supabase clients
 
 **Server Client**
 
@@ -25064,7 +25068,7 @@ app.post("/hello-world", async function (req, res, next) {
 })
 ```
 
-### Congratulations \[#express-congratulations]
+### Congratulations
 
 To recap, you've:
 
@@ -25075,7 +25079,7 @@ You can now use any Supabase feature from your client or server code.
 
 **Hono**
 
-### Create the Supabase clients \[#hono-create-clients]
+### Create the Supabase clients
 
 **Server Client**
 
@@ -25085,7 +25089,7 @@ Create a Hono middleware that creates a Supabase client.
 
 You can now use this middleware in your Hono application to create a server Supabase client that can be used to make authenticated requests.
 
-### Congratulations \[#hono-congratulations]
+### Congratulations
 
 To recap, you've:
 
@@ -25096,7 +25100,7 @@ You can now use any Supabase feature from your client or server code.
 
 **TanStack Start**
 
-### Write utility functions to create Supabase clients \[#tanstack-utility-functions]
+### Write utility functions to create Supabase clients
 
 TanStack Start renders matched routes on the server by default, so `beforeLoad` and `loader` run server-side on the initial request. Unlike Next.js, this means you don't need a proxy or middleware layer to keep sessions fresh. The server client reads and writes the session cookie directly on each request.
 
@@ -25126,7 +25130,7 @@ Danger: Skipping the check inside the server function exposes private data to un
 
 Any other server function that returns or mutates private data needs this same check. Don't rely on a route being nested under `_protected` alone.
 
-### Congratulations \[#tanstack-congratulations]
+### Congratulations
 
 To recap, you've:
 
@@ -26311,7 +26315,7 @@ app.get("/auth/callback", async function (req, res) {
 })
 ```
 
-### Configuration \[#configuration-web-oauth]
+### Configuration
 
 You will require the following information:
 
@@ -26447,7 +26451,7 @@ document.addEventListener('AppleIDSignInOnSuccess', async (event) => {
 
 Make sure you request the scope `name email` when initializing the library, as shown in the example above.
 
-### Configuration \[#configuration-web-apple-js]
+### Configuration
 
 To use Sign in with Apple JS you need to configure these options:
 
@@ -26569,7 +26573,7 @@ Note: - Sign in with Apple is not natively available on Android devices
 
 When working with bare React Native, you can use [invertase/react-native-apple-authentication](https://github.com/invertase/react-native-apple-authentication) to obtain the ID token on iOS. For Android, use the OAuth flow as shown above.
 
-### Configuration \[#configuration-expo-native]
+### Configuration
 
 Note: When testing with Expo Go, the Expo App ID `host.exp.Exponent` will be used. Make sure to add this to the "Client IDs" list in your [Supabase dashboard Apple provider configuration](https://supabase.com/dashboard/project/_/auth/providers)!
 
@@ -26643,7 +26647,7 @@ Future<AuthResponse> signInWithApple() async {
 }
 ```
 
-### Configuration \[#configuration-flutter-native]
+### Configuration
 
 1. Have an **App ID** which uniquely identifies the app you are building. You can create a new App ID from the [Identifiers](https://developer.apple.com/account/resources/identifiers/list/bundleId) section in the Apple Developer Console (use the filter menu in the upper right side to see all App IDs). These usually are a reverse domain name string, for example `com.example.app`. Make sure you configure Sign in with Apple for the App ID you created or already have, in the Capabilities list. At this time Supabase Auth does not support Server-to-Server notification endpoints, so you should leave that setting blank. (In the past App IDs were referred to as *bundle IDs.*)
 2. Register all of the App IDs that will be using your Supabase project in the [Apple provider configuration in the Supabase dashboard](https://supabase.com/dashboard/project/_/auth/providers) under *Client IDs*.
@@ -26667,7 +26671,7 @@ await supabase.auth.signInWithOAuth(
 
 This call takes the user to Apple's consent screen. Once the flow ends, the user's profile information is exchanged and validated with Supabase Auth before it redirects back to your Flutter application with an access and refresh token representing the user's session.
 
-### Configuration \[#configuration-flutter-web]
+### Configuration
 
 You will require the following information:
 
@@ -26760,7 +26764,7 @@ struct SignInView: View {
 }
 ```
 
-### Configuration \[#configuration-swift-native]
+### Configuration
 
 1. Have an **App ID** which uniquely identifies the app you are building. You can create a new App ID from the [Identifiers](https://developer.apple.com/account/resources/identifiers/list/bundleId) section in the Apple Developer Console (use the filter menu in the upper right side to see all App IDs). These usually are a reverse domain name string, for example `com.example.app`. Make sure you configure Sign in with Apple for the App ID you created or already have, in the Capabilities list. At this time Supabase Auth does not support Server-to-Server notification endpoints, so you should leave that setting blank. (In the past App IDs were referred to as *bundle IDs.*)
 2. Register all of the App IDs that will be using your Supabase project in the [Apple provider configuration in the Supabase dashboard](https://supabase.com/dashboard/project/_/auth/providers) under *Client IDs*.
@@ -26849,7 +26853,7 @@ Button(onClick = { authState.startFlow() }) {
 }
 ```
 
-### Configuration \[#configuration-kotlin]
+### Configuration
 
 **For iOS (native Sign in with Apple):**
 
@@ -30514,7 +30518,7 @@ class GoogleSignInViewController: UIViewController {
 }
 ```
 
-### Configuration \[#ios-configuration]
+### Configuration
 
 1. Follow the integration instructions on the [get started with Google Sign-In](https://developers.google.com/identity/sign-in/ios/start-integrating) for the iOS guide.
 2. Configure the [OAuth Consent Screen](https://console.cloud.google.com/apis/credentials/consent). This information is shown to the user when giving consent to your app. In particular, make sure you have set up links to your app's privacy policy and terms of service.
@@ -30883,7 +30887,7 @@ const { data, error } = await supabase.auth.signInWithOAuth({
 })
 ```
 
-### Google pre-built \[#google-pre-built]
+### Google pre-built
 
 Most web apps and websites can use Google's [personalized sign-in buttons](https://developers.google.com/identity/gsi/web/guides/personalized-button), [One Tap](https://developers.google.com/identity/gsi/web/guides/features) or [automatic sign-in](https://developers.google.com/identity/gsi/web/guides/automatic-sign-in-sign-out) for the best user experience.
 
@@ -37380,7 +37384,7 @@ Learn how to pick a connection method and where to find the connection string fo
 
 For how pooling works and the limits that apply to your connections, see [Connection pooling and limits](https://supabase.com/docs/guides/database/connecting-to-postgres/pooling-and-limits).
 
-## Which connection method do you use? \[#choose-a-connection-method]
+## Which connection method do you use?
 
 How you connect to your database depends on where your code runs. Find your case in the table, then get the matching connection string.
 
@@ -37398,7 +37402,7 @@ Caution: The IPv4 add-on is not dual-stack: enabling it swaps the project's IPv6
 
 For the host, port, and IP version of each mode, see [Endpoints and IP versions](#endpoints-and-ip-versions). For a named ORM or database GUI, see [Quickstarts](#quickstarts).
 
-## Get your connection string \[#get-your-connection-string]
+## Get your connection string
 
 Connecting from a frontend application? You don't need a connection string. Skip to [Data APIs and client libraries](#data-apis-and-client-libraries), which uses your project URL and an API key instead.
 
@@ -37411,7 +37415,7 @@ For every Postgres connection mode, the string comes from the same place:
 
 The sections below show what each string looks like and when to use it. Take the host, port, and username from the string you copied rather than typing the bracketed placeholders literally. The pooler host in particular can't be composed from your region, and pooled connections use a different username from direct connections. Both are covered under [Endpoints and IP versions](#endpoints-and-ip-versions).
 
-### Direct connection \[#direct-connection]
+### Direct connection
 
 The direct connection string connects directly to your Postgres instance. Use it for persistent backends, such as virtual machines (VMs) and long-running containers. Examples include AWS EC2 machines, Fly.io VMs, and DigitalOcean Droplets.
 
@@ -37423,7 +37427,7 @@ postgresql://postgres:[YOUR-PASSWORD]@db.[PROJECT-REF].supabase.co:5432/postgres
 
 Get this string from the Supabase Dashboard by clicking [Connect](https://supabase.com/dashboard/project/_?showConnect=true).
 
-### Shared pooler, session mode \[#pooler-session-mode]
+### Shared pooler, session mode
 
 The session mode connection string connects to your Postgres instance through the shared pooler. Use it as an alternative to a direct connection when you connect from an IPv4-only network.
 
@@ -37433,7 +37437,7 @@ postgresql://postgres.[PROJECT-REF]:[YOUR-PASSWORD]@[POOLER-HOST]:5432/postgres
 
 Get this string from the Supabase Dashboard by clicking [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&method=session) and choosing **Session pooler**.
 
-### Shared pooler, transaction mode \[#pooler-transaction-mode]
+### Shared pooler, transaction mode
 
 The transaction mode connection string connects to your Postgres instance through the shared pooler in transaction-pooling mode. Use it for serverless and edge functions, which open many short-lived connections.
 
@@ -37447,7 +37451,7 @@ postgresql://postgres.[PROJECT-REF]:[YOUR-PASSWORD]@[POOLER-HOST]:6543/postgres
 
 Get this string from the Supabase Dashboard by clicking [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&method=transaction) and choosing **Transaction pooler**.
 
-### Dedicated pooler \[#dedicated-pooler]
+### Dedicated pooler
 
 On paid plans, Supabase provisions a dedicated pooler that runs alongside your Postgres database. The dedicated pooler runs in transaction mode only. For session mode, use the [shared pooler](#pooler-session-mode). It is reachable over IPv6, or over IPv4 if the project has the [IPv4 add-on](https://supabase.com/docs/guides/platform/ipv4-address).
 
@@ -37457,7 +37461,7 @@ postgresql://postgres:[YOUR-PASSWORD]@db.[PROJECT-REF].supabase.co:6543/postgres
 
 Get this string from the Supabase Dashboard by clicking [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&method=transaction).
 
-### Data APIs and client libraries \[#data-apis-and-client-libraries]
+### Data APIs and client libraries
 
 The Data APIs let you interact with your database using REST or GraphQL requests. You can use these APIs to fetch and insert data from the frontend, as long as your tables have [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) (RLS) enabled and policies that allow the access. RLS with no policies denies every request.
 
@@ -37473,7 +37477,7 @@ For convenience, you can also use the [Supabase client libraries](https://supaba
 - [C#](https://supabase.com/docs/reference/csharp/introduction)
 - [Kotlin](https://supabase.com/docs/reference/kotlin/introduction)
 
-### Endpoints and IP versions \[#endpoints-and-ip-versions]
+### Endpoints and IP versions
 
 Each mode has its own host, port, and IP version support. IP version support depends on your plan and on whether the project has the [IPv4 add-on](https://supabase.com/docs/guides/platform/ipv4-address).
 
@@ -37548,7 +37552,7 @@ Direct connections and session mode support all four, so none of this applies to
 
 Caution: `postgres.js` pipelines queries by default, so this combination can hang queries or return mismatched rows — see the [Postgres.js guide](https://supabase.com/docs/guides/database/postgres-js) for how to avoid it.
 
-### SSL \[#connecting-with-ssl]
+### SSL
 
 Connect using SSL wherever possible, to prevent snooping and man-in-the-middle attacks.
 
@@ -37562,7 +37566,7 @@ Set SSL to `require` so the driver refuses to connect without encryption. Most d
 
 Serverless runtimes freeze a function between requests, which can leave a pooled TCP socket stale. If you see `CONNECT_TIMEOUT` errors or queries that hang until the execution limit, see [Troubleshooting `CONNECT_TIMEOUT` or hanging queries in Serverless Functions](https://supabase.com/kb/troubleshooting/troubleshooting-connect_timeout-or-hanging-queries-in-vercel-serverless-functions).
 
-## Quickstarts \[#quickstarts]
+## Quickstarts
 
 Each quickstart connects one ORM or database GUI to your Supabase database.
 
@@ -37602,7 +37606,7 @@ How connection pooling works, and the limits that apply to your connections
 
 Learn how to choose between connection modes, size a pool, and work out why you're running out of connections. To get connected, see [Connect to your database](https://supabase.com/docs/guides/database/connecting-to-postgres).
 
-## How connection pooling works \[#how-connection-pooling-works]
+## How connection pooling works
 
 Connection pooling improves database performance by reusing existing connections between queries. This reduces the overhead of establishing connections and improves scalability.
 
@@ -37612,7 +37616,7 @@ A pooler sits between clients and the database and shares a small set of databas
 
 ![A direct connection reserves one database connection per client. A connection pooler shares a smaller set of database connections across many clients.](https://supabase.com/docs/img/guides/database/connecting-to-postgres/how-connection-pooling-works.png)
 
-### Application-side and server-side poolers \[#application-side-poolers]
+### Application-side and server-side poolers
 
 There are two kinds, and they work together.
 
@@ -37622,7 +37626,7 @@ There are two kinds, and they work together.
 
 For more on when each is needed and how to size them, see the [Supavisor FAQ](https://supabase.com/kb/troubleshooting/supavisor-faq-YyP5tI).
 
-### Shared and dedicated poolers \[#shared-pooler]
+### Shared and dedicated poolers
 
 Supabase offers two poolers. The shared pooler, [Supavisor](https://github.com/supabase/supavisor), is multi-tenant, available on every project, and IPv4-only. The dedicated pooler, [PgBouncer](https://www.pgbouncer.org/), is available on paid plans and runs alongside your Postgres instance. Like the direct connection, it is on IPv6, or on IPv4 if the project has the [IPv4 add-on](https://supabase.com/docs/guides/platform/ipv4-address).
 
@@ -37632,7 +37636,7 @@ In most cases, choose either PgBouncer or Supavisor for pooled or transaction-ba
 
 ## Connection limits
 
-### Pool size \[#pooler-pool-size]
+### Pool size
 
 Pool size sets how many connections a pooler is allowed to open to Postgres. You can adjust it in [Database settings](https://supabase.com/dashboard/project/_/database/settings) in the Supabase Dashboard.
 
@@ -37640,7 +37644,7 @@ Supavisor and PgBouncer read the same setting but apply it independently, so rai
 
 For what the setting counts, and how it interacts with the user, database, and mode combinations connecting to your project, see [the Supavisor FAQ](https://supabase.com/kb/troubleshooting/supavisor-faq-YyP5tI).
 
-### Client connections and backend connections \[#client-connections-and-backend-connections]
+### Client connections and backend connections
 
 There are two limits to understand when working with poolers.
 
@@ -37662,7 +37666,7 @@ Stay below the maximum rather than at it. Supabase services hold their own conne
 
 For the connection counts that come with each compute size, see [compute and disk](https://supabase.com/docs/guides/platform/compute-and-disk#postgres-replication-slots-wal-senders-and-connections). For the terminology, see [Supavisor and connection terminology explained](https://supabase.com/kb/troubleshooting/supavisor-and-connection-terminology-explained-9pr_ZO).
 
-### Monitor connection usage \[#monitor-connection-usage]
+### Monitor connection usage
 
 Track connection usage in the [Observability](https://supabase.com/dashboard/project/_/observability/database) section of the Supabase Dashboard. There are three reports:
 
@@ -37800,7 +37804,7 @@ export { sql } from 'kysely'
 
 Cloudflare's Workers runtime also uses the [V8 engine](https://v8.dev/), but it provides polyfills for a subset of Node.js APIs and the [TCP Sockets API](https://developers.cloudflare.com/workers/runtime-apis/tcp-sockets/). That gives you three options:
 
-### Drivers \[#cloudflare-workers-drivers]
+### Drivers
 
 - [supabase-js](https://developers.cloudflare.com/workers/databases/third-party-integrations/supabase/)
 - [Postgres.js](https://github.com/porsager/postgres?tab=readme-ov-file#cloudflare-workers-support)
@@ -37810,7 +37814,7 @@ Cloudflare's Workers runtime also uses the [V8 engine](https://v8.dev/), but it 
 
 Supabase Edge Functions use the [Deno runtime](https://deno.com/), which has native support for TCP connections. You can choose any of these clients:
 
-### Drivers \[#supabase-edge-functions-drivers]
+### Drivers
 
 - [supabase-js](https://supabase.com/docs/guides/functions/connect-to-postgres#using-supabase-js)
 - [Deno Postgres driver](https://supabase.com/docs/guides/functions/connect-to-postgres#using-a-postgres-client)
@@ -38781,7 +38785,7 @@ A successful call to a web URL from the `http` extension returns a record with t
 
 ## Examples
 
-### Basic `GET` example \[#simple-get-example]
+### Basic `GET` example
 
 ```sql
 select
@@ -38790,7 +38794,7 @@ from
   extensions.http_get('https://jsonplaceholder.typicode.com/todos/1');
 ```
 
-### Basic `POST` example \[#simple-post-example]
+### Basic `POST` example
 
 ```sql
 select
@@ -39380,7 +39384,7 @@ Procedural languages are automatically installed within `pg_catalog`, so you don
 
 Creates an HTTP GET request returning the request's ID. HTTP requests are not started until the transaction is committed.
 
-### Signature \[#get-signature]
+### Signature
 
 Caution: This is a Postgres [SECURITY DEFINER](https://supabase.com/docs/guides/database/postgres/row-level-security#use-security-definer-functions) function.
 
@@ -39404,7 +39408,7 @@ net.http_get(
     language plpgsql
 ```
 
-### Usage \[#get-usage]
+### Usage
 
 ```sql
 select
@@ -39422,7 +39426,7 @@ Creates an HTTP POST request with a JSON body, returning the request's ID. HTTP 
 
 The body's character set encoding matches the database's `server_encoding` setting.
 
-### Signature \[#post-signature]
+### Signature
 
 Caution: This is a Postgres [SECURITY DEFINER](https://supabase.com/docs/guides/database/postgres/row-level-security#use-security-definer-functions) function
 
@@ -39447,7 +39451,7 @@ net.http_post(
     language plpgsql
 ```
 
-### Usage \[#post-usage]
+### Usage
 
 ```sql
 select
@@ -39465,7 +39469,7 @@ request_id
 
 Creates an HTTP DELETE request, returning the request's ID. HTTP requests are not started until the transaction is committed.
 
-### Signature \[#post-signature]
+### Signature
 
 Caution: This is a Postgres [SECURITY DEFINER](https://supabase.com/docs/guides/database/postgres/row-level-security#use-security-definer-functions) function
 
@@ -39490,7 +39494,7 @@ net.http_delete(
     security definer
 ```
 
-### Usage \[#delete-usage]
+### Usage
 
 ```sql
 select
@@ -58163,7 +58167,7 @@ values
 
 The functions we'll cover in this guide are:
 
-### `to_tsvector()` \[#to-tsvector]
+### `to_tsvector()`
 
 Converts your data into searchable tokens. `to_tsvector()` stands for "to text search vector." For example:
 
@@ -58174,7 +58178,7 @@ select to_tsvector('green eggs and ham');
 
 Collectively these tokens are called a "document" which Postgres can use for comparisons.
 
-### `to_tsquery()` \[#to-tsquery]
+### `to_tsquery()`
 
 Converts a query string into tokens to match. `to_tsquery()` stands for "to text search query."
 
@@ -58188,7 +58192,7 @@ Postgres provides several functions to create tsquery objects:
 - **`phraseto_tsquery()`** - Creates phrase queries: `phraseto_tsquery('english', 'fat rats')` → `'fat' <-> 'rat'`
 - **`websearch_to_tsquery()`** - Supports web search syntax with quotes, "or", and negation
 
-### Match: `@@` \[#match]
+### Match: `@@`
 
 The `@@` symbol is the "match" symbol for Full Text Search. It returns any matches between a `to_tsvector` result and a `to_tsquery` result.
 
@@ -58726,7 +58730,7 @@ When you want the search term to include a phrase or multiple words, you can con
 select * from search_books_by_title_prefix('Little+Puppy');
 ```
 
-## Web search syntax with `websearch_to_tsquery()` \[#websearch-to-tsquery]
+## Web search syntax with `websearch_to_tsquery()`
 
 The `websearch_to_tsquery()` function provides an intuitive search syntax similar to popular web search engines, making it ideal for user-facing search interfaces.
 
@@ -58914,7 +58918,7 @@ var result = await supabase
 Visit [Postgres: Text Search Functions and Operators](https://www.postgresql.org/docs/current/functions-textsearch.html)
 to learn about additional query operators you can use to do more advanced `full text queries`, such as:
 
-### Proximity: `<->` \[#proximity]
+### Proximity: `<->`
 
 The proximity symbol is useful for searching for terms that are a certain "distance" apart.
 For example, to find the phrase `big dreams`, where the a match for "big" is followed immediately by a match for "dreams":
@@ -59049,7 +59053,7 @@ var result = await supabase
   .Get();
 ```
 
-### Negation: `!` \[#negation]
+### Negation: `!`
 
 The negation symbol can be used to find phrases which *don't* contain a search term.
 For example, to find records that have the word `big` but not `little`:
@@ -59118,11 +59122,11 @@ var result = await supabase
   .Get();
 ```
 
-## Ranking search results \[#ranking]
+## Ranking search results
 
 Postgres provides ranking functions to sort search results by relevance, helping you present the most relevant matches first. Since ranking functions need to be computed server-side, use RPC functions and generated columns.
 
-### Creating a search function with ranking \[#search-function-ranking]
+### Creating a search function with ranking
 
 First, create a Postgres function that handles search and ranking:
 
@@ -59176,7 +59180,7 @@ await supabase.Rpc("search_books", new Dictionary<string, object> { { "search_qu
 select * from search_books('big');
 ```
 
-### Ranking with weighted columns \[#weighted-ranking]
+### Ranking with weighted columns
 
 Postgres allows you to assign different importance levels to different parts of your documents using weight labels. This is especially useful when you want matches in certain fields (like titles) to rank higher than matches in other fields (like descriptions).
 
@@ -59310,7 +59314,7 @@ Say you search for "Harry". With weighted columns:
 
 This ensures that books with "Harry" in the title ranks significantly higher than books that only mention "Harry" in the description, providing more relevant search results for users.
 
-### Using ranking with indexes \[#ranking-with-indexes]
+### Using ranking with indexes
 
 When using the `fts` column you created earlier, ranking becomes more efficient. Create a function that uses the indexed column:
 
@@ -59362,7 +59366,7 @@ await supabase.Rpc("search_books_fts", new Dictionary<string, object> { { "searc
 select * from search_books_fts('little & big');
 ```
 
-### Using web search syntax with ranking \[#websearch-ranking]
+### Using web search syntax with ranking
 
 You can also create a function that combines `websearch_to_tsquery()` with ranking for user-friendly search:
 
@@ -59448,7 +59452,7 @@ To use the Dashboard:
 3. Enter the SQL that creates or replaces your database function.
 4. Click **Run**. You can also press `cmd+enter` or `ctrl+enter`.
 
-### Basic functions \[#simple-functions]
+### Basic functions
 
 Create a basic database function that returns the string "hello world".
 
@@ -65013,7 +65017,7 @@ language sql;
 
 The Supabase Dashboard contains tools to help you identify timed-out and long-running queries.
 
-### Query timeout logs \[#using-the-sql-editor]
+### Query timeout logs
 
 Go to the [Explorer](https://supabase.com/dashboard/project/_/explorer), select **Run SQL**, choose query source **Logs**, set a time range, and run the following query to identify timed-out events (`statement timeout`) and queries that successfully run for longer than 10 seconds (`duration`).
 
@@ -65609,7 +65613,7 @@ This guide addresses common Prisma errors that you might encounter while using S
 
 Note: A full list of errors can be found in [Prisma's official docs](https://www.prisma.io/docs/orm/reference/error-reference).
 
-## Understanding connection string parameters: \[#start]
+## Understanding connection string parameters:
 
 Unlike other libraries, Prisma lets you configure [its settings](https://www.prisma.io/docs/orm/overview/databases/postgresql#arguments) through special options appended to your connection string.
 
@@ -65627,7 +65631,7 @@ connection_string.../postgres?KEY1=VALUE&KEY2=VALUE&KEY3=VALUE
 
 Supavisor in transaction mode (port 6543) does not support [prepared statements](https://www.postgresql.org/docs/current/sql-prepare.html), which Prisma will try to create in the background.
 
-#### Solution: \[#solution-prepared-statement-exists]
+#### Solution:
 
 - Add `pgbouncer=true` to the connection string. This turns off prepared statements in Prisma.
 
@@ -65641,13 +65645,13 @@ Supavisor in transaction mode (port 6543) does not support [prepared statements]
 
 Prisma couldn't establish a connection with Postgres or Supavisor before the timeout.
 
-#### Possible causes: \[#possible-causes-cant-reach-database-server-at]
+#### Possible causes:
 
 - **Database overload**: The database server is under heavy load, causing Prisma to struggle to connect.
 - **Malformed connection string**: The connection string used by Prisma is incorrect or incomplete.
 - **Transient network issues**: Temporary network problems are disrupting the connection.
 
-#### Solutions: \[#solution-cant-reach-database-server-at]
+#### Solutions:
 
 - **Check database health**: Use the [Observability Dashboard](https://supabase.com/dashboard/project/_/observability/database) to monitor CPU, memory, and I/O usage. If the database is overloaded, consider increasing your [compute size](https://supabase.com/docs/guides/platform/compute-and-disk) or [optimizing your queries](https://supabase.com/docs/guides/database/query-optimization).
 - **Verify connection string**: Double-check the connection string in your Prisma configuration to ensure it matches in your [project connect page](https://supabase.com/dashboard/project/_?showConnect=true).
@@ -65663,13 +65667,13 @@ Prisma couldn't establish a connection with Postgres or Supavisor before the tim
 
 Prisma is unable to allocate connections to pending queries fast enough to meet demand.
 
-#### Possible causes: \[#possible-causes-timed-out-fetching-a-new-connection]
+#### Possible causes:
 
 - **Overwhelmed server**: The server hosting Prisma is under heavy load, limiting its ability to manage connections. By default, Prisma will create the default `num_cpus * 2 + 1` worth of connections. A common cause for server strain is increasing the `connection_limit` significantly past the default.
 - **Insufficient pool size**: The Supavisor pooler does not have enough connections available to satisfy Prisma's requests.
 - **Slow queries**: Prisma's queries are taking too long to execute, preventing it from releasing connections for reuse.
 
-#### Solutions: \[#solution-timed-out-fetching-a-new-connection]
+#### Solutions:
 
 - **Increase the pool timeout**: Increase the `pool_timeout` parameter in your Prisma configuration to give the pooler more time to allocate connections.
 - **Reduce the connection limit**: If you've explicitly increased the `connection_limit` parameter in your Prisma configuration, try reducing it to a more reasonable value.
@@ -65683,7 +65687,7 @@ Prisma is unable to allocate connections to pending queries fast enough to meet 
 
 According to this [GitHub Issue for Prisma](https://github.com/prisma/prisma/discussions/7389), this error may be related to large return values for queries. It may also be caused by significant database strain.
 
-#### Solutions: \[#solution-server-has-closed-the-connection]
+#### Solutions:
 
 - **Limit row return sizes**: Try to limit the total amount of rows returned for particularly large requests.
 - **Minimize database strain**:Check the Reports Page for database strain. If there is obvious strain, consider [optimizing](https://supabase.com/docs/guides/database/query-optimization) or increasing compute size
@@ -65694,12 +65698,12 @@ According to this [GitHub Issue for Prisma](https://github.com/prisma/prisma/dis
 
 Prisma relies on migration files to ensure your database aligns with Prisma's model. External schema changes are detected as "drift", which Prisma will try to overwrite, potentially causing data loss.
 
-#### Possible causes: \[#possible-causes-your-database-schema-is-not-in-sync]
+#### Possible causes:
 
 - **Supabase Managed Schemas**: Supabase may update managed schemas like auth and storage to introduce new features. Granting Prisma access to these schemas can lead to drift during updates.
 - **External Schema Modifications**: Your team or another tool might have modified the database schema outside of Prisma, causing drift.
 
-#### Solution: \[#solution-your-database-schema-is-not-in-sync]
+#### Solution:
 
 - **Baselining migrations**: [baselining](https://www.prisma.io/docs/orm/prisma-migrate/workflows/baselining) re-syncs Prisma by capturing the current database schema as the starting point for future migrations.
 
@@ -65709,13 +65713,13 @@ Prisma relies on migration files to ensure your database aligns with Prisma's mo
 
 Postgres or Supavisor rejected a request for more connections
 
-#### Possible causes:\[#possible-causes-max-client-connections-reached]
+#### Possible causes:
 
 - **When working in transaction mode (port 6543):** The error "Max client connections reached" occurs when clients try to form more connections with the pooler than it can support.
 - **When working in session mode (port 5432):** The max amount of clients is restricted to the "Pool Size" value in the [Database Settings](https://supabase.com/dashboard/project/_/database/settings). If the "Pool Size" is set to 15, even if the pooler can handle 200 client connections, it will still be effectively capped at 15 for each unique ["database-role+database" combination](https://github.com/orgs/supabase/discussions/21566).
 - **When working with direct connections**: Postgres is already servicing the max amount of connections
 
-#### Solutions \[#solutions-causes-max-client-connections-reached]
+#### Solutions
 
 - **Transaction Mode for serverless apps**: If you are using serverless functions (Supabase Edge, Vercel, AWS Lambda), switch to transaction mode (port 6543). It handles more connections than session mode or direct connections.
 - **Reduce the number of Prisma connections**: A single client-server can establish multiple connections with a pooler. Typically, serverless setups do not need many connections. Starting with fewer, like five or three, or even one, is often sufficient. In serverless setups, begin with `connection_limit=1`, increasing cautiously if needed to avoid maxing out connections.
@@ -65730,11 +65734,11 @@ Postgres or Supavisor rejected a request for more connections
 
 A Prisma migration is referencing a schema it is not permitted to manage.
 
-#### Possible causes: \[#possible-causes-cross-schema-references]
+#### Possible causes:
 
 - A migration references a schema that Prisma is not permitted to manage
 
-#### Solutions: \[#solutions-cross-schema-references]
+#### Solutions:
 
 - Multi-schema support: If the external schema isn't Supabase managed, list the relevant schemas on the `datasource` block in your `schema.prisma` file.
 
@@ -66637,7 +66641,7 @@ Pipelines charges for configured pipeline hours, initial sync data, and ongoing 
 
 Prepare your destination, then enable and configure Pipelines in the Dashboard. A Postgres publication selects the data to replicate; you can create one during setup.
 
-### Step 1: Prepare your destination \[#step-1-create-a-postgres-publication]
+### Step 1: Prepare your destination
 
 Follow your destination guide to prepare its resources and credentials, and check its source table requirements:
 
@@ -67346,7 +67350,7 @@ Replicate Postgres tables to [DuckLake](https://ducklake.select/) for current-st
 
 Insert-only tables don't require a primary key or replica identity. Updates and deletes require a published Postgres row identity. See [supported replica identities](#replica-identity).
 
-## Prepare DuckLake resources \[#understand-the-ducklake-components]
+## Prepare DuckLake resources
 
 DuckLake stores metadata in a Postgres catalog and data in object storage. Pipelines offers two ways to set them up:
 
@@ -67363,11 +67367,11 @@ To read the replicated data, you also need a compatible query engine.
 
 You can query replicated tables, but treat them and their underlying catalog and object-storage state as read-only. Writes outside Pipelines can conflict with replication and background maintenance.
 
-## Configure DuckLake as a destination \[#choose-a-configuration-mode]
+## Configure DuckLake as a destination
 
 Follow [Set up Pipelines](https://supabase.com/docs/guides/database/replication/pipelines#setup-overview). In **Add pipeline**, select **DuckLake**, enter a **Pipeline name**, choose a **Publication**, and set **Initial sync**. Then choose how to configure the catalog and storage.
 
-### Use this Supabase project \[#use-supabase]
+### Use this Supabase project
 
 Use the current Supabase project's Postgres database for the catalog and a Storage bucket in the same project. Pipelines creates the connection credentials when you create the destination.
 
@@ -67386,7 +67390,7 @@ To configure the destination:
 
 Credential-provisioning warnings are expected before creation: catalog and Storage credentials are provisioned when you save the destination. Review the metadata schema and bucket before proceeding.
 
-### Enter connection details \[#custom-parameters]
+### Enter connection details
 
 Use this mode to connect an existing Postgres database and S3-compatible object storage. You provide their connection details and credentials.
 
@@ -67421,7 +67425,7 @@ Source schema and table names are preserved, while ASCII uppercase letters in co
 
 A source `TRUNCATE` truncates the DuckLake table. A [table restart](https://supabase.com/docs/guides/database/replication/pipelines-monitoring#restarting-tables) drops and recreates it. [Removing a table from the publication](https://supabase.com/docs/guides/database/replication/pipelines#removing-tables-from-replication) leaves its destination data in place.
 
-## Query replicated data \[#query-the-destination]
+## Query replicated data
 
 Connect DuckDB with its `ducklake` extension, or another compatible engine, to the same catalog and storage path. Query through the catalog; reading raw Parquet files can miss inlined changes, delete files, and the current snapshot.
 
@@ -67750,7 +67754,7 @@ Schema changes also affect stored history. A rename changes the column name in e
 
 For type changes, unsupported changes, and interrupted schema changes, see the shared [schema-change behavior and recovery](https://supabase.com/docs/guides/database/replication/pipelines#schema-change-support). Keep the primary key and its values stable. Apart from [enabling change tracking for a stream](#use-streams-and-tasks), do not alter managed destination objects manually.
 
-## Query replicated data \[#query-and-materialize-current-state]
+## Query replicated data
 
 Query the automatically maintained companion view to read current rows. You don't need to generate SQL or create the view yourself. It resolves complete and partial updates, explicit `NULL` values, and deletes followed by reinserts.
 
@@ -80238,7 +80242,7 @@ const supabaseAdmin = createClient(Deno.env.get('SUPABASE_URL')!, secretKeys['de
 
 If you are replacing legacy keys in an existing application rather than starting fresh, follow [Migrating to new API keys](https://supabase.com/docs/guides/getting-started/migrating-to-new-api-keys).
 
-### Rotate a leaked or compromised key \[#leaked-key]
+### Rotate a leaked or compromised key
 
 This procedure covers both a leaked secret key and a leaked `service_role` key.
 
@@ -98749,7 +98753,7 @@ Every example in this guide is written as `supabase <command>`. Translate it to 
 
 Note: If you want a working project to explore rather than an empty one, `supabase bootstrap` scaffolds a starter application (Next.js, Flutter, and more) with schema, migrations, and config already wired up. It's an alternative entry point to `supabase init` when starting a new project from scratch.
 
-## The `./supabase` directory \[#the-supabase-directory]
+## The `./supabase` directory
 
 After `supabase init`, your project contains a `./supabase` directory. Here's what goes in it and what to commit:
 
@@ -98765,7 +98769,7 @@ The `config.toml` is safe to commit. It contains no secrets by default. If you a
 
 Note: Many database commands accept `--local` and `--linked` flags to choose what they act on. The defaults are not the same across commands: `db diff` and `db reset` default to `--local`, while `db pull`, `db push`, and `db dump` default to `--linked`. When in doubt, pass the flag explicitly.
 
-## Which diff engine you're on \[#pg-delta]
+## Which diff engine you're on
 
 `db diff`, `db pull`, and the `db schema declarative` commands generate SQL with a diff engine. The CLI ships two. [`pg-delta`](https://github.com/supabase/pg-toolbelt/tree/main/packages/pg-delta) is the engine for projects created with a recent `supabase init`, and [`migra`](https://github.com/djrobstep/migra) is the legacy engine.
 
@@ -99223,7 +99227,7 @@ The CLI is project-scoped either way. Most commands, including `start`, expect a
 
 Install the CLI, bring the Supabase stack up on your machine, and stop it when you're done.
 
-### Install the Supabase CLI \[#installing-the-supabase-cli]
+### Install the Supabase CLI
 
 **npm**
 
@@ -99282,7 +99286,7 @@ Linux packages are provided in [Releases](https://github.com/supabase/cli/releas
    - `sudo dpkg -i <...>.deb`
    - `sudo rpm -i <...>.rpm`
 
-### Run a local Supabase project \[#running-a-local-supabase-project]
+### Run a local Supabase project
 
 The most common thing you do with the CLI is run the full Supabase stack (Postgres, Auth, Storage, and the rest) on your own machine. That stack runs in Docker containers, so you need a container runtime installed first. On Windows and Linux, follow the official guide to install and configure [Docker Desktop](https://docs.docker.com/desktop). In a coding agent sandbox or on a CI runner with no container engine, the experimental native runtime runs each service as a process instead. It supports Linux and macOS on Apple silicon. For platform requirements and setup, see [Docker and native runtimes](https://supabase.com/docs/guides/local-development/docker-and-native-runtimes).
 
@@ -99411,7 +99415,7 @@ Note: For advanced logs analysis using the Logs Explorer, use the BigQuery backe
 
 All logs are stored in the local database under the `_analytics` schema.
 
-### Stop local services \[#stopping-local-services]
+### Stop local services
 
 When you finish working, stop the stack. Stopping doesn't reset your local database:
 
@@ -99431,7 +99435,7 @@ For the steps, see [Pushing to a remote project](https://supabase.com/docs/guide
 
 These sections cover the CLI itself rather than your local project.
 
-### Use the beta channel \[#beta-channel]
+### Use the beta channel
 
 Pre-release CLI builds ship from the development branch and are versioned `X.Y.Z-beta.N`. Use the npm `beta` dist-tag, or install `supabase-beta` with Homebrew or Scoop. `supabase-beta` is a separate package from `supabase`.
 
@@ -99476,7 +99480,7 @@ brew link --overwrite supabase-beta
 
 Beta builds are attached to [GitHub pre-releases](https://github.com/supabase/cli/releases). Download the `.apk`, `.deb`, or `.rpm` for your platform and install with the same commands as [Linux packages](#linux-packages).
 
-### Update the Supabase CLI \[#updating-the-supabase-cli]
+### Update the Supabase CLI
 
 Update the CLI with the same package manager you installed it with. See the [CLI releases page](https://github.com/supabase/cli/releases) for available versions.
 
@@ -100474,7 +100478,7 @@ Two checks gate `sync` on a schema tree the CLI didn't generate:
 - If your migrations call `pg_net` (for example, [database webhooks](https://supabase.com/docs/guides/database/webhooks)), add `[experimental.webhooks]` with `enabled = true` to `config.toml` first. The section isn't part of the default `init` template.
 - Declare the extensions your schema files depend on. The check trips for `pg_net` and for extensions your own migrations create. When it does, interactive `sync` offers to add the missing declaration and re-plan, or to stage a fresh export into a sibling `-next` directory and print the commands to adopt it. A non-interactive run only prints those commands. Extensions the local stack already ships, such as `pgcrypto` and `uuid-ossp`, don't trip the check even when undeclared, so declare them yourself.
 
-## Declarative schemas on the legacy `migra` engine \[#declarative-schemas-on-the-legacy-migra-engine]
+## Declarative schemas on the legacy `migra` engine
 
 Projects that haven't enabled `pg-delta` can still use declarative schemas. The workflow has the same shape, but the commands differ, and the `db schema declarative` commands aren't available. See [Diff engines](https://supabase.com/docs/guides/local-development/diff-engines) for how to check which engine you're on and how the engines compare.
 
@@ -100527,11 +100531,11 @@ schema_paths = [
 supabase db dump > supabase/schemas/prod.sql
 ```
 
-### Limitations of the legacy engine \[#limitations-of-the-legacy-engine]
+### Limitations of the legacy engine
 
 In addition to the caveats above, the legacy [`migra`](https://github.com/djrobstep/migra) engine has these limitations: [view owner and grants](https://github.com/djrobstep/migra/issues/160#issuecomment-1702983833), [security invoker on views](https://github.com/djrobstep/migra/issues/234) (the setting is silently dropped from the view definition), [indexes on a materialized view aren't restored when the view is recreated](https://github.com/djrobstep/migra/issues/194), [alter policy statements](https://github.com/djrobstep/schemainspect/blob/master/schemainspect/pg/obj.py#L228), [column privileges](https://github.com/djrobstep/schemainspect/pull/67), [comments](https://github.com/djrobstep/migra/issues/69), [roles](https://github.com/djrobstep/migra/issues/240), [`alter publication ... add table`](https://github.com/supabase/cli/issues/883), and [`create domain` statements](https://github.com/supabase/cli/issues/2137). Add those entities through versioned migrations instead.
 
-### Switching to `pg-delta` \[#switching-to-pg-delta]
+### Switching to `pg-delta`
 
 Follow [Switch an existing project to `pg-delta`](https://supabase.com/docs/guides/local-development/diff-engines#switch-an-existing-project-to-pg-delta). For a declarative project, the steps that change your day-to-day work are removing `schema_paths`, replacing `db diff` with `db schema declarative sync` in scripts and CI, and dropping the `supabase stop` step.
 
@@ -100593,7 +100597,7 @@ The commands and the migration workflow are the same on both engines. What diffe
 
 For a walkthrough of the day-to-day commands on `pg-delta`, see [Local development workflow](https://supabase.com/docs/guides/local-development/cli-workflows). For the declarative workflow on each engine, see [Declarative database schemas](https://supabase.com/docs/guides/local-development/declarative-database-schemas).
 
-## Switch an existing project to `pg-delta` \[#switch-an-existing-project-to-pg-delta]
+## Switch an existing project to `pg-delta`
 
 Switching is a one-time change to `config.toml` followed by a catch-up migration. Do it on a branch so you can review everything before it reaches your team.
 
@@ -102373,7 +102377,7 @@ Read project data, diagnose issues, and run agent prompts to check your project
 
 Use project data to understand what is happening, investigate issues, and give an agent repeatable checks to run.
 
-## Read project data \[#metrics-api]
+## Read project data
 
 Query logs for events, inspect database statistics, or review advisor findings. Use Reports to visualize signals and the [Metrics API](https://supabase.com/docs/guides/observability/metrics) to export them.
 
@@ -102416,7 +102420,7 @@ Query ClickHouse logs through MCP, the Management API, or Explorer
 
 This guide explains how to query project logs with ClickHouse SQL. Use [MCP](#mcp) or the [Management API](#api) for programmatic access, or [Explorer](#studio) in Studio. To filter events without SQL, use [Logs in Studio](https://supabase.com/docs/guides/observability/logs).
 
-## Query events \[#querying-with-the-logs-explorer]
+## Query events
 
 Every event is a row in `logs`. Select a service with `source`, use a bounded time range, and limit the returned rows. For example, this query returns the latest API server errors within the supplied time range:
 
@@ -102434,11 +102438,11 @@ limit 100;
 
 Use the returned timestamp, ID, status, and path to investigate an event. No rows means no matching recorded events in that window; check the source, filters, and retention before concluding that there were no errors.
 
-### MCP \[#mcp]
+### MCP
 
 Connect [Supabase MCP](https://supabase.com/docs/guides/ai-tools/mcp) with `project_ref` and `read_only=true`. Call `query_logs` with the SQL and an explicit time range, using the tool's input schema. Use `execute_sql` for Postgres database diagnostics, not ClickHouse logs.
 
-### Management API \[#api]
+### Management API
 
 Set `SUPABASE_ACCESS_TOKEN` to a Management API access token authorized to read project logs, and `PROJECT_REF` to the project reference. Set `START` and `END` to UTC timestamps such as `2026-09-07T09:00:00Z`, with a range of 24 hours or less. Save the query above as `logs.sql`, then run:
 
@@ -102452,7 +102456,7 @@ curl --get "https://api.supabase.com/v1/projects/$PROJECT_REF/analytics/endpoint
 
 Inspect both the HTTP status and the response for query errors before interpreting the results. Without `sql`, this endpoint queries API Gateway events only. See the [logs endpoint reference](https://supabase.com/docs/reference/api/v1-get-project-logs) for request and response fields.
 
-### Explorer \[#studio]
+### Explorer
 
 1. Open [Explorer](https://supabase.com/dashboard/project/_/explorer) and select **Run SQL**.
 2. Open the query source menu and select **Logs**.
@@ -102461,15 +102465,15 @@ Inspect both the HTTP status and the response for query errors before interpreti
 
 The selected range is applied to the query. The **Logs** query source chooses ClickHouse; `source = 'edge_logs'` chooses API Gateway events within it. Select **Database** instead when running Postgres SQL.
 
-### Terminal access \[#cli]
+### Terminal access
 
 The Supabase CLI does not query ClickHouse logs. Use the Management API command above. For live database statistics, use [`supabase inspect db`](https://supabase.com/docs/guides/observability/inspect).
 
-## Sources and fields \[#logs-explorer]
+## Sources and fields
 
 Use the [Log sources and fields reference](https://supabase.com/docs/guides/observability/log-field-reference) to choose the service and query expressions. API Gateway events and a service's own logs describe different layers of a request.
 
-### Read structured fields \[#understanding-field-references]
+### Read structured fields
 
 Read a map key with bracket access, retaining its full dotted path. Values in `log_attributes` are strings. Cast numeric values before comparing them. `toInt32OrZero` treats missing or non-numeric values as zero; do not interpret that zero as a measured status or duration.
 
@@ -102485,11 +102489,11 @@ order by events desc
 limit 100;
 ```
 
-### Time ranges \[#timestamp-display-and-behavior]
+### Time ranges
 
 `timestamp` is a UTC `DateTime64` value. Compare and order it directly. Explorer supplies the chosen time range; MCP and API callers must supply their own bounded range. To compare more than 24 hours through the API, fetch separate windows within retention and combine their aggregates.
 
-## Search messages \[#filtering-with-regular-expressions]
+## Search messages
 
 Use `ilike` for a case-insensitive substring, or ClickHouse's [`match`](https://clickhouse.com/docs/sql-reference/functions/string-search-functions#match) for a regular expression:
 
@@ -102506,7 +102510,7 @@ limit 100;
 
 Combine predicates with `and`, `or`, and `not`. Select only the fields needed for the investigation. To correlate sources, use an identifier present in both; a shared timestamp alone does not establish that events belong to the same request.
 
-## Filter by Postgres error code \[#sqlstate-filtering]
+## Filter by Postgres error code
 
 Filter `postgres_logs` by SQLSTATE to surface errors at a specific category rather than by message text. The code lives in `log_attributes['parsed.sql_state_code']`.
 
@@ -102541,27 +102545,27 @@ limit 50;
 
 SQLSTATE codes starting with `25` or `53` usually indicate platform-level resource events rather than application bugs. See the [PostgREST error codes reference](https://supabase.com/docs/guides/api/rest/postgrest-error-codes#database-level-errors) and [Database size guide](https://supabase.com/docs/guides/platform/database-size#read-only-mode) for context.
 
-## Query limits \[#limit-and-result-row-limitations]
+## Query limits
 
 Use an explicit `limit` and narrow time range. The logs query surface rejects `select *` and `count(*)`; list columns and use `count()`. A result limit bounds returned rows, not the time range scanned.
 
-## Record additional events \[#working-with-api-logs]
+## Record additional events
 
 For HTTP header capture, see [Captured HTTP headers](https://supabase.com/docs/guides/observability/log-field-reference#captured-http-headers). Configure event recording separately from querying:
 
-### Postgres connections \[#logging-postgres-connections]
+### Postgres connections
 
 See [Configure connection logging](https://supabase.com/docs/guides/observability/configure-logging#postgres-connections).
 
-### Postgres statements \[#logging-postgres-queries]
+### Postgres statements
 
 See [Configure statement logging](https://supabase.com/docs/guides/observability/configure-logging#postgres-statements).
 
-### Statement classes \[#configuring-pgauditlog]
+### Statement classes
 
 See [pgAudit configuration](https://supabase.com/docs/guides/database/extensions/pgaudit#configure-the-extension) for session and role scope.
 
-### Realtime connections \[#logging-realtime-connections]
+### Realtime connections
 
 See [Configure Realtime logging](https://supabase.com/docs/guides/observability/configure-logging#realtime-connections).
 
@@ -105755,7 +105759,7 @@ from pg_statio_user_tables;
 
 Use a workload-specific baseline before alerting. A null ratio means no observed accesses. The operating system cache may serve a Postgres buffer miss. See [cache inspection](https://supabase.com/docs/reference/cli/supabase-inspect-db-cache-hit).
 
-## Capacity \[#usage]
+## Capacity
 
 ### Collect size and connection measurements
 
@@ -106675,7 +106679,7 @@ Filter, inspect, and export project events in the Logs view
 
 Use [Logs](https://supabase.com/dashboard/project/_/logs) to inspect events across your hosted project's services. For SQL queries through [Explorer](https://supabase.com/dashboard/project/_/explorer), MCP, or the API, see [Query logs with SQL](https://supabase.com/docs/guides/observability/advanced-log-filtering).
 
-## Find events \[#product-logs]
+## Find events
 
 1. Open [Logs](https://supabase.com/dashboard/project/_/logs).
 2. Set the **Time Range** in the sidebar, or select a range on the timeline.
@@ -106705,13 +106709,13 @@ The nested service toggles under **API Gateway** include or exclude gateway requ
 
 For SQL source names, see the [Log field reference](https://supabase.com/docs/guides/observability/log-field-reference).
 
-### Postgres \[#postgres]
+### Postgres
 
 Postgres logs contain database activity and errors. Connection events appear when [connection logging](https://supabase.com/docs/guides/platform/postgres-connection-logging) is enabled. Clear **Connection logs** under **Postgres** to hide them.
 
 To record additional statement classes, see [Configure statement logging](https://supabase.com/docs/guides/observability/configure-logging#postgres-statements).
 
-## Inspect an event \[#expanding-results]
+## Inspect an event
 
 Select a row to open its detail panel. **Overview**, when available for the log type, shows service details. **Raw JSON** shows the event data. Dock the panel at the bottom or on the right.
 
@@ -106725,7 +106729,7 @@ Edge Function invocations can include associated console output. In SQL, invocat
 
 For continuous export, use [Log drains](https://supabase.com/docs/guides/observability/log-drains).
 
-## Missing results \[#single-service-collections]
+## Missing results
 
 Check the time range, selected log types, and exclusions first. **User** combined with only Postgres or another unsupported type returns no matches. An empty result does not establish that the user had no activity.
 
@@ -107923,7 +107927,9 @@ The table below shows the actions each role can take on the resources belonging 
 
 # AWS Marketplace
 
-You can purchase Supabase through the AWS Marketplace. Buying through AWS Marketplace can mean simpler billing, faster progress toward your AWS spend commitments, and centralized purchasing across all your AWS accounts. Start the purchase process from our marketplace [product page](https://aws.amazon.com/marketplace/pp/prodview-zjciuce2qsb3q).
+You can purchase Supabase through the AWS Marketplace. Buying through AWS Marketplace can mean simpler billing, faster progress toward your AWS spend commitments, and centralized purchasing across all your AWS accounts.
+
+Choose a purchasing path on the [Supabase AWS Marketplace page](https://supabase.com/aws-marketplace), or go directly to the [AWS Marketplace listing](https://aws.amazon.com/marketplace/pp/prodview-zjciuce2qsb3q).
 
 When you make a purchase on AWS Marketplace, AWS will calculate sales taxes, VAT, GST, service tax, etc. (“Indirect Taxes”), if applicable, based on the location of your AWS account. You can find more details in the [AWS tax help guide](https://aws.amazon.com/tax-help/marketplace-buyers/).
 
@@ -108220,7 +108226,7 @@ You can access PITR in the [Point in Time](https://supabase.com/dashboard/projec
 
 The latest restore point of the project could be significantly behind the current time. This occurs when the database has had no recent activity, and therefore we have not made any recent WAL file backups. However, the state of the database at the latest recovery point still reflects the current state of the database, given that no transactions have occurred in between.
 
-### Restoration process \[#pitr-restoration-process]
+### Restoration process
 
 ![PITR: Calendar view](/docs/img/backups-pitr-calendar-view.png)
 
@@ -108731,7 +108737,7 @@ We charge hourly for additional compute based on your usage. Read more about [us
 
 All Postgres databases on Supabase run in isolated environments. Compute sizes up to `Medium` run on shared CPU, while `Large` and above run on dedicated vCPUs. The burst behavior you can observe on Supabase relates to disk IO rather than CPU — see [Compute size](#compute-size) for the disk limits of each compute size.
 
-### Compute upgrades \[#upgrades]
+### Compute upgrades
 
 Caution: Compute instance changes are usually applied with less than 2 minutes of downtime, but can take longer depending on the underlying Cloud Provider.
 
@@ -109558,7 +109564,7 @@ You can restore a paused project for up to 1 year after it was paused:
 
 The project will return to its previous state, including data and configurations.
 
-### Restore window \[#90-day-window-to-restore]
+### Restore window
 
 Once the project is paused, there is a 1-year window to restore the project on the platform from within Supabase Studio. The time limit exists because backups are only retained for a limited period, and platform changes may not be backward compatible with older backups. Unlike active projects, static backups can't be updated to accommodate such changes.
 
@@ -112330,7 +112336,7 @@ This guide aims to exhibit the process of transferring your Amazon RDS database 
 
 Supabase's core is Postgres, enabling the use of row-level security and providing access to over 40 Postgres extensions. By migrating from Amazon RDS to Supabase, you can leverage Postgres to its fullest potential and acquire all the features you need to complete your project.
 
-## Retrieve your Amazon RDS database credentials \[#retrieve-rds-credentials]
+## Retrieve your Amazon RDS database credentials
 
 1. Sign in to your [Amazon RDS account](https://aws.amazon.com/rds/).
 2. Select the region where your RDS database is located.
@@ -112342,7 +112348,7 @@ Supabase's core is Postgres, enabling the use of row-level security and providin
 
 ![Copying RDS credentials from AWS Management Console](/docs/img/guides/resources/migrating-to-supabase/amazon-rds/amazon-rds_credentials.png)
 
-## Retrieve your Supabase host \[#retrieve-supabase-host]
+## Retrieve your Supabase host
 
 1. If you're new to Supabase, [create a project](https://database.new). Make a note of your password, you will need this later. If you forget it, you can [reset it here](https://supabase.com/dashboard/project/_/database/settings).
 2. On your project dashboard, click [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&method=session)
@@ -112667,7 +112673,7 @@ Supabase provides several [tools](https://github.com/supabase-community/firebase
 - `firestoreusers2json` ([TypeScript](https://github.com/supabase-community/firebase-to-supabase/blob/main/auth/firestoreusers2json.ts), [JavaScript](https://github.com/supabase-community/firebase-to-supabase/blob/main/auth/firestoreusers2json.js)) exports users from an existing Firebase project to a `.json` file on your local system.
 - `import_users` ([TypeScript](https://github.com/supabase-community/firebase-to-supabase/blob/main/auth/import_users.ts), [JavaScript](https://github.com/supabase-community/firebase-to-supabase/blob/main/auth/import_users.js)) imports users from a saved `.json` file into your Supabase project (inserting those users into the `auth.users` table of your `Postgres` database instance).
 
-## Set up the migration tool \[#set-up-migration-tool]
+## Set up the migration tool
 
 1. Clone the [`firebase-to-supabase`](https://github.com/supabase-community/firebase-to-supabase) repository:
 
@@ -112693,7 +112699,7 @@ Supabase provides several [tools](https://github.com/supabase-community/firebase
 
 5. Enter the password you used when you created your Supabase project in the `password` entry in the `supabase-service.json` file.
 
-## Generate a Firebase private key \[#generate-firebase-private-key]
+## Generate a Firebase private key
 
 1. Sign in to your [Firebase Console](https://console.firebase.google.com/project) and open your project.
 2. Click the gear icon next to **Project Overview** in the sidebar and select **Project Settings**.
@@ -112701,7 +112707,7 @@ Supabase provides several [tools](https://github.com/supabase-community/firebase
 4. Click **Generate new private key**.
 5. Rename the downloaded file to `firebase-service.json`.
 
-## Save your Firebase password hash parameters \[#save-firebase-hash-parameters]
+## Save your Firebase password hash parameters
 
 1. Sign in to your [Firebase Console](https://console.firebase.google.com/project) and open your project.
 2. Select **Authentication** (Build section) in the sidebar.
@@ -112721,14 +112727,14 @@ hash_config {
 
 ## Command line options
 
-### Dump Firestore users to a JSON file \[#dump-firestore-users]
+### Dump Firestore users to a JSON file
 
 `node firestoreusers2json.js [<filename.json>] [<batch_size>]`
 
 - `filename.json`: (optional) output filename (defaults to `./users.json`)
 - `batchSize`: (optional) number of users to fetch in each batch (defaults to 100)
 
-### Import JSON users file to Supabase Auth (Postgres: `auth.users`) \[#import-json-users-file]
+### Import JSON users file to Supabase Auth (Postgres: `auth.users`)
 
 `node import_users.js <path_to_json_file> [<batch_size>]`
 
@@ -112761,7 +112767,7 @@ Supabase provides several [tools](https://github.com/supabase-community/firebase
 1. Files are downloaded from a Firebase storage bucket to a local filesystem.
 2. Files are uploaded from the local filesystem to a Supabase storage bucket.
 
-## Set up the migration tool \[#set-up-migration-tool]
+## Set up the migration tool
 
 1. Clone the [`firebase-to-supabase`](https://github.com/supabase-community/firebase-to-supabase) repository:
 
@@ -112777,7 +112783,7 @@ Supabase provides several [tools](https://github.com/supabase-community/firebase
 
 5. Under **Project API keys**, copy the **secret** key and update the `SUPABASE_KEY` value in `supabase-keys.js`.
 
-## Generate a Firebase private key \[#generate-firebase-private-key]
+## Generate a Firebase private key
 
 1. Sign in to your [Firebase Console](https://console.firebase.google.com/project) and open your project.
 2. Click the gear icon next to **Project Overview** in the sidebar and select **Project Settings**.
@@ -112787,7 +112793,7 @@ Supabase provides several [tools](https://github.com/supabase-community/firebase
 
 ## Command line options
 
-### Download Firestore Storage bucket to a local filesystem folder \[#download-firestore-storage-bucket]
+### Download Firestore Storage bucket to a local filesystem folder
 
 `node download.js <prefix> [<folder>] [<batchSize>] [<limit>] [<token>]`
 
@@ -112799,7 +112805,7 @@ Supabase provides several [tools](https://github.com/supabase-community/firebase
 
 To process in batches using multiple command-line executions, you must use the same parameters with a new `<token>` on subsequent calls. Use the token displayed on the last call to continue the process at a given point.
 
-### Upload files to Supabase Storage bucket \[#upload-to-supabase-storage-bucket]
+### Upload files to Supabase Storage bucket
 
 `node upload.js <prefix> <folder> <bucket>`
 
@@ -112830,7 +112836,7 @@ Supabase provides several [tools](https://github.com/supabase-community/firebase
 
 The Firestore `collection` is "flattened" and converted to a table with basic columns of one of the following types: `text`, `numeric`, `boolean`, or `jsonb`. If your structure is more complex, you can write a program to split the newly-created `json` file into multiple, related tables before you import your `json` file(s) to Supabase.
 
-## Set up the migration tool \[#set-up-migration-tool]
+## Set up the migration tool
 
 1. Clone the [`firebase-to-supabase`](https://github.com/supabase-community/firebase-to-supabase) repository:
 
@@ -112856,7 +112862,7 @@ The Firestore `collection` is "flattened" and converted to a table with basic co
 
 5. Enter the password you used when you created your Supabase project in the `password` entry in the `supabase-service.json` file.
 
-## Generate a Firebase private key \[#generate-firebase-private-key]
+## Generate a Firebase private key
 
 1. Sign in to your [Firebase Console](https://console.firebase.google.com/project) and open your project.
 2. Click the gear icon next to **Project Overview** in the sidebar and select **Project Settings**.
@@ -112900,7 +112906,7 @@ And split it into two files (one table for users and one table for items):
 ]
 ```
 
-### Import JSON file to Supabase (Postgres) \[#import-to-supabase]
+### Import JSON file to Supabase (Postgres)
 
 `node json2supabase.js <path_to_json_file> [<primary_key_strategy>] [<primary_key_name>]`
 
@@ -113049,7 +113055,7 @@ Supabase is one of the best [free alternatives to Heroku Postgres](https://supab
 
 
 
-## Retrieve your Heroku database credentials \[#retrieve-heroku-credentials]
+## Retrieve your Heroku database credentials
 
 1. Sign in to your [Heroku account](https://heroku.com) and select the project you want to migrate.
 2. Click **Resources** in the menu and select your **Heroku Postgres** database.
@@ -113060,13 +113066,13 @@ Supabase is one of the best [free alternatives to Heroku Postgres](https://supab
    - User (`$HEROKU_USER`)
    - Password (`$HEROKU_PASSWORD`)
 
-## Retrieve your Supabase connection string \[#retrieve-supabase-connection-string]
+## Retrieve your Supabase connection string
 
 1. If you're new to Supabase, [create a project](https://supabase.com/dashboard).
 2. Get your project's Session pooler connection string from your project dashboard by clicking [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&method=session).
 3. Replace \[YOUR-PASSWORD] in the connection string with your database password. You can reset your database password on the [Database Settings page](https://supabase.com/dashboard/project/_/database/settings) if you do not have it.
 
-## Export your Heroku database to a file \[#export-heroku-database]
+## Export your Heroku database to a file
 
 Use `pg_dump` with your Heroku credentials to export your Heroku database to a file (e.g., `heroku_dump.sql`).
 
@@ -113076,7 +113082,7 @@ pg_dump --clean --if-exists --quote-all-identifiers \
  --no-owner --no-privileges > heroku_dump.sql
 ```
 
-## Import the database to your Supabase project \[#import-database-to-supabase]
+## Import the database to your Supabase project
 
 Use `psql` to import the Heroku database file to your Supabase project.
 
@@ -113121,7 +113127,7 @@ Before you begin the migration, you need to collect essential information about 
    - Username
    - Password
 
-## Retrieve your Supabase host \[#retrieve-supabase-host]
+## Retrieve your Supabase host
 
 1. If you're new to Supabase, [create a project](https://supabase.com/dashboard).
    Make a note of your password, you will need this later. If you forget it, you can [reset it here](https://supabase.com/dashboard/project/_/database/settings).
@@ -113197,7 +113203,7 @@ Before you begin the migration, you need to collect essential information about 
    - Username
    - Password
 
-## Retrieve your Supabase host \[#retrieve-supabase-host]
+## Retrieve your Supabase host
 
 1. If you're new to Supabase, [create a project](https://supabase.com/dashboard).
    Make a note of your password, you will need this later. If you forget it, you can [reset it here](https://supabase.com/dashboard/project/_/database/settings).
@@ -113261,7 +113267,7 @@ Migrate your existing Neon database to Supabase.
 
 This guide demonstrates how to migrate your Neon database to Supabase to get the most out of Postgres while gaining access to all the features you need to build a project.
 
-## Retrieve your Neon database credentials \[#retrieve-credentials]
+## Retrieve your Neon database credentials
 
 1. Sign in to your Neon Console [https://console.neon.tech/login](https://console.neon.tech/login).
 2. Select **Projects** on the left.
@@ -113284,7 +113290,7 @@ Example:
 export OLD_DB_URL="postgresql://neondb_owner:xxxxxxxxxxxxxxx-random-word-yyyyyyyy.us-west-2.aws.neon.tech/neondb?sslmode=require"
 ```
 
-## Retrieve your Supabase connection string \[#retrieve-supabase-connection-string]
+## Retrieve your Supabase connection string
 
 1. If you're new to Supabase, [create a project](https://supabase.com/dashboard).
    Make a note of your password, you will need this later. If you forget it, you can [reset it here](https://supabase.com/dashboard/project/_/database/settings).
@@ -113942,7 +113948,7 @@ Supabase is one of the best free alternative to Render Postgres. Supabase provid
 
 This guide demonstrates how to migrate from Render to Supabase to get the most out of Postgres while gaining access to all the features you need to build a project.
 
-## Retrieve your Render database credentials \[#retrieve-render-credentials]
+## Retrieve your Render database credentials
 
 1. Sign in to your [Render account](https://render.com) and select the project you want to migrate.
 2. Click **Dashboard** in the menu and click in your **Postgres** database.
@@ -113956,7 +113962,7 @@ Example:
 %env PSQL_COMMAND=PGPASSWORD=RgaMDfTS_password_FTPa7 psql -h dpg-a_server_in.oregon-postgres.render.com -U my_db_pxl0_user my_db_pxl0
 ```
 
-## Retrieve your Supabase connection string \[#retrieve-supabase-connection-string]
+## Retrieve your Supabase connection string
 
 1. If you're new to Supabase, [create a project](https://supabase.com/dashboard).
    Make a note of your password, you will need this later. If you forget it, you can [reset it here](https://supabase.com/dashboard/project/_/database/settings).
@@ -114023,7 +114029,7 @@ Migrate your existing Vercel Postgres database to Supabase.
 
 This guide demonstrates how to migrate your Vercel Postgres database to Supabase to get the most out of Postgres while gaining access to all the features you need to build a project.
 
-## Retrieve your Vercel Postgres database credentials \[#retrieve-credentials]
+## Retrieve your Vercel Postgres database credentials
 
 1. Sign in to your Vercel Dashboard [https://vercel.com/login](https://vercel.com/login).
 2. Click on the **Storage** tab.
@@ -114053,7 +114059,7 @@ Example:
 export OLD_DB_URL="postgres://default:xxxxxxxxxxxx@yy-yyyyy-yyyyyy-yyyyyyy.us-west-2.aws.neon.tech:5432/verceldb?sslmode=require"
 ```
 
-## Retrieve your Supabase connection string \[#retrieve-supabase-connection-string]
+## Retrieve your Supabase connection string
 
 1. If you're new to Supabase, [create a project](https://supabase.com/dashboard).
    Make a note of your password, you will need this later. If you forget it, you can [reset it here](https://supabase.com/dashboard/project/_/database/settings).
@@ -115157,14 +115163,14 @@ Each Supabase project supports configurable restrictions on the IP ranges allowe
 
 If direct connections to your database [resolve to an IPv6 address](https://supabase.com/dashboard/project/_/database/settings), add both IPv4 and IPv6 CIDRs to your allowlist. Network restrictions apply to all connection routes, whether pooled or direct. There are two exceptions: if you have an extension on the IPv6 migration, or if you have the [IPv4 add-on](https://supabase.com/dashboard/project/_/settings/addons), you only need to add IPv4 CIDRs.
 
-## Configure with the dashboard \[#to-get-started-via-the-dashboard]
+## Configure with the dashboard
 
 To configure network restrictions with the dashboard:
 
 1. Open your project's [Database Settings](https://supabase.com/dashboard/project/_/database/settings) page.
 2. In the Network Restrictions section, make your changes. You need [Owner or Admin permissions](https://supabase.com/docs/guides/platform/access-control#manage-organization-members) to make changes.
 
-## Configure with the CLI \[#to-get-started-via-the-cli]
+## Configure with the CLI
 
 To configure network restrictions with the CLI:
 
@@ -116577,7 +116583,7 @@ Note: Looking for docs on how to add Single Sign-On support in your Supabase pro
 
 Supabase supports single sign-on (SSO) using Microsoft Azure AD.
 
-## Step 1: Add and register an Enterprise application \[#add-and-register-enterprise-application]
+## Step 1: Add and register an Enterprise application
 
 Open up the [Azure Active Directory](https://portal.azure.com/#view/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/~/Overview) dashboard for your Azure account.
 
@@ -116585,13 +116591,13 @@ Click the *Add* button then *Enterprise application*.
 
 ![Azure AD console: Default Directory Overview](/docs/img/sso-azure-step-01.png)
 
-## Step 2: Choose to create your own application \[#create-application]
+## Step 2: Choose to create your own application
 
 You'll be using the custom enterprise application setup for Supabase.
 
 ![Azure AD console: Browse Azure AD Gallery, select: Create your own application](/docs/img/sso-azure-step-02.png)
 
-## Step 3: Fill in application details \[#add-application-details]
+## Step 3: Fill in application details
 
 In the modal titled *Create your own application*, enter a display name for Supabase. This is the name your Azure AD users will see when signing in to Supabase from Azure. `Supabase` works in most cases.
 
@@ -116600,19 +116606,19 @@ don't find in the gallery (Non-gallery)*.
 
 ![Azure AD console: Create your own application modal](/docs/img/sso-azure-step-03.png)
 
-## Step 4: Set up single sign-on \[#set-up-single-sign-on]
+## Step 4: Set up single sign-on
 
 Before you get to assigning users and groups, which would allow accounts in Azure AD to access Supabase, you need to configure the SAML details that allows Supabase to accept sign in requests from Azure AD.
 
 ![Azure AD console: Supabase custom enterprise application, selected Set up single sign-on](/docs/img/sso-azure-step-04.png)
 
-## Step 5: Select SAML single sign-on method \[#saml-sso]
+## Step 5: Select SAML single sign-on method
 
 Supabase only supports the SAML 2.0 protocol for Single Sign-On, which is an industry standard.
 
 ![Azure AD console: Supabase application, Single sign-on configuration screen, selected SAML](/docs/img/sso-azure-step-05.png)
 
-## Step 6: Upload SAML-based sign-on metadata file \[#upload-saml-metadata]
+## Step 6: Upload SAML-based sign-on metadata file
 
 First you need to download Supabase's SAML metadata file. Click the button below to initiate a download of the file.
 
@@ -116637,19 +116643,19 @@ All of the correct information should automatically populate the *Basic SAML Con
 
 Finally, click the *Save* button to save the configuration.
 
-## Step 7: Obtain metadata URL \[#idp-metadata-url]
+## Step 7: Obtain metadata URL
 
 Save the link under **App Federation Metadata URL** in \*section 3 **SAML Certificates\***. You will need to enter this URL later in [Step 10](#dashboard-configure-metadata).
 
 ![Azure AD console: Supabase application, SAML Certificates card shown, App Federation Metadata Url highlighted](/docs/img/sso-azure-step-07.png)
 
-## Step 8: Enable SSO in the Dashboard \[#dashboard-enable-sso]
+## Step 8: Enable SSO in the Dashboard
 
 1. Visit the [SSO tab](https://supabase.com/dashboard/org/_/sso) under the Organization Settings page. ![SSO disabled](/docs/img/sso-dashboard-disabled.png)
 
 2. Toggle **Enable Single Sign-On** to begin configuration. Once enabled, the configuration form appears. ![SSO enabled](/docs/img/sso-dashboard-enabled.png)
 
-## Step 9: Configure domains \[#dashboard-configure-domain]
+## Step 9: Configure domains
 
 Enter one or more domains associated with your users email addresses (e.g., `supabase.com`).
 These domains determine which users are eligible to sign in via SSO.
@@ -116664,19 +116670,19 @@ Note: We do not permit use of public domains like `gmail.com`, `yahoo.com`.
 
 Note: You can configure each SSO provider with different email domains. For multi-environment setups (Dev/Staging/Prod), we recommend using IdP-initiated flow with multiple SAML apps under the same domain rather than domain-based routing. For more details, see the [Multiple SSO Providers guide](https://supabase.com/docs/guides/platform/sso/multiple-providers).
 
-## Step 10: Configure metadata \[#dashboard-configure-metadata]
+## Step 10: Configure metadata
 
 Enter the metadata URL you obtained from [Step 7](#idp-metadata-url) into the Metadata URL field:
 
 ![Metadata configuration with Azure AD](/docs/img/sso-dashboard-configure-metadata-azure.png)
 
-## Step 11: Configure attribute mapping \[#dashboard-configure-attributes]
+## Step 11: Configure attribute mapping
 
 Fill out the Attribute Mapping section using the **Azure** preset.
 
 ![Attribute mapping configuration](/docs/img/sso-dashboard-configure-attributes-azure.png)
 
-## Step 12: Join organization on sign-up (optional) \[#dashboard-configure-autojoin]
+## Step 12: Join organization on sign-up (optional)
 
 By default this setting is disabled, users signing in via SSO will not be added to your organization automatically.
 
@@ -116694,7 +116700,7 @@ We recommend choosing **Developer** as the default role (principle of least priv
 
 Note: Read [the Access Control documentation](https://supabase.com/docs/guides/platform/access-control) for details about each role.
 
-## Step 13: Save changes \[#dashboard-configure-save]
+## Step 13: Save changes
 
 When you click **Save changes**, your new SSO configuration is applied immediately. From that moment, any user with an email address matching one of your configured domains who visits your organization's sign-in URL will be routed through the SSO flow.
 
@@ -117110,23 +117116,23 @@ Note: Looking for docs on how to add Single Sign-On support in your Supabase pro
 
 Supabase supports single sign-on (SSO) using Google Workspace (formerly known as G Suite).
 
-## Step 1: Open the Google Workspace web and mobile apps console \[#google-workspace-console]
+## Step 1: Open the Google Workspace web and mobile apps console
 
 ![Google Workspace: Web and mobile apps admin console](/docs/img/sso-gsuite-step-01.png)
 
-## Step 2: Choose to add custom SAML app \[#add-custom-saml-app]
+## Step 2: Choose to add custom SAML app
 
 From the *Add app* button in the toolbar choose *Add custom SAML app*.
 
 ![Google Workspace: Web and mobile apps admin console, Add custom SAML app selected](/docs/img/sso-gsuite-step-02.png)
 
-## Step 3: Fill out app details \[#add-app-details]
+## Step 3: Fill out app details
 
 The information you enter here is for visibility into your Google Workspace. You can choose any values you like. `Supabase` as a name works well for most use cases. Optionally enter a description.
 
 ![Google Workspace: Web and mobile apps admin console, Add custom SAML, App details screen](/docs/img/sso-gsuite-step-03.png)
 
-## Step 4: Download IdP metadata \[#download-idp-metadata]
+## Step 4: Download IdP metadata
 
 This is a very important step. Click on *DOWNLOAD METADATA* and save the file that was downloaded. You will need to upload this file later in [Step 10](#dashboard-configure-metadata).
 
@@ -117136,7 +117142,7 @@ This is a very important step. Click on *DOWNLOAD METADATA* and save the file th
 
 Caution: **Certificate expiration:** Set a calendar reminder 30 days before the certificate expiration date. When the certificate is renewed, you'll need to download the new metadata file and update it in your Supabase SSO settings. Expired certificates are a common cause of SSO sign-in failures.
 
-## Step 5: Add service provider details \[#add-service-provider-details]
+## Step 5: Add service provider details
 
 Fill out these service provider details on the next screen.
 
@@ -117150,7 +117156,7 @@ Fill out these service provider details on the next screen.
 
 ![Google Workspace: Web and mobile apps admin console, Add custom SAML, Service provider details screen](/docs/img/sso-gsuite-step-05.png)
 
-## Step 6: Configure attribute mapping \[#configure-attribute-mapping]
+## Step 6: Configure attribute mapping
 
 Attribute mappings allow Supabase to get information about your Google Workspace users on each sign-in.
 
@@ -117160,7 +117166,7 @@ Any changes you make from this screen will be used later in [Step 10: Configure 
 
 ![Google Workspace: Web and mobile apps admin console, Add custom SAML, Attribute mapping](/docs/img/sso-gsuite-step-06.png)
 
-## Step 7: Configure user access \[#configure-user-access]
+## Step 7: Configure user access
 
 You can configure which Google Workspace user accounts will get access to Supabase. This is important if you wish to limit access to your software engineering teams.
 
@@ -117170,13 +117176,13 @@ You can configure this access by clicking on the *User access* card (or down-arr
 
 Note: Changes from this step sometimes take a while to propagate across Google's systems. Wait at least 15 minutes before testing your changes.
 
-## Step 8: Enable SSO in the Dashboard \[#dashboard-enable-sso]
+## Step 8: Enable SSO in the Dashboard
 
 1. Visit the [SSO tab](https://supabase.com/dashboard/org/_/sso) under the Organization Settings page. ![SSO disabled](/docs/img/sso-dashboard-disabled.png)
 
 2. Toggle **Enable Single Sign-On** to begin configuration. Once enabled, the configuration form appears. ![SSO enabled](/docs/img/sso-dashboard-enabled.png)
 
-## Step 9: Configure domains \[#dashboard-configure-domain]
+## Step 9: Configure domains
 
 Enter one or more domains associated with your users email addresses (e.g., `supabase.com`).
 These domains determine which users are eligible to sign in via SSO.
@@ -117191,13 +117197,13 @@ Note: We do not permit use of public domains like `gmail.com`, `yahoo.com`.
 
 Note: Each SSO provider can be configured with different email domains. For multi-environment setups (Dev/Staging/Prod), we recommend using IdP-initiated flow with multiple SAML apps under the same domain rather than domain-based routing. For more details, see the [Multiple SSO Providers guide](https://supabase.com/docs/guides/platform/sso/multiple-providers).
 
-## Step 10: Configure metadata \[#dashboard-configure-metadata]
+## Step 10: Configure metadata
 
 Upload the metadata file you downloaded in [Step 6](#download-idp-metadata) into the Metadata Upload File field.
 
 ![Metadata configuration with Google Workspace](/docs/img/sso-dashboard-configure-metadata-gsuite.png)
 
-## Step 11: Configure attribute mapping \[#dashboard-configure-attributes]
+## Step 11: Configure attribute mapping
 
 Enter the SAML attributes you filled out in [Step 6](#configure-attribute-mapping) into the Attribute Mapping section.
 
@@ -117205,7 +117211,7 @@ Enter the SAML attributes you filled out in [Step 6](#configure-attribute-mappin
 
 Note: If you did not customize your settings you may save some time by clicking the **G Suite** preset.
 
-## Step 12: Join organization on signup (optional) \[#dashboard-configure-autojoin]
+## Step 12: Join organization on signup (optional)
 
 Note: **Recommended workflow:** Start with auto-join **disabled** to test your SSO configuration. Once SSO sign-in is working correctly, enable auto-join if desired.
 
@@ -117225,7 +117231,7 @@ We recommend choosing **Developer** as the default role (principle of least priv
 
 Note: Visit [access-control](https://supabase.com/docs/guides/platform/access-control) documentation for details about each role.
 
-## Step 13: Save changes \[#dashboard-configure-save]
+## Step 13: Save changes
 
 When you click **Save changes**, your new SSO configuration is applied immediately. From that moment, any user with an email address matching one of your configured domains who visits your organization's sign-in URL will be routed through the SSO flow.
 
@@ -118043,25 +118049,25 @@ Note: Looking for docs on how to add Single Sign-On support in your Supabase pro
 
 Supabase supports single sign-on (SSO) using Okta.
 
-## Step 1: Choose to create an app integration in the applications dashboard \[#create-app-integration]
+## Step 1: Choose to create an app integration in the applications dashboard
 
 Navigate to the Applications dashboard of the Okta admin console. Click *Create App Integration*.
 
 ![Okta dashboard: Create App Integration button](/docs/img/sso-okta-step-01.png)
 
-## Step 2: Choose SAML 2.0 in the app integration dialog \[#create-saml-app]
+## Step 2: Choose SAML 2.0 in the app integration dialog
 
 Supabase supports the SAML 2.0 SSO protocol. Choose it from the *Create a new app integration* dialog.
 
 ![Okta dashboard: Create new app integration dialog](/docs/img/sso-okta-step-02.png)
 
-## Step 3: Fill out general settings \[#add-general-settings]
+## Step 3: Fill out general settings
 
 The information you enter here is for visibility into your Okta applications menu. You can choose any values you like. `Supabase` as a name works well for most use cases.
 
 ![Okta dashboard: Create SAML Integration wizard](/docs/img/sso-okta-step-03.png)
 
-## Step 4: Fill out SAML settings \[#add-saml-settings]
+## Step 4: Fill out SAML settings
 
 These settings let Supabase use SAML 2.0 properly with your Okta application. Make sure you enter this information exactly as shown on in this table.
 
@@ -118077,7 +118083,7 @@ These settings let Supabase use SAML 2.0 properly with your Okta application. Ma
 
 ![Okta dashboard: Create SAML Integration wizard, Configure SAML step](/docs/img/sso-okta-step-04.png)
 
-## Step 5: Fill out attribute statements \[#add-attribute-statements]
+## Step 5: Fill out attribute statements
 
 Attribute Statements allow Supabase to get information about your Okta users on each sign-in.
 
@@ -118085,7 +118091,7 @@ Attribute Statements allow Supabase to get information about your Okta users on 
 
 ![Okta dashboard: Attribute Statements configuration screen](/docs/img/sso-okta-step-05.png)
 
-## Step 6: Obtain IdP metadata URL \[#idp-metadata-url]
+## Step 6: Obtain IdP metadata URL
 
 Supabase needs to finalize enabling single sign-on with your Okta application.
 
@@ -118097,13 +118103,13 @@ The link usually has this structure: `https://<okta-org>.okta.com/apps/<app-id>/
 
 ![Okta dashboard: SAML Signing Certificates, Actions button highlighted](/docs/img/sso-okta-step-06.png)
 
-## Step 7: Enable SSO in the Dashboard \[#dashboard-enable-sso]
+## Step 7: Enable SSO in the Dashboard
 
 1. Visit the [SSO tab](https://supabase.com/dashboard/org/_/sso) under the Organization Settings page. ![SSO disabled](/docs/img/sso-dashboard-disabled.png)
 
 2. Toggle **Enable Single Sign-On** to begin configuration. Once enabled, the configuration form appears. ![SSO enabled](/docs/img/sso-dashboard-enabled.png)
 
-## Step 8: Configure domains \[#dashboard-configure-domain]
+## Step 8: Configure domains
 
 Enter one or more domains associated with your users email addresses (e.g., `supabase.com`).
 These domains determine which users are eligible to sign in via SSO.
@@ -118118,13 +118124,13 @@ Note: We do not permit use of public domains like `gmail.com`, `yahoo.com`.
 
 Note: Each SSO provider can be configured with different email domains. For multi-environment setups (Dev/Staging/Prod), we recommend using IdP-initiated flow with multiple SAML apps under the same domain rather than domain-based routing. For more details, see the [Multiple SSO Providers guide](https://supabase.com/docs/guides/platform/sso/multiple-providers).
 
-## Step 9: Configure metadata \[#dashboard-configure-metadata]
+## Step 9: Configure metadata
 
 Enter the metadata URL you obtained from [Step 6](#idp-metadata-url) into the Metadata URL field:
 
 ![Metadata configuration with Okta](/docs/img/sso-dashboard-configure-metadata-okta.png)
 
-## Step 10: Configure attribute mapping \[#dashboard-configure-attributes]
+## Step 10: Configure attribute mapping
 
 Enter the SAML attributes you filled out in [Step 5](#add-attribute-statements) into the Attribute Mapping section.
 
@@ -118132,7 +118138,7 @@ Enter the SAML attributes you filled out in [Step 5](#add-attribute-statements) 
 
 Note: If you did not customize your settings you may save some time by clicking the **Okta** preset.
 
-## Step 11: Join organization on signup (optional) \[#dashboard-configure-autojoin]
+## Step 11: Join organization on signup (optional)
 
 Note: **Recommended workflow:** Start with auto-join **disabled** to test your SSO configuration. Once SSO sign-in is working correctly, enable auto-join if desired.
 
@@ -118152,7 +118158,7 @@ We recommend choosing **Developer** as the default role (principle of least priv
 
 Note: Visit [access-control](https://supabase.com/docs/guides/platform/access-control) documentation for details about each role.
 
-## Step 12: Save changes \[#dashboard-configure-save]
+## Step 12: Save changes
 
 When you click **Save changes**, your new SSO configuration is applied immediately. From that moment, any user with an email address matching one of your configured domains who visits your organization's sign-in URL will be routed through the SSO flow.
 
@@ -119232,7 +119238,7 @@ Existing projects on lower versions of Postgres are not impacted, and the extens
 
 During the Supabase project upgrade, the `pg_cron` extension gets dropped and recreated. Before this process, the `cron.job_run_details` table is duplicated to avoid losing historical logs. The instantaneous disk pressure created by duplicating an extremely large details table can cause at best unnecessary performance degradation, or at worst, upgrade process failures.
 
-### Upgrading to pg\_graphql 1.6.0 \[#upgrading-to-pg\_graphql-160]
+### Upgrading to pg\_graphql 1.6.0
 
 Starting with pg\_graphql 1.6.0, GraphQL introspection is disabled by default. After the upgrade, queries to `__schema` and `__type` will return an error unless introspection is explicitly enabled. See the [pg\_graphql configuration docs](https://supabase.github.io/pg_graphql/configuration/#introspection) for full details.
 
@@ -120573,7 +120579,7 @@ pgmq is a lightweight message queue built on Postgres.
 create extension pgmq;
 ```
 
-## Usage \[#get-usage]
+## Usage
 
 ### Queue management
 
@@ -121249,7 +121255,7 @@ This is to prevent direct access to the `pgmq` schema and its tables (RLS is not
 
 To get started, navigate to the [**Queues > Settings**](https://supabase.com/dashboard/project/_/integrations/queues/settings) section of the Dashboard and enable **Expose Queues via PostgREST**. Once enabled, Supabase creates and exposes a `pgmq_public` schema containing database function wrappers to a subset of `pgmq`'s database functions.
 
-### Add an RLS policy on your tables in `pgmq` schema \[#enable-rls-on-your-tables-in-pgmq-schema]
+### Add an RLS policy on your tables in `pgmq` schema
 
 If you expose your pgmq schema with the Data API, for security purposes, you must enable Row Level Security (RLS) on all Queue tables (all tables in `pgmq` schema that begin with `q_`)
 
@@ -126432,7 +126438,7 @@ channel.AddPostgresChangeHandler(ListenType.Updates, (sender, change) =>
 await channel.Subscribe();
 ```
 
-### Negating a filter (`not`) \[#negating-a-filter-not]
+### Negating a filter (`not`)
 
 Prefix any operator with `not.` to invert it — for example `not.in`, `not.is`, or `not.like`.
 
@@ -127691,7 +127697,7 @@ Messages for all events are encoded as text frames using JSON except with the `b
 | `broadcast`    | Broadcast message sent to all clients in a channel       | ✅            | ✅                 |
 | `presence`     | Presence state update sent after joining a channel       | ✅            | ✅                 |
 
-#### phx\_join \[#phx\_join]
+#### phx\_join
 
 This is the initial message required to join a channel. The client sends this message to the server to join a specific topic and configure the features it wants to use, such as Postgres changes, Presence, and Broadcast. The payload of the `phx_join` event contains the configuration options for the channel.
 
@@ -127797,7 +127803,7 @@ Example on protocol version `2.0.0`:
 [null, "26", "phoenix", "heartbeat", {}]
 ```
 
-#### access\_token \[#access-token]
+#### access\_token
 
 Used to setup a new token to be used by Realtime for authentication and to refresh the token to prevent a private channel from closing when the token expires.
 
@@ -130051,7 +130057,7 @@ Self-hosted Supabase offers three ways to reach Postgres:
 - **Transaction mode** - Supavisor or PgBouncer on port `6543`. Best for serverless or edge functions that open many short-lived connections. Does not support session-level features (`SET`, `LISTEN/NOTIFY`, temporary tables that span transactions, or advisory locks). Supavisor pooler does not support prepared statements; PgBouncer can be [configured to support them](#use-pgbouncer-instead-of-supavisor). Available by default.
 - **Direct connection** - Postgres bypassing the pooler. Not exposed by default - refer to [exposing Postgres](#expose-postgres-for-direct-connections). Best for migrations, `pg_dump`, and long-lived backends.
 
-## Connect through Supavisor \[#connect-through-supavisor]
+## Connect through Supavisor
 
 Use your domain name, your server IP, or `localhost`, depending on where the stack runs.
 
@@ -138026,7 +138032,7 @@ How to calculate the Bandwidth and Storage Egress
 
 Free Plan Organizations in Supabase have a limit of 10 GB of bandwidth (5 GB cached + 5 GB uncached). This limit is calculated by the sum of all the data transferred from the Supabase servers to the client. This includes all the data transferred from the database, storage, and functions.
 
-### Query storage egress requests \[#checking-storage-egress-requests-in-the-sql-editor]
+### Query storage egress requests
 
 You can use the following query to get the number of requests for each object. Run it in the [Explorer](https://supabase.com/dashboard/project/_/explorer) after selecting **Run SQL**, query source **Logs**, and a time range.
 

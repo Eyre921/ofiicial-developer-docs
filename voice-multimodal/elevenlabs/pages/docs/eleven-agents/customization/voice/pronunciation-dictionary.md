@@ -20,13 +20,13 @@ Pronunciation dictionaries allow you to customize how your AI agent pronounces s
 
 > **Note**
 >
-> Pronunciation dictionary phoneme tags only work with eleven_v4, eleven_flash_v2 and eleven_v3 models.
+> Pronunciation dictionary phoneme tags only work with eleven_v4, eleven_v4_turbo, eleven_flash_v2 and eleven_v3 models.
 >
 > Other models skip dictionary phoneme tags and use the default pronunciation. For other models, use
 > alias tags instead to substitute spellings or phrases that produce the pronunciation you need.
 >
 > If you want to use IPA and CMU pronunciations in languages other than English, you will have to
-> switch to the eleven_v3 or eleven_v4 models.
+> switch to the eleven_v3, eleven_v4 or eleven_v4_turbo models.
 
 ### Attach a dictionary to your agent
 
@@ -164,14 +164,14 @@ Pronunciation dictionaries support two types of pronunciation notation:
 
 #### Which models support phoneme-based pronunciation?
 
-Pronunciation dictionary phoneme tags only work with eleven_v4, eleven_flash_v2 and eleven_v3 models.
+Pronunciation dictionary phoneme tags only work with eleven_v4, eleven_v4_turbo, eleven_flash_v2 and eleven_v3 models.
 
 Other models skip dictionary phoneme tags and use the default pronunciation. For other models,
 use alias tags instead to substitute spellings or phrases that produce the pronunciation you
 need.
 
 If you want to use IPA and CMU pronunciations in languages other than English, you will have to
-switch to the eleven_v4 or eleven_v3 model.
+switch to the eleven_v3, eleven_v4 or eleven_v4_turbo model.
 
 #### Can I use multiple dictionaries?
 

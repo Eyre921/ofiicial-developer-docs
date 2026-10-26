@@ -26705,7 +26705,7 @@ neon ask --prompt "What is a Neon project?" --output json
 
 Scaffold a new project from a Neon starter template
 
-The `bootstrap` command scaffolds a new application from a Neon starter template. By default it runs interactively: it prompts you to pick a template, scaffolds it into the target directory, then offers the usual setup steps (install dependencies, initialize git, install agent tooling, and link the directory to a Neon project). To add a single function to an existing project from a template, use [`neon functions new`](https://neon.com/docs/cli/functions#new) instead.
+The `bootstrap` command scaffolds a new application from a Neon starter template. By default it runs interactively: it prompts you to pick a template, scaffolds it into the target directory, then offers the usual setup steps (install dependencies, initialize git, install agent tooling, and link the directory to a Neon project). To add a single function to an existing project from a template, use the [Function Registry](https://neon.com/docs/compute/functions/registry) and [`neon functions new`](https://neon.com/docs/cli/functions#new) instead.
 
 ## Usage
 
@@ -28070,7 +28070,7 @@ Next: `neon config plan` to preview, `neon config apply` to provision.
 
 ### neon config add function
 
-Declares a [Neon Function](https://neon.com/docs/cli/functions) and creates its handler file. The handler defaults to `functions/<slug>.ts` (`.js` for a JavaScript config). A slug is 1 to 20 lowercase letters and digits, with no hyphens. Pass `--name` to set a display name (it defaults to the slug), or `--source` to register an existing handler relative to `neon.ts` without overwriting it. To start from a Function Registry template instead of the starter handler, use [`neon functions new`](https://neon.com/docs/cli/functions#new).
+Declares a [Neon Function](https://neon.com/docs/cli/functions) and creates its handler file. The handler defaults to `functions/<slug>.ts` (`.js` for a JavaScript config). A slug is 1 to 20 lowercase letters and digits, with no hyphens. Pass `--name` to set a display name (it defaults to the slug), or `--source` to register an existing handler relative to `neon.ts` without overwriting it. To start from a [Function Registry](https://neon.com/docs/compute/functions/registry) template instead of the starter handler, use [`neon functions new`](https://neon.com/docs/cli/functions#new).
 
 ```bash
 neon config add function <slug> [options]
@@ -29106,13 +29106,13 @@ Feedback received. Thank you!
 
 Create, deploy, list, inspect, and delete Neon Functions, and manage their custom domains
 
-The `functions` command manages [Neon Functions](https://neon.com/docs/compute/functions/overview) on a branch. This is the command reference; for the full deployment workflow, see [Deploy functions](https://neon.com/docs/compute/functions/deploy). To run functions locally, see [`neon dev`](https://neon.com/docs/cli/dev).
+The `functions` command manages [Neon Functions](https://neon.com/docs/compute/functions/overview) on a branch. This is the command reference; for the full deployment workflow, see [Deploy functions](https://neon.com/docs/compute/functions/deploy). To run functions locally, see [`neon dev`](https://neon.com/docs/cli/dev). To add a function from a catalog template, see the [Function Registry](https://neon.com/docs/compute/functions/registry).
 
 Subcommands: [delete](https://neon.com/docs/cli/functions#delete), [deploy](https://neon.com/docs/cli/functions#deploy), [domains](https://neon.com/docs/cli/functions#domains), [get](https://neon.com/docs/cli/functions#get), [list](https://neon.com/docs/cli/functions#list), [new](https://neon.com/docs/cli/functions#new), [templates](https://neon.com/docs/cli/functions#templates)
 
 ## neon functions new
 
-Creates a function from a Neon Function Registry template. It writes the template's files to `functions/<slug>/` and declares the function in `neon.ts`, creating the file if needed. It doesn't need a project or a signed-in session.
+Creates a function from a [Function Registry](https://neon.com/docs/compute/functions/registry) template. It writes the template's files to `functions/<slug>/` and declares the function in `neon.ts`, creating the file if needed. It doesn't need a project or a signed-in session. Requires the Neon CLI 8.11.0 or later. See [Function Registry templates](https://neon.com/docs/compute/functions/registry/templates) for the current catalog.
 
 ```bash
 neon functions new [template] [options]
@@ -29132,9 +29132,11 @@ neon functions new [template] [options]
 | `--branch`                 | Branch ID or name                                                                                                                                                                            | string  | —       |    No    |
 | `--project-id`             | Project ID                                                                                                                                                                                   | string  | —       |    No    |
 
+By default, the slug is the template ID with everything except lowercase letters and digits removed, so `neon functions new context-dev` writes to `functions/contextdev/`.
+
 A `router` template becomes one function, with a generated `index.ts` that routes each URL path to an operation. A `separate` template declares one function per operation under slugs the template sets, so `--slug` only renames the directory.
 
-If the template needs environment variables, the command declares them in `neon.ts` and adds their names, without values, to `.env.example`. Set the values in your env file and pass it to `neon config apply --env`; the `Next:` list prints the exact command. For `neon dev`, export them in your shell.
+If the template needs environment variables, the command declares them in `neon.ts` and adds their names, without values, to `.env.example`. Set the values in `.env.local`, which `neon dev` loads automatically, and deploy with `neon deploy --env .env.local`. The `Next:` list may print `neon config apply` instead, which does the same thing as `neon deploy`.
 
 Create a function from the `basic` template:
 
@@ -29143,6 +29145,7 @@ neon functions new basic --no-install
 ```
 
 ```text filename="Output"
+Fetching template "basic" from the Function Registry…
 Function created.
 -----------------
 
@@ -29165,6 +29168,7 @@ neon functions new basic --slug hello --no-add-to-config
 ```
 
 ```text filename="Output"
+Fetching template "basic" from the Function Registry…
 Function created.
 -----------------
 
@@ -29178,11 +29182,11 @@ Next:
   neon functions deploy hello --src functions/hello/index.ts
 ```
 
-Templates live in [`registry/`](https://github.com/neondatabase/examples/tree/main/registry) in `neondatabase/examples`. To try an unmerged template, set `NEON_FUNCTION_REGISTRY_DIR` to a local copy of that directory. New templates are added over time, so run [`neon functions templates list`](https://neon.com/docs/cli/functions#templates-list) to see what's available.
+Templates live in [`registry/`](https://github.com/neondatabase/examples/tree/main/registry) in `neondatabase/examples`. Set `NEON_FUNCTION_REGISTRY_DIR` to a local copy of that directory to install templates you're developing. See [Test a template locally](https://neon.com/docs/compute/functions/registry#test-a-template-locally).
 
 ## neon functions templates
 
-Browse the templates in the Neon Function Registry.
+Browse the templates in the [Function Registry](https://neon.com/docs/compute/functions/registry). The live catalog is [registry.json](https://neon.com/functions/registry/registry.json); see [Function Registry templates](https://neon.com/docs/compute/functions/registry/templates) for a readable list.
 
 Subcommands: [list](https://neon.com/docs/cli/functions#templates-list)
 
@@ -38372,7 +38376,7 @@ export default defineConfig({
 
 The slug is permanent: it can't be renamed after the first deploy. See the [neon.ts reference](https://neon.com/docs/reference/neon-ts) for all options.
 
-As a shortcut, `neon config add function hello` creates this `neon.ts` and a starter `functions/hello.ts` handler for you. See [`neon config add`](https://neon.com/docs/cli/config#add). To start from a Function Registry template instead, use [`neon functions new`](https://neon.com/docs/cli/functions#new).
+As a shortcut, `neon config add function hello` creates this `neon.ts` and a starter `functions/hello.ts` handler for you. See [`neon config add`](https://neon.com/docs/cli/config#add). To start from a [Function Registry](https://neon.com/docs/compute/functions/registry) template instead, use [`neon functions new`](https://neon.com/docs/cli/functions#new). See [Function Registry templates](https://neon.com/docs/compute/functions/registry/templates) for the current catalog.
 
 Install dependencies:
 
@@ -38485,6 +38489,7 @@ The response is a JSON object with your branch's Postgres version:
 
 ## Next steps
 
+- [Function Registry](https://neon.com/docs/compute/functions/registry): add a reusable function from a template instead of writing one by hand
 - [Function Triggers](https://neon.com/docs/compute/functions/triggers/overview): invoke a function on a cron schedule or an object upload instead of over HTTP
 - [Deploy and manage](https://neon.com/docs/compute/functions/deploy): the CLI and API for managing deployed functions
 - [Authentication](https://neon.com/docs/compute/functions/authentication): verify callers before a function runs
@@ -38597,6 +38602,7 @@ Your own code at an HTTP URL, with no servers to manage, running on your Neon br
 ## Get started
 
 - [Quickstart](https://neon.com/docs/compute/functions/get-started): Deploy your first function and call it over HTTP in under 5 minutes.
+- [Function Registry](https://neon.com/docs/compute/functions/registry): Install reusable functions from the catalog with neon functions new.
 - [Function Triggers](https://neon.com/docs/compute/functions/triggers/overview): Invoke a function on a cron schedule or an object upload, with no external scheduler.
 - [Custom domains](https://neon.com/docs/compute/functions/custom-domains): Serve a function from a domain you own with automatic TLS.
 - [AI agents](https://neon.com/docs/compute/functions/agents): Run streaming, tool-calling AI agents next to your data.
@@ -38671,7 +38677,7 @@ Functions are backend primitives, not full-stack app hosting. Host your app on V
 
 ## Starter templates
 
-Each example is a complete, runnable build. Read the source on GitHub, or scaffold one with `neon bootstrap --template <id>` (it copies the files, links a Neon project, and pulls env vars). You can also browse them at [build-on-neon.vercel.app](https://build-on-neon.vercel.app/). To add a single function to an existing project instead, use a [Function Registry template](https://neon.com/docs/compute/functions/deploy#deploy-a-function-from-a-template).
+Each example is a complete, runnable build. Read the source on GitHub, or scaffold one with `neon bootstrap --template <id>` (it copies the files, links a Neon project, and pulls env vars). You can also browse them at [build-on-neon.vercel.app](https://build-on-neon.vercel.app/). To add one function to an existing project, use the [Function Registry](https://neon.com/docs/compute/functions/registry) (`neon functions new`) instead of bootstrap. See [Function Registry templates](https://neon.com/docs/compute/functions/registry/templates) for what's available.
 
 | Example                  | `--template`        | Source                                                                                                                  | Neon services                                   | Stack                 |
 | ------------------------ | ------------------- | ----------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- | --------------------- |
@@ -38754,6 +38760,90 @@ Slugs must match `^[a-z0-9]{1,20}$` and are immutable after the first deployment
 ## Environment variables
 
 See [Environment variables](https://neon.com/docs/compute/functions/environment-variables#constraints) for limits on variable count and total size.
+
+--- [Document source](https://neon.com/docs/compute/functions/registry.md) ---
+
+> Summary: Public catalog of Neon Function templates. Install with neon functions new, browse /docs/compute/functions/registry/templates, fetch https://neon.com/functions/registry/registry.json.
+
+# Function Registry
+
+Add a reusable Neon Function to an existing project from a public catalog.
+
+The Function Registry is a public catalog of [Neon Functions](https://neon.com/docs/compute/functions/overview). [`neon functions new`](https://neon.com/docs/cli/functions#new) copies a template into `functions/<slug>/` and declares it in [`neon.ts`](https://neon.com/docs/reference/neon-ts), creating that file if needed. Use [`neon bootstrap`](https://neon.com/docs/cli/bootstrap) when you're starting from an empty directory.
+
+Browse the live catalog on the [templates](https://neon.com/docs/compute/functions/registry/templates) page. Each template has a docs page at `/docs/compute/functions/registry/templates/<id>`, for example [basic](https://neon.com/docs/compute/functions/registry/templates/basic).
+
+## Install
+
+```bash
+neon functions templates list
+neon functions new basic
+```
+
+Registry commands need Neon CLI 8.11.0 or later.
+
+The catalog `id` is what you pass to `neon functions new`. Installing doesn't deploy. Run [`neon dev`](https://neon.com/docs/cli/dev) locally, then [`neon deploy`](https://neon.com/docs/compute/functions/deploy) or [`neon functions deploy`](https://neon.com/docs/cli/functions#deploy).
+
+## Environment variables
+
+If a template lists secrets, `neon functions new` adds their names (no values) to [`neon.ts`](https://neon.com/docs/reference/neon-ts) and `.env.example`. In `neon.ts`, `process.env` is the shell at deploy time, not the function runtime:
+
+```ts filename="neon.ts"
+env: {
+  API_KEY: process.env.API_KEY!,
+},
+```
+
+Load values with `neon deploy --env .env.production`. Only keys you declare under `env` are uploaded, not the whole file. At runtime, the handler reads these values, plus Neon-injected branch credentials such as `DATABASE_URL`, from `process.env`:
+
+```ts
+const apiKey = process.env.API_KEY;
+```
+
+See [Environment variables](https://neon.com/docs/compute/functions/environment-variables).
+
+## Catalog
+
+The CLI reads the catalog from neon.com, which proxies [`registry/`](https://github.com/neondatabase/examples/tree/main/registry) on the `main` branch of `neondatabase/examples`.
+
+| File            | URL                                                                                                                                  |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| Catalog index   | [https://neon.com/functions/registry/registry.json](https://neon.com/functions/registry/registry.json)                               |
+| Catalog schema  | [https://neon.com/functions/registry/schemas/registry.schema.json](https://neon.com/functions/registry/schemas/registry.schema.json) |
+| Template schema | [https://neon.com/functions/registry/schemas/template.schema.json](https://neon.com/functions/registry/schemas/template.schema.json) |
+
+If neon.com is unreachable, the CLI falls back to [the same files on GitHub](https://raw.githubusercontent.com/neondatabase/examples/main/registry/registry.json). Installing a template still downloads the `neondatabase/examples` tarball from GitHub and extracts that template's folder.
+
+## Test a template locally
+
+Set `NEON_FUNCTION_REGISTRY_DIR` to a local `registry/` directory to list and install templates you're developing:
+
+```bash
+NEON_FUNCTION_REGISTRY_DIR=./registry neon functions templates list
+NEON_FUNCTION_REGISTRY_DIR=./registry neon functions new basic
+```
+
+The CLI reads the files in that folder and doesn't download the GitHub tarball.
+
+## Contribute
+
+Open a pull request in [`registry/`](https://github.com/neondatabase/examples/tree/main/registry) that adds a template folder and an index entry in `registry.json`. See [CONTRIBUTING.md](https://github.com/neondatabase/examples/blob/main/registry/CONTRIBUTING.md) for field rules and the review checklist.
+
+--- [Document source](https://neon.com/docs/compute/functions/registry/templates.md) ---
+
+> Summary: Searchable catalog of Function Registry templates you can add to an existing project with neon functions new.
+
+# Function Registry templates
+
+Search the live catalog and install a template with neon functions new.
+
+Search the live [Function Registry](https://neon.com/docs/compute/functions/registry) catalog, then open a template.
+
+Browse [Function Registry templates](https://neon.com/docs/compute/functions/registry/templates). Catalog: [registry.json](https://neon.com/functions/registry/registry.json).
+
+## Request or add a template
+
+Ask on [Discord](https://neon.com/discord) if you want a template that isn't listed, or add one in [`registry/`](https://github.com/neondatabase/examples/tree/main/registry) on GitHub.
 
 --- [Document source](https://neon.com/docs/compute/functions/telegram-bot.md) ---
 

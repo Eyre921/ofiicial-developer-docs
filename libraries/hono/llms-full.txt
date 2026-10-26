@@ -300,6 +300,7 @@ Most of this middleware leverages external libraries.
 - [Cap Checkpoint](https://capjs.js.org/guide/middleware/hono.html)
 - [Event Emitter](https://github.com/honojs/middleware/tree/main/packages/event-emitter)
 - [Geo](https://github.com/ktkongtong/hono-geo-middleware/tree/main/packages/middleware)
+- [Guard Core (IP filtering, rate limiting, attack detection)](https://github.com/Guard-Core/guard-core-ts/tree/master/packages/hono)
 - [Hono Rate Limiter](https://github.com/rhinobase/hono-rate-limiter)
 - [Hono Problem Details (RFC 9457)](https://github.com/paveg/hono-problem-details)
 - [Hono Simple DI](https://github.com/maou-shonen/hono-simple-DI)
@@ -739,6 +740,26 @@ app.get(
 ```
 
 :::
+
+## Caching authenticated responses
+
+The cache is shared by all clients, and it stores any cacheable response, including one for a signed-in user. The middleware does not look at the `Cookie` header of the request. To keep per-user responses out of the shared cache:
+
+- Register `cache()` after your authentication middleware, so unauthenticated requests never reach it.
+- Set `Cache-Control: private` (or `no-store`) on per-user responses. The middleware does not store them.
+- Or use the `vary` option, for example `vary: 'Cookie'`, to cache a separate response per cookie value.
+
+```ts
+app.use('/api/*', auth)
+app.get(
+  '/api/*',
+  cache({
+    cacheName: 'my-app',
+    cacheControl: 'max-age=60',
+    vary: 'Cookie',
+  })
+)
+```
 
 ## Caching QUERY requests
 
@@ -9753,6 +9774,10 @@ For the above code, it will work well with the following directory structure.
         └── dinotocat.png
 ```
 
+::: warning
+Route matching is case-sensitive, but the file system may not be. On Windows and macOS, `/ADMIN/secret.txt` resolves to the same file as `/admin/secret.txt`, and Windows also accepts 8.3 short names such as `/PROTEC~1`. Path-scoped middleware such as `app.use('/admin/*', auth)` does not match those spellings, so do not rely on it to protect files under a static root. Keep protected files outside the directory you serve, or apply the middleware to every path that `serveStatic` handles.
+:::
+
 ### `rewriteRequestPath`
 
 If you want to map `http://localhost:3000/static/*` to `./statics`, you can use the `rewriteRequestPath` option:
@@ -11866,9 +11891,10 @@ app.get('/hello', (c) => {
 
 export const GET = handle(app)
 
-`handle` comes from the `@hono/vercel` package, which the starter installs. On an existing project, add it with `npm i @hono/vercel`.
 export const POST = handle(app)
 ```
+
+`handle` comes from the `@hono/vercel` package, which the starter installs. On an existing project, add it with `npm i @hono/vercel`.
 
 ## 3. Run
 
@@ -12199,6 +12225,10 @@ If a request to the path `/hello.txt` or `/image.png` comes in and you want to r
 ```ts
 app.use('*', serveStatic({ root: './static' }))
 ```
+
+::: warning
+Route matching is case-sensitive, but the file system may not be. On Windows and macOS, `/ADMIN/secret.txt` resolves to the same file as `/admin/secret.txt`, and Windows also accepts 8.3 short names such as `/PROTEC~1`. Path-scoped middleware such as `app.use('/admin/*', auth)` does not match those spellings, so do not rely on it to protect files under a static root. Keep protected files outside the directory you serve, or apply the middleware to every path that `serveStatic` handles.
+:::
 
 ### `rewriteRequestPath`
 
@@ -14969,7 +14999,7 @@ The raw [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request) ob
 ```ts
 // For Cloudflare Workers
 app.post('/', async (c) => {
-  const metadata = c.req.raw.cf?.hostMetadata?
+  const metadata = c.req.raw.cf?.hostMetadata
   // ...
 })
 ```

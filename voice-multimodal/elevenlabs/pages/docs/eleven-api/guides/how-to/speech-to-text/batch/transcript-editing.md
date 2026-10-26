@@ -17,7 +17,7 @@ path: docs/eleven-api/guides/how-to/speech-to-text/batch/transcript-editing
 > **Warning**
 >
 > Transcript editing is an experimental feature and comes at an additional cost of 30% on top of the
-> base transcription cost, billed for a minimum of 10 seconds of audio per request. See the [API pricing page](https://elevenlabs.io/pricing?price.section=speech_to_text\&price.sections=speech_to_text,speech_to_text#pricing-table)
+> base transcription cost, billed for a minimum of 10 seconds of audio per request. See the [API pricing page](https://elevenlabs.io/pricing/api?price.section=speech_to_text\&price.sections=speech_to_text,speech_to_text#pricing-table)
 > for detailed pricing information.
 
 Transcript editing lets you attach a natural-language instruction to a transcription request. Once the audio has been transcribed, your instruction is applied to the transcript and the edited text is returned alongside the original.

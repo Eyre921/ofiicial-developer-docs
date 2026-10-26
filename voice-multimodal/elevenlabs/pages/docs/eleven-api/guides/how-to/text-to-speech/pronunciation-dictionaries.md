@@ -24,7 +24,7 @@ ElevenLabs supports both [IPA](https://en.wikipedia.org/wiki/International_Phone
 
 > **Info**
 >
-> Pronunciation dictionary phoneme tags only work with eleven_v4, eleven_flash_v2 and eleven_v3 models.
+> Pronunciation dictionary phoneme tags only work with eleven_v4, eleven_v4_turbo, eleven_flash_v2 and eleven_v3 models.
 >
 > Other models skip dictionary phoneme tags and use the default pronunciation. For other models, use
 > alias tags instead to substitute spellings or phrases that produce the pronunciation you need.

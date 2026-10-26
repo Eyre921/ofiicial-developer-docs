@@ -160588,7 +160588,7 @@ Consider an Access Group designed to manage access to critical server infrastruc
 
 Below is a diagram featuring an Access Group named "Secure Administrators," which uses a range of attributes to define the characteristics of secure administrators. The diagram shows the addition of two other Access Groups within "Secure Administrators". The groups include devices running on either the latest Windows or macOS, along with the requirement that the device must have either File Vault or Bitlocker enabled.
 
-![An example of using Access Groups can be for grouping up many device, network or user attributes into a single policy that can be reused across applications.](https://developers.cloudflare.com/cdn-cgi/image/onerror=redirect,width=1132,height=360,format=svg/_astro/figure6.aWooHqll.svg)
+![An example of using Access Groups can be for grouping up many device, network or user attributes into a single policy that can be reused across applications.](https://developers.cloudflare.com/cdn-cgi/image/onerror=redirect,width=1132,height=360,format=svg/_astro/cf1-ref-arch-24.aWooHqll.svg)
 
 Consistent with Cloudflare's overarching flexibility, Access Groups can be created, updated, and applied to policies through Cloudflare API or using Terraform. This allows a seamless integration with existing IT systems and processes, ensuring a cohesive approach to access management.
 
@@ -289869,7 +289869,7 @@ image: https://developers.cloudflare.com/data-localization/compatibility/og.png?
 
 # Product compatibility
 
-Last updated Oct 15, 2026|Copy as Markdown| [View as Markdown](https://developers.cloudflare.com/data-localization/compatibility/index.md)| [Agent setup](https://developers.cloudflare.com/agent-setup/)
+Last updated Oct 25, 2026|Copy as Markdown| [View as Markdown](https://developers.cloudflare.com/data-localization/compatibility/index.md)| [Agent setup](https://developers.cloudflare.com/agent-setup/)
 
 The Data Localization Suite (DLS) has three features, each controlling a different aspect of where your data is handled:
 
@@ -289954,13 +289954,13 @@ The tables below show whether each Cloudflare product is compatible with each DL
 
 | Product | Geo Key Manager | Regional Services | Customer Metadata Boundary |
 | --- | --- | --- | --- |
-| Argo Smart Routing | ✅ | ✘ <sup>[29](#user-content-fn-9)</sup> | ✘ <sup>[30](#user-content-fn-10)</sup> |
-| Static IP/BYOIP | ⚫️ | ✅ <sup>[31](#user-content-fn-26)</sup> | ⚫️ |
+| Argo Smart Routing | ✅ | ✅ | ✘ <sup>[29](#user-content-fn-10)</sup> |
+| Static IP/BYOIP | ⚫️ | ✅ <sup>[30](#user-content-fn-26)</sup> | ⚫️ |
 | Cloudflare Network Firewall | ⚫️ | ⚫️ | ✅ |
 | Network Flow | ⚫️ | ⚫️ | 🚧 <sup>[4](#user-content-fn-1)</sup> |
 | Magic Transit | ⚫️ | ⚫️ | ✅ <sup>[8](#user-content-fn-3)</sup> |
 | Cloudflare WAN | ⚫️ | ⚫️ | ✅ |
-| Spectrum | ✅ | ✅ <sup>[32](#user-content-fn-42)</sup> | ✅ |
+| Spectrum | ✅ | ✅ <sup>[31](#user-content-fn-42)</sup> | ✅ |
 
 ---
 
@@ -289968,9 +289968,9 @@ The tables below show whether each Cloudflare product is compatible with each DL
 
 | Product | Geo Key Manager | Regional Services | Customer Metadata Boundary |
 | --- | --- | --- | --- |
-| Logpull | ⚫️ | ⚫️ | 🚧 <sup>[33](#user-content-fn-12)</sup> |
-| Logpush | ⚫️ | ✅ | 🚧 <sup>[34](#user-content-fn-13)</sup> |
-| Log Explorer | ⚫️ | ⚫️ | ✘ <sup>[35](#user-content-fn-23)</sup> |
+| Logpull | ⚫️ | ⚫️ | 🚧 <sup>[32](#user-content-fn-12)</sup> |
+| Logpush | ⚫️ | ✅ | 🚧 <sup>[33](#user-content-fn-13)</sup> |
+| Log Explorer | ⚫️ | ⚫️ | ✘ <sup>[34](#user-content-fn-23)</sup> |
 
 ---
 
@@ -289978,13 +289978,13 @@ The tables below show whether each Cloudflare product is compatible with each DL
 
 | Product | Geo Key Manager | Regional Services | Customer Metadata Boundary |
 | --- | --- | --- | --- |
-| Access | 🚧 <sup>[36](#user-content-fn-14)</sup> | 🚧 <sup>[37](#user-content-fn-15)</sup> | ✅ <sup>[38](#user-content-fn-16)</sup> |
-| Browser Isolation | ⚫️ | 🚧 <sup>[39](#user-content-fn-17)</sup> | ✅ |
+| Access | 🚧 <sup>[35](#user-content-fn-14)</sup> | 🚧 <sup>[36](#user-content-fn-15)</sup> | ✅ <sup>[37](#user-content-fn-16)</sup> |
+| Browser Isolation | ⚫️ | 🚧 <sup>[38](#user-content-fn-17)</sup> | ✅ |
 | CASB | ⚫️ | ⚫️ | ✘ |
-| Cloudflare Tunnel | ⚫️ | 🚧 <sup>[40](#user-content-fn-18)</sup> | ⚫️ |
-| Digital Experience | ⚫️ | ⚫️ | 🚧 <sup>[41](#user-content-fn-49)</sup> |
-| DLP | ⚫️ <sup>[42](#user-content-fn-19)</sup> | ⚫️ <sup>[42](#user-content-fn-19)</sup> | 🚧 <sup>[43](#user-content-fn-31)</sup> |
-| Gateway | 🚧 <sup>[44](#user-content-fn-20)</sup> | 🚧 <sup>[45](#user-content-fn-21)</sup> | 🚧 <sup>[46](#user-content-fn-22)</sup> |
+| Cloudflare Tunnel | ⚫️ | 🚧 <sup>[39](#user-content-fn-18)</sup> | ⚫️ |
+| Digital Experience | ⚫️ | ⚫️ | 🚧 <sup>[40](#user-content-fn-49)</sup> |
+| DLP | ⚫️ <sup>[41](#user-content-fn-19)</sup> | ⚫️ <sup>[41](#user-content-fn-19)</sup> | 🚧 <sup>[42](#user-content-fn-31)</sup> |
+| Gateway | 🚧 <sup>[43](#user-content-fn-20)</sup> | 🚧 <sup>[44](#user-content-fn-21)</sup> | 🚧 <sup>[45](#user-content-fn-22)</sup> |
 | Cloudflare One Client | ⚫️ | ⚫️ | 🚧 <sup>[4](#user-content-fn-1)</sup> |
 
 ## Footnotes
@@ -290018,25 +290018,24 @@ The tables below show whether each Cloudflare product is compatible with each DL
 26. R2 Dashboard [Metrics and Analytics](https://developers.cloudflare.com/r2/platform/metrics-analytics/) are populated. [Jurisdictional Restrictions](https://developers.cloudflare.com/r2/reference/data-location/#jurisdictional-restrictions) guarantee objects in a bucket are stored within a specific jurisdiction. [↩](#user-content-fnref-28)
 27. Logs / Analytics not available outside US region when using Customer Metadata Boundary. Use Logpush instead. [↩](#user-content-fnref-41)
 28. Jurisdictional Restrictions (storage) for Workers KV pairs is not supported today. [↩](#user-content-fnref-34)
-29. Argo cannot be used with Regional Services. [↩](#user-content-fnref-9)
-30. Argo cannot be used with Customer Metadata Boundary. [↩](#user-content-fnref-10)
-31. You can use Static IP/BYOIP with Regionalized Spectrum Applications. You can also regionalize BYOIP prefixes at the IP layer with [Regionalized IP Bindings](https://developers.cloudflare.com/data-localization/regional-services/ip-bindings/). [↩](#user-content-fnref-26)
-32. Only applies to HTTP/S Spectrum applications. Spectrum applications use a separate regionalization mechanism from the Regional Hostnames API. Configuring a regional hostname does not regionalize a Spectrum application on the same hostname. Contact your [Account Team](https://developers.cloudflare.com/support/contacting-cloudflare-support/) for Spectrum-specific regionalization. [↩](#user-content-fnref-42)
-33. Logpull available when using CMB = US only. Logpull is a legacy feature, consider using [Logpush](https://developers.cloudflare.com/data-localization/metadata-boundary/logpush-datasets/) or [Log Explorer](https://developers.cloudflare.com/observability/logs/log-explorer/) instead. [↩](#user-content-fnref-12)
-34. Logpush available with Customer Metadata Boundary for [these datasets](https://developers.cloudflare.com/data-localization/metadata-boundary/logpush-datasets/). Contact your account team if you need another dataset. [↩](#user-content-fnref-13)
-35. Currently, customers do not have the ability to choose the location of the Cloudflare-managed R2 bucket for Log Explorer. [↩](#user-content-fnref-23)
-36. Access App SSL keys can use Geo Key Manager. [Access JWT](https://developers.cloudflare.com/cloudflare-one/access-controls/applications/http-apps/authorization-cookie/validating-json/) is not yet localized. [↩](#user-content-fnref-14)
-37. Can be localized to US FedRAMP Moderate Domestic region only. [↩](#user-content-fnref-15)
-38. Customer Metadata Boundary can be used to limit data transfer outside region, but Access User Logs will not be available outside US region. EU customers must use Logpush to retain logs. [↩](#user-content-fnref-16)
-39. Currently may only be used with US FedRAMP region. [↩](#user-content-fnref-17)
-40. The [`--region` parameter](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/configure-tunnels/run-parameters/#region) in `cloudflared` controls where the tunnel connector establishes its connection to Cloudflare. This setting is separate from Regional Services. For public hostnames served through a tunnel, Regional Services is configured at the DNS record level and operates independently from the tunnel connector region. For incoming web requests, Regional Services only applies when you have [published applications](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/routing-to-tunnel/) (services exposed to users through the tunnel). In that case, the region associated with the DNS record will apply. [↩](#user-content-fnref-18)
-41. Dashboard Analytics are empty when using CMB outside the US region. Use [Logpush](https://developers.cloudflare.com/logs/logpush/) instead. [↩](#user-content-fnref-49)
-42. Uses Gateway HTTP and CASB. [↩](#user-content-fnref-19) [↩<sup>2</sup>](#user-content-fnref-19-2)
-43. DLP is part of Gateway HTTP, however, [DLP detection entries](https://developers.cloudflare.com/cloudflare-one/data-loss-prevention/detection-entries/configure-detection-entries/) are not available outside US region when using Customer Metadata Boundary. [↩](#user-content-fnref-31)
-44. You can [bring your own certificate ↗︎](https://blog.cloudflare.com/bring-your-certificates-cloudflare-gateway/) to Gateway but these cannot yet be restricted to a specific region. [↩](#user-content-fnref-20)
-45. Gateway HTTP (web traffic filtering) supports Regional Services. Gateway DNS (domain name filtering) does not yet support regionalization.   
+29. Argo cannot be used with Customer Metadata Boundary. [↩](#user-content-fnref-10)
+30. You can use Static IP/BYOIP with Regionalized Spectrum Applications. You can also regionalize BYOIP prefixes at the IP layer with [Regionalized IP Bindings](https://developers.cloudflare.com/data-localization/regional-services/ip-bindings/). [↩](#user-content-fnref-26)
+31. Only applies to HTTP/S Spectrum applications. Spectrum applications use a separate regionalization mechanism from the Regional Hostnames API. Configuring a regional hostname does not regionalize a Spectrum application on the same hostname. Contact your [Account Team](https://developers.cloudflare.com/support/contacting-cloudflare-support/) for Spectrum-specific regionalization. [↩](#user-content-fnref-42)
+32. Logpull available when using CMB = US only. Logpull is a legacy feature, consider using [Logpush](https://developers.cloudflare.com/data-localization/metadata-boundary/logpush-datasets/) or [Log Explorer](https://developers.cloudflare.com/observability/logs/log-explorer/) instead. [↩](#user-content-fnref-12)
+33. Logpush available with Customer Metadata Boundary for [these datasets](https://developers.cloudflare.com/data-localization/metadata-boundary/logpush-datasets/). Contact your account team if you need another dataset. [↩](#user-content-fnref-13)
+34. Currently, customers do not have the ability to choose the location of the Cloudflare-managed R2 bucket for Log Explorer. [↩](#user-content-fnref-23)
+35. Access App SSL keys can use Geo Key Manager. [Access JWT](https://developers.cloudflare.com/cloudflare-one/access-controls/applications/http-apps/authorization-cookie/validating-json/) is not yet localized. [↩](#user-content-fnref-14)
+36. Can be localized to US FedRAMP Moderate Domestic region only. [↩](#user-content-fnref-15)
+37. Customer Metadata Boundary can be used to limit data transfer outside region, but Access User Logs will not be available outside US region. EU customers must use Logpush to retain logs. [↩](#user-content-fnref-16)
+38. Currently may only be used with US FedRAMP region. [↩](#user-content-fnref-17)
+39. The [`--region` parameter](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/configure-tunnels/run-parameters/#region) in `cloudflared` controls where the tunnel connector establishes its connection to Cloudflare. This setting is separate from Regional Services. For public hostnames served through a tunnel, Regional Services is configured at the DNS record level and operates independently from the tunnel connector region. For incoming web requests, Regional Services only applies when you have [published applications](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/routing-to-tunnel/) (services exposed to users through the tunnel). In that case, the region associated with the DNS record will apply. [↩](#user-content-fnref-18)
+40. Dashboard Analytics are empty when using CMB outside the US region. Use [Logpush](https://developers.cloudflare.com/logs/logpush/) instead. [↩](#user-content-fnref-49)
+41. Uses Gateway HTTP and CASB. [↩](#user-content-fnref-19) [↩<sup>2</sup>](#user-content-fnref-19-2)
+42. DLP is part of Gateway HTTP, however, [DLP detection entries](https://developers.cloudflare.com/cloudflare-one/data-loss-prevention/detection-entries/configure-detection-entries/) are not available outside US region when using Customer Metadata Boundary. [↩](#user-content-fnref-31)
+43. You can [bring your own certificate ↗︎](https://blog.cloudflare.com/bring-your-certificates-cloudflare-gateway/) to Gateway but these cannot yet be restricted to a specific region. [↩](#user-content-fnref-20)
+44. Gateway HTTP (web traffic filtering) supports Regional Services. Gateway DNS (domain name filtering) does not yet support regionalization.   
      ICMP proxy (forwarding network diagnostic traffic like ping) and Mesh proxy are not available to Regional Services users. [File Sandboxing](https://developers.cloudflare.com/cloudflare-one/traffic-controls/http-policies/file-sandboxing/) (an add-on that quarantines and scans suspicious files in an isolated environment) is incompatible with DLS. [↩](#user-content-fnref-21)
-46. Dashboard Analytics and Logs are empty when using CMB outside the US region. Use Logpush instead. [↩](#user-content-fnref-22)
+45. Dashboard Analytics and Logs are empty when using CMB outside the US region. Use Logpush instead. [↩](#user-content-fnref-22)
 
 Was this helpful?
 
@@ -290047,7 +290046,7 @@ YesNo
 [![](https://developers.cloudflare.com/_astro/logo.te5VL_aD.svg)Docs](https://developers.cloudflare.com/)
 
 ```json
-{"@context":"https://schema.org","@type":"TechArticle","@id":"https://developers.cloudflare.com/data-localization/compatibility/#page","headline":"Product compatibility","description":"Compatibility of Cloudflare products with Data Localization Suite features.","url":"https://developers.cloudflare.com/data-localization/compatibility/","inLanguage":"en","image":"https://developers.cloudflare.com/data-localization/compatibility/og.png?v=cdd563fe118e759b","dateModified":"2026-10-15","publisher":{"@type":"Organization","name":"Cloudflare","description":"One platform for your apps, agents, and workforce. Build, secure, and scale without managing infrastructure","url":"https://www.cloudflare.com/","sameAs":["https://github.com/cloudflare","https://www.linkedin.com/company/cloudflare","https://x.com/cloudflare"],"logo":{"@type":"ImageObject","url":"https://developers.cloudflare.com/logo.svg"},"address":{"@type":"PostalAddress","streetAddress":"101 Townsend St","addressLocality":"San Francisco","addressRegion":"CA","postalCode":"94107","addressCountry":"US"},"contactPoint":[{"@type":"ContactPoint","contactType":"Customer Support","url":"https://support.cloudflare.com/","availableLanguage":["English"]},{"@type":"ContactPoint","contactType":"Sales","url":"https://www.cloudflare.com/contact/","availableLanguage":["English"]}]},"isPartOf":{"@type":"WebSite","@id":"https://developers.cloudflare.com/#website","name":"Cloudflare Docs","url":"https://developers.cloudflare.com/"}}
+{"@context":"https://schema.org","@type":"TechArticle","@id":"https://developers.cloudflare.com/data-localization/compatibility/#page","headline":"Product compatibility","description":"Compatibility of Cloudflare products with Data Localization Suite features.","url":"https://developers.cloudflare.com/data-localization/compatibility/","inLanguage":"en","image":"https://developers.cloudflare.com/data-localization/compatibility/og.png?v=cdd563fe118e759b","dateModified":"2026-10-25","publisher":{"@type":"Organization","name":"Cloudflare","description":"One platform for your apps, agents, and workforce. Build, secure, and scale without managing infrastructure","url":"https://www.cloudflare.com/","sameAs":["https://github.com/cloudflare","https://www.linkedin.com/company/cloudflare","https://x.com/cloudflare"],"logo":{"@type":"ImageObject","url":"https://developers.cloudflare.com/logo.svg"},"address":{"@type":"PostalAddress","streetAddress":"101 Townsend St","addressLocality":"San Francisco","addressRegion":"CA","postalCode":"94107","addressCountry":"US"},"contactPoint":[{"@type":"ContactPoint","contactType":"Customer Support","url":"https://support.cloudflare.com/","availableLanguage":["English"]},{"@type":"ContactPoint","contactType":"Sales","url":"https://www.cloudflare.com/contact/","availableLanguage":["English"]}]},"isPartOf":{"@type":"WebSite","@id":"https://developers.cloudflare.com/#website","name":"Cloudflare Docs","url":"https://developers.cloudflare.com/"}}
 ```
 
 ---
@@ -386937,7 +386936,7 @@ image: https://developers.cloudflare.com/observability/pricing/og.png?v=6b4ce7ba
 
 # Pricing
 
-Last updated Oct 15, 2026|Copy as Markdown| [View as Markdown](https://developers.cloudflare.com/observability/pricing/index.md)| [Agent setup](https://developers.cloudflare.com/agent-setup/)
+Last updated Oct 25, 2026|Copy as Markdown| [View as Markdown](https://developers.cloudflare.com/observability/pricing/index.md)| [Agent setup](https://developers.cloudflare.com/agent-setup/)
 
 Beginning December 1, 2026, all Cloudflare logs and traces will use the same pricing model. Log Explorer datasets have a different price point of $1 per GB ingested and include 30-day retention. Queries, dashboards, alerts, and analytics do not incur additional charge.
 
@@ -386991,8 +386990,8 @@ Suppose a Paid account uses 75 GB of ingestion and 20 GB-month of storage during
 | Usage | Calculation | Additional charge |
 | --- | --- | --- |
 | Ingestion | (75 GB - 50 GB included) x $0.25 | $6.25 |
-| Storage | (20 GB-month - 10 GB-month included) x $0.10 | $0.80 |
-| Total | $6.25 + $0.80 | $7.05 |
+| Storage | (20 GB-month - 10 GB-month included) x $0.10 | $1.00 |
+| Total | $6.25 + $1.00 | $7.25 |
 
 ### Longer retention
 
@@ -387021,7 +387020,7 @@ YesNo
 [![](https://developers.cloudflare.com/_astro/logo.te5VL_aD.svg)Docs](https://developers.cloudflare.com/)
 
 ```json
-{"@context":"https://schema.org","@type":"TechArticle","@id":"https://developers.cloudflare.com/observability/pricing/#page","headline":"Pricing","description":"Understand Cloudflare Observability ingestion and storage pricing.","url":"https://developers.cloudflare.com/observability/pricing/","inLanguage":"en","image":"https://developers.cloudflare.com/observability/pricing/og.png?v=6b4ce7ba6d5bba9b","dateModified":"2026-10-15","publisher":{"@type":"Organization","name":"Cloudflare","description":"One platform for your apps, agents, and workforce. Build, secure, and scale without managing infrastructure","url":"https://www.cloudflare.com/","sameAs":["https://github.com/cloudflare","https://www.linkedin.com/company/cloudflare","https://x.com/cloudflare"],"logo":{"@type":"ImageObject","url":"https://developers.cloudflare.com/logo.svg"},"address":{"@type":"PostalAddress","streetAddress":"101 Townsend St","addressLocality":"San Francisco","addressRegion":"CA","postalCode":"94107","addressCountry":"US"},"contactPoint":[{"@type":"ContactPoint","contactType":"Customer Support","url":"https://support.cloudflare.com/","availableLanguage":["English"]},{"@type":"ContactPoint","contactType":"Sales","url":"https://www.cloudflare.com/contact/","availableLanguage":["English"]}]},"isPartOf":{"@type":"WebSite","@id":"https://developers.cloudflare.com/#website","name":"Cloudflare Docs","url":"https://developers.cloudflare.com/"}}
+{"@context":"https://schema.org","@type":"TechArticle","@id":"https://developers.cloudflare.com/observability/pricing/#page","headline":"Pricing","description":"Understand Cloudflare Observability ingestion and storage pricing.","url":"https://developers.cloudflare.com/observability/pricing/","inLanguage":"en","image":"https://developers.cloudflare.com/observability/pricing/og.png?v=6b4ce7ba6d5bba9b","dateModified":"2026-10-25","publisher":{"@type":"Organization","name":"Cloudflare","description":"One platform for your apps, agents, and workforce. Build, secure, and scale without managing infrastructure","url":"https://www.cloudflare.com/","sameAs":["https://github.com/cloudflare","https://www.linkedin.com/company/cloudflare","https://x.com/cloudflare"],"logo":{"@type":"ImageObject","url":"https://developers.cloudflare.com/logo.svg"},"address":{"@type":"PostalAddress","streetAddress":"101 Townsend St","addressLocality":"San Francisco","addressRegion":"CA","postalCode":"94107","addressCountry":"US"},"contactPoint":[{"@type":"ContactPoint","contactType":"Customer Support","url":"https://support.cloudflare.com/","availableLanguage":["English"]},{"@type":"ContactPoint","contactType":"Sales","url":"https://www.cloudflare.com/contact/","availableLanguage":["English"]}]},"isPartOf":{"@type":"WebSite","@id":"https://developers.cloudflare.com/#website","name":"Cloudflare Docs","url":"https://developers.cloudflare.com/"}}
 ```
 
 ---
@@ -423823,7 +423822,7 @@ Consider an Access Group designed to manage access to critical server infrastruc
 
 Below is a diagram featuring an Access Group named "Secure Administrators," which uses a range of attributes to define the characteristics of secure administrators. The diagram shows the addition of two other Access Groups within "Secure Administrators". The groups include devices running on either the latest Windows or macOS, along with the requirement that the device must have either File Vault or Bitlocker enabled.
 
-![An example of using Access Groups can be for grouping up many device, network or user attributes into a single policy that can be reused across applications.](https://developers.cloudflare.com/cdn-cgi/image/onerror=redirect,width=1132,height=360,format=svg/_astro/figure6.aWooHqll.svg)
+![An example of using Access Groups can be for grouping up many device, network or user attributes into a single policy that can be reused across applications.](https://developers.cloudflare.com/cdn-cgi/image/onerror=redirect,width=1132,height=360,format=svg/_astro/cf1-ref-arch-24.aWooHqll.svg)
 
 Consistent with Cloudflare's overarching flexibility, Access Groups can be created, updated, and applied to policies through Cloudflare API or using Terraform. This allows a seamless integration with existing IT systems and processes, ensuring a cohesive approach to access management.
 
@@ -428914,7 +428913,7 @@ For example, you can define "Employees" once as an Access Group, and then use th
 
 Below is a diagram featuring an Access Group named "Secure Administrators," which uses a range of attributes to define the characteristics of secure administrators. The diagram shows the addition of two other Access Groups within "Secure Administrators". The groups include devices running on either the latest Windows or macOS, along with the requirement that the device must have either File
 
-![Figure 6 - An access group that matches to IT administrators on secure systems.](https://developers.cloudflare.com/cdn-cgi/image/onerror=redirect,width=1132,height=360,format=svg/_astro/figure6.aWooHqll.svg "Figure 6 - An access group that matches to IT administrators on secure systems.")
+![Figure 6 - An access group that matches to IT administrators on secure systems.](https://developers.cloudflare.com/cdn-cgi/image/onerror=redirect,width=1132,height=360,format=svg/_astro/cf1-ref-arch-24.aWooHqll.svg "Figure 6 - An access group that matches to IT administrators on secure systems.")
 
 *Figure 6 - An access group that matches to IT administrators on secure systems.*
 
@@ -719021,7 +719020,7 @@ export class Browser extends DurableObject {
 }
 ```
 
-[Run Worker in Playground](https://workers.cloudflare.com/playground#LYVwNgLglgDghgJwgegGYHsHALQBM4RwDcABAEbogB2+CAngLzbPYZb6HbW5QDGU2AAwBmEQE4ALAFYAbMInSAXCxZtgHOFxp8BI8dLkKpAWABQAYXRUIAU2vYAIlADOMdM6jQrikmrwFiEio4YBsGACIoGhsADwA6ACtncNJUKDA7ELDI6Pik8LNLazsIbAAVOhgbHzgYGDA+AigrZAS4ADc4Z14EWAgAamB0XHAbMzMoYDckEgBvEgcQBDgyDIB5MgSbXggSAF9fBHRgEnDeMEpcVDBEaoB3TABrGwRkolNJ6d2AKhIukhgIDqNlsL0Ox1OAAFzpdrrdkIDgaCEClTKZYl8SLgbKg4OBdrNTABILp0Ki8Xwg3gACwAFAgbABHEA2ZwQAA0JDs7QAlHNiUTeFY2SR0JsSAwuVR2nEAEIAJTWAHUAMoAUXlcQA5iDZXQAHJZWnhMhHO7OF7hHnvAXIZAkFV2XB-EgM5ms3YQdAkCDUmwLJYrDIkDZbHac312P53OCeEieZyu1luKgWgVC1O7BmuCXR2O7MUJOKoKl0t0stnWtFEokMiBLKhJ1zvIl7dmmPY2jMigDSarVAAUAPoK5Xq+VDgCCABkAJIANTVQ9n+qH6vMa31DhVuZkghtGMwu3OXUTsrNFoQXJithoicWy1WNlD2wJxNN6HNLxbzxgEEnDTtDYs5UI6Ga4Imkr7sSbKYHAOo2oKwoQAgIA7JgtJsgQNictyfKEjWzhAi8mGELYuHSlWNa+i4cSwcsOq5lhth0V6DE2C2ezVqS5KUhANL0kyFYQPhtr2iqPQ2FG2boGAIBeKmPrerYIqUBA6bISQdxQLgvq5gA2gAjGIABMgicoZwgyDIFlSFZnJWeZJASIZEgALotkhmYkH6UBatSuySkZggABxOQA7DIIWciFMgSJycVOSFYgyB51ZEnaJAAKoWj6fokLwSwMtYWLYX8NA+pM-pegVDJlXAviydiV5sqhOxLP6bAkPKJkad5VCfg4ZWSlQNh3As2G0lRXkikKOKoLmhmCMtJC-Huq0kFInndlmlDRLgQ22Lmo3jYdNi0gKRIALIENScRHNwtIDXcZ3aiCZRVVNJD2nNqCoHyvy-ag7Y1jycReiqKFRFqU3bZpGBgM1uYPftr2uA0EDGiQADiV1lFa+mCGlYkkLOC2Rgy8aJg1H5fi1rIeFYopVFQnIMlwuWeAKUALbSACENHOHEtOXiQAA+YskAL1K0SLLxxC4RSjTsNi4FNok1jNsk2HEFwwwABuen6iw4aw+JDiDQFQWpBGN8aZnA5I2Pr01EihdD8prbsy0LctXpKcAxnGiJVMiut4uSdKC3E3JxFdACao6qhqrsHLwBA0iQtI2BrmvdtruvoDDl01obF5gqbPiWOAzoDbsWEzH79tYU7cQkGqCBHAgPgACSzDYez6yDmupwKXEk-KrIgiQv7-oB-pwKgthXjYcCZ+nYBgEpeX+qbArR7PAFQEBIFgVYEG5tBJPmH6vCPPGC1N7ELgQImZA4pg-roCz0MAvBNjc15tLWW5cEA8kunWBsttxqT1cMKc64QjZ0xIDcagmdcTpFVuETk8xmIgGcD4KQK09hVj6iKeAjEA5B09D7YWoC4gnQHP-WG6VMplDgM8Eg3QGR2GcNSdAr9RQLVXpnbhUlGweAAF4AJrF1WkGRdhQEvqQJRAAeLSOlfS6zsFqX0Kj+j9FziSahf8dR0RBPOKAY0vi0nmNpXS1IfD2N9PpKAblOS+X8hAHwniAquLcvsV2gd8ymJ1lqAR6BjQBQgDAAhdoHgIGeK8OIMIQBXBuAyFJxxkBWk8jNXYaQMiGlCLmfWYjeH8IgEOPuzjqT+L2DEPuviID1P1nknaXCKRUJCRQnW5TUyVJYZdYJcZo6x1lFlcwfYyhxEBJjfWfcEbNT2MgRZmDikD0SDALUQ9OnTXHjWTK5gLi5UIGQLSfpGwU39C4II3ohiUwSffGq78sRWC-lc-KvSBQjN2L0lJJzzqkMOfaWB09D7zz+EvMEVQEBqF-oQZwjxEw1UjAsNY+9aEQuPsBUC2xz6QRIFfEFDpp5orSK8XYcAMknBqs8GwMB0V-HnmQ48RUSgAUQCcbpozaH0X-m9OeXKWE1h5lnQqncOU0olCNcAYAjH5wyIXA2SCTZmy4SCK2NtqVcpdu0zSZQ1SrnXJubci1BAbSWstPJvy8q0X5WYi0QqsC0les9L6-QSCGuNWqDcW4VT7PSpAhAjYTrdWTPA40RFeC8AZrk4kByeIUh1S63OB8GVzxxaffFd4SD9ElEtRCGV7RqhvE6cgoCmUNBLIArO6a-xHxPni8CiZ1F9kHCORUycJwzgXEuFca5fWmoDZ7GsiqdZ6wul7MuxsK7qupP8d+UZZ7MpxY1K8fd62ZqbWfO8BwLQtrbqW28PBrYoJ5smR2cQh6XSCSY6ODq+kgk5S6t1n4PUkCWpa5aghXaZXjpQAqjspREUpmi80BUrDKwUlTGeGbV1AXIB7csHpf7OGOCCGW1tLqZUwCQBI+DdgKPjMeQFfx5LHCaBvMAHs7iXJ3pTW5A0tJPG3q83A7ycP2i6rEEI9QcIkH1ra6Ofs4hAVeM0KgU19Zjy5GAXKBEx3CgLpOkuM7kGV2vLG1Wqtz0liESQPu7bhxJ3HFOOci5lw+r9duPYQsb0jzyWK2kInQFGK1kqyd+tjnuF-qJvVJdhO0NEzCC0IqaxcQiwmjspgzAqGYGoDQWgeD8CEKIYQkhZDyGkIUKwt5ShODgR4BSPg-AaFIMEUIERQiEA0CkXwmDKvZFWGKAoFg8slHKJUaofw6gNHTgpVo6GqDjFMLMcIwBYxUCHEMEYGRwiKByNiPIyQ9hxfi4lgIyWdBpf0FlowzAzBAA)
+[Run Worker in Playground](https://workers.cloudflare.com/playground#LYVwNgLglgDghgJwgegGYHsHALQBM4RwDcABAEbogB2+CAngLzbPYZb6HbW5QDGU2AAwBmAJwBWACwB2AGzTxADgBMwgFwsWbYBzhcafASIkz5S1QFgAUAGF0VCAFMH2ACJQAzjHQeo0e2ok2ngExCRUcMCODABEUDSOAB4AdABWHjGkqFBgzpHRcQkp6THWdg7OENgAKnQwjoFwMDBgfARQ9sipcABucB68CLAQANTA6LjgjtbWUMDeSCQA3iSuIAhwZLkA8mSpjrwQJAC+QQjowCQxvGCUuKhgiA0A7pgA1o4IGURWcwtHACoSP0SDAQM1HE5PmcLlcAAI3O4PJ7IMEQqEITJWKxJf4kXCOVBwcBHJZWACQ-ToVF4QUhvAAFgAKBCOACOIEcHggABoSM4egBKZYU8m8ezckjoPYkBj8qg9ZIAIQAStsAOoAZQAoirkgBzSFKugAOXyTJiZHOzw8nxigp+ouQyBImucuGBJFZHK5Rwg6BIEAZjlW602uRIu32hz5QecwOecD8JD8Hi9XO8VFtovFWaOrK8soTSaO0tSyVQ9OZ3s53Id2PJ5NZEHWVHTXh+5OOPKsx0duclAGltdqAAoAfVVGp1KvHAEEADIASQAatrx0uTeOdTZtibXJqi7JBI7cZgjjd+mmldbbQh+YknDQ02sNltHFGDqSKVb0DbPp2HwwBAc6tD0jhLlQbq5rgaZyieFLcpgcCGo6YoShACAgIcmBMtyBCOHyArCmSjYeOCnx4YQThEQq9aNkGnjJEhGyGkW+FOMx-qsY4nbHA2VI0nSECMiy7K1hAJFOi6mqDI48YFugYAgP4WaBgGTiSpQEA5hhJDPFAuBBkWADaACMojKIIfJmcIsiyDZ4h2XydnWSQkhmZIAC6nboXmJDBlA+oMkccrmYIihuXIih8oosiSHy8VuYooiyD5Dbks6JAAKq2oGwYkLw6ysg4+IEcCNCBnMIb+oVrLlXAQRKQS97clhhzrCGbAkCqyi6f5VB-q45VylQjjPKsBFMvRfmSuKhKoEWZmCCtJBAsea0kOIvkDvmlAJLgw1OEWY0TUdjhMqK5IALIEAyyTnNwTKDc850GpC1TVdNJAuvNqCoMKQJ-agPaNoKyT+pqmHxPq007XpGBgC1RaPQdb1eK0EAWiQADi13VPaJmCOl0kkEui1xqyKZpo1v7-q1XK+PYUr1FQfKslweV+KKUCLUyACEjEeMkdN3iQAA+4skILDJMaLnzJJ45RjYcji4NNUmNrNSmOMktywwABjef5i642yBFDiDQFQ+rhONKZ5nANKOAbM3kphdAilr7uy8L8v3nKcCJsmaL1BievEjSzJC8kArJNdACaU5arqbunLwBCMiQTKOJrWsDjrevoLDV2Nkbt7QmbgR2OAHqDUc+GLP7Dv4c7yQkNqCDnAggQACRLI4xwG6DWtp6K-GkyqXKQiQQEgWBIZwKgTj3o4cBZxnYBgOp+Uhmboox3PoFQOBkHQfYsFFghpM2MGvBvCmi3N0kngQGmZCEpgIboKzMOgihjgeZ8xlnLCuCBBRXWbK2O2E0p5eAlBdGIxt6YkEeNQLORIchqxiHyFYHEQAeECOIVaxx6z9UlPANigdg5+l9iLMByRTqjgAXDDKWVqhwA+CQAYrJnAeAZOgN+UpFpryzjw+SbZfAAC9AGNm6kyXIRwoBX1IMogAPPpQyQY9bOH1EGVRIwRh50pDQ-+hpmKQhXFAca-wmQrAMkZBkgQHFBhMlALyfJArBQgIELxIU3FeROG7IOJYzG631II9AFoQoQBgIQ50rwEAfC+MkREIB7iPFZKki4yB7S+VmkcbIuQzRRCLAbcRfCBEQHHP3FxDIAnHESP3PxEAGkG3ybtbhtJqGhMobrCpWYqmsKuiE5MMc45KmyjYYc1RkhgixgbfuiMWrHGQEsrBJTB5pBgPqYeXSZoT0bFlGwtw8qEDIPpYMbZKYhk8OEAM4wqaJIfrVD++J7Df2uQVPpopRlHD6ak05F0yFHJdHAmeR8F7AmXtCeoCBtB-0IB4N4aZapxlWNsA+dDIUnwglBA4F84IkGvqC10M90XZC+EcOAmTLi1Q+I4GAGLgQL3IReYqlRQKIEuD0sZdCWIAPevPblrDGy82zkVLunLaWylGuAMAxiC65CLobZBptzbcMhNbW2NLuWuw6Xpao2otw7j3AeJaghNrLRWvkv5+UmICvMbaYVWAmRvRet9EYJAjUmu1LufcmoDkZSgQgNsp0eoZgQRacivBeCMzyRSQ5glaS6tdXnQ+jL564rPgS58JARhymWmhTKLptSPndOQMBzLWiViAdnDNwFj6n3xTBNMGjhxjknGqFOs5FyrnXJubcfqzWBq9o2JVut9aXW9uXE2lcNUMhBB-eMc8WW4qavefuDas3NvPs+U4tpW3tzLU+HgNtUG8wzE7ZIw8rrBNMTHR1-TIRctde6v8nqSDLStStQQbssoJ0oIVJ28pyJU3RTaQq9gVaqWprPTNa7wLkE9jWX0f8PAXEhLLG2V0sqYBIKkAhRxFEpgvEC4EKkLjtE3mAT2zwrm7ypncwa+l3g7zebgD5uGXTdSSJEFohESAGztTHf2yRwJfA6FQaaBtx78jAHlUi46JSFynaXWdKCq4PjjWrNWF7KzCJIP3DtE5k4znnMuNcG5fX+oPMcYWt7R75PFUyUTYDjHa2VVOg2JyfB-zE-q0uIm6FicRLaUVjZ+KRcTb2Kw1hNDMG0LofQPB+BCDEFIOQCgVDCDKPYJ8VR3DwN8KpQIwRdCkAiFEWIURCC6EyEELBVWChbGlKUWw+XKg1DqA0YEzRWgZ1Ul0DDVAZhWCWDEYASYqDjnGJMXIMQ1CFAJMUDIxx4sJaS6EFLhh0smCy+YYQzBrBAA)
 
 ```ts
 import { DurableObject } from "cloudflare:workers";
@@ -1046505,7 +1046504,7 @@ View tutorials to help you get started with Workers.
 | [Use Workers KV directly from Rust](https://developers.cloudflare.com/workers/tutorials/workers-kv-from-rust/) | 2 years ago | Intermediate |
 | [Build a todo list Jamstack application](https://developers.cloudflare.com/workers/tutorials/build-a-jamstack-app/) | 2 years ago | Beginner |
 | [Send Emails With Postmark](https://developers.cloudflare.com/workers/tutorials/send-emails-with-postmark/) | 2 years ago | Beginner |
-| [Send Emails With Resend](https://developers.cloudflare.com/workers/tutorials/send-emails-with-resend/) | 2 years ago | Beginner |
+| [Send Emails With Resend](https://developers.cloudflare.com/workers/tutorials/send-emails-with-resend/) | 3 years ago | Beginner |
 | [Log and store upload events in R2 with event notifications](https://developers.cloudflare.com/r2/tutorials/upload-logs-event-notifications/) | 3 years ago | Beginner |
 | [Create custom headers for Cloudflare Access-protected origins with Workers](https://developers.cloudflare.com/cloudflare-one/tutorials/access-workers/) | 3 years ago | Intermediate |
 | [Create a serverless, globally distributed time-series API with Timescale](https://developers.cloudflare.com/hyperdrive/tutorials/serverless-timeseries-api-with-timescale/) | 3 years ago | Beginner |

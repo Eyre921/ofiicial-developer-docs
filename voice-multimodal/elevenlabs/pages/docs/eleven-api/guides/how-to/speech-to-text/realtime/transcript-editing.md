@@ -19,7 +19,7 @@ path: docs/eleven-api/guides/how-to/speech-to-text/realtime/transcript-editing
 > **Warning**
 >
 > Transcript editing is an experimental feature and adds a 30% premium to the base transcription
-> cost, billed for at least 10 seconds of audio per committed transcript. See the [API pricing page](https://elevenlabs.io/pricing?price.section=speech_to_text\&price.sections=speech_to_text,speech_to_text#pricing-table)
+> cost, billed for at least 10 seconds of audio per committed transcript. See the [API pricing page](https://elevenlabs.io/pricing/api?price.section=speech_to_text\&price.sections=speech_to_text,speech_to_text#pricing-table)
 > for detailed pricing information.
 
 Realtime transcription can apply a natural-language edit instruction to every committed transcript, for example to write spoken dates in a fixed format or to expand abbreviations and acronyms. The instruction is passed once when the connection is opened, and each committed transcript is followed by a separate `edited_transcript` event with the edited text.

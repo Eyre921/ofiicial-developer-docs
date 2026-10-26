@@ -638,7 +638,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[EmpirioLabs AI](https://docs.empiriolabs.ai)**
 >
-> Specialized AI model hosting for open, proprietary, and custom stacks through one OpenAI-compatible API, plus GPU Cloud and hosted agents.
+> Specialized AI model hosting for open, proprietary, and custom stacks, plus GPU Cloud and hosted AI agents.
 
 > **[EnConvert](https://github.com/enconvert/langchain-enconvert)**
 >
@@ -675,6 +675,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > **[FalkorDB](https://docs.falkordb.com/genai-tools/langchain.html)**
 >
 > Graph database with ultra-low latency.
+
+> **[FastOCRLoader](https://github.com/fastocr-org/langchain-fastocr#readme)**
+>
+> Document loader that reads scanned PDFs and images with FastOCR in 100+ languages and returns text or a searchable PDF.
 
 > **[Featherless AI](https://github.com/featherlessai/langchain-featherless-ai)**
 >
@@ -1343,6 +1347,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > **[Ollama](/oss/python/integrations/providers/ollama)**
 >
 > Run Large Language Models (LLMs) locally.
+
+> **[Olostep](https://github.com/olostep-api/langchain-olostep#readme)**
+>
+> Web scraping, crawling, site mapping, batch extraction and cited web answers via the Olostep API.
 
 > **[OMEM](https://infrastructure.omem-cloud.com/docs)**
 >
