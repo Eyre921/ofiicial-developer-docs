@@ -1235,6 +1235,8 @@ export const myChat = chat.agent({
 
 If the background work finishes *during* a tool-call loop (not between turns), the messages are picked up at the next `prepareStep` boundary instead.
 
+An injection made from a tool mid-turn is recorded in the conversation history at the step where it happened, after the tool result. The next turn's prompt prefix is unchanged.
+
 ## Example: self-review
 
 A cheap model reviews the agent's response after each turn and injects coaching for the next one. Uses [Prompts](/docs/ai/prompts) for the review prompt and `generateObject` for structured output.
@@ -3192,6 +3194,7 @@ Within a single assistant turn the AI SDK chunk types you'll typically see, in o
 | `tool-input-start` / `tool-input-delta` / `tool-input-available` | tool-call argument streaming | The tool the model is calling. |
 | `tool-output-available` | tool result | After the agent runs the tool. |
 | `data-*` | `{ type: "data-<name>", data: ... }` | Custom data parts written by the agent's hooks. |
+| `data-subagent` | `{ type: "data-subagent", transient: true, data: { toolCallId, seq, chunks } }` | A batch of a sub-agent's chunks written by [`chat.forwardSubAgent`](/docs/ai-chat/patterns/sub-agents). `seq` counts from 0 per `toolCallId`; skip batches you have already applied when you resume. |
 | `finish-step` / `finish` | end markers for the assistant message | Followed by the `turn-complete` control record. |
 
 Refer to the AI SDK docs linked above for the full union — only the two control records below are Trigger.dev-specific.
@@ -6316,6 +6319,21 @@ for await (const chunk of stream) {
 }
 ```
 
+## Sub-agents
+
+When a tool delegates to a sub-agent with [`chat.forwardSubAgent`](/docs/ai-chat/patterns/sub-agents), the parent's tool part has no output until the sub-agent finishes. `useSubAgentMessages` rebuilds the sub-agent's message from the chunks streamed so far:
+
+```tsx app/components/chat.tsx theme={"theme":"css-variables"}
+import { useChat } from "@ai-sdk/react";
+import { useSubAgentMessages } from "@trigger.dev/sdk/chat/react";
+
+const subAgents = useSubAgentMessages();
+const { messages } = useChat({ transport, onData: subAgents.onData });
+
+// in the tool card: live while it runs, the tool output once it finishes
+const message = subAgents.get(part.toolCallId) ?? part.output;
+```
+
 ## Multi-tab coordination
 
 When the same chat is open in multiple browser tabs, `multiTab: true` prevents duplicate messages and syncs conversation state across tabs. Only one tab can send at a time. Other tabs enter read-only mode with real-time message updates.
@@ -8264,7 +8282,7 @@ Four primitives, related but distinct:
 
 * **Chat agents** — the SDK surface you define with [`chat.agent()`](/docs/ai-chat/backend#chat-agent). Owns the turn loop, lifecycle hooks, and the response stream.
 * **Sessions** — the durable, bi-directional channel keyed on `chatId` that holds the conversation across run boundaries. A chat agent runs *on top of* a [Session](/docs/ai-chat/sessions).
-* **Sub-agents** — Delegate work from one agent to another via [`AgentChat`](/docs/ai-chat/patterns/sub-agents). The sub-agent runs as its own durable agent on its own session; its response streams back through the parent as preliminary tool results, so the frontend sees the sub-agent working inside the parent's tool card.
+* **Sub-agents**: delegate work from one agent to another via [`AgentChat`](/docs/ai-chat/patterns/sub-agents). The sub-agent runs as its own durable agent on its own session; [`chat.forwardSubAgent`](/docs/ai-chat/patterns/sub-agents) streams its reply through the parent's tool call, so the frontend sees the sub-agent working inside the parent's tool card.
 * **Channels** connect an agent to a surface other than your frontend. [`slack()`](/docs/webhooks/slack) and [`linear()`](/docs/webhooks/linear) turn an agent into a Slack or Linear agent, and [`chat.channels.custom()`](/docs/webhooks/channels) connects any chat surface that sends webhooks. Each conversation there is still a durable session, and the reply posts back to the surface.
 
 ## Next steps
@@ -10649,32 +10667,35 @@ See [`projects/ai-chat/src/trigger/skills/time-utils/`](https://github.com/trigg
 # Sub-Agents
 Source: https://trigger.dev/docs/ai-chat/patterns/sub-agents
 
-Delegate work to durable sub-agents from within a parent agent's tool calls, with streaming preliminary results.
+Delegate work to durable sub-agents from a parent agent's tool calls, and stream each sub-agent's work to the frontend as it happens.
 
-Sub-agents let a parent agent delegate work to other agents running as durable Trigger.dev tasks. The sub-agent's response streams back through the parent as preliminary tool results, so the frontend sees the sub-agent working inside the parent's tool call card.
+**Sub-agents let a parent agent delegate work to other agents running as durable Trigger.dev tasks, and `chat.forwardSubAgent` streams each sub-agent's reply to the frontend inside the parent's tool call.**
 
-This builds on the AI SDK's [async generator tool pattern](https://ai-sdk.dev/docs/agents/subagents) and Trigger.dev's [AgentChat](/docs/ai-chat/server-chat) for server-side agent interaction.
+Every chunk the sub-agent streams is written to the parent chat once, so the cost of streaming a sub-agent grows with the length of its reply. When the sub-agent finishes, its final message becomes the tool's output and persists with the parent's history.
+
+This builds on Trigger.dev's [AgentChat](/docs/ai-chat/server-chat) for server-side agent interaction.
 
 ## How it works
 
-1. The parent LLM calls a tool (e.g., `researchAgent`)
-2. The tool's `execute` is an `async function*` (async generator)
-3. Inside, it creates an `AgentChat` and sends a message to the sub-agent
-4. `yield* stream.messages()` streams each accumulated `UIMessage` snapshot as a preliminary tool result
-5. The frontend renders the sub-agent's response building up inside the parent's tool card
-6. `toModelOutput` compresses the full output into a summary for the parent LLM
+1. The parent LLM calls a tool (for example `research`).
+2. The tool's `execute` creates an `AgentChat` and sends a message to the sub-agent.
+3. `chat.forwardSubAgent(stream, { toolCallId })` writes each sub-agent chunk to the parent chat as a transient `data-subagent` part.
+4. The frontend rebuilds the sub-agent's message from those chunks with `useSubAgentMessages` and renders it inside the parent's tool card.
+5. When the sub-agent finishes, `forwardSubAgent` resolves with its final `UIMessage`, which becomes the tool's output.
+6. `toModelOutput` compresses that output into a summary for the parent LLM.
 
 ```
 Parent LLM
   │
-  ├─ calls researchAgent tool
+  ├─ calls research tool
   │    │
   │    ├─ AgentChat triggers sub-agent run
-  │    ├─ sub-agent streams response (text, tool calls, etc.)
-  │    ├─ yield* sends UIMessage snapshots as preliminary results
-  │    └─ toModelOutput compresses for parent LLM
+  │    ├─ sub-agent streams its reply (text, tool calls, etc.)
+  │    ├─ forwardSubAgent writes each chunk once as a transient data-subagent part
+  │    ├─ the tool returns the sub-agent's final UIMessage
+  │    └─ toModelOutput compresses it for the parent LLM
   │
-  └─ parent LLM reads compressed summary, continues reasoning
+  └─ parent LLM reads the summary and continues
 ```
 
 ## Single-turn sub-agent
@@ -10682,7 +10703,8 @@ Parent LLM
 The simplest pattern: one tool call, one sub-agent turn, conversation closes.
 
 ```ts theme={"theme":"css-variables"}
-import { tool, stepCountIs } from "ai";
+import { tool } from "ai";
+import { chat } from "@trigger.dev/sdk/ai";
 import { AgentChat } from "@trigger.dev/sdk/chat";
 import { z } from "zod";
 import type { prReviewAgent } from "./trigger/pr-review";
@@ -10693,19 +10715,20 @@ const prReviewTool = tool({
     prNumber: z.number().describe("The PR number to review"),
     repo: z.string().describe("The GitHub repo URL"),
   }),
-  execute: async function* ({ prNumber, repo }, { abortSignal }) {
-    const chat = new AgentChat<typeof prReviewAgent>({
+  execute: async ({ prNumber, repo }, { toolCallId, abortSignal }) => {
+    const reviewer = new AgentChat<typeof prReviewAgent>({
       agent: "pr-review",
       id: `review-${prNumber}`,
       clientData: { userId: "parent-agent", githubUrl: repo },
     });
 
-    const stream = await chat.sendMessage(`Review PR #${prNumber}`, { abortSignal });
-
-    // Each yield sends a UIMessage snapshot to the frontend
-    yield* stream.messages();
-
-    await chat.close();
+    try {
+      const stream = await reviewer.sendMessage(`Review PR #${prNumber}`, { abortSignal });
+      // Streams the review to the frontend and resolves with the final message
+      return await chat.forwardSubAgent(stream, { toolCallId });
+    } finally {
+      await reviewer.close();
+    }
   },
   // The parent LLM only sees this compressed summary
   toModelOutput: ({ output: message }) => {
@@ -10717,19 +10740,34 @@ const prReviewTool = tool({
 });
 ```
 
-Use this tool in a parent agent's `streamText` call:
+`forwardSubAgent` needs the parent chat to write to, so call it from a tool that runs inside a `chat.agent` or `chat.customAgent` run. [Combining with chat.agent()](#combining-with-chat-agent) below shows the agent side.
 
-```ts theme={"theme":"css-variables"}
-import { streamText } from "ai";
-import { anthropic } from "@ai-sdk/anthropic";
+## Render sub-agents in the frontend
 
-const result = streamText({
-  model: anthropic("claude-sonnet-4-6"),
-  tools: { prReview: prReviewTool },
-  prompt: "Review PR #42 on triggerdotdev/trigger.dev",
-  stopWhen: stepCountIs(15),
-});
+While the sub-agent runs, the parent's tool part has no output yet. `useSubAgentMessages` collects the forwarded chunks and gives you the sub-agent's message so far for each tool call:
+
+```tsx app/components/chat.tsx theme={"theme":"css-variables"}
+import { useChat } from "@ai-sdk/react";
+import type { TriggerChatTransport } from "@trigger.dev/sdk/chat";
+import { useSubAgentMessages } from "@trigger.dev/sdk/chat/react";
+import { ReviewCard } from "./review-card";
+
+export function Chat({ transport }: { transport: TriggerChatTransport }) {
+  const subAgents = useSubAgentMessages();
+  const { messages } = useChat({ transport, onData: subAgents.onData });
+
+  return messages.map((message) =>
+    message.parts.map((part) => {
+      if (part.type !== "tool-prReview") return null;
+      // Live while the sub-agent runs, the tool output once it finishes
+      const review = subAgents.get(part.toolCallId) ?? part.output;
+      return <ReviewCard key={part.toolCallId} message={review} />;
+    })
+  );
+}
 ```
+
+The hook rebuilds each message at most once per `throttleMs` (100ms by default), so a long reply costs a bounded number of rebuilds. After a reload mid-turn, the transport replays the current turn and the hook rebuilds the sub-agent's message from it; batches it has already seen are skipped. Outside React, `createSubAgentMessages()` from `@trigger.dev/sdk/chat` does the same job.
 
 ## Multi-turn sub-agent (LLM-driven)
 
@@ -10737,6 +10775,7 @@ The parent LLM drives a persistent conversation with a sub-agent across multiple
 
 ```ts theme={"theme":"css-variables"}
 import { tool } from "ai";
+import { chat } from "@trigger.dev/sdk/ai";
 import { AgentChat } from "@trigger.dev/sdk/chat";
 import { z } from "zod";
 
@@ -10753,7 +10792,7 @@ const researchTool = tool({
       .describe("Unique ID for this research thread. Reuse to continue."),
     message: z.string().describe("Your message to the research agent"),
   }),
-  execute: async function* ({ conversationId, message }, { abortSignal }) {
+  execute: async ({ conversationId, message }, { toolCallId, abortSignal }) => {
     let agent = subAgents.get(conversationId);
     if (!agent) {
       agent = new AgentChat({
@@ -10764,7 +10803,7 @@ const researchTool = tool({
     }
 
     const stream = await agent.sendMessage(message, { abortSignal });
-    yield* stream.messages();
+    return await chat.forwardSubAgent(stream, { toolCallId });
   },
   toModelOutput: ({ output: message }) => {
     const lastText = message?.parts?.findLast(
@@ -10856,14 +10895,19 @@ For the multi-turn pattern, the parent should clean up sub-agents when it exits 
 
 ## What the frontend sees
 
-Each `yield` from `stream.messages()` sends a complete `UIMessage` containing all the sub-agent's parts accumulated so far. The AI SDK delivers these as `tool-output-available` chunks with `preliminary: true`.
+While the sub-agent runs, the parent's tool part stays in `state: "input-available"`, and the parent stream carries transient `data-subagent` parts. Each one holds a batch of the sub-agent's chunks, tagged with the parent's `toolCallId` and a sequence number:
 
-The frontend renders the tool part with:
+```ts theme={"theme":"css-variables"}
+{
+  type: "data-subagent",
+  transient: true,
+  data: { toolCallId: "toolu_01...", seq: 3, chunks: [/* UIMessageChunk[] */] },
+}
+```
 
-* `state: "output-available"` and `preliminary: true` while streaming
-* `state: "output-available"` and `preliminary: false` (or absent) when done
+Transient parts reach `useChat`'s `onData` and are not added to `message.parts`, so they never persist. When the sub-agent finishes, the tool part moves to `state: "output-available"` with the full `UIMessage` as its output: text, the sub-agent's own tool calls and results, reasoning, and so on. That output is what reloaded history renders.
 
-The tool output contains the full `UIMessage` with nested parts — text, the sub-agent's own tool calls and results, reasoning, etc.
+If the user stops the parent turn while a sub-agent is running, the tool call ends without an output, the same as any stopped tool. The sub-agent's work up to that point was only ever in the transient parts, so neither the parent's history nor the next turn's model context includes it.
 
 ### Controlling what the parent LLM sees
 
@@ -10886,31 +10930,28 @@ This is important for token efficiency: the sub-agent might use 100K tokens expl
 >
 > `toModelOutput` only runs when the SDK has your tools at conversion time. On a multi-turn parent, the SDK re-converts the persisted history at the start of each turn, so you must declare the sub-agent tool on the agent config (`chat.agent({ tools })`) for the compression to survive. Without it, the summary holds on turn 1 but turn 2 onward re-ingests the full sub-agent output. In a `chat.customAgent` loop you own the conversion, so pass the tools to `convertToModelMessages(uiMessages, { tools })` yourself. See [Tools: toModelOutput across turns](/docs/ai-chat/tools#tomodeloutput-across-turns).
 
-## ChatStream.messages()
+## Snapshots with `stream.messages()`
 
-The `messages()` method on `ChatStream` wraps the AI SDK's `readUIMessageStream`. It reads the raw `UIMessageChunk` stream and yields complete `UIMessage` snapshots — each containing all parts received so far.
+`ChatStream.messages()` wraps the AI SDK's `readUIMessageStream` and yields the whole accumulated `UIMessage` after almost every chunk. Yielding those snapshots from an `async function*` tool (`yield* stream.messages()`) turns each one into a preliminary tool result, which streams the sub-agent too, but every snapshot repeats the whole message so far. The bytes written grow with the square of the reply length:
+
+| Sub-agent reply | `yield* stream.messages()` | `chat.forwardSubAgent` |
+| - | - | - |
+| 500 text deltas, no tools | 1.1 MB | 0.07 MB |
+| 5 tool results of 20 KB, then 2,000 deltas | 218 MB | 0.47 MB |
+| 10 tool results of 50 KB, then 4,000 deltas | 2.1 GB | 1.5 MB |
+
+Every one of those bytes goes to the chat's stream storage and to each browser watching the chat. Use `forwardSubAgent` for sub-agents, and keep `stream.messages()` for reading a short reply in server code:
 
 ```ts theme={"theme":"css-variables"}
-const stream = await chat.sendMessage("Research this topic");
-
-// Each yield is a complete UIMessage with all accumulated parts
+const stream = await agent.sendMessage("Summarize this ticket in one sentence");
 for await (const message of stream.messages()) {
   console.log(message.parts.length, "parts so far");
 }
 ```
 
-For the sub-agent pattern, use `yield*` to delegate all yields to the parent tool's generator:
-
-```ts theme={"theme":"css-variables"}
-execute: async function* ({ topic }, { abortSignal }) {
-  const stream = await chat.sendMessage(topic, { abortSignal });
-  yield* stream.messages();
-},
-```
-
 > [!TIP]
 >
-> `stream.messages()` consumes the stream. You can't also call `stream.text()` or iterate over chunks on the same stream. Pick one consumption mode.
+> A `ChatStream` can be consumed once: by `forwardSubAgent`, `stream.messages()`, `stream.text()`, or by iterating its chunks. Pick one.
 
 ## Combining with chat.agent()
 
@@ -10992,6 +11033,8 @@ const research = tool({
   execute: ai.toolExecute(researchTask),
 });
 ```
+
+Keep a part you update this way small. The frontend replaces the part on each write, but the chat stream stores every version, so writing a growing payload under one `id` (a full message history, say) stores every copy. Mark progress updates that don't need to persist with `transient: true`, and use `chat.forwardSubAgent` when the thing you are streaming is a sub-agent's reply.
 
 On the frontend, render the custom data part:
 
@@ -11938,6 +11981,8 @@ When messages are injected, the SDK automatically writes a `data-pending-message
 * Remove them from the pending overlay
 * Render them inline at the injection point in the assistant response
 
+Background injections appear as a different data part (`data-background-injected`) that `usePendingMessages` ignores. It is not a user message.
+
 A "pending message injected" span also appears in the run trace.
 
 ## Backend: chat.createSession
@@ -12531,7 +12576,7 @@ Run your frontend and `pnpm exec trigger dev`, then send a message. You should s
 * [Frontend](/docs/ai-chat/frontend) — Session management, client data, reconnection
 * [Types](/docs/ai-chat/types) — `chat.withUIMessage`, `InferChatUIMessage`, and related typing
 * [`chat.local`](/docs/ai-chat/chat-local) — Per-run typed state across hooks, run, tools, subtasks
-* [Sub-agents pattern](/docs/ai-chat/patterns/sub-agents) — Subtask-as-tool, `target: "root"` streaming, `ai.toolExecute` helpers
+* [Sub-agents pattern](/docs/ai-chat/patterns/sub-agents): `chat.forwardSubAgent`, subtask-as-tool, `target: "root"` streaming, `ai.toolExecute` helpers
 * [Background injection](/docs/ai-chat/background-injection) — `chat.inject()` and `chat.defer()` for between-turn work
 
 
@@ -13101,6 +13146,7 @@ All methods available on the `chat` object from `@trigger.dev/sdk/ai`.
 | `chat.isStopped()` | Check if the current turn was stopped by the user |
 | `chat.cleanupAbortedParts(message)` | Remove incomplete parts from a stopped response message |
 | `chat.response.write(chunk)` | Write a data part that streams to the frontend AND persists in `onTurnComplete`'s `responseMessage` |
+| `chat.forwardSubAgent(stream, { toolCallId, flushIntervalMs? })` | Stream a sub-agent's reply through a parent tool call as transient `data-subagent` parts, and resolve with its final `UIMessage`. Call it inside a tool's `execute`. See [Sub-agents](/docs/ai-chat/patterns/sub-agents) |
 | `chat.stream` | Raw chat output stream — use `.writer()`, `.pipe()`, `.append()`, `.read()`. Chunks are NOT accumulated into the response. |
 | `chat.history.all()` | Read the current accumulated UI messages (returns a copy). See [chat.history](/docs/ai-chat/backend#chat-history) |
 | `chat.history.set(messages)` | Replace all accumulated messages (same as `chat.setMessages()`) |
@@ -13372,6 +13418,27 @@ const transport = useTriggerChatTransport({
 ```
 
 No-op when `BroadcastChannel` is unavailable (SSR, Node.js). See [Multi-tab coordination](/docs/ai-chat/frontend#multi-tab-coordination).
+
+## useSubAgentMessages
+
+React hook that rebuilds sub-agents streamed with [`chat.forwardSubAgent`](/docs/ai-chat/patterns/sub-agents) while they run. Import from `@trigger.dev/sdk/chat/react`.
+
+```tsx theme={"theme":"css-variables"}
+import { useSubAgentMessages } from "@trigger.dev/sdk/chat/react";
+
+const subAgents = useSubAgentMessages();
+const { messages } = useChat({ transport, onData: subAgents.onData });
+
+const message = subAgents.get(part.toolCallId) ?? part.output;
+```
+
+| Option | Type | Default | Description |
+| - | - | - | - |
+| `throttleMs` | `number` | `100` | Minimum time between rebuilds of a sub-agent's message while chunks stream in. |
+
+**Returns:** `{ onData, get }`. Pass `onData` to `useChat`. `get(toolCallId)` returns the sub-agent's `UIMessage` so far, or `undefined` before its first chunk. Batches a resumed stream replays are skipped, so a reload mid-turn does not duplicate content.
+
+`createSubAgentMessages({ throttleMs?, onChange? })` from `@trigger.dev/sdk/chat` is the same store without React: call its `onData` with every data part you receive, read with `get(toolCallId)`, and `dispose()` when you are done.
 
 ### Trigger configuration
 
@@ -13770,21 +13837,25 @@ export async function POST(req: Request) {
 
 ## Sub-agent tool pattern
 
-`AgentChat` can be used inside an AI SDK tool to delegate work to a durable sub-agent. The sub-agent's response streams as preliminary tool results:
+`AgentChat` can be used inside an AI SDK tool to delegate work to a durable sub-agent. `chat.forwardSubAgent` streams the sub-agent's reply to the frontend inside the tool call and resolves with its final message:
 
 ```ts theme={"theme":"css-variables"}
 import { tool } from "ai";
+import { chat } from "@trigger.dev/sdk/ai";
 import { AgentChat } from "@trigger.dev/sdk/chat";
 import { z } from "zod";
 
 const researchTool = tool({
   description: "Delegate research to a specialist agent.",
   inputSchema: z.object({ topic: z.string() }),
-  execute: async function* ({ topic }, { abortSignal }) {
-    const chat = new AgentChat({ agent: "research-agent" });
-    const stream = await chat.sendMessage(topic, { abortSignal });
-    yield* stream.messages();
-    await chat.close();
+  execute: async ({ topic }, { toolCallId, abortSignal }) => {
+    const researcher = new AgentChat({ agent: "research-agent" });
+    try {
+      const stream = await researcher.sendMessage(topic, { abortSignal });
+      return await chat.forwardSubAgent(stream, { toolCallId });
+    } finally {
+      await researcher.close();
+    }
   },
   toModelOutput: ({ output: message }) => {
     const lastText = message?.parts?.findLast(
@@ -13863,7 +13934,7 @@ const stream = await chat.reconnect();
 | - | - | - |
 | `text()` | `Promise<string>` | Consume stream, return accumulated text |
 | `result()` | `Promise<ChatStreamResult>` | Consume stream, return `{ text, toolCalls, toolResults }` |
-| `messages()` | `AsyncGenerator<UIMessage>` | Yield accumulated UIMessage snapshots (sub-agent pattern) |
+| `messages()` | `AsyncGenerator<UIMessage>` | Yield the accumulated UIMessage after each chunk. For sub-agents, pass the stream to `chat.forwardSubAgent` instead |
 | `[Symbol.asyncIterator]` | `UIMessageChunk` | Iterate over typed stream chunks |
 | `.stream` | `ReadableStream<UIMessageChunk>` | Raw stream for AI SDK utilities |
 
@@ -19549,7 +19620,7 @@ After each call we restore the few attributes we use to link a span to its run, 
 
 If you don't set a `runtime`, your tasks run on the current Node.js LTS. Setting `runtime: "node"` does the same thing — see the Node.js versions section below to pin a specific version instead.
 
-We currently only officially support the `node` runtime, but you can try our experimental `bun` runtime by setting the `runtime` option in your config file:
+We currently only officially support the `node` runtime, but you can try our experimental Bun runtimes by setting the `runtime` option in your config file:
 
 ```ts trigger.config.ts theme={"theme":"css-variables"}
 import { defineConfig } from "@trigger.dev/sdk";
@@ -19561,7 +19632,7 @@ export default defineConfig({
 });
 ```
 
-See our [Bun guide](/docs/guides/frameworks/bun) for more information.
+`bun` runs on Bun 1.3 with a Node.js binary alongside it. `bun-1.4` runs on a Bun-only image with no Node.js binary. See our [Bun guide](/docs/guides/frameworks/bun) for the differences.
 
 ### Node.js versions
 
@@ -19571,7 +19642,8 @@ Trigger.dev runs your deployed tasks on one of these runtimes:
 * Node.js `node-22` — `22.23.4`
 * Node.js `node-24` — `24.22.1`
 * Node.js `node-26` — `26.12.1`
-* Bun `bun` — `1.3.3`
+* Bun `bun` — `1.3.3` with Node.js `20` alongside it (also spelled `bun-legacy`)
+* Bun `bun-1.4` — `1.4.4`, no Node.js binary
 
 If you don't set a `runtime`, or you set `runtime: "node"`, your tasks run on the current Node.js LTS. That version moves forward as new LTS releases land, so set an explicit version — for example `runtime: "node-24"` — if you need it to stay fixed.
 
@@ -19579,7 +19651,7 @@ If you don't set a `runtime`, or you set `runtime: "node"`, your tasks run on th
 import { defineConfig } from "@trigger.dev/sdk";
 
 export default defineConfig({
-  // "node", "node-22", "node-24", "node-26" or "bun"
+  // "node", "node-22", "node-24", "node-26", "bun" or "bun-1.4"
   runtime: "node-24",
   project: "<your-project-ref>",
 });
@@ -33288,8 +33360,26 @@ This guide will show you how to setup Trigger.dev in your existing Bun project, 
 
 > [!NOTE]
 >
-> **Supported Bun version:** Deployed tasks run on Bun 1.3.3. For local development, use Bun 1.3.x
-> for compatibility.
+> **Supported Bun versions:** `runtime: "bun"` deploys on Bun 1.3.3 with a Node.js 20 binary
+> alongside it. Opt in to `runtime: "bun-1.4"` (Bun 1.4.4) for a
+> Bun-only image. For local development, match the Bun minor you deploy on.
+
+## Choosing a Bun runtime
+
+| `runtime` | Bun | Node.js binary in the image | Notes |
+| - | - | - | - |
+| `bun` | 1.3.3 | Yes (Node.js 20) | The default, also spelled `bun-legacy`. Use this if a task shells out to `node`. |
+| `bun-1.4` | 1.4.4 | No | Bun-only image. See the Bun 1.4 note below. |
+
+The `bun-1.4` image contains **no Node.js binary**. Anything in your task that spawns
+`node` (a CLI tool, a `postinstall` script, a library that shells out) will fail on it. Keep those
+projects on `bun`, or install Node.js yourself with a build extension.
+
+> [!NOTE]
+>
+> **Bun 1.4:** Bun 1.4.x has an open regression in its `node:http2` client
+> ([oven-sh/bun#39796](https://github.com/oven-sh/bun/issues/39796)). If your tasks use HTTP/2
+> clients, for example some gRPC or Google Cloud SDKs, use `bun` until it is fixed.
 
 ## Prerequisites
 
@@ -39381,6 +39471,10 @@ export const waitpointTask = task({
 
 Waiting saves you compute, but it doesn't always free up concurrency — see [Wait](/docs/wait).
 
+## Filter webhooks before they start runs
+
+Give each [webhook](/docs/webhooks/overview) subscriber a [filter](/docs/webhooks/filters) so it only runs for the events it handles. A delivery that no subscriber's filter matches starts no run for any subscriber, so you aren't charged for it. Filters only apply to subscribers: a run [waiting](/docs/webhooks/waiters) for a matching webhook still resumes and uses compute. Receiving webhooks has no separate charge.
+
 ## Use debounce to consolidate multiple triggers
 
 When a task might be triggered multiple times in quick succession, use debounce to consolidate them into a single run. This is useful for document indexing, webhook aggregation, cache invalidation, and real-time sync scenarios.
@@ -39971,7 +40065,7 @@ Build and run durable AI agents and workflows in TypeScript. Long-running tasks 
 
 Copy this prompt into your AI coding assistant from your app's directory:
 
-```text theme={"theme":"css-variables"} theme={"theme":"css-variables"}
+```text theme={"theme":"css-variables"}
 Bootstrap a Trigger.dev project: trigger.dev/SKILL.md
 ```
 
@@ -40324,6 +40418,47 @@ All of an environment's endpoints also share a per-environment limit, counted in
 | Hobby | 1,000 every 10 sec |
 | Pro | 3,000 every 10 sec |
 | Enterprise | Set per organization |
+
+## Webhook waiters
+
+A [waiter](/docs/webhooks/waiters) is a run paused until a matching webhook arrives. The per-endpoint limit is also the most waiting runs one delivery can resume.
+
+| Pricing tier | Live waiters per environment | Live waiters per endpoint |
+| :- | :- | :- |
+| Free | 500 | 100 |
+| Hobby | 2,000 | 1,000 |
+| Pro | 25,000 | 10,000 |
+| Enterprise | Set per organization | Set per organization |
+
+A waiter can wait for up to 90 days.
+
+## Webhook processing concurrency
+
+This limit controls how many webhook deliveries and waiter resumes are processed at once per environment. Additional deliveries wait their turn. It is not a limit on the runs those deliveries start, which use your normal [concurrency limits](#concurrency-limits).
+
+| Pricing tier | Limit |
+| :- | :- |
+| Free | 5 concurrent deliveries |
+| Hobby | 10 concurrent deliveries |
+| Pro | 50 concurrent deliveries |
+| Enterprise | Set per organization |
+
+## Webhook delivery retention
+
+How long [deliveries](/docs/webhooks/deliveries) stay visible in the dashboard and the API.
+
+| Pricing tier | Limit |
+| :- | :- |
+| Free | 3 days |
+| Hobby | 7 days |
+| Pro | 30 days |
+| Enterprise | 90, 180 or 365 days |
+
+By default, deliveries are stored for at least 30 days, so upgrading your plan shows older deliveries that are still stored. An organization can ask us to store deliveries only for its retention period instead. Deliveries past that period are then deleted and can't be shown again after an upgrade.
+
+## Webhook subscribers
+
+An endpoint can have up to 25 subscribers (tasks, agent sessions and channels) on every plan.
 
 ## Log retention
 
@@ -42545,11 +42680,6 @@ For a finished run, spans that finish more than 7 days after the run are returne
 
 ## Page large traces
 
-> [!WARNING]
->
-> **Rolling out.** This feature is being enabled gradually and may not be available
-> for your organization yet.
-
 The tree response stops at a size limit. To get every span of a large trace, page it: send `page[size]` (1,000–10,000) on the first request, then pass each response's `pagination.next` back as `page[after]` until it's absent.
 
 ```ts Your backend code theme={"theme":"css-variables"}
@@ -44567,7 +44697,8 @@ Trigger.dev runs your deployed tasks on one of these runtimes:
 * Node.js `node-22` — `22.23.4`
 * Node.js `node-24` — `24.22.1`
 * Node.js `node-26` — `26.12.1`
-* Bun `bun` — `1.3.3`
+* Bun `bun` — `1.3.3` with Node.js `20` alongside it (also spelled `bun-legacy`)
+* Bun `bun-1.4` — `1.4.4`, no Node.js binary
 
 If you don't set a `runtime`, or you set `runtime: "node"`, your tasks run on the current Node.js LTS. That version moves forward as new LTS releases land, so set an explicit version — for example `runtime: "node-24"` — if you need it to stay fixed.
 
@@ -44575,7 +44706,7 @@ If you don't set a `runtime`, or you set `runtime: "node"`, your tasks run on th
 import { defineConfig } from "@trigger.dev/sdk";
 
 export default defineConfig({
-  // "node", "node-22", "node-24", "node-26" or "bun"
+  // "node", "node-22", "node-24", "node-26", "bun" or "bun-1.4"
   runtime: "node-24",
   project: "<your-project-ref>",
 });
@@ -53369,6 +53500,14 @@ Environment variables for the webapp container.
 | `ARTIFACTS_OBJECT_STORE_ACCESS_KEY_ID` | No | — | Optional artifacts store access key. |
 | `ARTIFACTS_OBJECT_STORE_SECRET_ACCESS_KEY` | No | — | Optional artifacts store secret key. |
 | `ARTIFACTS_OBJECT_STORE_REGION` | No | — | Optional artifacts store region. |
+| `DEPLOYMENT_INDEX_OBJECT_STORE_BASE_URL` | No | — | Optional separate store for deployment index snapshots. If not set, uses main object store. |
+| `DEPLOYMENT_INDEX_OBJECT_STORE_BUCKET` | No | — | Deployment index store bucket. Required together with the base URL. |
+| `DEPLOYMENT_INDEX_OBJECT_STORE_ACCESS_KEY_ID` | No | — | Deployment index store access key. |
+| `DEPLOYMENT_INDEX_OBJECT_STORE_SECRET_ACCESS_KEY` | No | — | Deployment index store secret key. |
+| `DEPLOYMENT_INDEX_OBJECT_STORE_REGION` | No | — | Deployment index store region. |
+| `DEPLOYMENT_INDEX_OBJECT_STORE_SERVICE` | No | s3 | Deployment index store service. |
+| `DEPLOYMENT_INDEX_UPLOAD_MAX_ATTEMPTS` | No | 4 | Attempts to store a deployment's index before the deploy fails. |
+| `DEPLOYMENT_INDEX_CAPTURE_ENABLED` | No | false | Set to true to store each deployment's full index in object storage when it deploys. |
 | **Alerts** | | | |
 | `ORG_SLACK_INTEGRATION_CLIENT_ID` | No | — | Slack client ID. Required for Slack alerts. |
 | `ORG_SLACK_INTEGRATION_CLIENT_SECRET` | No | — | Slack client secret. Required for Slack alerts. |
@@ -61150,6 +61289,10 @@ The [MCP server](/docs/mcp-introduction) has `list_webhook_deliveries` (filter b
 | [`GET /api/v1/webhooks/deliveries/{deliveryId}`](/docs/management/webhooks/retrieve-delivery) | Reads a delivery, with a `targets` entry per subscriber and one for waiting runs. |
 | [`POST /api/v1/webhooks/deliveries/{deliveryId}/replay`](/docs/management/webhooks/replay-delivery) | Replays it, as above. The key needs permission to trigger every task the replay starts, and to write sessions if it reaches an agent's subscriber. |
 
+## Retention
+
+Deliveries stay visible for 3 days on Free, 7 days on Hobby, 30 days on Pro, and 90, 180 or 365 days on Enterprise. See [Limits](/docs/limits#webhook-delivery-retention).
+
 ## Deduplication
 
 Trigger.dev uses the endpoint and idempotency key to deduplicate incoming events. Delivery records and task runs have separate deduplication windows:
@@ -61757,6 +61900,14 @@ The limit covers every delivery the task handles. To process each customer's eve
 The CLI finds your endpoints and subscribers during `trigger dev` and deployment, and each environment gets one endpoint per declared id. The endpoint holds the URL and the credential used to verify requests.
 
 A request must pass verification before anything else happens. Provider handshakes are answered directly and create no delivery. A verified request is checked for duplicates, recorded, and then routed: each subscriber's filter is checked, matching subscribers run, and waiting runs whose match fits the event are resumed. The delivery records a result per subscriber.
+
+## Pricing and limits
+
+Webhooks have no separate charge on Trigger.dev Cloud. Receiving, verifying, filtering and recording deliveries is included in every plan. The runs a delivery starts or resumes are billed like any other run: a per-run invocation cost plus compute time. See [pricing](https://trigger.dev/pricing).
+
+A delivery that no subscriber's filter matches starts no run for any subscriber, so it costs nothing. A run already waiting for that webhook still resumes. A run [waiting](/docs/webhooks/waiters) for a webhook is suspended, so it uses no compute until the webhook arrives.
+
+Each plan sets limits on the ingest rate, waiting runs, processing concurrency and how long deliveries are kept. See [Limits](/docs/limits#webhook-ingest-rate-limits).
 
 ## Connect it
 
@@ -62758,14 +62909,14 @@ if (!result.cancelled) {
 
 | Limit | Default |
 | - | - |
-| Live waiters per endpoint | 10,000. This is also the most one delivery can resume. |
-| Live waiters per environment | 1,000,000 on self-hosted installs. |
+| Live waiters per endpoint | Depends on your plan on Trigger.dev Cloud, 10,000 on self-hosted installs. This is also the most one delivery can resume. |
+| Live waiters per environment | Depends on your plan on Trigger.dev Cloud, 1,000,000 on self-hosted installs. |
 | Distinct sets of `match` paths per endpoint | 25 |
 | Paths per `match` | 5 |
 | Tags per waiter | 10 |
 | Timeout | 24 hours by default, 90 days at most |
 
-On Trigger.dev Cloud the per-endpoint and per-environment limits depend on your plan. Self-hosted installs can change them with `WEBHOOK_WAITER_MAX_PER_ENDPOINT`, `WEBHOOK_WAITER_MAX_PER_ENVIRONMENT` and `WEBHOOK_WAITER_MAX_SHAPES`.
+On Trigger.dev Cloud the per-endpoint and per-environment limits depend on your plan: see [Limits](/docs/limits#webhook-waiters). Self-hosted installs can change them with `WEBHOOK_WAITER_MAX_PER_ENDPOINT`, `WEBHOOK_WAITER_MAX_PER_ENVIRONMENT` and `WEBHOOK_WAITER_MAX_SHAPES`.
 
 A delivery that resumes waiters shows one **Waiting runs** row on its [delivery page](/docs/webhooks/deliveries#where-a-delivery-went) with how many matched, resumed and failed. A delivery that arrives while runs are waiting but matches none of them, and no subscriber takes, is `UNMATCHED`.
 

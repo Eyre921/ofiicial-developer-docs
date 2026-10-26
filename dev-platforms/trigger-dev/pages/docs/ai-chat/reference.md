@@ -567,6 +567,7 @@ All methods available on the `chat` object from `@trigger.dev/sdk/ai`.
 | `chat.isStopped()` | Check if the current turn was stopped by the user |
 | `chat.cleanupAbortedParts(message)` | Remove incomplete parts from a stopped response message |
 | `chat.response.write(chunk)` | Write a data part that streams to the frontend AND persists in `onTurnComplete`'s `responseMessage` |
+| `chat.forwardSubAgent(stream, { toolCallId, flushIntervalMs? })` | Stream a sub-agent's reply through a parent tool call as transient `data-subagent` parts, and resolve with its final `UIMessage`. Call it inside a tool's `execute`. See [Sub-agents](/docs/ai-chat/patterns/sub-agents) |
 | `chat.stream` | Raw chat output stream — use `.writer()`, `.pipe()`, `.append()`, `.read()`. Chunks are NOT accumulated into the response. |
 | `chat.history.all()` | Read the current accumulated UI messages (returns a copy). See [chat.history](/docs/ai-chat/backend#chat-history) |
 | `chat.history.set(messages)` | Replace all accumulated messages (same as `chat.setMessages()`) |
@@ -838,6 +839,27 @@ const transport = useTriggerChatTransport({
 ```
 
 No-op when `BroadcastChannel` is unavailable (SSR, Node.js). See [Multi-tab coordination](/docs/ai-chat/frontend#multi-tab-coordination).
+
+## useSubAgentMessages
+
+React hook that rebuilds sub-agents streamed with [`chat.forwardSubAgent`](/docs/ai-chat/patterns/sub-agents) while they run. Import from `@trigger.dev/sdk/chat/react`.
+
+```tsx theme={"theme":"css-variables"}
+import { useSubAgentMessages } from "@trigger.dev/sdk/chat/react";
+
+const subAgents = useSubAgentMessages();
+const { messages } = useChat({ transport, onData: subAgents.onData });
+
+const message = subAgents.get(part.toolCallId) ?? part.output;
+```
+
+| Option | Type | Default | Description |
+| - | - | - | - |
+| `throttleMs` | `number` | `100` | Minimum time between rebuilds of a sub-agent's message while chunks stream in. |
+
+**Returns:** `{ onData, get }`. Pass `onData` to `useChat`. `get(toolCallId)` returns the sub-agent's `UIMessage` so far, or `undefined` before its first chunk. Batches a resumed stream replays are skipped, so a reload mid-turn does not duplicate content.
+
+`createSubAgentMessages({ throttleMs?, onChange? })` from `@trigger.dev/sdk/chat` is the same store without React: call its `onData` with every data part you receive, read with `get(toolCallId)`, and `dispose()` when you are done.
 
 ### Trigger configuration
 

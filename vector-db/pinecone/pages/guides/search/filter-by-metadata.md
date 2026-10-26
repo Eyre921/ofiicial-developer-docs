@@ -489,7 +489,7 @@ At the top level, list one or more fields (combined with implicit AND) or combin
 
 A metadata field can hold an array of strings, such as `{"genre": ["comedy", "documentary"]}`. A filter on that field matches when any value in the array satisfies it, so each of these filters matches:
 
-```json JSON theme={null} theme={null}
+```json JSON theme={null}
 {"genre": "comedy"}
 {"genre": {"$in": ["documentary", "action"]}}
 {"$and": [{"genre": "comedy"}, {"genre": "documentary"}]}
@@ -497,14 +497,14 @@ A metadata field can hold an array of strings, such as `{"genre": ["comedy", "do
 
 These filters don't match, because the array has no `"drama"` value and because `$ne` and `$nin` exclude an item when any of its values matches:
 
-```json JSON theme={null} theme={null}
+```json JSON theme={null}
 {"$and": [{"genre": "comedy"}, {"genre": "drama"}]}
 {"genre": {"$ne": "comedy"}}
 ```
 
 A filter value can't be an array. To match several values, use `$in`. These filters are invalid and return a `400` error:
 
-```json JSON theme={null} theme={null}
+```json JSON theme={null}
 {"genre": ["comedy", "documentary"]}
 {"genre": {"$eq": ["comedy", "documentary"]}}
 ```

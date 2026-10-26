@@ -350,6 +350,17 @@ components:
             generation. Lower values introduce broader emotional range for the
             voice. Higher values can result in a monotonous voice with limited
             emotion.
+        clone_strength:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 1
+          description: >-
+            Controls how closely the voice matches the professional voice clone
+            samples, from 0 (low) to 1 (high). We recommend 0 for most use
+            cases. Increase this value only if you experience issues with the
+            default settings. Only applies to professional voice clones
+            fine-tuned for the selected v4 model.
       description: >-
         Voice settings for dialogue generation. Only `stability` is supported
         for `eleven_v3` dialogue models.

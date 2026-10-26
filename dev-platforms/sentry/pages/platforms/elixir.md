@@ -70,6 +70,10 @@ To view and resolve the recorded error, log into [sentry.io](https://sentry.io) 
 
 * Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
 
+## Frameworks
+
+- [Plug and Phoenix](https://docs.sentry.io/platforms/elixir/integrations/plug_and_phoenix.md)
+
 ## Topics
 
 - [Logs](https://docs.sentry.io/platforms/elixir/logs.md)

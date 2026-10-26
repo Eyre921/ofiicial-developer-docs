@@ -36,7 +36,7 @@ The following table shows tools that execute online searches in some shape or fo
 | [Firecrawl Search](https://docs.firecrawl.dev/integrations/langchain) | 1,000 free credits/month | URL, Title, Description, Date, News, Images |
 | [Google Search](/oss/python/integrations/tools/google_search) | Paid | URL, Snippet, Title |
 | [iFlow Search](https://platform.iflow.cn/) | Paid | URL, Title, Snippet, Date |
-| [Keenable](https://docs.keenable.ai) | Free keyless tier available | Title, URL, description, publication date, index date; page markdown for fetch |
+| [Keenable](https://docs.keenable.ai/integrations/langchain) | Free keyless tier available | Title, URL, Snippet (page text), Published Date, Index Date; page markdown for fetch |
 | [Linkup Search](https://github.com/LinkupPlatform/langchain-linkup) | 2000 free searches/month | URL, Content, Sources |
 | [Octen](https://docs.octen.ai) | Paid | Title, URL, highlight, authors, time\_published |
 | [Mixpeek](https://docs.mixpeek.com/agent-integrations/langchain) | Free tier available | Multimodal search results (video, image, audio, document) |
@@ -276,6 +276,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`NimbleExtractTool`](https://docs.nimbleway.com/integrations/connectors/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nimble/month)](https://pypi.org/project/langchain-nimble/) |
 | [`NimbleSearchTool`](https://docs.nimbleway.com/integrations/connectors/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nimble/month)](https://pypi.org/project/langchain-nimble/) |
 | [`OpenpathSearch`](https://openpath.sh/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-openpath/month)](https://pypi.org/project/langchain-openpath/) |
+| [`Perfume10MLToolkit`](https://10ml.com/perfume-mcp-server) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-10ml-perfume/month)](https://pypi.org/project/langchain-10ml-perfume/) |
 | [`Pidgeon Toolkit`](https://pidgeon.ai/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-pidgeon/month)](https://pypi.org/project/langchain-pidgeon/) |
 | [`Prolog`](https://langchain-prolog.readthedocs.io/en/stable/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-prolog/month)](https://pypi.org/project/langchain-prolog/) |
 | [`SerpKiteSearch`](https://serpkite.com/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-serpkite/month)](https://pypi.org/project/langchain-serpkite/) |
@@ -462,6 +463,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`ModexiaToolkit`](https://modexia.software/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-modexia/month)](https://pypi.org/project/langchain-modexia/) |
 | [`SidClawToolkit`](https://docs.sidclaw.com/docs/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-sidclaw/month)](https://pypi.org/project/langchain-sidclaw/) |
 | [`FootballChartsToolkit`](https://www.football-charts.com/developers) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-footballcharts/month)](https://pypi.org/project/langchain-footballcharts/) |
+| [`CallinToolkit`](https://github.com/Callin-io/callin-agents/blob/main/python-langchain/README.md) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-callin/month)](https://pypi.org/project/langchain-callin/) |
 | [`Claw Messenger`](https://www.clawmessenger.com/blog/langchain-imessage-integration) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-claw-messenger/month)](https://pypi.org/project/langchain-claw-messenger/) |
 | [`OctenSearchResults`](https://docs.octen.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-octen/month)](https://pypi.org/project/langchain-octen/) |
 | [`QuanticData`](https://quanticdata.io/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-quanticdata/month)](https://pypi.org/project/langchain-quanticdata/) |

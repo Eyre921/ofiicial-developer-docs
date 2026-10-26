@@ -4372,6 +4372,17 @@ i.e. the Customer's address has not been collected yet.
     - `percentage`
       The tax rate percentage. This value is absent for flat-amount tax rates.
 
+- `taxIdInfo`
+  The Customer's tax ID collection information. This value is `null` if no tax ID information is available.
+    - `businessName`
+      The Customer's business name associated with tax ID collection.
+    - `taxId`
+      The Customer's tax ID.
+      - `type`
+        One of [the supported tax ID types](https://docs.stripe.com/tax/checkout/tax-ids?payment-ui=embedded-components.md#supported-types).
+      - `value`
+        The value of the tax ID.
+
 - `total`
   Tax and discount details for the computed total amount. Use this
 field to render an amount breakdown to your customer, such as in an
@@ -5907,6 +5918,17 @@ i.e. the Customer's address has not been collected yet.
     - `percentage`
       The tax rate percentage. This value is absent for flat-amount tax rates.
 
+- `taxIdInfo`
+  The Customer's tax ID collection information. This value is `null` if no tax ID information is available.
+    - `businessName`
+      The Customer's business name associated with tax ID collection.
+    - `taxId`
+      The Customer's tax ID.
+      - `type`
+        One of [the supported tax ID types](https://docs.stripe.com/tax/checkout/tax-ids?payment-ui=embedded-components.md#supported-types).
+      - `value`
+        The value of the tax ID.
+
 - `total`
   Tax and discount details for the computed total amount. Use this
 field to render an amount breakdown to your customer, such as in an
@@ -6420,6 +6442,17 @@ i.e. the Customer's address has not been collected yet.
       A user-facing description of the tax.
     - `percentage`
       The tax rate percentage. This value is absent for flat-amount tax rates.
+
+- `taxIdInfo`
+  The Customer's tax ID collection information. This value is `null` if no tax ID information is available.
+    - `businessName`
+      The Customer's business name associated with tax ID collection.
+    - `taxId`
+      The Customer's tax ID.
+      - `type`
+        One of [the supported tax ID types](https://docs.stripe.com/tax/checkout/tax-ids?payment-ui=embedded-components.md#supported-types).
+      - `value`
+        The value of the tax ID.
 
 - `total`
   Tax and discount details for the computed total amount. Use this
@@ -7981,6 +8014,17 @@ i.e. the Customer's address has not been collected yet.
     - `percentage`
       The tax rate percentage. This value is absent for flat-amount tax rates.
 
+- `taxIdInfo`
+  The Customer's tax ID collection information. This value is `null` if no tax ID information is available.
+    - `businessName`
+      The Customer's business name associated with tax ID collection.
+    - `taxId`
+      The Customer's tax ID.
+      - `type`
+        One of [the supported tax ID types](https://docs.stripe.com/tax/checkout/tax-ids?payment-ui=embedded-components.md#supported-types).
+      - `value`
+        The value of the tax ID.
+
 - `total`
   Tax and discount details for the computed total amount. Use this
 field to render an amount breakdown to your customer, such as in an
@@ -8494,6 +8538,17 @@ i.e. the Customer's address has not been collected yet.
       A user-facing description of the tax.
     - `percentage`
       The tax rate percentage. This value is absent for flat-amount tax rates.
+
+- `taxIdInfo`
+  The Customer's tax ID collection information. This value is `null` if no tax ID information is available.
+    - `businessName`
+      The Customer's business name associated with tax ID collection.
+    - `taxId`
+      The Customer's tax ID.
+      - `type`
+        One of [the supported tax ID types](https://docs.stripe.com/tax/checkout/tax-ids?payment-ui=embedded-components.md#supported-types).
+      - `value`
+        The value of the tax ID.
 
 - `total`
   Tax and discount details for the computed total amount. Use this
@@ -10770,7 +10825,7 @@ parameter. You can also include additional `payment_method_data` fields, which w
         - `billing_details`
           The customer's [billing_details](https://docs.stripe.com/api/payment_methods/create.md#create_payment_method-billing_details).
 Details collected by Elements will override values passed here.
-Billing fields that are omitted in the Payment Element via the `fields` option required.
+If you set any billing fields to `never` in the Payment Element's `fields` option, you must pass those values here.
 
 **Note**: When the [Address Element](https://docs.stripe.com/js/element/address_element.md) in billing mode is being used, billing address details are collected from the Address Element and passed
 to the PaymentIntents [confirm endpoint](https://docs.stripe.com/api/payment_intents/confirm.md) as the [billing_details](https://docs.stripe.com/api/payment_methods/create.md#create_payment_method-billing_details)
@@ -14184,7 +14239,7 @@ parameter. You can also include additional `payment_method_data` fields, which w
         - `billing_details`
           The customer's [billing_details](https://docs.stripe.com/api/payment_methods/create.md#create_payment_method-billing_details).
 Details collected by Elements will override values passed here.
-Billing fields that are omitted in the Payment Element via the `fields` option required.
+If you set any billing fields to `never` in the Payment Element's `fields` option, you must pass those values here.
         - `allow_redisplay`
           Indicates whether the payment method can be displayed to the customer in subsequent checkout flows. The value passed here will override the [allow_redisplay](docs/api/payment_methods/object#payment_method_object-allow_redisplay) determined by the provided `elements` parameter.
       - `expand`

@@ -93,7 +93,7 @@ const client = new OpenAI()
 
 export default async (req: Request, context: Context) => {
   const response = await client.responses.create({
-    model: "gpt-5-mini",
+    model: "gpt-6-luna",
     input: [{ role: "user", content: `Write a haiku about ${context.params.topic}.` }],
   })
 
@@ -178,7 +178,7 @@ const client = new OpenAI()
 export default {
   fetch: async (req, context) => {
     const response = await client.responses.create({
-      model: "gpt-5-mini",
+      model: "gpt-6-luna",
       input: [{ role: "user", content: `Write a haiku about ${context.params.topic}.` }],
     })
 

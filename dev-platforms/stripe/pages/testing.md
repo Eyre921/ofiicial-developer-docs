@@ -646,9 +646,9 @@ To test errors resulting from invalid data, provide invalid details. You don’t
 - [invalid_cvc](https://docs.stripe.com/declines/codes.md#invalid_cvc): Use a two-digit number, such as **99**.
 - [incorrect_number](https://docs.stripe.com/declines/codes.md#incorrect_number): Use a card number that fails the [Luhn check](https://en.wikipedia.org/wiki/Luhn_algorithm), such as `4242424242424241`.
 
-## Simulate a dispute 
+## Disputes and early fraud warnings 
 
-To simulate a [disputed transaction](https://docs.stripe.com/disputes.md), use the test cards in this section. Then, to simulate winning or losing the dispute, provide [winning or losing evidence](https://docs.stripe.com/testing.md#evidence).
+To simulate a [disputed transaction](https://docs.stripe.com/disputes.md) or early fraud warning, use the test cards in this section. Then, to simulate winning or losing a dispute, provide [winning or losing evidence](https://docs.stripe.com/testing.md#evidence).
 
 #### Card numbers
 

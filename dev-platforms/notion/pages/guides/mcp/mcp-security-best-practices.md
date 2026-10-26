@@ -25,7 +25,7 @@ Review the [documentation for common MCP clients](/guides/mcp/common-mcp-clients
 >
 > Treat content returned by tools as untrusted. Review proposed actions and data sharing before approving them.
 
-Review the permissions of every MCP client and tool. Notion MCP operates within your workspace, but a connected client may send content returned by Notion MCP to systems outside Notion.
+Review the permissions of every MCP client and tool. Notion MCP operates within your workspace, but a connected client may send content returned by Notion MCP to systems outside Notion. That content can include full items from connected sources, such as Slack threads, Google Drive files, and emails, when `notion-fetch` opens a connector search result. Fetch returns only what the user's own connection to that source can see.
 
 Enable confirmation before actions that change content. This lets you review an action before the MCP client runs it.
 

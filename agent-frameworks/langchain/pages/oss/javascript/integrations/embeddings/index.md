@@ -395,6 +395,7 @@ In production, you would typically use a more robust persistent store, such as a
 | [`WatsonxEmbeddings`](/oss/javascript/integrations/embeddings/ibm) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/ibm?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/ibm) |
 | [`Mixedbread AI`](/oss/javascript/integrations/embeddings/mixedbread_ai) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/mixedbread-ai?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/mixedbread-ai) |
 | [`SCXEmbeddings`](https://scx.ai/) | [  ![Downloads per month](https://img.shields.io/npm/dm/@scx-ai/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@scx-ai/langchain) |
+| [`EmpirioLabsEmbeddings`](https://docs.empiriolabs.ai/integrations#langchain) | N/A |
 | [`Minimax`](/oss/javascript/integrations/embeddings/minimax) | N/A |
 | [`OracleEmbeddings`](/oss/javascript/integrations/embeddings/oracleai) | N/A |
 

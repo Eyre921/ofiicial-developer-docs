@@ -187,8 +187,6 @@ View your API requests in the [Overview tab](https://dashboard.stripe.com/workbe
 
 ## Update your event destinations
 
-> [Thin events](https://docs.stripe.com/events/how-events-work.md#thin-events) for API v1 resources are available in private preview. You can use them to streamline integration upgrades without changing your webhook configuration. Previously, thin events only supported API v2 resources. [Learn more and request access](https://docs.google.com/forms/d/e/1FAIpQLSeEkqzB02afvlklMkqwA6wsBH90eW8gxmc-hBOvqe2N6TRujQ/viewform?usp=dialog).
-
 Review each event destination that receives snapshot events, including webhook endpoints and cloud destinations for Amazon EventBridge and Azure Event Grid. For snapshot events, the destination’s [snapshot_api_version](https://docs.stripe.com/api/v2/core/event-destinations/object.md#v2_event_destination_object-snapshot_api_version) property controls the API version used to render the event payload. This setting is independent of the API version used by your server-side SDK. Thin event payloads are unversioned.
 
 You can set `snapshot_api_version` only when you create an event destination. To use a different API version, create and test a destination configured with that version before deleting the existing destination. If both destinations are active during the migration, your event handler must be idempotent because Stripe delivers subscribed events to both destinations.

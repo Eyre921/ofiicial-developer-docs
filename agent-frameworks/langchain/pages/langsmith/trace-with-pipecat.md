@@ -1,5 +1,5 @@
 ---
-title: "Trace Pipecat applications"
+title: "Trace Pipecat agents"
 source: https://docs.langchain.com/langsmith/trace-with-pipecat
 path: langsmith/trace-with-pipecat
 ---
@@ -15,6 +15,10 @@ Trace your [Pipecat](https://pipecat.ai/) voice agents to LangSmith with the Lan
 > The Pipecat integration requires `langsmith[pipecat]>=0.9.7`.
 
 The integration hooks into the spans Pipecat already emits and maps them onto LangSmith's tracing format, so each conversation becomes a single LangSmith trace, with a span per pipeline stage (STT, LLM, TTS). This covers both the STT/LLM/TTS cascade and speech-to-speech (realtime) models. Realtime models (for example, `OpenAIRealtimeLLMService`) need one extra call to capture the user's transcript. See [When using Pipecat with a realtime model](#when-using-pipecat-with-a-realtime-model).
+
+> [!NOTE]
+>
+> In an [agent-based workspace](/langsmith/agents), [create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) as a compatibility value.
 
 ## Install
 
@@ -35,7 +39,8 @@ The integration reads your LangSmith credentials from the environment and export
 ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_API_KEY=<your-langsmith-api-key>
 LANGSMITH_TRACING=true
-LANGSMITH_PROJECT=pipecat-voice
+LANGSMITH_AGENT_ID="<your-agent-id>"
+LANGSMITH_AGENT_ENVIRONMENT="production"
 OPENAI_API_KEY=<your-openai-api-key>
 ```
 

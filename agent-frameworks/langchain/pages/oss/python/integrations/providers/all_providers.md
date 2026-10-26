@@ -8,6 +8,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 ## Providers
 
+> **[10ML Perfume Finder](https://10ml.com/perfume-mcp-server)**
+>
+> 10ML Perfume Finder provides read-only LangChain tools for searching perfumes, notes, accords, similar scents, and alternatives with no API key.
+
 > **[1Claw](https://docs.1claw.xyz/docs/integrations/langchain)**
 >
 > HSM-backed secrets, signing, memory, and automations for LangChain agents.
@@ -363,6 +367,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > **[CAMB AI](https://docs.camb.ai)**
 >
 > Multilingual audio and localization services supporting 140+ languages.
+
+> **[CallinToolkit](https://github.com/Callin-io/callin-agents/blob/main/python-langchain/README.md)**
+>
+> Callin.io places outbound phone calls with an AI voice agent toward a stated objective and returns status, summary, and transcript.
 
 > **[Capsule](https://github.com/mavdol/langchain-capsule)**
 >
@@ -728,6 +736,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Retriever, document loader and agent tool for FoxNose collections, with text, vector, hybrid and vector-boosted search over the Flux delivery API.
 
+> **[Future AGI](https://docs.futureagi.com/docs/integrations/traceai/langchain/)**
+>
+> Future AGI is an open-source observability and evaluation platform for tracing LangChain and LangGraph runs.
+
 > **[GAIP](https://pypi.org/project/langchain-gaip/)**
 >
 > Free LangChain tools to check whether an agent, MCP server, or API works, explain failures, follow changes, and verify cited quotes.
@@ -992,7 +1004,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Text-to-image and image-editing tool for the Kavel image API; text-to-image runs on a free tier without an API key.
 
-> **[Keenable](https://docs.keenable.ai)**
+> **[Keenable](https://docs.keenable.ai/integrations/langchain)**
 >
 > Web search and page-fetch API built for AI agents, with a keyless free tier.
 
@@ -1155,6 +1167,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > **[MartToolkit](https://github.com/Mart-API/langchain-mart#readme)**
 >
 > Mart provides public LinkedIn profile and company enrichment, contact refresh snapshots, posts and optional work-email lookup through a JSON API.
+
+> **[MembaseRetriever](https://github.com/unibaseio/membase/tree/main/integrations/langchain#readme)**
+>
+> Retriever over a user's Membase memory: searches their Memories (hosted or local) and returns passages that cite the Memory they came from.
 
 > **[Memgraph](/oss/python/integrations/providers/memgraph)**
 >

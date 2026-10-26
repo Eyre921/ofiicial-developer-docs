@@ -1566,9 +1566,9 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   Find and fix problems in a project with Copilot cloud agent.
 
-* [Building guardrails for GitHub Copilot cloud agent](/en/copilot/tutorials/cloud-agent/build-guardrails)
+* [Building guardrails for GitHub Copilot cloud agent in your enterprise](/en/copilot/tutorials/cloud-agent/build-guardrails)
 
-  Configure your enterprise so that Copilot cloud agent will operate in a secure, compliant environment.
+  Prepare enterprise policies, repository protections, and runner settings for a controlled rollout of Copilot cloud agent.
 
 * [Giving GitHub Copilot cloud agent access to resources in your organization](/en/copilot/tutorials/cloud-agent/give-access-to-resources)
 
@@ -1634,9 +1634,9 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   Roll out the GitHub Copilot app so developers can direct agents across parallel tasks while you control access, model availability, and external tools.
 
-* [Integrating agentic AI into your enterprise's software development lifecycle](/en/copilot/tutorials/roll-out-at-scale/enable-developers/integrate-ai-agents)
+* [Planning an AI agent rollout in your enterprise](/en/copilot/tutorials/roll-out-at-scale/enable-developers/integrate-ai-agents)
 
-  See how agents can boost productivity across your enterprise.
+  Identify where AI agents can help your teams, and plan the governance and support needed to adopt them across your enterprise.
 
 * [Driving team adoption of agentic GitHub Copilot](/en/copilot/tutorials/roll-out-at-scale/enable-developers/drive-team-agentic-adoption)
 
@@ -1706,9 +1706,9 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   Create an application without writing any code yourself.
 
-* [Using hooks with Copilot CLI for predictable, policy-compliant execution](/en/copilot/tutorials/copilot-cli-hooks)
+* [Rolling out Copilot CLI hooks for your teams](/en/copilot/tutorials/copilot-cli-hooks)
 
-  Use hooks to log user prompts and control which tools Copilot CLI can run in a repository, so teams can automate safely within your organization's security and compliance requirements.
+  Give your platform teams visibility into Copilot CLI usage and help developers follow organizational policies with repository-scoped hooks.
 
 * [Using Copilot CLI as your AI SME](/en/copilot/tutorials/use-an-ai-sme)
 

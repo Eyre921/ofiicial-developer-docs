@@ -16,6 +16,8 @@ Responses from the API use HTTP response codes to indicate general classes of su
 
 Error responses contain more detail about the error in the response body, in the `"code"` and `"message"` properties. Some error responses may also include an `"additional_data"` object with extra context, such as retry guidance or endpoint-specific details.
 
+To see which error codes a connection received in the last 24 hours, check the **Error codes** list on its [Health tab](/guides/manage-connections/connection-health).
+
 | HTTP status code | `"code"` | Description | `"message"` example |
 | :- | :- | :- | :- |
 | 400 | `"invalid_json"` | The request body could not be decoded as JSON. | `"Error parsing JSON body."` |

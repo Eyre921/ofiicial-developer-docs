@@ -983,6 +983,7 @@ Share the related database with your connection too. Missing access can leave re
     "relation": {
       "database_id": "668d797c-76fa-4934-9b05-ad288df2d136",
       "data_source_id": "6c4240a9-a3ce-413e-9fd0-8a51a4d0a49b",
+      "limit": null,
       "type": "single_property",
       "single_property": {}
     }

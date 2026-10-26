@@ -250,7 +250,7 @@ Requests to one of [Pinecone's hosted embedding models](/guides/index-data/index
 
 For example, this request uses the `multilingual-e5-large` model to embed sentences related to the word “apple”:
 
-```python Python theme={null} theme={null}
+```python Python theme={null}
 # Import the Pinecone library
 from pinecone.grpc import PineconeGRPC as Pinecone
 from pinecone import ServerlessSpec
@@ -279,7 +279,7 @@ embeddings = pc.inference.embed(
 print(embeddings)
 ```
 
-```javascript JavaScript theme={null} theme={null}
+```javascript JavaScript theme={null}
 // Import the Pinecone library
 import { Pinecone } from '@pinecone-database/pinecone';
 
@@ -308,7 +308,7 @@ const embeddings = await pc.inference.embed(
 console.log(embeddings);
 ```
 
-```java Java theme={null} theme={null}
+```java Java theme={null}
 // Import the required classes
 import io.pinecone.clients.Index;
 import io.pinecone.clients.Inference;
@@ -380,7 +380,7 @@ class DataObject {
 }
 ```
 
-```go Go theme={null} theme={null}
+```go Go theme={null}
 package main
 
 // Import the required packages
@@ -455,7 +455,7 @@ func main() {
 }
 ```
 
-```shell curl theme={null} theme={null}
+```shell curl theme={null}
 PINECONE_API_KEY="YOUR_API_KEY"
 
 curl https://api.pinecone.io/embed \
@@ -481,7 +481,7 @@ curl https://api.pinecone.io/embed \
 
 The response looks like this:
 
-```python Python theme={null} theme={null}
+```python Python theme={null}
 EmbeddingsList(
     model='llama-text-embed-v2',
     data=[
@@ -492,7 +492,7 @@ EmbeddingsList(
 )
 ```
 
-```javascript JavaScript theme={null} theme={null}
+```javascript JavaScript theme={null}
 EmbeddingsList(1) [
   {
     values: [
@@ -509,7 +509,7 @@ EmbeddingsList(1) [
 ]
 ```
 
-```java Java theme={null} theme={null}
+```java Java theme={null}
 class EmbeddingsList {
     model: llama-text-embed-v2
     data: [class Embedding {
@@ -524,7 +524,7 @@ class EmbeddingsList {
 }
 ```
 
-```go Go theme={null} theme={null}
+```go Go theme={null}
 {
   "data": [
     {
@@ -544,7 +544,7 @@ class EmbeddingsList {
 }
 ```
 
-```json curl theme={null} theme={null}
+```json curl theme={null}
 {
   "data": [
     {

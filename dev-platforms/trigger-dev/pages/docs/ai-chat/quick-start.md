@@ -156,5 +156,5 @@ Run your frontend and `pnpm exec trigger dev`, then send a message. You should s
 * [Frontend](/docs/ai-chat/frontend) — Session management, client data, reconnection
 * [Types](/docs/ai-chat/types) — `chat.withUIMessage`, `InferChatUIMessage`, and related typing
 * [`chat.local`](/docs/ai-chat/chat-local) — Per-run typed state across hooks, run, tools, subtasks
-* [Sub-agents pattern](/docs/ai-chat/patterns/sub-agents) — Subtask-as-tool, `target: "root"` streaming, `ai.toolExecute` helpers
+* [Sub-agents pattern](/docs/ai-chat/patterns/sub-agents): `chat.forwardSubAgent`, subtask-as-tool, `target: "root"` streaming, `ai.toolExecute` helpers
 * [Background injection](/docs/ai-chat/background-injection) — `chat.inject()` and `chat.defer()` for between-turn work

@@ -34,8 +34,8 @@ The following table describes many factors to consider when choosing which charg
 - You can create a charge before being able to transfer the funds.
 - Stripe debits fees from your platform account. | - An e-commerce marketplace that allows a single shopping cart for goods sold by multiple businesses |
 
-You can use multiple charge types, if that’s appropriate for your business.
-
+You can use multiple charge types if that’s appropriate for your business. Watch this video to compare the charge types and choose the appropriate option for your Connect integration.
+[Watch on YouTube](https://www.youtube.com/watch?v=wJd9A3SQJuE)
 ### Direct charges 
 
 Create a charge directly on a connected account. The account’s customers are often unaware of your platform’s existence. You can specify an application fee, which transfers to your platform’s account balance when the connected account collects the payment.

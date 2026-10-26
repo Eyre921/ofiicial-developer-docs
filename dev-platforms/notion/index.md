@@ -1,6 +1,6 @@
 # dev-platforms/notion 文档索引
 
-> 共 253 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 254 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## cli
@@ -52,6 +52,7 @@
 - `guides/get-started/upgrade-guide-2025-09-03` — [Upgrade guide](pages/guides/get-started/upgrade-guide-2025-09-03.md) · [原文](https://developers.notion.com/guides/get-started/upgrade-guide-2025-09-03)
 - `guides/get-started/upgrade-guide-2026-03-11` — [Upgrade guide](pages/guides/get-started/upgrade-guide-2026-03-11.md) · [原文](https://developers.notion.com/guides/get-started/upgrade-guide-2026-03-11)
 - `guides/link-previews/introduction` — [Introduction](pages/guides/link-previews/introduction.md) · [原文](https://developers.notion.com/guides/link-previews/introduction)
+- `guides/manage-connections/connection-health` — [Connection health](pages/guides/manage-connections/connection-health.md) · [原文](https://developers.notion.com/guides/manage-connections/connection-health)
 - `guides/mcp/build-mcp-client` — [Build an MCP client for Notion](pages/guides/mcp/build-mcp-client.md) · [原文](https://developers.notion.com/guides/mcp/build-mcp-client)
 - `guides/mcp/common-mcp-clients` — [Common MCP clients](pages/guides/mcp/common-mcp-clients.md) · [原文](https://developers.notion.com/guides/mcp/common-mcp-clients)
 - `guides/mcp/enterprise-managed-authorization` — [Enterprise-managed authorization](pages/guides/mcp/enterprise-managed-authorization.md) · [原文](https://developers.notion.com/guides/mcp/enterprise-managed-authorization)

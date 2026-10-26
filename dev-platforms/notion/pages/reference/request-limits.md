@@ -45,6 +45,8 @@ Requests that exceed a limit return a `"rate_limited"` error code and an HTTP 42
 
 Other `rate_limit_reason` values can appear. Handle them like any other 429 and wait for `Retry-After`.
 
+To see which limits a connection reached in the last 24 hours, check the **Rate limits** list on its [Health tab](/guides/manage-connections/connection-health).
+
 Connections should handle HTTP 429 and 529 responses and respect the `Retry-After` response header. The header value is an integer number of seconds. Use the returned value rather than assuming a fixed wait. A 529 response carries the `"service_overload"` code and means Notion is temporarily overloaded; retry it the same way as a 429. Whenever a response includes `Retry-After`, the body repeats the wait as `additional_data.retry_after`, a string of whole seconds, for clients that can't read response headers.
 
 ### Retry rate-limited requests

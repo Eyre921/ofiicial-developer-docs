@@ -18,6 +18,10 @@ Configure the following options to get personalized guidance and best practices 
 - A customized code quickstart
 - A customized LLM prompt that you can copy to use with an AI coding assistant
 
+When planning your Connect integration, use [the Stripe plugin](https://docs.stripe.com/agents/plugin.md) in your AI coding agent for guidance on onboarding connected accounts, configuring funds flows, and offering financial services. For example, ask:
+
+“Build a Stripe Connect integration for my fitness studio booking platform. Studios accept class payments through the platform and pay us a 1% platform fee on each payment in addition to Stripe’s processing fees.”
+
 ### 1. Select your business model
 
 Your business model determines the appropriate flow of funds for your integration.

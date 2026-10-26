@@ -26,13 +26,6 @@ This guide explains how to use the Capital API to:
 - Make the financing application available to connected accounts.
 - Provide connected accounts access to financing reporting.
 
-### Implementation phases
-
-1. **Before you begin:** Confirm your platform branding settings and create a test offer.
-2. **Build the offer-delivery flow:** Retrieve offers, send offer emails, create or refresh Account Links, and mark offers delivered.
-3. **Handle financing lifecycle updates:** Process webhooks, application submission review, financing payout, payment, financing reporting, and repayment.
-4. **Validate and launch your integration:** Review the test flow, enable automatic offers, then add refills and reporting.
-
 ## Confirm your branding settings [Dashboard]
 
 All connected accounts that receive Capital offers see your business name, icon, logo, and branding color in the offer emails, application, and financing reporting page.
@@ -329,9 +322,9 @@ When automatic offers are enabled in live mode, Stripe automatically creates fin
 1. Confirm and update email addresses for your connected accounts through the [Comms Center](https://dashboard.stripe.com/connect/comms_center/collect) if you’re planning to use Stripe co-branded no-code offer emails. To be eligible for Capital financing, connected accounts must have an email saved with Stripe so that they can receive transactional emails such as payment progress updates.
 2. [Contact us](mailto:capital-review@stripe.com) to enable live mode access to the financing offers API.
 
-### Enable additional features
+### Refills and reporting
 
-Over time, some of your connected accounts might become eligible for refills. Refills are additional financing offers sent to connected accounts that have made substantial payment progress towards their in-progress loans. Follow the [refills integration guide](https://docs.stripe.com/capital/refills.md) to update your integration to support refill financing offers.
+Connected accounts that have made substantial payment progress might become eligible for [refill financing offers](https://docs.stripe.com/capital/refills.md).
 
 If you want to include Capital transactions on your platform dashboard and update your connected accounts’ custom payout reporting, refer to the [reporting and reconciliation guide](https://docs.stripe.com/capital/reporting-and-reconciliation.md).
 

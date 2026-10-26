@@ -1657,6 +1657,8 @@ Check out all of the AI [templates and examples](https://github.com/supabase/sup
 
 [Amazon Bedrock: A fully managed service that offers a choice of high-performing foundation models from leading AI companies.](/docs/guides/ai/integrations/amazon-bedrock)
 
+[Fireworks AI: Call Fireworks AI models from Edge Functions and search Fireworks embeddings with pgvector.](/docs/guides/ai/integrations/fireworks-ai)
+
 [Hugging Face: Hugging Face is an open-source provider of NLP technologies. Supabase provides a way to use Hugging Face's models in your applications.](/docs/guides/ai/hugging-face)
 
 [LangChain: LangChain is a language-agnostic, open-source, and self-hosted API for text translation, summarization, and sentiment analysis.](/docs/guides/ai/langchain)
@@ -2012,7 +2014,7 @@ import 'jsr:@supabase/functions-js/edge-runtime.d.ts'
 // We'll make a direct Postgres connection to update the document
 import postgres from 'https://deno.land/x/postgresjs@v3.4.5/mod.js'
 // We'll use the OpenAI API to generate embeddings
-import OpenAI from 'jsr:@openai/openai'
+import OpenAI from 'npm:openai@^6'
 import { z } from 'npm:zod'
 
 // Initialize OpenAI client
@@ -5082,6 +5084,378 @@ This returns the most similar 3 records and their distance to the query vector.
 - [Amazon Bedrock](https://aws.amazon.com/bedrock)
 - [Amazon Titan](https://aws.amazon.com/bedrock/titan)
 - [Semantic Image Search with Amazon Titan](https://supabase.com/docs/guides/ai/examples/semantic-image-search-amazon-titan)
+
+
+---
+
+# Fireworks AI
+
+Call Fireworks AI models from Supabase Edge Functions, and store and search Fireworks embeddings in Postgres with pgvector.
+
+Call [Fireworks AI](https://fireworks.ai) models from Supabase Edge Functions, and store Fireworks embeddings in Postgres for similarity search with pgvector. The Fireworks API is compatible with the OpenAI API, so the OpenAI SDK works with a different base URL and API key.
+
+- [Generate text](#generate-text) calls a Fireworks chat model from an Edge Function.
+- [Search with embeddings](#search-with-embeddings) stores Fireworks embeddings in a table and finds the closest matches to a search query.
+- [Expose documents to MCP clients](#expose-documents-to-mcp-clients) serves the same table as a remote MCP server.
+
+## Prerequisites
+
+- A Supabase project. To create one, see [Create a project](https://database.new).
+- The [Supabase CLI](https://supabase.com/docs/guides/local-development/cli/getting-started).
+- A Fireworks API key. To create one, open [**API Keys**](https://app.fireworks.ai/settings/users/api-keys) in the Fireworks dashboard.
+
+## Store your API key
+
+Edge Functions read the Fireworks API key from a secret named `FIREWORKS_API_KEY`.
+
+1. For local development, add the key to `supabase/functions/.env`:
+
+   ```bash
+   echo "FIREWORKS_API_KEY=<your-fireworks-api-key>" >> supabase/functions/.env
+   ```
+
+2. For your hosted project, set the secret with the Supabase CLI:
+
+   ```bash
+   supabase secrets set FIREWORKS_API_KEY=<your-fireworks-api-key>
+   ```
+
+For more information about secrets in Edge Functions, see [Environment variables](https://supabase.com/docs/guides/functions/secrets).
+
+## Generate text
+
+Create an Edge Function that sends a prompt to a Fireworks chat model and returns the response.
+
+1. Create the function:
+
+   ```bash
+   supabase functions new fireworks-chat
+   ```
+
+2. Replace the contents of `supabase/functions/fireworks-chat/index.ts` with the following code. It points the OpenAI SDK at the Fireworks base URL and calls the `glm-5p3-flash` model:
+
+   ```ts supabase/functions/fireworks-chat/index.ts
+   import { withSupabase } from 'npm:@supabase/server@^1'
+   import OpenAI from 'npm:openai@^6'
+
+   const fireworks = new OpenAI({
+     apiKey: Deno.env.get('FIREWORKS_API_KEY'),
+     baseURL: 'https://api.fireworks.ai/inference/v1',
+   })
+
+   export default {
+     fetch: withSupabase({ auth: 'user' }, async (req) => {
+       const { prompt } = await req.json()
+
+       const completion = await fireworks.chat.completions.create({
+         model: 'accounts/fireworks/models/glm-5p3-flash',
+         messages: [{ role: 'user', content: prompt }],
+       })
+
+       return Response.json({ text: completion.choices[0].message.content })
+     }),
+   }
+   ```
+
+3. Deploy the function:
+
+   ```bash
+   supabase functions deploy fireworks-chat
+   ```
+
+4. Call the function from your app with a signed-in user:
+
+   ```ts
+   const { data, error } = await supabase.functions.invoke('fireworks-chat', {
+     body: { prompt: 'Explain Row Level Security in one sentence.' },
+   })
+   ```
+
+To use a different model, replace the `model` value with any model ID from the [Fireworks model library](https://fireworks.ai/models). For streaming responses, see [Running AI models](https://supabase.com/docs/guides/functions/ai-models).
+
+## Search with embeddings
+
+Store text with its Fireworks embedding in a table, then find the rows closest in meaning to a search query. This section uses the `fireworks/qwen3-embedding-8b` model and requests 1,024-dimension vectors with the `dimensions` parameter. The table column has to match the dimension you request.
+
+### Create the table and search function
+
+Run the following SQL using the [SQL Editor](https://supabase.com/dashboard/project/_/sql) in the Supabase Dashboard or with `psql` over a direct connection. To connect with `psql`, see [Direct connection](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connection).
+
+```sql
+create extension if not exists vector with schema extensions;
+
+create table documents (
+  id bigint primary key generated always as identity,
+  content text not null,
+  embedding extensions.vector(1024) not null
+);
+
+alter table documents enable row level security;
+
+create policy "Authenticated users can read documents"
+on documents for select
+to authenticated
+using (true);
+
+create index on documents using hnsw (embedding extensions.vector_cosine_ops);
+
+create or replace function match_documents(
+  query_embedding extensions.vector(1024),
+  match_count int default 5
+)
+returns table (id bigint, content text, similarity float)
+language sql
+stable
+set search_path = ''
+as $$
+  select
+    documents.id,
+    documents.content,
+    1 - (documents.embedding operator(extensions.<=>) query_embedding) as similarity
+  from public.documents
+  order by documents.embedding operator(extensions.<=>) query_embedding
+  limit match_count;
+$$;
+```
+
+The function orders rows by cosine distance. Qwen3 embeddings aren't normalized, and cosine distance normalizes the vectors for you.
+
+The function runs with the caller's permissions, so the `select` policy decides which rows a user can search.
+
+### Store embeddings
+
+Create an Edge Function that embeds text and inserts it into the `documents` table. Only callers that send your project's secret key can reach it, so call it from a backend job or another Edge Function.
+
+1. Create the function:
+
+   ```bash
+   supabase functions new fireworks-embed
+   ```
+
+2. In `supabase/config.toml`, turn off the platform JWT check for the function:
+
+   ```toml
+   [functions.fireworks-embed]
+   verify_jwt = false
+   ```
+
+3. Replace the contents of `supabase/functions/fireworks-embed/index.ts` with the following code:
+
+   ```ts supabase/functions/fireworks-embed/index.ts
+   import { withSupabase } from 'npm:@supabase/server@^1'
+   import OpenAI from 'npm:openai@^6'
+
+   const fireworks = new OpenAI({
+     apiKey: Deno.env.get('FIREWORKS_API_KEY'),
+     baseURL: 'https://api.fireworks.ai/inference/v1',
+   })
+
+   export default {
+     fetch: withSupabase({ auth: 'secret' }, async (req, ctx) => {
+       const { content } = await req.json()
+
+       const response = await fireworks.embeddings.create({
+         model: 'fireworks/qwen3-embedding-8b',
+         input: content,
+         dimensions: 1024,
+       })
+
+       const { error } = await ctx.supabaseAdmin
+         .from('documents')
+         .insert({ content, embedding: JSON.stringify(response.data[0].embedding) })
+       if (error) {
+         return Response.json({ error: error.message }, { status: 500 })
+       }
+
+       return Response.json({ ok: true })
+     }),
+   }
+   ```
+
+4. Deploy the function:
+
+   ```bash
+   supabase functions deploy fireworks-embed
+   ```
+
+To call the function with the secret key from a database trigger or a scheduled job, see [Call an Edge Function](https://supabase.com/docs/guides/database/webhooks#call-an-edge-function).
+
+### Search documents
+
+Create an Edge Function that embeds a search query with the same model and dimension, then calls `match_documents`.
+
+1. Create the function:
+
+   ```bash
+   supabase functions new fireworks-search
+   ```
+
+2. Replace the contents of `supabase/functions/fireworks-search/index.ts` with the following code:
+
+   ```ts supabase/functions/fireworks-search/index.ts
+   import { withSupabase } from 'npm:@supabase/server@^1'
+   import OpenAI from 'npm:openai@^6'
+
+   const fireworks = new OpenAI({
+     apiKey: Deno.env.get('FIREWORKS_API_KEY'),
+     baseURL: 'https://api.fireworks.ai/inference/v1',
+   })
+
+   export default {
+     fetch: withSupabase({ auth: 'user' }, async (req, ctx) => {
+       const { query } = await req.json()
+
+       const response = await fireworks.embeddings.create({
+         model: 'fireworks/qwen3-embedding-8b',
+         input: query,
+         dimensions: 1024,
+       })
+
+       const { data, error } = await ctx.supabase.rpc('match_documents', {
+         query_embedding: JSON.stringify(response.data[0].embedding),
+         match_count: 5,
+       })
+       if (error) {
+         return Response.json({ error: error.message }, { status: 500 })
+       }
+
+       return Response.json({ query, results: data })
+     }),
+   }
+   ```
+
+3. Deploy the function:
+
+   ```bash
+   supabase functions deploy fireworks-search
+   ```
+
+4. Call the function from your app with a signed-in user:
+
+   ```ts
+   const { data, error } = await supabase.functions.invoke('fireworks-search', {
+     body: { query: 'How do I secure a table?' },
+   })
+   ```
+
+The response lists the five closest documents, each with a `similarity` score between -1 and 1. Higher scores mean closer matches.
+
+## Expose documents to MCP clients
+
+Serve the `documents` table as a remote [Model Context Protocol](https://modelcontextprotocol.io/specification/2026-07-28) (MCP) server, so clients such as Claude, Cursor, or VS Code can search it. The server embeds each query with the same Fireworks model as [Search with embeddings](#search-with-embeddings), and every tool call runs as the signed-in user, so the `select` policy on `documents` decides what a client reads.
+
+The function composes the authenticated pipeline from [Deploy MCP servers](https://supabase.com/docs/guides/ai-tools/byo-mcp). `withOAuthProtectedResource()` answers MCP client discovery, and `withSupabase({ auth: 'user' })` verifies the user's token and scopes the Supabase client to them. Configure the OAuth 2.1 server, dynamic client registration, and a consent screen before you start. For those steps, see [Add authentication](https://supabase.com/docs/guides/ai-tools/byo-mcp#add-authentication).
+
+1. Create the function:
+
+   ```bash
+   supabase functions new mcp
+   ```
+
+2. In `supabase/config.toml`, turn off the platform JWT check for the function. The function verifies tokens itself, and the gateway would otherwise reject the unauthenticated discovery request:
+
+   ```toml supabase/config.toml
+   [functions.mcp]
+   verify_jwt = false
+   ```
+
+3. Replace the contents of `supabase/functions/mcp/index.ts` with the following code. It reads the `FIREWORKS_API_KEY` secret from [Store your API key](#store-your-api-key) and registers one tool to search the table and one to read a single row:
+
+   ```ts supabase/functions/mcp/index.ts
+   import { createMcpHandler, McpServer } from 'npm:@modelcontextprotocol/server@^2.0.0'
+   import { pipeline } from 'npm:@supabase/middleware@1'
+   import { withOAuthProtectedResource, withSupabase } from 'npm:@supabase/server@1'
+   import OpenAI from 'npm:openai@^6'
+   import { z } from 'npm:zod@^4.3.6'
+
+   const fireworks = new OpenAI({
+     apiKey: Deno.env.get('FIREWORKS_API_KEY'),
+     baseURL: 'https://api.fireworks.ai/inference/v1',
+   })
+
+   Deno.serve(
+     pipeline(
+       [withOAuthProtectedResource(), withSupabase({ auth: 'user' })],
+       async (req, { supabase }) => {
+         // A fresh server per request: Edge Functions are stateless
+         const handler = createMcpHandler(() => {
+           const server = new McpServer({ name: 'documents', version: '0.1.0' })
+
+           server.registerTool(
+             'search_document',
+             {
+               description: 'Search documents by meaning and return the closest matches',
+               inputSchema: z.object({
+                 query: z.string().min(1),
+                 limit: z.number().int().min(1).max(20).default(5),
+               }),
+               annotations: { readOnlyHint: true },
+             },
+             async ({ query, limit }) => {
+               const response = await fireworks.embeddings.create({
+                 model: 'fireworks/qwen3-embedding-8b',
+                 input: query,
+                 dimensions: 1024,
+               })
+
+               const { data, error } = await supabase.rpc('match_documents', {
+                 query_embedding: JSON.stringify(response.data[0].embedding),
+                 match_count: limit,
+               })
+               if (error) throw new Error(error.message)
+               return { content: [{ type: 'text', text: JSON.stringify(data) }] }
+             }
+           )
+
+           server.registerTool(
+             'fetch_document',
+             {
+               description: 'Fetch the full content of one document by ID',
+               inputSchema: z.object({ id: z.number().int() }),
+               annotations: { readOnlyHint: true },
+             },
+             async ({ id }) => {
+               const { data, error } = await supabase
+                 .from('documents')
+                 .select('id, content')
+                 .eq('id', id)
+                 .single()
+               if (error) throw new Error(error.message)
+               return { content: [{ type: 'text', text: JSON.stringify(data) }] }
+             }
+           )
+
+           return server
+         })
+
+         return handler.fetch(req)
+       }
+     )
+   )
+   ```
+
+4. Deploy the function:
+
+   ```bash
+   supabase functions deploy mcp
+   ```
+
+5. Add the server to an MCP client. For Claude Code:
+
+   ```bash
+   claude mcp add --transport http documents \
+     https://<your-project-ref>.supabase.co/functions/v1/mcp
+   ```
+
+Every client takes the same URL and runs the OAuth flow on first connection. For the other clients and where to enter the URL, see [Connect from MCP clients](https://supabase.com/docs/guides/ai-tools/byo-mcp#connect-from-mcp-clients).
+
+## Resources
+
+- [Fireworks OpenAI compatibility](https://docs.fireworks.ai/tools-sdks/openai-compatibility)
+- [Fireworks embeddings](https://docs.fireworks.ai/guides/querying-embeddings-models)
+- [Vector columns](https://supabase.com/docs/guides/ai/vector-columns)
+- [Vector indexes](https://supabase.com/docs/guides/ai/vector-indexes)
+- [Securing Edge Functions](https://supabase.com/docs/guides/functions/auth)
 
 
 ---
@@ -10696,6 +11070,8 @@ Configure the Site URL and any additional [redirect URLs](https://supabase.com/d
 
 By default, a user can only request a magic link once every 60 seconds and they expire after 1 hour.
 
+To test magic links without hitting email limits, see [Test auth flows](https://supabase.com/docs/guides/auth/testing-auth-flows).
+
 ### Signing in with Magic Link
 
 Call the "sign in with OTP" method from the client library.
@@ -11049,6 +11425,8 @@ Edit templates on the [Email Templates](https://supabase.com/dashboard/project/_
 ### Local development and self-hosted
 
 The dashboard template builder **does not apply** when running [local development with CLI](https://supabase.com/docs/guides/local-development) or [self-hosted Supabase](https://supabase.com/docs/guides/self-hosting). Customize templates in `supabase/config.toml` and local HTML files instead.
+
+For local development with the CLI, [open the emails your templates produce in Mailpit](https://supabase.com/docs/guides/auth/testing-auth-flows#test-email-flows-locally).
 
 Note: See [Customizing email templates](https://supabase.com/docs/guides/local-development/customizing-email-templates) for:
 
@@ -22162,9 +22540,7 @@ See the [Custom SMTP guide](https://supabase.com/docs/guides/auth/auth-smtp) for
 
 #### Local development with Mailpit
 
-You can test email flows on your local machine. The Supabase CLI automatically captures emails sent locally by using [Mailpit](https://github.com/axllent/mailpit).
-
-In your terminal, run `supabase status` to get the Mailpit URL. Go to this URL in your browser, and follow the instructions to find your emails.
+The Supabase CLI captures every email from local Auth in Mailpit, so you can test sign-up and password reset without sending email. For the steps, see [Test email flows locally](https://supabase.com/docs/guides/auth/testing-auth-flows#test-email-flows-locally).
 
 ## With phone
 
@@ -22455,6 +22831,8 @@ You also need to set up an SMS provider. Each provider has its own configuration
 
 
 By default, a user can only request an OTP once every 60 seconds and they expire after 1 hour.
+
+To test phone sign-in without sending SMS, [add test phone numbers with fixed codes](https://supabase.com/docs/guides/auth/testing-auth-flows#test-phone-sign-in-with-test-numbers).
 
 ## Signing in with phone OTP
 
@@ -24038,6 +24416,8 @@ The table below shows the rate limit quotas and additional details for authentic
 | Create or verify an MFA challenge  | `/auth/v1/factors/:id/challenge` `/auth/v1/factors/:id/verify`                                             | IP Address | No                             | 15 requests per minute, with bursts up to 30 requests.                                                                                                                                         |
 | Anonymous sign-ins                 | `/auth/v1/signup`                                                                                          | IP Address | Yes                            | Defaults to 30 requests per hour, with a burst capacity equal to the configured limit. This limit only applies if the endpoint is called without an email or phone number in the request body. |
 | Web3 sign-ups and sign-ins         | `/auth/v1/token`                                                                                           | IP Address | Yes                            | Defaults to 30 requests per 5 minutes, with bursts up to 30 requests.                                                                                                                          |
+
+[Test auth flows](https://supabase.com/docs/guides/auth/testing-auth-flows) shows how to test email and phone sign-in without hitting the email and SMS sending limits. The other limits on this page apply to tests too.
 
 ## IP address forwarding
 
@@ -35774,6 +36154,127 @@ await supabase.Auth.SignOut();
 - [Supabase - Get started for free](https://supabase.com)
 - [Supabase JS Client](https://github.com/supabase/supabase-js)
 - [Zoom App Marketplace](https://marketplace.zoom.us/)
+
+
+---
+
+# Test auth flows
+
+Test email and phone sign-in without hitting email and SMS limits
+
+Test sign-up, sign-in, and password recovery as often as you need without waiting on email or SMS limits. Develop against local Supabase to capture every email in Mailpit, and use test phone numbers to sign in with a fixed code.
+
+The local development steps need the Supabase CLI and a project initialized with `supabase init`. To set them up, see [Supabase CLI](https://supabase.com/docs/guides/local-development/cli/getting-started).
+
+## Test email flows locally
+
+The Supabase CLI sends every email from local Auth to Mailpit, an email testing server that runs with your local stack. No email leaves your machine, so you can send to any address. Local Auth has no hourly email limit. For more information about Mailpit, see the [Mailpit repository on GitHub](https://github.com/axllent/mailpit).
+
+1. In your project directory, run `supabase start` to start the local stack.
+
+2. Run `supabase status` to get your local stack's connection details. Copy the following values from the output:
+   - **Project URL**: the local API URL, which is `http://127.0.0.1:54321` by default
+   - **Publishable**: the local publishable key, which starts with `sb_publishable_`
+   - **Mailpit**: the Mailpit URL, which is `http://127.0.0.1:54324` by default
+
+3. Connect your app to the local stack. Your app's Supabase client reads a project URL and a publishable key from environment variables, which usually hold your hosted project's values. Replace them with the **Project URL** and **Publishable** key you copied from `supabase status`:
+
+   ```bash .env.local
+   NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321
+   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
+   ```
+
+   Variable names depend on your framework. To test against your hosted project again, restore its project URL and publishable key.
+
+4. In your app, request a magic link or a password recovery email.
+
+5. In your browser, go to the **Mailpit** URL and open the email to get the link or code.
+
+Local Auth limits how often it sends to the same address. By default, it sends one email per address per second. To change this, set `max_frequency` under `[auth.email]` in `supabase/config.toml`.
+
+Email confirmation is off by default in local development and on by default for hosted projects, so local sign-up doesn't send an email. To test the confirmation email locally, set `enable_confirmations = true` under `[auth.email]`, and then restart the local stack.
+
+## Test email flows on a hosted project
+
+Hosted projects send email through a built-in email service until you set up custom SMTP. The built-in service is for trying out Auth, and it has the following limits:
+
+- It sends only to the email addresses of your organization's team members. Other addresses fail with the error code `email_address_not_authorized`.
+- It sends 2 emails per hour across the whole project while **Confirm email** is on. When the project reaches the limit, Auth returns a `429` error with the code `over_email_send_rate_limit` and the message `email rate limit exceeded`.
+
+To send to any address and raise the limit, set up [custom SMTP](https://supabase.com/docs/guides/auth/auth-smtp) or the [Send Email hook](https://supabase.com/docs/guides/auth/auth-hooks/send-email-hook). You can then change the email limit in [**Authentication** > **Rate Limits**](https://supabase.com/dashboard/project/_/auth/rate-limits). For more information about the limits, see [Rate limits](https://supabase.com/docs/guides/auth/rate-limits).
+
+Caution: Turning off **Confirm email** lets anyone sign up with an email address they don't own, and Auth marks that address as confirmed. It also turns off the project's hourly email limit. If you turn it off while testing, turn it back on in [**Authentication** > **Sign In / Providers**](https://supabase.com/dashboard/project/_/auth/providers) before you launch.
+
+## Test phone sign-in with test numbers
+
+With a test phone number, you sign in with a fixed one-time password (OTP) that you choose. Auth doesn't send an SMS to a test number, and it accepts the fixed code as many times as you need.
+
+Test numbers work for phone sign-up, sign-in, and phone number changes. They don't apply to [phone multi-factor authentication](https://supabase.com/docs/guides/auth/auth-mfa/phone), which always sends a real SMS.
+
+Before you add test numbers, enable the phone provider and configure an SMS provider. Auth requires an SMS provider even though it doesn't send anything to test numbers.
+
+Write each phone number in international format, with the country code and without the `+` prefix or spaces. For example, write `+1 415 555 2671` as `14155552671`. Auth compares the number your app sends against this value, so a number without its country code doesn't match.
+
+**Dashboard**
+
+1. Go to [**Authentication** > **Sign In / Providers**](https://supabase.com/dashboard/project/_/auth/providers), and open **Phone**.
+2. In **Test Phone Numbers and OTPs**, enter a comma-separated list of `<phone number>=<OTP>` pairs, such as `14155552671=123456`.
+3. In **Test OTPs Valid Until**, choose when the test numbers stop working. The Dashboard requires this date.
+4. Click **Save**.
+
+**Local development**
+
+1. In `supabase/config.toml`, turn on phone sign-up, enable an SMS provider, and add each test number and its code. These sections exist in the default file, so edit them in place:
+
+   ```toml supabase/config.toml
+   [auth.sms]
+   enable_signup = true
+
+   [auth.sms.twilio]
+   enabled = true
+   account_sid = "placeholder"
+   message_service_sid = "placeholder"
+   auth_token = "placeholder"
+
+   [auth.sms.test_otp]
+   14155552671 = "123456"
+   ```
+
+   Auth doesn't use the provider credentials for test numbers, so placeholder values work.
+
+2. Restart the local stack:
+
+   ```bash
+   supabase stop && supabase start
+   ```
+
+Local test numbers don't expire.
+
+**Management API**
+
+Update the project's Auth configuration with the test numbers and the date they stop working. Replace `YYYY-MM-DDTHH:MM:SSZ` with that date in UTC:
+
+```bash
+# Get your access token from https://supabase.com/dashboard/account/tokens
+export SUPABASE_ACCESS_TOKEN="your-access-token"
+export PROJECT_REF="your-project-ref"
+
+curl -X PATCH "https://api.supabase.com/v1/projects/$PROJECT_REF/config/auth" \
+  -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "sms_test_otp": "14155552671=123456",
+    "sms_test_otp_valid_until": "YYYY-MM-DDTHH:MM:SSZ"
+  }'
+```
+
+Test numbers don't count toward the project's hourly SMS limit. Auth makes you wait between codes for the same number. The wait defaults to 5 seconds. Locally, change it with `max_frequency` under `[auth.sms]`.
+
+Danger: Anyone who knows a test number and its code can sign in as the user with that number. Remove test numbers before you launch, or set **Test OTPs Valid Until** to a date before launch.
+
+`supabase config push` copies `[auth.sms.test_otp]` from `config.toml` to your hosted project and sets the test numbers to expire after 10 years. Remove the section before you push to a production project.
+
+For a full list of settings to check before launch, see the [Production checklist](https://supabase.com/docs/guides/deployment/going-into-prod).
 
 
 ---
@@ -70904,6 +71405,7 @@ Note: Check and review issues in your database using [Security Advisor](https://
 - Consider enabling [MFA enforcement on your organization](https://supabase.com/docs/guides/platform/mfa/org-mfa-enforcement). This ensures all users must have a valid MFA-backed session to interact with organization and project resources.
 - Consider adding multiple owners on your Supabase org from [the **Organization > Team**](https://supabase.com/dashboard/org/_/team) section of the Supabase Dashboard. This ensures that if one of the owners is unreachable or loses access to their account, you still have Owner access to your org.
 - Enable email confirmations in the [**Authentication > Providers**](https://supabase.com/dashboard/project/_/auth/providers) section of the dashboard.
+- Remove any [test phone numbers](https://supabase.com/docs/guides/auth/testing-auth-flows#test-phone-sign-in-with-test-numbers) you added for testing.
 - Set the expiry in the [**Authentication > Providers**](https://supabase.com/dashboard/project/_/auth/providers) section of the dashboard for one-time passwords (OTPs) to a reasonable value that you are comfortable with.
   - We recommend setting this to 3600 seconds (1 hour) or lower.
   - Increase the length of the OTP if you need a higher level of entropy.
@@ -72229,7 +72731,7 @@ Note: Note that the model parameter doesn't have any effect here. The model depe
 
 ```ts
 import { withSupabase } from 'npm:@supabase/server@^1'
-import OpenAI from 'jsr:@openai/openai@^6'
+import OpenAI from 'npm:openai@^6'
 
 export default {
   fetch: withSupabase({ auth: 'publishable' }, async (req, ctx) => {
@@ -80457,7 +80959,7 @@ Less, but better.
 
 To avoid lock-in, we make it easy to migrate in and out. Our cloud offering is compatible with our self-hosted product.
 We use existing standards to increase portability (like `pg_dump` and CSV files). If a new standard emerges which competes with a "Supabase" approach, we will deprecate the approach in favor of the standard.
-This forces us to compete on user experience. We aim to be the best Postgres hosting service.
+This forces us to compete on user experience. We aim to be the best [Postgres hosting service](https://supabase.com/solutions/hosted-postgres).
 
 ### Play the long game
 
@@ -112306,1824 +112808,6 @@ Personal access tokens are not affected by MFA enforcement. Personal access toke
 
 ---
 
-# Migrating to Supabase
-
-Learn how to migrate to Supabase from another database service.
-
-## Migration guides
-
-- [Auth0](/docs/guides/platform/migrating-to-supabase/auth0)
-- [Firebase Auth](/docs/guides/platform/migrating-to-supabase/firebase-auth)
-- [Firestore Data](/docs/guides/platform/migrating-to-supabase/firestore-data)
-- [Firebase Storage](/docs/guides/platform/migrating-to-supabase/firebase-storage)
-- [Heroku](/docs/guides/platform/migrating-to-supabase/heroku)
-- [Render](/docs/guides/platform/migrating-to-supabase/render)
-- [Amazon RDS](/docs/guides/platform/migrating-to-supabase/amazon-rds)
-- [Postgres](/docs/guides/platform/migrating-to-supabase/postgres)
-- [Vercel Postgres](/docs/guides/platform/migrating-to-supabase/vercel-postgres)
-- [Neon](/docs/guides/platform/migrating-to-supabase/neon)
-- [MySQL](/docs/guides/platform/migrating-to-supabase/mysql)
-- [MSSQL](/docs/guides/platform/migrating-to-supabase/mssql)
-
-
----
-
-# Migrate from Amazon RDS to Supabase
-
-Migrate your Amazon RDS MySQL or MS SQL database to Supabase.
-
-This guide aims to exhibit the process of transferring your Amazon RDS database from any of these engines Postgres, MySQL or MS SQL to Supabase's Postgres database. Although Amazon RDS is a favored managed database service provided by AWS, it may not suffice for all use cases. Supabase, on the other hand, provides an excellent free and open source option that encompasses all the necessary backend features to develop a product: a Postgres database, authentication, instant APIs, edge functions, real-time subscriptions, and storage.
-
-Supabase's core is Postgres, enabling the use of row-level security and providing access to over 40 Postgres extensions. By migrating from Amazon RDS to Supabase, you can leverage Postgres to its fullest potential and acquire all the features you need to complete your project.
-
-## Retrieve your Amazon RDS database credentials
-
-1. Sign in to your [Amazon RDS account](https://aws.amazon.com/rds/).
-2. Select the region where your RDS database is located.
-3. Navigate to the **Databases** tab.
-4. Select the database that you want to migrate.
-5. In the **Connectivity & Security** tab, note down the Endpoint and the port number.
-6. In the **Configuration** tab, note down the Database name and the Username.
-7. If you do not have the password, create a new one and note it down.
-
-![Copying RDS credentials from AWS Management Console](/docs/img/guides/resources/migrating-to-supabase/amazon-rds/amazon-rds_credentials.png)
-
-## Retrieve your Supabase host
-
-1. If you're new to Supabase, [create a project](https://database.new). Make a note of your password, you will need this later. If you forget it, you can [reset it here](https://supabase.com/dashboard/project/_/database/settings).
-2. On your project dashboard, click [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&method=session)
-3. Under the Session pooler, click on the View parameters under the connect string. Note your Host (`$SUPABASE_HOST`).
-
-![Finding Supabase host address](/docs/img/guides/resources/migrating-to-supabase/amazon-rds/database-settings-host.png)
-
-## Migrate the database
-
-The fastest way to migrate your database is with the Supabase migration tool on
-[Google Colab](https://colab.research.google.com/github/mansueli/Supa-Migrate/blob/main/Amazon_RDS_to_Supabase.ipynb).
-
-Alternatively, you can use [pgloader](https://github.com/dimitri/pgloader), a flexible and powerful data migration tool that supports a wide range of source database engines, including MySQL and MS SQL, and migrates the data to a Postgres database. For databases using the Postgres engine, we recommend using the [`pg_dump`](https://www.postgresql.org/docs/current/app-pgdump.html) and [psql](https://www.postgresql.org/docs/current/app-psql.html) command line tools, which are included in a full Postgres installation.
-
-**Migrate using Colab**
-
-1. Select the Database Engine from the Source database in the dropdown
-2. Set the environment variables (`HOST`, `USER`, `SOURCE_DB`,`PASSWORD`, `SUPABASE_URL`, and `SUPABASE_PASSWORD`) in the Colab notebook.
-3. Run the first two steps in [the notebook](https://colab.research.google.com/github/mansueli/Supa-Migrate/blob/main/Amazon_RDS_to_Supabase.ipynb) in order. The first sets engine and installs the necessary files.
-4. Run the third step to start the migration. This will take a few minutes.
-
-**Migrate from MySQL with pgloader**
-
-1. Install pgloader.
-
-2. Create a configuration file (e.g., config.load).
-
-   For your destination, use your Supabase connection string with `Use connection pooling` enabled, and the mode set to `Session`. You can get the string from your [`Database Settings`](https://supabase.com/dashboard/project/_/settings/general).
-
-   ```sql
-   load database
-     from mysql://user:password@host/source_db
-     into postgres://postgres.xxxx:password@xxxx.pooler.supabase.com:5432/postgres
-   alter schema 'public' owner to 'postgres';
-   set wal_buffers = '64MB', max_wal_senders = 0, statement_timeout = 0, work_mem to '2GB';
-   ```
-
-3. Run the migration with pgloader
-
-   ```bash
-   pgloader config.load
-   ```
-
-**Migrate from MSSQL**
-
-1. Install pgloader.
-
-2. Create a configuration file (e.g., config.load).
-
-   ```sql
-   LOAD DATABASE
-       FROM mssql://USER:PASSWORD@HOST/SOURCE_DB
-       INTO postgres://postgres.xxxx:password@xxxx.pooler.supabase.com:6543/postgres
-   ALTER SCHEMA 'public' OWNER TO 'postgres';
-   set wal_buffers = '64MB', max_wal_senders = 0, statement_timeout = 0, work_mem to '2GB';
-   ```
-
-3. Run the migration with pgloader
-
-   ```bash
-   pgloader config.load
-   ```
-
-Caution: - If you're planning to migrate a database larger than 6 GB, we recommend [upgrading to at least a Large compute add-on](https://supabase.com/docs/guides/platform/compute-and-disk). This will ensure you have the necessary resources to handle the migration efficiently.
-
-- We strongly advise you to pre-provision the disk space you will need for your migration. On paid projects, you can do this by navigating to the [Infrastructure settings](https://supabase.com/dashboard/project/_/settings/infrastructure) page. For more information on disk scaling and disk limits, check out our [disk settings](https://supabase.com/docs/guides/platform/compute-and-disk#disk) documentation.
-
-## Enterprise
-
-[Contact us](https://forms.supabase.com/enterprise) if you need more help migrating your project.
-
-
----
-
-# Migrate from Auth0 to Supabase Auth
-
-Learn how to migrate your users from Auth0
-
-You can migrate your users from Auth0 to Supabase Auth.
-
-Changing authentication providers for a production app is an important operation. It can affect most aspects of your application. Prepare in advance by reading this guide, and develop a plan for handling the key migration steps and possible problems.
-
-With advance planning, a smooth and safe Auth migration is possible.
-
-## Before you begin
-
-Before beginning, consider the answers to the following questions. They will help you need decide if you need to migrate, and which strategy to use:
-
-- How do Auth provider costs scale as your user base grows?
-- Does the new Auth provider provide all needed features? (for example, OAuth, password logins, Security Assertion Markup Language (SAML), Multi-Factor Authentication (MFA))
-- Is downtime acceptable during the migration?
-- What is your timeline to migrate before terminating the old Auth provider?
-
-## Migration strategies
-
-Depending on your evaluation, you may choose to go with one of the following strategies:
-
-1. Rolling migration
-2. One-off migration
-
-| Strategy | Advantages                                                                   | Disadvantages                                                                                                                                                                                                                                                                                                                                                                                                        |
-| -------- | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Rolling  | 0 downtime
-
-Users may need to sign in again                                  | Need to maintain 2 different Auth services, which may be more costly in the short-term
-
-Need to maintain separate codepaths for the period of the migration
-
-Some existing users may be inactive and have not signed in with the new provider. This means that you eventually need to backfill these users. However, this is a much smaller-scale one-off migration with lower risks since these users are inactive. |
-| One-off  | No need to maintain 2 different auth services for an extended period of time | Some downtime
-
-Users will need to sign in again. Risky for active users.                                                                                                                                                                                                                                                                                                                                             |
-
-## Migration steps
-
-Auth provider migrations require 2 main steps:
-
-1. Export your user data from the old provider (Auth0)
-2. Import the data into your new provider (Supabase Auth)
-
-### Step 1: Export your user data
-
-Auth0 provides two methods for exporting user data:
-
-1. Use the [Auth0 data export feature](https://auth0.com/docs/troubleshoot/customer-support/manage-subscriptions/export-data)
-2. Use the [Auth0 management API](https://auth0.com/docs/api/management/v2/users/get-users). This endpoint has a rate limit, so you may need to export your users in several batches.
-
-To export password hashes and MFA factors, contact Auth0 support.
-
-### Step 2: Import your users into Supabase Auth
-
-The steps for importing your users depends on the sign-in methods that you support.
-
-See the following sections for how to import users with:
-
-- [Password-based sign-in](#password-based-methods)
-- [Passwordless sign-in](#passwordless-methods)
-- [OAuth](#oauth)
-
-#### Password-based methods
-
-For users who sign in with passwords, we recommend a hybrid approach to reduce downtime:
-
-1. For new users, use Supabase Auth for sign up.
-2. Migrate existing users in a one-off migration.
-
-##### Sign up new users
-
-Sign up new users using Supabase Auth's [signin methods](https://supabase.com/docs/guides/auth/passwords#signing-up-with-an-email-and-password).
-
-##### Migrate existing users to Supabase Auth
-
-Migrate existing users to Supabase Auth. This requires two main steps: first, check which users need to be migrated, then create their accounts using the Supabase admin endpoints.
-
-1. Get your Auth 0 user export and password hash export lists.
-
-2. Filter for users who use password sign-in.
-   - Under the `identities` field in the user object, these users will have `auth0` as a provider. In the same identity object, you can find their Auth0 `user_id`.
-   - Check that the user has a corresponding password hash by comparing their Auth0 `user_id` to the `oid` field in the password hash export.
-
-3. Use Supabase Auth's [admin create user](https://supabase.com/docs/reference/javascript/auth-admin-createuser) method to recreate the user in Supabase Auth. If the user has a confirmed email address or phone number, set `email_confirm` or `phone_confirm` to `true`.
-
-   ```ts
-   import { createClient } from '@supabase/supabase-js'
-
-   const supabase = createClient('your_project_url', 'your_supabase_api_key')
-
-   // ---cut---
-   const { data, error } = await supabase.auth.admin.createUser({
-     email: 'valid.email@supabase.io',
-     password_hash: '$2y$10$a9pghn27d7m0ltXvlX8LiOowy7XfFw0hW0G80OjKYQ1jaoejaA7NC',
-     email_confirm: true,
-   })
-   ```
-
-   Note: Supabase supports bcrypt and Argon2 password hashes.
-
-   If you have a plaintext password instead of a hash, you can provide that instead. Supabase Auth will handle hashing the password for you. (Passwords are **always** stored hashed.)
-
-   ```ts
-   import { createClient } from '@supabase/supabase-js'
-
-   const supabase = createClient('your_project_url', 'your_supabase_api_key')
-
-   // ---cut---
-   const { data, error } = await supabase.auth.admin.createUser({
-     email: 'valid.email@supabase.io',
-     password: 'supersecurepassword123!',
-   })
-   ```
-
-4. To sign in your migrated users, use the Supabase Auth [sign in methods](https://supabase.com/docs/reference/javascript/auth-signinwithpassword).
-
-   To check for edge cases where users aren't successfully migrated, use a fallback strategy. This ensures that users can continue to sign in seamlessly:
-
-   1. Try to sign in the user with Supabase Auth.
-   2. If the signin fails, try to sign in with Auth0.
-   3. If Auth0 signin succeeds, call the admin create user method again to create the user in Supabase Auth.
-
-#### Passwordless methods
-
-For passwordless signin via email or phone, check for users with verified email addresses or phone numbers. Create these users in Supabase Auth with `email_confirm` or `phone_confirm` set to `true`:
-
-```ts
-import { createClient } from '@supabase/supabase-js'
-
-const supabase = createClient('your_project_url', 'your_supabase_api_key')
-
-// ---cut---
-const { data, error } = await supabase.auth.admin.createUser({
-  email: 'valid.email@supabase.io',
-  email_confirm: true,
-})
-```
-
-Check your Supabase Auth [email configuration](https://supabase.com/docs/guides/auth/auth-smtp) and configure your [email template](https://supabase.com/dashboard/project/_/auth/templates) for use with magic links. See the [Email templates guide](https://supabase.com/docs/guides/auth/auth-email-templates) to learn more.
-
-Once you have imported your users, you can sign them in using the [`signInWithOtp`](https://supabase.com/docs/reference/javascript/auth-signinwithotp) method.
-
-#### OAuth
-
-Configure your OAuth providers in Supabase by following the [Social sign-in guides](https://supabase.com/docs/guides/auth/social-sign-in).
-
-For both new and existing users, sign in the user using the [`signInWithOAuth`](https://supabase.com/docs/reference/javascript/auth-signinwithoauth) method. This works without pre-migrating existing users, since the user always needs to sign in through the OAuth provider before being redirected to your service.
-
-After the user has completed the OAuth flow successfully, you can check if the user is a new or existing user in Auth0 by mapping their social provider id to Auth0. Auth0 stores the social provider ID in the user ID, which has the format `provider_name|provider_id` (for example, `github|123456`). See the [Auth0 identity docs](https://auth0.com/docs/manage-users/user-accounts/identify-users) to learn more.
-
-## Mapping between Auth0 and Supabase Auth
-
-Each Auth provider has its own schema for tracking users and user information.
-
-In Supabase Auth, your users are stored in your project's database under the `auth` schema. Every user has an identity (unless the user is an anonymous user), which represents the signin method they can use with Supabase. This is represented by the `auth.users` and `auth.identities` table.
-
-See the [Users](https://supabase.com/docs/guides/auth/users) and [Identities](https://supabase.com/docs/guides/auth/identities) sections to learn more.
-
-### Mapping user metadata and custom claims
-
-Supabase Auth provides 2 fields which you can use to map user-specific metadata from Auth0:
-
-- `auth.users.raw_user_meta_data` : For storing non-sensitive user metadata that the user can update (e.g full name, age, favorite color).
-- `auth.users.raw_app_meta_data` : For storing non-sensitive user metadata that the user should not be able to update (e.g pricing plan, access control roles).
-
-Both columns are accessible from the admin user methods. To create a user with custom metadata, you can use the following method:
-
-```ts
-import { createClient } from '@supabase/supabase-js'
-
-const supabase = createClient('your_project_url', 'your_supabase_api_key')
-
-// ---cut---
-const { data, error } = await supabase.auth.admin.createUser({
-  email: 'valid.email@supabase.io',
-  user_metadata: {
-    full_name: 'Foo Bar',
-  },
-  app_metadata: {
-    role: 'admin',
-  },
-})
-```
-
-Caution: These fields will be exposed in the user's access token JWT so it is recommended not to store excessive metadata in these fields.
-
-These fields are stored as columns in the `auth.users` table using the `jsonb` type. Both fields can be updated by using the admin [`updateUserById` method](https://supabase.com/docs/reference/javascript/auth-admin-updateuserbyid). If you want to allow the user to update their own `raw_user_meta_data` , you can use the [`updateUser` method](https://supabase.com/docs/reference/javascript/auth-updateuser).
-
-If you have a lot of user-specific metadata to store, it is recommended to create your own table in a private schema that uses the user id as a foreign key:
-
-```sql
-create table private.user_metadata (
-	id int generated always as identity,
-	user_id uuid references auth.users(id) on delete cascade,
-	user_metadata jsonb
-);
-```
-
-## Frequently Asked Questions (FAQ)
-
-**I have IDs assigned to existing users in my database, how can I maintain these IDs?**
-
-All users stored in Supabase Auth use the UUID V4 format as the ID. If your UUID format is identical, you can specify it in the admin create user method like this:
-
-Note: New users in Supabase Auth will always be created with a UUID V4 ID by default.
-
-```ts
-// specify a custom id
-const { data, error } = await supabase.auth.admin.createUser({
-  id: 'e7f5ae65-376e-4d05-a18c-10a91295727a',
-  email: 'valid.email@supabase.io',
-})
-```
-
-**How can I allow my users to retain their existing password?**
-
-Supabase Auth never stores passwords as plaintext. Since Supabase Auth supports reading bcrypt and argon2 password hashes, you can import your users passwords if they use the same hashing algorithm. New users in Supabase Auth who use password-based sign-in methods will always use a bcrypt hash. Passwords are stored in the `auth.users.encrypted_password` column.
-
-**My users have multi-factor authentication (MFA) enabled, how do I make sure they don't have to set up MFA again?**
-
-You can obtain an export of your users' MFA secrets by opening a support ticket with Auth0, similar to obtaining the export for password hashes. Supabase Auth only supports time-based one-time passwords (TOTP). Users who have TOTP-based factors may need to re-enroll using their choice of TOTP-based authenticator instead (e.g. 1Password / Google authenticator).
-
-**How do I migrate existing SAML Single Sign-On (SSO) connections?**
-
-Customers may need to link their identity provider with Supabase Auth separately, but their users should still be able to sign in as per normal after authenticating with their identity provider. For more information about SSO with SAML 2.0, you can check out [this guide](https://supabase.com/docs/guides/auth/enterprise-sso/auth-sso-saml). If you want to migrate your existing SAML SSO connections from Auth0 to Supabase Auth, reach out to us via support.
-
-**How do I migrate my Auth0 organizations to Supabase?**
-
-This isn't supported by Supabase Auth yet.
-
-## Useful references
-
-- [Migrating 125k users from Auth0 to Supabase](https://kevcodez.medium.com/migrating-125-000-users-from-auth0-to-supabase-81c0568de307)
-- [Loper to Supabase migration](https://eigen.sh/posts/auth-migration)
-
-
----
-
-# Migrate from Firebase Auth to Supabase
-
-Migrate Firebase auth users to Supabase Auth.
-
-Supabase provides several [tools](https://github.com/supabase-community/firebase-to-supabase/tree/main/auth) to help migrate auth users from a Firebase project to a Supabase project. There are two parts to the migration process:
-
-- `firestoreusers2json` ([TypeScript](https://github.com/supabase-community/firebase-to-supabase/blob/main/auth/firestoreusers2json.ts), [JavaScript](https://github.com/supabase-community/firebase-to-supabase/blob/main/auth/firestoreusers2json.js)) exports users from an existing Firebase project to a `.json` file on your local system.
-- `import_users` ([TypeScript](https://github.com/supabase-community/firebase-to-supabase/blob/main/auth/import_users.ts), [JavaScript](https://github.com/supabase-community/firebase-to-supabase/blob/main/auth/import_users.js)) imports users from a saved `.json` file into your Supabase project (inserting those users into the `auth.users` table of your `Postgres` database instance).
-
-## Set up the migration tool
-
-1. Clone the [`firebase-to-supabase`](https://github.com/supabase-community/firebase-to-supabase) repository:
-
-   ```bash
-   git clone https://github.com/supabase-community/firebase-to-supabase.git
-   ```
-
-2. In the `/auth` directory, create a file named `supabase-service.json` with the following contents:
-
-   ```json
-   {
-     "host": "database.server.com",
-     "password": "secretpassword",
-     "user": "postgres",
-     "database": "postgres",
-     "port": 5432
-   }
-   ```
-
-3. On your project dashboard, click [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&method=session)
-
-4. Under the Session pooler, click on the View parameters under the connect string. Replace the `Host` and `User` fields with the values shown.
-
-5. Enter the password you used when you created your Supabase project in the `password` entry in the `supabase-service.json` file.
-
-## Generate a Firebase private key
-
-1. Sign in to your [Firebase Console](https://console.firebase.google.com/project) and open your project.
-2. Click the gear icon next to **Project Overview** in the sidebar and select **Project Settings**.
-3. Click **Service Accounts** and select **Firebase Admin SDK**.
-4. Click **Generate new private key**.
-5. Rename the downloaded file to `firebase-service.json`.
-
-## Save your Firebase password hash parameters
-
-1. Sign in to your [Firebase Console](https://console.firebase.google.com/project) and open your project.
-2. Select **Authentication** (Build section) in the sidebar.
-3. Select **Users** in the top menu.
-4. At the top right of the users list, open the menu (3 dots) and click **Password hash parameters**.
-5. Copy and save the parameters for `base64_signer_key`, `base64_salt_separator`, `rounds`, and `mem_cost`.
-
-```text Sample
-hash_config {
-  algorithm: SCRYPT,
-  base64_signer_key: XXXX/XXX+XXXXXXXXXXXXXXXXX+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX==,
-  base64_salt_separator: Aa==,
-  rounds: 8,
-  mem_cost: 14,
-}
-```
-
-## Command line options
-
-### Dump Firestore users to a JSON file
-
-`node firestoreusers2json.js [<filename.json>] [<batch_size>]`
-
-- `filename.json`: (optional) output filename (defaults to `./users.json`)
-- `batchSize`: (optional) number of users to fetch in each batch (defaults to 100)
-
-### Import JSON users file to Supabase Auth (Postgres: `auth.users`)
-
-`node import_users.js <path_to_json_file> [<batch_size>]`
-
-- `path_to_json_file`: full local path and filename of JSON input file (of users)
-- `batch_size`: (optional) number of users to process in a batch (defaults to 100)
-
-## Notes
-
-For more advanced migrations, including the use of a middleware server component for verifying a user's existing Firebase password and updating that password in your Supabase project the first time a user logs in, see the [`firebase-to-supabase` repo](https://github.com/supabase-community/firebase-to-supabase/tree/main/auth).
-
-## Resources
-
-- [Supabase vs Firebase](https://supabase.com/alternatives/supabase-vs-firebase)
-- [Firestore Data Migration](https://supabase.com/docs/guides/platform/migrating-to-supabase/firestore-data)
-- [Firestore Storage Migration](https://supabase.com/docs/guides/platform/migrating-to-supabase/firebase-storage)
-
-## Migrate to Supabase
-
-[Contact us](https://forms.supabase.com/firebase-migration) if you need more help migrating your project.
-
-
----
-
-# Migrated from Firebase Storage to Supabase
-
-Migrate Firebase Storage files to Supabase Storage.
-
-Supabase provides several [tools](https://github.com/supabase-community/firebase-to-supabase/tree/main/storage) to convert storage files from Firebase Storage to Supabase Storage. Conversion is a two-step process:
-
-1. Files are downloaded from a Firebase storage bucket to a local filesystem.
-2. Files are uploaded from the local filesystem to a Supabase storage bucket.
-
-## Set up the migration tool
-
-1. Clone the [`firebase-to-supabase`](https://github.com/supabase-community/firebase-to-supabase) repository:
-
-   ```bash
-   git clone https://github.com/supabase-community/firebase-to-supabase.git
-   ```
-
-2. In the `/storage` directory, rename [supabase-keys-sample.js](https://github.com/supabase-community/firebase-to-supabase/blob/main/storage/supabase-keys-sample.js) to `supabase-keys.js`.
-
-3. Go to your Supabase project's [API settings](https://supabase.com/dashboard/project/_/settings/api) in the Dashboard.
-
-4. Copy the **Project URL** and update the `SUPABASE_URL` value in `supabase-keys.js`.
-
-5. Under **Project API keys**, copy the **secret** key and update the `SUPABASE_KEY` value in `supabase-keys.js`.
-
-## Generate a Firebase private key
-
-1. Sign in to your [Firebase Console](https://console.firebase.google.com/project) and open your project.
-2. Click the gear icon next to **Project Overview** in the sidebar and select **Project Settings**.
-3. Click **Service Accounts** and select **Firebase Admin SDK**.
-4. Click **Generate new private key**.
-5. Rename the downloaded file to `firebase-service.json`.
-
-## Command line options
-
-### Download Firestore Storage bucket to a local filesystem folder
-
-`node download.js <prefix> [<folder>] [<batchSize>] [<limit>] [<token>]`
-
-- `<prefix>`: The prefix of the files to download. To process the root bucket, use an empty prefix: "".
-- `<folder>`: (optional) Name of subfolder for downloaded files. The selected folder is created as a subfolder of the current folder (e.g., `./downloads/`). The default is `downloads`.
-- `<batchSize>`: (optional) The default is 100.
-- `<limit>`: (optional) Stop after processing this many files. For no limit, use `0`.
-- `<token>`: (optional) Begin processing at this `pageToken`.
-
-To process in batches using multiple command-line executions, you must use the same parameters with a new `<token>` on subsequent calls. Use the token displayed on the last call to continue the process at a given point.
-
-### Upload files to Supabase Storage bucket
-
-`node upload.js <prefix> <folder> <bucket>`
-
-- `<prefix>`: The prefix of the files to download. To process all files, use an empty prefix: "".
-- `<folder>`: Name of subfolder of files to upload. The selected folder is read as a subfolder of the current folder (e.g., `./downloads/`). The default is `downloads`.
-- `<bucket>`: Name of the bucket to upload to.
-
-Note: If the bucket doesn't exist, it's created as a `non-public` bucket. You must set permissions on this new bucket in the [Supabase Dashboard](https://supabase.com/dashboard/project/_/storage/buckets) before users can download any files.
-
-## Resources
-
-- [Supabase vs Firebase](https://supabase.com/alternatives/supabase-vs-firebase)
-- [Firestore Data Migration](https://supabase.com/docs/guides/platform/migrating-to-supabase/firestore-data)
-- [Firebase Auth Migration](https://supabase.com/docs/guides/platform/migrating-to-supabase/firebase-auth)
-
-## Migrate to Supabase
-
-[Contact us](https://forms.supabase.com/firebase-migration) if you need more help migrating your project.
-
-
----
-
-# Migrate from Firebase Firestore to Supabase
-
-Migrate your Firebase Firestore database to a Supabase Postgres database.
-
-Supabase provides several [tools](https://github.com/supabase-community/firebase-to-supabase/tree/main/firestore) to convert data from a Firebase Firestore database to a Supabase Postgres database. The process copies the entire contents of a single Firestore `collection` to a single Postgres `table`.
-
-The Firestore `collection` is "flattened" and converted to a table with basic columns of one of the following types: `text`, `numeric`, `boolean`, or `jsonb`. If your structure is more complex, you can write a program to split the newly-created `json` file into multiple, related tables before you import your `json` file(s) to Supabase.
-
-## Set up the migration tool
-
-1. Clone the [`firebase-to-supabase`](https://github.com/supabase-community/firebase-to-supabase) repository:
-
-   ```bash
-   git clone https://github.com/supabase-community/firebase-to-supabase.git
-   ```
-
-2. In the `/firestore` directory, create a file named `supabase-service.json` with the following contents:
-
-   ```json
-   {
-     "host": "database.server.com",
-     "password": "secretpassword",
-     "user": "postgres",
-     "database": "postgres",
-     "port": 5432
-   }
-   ```
-
-3. On your project dashboard, click [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&method=session)
-
-4. Under the Session pooler, click on the View parameters under the connect string. Replace the `Host` and `User` fields with the values shown.
-
-5. Enter the password you used when you created your Supabase project in the `password` entry in the `supabase-service.json` file.
-
-## Generate a Firebase private key
-
-1. Sign in to your [Firebase Console](https://console.firebase.google.com/project) and open your project.
-2. Click the gear icon next to **Project Overview** in the sidebar and select **Project Settings**.
-3. Click **Service Accounts** and select **Firebase Admin SDK**.
-4. Click **Generate new private key**.
-5. Rename the downloaded file to `firebase-service.json`.
-
-## Command line options
-
-### List all Firestore collections
-
-`node collections.js`
-
-### Dump Firestore collection to JSON file
-
-`node firestore2json.js <collectionName> [<batchSize>] [<limit>]`
-
-- `batchSize` (optional) defaults to 1000
-- output filename is `<collectionName>.json`
-- `limit` (optional) defaults to 0 (no limit)
-
-#### Customize the JSON file with hooks
-
-You can customize the way your JSON file is written using a [custom hook](#custom-hooks). A common use for this is to "flatten" the JSON file, or to split nested data into separate, related database tables. For example, you could take a Firestore document that looks like this:
-
-```json Firestore
-[{ "user": "mark", "score": 100, "items": ["hammer", "nail", "glue"] }]
-```
-
-And split it into two files (one table for users and one table for items):
-
-```json Users
-[{ "user": "mark", "score": 100 }]
-```
-
-```json Items
-[
-  { "user": "mark", "item": "hammer" },
-  { "user": "mark", "item": "nail" },
-  { "user": "mark", "item": "glue" }
-]
-```
-
-### Import JSON file to Supabase (Postgres)
-
-`node json2supabase.js <path_to_json_file> [<primary_key_strategy>] [<primary_key_name>]`
-
-- `<path_to_json_file>` The full path of the file you created in the previous step (`Dump Firestore collection to JSON file `), such as `./my_collection.json`
-- `[<primary_key_strategy>]` (optional) Is one of:
-  - `none` (default) No primary key is added to the table.
-  - `smallserial` Creates a key using `(id SMALLSERIAL PRIMARY KEY)` (autoincrementing 2-byte integer).
-  - `serial` Creates a key using `(id SERIAL PRIMARY KEY)` (autoincrementing 4-byte integer).
-  - `bigserial` Creates a key using `(id BIGSERIAL PRIMARY KEY)` (autoincrementing 8-byte integer).
-  - `uuid` Creates a key using `(id UUID PRIMARY KEY DEFAULT gen_random_uuid())` (randomly generated UUID).
-  - `firestore_id` Creates a key using `(id TEXT PRIMARY KEY)` (uses existing `firestore_id` random text as key).
-- `[<primary_key_name>]` (optional) Name of primary key. Defaults to "id".
-
-## Custom hooks
-
-Hooks are used to customize the process of exporting a collection of Firestore documents to JSON. They can be used for:
-
-- Customizing or modifying keys
-- Calculating data
-- Flattening nested documents into related SQL tables
-
-### Write a custom hook
-
-#### Create a `.js` file for your collection
-
-If your Firestore collection is called `users`, create a file called `users.js` in the current folder.
-
-#### Construct your `.js` file
-
-The basic format of a hook file looks like this:
-
-```js
-module.exports = (collectionName, doc, recordCounters, writeRecord) => {
-  // modify the doc here
-  return doc
-}
-```
-
-##### Parameters
-
-- `collectionName`: The name of the collection you are processing.
-- `doc`: The current document (JSON object) being processed.
-- `recordCounters`: An internal object that keeps track of how many records have been processed in each collection.
-- `writeRecord`: This function automatically handles the process of writing data to other JSON files (useful for "flatting" your document into separate JSON files to be written to separate database tables). `writeRecord` takes the following parameters:
-  - `name`: Name of the JSON file to write to.
-  - `doc`: The document to write to the file.
-  - `recordCounters`: The same `recordCounters` object that was passed to this hook (passes it on).
-
-### Examples
-
-#### Add a new (unique) numeric key to a collection
-
-```js
-module.exports = (collectionName, doc, recordCounters, writeRecord) => {
-  doc.unique_key = recordCounter[collectionName] + 1
-  return doc
-}
-```
-
-#### Add a timestamp of when this record was dumped from Firestore
-
-```js
-module.exports = (collectionName, doc, recordCounters, writeRecord) => {
-  doc.dump_time = new Date().toISOString()
-  return doc
-}
-```
-
-#### Flatten JSON into separate files
-
-Flatten the `users` collection into separate files:
-
-```json
-[
-  {
-    "uid": "abc123",
-    "name": "mark",
-    "score": 100,
-    "weapons": ["toothpick", "needle", "rock"]
-  },
-  {
-    "uid": "xyz789",
-    "name": "chuck",
-    "score": 9999999,
-    "weapons": ["hand", "foot", "head"]
-  }
-]
-```
-
-The `users.js` hook file:
-
-```js
-module.exports = (collectionName, doc, recordCounters, writeRecord) => {
-  for (let i = 0; i < doc.weapons.length; i++) {
-    const weapon = {
-      uid: doc.uid,
-      weapon: doc.weapons[i],
-    }
-    writeRecord('weapons', weapon, recordCounters)
-  }
-  delete doc.weapons // moved to separate file
-  return doc
-}
-```
-
-The result is two separate JSON files:
-
-```json users.json
-[
-  { "uid": "abc123", "name": "mark", "score": 100 },
-  { "uid": "xyz789", "name": "chuck", "score": 9999999 }
-]
-```
-
-```json weapons.json
-[
-  { "uid": "abc123", "weapon": "toothpick" },
-  { "uid": "abc123", "weapon": "needle" },
-  { "uid": "abc123", "weapon": "rock" },
-  { "uid": "xyz789", "weapon": "hand" },
-  { "uid": "xyz789", "weapon": "foot" },
-  { "uid": "xyz789", "weapon": "head" }
-]
-```
-
-## Resources
-
-- [Supabase vs Firebase](https://supabase.com/alternatives/supabase-vs-firebase)
-- [Firestore Storage Migration](https://supabase.com/docs/guides/platform/migrating-to-supabase/firebase-storage)
-- [Firebase Auth Migration](https://supabase.com/docs/guides/platform/migrating-to-supabase/firebase-auth)
-
-## Migrate to Supabase
-
-[Contact us](https://forms.supabase.com/firebase-migration) if you need more help migrating your project.
-
-
----
-
-# Migrate from Heroku to Supabase
-
-Migrate your Heroku Postgres database to Supabase.
-
-Supabase is one of the best [free alternatives to Heroku Postgres](https://supabase.com/alternatives/supabase-vs-heroku-postgres). This guide shows how to migrate your Heroku Postgres database to Supabase. This migration requires the [pg\_dump](https://www.postgresql.org/docs/current/app-pgdump.html) and [psql](https://www.postgresql.org/docs/current/app-psql.html) CLI tools, which are installed automatically as part of the complete Postgres installation package.
-
-## Quick demo
-
-
-
-## Retrieve your Heroku database credentials
-
-1. Sign in to your [Heroku account](https://heroku.com) and select the project you want to migrate.
-2. Click **Resources** in the menu and select your **Heroku Postgres** database.
-3. Click **Settings** in the menu.
-4. Click **View Credentials** and save the following information:
-   - Host (`$HEROKU_HOST`)
-   - Database (`$HEROKU_DATABASE`)
-   - User (`$HEROKU_USER`)
-   - Password (`$HEROKU_PASSWORD`)
-
-## Retrieve your Supabase connection string
-
-1. If you're new to Supabase, [create a project](https://supabase.com/dashboard).
-2. Get your project's Session pooler connection string from your project dashboard by clicking [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&method=session).
-3. Replace \[YOUR-PASSWORD] in the connection string with your database password. You can reset your database password on the [Database Settings page](https://supabase.com/dashboard/project/_/database/settings) if you do not have it.
-
-## Export your Heroku database to a file
-
-Use `pg_dump` with your Heroku credentials to export your Heroku database to a file (e.g., `heroku_dump.sql`).
-
-```bash
-pg_dump --clean --if-exists --quote-all-identifiers \
- -h $HEROKU_HOST -U $HEROKU_USER -d $HEROKU_DATABASE \
- --no-owner --no-privileges > heroku_dump.sql
-```
-
-## Import the database to your Supabase project
-
-Use `psql` to import the Heroku database file to your Supabase project.
-
-```bash
-psql -d "$YOUR_CONNECTION_STRING" -f heroku_dump.sql
-```
-
-## Additional options
-
-- To only migrate a single database schema, add the `--schema=PATTERN` parameter to your `pg_dump` command.
-- To exclude a schema: `--exclude-schema=PATTERN`.
-- To only migrate a single table: `--table=PATTERN`.
-- To exclude a table: `--exclude-table=PATTERN`.
-
-Run `pg_dump --help` for a full list of options.
-
-Caution: - If you're planning to migrate a database larger than 6 GB, we recommend [upgrading to at least a Large compute add-on](https://supabase.com/docs/guides/platform/compute-and-disk). This will ensure you have the necessary resources to handle the migration efficiently.
-
-- We strongly advise you to pre-provision the disk space you will need for your migration. On paid projects, you can do this by navigating to the [Infrastructure settings](https://supabase.com/dashboard/project/_/settings/infrastructure) page. For more information on disk scaling and disk limits, check out our [disk settings](https://supabase.com/docs/guides/platform/compute-and-disk#disk) documentation.
-
-## Enterprise
-
-[Contact us](https://forms.supabase.com/enterprise) if you need more help migrating your project.
-
-
----
-
-# Migrate from MSSQL to Supabase
-
-Migrate your Microsoft SQL Server database to Supabase.
-
-This guide aims to demonstrate the process of transferring your Microsoft SQL Server database to Supabase's Postgres database. Supabase is a powerful and open-source platform offering a wide range of backend features, including a Postgres database, authentication, instant APIs, edge functions, real-time subscriptions, and storage. Migrating your MSSQL database to Supabase's Postgres enables you to leverage Postgres's capabilities and access all the features you need for your project.
-
-## Retrieve your MSSQL database credentials
-
-Before you begin the migration, you need to collect essential information about your MSSQL database. Follow these steps:
-
-1. Sign in to your MSSQL database provider.
-2. Locate and note the following database details:
-   - Hostname or IP address
-   - Database name
-   - Username
-   - Password
-
-## Retrieve your Supabase host
-
-1. If you're new to Supabase, [create a project](https://supabase.com/dashboard).
-   Make a note of your password, you will need this later. If you forget it, you can [reset it here](https://supabase.com/dashboard/project/_/database/settings).
-
-2. On your project dashboard, click [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&method=session)
-
-3. Under the Session pooler, click on the View parameters under the connect string. Note your Host (`$SUPABASE_HOST`).
-
-![Finding Supabase host address](/docs/img/guides/resources/migrating-to-supabase/mssql/database-settings-host.png)
-
-## Migrate the database
-
-The fastest way to migrate your database is with the Supabase migration tool on
-[Google Colab](https://colab.research.google.com/github/mansueli/Supa-Migrate/blob/main/Amazon_RDS_to_Supabase.ipynb).
-
-Alternatively, you can use [pgloader](https://github.com/dimitri/pgloader), a flexible and powerful data migration tool that supports a wide range of source database engines, including MySQL and MS SQL, and migrates the data to a Postgres database. For databases using the Postgres engine, we recommend using the [`pg_dump`](https://www.postgresql.org/docs/current/app-pgdump.html) and [psql](https://www.postgresql.org/docs/current/app-psql.html) command line tools, which are included in a full Postgres installation.
-
-**Migrate using Colab**
-
-1. Select the Database Engine from the Source database in the dropdown.
-2. Set the environment variables (`HOST`, `USER`, `SOURCE_DB`,`PASSWORD`, `SUPABASE_URL`, and `SUPABASE_PASSWORD`) in the Colab notebook.
-3. Run the first two steps in [the notebook](https://colab.research.google.com/github/mansueli/Supa-Migrate/blob/main/Amazon_RDS_to_Supabase.ipynb) in order. The first sets engine and installs the necessary files.
-4. Run the third step to start the migration. This will take a few minutes.
-
-**Migrate from MSSQL**
-
-1. Install pgloader.
-
-2. Create a configuration file (e.g., config.load).
-
-   For your destination, use your Supabase connection string with `Use connection pooling` enabled, and the mode set to `Session`. You can get the string from your [`Database Settings`](https://supabase.com/dashboard/project/_/settings/general).
-
-   ```sql
-   LOAD DATABASE
-       FROM mssql://USER:PASSWORD@HOST/SOURCE_DB
-       INTO postgres://postgres.xxxx:password@xxxx.pooler.supabase.com:5432/postgres
-   ALTER SCHEMA 'public' OWNER TO 'postgres';
-   set wal_buffers = '64MB', max_wal_senders = 0, statement_timeout = 0, work_mem to '2GB';
-   ```
-
-3. Run the migration with pgloader
-
-   ```bash
-   pgloader config.load
-   ```
-
-Caution: - If you're planning to migrate a database larger than 6 GB, we recommend [upgrading to at least a Large compute add-on](https://supabase.com/docs/guides/platform/compute-and-disk). This will ensure you have the necessary resources to handle the migration efficiently.
-
-- We strongly advise you to pre-provision the disk space you will need for your migration. On paid projects, you can do this by navigating to the [Infrastructure settings](https://supabase.com/dashboard/project/_/settings/infrastructure) page. For more information on disk scaling and disk limits, check out our [disk settings](https://supabase.com/docs/guides/platform/compute-and-disk#disk) documentation.
-
-## Enterprise
-
-[Contact us](https://forms.supabase.com/enterprise) if you need more help migrating your project.
-
-
----
-
-# Migrate from MySQL to Supabase
-
-Migrate your MySQL database to Supabase Postgres database.
-
-This guide aims to exhibit the process of transferring your MySQL database to Supabase's Postgres database. Supabase is a robust and open-source platform offering a wide range of backend features, including a Postgres database, authentication, instant APIs, edge functions, real-time subscriptions, and storage. Migrating your MySQL database to Supabase's Postgres enables you to leverage Postgres's capabilities and access all the features you need for your project.
-
-## Retrieve your MySQL database credentials
-
-Before you begin the migration, you need to collect essential information about your MySQL database. Follow these steps:
-
-1. Sign in to your MySQL database provider.
-
-2. Locate and note the following database details:
-   - Hostname or IP address
-   - Database name
-   - Username
-   - Password
-
-## Retrieve your Supabase host
-
-1. If you're new to Supabase, [create a project](https://supabase.com/dashboard).
-   Make a note of your password, you will need this later. If you forget it, you can [reset it here](https://supabase.com/dashboard/project/_/database/settings).
-
-2. On your project dashboard, click [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&method=session)
-
-3. Under the Session pooler, click on the View parameters under the connect string. Note your Host (`$SUPABASE_HOST`).
-
-![Finding Supabase host address](/docs/img/guides/resources/migrating-to-supabase/mysql/database-settings-host.png)
-
-## Migrate the database
-
-The fastest way to migrate your database is with the Supabase migration tool on
-[Google Colab](https://colab.research.google.com/github/mansueli/Supa-Migrate/blob/main/Amazon_RDS_to_Supabase.ipynb).
-
-Alternatively, you can use [pgloader](https://github.com/dimitri/pgloader), a flexible and powerful data migration tool that supports a wide range of source database engines, including MySQL and MS SQL, and migrates the data to a Postgres database. For databases using the Postgres engine, we recommend using the [`pg_dump`](https://www.postgresql.org/docs/current/app-pgdump.html) and [psql](https://www.postgresql.org/docs/current/app-psql.html) command line tools, which are included in a full Postgres installation.
-
-**Migrate using Colab**
-
-1. Select the Database Engine from the Source database in the dropdown
-2. Set the environment variables (`HOST`, `USER`, `SOURCE_DB`,`PASSWORD`, `SUPABASE_URL`, and `SUPABASE_PASSWORD`) in the Colab notebook.
-3. Run the first two steps in [the notebook](https://colab.research.google.com/github/mansueli/Supa-Migrate/blob/main/Amazon_RDS_to_Supabase.ipynb) in order. The first sets engine and installs the necessary files.
-4. Run the third step to start the migration. This will take a few minutes.
-
-**Migrate from MySQL with pgloader**
-
-1. Install pgloader.
-
-2. Create a configuration file (e.g., config.load).
-
-   For your destination, use your Supabase connection string with `Use connection pooling` enabled, and the mode set to `Session`. You can get the string from your [`Database Settings`](https://supabase.com/dashboard/project/_/settings/general).
-
-   ```sql
-   load database
-     from mysql://user:password@host/source_db
-     into postgres://postgres.xxxx:password@xxxx.pooler.supabase.com:5432/postgres
-   alter schema 'public' owner to 'postgres';
-   set wal_buffers = '64MB', max_wal_senders = 0, statement_timeout = 0, work_mem to '2GB';
-   ```
-
-3. Run the migration with pgloader
-
-   ```bash
-   pgloader config.load
-   ```
-
-Caution: - If you're planning to migrate a database larger than 6 GB, we recommend [upgrading to at least a Large compute add-on](https://supabase.com/docs/guides/platform/compute-and-disk). This will ensure you have the necessary resources to handle the migration efficiently.
-
-- We strongly advise you to pre-provision the disk space you will need for your migration. On paid projects, you can do this by navigating to the [Infrastructure settings](https://supabase.com/dashboard/project/_/settings/infrastructure) page. For more information on disk scaling and disk limits, check out our [disk settings](https://supabase.com/docs/guides/platform/compute-and-disk#disk) documentation.
-
-## Enterprise
-
-[Contact us](https://forms.supabase.com/enterprise) if you need more help migrating your project.
-
-
----
-
-# Migrate from Neon to Supabase
-
-Migrate your existing Neon database to Supabase.
-
-This guide demonstrates how to migrate your Neon database to Supabase to get the most out of Postgres while gaining access to all the features you need to build a project.
-
-## Retrieve your Neon database credentials
-
-1. Sign in to your Neon Console [https://console.neon.tech/login](https://console.neon.tech/login).
-2. Select **Projects** on the left.
-3. Click on your project in the list.
-4. From your Project Dashboard find your **Connection string** and click **Copy snippet** to copy it to the clipboard (do not check "pooled connection").
-
-Example:
-
-```bash
-postgresql://neondb_owner:xxxxxxxxxxxxxxx-random-word-yyyyyyyy.us-west-2.aws.neon.tech/neondb?sslmode=require
-```
-
-## Set your `OLD_DB_URL` environment variable
-
-Set the **OLD\_DB\_URL** environment variable at the command line using your Neon database credentials from the clipboard.
-
-Example:
-
-```bash
-export OLD_DB_URL="postgresql://neondb_owner:xxxxxxxxxxxxxxx-random-word-yyyyyyyy.us-west-2.aws.neon.tech/neondb?sslmode=require"
-```
-
-## Retrieve your Supabase connection string
-
-1. If you're new to Supabase, [create a project](https://supabase.com/dashboard).
-   Make a note of your password, you will need this later. If you forget it, you can [reset it here](https://supabase.com/dashboard/project/_/database/settings).
-
-2. On your project dashboard, click [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&method=session)
-
-3. Under the Session pooler, click the **Copy** button to the right of your connection string to copy it to the clipboard.
-
-## Set your `NEW_DB_URL` environment variable
-
-Set the **NEW\_DB\_URL** environment variable at the command line using your Supabase connection string. You will need to replace `[YOUR-PASSWORD]` with your actual database password.
-
-Example:
-
-```bash
-export NEW_DB_URL="postgresql://postgres.xxxxxxxxxxxxxxxxxxxx:[YOUR-PASSWORD]@aws-0-us-west-1.pooler.supabase.com:5432/postgres"
-```
-
-## Migrate the database
-
-You will need the [pg\_dump](https://www.postgresql.org/docs/current/app-pgdump.html) and [psql](https://www.postgresql.org/docs/current/app-psql.html) command line tools, which are included in a full [Postgres installation](https://www.postgresql.org/download).
-
-1. Export your database to a file in console
-
-   Use `pg_dump` with your Postgres credentials to export your database to a file (e.g., `dump.sql`).
-
-```bash
-pg_dump "$OLD_DB_URL" \
-  --clean \
-  --if-exists \
-  --quote-all-identifiers \
-  --no-owner \
-  --no-privileges \
-  > dump.sql
-```
-
-2. Import the database to your Supabase project
-
-   Use `psql` to import the Postgres database file to your Supabase project.
-
-   ```bash
-   psql -d "$NEW_DB_URL" -f dump.sql
-   ```
-
-Additional options
-
-- To only migrate a single database schema, add the `--schema=PATTERN` parameter to your `pg_dump` command.
-- To exclude a schema: `--exclude-schema=PATTERN`.
-- To only migrate a single table: `--table=PATTERN`.
-- To exclude a table: `--exclude-table=PATTERN`.
-
-Run `pg_dump --help` for a full list of options.
-
-Caution: - If you're planning to migrate a database larger than 6 GB, we recommend [upgrading to at least a Large compute add-on](https://supabase.com/docs/guides/platform/compute-and-disk). This will ensure you have the necessary resources to handle the migration efficiently.
-
-- We strongly advise you to pre-provision the disk space you will need for your migration. On paid projects, you can do this by navigating to the [Infrastructure settings](https://supabase.com/dashboard/project/_/settings/infrastructure) page. For more information on disk scaling and disk limits, check out our [disk settings](https://supabase.com/docs/guides/platform/compute-and-disk#disk) documentation.
-
-## Enterprise
-
-[Contact us](https://forms.supabase.com/enterprise) if you need more help migrating your project.
-
-
----
-
-# Migrate from Postgres to Supabase
-
-Migrate your existing Postgres database to Supabase.
-
-This is a guide for migrating your Postgres database to [Supabase](https://supabase.com).
-Supabase is a robust and open-source platform. Supabase provides all the backend features developers need to build a product: a Postgres database, authentication, instant APIs, edge functions, real-time subscriptions, and storage. Postgres is the core of Supabase—for example, you can use row-level security, and there are more than 40 Postgres extensions available.
-
-This guide demonstrates how to migrate your Postgres database to Supabase to get the most out of Postgres while gaining access to all the features you need to build a project.
-
-This guide provides three methods for migrating your Postgres database to Supabase:
-
-1. **Google Colab** - Guided notebook with copy-paste workflow
-2. **Manual Dump/Restore** - CLI approach, works for all versions
-3. **Logical Replication** - Minimal downtime, requires Postgres 10+
-
-## Connection modes
-
-Supabase provides the following connection modes:
-
-- Direct connection
-- Supavisor session mode
-- Supavisor transaction mode
-
-Use Supavisor session mode for the database migration tasks (pg\_dump/restore and logical replication).
-
-## Method 1: Google Colab (easiest)
-
-Supabase provides a Google Colab migration notebook for a guided migration experience:
-[Supabase Migration Colab Notebook](https://colab.research.google.com/github/mansueli/Supa-Migrate/blob/main/Migrate_Postgres_Supabase.ipynb)
-
-This is ideal if you prefer a step-by-step, copy-paste workflow with minimal setup.
-
-## Method 2: Manual dump/restore
-
-This method works for all Postgres versions using CLI tools.
-
-### Prerequisites
-
-#### Source Postgres requirements
-
-- Connection string with rights to run `pg_dump`
-- No special settings required for dump/restore
-- Network access from migration VM
-
-#### Migration environment
-
-- Cloud VM running Ubuntu in the same region as source or target database
-- Postgres client tools matching your source database version
-- tmux for session persistence
-- Sufficient disk space (usually \~50% of source database size is enough, but varies case by case)
-
-### Pre-Migration checklist
-
-```sql
--- Check database size
-select pg_size_pretty(pg_database_size(current_database())) as size;
-
--- Check Postgres version
-select version();
-
--- List installed extensions
-select * from pg_extension order by extname;
-
--- Check active connections
-select count(*) from pg_stat_activity;
-```
-
-#### Check available extensions in Supabase
-
-```sql
--- Connect to your Supabase database and check available extensions
-SELECT name, comment FROM pg_available_extensions ORDER BY name;
-
--- Compare with source database extensions
-SELECT extname FROM pg_extension ORDER BY extname;
-
--- Install needed extensions
-CREATE EXTENSION IF NOT EXISTS extension_name;
-```
-
-### Step 1: Set up migration VM
-
-Note: For optimal performance, run the migration from a cloud VM, not your local machine. The VM should be in the same region as either your source or target database to optimize network performance. See the Resource Requirements table in Step 2 for VM sizing recommendations.
-
-#### Set up Ubuntu VM
-
-```bash
-# Install Postgres client and tools
-sudo apt update
-sudo apt install software-properties-common
-sudo sh -c 'echo "deb http://apt.Postgres.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
-wget --quiet -O - https://www.Postgres.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-sudo apt update
-sudo apt install Postgres-client-17 tmux htop iotop moreutils
-
-# Start or attach to tmux session
-tmux a -t migration || tmux new -s migration
-```
-
-### Step 2: Prepare Supabase project
-
-1. Create a Supabase project at [supabase.com/dashboard](https://supabase.com/dashboard)
-2. Note your database password
-3. Install required extensions via SQL or Dashboard
-4. Get your connection string:
-   - Go to **Project → Settings → Database → Connection Pooling**
-   - Select **Session pooler** (port 5432) and copy the connection string
-   - Connection format: `Postgres://postgres.[ref]:[password]@aws-0-[region].pooler.supabase.com:5432/postgres`
-
-**Important Notes**:
-
-- **Users/roles are not migrated** - You'll need to recreate roles and privileges after import ([Supabase Roles Guide](https://supabase.com/blog/postgres-roles-and-privileges))
-- **Row Level Security (RLS) status on tables is not migrated** - You'll need to enable RLS for tables after migration.
-
-**Resource Requirements**:
-
-| Database Size | Recommended Compute | Recommended Migration VM  | Action Required                                                     |
-| ------------- | ------------------- | ------------------------- | ------------------------------------------------------------------- |
-| \< 10 GB      | Default             | 2 vCPUs, 4 GB RAM         | None                                                                |
-| 10-100 GB     | Default-Small       | 4 vCPUs, 8 GB RAM         | Consider compute upgrade                                            |
-| 100-500 GB    | Large compute       | 8 vCPUs, 16 GB RAM, NVMe  | Upgrade compute before restore                                      |
-| 500 GB - 1 TB | XL compute          | 16 vCPUs, 32 GB RAM, NVMe | Upgrade compute before restore                                      |
-| > 1 TB        | Custom              | Custom                    | [Contact support](https://supabase.com/dashboard/support/new) first |
-
-Also, you can temporarily increase compute size and/or disk IOPS and throughput via Settings → Compute and Disk if you want faster database restore (you can use larger -j for pg\_restore if you do so).
-
-### Step 3: Create database dump
-
-#### Set source database to read only mode for production migration
-
-If doing a maintenance window migration, prevent data changes:
-
-```sql
--- Connect to source database and run:
-ALTER DATABASE your_database_name SET default_transaction_read_only = true;
-```
-
-For testing without a maintenance window, skip this step but use lower -j values.
-
-#### Dump the database
-
-```bash
-# Determine number of parallel jobs based on:
-# - Source database CPU cores (don't saturate production)
-# - VM CPU cores
-# - For testing without maintenance window: use lower values to be gentle
-# - For production with maintenance window: can use higher values
-
-DUMP_JOBS=4  # Adjust based on your setup
-
-# Check available cores on VM
-nproc
-
-# Create dump with progress logging
-pg_dump \
-  --host=<source_host> \
-  --port=<source_port> \
-  --username=<source_username> \
-  --dbname=<source_database> \
-  --jobs=$DUMP_JOBS \
-  --format=directory \
-  --no-owner \
-  --no-privileges \
-  --no-subscriptions \
-  --verbose \
-  --file=./db_dump 2>&1 | ts | tee -a dump.log
-```
-
-**Notes about dump flags**:
-
-- `--no-owner --no-privileges`: Applied at dump time to prevent Supabase user management conflicts. While these could be used in pg\_restore instead, applying them during dump keeps the dump file cleaner and more portable.
-- `--no-subscriptions`: Logical replication subscriptions won't work in the target
-- The dump captures all data and schema but excludes ownership/privileges that would conflict with Supabase's managed environment
-- To only migrate a single database schema, add the `--schema=PATTERN` parameter to your `pg_dump` command.
-- To exclude a schema: `--exclude-schema=PATTERN`.
-- To only migrate a single table: `--table=PATTERN`.
-- To exclude a table: `--exclude-table=PATTERN`.
-
-Run `pg_dump --help` for a full list of options.
-
-#### Recommended parallelization (-j values)
-
-| Database Size | Testing (no maintenance window) | Production (with maintenance window) | Limiting Factor |
-| ------------- | ------------------------------- | ------------------------------------ | --------------- |
-| \< 10 GB      | 2                               | 4                                    | Source CPU      |
-| 10-100 GB     | 2-4                             | 8                                    | Source CPU      |
-| 100-500 GB    | 4                               | 16                                   | Disk IOPS       |
-| 500 GB - 1 TB | 4-8                             | 16-32                                | Disk IOPS + CPU |
-
-**Note**: For testing without a maintenance window, use lower -j values to avoid impacting production performance.
-
-### Step 4: Restore to Supabase
-
-#### Set connection and restore
-
-```bash
-# Set Supabase connection (Session Pooler on port 5432 or direct connection)
-export SUPABASE_DB_URL="Postgres://postgres.[ref]:[password]@aws-0-[region].pooler.supabase.com:5432/postgres"
-
-# Determine restore parallelization based on your Supabase compute size:
-# Micro–Medium (shared compute): use -j 2
-# Large: 2 vCPUs → use -j 2
-# XL: 4 vCPUs → use -j 4
-# 2XL: 8 vCPUs → use -j 8
-# 4XL: 16 vCPUs → use -j 16
-# (larger sizes: match -j to the vCPU count shown on the pricing page)
-
-RESTORE_JOBS=2  # Conservative starting point — adjust for your compute size and monitor CPU and disk IO
-
-# Restore the dump (parallel mode)
-# Note: -j cannot be used with --single-transaction
-pg_restore \
-  --dbname="$SUPABASE_DB_URL" \
-  --jobs=$RESTORE_JOBS \
-  --format=directory \
-  --no-owner \
-  --no-privileges \
-  --verbose \
-  ./db_dump 2>&1 | ts | tee -a restore.log
-```
-
-If restore fails with extension errors, check that errors are only extension-related.
-
-### Step 5: Post-Migration tasks
-
-#### Update statistics (important)
-
-```bash
-psql "$SUPABASE_DB_URL" -c "VACUUM VERBOSE ANALYZE;"
-```
-
-Note: For Postgres 18+, pg\_dump includes statistics with `--with-statistics`, but you should still run VACUUM for optimal performance.
-
-#### Verify migration
-
-```sql
--- Check row counts
-select schemaname, tablename, n_live_tup
-from pg_stat_user_tables
-order by n_live_tup desc
-limit 20;
--- Verify data with application-specific queries
-```
-
-#### Re-enable writes on source (if keeping it)
-
-```sql
-ALTER DATABASE your_database_name SET default_transaction_read_only = false;
-```
-
-### Migration time estimates
-
-| Database Size | Dump Time | Restore Time | Total Time  |
-| ------------- | --------- | ------------ | ----------- |
-| 10 GB         | \~5 min   | \~10 min     | \~15 min    |
-| 100 GB        | \~30 min  | \~45 min     | \~1.5 hours |
-| 500 GB        | \~2 hours | \~3 hours    | \~5 hours   |
-| 1 TB          | \~4 hours | \~6 hours    | \~10 hours  |
-
-*Times vary based on hardware, network, and parallelization settings*
-
-### Important notes
-
-1. **Region proximity matters**: VM should be in the same region as the source or target for best performance
-2. **Downgrade migrations**: While technically possible in some cases, highly not recommended
-3. **Testing without downtime**: Use lower `-j` values for pg\_dump to avoid impacting production
-4. **For pg\_restore**: Can use full parallelization regardless of production impact
-5. **Monitor resources**: Watch CPU, disk I/O with `htop`, `iotop`
-6. **Disk I/O**: Often the bottleneck before network bandwidth
-
-***
-
-## Method 3: Logical replication
-
-This method allows migration with minimal downtime using Postgres's logical replication feature. Requires Postgres 10+ on both source and target.
-
-### When to use logical replication
-
-- You need minimal downtime (minutes instead of hours)
-- Source database is Postgres 10 or higher
-- You can configure logical replication on the source
-- Database has high write activity that can't be paused for long
-
-### Source Postgres prerequisites
-
-#### Access & privileges
-
-- Connection string with rights to CREATE PUBLICATION and read tables
-- Superuser or replication privileges recommended
-
-#### Required settings for logical replication
-
-- `wal_level = logical`
-- `max_wal_senders ≥ 1`
-- `max_replication_slots ≥ 1`
-- Sufficient `max_connections` (current + 1 for subscription)
-
-#### Replica identity
-
-Every table receiving UPDATE/DELETE must have a replica identity (typically a PRIMARY KEY). For tables without one:
-
-```sql
-ALTER TABLE schema.table_name REPLICA IDENTITY FULL;
-```
-
-#### Non-Replicated items
-
-- **DDL changes** (schema modifications)
-- **Sequences** (need manual sync)
-- **Large Objects (LOBs)** (use dump/restore or store in regular bytea columns)
-
-Plan a schema freeze, sequence sync before cutover, and handle LOBs separately.
-
-### Step 1: Configure source database
-
-Edit Postgres configuration files:
-
-#### Postgres.conf
-
-```bash
-# Set Supabase connection (Session Pooler on port 5432 or direct connection)
-export SUPABASE_DB_URL="Postgres://postgres.[ref]:[password]@aws-0-[region].pooler.supabase.com:5432/postgres"
-
-# Set WAL level to logical
-wal_level = logical
-
-# Ensure sufficient replication slots
-max_replication_slots = 10
-
-# Ensure sufficient WAL senders
-max_wal_senders = 10
-
-# Set appropriate max_connections (current connections + 1 for subscription)
-max_connections = 200  # Adjust based on your needs
-
-# Optional: Enable SSL for secure replication
-ssl = on
-
-# Allow connections from Supabase
-listen_addresses = '*'  # Or specific IP addresses
-```
-
-#### pg\_hba.conf
-
-```bash
-# Allow replication connections from Supabase
-# Replace <supabase_ip_range> with actual Supabase IP range
-host    replication     all     <supabase_ip_range>    md5
-host    all            all     <supabase_ip_range>    md5
-
-# With SSL:
-hostssl replication     all     <supabase_ip_range>    md5
-hostssl all            all     <supabase_ip_range>    md5
-```
-
-Restart Postgres:
-
-```bash
-sudo systemctl restart Postgres
-sudo systemctl status Postgres
-```
-
-### Step 2: Verify configuration
-
-```sql
--- Should return 'logical'
-SHOW wal_level;
-
--- Check other parameters
-SHOW max_replication_slots;
-SHOW max_wal_senders;
-
--- Check current connections
-SELECT count(*) FROM pg_stat_activity;
-```
-
-### Step 3: Check and set replica identity
-
-```sql
--- Find tables without primary keys
-SELECT n.nspname, c.relname
-FROM pg_class c
-JOIN pg_namespace n ON n.oid = c.relnamespace
-LEFT JOIN pg_constraint pk ON pk.conrelid = c.oid AND pk.contype = 'p'
-WHERE c.relkind = 'r'
-  AND pk.oid IS NULL
-  AND n.nspname NOT IN ('pg_catalog','information_schema');
-
--- For tables without a primary key, set REPLICA IDENTITY FULL
-ALTER TABLE my_schema.my_table REPLICA IDENTITY FULL;
-```
-
-### Step 4: Export and restore schema only
-
-```bash
-# Export schema from source
-pg_dump \
-  -h <source_host> \
-  -U <source_user> \
-  -p <source_port> \
-  -d <source_database> \
-  --schema-only \
-  --no-privileges \
-  --no-subscriptions \
-  --format=directory \
-  -f ./schema_dump
-
-# Restore schema to Supabase (use Session Pooler)
-pg_restore \
-  --dbname="$SUPABASE_DB_URL" \
-  --format=directory \
-  --schema-only \
-  --no-privileges \
-  --single-transaction \
-  --verbose \
-  ./schema_dump
-```
-
-### Step 5: Create publication on source
-
-```sql
--- Create publication for all tables
-CREATE PUBLICATION supabase_migration FOR ALL TABLES;
-
--- Or for specific tables only (doesn't require superuser)
-CREATE PUBLICATION supabase_migration FOR TABLE
-  schema1.table1,
-  schema1.table2,
-  public.table3;
-
--- Verify publication was created
-SELECT * FROM pg_publication;
-```
-
-### Step 6: Create subscription on Supabase
-
-Connect to your Supabase database:
-
-```sql
--- Create subscription with SSL (recommended)
-CREATE SUBSCRIPTION supabase_subscription
-CONNECTION 'host=<source_host> port=<source_port> user=<source_user> password=<source_password> dbname=<source_database> sslmode=require'
-PUBLICATION supabase_migration;
-
--- Or without SSL (if source doesn't support it)
-CREATE SUBSCRIPTION supabase_subscription
-CONNECTION 'host=<source_host> port=<source_port> user=<source_user> password=<source_password> dbname=<source_database> sslmode=disable'
-PUBLICATION supabase_migration;
-```
-
-### Step 7: Monitor replication status
-
-```sql
--- On Supabase (subscriber) - check subscription status
-select * from pg_subscription_rel;
-
--- srsubstate = 'r' means ready (synchronized)
--- srsubstate = 'i' means initializing
--- srsubstate = 'd' means data is being copied
-
--- Overall subscription status
-select * from pg_stat_subscription;
-
--- On source database - check replication status
-select * from pg_stat_replication;
-
--- Check replication lag
-select
-  slot_name,
-  pg_size_pretty(pg_wal_lsn_diff(pg_current_wal_lsn(), restart_lsn)) as lag_size
-from pg_replication_slots;
-```
-
-Wait until all tables show `srsubstate = 'r'` (ready) status.
-
-### Step 8: Synchronize sequences
-
-After initial data sync is complete, but BEFORE switching to Supabase:
-
-```bash
-# Set source to read-only
-psql -h <source_host> -c "ALTER DATABASE <source_database> SET default_transaction_read_only = true;"
-
-# Export sequences from source
-pg_dump \
-  -h <source_host> \
-  -U <source_user> \
-  -p <source_port> \
-  -d <source_database> \
-  --data-only \
-  --table='*_seq' \
-  --table='*_id_seq' > sequences.sql
-
-# Import sequences to Supabase
-psql "$SUPABASE_DB_URL" -f sequences.sql
-```
-
-### Step 9: Switch to Supabase
-
-1. Ensure replication lag is zero:
-
-```sql
--- On Supabase
-select * from pg_stat_subscription;
--- Check that latest_end_lsn is current
-```
-
-2. Stop writes to the source database (if not already read-only)
-
-3. Drop subscription on Supabase:
-
-```sql
-DROP SUBSCRIPTION supabase_subscription;
-```
-
-4. Update application connection strings to point to Supabase
-
-5. Verify application functionality
-
-### Step 10: Cleanup
-
-On source database (after successful migration):
-
-```sql
--- Remove publication
-DROP PUBLICATION supabase_migration;
-
--- Check and remove any remaining replication slots
-SELECT * FROM pg_replication_slots;
-DROP REPLICATION SLOT slot_name;  -- if any remain
-
--- The source database should remain read-only or be decommissioned
--- Do NOT re-enable writes to avoid a split-brain scenario!
-```
-
-### Troubleshooting logical replication
-
-| Issue                                | Solution                                                            |
-| ------------------------------------ | ------------------------------------------------------------------- |
-| "could not connect to the publisher" | Check network connectivity, firewall rules, pg\_hba.conf            |
-| "role does not exist"                | Ensure replication user exists on source with REPLICATION privilege |
-| "publication does not exist"         | Verify publication name and that it was created successfully        |
-| Replication lag growing              | Check network bandwidth, source database load, add more WAL senders |
-| Tables stuck in `i` state            | Check for locks on source tables, verify table structure matches    |
-| "out of replication slots"           | Increase max\_replication\_slots in Postgres.conf                   |
-
-### Important limitations
-
-- **DDL changes**: Schema modifications are not replicated - freeze schema during migration
-- **Sequences**: Need manual synchronization before cutover
-- **Large Objects (LOBs)**: Not replicated - use dump/restore or store in regular bytea columns
-- **Custom types**: May need special handling
-- **Users and roles**: Must be recreated manually on Supabase
-
-For detailed restrictions, see [Postgres Logical Replication Restrictions](https://www.Postgres.org/docs/current/logical-replication-restrictions.html)
-
-### When to use which method
-
-**Use Dump/Restore when:**
-
-- Downtime window is acceptable
-- Source is Postgres \< 10
-- Simpler process preferred
-- Cannot configure logical replication on the source
-
-**Use Logical Replication when:**
-
-- Minimal downtime required
-- Postgres 10+ on both sides
-- Can modify source configuration
-- Have replication privileges
-
-## Getting help
-
-- For databases > 150 GB: [Contact Supabase support](https://supabase.com/dashboard/support/new) before starting
-- [Supabase Dashboard Support](https://supabase.com/dashboard/support/new)
-- [Supabase Discord](https://discord.supabase.com)
-- [Postgres Roles and Privileges Guide](https://supabase.com/blog/postgres-roles-and-privileges)
-- [Row Level Security Guide](https://supabase.com/docs/guides/database/postgres/row-level-security)
-
-
----
-
-# Migrate from Render to Supabase
-
-Migrate your Render Postgres database to Supabase.
-
-Render is a popular Web Hosting service in the online services category that also has a managed Postgres service. Render has a great developer experience, allowing users to deploy straight from GitHub or GitLab. This is the core of their product and they do it really well. However, when it comes to Postgres databases, it may not be the best option.
-
-Supabase is one of the best free alternative to Render Postgres. Supabase provide all the backend features developers need to build a product: a Postgres database, authentication, instant APIs, edge functions, realtime subscriptions, and storage. Postgres is the core of Supabase—for example, you can use row-level security and there are more than 40 Postgres extensions available.
-
-This guide demonstrates how to migrate from Render to Supabase to get the most out of Postgres while gaining access to all the features you need to build a project.
-
-## Retrieve your Render database credentials
-
-1. Sign in to your [Render account](https://render.com) and select the project you want to migrate.
-2. Click **Dashboard** in the menu and click in your **Postgres** database.
-3. Scroll down in the **Info** tab.
-4. Click on **PSQL Command** and edit it adding the content after `PSQL_COMMAND=`.
-
-![Copying PSQL command from Render dashboard](/docs/img/guides/resources/migrating-to-supabase/render/render_dashboard.png)
-Example:
-
-```bash
-%env PSQL_COMMAND=PGPASSWORD=RgaMDfTS_password_FTPa7 psql -h dpg-a_server_in.oregon-postgres.render.com -U my_db_pxl0_user my_db_pxl0
-```
-
-## Retrieve your Supabase connection string
-
-1. If you're new to Supabase, [create a project](https://supabase.com/dashboard).
-   Make a note of your password, you will need this later. If you forget it, you can [reset it here](https://supabase.com/dashboard/project/_/database/settings).
-
-2. On your project dashboard, click [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&method=session)
-
-3. Under Session pooler, Copy the connection string and replace the password placeholder with your database password.
-
-   Note: If you're in an [IPv6 environment](https://github.com/orgs/supabase/discussions/27034) or have the IPv4 Add-On, you can use the direct connection string instead of Supavisor in Session mode.
-
-## Migrate the database
-
-The fastest way to migrate your database is with the Supabase migration tool on [Google Colab](https://colab.research.google.com/github/mansueli/Supa-Migrate/blob/main/Migrate_Postgres_Supabase.ipynb). Alternatively, you can use the [pg\_dump](https://www.postgresql.org/docs/current/app-pgdump.html) and [psql](https://www.postgresql.org/docs/current/app-psql.html) command line tools, which are included in a full Postgres installation.
-
-**Migrate using Colab**
-
-1. Set the environment variables (`PSQL_COMMAND`, `SUPABASE_HOST`, `SUPABASE_PASSWORD`) in the Colab notebook.
-2. Run the first two steps in [the notebook](https://colab.research.google.com/github/mansueli/Supa-Migrate/blob/main/Migrate_Postgres_Supabase.ipynb) in order. The first sets the variables and the second installs PSQL and the migration script.
-3. Run the third step to start the migration. This will take a few minutes.
-
-**Migrate using CLI tools**
-
-1. Export your Render database to a file in console
-
-   Use `pg_dump` with your Render credentials to export your Render database to a file (e.g., `render_dump.sql`).
-
-   ```bash
-   pg_dump --clean --if-exists --quote-all-identifiers \
-   -h $RENDER_HOST -U $RENDER_USER -d $RENDER_DATABASE \
-   --no-owner --no-privileges > render_dump.sql
-   ```
-
-2. Import the database to your Supabase project
-
-   Use `psql` to import the Render database file to your Supabase project.
-
-   ```bash
-   psql -d "$YOUR_CONNECTION_STRING" -f render_dump.sql
-   ```
-
-Additional options
-
-- To only migrate a single database schema, add the `--schema=PATTERN` parameter to your `pg_dump` command.
-- To exclude a schema: `--exclude-schema=PATTERN`.
-- To only migrate a single table: `--table=PATTERN`.
-- To exclude a table: `--exclude-table=PATTERN`.
-
-Run `pg_dump --help` for a full list of options.
-
-Caution: - If you're planning to migrate a database larger than 6 GB, we recommend [upgrading to at least a Large compute add-on](https://supabase.com/docs/guides/platform/compute-and-disk). This will ensure you have the necessary resources to handle the migration efficiently.
-
-- We strongly advise you to pre-provision the disk space you will need for your migration. On paid projects, you can do this by navigating to the [Infrastructure settings](https://supabase.com/dashboard/project/_/settings/infrastructure) page. For more information on disk scaling and disk limits, check out our [disk settings](https://supabase.com/docs/guides/platform/compute-and-disk#disk) documentation.
-
-## Enterprise
-
-[Contact us](https://forms.supabase.com/enterprise) if you need more help migrating your project.
-
-
----
-
-# Migrate from Vercel Postgres to Supabase
-
-Migrate your existing Vercel Postgres database to Supabase.
-
-This guide demonstrates how to migrate your Vercel Postgres database to Supabase to get the most out of Postgres while gaining access to all the features you need to build a project.
-
-## Retrieve your Vercel Postgres database credentials
-
-1. Sign in to your Vercel Dashboard [https://vercel.com/login](https://vercel.com/login).
-2. Click on the **Storage** tab.
-3. Click on your Postgres Database.
-4. Under the **Quickstart** section, select **psql** then click **Show Secret** to reveal your database password.
-5. Copy the string after `psql ` to the clipboard.
-
-Example:
-
-```bash
-psql "postgres://default:xxxxxxxxxxxx@yy-yyyyy-yyyyyy-yyyyyyy.us-west-2.aws.neon.tech:5432/verceldb?sslmode=require"
-```
-
-Copy this part to your clipboard:
-
-```bash
-"postgres://default:xxxxxxxxxxxx@yy-yyyyy-yyyyyy-yyyyyyy.us-west-2.aws.neon.tech:5432/verceldb?sslmode=require"
-```
-
-## Set your `OLD_DB_URL` environment variable
-
-Set the **OLD\_DB\_URL** environment variable at the command line using your Vercel Postgres Database credentials.
-
-Example:
-
-```bash
-export OLD_DB_URL="postgres://default:xxxxxxxxxxxx@yy-yyyyy-yyyyyy-yyyyyyy.us-west-2.aws.neon.tech:5432/verceldb?sslmode=require"
-```
-
-## Retrieve your Supabase connection string
-
-1. If you're new to Supabase, [create a project](https://supabase.com/dashboard).
-   Make a note of your password, you will need this later. If you forget it, you can [reset it here](https://supabase.com/dashboard/project/_/database/settings).
-
-2. On your project dashboard, click [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&method=session)
-
-3. Under the Session pooler, click the **Copy** button to the right of your connection string to copy it to the clipboard.
-
-## Set your `NEW_DB_URL` environment variable
-
-Set the **NEW\_DB\_URL** environment variable at the command line using your Supabase connection string. You will need to replace `[YOUR-PASSWORD]` with your actual database password.
-
-Example:
-
-```bash
-export NEW_DB_URL="postgresql://postgres.xxxxxxxxxxxxxxxxxxxx:[YOUR-PASSWORD]@aws-0-us-west-1.pooler.supabase.com:5432/postgres"
-```
-
-## Migrate the database
-
-You will need the [pg\_dump](https://www.postgresql.org/docs/current/app-pgdump.html) and [psql](https://www.postgresql.org/docs/current/app-psql.html) command line tools, which are included in a full [Postgres installation](https://www.postgresql.org/download).
-
-1. Export your database to a file in console
-
-   Use `pg_dump` with your Postgres credentials to export your database to a file (e.g., `dump.sql`).
-
-```bash
-pg_dump "$OLD_DB_URL" \
-  --clean \
-  --if-exists \
-  --quote-all-identifiers \
-  --no-owner \
-  --no-privileges \
-  > dump.sql
-```
-
-2. Import the database to your Supabase project
-
-   Use `psql` to import the Postgres database file to your Supabase project.
-
-   ```bash
-   psql -d "$NEW_DB_URL" -f dump.sql
-   ```
-
-Additional options
-
-- To only migrate a single database schema, add the `--schema=PATTERN` parameter to your `pg_dump` command.
-- To exclude a schema: `--exclude-schema=PATTERN`.
-- To only migrate a single table: `--table=PATTERN`.
-- To exclude a table: `--exclude-table=PATTERN`.
-
-Run `pg_dump --help` for a full list of options.
-
-Caution: - If you're planning to migrate a database larger than 6 GB, we recommend [upgrading to at least a Large compute add-on](https://supabase.com/docs/guides/platform/compute-and-disk). This will ensure you have the necessary resources to handle the migration efficiently.
-
-- We strongly advise you to pre-provision the disk space you will need for your migration. On paid projects, you can do this by navigating to the [Infrastructure settings](https://supabase.com/dashboard/project/_/settings/infrastructure) page. For more information on disk scaling and disk limits, check out our [disk settings](https://supabase.com/docs/guides/platform/compute-and-disk#disk) documentation.
-
-## Enterprise
-
-[Contact us](https://forms.supabase.com/enterprise) if you need more help migrating your project.
-
-
----
-
 # Migrating within Supabase
 
 Learn how to migrate from one Supabase project to another
@@ -115435,7 +114119,8 @@ Each permission controls read or read-write access to one resource, for example 
 | **Database**                     |                 |                                                                                                                                         |
 | Backups                          | Read            | [Get backup schedule](https://supabase.com/docs/reference/api/v1-get-backup-schedule)                                                   |
 |                                  |                 | [List all backups](https://supabase.com/docs/reference/api/v1-list-all-backups)                                                         |
-|                                  | Read-write      | [Restore PITR backup](https://supabase.com/docs/reference/api/v1-restore-pitr-backup)                                                   |
+|                                  | Read-write      | [Download project backup](https://supabase.com/docs/reference/api/v2-download-project-backup)                                           |
+|                                  |                 | [Restore PITR backup](https://supabase.com/docs/reference/api/v1-restore-pitr-backup)                                                   |
 |                                  |                 | [Update backup schedule](https://supabase.com/docs/reference/api/v1-update-backup-schedule)                                             |
 | Database                         | Read            | [Generate typescript types](https://supabase.com/docs/reference/api/v1-generate-typescript-types)                                       |
 |                                  |                 | [Get database metadata](https://supabase.com/docs/reference/api/v1-get-database-metadata)                                               |
@@ -129052,16 +127737,18 @@ Resources for getting started building with Supabase.
 
 ### Migrate to Supabase
 
-- **[Auth0](https://supabase.com/docs/guides/platform/migrating-to-supabase/auth0):** Move your auth users from Auth0 to a Supabase project.
-- **[Firebase Auth](https://supabase.com/docs/guides/platform/migrating-to-supabase/firebase-auth):** Move your auth users from a Firebase project to a Supabase project.
-- **[Firestore Data](https://supabase.com/docs/guides/platform/migrating-to-supabase/firestore-data):** Migrate the contents of a Firestore collection to a single Postgres table.
-- **[Firebase Storage](https://supabase.com/docs/guides/platform/migrating-to-supabase/firebase-storage):** Convert your Firebase Storage files to Supabase Storage.
-- **[Heroku](https://supabase.com/docs/guides/platform/migrating-to-supabase/heroku):** Migrate your Heroku Postgres database to Supabase.
-- **[Render](https://supabase.com/docs/guides/platform/migrating-to-supabase/render):** Migrate your Render Postgres database to Supabase.
-- **[Amazon RDS](https://supabase.com/docs/guides/platform/migrating-to-supabase/amazon-rds):** Migrate your Amazon RDS database to Supabase.
-- **[Postgres](https://supabase.com/docs/guides/platform/migrating-to-supabase/postgres):** Migrate your Postgres database to Supabase.
-- **[MySQL](https://supabase.com/docs/guides/platform/migrating-to-supabase/mysql):** Migrate your MySQL database to Supabase.
-- **[Microsoft SQL Server](https://supabase.com/docs/guides/platform/migrating-to-supabase/mssql):** Migrate your Microsoft SQL Server database to Supabase.
+- **[Auth0](https://supabase.com/kb/guides/migrate-from-auth0):** Move your auth users from Auth0 to a Supabase project.
+- **[Firebase Auth](https://supabase.com/kb/guides/migrate-from-firebase-auth):** Move your auth users from a Firebase project to a Supabase project.
+- **[Firestore Data](https://supabase.com/kb/guides/migrate-from-firestore-data):** Migrate the contents of a Firestore collection to a single Postgres table.
+- **[Firebase Storage](https://supabase.com/kb/guides/migrate-from-firebase-storage):** Convert your Firebase Storage files to Supabase Storage.
+- **[Heroku](https://supabase.com/kb/guides/migrate-from-heroku):** Migrate your Heroku Postgres database to Supabase.
+- **[Render](https://supabase.com/kb/guides/migrate-from-render):** Migrate your Render Postgres database to Supabase.
+- **[Amazon RDS](https://supabase.com/kb/guides/migrate-from-amazon-rds):** Migrate your Amazon RDS database to Supabase.
+- **[Postgres](https://supabase.com/kb/guides/migrate-from-postgres):** Migrate your Postgres database to Supabase.
+- **[MySQL](https://supabase.com/kb/guides/migrate-from-mysql):** Migrate your MySQL database to Supabase.
+- **[Microsoft SQL Server](https://supabase.com/kb/guides/migrate-from-mssql):** Migrate your Microsoft SQL Server database to Supabase.
+- **[Neon](https://supabase.com/kb/guides/migrate-from-neon):** Migrate your Neon database to Supabase.
+- **[Vercel Postgres](https://supabase.com/kb/guides/migrate-from-vercel-postgres):** Migrate your Vercel Postgres database to Supabase.
 
 ### Postgres resources
 
@@ -182996,6 +181683,14 @@ Removes an AWS account from the project's PrivateLink configuration for the give
 - `ref` (string, required): Project ref
 - `aws_account_id` (string, required): AWS account ID used in PrivateLink association
 - `database_identifier` (string, required): Identifier of the read replica this PrivateLink association targets
+
+## Download project backup
+
+`POST /v2/projects/{ref}/backups/download`
+
+### Parameters
+
+- `ref` (string, required): Project ref
 
 ## Gets all projects for the given organization
 

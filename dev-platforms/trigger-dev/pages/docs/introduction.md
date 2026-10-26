@@ -26,7 +26,7 @@ Build and run durable AI agents and workflows in TypeScript. Long-running tasks 
 
 Copy this prompt into your AI coding assistant from your app's directory:
 
-```text theme={"theme":"css-variables"} theme={"theme":"css-variables"}
+```text theme={"theme":"css-variables"}
 Bootstrap a Trigger.dev project: trigger.dev/SKILL.md
 ```
 

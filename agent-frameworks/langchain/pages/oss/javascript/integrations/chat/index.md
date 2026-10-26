@@ -262,6 +262,7 @@ Certain model providers offer endpoints that are compatible with OpenAI's (legac
 | [`RecallToolkit`](https://recallmem.dev/guides/langchain) | | | | | [  ![Downloads per month](https://img.shields.io/npm/dm/@recall-memory/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@recall-memory/langchain) |
 | [`ChatSCX`](https://scx.ai/) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@scx-ai/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@scx-ai/langchain) |
 | [`Auxen`](https://auxen.ai) | ✅ | ✅ | ✅ | ❌ | N/A |
+| [`ChatEmpirioLabs`](https://docs.empiriolabs.ai/integrations#langchain) | ✅ | ✅ | ✅ | ✅ | N/A |
 | [`FakeListChatModel`](/oss/javascript/integrations/chat/fake) | | | | | N/A |
 | [`FuturMix`](https://futurmix.ai/) | ✅ | ✅ | ✅ | ✅ | N/A |
 | [`Tuning Engines`](https://www.tuningengines.com/) | ✅ | ✅ | ✅ | ❌ | N/A |

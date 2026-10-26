@@ -193,6 +193,10 @@ export const waitpointTask = task({
 
 Waiting saves you compute, but it doesn't always free up concurrency — see [Wait](/docs/wait).
 
+## Filter webhooks before they start runs
+
+Give each [webhook](/docs/webhooks/overview) subscriber a [filter](/docs/webhooks/filters) so it only runs for the events it handles. A delivery that no subscriber's filter matches starts no run for any subscriber, so you aren't charged for it. Filters only apply to subscribers: a run [waiting](/docs/webhooks/waiters) for a matching webhook still resumes and uses compute. Receiving webhooks has no separate charge.
+
 ## Use debounce to consolidate multiple triggers
 
 When a task might be triggered multiple times in quick succession, use debounce to consolidate them into a single run. This is useful for document indexing, webhook aggregation, cache invalidation, and real-time sync scenarios.

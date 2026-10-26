@@ -10244,6 +10244,34 @@ To learn more about Link Previews, see the following resources:
 * [Help Centre](https://www.notion.com/help/guides/notion-api-link-previews-feature) guide
 
 
+# Connection health
+Source: https://developers.notion.com/guides/manage-connections/connection-health
+
+See how many API requests a connection sent in the last 24 hours, how many failed, and why.
+
+The **Health** tab shows a connection's API requests from the last 24 hours, including how many failed and why. It's available for internal and public connections.
+
+To open it, go to the [Developer portal](https://app.notion.com/developers/connections), select a connection, and select **Health**. The data updates every hour. For a public connection, it includes requests from every workspace that installed the connection.
+
+## What the Health tab shows
+
+**Requests** and **Failed requests** show the totals for the last 24 hours. **Requests by hour** shows when the connection sent requests and which ones failed. **Endpoints** lists the endpoints the connection called, busiest first, with the number of failures for each.
+
+When requests fail, **Failed requests by type** sorts them into blocked requests, client errors (4xx), rate-limit responses (429), and server errors (5xx). **Error codes** lists the `code` values from error responses. See [Status codes](/reference/status-codes) for what each code means. **Rate limits** shows which limits the connection reached. See [Request limits](/reference/request-limits) for how to handle each one.
+
+The Health tab counts every failed request and a sample of successful requests. Numbers that include successful requests, such as **Requests** and the share of requests that failed, are estimates and start with `~`. When a connection has less traffic, the tab may not have enough data to show these estimates. Failed requests still show.
+
+## Warnings
+
+When a connection's recent requests need attention, a warning appears at the top of its page in the Developer portal. An icon also appears next to the connection in your list of connections.
+
+| Warning | What to do |
+| :- | :- |
+| **High API error volume detected** | The connection received a lot of client errors. Check your logs for the failed requests and make sure they use a current API version. See [Status codes](/reference/status-codes) and [Versioning](/reference/versioning). |
+| **High API rate-limit volume detected** | The connection received a lot of rate-limit responses. Wait for the `Retry-After` time before sending more requests. See [Retry rate-limited requests](/reference/request-limits#retry-rate-limited-requests). |
+| **API requests blocked** | The connection's API access was restricted, so retrying won't help. If requests are still blocked, contact [Notion support](https://www.notion.com/help). |
+
+
 # Build an MCP client for Notion
 Source: https://developers.notion.com/guides/mcp/build-mcp-client
 
@@ -12186,7 +12214,7 @@ Review the [documentation for common MCP clients](/guides/mcp/common-mcp-clients
 >
 > Treat content returned by tools as untrusted. Review proposed actions and data sharing before approving them.
 
-Review the permissions of every MCP client and tool. Notion MCP operates within your workspace, but a connected client may send content returned by Notion MCP to systems outside Notion.
+Review the permissions of every MCP client and tool. Notion MCP operates within your workspace, but a connected client may send content returned by Notion MCP to systems outside Notion. That content can include full items from connected sources, such as Slack threads, Google Drive files, and emails, when `notion-fetch` opens a connector search result. Fetch returns only what the user's own connection to that source can see.
 
 Enable confirmation before actions that change content. This lets you review an action before the MCP client runs it.
 
@@ -12249,9 +12277,13 @@ An MCP client can call several tools in one task. For example, it can search for
 >
 > Put the full question in `question`, and distinctive names and terms in `keywords`. `lookback` sets a time window, such as `"7d"`, `"all_time"`, or a date like `"2026-10-01"`. To search only some sources, pass `sources`, such as `["slack"]` or `["google-drive", "github"]`. The names match the ones the response reports in `searchedSources`. Fewer sources return sooner. Omit `sources` to search every connected source.
 >
-> The response lists the sources it searched in `searchedSources`. A source that failed or timed out appears in `searchTargetStatuses`. Each result has a `url` that opens the item in its source app, and results without one are left out. `notion-fetch` can't open these results. The `warnings` array explains a requested source that wasn't searched, a source that failed or timed out (with the `sources` value to retry just that source), or a search that found no connected source.
+> The response lists the sources it searched in `searchedSources`. A source that failed or timed out appears in `searchTargetStatuses`. Each result has a `url` that opens the item in its source app, and results without one are left out. The `warnings` array explains a requested source that wasn't searched, a source that failed or timed out (with the `sources` value to retry just that source), or a search that found no connected source.
 >
 > `notion-connector-search` needs the same AI access as AI search: Business or Enterprise with Notion AI. `notion-get-tool-access` reports it under `connector_search`.
+>
+> To read a full item, pass the result's `id` or `url` to `notion-fetch`. Fetch reads the item through the user's own connection to that source, so it returns only what that connection can see. This works for results from Slack, Google Drive, GitHub, Jira, Microsoft Teams, SharePoint, Gmail, Notion Mail, Linear, Salesforce, Asana, and Box. Fetch can't open Outlook, Google Calendar, or Confluence results. To read a Notion Calendar event, use `notion-calendar-list-events` with a time range that covers it.
+>
+> Only connections that act as a user can open these results: Notion MCP OAuth connections and personal access tokens. The user needs the same AI access as `notion-connector-search`. Custom Agents and other bots can't open them. If fetch can't load an item, for example because the source isn't connected for the user or the item is gone, it returns an error that names the source and says to use the search result's title, highlight, and `url` instead.
 >
 > **Example prompts:**
 >
@@ -12376,6 +12408,8 @@ An MCP client can call several tools in one task. For example, it can search for
 > Pass a `view://` URL from a database response to read a saved view's filters, sorts, and display settings. A database URL with a `?v=` parameter still returns the database. To read the rows shown by a view, use `notion-query-data-sources` with `mode: "view"`.
 >
 > When a page is large enough that some subtrees could not be loaded, the response sets `truncated` to `true` and includes `unknown_block_ids` (up to 50 omitted subtree root IDs) and `unknown_block_count` (the total number of omitted subtree roots). Pass one of the returned IDs back to `notion-fetch` to retrieve that subtree directly. An ID may also represent content the caller cannot access, so treat an `object_not_found` error on retry as a permissions signal rather than a failure to handle.
+>
+> `notion-fetch` also opens results from `notion-connector-search`, such as a Slack thread or a GitHub file, by their `id` or `url`. The response has the item's `title`, `url`, and full `text`, and `metadata.type` is `connector`. See [Search connected sources](#search-connected-sources) for which sources and connections support it.
 >
 > Older clients can pass the id `self` to get the connected workspace and user instead of a page. This path still works, but new clients should [use `notion-get-self`](/guides/mcp/build-mcp-client#identify-the-connected-workspace).
 >
@@ -13158,7 +13192,7 @@ If the task is still `queued`, `running`, or `retrying`, wait at least the sugge
 >
 > For ChatGPT connections, content searches with `search` and calls to `fetch` return OpenAI's result shape, as both `structuredContent` and JSON text. A user lookup with `query_type: "user"` keeps the standard response. A connection counts as ChatGPT when its OAuth redirect URI is a trusted ChatGPT redirect URI. Other clients, including other OpenAI clients such as Codex, get the standard results. So do `ai-search` calls.
 >
-> `search` returns `{ results: [{ id, title, url }] }`. Each `id` works with `fetch`, so results that `fetch` can't open, such as connected-app results, are left out. These results don't include highlights, `path`, timestamps, or `notices`.
+> `search` returns `{ results: [{ id, title, url }] }`. Each `id` works with `fetch`. Connected-app results and other results that `fetch` can't open are left out. These results don't include highlights, `path`, timestamps, or `notices`.
 >
 > `fetch` returns `{ id, title, text, url, metadata }`, where `id` is the id you passed. Other fields of the standard response stay in place, so `fetch` with the id `self` still returns the `self` object. When you pass `include_file_urls: true`, `metadata.references` maps each uploaded file's `notion-file-block://` source in `text` to a signed download URL. Without it, the response has no `references`.
 
@@ -17834,6 +17868,16 @@ Source: https://developers.notion.com/guides/resources/notion-s-api-workspace
 Source: https://developers.notion.com/page/changelog
 
 
+
+**October 26, 2026**
+
+### See connection health in the Developer portal
+
+Internal and public connections now have a **Health** tab in the Developer portal. It shows the connection's API requests from the last 24 hours, including how many failed and why. A warning also appears when a connection's requests are blocked or receive a lot of client errors or rate-limit responses. See [Connection health](/guides/manage-connections/connection-health).
+
+### Open connected-source results with `notion-fetch`
+
+`notion-fetch` now opens results from `notion-connector-search` in hosted Notion MCP sessions. Pass a result's `id` or `url` to read the full item, such as a Slack thread, Google Drive file, or GitHub issue. The response has the item's `title`, `url`, and `text`, and `metadata.type` is `connector`. Fetch reads the item through the user's own connection to that source, so it returns only what that connection can see. It works for Notion MCP OAuth connections and personal access tokens when the user has the same AI access as `notion-connector-search`. Outlook, Google Calendar, and Confluence results still can't be fetched. See [Search connected sources](/guides/mcp/mcp-supported-tools#search-connected-sources).
 
 **October 22, 2026**
 
@@ -25100,6 +25144,7 @@ Share the related database with your connection too. Missing access can leave re
     "relation": {
       "database_id": "668d797c-76fa-4934-9b05-ad288df2d136",
       "data_source_id": "6c4240a9-a3ce-413e-9fd0-8a51a4d0a49b",
+      "limit": null,
       "type": "single_property",
       "single_property": {}
     }
@@ -28295,6 +28340,7 @@ A relation links pages to pages in a target data source.
 | :- | :- |
 | `data_source_id` | The target data source’s ID. Use this in current API requests. |
 | `database_id` | The target’s parent database ID, included in responses. |
+| `limit` | The maximum number of pages each page can relate to, or `null` when there is no limit. Read-only; included in responses. |
 | `type` | `single_property` or `dual_property`. |
 | `single_property` | An empty object for a one-way relation. |
 | `dual_property` | Settings for the matching relation on the target data source. |
@@ -28317,6 +28363,7 @@ Share the related database with your connection too. Missing access can leave re
     "relation": {
       "database_id": "668d797c-76fa-4934-9b05-ad288df2d136",
       "data_source_id": "6c4240a9-a3ce-413e-9fd0-8a51a4d0a49b",
+      "limit": null,
       "type": "single_property",
       "single_property": {}
     }
@@ -29437,6 +29484,8 @@ Requests that exceed a limit return a `"rate_limited"` error code and an HTTP 42
 | `public_api_request_blocked` | This connection's API access has been restricted. Retrying won't help. Contact Notion support. |
 
 Other `rate_limit_reason` values can appear. Handle them like any other 429 and wait for `Retry-After`.
+
+To see which limits a connection reached in the last 24 hours, check the **Rate limits** list on its [Health tab](/guides/manage-connections/connection-health).
 
 Connections should handle HTTP 429 and 529 responses and respect the `Retry-After` response header. The header value is an integer number of seconds. Use the returned value rather than assuming a fixed wait. A 529 response carries the `"service_overload"` code and means Notion is temporarily overloaded; retry it the same way as a 429. Whenever a response includes `Retry-After`, the body repeats the wait as `additional_data.retry_after`, a string of whole seconds, for clients that can't read response headers.
 
@@ -30630,6 +30679,8 @@ Responses from the API use HTTP response codes to indicate general classes of su
 ## Error codes
 
 Error responses contain more detail about the error in the response body, in the `"code"` and `"message"` properties. Some error responses may also include an `"additional_data"` object with extra context, such as retry guidance or endpoint-specific details.
+
+To see which error codes a connection received in the last 24 hours, check the **Error codes** list on its [Health tab](/guides/manage-connections/connection-health).
 
 | HTTP status code | `"code"` | Description | `"message"` example |
 | :- | :- | :- | :- |
@@ -34193,6 +34244,10 @@ Authenticate with third-party APIs like GitHub, Google, and Salesforce from a No
 
 Use OAuth when the API you're connecting to requires user authorization, such as GitHub, Google, Salesforce, and most SaaS APIs. You register an OAuth capability on your worker, deploy, complete the authorization flow via the CLI, and then call `accessToken()` in your code to get a valid token.
 
+> [!NOTE]
+>
+> Workers always sends Proof Key for Code Exchange (PKCE) parameters. The authorization request includes an S256 code challenge, and the token exchange includes the matching code verifier. PKCE does not replace a client secret when your provider requires one.
+
 ## Define an OAuth capability
 
 Call `worker.oauth()` with your provider's OAuth 2.0 endpoints and credentials:
@@ -34229,10 +34284,12 @@ const githubAuth = worker.oauth("githubAuth", {
 | `authorizationEndpoint` | Yes | The provider's OAuth 2.0 authorization URL |
 | `tokenEndpoint` | Yes | The provider's OAuth 2.0 token exchange URL |
 | `clientId` | Yes | Your OAuth app's client ID |
-| `clientSecret` | Yes | Your OAuth app's client secret |
+| `clientSecret` | No | Your OAuth app's client secret, if the provider requires one |
 | `scope` | Yes | Space-separated list of OAuth scopes to request |
 | `authorizationParams` | No | Additional parameters to include in the authorization request |
 | `accessTokenExpireMs` | No | Default token expiry in milliseconds (for providers that don't return `expires_in`) |
+
+For public OAuth clients, such as Etsy apps, omit `clientSecret` or set it to `null`. The SDK turns missing or `undefined` values into `null`. Workers sends the client ID without a client secret during token exchange and refresh. An empty string is treated as a configured secret with no value, so the server rejects it. If your provider requires a client secret, supply a non-empty string.
 
 ## Deploy and authorize
 

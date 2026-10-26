@@ -903,6 +903,7 @@ A relation links pages to pages in a target data source.
 | :- | :- |
 | `data_source_id` | The target data source’s ID. Use this in current API requests. |
 | `database_id` | The target’s parent database ID, included in responses. |
+| `limit` | The maximum number of pages each page can relate to, or `null` when there is no limit. Read-only; included in responses. |
 | `type` | `single_property` or `dual_property`. |
 | `single_property` | An empty object for a one-way relation. |
 | `dual_property` | Settings for the matching relation on the target data source. |
@@ -925,6 +926,7 @@ Share the related database with your connection too. Missing access can leave re
     "relation": {
       "database_id": "668d797c-76fa-4934-9b05-ad288df2d136",
       "data_source_id": "6c4240a9-a3ce-413e-9fd0-8a51a4d0a49b",
+      "limit": null,
       "type": "single_property",
       "single_property": {}
     }

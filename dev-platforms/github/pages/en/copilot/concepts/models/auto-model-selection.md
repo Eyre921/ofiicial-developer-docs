@@ -91,7 +91,7 @@ Auto model selection, with task optimization, is generally available in these Co
 * The GitHub Copilot app
 * Copilot cloud agent
 
-> [!NOTE] Auto tiers are only available on VS Code, Copilot CLI, and the GitHub Copilot app .
+> [!NOTE] Auto tiers are only available on Copilot Chat on the GitHub website, VS Code, Copilot CLI, and the GitHub Copilot app .
 
 > [!TIP]
 > You can see which model was used for each Copilot response.

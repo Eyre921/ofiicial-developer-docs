@@ -55,9 +55,13 @@ An MCP client can call several tools in one task. For example, it can search for
 >
 > Put the full question in `question`, and distinctive names and terms in `keywords`. `lookback` sets a time window, such as `"7d"`, `"all_time"`, or a date like `"2026-10-01"`. To search only some sources, pass `sources`, such as `["slack"]` or `["google-drive", "github"]`. The names match the ones the response reports in `searchedSources`. Fewer sources return sooner. Omit `sources` to search every connected source.
 >
-> The response lists the sources it searched in `searchedSources`. A source that failed or timed out appears in `searchTargetStatuses`. Each result has a `url` that opens the item in its source app, and results without one are left out. `notion-fetch` can't open these results. The `warnings` array explains a requested source that wasn't searched, a source that failed or timed out (with the `sources` value to retry just that source), or a search that found no connected source.
+> The response lists the sources it searched in `searchedSources`. A source that failed or timed out appears in `searchTargetStatuses`. Each result has a `url` that opens the item in its source app, and results without one are left out. The `warnings` array explains a requested source that wasn't searched, a source that failed or timed out (with the `sources` value to retry just that source), or a search that found no connected source.
 >
 > `notion-connector-search` needs the same AI access as AI search: Business or Enterprise with Notion AI. `notion-get-tool-access` reports it under `connector_search`.
+>
+> To read a full item, pass the result's `id` or `url` to `notion-fetch`. Fetch reads the item through the user's own connection to that source, so it returns only what that connection can see. This works for results from Slack, Google Drive, GitHub, Jira, Microsoft Teams, SharePoint, Gmail, Notion Mail, Linear, Salesforce, Asana, and Box. Fetch can't open Outlook, Google Calendar, or Confluence results. To read a Notion Calendar event, use `notion-calendar-list-events` with a time range that covers it.
+>
+> Only connections that act as a user can open these results: Notion MCP OAuth connections and personal access tokens. The user needs the same AI access as `notion-connector-search`. Custom Agents and other bots can't open them. If fetch can't load an item, for example because the source isn't connected for the user or the item is gone, it returns an error that names the source and says to use the search result's title, highlight, and `url` instead.
 >
 > **Example prompts:**
 >
@@ -182,6 +186,8 @@ An MCP client can call several tools in one task. For example, it can search for
 > Pass a `view://` URL from a database response to read a saved view's filters, sorts, and display settings. A database URL with a `?v=` parameter still returns the database. To read the rows shown by a view, use `notion-query-data-sources` with `mode: "view"`.
 >
 > When a page is large enough that some subtrees could not be loaded, the response sets `truncated` to `true` and includes `unknown_block_ids` (up to 50 omitted subtree root IDs) and `unknown_block_count` (the total number of omitted subtree roots). Pass one of the returned IDs back to `notion-fetch` to retrieve that subtree directly. An ID may also represent content the caller cannot access, so treat an `object_not_found` error on retry as a permissions signal rather than a failure to handle.
+>
+> `notion-fetch` also opens results from `notion-connector-search`, such as a Slack thread or a GitHub file, by their `id` or `url`. The response has the item's `title`, `url`, and full `text`, and `metadata.type` is `connector`. See [Search connected sources](#search-connected-sources) for which sources and connections support it.
 >
 > Older clients can pass the id `self` to get the connected workspace and user instead of a page. This path still works, but new clients should [use `notion-get-self`](/guides/mcp/build-mcp-client#identify-the-connected-workspace).
 >
@@ -964,7 +970,7 @@ If the task is still `queued`, `running`, or `retrying`, wait at least the sugge
 >
 > For ChatGPT connections, content searches with `search` and calls to `fetch` return OpenAI's result shape, as both `structuredContent` and JSON text. A user lookup with `query_type: "user"` keeps the standard response. A connection counts as ChatGPT when its OAuth redirect URI is a trusted ChatGPT redirect URI. Other clients, including other OpenAI clients such as Codex, get the standard results. So do `ai-search` calls.
 >
-> `search` returns `{ results: [{ id, title, url }] }`. Each `id` works with `fetch`, so results that `fetch` can't open, such as connected-app results, are left out. These results don't include highlights, `path`, timestamps, or `notices`.
+> `search` returns `{ results: [{ id, title, url }] }`. Each `id` works with `fetch`. Connected-app results and other results that `fetch` can't open are left out. These results don't include highlights, `path`, timestamps, or `notices`.
 >
 > `fetch` returns `{ id, title, text, url, metadata }`, where `id` is the id you passed. Other fields of the standard response stay in place, so `fetch` with the id `self` still returns the `self` object. When you pass `include_file_urls: true`, `metadata.references` maps each uploaded file's `notion-file-block://` source in `text` to a signed download URL. Without it, the response has no `references`.
 

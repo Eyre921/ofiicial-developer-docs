@@ -496,6 +496,12 @@ app.get("/session-status", async (req, res) => {
     subscription_status: session.payment_intent ? null : session.subscription?.status
   });
 });
+app.listen(4242, () => console.log("Running on http://localhost:4242/checkout.html"));
+app.listen(4242, () =>
+  console.log(
+    "API server running on http://localhost:4242. Open the app at http://localhost:3000/checkout"
+  )
+);
 {
   "name": "stripe-sample",
   "version": "1.0.0",
@@ -1608,6 +1614,8 @@ npm install
 ~~~
 npm start
 ~~~
+
+`npm start` runs two processes: the app on port 3000 (open this one) and the API server on port 4242, which the app calls behind the scenes.
 
 3. Go to [http://localhost:3000/checkout](http://localhost:3000/checkout)
 1. Build the server

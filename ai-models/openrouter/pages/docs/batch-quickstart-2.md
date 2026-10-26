@@ -123,7 +123,7 @@ On Google Vertex, image URLs must use HTTPS, end in `.png`, `.jpg`, `.jpeg`, `.w
 | Not supported | What to do instead |
 | - | - |
 | Base64 or data-URI images | Host the image and send a public `https` URL. |
-| Inline file bytes and provider file IDs | Send a public file URL. Accounts enabled by support can send inline PDFs (`data:application/pdf;base64,...`) on Anthropic and DeepInfra, up to 20 MiB each. |
+| Inline file bytes and provider file IDs | Send a public file URL. Inline PDFs (`data:application/pdf;base64,...`, up to 20 MiB each) work on Anthropic, DeepInfra, Google AI Studio, and OpenAI for accounts with inline files enabled, either individually or through a rollout to all accounts; other accounts get `Inline base64 files are not enabled for this account in batch`. |
 | Audio input, and video other than YouTube | Use the sync API. A YouTube video on Google AI Studio holds the model's full input limit against your balance at submit, because its length is unknown. You are billed for the tokens the provider reports. |
 | Image or audio output (`modalities`, `audio`, `image_config`) | Use the sync API. |
 | OpenRouter web search (`:online`, the `web` plugin, `web_search_options`) | Use the provider's own search tool, for example OpenAI `web_search` on `/v1/responses` or Anthropic `web_search_20250305` on `/v1/messages`. Google Vertex rejects web search tools. |
@@ -650,6 +650,12 @@ Each result `body` is a standard embeddings response, with one embedding per inp
 
 If you have a [provider key](https://openrouter.ai/docs/guides/overview/auth/byok.md), batches route through it the same as sync requests. The provider bills you for inference, and OpenRouter charges only the BYOK fee. Completed batches report `usage.is_byok: true` and the provider's inference estimate in `usage.cost_details.upstream_inference_cost`.
 
+When the BYOK-only switch is on for your account or workspace, batches run only on your own provider keys:
+
+* Keys marked as fallback-only count, the same as sync requests.
+* If none of your keys covers the model, the submit fails with `404` instead of `202 Accepted`.
+* Keys for providers that can't run a batch on your own key (Fireworks, Mistral, Sail Research, and Claude Platform on AWS) don't count.
+
 > **Google Vertex**
 >
 > Vertex batches use a bucket in your GCP project for input and output. Leave out `bucket`, and OpenRouter creates a private bucket on the first batch in each region. You can also give an existing bucket. See [Google Vertex API keys](https://openrouter.ai/docs/guides/overview/auth/byok.md#google-vertex-api-keys) for permissions.
@@ -676,7 +682,7 @@ If you have a [provider key](https://openrouter.ai/docs/guides/overview/auth/byo
 | - | - | - |
 | `400` | Bad input, `requests` before other fields, a private `callback_url`, or a model with no batch variant. | Read `error.message`. Pick a model from the [batch models list](https://openrouter.ai/models?variant=batch). |
 | `402` | The estimated cost is more than your balance. | Add credits, or split the batch. |
-| `404` | No provider in `provider.only`, your account's allowlist, or your guardrails serves the model in batch mode. | Change `provider.only`, your provider settings, or the guardrail on your key. |
+| `404` | No provider in `provider.only`, your account's allowlist, or your guardrails serves the model in batch mode, or every batch endpoint for the model requires your own [provider key](https://openrouter.ai/docs/guides/overview/auth/byok.md) and no eligible key is configured (the error names those providers). | Change `provider.only`, your provider settings, or the guardrail on your key; add a provider key; or pick a model with a platform-billed batch endpoint. |
 | `409` | You tried to delete a batch that is still running. | Wait until it finishes. |
 | `410` | The batch is older than 30 days, so its results were deleted. | Results cannot be recovered. |
 | `413` | The batch has more requests than the [per-batch limit](https://openrouter.ai/docs/guides/features/batch-api.md#limits), or is larger than 200 MB. `error.message` states the limit. | Split the batch, or use file URLs instead of inline PDFs. |

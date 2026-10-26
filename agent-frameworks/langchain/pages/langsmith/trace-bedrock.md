@@ -1,5 +1,5 @@
 ---
-title: "Trace Amazon Bedrock applications"
+title: "Trace with Amazon Bedrock"
 source: https://docs.langchain.com/langsmith/trace-bedrock
 path: langsmith/trace-bedrock
 ---
@@ -11,6 +11,10 @@ This guide shows you how to trace [Amazon Bedrock](https://aws.amazon.com/bedroc
 * Latency and performance metrics
 * Custom tags and metadata for filtering and analysis
 * Multi-step chains and agent workflows
+
+> [!NOTE]
+>
+> In an [agent-based workspace](/langsmith/agents), [create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) as a compatibility value.
 
 ## Installation
 
@@ -26,17 +30,18 @@ This integration uses the native AWS SDKs with LangSmith's tracing capabilities.
 
 ## Setup
 
-To enable LangSmith tracing, configure your [LangSmith API key](/langsmith/create-account-api-key) and project settings. You'll also need to set up your AWS credentials to authenticate with Bedrock.
+To enable LangSmith tracing, configure your [LangSmith API key](/langsmith/create-account-api-key), agent identifier, and environment. You'll also need to set up your AWS credentials to authenticate with Bedrock.
 
 ### LangSmith configuration
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY=<your_langsmith_api_key>
-export LANGSMITH_PROJECT=<your_project_name> # optional, defaults to "default"
+export LANGSMITH_AGENT_ID="<your-agent-id>"
+export LANGSMITH_AGENT_ENVIRONMENT="production"
 export LANGSMITH_TRACING=true
 ```
 
-You can obtain your LangSmith API key from [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-bedrock) by navigating to **Settings** > **API Keys**. The `LANGSMITH_PROJECT` variable allows you to organize traces into different projects.
+You can obtain your LangSmith API key from [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-bedrock) by navigating to **Settings** > **API Keys**. The agent identifier and environment select where traces appear.
 
 ### AWS credentials
 
@@ -140,7 +145,7 @@ console.log(answer);
 
 ## View traces in LangSmith
 
-After running your code, navigate to your LangSmith project at [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-bedrock) to view the traces. Each trace includes:
+After running your code, select your agent and environment, then open **Tracing** at [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-bedrock) to view the traces. Each trace includes:
 
 * **Request details**: Input messages, model parameters, and configuration
 * **Response details**: Model output, token usage, and response metadata

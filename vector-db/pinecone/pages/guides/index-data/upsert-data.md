@@ -2348,7 +2348,7 @@ futures = [
 | Max `full_text_search` string fields per schema | 100 |
 | Max size per `full_text_search` string field | 100 KB |
 | Max tokens per `full_text_search` string field | 10,000 |
-| Max bytes per token | 256 bytes |
+| Max [bytes per token](/guides/search/full-text-search/text-processing#tokens-and-analyzers) | 1,024 bytes |
 | Max filterable metadata size per document | 40 KB |
 | Max length for a record ID | 512 characters |
 | Max dimensionality for dense vectors | 20,000 |

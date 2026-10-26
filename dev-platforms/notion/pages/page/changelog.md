@@ -4,6 +4,16 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+**October 26, 2026**
+
+### See connection health in the Developer portal
+
+Internal and public connections now have a **Health** tab in the Developer portal. It shows the connection's API requests from the last 24 hours, including how many failed and why. A warning also appears when a connection's requests are blocked or receive a lot of client errors or rate-limit responses. See [Connection health](/guides/manage-connections/connection-health).
+
+### Open connected-source results with `notion-fetch`
+
+`notion-fetch` now opens results from `notion-connector-search` in hosted Notion MCP sessions. Pass a result's `id` or `url` to read the full item, such as a Slack thread, Google Drive file, or GitHub issue. The response has the item's `title`, `url`, and `text`, and `metadata.type` is `connector`. Fetch reads the item through the user's own connection to that source, so it returns only what that connection can see. It works for Notion MCP OAuth connections and personal access tokens when the user has the same AI access as `notion-connector-search`. Outlook, Google Calendar, and Confluence results still can't be fetched. See [Search connected sources](/guides/mcp/mcp-supported-tools#search-connected-sources).
+
 **October 22, 2026**
 
 ### Status properties show their default option

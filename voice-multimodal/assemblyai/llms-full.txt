@@ -82556,3 +82556,730 @@ components:
         - vehicle_id
         - zodiac_sign
 ```
+
+## docs/api-reference/specs/streaming-tts.yaml
+
+URL: https://www.assemblyai.com/docs/api-reference/specs/streaming-tts.yaml
+
+```yaml
+asyncapi: 3.0.0
+
+info:
+  title: AssemblyAI Streaming TTS WebSocket API
+  version: 1.0.0
+  description: |
+    Streaming text-to-speech over WebSocket. Clients send text and control messages and receive the speech as base64 audio, with per-word timings.
+    Every message in both directions is a JSON text frame with a `type` field naming it. See [WebSocket API basics](/tts/connect-parameters) for hosts, authentication and the connect sequence, and [Message frames](/tts/message-frames) for the protocol.
+
+servers:
+  usDataResidency:
+    host: tts.us.assemblyai.com
+    protocol: wss
+    description: US data zone. Text and audio are processed in the US (`us-east-1`).
+  euDataResidency:
+    host: tts.eu.assemblyai.com
+    protocol: wss
+    description: EU data zone. Text and audio are processed in the EU (`eu-north-1`).
+
+channels:
+  tts:
+    address: /v1/ws
+    description: |
+      Send text and receive synthesized speech. Authenticate with your API key in the `Authorization` header, or with the `token` query parameter where headers can't be set.
+    servers:
+      - $ref: "#/servers/usDataResidency"
+      - $ref: "#/servers/euDataResidency"
+    parameters:
+      token:
+        description: Optional. Authenticate with a [temporary token](/tts/authenticate-with-a-temporary-token) (minted with `product=tts`) or an API key, for clients that cannot set the `Authorization` header, such as browsers. Ignored when the header is present. Mint one temporary token per connection, and never put your API key in a URL that runs on a user's device.
+        location: $message.payload#/token
+
+      voice_id:
+        description: >-
+          Optional. The voice: the library slug of an [AssemblyAI voice](/tts/voices) such as `aai-jane`, a voice's ID (a UUID, in any letter case), or the slug of one of your account's voices, such as a [cloned voice](/tts/cloned-voices). Slugs are lowercase, at most 64 characters. When unset, the session speaks the default voice of its model in its language, `aai-jane`. An AssemblyAI voice the session's model does not speak in the session's language closes with `3006`; a `voice_id` that names no voice your account can use on this host closes with `3012`.
+        location: $message.payload#/voice_id
+        examples:
+          - aai-jane
+          - 49c443a4-8a1d-5f7e-b70b-98bdbd9823c3
+
+      model_id:
+        description: >-
+          Optional. The model to run the session on, such as `assemblyai-tts-1`, in lowercase. When unset, the default model of the session's language in the region. With `voice_id`, the voice must be paired with that model (`3014` otherwise). A model the region does not know closes with `3006` before `Begin`. See [Language and model](/tts/cloned-voices#language-and-model).
+        location: $message.payload#/model_id
+        examples:
+          - assemblyai-tts-1
+
+      language:
+        description: >-
+          Optional. The language of the text you send, as its full English name, not an ISO code. Case-insensitive, echoed lowercase. The API does not detect language. Defaults to `english`; with a library or cloned voice that speaks one language, to that voice's language, and any other value closes the session with `3006`. See [Languages](/tts/voices#languages).
+        location: $message.payload#/language
+        enum: ["english", "spanish", "german", "italian", "portuguese", "french"]
+        default: "english"
+
+      sample_rate:
+        description: Optional. Output sample rate in Hz. `24000` is the model's native rate; other rates are resampled.
+        location: $message.payload#/sample_rate
+        enum: ["8000", "16000", "22050", "24000", "44100", "48000"]
+        default: "24000"
+
+      encoding:
+        description: >-
+          Optional. Encoding of the audio in `Audio` messages: raw bytes with no header. `pcm_s16le` is 16-bit signed little-endian PCM; `pcm_mulaw` and `pcm_alaw` are 8-bit G.711 for telephony. The aliases `mulaw` and `alaw` are accepted and echoed in canonical form. See [Audio formats](/tts/connect-parameters#audio-formats) on WebSocket API basics.
+        location: $message.payload#/encoding
+        enum: ["pcm_s16le", "pcm_mulaw", "pcm_alaw"]
+        default: "pcm_s16le"
+
+      word_boundaries:
+        description: Optional. Whether to send a `WordBoundaries` message with per-word timings after each request's `FlushDone`. Takes `true`, `false`, `1` or `0`, in any case. See [Word boundaries](/tts/word-boundaries).
+        location: $message.payload#/word_boundaries
+        enum: ["true", "false"]
+        default: "true"
+
+      inactivity_timeout:
+        description: Optional. Seconds with no frame in either direction before the session closes with `3006` (`error_type` `inactivity_timeout`). Shortens the idle timeout every session has. An integer from `5` to `120`; `Begin.configuration.limits` reports the accepted range.
+        location: $message.payload#/inactivity_timeout
+        default: "120"
+        examples:
+          - "30"
+
+      extend_biometric_consent:
+        description: Optional. With `voice_id`, by the owner of a [cloned voice](/tts/cloned-voices) only, `true` renews the voice's biometric consent and attests renewed consent on behalf of the account that owns it. Set on a voice another account owns, the session closes with `3006` (`error_type` `not_owner`). See [Renew consent](/tts/cloned-voices#renew-consent).
+        location: $message.payload#/extend_biometric_consent
+        enum: ["true", "false"]
+        default: "false"
+
+    messages:
+      generate:
+        $ref: "#/components/messages/Generate"
+      flush:
+        $ref: "#/components/messages/Flush"
+      cancel:
+        $ref: "#/components/messages/Cancel"
+      keepAlive:
+        $ref: "#/components/messages/KeepAlive"
+      terminate:
+        $ref: "#/components/messages/Terminate"
+
+      begin:
+        $ref: "#/components/messages/Begin"
+      audio:
+        $ref: "#/components/messages/Audio"
+      flushDone:
+        $ref: "#/components/messages/FlushDone"
+      wordBoundaries:
+        $ref: "#/components/messages/WordBoundaries"
+      cancelled:
+        $ref: "#/components/messages/Cancelled"
+      termination:
+        $ref: "#/components/messages/Termination"
+      error:
+        $ref: "#/components/messages/Error"
+
+operations:
+  generate:
+    action: receive
+    channel:
+      $ref: "#/channels/tts"
+    messages:
+      - $ref: "#/channels/tts/messages/generate"
+    description: Send text to speak. Text from consecutive `Generate` messages is joined exactly as sent, so include spaces yourself. Short text is held until you `Flush`; once enough complete sentences are buffered, the server starts speaking them before any `Flush`. See [Generate](/tts/message-frames#generate).
+
+  flush:
+    action: receive
+    channel:
+      $ref: "#/channels/tts"
+    messages:
+      - $ref: "#/channels/tts/messages/flush"
+    description: Conclude the current request. Whatever is still unspoken is synthesized, then exactly one `FlushDone` arrives. Each request concluded by a `Flush` takes the next `flush_id`, starting at `0`. You do not have to wait for one `FlushDone` before sending the next `Flush`.
+
+  cancel:
+    action: receive
+    channel:
+      $ref: "#/channels/tts"
+    messages:
+      - $ref: "#/channels/tts/messages/cancel"
+    description: Barge-in. Stop the in-flight synthesis and discard everything sent but not yet heard, including pending flushes; none of them gets a `FlushDone`. The server answers with `Cancelled`. The session stays open, and the next request takes a new `flush_id`.
+
+  keepAlive:
+    action: receive
+    channel:
+      $ref: "#/channels/tts"
+    messages:
+      - $ref: "#/channels/tts/messages/keepAlive"
+    description: Restart the idle timer, and nothing else. Send one while the session is idle, at least once per idle timeout. It is not a warm-up.
+
+  terminate:
+    action: receive
+    channel:
+      $ref: "#/channels/tts"
+    messages:
+      - $ref: "#/channels/tts/messages/terminate"
+    description: End the session cleanly. Unflushed text is flushed for you and gets its own `FlushDone`, audio in flight and pending `WordBoundaries` are delivered, then `Termination` arrives and the socket closes with `1000`. Anything sent after `Terminate` is not read.
+
+  begin:
+    action: send
+    channel:
+      $ref: "#/channels/tts"
+    messages:
+      - $ref: "#/channels/tts/messages/begin"
+    description: Receive confirmation that the session opened, with the configuration it actually got. Always the first message.
+
+  audio:
+    action: send
+    channel:
+      $ref: "#/channels/tts"
+    messages:
+      - $ref: "#/channels/tts/messages/audio"
+    description: Receive a chunk of synthesized audio. A request's audio never interleaves with another's, and all of it arrives before that request's `FlushDone`.
+
+  flushDone:
+    action: send
+    channel:
+      $ref: "#/channels/tts"
+    messages:
+      - $ref: "#/channels/tts/messages/flushDone"
+    description: Receive notice that a request's audio has all been sent. Exactly one per `Flush`, in `flush_id` order. It means the audio was delivered to your socket, not that it has finished playing.
+
+  wordBoundaries:
+    action: send
+    channel:
+      $ref: "#/channels/tts"
+    messages:
+      - $ref: "#/channels/tts/messages/wordBoundaries"
+    description: Receive per-word timings for a request, best-effort, after its `FlushDone`. It may arrive after the next request's first `Audio`, so match it by `flush_id`. A cancelled request gets none.
+
+  cancelled:
+    action: send
+    channel:
+      $ref: "#/channels/tts"
+    messages:
+      - $ref: "#/channels/tts/messages/cancelled"
+    description: Receive the answer to a `Cancel`, one per `Cancel` in the order sent. `Audio` that arrives between your `Cancel` and its `Cancelled` belongs to the cancelled request; drop it.
+
+  termination:
+    action: send
+    channel:
+      $ref: "#/channels/tts"
+    messages:
+      - $ref: "#/channels/tts/messages/termination"
+    description: Receive the session summary after a clean `Terminate`. Not sent when the session fails or the client closes the socket.
+
+  error:
+    action: send
+    channel:
+      $ref: "#/channels/tts"
+    messages:
+      - $ref: "#/channels/tts/messages/error"
+    description: Receive the reason the session is about to close. Sent immediately before every failure close the server initiates, and always the last message of the session.
+
+components:
+  messages:
+    Generate:
+      name: Generate
+      title: Generate
+      summary: Client message with text to speak.
+      contentType: application/json
+      payload:
+        $ref: "#/components/schemas/GeneratePayload"
+      examples:
+        - payload:
+            type: Generate
+            text: "Hi, thanks for calling. "
+
+    Flush:
+      name: Flush
+      title: Flush
+      summary: Client message that concludes the current request.
+      contentType: application/json
+      payload:
+        $ref: "#/components/schemas/FlushPayload"
+      examples:
+        - payload:
+            type: Flush
+
+    Cancel:
+      name: Cancel
+      title: Cancel
+      summary: Client message that stops the speech in flight, for barge-in.
+      contentType: application/json
+      payload:
+        $ref: "#/components/schemas/CancelPayload"
+      examples:
+        - payload:
+            type: Cancel
+
+    KeepAlive:
+      name: KeepAlive
+      title: Keep Alive
+      summary: Client message that restarts the idle timer.
+      contentType: application/json
+      payload:
+        $ref: "#/components/schemas/KeepAlivePayload"
+      examples:
+        - payload:
+            type: KeepAlive
+
+    Terminate:
+      name: Terminate
+      title: Terminate Session
+      summary: Client message that ends the session cleanly.
+      contentType: application/json
+      payload:
+        $ref: "#/components/schemas/TerminatePayload"
+      examples:
+        - payload:
+            type: Terminate
+
+    Begin:
+      name: Begin
+      title: Session Begins
+      summary: Server message confirming the session opened, with its effective configuration.
+      contentType: application/json
+      payload:
+        $ref: "#/components/schemas/BeginPayload"
+      examples:
+        - payload:
+            type: Begin
+            id: 10885144-0d4b-4928-9eff-ef292a352937
+            expires_at: 1789556741
+            configuration:
+              language: english
+              sample_rate: 24000
+              encoding: pcm_s16le
+              inactivity_timeout: 120
+              word_boundaries: true
+              voice_id: aai-jane
+              extend_biometric_consent: false
+              word_boundaries_requested: true
+              model: assemblyai-tts-1
+              voice_expires_at: null
+              session_ttl_sec: 3600
+              limits:
+                max_generate_text_length: 2000
+                max_control_frames_per_sec: 20.0
+                max_egress_audio_buffer_ms: 300000
+                text_throttle_enabled: true
+                text_throttle_max_chars_per_sec: 100.0
+                text_throttle_initial_grace_chars: 1500
+                text_max_buffer_chars: 8000
+                session_ttl_grace_sec: 60
+                max_message_bytes: 1048576
+                max_queued_messages: 10000
+                write_stall_timeout_sec: 30.0
+                inactivity_timeout_min_sec: 5
+                inactivity_timeout_max_sec: 120
+              unknown_params: []
+
+    Audio:
+      name: Audio
+      title: Audio
+      summary: Server message with a chunk of synthesized audio.
+      contentType: application/json
+      payload:
+        $ref: "#/components/schemas/AudioPayload"
+      examples:
+        - payload:
+            type: Audio
+            audio: IwB6AOMABQHHAIMAJADw/wwA
+            flush_id: 0
+
+    FlushDone:
+      name: FlushDone
+      title: Flush Done
+      summary: Server message confirming a request's audio has all been sent.
+      contentType: application/json
+      payload:
+        $ref: "#/components/schemas/FlushDonePayload"
+      examples:
+        - payload:
+            type: FlushDone
+            flush_id: 0
+            audio_duration_ms: 2320
+
+    WordBoundaries:
+      name: WordBoundaries
+      title: Word Boundaries
+      summary: Server message with per-word timings for a request.
+      contentType: application/json
+      payload:
+        $ref: "#/components/schemas/WordBoundariesPayload"
+      examples:
+        - payload:
+            type: WordBoundaries
+            flush_id: 0
+            audio_start_ms: 0
+            words:
+              - word: Hello
+                start: 265
+                end: 530
+                confidence: 0.4791773557662964
+              - word: there,
+                start: 546
+                end: 712
+                confidence: 0.9253882169723511
+
+    Cancelled:
+      name: Cancelled
+      title: Cancelled
+      summary: Server message answering a `Cancel`.
+      contentType: application/json
+      payload:
+        $ref: "#/components/schemas/CancelledPayload"
+      examples:
+        - payload:
+            type: Cancelled
+            audio_duration_seconds: 0.4
+
+    Termination:
+      name: Termination
+      title: Session Terminated
+      summary: Server message with the session summary after a clean `Terminate`.
+      contentType: application/json
+      payload:
+        $ref: "#/components/schemas/TerminationPayload"
+      examples:
+        - payload:
+            type: Termination
+            session_duration_seconds: 12
+            total_input_char_length: 96
+            audio_duration_seconds: 3.12
+            voice_expires_at: null
+
+    Error:
+      name: Error
+      title: Error
+      summary: Server message sent before every failure close, with the reason.
+      contentType: application/json
+      payload:
+        $ref: "#/components/schemas/ErrorPayload"
+      examples:
+        - payload:
+            type: Error
+            error_code: 3009
+            error: Too many sessions opened for this account in the last minute (allowance 100 per minute); retry in 17 s.
+            error_type: rate_limited
+            retryable: true
+            param: null
+            retry_after_seconds: 17
+
+  schemas:
+    GeneratePayload:
+      type: object
+      required: [type, text]
+      properties:
+        type:
+          type: string
+          const: Generate
+        text:
+          type: string
+          maxLength: 2000
+          description: >-
+            Text to speak, at most 2000 characters (Unicode code points); a longer text closes the session with `3006`. Read as written: spell out numbers, dates and symbols where the reading matters, and remove markup. Text from consecutive `Generate` messages is joined with no separator. The two halves of a surrogate pair may arrive in consecutive messages; any other unpaired surrogate closes the session with `3006`. An empty `text` does nothing but counts toward the control-frame limit. See [How text is read](/tts/prompting-guide#how-text-is-read).
+
+    FlushPayload:
+      type: object
+      required: [type]
+      properties:
+        type:
+          type: string
+          const: Flush
+
+    CancelPayload:
+      type: object
+      required: [type]
+      properties:
+        type:
+          type: string
+          const: Cancel
+
+    KeepAlivePayload:
+      type: object
+      required: [type]
+      properties:
+        type:
+          type: string
+          const: KeepAlive
+
+    TerminatePayload:
+      type: object
+      required: [type]
+      properties:
+        type:
+          type: string
+          const: Terminate
+
+    BeginPayload:
+      type: object
+      required: [type, id, expires_at, configuration]
+      properties:
+        type:
+          type: string
+          const: Begin
+        id:
+          type: string
+          description: The session ID. Quote it in support requests.
+        expires_at:
+          type: integer
+          description: When the session expires, as a Unix timestamp in seconds, normally connect time plus 3600. A temporary token with a shorter `max_session_duration_seconds` brings it forward. When it passes, the server stops accepting input, speaks unflushed text, delivers the audio in flight, and closes with `3008` at most `limits.session_ttl_grace_sec` seconds later.
+        configuration:
+          $ref: "#/components/schemas/BeginConfiguration"
+
+    BeginConfiguration:
+      type: object
+      description: The configuration the session was actually created with. Drive your client off this object rather than your request. It holds the effective value of every connect parameter except `token` and `model_id`, whether you sent it or not, and may carry other keys, and gain keys over time; read the keys you need and ignore the others. See [Read the configuration back](/tts/connect-parameters#read-the-configuration-back).
+      additionalProperties: true
+      properties:
+        language:
+          type: string
+          description: The language the session speaks, lowercase.
+        sample_rate:
+          type: integer
+          description: The output sample rate in Hz.
+        encoding:
+          type: string
+          enum: [pcm_s16le, pcm_mulaw, pcm_alaw]
+          description: The audio encoding, in canonical form.
+        inactivity_timeout:
+          type: integer
+          description: The idle timeout in effect, in seconds.
+        word_boundaries:
+          type: boolean
+          description: Whether the session sends `WordBoundaries`. `false` after a `true` request when the service cannot supply word timings for the session.
+        voice_id:
+          type: string
+          description: The voice the session speaks, named as you sent it (a UUID in lowercase), or the default voice's slug when you sent none.
+        extend_biometric_consent:
+          type: boolean
+          description: "`true` when you sent it and renewals of a cloned voice's consent are available to your account."
+        word_boundaries_requested:
+          type: boolean
+          description: The `word_boundaries` you asked for.
+        model:
+          type: string
+          description: The name of the model the session runs on, such as `assemblyai-tts-1`. Never null.
+        voice_expires_at:
+          type: integer
+          nullable: true
+          description: For your own [cloned voice](/tts/cloned-voices#consent-period), when its consent period ends, as a Unix timestamp in seconds; `null` otherwise.
+        resolved_voice:
+          type: object
+          additionalProperties: true
+          description: The voice the session resolved.
+          properties:
+            voice_id:
+              type: string
+              nullable: true
+              description: The voice's UUID, also when you named it by slug.
+            language:
+              type: string
+              nullable: true
+              description: The voice's language.
+        session_ttl_sec:
+          type: integer
+          description: Seconds from connect to `expires_at`, 3600 unless a temporary token caps the session.
+        limits:
+          $ref: "#/components/schemas/SessionLimits"
+        unknown_params:
+          type: array
+          items:
+            type: string
+          description: The names of query parameters the server ignored, sorted, at most 16; `<invalid>` stands for a name that is too long or holds unusual characters.
+
+    SessionLimits:
+      type: object
+      description: The limits in force for the session. See [Limits](/tts/limits).
+      additionalProperties: true
+      properties:
+        max_generate_text_length:
+          type: integer
+          description: Characters per `Generate`.
+        max_control_frames_per_sec:
+          type: number
+          description: Sustained `Flush`, `KeepAlive`, `Cancel` and empty `Generate` messages per second, with about 3 seconds of burst allowance, before `3010`.
+        max_egress_audio_buffer_ms:
+          type: integer
+          description: Milliseconds of synthesized audio waiting for delivery before `3011`.
+        text_throttle_enabled:
+          type: boolean
+          description: Whether text intake is paced.
+        text_throttle_max_chars_per_sec:
+          type: number
+          description: Sustained characters per second of text intake pacing.
+        text_throttle_initial_grace_chars:
+          type: integer
+          description: Characters accepted unpaced at the start of the session.
+        text_max_buffer_chars:
+          type: integer
+          description: Characters sent but not yet synthesized before `3010`.
+        session_ttl_grace_sec:
+          type: integer
+          description: The most seconds the session runs past `expires_at` to deliver audio in flight before `3008`.
+        max_message_bytes:
+          type: integer
+          description: The largest message you may send, in bytes; a larger one closes with `1009`.
+        max_queued_messages:
+          type: integer
+          description: Messages waiting to be handled before `3010`.
+        write_stall_timeout_sec:
+          type: number
+          description: How long one write to your socket may stay blocked before `3011`.
+        inactivity_timeout_min_sec:
+          type: integer
+          description: The smallest `inactivity_timeout` you may set.
+        inactivity_timeout_max_sec:
+          type: integer
+          description: The largest `inactivity_timeout` you may set, and the timeout of a session that sets none.
+
+    AudioPayload:
+      type: object
+      required: [type, audio, flush_id]
+      properties:
+        type:
+          type: string
+          const: Audio
+        audio:
+          type: string
+          format: byte
+          description: Base64-encoded audio in the session's `encoding` and `sample_rate`, raw codec bytes with no header. Never empty. Chunk sizes vary, so do not assume a length. See [Audio formats](/tts/connect-parameters#audio-formats) on WebSocket API basics.
+        flush_id:
+          type: integer
+          description: The request this audio belongs to. Starts at `0` and advances with every `Flush` and every `Cancel`, so it can skip numbers after a `Cancel`.
+
+    FlushDonePayload:
+      type: object
+      required: [type, flush_id, audio_duration_ms]
+      properties:
+        type:
+          type: string
+          const: FlushDone
+        flush_id:
+          type: integer
+          description: The request that is done.
+        audio_duration_ms:
+          type: integer
+          description: The duration of the request's audio in milliseconds; `0` when it had nothing left to speak.
+
+    WordBoundariesPayload:
+      type: object
+      required: [type, flush_id, audio_start_ms, words]
+      properties:
+        type:
+          type: string
+          const: WordBoundaries
+        flush_id:
+          type: integer
+          description: The request these timings belong to.
+        audio_start_ms:
+          type: integer
+          description: Where this request's audio begins on the session's continuous audio timeline, in milliseconds. Subtract it from a word's `start` and `end` to place the word within this request's own audio.
+        words:
+          type: array
+          description: One entry per whitespace-delimited token of the request's text, in order, with its punctuation attached.
+          items:
+            $ref: "#/components/schemas/WordBoundary"
+
+    WordBoundary:
+      type: object
+      required: [word, start, end, confidence]
+      properties:
+        word:
+          type: string
+          description: The token as you sent it.
+        start:
+          type: integer
+          description: Start of the word in milliseconds on the session's continuous audio timeline, counted from the first audio the session delivered.
+        end:
+          type: integer
+          description: End of the word in milliseconds on the same timeline. Equal to `start` for a token with no sound of its own.
+        confidence:
+          type: number
+          description: Confidence of the word's timing, from 0 to 1; `0` for a token with no sound of its own.
+
+    CancelledPayload:
+      type: object
+      required: [type, audio_duration_seconds]
+      properties:
+        type:
+          type: string
+          const: Cancelled
+        audio_duration_seconds:
+          type: number
+          description: Audio streamed for the cancelled request only, in seconds rounded to 3 decimal places; `0.0` when nothing was in flight.
+
+    TerminationPayload:
+      type: object
+      required: [type, session_duration_seconds, total_input_char_length, audio_duration_seconds]
+      additionalProperties: true
+      properties:
+        type:
+          type: string
+          const: Termination
+        session_duration_seconds:
+          type: integer
+          description: The session's duration in whole seconds, truncated.
+        total_input_char_length:
+          type: integer
+          description: Characters of your `Generate` messages passed to synthesis, whether or not they were spoken.
+        audio_duration_seconds:
+          type: number
+          description: The audio delivered to you, cancelled requests' delivered audio included, in seconds rounded to 3 decimal places.
+        voice_expires_at:
+          type: integer
+          nullable: true
+          description: For your own [cloned voice](/tts/cloned-voices#consent-period), when its consent period ends after the session's renewal, if any, as a Unix timestamp in seconds; `null` otherwise.
+
+    ErrorPayload:
+      type: object
+      required: [type, error_code, error]
+      properties:
+        type:
+          type: string
+          const: Error
+        error_code:
+          type: integer
+          enum: [1008, 1011, 1012, 3005, 3006, 3008, 3009, 3010, 3011, 3012, 3014]
+          description: The WebSocket close code that follows. See [Close codes](/tts/error-handling#close-codes).
+        error:
+          type: string
+          description: What went wrong and what to do, written for people. It may be reworded, so log it rather than matching on it.
+        error_type:
+          type: string
+          enum:
+            - unauthorized
+            - insufficient_funds
+            - auth_unavailable
+            - service_restart
+            - invalid_parameter
+            - invalid_message
+            - invalid_request
+            - model_not_found
+            - feature_not_enabled
+            - not_owner
+            - biometric_terms_not_accepted
+            - inactivity_timeout
+            - session_expired
+            - rate_limited
+            - input_rate_exceeded
+            - audio_backlog
+            - voice_not_found
+            - voice_expired
+            - voice_blocked
+            - voice_not_paired
+            - model_retired
+            - voice_service_unavailable
+            - at_capacity
+            - upstream_unavailable
+            - internal_error
+          description: A stable, machine-readable cause, finer than the close code. New values may be added; treat an unknown one by its `error_code` and `retryable`. See [Error types](/tts/error-handling#error-types).
+        retryable:
+          type: boolean
+          description: Whether reconnecting with the same parameters can succeed.
+        param:
+          type: string
+          nullable: true
+          description: The connect parameter or message field at fault, such as `sample_rate`, `voice_id` or `language`, `Generate.text`, or `type`; `null` when there is none.
+        retry_after_seconds:
+          type: integer
+          nullable: true
+          description: The earliest useful retry, in seconds; `null` when there is no hint.
+```

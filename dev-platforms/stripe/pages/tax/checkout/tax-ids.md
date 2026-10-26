@@ -96,7 +96,7 @@ curl https://api.stripe.com/v1/checkout/sessions \
 
 ## Optional: Collect tax IDs in the payment form
 
-If you use elements mode (`ui_mode: 'elements'`), you can render the [Tax ID Element](https://docs.stripe.com/js/custom_checkout/create_tax_id_element) to collect tax IDs directly in your payment form. See [Render the Tax ID element](https://docs.stripe.com/tax/checkout/elements.md#render-tax-id-element) for client-side setup instructions.
+If you use hosted or embedded checkout pages and enable tax ID collection, the UI automatically renders a form to collect tax IDs. If you use elements mode (`ui_mode: 'elements'`), you can render the [Tax ID Element](https://docs.stripe.com/js/custom_checkout/create_tax_id_element) to collect tax IDs directly in your payment form. See [Render the Tax ID element](https://docs.stripe.com/tax/checkout/elements.md#render-tax-id-element) for client-side setup instructions.
 
 ## Retrieve customer tax ID details after a session
 
@@ -211,6 +211,7 @@ Checkout collects the following tax ID types in the given regions:
 | HR | eu_vat | European VAT number | HR12345678912 | Yes |
 | HU | eu_vat | European VAT number | HU12345678 | Yes |
 | HU | hu_tin | Hungary tax number (adószám) | 12345678-1-23 | No |
+| IC | ic_nif | Canary Islands NIF number (Número de Identificación Fiscal) | A12345678 | Yes |
 | ID | id_npwp | Indonesian NPWP number | 012.345.678.9-012.345 | No |
 | IE | eu_vat | European VAT number | IE1234567AB | Yes |
 | IN | in_gst | Indian GST number | 12ABCDE3456FGZH | Yes |

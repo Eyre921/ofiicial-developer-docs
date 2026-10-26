@@ -6,7 +6,7 @@ path: capital/refills
 
 # Refills
 
-Learn how to enable refills for your Capital program.
+Learn how refill financing offers work for your Capital program.
 
 Refills are additional financing offers sent to connected accounts who’ve made substantial repayment progress towards their in-progress financing offer balance. If approved, refill offers for connected accounts based in the United States (US), Australia (AU), and Canada (CA) pay down the remaining balance on the in-progress financing.
 
@@ -14,8 +14,7 @@ For France (FR), Germany (DE), and the United Kingdom (GB), review [stacked refi
 
 ## Before you begin
 
-- This guide assumes you completed an [API integration](https://docs.stripe.com/capital/api-integration.md).
-- Refills aren’t enabled by default. After you update your integration to support refills, you must submit details about your integration and API use to Stripe for compliance review using the [Change Request Form](https://form.asana.com/?k=8K51UWmWhttehNFD5qBLdg&d=974470123217835).
+To use the API and webhook examples in this guide, complete an [API integration](https://docs.stripe.com/capital/api-integration.md).
 
 ## Refill offer lifecycle
 
@@ -98,9 +97,7 @@ For France (FR), Germany (DE), and the United Kingdom (GB), review [stacked refi
 
 9. You can also view details about the refill and original financing on the [Financing Reporting](https://dashboard.stripe.com/test/connect/capital/financing_offers) page.
 
-### Stacked refill behavior 
-
-## Stacked refill behavior
+## Stacked refill behavior 
 
 Refills behave differently based on connected account country and partner. The following differences apply to connected accounts based in the United Kingdom (GB), France (FR) or Germany (DE).
 

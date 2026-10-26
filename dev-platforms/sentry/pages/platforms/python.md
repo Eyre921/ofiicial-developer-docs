@@ -205,6 +205,22 @@ Are you having problems setting up the SDK?
 * Find various topics in [Troubleshooting](https://docs.sentry.io/platforms/python/troubleshooting.md)
 * [Get support](https://www.sentry.help/en/)
 
+## Frameworks
+
+- [Django](https://docs.sentry.io/platforms/python/integrations/django.md)
+- [Flask](https://docs.sentry.io/platforms/python/integrations/flask.md)
+- [FastAPI](https://docs.sentry.io/platforms/python/integrations/fastapi.md)
+- [AIOHTTP](https://docs.sentry.io/platforms/python/integrations/aiohttp.md)
+- [Bottle](https://docs.sentry.io/platforms/python/integrations/bottle.md)
+- [Falcon](https://docs.sentry.io/platforms/python/integrations/falcon.md)
+- [Pyramid](https://docs.sentry.io/platforms/python/integrations/pyramid.md)
+- [Quart](https://docs.sentry.io/platforms/python/integrations/quart.md)
+- [Sanic](https://docs.sentry.io/platforms/python/integrations/sanic.md)
+- [Starlette](https://docs.sentry.io/platforms/python/integrations/starlette.md)
+- [Starlite](https://docs.sentry.io/platforms/python/integrations/starlite.md)
+- [Litestar](https://docs.sentry.io/platforms/python/integrations/litestar.md)
+- [Tornado](https://docs.sentry.io/platforms/python/integrations/tornado.md)
+
 ## Topics
 
 - [Capturing Errors](https://docs.sentry.io/platforms/python/usage.md)

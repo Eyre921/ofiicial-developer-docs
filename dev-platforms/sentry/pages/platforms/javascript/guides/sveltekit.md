@@ -1,0 +1,272 @@
+---
+title: "SvelteKit"
+source: https://docs.sentry.io/platforms/javascript/guides/sveltekit.md
+path: platforms/javascript/guides/sveltekit
+---
+
+---
+title: "SvelteKit"
+description: "Learn how to set up and configure Sentry in your SvelteKit application using the installation wizard, capture your first errors, and view them in Sentry."
+url: https://docs.sentry.io/platforms/javascript/guides/sveltekit/
+---
+
+# Sentry for SvelteKit
+
+## [Prerequisites](https://docs.sentry.io/platforms/javascript/guides/sveltekit.md#prerequisites)
+
+You need:
+
+* A Sentry [account](https://sentry.io/signup/) and [project](https://docs.sentry.io/product/projects.md)
+* Your application up and running
+* SvelteKit version `2.0.0`+ (we recommend `2.31.0` or higher for best support)
+* Vite version `4.2`+
+
+I'm on an older SvelteKit version than 2.31.0
+
+Version `2.31.0` of SvelteKit introduces [official support for observability and tracing](https://svelte.dev/docs/kit/observability). This means that Sentry can now follow the official best practice for how the SDK should be set up:
+
+* The Sentry SDK will be initialized at the correct, earliest possible time on the server, allowing for all its auto-instrumentation to work correctly. This means, you will now get spans from auto instrumentation (e.g. database queries) automatically.
+* The Sentry SDK picks up spans emitted from SvelteKit directly. You'll get more accurate insights into the performance of your handlers, server actions, `load`, and remote functions.
+
+SvelteKit observability is still an experimental feature in SvelteKit 2.x, but we recommend giving it a try. The Sentry wizard, as well as this guide, will use it as the default way of setting up the SDK.
+
+If you've already set up the SDK and don't want to migrate to the new setup, or don't want to upgrade to SvelteKit `2.31.0` or higher, that's fine too. Just follow [this guide](https://docs.sentry.io/platforms/javascript/guides/sveltekit/manual-setup__v10.7.0) instead. However, note that auto instrumentation (e.g. for database queries) will not work.
+
+Notes on SvelteKit adapter compatibility
+
+The SvelteKit Sentry SDK is designed to work out of the box with several SvelteKit adapters and their underlying server runtimes. Here's an overview of the current support:
+
+* **Fully supported Node.js runtimes**
+
+  * [Adapter-auto](https://kit.svelte.dev/docs/adapter-auto) for Vercel; other Node.js-based platforms might work, but we don't guarantee compatibility at this time
+  * [Adapter-vercel](https://kit.svelte.dev/docs/adapter-vercel) when used with Vercel's Node.js Lambda runtime
+  * [Adapter-node](https://kit.svelte.dev/docs/adapter-node)
+
+* **Supported non-Node.js runtimes**
+  * [Adapter-cloudflare](https://kit.svelte.dev/docs/adapter-cloudflare) requires [additional setup](https://docs.sentry.io/platforms/javascript/guides/cloudflare/frameworks/sveltekit.md)
+
+* **Currently not supported**
+  * Non-Node.js server runtimes, such as Vercel's edge runtime, are not yet supported.
+
+* **Other adapters**
+  * Other SvelteKit adapters might work, but they're not currently officially supported. We're looking into extending first-class support to more adapters in the future.
+
+## [Install](https://docs.sentry.io/platforms/javascript/guides/sveltekit.md#install)
+
+The AI-powered `sentry init` flow is currently experimental. To use the existing framework-specific setup instead, see the option below, or check out the [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/sveltekit/manual-setup.md) guide.
+
+Run the Sentry init command in your project directory to automatically configure Sentry in your SvelteKit application.
+
+The command guides you through setup and asks which optional Sentry features you want to enable beyond error monitoring.
+
+```bash
+npx sentry@latest init
+```
+
+How does sentry init work?
+
+The `sentry init` command is AI-powered. It analyzes your project and generates a tailored integration, rather than applying a fixed template. Here's what it does:
+
+* **Analyzes your project** — reads project files and manifests to understand your SvelteKit app structure, including monorepos. It also respects AI instruction files such as `CLAUDE.md`, `AGENTS.md`, and `.cursorrules`.
+* **Detects your framework** — identifies SvelteKit and selects the `@sentry/sveltekit` SDK.
+* **Fetches official Sentry docs** — uses the current Sentry documentation as the source of truth when generating integration code.
+* **Installs dependencies** — adds `@sentry/sveltekit` using your project's package manager.
+* **Creates and modifies files** — sets up client-side and server-side initialization, SvelteKit hooks or instrumentation, and other selected features based on your SvelteKit version and project structure.
+* **Verifies the integration** — re-reads modified files after writing to confirm Sentry was integrated.
+
+For full details on what each file does, see the [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/sveltekit/manual-setup.md) guide.
+
+Prefer the existing SvelteKit wizard?
+
+If you don't want to use the experimental AI-powered flow, run the framework-specific installation wizard instead:
+
+```bash
+npx @sentry/wizard@latest -i sveltekit
+```
+
+To configure Sentry manually, follow the [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/sveltekit/manual-setup.md) guide.
+
+## [Avoid Ad Blockers With Tunneling (Optional)](https://docs.sentry.io/platforms/javascript/guides/sveltekit.md#avoid-ad-blockers-with-tunneling-optional)
+
+You can prevent ad blockers from blocking Sentry events using tunneling. Use the `tunnel` option inside your `hooks.client.(js|ts)` file's `Sentry.init` to add an API endpoint in your application that forwards Sentry events to Sentry servers.
+
+This will send all events to the `tunnel` endpoint. However, the events need to be parsed and redirected to Sentry, so you'll need to do additional configuration on the server. You can find a detailed explanation on how to do this on our [Troubleshooting page](https://docs.sentry.io/platforms/javascript/guides/sveltekit/troubleshooting.md#using-the-tunnel-option).
+
+```javascript
+Sentry.init({
+  dsn: "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
+  tunnel: "/tunnel",
+});
+```
+
+## [Control the Data You Send to Sentry (Optional)](https://docs.sentry.io/platforms/javascript/guides/sveltekit.md#control-the-data-you-send-to-sentry-optional)
+
+By default, the SDK sends user identity data (IP address, ID, and similar) and other data like HTTP bodies and URL query parameters. This will give you rich debugging context.
+
+The SDK always filters sensitive values whose keys match a built-in denylist, such as `auth` or `password`, and sends `[Filtered]` instead.
+
+To send less data, turn off the categories you don't need in the `dataCollection` option. For the full list of categories and their defaults, [see the `dataCollection` options](https://docs.sentry.io/platforms/javascript/guides/sveltekit/configuration/options.md#dataCollection).
+
+```javascript
+Sentry.init({
+  dsn: "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
+  dataCollection: {
+    userInfo: false,
+    // other categories
+  },
+});
+```
+
+## [Verify Your Setup](https://docs.sentry.io/platforms/javascript/guides/sveltekit.md#verify-your-setup)
+
+The `sentry init` command checks the integration files it creates or modifies before it finishes. To confirm runtime events are reaching Sentry, start your SvelteKit app, exercise the parts of your app that should send events, and then check your Sentry project.
+
+If you used the SvelteKit installation wizard instead, you can also verify your setup with the example page and route it creates:
+
+1. Open the example page `/sentry-example-page` in your browser
+
+2. Click the "Throw Sample Error" button. This triggers two errors:
+
+   * a frontend error
+   * an error within the API route
+
+Sentry captures both of these errors for you. Additionally, the button click starts a trace to measure the time it takes for the API request to complete.
+
+##### Tip
+
+If you used the SvelteKit installation wizard, explore the example files' code in your project to understand what's happening after your button click.
+
+### [Verify Additional Features](https://docs.sentry.io/platforms/javascript/guides/sveltekit.md#verify-additional-features)
+
+**Logs** (enabled by default)
+
+See structured log entries from your application. You can send logs from anywhere:
+
+```typescript
+Sentry.logger.info("User action", { userId: "123" });
+Sentry.logger.warn("Slow response", { duration: 5000 });
+Sentry.logger.error("Operation failed", { reason: "timeout" });
+```
+
+Learn more about [Logs configuration](https://docs.sentry.io/platforms/javascript/guides/sveltekit/logs.md).
+
+**Application Metrics** (enabled by default) NEW
+
+Track and analyze custom application metrics to understand trends and patterns in your app's performance and behavior over time:
+
+```typescript
+Sentry.metrics.count("checkout.failed", 1);
+Sentry.metrics.gauge("queue.depth", 42);
+Sentry.metrics.distribution("api_latency", 187, {
+  unit: "millisecond",
+});
+```
+
+Learn more about [Application Metrics](https://docs.sentry.io/platforms/javascript/guides/sveltekit/metrics.md).
+
+### [View Captured Data in Sentry](https://docs.sentry.io/platforms/javascript/guides/sveltekit.md#view-captured-data-in-sentry)
+
+Now, head over to your project on [Sentry.io](https://sentry.io) to view the collected data (it takes a couple of moments for the data to appear).
+
+##### Important
+
+Errors triggered from within your browser's developer tools (like the browser console) are sandboxed, so they will not trigger Sentry's error monitoring.
+
+Need help locating captured data in your Sentry project?
+
+* Open the [**Issues**](https://sentry.io/orgredirect/organizations/:orgslug/issues/) page and select an error from the issues list to view the full details and context of this error. For more details, see the [Issue Details documentation](https://docs.sentry.io/product/issues/issue-details.md).
+* Open the [**Traces**](https://sentry.io/orgredirect/organizations/:orgslug/explore/traces/) page and select a trace to reveal more information about each span, its duration, and any errors. For an interactive UI walkthrough, click [here](https://docs.sentry.io/product/sentry-basics/getting-started-tutorial/generate-first-error.md#ui-walkthrough).
+* Open the [**Replays**](https://sentry.io/orgredirect/organizations/:orgslug/replays/) page and select an entry from the list to get a detailed view where you can replay the interaction and get more information to help you troubleshoot.
+* Open the [**Logs**](https://sentry.io/orgredirect/organizations/:orgslug/explore/logs/) page and filter by service, environment, or search keywords to view log entries from your application. For an interactive UI walkthrough, click [here](https://docs.sentry.io/product/logs.md#overview).
+* Open the [**Application Metrics**](https://sentry.io/orgredirect/organizations/:orgslug/explore/metrics) page to view and analyze your metrics. For more details, see this [interactive walkthrough](https://docs.sentry.io/product/metrics.md#overview).
+* Open the [**User Feedback**](https://sentry.io/orgredirect/organizations/:orgslug/feedback/) page and click on individual feedback to see more details all in one view. For more information, click [here](https://docs.sentry.io/product/user-feedback.md).
+
+## [Next Steps](https://docs.sentry.io/platforms/javascript/guides/sveltekit.md#next-steps)
+
+At this point, you should have integrated Sentry into your SvelteKit application and should already be sending error and performance data to your Sentry project.
+
+Now's a good time to customize your setup and look into more advanced topics. Our next recommended steps for you are:
+
+* Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
+* Learn how to [manually capture errors](https://docs.sentry.io/platforms/javascript/guides/sveltekit/usage.md)
+* Continue to [customize your configuration](https://docs.sentry.io/platforms/javascript/guides/sveltekit/configuration.md)
+* Learn how to [manually instrument](https://docs.sentry.io/platforms/javascript/guides/sveltekit/apis.md#load-function-instrumentation) SvelteKit-specific features
+* Learn more about [deploying SvelteKit apps to Cloudflare Pages](https://docs.sentry.io/platforms/javascript/guides/cloudflare/frameworks/sveltekit.md)
+* Get familiar with [Sentry's product features](https://docs.sentry.io/product.md) like tracing, insights, and alerts
+
+Are you having problems setting up the SDK?
+
+* If you encountered issues with our installation wizard, try [setting up Sentry manually](https://docs.sentry.io/platforms/javascript/guides/sveltekit/manual-setup.md)
+* Find various support topics in [troubleshooting](https://docs.sentry.io/platforms/javascript/guides/sveltekit/troubleshooting.md)
+* [Get support](https://www.sentry.help/en/)
+
+## Other JavaScript Frameworks
+
+- [Angular](https://docs.sentry.io/platforms/javascript/guides/angular.md)
+- [Astro](https://docs.sentry.io/platforms/javascript/guides/astro.md)
+- [AWS Lambda](https://docs.sentry.io/platforms/javascript/guides/aws-lambda.md)
+- [Azure Functions](https://docs.sentry.io/platforms/javascript/guides/azure-functions.md)
+- [Bun](https://docs.sentry.io/platforms/javascript/guides/bun.md)
+- [Capacitor](https://docs.sentry.io/platforms/javascript/guides/capacitor.md)
+- [Cloud Functions for Firebase](https://docs.sentry.io/platforms/javascript/guides/firebase.md)
+- [Cloudflare](https://docs.sentry.io/platforms/javascript/guides/cloudflare.md)
+- [Cordova](https://docs.sentry.io/platforms/javascript/guides/cordova.md)
+- [Deno](https://docs.sentry.io/platforms/javascript/guides/deno.md)
+- [Effect](https://docs.sentry.io/platforms/javascript/guides/effect.md)
+- [Electron](https://docs.sentry.io/platforms/javascript/guides/electron.md)
+- [Elysia](https://docs.sentry.io/platforms/javascript/guides/elysia.md)
+- [Ember](https://docs.sentry.io/platforms/javascript/guides/ember.md)
+- [Eve](https://docs.sentry.io/platforms/javascript/guides/eve.md)
+- [Express](https://docs.sentry.io/platforms/javascript/guides/express.md)
+- [Fastify](https://docs.sentry.io/platforms/javascript/guides/fastify.md)
+- [Flue](https://docs.sentry.io/platforms/javascript/guides/flue.md)
+- [Gatsby](https://docs.sentry.io/platforms/javascript/guides/gatsby.md)
+- [Google Cloud Functions](https://docs.sentry.io/platforms/javascript/guides/gcp-functions.md)
+- [Hapi](https://docs.sentry.io/platforms/javascript/guides/hapi.md)
+- [Hono](https://docs.sentry.io/platforms/javascript/guides/hono.md)
+- [Koa](https://docs.sentry.io/platforms/javascript/guides/koa.md)
+- [Mastra](https://docs.sentry.io/platforms/javascript/guides/mastra.md)
+- [Nest.js](https://docs.sentry.io/platforms/javascript/guides/nestjs.md)
+- [Next.js](https://docs.sentry.io/platforms/javascript/guides/nextjs.md)
+- [Nitro](https://docs.sentry.io/platforms/javascript/guides/nitro.md)
+- [Node.js](https://docs.sentry.io/platforms/javascript/guides/node.md)
+- [Nuxt](https://docs.sentry.io/platforms/javascript/guides/nuxt.md)
+- [Pi Durable](https://docs.sentry.io/platforms/javascript/guides/pi-durable.md)
+- [React](https://docs.sentry.io/platforms/javascript/guides/react.md)
+- [React Router Framework](https://docs.sentry.io/platforms/javascript/guides/react-router.md)
+- [Remix](https://docs.sentry.io/platforms/javascript/guides/remix.md)
+- [Solid](https://docs.sentry.io/platforms/javascript/guides/solid.md)
+- [SolidStart](https://docs.sentry.io/platforms/javascript/guides/solidstart.md)
+- [Svelte](https://docs.sentry.io/platforms/javascript/guides/svelte.md)
+- [TanStack Start React](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react.md)
+- [Vue](https://docs.sentry.io/platforms/javascript/guides/vue.md)
+- [Wasm](https://docs.sentry.io/platforms/javascript/guides/wasm.md)
+
+## Topics
+
+- [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/sveltekit/manual-setup.md)
+- [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/sveltekit/manual-setup__v10.7.0.md)
+- [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/sveltekit/manual-setup__v8.x.md)
+- [Capturing Errors](https://docs.sentry.io/platforms/javascript/guides/sveltekit/usage.md)
+- [Source Maps](https://docs.sentry.io/platforms/javascript/guides/sveltekit/sourcemaps.md)
+- [Logs](https://docs.sentry.io/platforms/javascript/guides/sveltekit/logs.md)
+- [Session Replay](https://docs.sentry.io/platforms/javascript/guides/sveltekit/session-replay.md)
+- [Tracing](https://docs.sentry.io/platforms/javascript/guides/sveltekit/tracing.md)
+- [Agent Tracing](https://docs.sentry.io/platforms/javascript/guides/sveltekit/agent-tracing.md)
+- [Application Metrics](https://docs.sentry.io/platforms/javascript/guides/sveltekit/metrics.md)
+- [MCP Monitoring](https://docs.sentry.io/platforms/javascript/guides/sveltekit/mcp-monitoring.md)
+- [Profiling](https://docs.sentry.io/platforms/javascript/guides/sveltekit/profiling.md)
+- [Crons](https://docs.sentry.io/platforms/javascript/guides/sveltekit/crons.md)
+- [User Feedback](https://docs.sentry.io/platforms/javascript/guides/sveltekit/user-feedback.md)
+- [Sampling](https://docs.sentry.io/platforms/javascript/guides/sveltekit/sampling.md)
+- [Enriching Events](https://docs.sentry.io/platforms/javascript/guides/sveltekit/enriching-events.md)
+- [Extended Configuration](https://docs.sentry.io/platforms/javascript/guides/sveltekit/configuration.md)
+- [OpenTelemetry Support](https://docs.sentry.io/platforms/javascript/guides/sveltekit/opentelemetry.md)
+- [OpenTelemetry Support](https://docs.sentry.io/platforms/javascript/guides/sveltekit/opentelemetry__v10.x.md)
+- [Feature Flags](https://docs.sentry.io/platforms/javascript/guides/sveltekit/feature-flags.md)
+- [Data Management](https://docs.sentry.io/platforms/javascript/guides/sveltekit/data-management.md)
+- [Security Policy Reporting](https://docs.sentry.io/platforms/javascript/guides/sveltekit/security-policy-reporting.md)
+- [Special Use Cases](https://docs.sentry.io/platforms/javascript/guides/sveltekit/best-practices.md)
+- [Migration Guide](https://docs.sentry.io/platforms/javascript/guides/sveltekit/migration.md)
+- [Troubleshooting](https://docs.sentry.io/platforms/javascript/guides/sveltekit/troubleshooting.md)
+

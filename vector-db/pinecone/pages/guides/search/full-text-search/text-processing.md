@@ -22,11 +22,12 @@ The pipeline (in order):
 2. **Lowercase** every token. Lowercasing is server-applied and can't be overridden.
 3. **Stem** each token to its root form, if [`stemming`](#stemming) is enabled on the field. The stemmer is selected by the field's [`language`](#language) setting (`models` → `model`, `running` → `run`).
 4. **Drop stop words** (common words like `the`, `and`), if `stop_words: true` is set on the field. Not all languages have built-in stop word lists; see the [Language](#language) table for details.
-5. **Cap** each token at 40 characters. A raw token value can be up to 256 bytes at ingest; the analyzer then truncates it to this 40-character cap. This cap is server-applied and can't be overridden.
 
 For example, with the `english` analyzer, `stemming: true`, and `stop_words: false`, the input `"State-of-the-Art Models"` becomes the tokens `state`, `of`, `the`, `art`, `model`. Those are the tokens BM25 scores against, and the tokens a `$match_phrase: "art models"` filter will look for.
 
-Fields configured for [substring search](#substring-search-with-n-grams) replace this whole-token pipeline with character n-gram tokenization, so a token is further split into overlapping character sequences.
+A single token can be up to 1,024 bytes, measured after splitting and before lowercasing or stemming. Tokens aren't truncated: an upsert, `text` query, or `query_string` query that contains a longer token fails with a `400` error, and a `$match_*` filter ignores a longer token without an error. This limit is server-applied and can't be overridden.
+
+Fields configured for [substring search](#substring-search-with-n-grams) replace this whole-token pipeline with character n-gram tokenization, so a token is further split into overlapping character sequences. These fields accept tokens over 1,024 bytes at upsert, but a query token over 1,024 bytes still fails with a `400` error.
 
 ### Dense-vector tokens (`type: "dense_vector"`)
 

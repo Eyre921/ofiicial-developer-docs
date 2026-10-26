@@ -8,6 +8,10 @@ Authenticate with third-party APIs like GitHub, Google, and Salesforce from a No
 
 Use OAuth when the API you're connecting to requires user authorization, such as GitHub, Google, Salesforce, and most SaaS APIs. You register an OAuth capability on your worker, deploy, complete the authorization flow via the CLI, and then call `accessToken()` in your code to get a valid token.
 
+> [!NOTE]
+>
+> Workers always sends Proof Key for Code Exchange (PKCE) parameters. The authorization request includes an S256 code challenge, and the token exchange includes the matching code verifier. PKCE does not replace a client secret when your provider requires one.
+
 ## Define an OAuth capability
 
 Call `worker.oauth()` with your provider's OAuth 2.0 endpoints and credentials:
@@ -44,10 +48,12 @@ const githubAuth = worker.oauth("githubAuth", {
 | `authorizationEndpoint` | Yes | The provider's OAuth 2.0 authorization URL |
 | `tokenEndpoint` | Yes | The provider's OAuth 2.0 token exchange URL |
 | `clientId` | Yes | Your OAuth app's client ID |
-| `clientSecret` | Yes | Your OAuth app's client secret |
+| `clientSecret` | No | Your OAuth app's client secret, if the provider requires one |
 | `scope` | Yes | Space-separated list of OAuth scopes to request |
 | `authorizationParams` | No | Additional parameters to include in the authorization request |
 | `accessTokenExpireMs` | No | Default token expiry in milliseconds (for providers that don't return `expires_in`) |
+
+For public OAuth clients, such as Etsy apps, omit `clientSecret` or set it to `null`. The SDK turns missing or `undefined` values into `null`. Workers sends the client ID without a client secret during token exchange and refresh. An empty string is treated as a configured secret with no value, so the server rejects it. If your provider requires a client secret, supply a non-empty string.
 
 ## Deploy and authorize
 

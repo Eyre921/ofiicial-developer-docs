@@ -30,7 +30,7 @@ ElevenLabs supports both [IPA](https://en.wikipedia.org/wiki/International_Phone
 > alias tags instead to substitute spellings or phrases that produce the pronunciation you need.
 >
 > If you want to use IPA and CMU pronunciations in languages other than English, you will have to
-> switch to the eleven_v4 model.
+> switch to the eleven_v4 or eleven_v4_turbo model.
 
 ## Quickstart
 

@@ -69,18 +69,6 @@ Four types of financing offers are available to US connected accounts:
 | **Fixed-term loan** | Celtic Bank or Lead Bank | Available to connected accounts that process payments outside Stripe and whose payment data has been imported to Stripe. Repaid through weekly minimums with a capped withholding structure. |
 | **Line of credit** (Private preview) | Celtic Bank or Lead Bank | Draw up to a prequalified credit limit, accessing only the amount needed. Each draw is repaid as principal plus a fixed fee over nine monthly payments. Available credit replenishes as repayments are made, and the credit limit is reevaluated every 90 days. |
 
-### Interested in offering line of credit financing to your connected accounts?
-
-Enter your email to request access.
-
-```bash
-curl https://docs.stripe.com/preview/register \
-  -X POST \
-  -H "Content-Type: application/json" \
-  -H "Referer: https://docs.stripe.com/capital/how-capital-for-platforms-works" \
-  -d '{"email": "EMAIL", "preview": "capital_review_preview"}'
-```
-
 #### AU
 
 ### Additional eligibility considerations

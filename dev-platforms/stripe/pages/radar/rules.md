@@ -75,15 +75,11 @@ Effective December 17, 2024, the Dashboard shows these rules to existing custome
 
 Stripe automatically handles soft decline codes indicating that 3DS is required by issuers. We also trigger 3DS when necessary, adhering to regulations, such as the [Strong Customer Authentication](https://stripe.com/guides/strong-customer-authentication) (SCA) mandated by the PSD2. Disabling Radar doesn’t prevent 3DS from being triggered in cases where it’s necessary.
 
-Stripe supports three legacy built-in rules to request 3DS when using Radar with [Payment Intents](https://docs.stripe.com/payments/accept-a-payment.md) or [SetupIntents](https://docs.stripe.com/payments/save-and-reuse.md):
+Stripe supports the following legacy built-in rule to request 3DS when using Radar with [Payment Intents](https://docs.stripe.com/payments/accept-a-payment.md) or [SetupIntents](https://docs.stripe.com/payments/save-and-reuse.md):
 
 | Radar rule | Description |
 | --- | --- |
-| `if 3D Secure is recommended for card` (Deprecated) | Enable this rule to prompt the customer for 3DS authentication based on risk. |
 | `if 3D Secure is supported for card` (Deprecated) | Enable this rule to prompt the customer for 3DS authentication, as long as their card supports it. |
-| `if 3D Secure is required for card` (Deprecated) | Enable this rule to prompt the customer for 3DS authentication, if the card historically [required 3DS](https://docs.stripe.com/payments/3d-secure/authentication-flow.md#three-ds-cards). Regardless of this rule, Stripe automatically triggers 3DS:
-- If a soft decline code indicates the issuer requires 3DS.
-- In adherence to regulations, such as the PSD2 [Strong Customer Authentication](https://stripe.com/guides/strong-customer-authentication) mandate. |
 
 Because 3DS requires your customer to go through an additional layer of authentication, indiscriminate use of 3DS might lower conversion rates.
 

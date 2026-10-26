@@ -1,15 +1,15 @@
 ---
-title: "Find an agent's project"
+title: "Resolve an agent environment"
 source: https://docs.langchain.com/langsmith/resolve-an-agent
 path: langsmith/resolve-an-agent
 ---
 
-Find the tracing project of an agent, experiment, or evaluator by resolving it to its project ID, so you can query its traces and use endpoints that take a project ID.
+Resolve an agent environment, experiment, or workspace evaluator traces to the session ID required by query and feedback APIs.
 
-[Agents](/langsmith/agents), [experiments](/langsmith/evaluation-concepts), and [evaluators](/langsmith/evaluators) each keep their traces in a [tracing project](/langsmith/observability-concepts#tracing-projects). Endpoints that read or manage that data identify the project by its ID. The SDKs and API call a tracing project a *session*, so a project ID is also a session ID. Resolve an agent to its project ID first, then pass the ID wherever an endpoint takes a project (session) ID. For example:
+Some APIs identify an [agent environment](/langsmith/agent-environments) by its backing trace-storage UUID, returned as `session_id`. Resolve the agent identifier and environment to get this UUID. Use it in API fields named `session_id`, `project_id`, or `project_ids`. These are existing API names for the same identifier. Resolution also supports [experiments](/langsmith/evaluation-concepts) and workspace [evaluator](/langsmith/evaluators) traces. Use the returned ID for operations such as:
 
 * Querying runs, threads, and traces with `project_ids`
-* Reading or updating the project, and its views, insights, and alerts
+* Reading or updating the environment's trace-storage settings, saved views, insights, and alerts
 
 > [!NOTE]
 >
@@ -20,9 +20,11 @@ Find the tracing project of an agent, experiment, or evaluator by resolving it t
 > * **Java**: `com.langchain.smith:langsmith-java` 0.1.0-beta.26 or later
 > * **Go**: `github.com/langchain-ai/langsmith-go` v0.28.0 or later
 
+For integrations that require `project_name`, [retrieve the agent environment](/langsmith/create-an-agent#use-an-environment-project) and use its `tracer_session_name`.
+
 ## What you can resolve
 
-Resolve any of the following to get the ID of its project:
+Resolve any of the following to get its `session_id`:
 
 **Python**
 
@@ -177,7 +179,7 @@ func main() {
 
 ## Resolve an experiment and query its runs
 
-Pass the ID of the experiment. An experiment is its own tracing project, so the endpoint returns the experiment's ID.
+Pass the experiment ID. The endpoint returns that same ID as `session_id`.
 
 **Python**
 
@@ -291,7 +293,7 @@ func main() {
 
 ## Resolve the evaluators and query their runs
 
-Evaluator traces share one project per workspace, so the evaluators take no ID.
+Evaluator traces share one storage destination per workspace, so the evaluator address takes no ID.
 
 **Python**
 
@@ -398,7 +400,7 @@ func main() {
 
 ## Errors
 
-* LangSmith returns a `404` if nothing in the workspace matches, if the agent is archived, or if you cannot read its project. An agent's environments exist once the agent exists.
+* LangSmith returns a `404` if nothing in the workspace matches, if the agent is archived, or if you cannot read the selected environment's traces. An agent's environments exist once the agent exists.
 * On a BYOC data plane, the endpoint returns a `501`, because resolving is not supported there yet.
 
 ## See also
