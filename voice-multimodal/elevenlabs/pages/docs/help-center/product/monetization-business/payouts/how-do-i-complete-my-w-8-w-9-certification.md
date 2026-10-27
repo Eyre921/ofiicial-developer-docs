@@ -15,7 +15,7 @@ To do this, click **My Account** and select **Payouts** to go to your Payouts pa
 You will see a section for W-8/W-9 certification, which will be marked **Incomplete**. Click **Update** to open the form\
 
 
-![](/docs/_fern-img/c86670b2a62775500db5c36908f55acad2dbf83e38440dc52c89d4a1d5348508.webp)
+![](/docs/_fern-files/_img/c86670b2a62775500db5c36908f55acad2dbf83e38440dc52c89d4a1d5348508.webp)
 
 Answer the questions on screen. The first question, "Are you considered a U.S. person for Federal Tax Purpose?", will determine whether you complete Form W-9 or Form W-8.
 

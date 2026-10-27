@@ -177,7 +177,7 @@ Now's a good time to customize your setup and look into more advanced topics. Ou
 
 * Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
 * Continue to [customize your configuration](https://docs.sentry.io/platforms/dart/guides/flutter/configuration.md)
-* Add readable [stack traces](https://docs.sentry.io/platforms/dart/guides/flutter/upload-debug.md#when-to-upload/) to errors
+* Add readable [stack traces](https://docs.sentry.io/platforms/dart/guides/flutter/debug-symbols.md#when-to-upload-debug-symbols) to errors
 * Learn about the [features of Sentry's Flutter SDK](https://docs.sentry.io/platforms/dart/guides/flutter/features.md)
 * Add [performance instrumentation to your app](https://docs.sentry.io/platforms/dart/guides/flutter/tracing/instrumentation.md)
 

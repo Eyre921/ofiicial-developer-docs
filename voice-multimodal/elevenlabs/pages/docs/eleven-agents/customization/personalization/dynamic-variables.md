@@ -166,7 +166,7 @@ Example of a response object and dot notation:
 
 To update a dynamic variable to be the first user's email, set the assignment like so.
 
-![Query parameters](/docs/_fern-img/95ff0cae8613eafa8bc4312e7cafa39ac0eab34d2fd2b21f0894a30775366110.webp)
+![Query parameters](/docs/_fern-files/_img/95ff0cae8613eafa8bc4312e7cafa39ac0eab34d2fd2b21f0894a30775366110.webp)
 
 Assignments are configured on each webhook tool; see [tool assignments](/docs/eleven-agents/api-reference/tools/create#response.body.tool_config.SystemToolConfig.assignments) in the API reference.
 
@@ -185,18 +185,18 @@ Add variables using double curly braces `{{variable_name}}` in your:
 * First messages
 * Tool parameters
 
-![Dynamic variables in messages](/docs/_fern-img/84a9870018a436215fe8d6563a47f42b1b45e005c56dffff3b37dbfe8a25adf3.webp)
+![Dynamic variables in messages](/docs/_fern-files/_img/84a9870018a436215fe8d6563a47f42b1b45e005c56dffff3b37dbfe8a25adf3.webp)
 
-![Dynamic variables in messages](/docs/_fern-img/052ab733ff3ecb2512218c70d82a4337764577b0082cdc4b2fb4415d273d2cbe.webp)
+![Dynamic variables in messages](/docs/_fern-files/_img/052ab733ff3ecb2512218c70d82a4337764577b0082cdc4b2fb4415d273d2cbe.webp)
 
 #### Define dynamic variables in tools
 
 You can also define dynamic variables in the tool configuration.
 To create a new dynamic variable, set the value type to Dynamic variable and click the `+` button.
 
-![Setting placeholders](/docs/_fern-img/7da35479f409f1505dc528e78d782d74e226fa51b2a5d3b6ede3929359be8ddd.webp)
+![Setting placeholders](/docs/_fern-files/_img/7da35479f409f1505dc528e78d782d74e226fa51b2a5d3b6ede3929359be8ddd.webp)
 
-![Setting placeholders](/docs/_fern-img/21856929c95fe77b274dc1a849668c144554719cd468a225d110295ae94c7713.webp)
+![Setting placeholders](/docs/_fern-files/_img/21856929c95fe77b274dc1a849668c144554719cd468a225d110295ae94c7713.webp)
 
 #### Set placeholders
 
@@ -206,7 +206,7 @@ Configure default values for testing without passing variables at runtime.
 
 Set default values for each dynamic variable in the agent's dashboard.
 
-![Setting placeholders](/docs/_fern-img/dbea803919e315240202a3cb355ef7f62f25a5182d9aa99d0916177349c70ae4.webp)
+![Setting placeholders](/docs/_fern-files/_img/dbea803919e315240202a3cb355ef7f62f25a5182d9aa99d0916177349c70ae4.webp)
 
 #### Update via the CLI
 

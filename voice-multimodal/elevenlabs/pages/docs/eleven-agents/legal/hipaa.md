@@ -143,17 +143,17 @@ When working with Zero Retention Mode agents:
 #### LLMs (except the available LLMs as described above) are disabled in the UI
 
 ![Redacted conversation analysis showing Zero Retention Mode in
-action](/docs/_fern-img/01ba5fbc3d5d4a06a127f488d818428304c3f0d9500fd7931a7e4c05f8f15dab.webp)
+action](/docs/_fern-files/_img/01ba5fbc3d5d4a06a127f488d818428304c3f0d9500fd7931a7e4c05f8f15dab.webp)
 
 #### Content is redacted from content history
 
 ![Redacted conversation history showing Zero Retention Mode in
-action](/docs/_fern-img/af6abcc7d19b503a11e2daa6f9ca41eaab25be1b06417f448338ca3c4ef0b63f.webp)
+action](/docs/_fern-files/_img/af6abcc7d19b503a11e2daa6f9ca41eaab25be1b06417f448338ca3c4ef0b63f.webp)
 
 #### Conversation analysis is limited
 
 ![Redacted conversation analysis showing HIPAA compliance in
-action](/docs/_fern-img/7dd246148456ae24c454a9f55d70f730fc1183b1a0b3270c9191d259af5081bb.webp)
+action](/docs/_fern-files/_img/7dd246148456ae24c454a9f55d70f730fc1183b1a0b3270c9191d259af5081bb.webp)
 
 ### API restrictions are enforced
 

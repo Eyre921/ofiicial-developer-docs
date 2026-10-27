@@ -26836,19 +26836,21 @@ Embeddings are billed per 1M input tokens.
 # Serverless Rate Limits
 Source: https://docs.fireworks.ai/serverless/rate-limits
 
-How adaptive rate limits work on Fireworks serverless inference: bounds, adjustment logic, and how RPS and TPS grow and shrink with your recent usage patterns.
+How per-model adaptive rate limits work on Fireworks serverless inference: bounds, adjustment logic, and how limits grow and shrink with your recent usage of each model.
 
 When using Serverless, you may experience `429 Too Many Requests` or `503 Service Overloaded`. To avoid 429s, you need to stay below our adaptive rate limits. To reduce the likelihood of 503s, you can upgrade to [Priority tier](/serverless/serverless-modes).
 
+**Rate limits are per account and per model — there is no single account-wide token pool.** Each model has its own TPM limits, and each model's adaptive limit grows, shrinks, and resets based only on your usage of that model. Using one model does not consume another model's limit, and hitting a limit on one model does not rate limit your traffic to other models.
+
 ## What are your rate limits?
 
-There are three metrics we use to rate limit accounts:
+There are three metrics we use to rate limit each account, separately for each model:
 
 * **Total Prompt TPM** — input tokens per minute (cached + uncached).
 * **Uncached Prompt TPM** — uncached input tokens per minute.
 * **Generated TPM** — output tokens per minute.
 
-All limits are measured and enforced in **tokens per minute (TPM)**.
+All limits are measured and enforced in **tokens per minute (TPM)**, per model. For example, exhausting your Total Prompt TPM on one model returns `429`s for that model only — your other models keep their own, unaffected Total Prompt TPM limits.
 
 Base adaptive rate limit ceilings depend on the model's total parameter count. Smaller models get higher base ceilings:
 
@@ -26926,6 +26928,8 @@ Historical limit samples for each model are in the [Serverless dashboard](https:
 Adaptive rate limits have an upper and lower bound. A higher account [Spending Tier](/guides/quotas_usage/account-quotas#spending-tiers) correlates with higher upper bound rate limits; **enterprise accounts** get higher upper bounds automatically.
 
 ## How do adaptive limits change?
+
+Adaptive rate limiting is also **per model**: each model's limit adapts independently, based only on your recent usage of that model. Ramping up one model does not raise another model's limit, and going idle on one model does not shrink another model's limit.
 
 Your limit for each model starts at a default value and grows in steps as you use it. If your recent one-minute usage is above 50% of your current limit, the limit increases by 25%, and no more than once every 15 minutes, until it reaches your base ceiling. If you stop using it, the limit shrinks slowly and eventually resets. [Elastic Burst](#elastic-burst) can move the current limit above that ceiling, and back toward it, independently of the schedule below.
 
@@ -27014,7 +27018,7 @@ These headers are not present on every response. Header values are tokens per mi
 
 > **How are rate limits scoped?**
 >
-> Rate limits are scoped **per account** and **per model**. **Fast** and **regular** model variants have **separate** limits. **Priority tier** and **regular** requests share the **same** rate limits for a given model.
+> Rate limits — including adaptive rate limiting — are scoped **per account** and **per model**. Each model has its own TPM limits and its own adaptive limit, which grows, shrinks, and resets based only on your usage of that model. Traffic to one model does not consume, raise, or lower another model's limits. **Fast** and **regular** model variants have **separate** limits. **Priority tier** and **regular** requests share the **same** rate limits for a given model.
 
 > **How is my model's ceiling tier determined?**
 >

@@ -28,7 +28,7 @@ The **Flag issue for review** tool lets your conversational agent silently raise
 * **Uninterrupted conversation**: the agent is told internally to keep helping the caller as best it can and not to mention that anything was flagged, so the conversation continues uninterrupted.
 
 ![Flag issue for review enabled in system
-tools](/docs/_fern-img/428092adaaf445254c89c54bc09904eb83fa7fe3a7ad41dad10546ce573de16e.webp)
+tools](/docs/_fern-files/_img/428092adaaf445254c89c54bc09904eb83fa7fe3a7ad41dad10546ce573de16e.webp)
 
 ## Availability
 

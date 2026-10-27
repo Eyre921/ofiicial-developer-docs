@@ -62,7 +62,7 @@ Open the agent, then go to **Version Control** > **Proposals**. The list can be 
 
 Architect also returns a link to the proposal in the conversation as soon as it creates it.
 
-![Proposals list on the Branches page](/docs/_fern-img/bfdb23ad1edb31c89c2ff2a137fa3028bf3f9fbcf31e236de142e207b5d54cd0.webp)
+![Proposals list on the Branches page](/docs/_fern-files/_img/bfdb23ad1edb31c89c2ff2a137fa3028bf3f9fbcf31e236de142e207b5d54cd0.webp)
 
 ## Anatomy of a proposal
 
@@ -74,7 +74,7 @@ The description, an activity timeline of commits on the source branch, reviews, 
 
 A description Architect writes always has three sections: **Summary** (each meaningful change and why), **Testing** (which tests were run and their results, or a statement that none were run), and **How to review** (what to focus on, and a test to run or conversation to try).
 
-![Overview tab of a merge proposal](/docs/_fern-img/569eccd1750f90cd5ec8121411e8effd3a38e924e0f03f06f6216a9fcc160e08.webp)
+![Overview tab of a merge proposal](/docs/_fern-files/_img/569eccd1750f90cd5ec8121411e8effd3a38e924e0f03f06f6216a9fcc160e08.webp)
 
 #### Changes
 
@@ -82,7 +82,7 @@ The configuration diff: what the target branch will look like after the merge, c
 
 After the proposal is merged, this tab shows the target branch before and after the merge.
 
-![Changes tab of a merge proposal](/docs/_fern-img/cd06c0f93240d7c973101b896599542290437a6dcbfa6d288a25db0c1bfcd566.webp)
+![Changes tab of a merge proposal](/docs/_fern-files/_img/cd06c0f93240d7c973101b896599542290437a6dcbfa6d288a25db0c1bfcd566.webp)
 
 #### Test runs
 
@@ -90,13 +90,13 @@ The pass rate and test run history for the source branch, including the runs Arc
 
 Test runs are linked to the branch, not to the proposal. Merging does not require tests to pass. Reviewers decide based on what the tab shows.
 
-![Test runs tab of a merge proposal](/docs/_fern-img/58e28b31cb3408fe5bf8e9193f4a4edb5e716e6023c56f29d5a4f924c70a0f7a.webp)
+![Test runs tab of a merge proposal](/docs/_fern-files/_img/58e28b31cb3408fe5bf8e9193f4a4edb5e716e6023c56f29d5a4f924c70a0f7a.webp)
 
 #### Conversations
 
 Every conversation that ran on the source branch, including live traffic sent there by a traffic split. Select a conversation to open its transcript. While a branch is on a gradual rollout, this is where you watch real callers use the change.
 
-![Conversations tab of a merge proposal](/docs/_fern-img/f6345ff5beaee9a22732c7322995a7e889245cda7901682ab390790ef3849690.webp)
+![Conversations tab of a merge proposal](/docs/_fern-files/_img/f6345ff5beaee9a22732c7322995a7e889245cda7901682ab390790ef3849690.webp)
 
 ## Reviewing and merging
 
@@ -114,7 +114,7 @@ While a proposal is open, each reviewer's latest review is either **Approved** o
 
 Reviews and comments appear in the activity timeline on the **Overview** tab, alongside each new version committed to the source branch.
 
-![Activity timeline of a merge proposal](/docs/_fern-img/522012341d0089ff418032a34bae6653d2b883934b64a0b6a12de887646b2f5f.webp)
+![Activity timeline of a merge proposal](/docs/_fern-files/_img/522012341d0089ff418032a34bae6653d2b883934b64a0b6a12de887646b2f5f.webp)
 
 ### Who can approve and merge
 

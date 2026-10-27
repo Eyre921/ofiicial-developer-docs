@@ -12,4 +12,4 @@ In Studio, you can either regenerate the whole of the selected paragraph, or if 
 
 You need to have generated audio for the whole paragraph before you will see the option to regenerate selection.
 
-![](/docs/_fern-img/ae346d2ef88d73816edfae816d42a6d4028d3fcc7f441fae9c12683dab620c43.webp)
+![](/docs/_fern-files/_img/ae346d2ef88d73816edfae816d42a6d4028d3fcc7f441fae9c12683dab620c43.webp)

@@ -32,7 +32,7 @@ Follow the on-screen instructions to upload or record your audio.
 
 ### Confirm voice details
 
-![Voice cloning IVC modal](/docs/_fern-img/b3b4b3b8361ca372638c9c315e69588dcc44520bfaa00a3455720d963894d8ed.webp)
+![Voice cloning IVC modal](/docs/_fern-files/_img/b3b4b3b8361ca372638c9c315e69588dcc44520bfaa00a3455720d963894d8ed.webp)
 
 Name and label your voice clone, confirm that you have the right and consent to clone the voice, then click **Save voice**.
 
@@ -211,7 +211,7 @@ Find a good balance for the volume so the audio is neither too quiet nor too lou
 
       You can check the progress of your PVC in My Voices by finding the voice in your list of voices, then clicking **View** to see more details.  You can hover over each model to see the current status.
 
-      ![](/docs/_fern-img/ec34838a2fd40c5105c9196c356045b2963daf2490fd36c19f42bcb8f5359c86.webp)
+      ![](/docs/_fern-files/_img/ec34838a2fd40c5105c9196c356045b2963daf2490fd36c19f42bcb8f5359c86.webp)
 
       For more detail on what each status means, please see [What does the status of my Professional Voice Clone mean?](/docs/help-center/product/voices/voice-cloning/what-does-the-status-of-my-professional-voice-clone-mean)
 

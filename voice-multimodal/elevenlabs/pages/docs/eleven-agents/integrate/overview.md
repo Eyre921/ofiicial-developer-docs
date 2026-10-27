@@ -10,7 +10,7 @@ path: docs/eleven-agents/integrate/overview
 
 The Integrate section provides everything you need to connect your agents to your users, whether through web widgets, mobile apps, phone systems, or custom integrations.
 
-![Integration options](/docs/_fern-img/7375358c43ac5dd1a170937123f0874e01b3d8b6cf178c282805588a11d39593.webp)
+![Integration options](/docs/_fern-files/_img/7375358c43ac5dd1a170937123f0874e01b3d8b6cf178c282805588a11d39593.webp)
 
 ### Connect and deploy
 

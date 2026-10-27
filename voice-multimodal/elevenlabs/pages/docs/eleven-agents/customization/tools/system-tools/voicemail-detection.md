@@ -40,7 +40,7 @@ The **Voicemail Detection** tool allows your ElevenLabs agent to automatically i
 The voicemail detection tool can be configured with the following options:
 
 ![Voicemail detection configuration
-interface](/docs/_fern-img/f2f9a87e27ce0d5f631d2d294163e8df39e6dee5b3a98aaba692589c66364550.webp)
+interface](/docs/_fern-files/_img/f2f9a87e27ce0d5f631d2d294163e8df39e6dee5b3a98aaba692589c66364550.webp)
 
 * **Voicemail Message**: You can configure an optional custom message to be played when voicemail is detected. This message supports [dynamic variables](/docs/eleven-agents/customization/personalization/dynamic-variables), allowing you to personalize voicemail messages with runtime values such as `{{user_name}}` or `{{appointment_time}}`
 

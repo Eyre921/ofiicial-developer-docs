@@ -19,7 +19,7 @@ The number of custom voices you can have saved in [My Voices](https://elevenlabs
 
 You can free up voice slots by removing voices from [My Voices](https://elevenlabs.io/app/voice-lab). Find the voice you want to delete in your list of voices, click the **More actions** (three dots) button, then select **Delete voice**.
 
-![](/docs/_fern-img/ee3031105ec93f8664704768ad3802973e91cba07922c854dda7ccf1c87a5586.webp)
+![](/docs/_fern-files/_img/ee3031105ec93f8664704768ad3802973e91cba07922c854dda7ccf1c87a5586.webp)
 
 Deleting a voice cannot be undone, and you will be asked to confirm the deletion.
 

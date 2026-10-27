@@ -36,6 +36,7 @@ Successful Response
 
 - `id` (string, required)
 - `test_runs` (list of UnitTestRunResponseModel, required)
+- `name` (string, optional, nullable) — The user-provided name of the test invocation, if one was set.
 - `agent_id` (string, optional, nullable)
 - `branch_id` (string, optional, nullable)
 - `version_id` (string, optional, nullable)
@@ -1201,6 +1202,7 @@ A common model for workflow tool responses.
       }
     }
   ],
+  "name": "string",
   "agent_id": "string",
   "branch_id": "string",
   "version_id": "string",

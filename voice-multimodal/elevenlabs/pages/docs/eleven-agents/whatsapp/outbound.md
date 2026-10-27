@@ -36,7 +36,7 @@ Sending a template message starts a new conversation. The agent stays silent unt
 
 Go to the [WhatsApp page](https://elevenlabs.io/app/agents/whatsapp), select your account, and click the ***Outbound -> Message*** button. Select an agent, provide a WhatsApp user ID, and choose the message template and its parameters:
 
-![WhatsApp outbound message dialog](/docs/_fern-img/13913c2ccc1d92cb59e7332b6fdb4a8c8c64760a334d1a311fa2007831eeb986.webp)
+![WhatsApp outbound message dialog](/docs/_fern-files/_img/13913c2ccc1d92cb59e7332b6fdb4a8c8c64760a334d1a311fa2007831eeb986.webp)
 
 #### Python
 
@@ -195,7 +195,7 @@ Outbound WhatsApp calls require the user's permission — see [user call permiss
 
 Go to the [WhatsApp page](https://elevenlabs.io/app/agents/whatsapp), select your account, and click the ***Outbound -> Call*** button. Select an agent, provide a WhatsApp user ID, and choose the call permission request template:
 
-![WhatsApp outbound call dialog](/docs/_fern-img/1fcf7968f1651ce8e9474e770aad4dce4e702c69b4522f5bcc65efcd8bf8a3e4.webp)
+![WhatsApp outbound call dialog](/docs/_fern-files/_img/1fcf7968f1651ce8e9474e770aad4dce4e702c69b4522f5bcc65efcd8bf8a3e4.webp)
 
 #### Python
 

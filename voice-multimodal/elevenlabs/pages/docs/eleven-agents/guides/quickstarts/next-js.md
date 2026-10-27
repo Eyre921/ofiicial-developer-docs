@@ -20,7 +20,7 @@ This tutorial will guide you through creating a web client that can interact wit
 >
 > Looking for a complete example? Check out our [Next.js demo on GitHub](https://github.com/elevenlabs/examples/tree/main/agents/nextjs/quickstart).
 
-![](/docs/_fern-img/c1bc26a84d079cebcdfe6b4eb602bd27476d5afc92419e9ddfb92b755ca8058e.webp)
+![](/docs/_fern-files/_img/c1bc26a84d079cebcdfe6b4eb602bd27476d5afc92419e9ddfb92b755ca8058e.webp)
 
 ## Setup
 
@@ -54,7 +54,7 @@ Run the following command to start the development server and open the provided 
 npm run dev
 ```
 
-![](/docs/_fern-img/537e2c5609df75b2fd15bf3a37c86da75410de053dfb0c76267a72d7b8d9914a.webp)
+![](/docs/_fern-files/_img/537e2c5609df75b2fd15bf3a37c86da75410de053dfb0c76267a72d7b8d9914a.webp)
 
 ## Implement ElevenLabs Agents
 

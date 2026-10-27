@@ -12,6 +12,17 @@ Learn common reasons that contributions may be missing from your contributions g
 
 After making a commit that meets the requirements to count as a contribution, you may need to wait for up to 24 hours to see the contribution appear on your contributions graph. For more information, see [Viewing commit details from your timeline](/en/account-and-profile/how-tos/contribution-settings/viewing-commit-details-from-your-timeline).
 
+## Contribution counts are stale after rewriting history
+
+If you own an account and squash commits or force-push rewritten history, your profile may continue to count commits that are no longer in the repository's visible history. This can include contributions to private repositories. This is a stale-count issue, not a missing-contribution issue, so the other troubleshooting steps in this article do not apply.
+
+If the counts remain incorrect, GitHub Support may be able to rebuild your contribution data, depending on the support options available to your account. For more information, see [About GitHub Support](/en/support/learning-about-github-support/about-github-support).
+
+After a rebuild, allow up to 24 hours for your profile's contributions graph and activity summary to refresh. Then:
+
+1. Recheck the affected dates.
+2. If the counts are still incorrect, follow up through the support options available to your account.
+
 ## Your local Git commit email isn't connected to your account
 
 Commits must be made with an email address that is connected to your account on GitHub, or the GitHub-provided `noreply` email address provided to you in your email settings, in order to appear on your contributions graph. For more information about `noreply` email addresses, see [Email addresses reference](/en/account-and-profile/reference/email-addresses-reference#your-noreply-email-address).

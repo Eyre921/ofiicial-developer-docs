@@ -15,7 +15,7 @@ The Build section covers everything you need to create sophisticated conversatio
 > Everything on this page can also be configured conversationally. Connect the [hosted MCP server](/docs/eleven-agents/operate/hosted-mcp) to Claude or another MCP client to create and
 > update agents through natural language.
 
-![Build your agent](/docs/_fern-img/aa4e5442250b80183bf690e4bcc3bf9517932e1c5a569e5acb539c98604a213e.webp)
+![Build your agent](/docs/_fern-files/_img/aa4e5442250b80183bf690e4bcc3bf9517932e1c5a569e5acb539c98604a213e.webp)
 
 ### Design and configure
 

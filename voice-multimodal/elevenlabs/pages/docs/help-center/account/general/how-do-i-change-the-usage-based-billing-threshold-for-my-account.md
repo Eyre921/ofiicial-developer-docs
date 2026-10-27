@@ -14,7 +14,7 @@ For self-serve subscriptions, Pay As You Go is our replacement for usage based b
 
 On Enterprise and legacy Creator, Pro, Scale and Business plans, you have the option to activate usage based billing. This will enable you to pay for additional credits used after exceeding your monthly quota.
 
-![](/docs/_fern-img/bb3f6653c5ab9e8087db9801d24e8a52ce7bdeda7a45ef1e661122199b013656.webp)
+![](/docs/_fern-files/_img/bb3f6653c5ab9e8087db9801d24e8a52ce7bdeda7a45ef1e661122199b013656.webp)
 
 To allow for more control over charges, usage based billing lets you set a maximum number of additional credits that can be used on your account. You can set this threshold when you enable usage based billing, or adjust it at any time.
 

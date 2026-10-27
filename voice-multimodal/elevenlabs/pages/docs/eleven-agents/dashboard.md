@@ -21,7 +21,7 @@ For conversation-level themes, use [Spotlight](/docs/eleven-agents/dashboard/spo
 Navigate to the **Analytics** tab in your agents dashboard. You can view metrics across your entire workspace or filter down to a specific agent.
 
 ![Analytics dashboard General tab showing call count, average duration, total cost, and call
-volume over time](/docs/_fern-img/028eabc5e8536870547389bc6a07c2fe01d9e9440c4f930cc2f9d1efdf22de37.webp)
+volume over time](/docs/_fern-files/_img/028eabc5e8536870547389bc6a07c2fe01d9e9440c4f930cc2f9d1efdf22de37.webp)
 
 When running [experiments](/docs/eleven-agents/operate/experiments), you can jump directly to branch-filtered analytics from the agent configuration page using the **View Analytics** button. This pre-applies the agent and branch filters so you can compare variant performance immediately.
 
@@ -68,7 +68,7 @@ The dashboard displays the current number of active calls in real time. This ref
 Narrow your analytics view by applying filters on any combination of dimensions:
 
 ![Tools tab showing average error rate and average tool latency grouped by tool
-type](/docs/_fern-img/381d3ab344234172f0cf9474ec7388e19dbb3da7b4b7698becbd839bb96a1e15.webp)
+type](/docs/_fern-files/_img/381d3ab344234172f0cf9474ec7388e19dbb3da7b4b7698becbd839bb96a1e15.webp)
 
 | Filter                  | Description                                                       |
 | ----------------------- | ----------------------------------------------------------------- |
@@ -89,10 +89,10 @@ type](/docs/_fern-img/381d3ab344234172f0cf9474ec7388e19dbb3da7b4b7698becbd839bb9
 Group metrics by any of the filterable dimensions to break down aggregate numbers.
 
 ![LLMs tab showing LLM time to first sentence over
-time](/docs/_fern-img/abfe0baeebc774a3782213d19e9fcf9d106cf12112fc530333289d8247f9fc10.webp)
+time](/docs/_fern-files/_img/abfe0baeebc774a3782213d19e9fcf9d106cf12112fc530333289d8247f9fc10.webp)
 
 ![Turn taking latency chart showing p50, p90, and p99
-percentiles](/docs/_fern-img/e010346a296dd85403e9b4519378eba78cefd60aca798645cb435ceefc793bd6.webp)
+percentiles](/docs/_fern-files/_img/e010346a296dd85403e9b4519378eba78cefd60aca798645cb435ceefc793bd6.webp)
 
 For example:
 
@@ -106,7 +106,7 @@ Multiple grouping dimensions can be combined for deeper analysis.
 ## Workflow analytics
 
 ![Workflow analytics tab showing per-node entries, durations, terminations, and edge flow overlaid
-on the workflow graph](/docs/_fern-img/a758029a005f0327c1e6319708577efd617399c72cec63d5c342d3af2f0db2a3.webp)
+on the workflow graph](/docs/_fern-files/_img/a758029a005f0327c1e6319708577efd617399c72cec63d5c342d3af2f0db2a3.webp)
 
 For agents with a [workflow](/docs/eleven-agents/customization/agent-workflows), the **Workflow** tab in the analytics dashboard overlays usage metrics directly on the workflow graph. Select an agent that uses a workflow to enable the graph view — you can then visualize conversation flow and traffic volume directly on the workflow canvas, with detailed inflow and outflow for every node.
 

@@ -29,14 +29,14 @@ account.
 Go to the [Integrations page](https://elevenlabs.io/app/agents/integrations), click the ***Add
 integration*** button, select WhatsApp and connect your account:
 
-![WhatsApp integration](/docs/_fern-img/e560b1b2a4345bd2fbe9519f7146b87d195268955d2b2aa2c6221629d97e4384.webp)
+![WhatsApp integration](/docs/_fern-files/_img/e560b1b2a4345bd2fbe9519f7146b87d195268955d2b2aa2c6221629d97e4384.webp)
 
 #### Add a tool
 
 Go to the [Tools page](https://elevenlabs.io/app/agents/tools), click the ***Add integration
 tool*** button, select the WhatsApp integration and the ***Send Message*** tool:
 
-![WhatsApp tool](/docs/_fern-img/e85dcc3a3e3581250604311c516e080fb7f61f100b98b4b55be5f6071866e888.webp)
+![WhatsApp tool](/docs/_fern-files/_img/e85dcc3a3e3581250604311c516e080fb7f61f100b98b4b55be5f6071866e888.webp)
 
 ## Using the tool
 
@@ -45,7 +45,7 @@ tool*** button, select the WhatsApp integration and the ***Send Message*** tool:
 Go to [WhatsApp Manager](https://business.facebook.com/latest/whatsapp_manager/), open the
 ***Manage templates*** page and create a message template:
 
-![WhatsApp message template](/docs/_fern-img/e2d2c8bcab0b4c664261a57658627fd4368fc00e4768e4bd4c16264c59d07e16.webp)
+![WhatsApp message template](/docs/_fern-files/_img/e2d2c8bcab0b4c664261a57658627fd4368fc00e4768e4bd4c16264c59d07e16.webp)
 
 > **Info**
 >
@@ -55,7 +55,7 @@ Go to [WhatsApp Manager](https://business.facebook.com/latest/whatsapp_manager/)
 
 Go to your agent configuration and add the tool:
 
-![Agent configuration: tools](/docs/_fern-img/0e078a4206030111493387ec6c9bc2235106ac3cb763d4555dd1ae7307c6d46a.webp)
+![Agent configuration: tools](/docs/_fern-files/_img/0e078a4206030111493387ec6c9bc2235106ac3cb763d4555dd1ae7307c6d46a.webp)
 
 In the system prompt, tell the agent:
 
@@ -63,13 +63,13 @@ In the system prompt, tell the agent:
 * what template name and language code to use
 * what parameters to pass
 
-![Agent configuration: prompt](/docs/_fern-img/893aa34f7bd3e01a0cbb919f08f801398de318d46e1d8d1a6c72a945193f7de9.webp)
+![Agent configuration: prompt](/docs/_fern-files/_img/893aa34f7bd3e01a0cbb919f08f801398de318d46e1d8d1a6c72a945193f7de9.webp)
 
 #### Test
 
 Test the tool configuration:
 
-![Test conversation](/docs/_fern-img/47d48232a04cd47112d5637288c6225761f7f66f3016f5fc7d9cf38a34b3782d.webp)![Test message received](/docs/_fern-img/6b3809101caa5d38cf7ea761feb38f4ee316bfde4bef20e2e22eca6b14d0262f.webp)
+![Test conversation](/docs/_fern-files/_img/47d48232a04cd47112d5637288c6225761f7f66f3016f5fc7d9cf38a34b3782d.webp)![Test message received](/docs/_fern-files/_img/6b3809101caa5d38cf7ea761feb38f4ee316bfde4bef20e2e22eca6b14d0262f.webp)
 
 ## Parameters and language codes
 

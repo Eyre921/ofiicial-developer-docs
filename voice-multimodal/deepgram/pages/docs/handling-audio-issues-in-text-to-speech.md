@@ -183,13 +183,13 @@ DC (Direct Current) offset refers to a mean amplitude displacement from zero in 
 
 **No DC Offset**
 
-![This audio doesn't contain a DC Offset.](/_fern-img/97a0b8487dc4ef810db281c8c2607c9682ff2f90006a4f8d9316a90aec9a59da.webp)
+![This audio doesn't contain a DC Offset.](/_fern-files/_img/97a0b8487dc4ef810db281c8c2607c9682ff2f90006a4f8d9316a90aec9a59da.webp)
 
 This audio doesn't contain a DC Offset.
 
 **DC Offset**
 
-![This audio does contain a DC Offset.](/_fern-img/ba08ac25a978aeef5aa98a4b9b2a0a802d4e3699410d7c175f49e7d622a5bc82.webp)
+![This audio does contain a DC Offset.](/_fern-files/_img/ba08ac25a978aeef5aa98a4b9b2a0a802d4e3699410d7c175f49e7d622a5bc82.webp)
 
 This audio does contain a DC Offset.
 

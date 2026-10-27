@@ -123,7 +123,7 @@ Go to the [Phone Numbers section](https://elevenlabs.io/app/agents/phone-numbers
 
 Click the "Import number" button, then select "From SIP Trunk" to open the configuration dialog.
 
-![Import number menu with the From SIP Trunk option](/docs/_fern-img/5c6e4969f3ae086d4876674a1399e3f1f2b964d15b955d5f46ad95da655829fb.webp)
+![Import number menu with the From SIP Trunk option](/docs/_fern-files/_img/5c6e4969f3ae086d4876674a1399e3f1f2b964d15b955d5f46ad95da655829fb.webp)
 
 #### Enter basic configuration
 
@@ -132,7 +132,7 @@ Complete the basic configuration with the following information:
 * **Label**: A descriptive name for the phone number
 * **Phone Number**: The E.164 formatted phone number to connect (e.g., +15551234567)
 
-![SIP trunk basic configuration with Label and Phone number fields](/docs/_fern-img/682cc9b519dc50553e4849c528837ae3f6ff9ebeef005464004474d201cccb95.webp)
+![SIP trunk basic configuration with Label and Phone number fields](/docs/_fern-files/_img/682cc9b519dc50553e4849c528837ae3f6ff9ebeef005464004474d201cccb95.webp)
 
 #### Configure inbound settings
 
@@ -149,7 +149,7 @@ Configure how ElevenLabs handles calls arriving at your SIP trunk, including med
   * **SIP Trunk Username**: Username for SIP digest authentication
   * **SIP Trunk Password**: Password for SIP digest authentication
 
-![Inbound configuration settings, including media encryption, allowed numbers, allowed source IP addresses, remote domains, and authentication](/docs/_fern-img/83a3ee6dd135f8f0206c08703ade8324d7993d88cc0572eaa1f65246313ccf90.webp)
+![Inbound configuration settings, including media encryption, allowed numbers, allowed source IP addresses, remote domains, and authentication](/docs/_fern-files/_img/83a3ee6dd135f8f0206c08703ade8324d7993d88cc0572eaa1f65246313ccf90.webp)
 
 #### Configure outbound settings
 
@@ -173,7 +173,7 @@ Configure where ElevenLabs should send calls for your phone number:
 
   If left empty, Access Control List (ACL) authentication will be used, which requires you to allowlist ElevenLabs IP addresses in your provider's settings.
 
-![Outbound configuration settings, including address, transport type, media encryption, enabled codecs, custom headers, and authentication](/docs/_fern-img/91e0283cb11362220b862856c2365c56fb47388f1b618007c1902d4515390253.webp)
+![Outbound configuration settings, including address, transport type, media encryption, enabled codecs, custom headers, and authentication](/docs/_fern-files/_img/91e0283cb11362220b862856c2365c56fb47388f1b618007c1902d4515390253.webp)
 
 > **Tip**
 >

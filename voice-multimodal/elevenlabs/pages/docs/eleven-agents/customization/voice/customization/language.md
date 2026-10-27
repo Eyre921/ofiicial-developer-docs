@@ -35,7 +35,7 @@ When you create a new agent, it's configured with:
 * Flash v2 model for fast, English-only responses
 * A default first message.
 
-![](/docs/_fern-img/c533094b96146b19a31fd712a02a4b0b6d63790aa2168698e7dc682291c04e0b.webp)
+![](/docs/_fern-files/_img/c533094b96146b19a31fd712a02a4b0b6d63790aa2168698e7dc682291c04e0b.webp)
 
 > **Note**
 >
@@ -51,7 +51,7 @@ Navigate to your agent's configuration page and locate the **Agent** tab.
 1. In the **Additional Languages** add an additional language (e.g. French)
 2. Review the first message, which is automatically translated using a Large Language Model (LLM). Customize it as needed for each additional language to ensure accuracy and cultural relevance.
 
-![](/docs/_fern-img/a5db1d23c7c1cc22b41f9093839cd76b078e6cbef69230714f8c0e58f3609b2f.webp)
+![](/docs/_fern-files/_img/a5db1d23c7c1cc22b41f9093839cd76b078e6cbef69230714f8c0e58f3609b2f.webp)
 
 #### Update via the CLI
 
@@ -147,11 +147,11 @@ For optimal pronunciation, configure each additional language with a language-sp
 
 #### Language-specific voice settings
 
-![](/docs/_fern-img/e1335d0fc8fe77691f00b928c9aeb5e050226a0d766dbab325ded52e97ed4399.webp)
+![](/docs/_fern-files/_img/e1335d0fc8fe77691f00b928c9aeb5e050226a0d766dbab325ded52e97ed4399.webp)
 
 #### Voice library
 
-![](/docs/_fern-img/975e3c0207d86c06d4d68db0ef600ec6a716596062eabfec395b0356265f3583.webp)
+![](/docs/_fern-files/_img/975e3c0207d86c06d4d68db0ef600ec6a716596062eabfec395b0356265f3583.webp)
 
 #### Enable language detection
 
@@ -164,7 +164,7 @@ Now that the agent is configured to support additional languages, the widget wil
 If using the SDK, the language can be set programmatically using conversation overrides. See the
 [Overrides](/docs/eleven-agents/customization/personalization/overrides) guide for implementation details.
 
-![](/docs/_fern-img/4252ccb78e8c03f864b3389ec641a296ec99b9e89ae7d7efe2de36ef6132a152.webp)
+![](/docs/_fern-files/_img/4252ccb78e8c03f864b3389ec641a296ec99b9e89ae7d7efe2de36ef6132a152.webp)
 
 > **Note**
 >

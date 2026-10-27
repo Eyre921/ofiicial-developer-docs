@@ -31,7 +31,7 @@ In the ElevenLabs dashboard, go to
 [**Developers** > **Webhooks**](https://elevenlabs.io/app/developers/webhooks).
 Click **Create webhook**, or edit an existing webhook.
 
-![Create webhook dialog with Transcription completed selected](/docs/_fern-img/866f389106e74e16586a4d68cf8160f2d27568518ff4f984c2fab81cbd1674c9.webp)
+![Create webhook dialog with Transcription completed selected](/docs/_fern-files/_img/866f389106e74e16586a4d68cf8160f2d27568518ff4f984c2fab81cbd1674c9.webp)
 
 Configure the webhook with:
 

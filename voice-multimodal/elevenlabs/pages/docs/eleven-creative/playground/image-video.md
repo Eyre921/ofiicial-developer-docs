@@ -89,7 +89,7 @@ The **Explore** tab displays a gallery of community creations for discovering in
 
 ## Generate
 
-![Video prompt interface](/docs/_fern-img/f25b7fd594fb471980501063a9554513c4d22a2b3f8d526537054a0797780b8f.webp)
+![Video prompt interface](/docs/_fern-files/_img/f25b7fd594fb471980501063a9554513c4d22a2b3f8d526537054a0797780b8f.webp)
 
 The prompt box is anchored at the bottom of the page and provides all controls for creating visual content.
 
@@ -101,7 +101,7 @@ The prompt box is anchored at the bottom of the page and provides all controls f
 
 ### Choose models and settings
 
-![Video models selection](/docs/_fern-img/422c8078ccb97a8b5f98e521f1c230d3efbad34a128e5905a457e2ed0deeebce.webp)
+![Video models selection](/docs/_fern-files/_img/422c8078ccb97a8b5f98e521f1c230d3efbad34a128e5905a457e2ed0deeebce.webp)
 
 **Select model:** Open the model menu to browse available options like Google Veo 3.1, Kling 2.5, or Flux 1 Kontext Pro. Each model has unique strengths and capabilities listed for easy comparison. See the [Models](#models) section for detailed information.
 
@@ -117,7 +117,7 @@ The prompt box is anchored at the bottom of the page and provides all controls f
 ### Add references
 
 ![Video references
-interface](/docs/_fern-img/e6591dc845bfa071c81202736d8748827ab8110f0fe76c985cab83b9adcb51ec.webp)
+interface](/docs/_fern-files/_img/e6591dc845bfa071c81202736d8748827ab8110f0fe76c985cab83b9adcb51ec.webp)
 
 For greater control over output, add visual references to guide generation. Availability depends on the selected model. We support a wide range of image file formats including JPG, PNG, WEBP, and more.
 
@@ -138,7 +138,7 @@ Before generating, a cost indicator shows the total cost for the number of asset
 
 ## History
 
-![Video history interface](/docs/_fern-img/c5da61f1025001d12e41e2113a43da63903ea5ae29748085624eb5422b8c2473.webp)
+![Video history interface](/docs/_fern-files/_img/c5da61f1025001d12e41e2113a43da63903ea5ae29748085624eb5422b8c2473.webp)
 
 The **History** tab provides a chronological log of everything you've generated and serves as a workspace for refining previous work.
 
@@ -169,7 +169,7 @@ Once you have a generation you're satisfied with, use built-in enhancement tools
 
 ### Exporting your assets
 
-![Video export interface](/docs/_fern-img/ec37123477c4568ad486fea312925a9a12e11a1bf7f252750db0b91f6d85b822.webp)
+![Video export interface](/docs/_fern-files/_img/ec37123477c4568ad486fea312925a9a12e11a1bf7f252750db0b91f6d85b822.webp)
 
 Export finished assets by downloading them locally or sending them directly to ElevenCreative Studio.
 
@@ -2599,7 +2599,7 @@ Converts standard dynamic range video into HDR.
 
       Image & Video enables you to create high-quality visual content from simple text descriptions and optional reference images.
 
-      ![](/docs/_fern-img/ec6dc958c221fea880349a9807857e535832d80e0cbd2f3399c0f2ee4328d27e.webp)
+      ![](/docs/_fern-files/_img/ec6dc958c221fea880349a9807857e535832d80e0cbd2f3399c0f2ee4328d27e.webp)
 
       You can choose from a range of different image and video generative models, depending on your use case. Your generated content can either be downloaded, or imported directly into Studio projects.
 
@@ -2622,7 +2622,7 @@ Converts standard dynamic range video into HDR.
 
       Before you submit your generation, you will be shown how many generations you have remaining, based on the model and settings you've chosen. To see how many credits will be deducted for the generations you selected, hover over the remaining generations.
 
-      ![](/docs/_fern-img/05a4697d64f8028a9651d23c5daba1870b6495db111973c3f491ec21bbbe6f5d.webp)
+      ![](/docs/_fern-files/_img/05a4697d64f8028a9651d23c5daba1870b6495db111973c3f491ec21bbbe6f5d.webp)
 
       For more details, see our [Image & Video documentation.](/docs/product-guides/playground/image-video)
 

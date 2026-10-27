@@ -56,20 +56,20 @@ Our language detection tool triggers language switching in two cases, both based
 
 The languages that the agent can switch to must be defined in the `Agent` settings tab.
 
-![Agent languages](/docs/_fern-img/633707d54276febd3baa054c4f41b186225b74f606307a46e8262607befc8381.webp)
+![Agent languages](/docs/_fern-files/_img/633707d54276febd3baa054c4f41b186225b74f606307a46e8262607befc8381.webp)
 
 #### Add the language detection tool
 
 Enable language detection by selecting the pre-configured system tool to your agent's tools in the `Agent` tab.
 This is automatically available as an option when selecting `add tool`.
 
-![System tool](/docs/_fern-img/3d17048ab2bc1a0547c49056abb98f624caf866927ff1714af27f898b06ab18f.webp)
+![System tool](/docs/_fern-files/_img/3d17048ab2bc1a0547c49056abb98f624caf866927ff1714af27f898b06ab18f.webp)
 
 #### Configure tool description
 
 Add a description that specifies when to call the tool
 
-![Description](/docs/_fern-img/3bebc9fe07dba7121bce7793f3793858c710fc8ea1c221347604eb05929271df.webp)
+![Description](/docs/_fern-files/_img/3bebc9fe07dba7121bce7793f3793858c710fc8ea1c221347604eb05929271df.webp)
 
 ## Restricting switching to the start of the conversation
 

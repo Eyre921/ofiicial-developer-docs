@@ -8,7 +8,7 @@ path: docs/eleven-creative/products/transcripts
 
 # Transcripts
 
-![Transcript Editor Product Feature](/docs/_fern-img/48ca56e96f6cbfe0614bce01f133a8df6f3a62e0b9c26d02c8bffc415d1caf62.webp)
+![Transcript Editor Product Feature](/docs/_fern-files/_img/48ca56e96f6cbfe0614bce01f133a8df6f3a62e0b9c26d02c8bffc415d1caf62.webp)
 
 ## Transcript Editor
 
@@ -16,7 +16,7 @@ path: docs/eleven-creative/products/transcripts
 
 In the ElevenLabs dashboard, navigate to the Speech to Text page and click any transcript to open the Transcript Editor.
 
-![Open transcript](/docs/_fern-img/2359a7f6f5c82bf570c68adf2d41c78916a62f81f1dfc9445532de39eb5f2292.webp)
+![Open transcript](/docs/_fern-files/_img/2359a7f6f5c82bf570c68adf2d41c78916a62f81f1dfc9445532de39eb5f2292.webp)
 
 #### Edit basic details
 
@@ -90,7 +90,7 @@ Click and drag to reorder speaker tracks on the timeline. You can also change th
 
 You can adjust the playback speed of the source media by clicking the indicator next to the play button.
 
-![Playback speed](/docs/_fern-img/7e585e9029ecb71342124be24a0a40d7620f0551c362460cb460307222b53b65.webp)
+![Playback speed](/docs/_fern-files/_img/7e585e9029ecb71342124be24a0a40d7620f0551c362460cb460307222b53b65.webp)
 
 #### Export transcript
 
@@ -102,7 +102,7 @@ Click the export button in the top right of the screen and select one of the tra
 * SRT
 * VTT
 
-![Exports](/docs/_fern-img/5ba313e9580586330fe51c8ef12f3dc6babc734e4503bf6d1c7bee3d2a4b8b0c.webp)
+![Exports](/docs/_fern-files/_img/5ba313e9580586330fe51c8ef12f3dc6babc734e4503bf6d1c7bee3d2a4b8b0c.webp)
 
 ## FAQ
 

@@ -67,6 +67,7 @@ Each broadcast trace includes comprehensive information about your API request:
 * **Cost Information**: The total cost of the request
 * **Timing**: Request start time, end time, and latency metrics
 * **Model Information**: The model slug and provider name used for the request
+* **Model Parameters**: The sampling parameters the request set (`temperature`, `top_p`, `top_k`, `frequency_penalty`, `presence_penalty`, `repetition_penalty`, `min_p`, `top_a`, `seed`, `max_completion_tokens`, `max_tokens` or `max_output_tokens` as `max_tokens`, and `stop` as `stop_sequences`). OpenTelemetry destinations export them as `gen_ai.request.*` attributes. Privacy Mode keeps them, including `stop`, which is text you wrote and can come from your prompt.
 * **Tool Usage**: Whether tools were included in the request and if tool calls were made
 
 ### Token and cost fields
@@ -108,6 +109,8 @@ Enable **Cost** under **Additional generation metadata** on each destination to 
 | `endpoint_deployment_type_source` | `inferred` when OpenRouter derived `endpoint_deployment_type` from its endpoint configuration, or `declared` when it comes from the deployment type set on your BYOK key. |
 
 Both tier fields are also exported with **Request context**, alongside `requested_service_tier`: the tier the request asked for after presets are applied, with `fast` normalized to `priority`. Tiers implied by a `:nitro` (`priority`) or `:floor` (`flex`) model variant, by a dedicated Anthropic `*-fast` model (`priority`), or by tier-suffixed provider slugs such as `openai/priority` in `provider.order` or `provider.only`, are included when `service_tier` is not set. Compare `requested_service_tier` with `billed_service_tier` to find requests that were not served at the tier they asked for. The existing `service_tier` field, also under **Request context**, is the provider's own reported tier value as returned upstream; it is `null` when the provider reports none and is not used for pricing.
+
+**Request context** also exports `provider_preferences`: the routing keys of the request's [`provider` object](https://openrouter.ai/docs/guides/routing/provider-selection) after presets are applied, such as `sort`, `order`, `only`, `ignore`, `allow_fallbacks`, `quantizations`, and `max_price`, exactly as sent. Provider-specific `options` are left out. It is `null` when the request set no provider preferences (empty lists and objects don't count), or when the routing keys serialize to more than 64 KiB. The deprecated top-level `max_price` is not included even though routing applies it; read it from the request body. Sorting implied by a `:nitro` or `:floor` model variant or by `service_tier` is not included; see the `model` and `requested_service_tier` fields for those.
 
 The following **Request context** fields are also exported with **Cost**, because they select or multiply a rate: `model` (the versioned model permaslug), `api_type`, `web_search_engine`, `num_search_results`, `num_fetches`, `num_media_prompt`, `num_input_audio_prompt`, and `num_media_completion`.
 
@@ -246,7 +249,7 @@ The shortened value carries an `openrouter_truncated` marker in one of three sha
 { "openrouter_truncated": { "reason": "too_large" } }
 ```
 
-Strings keep their beginning and end, with `[truncated]` in the middle. Objects keep every key when the keys and per-value markers fit: after reserving keys and punctuation, each value gets an equal share of the remaining space. Values that fit their share stay intact; unused space is not redistributed. If those reservations cannot fit, the object keeps leading entries and appends `omitted_keys`. Message arrays keep the first message and newest turns, with `omitted_items` in the gap. Space for the newest message and the gap marker is reserved before deciding whether to keep the first message whole; the first message is shortened if necessary. If the limit cannot hold a shortened first message beside the newest one, the message array is treated like any other array. Other arrays keep leading elements and append `omitted_items`. When there is not enough room for these shapes, or a value cannot be serialized, it is replaced by the `reason` marker (`too_large` or `unserializable`).
+Strings keep their beginning and end, with `[truncated]` in the middle. Objects keep every key when the keys and per-value markers fit: after reserving keys and punctuation, values that fit an equal share of the remaining space stay intact, and the space they leave is split evenly among the larger values, which are then kept whole when they fit that room and otherwise shortened to fit it. This split runs once: space that a larger value leaves unused after being kept whole is not offered to the other larger values. If those reservations cannot fit, the object keeps leading entries and appends `omitted_keys`. Message arrays keep the first message and newest turns, with `omitted_items` in the gap. Space for the newest message and the gap marker is reserved before deciding whether to keep the first message whole; the first message is shortened if necessary. If the limit cannot hold a shortened first message beside the newest one, the message array is treated like any other array. Other arrays keep leading elements and append `omitted_items`. When there is not enough room for these shapes, or a value cannot be serialized, it is replaced by the `reason` marker (`too_large` or `unserializable`).
 
 The span includes an `openrouter.trace_truncated` event with the affected attribute keys, truncation reason, and character limit. The event also includes a plain-language message explaining that part of the trace was shortened. The remainder of the trace is still delivered to the destination.
 
@@ -827,7 +830,7 @@ Each destination can optionally enable **Privacy Mode** to exclude prompt and co
 * **Input messages** (prompts sent to the model)
 * **Output choices** (completions returned by the model)
 
-All other trace data (including token counts, costs, timing, model information, and custom metadata) is still sent normally.
+All other trace data (including token counts, costs, timing, model information, model parameters, and custom metadata) is still sent normally. Model parameters include the request's `stop` sequences, which are caller-supplied text.
 
 This is useful when you want to monitor LLM usage metrics and costs without exposing the actual content of conversations, for example to comply with data privacy regulations or internal policies.
 

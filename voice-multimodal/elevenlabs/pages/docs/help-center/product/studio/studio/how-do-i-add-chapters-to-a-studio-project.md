@@ -12,6 +12,6 @@ The **Chapters** sidebar is available in Audio projects. When you import a docum
 
 Select the **Chapters** tab to open the sidebar.
 
-![Chapters sidebar in a Studio Audio project](/docs/_fern-img/6f636820458f31c4388e8e6f5ce5433fba73340fc4e8712f0ec818f5966365d9.webp)
+![Chapters sidebar in a Studio Audio project](/docs/_fern-files/_img/6f636820458f31c4388e8e6f5ce5433fba73340fc4e8712f0ec818f5966365d9.webp)
 
 Select **+** to add a chapter. Use **Chapter actions** to rename or remove a chapter. Drag chapters to reorder them.

@@ -33,31 +33,31 @@ Okta SAML SSO lets workspace members sign in to ElevenLabs through an Okta SAML 
 
 Go to **Workspace settings** > **Security & SSO**.
 
-![ElevenLabs Workspace settings Security and SSO tab](/docs/_fern-img/3bc083c160206a93cce639948b66d9aefdacfc7ed238d60548d1bde2ae365479.webp)
+![ElevenLabs Workspace settings Security and SSO tab](/docs/_fern-files/_img/3bc083c160206a93cce639948b66d9aefdacfc7ed238d60548d1bde2ae365479.webp)
 
 #### Select SAML as the SSO provider
 
 In **SSO Provider**, select **SAML**. Copy the **Service Provider Entity Id** and **Redirect
 URL** values. You will use these values in Okta.
 
-![ElevenLabs SAML provider settings](/docs/_fern-img/299948b19e628c531333c21ced70086b975d926f834b0f8a55e13edbd5898303.webp)
+![ElevenLabs SAML provider settings](/docs/_fern-files/_img/299948b19e628c531333c21ced70086b975d926f834b0f8a55e13edbd5898303.webp)
 
 #### Create an Okta app integration
 
 In the Okta Admin Console, go to **Applications** > **Applications**, then click **Create App
 Integration**.
 
-![Okta Applications page with Create App Integration](/docs/_fern-img/ed1e7575d777d053d3749efc7f0a31ebfdf19a5f37de5f266ea147b26e4a2487.webp)
+![Okta Applications page with Create App Integration](/docs/_fern-files/_img/ed1e7575d777d053d3749efc7f0a31ebfdf19a5f37de5f266ea147b26e4a2487.webp)
 
 Select **SAML 2.0**, then click **Next**.
 
-![Okta Create a new app integration dialog with SAML 2.0 selected](/docs/_fern-img/89e194f26b79f20c6e34af660802266901dd96464987be2f38ea41c7d338704b.webp)
+![Okta Create a new app integration dialog with SAML 2.0 selected](/docs/_fern-files/_img/89e194f26b79f20c6e34af660802266901dd96464987be2f38ea41c7d338704b.webp)
 
 #### Add the app name
 
 In **General Settings**, set **App name** to `ElevenLabs`, then click **Next**.
 
-![Okta Create SAML Integration general settings](/docs/_fern-img/56ed422543674b8b81608e27e585faf71fdca05d28ceb1493aef5d5d3c256722.webp)
+![Okta Create SAML Integration general settings](/docs/_fern-files/_img/56ed422543674b8b81608e27e585faf71fdca05d28ceb1493aef5d5d3c256722.webp)
 
 #### Configure SAML settings in Okta
 
@@ -69,30 +69,30 @@ In **SAML Settings**, configure the app with the values from ElevenLabs:
 * Set **Name ID format** to **EmailAddress**.
 * Set **Application username** to **Email**.
 
-![Okta SAML settings for ElevenLabs](/docs/_fern-img/45c4621749048612f9dcaa96123b07b60e661f3a84c03c654a0e229dce385ad6.webp)
+![Okta SAML settings for ElevenLabs](/docs/_fern-files/_img/45c4621749048612f9dcaa96123b07b60e661f3a84c03c654a0e229dce385ad6.webp)
 
 #### Assign users or groups
 
 Open the Okta app's **Assignments** tab and assign the users or groups that should be able to
 sign in to ElevenLabs.
 
-![Okta app Assignments tab](/docs/_fern-img/3cf08aff22d992d143bfb1c655f3a807c5b2b6b5cafba4ee2aff6e18bd997676.webp)
+![Okta app Assignments tab](/docs/_fern-files/_img/3cf08aff22d992d143bfb1c655f3a807c5b2b6b5cafba4ee2aff6e18bd997676.webp)
 
 #### Add the Okta certificate to ElevenLabs
 
 In Okta, open **SAML Signing Certificates** and use **Actions** > **Download certificate** for
 the active certificate.
 
-![Okta SAML Signing Certificates download certificate action](/docs/_fern-img/334a3a8fb4355a170254e0dd132b141fd9f6a86dd58374d054ae1a708a8778f9.webp)
+![Okta SAML Signing Certificates download certificate action](/docs/_fern-files/_img/334a3a8fb4355a170254e0dd132b141fd9f6a86dd58374d054ae1a708a8778f9.webp)
 
 Open the certificate file and copy the full PEM certificate, including
 `-----BEGIN CERTIFICATE-----` and `-----END CERTIFICATE-----`.
 
-![Okta certificate file in PEM format](/docs/_fern-img/d62e28cf4ff1d3240d190cc9405345e193177e533b185acd64b19ab7f77596c5.webp)
+![Okta certificate file in PEM format](/docs/_fern-files/_img/d62e28cf4ff1d3240d190cc9405345e193177e533b185acd64b19ab7f77596c5.webp)
 
 In ElevenLabs, click **Add Certificate**, paste the Okta certificate, then click **Add**.
 
-![ElevenLabs Add X509 Certificate dialog](/docs/_fern-img/910152284bd98c1ebdae064a7424d7d1ac185fe716abdda751607bad9b4cc147.webp)
+![ElevenLabs Add X509 Certificate dialog](/docs/_fern-files/_img/910152284bd98c1ebdae064a7424d7d1ac185fe716abdda751607bad9b4cc147.webp)
 
 #### Copy Okta metadata values into ElevenLabs
 
@@ -102,14 +102,14 @@ In Okta, open the IdP metadata XML. Copy the metadata values into ElevenLabs:
 * Use the `SingleSignOnService Location` URL that ends in `/sso/saml` for **Identity Provider
   Sign-In URL**.
 
-![Okta IdP metadata XML showing entityID and SingleSignOnService Location](/docs/_fern-img/96f8ad35da0fbeafc265310e0ca761c69163cb53c76baf8d35c97e9a992d4ee8.webp)
+![Okta IdP metadata XML showing entityID and SingleSignOnService Location](/docs/_fern-files/_img/96f8ad35da0fbeafc265310e0ca761c69163cb53c76baf8d35c97e9a992d4ee8.webp)
 
 #### Add your allowed email domain
 
 In ElevenLabs, click **Add Domain** and select the verified domain that matches the email
 domain of your Okta users.
 
-![ElevenLabs Add allowed email domains dialog](/docs/_fern-img/bd532d18051c43e9db7c3b33e54b5910a2050ec16e04e85c9b7541fda20f7b6f.webp)
+![ElevenLabs Add allowed email domains dialog](/docs/_fern-files/_img/bd532d18051c43e9db7c3b33e54b5910a2050ec16e04e85c9b7541fda20f7b6f.webp)
 
 #### Save the SSO provider
 

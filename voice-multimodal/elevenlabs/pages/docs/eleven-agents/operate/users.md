@@ -15,7 +15,7 @@ The Users page lists everyone who has talked to your agents in this workspace â€
 Each user is identified by the `user_id` you pass when starting a conversation. See [conversation initiation client data](/docs/eleven-agents/customization/personalization#conversation-initiation-client-data-structure) for how to set this, or the relevant guide under [integrate](/docs/eleven-agents/integrate/overview) for your platform.
 
 ![Users page showing the user list and a selected user's
-conversations](/docs/_fern-img/353b30276a034eed7007aa17008b84bab1ae50fe903b0890fd0d87d7bbc51fcd.webp)
+conversations](/docs/_fern-files/_img/353b30276a034eed7007aa17008b84bab1ae50fe903b0890fd0d87d7bbc51fcd.webp)
 
 ## Table columns
 

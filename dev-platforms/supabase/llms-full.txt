@@ -85595,6 +85595,158 @@ Before you deploy:
 
 ---
 
+# The Supabase way to build
+
+Which building block to reach for, and when.
+
+Which Supabase building blocks to add as your app grows, from a single database to a production system.
+
+Supabase is more than hosted Postgres. It's a set of composable building blocks you grow into. Start with a database, add more features as you need them, and keep as much logic in Postgres as possible.
+
+The [Architecture](https://supabase.com/docs/guides/getting-started/architecture) page tells you what the pieces are. This page tells you which piece to reach for, how to uses it as a building block, and when. Each section explains what you are adding and for what purpose, the mental model to hold, and a common mistake to avoid. The linked guides show you how to build each piece.
+
+## The progression at a glance
+
+Follow the path from the first need you have. Each step names the block to add and the idea to keep in mind, and opens that section.
+
+1. **[Start with a database](#start-with-a-database-postgres--api):** Postgres + API
+2. **[Add users](#add-users-auth):** Auth
+3. **[Scope data to each user](#scope-data-to-each-user-row-level-security):** Row Level Security
+4. **[Handle files and uploads](#handle-files-and-uploads-storage):** Storage
+5. **[Add server-side logic](#add-server-side-logic-edge-functions):** Edge Functions
+6. **[Reflect changes live](#reflect-changes-live-realtime):** Realtime
+7. **[Serve real traffic](#serve-real-traffic-harden-for-production):** Harden for production
+
+You don't need all of these things to start. Most apps start with a database and add as needed. Over time, many apps use all of them.
+
+## Start with a database: Postgres + API
+
+Every Supabase project is a full Postgres database, and Supabase generates a [REST API](https://supabase.com/docs/guides/api) from your schema automatically. Design your tables well and you have a working backend with no server code.
+
+**Mental model:** your schema is your API. The shape of your data is the shape of what clients can do.
+
+**Enough on its own for:** internal tools, prototypes, and read-heavy apps.
+
+Any table a browser or mobile client can reach still needs [Row Level Security](#scope-data-to-each-user-row-level-security), even for public data. Reserve unprotected tables for server-side callers. A single-user or trusted-client assumption is not a security boundary.
+
+Avoid hand-writing a REST server that only forwards create, read, update, and delete calls to the database. That rebuilds what PostgREST already generates for you. Put your effort into the schema instead.
+
+The Next.js quickstart allows public read on its sample table so the page can load. Return here before that table holds private rows. A [publishable key](https://supabase.com/docs/guides/getting-started/api-keys) only reaches what Row Level Security allows.
+
+### Build it
+
+- **[Tables and data](https://supabase.com/docs/guides/database/tables):** Create tables and relationships, and edit rows from the Dashboard.
+- **[API keys](https://supabase.com/docs/guides/getting-started/api-keys):** Use a publishable key in the browser and a secret key only on the server.
+- **[Connect a framework](https://supabase.com/docs/guides/getting-started/quickstarts/nextjs):** Wire your app to Supabase with a framework quickstart.
+
+## Add users: Auth
+
+When your app needs to know who is making a request, add [Supabase Auth](https://supabase.com/docs/guides/auth). It manages users and issues a signed JWT that carries the caller's identity.
+
+**Mental model:** auth issues a verifiable identity (a JWT) that the database itself can read. Other blocks use that identity for per-user behavior.
+
+**Trigger:** any multi-user app, personalization, or anything that must be private to an account.
+
+Once email and password sign-in works, add [social login](https://supabase.com/docs/guides/auth/social-sign-in) for providers such as Google and GitHub.
+
+### Build it
+
+- **[Password-based auth](https://supabase.com/docs/guides/auth/passwords):** Sign up and sign in users with email and password.
+- **[Server-side auth](https://supabase.com/docs/guides/auth/server-side):** Handle sessions and cookies in server-rendered apps.
+- **[Which package to use](https://supabase.com/docs/guides/auth/choosing-a-server-package):** Choose supabase-js, @supabase/ssr, or @supabase/server for server code.
+
+## Scope data to each user: Row Level Security
+
+After you have users, each user needs to see only their own data. With [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) (RLS), you write that rule once, as a policy on the table, and Postgres enforces it on every request made with your publishable (`anon`) or user keys. The secret (`service_role`) key bypasses RLS, so keep it server-side and enforce authorization there yourself.
+
+**Mental model:** authorization is data, enforced by Postgres, not logic scattered across your app. The policy lives next to the rows it protects.
+
+**Trigger:** users must not see each other's rows, multi-tenant apps, and anything where a leaked query would leak data.
+
+Caution: App-layer filtering leaks data the moment one query forgets the filter, a new client is added, or someone writes a new endpoint. A query like `select * from orders where user_id = $currentUser` looks safe, but it can be bypassed, gets duplicated, and drifts out of sync. An RLS policy can't be forgotten, because the database applies it to every request.
+
+### Build it
+
+- **[Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security):** Write policies that Postgres enforces on every query.
+- **[Column Level Security](https://supabase.com/docs/guides/database/postgres/column-level-security):** Restrict access to specific columns within a table.
+
+## Handle files and uploads: Storage
+
+For uploads, images, and documents, [Storage](https://supabase.com/docs/guides/storage) gives you S3-compatible object storage that keeps its metadata in Postgres, so you secure files with RLS, the same model you use for your rows.
+
+**Mental model:** files are secured by RLS too, but with their own policies on the `storage.objects` table. They don't inherit your app-table policies, and a public bucket serves files to anyone.
+
+**Trigger:** user avatars, attachments, media, and any binary a user owns.
+
+Write and review Storage policies alongside your data policies. They don't sync automatically, and a public bucket or a missing policy exposes files regardless of your table rules.
+
+When you serve images, resize them with [image transformations](https://supabase.com/docs/guides/storage/serving/image-transformations).
+
+### Build it
+
+- **[Storage quickstart](https://supabase.com/docs/guides/storage/quickstart):** Upload files to a bucket and serve them.
+- **[Access control](https://supabase.com/docs/guides/storage/security/access-control):** Secure buckets and objects with RLS policies.
+
+## Add server-side logic: Edge Functions
+
+Some logic can't live in the client, because it needs secrets, and isn't a good fit for the database, because it calls third-party APIs or reacts to events. That's what [Edge Functions](https://supabase.com/docs/guides/functions) are for: TypeScript functions you deploy at the edge.
+
+**Mental model:** put data-shaped logic in Postgres (triggers, [database functions](https://supabase.com/docs/guides/database/functions), and RPC) and integration-shaped logic at the edge (webhooks, third-party calls, and anything holding a secret key). For logic that's really about your data, prefer a Postgres function, closer to the data and easier to secure.
+
+Note: [Supabase Compute](https://supabase.com/compute) runs long-running jobs, always-on services, and code in any language next to your database. Compute is in Private Alpha. Existing Edge Functions keep running unchanged.
+
+**Trigger:** payment webhooks, calls to an external API, sending email, and any code that must hold a credential the browser can't see.
+
+Danger: A secret key in frontend code is exposed to anyone who opens the browser. Keep credentials in Edge Function secrets or [Supabase Vault](https://supabase.com/docs/guides/database/vault), never in client code. See [API keys](https://supabase.com/docs/guides/getting-started/api-keys) for which key belongs in the browser and which key stays on the server.
+
+### Build it
+
+- **[Edge Functions overview](https://supabase.com/docs/guides/functions):** Run TypeScript server-side, close to your users.
+- **[Database functions](https://supabase.com/docs/guides/database/functions):** Keep data-shaped logic inside Postgres.
+- **[Database webhooks](https://supabase.com/docs/guides/database/webhooks):** Trigger external services when your data changes.
+
+## Reflect changes live: Realtime
+
+When your UI has to reflect changes as they happen, [Realtime](https://supabase.com/docs/guides/realtime) streams database changes, broadcasts messages, and tracks presence over WebSockets.
+
+**Mental model:** subscribe to the database instead of polling it. The client reacts to change; it doesn't ask "anything new?" on a timer.
+
+**Trigger:** dashboards that update live, chat, collaboration, presence indicators, and multiplayer.
+
+Avoid polling loops. A `setInterval` that re-fetches every few seconds wastes requests, adds latency, and still misses fast changes. Subscribe once and let the change come to you.
+
+Authorize Broadcast and Presence with [Realtime Authorization](https://supabase.com/docs/guides/realtime/authorization). Those channels use policies on `realtime.messages`.
+
+### Build it
+
+- **[Broadcast from database](https://supabase.com/docs/guides/realtime/subscribing-to-database-changes#using-broadcast):** Send database changes to subscribed clients with Broadcast, the scalable option.
+- **[Postgres Changes](https://supabase.com/docs/guides/realtime/postgres-changes):** Subscribe to table changes directly. Simpler to set up, with scaling limits.
+- **[Presence](https://supabase.com/docs/guides/realtime/presence):** Track who is online and share ephemeral state.
+
+## Serve real traffic: Harden for production
+
+Before real traffic, confirm the app is secure and ready to scale. Run the [advisors](https://supabase.com/docs/guides/observability/advisors), review every RLS policy, pool connections with [Supavisor](https://supabase.com/docs/guides/database/connecting-to-postgres), set up observability and [backups](https://supabase.com/docs/guides/platform/backups), and check query and index performance.
+
+**Mental model:** production readiness is verification, not new features. Confirm the blocks you already added are configured correctly for traffic.
+
+**Trigger:** launch, production users, and production data.
+
+### Build it
+
+- **[Production checklist](https://supabase.com/docs/guides/deployment/going-into-prod):** What to review before you launch.
+- **[Connection pooling](https://supabase.com/docs/guides/database/connecting-to-postgres):** Choose a direct connection or a Supavisor pooler for your clients.
+- **[Backups](https://supabase.com/docs/guides/platform/backups):** Scheduled backups on paid plans, and how to restore them.
+
+## Where to go next
+
+- New here? Start with a [framework quickstart](https://supabase.com/docs/guides/getting-started/quickstarts/nextjs) and come back to add blocks as you need them.
+- Working locally? Use the [Supabase CLI](https://supabase.com/docs/guides/local-development/cli/getting-started).
+- Want the component-level picture? See [Architecture](https://supabase.com/docs/guides/getting-started/architecture).
+- Ready to build a specific piece? Follow the **Build it** links in each stage above.
+
+
+---
+
 # Build a User Management App with Angular
 
 Learn how to use Supabase in your Angular App.

@@ -76,6 +76,7 @@ Validation Error
 - `environment` (string, optional) — Environment to use for resolving environment variables
 - `starting_workflow_node_id` (string, optional) — If set, start the workflow at this node id instead of the default entry
 - `procedure_ids` (list of string, optional) — If set, only these procedures are available to the starting agent. Each ID must be attached to that agent; unknown IDs fail conversation start. An empty list disables all of that agent's procedures. Not applied after an agent transfer. Requires enable_procedure_ids_from_client.
+- `start_procedure_ids` (list of string, optional) — If set, these free-form procedures start when the conversation starts. Accepts at most five IDs. Each ID must be available after procedure_ids is applied. Unknown IDs and structured procedures fail conversation start. Requires enable_procedure_ids_from_client.
 - `dynamic_variables` (map from string to any, optional)
 
 ### ValidationError

@@ -45,7 +45,7 @@ Simulation testing evaluates your agent across a full, multi-turn conversation w
 
 ### Creating a Simulation Test
 
-![Simulation test creation UI](/docs/_fern-img/ec2b27db7da62af2d82be756b2f830f0d0257a304d7c5ccb674c0a02ee8854ae.webp)
+![Simulation test creation UI](/docs/_fern-files/_img/ec2b27db7da62af2d82be756b2f830f0d0257a304d7c5ccb674c0a02ee8854ae.webp)
 
 #### Define the scenario
 
@@ -116,7 +116,7 @@ For full multi-turn outcomes, use [Simulation Testing](#simulation-testing).
 
 ### Creating a Next Reply Test
 
-![Next Reply (Scenario) Testing Interface](/docs/_fern-img/62de63965584fd1b2368edfb204bd90495d03ba87fe137889a5f396859dc4dbc.webp)
+![Next Reply (Scenario) Testing Interface](/docs/_fern-files/_img/62de63965584fd1b2368edfb204bd90495d03ba87fe137889a5f396859dc4dbc.webp)
 
 #### Define the chat history
 
@@ -165,7 +165,7 @@ Tool call testing verifies that your agent correctly uses tools and passes the r
 
 ### Creating a Tool Call Test
 
-![Tool Call Testing Interface](/docs/_fern-img/291c48ac70376efa1991014f7b3ff90eb9910c9adffe250f2bf521c707c5c755.webp)
+![Tool Call Testing Interface](/docs/_fern-files/_img/291c48ac70376efa1991014f7b3ff90eb9910c9adffe250f2bf521c707c5c755.webp)
 
 #### Select the tool
 
@@ -275,7 +275,7 @@ Agent outputs can vary between runs. A single pass shows the agent *can* succeed
 
 #### Running a test multiple times
 
-![Split-run control on a test letting you pick how many times to execute it](/docs/_fern-img/15d5a18c384bc193de794bf8cd7bd5803b9543c8a98acac6ecb2f518b9fd1679.webp)
+![Split-run control on a test letting you pick how many times to execute it](/docs/_fern-files/_img/15d5a18c384bc193de794bf8cd7bd5803b9543c8a98acac6ecb2f518b9fd1679.webp)
 
 When triggering a test from the dashboard, use the split-run control on the run button to choose how many times to execute it (for example 3×, 5×, or 15×). Each run is independent: the agent receives the same chat history, dynamic variables, and other inputs, but its response is generated fresh every time.
 
@@ -283,7 +283,7 @@ Multi-run works for individual tests, folders, and running the entire test suite
 
 #### Pass rates and result bucketing
 
-![Multi-run results grouped into pass and failure buckets with a pass rate badge](/docs/_fern-img/17b73e8c8170162270519adad3c9d732dfabdafc820e47b4ab274ca5066fd7fc.webp)
+![Multi-run results grouped into pass and failure buckets with a pass rate badge](/docs/_fern-files/_img/17b73e8c8170162270519adad3c9d732dfabdafc820e47b4ab274ca5066fd7fc.webp)
 
 After a multi-run finishes, results are summarized as a pass rate (for example, **4/5 passed**) with a colored badge:
 

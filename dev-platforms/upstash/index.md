@@ -1,6 +1,6 @@
 # dev-platforms/upstash 文档索引
 
-> 共 987 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 992 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -742,6 +742,7 @@
 - `docs/redis/search/counting` — [Counting](pages/docs/redis/search/counting.md) · [原文](https://upstash.com/docs/redis/search/counting)
 - `docs/redis/search/document-updates` — [Document Updates](pages/docs/redis/search/document-updates.md) · [原文](https://upstash.com/docs/redis/search/document-updates)
 - `docs/redis/search/getting-started` — [Redis Search Quickstart](pages/docs/redis/search/getting-started.md) · [原文](https://upstash.com/docs/redis/search/getting-started)
+- `docs/redis/search/hybrid-search` — [Hybrid Search](pages/docs/redis/search/hybrid-search.md) · [原文](https://upstash.com/docs/redis/search/hybrid-search)
 - `docs/redis/search/index-management` — [Indices](pages/docs/redis/search/index-management.md) · [原文](https://upstash.com/docs/redis/search/index-management)
 - `docs/redis/search/introduction` — [Redis Search Introduction](pages/docs/redis/search/introduction.md) · [原文](https://upstash.com/docs/redis/search/introduction)
 - `docs/redis/search/query-operators/boolean-operators/boost` — [$boost](pages/docs/redis/search/query-operators/boolean-operators/boost.md) · [原文](https://upstash.com/docs/redis/search/query-operators/boolean-operators/boost)
@@ -759,6 +760,10 @@
 - `docs/redis/search/query-operators/field-operators/regex` — [$regex](pages/docs/redis/search/query-operators/field-operators/regex.md) · [原文](https://upstash.com/docs/redis/search/query-operators/field-operators/regex)
 - `docs/redis/search/query-operators/field-operators/smart-matching` — [Smart Matching](pages/docs/redis/search/query-operators/field-operators/smart-matching.md) · [原文](https://upstash.com/docs/redis/search/query-operators/field-operators/smart-matching)
 - `docs/redis/search/querying` — [Redis Search Queries](pages/docs/redis/search/querying.md) · [原文](https://upstash.com/docs/redis/search/querying)
+- `docs/redis/search/retrievers/ann` — [$ann](pages/docs/redis/search/retrievers/ann.md) · [原文](https://upstash.com/docs/redis/search/retrievers/ann)
+- `docs/redis/search/retrievers/overview` — [Overview](pages/docs/redis/search/retrievers/overview.md) · [原文](https://upstash.com/docs/redis/search/retrievers/overview)
+- `docs/redis/search/retrievers/rrf` — [$rrf](pages/docs/redis/search/retrievers/rrf.md) · [原文](https://upstash.com/docs/redis/search/retrievers/rrf)
+- `docs/redis/search/retrievers/standard` — [$standard](pages/docs/redis/search/retrievers/standard.md) · [原文](https://upstash.com/docs/redis/search/retrievers/standard)
 - `docs/redis/search/schema-definition` — [Schemas](pages/docs/redis/search/schema-definition.md) · [原文](https://upstash.com/docs/redis/search/schema-definition)
 - `docs/redis/search/streams` — [Searching Streams](pages/docs/redis/search/streams.md) · [原文](https://upstash.com/docs/redis/search/streams)
 - `docs/redis/search/troubleshooting` — [Redis Search Troubleshooting](pages/docs/redis/search/troubleshooting.md) · [原文](https://upstash.com/docs/redis/search/troubleshooting)

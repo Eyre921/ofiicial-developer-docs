@@ -36,17 +36,17 @@ For when the webhook fires and the request shape, see [Conversation initiation w
 In the [settings page](https://elevenlabs.io/app/agents/settings) of ElevenAgents, configure the webhook URL and add any
 secrets needed for authentication.
 
-![Enable webhook](/docs/_fern-img/53e98b709e5751bfb6cf6758372a8105c5408b20191523c7e91c2a7625d8b603.webp)
+![Enable webhook](/docs/_fern-files/_img/53e98b709e5751bfb6cf6758372a8105c5408b20191523c7e91c2a7625d8b603.webp)
 
 Click on the webhook to modify which secrets are sent in the headers.
 
-![Add secrets to headers](/docs/_fern-img/416d30e6906cd209de92820bfc146ac9478fbb6ce61c8fbbc24d62cad54d9f05.webp)
+![Add secrets to headers](/docs/_fern-files/_img/416d30e6906cd209de92820bfc146ac9478fbb6ce61c8fbbc24d62cad54d9f05.webp)
 
 #### Enable fetching conversation initiation data
 
 In the "Security" tab of the [agent's page](https://elevenlabs.io/app/agents/agents/), enable fetching conversation initiation data for inbound Twilio calls, and define fields that can be overridden.
 
-![Enable webhook](/docs/_fern-img/6024b7f7541b8f856514b56ebf391cd6ee24206fd89c07327de1b01d81795c20.webp)
+![Enable webhook](/docs/_fern-files/_img/6024b7f7541b8f856514b56ebf391cd6ee24206fd89c07327de1b01d81795c20.webp)
 
 #### Implement the webhook endpoint to receive Twilio data
 

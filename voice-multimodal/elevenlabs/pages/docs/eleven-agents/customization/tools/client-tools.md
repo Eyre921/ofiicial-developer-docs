@@ -52,7 +52,7 @@ Then create a new parameter `message` with the following configuration:
 | Required    | true                                                                               |
 | Description | The message to log in the console. Ensure the message is informative and relevant. |
 
-![logMessage client-tool setup](/docs/_fern-img/f7ed25d49a2a814b76112f3e385d471e0dc8444705e11f2f6fad0bd23f1eae12.webp)
+![logMessage client-tool setup](/docs/_fern-files/_img/f7ed25d49a2a814b76112f3e385d471e0dc8444705e11f2f6fad0bd23f1eae12.webp)
 
 #### Add via the CLI
 
@@ -244,7 +244,7 @@ Now that you've set up a basic client-side event, you can:
 
 When you want your agent to receive data back from a client tool, ensure that you tick the **Wait for response** option in the tool configuration.
 
-![Wait for response option in client tool configuration](/docs/_fern-img/0ecc615fc9f25446b67369fd3e010e34b39549a22146a2483ea17251206caf1e.webp)
+![Wait for response option in client tool configuration](/docs/_fern-files/_img/0ecc615fc9f25446b67369fd3e010e34b39549a22146a2483ea17251206caf1e.webp)
 
 Once the client tool is added, when the function is called the agent will wait for its response and append the response to the conversation context.
 

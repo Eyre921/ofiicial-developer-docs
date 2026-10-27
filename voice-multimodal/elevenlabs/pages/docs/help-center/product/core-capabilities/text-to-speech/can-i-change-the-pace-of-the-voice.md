@@ -16,6 +16,6 @@ Possible values range from 0.7 to 1.2. Values below 1 will slow the speech down,
 
 This setting is available for all voices and all models. You can find it in the voice settings.
 
-![](/docs/_fern-img/a1130594e85e35a2a3073530577fd85e902b7886cbf442a18b4422d9084dfcec.webp)
+![](/docs/_fern-files/_img/a1130594e85e35a2a3073530577fd85e902b7886cbf442a18b4422d9084dfcec.webp)
 
 For information on how to control speech when using the API, please see our [API reference.](/docs/api-reference/text-to-speech/convert#request.body.voice_settings.speed)

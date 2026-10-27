@@ -8,7 +8,7 @@ path: docs/eleven-creative/voices/voice-design
 
 # Voice Design
 
-![Voice design](/docs/_fern-img/1125280670aac11f82425cb9e04ccba451fb85ac046cff42203b867a82340f43.webp)
+![Voice design](/docs/_fern-files/_img/1125280670aac11f82425cb9e04ccba451fb85ac046cff42203b867a82340f43.webp)
 
 ## Overview
 

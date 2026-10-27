@@ -31,7 +31,7 @@ When browsing the [model catalog](https://developers.cloudflare.com/workers-ai/m
 
 Navigate to [dash.cloudflare.com](https://dash.cloudflare.com) and create or sign in to your account. In the navigation, select AI > Workers AI, and then click on the "Use REST API" widget.
 
-![Add Secret](/docs/_fern-img/ba8414d3dc5f806d004f8b4ac0c7dc0d77a0b292a9dbd86dfb8b2d6736a40118.webp)
+![Add Secret](/docs/_fern-files/_img/ba8414d3dc5f806d004f8b4ac0c7dc0d77a0b292a9dbd86dfb8b2d6736a40118.webp)
 
 Once you have your API key, you can try it out immediately with a curl request. Cloudflare provides an OpenAI-compatible API endpoint making this very convenient. At this point make a note of the model and the full endpoint — including the account ID. For example: `https://api.cloudflare.com/client/v4/accounts/{ACCOUNT_ID}c/ai/v1/`.
 
@@ -51,14 +51,14 @@ curl https://api.cloudflare.com/client/v4/accounts/{ACCOUNT_ID}/ai/v1/chat/compl
 
 Navigate to your [AI Agent](https://elevenlabs.io/app/agents), scroll down to the "Secrets" section and select "Add Secret". After adding the secret, make sure to hit "Save" to make the secret available to your agent.
 
-![Add Secret](/docs/_fern-img/59dbfcd46a69b9f28e58e68de7b3dd678ee9f6bfd499fd23699017e92b11931f.webp)
+![Add Secret](/docs/_fern-files/_img/59dbfcd46a69b9f28e58e68de7b3dd678ee9f6bfd499fd23699017e92b11931f.webp)
 
 Choose "Custom LLM" from the dropdown menu.
 
-![Choose custom llm](/docs/_fern-img/45ec75f558a5c8e5070bd3170d96cbc54ef63e15d9f04ac472a45854a22a17ac.webp)
+![Choose custom llm](/docs/_fern-files/_img/45ec75f558a5c8e5070bd3170d96cbc54ef63e15d9f04ac472a45854a22a17ac.webp)
 
 For the Server URL, specify Cloudflare's OpenAI-compatible API endpoint: `https://api.cloudflare.com/client/v4/accounts/{ACCOUNT_ID}/ai/v1/`. For the Model ID, specify `@cf/deepseek-ai/deepseek-r1-distill-qwen-32b` as discussed above, and select your API key from the dropdown menu.
 
-![Enter url](/docs/_fern-img/da17a1626b64d7b3eadb23ee17eb0e7bd3bb5156f8edf2357816820169d74d94.webp)
+![Enter url](/docs/_fern-files/_img/da17a1626b64d7b3eadb23ee17eb0e7bd3bb5156f8edf2357816820169d74d94.webp)
 
 Now you can go ahead and click "Test AI Agent" to chat with your custom DeepSeek R1 model.

@@ -51,6 +51,4 @@ curl https://api.deepgram.com/v1/auth/token \
 
 To create additional API keys, be sure that the API key you are using to authenticate your request has been assigned either the `administrator` role or the following permissions: `keys:read`, `keys:write`.
 
-Make sure you are sending API requests over HTTPS. Calls made over plain HTTP will fail. API requests made without authentication will also fail.
-
 ---

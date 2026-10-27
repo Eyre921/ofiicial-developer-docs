@@ -109,7 +109,7 @@ Under **Container Definition**, expand **Environment variables**
 
 Add each `DEEPGRAM_API_*` or `DEEPGRAM_ENGINE_*` variable with its TOML expression as the value
 
-![SageMaker console showing environment variable configuration for a Deepgram model package](/_fern-img/94e40e0e39e9999639df5dddc08cb6675db32f8abd5518bdb94b26b3dda8cf55.webp)
+![SageMaker console showing environment variable configuration for a Deepgram model package](/_fern-files/_img/94e40e0e39e9999639df5dddc08cb6675db32f8abd5518bdb94b26b3dda8cf55.webp)
 
 ### AWS CLI
 

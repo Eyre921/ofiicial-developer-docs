@@ -158,7 +158,6 @@ Validation Error
 - `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
 - `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
 - `next_refresh_by` (integer, optional) — Unix timestamp for the next scheduled sync or None (in case of folders)
-- `auto_discover` (boolean, optional, default: false, deprecated) — Deprecated. This field no longer has any effect and will be removed in a future release.
 
 ### ExternalFileSyncInfo
 

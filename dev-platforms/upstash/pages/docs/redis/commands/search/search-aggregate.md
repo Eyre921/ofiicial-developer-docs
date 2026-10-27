@@ -24,6 +24,8 @@ SEARCH.AGGREGATE <name> '<json_filter>' '<json_aggregations>'
 
 `<json_filter>` is an [Upstash JSON filter](/docs/redis/search/querying). The command accepts an index name or alias. See [Aggregations](/docs/redis/search/aggregations) for the aggregation object and supported operators.
 
+`<json_filter>` can be an `$rrf` retriever when it has no `$ann` retriever. The command then aggregates every document that matches any of the queries. The `window` and `weight` parameters of `$rrf` do not apply. `$ann` is not supported.
+
 ## Response
 
 In `redis-cli --json`, the response is an object keyed by aggregation alias:

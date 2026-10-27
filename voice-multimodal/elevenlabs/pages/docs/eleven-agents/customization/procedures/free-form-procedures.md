@@ -21,7 +21,7 @@ Use a free-form procedure when the agent can adapt wording and order to fit the 
 Here is a refund procedure in the editor:
 
 ![Refund procedure
-example](/docs/_fern-img/e1264b7a4f94403453087d30ef0894e72d412ba69378e6b8cb1b675e53e887b7.webp)
+example](/docs/_fern-files/_img/e1264b7a4f94403453087d30ef0894e72d412ba69378e6b8cb1b675e53e887b7.webp)
 
 A procedure has two main parts: a trigger and content. Both can contain inline references to other resources, shown in the screenshot above as tags with wrench icons. Each procedure also has a name shown in the dashboard.
 
@@ -69,12 +69,12 @@ A reference in the trigger lets the procedure fire based on a resource's output,
 
 Knowledge base documents referenced in a procedure always use the `auto` [usage mode](/docs/eleven-agents/customization/knowledge-base#how-your-agent-uses-knowledge): when RAG is enabled on the agent, the agent retrieves the relevant passages instead of placing the full document in the prompt. If the document is also attached to the agent, the agent's usage mode for it applies instead, so attach it to the agent with the `prompt` usage mode to keep its full text in the prompt.
 
-![Slash menu in the procedure editor](/docs/_fern-img/8625ffec0f5584619e6ccb97720fd86f2e8d3cd0061308ad87b57f176e5535e3.webp)
+![Slash menu in the procedure editor](/docs/_fern-files/_img/8625ffec0f5584619e6ccb97720fd86f2e8d3cd0061308ad87b57f176e5535e3.webp)
 
 If a referenced resource is deleted later, or your account loses access to it, the tag shows as broken. The **Errors** badge at the top of the editor lists these references: *invalid* if the resource no longer exists, or *unavailable* if it exists but your account does not have access. Open the badge to see which step is affected and fix or remove the reference.
 
 ![Errors dialog listing invalid
-references](/docs/_fern-img/e9ec6b19be2992da80a726883baf53265a5d5b38621373cd7e60375c944674cd.webp)
+references](/docs/_fern-files/_img/e9ec6b19be2992da80a726883baf53265a5d5b38621373cd7e60375c944674cd.webp)
 
 ## Sub-procedures
 
@@ -92,7 +92,7 @@ Supported formats: `PDF`, `DOCX`, `TXT`, `MD`, `HTML`, `EPUB`. Files must be 20 
 
 The importer analyzes the document, identifies up to 10 distinct procedures, and creates a draft for each one with a generated name, trigger, and content. Open each draft to refine it. If your document contains more than 10 SOPs, split it into smaller files before uploading.
 
-![Upload SOP dialog](/docs/_fern-img/716601fc90dea757e23971e5aabe063e6a66fc0f75878247dc9f1fc3011f5197.webp)
+![Upload SOP dialog](/docs/_fern-files/_img/716601fc90dea757e23971e5aabe063e6a66fc0f75878247dc9f1fc3011f5197.webp)
 
 ## Manage a free-form procedure
 

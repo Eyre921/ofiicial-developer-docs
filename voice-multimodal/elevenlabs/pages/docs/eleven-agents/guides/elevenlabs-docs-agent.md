@@ -12,7 +12,7 @@ path: docs/eleven-agents/guides/elevenlabs-docs-agent
 
 Our documentation agent Alexis serves as an interactive assistant on the ElevenLabs documentation website, helping users navigate our product offerings and technical documentation. This guide outlines how we engineered Alexis to provide natural, helpful guidance using ElevenLabs Agents.
 
-![ElevenLabs documentation agent Alexis](/docs/_fern-img/92cc100cadfb587d66024e50d969ff4fd16b04c1fb517e4ccd3e6f48f2a5e709.webp)
+![ElevenLabs documentation agent Alexis](/docs/_fern-files/_img/92cc100cadfb587d66024e50d969ff4fd16b04c1fb517e4ccd3e6f48f2a5e709.webp)
 
 ## Agent design
 
@@ -58,7 +58,7 @@ We fine-tuned the voice parameters to match Alexis's personality:
 The widget automatically adapts to different screen sizes, displaying in a compact format on mobile devices to conserve screen space while maintaining full functionality. This responsive design ensures users can access AI assistance regardless of their device.
 
 ![ElevenLabs documentation agent Alexis on
-mobile](/docs/_fern-img/32aec29072aa5ed45fd6518b4649b62e17a12c766031bb6a0755fdba464b12e2.webp)
+mobile](/docs/_fern-files/_img/32aec29072aa5ed45fd6518b4649b62e17a12c766031bb6a0755fdba464b12e2.webp)
 
 ## Prompt engineering structure
 

@@ -192,7 +192,7 @@ Amazon CloudWatch automatically creates alarms when you apply a target tracking 
 
 Key metrics to watch in the `AWS/SageMaker` namespace:
 
-![CloudWatch Metrics console showing the ConcurrentRequestsPerModel metric for a SageMaker Endpoint Variant](/_fern-img/511832b235f0bf021547acd94375c1bb907c5cf7cdbdb6e6b94756b7436af1b6.webp)
+![CloudWatch Metrics console showing the ConcurrentRequestsPerModel metric for a SageMaker Endpoint Variant](/_fern-files/_img/511832b235f0bf021547acd94375c1bb907c5cf7cdbdb6e6b94756b7436af1b6.webp)
 
 | Metric                       | Description                                                                                     |
 | ---------------------------- | ----------------------------------------------------------------------------------------------- |

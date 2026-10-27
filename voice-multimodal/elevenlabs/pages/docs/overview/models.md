@@ -631,7 +631,7 @@ As a general rule of thumb, a concurrency limit of 5 can typically support up to
 This is because of the speed it takes for audio to be generated relative to the time it takes for the TTS request to be processed.
 The diagram below is an example of how 4 concurrent calls with different users can be facilitated while only hitting 2 concurrent requests.
 
-![Concurrency limits](/docs/_fern-img/dcc5e3bd18993a9f862bd526f3dc1b32cfa89003a58ded6f4f6a7bda1bd5a2ea.webp)
+![Concurrency limits](/docs/_fern-files/_img/dcc5e3bd18993a9f862bd526f3dc1b32cfa89003a58ded6f4f6a7bda1bd5a2ea.webp)
 
 #### Building AI Voice Agents
 

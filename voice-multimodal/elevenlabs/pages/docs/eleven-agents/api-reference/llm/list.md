@@ -51,6 +51,8 @@ Validation Error
 - `supports_image_input` (boolean, required) — Whether the model supports image file inputs during conversations.
 - `supports_document_input` (boolean, required) — Whether the model supports document (PDF) file inputs during conversations.
 - `supports_parallel_tool_calls` (boolean, required) — Whether the model supports calling multiple tools in parallel.
+- `available_service_tiers` (list of enum, required) — Available service tiers for this model. Always includes at least the standard tier.
+  - Allowed values: `standard`, `fast`
 - `available_reasoning_efforts` (list of enum, optional) — Available reasoning effort levels for this model. Null if the model does not support configurable reasoning.
   - Allowed values: `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, `max`
 - `deprecation_info` (LlmDeprecationInfoModel, optional) — Deprecation information if this model is deprecated or scheduled for deprecation. Null if the model is not affected.
@@ -107,6 +109,9 @@ Validation Error
       "supports_image_input": true,
       "supports_document_input": true,
       "supports_parallel_tool_calls": true,
+      "available_service_tiers": [
+        "standard"
+      ],
       "available_reasoning_efforts": [
         "none"
       ],

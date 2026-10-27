@@ -21,7 +21,7 @@ Here's how it works:
 1. Trigger: An event in one app that starts the Zap. For example, receiving a new voicemail, recording a new meeting in a video conference software program, or uploading a video of a lecture.
 2. Action: An event that completes the Zap. It's the result or output you want to achieve, such as transcribing a new voicemail to text, converting a recorded meeting to written notes, or generating a summary text document from a spoken lecture.
 
-![](/_fern-img/0cc416a9fcf9263e94aca8c02e6f0bdd5a409756962f812a5a5607bb2215ba85.webp)
+![](/_fern-files/_img/0cc416a9fcf9263e94aca8c02e6f0bdd5a409756962f812a5a5607bb2215ba85.webp)
 
 An example Zap could be the following:
 
@@ -44,13 +44,13 @@ Currently, Deepgram offers these actions in Zapier:
 
 To create a Zap, click on the “Create Zap” button in the left-side navigation bar. This will create a starter zap with a trigger and an action.
 
-![](/_fern-img/9ed364415a0b2d17c6ecb1603a688031912db19aefbeadddf74c500539187848.webp)
+![](/_fern-files/_img/9ed364415a0b2d17c6ecb1603a688031912db19aefbeadddf74c500539187848.webp)
 
 ### Set up the Trigger
 
 Click into the first box to change the trigger. A Zap must start with a trigger. The trigger starts off the workflow with an initial trigger event.
 
-![](/_fern-img/e184ada453db58bf60f9557e0914a9df3324ca1c5cbea428ba8067c98f072079.webp)
+![](/_fern-files/_img/e184ada453db58bf60f9557e0914a9df3324ca1c5cbea428ba8067c98f072079.webp)
 
 > **Warning**
 >
@@ -66,7 +66,7 @@ Example triggers with Deepgram actions could be:
 
 Configure the trigger with your chosen integration (Amazon S3, Dropbox, etc.). Integrations may use OAuth to authenticate automatically, or you may have to enter an API key.
 
-![](/_fern-img/905817d7b8e99221b25a40eb014c9b9320af10fd078bb38893466caee408e2a8.webp)
+![](/_fern-files/_img/905817d7b8e99221b25a40eb014c9b9320af10fd078bb38893466caee408e2a8.webp)
 
 Once your trigger has been set up, you can add actions.
 
@@ -74,15 +74,15 @@ Once your trigger has been set up, you can add actions.
 
 Click into the action box to configure it to use Deepgram.
 
-![](/_fern-img/9cffae30754481e9be8a0144fd3c4b86edde9c712b0604d29704fe94ac787f8d.webp)
+![](/_fern-files/_img/9cffae30754481e9be8a0144fd3c4b86edde9c712b0604d29704fe94ac787f8d.webp)
 
 Connect to your Deepgram account by adding your API key.
 
-![](/_fern-img/4f8a0b7fc477b9f44b047b85918b9d702f4a6687603b4c621a369e432790d444.webp)
+![](/_fern-files/_img/4f8a0b7fc477b9f44b047b85918b9d702f4a6687603b4c621a369e432790d444.webp)
 
 After successfully connecting your account, you will select your configuration options in the form. Be sure to add a publicly accessible URL as the audio file to transcribe.
 
-![](/_fern-img/5576112e39dfa2007723b6c4664a0732aef297e9a4bca6abb961091aef3a9f3b.webp)
+![](/_fern-files/_img/5576112e39dfa2007723b6c4664a0732aef297e9a4bca6abb961091aef3a9f3b.webp)
 
 > **Info**
 >
@@ -90,11 +90,11 @@ After successfully connecting your account, you will select your configuration o
 
 You can test the workflow by clicking "Test Step". This will run the workflow, and then you should see a transcription response that looks similar to this:
 
-![](/_fern-img/ac7901fad97dfc4fb4a6aa2f8f305377e95dd9fce4e019bad6591a1405042db4.webp)
+![](/_fern-files/_img/ac7901fad97dfc4fb4a6aa2f8f305377e95dd9fce4e019bad6591a1405042db4.webp)
 
 If you add another action after your Deepgram action, you can use the transcript in that following action.
 
-![](/_fern-img/8d3304dc3ace9e6086cea472f05cb41917b6211235d07d38e92d13cf6c0984d8.webp)
+![](/_fern-files/_img/8d3304dc3ace9e6086cea472f05cb41917b6211235d07d38e92d13cf6c0984d8.webp)
 
 Click "Publish" in the final step to publish your zap.
 

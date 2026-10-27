@@ -14,11 +14,159 @@ path: docs/changelog
 
 Entries on this page are generated automatically from [OpenAPI specification](https://openrouter.ai/docs/api_reference/overview.md) diffs when releases ship. Breaking changes are reviewed by a human before publication. See [API Versioning](https://openrouter.ai/docs/api_reference/versioning.md) for what counts as a breaking change and how deprecations are announced. Endpoint paths are shown relative to the API base URL (`https://openrouter.ai/api/v1`).
 
+**October 27, 2026**
+
+## Breaking changes
+
+* `ObservabilityS3Destination.config`: required `accessKeyId` property removedNo action needed
+
+  * **Migration: no action for existing destinations.** S3 destinations now support IAM role authentication (`authMode: "iam_role"` with `provider: "aws"`, `roleArn`, and `region`), where OpenRouter assumes a role in your AWS account instead of storing access keys. `accessKeyId` and `secretAccessKey` are now optional in the schema because IAM role destinations have none. `authMode` defaults to `access_keys`, and in that mode both keys are still required on create and update, so existing requests and destinations behave exactly as before.
+  * **Migration for clients that read destinations:** if your code or a generated SDK type assumes `config.accessKeyId` and `config.secretAccessKey` are always present in `GET /observability/destinations` responses, handle them as optional; they are absent on IAM role destinations. Check `config.authMode` to tell the two apart.
+
+  **4 endpoints using this schema**
+
+  * [`GET /observability/destinations`](https://openrouter.ai/docs/api/api-reference/observability/list-observability-destinations)
+  * [`GET /observability/destinations/{id}`](https://openrouter.ai/docs/api/api-reference/observability/get-an-observability-destination)
+  * [`PATCH /observability/destinations/{id}`](https://openrouter.ai/docs/api/api-reference/observability/update-an-observability-destination)
+  * [`POST /observability/destinations`](https://openrouter.ai/docs/api/api-reference/observability/create-an-observability-destination)
+* `ObservabilityS3Destination.config`: required `secretAccessKey` property removedNo action needed
+
+  * Same change as above: required only when `authMode` is `access_keys` (the default).
+
+  **4 endpoints using this schema**
+
+  * [`GET /observability/destinations`](https://openrouter.ai/docs/api/api-reference/observability/list-observability-destinations)
+  * [`GET /observability/destinations/{id}`](https://openrouter.ai/docs/api/api-reference/observability/get-an-observability-destination)
+  * [`PATCH /observability/destinations/{id}`](https://openrouter.ai/docs/api/api-reference/observability/update-an-observability-destination)
+  * [`POST /observability/destinations`](https://openrouter.ai/docs/api/api-reference/observability/create-an-observability-destination)
+
+## New response codes
+
+* [`GET /endpoints/zdr`](https://openrouter.ai/docs/api/api-reference/endpoints/preview-the-impact-of-zdr-on-the-available-endpoints): now returns `503`
+* [`POST /generation/feedback`](https://openrouter.ai/docs/api/api-reference/generations/submit-feedback-for-a-generation): now returns `403`
+* [`POST /generation/feedback`](https://openrouter.ai/docs/api/api-reference/generations/submit-feedback-for-a-generation): now returns `503`
+* [`GET /models`](https://openrouter.ai/docs/api/api-reference/models/list-all-models-and-their-properties): now returns `503`
+* [`GET /models/user`](https://openrouter.ai/docs/api/api-reference/models/list-models-filtered-by-user-provider-preferences-privacy-settings-and-guardrails): now returns `503`
+* [`GET /models/{author}/{slug}/endpoints`](https://openrouter.ai/docs/api/api-reference/endpoints/list-all-endpoints-for-a-model): now returns `503`
+* [`GET /presets`](https://openrouter.ai/docs/api/api-reference/presets/list-presets): now returns `503`
+* [`GET /presets/{slug}`](https://openrouter.ai/docs/api/api-reference/presets/get-a-preset): now returns `503`
+* [`GET /presets/{slug}/versions`](https://openrouter.ai/docs/api/api-reference/presets/list-versions-of-a-preset): now returns `503`
+* [`GET /presets/{slug}/versions/{version}`](https://openrouter.ai/docs/api/api-reference/presets/get-a-specific-version-of-a-preset): now returns `503`
+
+## Modified schemas
+
+* `ObservabilityS3Destination`:
+
+  * new property `config.authMode`
+  * new property `config.externalId`
+  * new property `config.provider`
+  * new property `config.roleArn`
+  * property `region` updated
+
+  **4 endpoints using this schema**
+
+  * [`GET /observability/destinations`](https://openrouter.ai/docs/api/api-reference/observability/list-observability-destinations)
+  * [`GET /observability/destinations/{id}`](https://openrouter.ai/docs/api/api-reference/observability/get-an-observability-destination)
+  * [`PATCH /observability/destinations/{id}`](https://openrouter.ai/docs/api/api-reference/observability/update-an-observability-destination)
+  * [`POST /observability/destinations`](https://openrouter.ai/docs/api/api-reference/observability/create-an-observability-destination)
+
+**October 26, 2026**
+
+## New schemas
+
+* `AnthropicToolUnion`
+  * Used by [`POST /messages`](https://openrouter.ai/docs/api/api-reference/anthropic-messages/create-a-message), [`POST /presets/{slug}/messages`](https://openrouter.ai/docs/api/api-reference/presets/create-a-preset-from-a-messages-request-body)
+
+## Modified schemas
+
+* `VideoModel`: enum property\_added
+  * Used by [`GET /videos/models`](https://openrouter.ai/docs/api/api-reference/video-generation/list-all-video-generation-models)
+* `MessagesToolAdditionBlock`: description updated; new union variant added
+  * Used by [`POST /messages`](https://openrouter.ai/docs/api/api-reference/anthropic-messages/create-a-message), [`POST /presets/{slug}/messages`](https://openrouter.ai/docs/api/api-reference/presets/create-a-preset-from-a-messages-request-body)
+
 **October 23, 2026**
+
+## Breaking changes
+
+* `CreateInternRequest`: schema object removedAction required
+* `DeleteInternRequest`: schema object removedAction required
+* `DeleteInternResponse`: schema object removedAction required
+* `Intern`: schema object removedAction required
+* `InternApprovalMode`: schema object removedAction required
+* `InternChatAssistantMessage`: schema object removedAction required
+* `InternChatChoice`: schema object removedAction required
+* `InternChatCompletionChunk`: schema object removedAction required
+* `InternChatCompletionRequest`: schema object removedAction required
+* `InternChatDelta`: schema object removedAction required
+* `InternChatDeveloperMessage`: schema object removedAction required
+* `InternChatEchoedToolCall`: schema object removedAction required
+* `InternChatEchoedToolCallFunction`: schema object removedAction required
+* `InternChatError`: schema object removedAction required
+* `InternChatErrorMetadata`: schema object removedAction required
+* `InternChatErrorResponse`: schema object removedAction required
+* `InternChatMessage`: schema object removedAction required
+* `InternChatMessageContent`: schema object removedAction required
+* `InternChatPromptTokensDetails`: schema object removedAction required
+* `InternChatSteeredResponse`: schema object removedAction required
+* `InternChatStreamError`: schema object removedAction required
+* `InternChatStreamingResponse`: schema object removedAction required
+* `InternChatSystemMessage`: schema object removedAction required
+* `InternChatTextPart`: schema object removedAction required
+* `InternChatToolCall`: schema object removedAction required
+* `InternChatToolCallFunction`: schema object removedAction required
+* `InternChatToolMessage`: schema object removedAction required
+* `InternChatUsage`: schema object removedAction required
+* `InternChatUserMessage`: schema object removedAction required
+* `InternConnection`: schema object removedAction required
+* `InternConnectionList`: schema object removedAction required
+* `InternDaemonAccess`: schema object removedAction required
+* `InternInvokeAcceptedResponse`: schema object removedAction required
+* `InternInvokeRequest`: schema object removedAction required
+* `InternLifecycleError`: schema object removedAction required
+* `InternListResponse`: schema object removedAction required
+* `ProvisionInternResponse`: schema object removedAction required
+* `SignInternDaemonRequest`: schema object removedAction required
+* `SignInternDaemonResponse`: schema object removedAction required
+* `SuspendInternResponse`: schema object removedAction required
+* `UpdateInternRequest`: schema object removedAction required
+* `/interns`: endpoint object removedAction required
+* `/interns/{internId}`: endpoint object removedAction required
+* `/interns/{internId}/chat/completions`: endpoint object removedAction required
+* `/interns/{internId}/connections`: endpoint object removedAction required
+* `/interns/{internId}/daemon`: endpoint object removedAction required
+* `/interns/{internId}/daemon-access`: endpoint object removedAction required
+* `/interns/{internId}/daemon-access/sign`: endpoint object removedAction required
+* `/interns/{internId}/daemon/sign`: endpoint object removedAction required
+* `/interns/{internId}/icon`: endpoint object removedAction required
+* `/interns/{internId}/invoke`: endpoint object removedAction required
+* `/interns/{internId}/provision`: endpoint object removedAction required
+* `/interns/{internId}/suspend`: endpoint object removedAction required
+* \$.tags: Interns object removedAction required
+
+## Modified endpoints
+
+* [`POST /analytics/query`](https://openrouter.ai/docs/api/api-reference/analytics/query-analytics-data): response schema updated
 
 ## New response codes
 
 * [`GET /generation`](https://openrouter.ai/docs/api/api-reference/generations/get-request-&-usage-metadata-for-a-generation): now returns `403`
+
+## Modified schemas
+
+* `ChatStreamChunk`: property `metadata` updated
+  * Used by [`POST /chat/completions`](https://openrouter.ai/docs/api/api-reference/chat/create-a-chat-completion)
+* `MessagesRequest`: title property\_added
+  * Used by [`POST /messages`](https://openrouter.ai/docs/api/api-reference/anthropic-messages/create-a-message), [`POST /presets/{slug}/messages`](https://openrouter.ai/docs/api/api-reference/presets/create-a-preset-from-a-messages-request-body)
+* `ObservabilityWebhookDestination`: property `method` updated
+
+  **4 endpoints using this schema**
+
+  * [`GET /observability/destinations`](https://openrouter.ai/docs/api/api-reference/observability/list-observability-destinations)
+  * [`GET /observability/destinations/{id}`](https://openrouter.ai/docs/api/api-reference/observability/get-an-observability-destination)
+  * [`PATCH /observability/destinations/{id}`](https://openrouter.ai/docs/api/api-reference/observability/update-an-observability-destination)
+  * [`POST /observability/destinations`](https://openrouter.ai/docs/api/api-reference/observability/create-an-observability-destination)
+* `OpenResponsesErrorField`: title property\_added
+  * Used by [`GET /batches/{id}`](https://openrouter.ai/docs/api/api-reference/batch/get-a-batch), [`POST /batches`](https://openrouter.ai/docs/api/api-reference/batch/create-a-batch), [`POST /responses`](https://openrouter.ai/docs/api/api-reference/responses/create-a-response)
 
 **October 22, 2026**
 

@@ -25,19 +25,19 @@ New to WhatsApp on ElevenLabs? Follow the [getting started guide](/docs/eleven-a
 
 Go to the [WhatsApp page](https://elevenlabs.io/app/agents/whatsapp) and click the ***Import account*** button:
 
-![WhatsApp page](/docs/_fern-img/734d6e0c2af1c50b769700e084368bed2a8c7eccf47aece6cfb6fc5ca7623f44.webp)
+![WhatsApp page](/docs/_fern-files/_img/734d6e0c2af1c50b769700e084368bed2a8c7eccf47aece6cfb6fc5ca7623f44.webp)
 
 #### Authorize ElevenLabs
 
 This will open the authorization flow where you select your account and give ElevenLabs permission to manage it:
 
-![WhatsApp authorization flow](/docs/_fern-img/9e5238e98f926582db314e9debc187a7dc29fd38a980cb732b4563b373110351.webp)
+![WhatsApp authorization flow](/docs/_fern-files/_img/9e5238e98f926582db314e9debc187a7dc29fd38a980cb732b4563b373110351.webp)
 
 #### Assign an agent
 
 When you finish importing your account, you will be taken to its settings page where you can assign an agent to it:
 
-![WhatsApp account page](/docs/_fern-img/f5598ac70ade00048effb5ee3bf6cbc93cd61876652eb3ce5917ac21c6209bf6.webp)
+![WhatsApp account page](/docs/_fern-files/_img/f5598ac70ade00048effb5ee3bf6cbc93cd61876652eb3ce5917ac21c6209bf6.webp)
 
 > **Info**
 >
@@ -75,7 +75,7 @@ recent response.
 
 You can send a message to your WhatsApp business account and the agent will respond:
 
-![WhatsApp text conversation](/docs/_fern-img/4c31b4d2b5eccccd7cddfa81144176a6d3c32f4670add5306f3a6ef78bc05244.webp)
+![WhatsApp text conversation](/docs/_fern-files/_img/4c31b4d2b5eccccd7cddfa81144176a6d3c32f4670add5306f3a6ef78bc05244.webp)
 
 When either timeout expires, ElevenAgents sends the configured ***Max conversation duration
 message*** before closing the conversation. If the message is empty, the conversation closes
@@ -111,7 +111,7 @@ In addition to text, you can also send:
 * location
 * contact
 
-![WhatsApp audio conversation](/docs/_fern-img/372158bc0f86d62b6742f2bb44a741e5299ee7b95e36e38c3df1f9c06cffe2a0.webp)![WhatsApp image conversation](/docs/_fern-img/cbfbadb9d0a20f35537ce3bd137eb12b1005a862a7e1cf0155d271502fb713da.webp)![WhatsApp document conversation](/docs/_fern-img/2b91d4077ac19a56dda9c5c016a47ed7d574ba2cb77ac89eb8785925bc89fa13.webp)![WhatsApp location conversation](/docs/_fern-img/bcd0d8f7df69d6c381be5be7c7a91ec7752b2b1894a80539823b7d9266beb3dd.webp)![WhatsApp contacts conversation](/docs/_fern-img/75e56544700c87817a7f842943301a95e9e0b1fb84fc87e19139adb77f49ea5a.webp)
+![WhatsApp audio conversation](/docs/_fern-files/_img/372158bc0f86d62b6742f2bb44a741e5299ee7b95e36e38c3df1f9c06cffe2a0.webp)![WhatsApp image conversation](/docs/_fern-files/_img/cbfbadb9d0a20f35537ce3bd137eb12b1005a862a7e1cf0155d271502fb713da.webp)![WhatsApp document conversation](/docs/_fern-files/_img/2b91d4077ac19a56dda9c5c016a47ed7d574ba2cb77ac89eb8785925bc89fa13.webp)![WhatsApp location conversation](/docs/_fern-files/_img/bcd0d8f7df69d6c381be5be7c7a91ec7752b2b1894a80539823b7d9266beb3dd.webp)![WhatsApp contacts conversation](/docs/_fern-files/_img/75e56544700c87817a7f842943301a95e9e0b1fb84fc87e19139adb77f49ea5a.webp)
 
 ## Calls
 

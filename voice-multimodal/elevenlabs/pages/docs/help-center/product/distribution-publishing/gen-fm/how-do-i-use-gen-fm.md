@@ -18,7 +18,7 @@ Click **Workflows**.
 
 Click **Generate a podcast**.
 
-![Audio and Workflows in Studio](/docs/_fern-img/60b09d5f32158709cc6a7ee47eb5358b33a1d0be8814be12c1695b76b973ac94.webp)
+![Audio and Workflows in Studio](/docs/_fern-files/_img/60b09d5f32158709cc6a7ee47eb5358b33a1d0be8814be12c1695b76b973ac94.webp)
 
 You can then select options for your podcast.
 

@@ -10,19 +10,19 @@ path: docs/eleven-agents/overview
 
 Agents accomplish tasks through natural dialogue - from quick requests to complex, open-ended workflows. ElevenLabs provides voice-rich, expressive models, developer tools for building multimodal agents, and tools to monitor and evaluate agent performance at scale.
 
-[![](/docs/_fern-img/aa4e5442250b80183bf690e4bcc3bf9517932e1c5a569e5acb539c98604a213e.webp)](/docs/eleven-agents/build/overview)
+[![](/docs/_fern-files/_img/aa4e5442250b80183bf690e4bcc3bf9517932e1c5a569e5acb539c98604a213e.webp)](/docs/eleven-agents/build/overview)
 
 ### Configure
 
 Configure multimodal agents with our developer toolkit, dashboard, or visual workflow builder
 
-[![](/docs/_fern-img/7375358c43ac5dd1a170937123f0874e01b3d8b6cf178c282805588a11d39593.webp)](/docs/eleven-agents/integrate/overview)
+[![](/docs/_fern-files/_img/7375358c43ac5dd1a170937123f0874e01b3d8b6cf178c282805588a11d39593.webp)](/docs/eleven-agents/integrate/overview)
 
 ### Deploy
 
 Integrate multimodal agents across telephony systems, web, and mobile
 
-[![](/docs/_fern-img/2e1cb472973e6328927a6eddfd054e465469bcea3267e27f429ebbe33b8cddf5.webp)](/docs/eleven-agents/operate/overview)
+[![](/docs/_fern-files/_img/2e1cb472973e6328927a6eddfd054e465469bcea3267e27f429ebbe33b8cddf5.webp)](/docs/eleven-agents/operate/overview)
 
 ### Monitor
 

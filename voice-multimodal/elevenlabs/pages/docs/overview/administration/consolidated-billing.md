@@ -82,7 +82,7 @@ of both workspaces.
 
 The billing workspace will be able to see the usage of all linked workspaces.
 
-![Usage analytics grouped by reporting workspace](/docs/_fern-img/7e4b4abd815940402a5e68e37da191da43d4dd70e13efa3a1f84decdec9bc98b.webp)
+![Usage analytics grouped by reporting workspace](/docs/_fern-files/_img/7e4b4abd815940402a5e68e37da191da43d4dd70e13efa3a1f84decdec9bc98b.webp)
 
 The reporting workspace will only be able to see analytics for its own usage.
 

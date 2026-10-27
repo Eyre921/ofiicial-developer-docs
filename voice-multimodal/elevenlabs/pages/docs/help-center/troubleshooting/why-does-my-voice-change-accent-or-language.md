@@ -14,7 +14,7 @@ You can either create your own cloned voice, or you can find voices in the Voice
 
 
 
-![](/docs/_fern-img/a20116d23eec58c7eb81720fddd62551a68a4325a9267e09b8c447c3e7ac16c2.webp)
+![](/docs/_fern-files/_img/a20116d23eec58c7eb81720fddd62551a68a4325a9267e09b8c447c3e7ac16c2.webp)
 
 
 

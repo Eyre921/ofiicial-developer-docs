@@ -22,7 +22,7 @@ Click **Invite New User**
 
 Enter the email address of the person you want to invite
 
-![](/docs/_fern-img/8fe6ed56dd94671c2eb5a48e4ce70cd6431bf21d8a4704b451f24befbbec8efc.webp)
+![](/docs/_fern-files/_img/8fe6ed56dd94671c2eb5a48e4ce70cd6431bf21d8a4704b451f24befbbec8efc.webp)
 
 Once the new member has joined your workspace, you'll need to make sure that the agent is shared so that they can access it.
 

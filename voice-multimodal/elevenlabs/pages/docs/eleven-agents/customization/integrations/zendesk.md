@@ -204,13 +204,13 @@ Retrieves a user's profile so the agent can greet callers by name or verify thei
 
 On your agent's configuration page, click **Add tool** and select **Add integration tool**.
 
-![Add integration tool](/docs/_fern-img/ef3a82e0747f1b1da18fb6b4755812abe161d436582312e47836e621a44d83c7.webp)
+![Add integration tool](/docs/_fern-files/_img/ef3a82e0747f1b1da18fb6b4755812abe161d436582312e47836e621a44d83c7.webp)
 
 #### Select Zendesk tools
 
 Choose your Zendesk connection and toggle the tools you want the agent to use. You can enable as many or as few as needed — for example, a read-only triage agent might only need search and list tools, while a full-service agent might also create and update tickets.
 
-![Select Zendesk tools](/docs/_fern-img/9161ae75a4c514d477174622bd4857d6faf62a11825bc7d4d191176e52a72f91.webp)
+![Select Zendesk tools](/docs/_fern-files/_img/9161ae75a4c514d477174622bd4857d6faf62a11825bc7d4d191176e52a72f91.webp)
 
 #### (Optional) Provide parameters
 

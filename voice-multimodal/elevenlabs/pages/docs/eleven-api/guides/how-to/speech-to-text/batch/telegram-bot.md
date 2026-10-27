@@ -31,7 +31,7 @@ In this tutorial you will learn how to build a Telegram bot that transcribes aud
 
 Use the [BotFather](https://t.me/BotFather) to create a new Telegram bot. Run the `/newbot` command and follow the instructions to create a new bot. At the end, you will receive your secret bot token. Note it down securely for the next step.
 
-![BotFather](/docs/_fern-img/28aa856bb6ace1b49b82076a18f1e281a8a4f37bbb6cfc59c22d644564377248.webp)
+![BotFather](/docs/_fern-files/_img/28aa856bb6ace1b49b82076a18f1e281a8a4f37bbb6cfc59c22d644564377248.webp)
 
 ### Create a Supabase project locally
 
@@ -402,7 +402,7 @@ supabase db push
 
 Navigate to the [table editor](https://supabase.com/dashboard/project/_/editor) in your Supabase dashboard and you should see and empty `transcription_logs` table.
 
-![Empty table](/docs/_fern-img/c1493deafcd6c53712dcb4fa7a44b3253b571ade0bb2e9c2b4fdb090088b0695.webp)
+![Empty table](/docs/_fern-files/_img/c1493deafcd6c53712dcb4fa7a44b3253b571ade0bb2e9c2b4fdb090088b0695.webp)
 
 Lastly, run the following command to deploy the Edge Function:
 
@@ -412,7 +412,7 @@ supabase functions deploy --no-verify-jwt scribe-bot
 
 Navigate to the [Edge Functions view](https://supabase.com/dashboard/project/_/functions) in your Supabase dashboard and you should see the `scribe-bot` function deployed. Make a note of the function URL as you'll need it later, it should look something like `https://<project-ref>.functions.supabase.co/scribe-bot`.
 
-![Edge Function deployed](/docs/_fern-img/d12141a51a09563d625b379201de844800e0c7dcfa9e6c7f21484cbca7ff37cf.webp)
+![Edge Function deployed](/docs/_fern-files/_img/d12141a51a09563d625b379201de844800e0c7dcfa9e6c7f21484cbca7ff37cf.webp)
 
 ### Set up the webhook
 
@@ -424,7 +424,7 @@ https://api.telegram.org/bot<TELEGRAM_BOT_TOKEN>/setWebhook?url=https://<PROJECT
 
 Note that the `FUNCTION_SECRET` is the secret you set in your `.env` file.
 
-![Set webhook](/docs/_fern-img/ac72044bd3df138da3d8a0df09e8413e8a9fd8a5c3156a525d6b13664854482f.webp)
+![Set webhook](/docs/_fern-files/_img/ac72044bd3df138da3d8a0df09e8413e8a9fd8a5c3156a525d6b13664854482f.webp)
 
 ### Set the function secrets
 
@@ -438,11 +438,11 @@ supabase secrets set --env-file supabase/functions/.env
 
 Finally you can test the bot by sending it a voice message, audio or video file.
 
-![Test the bot](/docs/_fern-img/a42c784e6324f15575e0299bafe02a253a2bdc57f2ad5844f83e5b64297780e7.webp)
+![Test the bot](/docs/_fern-files/_img/a42c784e6324f15575e0299bafe02a253a2bdc57f2ad5844f83e5b64297780e7.webp)
 
 After you see the transcript as a reply, navigate back to your table editor in the Supabase dashboard and you should see a new row in your `transcription_logs` table.
 
-![New row in table](/docs/_fern-img/25c008858276b7cd4af6f8e72473891176bb9e2ce62e7002af353a2dac205e06.webp)
+![New row in table](/docs/_fern-files/_img/25c008858276b7cd4af6f8e72473891176bb9e2ce62e7002af353a2dac205e06.webp)
 
 ## Next steps
 

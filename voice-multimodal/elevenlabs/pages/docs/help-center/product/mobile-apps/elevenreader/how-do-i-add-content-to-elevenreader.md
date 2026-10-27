@@ -10,7 +10,7 @@ path: docs/help-center/product/mobile-apps/elevenreader/how-do-i-add-content-to-
 
 ElevenReader allows you to add content in four ways:
 
-![](/docs/_fern-img/3e323d0ed73edbd8e87e8bf4b611f067057e4d35de83a6fa20c4295f7d342bd0.webp)
+![](/docs/_fern-files/_img/3e323d0ed73edbd8e87e8bf4b611f067057e4d35de83a6fa20c4295f7d342bd0.webp)
 
 1. You can select **Write text** to enter text directly, either by typing or pasting text.
 

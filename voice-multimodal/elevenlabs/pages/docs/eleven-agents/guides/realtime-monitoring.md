@@ -73,7 +73,7 @@ Open your agent's configuration page in the dashboard.
 
 In the Advanced settings panel, toggle the "Monitoring" option.
 
-![Monitoring toggle in agent settings](/docs/_fern-img/1a4b5507a39ddf6a517772b8c01ede5f7d12429175fdf89e04c8ba910f646f8e.webp)
+![Monitoring toggle in agent settings](/docs/_fern-files/_img/1a4b5507a39ddf6a517772b8c01ede5f7d12429175fdf89e04c8ba910f646f8e.webp)
 
 ### Select events
 

@@ -54,14 +54,14 @@ Open a proposal from the branch whose changes you want reviewed:
 In the agent's **Branches** tab, open the options menu on the source branch and select **Open
 merge proposal**.
 
-![Open merge proposal option in a branch's options menu](/docs/_fern-img/5216047fc93408959d31bba118e0f0e8853129da106a9d75c00d57a2307e33e0.webp)
+![Open merge proposal option in a branch's options menu](/docs/_fern-files/_img/5216047fc93408959d31bba118e0f0e8853129da106a9d75c00d57a2307e33e0.webp)
 
 #### From the Proposals tab
 
 In the agent's **Branches > Proposals** tab, select the source branch, then click **Create
 proposal**.
 
-![Proposals tab on an agent's Branches page](/docs/_fern-img/bfdb23ad1edb31c89c2ff2a137fa3028bf3f9fbcf31e236de142e207b5d54cd0.webp)
+![Proposals tab on an agent's Branches page](/docs/_fern-files/_img/bfdb23ad1edb31c89c2ff2a137fa3028bf3f9fbcf31e236de142e207b5d54cd0.webp)
 
 Give the proposal a title, an optional description, and pick a target branch from the agent's other non-archived branches. Opening a proposal does not change either branch; it only records the request.
 
@@ -78,25 +78,25 @@ A proposal's page has these tabs:
 
 The description, review history, and a form for leaving a review.
 
-![Overview tab of a merge proposal](/docs/_fern-img/44894b2d2cbb79aeff99813f83d5832ab4a9e6ff44796c772e3681c69120b04c.webp)
+![Overview tab of a merge proposal](/docs/_fern-files/_img/44894b2d2cbb79aeff99813f83d5832ab4a9e6ff44796c772e3681c69120b04c.webp)
 
 #### Changes
 
 A diff between the source and target branch configurations.
 
-![Changes tab of a merge proposal](/docs/_fern-img/968126763b1bb7e5bf57ad68ee334d5d5bc64b43a7ce3006184a462ce0c3d929.webp)
+![Changes tab of a merge proposal](/docs/_fern-files/_img/968126763b1bb7e5bf57ad68ee334d5d5bc64b43a7ce3006184a462ce0c3d929.webp)
 
 #### Test runs
 
 The source branch's test history, so reviewers can check it still passes before approving.
 
-![Test runs tab of a merge proposal](/docs/_fern-img/a39354598b070cef39720159b84da10414d7b17820c8c71780ed2bd5a66a47fc.webp)
+![Test runs tab of a merge proposal](/docs/_fern-files/_img/a39354598b070cef39720159b84da10414d7b17820c8c71780ed2bd5a66a47fc.webp)
 
 #### Conversations
 
 Recent conversations on the source branch.
 
-![Conversations tab of a merge proposal](/docs/_fern-img/c37286e50107428225c57804a8bc8e09fe364b1ad6dc6cf582084dd8c52a6565.webp)
+![Conversations tab of a merge proposal](/docs/_fern-files/_img/c37286e50107428225c57804a8bc8e09fe364b1ad6dc6cf582084dd8c52a6565.webp)
 
 Anyone with edit access to the agent, other than the proposal's own author, can leave a review with an optional comment. Comments support markdown.
 

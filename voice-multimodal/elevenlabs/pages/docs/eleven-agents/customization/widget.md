@@ -25,7 +25,7 @@ The widget supports flexible input modes to match your use case. Configure these
 > Multimodality is fully supported in our client SDKs, see more
 > [here](/docs/eleven-api/resources/libraries).
 
-![Widget interface options](/docs/_fern-img/cf851dd7a29b4bd23f7d36097ebf57c0bfe1b6a7a3b35687ddea20d9920a93c0.webp)
+![Widget interface options](/docs/_fern-files/_img/cf851dd7a29b4bd23f7d36097ebf57c0bfe1b6a7a3b35687ddea20d9920a93c0.webp)
 
 **Available modes:**
 
@@ -168,7 +168,7 @@ Customize the widget's appearance, text content, language selection, and more.
 
 Open your agent in the dashboard and navigate to the **Widget** tab to customize appearance, avatar, text, terms, language support, and more.
 
-![Widget customization](/docs/_fern-img/1f773d01a3c0925a47f11cf57153db23bc8bc03b93efe5d7085919886ae392cf.webp)
+![Widget customization](/docs/_fern-files/_img/1f773d01a3c0925a47f11cf57153db23bc8bc03b93efe5d7085919886ae392cf.webp)
 
 #### Update via the CLI
 
@@ -264,7 +264,7 @@ Customize the widget colors and shapes to match your brand identity.
 
 Gather user insights to improve agent performance. This can be used to fine-tune your agent's knowledge-base & system prompt.
 
-![Widget feedback](/docs/_fern-img/d7117399e23f06522b3112ff5c5ead23f66d3ea4700c011ff75e5dcd6cce875c.webp)
+![Widget feedback](/docs/_fern-files/_img/d7117399e23f06522b3112ff5c5ead23f66d3ea4700c011ff75e5dcd6cce875c.webp)
 
 **Collection modes**
 
@@ -297,7 +297,7 @@ Customize all displayed widget text elements, for example to modify button label
 
 Display custom terms and conditions before the conversation.
 
-![Terms setup](/docs/_fern-img/58dfd0abf92615f85c7314e8baec1bf4dd401cc88a04f1096baf817f05edb39d.webp)
+![Terms setup](/docs/_fern-files/_img/58dfd0abf92615f85c7314e8baec1bf4dd401cc88a04f1096baf817f05edb39d.webp)
 
 **Available options**
 
@@ -308,7 +308,7 @@ Display custom terms and conditions before the conversation.
 
 The terms are displayed to users in a modal before starting the call:
 
-![Terms display](/docs/_fern-img/ca7511c60f1f6a29ee8bdd5c40083c73ef701f6cfd7ce1672161d73559a0c9b0.webp)
+![Terms display](/docs/_fern-files/_img/ca7511c60f1f6a29ee8bdd5c40083c73ef701f6cfd7ce1672161d73559a0c9b0.webp)
 
 The terms can be written in Markdown, allowing you to:
 
@@ -337,18 +337,18 @@ Enable multi-language support in the widget.
 
 Allow users to mute their audio in the widget.
 
-![Widget's mute button](/docs/_fern-img/e6968e4ba057d98857fb41125bb57f92570ed7c49711ce423add1ea558de5919.webp)
+![Widget's mute button](/docs/_fern-files/_img/e6968e4ba057d98857fb41125bb57f92570ed7c49711ce423add1ea558de5919.webp)
 
 To add the mute button please enable this in the `interface` card of the agent's `widget`
 settings.
 
-![Widget's mute button](/docs/_fern-img/7db9df78926f3f3b3db7c286d4efc033356ec9b79cabe20670f65a52a624fae8.webp)
+![Widget's mute button](/docs/_fern-files/_img/7db9df78926f3f3b3db7c286d4efc033356ec9b79cabe20670f65a52a624fae8.webp)
 
 #### Shareable page
 
 Customize your public widget landing page (shareable link).
 
-![Widget shareable page](/docs/_fern-img/9d8b23aa816f4b7d727b3c0511ef91d046796bb57b8299382c53b6bcff746c50.webp)
+![Widget shareable page](/docs/_fern-files/_img/9d8b23aa816f4b7d727b3c0511ef91d046796bb57b8299382c53b6bcff746c50.webp)
 
 **Available options**
 
@@ -358,7 +358,7 @@ Customize your public widget landing page (shareable link).
 
 Rich content lets the agent reply with interactive components alongside its messages. Configure it in the dashboard under **Channels** → **Widget** → **Rich content**.
 
-![Widget rich content settings](/docs/_fern-img/f6396cd0fb21e6d431ff4b09d609b1ce9b6b88e64960e82ee97027bb28d3d8df.webp)
+![Widget rich content settings](/docs/_fern-files/_img/f6396cd0fb21e6d431ff4b09d609b1ce9b6b88e64960e82ee97027bb28d3d8df.webp)
 
 Rich content is shown in text conversations, and in voice conversations when **Realtime transcript of the conversation** is enabled under **Interface**. It is only available in the embedded widget.
 
@@ -450,7 +450,7 @@ To create your first client tool, follow the [client tools guide](/docs/eleven-a
 
 #### Example: Creating the \`redirectToExternalURL\` Tool
 
-![Client tool configuration](/docs/_fern-img/d800b8c60cba2ab0a1d0aaaecc0652a678998a4161adaf10d83df51b928a7734.webp)
+![Client tool configuration](/docs/_fern-files/_img/d800b8c60cba2ab0a1d0aaaecc0652a678998a4161adaf10d83df51b928a7734.webp)
 
 #### Example Implementation
 

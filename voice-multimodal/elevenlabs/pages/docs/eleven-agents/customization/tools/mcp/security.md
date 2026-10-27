@@ -24,7 +24,7 @@ This guide outlines key security practices to consider when using MCP server int
 
 ElevenLabs provides built-in security controls through tool approval modes that help you manage the security risks associated with MCP tool usage. These controls allow you to balance functionality with security based on your specific needs.
 
-![Tool approval mode settings](/docs/_fern-img/9f4c208459131622478de5010e2234d3af8a03dc9bc5b7ec2fcab48a7be3bde3.webp)
+![Tool approval mode settings](/docs/_fern-files/_img/9f4c208459131622478de5010e2234d3af8a03dc9bc5b7ec2fcab48a7be3bde3.webp)
 
 ### Approval mode options
 
@@ -37,7 +37,7 @@ ElevenLabs provides built-in security controls through tool approval modes that 
 Fine-Grained Tool Approval mode provides the most flexible security configuration, allowing you to classify each tool based on its risk profile:
 
 ![Fine-grained tool approval
-settings](/docs/_fern-img/041cad753319ed92189ee8d4f70a9d3ed07177303bf71777ce36a90270a5dd24.webp)
+settings](/docs/_fern-files/_img/041cad753319ed92189ee8d4f70a9d3ed07177303bf71777ce36a90270a5dd24.webp)
 
 * **Auto-approved tools**: Suitable for low-risk, read-only operations or tools you completely trust
 * **Approval-required tools**: For tools that modify data, access sensitive information, or perform potentially risky operations

@@ -76,7 +76,7 @@ To install `boto3`, run `pip install boto3`.
 
 Once you have an audio file uploaded to one of your S3 buckets, you can generate a presigned URL very easily from the AWS S3 website: Click on your audio file, then going to “Object actions” in the top-right corner, and click “Share with a presigned URL”.
 
-![](/_fern-img/6632c1f9c4d2fbc48535b1b87dfe5ee661212c8096dee9205ad4b51f7b605152.webp)
+![](/_fern-files/_img/6632c1f9c4d2fbc48535b1b87dfe5ee661212c8096dee9205ad4b51f7b605152.webp)
 
 The presigned URL will be copied to your clipboard, and if you paste it into your browser’s URL bar the file will be downloaded to your computer. If you carefully inspect the URL, you will notice query parameters such as `Amz-Security-Token` and `X-Amz-Expires`. These query parameters contain the credentials for secure access to your files.
 
@@ -504,7 +504,7 @@ If you are receiving `AccessDenied` messages such as the one below, it's likely 
 </Error>
 ```
 
-![](/_fern-img/be123ff2fc9316134ec567bfc0b49112842613f844dd6c21d04f43ce6774da96.webp)
+![](/_fern-files/_img/be123ff2fc9316134ec567bfc0b49112842613f844dd6c21d04f43ce6774da96.webp)
 
 ---
 

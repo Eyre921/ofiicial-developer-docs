@@ -35,6 +35,9 @@ Overrides can be enabled for the following fields in the agent's security settin
 * Speed
 * Similarity boost
 * ASR keywords
+* Procedures
+
+The **Procedures** override does not use `conversation_config_override`. Instead, the client passes `procedure_ids` and `start_procedure_ids` at the top level of the conversation initiation client data. See [Choose procedures per conversation](/docs/eleven-agents/customization/procedures#choose-procedures-per-conversation).
 
 When overrides are enabled for a field, providing an override is still optional. If not provided, the agent will use the default values defined in the agent's [dashboard](https://elevenlabs.io/app/agents/agents). For most fields, an error will be thrown if an override is provided when that field does not have overrides enabled.
 
@@ -75,7 +78,7 @@ For security reasons, overrides are disabled by default. Enable the fields you w
 
 Navigate to your agent's settings and select the **Security** tab. Enable the `First message`, `System prompt`, `Tools`, `Knowledge base`, `ASR keywords`, and any other overrides you need, such as `LLM`.
 
-![Enable overrides](/docs/_fern-img/496f20380ffe29fc46275bbfe5c6eaabdb5e211c780188243a018b38715ea779.webp)
+![Enable overrides](/docs/_fern-files/_img/496f20380ffe29fc46275bbfe5c6eaabdb5e211c780188243a018b38715ea779.webp)
 
 #### Update via the CLI
 

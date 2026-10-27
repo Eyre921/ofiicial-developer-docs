@@ -17,11 +17,11 @@ To view the current status, find your voice in the list and look at the icons di
 **Draft:** This status means that your voice is incomplete. Generally this is either
 because you haven't completed creating the voice, or you haven't verified the voice yet.
 
-![](/docs/_fern-img/6d3f8b497dcb56c5ac48f87906f196f49fce5518dbe1f3e700df2f91ebbc1378.webp)
+![](/docs/_fern-files/_img/6d3f8b497dcb56c5ac48f87906f196f49fce5518dbe1f3e700df2f91ebbc1378.webp)
 
 To go through the verification process, click the tick icon.
 
-![](/docs/_fern-img/5e4e259056fdcee35a751b0d7ca2a463019a47469f95cabc9ed359f7f51fc5fe.webp)
+![](/docs/_fern-files/_img/5e4e259056fdcee35a751b0d7ca2a463019a47469f95cabc9ed359f7f51fc5fe.webp)
 
 To go back to the voice creation process, click **More actions** (three dots) and select **Edit voice**.
 
@@ -29,7 +29,7 @@ To go back to the voice creation process, click **More actions** (three dots) an
 
 Once you've verified your voice, it will need to fine-tune on our models before you can use it. You can track this process by hovering over the name of your voice in [My Voices](https://elevenlabs.io/app/voice-lab). You'll see all available models listed here, with an icon to indicate the status for each model.
 
-![](/docs/_fern-img/d4820b45f5fb4a89f76d3b5ef5ed2992bbf515eacac039c67596c055f136b67c.webp)
+![](/docs/_fern-files/_img/d4820b45f5fb4a89f76d3b5ef5ed2992bbf515eacac039c67596c055f136b67c.webp)
 
 
 
@@ -58,6 +58,6 @@ for this model has been completed, and you can now use your voice with this mode
 need to click the model name to begin fine-training. If additional models have become available for
 your voice to fine-tune on, you'll see an exclamation icon next to your voice.
 
-![](/docs/_fern-img/7fe7278b67a7f9697c1a6190837fb110fd53e64ddb3513b4cc351292a077740e.webp)
+![](/docs/_fern-files/_img/7fe7278b67a7f9697c1a6190837fb110fd53e64ddb3513b4cc351292a077740e.webp)
 
 To begin the fine-tuning process, just hover over your voice's name and click the name of the model.

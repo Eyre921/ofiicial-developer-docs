@@ -1733,6 +1733,15 @@ components:
             conversation start. An empty list disables all of that agent's
             procedures. Not applied after an agent transfer. Requires
             enable_procedure_ids_from_client.
+        start_procedure_ids:
+          type: array
+          items:
+            type: string
+          description: >-
+            If set, these free-form procedures start when the conversation
+            starts. Accepts at most five IDs. Each ID must be available after
+            procedure_ids is applied. Unknown IDs and structured procedures fail
+            conversation start. Requires enable_procedure_ids_from_client.
         dynamic_variables:
           type: object
           additionalProperties:

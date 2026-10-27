@@ -17,7 +17,7 @@ Triage tickets collect problems with an agent's real conversations so you can re
 > Triage tickets are about an agent's own performance. They are separate from support tickets that
 > an agent opens on behalf of an end user during a conversation.
 
-![Triage queue for an agent](/docs/_fern-img/9fe035e0f67b9c462de2e0260d9f93adfaef42303666b28e4e28e372f4185430.webp)
+![Triage queue for an agent](/docs/_fern-files/_img/9fe035e0f67b9c462de2e0260d9f93adfaef42303666b28e4e28e372f4185430.webp)
 
 ## Where tickets come from
 
@@ -26,7 +26,7 @@ Triage tickets collect problems with an agent's real conversations so you can re
 * **Conversation review**: you or a teammate open a ticket while reviewing a transcript.
 * **Architect review (coming soon)**: Architect opens a ticket after spotting a recurring pattern across recent conversations.
 
-![Flag issue button on a conversation](/docs/_fern-img/7ddb939cbd0cb690f643ad7051ae29dee94a33f5696f6ff4fe554e9e714afcac.webp)
+![Flag issue button on a conversation](/docs/_fern-files/_img/7ddb939cbd0cb690f643ad7051ae29dee94a33f5696f6ff4fe554e9e714afcac.webp)
 
 ## Ticket statuses
 

@@ -66,7 +66,8 @@ Validation Error
 - `failed_count` (integer, required) — Number of test runs that failed
 - `pending_count` (integer, required) — Number of test runs that are pending
 - `cancelled_count` (integer, required) — Number of test runs that were cancelled
-- `title` (string, required) — Title of the test invocation - the folder name for folder runs, otherwise the single test name or count of tests
+- `title` (string, required) — Display title of the test invocation: the user-provided name when set, otherwise the folder name, single test name, or test count.
+- `name` (string, optional, nullable) — The user-provided name of the test invocation, if one was set.
 - `agent_id` (string, optional, nullable) — The ID of the agent this test invocation belongs to
 - `branch_id` (string, optional, nullable) — The ID of the branch this test invocation was run on
 - `version_id` (string, optional, nullable) — The ID of the agent version this test invocation ran against. For draft or config-override runs this is the version those uncommitted changes were applied on top of. None only for runs recorded before this field existed.
@@ -123,6 +124,7 @@ Validation Error
       "pending_count": 1,
       "cancelled_count": 1,
       "title": "string",
+      "name": "string",
       "agent_id": "string",
       "branch_id": "string",
       "version_id": "string",

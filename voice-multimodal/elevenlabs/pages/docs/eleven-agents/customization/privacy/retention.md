@@ -41,7 +41,7 @@ The retention settings apply separately to:
 
 Navigate to your agent's settings and select the "Advanced" tab. The retention settings are located in the "Data Retention" section.
 
-![Enable overrides](/docs/_fern-img/39019a60151b8d999d5e1719e1553508a91c3bf7a34e6f5729ea2942c3dc4d57.webp)
+![Enable overrides](/docs/_fern-files/_img/39019a60151b8d999d5e1719e1553508a91c3bf7a34e6f5729ea2942c3dc4d57.webp)
 
 #### Update retention period
 
@@ -49,7 +49,7 @@ Navigate to your agent's settings and select the "Advanced" tab. The retention s
 2. Choose whether to apply changes to existing data
 3. Click "Save" to confirm changes
 
-![Enable overrides](/docs/_fern-img/a5d069a0957ee06672aab4a8784362a72ed7d3f055d548eb54b32998ec246aad.webp)
+![Enable overrides](/docs/_fern-files/_img/a5d069a0957ee06672aab4a8784362a72ed7d3f055d548eb54b32998ec246aad.webp)
 
 When modifying retention settings, you'll have the option to apply the new retention period to existing conversation data or only to new conversations going forward.
 

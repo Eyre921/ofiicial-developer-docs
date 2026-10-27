@@ -8,7 +8,7 @@ path: docs/eleven-agents/phone-numbers/twilio-integration/sms-otp-verification
 
 # SMS OTP verification
 
-![Agent conversation collecting a phone number, OTP code, and verification success](/docs/_fern-img/97201c6fdad0c63900236b52726c867d3ff9405fdbd30725858f384653c95803.webp)
+![Agent conversation collecting a phone number, OTP code, and verification success](/docs/_fern-files/_img/97201c6fdad0c63900236b52726c867d3ff9405fdbd30725858f384653c95803.webp)
 
 ## Overview
 
@@ -74,7 +74,7 @@ Basic dkFDxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx==
 
 ### send_SMS_verification
 
-![Agent conversation collecting a phone number, OTP code, and verification success](/docs/_fern-img/9d72a753674c17481e99ea871b1b178cd7791f2da1ec3491ad4786c3fbc9a84e.webp)
+![Agent conversation collecting a phone number, OTP code, and verification success](/docs/_fern-files/_img/9d72a753674c17481e99ea871b1b178cd7791f2da1ec3491ad4786c3fbc9a84e.webp)
 
 In the **Agent** section of your agent settings, choose **Add Tool** and select **Webhook**.
 

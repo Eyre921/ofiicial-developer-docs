@@ -17,7 +17,7 @@ Multi-voice support allows your ElevenLabs agent to dynamically switch between d
 * **Emotional agents**: Voice changes based on emotional context
 * **Role-playing scenarios**: Distinct voices for different personas
 
-![Multi-voice configuration interface](/docs/_fern-img/a421eaed65575340ef34c1209a30d97ca2594a5fb48ee57b02c8349930191727.webp)
+![Multi-voice configuration interface](/docs/_fern-files/_img/a421eaed65575340ef34c1209a30d97ca2594a5fb48ee57b02c8349930191727.webp)
 
 ## How it works
 
@@ -54,7 +54,7 @@ Each supported voice has the following properties:
 
 Open your agent in the dashboard, navigate to the **Voice** tab, and locate the **Multi-voice support** section. Click **Add voice** to configure a new supported voice.
 
-![Multi-voice configuration interface](/docs/_fern-img/e7a6e86ed58abb54f75e884214e6bc056c85e85fc60176924fb2683e16250aa1.webp)
+![Multi-voice configuration interface](/docs/_fern-files/_img/e7a6e86ed58abb54f75e884214e6bc056c85e85fc60176924fb2683e16250aa1.webp)
 
 #### Update via the CLI
 

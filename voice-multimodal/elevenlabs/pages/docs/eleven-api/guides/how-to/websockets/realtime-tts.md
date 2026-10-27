@@ -267,7 +267,7 @@ To manage this, you can use the `chunk_length_schedule` parameter when either in
 
 Here's an example of how this works with the default settings for `chunk_length_schedule`:
 
-![](/docs/_fern-img/077efc232570b0f92355aed2d6766b66bba815e335466e81cd64f8dfcce10ada.webp)
+![](/docs/_fern-files/_img/077efc232570b0f92355aed2d6766b66bba815e335466e81cd64f8dfcce10ada.webp)
 
 In the above diagram, audio is only generated after the second message is sent to the server. This is because the first message is below the threshold of 120 characters, while the second message brings the total number of characters above the threshold. The third message is above the threshold of 160 characters, so audio is immediately generated and returned to the client.
 
@@ -297,7 +297,7 @@ websocket.send(
 
 In the case that you want force the immediate return of the audio, you can use `flush: true` to clear out the buffer and force generate any buffered text. This can be useful, for example, when you have reached the end of a document and want to generate audio for the final section.
 
-![](/docs/_fern-img/84011e01024effe1bba1556f0007c7947165a0101bce3a41f8b955d1a9788a9c.webp)
+![](/docs/_fern-files/_img/84011e01024effe1bba1556f0007c7947165a0101bce3a41f8b955d1a9788a9c.webp)
 
 This can be specified on a per-message basis by setting `flush: true` in the message.
 

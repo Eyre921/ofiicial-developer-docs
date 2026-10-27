@@ -59,9 +59,9 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `id` | `string` | :heavy\_check\_mark: | The generation ID | gen-1234567890 |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `id` | `string` | ✅ | The generation ID | gen-1234567890 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -120,9 +120,9 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `id` | `string` | :heavy\_check\_mark: | The generation ID | gen-1234567890 |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `id` | `string` | ✅ | The generation ID | gen-1234567890 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -185,9 +185,9 @@ func main() {
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. |
-| `request` | [components.SubmitGenerationFeedbackRequest](../../models/components/submitgenerationfeedbackrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. |
+| `request` | [components.SubmitGenerationFeedbackRequest](../../models/components/submitgenerationfeedbackrequest.mdx) | ✅ | The request object to use for the request. |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. |
 
 ### Response
 
@@ -199,9 +199,11 @@ func main() {
 | - | - | - |
 | sdkerrors.BadRequestResponseError | 400 | application/json |
 | sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
 | sdkerrors.NotFoundResponseError | 404 | application/json |
 | sdkerrors.ConflictResponseError | 409 | application/json |
 | sdkerrors.TooManyRequestsResponseError | 429 | application/json |
 | sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.ServiceUnavailableResponseError | 503 | application/json |
 | sdkerrors.APIError | 4XX, 5XX | \*/\* |
 

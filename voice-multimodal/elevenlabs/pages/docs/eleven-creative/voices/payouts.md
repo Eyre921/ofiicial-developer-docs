@@ -8,7 +8,7 @@ path: docs/eleven-creative/voices/payouts
 
 # Payouts
 
-![Payouts](/docs/_fern-img/2827fdd8be3ad39ff50a5fe9b0a5d4d7a2dcf4aa7f1fc6a8406d451c1dd3d30d.webp)
+![Payouts](/docs/_fern-files/_img/2827fdd8be3ad39ff50a5fe9b0a5d4d7a2dcf4aa7f1fc6a8406d451c1dd3d30d.webp)
 
 ## Overview
 
@@ -22,7 +22,7 @@ To set up your Payouts account:
 
 * Click on your profile icon in the top right corner and select [Payouts](https://elevenlabs.io/app/payouts).
 
-![Payouts overview](/docs/_fern-img/a8a2f7f41a9d548644fbd90d54d416e1d1811c358c8a46f8b64f78b818af63d9.webp)
+![Payouts overview](/docs/_fern-files/_img/a8a2f7f41a9d548644fbd90d54d416e1d1811c358c8a46f8b64f78b818af63d9.webp)
 
 * Follow the prompts from Stripe Connect to complete the account setup.
 
@@ -205,7 +205,7 @@ To set up your Payouts account:
 
       To complete the process, please visit your Payouts page, and click **Complete Account Setup**, and follow the steps.
 
-      ![](/docs/_fern-img/eb52e5ffc758de83e815dccbf38f589f443d01943aa46e083839af073a7cd568.webp)
+      ![](/docs/_fern-files/_img/eb52e5ffc758de83e815dccbf38f589f443d01943aa46e083839af073a7cd568.webp)
 
       If you still see **Complete Account Setup** after completing all the steps, please contact Support by emailing [support@elevenlabs.io](mailto:support@elevenlabs.io).
 
@@ -215,11 +215,11 @@ To set up your Payouts account:
 
       Payouts will be disabled for any user who does not have a valid tax form. To resume Payouts, please visit your Payouts page and click **Manage Account**.
 
-      ![](/docs/_fern-img/5b05f4b71a2fa97f474b763834ab81479a21e159b7a24753be81adfd0b61db04.webp)
+      ![](/docs/_fern-files/_img/5b05f4b71a2fa97f474b763834ab81479a21e159b7a24753be81adfd0b61db04.webp)
 
       You will then see **Missing W-8/W-9 certification**. To complete your certification, click **Update** and answer the questions in the form.
 
-      ![](/docs/_fern-img/c86670b2a62775500db5c36908f55acad2dbf83e38440dc52c89d4a1d5348508.webp)
+      ![](/docs/_fern-files/_img/c86670b2a62775500db5c36908f55acad2dbf83e38440dc52c89d4a1d5348508.webp)
     </td>
   </tr>
 
@@ -306,7 +306,7 @@ To set up your Payouts account:
       You will see a section for W-8/W-9 certification, which will be marked **Incomplete**. Click **Update** to open the form\
 
 
-      ![](/docs/_fern-img/c86670b2a62775500db5c36908f55acad2dbf83e38440dc52c89d4a1d5348508.webp)
+      ![](/docs/_fern-files/_img/c86670b2a62775500db5c36908f55acad2dbf83e38440dc52c89d4a1d5348508.webp)
 
       Answer the questions on screen. The first question, "Are you considered a U.S. person for Federal Tax Purpose?", will determine whether you complete Form W-9 or Form W-8.
 

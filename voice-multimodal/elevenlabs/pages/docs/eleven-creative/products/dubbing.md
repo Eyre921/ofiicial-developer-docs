@@ -183,7 +183,7 @@ Where editing is available:
 
       Once it has completed processing, click the three dots icon and select **Edit** to open your dubbing project.
 
-      ![](/docs/_fern-img/88ae8853b135c164e1b969cc7ffdf4a427ec9e6ca56a50a646fceb54a0210656.webp)
+      ![](/docs/_fern-files/_img/88ae8853b135c164e1b969cc7ffdf4a427ec9e6ca56a50a646fceb54a0210656.webp)
 
       For more information about Dubbing Studio, please see our [overview.](/docs/product-guides/products/dubbing/dubbing-studio)
     </td>

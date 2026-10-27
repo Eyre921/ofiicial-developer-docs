@@ -21,7 +21,7 @@ Navigate to your Squarespace site, sign in and open the page you wish to add nar
 
 Click the "+" symbol on the spot you want to place the Audio Native player and select "Code" from the menu.
 
-![Audio Native](/docs/_fern-img/aedf2e008d7a58a1c502b0b71fc674397928102ce07202a31eec415360d98490.webp)
+![Audio Native](/docs/_fern-files/_img/aedf2e008d7a58a1c502b0b71fc674397928102ce07202a31eec415360d98490.webp)
 
 Paste the Audio Native embed code into the HTML box and press enter.
 
@@ -43,7 +43,7 @@ Paste the Audio Native embed code into the HTML box and press enter.
     <script src="https://elevenlabs.io/player/audioNativeHelper.js" type="text/javascript"></script>
 ```
 
-![Audio Native](/docs/_fern-img/c9bc7a9212ad6934ebd100aab3fc6d35436e01058d1ce41cf6ac9994a1aba91c.webp)
+![Audio Native](/docs/_fern-files/_img/c9bc7a9212ad6934ebd100aab3fc6d35436e01058d1ce41cf6ac9994a1aba91c.webp)
 
 #### Update the blog post
 
@@ -53,4 +53,4 @@ Click the "Save" button in the top right corner of the editor, which should now 
 
 Finally, navigate to the live version of the blog post. You should see a message to let you know that the Audio Native project is being created. After a few minutes the text in your blog will be converted to an audio article and the embedded audio player will appear.
 
-![Audio Native](/docs/_fern-img/e5dd2d8d5c0a5827527911cfab8bb32c5c1af58947a0eeb5e6e6e2df8687de44.webp)
+![Audio Native](/docs/_fern-files/_img/e5dd2d8d5c0a5827527911cfab8bb32c5c1af58947a0eeb5e6e6e2df8687de44.webp)

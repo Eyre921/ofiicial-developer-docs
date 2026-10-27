@@ -25,7 +25,7 @@ Certain events within ElevenLabs can be configured to trigger webhooks, allowing
 
 Webhooks can be created, disabled and deleted from the general settings page. For users within [Workspaces](/docs/overview/administration/workspaces/overview), only the workspace admins can configure the webhooks for the workspace.
 
-![HMAC webhook configuration](/docs/_fern-img/9ea298daac1c64eb43c802a12f7824e83accca44ba2edd1d01a39bcd62c0b9d6.webp)
+![HMAC webhook configuration](/docs/_fern-files/_img/9ea298daac1c64eb43c802a12f7824e83accca44ba2edd1d01a39bcd62c0b9d6.webp)
 
 After creation, the webhook can be selected to listen for events within product settings such as [Agents Platform](/docs/eleven-agents/workflows/post-call-webhooks).
 

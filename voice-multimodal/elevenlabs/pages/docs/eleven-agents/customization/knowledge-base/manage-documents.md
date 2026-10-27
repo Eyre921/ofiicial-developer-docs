@@ -11,7 +11,7 @@ path: docs/eleven-agents/customization/knowledge-base/manage-documents
 Manage your knowledge base from the [knowledge base dashboard](https://elevenlabs.io/app/agents/knowledge-base), the CLI, or the API. For what a knowledge base is and how agents use it, see [Knowledge base](/docs/eleven-agents/customization/knowledge-base).
 
 ![Knowledge base main interface showing a list of
-documents](/docs/_fern-img/0887213c4d8099240b7e5a8fec86fc75f4763e8fd80a6f7a6de33545c45f37a2.webp)
+documents](/docs/_fern-files/_img/0887213c4d8099240b7e5a8fec86fc75f4763e8fd80a6f7a6de33545c45f37a2.webp)
 
 ## Add documents
 
@@ -25,7 +25,7 @@ From the [knowledge base dashboard](https://elevenlabs.io/app/agents/knowledge-b
 
 Upload a document in PDF, TXT, DOCX, HTML, EPUB, or Markdown format, up to 20MB per file.
 
-![File upload interface showing supported formats and the 20MB size limit](/docs/_fern-img/b428874877d6aa2b24167c0293709e6a52a096a13b02244c0a5463139d3988e4.webp)
+![File upload interface showing supported formats and the 20MB size limit](/docs/_fern-files/_img/b428874877d6aa2b24167c0293709e6a52a096a13b02244c0a5463139d3988e4.webp)
 
 #### URL
 
@@ -33,7 +33,7 @@ Import a webpage by pasting its URL. To ingest an entire site, use the crawl opt
 crawl the whole website by following links from the starting URL, or import pages from the
 site's sitemap. If a page fails to import, confirm that your site allows the [crawler user agent](#crawler-user-agent).
 
-![URL import interface where users can paste a documentation link](/docs/_fern-img/8523ea5c5ae0418007eb7042d4af3e792a111ca41b74a090357df34cd5b4a369.webp)
+![URL import interface where users can paste a documentation link](/docs/_fern-files/_img/8523ea5c5ae0418007eb7042d4af3e792a111ca41b74a090357df34cd5b4a369.webp)
 
 > **Warning**
 >
@@ -43,7 +43,7 @@ site's sitemap. If a page fails to import, confirm that your site allows the [cr
 
 Enter text manually and give it a name.
 
-![Text input interface where users can name and add custom content](/docs/_fern-img/4e44e310335dcea24b4832d38813992f1bdc55ef85b4e54353963dc47e9baa0a.webp)
+![Text input interface where users can name and add custom content](/docs/_fern-files/_img/4e44e310335dcea24b4832d38813992f1bdc55ef85b4e54353963dc47e9baa0a.webp)
 
 #### CLI
 
@@ -222,7 +222,7 @@ Documents can be reused across agents, so shared knowledge only needs to be main
 3. Select an existing document from your knowledge base, or upload a new one.
 
 ![Interface for adding documents to an
-agent](/docs/_fern-img/8e8a6a2df244ed20d1ab889c8ae5dda76aefed0d15f3dd2fe09c35b281c63673.webp)
+agent](/docs/_fern-files/_img/8e8a6a2df244ed20d1ab889c8ae5dda76aefed0d15f3dd2fe09c35b281c63673.webp)
 
 > **Tip**
 >
@@ -237,7 +237,7 @@ You can edit a document's content directly instead of deleting and re-uploading 
 * **URL documents**: Edit the content when auto-sync is off. When auto-sync is on, the sync cycle manages the document and manual edits are blocked.
 
 ![Editing a document's content inline in the knowledge
-base](/docs/_fern-img/4ea01bb2c13162f31f7610b049ae0db542e279a26da38f4c79f17fb89a8524f5.webp)
+base](/docs/_fern-files/_img/4ea01bb2c13162f31f7610b049ae0db542e279a26da38f4c79f17fb89a8524f5.webp)
 
 ```python
 # Update a document's name or content
@@ -294,7 +294,7 @@ Folders group related documents so they are easier to manage and attach in bulk.
 A folder attached to an agent makes all of its documents available through RAG, so the agent must have RAG enabled to use folders.
 
 ![Creating a folder and moving documents into
-it](/docs/_fern-img/8267c0d4a36282c1fcaaacf0a665e5caf8c4cf6f2908451fc5a3b1cf6a8dd2e0.webp)
+it](/docs/_fern-files/_img/8267c0d4a36282c1fcaaacf0a665e5caf8c4cf6f2908451fc5a3b1cf6a8dd2e0.webp)
 
 ```python
 # Create a folder
@@ -328,6 +328,6 @@ await elevenlabs.conversationalAi.knowledgeBase.documents.move("i2YYI6huwBmcgYyd
 Each document has a **Dependent agents** tab that lists the agents currently depending on it.
 
 ![Document detail view showing the Dependent agents
-tab](/docs/_fern-img/20ecce9f1db77d27bdf760b4a90c9bd2baacb612b48cf660e0f395c82aa3a725.webp)
+tab](/docs/_fern-files/_img/20ecce9f1db77d27bdf760b4a90c9bd2baacb612b48cf660e0f395c82aa3a725.webp)
 
 A document cannot be deleted while an agent depends on it. Remove the document from those agents first, or use force deletion to detach it from all dependents at once.

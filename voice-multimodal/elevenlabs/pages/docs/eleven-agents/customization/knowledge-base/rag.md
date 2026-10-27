@@ -110,7 +110,7 @@ For each document in your knowledge base, you can choose how it's used:
 * **Auto (default)**: The document is only retrieved when relevant to the query
 * **Prompt**: The document is always included in the system prompt, regardless of relevance
 
-![Document usage mode options in the knowledge base](/docs/_fern-img/265aa612b4ad2da915b617552312b47c965892559b2a8615ecb42551763de4a5.webp)
+![Document usage mode options in the knowledge base](/docs/_fern-files/_img/265aa612b4ad2da915b617552312b47c965892559b2a8615ecb42551763de4a5.webp)
 
 > **Warning**
 >

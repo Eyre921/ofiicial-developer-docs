@@ -76,9 +76,9 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `window` | [\*operations.Window](../../models/operations/window.mdx) | :heavy\_minus\_sign: | Trailing time window for the classification data. Currently only `7d` (trailing 7 days) is supported. | 7d |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `window` | [\*operations.Window](../../models/operations/window.mdx) | ➖ | Trailing time window for the classification data. Currently only `7d` (trailing 7 days) is supported. | 7d |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 

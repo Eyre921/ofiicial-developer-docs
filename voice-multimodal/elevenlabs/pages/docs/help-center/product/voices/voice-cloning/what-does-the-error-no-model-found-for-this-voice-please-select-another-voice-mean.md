@@ -14,7 +14,7 @@ When you create a PVC, it needs to go through a number of processes before it be
 
 You can check the progress of your PVC in My Voices by finding the voice in your list of voices, then clicking **View** to see more details.  You can hover over each model to see the current status.
 
-![](/docs/_fern-img/ec34838a2fd40c5105c9196c356045b2963daf2490fd36c19f42bcb8f5359c86.webp)
+![](/docs/_fern-files/_img/ec34838a2fd40c5105c9196c356045b2963daf2490fd36c19f42bcb8f5359c86.webp)
 
 For more detail on what each status means, please see [What does the status of my Professional Voice Clone mean?](/docs/help-center/product/voices/voice-cloning/what-does-the-status-of-my-professional-voice-clone-mean)
 

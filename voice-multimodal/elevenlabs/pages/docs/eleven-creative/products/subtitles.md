@@ -8,7 +8,7 @@ path: docs/eleven-creative/products/subtitles
 
 # Subtitles
 
-![Subtitle Editor Product Feature](/docs/_fern-img/c27d860735dc78c9c1c8962fbf0b9ec190a08a4ed2a324719f626fc0f7e60f36.webp)
+![Subtitle Editor Product Feature](/docs/_fern-files/_img/c27d860735dc78c9c1c8962fbf0b9ec190a08a4ed2a324719f626fc0f7e60f36.webp)
 
 ## Subtitle Editor
 
@@ -16,7 +16,7 @@ path: docs/eleven-creative/products/subtitles
 
 You can use the subtitling mode of our transcript editor to edit your subtitles. Navigate to the Speech to Text page of your ElevenLabs account and click any transcript to get started.
 
-![Open transcript](/docs/_fern-img/2359a7f6f5c82bf570c68adf2d41c78916a62f81f1dfc9445532de39eb5f2292.webp)
+![Open transcript](/docs/_fern-files/_img/2359a7f6f5c82bf570c68adf2d41c78916a62f81f1dfc9445532de39eb5f2292.webp)
 
 #### Edit basic details
 
@@ -33,7 +33,7 @@ You can switch between transcription and subtitling mode at any time using the t
 
 ![Add subtitles](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/d129c29b30a9add87a984eb9aa861745be2d0701bf1734a06e805b43872f591c/assets/images/product-guides/subtitles/subtitles-add.gif)
 
-![Add subtitles](/docs/_fern-img/239e34f933d4464e5887458985117ab8dad9cbb5e2a37acb6beecd96e8c096ca.webp)
+![Add subtitles](/docs/_fern-files/_img/239e34f933d4464e5887458985117ab8dad9cbb5e2a37acb6beecd96e8c096ca.webp)
 
 #### Edit rules/constraints
 
@@ -41,9 +41,9 @@ Our subtitle editor uses red and green colors to give you real-time feedback on 
 
 To edit these rules, click the three dots next to 'Subtitles' in the panel on the right side of the screen and select 'Edit rules'
 
-![Edit rules](/docs/_fern-img/675daf87d4ca043271f57c3c584b0eb6ddb1ff13e80ee5e55c39997aaa059fea.webp)
+![Edit rules](/docs/_fern-files/_img/675daf87d4ca043271f57c3c584b0eb6ddb1ff13e80ee5e55c39997aaa059fea.webp)
 
-![Edit rules](/docs/_fern-img/208f20af0e907858ab03896fd0ba40276ec402ee9ec7094b3ee60c8dcdc67012.webp)
+![Edit rules](/docs/_fern-files/_img/208f20af0e907858ab03896fd0ba40276ec402ee9ec7094b3ee60c8dcdc67012.webp)
 
 #### Edit text
 
@@ -81,7 +81,7 @@ To delete a cue, select the cue and click ‘Delete’ in the panel on the right
 
 You can adjust the playback speed of the source media by clicking the indicator next to the play button.
 
-![Playback speed](/docs/_fern-img/7e585e9029ecb71342124be24a0a40d7620f0551c362460cb460307222b53b65.webp)
+![Playback speed](/docs/_fern-files/_img/7e585e9029ecb71342124be24a0a40d7620f0551c362460cb460307222b53b65.webp)
 
 #### Export subtitles
 
@@ -90,7 +90,7 @@ Click the export button in the top right of the screen and select one of the sub
 * SRT
 * VTT
 
-![Exports](/docs/_fern-img/5ba313e9580586330fe51c8ef12f3dc6babc734e4503bf6d1c7bee3d2a4b8b0c.webp)
+![Exports](/docs/_fern-files/_img/5ba313e9580586330fe51c8ef12f3dc6babc734e4503bf6d1c7bee3d2a4b8b0c.webp)
 
 ## FAQ
 

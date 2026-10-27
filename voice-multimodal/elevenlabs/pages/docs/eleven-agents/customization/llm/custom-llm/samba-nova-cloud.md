@@ -32,7 +32,7 @@ Note that `Meta-Llama-3.3-70B-Instruct` is SambaNova's most battle-tested model.
 
 Navigate to [cloud.sambanova.ai/apis](https://cloud.sambanova.ai/apis?utm_source=elevenlabs\&utm_medium=external\&utm_campaign=cloud_signup) and create a new API key.
 
-![Add Secret](/docs/_fern-img/9f15e96bc7394d1be5936a155aeaf3c450c48b1164623c0ca3a05f723aec81cd.webp)
+![Add Secret](/docs/_fern-files/_img/9f15e96bc7394d1be5936a155aeaf3c450c48b1164623c0ca3a05f723aec81cd.webp)
 
 Once you have your API key, you can test it by running the following curl command:
 
@@ -60,18 +60,18 @@ Create a new [AI Agent](https://elevenlabs.io/app/agents/agents) or edit an exis
 
 Scroll down to the "Workspace Secrets" section and select "Add Secret". Name the key `SAMBANOVA_API_KEY` and copy the value from the SambaNova Cloud dashboard. Be sure to hit "Save" to make the secret available to your agent.
 
-![Add Secret](/docs/_fern-img/8505deccfb198fbf8d33e3b936f65bf85caf59811bffbb708a5d526faa3329bc.webp)
+![Add Secret](/docs/_fern-files/_img/8505deccfb198fbf8d33e3b936f65bf85caf59811bffbb708a5d526faa3329bc.webp)
 
 Choose "Custom LLM" from the dropdown menu.
 
-![Choose custom llm](/docs/_fern-img/45ec75f558a5c8e5070bd3170d96cbc54ef63e15d9f04ac472a45854a22a17ac.webp)
+![Choose custom llm](/docs/_fern-files/_img/45ec75f558a5c8e5070bd3170d96cbc54ef63e15d9f04ac472a45854a22a17ac.webp)
 
 For the Server URL, specify SambaNova's OpenAI-compatible API endpoint: `https://api.sambanova.ai/v1`. For the Model ID, specify one the model names indicated above (e.g., `Meta-Llama-3.3-70B-Instruct`) and select the `SAMBANOVA_API_KEY` API key from the dropdown menu.
 
-![Enter url](/docs/_fern-img/d1e6fec480a23a0c3b11ca3b675dfddeaffe59f7a24becfaf1986675b109b99b.webp)
+![Enter url](/docs/_fern-files/_img/d1e6fec480a23a0c3b11ca3b675dfddeaffe59f7a24becfaf1986675b109b99b.webp)
 
 Set the max tokens to 1024 to restrict the agent's output for brevity. Also be sure to include an instruction in the System Prompt for the model to respond in 500 words or less.
 
-![Enter url](/docs/_fern-img/2be33272ea2e7aaf6166d482a41bdf492f3a75f1e43e2e8cb9cf363fb3b6188f.webp)
+![Enter url](/docs/_fern-files/_img/2be33272ea2e7aaf6166d482a41bdf492f3a75f1e43e2e8cb9cf363fb3b6188f.webp)
 
 Save your changes and click on "Test AI Agent" to chat with your SambaNova-powered agent!

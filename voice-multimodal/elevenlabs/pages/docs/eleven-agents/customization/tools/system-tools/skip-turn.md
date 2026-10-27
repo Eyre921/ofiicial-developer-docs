@@ -106,16 +106,16 @@ You can also configure the Skip Turn tool directly within the Agent's UI, in the
 
 Navigate to your agent's configuration page. In the "Tools" section, click on "Add tool", the `Skip Turn` option will already be available.
 
-![Add Skip Turn Tool Option](/docs/_fern-img/8b95051da94ada3dae7e42121148ad4509b49413e73bd16351142372ca26a68d.webp)
+![Add Skip Turn Tool Option](/docs/_fern-files/_img/8b95051da94ada3dae7e42121148ad4509b49413e73bd16351142372ca26a68d.webp)
 
 ### Step 2: Configure the tool
 
 You can optionally provide a description to customize when the LLM should trigger this tool, or leave it blank to use the default behavior.
 
-![Configure Skip Turn Tool](/docs/_fern-img/cbb419db630beb4feefc390ef3f3576f7a6dc2df098faec4fbd2d1d5e703364f.webp)
+![Configure Skip Turn Tool](/docs/_fern-files/_img/cbb419db630beb4feefc390ef3f3576f7a6dc2df098faec4fbd2d1d5e703364f.webp)
 
 ### Step 3: Enable the tool
 
 Once configured, the `Skip Turn` tool will appear in your agent's list of enabled tools and the agent will be able to skip turns. .
 
-![Skip Turn Tool Enabled](/docs/_fern-img/bdb738dc85ff91107cafa5899aad116420aabe9fe794b648bc1f0751729ba5af.webp)
+![Skip Turn Tool Enabled](/docs/_fern-files/_img/bdb738dc85ff91107cafa5899aad116420aabe9fe794b648bc1f0751729ba5af.webp)

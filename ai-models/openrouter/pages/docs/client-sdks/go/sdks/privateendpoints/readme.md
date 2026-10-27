@@ -66,8 +66,8 @@ func main() {
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. |
 
 ### Response
 
@@ -125,10 +125,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `createPrivateEndpointRequest` | [components.CreatePrivateEndpointRequest](../../models/components/createprivateendpointrequest.mdx) | :heavy\_check\_mark: | N/A | |
-| `idempotencyKey` | `*string` | :heavy\_minus\_sign: | Retry-safe create: a repeated create with the same key from the same organization returns the endpoint the first request created instead of creating another. The endpoint is returned as it is now. Reusing a key with a different request body (model, provider, base URL, upstream model ID, declared ZDR or region, or pricing) is rejected with 422 `idempotency_key_reused`. `activate` is not compared, and later edits to the endpoint do not affect the comparison. | wayfair-gpt-4o-eastus-2026-09 |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `createPrivateEndpointRequest` | [components.CreatePrivateEndpointRequest](../../models/components/createprivateendpointrequest.mdx) | ✅ | N/A | |
+| `idempotencyKey` | `*string` | ➖ | Retry-safe create: a repeated create with the same key from the same organization returns the endpoint the first request created instead of creating another. The endpoint is returned as it is now. Reusing a key with a different request body (model, provider, base URL, upstream model ID, declared ZDR or region, or pricing) is rejected with 422 `idempotency_key_reused`. `activate` is not compared, and later edits to the endpoint do not affect the comparison. | wayfair-gpt-4o-eastus-2026-09 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -186,10 +186,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `id` | `string` | :heavy\_check\_mark: | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
-| `draftOnly` | [\*operations.DraftOnly](../../models/operations/draftonly.mdx) | :heavy\_minus\_sign: | When `true`, only delete the endpoint if it is still a draft (409 otherwise). | |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `id` | `string` | ✅ | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
+| `draftOnly` | [\*operations.DraftOnly](../../models/operations/draftonly.mdx) | ➖ | When `true`, only delete the endpoint if it is still a draft (409 otherwise). | |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -247,9 +247,9 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `id` | `string` | :heavy\_check\_mark: | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `id` | `string` | ✅ | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -306,10 +306,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `id` | `string` | :heavy\_check\_mark: | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
-| `updatePrivateEndpointRequest` | [components.UpdatePrivateEndpointRequest](../../models/components/updateprivateendpointrequest.mdx) | :heavy\_check\_mark: | N/A | |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `id` | `string` | ✅ | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
+| `updatePrivateEndpointRequest` | [components.UpdatePrivateEndpointRequest](../../models/components/updateprivateendpointrequest.mdx) | ✅ | N/A | |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -367,9 +367,9 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `id` | `string` | :heavy\_check\_mark: | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `id` | `string` | ✅ | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -427,9 +427,9 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `id` | `string` | :heavy\_check\_mark: | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `id` | `string` | ✅ | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -487,9 +487,9 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `id` | `string` | :heavy\_check\_mark: | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `id` | `string` | ✅ | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -553,10 +553,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `id` | `string` | :heavy\_check\_mark: | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
-| `updatePrivateEndpointPricingRequest` | [components.UpdatePrivateEndpointPricingRequest](../../models/components/updateprivateendpointpricingrequest.mdx) | :heavy\_check\_mark: | N/A | |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `id` | `string` | ✅ | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
+| `updatePrivateEndpointPricingRequest` | [components.UpdatePrivateEndpointPricingRequest](../../models/components/updateprivateendpointpricingrequest.mdx) | ✅ | N/A | |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -617,10 +617,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `id` | `string` | :heavy\_check\_mark: | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
-| `validatePrivateEndpointRequest` | [components.ValidatePrivateEndpointRequest](../../models/components/validateprivateendpointrequest.mdx) | :heavy\_check\_mark: | N/A | |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `id` | `string` | ✅ | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
+| `validatePrivateEndpointRequest` | [components.ValidatePrivateEndpointRequest](../../models/components/validateprivateendpointrequest.mdx) | ✅ | N/A | |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 

@@ -14,7 +14,7 @@ path: docs/eleven-agents/customization/tools/system-tools/end-call
 > agents created via API or SDK, if you would like to enable the End Call tool, you must add it
 > manually as a system tool in your agent configuration. [See API Implementation below](#api-implementation) for details.
 
-![End call](/docs/_fern-img/f260bfd4e43f7fb0374ce12d2ed984efb946a8ca9ebaa1c2d4b3e6d5f52a7851.webp)
+![End call](/docs/_fern-files/_img/f260bfd4e43f7fb0374ce12d2ed984efb946a8ca9ebaa1c2d4b3e6d5f52a7851.webp)
 
 ## Overview
 

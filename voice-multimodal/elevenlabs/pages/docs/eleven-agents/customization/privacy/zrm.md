@@ -42,7 +42,7 @@ For workspaces not operating under global Zero Retention Mode, you can enable ZR
 
 Open your agent in the dashboard, navigate to the **Privacy** settings block, select the **Advanced** tab, and toggle **Zero Retention Mode** on. Save your changes.
 
-![Enable Zero Retention Mode for Agent](/docs/_fern-img/b11c36caf8829dd90829c3b51df2be879a77f718834af8988ecd33e9ae44a071.webp)
+![Enable Zero Retention Mode for Agent](/docs/_fern-files/_img/b11c36caf8829dd90829c3b51df2be879a77f718834af8988ecd33e9ae44a071.webp)
 
 #### Update via the CLI
 

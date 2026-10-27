@@ -14,7 +14,7 @@ Voice isolator is a tool that allows you to remove background noise from audio r
 
 ## Guide
 
-![Voice isolator](/docs/_fern-img/9a60aeca7a345ff15d3223b85a8fe2ce7798fb7815c8c013916cab745b45408c.webp)
+![Voice isolator](/docs/_fern-files/_img/9a60aeca7a345ff15d3223b85a8fe2ce7798fb7815c8c013916cab745b45408c.webp)
 
 To use the voice isolator app, navigate to [Voice Isolator](https://elevenlabs.io/app/voice-isolator) under the Audio Tools section. Here you can upload or drag and drop your audio file into the app, or record a new audio file with your device's microphone.
 

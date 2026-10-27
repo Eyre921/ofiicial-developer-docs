@@ -10,7 +10,7 @@ path: docs/eleven-api/guides/cookbooks/templates
 
 In this tutorial you run a public template from a Python or TypeScript script. The template turns a casual phone photo of a piece of clothing into a clean product shot, and the script saves the result next to it. The tutorial takes about five minutes, of which the run itself is under a minute.
 
-![Phone photo and packshot](/docs/_fern-img/6afed41d4d791df68c87f183bd8db1d4aca8b4be3e946cc518534bda902f9528.webp)
+![Phone photo and packshot](/docs/_fern-files/_img/6afed41d4d791df68c87f183bd8db1d4aca8b4be3e946cc518534bda902f9528.webp)
 
 A **template** is a published [ElevenCreative Flow](/docs/eleven-creative/products/flows): a chain of models that takes a fixed set of **inputs** and produces a fixed set of **outputs**. The one you will run, [Phone Photo to Packshot](https://elevenlabs.io/app/templates/Yz4DETxRv4uXyIo5PnEy), takes one image and returns one image. Its author already chose the models and prompts, so your code only passes the photo.
 
@@ -105,7 +105,7 @@ curl -o garment.jpg https://storage.googleapis.com/eleven-public-cdn/documentati
 
 Open [Phone Photo to Packshot](https://elevenlabs.io/app/templates/Yz4DETxRv4uXyIo5PnEy) in the ElevenLabs app and select the **API** tab. Every template has one, with the code that runs it in cURL, Python and TypeScript.
 
-![Template API tab](/docs/_fern-img/801c9d2e2736964b35f5bad954092c973b21eedc03801128f1ed8bf31ea095b1.webp)
+![Template API tab](/docs/_fern-files/_img/801c9d2e2736964b35f5bad954092c973b21eedc03801128f1ed8bf31ea095b1.webp)
 
 The tab walks through three steps: get an API key, choose how to get the result, and run the template. Under **Choose how to get the result**, **Wait for the result** is selected by default. The code in the third step opens on cURL; select **Python** or **TypeScript**, and the step becomes **Run and wait for the result**. Its snippet starts a run, waits for it to finish and prints each output. It passes one value under `inputs` for each of the template's inputs, keyed by the input's id, and reads each result from `outputs` by the output's id. This template has one input, `garment_photo`, and one output, `packshot`. These two ids are the only names your code needs.
 

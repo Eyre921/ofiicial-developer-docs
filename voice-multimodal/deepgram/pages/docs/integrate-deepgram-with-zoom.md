@@ -56,11 +56,11 @@ To install and start the Node Media Server, run the following command:
 
 That should result in output like:
 
-![](/_fern-img/b80f8614496090fa2e53fda6fada410e4b3ee983a7297de2830a2a44f29cacd0.webp)
+![](/_fern-files/_img/b80f8614496090fa2e53fda6fada410e4b3ee983a7297de2830a2a44f29cacd0.webp)
 
 To visit your new server and verify everything is working, navigate to [http://localhost:8000/admin](http://localhost:8000/admin) and log in with the username `admin` and the password `admin`. You should see the following interface if everything is set up correctly:
 
-![](/_fern-img/0fc292b7c9e9ed3eed9919aa72a19b09e0ddefb037137d09cdd7067efa28dbbc.webp)
+![](/_fern-files/_img/0fc292b7c9e9ed3eed9919aa72a19b09e0ddefb037137d09cdd7067efa28dbbc.webp)
 
 #### Make the Server Publicly Available
 
@@ -72,7 +72,7 @@ We’ll tell Ngrok to forward TCP traffic for port 1935 (the default port Node M
 
 The output should look like this:
 
-![](/_fern-img/89f8c55b58da6eb69aa455b0042bc0d28f4b28678449506e851c9e3ab33a8d2c.webp)
+![](/_fern-files/_img/89f8c55b58da6eb69aa455b0042bc0d28f4b28678449506e851c9e3ab33a8d2c.webp)
 
 Make sure to save the forwarding URL which in this case is `tcp://2.tcp.ngrok.io:12024`. We'll need to enter this URL in the next step.
 
@@ -110,15 +110,15 @@ Next, you will need to start your Zoom meeting and configure your Zoom live-stre
 
 1. Start your Zoom meeting and join the meeting with computer audio.
 
-   ![Join Zoom with Computer Audio](/_fern-img/ec9b89fcac412d0f67c09668ce34b79738a3c77076b3e4a9cf27aaefe4a50953.webp)
+   ![Join Zoom with Computer Audio](/_fern-files/_img/ec9b89fcac412d0f67c09668ce34b79738a3c77076b3e4a9cf27aaefe4a50953.webp)
 
 2. Select **More…** and then **Live on Custom Live Streaming Service**.
 
-   ![Zoom More menu](/_fern-img/761e3ecb5fbe4180eb7dd9c23d7bd6e342ea8e263798c66b5690442cea5a6e29.webp)
+   ![Zoom More menu](/_fern-files/_img/761e3ecb5fbe4180eb7dd9c23d7bd6e342ea8e263798c66b5690442cea5a6e29.webp)
 
 3. Configure streaming, and select **Go Live!**.
 
-![](/_fern-img/8dda6d7650d4690293f5cbb0880a14feef0a6d398dd154629a6eb446b533ab0c.webp)
+![](/_fern-files/_img/8dda6d7650d4690293f5cbb0880a14feef0a6d398dd154629a6eb446b533ab0c.webp)
 
 | Field                       | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -176,7 +176,7 @@ Replace `keyname` with the **Streaming key** you entered in Zoom.
 
 Start speaking into your microphone. After a brief delay, you should see results of the audio transcription of your livestreaming Zoom call start to appear on your screen.
 
-![](/_fern-img/d8aaa167806266d7a1b094f7a4f9b3c11a689fece091c84da5d08d57522aa0be.webp)
+![](/_fern-files/_img/d8aaa167806266d7a1b094f7a4f9b3c11a689fece091c84da5d08d57522aa0be.webp)
 
 > **Info**
 >

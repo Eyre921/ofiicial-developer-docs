@@ -18,7 +18,7 @@ This guide focuses on using Deepgram Console. If you would like to use the Deepg
 
 This guide only applies to Console projects which have been granted access to self-hosted products. If you have access, your [Console](https://console.deepgram.com/login) menu should have an "Self-Hosted" tab, as shown below.
 
-![](/_fern-img/ce3dd5ce35b13be3dc2dc1d4db490fa2595386098cc34f491584bf95c8e50a2c.webp)
+![](/_fern-files/_img/ce3dd5ce35b13be3dc2dc1d4db490fa2595386098cc34f491584bf95c8e50a2c.webp)
 
 If you do not have this tab in Console, your project has either:
 
@@ -35,7 +35,7 @@ You can use the [Deepgram Console](https://console.deepgram.com/login) or the De
 
 After receiving your key, you can dismiss the pop-up and return to the `API Keys` page. You should see your new self-hosted API key, and if you expand the details, you can view the self-hosted products which can be licensed by that key.
 
-![](/_fern-img/b218956d7dbb408bfff11da6fd02baff5a460c5cbbcd31cfc12f968f487fe8a6.webp)
+![](/_fern-files/_img/b218956d7dbb408bfff11da6fd02baff5a460c5cbbcd31cfc12f968f487fe8a6.webp)
 
 Depending on your self-hosted agreement with Deepgram, you may have access to different products. All self-hosted customers have access to API and Engine. For access to the [License Proxy](/docs/license-proxy), please contact [Support](https://deepgram.com/contact-us/).
 
@@ -49,13 +49,13 @@ Distribution credentials are used to authenticate with a container image reposit
 
 1. Back on the [Console](https://console.deepgram.com) page, use the menu on the left and click on the "Self-Hosted" tab, then click "Create New Distribution Credentials".
 
-   ![](/_fern-img/ce3dd5ce35b13be3dc2dc1d4db490fa2595386098cc34f491584bf95c8e50a2c.webp)
+   ![](/_fern-files/_img/ce3dd5ce35b13be3dc2dc1d4db490fa2595386098cc34f491584bf95c8e50a2c.webp)
 
-![](/_fern-img/2983e3d374dd79c34b5c3c4dca7d40b5a8939275114ad0ef7717b1510630a7b8.webp)
+![](/_fern-files/_img/2983e3d374dd79c34b5c3c4dca7d40b5a8939275114ad0ef7717b1510630a7b8.webp)
 
 2. Provide a name for your distribution credentials and click "Create Credentials".
 
-   ![](/_fern-img/4342a2c3051f1a9047e060cdd815ee78cc38147087e57c7bb8b60c41c6160b61.webp)
+   ![](/_fern-files/_img/4342a2c3051f1a9047e060cdd815ee78cc38147087e57c7bb8b60c41c6160b61.webp)
 
 3. Your new credentials will be shown, which include:
 
@@ -65,11 +65,11 @@ Distribution credentials are used to authenticate with a container image reposit
 
    You can use the `secret` as your password for the `shell` command. Again, take note of the displayed values, as they can't be accessed again. Once you've copied it, check the box affirming you understand this and click "Got it".
 
-![Distribution credentials limited secret access](/_fern-img/09e31055925f38aba5e810a562badba0f089f3e07b7751aa478d42142a85db7b.webp)
+![Distribution credentials limited secret access](/_fern-files/_img/09e31055925f38aba5e810a562badba0f089f3e07b7751aa478d42142a85db7b.webp)
 
 5. The pop-up will be dismissed and you will be back on the "Self-Hosted" page. You should see your new distribution credentials and the container images which can be accessed with those credentials.
 
-   ![](/_fern-img/51816f5ea9c7acf2f707d3c586fb3e27e3913b81333757c4783a302520f8c59d.webp)
+   ![](/_fern-files/_img/51816f5ea9c7acf2f707d3c586fb3e27e3913b81333757c4783a302520f8c59d.webp)
 
 ## Migration for Legacy Licensing and Container Distribution
 

@@ -37,14 +37,14 @@ Follow the [Twilio native integration](/docs/eleven-agents/phone-numbers/twilio-
 
 On the [**Phone Numbers**](https://elevenlabs.io/app/agents/phone-numbers) page, open your imported number and assign the agent that should handle inbound SMS.
 
-![Outbound call button](/docs/_fern-img/953a870b0ab0c0aa30872b3692260f0879f390d4b4b83c7f82e816385504034f.webp)
+![Outbound call button](/docs/_fern-files/_img/953a870b0ab0c0aa30872b3692260f0879f390d4b4b83c7f82e816385504034f.webp)
 
 #### Test the integration
 
 Send a text message to your Twilio number from a mobile device. Your agent should reply over SMS.
 
 ![SMS conversation between a user and an ElevenLabs
-agent](/docs/_fern-img/759839ae9ab62d9a958f9875580e345194c7a4974783904606f254a9f88722cb.webp)
+agent](/docs/_fern-files/_img/759839ae9ab62d9a958f9875580e345194c7a4974783904606f254a9f88722cb.webp)
 
 > **Tip**
 >

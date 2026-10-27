@@ -108,7 +108,7 @@ Now that you have created a function to receive incoming calls, apply it to your
 3. Under **Service**, select your service.
 4. Under **Function Path**, select `/inbound`.
 
-![When a call comes in, use a Function. Default service with the /inbound function path.](/_fern-img/a5bb4a59be80060e756877b9fa500702e4695029ec2c7bb02d56dcacb8ddc94c.webp)
+![When a call comes in, use a Function. Default service with the /inbound function path.](/_fern-files/_img/a5bb4a59be80060e756877b9fa500702e4695029ec2c7bb02d56dcacb8ddc94c.webp)
 
 ## Transcribing and Summarizing Calls
 

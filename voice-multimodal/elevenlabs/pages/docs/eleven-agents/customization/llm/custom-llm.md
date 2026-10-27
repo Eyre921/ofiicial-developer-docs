@@ -74,13 +74,13 @@ To integrate a custom OpenAI key, update your agent settings in the ElevenLabs d
 
 In your Agent settings in the ElevenLabs dashboard, select "Custom LLM" from the "LLM" dropdown menu on the right.
 
-![Add Secret](/docs/_fern-img/83c62b81ef04860b9d884e28e1b4ac7bbceaa6e481e72e15ae82a76ec9bbad8e.webp)
+![Add Secret](/docs/_fern-files/_img/83c62b81ef04860b9d884e28e1b4ac7bbceaa6e481e72e15ae82a76ec9bbad8e.webp)
 
 Click on the field under "LLM" and scroll down to select "Custom LLM".
 
 Enter the server URL and the Model ID of your custom LLM server.
 
-![Enter url](/docs/_fern-img/85ed8154868096a5c8de4c5e1c09d83c861069ea098c7643a960cac1736b67cb.webp)
+![Enter url](/docs/_fern-files/_img/85ed8154868096a5c8de4c5e1c09d83c861069ea098c7643a960cac1736b67cb.webp)
 
 Click the dropdown under "API key" and select "Create new secret". Name the key `OPENAI_API_KEY` and add the key to the "value" field and click "Add secret".
 
@@ -308,7 +308,7 @@ app.listen(8013, () => console.log("Server running on port 8013"));
 
 Run this code or your own server code.
 
-![](/docs/_fern-img/8032697eeac9a62bb084feb13ab05294df2fee44f14a97897f0b7c10ffee813c.webp)
+![](/docs/_fern-files/_img/8032697eeac9a62bb084feb13ab05294df2fee44f14a97897f0b7c10ffee813c.webp)
 
 ### Setting Up a Public URL for Your Server
 
@@ -318,13 +318,13 @@ To make your server accessible, create a public URL using a tunneling tool like 
 ngrok http --url=<Your url>.ngrok.app 8013
 ```
 
-![](/docs/_fern-img/16d139cc2889d46e026c8aa7578fcdcd8d228dbe0f4df245091ea6de2ceb345a.webp)
+![](/docs/_fern-files/_img/16d139cc2889d46e026c8aa7578fcdcd8d228dbe0f4df245091ea6de2ceb345a.webp)
 
 ### Configuring ElevenLabs CustomLLM
 
 Next, update your agent settings in the ElevenLabs dashboard to point to your custom LLM server.
 
-![](/docs/_fern-img/d57d81e44dffb7e6f581a4eed449d887f6c365b8ceb4f4f0174bd7e2ffd62537.webp)
+![](/docs/_fern-files/_img/d57d81e44dffb7e6f581a4eed449d887f6c365b8ceb4f4f0174bd7e2ffd62537.webp)
 
 Direct your server URL to ngrok endpoint and set "Limit token usage" to 5000.
 

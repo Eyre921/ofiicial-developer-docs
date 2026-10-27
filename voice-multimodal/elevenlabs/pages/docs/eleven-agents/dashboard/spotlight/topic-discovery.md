@@ -38,7 +38,7 @@ Opens the conversations behind a topic so you can review specific examples.
 Compares topics across the selected reporting period, such as 1, 7, or 30 days.
 
 ![Topic discovery showing trending conversation topics, conversation volume, sentiment, and
-success rate](/docs/_fern-img/66779a506120cd7bdaf035d0ab7e9c7c550b158072fd92ebd787d0bd797441cf.webp)
+success rate](/docs/_fern-files/_img/66779a506120cd7bdaf035d0ab7e9c7c550b158072fd92ebd787d0bd797441cf.webp)
 
 ## Enable topic discovery
 
@@ -47,7 +47,7 @@ To enable topic discovery, open your agent's **Analysis** settings and turn on *
 The same settings page also includes **Sentiment analysis**, which adds sentiment metrics to conversations and discovered topics.
 
 ![Analysis settings showing topic discovery and sentiment analysis
-toggles](/docs/_fern-img/75dff75af2e2aebca0ab6547562afef6f6b59fe988de2eea7814f27440dd2e53.webp)
+toggles](/docs/_fern-files/_img/75dff75af2e2aebca0ab6547562afef6f6b59fe988de2eea7814f27440dd2e53.webp)
 
 ## How topic discovery works
 

@@ -1706,6 +1706,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/concepts/customizations
 /en/copilot/concepts/customizations/comparing-customizations
 /en/copilot/concepts/customizations/agent-skills
+/en/copilot/concepts/customizations/allowing-safe-commands
 /en/copilot/concepts/customizations/custom-agents
 /en/copilot/concepts/customizations/mcp
 /en/copilot/concepts/customizations/hooks
@@ -3202,4 +3203,5 @@ path: api/pagelist/en/free-pro-team-latest
 /en/nonprofit/troubleshooting
 /en/nonprofit/troubleshooting/frequently-asked-questions
 /en/nonprofit/troubleshooting/cannot-find-my-organization-on-github-for-nonprofits
+/en/mos-diner
 

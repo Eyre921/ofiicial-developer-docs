@@ -14,12 +14,12 @@ If you have an existing PVC, you now have the option to fine-tune on additional 
 
 
 
-![](/docs/_fern-img/87eadcea0297fa3c147d36c190c117a4f1feb2a25aa201082615a9e71f1ad14f.webp)
+![](/docs/_fern-files/_img/87eadcea0297fa3c147d36c190c117a4f1feb2a25aa201082615a9e71f1ad14f.webp)
 
 
 
 To start the fine-tuning process, hover over the name of your voice in the list in [My Voices,](https://elevenlabs.io/app/voice-lab) and you will see all available models. Models that the voice has already been fine-tuned on will be displayed with a tick icon, and models that are available for fine-tuning will be displayed with a plus icon. To begin fine tuning, just click on the model.
 
-![](/docs/_fern-img/244445ebcacf0185f0cf89fbb06ad9ca34d2376e34c8900cb49de163f2b2226f.webp)
+![](/docs/_fern-files/_img/244445ebcacf0185f0cf89fbb06ad9ca34d2376e34c8900cb49de163f2b2226f.webp)
 
 While the voice is fine-tuning, you can hover over the model name to see the progress. Please note that due to voice caching, you may need to refresh the page to see the latest progress. Once the fine-training has been completed, you will be notified both in-app and by email.

@@ -14,7 +14,7 @@ We built an AI interviewer using ElevenLabs Agents to collect qualitative user f
 
 The goal was to replicate the depth and nuance of live customer interviews without the scheduling, language, and operational constraints of human-led sessions.
 
-![AI interviewer conversation transcript](/docs/_fern-img/6b1711145aee1061e0113055518005ec22f4a3c1b251db76f8e7c599a5f2468d.webp)
+![AI interviewer conversation transcript](/docs/_fern-files/_img/6b1711145aee1061e0113055518005ec22f4a3c1b251db76f8e7c599a5f2468d.webp)
 
 ## System architecture
 
@@ -27,7 +27,7 @@ The AI interviewer was implemented entirely on ElevenAgents, with the following 
 
 ## Agent design
 
-![Agent configuration UI](/docs/_fern-img/0c27dd1e46379f2cf6e2baf32a42dda33945f0505be6e877f182c1f0bd74c819.webp)
+![Agent configuration UI](/docs/_fern-files/_img/0c27dd1e46379f2cf6e2baf32a42dda33945f0505be6e877f182c1f0bd74c819.webp)
 
 ### Research objectives
 
@@ -192,7 +192,7 @@ Each interview was capped at ten minutes. The agent used the `end_call` tool to:
 
 ## Data collection and analysis
 
-![Analysis and data collection UI](/docs/_fern-img/c61890de3525fdcb252541af0242f6a65e66daa23480413fb6882e962cf0adf8.webp)
+![Analysis and data collection UI](/docs/_fern-files/_img/c61890de3525fdcb252541af0242f6a65e66daa23480413fb6882e962cf0adf8.webp)
 
 ### Transcript processing
 

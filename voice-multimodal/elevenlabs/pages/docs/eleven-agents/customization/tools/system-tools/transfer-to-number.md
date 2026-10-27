@@ -81,13 +81,13 @@ Human transfer is configured using the `transfer_to_number` system tool.
 
 Enable human transfer by selecting the `transfer_to_number` system tool in your agent's configuration within the `Agent` tab. Choose "Transfer to Human" when adding a tool.
 
-![Add Human Transfer Tool](/docs/_fern-img/1b0a0985dd32cab9532b38b80aaa90873b4076bb26e7a47ce2e12832dd78ea45.webp)
+![Add Human Transfer Tool](/docs/_fern-files/_img/1b0a0985dd32cab9532b38b80aaa90873b4076bb26e7a47ce2e12832dd78ea45.webp)
 
 #### Configure tool description (optional)
 
 You can provide a custom description to guide the LLM on when to trigger a transfer. If left blank, a default description encompassing the defined transfer rules will be used.
 
-![Human Transfer Tool Description](/docs/_fern-img/23b446030f915db9a10693153e44f95ab59c313e01df2b95291e40e12f2f4bde.webp)
+![Human Transfer Tool Description](/docs/_fern-files/_img/23b446030f915db9a10693153e44f95ab59c313e01df2b95291e40e12f2f4bde.webp)
 
 #### Define transfer rules
 
@@ -110,7 +110,7 @@ The LLM will use these conditions, along with the tool description, to decide wh
 >
 > **Blind transfers** are only available when the agent's phone number is imported via the [native Twilio integration](/docs/eleven-agents/phone-numbers/twilio-integration/native-integration) and must be configured via the JSON editor. The original caller ID is preserved, but no warm transfer message is sent to the human operator.
 
-![Human Transfer Rules Configuration](/docs/_fern-img/86e46148dc133fe68e6b517752d38bf493bef8347fee91a577e9f27600bafa5d.webp)
+![Human Transfer Rules Configuration](/docs/_fern-files/_img/86e46148dc133fe68e6b517752d38bf493bef8347fee91a577e9f27600bafa5d.webp)
 
 > **Note**
 >

@@ -70,7 +70,7 @@ az communication create --name my-acs --resource-group $RG \
 Buy a number in the resource (Portal → your ACS resource → **Phone numbers → Get**, or the [phone-numbers SDK](https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/telephony/get-phone-number)). For an agent that **answers** calls, a number with **inbound calling** is enough; add **outbound** capability if you also want `/api/outboundCall`.
 
 ![The ACS resource Phone numbers blade listing active numbers with their calling
-capabilities](/docs/_fern-img/9d14034ee9f81e2ebcf64e30371f914ef6f87a8da30ac250e702662f2e5e1cc1.webp)
+capabilities](/docs/_fern-files/_img/9d14034ee9f81e2ebcf64e30371f914ef6f87a8da30ac250e702662f2e5e1cc1.webp)
 
 To verify from the CLI (requires `az extension add --name communication`), and to fetch the connection string the bridge uses as `ACS_CONNECTION_STRING`:
 
@@ -231,7 +231,7 @@ The subscription appears under the ACS resource's **Events** blade:
 
 ![The Events blade of the ACS resource listing the acs-incomingcall webhook subscription filtered
 to
-Microsoft.Communication.IncomingCall](/docs/_fern-img/f310aed9637e06b81906ca188350e3e721aaa5f4de69af2b3b6e7d157817a1ea.webp)
+Microsoft.Communication.IncomingCall](/docs/_fern-files/_img/f310aed9637e06b81906ca188350e3e721aaa5f4de69af2b3b6e7d157817a1ea.webp)
 
 Dial the number — the agent answers.
 
@@ -280,7 +280,7 @@ calling and is in the same ACS resource the subscription is on. On the subscript
 **Filters** tab, the event types must include **Incoming Call**:
 
 ![The event subscription Filters tab with the event type filtered to Incoming
-Call](/docs/_fern-img/c7026e86d96551d713e4fd7d5753062f643fcd6a67b455866bb8f1bbb6b57eb1.webp)
+Call](/docs/_fern-files/_img/c7026e86d96551d713e4fd7d5753062f643fcd6a67b455866bb8f1bbb6b57eb1.webp)
 
 #### \`CreateCallFailed\` / \`AddParticipantFailed\` for an international number
 

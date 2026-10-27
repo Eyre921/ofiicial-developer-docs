@@ -31,7 +31,7 @@ With this in mind, it's recommended to use at least `meta-llama/Meta-Llama-3.1-7
 
 Navigate to [api.together.xyz/settings/api-keys](https://api.together.xyz/settings/api-keys) and create a new API key.
 
-![Add Secret](/docs/_fern-img/97323ef6ffb761b54a7b5c4183054bc1fd621d1069a38cbeb474444e84de75f4.webp)
+![Add Secret](/docs/_fern-files/_img/97323ef6ffb761b54a7b5c4183054bc1fd621d1069a38cbeb474444e84de75f4.webp)
 
 Once you have your API key, you can test it by running the following curl command:
 
@@ -50,14 +50,14 @@ curl https://api.together.xyz/v1/chat/completions -s \
 
 Navigate to your [AI Agent](https://elevenlabs.io/app/agents), scroll down to the "Secrets" section and select "Add Secret". After adding the secret, make sure to hit "Save" to make the secret available to your agent.
 
-![Add Secret](/docs/_fern-img/43e5478a3c62f31d2d9f66f9919e7c4c1b5878e3b79681d08741221ce3e689d8.webp)
+![Add Secret](/docs/_fern-files/_img/43e5478a3c62f31d2d9f66f9919e7c4c1b5878e3b79681d08741221ce3e689d8.webp)
 
 Choose "Custom LLM" from the dropdown menu.
 
-![Choose custom llm](/docs/_fern-img/45ec75f558a5c8e5070bd3170d96cbc54ef63e15d9f04ac472a45854a22a17ac.webp)
+![Choose custom llm](/docs/_fern-files/_img/45ec75f558a5c8e5070bd3170d96cbc54ef63e15d9f04ac472a45854a22a17ac.webp)
 
 For the Server URL, specify Together AI's OpenAI-compatible API endpoint: `https://api.together.xyz/v1`. For the Model ID, specify `meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo` as discussed above, and select your API key from the dropdown menu.
 
-![Enter url](/docs/_fern-img/94d7f96a16d483327751195b306431b5d7c0e4df237510b74d7e98f28b58efe1.webp)
+![Enter url](/docs/_fern-files/_img/94d7f96a16d483327751195b306431b5d7c0e4df237510b74d7e98f28b58efe1.webp)
 
 Now you can go ahead and click "Test AI Agent" to chat with your custom Llama 3.1 model.

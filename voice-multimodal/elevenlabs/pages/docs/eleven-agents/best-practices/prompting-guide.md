@@ -12,7 +12,7 @@ path: docs/eleven-agents/best-practices/prompting-guide
 
 Effective prompting transforms [ElevenLabs Agents](/docs/eleven-agents/overview) from robotic to lifelike.
 
-![ElevenLabs Agents prompting guide](/docs/_fern-img/255df05f53675feaf54c765c4ee294fda00a7c14de1b02f155922012bf0a5433.webp)
+![ElevenLabs Agents prompting guide](/docs/_fern-files/_img/255df05f53675feaf54c765c4ee294fda00a7c14de1b02f155922012bf0a5433.webp)
 
 A system prompt is the personality and policy blueprint of your AI agent. In enterprise use, it tends to be elaborate—defining the agent's role, goals, allowable tools, step-by-step instructions for certain tasks, and guardrails describing what the agent should not do. The way you structure this prompt directly impacts reliability.
 
@@ -29,7 +29,7 @@ A system prompt is the personality and policy blueprint of your AI agent. In ent
 > conversationally.
 
 ![Enterprise agent reliability
-framework](/docs/_fern-img/18c7dd3bf58a6715656d588834a278dbc1f368eaed2cbf91aeea3e977c2631ed.webp)
+framework](/docs/_fern-files/_img/18c7dd3bf58a6715656d588834a278dbc1f368eaed2cbf91aeea3e977c2631ed.webp)
 
 ## Prompt engineering fundamentals
 

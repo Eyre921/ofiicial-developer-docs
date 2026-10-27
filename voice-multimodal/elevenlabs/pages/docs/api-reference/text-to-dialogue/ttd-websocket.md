@@ -12,13 +12,13 @@ GET /v1/text-to-dialogue/stream-input
 
 Stream expressive dialogue audio over a WebSocket by sending incremental text segments per registered voice.
 
-The connection uses Eleven v3 dialogue models only (`model_id` must start with `eleven_v3`). The default model is `eleven_v3_conversational`.
+The connection uses Eleven v3 and v4 dialogue models (`model_id` must start with `eleven_v3` or `eleven_v4`). The default model is `eleven_v3_conversational`.
 
 ## Session setup
 
 * After connecting, the first JSON message **must** include `voices` (voice IDs to register for the session) and credentials if not already sent via headers or query string.
 * Optional `voice_settings` and `pronunciation_dictionary_locators` are only accepted on the first message.
-* For `eleven_v3_conversational`, only **one** voice ID may be registered. For `eleven_v3`, you may register up to **10** voices.
+* For `eleven_v3_conversational` and `eleven_v4` models, only **one** voice ID may be registered. For `eleven_v3`, you may register up to **10** voices.
 
 ## Streaming text
 
@@ -51,8 +51,9 @@ info:
     text segments per registered voice.
 
 
-    The connection uses Eleven v3 dialogue models only (`model_id` must start
-    with `eleven_v3`). The default model is `eleven_v3_conversational`.
+    The connection uses Eleven v3 and v4 dialogue models (`model_id` must start
+    with `eleven_v3` or `eleven_v4`). The default model is
+    `eleven_v3_conversational`.
 
 
     ## Session setup
@@ -64,8 +65,8 @@ info:
     - Optional `voice_settings` and `pronunciation_dictionary_locators` are only
     accepted on the first message.
 
-    - For `eleven_v3_conversational`, only **one** voice ID may be registered.
-    For `eleven_v3`, you may register up to **10** voices.
+    - For `eleven_v3_conversational` and `eleven_v4` models, only **one** voice
+    ID may be registered. For `eleven_v3`, you may register up to **10** voices.
 
 
     ## Streaming text
@@ -107,8 +108,9 @@ channels:
       text segments per registered voice.
 
 
-      The connection uses Eleven v3 dialogue models only (`model_id` must start
-      with `eleven_v3`). The default model is `eleven_v3_conversational`.
+      The connection uses Eleven v3 and v4 dialogue models (`model_id` must
+      start with `eleven_v3` or `eleven_v4`). The default model is
+      `eleven_v3_conversational`.
 
 
       ## Session setup
@@ -120,8 +122,9 @@ channels:
       - Optional `voice_settings` and `pronunciation_dictionary_locators` are
       only accepted on the first message.
 
-      - For `eleven_v3_conversational`, only **one** voice ID may be registered.
-      For `eleven_v3`, you may register up to **10** voices.
+      - For `eleven_v3_conversational` and `eleven_v4` models, only **one**
+      voice ID may be registered. For `eleven_v3`, you may register up to **10**
+      voices.
 
 
       ## Streaming text

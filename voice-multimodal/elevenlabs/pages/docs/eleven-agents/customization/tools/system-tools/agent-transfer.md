@@ -62,13 +62,13 @@ Agent transfer is configured using the `transfer_to_agent` system tool.
 
 Enable agent transfer by selecting the `transfer_to_agent` system tool in your agent's configuration within the `Agent` tab. Choose "Transfer to AI Agent" when adding a tool.
 
-![Add Transfer Tool](/docs/_fern-img/3e2756669b192395680d48a17c622493faee9fb61649f491bbe66820a91d46ef.webp)
+![Add Transfer Tool](/docs/_fern-files/_img/3e2756669b192395680d48a17c622493faee9fb61649f491bbe66820a91d46ef.webp)
 
 #### Configure tool description (optional)
 
 You can provide a custom description to guide the LLM on when to trigger a transfer. If left blank, a default description encompassing the defined transfer rules will be used.
 
-![Transfer Tool Description](/docs/_fern-img/6b916200ef66cd0c6f5af7f6ba51b4b48eb1a266c7b10e863ae874c5a11452ae.webp)
+![Transfer Tool Description](/docs/_fern-files/_img/6b916200ef66cd0c6f5af7f6ba51b4b48eb1a266c7b10e863ae874c5a11452ae.webp)
 
 #### Define transfer rules
 
@@ -82,7 +82,7 @@ Configure the specific rules for transferring to other agents. For each rule, sp
 
 The LLM will use these conditions, along with the tool description, to decide when and to which agent (by number) to transfer.
 
-![Transfer Rules Configuration](/docs/_fern-img/b1b7e0f58ae757640af46630fde962a78ef4a164a380f974297bb643ccc29443.webp)
+![Transfer Rules Configuration](/docs/_fern-files/_img/b1b7e0f58ae757640af46630fde962a78ef4a164a380f974297bb643ccc29443.webp)
 
 > **Note**
 >

@@ -17,7 +17,7 @@ Use a structured procedure when specific steps must happen the same way on every
 Like every procedure, a structured procedure has a trigger that describes when it applies. When a conversation matches the trigger, the agent runs the procedure's steps in order, then returns to the rest of the conversation.
 
 ![Structured procedure
-editor](/docs/_fern-img/bc996f67b2afad8f1de5abe8febcf8af3766b4f098627b0ae60e0456b3c2703b.webp)
+editor](/docs/_fern-files/_img/bc996f67b2afad8f1de5abe8febcf8af3766b4f098627b0ae60e0456b3c2703b.webp)
 
 ## When to use a structured procedure
 
@@ -53,7 +53,7 @@ The procedure body is an ordered list of typed steps. There are multiple step ty
 | **Retry**         | Re-runs a Tool step's failure handler, tool call included, up to three times. Available only inside a Tool step's failure handler.                                                                                           |
 
 ![Structured procedure step type
-menu](/docs/_fern-img/14976a6b9979d21fd7c77541a49e7475f8aa0764af4940746d3390804e7c4598.webp)
+menu](/docs/_fern-files/_img/14976a6b9979d21fd7c77541a49e7475f8aa0764af4940746d3390804e7c4598.webp)
 
 Not every step can appear everywhere. Inside an If arm, you can use any step except another If or a Retry. Inside a Tool step's failure handler, you can use any step except an If or another Tool.
 
@@ -452,10 +452,10 @@ The dashboard validates structured procedures as you edit. If a procedure breaks
 fixed. Select the error indicator to see which procedure and step is affected.
 
 ![Structured procedure editor with the Publish button in its error state and a 1 Error
-badge](/docs/_fern-img/e406c33fac3966fab26d5d07e10d364a475fc4a56fd75aad2e23edbb0d1940d5.webp)
+badge](/docs/_fern-files/_img/e406c33fac3966fab26d5d07e10d364a475fc4a56fd75aad2e23edbb0d1940d5.webp)
 
 ![Validation details dialog listing the failing procedure and the step that needs a
-message](/docs/_fern-img/a1cc889b2d0e68ce23725609b531938d0f7c417b1c6f4375103531eaae4ada63.webp)
+message](/docs/_fern-files/_img/a1cc889b2d0e68ce23725609b531938d0f7c417b1c6f4375103531eaae4ada63.webp)
 
 #### Manage via the CLI
 

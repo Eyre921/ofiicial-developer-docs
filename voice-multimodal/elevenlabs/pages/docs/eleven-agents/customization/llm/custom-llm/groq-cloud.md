@@ -28,7 +28,7 @@ With this in mind, it's recommended to use `meta-llama/llama-4-scout-17b-16e-ins
 
 Navigate to [console.groq.com/keys](https://console.groq.com/keys) and create a new API key.
 
-![Add Secret](/docs/_fern-img/2dc1bdac30871fb4059a394b8edfedd4cf953f8e1f787ca8b807a9f195e7fdf3.webp)
+![Add Secret](/docs/_fern-files/_img/2dc1bdac30871fb4059a394b8edfedd4cf953f8e1f787ca8b807a9f195e7fdf3.webp)
 
 Once you have your API key, you can test it by running the following curl command:
 
@@ -47,14 +47,14 @@ curl https://api.groq.com/openai/v1/chat/completions -s \
 
 Navigate to your [AI Agent](https://elevenlabs.io/app/agents), scroll down to the "Secrets" section and select "Add Secret". After adding the secret, make sure to hit "Save" to make the secret available to your agent.
 
-![Add Secret](/docs/_fern-img/464e123d926fbd9e6986a382af8da55d9f3861d1e593bb1f4b41ba33bed67ae1.webp)
+![Add Secret](/docs/_fern-files/_img/464e123d926fbd9e6986a382af8da55d9f3861d1e593bb1f4b41ba33bed67ae1.webp)
 
 Choose "Custom LLM" from the dropdown menu.
 
-![Choose custom llm](/docs/_fern-img/45ec75f558a5c8e5070bd3170d96cbc54ef63e15d9f04ac472a45854a22a17ac.webp)
+![Choose custom llm](/docs/_fern-files/_img/45ec75f558a5c8e5070bd3170d96cbc54ef63e15d9f04ac472a45854a22a17ac.webp)
 
 For the Server URL, specify Groq's OpenAI-compatible API endpoint: `https://api.groq.com/openai/v1`. For the Model ID, specify `meta-llama/llama-4-scout-17b-16e-instruct` as discussed above, and select your API key from the dropdown menu.
 
-![Enter url](/docs/_fern-img/70555982e71101023f8e988102ab505c964fd6796a190a9bce74f3c0ed1b56be.webp)
+![Enter url](/docs/_fern-files/_img/70555982e71101023f8e988102ab505c964fd6796a190a9bce74f3c0ed1b56be.webp)
 
 Now you can go ahead and click "Test AI Agent" to chat with your custom Llama 3.3 model.

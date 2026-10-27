@@ -186,6 +186,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/UnauthorizedResponse'
           description: Unauthorized - Authentication required or invalid credentials
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: Only management keys can perform this operation
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: Forbidden - Authentication successful but insufficient permissions
         '404':
           content:
             application/json:
@@ -228,6 +238,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
           description: Internal Server Error - Unexpected server error
+        '503':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 503
+                  message: Service temporarily unavailable
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+          description: Service Unavailable - Service temporarily unavailable
 components:
   schemas:
     SubmitGenerationFeedbackRequest:
@@ -324,6 +344,27 @@ components:
       required:
         - error
       type: object
+    ForbiddenResponse:
+      description: Forbidden - Authentication successful but insufficient permissions
+      example:
+        error:
+          code: 403
+          message: Only management keys can perform this operation
+      properties:
+        error:
+          $ref: '#/components/schemas/ForbiddenResponseErrorData'
+        openrouter_metadata:
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
+        user_id:
+          type:
+            - string
+            - 'null'
+      required:
+        - error
+      type: object
     NotFoundResponse:
       description: Not Found - Resource does not exist
       example:
@@ -408,6 +449,27 @@ components:
       required:
         - error
       type: object
+    ServiceUnavailableResponse:
+      description: Service Unavailable - Service temporarily unavailable
+      example:
+        error:
+          code: 503
+          message: Service temporarily unavailable
+      properties:
+        error:
+          $ref: '#/components/schemas/ServiceUnavailableResponseErrorData'
+        openrouter_metadata:
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
+        user_id:
+          type:
+            - string
+            - 'null'
+      required:
+        - error
+      type: object
     BadRequestResponseErrorData:
       description: Error data for BadRequestResponse
       example:
@@ -432,6 +494,25 @@ components:
       example:
         code: 401
         message: Missing Authentication header
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        metadata:
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
+      required:
+        - code
+        - message
+      type: object
+    ForbiddenResponseErrorData:
+      description: Error data for ForbiddenResponse
+      example:
+        code: 403
+        message: Only management keys can perform this operation
       properties:
         code:
           type: integer
@@ -508,6 +589,25 @@ components:
       example:
         code: 500
         message: Internal Server Error
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        metadata:
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
+      required:
+        - code
+        - message
+      type: object
+    ServiceUnavailableResponseErrorData:
+      description: Error data for ServiceUnavailableResponse
+      example:
+        code: 503
+        message: Service temporarily unavailable
       properties:
         code:
           type: integer

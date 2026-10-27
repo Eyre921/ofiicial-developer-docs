@@ -72,6 +72,7 @@ Validation Error
 - `allowed_ips` (list of string, optional, nullable)
 - `third_party_disable_allowed` (boolean, optional, nullable)
 - `platform_limits` (PlatformLimits, optional, nullable) — Per-API-key concurrency limits (TTS/dubbing/music). Enterprise-only.
+- `expires_at_unix` (integer, optional, nullable) — Unix timestamp (seconds) after which this API key stops working. Null means the key never expires.
 
 ### DefaultSharingGroupResponseModel
 
@@ -204,7 +205,8 @@ Platform limit with usage computed externally. Example: PVCs use the count_owned
             "music_concurrency": {
               "limit": 1
             }
-          }
+          },
+          "expires_at_unix": 1
         }
       ],
       "created_at_unix": 1,

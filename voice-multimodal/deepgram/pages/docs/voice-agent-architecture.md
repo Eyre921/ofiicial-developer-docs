@@ -14,7 +14,7 @@ Building a voice agent usually means stitching together a speech-to-text service
 
 Deepgram's Voice Agent API collapses that stack into a **single, unified API**. You open one WebSocket connection, send audio in, and receive audio out. Deepgram runs the full speech loop — speech-to-text, LLM orchestration, and text-to-speech — and handles the hard real-time problems (end-of-turn detection, interruption handling, function calling) natively. You spend your engineering time on what your agent *does*, not on how it hears or talks.
 
-![Unified speech-to-speech Voice Agent API architecture. A customer's audio, including telephony, streams to and from the Voice Agent API. Inside the API, speech-to-text (Deepgram Flux or Nova-3) leads to an LLM (managed, BYO, or custom), which leads to text-to-speech (Deepgram Aura-2, managed, or BYO). End-of-thought detection, interruption handling, and function calling are built in. The API connects to external systems including databases, an embedding model, and a retrieval API.](/_fern-img/312bf9bf3b58bca3cec4d9380f4182ac1836edef65788a972246bdd1890d57bd.webp)
+![Unified speech-to-speech Voice Agent API architecture. A customer's audio, including telephony, streams to and from the Voice Agent API. Inside the API, speech-to-text (Deepgram Flux or Nova-3) leads to an LLM (managed, BYO, or custom), which leads to text-to-speech (Deepgram Aura-2, managed, or BYO). End-of-thought detection, interruption handling, and function calling are built in. The API connects to external systems including databases, an embedding model, and a retrieval API.](/_fern-files/_img/312bf9bf3b58bca3cec4d9380f4182ac1836edef65788a972246bdd1890d57bd.webp)
 
 ## One connection, the whole loop
 

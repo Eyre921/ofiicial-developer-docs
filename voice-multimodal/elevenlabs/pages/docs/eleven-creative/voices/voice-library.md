@@ -8,7 +8,7 @@ path: docs/eleven-creative/voices/voice-library
 
 # Voice Library
 
-![Voice Library](/docs/_fern-img/a716446ac7de888e68a67612121b1c589595f246fcebfad5e3507fe07f803e84.webp)
+![Voice Library](/docs/_fern-files/_img/a716446ac7de888e68a67612121b1c589595f246fcebfad5e3507fe07f803e84.webp)
 
 ## Overview
 
@@ -300,7 +300,7 @@ them there.
 
       To access the Voice Library, click **Voices** in the sidebar and select **Explore**.
 
-      ![](/docs/_fern-img/bf65cdac70a470cbeea56ff85d3e692fee46b0a02d0072c497bdc0583c094b5c.webp)
+      ![](/docs/_fern-files/_img/bf65cdac70a470cbeea56ff85d3e692fee46b0a02d0072c497bdc0583c094b5c.webp)
 
       You can browse the Voice Library in several ways:
 
@@ -382,7 +382,7 @@ them there.
 
       To do this, either drag and drop an audio or video file anywhere on the [Voice Library](https://elevenlabs.io/app/voice-library) page, or click the upload icon to select a file to upload.
 
-      ![](/docs/_fern-img/1d07416f03990f9d9a6ca920b0967daab49a19573e6a9712bd706de4010facdb.webp)
+      ![](/docs/_fern-files/_img/1d07416f03990f9d9a6ca920b0967daab49a19573e6a9712bd706de4010facdb.webp)
 
       For the best results, please upload speech only, without background music or noise.  You can use our [Voice Isolator](https://elevenlabs.io/app/voice-isolator) to clean up the audio if required.
 
@@ -423,12 +423,12 @@ them there.
 
       If a voice has a credit multiplier in place, this will be displayed as a tag in the Voice Library:
 
-      ![](/docs/_fern-img/d86ddc91232731c1ef5de097ac38d4201e993e08b40164a7831bacbac7eec32e.webp)
+      ![](/docs/_fern-files/_img/d86ddc91232731c1ef5de097ac38d4201e993e08b40164a7831bacbac7eec32e.webp)
 
       In Speech Synthesis, you will see a notification that the voice has a credit multiplier in place:\
 
 
-      ![](/docs/_fern-img/e9e67cad1e6482fee0cf9f08bb492f5a26ab29a54cb9e2be8985ec657a6a13b3.webp)
+      ![](/docs/_fern-files/_img/e9e67cad1e6482fee0cf9f08bb492f5a26ab29a54cb9e2be8985ec657a6a13b3.webp)
 
       The credit multiplier that applies for generating audio is based on the custom rate chosen by the voice owner as well as the subscription plan of the user of the voice.
     </td>
@@ -452,7 +452,7 @@ them there.
 
       For larger operations, you can also set up a webhook notification for voice removal, ensuring you are informed as soon as a voice is removed. This can be very useful if you need to be informed as soon as the voice is removed, for example if you need to notify your customers.
 
-      ![](/docs/_fern-img/ef4914131e291b23f5894a85b274e6a6a106b77e603e330beff26c4ce2593aa1.webp)
+      ![](/docs/_fern-files/_img/ef4914131e291b23f5894a85b274e6a6a106b77e603e330beff26c4ce2593aa1.webp)
 
       You can set this up on your [webhooks settings page](https://elevenlabs.io/app/settings/webhooks) for your account.
     </td>

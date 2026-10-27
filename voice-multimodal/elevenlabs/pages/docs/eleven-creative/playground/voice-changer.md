@@ -24,7 +24,7 @@ Voice changer can be used to complement Text-to-Speech (TTS) by fixing pronuncia
 
 ## Guide
 
-![Voice changer demo](/docs/_fern-img/2edaef4c56e389edff8faf0c5a43247631432cead38d23023fb6263bb258cc55.webp)
+![Voice changer demo](/docs/_fern-files/_img/2edaef4c56e389edff8faf0c5a43247631432cead38d23023fb6263bb258cc55.webp)
 
 Audio can be uploaded either directly with an audio file, or spoken live through a microphone. The audio file must be less than **50mb in size**, and either the audio file or your live recording cannot exceed **5 minutes in length**.
 
@@ -44,7 +44,7 @@ You will then see the audio file of this recording, which you can then playback 
 
 ## Settings
 
-![Voice changer settings](/docs/_fern-img/b1f916391e35ad88e7820ca098831d9b76aa6b95ac3689b51f794b526e8778b3.webp)
+![Voice changer settings](/docs/_fern-files/_img/b1f916391e35ad88e7820ca098831d9b76aa6b95ac3689b51f794b526e8778b3.webp)
 
 Learn more about the different voice settings [here](/docs/eleven-creative/playground/text-to-speech#settings).
 

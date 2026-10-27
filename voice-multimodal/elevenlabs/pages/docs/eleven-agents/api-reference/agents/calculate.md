@@ -36,6 +36,8 @@ This endpoint expects an object.
 - `prompt_length` (integer, optional) — Length of the prompt in characters.
 - `number_of_pages` (integer, optional) — Pages of content in pdf documents OR urls in agent's Knowledge Base.
 - `rag_enabled` (boolean, optional) — Whether RAG is enabled.
+- `service_tier` (enum, optional, default: standard) — Service tier to price against. Only affects models that offer the tier; others fall back to their standard price.
+  - Allowed values: `standard`, `fast`
 
 ## Response
 

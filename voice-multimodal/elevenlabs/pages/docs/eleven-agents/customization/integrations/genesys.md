@@ -105,7 +105,7 @@ In Architect, open the Inbound Message Flow you want to use.
    * **escalate** → transfer to a support queue
    * **failure** → transfer to a fallback queue
 
-![Genesys Bot Connector flow configuration](/docs/_fern-img/49cf1993f9e6978e75af83e28ac8de1256198630f3c06b9e850c1ce3f4486cb2.webp)
+![Genesys Bot Connector flow configuration](/docs/_fern-files/_img/49cf1993f9e6978e75af83e28ac8de1256198630f3c06b9e850c1ce3f4486cb2.webp)
 
 #### Configure escalation
 

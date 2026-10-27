@@ -325,7 +325,6 @@
 
 - API reference > Assistants [List Assistants](https://docs.vapi.ai/api-reference/assistants/list.md)
 - API reference > Assistants [Create Assistant](https://docs.vapi.ai/api-reference/assistants/create.md)
-- API reference > Assistants [Validate Background Sound URL](https://docs.vapi.ai/api-reference/assistants/assistant-controller-validate-background-sound-url.md)
 - API reference > Assistants [Get Assistant](https://docs.vapi.ai/api-reference/assistants/get.md)
 - API reference > Assistants [Delete Assistant](https://docs.vapi.ai/api-reference/assistants/delete.md)
 - API reference > Assistants [Update Assistant](https://docs.vapi.ai/api-reference/assistants/update.md)
@@ -425,6 +424,9 @@
 - API reference > Simulation Suites [Delete Simulation Suite](https://docs.vapi.ai/api-reference/simulation-suites/simulation-suite-controller-remove.md)
 - API reference > Simulation Suites [Update Simulation Suite](https://docs.vapi.ai/api-reference/simulation-suites/simulation-suite-controller-update.md)
 - API reference > Simulations [Generate Scenarios with AI](https://docs.vapi.ai/api-reference/simulations/simulation-generate-controller-generate.md)
+- API reference > Simulations [Draft simulation requirements](https://docs.vapi.ai/api-reference/simulations/simulation-onboarding-controller-requirements-draft.md)
+- API reference > Simulations [Generate a simulation suite](https://docs.vapi.ai/api-reference/simulations/simulation-onboarding-controller-suite-create.md)
+- API reference > Simulations [Edit a generated simulation suite](https://docs.vapi.ai/api-reference/simulations/simulation-onboarding-controller-suite-update.md)
 - API reference > Simulations [List Simulations](https://docs.vapi.ai/api-reference/simulations/simulation-controller-find-all.md)
 - API reference > Simulations [Create Simulation](https://docs.vapi.ai/api-reference/simulations/simulation-controller-create.md)
 - API reference > Simulations [Get Simulation Concurrency](https://docs.vapi.ai/api-reference/simulations/simulation-controller-get-concurrency.md)

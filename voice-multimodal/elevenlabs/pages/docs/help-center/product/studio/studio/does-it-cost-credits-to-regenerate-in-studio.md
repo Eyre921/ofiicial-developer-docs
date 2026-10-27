@@ -14,6 +14,6 @@ To regenerate, either click on the paragraph to regenerate the whole paragraph, 
 
 If the selection is eligible for a free regeneration, you will see that the Generate/Regenerate button in the toolbar says **Regenerate**, and if you hover over it, you will see a notification letting you know how many free regenerations are remaining.
 
-![Generate and Regenerate controls in Studio](/docs/_fern-img/648aadb17d5d4c3bb29a3d1e568f37ad4139f941e092e7fce740c7f34821374c.webp)
+![Generate and Regenerate controls in Studio](/docs/_fern-files/_img/648aadb17d5d4c3bb29a3d1e568f37ad4139f941e092e7fce740c7f34821374c.webp)
 
 If your selection isn't eligible for a free regeneration, the button will say **Generate**, and you will be charged for the generation.

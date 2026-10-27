@@ -12,7 +12,7 @@ Usage based billing is a legacy feature, and is not available on new self-serve 
 
 For self-serve subscriptions, Pay As You Go is our replacement for usage based billing. For more information, see our [Pay As You Go documentation. ](/docs/overview/administration/pay-as-you-go)
 
-![](/docs/_fern-img/707e3ca222db4b26e352bda08d034698c5c69d7cb0836c19ce2f83c65b9b12df.webp)
+![](/docs/_fern-files/_img/707e3ca222db4b26e352bda08d034698c5c69d7cb0836c19ce2f83c65b9b12df.webp)
 
 On Enterprise and legacy Creator, Pro, Scale and Business plans, you have the option to activate usage based billing. If you're on an eligible plan, here’s how to enable usage based billing for your account:
 

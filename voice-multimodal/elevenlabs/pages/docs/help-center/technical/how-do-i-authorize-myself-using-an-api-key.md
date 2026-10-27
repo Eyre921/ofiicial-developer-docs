@@ -18,11 +18,11 @@ By default, your API key will be restricted, and you will need to select the fea
 
 You can turn off all restrictions using the **Restrict Key** toggle, but for security reasons, we recommend implementing restrictions on your API key.
 
-![](/docs/_fern-img/447b5f0f47299cddaca0c42dd6519030b8620ab9a6d6bdbf915bec51a99c9fcf.webp)
+![](/docs/_fern-files/_img/447b5f0f47299cddaca0c42dd6519030b8620ab9a6d6bdbf915bec51a99c9fcf.webp)
 
 To edit an existing API key, click the **More Actions** (...) icon to the right of the key in the list of API key, then select **Edit.**
 
-![](/docs/_fern-img/654ef4e7f77ada10a8bee9eba9e4608ae9fe7fc142d60d86ccdd3a58dbafc44e.webp)
+![](/docs/_fern-files/_img/654ef4e7f77ada10a8bee9eba9e4608ae9fe7fc142d60d86ccdd3a58dbafc44e.webp)
 
 To delete an existing API key, click the **More Actions** icon to the right of the key in the list of API key, then select **Delete.** Deleting an API key is irreversible.
 

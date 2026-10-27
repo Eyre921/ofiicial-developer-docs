@@ -67,9 +67,9 @@ func main() {
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. |
-| `request` | [components.VideoGenerationRequest](../../models/components/videogenerationrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. |
+| `request` | [components.VideoGenerationRequest](../../models/components/videogenerationrequest.mdx) | ✅ | The request object to use for the request. |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. |
 
 ### Response
 
@@ -128,9 +128,9 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `jobID` | `string` | :heavy\_check\_mark: | N/A | job-abc123 |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `jobID` | `string` | ✅ | N/A | job-abc123 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -184,10 +184,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `jobID` | `string` | :heavy\_check\_mark: | N/A | job-abc123 |
-| `index` | optionalnullable.OptionalNullable\[`int64`] | :heavy\_minus\_sign: | N/A | 0 |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `jobID` | `string` | ✅ | N/A | job-abc123 |
+| `index` | optionalnullable.OptionalNullable\[`int64`] | ➖ | N/A | 0 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -244,8 +244,8 @@ func main() {
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. |
 
 ### Response
 

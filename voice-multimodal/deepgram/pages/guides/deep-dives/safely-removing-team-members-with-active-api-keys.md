@@ -39,7 +39,7 @@ A key's effective permissions are also limited by its creator's role. If a user 
 
 When you attempt to remove a team member in Console, you'll see a warning if they have active API keys.
 
-![Warning dialog when removing a team member with active API keys](/_fern-img/2dce634f18b359ebbe04f297648f29617b9b27905e442af6ff9062e8d8746726.webp)
+![Warning dialog when removing a team member with active API keys](/_fern-files/_img/2dce634f18b359ebbe04f297648f29617b9b27905e442af6ff9062e8d8746726.webp)
 
 The warning shows:
 
@@ -75,7 +75,7 @@ For each active key that needs to be replaced:
 1. Go to **API Keys** in your project.
 2. Click **Create a New API Key**.
 3. Give it a clear, descriptive name (e.g., "Production - Main Application").
-   ![Create a New API Key dialog in Deepgram Console with fields for name, role, expiration, and tags](/_fern-img/f663f53b06fa7bfbf208f5fb5feed0ff7ea9d5d2d8d1881b6c7e75dd42145bf4.webp)
+   ![Create a New API Key dialog in Deepgram Console with fields for name, role, expiration, and tags](/_fern-files/_img/f663f53b06fa7bfbf208f5fb5feed0ff7ea9d5d2d8d1881b6c7e75dd42145bf4.webp)
 4. Match the role of the key you're replacing:
    * If the old key had no role (default), leave the new one as default.
    * If the old key had a role like Member, Admin, or Owner, select the same role.
@@ -113,7 +113,7 @@ Deploy these changes to all environments before proceeding.
 Before removing the user, confirm that traffic has moved to the new keys:
 
 1. Go to the **API Keys** page and expand the old key to copy its **Key ID**.
-   ![Expanded API key row showing the Key ID field available to copy](/_fern-img/9ee8fed2db7874f1693e98dab3e2820e86bebcca5f2065dda8c0367627f585ed.webp)
+   ![Expanded API key row showing the Key ID field available to copy](/_fern-files/_img/9ee8fed2db7874f1693e98dab3e2820e86bebcca5f2065dda8c0367627f585ed.webp)
 2. Go to **Usage > Logs**.
 3. Paste the Key ID into the **API Key ID** filter.
 4. Set the date range to the **last 7 days**.

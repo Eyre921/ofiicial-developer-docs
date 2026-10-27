@@ -34,7 +34,7 @@ These voices offer a range of styles and characteristics that work well for diff
 
 ## Voice settings
 
-![Voice settings](/docs/_fern-img/007b0ec153f9210ce48a6e6ed3184c4d004476222a2be2b5bf6ab6afdecf4804.webp)
+![Voice settings](/docs/_fern-files/_img/007b0ec153f9210ce48a6e6ed3184c4d004476222a2be2b5bf6ab6afdecf4804.webp)
 
 Voice settings dramatically affect how your agent is perceived:
 

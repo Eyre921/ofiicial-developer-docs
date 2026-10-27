@@ -16,10 +16,10 @@ By default, we don’t train on any data from our Enterprise customers, other th
 
 You can modify your data use settings at any time by clicking your profile icon in the top right corner of any page in the ElevenLabs platform and navigating to **Terms and privacy** >  **Data use.**
 
-![](/docs/_fern-img/93f43c898d2cffe45aee789e83281520f0531af66ca2fe47f73f1295eefdf432.webp)
+![](/docs/_fern-files/_img/93f43c898d2cffe45aee789e83281520f0531af66ca2fe47f73f1295eefdf432.webp)
 
 In the **Data use** menu, you’ll see a toggle called **Improve the models for everyone.** To stop sharing your data with us, disable the toggle as shown in the image below and click **Update your choice.** Once the toggle is disabled, new data you submit to us won’t be used to train our models.
 
-![](/docs/_fern-img/7d6376b5033c3fa3c468dbcd528beac81c831f46b6c4374bce2aec978dbb5170.webp)
+![](/docs/_fern-files/_img/7d6376b5033c3fa3c468dbcd528beac81c831f46b6c4374bce2aec978dbb5170.webp)
 
 Note that if you previously submitted an opt-out request to us via Typeform, your choice should be reflected in your Data use dialog. For more information, please see our [Privacy Policy](https://elevenlabs.io/privacy-policy).

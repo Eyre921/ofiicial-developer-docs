@@ -24,7 +24,7 @@ The easiest way to order a dub from Productions is through the [Productions](htt
 * **Source language** (e.g., English)
 * **Target language** (e.g., Spanish, Hindi, Arabic)
 
-![Productions Home](/docs/_fern-img/cd072dfc01c9b277960c0583a3900ca963ee0ca766f204f5fac602117f5a8174.webp)
+![Productions Home](/docs/_fern-files/_img/cd072dfc01c9b277960c0583a3900ca963ee0ca766f204f5fac602117f5a8174.webp)
 
 #### Processing
 

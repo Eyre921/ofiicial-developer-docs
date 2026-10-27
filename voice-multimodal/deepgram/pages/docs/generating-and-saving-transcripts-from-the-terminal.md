@@ -60,7 +60,7 @@ Let’s look more closely at this request:
 
 When you run this command and it is finished processing (often after only a few seconds), you’ll receive a JSON response that looks similar to the following:
 
-![](/_fern-img/317326d600ee839975a185fad761e37495c8d6269e411de69cffffeb96f731bd.webp)
+![](/_fern-files/_img/317326d600ee839975a185fad761e37495c8d6269e411de69cffffeb96f731bd.webp)
 
 This may look daunting, so let's look at a way to make both our curl request and our response easier to read.
 
@@ -112,7 +112,7 @@ curl https://api.deepgram.com/v1/listen?punctuate=true \
 
 When you run this command and it is finished processing (often after only a few seconds), you’ll receive a JSON response that looks similar to the following:
 
-![](/_fern-img/4e327ad3b8562595dbc6590b7b8d56e215974c91d53bfce7cdfd692e94c08b2b.webp)
+![](/_fern-files/_img/4e327ad3b8562595dbc6590b7b8d56e215974c91d53bfce7cdfd692e94c08b2b.webp)
 
 ## Saving Output to a File
 

@@ -33,7 +33,7 @@ From the pop-up, select **Professional Voice Clone**.
 > Professional Voice Clones do not currently support singing. Audio recordings must consist of
 > spoken voice only.
 
-![Create a new Professional Voice Clone](/docs/_fern-img/84134ac62c71531ac93d090030d9651bf428dc90802c17b33ad924973b6560c2.webp)
+![Create a new Professional Voice Clone](/docs/_fern-files/_img/84134ac62c71531ac93d090030d9651bf428dc90802c17b33ad924973b6560c2.webp)
 
 Upload your audio samples by clicking **Upload samples**.
 
@@ -43,13 +43,13 @@ If you don't already have pre-recorded training audio, you can also record direc
 
 Once your audio has been uploaded, you will see feedback on the length of your samples. For the best results, we recommend uploading at least an hour of training audio, and ideally as close to three hours as possible.
 
-![Create a new Professional Voice Clone](/docs/_fern-img/868803a15dac167dc8b97930436273e7196314e7a66a5db95ef2c16e7806c753.webp)
+![Create a new Professional Voice Clone](/docs/_fern-files/_img/868803a15dac167dc8b97930436273e7196314e7a66a5db95ef2c16e7806c753.webp)
 
 ### Process your audio
 
 Once your audio samples have been uploaded, you can process them to improve the quality. You can remove any background noise, and you can also separate out different speakers, if your audio includes more than one speaker. To access these options, click the **Audio settings** button next to the clip you want to process.
 
-![Create a new Professional Voice Clone](/docs/_fern-img/2ad9fdf1aff0635cdf884d77da4dc6be7d77e7596601ebde4cb0bf50ecc80e37.webp)
+![Create a new Professional Voice Clone](/docs/_fern-files/_img/2ad9fdf1aff0635cdf884d77da4dc6be7d77e7596601ebde4cb0bf50ecc80e37.webp)
 
 ### Verify your voice
 
@@ -214,13 +214,13 @@ Provide at least 30 minutes of high-quality audio that follows the above guideli
 
 
 
-      ![](/docs/_fern-img/87eadcea0297fa3c147d36c190c117a4f1feb2a25aa201082615a9e71f1ad14f.webp)
+      ![](/docs/_fern-files/_img/87eadcea0297fa3c147d36c190c117a4f1feb2a25aa201082615a9e71f1ad14f.webp)
 
 
 
       To start the fine-tuning process, hover over the name of your voice in the list in [My Voices,](https://elevenlabs.io/app/voice-lab) and you will see all available models. Models that the voice has already been fine-tuned on will be displayed with a tick icon, and models that are available for fine-tuning will be displayed with a plus icon. To begin fine tuning, just click on the model.
 
-      ![](/docs/_fern-img/244445ebcacf0185f0cf89fbb06ad9ca34d2376e34c8900cb49de163f2b2226f.webp)
+      ![](/docs/_fern-files/_img/244445ebcacf0185f0cf89fbb06ad9ca34d2376e34c8900cb49de163f2b2226f.webp)
 
       While the voice is fine-tuning, you can hover over the model name to see the progress. Please note that due to voice caching, you may need to refresh the page to see the latest progress. Once the fine-training has been completed, you will be notified both in-app and by email.
     </td>
@@ -239,11 +239,11 @@ Provide at least 30 minutes of high-quality audio that follows the above guideli
       **Draft:** This status means that your voice is incomplete. Generally this is either
       because you haven't completed creating the voice, or you haven't verified the voice yet.
 
-      ![](/docs/_fern-img/6d3f8b497dcb56c5ac48f87906f196f49fce5518dbe1f3e700df2f91ebbc1378.webp)
+      ![](/docs/_fern-files/_img/6d3f8b497dcb56c5ac48f87906f196f49fce5518dbe1f3e700df2f91ebbc1378.webp)
 
       To go through the verification process, click the tick icon.
 
-      ![](/docs/_fern-img/5e4e259056fdcee35a751b0d7ca2a463019a47469f95cabc9ed359f7f51fc5fe.webp)
+      ![](/docs/_fern-files/_img/5e4e259056fdcee35a751b0d7ca2a463019a47469f95cabc9ed359f7f51fc5fe.webp)
 
       To go back to the voice creation process, click **More actions** (three dots) and select **Edit voice**.
 
@@ -251,7 +251,7 @@ Provide at least 30 minutes of high-quality audio that follows the above guideli
 
       Once you've verified your voice, it will need to fine-tune on our models before you can use it. You can track this process by hovering over the name of your voice in [My Voices](https://elevenlabs.io/app/voice-lab). You'll see all available models listed here, with an icon to indicate the status for each model.
 
-      ![](/docs/_fern-img/d4820b45f5fb4a89f76d3b5ef5ed2992bbf515eacac039c67596c055f136b67c.webp)
+      ![](/docs/_fern-files/_img/d4820b45f5fb4a89f76d3b5ef5ed2992bbf515eacac039c67596c055f136b67c.webp)
 
 
 
@@ -280,7 +280,7 @@ Provide at least 30 minutes of high-quality audio that follows the above guideli
       need to click the model name to begin fine-training. If additional models have become available for
       your voice to fine-tune on, you'll see an exclamation icon next to your voice.
 
-      ![](/docs/_fern-img/7fe7278b67a7f9697c1a6190837fb110fd53e64ddb3513b4cc351292a077740e.webp)
+      ![](/docs/_fern-files/_img/7fe7278b67a7f9697c1a6190837fb110fd53e64ddb3513b4cc351292a077740e.webp)
 
       To begin the fine-tuning process, just hover over your voice's name and click the name of the model.
     </td>
@@ -477,7 +477,7 @@ Provide at least 30 minutes of high-quality audio that follows the above guideli
 
       You can check the progress of your PVC in My Voices by finding the voice in your list of voices, then clicking **View** to see more details.  You can hover over each model to see the current status.
 
-      ![](/docs/_fern-img/ec34838a2fd40c5105c9196c356045b2963daf2490fd36c19f42bcb8f5359c86.webp)
+      ![](/docs/_fern-files/_img/ec34838a2fd40c5105c9196c356045b2963daf2490fd36c19f42bcb8f5359c86.webp)
 
       For more detail on what each status means, please see [What does the status of my Professional Voice Clone mean?](/docs/help-center/product/voices/voice-cloning/what-does-the-status-of-my-professional-voice-clone-mean)
 

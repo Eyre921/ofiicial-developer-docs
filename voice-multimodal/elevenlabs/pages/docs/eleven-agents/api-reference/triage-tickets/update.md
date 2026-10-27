@@ -11,7 +11,7 @@ path: docs/eleven-agents/api-reference/triage-tickets/update
 PATCH https://api.elevenlabs.io/v1/convai/triage-tickets/{agentqa_ticket_id}
 Content-Type: application/json
 
-Update a ticket's title, comment, status, priority, and/or assignee. Requires editor access to the ticket's agent.
+Update a ticket's title, comment, status, priority, and/or assignee. Requires viewer access to the ticket's agent.
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/update
 

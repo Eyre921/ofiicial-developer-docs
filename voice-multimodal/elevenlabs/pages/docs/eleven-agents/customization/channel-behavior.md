@@ -66,7 +66,7 @@ Configure channel behavior with the `conversation_config.agent.text_behavior_ove
 Open your agent in the dashboard, select the **Agent** tab, and open **Agent behavior**. Expand a channel under **Text channels** and adjust its verbosity, output format, or response time. Save your changes.
 
 ![Agent behavior panel with per-channel text
-settings](/docs/_fern-img/372e6260e210a832be68a693b003abd63f2ae9b0f9f297d7b7049d1d0c978fec.webp)
+settings](/docs/_fern-files/_img/372e6260e210a832be68a693b003abd63f2ae9b0f9f297d7b7049d1d0c978fec.webp)
 
 #### Update via the CLI
 

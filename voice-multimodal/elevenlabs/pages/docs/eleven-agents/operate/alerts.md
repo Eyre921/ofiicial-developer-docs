@@ -35,7 +35,7 @@ Each alert has one of the following statuses:
 
 Navigate to [**Developers** > **Alerts**](https://elevenlabs.io/app/developers/alerts) to see recent monitoring alerts for agents in your workspace. The page shows a timeline of alert activity and a table listing each alert's timestamp, duration, status, type, and agent. You can filter by status, agent, or tool, and adjust the time range (up to 90 days).
 
-![Alerts page in the dashboard](/docs/_fern-img/d2dbe97d07149ab05ea88cff5300146de39682532a84d1a37326b01dbc04ba9f.webp)
+![Alerts page in the dashboard](/docs/_fern-files/_img/d2dbe97d07149ab05ea88cff5300146de39682532a84d1a37326b01dbc04ba9f.webp)
 
 Click an alert to open the affected conversations, or use the row menu to **Inspect conversations** in the conversation history. Active alerts can be dismissed from the same menu.
 
@@ -54,7 +54,7 @@ On the [**Developers** > **Alerts**](https://elevenlabs.io/app/developers/alerts
 Each monitor can be enabled or disabled and has a **Threshold** setting: the error rate that triggers an alert, as a percentage between 0% and 100%. You can also set **Auto-resolve after inactivity (minutes)** to control how long an alert can stay inactive before it auto-resolves.
 
 ![Alert settings in the agent's Advanced
-tab](/docs/_fern-img/d951fa5b6cd3c39590227a893874426be4b0629cd84a6d9919b584a977d2cfdc.webp)
+tab](/docs/_fern-files/_img/d951fa5b6cd3c39590227a893874426be4b0629cd84a6d9919b584a977d2cfdc.webp)
 
 ## Notifications
 

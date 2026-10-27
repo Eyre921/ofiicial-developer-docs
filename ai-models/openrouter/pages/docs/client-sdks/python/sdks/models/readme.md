@@ -148,6 +148,7 @@ with OpenRouter(
 | errors.BadRequestResponseError | 400 | application/json |
 | errors.ForbiddenResponseError | 403 | application/json |
 | errors.InternalServerResponseError | 500 | application/json |
+| errors.ServiceUnavailableResponseError | 503 | application/json |
 | errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## count
@@ -252,5 +253,6 @@ with OpenRouter(
 | errors.ForbiddenResponseError | 403 | application/json |
 | errors.NotFoundResponseError | 404 | application/json |
 | errors.InternalServerResponseError | 500 | application/json |
+| errors.ServiceUnavailableResponseError | 503 | application/json |
 | errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 

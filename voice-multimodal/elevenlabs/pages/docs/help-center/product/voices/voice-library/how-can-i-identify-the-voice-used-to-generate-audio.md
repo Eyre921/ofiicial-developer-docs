@@ -12,7 +12,7 @@ You can use audio or video files to search the [Voice Library](https://elevenlab
 
 To do this, either drag and drop an audio or video file anywhere on the [Voice Library](https://elevenlabs.io/app/voice-library) page, or click the upload icon to select a file to upload.
 
-![](/docs/_fern-img/1d07416f03990f9d9a6ca920b0967daab49a19573e6a9712bd706de4010facdb.webp)
+![](/docs/_fern-files/_img/1d07416f03990f9d9a6ca920b0967daab49a19573e6a9712bd706de4010facdb.webp)
 
 For the best results, please upload speech only, without background music or noise.  You can use our [Voice Isolator](https://elevenlabs.io/app/voice-isolator) to clean up the audio if required.
 

@@ -33,9 +33,9 @@ These open Architect without specific context beyond the page you are on.
 | Chat history         | The history list in the sidebar                                                                                                       | Reopens a previous chat with its message history.                                                                                                 |
 | **Troubleshoot**     | The button on an error notification                                                                                                   | The error message, with a request to help resolve it.                                                                                             |
 
-![Architect header button](/docs/_fern-img/d60a7dc0778e4b7743c84904e51ab0395a39508bf4cc2d5231e51a1605e0832e.webp)
+![Architect header button](/docs/_fern-files/_img/d60a7dc0778e4b7743c84904e51ab0395a39508bf4cc2d5231e51a1605e0832e.webp)
 
-![Command palette](/docs/_fern-img/1e799dfc1c1600d78a2465dd6265cd2905d646f7b2b2dd7c5c9d81bb4195eea0.webp)
+![Command palette](/docs/_fern-files/_img/1e799dfc1c1600d78a2465dd6265cd2905d646f7b2b2dd7c5c9d81bb4195eea0.webp)
 
 ## Entry points with context
 
@@ -52,7 +52,7 @@ When a test run has failures, **Fix with Architect** appears on the test run det
 Architect receives the test run's invocation ID and the names of the failing tests. It reads the failure details, transcripts, and evaluation results itself with its test tools, so the answer reflects the full run.
 
 ![Failed test with Fix with
-Architect](/docs/_fern-img/4233cb4faf8238cca926fbfdae052013e229777e693a2c8067751f7cca431f57.webp)
+Architect](/docs/_fern-files/_img/4233cb4faf8238cca926fbfdae052013e229777e693a2c8067751f7cca431f57.webp)
 
 ### Spotlight
 
@@ -68,10 +68,10 @@ Architect](/docs/_fern-img/4233cb4faf8238cca926fbfdae052013e229777e693a2c8067751
 
 Charts and metric tiles on Spotlight don't have their own Architect button. To ask about a specific chart, open Architect from the page header: in the sidebar, Architect can read the values on screen.
 
-![Weekly summary](/docs/_fern-img/e59d75a18fcad464fcbf92afc711eee6ef832ea86477190b6870d89cc0197aeb.webp)
+![Weekly summary](/docs/_fern-files/_img/e59d75a18fcad464fcbf92afc711eee6ef832ea86477190b6870d89cc0197aeb.webp)
 
 ![Alert card with Investigate with
-Architect](/docs/_fern-img/e71b18a2ac615b122870d69257575462ab416b154bc9d6d4bfd3d0864e1b81e9.webp)
+Architect](/docs/_fern-files/_img/e71b18a2ac615b122870d69257575462ab416b154bc9d6d4bfd3d0864e1b81e9.webp)
 
 ### Triage tickets
 
@@ -79,15 +79,15 @@ In a [triage ticket](/docs/eleven-agents/operate/triage), select **Discuss with 
 
 A ticket records every Architect chat started from it. Once you have started one, the button changes to **Continue in Architect** and **New Architect chat**. Chats stay private to the person who started them. In the triage list, a ticket with an Architect chat shows who dispatched Architect.
 
-![Triage ticket with Architect](/docs/_fern-img/7327710426954b013a17073554ce183de64a322eeab78e458e30d9da6c0b470f.webp)
+![Triage ticket with Architect](/docs/_fern-files/_img/7327710426954b013a17073554ce183de64a322eeab78e458e30d9da6c0b470f.webp)
 
-![Triage list with Architect](/docs/_fern-img/b4dccefa125d457ab5f5deedabd8be75255ce1ec2206607c172673a46492205a.webp)
+![Triage list with Architect](/docs/_fern-files/_img/b4dccefa125d457ab5f5deedabd8be75255ce1ec2206607c172673a46492205a.webp)
 
 ### Conversation transcripts
 
 In a conversation's transcript, select **Analyze** on an agent message, or the **Analyze with Architect** icon in the history view. Architect receives the conversation ID and the text of that message, and explains why the agent responded the way it did.
 
-![Analyze on an agent message](/docs/_fern-img/3ba13985b69854baaa770393be1c2d654ad02a1c1e8001b73a46ecad04cb7b62.webp)
+![Analyze on an agent message](/docs/_fern-files/_img/3ba13985b69854baaa770393be1c2d654ad02a1c1e8001b73a46ecad04cb7b62.webp)
 
 ### Building an agent
 

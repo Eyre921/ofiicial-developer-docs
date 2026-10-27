@@ -15,7 +15,7 @@ A procedure contains instructions for one specific task. Each procedure has a tr
 Use procedures when your agent needs to handle many distinct tasks. One example use case is a customer support agent, where each procedure covers one type of request: refunds, identity verification, account recovery, or connection troubleshooting.
 
 ![Procedures tab in the agent
-dashboard](/docs/_fern-img/38b190b7a08cb9e628da309a86c5e4b315eabccf238a41d5d3a6c2646aba11af.webp)
+dashboard](/docs/_fern-files/_img/38b190b7a08cb9e628da309a86c5e4b315eabccf238a41d5d3a6c2646aba11af.webp)
 
 ## Procedure types
 
@@ -137,6 +137,125 @@ change using the same flow.
 
 See the [Procedures API reference](/docs/api-reference/agents/procedures/) for complete endpoint
 schemas.
+
+## Choose procedures per conversation
+
+By default, every conversation can use all of the agent's procedures, and the agent loads a procedure only after the conversation matches its trigger. Your application often knows more before the conversation starts: who the user is, which region they are in, or what they called about. Pass procedure IDs in the conversation initiation client data to use that knowledge. You decide which procedures the agent can use, and which ones it follows from the first turn.
+
+| Field                 | What it does                                                                                                                    | Why use it                                                                                                                                                                                                                                                                                                                          |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `procedure_ids`       | Limits the conversation to these procedures. An empty array disables all of the agent's procedures.                             | Give each user only the procedures that apply to them, for example hide account procedures from a user who has not signed in. Also use it when procedures have similar triggers that you cannot avoid, such as one refund procedure per region. Pass only the user's region, so the agent cannot follow another region's procedure. |
+| `start_procedure_ids` | Starts these free-form procedures with the conversation, so the agent follows them from the first turn. Accepts up to five IDs. | Reply faster when you already know the user's task, for example from an IVR menu choice, the page that hosts the widget, or CRM data.                                                                                                                                                                                               |
+
+A procedure in `start_procedure_ids` is already loaded when the user first speaks, so the agent skips the LLM call that would load it. Any active procedure stays in the prompt on every turn, whether the agent or your application started it. A started procedure that the conversation never needs still adds its content to every turn, so start only the procedures the conversation is likely to use.
+
+### Allow procedure selection
+
+The **Procedures** override is off by default. Enable it on each agent that should accept procedure IDs from the client.
+
+#### Dashboard
+
+Open your agent in the [dashboard](https://elevenlabs.io/app/agents), select the **Security** tab, and enable the **Procedures** override.
+
+#### CLI
+
+Pull the agent configuration:
+
+```bash
+elevenlabs agents pull --agent "<agent-name>"
+```
+
+In `agent_configs/<agent-name>.json`, set `platform_settings.overrides.enable_procedure_ids_from_client` to `true`:
+
+```json
+{
+  "platform_settings": {
+    "overrides": {
+      "enable_procedure_ids_from_client": true
+    }
+  }
+}
+```
+
+Push the change:
+
+```bash
+elevenlabs agents push --agent "<agent-name>"
+```
+
+#### SDK
+
+```python
+import os
+
+from dotenv import load_dotenv
+from elevenlabs import ElevenLabs
+
+load_dotenv()
+
+elevenlabs = ElevenLabs(api_key=os.getenv("ELEVENLABS_API_KEY"))
+
+elevenlabs.conversational_ai.agents.update(
+    agent_id="agent_7101k5zvyjhmfg983brhmhkd98n6",
+    platform_settings={
+        "overrides": {
+            "enable_procedure_ids_from_client": True,
+        },
+    },
+)
+```
+
+```typescript
+import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+
+const elevenlabs = new ElevenLabsClient({ apiKey: process.env.ELEVENLABS_API_KEY });
+
+await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd98n6", {
+  platformSettings: {
+    overrides: {
+      enableProcedureIdsFromClient: true,
+    },
+  },
+});
+```
+
+### Pass the IDs when the conversation starts
+
+> **Warning**
+>
+> If the agent does not have the **Procedures** override enabled, or an ID is invalid, the
+> conversation fails to start.
+
+Get procedure IDs from [List procedures](/docs/api-reference/agents/procedures/list). Add `procedure_ids`, `start_procedure_ids`, or both to the conversation initiation client data:
+
+**`Conversation initiation payload`**
+
+```json title="Conversation initiation payload"
+{
+  "type": "conversation_initiation_client_data",
+  "procedure_ids": [
+    "agtprc_4101k8f3w2pqv6xs9mhdr0tz7n3b",
+    "agtprc_2301k8f3xq9zfa7tkrqs6m4bdn5e",
+    "agtprc_7801k8f3yt4mfzh2xbq9d0vcpw1r"
+  ],
+  "start_procedure_ids": ["agtprc_4101k8f3w2pqv6xs9mhdr0tz7n3b"]
+}
+```
+
+The agent starts the conversation with the first procedure already running. It can still start the other two when the conversation matches their triggers.
+
+> **Note**
+>
+> The Python and JavaScript conversation SDKs do not send `procedure_ids` or `start_procedure_ids`.
+> To use these fields, send the initiation message over the
+> [WebSocket](/docs/eleven-agents/libraries/web-sockets) yourself.
+
+Both fields follow these rules:
+
+* Each ID in `procedure_ids` must belong to the agent. If a selected procedure calls sub-procedures, include the sub-procedures too.
+* Each ID in `start_procedure_ids` must be a free-form procedure. When you also pass `procedure_ids`, each ID must also be in that list.
+* `procedure_ids` applies only to the agent the conversation starts with. It does not apply after an [agent transfer](/docs/eleven-agents/customization/tools/system-tools/agent-transfer).
+* Started procedures count toward the five active procedures in [Limitations](#limitations). The conversation history records each one as a `start_procedure` tool call.
 
 ## Limitations
 

@@ -34,7 +34,7 @@ Clone the [Dialogflow Example](https://github.com/deepgram/dialogflow-example) r
 
 Dialogflow agents can accept user input in the form of audio or text. If you send audio to an agent, Google will transcribe it with their own speech-to-text engine. In order to use Deepgram's transcription, we need to transcribe the audio outside of Dialogflow and send the resulting text to our agent. If we also want to use Deepgram's text-to-speech for the bot's voice, we must configure Dialogflow to return agent responses as text. This diagram depicts the full process:
 
-![](/_fern-img/2bff12016a25152ac9274d36282420b0395a1f99f876710a76055d7f45be2c04.webp)
+![](/_fern-files/_img/2bff12016a25152ac9274d36282420b0395a1f99f876710a76055d7f45be2c04.webp)
 
 1. The user speaks into their microphone.
 2. The integration continuously streams the user's speech to Deepgram.

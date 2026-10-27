@@ -13,7 +13,7 @@ Spotlight is the agent dashboard tab for conversation insights.
 It helps you monitor live activity, understand user sentiment, and discover recurring topics from completed conversations.
 
 ![Spotlight dashboard showing recommendations, conversation volume, and success
-rate](/docs/_fern-img/21264fd2d522fee483b01b2c5ee71c79aa5bafda417a31034c7a675ddb217839.webp)
+rate](/docs/_fern-files/_img/21264fd2d522fee483b01b2c5ee71c79aa5bafda417a31034c7a675ddb217839.webp)
 
 #### [Real-time insights](/docs/eleven-agents/dashboard/spotlight/real-time-insights)
 

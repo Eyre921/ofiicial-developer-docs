@@ -12,7 +12,7 @@ The [Voice Library](https://elevenlabs.io/app/voice-library) is a marketplace wh
 
 To access the Voice Library, click **Voices** in the sidebar and select **Explore**.
 
-![](/docs/_fern-img/bf65cdac70a470cbeea56ff85d3e692fee46b0a02d0072c497bdc0583c094b5c.webp)
+![](/docs/_fern-files/_img/bf65cdac70a470cbeea56ff85d3e692fee46b0a02d0072c497bdc0583c094b5c.webp)
 
 You can browse the Voice Library in several ways:
 

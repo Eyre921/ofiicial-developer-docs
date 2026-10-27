@@ -26,4 +26,4 @@ The available seat types depends on your subscription plan. Additional Full and 
 
 You can also assign the seat type when inviting a new member to your workspace.
 
-![](/docs/_fern-img/f051e400bf855eb868241f39d03470294541917158d48cb1c5a20952a372e7c4.webp)
+![](/docs/_fern-files/_img/f051e400bf855eb868241f39d03470294541917158d48cb1c5a20952a372e7c4.webp)

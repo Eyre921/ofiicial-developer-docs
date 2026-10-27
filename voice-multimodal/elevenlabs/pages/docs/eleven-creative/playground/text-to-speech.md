@@ -16,7 +16,7 @@ To get started generating your first audio using Text to Speech, it's very simpl
 
 ## Guide
 
-![Text to Speech demo](/docs/_fern-img/32b6abef4b76c8652b0e55dbb26c9694fdc82e191a062678b93c9a5ca5d80c94.webp)
+![Text to Speech demo](/docs/_fern-files/_img/32b6abef4b76c8652b0e55dbb26c9694fdc82e191a062678b93c9a5ca5d80c94.webp)
 
 #### Adjust settings (optional)
 
@@ -49,7 +49,7 @@ The order of importance goes as follows: **Voice** selection is most important, 
 ### Voices
 
 ![Text to Speech voice
-selection](/docs/_fern-img/a1a2f62118fa246f300c666a5a4f3fbd18cc9bfed023a8c6a010782545da1254.webp)
+selection](/docs/_fern-files/_img/a1a2f62118fa246f300c666a5a4f3fbd18cc9bfed023a8c6a010782545da1254.webp)
 
 We offer many types of voices, including the curated **Default Voices**, our vast **Voices Library&#x20;**&#x77;ith almost any voices you can imagine, completely synthetic voices created using our **Voice Design** tool, and you can create your own collection of cloned voices using our two technologies: **Instant Voice Cloning** and **Professional Voice Cloning**.
 
@@ -72,7 +72,7 @@ Keep in mind, voice remixing only works for specific voices. For example, you ca
 ### Models
 
 ![Text to Speech model
-selection](/docs/_fern-img/aa32e23cc2a196a48ff47650249e612e7e5da023fd2f69244f27c5fea7968b75.webp)
+selection](/docs/_fern-files/_img/aa32e23cc2a196a48ff47650249e612e7e5da023fd2f69244f27c5fea7968b75.webp)
 
 We offer two families of models: **Standard (high-quality)** models and **Flash** models, which are optimized for extremely low latency. Most families include both English-only and multilingual versions.
 
@@ -161,7 +161,7 @@ Faster model, 50% lower price per character for API generations
 ### Voice settings
 
 ![Text to Speech voice
-settings](/docs/_fern-img/9e08b179bfd640650ca5225b7e2e5b8d9d4c192d63a80d2478e4078e408bf869.webp)
+settings](/docs/_fern-files/_img/9e08b179bfd640650ca5225b7e2e5b8d9d4c192d63a80d2478e4078e408bf869.webp)
 
 The most common setting is stability around 50, similarity around 75, and keeping style at 0, with minimal changes thereafter. Of course, this all depends on the original voice and the style of performance you're aiming for.
 
@@ -372,7 +372,7 @@ We are working on more advanced workflows to allow you to influence the AI's del
 
       This setting is available for all voices and all models. You can find it in the voice settings.
 
-      ![](/docs/_fern-img/a1130594e85e35a2a3073530577fd85e902b7886cbf442a18b4422d9084dfcec.webp)
+      ![](/docs/_fern-files/_img/a1130594e85e35a2a3073530577fd85e902b7886cbf442a18b4422d9084dfcec.webp)
 
       For information on how to control speech when using the API, please see our [API reference.](/docs/api-reference/text-to-speech/convert#request.body.voice_settings.speed)
     </td>
@@ -581,7 +581,7 @@ We are working on more advanced workflows to allow you to influence the AI's del
       * **Browse the Voice Library** and use the search filters to find suitable voices that
         match your needs.
 
-      ![](/docs/_fern-img/b3e4de803d69ffbd3aed314c2c5f9defa87d3d7fd6fc1931a4a02278041c1c43.webp)
+      ![](/docs/_fern-files/_img/b3e4de803d69ffbd3aed314c2c5f9defa87d3d7fd6fc1931a4a02278041c1c43.webp)
     </td>
   </tr>
 
@@ -643,11 +643,11 @@ We are working on more advanced workflows to allow you to influence the AI's del
 
       If this is the case, you will see 'Regenerate speech', and the number of free regenerations remaining will be displayed if you hover over the 'Regenerate speech' button:
 
-      ![](/docs/_fern-img/9b75422ebf4bee357d8eb5384d30e03a3c4c5102f422cb87c22ff09c1bfe1c8d.webp)
+      ![](/docs/_fern-files/_img/9b75422ebf4bee357d8eb5384d30e03a3c4c5102f422cb87c22ff09c1bfe1c8d.webp)
 
       Once your free regenerations have been used, the button will return to 'Generate speech', and the number of credits that will be used for the generation will be displayed:
 
-      ![](/docs/_fern-img/72b5058ea9066fbad31cf1a38453ba35947cc7486eb06ded307d1ae13c1011d4.webp)
+      ![](/docs/_fern-files/_img/72b5058ea9066fbad31cf1a38453ba35947cc7486eb06ded307d1ae13c1011d4.webp)
 
       Free regenerations are only available in Text to Speech via the website. They are not available via the API.
 

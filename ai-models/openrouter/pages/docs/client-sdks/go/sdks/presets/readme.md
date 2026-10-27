@@ -76,10 +76,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `offset` | optionalnullable.OptionalNullable\[`int64`] | :heavy\_minus\_sign: | Number of records to skip for pagination | 0 |
-| `limit` | `*int64` | :heavy\_minus\_sign: | Maximum number of records to return (max 100) | 50 |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `offset` | optionalnullable.OptionalNullable\[`int64`] | ➖ | Number of records to skip for pagination | 0 |
+| `limit` | `*int64` | ➖ | Maximum number of records to return (max 100) | 50 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -93,6 +93,7 @@ func main() {
 | sdkerrors.UnauthorizedResponseError | 401 | application/json |
 | sdkerrors.ForbiddenResponseError | 403 | application/json |
 | sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.ServiceUnavailableResponseError | 503 | application/json |
 | sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## Get
@@ -132,9 +133,9 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `slug` | `string` | :heavy\_check\_mark: | URL-safe slug identifying the preset. | my-preset |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `slug` | `string` | ✅ | URL-safe slug identifying the preset. | my-preset |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -149,6 +150,7 @@ func main() {
 | sdkerrors.ForbiddenResponseError | 403 | application/json |
 | sdkerrors.NotFoundResponseError | 404 | application/json |
 | sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.ServiceUnavailableResponseError | 503 | application/json |
 | sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## CreatePresetsChatCompletions
@@ -211,10 +213,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `slug` | `string` | :heavy\_check\_mark: | URL-safe slug identifying the preset. Created if it does not exist. | my-preset |
-| `chatRequest` | [components.ChatRequest](../../models/components/chatrequest.mdx) | :heavy\_check\_mark: | N/A | \{ "max\_tokens": 150, "messages": \[ \{ "content": "You are a helpful assistant.", "role": "system" }, \{ "content": "What is the capital of France?", "role": "user" } ], "model": "openai/gpt-4", "temperature": 0.7 } |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `slug` | `string` | ✅ | URL-safe slug identifying the preset. Created if it does not exist. | my-preset |
+| `chatRequest` | [components.ChatRequest](../../models/components/chatrequest.mdx) | ✅ | N/A | \{ "max\_tokens": 150, "messages": \[ \{ "content": "You are a helpful assistant.", "role": "system" }, \{ "content": "What is the capital of France?", "role": "user" } ], "model": "openai/gpt-4", "temperature": 0.7 } |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -284,10 +286,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `slug` | `string` | :heavy\_check\_mark: | URL-safe slug identifying the preset. Created if it does not exist. | my-preset |
-| `messagesRequest` | [components.MessagesRequest](../../models/components/messagesrequest.mdx) | :heavy\_check\_mark: | N/A | \{ "max\_tokens": 1024, "messages": \[ \{ "content": "Hello, how are you?", "role": "user" } ], "model": "anthropic/claude-4.5-sonnet-20250929", "temperature": 0.7 } |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `slug` | `string` | ✅ | URL-safe slug identifying the preset. Created if it does not exist. | my-preset |
+| `messagesRequest` | [components.MessagesRequest](../../models/components/messagesrequest.mdx) | ✅ | N/A | \{ "max\_tokens": 1024, "messages": \[ \{ "content": "Hello, how are you?", "role": "user" } ], "model": "anthropic/claude-4.5-sonnet-20250929", "temperature": 0.7 } |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -350,10 +352,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `slug` | `string` | :heavy\_check\_mark: | URL-safe slug identifying the preset. Created if it does not exist. | my-preset |
-| `responsesRequest` | [components.ResponsesRequest](../../models/components/responsesrequest.mdx) | :heavy\_check\_mark: | N/A | \{ "input": \[ \{ "content": "Hello, how are you?", "role": "user", "type": "message" } ], "model": "anthropic/claude-4.5-sonnet-20250929", "temperature": 0.7, "tools": \[ \{ "description": "Get the current weather in a given location", "name": "get\_current\_weather", "parameters": \{ "properties": \{ "location": \{ "type": "string" } }, "type": "object" }, "type": "function" } ], "top\_p": 0.9 } |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `slug` | `string` | ✅ | URL-safe slug identifying the preset. Created if it does not exist. | my-preset |
+| `responsesRequest` | [components.ResponsesRequest](../../models/components/responsesrequest.mdx) | ✅ | N/A | \{ "input": \[ \{ "content": "Hello, how are you?", "role": "user", "type": "message" } ], "model": "anthropic/claude-4.5-sonnet-20250929", "temperature": 0.7, "tools": \[ \{ "description": "Get the current weather in a given location", "name": "get\_current\_weather", "parameters": \{ "properties": \{ "location": \{ "type": "string" } }, "type": "object" }, "type": "function" } ], "top\_p": 0.9 } |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -421,11 +423,11 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `slug` | `string` | :heavy\_check\_mark: | URL-safe slug identifying the preset. | my-preset |
-| `offset` | optionalnullable.OptionalNullable\[`int64`] | :heavy\_minus\_sign: | Number of records to skip for pagination | 0 |
-| `limit` | `*int64` | :heavy\_minus\_sign: | Maximum number of records to return (max 100) | 50 |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `slug` | `string` | ✅ | URL-safe slug identifying the preset. | my-preset |
+| `offset` | optionalnullable.OptionalNullable\[`int64`] | ➖ | Number of records to skip for pagination | 0 |
+| `limit` | `*int64` | ➖ | Maximum number of records to return (max 100) | 50 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -440,6 +442,7 @@ func main() {
 | sdkerrors.ForbiddenResponseError | 403 | application/json |
 | sdkerrors.NotFoundResponseError | 404 | application/json |
 | sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.ServiceUnavailableResponseError | 503 | application/json |
 | sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## GetVersion
@@ -479,10 +482,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `slug` | `string` | :heavy\_check\_mark: | URL-safe slug identifying the preset. | my-preset |
-| `version` | `string` | :heavy\_check\_mark: | Version number of the preset. | 1 |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `slug` | `string` | ✅ | URL-safe slug identifying the preset. | my-preset |
+| `version` | `string` | ✅ | Version number of the preset. | 1 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -497,5 +500,6 @@ func main() {
 | sdkerrors.ForbiddenResponseError | 403 | application/json |
 | sdkerrors.NotFoundResponseError | 404 | application/json |
 | sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.ServiceUnavailableResponseError | 503 | application/json |
 | sdkerrors.APIError | 4XX, 5XX | \*/\* |
 

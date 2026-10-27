@@ -141,7 +141,7 @@ Store the key in the agent's secret storage to keep it secure and accessible whe
 >
 > To match the expected authentication structure of Cal.com, remember to prepend the API key with `Bearer ` when creating the secret.
 
-![Tool secrets](/docs/_fern-img/5ffae070945a86b74975cd9b56679c2bb76f0ce70d05fe7b10e8e5dff6ddd630.webp)
+![Tool secrets](/docs/_fern-files/_img/5ffae070945a86b74975cd9b56679c2bb76f0ce70d05fe7b10e8e5dff6ddd630.webp)
 
 #### Add tools to the agent
 

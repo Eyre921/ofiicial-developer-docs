@@ -15,7 +15,7 @@ This tutorial will guide you through adding your ElevenLabs agent to your Framer
 * An ElevenLabs Agents agent created following [this guide](/docs/eleven-agents/quickstart)
 * A Framer account & website, create one [here](https://framer.com)
 
-![Convai Framer Example Project](/docs/_fern-img/a0681bdfc73398af1391e381bc11f8d450a4eea0788991bc418f83ac6490c34f.webp)
+![Convai Framer Example Project](/docs/_fern-files/_img/a0681bdfc73398af1391e381bc11f8d450a4eea0788991bc418f83ac6490c34f.webp)
 
 ## Guide
 
@@ -40,7 +40,7 @@ You can find the agent ID in the [ElevenLabs dashboard](https://elevenlabs.io/ap
 
 Having trouble? Make sure the ElevenAgents component is placed below the desktop component in the layers panel.
 
-![Convai Framer Example Project](/docs/_fern-img/17f4e7b2bbc3ebafadb1b705e6c963c6900ae162236b39feff2c6839654cf4f9.webp)![Convai Framer Example Project](/docs/_fern-img/fcb5867e142022ca7ebc3aba3904fffc7ce0f4ddca716e2c7bac38012e2e1641.webp)
+![Convai Framer Example Project](/docs/_fern-files/_img/17f4e7b2bbc3ebafadb1b705e6c963c6900ae162236b39feff2c6839654cf4f9.webp)![Convai Framer Example Project](/docs/_fern-files/_img/fcb5867e142022ca7ebc3aba3904fffc7ce0f4ddca716e2c7bac38012e2e1641.webp)
 
 ## Next steps
 

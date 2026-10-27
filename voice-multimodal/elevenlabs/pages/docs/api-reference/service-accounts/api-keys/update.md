@@ -43,6 +43,7 @@ This endpoint expects a Body_edit_service_account_api_key_v1_service_accounts__s
 - `tts_concurrency_limit` (BodyEditServiceAccountApiKeyV1ServiceAccountsServiceAccountUserIdApiKeysApiKeyIdPatchTtsConcurrencyLimit, optional, nullable, default: no_update) — Maximum concurrent text-to-speech/speech-to-speech requests for this API key. Only available for enterprise customers.
 - `dubbing_concurrency_limit` (BodyEditServiceAccountApiKeyV1ServiceAccountsServiceAccountUserIdApiKeysApiKeyIdPatchDubbingConcurrencyLimit, optional, nullable, default: no_update) — Maximum concurrent dubbing requests for this API key. Only available for enterprise customers.
 - `music_concurrency_limit` (BodyEditServiceAccountApiKeyV1ServiceAccountsServiceAccountUserIdApiKeysApiKeyIdPatchMusicConcurrencyLimit, optional, nullable, default: no_update) — Maximum concurrent music generation requests for this API key. Only available for enterprise customers.
+- `expires_at_unix` (BodyEditServiceAccountApiKeyV1ServiceAccountsServiceAccountUserIdApiKeysApiKeyIdPatchExpiresAtUnix, optional, default: no_update) — Unix timestamp (in seconds) after which this API key stops working. When set, it must be at least 15 minutes and at most 90 days in the future. On create, omit or pass null for a key that never expires. On update, omit to leave it unchanged, or pass "clear" to remove the expiry (never expires).
 
 ## Response
 
@@ -121,6 +122,14 @@ Maximum concurrent dubbing requests for this API key. Only available for enterpr
 ### BodyEditServiceAccountApiKeyV1ServiceAccountsServiceAccountUserIdApiKeysApiKeyIdPatchMusicConcurrencyLimit
 
 Maximum concurrent music generation requests for this API key. Only available for enterprise customers.
+
+- integer
+- enum
+  - Allowed values: `clear`, `no_update`
+
+### BodyEditServiceAccountApiKeyV1ServiceAccountsServiceAccountUserIdApiKeysApiKeyIdPatchExpiresAtUnix
+
+Unix timestamp (in seconds) after which this API key stops working. When set, it must be at least 15 minutes and at most 90 days in the future. On create, omit or pass null for a key that never expires. On update, omit to leave it unchanged, or pass "clear" to remove the expiry (never expires).
 
 - integer
 - enum

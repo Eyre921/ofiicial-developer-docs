@@ -8,7 +8,7 @@ path: docs/overview/administration/workspaces/overview
 
 # Workspaces
 
-![Workspaces](/docs/_fern-img/7623fe79ed73fc788b7814694e0f1e27457878b0f34acb8b3b409d5f257bceae.webp)
+![Workspaces](/docs/_fern-files/_img/7623fe79ed73fc788b7814694e0f1e27457878b0f34acb8b3b409d5f257bceae.webp)
 
 ## Overview
 
@@ -50,7 +50,7 @@ Users can now accept invitations to multiple workspaces, allowing you to collabo
 
 * **Switch between workspaces** - Use the workspace switcher in your account menu to quickly navigate between your workspaces.
 
-![Switching between workspaces](/docs/_fern-img/c85e9460b00a07fb6c09c22cb068dc12c60392ee4da139d985ce32e4577a2a2f.webp)
+![Switching between workspaces](/docs/_fern-files/_img/c85e9460b00a07fb6c09c22cb068dc12c60392ee4da139d985ce32e4577a2a2f.webp)
 
 ### Workspace limits
 
@@ -73,7 +73,7 @@ Multi seat workspaces are automatically enabled on all accounts with Scale, Busi
 >
 > Only administrators can add and remove team members.
 
-![Workspace domain verification](/docs/_fern-img/5663221cd2bff5a1cd150bdd0a5bdb731ab1c6ee2b82958e4c8c85f33092318b.webp)
+![Workspace domain verification](/docs/_fern-files/_img/5663221cd2bff5a1cd150bdd0a5bdb731ab1c6ee2b82958e4c8c85f33092318b.webp)
 
 Once you are logged in, select your profile icon in the top right corner of the dashboard, choose **Workspace settings**, then navigate to the **Members** tab. From there you'll be able to add team members, assign roles and remove members from the workspace.
 

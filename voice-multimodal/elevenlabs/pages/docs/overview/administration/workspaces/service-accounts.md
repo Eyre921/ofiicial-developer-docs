@@ -8,7 +8,7 @@ path: docs/overview/administration/workspaces/service-accounts
 
 # Service Accounts
 
-![Service Accounts](/docs/_fern-img/85b1646b900085c39df273c7337c7428e92325cb621da63c2f6c6d76d2119efd.webp)
+![Service Accounts](/docs/_fern-files/_img/85b1646b900085c39df273c7337c7428e92325cb621da63c2f6c6d76d2119efd.webp)
 
 ## Overview
 

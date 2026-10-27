@@ -12,7 +12,7 @@ path: docs/eleven-creative/services/productions/overview
 
 Productions is a service that lets you order human-edited transcripts, subtitles, dubs, and audiobooks directly on the ElevenLabs platform. A team of expert linguists and localization professionals vetted and trained by ElevenLabs works on your content and delivers you polished final assets.
 
-![Productions Get Human Review Option](/docs/_fern-img/cd072dfc01c9b277960c0583a3900ca963ee0ca766f204f5fac602117f5a8174.webp)
+![Productions Get Human Review Option](/docs/_fern-files/_img/cd072dfc01c9b277960c0583a3900ca963ee0ca766f204f5fac602117f5a8174.webp)
 
 ## Why use Productions?
 
@@ -49,11 +49,11 @@ Support for single and multi-speaker voice casting
 
 **Ordering a new asset**: head to the [Productions](https://elevenlabs.io/app/productions) page of your ElevenLabs account and create a new order. You may also see a *Productions* option when using the order dialog for other products like [Speech to Text](https://elevenlabs.io/app/speech-to-text) or [Dubbing](https://elevenlabs.io/app/dubbing)
 
-![Productions STT Dialog](/docs/_fern-img/1d18c451ce48b05fb9943a11707e86cd7a8c883b30e7557551f1bdccc05851a9.webp)
+![Productions STT Dialog](/docs/_fern-files/_img/1d18c451ce48b05fb9943a11707e86cd7a8c883b30e7557551f1bdccc05851a9.webp)
 
 **Starting from an existing asset**: you can also order human-edited versions of existing assets in your ElevenLabs account. Look for the 'Get human review' button in the top right of the editor view for this option.
 
-![Productions Get Human Review Option](/docs/_fern-img/b25a0e08ad610f29b352c4cf9a1ef8f29061487c61f51de7c5c0b2cfb0533863.webp)
+![Productions Get Human Review Option](/docs/_fern-files/_img/b25a0e08ad610f29b352c4cf9a1ef8f29061487c61f51de7c5c0b2cfb0533863.webp)
 
 #### Review and confirm quote
 
@@ -61,7 +61,7 @@ Once you upload a file, select a language, and choose your style guide options, 
 
 When you click *Continue*, the file will be analyzed and the final price will be returned.
 
-![Productions quote](/docs/_fern-img/ae927b61d36a1b1bd5e2d01f8213acc89c5609a1823bef127a20a92510b9022f.webp)
+![Productions quote](/docs/_fern-files/_img/ae927b61d36a1b1bd5e2d01f8213acc89c5609a1823bef127a20a92510b9022f.webp)
 
 > **Info**
 >
@@ -81,7 +81,7 @@ Head to the [Productions](https://elevenlabs.io/app/productions) page of your El
 
 You'll also receive an email when your order is ready.
 
-![Sidebar](/docs/_fern-img/7febf81821dfd24da99d0d1ddc0c58ed66866a61ee9f849f75f1b150b02332bf.webp)
+![Sidebar](/docs/_fern-files/_img/7febf81821dfd24da99d0d1ddc0c58ed66866a61ee9f849f75f1b150b02332bf.webp)
 
 #### View and download your completed assets and invoices
 
@@ -95,7 +95,7 @@ To export your completed assets, use the export menu in the sidebar or inside th
 
 Productions has a folder system to help you organize your assets. Click *New folder* to create a new folder. Click *Manage* and use the *Move to Folder* option in the toolbar to nest folders inside other folders.
 
-![Folders](/docs/_fern-img/660a49d56be4c962ae583498654f83a1342edf8904bd2d35b806a9cd4e01373e.webp)
+![Folders](/docs/_fern-files/_img/660a49d56be4c962ae583498654f83a1342edf8904bd2d35b806a9cd4e01373e.webp)
 
 ## Enterprise
 

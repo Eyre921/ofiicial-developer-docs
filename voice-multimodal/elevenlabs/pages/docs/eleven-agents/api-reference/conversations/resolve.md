@@ -98,9 +98,9 @@ Validation Error
 - `whatsapp` (WhatsAppConversationInfo, optional)
 - `sms` (SmsConversationInfo, optional)
 - `agent_created_from` (enum, optional, default: unknown)
-  - Allowed values: `cli`, `ui`, `api`, `template`, `unknown`
+  - Allowed values: `cli`, `ui`, `api`, `template`, `architect`, `unknown`
 - `agent_last_updated_from` (enum, optional, default: unknown)
-  - Allowed values: `cli`, `ui`, `api`, `template`, `unknown`
+  - Allowed values: `cli`, `ui`, `api`, `template`, `architect`, `unknown`
 - `voice_rewards` (list of ConversationVoiceRewardModel, optional)
 - `cost_fiat` (double, optional) — Total fiat cost of the conversation in USD, i.e. the sum of the LLM price and the non-LLM platform price (the fiat analogue of ``cost``). ``None`` when neither is set (e.g. conversations that predate fiat cost tracking).
 
@@ -168,6 +168,7 @@ An agent (and optional branch) that participated in the call, in first-seen tran
 - `environment` (string, optional) — Environment to use for resolving environment variables
 - `starting_workflow_node_id` (string, optional) — If set, start the workflow at this node id instead of the default entry
 - `procedure_ids` (list of string, optional) — If set, only these procedures are available to the starting agent. Each ID must be attached to that agent; unknown IDs fail conversation start. An empty list disables all of that agent's procedures. Not applied after an agent transfer. Requires enable_procedure_ids_from_client.
+- `start_procedure_ids` (list of string, optional) — If set, these free-form procedures start when the conversation starts. Accepts at most five IDs. Each ID must be available after procedure_ids is applied. Unknown IDs and structured procedures fail conversation start. Requires enable_procedure_ids_from_client.
 - `dynamic_variables` (map from string to any, optional)
 
 ### ValidationError
@@ -1317,6 +1318,9 @@ A locator for other documents to be able to reference a specific dictionary and 
     "starting_workflow_node_id": "starting_workflow_node_id",
     "procedure_ids": [
       "procedure_ids"
+    ],
+    "start_procedure_ids": [
+      "start_procedure_ids"
     ],
     "dynamic_variables": {
       "key": "value"

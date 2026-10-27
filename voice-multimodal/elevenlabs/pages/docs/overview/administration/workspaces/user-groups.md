@@ -8,7 +8,7 @@ path: docs/overview/administration/workspaces/user-groups
 
 # User groups
 
-![Group Management](/docs/_fern-img/b3352775553098f965b4c3a92526bf71c6afb836ce32b6eccac2947b80d0fd01.webp)
+![Group Management](/docs/_fern-files/_img/b3352775553098f965b4c3a92526bf71c6afb836ce32b6eccac2947b80d0fd01.webp)
 
 ## Overview
 

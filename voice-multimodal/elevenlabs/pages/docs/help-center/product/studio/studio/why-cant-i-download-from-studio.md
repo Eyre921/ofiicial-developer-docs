@@ -16,6 +16,6 @@ If you're having issues downloading from Studio, make sure you are following the
 
 To create a new version of your chapter or project, which will then be downloaded, you need to use the **Export** button. You have the option to create a new export of either the current chapter, or your entire project. If you've made any changes since your last export, you will see a confirmation of how many credits it will take to create the new export. You'll only be charged credits for paragraphs that have not already been converted, or that have been edited since your last export and therefore need to be converted again.
 
-![](/docs/_fern-img/93aa484ecbad755a27957509e4bf9252a8e0c3f06a882985c6494c2e2449d299.webp)
+![](/docs/_fern-files/_img/93aa484ecbad755a27957509e4bf9252a8e0c3f06a882985c6494c2e2449d299.webp)
 
 You can also access all your previous exports. To do this, click the **Export** button, then select the **History** tab.

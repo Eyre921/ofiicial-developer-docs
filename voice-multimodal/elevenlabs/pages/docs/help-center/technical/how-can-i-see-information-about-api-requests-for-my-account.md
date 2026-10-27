@@ -18,7 +18,7 @@ The API Requests view shows request volume and performance for your account or w
 * Top called path
 
 ![API Requests metrics in
-Analytics](/docs/_fern-img/85616095f05819be54ba35639423d2175c51ca34aec2d34273a3e8b1a6bd8401.webp)
+Analytics](/docs/_fern-files/_img/85616095f05819be54ba35639423d2175c51ca34aec2d34273a3e8b1a6bd8401.webp)
 
 You can filter by time period (for example, hour, day, month, or year) and at different levels of granularity.
 

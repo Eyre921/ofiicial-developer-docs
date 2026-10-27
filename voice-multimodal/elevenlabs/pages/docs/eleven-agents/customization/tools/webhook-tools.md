@@ -45,19 +45,19 @@ Define a high-level `Name` and `Description` to describe the tool's purpose. Thi
 > If the API requires path parameters, include variables in the URL path by wrapping them in curly
 > braces `{}`, for example: `/api/resource/{id}` where `id` is a path parameter.
 
-![Configuration](/docs/_fern-img/fb6e6619e4e7a5f19c2a86f9c2a489f5cb33cfb0883c14a06f0eec3cb35d71d5.webp)
+![Configuration](/docs/_fern-files/_img/fb6e6619e4e7a5f19c2a86f9c2a489f5cb33cfb0883c14a06f0eec3cb35d71d5.webp)
 
 #### Authentication
 
 Configure authentication by adding custom headers or using out-of-the-box authentication methods through auth connections.
 
-![Tool authentication](/docs/_fern-img/5ffae070945a86b74975cd9b56679c2bb76f0ce70d05fe7b10e8e5dff6ddd630.webp)
+![Tool authentication](/docs/_fern-files/_img/5ffae070945a86b74975cd9b56679c2bb76f0ce70d05fe7b10e8e5dff6ddd630.webp)
 
 #### Headers
 
 Specify any headers that need to be included in the request.
 
-![Headers](/docs/_fern-img/9c8c3f2d42f84a6e40922a4c777199e79646b174fa51b9e4d5b21695d7da3f66.webp)
+![Headers](/docs/_fern-files/_img/9c8c3f2d42f84a6e40922a4c777199e79646b174fa51b9e4d5b21695d7da3f66.webp)
 
 #### Path parameters
 
@@ -65,13 +65,13 @@ Include variables in the URL path by wrapping them in curly braces `{}`:
 
 * **Example**: `/api/resource/{id}` where `id` is a path parameter.
 
-![Path parameters](/docs/_fern-img/12dde95654a12f8fd5894eefe2bdbebb8b819072d3589ed32ddd578997f53c1d.webp)
+![Path parameters](/docs/_fern-files/_img/12dde95654a12f8fd5894eefe2bdbebb8b819072d3589ed32ddd578997f53c1d.webp)
 
 #### Body parameters
 
 Specify any body parameters to be included in the request.
 
-![Body parameters](/docs/_fern-img/17627460d24323cc40f461196625d34a5825dbe85d684618be0bc46b11ff9205.webp)
+![Body parameters](/docs/_fern-files/_img/17627460d24323cc40f461196625d34a5825dbe85d684618be0bc46b11ff9205.webp)
 
 ### Content Type
 
@@ -95,13 +95,13 @@ URL-encoded format is useful when integrating with APIs that require form data s
 
 Specify any query parameters to be included in the request.
 
-![Query parameters](/docs/_fern-img/4127f87fe066cdaa71df0e6f75caa24ec8174e7d156c74b3c62ea9df98b9712e.webp)
+![Query parameters](/docs/_fern-files/_img/4127f87fe066cdaa71df0e6f75caa24ec8174e7d156c74b3c62ea9df98b9712e.webp)
 
 #### Dynamic variable assignment
 
 Specify dynamic variables to update from the tool response for later use in the conversation.
 
-![Query parameters](/docs/_fern-img/95ff0cae8613eafa8bc4312e7cafa39ac0eab34d2fd2b21f0894a30775366110.webp)
+![Query parameters](/docs/_fern-files/_img/95ff0cae8613eafa8bc4312e7cafa39ac0eab34d2fd2b21f0894a30775366110.webp)
 
 ## Guide
 
@@ -283,11 +283,11 @@ First message: "Hey, how can I help you today?"
 
 ElevenLabs Agents supports multiple authentication methods to securely connect your tools with external APIs. Authentication methods are configured in your agent settings and then connected to individual tools as needed.
 
-![Workspace Auth Connection](/docs/_fern-img/131f7e017f01eaba444cddc672efdb77415db1a4c3a39f05b92a1678c5cd68f1.webp)
+![Workspace Auth Connection](/docs/_fern-files/_img/131f7e017f01eaba444cddc672efdb77415db1a4c3a39f05b92a1678c5cd68f1.webp)
 
 Once configured, you can connect these authentication methods to your tools and manage custom headers in the tool configuration:
 
-![Tool Auth Connection](/docs/_fern-img/c018c5bf11266512a6d6157e33274b1a12f8c20768e5ab18da0f20f933f8aea9.webp)
+![Tool Auth Connection](/docs/_fern-files/_img/c018c5bf11266512a6d6157e33274b1a12f8c20768e5ab18da0f20f933f8aea9.webp)
 
 #### OAuth2 Client Credentials
 

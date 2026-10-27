@@ -82643,7 +82643,7 @@ channels:
           - "30"
 
       extend_biometric_consent:
-        description: Optional. With `voice_id`, by the owner of a [cloned voice](/tts/cloned-voices) only, `true` renews the voice's biometric consent and attests renewed consent on behalf of the account that owns it. Set on a voice another account owns, the session closes with `3006` (`error_type` `not_owner`). See [Renew consent](/tts/cloned-voices#renew-consent).
+        description: Optional. With `voice_id`, by the owner of a [cloned voice](/tts/cloned-voices) only, `true` renews the voice's biometric consent and attests renewed consent on behalf of the account that owns it. Set on a voice another account owns, the session closes with `3006` (`error_type` `not_owner`). The account must have accepted the [biometric data terms](/tts/cloned-voices#biometric-data-terms) (`3006` `biometric_terms_not_accepted` otherwise). See [Renew consent](/tts/cloned-voices#renew-consent).
         location: $message.payload#/extend_biometric_consent
         enum: ["true", "false"]
         default: "false"
@@ -82858,6 +82858,7 @@ components:
                 max_generate_text_length: 2000
                 max_control_frames_per_sec: 20.0
                 max_egress_audio_buffer_ms: 300000
+                max_egress_audio_buffer_bytes: 16777216
                 text_throttle_enabled: true
                 text_throttle_max_chars_per_sec: 100.0
                 text_throttle_initial_grace_chars: 1500
@@ -83099,6 +83100,9 @@ components:
         max_egress_audio_buffer_ms:
           type: integer
           description: Milliseconds of synthesized audio waiting for delivery before `3011`.
+        max_egress_audio_buffer_bytes:
+          type: integer
+          description: Bytes of synthesized audio, in the session's `encoding`, waiting for delivery before `3011`; `16777216` (16 MiB) by default. Whichever of this and `max_egress_audio_buffer_ms` the session's format reaches first applies, so the limit is about 190 seconds at 44.1 kHz and 175 seconds at 48 kHz `pcm_s16le`, and 300 seconds at every other format.
         text_throttle_enabled:
           type: boolean
           description: Whether text intake is paced.

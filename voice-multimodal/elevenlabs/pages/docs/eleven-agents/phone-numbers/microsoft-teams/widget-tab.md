@@ -13,7 +13,7 @@ path: docs/eleven-agents/phone-numbers/microsoft-teams/widget-tab
 Host a small HTML page that loads the [agent widget](/docs/eleven-agents/customization/widget) and surface it as a **Teams tab**. Users open the tab and talk to the agent in the Teams client — no phone number or telephony. This is the lightest-weight approach; use it for internal self-service assistants and demos.
 
 ![The ElevenLabs agent widget open in a Microsoft Teams
-tab](/docs/_fern-img/8fedd2110258c6751012619128601214cdfcd4a11aaa832f62050c00c52106e7.webp)
+tab](/docs/_fern-files/_img/8fedd2110258c6751012619128601214cdfcd4a11aaa832f62050c00c52106e7.webp)
 
 ## How it works
 
@@ -155,7 +155,7 @@ In Teams: **Apps → Manage your apps → Upload an app → Upload a custom app*
 If no prompt appears, open the tab's dropdown and choose **App permissions** to grant microphone access manually:
 
 ![The Teams tab dropdown menu with App permissions
-highlighted](/docs/_fern-img/308d95d230864371f4ad2cd8b329c503e672878788a1fdcbc49ab2ce6aa8ce7d.webp)
+highlighted](/docs/_fern-files/_img/308d95d230864371f4ad2cd8b329c503e672878788a1fdcbc49ab2ce6aa8ce7d.webp)
 
 ## Step 3 — Allow Teams to embed the page
 

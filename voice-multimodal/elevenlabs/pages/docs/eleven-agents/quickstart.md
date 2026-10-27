@@ -24,7 +24,7 @@ In this guide, you'll learn how to create your first conversational agent. This 
 
 ElevenLabs Agents are managed either through the [ElevenAgents dashboard](https://elevenlabs.io/app/agents), the [ElevenLabs API](/docs/api-reference/introduction), the [Agents CLI](/docs/eleven-agents/operate/cli) or the [hosted MCP server](/docs/eleven-agents/operate/hosted-mcp).
 
-![ElevenLabs Agents](/docs/_fern-img/62ad20de44cee44a439b138d56764c801c4eb939cf3b0f167f594d5c6a6895fb.webp)
+![ElevenLabs Agents](/docs/_fern-files/_img/62ad20de44cee44a439b138d56764c801c4eb939cf3b0f167f594d5c6a6895fb.webp)
 
 ## Creating your first agent
 
@@ -34,7 +34,7 @@ In this quickstart guide we'll start by creating an agent via the API or the web
 
 In this guide, we'll create a conversational support assistant capable of answering questions about your product, documentation, or service. This assistant can be embedded into your website or app to provide real-time support to your customers.
 
-![ElevenLabs Agents](/docs/_fern-img/62ad20de44cee44a439b138d56764c801c4eb939cf3b0f167f594d5c6a6895fb.webp)
+![ElevenLabs Agents](/docs/_fern-files/_img/62ad20de44cee44a439b138d56764c801c4eb939cf3b0f167f594d5c6a6895fb.webp)
 
 #### Sign in to ElevenLabs
 
@@ -98,7 +98,7 @@ Next we'll configure the voice for your assistant.
 
 In the **Voice** tab, choose a voice that best matches your assistant from the [voice library](https://elevenlabs.io/voice-library):
 
-![Voice settings](/docs/_fern-img/14aad328f468daafa9ec95d3b7a55489a8cb1a34869368020e05b207c9b0360a.webp)
+![Voice settings](/docs/_fern-files/_img/14aad328f468daafa9ec95d3b7a55489a8cb1a34869368020e05b207c9b0360a.webp)
 
 > **Note**
 >
@@ -114,7 +114,7 @@ Configure evaluation criteria and data collection to analyze conversations and i
 
 Navigate to the **Analysis** tab in your assistant's settings to define custom criteria for evaluating conversations.
 
-![Analysis settings](/docs/_fern-img/fee8bc444d5436c71eae3829b9ec8d5cdb6a57c4d4efe6483d7bfed2b066e438.webp)
+![Analysis settings](/docs/_fern-files/_img/fee8bc444d5436c71eae3829b9ec8d5cdb6a57c4d4efe6483d7bfed2b066e438.webp)
 
 Every conversation transcript is passed to the LLM to verify if specific goals were met. Results will either be `success`, `failure`, or `unknown`, along with a rationale explaining the chosen result.
 
@@ -154,7 +154,7 @@ Extract the user's questions & inquiries from the conversation.
 
 View evaluation results and collected data for each conversation in the **Call history** tab.
 
-![Conversation history](/docs/_fern-img/fd517a080ba2c0d678c1ce34ea79afbd0dad764a19da43ca045a1c29b693ee48.webp)
+![Conversation history](/docs/_fern-files/_img/fd517a080ba2c0d678c1ce34ea79afbd0dad764a19da43ca045a1c29b693ee48.webp)
 
 > **Tip**
 >

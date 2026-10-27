@@ -29,7 +29,7 @@ To enable sentiment analysis, open your agent's **Analysis** settings and turn o
 The same settings page also includes the **Topic discovery** toggle, which controls whether the agent's completed conversations are clustered into topics in Spotlight.
 
 ![Analysis settings showing sentiment analysis and topic discovery
-toggles](/docs/_fern-img/75dff75af2e2aebca0ab6547562afef6f6b59fe988de2eea7814f27440dd2e53.webp)
+toggles](/docs/_fern-files/_img/75dff75af2e2aebca0ab6547562afef6f6b59fe988de2eea7814f27440dd2e53.webp)
 
 ## How to interpret sentiment
 
@@ -46,7 +46,7 @@ For individual conversations, sentiment analysis can show how user sentiment cha
 Each scored user turn is plotted on a scale from negative to positive sentiment. Use the trajectory to identify where a conversation improved, declined, or stayed neutral.
 
 ![Sentiment over time chart showing scored user turns and the best moment in the
-conversation](/docs/_fern-img/b095a26cc1fb6eb6a13adc01841628da32d357afe5783cce27fb6a64c2d58f0b.webp)
+conversation](/docs/_fern-files/_img/b095a26cc1fb6eb6a13adc01841628da32d357afe5783cce27fb6a64c2d58f0b.webp)
 
 ## Relationship to topic discovery
 

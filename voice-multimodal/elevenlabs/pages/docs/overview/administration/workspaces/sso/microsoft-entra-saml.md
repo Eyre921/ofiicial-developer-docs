@@ -46,7 +46,7 @@ with. Enter the domain (subdomains are allowed), then follow the prompts to conf
 Optionally enable auto-provisioning so users with a matching email domain automatically join your
 workspace.
 
-![ElevenLabs bulk domain verification dialog](/docs/_fern-img/9b471a5441feffcb2f57e3e1ee85bafdccf687bfbe61e6cfb89234f38bc5821d.webp)
+![ElevenLabs bulk domain verification dialog](/docs/_fern-files/_img/9b471a5441feffcb2f57e3e1ee85bafdccf687bfbe61e6cfb89234f38bc5821d.webp)
 
 #### Select SAML as the SSO provider
 
@@ -58,29 +58,29 @@ values. You will use these values in Microsoft Entra.
 In the Microsoft Entra admin center, open your directory **Overview**, then click **Add** >
 **Enterprise application**.
 
-![Microsoft Entra Overview Add menu with Enterprise application selected](/docs/_fern-img/3d80c303777e59820fc3e9240368ffaf6fd5af53279f5ce574b21d57f4433cff.webp)
+![Microsoft Entra Overview Add menu with Enterprise application selected](/docs/_fern-files/_img/3d80c303777e59820fc3e9240368ffaf6fd5af53279f5ce574b21d57f4433cff.webp)
 
 On **Browse Microsoft Entra App Gallery**, click **Create your own application**.
 
-![Microsoft Entra App Gallery with Create your own application](/docs/_fern-img/e78db7434ea9a3b210ef75544126423d1a55fb04aa6e08408dc0abaed1aa2fb2.webp)
+![Microsoft Entra App Gallery with Create your own application](/docs/_fern-files/_img/e78db7434ea9a3b210ef75544126423d1a55fb04aa6e08408dc0abaed1aa2fb2.webp)
 
 #### Name the application
 
 Enter a name (for example, `ElevenLabs`), select **Integrate any other application you don't find
 in the gallery (Non-gallery)**, then click **Create**.
 
-![Microsoft Entra Create your own application panel with a non-gallery app](/docs/_fern-img/4ab66649e94c88812f19c55412be1370aa3d8d7a9249f55576dfd62c3cb33558.webp)
+![Microsoft Entra Create your own application panel with a non-gallery app](/docs/_fern-files/_img/4ab66649e94c88812f19c55412be1370aa3d8d7a9249f55576dfd62c3cb33558.webp)
 
 #### Start single sign-on setup
 
 On the application **Overview**, under **Getting Started**, select **Set up single sign on** >
 **Get started**.
 
-![Microsoft Entra enterprise application Getting Started with Set up single sign on](/docs/_fern-img/1fcee15188b6ebc3c5773af4fd1ffb0dd9ff986821a57702b9b4ae876b8e26cf.webp)
+![Microsoft Entra enterprise application Getting Started with Set up single sign on](/docs/_fern-files/_img/1fcee15188b6ebc3c5773af4fd1ffb0dd9ff986821a57702b9b4ae876b8e26cf.webp)
 
 Select **SAML** as the single sign-on method.
 
-![Microsoft Entra Select a single sign-on method with SAML](/docs/_fern-img/e0a67bdc3f893e3d00fefc2531db05e2ae5db569821ab59479f629bf9619d6e9.webp)
+![Microsoft Entra Select a single sign-on method with SAML](/docs/_fern-files/_img/e0a67bdc3f893e3d00fefc2531db05e2ae5db569821ab59479f629bf9619d6e9.webp)
 
 #### Configure basic SAML settings
 
@@ -92,7 +92,7 @@ In **Basic SAML Configuration**, configure the app with the values from ElevenLa
 
 Click **Save**.
 
-![Microsoft Entra Basic SAML Configuration with Identifier and Reply URL](/docs/_fern-img/9961d266eb4ccb0bd4b6aa6f2d9a3322b059322fa7b933fe2741ca2c2ac2edb9.webp)
+![Microsoft Entra Basic SAML Configuration with Identifier and Reply URL](/docs/_fern-files/_img/9961d266eb4ccb0bd4b6aa6f2d9a3322b059322fa7b933fe2741ca2c2ac2edb9.webp)
 
 > **Note**
 >
@@ -116,28 +116,28 @@ Click **Save**.
 > Choose the attribute that holds an email address for every user. If `user.mail` is not populated
 > for all of your users, use `user.userprincipalname` instead.
 
-![Microsoft Entra Manage claim with Email address format and user.mail source attribute](/docs/_fern-img/1d94d0fecd19d9ca30ff5cce93294fda6a8c84ed98837ea89549f79b97ae153d.webp)
+![Microsoft Entra Manage claim with Email address format and user.mail source attribute](/docs/_fern-files/_img/1d94d0fecd19d9ca30ff5cce93294fda6a8c84ed98837ea89549f79b97ae153d.webp)
 
 #### Download the signing certificate
 
 In **SAML Certificates**, next to **Certificate (Base64)**, click **Download**. Open the
 downloaded file in a text editor.
 
-![Microsoft Entra SAML Certificates with Certificate Base64 download](/docs/_fern-img/684fac9e520103b4c6978ef8dd3e95ea30d04a34e31b6ec7d13d97128492af07.webp)
+![Microsoft Entra SAML Certificates with Certificate Base64 download](/docs/_fern-files/_img/684fac9e520103b4c6978ef8dd3e95ea30d04a34e31b6ec7d13d97128492af07.webp)
 
 #### Assign users or groups
 
 Open the app's **Users and groups**, then assign the users or groups that should be able to sign
 in to ElevenLabs.
 
-![Microsoft Entra Add Assignment users list](/docs/_fern-img/c07ddb7a33eb511ada81ce437cdf468aecbfb83ef11a5c3a25f3fa6c87f5afcc.webp)
+![Microsoft Entra Add Assignment users list](/docs/_fern-files/_img/c07ddb7a33eb511ada81ce437cdf468aecbfb83ef11a5c3a25f3fa6c87f5afcc.webp)
 
 #### Add the Entra certificate to ElevenLabs
 
 In ElevenLabs, click **Add Certificate**. Paste the full PEM certificate from the Base64 file,
 including `-----BEGIN CERTIFICATE-----` and `-----END CERTIFICATE-----`, then click **Add**.
 
-![ElevenLabs Add X509 Certificate dialog](/docs/_fern-img/bd8d3e047624b0c8f5b119d77e79ef4b721ef2917ad9049a2a44b36b6016201b.webp)
+![ElevenLabs Add X509 Certificate dialog](/docs/_fern-files/_img/bd8d3e047624b0c8f5b119d77e79ef4b721ef2917ad9049a2a44b36b6016201b.webp)
 
 #### Copy Entra identity provider values into ElevenLabs
 
@@ -146,14 +146,14 @@ In the Microsoft Entra **Set up** section, copy the identity provider values int
 * Use the **Microsoft Entra Identifier** for **Identity Provider Entity Id**.
 * Use the **Login URL** for **Identity Provider Sign-In URL**.
 
-![Microsoft Entra set up values showing Login URL and Microsoft Entra Identifier](/docs/_fern-img/abddc7178305f0c220d6b9ad92d21320859824c024a84506933fd67a9045144e.webp)
+![Microsoft Entra set up values showing Login URL and Microsoft Entra Identifier](/docs/_fern-files/_img/abddc7178305f0c220d6b9ad92d21320859824c024a84506933fd67a9045144e.webp)
 
 #### Add your allowed email domain
 
 In ElevenLabs, click **Add Domain** and select the verified domain that matches the email domain
 of your Microsoft Entra users.
 
-![ElevenLabs Add allowed email domains dialog](/docs/_fern-img/3039fce378edac35eaeab847e55a99ec82a241d7fc3bc46be24b23ec52e4a2bf.webp)
+![ElevenLabs Add allowed email domains dialog](/docs/_fern-files/_img/3039fce378edac35eaeab847e55a99ec82a241d7fc3bc46be24b23ec52e4a2bf.webp)
 
 #### Save the SSO provider
 

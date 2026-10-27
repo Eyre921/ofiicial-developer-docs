@@ -54,7 +54,7 @@ or settings and regenerate.
 
 ## Explore the library
 
-![Sound effects explore](/docs/_fern-img/d8d7c3cca84e6acb0dfc419aed291be764794f299b2c7c478a9efc3f8f6e25ef.webp)
+![Sound effects explore](/docs/_fern-files/_img/d8d7c3cca84e6acb0dfc419aed291be764794f299b2c7c478a9efc3f8f6e25ef.webp)
 
 Browse community-made sound effects in the **Explore** tab.
 

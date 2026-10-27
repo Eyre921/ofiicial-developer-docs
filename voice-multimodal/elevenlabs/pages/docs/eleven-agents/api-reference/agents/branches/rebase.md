@@ -9,6 +9,7 @@ path: docs/eleven-agents/api-reference/agents/branches/rebase
 # Rebase a branch onto main
 
 POST https://api.elevenlabs.io/v1/convai/agents/{agent_id}/branches/{branch_id}/rebase
+Content-Type: application/json
 
 Pull changes from a source branch (defaults to main) into this branch as a new version, preserving this branch's own changes on conflicts.
 
@@ -64,6 +65,12 @@ Validation Error
 
 ## Examples
 
+**Request**
+
+```json
+{}
+```
+
 **Response**
 
 ```json
@@ -81,14 +88,17 @@ url = "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfy
 
 querystring = {"source_branch_id":"source_branch_id"}
 
-response = requests.post(url, params=querystring)
+payload = {}
+headers = {"Content-Type": "application/json"}
+
+response = requests.post(url, json=payload, headers=headers, params=querystring)
 
 print(response.json())
 ```
 
 ```javascript
 const url = 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase?source_branch_id=source_branch_id';
-const options = {method: 'POST'};
+const options = {method: 'POST', headers: {'Content-Type': 'application/json'}, body: '{}'};
 
 try {
   const response = await fetch(url, options);
@@ -104,6 +114,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"net/http"
 	"io"
 )
@@ -112,7 +123,11 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase?source_branch_id=source_branch_id"
 
-	req, _ := http.NewRequest("POST", url, nil)
+	payload := strings.NewReader("{}")
+
+	req, _ := http.NewRequest("POST", url, payload)
+
+	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -135,6 +150,8 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
+request["Content-Type"] = 'application/json'
+request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -145,6 +162,8 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase?source_branch_id=source_branch_id")
+  .header("Content-Type", "application/json")
+  .body("{}")
   .asString();
 ```
 
@@ -154,7 +173,12 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase?source_branch_id=source_branch_id');
+$response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase?source_branch_id=source_branch_id', [
+  'body' => '{}',
+  'headers' => [
+    'Content-Type' => 'application/json',
+  ],
+]);
 
 echo $response->getBody();
 ```
@@ -164,16 +188,25 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase?source_branch_id=source_branch_id");
 var request = new RestRequest(Method.POST);
+request.AddHeader("Content-Type", "application/json");
+request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
+let headers = ["Content-Type": "application/json"]
+let parameters = [] as [String : Any]
+
+let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
+
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/rebase?source_branch_id=source_branch_id")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "POST"
+request.allHTTPHeaderFields = headers
+request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

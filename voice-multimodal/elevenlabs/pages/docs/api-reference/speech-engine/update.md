@@ -220,9 +220,9 @@ Validation Error
 - `created_at_unix_secs` (integer, required)
 - `updated_at_unix_secs` (integer, required)
 - `created_from` (enum, optional, default: unknown)
-  - Allowed values: `cli`, `ui`, `api`, `template`, `unknown`
+  - Allowed values: `cli`, `ui`, `api`, `template`, `architect`, `unknown`
 - `last_updated_from` (enum, optional, default: unknown)
-  - Allowed values: `cli`, `ui`, `api`, `template`, `unknown`
+  - Allowed values: `cli`, `ui`, `api`, `template`, `architect`, `unknown`
 
 ### ResourceAccessInfo
 

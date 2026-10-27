@@ -72,7 +72,7 @@ elevenlabs-conversational-ai/
 
 In `index.html`, set up a simple user interface:
 
-![](/docs/_fern-img/5ad9dea65eddc50beaf444e5d319dc5094df0f4183e50f7ed01900394b3ff9d2.webp)
+![](/docs/_fern-files/_img/5ad9dea65eddc50beaf444e5d319dc5094df0f4183e50f7ed01900394b3ff9d2.webp)
 
 **`index.html`**
 

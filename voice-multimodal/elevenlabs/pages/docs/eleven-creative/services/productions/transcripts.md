@@ -31,19 +31,19 @@ We offer 2 types of human transcripts:
 
 The easiest way to order a new transcript from Productions is from the [Productions](https://elevenlabs.io/app/productions) page in your ElevenLabs account.
 
-![Productions Home](/docs/_fern-img/cd072dfc01c9b277960c0583a3900ca963ee0ca766f204f5fac602117f5a8174.webp)
+![Productions Home](/docs/_fern-files/_img/cd072dfc01c9b277960c0583a3900ca963ee0ca766f204f5fac602117f5a8174.webp)
 
 ### Speech to Text Order Dialog
 
 You can also select the *Human Transcript* option in the [Speech to Text](/docs/overview/capabilities/speech-to-text) order dialog.
 
-![Productions STT Dialog](/docs/_fern-img/1d18c451ce48b05fb9943a11707e86cd7a8c883b30e7557551f1bdccc05851a9.webp)
+![Productions STT Dialog](/docs/_fern-files/_img/1d18c451ce48b05fb9943a11707e86cd7a8c883b30e7557551f1bdccc05851a9.webp)
 
 #### Starting from an existing transcript
 
 Open an existing transcript and click the *Get human review* button to create a new Productions order for that transcript.
 
-![Productions Get Human Review](/docs/_fern-img/b25a0e08ad610f29b352c4cf9a1ef8f29061487c61f51de7c5c0b2cfb0533863.webp)
+![Productions Get Human Review](/docs/_fern-files/_img/b25a0e08ad610f29b352c4cf9a1ef8f29061487c61f51de7c5c0b2cfb0533863.webp)
 
 #### Export transcript
 
@@ -73,7 +73,7 @@ We aim to deliver all transcripts **within 48 hours.** If you are an enterprise 
 
 When ordering a Productions transcript, you will see the option to activate 'Verbatim' mode. Please read the breakdown below for more information about this option.
 
-![Productions Style Guide](/docs/_fern-img/fdf172c15645a4cfe48e59cb436adcaae7ff6c16979374e358d4ce56071250a9.webp)
+![Productions Style Guide](/docs/_fern-files/_img/fdf172c15645a4cfe48e59cb436adcaae7ff6c16979374e358d4ce56071250a9.webp)
 
 #### Non-verbatim
 

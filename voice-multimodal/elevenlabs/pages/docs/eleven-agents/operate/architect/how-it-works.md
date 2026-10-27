@@ -130,7 +130,7 @@ Validation happens inside the conversation, before you are asked to publish or r
 > every change. To make sure it does, ask for it directly, for example "Show me the new tests
 > failing on main and passing on the branch."
 
-![Architect work trace](/docs/_fern-img/a0ac226f441713105d638105f3ca8fd93ad672556b6ae0ae48847d1de8c7ba8d.webp)
+![Architect work trace](/docs/_fern-files/_img/a0ac226f441713105d638105f3ca8fd93ad672556b6ae0ae48847d1de8c7ba8d.webp)
 
 ## Slash commands
 

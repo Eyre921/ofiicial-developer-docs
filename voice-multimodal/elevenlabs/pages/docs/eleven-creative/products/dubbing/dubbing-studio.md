@@ -104,7 +104,7 @@ To reassign a clips to a different speaker, click the segment and drag it to ano
 
 Use the action buttons at the bottom of the timeline to add new audio tracks
 
-![Dubbing Studio Add Tracks](/docs/_fern-img/6144bb02bb8a9da95cd4fbf76d9df479b2174e83fb8569bdeaf9b14743d19cdf.webp)
+![Dubbing Studio Add Tracks](/docs/_fern-files/_img/6144bb02bb8a9da95cd4fbf76d9df479b2174e83fb8569bdeaf9b14743d19cdf.webp)
 
 #### Voice Settings
 
@@ -249,7 +249,7 @@ Adam,"0:00:06,000","0:00:10,000","I'm fine, thank you.","Estoy bien, gracias."
 
       Once it has completed processing, click the three dots icon and select **Edit** to open your dubbing project.
 
-      ![](/docs/_fern-img/88ae8853b135c164e1b969cc7ffdf4a427ec9e6ca56a50a646fceb54a0210656.webp)
+      ![](/docs/_fern-files/_img/88ae8853b135c164e1b969cc7ffdf4a427ec9e6ca56a50a646fceb54a0210656.webp)
 
       For more information about Dubbing Studio, please see our [overview.](/docs/product-guides/products/dubbing/dubbing-studio)
     </td>

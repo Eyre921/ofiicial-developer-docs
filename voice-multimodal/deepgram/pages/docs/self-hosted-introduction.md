@@ -51,7 +51,7 @@ Deepgram provides a variety of components available for a self-hosted deployment
 >
 > The components and architecture below describe Docker/Podman and Kubernetes deployments. [Amazon SageMaker](/docs/amazon-sagemaker) packages the API, Engine, and licensing into a single managed endpoint that scales horizontally as one unit — you don't provision or scale API, Engine, and the License Proxy separately. A SageMaker deployment also runs fully airgapped: the container is network-isolated and makes no connection to the Deepgram Cloud.
 
-![](/_fern-img/9c8beab8a02fc149c898dcadcbabd1701dbd872d4c105d919164ffa401311f95.webp)
+![](/_fern-files/_img/9c8beab8a02fc149c898dcadcbabd1701dbd872d4c105d919164ffa401311f95.webp)
 
 ### Deepgram API
 

@@ -124,7 +124,7 @@ The value is specified in seconds and must be between 1 and 30 seconds. In the C
 
 Open your agent in the dashboard, navigate to the **Advanced** tab, and adjust the **Take turn after silence** value. Save your changes.
 
-![Take turn after silence setting](/docs/_fern-img/9de7653a0940ae3441b3470c2af53f4a72294ad3680946d4c3fa3b91df69c566.webp)
+![Take turn after silence setting](/docs/_fern-files/_img/9de7653a0940ae3441b3470c2af53f4a72294ad3680946d4c3fa3b91df69c566.webp)
 
 #### Update via the CLI
 
@@ -221,7 +221,7 @@ Soft timeout triggers only once per turn to prevent multiple fillers in successi
 
 Open your agent in the dashboard, navigate to the **Advanced** tab, and adjust the **Soft timeout** settings. Save your changes.
 
-![Soft timeout settings](/docs/_fern-img/7fdaca49ad50e6bc1f09f5eac46e36f0f4b071c5477e061a62791df9e100be75.webp)
+![Soft timeout settings](/docs/_fern-files/_img/7fdaca49ad50e6bc1f09f5eac46e36f0f4b071c5477e061a62791df9e100be75.webp)
 
 #### Update via the CLI
 
@@ -355,11 +355,11 @@ To enable interruptions, make sure interruption is a selected client event.
 
 #### Interruptions enabled
 
-![Interruption allowed](/docs/_fern-img/1da794be8ea3bfed45d06241ce5db390480cd45d27c0f886943518bd52d76157.webp)
+![Interruption allowed](/docs/_fern-files/_img/1da794be8ea3bfed45d06241ce5db390480cd45d27c0f886943518bd52d76157.webp)
 
 #### Interruptions disabled
 
-![Interruption ignored](/docs/_fern-img/847a2ebcdfff9498501502ab4b568fc498b6995f860a5552177a7883942197ff.webp)
+![Interruption ignored](/docs/_fern-files/_img/847a2ebcdfff9498501502ab4b568fc498b6995f860a5552177a7883942197ff.webp)
 
 > **Note**
 >

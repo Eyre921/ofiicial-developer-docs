@@ -14,11 +14,11 @@ When you use a voice with a custom rate to generate audio, this will have a cred
 
 If a voice has a credit multiplier in place, this will be displayed as a tag in the Voice Library:
 
-![](/docs/_fern-img/d86ddc91232731c1ef5de097ac38d4201e993e08b40164a7831bacbac7eec32e.webp)
+![](/docs/_fern-files/_img/d86ddc91232731c1ef5de097ac38d4201e993e08b40164a7831bacbac7eec32e.webp)
 
 In Speech Synthesis, you will see a notification that the voice has a credit multiplier in place:\
 
 
-![](/docs/_fern-img/e9e67cad1e6482fee0cf9f08bb492f5a26ab29a54cb9e2be8985ec657a6a13b3.webp)
+![](/docs/_fern-files/_img/e9e67cad1e6482fee0cf9f08bb492f5a26ab29a54cb9e2be8985ec657a6a13b3.webp)
 
 The credit multiplier that applies for generating audio is based on the custom rate chosen by the voice owner as well as the subscription plan of the user of the voice.

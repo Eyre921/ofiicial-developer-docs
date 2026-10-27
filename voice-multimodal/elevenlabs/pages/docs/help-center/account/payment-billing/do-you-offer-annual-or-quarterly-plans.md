@@ -12,7 +12,7 @@ Yes, we offer annual plans for all of our subscription tiers. At the moment, we 
 
 On our [pricing page](https://elevenlabs.io/pricing) and [subscription page](https://elevenlabs.io/app/subscription), you can toggle between monthly and annual plans to see the different pricing and options available.
 
-![](/docs/_fern-img/5061fc9c3052f020d44e9760a4887a4bb972e4b02b959d9ad68414cb4a2e1730.webp)
+![](/docs/_fern-files/_img/5061fc9c3052f020d44e9760a4887a4bb972e4b02b959d9ad68414cb4a2e1730.webp)
 
 Annual plans are billed on an annual cycle and will renew automatically unless cancelled.
 

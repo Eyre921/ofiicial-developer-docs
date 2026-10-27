@@ -22,6 +22,6 @@ Once a notice period is active, users can see in the app when the voice will be 
 
 For larger operations, you can also set up a webhook notification for voice removal, ensuring you are informed as soon as a voice is removed. This can be very useful if you need to be informed as soon as the voice is removed, for example if you need to notify your customers.
 
-![](/docs/_fern-img/ef4914131e291b23f5894a85b274e6a6a106b77e603e330beff26c4ce2593aa1.webp)
+![](/docs/_fern-files/_img/ef4914131e291b23f5894a85b274e6a6a106b77e603e330beff26c4ce2593aa1.webp)
 
 You can set this up on your [webhooks settings page](https://elevenlabs.io/app/settings/webhooks) for your account.

@@ -130,6 +130,132 @@ Validation Error
   - `assigned_agent` (PhoneNumberAgentInfo, optional) — The agent that is assigned to the phone number
   - `inbound_trunk` (GetPhoneNumberInboundSipTrunkConfigResponseModel, optional) — Configuration of the Inbound SIP trunk - if configured.
   - `outbound_trunk` (GetPhoneNumberOutboundSipTrunkConfigResponseModel, optional) — Configuration of the Outbound SIP trunk - if configured.
+  - `store_sip_messages` (boolean, optional, default: true) — Whether to store SIP messages for this ph> This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.
+
+# Preview rebased configuration
+
+GET https://api.elevenlabs.io/v1/convai/agents/{agent_id}/branches/{branch_id}/rebase-preview
+
+Returns the result of pulling changes from a source branch (defaults to main) into the given branch without performing it, preserving the given branch's own changes. Useful for showing an accurate diff before confirming.
+
+Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/preview-rebase
+
+## Servers
+
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
+
+## Request
+
+### Path parameters
+
+- `agent_id` (string, required) — The id of an agent. This is returned on agent creation.
+- `branch_id` (string, required) — Unique identifier for the source branch to merge from.
+
+### Query parameters
+
+- `source_branch_id` (string, optional) — The ID of the branch to pull changes from. Defaults to the agent's main branch.
+- `include_procedure_generated_workflow_elements` (boolean, optional, default: true) — Whether to include the workflow nodes and edges generated from structured procedures. When false, the workflow contains only authored elements.
+
+## Response
+
+### 200
+
+Successful Response
+
+- `agent_id` (string, required) — The ID of the agent
+- `name` (string, required) — The name of the agent
+- `conversation_config` (ConversationalConfig, required) — The conversation configuration of the agent
+- `metadata` (AgentMetadataResponseModel, required) — The metadata of the agent
+- `platform_settings` (AgentPlatformSettingsResponseModel, optional) — The platform settings of the agent
+- `phone_numbers` (list of MergePreviewResponseModelPhoneNumbersItem, optional) — The phone numbers of the agent
+- `whatsapp_accounts` (list of GetWhatsAppAccountResponse, optional) — WhatsApp accounts assigned to the agent
+- `workflow` (AgentWorkflowResponseModel, optional) — The workflow of the agent
+- `access_info` (ResourceAccessInfo, optional) — The access information of the agent for the user
+- `tags` (list of string, optional) — Agent tags used to categorize the agent
+- `version_id` (string, optional) — The ID of the version the agent is on
+- `branch_id` (string, optional) — The ID of the branch the agent is on
+- `main_branch_id` (string, optional) — The ID of the main branch for this agent
+- `procedures` (map from string to ProcedureRefResponseModel, optional) — Procedures keyed by procedure_id.
+- `default_hold_audio_url` (string, optional, default: https://eleven-public-cdn-common.elevenlabs.io/convai/ambient-audio-assets/elevator1.mp3) — URL of the default hold tone played to queued callers when no custom hold audio is uploaded, so the dashboard can preview it.
+- `overridden_fields` (list of string, optional) — Dot-paths of config fields where both branches modified the same field relative to their common ancestor (conflicts). Present regardless of which side wins the conflict.
+- `conflicts` (list of FieldConflict, optional) — Structured view of the same conflicts as overridden_fields, each carrying the value on the base (common ancestor), source branch, and target branch so the divergence can be presented and resolved field-by-field.
+- `source_identical_to_target` (boolean, optional, default: false) — True when the merge/rebase would be a no-op, i.e. the merged result is identical to the source branch tip. The rebase endpoint rejects in this case.
+
+## Errors
+
+### 422 Branches Preview Rebase Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ConversationalConfig
+
+- `asr` (AsrConversationalConfig, optional) — Configuration for conversational transcription
+- `turn` (TurnConfig, optional) — Configuration for turn detection
+- `tts` (TtsConversationalConfigOutput, optional) — Configuration for conversational text to speech
+- `conversation` (ConversationConfigOutput, optional) — Configuration for conversational events
+- `language_presets` (map from string to LanguagePresetOutput, optional) — Language presets for conversations
+- `vad` (VadConfig, optional) — Configuration for voice activity detection
+- `agent` (AgentConfig, optional) — Agent specific configuration
+
+### AgentMetadataResponseModel
+
+- `created_at_unix_secs` (integer, required) — The creation time of the agent in unix seconds
+- `updated_at_unix_secs` (integer, required) — The last update time of the agent in unix seconds
+
+### AgentPlatformSettingsResponseModel
+
+- `evaluation` (EvaluationSettingsOutput, optional) — Settings for evaluation
+- `widget` (WidgetConfig, optional) — Configuration for the widget
+- `data_collection` (map from string to AnalysisProperty, optional) — Data collection settings
+- `data_collection_scopes` (map from string to enum, optional) — Scope per data collection item ID. Missing keys default to conversation scope.
+  - Allowed values: `conversation`, `agent`
+- `analysis_items` (AgentAnalysisItemsOutput, optional) — Evaluation + data-collection items attached by reference. None means the agent has not been migrated onto analysis items yet (distinct from an empty, migrated set); reads fall back to the legacy evaluation/data_collection fields in that case.
+- `overrides` (ConversationInitiationClientDataConfigOutput, optional) — Additional overrides for the agent during conversation initiation
+- `workspace_overrides` (AgentWorkspaceOverridesOutput, optional) — Workspace overrides for the agent
+- `testing` (AgentTestingSettings, optional) — Testing configuration for the agent
+- `archived` (boolean, optional, default: false) — Whether the agent is archived
+- `guardrails` (GuardrailsV1Output, optional) — Guardrails configuration for the agent
+- `summary_language` (string, optional) — Language for all conversation analysis outputs (summaries, titles, evaluation rationales, data collection rationales). If not set, the language will be inferred from the conversation. Must be one of the supported conversation languages.
+- `auto_translate_transcript_to_app_language` (boolean, optional) — When enabled, a conversation transcript is automatically translated to the viewer's application language when they open the transcript page. If not set or false, transcripts are shown in their original language unless the viewer manually selects a translation.
+- `auth` (AuthSettings, optional) — Settings for authentication
+- `call_limits` (AgentCallLimits, optional) — Call limits for the agent
+- `queueing_config` (AgentQueueingConfig, optional) — Concurrency wait-queue config for the agent
+- `privacy` (PrivacyConfigOutput, optional) — Privacy settings for the agent
+- `trust_context` (enum, optional, default: unknown) — The trust context in which the agent operates.
+  - Allowed values: `unknown`, `low`, `high`
+- `analysis_llm` (enum, optional) — Default LLM model for post-call analysis (evaluation and data collection)
+  - Allowed values: `gpt-4o-mini`, `gpt-4o`, `gpt-4`, `gpt-4-turbo`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `gpt-5`, `gpt-5.1`, `gpt-5.2`, `gpt-5.2-chat-latest`, `gpt-5.4`, `gpt-5.4-mini`, `gpt-5.4-nano`, `gpt-5.5`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-6-astra`, `gpt-6-sol`, `gpt-6-luna`, `gpt-6.1-sol`, `gpt-5-mini`, `gpt-5-nano`, `gpt-3.5-turbo`, `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-3-pro-preview`, `gemini-3-flash-preview`, `gemini-3.1-pro-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.1-flash-lite`, `gemini-3.5-flash`, `gemini-3.5-flash-lite`, `gemini-3.6-flash`, `gemini-3.7-flash`, `gemini-3.8-flash`, `gemini-4-argon`, `claude-sonnet-4-5`, `claude-opus-4-6`, `claude-opus-4-7`, `claude-opus-4-8`, `claude-opus-5`, `claude-opus-5-5`, `claude-sonnet-4-6`, `claude-sonnet-5`, `claude-sonnet-5-5`, `claude-sonnet-4`, `claude-haiku-4-5`, `claude-haiku-5-5`, `claude-3-7-sonnet`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v1`, `claude-3-haiku`, `grok-beta`, `custom-llm`, `qwen3-4b`, `qwen3-30b-a3b`, `qwen36-35b-a3b`, `qwen35-397b-a17b`, `gpt-oss-20b`, `gpt-oss-120b`, `glm-45-air-fp8`, `glm-52`, `deepseek-v41-flash`, `nemotron-35-super-vl-nvfp4`, `gemini-2.5-flash-preview-09-2025`, `gemini-2.5-flash-lite-preview-09-2025`, `gemini-2.5-flash-preview-05-20`, `gemini-2.5-flash-preview-04-17`, `gemini-2.5-flash-lite-preview-06-17`, `gemini-2.0-flash-lite-001`, `gemini-2.0-flash-001`, `gemini-1.5-flash-002`, `gemini-1.5-flash-001`, `gemini-1.5-pro-002`, `gemini-1.5-pro-001`, `claude-sonnet-4@20250514`, `claude-sonnet-4-5@20250929`, `claude-haiku-4-5@20251001`, `claude-3-7-sonnet@20250219`, `claude-3-5-sonnet@20240620`, `claude-3-5-sonnet-v2@20241022`, `claude-3-haiku@20240307`, `gpt-5-2025-08-07`, `gpt-5.1-2025-11-13`, `gpt-5.2-2025-12-11`, `gpt-5.4-2026-03-05`, `gpt-5.4-mini-2026-03-17`, `gpt-5.4-nano-2026-03-17`, `gpt-5.5-2026-04-23`, `gpt-5-mini-2025-08-07`, `gpt-5-nano-2025-08-07`, `gpt-4.1-2025-04-14`, `gpt-4.1-mini-2025-04-14`, `gpt-4.1-nano-2025-04-14`, `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-4o-2024-08-06`, `gpt-4o-2024-05-13`, `gpt-4-0613`, `gpt-4-0314`, `gpt-4-turbo-2024-04-09`, `gpt-3.5-turbo-0125`, `gpt-3.5-turbo-1106`, `watt-tool-8b`, `watt-tool-70b`
+- `topic_discovery` (TopicDiscoverySettings, optional) — Per-agent topic discovery configuration
+- `sentiment_analysis` (SentimentAnalysisSettings, optional) — Per-agent post-call sentiment analysis configuration
+- `alerting` (AlertingSettingsResponse, optional) — Agent-level alerting configuration overriding workspace settings.
+- `safety` (SafetyResponseModel, optional)
+
+### MergePreviewResponseModelPhoneNumbersItem
+
+- `provider`: `exotel`
+  - `label` (string, required) — Label for the phone number
+  - `phone_number` (string, required) — Phone number
+  - `phone_number_id` (string, required) — The ID of the phone number
+  - `assigned_agent` (PhoneNumberAgentInfo, optional) — The agent that is assigned to the phone number
+  - `supports_inbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports inbound calls
+  - `supports_outbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports outbound calls
+- `provider`: `sip_trunk`
+  - `label` (string, required) — Label for the phone number
+  - `livekit_stack` (enum, required, default: standard) — Type of Livekit stack used for this number.
+    - Allowed values: `standard`, `static`
+  - `phone_number` (string, required) — Phone number
+  - `phone_number_id` (string, required) — The ID of the phone number
+  - `assigned_agent` (PhoneNumberAgentInfo, optional) — The agent that is assigned to the phone number
+  - `inbound_trunk` (GetPhoneNumberInboundSipTrunkConfigResponseModel, optional) — Configuration of the Inbound SIP trunk - if configured.
+  - `outbound_trunk` (GetPhoneNumberOutboundSipTrunkConfigResponseModel, optional) — Configuration of the Outbound SIP trunk - if configured.
   - `store_sip_messages` (boolean, optional, default: true) — Whether to store SIP messages for this phone number.
   - `provider_config` (GetPhoneNumberOutboundSipTrunkConfigResponseModel, optional, deprecated) — SIP Trunk configuration details for a phone number
   - `supports_inbound` (boolean, optional, default: true, deprecated) — This field is deprecated and will be removed in the future. Whether this phone number supports inbound calls
@@ -345,6 +471,7 @@ Settings to evaluate an agent's performance. Agents are evaluated against a set 
 - `styles` (WidgetStyles, optional) — Styles for the widget
 - `show_resize_button` (boolean, optional, default: true) — Whether to show the resize button
 - `end_confirmation_enabled` (boolean, optional, default: false) — Whether to ask the user to confirm before ending a chat or call
+- `mobile_fullscreen` (boolean, optional, default: true) — Whether the widget opens fullscreen on mobile
 - `language_selector` (boolean, optional, default: false) — Whether to show the language selector
 - `supports_text_only` (boolean, optional, default: true) — Whether the widget can switch to text only mode
 - `custom_avatar_path` (string, optional) — The custom avatar path
@@ -379,7 +506,7 @@ Data collection property with optional per-item LLM override for post-call analy
 - `custom_llm_extra_body` (boolean, optional, default: false) — Whether to include custom LLM extra body
 - `enable_conversation_initiation_client_data_from_webhook` (boolean, optional, default: false) — Whether to enable conversation initiation client data from webhooks
 - `enable_starting_workflow_node_id_from_client` (boolean, optional, default: false) — Whether clients may pass starting_workflow_node_id in initiation client data; if false, sending it fails conversation start.
-- `enable_procedure_ids_from_client` (boolean, optional, default: false) — Whether clients may pass procedure_ids in initiation client data to select which of the agent's procedures are available for the conversation; if false, sending it fails conversation start.
+- `enable_procedure_ids_from_client` (boolean, optional, default: false) — Whether clients may pass procedure_ids and start_procedure_ids in initiation client data. procedure_ids selects which of the agent's procedures are available. start_procedure_ids starts free-form procedures when the conversation starts. If false, sending either field fails conversation start.
 
 ### AgentWorkspaceOverridesOutput
 
@@ -658,6 +785,8 @@ Configuration for DTMF (keypad) input collection during phone calls.
   - Allowed values: `gpt-4o-mini`, `gpt-4o`, `gpt-4`, `gpt-4-turbo`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `gpt-5`, `gpt-5.1`, `gpt-5.2`, `gpt-5.2-chat-latest`, `gpt-5.4`, `gpt-5.4-mini`, `gpt-5.4-nano`, `gpt-5.5`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-6-astra`, `gpt-6-sol`, `gpt-6-luna`, `gpt-6.1-sol`, `gpt-5-mini`, `gpt-5-nano`, `gpt-3.5-turbo`, `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-3-pro-preview`, `gemini-3-flash-preview`, `gemini-3.1-pro-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.1-flash-lite`, `gemini-3.5-flash`, `gemini-3.5-flash-lite`, `gemini-3.6-flash`, `gemini-3.7-flash`, `gemini-3.8-flash`, `gemini-4-argon`, `claude-sonnet-4-5`, `claude-opus-4-6`, `claude-opus-4-7`, `claude-opus-4-8`, `claude-opus-5`, `claude-opus-5-5`, `claude-sonnet-4-6`, `claude-sonnet-5`, `claude-sonnet-5-5`, `claude-sonnet-4`, `claude-haiku-4-5`, `claude-haiku-5-5`, `claude-3-7-sonnet`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v1`, `claude-3-haiku`, `grok-beta`, `custom-llm`, `qwen3-4b`, `qwen3-30b-a3b`, `qwen36-35b-a3b`, `qwen35-397b-a17b`, `gpt-oss-20b`, `gpt-oss-120b`, `glm-45-air-fp8`, `glm-52`, `deepseek-v41-flash`, `nemotron-35-super-vl-nvfp4`, `gemini-2.5-flash-preview-09-2025`, `gemini-2.5-flash-lite-preview-09-2025`, `gemini-2.5-flash-preview-05-20`, `gemini-2.5-flash-preview-04-17`, `gemini-2.5-flash-lite-preview-06-17`, `gemini-2.0-flash-lite-001`, `gemini-2.0-flash-001`, `gemini-1.5-flash-002`, `gemini-1.5-flash-001`, `gemini-1.5-pro-002`, `gemini-1.5-pro-001`, `claude-sonnet-4@20250514`, `claude-sonnet-4-5@20250929`, `claude-haiku-4-5@20251001`, `claude-3-7-sonnet@20250219`, `claude-3-5-sonnet@20240620`, `claude-3-5-sonnet-v2@20241022`, `claude-3-haiku@20240307`, `gpt-5-2025-08-07`, `gpt-5.1-2025-11-13`, `gpt-5.2-2025-12-11`, `gpt-5.4-2026-03-05`, `gpt-5.4-mini-2026-03-17`, `gpt-5.4-nano-2026-03-17`, `gpt-5.5-2026-04-23`, `gpt-5-mini-2025-08-07`, `gpt-5-nano-2025-08-07`, `gpt-4.1-2025-04-14`, `gpt-4.1-mini-2025-04-14`, `gpt-4.1-nano-2025-04-14`, `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-4o-2024-08-06`, `gpt-4o-2024-05-13`, `gpt-4-0613`, `gpt-4-0314`, `gpt-4-turbo-2024-04-09`, `gpt-3.5-turbo-0125`, `gpt-3.5-turbo-1106`, `watt-tool-8b`, `watt-tool-70b`
 - `reasoning_effort` (enum, optional) — Reasoning effort of the model. Only available for some models.
   - Allowed values: `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, `max`
+- `service_tier` (enum, optional, default: standard) — Service tier of the model, trading a per-token price premium for higher token throughput. Only available for some models.
+  - Allowed values: `standard`, `fast`
 - `thinking_budget` (integer, optional) — Max number of tokens used for thinking. Use 0 to turn off if supported by the model.
 - `enable_reasoning_summary` (boolean, optional, default: false) — Enable model reasoning summaries. When disabled, we do not request summaries from provider if possible for faster TTFB. Not ZRM compatible.
 - `temperature` (double, optional) — The temperature for the LLM. Defaults to 0. Set to null to omit the parameter from the LLM request entirely (useful for custom LLMs that reject the temperature field).
@@ -1651,6 +1780,8 @@ Value of this literal.
   - Allowed values: `gpt-4o-mini`, `gpt-4o`, `gpt-4`, `gpt-4-turbo`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `gpt-5`, `gpt-5.1`, `gpt-5.2`, `gpt-5.2-chat-latest`, `gpt-5.4`, `gpt-5.4-mini`, `gpt-5.4-nano`, `gpt-5.5`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-6-astra`, `gpt-6-sol`, `gpt-6-luna`, `gpt-6.1-sol`, `gpt-5-mini`, `gpt-5-nano`, `gpt-3.5-turbo`, `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`, `gemini-3-pro-preview`, `gemini-3-flash-preview`, `gemini-3.1-pro-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.1-flash-lite`, `gemini-3.5-flash`, `gemini-3.5-flash-lite`, `gemini-3.6-flash`, `gemini-3.7-flash`, `gemini-3.8-flash`, `gemini-4-argon`, `claude-sonnet-4-5`, `claude-opus-4-6`, `claude-opus-4-7`, `claude-opus-4-8`, `claude-opus-5`, `claude-opus-5-5`, `claude-sonnet-4-6`, `claude-sonnet-5`, `claude-sonnet-5-5`, `claude-sonnet-4`, `claude-haiku-4-5`, `claude-haiku-5-5`, `claude-3-7-sonnet`, `claude-3-5-sonnet`, `claude-3-5-sonnet-v1`, `claude-3-haiku`, `grok-beta`, `custom-llm`, `qwen3-4b`, `qwen3-30b-a3b`, `qwen36-35b-a3b`, `qwen35-397b-a17b`, `gpt-oss-20b`, `gpt-oss-120b`, `glm-45-air-fp8`, `glm-52`, `deepseek-v41-flash`, `nemotron-35-super-vl-nvfp4`, `gemini-2.5-flash-preview-09-2025`, `gemini-2.5-flash-lite-preview-09-2025`, `gemini-2.5-flash-preview-05-20`, `gemini-2.5-flash-preview-04-17`, `gemini-2.5-flash-lite-preview-06-17`, `gemini-2.0-flash-lite-001`, `gemini-2.0-flash-001`, `gemini-1.5-flash-002`, `gemini-1.5-flash-001`, `gemini-1.5-pro-002`, `gemini-1.5-pro-001`, `claude-sonnet-4@20250514`, `claude-sonnet-4-5@20250929`, `claude-haiku-4-5@20251001`, `claude-3-7-sonnet@20250219`, `claude-3-5-sonnet@20240620`, `claude-3-5-sonnet-v2@20241022`, `claude-3-haiku@20240307`, `gpt-5-2025-08-07`, `gpt-5.1-2025-11-13`, `gpt-5.2-2025-12-11`, `gpt-5.4-2026-03-05`, `gpt-5.4-mini-2026-03-17`, `gpt-5.4-nano-2026-03-17`, `gpt-5.5-2026-04-23`, `gpt-5-mini-2025-08-07`, `gpt-5-nano-2025-08-07`, `gpt-4.1-2025-04-14`, `gpt-4.1-mini-2025-04-14`, `gpt-4.1-nano-2025-04-14`, `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-4o-2024-08-06`, `gpt-4o-2024-05-13`, `gpt-4-0613`, `gpt-4-0314`, `gpt-4-turbo-2024-04-09`, `gpt-3.5-turbo-0125`, `gpt-3.5-turbo-1106`, `watt-tool-8b`, `watt-tool-70b`
 - `reasoning_effort` (enum, optional) — Reasoning effort of the model. Only available for some models.
   - Allowed values: `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, `max`
+- `service_tier` (enum, optional, default: standard) — Service tier of the model, trading a per-token price premium for higher token throughput. Only available for some models.
+  - Allowed values: `standard`, `fast`
 - `thinking_budget` (integer, optional) — Max number of tokens used for thinking. Use 0 to turn off if supported by the model.
 - `enable_reasoning_summary` (boolean, optional) — Enable model reasoning summaries. When disabled, we do not request summaries from provider if possible for faster TTFB. Not ZRM compatible.
 - `temperature` (double, optional) — The temperature for the LLM. Defaults to 0. Set to null to omit the parameter from the LLM request entirely (useful for custom LLMs that reject the temperature field).
@@ -2410,6 +2541,7 @@ Schema for array elements.
       "syntax_highlight_theme": "light",
       "show_resize_button": true,
       "end_confirmation_enabled": true,
+      "mobile_fullscreen": true,
       "language_selector": false,
       "supports_text_only": true,
       "custom_avatar_path": "https://example.com/avatar.png",

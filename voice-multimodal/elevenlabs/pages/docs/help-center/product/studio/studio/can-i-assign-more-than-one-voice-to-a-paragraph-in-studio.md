@@ -12,4 +12,4 @@ You can assign multiple voices to a single paragraph in Studio. To do this, you 
 
 Each voice will be designated with a different color icon to the left of the paragraph, and the text associated with each voice will be highlighted in a corresponding color.
 
-![](/docs/_fern-img/c494f027a94c3dd43aafbd04502528db546941aa975f48db11c818d09114b428.webp)
+![](/docs/_fern-files/_img/c494f027a94c3dd43aafbd04502528db546941aa975f48db11c818d09114b428.webp)

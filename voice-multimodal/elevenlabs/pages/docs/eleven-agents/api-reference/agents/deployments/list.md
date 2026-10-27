@@ -59,7 +59,7 @@ Validation Error
 - `is_active` (boolean, required) — Whether this is the live traffic split
 - `traffic_percentage_branch_id_map` (map from string to double, optional) — Map of branch IDs to traffic percentages
 - `source` (enum, optional) — What caused this traffic split change. Null for deployments created before this was recorded.
-  - Allowed values: `manual`, `branch_merge`
+  - Allowed values: `manual`, `branch_merge`, `duplicate`
 - `access_info` (ResourceAccessInfo, optional) — Access information for the deployment, including who created it
 
 ### ListResponseMeta

@@ -36,7 +36,7 @@ By default, audio recordings are enabled. You can modify this setting to:
 Find your agent in the ElevenAgents [page](https://elevenlabs.io/app/agents/agents) and select
 the "Advanced" tab. The audio saving control is located in the "Privacy Settings" section.
 
-![Disable audio saving option](/docs/_fern-img/e2f7d92f9128bace5d992e76aa500da7e1bc62d22d423841b774c1e20fcaf891.webp)
+![Disable audio saving option](/docs/_fern-files/_img/e2f7d92f9128bace5d992e76aa500da7e1bc62d22d423841b774c1e20fcaf891.webp)
 
 #### Choose saving option
 
@@ -46,11 +46,11 @@ Toggle the control to enable or disable audio saving and click save to confirm y
 
 When audio saving is enabled, calls in the call history allow you to review the audio.
 
-![Call with audio saved](/docs/_fern-img/871a28d699f54774c3e2695091e9af04948e236afded7807c27ea73bc2a8f71f.webp)
+![Call with audio saved](/docs/_fern-files/_img/871a28d699f54774c3e2695091e9af04948e236afded7807c27ea73bc2a8f71f.webp)
 
 When audio saving is disabled, calls in the call history do not include audio.
 
-![Call without audio saved](/docs/_fern-img/5dffbe46545eda166d48328b21f63ff0a6d3a0a8b05224213307da426ba6e47e.webp)
+![Call without audio saved](/docs/_fern-files/_img/5dffbe46545eda166d48328b21f63ff0a6d3a0a8b05224213307da426ba6e47e.webp)
 
 #### Update via the CLI
 

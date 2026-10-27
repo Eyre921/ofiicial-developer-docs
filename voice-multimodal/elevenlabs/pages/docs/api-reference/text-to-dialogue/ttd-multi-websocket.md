@@ -14,13 +14,13 @@ Stream expressive dialogue audio for multiple independent streams (contexts) mul
 
 Each context, identified by a client-chosen `context_id`, behaves like an independent [Text to Dialogue WebSocket](/docs/api-reference/text-to-dialogue/ttd-websocket) session: it registers its own voices and settings, buffers its own text, and produces its own audio stream. This is useful for scenarios requiring concurrent or interleaved dialogue generations, such as conversational AI applications that need to handle interruptions.
 
-The connection uses Eleven v3 dialogue models only (`model_id` must start with `eleven_v3`). The default model is `eleven_v3_conversational`.
+The connection uses Eleven v3 and v4 dialogue models (`model_id` must start with `eleven_v3` or `eleven_v4`). The default model is `eleven_v3_conversational`.
 
 ## Context setup
 
 * Every message **must** include a `context_id`. A message containing only `close_socket` is the exception.
 * The first message for a new `context_id` creates that context and **must** include `voices` (voice IDs to register for the context). Optional `voice_settings` and `pronunciation_dictionary_locators` are only accepted on this first message.
-* For `eleven_v3_conversational`, only **one** voice ID may be registered per context. For `eleven_v3`, you may register up to **10** voices per context.
+* For `eleven_v3_conversational` and `eleven_v4` models, only **one** voice ID may be registered per context. For `eleven_v3`, you may register up to **10** voices per context.
 * A connection can hold at most **5** simultaneous contexts; close a context to free a slot.
 
 ## Streaming text
@@ -66,8 +66,9 @@ info:
     that need to handle interruptions.
 
 
-    The connection uses Eleven v3 dialogue models only (`model_id` must start
-    with `eleven_v3`). The default model is `eleven_v3_conversational`.
+    The connection uses Eleven v3 and v4 dialogue models (`model_id` must start
+    with `eleven_v3` or `eleven_v4`). The default model is
+    `eleven_v3_conversational`.
 
 
     ## Context setup
@@ -80,9 +81,9 @@ info:
     `voice_settings` and `pronunciation_dictionary_locators` are only accepted
     on this first message.
 
-    - For `eleven_v3_conversational`, only **one** voice ID may be registered
-    per context. For `eleven_v3`, you may register up to **10** voices per
-    context.
+    - For `eleven_v3_conversational` and `eleven_v4` models, only **one** voice
+    ID may be registered per context. For `eleven_v3`, you may register up to
+    **10** voices per context.
 
     - A connection can hold at most **5** simultaneous contexts; close a context
     to free a slot.
@@ -148,8 +149,9 @@ channels:
       that need to handle interruptions.
 
 
-      The connection uses Eleven v3 dialogue models only (`model_id` must start
-      with `eleven_v3`). The default model is `eleven_v3_conversational`.
+      The connection uses Eleven v3 and v4 dialogue models (`model_id` must
+      start with `eleven_v3` or `eleven_v4`). The default model is
+      `eleven_v3_conversational`.
 
 
       ## Context setup
@@ -162,9 +164,9 @@ channels:
       Optional `voice_settings` and `pronunciation_dictionary_locators` are only
       accepted on this first message.
 
-      - For `eleven_v3_conversational`, only **one** voice ID may be registered
-      per context. For `eleven_v3`, you may register up to **10** voices per
-      context.
+      - For `eleven_v3_conversational` and `eleven_v4` models, only **one**
+      voice ID may be registered per context. For `eleven_v3`, you may register
+      up to **10** voices per context.
 
       - A connection can hold at most **5** simultaneous contexts; close a
       context to free a slot.

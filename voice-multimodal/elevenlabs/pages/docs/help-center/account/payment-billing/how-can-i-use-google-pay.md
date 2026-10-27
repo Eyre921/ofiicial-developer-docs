@@ -62,14 +62,14 @@ The screenshots below show the browser payment settings to enable in Chrome for 
 
 
 
-![](/docs/_fern-img/1b4dfe694da01f17db72c894b6fcf7a565de0835f6f2bb743e91e8c578aa99b8.webp)
+![](/docs/_fern-files/_img/1b4dfe694da01f17db72c894b6fcf7a565de0835f6f2bb743e91e8c578aa99b8.webp)
 
 
 
-![](/docs/_fern-img/aa530c55277c6b502d5a8d972c7794ec26d7e6aac1bd43b0691b5bd0b8f55be5.webp)
+![](/docs/_fern-files/_img/aa530c55277c6b502d5a8d972c7794ec26d7e6aac1bd43b0691b5bd0b8f55be5.webp)
 
 
 
 
 
-![](/docs/_fern-img/25f3fa160ce62ea0879b21a3e5db0beee14ebb8e5055c74abb0b17e0568dfa6f.webp)
+![](/docs/_fern-files/_img/25f3fa160ce62ea0879b21a3e5db0beee14ebb8e5055c74abb0b17e0568dfa6f.webp)

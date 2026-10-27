@@ -98,7 +98,7 @@ az rest --method GET \
 In the portal, verify in the [Entra admin center](https://entra.microsoft.com/#view/Microsoft_AAD_RegisteredApps/RegisteredAppsListBlade) under **App registrations → your app → API permissions**: both permissions should show **Granted** with green checks.
 
 ![The app registration API permissions blade showing Calls.AccessMedia.All and Calls.Initiate.All
-granted](/docs/_fern-img/4abc1e220d3fc03845594aa4f835656425cc1c39448dae30dace98e672fd8fb1.webp)
+granted](/docs/_fern-files/_img/4abc1e220d3fc03845594aa4f835656425cc1c39448dae30dace98e672fd8fb1.webp)
 
 ## Step 2 — Provision the Windows VM, cert and ports
 
@@ -267,17 +267,17 @@ Both sides are PCM 16 kHz mono, so it's a base64 passthrough — set the agent t
    In the portal this lives at your Azure Bot resource → **Channels** → **Microsoft Teams** → **Calling** tab:
 
    ![The Azure Bot Channels blade listing the Microsoft Teams channel as
-   healthy](/docs/_fern-img/01115d26ab645dd6ec6569a36a918cd4de0214c79dcb0070d7a3c3a5e544c93b.webp)
+   healthy](/docs/_fern-files/_img/01115d26ab645dd6ec6569a36a918cd4de0214c79dcb0070d7a3c3a5e544c93b.webp)
 
    ![The Teams channel Calling tab with Enable calling checked and the calling webhook
-   set](/docs/_fern-img/7c4819f64878bfb152661adc948c1170f9efd48ba3d68401c4a4d4ba075951b0.webp)
+   set](/docs/_fern-files/_img/7c4819f64878bfb152661adc948c1170f9efd48ba3d68401c4a4d4ba075951b0.webp)
 
 2. Build a **Teams app manifest** with `bots[0].supportsCalling: true` and the bot's app ID, then sideload it (**Apps → Manage your apps → Upload a custom app**), or publish it org-wide without the UI: `New-TeamsApp -DistributionMethod organization -Path ./bot-app.zip` (MicrosoftTeams PowerShell module).
 
 Search the app by name in Teams and call it — the bot answers and the ElevenLabs agent speaks.
 
 ![An active Teams call with the ElevenLabs agent
-bot](/docs/_fern-img/0f1fad08a091bcd20ffbbf5c3949b5503f423d8eb6298f464a870b3a0a254726.webp)
+bot](/docs/_fern-files/_img/0f1fad08a091bcd20ffbbf5c3949b5503f423d8eb6298f464a870b3a0a254726.webp)
 
 > **Note**
 >
@@ -289,7 +289,7 @@ bot](/docs/_fern-img/0f1fad08a091bcd20ffbbf5c3949b5503f423d8eb6298f464a870b3a0a2
 The same Azure Bot can also answer **text** in Teams — so users can either call the agent or chat with it. Calling and messaging are independent channels on the bot: the calling webhook handles voice, and a Bot Framework **messaging endpoint** (`/api/messages`) handles chat.
 
 ![A Teams chat with the ElevenLabs agent bot answering text
-messages](/docs/_fern-img/fb75ae17848916790d29c1c0a703051946902893e46ed62884742db36be453b2.webp)
+messages](/docs/_fern-files/_img/fb75ae17848916790d29c1c0a703051946902893e46ed62884742db36be453b2.webp)
 
 Point the bot's messaging endpoint at whichever host serves it (the media bot, or any other service — it doesn't have to be the Windows VM):
 

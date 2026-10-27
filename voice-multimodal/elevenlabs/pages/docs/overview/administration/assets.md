@@ -8,7 +8,7 @@ path: docs/overview/administration/assets
 
 # Assets
 
-![Assets interface](/docs/_fern-img/5b5f5c5423d8be02f36f341792959f03f6e294ca402dd4039495e78011e54d79.webp)
+![Assets interface](/docs/_fern-files/_img/5b5f5c5423d8be02f36f341792959f03f6e294ca402dd4039495e78011e54d79.webp)
 
 ## Overview
 
@@ -50,7 +50,7 @@ Add content generated from various ElevenCreative tools directly to Assets:
 
 ### Organizing assets
 
-![Organizing assets with folders](/docs/_fern-img/f790d6dd3237f14d691e70b2d0b5a6d825f1d6f8656f3337287fe41d2e5f27cd.webp)
+![Organizing assets with folders](/docs/_fern-files/_img/f790d6dd3237f14d691e70b2d0b5a6d825f1d6f8656f3337287fe41d2e5f27cd.webp)
 
 Keep your assets organized with folders and collections:
 

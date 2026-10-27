@@ -10,7 +10,7 @@ path: docs/help-center/product/voices/my-voices/how-do-i-delete-voices-from-my-v
 
 To delete a voice from [My Voices](https://elevenlabs.io/app/voice-lab), first find it in your list of voices, click the **More actions** (three dots) button, then select **Delete voice.**
 
-![](/docs/_fern-img/ee3031105ec93f8664704768ad3802973e91cba07922c854dda7ccf1c87a5586.webp)
+![](/docs/_fern-files/_img/ee3031105ec93f8664704768ad3802973e91cba07922c854dda7ccf1c87a5586.webp)
 
 Deleting a voice cannot be undone, and you will be asked to confirm the deletion.
 

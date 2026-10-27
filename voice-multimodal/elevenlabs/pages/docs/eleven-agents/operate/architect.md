@@ -23,7 +23,7 @@ ElevenAgents Architect is the AI assistant built into ElevenAgents. You describe
 
 Architect works with the same objects you edit by hand: the system prompt, procedures, workflow, tools, knowledge base, guardrails, tests, branches, and merge proposals. It has no separate hidden configuration. Every change it makes appears in the same draft, diff, and version history as a change you made yourself.
 
-![Architect tab home screen](/docs/_fern-img/ed0d216d50539bce021442606fa5a8b82bd29b1596707571e2247081c399546d.webp)
+![Architect tab home screen](/docs/_fern-files/_img/ed0d216d50539bce021442606fa5a8b82bd29b1596707571e2247081c399546d.webp)
 
 ## What ElevenAgents Architect is for
 

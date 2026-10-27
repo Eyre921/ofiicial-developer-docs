@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1398 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1396 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -55,7 +55,6 @@
 - `docs/api-reference/assets/delete` — [Delete Asset](pages/docs/api-reference/assets/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/assets/delete.md)
 - `docs/api-reference/assets/get` — [Get Asset](pages/docs/api-reference/assets/get.md) · [原文](https://elevenlabs.io/docs/api-reference/assets/get.md)
 - `docs/api-reference/assets/list` — [List Assets](pages/docs/api-reference/assets/list.md) · [原文](https://elevenlabs.io/docs/api-reference/assets/list.md)
-- `docs/api-reference/audio-effects/get-catalog` — [Get Audio Effects Catalog](pages/docs/api-reference/audio-effects/get-catalog.md) · [原文](https://elevenlabs.io/docs/api-reference/audio-effects/get-catalog.md)
 - `docs/api-reference/audio-isolation/convert` — [Audio isolation](pages/docs/api-reference/audio-isolation/convert.md) · [原文](https://elevenlabs.io/docs/api-reference/audio-isolation/convert.md)
 - `docs/api-reference/audio-isolation/delete` — [Delete Audio Isolation History Item](pages/docs/api-reference/audio-isolation/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/audio-isolation/delete.md)
 - `docs/api-reference/audio-isolation/list` — [Get Audio Isolation History](pages/docs/api-reference/audio-isolation/list.md) · [原文](https://elevenlabs.io/docs/api-reference/audio-isolation/list.md)
@@ -115,6 +114,7 @@
 - `docs/api-reference/dubbing/target-transcript/regenerate-target` — [Regenerate target](pages/docs/api-reference/dubbing/target-transcript/regenerate-target.md) · [原文](https://elevenlabs.io/docs/api-reference/dubbing/target-transcript/regenerate-target.md)
 - `docs/api-reference/dubbing/target-transcript/update-target-segment` — [Update target segment](pages/docs/api-reference/dubbing/target-transcript/update-target-segment.md) · [原文](https://elevenlabs.io/docs/api-reference/dubbing/target-transcript/update-target-segment.md)
 - `docs/api-reference/environment-variables/create` — [Create environment variable](pages/docs/api-reference/environment-variables/create.md) · [原文](https://elevenlabs.io/docs/api-reference/environment-variables/create.md)
+- `docs/api-reference/environment-variables/delete` — [Delete environment variable](pages/docs/api-reference/environment-variables/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/environment-variables/delete.md)
 - `docs/api-reference/environment-variables/get` — [Get environment variable](pages/docs/api-reference/environment-variables/get.md) · [原文](https://elevenlabs.io/docs/api-reference/environment-variables/get.md)
 - `docs/api-reference/environment-variables/list` — [List environment variables](pages/docs/api-reference/environment-variables/list.md) · [原文](https://elevenlabs.io/docs/api-reference/environment-variables/list.md)
 - `docs/api-reference/environment-variables/update` — [Update environment variable](pages/docs/api-reference/environment-variables/update.md) · [原文](https://elevenlabs.io/docs/api-reference/environment-variables/update.md)
@@ -300,6 +300,7 @@
 - `docs/api-reference/tests/test-invocations/get` — [Get test invocation](pages/docs/api-reference/tests/test-invocations/get.md) · [原文](https://elevenlabs.io/docs/api-reference/tests/test-invocations/get.md)
 - `docs/api-reference/tests/test-invocations/list` — [List test invocations](pages/docs/api-reference/tests/test-invocations/list.md) · [原文](https://elevenlabs.io/docs/api-reference/tests/test-invocations/list.md)
 - `docs/api-reference/tests/test-invocations/resubmit` — [Resubmit test invocation](pages/docs/api-reference/tests/test-invocations/resubmit.md) · [原文](https://elevenlabs.io/docs/api-reference/tests/test-invocations/resubmit.md)
+- `docs/api-reference/tests/test-invocations/update` — [Update test invocation](pages/docs/api-reference/tests/test-invocations/update.md) · [原文](https://elevenlabs.io/docs/api-reference/tests/test-invocations/update.md)
 - `docs/api-reference/tests/update` — [Update test](pages/docs/api-reference/tests/update.md) · [原文](https://elevenlabs.io/docs/api-reference/tests/update.md)
 - `docs/api-reference/text-to-dialogue/convert` — [Create dialogue](pages/docs/api-reference/text-to-dialogue/convert.md) · [原文](https://elevenlabs.io/docs/api-reference/text-to-dialogue/convert.md)
 - `docs/api-reference/text-to-dialogue/convert-with-timestamps` — [Create dialogue with timestamps](pages/docs/api-reference/text-to-dialogue/convert-with-timestamps.md) · [原文](https://elevenlabs.io/docs/api-reference/text-to-dialogue/convert-with-timestamps.md)
@@ -438,7 +439,6 @@
 - `docs/eleven-agents/api-reference/agents/merge-proposals/create` — [Create A Merge Proposal](pages/docs/eleven-agents/api-reference/agents/merge-proposals/create.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/create.md)
 - `docs/eleven-agents/api-reference/agents/merge-proposals/get` — [Get A Merge Proposal](pages/docs/eleven-agents/api-reference/agents/merge-proposals/get.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/get.md)
 - `docs/eleven-agents/api-reference/agents/merge-proposals/list` — [List Proposals](pages/docs/eleven-agents/api-reference/agents/merge-proposals/list.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/list.md)
-- `docs/eleven-agents/api-reference/agents/merge-proposals/merge` — [Merge A Merge Proposal](pages/docs/eleven-agents/api-reference/agents/merge-proposals/merge.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/merge.md)
 - `docs/eleven-agents/api-reference/agents/merge-proposals/submit-review` — [Review A Merge Proposal](pages/docs/eleven-agents/api-reference/agents/merge-proposals/submit-review.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/submit-review.md)
 - `docs/eleven-agents/api-reference/agents/merge-proposals/update` — [Update A Merge Proposal](pages/docs/eleven-agents/api-reference/agents/merge-proposals/update.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/update.md)
 - `docs/eleven-agents/api-reference/agents/procedures/compile` — [Compile Procedures (legacy)](pages/docs/eleven-agents/api-reference/agents/procedures/compile.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/compile.md)
@@ -471,7 +471,6 @@
 - `docs/eleven-agents/api-reference/conversations/get-audio` — [Get conversation audio](pages/docs/eleven-agents/api-reference/conversations/get-audio.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get-audio.md)
 - `docs/eleven-agents/api-reference/conversations/get-signed-url` — [Get signed URL](pages/docs/eleven-agents/api-reference/conversations/get-signed-url.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get-signed-url.md)
 - `docs/eleven-agents/api-reference/conversations/get-sip-messages` — [Get SIP messages for a conversation](pages/docs/eleven-agents/api-reference/conversations/get-sip-messages.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get-sip-messages.md)
-- `docs/eleven-agents/api-reference/conversations/get-summary` — [Get conversation summary](pages/docs/eleven-agents/api-reference/conversations/get-summary.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get-summary.md)
 - `docs/eleven-agents/api-reference/conversations/get-webrtc-token` — [Get conversation token](pages/docs/eleven-agents/api-reference/conversations/get-webrtc-token.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get-webrtc-token.md)
 - `docs/eleven-agents/api-reference/conversations/list` — [List conversations](pages/docs/eleven-agents/api-reference/conversations/list.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/list.md)
 - `docs/eleven-agents/api-reference/conversations/messages/search` — [Smart search](pages/docs/eleven-agents/api-reference/conversations/messages/search.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/messages/search.md)
@@ -488,6 +487,7 @@
 - `docs/eleven-agents/api-reference/conversations/upload-file` — [Upload conversation file](pages/docs/eleven-agents/api-reference/conversations/upload-file.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/upload-file.md)
 - `docs/eleven-agents/api-reference/eleven-agents/websocket` — [Agent WebSockets](pages/docs/eleven-agents/api-reference/eleven-agents/websocket.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/eleven-agents/websocket.md)
 - `docs/eleven-agents/api-reference/environment-variables/create` — [Create environment variable](pages/docs/eleven-agents/api-reference/environment-variables/create.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/environment-variables/create.md)
+- `docs/eleven-agents/api-reference/environment-variables/delete` — [Delete environment variable](pages/docs/eleven-agents/api-reference/environment-variables/delete.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/environment-variables/delete.md)
 - `docs/eleven-agents/api-reference/environment-variables/get` — [Get environment variable](pages/docs/eleven-agents/api-reference/environment-variables/get.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/environment-variables/get.md)
 - `docs/eleven-agents/api-reference/environment-variables/list` — [List environment variables](pages/docs/eleven-agents/api-reference/environment-variables/list.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/environment-variables/list.md)
 - `docs/eleven-agents/api-reference/environment-variables/update` — [Update environment variable](pages/docs/eleven-agents/api-reference/environment-variables/update.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/environment-variables/update.md)
@@ -573,6 +573,7 @@
 - `docs/eleven-agents/api-reference/tests/test-invocations/get` — [Get test invocation](pages/docs/eleven-agents/api-reference/tests/test-invocations/get.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-invocations/get.md)
 - `docs/eleven-agents/api-reference/tests/test-invocations/list` — [List test invocations](pages/docs/eleven-agents/api-reference/tests/test-invocations/list.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-invocations/list.md)
 - `docs/eleven-agents/api-reference/tests/test-invocations/resubmit` — [Resubmit test invocation](pages/docs/eleven-agents/api-reference/tests/test-invocations/resubmit.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-invocations/resubmit.md)
+- `docs/eleven-agents/api-reference/tests/test-invocations/update` — [Update test invocation](pages/docs/eleven-agents/api-reference/tests/test-invocations/update.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-invocations/update.md)
 - `docs/eleven-agents/api-reference/tests/update` — [Update test](pages/docs/eleven-agents/api-reference/tests/update.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/update.md)
 - `docs/eleven-agents/api-reference/tools/create` — [Create tool](pages/docs/eleven-agents/api-reference/tools/create.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/tools/create.md)
 - `docs/eleven-agents/api-reference/tools/delete` — [Delete tool](pages/docs/eleven-agents/api-reference/tools/delete.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/tools/delete.md)
@@ -817,7 +818,6 @@
 - `docs/eleven-api/guides/how-to/speech-to-text/batch/webhooks` — [Asynchronous Speech to Text](pages/docs/eleven-api/guides/how-to/speech-to-text/batch/webhooks.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/batch/webhooks.md)
 - `docs/eleven-api/guides/how-to/speech-to-text/realtime/client-side-streaming` — [Client-side streaming](pages/docs/eleven-api/guides/how-to/speech-to-text/realtime/client-side-streaming.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/realtime/client-side-streaming.md)
 - `docs/eleven-api/guides/how-to/speech-to-text/realtime/event-reference` — [Realtime event reference](pages/docs/eleven-api/guides/how-to/speech-to-text/realtime/event-reference.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/realtime/event-reference.md)
-- `docs/eleven-api/guides/how-to/speech-to-text/realtime/server-side-streaming` — [Server-side streaming](pages/docs/eleven-api/guides/how-to/speech-to-text/realtime/server-side-streaming.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/realtime/server-side-streaming.md)
 - `docs/eleven-api/guides/how-to/speech-to-text/realtime/transcript-editing` — [Transcript editing](pages/docs/eleven-api/guides/how-to/speech-to-text/realtime/transcript-editing.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/realtime/transcript-editing.md)
 - `docs/eleven-api/guides/how-to/speech-to-text/realtime/transcripts-and-commit-strategies` — [Transcripts and commit strategies](pages/docs/eleven-api/guides/how-to/speech-to-text/realtime/transcripts-and-commit-strategies.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/realtime/transcripts-and-commit-strategies.md)
 - `docs/eleven-api/guides/how-to/templates/run-a-template` — [Run your team's template](pages/docs/eleven-api/guides/how-to/templates/run-a-template.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/templates/run-a-template.md)
@@ -876,7 +876,6 @@
 - `docs/eleven-creative/quickstart` — [ElevenCreative quickstart](pages/docs/eleven-creative/quickstart.md) · [原文](https://elevenlabs.io/docs/eleven-creative/quickstart.md)
 - `docs/eleven-creative/services/productions/dubbing` — [Dubbing](pages/docs/eleven-creative/services/productions/dubbing.md) · [原文](https://elevenlabs.io/docs/eleven-creative/services/productions/dubbing.md)
 - `docs/eleven-creative/services/productions/overview` — [Productions](pages/docs/eleven-creative/services/productions/overview.md) · [原文](https://elevenlabs.io/docs/eleven-creative/services/productions/overview.md)
-- `docs/eleven-creative/services/productions/subtitles` — [Subtitles](pages/docs/eleven-creative/services/productions/subtitles.md) · [原文](https://elevenlabs.io/docs/eleven-creative/services/productions/subtitles.md)
 - `docs/eleven-creative/services/productions/transcripts` — [Transcripts](pages/docs/eleven-creative/services/productions/transcripts.md) · [原文](https://elevenlabs.io/docs/eleven-creative/services/productions/transcripts.md)
 - `docs/eleven-creative/troubleshooting` — [Troubleshooting](pages/docs/eleven-creative/troubleshooting.md) · [原文](https://elevenlabs.io/docs/eleven-creative/troubleshooting.md)
 - `docs/eleven-creative/voices/payouts` — [Payouts](pages/docs/eleven-creative/voices/payouts.md) · [原文](https://elevenlabs.io/docs/eleven-creative/voices/payouts.md)
@@ -1361,7 +1360,6 @@
 - `docs/overview/capabilities/voice-isolator` — [Voice isolator](pages/docs/overview/capabilities/voice-isolator.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/voice-isolator.md)
 - `docs/overview/capabilities/voice-remixing` — [Voice remixing](pages/docs/overview/capabilities/voice-remixing.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/voice-remixing.md)
 - `docs/overview/capabilities/voices` — [Voices](pages/docs/overview/capabilities/voices.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/voices.md)
-- `docs/overview/intro` — [ElevenLabs Documentation](pages/docs/overview/intro.md) · [原文](https://elevenlabs.io/docs/overview/intro.md)
 - `docs/overview/models` — [Models](pages/docs/overview/models.md) · [原文](https://elevenlabs.io/docs/overview/models.md)
 - `docs/reception-ai/billing/plans-and-pricing` — [Plans and pricing](pages/docs/reception-ai/billing/plans-and-pricing.md) · [原文](https://elevenlabs.io/docs/reception-ai/billing/plans-and-pricing.md)
 - `docs/reception-ai/billing/referral-program` — [Referral program](pages/docs/reception-ai/billing/referral-program.md) · [原文](https://elevenlabs.io/docs/reception-ai/billing/referral-program.md)

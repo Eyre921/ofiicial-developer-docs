@@ -20,14 +20,14 @@ ElevenAgents Architect's own instructions are fixed, but you control the context
 
 To open them, go to the agent's **Settings** > **Architect** tab, or to **Workspace Settings** > **Architect**. You can also select **Customization** on the Architect tab home page. The workspace page also lists the agent context for each of your agents.
 
-![Customization on the Architect tab](/docs/_fern-img/b374ed85570a53cde1f0617a3e537af3f7a4c92c83c02d63eb59f528d2668c5b.webp)
+![Customization on the Architect tab](/docs/_fern-files/_img/b374ed85570a53cde1f0617a3e537af3f7a4c92c83c02d63eb59f528d2668c5b.webp)
 
 > **Note**
 >
 > These documents only guide how Architect helps you build. They don't change the agent's runtime
 > behavior or the system prompt it uses with callers.
 
-![Architect settings for an agent](/docs/_fern-img/d12588d007d18de1de31d047da07e5da57cce7f9fca6203becc7449c3ab1e809.webp)
+![Architect settings for an agent](/docs/_fern-files/_img/d12588d007d18de1de31d047da07e5da57cce7f9fca6203becc7449c3ab1e809.webp)
 
 ## Defining the standards ElevenAgents Architect follows
 

@@ -154,7 +154,7 @@ You can use these placeholders in the feedback text:
 
 You can see an estimated cost (under the prompt) when creating or editing a custom guardrail.
 
-![Custom guardrail cost estimation](/docs/_fern-img/a829a7451a1bb209dcbbe718dc75c3f6a28191f4de8ad6be44da6e0b7d4466ec.webp)
+![Custom guardrail cost estimation](/docs/_fern-files/_img/a829a7451a1bb209dcbbe718dc75c3f6a28191f4de8ad6be44da6e0b7d4466ec.webp)
 
 > **Note**
 >

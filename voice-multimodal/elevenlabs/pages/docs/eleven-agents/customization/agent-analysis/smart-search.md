@@ -15,7 +15,7 @@ Conversation history includes a search bar with two modes for finding messages a
 Keyword search performs full-text matching and supports the same filters as the conversation list (time range, duration, ratings, tools, languages, and more). Smart search uses semantic search to match transcript chunks by meaning — useful when you don't know the exact phrasing a caller used.
 
 ![Conversation history search field with the search mode menu
-open](/docs/_fern-img/5a8ee4f43638200e84fc77961ee4388ea3a32314c03a7e74ffaba6acf695ee68.webp)
+open](/docs/_fern-files/_img/5a8ee4f43638200e84fc77961ee4388ea3a32314c03a7e74ffaba6acf695ee68.webp)
 
 > **Note**
 >

@@ -13,7 +13,7 @@ path: docs/eleven-creative/audio-tools/voiceover-studio
 > Voiceover Studio will be sunset on **May 15, 2026**. For all new projects, use [ElevenCreative Studio](/docs/eleven-creative/products/studio). You can also open Studio directly at
 > [elevenlabs.io/app/studio](https://elevenlabs.io/app/studio).
 
-![Voiceover studio](/docs/_fern-img/051b3139b84d462fcaa5bcf11d7ca2e7be093fa226ac08e7d827c447ee97ae4a.webp)
+![Voiceover studio](/docs/_fern-files/_img/051b3139b84d462fcaa5bcf11d7ca2e7be093fa226ac08e7d827c447ee97ae4a.webp)
 
 ## Overview
 

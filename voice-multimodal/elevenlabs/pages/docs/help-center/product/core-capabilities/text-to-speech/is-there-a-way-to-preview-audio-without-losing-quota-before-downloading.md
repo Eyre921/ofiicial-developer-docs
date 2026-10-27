@@ -20,11 +20,11 @@ We do permit two free regenerations in Text to Speech via the website in the fol
 
 If this is the case, you will see 'Regenerate speech', and the number of free regenerations remaining will be displayed if you hover over the 'Regenerate speech' button:
 
-![](/docs/_fern-img/9b75422ebf4bee357d8eb5384d30e03a3c4c5102f422cb87c22ff09c1bfe1c8d.webp)
+![](/docs/_fern-files/_img/9b75422ebf4bee357d8eb5384d30e03a3c4c5102f422cb87c22ff09c1bfe1c8d.webp)
 
 Once your free regenerations have been used, the button will return to 'Generate speech', and the number of credits that will be used for the generation will be displayed:
 
-![](/docs/_fern-img/72b5058ea9066fbad31cf1a38453ba35947cc7486eb06ded307d1ae13c1011d4.webp)
+![](/docs/_fern-files/_img/72b5058ea9066fbad31cf1a38453ba35947cc7486eb06ded307d1ae13c1011d4.webp)
 
 Free regenerations are only available in Text to Speech via the website. They are not available via the API.
 

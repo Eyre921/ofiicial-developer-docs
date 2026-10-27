@@ -38,4 +38,4 @@ You can:
 * **Browse the Voice Library** and use the search filters to find suitable voices that
   match your needs.
 
-![](/docs/_fern-img/b3e4de803d69ffbd3aed314c2c5f9defa87d3d7fd6fc1931a4a02278041c1c43.webp)
+![](/docs/_fern-files/_img/b3e4de803d69ffbd3aed314c2c5f9defa87d3d7fd6fc1931a4a02278041c1c43.webp)

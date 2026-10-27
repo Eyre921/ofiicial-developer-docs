@@ -169,7 +169,7 @@ Yes, we offer annual plans for all of our subscription tiers. At the moment, we 
 
 On our [pricing page](https://elevenlabs.io/pricing) and [subscription page](https://elevenlabs.io/app/subscription), you can toggle between monthly and annual plans to see the different pricing and options available.
 
-![](/docs/_fern-img/5061fc9c3052f020d44e9760a4887a4bb972e4b02b959d9ad68414cb4a2e1730.webp)
+![](/docs/_fern-files/_img/5061fc9c3052f020d44e9760a4887a4bb972e4b02b959d9ad68414cb4a2e1730.webp)
 
 Annual plans are billed on an annual cycle and will renew automatically unless cancelled.
 
@@ -314,17 +314,17 @@ The screenshots below show the browser payment settings to enable in Chrome for 
 
 
 
-![](/docs/_fern-img/1b4dfe694da01f17db72c894b6fcf7a565de0835f6f2bb743e91e8c578aa99b8.webp)
+![](/docs/_fern-files/_img/1b4dfe694da01f17db72c894b6fcf7a565de0835f6f2bb743e91e8c578aa99b8.webp)
 
 
 
-![](/docs/_fern-img/aa530c55277c6b502d5a8d972c7794ec26d7e6aac1bd43b0691b5bd0b8f55be5.webp)
+![](/docs/_fern-files/_img/aa530c55277c6b502d5a8d972c7794ec26d7e6aac1bd43b0691b5bd0b8f55be5.webp)
 
 
 
 
 
-![](/docs/_fern-img/25f3fa160ce62ea0879b21a3e5db0beee14ebb8e5055c74abb0b17e0568dfa6f.webp)
+![](/docs/_fern-files/_img/25f3fa160ce62ea0879b21a3e5db0beee14ebb8e5055c74abb0b17e0568dfa6f.webp)
 
 #### Can I pay for my ElevenLabs subscription in INR?
 
@@ -360,7 +360,7 @@ Usage based billing is a legacy feature, and is not available on new self-serve 
 
 For self-serve subscriptions, Pay As You Go is our replacement for usage based billing. For more information, see our [Pay As You Go documentation. ](/docs/overview/administration/pay-as-you-go)
 
-![](/docs/_fern-img/707e3ca222db4b26e352bda08d034698c5c69d7cb0836c19ce2f83c65b9b12df.webp)
+![](/docs/_fern-files/_img/707e3ca222db4b26e352bda08d034698c5c69d7cb0836c19ce2f83c65b9b12df.webp)
 
 On Enterprise and legacy Creator, Pro, Scale and Business plans, you have the option to activate usage based billing. If you're on an eligible plan, here’s how to enable usage based billing for your account:
 
@@ -392,7 +392,7 @@ For self-serve subscriptions, Pay As You Go is our replacement for usage based b
 
 On Enterprise and legacy Creator, Pro, Scale and Business plans, you have the option to activate usage based billing. This will enable you to pay for additional credits used after exceeding your monthly quota.
 
-![](/docs/_fern-img/bb3f6653c5ab9e8087db9801d24e8a52ce7bdeda7a45ef1e661122199b013656.webp)
+![](/docs/_fern-files/_img/bb3f6653c5ab9e8087db9801d24e8a52ce7bdeda7a45ef1e661122199b013656.webp)
 
 To allow for more control over charges, usage based billing lets you set a maximum number of additional credits that can be used on your account. You can set this threshold when you enable usage based billing, or adjust it at any time.
 
