@@ -6,7 +6,7 @@ path: sdk/python/guides/flask
 
 Set up Turso in your Flask project in minutes
 
-<img alt="Flask banner" />
+![Flask banner](https://mintcdn.com/turso/7mjM7fXIfeZ8ZwNC/images/guides/flask-banner.png?fit=max\&auto=format\&n=7mjM7fXIfeZ8ZwNC\&q=85\&s=29d0d7405a0b24c0f3ccf312ac32ad4b)
 
 ## Prerequisites
 
@@ -16,73 +16,69 @@ Before you start, make sure you:
 * [Sign up or login to Turso](/cli/authentication#signup)
 * Have a Flask app — [learn more](https://flask.palletsprojects.com/en/3.0.x/installation/#create-an-environment)
 
-<Steps>
-  <Step title="Install the libSQL dialect">
-    ```bash theme={null}
-    pip install sqlalchemy-libsql python-dotenv
-    ```
-  </Step>
+**1. Install the libSQL dialect**
 
-  <Step title="Retrieve database credentials">
-    <Snippet />
-  </Step>
+```bash theme={null}
+pip install sqlalchemy-libsql python-dotenv
+```
 
-  <Step title="Create database models">
-    ```python models.py theme={null}
-    from sqlalchemy import String
-    from sqlalchemy.orm import DeclarativeBase
-    from sqlalchemy.orm import Mapped
-    from sqlalchemy.orm import mapped_column
+**2. Retrieve database credentials**
 
-    class Base(DeclarativeBase):
-        pass
+<Snippet />
 
-    class Item(Base):
-        __tablename__ = "items"
-        id: Mapped[str] = mapped_column(primary_key=True)
-        foo: Mapped[str] = mapped_column(String(255))
-        bar: Mapped[str] = mapped_column(String(100))
-        def __repr__(self) -> str:
-            return f"Item(id={self.id!r}, foo={self.foo!r}, bar={self.bar!r})"
-    ```
-  </Step>
+**3. Create database models**
 
-  <Step title="Query">
-    ```python theme={null}
-    from dotenv import load_dotenv
-    from sqlalchemy import create_engine
-    from sqlalchemy.orm import Session
-    from sqlalchemy import select
-    from models import Item
+```python models.py theme={null}
+from sqlalchemy import String
+from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.orm import Mapped
+from sqlalchemy.orm import mapped_column
 
-    load_dotenv()
+class Base(DeclarativeBase):
+    pass
 
-    # Get environment variables
-    TURSO_DATABASE_URL = os.environ.get("TURSO_DATABASE_URL")
-    TURSO_AUTH_TOKEN = os.environ.get("TURSO_AUTH_TOKEN")
+class Item(Base):
+    __tablename__ = "items"
+    id: Mapped[str] = mapped_column(primary_key=True)
+    foo: Mapped[str] = mapped_column(String(255))
+    bar: Mapped[str] = mapped_column(String(100))
+    def __repr__(self) -> str:
+        return f"Item(id={self.id!r}, foo={self.foo!r}, bar={self.bar!r})"
+```
 
-    # construct special SQLAlchemy URL
-    dbUrl = f"sqlite+{TURSO_DATABASE_URL}/?authToken={TURSO_AUTH_TOKEN}&secure=true"
+**4. Query**
 
-    engine = create_engine(dbUrl, connect_args={'check_same_thread': False}, echo=True)
+```python theme={null}
+from dotenv import load_dotenv
+from sqlalchemy import create_engine
+from sqlalchemy.orm import Session
+from sqlalchemy import select
+from models import Item
 
-    @app.route("/", methods=(["GET"]))
-    def home():
-        session = Session(engine)
+load_dotenv()
 
-        # get & print items
-        stmt = select(Item)
+# Get environment variables
+TURSO_DATABASE_URL = os.environ.get("TURSO_DATABASE_URL")
+TURSO_AUTH_TOKEN = os.environ.get("TURSO_AUTH_TOKEN")
 
-        for item in session.scalars(stmt):
-            print(item)
-    ```
-  </Step>
-</Steps>
+# construct special SQLAlchemy URL
+dbUrl = f"sqlite+{TURSO_DATABASE_URL}/?authToken={TURSO_AUTH_TOKEN}&secure=true"
+
+engine = create_engine(dbUrl, connect_args={'check_same_thread': False}, echo=True)
+
+@app.route("/", methods=(["GET"]))
+def home():
+    session = Session(engine)
+
+    # get & print items
+    stmt = select(Item)
+
+    for item in session.scalars(stmt):
+        print(item)
+```
 
 ## Examples
 
-<CardGroup>
-  <Card title="Social App" icon="github" href="https://github.com/tursodatabase/examples/tree/master/app-find-me-on-python-htmx">
-    See the full source code
-  </Card>
-</CardGroup>
+> **[Social App](https://github.com/tursodatabase/examples/tree/master/app-find-me-on-python-htmx)**
+>
+> See the full source code

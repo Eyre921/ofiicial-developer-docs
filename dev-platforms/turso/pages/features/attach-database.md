@@ -6,11 +6,11 @@ path: features/attach-database
 
 Attach and read data across multiple databases.
 
-<Warning>
-  This feature is now deprecated for all new users. Existing paid users can
-  continue to use `ATTACH` — [read the
-  announcement](https://turso.tech/blog/upcoming-changes-to-the-turso-platform-and-roadmap)
-</Warning>
+> [!WARNING]
+>
+> This feature is now deprecated for all new users. Existing paid users can
+> continue to use `ATTACH` — [read the
+> announcement](https://turso.tech/blog/upcoming-changes-to-the-turso-platform-and-roadmap)
 
 The `ATTACH` statement enables you to link multiple databases within a single transaction, which is ideal for:
 
@@ -35,98 +35,92 @@ You can use the `ATTACH` statement to connect to other databases within a transa
 
 Make sure you have the [Turso CLI](/cli/installation) installed, and [logged in](/cli/auth/login).
 
-<Steps>
-  <Step title="Enable attach on required databases">
-    You will first need to enable the `ATTACH` feature on the database(s) you want to attach:
+**1. Enable attach on required databases**
 
-    ```bash theme={null}
-    turso db config attach allow <database-name>
-    ```
-  </Step>
+You will first need to enable the `ATTACH` feature on the database(s) you want to attach:
 
-  <Step title="Retrieve Database ID">
-    You now need to retrieve the **Database ID** for the database you want to `ATTACH`:
+```bash theme={null}
+turso db config attach allow <database-name>
+```
 
-    ```bash theme={null}
-    turso db show <database-name>
-    ```
-  </Step>
+**2. Retrieve Database ID**
 
-  <Step title="Connect to any database with attach">
-    Now pass the names of the databases via the `--attach` flag when connecting to your database(s):
+You now need to retrieve the **Database ID** for the database you want to `ATTACH`:
 
-    ```bash theme={null}
-    turso db shell <database-name> --attach <...database-name(s)>
-    ```
-  </Step>
+```bash theme={null}
+turso db show <database-name>
+```
 
-  <Step title="ATTACH">
-    Now once connected to the database you can invoke an `ATTACH` statement to connect the other database(s):
+**3. Connect to any database with attach**
 
-    ```sql theme={null}
-    ATTACH "<database-id>" AS my_db;
-    ```
-  </Step>
+Now pass the names of the databases via the `--attach` flag when connecting to your database(s):
 
-  <Step title="Query">
-    Execute a query using the alias for any attached database(s):
+```bash theme={null}
+turso db shell <database-name> --attach <...database-name(s)>
+```
 
-    ```sql theme={null}
-    SELECT * FROM my_db.my_table;
-    ```
-  </Step>
-</Steps>
+**4. ATTACH**
+
+Now once connected to the database you can invoke an `ATTACH` statement to connect the other database(s):
+
+```sql theme={null}
+ATTACH "<database-id>" AS my_db;
+```
+
+**5. Query**
+
+Execute a query using the alias for any attached database(s):
+
+```sql theme={null}
+SELECT * FROM my_db.my_table;
+```
 
 ### libSQL SDKs
 
 You can use one of the libSQL client SDKs with [TypeScript](/sdk/ts), [Rust](/sdk/rust), [Go](/sdk/go), [Python](/sdk/python), or over [HTTP](/sdk/http).
 
-<Steps>
-  <Step title="Enable attach on required databases">
-    You will first need to enable the `ATTACH` feature on the database(s) you want to attach:
+**1. Enable attach on required databases**
 
-    ```bash theme={null}
-    turso db config attach allow <database-name>
-    ```
-  </Step>
+You will first need to enable the `ATTACH` feature on the database(s) you want to attach:
 
-  <Step title="Retrieve Database ID">
-    You now need to retrieve the **Database ID** for the database you want to `ATTACH`:
+```bash theme={null}
+turso db config attach allow <database-name>
+```
 
-    ```bash theme={null}
-    turso db show <database-name>
-    ```
-  </Step>
+**2. Retrieve Database ID**
 
-  <Step title="Create token with ATTACH permissions">
-    Now create a token for the libSQL client with the `attach` permission for the database you want to attach:
+You now need to retrieve the **Database ID** for the database you want to `ATTACH`:
 
-    ```bash theme={null}
-    turso db tokens create <database-name> --attach <another-database-name>
-    ```
-  </Step>
+```bash theme={null}
+turso db show <database-name>
+```
 
-  <Step title="Connect to any database with ATTACH">
-    Use a [Client SDK](/sdk) to attach the desired database within a read transaction:
+**3. Create token with ATTACH permissions**
 
-    <CodeGroup>
-      ```ts @libsql/client theme={null}
-      import { createClient } from "@libsql/client";
+Now create a token for the libSQL client with the `attach` permission for the database you want to attach:
 
-      const client = createClient({
-        syncUrl: "libsql://...",
-        authToken: "...",
-      });
+```bash theme={null}
+turso db tokens create <database-name> --attach <another-database-name>
+```
 
-      const txn = await db.transaction("read");
+**4. Connect to any database with ATTACH**
 
-      await txn.execute('ATTACH "<database-id>" AS my_db');
+Use a [Client SDK](/sdk) to attach the desired database within a read transaction:
 
-      const rs = await txn.execute("SELECT * FROM my_db.my_table");
-      ```
-    </CodeGroup>
-  </Step>
-</Steps>
+```ts @libsql/client theme={null}
+import { createClient } from "@libsql/client";
+
+const client = createClient({
+  syncUrl: "libsql://...",
+  authToken: "...",
+});
+
+const txn = await db.transaction("read");
+
+await txn.execute('ATTACH "<database-id>" AS my_db');
+
+const rs = await txn.execute("SELECT * FROM my_db.my_table");
+```
 
 ## Things to know
 

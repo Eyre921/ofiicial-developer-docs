@@ -4,57 +4,55 @@ source: https://docs.turso.tech/connect/python
 path: connect/python
 ---
 
-<Steps>
-  <Step title="Install">
-    Add the Turso package to your Python project:
+**1. Install**
 
-    ```bash theme={null}
-    uv pip install pyturso
-    ```
-  </Step>
+Add the Turso package to your Python project:
 
-  <Step title="Connect">
-    Here's how you can connect to a local SQLite database:
+```bash theme={null}
+uv pip install pyturso
+```
 
-    ```python theme={null}
-    import turso
+**2. Connect**
 
-    con = turso.connect("sqlite.db")
-    cur = con.cursor()
-    ```
-  </Step>
+Here's how you can connect to a local SQLite database:
 
-  <Step title="Create table">
-    Create a table for users:
+```python theme={null}
+import turso
 
-    ```python theme={null}
-    cur.execute("""
-      CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username TEXT NOT NULL
-      )
-    """)
-    con.commit()
-    ```
-  </Step>
+con = turso.connect("sqlite.db")
+cur = con.cursor()
+```
 
-  <Step title="Insert data">
-    Insert some data into the users table:
+**3. Create table**
 
-    ```python theme={null}
-    cur.execute("INSERT INTO users (username) VALUES (?)", ("alice",))
-    cur.execute("INSERT INTO users (username) VALUES (?)", ("bob",))
-    con.commit()
-    ```
-  </Step>
+Create a table for users:
 
-  <Step title="Query data">
-    Query all users from the table:
+```python theme={null}
+cur.execute("""
+  CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL
+  )
+""")
+con.commit()
+```
 
-    ```python theme={null}
-    res = cur.execute("SELECT * FROM users")
-    users = res.fetchall()
-    print(users)
-    ```
-  </Step>
-</Steps>
+**4. Insert data**
+
+Insert some data into the users table:
+
+```python theme={null}
+cur.execute("INSERT INTO users (username) VALUES (?)", ("alice",))
+cur.execute("INSERT INTO users (username) VALUES (?)", ("bob",))
+con.commit()
+```
+
+**5. Query data**
+
+Query all users from the table:
+
+```python theme={null}
+res = cur.execute("SELECT * FROM users")
+users = res.fetchall()
+print(users)
+```

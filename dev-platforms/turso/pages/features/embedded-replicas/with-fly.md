@@ -6,7 +6,7 @@ path: features/embedded-replicas/with-fly
 
 Deploy a JavaScript app using [Turso Cloud embedded replicas](/features/embedded-replicas) to [Fly.io](https://www.fly.io/).
 
-<img alt="Koyeb banner" />
+![Koyeb banner](https://mintcdn.com/turso/7mjM7fXIfeZ8ZwNC/images/platforms/fly-banner.png?fit=max\&auto=format\&n=7mjM7fXIfeZ8ZwNC\&q=85\&s=f3d7f266e79052e9d176d519a4a277fc)
 
 ## Prerequisites
 
@@ -16,73 +16,71 @@ Before you start, make sure you:
 * [Sign up or login to Turso Cloud](/cli/authentication#signup)
 * [Install the Fly.io CLI](https://fly.io/docs/hands-on/install-flyctl/)
 
-<Steps>
-  <Step title="Locate your application">
-    You should have an application ready using your Turso Cloud database that you want to deploy to Fly.
-  </Step>
+**1. Locate your application**
 
-  <Step title="Launch with Fly">
-    Using the Fly CLI, launch it:
+You should have an application ready using your Turso Cloud database that you want to deploy to Fly.
 
-    ```bash theme={null}
-    fly launch
-    ```
+**2. Launch with Fly**
 
-    Your application will automatically deploy to Fly, but we're not ready yet.
-  </Step>
+Using the Fly CLI, launch it:
 
-  <Step title="Create a shared volume">
-    Now create a volume that will be used to store the embedded replica(s):
+```bash theme={null}
+fly launch
+```
 
-    ```bash theme={null}
-    fly volumes create libsql_data
-    ```
-  </Step>
+Your application will automatically deploy to Fly, but we're not ready yet.
 
-  <Step title="Mount and configure volumes">
-    The files `fly.toml` and `Dockerfile` created created when you launched previously.
+**3. Create a shared volume**
 
-    Update `fly.toml` this file to mount the new volume:
+Now create a volume that will be used to store the embedded replica(s):
 
-    ```toml theme={null}
-    [[mounts]]
-    source = "libsql_data"
-    destination = "/app/data"
-    ```
+```bash theme={null}
+fly volumes create libsql_data
+```
 
-    Then inside `Dockerfile`, make sure you install and update `ca-certificates`:
+**4. Mount and configure volumes**
 
-    ```dockerfile theme={null}
-    RUN apt-get update -qq && \
-        apt-get install -y ca-certificates && \
-        update-ca-certificates
-    ```
+The files `fly.toml` and `Dockerfile` created created when you launched previously.
 
-    Make sure to also add the following line after any `COPY` commands to copy the certificates:
+Update `fly.toml` this file to mount the new volume:
 
-    ```dockerfile theme={null}
-    COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
-    ```
-  </Step>
+```toml theme={null}
+[[mounts]]
+source = "libsql_data"
+destination = "/app/data"
+```
 
-  <Step title="Configure the libSQL client">
-    You will want to change the `url` to point to a local file, and set the `syncUrl` to be your Turso Cloud database URL:
+Then inside `Dockerfile`, make sure you install and update `ca-certificates`:
 
-    ```ts theme={null}
-    import { createClient } from "@libsql/client";
+```dockerfile theme={null}
+RUN apt-get update -qq && \
+    apt-get install -y ca-certificates && \
+    update-ca-certificates
+```
 
-    const client = createClient({
-      url: "file:/app/data/local.db",
-      syncUrl: process.env.TURSO_DATABASE_URL,
-      authToken: process.env.TURSO_AUTH_TOKEN,
-      syncInterval: 60,
-    });
-    ```
-  </Step>
+Make sure to also add the following line after any `COPY` commands to copy the certificates:
 
-  <Step title="Deploy your updated app">
-    ```bash theme={null}
-    fly deploy
-    ```
-  </Step>
-</Steps>
+```dockerfile theme={null}
+COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+```
+
+**5. Configure the libSQL client**
+
+You will want to change the `url` to point to a local file, and set the `syncUrl` to be your Turso Cloud database URL:
+
+```ts theme={null}
+import { createClient } from "@libsql/client";
+
+const client = createClient({
+  url: "file:/app/data/local.db",
+  syncUrl: process.env.TURSO_DATABASE_URL,
+  authToken: process.env.TURSO_AUTH_TOKEN,
+  syncInterval: 60,
+});
+```
+
+**6. Deploy your updated app**
+
+```bash theme={null}
+fly deploy
+```

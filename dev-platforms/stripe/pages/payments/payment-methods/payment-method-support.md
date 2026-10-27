@@ -132,7 +132,7 @@ To determine which payment methods each Stripe product supports, refer to the fo
 | [Billie](https://docs.stripe.com/payments/billie.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | - Unsupported |
 | [Klarna](https://docs.stripe.com/payments/klarna.md) | ✓ Supported | ✓ Supported 5 | ✓ Supported | ✓ Supported | ✓ Supported3 | ✓ Supported | ✓ Supported | ✓ Supported 4 | - Unsupported | (Private preview) |
 | [Kriya](https://docs.stripe.com/payments/kriya.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | - Unsupported |
-| [Mondu](https://docs.stripe.com/payments/mondu.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | - Unsupported |
+| [Mondu](https://docs.stripe.com/payments/mondu.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | - Unsupported |
 | [Scalapay](https://docs.stripe.com/payments/scalapay.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | - Unsupported |
 | [SeQura](https://docs.stripe.com/payments/sequra.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | - Unsupported | ✓ Supported 4 | - Unsupported | - Unsupported |
 | [Sunbit](https://docs.stripe.com/payments/sunbit.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | - Unsupported |

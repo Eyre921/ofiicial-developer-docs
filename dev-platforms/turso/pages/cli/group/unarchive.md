@@ -10,6 +10,6 @@ You can unarchive inactive databases by running the following command:
 turso group unarchive <group-name>
 ```
 
-<Info>
-  Databases get archived after 10 days of inactivity for users on a free plan.
-</Info>
+> [!NOTE]
+>
+> Databases get archived after 10 days of inactivity for users on a free plan.

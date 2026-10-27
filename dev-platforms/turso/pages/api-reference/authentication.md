@@ -10,13 +10,13 @@ Tokens can be minted at three levels of restriction:
 
 | Restriction | What it can do | How to mint |
 | - | - | - |
-| Organization-scoped | Restricted to a single organization. | `turso auth api-tokens mint my-token --org my-org` |
+| Organization-scoped | Restricted to a single organization. Optionally limited to a set of [scopes](#organization-scoped-tokens-with-scopes). | `turso auth api-tokens mint my-token --org my-org` |
 | Group-scoped | Pinned to one group inside an organization, with a chosen set of permissions. | `turso auth api-tokens mint my-token --org my-org --group default --read-only` |
 | Unrestricted *(deprecated)* | Acts on every organization the caller belongs to. | `turso auth api-tokens mint my-token` |
 
-<Warning>
-  **Unrestricted (cross-org) tokens are deprecated and will be removed in a future release.** New tokens should always be scoped to an organization with `--org`. Existing unrestricted tokens continue to work for now, but you should rotate them to scoped tokens at your earliest convenience.
-</Warning>
+> [!WARNING]
+>
+> **Unrestricted (cross-org) tokens are deprecated and will be removed in a future release.** New tokens should always be scoped to an organization with `--org`. Existing unrestricted tokens continue to work for now, but you should rotate them to scoped tokens at your earliest convenience.
 
 ```bash theme={null}
 # Token scoped to a single organization
@@ -39,15 +39,41 @@ Turso uses Bearer authentication, and requires your API token to be passed with 
 Authorization: Bearer TOKEN
 ```
 
+## Organization-scoped tokens with scopes
+
+An organization-scoped token without scopes can do everything that the user who minted it can do in the organization. To limit it, mint it with scopes. The token can then do only the listed operations, in every group of the organization.
+
+```bash theme={null}
+# Read the audit logs, members, and billing data of the organization
+turso auth api-tokens mint audit-reader --org my-org --scope org:read
+
+# Create databases and mint SQL tokens in every group
+turso auth api-tokens mint deploy-bot --org my-org --scope db:create --scope db:mint-token
+```
+
+An organization-scoped token can have all the [group scopes](#scope-vocabulary). It can also have these organization scopes, which group-scoped tokens cannot have:
+
+| Scope | Allows |
+| - | - |
+| `group:create` | Create groups in the organization. |
+| `group:delete` | Delete groups in the organization. |
+| `org:read` | Read organization data: members, invites, billing, invoices, audit logs, SSO, JWKS, and API tokens. |
+
+Reading invites and audit logs also requires that the user who minted the token is an admin or owner of the organization.
+
+A token with scopes cannot do operations that have no scope. These include managing members and invites, changing organization settings, transferring groups or databases, and minting API tokens. Use a token without scopes for these operations.
+
+The `full-access` preset does not include the organization scopes. To grant them, list each scope with `--scope`.
+
 ## Group-scoped tokens
 
 A group-scoped token is a Platform API credential pinned to one group inside an organization, with an explicit list of allowed operations. It's the right shape for automations that should be able to provision and manage databases inside a single group without being able to reach the rest of the organization.
 
 The caller minting a group-scoped token must be an admin or owner of the organization.
 
-<Note>
-  Group-scoped tokens are control-plane credentials — they authorize requests to the Turso Platform API. They are independent from the [SQL-engine tokens](/sdk/authorization/tokens) that your application uses to query a database. The two systems do not share key material or vocabulary.
-</Note>
+> [!NOTE]
+>
+> Group-scoped tokens are control-plane credentials — they authorize requests to the Turso Platform API. They are independent from the [SQL-engine tokens](/sdk/authorization/tokens) that your application uses to query a database. The two systems do not share key material or vocabulary.
 
 ### Scope vocabulary
 
@@ -58,16 +84,16 @@ The platform expands the presets `read-only` and `full-access` to the correspond
 | `read` | All GET-style routes: list/retrieve databases and groups, configuration, usage, instances, locations. |
 | `db:create` | Create databases inside the group (`POST /databases`), seed from a dump, restore. |
 | `db:delete` | Delete a database inside the group. |
-| `db:configure` | Patch database configuration, transfer, wake, add or remove instances. |
+| `db:configure` | Patch database configuration, wake, add or remove instances. |
 | `db:mint-token` | Issue a SQL-engine token or TLS client certificate for a database inside the group. |
 | `db:rotate-creds` | Rotate the database signing key, invalidating every SQL token previously issued for it. |
 | `group:configure` | Configure, rename, update, unarchive the group, or add and remove locations. |
 | `group:mint-token` | Issue a group-level SQL-engine token. |
 | `group:rotate-creds` | Rotate the group signing key, invalidating every SQL token issued against any database in the group. |
 
-<Warning>
-  `db:mint-token` and `db:rotate-creds` are deliberately separate scopes. Minting a new SQL credential is additive; rotating invalidates every credential currently in use, which can take down running applications. Grant rotation only to automations that need it.
-</Warning>
+> [!WARNING]
+>
+> `db:mint-token` and `db:rotate-creds` are deliberately separate scopes. Minting a new SQL credential is additive; rotating invalidates every credential currently in use, which can take down running applications. Grant rotation only to automations that need it.
 
 ### Presets
 

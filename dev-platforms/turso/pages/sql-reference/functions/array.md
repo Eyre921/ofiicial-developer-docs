@@ -8,9 +8,9 @@ Create, manipulate, and query array values
 
 # Array Functions
 
-<Info>
-  **Turso Extension**: Array types and functions are a Turso-specific feature for working with ordered collections directly in SQL. These functions are not part of the SQLite standard. Array columns require [STRICT tables](/sql-reference/statements/create-table#strict-tables).
-</Info>
+> [!NOTE]
+>
+> **Turso Extension**: Array types and functions are a Turso-specific feature for working with ordered collections directly in SQL. These functions are not part of the SQLite standard. Array columns require [STRICT tables](/sql-reference/statements/create-table#strict-tables).
 
 Turso provides built-in support for array columns and a set of functions for constructing, querying, and transforming arrays. Arrays are stored internally as compact record-format BLOBs and displayed as JSON arrays on output.
 

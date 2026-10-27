@@ -206,9 +206,9 @@ SELECT glob('*.TXT', 'readme.txt');   -- 0 (case-sensitive)
 SELECT glob('H?llo', 'Hello');        -- 1
 ```
 
-<Info>
-  The `glob(X, Y)` function is the functional form of the `Y GLOB X` operator. Note the reversed argument order compared to the operator syntax.
-</Info>
+> [!NOTE]
+>
+> The `glob(X, Y)` function is the functional form of the `Y GLOB X` operator. Note the reversed argument order compared to the operator syntax.
 
 ### hex(X) and unhex(X)
 
@@ -277,9 +277,9 @@ SELECT like('H_llo', 'Hello');            -- 1
 SELECT like('10\%%', '10% discount', '\'); -- 1 (escaped %)
 ```
 
-<Info>
-  The `like(X, Y)` function is the functional form of the `Y LIKE X` operator. Note the reversed argument order compared to the operator syntax.
-</Info>
+> [!NOTE]
+>
+> The `like(X, Y)` function is the functional form of the `Y LIKE X` operator. Note the reversed argument order compared to the operator syntax.
 
 ### lower(X), upper(X)
 
@@ -322,9 +322,9 @@ SELECT max('apple', 'banana'); -- 'banana'
 SELECT min(10, NULL, 3);      -- NULL
 ```
 
-<Info>
-  The multi-argument `max()` and `min()` are scalar functions. When called with a single argument inside an aggregate query (e.g., `SELECT max(salary) FROM employees`), they act as [aggregate functions](/sql-reference/functions/aggregate).
-</Info>
+> [!NOTE]
+>
+> The multi-argument `max()` and `min()` are scalar functions. When called with a single argument inside an aggregate query (e.g., `SELECT max(salary) FROM employees`), they act as [aggregate functions](/sql-reference/functions/aggregate).
 
 ### nullif(X, Y)
 
@@ -545,9 +545,9 @@ Loads a Turso-native extension from the shared library at path X.
 SELECT load_extension('./my_extension');
 ```
 
-<Info>
-  Extension loading must be enabled on the database connection. See the [Extensions documentation](/docs/extensions) for details on building and loading extensions.
-</Info>
+> [!NOTE]
+>
+> Extension loading must be enabled on the database connection. See the [Extensions documentation](/docs/extensions) for details on building and loading extensions.
 
 ## See Also
 

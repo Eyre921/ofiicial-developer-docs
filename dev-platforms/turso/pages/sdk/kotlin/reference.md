@@ -8,10 +8,10 @@ libSQL Android Reference
 
 <Snippet />
 
-<Note>
-  This will only work with the Android Gradle Plugin for now. Fully Kotlin
-  support is coming.
-</Note>
+> [!NOTE]
+>
+> This will only work with the Android Gradle Plugin for now. Fully Kotlin
+> support is coming.
 
 ## Installing
 
@@ -78,25 +78,23 @@ db.sync() // Call sync manually to update local database (only for EmbeddedRepli
 You can pass a string to `query()` to invoke a SQL statement, as well as
 optional arguments:
 
-<CodeGroup>
-  ```kotlin Execute theme={null}
-  db.connect().use {
-      it.execute("INSERT INTO users VALUES (?)", 1)
-  }
-  ```
+```kotlin Execute theme={null}
+db.connect().use {
+    it.execute("INSERT INTO users VALUES (?)", 1)
+}
+```
 
-  ```kotlin Query theme={null}
-  db.connect().use {
-      it.query("INSERT INTO users VALUES (?)", 1)
-  }
-  ```
+```kotlin Query theme={null}
+db.connect().use {
+    it.query("INSERT INTO users VALUES (?)", 1)
+}
+```
 
-  ```kotlin Arguments theme={null}
-  db.connect().use {
-      it.query("SELECT * FROM users WHERE id = ?", 1)
-  }
-  ```
-</CodeGroup>
+```kotlin Arguments theme={null}
+db.connect().use {
+    it.query("SELECT * FROM users WHERE id = ?", 1)
+}
+```
 
 ## Placeholders
 

@@ -7,35 +7,31 @@ path: api-reference/groups/create-token
 POST /v1/organizations/{organizationSlug}/groups/{groupName}/auth/tokens
 Generates an authorization token for the specified group.
 
-<Info>
-  Tokens cannot be retrieved once created, and cannot be revoked individually.
-</Info>
+> [!NOTE]
+>
+> Tokens cannot be retrieved once created, and cannot be revoked individually.
 
-<RequestExample>
-  ```bash cURL theme={null}
-  curl -L -X POST 'https://api.turso.tech/v1/organizations/{organizationSlug}/groups/{groupName}/auth/tokens?expiration=2w&authorization=full-access' \
-  -H 'Authorization: Bearer TOKEN'
-  ```
+```bash cURL theme={null}
+curl -L -X POST 'https://api.turso.tech/v1/organizations/{organizationSlug}/groups/{groupName}/auth/tokens?expiration=2w&authorization=full-access' \
+-H 'Authorization: Bearer TOKEN'
+```
 
-  ```ts Node.js theme={null}
-  import { createClient } from "@tursodatabase/api";
+```ts Node.js theme={null}
+import { createClient } from "@tursodatabase/api";
 
-  const turso = createClient({
-    org: "...",
-    token: "",
-  });
+const turso = createClient({
+  org: "...",
+  token: "",
+});
 
-  const token = await turso.groups.createToken("default", {
-    expiration: "2w",
-    authorization: "full-access",
-  });
-  ```
-</RequestExample>
+const token = await turso.groups.createToken("default", {
+  expiration: "2w",
+  authorization: "full-access",
+});
+```
 
-<ResponseExample>
-  ```json theme={null}
-  {
-    "jwt": "TOKEN"
-  }
-  ```
-</ResponseExample>
+```json theme={null}
+{
+  "jwt": "TOKEN"
+}
+```

@@ -16,7 +16,7 @@ The same API is also available in an OpenAI-compatible shape at [`POST /inferenc
 POST https://api.fireworks.ai/inference/v1/systemone
 ```
 
-Authenticate with your normal Fireworks API key. Set `model` to the System One model path, for example `accounts/<your-account>/models/<your-model>`. Models that don't support this API return a `400`.
+Authenticate with your normal Fireworks API key. Set `model` to the System One model path. The public Serverless model is [`accounts/fireworks/models/rune`](https://app.fireworks.ai/models/fireworks/rune), which serves this API and the Decisions API only; chat completions and completions against it return a `400`. Other models that don't support this API also return a `400`.
 
 ## Quickstart
 
@@ -145,7 +145,10 @@ Values above are illustrative.
 
 ## Pricing and capacity
 
-Billing, capacity, and rate limits depend on how the model is deployed. On a [dedicated deployment](/guides/ondemand-deployments), usage is billed at the deployment's standard on-demand GPU rate and capacity scales with the deployment's size and [autoscaling settings](/deployments/autoscaling).
+Billing, capacity, and rate limits depend on how the model is deployed.
+
+* **Serverless.** Rune is billed per input token on [Serverless pricing](/serverless/pricing). Output tokens are always zero. Capacity and rate limits work the same as for other Serverless models; see [Serverless rate limits](/serverless/rate-limits).
+* **Dedicated deployment.** Usage is billed at the deployment's standard on-demand GPU rate, and capacity scales with the deployment's size and [autoscaling settings](/deployments/autoscaling).
 
 ## Latency and caching
 

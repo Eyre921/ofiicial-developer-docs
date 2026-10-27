@@ -28,6 +28,8 @@ Serverless is priced per token. Three dimensions are billed:
 * **Cached input tokens** — input tokens served from prompt cache, discounted (default 50% of input on text and vision models, unless a model lists a different cached rate).
 * **Generated tokens** — what the model produces.
 
+Decision models such as [Rune 26B-A4B](https://app.fireworks.ai/models/fireworks/rune) are billed on input only: they return calibrated probabilities for typed questions and never generate tokens.
+
 Other things to know:
 
 * The `usage` object in each response is the source of truth for what was billed (`prompt_tokens`, `completion_tokens`, `total_tokens`).

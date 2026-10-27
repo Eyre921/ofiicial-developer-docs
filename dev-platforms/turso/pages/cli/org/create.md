@@ -10,6 +10,6 @@ To create a new organization that you own, run the following command:
 turso org create <name>
 ```
 
-<Info>
-  You will be asked to add a payment method and subscribe to the Scaler plan to successfully create a new organization.
-</Info>
+> [!NOTE]
+>
+> You will be asked to add a payment method and subscribe to the Scaler plan to successfully create a new organization.

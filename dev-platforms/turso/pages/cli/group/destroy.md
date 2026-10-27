@@ -10,11 +10,11 @@ You can destroy a group and all of its databases using the following command:
 turso group destroy <group-name> [flags]
 ```
 
-<Note>
-  On paid plans, a destroyed group and its databases can be restored for up to five
-  days — see
-  [Recover Deleted Databases](/features/recover-deleted-databases).
-</Note>
+> [!NOTE]
+>
+> On paid plans, a destroyed group and its databases can be restored for up to five
+> days — see
+> [Recover Deleted Databases](/features/recover-deleted-databases).
 
 ## Flags
 

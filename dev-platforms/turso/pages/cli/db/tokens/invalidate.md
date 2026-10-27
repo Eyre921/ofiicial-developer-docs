@@ -16,6 +16,6 @@ turso db tokens invalidate <database-name> [flags]
 | - | - |
 | `-y`, `--yes` | Confirms the invalidation of all existing db tokens. |
 
-<Warning>
-  All tokens in the group that provided database belongs will also be invalidated. This means that all existing tokens will no longer be valid and will need to be regenerated.
-</Warning>
+> [!WARNING]
+>
+> All tokens in the group that provided database belongs will also be invalidated. This means that all existing tokens will no longer be valid and will need to be regenerated.

@@ -103,9 +103,9 @@ Supported ciphers: `aegis256`, `aegis256x2`, `aegis128l`, `aegis128x2`, `aegis12
 
 Encrypted databases cannot be read as standard SQLite databases — you must use the Turso Database engine to open them.
 
-<Info>
-  Turso Cloud databases can also be encrypted with bring-your-own-key — [learn more](/cloud/encryption).
-</Info>
+> [!NOTE]
+>
+> Turso Cloud databases can also be encrypted with bring-your-own-key — [learn more](/cloud/encryption).
 
 ### Sync (Push and Pull)
 
@@ -191,9 +191,9 @@ let mut rows = conn.query("SELECT * FROM users WHERE id = ?1", [1]).await?;
 
 The `libsql` crate is built on [libSQL](https://github.com/tursodatabase/libsql), the open-source fork of SQLite that powers Turso Cloud today. It is production-ready and battle-tested, and is the right choice when you are working with an existing `libsql`-based codebase.
 
-<Info>
-  With `libsql` Embedded Replicas, reads are local and writes are sent to the cloud primary, then reflected back to the replica. Embedded Replicas are fully supported. For new projects that need sync, we recommend the `turso` crate with `turso::sync` — see the [quickstart](/sdk/rust/quickstart).
-</Info>
+> [!NOTE]
+>
+> With `libsql` Embedded Replicas, reads are local and writes are sent to the cloud primary, then reflected back to the replica. Embedded Replicas are fully supported. For new projects that need sync, we recommend the `turso` crate with `turso::sync` — see the [quickstart](/sdk/rust/quickstart).
 
 ### Embedded Replicas
 
@@ -243,17 +243,17 @@ let db = Builder::new_remote_replica("local.db", url, token)
 
 ### Encryption
 
-<Warning>
-  For new projects, we recommend the [`turso`](#turso) crate for local encryption — it is built on the Turso Database engine with better performance and concurrent write support.
-</Warning>
+> [!WARNING]
+>
+> For new projects, we recommend the [`turso`](#turso) crate for local encryption — it is built on the Turso Database engine with better performance and concurrent write support.
 
 To enable encryption on a SQLite file, pass the encryption key value as an argument to the constructor:
 
 <Snippet />
 
-<Info>
-  Encrypted databases appear as raw data and cannot be read as standard SQLite databases. You must use the libSQL client for any operations — [learn more](/libsql#encryption-at-rest).
-</Info>
+> [!NOTE]
+>
+> Encrypted databases appear as raw data and cannot be read as standard SQLite databases. You must use the libSQL client for any operations — [learn more](/libsql#encryption-at-rest).
 
 ### Conditional compilation
 
@@ -275,15 +275,13 @@ conn.execute("SELECT * FROM users WHERE id = ?1", [1]).await?;
 
 ### Placeholders
 
-<CodeGroup>
-  ```rust Positional theme={null}
-  conn.execute("SELECT * FROM users WHERE id = ?1", libsql::params![1]).await?;
-  ```
+```rust Positional theme={null}
+conn.execute("SELECT * FROM users WHERE id = ?1", libsql::params![1]).await?;
+```
 
-  ```rust Named theme={null}
-  conn.execute("INSERT INTO users (name) VALUES (:name)", libsql::named_params! { ":name": "Iku" }).await?;
-  ```
-</CodeGroup>
+```rust Named theme={null}
+conn.execute("INSERT INTO users (name) VALUES (:name)", libsql::named_params! { ":name": "Iku" }).await?;
+```
 
 ### Deserialization
 
@@ -317,23 +315,21 @@ conn.execute_batch(r#"
 
 ### Interactive Transactions
 
-<CodeGroup>
-  ```rust Default theme={null}
-  let tx = conn.transaction().await?;
+```rust Default theme={null}
+let tx = conn.transaction().await?;
 
-  tx.execute("INSERT INTO users (name) VALUES (?1)", ["Alice"]).await?;
-  tx.execute("INSERT INTO users (name) VALUES (?1)", ["Bob"]).await?;
+tx.execute("INSERT INTO users (name) VALUES (?1)", ["Alice"]).await?;
+tx.execute("INSERT INTO users (name) VALUES (?1)", ["Bob"]).await?;
 
-  tx.commit().await?;
-  ```
+tx.commit().await?;
+```
 
-  ```rust Advanced control theme={null}
-  use libsql::TransactionBehavior;
+```rust Advanced control theme={null}
+use libsql::TransactionBehavior;
 
-  let tx = conn.transaction_with_behavior(TransactionBehavior::Immediate).await?;
+let tx = conn.transaction_with_behavior(TransactionBehavior::Immediate).await?;
 
-  tx.execute("UPDATE users SET age = age + 1 WHERE id = ?1", [1]).await?;
+tx.execute("UPDATE users SET age = age + 1 WHERE id = ?1", [1]).await?;
 
-  tx.commit().await?;
-  ```
-</CodeGroup>
+tx.commit().await?;
+```

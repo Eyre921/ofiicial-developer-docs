@@ -26,9 +26,9 @@ Some Turso features are still experimental and must be explicitly enabled before
 | Multi-Process WAL | `multiprocess_wal` | [Multi-Process Access](/sql-reference/multiprocess-access) — share a database file between OS processes via a shared WAL coordinator |
 | MVCC Passive Checkpoint | `mvcc_passive_checkpoint` | Passive checkpointing under MVCC (`journal_mode=mvcc`) |
 
-<Info>
-  Triggers are no longer experimental as of Turso 0.7 — [CREATE TRIGGER](/sql-reference/statements/create-trigger) and [DROP TRIGGER](/sql-reference/statements/drop-trigger) work without any flag.
-</Info>
+> [!NOTE]
+>
+> Triggers are no longer experimental as of Turso 0.7 — [CREATE TRIGGER](/sql-reference/statements/create-trigger) and [DROP TRIGGER](/sql-reference/statements/drop-trigger) work without any flag.
 
 ## CLI
 

@@ -12,9 +12,9 @@ BYOK Encryption happens at the server level, making sure that nobody has access 
 
 Turso Cloud BYOK encryption for data at rest uses industry-standard AEAD algorithms. Each database page is encrypted individually, ensuring data integrity and security across all environments. BYOK encryption is available on Pro, and [Enterprise](https://tur.so/turso-enterprise-chat) plans.
 
-<Info>
-  **You hold the keys.** Each database can be encrypted with its own unique key that only you control. Turso never sees or stores your encryption keys. Encryption works seamlessly with both remote queries and sync.
-</Info>
+> [!NOTE]
+>
+> **You hold the keys.** Each database can be encrypted with its own unique key that only you control. Turso never sees or stores your encryption keys. Encryption works seamlessly with both remote queries and sync.
 
 * **Page-level encryption**: Each 4 KiB page is encrypted individually with a unique nonce
 * **AEAD algorithms**: Support for AEGIS-256, AES-GCM, and ChaCha20Poly1305
@@ -23,112 +23,104 @@ Turso Cloud BYOK encryption for data at rest uses industry-standard AEAD algorit
 
 Turso Cloud with BYOK encryption is perfect for:
 
-<CardGroup>
-  <Card title="AI Agents" icon="robot">
-    Manage a fleet of trusted agents that deal with personal private data
-  </Card>
+> **AI Agents**
+>
+> Manage a fleet of trusted agents that deal with personal private data
 
-  <Card title="Fintech Applications" icon="credit-card">
-    Meet regulatory requirements for sensitive financial data
-  </Card>
+> **Fintech Applications**
+>
+> Meet regulatory requirements for sensitive financial data
 
-  <Card title="Privacy-Focused Products" icon="user-shield">
-    Build user trust with strong data protection
-  </Card>
+> **Privacy-Focused Products**
+>
+> Build user trust with strong data protection
 
-  <Card title="Healthcare Apps" icon="heart-pulse">
-    Protect patient data and meet HIPAA compliance
-  </Card>
+> **Healthcare Apps**
+>
+> Protect patient data and meet HIPAA compliance
 
-  <Card title="AI/ML Applications" icon="brain">
-    Secure training data and model outputs
-  </Card>
-</CardGroup>
+> **AI/ML Applications**
+>
+> Secure training data and model outputs
 
 ## What's Encrypted
 
-<CardGroup>
-  <Card title="Encrypted" icon="lock">
-    * The database file and Write-Ahead Log (WAL) file on disk and on S3.
-  </Card>
-</CardGroup>
+> **Encrypted**
+>
+> * The database file and Write-Ahead Log (WAL) file on disk and on S3.
 
 ## Generate an Encryption Key
 
 Generate a secure encryption key in base64 format. The key size depends on the cipher you choose:
 
-<Tabs>
-  <Tab title="256-bit (32 bytes)">
-    For AEGIS-256 variants and AES-256-GCM:
+**256-bit (32 bytes)**
 
-    ```bash theme={null}
-    openssl rand -base64 32
-    ```
+For AEGIS-256 variants and AES-256-GCM:
 
-    Output example:
+```bash theme={null}
+openssl rand -base64 32
+```
 
-    ```
-    YUfkdsD2SJe4KzTB8n6CjwCgs1YIW6k1xxMEguRuI5s=
-    ```
-  </Tab>
+Output example:
 
-  <Tab title="128-bit (16 bytes)">
-    For AEGIS-128 variants and AES-128-GCM:
+```
+YUfkdsD2SJe4KzTB8n6CjwCgs1YIW6k1xxMEguRuI5s=
+```
 
-    ```bash theme={null}
-    openssl rand -base64 16
-    ```
+**128-bit (16 bytes)**
 
-    Output example:
+For AEGIS-128 variants and AES-128-GCM:
 
-    ```
-    XG1iWMFBFYEYrmYxjWDf5w==
-    ```
-  </Tab>
-</Tabs>
+```bash theme={null}
+openssl rand -base64 16
+```
 
-<Warning>
-  **Store your key securely!** If you lose the encryption key, you will not be
-  able to access your encrypted database. Keys are never stored anywhere in the Turso Cloud.
-</Warning>
+Output example:
+
+```
+XG1iWMFBFYEYrmYxjWDf5w==
+```
+
+> [!WARNING]
+>
+> **Store your key securely!** If you lose the encryption key, you will not be
+> able to access your encrypted database. Keys are never stored anywhere in the Turso Cloud.
 
 ## Create an Encrypted Database
 
-<Steps>
-  <Step title="Launch with encryption">
-    Use the `--remote-encryption-key`, `--remote-encryption-cipher` flags and specify your cipher and key in database creation command:
+**1. Launch with encryption**
 
-    ```bash theme={null}
-    turso db create my-secret-db --remote-encryption-key "YOUR_SECRET_KEY" --remote-encryption-cipher aegis128l
-    ```
+Use the `--remote-encryption-key`, `--remote-encryption-cipher` flags and specify your cipher and key in database creation command:
 
-    Replace `YOUR_SECRET_KEY` with the key you generated above. You can also set the `TURSO_DB_REMOTE_ENCRYPTION_KEY` environment variable instead of passing the flag each time.
-  </Step>
+```bash theme={null}
+turso db create my-secret-db --remote-encryption-key "YOUR_SECRET_KEY" --remote-encryption-cipher aegis128l
+```
 
-  <Step title="Create and insert data">
-    Use `--remote-encryption-key` flag to start the shell, create a table and insert some data:
+Replace `YOUR_SECRET_KEY` with the key you generated above. You can also set the `TURSO_DB_REMOTE_ENCRYPTION_KEY` environment variable instead of passing the flag each time.
 
-    ```bash theme={null}
-    turso db shell my-secret-db --remote-encryption-key "YOUR_SECRET_KEY"
-    ```
+**2. Create and insert data**
 
-    ```sql theme={null}
-    CREATE TABLE secrets (id INT, data TEXT);
-    INSERT INTO secrets VALUES (1, 'sensitive information');
-    INSERT INTO secrets VALUES (2, 'confidential data');
-    ```
-  </Step>
+Use `--remote-encryption-key` flag to start the shell, create a table and insert some data:
 
-  <Step title="Verify encryption">
-    Exit the shell (type `.quit`) and try to open the database without the key:
+```bash theme={null}
+turso db shell my-secret-db --remote-encryption-key "YOUR_SECRET_KEY"
+```
 
-    ```bash theme={null}
-    turso db shell my-secret-db
-    ```
+```sql theme={null}
+CREATE TABLE secrets (id INT, data TEXT);
+INSERT INTO secrets VALUES (1, 'sensitive information');
+INSERT INTO secrets VALUES (2, 'confidential data');
+```
 
-    You won't be able to access the data. The database is encrypted in the cloud.
-  </Step>
-</Steps>
+**3. Verify encryption**
+
+Exit the shell (type `.quit`) and try to open the database without the key:
+
+```bash theme={null}
+turso db shell my-secret-db
+```
+
+You won't be able to access the data. The database is encrypted in the cloud.
 
 ## Upload Existing Database
 
@@ -187,12 +179,12 @@ Modern, high-performance cipher family optimized for speed. **Recommended for mo
 | **AEGIS-256X2** | 256-bit (32 bytes) | `aegis256x2` | 2x parallel processing, 256-bit |
 | **AEGIS-256X4** | 256-bit (32 bytes) | `aegis256x4` | 4x parallel, maximum speed & security |
 
-<Info>
-  **Choosing a cipher:**
-
-  * Use `aegis128l` for 128 bit encryption, `aegis256` for 256 bit encryption (default recommendation)
-  * For AES, use `aes128gcm` for 128 bit encryption, `aes256gcm` or `chacha20poly1305` for 256 bit encryption
-</Info>
+> [!NOTE]
+>
+> **Choosing a cipher:**
+>
+> * Use `aegis128l` for 128 bit encryption, `aegis256` for 256 bit encryption (default recommendation)
+> * For AES, use `aes128gcm` for 128 bit encryption, `aes256gcm` or `chacha20poly1305` for 256 bit encryption
 
 ## Future Work
 

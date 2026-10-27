@@ -350,13 +350,13 @@ INSERT INTO "employees" VALUES(2,'Bob');
 COMMIT;
 ```
 
-<Info>
-  The output of `.dump` can be piped into another Turso instance to recreate the database:
-
-  ```bash theme={null}
-  tursodb original.db ".dump" | tursodb -q clone.db
-  ```
-</Info>
+> [!NOTE]
+>
+> The output of `.dump` can be piped into another Turso instance to recreate the database:
+>
+> ```bash theme={null}
+> tursodb original.db ".dump" | tursodb -q clone.db
+> ```
 
 ### .import
 
@@ -433,9 +433,9 @@ Load an extension library.
 tursodb> .load ./liblimbo_regexp
 ```
 
-<Info>
-  Only Turso-native extensions can be loaded. SQLite `.so`/`.dll` loadable extensions are not supported. See the [Extensions](/sql-reference/extensions) documentation for available extensions.
-</Info>
+> [!NOTE]
+>
+> Only Turso-native extensions can be loaded. SQLite `.so`/`.dll` loadable extensions are not supported. See the [Extensions](/sql-reference/extensions) documentation for available extensions.
 
 ## Debugging
 

@@ -694,6 +694,8 @@ An MCP client can call several tools in one task. For example, it can search for
 > inline discussions, resolved threads, and full comment content. Comments the
 > connected user wrote are marked `by-you="true"`.
 >
+> Pending suggested edits are listed with `kind="suggested_edit"`. Pass their `discussion://` URL to `notion-get-suggested-edit`. The response's `suggested_edits_status` is `included` when pending suggestions are in the list, `upgrade_required` when the workspace isn't on a Business or Enterprise plan, and `not_enabled` when the connection doesn't support them. Use it to tell an empty result apart from one that couldn't include suggestions.
+>
 > **Example prompts:**
 >
 > * "Get all discussions on this page, including resolved ones"
@@ -723,6 +725,30 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Fix the typo in my last comment on this page"
 > * "Resolve the discussion about the launch date"
 > * "React with 👍 to Ada's comment"
+
+> **Suggest edits**
+>
+> These tools propose changes to a page that a person accepts or rejects in Notion. A suggestion doesn't change the page until someone accepts it. `notion-fetch` shows only accepted content, so pending suggestions don't appear in fetched page text.
+>
+> * `notion-create-suggested-edit` proposes one change. Pass the page as `page_id`, the exact text to change as `old_text`, and the proposed Notion-flavored Markdown as `new_text`. Copy `old_text` from `notion-fetch` output. It must appear exactly once on the page. `mode` defaults to `replace`, and an empty `new_text` suggests a deletion. With `insert_before` or `insert_after`, `old_text` is an anchor that stays as it is, and `new_text` is only the inserted content. A suggestion can span blocks and change text, formatting, mentions, equations, and tables, or add, remove, or replace blocks. To suggest a change to a page title or a database title or text property, pass its name as `property_name` and use `replace`. You can't insert into an empty page. The response has a `suggested_edit_url` and `status: "pending"`.
+> * `notion-get-suggested-edit` reads one pending suggestion. Pass its `suggested_edit_url`. The response has a Markdown before-and-after `diff` and the `allowed_actions` the user can take, `accept`, `reject`, or both.
+> * `notion-resolve-suggested-edit` accepts or rejects one pending suggestion. Pass `suggested_edit_url` and `action`. Accepting applies the change to the page. Rejecting discards it. The tool is marked destructive (`destructiveHint: true`), so MCP clients that honor tool annotations ask before running it.
+>
+> In Notion, each suggestion appears on the page as a suggested edit with its own discussion thread. You can pass a single-line inline Markdown `comment` to start that thread. Every suggestion made through Notion MCP gets a note at the end of its first comment that names the MCP client, such as `[Prepared via Notion MCP]`.
+>
+> > [!NOTE]
+> >
+> > Requires a Business or Enterprise plan. On other plans the tools return an upgrade prompt.
+>
+> Creating a suggestion needs comment access to the page. Accepting needs edit access to the page. Users can reject their own suggestions with comment access, and anyone's suggestions with edit access. Creating and resolving need the insert comments [capability](/reference/capabilities), and reading needs the read comments capability. Accepting also needs the update content capability.
+>
+> One suggestion can't overlap another pending suggestion. To change a pending suggestion, reject it, then create a new one. If someone edits the text a suggestion covers, the suggestion becomes stale. A stale suggestion can't be read or accepted, but it can still be rejected. Errors return an HTTP 400 `validation_error` with `additional_data.tool_error_code` set to a code such as `suggested_edit_no_match`, `suggested_edit_multiple_matches`, `suggested_edit_conflict`, or `suggested_edit_stale`.
+>
+> **Example prompts:**
+>
+> * "Suggest a clearer opening paragraph for this proposal"
+> * "Propose changing the launch date in the title to June 12"
+> * "Show me the pending suggestion on the FAQ and accept it"
 
 > **Get teams**
 >

@@ -10,9 +10,9 @@ For the Starter and Scaler plans, Turso usage is limited monthly based on the fo
 * Number of table [rows written](#rows-written)
 * Amount of [total storage](#total-storage)
 
-<Info>
-  In billing plans that include monthly quotas for row reads, row writes, and total storage, any query that exceeds these limits will result in a failure, indicated by the `BLOCKED` error code.
-</Info>
+> [!NOTE]
+>
+> In billing plans that include monthly quotas for row reads, row writes, and total storage, any query that exceeds these limits will result in a failure, indicated by the `BLOCKED` error code.
 
 ## Rows Read
 
@@ -25,18 +25,18 @@ In SQLite, the term "row read" actually refers to a "row scan" during statement 
 
 Using functions like `count`, `avg`, `min`, `max`, and `sum` results in a row scan for every row considered in the aggregation.
 
-<Info>
-  Improve query efficiency by storing aggregate values in a separate table and
-  updating it transactionally with the base table changes.
-</Info>
+> [!NOTE]
+>
+> Improve query efficiency by storing aggregate values in a separate table and
+> updating it transactionally with the base table changes.
 
 ### Full Table Scans
 
 Queries lacking index support perform a full table scan, incurring a row scan for each table row.
 
-<Info>
-  Seek strategies to minimize costly table scans.
-</Info>
+> [!NOTE]
+>
+> Seek strategies to minimize costly table scans.
 
 ### Complex Query Costs
 
@@ -74,17 +74,17 @@ In SQLite, a "row written" encompasses both the insertion of a new row and the u
 
 Even if a transaction is not committed, any row that was inserted or updated during the transaction incurs a row write. This underscores the importance of transaction management in controlling database writes.
 
-<Note>
-  `ALTER TABLE` actions may also lead to row reads, adding another layer to consider when modifying table structures.
-</Note>
+> [!NOTE]
+>
+> `ALTER TABLE` actions may also lead to row reads, adding another layer to consider when modifying table structures.
 
 ## Total Storage
 
 SQLite utilizes the virtual table [`dbstat`](https://www.sqlite.org/dbstat.html) to calculate the total space used by all tables and indexes. The base unit for this measurement is a database file page, which is 4KB.
 
-<Note>
-  In SQLite, the `VACUUM` command is a common tool for optimizing storage by compacting the database. However, it's important to note that this command is currently disabled in Turso. Future updates may introduce options for developers to efficiently manage and reduce the total storage footprint of their databases.
-</Note>
+> [!NOTE]
+>
+> In SQLite, the `VACUUM` command is a common tool for optimizing storage by compacting the database. However, it's important to note that this command is currently disabled in Turso. Future updates may introduce options for developers to efficiently manage and reduce the total storage footprint of their databases.
 
 ## Reducing Usage
 

@@ -222,5 +222,3 @@ Click the “API” tab on your model page to see example code for running the m
 Now that you have your own model, see what else you can do with it!
 
 To see what models you can use, [check out the Transformers docs on Hugging Face](https://huggingface.co/docs/transformers).
-
-If you need inspiration or guidance, jump into our [Discord](https://discord.gg/replicate).

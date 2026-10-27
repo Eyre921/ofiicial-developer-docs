@@ -4,9 +4,9 @@ source: https://docs.turso.tech/guides/agent-databases
 path: guides/agent-databases
 ---
 
-<Info>
-  Looking for a complete agent state management solution? Check out [AgentFS](/agentfs/introduction) - our specialized SDK designed specifically for AI agents, offering filesystem operations, key-value storage, and automatic tool call tracking in a single database file.
-</Info>
+> [!NOTE]
+>
+> Looking for a complete agent state management solution? Check out [AgentFS](/agentfs/introduction) - our specialized SDK designed specifically for AI agents, offering filesystem operations, key-value storage, and automatic tool call tracking in a single database file.
 
 AI agents need databases to store context, track state, and maintain memory across executions. Turso Database offers two powerful approaches:
 
@@ -46,9 +46,9 @@ db.prepare("INSERT INTO steps (action, result) VALUES (?, ?)").run(
 
 Benefit from zero network latency, full offline capability, complete data privacy, and simple single-file deployment.
 
-<Info>
-  Data is isolated to this agent instance with no built-in multi-agent collaboration or cross-session persistence (unless you manage the file yourself).
-</Info>
+> [!NOTE]
+>
+> Data is isolated to this agent instance with no built-in multi-agent collaboration or cross-session persistence (unless you manage the file yourself).
 
 ## Turso Sync (Cloud-Connected)
 
@@ -84,9 +84,9 @@ await db.sync();
 
 💡 Persistent memory across restarts, multi-agent coordination via shared state, cloud backup and durability, with fast local reads and background sync.
 
-<Info>
-  **Sync modes:** `sync` (bidirectional), `pull` (cloud → agent), `push` (agent → cloud).
-</Info>
+> [!NOTE]
+>
+> **Sync modes:** `sync` (bidirectional), `pull` (cloud → agent), `push` (agent → cloud).
 
 ## Multi-Agent Architectures
 
@@ -102,9 +102,9 @@ const agent1DB = await connect("agent-1.db");
 const agent2DB = await connect("agent-2.db");
 ```
 
-<Info>
-  Independent agents performing separate tasks with no coordination needs and maximum isolation.
-</Info>
+> [!NOTE]
+>
+> Independent agents performing separate tasks with no coordination needs and maximum isolation.
 
 ### Pattern 2: Shared Database with Sync
 
@@ -183,9 +183,9 @@ async function provisionAgentDatabase(agentId) {
 }
 ```
 
-<Info>
-  Complete isolation between agents, independent scaling per agent, improved security (compromised agent only affects one database), and easy cleanup when agents are retired.
-</Info>
+> [!NOTE]
+>
+> Complete isolation between agents, independent scaling per agent, improved security (compromised agent only affects one database), and easy cleanup when agents are retired.
 
 ## Examples
 

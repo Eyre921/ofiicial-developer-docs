@@ -10,9 +10,9 @@ Perform calculations across sets of rows related to the current row without coll
 
 Window functions perform calculations across a set of rows that are related to the current row. Unlike aggregate functions with GROUP BY, window functions do not collapse rows into a single output row. Every input row produces a corresponding output row, with the window function result appended.
 
-<Info>
-  Turso supports aggregate functions used as window functions with the default frame definition, the `row_number()` ranking function, and the `FILTER (WHERE ...)` clause. The remaining dedicated window functions (`rank`, `dense_rank`, `ntile`, `lag`, `lead`, `first_value`, `last_value`, `nth_value`) and custom frame specifications (ROWS, RANGE, or GROUPS with explicit bounds) are not yet supported.
-</Info>
+> [!NOTE]
+>
+> Turso supports aggregate functions used as window functions with the default frame definition, the `row_number()` ranking function, and the `FILTER (WHERE ...)` clause. The remaining dedicated window functions (`rank`, `dense_rank`, `ntile`, `lag`, `lead`, `first_value`, `last_value`, `nth_value`) and custom frame specifications (ROWS, RANGE, or GROUPS with explicit bounds) are not yet supported.
 
 ## Syntax
 

@@ -6,7 +6,7 @@ path: features/embedded-replicas/with-akamai
 
 Deploy a JavaScript/Rust app using [Turso Cloud embedded replicas](/features/embedded-replicas) to [Akamai](https://www.linode.com/).
 
-<img alt="Akamai banner" />
+![Akamai banner](https://mintcdn.com/turso/7mjM7fXIfeZ8ZwNC/images/platforms/akamai-banner.png?fit=max\&auto=format\&n=7mjM7fXIfeZ8ZwNC\&q=85\&s=66d07bd3d96ab8ddcec273d80a00fdca)
 
 ## Prerequisites
 
@@ -16,45 +16,43 @@ Before you start, make sure you:
 * [Sign up or login to Turso Cloud](/cli/authentication#signup)
 * Have an Akamai account - [create one](https://login.linode.com/signup)
 
-<Steps>
-  <Step title="Retrieve database credentials">
-    You will need an existing database to continue. If you don't have one, [create one](/quickstart).
+**1. Retrieve database credentials**
 
-    <Snippet />
+You will need an existing database to continue. If you don't have one, [create one](/quickstart).
 
-    <Info>You will want to store these as environment variables.</Info>
-  </Step>
+<Snippet />
 
-  <Step>
-    Fork one of the following embedded replica projects from GitHub
+> [!NOTE]
+>
+> You will want to store these as environment variables.
 
-    <CardGroup>
-      <Card title="My Expenses Tracker - (Elysia + Bun)" icon="github" href="https://github.com/tursodatabase/embedded-replicas-with-js">
-        See the full source code
-      </Card>
+**Step 2**
 
-      <Card title="Web Traffic API - (Rust)" icon="github" href="https://github.com/tursodatabase/embedded-replicas-with-rust">
-        See the full source code
-      </Card>
-    </CardGroup>
-  </Step>
+Fork one of the following embedded replica projects from GitHub
 
-  <Step title="Set up a Linode server">
-    Configure and create a new linode. Then, [set up SSH authentication](https://www.linode.com/docs/guides/use-public-key-authentication-with-ssh/) to securely access the Linode server from your terminal.
+> **[My Expenses Tracker - (Elysia + Bun)](https://github.com/tursodatabase/embedded-replicas-with-js)**
+>
+> See the full source code
 
-    Prepare the newly created linode server environment by accessing and set it up for Rust/JavaScript development depending on the project you forked earlier. Install and set up [Git](https://git-scm.com/) too.
-  </Step>
+> **[Web Traffic API - (Rust)](https://github.com/tursodatabase/embedded-replicas-with-rust)**
+>
+> See the full source code
 
-  <Step title="Transfer project to Linode server">
-    SSH into your server, clone the project from GitHub, and follow its README instructions to set it up.
-  </Step>
+**3. Set up a Linode server**
 
-  <Step title="Deploy">
-    Build, run the project, and set up load balancing for it.
-    [pm2](https://www.npmjs.com/package/pm2) is one of the good candidates out there with built-in load balancing, log monitoring, and bug/exception alerts.
+Configure and create a new linode. Then, [set up SSH authentication](https://www.linode.com/docs/guides/use-public-key-authentication-with-ssh/) to securely access the Linode server from your terminal.
 
-    <Info>
-      You can go with your favorite options for where to buy domains, reverse proxy setup, and SSL certificates. [Caddy](https://caddyserver.com/) is another good option here.
-    </Info>
-  </Step>
-</Steps>
+Prepare the newly created linode server environment by accessing and set it up for Rust/JavaScript development depending on the project you forked earlier. Install and set up [Git](https://git-scm.com/) too.
+
+**4. Transfer project to Linode server**
+
+SSH into your server, clone the project from GitHub, and follow its README instructions to set it up.
+
+**5. Deploy**
+
+Build, run the project, and set up load balancing for it.
+[pm2](https://www.npmjs.com/package/pm2) is one of the good candidates out there with built-in load balancing, log monitoring, and bug/exception alerts.
+
+> [!NOTE]
+>
+> You can go with your favorite options for where to buy domains, reverse proxy setup, and SSL certificates. [Caddy](https://caddyserver.com/) is another good option here.

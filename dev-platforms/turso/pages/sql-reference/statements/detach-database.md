@@ -29,9 +29,9 @@ DETACH closes the connection to the attached database identified by `schema-name
 
 The `main` and `temp` schemas cannot be detached.
 
-<Info>
-  DETACH cannot be used while a transaction is active. Commit or roll back any open transaction before detaching a database.
-</Info>
+> [!NOTE]
+>
+> DETACH cannot be used while a transaction is active. Commit or roll back any open transaction before detaching a database.
 
 ## Examples
 

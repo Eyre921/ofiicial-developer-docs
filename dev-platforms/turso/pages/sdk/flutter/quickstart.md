@@ -6,9 +6,9 @@ path: sdk/flutter/quickstart
 
 Get started with Flutter and Dart using the libSQL client in a few simple steps
 
-<Note>
-  This SDK is community maintained and may not be officially supported by Turso, or up to date with the latest features. Join the `#libsql-dart` channel [on Discord](https://tur.so/discord) for help and feedback.
-</Note>
+> [!NOTE]
+>
+> This SDK is community maintained and may not be officially supported by Turso, or up to date with the latest features. Join the `#libsql-dart` channel [on Discord](https://tur.so/discord) for help and feedback.
 
 In this Flutter/Dart quickstart we will learn how to:
 
@@ -18,131 +18,123 @@ In this Flutter/Dart quickstart we will learn how to:
 * Execute a query using SQL
 * Sync changes to local database (optional)
 
-<Steps>
-  <Step title="Retrieve database credentials">
-    You will need an existing database to continue. If you don't have one, [create one](/quickstart).
+**1. Retrieve database credentials**
 
-    <Snippet />
+You will need an existing database to continue. If you don't have one, [create one](/quickstart).
 
-    <Info>You will want to store these as environment variables.</Info>
-  </Step>
+<Snippet />
 
-  <Step title="Install libsql_dart">
-    ```bash theme={null}
-    flutter pub add libsql_dart
-    ```
-  </Step>
+> [!NOTE]
+>
+> You will want to store these as environment variables.
 
-  <Step title="Initialize">
-    Now connect to your local or remote database using the `LibsqlClient` constructor:
+**2. Install libsql\_dart**
 
-    <AccordionGroup>
-      <Accordion title="Embedded Replicas">
-        ```dart theme={null}
-        final dir = await getApplicationCacheDirectory();
-        final path = '${dir.path}/local.db';
+```bash theme={null}
+flutter pub add libsql_dart
+```
 
-        final client = LibsqlClient(path)
-          ..authToken = '<TOKEN>'
-          ..syncUrl = '<TURSO_OR_LIBSQL_URL>'
-          ..syncIntervalSeconds = 5
-          ..readYourWrites = true;
-        ```
-      </Accordion>
+**3. Initialize**
 
-      <Accordion title="Local only">
-        <CodeGroup>
-          ```dart File theme={null}
-          final dir = await getApplicationCacheDirectory();
-          final path = '${dir.path}/local.db';
+Now connect to your local or remote database using the `LibsqlClient` constructor:
 
-          final client = LibsqlClient(path);
-          ```
+> **Embedded Replicas**
+>
+> ```dart theme={null}
+> final dir = await getApplicationCacheDirectory();
+> final path = '${dir.path}/local.db';
+>
+> final client = LibsqlClient(path)
+>   ..authToken = '<TOKEN>'
+>   ..syncUrl = '<TURSO_OR_LIBSQL_URL>'
+>   ..syncIntervalSeconds = 5
+>   ..readYourWrites = true;
+> ```
 
-          ```dart In-Memory theme={null}
-          final client = LibsqlClient(":memory:");
-          ```
-        </CodeGroup>
-      </Accordion>
+> **Local only**
+>
+> ```dart File theme={null}
+> final dir = await getApplicationCacheDirectory();
+> final path = '${dir.path}/local.db';
+>
+> final client = LibsqlClient(path);
+> ```
+>
+> ```dart In-Memory theme={null}
+> final client = LibsqlClient(":memory:");
+> ```
 
-      <Accordion title="Remote only">
-        ```dart theme={null}
-        final client = LibsqlClient('<TURSO_OR_LIBSQL_URL>')
-          ..authToken = '<TOKEN>';
-        ```
-      </Accordion>
-    </AccordionGroup>
-  </Step>
+> **Remote only**
+>
+> ```dart theme={null}
+> final client = LibsqlClient('<TURSO_OR_LIBSQL_URL>')
+>   ..authToken = '<TOKEN>';
+> ```
 
-  <Step title="Connect">
-    ```dart theme={null}
-    await client.connect();
-    ```
-  </Step>
+**4. Connect**
 
-  <Step title="Execute">
-    <CodeGroup>
-      ```dart Execute theme={null}
-      await client.execute("create table if not exists customers (id integer primary key, name text);");
-      ```
+```dart theme={null}
+await client.connect();
+```
 
-      ```dart Insert theme={null}
-      await client.query("insert into customers(name) values ('John Doe')");
-      ```
+**5. Execute**
 
-      ```dart Select theme={null}
-      print(await client.query("select * from customers"));
-      ```
+```dart Execute theme={null}
+await client.execute("create table if not exists customers (id integer primary key, name text);");
+```
 
-      ```dart Batch theme={null}
-      await client.batch("""insert into customers (name) values ('Jane Doe'); insert into customers (name) values ('Jake Doe');""");
-      ```
+```dart Insert theme={null}
+await client.query("insert into customers(name) values ('John Doe')");
+```
 
-      ```dart Prepared statement theme={null}
-      final statement = await client
-      	.prepare("select * from customers where id = ?");
+```dart Select theme={null}
+print(await client.query("select * from customers"));
+```
 
-      await statement.query(positional: [1])
-      ```
+```dart Batch theme={null}
+await client.batch("""insert into customers (name) values ('Jane Doe'); insert into customers (name) values ('Jake Doe');""");
+```
 
-      ```dart Interactive transaction theme={null}
-      final tx = await client.transaction();
+```dart Prepared statement theme={null}
+final statement = await client
+	.prepare("select * from customers where id = ?");
 
-      await tx
-      	.execute("update customers set name = 'John Noe' where id = 1");
-      await tx
-      	.execute("update customers set name = 'Jane Noe' where id = 2");
-      print(await tx
-      	.query("select * from customers where id = ?", positional: [1]));
+await statement.query(positional: [1])
+```
 
-      await tx.commit();
-      ```
-    </CodeGroup>
+```dart Interactive transaction theme={null}
+final tx = await client.transaction();
 
-    If you need to use placeholders for values, you can do that:
+await tx
+	.execute("update customers set name = 'John Noe' where id = 1");
+await tx
+	.execute("update customers set name = 'Jane Noe' where id = 2");
+print(await tx
+	.query("select * from customers where id = ?", positional: [1]));
 
-    <CodeGroup>
-      ```dart Positional theme={null}
-      final statement = await client
-        .prepare("select * from customers where id = ?");
+await tx.commit();
+```
 
-      await statement.query(positional: [1])
-      ```
+If you need to use placeholders for values, you can do that:
 
-      ```dart Named theme={null}
-      final statement = await client
-      	.prepare("select * from customers where id = :id");
+```dart Positional theme={null}
+final statement = await client
+  .prepare("select * from customers where id = ?");
 
-      await statement.query(named: {"id": 1})
-      ```
-    </CodeGroup>
-  </Step>
+await statement.query(positional: [1])
+```
 
-  <Step title="Sync (Embedded Replicas only)">
-    When using embedded replicas you should call `sync()` on the connector to sync your local database with the primary database.
+```dart Named theme={null}
+final statement = await client
+	.prepare("select * from customers where id = :id");
 
-    ```dart theme={null}
-    await client.sync();
-    ```
-  </Step>
-</Steps>
+await statement.query(named: {"id": 1})
+```
+
+**6. Sync (Embedded Replicas only)**
+
+When using embedded replicas you should call `sync()` on the connector to sync your local database with the primary database.
+
+```dart theme={null}
+await client.sync();
+```

@@ -118,9 +118,9 @@ When either operand is an array, `||` performs array concatenation instead. See 
 
 ### Array Operators
 
-<Info>
-  **Turso Extension**: Array operators are a Turso-specific feature not available in SQLite.
-</Info>
+> [!NOTE]
+>
+> **Turso Extension**: Array operators are a Turso-specific feature not available in SQLite.
 
 | Operator | Description | Example | Result |
 | - | - | - | - |
@@ -162,9 +162,9 @@ SELECT CAST('abc' AS INTEGER);   -- 0
 SELECT CAST(NULL AS INTEGER);    -- NULL
 ```
 
-<Info>
-  **Turso Extension**: In STRICT tables with custom types, `CAST(value AS custom_type)` applies the custom type's ENCODE function. See [CREATE TYPE](/sql-reference/statements/create-type) for details.
-</Info>
+> [!NOTE]
+>
+> **Turso Extension**: In STRICT tables with custom types, `CAST(value AS custom_type)` applies the custom type's ENCODE function. See [CREATE TYPE](/sql-reference/statements/create-type) for details.
 
 ## COLLATE Expression
 

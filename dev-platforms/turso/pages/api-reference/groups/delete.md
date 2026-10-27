@@ -7,26 +7,24 @@ path: api-reference/groups/delete
 DELETE /v1/organizations/{organizationSlug}/groups/{groupName}
 Delete a group belonging to the organization or user.
 
-<Note>
-  On paid plans, a deleted group and its databases can be restored for up to five
-  days — see
-  [Recover Deleted Databases](/features/recover-deleted-databases).
-</Note>
+> [!NOTE]
+>
+> On paid plans, a deleted group and its databases can be restored for up to five
+> days — see
+> [Recover Deleted Databases](/features/recover-deleted-databases).
 
-<RequestExample>
-  ```bash cURL theme={null}
-  curl -L -X DELETE 'https://api.turso.tech/v1/organizations/{organizationSlug}/groups/{groupName}' \
-  -H 'Authorization: Bearer TOKEN'
-  ```
+```bash cURL theme={null}
+curl -L -X DELETE 'https://api.turso.tech/v1/organizations/{organizationSlug}/groups/{groupName}' \
+-H 'Authorization: Bearer TOKEN'
+```
 
-  ```ts Node.js theme={null}
-  import { createClient } from "@tursodatabase/api";
+```ts Node.js theme={null}
+import { createClient } from "@tursodatabase/api";
 
-  const turso = createClient({
-    org: "...",
-    token: "",
-  });
+const turso = createClient({
+  org: "...",
+  token: "",
+});
 
-  const group = await turso.groups.delete("new-group");
-  ```
-</RequestExample>
+const group = await turso.groups.delete("new-group");
+```

@@ -63,9 +63,9 @@ An `AFTER` trigger fires after the triggering statement has modified the row. Us
 
 ### INSTEAD OF Triggers
 
-<Warning>
-  `INSTEAD OF` triggers are not yet supported in Turso. `CREATE TRIGGER ... INSTEAD OF ...` returns an error.
-</Warning>
+> [!WARNING]
+>
+> `INSTEAD OF` triggers are not yet supported in Turso. `CREATE TRIGGER ... INSTEAD OF ...` returns an error.
 
 In SQLite, an `INSTEAD OF` trigger can only be created on a view and fires in place of the triggering INSERT, UPDATE, or DELETE, allowing you to make views writable. Turso parses this syntax but does not yet execute it.
 

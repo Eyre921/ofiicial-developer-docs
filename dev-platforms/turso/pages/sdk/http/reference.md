@@ -6,9 +6,9 @@ path: sdk/http/reference
 
 Turso Databases can be accessed via HTTP. The API enables developers to perform SQL operations using [SQL over HTTP](https://github.com/tursodatabase/libsql/blob/main/docs/HTTP_V2_SPEC.md), retrieve server version information, and monitor the health status.
 
-<Info>
-  It's recommended you use a [native SDK](/sdk).
-</Info>
+> [!NOTE]
+>
+> It's recommended you use a [native SDK](/sdk).
 
 ## Base URL
 
@@ -20,11 +20,11 @@ https://[databaseName]-[organizationSlug].turso.io
 
 You can obtain your database base URL from the Turso CLI:
 
-<Accordion title="Obtain HTTP URL using Turso CLI">
-  ```bash theme={null}
-  turso db show <database-name> --http-url
-  ```
-</Accordion>
+> **Obtain HTTP URL using Turso CLI**
+>
+> ```bash theme={null}
+> turso db show <database-name> --http-url
+> ```
 
 ## Authentication
 
@@ -34,11 +34,11 @@ Turso uses Bearer authentication, and requires your API token to be passed with 
 Authorization: Bearer TOKEN
 ```
 
-<Accordion title="Create token using Turso CLI">
-  ```bash theme={null}
-  turso db tokens create <database-name>
-  ```
-</Accordion>
+> **Create token using Turso CLI**
+>
+> ```bash theme={null}
+> turso db tokens create <database-name>
+> ```
 
 ## Endpoints
 
@@ -53,50 +53,46 @@ You can use the `/v2/pipeline` endpoint to query a database. The endpoint accept
 
 #### Simple query
 
-<CodeGroup>
-  ```json Request theme={null}
-  {
-    "requests": [
-      { "type": "execute", "stmt": { "sql": "CREATE TABLE users (name)" } },
-      { "type": "close" }
-    ]
-  }
-  ```
+```json Request theme={null}
+{
+  "requests": [
+    { "type": "execute", "stmt": { "sql": "CREATE TABLE users (name)" } },
+    { "type": "close" }
+  ]
+}
+```
 
-  ```json Response theme={null}
-  {
-    "baton": null,
-    "base_url": null,
-    "results": [
-      {
-        "type": "ok",
-        "response": {
-          "type": "execute",
-          "result": {
-            "cols": [],
-            "rows": [],
-            "affected_row_count": 0,
-            "last_insert_rowid": null,
-            "replication_index": "1"
-          }
-        }
-      },
-      {
-        "type": "ok",
-        "response": {
-          "type": "close"
+```json Response theme={null}
+{
+  "baton": null,
+  "base_url": null,
+  "results": [
+    {
+      "type": "ok",
+      "response": {
+        "type": "execute",
+        "result": {
+          "cols": [],
+          "rows": [],
+          "affected_row_count": 0,
+          "last_insert_rowid": null,
+          "replication_index": "1"
         }
       }
-    ]
-  }
-  ```
-</CodeGroup>
+    },
+    {
+      "type": "ok",
+      "response": {
+        "type": "close"
+      }
+    }
+  ]
+}
+```
 
-<br />
-
-<Info>
-  Connections are left open until they timeout, unless you close them explicitly in the request (as shown above). Every request made on a connection bumps the timeout. You should close the connection when it's no longer needed.
-</Info>
+> [!NOTE]
+>
+> Connections are left open until they timeout, unless you close them explicitly in the request (as shown above). Every request made on a connection bumps the timeout. You should close the connection when it's no longer needed.
 
 #### Parameter binding
 
@@ -104,203 +100,193 @@ Queries with bound parameters come in two types:
 
 1. Positional query parameters, bound by their position in the parameter list, and prefixed `?`. If the query uses positional parameters, the values should be provided as an array to the `args` field.
 
-<CodeGroup>
-  ```json Request theme={null}
-  {
-    "requests": [
-      {
-        "type": "execute",
-        "stmt": {
-          "sql": "SELECT * FROM users WHERE name = ?",
-          "args": [
-            {
-              "type": "text",
-              "value": "Turso"
-            }
-          ]
-        }
-      },
-      {
-        "type": "close"
-      }
-    ]
-  }
-  ```
-
-  ```json Response theme={null}
-  {
-    "baton": null,
-    "base_url": null,
-    "results": [
-      {
-        "type": "ok",
-        "response": {
-          "type": "execute",
-          "result": {
-            "cols": [
-              {
-                "name": "name",
-                "decltype": "TEXT"
-              }
-            ],
-            "rows": [
-              [
-                {
-                  "type": "text",
-                  "value": "Turso"
-                }
-              ]
-            ],
-            "affected_row_count": 0,
-            "last_insert_rowid": null
+```json Request theme={null}
+{
+  "requests": [
+    {
+      "type": "execute",
+      "stmt": {
+        "sql": "SELECT * FROM users WHERE name = ?",
+        "args": [
+          {
+            "type": "text",
+            "value": "Turso"
           }
-        }
-      },
-      {
-        "type": "ok",
-        "response": {
-          "type": "close"
-        }
+        ]
       }
-    ]
-  }
-  ```
-</CodeGroup>
+    },
+    {
+      "type": "close"
+    }
+  ]
+}
+```
 
-<br />
-
-2. Named bound parameters, where the parameter is referred to by a name and is prefixed with a `:`, a `@` or a `$`. If the query uses named parameters, then the `named_args` field of the query should be an array of objects mapping parameters to their values.
-
-<CodeGroup>
-  ```json Request theme={null}
-  {
-    "requests": [
-      {
+```json Response theme={null}
+{
+  "baton": null,
+  "base_url": null,
+  "results": [
+    {
+      "type": "ok",
+      "response": {
         "type": "execute",
-        "stmt": {
-          "sql": "SELECT * FROM users WHERE name = :name OR name = $second_name OR name = @third_name",
-          "named_args": [
+        "result": {
+          "cols": [
             {
               "name": "name",
-              "value": {
+              "decltype": "TEXT"
+            }
+          ],
+          "rows": [
+            [
+              {
                 "type": "text",
                 "value": "Turso"
               }
-            },
-            {
-              "name": "second_name",
-              "value": {
-                "type": "text",
-                "value": "Not Turso"
-              }
-            },
-            {
-              "name": "third_name",
-              "value": {
-                "type": "text",
-                "value": "Maybe Turso"
-              }
-            }
-          ]
+            ]
+          ],
+          "affected_row_count": 0,
+          "last_insert_rowid": null
         }
-      },
-      {
+      }
+    },
+    {
+      "type": "ok",
+      "response": {
         "type": "close"
       }
-    ]
-  }
-  ```
+    }
+  ]
+}
+```
 
-  ```json Response theme={null}
-  {
-    "baton": null,
-    "base_url": null,
-    "results": [
-      {
-        "type": "ok",
-        "response": {
-          "type": "execute",
-          "result": {
-            "cols": [
-              {
-                "name": "name",
-                "decltype": "TEXT"
-              }
-            ],
-            "rows": [
-              [
-                {
-                  "type": "text",
-                  "value": "Turso"
-                }
-              ]
-            ],
-            "affected_row_count": 0,
-            "last_insert_rowid": null
+2. Named bound parameters, where the parameter is referred to by a name and is prefixed with a `:`, a `@` or a `$`. If the query uses named parameters, then the `named_args` field of the query should be an array of objects mapping parameters to their values.
+
+```json Request theme={null}
+{
+  "requests": [
+    {
+      "type": "execute",
+      "stmt": {
+        "sql": "SELECT * FROM users WHERE name = :name OR name = $second_name OR name = @third_name",
+        "named_args": [
+          {
+            "name": "name",
+            "value": {
+              "type": "text",
+              "value": "Turso"
+            }
+          },
+          {
+            "name": "second_name",
+            "value": {
+              "type": "text",
+              "value": "Not Turso"
+            }
+          },
+          {
+            "name": "third_name",
+            "value": {
+              "type": "text",
+              "value": "Maybe Turso"
+            }
           }
-        }
-      },
-      {
-        "type": "ok",
-        "response": {
-          "type": "close"
+        ]
+      }
+    },
+    {
+      "type": "close"
+    }
+  ]
+}
+```
+
+```json Response theme={null}
+{
+  "baton": null,
+  "base_url": null,
+  "results": [
+    {
+      "type": "ok",
+      "response": {
+        "type": "execute",
+        "result": {
+          "cols": [
+            {
+              "name": "name",
+              "decltype": "TEXT"
+            }
+          ],
+          "rows": [
+            [
+              {
+                "type": "text",
+                "value": "Turso"
+              }
+            ]
+          ],
+          "affected_row_count": 0,
+          "last_insert_rowid": null
         }
       }
-    ]
-  }
-  ```
-</CodeGroup>
+    },
+    {
+      "type": "ok",
+      "response": {
+        "type": "close"
+      }
+    }
+  ]
+}
+```
 
-<br />
+> [!NOTE]
+>
+> The `name` property of each `named_args` can match the prefix or omit the prefix. They were omitted in the example above, but both versions are valid.
+>
+> The `type` field within each arg corresponds to the column datatype and can be one of the following: `null`, `integer`, `float`, `text`, or `blob`.
 
-<Info>
-  The `name` property of each `named_args` can match the prefix or omit the prefix. They were omitted in the example above, but both versions are valid.
+> [!NOTE]
+>
+> If using the `blob` type, replace the `value` property with `base64` and encode the argument into `base64` before sending the request.
 
-  The `type` field within each arg corresponds to the column datatype and can be one of the following: `null`, `integer`, `float`, `text`, or `blob`.
-</Info>
-
-<Info>
-  If using the `blob` type, replace the `value` property with `base64` and encode the argument into `base64` before sending the request.
-</Info>
-
-<Note>
-  In JSON, the `value` is a `String` to avoid losing precision, because some
-  JSON implementations treat all numbers as 64-bit floats.
-</Note>
+> [!NOTE]
+>
+> In JSON, the `value` is a `String` to avoid losing precision, because some
+> JSON implementations treat all numbers as 64-bit floats.
 
 #### Interactive query
 
 Sometimes, it may be desirable to perform multiple operation on the same connection, in multiple roundtrips. We can do this by not closing the connection right away:
 
-<CodeGroup>
-  ```json Body theme={null}
-  {
-    "requests": [{ "type": "execute", "stmt": { "sql": "BEGIN" } }]
-  }
-  ```
+```json Body theme={null}
+{
+  "requests": [{ "type": "execute", "stmt": { "sql": "BEGIN" } }]
+}
+```
 
-  ```json Response theme={null}
-  {
-    "baton": "m7lVVgEvknpf1P1irxHsHqrAqH7BLiwO4DQIAwr93PdZWGvdBNugLSokSsCZNkry",
-    "base_url": null,
-    "results": [
-      {
-        "type": "ok",
-        "response": {
-          "type": "execute",
-          "result": {
-            "cols": [],
-            "rows": [],
-            "affected_row_count": 0,
-            "last_insert_rowid": null,
-            "replication_index": "1"
-          }
+```json Response theme={null}
+{
+  "baton": "m7lVVgEvknpf1P1irxHsHqrAqH7BLiwO4DQIAwr93PdZWGvdBNugLSokSsCZNkry",
+  "base_url": null,
+  "results": [
+    {
+      "type": "ok",
+      "response": {
+        "type": "execute",
+        "result": {
+          "cols": [],
+          "rows": [],
+          "affected_row_count": 0,
+          "last_insert_rowid": null,
+          "replication_index": "1"
         }
       }
-    ]
-  }
-  ```
-</CodeGroup>
+    }
+  ]
+}
+```
 
 We can see that we have received a `baton` back. This is because we haven't closed the connection. We can now use this baton to perform more queries on the same connection:
 
@@ -319,9 +305,9 @@ We can see that we have received a `baton` back. This is because we haven't clos
 }
 ```
 
-<Info>
-  Note that both transactions and connections have timeouts. Transaction have a 5 seconds window to complete, while connections get closed after 10 seconds of idle time.
-</Info>
+> [!NOTE]
+>
+> Note that both transactions and connections have timeouts. Transaction have a 5 seconds window to complete, while connections get closed after 10 seconds of idle time.
 
 #### Response types
 
@@ -350,55 +336,49 @@ The `results` array contains the results for each of the requests made in the pi
 
 To obtain the current version of the server running your database you can use the `/version` endpoint:
 
-<CodeGroup>
-  ```bash Request theme={null}
-  curl -L -X GET 'https://[databaseName]-[organizationSlug].turso.io/version' \
-    -H 'Authorization: Bearer TOKEN'
-  ```
+```bash Request theme={null}
+curl -L -X GET 'https://[databaseName]-[organizationSlug].turso.io/version' \
+  -H 'Authorization: Bearer TOKEN'
+```
 
-  ```text 200 theme={null}
-  sqld 0.21.9 (67f3ea5d 2023-10-26)
-  ```
-</CodeGroup>
+```text 200 theme={null}
+sqld 0.21.9 (67f3ea5d 2023-10-26)
+```
 
 ### `GET /health`
 
 To check the health of your database, you can use the `/health` endpoint which returns an empty body with an HTTP status:
 
-<CodeGroup>
-  ```bash Request theme={null}
-  curl -L -X GET 'https://[databaseName]-[organizationSlug].turso.io/health' \
-    -H 'Authorization: Bearer TOKEN'
-  ```
+```bash Request theme={null}
+curl -L -X GET 'https://[databaseName]-[organizationSlug].turso.io/health' \
+  -H 'Authorization: Bearer TOKEN'
+```
 
-  ```text 200 theme={null}
-  This response has no body data.
-  ```
-</CodeGroup>
+```text 200 theme={null}
+This response has no body data.
+```
 
 ### `GET /dump`
 
 You can dump the database using the `/dump` endpoint:
 
-<CodeGroup>
-  ```bash Request theme={null}
-  curl -L -X GET 'https://[databaseName]-[organizationSlug].turso.io/dump' \
-    -H 'Authorization: Bearer TOKEN'
-  ```
+```bash Request theme={null}
+curl -L -X GET 'https://[databaseName]-[organizationSlug].turso.io/dump' \
+  -H 'Authorization: Bearer TOKEN'
+```
 
-  ```text 200 theme={null}
-  PRAGMA foreign_keys=OFF;
-  BEGIN TRANSACTION;
-  CREATE TABLE IF NOT EXISTS mytable (
-  content TEXT,
-  embedding FLOAT32(1536)
-  );
-  CREATE TABLE IF NOT EXISTS libsql_vector_index (type TEXT, name TEXT, vector_type TEXT, block_size INTEGER, dims INTEGER, distance_ops TEXT);
-  INSERT INTO libsql_vector_index VALUES('diskann','mytable_idx','float32',128,1536,'cosine');
-  CREATE INDEX mytable_idx USING diskann_cosine_ops ON mytable (embedding);
-  COMMIT;
-  ```
-</CodeGroup>
+```text 200 theme={null}
+PRAGMA foreign_keys=OFF;
+BEGIN TRANSACTION;
+CREATE TABLE IF NOT EXISTS mytable (
+content TEXT,
+embedding FLOAT32(1536)
+);
+CREATE TABLE IF NOT EXISTS libsql_vector_index (type TEXT, name TEXT, vector_type TEXT, block_size INTEGER, dims INTEGER, distance_ops TEXT);
+INSERT INTO libsql_vector_index VALUES('diskann','mytable_idx','float32',128,1536,'cosine');
+CREATE INDEX mytable_idx USING diskann_cosine_ops ON mytable (embedding);
+COMMIT;
+```
 
 If you're using [multi-db schemas](/features/multi-db-schemas), or vector databases, you will see statements that represent internally managed tables.
 
@@ -408,132 +388,128 @@ Turso provides a managed multi-tenant schema system — [Multi-DB Schemas](/feat
 
 The `/v1/jobs` endpoint lets you monitor the status of schema migrations.
 
-<Warning>
-  Currently not available on AWS for Free, Developer and Scaler plans.
-</Warning>
+> [!WARNING]
+>
+> Currently not available on AWS for Free, Developer and Scaler plans.
 
 ### `GET /v1/jobs`
 
 Returns a summary of all migration jobs for a schema:
 
-<CodeGroup>
-  ```bash Request theme={null}
-  curl -X GET 'https://[databaseName]-[organizationSlug].turso.io/v1/jobs' \
-       -H 'Authorization: Bearer TOKEN'
-  ```
+```bash Request theme={null}
+curl -X GET 'https://[databaseName]-[organizationSlug].turso.io/v1/jobs' \
+     -H 'Authorization: Bearer TOKEN'
+```
 
-  ```json Example Response theme={null}
-  {
-    "schema_version": 4,
-    "migrations": [
-      {
-        "job_id": 43,
-        "status": "RunSuccess"
-      },
-      {
-        "job_id": 42,
-        "status": "RunSuccess"
-      },
-      {
-        "job_id": 39,
-        "status": "RunSuccess"
-      }
-    ]
-  }
-  ```
-</CodeGroup>
+```json Example Response theme={null}
+{
+  "schema_version": 4,
+  "migrations": [
+    {
+      "job_id": 43,
+      "status": "RunSuccess"
+    },
+    {
+      "job_id": 42,
+      "status": "RunSuccess"
+    },
+    {
+      "job_id": 39,
+      "status": "RunSuccess"
+    }
+  ]
+}
+```
 
 #### Response Fields
 
-<ResponseField name="schema_version" type="number">
-  Current version of the schema.
-</ResponseField>
+**schema\_version** `number`
 
-<ResponseField name="migrations" type="array">
-  List of migration jobs
+Current version of the schema.
 
-  <Expandable title="Migration Object">
-    <ResponseField name="job_id" type="number">
-      Unique ID for the migration job.
-    </ResponseField>
+**migrations** `array`
 
-    <ResponseField name="status" type="string">
-      Current status of the job. Possible values: `WaitingDryRun`,
-      `DryRunSuccess`, `DryRunFailure`, `WaitingRun`, `RunSuccess`, `RunFailure`
-    </ResponseField>
-  </Expandable>
-</ResponseField>
+List of migration jobs
+
+**Migration Object**
+
+**job\_id** `number`
+
+Unique ID for the migration job.
+
+**status** `string`
+
+Current status of the job. Possible values: `WaitingDryRun`,
+`DryRunSuccess`, `DryRunFailure`, `WaitingRun`, `RunSuccess`, `RunFailure`
 
 ### `GET /v1/jobs/:id`
 
 Returns detailed information about a specific migration job.
 
-<CodeGroup>
-  ```bash Request theme={null}
-  curl -X GET 'https://[databaseName]-[organizationSlug].turso.io/v1/jobs/:id' \
-       -H 'Authorization: Bearer TOKEN'
-  ```
+```bash Request theme={null}
+curl -X GET 'https://[databaseName]-[organizationSlug].turso.io/v1/jobs/:id' \
+     -H 'Authorization: Bearer TOKEN'
+```
 
-  ```json Example Response theme={null}
-  {
-    "job_id": 1,
-    "status": "RunSuccess",
-    "error": null,
-    "progress": [
-      {
-        "namespace": "db1",
-        "status": "Success",
-        "error": null
-      },
-      {
-        "namespace": "db2",
-        "status": "Failure",
-        "error": "Connection lost"
-      }
-    ]
-  }
-  ```
-</CodeGroup>
+```json Example Response theme={null}
+{
+  "job_id": 1,
+  "status": "RunSuccess",
+  "error": null,
+  "progress": [
+    {
+      "namespace": "db1",
+      "status": "Success",
+      "error": null
+    },
+    {
+      "namespace": "db2",
+      "status": "Failure",
+      "error": "Connection lost"
+    }
+  ]
+}
+```
 
 #### Path Parameters
 
-<ParamField type="number">
-  The ID of the migration job.
-</ParamField>
+**id** `number` *required*
+
+The ID of the migration job.
 
 #### Response Fields
 
-<ResponseField name="job_id" type="number">
-  Unique ID of the migration job.
-</ResponseField>
+**job\_id** `number`
 
-<ResponseField name="status" type="string">
-  Overall status of the job. Possible values are the same as in the `/v1/jobs`
-  endpoint.
-</ResponseField>
+Unique ID of the migration job.
 
-<ResponseField name="error" type="string">
-  Error message if the job failed, null otherwise.
-</ResponseField>
+**status** `string`
 
-<ResponseField name="progress" type="array">
-  List of migration statuses for the individual databases.
+Overall status of the job. Possible values are the same as in the `/v1/jobs`
+endpoint.
 
-  <Expandable title="Progress Object">
-    <ResponseField name="namespace" type="string">
-      Name of the database.
-    </ResponseField>
+**error** `string`
 
-    <ResponseField name="status" type="string">
-      Status of migration for this database. Possible values: `Enqueued`,
-      `DryRunSuccess`, `DryRunFailure`, `Run`, `Success`, `Failure`
-    </ResponseField>
+Error message if the job failed, null otherwise.
 
-    <ResponseField name="error" type="string">
-      Error message if migration failed for this database, null otherwise.
-    </ResponseField>
-  </Expandable>
-</ResponseField>
+**progress** `array`
+
+List of migration statuses for the individual databases.
+
+**Progress Object**
+
+**namespace** `string`
+
+Name of the database.
+
+**status** `string`
+
+Status of migration for this database. Possible values: `Enqueued`,
+`DryRunSuccess`, `DryRunFailure`, `Run`, `Success`, `Failure`
+
+**error** `string`
+
+Error message if migration failed for this database, null otherwise.
 
 ## Listen to changes
 
@@ -541,11 +517,13 @@ You can listen to changes committed to your database using the `/beta/listen` en
 
 <Snippet />
 
-<Warning>Currently not available on AWS for Free, Developer and Scaler plans.</Warning>
+> [!WARNING]
+>
+> Currently not available on AWS for Free, Developer and Scaler plans.
 
-<Info>
-  Your database group must be using the version `v0.24.18` or greater — `turso group update <group-name> --version latest`
-</Info>
+> [!NOTE]
+>
+> Your database group must be using the version `v0.24.18` or greater — `turso group update <group-name> --version latest`
 
 ### `GET /beta/listen`
 
@@ -556,10 +534,10 @@ curl -L 'https://[primary-instance-id]-[databaseName]-[organizationSlug].turso.i
 
 #### Query Parameters
 
-<ParamField type="string">
-  The name of the table to listen to.
-</ParamField>
+**table** `string` *required*
 
-<ParamField type="string">
-  The name of the action to listen to — `insert`, `update`, or `delete`.
-</ParamField>
+The name of the table to listen to.
+
+**action** `string` *required*
+
+The name of the action to listen to — `insert`, `update`, or `delete`.

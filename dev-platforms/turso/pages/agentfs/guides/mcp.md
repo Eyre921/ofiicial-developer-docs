@@ -57,13 +57,13 @@ agentfs serve mcp my-agent --tools kv_get,kv_set,kv_delete,kv_list
 
 ## Security Considerations
 
-<Warning>
-  The MCP server gives AI assistants direct access to the AgentFS filesystem. Consider these security practices:
-
-  * **Limit tools** - Only expose tools the assistant needs
-  * **Use overlays** - Create overlay filesystems instead of giving access to real directories
-  * **Review the agent database** - Check `.agentfs/*.db` periodically
-</Warning>
+> [!WARNING]
+>
+> The MCP server gives AI assistants direct access to the AgentFS filesystem. Consider these security practices:
+>
+> * **Limit tools** - Only expose tools the assistant needs
+> * **Use overlays** - Create overlay filesystems instead of giving access to real directories
+> * **Review the agent database** - Check `.agentfs/*.db` periodically
 
 ## Debugging
 
@@ -79,12 +79,10 @@ ls -la .agentfs/my-agent.db
 
 ## Next Steps
 
-<CardGroup>
-  <Card title="NFS Server" icon="network-wired" href="/agentfs/guides/nfs">
-    Remote access via NFS
-  </Card>
+> **[NFS Server](/agentfs/guides/nfs)**
+>
+> Remote access via NFS
 
-  <Card title="Copy-on-Write Overlays" icon="layer-group" href="/agentfs/guides/overlay">
-    How isolation works
-  </Card>
-</CardGroup>
+> **[Copy-on-Write Overlays](/agentfs/guides/overlay)**
+>
+> How isolation works

@@ -314,7 +314,7 @@ Claude Code also checks the files a `tee` command writes, including in a pipelin
 
 ### PowerShell
 
-PowerShell permission rules use the same shape as Bash rules. Wildcards with `*` match at any position, the `:*` suffix is equivalent to a trailing ` *`, and a bare `PowerShell` or `PowerShell(*)` matches every command. This configuration allows `Get-ChildItem` and `git commit` commands while blocking `Remove-Item`:
+PowerShell permission rules use the same shape as [Bash rules](#wildcard-patterns), and a bare `PowerShell` or `PowerShell(*)` matches every command. This configuration allows `Get-ChildItem` and `git commit` commands while blocking `Remove-Item`:
 
 ```json theme={null}
 {
@@ -524,7 +524,7 @@ In `dontAsk` mode, Claude Code denies the read instead of prompting. In `bypassP
 
 To read files on a network share without this prompt, give the share a local path first:
 
-* **Windows**: map the share to a drive letter and pass the drive with `--add-dir` when you launch Claude Code, as [Working directories](#working-directories) describes. Reads under a drive you add later with `/add-dir`, or list in `additionalDirectories` in a settings file, still prompt. To stop those prompts for a share mapped to `Z:`, start a new session in PowerShell with `claude --add-dir Z:\`.
+* **Windows**: map the share to a drive letter and pass the drive with `--add-dir` when you launch Claude Code, as [Working directories](#working-directories) describes. For a share mapped to `Z:`, run `claude --add-dir Z:\` in PowerShell.
 * **macOS and Linux**: mount the share at a local path, such as a directory under `/mnt` or `/Volumes`, and read the files from there, as [Working directory is a network path](/docs/en/errors#working-directory-is-a-network-path) describes
 
 ### WebFetch

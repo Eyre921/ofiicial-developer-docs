@@ -8,180 +8,170 @@ Learn how to import your existing SQLite database to Turso.
 
 This guide will walk you through the process of migrating your existing SQLite database to Turso Cloud. You can choose between using the Turso CLI, or the Platform API.
 
-<Frame>
-  <img alt="Migrate to Turso" />
-</Frame>
+![Migrate to Turso](https://mintcdn.com/turso/7mjM7fXIfeZ8ZwNC/images/cloud/import.png?fit=max\&auto=format\&n=7mjM7fXIfeZ8ZwNC\&q=85\&s=b9672b095d28bc1d3efdc25d337a9a73)
 
 ## Preparing to Migrate
 
 Before importing your SQLite database to Turso, you need to ensure it's compatible with Turso's requirements. Specifically, your SQLite database should be using WAL (Write-Ahead Logging) mode.
 
-<Steps>
-  <Step title="Open your SQLite database">
-    Use the SQLite command-line tool or any SQLite client to open your database:
+**1. Open your SQLite database**
 
-    ```bash theme={null}
-    sqlite3 path/to/your/database.db
-    ```
-  </Step>
+Use the SQLite command-line tool or any SQLite client to open your database:
 
-  <Step title="Set WAL journal mode">
-    Run the following command to switch your database to WAL mode:
+```bash theme={null}
+sqlite3 path/to/your/database.db
+```
 
-    ```sql theme={null}
-    PRAGMA journal_mode='wal';
-    ```
+**2. Set WAL journal mode**
 
-    This should return `wal` to confirm the change was successful.
-  </Step>
+Run the following command to switch your database to WAL mode:
 
-  <Step title="Checkpoint and truncate the WAL file">
-    Execute a checkpoint to ensure all changes are written to the main database file and truncate the WAL file:
+```sql theme={null}
+PRAGMA journal_mode='wal';
+```
 
-    ```sql theme={null}
-    PRAGMA wal_checkpoint(truncate);
-    ```
-  </Step>
+This should return `wal` to confirm the change was successful.
 
-  <Step title="Verify the journal mode">
-    Confirm that your database is now in WAL mode:
+**3. Checkpoint and truncate the WAL file**
 
-    ```sql theme={null}
-    PRAGMA journal_mode;
-    ```
+Execute a checkpoint to ensure all changes are written to the main database file and truncate the WAL file:
 
-    This should return `wal`.
-  </Step>
+```sql theme={null}
+PRAGMA wal_checkpoint(truncate);
+```
 
-  <Step title="Close the database">
-    Exit the SQLite shell:
+**4. Verify the journal mode**
 
-    ```sql theme={null}
-    .exit
-    ```
+Confirm that your database is now in WAL mode:
 
-    Your database is now ready for migration to Turso.
-  </Step>
-</Steps>
+```sql theme={null}
+PRAGMA journal_mode;
+```
+
+This should return `wal`.
+
+**5. Close the database**
+
+Exit the SQLite shell:
+
+```sql theme={null}
+.exit
+```
+
+Your database is now ready for migration to Turso.
 
 ## Using the CLI
 
 You can create a new database from a local SQLite file using the Turso CLI:
 
-<Steps>
-  <Step title="Install the Turso CLI">
-    Make sure you have the [Turso CLI installed](/cli/introduction), and you're authenticated.
-  </Step>
+**1. Install the Turso CLI**
 
-  <Step title="Import your SQLite Database">
-    Import your existing SQLite database file using the `db import` command:
+Make sure you have the [Turso CLI installed](/cli/introduction), and you're authenticated.
 
-    ```bash theme={null}
-    turso db import ~/path/to/my-database.db
-    ```
+**2. Import your SQLite Database**
 
-    <Note>
-      Your database will be named after the file (without the .db extension), and
-      will import all your tables, data, and schema.
-    </Note>
-  </Step>
+Import your existing SQLite database file using the `db import` command:
 
-  <Step title="Connect to your database">
-    You can now connect to your database using the shell:
+```bash theme={null}
+turso db import ~/path/to/my-database.db
+```
 
-    ```bash theme={null}
-    turso db shell <database-name>
-    ```
-  </Step>
-</Steps>
+> [!NOTE]
+>
+> Your database will be named after the file (without the .db extension), and
+> will import all your tables, data, and schema.
+
+**3. Connect to your database**
+
+You can now connect to your database using the shell:
+
+```bash theme={null}
+turso db shell <database-name>
+```
 
 ## Using the Platform API
 
 You can also use the Platform API to migrate your existing SQLite database:
 
-<Steps>
-  <Step title="Signup or Login using the Turso CLI">
-    Make sure to [install the Turso CLI](/cli/installation) if you haven't
-    already.
+**1. Signup or Login using the Turso CLI**
 
-    <CodeGroup>
-      ```bash Signup theme={null}
-      turso auth signup
-      ```
+Make sure to [install the Turso CLI](/cli/installation) if you haven't
+already.
 
-      ```bash Login theme={null}
-      turso auth login
-      ```
-    </CodeGroup>
-  </Step>
+```bash Signup theme={null}
+turso auth signup
+```
 
-  <Step title="Create a new Platform API Token">
-    Now create a new API Token using the Turso CLI:
+```bash Login theme={null}
+turso auth login
+```
 
-    ```bash theme={null}
-    turso auth api-tokens mint quickstart
-    ```
+**2. Create a new Platform API Token**
 
-    <Info>
-      Make sure to save the token somewhere safe. You'll need it to create a database and database token.
-    </Info>
-  </Step>
+Now create a new API Token using the Turso CLI:
 
-  <Step title="Retrieve your account or organization slug">
-    The Platform API can be used with your personal account or with an organization. You'll need the obtain the `slug` of your account or organization using using the Turso CLI:
+```bash theme={null}
+turso auth api-tokens mint quickstart
+```
 
-    ```bash theme={null}
-    turso org list
-    ```
-  </Step>
+> [!NOTE]
+>
+> Make sure to save the token somewhere safe. You'll need it to create a database and database token.
 
-  <Step title="Create a Database for Import">
-    First, create a database that's ready to receive an import:
+**3. Retrieve your account or organization slug**
 
-    ```bash theme={null}
-    curl -X POST "https://api.turso.tech/v1/organizations/{organizationSlug}/databases" \
-      -L \
-      -H "Authorization: Bearer TOKEN" \
-      -H "Content-Type: application/json" \
-      -d '{
-          "name": "new-database",
-          "group": "default",
-          "seed": { "type": "database_upload" }
-      }'
-    ```
+The Platform API can be used with your personal account or with an organization. You'll need the obtain the `slug` of your account or organization using using the Turso CLI:
 
-    <Note>
-      The `seed` parameter with `"type": "database_upload"` indicates that you plan to upload a database file. If you don't proceed to upload a database, this database will count towards your quota, but will not be usable.
-    </Note>
-  </Step>
+```bash theme={null}
+turso org list
+```
 
-  <Step title="Create a Database Token">
-    Generate an authentication token for your database:
+**4. Create a Database for Import**
 
-    ```bash theme={null}
-    curl -X POST "https://api.turso.tech/v1/organizations/{organizationSlug}/databases/{databaseName}/auth/tokens" \
-      -L \
-      -H "Authorization: Bearer TOKEN"
-    ```
+First, create a database that's ready to receive an import:
 
-    This token will be used to authenticate your upload request, and future requests to the database.
-  </Step>
+```bash theme={null}
+curl -X POST "https://api.turso.tech/v1/organizations/{organizationSlug}/databases" \
+  -L \
+  -H "Authorization: Bearer TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+      "name": "new-database",
+      "group": "default",
+      "seed": { "type": "database_upload" }
+  }'
+```
 
-  <Step title="Upload Your SQLite Database">
-    Finally, upload your SQLite database file:
+> [!NOTE]
+>
+> The `seed` parameter with `"type": "database_upload"` indicates that you plan to upload a database file. If you don't proceed to upload a database, this database will count towards your quota, but will not be usable.
 
-    ```bash theme={null}
-    curl -X POST "https://{databaseName}-{organizationSlug}.turso.io/v1/upload" \
-      -H "Authorization: Bearer DATABASE_TOKEN" \
-      --data-binary @/path/to/your/database.db
-    ```
+**5. Create a Database Token**
 
-    <Note>
-      The `Authorization` header uses the database token you generated in the
-      previous step, not your Platform API token.
-    </Note>
-  </Step>
-</Steps>
+Generate an authentication token for your database:
+
+```bash theme={null}
+curl -X POST "https://api.turso.tech/v1/organizations/{organizationSlug}/databases/{databaseName}/auth/tokens" \
+  -L \
+  -H "Authorization: Bearer TOKEN"
+```
+
+This token will be used to authenticate your upload request, and future requests to the database.
+
+**6. Upload Your SQLite Database**
+
+Finally, upload your SQLite database file:
+
+```bash theme={null}
+curl -X POST "https://{databaseName}-{organizationSlug}.turso.io/v1/upload" \
+  -H "Authorization: Bearer DATABASE_TOKEN" \
+  --data-binary @/path/to/your/database.db
+```
+
+> [!NOTE]
+>
+> The `Authorization` header uses the database token you generated in the
+> previous step, not your Platform API token.
 
 You're now ready to connect to your new Turso database using any of the Turso client libraries.
 

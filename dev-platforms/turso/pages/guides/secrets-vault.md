@@ -56,9 +56,9 @@ const db = await connect("vault.db", {
 await db.exec(SCHEMA); // The CREATE TABLE statements above
 ```
 
-<Info>
-  `hexkey` is a 64-character hex string. Where it comes from is up to you. You can derive it from a passphrase with scrypt (and never store it), unwrap it from the OS keychain, or fetch it from a cloud KMS. Turso only needs the key at `connect()` time; the storage layer is identical regardless of the source.
-</Info>
+> [!NOTE]
+>
+> `hexkey` is a 64-character hex string. Where it comes from is up to you. You can derive it from a passphrase with scrypt (and never store it), unwrap it from the OS keychain, or fetch it from a cloud KMS. Turso only needs the key at `connect()` time; the storage layer is identical regardless of the source.
 
 ## Storing a secret
 
@@ -110,9 +110,9 @@ const result = await runCommand(command, {
 const safe = result.stdout.replaceAll(value, "***");
 ```
 
-<Warning>
-  Scrubbing captured output is not a sandbox. A command that can read a secret can always leak it on purpose (write it to a file, send it over the network). What the vault guarantees is narrower and still useful: the *model* never receives the value, and a careless `echo $TOKEN` gets redacted. The secret only ever lives in the encrypted file and the short-lived process that used it.
-</Warning>
+> [!WARNING]
+>
+> Scrubbing captured output is not a sandbox. A command that can read a secret can always leak it on purpose (write it to a file, send it over the network). What the vault guarantees is narrower and still useful: the *model* never receives the value, and a careless `echo $TOKEN` gets redacted. The secret only ever lives in the encrypted file and the short-lived process that used it.
 
 ## Auditing every use
 

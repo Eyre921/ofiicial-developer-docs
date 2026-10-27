@@ -16,105 +16,101 @@ Before you start, make sure you:
 * [Sign up or login to Turso](/cli/authentication#signup)
 * Have a Rails app — [learn more](https://guides.rubyonrails.org/getting_started.html)
 
-<Steps>
-  <Step title="Install the libsql_activerecord Rubygem">
-    Add the following to your Gemfile:
+**1. Install the libsql\_activerecord Rubygem**
 
-    ```ruby theme={null}
-    gem 'libsql_activerecord'
-    ```
+Add the following to your Gemfile:
 
-    Then run:
+```ruby theme={null}
+gem 'libsql_activerecord'
+```
 
-    ```bash theme={null}
-    bundle install
-    ```
-  </Step>
+Then run:
 
-  <Step title="Configure database credentials">
-    <Snippet />
+```bash theme={null}
+bundle install
+```
 
-    Add your Turso credentials to your Rails credentials file or environment variables.
-  </Step>
+**2. Configure database credentials**
 
-  <Step title="Use the libsql adapter">
-    ```yml theme={null}
-    default: &default
-      adapter: libsql
-      pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+<Snippet />
 
-    development:
-      <<: *default
-      url: <%= ENV['TURSO_DATABASE_URL'] %>
-      auth_token: <%= ENV['TURSO_AUTH_TOKEN'] %>
-      path: storage/development.sqlite3 # For embedded replica
-    ```
-  </Step>
+Add your Turso credentials to your Rails credentials file or environment variables.
 
-  <Step title="Create and run migrations">
-    Generate a migration:
+**3. Use the libsql adapter**
 
-    ```bash theme={null}
-    rails generate migration CreateProducts name:string description:text
-    ```
+```yml theme={null}
+default: &default
+  adapter: libsql
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
-    Run the migration:
+development:
+  <<: *default
+  url: <%= ENV['TURSO_DATABASE_URL'] %>
+  auth_token: <%= ENV['TURSO_AUTH_TOKEN'] %>
+  path: storage/development.sqlite3 # For embedded replica
+```
 
-    ```bash theme={null}
-    rails db:migrate
-    ```
-  </Step>
+**4. Create and run migrations**
 
-  <Step title="Define models">
-    Create a model in `app/models/product.rb`:
+Generate a migration:
 
-    ```ruby theme={null}
-    class Product < ApplicationRecord
-      validates :name, presence: true
+```bash theme={null}
+rails generate migration CreateProducts name:string description:text
+```
+
+Run the migration:
+
+```bash theme={null}
+rails db:migrate
+```
+
+**5. Define models**
+
+Create a model in `app/models/product.rb`:
+
+```ruby theme={null}
+class Product < ApplicationRecord
+  validates :name, presence: true
+end
+```
+
+**6. Use in controllers**
+
+In your controllers, you can now use ActiveRecord methods to interact with your Turso database:
+
+```ruby theme={null}
+class ProductsController < ApplicationController
+  def index
+    @products = Product.all
+  end
+
+  def create
+    @product = Product.new(product_params)
+    if @product.save
+      redirect_to @product, notice: 'Product was successfully created.'
+    else
+      render :new
     end
-    ```
-  </Step>
+  end
 
-  <Step title="Use in controllers">
-    In your controllers, you can now use ActiveRecord methods to interact with your Turso database:
+  private
 
-    ```ruby theme={null}
-    class ProductsController < ApplicationController
-      def index
-        @products = Product.all
-      end
+  def product_params
+    params.require(:product).permit(:name, :description)
+  end
+end
+```
 
-      def create
-        @product = Product.new(product_params)
-        if @product.save
-          redirect_to @product, notice: 'Product was successfully created.'
-        else
-          render :new
-        end
-      end
+**7. Execute raw SQL (if needed)**
 
-      private
+You can also execute raw SQL queries:
 
-      def product_params
-        params.require(:product).permit(:name, :description)
-      end
-    end
-    ```
-  </Step>
-
-  <Step title="Execute raw SQL (if needed)">
-    You can also execute raw SQL queries:
-
-    ```ruby theme={null}
-    results = ActiveRecord::Base.connection.execute("SELECT * FROM products")
-    ```
-  </Step>
-</Steps>
+```ruby theme={null}
+results = ActiveRecord::Base.connection.execute("SELECT * FROM products")
+```
 
 ## Examples
 
-<CardGroup>
-  <Card title="Ruby on Rails App" icon="github" href="https://github.com/tursodatabase/libsql-activerecord/tree/main/examples/railsapp">
-    See the full source code
-  </Card>
-</CardGroup>
+> **[Ruby on Rails App](https://github.com/tursodatabase/libsql-activerecord/tree/main/examples/railsapp)**
+>
+> See the full source code

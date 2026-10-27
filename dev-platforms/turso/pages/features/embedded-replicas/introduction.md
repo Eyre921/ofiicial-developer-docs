@@ -4,11 +4,11 @@ source: https://docs.turso.tech/features/embedded-replicas/introduction
 path: features/embedded-replicas/introduction
 ---
 
-<Info>
-  Embedded Replicas keep a local read replica of a Turso Cloud database: reads run locally from the file in microseconds, and writes are sent to the cloud primary and then reflected back to the replica. Embedded Replicas are fully supported in production.
-
-  For new projects that need sync, we recommend [Turso Sync](/sync/usage). Sync is built on the Turso Database engine and uses logical change-data-capture, providing local-first writes, explicit `push()` / `pull()`, and [significantly less bandwidth and lower latency](https://turso.tech/blog/sync-benchmark) than the page-level replication Embedded Replicas use.
-</Info>
+> [!NOTE]
+>
+> Embedded Replicas keep a local read replica of a Turso Cloud database: reads run locally from the file in microseconds, and writes are sent to the cloud primary and then reflected back to the replica. Embedded Replicas are fully supported in production.
+>
+> For new projects that need sync, we recommend [Turso Sync](/sync/usage). Sync is built on the Turso Database engine and uses logical change-data-capture, providing local-first writes, explicit `push()` / `pull()`, and [significantly less bandwidth and lower latency](https://turso.tech/blog/sync-benchmark) than the page-level replication Embedded Replicas use.
 
 Turso Cloud's embedded replicas let you replicate a database right within your application. This is especially useful for VMs or VPS deployments, and for mobile applications where stable connectivity is a challenge, since they allow uninterrupted access to the local database.
 
@@ -57,154 +57,148 @@ Embedded Replicas also will guarantee read-your-writes semantics. What that mean
 
 Other replicas will see the new data when they call `sync()`, or at the next sync period, if [Periodic Sync](#periodic-sync) is used.
 
-<img alt="Read your writes" />
+![Read your writes](https://mintcdn.com/turso/7mjM7fXIfeZ8ZwNC/features/embedded-replicas/read-your-writes.png?fit=max\&auto=format\&n=7mjM7fXIfeZ8ZwNC\&q=85\&s=44d76ec117694d77b50d0b6f134065fe)
 
 ### Encryption at rest
 
 Embedded Replicas support encryption at rest with one of the libSQL client SDKs. Simply pass the `encryptionKey` parameter when instantiating the client:
 
-<CodeGroup>
-  <Snippet />
+<Snippet />
 
-  <Snippet />
+<Snippet />
 
-  <Snippet />
+<Snippet />
 
-  <Snippet />
+<Snippet />
 
-  <Snippet />
-</CodeGroup>
+<Snippet />
 
-<Note>The encryption key used should be generated and managed by you.</Note>
+> [!NOTE]
+>
+> The encryption key used should be generated and managed by you.
 
 ## Usage
 
 To use embedded replicas, you need to create a client with a `syncUrl` parameter. This parameter specifies the URL of the remote Turso Cloud database that the client will sync with:
 
-<CodeGroup>
-  ```ts TypeScript theme={null}
-  import { createClient } from "@libsql/client";
+```ts TypeScript theme={null}
+import { createClient } from "@libsql/client";
 
-  const client = createClient({
-    url: "file:replica.db",
-    syncUrl: "libsql://...",
-    authToken: "...",
-  });
-  ```
+const client = createClient({
+  url: "file:replica.db",
+  syncUrl: "libsql://...",
+  authToken: "...",
+});
+```
 
-  ```go Go theme={null}
-  package main
+```go Go theme={null}
+package main
 
-  import (
-     "database/sql"
-     "fmt"
-     "os"
-     "path/filepath"
+import (
+   "database/sql"
+   "fmt"
+   "os"
+   "path/filepath"
 
-     "github.com/tursodatabase/go-libsql"
-  )
+   "github.com/tursodatabase/go-libsql"
+)
 
-  func main() {
-     dbName := "local.db"
-     primaryUrl := "libsql://[DATABASE].turso.io"
-     authToken := "..."
+func main() {
+   dbName := "local.db"
+   primaryUrl := "libsql://[DATABASE].turso.io"
+   authToken := "..."
 
-     dir, err := os.MkdirTemp("", "libsql-*")
-     if err != nil {
-        fmt.Println("Error creating temporary directory:", err)
-        os.Exit(1)
-     }
-     defer os.RemoveAll(dir)
+   dir, err := os.MkdirTemp("", "libsql-*")
+   if err != nil {
+      fmt.Println("Error creating temporary directory:", err)
+      os.Exit(1)
+   }
+   defer os.RemoveAll(dir)
 
-     dbPath := filepath.Join(dir, dbName)
+   dbPath := filepath.Join(dir, dbName)
 
-     connector, err := libsql.NewEmbeddedReplicaConnector(dbPath, primaryUrl,
-        libsql.WithAuthToken(authToken),
-     )
-     if err != nil {
-        fmt.Println("Error creating connector:", err)
-        os.Exit(1)
-     }
-     defer connector.Close()
+   connector, err := libsql.NewEmbeddedReplicaConnector(dbPath, primaryUrl,
+      libsql.WithAuthToken(authToken),
+   )
+   if err != nil {
+      fmt.Println("Error creating connector:", err)
+      os.Exit(1)
+   }
+   defer connector.Close()
 
-     db := sql.OpenDB(connector)
-     defer db.Close()
-  }
-  ```
+   db := sql.OpenDB(connector)
+   defer db.Close()
+}
+```
 
-  ```rust Rust theme={null}
-  use libsql::{Builder};
+```rust Rust theme={null}
+use libsql::{Builder};
 
-  let build = Builder::new_remote_replica("file:replica.db", "libsql://...", "...")
-     .build()
-     .await?;
-  let client = build.connect()?;
-  ```
+let build = Builder::new_remote_replica("file:replica.db", "libsql://...", "...")
+   .build()
+   .await?;
+let client = build.connect()?;
+```
 
-  ```php PHP theme={null}
-  use Libsql\Database;
+```php PHP theme={null}
+use Libsql\Database;
 
-  $db = new Database(
-      path: 'replica.db',
-      url: getenv('TURSO_URL'),
-      authToken: getenv('TURSO_AUTH_TOKEN'),
-      syncInterval: 300 // Sync every 5 minutes
-  );
-  $conn = $db->connect();
-  ```
+$db = new Database(
+    path: 'replica.db',
+    url: getenv('TURSO_URL'),
+    authToken: getenv('TURSO_AUTH_TOKEN'),
+    syncInterval: 300 // Sync every 5 minutes
+);
+$conn = $db->connect();
+```
 
-  ```php Laravel theme={null}
-  // config/database.php
-  return [
-      "default" => env("DB_CONNECTION", "libsql"),
+```php Laravel theme={null}
+// config/database.php
+return [
+    "default" => env("DB_CONNECTION", "libsql"),
 
-      "connections" => [
-          "libsql" => [
-              "driver" => "libsql",
-              "database" => database_path("database.db"),
-              "url" => env("TURSO_DATABASE_URL"),
-              "password" => env("TURSO_AUTH_TOKEN"),
-              "sync_interval" => env("TURSO_SYNC_INTERVAL", 300),
-          ],
-          // ...
-      ],
-  ];
+    "connections" => [
+        "libsql" => [
+            "driver" => "libsql",
+            "database" => database_path("database.db"),
+            "url" => env("TURSO_DATABASE_URL"),
+            "password" => env("TURSO_AUTH_TOKEN"),
+            "sync_interval" => env("TURSO_SYNC_INTERVAL", 300),
+        ],
+        // ...
+    ],
+];
 
-  // .env
-  DB_CONNECTION=libsql
-  TURSO_DATABASE_URL=libsql://...
-  TURSO_AUTH_TOKEN=...
-  TURSO_SYNC_INTERVAL=300
-  ```
-</CodeGroup>
+// .env
+DB_CONNECTION=libsql
+TURSO_DATABASE_URL=libsql://...
+TURSO_AUTH_TOKEN=...
+TURSO_SYNC_INTERVAL=300
+```
 
 You can sync changes from the remote database to the local replica manually:
 
-<CodeGroup>
-  ```ts TypeScript theme={null}
-  await client.sync();
-  ```
+```ts TypeScript theme={null}
+await client.sync();
+```
 
-  ```go Go theme={null}
-  if err := connector.Sync(); err != nil {
-    fmt.Println("Error syncing database:", err)
-  }
-  ```
+```go Go theme={null}
+if err := connector.Sync(); err != nil {
+  fmt.Println("Error syncing database:", err)
+}
+```
 
-  ```rust Rust theme={null}
-  client.sync().await?;
-  ```
+```rust Rust theme={null}
+client.sync().await?;
+```
 
-  ```php PHP theme={null}
-  $db->sync();
-  ```
-</CodeGroup>
+```php PHP theme={null}
+$db->sync();
+```
 
-<br />
-
-<Note>
-  You should call `.sync()` in the background whenever your application wants to sync the remote and local embedded replica. For example, you can call it every 5 minutes or every time the application starts.
-</Note>
+> [!NOTE]
+>
+> You should call `.sync()` in the background whenever your application wants to sync the remote and local embedded replica. For example, you can call it every 5 minutes or every time the application starts.
 
 ## Things to know
 
@@ -224,24 +218,22 @@ You can sync changes from the remote database to the local replica manually:
 
 ## Deployment Guides
 
-<CardGroup>
-  <Card href="/features/embedded-replicas/with-fly" title="Turso + Fly">
-    Deploy a JavaScript project with Embedded Replicas to Fly.io
-  </Card>
+> **[Turso + Fly](/features/embedded-replicas/with-fly)**
+>
+> Deploy a JavaScript project with Embedded Replicas to Fly.io
 
-  <Card href="/features/embedded-replicas/with-koyeb" title="Turso + Koyeb">
-    Deploy a JavaScript/Rust project with Embedded Replicas to Koyeb
-  </Card>
+> **[Turso + Koyeb](/features/embedded-replicas/with-koyeb)**
+>
+> Deploy a JavaScript/Rust project with Embedded Replicas to Koyeb
 
-  <Card href="/features/embedded-replicas/with-railway" title="Turso + Railway">
-    Deploy a JavaScript/Rust project with Embedded Replicas to Railway
-  </Card>
+> **[Turso + Railway](/features/embedded-replicas/with-railway)**
+>
+> Deploy a JavaScript/Rust project with Embedded Replicas to Railway
 
-  <Card href="/features/embedded-replicas/with-render" title="Turso + Render">
-    Deploy a JavaScript project with Embedded Replicas to Render
-  </Card>
+> **[Turso + Render](/features/embedded-replicas/with-render)**
+>
+> Deploy a JavaScript project with Embedded Replicas to Render
 
-  <Card href="/features/embedded-replicas/with-akamai" title="Turso + Linode by Akamai">
-    Deploy a JavaScript/Rust project with Embedded Replicas to Akamai
-  </Card>
-</CardGroup>
+> **[Turso + Linode by Akamai](/features/embedded-replicas/with-akamai)**
+>
+> Deploy a JavaScript/Rust project with Embedded Replicas to Akamai

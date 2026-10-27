@@ -295,9 +295,9 @@ SELECT DISTINCT department FROM employees;
 SELECT DISTINCT department, title FROM employees;
 ```
 
-<Info>
-  DISTINCT applies to the entire result row, not to a single column. Two rows are considered duplicates only if every column value is identical.
-</Info>
+> [!NOTE]
+>
+> DISTINCT applies to the entire result row, not to a single column. Two rows are considered duplicates only if every column value is identical.
 
 ## ORDER BY
 
@@ -345,9 +345,9 @@ SELECT * FROM employees ORDER BY salary DESC LIMIT 10;
 SELECT * FROM employees ORDER BY salary DESC LIMIT 10 OFFSET 20;
 ```
 
-<Info>
-  Always use ORDER BY with LIMIT and OFFSET. Without ORDER BY, the set of rows skipped or returned is arbitrary.
-</Info>
+> [!NOTE]
+>
+> Always use ORDER BY with LIMIT and OFFSET. Without ORDER BY, the set of rows skipped or returned is arbitrary.
 
 ## Subqueries
 
@@ -432,9 +432,9 @@ JOIN recent_orders ro ON ac.id = ro.customer_id
 GROUP BY ac.name;
 ```
 
-<Info>
-  CTEs in Turso are SELECT-only. RECURSIVE CTEs and the MATERIALIZED/NOT MATERIALIZED hints are not supported.
-</Info>
+> [!NOTE]
+>
+> CTEs in Turso are SELECT-only. RECURSIVE CTEs and the MATERIALIZED/NOT MATERIALIZED hints are not supported.
 
 ## Window Functions
 
@@ -475,9 +475,9 @@ function_name() OVER (
 
 Standard aggregate functions (`SUM`, `AVG`, `COUNT`, `MIN`, `MAX`, `TOTAL`, `GROUP_CONCAT`) can all be used as window functions.
 
-<Info>
-  Window functions in Turso use the default frame definition (RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW). Custom frame specifications (ROWS, RANGE, GROUPS with explicit bounds) are not supported. The `row_number()` ranking function and the `FILTER (WHERE ...)` clause are supported; other ranking and navigation functions (`rank`, `dense_rank`, `lag`, `lead`, and so on) are not yet available.
-</Info>
+> [!NOTE]
+>
+> Window functions in Turso use the default frame definition (RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW). Custom frame specifications (ROWS, RANGE, GROUPS with explicit bounds) are not supported. The `row_number()` ranking function and the `FILTER (WHERE ...)` clause are supported; other ranking and navigation functions (`rank`, `dense_rank`, `lag`, `lead`, and so on) are not yet available.
 
 ## Set Operations
 

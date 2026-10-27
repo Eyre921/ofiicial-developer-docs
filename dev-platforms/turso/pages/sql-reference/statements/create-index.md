@@ -100,9 +100,9 @@ Each expression in the index must be a deterministic expression that references 
 
 ## Custom Index Methods
 
-<Info>
-  **Turso Extension**: Custom index methods extend indexing beyond B-trees. This feature is experimental and must be [enabled before use](/sql-reference/experimental-features).
-</Info>
+> [!NOTE]
+>
+> **Turso Extension**: Custom index methods extend indexing beyond B-trees. This feature is experimental and must be [enabled before use](/sql-reference/experimental-features).
 
 Turso supports a `USING` clause to specify an alternative index method.
 

@@ -135,7 +135,7 @@ Controls which regions a dedicated deployment is allowed to schedule replicas in
 The hardware and precision configuration used when creating a dedicated deployment. Shapes encode GPU type, count, precision (BF16, FP8, FP4), and other settings. Specified with `--deployment-shape`. Some shapes do not support LoRA addons.
 
 **Deployment state**\
-The lifecycle status of a deployment: `CREATING`, `DEPLOYING`, `DEPLOYED`, `SCALING`, `UPDATING`, `FAILED`, `DELETING`, `DELETED`.
+The lifecycle status of a deployment: `CREATING`, `READY`, `UPDATING`, `FAILED`, `DELETING`, `DELETED`. A deployment can serve requests when it is `READY`. A model or LoRA loaded onto a deployment has its own states: `DEPLOYING`, `DEPLOYED`, `UPDATING`, `UNDEPLOYING`.
 
 **Replica**\
 A single instance of a deployed model. Adding replicas increases concurrency. Replicas can be scaled manually or via autoscaling rules.

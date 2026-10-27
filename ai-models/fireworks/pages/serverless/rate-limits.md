@@ -81,7 +81,7 @@ Fast, Priority, and US-only variants of a model share the same tier and ceilings
 
 | Tier | Models |
 | - | - |
-| **Small** | DeepSeek V4.1 Flash, GLM 5.3, GLM 5.3 Flash, MiniMax M3, NVIDIA Nemotron 3 Ultra (Preview), OpenAI GPT OSS 120B, NVIDIA Nemotron 3.5 Lightning 30B A3B |
+| **Small** | DeepSeek V4.1 Flash, GLM 5.3, GLM 5.3 Flash, MiniMax M3, NVIDIA Nemotron 3 Ultra (Preview), OpenAI GPT OSS 120B, NVIDIA Nemotron 3.5 Lightning 30B A3B, Rune 26B-A4B |
 | **Medium** | Muse Spark Open |
 | **Large** | Ember-1, Kimi K3, Qwen 3.8 Max |
 

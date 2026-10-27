@@ -13,64 +13,62 @@ Before you start, make sure you:
 * [Install the Turso CLI](/cli/installation)
 * [Sign up or login to Turso](/cli/authentication#signup)
 
-<Steps>
-  <Step title="Add packages to your project">
-    ```bash theme={null}
-    flutter pub add drift_libsql drift drift_flutter dev:build_runner dev:drift_dev
-    ```
-  </Step>
+**1. Add packages to your project**
 
-  <Step title="Retrieve database credentials">
-    <Snippet />
-  </Step>
+```bash theme={null}
+flutter pub add drift_libsql drift drift_flutter dev:build_runner dev:drift_dev
+```
 
-  <Step title="Create a table schema">
-    ```dart theme={null}
-    class TaskTable extends Table {
-      IntColumn get id => integer().autoIncrement()();
-      TextColumn get title => text()();
-      TextColumn get description => text()();
-      BoolColumn get completed => boolean()();
-    }
-    ```
-  </Step>
+**2. Retrieve database credentials**
 
-  <Step title="Create db class">
-    ```dart theme={null}
-    @DriftDatabase(tables: [TaskTable])
-    class AppDatabase extends _$AppDatabase {
-      AppDatabase(super.e);
+<Snippet />
 
-      @override
-      int get schemaVersion => 1;
-    }
-    ```
-  </Step>
+**3. Create a table schema**
 
-  <Step title="Run build runner">
-    ```bash theme={null}
-    dart run build_runner build
-    ```
-  </Step>
+```dart theme={null}
+class TaskTable extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get title => text()();
+  TextColumn get description => text()();
+  BoolColumn get completed => boolean()();
+}
+```
 
-  <Step title="Create the db">
-    ```dart theme={null}
-    final db = AppDatabase(DriftLibsqlDatabase(
-        "${dir.path}/replica.db",
-        syncUrl: url,
-        authToken: token,
-        readYourWrites: true,
-        syncIntervalSeconds: 3,
-      ));
-    ```
-  </Step>
+**4. Create db class**
 
-  <Step title="Perform SQL operations">
-    ```dart theme={null}
-    await db.into(db.taskTable).insert(TaskTableCompanion.insert(
-    	title: task.title,
-    	description: task.description,
-    	completed: task.completed));
-    ```
-  </Step>
-</Steps>
+```dart theme={null}
+@DriftDatabase(tables: [TaskTable])
+class AppDatabase extends _$AppDatabase {
+  AppDatabase(super.e);
+
+  @override
+  int get schemaVersion => 1;
+}
+```
+
+**5. Run build runner**
+
+```bash theme={null}
+dart run build_runner build
+```
+
+**6. Create the db**
+
+```dart theme={null}
+final db = AppDatabase(DriftLibsqlDatabase(
+    "${dir.path}/replica.db",
+    syncUrl: url,
+    authToken: token,
+    readYourWrites: true,
+    syncIntervalSeconds: 3,
+  ));
+```
+
+**7. Perform SQL operations**
+
+```dart theme={null}
+await db.into(db.taskTable).insert(TaskTableCompanion.insert(
+	title: task.title,
+	description: task.description,
+	completed: task.completed));
+```

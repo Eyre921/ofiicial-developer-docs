@@ -6,15 +6,15 @@ path: features/point-in-time-recovery
 
 Turso supports point-in-time recovery (PITR) for databases. PITR allows you to restore a database to a specific point in time. This is useful for recovering from user errors, such as dropping a table by mistake.
 
-<Info>
-  Backups are created automatically at `COMMIT`. Free plan users can restore to any point in time within the last 24 hours. Developer, Scaler, and Pro users can restore to any point in time within the last 10, 30, or 90 days, respectively.
-</Info>
+> [!NOTE]
+>
+> Backups are created automatically at `COMMIT`. Free plan users can restore to any point in time within the last 24 hours. Developer, Scaler, and Pro users can restore to any point in time within the last 10, 30, or 90 days, respectively.
 
-<Note>
-  PITR restores an **existing** database — it cannot bring back a database that was
-  deleted. On paid plans, deleted databases can be restored for up to five days: see
-  [Recover Deleted Databases](/features/recover-deleted-databases).
-</Note>
+> [!NOTE]
+>
+> PITR restores an **existing** database — it cannot bring back a database that was
+> deleted. On paid plans, deleted databases can be restored for up to five days: see
+> [Recover Deleted Databases](/features/recover-deleted-databases).
 
 ## How it works
 
@@ -24,34 +24,30 @@ Turso supports point-in-time recovery (PITR) for databases. PITR allows you to r
 
 ## Usage
 
-<CodeGroup>
-  ```bash CLI theme={null}
-  turso db create my-new-database --from-db my-existing-database --timestamp 2024-01-01T00:00:00Z
-  ```
+```bash CLI theme={null}
+turso db create my-new-database --from-db my-existing-database --timestamp 2024-01-01T00:00:00Z
+```
 
-  ```bash Platform API theme={null}
-  curl -L -X POST 'https://api.turso.tech/v1/organizations/{organizationSlug}/databases' \
-    -H 'Authorization: Bearer TOKEN' \
-    -H 'Content-Type: application/json' \
-    -d '{
-        "name": "new-database",
-        "group": "default",
-        "seed": {
-          "type:": "database",
-          "name": "my-existing-database",
-          "timestamp": "2024-01-01T00:00:00Z"
-        }
-    }'
-  ```
-</CodeGroup>
+```bash Platform API theme={null}
+curl -L -X POST 'https://api.turso.tech/v1/organizations/{organizationSlug}/databases' \
+  -H 'Authorization: Bearer TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+      "name": "new-database",
+      "group": "default",
+      "seed": {
+        "type:": "database",
+        "name": "my-existing-database",
+        "timestamp": "2024-01-01T00:00:00Z"
+      }
+  }'
+```
 
 Refer to the following references for more details about all arguments:
 
-<CardGroup>
-  <Card title="CLI Reference" icon="terminal" href="/cli/db/create" />
+> **[CLI Reference](/cli/db/create)**
 
-  <Card title="API Reference" icon="code" href="/api-reference/databases/create" />
-</CardGroup>
+> **[API Reference](/api-reference/databases/create)**
 
 ## Things to know
 

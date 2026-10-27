@@ -665,6 +665,7 @@ To simulate a [disputed transaction](https://docs.stripe.com/disputes.md) or ear
 | Visa compliance | 4000008400000779 | With default account settings, charge succeeds, only to be disputed as a [Visa compliance dispute](https://docs.stripe.com/disputes/api/visa-compliance.md#testing). |
 | Mastercard compliance | 5105008400000002 | With default account settings, charge succeeds, only to be disputed as a [Mastercard compliance dispute](https://docs.stripe.com/disputes/api/mastercard-compliance.md#testing). |
 | Smart disputes | 4000000001000043 | With default account settings, charge succeeds, only to be disputed as a [Smart Disputes](https://docs.stripe.com/disputes/smart-disputes.md) eligible dispute. |
+| Partially refunded dispute (asynchronous) | 4000008400000795 | The payment succeeds without automatically creating a refund or dispute. If you partially refund the payment, Stripe asynchronously creates a fraudulent dispute for the amount that isn’t refunded. For example, refunding 3 USD of a 10 USD payment creates a 7 USD dispute. Fully refunding the payment doesn’t trigger a dispute. |
 
 #### PaymentMethods
 

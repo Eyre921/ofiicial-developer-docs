@@ -477,6 +477,16 @@ components:
           items:
             $ref: '#/components/schemas/PrivateEndpointCheck'
           type: array
+        parameters:
+          description: >-
+            Request parameters probed after the checks passed, each with whether
+            the upstream honored it. Supported ones are recorded in
+            `tested_parameters`. Absent on a failed run and for providers that
+            run no parameter probes; empty when every probe group was already
+            proven.
+          items:
+            $ref: '#/components/schemas/PrivateEndpointParameterCheck'
+          type: array
         passed:
           description: Whether every check passed.
           example: true
@@ -689,6 +699,20 @@ components:
       required:
         - name
         - passed
+      type: object
+    PrivateEndpointParameterCheck:
+      example:
+        parameter: response_format
+        supported: true
+      properties:
+        parameter:
+          example: response_format
+          type: string
+        supported:
+          type: boolean
+      required:
+        - parameter
+        - supported
       type: object
     PrivateEndpointCheckReason:
       description: Why the check failed.

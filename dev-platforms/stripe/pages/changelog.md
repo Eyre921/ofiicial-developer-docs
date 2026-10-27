@@ -22,7 +22,7 @@ Keep track of changes and upgrades to the Stripe API.
 | [Adds the ability to clear invoicing rules on Invoice Items](https://docs.stripe.com/changelog/endive/2026-09-30/clear-invoicing-rules-on-invoice-items.md) | Billing | Non-breaking | api |
 | [Adds proration details for Invoice Items using classic billing mode](https://docs.stripe.com/changelog/endive/2026-09-30/invoice-items-proration-details.md) | Billing | Non-breaking | api |
 | [Makes trial offers generally available](https://docs.stripe.com/changelog/endive/2026-09-30/trial-offer-ga.md) | Billing | Non-breaking | api |
-| [Adds detailed status to explain why an Invoice is uncollectable](https://docs.stripe.com/changelog/endive/2026-09-30/invoice-uncollectible-status-detail.md) | Billing | Non-breaking | api |
+| [Adds detailed status to explain why an invoice is uncollectible](https://docs.stripe.com/changelog/endive/2026-09-30/invoice-uncollectible-status-detail.md) | Billing | Non-breaking | api |
 | [Adds support for scheduling Subscription cancellation as part of pending update](https://docs.stripe.com/changelog/endive/2026-09-30/scheduled-subscription-cancellation.md) | Billing | Non-breaking | api |
 | [Adds the ability to pause and resume Subscriptions on demand](https://docs.stripe.com/changelog/endive/2026-09-30/pause-subscription.md) | Billing | Non-breaking | api |
 | [Adds the Feedback Options API](https://docs.stripe.com/changelog/endive/2026-09-30/feedback-options-api.md) | Billing | Non-breaking | api |

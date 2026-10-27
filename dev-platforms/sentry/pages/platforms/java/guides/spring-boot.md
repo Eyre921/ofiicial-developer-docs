@@ -44,7 +44,7 @@ plugins {
 }
 // ___PRODUCT_OPTION_START___ profiling
 dependencies {
-  implementation 'io.sentry:sentry-async-profiler:8.61.1'
+  implementation 'io.sentry:sentry-async-profiler:8.62.0'
 }
 // ___PRODUCT_OPTION_END___ profiling
 ```
@@ -89,7 +89,7 @@ dependencies {
   <dependency>
       <groupId>io.sentry</groupId>
       <artifactId>sentry-async-profiler</artifactId>
-      <version>8.61.1</version>
+      <version>8.62.0</version>
   </dependency>
 </dependencies>
 // ___PRODUCT_OPTION_END___ profiling
@@ -98,27 +98,27 @@ dependencies {
 **Gradle (Spring Boot 2)**
 
 ```groovy
-implementation 'io.sentry:sentry-spring-boot-starter:8.61.1'
+implementation 'io.sentry:sentry-spring-boot-starter:8.62.0'
 // ___PRODUCT_OPTION_START___ profiling
-implementation 'io.sentry:sentry-async-profiler:8.61.1'
+implementation 'io.sentry:sentry-async-profiler:8.62.0'
 // ___PRODUCT_OPTION_END___ profiling
 ```
 
 **Gradle (Spring Boot 3)**
 
 ```groovy
-implementation 'io.sentry:sentry-spring-boot-starter-jakarta:8.61.1'
+implementation 'io.sentry:sentry-spring-boot-starter-jakarta:8.62.0'
 // ___PRODUCT_OPTION_START___ profiling
-implementation 'io.sentry:sentry-async-profiler:8.61.1'
+implementation 'io.sentry:sentry-async-profiler:8.62.0'
 // ___PRODUCT_OPTION_END___ profiling
 ```
 
 **Gradle (Spring Boot 4)**
 
 ```groovy
-implementation 'io.sentry:sentry-spring-boot-4:8.61.1'
+implementation 'io.sentry:sentry-spring-boot-4:8.62.0'
 // ___PRODUCT_OPTION_START___ profiling
-implementation 'io.sentry:sentry-async-profiler:8.61.1'
+implementation 'io.sentry:sentry-async-profiler:8.62.0'
 // ___PRODUCT_OPTION_END___ profiling
 ```
 
@@ -128,13 +128,13 @@ implementation 'io.sentry:sentry-async-profiler:8.61.1'
 <dependency>
     <groupId>io.sentry</groupId>
     <artifactId>sentry-spring-boot-starter</artifactId>
-    <version>8.61.1</version>
+    <version>8.62.0</version>
 </dependency>
 // ___PRODUCT_OPTION_START___ profiling
 <dependency>
     <groupId>io.sentry</groupId>
     <artifactId>sentry-async-profiler</artifactId>
-    <version>8.61.1</version>
+    <version>8.62.0</version>
 </dependency>
 // ___PRODUCT_OPTION_END___ profiling
 ```
@@ -145,13 +145,13 @@ implementation 'io.sentry:sentry-async-profiler:8.61.1'
 <dependency>
     <groupId>io.sentry</groupId>
     <artifactId>sentry-spring-boot-starter-jakarta</artifactId>
-    <version>8.61.1</version>
+    <version>8.62.0</version>
 </dependency>
 // ___PRODUCT_OPTION_START___ profiling
 <dependency>
     <groupId>io.sentry</groupId>
     <artifactId>sentry-async-profiler</artifactId>
-    <version>8.61.1</version>
+    <version>8.62.0</version>
 </dependency>
 // ___PRODUCT_OPTION_END___ profiling
 ```
@@ -162,13 +162,13 @@ implementation 'io.sentry:sentry-async-profiler:8.61.1'
 <dependency>
     <groupId>io.sentry</groupId>
     <artifactId>sentry-spring-boot-4</artifactId>
-    <version>8.61.1</version>
+    <version>8.62.0</version>
 </dependency>
 // ___PRODUCT_OPTION_START___ profiling
 <dependency>
     <groupId>io.sentry</groupId>
     <artifactId>sentry-async-profiler</artifactId>
-    <version>8.61.1</version>
+    <version>8.62.0</version>
 </dependency>
 // ___PRODUCT_OPTION_END___ profiling
 ```
@@ -179,16 +179,16 @@ If you are manually adding multiple Sentry dependencies, you can add a [bill of 
 
 When running your application, please add our `sentry-opentelemetry-agent` to the `java` command.
 
-Download the latest version of the `sentry-opentelemetry-agent-8.61.1.jar` from [MavenCentral](https://search.maven.org/artifact/io.sentry/sentry-opentelemetry-agent):
+Download the latest version of the `sentry-opentelemetry-agent-8.62.0.jar` from [MavenCentral](https://search.maven.org/artifact/io.sentry/sentry-opentelemetry-agent):
 
 ```bash
-curl https://repo1.maven.org/maven2/io/sentry/sentry-opentelemetry-agent/8.61.1/sentry-opentelemetry-agent-8.61.1.jar -o sentry-opentelemetry-agent-8.61.1.jar
+curl https://repo1.maven.org/maven2/io/sentry/sentry-opentelemetry-agent/8.62.0/sentry-opentelemetry-agent-8.62.0.jar -o sentry-opentelemetry-agent-8.62.0.jar
 ```
 
 Then run your application with:
 
 ```bash
-SENTRY_AUTO_INIT=false JAVA_TOOL_OPTIONS="-javaagent:sentry-opentelemetry-agent-8.61.1.jar" java -jar your-application.jar
+SENTRY_AUTO_INIT=false JAVA_TOOL_OPTIONS="-javaagent:sentry-opentelemetry-agent-8.62.0.jar" java -jar your-application.jar
 ```
 
 *Other available variations of the above snippet: Java CLI argument*

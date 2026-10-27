@@ -21,11 +21,11 @@ Some SQLite pragma statements behave differently on Turso Cloud or are not suppo
 | `busy_timeout` | Not supported. Turso Cloud manages concurrency internally, so setting a busy timeout has no effect. |
 | `journal_mode` | Not supported. Turso Cloud manages journaling internally and does not allow changing the journal mode. |
 
-<Warning>
-  If you're using `PRAGMA user_version` to track schema migrations (common in vanilla SQLite), you'll need to switch to a table-based approach on Turso Cloud:
-
-  ```sql theme={null}
-  CREATE TABLE IF NOT EXISTS _schema_version (version INTEGER NOT NULL);
-  INSERT INTO _schema_version (version) VALUES (0);
-  ```
-</Warning>
+> [!WARNING]
+>
+> If you're using `PRAGMA user_version` to track schema migrations (common in vanilla SQLite), you'll need to switch to a table-based approach on Turso Cloud:
+>
+> ```sql theme={null}
+> CREATE TABLE IF NOT EXISTS _schema_version (version INTEGER NOT NULL);
+> INSERT INTO _schema_version (version) VALUES (0);
+> ```

@@ -8,9 +8,9 @@ Create, compare, and manipulate vector embeddings
 
 # Vector Functions
 
-<Info>
-  **Turso Extension**: Vector functions are a Turso-specific feature for working with vector embeddings directly in SQL. These functions are not part of the SQLite standard.
-</Info>
+> [!NOTE]
+>
+> **Turso Extension**: Vector functions are a Turso-specific feature for working with vector embeddings directly in SQL. These functions are not part of the SQLite standard.
 
 Turso provides built-in functions for storing and querying vector embeddings. Vectors are stored as BLOBs in a compact binary format and can be compared using distance functions for similarity search.
 
@@ -145,9 +145,9 @@ vector32_sparse(json_array)
 SELECT vector32_sparse('[0.0, 0.0, 1.5, 0.0, 0.0, 2.5]');
 ```
 
-<Info>
-  Sparse vectors can be indexed with the experimental sparse vector index method (enable `--experimental-index-method`). See [CREATE INDEX](/sql-reference/statements/create-index).
-</Info>
+> [!NOTE]
+>
+> Sparse vectors can be indexed with the experimental sparse vector index method (enable `--experimental-index-method`). See [CREATE INDEX](/sql-reference/statements/create-index).
 
 ***
 
@@ -413,9 +413,9 @@ SELECT vector_extract(
 -- [0.120000,-0.340000,0.560000,0.780000]
 ```
 
-<Note>
-  By default, similarity searches use a linear scan over the table. An experimental sparse vector index method is available behind the `--experimental-index-method` flag; without it, consider limiting search to a subset of rows with a WHERE clause for large datasets.
-</Note>
+> [!NOTE]
+>
+> By default, similarity searches use a linear scan over the table. An experimental sparse vector index method is available behind the `--experimental-index-method` flag; without it, consider limiting search to a subset of rows with a WHERE clause for large datasets.
 
 ## See Also
 

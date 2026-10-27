@@ -34,6 +34,22 @@ Use the following test credit card numbers to create payments in a *sandbox* (A 
 | `pm_card_chargeDeclinedFraudulent` | Results in a charge with a risk level of `highest`, and is always blocked regardless of your rules. |
 | `pm_card_riskLevelElevated` | Results in a charge with a risk level of `elevated`. |
 
+## SEPA Direct Debit
+
+Use the following test IBAN to create a payment that Radar blocks in a sandbox.
+
+| IBAN | Description |
+| --- | --- |
+| NL57RABO5883930565 | The payment is blocked by Radar. |
+
+## ACH Direct Debit
+
+Use the following test account and routing numbers to create a payment that Radar blocks in a sandbox.
+
+| Account number | Routing number | Description |
+| --- | --- | --- |
+| 000000004954 | 110000000 | The payment is blocked by Radar. |
+
 ## Rules
 
 Before you [add or update a rule](https://docs.stripe.com/radar/rules.md), we’ll search for historical live mode payments that match the rule criteria. You can inspect that list of payments to verify the criterion’s intended behavior, and we also summarize those search results to help you estimate its future impact.

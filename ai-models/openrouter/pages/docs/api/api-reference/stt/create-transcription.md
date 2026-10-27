@@ -1232,6 +1232,9 @@ components:
         poolside:
           additionalProperties: {}
           type: object
+        primalabs:
+          additionalProperties: {}
+          type: object
         primeintellect:
           additionalProperties: {}
           type: object

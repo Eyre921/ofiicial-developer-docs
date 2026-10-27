@@ -62,7 +62,7 @@ To edit a subscription:
 
    - **Pause payment collection**: Select the duration of the pause (indefinite or ending on a custom date) and how invoices should behave during the pause.
 
-   - **Share payment update link**: Generate a link the customer can use to [update the subscription payment method](https://docs.stripe.com/billing/subscriptions/payment-methods-setting.md#update-payment-method).
+   - **Share payment update link**: Generate a link the customer can use to [update the subscription payment method](https://docs.stripe.com/billing/invoices/subscription.md#update-payment-method).
 
 3. Make your changes to the subscription.
 

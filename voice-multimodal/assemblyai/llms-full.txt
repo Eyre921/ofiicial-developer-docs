@@ -128,7 +128,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Universal-3.6 Pro on Pipecat](#universal-3-6-pro-on-pipecat-docs-voice-agents-pipecat-universal-3-5-pro-mdx)
 - [Universal-3.6 Pro on Vapi](#universal-3-6-pro-on-vapi-docs-voice-agents-vapi-mdx)
 - [Universal-3.6 Pro on Bolna](#universal-3-6-pro-on-bolna-docs-voice-agents-bolna-mdx)
-- [Streaming Migration Guide: Universal Streaming to Universal-3.6 Pro Streaming](#streaming-migration-guide-universal-streaming-to-universal-3-6-pro-streaming-docs-streaming-migration-guides-universal-to-universal-3-5-pro-streaming-mdx)
+- [Streaming Migration Guide: Universal Streaming to Universal-3.6 Pro Realtime](#streaming-migration-guide-universal-streaming-to-universal-3-6-pro-realtime-docs-streaming-migration-guides-universal-to-universal-3-5-pro-streaming-mdx)
 - [Streaming Migration Guide: Deepgram to AssemblyAI](#streaming-migration-guide-deepgram-to-assemblyai-docs-streaming-migration-guides-dg-to-aai-streaming-mdx)
 - [Migration guide: Speechmatics to AssemblyAI](#migration-guide-speechmatics-to-assemblyai-docs-streaming-migration-guides-speechmatics-to-aai-streaming-mdx)
 - [Streaming Migration Guide: Gladia to AssemblyAI](#streaming-migration-guide-gladia-to-assemblyai-docs-streaming-migration-guides-gladia-to-aai-streaming-mdx)
@@ -336,7 +336,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Universal-3.5 Pro](#universal-3-5-pro-docs-pre-recorded-audio-universal-3-5-pro-mdx)
 - [Tracking customer transcription usage](#tracking-customer-transcription-usage-docs-tracking-your-customers-usage-mdx)
 - [Use case guides](#use-case-guides-docs-use-cases-mdx)
-- [Universal-3.5 Pro Streaming API](#universal-3-5-pro-streaming-api-docs-voice-agents-universal-3-5-pro-streaming-api-mdx)
+- [Universal-3.5 Pro Realtime API](#universal-3-5-pro-realtime-api-docs-voice-agents-universal-3-5-pro-streaming-api-mdx)
 - [API specs](#api-specs)
 
 ---
@@ -620,8 +620,8 @@ Use this to build the recommendation. Do not dump it on the user.
 | Developer need | Parameter / approach |
 |---|---|
 | Speaker diarization | `speaker_labels: true` (pre-recorded, and streaming — streaming adds a `speaker_label` to each Turn event) |
-| Automatic language detection | `language_detection: true` (pre-recorded; on streaming, only available on Universal-Streaming Multilingual — adds `language_code` + `language_confidence` to Turn events. **Not** supported on U3 Pro Streaming.) |
-| Specific language | `language_code: "es"` etc. (pre-recorded and U3 Pro Streaming — biases the multilingual model toward one language) |
+| Automatic language detection | `language_detection: true` (pre-recorded; on streaming, available on Universal-3.6 Pro Realtime and Universal-Streaming Multilingual — adds `language_code` + `language_confidence` to Turn events. It only reports the language; it doesn't change transcription.) |
+| Specific language | `language_code: "es"` etc. on pre-recorded; on Universal-3.6 Pro Realtime, `language_codes: ["es"]` steers the model toward the languages you list |
 | Multilingual / code-switching | `speech_models: ["universal-3-5-pro"]` + `prompt` parameter — see [U3 Pro prompting guide](/pre-recorded-audio/universal-3-5-pro/prompting) |
 | Domain-specific vocabulary | `keyterms_prompt: [...]` (pre-recorded: up to 1,000 terms with U3 Pro / 200 with U2; streaming: up to 100 terms, each ≤50 chars) |
 | Medical domain | `domain: "medical-v1"` (pre-recorded *and* streaming; supported languages: en, es, de, fr) |
@@ -631,7 +631,7 @@ Use this to build the recommendation. Do not dump it on the user.
 | Word timestamps / confidence | Included by default on `words[]` |
 | Webhook delivery (skip polling) | `webhook_url: "..."` (Section 7) |
 | Custom voice agent (your LLM + TTS) | Real-time STT + framework integration (Section 10) |
-| Multilingual streaming | Universal-3 Pro Streaming (native code-switching; `language_code` to bias toward one language) |
+| Multilingual streaming | Universal-3.6 Pro Realtime (native code-switching; `language_codes` to steer toward known languages) |
 
 ---
 
@@ -653,7 +653,7 @@ Core REST endpoints:
 - `GET /v2/transcript/{id}` — poll. Statuses: `queued`, `processing`, `completed`, `error`.
 
 Streaming:
-- `wss://streaming.assemblyai.com/v3/ws?sample_rate=16000&speech_model=universal-3-5-pro`
+- `wss://streaming.assemblyai.com/v3/ws?sample_rate=16000&speech_model=universal-3-6-pro`
 - `GET https://streaming.assemblyai.com/v3/token?expires_in_seconds=60` — mint a temp token for browser/mobile clients. The token is reusable until `expires_in_seconds` elapses, so mint a fresh one per session. Optional `max_session_duration_seconds` (60–10800, defaults to 3 h) caps the downstream session length. At the cap, the session ends after the current turn or up to 60 s later, and that extra time is billed.
 
 ---
@@ -664,7 +664,7 @@ Streaming:
 
 Recommended default: `["universal-3-5-pro", "universal-2"]` — tries the latest model first, falls back to the stable predecessor.
 
-On streaming, the parameter is **singular** (`speech_model=universal-3-5-pro`) — there is no fallback list. Easy to mix up.
+On streaming, the parameter is **singular** (`speech_model=universal-3-6-pro`) — there is no fallback list. Easy to mix up.
 
 ---
 
@@ -803,9 +803,9 @@ Do not submit with `auto_chapters` and `summarization` both enabled — the API 
 
 ---
 
-## 9. Streaming — Universal-3.5 Pro
+## 9. Streaming — Universal-3.6 Pro
 
-**WebSocket (default, Edge Routing):** `wss://streaming.assemblyai.com/v3/ws?sample_rate=16000&speech_model=universal-3-5-pro`
+**WebSocket (default, Edge Routing):** `wss://streaming.assemblyai.com/v3/ws?sample_rate=16000&speech_model=universal-3-6-pro`
 
 For data residency, swap the host: `streaming.us.assemblyai.com` (US-pinned) or `streaming.eu.assemblyai.com` (EU-pinned). The default host auto-routes to the nearest region.
 
@@ -861,7 +861,7 @@ client = StreamingClient(
     StreamingClientOptions(api_key=os.environ["ASSEMBLYAI_API_KEY"])
 )
 client.on(StreamingEvents.Turn, on_turn)
-client.connect(StreamingParameters(sample_rate=16000, speech_model="universal-3-5-pro"))
+client.connect(StreamingParameters(sample_rate=16000, speech_model="universal-3-6-pro"))
 
 # Feed 16 kHz mono PCM16 chunks (50–1000ms each) via client.stream(chunk)
 # When finished:
@@ -876,7 +876,7 @@ import { AssemblyAI } from 'assemblyai';
 const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 const rt = client.streaming.transcriber({
   sampleRate: 16000,
-  speechModel: 'universal-3-5-pro',
+  speechModel: 'universal-3-6-pro',
 });
 
 rt.on('turn', (turn) => {
@@ -898,7 +898,7 @@ await rt.close(); // sends Terminate and closes
 import WebSocket from 'ws';
 
 const ws = new WebSocket(
-  'wss://streaming.assemblyai.com/v3/ws?sample_rate=16000&speech_model=universal-3-5-pro',
+  'wss://streaming.assemblyai.com/v3/ws?sample_rate=16000&speech_model=universal-3-6-pro',
   { headers: { authorization: process.env.ASSEMBLYAI_API_KEY } },
 );
 
@@ -923,7 +923,7 @@ function stop() {
 ```python
 import asyncio, json, os, websockets
 
-URL = "wss://streaming.assemblyai.com/v3/ws?sample_rate=16000&speech_model=universal-3-5-pro"
+URL = "wss://streaming.assemblyai.com/v3/ws?sample_rate=16000&speech_model=universal-3-6-pro"
 
 async def run(audio_source):
     """audio_source: async iterator yielding 50–1000ms PCM16 chunks at 16kHz mono."""
@@ -960,7 +960,7 @@ The defaults will not be good enough. Common tuning:
 
 - **`keyterms_prompt`** — pass proper nouns, product names, and domain terms. For dynamic values (usernames, order IDs), update mid-session via `UpdateConfiguration`.
 - **Turn silence bounds** — `min_turn_silence` and `max_turn_silence` (ms). Lower values fire end-of-turn faster but risk cutting speakers off. Higher values reduce false finalizations. Form-filling and dictation use cases often want wider windows.
-- **Multilingual** — Universal-3 Pro Streaming code-switches natively and ignores `end_of_turn_confidence_threshold`. Pass `language_code` to bias the model toward a single language.
+- **Multilingual** — Universal-3.6 Pro Realtime code-switches natively and ignores `end_of_turn_confidence_threshold`. Pass `language_codes` (for example `["es"]`) to steer the model toward known languages.
 - **Barge-in / false SpeechStarted** — ambient noise, TTS bleed-through, and PSTN echo can cause spurious `SpeechStarted` events. If the agent is interrupting itself, look here first. Framework-level knobs (e.g., LiveKit's `min_interruption_duration`) often complement, not replace, server-side tuning.
 - **Phone audio** — 8 kHz mu-law (`pcm_mulaw` at 8000 Hz) should be sent as-is, not upsampled to 16 kHz. Upsampling degrades accuracy.
 
@@ -1020,7 +1020,7 @@ export async function GET() {
 // Client
 const { token } = await fetch('/api/aai-token').then((r) => r.json());
 const ws = new WebSocket(
-  `wss://streaming.assemblyai.com/v3/ws?sample_rate=16000&speech_model=universal-3-5-pro&token=${token}`,
+  `wss://streaming.assemblyai.com/v3/ws?sample_rate=16000&speech_model=universal-3-6-pro&token=${token}`,
 );
 ws.onmessage = (e) => {
   const msg = JSON.parse(e.data);
@@ -1080,7 +1080,7 @@ If a developer asks for any of these, say so directly and propose the closest su
 ### Streaming gotchas
 
 - `speech_model` (streaming, singular) vs `speech_models` (pre-recorded, plural). Don't mix up.
-- On U3 Pro Streaming, `end_of_turn_confidence_threshold` is silently ignored; `language_code` biases the multilingual model toward a single language.
+- On Universal-3.6 Pro Realtime, `end_of_turn_confidence_threshold` is silently ignored; `language_codes` steers the model toward the languages you list.
 - Always send `{ "type": "Terminate" }` when finished. An abandoned session stays billable until the 3-hour cap (`3008`).
 - Chunk size matters: frames outside 50–1000 ms will close the socket with `3007`.
 
@@ -1136,28 +1136,18 @@ Any MCP client that supports [Streamable HTTP transport](https://modelcontextpro
 
 ## Claude Code skill
 
-The [AssemblyAI skill](https://github.com/AssemblyAI/assemblyai-skill) gives Claude Code curated instructions and context for the Python and JavaScript SDKs, streaming, voice agents, audio intelligence, and more.
-
-```bash
-claude install-skill https://github.com/AssemblyAI/assemblyai-skill
-```
-
-Works with 60+ AI coding agents via the universal skills format:
+The [AssemblyAI skill](https://github.com/AssemblyAI/assemblyai-skill) gives Claude Code curated instructions and context for the Python and JavaScript SDKs, streaming, voice agents, audio intelligence, and more. Install it with the [skills CLI](https://github.com/vercel-labs/skills), which also works with Cursor, Copilot, Codex, and 60+ other AI coding agents:
 
 ```bash
 npx skills add AssemblyAI/assemblyai-skill
 ```
 
-Verify it's installed:
-
-```bash
-claude skill list
-```
+The CLI asks which agents to install it for. Run `npx skills check` later to see whether an update is available.
 
 ## Tips for best results
 
 - **Be specific about the SDK** — say "use the AssemblyAI Python SDK" or "use the JavaScript SDK" rather than "use AssemblyAI".
-- **Reference the model** — specify `universal-3-5-pro` for pre-recorded or streaming to avoid outdated model names.
+- **Reference the model** — specify `universal-3-5-pro` for pre-recorded or `universal-3-6-pro` for streaming to avoid outdated model names.
 - **Set your API key as an environment variable** — `export ASSEMBLYAI_API_KEY=your_key` so the agent can reference it naturally.
 
 ---
@@ -1343,7 +1333,7 @@ We recommend [Universal-3.5 Pro](/pre-recorded-audio/universal-3-5-pro) for pre-
       <li>Fastest word emissions</li>
       <li>Advanced prompting capabilities</li>
       <li>Keyterms prompting up to 100 words</li>
-      <li>18 languages with native code switching</li>
+      <li>32 languages with native code switching</li>
     </ul>
   
   
@@ -1363,7 +1353,7 @@ We recommend [Universal-3.5 Pro](/pre-recorded-audio/universal-3-5-pro) for pre-
     </ul>
   
 
-We recommend [Universal-3.5 Pro Streaming](/streaming/getting-started/transcribe-streaming-audio) for streaming transcription. It provides the highest accuracy with sub-300ms latency, native multilingual code switching, and advanced prompting support.
+We recommend [Universal-3.6 Pro Realtime](/streaming/getting-started/transcribe-streaming-audio) for streaming transcription. It provides the highest accuracy with sub-300ms latency, native multilingual code switching, and advanced prompting support.
 
 ## Add-on models
 
@@ -1384,7 +1374,7 @@ Medical Mode (`domain: "medical-v1"`) is an add-on that enhances transcription a
 
 **Supported models:**
 - Pre-recorded: Universal-3.5 Pro, Universal-2
-- Streaming: Universal-3.5 Pro Streaming, Universal-Streaming English, Universal-Streaming Multilingual
+- Streaming: Universal-3.6 Pro Realtime, Universal-3.5 Pro Realtime, Universal-Streaming English, Universal-Streaming Multilingual
 
 **Supported languages:** English, Spanish, German, French
 
@@ -1432,9 +1422,9 @@ Universal-2 offers accurate, cost-effective transcription across 99 languages wi
 
 ### Streaming
 
-#### Universal-3.5 Pro Streaming
+#### Universal-3.6 Pro Realtime
 
-The most accurate model with the fastest word emissions for voice agents that demand the highest quality. Best-in-class accuracy with advanced prompting capabilities, including both [keyterms prompting](/streaming/prompting-and-keyterms) and [native prompting](/streaming/prompting-and-keyterms). Supports English, Spanish, German, French, Portuguese, Italian, Turkish, Dutch, Swedish, Norwegian, Danish, Finnish, Hindi, Vietnamese, Arabic, Hebrew, Japanese, and Mandarin.
+The most accurate model with the fastest word emissions for voice agents that demand the highest quality. Best-in-class accuracy with advanced prompting capabilities, including both [keyterms prompting](/streaming/prompting-and-keyterms) and [native prompting](/streaming/prompting-and-keyterms). Supports 32 languages (see the list below). The previous flagship, Universal-3.5 Pro Realtime (`universal-3-5-pro`), is still supported for existing integrations, with the same features in 19 languages.
 
 **Best for:**
 - Real-time voice agents
@@ -1442,7 +1432,7 @@ The most accurate model with the fastest word emissions for voice agents that de
 - Customer service voice agents needing elite entity accuracy
 - IVR replacement / binary response detection in short utterances
 - Agent assist and sales intelligence needing real-time speaker diarization, mid-session dynamic prompting
-- Multilingual voice agents with native code-switching across 18 languages
+- Multilingual voice agents with native code-switching across 32 languages
 - Compliance and verbatim recording — disfluency control via prompting
 
   
@@ -1450,9 +1440,9 @@ The most accurate model with the fastest word emissions for voice agents that de
 
   **Regional dialects**
 
-Universal-3.5 Pro Streaming also supports regional dialects and local speech variants out of the box, with no special configuration needed. See the full list of [supported dialects](/streaming/getting-started/transcribe-streaming-audio).
+Universal-3.6 Pro Realtime also supports regional dialects and local speech variants out of the box, with no special configuration needed. See the full list of [supported dialects](/streaming/getting-started/transcribe-streaming-audio).
 
-[Learn more about Universal-3.5 Pro Streaming](/streaming/getting-started/transcribe-streaming-audio)
+[Learn more about Universal-3.6 Pro Realtime](/streaming/getting-started/transcribe-streaming-audio)
 
 #### Universal-Streaming Multilingual
 
@@ -1501,7 +1491,8 @@ Streaming is billed per hour of **session duration** — the total time your Web
 
 | Model                            | Price per Hour (session duration) | Volume discounts |
 | -------------------------------- | --------------------------------- | ---------------- |
-| Universal-3.5 Pro Streaming      | $0.45/hr                          | Available        |
+| Universal-3.6 Pro Realtime       | $0.45/hr                          | Available        |
+| Universal-3.5 Pro Realtime      | $0.45/hr                          | Available        |
 | Universal-Streaming Multilingual | $0.15/hr                          | Available        |
 | Universal-Streaming English      | $0.15/hr                          | Available        |
 
@@ -1510,7 +1501,7 @@ For volume discounts, please reach out to sales@assemblyai.com.
 ## Next steps
 
 - Explore [Speech Understanding](/speech-understanding) features like summarization, sentiment analysis, and more
-- Learn about prompting: [Universal-3.5 Pro prompting guide](/pre-recorded-audio/universal-3-5-pro/prompting) | [Universal-3.5 Pro Streaming prompting guide](/streaming/prompting-and-keyterms)
+- Learn about prompting: [Universal-3.5 Pro prompting guide](/pre-recorded-audio/universal-3-5-pro/prompting) | [Universal-3.6 Pro Realtime prompting guide](/streaming/prompting-and-keyterms)
 
 ---
 
@@ -2712,7 +2703,7 @@ Stream audio from your microphone with speaker diarization and LLM Gateway to ge
 
 **Products used:** [Real-time STT](/streaming/getting-started/transcribe-streaming-audio) + [Universal-3.5 Pro](/streaming/getting-started/transcribe-streaming-audio) + [LLM Gateway](/guides/real_time_llm_gateway)
 
-**Model selection:** Uses `universal-3-5-pro` (Universal-3.5 Pro Streaming) for the lowest latency (~300ms) with the highest streaming accuracy.
+**Model selection:** Uses `universal-3-5-pro` (Universal-3.5 Pro Realtime) for the lowest latency (~300ms) with the highest streaming accuracy.
 
 ```python expandable
 # pip install pyaudio websocket-client
@@ -13102,7 +13093,7 @@ AssemblyAI stands out as the premier choice for meeting notetakers with several 
 
 ### Streaming with Universal-3.5 Pro
 
-As meeting notetakers evolve toward real-time capabilities, AssemblyAI's Universal-3.5 Pro Streaming model (`universal-3-5-pro`) offers significant benefits:
+As meeting notetakers evolve toward real-time capabilities, AssemblyAI's Universal-3.5 Pro Realtime model (`universal-3-5-pro`) offers significant benefits:
 
 - **Speaker diarization** available for both pre-recorded and streaming transcription
 - **Ultra-low latency (~300ms)** enables live transcription without delays
@@ -13141,7 +13132,7 @@ Understanding when to use pre-recorded versus streaming speech-to-text is critic
 
 **Live meetings** - Transcribing as the meeting happens
 
-You should use streaming when you need to display a live transcript of text to users as they are speaking. With Universal-3.5 Pro Streaming, accuracy is closer to pre-recorded, but pre-recorded will always be the most accurate option.
+You should use streaming when you need to display a live transcript of text to users as they are speaking. With Universal-3.5 Pro Realtime, accuracy is closer to pre-recorded, but pre-recorded will always be the most accurate option.
 
 - **Real-time captions** - Displaying subtitles/captions to participants during calls
 - **Immediate feedback** - Need transcription within ~300ms
@@ -13205,14 +13196,14 @@ For live meeting transcription:
 - English-only model (default)
 - Multilingual model supporting English, Spanish, French, German, Portuguese, and Italian
 
-### Streaming (Universal-3.5 Pro Streaming)
+### Streaming (Universal-3.5 Pro Realtime)
 
 - Speaker diarization for identifying who is speaking
 - Partial and final transcripts for responsive UI
 - Format turns for structured, readable output
 - Keyterms prompt for contextual accuracy
 
-See the [Universal-3.5 Pro Streaming documentation](/streaming/getting-started/transcribe-streaming-audio) for full details.
+See the [Universal-3.5 Pro Realtime documentation](/streaming/getting-started/transcribe-streaming-audio) for full details.
 
 ## How Can I Get Started Building a Post-Call Meeting Notetaker?
 
@@ -14534,7 +14525,7 @@ full_transcript = processor.get_full_transcript()
 ## Additional Resources
 
 - [Universal Pre-recorded Documentation](/pre-recorded-audio)
-- [Universal-3.5 Pro Streaming Documentation](/streaming)
+- [Universal-3.5 Pro Realtime Documentation](/streaming)
 - [Speaker Diarization Guide](/pre-recorded-audio/label-speakers)
 - [Speaker Identification Guide](/speech-understanding/speaker-identification)
 - [Translation Guide](/speech-understanding/translation)
@@ -14562,7 +14553,7 @@ Choose the guide that matches your clinical workflow:
     Transcribe recorded patient encounters with Universal-3.5 Pro. Includes Medical Mode, speaker diarization, entity detection, PII redaction, and SOAP note generation.
   
   
-    Stream audio from a microphone during live encounters with Universal-3.5 Pro Streaming. Includes LLM Gateway post-processing, medical keyterms, and automatic SOAP note generation.
+    Stream audio from a microphone during live encounters with Universal-3.5 Pro Realtime. Includes LLM Gateway post-processing, medical keyterms, and automatic SOAP note generation.
   
 
 ## Which approach should I use?
@@ -14603,7 +14594,7 @@ AssemblyAI stands out as the premier choice for contact center applications with
 
 ### Streaming with Universal-3.5 Pro
 
-For real-time agent assist, AssemblyAI's Universal-3.5 Pro Streaming model (`universal-3-5-pro`) offers:
+For real-time agent assist, AssemblyAI's Universal-3.5 Pro Realtime model (`universal-3-5-pro`) offers:
 
 - **Low latency** enables live transcription during calls
 - **Format turns** feature provides structured, readable output
@@ -14642,7 +14633,7 @@ Understanding when to use pre-recorded versus streaming is critical for contact 
 
 **Live calls** - Transcribing as the call happens
 
-You should use streaming when you need to display a live transcript to agents during calls. With Universal-3.5 Pro Streaming, accuracy is closer to pre-recorded, but pre-recorded will always be the most accurate option.
+You should use streaming when you need to display a live transcript to agents during calls. With Universal-3.5 Pro Realtime, accuracy is closer to pre-recorded, but pre-recorded will always be the most accurate option.
 
 - **Agent assist** - Live transcription visible to agents during calls
 - **Real-time coaching** - Prompt agents with suggested responses or compliance reminders
@@ -14698,9 +14689,9 @@ For post-call analytics, AssemblyAI supports:
 
 - PII redaction on text and audio for HIPAA and PCI compliance
 
-### Streaming (Universal-3.5 Pro Streaming)
+### Streaming (Universal-3.5 Pro Realtime)
 
-For live call transcription, use **Universal-3.5 Pro Streaming** (`universal-3-5-pro`) for the highest streaming accuracy:
+For live call transcription, use **Universal-3.5 Pro Realtime** (`universal-3-5-pro`) for the highest streaming accuracy:
 
 **Core Features**:
 
@@ -14710,7 +14701,7 @@ For live call transcription, use **Universal-3.5 Pro Streaming** (`universal-3-5
 - Keyterms prompt for company names, products, and compliance phrases
 - Dual-channel streaming for separate agent and customer audio
 
-For more details, see the [Universal-3.5 Pro Streaming documentation](/streaming/getting-started/transcribe-streaming-audio).
+For more details, see the [Universal-3.5 Pro Realtime documentation](/streaming/getting-started/transcribe-streaming-audio).
 
 ## How can I get started building a post-call analytics pipeline?
 
@@ -14991,7 +14982,7 @@ KEYTERMS = [
 # CONTACT CENTER CONFIGURATION
 CONNECTION_PARAMS = {
     "sample_rate": 8000,  # Telephony standard (8kHz)
-    "speech_model": "universal-3-5-pro",  # Universal-3.5 Pro Streaming for highest accuracy
+    "speech_model": "universal-3-5-pro",  # Universal-3.5 Pro Realtime for highest accuracy
     "format_turns": True,
 
     # Contact center turn detection
@@ -15595,7 +15586,7 @@ print(f"Sentiment: {result.get('sentiment_breakdown', {})}")
 ## Additional Resources
 
 - [Universal-3.5 Pro Pre-recorded Documentation](/pre-recorded-audio)
-- [Universal-3.5 Pro Streaming Documentation](/streaming/getting-started/transcribe-streaming-audio)
+- [Universal-3.5 Pro Realtime Documentation](/streaming/getting-started/transcribe-streaming-audio)
 - [Speaker Diarization Guide](/pre-recorded-audio/label-speakers)
 - [Multichannel Streaming Guide](/streaming/label-speakers-and-separate-channels)
 - [Speaker Identification Guide](/speech-understanding/speaker-identification)
@@ -22042,14 +22033,14 @@ The `speech_model` connection parameter lets you specify which model to use for 
 
 | Name                                      | Parameter                                            | Description                                                                                                                                             | Best for                                                                                                                            |
 | ----------------------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| **Universal-3.6 Pro Streaming** <span class="recommended-pill">Recommended</span> | `"universal-3-6-pro"`                | Our flagship streaming model. 32 languages with native code-switching, plus prompting and conversational context features.                                           | Real-time voice agents needing the latest accuracy, broad language support, and conversational context.        |
-| **Universal-3.5 Pro Streaming**            | `"universal-3-5-pro"`                | The previous flagship streaming model. Still fully supported, with the same features as Universal-3.6 Pro but 19 languages instead of 32.                                           | Existing integrations pinned to this model.        |
+| **Universal-3.6 Pro Realtime** <span class="recommended-pill">Recommended</span> | `"universal-3-6-pro"`                | Our flagship streaming model. 32 languages with native code-switching, plus prompting and conversational context features.                                           | Real-time voice agents needing the latest accuracy, broad language support, and conversational context.        |
+| **Universal-3.5 Pro Realtime**            | `"universal-3-5-pro"`                | The previous flagship streaming model. Still fully supported, with the same features as Universal-3.6 Pro but 19 languages instead of 32.                                           | Existing integrations pinned to this model.        |
 | **Universal-Streaming English**            | `"universal-streaming-english"`      | An English transcription model offering a good balance of speed and cost-effectiveness.                                                                 | Cost-effective English real-time transcription, English-only real-time apps                                                          |
 | **Universal-Streaming Multilingual**      | `"universal-streaming-multilingual"` | A multilingual transcription model offering a good balance of speed and cost-effectiveness.                            | Cost-effective multilingual streaming across EN/ES/DE/FR/PT/IT                                                                      |
 
 ## Choosing a model
 
-| Feature                         | Universal-3.6 Pro / 3.5 Pro Streaming <span class="recommended-pill">Recommended</span>                                                                              | Universal-Streaming English                                              | Universal-Streaming Multilingual                                         |
+| Feature                         | Universal-3.6 Pro / 3.5 Pro Realtime <span class="recommended-pill">Recommended</span>                                                                              | Universal-Streaming English                                              | Universal-Streaming Multilingual                                         |
 | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
 | **Latency**                     | Fastest                                                                                                                                            | Fast                                                                     | Fast                                                                     |
 | **Supported languages**         | 32 on Universal-3.6 Pro, 19 on Universal-3.5 Pro ([full list](/streaming/multilingual-transcription#supported-languages))                                                                         | EN                                                                       | EN, ES, DE, FR, PT, IT                                                   |
@@ -22061,7 +22052,7 @@ The `speech_model` connection parameter lets you specify which model to use for 
 | **Non-speech tags**             | No                                                                                                                                                 | No                                                                       | No                                                                       |
 | **Customization**               | [Keyterms prompting](/streaming/prompting-and-keyterms) (known context) + [Native prompting](/streaming/prompting-and-keyterms) (unknown context) | [Keyterms prompting](/streaming/prompting-and-keyterms) (known context) | [Keyterms prompting](/streaming/prompting-and-keyterms) (known context) |
 
-For detailed setup and configuration of Universal-3.6 Pro Streaming, see the [Universal-3.6 Pro Streaming](/streaming/getting-started/transcribe-streaming-audio) page. For prompting guidance, see the [Prompting guide](/streaming/prompting-and-keyterms).
+For detailed setup and configuration of Universal-3.6 Pro Realtime, see the [Universal-3.6 Pro Realtime](/streaming/getting-started/transcribe-streaming-audio) page. For prompting guidance, see the [Prompting guide](/streaming/prompting-and-keyterms).
 
 ## Set the model
 
@@ -22110,7 +22101,7 @@ Description: Tune streaming models to balance transcription accuracy and latency
 
 ## Mode
 
-Universal-3.6 Pro Streaming workloads sit on a spectrum between two competing goals: returning transcripts as fast as possible, and returning the most accurate transcripts possible. To make this tradeoff explicit, Universal-3.6 Pro supports a **mode** connection parameter you can set when opening a streaming session.
+Universal-3.6 Pro Realtime workloads sit on a spectrum between two competing goals: returning transcripts as fast as possible, and returning the most accurate transcripts possible. To make this tradeoff explicit, Universal-3.6 Pro supports a **mode** connection parameter you can set when opening a streaming session.
 
 | Mode | Value | When to use |
 | --- | --- | --- |
@@ -22156,7 +22147,7 @@ const transcriber = client.streaming.transcriber({
 
 ## Language selection
 
-By default, Universal-3.6 Pro Streaming is multilingual and code-switches natively across all supported languages with no configuration. When you know which languages a session will use, pass the `language_codes` connection parameter to steer the model toward them and improve language accuracy.
+By default, Universal-3.6 Pro Realtime is multilingual and code-switches natively across all supported languages with no configuration. When you know which languages a session will use, pass the `language_codes` connection parameter to steer the model toward them and improve language accuracy.
 
 - For a **known subset**, pass the codes you expect (for example, `["en", "es"]`). The model still code-switches, but heavily biased to the languages you list.
 - For a **monolingual session**, pass a single-element list (for example, `["es"]`).
@@ -22166,7 +22157,7 @@ See [Multilingual transcription](/streaming/multilingual-transcription) for the 
 
 ## Turn detection
 
-Universal-3.6 Pro Streaming detects the end of a turn using the transcript rather than silence alone. The `mode` preset sets the defaults, and every turn detection parameter can be overridden on the connection or updated mid-stream to tune endpointing for your use case.
+Universal-3.6 Pro Realtime detects the end of a turn using the transcript rather than silence alone. The `mode` preset sets the defaults, and every turn detection parameter can be overridden on the connection or updated mid-stream to tune endpointing for your use case.
 
 - Raise `min_turn_silence` when brief pauses end turns too early, for example while a caller dictates a phone number. Raise `max_turn_silence` when you expect longer pauses within a turn.
 - Lower `vad_threshold` when quiet speech is missed. When background noise causes false interruptions, raise `vad_threshold`, increase `interruption_delay`, or enable [Voice Focus](/streaming/voice-focus).
@@ -22241,7 +22232,7 @@ Streaming transcription is delivered in **turns**. A turn is one continuous unit
 
 ## How turn detection works
 
-Universal-3.6 Pro Streaming does not endpoint on silence alone. When a speaker pauses, the model evaluates what has been said so far to judge whether the speaker is finished or just pausing mid-thought. If the turn ends in an entity that may still continue, such as part of a phone number, the turn stays open. This is called [entity-aware endpointing](#entity-aware-endpointing).
+Universal-3.6 Pro Realtime does not endpoint on silence alone. When a speaker pauses, the model evaluates what has been said so far to judge whether the speaker is finished or just pausing mid-thought. If the turn ends in an entity that may still continue, such as part of a phone number, the turn stays open. This is called [entity-aware endpointing](#entity-aware-endpointing).
 
 Two silence thresholds control this behavior.
 
@@ -22650,7 +22641,7 @@ Improve voice agent outcomes by giving Universal-3.6 Pro the full conversational
 
 With the agent's side of the conversation in context, Universal-3.6 Pro can anticipate the kind of answer to expect, sharpen entity recognition, and disambiguate words that sound similar. For example, after your agent asks `"What's your email address?"` the model might transcribe the reply as `"user at assemblyai dot com"`. With that question passed in via `agent_context`, the model knows an email is coming and produces `"user@assemblyai.com"`.
 
-The user side comes along for free: Universal-3.6 Pro Streaming automatically carries prior STT-finalized turns forward as context, so you don't need to configure anything for the user half of the conversation. `agent_context` is what fills in the agent half.
+The user side comes along for free: Universal-3.6 Pro Realtime automatically carries prior STT-finalized turns forward as context, so you don't need to configure anything for the user half of the conversation. `agent_context` is what fills in the agent half.
 
   **Set `agent_context` at connection time and after each agent reply**
 
@@ -22658,7 +22649,7 @@ The user side comes along for free: Universal-3.6 Pro Streaming automatically ca
 
 ## How it works
 
-During a streaming session, Universal-3.6 Pro Streaming keeps a short memory of the conversation. Two sources feed that memory: `agent_context` values you push in (the agent half) and prior finalized user turns (the user half, carried forward automatically). The model uses both when transcribing the next user turn.
+During a streaming session, Universal-3.6 Pro Realtime keeps a short memory of the conversation. Two sources feed that memory: `agent_context` values you push in (the agent half) and prior finalized user turns (the user half, carried forward automatically). The model uses both when transcribing the next user turn.
 
 This means:
 
@@ -22734,7 +22725,7 @@ await transcriber.connect();
 
 A typical voice agent loop looks like this:
 
-1. User speaks → Universal-3.6 Pro Streaming emits a final turn.
+1. User speaks → Universal-3.6 Pro Realtime emits a final turn.
 2. Your agent runs an LLM step and generates a reply.
 3. Your TTS speaks the reply to the user.
 4. User responds → next turn.
@@ -22804,7 +22795,7 @@ Description: Multilingual Transcription documentation.
 
 Transcribe live audio in any supported language, or several at once, with native code switching.
 
-Universal-3.6 Pro Streaming is multilingual by default. It follows speakers as they shift mid-sentence between languages like English and Spanish, French, Hindi or Mandarin, preserving exactly what was said without translating everything into a single language. No configuration is required.
+Universal-3.6 Pro Realtime is multilingual by default. It follows speakers as they shift mid-sentence between languages like English and Spanish, French, Hindi or Mandarin, preserving exactly what was said without translating everything into a single language. No configuration is required.
 
 Hear what code switching sounds like, and how it's transcribed.
 
@@ -22910,7 +22901,7 @@ You can also name the expected languages in natural language as part of a contex
 
 ## Supported languages
 
-Universal-3.6 Pro Streaming code-switches across 32 languages.
+Universal-3.6 Pro Realtime code-switches across 32 languages.
 
 Universal-3.6 Pro adds Afrikaans, Cantonese, Estonian, Galician, Korean, Marathi, Norwegian Nynorsk, Persian, Romanian, Russian, Urdu, Xhosa, and Zulu to the set supported by Universal-3.5 Pro.
 
@@ -22947,7 +22938,7 @@ Set the `language_detection` connection parameter to `true` to have each turn re
 }
 ```
 
-`language_detection` only controls reporting and doesn't change how the model transcribes. It's available on Universal-3.6 Pro Streaming and Universal-Streaming Multilingual.
+`language_detection` only controls reporting and doesn't change how the model transcribes. It's available on Universal-3.6 Pro Realtime and Universal-Streaming Multilingual.
 
 ```python
 CONNECTION_PARAMS = {
@@ -23025,11 +23016,11 @@ See [Updating configuration mid-stream](/streaming/updating-configuration-mid-st
 
 ## Other streaming models
 
-Universal-3.6 Pro Streaming is the only streaming model with native (mid-sentence) code switching. The other streaming models handle languages differently.
+Universal-3.6 Pro Realtime is the only streaming model with native (mid-sentence) code switching. The other streaming models handle languages differently.
 
 | Model                            | Languages                              | Code switching |
 | -------------------------------- | -------------------------------------- | -------------- |
-| Universal-3.6 Pro Streaming      | 32 languages (see above)               | Native, mid-sentence |
+| Universal-3.6 Pro Realtime      | 32 languages (see above)               | Native, mid-sentence |
 | Universal-Streaming Multilingual | `en`, `es`, `de`, `fr`, `pt`, `it`     | Per turn       |
 | Universal-Streaming English      | `en` only                              | No             |
 
@@ -25509,7 +25500,7 @@ As the speaker is talking, the server emits one or more `Turn` messages with `en
 }
 ```
 
-The cadence and shape of partials depends on the model. See [Universal-3.6 Pro Streaming](/streaming/getting-started/transcribe-streaming-audio) and [Universal Streaming](/streaming/getting-started/transcribe-streaming-audio) for the details of how each model produces partials.
+The cadence and shape of partials depends on the model. See [Universal-3.6 Pro Realtime](/streaming/getting-started/transcribe-streaming-audio) and [Universal Streaming](/streaming/getting-started/transcribe-streaming-audio) for the details of how each model produces partials.
 
 ## End of turn
 
@@ -26680,7 +26671,7 @@ Description: Industry-leading accuracy for streaming speech-to-text.
 
 Benchmarks are an important first step before running your own [evaluation](/streaming/evaluations/voice-agents). Below are the current benchmarks for our streaming models so you can assess performance across accuracy, latency, and error rates.
 
-The Pro figures below were measured on Universal-3.5 Pro Streaming. Universal-3.6 Pro Streaming is the current flagship and is a drop-in replacement; its published benchmark figures are not yet available.
+The Pro figures below were measured on Universal-3.5 Pro Realtime. Universal-3.6 Pro Realtime is the current flagship and is a drop-in replacement; its published benchmark figures are not yet available.
 
   Public benchmarks can be misleading due to overfitting and benchmark gaming.
   We strongly recommend [running your own evaluation](/streaming/evaluations/voice-agents) on your
@@ -26727,7 +26718,7 @@ Most recent update: **March 2026**.
 
 For voice agents, the words that break conversion are entities — emails, phone numbers, organizations, names, and medical terms. The Missed Entity Rate (MER) measures how often a model fails to correctly transcribe these high-stakes terms. See [Missed Entity Rate](/pre-recorded-audio/evaluations#missed-entity-rate-mer) for the full definition.
 
-Universal-3.5 Pro Streaming delivers double-digit relative gains over Universal Streaming across most categories, with the biggest improvements on emails, locations, and medical terms.
+Universal-3.5 Pro Realtime delivers double-digit relative gains over Universal Streaming across most categories, with the biggest improvements on emails, locations, and medical terms.
 
 | Entity type        | Universal-3.5 Pro MER (%) | Universal Streaming MER (%) | Relative gain vs Universal Streaming |
 | ------------------ | ----------------------- | --------------------------- | ------------------------------------ |
@@ -26757,9 +26748,9 @@ Time from when a word is spoken to when that word is returned by the API. Best m
 | -------------------------------- | -------- | -------- |
 | Universal Streaming English      | 317      | 597      |
 | Universal Streaming Multilingual | 303      | 535      |
-| Universal-3.5 Pro Streaming        | N/A      | N/A      |
+| Universal-3.5 Pro Realtime        | N/A      | N/A      |
 
-Universal-3.5 Pro Streaming emits segment-level partials rather than word-by-word, so the standard emission-latency metric doesn't apply.
+Universal-3.5 Pro Realtime emits segment-level partials rather than word-by-word, so the standard emission-latency metric doesn't apply.
 
 ### Time to Complete Turn (TTCT)
 
@@ -26768,7 +26759,7 @@ Time from end of speaker turn to receipt of the finalized transcript. Best metri
 | Model                       | P50 (ms) | P90 (ms) |
 | --------------------------- | -------- | -------- |
 | Universal Streaming English | 649      | 990      |
-| Universal-3.5 Pro Streaming   | 568      | 829      |
+| Universal-3.5 Pro Realtime   | 568      | 829      |
 
   Time to First Token (TTFT) is a useful metric for LLMs but is not well suited to measuring real-time STT performance. For real-time STT, use emission latency (for partial transcript speed) and TTCT (for voice agent responsiveness).
 
@@ -26824,7 +26815,7 @@ This measures the time from when the audio stream begins (including model startu
 
   TTFT is borrowed from LLM evaluation and is less informative for real-time STT than other metrics. Because some providers emit tokens before any audio is actually spoken to game this metric, TTFT can be misleading. For real-time STT, prefer emission latency (the time from when a word is spoken to when that word is returned, best for use cases that consume partial transcriptions in real time) or [TTCT](#time-to-complete-transcript-ttct--transcription-delay) (for voice agents that act on finalized turns).
 
-  For Universal-3.6 Pro Streaming, the `interruption_delay` parameter directly controls TTFT by configuring how soon the first partial transcript is emitted. Lower values (e.g. `0`) produce faster TTFT (~300ms effective) at the cost of less audio context; higher values (e.g. `500`–`1000`) are slower but more confident. See [Tuning early partial timing](/streaming/getting-started/transcribe-streaming-audio) for configuration details.
+  For Universal-3.6 Pro Realtime, the `interruption_delay` parameter directly controls TTFT by configuring how soon the first partial transcript is emitted. Lower values (e.g. `0`) produce faster TTFT (~300ms effective) at the cost of less audio context; higher values (e.g. `500`–`1000`) are slower but more confident. See [Tuning early partial timing](/streaming/getting-started/transcribe-streaming-audio) for configuration details.
 
 ### Time to Complete Transcript (TTCT) / Transcription Delay
 
@@ -30088,16 +30079,16 @@ Migrating a production deployment? [Talk to our team](https://www.assemblyai.com
 
 ---
 
-<a id="streaming-migration-guide-universal-streaming-to-universal-3-6-pro-streaming-docs-streaming-migration-guides-universal-to-universal-3-5-pro-streaming-mdx"></a>
+<a id="streaming-migration-guide-universal-streaming-to-universal-3-6-pro-realtime-docs-streaming-migration-guides-universal-to-universal-3-5-pro-streaming-mdx"></a>
 
-# Streaming Migration Guide: Universal Streaming to Universal-3.6 Pro Streaming
+# Streaming Migration Guide: Universal Streaming to Universal-3.6 Pro Realtime
 
 URL: https://www.assemblyai.com/docs/streaming/migration-guides/universal-to-universal-3-5-pro-streaming
 Source: docs/streaming/migration-guides/universal-to-universal-3-5-pro-streaming.mdx
 Navigation: Real-time STT > Guides > Migration guides
-Description: Streaming Migration Guide: Universal Streaming to Universal-3.6 Pro Streaming documentation.
+Description: Streaming Migration Guide: Universal Streaming to Universal-3.6 Pro Realtime documentation.
 
-This guide walks through the process of upgrading from Universal Streaming to Universal-3.6 Pro Streaming for real-time audio transcription.
+This guide walks through the process of upgrading from Universal Streaming to Universal-3.6 Pro Realtime for real-time audio transcription.
 
 ## Get Started
 
@@ -30105,7 +30096,7 @@ Before we begin, make sure you have an AssemblyAI account and an API key. You ca
 
 ## Quick upgrade
 
-If you're already using Universal Streaming, you can quickly test Universal-3.6 Pro Streaming by switching the `speech_model` parameter to `"universal-3-6-pro"` and removing `format_turns` (formatting is always on in U3.6 Pro). Just update the connection params and start streaming.
+If you're already using Universal Streaming, you can quickly test Universal-3.6 Pro Realtime by switching the `speech_model` parameter to `"universal-3-6-pro"` and removing `format_turns` (formatting is always on in U3.6 Pro). Just update the connection params and start streaming.
 
 ```python
 # Before (Universal Streaming)
@@ -30114,7 +30105,7 @@ CONNECTION_PARAMS = {
     "format_turns": True,
 }
 
-# After (Universal-3.6 Pro Streaming)
+# After (Universal-3.6 Pro Realtime)
 CONNECTION_PARAMS = {
     "sample_rate": 16000,
     "speech_model": "universal-3-6-pro",
@@ -30127,7 +30118,7 @@ CONNECTION_PARAMS = {
 
 ## Why upgrade
 
-Universal-3.6 Pro Streaming delivers:
+Universal-3.6 Pro Realtime delivers:
 
 - **Exceptional entity accuracy** — credit card numbers, phone numbers, email addresses, physical addresses, and names captured correctly at streaming speed
 - **Promptable model** — contextual prompting via `prompt` (describe what the audio is about), plus domain-term boosting via `keyterms_prompt` (up to 100 terms)
@@ -30136,13 +30127,13 @@ Universal-3.6 Pro Streaming delivers:
 - **Sub-300ms latency** — fast time to complete transcript
 - **Mid-stream configuration** — update keyterms, prompts, and silence parameters without dropping the connection
 
-For full details, see [Universal-3.6 Pro Streaming](/streaming/getting-started/transcribe-streaming-audio).
+For full details, see [Universal-3.6 Pro Realtime](/streaming/getting-started/transcribe-streaming-audio).
 
 ## What changes
 
 This table covers the key parameter, behavior, and response field differences. Use it as a migration checklist.
 
-| What                                    | Universal Streaming                                                                                                                                             | Universal-3.6 Pro Streaming                                                     | Action Required                                                                                              |
+| What                                    | Universal Streaming                                                                                                                                             | Universal-3.6 Pro Realtime                                                     | Action Required                                                                                              |
 | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | **`speech_model`**                      | Not required (defaults to English)                                                                                                                              | `"universal-3-6-pro"`                                                                 | Add `speech_model: "universal-3-6-pro"` to connection params                                                         |
 | **`format_turns`**                      | `false` by default; set `true` for formatted transcripts                                                                                                        | Always on (not a parameter)                                                   | Remove `format_turns` from connection params                                                                 |
@@ -30451,7 +30442,7 @@ When silence reaches `min_turn_silence`, the model transcribes the audio and che
 
 ## New capabilities
 
-These features are new or enhanced in Universal-3.6 Pro. For full details, see [Universal-3.6 Pro Streaming](/streaming/getting-started/transcribe-streaming-audio).
+These features are new or enhanced in Universal-3.6 Pro. For full details, see [Universal-3.6 Pro Realtime](/streaming/getting-started/transcribe-streaming-audio).
 
 ### Prompting
 
@@ -30517,7 +30508,7 @@ ws.send(json.dumps({"type": "ForceEndpoint"}))
 
 ## Resources
 
-- [Universal-3.6 Pro Streaming](/streaming/getting-started/transcribe-streaming-audio)
+- [Universal-3.6 Pro Realtime](/streaming/getting-started/transcribe-streaming-audio)
 - [Universal Streaming](/streaming/getting-started/transcribe-streaming-audio)
 - [Turn Detection (Universal)](/streaming/getting-started/transcribe-streaming-audio)
 - [Prompting Guide (Streaming)](/streaming/prompting-and-keyterms)
@@ -31306,7 +31297,7 @@ Helpful things to know about AssemblyAI’s shutdown:
 
 For additional information about using AssemblyAI's Streaming Speech-To-Text API you can also refer to:
 
-- [Universal-3.6 Pro Streaming](/streaming/getting-started/transcribe-streaming-audio)
+- [Universal-3.6 Pro Realtime](/streaming/getting-started/transcribe-streaming-audio)
 - [Streaming Guide](/streaming/getting-started/transcribe-streaming-audio)
 
 ---
@@ -32438,7 +32429,7 @@ To learn more about both Streaming APIs, their key differences, and how to best 
 
 **AssemblyAI**
 
-- [Universal-3.6 Pro Streaming](/streaming/getting-started/transcribe-streaming-audio)
+- [Universal-3.6 Pro Realtime](/streaming/getting-started/transcribe-streaming-audio)
 - [Streaming Speech-to-Text](/streaming/getting-started/transcribe-streaming-audio)
 - [Streaming API reference](/streaming/api-spec/streaming-websocket)
 
@@ -33200,7 +33191,7 @@ Helpful information to know about AssemblyAI’s shutdown:
 
 For additional information about using AssemblyAI's Streaming Speech-To-Text API you can also refer to:
 
-- [Universal-3.6 Pro Streaming](/streaming/getting-started/transcribe-streaming-audio)
+- [Universal-3.6 Pro Realtime](/streaming/getting-started/transcribe-streaming-audio)
 - [Streaming Guide](/streaming/getting-started/transcribe-streaming-audio)
 
 ---
@@ -33231,7 +33222,7 @@ AssemblyAI stands out as the premier choice for meeting notetakers with several 
 
 ### Streaming with Universal-3.5 Pro
 
-As meeting notetakers evolve toward real-time capabilities, AssemblyAI's Universal-3.5 Pro Streaming model (`universal-3-5-pro`) offers significant benefits:
+As meeting notetakers evolve toward real-time capabilities, AssemblyAI's Universal-3.5 Pro Realtime model (`universal-3-5-pro`) offers significant benefits:
 
 - **Speaker diarization** available for both pre-recorded and streaming transcription
 - **Ultra-low latency (~300ms)** enables live transcription without delays
@@ -33270,7 +33261,7 @@ Understanding when to use pre-recorded versus streaming speech-to-text is critic
 
 **Live meetings** - Transcribing as the meeting happens
 
-You should use streaming when you need to display a live transcript of text to users as they are speaking. With Universal-3.5 Pro Streaming, accuracy is closer to pre-recorded, but pre-recorded will always be the most accurate option.
+You should use streaming when you need to display a live transcript of text to users as they are speaking. With Universal-3.5 Pro Realtime, accuracy is closer to pre-recorded, but pre-recorded will always be the most accurate option.
 
 - **Real-time captions** - Displaying subtitles/captions to participants during calls
 - **Immediate feedback** - Need transcription within ~300ms
@@ -33334,14 +33325,14 @@ For live meeting transcription:
 - English-only model (default)
 - Multilingual model supporting English, Spanish, French, German, Portuguese, and Italian
 
-### Streaming (Universal-3.5 Pro Streaming)
+### Streaming (Universal-3.5 Pro Realtime)
 
 - Speaker diarization for identifying who is speaking
 - Partial and final transcripts for responsive UI
 - Format turns for structured, readable output
 - Keyterms prompt for contextual accuracy
 
-See the [Universal-3.5 Pro Streaming documentation](/streaming/getting-started/transcribe-streaming-audio) for full details.
+See the [Universal-3.5 Pro Realtime documentation](/streaming/getting-started/transcribe-streaming-audio) for full details.
 
 ## How Can I Get Started Building a Post-Call Meeting Notetaker?
 
@@ -34663,7 +34654,7 @@ full_transcript = processor.get_full_transcript()
 ## Additional Resources
 
 - [Universal Pre-recorded Documentation](/pre-recorded-audio)
-- [Universal-3.5 Pro Streaming Documentation](/streaming)
+- [Universal-3.5 Pro Realtime Documentation](/streaming)
 - [Speaker Diarization Guide](/pre-recorded-audio/label-speakers)
 - [Speaker Identification Guide](/speech-understanding/speaker-identification)
 - [Translation Guide](/speech-understanding/translation)
@@ -34691,7 +34682,7 @@ Choose the guide that matches your clinical workflow:
     Transcribe recorded patient encounters with Universal-3.5 Pro. Includes Medical Mode, speaker diarization, entity detection, PII redaction, and SOAP note generation.
   
   
-    Stream audio from a microphone during live encounters with Universal-3.5 Pro Streaming. Includes LLM Gateway post-processing, medical keyterms, and automatic SOAP note generation.
+    Stream audio from a microphone during live encounters with Universal-3.5 Pro Realtime. Includes LLM Gateway post-processing, medical keyterms, and automatic SOAP note generation.
   
 
 ## Which approach should I use?
@@ -34717,13 +34708,13 @@ Description: Complete guide for building voice agents with AssemblyAI's Universa
 
 ## Introduction
 
-AssemblyAI's **Universal-3.5 Pro Streaming** is the most accurate real-time speech-to-text model designed for voice agents. It delivers formatted, immutable transcripts with sub-300ms latency, exceptional entity accuracy, native multilingual code switching, and a fully promptable interface, all optimized for conversational AI workflows.
+AssemblyAI's **Universal-3.5 Pro Realtime** is the most accurate real-time speech-to-text model designed for voice agents. It delivers formatted, immutable transcripts with sub-300ms latency, exceptional entity accuracy, native multilingual code switching, and a fully promptable interface, all optimized for conversational AI workflows.
 
 The STT component is the "ears" of your voice agent. Transcription errors propagate into the LLM and response logic, so even small accuracy gaps compound in impact. Choosing and configuring the right STT model is one of the highest-leverage decisions you can make when building a voice agent. For guidance on how to evaluate and compare STT models for your use case, see the [streaming evaluation guide](/streaming/evaluations/voice-agents).
 
-## Why Universal-3.5 Pro Streaming for Voice Agents?
+## Why Universal-3.5 Pro Realtime for Voice Agents?
 
-Voice agents need speed, accuracy, and natural turn-taking. Universal-3.5 Pro Streaming is purpose-built for this:
+Voice agents need speed, accuracy, and natural turn-taking. Universal-3.5 Pro Realtime is purpose-built for this:
 
 **Sub-300ms latency with formatted output**
 
@@ -34753,9 +34744,9 @@ Voice agents need speed, accuracy, and natural turn-taking. Universal-3.5 Pro St
 - Automatic code-switching between languages within a single session
 - Language-specific prompting for improved accuracy
 
-## What Languages Does Universal-3.5 Pro Streaming Support?
+## What Languages Does Universal-3.5 Pro Realtime Support?
 
-Universal-3.5 Pro Streaming supports 18 languages with automatic code-switching:
+Universal-3.5 Pro Realtime supports 18 languages with automatic code-switching:
 
 - English
 - Spanish
@@ -34786,7 +34777,7 @@ To bias the model toward a specific language, pass the `language_code` connectio
 
 For a cascading architecture, AssemblyAI has the best speech-to-text model. For a complete stack, you need:
 
-1. **Speech-to-Text (STT):** AssemblyAI Universal-3.5 Pro Streaming
+1. **Speech-to-Text (STT):** AssemblyAI Universal-3.5 Pro Realtime
 2. **Large Language Model (LLM):** OpenAI, Anthropic, Google, etc.
 3. **Text-to-Speech (TTS):** Rime, Cartesia, ElevenLabs, etc.
 4. **Orchestration:** LiveKit, Pipecat, or custom build
@@ -34887,7 +34878,7 @@ ws = websocket.WebSocketApp(
 
 ## How Does Turn Detection Work?
 
-Universal-3.5 Pro Streaming uses a **punctuation-based turn detection system** controlled by two parameters:
+Universal-3.5 Pro Realtime uses a **punctuation-based turn detection system** controlled by two parameters:
 
 | Parameter          | Default    | Description                                                              |
 | ------------------ | ---------- | ------------------------------------------------------------------------ |
@@ -34902,7 +34893,7 @@ Universal-3.5 Pro Streaming uses a **punctuation-based turn detection system** c
 4. If no terminal punctuation → partial emitted with `end_of_turn: false`, turn continues
 5. If silence reaches `max_turn_silence` → turn forced to end regardless of punctuation
 
-This is different from the legacy Universal-Streaming models, which used a confidence-based `end_of_turn_confidence_threshold`. Universal-3.5 Pro Streaming does not use that parameter. Turn decisions are based on punctuation after silence thresholds.
+This is different from the legacy Universal-Streaming models, which used a confidence-based `end_of_turn_confidence_threshold`. Universal-3.5 Pro Realtime does not use that parameter. Turn decisions are based on punctuation after silence thresholds.
 
 ### Configuration presets
 
@@ -34949,7 +34940,7 @@ For voice agents, the downstream LLM can usually piece together split entities. 
 
 ### SpeechStarted events
 
-Universal-3.5 Pro Streaming emits `SpeechStarted` events when speech has been detected. `SpeechStarted` is only emitted when the model produces a transcript. This makes it a reliable signal for barge-in handling:
+Universal-3.5 Pro Realtime emits `SpeechStarted` events when speech has been detected. `SpeechStarted` is only emitted when the model produces a transcript. This makes it a reliable signal for barge-in handling:
 
 ```json
 {
@@ -34971,11 +34962,11 @@ Users often produce short backchannel utterances ("mhm", "yeah", "um", "okay") w
 The fix is to gate barge-in on each `Turn` event during agent speech: suppress the interrupt when the transcript is short or every token is a known backchannel. Implementation depends on your stack:
 
 - **LiveKit**: LiveKit Cloud users should enable [adaptive interruption handling](/voice-agents/livekit-universal-3-6-pro#interruption-handling). Self-hosted deployments use the two custom filters in the same section.
-- **Direct WebSocket**: see [Interruption handling](/voice-agents/universal-3-5-pro-streaming-api#interruption-handling) on the Universal-3.5 Pro Streaming API page for the combined word-count + filler-word filter.
+- **Direct WebSocket**: see [Interruption handling](/voice-agents/universal-3-5-pro-streaming-api#interruption-handling) on the Universal-3.5 Pro Realtime API page for the combined word-count + filler-word filter.
 
 ### VAD threshold alignment
 
-Universal-3.5 Pro Streaming includes an internal Silero VAD controlled by the `vad_threshold` parameter (default `0.3`). If you're also running a local VAD (common in LiveKit and Pipecat), align the thresholds to avoid a dead zone where one detects speech but the other doesn't:
+Universal-3.5 Pro Realtime includes an internal Silero VAD controlled by the `vad_threshold` parameter (default `0.3`). If you're also running a local VAD (common in LiveKit and Pipecat), align the thresholds to avoid a dead zone where one detects speech but the other doesn't:
 
 ```python
 # Both thresholds aligned at 0.3
@@ -34994,7 +34985,7 @@ If you're in a noisy environment and getting false speech triggers, raise both t
 
 ### The prompt parameter
 
-Universal-3.5 Pro Streaming supports a `prompt` parameter for [contextual prompting](/streaming/prompting-and-keyterms) — a natural-language description of what the audio is about. Transcription behavior itself (verbatim output, punctuation, turn detection) is built in and managed automatically; the prompt carries context, not instructions.
+Universal-3.5 Pro Realtime supports a `prompt` parameter for [contextual prompting](/streaming/prompting-and-keyterms) — a natural-language description of what the audio is about. Transcription behavior itself (verbatim output, punctuation, turn detection) is built in and managed automatically; the prompt carries context, not instructions.
 
   **Beta feature**
 
@@ -35041,7 +35032,7 @@ For detailed guidance, see [Keyterms prompting](/streaming/prompting-and-keyterm
 
 ## How Do I Update Configuration Mid-Session?
 
-You can update `prompt`, `keyterms_prompt`, `min_turn_silence`, and `max_turn_silence` during an active session using `UpdateConfiguration`. This is one of Universal-3.5 Pro Streaming's most powerful features for voice agents.
+You can update `prompt`, `keyterms_prompt`, `min_turn_silence`, and `max_turn_silence` during an active session using `UpdateConfiguration`. This is one of Universal-3.5 Pro Realtime's most powerful features for voice agents.
 
 ### Dynamic keyterms by conversation stage
 
@@ -35169,7 +35160,7 @@ Only enable `speaker_labels` if you need diarization. Only use `keyterms_prompt`
 
 ## How Does the Message Sequence Work?
 
-Universal-3.5 Pro Streaming sends messages in a specific sequence. Here's what a typical conversation looks like:
+Universal-3.5 Pro Realtime sends messages in a specific sequence. Here's what a typical conversation looks like:
 
 **1. Session begins**
 
@@ -35228,7 +35219,7 @@ Universal-3.5 Pro Streaming sends messages in a specific sequence. Here's what a
 }
 ```
 
-For Universal-3.5 Pro Streaming, `end_of_turn` and `turn_is_formatted` always have the same value. You can reliably use `end_of_turn: true` to detect a formatted, final transcript.
+For Universal-3.5 Pro Realtime, `end_of_turn` and `turn_is_formatted` always have the same value. You can reliably use `end_of_turn: true` to detect a formatted, final transcript.
 
 **6. Session termination**
 
@@ -35257,13 +35248,13 @@ If entities are splitting across turns, increase `min_turn_silence` (for punctua
 
 ### Noise handling
 
-Universal-3.5 Pro Streaming handles background noise well out of the box. Avoid adding noise cancellation as a preprocessing step. The artifacts it introduces typically cause more harm than the background noise itself.
+Universal-3.5 Pro Realtime handles background noise well out of the box. Avoid adding noise cancellation as a preprocessing step. The artifacts it introduces typically cause more harm than the background noise itself.
 
 For telephony environments with low-quality audio (such as 8 kHz mulaw), you can prompt the model to tag genuinely unclear segments as `[unclear]` rather than forcing a guess. This helps you identify audio segments that no model (or human) can reliably transcribe, and prevents inaccurate guesses from entering your downstream pipeline.
 
 ## Scaling and Rate Limits
 
-Universal-3.5 Pro Streaming provides unlimited parallel streams:
+Universal-3.5 Pro Realtime provides unlimited parallel streams:
 
 - No hard caps on simultaneous connections
 - No overage fees for spike traffic
@@ -35292,7 +35283,7 @@ For a complete evaluation framework including accuracy metrics, latency metrics,
 ## Additional Resources
 
 - [Streaming evaluation guide](/streaming/evaluations/voice-agents)
-- [Universal-3.5 Pro Streaming overview](/streaming/getting-started/transcribe-streaming-audio)
+- [Universal-3.5 Pro Realtime overview](/streaming/getting-started/transcribe-streaming-audio)
 - [Turn detection guide](/streaming/getting-started/transcribe-streaming-audio)
 - [Prompting guide](/streaming/prompting-and-keyterms)
 - [Keyterms prompting](/streaming/prompting-and-keyterms)
@@ -35332,7 +35323,7 @@ AssemblyAI stands out as the premier choice for contact center applications with
 
 ### Streaming with Universal-3.5 Pro
 
-For real-time agent assist, AssemblyAI's Universal-3.5 Pro Streaming model (`universal-3-5-pro`) offers:
+For real-time agent assist, AssemblyAI's Universal-3.5 Pro Realtime model (`universal-3-5-pro`) offers:
 
 - **Low latency** enables live transcription during calls
 - **Format turns** feature provides structured, readable output
@@ -35371,7 +35362,7 @@ Understanding when to use pre-recorded versus streaming is critical for contact 
 
 **Live calls** - Transcribing as the call happens
 
-You should use streaming when you need to display a live transcript to agents during calls. With Universal-3.5 Pro Streaming, accuracy is closer to pre-recorded, but pre-recorded will always be the most accurate option.
+You should use streaming when you need to display a live transcript to agents during calls. With Universal-3.5 Pro Realtime, accuracy is closer to pre-recorded, but pre-recorded will always be the most accurate option.
 
 - **Agent assist** - Live transcription visible to agents during calls
 - **Real-time coaching** - Prompt agents with suggested responses or compliance reminders
@@ -35427,9 +35418,9 @@ For post-call analytics, AssemblyAI supports:
 
 - PII redaction on text and audio for HIPAA and PCI compliance
 
-### Streaming (Universal-3.5 Pro Streaming)
+### Streaming (Universal-3.5 Pro Realtime)
 
-For live call transcription, use **Universal-3.5 Pro Streaming** (`universal-3-5-pro`) for the highest streaming accuracy:
+For live call transcription, use **Universal-3.5 Pro Realtime** (`universal-3-5-pro`) for the highest streaming accuracy:
 
 **Core Features**:
 
@@ -35439,7 +35430,7 @@ For live call transcription, use **Universal-3.5 Pro Streaming** (`universal-3-5
 - Keyterms prompt for company names, products, and compliance phrases
 - Dual-channel streaming for separate agent and customer audio
 
-For more details, see the [Universal-3.5 Pro Streaming documentation](/streaming/getting-started/transcribe-streaming-audio).
+For more details, see the [Universal-3.5 Pro Realtime documentation](/streaming/getting-started/transcribe-streaming-audio).
 
 ## How can I get started building a post-call analytics pipeline?
 
@@ -35720,7 +35711,7 @@ KEYTERMS = [
 # CONTACT CENTER CONFIGURATION
 CONNECTION_PARAMS = {
     "sample_rate": 8000,  # Telephony standard (8kHz)
-    "speech_model": "universal-3-5-pro",  # Universal-3.5 Pro Streaming for highest accuracy
+    "speech_model": "universal-3-5-pro",  # Universal-3.5 Pro Realtime for highest accuracy
     "format_turns": True,
 
     # Contact center turn detection
@@ -36324,7 +36315,7 @@ print(f"Sentiment: {result.get('sentiment_breakdown', {})}")
 ## Additional Resources
 
 - [Universal-3.5 Pro Pre-recorded Documentation](/pre-recorded-audio)
-- [Universal-3.5 Pro Streaming Documentation](/streaming/getting-started/transcribe-streaming-audio)
+- [Universal-3.5 Pro Realtime Documentation](/streaming/getting-started/transcribe-streaming-audio)
 - [Speaker Diarization Guide](/pre-recorded-audio/label-speakers)
 - [Multichannel Streaming Guide](/streaming/label-speakers-and-separate-channels)
 - [Speaker Identification Guide](/speech-understanding/speaker-identification)
@@ -69677,7 +69668,7 @@ Description: How can I make certain words more likely to be transcribed? documen
 Our speech recognition models support a feature called **keyterms prompting**, which lets you provide a list of words or phrases that you want the model to be more likely to transcribe accurately. How this feature works varies slightly by model, so see these specific sections of our documentation for more details:
 
 - [Pre-recorded (Universal-3.5 Pro and Universal-2)](/pre-recorded-audio/universal-3-5-pro/prompting#keyterms-prompting)
-- [Streaming (Universal-3.5 Pro Streaming and Universal-Streaming)](/streaming/prompting-and-keyterms)
+- [Streaming (Universal-3.5 Pro Realtime and Universal-Streaming)](/streaming/prompting-and-keyterms)
 
 ---
 
@@ -70267,13 +70258,13 @@ Language support for Real-time STT depends on the model you select. AssemblyAI o
 
 | Model | Languages Supported |
 | --- | --- |
-| **Universal-3.5 Pro Streaming** | English, Spanish, German, French, Portuguese, Italian, Turkish, Dutch, Swedish, Norwegian, Danish, Finnish, Hindi, Vietnamese, Arabic, Hebrew, Japanese, Mandarin (native code switching across 18 languages) |
+| **Universal-3.5 Pro Realtime** | English, Spanish, German, French, Portuguese, Italian, Turkish, Dutch, Swedish, Norwegian, Danish, Finnish, Hindi, Vietnamese, Arabic, Hebrew, Japanese, Mandarin (native code switching across 18 languages) |
 | **Universal-Streaming English** | English only |
 | **Universal-Streaming Multilingual** | English, Spanish, German, French, Portuguese, Italian (per turn) |
 
 ## Choosing the Right Model
 
-- If you need the highest accuracy with multilingual code switching across up to 18 languages, use [Universal-3.5 Pro Streaming](/streaming/getting-started/transcribe-streaming-audio) (`universal-3-5-pro`).
+- If you need the highest accuracy with multilingual code switching across up to 18 languages, use [Universal-3.5 Pro Realtime](/streaming/getting-started/transcribe-streaming-audio) (`universal-3-5-pro`).
 - If you only need English transcription at the lowest cost, use Universal-Streaming English (`universal-streaming-english`).
 - If you need multilingual support at a lower cost, use Universal-Streaming Multilingual (`universal-streaming-multilingual`).
 
@@ -70349,13 +70340,13 @@ If you receive an error message indicating `Model deprecated, see our docs for n
 
 ## How to upgrade to a supported streaming model
 
-You'll need to update your implementation to use one of our current streaming models. We recommend **Universal-3.5 Pro Streaming** (`universal-3-5-pro`) as the primary streaming model. It delivers the highest accuracy with sub-300ms latency and native code switching across English, Spanish, German, French, Portuguese, and Italian.
+You'll need to update your implementation to use one of our current streaming models. We recommend **Universal-3.5 Pro Realtime** (`universal-3-5-pro`) as the primary streaming model. It delivers the highest accuracy with sub-300ms latency and native code switching across English, Spanish, German, French, Portuguese, and Italian.
 
 1. Review the [Streaming documentation](/streaming) for model selection and implementation guidance.
 
 2. For a quick start guide, see our [Getting Started with Streaming Audio](/streaming/getting-started/transcribe-streaming-audio) documentation.
 
-  Universal-3.5 Pro Streaming and the Universal-Streaming family of models offer
+  Universal-3.5 Pro Realtime and the Universal-Streaming family of models offer
   improved accuracy and reliability compared to our legacy streaming
   implementation.
 
@@ -70836,8 +70827,8 @@ Use this to build the recommendation. Do not dump it on the user.
 | Developer need | Parameter / approach |
 |---|---|
 | Speaker diarization | `speaker_labels: true` (pre-recorded, and streaming — streaming adds a `speaker_label` to each Turn event) |
-| Automatic language detection | `language_detection: true` (pre-recorded; on streaming, only available on Universal-Streaming Multilingual — adds `language_code` + `language_confidence` to Turn events. **Not** supported on U3 Pro Streaming.) |
-| Specific language | `language_code: "es"` etc. (pre-recorded and U3 Pro Streaming — biases the multilingual model toward one language) |
+| Automatic language detection | `language_detection: true` (pre-recorded; on streaming, available on Universal-3.6 Pro Realtime and Universal-Streaming Multilingual — adds `language_code` + `language_confidence` to Turn events. It only reports the language; it doesn't change transcription.) |
+| Specific language | `language_code: "es"` etc. on pre-recorded; on Universal-3.6 Pro Realtime, `language_codes: ["es"]` steers the model toward the languages you list |
 | Multilingual / code-switching | `speech_models: ["universal-3-5-pro"]` + `prompt` parameter — see [U3 Pro prompting guide](/pre-recorded-audio/universal-3-5-pro/prompting) |
 | Domain-specific vocabulary | `keyterms_prompt: [...]` (pre-recorded: up to 1,000 terms with U3 Pro / 200 with U2; streaming: up to 100 terms, each ≤50 chars) |
 | Medical domain | `domain: "medical-v1"` (pre-recorded *and* streaming; supported languages: en, es, de, fr) |
@@ -70847,7 +70838,7 @@ Use this to build the recommendation. Do not dump it on the user.
 | Word timestamps / confidence | Included by default on `words[]` |
 | Webhook delivery (skip polling) | `webhook_url: "..."` (Section 7) |
 | Custom voice agent (your LLM + TTS) | Real-time STT + framework integration (Section 10) |
-| Multilingual streaming | Universal-3 Pro Streaming (native code-switching; `language_code` to bias toward one language) |
+| Multilingual streaming | Universal-3.6 Pro Realtime (native code-switching; `language_codes` to steer toward known languages) |
 
 ---
 
@@ -70869,7 +70860,7 @@ Core REST endpoints:
 - `GET /v2/transcript/{id}` — poll. Statuses: `queued`, `processing`, `completed`, `error`.
 
 Streaming:
-- `wss://streaming.assemblyai.com/v3/ws?sample_rate=16000&speech_model=universal-3-5-pro`
+- `wss://streaming.assemblyai.com/v3/ws?sample_rate=16000&speech_model=universal-3-6-pro`
 - `GET https://streaming.assemblyai.com/v3/token?expires_in_seconds=60` — mint a temp token for browser/mobile clients. The token is reusable until `expires_in_seconds` elapses, so mint a fresh one per session. Optional `max_session_duration_seconds` (60–10800, defaults to 3 h) caps the downstream session length. At the cap, the session ends after the current turn or up to 60 s later, and that extra time is billed.
 
 ---
@@ -70880,7 +70871,7 @@ Streaming:
 
 Recommended default: `["universal-3-5-pro", "universal-2"]` — tries the latest model first, falls back to the stable predecessor.
 
-On streaming, the parameter is **singular** (`speech_model=universal-3-5-pro`) — there is no fallback list. Easy to mix up.
+On streaming, the parameter is **singular** (`speech_model=universal-3-6-pro`) — there is no fallback list. Easy to mix up.
 
 ---
 
@@ -71019,9 +71010,9 @@ Do not submit with `auto_chapters` and `summarization` both enabled — the API 
 
 ---
 
-## 9. Streaming — Universal-3.5 Pro
+## 9. Streaming — Universal-3.6 Pro
 
-**WebSocket (default, Edge Routing):** `wss://streaming.assemblyai.com/v3/ws?sample_rate=16000&speech_model=universal-3-5-pro`
+**WebSocket (default, Edge Routing):** `wss://streaming.assemblyai.com/v3/ws?sample_rate=16000&speech_model=universal-3-6-pro`
 
 For data residency, swap the host: `streaming.us.assemblyai.com` (US-pinned) or `streaming.eu.assemblyai.com` (EU-pinned). The default host auto-routes to the nearest region.
 
@@ -71077,7 +71068,7 @@ client = StreamingClient(
     StreamingClientOptions(api_key=os.environ["ASSEMBLYAI_API_KEY"])
 )
 client.on(StreamingEvents.Turn, on_turn)
-client.connect(StreamingParameters(sample_rate=16000, speech_model="universal-3-5-pro"))
+client.connect(StreamingParameters(sample_rate=16000, speech_model="universal-3-6-pro"))
 
 # Feed 16 kHz mono PCM16 chunks (50–1000ms each) via client.stream(chunk)
 # When finished:
@@ -71092,7 +71083,7 @@ import { AssemblyAI } from 'assemblyai';
 const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 const rt = client.streaming.transcriber({
   sampleRate: 16000,
-  speechModel: 'universal-3-5-pro',
+  speechModel: 'universal-3-6-pro',
 });
 
 rt.on('turn', (turn) => {
@@ -71114,7 +71105,7 @@ await rt.close(); // sends Terminate and closes
 import WebSocket from 'ws';
 
 const ws = new WebSocket(
-  'wss://streaming.assemblyai.com/v3/ws?sample_rate=16000&speech_model=universal-3-5-pro',
+  'wss://streaming.assemblyai.com/v3/ws?sample_rate=16000&speech_model=universal-3-6-pro',
   { headers: { authorization: process.env.ASSEMBLYAI_API_KEY } },
 );
 
@@ -71139,7 +71130,7 @@ function stop() {
 ```python
 import asyncio, json, os, websockets
 
-URL = "wss://streaming.assemblyai.com/v3/ws?sample_rate=16000&speech_model=universal-3-5-pro"
+URL = "wss://streaming.assemblyai.com/v3/ws?sample_rate=16000&speech_model=universal-3-6-pro"
 
 async def run(audio_source):
     """audio_source: async iterator yielding 50–1000ms PCM16 chunks at 16kHz mono."""
@@ -71176,7 +71167,7 @@ The defaults will not be good enough. Common tuning:
 
 - **`keyterms_prompt`** — pass proper nouns, product names, and domain terms. For dynamic values (usernames, order IDs), update mid-session via `UpdateConfiguration`.
 - **Turn silence bounds** — `min_turn_silence` and `max_turn_silence` (ms). Lower values fire end-of-turn faster but risk cutting speakers off. Higher values reduce false finalizations. Form-filling and dictation use cases often want wider windows.
-- **Multilingual** — Universal-3 Pro Streaming code-switches natively and ignores `end_of_turn_confidence_threshold`. Pass `language_code` to bias the model toward a single language.
+- **Multilingual** — Universal-3.6 Pro Realtime code-switches natively and ignores `end_of_turn_confidence_threshold`. Pass `language_codes` (for example `["es"]`) to steer the model toward known languages.
 - **Barge-in / false SpeechStarted** — ambient noise, TTS bleed-through, and PSTN echo can cause spurious `SpeechStarted` events. If the agent is interrupting itself, look here first. Framework-level knobs (e.g., LiveKit's `min_interruption_duration`) often complement, not replace, server-side tuning.
 - **Phone audio** — 8 kHz mu-law (`pcm_mulaw` at 8000 Hz) should be sent as-is, not upsampled to 16 kHz. Upsampling degrades accuracy.
 
@@ -71236,7 +71227,7 @@ export async function GET() {
 // Client
 const { token } = await fetch('/api/aai-token').then((r) => r.json());
 const ws = new WebSocket(
-  `wss://streaming.assemblyai.com/v3/ws?sample_rate=16000&speech_model=universal-3-5-pro&token=${token}`,
+  `wss://streaming.assemblyai.com/v3/ws?sample_rate=16000&speech_model=universal-3-6-pro&token=${token}`,
 );
 ws.onmessage = (e) => {
   const msg = JSON.parse(e.data);
@@ -71296,7 +71287,7 @@ If a developer asks for any of these, say so directly and propose the closest su
 ### Streaming gotchas
 
 - `speech_model` (streaming, singular) vs `speech_models` (pre-recorded, plural). Don't mix up.
-- On U3 Pro Streaming, `end_of_turn_confidence_threshold` is silently ignored; `language_code` biases the multilingual model toward a single language.
+- On Universal-3.6 Pro Realtime, `end_of_turn_confidence_threshold` is silently ignored; `language_codes` steers the model toward the languages you list.
 - Always send `{ "type": "Terminate" }` when finished. An abandoned session stays billable until the 3-hour cap (`3008`).
 - Chunk size matters: frames outside 50–1000 ms will close the socket with `3007`.
 
@@ -73227,9 +73218,9 @@ Explore additional guides for async and streaming transcription workflows, inclu
 
 ---
 
-<a id="universal-3-5-pro-streaming-api-docs-voice-agents-universal-3-5-pro-streaming-api-mdx"></a>
+<a id="universal-3-5-pro-realtime-api-docs-voice-agents-universal-3-5-pro-streaming-api-mdx"></a>
 
-# Universal-3.5 Pro Streaming API
+# Universal-3.5 Pro Realtime API
 
 URL: https://www.assemblyai.com/docs/voice-agents/universal-3-5-pro-streaming-api
 Source: docs/voice-agents/universal-3-5-pro-streaming-api.mdx
@@ -73238,9 +73229,9 @@ Description: Build a custom voice agent on AssemblyAI's streaming WebSocket with
 
 ## Overview
 
-This guide is for voice agents that connect AssemblyAI's [Universal-3.5 Pro Streaming](/streaming/getting-started/transcribe-streaming-audio) WebSocket directly to a custom LLM and TTS, with no LiveKit, Pipecat, or other orchestrator in the loop.
+This guide is for voice agents that connect AssemblyAI's [Universal-3.5 Pro Realtime](/streaming/getting-started/transcribe-streaming-audio) WebSocket directly to a custom LLM and TTS, with no LiveKit, Pipecat, or other orchestrator in the loop.
 
-Universal-3.5 Pro Streaming is optimized for real-time audio under 10 seconds with low-latency turn detection, native multilingual code switching, and prompting support. The protocol is documented in detail on the [Universal-3.5 Pro overview](/streaming/getting-started/transcribe-streaming-audio) and [message sequence](/streaming/getting-started/transcribe-streaming-audio) pages. This guide focuses on the voice-agent loop and how to handle barge-in and interruptions correctly.
+Universal-3.5 Pro Realtime is optimized for real-time audio under 10 seconds with low-latency turn detection, native multilingual code switching, and prompting support. The protocol is documented in detail on the [Universal-3.5 Pro overview](/streaming/getting-started/transcribe-streaming-audio) and [message sequence](/streaming/getting-started/transcribe-streaming-audio) pages. This guide focuses on the voice-agent loop and how to handle barge-in and interruptions correctly.
 
 ## Quickstart
 
@@ -73301,7 +73292,7 @@ For the full message protocol, including all event fields, audio framing, and te
 
 ## Turn detection
 
-Universal-3.5 Pro Streaming uses punctuation-based turn detection controlled by two parameters:
+Universal-3.5 Pro Realtime uses punctuation-based turn detection controlled by two parameters:
 
 | Parameter          | Default   | Description                                                              |
 | ------------------ | --------- | ------------------------------------------------------------------------ |
@@ -73426,7 +73417,7 @@ For cross-cutting topics like dynamic configuration updates, scaling, latency bu
 
 ## Related
 
-- [Universal-3.5 Pro Streaming overview](/streaming/getting-started/transcribe-streaming-audio)
+- [Universal-3.5 Pro Realtime overview](/streaming/getting-started/transcribe-streaming-audio)
 - [Universal-3.5 Pro message sequence](/streaming/getting-started/transcribe-streaming-audio)
 - [LiveKit integration](/voice-agents/livekit-universal-3-6-pro)
 - [Pipecat integration](/voice-agents/pipecat-universal-3-5-pro)

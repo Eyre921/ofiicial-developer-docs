@@ -8,6 +8,16 @@ Fireworks documentation changelog: recent additions, updates, and clarifications
 
 All
 
+**2026-10-27**
+
+Inference
+
+# New model on Serverless: Rune 26B-A4B
+
+**[Rune 26B-A4B](https://app.fireworks.ai/models/fireworks/rune)** is now available on Serverless. It's a System One decision model, so it doesn't reason and doesn't generate text. You send a document and up to 256 typed questions about it, and it returns a calibrated probability for each answer from a single read. Questions can be multiple choice, true/false, or a graded scale. Output tokens are always zero, so you're billed for input only.
+
+Call `accounts/fireworks/models/rune` through the [System One decisions API](/api-reference/post-systemone) or the [OpenAI-compatible Decisions API](/api-reference/post-decisions). It accepts text only, up to 262K context. Rates are on [Serverless pricing](/serverless/pricing).
+
 **2026-10-21**
 
 Training

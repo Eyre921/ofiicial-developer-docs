@@ -6,9 +6,7 @@ path: introduction
 
 The small database to power your big dreams in the age of AI.
 
-<Frame>
-  <img alt="Turso Quickstart" />
-</Frame>
+![Turso Quickstart](https://mintcdn.com/turso/7mjM7fXIfeZ8ZwNC/images/turso-banner.png?fit=max\&auto=format\&n=7mjM7fXIfeZ8ZwNC\&q=85\&s=e06c9ad0e66501d523ed87aaecefa6ba)
 
 Turso is the small database to power your big dreams in the age of AI. The most efficient way to build for traditional applications, smart devices, embodied AI, agents, and anything in between.
 
@@ -16,81 +14,73 @@ Turso is the small database to power your big dreams in the age of AI. The most 
 
 Choose your path to get started with Turso:
 
-<CardGroup>
-  <Card title="Turso Database (Embedded)" icon="microchip" href="/tursodb/quickstart">
-    An embedded database engine that goes anywhere. Offline, in the browser, or
-    on-device.
-  </Card>
+> **[Turso Database (Embedded)](/tursodb/quickstart)**
+>
+> An embedded database engine that goes anywhere. Offline, in the browser, or
+> on-device.
 
-  <Card title="AgentFS" icon="robot" href="/agentfs/introduction">
-    Filesystem and state SDK for AI agents with built-in auditability.
-  </Card>
+> **[AgentFS](/agentfs/introduction)**
+>
+> Filesystem and state SDK for AI agents with built-in auditability.
 
-  <Card title="Turso Cloud" icon="cloud" href="/turso-cloud">
-    Fully managed platform for Turso and libSQL databases, with branching,
-    analytics, backups, and more.
-  </Card>
+> **[Turso Cloud](/turso-cloud)**
+>
+> Fully managed platform for Turso and libSQL databases, with branching,
+> analytics, backups, and more.
 
-  <Card title="How Well You Know Turso?" icon="circle-question" href="https://www.howwellyouknow.com/play/turso">
-    Test your knowledge of Turso and share your results.
-  </Card>
-</CardGroup>
+> **[How Well You Know Turso?](https://www.howwellyouknow.com/play/turso)**
+>
+> Test your knowledge of Turso and share your results.
 
-<Info>
-  **Need sync?** If you want local reads and writes with push/pull sync to the cloud, start with [Turso Database](/tursodb/quickstart) and [Turso Sync](/sync/usage).
-</Info>
+> [!NOTE]
+>
+> **Need sync?** If you want local reads and writes with push/pull sync to the cloud, start with [Turso Database](/tursodb/quickstart) and [Turso Sync](/sync/usage).
 
 ## Turso Database Features
 
 The next evolution of SQLite, built for modern applications:
 
-<CardGroup>
-  <Card title="Vector Search" icon="magnifying-glass">
-    Native similarity search for AI apps and RAG workflows, no extensions
-    required
-  </Card>
+> **Vector Search**
+>
+> Native similarity search for AI apps and RAG workflows, no extensions
+> required
 
-  <Card title="Async Design" icon="bolt">
-    Modern async primitives such as Linux io\_uring to keep your apps responsive
-  </Card>
+> **Async Design**
+>
+> Modern async primitives such as Linux io\_uring to keep your apps responsive
 
-  <Card title="SQLite Compatible" icon="check">
-    Fully backwards compatible with SQLite, but built for the next generation
-  </Card>
+> **SQLite Compatible**
+>
+> Fully backwards compatible with SQLite, but built for the next generation
 
-  <Card title="Concurrent Writes" icon="arrows-rotate">
-    Multiple writers, zero conflicts, without locking
-  </Card>
+> **Concurrent Writes**
+>
+> Multiple writers, zero conflicts, without locking
 
-  <Card title="Richer Type System" icon="tags">
-    Richer and stricter type system, including User-Defined Types (experimental)
-  </Card>
+> **Richer Type System**
+>
+> Richer and stricter type system, including User-Defined Types (experimental)
 
-  <Card title="Open Contribution" icon="code-branch">
-    Take your seat at the table and contribute to the next evolution of SQLite
-  </Card>
-</CardGroup>
+> **Open Contribution**
+>
+> Take your seat at the table and contribute to the next evolution of SQLite
 
 ## Join Our Communities
 
 Connect with developers and the Turso team:
 
-<CardGroup>
-  <Card title="Turso Database Core Developers" icon="discord" href="https://discord.gg/jgjmyYgHwB">
-    Join the core development community for Turso Database discussions
-  </Card>
+> **[Turso Database Core Developers](https://discord.gg/jgjmyYgHwB)**
+>
+> Join the core development community for Turso Database discussions
 
-  <Card title="Turso Community" icon="discord" href="https://tur.so/discord">
-    Connect with users and get support for Turso Cloud
-  </Card>
-</CardGroup>
+> **[Turso Community](https://tur.so/discord)**
+>
+> Connect with users and get support for Turso Cloud
 
 ### Follow Us
 
-<CardGroup>
-  <Card title="GitHub" icon="star" href="https://github.com/tursodatabase" />
+> **[GitHub](https://github.com/tursodatabase)**
 
-  <Card title="X (Twitter)" icon="x-twitter" href="https://twitter.com/tursodatabase" />
+> **[X (Twitter)](https://twitter.com/tursodatabase)**
 
-  <Card title="LinkedIn" icon="linkedin" href="https://www.linkedin.com/company/turso" />
-</CardGroup>
+> **[LinkedIn](https://www.linkedin.com/company/turso)**

@@ -50,7 +50,7 @@ Action forms in the `Needs attention` state to get missing name, address, and ta
 
 ## Review tax form totals and identity information [December 31]
 
-- Stripe begins [outreach](https://docs.stripe.com/connect/platform-express-dashboard-taxes-walkthrough.md) to your connected accounts starting the week of November 3 if you have opted into e-delivery / outreach from Stripe. We recommend opting in by **January 4** so we can contact all of your accounts for pre-filing confirmation by January 15, the last possible day for automated outreach from Stripe. Note, we don’t send outreach emails to platforms’ connected accounts until *7 days* after you enable the setting.
+- Stripe begins [outreach](https://docs.stripe.com/connect/platform-express-dashboard-taxes-walkthrough.md) to your connected accounts starting the week of November 3 if you opted in to e-delivery or outreach from Stripe. We recommend opting in by **January 4** so we can contact all of your accounts for pre-filing confirmation by January 15, the last possible day for automated outreach from Stripe. We don’t send outreach emails to platforms’ connected accounts until *7 days* after you enable the setting.
 - Continue [actioning forms](https://docs.stripe.com/connect/identify-forms-missing-information.md) in `Needs attention` and reach out to accounts with missing information.
 - Audit tax calculations on some 1099 tax forms.
 - Verify your [tax form settings](https://dashboard.stripe.com/settings/connect/tax_forms) so you’re ready to file 1099 tax forms in January.

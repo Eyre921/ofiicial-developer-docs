@@ -17,145 +17,141 @@ In this TypeScript quickstart we will learn how to:
 
 `@tursodatabase/database` is the recommended package for local and embedded use cases (Node.js, Electron, mobile, IoT). It is built on the Turso Database engine — a ground-up rewrite of SQLite with concurrent writes (MVCC) and async I/O.
 
-<Steps>
-  <Step title="Install">
-    ```bash theme={null}
-    npm install @tursodatabase/database
-    ```
-  </Step>
+**1. Install**
 
-  <Step title="Connect">
-    ```ts theme={null}
-    import { connect } from "@tursodatabase/database";
+```bash theme={null}
+npm install @tursodatabase/database
+```
 
-    const db = await connect("app.db");
-    ```
-  </Step>
+**2. Connect**
 
-  <Step title="Execute">
-    ```ts theme={null}
-    const createTable = db.prepare(`
-      CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username TEXT NOT NULL
-      )
-    `);
-    await createTable.run();
+```ts theme={null}
+import { connect } from "@tursodatabase/database";
 
-    const insertUser = db.prepare("INSERT INTO users (username) VALUES (?)");
-    await insertUser.run("alice");
+const db = await connect("app.db");
+```
 
-    const stmt = db.prepare("SELECT * FROM users");
-    const users = await stmt.all();
-    console.log(users);
-    ```
-  </Step>
+**3. Execute**
 
-  <Step title="Sync (push and pull)">
-    If you need to sync your local database with Turso Cloud, use [`@tursodatabase/sync`](/sync/usage):
+```ts theme={null}
+const createTable = db.prepare(`
+  CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL
+  )
+`);
+await createTable.run();
 
-    ```bash theme={null}
-    npm install @tursodatabase/sync
-    ```
+const insertUser = db.prepare("INSERT INTO users (username) VALUES (?)");
+await insertUser.run("alice");
 
-    ```ts theme={null}
-    import { connect } from "@tursodatabase/sync";
+const stmt = db.prepare("SELECT * FROM users");
+const users = await stmt.all();
+console.log(users);
+```
 
-    const db = await connect({
-      path: "./app.db",
-      url: process.env.TURSO_DATABASE_URL,
-      authToken: process.env.TURSO_AUTH_TOKEN,
-    });
+**4. Sync (push and pull)**
 
-    await db.exec("INSERT INTO users (username) VALUES ('bob')");
+If you need to sync your local database with Turso Cloud, use [`@tursodatabase/sync`](/sync/usage):
 
-    // Push local writes to Turso Cloud
-    await db.push();
+```bash theme={null}
+npm install @tursodatabase/sync
+```
 
-    // Pull remote changes to local database
-    const changed = await db.pull();
-    ```
+```ts theme={null}
+import { connect } from "@tursodatabase/sync";
 
-    All reads and writes happen against the local database file — fast, offline-capable. `push()` sends your changes to the cloud. `pull()` brings remote changes down. See [Turso Sync](/sync/usage) for details on conflict resolution, checkpointing, and more.
-  </Step>
-</Steps>
+const db = await connect({
+  path: "./app.db",
+  url: process.env.TURSO_DATABASE_URL,
+  authToken: process.env.TURSO_AUTH_TOKEN,
+});
+
+await db.exec("INSERT INTO users (username) VALUES ('bob')");
+
+// Push local writes to Turso Cloud
+await db.push();
+
+// Pull remote changes to local database
+const changed = await db.pull();
+```
+
+All reads and writes happen against the local database file — fast, offline-capable. `push()` sends your changes to the cloud. `pull()` brings remote changes down. See [Turso Sync](/sync/usage) for details on conflict resolution, checkpointing, and more.
 
 ## Remote Turso database: @tursodatabase/serverless
 
 `@tursodatabase/serverless` is the package for applications that connect to a remote [Turso database](/tursodb/quickstart) on Turso Cloud over the network — including Node.js servers, Docker containers, serverless functions, and edge runtimes (Cloudflare Workers, Vercel Edge, Deno Deploy). It uses only `fetch` — zero native dependencies, works everywhere.
 
-<Steps>
-  <Step title="Retrieve database credentials">
-    You will need an existing Turso database to continue. If you don't have one, create one with `turso db create --tursodb` (see the [quickstart](/quickstart)).
+**1. Retrieve database credentials**
 
-    <Snippet />
+You will need an existing Turso database to continue. If you don't have one, create one with `turso db create --tursodb` (see the [quickstart](/quickstart)).
 
-    <Info>You will want to store these as environment variables.</Info>
-  </Step>
+<Snippet />
 
-  <Step title="Install">
-    ```bash theme={null}
-    npm install @tursodatabase/serverless
-    ```
-  </Step>
+> [!NOTE]
+>
+> You will want to store these as environment variables.
 
-  <Step title="Connect to your database">
-    ```ts theme={null}
-    import { connect } from "@tursodatabase/serverless";
+**2. Install**
 
-    const conn = connect({
-      url: process.env.TURSO_DATABASE_URL,
-      authToken: process.env.TURSO_AUTH_TOKEN,
-    });
-    ```
+```bash theme={null}
+npm install @tursodatabase/serverless
+```
 
-    For compatibility with the `@libsql/client` API, use the compat module:
+**3. Connect to your database**
 
-    ```ts theme={null}
-    import { createClient } from "@tursodatabase/serverless/compat";
+```ts theme={null}
+import { connect } from "@tursodatabase/serverless";
 
-    const client = createClient({
-      url: process.env.TURSO_DATABASE_URL,
-      authToken: process.env.TURSO_AUTH_TOKEN,
-    });
-    ```
-  </Step>
+const conn = connect({
+  url: process.env.TURSO_DATABASE_URL,
+  authToken: process.env.TURSO_AUTH_TOKEN,
+});
+```
 
-  <Step title="Execute a query using SQL">
-    ```ts theme={null}
-    const stmt = await conn.prepare("SELECT * FROM users");
-    const rows = await stmt.all();
-    ```
+For compatibility with the `@libsql/client` API, use the compat module:
 
-    If you need to use placeholders for values, you can do that:
+```ts theme={null}
+import { createClient } from "@tursodatabase/serverless/compat";
 
-    ```ts theme={null}
-    const stmt = await conn.prepare("SELECT * FROM users WHERE id = ?");
-    const row = await stmt.get([1]);
-    ```
-  </Step>
-</Steps>
+const client = createClient({
+  url: process.env.TURSO_DATABASE_URL,
+  authToken: process.env.TURSO_AUTH_TOKEN,
+});
+```
+
+**4. Execute a query using SQL**
+
+```ts theme={null}
+const stmt = await conn.prepare("SELECT * FROM users");
+const rows = await stmt.all();
+```
+
+If you need to use placeholders for values, you can do that:
+
+```ts theme={null}
+const stmt = await conn.prepare("SELECT * FROM users WHERE id = ?");
+const row = await stmt.get([1]);
+```
 
 ## Remote libSQL database: @libsql/client
 
 `@libsql/client` is the package for applications that connect to a remote [libSQL](/libsql) database on Turso Cloud. It is also the package to use for ORM integration (Drizzle, Prisma). See the [reference](/sdk/ts/reference#libsqlclient) for full documentation.
 
-<Steps>
-  <Step title="Install">
-    <Snippet />
-  </Step>
+**1. Install**
 
-  <Step title="Connect">
-    <Snippet />
-  </Step>
+<Snippet />
 
-  <Step title="Execute">
-    ```ts theme={null}
-    await turso.execute("SELECT * FROM users");
-    ```
-  </Step>
+**2. Connect**
 
-  <Step title="Sync">
-    If you need to sync your local database with a remote Turso Cloud database (local reads and writes with push/pull to the cloud), use [Turso Sync](/sync/usage). Turso Sync is built on the Turso Database engine and provides local-first sync with explicit `push()` and `pull()` operations.
-  </Step>
-</Steps>
+<Snippet />
+
+**3. Execute**
+
+```ts theme={null}
+await turso.execute("SELECT * FROM users");
+```
+
+**4. Sync**
+
+If you need to sync your local database with a remote Turso Cloud database (local reads and writes with push/pull to the cloud), use [Turso Sync](/sync/usage). Turso Sync is built on the Turso Database engine and provides local-first sync with explicit `push()` and `pull()` operations.

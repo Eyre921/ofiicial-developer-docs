@@ -8,9 +8,9 @@ Define a named sequence generator for producing auto-incrementing numeric values
 
 # CREATE SEQUENCE
 
-<Info>
-  **Turso Extension**: CREATE SEQUENCE is a Turso-specific statement not available in standard SQLite.
-</Info>
+> [!NOTE]
+>
+> **Turso Extension**: CREATE SEQUENCE is a Turso-specific statement not available in standard SQLite.
 
 The CREATE SEQUENCE statement defines a named sequence object that generates a series of numeric values. Sequences are independent of any table and can be used across multiple tables and queries via the `nextval()`, `currval()`, and `setval()` functions.
 

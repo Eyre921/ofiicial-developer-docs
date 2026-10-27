@@ -40,6 +40,14 @@ Entries on this page are generated automatically from [OpenAPI specification](ht
   * [`PATCH /observability/destinations/{id}`](https://openrouter.ai/docs/api/api-reference/observability/update-an-observability-destination)
   * [`POST /observability/destinations`](https://openrouter.ai/docs/api/api-reference/observability/create-an-observability-destination)
 
+## New endpoints
+
+* [`PUT /private-endpoints/{id}/parameters`](https://openrouter.ai/docs/api/api-reference/private-endpoints/set-private-endpoint-supported-parameters): Set private endpoint supported parameters
+
+## Modified endpoints
+
+* [`POST /private-endpoints`](https://openrouter.ai/docs/api/api-reference/private-endpoints/create-a-private-endpoint): description updated
+
 ## New response codes
 
 * [`GET /endpoints/zdr`](https://openrouter.ai/docs/api/api-reference/endpoints/preview-the-impact-of-zdr-on-the-available-endpoints): now returns `503`
@@ -52,6 +60,17 @@ Entries on this page are generated automatically from [OpenAPI specification](ht
 * [`GET /presets/{slug}`](https://openrouter.ai/docs/api/api-reference/presets/get-a-preset): now returns `503`
 * [`GET /presets/{slug}/versions`](https://openrouter.ai/docs/api/api-reference/presets/list-versions-of-a-preset): now returns `503`
 * [`GET /presets/{slug}/versions/{version}`](https://openrouter.ai/docs/api/api-reference/presets/get-a-specific-version-of-a-preset): now returns `503`
+
+## New schemas
+
+* `PrivateEndpointDeclaredParameter`
+  * Used by [`POST /private-endpoints`](https://openrouter.ai/docs/api/api-reference/private-endpoints/create-a-private-endpoint), [`PUT /private-endpoints/{id}/parameters`](https://openrouter.ai/docs/api/api-reference/private-endpoints/set-private-endpoint-supported-parameters)
+* `PrivateEndpointParameterCheck`
+  * Used by [`POST /private-endpoints`](https://openrouter.ai/docs/api/api-reference/private-endpoints/create-a-private-endpoint), [`POST /private-endpoints/{id}/validate`](https://openrouter.ai/docs/api/api-reference/private-endpoints/validate-a-draft-private-endpoint)
+* `UpdatePrivateEndpointParametersRequest`
+  * Used by [`PUT /private-endpoints/{id}/parameters`](https://openrouter.ai/docs/api/api-reference/private-endpoints/set-private-endpoint-supported-parameters)
+* `DecisionsImageAsset`
+  * Used by [`POST /api/alpha/decisions`](https://openrouter.ai/docs/api/api-reference/alphadecisions/submit-a-decisions-request), [`POST /systemone`](https://openrouter.ai/docs/api/api-reference/systemone/submit-a-system-one-request)
 
 ## Modified schemas
 
@@ -69,6 +88,67 @@ Entries on this page are generated automatically from [OpenAPI specification](ht
   * [`GET /observability/destinations/{id}`](https://openrouter.ai/docs/api/api-reference/observability/get-an-observability-destination)
   * [`PATCH /observability/destinations/{id}`](https://openrouter.ai/docs/api/api-reference/observability/update-an-observability-destination)
   * [`POST /observability/destinations`](https://openrouter.ai/docs/api/api-reference/observability/create-an-observability-destination)
+* `CreatePrivateEndpointRequest`: new property `declared_parameters`; new property `max_completion_tokens`
+  * Used by [`POST /private-endpoints`](https://openrouter.ai/docs/api/api-reference/private-endpoints/create-a-private-endpoint)
+* `PrivateEndpoint`:
+
+  * example modified
+  * new property `declared_parameters` (always present)
+  * new property `max_completion_tokens`
+  * new property `tested_parameters` (always present)
+
+  **4 endpoints using this schema**
+
+  * [`GET /private-endpoints/{id}`](https://openrouter.ai/docs/api/api-reference/private-endpoints/get-a-private-endpoint)
+  * [`PATCH /private-endpoints/{id}`](https://openrouter.ai/docs/api/api-reference/private-endpoints/update-a-draft-private-endpoint)
+  * [`PUT /private-endpoints/{id}/parameters`](https://openrouter.ai/docs/api/api-reference/private-endpoints/set-private-endpoint-supported-parameters)
+  * [`PUT /private-endpoints/{id}/pricing`](https://openrouter.ai/docs/api/api-reference/private-endpoints/set-private-endpoint-pricing)
+* `PrivateEndpointValidation`: new property `parameters`
+  * Used by [`POST /private-endpoints/{id}/validate`](https://openrouter.ai/docs/api/api-reference/private-endpoints/validate-a-draft-private-endpoint)
+* `PrivateEndpointValidationNullable`: new property `parameters`
+  * Used by [`POST /private-endpoints`](https://openrouter.ai/docs/api/api-reference/private-endpoints/create-a-private-endpoint)
+* `DecisionsRequest`: new property `assets`
+  * Used by [`POST /api/alpha/decisions`](https://openrouter.ai/docs/api/api-reference/alphadecisions/submit-a-decisions-request), [`POST /systemone`](https://openrouter.ai/docs/api/api-reference/systemone/submit-a-system-one-request)
+* `MessagesStartEvent`: property `provider` updated
+  * Used by [`POST /messages`](https://openrouter.ai/docs/api/api-reference/anthropic-messages/create-a-message)
+* `ProviderName`: enum property\_added
+
+  **14 endpoints using this schema**
+
+  * [`GET /endpoints/zdr`](https://openrouter.ai/docs/api/api-reference/endpoints/preview-the-impact-of-zdr-on-the-available-endpoints)
+  * [`GET /models/{author}/{slug}/endpoints`](https://openrouter.ai/docs/api/api-reference/endpoints/list-all-endpoints-for-a-model)
+  * [`POST /api/alpha/decisions`](https://openrouter.ai/docs/api/api-reference/alphadecisions/submit-a-decisions-request)
+  * [`POST /batches`](https://openrouter.ai/docs/api/api-reference/batch/create-a-batch)
+  * [`POST /chat/completions`](https://openrouter.ai/docs/api/api-reference/chat/create-a-chat-completion)
+  * [`POST /embeddings`](https://openrouter.ai/docs/api/api-reference/embeddings/submit-an-embedding-request)
+  * [`POST /images`](https://openrouter.ai/docs/api/api-reference/images/generate-an-image)
+  * [`POST /messages`](https://openrouter.ai/docs/api/api-reference/anthropic-messages/create-a-message)
+  * [`POST /presets/{slug}/chat/completions`](https://openrouter.ai/docs/api/api-reference/presets/create-a-preset-from-a-chat-completions-request-body)
+  * [`POST /presets/{slug}/messages`](https://openrouter.ai/docs/api/api-reference/presets/create-a-preset-from-a-messages-request-body)
+  * [`POST /presets/{slug}/responses`](https://openrouter.ai/docs/api/api-reference/presets/create-a-preset-from-a-responses-request-body)
+  * [`POST /rerank`](https://openrouter.ai/docs/api/api-reference/rerank/submit-a-rerank-request)
+  * [`POST /responses`](https://openrouter.ai/docs/api/api-reference/responses/create-a-response)
+  * [`POST /systemone`](https://openrouter.ai/docs/api/api-reference/systemone/submit-a-system-one-request)
+* `ProviderOptions`: new property `primalabs`
+
+  **14 endpoints using this schema**
+
+  * [`POST /api/alpha/decisions`](https://openrouter.ai/docs/api/api-reference/alphadecisions/submit-a-decisions-request)
+  * [`POST /audio/speech`](https://openrouter.ai/docs/api/api-reference/tts/create-speech)
+  * [`POST /audio/transcriptions`](https://openrouter.ai/docs/api/api-reference/stt/create-transcription)
+  * [`POST /chat/completions`](https://openrouter.ai/docs/api/api-reference/chat/create-a-chat-completion)
+  * [`POST /embeddings`](https://openrouter.ai/docs/api/api-reference/embeddings/submit-an-embedding-request)
+  * [`POST /images`](https://openrouter.ai/docs/api/api-reference/images/generate-an-image)
+  * [`POST /messages`](https://openrouter.ai/docs/api/api-reference/anthropic-messages/create-a-message)
+  * [`POST /presets/{slug}/chat/completions`](https://openrouter.ai/docs/api/api-reference/presets/create-a-preset-from-a-chat-completions-request-body)
+  * [`POST /presets/{slug}/messages`](https://openrouter.ai/docs/api/api-reference/presets/create-a-preset-from-a-messages-request-body)
+  * [`POST /presets/{slug}/responses`](https://openrouter.ai/docs/api/api-reference/presets/create-a-preset-from-a-responses-request-body)
+  * [`POST /rerank`](https://openrouter.ai/docs/api/api-reference/rerank/submit-a-rerank-request)
+  * [`POST /responses`](https://openrouter.ai/docs/api/api-reference/responses/create-a-response)
+  * [`POST /systemone`](https://openrouter.ai/docs/api/api-reference/systemone/submit-a-system-one-request)
+  * [`POST /videos`](https://openrouter.ai/docs/api/api-reference/video-generation/submit-a-video-generation-request)
+* `ProviderResponse`: enum property\_added
+  * Used by [`GET /generation`](https://openrouter.ai/docs/api/api-reference/generations/get-request-&-usage-metadata-for-a-generation)
 
 **October 26, 2026**
 

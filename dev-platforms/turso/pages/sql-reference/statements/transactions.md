@@ -136,15 +136,15 @@ RELEASE before_bonus;
 COMMIT;
 ```
 
-<Info>
-  While a write statement on the same connection is still in progress, `SAVEPOINT`, `RELEASE`, and `ROLLBACK TO` may return `SQLITE_BUSY`.
-</Info>
+> [!NOTE]
+>
+> While a write statement on the same connection is still in progress, `SAVEPOINT`, `RELEASE`, and `ROLLBACK TO` may return `SQLITE_BUSY`.
 
 ## BEGIN CONCURRENT
 
-<Info>
-  **Turso Extension**: BEGIN CONCURRENT is a Turso-specific extension not available in standard SQLite. It requires MVCC mode.
-</Info>
+> [!NOTE]
+>
+> **Turso Extension**: BEGIN CONCURRENT is a Turso-specific extension not available in standard SQLite. It requires MVCC mode.
 
 The BEGIN CONCURRENT statement starts an optimistic concurrent write transaction that allows multiple connections to write simultaneously.
 

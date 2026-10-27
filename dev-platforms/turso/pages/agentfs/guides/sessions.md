@@ -136,12 +136,10 @@ Each database contains:
 
 ## Next Steps
 
-<CardGroup>
-  <Card title="Auditing" icon="list" href="/agentfs/guides/auditing">
-    Inspect what happened in a session
-  </Card>
+> **[Auditing](/agentfs/guides/auditing)**
+>
+> Inspect what happened in a session
 
-  <Card title="Overlay Filesystem" icon="layer-group" href="/agentfs/guides/overlay">
-    How copy-on-write works
-  </Card>
-</CardGroup>
+> **[Overlay Filesystem](/agentfs/guides/overlay)**
+>
+> How copy-on-write works

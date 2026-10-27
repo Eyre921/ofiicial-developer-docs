@@ -6,7 +6,7 @@ path: features/embedded-replicas/with-railway
 
 Deploy a JavaScript/Rust app using [Turso Cloud embedded replicas](/features/embedded-replicas) to [Railway](https://railway.app/).
 
-<img alt="Koyeb banner" />
+![Koyeb banner](https://mintcdn.com/turso/7mjM7fXIfeZ8ZwNC/images/platforms/railway-banner.png?fit=max\&auto=format\&n=7mjM7fXIfeZ8ZwNC\&q=85\&s=c04df842dadd8d42cd24364580fbf7bf)
 
 ## Prerequisites
 
@@ -16,72 +16,70 @@ Before you start, make sure you:
 * [Sign up or login to Turso Cloud](/cli/authentication#signup)
 * [Install the Railway CLI](https://docs.railway.app/guides/cli#installing-the-cli)
 
-<Steps>
-  <Step title="Retrieve database credentials">
-    You will need an existing database to continue. If you don't have one, [create one](/quickstart).
+**1. Retrieve database credentials**
 
-    <Snippet />
+You will need an existing database to continue. If you don't have one, [create one](/quickstart).
 
-    <Info>You will want to store these as environment variables.</Info>
-  </Step>
+<Snippet />
 
-  <Step title="Get application code">
-    Fork and clone the following embedded replica project from GitHub locally:
+> [!NOTE]
+>
+> You will want to store these as environment variables.
 
-    <CardGroup>
-      <Card title="My Expenses Tracker - (Elysia + Bun)" icon="github" href="https://github.com/tursodatabase/embedded-replicas-with-js">
-        See the full source code
-      </Card>
+**2. Get application code**
 
-      <Card title="Web Traffic API - (Rust)" icon="github" href="https://github.com/tursodatabase/embedded-replicas-with-rust">
-        See the full source code
-      </Card>
-    </CardGroup>
-  </Step>
+Fork and clone the following embedded replica project from GitHub locally:
 
-  <Step title="Create a new Railway project">
-    Run the following command to create a new Railway project. Provide the project's name when prompted.
+> **[My Expenses Tracker - (Elysia + Bun)](https://github.com/tursodatabase/embedded-replicas-with-js)**
+>
+> See the full source code
 
-    ```sh theme={null}
-    railway init
-    ```
-  </Step>
+> **[Web Traffic API - (Rust)](https://github.com/tursodatabase/embedded-replicas-with-rust)**
+>
+> See the full source code
 
-  <Step title="Add a service to the Railway project">
-    [Create a new empty service](https://docs.railway.app/guides/services#creating-a-service) on your Railway project to act as your app's deployment target.
-  </Step>
+**3. Create a new Railway project**
 
-  <Step title="Link application to service">
-    Run the following command to list and select the service to link to your application:
+Run the following command to create a new Railway project. Provide the project's name when prompted.
 
-    ```sh theme={null}
-    railway service
-    ```
-  </Step>
+```sh theme={null}
+railway init
+```
 
-  <Step title="Add database credentials">
-    Open the service on your Railway dashboard and add your Turso Cloud database credentials.
+**4. Add a service to the Railway project**
 
-    ```sh theme={null}
-    TURSO_DATABASE_URL=libsql://[db-name]-[github-username].turso.io
-    TURSO_AUTH_TOKEN=...
-    LOCAL_DB=file:local-db-name.db
-    ```
-  </Step>
+[Create a new empty service](https://docs.railway.app/guides/services#creating-a-service) on your Railway project to act as your app's deployment target.
 
-  <Step title="Deploy">
-    Run the following command to deploy your application:
+**5. Link application to service**
 
-    ```sh theme={null}
-    railway up
-    ```
+Run the following command to list and select the service to link to your application:
 
-    <Info>
-      Make sure you [expose your application to the internet](https://docs.railway.app/guides/public-networking) to make it accessible from the public network.
-    </Info>
+```sh theme={null}
+railway service
+```
 
-    <Warning>
-      If you are on a free plan, you'll need to connect your Railway account to GitHub to have access to code deployments.
-    </Warning>
-  </Step>
-</Steps>
+**6. Add database credentials**
+
+Open the service on your Railway dashboard and add your Turso Cloud database credentials.
+
+```sh theme={null}
+TURSO_DATABASE_URL=libsql://[db-name]-[github-username].turso.io
+TURSO_AUTH_TOKEN=...
+LOCAL_DB=file:local-db-name.db
+```
+
+**7. Deploy**
+
+Run the following command to deploy your application:
+
+```sh theme={null}
+railway up
+```
+
+> [!NOTE]
+>
+> Make sure you [expose your application to the internet](https://docs.railway.app/guides/public-networking) to make it accessible from the public network.
+
+> [!WARNING]
+>
+> If you are on a free plan, you'll need to connect your Railway account to GitHub to have access to code deployments.

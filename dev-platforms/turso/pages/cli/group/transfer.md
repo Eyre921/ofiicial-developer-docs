@@ -10,9 +10,9 @@ You can transfer a group (including its databases) to an organization you're an 
 turso group transfer <group-name> <organization-name> [flags]
 ```
 
-<Warning>
-  Existing database URL and tokens will continue to work, but should update your application to use the new URL and token as soon as possible.
-</Warning>
+> [!WARNING]
+>
+> Existing database URL and tokens will continue to work, but should update your application to use the new URL and token as soon as possible.
 
 ## Flags
 

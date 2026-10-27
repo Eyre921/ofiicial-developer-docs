@@ -34,25 +34,23 @@ cd agentfs
 
 Use `agentfs run` with the `--session` flag to start a session. Pick a name that can eventually become your git branch name.
 
-<Tabs>
-  <Tab title="Claude Code">
-    ```bash theme={null}
-    agentfs run --session fix-bug-123 claude
-    ```
-  </Tab>
+**Claude Code**
 
-  <Tab title="Codex">
-    ```bash theme={null}
-    agentfs run --session fix-bug-123 codex
-    ```
-  </Tab>
+```bash theme={null}
+agentfs run --session fix-bug-123 claude
+```
 
-  <Tab title="OpenCode">
-    ```bash theme={null}
-    agentfs run --session fix-bug-123 opencode
-    ```
-  </Tab>
-</Tabs>
+**Codex**
+
+```bash theme={null}
+agentfs run --session fix-bug-123 codex
+```
+
+**OpenCode**
+
+```bash theme={null}
+agentfs run --session fix-bug-123 opencode
+```
 
 The agent now runs in a copy-on-write environment. Your original source tree remains untouched while the agent works.
 
@@ -83,12 +81,10 @@ You can then create a PR manually from the pushed branch.
 
 ## Next Steps
 
-<CardGroup>
-  <Card title="Multi-Agent Sessions" icon="clock" href="/agentfs/guides/sessions">
-    Share state between agents and terminals
-  </Card>
+> **[Multi-Agent Sessions](/agentfs/guides/sessions)**
+>
+> Share state between agents and terminals
 
-  <Card title="Auditing" icon="magnifying-glass" href="/agentfs/guides/auditing">
-    Inspect what an agent did with diff and timeline
-  </Card>
-</CardGroup>
+> **[Auditing](/agentfs/guides/auditing)**
+>
+> Inspect what an agent did with diff and timeline

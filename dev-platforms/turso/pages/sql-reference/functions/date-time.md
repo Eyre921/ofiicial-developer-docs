@@ -286,9 +286,9 @@ All date and time functions accept time values in the following formats.
 | Julian day number | `2460811.5` | REAL number representing a Julian day |
 | Unix timestamp | `1718458200` | INTEGER, requires `'unixepoch'` modifier |
 
-<Info>
-  When passing a Unix timestamp as the time value, you must include the `'unixepoch'` modifier so the function knows to interpret the number as seconds since 1970-01-01, not as a Julian day number.
-</Info>
+> [!NOTE]
+>
+> When passing a Unix timestamp as the time value, you must include the `'unixepoch'` modifier so the function knows to interpret the number as seconds since 1970-01-01, not as a Julian day number.
 
 ```sql theme={null}
 -- Unix timestamp requires the 'unixepoch' modifier

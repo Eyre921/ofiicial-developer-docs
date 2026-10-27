@@ -4,28 +4,26 @@ source: https://docs.turso.tech/connect/java
 path: connect/java
 ---
 
-<Steps>
-  <Step title="Install">
-    Currently, we have not published to the maven central. Instead, you can locally build the jar and deploy it to maven local to use it.
+**1. Install**
 
-    Build jar and publish to maven local:
+Currently, we have not published to the maven central. Instead, you can locally build the jar and deploy it to maven local to use it.
 
-    ```bash theme={null}
-    cd bindings/java
+Build jar and publish to maven local:
 
-    # Please select the appropriate target platform, currently supports `macos_x86`, `macos_arm64`, `windows` and `linux_x86`
-    make macos_x86
+```bash theme={null}
+cd bindings/java
 
-    # deploy to maven local
-    make publish_local
-    ```
+# Please select the appropriate target platform, currently supports `macos_x86`, `macos_arm64`, `windows` and `linux_x86`
+make macos_x86
 
-    Now you can use the dependency as follows:
+# deploy to maven local
+make publish_local
+```
 
-    ```gradle theme={null}
-    dependencies {
-        implementation("tech.turso:turso:0.0.1-SNAPSHOT")
-    }
-    ```
-  </Step>
-</Steps>
+Now you can use the dependency as follows:
+
+```gradle theme={null}
+dependencies {
+    implementation("tech.turso:turso:0.0.1-SNAPSHOT")
+}
+```

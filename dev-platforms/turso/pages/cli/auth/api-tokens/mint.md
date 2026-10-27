@@ -10,9 +10,9 @@ To create a new API token, scoped to a single organization, run the following co
 turso auth api-tokens mint <api-token-name> --org <organization-slug>
 ```
 
-<Warning>
-  **Unrestricted (cross-org) tokens — minting without `--org` — are deprecated and will be removed in a future release.** Always pass `--org` for new tokens. Existing unrestricted tokens continue to work for now, but you should rotate them to scoped tokens at your earliest convenience.
-</Warning>
+> [!WARNING]
+>
+> **Unrestricted (cross-org) tokens — minting without `--org` — are deprecated and will be removed in a future release.** Always pass `--org` for new tokens. Existing unrestricted tokens continue to work for now, but you should rotate them to scoped tokens at your earliest convenience.
 
 ## Flags
 
@@ -20,9 +20,9 @@ turso auth api-tokens mint <api-token-name> --org <organization-slug>
 | - | - |
 | `--org` | Restrict the token to a specific organization. |
 | `--group` | Restrict the token to a specific group inside `--org`. Requires `--org` and at least one scope. |
-| `--scope` | Permission to grant a group-scoped token. Repeatable. |
+| `--scope` | Permission to grant the token. Repeatable. |
 | `--read-only` | Shorthand for `--scope read`. |
-| `--full-access` | Shorthand for granting every scope. |
+| `--full-access` | Shorthand for granting every group scope. Does not include the organization scopes. |
 
 ## Organization-scoped tokens
 
@@ -33,6 +33,30 @@ turso auth api-tokens mint <api-token-name> --org <organization-slug>
 ```
 
 An org-scoped token can only manage resources (groups, databases, members) within that organization. Requests to any other organization will be rejected.
+
+Without scopes, the token can do everything that you can do in the organization. Add `--scope` to limit it. The scopes then apply to every group in the organization:
+
+```bash theme={null}
+# Read the audit logs, members, and billing data of the organization
+turso auth api-tokens mint audit-reader --org my-org --scope org:read
+
+# Create databases and mint SQL tokens in every group
+turso auth api-tokens mint deploy-bot --org my-org --scope db:create --scope db:mint-token
+```
+
+An org-scoped token accepts all the [group scopes](#available-scopes), and also the organization scopes that follow. A token with scopes cannot manage members or invites, change organization settings, transfer groups or databases, or mint API tokens.
+
+### Organization scopes
+
+These scopes are valid only on org-scoped tokens, that is, without `--group`:
+
+| Scope | Allows |
+| - | - |
+| `group:create` | Create groups in the organization. |
+| `group:delete` | Delete groups in the organization. |
+| `org:read` | Read organization data: members, invites, billing, invoices, audit logs, SSO, JWKS, and API tokens. |
+
+Reading invites and audit logs also requires that you are an admin or owner of the organization. `--full-access` does not include these scopes. To grant them, list each scope with `--scope`.
 
 ## Group-scoped tokens
 
@@ -61,16 +85,16 @@ turso auth api-tokens mint deploy-bot --org my-org --group default \
 | `read` | All GET-style routes: list/retrieve databases and groups, configuration, usage, instances, locations. |
 | `db:create` | Create databases inside the group, seed from a dump, restore. |
 | `db:delete` | Delete a database inside the group. |
-| `db:configure` | Patch database configuration, transfer, wake, add or remove instances. |
+| `db:configure` | Patch database configuration, wake, add or remove instances. |
 | `db:mint-token` | Issue a SQL-engine token or TLS client certificate for a database inside the group. |
 | `db:rotate-creds` | Rotate the database signing key, invalidating every SQL token previously issued for it. |
 | `group:configure` | Configure, rename, update, unarchive the group, or add and remove locations. |
 | `group:mint-token` | Issue a group-level SQL-engine token. |
 | `group:rotate-creds` | Rotate the group signing key, invalidating every SQL token issued against any database in the group. |
 
-<Warning>
-  `db:mint-token` and `db:rotate-creds` are deliberately separate scopes. Minting a new SQL credential is additive; rotating invalidates every credential currently in use, which can take down running applications. Grant rotation only to automations that need it.
-</Warning>
+> [!WARNING]
+>
+> `db:mint-token` and `db:rotate-creds` are deliberately separate scopes. Minting a new SQL credential is additive; rotating invalidates every credential currently in use, which can take down running applications. Grant rotation only to automations that need it.
 
 `--scope`, `--read-only`, and `--full-access` are mutually exclusive — pass one flavor at a time. Unknown scope labels are rejected before the request is sent. Group create, group delete, group transfer, and AWS migration are never reachable from a group-scoped token at any scope.
 
@@ -78,6 +102,6 @@ turso auth api-tokens mint deploy-bot --org my-org --group default \
 
 Group-scoped tokens are pinned by the group's UUID, not its name. Deleting a group, or transferring it to another organization, cascades a revoke to every token scoped to it. A new group created with the same name does not inherit tokens from the previous one.
 
-<Warning>
-  The token value is only shown once at creation time. Store it somewhere safe.
-</Warning>
+> [!WARNING]
+>
+> The token value is only shown once at creation time. Store it somewhere safe.

@@ -4,60 +4,58 @@ source: https://docs.turso.tech/connect/rust
 path: connect/rust
 ---
 
-<Steps>
-  <Step title="Install">
-    Add the Turso crate to your Rust project:
+**1. Install**
 
-    ```bash theme={null}
-    cargo add turso
-    ```
-  </Step>
+Add the Turso crate to your Rust project:
 
-  <Step title="Connect">
-    Here's how you can connect to a local SQLite database:
+```bash theme={null}
+cargo add turso
+```
 
-    ```rust theme={null}
-    use turso::Builder;
+**2. Connect**
 
-    #[tokio::main]
-    async fn main() -> Result<(), Box<dyn std::error::Error>> {
-        let db = Builder::new_local("sqlite.db").build().await?;
-        let conn = db.connect()?;
+Here's how you can connect to a local SQLite database:
 
-        Ok(())
-    }
-    ```
-  </Step>
+```rust theme={null}
+use turso::Builder;
 
-  <Step title="Create table">
-    Create a table for users:
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let db = Builder::new_local("sqlite.db").build().await?;
+    let conn = db.connect()?;
 
-    ```rust theme={null}
-    conn.execute(
-        "CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT NOT NULL
-        )",
-        ()
-    ).await?;
-    ```
-  </Step>
+    Ok(())
+}
+```
 
-  <Step title="Insert data">
-    Insert some data into the users table:
+**3. Create table**
 
-    ```rust theme={null}
-    conn.execute("INSERT INTO users (username) VALUES (?)", ("alice",)).await?;
-    conn.execute("INSERT INTO users (username) VALUES (?)", ("bob",)).await?;
-    ```
-  </Step>
+Create a table for users:
 
-  <Step title="Query data">
-    Query all users from the table:
+```rust theme={null}
+conn.execute(
+    "CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT NOT NULL
+    )",
+    ()
+).await?;
+```
 
-    ```rust theme={null}
-    let res = conn.query("SELECT * FROM users", ()).await?;
-    println!("{:?}", res);
-    ```
-  </Step>
-</Steps>
+**4. Insert data**
+
+Insert some data into the users table:
+
+```rust theme={null}
+conn.execute("INSERT INTO users (username) VALUES (?)", ("alice",)).await?;
+conn.execute("INSERT INTO users (username) VALUES (?)", ("bob",)).await?;
+```
+
+**5. Query data**
+
+Query all users from the table:
+
+```rust theme={null}
+let res = conn.query("SELECT * FROM users", ()).await?;
+println!("{:?}", res);
+```

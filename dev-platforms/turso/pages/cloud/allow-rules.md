@@ -8,9 +8,9 @@ Restrict database access to specific IP addresses, CIDR ranges, or AWS VPC endpo
 
 Allow rules let you lock down a database so that only connections from specific sources are accepted. You can restrict by IP address or CIDR range, by AWS VPC endpoint ID, or both at the same time.
 
-<Info>
-  **AND semantics.** When both lists are configured, a connection must satisfy **both** rules: the client IP must be on the allowed-IP list **and** the connection must arrive through one of the allowed VPC endpoints.
-</Info>
+> [!NOTE]
+>
+> **AND semantics.** When both lists are configured, a connection must satisfy **both** rules: the client IP must be on the allowed-IP list **and** the connection must arrive through one of the allowed VPC endpoints.
 
 ## Show Current Rules
 

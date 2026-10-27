@@ -6,9 +6,9 @@ path: sync/checkpoint
 
 How to compact the local WAL to bound disk usage while preserving sync state.
 
-<Note>
-  This particular usage uses the Turso Cloud to sync the local Turso databases and assumes that you have an account.
-</Note>
+> [!NOTE]
+>
+> This particular usage uses the Turso Cloud to sync the local Turso databases and assumes that you have an account.
 
 ## Overview
 
@@ -22,37 +22,35 @@ Without checkpointing, the WAL grows unbounded. After many writes, the WAL can b
 
 You can observe this with `stats()`:
 
-<CodeGroup>
-  ```ts TypeScript theme={null}
-  const before = await db.stats();
-  console.log('WAL size before:', before.mainWalSize);
+```ts TypeScript theme={null}
+const before = await db.stats();
+console.log('WAL size before:', before.mainWalSize);
 
-  await db.checkpoint();
+await db.checkpoint();
 
-  const after = await db.stats();
-  console.log('WAL size after:', after.mainWalSize);
-  ```
+const after = await db.stats();
+console.log('WAL size after:', after.mainWalSize);
+```
 
-  ```py Python theme={null}
-  before = conn.stats()
-  print("WAL size before:", before.main_wal_size)
+```py Python theme={null}
+before = conn.stats()
+print("WAL size before:", before.main_wal_size)
 
-  conn.checkpoint()
+conn.checkpoint()
 
-  after = conn.stats()
-  print("WAL size after:", after.main_wal_size)
-  ```
+after = conn.stats()
+print("WAL size after:", after.main_wal_size)
+```
 
-  ```go Go theme={null}
-  before, _ := db.Stats(ctx)
-  log.Printf("WAL size before: %d", before.MainWalSize)
+```go Go theme={null}
+before, _ := db.Stats(ctx)
+log.Printf("WAL size before: %d", before.MainWalSize)
 
-  db.Checkpoint(ctx)
+db.Checkpoint(ctx)
 
-  after, _ := db.Stats(ctx)
-  log.Printf("WAL size after: %d", after.MainWalSize)
-  ```
-</CodeGroup>
+after, _ := db.Stats(ctx)
+log.Printf("WAL size after: %d", after.MainWalSize)
+```
 
 ## When to Checkpoint
 
@@ -62,18 +60,16 @@ Call `checkpoint()` periodically based on your write patterns:
 * **On a schedule** — for steady write workloads, checkpoint at regular intervals (e.g. every few minutes)
 * **When WAL size is large** — use `stats().mainWalSize` to monitor and checkpoint when it exceeds a threshold
 
-<CodeGroup>
-  ```ts TypeScript theme={null}
-  await db.checkpoint();
-  ```
+```ts TypeScript theme={null}
+await db.checkpoint();
+```
 
-  ```py Python theme={null}
-  conn.checkpoint()
-  ```
+```py Python theme={null}
+conn.checkpoint()
+```
 
-  ```go Go theme={null}
-  if err := db.Checkpoint(ctx); err != nil {
-  	return err
-  }
-  ```
-</CodeGroup>
+```go Go theme={null}
+if err := db.Checkpoint(ctx); err != nil {
+	return err
+}
+```

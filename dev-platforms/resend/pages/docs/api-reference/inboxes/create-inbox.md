@@ -113,6 +113,7 @@ func main() {
 	}
 
 	client.Inboxes.Create(params)
+}
 ```
 
 ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}

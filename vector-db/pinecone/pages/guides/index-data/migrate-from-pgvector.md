@@ -8,6 +8,10 @@ Migrate vector data from pgvector to Pinecone Database, validate search results,
 
 This guide shows you how to migrate a vector-search workload from pgvector to Pinecone Database while keeping PostgreSQL available as the source of truth until cutover. It's based on the [pgvector-migration tool](https://github.com/pinecone-field/pgvector-migration), which provides a step-by-step migration manual, a runnable notebook, and a synchronization script that supports backfills, incremental synchronization, and reconciliation.
 
+> [!TIP]
+>
+> To keep your data in Postgres and search it with Pinecone instead, see [pg\_pinecone](/guides/pg-pinecone/overview), an open-source Postgres extension.
+
 ## Before you migrate
 
 You need:

@@ -10,13 +10,13 @@ You can create a new database in a specific group using the following command:
 turso db create [database-name]
 ```
 
-<Info>
-  The `[database-name]` argument is optional. If you don't provide a name, the Turso team will use the name of your project.
-</Info>
+> [!NOTE]
+>
+> The `[database-name]` argument is optional. If you don't provide a name, the Turso team will use the name of your project.
 
-<Info>
-  If you have more than one group, you will need to pass the `--group` flag.
-</Info>
+> [!NOTE]
+>
+> If you have more than one group, you will need to pass the `--group` flag.
 
 ## Flags
 
@@ -26,7 +26,7 @@ turso db create [database-name]
 | `--from-csv` | Create the database from a csv file. |
 | `--csv-table-name` | Name of the table in the csv file. |
 | `--from-db` | Select another database to copy data from. |
-| `--timestamp` | Set a point in time in the past to copy data from the selected database.<br /><br />Must be used with the 'from-db' flag. Must be in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339) format like '2023-09-29T10:16:13-03:00' |
+| `--timestamp` | Set a point in time in the past to copy data from the selected database. Must be used with the 'from-db' flag. Must be in [RFC3339](https://datatracker.ietf.org/doc/html/rfc3339) format like '2023-09-29T10:16:13-03:00' |
 | `--from-dump` | Create the database from a local SQLite dump. |
 | `--from-dump-url` | Create the database from a remote SQLite dump. |
 | `--from-file` | Create the database from a local SQLite3-compatible file. |
@@ -56,9 +56,9 @@ You can create a new Turso database from an existing SQLite file using the `--fr
 turso db create [database-name] --from-file ./path/to/file.db
 ```
 
-<Info>
-  The file size is limited to 2GB.
-</Info>
+> [!NOTE]
+>
+> The file size is limited to 2GB.
 
 ### Create database from SQLite dump
 
@@ -100,6 +100,6 @@ You can create a database with experimental support for SQLite [extensions](/lib
 turso db create [database-name] --enable-extensions
 ```
 
-<Note>
-  Using `--enable-extensions` will enable extensions on all databases in the group.
-</Note>
+> [!NOTE]
+>
+> Using `--enable-extensions` will enable extensions on all databases in the group.

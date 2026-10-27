@@ -498,9 +498,13 @@ components:
     PrivateEndpoint:
       example:
         base_url: https://contoso.openai.azure.com
+        declared_parameters:
+          - temperature
+          - seed
         declared_region: us
         declared_zdr: true
         id: 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11
+        max_completion_tokens: 131072
         model_name: 'OpenAI: GPT-4o'
         model_permaslug: openai/gpt-4o-2024-08-06
         model_slug: openai/gpt-4o
@@ -512,6 +516,10 @@ components:
         provider_name: Azure
         provider_slug: azure
         status: active
+        tested_parameters:
+          - tools
+          - tool_choice
+          - response_format
         upstream_model_id: gpt-4o-prod
       properties:
         base_url:
@@ -523,6 +531,16 @@ components:
           type:
             - string
             - 'null'
+        declared_parameters:
+          description: >-
+            Parameters you declared the upstream supports. Requests that use a
+            parameter only route to this endpoint when it is tested or declared.
+          example:
+            - temperature
+            - seed
+          items:
+            type: string
+          type: array
         declared_region:
           $ref: '#/components/schemas/PrivateEndpointDeclaredRegion'
         declared_zdr:
@@ -538,6 +556,15 @@ components:
           example: 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11
           format: uuid
           type: string
+        max_completion_tokens:
+          description: >-
+            Most completion tokens a request routed to this endpoint can
+            produce, or `null` when the endpoint sets no cap beyond the model
+            context length.
+          example: 131072
+          type:
+            - integer
+            - 'null'
         model_name:
           description: >-
             Display name of the model, or `null` when the model is no longer
@@ -572,6 +599,18 @@ components:
             - 'null'
         status:
           $ref: '#/components/schemas/PrivateEndpointStatus'
+        tested_parameters:
+          description: >-
+            Parameters a validation run proved the upstream honors (`tools`,
+            `tool_choice`, `response_format`, `structured_outputs`, `stop`).
+            Read-only; cleared when the upstream configuration changes.
+          example:
+            - tools
+            - tool_choice
+            - response_format
+          items:
+            type: string
+          type: array
         upstream_model_id:
           description: Model or deployment identifier sent to the upstream provider.
           example: gpt-4o-prod
@@ -589,6 +628,8 @@ components:
         - declared_zdr
         - declared_region
         - pricing
+        - tested_parameters
+        - declared_parameters
       type: object
     BadRequestResponseErrorData:
       description: Error data for BadRequestResponse

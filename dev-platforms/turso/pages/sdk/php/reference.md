@@ -123,19 +123,17 @@ $db = new Database(
 You can acquire a connection from a database and call `query()` to invoke a
 SQL statement, as well as optional arguments:
 
-<CodeGroup>
-  ```php Query theme={null}
-  $rows = $conn->query("SELECT * FROM users");
-  ```
+```php Query theme={null}
+$rows = $conn->query("SELECT * FROM users");
+```
 
-  ```php Arguments theme={null}
-  $rows = $conn->query("SELECT * FROM users WHERE id = ?1", [1]);
-  ```
+```php Arguments theme={null}
+$rows = $conn->query("SELECT * FROM users WHERE id = ?1", [1]);
+```
 
-  ```php Named Arguments theme={null}
-  $rows = $conn->query("SELECT * FROM users WHERE id = :id", [":id" => 1]);
-  ```
-</CodeGroup>
+```php Named Arguments theme={null}
+$rows = $conn->query("SELECT * FROM users WHERE id = :id", [":id" => 1]);
+```
 
 ## Prepared Statements
 
@@ -151,15 +149,13 @@ $rows = $stmt->bind([1])->query();
 
 libSQL supports the use of positional and named placeholders within SQL statements:
 
-<CodeGroup>
-  ```rust Positional theme={null}
-  conn->query("SELECT * FROM users WHERE id = ?", [1]);
-  ```
+```rust Positional theme={null}
+conn->query("SELECT * FROM users WHERE id = ?", [1]);
+```
 
-  ```rust Named theme={null}
-  conn->execute("INSERT INTO users (name) VALUES (:name)", [ ":name" => "Iku" ]);
-  ```
-</CodeGroup>
+```rust Named theme={null}
+conn->execute("INSERT INTO users (name) VALUES (:name)", [ ":name" => "Iku" ]);
+```
 
 ## Batch Transactions
 

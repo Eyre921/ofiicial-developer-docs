@@ -9,36 +9,32 @@ Returns the closest region to the user's location.
 
 #### Response
 
-<ResponseField name="server" type="string">
-  The location code for the server responding.
-</ResponseField>
+**server** `string`
 
-<ResponseField name="client" type="string">
-  The location code for the client request.
-</ResponseField>
+The location code for the server responding.
 
-<RequestExample>
-  ```bash cURL theme={null}
-  curl https://region.turso.io
-  ```
+**client** `string`
 
-  ```ts Node.js theme={null}
-  import { createClient } from "@tursodatabase/api";
+The location code for the client request.
 
-  const turso = createClient({
-    org: "...",
-    token: "",
-  });
+```bash cURL theme={null}
+curl https://region.turso.io
+```
 
-  const { server, client } = await turso.locations.closest();
-  ```
-</RequestExample>
+```ts Node.js theme={null}
+import { createClient } from "@tursodatabase/api";
 
-<ResponseExample>
-  ```json 200 theme={null}
-  {
-    "server": "lhr",
-    "client": "lhr"
-  }
-  ```
-</ResponseExample>
+const turso = createClient({
+  org: "...",
+  token: "",
+});
+
+const { server, client } = await turso.locations.closest();
+```
+
+```json 200 theme={null}
+{
+  "server": "lhr",
+  "client": "lhr"
+}
+```

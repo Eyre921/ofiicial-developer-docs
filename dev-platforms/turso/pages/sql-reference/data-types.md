@@ -100,15 +100,15 @@ STRICT tables only allow these base type names:
 | BLOB | Raw binary data |
 | ANY | Any storage class (disables type checking for this column) |
 
-<Info>
-  **Turso Extension**: STRICT tables also accept [custom type](/sql-reference/statements/create-type) names, [composite types](#composite-types-struct-and-union) (STRUCT and UNION), and [array types](#array-types). Any base type can be turned into an array column by appending `[]` to the type name (e.g., `INTEGER[]`, `TEXT[]`). Arrays, custom types, and composite types are Turso-specific features.
-</Info>
+> [!NOTE]
+>
+> **Turso Extension**: STRICT tables also accept [custom type](/sql-reference/statements/create-type) names, [composite types](#composite-types-struct-and-union) (STRUCT and UNION), and [array types](#array-types). Any base type can be turned into an array column by appending `[]` to the type name (e.g., `INTEGER[]`, `TEXT[]`). Arrays, custom types, and composite types are Turso-specific features.
 
 ## Custom Types
 
-<Info>
-  **Turso Extension**: Custom types are a Turso-specific feature not available in SQLite. Custom types work only with STRICT tables. This feature is experimental and must be [enabled before use](/sql-reference/experimental-features).
-</Info>
+> [!NOTE]
+>
+> **Turso Extension**: Custom types are a Turso-specific feature not available in SQLite. Custom types work only with STRICT tables. This feature is experimental and must be [enabled before use](/sql-reference/experimental-features).
 
 Custom types let you define how values are encoded before storage and decoded when read, enforce domain constraints at the storage layer, attach operators, and provide defaults. Custom types are declared with the `CREATE TYPE` statement.
 
@@ -193,9 +193,9 @@ For the full composite types reference, see [CREATE TYPE — Composite Types](/s
 
 ## Array Types
 
-<Info>
-  **Turso Extension**: Array types are a Turso-specific feature not available in SQLite. Array columns work only with STRICT tables.
-</Info>
+> [!NOTE]
+>
+> **Turso Extension**: Array types are a Turso-specific feature not available in SQLite. Array columns work only with STRICT tables.
 
 Array columns store ordered collections of values. Declare them by appending `[]` to any base type name:
 

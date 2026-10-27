@@ -6,62 +6,60 @@ path: sdk/authorization/jwks
 
 Instead of managing tokens manually, you can let your authentication provider issue JWT tokens using JWKS. This allows you to leverage your existing auth infrastructure (e.g., Clerk, Auth0).
 
-<Info>
-  During the Turso Beta, we only support Clerk & Auth0 as OIDC providers.
-</Info>
+> [!NOTE]
+>
+> During the Turso Beta, we only support Clerk & Auth0 as OIDC providers.
 
-<Steps>
-  <Step title="Generate JWT Template">
-    Use the Turso CLI to generate a JWT claims template for your auth provider:
+**1. Generate JWT Template**
 
-    ```bash theme={null}
-    # Full access to a database
-    turso org jwks template --database <database-name> --scope full-access
+Use the Turso CLI to generate a JWT claims template for your auth provider:
 
-    # Read-only access to a group
-    turso org jwks template --group <group-name> --scope read-only
+```bash theme={null}
+# Full access to a database
+turso org jwks template --database <database-name> --scope full-access
 
-    # Fine-grained permissions
-    turso org jwks template \
-      --database <database-name> \
-      --permissions all:data_read \
-      --permissions comments:data_add
-    ```
+# Read-only access to a group
+turso org jwks template --group <group-name> --scope read-only
 
-    Copy the generated template into your auth provider's JWT configuration.
-  </Step>
+# Fine-grained permissions
+turso org jwks template \
+  --database <database-name> \
+  --permissions all:data_read \
+  --permissions comments:data_add
+```
 
-  <Step title="Add JWKS Endpoint to Turso">
-    Register your auth provider's JWKS endpoint with your Turso organization:
+Copy the generated template into your auth provider's JWT configuration.
 
-    ```bash theme={null}
-    turso org jwks save <name> <url>
-    ```
+**2. Add JWKS Endpoint to Turso**
 
-    For example, with Clerk:
+Register your auth provider's JWKS endpoint with your Turso organization:
 
-    ```bash theme={null}
-    turso org jwks save clerk https://your-app.clerk.accounts.dev/.well-known/jwks.json
-    ```
+```bash theme={null}
+turso org jwks save <name> <url>
+```
 
-    You can also add JWKS endpoints in the [Turso Dashboard](https://turso.tech/app) under organization settings.
-  </Step>
+For example, with Clerk:
 
-  <Step title="Use Tokens in Your Application">
-    Get the JWT from your auth provider and pass it as the `authToken`:
+```bash theme={null}
+turso org jwks save clerk https://your-app.clerk.accounts.dev/.well-known/jwks.json
+```
 
-    ```javascript theme={null}
-    import { connect } from "@tursodatabase/serverless";
+You can also add JWKS endpoints in the [Turso Dashboard](https://turso.tech/app) under organization settings.
 
-    const authToken = await getAuthToken(); // e.g., from Clerk, Auth0
+**3. Use Tokens in Your Application**
 
-    const db = connect({
-      url: "<your-database-url>",
-      authToken,
-    });
-    ```
-  </Step>
-</Steps>
+Get the JWT from your auth provider and pass it as the `authToken`:
+
+```javascript theme={null}
+import { connect } from "@tursodatabase/serverless";
+
+const authToken = await getAuthToken(); // e.g., from Clerk, Auth0
+
+const db = connect({
+  url: "<your-database-url>",
+  authToken,
+});
+```
 
 ## Managing JWKS Endpoints
 
@@ -73,7 +71,7 @@ turso org jwks list
 turso org jwks remove <name>
 ```
 
-<Warning>
-  If you don't setup a JWT template with specific permissions, the generated
-  tokens will have access to **all databases in all groups** by default.
-</Warning>
+> [!WARNING]
+>
+> If you don't setup a JWT template with specific permissions, the generated
+> tokens will have access to **all databases in all groups** by default.

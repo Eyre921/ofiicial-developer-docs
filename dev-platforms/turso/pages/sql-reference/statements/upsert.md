@@ -108,9 +108,9 @@ ON CONFLICT (id) DO UPDATE SET name = excluded.name, email = excluded.email
 ON CONFLICT (email) DO NOTHING;
 ```
 
-<Info>
-  At most one `ON CONFLICT` clause can omit the conflict target. A clause without a conflict target acts as a catch-all and must appear last. Only `DO NOTHING` is allowed without a conflict target.
-</Info>
+> [!NOTE]
+>
+> At most one `ON CONFLICT` clause can omit the conflict target. A clause without a conflict target acts as a catch-all and must appear last. Only `DO NOTHING` is allowed without a conflict target.
 
 ## Examples
 

@@ -34,79 +34,77 @@ apart and confirm before doing anything that changes data.
 
 ## Connect
 
-<Tabs>
-  <Tab title="Claude Code">
-    Install the plugin, then authenticate:
+**Claude Code**
 
-    ```bash theme={null}
-    /plugin marketplace add tursodatabase/turso-mcp
-    /plugin install turso@turso
-    ```
+Install the plugin, then authenticate:
 
-    Run `/mcp`, select **turso**, and choose **Authenticate**. Your browser opens
-    to approve access (see [Authorize](#authorize-access) below).
-  </Tab>
+```bash theme={null}
+/plugin marketplace add tursodatabase/turso-mcp
+/plugin install turso@turso
+```
 
-  <Tab title="Codex">
-    Install the plugin (it bundles the Turso skill too), then authenticate:
+Run `/mcp`, select **turso**, and choose **Authenticate**. Your browser opens
+to approve access (see [Authorize](#authorize-access) below).
 
-    ```bash theme={null}
-    codex plugin marketplace add tursodatabase/turso-mcp
-    codex plugin add turso@turso
-    codex mcp login turso
-    ```
+**Codex**
 
-    A browser opens to approve access (see [Authorize](#authorize-access) below).
-    MCP-only alternative: add `[mcp_servers.turso]` with
-    `url = "https://mcp.turso.ai/mcp"` to `~/.codex/config.toml`, then
-    `codex mcp login turso`.
-  </Tab>
+Install the plugin (it bundles the Turso skill too), then authenticate:
 
-  <Tab title="Cursor">
-    Install the plugin (it bundles the Turso skill too): open **Customize →
-    Plugins → Add marketplace**, enter `https://github.com/tursodatabase/turso-mcp`,
-    and install **Turso** from it. Then open **Settings → MCP**, select **turso**, and follow
-    the login prompt to approve access (see [Authorize](#authorize-access) below).
+```bash theme={null}
+codex plugin marketplace add tursodatabase/turso-mcp
+codex plugin add turso@turso
+codex mcp login turso
+```
 
-    One-click alternative (MCP server only, no skill):
-    <a href="cursor://anysphere.cursor-deeplink/mcp/install?name=turso&config=eyJ1cmwiOiJodHRwczovL21jcC50dXJzby5haS9tY3AifQ==">**Add to Cursor**</a>,
-    or add the server manually to `~/.cursor/mcp.json`:
+A browser opens to approve access (see [Authorize](#authorize-access) below).
+MCP-only alternative: add `[mcp_servers.turso]` with
+`url = "https://mcp.turso.ai/mcp"` to `~/.codex/config.toml`, then
+`codex mcp login turso`.
 
-    ```json theme={null}
-    {
-      "mcpServers": {
-        "turso": { "url": "https://mcp.turso.ai/mcp" }
-      }
-    }
-    ```
+**Cursor**
 
-    **Cursor web & cloud agents** don't read plugin or `mcp.json` config — add
-    the server once for your account instead: at
-    [cursor.com/agents](https://cursor.com/agents), open the **“+” menu** next to
-    the model picker → hover **MCP Servers** → **Add MCP**, and enter
-    `https://mcp.turso.ai/mcp`.
-  </Tab>
+Install the plugin (it bundles the Turso skill too): open **Customize →
+Plugins → Add marketplace**, enter `https://github.com/tursodatabase/turso-mcp`,
+and install **Turso** from it. Then open **Settings → MCP**, select **turso**, and follow
+the login prompt to approve access (see [Authorize](#authorize-access) below).
 
-  <Tab title="Claude (web & desktop)">
-    Add a custom connector pointing at the Turso MCP server:
+One-click alternative (MCP server only, no skill):
+[**Add to Cursor**](cursor://anysphere.cursor-deeplink/mcp/install?name=turso\&config=eyJ1cmwiOiJodHRwczovL21jcC50dXJzby5haS9tY3AifQ==),
+or add the server manually to `~/.cursor/mcp.json`:
 
-    1. Open **Settings → Connectors → Add custom connector**.
-    2. Set the URL to `https://mcp.turso.ai/mcp` and connect.
-    3. Approve access in the browser (see [Authorize](#authorize-access) below).
-  </Tab>
+```json theme={null}
+{
+  "mcpServers": {
+    "turso": { "url": "https://mcp.turso.ai/mcp" }
+  }
+}
+```
 
-  <Tab title="Other MCP clients">
-    Point any MCP client that supports remote (Streamable HTTP) servers with OAuth
-    at:
+**Cursor web & cloud agents** don't read plugin or `mcp.json` config — add
+the server once for your account instead: at
+[cursor.com/agents](https://cursor.com/agents), open the **“+” menu** next to
+the model picker → hover **MCP Servers** → **Add MCP**, and enter
+`https://mcp.turso.ai/mcp`.
 
-    ```
-    https://mcp.turso.ai/mcp
-    ```
+**Claude (web & desktop)**
 
-    The client discovers the authorization server automatically (RFC 9728 / RFC
-    8414\) and walks you through the same browser approval.
-  </Tab>
-</Tabs>
+Add a custom connector pointing at the Turso MCP server:
+
+1. Open **Settings → Connectors → Add custom connector**.
+2. Set the URL to `https://mcp.turso.ai/mcp` and connect.
+3. Approve access in the browser (see [Authorize](#authorize-access) below).
+
+**Other MCP clients**
+
+Point any MCP client that supports remote (Streamable HTTP) servers with OAuth
+at:
+
+```
+https://mcp.turso.ai/mcp
+```
+
+The client discovers the authorization server automatically (RFC 9728 / RFC
+8414\) and walks you through the same browser approval.
 
 ## Authorize access
 
@@ -122,12 +120,12 @@ Approve, and the agent is connected. To re-scope or switch organizations,
 disconnect and authenticate again (in Claude Code: `/mcp` → **turso** → **Clear
 authentication**).
 
-<Note>
-  Picking a **group** scopes the token to that group's resources — the
-  least-privilege choice. "Entire organization" grants full access. Either way the
-  token is enforced at Turso's API: every tool call is checked for org-binding,
-  role, and scope, and recorded in your audit log.
-</Note>
+> [!NOTE]
+>
+> Picking a **group** scopes the token to that group's resources — the
+> least-privilege choice. "Entire organization" grants full access. Either way the
+> token is enforced at Turso's API: every tool call is checked for org-binding,
+> role, and scope, and recorded in your audit log.
 
 ## How it works
 

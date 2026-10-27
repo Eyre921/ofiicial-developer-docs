@@ -40,72 +40,70 @@ Match the driver to your database engine: **`@tursodatabase/serverless`** for [T
 
 ### Quickstart
 
-<Tabs>
-  <Tab title="@tursodatabase/serverless">
-    The `@tursodatabase/serverless` package connects to Turso using only the `fetch` API — no native dependencies, making it the smallest option for edge and serverless runtimes.
+**@tursodatabase/serverless**
 
-    ```bash theme={null}
-    npm install @tursodatabase/serverless
-    ```
+The `@tursodatabase/serverless` package connects to Turso using only the `fetch` API — no native dependencies, making it the smallest option for edge and serverless runtimes.
 
-    ```typescript theme={null}
-    import { connect } from "@tursodatabase/serverless";
+```bash theme={null}
+npm install @tursodatabase/serverless
+```
 
-    const conn = connect({
-      url: process.env.TURSO_DATABASE_URL,
-      authToken: process.env.TURSO_AUTH_TOKEN,
-    });
+```typescript theme={null}
+import { connect } from "@tursodatabase/serverless";
 
-    const stmt = await conn.prepare("SELECT * FROM users WHERE id = ?");
-    const row = await stmt.get([123]);
-    ```
+const conn = connect({
+  url: process.env.TURSO_DATABASE_URL,
+  authToken: process.env.TURSO_AUTH_TOKEN,
+});
 
-    For compatibility with the libSQL client API, use the compat module:
+const stmt = await conn.prepare("SELECT * FROM users WHERE id = ?");
+const row = await stmt.get([123]);
+```
 
-    ```typescript theme={null}
-    import { createClient } from "@tursodatabase/serverless/compat";
+For compatibility with the libSQL client API, use the compat module:
 
-    const client = createClient({
-      url: process.env.TURSO_DATABASE_URL,
-      authToken: process.env.TURSO_AUTH_TOKEN,
-    });
+```typescript theme={null}
+import { createClient } from "@tursodatabase/serverless/compat";
 
-    const result = await client.execute("SELECT * FROM users WHERE id = ?", [123]);
-    ```
-  </Tab>
+const client = createClient({
+  url: process.env.TURSO_DATABASE_URL,
+  authToken: process.env.TURSO_AUTH_TOKEN,
+});
 
-  <Tab title="@libsql/client">
-    The `@libsql/client` package is the production-ready libSQL driver used across the Turso ecosystem. Use the `/web` import for Vercel serverless and edge runtimes:
+const result = await client.execute("SELECT * FROM users WHERE id = ?", [123]);
+```
 
-    ```bash theme={null}
-    npm install @libsql/client
-    ```
+**@libsql/client**
 
-    ```typescript theme={null}
-    import { createClient } from "@libsql/client/web";
+The `@libsql/client` package is the production-ready libSQL driver used across the Turso ecosystem. Use the `/web` import for Vercel serverless and edge runtimes:
 
-    const client = createClient({
-      url: process.env.TURSO_DATABASE_URL!,
-      authToken: process.env.TURSO_AUTH_TOKEN!,
-    });
+```bash theme={null}
+npm install @libsql/client
+```
 
-    const result = await client.execute({
-      sql: "SELECT * FROM users WHERE id = ?",
-      args: [123],
-    });
-    ```
+```typescript theme={null}
+import { createClient } from "@libsql/client/web";
 
-    <Note>
-      Use `@libsql/client/web` instead of `@libsql/client` for Vercel deployments. The `/web` import uses the HTTP protocol, which is compatible with edge and serverless runtimes.
-    </Note>
-  </Tab>
-</Tabs>
+const client = createClient({
+  url: process.env.TURSO_DATABASE_URL!,
+  authToken: process.env.TURSO_AUTH_TOKEN!,
+});
+
+const result = await client.execute({
+  sql: "SELECT * FROM users WHERE id = ?",
+  args: [123],
+});
+```
+
+> [!NOTE]
+>
+> Use `@libsql/client/web` instead of `@libsql/client` for Vercel deployments. The `/web` import uses the HTTP protocol, which is compatible with edge and serverless runtimes.
 
 ## In-Function SQLite
 
-<Warning>
-  The `@tursodatabase/vercel-experimental` package is in beta. It may still contain bugs and unexpected behavior. Use caution with production data and ensure you have backups.
-</Warning>
+> [!WARNING]
+>
+> The `@tursodatabase/vercel-experimental` package is in beta. It may still contain bugs and unexpected behavior. Use caution with production data and ensure you have backups.
 
 The `@tursodatabase/vercel-experimental` package replicates SQLite database pages into the serverless function itself. Reads execute against the local copy with no network round-trips. Writes go directly to the remote database for durability and consistency. This approach is ideal for read-heavy workloads where per-query network latency is the dominant cost.
 
@@ -139,9 +137,9 @@ TURSO_GROUP=your-group-name
 TURSO_DATABASE=your-database-name
 ```
 
-<Note>
-  The `TURSO_GROUP` environment variable scopes all database access to a single group. Even though the API token grants access to the entire organization, an attacker who controls the database name can only access databases within the configured group. The database name is still recommended to be stored as a secret environment variable when possible.
-</Note>
+> [!NOTE]
+>
+> The `TURSO_GROUP` environment variable scopes all database access to a single group. Even though the API token grants access to the entire organization, an attacker who controls the database name can only access databases within the configured group. The database name is still recommended to be stored as a secret environment variable when possible.
 
 Use `createDb()` to open a database and start querying:
 

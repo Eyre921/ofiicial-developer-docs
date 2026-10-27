@@ -22,27 +22,25 @@ You can control token scope, permissions, and expiration:
 | `-p`, `--permissions` | Set [fine-grained permissions](/sdk/authorization/fine-grained-permissions) per table and action |
 | `-e`, `--expiration` | Set token expiration (`never`, `7d`, `30d`, etc.) |
 
-<CodeGroup>
-  ```bash Read-only token theme={null}
-  turso db tokens create mydb --read-only
-  ```
+```bash Read-only token theme={null}
+turso db tokens create mydb --read-only
+```
 
-  ```bash Token with 7-day expiration theme={null}
-  turso db tokens create mydb --expiration 7d
-  ```
+```bash Token with 7-day expiration theme={null}
+turso db tokens create mydb --expiration 7d
+```
 
-  ```bash Fine-grained permissions theme={null}
-  turso db tokens create mydb \
-    -p all:data_read \
-    -p comments:data_add,data_update
-  ```
+```bash Fine-grained permissions theme={null}
+turso db tokens create mydb \
+  -p all:data_read \
+  -p comments:data_add,data_update
+```
 
-  ```bash Combined scoping theme={null}
-  turso db tokens create mydb \
-    --read-only \
-    --expiration 7d
-  ```
-</CodeGroup>
+```bash Combined scoping theme={null}
+turso db tokens create mydb \
+  --read-only \
+  --expiration 7d
+```
 
 You can also create tokens using the [Platform API](/api-reference/databases/create-token).
 

@@ -3717,6 +3717,7 @@ components:
         - Parasail
         - ParetoAlpha
         - Poolside
+        - PrimaLabs
         - PrimeIntellect
         - Perceptron
         - Perplexity
@@ -4077,6 +4078,9 @@ components:
           additionalProperties: {}
           type: object
         poolside:
+          additionalProperties: {}
+          type: object
+        primalabs:
           additionalProperties: {}
           type: object
         primeintellect:

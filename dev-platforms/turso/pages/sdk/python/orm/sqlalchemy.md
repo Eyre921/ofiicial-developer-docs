@@ -6,7 +6,7 @@ path: sdk/python/orm/sqlalchemy
 
 Configure SQLAlchemy to work with your Turso database
 
-<img alt="SQLAlchemy Quickstart" />
+![SQLAlchemy Quickstart](https://mintcdn.com/turso/7mjM7fXIfeZ8ZwNC/images/guides/sqlalchemy-banner.png?fit=max\&auto=format\&n=7mjM7fXIfeZ8ZwNC\&q=85\&s=c43a5833c30b4a5d3403fd4d68fd84e2)
 
 ## Prerequisites
 
@@ -15,108 +15,104 @@ Before you start, make sure you:
 * [Install the Turso CLI](/cli/installation)
 * [Sign up or login to Turso](/cli/authentication#signup)
 
-<Steps>
-  <Step title="Install the libSQL dialect for SQLAlchemy">
-    ```bash theme={null}
-    pip install sqlalchemy-libsql
-    ```
-  </Step>
+**1. Install the libSQL dialect for SQLAlchemy**
 
-  <Step title="Retrieve database credentials">
-    <Snippet />
-  </Step>
+```bash theme={null}
+pip install sqlalchemy-libsql
+```
 
-  <Step title="Create database models">
-    ```python models.py theme={null}
-    from sqlalchemy import String
-    from sqlalchemy.orm import DeclarativeBase
-    from sqlalchemy.orm import Mapped
-    from sqlalchemy.orm import mapped_column
+**2. Retrieve database credentials**
 
-    class Base(DeclarativeBase):
-        pass
+<Snippet />
 
-    class Foo(Base):
-        __tablename__ = "foo"
-        id: Mapped[str] = mapped_column(primary_key=True)
-        bar: Mapped[str] = mapped_column(String(100))
-        def __repr__(self) -> str:
-            return f"Item(id={self.id!r}, bar={self.bar!r})"
+**3. Create database models**
 
-    ```
-  </Step>
+```python models.py theme={null}
+from sqlalchemy import String
+from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.orm import Mapped
+from sqlalchemy.orm import mapped_column
 
-  <Step title="Create engine">
-    <AccordionGroup>
-      <Accordion title="Embedded Replicas">
-        ```python theme={null}
-        from dotenv import load_dotenv
-        from sqlalchemy import create_engine
+class Base(DeclarativeBase):
+    pass
 
-        TURSO_DATABASE_URL = os.environ.get("TURSO_DATABASE_URL")
-        TURSO_AUTH_TOKEN = os.environ.get("TURSO_AUTH_TOKEN")
+class Foo(Base):
+    __tablename__ = "foo"
+    id: Mapped[str] = mapped_column(primary_key=True)
+    bar: Mapped[str] = mapped_column(String(100))
+    def __repr__(self) -> str:
+        return f"Item(id={self.id!r}, bar={self.bar!r})"
 
-        engine = create_engine(
-             "sqlite+libsql:///embedded.db",
-             connect_args={
-                 "auth_token": TURSO_AUTH_TOKEN,
-                 "sync_url": TURSO_DATABASE_URL,
-             },
-        )
-        ```
-      </Accordion>
+```
 
-      <Accordion title="Remote only">
-        ```python theme={null}
-        from dotenv import load_dotenv
-        from sqlalchemy import create_engine
+**4. Create engine**
 
-        TURSO_DATABASE_URL = os.environ.get("TURSO_DATABASE_URL")
-        TURSO_AUTH_TOKEN = os.environ.get("TURSO_AUTH_TOKEN")
+> **Embedded Replicas**
+>
+> ```python theme={null}
+> from dotenv import load_dotenv
+> from sqlalchemy import create_engine
+>
+> TURSO_DATABASE_URL = os.environ.get("TURSO_DATABASE_URL")
+> TURSO_AUTH_TOKEN = os.environ.get("TURSO_AUTH_TOKEN")
+>
+> engine = create_engine(
+>      "sqlite+libsql:///embedded.db",
+>      connect_args={
+>          "auth_token": TURSO_AUTH_TOKEN,
+>          "sync_url": TURSO_DATABASE_URL,
+>      },
+> )
+> ```
 
-        engine = create_engine(
-            f"sqlite+{TURSO_DATABASE_URL}?secure=true",
-            connect_args={
-                "auth_token": TURSO_AUTH_TOKEN,
-            },
-        )
-        ```
-      </Accordion>
+> **Remote only**
+>
+> ```python theme={null}
+> from dotenv import load_dotenv
+> from sqlalchemy import create_engine
+>
+> TURSO_DATABASE_URL = os.environ.get("TURSO_DATABASE_URL")
+> TURSO_AUTH_TOKEN = os.environ.get("TURSO_AUTH_TOKEN")
+>
+> engine = create_engine(
+>     f"sqlite+{TURSO_DATABASE_URL}?secure=true",
+>     connect_args={
+>         "auth_token": TURSO_AUTH_TOKEN,
+>     },
+> )
+> ```
 
-      <Accordion title="Memory Only">
-        ```python theme={null}
-        from sqlalchemy import create_engine
+> **Memory Only**
+>
+> ```python theme={null}
+> from sqlalchemy import create_engine
+>
+> engine = create_engine("sqlite+libsql://")
+> ```
 
-        engine = create_engine("sqlite+libsql://")
-        ```
-      </Accordion>
+> **Local only**
+>
+> ```python theme={null}
+> from sqlalchemy import create_engine
+>
+> engine = create_engine("sqlite+libsql:///local.db")
+> ```
 
-      <Accordion title="Local only">
-        ```python theme={null}
-        from sqlalchemy import create_engine
+**5. Query**
 
-        engine = create_engine("sqlite+libsql:///local.db")
-        ```
-      </Accordion>
-    </AccordionGroup>
-  </Step>
+```py app.py theme={null}
+from sqlalchemy.orm import Session
+from sqlalchemy import select
+from models import Foo
 
-  <Step title="Query">
-    ```py app.py theme={null}
-    from sqlalchemy.orm import Session
-    from sqlalchemy import select
-    from models import Foo
+@app.route("/", methods=(["GET"]))
+def home():
+    session = Session(engine)
 
-    @app.route("/", methods=(["GET"]))
-    def home():
-        session = Session(engine)
+    # get & print foos
+    stmt = select(Foo)
 
-        # get & print foos
-        stmt = select(Foo)
+    for item in session.scalars(stmt):
+        print(item)
 
-        for item in session.scalars(stmt):
-            print(item)
-
-    ```
-  </Step>
-</Steps>
+```

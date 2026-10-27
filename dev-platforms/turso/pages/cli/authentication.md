@@ -14,9 +14,9 @@ turso auth login
 
 This will open a browser window, asking you to log into your account with GitHub.
 
-<Note>
-  If you're using Windows with WSL or a remote CI/CD environment, pass the `--headless` flag.
-</Note>
+> [!NOTE]
+>
+> If you're using Windows with WSL or a remote CI/CD environment, pass the `--headless` flag.
 
 Once you're logged in, you can manage your account and databases. You can explore all of the commands via the docs, or by using the `--help` flag for each subcommand:
 
@@ -24,9 +24,9 @@ Once you're logged in, you can manage your account and databases. You can explor
 turso
 ```
 
-<Info>
-  The Turso CLI requires you to reauthenticate after one week. Don't share your token.
-</Info>
+> [!NOTE]
+>
+> The Turso CLI requires you to reauthenticate after one week. Don't share your token.
 
 ## `signup`
 

@@ -16,118 +16,112 @@ In this C quickstart we will learn how to:
 * Execute a query using SQL
 * Sync changes to local database (optional)
 
-<Steps>
-  <Step title="Retrieve database credentials">
-    You will need an existing database to continue. If you don't have one, [create one](/quickstart).
+**1. Retrieve database credentials**
 
-    <Snippet />
+You will need an existing database to continue. If you don't have one, [create one](/quickstart).
 
-    <Snippet />
-  </Step>
+<Snippet />
 
-  <Step title="Install">
-    To use libSQL with C, you need to build the library from source:
+<Snippet />
 
-    <Card title="libSQL C" href="https://github.com/tursodatabase/libsql">
-      Build from source code
-    </Card>
+**2. Install**
 
-    After building, make sure to link against the library when compiling your C program:
+To use libSQL with C, you need to build the library from source:
 
-    ```bash theme={null}
-    gcc -o your_program your_program.c -L/path/to/libsql/lib -llibsql
-    ```
-  </Step>
+> **[libSQL C](https://github.com/tursodatabase/libsql)**
+>
+> Build from source code
 
-  <Step title="Connect">
-    You must first initialize libSQL, create a `libsql_database_t` object, and then open a `libsql_connection_t` to it:
+After building, make sure to link against the library when compiling your C program:
 
-    <AccordionGroup>
-      <Accordion title="Embedded Replicas">
-        ```c theme={null}
-        #include "libsql.h"
+```bash theme={null}
+gcc -o your_program your_program.c -L/path/to/libsql/lib -llibsql
+```
 
-        libsql_setup((libsql_config_t){0});
+**3. Connect**
 
-        libsql_database_t db = libsql_database_init((libsql_database_desc_t){
-            .path = "local.db",
-            .url = "TURSO_DATABASE_URL",
-            .auth_token = "TURSO_AUTH_TOKEN",
-            .sync_interval = 300
-        });
+You must first initialize libSQL, create a `libsql_database_t` object, and then open a `libsql_connection_t` to it:
 
-        libsql_connection_t conn = libsql_database_connect(db);
-        ```
-      </Accordion>
+> **Embedded Replicas**
+>
+> ```c theme={null}
+> #include "libsql.h"
+>
+> libsql_setup((libsql_config_t){0});
+>
+> libsql_database_t db = libsql_database_init((libsql_database_desc_t){
+>     .path = "local.db",
+>     .url = "TURSO_DATABASE_URL",
+>     .auth_token = "TURSO_AUTH_TOKEN",
+>     .sync_interval = 300
+> });
+>
+> libsql_connection_t conn = libsql_database_connect(db);
+> ```
 
-      <Accordion title="Local only">
-        ```c theme={null}
-        #include "libsql.h"
+> **Local only**
+>
+> ```c theme={null}
+> #include "libsql.h"
+>
+> libsql_setup((libsql_config_t){0});
+>
+> libsql_database_t db = libsql_database_init((libsql_database_desc_t){
+>     .path = "local.db"
+> });
+>
+> libsql_connection_t conn = libsql_database_connect(db);
+> ```
 
-        libsql_setup((libsql_config_t){0});
+> **Remote only**
+>
+> ```c theme={null}
+> #include "libsql.h"
+>
+> libsql_setup((libsql_config_t){0});
+>
+> libsql_database_t db = libsql_database_init((libsql_database_desc_t){
+>     .url = "TURSO_DATABASE_URL",
+>     .auth_token = "TURSO_AUTH_TOKEN"
+> });
+>
+> libsql_connection_t conn = libsql_database_connect(db);
+> ```
 
-        libsql_database_t db = libsql_database_init((libsql_database_desc_t){
-            .path = "local.db"
-        });
+**4. Execute**
 
-        libsql_connection_t conn = libsql_database_connect(db);
-        ```
-      </Accordion>
+You can execute a SQL query against your existing database by preparing a statement and then executing it:
 
-      <Accordion title="Remote only">
-        ```c theme={null}
-        #include "libsql.h"
+```c theme={null}
+libsql_statement_t stmt = libsql_connection_prepare(conn, "SELECT * FROM users");
+libsql_rows_t rows = libsql_statement_query(stmt);
+```
 
-        libsql_setup((libsql_config_t){0});
+If you need to use placeholders for values, you can do that:
 
-        libsql_database_t db = libsql_database_init((libsql_database_desc_t){
-            .url = "TURSO_DATABASE_URL",
-            .auth_token = "TURSO_AUTH_TOKEN"
-        });
+```c Positional Query theme={null}
+libsql_statement_t stmt = libsql_connection_prepare(conn, "SELECT * FROM users WHERE id = ?");
+libsql_statement_bind_value(stmt, libsql_integer(1));
+libsql_rows_t rows = libsql_statement_query(stmt);
+```
 
-        libsql_connection_t conn = libsql_database_connect(db);
-        ```
-      </Accordion>
-    </AccordionGroup>
-  </Step>
+```c Positional Insert theme={null}
+libsql_statement_t stmt = libsql_connection_prepare(conn, "INSERT INTO users (id) VALUES (?)");
+libsql_statement_bind_value(stmt, libsql_integer(1));
+libsql_execute_t result = libsql_statement_execute(stmt);
+```
 
-  <Step title="Execute">
-    You can execute a SQL query against your existing database by preparing a statement and then executing it:
+**5. Sync (Embedded Replicas only)**
 
-    ```c theme={null}
-    libsql_statement_t stmt = libsql_connection_prepare(conn, "SELECT * FROM users");
-    libsql_rows_t rows = libsql_statement_query(stmt);
-    ```
+When using embedded replicas, you should call `libsql_database_sync()` on the database to sync your local database with the primary database, unless you are using `sync_interval` (though there is no issue with calling `sync` with `sync_interval` enabled):
 
-    If you need to use placeholders for values, you can do that:
-
-    <CodeGroup>
-      ```c Positional Query theme={null}
-      libsql_statement_t stmt = libsql_connection_prepare(conn, "SELECT * FROM users WHERE id = ?");
-      libsql_statement_bind_value(stmt, libsql_integer(1));
-      libsql_rows_t rows = libsql_statement_query(stmt);
-      ```
-
-      ```c Positional Insert theme={null}
-      libsql_statement_t stmt = libsql_connection_prepare(conn, "INSERT INTO users (id) VALUES (?)");
-      libsql_statement_bind_value(stmt, libsql_integer(1));
-      libsql_execute_t result = libsql_statement_execute(stmt);
-      ```
-    </CodeGroup>
-  </Step>
-
-  <Step title="Sync (Embedded Replicas only)">
-    When using embedded replicas, you should call `libsql_database_sync()` on the database to sync your local database with the primary database, unless you are using `sync_interval` (though there is no issue with calling `sync` with `sync_interval` enabled):
-
-    ```c theme={null}
-    libsql_sync_t sync = libsql_database_sync(db);
-    if (sync.err) {
-        fprintf(stderr, "Error syncing database: %s\n", libsql_error_message(sync.err));
-    } else {
-        printf("Sync completed. Frame number: %llu, Frames synced: %llu\n",
-                (unsigned long long)sync.frame_no,
-                (unsigned long long)sync.frames_synced);
-    }
-    ```
-  </Step>
-</Steps>
+```c theme={null}
+libsql_sync_t sync = libsql_database_sync(db);
+if (sync.err) {
+    fprintf(stderr, "Error syncing database: %s\n", libsql_error_message(sync.err));
+} else {
+    printf("Sync completed. Frame number: %llu, Frames synced: %llu\n",
+            (unsigned long long)sync.frame_no,
+            (unsigned long long)sync.frames_synced);
+}
+```

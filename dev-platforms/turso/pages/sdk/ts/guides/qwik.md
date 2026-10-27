@@ -6,7 +6,7 @@ path: sdk/ts/guides/qwik
 
 Set up Turso in your Qwik project in minutes
 
-<img alt="Qwik banner" />
+![Qwik banner](https://mintcdn.com/turso/7mjM7fXIfeZ8ZwNC/images/guides/qwik-banner.png?fit=max\&auto=format\&n=7mjM7fXIfeZ8ZwNC\&q=85\&s=bd50c1555e2915546f901981ac6efba5)
 
 ## Prerequisites
 
@@ -16,70 +16,64 @@ Before you start, make sure you:
 * [Sign up or login to Turso](/cli/authentication#signup)
 * Have a Qwik app — [learn more](https://qwik.builder.io/docs/getting-started/#create-an-app-using-the-cli)
 
-<Steps>
-  <Step title="Add Turso Integration">
-    <CodeGroup>
-      ```bash npm theme={null}
-      npm run qwik add turso
-      ```
+**1. Add Turso Integration**
 
-      ```bash pnpm theme={null}
-      pnpm qwik add turso
-      ```
+```bash npm theme={null}
+npm run qwik add turso
+```
 
-      ```bash yarn theme={null}
-      yarn qwik add turso
-      ```
-    </CodeGroup>
-  </Step>
+```bash pnpm theme={null}
+pnpm qwik add turso
+```
 
-  <Step title="Configure database credentials">
-    Get the database URL:
+```bash yarn theme={null}
+yarn qwik add turso
+```
 
-    ```bash theme={null}
-    turso db show --url <database-name>
-    ```
+**2. Configure database credentials**
 
-    Get the database authentication token:
+Get the database URL:
 
-    ```bash theme={null}
-    turso db tokens create <database-name>
-    ```
+```bash theme={null}
+turso db show --url <database-name>
+```
 
-    Assign credentials to the environment variables inside `.env.local`.
+Get the database authentication token:
 
-    ```bash theme={null}
-    PRIVATE_TURSO_DATABASE_URL="..."
-    PRIVATE_TURSO_AUTH_TOKEN="..."
-    ```
-  </Step>
+```bash theme={null}
+turso db tokens create <database-name>
+```
 
-  <Step title="Execute SQL">
-    ```ts theme={null}
-    import { tursoClient } from "~/utils/turso";
+Assign credentials to the environment variables inside `.env.local`.
 
-    export const useFrameworks = routeLoader$(
-      async (requestEvent: RequestEventBase) => {
-        const db = tursoClient(requestEvent["env"]);
-        const { rows } = await db.execute("select * from table_name");
+```bash theme={null}
+PRIVATE_TURSO_DATABASE_URL="..."
+PRIVATE_TURSO_AUTH_TOKEN="..."
+```
 
-        return {
-          items: rows,
-        };
-      },
-    );
-    ```
-  </Step>
-</Steps>
+**3. Execute SQL**
+
+```ts theme={null}
+import { tursoClient } from "~/utils/turso";
+
+export const useFrameworks = routeLoader$(
+  async (requestEvent: RequestEventBase) => {
+    const db = tursoClient(requestEvent["env"]);
+    const { rows } = await db.execute("select * from table_name");
+
+    return {
+      items: rows,
+    };
+  },
+);
+```
 
 ## Examples
 
-<CardGroup>
-  <Card title="Social Website" icon="github" href="https://github.com/tursodatabase/examples/tree/master/app-find-me-on">
-    See the full source code
-  </Card>
+> **[Social Website](https://github.com/tursodatabase/examples/tree/master/app-find-me-on)**
+>
+> See the full source code
 
-  <Card title="Shopping Cart" icon="github" href="https://github.com/tursodatabase/examples/tree/master/app-turqw-store">
-    See the full source code
-  </Card>
-</CardGroup>
+> **[Shopping Cart](https://github.com/tursodatabase/examples/tree/master/app-turqw-store)**
+>
+> See the full source code

@@ -11,188 +11,188 @@ In this Laravel quickstart we will learn how to:
 * Create a model and migration
 * Perform CRUD operations using Eloquent
 
-<Steps>
-  <Step title="Retrieve database credentials">
-    You will need an existing database to continue. If you don't have one, [create one](/quickstart).
+**1. Retrieve database credentials**
 
-    <Snippet />
+You will need an existing database to continue. If you don't have one, [create one](/quickstart).
 
-    <Info>You will want to store these as environment variables.</Info>
-  </Step>
+<Snippet />
 
-  <Step title="Install">
-    Install the package to your Laravel project using Composer:
+> [!NOTE]
+>
+> You will want to store these as environment variables.
 
-    ```console theme={null}
-    composer require turso/libsql-laravel
-    ```
+**2. Install**
 
-    <Info>Make sure to enable FFI in your PHP configuration to use the Laravel adapter.</Info>
-  </Step>
+Install the package to your Laravel project using Composer:
 
-  <Step title="Configure">
-    Choose your preferred setup and configure accordingly:
+```console theme={null}
+composer require turso/libsql-laravel
+```
 
-    <AccordionGroup>
-      <Accordion title="Local only">
-        Update your `config/database.php`:
+> [!NOTE]
+>
+> Make sure to enable FFI in your PHP configuration to use the Laravel adapter.
 
-        ```php theme={null}
-        return [
-            "default" => env("DB_CONNECTION", "libsql"),
+**3. Configure**
 
-            "connections" => [
-                "libsql" => [
-                    "driver" => "libsql",
-                    "database" => database_path("database.db"),
-                ],
-                // ...
-            ],
-        ];
-        ```
+Choose your preferred setup and configure accordingly:
 
-        This will use a local SQLite file with the libSQL adapter.
-      </Accordion>
+> **Local only**
+>
+> Update your `config/database.php`:
+>
+> ```php theme={null}
+> return [
+>     "default" => env("DB_CONNECTION", "libsql"),
+>
+>     "connections" => [
+>         "libsql" => [
+>             "driver" => "libsql",
+>             "database" => database_path("database.db"),
+>         ],
+>         // ...
+>     ],
+> ];
+> ```
+>
+> This will use a local SQLite file with the libSQL adapter.
 
-      <Accordion title="Remote only">
-        Update your `config/database.php`:
+> **Remote only**
+>
+> Update your `config/database.php`:
+>
+> ```php theme={null}
+> return [
+>     "default" => env("DB_CONNECTION", "libsql"),
+>
+>     "connections" => [
+>         "libsql" => [
+>             "driver" => "libsql",
+>             "url" => env("TURSO_DATABASE_URL"),
+>             "password" => env("TURSO_AUTH_TOKEN"),
+>         ],
+>         // ...
+>     ],
+> ];
+> ```
+>
+> Then add to your `.env` file:
+>
+> ```
+> DB_CONNECTION=libsql
+> TURSO_DATABASE_URL=libsql://...
+> TURSO_AUTH_TOKEN=...
+> ```
 
-        ```php theme={null}
-        return [
-            "default" => env("DB_CONNECTION", "libsql"),
+> **Embedded Replicas**
+>
+> Update your `config/database.php`:
+>
+> ```php theme={null}
+> return [
+>     "default" => env("DB_CONNECTION", "libsql"),
+>
+>     "connections" => [
+>         "libsql" => [
+>             "driver" => "libsql",
+>             "database" => database_path("database.db"),
+>             "url" => env("TURSO_DATABASE_URL"),
+>             "password" => env("TURSO_AUTH_TOKEN"),
+>             "sync_interval" => env("TURSO_SYNC_INTERVAL", 300),
+>         ],
+>         // ...
+>     ],
+> ];
+> ```
+>
+> Then add to your `.env` file:
+>
+> ```
+> DB_CONNECTION=libsql
+> TURSO_DATABASE_URL=libsql://...
+> TURSO_AUTH_TOKEN=...
+> TURSO_SYNC_INTERVAL=300
+> ```
+>
+> > [!NOTE]
+> >
+> > The `sync_interval` is optional and defaults to 300 seconds (5 minutes).
 
-            "connections" => [
-                "libsql" => [
-                    "driver" => "libsql",
-                    "url" => env("TURSO_DATABASE_URL"),
-                    "password" => env("TURSO_AUTH_TOKEN"),
-                ],
-                // ...
-            ],
-        ];
-        ```
+**4. Create a model and migration**
 
-        Then add to your `.env` file:
+Create a User model and migration:
 
-        ```
-        DB_CONNECTION=libsql
-        TURSO_DATABASE_URL=libsql://...
-        TURSO_AUTH_TOKEN=...
-        ```
-      </Accordion>
+```console theme={null}
+php artisan make:model User -m
+```
 
-      <Accordion title="Embedded Replicas">
-        Update your `config/database.php`:
+Update the migration file:
 
-        ```php theme={null}
-        return [
-            "default" => env("DB_CONNECTION", "libsql"),
+```php theme={null}
+public function up()
+{
+    Schema::create('users', function (Blueprint $table) {
+        $table->id();
+        $table->string('name');
+        $table->string('email')->unique();
+        $table->timestamps();
+    });
+}
+```
 
-            "connections" => [
-                "libsql" => [
-                    "driver" => "libsql",
-                    "database" => database_path("database.db"),
-                    "url" => env("TURSO_DATABASE_URL"),
-                    "password" => env("TURSO_AUTH_TOKEN"),
-                    "sync_interval" => env("TURSO_SYNC_INTERVAL", 300),
-                ],
-                // ...
-            ],
-        ];
-        ```
+**5. Run migrations**
 
-        Then add to your `.env` file:
+Apply the migration to create the users table:
 
-        ```
-        DB_CONNECTION=libsql
-        TURSO_DATABASE_URL=libsql://...
-        TURSO_AUTH_TOKEN=...
-        TURSO_SYNC_INTERVAL=300
-        ```
+```console theme={null}
+php artisan migrate
+```
 
-        <Info>The `sync_interval` is optional and defaults to 300 seconds (5 minutes).</Info>
-      </Accordion>
-    </AccordionGroup>
-  </Step>
+**6. Execute CRUD operations**
 
-  <Step title="Create a model and migration">
-    Create a User model and migration:
+Now you can perform CRUD operations using Eloquent:
 
-    ```console theme={null}
-    php artisan make:model User -m
-    ```
+```php Create theme={null}
+use App\Models\User;
 
-    Update the migration file:
+$user = User::create([
+    'name' => 'John Doe',
+    'email' => 'john@example.com',
+]);
+```
 
-    ```php theme={null}
-    public function up()
-    {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamps();
-        });
-    }
-    ```
-  </Step>
+```php Read theme={null}
+use App\Models\User;
 
-  <Step title="Run migrations">
-    Apply the migration to create the users table:
+// Fetch all users
+$allUsers = User::all();
 
-    ```console theme={null}
-    php artisan migrate
-    ```
-  </Step>
+// Find a specific user by ID
+$user = User::find(1);
 
-  <Step title="Execute CRUD operations">
-    Now you can perform CRUD operations using Eloquent:
+// Filter users
+$filteredUsers = User::where('name', 'John Doe')->get();
+```
 
-    <CodeGroup>
-      ```php Create theme={null}
-      use App\Models\User;
+```php Update theme={null}
+use App\Models\User;
 
-      $user = User::create([
-          'name' => 'John Doe',
-          'email' => 'john@example.com',
-      ]);
-      ```
+// Update a single record
+$user = User::find(1);
+$user->name = 'Jane Doe';
+$user->save();
 
-      ```php Read theme={null}
-      use App\Models\User;
+// Update multiple records
+User::where('name', 'John Doe')->update(['name' => 'Jane Doe']);
+```
 
-      // Fetch all users
-      $allUsers = User::all();
+```php Delete theme={null}
+use App\Models\User;
 
-      // Find a specific user by ID
-      $user = User::find(1);
+// Delete a single record
+$user = User::find(1);
+$user->delete();
 
-      // Filter users
-      $filteredUsers = User::where('name', 'John Doe')->get();
-      ```
-
-      ```php Update theme={null}
-      use App\Models\User;
-
-      // Update a single record
-      $user = User::find(1);
-      $user->name = 'Jane Doe';
-      $user->save();
-
-      // Update multiple records
-      User::where('name', 'John Doe')->update(['name' => 'Jane Doe']);
-      ```
-
-      ```php Delete theme={null}
-      use App\Models\User;
-
-      // Delete a single record
-      $user = User::find(1);
-      $user->delete();
-
-      // Delete multiple records
-      User::where('name', 'Jane Doe')->delete();
-      ```
-    </CodeGroup>
-  </Step>
-</Steps>
+// Delete multiple records
+User::where('name', 'Jane Doe')->delete();
+```

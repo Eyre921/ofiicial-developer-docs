@@ -174,7 +174,7 @@ Organizations support role-based access control:
 
 > **Can organization members see each other's usage data?**
 >
-> Organization members can see usage metadata (model used, cost, timing) for all organization activity in the activity feed. OpenRouter does not store prompts or responses.
+> Organization members can see usage metadata (model used, cost, timing) for all organization activity in the activity feed. OpenRouter does not store prompts or responses unless you opt in to logging or content is flagged for CSAM review.
 
 > **What happens if I leave an organization?**
 >

@@ -10,13 +10,13 @@ You can import an existing SQLite file to Turso Cloud using the following comman
 turso db import ~/path/to/database.db
 ```
 
-<Info>
-  Make sure the SQLite file has WAL journal mode enabled.
-</Info>
+> [!NOTE]
+>
+> Make sure the SQLite file has WAL journal mode enabled.
 
-<Info>
-  If you have more than one group, you will need to pass the `--group` flag.
-</Info>
+> [!NOTE]
+>
+> If you have more than one group, you will need to pass the `--group` flag.
 
 ## Flags
 

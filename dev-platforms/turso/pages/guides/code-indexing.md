@@ -66,9 +66,9 @@ const db = await connect(".index/code.db", {
 await db.exec(SCHEMA);
 ```
 
-<Info>
-  The `experimental: ["index_method"]` flag enables Turso's `USING fts` index syntax and the `fts_match()` / `fts_score()` functions.
-</Info>
+> [!NOTE]
+>
+> The `experimental: ["index_method"]` flag enables Turso's `USING fts` index syntax and the `fts_match()` / `fts_score()` functions.
 
 ## Indexing files
 

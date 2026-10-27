@@ -8,9 +8,9 @@ Share a Turso database file between multiple OS processes using the experimental
 
 # Multi-Process Access
 
-<Warning>
-  Multi-process access is **experimental**. The on-disk coordination format and the public API may change between releases. Do not rely on the format for long-term storage across Turso versions.
-</Warning>
+> [!WARNING]
+>
+> Multi-process access is **experimental**. The on-disk coordination format and the public API may change between releases. Do not rely on the format for long-term storage across Turso versions.
 
 By default, a Turso database file is opened by a single OS process. Multiple threads and connections within that process can safely share the database, but opening the same file from a second process is rejected with a locking error.
 

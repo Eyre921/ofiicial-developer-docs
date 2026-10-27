@@ -293,4 +293,4 @@ To learn more, check out the [guide to deploying a custom model](https://replica
 [](#get-support)Get support
 ---------------------------
 
-Stuck on something? Our community’s here to help. [Find us in Discord](https://discord.gg/replicate).
+Stuck on something? [Contact our support team](https://replicate.com/support).

@@ -6,17 +6,13 @@ path: billing/billing-apis
 
 # How the Billing APIs work
 
-Understand how the Billing API objects work together.
+Learn how the Billing API objects work together to create and manage subscriptions.
 
-We recommend using the [Checkout Sessions API to create subscriptions](https://docs.stripe.com/billing/quickstart.md). A Checkout Session gives your customer a payment page where they enter their payment details. Stripe then creates the customer, activates the subscription, and handles the payment process.
+A *subscription* (A Subscription represents the product details associated with the plan that your customer subscribes to. Allows you to charge the customer on a recurring basis) connects the objects that define what you sell, who buys it, and how you collect payment. Each subscription has:
 
-A *subscription* (A Subscription represents the product details associated with the plan that your customer subscribes to. Allows you to charge the customer on a recurring basis) has:
-
-- A *Product* (Products represent what your business sells—whether that's a good or a service) to model what’s being sold.
-- A *Price* (Prices define how much and how often to charge for products. This includes how much the product costs, what currency to use, and the interval if the price is for subscriptions) to determine the interval and amount to charge.
-- An object that represents a customer to store the *Payment Methods* (PaymentMethods represent your customer's payment instruments, used with the Payment Intents or Setup Intents APIs) used to make each recurring payment. Depending on how you represent your customers, this can be either a [customer-configured Account](https://docs.stripe.com/api/v2/core/accounts/object.md#v2_account_object-configuration-customer-applied) or a [Customer](https://docs.stripe.com/api/customers.md).
-
-When you create a subscription, Stripe automatically generates an *Invoice* (Invoices are statements of amounts owed by a customer. They track the status of payments from draft through paid or otherwise finalized. Subscriptions automatically generate invoices, or you can manually create a one-off invoice) object at each billing cycle. Each `Invoice` automatically creates a *PaymentIntent* (API object that represents your intent to collect payment from a customer, tracking charge attempts and payment state changes throughout the process) object to collect payment from the customer’s stored payment method. After you create the subscription, Stripe manages the rest of the billing lifecycle.
+- A *Product* (Products represent what your business sells—whether that's a good or a service) that models what you sell.
+- A *Price* (Prices define how much and how often to charge for products. This includes how much the product costs, what currency to use, and the interval if the price is for subscriptions) that defines the billing interval and amount to charge.
+- An object that represents the customer and stores the *payment methods* (PaymentMethods represent your customer's payment instruments, used with the Payment Intents or Setup Intents APIs) used for each recurring payment. Depending on how you represent your customers, this object is either a [customer-configured Account](https://docs.stripe.com/api/v2/core/accounts/object.md#v2_account_object-configuration-customer-applied) or a [Customer](https://docs.stripe.com/api/customers.md).
 
 > #### Use the Accounts v2 API to represent customers
 > 
@@ -25,6 +21,12 @@ When you create a subscription, Stripe automatically generates an *Invoice* (Inv
 > To join the Accounts v2 preview, go to [Account previews and features](https://dashboard.stripe.com/settings/previews) in your Dashboard and enable **Reusable payment methods for Global Payouts**.
 > 
 > For most use cases, we recommend [modeling your customers as customer-configured Account objects](https://docs.stripe.com/accounts-v2/use-accounts-as-customers.md) instead of using [Customer](https://docs.stripe.com/api/customers.md) objects.
+
+## How subscription billing works
+
+When you create a subscription, Stripe generates an *Invoice* (Invoices are statements of amounts owed by a customer. They track the status of payments from draft through paid or otherwise finalized. Subscriptions automatically generate invoices, or you can manually create a one-off invoice) object for each billing cycle. If an `Invoice` has an amount due, Stripe creates a *PaymentIntent* (API object that represents your intent to collect payment from a customer, tracking charge attempts and payment state changes throughout the process) object to collect it and tracks the payment in the invoice’s `payments` list. For subscriptions that charge automatically, Stripe charges the default payment method on the subscription or customer.
+
+The following diagram shows how these objects reference each other.
 
 #### Accounts v2
 
@@ -178,6 +180,8 @@ A diagram illustrating common billing objects and their relationships (See full 
 
 ## API object definitions
 
+The following table describes the objects that subscriptions use, including the objects for feature entitlements.
+
 | Resource | Definition |
 | --- | --- |
 | [Account configured as a customer](https://docs.stripe.com/api/v2/core/accounts/create.md#v2_create_accounts-configuration-customer) | Represents a customer in the Accounts v2 API who purchases a subscription. Configure an `Account` object as a customer and associate it with a subscription to make and track recurring charges and to manage the products that they subscribe to. For more information, see the [Use Accounts as customers guide](https://docs.stripe.com/accounts-v2/use-accounts-as-customers.md). |
@@ -205,11 +209,13 @@ Another customer, `second_customer`, subscribes to the advanced product. When yo
 
 You can determine which features to provision for a customer by [retrieving their active entitlements or listening to the Active Entitlement Summary event](https://docs.stripe.com/billing/entitlements.md?dashboard-or-api=api#entitlements). You don’t have to retrieve their subscriptions, products, and features.
 
+## Create a subscription
+
+We recommend using the [Checkout Sessions API to create subscriptions](https://docs.stripe.com/billing/quickstart.md). A Checkout Session gives your customer a payment page where they enter their payment details. When your customer completes the session, Stripe creates the subscription, creates a customer if you didn’t provide one, and collects any payment that’s due.
+
 ## See also
 
-- [Coupons](https://docs.stripe.com/billing/subscriptions/coupons.md)
 - [Customers](https://docs.stripe.com/billing/customer.md)
+- [Represent customers using Account objects](https://docs.stripe.com/accounts-v2/use-accounts-as-customers.md)
 - [Subscription invoices](https://docs.stripe.com/billing/invoices/subscription.md)
-- [How invoicing works](https://docs.stripe.com/invoicing/overview.md)
-- [Payment Intents](https://docs.stripe.com/payments/payment-intents.md)
 

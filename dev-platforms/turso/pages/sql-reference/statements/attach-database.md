@@ -30,9 +30,9 @@ ATTACH opens the database file at `filename` and makes its tables accessible thr
 
 Every connection has a built-in schema named `main` for its primary database. The names `main` and `temp` are reserved and cannot be used as schema names for attached databases.
 
-<Info>
-  This feature is experimental and must be [enabled before use](/sql-reference/experimental-features). Attached databases support both read and write operations (INSERT, UPDATE, DELETE, CREATE TABLE, etc.). The attached database's journal mode must match the main database's journal mode (e.g., both WAL or both MVCC).
-</Info>
+> [!NOTE]
+>
+> This feature is experimental and must be [enabled before use](/sql-reference/experimental-features). Attached databases support both read and write operations (INSERT, UPDATE, DELETE, CREATE TABLE, etc.). The attached database's journal mode must match the main database's journal mode (e.g., both WAL or both MVCC).
 
 ## Examples
 

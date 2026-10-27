@@ -37,13 +37,13 @@ Error Monitoring\[ ]Tracing\[ ]Profiling\[x]Logs\[x]OpenTelemetry
 <dependency>
     <groupId>io.sentry</groupId>
     <artifactId>sentry-jul</artifactId>
-    <version>8.61.1</version>
+    <version>8.62.0</version>
 </dependency>
 // ___PRODUCT_OPTION_START___ profiling
 <dependency>
     <groupId>io.sentry</groupId>
     <artifactId>sentry-async-profiler</artifactId>
-    <version>8.61.1</version>
+    <version>8.62.0</version>
 </dependency>
 // ___PRODUCT_OPTION_END___ profiling
 ```
@@ -56,16 +56,16 @@ If you are using multiple Sentry dependencies, you can add a [bill of materials]
 
 When running your application, please add our `sentry-opentelemetry-agent` to the `java` command.
 
-Download the latest version of the `sentry-opentelemetry-agent-8.61.1.jar` from [MavenCentral](https://search.maven.org/artifact/io.sentry/sentry-opentelemetry-agent):
+Download the latest version of the `sentry-opentelemetry-agent-8.62.0.jar` from [MavenCentral](https://search.maven.org/artifact/io.sentry/sentry-opentelemetry-agent):
 
 ```bash
-curl https://repo1.maven.org/maven2/io/sentry/sentry-opentelemetry-agent/8.61.1/sentry-opentelemetry-agent-8.61.1.jar -o sentry-opentelemetry-agent-8.61.1.jar
+curl https://repo1.maven.org/maven2/io/sentry/sentry-opentelemetry-agent/8.62.0/sentry-opentelemetry-agent-8.62.0.jar -o sentry-opentelemetry-agent-8.62.0.jar
 ```
 
 Then run your application with:
 
 ```bash
-SENTRY_PROPERTIES_FILE=sentry.properties JAVA_TOOL_OPTIONS="-javaagent:sentry-opentelemetry-agent-8.61.1.jar" java -jar your-application.jar
+SENTRY_PROPERTIES_FILE=sentry.properties JAVA_TOOL_OPTIONS="-javaagent:sentry-opentelemetry-agent-8.62.0.jar" java -jar your-application.jar
 ```
 
 *Other available variations of the above snippet: Java CLI argument*

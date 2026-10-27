@@ -6,7 +6,7 @@ path: sdk/php/orm/doctrine-dbal
 
 Set up Turso in your PHP + Doctrine DBAL project in minutes
 
-<img alt="Doctrine DBAL" />
+![Doctrine DBAL](https://mintcdn.com/turso/7mjM7fXIfeZ8ZwNC/images/guides/doctrine-dbal-banner.png?fit=max\&auto=format\&n=7mjM7fXIfeZ8ZwNC\&q=85\&s=42ebe47228681e458a0f7570d61f74e5)
 
 ## Prerequisites
 
@@ -18,309 +18,303 @@ Before you start, make sure you:
 
 <Snippet />
 
-<Steps>
-  <Step title="Configure database credentials">
-    Get the database URL:
+**1. Configure database credentials**
 
-    ```bash theme={null}
-    turso db show --url <database-name>
-    ```
+Get the database URL:
 
-    Get the database authentication token:
+```bash theme={null}
+turso db show --url <database-name>
+```
 
-    ```bash theme={null}
-    turso db tokens create <database-name>
-    ```
+Get the database authentication token:
 
-    Assign credentials to the environment variables inside `.env`.
+```bash theme={null}
+turso db tokens create <database-name>
+```
 
-    ```bash theme={null}
-    TURSO_DATABASE_URL=
-    TURSO_AUTH_TOKEN=
-    ```
+Assign credentials to the environment variables inside `.env`.
 
-    <Info>Save this later when you need to connect to **Remote** and **Embedded Replica**</Info>
-  </Step>
+```bash theme={null}
+TURSO_DATABASE_URL=
+TURSO_AUTH_TOKEN=
+```
 
-  <Step title="Create PHP Project">
-    Create new directory:
+> [!NOTE]
+>
+> Save this later when you need to connect to **Remote** and **Embedded Replica**
 
-    ```bash theme={null}
-    mkdir your-awesome-php-project
-    cd your-awesome-php-project
-    ```
-  </Step>
+**2. Create PHP Project**
 
-  <Step title="Install Turso Doctrine DBAL">
-    ```bash theme={null}
-    composer require tursodatabase/turso-doctrine-dbal
-    ```
-  </Step>
+Create new directory:
 
-  <Step title="Configure database connection">
-    Setup the environment variable in your Laravel application, choose what the type connection you need.
+```bash theme={null}
+mkdir your-awesome-php-project
+cd your-awesome-php-project
+```
 
-    <CodeGroup>
-      ```php In-Memory Only theme={null}
-      $params = [
-          "url"               => ":memory:",
-          'driverClass'       => \Turso\Doctrine\DBAL\Driver::class,
-      ];
-      ```
+**3. Install Turso Doctrine DBAL**
 
-      ```php Local Only theme={null}
-      $params = [
-          "url"               => "database.db",
-          'driverClass'       => \Turso\Doctrine\DBAL\Driver::class,
-      ];
-      ```
+```bash theme={null}
+composer require tursodatabase/turso-doctrine-dbal
+```
 
-      ```php Remote Only theme={null}
-      $params = [
-          "auth_token"        => getenv('TURSO_AUTH_TOKEN'),
-          "sync_url"          => getenv('TURSO_DATABASE_URL'),
-          'driverClass'       => \Turso\Doctrine\DBAL\Driver::class,
-      ];
-      ```
+**4. Configure database connection**
 
-      ```php Embedded Replica theme={null}
-      $params = [
-          "url"               => "database.db",
-          "auth_token"        => getenv('TURSO_AUTH_TOKEN'),
-          "sync_url"          => getenv('TURSO_DATABASE_URL'),
-          'driverClass'       => \Turso\Doctrine\DBAL\Driver::class,
-      ];
-      ```
-    </CodeGroup>
+Setup the environment variable in your Laravel application, choose what the type connection you need.
 
-    **Other environment variables (Embedded Replica Only)**
+```php In-Memory Only theme={null}
+$params = [
+    "url"               => ":memory:",
+    'driverClass'       => \Turso\Doctrine\DBAL\Driver::class,
+];
+```
 
-    <Expandable title="Other environment variables (Embedded Replica Only)">
-      <ResponseField name="sync_interval" type="integer">
-        Integer value representing synchronization interval in seconds (optional, default: `5`).
-      </ResponseField>
+```php Local Only theme={null}
+$params = [
+    "url"               => "database.db",
+    'driverClass'       => \Turso\Doctrine\DBAL\Driver::class,
+];
+```
 
-      <ResponseField name="read_your_writes" type="boolean">
-        Boolean value indicating whether to read your writes (optional, default: `true`).
-      </ResponseField>
+```php Remote Only theme={null}
+$params = [
+    "auth_token"        => getenv('TURSO_AUTH_TOKEN'),
+    "sync_url"          => getenv('TURSO_DATABASE_URL'),
+    'driverClass'       => \Turso\Doctrine\DBAL\Driver::class,
+];
+```
 
-      <ResponseField name="encryption_key" type="string">
-        String value for encryption purposes (optional, default: empty).
-      </ResponseField>
-    </Expandable>
-  </Step>
+```php Embedded Replica theme={null}
+$params = [
+    "url"               => "database.db",
+    "auth_token"        => getenv('TURSO_AUTH_TOKEN'),
+    "sync_url"          => getenv('TURSO_DATABASE_URL'),
+    'driverClass'       => \Turso\Doctrine\DBAL\Driver::class,
+];
+```
 
-  <Step title="Project Structure Example">
-    ```bash theme={null}
-    src/
-    ├── helpers.php
-    └── Todo.php
-    vendor/
-    composer.json
-    composer.lock
-    todo            # todo executable
-    ```
+**Other environment variables (Embedded Replica Only)**
 
-    Here you simple php todo cli + Doctrine BDAL
+**Other environment variables (Embedded Replica Only)**
 
-    <CodeGroup>
-      ```php todo theme={null}
-      #!/usr/bin/env php
-      <?php
+**sync\_interval** `integer`
 
-      use Turso\Todo\CLI\Todo;
+Integer value representing synchronization interval in seconds (optional, default: `5`).
 
-      require_once __DIR__ . '/vendor/autoload.php';
+**read\_your\_writes** `boolean`
 
-      $header = 'TODO CLI + TURSO';
+Boolean value indicating whether to read your writes (optional, default: `true`).
 
-      echo $header . PHP_EOL;
-      function main()
-      {
-          echo str_repeat('-', WIDTH - 18) . "  Todo CLI - " . VERSION . PHP_EOL;
+**encryption\_key** `string`
 
-          while (true) {
-              echo "[L] List | [A] Add | [E] Edit | [D] Delete | [X] Exit" . PHP_EOL;
-              echo "command: ";
+String value for encryption purposes (optional, default: empty).
 
-              $choice = trim(fgets(STDIN));
+**5. Project Structure Example**
 
-              $app = new Todo();
+```bash theme={null}
+src/
+├── helpers.php
+└── Todo.php
+vendor/
+composer.json
+composer.lock
+todo            # todo executable
+```
 
-              switch (strtolower($choice)) {
-                  case 'l':
-                      $app->listTodos();
-                      break;
-                  case 'a':
-                      $app->addTodo();
-                      clearScreen();
-                      break;
-                  case 'e':
-                      $app->editTodo();
-                      clearScreen();
-                      break;
-                  case 'd':
-                      $app->deleteTodo();
-                      clearScreen();
-                      break;
-                  case 'x':
-                      exit("Goodbye!" . PHP_EOL);
-                  default:
-                      echo "Invalid choice." . PHP_EOL;
-                      clearScreen();
-              }
-          }
+Here you simple php todo cli + Doctrine BDAL
 
-          echo PHP_EOL;
-      }
+```php todo theme={null}
+#!/usr/bin/env php
+<?php
 
-      main();
-      ```
+use Turso\Todo\CLI\Todo;
 
-      ```php src/helpers.php theme={null}
-      <?php
+require_once __DIR__ . '/vendor/autoload.php';
 
-      use Doctrine\DBAL\Connection;
-      use Doctrine\DBAL\DriverManager;
+$header = 'TODO CLI + TURSO';
 
-      const WIDTH = 100;
-      const VERSION = '1.0.0';
+echo $header . PHP_EOL;
+function main()
+{
+    echo str_repeat('-', WIDTH - 18) . "  Todo CLI - " . VERSION . PHP_EOL;
 
-      function clearScreen()
-      {
-          if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-              system('cls');
-          } else {
-              system('clear');
-          }
-      }
+    while (true) {
+        echo "[L] List | [A] Add | [E] Edit | [D] Delete | [X] Exit" . PHP_EOL;
+        echo "command: ";
 
-      function createConnection(): Connection
-      {
-          $params = [
-              "auth_token"        => getenv('TURSO_AUTH_TOKEN'),
-              "sync_url"          => getenv('TURSO_DATABASE_URL'),
-              'driverClass'       => \Turso\Doctrine\DBAL\Driver::class,
-          ];
+        $choice = trim(fgets(STDIN));
 
-          $db = DriverManager::getConnection($params);
-          
-          return $db;
-      }
-      ```
+        $app = new Todo();
 
-      ```php src/Todo.php theme={null}
-      <?php
+        switch (strtolower($choice)) {
+            case 'l':
+                $app->listTodos();
+                break;
+            case 'a':
+                $app->addTodo();
+                clearScreen();
+                break;
+            case 'e':
+                $app->editTodo();
+                clearScreen();
+                break;
+            case 'd':
+                $app->deleteTodo();
+                clearScreen();
+                break;
+            case 'x':
+                exit("Goodbye!" . PHP_EOL);
+            default:
+                echo "Invalid choice." . PHP_EOL;
+                clearScreen();
+        }
+    }
 
-      namespace Turso\Todo\CLI;
+    echo PHP_EOL;
+}
 
-      use Doctrine\DBAL\Connection;
+main();
+```
 
-      class Todo
-      {
+```php src/helpers.php theme={null}
+<?php
 
-          private Connection $db;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DriverManager;
 
-          public function __construct()
-          {
-              $this->db = createConnection();
-          }
+const WIDTH = 100;
+const VERSION = '1.0.0';
 
-          public function loadTodos(): array
-          {
-              $sql = "SELECT * FROM todos";
-              return $this->db->fetchAllAssociative($sql);
-          }
+function clearScreen()
+{
+    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+        system('cls');
+    } else {
+        system('clear');
+    }
+}
 
-          public function saveTodo(string $todo): void
-          {
-              $sql = "INSERT INTO todos (name) VALUES (?)";
-              $this->db->executeStatement($sql, [$todo]);
-          }
+function createConnection(): Connection
+{
+    $params = [
+        "auth_token"        => getenv('TURSO_AUTH_TOKEN'),
+        "sync_url"          => getenv('TURSO_DATABASE_URL'),
+        'driverClass'       => \Turso\Doctrine\DBAL\Driver::class,
+    ];
 
-          public function updateTodo(int $id, string $todo): void
-          {
-              $sql = "UPDATE todos SET name = ? WHERE id = ?";
-              $this->db->executeStatement($sql, [$todo, $id]);
-          }
+    $db = DriverManager::getConnection($params);
+    
+    return $db;
+}
+```
 
-          public function removeTodo(int $id): void
-          {
-              $sql = "DELETE FROM todos WHERE id = ?";
-              $this->db->executeStatement($sql, [$id]);
-          }
+```php src/Todo.php theme={null}
+<?php
 
-          public function listTodos()
-          {
-              $todos = $this->loadTodos();
-              echo "\n" . "TODO-List   " . str_repeat('-', WIDTH - 12) . "\n\n";
-              if (!empty($todos)) {
-                  foreach ($todos as $todo) {
-                      echo sprintf("[%d] %s\n", $todo['id'], $todo['name']);
-                  }
-              } else {
-                  echo "Nothing...\n";
-              }
-              echo "\n" . str_repeat('-', WIDTH) . "\n";
-          }
+namespace Turso\Todo\CLI;
 
-          public function addTodo()
-          {
-              echo "Enter the new To-Do: ";
-              $todo = trim(fgets(STDIN));
-              $this->saveTodo($todo);
-              echo "To-Do added.\n";
-          }
+use Doctrine\DBAL\Connection;
 
-          public function editTodo()
-          {
-              $this->listTodos();
-              echo "Enter the number of the To-Do to edit: ";
-              $index = intval(trim(fgets(STDIN)));
+class Todo
+{
 
-              $findTodo = $this->db->executeQuery("SELECT * FROM todos WHERE id = ?", [$index])->fetchAssociative();
+    private Connection $db;
 
-              if (!empty($findTodo)) {
-                  echo "Enter the new value: ";
-                  $todo = trim(fgets(STDIN));
-                  $this->updateTodo($findTodo['id'], $todo);
-                  echo "To-Do updated.\n";
-              } else {
-                  echo "Invalid index.\n";
-              }
-          }
+    public function __construct()
+    {
+        $this->db = createConnection();
+    }
 
-          public function deleteTodo()
-          {
-              $this->listTodos();
-              echo "Enter the number of the To-Do to delete: ";
-              $index = intval(trim(fgets(STDIN)));
-              $findTodo = $this->db->executeQuery("SELECT * FROM todos WHERE id = ?", [$index])->fetchAssociative();
-              if (!empty($findTodo)) {
-                  $this->removeTodo($findTodo['id']);
-                  echo "To-Do deleted.\n";
-              } else {
-                  echo "Invalid index.\n";
-              }
-          }
-      }
-      ```
-    </CodeGroup>
-  </Step>
+    public function loadTodos(): array
+    {
+        $sql = "SELECT * FROM todos";
+        return $this->db->fetchAllAssociative($sql);
+    }
 
-  <Step title="Your PHP Application Ready!">
-    ![PHP TODO CLI - TURSO](https://i.imgur.com/dmrPFr2.png)
-  </Step>
-</Steps>
+    public function saveTodo(string $todo): void
+    {
+        $sql = "INSERT INTO todos (name) VALUES (?)";
+        $this->db->executeStatement($sql, [$todo]);
+    }
+
+    public function updateTodo(int $id, string $todo): void
+    {
+        $sql = "UPDATE todos SET name = ? WHERE id = ?";
+        $this->db->executeStatement($sql, [$todo, $id]);
+    }
+
+    public function removeTodo(int $id): void
+    {
+        $sql = "DELETE FROM todos WHERE id = ?";
+        $this->db->executeStatement($sql, [$id]);
+    }
+
+    public function listTodos()
+    {
+        $todos = $this->loadTodos();
+        echo "\n" . "TODO-List   " . str_repeat('-', WIDTH - 12) . "\n\n";
+        if (!empty($todos)) {
+            foreach ($todos as $todo) {
+                echo sprintf("[%d] %s\n", $todo['id'], $todo['name']);
+            }
+        } else {
+            echo "Nothing...\n";
+        }
+        echo "\n" . str_repeat('-', WIDTH) . "\n";
+    }
+
+    public function addTodo()
+    {
+        echo "Enter the new To-Do: ";
+        $todo = trim(fgets(STDIN));
+        $this->saveTodo($todo);
+        echo "To-Do added.\n";
+    }
+
+    public function editTodo()
+    {
+        $this->listTodos();
+        echo "Enter the number of the To-Do to edit: ";
+        $index = intval(trim(fgets(STDIN)));
+
+        $findTodo = $this->db->executeQuery("SELECT * FROM todos WHERE id = ?", [$index])->fetchAssociative();
+
+        if (!empty($findTodo)) {
+            echo "Enter the new value: ";
+            $todo = trim(fgets(STDIN));
+            $this->updateTodo($findTodo['id'], $todo);
+            echo "To-Do updated.\n";
+        } else {
+            echo "Invalid index.\n";
+        }
+    }
+
+    public function deleteTodo()
+    {
+        $this->listTodos();
+        echo "Enter the number of the To-Do to delete: ";
+        $index = intval(trim(fgets(STDIN)));
+        $findTodo = $this->db->executeQuery("SELECT * FROM todos WHERE id = ?", [$index])->fetchAssociative();
+        if (!empty($findTodo)) {
+            $this->removeTodo($findTodo['id']);
+            echo "To-Do deleted.\n";
+        } else {
+            echo "Invalid index.\n";
+        }
+    }
+}
+```
+
+**6. Your PHP Application Ready!**
+
+![PHP TODO CLI - TURSO](https://i.imgur.com/dmrPFr2.png)
 
 ## Examples
 
-<CardGroup>
-  <Card title="PHP Todo CLI + Doctrine DBAL" icon="github" href="https://github.com/tursodatabase/example/php-todo-cli-doctrine-dbal/tree/master">
-    See the full source code
-  </Card>
+> **[PHP Todo CLI + Doctrine DBAL](https://github.com/tursodatabase/example/php-todo-cli-doctrine-dbal/tree/master)**
+>
+> See the full source code
 
-  <Card title="Symfony Rest API CRUD" icon="github" href="https://github.com/tursodatabase/example/symfony7-rest-api-crud/tree/master">
-    See the full source code
-  </Card>
-</CardGroup>
+> **[Symfony Rest API CRUD](https://github.com/tursodatabase/example/symfony7-rest-api-crud/tree/master)**
+>
+> See the full source code

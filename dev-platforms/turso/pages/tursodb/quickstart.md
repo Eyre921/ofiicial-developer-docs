@@ -4,83 +4,77 @@ source: https://docs.turso.tech/tursodb/quickstart
 path: tursodb/quickstart
 ---
 
-<Steps>
-  <Step title="Install">
-    <Tabs>
-      <Tab title="macOS / Linux">
-        ```bash theme={null}
-        curl --proto '=https' --tlsv1.2 -LsSf https://github.com/tursodatabase/turso/releases/latest/download/turso_cli-installer.sh | sh
-        ```
-      </Tab>
+**1. Install**
 
-      <Tab title="Windows">
-        Run the following command in PowerShell:
+**macOS / Linux**
 
-        ```powershell theme={null}
-        irm https://github.com/tursodatabase/turso/releases/latest/download/turso_cli-installer.ps1 | iex
-        ```
+```bash theme={null}
+curl --proto '=https' --tlsv1.2 -LsSf https://github.com/tursodatabase/turso/releases/latest/download/turso_cli-installer.sh | sh
+```
 
-        Alternatively, you can [download the Windows executable](https://github.com/tursodatabase/turso/releases/latest) and add it to your PATH.
-      </Tab>
-    </Tabs>
-  </Step>
+**Windows**
 
-  <Step title="Launch">
-    Then launch the interactive shell:
+Run the following command in PowerShell:
 
-    ```bash theme={null}
-    tursodb
-    ```
+```powershell theme={null}
+irm https://github.com/tursodatabase/turso/releases/latest/download/turso_cli-installer.ps1 | iex
+```
 
-    This will start the Turso interactive shell where you can execute SQL statements:
+Alternatively, you can [download the Windows executable](https://github.com/tursodatabase/turso/releases/latest) and add it to your PATH.
 
-    ```
-    Turso
-    Enter ".help" for usage hints.
-    Connected to a transient in-memory database.
-    Use ".open FILENAME" to reopen on a persistent database
-    turso>
-    ```
-  </Step>
+**2. Launch**
 
-  <Step title="Execute">
-    Now you can execute SQL statements in the interactive shell:
+Then launch the interactive shell:
 
-    <AccordionGroup>
-      <Accordion title="Create a table">
-        Create a table for users:
+```bash theme={null}
+tursodb
+```
 
-        ```sql theme={null}
-        CREATE TABLE users (id INT, username TEXT);
-        ```
-      </Accordion>
+This will start the Turso interactive shell where you can execute SQL statements:
 
-      <Accordion title="Insert data">
-        Insert some data into the users table:
+```
+Turso
+Enter ".help" for usage hints.
+Connected to a transient in-memory database.
+Use ".open FILENAME" to reopen on a persistent database
+turso>
+```
 
-        ```sql theme={null}
-        INSERT INTO users VALUES (1, 'alice');
-        INSERT INTO users VALUES (2, 'bob');
-        ```
-      </Accordion>
+**3. Execute**
 
-      <Accordion title="Query data">
-        Query all users from the table:
+Now you can execute SQL statements in the interactive shell:
 
-        ```sql theme={null}
-        SELECT * FROM users;
-        ```
+> **Create a table**
+>
+> Create a table for users:
+>
+> ```sql theme={null}
+> CREATE TABLE users (id INT, username TEXT);
+> ```
 
-        This will return:
+> **Insert data**
+>
+> Insert some data into the users table:
+>
+> ```sql theme={null}
+> INSERT INTO users VALUES (1, 'alice');
+> INSERT INTO users VALUES (2, 'bob');
+> ```
 
-        ```
-        1|alice
-        2|bob
-        ```
-      </Accordion>
-    </AccordionGroup>
-  </Step>
-</Steps>
+> **Query data**
+>
+> Query all users from the table:
+>
+> ```sql theme={null}
+> SELECT * FROM users;
+> ```
+>
+> This will return:
+>
+> ```
+> 1|alice
+> 2|bob
+> ```
 
 ## Experimental Features
 

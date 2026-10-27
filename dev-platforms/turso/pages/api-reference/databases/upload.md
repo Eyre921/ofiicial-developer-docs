@@ -8,17 +8,17 @@ POST https://{database_hostname}/v1/upload
 
 Upload a SQLite database file to a database created with `seed.type = "database_upload"`.
 
-<Note>
-  This endpoint is on the **database hostname** (e.g., `my-db-my-org.turso.io`), not `api.turso.tech`.
-</Note>
+> [!NOTE]
+>
+> This endpoint is on the **database hostname** (e.g., `my-db-my-org.turso.io`), not `api.turso.tech`.
 
-<Note>
-  You must first [create a database](/api-reference/databases/create) with `seed.type = "database_upload"`.
-</Note>
+> [!NOTE]
+>
+> You must first [create a database](/api-reference/databases/create) with `seed.type = "database_upload"`.
 
-<Note>
-  This endpoint requires a **database token**, not a platform API token. You can [create a database token](/api-reference/databases/create-token) after creating the database.
-</Note>
+> [!NOTE]
+>
+> This endpoint requires a **database token**, not a platform API token. You can [create a database token](/api-reference/databases/create-token) after creating the database.
 
 ## Headers
 
@@ -69,20 +69,18 @@ Returns an empty response with status `200 OK` on success.
 | `400` | Invalid database file (wrong format, settings, or corruption) |
 | `401` | Invalid or missing authorization token |
 
-<RequestExample>
-  ```bash cURL theme={null}
-  curl -X POST 'https://{database_hostname}/v1/upload' \
-    -H 'Authorization: Bearer DATABASE_TOKEN' \
-    -H 'Content-Length: FILE_SIZE' \
-    --data-binary '@/path/to/database.db'
-  ```
+```bash cURL theme={null}
+curl -X POST 'https://{database_hostname}/v1/upload' \
+  -H 'Authorization: Bearer DATABASE_TOKEN' \
+  -H 'Content-Length: FILE_SIZE' \
+  --data-binary '@/path/to/database.db'
+```
 
-  ```bash cURL (with encryption) theme={null}
-  curl -X POST 'https://{database_hostname}/v1/upload' \
-    -H 'Authorization: Bearer DATABASE_TOKEN' \
-    -H 'Content-Length: FILE_SIZE' \
-    -H 'x-turso-encryption-key: BASE64_ENCRYPTION_KEY' \
-    -H 'x-turso-encryption-cipher: aes256gcm' \
-    --data-binary '@/path/to/database.db'
-  ```
-</RequestExample>
+```bash cURL (with encryption) theme={null}
+curl -X POST 'https://{database_hostname}/v1/upload' \
+  -H 'Authorization: Bearer DATABASE_TOKEN' \
+  -H 'Content-Length: FILE_SIZE' \
+  -H 'x-turso-encryption-key: BASE64_ENCRYPTION_KEY' \
+  -H 'x-turso-encryption-cipher: aes256gcm' \
+  --data-binary '@/path/to/database.db'
+```

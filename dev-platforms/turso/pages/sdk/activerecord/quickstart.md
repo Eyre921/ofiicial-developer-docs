@@ -18,170 +18,164 @@ In this Ruby quickstart we will learn how to:
 * Execute raw SQL queries
 * Work with migrations
 
-<Steps>
-  <Step title="Retrieve database credentials">
-    You will need an existing database to continue. If you don't have one, [create one](/quickstart).
+**1. Retrieve database credentials**
 
-    <Snippet />
-  </Step>
+You will need an existing database to continue. If you don't have one, [create one](/quickstart).
 
-  <Step title="Install">
-    In your Ruby project, add the following gems to your Gemfile:
+<Snippet />
 
-    ```ruby theme={null}
-    gem 'libsql_activerecord'
-    gem 'activerecord'
-    ```
+**2. Install**
 
-    Then run:
+In your Ruby project, add the following gems to your Gemfile:
 
-    ```bash theme={null}
-    bundle install
-    ```
-  </Step>
+```ruby theme={null}
+gem 'libsql_activerecord'
+gem 'activerecord'
+```
 
-  <Step title="Connect">
-    Create a Ruby file (e.g., `database.rb`) to set up the database connection:
+Then run:
 
-    <AccordionGroup>
-      <Accordion title="Embedded Replicas">
-        ```rb theme={null}
-        require 'libsql_activerecord'
-        require 'active_record'
+```bash theme={null}
+bundle install
+```
 
-        ActiveRecord::Base.establish_connection(
-          adapter: 'libsql',
-          url: ENV['TURSO_DATABASE_URL'],
-          auth_token: ENV['TURSO_AUTH_TOKEN'],
-          path: 'path/to/local/replica.db'
-        )
-        ```
-      </Accordion>
+**3. Connect**
 
-      <Accordion title="Local only">
-        ```rb theme={null}
-        require 'libsql_activerecord'
-        require 'active_record'
+Create a Ruby file (e.g., `database.rb`) to set up the database connection:
 
-        ActiveRecord::Base.establish_connection(
-          adapter: 'libsql',
-          path: 'path/to/local.db'
-        )
-        ```
-      </Accordion>
+> **Embedded Replicas**
+>
+> ```rb theme={null}
+> require 'libsql_activerecord'
+> require 'active_record'
+>
+> ActiveRecord::Base.establish_connection(
+>   adapter: 'libsql',
+>   url: ENV['TURSO_DATABASE_URL'],
+>   auth_token: ENV['TURSO_AUTH_TOKEN'],
+>   path: 'path/to/local/replica.db'
+> )
+> ```
 
-      <Accordion title="Remote only">
-        ```rb theme={null}
-        require 'libsql_activerecord'
-        require 'active_record'
+> **Local only**
+>
+> ```rb theme={null}
+> require 'libsql_activerecord'
+> require 'active_record'
+>
+> ActiveRecord::Base.establish_connection(
+>   adapter: 'libsql',
+>   path: 'path/to/local.db'
+> )
+> ```
 
-        ActiveRecord::Base.establish_connection(
-          adapter: 'libsql',
-          url: ENV['TURSO_DATABASE_URL'],
-          auth_token: ENV['TURSO_AUTH_TOKEN']
-        )
-        ```
-      </Accordion>
+> **Remote only**
+>
+> ```rb theme={null}
+> require 'libsql_activerecord'
+> require 'active_record'
+>
+> ActiveRecord::Base.establish_connection(
+>   adapter: 'libsql',
+>   url: ENV['TURSO_DATABASE_URL'],
+>   auth_token: ENV['TURSO_AUTH_TOKEN']
+> )
+> ```
 
-      <Accordion title="In-memory">
-        ```rb theme={null}
-        require 'libsql_activerecord'
-        require 'active_record'
+> **In-memory**
+>
+> ```rb theme={null}
+> require 'libsql_activerecord'
+> require 'active_record'
+>
+> ActiveRecord::Base.establish_connection(adapter: 'libsql')
+> ```
 
-        ActiveRecord::Base.establish_connection(adapter: 'libsql')
-        ```
-      </Accordion>
-    </AccordionGroup>
-  </Step>
+**4. Define models**
 
-  <Step title="Define models">
-    Create model files for your database tables. For example, `product.rb`:
+Create model files for your database tables. For example, `product.rb`:
 
-    ```rb theme={null}
-    class Product < ActiveRecord::Base
-      validates :name, presence: true
+```rb theme={null}
+class Product < ActiveRecord::Base
+  validates :name, presence: true
+end
+```
+
+**5. Create and execute a migration**
+
+Create a migration file (e.g., `001_create_products.rb`):
+
+```rb theme={null}
+class CreateProducts < ActiveRecord::Migration[8.0]
+  def change
+    create_table :products do |t|
+      t.string :name
+      t.text :description
+      t.timestamps
     end
-    ```
-  </Step>
+  end
+end
+```
 
-  <Step title="Create and execute a migration">
-    Create a migration file (e.g., `001_create_products.rb`):
+Execute the migration:
 
-    ```rb theme={null}
-    class CreateProducts < ActiveRecord::Migration[8.0]
-      def change
-        create_table :products do |t|
-          t.string :name
-          t.text :description
-          t.timestamps
-        end
-      end
-    end
-    ```
+```rb theme={null}
+require_relative 'database'
+require_relative '001_create_products'
 
-    Execute the migration:
+CreateProducts.migrate(:up)
+```
 
-    ```rb theme={null}
-    require_relative 'database'
-    require_relative '001_create_products'
+**6. Execute**
 
-    CreateProducts.migrate(:up)
-    ```
-  </Step>
+Perform some basic CRUD operations:
 
-  <Step title="Execute">
-    Perform some basic CRUD operations:
+```rb Create theme={null}
+product = Product.create(name: 'Book', description: 'A book about books')
+```
 
-    <CodeGroup>
-      ```rb Create theme={null}
-      product = Product.create(name: 'Book', description: 'A book about books')
-      ```
+```rb Read theme={null}
+all_products = Product.all
+first_product = Product.first
+found_product = Product.find_by(name: 'Book')
+```
 
-      ```rb Read theme={null}
-      all_products = Product.all
-      first_product = Product.first
-      found_product = Product.find_by(name: 'Book')
-      ```
+```rb Update theme={null}
+product.update(description: 'An updated description')
+```
 
-      ```rb Update theme={null}
-      product.update(description: 'An updated description')
-      ```
+```rb Delete theme={null}
+product.destroy
+```
 
-      ```rb Delete theme={null}
-      product.destroy
-      ```
+```rb Raw SQL theme={null}
+results = ActiveRecord::Base.connection.execute("SELECT * FROM products WHERE name LIKE '%Book%'")
 
-      ```rb Raw SQL theme={null}
-      results = ActiveRecord::Base.connection.execute("SELECT * FROM products WHERE name LIKE '%Book%'")
+results.each do |row|
+  puts row.inspect
+end
+```
 
-      results.each do |row|
-        puts row.inspect
-      end
-      ```
-    </CodeGroup>
-  </Step>
+**7. Work with associations**
 
-  <Step title="Work with associations">
-    Define associations in your models:
+Define associations in your models:
 
-    ```ruby theme={null}
-    class Author < ActiveRecord::Base
-      has_many :books
-    end
+```ruby theme={null}
+class Author < ActiveRecord::Base
+  has_many :books
+end
 
-    class Book < ActiveRecord::Base
-      belongs_to :author
-    end
-    ```
+class Book < ActiveRecord::Base
+  belongs_to :author
+end
+```
 
-    Use associations in your code:
+Use associations in your code:
 
-    ```ruby theme={null}
-    author = Author.create(name: 'Jane Doe')
-    book = author.books.create(title: 'My First Book')
+```ruby theme={null}
+author = Author.create(name: 'Jane Doe')
+book = author.books.create(title: 'My First Book')
 
-    puts author.books.count # => 1
-    puts book.author.name # => "Jane Doe"
-    ```
-  </Step>
-</Steps>
+puts author.books.count # => 1
+puts book.author.name # => "Jane Doe"
+```

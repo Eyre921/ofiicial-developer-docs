@@ -8,9 +8,9 @@ Complete reference for the AgentFS command-line interface
 
 Complete reference for the `agentfs` command-line tool.
 
-<Info>
-  For the latest reference, see [MANUAL.md](https://github.com/tursodatabase/agentfs/blob/main/MANUAL.md) in the repository.
-</Info>
+> [!NOTE]
+>
+> For the latest reference, see [MANUAL.md](https://github.com/tursodatabase/agentfs/blob/main/MANUAL.md) in the repository.
 
 ## Installation
 
@@ -303,12 +303,10 @@ Variables set inside the sandbox:
 
 ## See Also
 
-<CardGroup>
-  <Card title="Installation" icon="download" href="/agentfs/installation">
-    Installation instructions
-  </Card>
+> **[Installation](/agentfs/installation)**
+>
+> Installation instructions
 
-  <Card title="Sandbox Guide" icon="shield" href="/agentfs/guides/sandbox">
-    Running agents in sandboxes
-  </Card>
-</CardGroup>
+> **[Sandbox Guide](/agentfs/guides/sandbox)**
+>
+> Running agents in sandboxes

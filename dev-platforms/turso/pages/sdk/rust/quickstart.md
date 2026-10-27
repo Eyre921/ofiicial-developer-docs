@@ -17,185 +17,183 @@ In this Rust quickstart we will learn how to:
 
 `turso` is the recommended crate for running a local database, including synchronizing it to and from Turso Cloud. It is built on the Turso Database engine — a ground-up rewrite of SQLite with concurrent writes (MVCC), async I/O, and native Rust async/await support.
 
-<Steps>
-  <Step title="Install">
-    ```bash theme={null}
-    cargo add turso tokio --features tokio/full
-    ```
-  </Step>
+**1. Install**
 
-  <Step title="Connect">
-    ```rust theme={null}
-    use turso::Builder;
+```bash theme={null}
+cargo add turso tokio --features tokio/full
+```
 
-    #[tokio::main]
-    async fn main() -> Result<(), Box<dyn std::error::Error>> {
-        let db = Builder::new_local("app.db").build().await?;
-        let conn = db.connect()?;
+**2. Connect**
 
-        conn.execute(
-            "CREATE TABLE IF NOT EXISTS users (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT NOT NULL
-            )",
-            (),
-        ).await?;
+```rust theme={null}
+use turso::Builder;
 
-        conn.execute("INSERT INTO users (name) VALUES (?)", ("Alice",)).await?;
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let db = Builder::new_local("app.db").build().await?;
+    let conn = db.connect()?;
 
-        let mut rows = conn.query("SELECT * FROM users", ()).await?;
-        while let Some(row) = rows.next().await? {
-            let id: i64 = row.get(0)?;
-            let name: String = row.get(1)?;
-            println!("User: {} {}", id, name);
-        }
+    conn.execute(
+        "CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL
+        )",
+        (),
+    ).await?;
 
-        Ok(())
+    conn.execute("INSERT INTO users (name) VALUES (?)", ("Alice",)).await?;
+
+    let mut rows = conn.query("SELECT * FROM users", ()).await?;
+    while let Some(row) = rows.next().await? {
+        let id: i64 = row.get(0)?;
+        let name: String = row.get(1)?;
+        println!("User: {} {}", id, name);
     }
-    ```
-  </Step>
 
-  <Step title="Sync (push and pull)">
-    If you need to sync your local database with Turso Cloud, enable the `sync` feature:
+    Ok(())
+}
+```
 
-    ```bash theme={null}
-    cargo add turso --features sync
-    ```
+**3. Sync (push and pull)**
 
-    ```rust theme={null}
-    use turso::sync::Builder;
+If you need to sync your local database with Turso Cloud, enable the `sync` feature:
 
-    #[tokio::main]
-    async fn main() -> Result<(), Box<dyn std::error::Error>> {
-        let db = Builder::new_remote("app.db")
-            .with_remote_url(&std::env::var("TURSO_DATABASE_URL")?)
-            .with_auth_token(&std::env::var("TURSO_AUTH_TOKEN")?)
-            .build()
-            .await?;
+```bash theme={null}
+cargo add turso --features sync
+```
 
-        let conn = db.connect().await?;
+```rust theme={null}
+use turso::sync::Builder;
 
-        conn.execute("INSERT INTO users (name) VALUES (?)", ("Bob",)).await?;
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let db = Builder::new_remote("app.db")
+        .with_remote_url(&std::env::var("TURSO_DATABASE_URL")?)
+        .with_auth_token(&std::env::var("TURSO_AUTH_TOKEN")?)
+        .build()
+        .await?;
 
-        // Push local writes to Turso Cloud
-        db.push().await?;
+    let conn = db.connect().await?;
 
-        // Pull remote changes to local database
-        db.pull().await?;
+    conn.execute("INSERT INTO users (name) VALUES (?)", ("Bob",)).await?;
 
-        Ok(())
-    }
-    ```
+    // Push local writes to Turso Cloud
+    db.push().await?;
 
-    All reads and writes happen against the local database file — fast, offline-capable. `push()` sends your changes to the cloud. `pull()` brings remote changes down. See the [reference](/sdk/rust/reference) for checkpoint, stats, and encryption. See [Turso Sync](/sync/usage) for details on conflict resolution and more.
+    // Pull remote changes to local database
+    db.pull().await?;
 
-    <Info>
-      You can test sync locally without a Turso Cloud account by starting a local sync server:
+    Ok(())
+}
+```
 
-      ```bash theme={null}
-      tursodb :memory: --sync-server 127.0.0.1:8080
-      ```
+All reads and writes happen against the local database file — fast, offline-capable. `push()` sends your changes to the cloud. `pull()` brings remote changes down. See the [reference](/sdk/rust/reference) for checkpoint, stats, and encryption. See [Turso Sync](/sync/usage) for details on conflict resolution and more.
 
-      Then use `http://127.0.0.1:8080` as the remote URL (no auth token needed). See [Turso Database quickstart](/tursodb/quickstart) for how to install `tursodb`.
-    </Info>
-  </Step>
-</Steps>
+> [!NOTE]
+>
+> You can test sync locally without a Turso Cloud account by starting a local sync server:
+>
+> ```bash theme={null}
+> tursodb :memory: --sync-server 127.0.0.1:8080
+> ```
+>
+> Then use `http://127.0.0.1:8080` as the remote URL (no auth token needed). See [Turso Database quickstart](/tursodb/quickstart) for how to install `tursodb`.
 
 ## Remote Access (Over-the-Wire)
 
 If your application needs to query a Turso Cloud database directly over the network (e.g., from a web server or serverless function), use the crate that matches your database engine: `turso_serverless` for [Turso databases](/tursodb/quickstart), or `libsql` (with the `remote` feature) for [libSQL](/libsql) databases.
 
-<Info>
-  For most applications, we recommend running a local database with sync (`turso::sync`) instead — it gives you faster reads, offline support, and lower latency. Remote access is useful when you cannot store a local database file (e.g., stateless serverless environments).
-</Info>
+> [!NOTE]
+>
+> For most applications, we recommend running a local database with sync (`turso::sync`) instead — it gives you faster reads, offline support, and lower latency. Remote access is useful when you cannot store a local database file (e.g., stateless serverless environments).
 
 ### Remote Turso database: turso\_serverless
 
 `turso_serverless` connects to a remote Turso database over HTTP — no persistent connections, no C compiler required. Its API mirrors the embedded `turso` crate, so code moves between local and remote with minimal changes.
 
-<Steps>
-  <Step title="Retrieve database credentials">
-    You will need an existing Turso database to continue. If you don't have one, create one with `turso db create --tursodb` (see the [quickstart](/quickstart)).
+**1. Retrieve database credentials**
 
-    <Snippet />
+You will need an existing Turso database to continue. If you don't have one, create one with `turso db create --tursodb` (see the [quickstart](/quickstart)).
 
-    <Info>You will want to store these as environment variables.</Info>
-  </Step>
+<Snippet />
 
-  <Step title="Install">
-    ```bash theme={null}
-    cargo add turso_serverless tokio --features tokio/full
-    ```
-  </Step>
+> [!NOTE]
+>
+> You will want to store these as environment variables.
 
-  <Step title="Connect and query">
-    ```rust theme={null}
-    use turso_serverless::Builder;
+**2. Install**
 
-    #[tokio::main]
-    async fn main() -> Result<(), Box<dyn std::error::Error>> {
-        let db = Builder::new_remote(std::env::var("TURSO_DATABASE_URL")?)
-            .with_auth_token(std::env::var("TURSO_AUTH_TOKEN")?)
-            .build()
-            .await?;
-        let conn = db.connect()?;
+```bash theme={null}
+cargo add turso_serverless tokio --features tokio/full
+```
 
-        let mut rows = conn.query("SELECT * FROM users", ()).await?;
-        while let Some(row) = rows.next().await? {
-            let id: i64 = row.get(0)?;
-            let name: String = row.get(1)?;
-            println!("User: {} {}", id, name);
-        }
+**3. Connect and query**
 
-        Ok(())
+```rust theme={null}
+use turso_serverless::Builder;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let db = Builder::new_remote(std::env::var("TURSO_DATABASE_URL")?)
+        .with_auth_token(std::env::var("TURSO_AUTH_TOKEN")?)
+        .build()
+        .await?;
+    let conn = db.connect()?;
+
+    let mut rows = conn.query("SELECT * FROM users", ()).await?;
+    while let Some(row) = rows.next().await? {
+        let id: i64 = row.get(0)?;
+        let name: String = row.get(1)?;
+        println!("User: {} {}", id, name);
     }
-    ```
-  </Step>
-</Steps>
+
+    Ok(())
+}
+```
 
 ### Remote libSQL database: libsql
 
 The `libsql` crate with the `remote` feature connects to a remote libSQL database over HTTP — no local file needed, no C compiler required.
 
-<Steps>
-  <Step title="Retrieve database credentials">
-    You will need an existing libSQL database to continue. If you don't have one, [create one](/quickstart).
+**1. Retrieve database credentials**
 
-    <Snippet />
+You will need an existing libSQL database to continue. If you don't have one, [create one](/quickstart).
 
-    <Info>You will want to store these as environment variables.</Info>
-  </Step>
+<Snippet />
 
-  <Step title="Install">
-    ```bash theme={null}
-    cargo add libsql --features remote
-    ```
-  </Step>
+> [!NOTE]
+>
+> You will want to store these as environment variables.
 
-  <Step title="Connect and query">
-    ```rust theme={null}
-    use libsql::Builder;
+**2. Install**
 
-    #[tokio::main]
-    async fn main() -> Result<(), Box<dyn std::error::Error>> {
-        let url = std::env::var("TURSO_DATABASE_URL")?;
-        let token = std::env::var("TURSO_AUTH_TOKEN")?;
+```bash theme={null}
+cargo add libsql --features remote
+```
 
-        let db = Builder::new_remote(url, token).build().await?;
-        let conn = db.connect()?;
+**3. Connect and query**
 
-        let mut rows = conn.query("SELECT * FROM users", ()).await?;
-        while let Some(row) = rows.next().await? {
-            let id: i64 = row.get(0)?;
-            let name: String = row.get(1)?;
-            println!("User: {} {}", id, name);
-        }
+```rust theme={null}
+use libsql::Builder;
 
-        Ok(())
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let url = std::env::var("TURSO_DATABASE_URL")?;
+    let token = std::env::var("TURSO_AUTH_TOKEN")?;
+
+    let db = Builder::new_remote(url, token).build().await?;
+    let conn = db.connect()?;
+
+    let mut rows = conn.query("SELECT * FROM users", ()).await?;
+    while let Some(row) = rows.next().await? {
+        let id: i64 = row.get(0)?;
+        let name: String = row.get(1)?;
+        println!("User: {} {}", id, name);
     }
-    ```
-  </Step>
-</Steps>
+
+    Ok(())
+}
+```
 
 ## Using an ORM
 
@@ -209,10 +207,10 @@ See the [Toasty + Turso guide](/sdk/rust/orm/toasty) for the full walkthrough.
 
 ## Embedded Replicas (libsql)
 
-<Info>
-  Embedded Replicas give your Rust app a local read copy of a Turso Cloud database. Reads are served locally; writes go to the cloud primary and are reflected back to the replica. Embedded Replicas are fully supported in production.
-
-  For new projects that need sync, we recommend the `turso` crate with `turso::sync`: both reads and writes are local, you sync explicitly with `push()` / `pull()`, and the wire format is logical change-data-capture rather than page frames ([benchmark](https://turso.tech/blog/sync-benchmark)).
-</Info>
+> [!NOTE]
+>
+> Embedded Replicas give your Rust app a local read copy of a Turso Cloud database. Reads are served locally; writes go to the cloud primary and are reflected back to the replica. Embedded Replicas are fully supported in production.
+>
+> For new projects that need sync, we recommend the `turso` crate with `turso::sync`: both reads and writes are local, you sync explicitly with `push()` / `pull()`, and the wire format is logical change-data-capture rather than page frames ([benchmark](https://turso.tech/blog/sync-benchmark)).
 
 See the [reference](/sdk/rust/reference) for full documentation on Embedded Replicas with `libsql`.

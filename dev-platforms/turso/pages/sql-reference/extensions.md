@@ -102,9 +102,9 @@ SELECT regexp_replace('Hello World', '[aeiou]', '*');
 
 ## Vector Extension
 
-<Info>
-  **Turso Extension**: Native vector search for similarity search and semantic search applications.
-</Info>
+> [!NOTE]
+>
+> **Turso Extension**: Native vector search for similarity search and semantic search applications.
 
 The vector extension provides functions for creating, storing, and searching vector embeddings. Vectors are stored as BLOBs.
 
@@ -145,20 +145,20 @@ LIMIT 5;
 
 The time extension is compatible with [sqlean-time](https://github.com/nalgeon/sqlean/blob/main/docs/time.md) and provides advanced time manipulation functions.
 
-<Info>
-  A **time value** (`t` in the tables below) is an opaque 13-byte **BLOB**, not an integer — this matches sqlean-time byte-for-byte (`version(1) + seconds(8) + nanoseconds(4)`, with seconds counted from year 0001). Any function that produces a time (`time_now`, `time_date`, `time_add`, …) returns a BLOB, and `typeof(time_now())` is `blob`. Use `time_to_unix` / `time_to_nano` to get an INTEGER, and the `time_fmt_*` functions to get TEXT.
-
-  To store a time value in a `STRICT` table, use a `BLOB` column, or convert it first:
-
-  ```sql theme={null}
-  CREATE TABLE X (t BLOB) STRICT;
-  INSERT INTO X (t) VALUES (time_now());
-
-  -- Or store a Unix integer:
-  CREATE TABLE Y (t INTEGER) STRICT;
-  INSERT INTO Y (t) VALUES (time_to_nano(time_now()));
-  ```
-</Info>
+> [!NOTE]
+>
+> A **time value** (`t` in the tables below) is an opaque 13-byte **BLOB**, not an integer — this matches sqlean-time byte-for-byte (`version(1) + seconds(8) + nanoseconds(4)`, with seconds counted from year 0001). Any function that produces a time (`time_now`, `time_date`, `time_add`, …) returns a BLOB, and `typeof(time_now())` is `blob`. Use `time_to_unix` / `time_to_nano` to get an INTEGER, and the `time_fmt_*` functions to get TEXT.
+>
+> To store a time value in a `STRICT` table, use a `BLOB` column, or convert it first:
+>
+> ```sql theme={null}
+> CREATE TABLE X (t BLOB) STRICT;
+> INSERT INTO X (t) VALUES (time_now());
+>
+> -- Or store a Unix integer:
+> CREATE TABLE Y (t INTEGER) STRICT;
+> INSERT INTO Y (t) VALUES (time_to_nano(time_now()));
+> ```
 
 ### Key Functions
 
@@ -231,9 +231,9 @@ SELECT time_since(time_date(2025, 1, 1, 0, 0, 0)) / dur_h();
 
 ## Full-Text Search (FTS)
 
-<Info>
-  **Turso Extension**: Full-text search powered by Tantivy, replacing SQLite's FTS3/FTS4/FTS5.
-</Info>
+> [!NOTE]
+>
+> **Turso Extension**: Full-text search powered by Tantivy, replacing SQLite's FTS3/FTS4/FTS5.
 
 Turso provides full-text search through the FTS index method. For the complete reference including query syntax, tokenizers, and scoring, see [FTS Functions](/sql-reference/functions/fts).
 

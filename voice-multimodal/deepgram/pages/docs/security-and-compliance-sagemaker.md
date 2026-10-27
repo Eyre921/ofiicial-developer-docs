@@ -75,7 +75,7 @@ Use a VPC endpoint when you want to:
 
 ## Compliance
 
-Deepgram models running on Amazon SageMaker AI real-time endpoints are eligible for most common compliance frameworks, including SOC 1/2/3, HIPAA, PCI DSS, FedRAMP, GDPR, and ISO 27001/27017/27018.
+Deepgram models running on Amazon SageMaker AI real-time endpoints are eligible for most common compliance frameworks, including but not limited to SOC 1/2/3, HIPAA, HITRUST, PCI DSS, FedRAMP, GDPR, and ISO 27001/27017/27018.
 
 ### FedRAMP
 

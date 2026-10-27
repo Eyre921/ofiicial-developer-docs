@@ -38,7 +38,7 @@ Each offer specifies the type of financing being offered, which might be a loan 
 
 ## Eligibility
 
-Stripe, together with our financing partner, determines your eligibility for an offer based on a variety of factors related to your Stripe accounts, including your processing volume and the size of your customer base. We regularly review your business for offer eligibility. If you become eligible, you receive an email, and can view your offer in the Dashboard under the [Capital tab](https://dashboard.stripe.com/capital). To receive emails regarding new offers, update [your email settings](https://go.stripe.global/subscribe?tmp_source=none) to opt into receiving Stripe Capital emails.
+Stripe, together with our financing partner, determines your eligibility for an offer based on a variety of factors related to your Stripe accounts, including your processing volume and the size of your customer base. We regularly review your business for offer eligibility. If you become eligible, you receive an email, and can view your offer in the Dashboard under the [Capital tab](https://dashboard.stripe.com/capital). To receive emails regarding new offers, update [your email settings](https://go.stripe.global/subscribe?tmp_source=none) to opt in to receiving Stripe Capital emails.
 
 You might see a banner in the Stripe Dashboard that indicates that you’re on track for a future offer. This isn’t a guarantee of a future offer, specific terms, or timing, and doesn’t reflect a credit decision or evaluation.
 
@@ -173,7 +173,7 @@ We evaluate your business daily for eligibility, which includes your fixed fee p
 
 Paying off your active financing offer doesn’t automatically qualify you for a new offer. When you’re eligible for a new offer, it appears automatically in your [Dashboard](https://dashboard.stripe.com/capital). Eligibility for additional financing offers involves several factors. Typically, eligibility for additional funding is linked to businesses that maintain consistent repayments and have repaid a significant portion of their existing funding.
 
-We assess every business regularly, even those actively paying on a financing offer. Even if you aren’t eligible for a new offer today, you might be eligible in the future. For questions regarding eligibility, contact our partner, YouLend, at [stripecapital@youlend.com](mailto:stripecapital@youlend.com). To receive emails regarding new offers, update [your email settings](https://go.stripe.global/subscribe?tmp_source=none) to opt into receiving Stripe Capital emails.
+We assess every business regularly, even those actively paying on a financing offer. Even if you aren’t eligible for a new offer today, you might be eligible in the future. For questions regarding eligibility, contact our partner, YouLend, at [stripecapital@youlend.com](mailto:stripecapital@youlend.com). To receive emails regarding new offers, update [your email settings](https://go.stripe.global/subscribe?tmp_source=none) to opt in to receiving Stripe Capital emails.
 
 You might see a banner in the Stripe Dashboard that indicates that you’re on track for a future offer. This isn’t a guarantee of a future offer or of specific terms and doesn’t reflect a credit decision or evaluation.
 
@@ -266,7 +266,7 @@ We evaluate your business regularly for eligibility, which includes your fixed f
 
 Paying off your active financing offer doesn’t automatically qualify you for a new offer. When you’re eligible for a new offer, it appears automatically in your [Dashboard](https://dashboard.stripe.com/capital). Eligibility for additional financing offers involves several factors. Typically, eligibility for additional funding is linked to businesses that maintain consistent repayments and have repaid a significant portion of their existing funding.
 
-We assess every business regularly, even those actively paying on a financing offer. Even if you aren’t eligible for a new offer today, you might be eligible in the future. For questions regarding eligibility, contact our partner, YouLend, at [stripecapital@youlend.com](mailto:stripecapital@youlend.com). To receive emails regarding new offers, update [your email settings](https://go.stripe.global/subscribe?tmp_source=none) to opt into receiving Stripe Capital emails.
+We assess every business regularly, even those actively paying on a financing offer. Even if you aren’t eligible for a new offer today, you might be eligible in the future. For questions regarding eligibility, contact our partner, YouLend, at [stripecapital@youlend.com](mailto:stripecapital@youlend.com). To receive emails regarding new offers, update [your email settings](https://go.stripe.global/subscribe?tmp_source=none) to opt in to receiving Stripe Capital emails.
 
 You might see a banner in the Stripe Dashboard that indicates that you’re on track for a future offer. This isn’t a guarantee of a future offer or of specific terms and doesn’t reflect a credit decision or evaluation.
 
@@ -361,7 +361,7 @@ We evaluate your business regularly for eligibility, which includes the way in w
 
 When you’re eligible for a new offer, it appears automatically in your [Dashboard](https://dashboard.stripe.com/capital). Eligibility for additional financing offers involves several factors. Typically, eligibility for additional funding is linked to businesses that maintain consistent repayments and have repaid a significant portion of their existing funding.
 
-We assess every business regularly, even those actively paying on a financing offer. Even if you aren’t eligible for a new offer today, you might be eligible in the future. For questions regarding eligibility, contact our partner, YouLend, at [stripecapital@youlend.com](mailto:stripecapital@youlend.com). To receive emails regarding new offers, update [your email settings](https://go.stripe.global/subscribe?tmp_source=none) to opt into receiving Stripe Capital emails.
+We assess every business regularly, even those actively paying on a financing offer. Even if you aren’t eligible for a new offer today, you might be eligible in the future. For questions regarding eligibility, contact our partner, YouLend, at [stripecapital@youlend.com](mailto:stripecapital@youlend.com). To receive emails regarding new offers, update [your email settings](https://go.stripe.global/subscribe?tmp_source=none) to opt in to receiving Stripe Capital emails.
 
 You might see a banner in the Stripe Dashboard that indicates that you’re on track for a future offer. This isn’t a guarantee of a future offer or of specific terms and doesn’t reflect a credit decision or evaluation.
 
@@ -458,7 +458,7 @@ We evaluate your business regularly for eligibility, which includes how we calcu
 
 When you’re eligible for a new Stripe Capital offer, it appears automatically in your [Dashboard](https://dashboard.stripe.com/capital). Eligibility for additional offers takes several factors into account. Typically, eligibility for additional funding is linked to businesses that maintain consistent repayments and have repaid a significant portion of their existing funding. We assess every business regularly, even those actively paying a loan. Even if you aren’t eligible for a new offer today, you might be eligible in the future.
 
-For questions regarding eligibility, [email our partner, Fundbox](mailto:stripe-capital@fundbox.com). To receive emails regarding new offers, update [your email settings](https://go.stripe.global/subscribe?tmp_source=none) to opt into receiving Stripe Capital emails.
+For questions regarding eligibility, [email our partner, Fundbox](mailto:stripe-capital@fundbox.com). To receive emails regarding new offers, update [your email settings](https://go.stripe.global/subscribe?tmp_source=none) to opt in to receiving Stripe Capital emails.
 
 You might see a banner in the Stripe Dashboard that indicates that you could be eligible for a future offer. This isn’t a guarantee of a future offer, or a promise of specific terms, and it doesn’t reflect a credit decision or evaluation.
 
@@ -562,7 +562,7 @@ We evaluate your business regularly for eligibility, which includes how we calcu
 
 When you’re eligible for a new Stripe Capital offer, it appears automatically in your [Dashboard](https://dashboard.stripe.com/capital). Eligibility for additional offers takes several factors into account. Typically, eligibility for additional funding is linked to businesses that maintain consistent repayments and have repaid a significant portion of their existing funding. We assess every business regularly, even those actively paying a loan. Even if you aren’t eligible for a new offer today, you might be eligible in the future.
 
-For questions regarding eligibility, [email our partner, Fundbox](mailto:stripe-capital-ca@fundbox.com). To receive emails regarding new offers, update [your email settings](https://go.stripe.global/subscribe?tmp_source=none) to opt into receiving Stripe Capital emails.
+For questions regarding eligibility, [email our partner, Fundbox](mailto:stripe-capital-ca@fundbox.com). To receive emails regarding new offers, update [your email settings](https://go.stripe.global/subscribe?tmp_source=none) to opt in to receiving Stripe Capital emails.
 
 You might see a banner in the Stripe Dashboard that indicates that you could be eligible for a future offer. This isn’t a guarantee of a future offer, or a promise of specific terms, and it doesn’t reflect a credit decision or evaluation.
 

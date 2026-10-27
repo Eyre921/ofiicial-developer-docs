@@ -16,84 +16,78 @@ In this Ruby quickstart we will learn how to:
 * Execute a query using SQL
 * Sync changes to local database (optional)
 
-<Steps>
-  <Step title="Retrieve database credentials">
-    You will need an existing database to continue. If you don't have one, [create one](/quickstart).
+**1. Retrieve database credentials**
 
-    <Snippet />
+You will need an existing database to continue. If you don't have one, [create one](/quickstart).
 
-    <Snippet />
-  </Step>
+<Snippet />
 
-  <Step title="Install">
-    Inside your Ruby project, install the following Rubygem:
+<Snippet />
 
-    ```bash theme={null}
-    bundle add turso_libsql
-    ```
-  </Step>
+**2. Install**
 
-  <Step title="Connect">
-    <AccordionGroup>
-      <Accordion title="Embedded Replicas">
-        ```rb theme={null}
-        require 'turso_libsql'
+Inside your Ruby project, install the following Rubygem:
 
-        db =Libsql::Database.new(
-          path: 'local.db',
-          url: ENV['TURSO_DATABASE_URL'],
-          auth_token: ENV['TURSO_AUTH_TOKEN'],
-          sync_interval: 100
-        )
-        ```
-      </Accordion>
+```bash theme={null}
+bundle add turso_libsql
+```
 
-      <Accordion title="Local only">
-        ```rb theme={null}
-        require 'turso_libsql'
+**3. Connect**
 
-        db = Libsql::Database.new(path: 'local.db')
-        ```
-      </Accordion>
+> **Embedded Replicas**
+>
+> ```rb theme={null}
+> require 'turso_libsql'
+>
+> db =Libsql::Database.new(
+>   path: 'local.db',
+>   url: ENV['TURSO_DATABASE_URL'],
+>   auth_token: ENV['TURSO_AUTH_TOKEN'],
+>   sync_interval: 100
+> )
+> ```
 
-      <Accordion title="Remote only">
-        ```rb theme={null}
-        require 'turso_libsql'
+> **Local only**
+>
+> ```rb theme={null}
+> require 'turso_libsql'
+>
+> db = Libsql::Database.new(path: 'local.db')
+> ```
 
-        db = Libsql::Database.new(
-          url: ENV['TURSO_DATABASE_URL'],
-          auth_token: ENV['TURSO_AUTH_TOKEN']
-        )
-        ```
-      </Accordion>
-    </AccordionGroup>
-  </Step>
+> **Remote only**
+>
+> ```rb theme={null}
+> require 'turso_libsql'
+>
+> db = Libsql::Database.new(
+>   url: ENV['TURSO_DATABASE_URL'],
+>   auth_token: ENV['TURSO_AUTH_TOKEN']
+> )
+> ```
 
-  <Step title="Execute">
-    You can execute a SQL query against your existing database by preparing a statement and then executing it:
+**4. Execute**
 
-    ```c theme={null}
-    db.connect do |conn|
-      rows = conn.query 'SELECT * FROM users'
-      rows.close
-    end
-    ```
+You can execute a SQL query against your existing database by preparing a statement and then executing it:
 
-    If you need to use placeholders for values, you can do that:
+```c theme={null}
+db.connect do |conn|
+  rows = conn.query 'SELECT * FROM users'
+  rows.close
+end
+```
 
-    <CodeGroup>
-      ```c Positional theme={null}
-      name = 'Iku'
-      rows = conn.execute 'INSERT INTO users (id) VALUES (?)', [name]
-      ```
-    </CodeGroup>
-  </Step>
+If you need to use placeholders for values, you can do that:
 
-  <Step title="Sync (Embedded Replicas only)">
-    When using embedded replicas, you should call `sync` on the database to sync your local database with the primary database, unless you are using `sync_interval` (though there is no issue with calling `sync` with `sync_interval` enabled):
+```c Positional theme={null}
+name = 'Iku'
+rows = conn.execute 'INSERT INTO users (id) VALUES (?)', [name]
+```
 
-    ```rb theme={null}
-    db.sync
-    ```
-  </Step>
-</Steps>
+**5. Sync (Embedded Replicas only)**
+
+When using embedded replicas, you should call `sync` on the database to sync your local database with the primary database, unless you are using `sync_interval` (though there is no issue with calling `sync` with `sync_interval` enabled):
+
+```rb theme={null}
+db.sync
+```

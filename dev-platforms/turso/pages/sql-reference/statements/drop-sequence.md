@@ -8,9 +8,9 @@ Remove a named sequence generator from the database
 
 # DROP SEQUENCE
 
-<Info>
-  **Turso Extension**: DROP SEQUENCE is a Turso-specific statement not available in standard SQLite.
-</Info>
+> [!NOTE]
+>
+> **Turso Extension**: DROP SEQUENCE is a Turso-specific statement not available in standard SQLite.
 
 The DROP SEQUENCE statement removes a sequence object from the database. Once dropped, the sequence name can no longer be used with `nextval()`, `currval()`, or `setval()`.
 

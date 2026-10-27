@@ -8,10 +8,10 @@ Learn how to use SQLite extensions with Turso.
 
 Turso comes loaded with extensions that provide additional functionality to SQLite. Some plans will have more extensions preloaded.
 
-<Info>
-  If you're looking to enable vector extensions, you should instead consider
-  using the native [libSQL vector datatype](/features/ai-and-embeddings).
-</Info>
+> [!NOTE]
+>
+> If you're looking to enable vector extensions, you should instead consider
+> using the native [libSQL vector datatype](/features/ai-and-embeddings).
 
 ## Preloaded Extensions
 

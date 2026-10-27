@@ -8,9 +8,9 @@ Use the Turso CLI as a local sync server for development and testing without Tur
 
 The `tursodb` CLI includes a built-in sync server that you can run locally. This lets you develop and test sync workflows entirely on your machine — no Turso Cloud account required.
 
-<Info>
-  The local sync server implements the same sync protocol as Turso Cloud, so your application code works the same way in both environments.
-</Info>
+> [!NOTE]
+>
+> The local sync server implements the same sync protocol as Turso Cloud, so your application code works the same way in both environments.
 
 ## Starting the server
 
@@ -26,38 +26,36 @@ This starts a sync server listening on port `8080`, backed by `./server.db`.
 
 Point your sync client at `http://localhost:8080`. No auth token is needed for the local server.
 
-<CodeGroup>
-  ```ts TypeScript theme={null}
-  import { connect } from '@tursodatabase/sync';
+```ts TypeScript theme={null}
+import { connect } from '@tursodatabase/sync';
 
-  const db = await connect({
-    path: './local-replica.db',
-    url: 'http://localhost:8080',
-  });
-  ```
+const db = await connect({
+  path: './local-replica.db',
+  url: 'http://localhost:8080',
+});
+```
 
-  ```py Python theme={null}
-  import turso.sync
+```py Python theme={null}
+import turso.sync
 
-  conn = turso.sync.connect(
-      path="./local-replica.db",
-      remote_url="http://localhost:8080",
-  )
-  ```
+conn = turso.sync.connect(
+    path="./local-replica.db",
+    remote_url="http://localhost:8080",
+)
+```
 
-  ```go Go theme={null}
-  package main
+```go Go theme={null}
+package main
 
-  import (
-  	turso "turso.tech/database/tursogo"
-  )
+import (
+	turso "turso.tech/database/tursogo"
+)
 
-  db, err := turso.NewTursoSyncDb(ctx, turso.TursoSyncDbConfig{
-      Path:      "./local-replica.db",
-      RemoteUrl: "http://localhost:8080",
-  })
-  ```
-</CodeGroup>
+db, err := turso.NewTursoSyncDb(ctx, turso.TursoSyncDbConfig{
+    Path:      "./local-replica.db",
+    RemoteUrl: "http://localhost:8080",
+})
+```
 
 Once connected, all sync operations (`push`, `pull`, `checkpoint`, `stats`) work exactly as described in the [Usage](/sync/usage) guide.
 
@@ -65,114 +63,108 @@ Once connected, all sync operations (`push`, `pull`, `checkpoint`, `stats`) work
 
 This example walks through a complete workflow — starting the server, writing data from one client, and syncing it to another.
 
-<Steps>
-  <Step title="1. Start the sync server">
-    Open a terminal and start the server:
+**1. 1. Start the sync server**
 
-    ```bash theme={null}
-    tursodb ./server.db --sync-server 0.0.0.0:8080
-    ```
-  </Step>
+Open a terminal and start the server:
 
-  <Step title="2. Write and push from Client A">
-    <CodeGroup>
-      ```ts TypeScript theme={null}
-      import { connect } from '@tursodatabase/sync';
+```bash theme={null}
+tursodb ./server.db --sync-server 0.0.0.0:8080
+```
 
-      const clientA = await connect({
-        path: './client-a.db',
-        url: 'http://localhost:8080',
-      });
+**2. 2. Write and push from Client A**
 
-      await clientA.exec("CREATE TABLE IF NOT EXISTS notes (id TEXT PRIMARY KEY, body TEXT)");
-      await clientA.exec("INSERT INTO notes VALUES ('n1', 'hello from client A')");
+```ts TypeScript theme={null}
+import { connect } from '@tursodatabase/sync';
 
-      await clientA.push();
-      ```
+const clientA = await connect({
+  path: './client-a.db',
+  url: 'http://localhost:8080',
+});
 
-      ```py Python theme={null}
-      import turso.sync
+await clientA.exec("CREATE TABLE IF NOT EXISTS notes (id TEXT PRIMARY KEY, body TEXT)");
+await clientA.exec("INSERT INTO notes VALUES ('n1', 'hello from client A')");
 
-      client_a = turso.sync.connect(
-          path="./client-a.db",
-          remote_url="http://localhost:8080",
-      )
+await clientA.push();
+```
 
-      client_a.execute("CREATE TABLE IF NOT EXISTS notes (id TEXT PRIMARY KEY, body TEXT)")
-      client_a.commit()
-      client_a.execute("INSERT INTO notes VALUES ('n1', 'hello from client A')")
-      client_a.commit()
+```py Python theme={null}
+import turso.sync
 
-      client_a.push()
-      ```
+client_a = turso.sync.connect(
+    path="./client-a.db",
+    remote_url="http://localhost:8080",
+)
 
-      ```go Go theme={null}
-      clientA, err := turso.NewTursoSyncDb(ctx, turso.TursoSyncDbConfig{
-          Path:      "./client-a.db",
-          RemoteUrl: "http://localhost:8080",
-      })
-      if err != nil {
-          return err
-      }
-      connA, _ := clientA.Connect(ctx)
+client_a.execute("CREATE TABLE IF NOT EXISTS notes (id TEXT PRIMARY KEY, body TEXT)")
+client_a.commit()
+client_a.execute("INSERT INTO notes VALUES ('n1', 'hello from client A')")
+client_a.commit()
 
-      connA.ExecContext(ctx, "CREATE TABLE IF NOT EXISTS notes (id TEXT PRIMARY KEY, body TEXT)")
-      connA.ExecContext(ctx, "INSERT INTO notes VALUES ('n1', 'hello from client A')")
+client_a.push()
+```
 
-      clientA.Push(ctx)
-      ```
-    </CodeGroup>
-  </Step>
+```go Go theme={null}
+clientA, err := turso.NewTursoSyncDb(ctx, turso.TursoSyncDbConfig{
+    Path:      "./client-a.db",
+    RemoteUrl: "http://localhost:8080",
+})
+if err != nil {
+    return err
+}
+connA, _ := clientA.Connect(ctx)
 
-  <Step title="3. Pull from Client B">
-    <CodeGroup>
-      ```ts TypeScript theme={null}
-      import { connect } from '@tursodatabase/sync';
+connA.ExecContext(ctx, "CREATE TABLE IF NOT EXISTS notes (id TEXT PRIMARY KEY, body TEXT)")
+connA.ExecContext(ctx, "INSERT INTO notes VALUES ('n1', 'hello from client A')")
 
-      const clientB = await connect({
-        path: './client-b.db',
-        url: 'http://localhost:8080',
-      });
+clientA.Push(ctx)
+```
 
-      const changed = await clientB.pull();
-      console.log('changes pulled:', changed);
+**3. 3. Pull from Client B**
 
-      const rows = await clientB.query("SELECT * FROM notes");
-      console.log(rows);
-      // [{ id: 'n1', body: 'hello from client A' }]
-      ```
+```ts TypeScript theme={null}
+import { connect } from '@tursodatabase/sync';
 
-      ```py Python theme={null}
-      import turso.sync
+const clientB = await connect({
+  path: './client-b.db',
+  url: 'http://localhost:8080',
+});
 
-      client_b = turso.sync.connect(
-          path="./client-b.db",
-          remote_url="http://localhost:8080",
-      )
+const changed = await clientB.pull();
+console.log('changes pulled:', changed);
 
-      changed = client_b.pull()
-      print("changes pulled:", changed)
+const rows = await clientB.query("SELECT * FROM notes");
+console.log(rows);
+// [{ id: 'n1', body: 'hello from client A' }]
+```
 
-      rows = client_b.execute("SELECT * FROM notes").fetchall()
-      print(rows)
-      # [('n1', 'hello from client A')]
-      ```
+```py Python theme={null}
+import turso.sync
 
-      ```go Go theme={null}
-      clientB, err := turso.NewTursoSyncDb(ctx, turso.TursoSyncDbConfig{
-          Path:      "./client-b.db",
-          RemoteUrl: "http://localhost:8080",
-      })
-      if err != nil {
-          return err
-      }
+client_b = turso.sync.connect(
+    path="./client-b.db",
+    remote_url="http://localhost:8080",
+)
 
-      changed, _ := clientB.Pull(ctx)
-      log.Println("changes pulled:", changed)
+changed = client_b.pull()
+print("changes pulled:", changed)
 
-      connB, _ := clientB.Connect(ctx)
-      rows, _ := connB.QueryContext(ctx, "SELECT * FROM notes")
-      ```
-    </CodeGroup>
-  </Step>
-</Steps>
+rows = client_b.execute("SELECT * FROM notes").fetchall()
+print(rows)
+# [('n1', 'hello from client A')]
+```
+
+```go Go theme={null}
+clientB, err := turso.NewTursoSyncDb(ctx, turso.TursoSyncDbConfig{
+    Path:      "./client-b.db",
+    RemoteUrl: "http://localhost:8080",
+})
+if err != nil {
+    return err
+}
+
+changed, _ := clientB.Pull(ctx)
+log.Println("changes pulled:", changed)
+
+connB, _ := clientB.Connect(ctx)
+rows, _ := connB.QueryContext(ctx, "SELECT * FROM notes")
+```

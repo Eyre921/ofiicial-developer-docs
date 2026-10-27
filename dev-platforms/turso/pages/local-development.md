@@ -15,73 +15,67 @@ Developers can build locally with Turso using either of the following methods:
 
 You can always dump your production database and use it locally for development:
 
-<Steps>
-  <Step title="Create a dump using the Turso CLI">
-    ```bash theme={null}
-    turso db shell your-database .dump > dump.sql
-    ```
-  </Step>
+**1. Create a dump using the Turso CLI**
 
-  <Step title="Create SQLite file from dump">
-    ```bash theme={null}
-    cat dump.sql | sqlite3 local.db
-    ```
-  </Step>
+```bash theme={null}
+turso db shell your-database .dump > dump.sql
+```
 
-  <Step title="Connect to the file">
-    You can use either of the methods below with the `local.db` file, or you can use a new file name if you prefer to create a database from scratch.
-  </Step>
-</Steps>
+**2. Create SQLite file from dump**
+
+```bash theme={null}
+cat dump.sql | sqlite3 local.db
+```
+
+**3. Connect to the file**
+
+You can use either of the methods below with the `local.db` file, or you can use a new file name if you prefer to create a database from scratch.
 
 ## Local Turso database
 
 Whenever your application runs against a local database, we recommend the [Turso packages](/sdk). They are fully SQLite-compatible — they open existing SQLite files — and run entirely in your process, no server needed:
 
-<CodeGroup>
-  ```ts JavaScript theme={null}
-  import { connect } from "@tursodatabase/database";
+```ts JavaScript theme={null}
+import { connect } from "@tursodatabase/database";
 
-  const db = await connect("local.db");
-  ```
+const db = await connect("local.db");
+```
 
-  ```rust Rust theme={null}
-  use turso::Builder;
+```rust Rust theme={null}
+use turso::Builder;
 
-  let db = Builder::new_local("local.db").build().await?;
-  let conn = db.connect()?;
-  ```
+let db = Builder::new_local("local.db").build().await?;
+let conn = db.connect()?;
+```
 
-  ```go Go theme={null}
-  package main
+```go Go theme={null}
+package main
 
-  import (
-    "database/sql"
+import (
+  "database/sql"
 
-    _ "turso.tech/database/tursogo"
-  )
+  _ "turso.tech/database/tursogo"
+)
 
-  func main() {
-    db, _ := sql.Open("turso", "local.db")
-    defer db.Close()
-  }
-  ```
+func main() {
+  db, _ := sql.Open("turso", "local.db")
+  defer db.Close()
+}
+```
 
-  ```python Python theme={null}
-  import turso
+```python Python theme={null}
+import turso
 
-  db = turso.connect("local.db")
-  ```
-</CodeGroup>
+db = turso.connect("local.db")
+```
 
-<br />
+> [!NOTE]
+>
+> You don't need to provide an `authToken` in development.
 
-<Info>
-  You don't need to provide an `authToken` in development.
-</Info>
-
-<Info>
-  It's recommended to use environment variables for both `url` and `authToken` for a seamless developer experience.
-</Info>
+> [!NOTE]
+>
+> It's recommended to use environment variables for both `url` and `authToken` for a seamless developer experience.
 
 ## Turso CLI
 
@@ -103,11 +97,9 @@ const client = createClient({
 
 The same URL works with the libSQL clients for [other languages](/sdk).
 
-<br />
-
-<Warning>
-  Changes will be lost when you stop the server.
-</Warning>
+> [!WARNING]
+>
+> Changes will be lost when you stop the server.
 
 If you want to persist changes, or use a production dump, you can pass the `--db-file` flag with the name of the SQLite file:
 
@@ -119,9 +111,9 @@ turso dev --db-file local.db
 
 If you already have a database created on Turso Cloud, you can use that same one in development by passing the `url` option to your SDK.
 
-<Warning>
-  Keep in mind that using the Turso Cloud hosted database will incur platform costs and count towards your quota. Consider one of the local methods above to avoid platform costs.
-</Warning>
+> [!WARNING]
+>
+> Keep in mind that using the Turso Cloud hosted database will incur platform costs and count towards your quota. Consider one of the local methods above to avoid platform costs.
 
 ## Connecting a GUI
 

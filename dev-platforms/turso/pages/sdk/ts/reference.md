@@ -79,9 +79,9 @@ Supported ciphers: `aegis256`, `aegis256x2`, `aegis128l`, `aegis128x2`, `aegis12
 
 Encrypted databases cannot be read as standard SQLite databases — you must use the Turso Database engine to open them.
 
-<Info>
-  Turso Cloud databases can also be encrypted with bring-your-own-key — [learn more](/cloud/encryption).
-</Info>
+> [!NOTE]
+>
+> Turso Cloud databases can also be encrypted with bring-your-own-key — [learn more](/cloud/encryption).
 
 ## @tursodatabase/sync
 
@@ -186,9 +186,9 @@ const row = await stmt2.get([1]);
 
 The `@libsql/client` package is built on [libSQL](https://github.com/tursodatabase/libsql), the open-source fork of SQLite that has powered Turso Cloud for years. It is production-ready, battle-tested, and the right choice for remote access to libSQL databases, when you need ORM integration beyond Drizzle (e.g., Prisma), or when working with an existing `@libsql/client`-based codebase.
 
-<Info>
-  With `@libsql/client` Embedded Replicas, reads are local and writes are sent to the cloud primary, then reflected back to the replica. Embedded Replicas are fully supported. For new projects that need sync, we recommend `@tursodatabase/sync` with [Turso Sync](/sync/usage).
-</Info>
+> [!NOTE]
+>
+> With `@libsql/client` Embedded Replicas, reads are local and writes are sent to the cloud primary, then reflected back to the replica. Embedded Replicas are fully supported. For new projects that need sync, we recommend `@tursodatabase/sync` with [Turso Sync](/sync/usage).
 
 ### Installing
 
@@ -198,11 +198,9 @@ The `@libsql/client` package is built on [libSQL](https://github.com/tursodataba
 
 <Snippet />
 
-<br />
-
-<Info>
-  If you're using libsql locally or an sqlite file, you can ignore passing `authToken`.
-</Info>
+> [!NOTE]
+>
+> If you're using libsql locally or an sqlite file, you can ignore passing `authToken`.
 
 ### In-Memory Databases
 
@@ -227,15 +225,15 @@ const client = createClient({
 });
 ```
 
-<Warning>
-  The `@libsql/client/web` does not support local file URLs.
-</Warning>
+> [!WARNING]
+>
+> The `@libsql/client/web` does not support local file URLs.
 
 ### Embedded Replicas
 
-<Info>
-  For workloads that need **offline writes**, **bidirectional sync**, or **multi-writer convergence**, we recommend [`@tursodatabase/sync`](#tursodatabasesync) — both reads and writes are local, and you sync explicitly with `push()` / `pull()`.
-</Info>
+> [!NOTE]
+>
+> For workloads that need **offline writes**, **bidirectional sync**, or **multi-writer convergence**, we recommend [`@tursodatabase/sync`](#tursodatabasesync) — both reads and writes are local, and you sync explicitly with `push()` / `pull()`.
 
 You can work with embedded replicas by passing your Turso Database URL to `syncUrl`:
 
@@ -272,9 +270,9 @@ const client = createClient({
 
 ### Encryption
 
-<Warning>
-  For new projects, we recommend [`@tursodatabase/database`](#tursodatabasedatabase) for local encryption — it is built on the Turso Database engine with better performance and concurrent write support.
-</Warning>
+> [!WARNING]
+>
+> For new projects, we recommend [`@tursodatabase/database`](#tursodatabasedatabase) for local encryption — it is built on the Turso Database engine with better performance and concurrent write support.
 
 <Snippet />
 
@@ -307,64 +305,58 @@ Each method listed below returns a `Promise<ResultSet>`:
 
 You can pass a string or object to `execute()` to invoke a SQL statement:
 
-<CodeGroup>
-  ```ts String theme={null}
-  const result = await client.execute("SELECT * FROM users");
-  ```
+```ts String theme={null}
+const result = await client.execute("SELECT * FROM users");
+```
 
-  ```ts Object theme={null}
-  const result = await client.execute({
-    sql: "SELECT * FROM users WHERE id = ?",
-    args: [1],
-  });
-  ```
-</CodeGroup>
+```ts Object theme={null}
+const result = await client.execute({
+  sql: "SELECT * FROM users WHERE id = ?",
+  args: [1],
+});
+```
 
 ### Placeholders
 
 libSQL supports the use of positional and named placeholders within SQL statements:
 
-<CodeGroup>
-  ```ts Positional theme={null}
-  const result = await client.execute({
-    sql: "SELECT * FROM users WHERE id = ?",
-    args: [1],
-  });
+```ts Positional theme={null}
+const result = await client.execute({
+  sql: "SELECT * FROM users WHERE id = ?",
+  args: [1],
+});
 
-  const result = await client.batch(
-    [
-      {
-        sql: "INSERT INTO users VALUES (?)",
-        args: ["Iku"],
-      },
-    ],
-    "write",
-  );
-  ```
+const result = await client.batch(
+  [
+    {
+      sql: "INSERT INTO users VALUES (?)",
+      args: ["Iku"],
+    },
+  ],
+  "write",
+);
+```
 
-  ```ts Named theme={null}
-  const result = await client.execute({
-    sql: "INSERT INTO users VALUES (:name)",
-    args: { name: "Iku" },
-  });
+```ts Named theme={null}
+const result = await client.execute({
+  sql: "INSERT INTO users VALUES (:name)",
+  args: { name: "Iku" },
+});
 
-  const result = await client.batch(
-    [
-      {
-        sql: "INSERT INTO users VALUES (:name)",
-        args: { name: "Iku" },
-      },
-    ],
-    "write",
-  );
-  ```
-</CodeGroup>
+const result = await client.batch(
+  [
+    {
+      sql: "INSERT INTO users VALUES (:name)",
+      args: { name: "Iku" },
+    },
+  ],
+  "write",
+);
+```
 
-<br />
-
-<Info>
-  libSQL supports the same named placeholder characters as SQLite — `:`, `@` and `$`.
-</Info>
+> [!NOTE]
+>
+> libSQL supports the same named placeholder characters as SQLite — `:`, `@` and `$`.
 
 ### Transaction Modes
 
@@ -405,103 +397,99 @@ Interactive transactions in SQLite ensure the consistency of a series of read an
 | `rollback()` | Rolls back the entire transaction |
 | `close()` | Immediately stops the transaction |
 
-<CodeGroup>
-  ```ts Rollback Usage theme={null}
-  try {
-    const userId = "user123";
-    const withdrawalAmount = 500;
+```ts Rollback Usage theme={null}
+try {
+  const userId = "user123";
+  const withdrawalAmount = 500;
 
-    const transaction = await client.transaction("write");
+  const transaction = await client.transaction("write");
 
-    const balanceResult = await transaction.execute({
-      sql: "SELECT balance FROM accounts WHERE userId = ?",
-      args: [userId],
+  const balanceResult = await transaction.execute({
+    sql: "SELECT balance FROM accounts WHERE userId = ?",
+    args: [userId],
+  });
+
+  const currentBalance = balanceResult.rows[0]["balance"] as number;
+
+  if (currentBalance >= withdrawalAmount) {
+    await transaction.execute({
+      sql: "UPDATE accounts SET balance = balance - ? WHERE userId = ?",
+      args: [withdrawalAmount, userId],
     });
-
-    const currentBalance = balanceResult.rows[0]["balance"] as number;
-
-    if (currentBalance >= withdrawalAmount) {
-      await transaction.execute({
-        sql: "UPDATE accounts SET balance = balance - ? WHERE userId = ?",
-        args: [withdrawalAmount, userId],
-      });
-    } else {
-      console.log("Insufficient funds");
-      await transaction.rollback();
-      return;
-    }
-
-    await transaction.commit();
-  } catch (e) {
-    console.error(e);
+  } else {
+    console.log("Insufficient funds");
+    await transaction.rollback();
+    return;
   }
-  ```
 
-  ```ts Batch Usage theme={null}
-  let transaction: Transaction | null = null;
+  await transaction.commit();
+} catch (e) {
+  console.error(e);
+}
+```
 
-  try {
-    const records = [
-      { name: "Alice", age: 30 },
-      { name: "Bob", age: 25 },
-      { name: "Charlie", age: 35 },
-    ];
+```ts Batch Usage theme={null}
+let transaction: Transaction | null = null;
 
-    transaction = await client.transaction("write");
+try {
+  const records = [
+    { name: "Alice", age: 30 },
+    { name: "Bob", age: 25 },
+    { name: "Charlie", age: 35 },
+  ];
 
-    for (const record of records) {
-      await transaction.execute({
-        sql: "INSERT INTO people (name, age) VALUES (?, ?)",
-        args: [record.name, record.age],
-      });
-    }
+  transaction = await client.transaction("write");
 
-    await transaction.commit();
-  } catch (e) {
-    console.error(e);
-    if (transaction) await transaction.rollback();
-  }
-  ```
-
-  ```ts Conditional Usage theme={null}
-  try {
-    const productId = "prod456";
-    const newPrice = 150;
-
-    const transaction = await client.transaction("write");
-
-    const productResult = await transaction.execute({
-      sql: "SELECT price FROM products WHERE productId = ?",
-      args: [productId],
+  for (const record of records) {
+    await transaction.execute({
+      sql: "INSERT INTO people (name, age) VALUES (?, ?)",
+      args: [record.name, record.age],
     });
-
-    const currentPrice = productResult.rows[0]["price"] as number;
-
-    if (currentPrice > newPrice) {
-      await transaction.execute({
-        sql: "UPDATE products SET price = ? WHERE productId = ?",
-        args: [newPrice, productId],
-      });
-    } else {
-      console.log("New price is not lower than current price");
-      await transaction.rollback();
-      return;
-    }
-
-    await transaction.commit();
-  } catch (e) {
-    console.error(e);
   }
-  ```
-</CodeGroup>
 
-<br />
+  await transaction.commit();
+} catch (e) {
+  console.error(e);
+  if (transaction) await transaction.rollback();
+}
+```
 
-<Warning>
-  Interactive transactions in libSQL lock the database for writing until
-  committed or rolled back, with a 5-second timeout. They can impact performance
-  on high-latency or busy databases.
-</Warning>
+```ts Conditional Usage theme={null}
+try {
+  const productId = "prod456";
+  const newPrice = 150;
+
+  const transaction = await client.transaction("write");
+
+  const productResult = await transaction.execute({
+    sql: "SELECT price FROM products WHERE productId = ?",
+    args: [productId],
+  });
+
+  const currentPrice = productResult.rows[0]["price"] as number;
+
+  if (currentPrice > newPrice) {
+    await transaction.execute({
+      sql: "UPDATE products SET price = ? WHERE productId = ?",
+      args: [newPrice, productId],
+    });
+  } else {
+    console.log("New price is not lower than current price");
+    await transaction.rollback();
+    return;
+  }
+
+  await transaction.commit();
+} catch (e) {
+  console.error(e);
+}
+```
+
+> [!WARNING]
+>
+> Interactive transactions in libSQL lock the database for writing until
+> committed or rolled back, with a 5-second timeout. They can impact performance
+> on high-latency or busy databases.
 
 ### ATTACH
 
@@ -522,8 +510,8 @@ await txn.execute('ATTACH "<database-id>" AS attached');
 const rs = await txn.execute("SELECT * FROM attached.users");
 ```
 
-<Info>
-  Make sure to [allow `ATTACH`](/cli/db/config/attach/allow) and create a token
-  with the permission to attach a database — [learn
-  more](/features/attach-database)
-</Info>
+> [!NOTE]
+>
+> Make sure to [allow `ATTACH`](/cli/db/config/attach/allow) and create a token
+> with the permission to attach a database — [learn
+> more](/features/attach-database)

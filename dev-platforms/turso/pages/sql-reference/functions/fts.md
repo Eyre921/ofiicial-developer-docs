@@ -8,9 +8,9 @@ Full-text search with Tantivy-powered FTS indexes, scoring, and highlighting
 
 # Full-Text Search
 
-<Info>
-  **Turso Extension**: Full-text search (FTS) in Turso is powered by [Tantivy](https://github.com/quickwit-oss/tantivy), not SQLite's FTS3/FTS4/FTS5 modules. The syntax and functions differ from SQLite FTS.
-</Info>
+> [!NOTE]
+>
+> **Turso Extension**: Full-text search (FTS) in Turso is powered by [Tantivy](https://github.com/quickwit-oss/tantivy), not SQLite's FTS3/FTS4/FTS5 modules. The syntax and functions differ from SQLite FTS.
 
 Turso provides full-text search through custom FTS indexes and three SQL functions: `fts_match` for filtering, `fts_score` for relevance ranking, and `fts_highlight` for displaying results with matched terms highlighted.
 

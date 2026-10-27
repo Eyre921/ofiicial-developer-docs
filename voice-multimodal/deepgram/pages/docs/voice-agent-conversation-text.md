@@ -28,9 +28,25 @@ The server will send a `ConversationText` message every time the agent hears the
 {
   "type": "ConversationText",
   "role": "", // The speaker of this statement, either "user" or "assistant"
+  "conversational_behavior": "", // What kind of utterance this is
   "content": "" // The statement that was spoken
 }
 ```
+
+## `conversational_behavior`
+
+Every `ConversationText` message carries a `conversational_behavior` field annotating what kind of utterance it represents.
+
+| Value            | Meaning                                                                                                                                           |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `default`        | A standard turn.                                                                                                                                  |
+| `backchannel`    | A short acknowledgement produced while the user held the floor.                                                                                   |
+| `presence_check` | A prompt produced after extended silence.                                                                                                         |
+| `filler`         | A line covering a wait, either on a function call or on an [`InjectAgentMessage`](/docs/voice-agent-inject-agent-message) sent with `is_dynamic`. |
+
+Only [Think Live](/docs/voice-agent-think-live) produces the values other than `default`. While it is off, every message is reported as `default`, so a client that ignores the field behaves exactly as it did before the field existed.
+
+Backchannels, presence checks, and filler are conversational scaffolding rather than substance. Most clients render them differently from a `default` turn, or suppress them entirely, to keep transcripts and UI readable.
 
 ## Multilingual Fields (Flux Multilingual)
 

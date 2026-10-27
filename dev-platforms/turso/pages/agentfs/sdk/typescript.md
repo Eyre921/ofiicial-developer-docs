@@ -10,25 +10,23 @@ Build stateful AI agents with the AgentFS TypeScript SDK, supporting both Node.j
 
 ## Installation
 
-<Tabs>
-  <Tab title="npm">
-    ```bash theme={null}
-    npm install agentfs-sdk
-    ```
-  </Tab>
+**npm**
 
-  <Tab title="bun">
-    ```bash theme={null}
-    bun add agentfs-sdk
-    ```
-  </Tab>
+```bash theme={null}
+npm install agentfs-sdk
+```
 
-  <Tab title="deno">
-    ```typescript theme={null}
-    import { AgentFS } from "npm:agentfs-sdk";
-    ```
-  </Tab>
-</Tabs>
+**bun**
+
+```bash theme={null}
+bun add agentfs-sdk
+```
+
+**deno**
+
+```typescript theme={null}
+import { AgentFS } from "npm:agentfs-sdk";
+```
 
 ## Quick Start
 

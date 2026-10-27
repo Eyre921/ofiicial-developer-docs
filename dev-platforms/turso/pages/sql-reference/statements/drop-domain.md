@@ -8,9 +8,9 @@ Remove a user-defined domain from the database
 
 # DROP DOMAIN
 
-<Info>
-  **Turso Extension**: DROP DOMAIN is a Turso-specific statement not available in standard SQLite. This feature is experimental and must be [enabled before use](/sql-reference/experimental-features).
-</Info>
+> [!NOTE]
+>
+> **Turso Extension**: DROP DOMAIN is a Turso-specific statement not available in standard SQLite. This feature is experimental and must be [enabled before use](/sql-reference/experimental-features).
 
 The DROP DOMAIN statement removes a user-defined domain from the database. Once dropped, the domain name can no longer be used in new column definitions.
 

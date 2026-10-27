@@ -397,6 +397,7 @@ The following documented routes reject regular API keys and must be called with 
 | `POST` | `/api/v1/private-endpoints/{id}/activate` | [Activate a validated private endpoint](https://openrouter.ai/docs/api/api-reference/private-endpoints/activate-a-validated-private-endpoint.md) |
 | `POST` | `/api/v1/private-endpoints/{id}/disable` | [Disable a private endpoint](https://openrouter.ai/docs/api/api-reference/private-endpoints/disable-a-private-endpoint.md) |
 | `POST` | `/api/v1/private-endpoints/{id}/enable` | [Enable a private endpoint](https://openrouter.ai/docs/api/api-reference/private-endpoints/enable-a-private-endpoint.md) |
+| `PUT` | `/api/v1/private-endpoints/{id}/parameters` | [Set private endpoint supported parameters](https://openrouter.ai/docs/api/api-reference/private-endpoints/set-private-endpoint-supported-parameters.md) |
 | `PUT` | `/api/v1/private-endpoints/{id}/pricing` | [Set private endpoint pricing](https://openrouter.ai/docs/api/api-reference/private-endpoints/set-private-endpoint-pricing.md) |
 | `POST` | `/api/v1/private-endpoints/{id}/validate` | [Validate a draft private endpoint](https://openrouter.ai/docs/api/api-reference/private-endpoints/validate-a-draft-private-endpoint.md) |
 

@@ -596,9 +596,9 @@ SELECT key, value FROM json_each('{"data": [1, 2, 3]}', '$.data');
 
 ### json\_tree
 
-<Warning>
-  `json_tree` has partial support. Some advanced traversal features may not work as expected.
-</Warning>
+> [!WARNING]
+>
+> `json_tree` has partial support. Some advanced traversal features may not work as expected.
 
 A table-valued function that recursively walks a JSON document, returning one row for every element at every level of nesting.
 

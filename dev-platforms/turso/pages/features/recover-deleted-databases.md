@@ -13,12 +13,12 @@ the delete came from a teammate, a script, or an AI agent with too much enthusia
 
 Recovery is available on all paid plans at no additional cost.
 
-<Info>
-  This is different from [Point-in-Time Recovery](/features/point-in-time-recovery)
-  (PITR). PITR restores an **existing** database to an earlier point in time, but it
-  cannot bring back a database that was deleted. Recovery brings back a **deleted**
-  database at the moment it was deleted.
-</Info>
+> [!NOTE]
+>
+> This is different from [Point-in-Time Recovery](/features/point-in-time-recovery)
+> (PITR). PITR restores an **existing** database to an earlier point in time, but it
+> cannot bring back a database that was deleted. Recovery brings back a **deleted**
+> database at the moment it was deleted.
 
 ## Requirements
 
@@ -43,27 +43,25 @@ also attempts to restore the databases that were deleted along with it.
 List the databases deleted within the last five days, then restore by the
 database's UUID:
 
-<CodeGroup>
-  ```bash List deleted databases theme={null}
-  curl -L 'https://api.turso.tech/v3/organizations/{organizationId}/databases?deleted=true' \
-    -H 'Authorization: Bearer TOKEN'
-  ```
+```bash List deleted databases theme={null}
+curl -L 'https://api.turso.tech/v3/organizations/{organizationId}/databases?deleted=true' \
+  -H 'Authorization: Bearer TOKEN'
+```
 
-  ```bash Restore a database theme={null}
-  curl -L -X POST 'https://api.turso.tech/v3/organizations/{organizationId}/databases/{databaseId}/restore' \
-    -H 'Authorization: Bearer TOKEN'
-  ```
+```bash Restore a database theme={null}
+curl -L -X POST 'https://api.turso.tech/v3/organizations/{organizationId}/databases/{databaseId}/restore' \
+  -H 'Authorization: Bearer TOKEN'
+```
 
-  ```bash List deleted groups theme={null}
-  curl -L 'https://api.turso.tech/v3/organizations/{organizationId}/deleted-groups' \
-    -H 'Authorization: Bearer TOKEN'
-  ```
+```bash List deleted groups theme={null}
+curl -L 'https://api.turso.tech/v3/organizations/{organizationId}/deleted-groups' \
+  -H 'Authorization: Bearer TOKEN'
+```
 
-  ```bash Restore a group theme={null}
-  curl -L -X POST 'https://api.turso.tech/v3/organizations/{organizationId}/groups/{groupId}/restore' \
-    -H 'Authorization: Bearer TOKEN'
-  ```
-</CodeGroup>
+```bash Restore a group theme={null}
+curl -L -X POST 'https://api.turso.tech/v3/organizations/{organizationId}/groups/{groupId}/restore' \
+  -H 'Authorization: Bearer TOKEN'
+```
 
 These endpoints identify everything by **UUID** rather than name:
 `{organizationId}` is the `id` field from
@@ -74,15 +72,13 @@ pass a JSON body: `{ "name": "my-restored-database" }`.
 
 Refer to the API reference for all parameters and response fields:
 
-<CardGroup>
-  <Card title="List Deleted Databases" icon="code" href="/api-reference/databases/list-deleted" />
+> **[List Deleted Databases](/api-reference/databases/list-deleted)**
 
-  <Card title="Restore Database" icon="code" href="/api-reference/databases/restore" />
+> **[Restore Database](/api-reference/databases/restore)**
 
-  <Card title="List Deleted Groups" icon="code" href="/api-reference/groups/list-deleted" />
+> **[List Deleted Groups](/api-reference/groups/list-deleted)**
 
-  <Card title="Restore Group" icon="code" href="/api-reference/groups/restore" />
-</CardGroup>
+> **[Restore Group](/api-reference/groups/restore)**
 
 ## Restore with an AI agent
 
@@ -141,8 +137,6 @@ recovery.
   [group](/api-reference/groups/update-configuration) — a protected database
   cannot be deleted until protection is turned off.
 
-<CardGroup>
-  <Card title="Point-in-Time Recovery" icon="clock-rotate-left" href="/features/point-in-time-recovery" />
+> **[Point-in-Time Recovery](/features/point-in-time-recovery)**
 
-  <Card title="MCP (AI agents)" icon="robot" href="/integrations/mcp" />
-</CardGroup>
+> **[MCP (AI agents)](/integrations/mcp)**

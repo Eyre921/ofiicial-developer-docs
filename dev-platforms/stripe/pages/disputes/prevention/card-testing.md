@@ -16,7 +16,7 @@ Fraudulent activity such as card testing is an unavoidable part of online commer
 
 Card testers use both card setup and payments to determine whether the stolen or enumerated card information they have is valid or not. To quickly validate many card numbers, fraudulent actors use scripts to test a large amount of card information at once, and collect 3DS or issuer responses to validate which card information is valid. After they have identified the valid cards, they can cash them with merchants or resell confirmed cards on the dark web.
 
-- **Card setup**: This is a method preferred by fraudulent actors, because card validation and authorizations during card setup don’t typically show up on cardholder statements. This reduces the likelihood of card holders noticing and reporting the fraudulent activity.
+- **Card setup**: This is a method preferred by fraudulent actors, because card validation and authorizations during card setup don’t typically show up on cardholder statements. This reduces the likelihood of cardholders noticing and reporting the fraudulent activity.
 - **Payments**: Card testers create small amount payments, which cardholders are less likely to notice and report as fraudulent.
 
 ## Card testing consequences 

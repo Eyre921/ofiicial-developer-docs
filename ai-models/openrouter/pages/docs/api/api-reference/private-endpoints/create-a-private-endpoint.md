@@ -158,9 +158,12 @@ paths:
             organization returns the endpoint the first request created instead
             of creating another. The endpoint is returned as it is now. Reusing
             a key with a different request body (model, provider, base URL,
-            upstream model ID, declared ZDR or region, or pricing) is rejected
-            with 422 `idempotency_key_reused`. `activate` is not compared, and
-            later edits to the endpoint do not affect the comparison.
+            upstream model ID, declared ZDR or region, pricing, or declared
+            parameters) is rejected with 422 `idempotency_key_reused`. Declared
+            parameters are compared as a set, so a retry that reorders or
+            repeats a name replays the endpoint. `activate` and
+            `max_completion_tokens` are not compared, and later edits to the
+            endpoint do not affect the comparison.
           in: header
           name: idempotency-key
           required: false
@@ -170,10 +173,12 @@ paths:
               same organization returns the endpoint the first request created
               instead of creating another. The endpoint is returned as it is
               now. Reusing a key with a different request body (model, provider,
-              base URL, upstream model ID, declared ZDR or region, or pricing)
-              is rejected with 422 `idempotency_key_reused`. `activate` is not
-              compared, and later edits to the endpoint do not affect the
-              comparison.
+              base URL, upstream model ID, declared ZDR or region, pricing, or
+              declared parameters) is rejected with 422
+              `idempotency_key_reused`. Declared parameters are compared as a
+              set, so a retry that reorders or repeats a name replays the
+              endpoint. `activate` and `max_completion_tokens` are not compared,
+              and later edits to the endpoint do not affect the comparison.
             example: wayfair-gpt-4o-eastus-2026-09
             maxLength: 255
             minLength: 1
@@ -303,6 +308,20 @@ components:
           example: https://contoso.openai.azure.com
           minLength: 1
           type: string
+        declared_parameters:
+          description: >-
+            Parameters the upstream supports beyond the tested ones. Replaces
+            the earlier declaration; tested parameters stay. Order and repeated
+            names are ignored, but the list holds at most as many entries as
+            there are declarable parameters, repeats included. `tool_choice`
+            requires `tools` to be tested or declared.
+          example:
+            - temperature
+            - seed
+          items:
+            $ref: '#/components/schemas/PrivateEndpointDeclaredParameter'
+          maxItems: 25
+          type: array
         declared_region:
           description: Attest where this deployment processes data.
           enum:
@@ -319,6 +338,16 @@ components:
           type:
             - boolean
             - 'null'
+        max_completion_tokens:
+          description: >-
+            Cap on completion tokens per request. Requests asking for more skip
+            this endpoint, and the default output length stays within it. When
+            omitted, the cap is copied from the public endpoint for the same
+            model and provider, if there is one.
+          example: 131072
+          maximum: 2147483647
+          minimum: 1
+          type: integer
         model_permaslug:
           description: Permanent slug of the model this endpoint serves.
           example: openai/gpt-4o-2024-08-06
@@ -581,6 +610,36 @@ components:
       required:
         - workspace_id
       type: object
+    PrivateEndpointDeclaredParameter:
+      description: A chat request parameter the endpoint accepts.
+      enum:
+        - temperature
+        - top_p
+        - top_k
+        - min_p
+        - top_a
+        - frequency_penalty
+        - presence_penalty
+        - repetition_penalty
+        - max_tokens
+        - max_completion_tokens
+        - logit_bias
+        - logprobs
+        - top_logprobs
+        - prediction
+        - seed
+        - response_format
+        - structured_outputs
+        - stop
+        - tools
+        - tool_choice
+        - parallel_tool_calls
+        - reasoning
+        - reasoning_effort
+        - web_search_options
+        - verbosity
+      example: seed
+      type: string
     PrivateEndpointPricing:
       description: >-
         Negotiated per-token rates reported for requests routed to this
@@ -638,6 +697,15 @@ components:
               example: true
               type:
                 - boolean
+                - 'null'
+            max_completion_tokens:
+              description: >-
+                Most completion tokens a request routed to this endpoint can
+                produce, or `null` when the endpoint sets no cap beyond the
+                model context length.
+              example: 131072
+              type:
+                - integer
                 - 'null'
           required:
             - declared_zdr
@@ -705,6 +773,16 @@ components:
         checks:
           items:
             $ref: '#/components/schemas/PrivateEndpointCheck'
+          type: array
+        parameters:
+          description: >-
+            Request parameters probed after the checks passed, each with whether
+            the upstream honored it. Supported ones are recorded in
+            `tested_parameters`. Absent on a failed run and for providers that
+            run no parameter probes; empty when every probe group was already
+            proven.
+          items:
+            $ref: '#/components/schemas/PrivateEndpointParameterCheck'
           type: array
         passed:
           description: Whether every check passed.
@@ -920,6 +998,20 @@ components:
       required:
         - name
         - passed
+      type: object
+    PrivateEndpointParameterCheck:
+      example:
+        parameter: response_format
+        supported: true
+      properties:
+        parameter:
+          example: response_format
+          type: string
+        supported:
+          type: boolean
+      required:
+        - parameter
+        - supported
       type: object
     PrivateEndpointStatus:
       description: >-

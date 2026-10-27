@@ -14,7 +14,7 @@ The Decisions API is the System One decisions API in the shape of OpenAI's Decis
 POST https://api.fireworks.ai/inference/v1/decisions
 ```
 
-Authenticate with your normal Fireworks API key. Set `model` to the System One model path, for example `accounts/<your-account>/models/<your-model>`. Models that don't support this API return a `400`.
+Authenticate with your normal Fireworks API key. Set `model` to the System One model path. The public Serverless model is [`accounts/fireworks/models/rune`](https://app.fireworks.ai/models/fireworks/rune). Models that don't support this API return a `400`.
 
 ```bash cURL theme={null}
 curl https://api.fireworks.ai/inference/v1/decisions \

@@ -8,9 +8,9 @@ Define a custom type with encoding, decoding, validation, operators, and default
 
 # CREATE TYPE
 
-<Info>
-  **Turso Extension**: CREATE TYPE is a Turso-specific statement not available in standard SQLite. Custom types require STRICT tables. This feature is experimental and must be [enabled before use](/sql-reference/experimental-features).
-</Info>
+> [!NOTE]
+>
+> **Turso Extension**: CREATE TYPE is a Turso-specific statement not available in standard SQLite. Custom types require STRICT tables. This feature is experimental and must be [enabled before use](/sql-reference/experimental-features).
 
 The CREATE TYPE statement defines a user-defined type that controls how values are encoded before storage, decoded when read, validated on input, compared for ordering, and what default value to use. Custom types extend the STRICT table type system beyond the five built-in SQLite storage classes.
 
@@ -277,9 +277,9 @@ Turso provides the following built-in custom types in STRICT tables:
 | `json` | text | -- | Validated JSON text. |
 | `jsonb` | blob | -- | JSON stored in binary format, returned as JSON text on read. |
 
-<Info>
-  The `uuid`, `json`, and `jsonb` types require their respective extensions to be compiled in. They are available by default in standard Turso builds.
-</Info>
+> [!NOTE]
+>
+> The `uuid`, `json`, and `jsonb` types require their respective extensions to be compiled in. They are available by default in standard Turso builds.
 
 ## Composite Types: STRUCT and UNION
 
@@ -509,9 +509,9 @@ For the full set of array functions (`array_agg`, `array_append`, `array_contain
 * **STRICT tables only**: Custom type names are ignored in non-STRICT tables. The column uses standard type affinity rules instead.
 * **Cannot drop while in use**: A type cannot be dropped with DROP TYPE while any table has a column of that type.
 
-<Note>
-  If a non-STRICT table was created with a type name that did not exist at the time (e.g., `CREATE TABLE t(x mytype)`), and a custom type with that name is created afterwards (`CREATE TYPE mytype ...`), the type's ENCODE/DECODE logic will **not** be retroactively applied to the existing table. This is not a bug: non-STRICT tables treat all type names as plain affinity hints regardless of whether a matching custom type exists. STRICT tables prevent this scenario because they reject unknown type names at CREATE TABLE time.
-</Note>
+> [!NOTE]
+>
+> If a non-STRICT table was created with a type name that did not exist at the time (e.g., `CREATE TABLE t(x mytype)`), and a custom type with that name is created afterwards (`CREATE TYPE mytype ...`), the type's ENCODE/DECODE logic will **not** be retroactively applied to the existing table. This is not a bug: non-STRICT tables treat all type names as plain affinity hints regardless of whether a matching custom type exists. STRICT tables prevent this scenario because they reject unknown type names at CREATE TABLE time.
 
 * **No subqueries in expressions**: The ENCODE, DECODE, and DEFAULT expressions cannot contain subqueries, aggregate functions, or window functions.
 * **No indexes on STRUCT/UNION columns**: CREATE INDEX on a STRUCT or UNION column is not supported.

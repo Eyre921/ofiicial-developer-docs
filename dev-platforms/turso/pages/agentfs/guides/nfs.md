@@ -24,9 +24,9 @@ To allow remote access:
 agentfs serve nfs my-agent --bind 0.0.0.0 --port 2049
 ```
 
-<Warning>
-  Exposing NFS on `0.0.0.0` makes the filesystem accessible to anyone who can reach your machine. Use firewall rules or a VPN for production deployments.
-</Warning>
+> [!WARNING]
+>
+> Exposing NFS on `0.0.0.0` makes the filesystem accessible to anyone who can reach your machine. Use firewall rules or a VPN for production deployments.
 
 ## Mounting the Filesystem
 
@@ -69,12 +69,10 @@ umount -l /mnt/agentfs  # Lazy unmount
 
 ## Next Steps
 
-<CardGroup>
-  <Card title="MCP Server" icon="plug" href="/agentfs/guides/mcp">
-    Expose AgentFS via MCP
-  </Card>
+> **[MCP Server](/agentfs/guides/mcp)**
+>
+> Expose AgentFS via MCP
 
-  <Card title="Sync with Turso Cloud" icon="cloud" href="/agentfs/guides/sync">
-    Back up and share agent state
-  </Card>
-</CardGroup>
+> **[Sync with Turso Cloud](/agentfs/guides/sync)**
+>
+> Back up and share agent state

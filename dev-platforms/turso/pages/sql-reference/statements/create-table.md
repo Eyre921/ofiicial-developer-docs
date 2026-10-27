@@ -101,21 +101,21 @@ CREATE TABLE events (
 
 Without `AUTOINCREMENT`, Turso may reuse rowid values after rows are deleted. With `AUTOINCREMENT`, automatically generated rowids are greater than any rowid that has ever existed in a committed row for the table, even if rows have been deleted.
 
-<Info>
-  `AUTOINCREMENT` adds minor overhead because it maintains a committed high-water mark. Rolled-back inserts do not have to permanently burn their generated rowids, but gaps are still possible when concurrent transactions commit later generated values.
-</Info>
+> [!NOTE]
+>
+> `AUTOINCREMENT` adds minor overhead because it maintains a committed high-water mark. Rolled-back inserts do not have to permanently burn their generated rowids, but gaps are still possible when concurrent transactions commit later generated values.
 
-<Warning>
-  **AUTOINCREMENT under MVCC (`journal_mode=experimental_mvcc`)**: `sqlite_sequence` is updated lazily — only when the WAL is checkpointed. Between checkpoints it may lag the actual high-water mark or be empty for a freshly-created AUTOINCREMENT table. Do **not** rely on `sqlite_sequence` to recover the current value in MVCC mode. Instead, query the internal sequence backing table directly:
-
-  ```sql theme={null}
-  SELECT MAX(value) FROM "__turso_internal_seq___turso_internal_autoincrement_<table_name>";
-  ```
-
-  This row is updated immediately by every committed (and durably-burnt) `nextval`. After `PRAGMA wal_checkpoint(TRUNCATE)`, `sqlite_sequence` is coalesced to a single row per AUTOINCREMENT table and is then safe to read with normal SQLite-compatible queries.
-
-  Note also that MVCC autoincrement does **not** un-burn rolled-back rowids — a `ROLLBACK` after `INSERT` leaves a gap rather than recycling the rowid. SQLite WAL mode and Turso's WAL mode both un-burn on rollback; only MVCC mode keeps them burnt.
-</Warning>
+> [!WARNING]
+>
+> **AUTOINCREMENT under MVCC (`journal_mode=experimental_mvcc`)**: `sqlite_sequence` is updated lazily — only when the WAL is checkpointed. Between checkpoints it may lag the actual high-water mark or be empty for a freshly-created AUTOINCREMENT table. Do **not** rely on `sqlite_sequence` to recover the current value in MVCC mode. Instead, query the internal sequence backing table directly:
+>
+> ```sql theme={null}
+> SELECT MAX(value) FROM "__turso_internal_seq___turso_internal_autoincrement_<table_name>";
+> ```
+>
+> This row is updated immediately by every committed (and durably-burnt) `nextval`. After `PRAGMA wal_checkpoint(TRUNCATE)`, `sqlite_sequence` is coalesced to a single row per AUTOINCREMENT table and is then safe to read with normal SQLite-compatible queries.
+>
+> Note also that MVCC autoincrement does **not** un-burn rolled-back rowids — a `ROLLBACK` after `INSERT` leaves a gap rather than recycling the rowid. SQLite WAL mode and Turso's WAL mode both un-burn on rollback; only MVCC mode keeps them burnt.
 
 ### NOT NULL
 
@@ -256,9 +256,9 @@ CREATE TABLE reservations (
 
 Foreign key constraints enforce referential integrity between tables. They ensure that values in the child table correspond to existing values in the parent table.
 
-<Info>
-  Foreign key enforcement is off by default. Enable it with `PRAGMA foreign_keys = ON;` before performing operations that should be checked.
-</Info>
+> [!NOTE]
+>
+> Foreign key enforcement is off by default. Enable it with `PRAGMA foreign_keys = ON;` before performing operations that should be checked.
 
 #### Syntax
 
@@ -338,9 +338,9 @@ CREATE TABLE bad (
 ) STRICT;
 ```
 
-<Info>
-  **Turso Extension**: STRICT tables also support custom types defined with [CREATE TYPE](/sql-reference/statements/create-type) and [array types](/sql-reference/data-types#array-types). Custom types extend the type system with user-defined encoding, decoding, validation, and operator overloading. Array columns are declared by appending `[]` to a base type.
-</Info>
+> [!NOTE]
+>
+> **Turso Extension**: STRICT tables also support custom types defined with [CREATE TYPE](/sql-reference/statements/create-type) and [array types](/sql-reference/data-types#array-types). Custom types extend the type system with user-defined encoding, decoding, validation, and operator overloading. Array columns are declared by appending `[]` to a base type.
 
 ```sql theme={null}
 CREATE TABLE events (

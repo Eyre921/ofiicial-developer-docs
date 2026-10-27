@@ -6,7 +6,7 @@ path: sdk/ts/guides/nuxt
 
 Set up Turso in your Nuxt project in minutes
 
-<img alt="Nuxt banner" />
+![Nuxt banner](https://mintcdn.com/turso/7mjM7fXIfeZ8ZwNC/images/guides/nuxt-banner.png?fit=max\&auto=format\&n=7mjM7fXIfeZ8ZwNC\&q=85\&s=9c0353730a9944cd5e99e71cb2666025)
 
 Before you start, make sure you:
 
@@ -14,88 +14,84 @@ Before you start, make sure you:
 * [Sign up or login to Turso](/cli/authentication#signup)
 * Have a Nuxt app — [learn more](https://nuxt.com/docs/getting-started/installation#new-project)
 
-<Steps>
-  <Step title="Install the libSQL SDK">
-    <Snippet />
-  </Step>
+**1. Install the libSQL SDK**
 
-  <Step title="Configure database credentials">
-    Get the database URL:
+<Snippet />
 
-    ```bash theme={null}
-    turso db show --url <database-name>
-    ```
+**2. Configure database credentials**
 
-    Get the database authentication token:
+Get the database URL:
 
-    ```bash theme={null}
-    turso db tokens create <database-name>
-    ```
+```bash theme={null}
+turso db show --url <database-name>
+```
 
-    Assign credentials to the environment variables inside `.env`.
+Get the database authentication token:
 
-    ```bash theme={null}
-    NUXT_TURSO_DATABASE_URL=
-    NUXT_TURSO_AUTH_TOKEN=
-    ```
-  </Step>
+```bash theme={null}
+turso db tokens create <database-name>
+```
 
-  <Step title="Configure variables inside Nuxt's runtime config.">
-    ```ts nuxt.config.ts theme={null}
-    export default defineNuxtConfig({
-      runtimeConfig: {
-        turso: {
-          databaseUrl: "",
-          authToken: "",
-        },
-      },
-    });
-    ```
+Assign credentials to the environment variables inside `.env`.
 
-    <Note>
-      Make sure that names of the keys in the `runtimeConfig` object match the names
-      of your environment variables. Read more about this
-      [here](https://nuxt.com/docs/guide/going-further/runtime-config).
-    </Note>
-  </Step>
+```bash theme={null}
+NUXT_TURSO_DATABASE_URL=
+NUXT_TURSO_AUTH_TOKEN=
+```
 
-  <Step title="Configure libSQL Client.">
-    ```ts server/utils/turso.ts theme={null}
-    import { createClient } from "@libsql/client";
-    // You can optionally pass in the event to useRuntimeConfig
-    // import { H3Event } from "h3";
+**3. Configure variables inside Nuxt's runtime config.**
 
-    export function useTurso(/* event: H3Event */) {
-      const { turso } = useRuntimeConfig(/* event */);
+```ts nuxt.config.ts theme={null}
+export default defineNuxtConfig({
+  runtimeConfig: {
+    turso: {
+      databaseUrl: "",
+      authToken: "",
+    },
+  },
+});
+```
 
-      return createClient({
-        url: turso.databaseUrl,
-        authToken: turso.authToken,
-      });
-    }
-    ```
-  </Step>
+> [!NOTE]
+>
+> Make sure that names of the keys in the `runtimeConfig` object match the names
+> of your environment variables. Read more about this
+> [here](https://nuxt.com/docs/guide/going-further/runtime-config).
 
-  <Step title="Execute SQL">
-    ```ts server/api/items.get.ts theme={null}
-    export default defineEventHandler(async (event) => {
-      const client = useTurso(/* event */);
-      const { rows } = await client.execute("select * from table_name");
+**4. Configure libSQL Client.**
 
-      return {
-        data: {
-          items: rows,
-        },
-      };
-    });
-    ```
-  </Step>
-</Steps>
+```ts server/utils/turso.ts theme={null}
+import { createClient } from "@libsql/client";
+// You can optionally pass in the event to useRuntimeConfig
+// import { H3Event } from "h3";
+
+export function useTurso(/* event: H3Event */) {
+  const { turso } = useRuntimeConfig(/* event */);
+
+  return createClient({
+    url: turso.databaseUrl,
+    authToken: turso.authToken,
+  });
+}
+```
+
+**5. Execute SQL**
+
+```ts server/api/items.get.ts theme={null}
+export default defineEventHandler(async (event) => {
+  const client = useTurso(/* event */);
+  const { rows } = await client.execute("select * from table_name");
+
+  return {
+    data: {
+      items: rows,
+    },
+  };
+});
+```
 
 ## Examples
 
-<CardGroup>
-  <Card title="Website + App" icon="github" href="https://github.com/tursodatabase/examples/tree/master/app-top-web-frameworks">
-    See the full source code
-  </Card>
-</CardGroup>
+> **[Website + App](https://github.com/tursodatabase/examples/tree/master/app-top-web-frameworks)**
+>
+> See the full source code

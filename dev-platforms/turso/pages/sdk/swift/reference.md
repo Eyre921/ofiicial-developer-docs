@@ -12,9 +12,9 @@ libSQL Swift Reference
 
 First begin by adding `libsql` as a package dependency in XCode using this repo:
 
-<Card title="libSQL Swift" href="https://github.com/tursodatabase/libsql-swift">
-  Build from source code
-</Card>
+> **[libSQL Swift](https://github.com/tursodatabase/libsql-swift)**
+>
+> Build from source code
 
 Or add it to your SwiftPM dependencies:
 
@@ -125,19 +125,17 @@ let conn = try db.connect()
 You can pass a string to `query()` to invoke a SQL statement, as well as
 optional arguments:
 
-<CodeGroup>
-  ```swift Execute theme={null}
-  try conn.execute("INSERT INTO users VALUES (?)", [1])
-  ```
+```swift Execute theme={null}
+try conn.execute("INSERT INTO users VALUES (?)", [1])
+```
 
-  ```swift Query theme={null}
-  try conn.query("SELECT * FROM users")
-  ```
+```swift Query theme={null}
+try conn.query("SELECT * FROM users")
+```
 
-  ```swift Arguments theme={null}
-  try conn.query("SELECT * FROM users WHERE id = ?", [1])
-  ```
-</CodeGroup>
+```swift Arguments theme={null}
+try conn.query("SELECT * FROM users WHERE id = ?", [1])
+```
 
 ## Prepared Statements
 
@@ -154,12 +152,10 @@ stmt.query()
 
 libSQL supports the use of positional and named placeholders within SQL statements:
 
-<CodeGroup>
-  ```swift Positional theme={null}
-  try conn.query("SELECT * FROM users WHERE id = ?", [1])
-  ```
+```swift Positional theme={null}
+try conn.query("SELECT * FROM users WHERE id = ?", [1])
+```
 
-  ```swift Named theme={null}
-  try conn.query("SELECT * FROM users WHERE id = :id", [ ":id": 1 ])
-  ```
-</CodeGroup>
+```swift Named theme={null}
+try conn.query("SELECT * FROM users WHERE id = :id", [ ":id": 1 ])
+```

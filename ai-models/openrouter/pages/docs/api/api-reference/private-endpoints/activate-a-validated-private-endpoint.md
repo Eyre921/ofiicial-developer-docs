@@ -465,6 +465,15 @@ components:
               type:
                 - boolean
                 - 'null'
+            max_completion_tokens:
+              description: >-
+                Most completion tokens a request routed to this endpoint can
+                produce, or `null` when the endpoint sets no cap beyond the
+                model context length.
+              example: 131072
+              type:
+                - integer
+                - 'null'
           required:
             - declared_zdr
             - declared_region

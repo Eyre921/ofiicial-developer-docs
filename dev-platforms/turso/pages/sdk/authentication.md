@@ -10,25 +10,21 @@ SDKs connect using the `turso://` protocol for [Turso](/tursodb/quickstart) data
 
 You can find your database URL using the [Turso CLI](/cli/db/show) or [Platform API](/api-reference/databases/retrieve), it looks something like this:
 
-<CodeGroup>
-  ```bash Turso theme={null}
-  turso://[DB-NAME]-[ORG-NAME].turso.io
-  ```
+```bash Turso theme={null}
+turso://[DB-NAME]-[ORG-NAME].turso.io
+```
 
-  ```bash libSQL theme={null}
-  libsql://[DB-NAME]-[ORG-NAME].turso.io
-  ```
+```bash libSQL theme={null}
+libsql://[DB-NAME]-[ORG-NAME].turso.io
+```
 
-  ```bash HTTPS theme={null}
-  https://[DB-NAME]-[ORG-NAME].turso.io
-  ```
-</CodeGroup>
+```bash HTTPS theme={null}
+https://[DB-NAME]-[ORG-NAME].turso.io
+```
 
-<br />
-
-<Info>
-  WebSockets generally offer better performance when maintaining an open socket for multiple queries, whereas HTTP is typically more efficient for single queries due to reduced client-server round trips — it's advisable to benchmark both to ascertain the best option for your specific needs.
-</Info>
+> [!NOTE]
+>
+> WebSockets generally offer better performance when maintaining an open socket for multiple queries, whereas HTTP is typically more efficient for single queries due to reduced client-server round trips — it's advisable to benchmark both to ascertain the best option for your specific needs.
 
 ## Auth Tokens
 

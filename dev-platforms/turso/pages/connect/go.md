@@ -4,87 +4,85 @@ source: https://docs.turso.tech/connect/go
 path: connect/go
 ---
 
-<Steps>
-  <Step title="Install">
-    Add the Turso package to your Go project:
+**1. Install**
 
-    ```bash theme={null}
-    go get turso.tech/database/tursogo
-    ```
-  </Step>
+Add the Turso package to your Go project:
 
-  <Step title="Connect">
-    Here's how you can connect to a local SQLite database:
+```bash theme={null}
+go get turso.tech/database/tursogo
+```
 
-    ```go theme={null}
-    package main
+**2. Connect**
 
-    import (
-        "database/sql"
-        "fmt"
-        _ "turso.tech/database/tursogo"
-    )
+Here's how you can connect to a local SQLite database:
 
-    func main() {
-        db, err := sql.Open("turso", "sqlite.db")
-        if err != nil {
-            panic(err)
-        }
-        defer db.Close()
-    }
-    ```
-  </Step>
+```go theme={null}
+package main
 
-  <Step title="Create table">
-    Create a table for users:
+import (
+    "database/sql"
+    "fmt"
+    _ "turso.tech/database/tursogo"
+)
 
-    ```go theme={null}
-    _, err = db.Exec(`
-      CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username TEXT NOT NULL
-      )
-    `)
+func main() {
+    db, err := sql.Open("turso", "sqlite.db")
     if err != nil {
         panic(err)
     }
-    ```
-  </Step>
+    defer db.Close()
+}
+```
 
-  <Step title="Insert data">
-    Insert some data into the users table:
+**3. Create table**
 
-    ```go theme={null}
-    _, err = db.Exec("INSERT INTO users (username) VALUES (?)", "alice")
-    if err != nil {
+Create a table for users:
+
+```go theme={null}
+_, err = db.Exec(`
+  CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL
+  )
+`)
+if err != nil {
+    panic(err)
+}
+```
+
+**4. Insert data**
+
+Insert some data into the users table:
+
+```go theme={null}
+_, err = db.Exec("INSERT INTO users (username) VALUES (?)", "alice")
+if err != nil {
+    panic(err)
+}
+
+_, err = db.Exec("INSERT INTO users (username) VALUES (?)", "bob")
+if err != nil {
+    panic(err)
+}
+```
+
+**5. Query data**
+
+Query all users from the table:
+
+```go theme={null}
+rows, err := db.Query("SELECT * FROM users")
+if err != nil {
+    panic(err)
+}
+defer rows.Close()
+
+for rows.Next() {
+    var id int
+    var username string
+    if err := rows.Scan(&id, &username); err != nil {
         panic(err)
     }
-
-    _, err = db.Exec("INSERT INTO users (username) VALUES (?)", "bob")
-    if err != nil {
-        panic(err)
-    }
-    ```
-  </Step>
-
-  <Step title="Query data">
-    Query all users from the table:
-
-    ```go theme={null}
-    rows, err := db.Query("SELECT * FROM users")
-    if err != nil {
-        panic(err)
-    }
-    defer rows.Close()
-
-    for rows.Next() {
-        var id int
-        var username string
-        if err := rows.Scan(&id, &username); err != nil {
-            panic(err)
-        }
-        fmt.Printf("User: ID: %d, Username: %s\n", id, username)
-    }
-    ```
-  </Step>
-</Steps>
+    fmt.Printf("User: ID: %d, Username: %s\n", id, username)
+}
+```

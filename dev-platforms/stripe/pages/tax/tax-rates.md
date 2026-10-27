@@ -116,10 +116,10 @@ For example, here’s an invoice where two line items have two different rates:
 
 | Invoice | Amount | Tax Rate | Tax Amount | Totals |
 | --- | --- | --- | --- | --- |
-| Line item 1 | 5.00 USD | 5% (excl) | 0.25 USD | — |
-| Line item 2 | 10.00 USD | 10% (excl) | 1.00 USD | — |
-| **Total Tax Amount** | — | — | 1.25 USD | — |
-| **Total** | 15.00 USD | — | — | 16.25 USD |
+| Line item 1 | 5.00 USD | 5% (excl) | 0.25 USD | -– |
+| Line item 2 | 10.00 USD | 10% (excl) | 1.00 USD | -– |
+| **Total Tax Amount** | -– | -– | 1.25 USD | -– |
+| **Total** | 15.00 USD | -– | -– | 16.25 USD |
 
 [Download example invoice PDF](https://d37ugbyn3rpeym.cloudfront.net/docs/files/billing/taxes/example-tax-amounts.pdf)
 
@@ -138,9 +138,9 @@ Select this configuration on the [invoice settings](https://dashboard.stripe.com
 | --- | --- | --- | --- | --- | --- |
 | Line Item 1 | 1000.00 USD | 10% | 909.0909 USD | 90.9091 USD | 90.91 USD |
 | Line Item 2 | 50.00 USD | 10% | 45.4545 USD | 4.5455 USD | 4.55 USD |
-| Subtotal | 1,050.00 USD | — | — | — | — |
-| Total Tax Amounts | — | — | — | — | 95.46 USD |
-| Total rounded | 1,050.00 USD | — | 954.54 USD | — | 95.46 USD |
+| Subtotal | 1,050.00 USD | -– | -– | -– | -– |
+| Total Tax Amounts | -– | -– | -– | -– | 95.46 USD |
+| Total rounded | 1,050.00 USD | -– | 954.54 USD | -– | 95.46 USD |
 
 [Download example line item level rounding invoice PDF](https://d37ugbyn3rpeym.cloudfront.net/docs/files/billing/taxes/example-line-item-level-rounding.pdf)
 
@@ -148,11 +148,11 @@ Select this configuration on the [invoice settings](https://dashboard.stripe.com
 
 | Name | Amount | Inclusive Tax Rate | Taxable Amount (before rounding) | Tax Amount (before rounding) | Tax Amount (after rounding) |
 | --- | --- | --- | --- | --- | --- |
-| Line Item 1 | 1000.00 USD | 10% | 909.0909 USD | — | — |
-| Line Item 2 | 50.00 USD | 10% | 45.4545 USD | — | — |
-| Subtotal | 1,050.00 USD | 10% | 954.5455 USD | — | — |
+| Line Item 1 | 1000.00 USD | 10% | 909.0909 USD | -– | -– |
+| Line Item 2 | 50.00 USD | 10% | 45.4545 USD | -– | -– |
+| Subtotal | 1,050.00 USD | 10% | 954.5455 USD | -– | -– |
 | Total Tax Amounts | 1,050.00 USD | 10% | 954.5455 USD | 95.45 USD | 95.45 USD |
-| Total rounded | 1,050.00 USD | — | 954.55 USD | — | 95.45 USD |
+| Total rounded | 1,050.00 USD | -– | 954.55 USD | -– | 95.45 USD |
 
 [Download example invoice level rounding invoice PDF](https://d37ugbyn3rpeym.cloudfront.net/docs/files/billing/taxes/example-invoice-level-rounding.pdf)
 

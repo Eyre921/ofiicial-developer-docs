@@ -6386,6 +6386,10 @@ Migrate vector data from pgvector to Pinecone Database, validate search results,
 
 This guide shows you how to migrate a vector-search workload from pgvector to Pinecone Database while keeping PostgreSQL available as the source of truth until cutover. It's based on the [pgvector-migration tool](https://github.com/pinecone-field/pgvector-migration), which provides a step-by-step migration manual, a runnable notebook, and a synchronization script that supports backfills, incremental synchronization, and reconciliation.
 
+> [!TIP]
+>
+> To keep your data in Postgres and search it with Pinecone instead, see [pg\_pinecone](/guides/pg-pinecone/overview), an open-source Postgres extension.
+
 ## Before you migrate
 
 You need:
@@ -26792,11 +26796,11 @@ Source: https://docs.pinecone.io/guides/search/hybrid-search
 
 Combine keyword and semantic retrieval in Pinecone with a text-match filter on a dense search, or by fusing separate searches with reciprocal rank fusion.
 
-Hybrid search combines a keyword signal with a semantic signal so a single query benefits from both. Keyword retrieval (full-text BM25 or sparse vectors) matches specific tokens like product codes, error strings, and names. Semantic retrieval (dense vectors) matches on meaning, so a query still finds an answer phrased with different words. Each method misses what the other catches, and hybrid search closes that gap.
+Hybrid search combines a keyword signal with a semantic signal so your results benefit from both. Full-text search (BM25) and sparse-vector search match specific terms like product codes, error strings, and names. Semantic search (dense vectors) matches on meaning, so a query still finds an answer phrased with different words. Each method misses what the other catches, and hybrid search closes that gap.
 
 > [!NOTE]
 >
-> "Hybrid" isn't one fixed method. Qualify what you are combining: full-text (BM25) plus dense, sparse plus dense, or a keyword filter plus dense. This page uses those qualifiers throughout.
+> "Hybrid" covers several combinations: full-text (BM25) plus dense, sparse plus dense, or a text-match filter plus dense.
 
 ## Combine signals
 
@@ -26804,17 +26808,19 @@ Pinecone gives you three ways to combine a keyword signal with a dense signal. [
 
 | Pattern | How it works | When to use it |
 | - | - | - |
-| Filter, then rank | A [text-match filter](/guides/search/filter-by-metadata#text-match-filters) (`$match_phrase`, `$match_all`, `$match_any`) on a full-text field narrows the candidates, then a `dense_vector` search ranks what remains, all in one request. | Document and text workloads on the Documents API. One index, one call, and no score normalization. |
+| Filter, then rank | A [text-match filter](/guides/search/filter-by-metadata#text-match-filters) (`$match_phrase`, `$match_all`, `$match_any`) on a full-text field narrows the candidates, then a dense search ranks what remains, all in one request. The dense search can score the same `string` field with `embed`, or score a `dense_vector` field. | Document and text workloads on the Documents API. One index, one call, and no score normalization. |
 | Client-side fusion | Run a keyword search and a dense search separately, then merge the two ranked lists with [reciprocal rank fusion (RRF)](/guides/search/reciprocal-rank-fusion). | When you want both signals to contribute to the ranking, not just to filter. Works on either API. |
-| Server-side combination (Vectors API) | Store a dense vector and a sparse vector on each record in a single vector index. Pinecone combines both in one query, and you set the dense/sparse balance client-side by scaling the query vectors before you send them (an `alpha` weighting). | Existing vector and records workloads on the Vectors API. |
+| Server-side combination (Vectors API) | Store a dense vector and a sparse vector on each record in a single vector index. Pinecone combines both in one query, and you set the dense/sparse balance client-side by scaling the query vectors before you send them (an `alpha` weighting). | Existing vector index workloads on the Vectors API. |
 
 RRF is a fusion method, not a synonym for hybrid search. It's one way to merge ranked lists, while "hybrid search" is the broader approach of combining signals. See [Reciprocal rank fusion](/guides/search/reciprocal-rank-fusion).
 
 ## Choose an approach
 
-For a new document or text workload, use the Documents API. Declare a `dense_vector` field and one or more full-text `string` fields in one schema, then either filter a dense search with a text-match filter or run a keyword search and a dense search and fuse them with RRF. See [Full-text search](/guides/search/full-text-search) and its [example schemas](/guides/search/full-text-search#example-schemas).
+For a new document or text workload, use the Documents API. Declare one `string` field with both `full_text_search` and `embed`, so Pinecone indexes its text for full-text search and embeds it for semantic search. Then either filter an `embed` search with a text-match filter on that field, or run a `text` search and an `embed` search and fuse them with RRF. See [Integrated embedding](/guides/search/integrated-embedding).
 
-For an existing vector or records workload, use the Vectors API.
+If you generate your own embeddings, declare a `dense_vector` field alongside one or more full-text `string` fields instead. See the full-text search [example schemas](/guides/search/full-text-search#example-schemas).
+
+For an existing vector index workload, use the Vectors API.
 
 ## Hybrid search on the Vectors API
 
@@ -85600,6 +85606,856 @@ Task records across the project, newest first. Filter by workflow, state, or con
 
 
 
+# Search a table with full-text search
+Source: https://docs.pinecone.io/guides/pg-pinecone/full-text-search
+
+Use pg_pinecone to keep a Pinecone index for full-text search in sync with a Postgres table, then run BM25, filtered, and hybrid searches in SQL.
+
+pg\_pinecone can keep a Pinecone index for [full-text search](/guides/search/full-text-search) in sync with a Postgres table's text columns. You declare the searchable columns once and search them with SQL, and Postgres stays the system of record.
+
+## Before you begin
+
+* pg\_pinecone installed, as the [quickstart](/guides/pg-pinecone/quickstart) shows.
+* A Pinecone API key stored in the database. Store it with `SELECT pinecone.set_api_key('YOUR_API_KEY');`.
+* `pg_pinecone` in `shared_preload_libraries`, followed by a Postgres restart. See [Preload the extension](/guides/pg-pinecone/switch-to-remote#preload-the-extension).
+* A table with a single-column primary key, which becomes each document's ID. You must own the table.
+
+## Search a table
+
+### 1. Create a sample table
+
+This guide uses a table of help-center articles. The embeddings are only needed to [combine text and vector search](#combine-text-and-vector-search):
+
+```sql SQL theme={null}
+CREATE TABLE articles (
+    id        bigint PRIMARY KEY,
+    title     text,
+    body      text,
+    category  text,
+    embedding vector(1024)
+);
+
+WITH input(id, title, body, category) AS (
+    VALUES
+        (1, 'Reset your password', 'Open Settings, choose Security, and select Reset password. A reset link arrives by email within a few minutes.', 'account'),
+        (2, 'Enable two-factor authentication', 'Two-factor authentication adds a one-time code from an authenticator app to every sign-in.', 'account'),
+        (3, 'Export your data', 'Go to Settings and choose Export to download every project as a CSV file.', 'data'),
+        (4, 'Fix error E-1042 during import', 'Error E-1042 means the CSV file has a header row that does not match the table columns.', 'data'),
+        (5, 'Change your billing plan', 'Upgrade or downgrade your plan from the Billing page. Changes take effect at the next invoice.', 'billing'),
+        (6, 'Download past invoices', 'Every invoice is available as a PDF on the Billing page under Invoice history.', 'billing')
+)
+INSERT INTO articles (id, title, body, category, embedding)
+SELECT i.id, i.title, i.body, i.category, e.embedding::vector
+FROM input i
+JOIN pinecone.embed_batch((SELECT array_agg(title || '. ' || body ORDER BY id) FROM input)) e
+  ON e.ordinal = i.id;
+```
+
+### 2. Declare the searchable columns
+
+Call `pinecone.track_docs()` with the text columns to index. `metadata_columns` lists columns you want to filter on, and `vector_column` is optional. `text_columns` takes a JSON list, and `metadata_columns` takes a Postgres array:
+
+```sql SQL theme={null}
+SELECT pinecone.track_docs(
+    'articles',
+    text_columns     => '["title", "body"]',
+    metadata_columns => ARRAY['category'],
+    vector_column    => 'embedding'
+);
+```
+
+This creates a Pinecone index and queues the table's existing rows to be copied to it. Only the declared columns leave Postgres. From then on, pg\_pinecone copies every committed insert, update, and delete in the background.
+
+A list of column names uses English text analysis with stemming and stop words. To set options per column, pass an object instead. For example, on a table with a `sku` column, turn off stemming and stop words so identifiers match exactly:
+
+```sql SQL theme={null}
+text_columns => '{"title": {"language": "en"}, "sku": {"stemming": false, "stop_words": false}}'
+```
+
+### 3. Wait for the initial copy
+
+Check progress with `pinecone.status()`:
+
+```sql SQL theme={null}
+SELECT table_name, docs_backfill_done, docs_backfill_total, docs_queue_state
+FROM pinecone.status();
+```
+
+The copy is finished when `docs_backfill_done` equals `docs_backfill_total`. `pinecone.flush_docs('articles')` waits until everything committed so far has been delivered, then returns `true`. It returns `false` if delivery doesn't finish within 30 seconds. Pinecone then takes up to about a minute to index delivered documents and make them searchable.
+
+### 4. Search the table
+
+`pinecone.search_docs()` returns each match's ID, score, and rank. Join back to the table for the rest of the row:
+
+```sql SQL theme={null}
+SELECT a.id, a.title, s.score
+FROM pinecone.search_docs('articles', 'download invoice pdf', k => 3) s
+JOIN articles a ON a.id = s.id::bigint
+ORDER BY s.rank;
+```
+
+```text Output theme={null}
+ id |          title           |   score
+----+--------------------------+-----------
+  6 | Download past invoices   |  6.580365
+  3 | Export your data         | 1.6908139
+  5 | Change your billing plan | 1.0116261
+```
+
+Pinecone ranks results with BM25. Because the join reads the table with your own privileges, it respects row-level security and drops any row deleted since the last sync.
+
+## Filter results
+
+Use `filter` to restrict results by metadata columns, and `must` to require text in a column:
+
+```sql SQL theme={null}
+-- Only articles in the account category
+SELECT a.id, a.title
+FROM pinecone.search_docs('articles', 'settings',
+       filter => '{"category": {"$eq": "account"}}', k => 3) s
+JOIN articles a ON a.id = s.id::bigint
+ORDER BY s.rank;
+
+-- Only articles whose body contains the exact error code
+SELECT a.id, a.title
+FROM pinecone.search_docs('articles', 'import error',
+       must => '{"body": {"$match_phrase": "E-1042"}}', k => 3) s
+JOIN articles a ON a.id = s.id::bigint
+ORDER BY s.rank;
+```
+
+`must` accepts `$match_phrase`, `$match_all`, and `$match_any`. For the operators `filter` accepts, see [Filter operators](/guides/search/full-text-search#filter-operators).
+
+To write the whole query in [Lucene syntax](/guides/search/full-text-search/query-syntax), set `mode => 'query_string'`:
+
+```sql SQL theme={null}
+SELECT a.id, a.title
+FROM pinecone.search_docs('articles', 'title:(password OR invoices) -body:email',
+       mode => 'query_string', k => 3) s
+JOIN articles a ON a.id = s.id::bigint
+ORDER BY s.rank;
+```
+
+## Combine text and vector search
+
+If you declared a `vector_column`, pass a query vector with `vector`, and name the column the text query must match with `field`. The text query narrows the results to rows that match it in that column, and the vector ranks what's left:
+
+```sql SQL theme={null}
+SELECT a.id, a.title
+FROM pinecone.search_docs('articles', 'billing', field => 'body',
+       vector => pinecone.embed('how do I get a receipt for my payment'), k => 3) s
+JOIN articles a ON a.id = s.id::bigint
+ORDER BY s.rank;
+```
+
+```text Output theme={null}
+ id |          title
+----+--------------------------
+  6 | Download past invoices
+  5 | Change your billing plan
+```
+
+## Search one tenant
+
+To keep each tenant's documents in their own Pinecone [namespace](/guides/index-data/indexing-overview#namespaces), pass a tenant column as `partition_column` when you call `pinecone.track_docs()`. Then name the tenant with `partition` on every search. This example uses a `tickets` table with a `tenant_id` column:
+
+```sql SQL theme={null}
+SELECT pinecone.track_docs('tickets',
+    text_columns     => '["title", "body"]',
+    partition_column => 'tenant_id');
+
+SELECT s.id, s.score
+FROM pinecone.search_docs('tickets', 'invoice pdf', partition => 42, k => 10) s;
+```
+
+A search covers exactly one tenant, and BM25 scores are calculated within that tenant's documents. A search without `partition` returns an error. With [`engine => 'local'`](#search-without-pinecone), `partition` becomes a condition on the column instead. `pinecone.delete_partition('tickets', 42)` deletes one tenant's documents from Pinecone, and its rows stay in the table.
+
+The partition column must be `NOT NULL`. Pinecone limits the number of namespaces per index by plan, and pg\_pinecone warns when a table has more than 1,000 distinct values.
+
+## Highlight matches
+
+`pinecone.headline()` marks the query terms in a column's text, using the language you declared for that column:
+
+```sql SQL theme={null}
+SELECT a.id, pinecone.headline('articles', 'body', a.body, 'download invoice pdf') AS snippet
+FROM pinecone.search_docs('articles', 'download invoice pdf', k => 2) s
+JOIN articles a ON a.id = s.id::bigint
+ORDER BY s.rank;
+```
+
+```text Output theme={null}
+ id |                                               snippet
+----+-----------------------------------------------------------------------------------------------------
+  6 | Every <b>invoice</b> is available as a <b>PDF</b> on the Billing page under <b>Invoice</b> history.
+  3 | Go to Settings and choose Export to <b>download</b> every project as a CSV file.
+```
+
+## Search without Pinecone
+
+Set `engine => 'local'` to answer the same call with Postgres's built-in full-text search instead of Pinecone:
+
+```sql SQL theme={null}
+SELECT a.id, a.title, s.score
+FROM pinecone.search_docs('articles', 'download invoice', engine => 'local', k => 3) s
+JOIN articles a ON a.id = s.id::bigint
+ORDER BY s.rank;
+```
+
+The local engine reflects writes immediately. It also works on tables you haven't declared with `track_docs()` if you name a column with `field`. It ranks results with Postgres's `ts_rank_cd` instead of BM25 and requires every query word to match, so it can return fewer results than the remote engine, in a different order. It doesn't support `filter`, `must`, `vector`, or `mode => 'query_string'`, and it doesn't create an index, so add a [GIN index](https://www.postgresql.org/docs/current/textsearch-indexes.html) on large tables.
+
+## Manage a tracked table
+
+Once a table is tracked, pg\_pinecone keeps its Pinecone index in sync on its own. These functions handle the cases that need your attention:
+
+* **Retry rejected documents**: If Pinecone rejects a document, pg\_pinecone sets it aside without stopping the rest of the table. `pinecone.failed_docs('articles')` lists rejected documents and why, and `pinecone.retry_failed_docs('articles')` queues them again.
+* **Re-send every row**: `pinecone.backfill_docs('articles', clear => true)` copies the whole table again, for example after restoring a database backup.
+* **Change a declared column**: Stop tracking the table before you drop, rename, or change the type of a declared column.
+* **Stop tracking**: `pinecone.untrack_docs('articles', drop_index => true)` stops syncing and deletes the Pinecone index.
+
+## Search an index directly
+
+To work with a Pinecone index for full-text search that isn't tied to a table, use `pinecone.create_doc_index()`, `pinecone.upsert_docs()`, and `pinecone.search_doc_index()`:
+
+```sql SQL theme={null}
+SELECT pinecone.create_doc_index('faq',
+  '{"fields": {"question": {"type": "string", "full_text_search": {"language": "en"}}}}');
+
+SELECT pinecone.upsert_docs('faq',
+  '[{"_id": "q1", "question": "How do I cancel my subscription?"},
+    {"_id": "q2", "question": "Where can I find my invoices?"}]');
+
+SELECT id, score
+FROM pinecone.search_doc_index('faq',
+  '{"type": "text", "fields": ["question"], "query": "invoices"}', k => 3);
+```
+
+Upserted documents become searchable shortly after Pinecone indexes them, so a search run immediately after an upsert may return nothing. The schema and query use the same JSON as the [Documents API](/guides/search/full-text-search).
+
+To delete the index when you're done:
+
+```sql SQL theme={null}
+SELECT pinecone.drop_doc_index('faq');
+```
+
+
+# pg_pinecone
+Source: https://docs.pinecone.io/guides/pg-pinecone/overview
+
+pg_pinecone is an open-source PostgreSQL extension that runs the search engine Pinecone uses at scale inside Postgres, or on an index in Pinecone's cloud.
+
+pg\_pinecone is an open-source PostgreSQL extension, licensed under [Apache 2.0](https://github.com/pinecone-io/pg_pinecone/blob/main/LICENSE), that brings Pinecone's vector search into the Postgres database you already run. It runs on PostgreSQL 17 and 18 servers you manage yourself, because installing it needs superuser access. The `remote` engine and full-text search also need a server setting.
+
+> **[Quickstart](/guides/pg-pinecone/quickstart)**
+>
+> Install the extension and search a table with a native index.
+
+> **[Storage engines](/guides/pg-pinecone/storage-engines)**
+>
+> The pgvector, native, and remote engines, and when to use each.
+
+> **[Switch from pgvector to native](/guides/pg-pinecone/switch-from-pgvector)**
+>
+> Replace a table's pgvector index with a native index.
+
+> **[Switch from native to remote](/guides/pg-pinecone/switch-to-remote)**
+>
+> Switch a table to the remote engine when it outgrows one server.
+
+## How it works
+
+pg\_pinecone has three engines for a table's vector search:
+
+* **`pgvector`**: Uses pgvector's own index, the same one you'd run without pg\_pinecone.
+* **`native`**: The default. Runs the search engine Pinecone uses at scale, inside your Postgres database. It doesn't call Pinecone.
+* **`remote`**: Runs the search on an index in Pinecone's cloud instead, for a table that outgrows one server.
+
+Your tables and queries stay the same on every engine, and you switch a table between `native` and `remote` with one SQL call. Every switch can be reversed. Postgres keeps every row on every engine, including `remote`, so switching back rebuilds an index from data already in your database.
+
+### Architecture
+
+![An application sends pgvector SQL to Postgres, which keeps the rows and their vector column. pg\_pinecone searches them with the native engine (the default), the pgvector engine, or the remote engine, which syncs to a Pinecone serverless index and returns the results.](https://mintcdn.com/pinecone/qIfhVY6y5p5rJ02f/images/pg-pinecone/pg-pinecone-overview-light.svg?fit=max\&auto=format\&n=qIfhVY6y5p5rJ02f\&q=85\&s=a925c57ae6c04da11de0bda31fb8041a)
+
+The diagram names these index types:
+
+* **HNSW** (Hierarchical Navigable Small World): A graph index in pgvector. Each vector links to its nearest neighbors, and a search follows those links toward the query.
+* **IVFFlat**: A clustered index in pgvector. It groups vectors into lists and compares the query with the full vectors in the lists nearest to it.
+* **IVF + RaBitQ**: How the `native` engine searches. IVF (inverted file) groups vectors into clusters the same way, and RaBitQ stores each vector as a short binary code, so the index is small and quick to scan. The closest matches are then rechecked against the full vectors.
+
+## Features
+
+* **Filtered search**: With a [filter column](/guides/pg-pinecone/storage-engines#filter-column), the `native` engine applies a filter, such as a tenant ID, during the search, so filtered queries return a full set of results. It runs in your database without an account or network access.
+* **Scale**: The `remote` engine moves a table's vector search to a Pinecone index, and Postgres keeps the rows.
+* **Unchanged queries**: A pgvector query like `ORDER BY embedding <=> $1` works the same on every engine.
+* **Tenant isolation**: With the `remote` engine, each tenant can have its own Pinecone namespace, so a query searches only that tenant's data.
+* **Full-text search**: pg\_pinecone keeps a Pinecone index for full-text search in sync with a table's text columns, and you run BM25, vector, or hybrid searches on it from SQL.
+* **SQL functions**: You can generate embeddings and rerank results in SQL. See the [SQL reference](https://github.com/pinecone-io/pg_pinecone/blob/main/docs/reference.md).
+
+## Choose your path
+
+* **New to vector search**: The [quickstart](/guides/pg-pinecone/quickstart) creates a table with embeddings and searches it with a `native` index.
+* **Already using pgvector**: [Switch from pgvector to native](/guides/pg-pinecone/switch-from-pgvector).
+* **Outgrowing one server**: [Switch from native to remote](/guides/pg-pinecone/switch-to-remote), so Pinecone serves the table's vector search.
+* **Leaving Postgres**: [Migrate from pgvector](/guides/index-data/migrate-from-pgvector) moves your data into Pinecone Database.
+
+
+# pg_pinecone quickstart
+Source: https://docs.pinecone.io/guides/pg-pinecone/quickstart
+
+Install the pg_pinecone extension for Postgres and search a sample table with a native index, which runs the search engine Pinecone uses at scale.
+
+This quickstart installs pg\_pinecone on a PostgreSQL server you manage. You create a sample table with vectors and search it with a `native` index, which runs the search engine Pinecone uses at scale inside Postgres. You can bring your own vectors, with no API key or network access, or have Pinecone generate embeddings. To compare `native` with the other engines, see [Storage engines](/guides/pg-pinecone/storage-engines).
+
+If you already have a table with a pgvector index, complete steps 1 and 2 to install pg\_pinecone, then [switch from pgvector to native](/guides/pg-pinecone/switch-from-pgvector).
+
+## Prerequisites
+
+* A PostgreSQL 17 or 18 server and a superuser role on it.
+* pgvector installed on that server, because pg\_pinecone uses its `vector` column type and distance operators. If you don't have it, run `sudo apt install postgresql-17-pgvector` on Debian or Ubuntu, or `brew install pgvector` with Homebrew on macOS. For other Linux distributions, see the [pgvector installation guide](https://github.com/pgvector/pgvector#installation). If you install with Docker, the image includes Postgres and pgvector, so you need only Docker.
+* Optional: a [Pinecone API key](https://app.pinecone.io/organizations/-/projects/-/keys), if you want Pinecone to generate the embeddings. A key from the free [Starter plan](https://www.pinecone.io/pricing/) is enough.
+
+> [!NOTE]
+>
+> The `native` engine never calls Pinecone. Steps 3 and 4 each have two tabs, so pick the same one in both. **Your own vectors** runs entirely in your database with no API key or network access, and **Pinecone embeddings** generates embeddings with a Pinecone-hosted model.
+
+## 1. Install pg\_pinecone
+
+**Release archive**
+
+1. Download the release archive for your platform and Postgres version from the [releases page](https://github.com/pinecone-io/pg_pinecone/releases).
+
+   Archives are published for PostgreSQL 17 and 18 on Linux x86\_64, Linux arm64, and macOS arm64. The Linux x86\_64 build needs a CPU that supports x86-64-v3 (Intel Haswell or newer, which covers current cloud instances), and the Linux builds need glibc 2.39 or later, such as Ubuntu 24.04 or Debian 13.
+
+2. Extract the archive and copy its files into your Postgres installation.
+
+   The commands use `PG=17`. If your server runs PostgreSQL 18, change it to `PG=18`. To check your version, run `pg_config --version`. `pg_config` also reports where your Postgres installation keeps extension files:
+
+   ```bash Linux theme={null}
+   PG=17
+   tar xzf pg_pinecone-0.11.0-pg$PG-linux-x86_64.tar.gz
+   sudo cp usr/lib/postgresql/$PG/lib/pg_pinecone.so "$(pg_config --pkglibdir)/"
+   sudo cp usr/share/postgresql/$PG/extension/pg_pinecone* "$(pg_config --sharedir)/extension/"
+   ```
+
+   ```bash macOS theme={null}
+   PG=17
+   tar xzf pg_pinecone-0.11.0-pg$PG-darwin-arm64.tar.gz
+   cp opt/homebrew/lib/postgresql@$PG/pg_pinecone.dylib "$(pg_config --pkglibdir)/"
+   cp opt/homebrew/share/postgresql@$PG/extension/pg_pinecone* "$(pg_config --sharedir)/extension/"
+   ```
+
+On Linux arm64, use the `linux-arm64` archive. If more than one Postgres version is installed, use the `pg_config` that belongs to the server you're installing into. On other platforms, including Debian 12, Ubuntu 22.04, RHEL 9, and older x86\_64 CPUs, [build from source](https://github.com/pinecone-io/pg_pinecone#readme).
+
+**Docker**
+
+The [`pineconeteam/pg_pinecone`](https://hub.docker.com/r/pineconeteam/pg_pinecone) image is the [`pgvector/pgvector`](https://hub.docker.com/r/pgvector/pgvector) image with pg\_pinecone added, so it includes Postgres and pgvector. It runs on x86\_64 and arm64 hosts. On x86\_64, it needs a CPU that supports x86-64-v3, like the Linux x86\_64 release archive.
+
+1. Pull the image. The image includes its own Postgres, so you don't need to match a server you already have. This command uses PostgreSQL 17, the more widely used of the two supported versions. For PostgreSQL 18, use the `0.11.0-pg18` tag here and in the next step instead:
+
+   ```bash theme={null}
+   docker pull pineconeteam/pg_pinecone:0.11.0-pg17
+   ```
+
+2. Start a container from the image:
+
+   ```bash theme={null}
+   docker run -d --name pg_pinecone \
+     -e POSTGRES_PASSWORD=secret \
+     pineconeteam/pg_pinecone:0.11.0-pg17 \
+     -c shared_preload_libraries=pg_pinecone
+   ```
+
+   The `shared_preload_libraries` setting isn't needed for this quickstart, but the `remote` engine and full-text search need it, and setting it now saves a restart later.
+
+## 2. Connect and create the extensions
+
+1. Connect to your database as a superuser with `psql`:
+
+   ```bash Linux theme={null}
+   sudo -u postgres psql
+   ```
+
+   ```bash macOS theme={null}
+   psql postgres
+   ```
+
+   ```bash Docker theme={null}
+   docker exec -it pg_pinecone psql -U postgres
+   ```
+
+   On Linux, the `postgres` system user is the superuser that the package creates. With Homebrew on macOS, your own user is the superuser. In the Docker image, the superuser is `postgres`. To connect to a different database or a remote server, add `-d your_database`, `-h your_host`, and `-U your_superuser`.
+
+2. Create the extensions. Create pgvector first, because pg\_pinecone builds on its `vector` type and operators:
+
+   ```sql SQL theme={null}
+   CREATE EXTENSION vector;
+   CREATE EXTENSION pg_pinecone;
+   ```
+
+## 3. Add sample data
+
+**Your own vectors**
+
+1. Create the table. These vectors have three dimensions:
+
+   ```sql SQL theme={null}
+   CREATE TABLE docs (
+       id        bigint PRIMARY KEY,
+       body      text,
+       embedding vector(3)
+   );
+   ```
+
+2. Insert a few short documents with their vectors. In a real application, you'd generate the vectors with an embedding model of your choice. To skip that step here, each document gets a hand-made vector whose values stand for food, nature, and places:
+
+   ```sql SQL theme={null}
+   INSERT INTO docs (id, body, embedding) VALUES
+       (1, 'The Eiffel Tower was completed in 1889 for the World''s Fair in Paris.', '[0.1, 0.1, 0.9]'),
+       (2, 'Photosynthesis converts sunlight, water, and carbon dioxide into glucose.', '[0.05, 0.9, 0.1]'),
+       (3, 'The Great Barrier Reef is the largest coral reef system in the world.', '[0.1, 0.8, 0.3]'),
+       (4, 'Espresso is brewed by forcing hot water through finely ground coffee.', '[0.95, 0.05, 0.05]'),
+       (5, 'Mount Everest sits on the border between Nepal and China.', '[0.05, 0.4, 0.8]'),
+       (6, 'Honeybees communicate the location of flowers with a waggle dance.', '[0.2, 0.85, 0.05]'),
+       (7, 'A croissant is a flaky pastry made from laminated, buttered dough.', '[0.95, 0.05, 0.1]'),
+       (8, 'The Amazon rainforest produces a large share of the world''s oxygen.', '[0.05, 0.9, 0.3]');
+   ```
+
+**Pinecone embeddings**
+
+1. Store your Pinecone API key so the extension can generate embeddings. The key is stored in the `pinecone.secret` table, which only superusers can read by default:
+
+   ```sql SQL theme={null}
+   SELECT pinecone.set_api_key('YOUR_API_KEY');
+   ```
+
+2. Create the table. The [`multilingual-e5-large`](/models/multilingual-e5-large) model that `pinecone.embed_batch()` uses by default produces 1024-dimensional vectors:
+
+   ```sql SQL theme={null}
+   CREATE TABLE docs (
+       id        bigint PRIMARY KEY,
+       body      text,
+       embedding vector(1024)
+   );
+   ```
+
+3. Insert a few short documents and generate their embeddings in the same statement:
+
+   ```sql SQL theme={null}
+   WITH input(body) AS (
+       VALUES
+           ('The Eiffel Tower was completed in 1889 for the World''s Fair in Paris.'),
+           ('Photosynthesis converts sunlight, water, and carbon dioxide into glucose.'),
+           ('The Great Barrier Reef is the largest coral reef system in the world.'),
+           ('Espresso is brewed by forcing hot water through finely ground coffee.'),
+           ('Mount Everest sits on the border between Nepal and China.'),
+           ('Honeybees communicate the location of flowers with a waggle dance.'),
+           ('A croissant is a flaky pastry made from laminated, buttered dough.'),
+           ('The Amazon rainforest produces a large share of the world''s oxygen.')
+   ),
+   numbered AS (
+       SELECT row_number() OVER () AS ordinal, body FROM input
+   )
+   INSERT INTO docs (id, body, embedding)
+   SELECT n.ordinal, n.body, e.embedding::vector
+   FROM numbered n
+   JOIN pinecone.embed_batch((SELECT array_agg(body ORDER BY ordinal) FROM numbered)) e
+     ON e.ordinal = n.ordinal;
+   ```
+
+## 4. Search inside Postgres
+
+### 1. Create a native index
+
+Create a `native` index on the vector column. `native` is the default engine, so `engine => 'native'` is optional:
+
+```sql SQL theme={null}
+SELECT pinecone.create_index('docs', 'embedding', engine => 'native');
+```
+
+With Pinecone embeddings, `pinecone.create_index()` prints an informational message, labeled `NOTICE`, that suggests `SET STORAGE PLAIN` on the vector column, which speeds up searches on large tables. You can ignore it for this sample.
+
+### 2. Run a search
+
+Search with an ordinary pgvector query, the same query you'd run without pg\_pinecone. `<=>` is pgvector's cosine distance operator:
+
+**Your own vectors**
+
+Query with `[1, 0, 0]`, a vector that points entirely toward food, with no nature or places:
+
+```sql SQL theme={null}
+SET enable_seqscan = off;
+
+SELECT id, body
+FROM docs
+ORDER BY embedding <=> '[1, 0, 0]'
+LIMIT 2;
+```
+
+The two closest documents are the two about food:
+
+```text Output theme={null}
+ id |                                 body
+----+-----------------------------------------------------------------------
+  4 | Espresso is brewed by forcing hot water through finely ground coffee.
+  7 | A croissant is a flaky pastry made from laminated, buttered dough.
+```
+
+**Pinecone embeddings**
+
+Query with a question, which `pinecone.embed()` turns into a vector:
+
+```sql SQL theme={null}
+SET enable_seqscan = off;
+
+SELECT id, body
+FROM docs
+ORDER BY embedding <=> (SELECT pinecone.embed('What should I order for breakfast at a cafe?')::vector)
+LIMIT 2;
+```
+
+`::vector` converts the embedding to pgvector's `vector` type. The subquery embeds the question once, before the search, so Postgres can use the index. If you call `pinecone.embed()` directly in `ORDER BY`, Postgres reads every row instead.
+
+The two closest documents are about espresso and croissants, even though neither one mentions breakfast or a cafe:
+
+```text Output theme={null}
+ id |                                 body
+----+-----------------------------------------------------------------------
+  4 | Espresso is brewed by forcing hot water through finely ground coffee.
+  7 | A croissant is a flaky pastry made from laminated, buttered dough.
+```
+
+> [!NOTE]
+>
+> `SET enable_seqscan = off` makes Postgres use the index on this eight-row table. On a table this small, the planner would otherwise read every row directly, because that's cheaper than using any index. Once a table is large enough that reading every row costs more, the planner chooses the index on its own, and you don't need this setting. It lasts until you disconnect.
+
+### 3. Check which index served the query
+
+`EXPLAIN` shows the plan Postgres uses to run a query, including which index it reads. To confirm the `native` index served the search, check the plan:
+
+```sql SQL theme={null}
+SET enable_seqscan = off;
+
+EXPLAIN (COSTS OFF)
+SELECT id
+FROM docs
+ORDER BY embedding <=> (SELECT embedding FROM docs WHERE id = 4)
+LIMIT 2;
+```
+
+The plan includes `Index Scan using docs_embedding_pinecone_idx`, the `native` index you created in step 4.1. If Postgres read every row instead, the plan would show `Seq Scan`.
+
+## 5. Clean up
+
+If you don't need the sample table anymore, delete it. `DROP TABLE` permanently deletes the table, its rows, and its indexes, including the `native` index. To try [switching from native to remote](/guides/pg-pinecone/switch-to-remote) next, skip this step, because that guide uses the same table.
+
+```sql SQL theme={null}
+DROP TABLE docs;
+```
+
+## Next steps
+
+* [Choose a storage engine](/guides/pg-pinecone/storage-engines) for your workload.
+* [Switch from pgvector to native](/guides/pg-pinecone/switch-from-pgvector) on an existing table.
+* [Switch from native to remote](/guides/pg-pinecone/switch-to-remote) when a table outgrows one server.
+* [Search a table with full-text search](/guides/pg-pinecone/full-text-search).
+
+
+# pg_pinecone storage engines
+Source: https://docs.pinecone.io/guides/pg-pinecone/storage-engines
+
+Learn how pg_pinecone's pgvector, native, and remote storage engines work, when to use each, and how to switch between them.
+
+pg\_pinecone searches a table's vector column with one of three engines: `pgvector` or `native` inside Postgres, or `remote` on Pinecone. The engine is a setting on the table's one pg\_pinecone index, so you switch engines per table. Your queries are the same on all three, so you can change engines without touching application code:
+
+```sql SQL theme={null}
+SELECT id, body FROM docs ORDER BY embedding <=> $1 LIMIT 10;
+```
+
+## The engines
+
+| Engine | What it is | Where vectors are searched | Needs a Pinecone account |
+| - | - | - | - |
+| `pgvector` | pgvector's own index, such as HNSW. | In Postgres | No |
+| `native` | The search engine Pinecone uses at scale, running inside Postgres. This is the default. | In Postgres | No |
+| `remote` | A Pinecone Database index, kept in sync with your table. | In Pinecone | Yes |
+
+If you create an index without choosing an engine, you get `native`. A pgvector index that a table already has stays in place until you replace it.
+
+A `native` index built on fewer than 10,000 rows compares each query with every row. That's exact, but it slows down as the table grows, so create the index after you load your data, or rebuild it with `REINDEX` once the table is larger.
+
+Postgres stays the system of record with every engine. Your rows, including the vector column, live in Postgres, and the engine only decides which index answers similarity queries.
+
+## When to use each engine
+
+* **`pgvector`**: A table that already has a pgvector index and doesn't filter its searches. You can keep that index and add pg\_pinecone without changing anything.
+* **`native`**: Filtered search, especially when the rows that match a filter are clustered, such as per-tenant data queried with `WHERE tenant_id = $1`. The `native` engine scans by cluster, so it keeps finding matches where a graph index like pgvector's [HNSW](https://github.com/pgvector/pgvector#hnsw) can miss them. It runs without an account or network access.
+* **`remote`**: A table that has outgrown a single Postgres server. Pinecone stores and searches the vectors, and Postgres keeps the rest of the row.
+
+## Switching engines
+
+You switch a table between `native` and `remote` with one call to `pinecone.set_engine()`, in either direction:
+
+* **To `remote`**: pg\_pinecone creates a Pinecone index and copies the table's vectors to it in the background. Queries keep using the `native` index until the copy finishes, and new writes go to both, so reads and writes are never interrupted. In version 0.10.0 and later, a table of a million rows takes up to about an hour to copy at the default settings.
+* **To `native`**: pg\_pinecone queues a rebuild of the `native` index and keeps serving queries from Pinecone until the rebuild starts. The rebuild blocks reads that use the index, and writes to the table, until it finishes. That usually takes seconds to a few minutes, depending on table size. After the rebuild, pg\_pinecone deletes the Pinecone index it created.
+
+To switch a pgvector index you created with `CREATE INDEX` to `native`, create the `native` index with `pinecone.create_index()`, then drop the pgvector index. A pgvector index that `pinecone.create_index()` built switches with one call, `pinecone.set_engine('your_table', 'native')`. To switch from `native` back to `pgvector`, drop the `native` index and create the pgvector index again.
+
+Every switch can be reversed, and none of them loses data. Postgres keeps every row, including the vector column, on every engine, so switching back rebuilds an index from the table.
+
+[Switch from pgvector to native](/guides/pg-pinecone/switch-from-pgvector) and [Switch from native to remote](/guides/pg-pinecone/switch-to-remote) walk through each switch.
+
+## Filtered and multi-tenant tables
+
+An index can cover one extra column besides the vector, either as a filter column or as a partition column. Both apply to queries that include `WHERE column = value`.
+
+### Filter column
+
+A filter column narrows the search inside the index instead of after it. Set it with `filter_column` when you create a `native` or `remote` index:
+
+```sql SQL theme={null}
+SELECT pinecone.create_index('docs', 'embedding', engine => 'native', filter_column => 'tenant_id');
+
+SELECT id, body FROM docs
+WHERE tenant_id = $1
+ORDER BY embedding <=> $2
+LIMIT 10;
+```
+
+* **On `native`**: The engine applies the filter while it scans.
+* **On `remote`**: pg\_pinecone stores the column as Pinecone metadata and sends `WHERE tenant_id = $1` to Pinecone as a [metadata filter](/guides/search/filter-by-metadata). A filtered `native` index keeps its filter column when you switch it to `remote`.
+* **Other conditions**: Only `=` on the filter column is applied inside the index. Any other condition, such as a range or a second column, is applied to each batch the index returns, so a selective one can leave fewer rows than `LIMIT`. On `native`, the scan keeps going until the query has enough rows, because `pinecone.iterative_scan` defaults to `auto`. On `remote`, the scan asks Pinecone for more rows, up to 10,000, and returns an error if that's still not enough. To return the rows found instead, run `SET pinecone.iterative_scan = 'relaxed_order'`. Rows after the first batch arrive in batch order, so re-sort them if exact order matters. On the `pgvector` engine, use pgvector's own [`hnsw.iterative_scan`](https://github.com/pgvector/pgvector#iterative-index-scans) instead.
+
+The filter column must be a `smallint`, `integer`, `bigint`, `text`, or `varchar` column.
+
+### Partition column
+
+A partition column gives each value its own Pinecone [namespace](/guides/index-data/indexing-overview#namespaces), so each tenant's vectors are stored and searched separately. It applies to the `remote` engine:
+
+```sql SQL theme={null}
+SELECT pinecone.create_index('docs', 'embedding', engine => 'remote', partition_column => 'tenant_id');
+```
+
+* **Namespaces**: Each value maps to a namespace named `<schema>.<table>:<value>`, such as `public.docs:42`.
+* **Queries**: Every query must include `WHERE tenant_id = <value>`, and it searches only that tenant's namespace. A query without it returns an error instead of searching across tenants.
+* **Removing a tenant**: `pinecone.delete_partition('docs', 42)` deletes that tenant's namespace. Its rows stay in the table.
+* **Limits**: The column must be `NOT NULL`. Pinecone limits the number of namespaces per index by plan, and pg\_pinecone warns when a table has more than 1,000 distinct values.
+
+You can also set `partition_column` when you switch a filtered `native` index to `remote` with `pinecone.set_engine()`.
+
+## Consistency with the remote engine
+
+When a table uses the `remote` engine, each committed write is queued in Postgres and copied to Pinecone by a background worker, usually within a few seconds. Under heavy write load, the queue can fall behind, and new rows can take minutes to become searchable.
+
+* **No read-your-writes**: A query run right after a write may not reflect it yet.
+* **Rolled-back writes never reach Pinecone**: Only committed changes are queued.
+* **Postgres keeps working if Pinecone is unreachable**: Writes still commit in Postgres, and the queue holds them and retries while Pinecone is unavailable.
+* **Searches aren't retried**: If Pinecone rejects a search because of a rate limit or a server error, the query fails immediately. Retry with backoff in your application, or spread tenants across namespaces with a [partition column](#partition-column).
+
+`pinecone.status()` lists each table that syncs to Pinecone, with its `mode` and how many writes are still queued (`backlog`). Tables on `native` don't appear. A table whose pgvector index `pinecone.create_index()` built appears with `mode` `local`. The [operator runbook](https://github.com/pinecone-io/pg_pinecone/blob/main/docs/runbook.md) covers monitoring the queue and handling writes that Pinecone rejects.
+
+
+# pg_pinecone support
+Source: https://docs.pinecone.io/guides/pg-pinecone/support
+
+Ask questions about pg_pinecone in the Pinecone Discord community, and report bugs or request features in GitHub issues.
+
+* **Questions and feedback**: Ask in the [Pinecone Discord community](https://discord.gg/tJ8V62S3sH), where other users and the Pinecone team answer.
+* **Bugs and feature requests**: Open an issue in the [pg\_pinecone repository](https://github.com/pinecone-io/pg_pinecone/issues). To propose a code change, open an issue first so the approach can be agreed on before any work starts.
+* **Security issues**: Don't open a public issue. Email [security@pinecone.io](mailto:security@pinecone.io), or follow the [security policy](https://github.com/pinecone-io/pg_pinecone/blob/main/SECURITY.md) to report it privately on GitHub.
+* **Your Pinecone account or index**: For a problem with the Pinecone index that the `remote` engine or full-text search uses, [contact Pinecone Support](/admin/support/contact-support).
+
+When you report a bug, include your pg\_pinecone and Postgres versions, your operating system, the table's engine, and the full error message. To find the versions, run:
+
+```sql SQL theme={null}
+SELECT extversion FROM pg_extension WHERE extname = 'pg_pinecone';
+SELECT version();
+```
+
+
+# Switch from pgvector to native
+Source: https://docs.pinecone.io/guides/pg-pinecone/switch-from-pgvector
+
+Replace a table's pgvector index with a pg_pinecone native index without changing your queries, and switch back to pgvector if you need to.
+
+A table with a pgvector index, such as an [HNSW index](https://github.com/pgvector/pgvector#hnsw), is on the `pgvector` engine. You can switch it to `native`, which runs the search engine Pinecone uses at scale inside Postgres. Your queries and data stay the same, and you can [switch back to pgvector](#switch-back-to-pgvector) at any time.
+
+## Before you begin
+
+* pg\_pinecone installed and created in the database, as steps 1 and 2 of the [quickstart](/guides/pg-pinecone/quickstart) show.
+* A table with a `vector` column and a pgvector index on that column created with `CREATE INDEX`. If `pinecone.create_index()` built the pgvector index instead, skip this guide and switch it with one call: `SELECT pinecone.set_engine('your_table', 'native');`.
+* A single-column primary key, if you plan to [switch to `remote`](/guides/pg-pinecone/switch-to-remote) later. A `native` index doesn't need one.
+
+## Replace the index
+
+### 1. Create a native index
+
+Create a `native` index on the table's `vector` column. The pgvector index keeps serving queries while the `native` index builds:
+
+```sql SQL theme={null}
+SELECT pinecone.create_index('your_table', 'embedding', engine => 'native');
+```
+
+`pinecone.create_index()` uses cosine distance by default. If your pgvector index uses a different distance, pass the matching `metric`: `'l2'` for `vector_l2_ops`, or `'ip'` for `vector_ip_ops`.
+
+If your queries filter on one column, such as a tenant ID, add it as a filter column with `filter_column => 'tenant_id'`. See [Filter column](/guides/pg-pinecone/storage-engines#filter-column).
+
+### 2. Drop the pgvector index
+
+```sql SQL theme={null}
+DROP INDEX your_hnsw_index;
+```
+
+Your queries now use the `native` index.
+
+### 3. Check which index serves queries
+
+Run `EXPLAIN` on a similarity query. This one uses a row's own vector as the query:
+
+```sql SQL theme={null}
+EXPLAIN (COSTS OFF)
+SELECT id FROM your_table
+ORDER BY embedding <=> (SELECT embedding FROM your_table LIMIT 1)
+LIMIT 10;
+```
+
+The plan includes `Index Scan using your_table_embedding_pinecone_idx`. `pinecone.create_index()` names the index `<table>_<column>_pinecone_idx`. On a small table, Postgres may choose to read every row instead of using any index, because that's cheaper.
+
+## Switch back to pgvector
+
+If the table uses the `remote` engine, [switch it back to `native`](/guides/pg-pinecone/switch-to-remote#switch-back-to-native) first.
+
+### 1. Drop the native index
+
+```sql SQL theme={null}
+DROP INDEX your_table_embedding_pinecone_idx;
+```
+
+Until the pgvector index exists, queries on the table read every row.
+
+### 2. Create the pgvector index
+
+```sql SQL theme={null}
+CREATE INDEX your_hnsw_index ON your_table USING hnsw (embedding vector_cosine_ops);
+```
+
+Postgres builds the index from the vectors already in the table.
+
+
+# Switch from native to remote
+Source: https://docs.pinecone.io/guides/pg-pinecone/switch-to-remote
+
+Switch a pg_pinecone table from the native engine to the remote engine, so Pinecone serves its vector search while Postgres keeps the rows.
+
+When a table outgrows a single Postgres server, you can move its vector search to Pinecone by switching the table to the `remote` engine. Pinecone stores a copy of the vectors and answers the table's similarity queries, and Postgres keeps every row. Your queries don't change, and you can [switch back to native](#switch-back-to-native) at any time.
+
+## Before you begin
+
+* pg\_pinecone installed, as the [quickstart](/guides/pg-pinecone/quickstart) shows.
+* A Pinecone API key stored in the database, which the `remote` engine needs even if you bring your own vectors. Store it with `SELECT pinecone.set_api_key('YOUR_API_KEY');`.
+* A table with a `native` index. The examples use the `docs` table from the quickstart, so skip the quickstart's clean-up step if you want to follow along.
+
+## Switch to the remote engine
+
+The `remote` engine relies on a background worker that copies writes to Pinecone, and Postgres starts that worker only when the extension is preloaded.
+
+### 1. Preload the extension
+
+Add `pg_pinecone` to `shared_preload_libraries` in `postgresql.conf`. To find the file, run `SHOW config_file;` in `psql`. If the setting already lists other libraries, add `pg_pinecone` to the list:
+
+```ini postgresql.conf theme={null}
+shared_preload_libraries = 'pg_pinecone'
+```
+
+Then restart Postgres. For example, `sudo systemctl restart postgresql` on most Linux installs, or `brew services restart postgresql@17` with Homebrew on macOS.
+
+### 2. Switch the engine
+
+Reconnect and switch the table to the `remote` engine:
+
+```sql SQL theme={null}
+SELECT pinecone.set_engine('docs', 'remote');
+```
+
+This creates a serverless index in your Pinecone project and starts copying the table's vectors to it in the background. The index is created in `aws` `us-east-1` unless you set `pinecone.am_cloud` and `pinecone.am_region` first. While the copy runs, queries keep using the `native` index, so reads and writes aren't interrupted.
+
+### 3. Wait for the copy to finish
+
+Check progress with `pinecone.status()`:
+
+```sql SQL theme={null}
+SELECT table_name, mode, index_name, backlog FROM pinecone.status();
+```
+
+`mode` is `promoting` while the copy runs. When `mode` is `remote` and `backlog` is `0`, Pinecone is serving the table's queries. In version 0.10.0 and later, a table of a million rows takes up to about an hour to copy at the default settings.
+
+### 4. Run the same query
+
+Run the quickstart's query again, unchanged:
+
+**Your own vectors**
+
+```sql SQL theme={null}
+SET enable_seqscan = off;
+
+SELECT id, body
+FROM docs
+ORDER BY embedding <=> '[1, 0, 0]'
+LIMIT 2;
+```
+
+**Pinecone embeddings**
+
+```sql SQL theme={null}
+SET enable_seqscan = off;
+
+SELECT id, body
+FROM docs
+ORDER BY embedding <=> (SELECT pinecone.embed('What should I order for breakfast at a cafe?')::vector)
+LIMIT 2;
+```
+
+Pinecone now serves the results. The new index also appears in the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/indexes) under the name `pinecone.status()` reports.
+
+New writes to the table reach Pinecone within a few seconds, so a query run immediately after a write may not reflect it yet. See [Consistency with the remote engine](/guides/pg-pinecone/storage-engines#consistency-with-the-remote-engine) for details.
+
+## Switch back to native
+
+Switching back moves the table's search into Postgres again. Postgres still has every row, so nothing is copied back from Pinecone. The rebuild blocks queries and writes on the table while it runs, as [Switching engines](/guides/pg-pinecone/storage-engines#switching-engines) explains, so plan it for a quiet period.
+
+### 1. Switch the engine back
+
+```sql SQL theme={null}
+SELECT pinecone.set_engine('docs', 'native');
+```
+
+pg\_pinecone rebuilds the `native` index from the table, then deletes the Pinecone index it created.
+
+### 2. Check that the switch finished
+
+```sql SQL theme={null}
+SELECT table_name, mode FROM pinecone.status();
+```
+
+The table is back on `native` when it no longer appears in the results. The rebuild runs in the background, so the table can still show `remote` for a few seconds on a small table, or longer on a large one.
+
+## Query the index from your application
+
+The Pinecone index that the `remote` engine creates is a standard [Pinecone Database](/guides/get-started/overview) index, so your application can also query it directly with a [Pinecone SDK](/reference/sdks/python/overview). The table's records are in a namespace named after the table, such as `public.docs`, so pass that namespace in your query. Its record IDs are Postgres row locations in `block:offset` form, not your primary key values, so look up matching rows through Postgres. To move a workload off Postgres entirely, see [Migrate from pgvector](/guides/index-data/migrate-from-pgvector).
+
+
+# pg_pinecone operator runbook
+Source: https://docs.pinecone.io/reference/pg-pinecone/operator-runbook
+
+Monitor and maintain pg_pinecone in production: the write queue, engine changes, upgrades, and maintenance, in the pg_pinecone repository on GitHub.
+
+
+
+# pg_pinecone SQL reference
+Source: https://docs.pinecone.io/reference/pg-pinecone/sql-reference
+
+Reference for every pg_pinecone SQL function, configuration setting, and error message, maintained in the pg_pinecone repository on GitHub.
+
+
+
 # Pinecone 2022 changelog
 Source: https://docs.pinecone.io/release-notes/2022
 
@@ -87290,6 +88146,12 @@ Source: https://docs.pinecone.io/release-notes/2026
 Every change to Pinecone in 2026, including new features, API updates, deprecations, and pricing and plan changes.
 
 All Pinecone products share this changelog. Use the filters to narrow the list.
+
+**2026-10-27**
+
+### Released pg\_pinecone
+
+[pg\_pinecone](/guides/pg-pinecone/overview), an open-source PostgreSQL extension, is now available. It brings Pinecone's vector search into the Postgres database you already run, without changes to your tables or pgvector queries. Search inside Postgres with the `native` engine, or move a table's search to a Pinecone index with the `remote` engine when it outgrows one server. Get started in the [pg\_pinecone quickstart](/guides/pg-pinecone/quickstart).
 
 **2026-10-20**
 

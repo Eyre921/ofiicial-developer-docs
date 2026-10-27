@@ -6,7 +6,7 @@ path: features/embedded-replicas/with-render
 
 Deploy a JavaScript app using [Turso Cloud embedded replicas](/features/embedded-replicas) to [Render](https://render.com/).
 
-<img alt="Render banner" />
+![Render banner](https://mintcdn.com/turso/7mjM7fXIfeZ8ZwNC/images/platforms/render-banner.png?fit=max\&auto=format\&n=7mjM7fXIfeZ8ZwNC\&q=85\&s=6e416c1d54d38e041de310997834574e)
 
 ## Prerequisites
 
@@ -16,46 +16,46 @@ Before you start, make sure you:
 * [Sign up or login to Turso Cloud](/cli/authentication#signup)
 * Have a Render account - [create one](https://dashboard.render.com/)
 
-<Steps>
-  <Step title="Retrieve database credentials">
-    You will need an existing database to continue. If you don't have one, [create one](/quickstart).
+**1. Retrieve database credentials**
 
-    <Snippet />
+You will need an existing database to continue. If you don't have one, [create one](/quickstart).
 
-    <Info>You will want to store these as environment variables.</Info>
-  </Step>
+<Snippet />
 
-  <Step title="Get application code">
-    Fork the following embedded replica project from GitHub locally:
+> [!NOTE]
+>
+> You will want to store these as environment variables.
 
-    <Card title="My Expenses Tracker - (Elysia + Bun)" icon="github" href="https://github.com/tursodatabase/embedded-replicas-with-js">
-      See the full source code
-    </Card>
+**2. Get application code**
 
-    <Note>
-      Or, you can:
+Fork the following embedded replica project from GitHub locally:
 
-      <Card title="Deploy to Render with a single-click" href="https://render.com/deploy?repo=https://github.com/tursodatabase/embedded-replicas-with-js" />
-    </Note>
-  </Step>
+> **[My Expenses Tracker - (Elysia + Bun)](https://github.com/tursodatabase/embedded-replicas-with-js)**
+>
+> See the full source code
 
-  <Step title="Create a web service">
-    Create a new Render **Web Service** by clicking on the "New Web Service" button on the Web Services card inside you Render dashboard.
-  </Step>
+> [!NOTE]
+>
+> Or, you can:
+>
+> > **[Deploy to Render with a single-click](https://render.com/deploy?repo=https://github.com/tursodatabase/embedded-replicas-with-js)**
 
-  <Step title="Connect to Git repository">
-    1. Select "build and deploy from a Git repository" and proceed to the next page.
+**3. Create a web service**
 
-    2. Click on "Connect" for your target project repository
-  </Step>
+Create a new Render **Web Service** by clicking on the "New Web Service" button on the Web Services card inside you Render dashboard.
 
-  <Step title="Set project's environment variables">
-    On the web service configuration page, under "Advanced" add **a secret file** and fill it in with your database secret credentials:
+**4. Connect to Git repository**
 
-    <img alt="Render secret credentials" />
-  </Step>
+1. Select "build and deploy from a Git repository" and proceed to the next page.
 
-  <Step title="Deploy project">
-    Scroll to the bottom of the web service configuration page and click on "Create Web Service".
-  </Step>
-</Steps>
+2. Click on "Connect" for your target project repository
+
+**5. Set project's environment variables**
+
+On the web service configuration page, under "Advanced" add **a secret file** and fill it in with your database secret credentials:
+
+![Render secret credentials](https://mintlify.s3.us-west-1.amazonaws.com/turso/features/embedded-replicas/images/platforms/render-env-vars.png)
+
+**6. Deploy project**
+
+Scroll to the bottom of the web service configuration page and click on "Create Web Service".

@@ -7,15 +7,13 @@ path: api-reference/groups/list-deleted
 GET /v3/organizations/{organizationId}/deleted-groups
 Returns groups deleted within the last five days, including empty groups, which can still be restored. Requires a paid plan and an organization-level token. Available even while recovery is disabled for the organization.
 
-<Note>
-  Unlike the v1 endpoints, this endpoint identifies the organization by its
-  **UUID** — the `id` field from
-  [Retrieve Organization](/api-reference/organizations/retrieve).
-</Note>
+> [!NOTE]
+>
+> Unlike the v1 endpoints, this endpoint identifies the organization by its
+> **UUID** — the `id` field from
+> [Retrieve Organization](/api-reference/organizations/retrieve).
 
-<RequestExample>
-  ```bash cURL theme={null}
-  curl -L 'https://api.turso.tech/v3/organizations/{organizationId}/deleted-groups' \
-    -H 'Authorization: Bearer TOKEN'
-  ```
-</RequestExample>
+```bash cURL theme={null}
+curl -L 'https://api.turso.tech/v3/organizations/{organizationId}/deleted-groups' \
+  -H 'Authorization: Bearer TOKEN'
+```

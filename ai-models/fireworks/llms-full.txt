@@ -2439,7 +2439,7 @@ The Decisions API is the System One decisions API in the shape of OpenAI's Decis
 POST https://api.fireworks.ai/inference/v1/decisions
 ```
 
-Authenticate with your normal Fireworks API key. Set `model` to the System One model path, for example `accounts/<your-account>/models/<your-model>`. Models that don't support this API return a `400`.
+Authenticate with your normal Fireworks API key. Set `model` to the System One model path. The public Serverless model is [`accounts/fireworks/models/rune`](https://app.fireworks.ai/models/fireworks/rune). Models that don't support this API return a `400`.
 
 ```bash cURL theme={null}
 curl https://api.fireworks.ai/inference/v1/decisions \
@@ -2583,7 +2583,7 @@ The same API is also available in an OpenAI-compatible shape at [`POST /inferenc
 POST https://api.fireworks.ai/inference/v1/systemone
 ```
 
-Authenticate with your normal Fireworks API key. Set `model` to the System One model path, for example `accounts/<your-account>/models/<your-model>`. Models that don't support this API return a `400`.
+Authenticate with your normal Fireworks API key. Set `model` to the System One model path. The public Serverless model is [`accounts/fireworks/models/rune`](https://app.fireworks.ai/models/fireworks/rune), which serves this API and the Decisions API only; chat completions and completions against it return a `400`. Other models that don't support this API also return a `400`.
 
 ## Quickstart
 
@@ -2712,7 +2712,10 @@ Values above are illustrative.
 
 ## Pricing and capacity
 
-Billing, capacity, and rate limits depend on how the model is deployed. On a [dedicated deployment](/guides/ondemand-deployments), usage is billed at the deployment's standard on-demand GPU rate and capacity scales with the deployment's size and [autoscaling settings](/deployments/autoscaling).
+Billing, capacity, and rate limits depend on how the model is deployed.
+
+* **Serverless.** Rune is billed per input token on [Serverless pricing](/serverless/pricing). Output tokens are always zero. Capacity and rate limits work the same as for other Serverless models; see [Serverless rate limits](/serverless/rate-limits).
+* **Dedicated deployment.** Usage is billed at the deployment's standard on-demand GPU rate, and capacity scales with the deployment's size and [autoscaling settings](/deployments/autoscaling).
 
 ## Latency and caching
 
@@ -12993,7 +12996,7 @@ Controls which regions a dedicated deployment is allowed to schedule replicas in
 The hardware and precision configuration used when creating a dedicated deployment. Shapes encode GPU type, count, precision (BF16, FP8, FP4), and other settings. Specified with `--deployment-shape`. Some shapes do not support LoRA addons.
 
 **Deployment state**\
-The lifecycle status of a deployment: `CREATING`, `DEPLOYING`, `DEPLOYED`, `SCALING`, `UPDATING`, `FAILED`, `DELETING`, `DELETED`.
+The lifecycle status of a deployment: `CREATING`, `READY`, `UPDATING`, `FAILED`, `DELETING`, `DELETED`. A deployment can serve requests when it is `READY`. A model or LoRA loaded onto a deployment has its own states: `DEPLOYING`, `DEPLOYED`, `UPDATING`, `UNDEPLOYING`.
 
 **Replica**\
 A single instance of a deployed model. Adding replicas increases concurrency. Replicas can be scaled manually or via autoscaling rules.
@@ -26661,6 +26664,8 @@ Serverless is priced per token. Three dimensions are billed:
 * **Cached input tokens** — input tokens served from prompt cache, discounted (default 50% of input on text and vision models, unless a model lists a different cached rate).
 * **Generated tokens** — what the model produces.
 
+Decision models such as [Rune 26B-A4B](https://app.fireworks.ai/models/fireworks/rune) are billed on input only: they return calibrated probabilities for typed questions and never generate tokens.
+
 Other things to know:
 
 * The `usage` object in each response is the source of truth for what was billed (`prompt_tokens`, `completion_tokens`, `total_tokens`).
@@ -26806,6 +26811,18 @@ Per-model pricing for headline models. Fast variants appear as adjacent rows. In
 
 Muse Spark Open runs on US-only capacity. The 50% US-only premium is waived, so the rates in that row are what you pay.
 
+## Decision models
+
+[Rune 26B-A4B](https://app.fireworks.ai/models/fireworks/rune) is a System One decision model. It reads the input once and returns calibrated probabilities for a set of typed questions, and it never generates output tokens. You pay for input only, so the rates below cover the full cost of a request.
+
+| Model | Standard | Priority |
+| - | - | - |
+| [Rune 26B-A4B](https://app.fireworks.ai/models/fireworks/rune) | \$0.042 / \$0.0084 / \$0.00 | — |
+
+Cached input is 20% of the input rate. Call it with `model: "accounts/fireworks/models/rune"`; see the [System One decisions API](/api-reference/post-systemone) for the request shape.
+
+Rune runs on US capacity. There is no US-capacity premium, so the rates above are what you pay.
+
 ## Other base models — by size and architecture
 
 For any text or vision model not listed individually, pricing is set by parameter count and architecture. These size-based prices apply uniformly to input and output (no separate cached-input rate):
@@ -26913,7 +26930,7 @@ Fast, Priority, and US-only variants of a model share the same tier and ceilings
 
 | Tier | Models |
 | - | - |
-| **Small** | DeepSeek V4.1 Flash, GLM 5.3, GLM 5.3 Flash, MiniMax M3, NVIDIA Nemotron 3 Ultra (Preview), OpenAI GPT OSS 120B, NVIDIA Nemotron 3.5 Lightning 30B A3B |
+| **Small** | DeepSeek V4.1 Flash, GLM 5.3, GLM 5.3 Flash, MiniMax M3, NVIDIA Nemotron 3 Ultra (Preview), OpenAI GPT OSS 120B, NVIDIA Nemotron 3.5 Lightning 30B A3B, Rune 26B-A4B |
 | **Medium** | Muse Spark Open |
 | **Large** | Ember-1, Kimi K3, Qwen 3.8 Max |
 
@@ -32713,6 +32730,16 @@ Source: https://docs.fireworks.ai/updates/changelog
 Fireworks documentation changelog: recent additions, updates, and clarifications across serverless, fine-tuning, deployments, integrations, and API reference.
 
 All
+
+**2026-10-27**
+
+Inference
+
+# New model on Serverless: Rune 26B-A4B
+
+**[Rune 26B-A4B](https://app.fireworks.ai/models/fireworks/rune)** is now available on Serverless. It's a System One decision model, so it doesn't reason and doesn't generate text. You send a document and up to 256 typed questions about it, and it returns a calibrated probability for each answer from a single read. Questions can be multiple choice, true/false, or a graded scale. Output tokens are always zero, so you're billed for input only.
+
+Call `accounts/fireworks/models/rune` through the [System One decisions API](/api-reference/post-systemone) or the [OpenAI-compatible Decisions API](/api-reference/post-decisions). It accepts text only, up to 262K context. Rates are on [Serverless pricing](/serverless/pricing).
 
 **2026-10-21**
 

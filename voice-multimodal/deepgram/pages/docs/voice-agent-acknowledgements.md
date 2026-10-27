@@ -12,7 +12,7 @@ path: docs/voice-agent-acknowledgements
 
 Voice Agent
 
-When the client sends an [`UpdateListen`](/docs/voice-agent-update-listen), [`UpdateThink`](/docs/voice-agent-update-think), [`UpdateSpeak`](/docs/voice-agent-update-speak), or [`UpdatePrompt`](/docs/voice-agent-update-prompt) message, the server applies the change and replies with a corresponding acknowledgement event. The new configuration takes effect immediately and applies to every subsequent request.
+When the client sends an [`UpdateListen`](/docs/voice-agent-update-listen), [`UpdateThink`](/docs/voice-agent-update-think), `UpdateThink_Live`, [`UpdateSpeak`](/docs/voice-agent-update-speak), or [`UpdatePrompt`](/docs/voice-agent-update-prompt) message, the server applies the change and replies with a corresponding acknowledgement event. The new configuration takes effect immediately and applies to every subsequent request.
 
 You do not need to handle these events unless you want to verify that an update landed.
 
@@ -37,6 +37,18 @@ The server sends `ThinkUpdated` after applying an [`UpdateThink`](/docs/voice-ag
 ```json JSON
 {
   "type": "ThinkUpdated"
+}
+```
+
+## `ThinkLiveUpdated`
+
+The server sends `ThinkLiveUpdated` after applying an `UpdateThink_Live` message, which changes the [Think Live](/docs/voice-agent-think-live) model configuration. Like `UpdateThink`, the update replaces the entire `think_live.provider` block, so the acknowledgement confirms the full replacement landed. It does not affect your reasoning LLM.
+
+**`JSON`**
+
+```json JSON
+{
+  "type": "ThinkLiveUpdated"
 }
 ```
 

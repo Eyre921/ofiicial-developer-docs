@@ -149,12 +149,10 @@ AgentFS uses last-write-wins for conflicts. If the same file is modified on mult
 
 ## Next Steps
 
-<CardGroup>
-  <Card title="Turso Cloud" icon="cloud" href="https://turso.tech">
-    Learn more about Turso Cloud
-  </Card>
+> **[Turso Cloud](https://turso.tech)**
+>
+> Learn more about Turso Cloud
 
-  <Card title="NFS Server" icon="network-wired" href="/agentfs/guides/nfs">
-    Remote access via NFS
-  </Card>
-</CardGroup>
+> **[NFS Server](/agentfs/guides/nfs)**
+>
+> Remote access via NFS

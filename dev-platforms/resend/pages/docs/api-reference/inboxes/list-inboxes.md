@@ -132,6 +132,7 @@ func main() {
 	client := resend.NewClient("re_xxxxxxxxx")
 
 	client.Inboxes.List(nil)
+}
 ```
 
 ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}

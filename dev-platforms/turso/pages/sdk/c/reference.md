@@ -12,9 +12,9 @@ libSQL C Reference
 
 To use the libSQL C bindings, you need to include the `libsql.h` header file in your project and link against the `liblibsql.so` shared library.
 
-<Card title="libSQL C" href="https://github.com/tursodatabase/libsql">
-  Build from source code
-</Card>
+> **[libSQL C](https://github.com/tursodatabase/libsql)**
+>
+> Build from source code
 
 Before using libSQL, you need to call the setup function:
 
@@ -129,17 +129,15 @@ libsql_execute_t result = libsql_statement_execute(stmt);
 
 libSQL supports the use of positional and named placeholders within SQL statements:
 
-<CodeGroup>
-  ```c Positional theme={null}
-  libsql_statement_t stmt = libsql_connection_prepare(conn, "SELECT * FROM users WHERE id = ?");
-  libsql_statement_bind_value(stmt, libsql_integer(1));
-  ```
+```c Positional theme={null}
+libsql_statement_t stmt = libsql_connection_prepare(conn, "SELECT * FROM users WHERE id = ?");
+libsql_statement_bind_value(stmt, libsql_integer(1));
+```
 
-  ```c Named theme={null}
-  libsql_statement_t stmt = libsql_connection_prepare(conn, "SELECT * FROM users WHERE id = :id");
-  libsql_statement_bind_named(stmt, ":id", libsql_integer(1));
-  ```
-</CodeGroup>
+```c Named theme={null}
+libsql_statement_t stmt = libsql_connection_prepare(conn, "SELECT * FROM users WHERE id = :id");
+libsql_statement_bind_named(stmt, ":id", libsql_integer(1));
+```
 
 ## Transactions
 

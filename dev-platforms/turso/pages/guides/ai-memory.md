@@ -76,9 +76,9 @@ ORDER BY distance ASC
 LIMIT ?;
 ```
 
-<Info>
-  `vector_distance_cos()` returns cosine **distance** (0 = identical, 2 = opposite). Lower is better. To convert to similarity: `1.0 - distance`.
-</Info>
+> [!NOTE]
+>
+> `vector_distance_cos()` returns cosine **distance** (0 = identical, 2 = opposite). Lower is better. To convert to similarity: `1.0 - distance`.
 
 After retrieval, update the memory's metadata:
 
@@ -136,9 +136,9 @@ The schema above is deliberately minimal. In practice you will want to experimen
 * **Task scoring** — track outcome metrics (tokens used, errors, corrections) per task and use them to compute a credit signal for the memories that were retrieved during that task.
 * **Retrieval attribution** — add a join table `(memory_id, task_id, similarity, credit)` to record exactly which memories were used in each task and how they were rated.
 
-<Warning>
-  There is no single best approach — the right strategy depends on your agent's workload, how often memories are created, and how aggressively you want to prune. Start simple and iterate.
-</Warning>
+> [!WARNING]
+>
+> There is no single best approach — the right strategy depends on your agent's workload, how often memories are created, and how aggressively you want to prune. Start simple and iterate.
 
 ## Example
 

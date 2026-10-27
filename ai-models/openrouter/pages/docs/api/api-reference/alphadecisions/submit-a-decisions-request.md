@@ -346,6 +346,17 @@ components:
   schemas:
     DecisionsRequest:
       properties:
+        assets:
+          additionalProperties:
+            $ref: '#/components/schemas/DecisionsImageAsset'
+          description: >-
+            Images keyed by reference string, as in TypeSafe's API. Write a
+            reference wherever the image belongs in `state`, `instructions`, or
+            `criteria`; every asset must be referenced at least once. Jev reads
+            a reference as a whole string value or inside longer text. Other
+            Decisions models read a whole-string reference wherever they read an
+            `image_url` part and reject a reference inside longer text.
+          type: object
         model:
           type: string
         provider:
@@ -695,6 +706,31 @@ components:
             - 'null'
       required:
         - error
+      type: object
+    DecisionsImageAsset:
+      additionalProperties: false
+      description: >-
+        An image sent once and referenced by its key in the `assets` map.
+        `data_base64` is the PNG or JPEG file in standard base64 with no `data:`
+        prefix. The multipart `part` field of TypeSafe's API is not accepted.
+      properties:
+        data_base64:
+          minLength: 1
+          pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
+          type: string
+        format:
+          enum:
+            - png
+            - jpg
+            - jpeg
+          type: string
+        type:
+          enum:
+            - image
+          type: string
+      required:
+        - format
+        - data_base64
       type: object
     ProviderPreferences:
       additionalProperties: false
@@ -1403,6 +1439,7 @@ components:
         - Parasail
         - ParetoAlpha
         - Poolside
+        - PrimaLabs
         - PrimeIntellect
         - Perceptron
         - Perplexity
@@ -1763,6 +1800,9 @@ components:
           additionalProperties: {}
           type: object
         poolside:
+          additionalProperties: {}
+          type: object
+        primalabs:
           additionalProperties: {}
           type: object
         primeintellect:

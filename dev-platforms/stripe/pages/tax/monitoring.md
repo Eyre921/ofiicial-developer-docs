@@ -200,7 +200,7 @@ You can exceed tax thresholds in multiple locations during the same day.
 
 Stripe only notifies you when you have exceeded a tax threshold based on Stripe’s calculations. To receive tax threshold notifications, you must meet the following requirements:
 
-- You’ve opted into [Stripe Tax](https://dashboard.stripe.com/tax).
+- You’ve opted in to [Stripe Tax](https://dashboard.stripe.com/tax).
 - You haven’t disabled [Stripe Tax notifications](https://dashboard.stripe.com/settings/communication-preferences).
 - You’ve had 10,000 USD in revenue in the previous year.
 - You don’t have an active live mode tax registration for the location.

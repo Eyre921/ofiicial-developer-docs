@@ -8,325 +8,311 @@ How to enable and use sync with Turso across TypeScript, Python, and Go.
 
 This guide shows how to set up a Turso database and use the sync features from your application.
 
-<Note>
-  This particular usage uses the Turso Cloud to sync the local Turso databases and assumes that you have an account.
-</Note>
+> [!NOTE]
+>
+> This particular usage uses the Turso Cloud to sync the local Turso databases and assumes that you have an account.
 
-<Steps>
-  <Step title="1. Setup Turso Cloud database">
-    * Follow our [Quickstart](/quickstart) to install the CLI, create a database
+**1. 1. Setup Turso Cloud database**
 
-    * Get the database URL (`turso://...`):
+* Follow our [Quickstart](/quickstart) to install the CLI, create a database
 
-    ```
-    turso db show <db>
-    ```
+* Get the database URL (`turso://...`):
 
-    * Create a token for your app:
+```
+turso db show <db>
+```
 
-    ```
-    turso db tokens create <db>
-    ```
-  </Step>
+* Create a token for your app:
 
-  <Step title="2. Setup a basic connection with sync">
-    You need three essentials to enable sync:
+```
+turso db tokens create <db>
+```
 
-    * Local path: where the local, synced tursodb file is stored
-    * Remote URL: your Turso Cloud URL (`turso://...`)
-    * Auth token: Turso Cloud token to authenticate requests
+**2. 2. Setup a basic connection with sync**
 
-    <CodeGroup>
-      ```ts TypeScript theme={null}
-      import { connect } from '@tursodatabase/sync';
+You need three essentials to enable sync:
 
-      const db = await connect({
-        path: './app.db',                               // local path
-        url: 'turso://...',                            // remote URL (generated with turso db show <db-name> --url)
-        authToken: process.env.TURSO_AUTH_TOKEN,        // authentication token (generated with turso db tokens create <db-name>)
-        // longPollTimeoutMs: 10_000,                   // optional: server waits before replying to pull
-        // bootstrapIfEmpty: false,                     // set to false to avoid bootstrapping on first run
-      });
-      ```
+* Local path: where the local, synced tursodb file is stored
+* Remote URL: your Turso Cloud URL (`turso://...`)
+* Auth token: Turso Cloud token to authenticate requests
 
-      ```py Python theme={null}
-      import os
-      import turso.sync
+```ts TypeScript theme={null}
+import { connect } from '@tursodatabase/sync';
 
-      conn = turso.sync.connect(
-          path="./app.db",                                  # local path
-          remote_url="turso://...",                        # remote URL (generated with turso db show <db-name> --url)
-          auth_token=os.environ["TURSO_AUTH_TOKEN"],        # authentication token (generated with turso db tokens create <db-name>)
-          # long_poll_timeout_ms=10_000,                    # optional: server waits before replying to pull
-          # bootstrap_if_empty=False,                       # set to false to avoid bootstrapping on first run
-      )
-      ```
+const db = await connect({
+  path: './app.db',                               // local path
+  url: 'turso://...',                            // remote URL (generated with turso db show <db-name> --url)
+  authToken: process.env.TURSO_AUTH_TOKEN,        // authentication token (generated with turso db tokens create <db-name>)
+  // longPollTimeoutMs: 10_000,                   // optional: server waits before replying to pull
+  // bootstrapIfEmpty: false,                     // set to false to avoid bootstrapping on first run
+});
+```
 
-      ```go Go theme={null}
-      package main
+```py Python theme={null}
+import os
+import turso.sync
 
-      import (
-      	turso "turso.tech/database/tursogo"
-      )
+conn = turso.sync.connect(
+    path="./app.db",                                  # local path
+    remote_url="turso://...",                        # remote URL (generated with turso db show <db-name> --url)
+    auth_token=os.environ["TURSO_AUTH_TOKEN"],        # authentication token (generated with turso db tokens create <db-name>)
+    # long_poll_timeout_ms=10_000,                    # optional: server waits before replying to pull
+    # bootstrap_if_empty=False,                       # set to false to avoid bootstrapping on first run
+)
+```
 
-      db, err := turso.NewTursoSyncDb(ctx, turso.TursoSyncDbConfig{
-        Path:              "./app.db",                    // local path
-        RemoteUrl:         "turso://...",                // remote URL (generated with turso db show <db-name> --url)
-        AuthToken:         os.Getenv("TURSO_AUTH_TOKEN"), // authentication token (generated with turso db tokens create <db-name>)
-        // LongPollTimeoutMs: 10_000,                     // optional: server waits before replying to pull
-        // BootstrapIfEmpty: new(bool),                   // *bool; point at false to avoid bootstrapping on first run
-      })
-      ```
-    </CodeGroup>
+```go Go theme={null}
+package main
 
-    <Note>
-      On the first run, the local database is automatically bootstrapped from the remote — so the remote must be reachable during the initial connect.
+import (
+	turso "turso.tech/database/tursogo"
+)
 
-      If you set `bootstrap_if_empty` to `false`, the local database will start empty instead.
-      You can bootstrap or update it later at any time by explicitly calling `pull()`.
-    </Note>
-  </Step>
+db, err := turso.NewTursoSyncDb(ctx, turso.TursoSyncDbConfig{
+  Path:              "./app.db",                    // local path
+  RemoteUrl:         "turso://...",                // remote URL (generated with turso db show <db-name> --url)
+  AuthToken:         os.Getenv("TURSO_AUTH_TOKEN"), // authentication token (generated with turso db tokens create <db-name>)
+  // LongPollTimeoutMs: 10_000,                     // optional: server waits before replying to pull
+  // BootstrapIfEmpty: new(bool),                   // *bool; point at false to avoid bootstrapping on first run
+})
+```
 
-  <Step title="3. Push changes">
-    Push sends your local changes to the Turso Cloud server. Under the hood, logical statements are sent, and on conflicts the strategy is "last push wins". COMMITTED WRITE transactions which overlap with WRITE transactions that are still open MAY be delayed. To push every committed transaction, make sure no write transaction is open when you push.
+> [!NOTE]
+>
+> On the first run, the local database is automatically bootstrapped from the remote — so the remote must be reachable during the initial connect.
+>
+> If you set `bootstrap_if_empty` to `false`, the local database will start empty instead.
+> You can bootstrap or update it later at any time by explicitly calling `pull()`.
 
-    <CodeGroup>
-      ```ts TypeScript theme={null}
-      await db.exec("CREATE TABLE IF NOT EXISTS notes(id TEXT PRIMARY KEY, body TEXT)");
-      await db.exec("INSERT INTO notes VALUES ('n1', 'hello')");
+**3. 3. Push changes**
 
-      await db.push();
-      ```
+Push sends your local changes to the Turso Cloud server. Under the hood, logical statements are sent, and on conflicts the strategy is "last push wins". COMMITTED WRITE transactions which overlap with WRITE transactions that are still open MAY be delayed. To push every committed transaction, make sure no write transaction is open when you push.
 
-      ```py Python theme={null}
-      conn.execute("CREATE TABLE IF NOT EXISTS notes(id TEXT PRIMARY KEY, body TEXT)")
-      conn.commit()
-      conn.execute("INSERT INTO notes VALUES ('n1', 'hello')")
-      conn.commit()
+```ts TypeScript theme={null}
+await db.exec("CREATE TABLE IF NOT EXISTS notes(id TEXT PRIMARY KEY, body TEXT)");
+await db.exec("INSERT INTO notes VALUES ('n1', 'hello')");
 
-      conn.push()
-      ```
+await db.push();
+```
 
-      ```go Go theme={null}
-      // create *sql.DB instance
-      conn, err := db.Connect(ctx)
-      if err != nil {
-        return err
-      }
+```py Python theme={null}
+conn.execute("CREATE TABLE IF NOT EXISTS notes(id TEXT PRIMARY KEY, body TEXT)")
+conn.commit()
+conn.execute("INSERT INTO notes VALUES ('n1', 'hello')")
+conn.commit()
 
-      _, err = conn.ExecContext(ctx, "CREATE TABLE IF NOT EXISTS notes(id TEXT PRIMARY KEY, body TEXT)")
-      if err != nil {
-        return err
-      }
-      _, err = conn.ExecContext(ctx, "INSERT INTO notes VALUES ('n1', 'hello')")
-      if err != nil {
-        return err
-      }
+conn.push()
+```
 
-      if err := db.Push(ctx); err != nil {
-      	return err
-      }
-      ```
-    </CodeGroup>
-  </Step>
+```go Go theme={null}
+// create *sql.DB instance
+conn, err := db.Connect(ctx)
+if err != nil {
+  return err
+}
 
-  <Step title="4. Pull changes">
-    Pull fetches remote changes and applies them locally. It returns a boolean indicating whether anything changed.
+_, err = conn.ExecContext(ctx, "CREATE TABLE IF NOT EXISTS notes(id TEXT PRIMARY KEY, body TEXT)")
+if err != nil {
+  return err
+}
+_, err = conn.ExecContext(ctx, "INSERT INTO notes VALUES ('n1', 'hello')")
+if err != nil {
+  return err
+}
 
-    * Configure `long_poll_timeout_ms`/`LongPollTimeoutMs` if you want the server to wait for changes and avoid empty replies.
-    * If you pushed earlier, a subsequent pull can still return that something changed due to server-side conflict resolution frames.
+if err := db.Push(ctx); err != nil {
+	return err
+}
+```
 
-    <CodeGroup>
-      ```ts TypeScript theme={null}
-      // Returns true if anything changed locally
-      const changed = await db.pull();
-      console.info('pulled changes:', changed);
-      ```
+**4. 4. Pull changes**
 
-      ```py Python theme={null}
-      changed = conn.pull()
-      print("pulled changes:", changed)
-      ```
+Pull fetches remote changes and applies them locally. It returns a boolean indicating whether anything changed.
 
-      ```go Go theme={null}
-      changed, err := db.Pull(ctx)
-      if err != nil {
-      	return err
-      }
-      log.Println("pulled changes:", changed)
-      ```
-    </CodeGroup>
-  </Step>
+* Configure `long_poll_timeout_ms`/`LongPollTimeoutMs` if you want the server to wait for changes and avoid empty replies.
+* If you pushed earlier, a subsequent pull can still return that something changed due to server-side conflict resolution frames.
 
-  <Step title="5. Checkpoint">
-    Checkpoint compacts the local WAL to bound local disk usage while preserving sync state.
+```ts TypeScript theme={null}
+// Returns true if anything changed locally
+const changed = await db.pull();
+console.info('pulled changes:', changed);
+```
 
-    <CodeGroup>
-      ```ts TypeScript theme={null}
-      await db.checkpoint();
-      ```
+```py Python theme={null}
+changed = conn.pull()
+print("pulled changes:", changed)
+```
 
-      ```py Python theme={null}
-      conn.checkpoint()
-      ```
+```go Go theme={null}
+changed, err := db.Pull(ctx)
+if err != nil {
+	return err
+}
+log.Println("pulled changes:", changed)
+```
 
-      ```go Go theme={null}
-      if err := db.Checkpoint(ctx); err != nil {
-      	return err
-      }
-      ```
-    </CodeGroup>
-  </Step>
+**5. 5. Checkpoint**
 
-  <Step title="6. Stats">
-    Stats help you observe sync behavior and usage (WAL sizes, last push/pull times, network usage, revision, etc.).
+Checkpoint compacts the local WAL to bound local disk usage while preserving sync state.
 
-    <CodeGroup>
-      ```ts TypeScript theme={null}
-      const s = await db.stats();
-      console.info({
-        cdcOperations: s.cdcOperations,
-        mainWalSize: s.mainWalSize,
-        revertWalSize: s.revertWalSize,
-        networkReceivedBytes: s.networkReceivedBytes,
-        networkSentBytes: s.networkSentBytes,
-        lastPullUnixTime: s.lastPullUnixTime,
-        lastPushUnixTime: s.lastPushUnixTime,
-        revision: s.revision,
-      });
-      ```
+```ts TypeScript theme={null}
+await db.checkpoint();
+```
 
-      ```py Python theme={null}
-      s = conn.stats()
-      print({
-          "cdc_operations": s.cdc_operations,
-          "main_wal_size": s.main_wal_size,
-          "revert_wal_size": s.revert_wal_size,
-          "network_received_bytes": s.network_received_bytes,
-          "network_sent_bytes": s.network_sent_bytes,
-          "last_pull_unix_time": s.last_pull_unix_time,
-          "last_push_unix_time": s.last_push_unix_time,
-          "revision": s.revision,
-      })
-      ```
+```py Python theme={null}
+conn.checkpoint()
+```
 
-      ```go Go theme={null}
-      s, err := db.Stats(ctx)
-      if err != nil {
-      	return err
-      }
-      log.Printf("stats: cdc=%v, main=%d revert=%d rx=%d tx=%d pull=%d push=%d revision=%s",
-        s.CdcOperations,
-        s.MainWalSize,
-        s.RevertWalSize,
-        s.NetworkReceivedBytes,
-        s.NetworkSentBytes,
-        s.LastPullUnixTime,
-        s.LastPushUnixTime,
-        s.Revision,
-      )
-      ```
-    </CodeGroup>
-  </Step>
-</Steps>
+```go Go theme={null}
+if err := db.Checkpoint(ctx); err != nil {
+	return err
+}
+```
+
+**6. 6. Stats**
+
+Stats help you observe sync behavior and usage (WAL sizes, last push/pull times, network usage, revision, etc.).
+
+```ts TypeScript theme={null}
+const s = await db.stats();
+console.info({
+  cdcOperations: s.cdcOperations,
+  mainWalSize: s.mainWalSize,
+  revertWalSize: s.revertWalSize,
+  networkReceivedBytes: s.networkReceivedBytes,
+  networkSentBytes: s.networkSentBytes,
+  lastPullUnixTime: s.lastPullUnixTime,
+  lastPushUnixTime: s.lastPushUnixTime,
+  revision: s.revision,
+});
+```
+
+```py Python theme={null}
+s = conn.stats()
+print({
+    "cdc_operations": s.cdc_operations,
+    "main_wal_size": s.main_wal_size,
+    "revert_wal_size": s.revert_wal_size,
+    "network_received_bytes": s.network_received_bytes,
+    "network_sent_bytes": s.network_sent_bytes,
+    "last_pull_unix_time": s.last_pull_unix_time,
+    "last_push_unix_time": s.last_push_unix_time,
+    "revision": s.revision,
+})
+```
+
+```go Go theme={null}
+s, err := db.Stats(ctx)
+if err != nil {
+	return err
+}
+log.Printf("stats: cdc=%v, main=%d revert=%d rx=%d tx=%d pull=%d push=%d revision=%s",
+  s.CdcOperations,
+  s.MainWalSize,
+  s.RevertWalSize,
+  s.NetworkReceivedBytes,
+  s.NetworkSentBytes,
+  s.LastPullUnixTime,
+  s.LastPushUnixTime,
+  s.Revision,
+)
+```
 
 ## Offline-first writes
 
 If your app needs to accept writes without internet connectivity, write locally and call `push()` when the connection is available. All changes are safely stored in the local database file until they can be synced.
 
-<CodeGroup>
-  ```ts TypeScript theme={null}
-  import { connect } from '@tursodatabase/sync';
+```ts TypeScript theme={null}
+import { connect } from '@tursodatabase/sync';
 
-  // bootstrapIfEmpty: false lets the app start offline without
-  // needing to reach the remote on first launch
-  const db = await connect({
-    path: './local.db',
-    url: process.env.TURSO_URL!,
-    authToken: process.env.TURSO_AUTH_TOKEN!,
-    bootstrapIfEmpty: false,
-  });
+// bootstrapIfEmpty: false lets the app start offline without
+// needing to reach the remote on first launch
+const db = await connect({
+  path: './local.db',
+  url: process.env.TURSO_URL!,
+  authToken: process.env.TURSO_AUTH_TOKEN!,
+  bootstrapIfEmpty: false,
+});
 
-  async function syncWhenOnline(db) {
-    try {
-      await db.push();
-    } catch (e) {
-      // No connectivity — changes are safe in the local file
-      // and will sync on the next push() call
-    }
-  }
-
-  // On app launch, pull the latest state if online
+async function syncWhenOnline(db) {
   try {
-    await db.pull();
+    await db.push();
   } catch (e) {
-    // Offline — local data is still available for reads and writes
+    // No connectivity — changes are safe in the local file
+    // and will sync on the next push() call
   }
+}
 
-  // On a timer or connectivity event
-  await syncWhenOnline(db);
-  ```
+// On app launch, pull the latest state if online
+try {
+  await db.pull();
+} catch (e) {
+  // Offline — local data is still available for reads and writes
+}
 
-  ```py Python theme={null}
-  import os
-  import turso.sync
+// On a timer or connectivity event
+await syncWhenOnline(db);
+```
 
-  # bootstrap_if_empty=False lets the app start offline without
-  # needing to reach the remote on first launch
-  conn = turso.sync.connect(
-      path="./local.db",
-      remote_url=os.environ["TURSO_URL"],
-      auth_token=os.environ["TURSO_AUTH_TOKEN"],
-      bootstrap_if_empty=False,
-  )
+```py Python theme={null}
+import os
+import turso.sync
 
-  def sync_when_online(conn):
-      try:
-          conn.push()
-      except Exception:
-          # No connectivity — changes are safe in the local file
-          # and will sync on the next push() call
-          pass
+# bootstrap_if_empty=False lets the app start offline without
+# needing to reach the remote on first launch
+conn = turso.sync.connect(
+    path="./local.db",
+    remote_url=os.environ["TURSO_URL"],
+    auth_token=os.environ["TURSO_AUTH_TOKEN"],
+    bootstrap_if_empty=False,
+)
 
-  # On app launch, pull the latest state if online
-  try:
-      conn.pull()
-  except Exception:
-      # Offline — local data is still available for reads and writes
-      pass
+def sync_when_online(conn):
+    try:
+        conn.push()
+    except Exception:
+        # No connectivity — changes are safe in the local file
+        # and will sync on the next push() call
+        pass
 
-  # On a timer or connectivity event
-  sync_when_online(conn)
-  ```
+# On app launch, pull the latest state if online
+try:
+    conn.pull()
+except Exception:
+    # Offline — local data is still available for reads and writes
+    pass
 
-  ```go Go theme={null}
-  // BootstrapIfEmpty pointing at false lets the app start offline
-  // without needing to reach the remote on first launch
-  noBootstrap := false
-  db, err := turso.NewTursoSyncDb(ctx, turso.TursoSyncDbConfig{
-  	Path:             "./local.db",
-  	RemoteUrl:        os.Getenv("TURSO_URL"),
-  	AuthToken:        os.Getenv("TURSO_AUTH_TOKEN"),
-  	BootstrapIfEmpty: &noBootstrap,
-  })
+# On a timer or connectivity event
+sync_when_online(conn)
+```
 
-  func syncWhenOnline(ctx context.Context, db *turso.TursoSyncDb) {
-  	if err := db.Push(ctx); err != nil {
-  		// No connectivity — changes are safe in the local file
-  		// and will sync on the next Push() call
-  		log.Println("push deferred:", err)
-  	}
-  }
+```go Go theme={null}
+// BootstrapIfEmpty pointing at false lets the app start offline
+// without needing to reach the remote on first launch
+noBootstrap := false
+db, err := turso.NewTursoSyncDb(ctx, turso.TursoSyncDbConfig{
+	Path:             "./local.db",
+	RemoteUrl:        os.Getenv("TURSO_URL"),
+	AuthToken:        os.Getenv("TURSO_AUTH_TOKEN"),
+	BootstrapIfEmpty: &noBootstrap,
+})
 
-  // On app launch, pull the latest state if online
-  if _, err := db.Pull(ctx); err != nil {
-  	// Offline — local data is still available for reads and writes
-  	log.Println("pull deferred:", err)
-  }
+func syncWhenOnline(ctx context.Context, db *turso.TursoSyncDb) {
+	if err := db.Push(ctx); err != nil {
+		// No connectivity — changes are safe in the local file
+		// and will sync on the next Push() call
+		log.Println("push deferred:", err)
+	}
+}
 
-  // On a timer or connectivity event
-  syncWhenOnline(ctx, db)
-  ```
-</CodeGroup>
+// On app launch, pull the latest state if online
+if _, err := db.Pull(ctx); err != nil {
+	// Offline — local data is still available for reads and writes
+	log.Println("pull deferred:", err)
+}
+
+// On a timer or connectivity event
+syncWhenOnline(ctx, db)
+```
 
 This is the modern equivalent of the `offline: true` flag from [`@libsql/client` Embedded Replicas](/features/embedded-replicas/introduction). With Turso Sync, all reads and writes happen locally by default — you control when to sync with explicit `push()` and `pull()` calls.

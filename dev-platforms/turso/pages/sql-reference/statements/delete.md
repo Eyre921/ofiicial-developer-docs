@@ -60,9 +60,9 @@ ORDER BY created_at ASC
 LIMIT 500 OFFSET 100;
 ```
 
-<Info>
-  `ORDER BY` without `LIMIT` is not allowed on `DELETE` statements. If you need to delete all rows matching a condition in a specific order, provide a `LIMIT` value larger than the expected number of matching rows.
-</Info>
+> [!NOTE]
+>
+> `ORDER BY` without `LIMIT` is not allowed on `DELETE` statements. If you need to delete all rows matching a condition in a specific order, provide a `LIMIT` value larger than the expected number of matching rows.
 
 ## Examples
 

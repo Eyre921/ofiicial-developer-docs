@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1672 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1675 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -610,6 +610,7 @@
 - `langsmith/server-a2a` — [A2A endpoint in Agent Server](pages/langsmith/server-a2a.md) · [原文](https://docs.langchain.com/langsmith/server-a2a)
 - `langsmith/server-api-ref` — [Agent Server API reference for LangSmith Deployment](pages/langsmith/server-api-ref.md) · [原文](https://docs.langchain.com/langsmith/server-api-ref)
 - `langsmith/server-mcp` — [MCP endpoint in Agent Server](pages/langsmith/server-mcp.md) · [原文](https://docs.langchain.com/langsmith/server-mcp)
+- `langsmith/server-mcp-elicitation` — [Human-in-the-loop over MCP](pages/langsmith/server-mcp-elicitation.md) · [原文](https://docs.langchain.com/langsmith/server-mcp-elicitation)
 - `langsmith/serverless-environments` — [Trace JS functions in serverless environments](pages/langsmith/serverless-environments.md) · [原文](https://docs.langchain.com/langsmith/serverless-environments)
 - `langsmith/set-up-custom-auth` — [Set up custom authentication](pages/langsmith/set-up-custom-auth.md) · [原文](https://docs.langchain.com/langsmith/set-up-custom-auth)
 - `langsmith/set-up-feedback-criteria` — [Set up feedback criteria](pages/langsmith/set-up-feedback-criteria.md) · [原文](https://docs.langchain.com/langsmith/set-up-feedback-criteria)
@@ -1378,6 +1379,7 @@
 - `oss/javascript/langchain/agents` — [Agents](pages/oss/javascript/langchain/agents.md) · [原文](https://docs.langchain.com/oss/javascript/langchain/agents)
 - `oss/javascript/langchain/component-architecture` — [Component architecture](pages/oss/javascript/langchain/component-architecture.md) · [原文](https://docs.langchain.com/oss/javascript/langchain/component-architecture)
 - `oss/javascript/langchain/context-engineering` — [Context engineering in agents](pages/oss/javascript/langchain/context-engineering.md) · [原文](https://docs.langchain.com/oss/javascript/langchain/context-engineering)
+- `oss/javascript/langchain/deep-agent-from-scratch` — [Build a data analysis agent from scratch](pages/oss/javascript/langchain/deep-agent-from-scratch.md) · [原文](https://docs.langchain.com/oss/javascript/langchain/deep-agent-from-scratch)
 - `oss/javascript/langchain/deploy` — [Deployment](pages/oss/javascript/langchain/deploy.md) · [原文](https://docs.langchain.com/oss/javascript/langchain/deploy)
 - `oss/javascript/langchain/event-streaming` — [Event streaming](pages/oss/javascript/langchain/event-streaming.md) · [原文](https://docs.langchain.com/oss/javascript/langchain/event-streaming)
 - `oss/javascript/langchain/frontend/branching-chat` — [Branching chat](pages/oss/javascript/langchain/frontend/branching-chat.md) · [原文](https://docs.langchain.com/oss/javascript/langchain/frontend/branching-chat)
@@ -1465,6 +1467,7 @@
 - `oss/javascript/langgraph/persistence` — [Persistence](pages/oss/javascript/langgraph/persistence.md) · [原文](https://docs.langchain.com/oss/javascript/langgraph/persistence)
 - `oss/javascript/langgraph/pregel` — [LangGraph runtime](pages/oss/javascript/langgraph/pregel.md) · [原文](https://docs.langchain.com/oss/javascript/langgraph/pregel)
 - `oss/javascript/langgraph/quickstart` — [Quickstart](pages/oss/javascript/langgraph/quickstart.md) · [原文](https://docs.langchain.com/oss/javascript/langgraph/quickstart)
+- `oss/javascript/langgraph/sql-agent` — [Build a custom SQL agent](pages/oss/javascript/langgraph/sql-agent.md) · [原文](https://docs.langchain.com/oss/javascript/langgraph/sql-agent)
 - `oss/javascript/langgraph/stores` — [Stores](pages/oss/javascript/langgraph/stores.md) · [原文](https://docs.langchain.com/oss/javascript/langgraph/stores)
 - `oss/javascript/langgraph/streaming` — [Streaming](pages/oss/javascript/langgraph/streaming.md) · [原文](https://docs.langchain.com/oss/javascript/langgraph/streaming)
 - `oss/javascript/langgraph/studio` — [LangSmith Studio](pages/oss/javascript/langgraph/studio.md) · [原文](https://docs.langchain.com/oss/javascript/langgraph/studio)

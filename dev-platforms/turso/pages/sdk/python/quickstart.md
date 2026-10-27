@@ -17,170 +17,168 @@ In this Python quickstart we will learn how to:
 
 `pyturso` is the recommended package for local and embedded use cases. It is built on the Turso Database engine — a ground-up rewrite of SQLite with concurrent writes (MVCC) and async I/O. The API follows the standard Python `sqlite3` interface, so it works as a drop-in replacement.
 
-<Steps>
-  <Step title="Install">
-    ```bash theme={null}
-    uv add pyturso
-    ```
+**1. Install**
 
-    Or with pip:
+```bash theme={null}
+uv add pyturso
+```
 
-    ```bash theme={null}
-    pip install pyturso
-    ```
-  </Step>
+Or with pip:
 
-  <Step title="Connect">
-    ```py theme={null}
-    import turso
+```bash theme={null}
+pip install pyturso
+```
 
-    db = turso.connect("app.db")
-    ```
+**2. Connect**
 
-    In-memory databases are also supported:
+```py theme={null}
+import turso
 
-    ```py theme={null}
-    db = turso.connect(":memory:")
-    ```
-  </Step>
+db = turso.connect("app.db")
+```
 
-  <Step title="Execute">
-    ```py theme={null}
-    db.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT)")
-    db.execute("INSERT INTO users (name) VALUES (?)", ("Alice",))
-    db.commit()
+In-memory databases are also supported:
 
-    for row in db.execute("SELECT * FROM users"):
-        print(row)
-    ```
-  </Step>
+```py theme={null}
+db = turso.connect(":memory:")
+```
 
-  <Step title="Sync (push and pull)">
-    If you need to sync your local database with Turso Cloud, use `turso.sync`:
+**3. Execute**
 
-    ```py theme={null}
-    import os
-    import turso.sync
+```py theme={null}
+db.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT)")
+db.execute("INSERT INTO users (name) VALUES (?)", ("Alice",))
+db.commit()
 
-    db = turso.sync.connect(
-        "app.db",
-        remote_url=os.environ["TURSO_DATABASE_URL"],
-        auth_token=os.environ["TURSO_AUTH_TOKEN"],
-    )
+for row in db.execute("SELECT * FROM users"):
+    print(row)
+```
 
-    db.execute("INSERT INTO users (name) VALUES (?)", ("Bob",))
-    db.commit()
+**4. Sync (push and pull)**
 
-    # Push local writes to Turso Cloud
-    db.push()
+If you need to sync your local database with Turso Cloud, use `turso.sync`:
 
-    # Pull remote changes to local database
-    db.pull()
-    ```
+```py theme={null}
+import os
+import turso.sync
 
-    All reads and writes happen against the local database file — fast, offline-capable. `push()` sends your changes to the cloud. `pull()` brings remote changes down. See [Turso Sync](/sync/usage) for details on conflict resolution, checkpointing, and more.
-  </Step>
-</Steps>
+db = turso.sync.connect(
+    "app.db",
+    remote_url=os.environ["TURSO_DATABASE_URL"],
+    auth_token=os.environ["TURSO_AUTH_TOKEN"],
+)
+
+db.execute("INSERT INTO users (name) VALUES (?)", ("Bob",))
+db.commit()
+
+# Push local writes to Turso Cloud
+db.push()
+
+# Pull remote changes to local database
+db.pull()
+```
+
+All reads and writes happen against the local database file — fast, offline-capable. `push()` sends your changes to the cloud. `pull()` brings remote changes down. See [Turso Sync](/sync/usage) for details on conflict resolution, checkpointing, and more.
 
 ## Remote Access (Over-the-Wire)
 
 If your application needs to query a Turso Cloud database directly over the network (e.g., from a web server or serverless function), use the driver that matches your database engine: `turso_serverless` for [Turso databases](/tursodb/quickstart), or `libsql` for [libSQL](/libsql) databases.
 
-<Info>
-  For most applications, we recommend running a local database with [Turso Sync](/sync/usage) (`turso.sync`) instead — it gives you faster reads, offline support, and lower latency. Remote access is useful when you cannot store a local database file (e.g., stateless serverless environments).
-</Info>
+> [!NOTE]
+>
+> For most applications, we recommend running a local database with [Turso Sync](/sync/usage) (`turso.sync`) instead — it gives you faster reads, offline support, and lower latency. Remote access is useful when you cannot store a local database file (e.g., stateless serverless environments).
 
 ### Remote Turso database: turso\_serverless
 
 `turso_serverless` connects to a remote Turso database over HTTP — no persistent connections, no native extensions, just the standard library. Like `pyturso`, it implements the standard DB-API interface.
 
-<Steps>
-  <Step title="Retrieve database credentials">
-    You will need an existing Turso database to continue. If you don't have one, create one with `turso db create --tursodb` (see the [quickstart](/quickstart)).
+**1. Retrieve database credentials**
 
-    <Snippet />
+You will need an existing Turso database to continue. If you don't have one, create one with `turso db create --tursodb` (see the [quickstart](/quickstart)).
 
-    <Info>You will want to store these as environment variables.</Info>
-  </Step>
+<Snippet />
 
-  <Step title="Install">
-    ```bash theme={null}
-    uv add turso_serverless
-    ```
+> [!NOTE]
+>
+> You will want to store these as environment variables.
 
-    Or with pip:
+**2. Install**
 
-    ```bash theme={null}
-    pip install turso_serverless
-    ```
-  </Step>
+```bash theme={null}
+uv add turso_serverless
+```
 
-  <Step title="Connect and query">
-    ```py theme={null}
-    import os
-    import turso_serverless
+Or with pip:
 
-    conn = turso_serverless.connect(
-        os.environ["TURSO_DATABASE_URL"],
-        auth_token=os.environ["TURSO_AUTH_TOKEN"],
-    )
+```bash theme={null}
+pip install turso_serverless
+```
 
-    conn.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT)")
-    conn.execute("INSERT INTO users (name) VALUES (?)", ("Alice",))
-    conn.commit()
+**3. Connect and query**
 
-    for row in conn.execute("SELECT * FROM users"):
-        print(row)
+```py theme={null}
+import os
+import turso_serverless
 
-    conn.close()
-    ```
-  </Step>
-</Steps>
+conn = turso_serverless.connect(
+    os.environ["TURSO_DATABASE_URL"],
+    auth_token=os.environ["TURSO_AUTH_TOKEN"],
+)
+
+conn.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT)")
+conn.execute("INSERT INTO users (name) VALUES (?)", ("Alice",))
+conn.commit()
+
+for row in conn.execute("SELECT * FROM users"):
+    print(row)
+
+conn.close()
+```
 
 ### Remote libSQL database: libsql
 
 `libsql` connects to a remote libSQL database via HTTP — no local file needed.
 
-<Steps>
-  <Step title="Retrieve database credentials">
-    You will need an existing libSQL database to continue. If you don't have one, [create one](/quickstart).
+**1. Retrieve database credentials**
 
-    <Snippet />
+You will need an existing libSQL database to continue. If you don't have one, [create one](/quickstart).
 
-    <Info>You will want to store these as environment variables.</Info>
-  </Step>
+<Snippet />
 
-  <Step title="Install">
-    ```bash theme={null}
-    uv add libsql
-    ```
+> [!NOTE]
+>
+> You will want to store these as environment variables.
 
-    Or with pip:
+**2. Install**
 
-    ```bash theme={null}
-    pip install libsql
-    ```
-  </Step>
+```bash theme={null}
+uv add libsql
+```
 
-  <Step title="Connect and query">
-    ```py theme={null}
-    import os
-    import libsql
+Or with pip:
 
-    conn = libsql.connect(
-        database=os.environ["TURSO_DATABASE_URL"],
-        auth_token=os.environ["TURSO_AUTH_TOKEN"],
-    )
+```bash theme={null}
+pip install libsql
+```
 
-    conn.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT)")
-    conn.execute("INSERT INTO users (name) VALUES (?)", ("Alice",))
-    conn.commit()
+**3. Connect and query**
 
-    rows = conn.execute("SELECT * FROM users").fetchall()
-    print(rows)
-    ```
-  </Step>
-</Steps>
+```py theme={null}
+import os
+import libsql
+
+conn = libsql.connect(
+    database=os.environ["TURSO_DATABASE_URL"],
+    auth_token=os.environ["TURSO_AUTH_TOKEN"],
+)
+
+conn.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT)")
+conn.execute("INSERT INTO users (name) VALUES (?)", ("Alice",))
+conn.commit()
+
+rows = conn.execute("SELECT * FROM users").fetchall()
+print(rows)
+```
 
 ## Embedded Replicas (libsql)
 

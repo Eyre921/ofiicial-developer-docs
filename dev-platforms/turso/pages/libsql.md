@@ -8,19 +8,17 @@ libSQL is a production-ready fork of SQLite, maintained by Turso.
 
 libSQL is a fork of SQLite, created because SQLite is [open-source but not open-contribution](https://www.sqlite.org/copyright.html). libSQL is production-ready, fully backwards compatible with SQLite, and adds features like native vector search.
 
-<Note>
-  libSQL represents where we started. Today, our focus is [Turso Database](/tursodb/quickstart), a full rewrite of SQLite built from scratch, designed for the highest density of databases with no need for servers or connectivity. If you're starting a new project, we recommend [Turso Database](/tursodb/quickstart). For mission-critical workloads that need a battle-tested foundation today, libSQL is the right choice.
-</Note>
+> [!NOTE]
+>
+> libSQL represents where we started. Today, our focus is [Turso Database](/tursodb/quickstart), a full rewrite of SQLite built from scratch, designed for the highest density of databases with no need for servers or connectivity. If you're starting a new project, we recommend [Turso Database](/tursodb/quickstart). For mission-critical workloads that need a battle-tested foundation today, libSQL is the right choice.
 
-<CardGroup>
-  <Card title="tursodatabase/libsql" icon="github" href="https://github.com/tursodatabase/libsql/">
-    Browse the libSQL source code on GitHub, report issues, feature requests and contribute using pull requests.
-  </Card>
+> **[tursodatabase/libsql](https://github.com/tursodatabase/libsql/)**
+>
+> Browse the libSQL source code on GitHub, report issues, feature requests and contribute using pull requests.
 
-  <Card title="Discord" href="https://tur.so/discord" icon="discord">
-    Join the community on Discord to talk about the development of libSQL.
-  </Card>
-</CardGroup>
+> **[Discord](https://tur.so/discord)**
+>
+> Join the community on Discord to talk about the development of libSQL.
 
 ## libSQL vs. Turso Database
 
@@ -39,9 +37,9 @@ Both are open-contribution and maintained by Turso, and both can be deployed on 
 
 ## Extensions
 
-<Info>
-  If you're looking to enable vector extensions, you should instead consider
-  using the native [libSQL vector datatype](/features/ai-and-embeddings).
-</Info>
+> [!NOTE]
+>
+> If you're looking to enable vector extensions, you should instead consider
+> using the native [libSQL vector datatype](/features/ai-and-embeddings).
 
 A full list of supported extensions can be found [here](/features/sqlite-extensions).

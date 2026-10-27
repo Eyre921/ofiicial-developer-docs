@@ -54,7 +54,7 @@ From the detail sheet you can also open the generation in the Chatroom or replay
 
 ## Stored prompts and completions
 
-By default OpenRouter stores only metadata about each generation. To keep the prompt and completion text as well, enable [Input & Output Logging](https://openrouter.ai/docs/guides/features/input-output-logging.md) under **Settings > Observability**. Only generations made after you enable it will have stored content.
+By default, your logs show only metadata about each generation. To keep the prompt and completion text as well, enable [Input & Output Logging](https://openrouter.ai/docs/guides/features/input-output-logging.md) under **Settings > Observability**. Only generations made after you enable it will have stored content.
 
 ## API access
 

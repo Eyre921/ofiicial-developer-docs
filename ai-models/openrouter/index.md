@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 510 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 511 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -122,6 +122,7 @@
 - `docs/api/api-reference/private-endpoints/get-a-private-endpoint` — [Get a private endpoint](pages/docs/api/api-reference/private-endpoints/get-a-private-endpoint.md) · [原文](https://openrouter.ai/docs/api/api-reference/private-endpoints/get-a-private-endpoint.md)
 - `docs/api/api-reference/private-endpoints/list-private-endpoints` — [List private endpoints](pages/docs/api/api-reference/private-endpoints/list-private-endpoints.md) · [原文](https://openrouter.ai/docs/api/api-reference/private-endpoints/list-private-endpoints.md)
 - `docs/api/api-reference/private-endpoints/set-private-endpoint-pricing` — [Set private endpoint pricing](pages/docs/api/api-reference/private-endpoints/set-private-endpoint-pricing.md) · [原文](https://openrouter.ai/docs/api/api-reference/private-endpoints/set-private-endpoint-pricing.md)
+- `docs/api/api-reference/private-endpoints/set-private-endpoint-supported-parameters` — [Set private endpoint supported parameters](pages/docs/api/api-reference/private-endpoints/set-private-endpoint-supported-parameters.md) · [原文](https://openrouter.ai/docs/api/api-reference/private-endpoints/set-private-endpoint-supported-parameters.md)
 - `docs/api/api-reference/private-endpoints/update-a-draft-private-endpoint` — [Update a draft private endpoint](pages/docs/api/api-reference/private-endpoints/update-a-draft-private-endpoint.md) · [原文](https://openrouter.ai/docs/api/api-reference/private-endpoints/update-a-draft-private-endpoint.md)
 - `docs/api/api-reference/private-endpoints/validate-a-draft-private-endpoint` — [Validate a draft private endpoint](pages/docs/api/api-reference/private-endpoints/validate-a-draft-private-endpoint.md) · [原文](https://openrouter.ai/docs/api/api-reference/private-endpoints/validate-a-draft-private-endpoint.md)
 - `docs/api/api-reference/providers/list-all-providers` — [List all providers](pages/docs/api/api-reference/providers/list-all-providers.md) · [原文](https://openrouter.ai/docs/api/api-reference/providers/list-all-providers.md)
@@ -513,5 +514,5 @@
 - `docs/guides/routing/routers/jev-router` — [Jev Router](pages/docs/guides/routing/routers/jev-router.md) · [原文](https://openrouter.ai/docs/guides/routing/routers/jev-router.md)
 - `docs/guides/routing/routers/latest-resolution` — [Latest Model Resolution](pages/docs/guides/routing/routers/latest-resolution.md) · [原文](https://openrouter.ai/docs/guides/routing/routers/latest-resolution.md)
 - `docs/guides/routing/routers/pareto-router` — [Pareto Router](pages/docs/guides/routing/routers/pareto-router.md) · [原文](https://openrouter.ai/docs/guides/routing/routers/pareto-router.md)
-- `docs/guides/routing/routers/switchyard-router` — [Switchyard Router](pages/docs/guides/routing/routers/switchyard-router.md) · [原文](https://openrouter.ai/docs/guides/routing/routers/switchyard-router.md)
+- `docs/guides/routing/routers/switchyard-router` — [Switchyard](pages/docs/guides/routing/routers/switchyard-router.md) · [原文](https://openrouter.ai/docs/guides/routing/routers/switchyard-router.md)
 - `docs/quickstart` — [Quickstart](pages/docs/quickstart.md) · [原文](https://openrouter.ai/docs/quickstart.md)

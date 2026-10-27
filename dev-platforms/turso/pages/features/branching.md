@@ -18,33 +18,29 @@ A branch is a separate database instance that is created from an existing databa
 
 You can create a new database from an existing database using the CLI or API:
 
-<CodeGroup>
-  ```bash CLI theme={null}
-  turso db create my-new-database-branch --from-db my-existing-database
-  ```
+```bash CLI theme={null}
+turso db create my-new-database-branch --from-db my-existing-database
+```
 
-  ```bash Platform API theme={null}
-  curl -L -X POST 'https://api.turso.tech/v1/organizations/{organizationSlug}/databases' \
-    -H 'Authorization: Bearer TOKEN' \
-    -H 'Content-Type: application/json' \
-    -d '{
-        "name": "new-database",
-        "group": "default",
-        "seed": {
-          "type:": "database",
-          "name": "my-existing-database"
-        }
-    }'
-  ```
-</CodeGroup>
+```bash Platform API theme={null}
+curl -L -X POST 'https://api.turso.tech/v1/organizations/{organizationSlug}/databases' \
+  -H 'Authorization: Bearer TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+      "name": "new-database",
+      "group": "default",
+      "seed": {
+        "type:": "database",
+        "name": "my-existing-database"
+      }
+  }'
+```
 
 Refer to the following references for more details about all arguments:
 
-<CardGroup>
-  <Card title="CLI Reference" icon="terminal" href="/cli/db/create" />
+> **[CLI Reference](/cli/db/create)**
 
-  <Card title="API Reference" icon="code" href="/api-reference/databases/create" />
-</CardGroup>
+> **[API Reference](/api-reference/databases/create)**
 
 ## Things to know
 

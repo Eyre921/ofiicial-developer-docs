@@ -6,11 +6,11 @@ path: sdk/ts/orm/drizzle
 
 Configure Drizzle to work with Turso
 
-<img alt="Drizzle banner" />
+![Drizzle banner](https://mintcdn.com/turso/7mjM7fXIfeZ8ZwNC/images/guides/drizzle-banner.png?fit=max\&auto=format\&n=7mjM7fXIfeZ8ZwNC\&q=85\&s=fa7f430abb2a3b3df72c6ca45649b099)
 
-<Info>
-  Drizzle uses `@libsql/client` for Turso integration. There is also [beta support for `@tursodatabase/database`](https://orm.drizzle.team/docs/connect-turso-database) for local/embedded use cases.
-</Info>
+> [!NOTE]
+>
+> Drizzle uses `@libsql/client` for Turso integration. There is also [beta support for `@tursodatabase/database`](https://orm.drizzle.team/docs/connect-turso-database) for local/embedded use cases.
 
 ## Prerequisites
 
@@ -19,246 +19,236 @@ Before you start, make sure you:
 * [Install the Turso CLI](/cli/installation)
 * [Sign up or login to Turso](/cli/authentication#signup)
 
-<Steps>
-  <Step title="Install Drizzle and the libSQL SDK">
-    <CodeGroup>
-      ```bash npm theme={null}
-      npm i drizzle-orm @libsql/client dotenv
-      npm i -D drizzle-kit
-      ```
+**1. Install Drizzle and the libSQL SDK**
 
-      ```bash pnpm theme={null}
-      pnpm add drizzle-orm @libsql/client dotenv
-      pnpm add -D drizzle-kit
-      ```
+```bash npm theme={null}
+npm i drizzle-orm @libsql/client dotenv
+npm i -D drizzle-kit
+```
 
-      ```bash yarn theme={null}
-      yarn add drizzle-orm @libsql/client dotenv
-      yarn add -D drizzle-kit
-      ```
-    </CodeGroup>
+```bash pnpm theme={null}
+pnpm add drizzle-orm @libsql/client dotenv
+pnpm add -D drizzle-kit
+```
 
-    Finish by updating `package.json` to include three new `scripts`:
+```bash yarn theme={null}
+yarn add drizzle-orm @libsql/client dotenv
+yarn add -D drizzle-kit
+```
 
-    ```json theme={null}
-    {
-      "scripts": {
-        "db:generate": "drizzle-kit generate",
-        "db:migrate": "drizzle-kit migrate",
-        "db:studio": "drizzle-kit studio"
-      }
-    }
-    ```
-  </Step>
+Finish by updating `package.json` to include three new `scripts`:
 
-  <Step title="Retrieve database credentials">
-    <Snippet />
-  </Step>
+```json theme={null}
+{
+  "scripts": {
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio"
+  }
+}
+```
 
-  <Step title="Create a Drizzle schema">
-    ```ts db/schema.ts theme={null}
-    import { sql } from "drizzle-orm";
-    import { text, sqliteTable } from "drizzle-orm/sqlite-core";
+**2. Retrieve database credentials**
 
-    export const fooTable = sqliteTable("foo", {
-      bar: text("bar").notNull().default("Hey!"),
-    });
-    ```
-  </Step>
+<Snippet />
 
-  <Step title="Configure Drizzle Kit">
-    Create the file `drizzle.config.ts` in the root of your project with the following:
+**3. Create a Drizzle schema**
 
-    ```ts drizzle.config.ts theme={null}
-    require("dotenv").config();
+```ts db/schema.ts theme={null}
+import { sql } from "drizzle-orm";
+import { text, sqliteTable } from "drizzle-orm/sqlite-core";
 
-    import type { Config } from "drizzle-kit";
+export const fooTable = sqliteTable("foo", {
+  bar: text("bar").notNull().default("Hey!"),
+});
+```
 
-    export default {
-      schema: "./db/schema.ts",
-      out: "./migrations",
-      dialect: "turso",
-      dbCredentials: {
-        url: process.env.TURSO_DATABASE_URL!,
-        authToken: process.env.TURSO_AUTH_TOKEN,
-      },
-    } satisfies Config;
-    ```
+**4. Configure Drizzle Kit**
 
-    <Note>
-      We're using `dotenv` above, but if you're using something like Next.js, Remix, Astro, or Vite, you can use their built-in environment variables manager to source these values.
-    </Note>
-  </Step>
+Create the file `drizzle.config.ts` in the root of your project with the following:
 
-  <Step title="Connect Drizzle with libSQL">
-    <CodeGroup>
-      ```ts Node.js / Serverless theme={null}
-      import { drizzle } from "drizzle-orm/libsql";
-      import { createClient } from "@libsql/client";
+```ts drizzle.config.ts theme={null}
+require("dotenv").config();
 
-      const turso = createClient({
-        url: process.env.TURSO_DATABASE_URL!,
-        authToken: process.env.TURSO_AUTH_TOKEN,
-      });
+import type { Config } from "drizzle-kit";
 
-      export const db = drizzle(turso);
-      ```
+export default {
+  schema: "./db/schema.ts",
+  out: "./migrations",
+  dialect: "turso",
+  dbCredentials: {
+    url: process.env.TURSO_DATABASE_URL!,
+    authToken: process.env.TURSO_AUTH_TOKEN,
+  },
+} satisfies Config;
+```
 
-      ```ts Edge Runtimes theme={null}
-      import { drizzle } from "drizzle-orm/libsql";
-      import { createClient } from "@libsql/client/web";
+> [!NOTE]
+>
+> We're using `dotenv` above, but if you're using something like Next.js, Remix, Astro, or Vite, you can use their built-in environment variables manager to source these values.
 
-      const turso = createClient({
-        url: process.env.TURSO_DATABASE_URL!,
-        authToken: process.env.TURSO_AUTH_TOKEN,
-      });
+**5. Connect Drizzle with libSQL**
 
-      export const db = drizzle(turso);
-      ```
-    </CodeGroup>
-  </Step>
+```ts Node.js / Serverless theme={null}
+import { drizzle } from "drizzle-orm/libsql";
+import { createClient } from "@libsql/client";
 
-  <Step title="Database migrations">
-    Drizzle can generate and apply database migrations with `drizzle-kit`.
+const turso = createClient({
+  url: process.env.TURSO_DATABASE_URL!,
+  authToken: process.env.TURSO_AUTH_TOKEN,
+});
 
-    Whenever you make changes to the schema, run `db:generate`:
+export const db = drizzle(turso);
+```
 
-    ```bash theme={null}
-    npm run db:generate
-    ```
+```ts Edge Runtimes theme={null}
+import { drizzle } from "drizzle-orm/libsql";
+import { createClient } from "@libsql/client/web";
 
-    Now apply these changes to the database with `db:migrate`:
+const turso = createClient({
+  url: process.env.TURSO_DATABASE_URL!,
+  authToken: process.env.TURSO_AUTH_TOKEN,
+});
 
-    ```bash theme={null}
-    npm run db:migrate
-    ```
-  </Step>
+export const db = drizzle(turso);
+```
 
-  <Step title="Query">
-    ```ts theme={null}
-    import { db } from "./db";
-    import { fooTable } from "./schema";
+**6. Database migrations**
 
-    const result = await db.select().from(fooTable).all();
-    ```
-  </Step>
+Drizzle can generate and apply database migrations with `drizzle-kit`.
 
-  <Step title="Connect Drizzle Studio">
-    <CodeGroup>
-      ```bash npm theme={null}
-      npm run db:studio
-      ```
+Whenever you make changes to the schema, run `db:generate`:
 
-      ```bash pnpm theme={null}
-      pnpm run db:studio
-      ```
-    </CodeGroup>
-  </Step>
-</Steps>
+```bash theme={null}
+npm run db:generate
+```
+
+Now apply these changes to the database with `db:migrate`:
+
+```bash theme={null}
+npm run db:migrate
+```
+
+**7. Query**
+
+```ts theme={null}
+import { db } from "./db";
+import { fooTable } from "./schema";
+
+const result = await db.select().from(fooTable).all();
+```
+
+**8. Connect Drizzle Studio**
+
+```bash npm theme={null}
+npm run db:studio
+```
+
+```bash pnpm theme={null}
+pnpm run db:studio
+```
 
 ## Vector Embeddings
 
 You can extend Drizzle to support Turso's native vector — [learn more](/features/ai-and-embeddings).
 
-<Steps>
-  <Step title="Define custom vector type">
-    Inside `db/schema.ts`, add the following:
+**1. Define custom vector type**
 
-    ```typescript theme={null}
-    import { sql } from "drizzle-orm";
-    import { customType } from "drizzle-orm/sqlite-core";
+Inside `db/schema.ts`, add the following:
 
-    const float32Array = customType<{
-      data: number[];
-      config: { dimensions: number };
-      configRequired: true;
-      driverData: Buffer;
-    }>({
-      dataType(config) {
-        return `F32_BLOB(${config.dimensions})`;
-      },
-      fromDriver(value: Buffer) {
-        return Array.from(new Float32Array(value.buffer));
-      },
-      toDriver(value: number[]) {
-        return sql`vector32(${JSON.stringify(value)})`;
-      },
-    });
-    ```
-  </Step>
+```typescript theme={null}
+import { sql } from "drizzle-orm";
+import { customType } from "drizzle-orm/sqlite-core";
 
-  <Step title="Create a table with a vector column">
-    Now where you define the schema, invoke `float32Array` to create a column that stores vectors:
+const float32Array = customType<{
+  data: number[];
+  config: { dimensions: number };
+  configRequired: true;
+  driverData: Buffer;
+}>({
+  dataType(config) {
+    return `F32_BLOB(${config.dimensions})`;
+  },
+  fromDriver(value: Buffer) {
+    return Array.from(new Float32Array(value.buffer));
+  },
+  toDriver(value: number[]) {
+    return sql`vector32(${JSON.stringify(value)})`;
+  },
+});
+```
 
-    ```typescript theme={null}
-    import { sqliteTable, integer } from "drizzle-orm/sqlite-core";
+**2. Create a table with a vector column**
 
-    export const vectorTable = sqliteTable("vector_table", {
-      id: integer("id").primaryKey(),
-      vector: float32Array("vector", { dimensions: 3 }),
-    });
-    ```
-  </Step>
+Now where you define the schema, invoke `float32Array` to create a column that stores vectors:
 
-  <Step title="Create a vector index">
-    You will need to use raw SQL to create the index:
+```typescript theme={null}
+import { sqliteTable, integer } from "drizzle-orm/sqlite-core";
 
-    ```typescript theme={null}
-    import { drizzle } from "drizzle-orm/libsql";
-    import { createClient } from "@libsql/client";
+export const vectorTable = sqliteTable("vector_table", {
+  id: integer("id").primaryKey(),
+  vector: float32Array("vector", { dimensions: 3 }),
+});
+```
 
-    const client = createClient({
-      url: process.env.TURSO_DATABASE_URL!,
-      authToken: process.env.TURSO_AUTH_TOKEN,
-    });
+**3. Create a vector index**
 
-    const db = drizzle(client);
+You will need to use raw SQL to create the index:
 
-    await db.run(sql`
-      CREATE INDEX IF NOT EXISTS vector_index
-      ON vector_table(vector)
-      USING vector_cosine(3)
-    `);
-    ```
-  </Step>
+```typescript theme={null}
+import { drizzle } from "drizzle-orm/libsql";
+import { createClient } from "@libsql/client";
 
-  <Step title="Insert vector data">
-    ```typescript theme={null}
-    await db
-      .insert(vectorTable)
-      .values([{ vector: sql`vector32(${JSON.stringify([1.1, 2.2, 3.3])})` }]);
-    ```
-  </Step>
+const client = createClient({
+  url: process.env.TURSO_DATABASE_URL!,
+  authToken: process.env.TURSO_AUTH_TOKEN,
+});
 
-  <Step title="Query vector data">
-    Calculate vector distance:
+const db = drizzle(client);
 
-    ```typescript theme={null}
-    const res = await db
-      .select({
-        distance: sql<number>`vector_distance_cos(${vectorTable.vector}, vector32(${JSON.stringify([2.2, 3.3, 4.4])}))`,
-      })
-      .from(vectorTable);
+await db.run(sql`
+  CREATE INDEX IF NOT EXISTS vector_index
+  ON vector_table(vector)
+  USING vector_cosine(3)
+`);
+```
 
-    console.log(res);
-    ```
+**4. Insert vector data**
 
-    Perform efficient nearest neighbor search:
+```typescript theme={null}
+await db
+  .insert(vectorTable)
+  .values([{ vector: sql`vector32(${JSON.stringify([1.1, 2.2, 3.3])})` }]);
+```
 
-    ```typescript theme={null}
-    const topK = await db
-      .select({
-        id: sql`id`,
-        distance: sql`distance`,
-      })
-      .from(
-        sql`vector_top_k('vector_index', vector32(${JSON.stringify([2.2, 3.3, 4.4])}), 5)`,
-      )
-      .leftJoin(vectorTable, sql`${vectorTable}.id = id`);
+**5. Query vector data**
 
-    console.log(topK);
-    ```
-  </Step>
-</Steps>
+Calculate vector distance:
+
+```typescript theme={null}
+const res = await db
+  .select({
+    distance: sql<number>`vector_distance_cos(${vectorTable.vector}, vector32(${JSON.stringify([2.2, 3.3, 4.4])}))`,
+  })
+  .from(vectorTable);
+
+console.log(res);
+```
+
+Perform efficient nearest neighbor search:
+
+```typescript theme={null}
+const topK = await db
+  .select({
+    id: sql`id`,
+    distance: sql`distance`,
+  })
+  .from(
+    sql`vector_top_k('vector_index', vector32(${JSON.stringify([2.2, 3.3, 4.4])}), 5)`,
+  )
+  .leftJoin(vectorTable, sql`${vectorTable}.id = id`);
+
+console.log(topK);
+```
 
 Remember to create appropriate indexes for efficient vector operations and adjust vector dimensions as needed for your use case.

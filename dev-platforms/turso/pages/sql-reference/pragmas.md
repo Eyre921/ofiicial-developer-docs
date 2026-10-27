@@ -220,15 +220,15 @@ PRAGMA journal_mode = wal;
 
 Turso supports WAL (Write-Ahead Logging) mode. Rollback journal modes (DELETE, TRUNCATE, PERSIST, MEMORY) are not supported.
 
-<Info>
-  **Turso Extension**: Turso supports an experimental MVCC journal mode for concurrent writes:
-
-  ```sql theme={null}
-  PRAGMA journal_mode = mvcc;
-  ```
-
-  When MVCC mode is active, you can use `BEGIN CONCURRENT` for optimistic concurrent write transactions. See [Transactions](/sql-reference/statements/transactions#begin-concurrent) for details.
-</Info>
+> [!NOTE]
+>
+> **Turso Extension**: Turso supports an experimental MVCC journal mode for concurrent writes:
+>
+> ```sql theme={null}
+> PRAGMA journal_mode = mvcc;
+> ```
+>
+> When MVCC mode is active, you can use `BEGIN CONCURRENT` for optimistic concurrent write transactions. See [Transactions](/sql-reference/statements/transactions#begin-concurrent) for details.
 
 ### cache\_size
 
@@ -331,9 +331,9 @@ PRAGMA data_sync_retry = 0;   -- do not retry (default)
 
 ### require\_where
 
-<Info>
-  **Turso Extension**: a safety pragma with no SQLite equivalent.
-</Info>
+> [!NOTE]
+>
+> **Turso Extension**: a safety pragma with no SQLite equivalent.
 
 When enabled, Turso rejects any `UPDATE` or `DELETE` that does not include a `WHERE` clause, guarding against accidental full-table modifications. `i_am_a_dummy` is an alias that enables the same behavior.
 
@@ -382,9 +382,9 @@ A checkpoint writes pages from the WAL file back to the database file.
 
 ## MVCC Tuning
 
-<Info>
-  **Turso Extension**: these pragmas apply only when MVCC mode is enabled (`PRAGMA journal_mode = mvcc`).
-</Info>
+> [!NOTE]
+>
+> **Turso Extension**: these pragmas apply only when MVCC mode is enabled (`PRAGMA journal_mode = mvcc`).
 
 ### mvcc\_checkpoint\_threshold
 
@@ -404,9 +404,9 @@ PRAGMA mvcc_gc_threshold = 1000;
 
 ## Change Data Capture
 
-<Info>
-  **Turso Extension**: Change Data Capture (CDC) is a Turso-specific feature that tracks all data changes for replication, auditing, and reactive applications.
-</Info>
+> [!NOTE]
+>
+> **Turso Extension**: Change Data Capture (CDC) is a Turso-specific feature that tracks all data changes for replication, auditing, and reactive applications.
 
 ### capture\_data\_changes\_conn
 
@@ -478,9 +478,9 @@ CDC respects transaction boundaries. Changes are only recorded when a transactio
 
 ## Encryption
 
-<Info>
-  **Turso Extension**: At-rest encryption is a Turso-specific feature. This feature is experimental and must be [enabled before use](/sql-reference/experimental-features).
-</Info>
+> [!NOTE]
+>
+> **Turso Extension**: At-rest encryption is a Turso-specific feature. This feature is experimental and must be [enabled before use](/sql-reference/experimental-features).
 
 ### cipher
 
@@ -532,9 +532,9 @@ To open an existing encrypted database, the cipher and key must be provided as U
 
 ## Custom Types
 
-<Info>
-  **Turso Extension**: Custom types are a Turso-specific feature.
-</Info>
+> [!NOTE]
+>
+> **Turso Extension**: Custom types are a Turso-specific feature.
 
 ### list\_types
 

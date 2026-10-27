@@ -6,139 +6,127 @@ path: api-reference/quickstart
 
 Get started with Turso API in a few easy steps.
 
-<Info>
-  **Using TypeScript?** You can skip the raw HTTP examples and use the [`@tursodatabase/api`](https://www.npmjs.com/package/@tursodatabase/api) client instead. See the [SDK quickstart](/api-reference/introduction#quickstart-with-the-typescript-sdk).
-</Info>
+> [!NOTE]
+>
+> **Using TypeScript?** You can skip the raw HTTP examples and use the [`@tursodatabase/api`](https://www.npmjs.com/package/@tursodatabase/api) client instead. See the [SDK quickstart](/api-reference/introduction#quickstart-with-the-typescript-sdk).
 
-<Steps>
-  <Step title="Signup or Login using the Turso CLI">
-    Make sure to [install the Turso CLI](/cli/installation) if you haven't
-    already.
+**1. Signup or Login using the Turso CLI**
 
-    <CodeGroup>
-      ```bash Signup theme={null}
-      turso auth signup
-      ```
+Make sure to [install the Turso CLI](/cli/installation) if you haven't
+already.
 
-      ```bash Login theme={null}
-      turso auth login
-      ```
-    </CodeGroup>
-  </Step>
+```bash Signup theme={null}
+turso auth signup
+```
 
-  <Step title="Retrieve your account or organization slug">
-    The Platform API can be used with your personal account or with an organization. You'll need the obtain the `slug` of your account or organization using using the Turso CLI:
+```bash Login theme={null}
+turso auth login
+```
 
-    ```bash theme={null}
-    turso org list
-    ```
-  </Step>
+**2. Retrieve your account or organization slug**
 
-  <Step title="Create a new Platform API Token">
-    Now create a new API Token using the Turso CLI:
+The Platform API can be used with your personal account or with an organization. You'll need the obtain the `slug` of your account or organization using using the Turso CLI:
 
-    ```bash theme={null}
-    turso auth api-tokens mint quickstart
-    ```
+```bash theme={null}
+turso org list
+```
 
-    You can scope the token to a specific organization with `--org`:
+**3. Create a new Platform API Token**
 
-    ```bash theme={null}
-    turso auth api-tokens mint quickstart --org my-org
-    ```
+Now create a new API Token using the Turso CLI:
 
-    <Info>
-      Make sure to save the token somewhere safe. We'll need it next.
-    </Info>
-  </Step>
+```bash theme={null}
+turso auth api-tokens mint quickstart
+```
 
-  <Step title="Fetch available Locations">
-    Before we can create a group or database in a specific region, we'll need to fetch the list of available regions:
+You can scope the token to a specific organization with `--org`:
 
-    <CodeGroup>
-      ```bash cURL theme={null}
-      curl -L 'https://api.turso.tech/v1/locations' \
-        -H 'Authorization: Bearer TOKEN' \
-      ```
+```bash theme={null}
+turso auth api-tokens mint quickstart --org my-org
+```
 
-      ```ts Node.js theme={null}
-      import { createClient } from "@tursodatabase/api";
+> [!NOTE]
+>
+> Make sure to save the token somewhere safe. We'll need it next.
 
-      const turso = createClient({
-        org: "...",
-        token: "",
-      });
+**4. Fetch available Locations**
 
-      const locations = await turso.locations.list();
-      ```
-    </CodeGroup>
+Before we can create a group or database in a specific region, we'll need to fetch the list of available regions:
 
-    <br />
+```bash cURL theme={null}
+curl -L 'https://api.turso.tech/v1/locations' \
+  -H 'Authorization: Bearer TOKEN' \
+```
 
-    <Info>
-      The `organizationSlug` is the name of your organization or personal account.
-    </Info>
-  </Step>
+```ts Node.js theme={null}
+import { createClient } from "@tursodatabase/api";
 
-  <Step title="Create a Group">
-    All databases belong to a group that can exist in one or more locations.
+const turso = createClient({
+  org: "...",
+  token: "",
+});
 
-    Begin by creating a group, giving it a `name` and primary `location`:
+const locations = await turso.locations.list();
+```
 
-    <CodeGroup>
-      ```bash cURL theme={null}
-      curl -L -X POST 'https://api.turso.tech/v1/organizations/{organizationSlug}/groups' \
-        -H 'Authorization: Bearer TOKEN' \
-        -H 'Content-Type: application/json' \
-        -d '{
-            "name": "default",
-            "location": "lhr"
-        }'
-      ```
+> [!NOTE]
+>
+> The `organizationSlug` is the name of your organization or personal account.
 
-      ```ts Node.js theme={null}
-      import { createClient } from "@tursodatabase/api";
+**5. Create a Group**
 
-      const turso = createClient({
-        org: "...",
-        token: "",
-      });
+All databases belong to a group that can exist in one or more locations.
 
-      const group = await turso.groups.addLocation("default", "lhr");
-      ```
-    </CodeGroup>
-  </Step>
+Begin by creating a group, giving it a `name` and primary `location`:
 
-  <Step title="Create a Database">
-    Now create your first database in the group you created above:
+```bash cURL theme={null}
+curl -L -X POST 'https://api.turso.tech/v1/organizations/{organizationSlug}/groups' \
+  -H 'Authorization: Bearer TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+      "name": "default",
+      "location": "lhr"
+  }'
+```
 
-    <CodeGroup>
-      ```bash cURL theme={null}
-      curl -L -X POST 'https://api.turso.tech/v1/organizations/{organizationSlug}/databases' \
-        -H 'Authorization: Bearer TOKEN' \
-        -H 'Content-Type: application/json' \
-        -d '{
-            "name": "my-db",
-            "group": "default"
-        }'
-      ```
+```ts Node.js theme={null}
+import { createClient } from "@tursodatabase/api";
 
-      ```ts Node.js theme={null}
-      import { createClient } from "@tursodatabase/api";
+const turso = createClient({
+  org: "...",
+  token: "",
+});
 
-      const turso = createClient({
-        org: "...",
-        token: "",
-      });
+const group = await turso.groups.addLocation("default", "lhr");
+```
 
-      const database = await turso.databases.create("my-db", "ams");
-      ```
-    </CodeGroup>
-  </Step>
+**6. Create a Database**
 
-  <Step title="Connect to your database">
-    You now have a database, distributed across multiple regions that you can connect to using one of the official or experimental SDKs:
+Now create your first database in the group you created above:
 
-    <Snippet />
-  </Step>
-</Steps>
+```bash cURL theme={null}
+curl -L -X POST 'https://api.turso.tech/v1/organizations/{organizationSlug}/databases' \
+  -H 'Authorization: Bearer TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+      "name": "my-db",
+      "group": "default"
+  }'
+```
+
+```ts Node.js theme={null}
+import { createClient } from "@tursodatabase/api";
+
+const turso = createClient({
+  org: "...",
+  token: "",
+});
+
+const database = await turso.databases.create("my-db", "ams");
+```
+
+**7. Connect to your database**
+
+You now have a database, distributed across multiple regions that you can connect to using one of the official or experimental SDKs:
+
+<Snippet />

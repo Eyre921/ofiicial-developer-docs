@@ -1,6 +1,6 @@
 # dev-platforms/notion 文档索引
 
-> 共 254 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 253 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## cli
@@ -122,7 +122,6 @@
 - `reference/admin/update-mcp-client-connection-enterprise-managed-access` — [Deny or restore enterprise-managed MCP client access](pages/reference/admin/update-mcp-client-connection-enterprise-managed-access.md) · [原文](https://developers.notion.com/reference/admin/update-mcp-client-connection-enterprise-managed-access)
 - `reference/admin/update-permission-group` — [Update a group](pages/reference/admin/update-permission-group.md) · [原文](https://developers.notion.com/reference/admin/update-permission-group)
 - `reference/admin/update-permission-group-member` — [Update a group member](pages/reference/admin/update-permission-group-member.md) · [原文](https://developers.notion.com/reference/admin/update-permission-group-member)
-- `reference/admin/update-workspace-credit-limit` — [Update the default agent credit limit for a workspace](pages/reference/admin/update-workspace-credit-limit.md) · [原文](https://developers.notion.com/reference/admin/update-workspace-credit-limit)
 - `reference/admin/versioning` — [Versioning](pages/reference/admin/versioning.md) · [原文](https://developers.notion.com/reference/admin/versioning)
 - `reference/agent-skills/get-plugin-directory` — [Get plugin](pages/reference/agent-skills/get-plugin-directory.md) · [原文](https://developers.notion.com/reference/agent-skills/get-plugin-directory)
 - `reference/agent-skills/get-skill-directory` — [Get skill](pages/reference/agent-skills/get-skill-directory.md) · [原文](https://developers.notion.com/reference/agent-skills/get-skill-directory)

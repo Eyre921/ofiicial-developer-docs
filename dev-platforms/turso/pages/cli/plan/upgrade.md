@@ -10,6 +10,6 @@ You can upgrade your account to a paid plan at any time using the command:
 turso plan upgrade
 ```
 
-<Info>
-  You will need to add your credit card details to your account before you can upgrade to a paid plan.
-</Info>
+> [!NOTE]
+>
+> You will need to add your credit card details to your account before you can upgrade to a paid plan.

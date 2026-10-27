@@ -10,6 +10,6 @@ To list all members of the current active organization, run the following comman
 turso org members list
 ```
 
-<Info>
-  This command is only available to active organizations, use [`org switch`](/cli/org/switch) if you're currently authenticated with your personal account.
-</Info>
+> [!NOTE]
+>
+> This command is only available to active organizations, use [`org switch`](/cli/org/switch) if you're currently authenticated with your personal account.

@@ -41,9 +41,34 @@ The cascading process follows a defined sequence:
 
 ## Custom LLMs
 
-When you configure a [Custom LLM](/docs/eleven-agents/customization/llm/custom-llm), the standard cascading logic to *other* models is bypassed. The system will attempt to use your specified Custom LLM.
+When you configure a [Custom LLM](/docs/eleven-agents/customization/llm/custom-llm) as your primary model, the standard cascading logic to ElevenLabs-hosted models is bypassed by default. The system attempts to use your Custom LLM and, if it fails, retries the request with the *same* Custom LLM multiple times (matching the standard minimum retry count) before considering the request failed.
 
-If your Custom LLM fails, the system will retry the request with the *same* Custom LLM multiple times (matching the standard minimum retry count) before considering the request failed. It will not fall back to ElevenLabs-hosted models, ensuring your specific configuration is respected.
+This default keeps all traffic on your own endpoint, but it means a sustained failure of your Custom LLM ends the conversation. To keep conversations running when your Custom LLM is unavailable, configure a custom backup cascade that falls back to other models.
+
+### Configuring a custom backup cascade
+
+A custom backup cascade works the same way when a Custom LLM is primary as it does for any other model. Set the agent's backup LLM preference to `override` and provide an `order` array listing the ElevenLabs-hosted models to fall back to, in sequence. See the `backup_llm_config` field on the [Create agent](/docs/api-reference/agents/create) and [Update agent](/docs/api-reference/agents/update) endpoints for the exact shape.
+
+> **Tip**
+>
+> You can also configure this in the ElevenLabs dashboard under **Backup LLM configuration** by
+> selecting **Custom** and arranging the fallback models. See
+> [Models](/docs/eleven-agents/customization/llm#backup-llm-configuration) for the available
+> options.
+
+The cascade follows the same retry and timeout behavior described above: each model in the order is tried in turn, and the system makes at least 3 attempts across the sequence (primary plus backups) before considering the request failed. Set `cascade_timeout_seconds` (2–15 seconds, default 4) to control how long the system waits on a single model before moving to the next.
+
+> **Note**
+>
+> A Custom LLM can only be used as the primary model — it cannot be listed in the backup `order`.
+> Backup entries must be ElevenLabs-hosted models.
+
+> **Warning**
+>
+> When your Custom LLM is primary and `backup_llm_config` is set to `default` or `disabled`, the
+> system does not fall back to ElevenLabs-hosted models — a sustained failure of your Custom LLM
+> ends the conversation with no backup. Use `override` to enable fallback. Only set `disabled` if
+> you intentionally want no fallback (strongly discouraged for production).
 
 On an agent using a [Realtime model](/docs/eleven-agents/customization/realtime-models), the agent falls back to a backup LLM if the Realtime model doesn't respond in time. The Realtime model sets how long the agent waits.
 
@@ -55,4 +80,6 @@ On an agent using a [Realtime model](/docs/eleven-agents/customization/realtime-
 
 ## Configuration
 
-LLM cascading is an automatic background process. The only configuration required is selecting your **Preferred LLM** in the agent's settings. The system handles the rest to ensure robust performance.
+LLM cascading is an automatic background process. By default, the only configuration required is selecting your **Preferred LLM** in the agent's settings, and the system handles the rest.
+
+To customize the fallback behavior — including when using a Custom LLM as primary — set the agent's **Backup LLM configuration** to **Default**, **Custom**, or **Disabled** (see [Custom LLMs](#custom-llms) above).

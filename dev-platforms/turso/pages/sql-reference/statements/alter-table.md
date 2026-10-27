@@ -46,9 +46,9 @@ Renaming a table updates all references to the table in:
 * CHECK constraints
 * Views that reference the table
 
-<Info>
-  The new table name must not collide with an existing table, view, or index name in the same database.
-</Info>
+> [!NOTE]
+>
+> The new table name must not collide with an existing table, view, or index name in the same database.
 
 ### Example
 

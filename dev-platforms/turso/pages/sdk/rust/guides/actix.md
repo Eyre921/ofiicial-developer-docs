@@ -6,7 +6,7 @@ path: sdk/rust/guides/actix
 
 Set up Turso in your Actix project in minutes
 
-<img alt="Actix banner" />
+![Actix banner](https://mintcdn.com/turso/7mjM7fXIfeZ8ZwNC/images/guides/actix-banner.png?fit=max\&auto=format\&n=7mjM7fXIfeZ8ZwNC\&q=85\&s=4d06a48cc1186caa607491545546e600)
 
 ## Prerequisites
 
@@ -16,76 +16,74 @@ Before you start, make sure you:
 * [Sign up or login to Turso](/cli/authentication#signup)
 * Have an Actix app — [learn more](https://actix.rs/docs/getting-started)
 
-<Steps>
-  <Step title="Retrieve database credentials">
-    You will need an existing database to continue. If you don't have one, [create one](/quickstart).
+**1. Retrieve database credentials**
 
-    <Snippet />
+You will need an existing database to continue. If you don't have one, [create one](/quickstart).
 
-    <Info>You will want to store these as environment variables.</Info>
-  </Step>
+<Snippet />
 
-  <Step title="Add the libsql crate to the project">
-    ```sh theme={null}
-    cargo add libsql
-    ```
+> [!NOTE]
+>
+> You will want to store these as environment variables.
 
-    <Note>
-      Optionally, you can add a package such as [`dotenvy`](https://docs.rs/dotenvy/latest/dotenvy) to help you work with `.env` files:
+**2. Add the libsql crate to the project**
 
-      ```sh theme={null}
-      cargo add dotenvy
-      ```
-    </Note>
-  </Step>
+```sh theme={null}
+cargo add libsql
+```
 
-  <Step title="Execute SQL">
-    ```rust theme={null}
-    #[tokio::main]
-    #[actix_web::main]
-    async fn main() -> std::io::Result<()> {
-        HttpServer::new(|| App::new().route("/", web::get().to(index)).route("/items", web::get().to(get_items)))
-            .bind(("127.0.0.1", 8080))?
-            .run()
-            .await
-    }
+> [!NOTE]
+>
+> Optionally, you can add a package such as [`dotenvy`](https://docs.rs/dotenvy/latest/dotenvy) to help you work with `.env` files:
+>
+> ```sh theme={null}
+> cargo add dotenvy
+> ```
 
-    async fn get_items() -> Result<HttpResponse, Error> {
-        dotenv().expect(".env file not found");
+**3. Execute SQL**
 
-        let db_url = env::var("TURSO_DATABASE_URL").unwrap();
-        let auth_token = env::var("TURSO_AUTH_TOKEN").unwrap();
-        let db_file = env::var("LOCAL_DB").unwrap();
-
-        let db = Builder::new_remote_replica(db_file, url, auth_token)
-        .read_your_writes(true)
-        .build()
+```rust theme={null}
+#[tokio::main]
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+    HttpServer::new(|| App::new().route("/", web::get().to(index)).route("/items", web::get().to(get_items)))
+        .bind(("127.0.0.1", 8080))?
+        .run()
         .await
-        .unwrap();
+}
 
-        let conn = db.connect().unwrap();
+async fn get_items() -> Result<HttpResponse, Error> {
+    dotenv().expect(".env file not found");
 
-        let mut results = conn.query("SELECT * FROM items", ()).await.unwrap();
+    let db_url = env::var("TURSO_DATABASE_URL").unwrap();
+    let auth_token = env::var("TURSO_AUTH_TOKEN").unwrap();
+    let db_file = env::var("LOCAL_DB").unwrap();
 
-        let mut items: Vec<T> = Vec::new();
+    let db = Builder::new_remote_replica(db_file, url, auth_token)
+    .read_your_writes(true)
+    .build()
+    .await
+    .unwrap();
 
-        while let Some(row) = results.next().await.unwrap() {
-            let item: Item = Item {
-                task: row.get(0).unwrap(),
-            };
-            items.push(item);
-        }
+    let conn = db.connect().unwrap();
 
-        Ok(HttpResponse::Ok().json(items))
+    let mut results = conn.query("SELECT * FROM items", ()).await.unwrap();
+
+    let mut items: Vec<T> = Vec::new();
+
+    while let Some(row) = results.next().await.unwrap() {
+        let item: Item = Item {
+            task: row.get(0).unwrap(),
+        };
+        items.push(item);
     }
-    ```
-  </Step>
-</Steps>
+
+    Ok(HttpResponse::Ok().json(items))
+}
+```
 
 ## Examples
 
-<CardGroup>
-  <Card title="Turso + Actix Web Traffic Tracker" icon="github" href="https://github.com/tursodatabase/examples/tree/master/app-web-traffic-tracker-actix">
-    See the full source code
-  </Card>
-</CardGroup>
+> **[Turso + Actix Web Traffic Tracker](https://github.com/tursodatabase/examples/tree/master/app-web-traffic-tracker-actix)**
+>
+> See the full source code

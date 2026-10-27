@@ -8,9 +8,9 @@ Create a materialized view that stores precomputed results and updates automatic
 
 # CREATE MATERIALIZED VIEW
 
-<Info>
-  **Turso Extension**: Materialized views are a Turso-specific feature not available in SQLite. This feature is experimental and must be [enabled before use](/sql-reference/experimental-features).
-</Info>
+> [!NOTE]
+>
+> **Turso Extension**: Materialized views are a Turso-specific feature not available in SQLite. This feature is experimental and must be [enabled before use](/sql-reference/experimental-features).
 
 A materialized view stores precomputed query results on disk and automatically keeps them up to date using Incremental View Maintenance (IVM). Unlike standard views, reading from a materialized view does not re-execute the underlying SELECT.
 

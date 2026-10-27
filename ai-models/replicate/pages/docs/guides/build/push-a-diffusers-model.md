@@ -140,5 +140,3 @@ Click the “API” tab on your model page to see example code for running the m
 -------------------------
 
 Now that you have your own model, see what else you can do with it.
-
-If you need inspiration or guidance, jump into our [Discord](https://discord.gg/replicate).

@@ -12,7 +12,7 @@ Stripe Issuing offers solutions for platforms to provide cards to businesses acr
 
 Learn how to:
 
-- Use local issuing in 22 countries.
+- Use local issuing in 24 countries.
 - Apply for early access to expand your card program internationally using a cross-border issuing integration that allows you to:
   - Serve multinational companies with subsidiaries in multiple countries.
   - Issue stablecoin-backed cards in more than 30 countries across Latin America, the Caribbean, and Africa.
@@ -23,9 +23,9 @@ Learn how to:
 
 Most Issuing programs use local Issuing. This means the Issuer (the financial institution providing cards) and the Stripe platform are in the same region as the connected account and cardholder. For example, if your business is  established in Europe, you can issue cards to any company or individual residing in any European Economic Area (EEA) country.
 
-Locally issued cards can be used anywhere your card network (Visa or Mastercard) is accepted. They’re denominated in USD, EUR, or GBP depending on your platform’s location. Automatic currency conversion occurs as necessary.
+Locally issued cards can be used anywhere your card network (Visa or Mastercard) is accepted. They’re denominated in CAD, USD, EUR, or GBP depending on your platform’s location. Automatic currency conversion occurs as necessary.
 
-Stripe Issuing is live with local Issuance in 22 countries. [Contact us ](https://stripe.com/contact/baas) to set up local Issuing in any of the following countries:
+Local commercial issuing is available in the following countries. [Contact us](https://stripe.com/contact/baas) to set up your program.
 
 - AT
 - BE
@@ -50,6 +50,7 @@ Stripe Issuing is live with local Issuance in 22 countries. [Contact us ](https:
 - PT
 - SI
 - SK
+- US
 
 ## Cross-border issuing
 
@@ -70,7 +71,7 @@ Stripe Issuing:
 
 ### Multinational programs
 
-For enterprise issuers serving large multinational companies, we support Visa’s Multinational Program and Mastercard’s Extension of Area of Use programs. Platforms can issue cards to subsidiaries of US multinational companies in over 40 countries where the US multinational is already an accountholder.
+For enterprise issuers serving large multinational companies, we support Visa’s Multinational Program and Mastercard’s Extension of Area of Use programs. Platforms can issue cards to subsidiaries of US multinational companies in over 40 countries where the US multinational is already an account holder.
 
 ### Stablecoin cards (Private preview)
 

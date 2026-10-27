@@ -1,5 +1,5 @@
 ---
-title: "Switchyard Router"
+title: "Switchyard"
 source: https://openrouter.ai/docs/guides/routing/routers/switchyard-router.md
 path: docs/guides/routing/routers/switchyard-router
 ---
@@ -8,13 +8,13 @@ path: docs/guides/routing/routers/switchyard-router
 > Fetch the complete documentation index at: https://openrouter.ai/docs/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-# Switchyard Router
+# Switchyard
 
-> Automate model selection across a model pool you choose to balance accuracy, cost, and speed
+> Automate model switching across a model pool of your choice to balance accuracy, cost, and speed
 
-The [Switchyard Router](https://openrouter.ai/nvidia/switchyard) (`nvidia/switchyard`) is OpenRouter’s model-routing plugin powered by [NVIDIA NeMo Switchyard](https://github.com/NVIDIA-NeMo/Switchyard), an open-source library that uses configurable routing algorithms to automate model selection across a chosen model pool and balance accuracy, cost, and speed.
+[Switchyard](https://openrouter.ai/nvidia/switchyard) (`nvidia/switchyard`) is a model-routing system that switches between multiple models to optimize the cost of requests, built on the open-source [NVIDIA NeMo Switchyard](https://github.com/NVIDIA-NeMo/Switchyard) library.
 
-If you don't specify `models`, OpenRouter will use market data to select the most popular low-cost and high-cost models from the past 7 days. The plugin allows you to name up to three candidate models in `models`. OpenRouter uses pricing data to map these to the capable and efficient model inputs in Switchyard, and optionally uses the third as a fallback.
+If you don't specify `models`, OpenRouter will use market data to select the most popular low-cost and high-cost models from the past 7 days. The plugin allows you to name up to three candidate models in `models`. OpenRouter uses pricing data to map these to the capable and efficient model inputs in NeMo Switchyard, and optionally uses the third as a fallback.
 
 NeMo Switchyard enables developers to control and tune routing decisions for your workloads. Because no routing strategy or model pool performs best for every task, OpenRouter’s [Model Routing Benchmarks](https://openrouter.ai/benchmarks/routers#all-benchmarks) show how different configurations perform across public evaluations. They can help you think about potential combinations that could be well-suited to your needs.
 
@@ -30,14 +30,14 @@ Other algorithms skip the judge entirely, pick at random as an A/B baseline, or 
 
 1. You send a request with `model: "nvidia/switchyard"` and one to three concrete models in `models`, or no `models` to use the default pair (see [Choose your candidates](#choose-your-candidates)). Switchyard needs at least two eligible candidates to make a choice; with one, OpenRouter serves that model.
 2. OpenRouter applies your usual routing constraints to each candidate: [provider preferences](https://openrouter.ai/docs/guides/routing/provider-selection.md), price limits, data-collection and ZDR requirements, [BYOK](https://openrouter.ai/docs/guides/overview/auth/byok.md) keys, and account model restrictions. Candidates with no eligible endpoint drop out.
-3. OpenRouter sorts the remaining candidates by price and passes the cheapest to Switchyard as the **efficient** tier and the most expensive as the **capable** tier. See [How candidates become tiers](#how-candidates-become-tiers).
-4. Switchyard's algorithm picks a tier, and OpenRouter runs the request on that model. If that model fails, OpenRouter falls back to the next model in the plugin's order, the same as [model fallbacks](https://openrouter.ai/docs/guides/routing/model-fallbacks.md).
+3. OpenRouter sorts the remaining candidates by price and passes the cheapest to NeMo Switchyard as the **efficient** tier and the most expensive as the **capable** tier. See [How candidates become tiers](#how-candidates-become-tiers).
+4. NeMo Switchyard's algorithm picks a tier, and OpenRouter runs the request on that model. If that model fails, OpenRouter falls back to the next model in the plugin's order, the same as [model fallbacks](https://openrouter.ai/docs/guides/routing/model-fallbacks.md).
 
 The response's `model` field names the model that answered. The response shape is the same as a request to that model directly.
 
 ## How candidates become tiers
 
-Switchyard's algorithms do not know your models by name. They choose between two roles, **efficient** and **capable**, and OpenRouter assigns those roles from price on every request:
+NeMo Switchyard's algorithms do not know your models by name. They choose between two roles, **efficient** and **capable**, and OpenRouter assigns those roles from price on every request:
 
 1. For each candidate, take its lowest-priced endpoint among the endpoints your request is allowed to use.
 2. Price that endpoint as prompt price plus completion price, per token.

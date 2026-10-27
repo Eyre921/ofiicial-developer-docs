@@ -14,109 +14,101 @@ Turso Database provides native encryption for data at rest using industry-standa
 
 Turso Database with encryption is perfect for:
 
-<CardGroup>
-  <Card title="Fintech Applications" icon="credit-card">
-    Meet regulatory requirements for sensitive financial data
-  </Card>
+> **Fintech Applications**
+>
+> Meet regulatory requirements for sensitive financial data
 
-  <Card title="Privacy-Focused Products" icon="user-shield">
-    Build user trust with strong data protection
-  </Card>
+> **Privacy-Focused Products**
+>
+> Build user trust with strong data protection
 
-  <Card title="Healthcare Apps" icon="heart-pulse">
-    Protect patient data and meet HIPAA compliance
-  </Card>
+> **Healthcare Apps**
+>
+> Protect patient data and meet HIPAA compliance
 
-  <Card title="AI/ML Applications" icon="brain">
-    Secure training data and model outputs
-  </Card>
-</CardGroup>
+> **AI/ML Applications**
+>
+> Secure training data and model outputs
 
 ## What's Encrypted
 
-<CardGroup>
-  <Card title="Encrypted" icon="lock">
-    * All database pages with your data - The database file - Write-Ahead Log
-      (WAL) file
-  </Card>
+> **Encrypted**
+>
+> * All database pages with your data - The database file - Write-Ahead Log
+>   (WAL) file
 
-  <Card title="Not Encrypted" icon="lock-open">
-    * The database header (first 100 bytes)
-  </Card>
-</CardGroup>
+> **Not Encrypted**
+>
+> * The database header (first 100 bytes)
 
 ## Generate an Encryption Key
 
 Generate a secure encryption key in hexadecimal format. The key size depends on the cipher you choose:
 
-<Tabs>
-  <Tab title="256-bit (32 bytes)">
-    For AEGIS-256 variants and AES-256-GCM:
+**256-bit (32 bytes)**
 
-    ```bash theme={null}
-    openssl rand -hex 32
-    ```
+For AEGIS-256 variants and AES-256-GCM:
 
-    Output example:
+```bash theme={null}
+openssl rand -hex 32
+```
 
-    ```
-    2d7a30108d3eb3e45c90a732041fe54778bdcf707c76749fab7da335d1b39c1d
-    ```
-  </Tab>
+Output example:
 
-  <Tab title="128-bit (16 bytes)">
-    For AEGIS-128 variants and AES-128-GCM:
+```
+2d7a30108d3eb3e45c90a732041fe54778bdcf707c76749fab7da335d1b39c1d
+```
 
-    ```bash theme={null}
-    openssl rand -hex 16
-    ```
+**128-bit (16 bytes)**
 
-    Output example:
+For AEGIS-128 variants and AES-128-GCM:
 
-    ```
-    5f3e2a8c9b1d4f6e7a2c8d4b9e1f3a6c
-    ```
-  </Tab>
-</Tabs>
+```bash theme={null}
+openssl rand -hex 16
+```
 
-<Warning>
-  **Store your key securely!** If you lose the encryption key, you will not be
-  able to access your encrypted database. Keys are never stored on disk.
-</Warning>
+Output example:
+
+```
+5f3e2a8c9b1d4f6e7a2c8d4b9e1f3a6c
+```
+
+> [!WARNING]
+>
+> **Store your key securely!** If you lose the encryption key, you will not be
+> able to access your encrypted database. Keys are never stored on disk.
 
 ## Create an Encrypted Database
 
-<Steps>
-  <Step title="Launch with encryption">
-    Use the `--experimental-encryption` flag and specify your cipher and key in the connection URI:
+**1. Launch with encryption**
 
-    ```bash theme={null}
-    tursodb --experimental-encryption "file:encrypted.db?cipher=aegis256&hexkey=YOUR_HEX_KEY"
-    ```
+Use the `--experimental-encryption` flag and specify your cipher and key in the connection URI:
 
-    Replace `YOUR_HEX_KEY` with the key you generated above.
-  </Step>
+```bash theme={null}
+tursodb --experimental-encryption "file:encrypted.db?cipher=aegis256&hexkey=YOUR_HEX_KEY"
+```
 
-  <Step title="Create and insert data">
-    Once in the interactive shell, create a table and insert some data:
+Replace `YOUR_HEX_KEY` with the key you generated above.
 
-    ```sql theme={null}
-    CREATE TABLE secrets (id INT, data TEXT);
-    INSERT INTO secrets VALUES (1, 'sensitive information');
-    INSERT INTO secrets VALUES (2, 'confidential data');
-    ```
-  </Step>
+**2. Create and insert data**
 
-  <Step title="Verify encryption">
-    Exit the shell (type `.quit`) and try to open the database without the key:
+Once in the interactive shell, create a table and insert some data:
 
-    ```bash theme={null}
-    tursodb encrypted.db
-    ```
+```sql theme={null}
+CREATE TABLE secrets (id INT, data TEXT);
+INSERT INTO secrets VALUES (1, 'sensitive information');
+INSERT INTO secrets VALUES (2, 'confidential data');
+```
 
-    You won't be able to access the data. The database is encrypted on disk.
-  </Step>
-</Steps>
+**3. Verify encryption**
+
+Exit the shell (type `.quit`) and try to open the database without the key:
+
+```bash theme={null}
+tursodb encrypted.db
+```
+
+You won't be able to access the data. The database is encrypted on disk.
 
 ## Open an Encrypted Database
 
@@ -158,13 +150,13 @@ Modern, high-performance cipher family optimized for speed. **Recommended for mo
 | **AEGIS-256X2** | 256-bit (32 bytes) | `aegis256x2` | 2x parallel processing, 256-bit |
 | **AEGIS-256X4** | 256-bit (32 bytes) | `aegis256x4` | 4x parallel, maximum speed & security |
 
-<Info>
-  **Choosing a cipher:**
-
-  * Use `aegis128L` for 128 bit encryption, `aegis256` for 256 bit encryption (default recommendation)
-  * Use the other AEGIS variants if your hardware supports it `aegis128X2` `aegis128X4` `aegis256x2` `aegis256x4`
-  * For AES, use `aes128gcm` for 128 bit encryption, `aes256gcm` for 256 bit encryption
-</Info>
+> [!NOTE]
+>
+> **Choosing a cipher:**
+>
+> * Use `aegis128L` for 128 bit encryption, `aegis256` for 256 bit encryption (default recommendation)
+> * Use the other AEGIS variants if your hardware supports it `aegis128X2` `aegis128X4` `aegis256x2` `aegis256x4`
+> * For AES, use `aes128gcm` for 128 bit encryption, `aes256gcm` for 256 bit encryption
 
 ## URI Parameters
 

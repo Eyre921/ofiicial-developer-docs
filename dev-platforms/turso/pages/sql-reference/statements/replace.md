@@ -30,9 +30,9 @@ With a plain `INSERT`, a constraint violation causes the statement to fail with 
 
 Because the conflicting row is deleted first, `REPLACE` may fire `DELETE` triggers on the old row and `INSERT` triggers on the new row.
 
-<Info>
-  `REPLACE` deletes the entire conflicting row and inserts a new one. This means any columns not specified in the `REPLACE` statement receive their default values, not the values from the deleted row. If you want to keep existing column values while updating specific columns, use [INSERT ... ON CONFLICT DO UPDATE](/sql-reference/statements/upsert) instead.
-</Info>
+> [!NOTE]
+>
+> `REPLACE` deletes the entire conflicting row and inserts a new one. This means any columns not specified in the `REPLACE` statement receive their default values, not the values from the deleted row. If you want to keep existing column values while updating specific columns, use [INSERT ... ON CONFLICT DO UPDATE](/sql-reference/statements/upsert) instead.
 
 ### Constraint Behavior
 

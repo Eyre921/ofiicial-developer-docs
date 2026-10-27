@@ -88,9 +88,9 @@ Supported ciphers: `aegis256`, `aegis256x2`, `aegis128l`, `aegis128x2`, `aegis12
 
 Encrypted databases cannot be read as standard SQLite databases — you must use the Turso Database engine to open them.
 
-<Info>
-  Turso Cloud databases can also be encrypted with bring-your-own-key — [learn more](/cloud/encryption).
-</Info>
+> [!NOTE]
+>
+> Turso Cloud databases can also be encrypted with bring-your-own-key — [learn more](/cloud/encryption).
 
 ### Sync (Push and Pull)
 
@@ -182,15 +182,15 @@ rows, err := db.Query("SELECT * FROM users WHERE id = ?", 1)
 
 The `go-libsql` package is built on [libSQL](https://github.com/tursodatabase/libsql), the open-source fork of SQLite that powers Turso Cloud today. It is production-ready and battle-tested, and is the right choice when you are working with an existing `go-libsql`-based codebase.
 
-<Info>
-  With `go-libsql` Embedded Replicas, reads are local and writes are sent to the cloud primary, then reflected back to the replica. Embedded Replicas are fully supported. For new projects that need sync, we recommend `tursogo` with `NewTursoSyncDb` — see the [quickstart](/sdk/go/quickstart).
-</Info>
+> [!NOTE]
+>
+> With `go-libsql` Embedded Replicas, reads are local and writes are sent to the cloud primary, then reflected back to the replica. Embedded Replicas are fully supported. For new projects that need sync, we recommend `tursogo` with `NewTursoSyncDb` — see the [quickstart](/sdk/go/quickstart).
 
 ### Embedded Replicas
 
-<Info>
-  For workloads that need **offline writes**, **bidirectional sync**, or **multi-writer convergence**, we recommend `tursogo` with `NewTursoSyncDb` — both reads and writes are local, and you sync explicitly with `Push()` / `Pull()`.
-</Info>
+> [!NOTE]
+>
+> For workloads that need **offline writes**, **bidirectional sync**, or **multi-writer convergence**, we recommend `tursogo` with `NewTursoSyncDb` — both reads and writes are local, and you sync explicitly with `Push()` / `Pull()`.
 
 You can work with [embedded replicas](/features/embedded-replicas) that can sync from the remote database to a local SQLite file, and delegate writes to the remote primary database:
 
@@ -268,9 +268,9 @@ connector, err := libsql.NewEmbeddedReplicaConnector(dbPath, primaryUrl,
 
 ### Encryption
 
-<Warning>
-  For new projects, we recommend [`tursogo`](#tursogo) for local encryption — it is built on the Turso Database engine with better performance and concurrent write support.
-</Warning>
+> [!WARNING]
+>
+> For new projects, we recommend [`tursogo`](#tursogo) for local encryption — it is built on the Turso Database engine with better performance and concurrent write support.
 
 To enable encryption on a SQLite file, pass the encryption key value as an argument to the constructor:
 
@@ -283,6 +283,6 @@ connector, err := libsql.NewEmbeddedReplicaConnector(dbPath, primaryUrl,
 )
 ```
 
-<Info>
-  Encrypted databases appear as raw data and cannot be read as standard SQLite databases. You must use the libSQL client for any operations — [learn more](/libsql#encryption-at-rest).
-</Info>
+> [!NOTE]
+>
+> Encrypted databases appear as raw data and cannot be read as standard SQLite databases. You must use the libSQL client for any operations — [learn more](/libsql#encryption-at-rest).

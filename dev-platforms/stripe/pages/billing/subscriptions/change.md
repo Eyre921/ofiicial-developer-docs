@@ -28,7 +28,7 @@ You can modify active subscriptions without canceling and recreating them. You c
 
 [Collect taxes](https://docs.stripe.com/billing/taxes/collect-taxes.md): Collect and report taxes with Stripe Billing and Stripe Tax.
 
-[Set payment methods](https://docs.stripe.com/billing/subscriptions/payment-methods-setting.md): Specify which payment methods to allow for a subscription.
+[Set payment method types](https://docs.stripe.com/billing/subscriptions/payment-methods-setting.md): Specify which payment method types to allow for a subscription.
 
 [Manage prorations](https://docs.stripe.com/billing/subscriptions/prorations.md): Handle prorations for modified subscriptions.
 

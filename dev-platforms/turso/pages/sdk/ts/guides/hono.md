@@ -6,7 +6,7 @@ path: sdk/ts/guides/hono
 
 Set up Turso in your Hono project in minutes.
 
-<img alt="Hono banner" />
+![Hono banner](https://mintcdn.com/turso/7mjM7fXIfeZ8ZwNC/images/guides/hono-banner.png?fit=max\&auto=format\&n=7mjM7fXIfeZ8ZwNC\&q=85\&s=1c88c1bf0425b350d511be756e47f83f)
 
 ## Prerequisites
 
@@ -16,39 +16,35 @@ Before you start, make sure you:
 * [Sign up or login to Turso](/cli/authentication#signup)
 * Have a Hono app — [learn more](https://hono.dev/top#quick-start)
 
-<Steps>
-  <Step title="Install the libSQL SDK">
-    <Snippet />
-  </Step>
+**1. Install the libSQL SDK**
 
-  <Step title="Retrieve database credentials">
-    <Snippet />
-  </Step>
+<Snippet />
 
-  <Step title="Configure libSQL client">
-    <Snippet />
-  </Step>
+**2. Retrieve database credentials**
 
-  <Step title="Execute SQL">
-    ```ts theme={null}
-    import { Hono } from "hono";
-    import { turso } from "./lib/turso";
+<Snippet />
 
-    const app = new Hono();
+**3. Configure libSQL client**
 
-    app.get("/items", async (c) => {
-      const { rows } = await turso.execute("SELECT * FROM items");
+<Snippet />
 
-      return c.json({ rows });
-    });
-    ```
-  </Step>
-</Steps>
+**4. Execute SQL**
+
+```ts theme={null}
+import { Hono } from "hono";
+import { turso } from "./lib/turso";
+
+const app = new Hono();
+
+app.get("/items", async (c) => {
+  const { rows } = await turso.execute("SELECT * FROM items");
+
+  return c.json({ rows });
+});
+```
 
 ## Examples
 
-<CardGroup>
-  <Card title="Expenses tracker app with Hono & Turso" icon="github" href="https://github.com/tursodatabase/examples/tree/master/app-expenses-tracker-hono">
-    See the full source code
-  </Card>
-</CardGroup>
+> **[Expenses tracker app with Hono & Turso](https://github.com/tursodatabase/examples/tree/master/app-expenses-tracker-hono)**
+>
+> See the full source code

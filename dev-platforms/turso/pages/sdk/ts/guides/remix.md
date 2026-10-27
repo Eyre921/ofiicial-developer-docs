@@ -6,7 +6,7 @@ path: sdk/ts/guides/remix
 
 Set up Turso in your Remix project in minutes
 
-<img alt="Remix banner" />
+![Remix banner](https://mintcdn.com/turso/7mjM7fXIfeZ8ZwNC/images/guides/remix-banner.png?fit=max\&auto=format\&n=7mjM7fXIfeZ8ZwNC\&q=85\&s=84822de5a6eb5531447a66d6afe6662a)
 
 ## Prerequisites
 
@@ -16,44 +16,40 @@ Before you start, make sure you:
 * [Sign up or login to Turso](/cli/authentication#signup)
 * Have a Remix app — [learn more](https://remix.run/docs/en/main/start/quickstart#quick-start)
 
-<Steps>
-  <Step title="Install the libSQL SDK">
-    <Snippet />
-  </Step>
+**1. Install the libSQL SDK**
 
-  <Step title="Configure database credentials">
-    <Snippet />
-  </Step>
+<Snippet />
 
-  <Step title="Configure libSQL Client.">
-    <Snippet />
-  </Step>
+**2. Configure database credentials**
 
-  <Step title="Execute SQL">
-    ```ts app/routes/_index.ts theme={null}
-    import type { LoaderFunction } from "@remix-run/node";
+<Snippet />
 
-    import { turso } from "~/lib/turso";
+**3. Configure libSQL Client.**
 
-    export const loader: LoaderFunction = async () => {
-      const { rows } = await turso.execute("SELECT * from TABLE_NAME");
+<Snippet />
 
-      return {
-        items: rows,
-      };
-    };
-    ```
-  </Step>
-</Steps>
+**4. Execute SQL**
+
+```ts app/routes/_index.ts theme={null}
+import type { LoaderFunction } from "@remix-run/node";
+
+import { turso } from "~/lib/turso";
+
+export const loader: LoaderFunction = async () => {
+  const { rows } = await turso.execute("SELECT * from TABLE_NAME");
+
+  return {
+    items: rows,
+  };
+};
+```
 
 ## Examples
 
-<CardGroup>
-  <Card title="E-commerce Store" icon="github" href="https://github.com/tursodatabase/examples/tree/master/app-the-mug-store">
-    See the full source code
-  </Card>
+> **[E-commerce Store](https://github.com/tursodatabase/examples/tree/master/app-the-mug-store)**
+>
+> See the full source code
 
-  <Card title="CRM App" icon="github" href="https://github.com/tursodatabase/examples/tree/master/app-turso-crm">
-    See the full source code
-  </Card>
-</CardGroup>
+> **[CRM App](https://github.com/tursodatabase/examples/tree/master/app-turso-crm)**
+>
+> See the full source code

@@ -12,6 +12,10 @@ path: docs/guides/features/zdr
 
 > How OpenRouter gives you control over your data
 
+> [!NOTE]
+>
+> **Planned update (October 27, 2026):** OpenRouter will screen all inference requests, including ZDR traffic, for child sexual abuse material (CSAM) in flight. Content flagged as potential CSAM may be retained for human review, reporting, and preservation where required by law. This does not permit general retention or use for model training. [Read the announcement](https://openrouter.ai/blog/announcements/csam-screening). We're updating this page and our related terms.
+
 Zero Data Retention (ZDR) means that a provider will not store your data for any period of time.
 
 OpenRouter has [privacy settings](https://openrouter.ai/settings/privacy) that, when enabled, only allow you to route to endpoints that have a Zero Data Retention policy. You can enforce ZDR globally, per model group, per guardrail, or per request.
@@ -152,7 +156,7 @@ Existing private endpoints keep their current classification. Introducing this s
 
 ## OpenRouter's Retention Policy
 
-OpenRouter itself has a ZDR policy; your prompts are not retained unless you specifically opt in to prompt logging.
+For inference content covered by OpenRouter's ZDR policy, we do not retain prompts or responses after processing, except when you explicitly choose to have us store them or when retention is needed for CSAM review, reporting, and related legal preservation. CSAM screening will also apply to requests covered by OpenRouter's ZDR policy. See [CSAM Screening Across OpenRouter](https://openrouter.ai/blog/announcements/csam-screening).
 
 ## Zero Retention Endpoints
 

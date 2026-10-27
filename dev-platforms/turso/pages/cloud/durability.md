@@ -17,12 +17,12 @@ For all Turso AWS regions, we employ a diskless architecture where data is backe
 
 Commits are only acknowledged once data is safely stored in either S3 or S3-express. Compute nodes can come and go at any time, and local disks act as a local cache. Therefore, we can provide the same durability guarantees as AWS’s best-in-class S3 storage.
 
-<Note>
-  Pro and Enterprise customers can use their own S3 / S3-express buckets,
-  guaranteeing that data lives inside their infrastructure. In our future
-  roadmap, compute will also be runnable inside your account, for a full BYOC
-  solution
-</Note>
+> [!NOTE]
+>
+> Pro and Enterprise customers can use their own S3 / S3-express buckets,
+> guaranteeing that data lives inside their infrastructure. In our future
+> roadmap, compute will also be runnable inside your account, for a full BYOC
+> solution
 
 ## Short term and long term guarantees
 

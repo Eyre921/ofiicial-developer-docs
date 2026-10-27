@@ -53,6 +53,18 @@ Per-model pricing for headline models. Fast variants appear as adjacent rows. In
 
 Muse Spark Open runs on US-only capacity. The 50% US-only premium is waived, so the rates in that row are what you pay.
 
+## Decision models
+
+[Rune 26B-A4B](https://app.fireworks.ai/models/fireworks/rune) is a System One decision model. It reads the input once and returns calibrated probabilities for a set of typed questions, and it never generates output tokens. You pay for input only, so the rates below cover the full cost of a request.
+
+| Model | Standard | Priority |
+| - | - | - |
+| [Rune 26B-A4B](https://app.fireworks.ai/models/fireworks/rune) | \$0.042 / \$0.0084 / \$0.00 | — |
+
+Cached input is 20% of the input rate. Call it with `model: "accounts/fireworks/models/rune"`; see the [System One decisions API](/api-reference/post-systemone) for the request shape.
+
+Rune runs on US capacity. There is no US-capacity premium, so the rates above are what you pay.
+
 ## Other base models — by size and architecture
 
 For any text or vision model not listed individually, pricing is set by parameter count and architecture. These size-based prices apply uniformly to input and output (no separate cached-input rate):

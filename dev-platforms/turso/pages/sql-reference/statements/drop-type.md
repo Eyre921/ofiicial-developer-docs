@@ -8,9 +8,9 @@ Remove a user-defined custom type from the database
 
 # DROP TYPE
 
-<Info>
-  **Turso Extension**: DROP TYPE is a Turso-specific statement not available in standard SQLite. This feature is experimental and must be [enabled before use](/sql-reference/experimental-features).
-</Info>
+> [!NOTE]
+>
+> **Turso Extension**: DROP TYPE is a Turso-specific statement not available in standard SQLite. This feature is experimental and must be [enabled before use](/sql-reference/experimental-features).
 
 The DROP TYPE statement removes a user-defined custom type from the database. Once dropped, the type name can no longer be used in new column definitions.
 

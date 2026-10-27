@@ -10,9 +10,9 @@ To authenticate the Turso CLI with your account, run the following command:
 turso auth login
 ```
 
-<Note>
-  If you're using Windows with WSL or a remote CI/CD environment, pass the --headless flag.
-</Note>
+> [!NOTE]
+>
+> If you're using Windows with WSL or a remote CI/CD environment, pass the --headless flag.
 
 ## Flags
 

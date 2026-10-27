@@ -4,6 +4,12 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+**October 27, 2026**
+
+### Suggest edits in Notion MCP
+
+Three new Notion MCP tools let an assistant propose changes that a person reviews in Notion. `notion-create-suggested-edit` adds a suggested edit to a page without changing its accepted content. `notion-get-suggested-edit` shows a pending suggestion's before-and-after diff, and `notion-resolve-suggested-edit` accepts or rejects it. `notion-get-comments` now lists pending suggestions too. The tools need a Business or Enterprise plan. See [Suggest edits](/guides/mcp/mcp-supported-tools#suggest-edits).
+
 **October 26, 2026**
 
 ### See connection health in the Developer portal
@@ -13,6 +19,10 @@ Internal and public connections now have a **Health** tab in the Developer porta
 ### Open connected-source results with `notion-fetch`
 
 `notion-fetch` now opens results from `notion-connector-search` in hosted Notion MCP sessions. Pass a result's `id` or `url` to read the full item, such as a Slack thread, Google Drive file, or GitHub issue. The response has the item's `title`, `url`, and `text`, and `metadata.type` is `connector`. Fetch reads the item through the user's own connection to that source, so it returns only what that connection can see. It works for Notion MCP OAuth connections and personal access tokens when the user has the same AI access as `notion-connector-search`. Outlook, Google Calendar, and Confluence results still can't be fetched. See [Search connected sources](/guides/mcp/mcp-supported-tools#search-connected-sources).
+
+### Page markdown ignores pending suggested edits
+
+[Retrieve a page as markdown](/reference/retrieve-page-markdown) and the `notion-fetch` MCP tool now show only accepted page content. Suggested edits that nobody has accepted yet no longer show up as page text. [Update a page's content as markdown](/reference/update-page-markdown) and the `notion-update-page` MCP tool match `old_str` against that same view, so text you copy from a retrieved page still matches, and an edit can't target a proposal as if it were page text.
 
 **October 22, 2026**
 

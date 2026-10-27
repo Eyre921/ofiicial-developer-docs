@@ -24,7 +24,5 @@ Build an onramp flow native to your app or website with components that provide 
 
 [EU KYC integration guide](https://docs.stripe.com/crypto/onramp/eu-kyc-integration-guide.md): Integrate KYC for customers in EU countries.
 
-[Seamless sign-in integration guide](https://docs.stripe.com/crypto/onramp/seamless-sign-in-integration-guide.md): Let customers sign in to Link without leaving your app.
-
 [Error handling](https://docs.stripe.com/crypto/onramp/embedded-components-error-handling-guide.md): Handle errors that occur during onramp sessions.
 

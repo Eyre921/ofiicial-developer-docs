@@ -137,9 +137,9 @@ tursodb --sync-server 0.0.0.0:8080 mydata.db
 
 These flags enable features that are still under development. They may change or be removed in future releases.
 
-<Warning>
-  Experimental features may have incomplete implementations or known limitations. Use them for testing and development only.
-</Warning>
+> [!WARNING]
+>
+> Experimental features may have incomplete implementations or known limitations. Use them for testing and development only.
 
 | Flag | Description |
 | - | - |
@@ -155,9 +155,9 @@ These flags enable features that are still under development. They may change or
 | `--experimental-multiprocess-wal` | Enable sharing a database between processes via a shared WAL coordinator |
 | `--experimental-mvcc-passive-checkpoint` | Enable passive checkpointing under MVCC (`journal_mode=mvcc`) |
 
-<Info>
-  Triggers (`CREATE TRIGGER` / `DROP TRIGGER`) are stable as of Turso 0.7 and no longer require a flag.
-</Info>
+> [!NOTE]
+>
+> Triggers (`CREATE TRIGGER` / `DROP TRIGGER`) are stable as of Turso 0.7 and no longer require a flag.
 
 ```bash theme={null}
 # Enable views, custom types, and in-place VACUUM

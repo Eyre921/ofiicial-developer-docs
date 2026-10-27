@@ -8,9 +8,9 @@ Define a named constraint wrapper over a base type for use in STRICT tables
 
 # CREATE DOMAIN
 
-<Info>
-  **Turso Extension**: CREATE DOMAIN is a Turso-specific statement not available in standard SQLite. Domains require STRICT tables and the custom types experimental feature. This feature must be [enabled before use](/sql-reference/experimental-features).
-</Info>
+> [!NOTE]
+>
+> **Turso Extension**: CREATE DOMAIN is a Turso-specific statement not available in standard SQLite. Domains require STRICT tables and the custom types experimental feature. This feature must be [enabled before use](/sql-reference/experimental-features).
 
 The CREATE DOMAIN statement defines a named type alias with optional constraints. Unlike [CREATE TYPE](/sql-reference/statements/create-type), a domain does not specify custom ENCODE/DECODE logic or OPERATORs. Instead, a domain adds NOT NULL and CHECK constraints on top of a base type, and values are stored using the base type's native storage format.
 
@@ -285,9 +285,9 @@ DROP DOMAIN my_domain;
 * **STRICT tables only**: Using a domain type on a non-STRICT table is rejected at CREATE TABLE and ALTER TABLE ADD COLUMN time. Non-STRICT tables allow arbitrary type names as affinity hints, but domain constraints (CHECK, NOT NULL, DEFAULT) are only enforced on STRICT tables, so permitting them would be misleading.
 * **Cannot drop while in use**: A domain cannot be dropped while any table column or another domain references it.
 
-<Note>
-  If a non-STRICT table was created with a type name that did not exist at the time (e.g., `CREATE TABLE t(x mydom)`), and a domain with that name is created afterwards (`CREATE DOMAIN mydom AS ...`), the domain constraints will **not** be retroactively enforced on the existing table. This is not a bug: non-STRICT tables treat all type names as plain affinity hints regardless of whether a matching domain exists. STRICT tables prevent this scenario because they reject unknown type names at CREATE TABLE time.
-</Note>
+> [!NOTE]
+>
+> If a non-STRICT table was created with a type name that did not exist at the time (e.g., `CREATE TABLE t(x mydom)`), and a domain with that name is created afterwards (`CREATE DOMAIN mydom AS ...`), the domain constraints will **not** be retroactively enforced on the existing table. This is not a bug: non-STRICT tables treat all type names as plain affinity hints regardless of whether a matching domain exists. STRICT tables prevent this scenario because they reject unknown type names at CREATE TABLE time.
 
 * **No UNIQUE, PRIMARY KEY, or REFERENCES**: These constraints are not supported in domain definitions. Use table-level constraints instead.
 * **No duplicate clauses**: Multiple DEFAULT or NOT NULL clauses in the same definition are rejected. Conflicting NULL and NOT NULL clauses are also rejected.

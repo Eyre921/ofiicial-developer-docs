@@ -6,7 +6,7 @@ path: sdk/rust/guides/axum
 
 Set up Turso in your Axum project in minutes
 
-<img alt="Axum banner" />
+![Axum banner](https://mintcdn.com/turso/7mjM7fXIfeZ8ZwNC/images/guides/axum-banner.png?fit=max\&auto=format\&n=7mjM7fXIfeZ8ZwNC\&q=85\&s=e92d18a8f72196e94541553f254a77b3)
 
 ## Prerequisites
 
@@ -16,119 +16,119 @@ Before you start, make sure you:
 * [Sign up or login to Turso](/cli/authentication#signup)
 * Have an Axum app — [learn more](https://github.com/tokio-rs/axum)
 
-<Steps>
-  <Step title="Retrieve database credentials">
-    You will need an existing database to continue. If you don't have one, [create one](/quickstart).
+**1. Retrieve database credentials**
 
-    <Snippet />
+You will need an existing database to continue. If you don't have one, [create one](/quickstart).
 
-    <Info>You will want to store these as environment variables.</Info>
-  </Step>
+<Snippet />
 
-  <Step title="Add the libsql crate to the project">
-    ```sh theme={null}
-    cargo add libsql
-    ```
+> [!NOTE]
+>
+> You will want to store these as environment variables.
 
-    <Note>
-      Optionally, you can add a package such as [`dotenvy`](https://docs.rs/dotenvy/latest/dotenvy) to help you work with `.env` files:
+**2. Add the libsql crate to the project**
 
-      ```sh theme={null}
-      cargo add dotenvy
-      ```
-    </Note>
-  </Step>
+```sh theme={null}
+cargo add libsql
+```
 
-  <Step title="Execute SQL">
-    ```rust theme={null}
-    use libsql::{Builder, Connection, Database, Result};
+> [!NOTE]
+>
+> Optionally, you can add a package such as [`dotenvy`](https://docs.rs/dotenvy/latest/dotenvy) to help you work with `.env` files:
+>
+> ```sh theme={null}
+> cargo add dotenvy
+> ```
 
-    #[tokio::main]
-    async fn main() -> Result<()> {
-        dotenv().ok();
+**3. Execute SQL**
 
-        let db_url = std::env::var("TURSO_DATABASE_URL").expect("TURSO_DATABASE_URL must be set");
-        let auth_token = std::env::var("TURSO_AUTH_TOKEN").expect("TURSO_AUTH_TOKEN must be set");
+```rust theme={null}
+use libsql::{Builder, Connection, Database, Result};
 
-        let db = Builder::new_remote(db_url, auth_token)
-            .build()
-            .await?;
+#[tokio::main]
+async fn main() -> Result<()> {
+    dotenv().ok();
 
-        let conn = db.connect()?;
+    let db_url = std::env::var("TURSO_DATABASE_URL").expect("TURSO_DATABASE_URL must be set");
+    let auth_token = std::env::var("TURSO_AUTH_TOKEN").expect("TURSO_AUTH_TOKEN must be set");
 
-        // Execute a query
-        let mut rows = conn.query("SELECT * FROM users", ()).await?;
+    let db = Builder::new_remote(db_url, auth_token)
+        .build()
+        .await?;
 
-        while let Some(row) = rows.next().await? {
-            let id: i64 = row.get(0)?;
-            let name: String = row.get(1)?;
-            println!("User: {} - {}", id, name);
-        }
+    let conn = db.connect()?;
 
-        Ok(())
-    }
-    ```
-  </Step>
+    // Execute a query
+    let mut rows = conn.query("SELECT * FROM users", ()).await?;
 
-  <Step title="Use in an Axum handler">
-    ```rust theme={null}
-    use axum::{
-        extract::State,
-        routing::get,
-        Json, Router,
-    };
-    use libsql::{Builder, Connection, Database};
-    use serde::Serialize;
-
-    #[derive(Clone)]
-    struct AppState {
-        db: Database,
+    while let Some(row) = rows.next().await? {
+        let id: i64 = row.get(0)?;
+        let name: String = row.get(1)?;
+        println!("User: {} - {}", id, name);
     }
 
-    #[derive(Serialize)]
-    struct User {
-        id: i64,
-        name: String,
+    Ok(())
+}
+```
+
+**4. Use in an Axum handler**
+
+```rust theme={null}
+use axum::{
+    extract::State,
+    routing::get,
+    Json, Router,
+};
+use libsql::{Builder, Connection, Database};
+use serde::Serialize;
+
+#[derive(Clone)]
+struct AppState {
+    db: Database,
+}
+
+#[derive(Serialize)]
+struct User {
+    id: i64,
+    name: String,
+}
+
+async fn get_users(State(state): State<AppState>) -> Json<Vec<User>> {
+    let conn = state.db.connect().unwrap();
+    let mut rows = conn.query("SELECT id, name FROM users", ()).await.unwrap();
+
+    let mut users = Vec::new();
+    while let Some(row) = rows.next().await.unwrap() {
+        users.push(User {
+            id: row.get(0).unwrap(),
+            name: row.get(1).unwrap(),
+        });
     }
 
-    async fn get_users(State(state): State<AppState>) -> Json<Vec<User>> {
-        let conn = state.db.connect().unwrap();
-        let mut rows = conn.query("SELECT id, name FROM users", ()).await.unwrap();
+    Json(users)
+}
 
-        let mut users = Vec::new();
-        while let Some(row) = rows.next().await.unwrap() {
-            users.push(User {
-                id: row.get(0).unwrap(),
-                name: row.get(1).unwrap(),
-            });
-        }
+#[tokio::main]
+async fn main() {
+    let db_url = std::env::var("TURSO_DATABASE_URL").expect("TURSO_DATABASE_URL must be set");
+    let auth_token = std::env::var("TURSO_AUTH_TOKEN").expect("TURSO_AUTH_TOKEN must be set");
 
-        Json(users)
-    }
+    let db = Builder::new_remote(db_url, auth_token)
+        .build()
+        .await
+        .unwrap();
 
-    #[tokio::main]
-    async fn main() {
-        let db_url = std::env::var("TURSO_DATABASE_URL").expect("TURSO_DATABASE_URL must be set");
-        let auth_token = std::env::var("TURSO_AUTH_TOKEN").expect("TURSO_AUTH_TOKEN must be set");
+    let app_state = AppState { db };
 
-        let db = Builder::new_remote(db_url, auth_token)
-            .build()
-            .await
-            .unwrap();
+    let app = Router::new()
+        .route("/users", get(get_users))
+        .with_state(app_state);
 
-        let app_state = AppState { db };
+    axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
+        .serve(app.into_make_service())
+        .await
+        .unwrap();
+}
+```
 
-        let app = Router::new()
-            .route("/users", get(get_users))
-            .with_state(app_state);
-
-        axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
-            .serve(app.into_make_service())
-            .await
-            .unwrap();
-    }
-    ```
-
-    This example creates a shared `Database` instance in the application state, which is then used in the handler to execute queries.
-  </Step>
-</Steps>
+This example creates a shared `Database` instance in the application state, which is then used in the handler to execute queries.

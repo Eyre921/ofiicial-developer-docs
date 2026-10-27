@@ -31,7 +31,7 @@ Each setting below is independent. They layer rather than replace each other, so
 
 > [!TIP]
 >
-> For workflow techniques that keep context small in any repository, such as [running exploration in a subagent](/docs/en/best-practices#use-subagents-for-investigation) so file reads stay out of the main conversation, see [Best practices for Claude Code](/docs/en/best-practices). To roll out a baseline configuration to every developer in your organization, see [Set up Claude Code for your organization](/docs/en/admin-setup).
+> For workflow techniques that keep context small in any repository, see [Best practices for Claude Code](/docs/en/best-practices). One example is [running exploration in a subagent](/docs/en/best-practices#know-what-subagents-cost) so file reads stay out of the main conversation. To roll out a baseline configuration to every developer in your organization, see [Set up Claude Code for your organization](/docs/en/admin-setup).
 
 ### The example monorepo
 
@@ -465,7 +465,7 @@ The configuration above controls what Claude sees. When a single change touches 
 Two techniques help keep a cross-package change consistent:
 
 * **Give Claude the whole change in one session**: handing over the shared edit and its call sites together keeps the decisions behind each edit consistent, rather than re-deriving them per package
-* **Plan before editing**: [plan first](/docs/en/best-practices#explore-first-then-plan-then-code) in [plan mode](/docs/en/permission-modes#analyze-before-you-edit-with-plan-mode), and Claude writes the plan to a file. A long cross-package session [compacts its context](/docs/en/context-window#what-survives-compaction) along the way. Claude Code re-injects the plan file after each compaction, so the plan survives where conversation history may not
+* **Plan before editing**: plan first in [plan mode](/docs/en/permission-modes#analyze-before-you-edit-with-plan-mode), and Claude writes the plan to a file. A long cross-package session [compacts its context](/docs/en/context-window#what-survives-compaction) as it goes. Claude Code re-injects the plan file after each compaction, so the plan survives where conversation history may not
 
 ## Next steps
 

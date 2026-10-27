@@ -6,59 +6,57 @@ path: connect/javascript
 
 ## Quickstart
 
-<Steps>
-  <Step title="Install">
-    Add the Turso database package to your JavaScript project:
+**1. Install**
 
-    ```bash theme={null}
-    npm i @tursodatabase/database
-    ```
-  </Step>
+Add the Turso database package to your JavaScript project:
 
-  <Step title="Connect">
-    Here's how you can connect to a local SQLite database:
+```bash theme={null}
+npm i @tursodatabase/database
+```
 
-    ```javascript theme={null}
-    import { connect } from "@tursodatabase/database";
+**2. Connect**
 
-    const db = await connect("sqlite.db");
-    ```
-  </Step>
+Here's how you can connect to a local SQLite database:
 
-  <Step title="Create table">
-    Create a table for users:
+```javascript theme={null}
+import { connect } from "@tursodatabase/database";
 
-    ```javascript theme={null}
-    const createTable = db.prepare(`
-      CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username TEXT NOT NULL
-      )
-    `);
-    createTable.run();
-    ```
-  </Step>
+const db = await connect("sqlite.db");
+```
 
-  <Step title="Insert data">
-    Insert some data into the users table:
+**3. Create table**
 
-    ```javascript theme={null}
-    const insertUser = db.prepare("INSERT INTO users (username) VALUES (?)");
-    insertUser.run("alice");
-    insertUser.run("bob");
-    ```
-  </Step>
+Create a table for users:
 
-  <Step title="Query data">
-    Query all users from the table:
+```javascript theme={null}
+const createTable = db.prepare(`
+  CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL
+  )
+`);
+createTable.run();
+```
 
-    ```javascript theme={null}
-    const stmt = db.prepare("SELECT * FROM users");
-    const users = stmt.all();
-    console.log(users);
-    ```
-  </Step>
-</Steps>
+**4. Insert data**
+
+Insert some data into the users table:
+
+```javascript theme={null}
+const insertUser = db.prepare("INSERT INTO users (username) VALUES (?)");
+insertUser.run("alice");
+insertUser.run("bob");
+```
+
+**5. Query data**
+
+Query all users from the table:
+
+```javascript theme={null}
+const stmt = db.prepare("SELECT * FROM users");
+const users = stmt.all();
+console.log(users);
+```
 
 ## Examples
 

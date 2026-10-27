@@ -457,7 +457,7 @@ Required information:
 
 Acceptable forms of address verification:
 
-- Aadhaar (First 8 digits of the Aadhaar number and VID to be redacted) in Password protected Aadhaar Zip file along with the share code
+- Aadhaar (First 8 digits of the Aadhaar number and VID to be redacted) in Password protected Aadhaar ZIP file along with the share code
 - Voter’s Identity Card issued by the Election Commission of India
 
 If your identity documents don’t contain your updated residential address, any one of the following documents is accepted:

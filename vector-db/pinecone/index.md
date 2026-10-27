@@ -1,6 +1,6 @@
 # vector-db/pinecone 文档索引
 
-> 共 555 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 564 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## admin
@@ -208,6 +208,13 @@
 - `guides/optimize/increase-relevance` — [Increase search relevance](pages/guides/optimize/increase-relevance.md) · [原文](https://docs.pinecone.io/guides/optimize/increase-relevance)
 - `guides/optimize/increase-throughput` — [Increase throughput](pages/guides/optimize/increase-throughput.md) · [原文](https://docs.pinecone.io/guides/optimize/increase-throughput)
 - `guides/optimize/test-at-scale` — [Test Pinecone at scale](pages/guides/optimize/test-at-scale.md) · [原文](https://docs.pinecone.io/guides/optimize/test-at-scale)
+- `guides/pg-pinecone/full-text-search` — [Search a table with full-text search](pages/guides/pg-pinecone/full-text-search.md) · [原文](https://docs.pinecone.io/guides/pg-pinecone/full-text-search)
+- `guides/pg-pinecone/overview` — [pg_pinecone](pages/guides/pg-pinecone/overview.md) · [原文](https://docs.pinecone.io/guides/pg-pinecone/overview)
+- `guides/pg-pinecone/quickstart` — [pg_pinecone quickstart](pages/guides/pg-pinecone/quickstart.md) · [原文](https://docs.pinecone.io/guides/pg-pinecone/quickstart)
+- `guides/pg-pinecone/storage-engines` — [pg_pinecone storage engines](pages/guides/pg-pinecone/storage-engines.md) · [原文](https://docs.pinecone.io/guides/pg-pinecone/storage-engines)
+- `guides/pg-pinecone/support` — [pg_pinecone support](pages/guides/pg-pinecone/support.md) · [原文](https://docs.pinecone.io/guides/pg-pinecone/support)
+- `guides/pg-pinecone/switch-from-pgvector` — [Switch from pgvector to native](pages/guides/pg-pinecone/switch-from-pgvector.md) · [原文](https://docs.pinecone.io/guides/pg-pinecone/switch-from-pgvector)
+- `guides/pg-pinecone/switch-to-remote` — [Switch from native to remote](pages/guides/pg-pinecone/switch-to-remote.md) · [原文](https://docs.pinecone.io/guides/pg-pinecone/switch-to-remote)
 - `guides/production/bring-your-own-cloud` — [Bring Your Own Cloud (BYOC) overview](pages/guides/production/bring-your-own-cloud.md) · [原文](https://docs.pinecone.io/guides/production/bring-your-own-cloud)
 - `guides/production/bring-your-own-cloud/connect-and-manage` — [Connect to and manage BYOC](pages/guides/production/bring-your-own-cloud/connect-and-manage.md) · [原文](https://docs.pinecone.io/guides/production/bring-your-own-cloud/connect-and-manage)
 - `guides/production/bring-your-own-cloud/create-an-index` — [Create an index in BYOC](pages/guides/production/bring-your-own-cloud/create-an-index.md) · [原文](https://docs.pinecone.io/guides/production/bring-your-own-cloud/create-an-index)
@@ -510,6 +517,8 @@
 - `reference/cli/target-context` — [CLI target context](pages/reference/cli/target-context-3.md) · [原文](https://docs.pinecone.io/reference/cli/target-context)
 - `reference/cli/target-context` — [CLI target context](pages/reference/cli/target-context-4.md) · [原文](https://docs.pinecone.io/reference/cli/target-context)
 - `reference/cli/target-context` — [CLI target context](pages/reference/cli/target-context-5.md) · [原文](https://docs.pinecone.io/reference/cli/target-context)
+- `reference/pg-pinecone/operator-runbook` — [pg_pinecone operator runbook](pages/reference/pg-pinecone/operator-runbook.md) · [原文](https://docs.pinecone.io/reference/pg-pinecone/operator-runbook)
+- `reference/pg-pinecone/sql-reference` — [pg_pinecone SQL reference](pages/reference/pg-pinecone/sql-reference.md) · [原文](https://docs.pinecone.io/reference/pg-pinecone/sql-reference)
 - `reference/pinecone-sdks` — [Pinecone SDKs overview](pages/reference/pinecone-sdks.md) · [原文](https://docs.pinecone.io/reference/pinecone-sdks)
 - `reference/pinecone-sdks` — [Pinecone SDKs overview](pages/reference/pinecone-sdks-2.md) · [原文](https://docs.pinecone.io/reference/pinecone-sdks)
 - `reference/pinecone-sdks` — [Pinecone SDKs overview](pages/reference/pinecone-sdks-3.md) · [原文](https://docs.pinecone.io/reference/pinecone-sdks)

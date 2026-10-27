@@ -54,6 +54,6 @@ const db = connect({
 });
 ```
 
-<Note>
-  You can get your database URL with `turso db show <database-name> --url`.
-</Note>
+> [!NOTE]
+>
+> You can get your database URL with `turso db show <database-name> --url`.

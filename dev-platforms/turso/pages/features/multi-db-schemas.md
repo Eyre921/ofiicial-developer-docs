@@ -6,21 +6,21 @@ path: features/multi-db-schemas
 
 Create and share a single schema across multiple databases.
 
-<Warning>
-  This feature is now deprecated for all new users. Existing paid users can
-  continue to use Multi-DB Schemas — [read the
-  announcement](https://turso.tech/blog/upcoming-changes-to-the-turso-platform-and-roadmap)
-</Warning>
+> [!WARNING]
+>
+> This feature is now deprecated for all new users. Existing paid users can
+> continue to use Multi-DB Schemas — [read the
+> announcement](https://turso.tech/blog/upcoming-changes-to-the-turso-platform-and-roadmap)
 
 Turso allows you to create a single schema and share it across multiple databases. This is useful for creating a multi-tenant application where each tenant has their own database.
 
-<Info>
-  **Using TypeScript?** To provision databases programmatically, use the [`@tursodatabase/api`](https://www.npmjs.com/package/@tursodatabase/api) client rather than calling the REST API directly. See the [SDK quickstart](/api-reference/introduction#quickstart-with-the-typescript-sdk).
-</Info>
+> [!NOTE]
+>
+> **Using TypeScript?** To provision databases programmatically, use the [`@tursodatabase/api`](https://www.npmjs.com/package/@tursodatabase/api) client rather than calling the REST API directly. See the [SDK quickstart](/api-reference/introduction#quickstart-with-the-typescript-sdk).
 
-<Info>
-  Try the [Turso Per User Starter](https://github.com/notrab/turso-per-user-starter) to get started with a multi-tenant application using Next.js, Drizzle, Clerk, libSQL, and Turso Multi-DB Schemas.
-</Info>
+> [!NOTE]
+>
+> Try the [Turso Per User Starter](https://github.com/notrab/turso-per-user-starter) to get started with a multi-tenant application using Next.js, Drizzle, Clerk, libSQL, and Turso Multi-DB Schemas.
 
 ## How it works
 
@@ -32,97 +32,93 @@ Turso allows you to create a single schema and share it across multiple database
 
 You can create and manage parent or child databases using the [Turso CLI](/cli/db/create), and [Platform API](/api-reference/databases/create).
 
-<iframe title="Multi database schema changes" />
+[Multi database schema changes](https://www.youtube.com/embed/Slacu1aGm8A)
 
 ### Turso CLI
 
 Make sure you have the [Turso CLI](/cli/installation) installed, and [logged in](/cli/auth/login).
 
-<Steps>
-  <Step title="Create Parent Database">
-    Create a single database using the `--type` flag set to `schema`:
+**1. Create Parent Database**
 
-    ```bash theme={null}
-    turso db create parent-db --type schema
-    ```
-  </Step>
+Create a single database using the `--type` flag set to `schema`:
 
-  <Step title="Create Schema">
-    Connect to your database using the shell to `CREATE TABLE`, `CREATE TRIGGER`, `CREATE VIEW`, and anything else to setup your schema:
+```bash theme={null}
+turso db create parent-db --type schema
+```
 
-    ```bash theme={null}
-    turso db shell parent-db
-    ```
-  </Step>
+**2. Create Schema**
 
-  <Step title="Create Child Database(s)">
-    Create one or more child databases using the `--schema` flag with the name of the parent database:
+Connect to your database using the shell to `CREATE TABLE`, `CREATE TRIGGER`, `CREATE VIEW`, and anything else to setup your schema:
 
-    ```bash theme={null}
-    turso db create child-db --schema parent-db
-    ```
-  </Step>
+```bash theme={null}
+turso db shell parent-db
+```
 
-  <Step title="Apply Additional Schema Changes">
-    You can now apply additional schema changes to the parent database, and the child databases will be automatically updated:
+**3. Create Child Database(s)**
 
-    ```bash theme={null}
-    turso db shell parent-db "CREATE TABLE users (id INT PRIMARY KEY, name TEXT);"
-    ```
-  </Step>
-</Steps>
+Create one or more child databases using the `--schema` flag with the name of the parent database:
+
+```bash theme={null}
+turso db create child-db --schema parent-db
+```
+
+**4. Apply Additional Schema Changes**
+
+You can now apply additional schema changes to the parent database, and the child databases will be automatically updated:
+
+```bash theme={null}
+turso db shell parent-db "CREATE TABLE users (id INT PRIMARY KEY, name TEXT);"
+```
 
 ### Platform API
 
 Make sure you have an API Token, and know your Organization name:
 
-<Steps>
-  <Step title="Create Parent Database">
-    Create a database and set the `is_schema` field to `true`:
+**1. Create Parent Database**
 
-    ```bash theme={null}
-    curl -L -X POST 'https://api.turso.tech/v1/organizations/{organizationSlug}/databases' \
-      -H 'Authorization: Bearer TOKEN' \
-      -H 'Content-Type: application/json' \
-      -d '{
-          "name": "parent-db",
-          "group": "default",
-          "is_schema": true
-      }'
-    ```
-  </Step>
+Create a database and set the `is_schema` field to `true`:
 
-  <Step title="Create Schema">
-    Connect to your database using the shell, [SDK](/sdk), or migration script to `CREATE TABLE`, `CREATE TRIGGER`, `CREATE VIEW`, and anything else to setup your schema:
+```bash theme={null}
+curl -L -X POST 'https://api.turso.tech/v1/organizations/{organizationSlug}/databases' \
+  -H 'Authorization: Bearer TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+      "name": "parent-db",
+      "group": "default",
+      "is_schema": true
+  }'
+```
 
-    ```bash Turso CLI theme={null}
-    turso db shell parent-db
-    ```
-  </Step>
+**2. Create Schema**
 
-  <Step title="Create Child Database(s)">
-    Create one or more child databases and pass the `schema` field the name of your parent database:
+Connect to your database using the shell, [SDK](/sdk), or migration script to `CREATE TABLE`, `CREATE TRIGGER`, `CREATE VIEW`, and anything else to setup your schema:
 
-    ```bash theme={null}
-    curl -L -X POST 'https://api.turso.tech/v1/organizations/{organizationSlug}/databases' \
-      -H 'Authorization: Bearer TOKEN' \
-      -H 'Content-Type: application/json' \
-      -d '{
-          "name": "child-db",
-          "group": "default",
-          "schema": "parent-db"
-      }'
-    ```
-  </Step>
+```bash Turso CLI theme={null}
+turso db shell parent-db
+```
 
-  <Step title="Apply Additional Schema Changes">
-    You can now apply additional schema changes to the parent database, and the child databases will be automatically updated:
+**3. Create Child Database(s)**
 
-    ```bash theme={null}
-    turso db shell parent-db "CREATE TABLE users (id INT PRIMARY KEY, name TEXT);"
-    ```
-  </Step>
-</Steps>
+Create one or more child databases and pass the `schema` field the name of your parent database:
+
+```bash theme={null}
+curl -L -X POST 'https://api.turso.tech/v1/organizations/{organizationSlug}/databases' \
+  -H 'Authorization: Bearer TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+      "name": "child-db",
+      "group": "default",
+      "schema": "parent-db"
+  }'
+```
+
+**4. Apply Additional Schema Changes**
+
+You can now apply additional schema changes to the parent database, and the child databases will be automatically updated:
+
+```bash theme={null}
+turso db shell parent-db "CREATE TABLE users (id INT PRIMARY KEY, name TEXT);"
+```
 
 ## Things to know
 

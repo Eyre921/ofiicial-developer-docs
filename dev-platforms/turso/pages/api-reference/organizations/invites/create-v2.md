@@ -7,46 +7,46 @@ path: api-reference/organizations/invites/create-v2
 POST /v2/organizations/{organizationSlug}/invites
 Invite a user to an organization. If the user isn't already registered with Turso, they will receive a signup link. If an existing pending invite exists for the same email, it will be replaced.
 
-<Warning>Invites are limited to scaler plan and above.</Warning>
+> [!WARNING]
+>
+> Invites are limited to scaler plan and above.
 
-<Info>
-  You can invite by **email** or by **username** — provide exactly one. When inviting by username, the invite is sent to that user's registered email.
-</Info>
+> [!NOTE]
+>
+> You can invite by **email** or by **username** — provide exactly one. When inviting by username, the invite is sent to that user's registered email.
 
-<Info>
-  You must be an `owner` or `admin` to invite other users. **You can only invite users to a team and not your personal account.**
-</Info>
+> [!NOTE]
+>
+> You must be an `owner` or `admin` to invite other users. **You can only invite users to a team and not your personal account.**
 
-<Info>
-  If a pending invite already exists for the same email, it will be replaced with a new one.
-</Info>
+> [!NOTE]
+>
+> If a pending invite already exists for the same email, it will be replaced with a new one.
 
-<RequestExample>
-  ```bash Invite by email theme={null}
-  curl -L -X POST https://api.turso.tech/v2/organizations/{organizationSlug}/invites \
-    -H 'Authorization: Bearer TOKEN' \
-    -H 'Content-Type: application/json' \
-    -d '{"email": "user@example.com", "role": "member"}'
-  ```
+```bash Invite by email theme={null}
+curl -L -X POST https://api.turso.tech/v2/organizations/{organizationSlug}/invites \
+  -H 'Authorization: Bearer TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{"email": "user@example.com", "role": "member"}'
+```
 
-  ```bash Invite by username theme={null}
-  curl -L -X POST https://api.turso.tech/v2/organizations/{organizationSlug}/invites \
-    -H 'Authorization: Bearer TOKEN' \
-    -H 'Content-Type: application/json' \
-    -d '{"username": "turso-user", "role": "member"}'
-  ```
+```bash Invite by username theme={null}
+curl -L -X POST https://api.turso.tech/v2/organizations/{organizationSlug}/invites \
+  -H 'Authorization: Bearer TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{"username": "turso-user", "role": "member"}'
+```
 
-  ```ts Node.js theme={null}
-  import { createClient } from "@tursodatabase/api";
+```ts Node.js theme={null}
+import { createClient } from "@tursodatabase/api";
 
-  const turso = createClient({
-    org: "mycompany",
-    token: "",
-  });
+const turso = createClient({
+  org: "mycompany",
+  token: "",
+});
 
-  const invite = await turso.organizations.inviteUser(
-    "user@example.com",
-    "member"
-  );
-  ```
-</RequestExample>
+const invite = await turso.organizations.inviteUser(
+  "user@example.com",
+  "member"
+);
+```

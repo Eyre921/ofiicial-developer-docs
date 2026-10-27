@@ -132,27 +132,23 @@ print(await client.query("select * from customers"));
 
 libSQL supports the use of positional and named placeholders within SQL statements:
 
-<CodeGroup>
-  ```dart Positional theme={null}
-  final statement = await client
-  	.prepare("select * from customers where id = ?");
+```dart Positional theme={null}
+final statement = await client
+	.prepare("select * from customers where id = ?");
 
-  await statement.query(positional: [1])
-  ```
+await statement.query(positional: [1])
+```
 
-  ```dart Named theme={null}
-  final statement = await client
-  	.prepare("select * from customers where id = :id");
+```dart Named theme={null}
+final statement = await client
+	.prepare("select * from customers where id = :id");
 
-  await statement.query(named: {"id": 1})
-  ```
-</CodeGroup>
+await statement.query(named: {"id": 1})
+```
 
-<br />
-
-<Info>
-  libSQL supports the same named placeholder characters as SQLite — `:`, `@` and `$`.
-</Info>
+> [!NOTE]
+>
+> libSQL supports the same named placeholder characters as SQLite — `:`, `@` and `$`.
 
 ## Batch Transactions
 
@@ -194,13 +190,11 @@ print(await tx
 await tx.commit();
 ```
 
-<br />
-
-<Warning>
-  Interactive transactions in libSQL lock the database for writing until
-  committed or rolled back, with a 5-second timeout. They can impact performance
-  on high-latency or busy databases.
-</Warning>
+> [!WARNING]
+>
+> Interactive transactions in libSQL lock the database for writing until
+> committed or rolled back, with a 5-second timeout. They can impact performance
+> on high-latency or busy databases.
 
 ## ATTACH
 
@@ -216,8 +210,8 @@ print(await tx.execute("SELECT * FROM attached.customers"));
 await tx.commit();
 ```
 
-<Info>
-  Make sure to [allow `ATTACH`](/cli/db/config/attach/allow) and create a token
-  with the permission to attach a database — [learn
-  more](/features/attach-database)
-</Info>
+> [!NOTE]
+>
+> Make sure to [allow `ATTACH`](/cli/db/config/attach/allow) and create a token
+> with the permission to attach a database — [learn
+> more](/features/attach-database)

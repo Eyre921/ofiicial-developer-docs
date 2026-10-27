@@ -70,23 +70,23 @@ Supported ciphers: `aegis256`, `aegis256x2`, `aegis128l`, `aegis128x2`, `aegis12
 
 Encrypted databases cannot be read as standard SQLite databases — you must use the Turso Database engine to open them.
 
-<Info>
-  Turso Cloud databases can also be encrypted with bring-your-own-key — [learn more](/cloud/encryption).
-</Info>
+> [!NOTE]
+>
+> Turso Cloud databases can also be encrypted with bring-your-own-key — [learn more](/cloud/encryption).
 
 ## libsql (libSQL)
 
 The `libsql` package is built on [libSQL](https://github.com/tursodatabase/libsql), the open-source fork of SQLite that powers Turso Cloud today. It is production-ready and battle-tested, and is the right choice when you are working with an existing `libsql`-based codebase.
 
-<Info>
-  With `libsql` Embedded Replicas, reads are local and writes are sent to the cloud primary, then reflected back to the replica. Embedded Replicas are fully supported. For new projects that need sync, we recommend `turso.sync` — see the [quickstart](/sdk/python/quickstart).
-</Info>
+> [!NOTE]
+>
+> With `libsql` Embedded Replicas, reads are local and writes are sent to the cloud primary, then reflected back to the replica. Embedded Replicas are fully supported. For new projects that need sync, we recommend `turso.sync` — see the [quickstart](/sdk/python/quickstart).
 
 ## Embedded Replicas
 
-<Info>
-  For workloads that need **offline writes**, **bidirectional sync**, or **multi-writer convergence**, we recommend `turso.sync` — both reads and writes are local, and you sync explicitly with `push()` / `pull()`. See the [quickstart](/sdk/python/quickstart).
-</Info>
+> [!NOTE]
+>
+> For workloads that need **offline writes**, **bidirectional sync**, or **multi-writer convergence**, we recommend `turso.sync` — both reads and writes are local, and you sync explicitly with `push()` / `pull()`. See the [quickstart](/sdk/python/quickstart).
 
 You can work with [embedded replicas](/features/embedded-replicas) that can sync from the remote database to a local SQLite file, and delegate writes to the remote primary database:
 
@@ -127,9 +127,9 @@ conn.sync()
 
 ## Encryption
 
-<Warning>
-  For new projects, we recommend [`pyturso`](#pyturso) for local encryption — it is built on the Turso Database engine with better performance and concurrent write support.
-</Warning>
+> [!WARNING]
+>
+> For new projects, we recommend [`pyturso`](#pyturso) for local encryption — it is built on the Turso Database engine with better performance and concurrent write support.
 
 To enable encryption on a SQLite file, pass the encryption secret to the `encryption_key` option:
 
@@ -139,6 +139,6 @@ conn = libsql.connect("encrypted.db", sync_url=os.getenv("LIBSQL_URL"),
                       encryption_key=os.getenv("ENCRYPTION_KEY"))
 ```
 
-<Info>
-  Encrypted databases appear as raw data and cannot be read as standard SQLite databases. You must use the libSQL client for any operations — [learn more](/libsql#encryption-at-rest).
-</Info>
+> [!NOTE]
+>
+> Encrypted databases appear as raw data and cannot be read as standard SQLite databases. You must use the libSQL client for any operations — [learn more](/libsql#encryption-at-rest).

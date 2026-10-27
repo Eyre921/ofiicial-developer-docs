@@ -14,13 +14,11 @@ Authorization is symmetric with the revoke endpoint:
 
 This mirrors the personal-access-token model used in GitHub organization settings: admins get the full attribution list; everyone else sees their own access.
 
-<Info>
-  Use this endpoint to enumerate the tokens that act on a single organization (both org-scoped and group-scoped). Admins and owners see every token in the organization with the minting user attached; members and viewers see only their own. To list tokens across every organization the caller belongs to, use [`GET /v1/auth/api-tokens`](/api-reference/tokens/list) instead.
-</Info>
+> [!NOTE]
+>
+> Use this endpoint to enumerate the tokens that act on a single organization (both org-scoped and group-scoped). Admins and owners see every token in the organization with the minting user attached; members and viewers see only their own. To list tokens across every organization the caller belongs to, use [`GET /v1/auth/api-tokens`](/api-reference/tokens/list) instead.
 
-<RequestExample>
-  ```bash cURL theme={null}
-  curl -L 'https://api.turso.tech/v1/organizations/{organizationSlug}/api-tokens' \
-    -H 'Authorization: Bearer TOKEN'
-  ```
-</RequestExample>
+```bash cURL theme={null}
+curl -L 'https://api.turso.tech/v1/organizations/{organizationSlug}/api-tokens' \
+  -H 'Authorization: Bearer TOKEN'
+```

@@ -23,15 +23,13 @@ turso db inspect <database-name>
 
 You can fetch the most executed, resource-intensive SQL statements that have been run against your database using the Turso CLI:
 
-<CodeGroup>
-  ```bash Command theme={null}
-  turso db inspect <database-name> --queries
-  ```
+```bash Command theme={null}
+turso db inspect <database-name> --queries
+```
 
-  ```bash Response theme={null}
-  SELECT * FROM Orders WHERE Status = 'Pending';
-  SELECT COUNT(*), CustomerID FROM Orders GROUP BY CustomerID HAVING COUNT(*) > 5;
-  SELECT Orders.OrderID, Customers.CustomerName FROM Orders INNER JOIN Customers ON Orders.CustomerID = Customers.CustomerID;
-  UPDATE Products SET Price = Price * 1.10 WHERE Category = 'Electronics';
-  ```
-</CodeGroup>
+```bash Response theme={null}
+SELECT * FROM Orders WHERE Status = 'Pending';
+SELECT COUNT(*), CustomerID FROM Orders GROUP BY CustomerID HAVING COUNT(*) > 5;
+SELECT Orders.OrderID, Customers.CustomerName FROM Orders INNER JOIN Customers ON Orders.CustomerID = Customers.CustomerID;
+UPDATE Products SET Price = Price * 1.10 WHERE Category = 'Electronics';
+```

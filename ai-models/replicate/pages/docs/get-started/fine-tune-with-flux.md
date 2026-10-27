@@ -188,4 +188,4 @@ Now that you’ve got a fine-tuned image generation model and a language model t
 
 If you need inspiration, check the collection of [FLUX fine-tunes on Replicate](https://replicate.com/collections/flux-fine-tunes) to see what other people have created.
 
-Have fun and share your results with the community on [X](https://x.com/replicate) or [Discord](https://discord.gg/replicate).
+Have fun and share your results with the community on [X](https://x.com/replicate).

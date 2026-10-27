@@ -6,9 +6,9 @@ path: sync/conflict-resolution
 
 How Turso sync handles concurrent changes from multiple clients.
 
-<Note>
-  This particular usage uses the Turso Cloud to sync the local Turso databases and assumes that you have an account.
-</Note>
+> [!NOTE]
+>
+> This particular usage uses the Turso Cloud to sync the local Turso databases and assumes that you have an account.
 
 ## Last Push Wins
 

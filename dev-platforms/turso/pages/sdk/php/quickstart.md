@@ -14,127 +14,123 @@ In this PHP quickstart we will learn how to:
 * Execute a query using SQL
 * Sync changes to local database (optional)
 
-<Steps>
-  <Step title="Retrieve database credentials">
-    You will need an existing database to continue. If you don't have one, [create
-    one](/quickstart).
+**1. Retrieve database credentials**
 
-    <Snippet />
+You will need an existing database to continue. If you don't have one, [create
+one](/quickstart).
 
-    <Info>You will want to store these as environment variables.</Info>
-  </Step>
+<Snippet />
 
-  <Step title="Install">
-    Install the package to your project using composer:
+> [!NOTE]
+>
+> You will want to store these as environment variables.
 
-    ```console theme={null}
-    composer require turso/libsql
-    ```
-  </Step>
+**2. Install**
 
-  <Step title="Connect">
-    Now connect to your local or remote database using the libSQL connector:
+Install the package to your project using composer:
 
-    <AccordionGroup>
-      <Accordion title="Embedded Replica">
-        ```php theme={null}
-        use Libsql\Database;
+```console theme={null}
+composer require turso/libsql
+```
 
-        $db = new Database(
-            path: 'test.db',
-            url: getenv('TURSO_URL'),
-            authToken: getenv('TURSO_AUTH_TOKEN')
-            syncInterval: 100 // Sync every second
-        );
-        $conn = $db->connect();
-        ```
-      </Accordion>
+**3. Connect**
 
-      <Accordion title="Local only">
-        ```php theme={null}
-        use Libsql\Database;
+Now connect to your local or remote database using the libSQL connector:
 
-        $db = new Database(path: "database.db");
-        ```
+> **Embedded Replica**
+>
+> ```php theme={null}
+> use Libsql\Database;
+>
+> $db = new Database(
+>     path: 'test.db',
+>     url: getenv('TURSO_URL'),
+>     authToken: getenv('TURSO_AUTH_TOKEN')
+>     syncInterval: 100 // Sync every second
+> );
+> $conn = $db->connect();
+> ```
 
-        Or just:
+> **Local only**
+>
+> ```php theme={null}
+> use Libsql\Database;
+>
+> $db = new Database(path: "database.db");
+> ```
+>
+> Or just:
+>
+> ```php theme={null}
+> use Libsql\Database;
+>
+> $db = new Database("database.db");
+> ```
 
-        ```php theme={null}
-        use Libsql\Database;
+> **Local only**
+>
+> ```php theme={null}
+> use Libsql\Database;
+>
+> $db = new Database(path: "database.db");
+> ```
+>
+> Or just:
+>
+> ```php theme={null}
+> use Libsql\Database;
+>
+> $db = new Database("database.db");
+> ```
 
-        $db = new Database("database.db");
-        ```
-      </Accordion>
+> **Remote only**
+>
+> ```php theme={null}
+> use Libsql\Database;
+>
+> $db = new Database(
+>     url: getenv('TURSO_URL'),
+>     authToken: getenv('TURSO_AUTH_TOKEN'),
+> )
+> ```
 
-      <Accordion title="Local only">
-        ```php theme={null}
-        use Libsql\Database;
+**4. Execute**
 
-        $db = new Database(path: "database.db");
-        ```
+You can execute SQL queries against your existing database as follows:
 
-        Or just:
+```php theme={null}
+$createUsers = "
+  CREATE TABLE IF NOT EXISTS users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT,
+      age INTEGER
+  );
+  INSERT INTO users (name, age) VALUES ('Prof. Ir. Onno Widodo Purbo, M.Eng., Ph.D', 61);
+  INSERT INTO users (name, age) VALUES ('Jim Geovedi', 41);
+  INSERT INTO users (name, age) VALUES ('Nasirun', 59);
+";
 
-        ```php theme={null}
-        use Libsql\Database;
+$db->executeBatch($createUsers);
+$db->query("SELECT * FROM users")->fetchArray();
+```
 
-        $db = new Database("database.db");
-        ```
-      </Accordion>
+If you need to use placeholders for values, you can do that:
 
-      <Accordion title="Remote only">
-        ```php theme={null}
-        use Libsql\Database;
+```php Positional theme={null}
+$db->query("SELECT * FROM users WHERE id = ?", [1])->fetchArray();
+```
 
-        $db = new Database(
-            url: getenv('TURSO_URL'),
-            authToken: getenv('TURSO_AUTH_TOKEN'),
-        )
-        ```
-      </Accordion>
-    </AccordionGroup>
-  </Step>
+```php Named theme={null}
+$db->query("SELECT * FROM users WHERE id = :id", [":id" => 1])->fetchArray();
+```
 
-  <Step title="Execute">
-    You can execute SQL queries against your existing database as follows:
+**5. Sync (Embedded Replicas only)**
 
-    ```php theme={null}
-    $createUsers = "
-      CREATE TABLE IF NOT EXISTS users (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          name TEXT,
-          age INTEGER
-      );
-      INSERT INTO users (name, age) VALUES ('Prof. Ir. Onno Widodo Purbo, M.Eng., Ph.D', 61);
-      INSERT INTO users (name, age) VALUES ('Jim Geovedi', 41);
-      INSERT INTO users (name, age) VALUES ('Nasirun', 59);
-    ";
+When using embedded replicas you should call `sync()` on the database type
+to sync your local database with the primary database:
 
-    $db->executeBatch($createUsers);
-    $db->query("SELECT * FROM users")->fetchArray();
-    ```
+```php theme={null}
+<?php
 
-    If you need to use placeholders for values, you can do that:
-
-    <CodeGroup>
-      ```php Positional theme={null}
-      $db->query("SELECT * FROM users WHERE id = ?", [1])->fetchArray();
-      ```
-
-      ```php Named theme={null}
-      $db->query("SELECT * FROM users WHERE id = :id", [":id" => 1])->fetchArray();
-      ```
-    </CodeGroup>
-  </Step>
-
-  <Step title="Sync (Embedded Replicas only)">
-    When using embedded replicas you should call `sync()` on the database type
-    to sync your local database with the primary database:
-
-    ```php theme={null}
-    <?php
-
-    $db->sync();
-    ```
-  </Step>
-</Steps>
+$db->sync();
+```

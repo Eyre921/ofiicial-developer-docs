@@ -12,6 +12,6 @@ You can opt out of this behaviour by passing the `--headless` flag with operatio
 turso auth login --headless
 ```
 
-<Note>
-  If you're using Windows with WSL or a remote CI/CD environment, pass the `--headless` flag.
-</Note>
+> [!NOTE]
+>
+> If you're using Windows with WSL or a remote CI/CD environment, pass the `--headless` flag.

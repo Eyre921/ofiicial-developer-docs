@@ -16,114 +16,110 @@ In this Swift quickstart we will learn how to:
 * Execute a query using SQL
 * Sync changes to local database (optional)
 
-<Steps>
-  <Step title="Retrieve database credentials">
-    You will need an existing database to continue. If you don't have one, [create one](/quickstart).
+**1. Retrieve database credentials**
 
-    <Snippet />
+You will need an existing database to continue. If you don't have one, [create one](/quickstart).
 
-    <Snippet />
-  </Step>
+<Snippet />
 
-  <Step title="Install">
-    First begin by adding `libsql` as a package dependency in XCode using this repo:
+<Snippet />
 
-    <Card title="libSQL Swift" href="https://github.com/tursodatabase/libsql-swift">
-      Build from source code
-    </Card>
+**2. Install**
 
-    Or add it to your SwiftPM dependencies:
+First begin by adding `libsql` as a package dependency in XCode using this repo:
 
-    ```swift theme={null}
-    import PackageDescription
+> **[libSQL Swift](https://github.com/tursodatabase/libsql-swift)**
+>
+> Build from source code
 
-    let package = Package(
-        // ...
-        dependencies: [
-            .package(url: "https://github.com/tursodatabase/libsql-swift", from: "0.1.1"),
-        ],
-        // ...
-    )
-    ```
-  </Step>
+Or add it to your SwiftPM dependencies:
 
-  <Step title="Connect">
-    You must first create a `Database` object and then open a `Connection` to it:
+```swift theme={null}
+import PackageDescription
 
-    <AccordionGroup>
-      <Accordion title="Embedded Replicas">
-        ```swift theme={null}
-        import Libsql
+let package = Package(
+    // ...
+    dependencies: [
+        .package(url: "https://github.com/tursodatabase/libsql-swift", from: "0.1.1"),
+    ],
+    // ...
+)
+```
 
-        let db = try Database(
-            path: "./local.db",
-            url: "TURSO_DATABASE_URL",
-            authToken: "TURSO_AUTH_TOKEN",
-            syncInterval: 300
-        )
+**3. Connect**
 
-        let conn = try db.connect()
-        ```
-      </Accordion>
+You must first create a `Database` object and then open a `Connection` to it:
 
-      <Accordion title="Local only">
-        ```swift theme={null}
-        import Libsql
+> **Embedded Replicas**
+>
+> ```swift theme={null}
+> import Libsql
+>
+> let db = try Database(
+>     path: "./local.db",
+>     url: "TURSO_DATABASE_URL",
+>     authToken: "TURSO_AUTH_TOKEN",
+>     syncInterval: 300
+> )
+>
+> let conn = try db.connect()
+> ```
 
-        let db = try Database(
-            path: "./local.db",
-        )
+> **Local only**
+>
+> ```swift theme={null}
+> import Libsql
+>
+> let db = try Database(
+>     path: "./local.db",
+> )
+>
+> let conn = try db.connect()
+> ```
 
-        let conn = try db.connect()
-        ```
-      </Accordion>
+> **Remote only**
+>
+> ```swift theme={null}
+> import Libsql
+>
+> let db = try Database(
+>     url: "TURSO_DATABASE_URL",
+>     authToken: "TURSO_AUTH_TOKEN"
+> )
+>
+> let conn = try db.connect()
+> ```
 
-      <Accordion title="Remote only">
-        ```swift theme={null}
-        import Libsql
+**4. Execute**
 
-        let db = try Database(
-            url: "TURSO_DATABASE_URL",
-            authToken: "TURSO_AUTH_TOKEN"
-        )
+You can execute a SQL query against your existing database by calling `query()`,
+or `execute()` when you expect the query to not yield any rows:
 
-        let conn = try db.connect()
-        ```
-      </Accordion>
-    </AccordionGroup>
-  </Step>
+```swift theme={null}
+let rows = try conn.query("SELECT * FROM users")
+```
 
-  <Step title="Execute">
-    You can execute a SQL query against your existing database by calling `query()`,
-    or `execute()` when you expect the query to not yield any rows:
+If you need to use placeholders for values, you can do that:
 
-    ```swift theme={null}
-    let rows = try conn.query("SELECT * FROM users")
-    ```
+```swift Positional Query theme={null}
+try conn.query("SELECT * FROM users WHERE id = ?", 1)
+```
 
-    If you need to use placeholders for values, you can do that:
+```swift Positional Insert theme={null}
+try conn.execute("INSERT INTO users (id) VALUES (?)", 1)
+```
 
-    <CodeGroup>
-      ```swift Positional Query theme={null}
-      try conn.query("SELECT * FROM users WHERE id = ?", 1)
-      ```
+> [!NOTE]
+>
+> Named arguments are not supported yet.
 
-      ```swift Positional Insert theme={null}
-      try conn.execute("INSERT INTO users (id) VALUES (?)", 1)
-      ```
+**5. Sync (Embedded Replicas only)**
 
-      <Note>Named arguments are not supported yet.</Note>
-    </CodeGroup>
-  </Step>
+When using embedded replicas you should call `sync()` on the database type to
+sync your local database with the primary database, unless you are using
+`sync_interval` (though there is no issue with calling `sync` with
+`sync_interval` enabled):
 
-  <Step title="Sync (Embedded Replicas only)">
-    When using embedded replicas you should call `sync()` on the database type to
-    sync your local database with the primary database, unless you are using
-    `sync_interval` (though there is no issue with calling `sync` with
-    `sync_interval` enabled):
-
-    ```swift theme={null}
-    try db.sync()
-    ```
-  </Step>
-</Steps>
+```swift theme={null}
+try db.sync()
+```

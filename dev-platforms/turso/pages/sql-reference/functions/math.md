@@ -62,9 +62,9 @@ Turso provides all SQLite math functions. These functions operate on numeric val
 | `log10(X)` | Base-10 logarithm of X. X must be > 0 | REAL |
 | `log2(X)` | Base-2 logarithm of X. X must be > 0 | REAL |
 
-<Info>
-  The single-argument `log(X)` returns the natural logarithm (base e), matching SQLite behavior. This differs from some other databases where `log(X)` returns the base-10 logarithm.
-</Info>
+> [!NOTE]
+>
+> The single-argument `log(X)` returns the natural logarithm (base e), matching SQLite behavior. This differs from some other databases where `log(X)` returns the base-10 logarithm.
 
 ### Arithmetic Functions
 
@@ -293,9 +293,9 @@ SELECT gcd(0, 0);      -- 0
 SELECT gcd(NULL, 7);   -- NULL
 ```
 
-<Info>
-  `gcd` and `lcm` are PostgreSQL/MySQL/Oracle-compatible additions that SQLite does not ship. They operate on signed 64-bit integers; non-integer text inputs that cannot be parsed return NULL.
-</Info>
+> [!NOTE]
+>
+> `gcd` and `lcm` are PostgreSQL/MySQL/Oracle-compatible additions that SQLite does not ship. They operate on signed 64-bit integers; non-integer text inputs that cannot be parsed return NULL.
 
 ***
 

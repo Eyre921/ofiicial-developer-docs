@@ -20,11 +20,12 @@ The `InjectAgentMessage` message is a JSON message you can send to immediately t
 
 ## Fields
 
-| Field      | Type   | Required | Description                                                                                                               |
-| ---------- | ------ | -------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `type`     | string | Yes      | Must be `"InjectAgentMessage"`.                                                                                           |
-| `message`  | string | Yes      | The statement the agent should say.                                                                                       |
-| `behavior` | string | No       | How the injection interacts with the current turn: `"default"`, `"queue"`, or `"interrupt"`. Uses `"default"` if omitted. |
+| Field        | Type    | Required    | Description                                                                                                                                                                               |
+| ------------ | ------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `type`       | string  | Yes         | Must be `"InjectAgentMessage"`.                                                                                                                                                           |
+| `message`    | string  | Conditional | The statement the agent should say. Required unless `is_dynamic` is `true`, and must be omitted when `is_dynamic` is `true`.                                                              |
+| `is_dynamic` | boolean | No          | Requires `agent.think_live`. When `true`, the Think Live model words the line itself instead of speaking `message`. See [Dynamic filler](#dynamic-filler). Treated as `false` if omitted. |
+| `behavior`   | string  | No          | How the injection interacts with the current turn: `"default"`, `"queue"`, or `"interrupt"`. Uses `"default"` if omitted.                                                                 |
 
 ### `behavior` values
 
@@ -33,6 +34,16 @@ The `InjectAgentMessage` message is a JSON message you can send to immediately t
 * **`interrupt`**: the agent immediately speaks.
   * If the agent was already speaking, it interrupts any current speech and replaces it with the new message.
   * If the user is speaking, the agent interrupts with the new message. However, the user's continued speech triggers [`UserStartedSpeaking`](/docs/voice-agent-user-started-speaking), which quickly interrupts the agent, ensuring the conversation continues forward.
+
+### Dynamic filler
+
+Setting `is_dynamic` to `true` asks Deepgram's Think Live model to word the line itself, so you cover a wait without choosing the wording in advance. Send it without `message`; sending both is an error.
+
+Dynamic filler requires [Think Live](/docs/voice-agent-think-live). Configure `agent.think_live` in your `Settings` message before you send it.
+
+Each request produces one filler line. A second request during the same wait escalates the wording rather than repeating it. When the Think Live model cannot produce a line, the agent says nothing and the server sends a `DYNAMIC_FILLER_UNAVAILABLE` warning.
+
+The spoken line arrives in [`ConversationText`](/docs/voice-agent-conversation-text) with `conversational_behavior` set to `"filler"`.
 
 ## Example Payloads
 
@@ -69,6 +80,18 @@ The `InjectAgentMessage` message is a JSON message you can send to immediately t
   "type": "InjectAgentMessage",
   "behavior": "interrupt",
   "message": "Sorry to cut in — let me correct that."
+}
+```
+
+### `is_dynamic`: let the Think Live model word the line
+
+**`JSON`**
+
+```json JSON
+{
+  "type": "InjectAgentMessage",
+  "behavior": "queue",
+  "is_dynamic": true
 }
 ```
 

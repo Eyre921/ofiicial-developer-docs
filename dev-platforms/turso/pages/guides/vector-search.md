@@ -45,9 +45,9 @@ Values are linearly quantized to the 0-255 range using min/max scaling. Dequanti
 
 Positive values become 1, non-positive values become 0. Extracted values are displayed as +1/-1.
 
-<Note>
-  For most applications, `vector32` is a good starting point. Explore more compact types if your table has a large number of rows.
-</Note>
+> [!NOTE]
+>
+> For most applications, `vector32` is a good starting point. Explore more compact types if your table has a large number of rows.
 
 ## Storing Vectors
 
@@ -207,9 +207,9 @@ ORDER BY distance
 LIMIT 3;
 ```
 
-<Note>
-  Similarity searches use a linear scan over the table. For large datasets, consider limiting the search to a subset of rows with a `WHERE` clause.
-</Note>
+> [!NOTE]
+>
+> Similarity searches use a linear scan over the table. For large datasets, consider limiting the search to a subset of rows with a `WHERE` clause.
 
 ## See Also
 

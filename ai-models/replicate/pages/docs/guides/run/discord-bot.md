@@ -189,4 +189,4 @@ Now might be a good time to tinker with the bot a bit. Some ideas:
 *   Take the image output and run it through another model, like an [upscaler](https://replicate.com/collections/super-resolution).
 *   Turn it into a game. Perhaps [a game of telephone](https://twitter.com/TelephoneAI), or [a game of Pictionary](https://en.wikipedia.org/wiki/Pictionary).
 
-[Get creative and share what you’ve built in our Discord!](https://discord.gg/replicate)
+Get creative and share what you’ve built with us on [X](https://x.com/replicate)!

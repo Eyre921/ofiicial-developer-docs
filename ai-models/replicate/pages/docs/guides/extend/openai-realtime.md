@@ -316,4 +316,4 @@ But there’s a lot more you can do. Here are some ideas:
 
 We’d love to see what you build with these powerful new tools.
 
-Share your project on [X](https://x.com/replicate) or [Discord](https://discord.gg/replicate) and tag us.
+Share your project on [X](https://x.com/replicate) and tag us.

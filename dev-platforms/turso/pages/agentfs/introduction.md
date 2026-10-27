@@ -32,20 +32,18 @@ agentfs run bash
 
 ## Next Steps
 
-<CardGroup>
-  <Card title="Installation" icon="download" href="/agentfs/installation">
-    Install the AgentFS CLI
-  </Card>
+> **[Installation](/agentfs/installation)**
+>
+> Install the AgentFS CLI
 
-  <Card title="Agentic Coding" icon="robot" href="/agentfs/guides/sandbox">
-    Run AI coding agents safely
-  </Card>
+> **[Agentic Coding](/agentfs/guides/sandbox)**
+>
+> Run AI coding agents safely
 
-  <Card title="AgentFS SDKs" icon="robot" href="/agentfs/sdk">
-    Build custom agents with the AgentFS SDKs
-  </Card>
-</CardGroup>
+> **[AgentFS SDKs](/agentfs/sdk)**
+>
+> Build custom agents with the AgentFS SDKs
 
-<Warning>
-  This software is in BETA. It may still contain bugs and unexpected behavior. Use caution with production data and ensure you have backups.
-</Warning>
+> [!WARNING]
+>
+> This software is in BETA. It may still contain bugs and unexpected behavior. Use caution with production data and ensure you have backups.

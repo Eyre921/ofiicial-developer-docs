@@ -6,7 +6,7 @@ path: sdk/ts/guides/elysia
 
 Set up Turso in your Elysia project in minutes.
 
-<img alt="Elysia banner" />
+![Elysia banner](https://mintcdn.com/turso/7mjM7fXIfeZ8ZwNC/images/guides/elysia-banner.png?fit=max\&auto=format\&n=7mjM7fXIfeZ8ZwNC\&q=85\&s=feb0570b5243f4be9c133fe35f0f8f42)
 
 ## Prerequisites
 
@@ -16,36 +16,32 @@ Before you start, make sure you:
 * [Sign up or login to Turso](/cli/authentication#signup)
 * Have an Elysia app — [learn more](https://elysiajs.com/quick-start.html)
 
-<Steps>
-  <Step title="Install the libSQL SDK">
-    <Snippet />
-  </Step>
+**1. Install the libSQL SDK**
 
-  <Step title="Retrieve database credentials">
-    <Snippet />
-  </Step>
+<Snippet />
 
-  <Step title="Configure libSQL client">
-    <Snippet />
-  </Step>
+**2. Retrieve database credentials**
 
-  <Step title="Execute SQL">
-    ```ts theme={null}
-    import { Elysia } from "elysia";
-    import { turso } from "./lib/turso";
+<Snippet />
 
-    const app = new Elysia().get("/items", async () => {
-      const { rows } = await turso.execute("SELECT * FROM items");
-      return rows;
-    });
-    ```
-  </Step>
-</Steps>
+**3. Configure libSQL client**
+
+<Snippet />
+
+**4. Execute SQL**
+
+```ts theme={null}
+import { Elysia } from "elysia";
+import { turso } from "./lib/turso";
+
+const app = new Elysia().get("/items", async () => {
+  const { rows } = await turso.execute("SELECT * FROM items");
+  return rows;
+});
+```
 
 ## Examples
 
-<CardGroup>
-  <Card title="Expenses tracker app with Elysia & Turso" icon="github" href="https://github.com/tursodatabase/examples/tree/master/app-expenses-tracker-elysia">
-    See the full source code
-  </Card>
-</CardGroup>
+> **[Expenses tracker app with Elysia & Turso](https://github.com/tursodatabase/examples/tree/master/app-expenses-tracker-elysia)**
+>
+> See the full source code

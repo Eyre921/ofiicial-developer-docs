@@ -79,7 +79,7 @@ Redirect all customer complaints regarding the Stripe Capital product to Stripe 
 - **Servicing** |
 | Date resolved | *Datetime format* |
 | Redress required | *Disclosure of whether the borrower required to be refunded any amount of money.* |
-| Systemic issue identified | - **Yes**
+| Systemic issue identified | - **Yes**&nbsp;
 - **No** |
 | User correspondence link | *Links to user correspondence that would allow an auditor or regulator to review the ticket history and resolution* |
 

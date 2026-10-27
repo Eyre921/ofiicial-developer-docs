@@ -130,9 +130,9 @@ INSERT INTO tasks (title) VALUES ('Review pull request');
 
 ## DEFAULT Keyword in VALUES
 
-<Info>
-  **Turso extension** -- This feature follows the SQL standard (SQL:2016) but is not supported by SQLite.
-</Info>
+> [!NOTE]
+>
+> **Turso extension** -- This feature follows the SQL standard (SQL:2016) but is not supported by SQLite.
 
 The `DEFAULT` keyword can be used in place of any value expression in a VALUES list. It resolves to the column's default value as defined in the CREATE TABLE statement, or NULL if no default is defined. This is particularly useful when inserting multiple rows where different rows need defaults for different columns -- something that cannot be achieved by simply omitting columns from the column list.
 
@@ -185,9 +185,9 @@ INSERT OR ABORT INTO employees (id, name, department, salary)
 VALUES (1, 'Alice', 'Engineering', 95000);
 ```
 
-<Info>
-  For more granular conflict handling based on specific constraints, use the [ON CONFLICT](/sql-reference/statements/upsert) clause (UPSERT), which allows different actions depending on which constraint was violated.
-</Info>
+> [!NOTE]
+>
+> For more granular conflict handling based on specific constraints, use the [ON CONFLICT](/sql-reference/statements/upsert) clause (UPSERT), which allows different actions depending on which constraint was violated.
 
 ## RETURNING Clause
 

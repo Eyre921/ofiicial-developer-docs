@@ -33,9 +33,9 @@ These rules apply to both `VACUUM` and `VACUUM INTO`:
 
 ## VACUUM
 
-<Info>
-  In-place `VACUUM` is experimental and must be [enabled before use](/sql-reference/experimental-features). `VACUUM INTO` does not require the flag and is always available.
-</Info>
+> [!NOTE]
+>
+> In-place `VACUUM` is experimental and must be [enabled before use](/sql-reference/experimental-features). `VACUUM INTO` does not require the flag and is always available.
 
 In-place `VACUUM` rebuilds the main database by writing a compacted image into an internal temp database and then copying those pages back over the original file. When it completes, unused pages have been released and all storage-backed objects have been recreated.
 
@@ -79,9 +79,9 @@ When the database uses MVCC (`PRAGMA journal_mode = mvcc`), additional rules app
 * If the source uses MVCC, the destination is created with MVCC enabled but with fresh state. The source's MVCC metadata table is not copied across.
 * The file is fully synced and a TRUNCATE checkpoint is performed before the statement returns, so the destination is durable without further action.
 
-<Warning>
-  `VACUUM INTO` does not carry encryption through to the destination. Even when the source is encrypted, the compacted copy is written as an ordinary unencrypted database file and can be opened without a key. Reserved header bytes are still copied across, so the destination's page layout matches the source.
-</Warning>
+> [!WARNING]
+>
+> `VACUUM INTO` does not carry encryption through to the destination. Even when the source is encrypted, the compacted copy is written as an ordinary unencrypted database file and can be opened without a key. Reserved header bytes are still copied across, so the destination's page layout matches the source.
 
 ### Requirements
 

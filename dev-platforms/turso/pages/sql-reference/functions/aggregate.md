@@ -78,9 +78,9 @@ GROUP BY region;
 | North | 183.333333333333 |
 | South | 162.5 |
 
-<Info>
-  `avg(X)` ignores NULL values in both the sum and the count. In the example above, the South region has three non-NULL amounts (150 + 175 = 325, but also the NULL row is excluded), so the average is computed over the non-NULL values only.
-</Info>
+> [!NOTE]
+>
+> `avg(X)` ignores NULL values in both the sum and the count. In the example above, the South region has three non-NULL amounts (150 + 175 = 325, but also the NULL row is excluded), so the average is computed over the non-NULL values only.
 
 ### count(X) and count(\*)
 
@@ -203,9 +203,9 @@ GROUP BY region;
 | North | 250.0 | 100.0 |
 | South | 175.0 | 150.0 |
 
-<Info>
-  When `max(X)` or `min(X)` is called with a single argument in an aggregate context, it acts as an aggregate function. When called with two or more arguments (e.g., `max(a, b, c)`), it acts as a [scalar function](/sql-reference/functions/scalar) and returns the largest argument.
-</Info>
+> [!NOTE]
+>
+> When `max(X)` or `min(X)` is called with a single argument in an aggregate context, it acts as an aggregate function. When called with two or more arguments (e.g., `max(a, b, c)`), it acts as a [scalar function](/sql-reference/functions/scalar) and returns the largest argument.
 
 ### sum(X) and total(X)
 
@@ -272,9 +272,9 @@ SELECT total(amount) * 1.1 AS with_tax FROM sales;
 -- sum() with all NULLs would produce NULL, making the multiplication NULL too
 ```
 
-<Info>
-  `sum(X)` returns an integer result when all inputs are integers and the result fits within a 64-bit signed integer. If the sum overflows, it automatically switches to REAL. Use `total(X)` when you always want a floating-point result.
-</Info>
+> [!NOTE]
+>
+> `sum(X)` returns an integer result when all inputs are integers and the result fits within a 64-bit signed integer. If the sum overflows, it automatically switches to REAL. Use `total(X)` when you always want a floating-point result.
 
 ## Using Aggregates with GROUP BY
 
@@ -357,9 +357,9 @@ ORDER BY region, id;
 
 ## Ordered-Set Aggregates (WITHIN GROUP)
 
-<Info>
-  `mode`, `percentile_cont` and `percentile_disc` with `WITHIN GROUP (ORDER BY ...)` are built in and available by default — no extension required. The syntax and results match PostgreSQL. (Standard SQLite does not support `WITHIN GROUP`.)
-</Info>
+> [!NOTE]
+>
+> `mode`, `percentile_cont` and `percentile_disc` with `WITHIN GROUP (ORDER BY ...)` are built in and available by default — no extension required. The syntax and results match PostgreSQL. (Standard SQLite does not support `WITHIN GROUP`.)
 
 Ordered-set aggregates compute a result over the values of an `ORDER BY` expression, sorted within each group:
 
@@ -399,9 +399,9 @@ GROUP BY region;
 | North | Widget |
 | South | Widget |
 
-<Info>
-  `mode()` is only valid with `WITHIN GROUP`; calling `mode(X)` without it is an error.
-</Info>
+> [!NOTE]
+>
+> `mode()` is only valid with `WITHIN GROUP`; calling `mode(X)` without it is an error.
 
 ### percentile\_cont(fraction) and percentile\_disc(fraction)
 
@@ -456,9 +456,9 @@ Text values are ordered using the applicable collation — an explicit `COLLATE`
 
 ## Turso Extension: array\_agg(X)
 
-<Info>
-  `array_agg(X)` is a Turso extension and is not part of standard SQLite. It is available by default in Turso without loading any additional extensions.
-</Info>
+> [!NOTE]
+>
+> `array_agg(X)` is a Turso extension and is not part of standard SQLite. It is available by default in Turso without loading any additional extensions.
 
 ```sql theme={null}
 array_agg(X)
@@ -497,9 +497,9 @@ For more array functions, see [Array Functions](/sql-reference/functions/array).
 
 ## Turso Extension: stddev(X)
 
-<Info>
-  `stddev(X)` is a Turso extension and is not part of standard SQLite. It is available by default in Turso without loading any additional extensions.
-</Info>
+> [!NOTE]
+>
+> `stddev(X)` is a Turso extension and is not part of standard SQLite. It is available by default in Turso without loading any additional extensions.
 
 ```sql theme={null}
 stddev(X)
@@ -525,9 +525,9 @@ GROUP BY region;
 
 The following aggregate functions are available through the **percentile** extension. Load it before use.
 
-<Info>
-  These functions require the `percentile` extension. Load it with `SELECT load_extension('./percentile');` or by configuring your connection to auto-load it.
-</Info>
+> [!NOTE]
+>
+> These functions require the `percentile` extension. Load it with `SELECT load_extension('./percentile');` or by configuring your connection to auto-load it.
 
 ### median(X)
 
@@ -597,9 +597,9 @@ SELECT percentile_cont(amount, 0.5) FROM sales;
 SELECT percentile_disc(amount, 0.5) FROM sales;
 ```
 
-<Info>
-  Note the difference in P range: `percentile(Y, P)` takes P from 0 to 100, while `percentile_cont` and `percentile_disc` take P from 0.0 to 1.0.
-</Info>
+> [!NOTE]
+>
+> Note the difference in P range: `percentile(Y, P)` takes P from 0 to 100, while `percentile_cont` and `percentile_disc` take P from 0.0 to 1.0.
 
 ## See Also
 

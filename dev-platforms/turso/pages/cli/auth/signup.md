@@ -10,9 +10,9 @@ To sign up for a new Turso account using the CLI, run the following command:
 turso auth signup
 ```
 
-<Note>
-  If you're using Windows with WSL or a remote CI/CD environment, pass the --headless flag.
-</Note>
+> [!NOTE]
+>
+> If you're using Windows with WSL or a remote CI/CD environment, pass the --headless flag.
 
 ## Flags
 

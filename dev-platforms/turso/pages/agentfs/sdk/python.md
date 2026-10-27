@@ -319,12 +319,10 @@ asyncio.run(main())
 
 ## Next Steps
 
-<CardGroup>
-  <Card title="OpenAI Agents" icon="robot" href="/agentfs/integrations/openai-agents">
-    Using AgentFS with OpenAI Agents SDK
-  </Card>
+> **[OpenAI Agents](/agentfs/integrations/openai-agents)**
+>
+> Using AgentFS with OpenAI Agents SDK
 
-  <Card title="LlamaIndex" icon="llama" href="/agentfs/integrations/llamaindex">
-    Using AgentFS with LlamaIndex
-  </Card>
-</CardGroup>
+> **[LlamaIndex](/agentfs/integrations/llamaindex)**
+>
+> Using AgentFS with LlamaIndex

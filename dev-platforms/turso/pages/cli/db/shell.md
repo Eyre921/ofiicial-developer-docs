@@ -36,9 +36,9 @@ You can dump the contents of a Turso database using the following command:
 turso db shell <database-name> .dump > dump.sql
 ```
 
-<Info>
-  The `.dump` can be used to rebuild a database and doesn't contain any libSQL or SQLite internal tables.
-</Info>
+> [!NOTE]
+>
+> The `.dump` can be used to rebuild a database and doesn't contain any libSQL or SQLite internal tables.
 
 ### Load from dump
 

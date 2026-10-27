@@ -8,9 +8,9 @@ Use Toasty, the async ORM from the Tokio project, with Turso Database.
 
 [Toasty](https://github.com/tokio-rs/toasty) is an async ORM for Rust maintained by the [Tokio](https://tokio.rs/) project. It ships a native Turso driver (`toasty-driver-turso`) that connects to a local Turso Database file or an in-memory database — the same engine you get from the [`turso` crate](/sdk/rust/quickstart).
 
-<Info>
-  The Toasty Turso driver currently targets local and in-memory databases. For sync against Turso Cloud, drop down to the [`turso` crate directly](/sdk/rust/quickstart#sync-push-and-pull).
-</Info>
+> [!NOTE]
+>
+> The Toasty Turso driver currently targets local and in-memory databases. For sync against Turso Cloud, drop down to the [`turso` crate directly](/sdk/rust/quickstart#sync-push-and-pull).
 
 ## Prerequisites
 
@@ -18,122 +18,118 @@ Use Toasty, the async ORM from the Tokio project, with Turso Database.
 * A Rust project (`cargo init`)
 * Tokio as your async runtime
 
-<Steps>
-  <Step title="Install Toasty with the Turso driver">
-    ```bash theme={null}
-    cargo add toasty --features turso
-    cargo add tokio --features full
-    cargo add uuid
-    ```
-  </Step>
+**1. Install Toasty with the Turso driver**
 
-  <Step title="Define your models">
-    Toasty derives schema, queries, and relations from plain Rust structs:
+```bash theme={null}
+cargo add toasty --features turso
+cargo add tokio --features full
+cargo add uuid
+```
 
-    ```rust models.rs theme={null}
-    #[derive(Debug, toasty::Model)]
-    struct User {
-        #[key]
-        #[auto]
-        id: uuid::Uuid,
+**2. Define your models**
 
-        name: String,
+Toasty derives schema, queries, and relations from plain Rust structs:
 
-        #[unique]
-        email: String,
+```rust models.rs theme={null}
+#[derive(Debug, toasty::Model)]
+struct User {
+    #[key]
+    #[auto]
+    id: uuid::Uuid,
 
-        #[has_many]
-        todos: toasty::Deferred<Vec<Todo>>,
-    }
+    name: String,
 
-    #[derive(Debug, toasty::Model)]
-    struct Todo {
-        #[key]
-        #[auto]
-        id: uuid::Uuid,
+    #[unique]
+    email: String,
 
-        #[index]
-        user_id: uuid::Uuid,
+    #[has_many]
+    todos: toasty::Deferred<Vec<Todo>>,
+}
 
-        #[belongs_to(key = user_id, references = id)]
-        user: toasty::Deferred<User>,
+#[derive(Debug, toasty::Model)]
+struct Todo {
+    #[key]
+    #[auto]
+    id: uuid::Uuid,
 
-        title: String,
-    }
-    ```
-  </Step>
+    #[index]
+    user_id: uuid::Uuid,
 
-  <Step title="Connect to Turso">
-    Pass a `turso:` URL to `Db::builder` — either an in-memory database or a file path:
+    #[belongs_to(key = user_id, references = id)]
+    user: toasty::Deferred<User>,
 
-    <AccordionGroup>
-      <Accordion title="In-memory">
-        ```rust theme={null}
-        let db = toasty::Db::builder()
-            .models(toasty::models!(crate::*))
-            .connect("turso::memory:")
-            .await?;
-        ```
-      </Accordion>
+    title: String,
+}
+```
 
-      <Accordion title="File-backed">
-        ```rust theme={null}
-        let db = toasty::Db::builder()
-            .models(toasty::models!(crate::*))
-            .connect("turso:./app.db")
-            .await?;
-        ```
-      </Accordion>
+**3. Connect to Turso**
 
-      <Accordion title="With concurrent writes (MVCC)">
-        To enable Turso's MVCC journal so multiple writers can run concurrently, build the driver explicitly and pass it to `build()`:
+Pass a `turso:` URL to `Db::builder` — either an in-memory database or a file path:
 
-        ```rust theme={null}
-        use toasty_driver_turso::Turso;
+> **In-memory**
+>
+> ```rust theme={null}
+> let db = toasty::Db::builder()
+>     .models(toasty::models!(crate::*))
+>     .connect("turso::memory:")
+>     .await?;
+> ```
 
-        let driver = Turso::file("app.db").concurrent_writes();
+> **File-backed**
+>
+> ```rust theme={null}
+> let db = toasty::Db::builder()
+>     .models(toasty::models!(crate::*))
+>     .connect("turso:./app.db")
+>     .await?;
+> ```
 
-        let db = toasty::Db::builder()
-            .models(toasty::models!(crate::*))
-            .build(driver)
-            .await?;
-        ```
+> **With concurrent writes (MVCC)**
+>
+> To enable Turso's MVCC journal so multiple writers can run concurrently, build the driver explicitly and pass it to `build()`:
+>
+> ```rust theme={null}
+> use toasty_driver_turso::Turso;
+>
+> let driver = Turso::file("app.db").concurrent_writes();
+>
+> let db = toasty::Db::builder()
+>     .models(toasty::models!(crate::*))
+>     .build(driver)
+>     .await?;
+> ```
+>
+> When `concurrent_writes()` is enabled, write-write conflicts surface as a serialization failure — check `err.is_serialization_failure()` and retry the transaction.
 
-        When `concurrent_writes()` is enabled, write-write conflicts surface as a serialization failure — check `err.is_serialization_failure()` and retry the transaction.
-      </Accordion>
-    </AccordionGroup>
-  </Step>
+**4. Create the schema and query**
 
-  <Step title="Create the schema and query">
-    ```rust theme={null}
-    #[tokio::main]
-    async fn main() -> toasty::Result<()> {
-        let mut db = toasty::Db::builder()
-            .models(toasty::models!(crate::*))
-            .connect("turso:./app.db")
-            .await?;
+```rust theme={null}
+#[tokio::main]
+async fn main() -> toasty::Result<()> {
+    let mut db = toasty::Db::builder()
+        .models(toasty::models!(crate::*))
+        .connect("turso:./app.db")
+        .await?;
 
-        db.push_schema().await?;
+    db.push_schema().await?;
 
-        let user = toasty::create!(User {
-            name: "Ada Lovelace",
-            email: "ada@example.com",
-        })
+    let user = toasty::create!(User {
+        name: "Ada Lovelace",
+        email: "ada@example.com",
+    })
+    .exec(&mut db)
+    .await?;
+
+    toasty::create!(in user.todos() { title: "ship Toasty + Turso" })
         .exec(&mut db)
         .await?;
 
-        toasty::create!(in user.todos() { title: "ship Toasty + Turso" })
-            .exec(&mut db)
-            .await?;
+    let reloaded = User::get_by_email(&mut db, &user.email).await?;
+    println!("{reloaded:#?}");
 
-        let reloaded = User::get_by_email(&mut db, &user.email).await?;
-        println!("{reloaded:#?}");
-
-        Ok(())
-    }
-    ```
-  </Step>
-</Steps>
+    Ok(())
+}
+```
 
 ## Where to go next
 

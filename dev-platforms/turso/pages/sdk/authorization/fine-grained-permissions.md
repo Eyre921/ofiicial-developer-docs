@@ -24,7 +24,7 @@ turso db tokens create mydb \
   -p posts:data_add,data_update,data_delete
 ```
 
-Use `all` as the table name to apply permissions to every table.
+Permission rules only grant access. There are no deny rules. Use `all` as the table name to apply permissions to every table.
 
 ## Available Actions
 
@@ -34,14 +34,40 @@ Use `all` as the table name to apply permissions to every table.
 | `data_add` | Insert new rows |
 | `data_update` | Update existing rows |
 | `data_delete` | Delete rows |
-| `schema_add` | Create new tables |
-| `schema_update` | Modify table schemas |
-| `schema_delete` | Drop tables |
+| `schema_add` | Create tables, views, indexes, and triggers |
+| `schema_update` | Change tables with `ALTER TABLE` |
+| `schema_delete` | Drop tables, views, indexes, and triggers |
 
-<Note>
-  `data_read` is allowed on SQLite system tables (e.g., `sqlite_master`,
-  `sqlite_schema`) by default, allowing users to query database metadata.
-</Note>
+> [!NOTE]
+>
+> `data_read` is allowed on SQLite system tables (e.g., `sqlite_master`,
+> `sqlite_schema`) by default, allowing users to query database metadata.
+
+> [!WARNING]
+>
+> `data_add` also allows replacing existing rows through `INSERT OR REPLACE` or `REPLACE INTO`.
+
+## Schema Actions
+
+Each schema statement needs a schema action on a specific table name:
+
+| Statement | Action | Table name in the rule |
+| - | - | - |
+| `CREATE TABLE`, `CREATE VIEW` | `schema_add` | The new table or view |
+| `CREATE INDEX`, `CREATE TRIGGER` | `schema_add` | The table of the index or trigger |
+| `ALTER TABLE` (`ADD COLUMN`, `RENAME TO`, `RENAME COLUMN`, `DROP COLUMN`) | `schema_update` | The altered table |
+| `DROP INDEX`, `DROP TRIGGER` | `schema_delete` | The table of the index or trigger |
+| `DROP TABLE`, `DROP VIEW` | `schema_delete` | The dropped table. `DROP TABLE` also requires `data_delete` on the table. |
+
+### Example
+
+This token can read all tables. It can change `posts` with `ALTER TABLE`, and create or drop indexes and triggers on `posts`. It cannot drop the `posts` table, because it does not have `data_delete` on `posts`:
+
+```bash theme={null}
+turso db tokens create mydb \
+  -p all:data_read \
+  -p posts:schema_add,schema_update,schema_delete
+```
 
 ## Role-Based Access Example
 

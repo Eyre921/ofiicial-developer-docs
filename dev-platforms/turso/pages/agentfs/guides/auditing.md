@@ -115,19 +115,17 @@ This shows:
 
 Since AgentFS uses SQLite, you can run arbitrary queries:
 
-<Tabs>
-  <Tab title="Turso">
-    ```bash theme={null}
-    tursodb .agentfs/my-session.db
-    ```
-  </Tab>
+**Turso**
 
-  <Tab title="SQLite">
-    ```bash theme={null}
-    sqlite3 .agentfs/my-session.db
-    ```
-  </Tab>
-</Tabs>
+```bash theme={null}
+tursodb .agentfs/my-session.db
+```
+
+**SQLite**
+
+```bash theme={null}
+sqlite3 .agentfs/my-session.db
+```
 
 Example queries:
 
@@ -192,12 +190,10 @@ agentfs timeline my-session --format json > audit-log.json
 
 ## Next Steps
 
-<CardGroup>
-  <Card title="Overlay Filesystem" icon="layer-group" href="/agentfs/guides/overlay">
-    Understanding copy-on-write
-  </Card>
+> **[Overlay Filesystem](/agentfs/guides/overlay)**
+>
+> Understanding copy-on-write
 
-  <Card title="Syncing" icon="cloud" href="/agentfs/guides/sync">
-    Sync sessions to Turso Cloud
-  </Card>
-</CardGroup>
+> **[Syncing](/agentfs/guides/sync)**
+>
+> Sync sessions to Turso Cloud
