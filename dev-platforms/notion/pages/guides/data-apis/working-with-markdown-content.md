@@ -75,6 +75,8 @@ A `v2` update can contain syntax that the parser doesn't support, such as an unk
 
 `code` is the warning category. The field is left out when there are no warnings, and other endpoints never return it. Async updates (`allow_async: true`) don't return warnings in the task result.
 
+If no `update_content` edit matches, the request fails with `validation_error` and nothing changes. When your integration can read the page content, the error message also tells you to fetch the page again and base `old_str` on its current text.
+
 ## Block type support
 
 The markdown API supports most Notion block types. The table below shows how each block type maps to its markdown representation.

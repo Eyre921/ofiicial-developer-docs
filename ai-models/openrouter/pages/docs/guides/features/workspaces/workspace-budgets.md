@@ -18,7 +18,7 @@ Workspace budgets pair with [guardrail budgets](https://openrouter.ai/docs/guide
 
 > [!NOTE]
 >
-> Workspace budgets are available on the **Enterprise** plan. In the dashboard, only **Organization Administrators** can create, edit, or delete budgets — other workspace members can view budgets and current spend but cannot modify them. Programmatic budget management uses organization [management API keys](https://openrouter.ai/docs/guides/overview/auth/management-api-keys.md), which operate at the account level. Contact [sales](https://openrouter.ai/contact/sales) to get started.
+> Workspace budgets are available on every plan. In the dashboard, personal accounts manage their own workspace budgets. Within an organization, only **Organization Administrators** can create, edit, or delete budgets — other workspace members can view budgets and current spend but cannot modify them. Programmatic budget management uses organization [management API keys](https://openrouter.ai/docs/guides/overview/auth/management-api-keys.md), which operate at the account level.
 
 ## How It Works
 
@@ -182,7 +182,7 @@ When you create a workspace, spend starts at zero for every interval. Periodic b
 
 ## Budgets During Workspace Creation
 
-Enterprise org admins can also set budgets when creating a new workspace. The workspace creation form includes an optional **Budgets** section where you can configure limits before any keys are issued, along with the **Include BYOK spend** toggle.
+Organization administrators can also set budgets when creating a new workspace. The workspace creation form includes an optional **Budgets** section where you can configure limits before any keys are issued, along with the **Include BYOK spend** toggle.
 
 ## FAQ
 

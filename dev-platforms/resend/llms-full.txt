@@ -9088,11 +9088,13 @@ Verify an existing domain.
 > [!NOTE]
 >
 > Calling this API endpoint triggers an **asynchronous domain verification
-> process**. The domain will be temporarily marked as `pending` regardless of
-> its current status while the verification is in progress. Since this request
-> initiates the complete domain verification cycle, it will trigger
-> `domain.updated` webhook events as the domain status changes during the
-> verification process.
+> process**. Records that are already verified stay `verified` while the
+> verification is in progress, so sending and receiving are not interrupted.
+> Records that are not verified are marked as `pending`. If a verified record is
+> no longer found, it is marked as `failed` once the verification times out.
+> Since this request initiates the complete domain verification cycle, it will
+> trigger `domain.updated` webhook events as the domain status changes during
+> the verification process.
 
 > [!NOTE]
 >
@@ -52167,8 +52169,9 @@ DNS records stay untouched. Don't remove them.
 **4. Verify**
 
 Once the record verifies, the Forge section of your domain's page shows an
-**Enabled** tag and your email starts going through Forge. Your domain keeps
-sending as usual until then.
+**Enabled** tag. From there, Resend gradually moves your sending onto Forge to
+keep deliverability high, and the share of your email going through Forge
+grows over time.
 
 ## Domain Connect
 
@@ -52265,6 +52268,12 @@ If the Forge record doesn't verify, these are some common troubleshooting method
 > Forge runs only in North Virginia (`us-east-1`). Data residency is the same
 > as for every other region. See [Data
 > Residency](/docs/dashboard/domains/regions#data-residency) for details.
+
+> **I have activated Forge but I'm still seeing the old headers**
+>
+> The **Enabled** tag means your domain is ready for Forge. Resend moves your
+> sending onto Forge gradually, so for a while part of your email still goes
+> out the usual way. You don't need to do anything.
 
 
 # Can I merge accounts or teams?

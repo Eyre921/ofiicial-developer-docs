@@ -501,6 +501,18 @@ components:
           type:
             - boolean
             - 'null'
+        enforce_first_party_harness_models:
+          description: >-
+            Whether coding harnesses list only their vendor's own models: Codex
+            lists OpenAI models and Claude Code and Claude Desktop list
+            Anthropic models. Affects only the model list those harnesses
+            request from GET /models; a model the client names directly is still
+            routed. Any true across the workspace default, member, and API key
+            guardrails applies.
+          example: false
+          type:
+            - boolean
+            - 'null'
         enforce_zdr:
           deprecated: true
           description: >-

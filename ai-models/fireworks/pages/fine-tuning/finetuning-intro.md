@@ -8,12 +8,12 @@ Train an open model on your own data with Fireworks. Start in five minutes with 
 
 Training adapts an open model to your task with your own data. A trained model can beat a larger general-purpose model on quality while costing less and responding faster. Read [when to train your own model](https://fireworks.ai/blog/specialized-intelligence-train-your-own-model).
 
-**Muse Glimmer 30B SFT is free to train until 11/30.**\
+**Muse Glimmer 30B SFT is free to train until November 30, 2026.**\
 No credit card required. [Start here](https://app.fireworks.ai/dashboard/fine-tuning/create?type=supervised\&baseModel=accounts/fireworks/models/muse-glimmer-30b)
 
 ## Quickstart
 
-Train your first model in about five minutes with a coding agent such as Cursor, Claude Code, or Codex.
+Train your first model in about five minutes with a coding agent such as Cursor, Claude Code, or Codex. You need a [Fireworks account](https://app.fireworks.ai/signup) and an [API key](https://app.fireworks.ai/settings/users/api-keys).
 
 **Step 1: Install the training skills.** Paste this into your agent:
 

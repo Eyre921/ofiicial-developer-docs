@@ -231,7 +231,7 @@ To delete records from a namespace based on their metadata values, pass a [metad
 
 For example, the following code deletes all records with a `genre` field set to `documentary` from namespace `example-namespace`:
 
-```Python Python theme={null}
+```Python Python theme={null} theme={null} theme={null} theme={null}
 # pip install pinecone
 from pinecone.grpc import PineconeGRPC as Pinecone
 
@@ -249,7 +249,7 @@ index.delete(
 )
 ```
 
-```JavaScript JavaScript theme={null}
+```JavaScript JavaScript theme={null} theme={null} theme={null} theme={null}
 import { Pinecone } from '@pinecone-database/pinecone'
 
 const pc = new Pinecone({ apiKey: "YOUR_API_KEY" })
@@ -265,7 +265,7 @@ await ns.deleteMany({
 });
 ```
 
-```java Java theme={null}
+```java Java theme={null} theme={null} theme={null} theme={null}
 import com.google.protobuf.Struct;
 import com.google.protobuf.Value;
 import io.pinecone.clients.Index;
@@ -297,7 +297,7 @@ public class DeleteExample {
 }
 ```
 
-```go Go theme={null}
+```go Go theme={null} theme={null} theme={null} theme={null}
 package main
 
 import (
@@ -342,7 +342,7 @@ func main() {
 }
 ```
 
-```bash curl theme={null}
+```bash curl theme={null} theme={null} theme={null} theme={null}
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
 PINECONE_API_KEY="YOUR_API_KEY"
@@ -482,7 +482,7 @@ These limits apply to the Vectors API. For an index with a document schema, see 
 
 | Metric | Limit |
 | :- | :- |
-| Max request rate | 5 requests per second per namespace 500 requests per second per index |
+| Max request rate | 20 requests per second per namespace 500 requests per second per index |
 
 ## Data freshness
 

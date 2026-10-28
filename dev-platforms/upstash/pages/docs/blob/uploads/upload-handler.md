@@ -47,11 +47,48 @@ uploads = AsyncUploadHandler(
     on_upload_complete=record,
 )
 ```
+
+```go Go
+uploads, err := blob.NewUploadHandler(blob.UploadHandlerOptions[struct{}]{
+	ContentTypes: []string{"image/*", "application/pdf"},
+	MaxSize:      20 * blob.MB,
+
+	OnBeforeUpload: func(
+		a blob.BeforeUploadArgs[struct{}],
+	) (blob.BeforeUploadResult, error) {
+		user := getUser(a.Request)
+		if user == nil {
+			// 401, nothing is signed
+			return blob.BeforeUploadResult{}, blob.NewError(
+				blob.CodeUnauthorized,
+				blob.ErrorOptions{},
+			)
+		}
+		return blob.BeforeUploadResult{
+			Path:     blob.UniquePath(user.ID + "/" + a.File.Name),
+			Metadata: map[string]string{"owner": user.ID},
+		}, nil
+	},
+
+	OnUploadComplete: func(a blob.UploadCompleteArgs[struct{}]) (any, error) {
+		err := db.UpsertFile(a.Request.Context(), File{
+			UploadID: a.UploadID,
+			Owner:    a.Metadata["owner"],
+			Path:     a.Path,
+			URL:      a.URL,
+		})
+		if err != nil {
+			return nil, err
+		}
+		return map[string]string{"path": a.Path}, nil
+	},
+})
+```
 </CodeGroup>
 
 The handler runs a before-upload callback at the `begin` phase, before anything is signed, and a completion callback at the `end` phase, once the object exists. The PUTs in between go to storage, not to you. The phases are listed on [Types](/docs/blob/reference/types#upload-phases).
 
-Option names, argument types and framework wiring: [TypeScript](/docs/blob/sdks/ts/upload-handler), [Python](/docs/blob/sdks/py/upload-handler).
+Option names, argument types and framework wiring: [TypeScript](/docs/blob/sdks/ts/upload-handler), [Python](/docs/blob/sdks/py/upload-handler), [Go](/docs/blob/sdks/go/upload-handler).
 
   <img className="block dark:hidden" alt="Client upload flow" />
   <img className="hidden dark:block" alt="Client upload flow" />
@@ -78,11 +115,16 @@ from app.uploads import uploads
 app = FastAPI()
 app.add_api_route("/api/upload", upload_view(uploads), methods=["GET", "POST"])
 ```
+
+```go Go
+// main.go (net/http)
+http.Handle("/api/upload", uploads)
+```
 </CodeGroup>
 
 The handler answers `GET` and `POST` at one URL. `POST` runs the upload phases and `GET` serves the route's [constraints](#the-get-endpoint). The [browser client](/docs/blob/uploads/upload-client) assumes `/api/upload` and can be pointed anywhere else. It speaks the same protocol to every server SDK, so the frontend does not change with the backend language.
 
-Mounting in other frameworks: [TypeScript](/docs/blob/sdks/ts/upload-handler#other-frameworks), [Python](/docs/blob/sdks/py/upload-handler#mounting-it).
+Mounting in other frameworks: [TypeScript](/docs/blob/sdks/ts/upload-handler#other-frameworks), [Python](/docs/blob/sdks/py/upload-handler#mounting-it), [Go](/docs/blob/sdks/go/upload-handler#mounting-it).
 
 If the bytes have to pass through your app instead, write an ordinary route that calls `put` and drive it with [`useServerUpload`](/docs/blob/uploads/upload-client#useserverupload).
 
@@ -126,6 +168,18 @@ def authorize(args: BeforeUploadArgs) -> BeforeUploadResult:
         metadata={"owner": args.ctx.user_id},
     )
 ```
+
+```go Go
+func authorize(
+	a blob.BeforeUploadArgs[*Session],
+) (blob.BeforeUploadResult, error) {
+	// a.Ctx, a.Route, a.Request, a.File, a.Input
+	return blob.BeforeUploadResult{
+		Path:     blob.UniquePath(a.Ctx.UserID + "/" + a.File.Name),
+		Metadata: map[string]string{"owner": a.Ctx.UserID},
+	}, nil
+}
+```
 </CodeGroup>
 
 The before-upload callback runs at `begin`, before anything is signed and before any bytes exist. It decides whether the upload happens and where the object goes.
@@ -155,6 +209,11 @@ uniquePath("chat/Thread_42/Holiday Pic.PNG")
 ```python Python
 unique_path("chat/Thread_42/Holiday Pic.PNG")
 # chat/Thread_42/Holiday Pic-7Kd2mQ9x.PNG
+```
+
+```go Go
+blob.UniquePath("chat/Thread_42/Holiday Pic.PNG")
+// chat/Thread_42/Holiday Pic-7Kd2mQ9x.PNG
 ```
 </CodeGroup>
 
@@ -193,9 +252,31 @@ async def authorize(args: BeforeUploadArgs) -> BeforeUploadResult:
         raise BlobError("too_large", "you are out of space")
     return BeforeUploadResult(path=unique_path(f"{user.id}/{args.file.name}"))
 ```
+
+```go Go
+func authorize(
+	a blob.BeforeUploadArgs[struct{}],
+) (blob.BeforeUploadResult, error) {
+	user := getUser(a.Request)
+	if user == nil {
+		return blob.BeforeUploadResult{}, blob.NewError(
+			blob.CodeUnauthorized,
+			blob.ErrorOptions{},
+		)
+	}
+	if overQuota(user) {
+		return blob.BeforeUploadResult{}, blob.NewError(
+			blob.CodeTooLarge,
+			blob.ErrorOptions{Message: "you are out of space"},
+		)
+	}
+	path := blob.UniquePath(user.ID + "/" + a.File.Name)
+	return blob.BeforeUploadResult{Path: path}, nil
+}
+```
 </CodeGroup>
 
-Refuse with a `BlobError`. Nothing is signed and no URL is handed out. The error reaches the browser with its code intact, so a hook can switch on `error.code` instead of status numbers. The codes are on [Errors](/docs/blob/reference/errors).
+Refuse with a `BlobError` (a returned `*blob.Error` in Go). Nothing is signed and no URL is handed out. The error reaches the browser with its code intact, so a hook can switch on `error.code` instead of status numbers. The codes are on [Errors](/docs/blob/reference/errors).
 
 The browser never retries `begin`, so a callback that writes a row runs once per file.
 
@@ -222,6 +303,23 @@ async def record(args: UploadCompleteArgs) -> dict[str, str]:
         content_type=args.content_type,
     )
     return {"path": args.path}
+```
+
+```go Go
+func record(a blob.UploadCompleteArgs[*Session]) (any, error) {
+	err := db.UpsertFile(a.Request.Context(), File{
+		UploadID:    a.UploadID,
+		Owner:       a.Ctx.UserID,
+		Path:        a.Path,
+		URL:         a.URL,
+		Size:        a.Size,
+		ContentType: a.ContentType,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return map[string]string{"path": a.Path}, nil
+}
 ```
 </CodeGroup>
 
@@ -252,7 +350,7 @@ What it returns is handed to the browser as `upload.blob.data`.
 <Warning>
   **It may run more than once.** The browser retries `end` on a network failure, so upsert on the upload id, which is stable across retries, rather than inserting a new row.
 
-  **A throw deletes the object.** That is the intent for a refusal, and a trap for a database error: a short outage destroys bytes that uploaded fine. Catch your own storage errors rather than letting them escape.
+  **A throw deletes the object**, and so does a returned error in Go. That is the intent for a refusal, and a trap for a database error: a short outage destroys bytes that uploaded fine. Catch your own storage errors rather than letting them escape.
 </Warning>
 
 <CodeGroup>
@@ -279,6 +377,26 @@ async def record(args: UploadCompleteArgs) -> dict[str, str]:
         raise BlobError("not_ready", "could not record the upload, try again")
     return {"path": args.path}
 ```
+
+```go Go
+func record(a blob.UploadCompleteArgs[struct{}]) (any, error) {
+	err := db.UpsertFile(a.Request.Context(), File{
+		UploadID: a.UploadID,
+		Owner:    a.Metadata["owner"],
+		Path:     a.Path,
+		URL:      a.URL,
+	})
+	if err != nil {
+		slog.Error("[uploads] could not record", "path", a.Path, "err", err)
+		// Return an error only when losing the file is better than
+		// keeping an unrecorded one.
+		return nil, blob.NewError(blob.CodeNotReady, blob.ErrorOptions{
+			Message: "could not record the upload, try again",
+		})
+	}
+	return map[string]string{"path": a.Path}, nil
+}
+```
 </CodeGroup>
 
 A browser that dies before `end` leaves an object no callback recorded. See [Abandoned uploads](/docs/blob/uploads/abandoned-uploads).
@@ -301,6 +419,20 @@ def on_error(args: UploadErrorArgs) -> BlobError | None:
     if isinstance(args.error, PaymentRequired):
         return BlobError("forbidden", "plan expired")
     return None
+```
+
+```go Go
+func onError(a blob.UploadErrorArgs[*Session]) error {
+	slog.Warn("upload refused", "route", a.Route, "path", a.Path, "err", a.Err)
+	var expired PaymentRequired
+	if errors.As(a.Err, &expired) {
+		return blob.NewError(
+			blob.CodeForbidden,
+			blob.ErrorOptions{Message: "plan expired"},
+		)
+	}
+	return nil
+}
 ```
 </CodeGroup>
 
@@ -352,6 +484,38 @@ uploads = AsyncUploadHandler(
     },
 )
 ```
+
+```go Go
+uploads, err := blob.NewUploadHandler(blob.UploadHandlerOptions[*User]{
+	// returns an unauthorized *blob.Error on a dead session
+	Context: requireUser,
+
+	Routes: map[string]blob.UploadRoute[*User]{
+		"avatar": {
+			OnBeforeUpload: func(
+				a blob.BeforeUploadArgs[*User],
+			) (blob.BeforeUploadResult, error) {
+				name := a.Ctx.ID + "/" + a.File.Name
+				path := blob.UniquePath("avatars/" + name)
+				return blob.BeforeUploadResult{Path: path}, nil
+			},
+			OnUploadComplete: func(
+				a blob.UploadCompleteArgs[*User],
+			) (any, error) {
+				return nil, db.SetAvatar(a.Request.Context(), a.Ctx.ID, a.URL)
+			},
+		},
+		"attachment": {
+			OnBeforeUpload: func(
+				a blob.BeforeUploadArgs[*User],
+			) (blob.BeforeUploadResult, error) {
+				path := blob.UniquePath("files/" + a.Ctx.ID + "/" + a.File.Name)
+				return blob.BeforeUploadResult{Path: path}, nil
+			},
+		},
+	},
+})
+```
 </CodeGroup>
 
 Context runs once per POST, after the route is picked and before any body is read. Its value reaches every callback. It does not run for `GET`, which serves a public constraints document.
@@ -401,6 +565,39 @@ uploads = AsyncUploadHandler(
         ),
     },
 )
+```
+
+```go Go
+uploads, err := blob.NewUploadHandler(blob.UploadHandlerOptions[*User]{
+	MaxSize:      20 * blob.MB,
+	ContentTypes: []string{"image/*"},
+	Context:      requireUser,
+
+	Routes: map[string]blob.UploadRoute[*User]{
+		"avatar": {
+			MaxSize: 2 * blob.MB,
+			OnBeforeUpload: func(
+				a blob.BeforeUploadArgs[*User],
+			) (blob.BeforeUploadResult, error) {
+				return blob.BeforeUploadResult{
+					Path:  "avatars/" + a.Ctx.ID,
+					Cache: blob.CacheRevalidate,
+				}, nil
+			},
+		},
+		"attachment": {
+			// clears the handler's list for this route
+			ContentTypes: []string{},
+			Multipart:    blob.MultipartOver(50 * blob.MB),
+			OnBeforeUpload: func(
+				a blob.BeforeUploadArgs[*User],
+			) (blob.BeforeUploadResult, error) {
+				path := blob.UniquePath("files/" + a.Ctx.ID + "/" + a.File.Name)
+				return blob.BeforeUploadResult{Path: path}, nil
+			},
+		},
+	},
+})
 ```
 </CodeGroup>
 
@@ -458,6 +655,48 @@ thread = UploadRoute(
     on_upload_complete=post_message,
 )
 ```
+
+```go Go
+type Thread struct {
+	ThreadID string `json:"threadId"`
+}
+
+type threadState struct {
+	ThreadID string `json:"threadId"`
+	Name     string `json:"name"`
+}
+
+thread := blob.UploadRoute[*User]{
+	Input: blob.JSONInput[Thread](),
+
+	OnBeforeUpload: func(
+		a blob.BeforeUploadArgs[*User],
+	) (blob.BeforeUploadResult, error) {
+		t := a.Input.(Thread)
+		if _, err := uuid.Parse(t.ThreadID); err != nil {
+			return blob.BeforeUploadResult{}, blob.NewError(
+				blob.CodeInvalidInput,
+				blob.ErrorOptions{Message: "the threadId is not a UUID"},
+			)
+		}
+		return blob.BeforeUploadResult{
+			Path:  blob.UniquePath("chat/" + t.ThreadID + "/" + a.File.Name),
+			State: threadState{ThreadID: t.ThreadID, Name: a.File.Name},
+		}, nil
+	},
+
+	OnUploadComplete: func(a blob.UploadCompleteArgs[*User]) (any, error) {
+		var s threadState
+		if err := json.Unmarshal(a.State, &s); err != nil {
+			return nil, err
+		}
+		ctx := a.Request.Context()
+		return nil, db.InsertMessage(
+			ctx, a.UploadID, s.ThreadID, s.Name, a.Ctx.ID, a.URL,
+		)
+	},
+}
+```
 </CodeGroup>
 
 ```tsx app/page.tsx
@@ -470,7 +709,7 @@ A route can take `input`, data the browser sends along with the file, and pass `
 * `input` is validated before the before-upload callback runs, and only the parsed value reaches it. A route with **no** schema refuses any `input` the browser sends with `invalid_input`. Validation failures are `invalid_input` too, with the issues joined as `path: message`, so a bad `threadId` reads `threadId: Invalid uuid`.
 * `state` is for values the callback already computed and does not want to look up again. It travels through the browser and is readable in devtools, so put a row id there, never a secret. See [The completion token](/docs/blob/reference/signing#the-completion-token).
 
-How a route declares its schema and types its state: [TypeScript](/docs/blob/sdks/ts/upload-handler#uploadroute), [Python](/docs/blob/sdks/py/upload-handler#input-and-state).
+How a route declares its schema and types its state: [TypeScript](/docs/blob/sdks/ts/upload-handler#uploadroute), [Python](/docs/blob/sdks/py/upload-handler#input-and-state), [Go](/docs/blob/sdks/go/upload-handler#input-and-state).
 
 ***
 

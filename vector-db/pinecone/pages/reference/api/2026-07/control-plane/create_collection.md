@@ -67,6 +67,19 @@ func main() {
 }
 ```
 
+```hcl Terraform theme={null}
+# Requires Terraform provider v5.0.0 or later
+# The source must be an existing pod-based index
+resource "pinecone_collection" "example_collection" {
+  name   = "example-collection"
+  source = "docs-example"
+}
+
+output "example_collection_status" {
+  value = pinecone_collection.example_collection.status
+}
+```
+
 ```shell curl theme={null}
 PINECONE_API_KEY="YOUR_API_KEY"
 

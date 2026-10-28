@@ -564,6 +564,7 @@ components:
         - openai
         - parasail
         - pareto-alpha
+        - particle-ai
         - perceptron
         - perplexity
         - phala

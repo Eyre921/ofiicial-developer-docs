@@ -610,6 +610,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/BadRequestResponse'
           description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
         '403':
           content:
             application/json:
@@ -620,6 +630,46 @@ paths:
               schema:
                 $ref: '#/components/schemas/ForbiddenResponse'
           description: Forbidden - Authentication successful but insufficient permissions
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '408':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 408
+                  message: Operation timed out. Please try again later.
+              schema:
+                $ref: '#/components/schemas/RequestTimeoutResponse'
+          description: Request Timeout - Operation exceeded time limit
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: Resource conflict. Please try again later.
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+          description: Conflict - Resource conflict or concurrent modification
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: Rate limit exceeded
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: Too Many Requests - Rate limit exceeded
         '500':
           content:
             application/json:
@@ -734,6 +784,27 @@ components:
       required:
         - error
       type: object
+    UnauthorizedResponse:
+      description: Unauthorized - Authentication required or invalid credentials
+      example:
+        error:
+          code: 401
+          message: Missing Authentication header
+      properties:
+        error:
+          $ref: '#/components/schemas/UnauthorizedResponseErrorData'
+        openrouter_metadata:
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
+        user_id:
+          type:
+            - string
+            - 'null'
+      required:
+        - error
+      type: object
     ForbiddenResponse:
       description: Forbidden - Authentication successful but insufficient permissions
       example:
@@ -743,6 +814,90 @@ components:
       properties:
         error:
           $ref: '#/components/schemas/ForbiddenResponseErrorData'
+        openrouter_metadata:
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
+        user_id:
+          type:
+            - string
+            - 'null'
+      required:
+        - error
+      type: object
+    NotFoundResponse:
+      description: Not Found - Resource does not exist
+      example:
+        error:
+          code: 404
+          message: Resource not found
+      properties:
+        error:
+          $ref: '#/components/schemas/NotFoundResponseErrorData'
+        openrouter_metadata:
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
+        user_id:
+          type:
+            - string
+            - 'null'
+      required:
+        - error
+      type: object
+    RequestTimeoutResponse:
+      description: Request Timeout - Operation exceeded time limit
+      example:
+        error:
+          code: 408
+          message: Operation timed out. Please try again later.
+      properties:
+        error:
+          $ref: '#/components/schemas/RequestTimeoutResponseErrorData'
+        openrouter_metadata:
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
+        user_id:
+          type:
+            - string
+            - 'null'
+      required:
+        - error
+      type: object
+    ConflictResponse:
+      description: Conflict - Resource conflict or concurrent modification
+      example:
+        error:
+          code: 409
+          message: Resource conflict. Please try again later.
+      properties:
+        error:
+          $ref: '#/components/schemas/ConflictResponseErrorData'
+        openrouter_metadata:
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
+        user_id:
+          type:
+            - string
+            - 'null'
+      required:
+        - error
+      type: object
+    TooManyRequestsResponse:
+      description: Too Many Requests - Rate limit exceeded
+      example:
+        error:
+          code: 429
+          message: Rate limit exceeded
+      properties:
+        error:
+          $ref: '#/components/schemas/TooManyRequestsResponseErrorData'
         openrouter_metadata:
           additionalProperties: {}
           type:
@@ -858,11 +1013,106 @@ components:
         - code
         - message
       type: object
+    UnauthorizedResponseErrorData:
+      description: Error data for UnauthorizedResponse
+      example:
+        code: 401
+        message: Missing Authentication header
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        metadata:
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
+      required:
+        - code
+        - message
+      type: object
     ForbiddenResponseErrorData:
       description: Error data for ForbiddenResponse
       example:
         code: 403
         message: Only management keys can perform this operation
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        metadata:
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
+      required:
+        - code
+        - message
+      type: object
+    NotFoundResponseErrorData:
+      description: Error data for NotFoundResponse
+      example:
+        code: 404
+        message: Resource not found
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        metadata:
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
+      required:
+        - code
+        - message
+      type: object
+    RequestTimeoutResponseErrorData:
+      description: Error data for RequestTimeoutResponse
+      example:
+        code: 408
+        message: Operation timed out. Please try again later.
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        metadata:
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
+      required:
+        - code
+        - message
+      type: object
+    ConflictResponseErrorData:
+      description: Error data for ConflictResponse
+      example:
+        code: 409
+        message: Resource conflict. Please try again later.
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        metadata:
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
+      required:
+        - code
+        - message
+      type: object
+    TooManyRequestsResponseErrorData:
+      description: Error data for TooManyRequestsResponse
+      example:
+        code: 429
+        message: Rate limit exceeded
       properties:
         code:
           type: integer

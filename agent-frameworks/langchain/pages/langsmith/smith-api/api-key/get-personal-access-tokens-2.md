@@ -1,8 +1,0 @@
----
-title: "Get personal access tokens"
-source: https://docs.langchain.com/langsmith/smith-api/api-key/get-personal-access-tokens
-path: langsmith/smith-api/api-key/get-personal-access-tokens
----
-
-/langsmith/langsmith-platform-openapi.json get /api/v1/api-key/current
-DEPRECATED: Use /orgs/current/personal-access-tokens instead

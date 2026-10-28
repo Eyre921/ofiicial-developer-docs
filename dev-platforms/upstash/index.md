@@ -1,6 +1,6 @@
 # dev-platforms/upstash 文档索引
 
-> 共 1000 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1004 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -42,6 +42,10 @@
 - `docs/blob/reference/errors` — [Errors](pages/docs/blob/reference/errors.md) · [原文](https://upstash.com/docs/blob/reference/errors)
 - `docs/blob/reference/signing` — [How Signing Works](pages/docs/blob/reference/signing.md) · [原文](https://upstash.com/docs/blob/reference/signing)
 - `docs/blob/reference/types` — [Types](pages/docs/blob/reference/types.md) · [原文](https://upstash.com/docs/blob/reference/types)
+- `docs/blob/sdks/go/bucket` — [Bucket API](pages/docs/blob/sdks/go/bucket.md) · [原文](https://upstash.com/docs/blob/sdks/go/bucket)
+- `docs/blob/sdks/go/errors` — [Errors](pages/docs/blob/sdks/go/errors.md) · [原文](https://upstash.com/docs/blob/sdks/go/errors)
+- `docs/blob/sdks/go/overview` — [Go SDK](pages/docs/blob/sdks/go/overview.md) · [原文](https://upstash.com/docs/blob/sdks/go/overview)
+- `docs/blob/sdks/go/upload-handler` — [Upload Handler](pages/docs/blob/sdks/go/upload-handler.md) · [原文](https://upstash.com/docs/blob/sdks/go/upload-handler)
 - `docs/blob/sdks/py/bucket` — [Bucket API](pages/docs/blob/sdks/py/bucket.md) · [原文](https://upstash.com/docs/blob/sdks/py/bucket)
 - `docs/blob/sdks/py/errors` — [Errors](pages/docs/blob/sdks/py/errors.md) · [原文](https://upstash.com/docs/blob/sdks/py/errors)
 - `docs/blob/sdks/py/overview` — [Python SDK](pages/docs/blob/sdks/py/overview.md) · [原文](https://upstash.com/docs/blob/sdks/py/overview)

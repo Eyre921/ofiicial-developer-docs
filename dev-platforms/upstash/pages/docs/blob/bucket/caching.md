@@ -14,6 +14,13 @@ await bucket.put("avatars/7.png", file, { contentType: "image/png", cache: "immu
 ```python Python
 bucket.put("avatars/7.png", file, content_type="image/png", cache="immutable")
 ```
+
+```go Go
+bucket.Put(ctx, "avatars/7.png", file, &blob.PutOptions{
+	ContentType: "image/png",
+	Cache:       blob.CacheImmutable,
+})
+```
 </CodeGroup>
 
 `Cache-Control` is written once, at upload, and stored with the object. The CDN and the browser honor it on every read. There is no per-request override; changing it means writing the object again.
@@ -57,6 +64,14 @@ cache="15 min"              # public, max-age=900
 cache="7d"                  # public, max-age=604800
 cache=timedelta(minutes=5)  # public, max-age=300
 ```
+
+```go Go
+Cache: "1h"     // public, max-age=3600
+Cache: "3600"   // public, max-age=3600
+Cache: "15 min" // public, max-age=900
+Cache: "7d"     // public, max-age=604800
+Cache: "1h30m"  // public, max-age=5400
+```
 </CodeGroup>
 
 A duration is converted to whole seconds, so `'1500ms'` stores `max-age=1`. The grammar is on [Types](/docs/blob/reference/types#duration).
@@ -72,6 +87,11 @@ cache: "max-age=0, stale-while-revalidate=86400"
 ```python Python
 cache="public, max-age=60, s-maxage=31536000"
 cache="max-age=0, stale-while-revalidate=86400"
+```
+
+```go Go
+Cache: "public, max-age=60, s-maxage=31536000"
+Cache: "max-age=0, stale-while-revalidate=86400"
 ```
 </CodeGroup>
 
@@ -112,9 +132,17 @@ from upstash_blob import Bucket
 
 bucket = Bucket.from_env(cache="immutable")
 ```
+
+```go Go
+// blob.go
+bucket, err := blob.NewBucketWith(blob.Options{
+	Token: os.Getenv("UPSTASH_BLOB_TOKEN"),
+	Cache: blob.CacheImmutable,
+})
+```
 </CodeGroup>
 
-The default for every object this client stores. Client options: [TypeScript](/docs/blob/sdks/ts/overview#the-bucket-client), [Python](/docs/blob/sdks/py/overview#the-bucket-client).
+The default for every object this client stores. Client options: [TypeScript](/docs/blob/sdks/ts/overview#the-bucket-client), [Python](/docs/blob/sdks/py/overview#the-bucket-client), [Go](/docs/blob/sdks/go/overview#the-bucket-client).
 
 ### On a put
 
@@ -128,6 +156,13 @@ await bucket.put("avatars/7.png", file, {
 
 ```python Python
 bucket.put("avatars/7.png", file, content_type="image/png", cache="revalidate")
+```
+
+```go Go
+bucket.Put(ctx, "avatars/7.png", file, &blob.PutOptions{
+	ContentType: "image/png",
+	Cache:       blob.CacheRevalidate,
+})
 ```
 </CodeGroup>
 
@@ -149,6 +184,15 @@ await fetch(upload.url, { method: "PUT", headers: upload.headers, body })
 upload = bucket.signed_upload_url("u/7/report.pdf", content_type="application/pdf", cache="immutable")
 
 httpx.put(upload.url, headers=upload.headers, content=body)
+```
+
+```go Go
+up, err := bucket.SignedUploadURL(ctx, "u/7/report.pdf",
+	&blob.SignedUploadURLOptions{
+		ContentType: "application/pdf",
+		Cache:       blob.CacheImmutable,
+	})
+// PUT to up.URL with every header in up.Headers
 ```
 </CodeGroup>
 
@@ -179,6 +223,20 @@ uploads = AsyncUploadHandler(
         cache="immutable",
     ),
 )
+```
+
+```go Go
+// uploads.go
+uploads, err := blob.NewUploadHandler(blob.UploadHandlerOptions[struct{}]{
+	OnBeforeUpload: func(
+		a blob.BeforeUploadArgs[struct{}],
+	) (blob.BeforeUploadResult, error) {
+		return blob.BeforeUploadResult{
+			Path:  blob.UniquePath("uploads/" + a.File.Name),
+			Cache: blob.CacheImmutable,
+		}, nil
+	},
+})
 ```
 </CodeGroup>
 
@@ -221,6 +279,19 @@ blob = bucket.put(f"avatars/{user.id}.png", file, content_type="image/png", cach
 
 db.users.update(user.id, avatar=blob.versioned_url)
 ```
+
+```go Go
+// avatar.go
+b, err := bucket.Put(ctx, "avatars/"+user.ID+".png", file, &blob.PutOptions{
+	ContentType: "image/png",
+	Cache:       blob.CacheImmutable,
+})
+if err != nil {
+	return err
+}
+
+db.UpdateUserAvatar(ctx, user.ID, b.VersionedURL)
+```
 </CodeGroup>
 
 ```tsx
@@ -249,6 +320,15 @@ const { url, expiresAt } = await bucket.signedReadUrl("private/report.pdf")
 bucket.put("private/report.pdf", body, content_type="application/pdf", cache="no-store")
 
 link = bucket.signed_read_url("private/report.pdf")
+```
+
+```go Go
+bucket.Put(ctx, "private/report.pdf", body, &blob.PutOptions{
+	ContentType: "application/pdf",
+	Cache:       blob.CacheNoStore,
+})
+
+link, err := bucket.SignedReadURL(ctx, "private/report.pdf", nil)
 ```
 </CodeGroup>
 

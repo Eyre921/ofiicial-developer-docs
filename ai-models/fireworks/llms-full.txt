@@ -7005,12 +7005,12 @@ Train an open model on your own data with Fireworks. Start in five minutes with 
 
 Training adapts an open model to your task with your own data. A trained model can beat a larger general-purpose model on quality while costing less and responding faster. Read [when to train your own model](https://fireworks.ai/blog/specialized-intelligence-train-your-own-model).
 
-**Muse Glimmer 30B SFT is free to train until 11/30.**\
+**Muse Glimmer 30B SFT is free to train until November 30, 2026.**\
 No credit card required. [Start here](https://app.fireworks.ai/dashboard/fine-tuning/create?type=supervised\&baseModel=accounts/fireworks/models/muse-glimmer-30b)
 
 ## Quickstart
 
-Train your first model in about five minutes with a coding agent such as Cursor, Claude Code, or Codex.
+Train your first model in about five minutes with a coding agent such as Cursor, Claude Code, or Codex. You need a [Fireworks account](https://app.fireworks.ai/signup) and an [API key](https://app.fireworks.ai/settings/users/api-keys).
 
 **Step 1: Install the training skills.** Paste this into your agent:
 
@@ -7157,7 +7157,7 @@ Managed training, the Training API, and serverless training all draw from the sa
 
 > [!NOTE]
 >
-> Muse Glimmer 30B SFT is free to train until 11/30.\
+> Muse Glimmer 30B SFT is free to train until November 30, 2026.\
 > No credit card required. [Start here](https://app.fireworks.ai/dashboard/fine-tuning/create?type=supervised\&baseModel=accounts/fireworks/models/muse-glimmer-30b)
 
 ## Model availability
@@ -19531,6 +19531,12 @@ print(second.output_text)
 
 Set `store=False` to opt out of storage. Responses created with `store=False` cannot be referenced by `previous_response_id`, so you must manage history yourself by passing prior turns in `input`.
 
+> [!WARNING]
+>
+> Stored responses are kept for up to 30 days, but they are held in a cache and can be evicted much sooner, often within about an hour. `previous_response_id` and `GET /v1/responses/{response_id}` are reliable for turns that follow closely, not for conversations with long gaps.
+>
+> If a request returns `404` with `"Response not found"`, resend the conversation history in `input` instead. To keep resent history cheap, set the same `prompt_cache_key` on every request in a conversation (for example, your conversation ID) so repeated prefixes are served from the [prompt cache](/guides/prompt-caching). For long-running conversations, managing history yourself with `store=False` avoids depending on server-side storage entirely.
+
 ### Managing stored responses
 
 | Operation | Endpoint |
@@ -20184,7 +20190,7 @@ done
 # Zero Data Retention
 Source: https://docs.fireworks.ai/guides/security_compliance/data_handling
 
-How Fireworks handles zero data retention for prompts and generations by default, plus the Response API 30-day retention when store=True is enabled.
+How Fireworks handles zero data retention for prompts and generations by default, plus Response API retention of up to 30 days when store=True is enabled.
 
 ## Zero data retention
 
@@ -20208,7 +20214,7 @@ For the Response API specifically, Fireworks retains conversation data with the 
   * Model responses
   * Tools called by the model
 * **Opt-out option**: You can disable data storage by setting `store=False` in your API requests to prevent any conversation data from being retained.
-* **Retention period**: All stored conversation data is automatically deleted after 30 days.
+* **Retention period**: Stored conversation data is kept for up to 30 days and is automatically deleted no later than that. Stored responses are held in a cache and can be evicted earlier, often within about an hour, so they are not guaranteed to be retrievable for the full period.
 * **Immediate deletion**: You can immediately delete stored conversation data using the DELETE API endpoint by providing the `response_id`. This will permanently remove the record.
 
 This retention policy is designed to be consistent with the OpenAI API while providing users control over their data storage preferences.
@@ -26736,6 +26742,7 @@ Per-model pricing for headline models. Fast variants appear as adjacent rows. In
 | [DeepSeek V4.1 Flash 1017 (US)](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017) | \$0.45 / \$0.009 / \$1.80 | \$0.5625 / \$0.01125 / \$2.25 |
 | [GLM 5.3 Flash](https://app.fireworks.ai/models/fireworks/glm-5p3-flash) | \$0.15 / \$0.03 / \$0.50 | \$0.1875 / \$0.0375 / \$0.625 |
 | [GLM 5.3 Flash (US)](https://app.fireworks.ai/models/fireworks/glm-5p3-flash) | \$0.225 / \$0.045 / \$0.75 | \$0.28125 / \$0.05625 / \$0.9375 |
+| [Ultramarine 1 Flash (US)](https://app.fireworks.ai/models/fireworks/ultramarine-1-flash-us) | \$0.225 / \$0.045 / \$0.75 | \$0.28125 / \$0.05625 / \$0.9375 |
 | [GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3) | \$1.40 / \$0.26 / \$4.40 | \$1.75 / \$0.325 / \$5.50 |
 | [GLM 5.3 (US)](https://app.fireworks.ai/models/fireworks/glm-5p3) | \$2.10 / \$0.39 / \$6.60 | \$2.625 / \$0.4875 / \$8.25 |
 | [GLM 5.3 Fast](https://app.fireworks.ai/models/fireworks/glm-5p3) | \$2.10 / \$0.39 / \$6.60 | — |

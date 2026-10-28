@@ -1,6 +1,6 @@
 # dev-platforms/stripe 文档索引
 
-> 共 472 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 470 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -18,7 +18,6 @@
 - `projects` — [Stripe Projects CLI](pages/projects.md) · [原文](https://docs.stripe.com/projects.md)
 - `radar` — [Stripe Radar](pages/radar.md) · [原文](https://docs.stripe.com/radar.md)
 - `refunds` — [Refund and cancel payments](pages/refunds.md) · [原文](https://docs.stripe.com/refunds.md)
-- `saas` — [SaaS](pages/saas.md) · [原文](https://docs.stripe.com/saas.md)
 - `sandboxes` — [sandboxes](pages/sandboxes.md) · [原文](https://docs.stripe.com/sandboxes.md)
 - `sdks` — [Stripe SDKs](pages/sdks.md) · [原文](https://docs.stripe.com/sdks.md)
 - `security` — [Security at Stripe](pages/security.md) · [原文](https://docs.stripe.com/security.md)
@@ -91,7 +90,6 @@
 - `billing/subscriptions/pause-payment` — [Pause payment collection](pages/billing/subscriptions/pause-payment.md) · [原文](https://docs.stripe.com/billing/subscriptions/pause-payment.md)
 - `billing/subscriptions/payment-methods-setting` — [Set payment methods per-subscription](pages/billing/subscriptions/payment-methods-setting.md) · [原文](https://docs.stripe.com/billing/subscriptions/payment-methods-setting.md)
 - `billing/subscriptions/quantities` — [Set product or subscription quantities](pages/billing/subscriptions/quantities.md) · [原文](https://docs.stripe.com/billing/subscriptions/quantities.md)
-- `billing/subscriptions/use-cases` — [Subscription Use Cases](pages/billing/subscriptions/use-cases.md) · [原文](https://docs.stripe.com/billing/subscriptions/use-cases.md)
 - `billing/taxes/collect-taxes` — [Collect taxes for recurring payments](pages/billing/taxes/collect-taxes.md) · [原文](https://docs.stripe.com/billing/taxes/collect-taxes.md)
 - `billing/usage-based` — [Metronome overview](pages/billing/usage-based.md) · [原文](https://docs.stripe.com/billing/usage-based.md)
 
@@ -243,6 +241,7 @@
 - `get-started/data-migrations/pan-import` — [the migration process](pages/get-started/data-migrations/pan-import.md) · [原文](https://docs.stripe.com/get-started/data-migrations/pan-import.md)
 - `get-started/development-environment` — [Set up your development environment](pages/get-started/development-environment.md) · [原文](https://docs.stripe.com/get-started/development-environment.md)
 - `get-started/test-developer-integration` — [Build and test new features](pages/get-started/test-developer-integration.md) · [原文](https://docs.stripe.com/get-started/test-developer-integration.md)
+- `get-started/use-cases/saas-subscriptions` — [SaaS subscription business](pages/get-started/use-cases/saas-subscriptions.md) · [原文](https://docs.stripe.com/get-started/use-cases/saas-subscriptions.md)
 
 ## identity
 
@@ -291,7 +290,6 @@
 - `issuing/adding-funds-to-your-card-program` — [Add funds to your card program](pages/issuing/adding-funds-to-your-card-program.md) · [原文](https://docs.stripe.com/issuing/adding-funds-to-your-card-program.md)
 - `issuing/cards/choose-bundle` — [Choose your physical bundle](pages/issuing/cards/choose-bundle.md) · [原文](https://docs.stripe.com/issuing/cards/choose-bundle.md)
 - `issuing/cards/digital-wallets` — [Use digital wallets with Issuing](pages/issuing/cards/digital-wallets.md) · [原文](https://docs.stripe.com/issuing/cards/digital-wallets.md)
-- `issuing/cards/physical` — [Physical cards](pages/issuing/cards/physical.md) · [原文](https://docs.stripe.com/issuing/cards/physical.md)
 - `issuing/cards/physical/card-bundle-selections` — [Customize card bundle](pages/issuing/cards/physical/card-bundle-selections.md) · [原文](https://docs.stripe.com/issuing/cards/physical/card-bundle-selections.md)
 - `issuing/cards/physical/create-design` — [Create a design](pages/issuing/cards/physical/create-design.md) · [原文](https://docs.stripe.com/issuing/cards/physical/create-design.md)
 - `issuing/cards/physical/order-custom-bundle` — [Order a custom bundle](pages/issuing/cards/physical/order-custom-bundle.md) · [原文](https://docs.stripe.com/issuing/cards/physical/order-custom-bundle.md)

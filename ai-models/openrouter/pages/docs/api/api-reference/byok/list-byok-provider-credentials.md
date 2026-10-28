@@ -277,6 +277,7 @@ paths:
               - openai
               - parasail
               - pareto-alpha
+              - particle-ai
               - perceptron
               - perplexity
               - phala
@@ -838,6 +839,7 @@ components:
         - openai
         - parasail
         - pareto-alpha
+        - particle-ai
         - perceptron
         - perplexity
         - phala

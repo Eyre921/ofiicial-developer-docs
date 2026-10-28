@@ -2834,6 +2834,7 @@ components:
         - OpenInference
         - Parasail
         - ParetoAlpha
+        - Particle AI
         - Poolside
         - PrimaLabs
         - PrimeIntellect
@@ -3184,6 +3185,9 @@ components:
           additionalProperties: {}
           type: object
         pareto-alpha:
+          additionalProperties: {}
+          type: object
+        particle-ai:
           additionalProperties: {}
           type: object
         perceptron:

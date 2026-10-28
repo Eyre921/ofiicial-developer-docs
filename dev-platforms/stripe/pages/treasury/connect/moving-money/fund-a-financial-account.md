@@ -193,6 +193,8 @@ In the US, connected accounts can fund USD financial accounts by sending ACH, RT
 
 ## Use inbound transfers from a linked external bank account  (Private preview)
 Available in: US, GB
+In the US, inbound transfers are available in private preview for commercial financial accounts only. Consumer financial accounts aren’t supported.
+
 You can use inbound transfers to fund your connected account’s Stripe financial account by debiting their linked external bank account.
 
 #### US

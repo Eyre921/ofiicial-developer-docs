@@ -10,7 +10,7 @@ Provide a platform where merchants accept payments directly from their customers
 
 > This guide uses Accounts v2 to create and manage connected accounts. For a guide that uses Accounts v1, see [Build a SaaS platform with Accounts v1](https://docs.stripe.com/connect/end-to-end-saas-platform.md).
 
-If you’re a subscription-based [SaaS business](https://docs.stripe.com/saas.md), but don’t extend Stripe products or payment processing to your merchants, you don’t need Connect.
+If your SaaS business [sells subscriptions](https://docs.stripe.com/get-started/use-cases/saas-subscriptions.md) directly to your own customers, you don’t need Connect. You only need Connect if you extend Stripe products or payment processing to your connected accounts.
 
 As a software as a service (SaaS) platform, you extend your integration of Stripe products to your merchant connected accounts. Those merchants can access Stripe through your platform to accept payments from their own customers and receive *payouts* (A payout is the transfer of funds to an external account, usually a bank account, in the form of a deposit) from their Stripe balance.
 

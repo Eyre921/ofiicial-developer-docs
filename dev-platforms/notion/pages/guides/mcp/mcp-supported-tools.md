@@ -258,6 +258,17 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Which pages link to our launch plan?"
 > * "Find comments that mention this spec"
 
+> **View a past version**
+>
+> `notion-view-version`
+>
+> Reads a page or database as it looked at a past time. Pass the page and an ISO 8601 `time`. A page returns its properties and Markdown content. A database returns its data sources, views, and rows. Requires edit access to the page, and can only read as far back as the workspace's plan keeps version history.
+>
+> **Example prompts:**
+>
+> * "Show me what our launch plan looked like last Monday"
+> * "What rows were in the bug tracker on October 1?"
+
 > **Create a file upload URL**
 >
 > `notion-create-file-upload`
@@ -354,7 +365,7 @@ An MCP client can call several tools in one task. For example, it can search for
 >
 > > [!NOTE]
 > >
-> > The `update_content` command applies each search-and-replace operation whose `old_str` matches the page and skips the rest. Each skipped operation appears in `warnings` with code `no_match`, or `indentation_mismatch` when the text is on the page with different indentation. If an operation misses and no content-changing operation matches, the call returns a validation error naming the unmatched values and the page is left unchanged. An operation whose `old_str` and `new_str` are identical doesn't change the page and doesn't count as a match. Each `old_str` must be a non-empty string that matches exactly one location, unless `replace_all_matches: true` is set for that operation.
+> > The `update_content` command applies each search-and-replace operation whose `old_str` matches the page and skips the rest. Each skipped operation appears in `warnings` with code `no_match`, or `indentation_mismatch` when the text is on the page with different indentation. If an operation misses and no content-changing operation matches, the call returns a validation error naming the unmatched values and the page is left unchanged. If the connection can read the page, the error also asks you to fetch the page again and base the retry's `old_str` on its current text; an update that runs as an `async_task` fails with the plain no-match error instead. The error never includes page text. An operation whose `old_str` and `new_str` are identical doesn't change the page and doesn't count as a match. Each `old_str` must be a non-empty string that matches exactly one location, unless `replace_all_matches: true` is set for that operation.
 >
 > When part of the input was changed or ignored, the result includes a `warnings` array. Examples are operations whose `old_str` matched nothing, lines dropped for incorrect indentation, text auto-corrected to match the page, and a property key repaired before the write, such as `URL` written as `userDefined:URL`. Each warning has a `code` and a `message`. Each message is at most 500 characters; a longer one is cut and ends with a note giving its original length, such as `… (truncated from 12000 characters)`. Markdown parser warnings also carry `category`, such as `unsupported_tag`, and `autofix`, which is `true` when the parser changed the content to apply it. A clean update has no `warnings` key. Read any warnings before you treat the edit as done.
 >

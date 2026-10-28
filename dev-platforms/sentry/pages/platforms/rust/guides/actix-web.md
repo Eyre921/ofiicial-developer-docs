@@ -24,7 +24,7 @@ To add Sentry with the Actix Web integration to your Rust project, add a new dep
 ```toml
 [dependencies]
 actix-web = "4.11.0"
-sentry = { version = "0.49.3", features = ["actix"] }
+sentry = { version = "0.49.5", features = ["actix"] }
 ```
 
 ## [Configure](https://docs.sentry.io/platforms/rust/guides/actix-web.md#configure)

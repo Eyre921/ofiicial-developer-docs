@@ -532,6 +532,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`Hugging Bay tools`](https://pypi.org/project/langchain-hugging-bay/0.1.0/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-hugging-bay/month)](https://pypi.org/project/langchain-hugging-bay/) |
 | [`AgentLair`](https://agentlair.dev/docs) | N/A |
 | [`Browserless`](https://browserless.io) | N/A |
+| [`GridPinToolkit`](https://github.com/gridpin/gridpin/tree/main/integrations/langchain) | N/A |
 | [`HuangtingFlux`](https://huangtingflux.com/integrations/langchain) | N/A |
 | [`Stagehand`](/oss/python/integrations/tools/stagehand) | N/A |
 

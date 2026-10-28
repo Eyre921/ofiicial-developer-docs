@@ -46,7 +46,7 @@ Each workspace has independent settings for:
 * **[Plugins](https://openrouter.ai/workspaces/default/plugins)**. Configure default plugin behavior for API requests in each workspace.
 * **[Observability](https://openrouter.ai/workspaces/default/observability)**. Connect different observability integrations per workspace, or send traces from all workspaces to the same platform.
 * **[Members](https://openrouter.ai/workspaces/default/members)**. Control which team members have access to each workspace.
-* **[Budgets](https://openrouter.ai/docs/guides/features/workspaces/workspace-budgets.md)**. Set daily, weekly, monthly, or lifetime spending limits per workspace (Enterprise plan). See the [Spend Controls best practices guide](https://openrouter.ai/docs/guides/best-practices/spend-controls.md) for structuring budgets alongside guardrails.
+* **[Budgets](https://openrouter.ai/docs/guides/features/workspaces/workspace-budgets.md)**. Set daily, weekly, monthly, or lifetime spending limits per workspace. See the [Spend Controls best practices guide](https://openrouter.ai/docs/guides/best-practices/spend-controls.md) for structuring budgets alongside guardrails.
 
 ## Account Level Settings
 

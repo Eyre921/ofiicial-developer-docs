@@ -10,6 +10,10 @@ path: page/changelog
 
 Three new Notion MCP tools let an assistant propose changes that a person reviews in Notion. `notion-create-suggested-edit` adds a suggested edit to a page without changing its accepted content. `notion-get-suggested-edit` shows a pending suggestion's before-and-after diff, and `notion-resolve-suggested-edit` accepts or rejects it. `notion-get-comments` now lists pending suggestions too. The tools need a Business or Enterprise plan. See [Suggest edits](/guides/mcp/mcp-supported-tools#suggest-edits).
 
+### View past versions in Notion MCP
+
+`notion-view-version` shows a page or database as it looked at a past time. See [View a past version](/guides/mcp/mcp-supported-tools#view-a-past-version).
+
 **October 26, 2026**
 
 ### See connection health in the Developer portal

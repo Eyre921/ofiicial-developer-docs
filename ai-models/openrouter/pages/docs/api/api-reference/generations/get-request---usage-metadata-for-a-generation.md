@@ -1051,6 +1051,7 @@ components:
             - OpenInference
             - Parasail
             - ParetoAlpha
+            - Particle AI
             - Poolside
             - PrimaLabs
             - PrimeIntellect

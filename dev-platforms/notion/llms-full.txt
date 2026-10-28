@@ -4449,6 +4449,8 @@ A `v2` update can contain syntax that the parser doesn't support, such as an unk
 
 `code` is the warning category. The field is left out when there are no warnings, and other endpoints never return it. Async updates (`allow_async: true`) don't return warnings in the task result.
 
+If no `update_content` edit matches, the request fails with `validation_error` and nothing changes. When your integration can read the page content, the error message also tells you to fetch the page again and base `old_str` on its current text.
+
 ## Block type support
 
 The markdown API supports most Notion block types. The table below shows how each block type maps to its markdown representation.
@@ -12524,6 +12526,17 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Which pages link to our launch plan?"
 > * "Find comments that mention this spec"
 
+> **View a past version**
+>
+> `notion-view-version`
+>
+> Reads a page or database as it looked at a past time. Pass the page and an ISO 8601 `time`. A page returns its properties and Markdown content. A database returns its data sources, views, and rows. Requires edit access to the page, and can only read as far back as the workspace's plan keeps version history.
+>
+> **Example prompts:**
+>
+> * "Show me what our launch plan looked like last Monday"
+> * "What rows were in the bug tracker on October 1?"
+
 > **Create a file upload URL**
 >
 > `notion-create-file-upload`
@@ -12620,7 +12633,7 @@ An MCP client can call several tools in one task. For example, it can search for
 >
 > > [!NOTE]
 > >
-> > The `update_content` command applies each search-and-replace operation whose `old_str` matches the page and skips the rest. Each skipped operation appears in `warnings` with code `no_match`, or `indentation_mismatch` when the text is on the page with different indentation. If an operation misses and no content-changing operation matches, the call returns a validation error naming the unmatched values and the page is left unchanged. An operation whose `old_str` and `new_str` are identical doesn't change the page and doesn't count as a match. Each `old_str` must be a non-empty string that matches exactly one location, unless `replace_all_matches: true` is set for that operation.
+> > The `update_content` command applies each search-and-replace operation whose `old_str` matches the page and skips the rest. Each skipped operation appears in `warnings` with code `no_match`, or `indentation_mismatch` when the text is on the page with different indentation. If an operation misses and no content-changing operation matches, the call returns a validation error naming the unmatched values and the page is left unchanged. If the connection can read the page, the error also asks you to fetch the page again and base the retry's `old_str` on its current text; an update that runs as an `async_task` fails with the plain no-match error instead. The error never includes page text. An operation whose `old_str` and `new_str` are identical doesn't change the page and doesn't count as a match. Each `old_str` must be a non-empty string that matches exactly one location, unless `replace_all_matches: true` is set for that operation.
 >
 > When part of the input was changed or ignored, the result includes a `warnings` array. Examples are operations whose `old_str` matched nothing, lines dropped for incorrect indentation, text auto-corrected to match the page, and a property key repaired before the write, such as `URL` written as `userDefined:URL`. Each warning has a `code` and a `message`. Each message is at most 500 characters; a longer one is cut and ends with a note giving its original length, such as `… (truncated from 12000 characters)`. Markdown parser warnings also carry `category`, such as `unsupported_tag`, and `autofix`, which is `true` when the parser changed the content to apply it. A clean update has no `warnings` key. Read any warnings before you treat the edit as done.
 >
@@ -17945,6 +17958,10 @@ Source: https://developers.notion.com/page/changelog
 
 Three new Notion MCP tools let an assistant propose changes that a person reviews in Notion. `notion-create-suggested-edit` adds a suggested edit to a page without changing its accepted content. `notion-get-suggested-edit` shows a pending suggestion's before-and-after diff, and `notion-resolve-suggested-edit` accepts or rejects it. `notion-get-comments` now lists pending suggestions too. The tools need a Business or Enterprise plan. See [Suggest edits](/guides/mcp/mcp-supported-tools#suggest-edits).
 
+### View past versions in Notion MCP
+
+`notion-view-version` shows a page or database as it looked at a past time. See [View a past version](/guides/mcp/mcp-supported-tools#view-a-past-version).
+
 **October 26, 2026**
 
 ### See connection health in the Developer portal
@@ -21786,6 +21803,7 @@ When [retrieving comments](/reference/list-comments), one or more Comment object
 | `id` | `string` (UUIDv4) | Unique identifier of the comment. | `"ce18f8c6-ef2a-427f-b416-43531fc7c117"` |
 | `parent` | `object` | Information about the comment's parent. See [Parent object](/reference/parent-object). Note that comments may only be parented by pages or blocks. | `{ "type": "block_id", "block_id": "5d4ca33c-d6b7-4675-93d9-84b70af45d1c" }` |
 | `discussion_id` | `string` (UUIDv4) | Unique identifier of the discussion thread that the comment is associated with. See [the guide](/guides/data-apis/working-with-comments#retrieving-comments-for-a-page-or-block) for more information about discussion threads. | `"ce18f8c6-ef2a-427f-b416-43531fc7c117"` |
+| `property_id` | `string` | Only present for comments on a database page property. The ID of that property, which matches the property's `id` in the [page object](/reference/page-property-values). | `"%3AUPp"` |
 | `created_time` | `string` ([ISO 8601 date and time](https://en.wikipedia.org/wiki/ISO_8601)) | Date and time when this comment was created. Formatted as an [ISO 8601 date time](https://en.wikipedia.org/wiki/ISO_8601) string. | `"2022-07-15T21:46:00.000Z"` |
 | `last_edited_time` | `string` ([ISO 8601 date and time](https://en.wikipedia.org/wiki/ISO_8601)) | Date and time when this comment was updated. Formatted as an [ISO 8601 date time](https://en.wikipedia.org/wiki/ISO_8601) string. | `"2022-07-15T21:46:00.000Z"` |
 | `created_by` | [Partial User](/reference/user) | User who created the comment. | `{ "object": "user", "id": "e450a39e-9051-4d36-bc4e-8581611fc592" }` |
@@ -33542,6 +33560,8 @@ Notion currently supports the following event `type`s. We've added an example pa
   }
 }
 ```
+
+For a comment on a database page property, comment events also include `data.property_id`. It matches the property's `id` in the [page object](/reference/page-property-values). Other comment events leave it out.
 
 ### comment.updated
 

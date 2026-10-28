@@ -32,7 +32,7 @@ With GitHub Free, your personal account includes:
 * 120 GitHub Codespaces core hours per month
 * 15 GB GitHub Codespaces storage per month
 * GitHub Actions features:
-  * 2,000 minutes per month
+  * $12 USD of included compute usage per month
   * Deployment protection rules for public repositories
 * GitHub Pages in public repositories
 
@@ -41,7 +41,7 @@ With GitHub Free, your personal account includes:
 In addition to the features available with GitHub Free for personal accounts, GitHub Pro includes:
 
 * GitHub Support via email
-* 3,000 GitHub Actions minutes per month
+* $18 USD of included compute usage per month for eligible GitHub Actions and cloud sandbox usage
 * 2 GB GitHub Packages storage
 * 180 GitHub Codespaces core hours per month
 * 20 GB GitHub Codespaces storage per month
@@ -78,7 +78,7 @@ In addition to the features available with GitHub Free for personal accounts, Gi
 
 * GitHub Community Support
 * Team access controls for managing groups
-* 2,000 GitHub Actions minutes per month
+* $12 USD of included compute usage per month for eligible GitHub Actions and cloud sandbox usage
 
 ### GitHub Team
 
@@ -86,7 +86,7 @@ In addition to the features available with GitHub Free for organizations, GitHub
 
 * GitHub Support via email
 
-* 3,000 GitHub Actions minutes per month
+* $18 USD of included compute usage per month for eligible GitHub Actions and cloud sandbox usage
 
 * 2 GB GitHub Packages storage
 
@@ -131,7 +131,9 @@ In addition to the features available with GitHub Free for organizations, GitHub
 
 GitHub bills for GitHub Team on a per-user basis. For more information, see [About per-user pricing](/en/billing/managing-the-plan-for-your-github-account/about-per-user-pricing).
 
-GitHub Actions usage is free for standard GitHub-hosted runners in public repositories, and for self-hosted runners. See [Choosing the runner for a job](/en/actions/how-tos/write-workflows/choose-where-workflows-run/choose-the-runner-for-a-job#standard-github-hosted-runners-for-public-repositories). For private repositories, each GitHub account receives a quota of free minutes and storage for use with GitHub-hosted runners, depending on the account's plan. Any usage beyond the included amounts is billed to your account.
+GitHub Actions usage is free for standard GitHub-hosted runners in public repositories, and for self-hosted runners. See [Choosing the runner for a job](/en/actions/how-tos/write-workflows/choose-where-workflows-run/choose-the-runner-for-a-job#standard-github-hosted-runners-for-public-repositories).
+
+For private repositories, each GitHub account receives storage and a monthly included compute usage, depending on the account's plan. The cost of eligible runner usage draws from the included compute usage, which is also available for cloud sandbox compute and memory. Additional usage is billed to your account.
 
 ### GitHub Enterprise
 
@@ -149,8 +151,7 @@ In addition to the features available with GitHub Team, GitHub Enterprise includ
 
 GitHub Enterprise Cloud specifically includes:
 
-* 50,000 GitHub Actions minutes per month
-  * Included minutes can be used with standard GitHub-hosted runners only. For more information about billing for larger runners, see [Larger runners](/en/enterprise-cloud@latest/actions/concepts/runners/larger-runners#billing).
+* $300 USD of included compute usage per month for eligible GitHub Actions and cloud sandbox usage. For details about which usage qualifies, see [GitHub Actions billing](/en/billing/concepts/product-billing/github-actions).
 * 50 GB GitHub Packages storage
 * A service level agreement for 99.9% monthly uptime
 * The option to centrally manage policy and billing for multiple GitHub organizations with an enterprise account. For more information, see [Enterprise accounts](/en/enterprise-cloud@latest/admin/concepts/enterprise-fundamentals/enterprise-accounts).

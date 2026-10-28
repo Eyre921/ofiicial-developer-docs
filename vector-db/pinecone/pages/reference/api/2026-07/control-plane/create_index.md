@@ -157,6 +157,33 @@ func main() {
 }
 ```
 
+```hcl Terraform theme={null}
+# Requires Terraform provider v5.0.0 or later
+resource "pinecone_index" "articles" {
+  name = "articles"
+  deployment = {
+    managed = {
+      cloud  = "aws"
+      region = "us-east-1"
+    }
+  }
+  schema = {
+    fields = {
+      title = { string = { full_text_search = {} } }
+      body  = { string = { full_text_search = { language = "en", stemming = true, stop_words = true } } }
+    }
+  }
+  read_capacity = {
+    on_demand = {}
+  }
+  deletion_protection = "disabled"
+}
+
+output "articles_host" {
+  value = pinecone_index.articles.host
+}
+```
+
 ```shell curl theme={null}
 PINECONE_API_KEY="YOUR_API_KEY"
 

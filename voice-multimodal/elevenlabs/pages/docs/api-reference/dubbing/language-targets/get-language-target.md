@@ -73,8 +73,9 @@ Signed, time-limited download URLs for a language target's outputs.
 
 ### DubbingError
 
-- `message_type` ("error", required)
-- `error` (string, required)
+- `code` (string, required) — Stable identifier for the failure, safe to branch on. New codes are added over time, so we recommend treating an unrecognized value as `internal_error`.
+- `message` (string, required) — Human-readable description of the failure, for display. The wording may change at any time, so we recommend branching on `code` instead.
+- `retryable` (boolean, required) — Whether resubmitting the same input could succeed. A value of false means the failure describes the input or the account, so an identical retry will fail the same way.
 
 ### VoicesNotPermittedWarning
 

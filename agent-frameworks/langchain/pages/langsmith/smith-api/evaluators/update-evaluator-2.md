@@ -1,8 +1,0 @@
----
-title: "Update evaluator"
-source: https://docs.langchain.com/langsmith/smith-api/evaluators/update-evaluator
-path: langsmith/smith-api/evaluators/update-evaluator
----
-
-/langsmith/langsmith-platform-openapi.json patch /api/v1/platform/evaluators/{evaluator_id}
-Update an existing evaluator's name, LLM configuration, or code configuration. Returns 409 when a code evaluator build is ENQUEUED or BUILDING.

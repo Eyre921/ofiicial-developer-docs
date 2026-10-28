@@ -13,6 +13,7 @@ url: https://docs.sentry.io/api/projects/
 
 * #### [Add a Symbol Source to a Project](https://docs.sentry.io/api/projects/add-a-symbol-source-to-a-project.md)
 * #### [Add a Team to a Project](https://docs.sentry.io/api/projects/add-a-team-to-a-project.md)
+* #### [Assemble Debug Information Files](https://docs.sentry.io/api/projects/assemble-debug-information-files.md)
 * #### [Create a CODEOWNERS Configuration for a Project](https://docs.sentry.io/api/projects/create-a-codeowners-configuration-for-a-project.md)
 * #### [Create a Custom Inbound Filter](https://docs.sentry.io/api/projects/create-a-custom-inbound-filter.md)
 * #### [Create a New Client Key](https://docs.sentry.io/api/projects/create-a-new-client-key.md)
@@ -62,6 +63,7 @@ url: https://docs.sentry.io/api/projects/
 
 - [Add a Symbol Source to a Project](https://docs.sentry.io/api/projects/add-a-symbol-source-to-a-project.md)
 - [Add a Team to a Project](https://docs.sentry.io/api/projects/add-a-team-to-a-project.md)
+- [Assemble Debug Information Files](https://docs.sentry.io/api/projects/assemble-debug-information-files.md)
 - [Create a CODEOWNERS Configuration for a Project](https://docs.sentry.io/api/projects/create-a-codeowners-configuration-for-a-project.md)
 - [Create a Custom Inbound Filter](https://docs.sentry.io/api/projects/create-a-custom-inbound-filter.md)
 - [Create a New Client Key](https://docs.sentry.io/api/projects/create-a-new-client-key.md)

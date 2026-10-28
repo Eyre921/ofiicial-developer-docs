@@ -11,6 +11,7 @@ url: https://docs.sentry.io/api/releases/
 
 # Releases | Sentry Docs
 
+* #### [Assemble an Artifact Bundle](https://docs.sentry.io/api/releases/assemble-an-artifact-bundle.md)
 * #### [Create a Deploy](https://docs.sentry.io/api/releases/create-a-deploy.md)
 * #### [Create a New Release for an Organization](https://docs.sentry.io/api/releases/create-a-new-release-for-an-organization.md)
 * #### [Delete a Project Release's File](https://docs.sentry.io/api/releases/delete-a-project-releases-file.md)
@@ -38,6 +39,7 @@ url: https://docs.sentry.io/api/releases/
 
 ## Pages in this section
 
+- [Assemble an Artifact Bundle](https://docs.sentry.io/api/releases/assemble-an-artifact-bundle.md)
 - [Create a Deploy](https://docs.sentry.io/api/releases/create-a-deploy.md)
 - [Create a New Release for an Organization](https://docs.sentry.io/api/releases/create-a-new-release-for-an-organization.md)
 - [Delete a Project Release's File](https://docs.sentry.io/api/releases/delete-a-project-releases-file.md)

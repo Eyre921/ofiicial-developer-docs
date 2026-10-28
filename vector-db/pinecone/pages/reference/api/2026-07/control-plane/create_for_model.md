@@ -89,6 +89,27 @@ func main() {
 }
 ```
 
+```hcl Terraform theme={null}
+# Requires Terraform provider v5.0.0 or later
+# Creates a legacy integrated index. For new indexes, declare integrated embedding
+# on a string field of a document index instead (provider v5.1.0 or later).
+resource "pinecone_index" "docs_example" {
+  name = "docs-example"
+  spec = {
+    serverless = {
+      cloud  = "aws"
+      region = "us-east-1"
+    }
+  }
+  embed = {
+    model = "multilingual-e5-large"
+    field_map = {
+      text = "chunk_text"
+    }
+  }
+}
+```
+
 ```shell curl theme={null}
 PINECONE_API_KEY="YOUR_API_KEY"
 

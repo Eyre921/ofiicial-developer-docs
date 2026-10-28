@@ -1047,6 +1047,9 @@ components:
         pareto-alpha:
           additionalProperties: {}
           type: object
+        particle-ai:
+          additionalProperties: {}
+          type: object
         perceptron:
           additionalProperties: {}
           type: object

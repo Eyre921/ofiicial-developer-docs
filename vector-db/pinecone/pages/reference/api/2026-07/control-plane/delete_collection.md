@@ -59,6 +59,17 @@ func main() {
 }
 ```
 
+```hcl Terraform theme={null}
+# Requires Terraform provider v5.0.0 or later
+# This block defines the collection. To delete it, either remove the block and run
+# `terraform apply`, or run:
+#   terraform destroy -target=pinecone_collection.example_collection
+resource "pinecone_collection" "example_collection" {
+  name   = "example-collection"
+  source = "docs-example"
+}
+```
+
 ```shell curl theme={null}
 PINECONE_API_KEY="YOUR_API_KEY"
 

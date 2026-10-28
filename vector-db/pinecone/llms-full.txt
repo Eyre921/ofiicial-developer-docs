@@ -15059,7 +15059,7 @@ To delete records from a namespace based on their metadata values, pass a [metad
 
 For example, the following code deletes all records with a `genre` field set to `documentary` from namespace `example-namespace`:
 
-```Python Python theme={null}
+```Python Python theme={null} theme={null} theme={null} theme={null}
 # pip install pinecone
 from pinecone.grpc import PineconeGRPC as Pinecone
 
@@ -15077,7 +15077,7 @@ index.delete(
 )
 ```
 
-```JavaScript JavaScript theme={null}
+```JavaScript JavaScript theme={null} theme={null} theme={null} theme={null}
 import { Pinecone } from '@pinecone-database/pinecone'
 
 const pc = new Pinecone({ apiKey: "YOUR_API_KEY" })
@@ -15093,7 +15093,7 @@ await ns.deleteMany({
 });
 ```
 
-```java Java theme={null}
+```java Java theme={null} theme={null} theme={null} theme={null}
 import com.google.protobuf.Struct;
 import com.google.protobuf.Value;
 import io.pinecone.clients.Index;
@@ -15125,7 +15125,7 @@ public class DeleteExample {
 }
 ```
 
-```go Go theme={null}
+```go Go theme={null} theme={null} theme={null} theme={null}
 package main
 
 import (
@@ -15170,7 +15170,7 @@ func main() {
 }
 ```
 
-```bash curl theme={null}
+```bash curl theme={null} theme={null} theme={null} theme={null}
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
 PINECONE_API_KEY="YOUR_API_KEY"
@@ -15310,7 +15310,7 @@ These limits apply to the Vectors API. For an index with a document schema, see 
 
 | Metric | Limit |
 | :- | :- |
-| Max request rate | 5 requests per second per namespace 500 requests per second per index |
+| Max request rate | 20 requests per second per namespace 500 requests per second per index |
 
 ## Data freshness
 
@@ -32554,7 +32554,7 @@ Reaching a monthly usage limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade you
 | Query requests per second per namespace | 100 | 100 | 100 | 100 |
 | Update records per second per namespace | 100 | 100 | 100 | 100 |
 | Update requests per second per namespace | 100 | 100 | 100 | 100 |
-| Update by metadata requests per second per namespace | 5 | 5 | 5 | 5 |
+| Update by metadata requests per second per namespace | 20 | 20 | 20 | 20 |
 | Update by metadata requests per second per index | 500 | 500 | 500 | 500 |
 | Upsert requests per second per namespace | 100 | 100 | 100 | 100 |
 | Fetch requests per second per index | 100 | 100 | 100 | 100 |
@@ -32563,7 +32563,7 @@ Reaching a monthly usage limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade you
 | Delete requests per second per namespace | 100 | 100 | 100 | 100 |
 | Delete records per second per namespace | 5,000 | 5,000 | 5,000 | 5,000 |
 | Delete records per second per index | 5,000 | 5,000 | 5,000 | 5,000 |
-| Delete by metadata requests per second per namespace | 5 | 5 | 5 | 5 |
+| Delete by metadata requests per second per namespace | 20 | 20 | 20 | 20 |
 | Delete by metadata requests per second per index | 500 | 500 | 500 | 500 |
 
 Exceeding a per-second throughput limit returns a `429 - TOO_MANY_REQUESTS`. [Implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic), pace your requests, consider [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) (which aren't subject to per-second read limits) for high-throughput reads, or [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to raise a limit.
@@ -33192,6 +33192,46 @@ func main() {
 }
 ```
 
+```hcl Terraform theme={null}
+# Requires Terraform provider v5.0.0 or later
+# To configure an index, change deletion_protection, tags, or read_capacity in its
+# resource block and run `terraform apply`. Terraform updates the index in place.
+# An index can't switch from dedicated read capacity back to on-demand.
+resource "pinecone_index" "articles" {
+  name = "articles"
+  deployment = {
+    managed = {
+      cloud  = "aws"
+      region = "us-east-1"
+    }
+  }
+  schema = {
+    fields = {
+      title = { string = { full_text_search = {} } }
+      body  = { string = { full_text_search = { language = "en", stemming = true, stop_words = true } } }
+    }
+  }
+
+  # Enable deletion protection
+  deletion_protection = "enabled"
+
+  # Add or change tags
+  tags = {
+    environment = "production"
+  }
+
+  # Convert read capacity from on-demand to dedicated. The apply waits until the
+  # dedicated read nodes are ready.
+  read_capacity = {
+    dedicated = {
+      node_type = "b1"
+      replicas  = 1
+      shards    = 1
+    }
+  }
+}
+```
+
 ```shell curl theme={null}
 PINECONE_API_KEY="YOUR_API_KEY"
 
@@ -33487,6 +33527,19 @@ func main() {
 }
 ```
 
+```hcl Terraform theme={null}
+# Requires Terraform provider v5.0.0 or later
+# The source must be an existing pod-based index
+resource "pinecone_collection" "example_collection" {
+  name   = "example-collection"
+  source = "docs-example"
+}
+
+output "example_collection_status" {
+  value = pinecone_collection.example_collection.status
+}
+```
+
 ```shell curl theme={null}
 PINECONE_API_KEY="YOUR_API_KEY"
 
@@ -33587,6 +33640,27 @@ func main() {
         log.Fatalf("Failed to create index: %v", err)
     }
     fmt.Println(idx.Name, idx.Host)
+}
+```
+
+```hcl Terraform theme={null}
+# Requires Terraform provider v5.0.0 or later
+# Creates a legacy integrated index. For new indexes, declare integrated embedding
+# on a string field of a document index instead (provider v5.1.0 or later).
+resource "pinecone_index" "docs_example" {
+  name = "docs-example"
+  spec = {
+    serverless = {
+      cloud  = "aws"
+      region = "us-east-1"
+    }
+  }
+  embed = {
+    model = "multilingual-e5-large"
+    field_map = {
+      text = "chunk_text"
+    }
+  }
 }
 ```
 
@@ -33762,6 +33836,33 @@ func main() {
 
     host := idx.Host
     fmt.Println(host)
+}
+```
+
+```hcl Terraform theme={null}
+# Requires Terraform provider v5.0.0 or later
+resource "pinecone_index" "articles" {
+  name = "articles"
+  deployment = {
+    managed = {
+      cloud  = "aws"
+      region = "us-east-1"
+    }
+  }
+  schema = {
+    fields = {
+      title = { string = { full_text_search = {} } }
+      body  = { string = { full_text_search = { language = "en", stemming = true, stop_words = true } } }
+    }
+  }
+  read_capacity = {
+    on_demand = {}
+  }
+  deletion_protection = "disabled"
+}
+
+output "articles_host" {
+  value = pinecone_index.articles.host
 }
 ```
 
@@ -34188,6 +34289,17 @@ func main() {
 }
 ```
 
+```hcl Terraform theme={null}
+# Requires Terraform provider v5.0.0 or later
+# This block defines the collection. To delete it, either remove the block and run
+# `terraform apply`, or run:
+#   terraform destroy -target=pinecone_collection.example_collection
+resource "pinecone_collection" "example_collection" {
+  name   = "example-collection"
+  source = "docs-example"
+}
+```
+
 ```shell curl theme={null}
 PINECONE_API_KEY="YOUR_API_KEY"
 
@@ -34250,6 +34362,30 @@ func main() {
         log.Fatalf("Failed to delete index: %v", err)
     }
     fmt.Println("Deleted index docs-example")
+}
+```
+
+```hcl Terraform theme={null}
+# Requires Terraform provider v5.0.0 or later
+# This block defines the index. To delete it, either remove the block and run
+# `terraform apply`, or run:
+#   terraform destroy -target=pinecone_index.docs_example
+# If deletion protection is enabled, first set deletion_protection = "disabled"
+# and run `terraform apply`, then delete the index.
+resource "pinecone_index" "docs_example" {
+  name = "docs-example"
+  deployment = {
+    managed = {
+      cloud  = "aws"
+      region = "us-east-1"
+    }
+  }
+  schema = {
+    fields = {
+      _values = { dense_vector = { dimension = 1536, metric = "cosine" } }
+    }
+  }
+  deletion_protection = "disabled"
 }
 ```
 
@@ -34444,6 +34580,21 @@ func main() {
 }
 ```
 
+```hcl Terraform theme={null}
+# Requires Terraform provider v5.0.0 or later
+data "pinecone_collection" "example_collection" {
+  name = "example-collection"
+}
+
+output "example_collection" {
+  value = {
+    status       = data.pinecone_collection.example_collection.status
+    dimension    = data.pinecone_collection.example_collection.dimension
+    vector_count = data.pinecone_collection.example_collection.vector_count
+  }
+}
+```
+
 ```shell curl theme={null}
 PINECONE_API_KEY="YOUR_API_KEY"
 
@@ -34522,6 +34673,25 @@ func main() {
 
     host := idx.Host
     fmt.Println(host)
+}
+```
+
+```hcl Terraform theme={null}
+# Requires Terraform provider v5.0.0 or later
+data "pinecone_index" "articles" {
+  name = "articles"
+}
+
+output "articles_host" {
+  value = data.pinecone_index.articles.host
+}
+
+output "articles_status" {
+  value = data.pinecone_index.articles.status
+}
+
+output "articles_schema" {
+  value = data.pinecone_index.articles.schema
 }
 ```
 
@@ -34776,6 +34946,17 @@ func main() {
 }
 ```
 
+```hcl Terraform theme={null}
+# Requires Terraform provider v5.0.0 or later
+data "pinecone_collections" "all" {}
+
+output "collections" {
+  value = {
+    for collection in coalesce(data.pinecone_collections.all.collectionsm, []) : collection.name => collection.status
+  }
+}
+```
+
 ```shell curl theme={null}
 PINECONE_API_KEY="YOUR_API_KEY"
 
@@ -34927,6 +35108,20 @@ func main() {
     for _, idx := range idxs {
         fmt.Println(idx.Name, idx.Host, idx.Status.State)
     }
+}
+```
+
+```hcl Terraform theme={null}
+# Requires Terraform provider v5.0.0 or later
+data "pinecone_indexes" "all" {}
+
+output "indexes" {
+  value = {
+    for index in coalesce(data.pinecone_indexes.all.indexes, []) : index.name => {
+      host  = index.host
+      state = index.status.state
+    }
+  }
 }
 ```
 
@@ -40013,7 +40208,7 @@ Reaching a monthly usage limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade you
 | Query requests per second per namespace | 100 | 100 | 100 | 100 |
 | Update records per second per namespace | 100 | 100 | 100 | 100 |
 | Update requests per second per namespace | 100 | 100 | 100 | 100 |
-| Update by metadata requests per second per namespace | 5 | 5 | 5 | 5 |
+| Update by metadata requests per second per namespace | 20 | 20 | 20 | 20 |
 | Update by metadata requests per second per index | 500 | 500 | 500 | 500 |
 | Upsert requests per second per namespace | 100 | 100 | 100 | 100 |
 | Fetch requests per second per index | 100 | 100 | 100 | 100 |
@@ -40022,7 +40217,7 @@ Reaching a monthly usage limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade you
 | Delete requests per second per namespace | 100 | 100 | 100 | 100 |
 | Delete records per second per namespace | 5,000 | 5,000 | 5,000 | 5,000 |
 | Delete records per second per index | 5,000 | 5,000 | 5,000 | 5,000 |
-| Delete by metadata requests per second per namespace | 5 | 5 | 5 | 5 |
+| Delete by metadata requests per second per namespace | 20 | 20 | 20 | 20 |
 | Delete by metadata requests per second per index | 500 | 500 | 500 | 500 |
 
 Exceeding a per-second throughput limit returns a `429 - TOO_MANY_REQUESTS`. [Implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic), pace your requests, consider [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) (which aren't subject to per-second read limits) for high-throughput reads, or [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to raise a limit.
@@ -45761,7 +45956,7 @@ Reaching a monthly usage limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade you
 | Query requests per second per namespace | 100 | 100 | 100 | 100 |
 | Update records per second per namespace | 100 | 100 | 100 | 100 |
 | Update requests per second per namespace | 100 | 100 | 100 | 100 |
-| Update by metadata requests per second per namespace | 5 | 5 | 5 | 5 |
+| Update by metadata requests per second per namespace | 20 | 20 | 20 | 20 |
 | Update by metadata requests per second per index | 500 | 500 | 500 | 500 |
 | Upsert requests per second per namespace | 100 | 100 | 100 | 100 |
 | Fetch requests per second per index | 100 | 100 | 100 | 100 |
@@ -45770,7 +45965,7 @@ Reaching a monthly usage limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade you
 | Delete requests per second per namespace | 100 | 100 | 100 | 100 |
 | Delete records per second per namespace | 5,000 | 5,000 | 5,000 | 5,000 |
 | Delete records per second per index | 5,000 | 5,000 | 5,000 | 5,000 |
-| Delete by metadata requests per second per namespace | 5 | 5 | 5 | 5 |
+| Delete by metadata requests per second per namespace | 20 | 20 | 20 | 20 |
 | Delete by metadata requests per second per index | 500 | 500 | 500 | 500 |
 
 Exceeding a per-second throughput limit returns a `429 - TOO_MANY_REQUESTS`. [Implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic), pace your requests, consider [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) (which aren't subject to per-second read limits) for high-throughput reads, or [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to raise a limit.
@@ -51509,7 +51704,7 @@ Reaching a monthly usage limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade you
 | Query requests per second per namespace | 100 | 100 | 100 | 100 |
 | Update records per second per namespace | 100 | 100 | 100 | 100 |
 | Update requests per second per namespace | 100 | 100 | 100 | 100 |
-| Update by metadata requests per second per namespace | 5 | 5 | 5 | 5 |
+| Update by metadata requests per second per namespace | 20 | 20 | 20 | 20 |
 | Update by metadata requests per second per index | 500 | 500 | 500 | 500 |
 | Upsert requests per second per namespace | 100 | 100 | 100 | 100 |
 | Fetch requests per second per index | 100 | 100 | 100 | 100 |
@@ -51518,7 +51713,7 @@ Reaching a monthly usage limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade you
 | Delete requests per second per namespace | 100 | 100 | 100 | 100 |
 | Delete records per second per namespace | 5,000 | 5,000 | 5,000 | 5,000 |
 | Delete records per second per index | 5,000 | 5,000 | 5,000 | 5,000 |
-| Delete by metadata requests per second per namespace | 5 | 5 | 5 | 5 |
+| Delete by metadata requests per second per namespace | 20 | 20 | 20 | 20 |
 | Delete by metadata requests per second per index | 500 | 500 | 500 | 500 |
 
 Exceeding a per-second throughput limit returns a `429 - TOO_MANY_REQUESTS`. [Implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic), pace your requests, consider [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) (which aren't subject to per-second read limits) for high-throughput reads, or [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to raise a limit.
@@ -57257,7 +57452,7 @@ Reaching a monthly usage limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade you
 | Query requests per second per namespace | 100 | 100 | 100 | 100 |
 | Update records per second per namespace | 100 | 100 | 100 | 100 |
 | Update requests per second per namespace | 100 | 100 | 100 | 100 |
-| Update by metadata requests per second per namespace | 5 | 5 | 5 | 5 |
+| Update by metadata requests per second per namespace | 20 | 20 | 20 | 20 |
 | Update by metadata requests per second per index | 500 | 500 | 500 | 500 |
 | Upsert requests per second per namespace | 100 | 100 | 100 | 100 |
 | Fetch requests per second per index | 100 | 100 | 100 | 100 |
@@ -57266,7 +57461,7 @@ Reaching a monthly usage limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade you
 | Delete requests per second per namespace | 100 | 100 | 100 | 100 |
 | Delete records per second per namespace | 5,000 | 5,000 | 5,000 | 5,000 |
 | Delete records per second per index | 5,000 | 5,000 | 5,000 | 5,000 |
-| Delete by metadata requests per second per namespace | 5 | 5 | 5 | 5 |
+| Delete by metadata requests per second per namespace | 20 | 20 | 20 | 20 |
 | Delete by metadata requests per second per index | 500 | 500 | 500 | 500 |
 
 Exceeding a per-second throughput limit returns a `429 - TOO_MANY_REQUESTS`. [Implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic), pace your requests, consider [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) (which aren't subject to per-second read limits) for high-throughput reads, or [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to raise a limit.
@@ -68572,7 +68767,7 @@ Reaching a monthly usage limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade you
 | Query requests per second per namespace | 100 | 100 | 100 | 100 |
 | Update records per second per namespace | 100 | 100 | 100 | 100 |
 | Update requests per second per namespace | 100 | 100 | 100 | 100 |
-| Update by metadata requests per second per namespace | 5 | 5 | 5 | 5 |
+| Update by metadata requests per second per namespace | 20 | 20 | 20 | 20 |
 | Update by metadata requests per second per index | 500 | 500 | 500 | 500 |
 | Upsert requests per second per namespace | 100 | 100 | 100 | 100 |
 | Fetch requests per second per index | 100 | 100 | 100 | 100 |
@@ -68581,7 +68776,7 @@ Reaching a monthly usage limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade you
 | Delete requests per second per namespace | 100 | 100 | 100 | 100 |
 | Delete records per second per namespace | 5,000 | 5,000 | 5,000 | 5,000 |
 | Delete records per second per index | 5,000 | 5,000 | 5,000 | 5,000 |
-| Delete by metadata requests per second per namespace | 5 | 5 | 5 | 5 |
+| Delete by metadata requests per second per namespace | 20 | 20 | 20 | 20 |
 | Delete by metadata requests per second per index | 500 | 500 | 500 | 500 |
 
 Exceeding a per-second throughput limit returns a `429 - TOO_MANY_REQUESTS`. [Implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic), pace your requests, consider [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) (which aren't subject to per-second read limits) for high-throughput reads, or [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to raise a limit.

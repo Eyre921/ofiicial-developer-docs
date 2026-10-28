@@ -116,6 +116,46 @@ func main() {
 }
 ```
 
+```hcl Terraform theme={null}
+# Requires Terraform provider v5.0.0 or later
+# To configure an index, change deletion_protection, tags, or read_capacity in its
+# resource block and run `terraform apply`. Terraform updates the index in place.
+# An index can't switch from dedicated read capacity back to on-demand.
+resource "pinecone_index" "articles" {
+  name = "articles"
+  deployment = {
+    managed = {
+      cloud  = "aws"
+      region = "us-east-1"
+    }
+  }
+  schema = {
+    fields = {
+      title = { string = { full_text_search = {} } }
+      body  = { string = { full_text_search = { language = "en", stemming = true, stop_words = true } } }
+    }
+  }
+
+  # Enable deletion protection
+  deletion_protection = "enabled"
+
+  # Add or change tags
+  tags = {
+    environment = "production"
+  }
+
+  # Convert read capacity from on-demand to dedicated. The apply waits until the
+  # dedicated read nodes are ready.
+  read_capacity = {
+    dedicated = {
+      node_type = "b1"
+      replicas  = 1
+      shards    = 1
+    }
+  }
+}
+```
+
 ```shell curl theme={null}
 PINECONE_API_KEY="YOUR_API_KEY"
 

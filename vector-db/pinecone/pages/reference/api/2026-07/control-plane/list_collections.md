@@ -65,6 +65,17 @@ func main() {
 }
 ```
 
+```hcl Terraform theme={null}
+# Requires Terraform provider v5.0.0 or later
+data "pinecone_collections" "all" {}
+
+output "collections" {
+  value = {
+    for collection in coalesce(data.pinecone_collections.all.collectionsm, []) : collection.name => collection.status
+  }
+}
+```
+
 ```shell curl theme={null}
 PINECONE_API_KEY="YOUR_API_KEY"
 

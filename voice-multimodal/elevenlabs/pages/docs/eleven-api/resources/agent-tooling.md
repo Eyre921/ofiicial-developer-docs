@@ -75,6 +75,26 @@ LLM: Use my existing chat completion logic.
 Output: Create the Speech Engine server route, client connection code, and setup steps.
 ```
 
+#### Realtime models
+
+Run an ElevenAgents agent on an Eleven Realtime model, or move a browser voice app from OpenAI Realtime to the OpenAI-compatible ElevenLabs Realtime API, using the [Realtime skill](https://github.com/elevenlabs/skills/tree/main/realtime). Install only this skill with:
+
+```bash
+npx skills add elevenlabs/skills --skill realtime
+```
+
+```text
+Use the Realtime skill to switch agent agent_7101k5zvyjhmfg983brhmhkd98n6 to a Realtime model.
+Model: eleven_realtime_v1_mini.
+Check that the agent can use Realtime before changing it, then set the model with the CLI.
+```
+
+```text
+Use the Realtime skill to migrate my browser voice app from OpenAI Realtime to ElevenLabs Realtime.
+Keep the @openai/agents-realtime SDK.
+Output: Update the client secret route, the browser session, and the audio handling.
+```
+
 #### Sound effects
 
 Generate sound effects from text prompts.

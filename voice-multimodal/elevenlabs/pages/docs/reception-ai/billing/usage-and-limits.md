@@ -33,12 +33,12 @@ When you upgrade mid-cycle, your remaining credits carry over, up to the new pla
 
 On paid plans, usage beyond your credit pool is billed at your plan's overage rate:
 
-| Item               | Basic   | Plus    | Premium |
-| ------------------ | ------- | ------- | ------- |
-| Per credit         | \$0.45  | \$0.38  | \$0.30  |
-| Extra phone minute | \$0.45  | \$0.38  | \$0.30  |
-| Extra web minute   | \$0.225 | \$0.19  | \$0.15  |
-| Extra text message | \$0.045 | \$0.038 | \$0.03  |
+| Item               | Basic  | Plus    | Premium |
+| ------------------ | ------ | ------- | ------- |
+| Per credit         | \$0.40 | \$0.32  | \$0.22  |
+| Extra phone minute | \$0.40 | \$0.32  | \$0.22  |
+| Extra web minute   | \$0.20 | \$0.16  | \$0.11  |
+| Extra text message | \$0.04 | \$0.032 | \$0.022 |
 
 The free trial has no overage. When trial credits run out, your receptionist stops answering until you upgrade.
 

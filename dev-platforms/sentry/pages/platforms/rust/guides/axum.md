@@ -30,7 +30,7 @@ To add Sentry with the `axum` integration to your Rust project, add a new depend
 axum = "0.8.4"
 tower = "0.5.2"
 tokio = { version = "1.45.0", features = ["full"] }
-sentry = { version = "0.49.3", features = ["tower-axum-matched-path"] }
+sentry = { version = "0.49.5", features = ["tower-axum-matched-path"] }
 ```
 
 ## [Configure](https://docs.sentry.io/platforms/rust/guides/axum.md#configure)

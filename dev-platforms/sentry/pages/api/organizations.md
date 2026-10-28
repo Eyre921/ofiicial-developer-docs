@@ -24,9 +24,11 @@ url: https://docs.sentry.io/api/organizations/
 * #### [Retrieve an Organization](https://docs.sentry.io/api/organizations/retrieve-an-organization.md)
 * #### [Retrieve an Organization Member](https://docs.sentry.io/api/organizations/retrieve-an-organization-member.md)
 * #### [Retrieve an Organization's Events Count by Project](https://docs.sentry.io/api/organizations/retrieve-an-organizations-events-count-by-project.md)
+* #### [Retrieve Chunk Upload Options](https://docs.sentry.io/api/organizations/retrieve-chunk-upload-options.md)
 * #### [Retrieve Event Counts for an Organization (v2)](https://docs.sentry.io/api/organizations/retrieve-event-counts-for-an-organization-v2.md)
 * #### [Update an Organization](https://docs.sentry.io/api/organizations/update-an-organization.md)
 * #### [Update an Organization Member's Roles](https://docs.sentry.io/api/organizations/update-an-organization-members-roles.md)
+* #### [Upload File Chunks](https://docs.sentry.io/api/organizations/upload-file-chunks.md)
 
 ## Pages in this section
 
@@ -43,7 +45,9 @@ url: https://docs.sentry.io/api/organizations/
 - [Retrieve an Organization](https://docs.sentry.io/api/organizations/retrieve-an-organization.md)
 - [Retrieve an Organization Member](https://docs.sentry.io/api/organizations/retrieve-an-organization-member.md)
 - [Retrieve an Organization's Events Count by Project](https://docs.sentry.io/api/organizations/retrieve-an-organizations-events-count-by-project.md)
+- [Retrieve Chunk Upload Options](https://docs.sentry.io/api/organizations/retrieve-chunk-upload-options.md)
 - [Retrieve Event Counts for an Organization (v2)](https://docs.sentry.io/api/organizations/retrieve-event-counts-for-an-organization-v2.md)
 - [Update an Organization](https://docs.sentry.io/api/organizations/update-an-organization.md)
 - [Update an Organization Member's Roles](https://docs.sentry.io/api/organizations/update-an-organization-members-roles.md)
+- [Upload File Chunks](https://docs.sentry.io/api/organizations/upload-file-chunks.md)
 

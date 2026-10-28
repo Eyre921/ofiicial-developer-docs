@@ -73,6 +73,25 @@ func main() {
 }
 ```
 
+```hcl Terraform theme={null}
+# Requires Terraform provider v5.0.0 or later
+data "pinecone_index" "articles" {
+  name = "articles"
+}
+
+output "articles_host" {
+  value = data.pinecone_index.articles.host
+}
+
+output "articles_status" {
+  value = data.pinecone_index.articles.status
+}
+
+output "articles_schema" {
+  value = data.pinecone_index.articles.schema
+}
+```
+
 ```shell curl theme={null}
 PINECONE_API_KEY="YOUR_API_KEY"
 curl "https://api.pinecone.io/indexes/articles" \

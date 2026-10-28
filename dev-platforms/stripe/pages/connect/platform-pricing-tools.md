@@ -86,6 +86,7 @@ The following roles can access pricing schemes that apply to all connected accou
 | Role | Permissions |
 | --- | --- |
 | Administrator | Read and write |
+| Connect Pricing Analyst | Read and write |
 | Developer | None |
 | IAM Admin | None |
 | Connect Onboarding Analyst | None |
@@ -106,6 +107,7 @@ The following roles can access pricing schemes on a specific connected accountâ€
 | Role | Permissions |
 | --- | --- |
 | Administrator | Read and write |
+| Connect Pricing Analyst | Read and write |
 | Developer | Read and write |
 | Connect Onboarding Analyst | Read and write |
 | View Only | Read Only |

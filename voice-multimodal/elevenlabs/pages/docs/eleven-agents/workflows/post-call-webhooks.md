@@ -155,6 +155,83 @@ export async function POST(req: NextRequest) {
 }
 ```
 
+### Custom request headers
+
+In addition to HMAC signature validation, you can include custom headers with each webhook delivery. This is useful for passing API keys, bearer tokens, or other authentication headers that your receiving endpoint requires.
+
+#### Dashboard
+
+Custom headers are not currently configurable via the ElevenAgents dashboard. Use the SDK or API to set custom headers.
+
+#### CLI
+
+> **Note**
+>
+> Workspace webhooks are managed via the Dashboard or SDK. The CLI does not support creating or updating workspace webhooks directly.
+
+#### SDK
+
+**`Python`**
+
+```python title="Python"
+import os
+
+from dotenv import load_dotenv
+from elevenlabs import ElevenLabs
+
+load_dotenv()
+
+elevenlabs = ElevenLabs(
+    api_key=os.getenv("ELEVENLABS_API_KEY"),
+)
+
+webhook = elevenlabs.webhooks.create(
+    settings={
+        "auth_type": "hmac",
+        "name": "My Webhook",
+        "webhook_url": "https://api.example.com/webhook",
+        "request_headers": {
+            "x-api-key": "your-secret-key",
+            "Authorization": "Bearer your-token",
+        },
+    }
+)
+```
+
+**`TypeScript`**
+
+```typescript title="TypeScript"
+import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+import "dotenv/config";
+
+const elevenlabs = new ElevenLabsClient({
+  apiKey: process.env.ELEVENLABS_API_KEY,
+});
+
+const webhook = await elevenlabs.webhooks.create({
+  settings: {
+    authType: "hmac",
+    name: "My Webhook",
+    webhookUrl: "https://api.example.com/webhook",
+    requestHeaders: {
+      "x-api-key": "your-secret-key",
+      Authorization: "Bearer your-token",
+    },
+  },
+});
+```
+
+> **Note**
+>
+> Custom headers work alongside HMAC authentication. The `auth_type` must still be set to `hmac`,
+> and custom headers are sent in addition to the `ElevenLabs-Signature` header.
+
+> **Warning**
+>
+> Custom headers are write-only. The [list webhooks endpoint](/docs/api-reference/webhooks/list)
+> does not return `request_headers` in its response, so you cannot read back what headers are
+> configured for a webhook.
+
 ### IP allowlisting
 
 For additional security, you can add ElevenLabs' static egress IPs to your allowlist. See [IP allowlisting](/docs/eleven-api/resources/ip-allowlisting) for the complete list of IP addresses.
@@ -163,6 +240,115 @@ For additional security, you can add ElevenLabs' static egress IPs to your allow
 >
 > Using IP allowlisting in combination with HMAC signature validation provides multiple layers of
 > security.
+
+### Per-agent webhook overrides
+
+By default, all agents in your workspace use the webhook configured in your workspace settings. You can override this on a per-agent basis to send post-call data to different endpoints for different agents.
+
+#### Dashboard
+
+### Open agent settings
+
+Navigate to your agent in the [ElevenAgents Dashboard](https://elevenlabs.io/app/agents) and go to **Settings**.
+
+### Configure webhook override
+
+In the **Post-call webhooks** section, select a different webhook from the dropdown to override the workspace default for this agent. You can also configure which event types to send.
+
+![Agent webhook override settings](/docs/_fern-files/_img/eb5d768612d6461a21bc3127611f60724be3e1a55005af43faf48f2d7bf23807.webp)
+
+#### CLI
+
+### Pull the agent configuration
+
+```bash
+elevenlabs agents pull --agent "<agent-name>"
+```
+
+### Edit the agent config
+
+Edit `agent_configs/<agent-name>.json` to set `platform_settings.workspace_overrides.webhooks`:
+
+```json
+{
+  "platform_settings": {
+    "workspace_overrides": {
+      "webhooks": {
+        "post_call_webhook_id": "wh_abc123",
+        "events": ["transcript", "audio"]
+      }
+    }
+  }
+}
+```
+
+### Push your changes
+
+```bash
+elevenlabs agents push --agent "<agent-name>"
+```
+
+#### SDK
+
+**`Python`**
+
+```python title="Python"
+import os
+
+from dotenv import load_dotenv
+from elevenlabs import ElevenLabs
+
+load_dotenv()
+
+elevenlabs = ElevenLabs(
+    api_key=os.getenv("ELEVENLABS_API_KEY"),
+)
+
+elevenlabs.conversational_ai.agents.update(
+    agent_id="agent_7101k5zvyjhmfg983brhmhkd98n6",
+    platform_settings={
+        "workspace_overrides": {
+            "webhooks": {
+                "post_call_webhook_id": "wh_abc123",
+                "events": ["transcript", "audio"],
+            }
+        }
+    },
+)
+```
+
+**`TypeScript`**
+
+```typescript title="TypeScript"
+import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+import "dotenv/config";
+
+const elevenlabs = new ElevenLabsClient({
+  apiKey: process.env.ELEVENLABS_API_KEY,
+});
+
+await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd98n6", {
+  platformSettings: {
+    workspaceOverrides: {
+      webhooks: {
+        postCallWebhookId: "wh_abc123",
+        events: ["transcript", "audio"],
+      },
+    },
+  },
+});
+```
+
+The `post_call_webhook_id` must reference a webhook that already exists in your workspace. You can also specify which event types to send using the `events` array:
+
+| Event type                    | Description                                                       |
+| ----------------------------- | ----------------------------------------------------------------- |
+| `transcript`                  | Transcription data with conversation details and analysis         |
+| `audio`                       | Base64-encoded MP3 audio of the full conversation                 |
+| `call_initiation_failure`     | Information about failed call initiation attempts                 |
+| `answering_machine_detection` | Answering machine detection results (outbound calls only)         |
+| `unredacted_transcript`       | Transcript with PII intact (requires appropriate data retention)  |
+| `unredacted_audio`            | Audio without PII redaction (requires appropriate data retention) |
 
 ## Webhook response structure
 

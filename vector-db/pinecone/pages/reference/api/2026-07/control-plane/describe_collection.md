@@ -61,6 +61,21 @@ func main() {
 }
 ```
 
+```hcl Terraform theme={null}
+# Requires Terraform provider v5.0.0 or later
+data "pinecone_collection" "example_collection" {
+  name = "example-collection"
+}
+
+output "example_collection" {
+  value = {
+    status       = data.pinecone_collection.example_collection.status
+    dimension    = data.pinecone_collection.example_collection.dimension
+    vector_count = data.pinecone_collection.example_collection.vector_count
+  }
+}
+```
+
 ```shell curl theme={null}
 PINECONE_API_KEY="YOUR_API_KEY"
 

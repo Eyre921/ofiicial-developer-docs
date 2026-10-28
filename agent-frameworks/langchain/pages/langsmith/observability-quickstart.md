@@ -220,7 +220,7 @@ if __name__ == "__main__":
     print(assistant("How long are LangSmith traces stored?"))
 ```
 
-```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import OpenAI from "openai";
 import { wrapOpenAI } from "langsmith/wrappers";
 import { traceable } from "langsmith/traceable";
@@ -399,7 +399,7 @@ if __name__ == "__main__":
     print(assistant("How long are LangSmith traces stored?"))
 ```
 
-```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import Anthropic from "@anthropic-ai/sdk";
 import { wrapAnthropic } from "langsmith/wrappers/anthropic";
 import { traceable } from "langsmith/traceable";
@@ -459,7 +459,7 @@ if __name__ == "__main__":
     print(assistant("How long are LangSmith traces stored?"))
 ```
 
-```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { GoogleGenAI } from "@google/genai";
 import { wrapGemini } from "langsmith/wrappers/gemini";
 import { traceable } from "langsmith/traceable";

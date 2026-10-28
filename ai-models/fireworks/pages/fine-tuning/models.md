@@ -10,7 +10,7 @@ Managed training, the Training API, and serverless training all draw from the sa
 
 > [!NOTE]
 >
-> Muse Glimmer 30B SFT is free to train until 11/30.\
+> Muse Glimmer 30B SFT is free to train until November 30, 2026.\
 > No credit card required. [Start here](https://app.fireworks.ai/dashboard/fine-tuning/create?type=supervised\&baseModel=accounts/fireworks/models/muse-glimmer-30b)
 
 ## Model availability

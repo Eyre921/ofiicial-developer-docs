@@ -57,6 +57,30 @@ func main() {
 }
 ```
 
+```hcl Terraform theme={null}
+# Requires Terraform provider v5.0.0 or later
+# This block defines the index. To delete it, either remove the block and run
+# `terraform apply`, or run:
+#   terraform destroy -target=pinecone_index.docs_example
+# If deletion protection is enabled, first set deletion_protection = "disabled"
+# and run `terraform apply`, then delete the index.
+resource "pinecone_index" "docs_example" {
+  name = "docs-example"
+  deployment = {
+    managed = {
+      cloud  = "aws"
+      region = "us-east-1"
+    }
+  }
+  schema = {
+    fields = {
+      _values = { dense_vector = { dimension = 1536, metric = "cosine" } }
+    }
+  }
+  deletion_protection = "disabled"
+}
+```
+
 ```shell curl theme={null}
 PINECONE_API_KEY="YOUR_API_KEY"
 

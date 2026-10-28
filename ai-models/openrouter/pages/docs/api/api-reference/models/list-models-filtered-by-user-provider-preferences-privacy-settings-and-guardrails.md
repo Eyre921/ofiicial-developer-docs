@@ -320,6 +320,36 @@ paths:
               schema:
                 $ref: '#/components/schemas/NotFoundResponse'
           description: Not Found - Resource does not exist
+        '408':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 408
+                  message: Operation timed out. Please try again later.
+              schema:
+                $ref: '#/components/schemas/RequestTimeoutResponse'
+          description: Request Timeout - Operation exceeded time limit
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: Resource conflict. Please try again later.
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+          description: Conflict - Resource conflict or concurrent modification
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: Rate limit exceeded
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: Too Many Requests - Rate limit exceeded
         '500':
           content:
             application/json:
@@ -478,6 +508,69 @@ components:
       required:
         - error
       type: object
+    RequestTimeoutResponse:
+      description: Request Timeout - Operation exceeded time limit
+      example:
+        error:
+          code: 408
+          message: Operation timed out. Please try again later.
+      properties:
+        error:
+          $ref: '#/components/schemas/RequestTimeoutResponseErrorData'
+        openrouter_metadata:
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
+        user_id:
+          type:
+            - string
+            - 'null'
+      required:
+        - error
+      type: object
+    ConflictResponse:
+      description: Conflict - Resource conflict or concurrent modification
+      example:
+        error:
+          code: 409
+          message: Resource conflict. Please try again later.
+      properties:
+        error:
+          $ref: '#/components/schemas/ConflictResponseErrorData'
+        openrouter_metadata:
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
+        user_id:
+          type:
+            - string
+            - 'null'
+      required:
+        - error
+      type: object
+    TooManyRequestsResponse:
+      description: Too Many Requests - Rate limit exceeded
+      example:
+        error:
+          code: 429
+          message: Rate limit exceeded
+      properties:
+        error:
+          $ref: '#/components/schemas/TooManyRequestsResponseErrorData'
+        openrouter_metadata:
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
+        user_id:
+          type:
+            - string
+            - 'null'
+      required:
+        - error
+      type: object
     InternalServerResponse:
       description: Internal Server Error - Unexpected server error
       example:
@@ -605,6 +698,63 @@ components:
       example:
         code: 404
         message: Resource not found
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        metadata:
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
+      required:
+        - code
+        - message
+      type: object
+    RequestTimeoutResponseErrorData:
+      description: Error data for RequestTimeoutResponse
+      example:
+        code: 408
+        message: Operation timed out. Please try again later.
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        metadata:
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
+      required:
+        - code
+        - message
+      type: object
+    ConflictResponseErrorData:
+      description: Error data for ConflictResponse
+      example:
+        code: 409
+        message: Resource conflict. Please try again later.
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        metadata:
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
+      required:
+        - code
+        - message
+      type: object
+    TooManyRequestsResponseErrorData:
+      description: Error data for TooManyRequestsResponse
+      example:
+        code: 429
+        message: Rate limit exceeded
       properties:
         code:
           type: integer

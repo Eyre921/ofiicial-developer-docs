@@ -183,7 +183,12 @@ run();
 | Error Type | Status Code | Content Type |
 | - | - | - |
 | errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
 | errors.ForbiddenResponseError | 403 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.RequestTimeoutResponseError | 408 | application/json |
+| errors.ConflictResponseError | 409 | application/json |
+| errors.TooManyRequestsResponseError | 429 | application/json |
 | errors.InternalServerResponseError | 500 | application/json |
 | errors.ServiceUnavailableResponseError | 503 | application/json |
 | errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
@@ -347,6 +352,9 @@ run();
 | errors.UnauthorizedResponseError | 401 | application/json |
 | errors.ForbiddenResponseError | 403 | application/json |
 | errors.NotFoundResponseError | 404 | application/json |
+| errors.RequestTimeoutResponseError | 408 | application/json |
+| errors.ConflictResponseError | 409 | application/json |
+| errors.TooManyRequestsResponseError | 429 | application/json |
 | errors.InternalServerResponseError | 500 | application/json |
 | errors.ServiceUnavailableResponseError | 503 | application/json |
 | errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |

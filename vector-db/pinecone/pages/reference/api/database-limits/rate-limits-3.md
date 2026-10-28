@@ -53,7 +53,7 @@ Reaching a monthly usage limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade you
 | Query requests per second per namespace | 100 | 100 | 100 | 100 |
 | Update records per second per namespace | 100 | 100 | 100 | 100 |
 | Update requests per second per namespace | 100 | 100 | 100 | 100 |
-| Update by metadata requests per second per namespace | 5 | 5 | 5 | 5 |
+| Update by metadata requests per second per namespace | 20 | 20 | 20 | 20 |
 | Update by metadata requests per second per index | 500 | 500 | 500 | 500 |
 | Upsert requests per second per namespace | 100 | 100 | 100 | 100 |
 | Fetch requests per second per index | 100 | 100 | 100 | 100 |
@@ -62,7 +62,7 @@ Reaching a monthly usage limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade you
 | Delete requests per second per namespace | 100 | 100 | 100 | 100 |
 | Delete records per second per namespace | 5,000 | 5,000 | 5,000 | 5,000 |
 | Delete records per second per index | 5,000 | 5,000 | 5,000 | 5,000 |
-| Delete by metadata requests per second per namespace | 5 | 5 | 5 | 5 |
+| Delete by metadata requests per second per namespace | 20 | 20 | 20 | 20 |
 | Delete by metadata requests per second per index | 500 | 500 | 500 | 500 |
 
 Exceeding a per-second throughput limit returns a `429 - TOO_MANY_REQUESTS`. [Implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic), pace your requests, consider [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) (which aren't subject to per-second read limits) for high-throughput reads, or [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to raise a limit.

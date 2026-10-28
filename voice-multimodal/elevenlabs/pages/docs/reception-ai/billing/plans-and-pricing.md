@@ -15,14 +15,14 @@ Reception.ai offers a free trial and three paid plans. You can upgrade at any ti
 |                            | Free Trial    | Basic                   | Plus                    | Premium                    |
 | -------------------------- | ------------- | ----------------------- | ----------------------- | -------------------------- |
 | **Price**                  | \$0 (14 days) | \$29/month              | \$79/month              | \$199/month                |
-| **Annual price**           | —             | \$288/year (\$24/month) | \$792/year (\$66/month) | \$1,992/year (\$166/month) |
+| **Annual price**           | —             | \$290/year (\$24/month) | \$790/year (\$66/month) | \$1,990/year (\$166/month) |
 | **Included credits**       | 30            | 75                      | 275                     | 1,000                      |
 | **Phone numbers**          | 1             | 1                       | 3                       | 5                          |
 | **Locations**              | 20            | 1                       | 1                       | 20                         |
 | **Knowledge sources**      | 5             | 5                       | 10                      | 20                         |
 | **Assistant messages/day** | 150           | 150                     | 300                     | 500                        |
 | **Concurrent calls**       | 20            | 1                       | 3                       | 10                         |
-| **Overage rate**           | —             | \$0.45/credit           | \$0.38/credit           | \$0.30/credit              |
+| **Overage rate**           | —             | \$0.40/min              | \$0.32/min              | \$0.22/min                 |
 | **Zapier**                 | Yes           | Yes                     | Yes                     | Yes                        |
 | **Webhooks and MCP**       | Yes           | Yes                     | Yes                     | Yes                        |
 | **Google Calendar**        | Yes           | Yes                     | Yes                     | Yes                        |
@@ -53,7 +53,7 @@ Each plan includes a monthly credit pool shared across all activity:
 
 ## Overage
 
-On paid plans, usage beyond your included credits is billed at your plan's overage rate: Basic **$0.45**, Plus **$0.38**, and Premium **\$0.30** per credit.
+On paid plans, usage beyond your included credits is billed at your plan's overage rate. A phone minute is one credit: Basic **$0.40**, Plus **$0.32**, and Premium **\$0.22** per extra phone minute. Web minutes and text messages draw from the same pool, so they are billed at that rate per credit.
 
 ## Upgrading
 

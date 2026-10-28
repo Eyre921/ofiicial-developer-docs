@@ -86,6 +86,12 @@ print(second.output_text)
 
 Set `store=False` to opt out of storage. Responses created with `store=False` cannot be referenced by `previous_response_id`, so you must manage history yourself by passing prior turns in `input`.
 
+> [!WARNING]
+>
+> Stored responses are kept for up to 30 days, but they are held in a cache and can be evicted much sooner, often within about an hour. `previous_response_id` and `GET /v1/responses/{response_id}` are reliable for turns that follow closely, not for conversations with long gaps.
+>
+> If a request returns `404` with `"Response not found"`, resend the conversation history in `input` instead. To keep resent history cheap, set the same `prompt_cache_key` on every request in a conversation (for example, your conversation ID) so repeated prefixes are served from the [prompt cache](/guides/prompt-caching). For long-running conversations, managing history yourself with `store=False` avoids depending on server-side storage entirely.
+
 ### Managing stored responses
 
 | Operation | Endpoint |

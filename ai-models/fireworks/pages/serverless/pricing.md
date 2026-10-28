@@ -40,6 +40,7 @@ Per-model pricing for headline models. Fast variants appear as adjacent rows. In
 | [DeepSeek V4.1 Flash 1017 (US)](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017) | \$0.45 / \$0.009 / \$1.80 | \$0.5625 / \$0.01125 / \$2.25 |
 | [GLM 5.3 Flash](https://app.fireworks.ai/models/fireworks/glm-5p3-flash) | \$0.15 / \$0.03 / \$0.50 | \$0.1875 / \$0.0375 / \$0.625 |
 | [GLM 5.3 Flash (US)](https://app.fireworks.ai/models/fireworks/glm-5p3-flash) | \$0.225 / \$0.045 / \$0.75 | \$0.28125 / \$0.05625 / \$0.9375 |
+| [Ultramarine 1 Flash (US)](https://app.fireworks.ai/models/fireworks/ultramarine-1-flash-us) | \$0.225 / \$0.045 / \$0.75 | \$0.28125 / \$0.05625 / \$0.9375 |
 | [GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3) | \$1.40 / \$0.26 / \$4.40 | \$1.75 / \$0.325 / \$5.50 |
 | [GLM 5.3 (US)](https://app.fireworks.ai/models/fireworks/glm-5p3) | \$2.10 / \$0.39 / \$6.60 | \$2.625 / \$0.4875 / \$8.25 |
 | [GLM 5.3 Fast](https://app.fireworks.ai/models/fireworks/glm-5p3) | \$2.10 / \$0.39 / \$6.60 | — |

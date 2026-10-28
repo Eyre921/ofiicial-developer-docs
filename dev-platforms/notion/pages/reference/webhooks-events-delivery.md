@@ -1073,6 +1073,8 @@ Notion currently supports the following event `type`s. We've added an example pa
 }
 ```
 
+For a comment on a database page property, comment events also include `data.property_id`. It matches the property's `id` in the [page object](/reference/page-property-values). Other comment events leave it out.
+
 ### comment.updated
 
 ```json JSON expandable theme={null}
