@@ -12,7 +12,7 @@ Set the version by including a `Notion-Version` header. Setting this header is *
 
 ```bash cURL theme={null}
 curl https://api.notion.com/v1/users/01da9b00-e400-4959-91ce-af55307647e5 \
-  -H "Authorization: Bearer secret_t1CdN9S8yicG5eWLUOfhcWaOscVnFXns"
+  -H "Authorization: Bearer ntn_..." \
   -H "Notion-Version: 2026-03-11"
 ```
 

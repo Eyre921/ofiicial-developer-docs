@@ -22,6 +22,7 @@ The Integrate section provides everything you need to connect your agents to you
 | Build iOS apps              | [Swift SDK](/docs/eleven-agents/libraries/swift)                                  | Native iOS SDK for voice agents                                    |
 | Build Android apps          | [Kotlin SDK](/docs/eleven-agents/libraries/kotlin)                                | Native Android SDK for voice agents                                |
 | Build React Native apps     | [React Native SDK](/docs/eleven-agents/libraries/react-native)                    | Cross-platform iOS and Android with React Native                   |
+| Build Unity games           | [Unity SDK](/docs/eleven-agents/libraries/unity)                                  | Voice agents in Unity scenes for desktop and WebGL builds          |
 | Connect via SIP trunk       | [SIP trunk](/docs/eleven-agents/phone-numbers/sip-trunking)                       | Integrate with existing telephony infrastructure                   |
 | Make batch outbound calls   | [Batch calls](/docs/eleven-agents/phone-numbers/batch-calls)                      | Trigger multiple calls programmatically                            |
 | Use Twilio integration      | [Twilio](/docs/eleven-agents/phone-numbers/twilio-integration/native-integration) | Native Twilio integration for phone calls                          |

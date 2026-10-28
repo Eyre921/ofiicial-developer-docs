@@ -949,7 +949,7 @@ Revised **Section 3.1** of the [Developer Terms](https://www.notion.so/Developer
   * [Formulas 2.0: How to use Notion's new and improved formulas with your existing setups](https://www.notion.so/help/guides/new-formulas-whats-changed)
   * [How to write Notion formulas that extend the capabilities of your databases](https://www.notion.so/help/guides/write-formulas-that-extend-capabilities-of-databases)
 * The example for the [Formula database property](/reference/property-object#formula) was updated to align with the new Formula 2.0 launch.
-* [New sample code](https://github.com/makenotion/notion-cookbook/tree/main/examples/javascript/intro-to-notion-api) was added to the [Notion SDK for JavaScript's `examples`](https://github.com/makenotion/notion-cookbook/tree/main/examples/javascript) directory. This new example demonstrates how to use the Public API with basic and intermediate levels of difficulty.
+* [New sample code](https://github.com/makenotion/notion-cookbook/tree/main/examples/intro-to-notion-api) was added to the [Notion SDK for JavaScript's `examples`](https://github.com/makenotion/notion-cookbook/tree/main/examples) directory. This new example demonstrates how to use the Public API with basic and intermediate levels of difficulty.
 
 > [!NOTE]
 >

@@ -1,0 +1,37 @@
+---
+title: "Encryption at rest"
+source: https://docs.langchain.com/langsmith/encryption
+path: langsmith/encryption
+---
+
+Choose between built-in AES encryption and custom encryption handlers for Agent Server data.
+
+Agent Server supports two approaches to application-level encryption at rest. Use built-in AES encryption unless you need per-tenant keys or an external key management system.
+
+## Choose an encryption approach
+
+> **[Built-in AES encryption](/langsmith/aes-encryption)**
+>
+> Recommended for most deployments. Configure an AES key to encrypt checkpoint data and selected JSON fields. Supports lazy key rotation.
+
+> **[Custom encryption](/langsmith/custom-encryption)**
+>
+> Use only when built-in AES does not meet your requirements. Supports per-tenant keys and external key management systems through custom handlers.
+
+Choose [built-in AES encryption](/langsmith/aes-encryption) if you need:
+
+* One encryption key for the deployment
+* Key rotation
+* Selective encryption of JSON fields
+
+Choose [custom encryption](/langsmith/custom-encryption) only if you need:
+
+* Different encryption keys for different tenants
+* An external key management system
+* Custom encryption logic or audit behavior
+
+***
+
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/encryption.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

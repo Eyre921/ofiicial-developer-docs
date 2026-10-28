@@ -1,0 +1,82 @@
+---
+title: "Develop locally with LangSmith Studio"
+source: https://docs.langchain.com/langsmith/javascript/managed-deep-agents-local-development
+path: langsmith/javascript/managed-deep-agents-local-development
+---
+
+Run and test a Managed Deep Agent locally with mda dev and LangSmith Studio.
+
+`mda dev` compiles a Managed Deep Agents project and runs it on a local Agent Server. It opens [LangSmith Studio](/langsmith/studio) so you can interact with the agent and inspect its behavior before deploying.
+
+> [!NOTE]
+>
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
+
+## Start local Studio
+
+Install the project dependencies and add the model provider credentials to `.env`.
+
+From the project root, run:
+
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npx mda dev
+```
+
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm exec mda dev
+```
+
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bunx mda dev
+```
+
+The CLI prints the local server and Studio URLs and opens Studio in your browser. Send messages in Studio to inspect model responses, tool calls, state, and interrupts.
+
+After changing project files, stop and rerun `mda dev` to recompile the project.
+
+## What `mda dev` does
+
+`mda dev`:
+
+1. Validates the project and compiles it into `.mda/build`.
+2. Copies the project `.env` into the local build and adds local-only identity configuration when needed.
+3. Creates a local [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub) mock for instructions, skills, and memory.
+4. Starts the language-specific LangGraph development server.
+5. Opens the agent in Studio.
+
+Local development does not create or update a hosted deployment.
+
+## Trace local runs
+
+`mda dev` sends traces to the agent's **Local** environment. The project name is `{name}-local`, taken from the `name` you pass to `define_deep_agent` or `defineDeepAgent`.
+
+In an [agent-based workspace](/langsmith/agents), LangSmith rejects those traces until the agent record exists. [`mda deploy`](/langsmith/javascript/managed-deep-agents-deploy) creates that record. `mda dev` alone does not.
+
+Before you rely on local traces, [create the agent](/langsmith/create-an-agent) once with that same identifier in the UI or API, or run `mda deploy` once. Studio chat still works while traces are rejected.
+
+## Configure the local server
+
+| Flag | Use |
+| - | - |
+| `--port PORT` | Set the local server port. |
+| `--hostname HOSTNAME` | Set the hostname on which the server listens. |
+| `--no-browser` | Start the server without opening Studio automatically. |
+| `--no-reload` | Disable the LangGraph development server's hot reload. |
+
+For all command details, see the [`mda dev` CLI reference](/langsmith/javascript/managed-deep-agents-cli#develop-locally).
+
+## Understand local behavior
+
+`mda dev` uses local defaults to make testing easier:
+
+* If the agent uses identity, Studio provides a local test user automatically.
+* If the configured sandbox is unavailable, the agent uses a temporary local folder instead. The CLI prints the folder path.
+* [Schedules](/langsmith/javascript/managed-deep-agents-schedules) do not run. `mda dev` lists each schedule at startup but does not provision it, so no scheduled run fires locally.
+
+These defaults differ from a deployed agent. Test identity and sandbox behavior in a development deployment before using the agent in production.
+
+***
+
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-local-development.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

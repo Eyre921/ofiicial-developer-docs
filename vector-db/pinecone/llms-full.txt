@@ -68171,7 +68171,7 @@ Browse Pinecone's hosted embedding and reranking model gallery with details on d
 
 Inference
 
-Build end-to-end faster with models hosted by Pinecone.
+Embed and rerank with these models using only your Pinecone API key.
 
 [Request a model](https://www.pinecone.io/request-a-model/)
 
@@ -68253,34 +68253,6 @@ Text
 
 Try this model
 
-![Cohere Logo](https://cdn.sanity.io/images/vr8gru94/production/33b1cb253308f74fc83248746b7370a89b3c2c05-250x250.svg)
-
-## cohere-rerank-3.5
-
-Deprecated
-
-COHERE
-
-Cohere's previous-generation reranker. Deprecated; requests are served by cohere-rerank-4-fast.
-
-**Task**
-
-Rerank
-
-**Modality**
-
-Text
-
-**Max Input Tokens**
-
-4096
-
-**Price**
-
-\$2.00 / 1k rerank units
-
-Try this model
-
 ![Pinecone Logo](https://cdn.sanity.io/images/vr8gru94/production/f995ec77f7d3ccf3ed269fb6076ea3efdf22a8a6-724x785.png)
 
 ## pinecone-sparse-english-v0
@@ -68326,6 +68298,32 @@ Text
 **Max Input Tokens**
 
 1024
+
+**Price**
+
+\$2.00 / 1k requests
+
+Try this model
+
+![Pinecone Logo](https://cdn.sanity.io/images/vr8gru94/production/f995ec77f7d3ccf3ed269fb6076ea3efdf22a8a6-724x785.png)
+
+## pinecone-rerank-v0
+
+PINECONE
+
+Pinecone's reranker, optimized for precision in RAG.
+
+**Task**
+
+Rerank
+
+**Modality**
+
+Text
+
+**Max Input Tokens**
+
+512
 
 **Price**
 

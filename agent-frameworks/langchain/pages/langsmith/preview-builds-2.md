@@ -1,0 +1,54 @@
+---
+title: "Preview builds"
+source: https://docs.langchain.com/langsmith/preview-builds
+path: langsmith/preview-builds
+---
+
+Create temporary preview deployments for pull requests to test Agent Server changes before merging.
+
+Preview builds create temporary **preview deployments** for pull requests. Use a preview deployment to test Agent Server changes in isolation before you merge them into the branch that runs your parent deployment.
+
+When a pull request triggers a preview build, LangSmith builds the latest commit from the source branch as the preview deployment's first revision. Each subsequent commit to that branch triggers a new revision.
+
+> [!NOTE]
+>
+> Preview builds are in public beta and are available only on LangSmith Cloud for deployments created through the GitHub integration.
+
+## Enable preview builds
+
+To enable preview builds:
+
+1. From the **Deployments** view, select a deployment.
+2. In the top-right corner, select the gear icon (**Deployment Settings**).
+3. Scroll to the **Preview Builds** section.
+4. Select **Enable preview builds**.
+5. Select a trigger mode:
+   * **Every PR**: Any pull request against the deployment branch triggers a preview build.
+   * **Label only**: A pull request triggers a preview build only when it has the configured label.
+6. Configure the preview limits:
+   * **Idle TTL**: The time a preview deployment can remain inactive after its latest revision before LangSmith deletes it.
+   * **Max concurrent previews**: The maximum number of preview deployments that can run concurrently for the parent deployment.
+7. Select **Save**.
+
+## Manage secrets
+
+A preview deployment inherits the parent deployment's secrets when LangSmith creates it. You can override the inherited secrets on the preview deployment.
+
+Changes to the parent deployment's secrets do not propagate to existing preview deployments.
+
+## Delete preview deployments
+
+LangSmith deletes a preview deployment when its idle TTL expires. You can also delete it manually at any time.
+
+Deleting the parent deployment deletes all of its preview deployments.
+
+## See also
+
+* [Deploy on Cloud](/langsmith/deploy-to-cloud)
+* [Implement a CI/CD pipeline](/langsmith/cicd-pipeline-example)
+
+***
+
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/preview-builds.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

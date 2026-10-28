@@ -102,7 +102,7 @@ Check `request_status.type === "incomplete"` on every response page to know whet
 
 For connections that need to process all pages in a large data source, we recommend:
 
-* Reading every row past the limit by partitioning the query into `created_time` windows. See [Query large data sources](/guides/data-apis/query-large-data-sources) for the technique and a [runnable cookbook example](https://github.com/makenotion/notion-cookbook/tree/main/examples/javascript/query-large-data-sources).
+* Reading every row past the limit by partitioning the query into `created_time` windows. See [Query large data sources](/guides/data-apis/query-large-data-sources) for the technique and a [runnable cookbook example](https://github.com/makenotion/notion-cookbook/tree/main/examples/query-large-data-sources).
 * Using [filters](/reference/filter-data-source-entries) to narrow the result set (e.g. filter by `last_edited_time` to fetch only recently changed pages).
 * Setting up [connection webhooks](/reference/webhooks) for incremental sync instead of polling the full data source on a schedule.
 

@@ -1,0 +1,119 @@
+---
+title: "Managed Deep Agents project structure"
+source: https://docs.langchain.com/langsmith/javascript/managed-deep-agents-project-structure
+path: langsmith/javascript/managed-deep-agents-project-structure
+---
+
+Understand the project layout for Managed Deep Agents.
+
+A Managed Deep Agents project is a normal TypeScript package with one required root agent entry. Other paths are either ordinary modules you import, or files and directories that MDA discovers to enable managed capabilities.
+
+> [!NOTE]
+>
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
+
+## Project layout
+
+```text Project layout theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+my-agent/
+├── agent.ts | agent.tsx            # Core agent definition
+
+├── instructions.md                 # Managed context
+├── skills/
+│   └── <name>/
+│       └── SKILL.md
+
+├── tools/                          # Application code
+│   └── mcp.ts                      # MCP server declaration
+├── middleware/
+
+├── channels/                       # Managed configuration
+│   └── <name>.ts
+├── schedules/
+│   └── <name>.ts
+├── sandbox/
+│   └── index.ts
+├── identity.ts
+├── memory.ts
+
+├── package.json                    # Dependencies
+├── .env                            # Local and deploy secrets
+
+└── evals/                          # Harbor workspace
+    ├── harbor-job.json
+    └── <task>/                     # Harbor task
+        ├── Task.md
+        ├── instruction.md
+        ├── environment/
+        └── tests/
+```
+
+The only required file is `agent.ts` or `agent.tsx` at the project root containing the [agent definition](/langsmith/javascript/managed-deep-agents-agent-definition) as a named `agent`. It must export a named `agent` created with `defineDeepAgent`. Use only one agent entry in a project.
+
+The layout above shows the common `.ts` names. TypeScript managed declarations also accept the supported `.tsx`, `.mts`, or `.cts` variants.
+
+## How MDA treats project files
+
+* **Managed context**: [`instructions.md`](/langsmith/javascript/managed-deep-agents-instructions) defines the system prompt. Each directory under [`skills/`](/langsmith/javascript/managed-deep-agents-skills) contains task-specific instructions, such as a `SKILL.md` and any supporting files. MDA syncs both `instructions.md` and `skills/` to [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub). Optional [durable memory](/langsmith/javascript/managed-deep-agents-memory) is also backed by Context Hub.
+
+* **Application code**: Files under [`tools/`](/langsmith/javascript/managed-deep-agents-tools) and [`middleware/`](/langsmith/javascript/managed-deep-agents-middleware) are ordinary project modules. Import them from the agent entry.
+
+* **Managed configuration**: Certain paths enable capabilities when present. For `channels/` and `schedules/`, only direct children are managed declarations; nested modules are not.
+
+  | Path | Enables |
+  | - | - |
+  | `identity.ts` | [Caller authentication](/langsmith/javascript/managed-deep-agents-identity) |
+  | `memory.ts` | [Durable memory](/langsmith/javascript/managed-deep-agents-memory) |
+  | `channels/<name>.ts` | [Messaging channels](/langsmith/javascript/managed-deep-agents-channels) |
+  | `tools/mcp.ts` | [MCP connectors](/langsmith/javascript/managed-deep-agents-mcp-connectors) |
+  | `schedules/<name>.ts` | [Cron schedules](/langsmith/javascript/managed-deep-agents-schedules) |
+  | `sandbox/index.ts` | [Sandbox filesystem and shell](/langsmith/javascript/managed-deep-agents-sandboxes) |
+
+  `tools/` holds ordinary modules with one exception. `tools/mcp.ts` is a managed declaration and exports a named `mcp`. Every other module under `tools/` is application code you import.
+
+* **Dependencies and secrets**: Declare dependencies in `package.json`. MDA loads `.env` locally and forwards non-reserved values as deployment secrets. Reserved platform variables and `.env` files are not included in the build archive. For more information, see [Deploy a Managed Deep Agent](/langsmith/javascript/managed-deep-agents-deploy).
+
+* **Evals**: Managed Deep Agents [evals](/langsmith/javascript/managed-deep-agents-evals) are Harbor evals. Run `mda evals init -i` and develop tasks with a coding agent and the `eval-engineering` skill. Generated runtime files stay under `.mda/evals/` and are not included in the deployed agent build.
+
+## Share code from outside the project
+
+The build copies only the project directory. To use a package from a sibling directory, declare it as a local dependency:
+
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install ../shared
+```
+
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add ../shared
+```
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { helper } from "@acme/shared";
+```
+
+Put the shared code in its own package. Its `package.json` needs a `name` and a `main` or `exports` entry, which can point to `.ts` files:
+
+```json ../shared/package.json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "name": "@acme/shared",
+  "main": "./index.ts"
+}
+```
+
+MDA copies the package into the build. `mda dev` reloads when you edit it, and `mda deploy` ships it.
+
+## Next steps
+
+> **[Quickstart](/langsmith/javascript/managed-deep-agents-quickstart)**
+>
+> Create and deploy your first Managed Deep Agent with the `mda` CLI.
+
+> **[Tutorial](/langsmith/javascript/managed-deep-agents-tutorial)**
+>
+> Add durable memory and a daily schedule to the quickstart research assistant.
+
+***
+
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-project-structure.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

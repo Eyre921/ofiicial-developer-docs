@@ -32,7 +32,7 @@ And looking for `Tunable: true`.
 
 **2. Prepare a dataset**
 
-A dataset is JSONL: one JSON object per line, from 3 to 3 million lines. Each object has a `messages` array and may have a `tools` array of OpenAI function definitions. There is no weight on the example itself.
+A dataset is JSONL: one JSON object per line, from 3 to 3 million lines. Each object has a `messages` array and may have a `tools` array of OpenAI function definitions. There is no weight on the example itself. This is the OpenAI chat format, so an existing OpenAI SFT dataset works without conversion.
 
 Each message is an object:
 

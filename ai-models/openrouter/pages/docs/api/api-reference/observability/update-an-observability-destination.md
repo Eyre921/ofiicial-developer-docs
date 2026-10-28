@@ -2723,7 +2723,7 @@ components:
                 require the external ID below, and its permissions must allow
                 s3:PutObject on the bucket and prefix (plus kms:GenerateDataKey
                 for SSE-KMS buckets).
-              pattern: ^arn:aws(?:-[a-z]+)*:iam::\d{12}:role\/[\w+=,.@/-]{1,512}$
+              pattern: ^arn:aws:iam::\d{12}:role\/[\w+=,.@/-]{1,512}$
               type: string
               visibleWhen:
                 - field: provider

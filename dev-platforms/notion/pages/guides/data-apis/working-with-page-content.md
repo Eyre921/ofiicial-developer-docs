@@ -31,8 +31,8 @@ Let's start with a simple example, a [paragraph block](/reference/block#paragrap
   "object": "block",
   "id": "380c78c0-e0f5-4565-bdbd-c4ccb079050d",
   "type": "paragraph",
-  "created_time": "",
-  "last_edited_time": "",
+  "created_time": "2022-03-01T19:05:00.000Z",
+  "last_edited_time": "2022-03-01T19:05:00.000Z",
   "has_children": false,
 
   "paragraph": {
@@ -53,8 +53,8 @@ Now let's look at an example where the block has child blocks: a paragraph follo
   "object": "block",
   "id": "380c78c0-e0f5-4565-bdbd-c4ccb079050d",
   "type": "paragraph",
-  "created_time": "",
-  "last_edited_time": "",
+  "created_time": "2022-03-01T19:05:00.000Z",
+  "last_edited_time": "2022-03-01T19:05:00.000Z",
   "has_children": true,
 
   "paragraph": {
@@ -67,8 +67,8 @@ Now let's look at an example where the block has child blocks: a paragraph follo
         "object": "block",
         "id": "6d5b2463-a1c1-4e22-9b3b-49b3fe7ad384",
         "type": "to_do",
-        "created_time": "",
-        "last_edited_time": "",
+        "created_time": "2022-03-01T19:05:00.000Z",
+        "last_edited_time": "2022-03-01T19:05:00.000Z",
         "has_children": false,
 
         "to_do": {

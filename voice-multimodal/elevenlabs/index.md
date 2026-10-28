@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1402 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1399 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -110,11 +110,9 @@
 - `docs/api-reference/dubbing/source-transcript/delete-source-segment` — [Delete source segment](pages/docs/api-reference/dubbing/source-transcript/delete-source-segment.md) · [原文](https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/delete-source-segment.md)
 - `docs/api-reference/dubbing/source-transcript/get-source-transcript` — [Get source transcript](pages/docs/api-reference/dubbing/source-transcript/get-source-transcript.md) · [原文](https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/get-source-transcript.md)
 - `docs/api-reference/dubbing/source-transcript/update-source-segment` — [Update source segment](pages/docs/api-reference/dubbing/source-transcript/update-source-segment.md) · [原文](https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/update-source-segment.md)
-- `docs/api-reference/dubbing/target-transcript/batch-update-target-segments` — [Batch update target segments](pages/docs/api-reference/dubbing/target-transcript/batch-update-target-segments.md) · [原文](https://elevenlabs.io/docs/api-reference/dubbing/target-transcript/batch-update-target-segments.md)
 - `docs/api-reference/dubbing/target-transcript/get-target-transcript` — [Get target transcript](pages/docs/api-reference/dubbing/target-transcript/get-target-transcript.md) · [原文](https://elevenlabs.io/docs/api-reference/dubbing/target-transcript/get-target-transcript.md)
 - `docs/api-reference/dubbing/target-transcript/regenerate-target` — [Regenerate target](pages/docs/api-reference/dubbing/target-transcript/regenerate-target.md) · [原文](https://elevenlabs.io/docs/api-reference/dubbing/target-transcript/regenerate-target.md)
 - `docs/api-reference/dubbing/target-transcript/update-target-segment` — [Update target segment](pages/docs/api-reference/dubbing/target-transcript/update-target-segment.md) · [原文](https://elevenlabs.io/docs/api-reference/dubbing/target-transcript/update-target-segment.md)
-- `docs/api-reference/environment-variables/create` — [Create environment variable](pages/docs/api-reference/environment-variables/create.md) · [原文](https://elevenlabs.io/docs/api-reference/environment-variables/create.md)
 - `docs/api-reference/environment-variables/delete` — [Delete environment variable](pages/docs/api-reference/environment-variables/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/environment-variables/delete.md)
 - `docs/api-reference/environment-variables/get` — [Get environment variable](pages/docs/api-reference/environment-variables/get.md) · [原文](https://elevenlabs.io/docs/api-reference/environment-variables/get.md)
 - `docs/api-reference/environment-variables/list` — [List environment variables](pages/docs/api-reference/environment-variables/list.md) · [原文](https://elevenlabs.io/docs/api-reference/environment-variables/list.md)
@@ -189,7 +187,6 @@
 - `docs/api-reference/legacy/dubbing/get` — [Get dubbing](pages/docs/api-reference/legacy/dubbing/get.md) · [原文](https://elevenlabs.io/docs/api-reference/legacy/dubbing/get.md)
 - `docs/api-reference/legacy/dubbing/get-transcript-for-dub` — [Get dubbed transcript](pages/docs/api-reference/legacy/dubbing/get-transcript-for-dub.md) · [原文](https://elevenlabs.io/docs/api-reference/legacy/dubbing/get-transcript-for-dub.md)
 - `docs/api-reference/legacy/dubbing/list` — [List dubs](pages/docs/api-reference/legacy/dubbing/list.md) · [原文](https://elevenlabs.io/docs/api-reference/legacy/dubbing/list.md)
-- `docs/api-reference/legacy/dubbing/transcripts/get` — [Retrieve a transcript](pages/docs/api-reference/legacy/dubbing/transcripts/get.md) · [原文](https://elevenlabs.io/docs/api-reference/legacy/dubbing/transcripts/get.md)
 - `docs/api-reference/legacy/knowledge-base/add-to-knowledge-base` — [Add To Knowledge Base](pages/docs/api-reference/legacy/knowledge-base/add-to-knowledge-base.md) · [原文](https://elevenlabs.io/docs/api-reference/legacy/knowledge-base/add-to-knowledge-base.md)
 - `docs/api-reference/legacy/usage/get` — [Get character metrics usage](pages/docs/api-reference/legacy/usage/get.md) · [原文](https://elevenlabs.io/docs/api-reference/legacy/usage/get.md)
 - `docs/api-reference/legacy/voices/create-previews` — [Voice design](pages/docs/api-reference/legacy/voices/create-previews.md) · [原文](https://elevenlabs.io/docs/api-reference/legacy/voices/create-previews.md)
@@ -734,6 +731,7 @@
 - `docs/eleven-agents/libraries/react` — [React SDK](pages/docs/eleven-agents/libraries/react.md) · [原文](https://elevenlabs.io/docs/eleven-agents/libraries/react.md)
 - `docs/eleven-agents/libraries/react-native` — [React Native SDK](pages/docs/eleven-agents/libraries/react-native.md) · [原文](https://elevenlabs.io/docs/eleven-agents/libraries/react-native.md)
 - `docs/eleven-agents/libraries/swift` — [Swift SDK](pages/docs/eleven-agents/libraries/swift.md) · [原文](https://elevenlabs.io/docs/eleven-agents/libraries/swift.md)
+- `docs/eleven-agents/libraries/unity` — [Unity SDK](pages/docs/eleven-agents/libraries/unity.md) · [原文](https://elevenlabs.io/docs/eleven-agents/libraries/unity.md)
 - `docs/eleven-agents/libraries/web-sockets` — [WebSocket](pages/docs/eleven-agents/libraries/web-sockets.md) · [原文](https://elevenlabs.io/docs/eleven-agents/libraries/web-sockets.md)
 - `docs/eleven-agents/operate/alerts` — [Alerts](pages/docs/eleven-agents/operate/alerts.md) · [原文](https://elevenlabs.io/docs/eleven-agents/operate/alerts.md)
 - `docs/eleven-agents/operate/architect` — [ElevenAgents Architect](pages/docs/eleven-agents/operate/architect.md) · [原文](https://elevenlabs.io/docs/eleven-agents/operate/architect.md)
@@ -825,7 +823,6 @@
 - `docs/eleven-api/guides/how-to/speech-to-text/realtime/transcript-editing` — [Transcript editing](pages/docs/eleven-api/guides/how-to/speech-to-text/realtime/transcript-editing.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/realtime/transcript-editing.md)
 - `docs/eleven-api/guides/how-to/speech-to-text/realtime/transcripts-and-commit-strategies` — [Transcripts and commit strategies](pages/docs/eleven-api/guides/how-to/speech-to-text/realtime/transcripts-and-commit-strategies.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/realtime/transcripts-and-commit-strategies.md)
 - `docs/eleven-api/guides/how-to/templates/run-a-template` — [Run your team's template](pages/docs/eleven-api/guides/how-to/templates/run-a-template.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/templates/run-a-template.md)
-- `docs/eleven-api/guides/how-to/text-to-speech/pronunciation-dictionaries` — [Using pronunciation dictionaries](pages/docs/eleven-api/guides/how-to/text-to-speech/pronunciation-dictionaries.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/text-to-speech/pronunciation-dictionaries.md)
 - `docs/eleven-api/guides/how-to/text-to-speech/request-stitching` — [Stitching multiple requests](pages/docs/eleven-api/guides/how-to/text-to-speech/request-stitching.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/text-to-speech/request-stitching.md)
 - `docs/eleven-api/guides/how-to/text-to-speech/streaming` — [Streaming text to speech](pages/docs/eleven-api/guides/how-to/text-to-speech/streaming.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/text-to-speech/streaming.md)
 - `docs/eleven-api/guides/how-to/text-to-speech/streaming-and-caching-with-supabase` — [Streaming and Caching with Supabase](pages/docs/eleven-api/guides/how-to/text-to-speech/streaming-and-caching-with-supabase.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/text-to-speech/streaming-and-caching-with-supabase.md)

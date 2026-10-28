@@ -315,6 +315,8 @@ Metadata for async conversation delivery (Zendesk, Slack, etc.).
 - `awaiting_first_user_message` (boolean, optional, nullable)
 - `recipient` (WhatsAppRecipient, optional, nullable) — A WhatsApp user by phone number and/or BSUID; the phone wins where one is needed.
 - `call_permission_request` (WhatsAppCallPermissionRequest, optional, nullable)
+- `call_result` (enum, optional, nullable)
+  - Allowed values: `answered`, `voicemail`, `busy`, `no_answer`, `failed`
 
 ### SMSConversationInfo
 

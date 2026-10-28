@@ -2419,7 +2419,10 @@ components:
         role: developer
       properties:
         configuration_update:
-          additionalProperties: false
+          anyOf:
+            - $ref: '#/components/schemas/ConfigurationUpdate'
+            - type: 'null'
+            - type: 'null'
           description: >-
             OpenRouter extension. Same as the system message
             `configuration_update`: changes reasoning effort from this point in
@@ -2428,14 +2431,6 @@ components:
           example:
             reasoning:
               effort: low
-          properties:
-            reasoning:
-              $ref: '#/components/schemas/ConfigurationUpdateReasoning'
-          required:
-            - reasoning
-          type:
-            - object
-            - 'null'
         content:
           anyOf:
             - type: string
@@ -2464,7 +2459,10 @@ components:
         role: system
       properties:
         configuration_update:
-          additionalProperties: false
+          anyOf:
+            - $ref: '#/components/schemas/ConfigurationUpdate'
+            - type: 'null'
+            - type: 'null'
           description: >-
             OpenRouter extension. Changes reasoning effort from this point in
             the conversation onward without invalidating the prompt cache for
@@ -2476,14 +2474,6 @@ components:
           example:
             reasoning:
               effort: low
-          properties:
-            reasoning:
-              $ref: '#/components/schemas/ConfigurationUpdateReasoning'
-          required:
-            - reasoning
-          type:
-            - object
-            - 'null'
         content:
           anyOf:
             - type: string
@@ -4100,26 +4090,20 @@ components:
         - type
         - function
       type: object
-    ConfigurationUpdateReasoning:
+    ConfigurationUpdate:
       additionalProperties: false
-      description: Reasoning settings applied from this point in the conversation onward
+      description: >-
+        Mid-conversation configuration update. Changes reasoning effort from
+        this point onward without invalidating the prompt cache for the
+        preceding turns.
       example:
-        effort: low
+        reasoning:
+          effort: low
       properties:
-        effort:
-          description: Reasoning effort to apply from this point in the conversation onward
-          enum:
-            - max
-            - xhigh
-            - high
-            - medium
-            - low
-            - minimal
-            - none
-          example: low
-          type: string
+        reasoning:
+          $ref: '#/components/schemas/ConfigurationUpdateReasoning'
       required:
-        - effort
+        - reasoning
       type: object
     ChatContentText:
       description: Text content part
@@ -4998,6 +4982,27 @@ components:
         - $ref: '#/components/schemas/ReasoningDetailEncrypted'
         - $ref: '#/components/schemas/ReasoningDetailText'
         - $ref: '#/components/schemas/ReasoningDetailServerToolCall'
+    ConfigurationUpdateReasoning:
+      additionalProperties: false
+      description: Reasoning settings applied from this point in the conversation onward
+      example:
+        effort: low
+      properties:
+        effort:
+          description: Reasoning effort to apply from this point in the conversation onward
+          enum:
+            - max
+            - xhigh
+            - high
+            - medium
+            - low
+            - minimal
+            - none
+          example: low
+          type: string
+      required:
+        - effort
+      type: object
     PromptCacheBreakpoint:
       description: >-
         Marks an explicit prompt-cache boundary on this content block

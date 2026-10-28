@@ -10,7 +10,7 @@ A single [data source query](/reference/query-a-data-source) returns at most **1
 
 This trips up full exports. A loop that just follows `next_cursor` until `has_more` is `false` looks like it finished, but on a 25,000-row database it quietly returns 10,000 rows. This guide shows how to detect the limit and read every row past it.
 
-A runnable version of everything here is in the [query-large-data-sources cookbook example](https://github.com/makenotion/notion-cookbook/tree/main/examples/javascript/query-large-data-sources).
+A runnable version of everything here is in the [query-large-data-sources cookbook example](https://github.com/makenotion/notion-cookbook/tree/main/examples/query-large-data-sources).
 
 ## Detect when a query was cut off
 
@@ -184,4 +184,4 @@ const rows = await queryAllRows({
 
 * [Query a data source](/reference/query-a-data-source) endpoint reference
 * [Pagination](/reference/intro#pagination) conventions
-* [query-large-data-sources cookbook example](https://github.com/makenotion/notion-cookbook/tree/main/examples/javascript/query-large-data-sources)
+* [query-large-data-sources cookbook example](https://github.com/makenotion/notion-cookbook/tree/main/examples/query-large-data-sources)

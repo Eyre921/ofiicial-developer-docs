@@ -201,7 +201,9 @@ paths:
                 limit:
                   description: New spending limit for the API key in USD
                   example: 75
+                  exclusiveMaximum: 1000000
                   format: double
+                  minimum: 0
                   type:
                     - number
                     - 'null'
@@ -222,6 +224,8 @@ paths:
                 name:
                   description: New name for the API key
                   example: Updated API Key Name
+                  maxLength: 256
+                  minLength: 1
                   type: string
                 workspace_id:
                   description: >-

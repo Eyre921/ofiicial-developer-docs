@@ -315,6 +315,8 @@ Metadata for async conversation delivery (Zendesk, Slack, etc.).
 - `awaiting_first_user_message` (boolean, optional)
 - `recipient` (WhatsAppRecipient, optional) — A WhatsApp user by phone number and/or BSUID; the phone wins where one is needed.
 - `call_permission_request` (WhatsAppCallPermissionRequest, optional)
+- `call_result` (enum, optional)
+  - Allowed values: `answered`, `voicemail`, `busy`, `no_answer`, `failed`
 
 ### SmsConversationInfo
 
@@ -1084,7 +1086,8 @@ A locator for other documents to be able to reference a specific dictionary and 
       "awaiting_first_user_message": true,
       "call_permission_request": {
         "state": "blocked"
-      }
+      },
+      "call_result": "answered"
     },
     "sms": {
       "direction": "inbound",

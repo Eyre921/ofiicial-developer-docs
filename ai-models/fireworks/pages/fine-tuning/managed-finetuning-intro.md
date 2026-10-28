@@ -50,9 +50,11 @@ To browse the broader catalog (including non-tunable inference models), visit th
 
 ## Tuning modes and context length
 
-Managed training runs **[Low-Rank Adaptation (LoRA)](https://arxiv.org/abs/2106.09685)** only. It supports the full context lengths exposed by the available training shapes, matching the same long-context capabilities used by cookbook recipes.
+Managed training runs **[Low-Rank Adaptation (LoRA)](https://arxiv.org/abs/2106.09685)** by default. It supports the full context lengths exposed by the available training shapes, matching the same long-context capabilities used by cookbook recipes.
 
-LoRA gives you efficient adapter training and flexible deployment, including [multiple LoRAs](/fine-tuning/deploying-loras#multi-lora-deployment) on a single base model deployment. For full-parameter tuning, use the [Training API](/fine-tuning/training-api/introduction).
+LoRA gives you efficient adapter training and flexible deployment, including [multiple LoRAs](/fine-tuning/deploying-loras#multi-lora-deployment) on a single base model deployment.
+
+Select models also support full-parameter SFT and DPO in managed training. To use it, [set the LoRA rank to `0`](/fine-tuning/fine-tuning-models#lora-rank). If the model doesn't support it, the job is rejected with "model is not tunable for supervised full-parameter fine-tuning". Full-parameter training produces a full model rather than an adapter, so it can't be served as a multi-LoRA addon. For most full-parameter work, we recommend the [Training API](/fine-tuning/training-api/introduction), which has ready-made recipes and works with the [training skill](/fine-tuning/agent/use-with-coding-agents).
 
 > [!WARNING]
 >

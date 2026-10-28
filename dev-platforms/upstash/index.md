@@ -1,6 +1,6 @@
 # dev-platforms/upstash 文档索引
 
-> 共 992 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1000 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -42,6 +42,14 @@
 - `docs/blob/reference/errors` — [Errors](pages/docs/blob/reference/errors.md) · [原文](https://upstash.com/docs/blob/reference/errors)
 - `docs/blob/reference/signing` — [How Signing Works](pages/docs/blob/reference/signing.md) · [原文](https://upstash.com/docs/blob/reference/signing)
 - `docs/blob/reference/types` — [Types](pages/docs/blob/reference/types.md) · [原文](https://upstash.com/docs/blob/reference/types)
+- `docs/blob/sdks/py/bucket` — [Bucket API](pages/docs/blob/sdks/py/bucket.md) · [原文](https://upstash.com/docs/blob/sdks/py/bucket)
+- `docs/blob/sdks/py/errors` — [Errors](pages/docs/blob/sdks/py/errors.md) · [原文](https://upstash.com/docs/blob/sdks/py/errors)
+- `docs/blob/sdks/py/overview` — [Python SDK](pages/docs/blob/sdks/py/overview.md) · [原文](https://upstash.com/docs/blob/sdks/py/overview)
+- `docs/blob/sdks/py/upload-handler` — [Upload Handler](pages/docs/blob/sdks/py/upload-handler.md) · [原文](https://upstash.com/docs/blob/sdks/py/upload-handler)
+- `docs/blob/sdks/ts/bucket` — [Bucket API](pages/docs/blob/sdks/ts/bucket.md) · [原文](https://upstash.com/docs/blob/sdks/ts/bucket)
+- `docs/blob/sdks/ts/errors` — [Errors](pages/docs/blob/sdks/ts/errors.md) · [原文](https://upstash.com/docs/blob/sdks/ts/errors)
+- `docs/blob/sdks/ts/overview` — [TypeScript SDK](pages/docs/blob/sdks/ts/overview.md) · [原文](https://upstash.com/docs/blob/sdks/ts/overview)
+- `docs/blob/sdks/ts/upload-handler` — [Upload Handler](pages/docs/blob/sdks/ts/upload-handler.md) · [原文](https://upstash.com/docs/blob/sdks/ts/upload-handler)
 - `docs/blob/uploads/abandoned-uploads` — [Abandoned Uploads](pages/docs/blob/uploads/abandoned-uploads.md) · [原文](https://upstash.com/docs/blob/uploads/abandoned-uploads)
 - `docs/blob/uploads/constraints` — [Constraints](pages/docs/blob/uploads/constraints.md) · [原文](https://upstash.com/docs/blob/uploads/constraints)
 - `docs/blob/uploads/large-files` — [Large Files](pages/docs/blob/uploads/large-files.md) · [原文](https://upstash.com/docs/blob/uploads/large-files)

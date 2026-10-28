@@ -22,7 +22,7 @@ View an archive of Notion Developers updates prior to September 2023
 **August 8 - August 22, 2023**
 
 * The [Build your first integration](/guides/get-started/quick-start) guide was rewritten with new demo code to help developers learn how to use Notion’s API even faster.
-  * A new [sample app](https://github.com/makenotion/notion-cookbook/tree/main/examples/javascript/web-form-with-express) was added to the [Notion SDK for JavaScript](https://github.com/makenotion/notion-sdk-js) `/examples` directory. This completed sample app is referenced in the new [Build your first integration](/guides/get-started/quick-start) guide.
+  * A new [sample app](https://github.com/makenotion/notion-cookbook/tree/main/examples/web-form-with-express) was added to the [Notion SDK for JavaScript](https://github.com/makenotion/notion-sdk-js) `/examples` directory. This completed sample app is referenced in the new [Build your first integration](/guides/get-started/quick-start) guide.
 * The description for the `block_id` path parameter was updated for the [Append block children](/reference/patch-block-children) endpoint to indicate that a block ID or page ID can be used.
 * A clarification was added to [documentation](/reference/retrieve-a-database) for retrieving/updating database properties: If a property is based on a relation to another database, the related database also needs to be shared with the integration.
 * A clarification was added to documentation for [querying databases](/reference/post-database-query-filter#multi-select). When filtering a multi-select property, the `contains` field will filter for exact matches for the string provided.
@@ -107,7 +107,7 @@ Keep an eye on this changelog for when the update becomes available in the Publi
 
 **July 11 - July 24, 2023**
 
-* A new integration [example](https://github.com/makenotion/notion-cookbook/tree/main/examples/javascript/parse-text-from-any-block-type) was added to the Notion SDK for JavaScript repo. This example shows how to get the plain text from any block type currently supported by the public API.
+* A new integration [example](https://github.com/makenotion/notion-cookbook/tree/main/examples/parse-text-from-any-block-type) was added to the Notion SDK for JavaScript repo. This example shows how to get the plain text from any block type currently supported by the public API.
 * The new unique ID page property was added to the [Page properties](/reference/page-property-values) documentation. When used, the unique ID (`unique_id`) auto-increments for every new page created in a database. An optional prefix can be included that will be applied to the ID values.
 
 ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/c599280-unique_id.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=92437cad7aa45d267c0f0a3d82874be2)

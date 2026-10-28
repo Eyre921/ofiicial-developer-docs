@@ -27,7 +27,7 @@ Use an environment variable for local development. Add `.env` files to `.gitigno
 
 ```bash theme={null}
 # .env file (never commit this file)
-NOTION_API_KEY=ntn_abc123def456ghi789jkl012mno345pqr
+NOTION_API_KEY=ntn_...
 ```
 
 ```typescript TypeScript theme={null}
@@ -42,7 +42,7 @@ Use a secret manager for deployed applications. Limit who can read production se
 
 The Notion API sends cross-origin resource sharing (CORS) headers, so browser code can call the API directly.
 
-Never ship an internal connection token or a client secret in page source that strangers can load. Anyone who can view the source can use that secret to act as the connection.
+Never ship an internal connection token or a client secret in page source that strangers can load. Anyone who can view the source can use that secret to act as the connection. Build tools copy some environment variables into the browser bundle, such as ones that start with `VITE_` or `NEXT_PUBLIC_`. Don't give a token one of those names.
 
 For apps that other people use, create a [public connection](/guides/get-started/public-connections), which uses OAuth. Exchange the OAuth code for a token on a server you control. For a personal or local tool, putting a token in a page that only you can open is a risk you must choose whether to accept.
 

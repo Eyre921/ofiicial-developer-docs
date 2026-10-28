@@ -75,7 +75,7 @@ Global compliance requirements do evolve and change over time. With Express, Str
 
 Select one of the available countries when you create an Express connected account. You can’t change the country later.
 
-Some countries are available only when using [cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md).
+Some countries are available only when using [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md).
 
 To know when Express connected accounts are available in your country, [contact Stripe](https://docs.stripe.com/connect@stripe.com.md).
 
@@ -224,7 +224,7 @@ If you decide to use Custom connected accounts, Stripe recommends that you use [
 
 Select one of the available countries when you create a Custom connected account. You can’t change the country later.
 
-Some countries are available only when using [cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md).
+Some countries are available only when using [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md).
 
 To request notification when Custom connected accounts are available in your country, [contact Stripe](https://docs.stripe.com/connect@stripe.com.md).
 

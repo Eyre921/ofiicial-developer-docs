@@ -3755,6 +3755,8 @@ To change the company information shown on your invoices, email [support@assembl
 
 Pre-recorded transcription is billed on the duration of the submitted audio or video file in seconds, multiplied by the hourly rate for the selected speech model. Add-on features (for example, Entity Detection or Medical Mode) are billed separately at their own hourly rates, also pro-rated to the exact second.
 
+If you set the `audio_start_from` or `audio_end_at` parameters to [transcribe only part of a file](/pre-recorded-audio/set-the-start-and-end-of-the-transcript), billing is based on the transcribed audio range instead of the duration of the entire file.
+
 ## Streaming Speech-to-Text billing
 
   **Streaming is billed per session, not per second of audio**
@@ -9158,6 +9160,8 @@ Navigation: Pre-recorded STT > Features
 Description: Set the Start and End of the Transcript documentation.
 
 If you only want to transcribe a portion of your file, you can set the `audio_start_from` and the `audio_end_at` parameters in your transcription config.
+
+When you set `audio_start_from` or `audio_end_at`, you're billed only for the audio range that's transcribed, not the duration of the entire file. For example, setting `audio_start_from` to `5000` and `audio_end_at` to `15000` bills 10 seconds of audio.
 
 ```python title="Python SDK" highlight={7-8} 
 from assemblyai.prerecorded.v2 import Transcriber, TranscriptionConfig
@@ -69848,6 +69852,8 @@ There are parameters that you can add to your `POST` request that allow you to s
 
 More specifically you can use the `audio_start_from` parameter and enter the time in milliseconds of where you would like to start transcribing your media file and the `audio_end_at` parameter and enter the time in milliseconds of where you'd like to stop transcribing your media file.
 
+You're billed only for the audio range that's transcribed, not the duration of the entire file.
+
 The parameters are referenced in the [Set the start and end of the transcript](/pre-recorded-audio/set-the-start-and-end-of-the-transcript) section of our documentation.
 
 ---
@@ -82576,13 +82582,13 @@ channels:
   tts:
     address: /v1/ws
     description: |
-      Send text and receive synthesized speech. Authenticate with your API key in the `Authorization` header, or with the `token` query parameter where headers can't be set.
+      Send text and receive synthesized speech. Authenticate with your API key or a temporary token in the `Authorization` header, or with the `token` query parameter where headers can't be set.
     servers:
       - $ref: "#/servers/usDataResidency"
       - $ref: "#/servers/euDataResidency"
     parameters:
       token:
-        description: Optional. Authenticate with a [temporary token](/tts/authenticate-with-a-temporary-token) (minted with `product=tts`) or an API key, for clients that cannot set the `Authorization` header, such as browsers. Ignored when the header is present. Mint one temporary token per connection, and never put your API key in a URL that runs on a user's device.
+        description: Optional. Authenticate with a [temporary token](/tts/authenticate-with-a-temporary-token) (minted with `product=tts`) or an API key, for clients that cannot set the `Authorization` header, such as browsers. Ignored when the `Authorization` header carries a credential; a header that is empty or only `Bearer` carries none. Mint one temporary token per connection, and never put your API key in a URL that runs on a user's device.
         location: $message.payload#/token
 
       voice_id:
@@ -82595,14 +82601,14 @@ channels:
 
       model_id:
         description: >-
-          Optional. The model to run the session on, such as `assemblyai-tts-1`, in lowercase. When unset, the default model of the session's language in the region. With `voice_id`, the voice must be paired with that model (`3014` otherwise). A model the region does not know closes with `3006` before `Begin`. See [Language and model](/tts/cloned-voices#language-and-model).
+          Optional. The model to run the session on, such as `assemblyai-tts-1`, in lowercase; `latest` names the default model of the session's language. When unset, the default model of the session's language in the region. A [cloned voice](/tts/cloned-voices) in `voice_id` must be paired with that model (`3014` otherwise). A model the region does not know, or one that does not speak the session's language, closes with `3006` before `Begin`. See [Language and model](/tts/cloned-voices#language-and-model).
         location: $message.payload#/model_id
         examples:
           - assemblyai-tts-1
 
       language:
         description: >-
-          Optional. The language of the text you send, as its full English name, not an ISO code. Case-insensitive, echoed lowercase. The API does not detect language. Defaults to `english`; with a library or cloned voice that speaks one language, to that voice's language, and any other value closes the session with `3006`. See [Languages](/tts/voices#languages).
+          Optional. The language of the text you send, as its full English name, not an ISO code. Case-insensitive, echoed lowercase. The API does not detect language. Defaults to the language of the voice in `voice_id`, and to `english` when you name no voice. A value outside this list closes the session with `3006` before `Begin`, and so does a language the voice cannot speak on the session's model (never on `assemblyai-tts-1`, which speaks every voice in all six languages). See [Languages](/tts/voices#languages).
         location: $message.payload#/language
         enum: ["english", "spanish", "german", "italian", "portuguese", "french"]
         default: "english"
@@ -82634,7 +82640,7 @@ channels:
           - "30"
 
       extend_biometric_consent:
-        description: Optional. With `voice_id`, by the owner of a [cloned voice](/tts/cloned-voices) only, `true` renews the voice's biometric consent and attests renewed consent on behalf of the account that owns it. Set on a voice another account owns, the session closes with `3006` (`error_type` `not_owner`). The account must have accepted the [biometric data terms](/tts/cloned-voices#biometric-data-terms) (`3006` `biometric_terms_not_accepted` otherwise). See [Renew consent](/tts/cloned-voices#renew-consent).
+        description: Optional. With `voice_id`, by the owner of a [cloned voice](/tts/cloned-voices) only, `true` renews the voice's biometric consent and attests renewed consent on behalf of the account that owns it. Set on a voice your account does not own, an AssemblyAI voice included, the session closes with `3006` (`error_type` `not_owner`), and set without `voice_id`, with `3006` (`error_type` `invalid_parameter`). The account must have accepted the [biometric data terms](/tts/cloned-voices#biometric-data-terms) (`3006` `biometric_terms_not_accepted` otherwise). See [Renew consent](/tts/cloned-voices#renew-consent).
         location: $message.payload#/extend_biometric_consent
         enum: ["true", "false"]
         default: "false"
@@ -82705,7 +82711,7 @@ operations:
       $ref: "#/channels/tts"
     messages:
       - $ref: "#/channels/tts/messages/terminate"
-    description: End the session cleanly. Unflushed text is flushed for you and gets its own `FlushDone`, audio in flight and pending `WordBoundaries` are delivered, then `Termination` arrives and the socket closes with `1000`. Anything sent after `Terminate` is not read.
+    description: End the session cleanly. Unflushed text is flushed for you and gets its own `FlushDone`, audio in flight and pending `WordBoundaries` are delivered, then `Termination` arrives and the socket closes with `1000`. Anything sent after `Terminate` is ignored. Keep reading until `Termination`, since audio still unread once its playing time plus 10 seconds has passed closes the session with `3011`.
 
   begin:
     action: send
@@ -82966,7 +82972,7 @@ components:
           type: string
           maxLength: 2000
           description: >-
-            Text to speak, at most 2000 characters (Unicode code points); a longer text closes the session with `3006`. Read as written: spell out numbers, dates and symbols where the reading matters, and remove markup. Text from consecutive `Generate` messages is joined with no separator. The two halves of a surrogate pair may arrive in consecutive messages; any other unpaired surrogate closes the session with `3006`. An empty `text` does nothing but counts toward the control-frame limit. See [How text is read](/tts/prompting-guide#how-text-is-read).
+            Text to speak, at most 2000 characters (Unicode code points); a longer text closes the session with `3006`. Text from consecutive `Generate` messages is joined with no separator. The two halves of a surrogate pair may arrive in consecutive messages; any other unpaired surrogate closes the session with `3006`. An empty `text` does nothing but counts toward the control-frame limit. See [How text is read](/tts/prompting-guide#how-text-is-read).
 
     FlushPayload:
       type: object
@@ -83248,7 +83254,6 @@ components:
             - invalid_message
             - invalid_request
             - model_not_found
-            - feature_not_enabled
             - not_owner
             - biometric_terms_not_accepted
             - inactivity_timeout

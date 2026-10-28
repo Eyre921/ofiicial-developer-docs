@@ -7176,6 +7176,7 @@ components:
         - searching
         - in_progress
         - failed
+        - incomplete
       example: completed
       type: string
     ImageGenerationStatus:

@@ -10,9 +10,8 @@ Managed training, the Training API, and serverless training all draw from the sa
 
 > [!NOTE]
 >
-> Muse Glimmer 30B SFT is free via UI and Serverless Training API until 11/30 ✨ No credit card required.
->
-> [Start a job](https://app.fireworks.ai/dashboard/fine-tuning/create?type=supervised\&baseModel=accounts/fireworks/models/muse-glimmer-30b)
+> Muse Glimmer 30B SFT is free to train until 11/30.\
+> No credit card required. [Start here](https://app.fireworks.ai/dashboard/fine-tuning/create?type=supervised\&baseModel=accounts/fireworks/models/muse-glimmer-30b)
 
 ## Model availability
 

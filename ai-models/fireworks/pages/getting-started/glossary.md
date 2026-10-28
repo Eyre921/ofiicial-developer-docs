@@ -67,7 +67,7 @@ A model that accepts images as well as text. Video and audio support depends on 
 The Serverless rate-limit unit. Fireworks limits total prompt tokens per minute and generated tokens per minute. A `429` means you crossed a limit. A `503` means Fireworks is overloaded. See [Serverless rate limits](/serverless/rate-limits).
 
 **Managed Training**\
-Fireworks runs the training loop for you. You supply data and a method. Managed Training currently accepts SFT, DPO, and ORPO. It is LoRA-only. See [Managed Training](/fine-tuning/managed-finetuning-intro).
+Fireworks runs the training loop for you. You supply data and a method. Managed Training currently accepts SFT, DPO, and ORPO. It uses LoRA by default, and select models also support full-parameter training. See [Managed Training](/fine-tuning/managed-finetuning-intro).
 
 **Training API**\
 You write the training loop in Python, and Fireworks runs it on GPUs. Use it for custom losses, full-parameter training, and reinforcement learning. See [Training API](/fine-tuning/training-api/introduction).

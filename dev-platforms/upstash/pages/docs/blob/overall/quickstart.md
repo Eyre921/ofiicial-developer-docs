@@ -8,7 +8,7 @@ import { AgentSetup } from "/snippets/agent-setup.jsx";
 
 <AgentSetup product="Blob" />
 
-Upstash Blob is S3-compatible object storage. `@upstash/blob` has a `Bucket` client for your server, and an upload handler plus React hooks that upload from the browser straight to storage. This page builds a working file picker on Next.js App Router. Other frameworks work the same way; see [Other frameworks](/docs/blob/uploads/upload-handler#other-frameworks).
+Upstash Blob is S3-compatible object storage. Each server SDK has a bucket client and an upload handler, and `@upstash/blob` has React hooks that upload from the browser straight to storage. This page builds a working file picker in React. The server code is Next.js App Router in TypeScript, or FastAPI in Python. Other frameworks work the same way; see [Other frameworks](/docs/blob/sdks/ts/upload-handler#other-frameworks) in TypeScript and [Mounting it](/docs/blob/sdks/py/upload-handler#mounting-it) in Python.
 
 ***
 
@@ -30,7 +30,17 @@ yarn add @upstash/blob
 ```bash bun
 bun add @upstash/blob
 ```
+
+```bash pip
+pip install upstash-blob
+```
+
+```bash uv
+uv add upstash-blob
+```
 </CodeGroup>
+
+`upstash-blob` is the Python server SDK. The browser side is `@upstash/blob` whichever language runs the server, so a Python app installs both.
 
 Create a bucket in the [Upstash Console](https://console.upstash.com) and put its token in your environment.
 
@@ -41,13 +51,15 @@ UPSTASH_BLOB_TOKEN=...
 The console asks whether the bucket is public or private:
 
 * **Public**: every object has a public URL. For avatars, product images, anything a page links to directly.
-* **Private**: no public URL. Every read goes through a time-limited [signed URL](/docs/blob/bucket/reading#signedreadurl). For user documents, invoices, anything that must not be guessable.
+* **Private**: no public URL. Every read goes through a time-limited [signed URL](/docs/blob/bucket/reading#signed-read-urls). For user documents, invoices, anything that must not be guessable.
 
 ***
 
 ## Upload from your server
 
-```ts lib/reports.ts
+<CodeGroup>
+```ts TypeScript
+// lib/reports.ts
 import { Bucket } from "@upstash/blob"
 
 const bucket = Bucket.fromEnv()
@@ -60,7 +72,21 @@ export async function saveReport(file: Blob) {
 }
 ```
 
-Bytes already on your server go to the bucket with `put`. `blob.url` is the public object URL, `undefined` on a private bucket. See [Writing](/docs/blob/bucket/writing).
+```python Python
+# app/reports.py
+from pathlib import Path
+
+from upstash_blob import Bucket
+
+bucket = Bucket.from_env()
+
+def save_report(pdf: Path) -> str | None:
+    blob = bucket.put("reports/2026-01.pdf", pdf, content_type="application/pdf")
+    return blob.url
+```
+</CodeGroup>
+
+Bytes already on your server go to the bucket with `put`. The returned record's URL is the public object URL, not set on a private bucket. See [Writing](/docs/blob/bucket/writing), and the [TypeScript SDK](/docs/blob/sdks/ts/overview) or [Python SDK](/docs/blob/sdks/py/overview) for setup details.
 
 ***
 
@@ -72,7 +98,9 @@ Files a user picks go straight from the browser to storage. Your server only aut
 
 <Step title="Write the upload handler">
 
-```ts lib/uploads.ts
+<CodeGroup>
+```ts TypeScript
+// lib/uploads.ts
 import "server-only"
 import { uploadHandler } from "@upstash/blob"
 
@@ -86,6 +114,18 @@ export const uploads = uploadHandler({
 })
 ```
 
+```python Python
+# app/uploads.py
+from upstash_blob import AsyncUploadHandler, BeforeUploadResult
+
+uploads = AsyncUploadHandler(
+    max_size="20mb",
+    content_types=["image/*", "application/pdf"],
+    on_before_upload=lambda args: BeforeUploadResult(path=f"images/{args.file.name}"),
+)
+```
+</CodeGroup>
+
 The handler runs on your server. It decides who may upload, where the object goes, and what happens once it lands. It never sees the bytes.
 
 This one accepts anyone. [Upload handler](/docs/blob/uploads/upload-handler) adds the auth check and the completion callback.
@@ -94,11 +134,25 @@ This one accepts anyone. [Upload handler](/docs/blob/uploads/upload-handler) add
 
 <Step title="Mount it as a route">
 
-```ts app/api/upload/route.ts
+<CodeGroup>
+```ts TypeScript
+// app/api/upload/route.ts
 import { uploads } from "@/lib/uploads"
 
 export const { GET, POST } = uploads
 ```
+
+```python Python
+# app/main.py (FastAPI)
+from fastapi import FastAPI
+from upstash_blob.fastapi import upload_view
+
+from app.uploads import uploads
+
+app = FastAPI()
+app.add_api_route("/api/upload", upload_view(uploads), methods=["GET", "POST"])
+```
+</CodeGroup>
 
 `POST` runs the upload and `GET` serves the route's constraints. The hooks look at `/api/upload` by default, so nothing else has to name a URL.
 
@@ -116,6 +170,8 @@ export const { useUpload } = uploadHooks<typeof uploads>()
 ```
 
 `uploadHooks<typeof uploads>()` reads the handler's type, so route names and completion data are checked at compile time. The `import type` is erased at build time and never pulls server code into the browser bundle.
+
+A Python handler has no type to bind to. Call `uploadHooks()` with no type parameter and pass the URL, `useUpload("/api/upload")`, in the next step. [FastAPI + React](/docs/blob/recipes/fastapi-react) has the whole app, including the dev proxy that puts `/api` on the page's origin.
 
 </Step>
 
@@ -158,7 +214,7 @@ You get these without more code:
 * **Retries.** Failed parts back off and retry, and an expired signature is refreshed mid-upload.
 * **A picker that matches the server.** `accept` comes from the route's own `GET`, so an oversized file is refused before any request goes out. See [Constraints](/docs/blob/uploads/constraints).
 * **Progress.** `percent`, `status` and `pending` read the same for one PUT or 200 parts.
-* **Types end to end.** Whatever `onUploadComplete` returns is `upload.blob.data` on the client.
+* **Types end to end.** With a TypeScript handler, whatever `onUploadComplete` returns is `upload.blob.data` on the client, typed.
 
 ***
 
@@ -186,6 +242,7 @@ You get these without more code:
 - [File Attachments](https://upstash.com/docs/blob/recipes/attachments.md): Several files per thread, uploaded from the browser as multipart, one row per attachment.
 - [Profile Pictures](https://upstash.com/docs/blob/recipes/avatars.md): One picture per user, overwritten in place, uploaded from the browser, with the old one out of the cache.
 - [Generated Exports](https://upstash.com/docs/blob/recipes/exports.md): A background job builds the file, and the download link stops working after a day.
+- [FastAPI + React Uploads](https://upstash.com/docs/blob/recipes/fastapi-react.md): A FastAPI backend serving useUpload from @upstash/blob/react: direct browser uploads, one row per file, signed in users only.
 - [Blob Recipes Overview](https://upstash.com/docs/blob/recipes/overview.md): Pick a recipe by the shape of your data, and the three rules that run under all of them.
 - [Private Documents](https://upstash.com/docs/blob/recipes/private-documents.md): One document per owner on a private bucket, handed out through short-lived signed URLs.
 - [Product Images](https://upstash.com/docs/blob/recipes/product-images.md): Several ordered images per product, uploaded from the browser and rendered from your own rows.

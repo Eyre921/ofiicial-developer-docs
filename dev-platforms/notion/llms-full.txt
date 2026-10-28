@@ -129,65 +129,43 @@ Source: https://developers.notion.com/cli/get-started/installation
 
 Install the Notion CLI on your machine.
 
-## Install via script (recommended)
+## Install
 
-The recommended way to install `ntn` on macOS and Linux:
+**macOS and Linux**
 
 ```bash theme={null}
 curl -fsSL https://ntn.dev | bash
 ```
 
-To inspect the installer before running it, view the [install script](https://ntn.dev/install.sh).
-
-To update:
+If the installer says it couldn't install the Notion CLI to `/usr/local/bin`, pick a directory you can write to with `NTN_INSTALL_DIR`:
 
 ```bash theme={null}
-ntn update
+curl -fsSL https://ntn.dev | NTN_INSTALL_DIR="$HOME/.local/bin" bash
 ```
 
-## Install via npm
+If that directory isn't on your `PATH`, the installer prints the line to add to your shell startup file.
 
-Use macOS, Linux, or Windows to install:
+To inspect the installer before you run it, view the [install script](https://ntn.dev/install.sh).
 
-```bash theme={null}
-npm install --global ntn
-```
+**Windows**
 
-To update:
-
-```bash theme={null}
-npm update --global ntn
-```
-
-> [!NOTE]
->
-> Requires Node.js 22+ and npm 10+.
-
-## Install via Winget (Windows)
-
-In PowerShell or Command Prompt, including either shell in Windows Terminal:
+The install script doesn't support Windows. In PowerShell or Command Prompt, install with WinGet:
 
 ```powershell theme={null}
 winget install Notion.ntn
 ```
 
-You can also confirm the WinGet package:
+The WinGet package supports only Windows x64 (x86-64/AMD64). To confirm the package installed, run `winget list --exact --id Notion.ntn`.
 
-```powershell theme={null}
-winget list --exact --id Notion.ntn
+**npm**
+
+Use npm on macOS, Linux, or Windows. This requires Node.js 22+ and npm 10+.
+
+```bash theme={null}
+npm install --global ntn
 ```
 
-Restart your terminal to verify.
-
-To update:
-
-```powershell theme={null}
-winget upgrade Notion.ntn
-```
-
-> [!NOTE]
->
-> We currently only support Windows x64 (x86-64/AMD64)
+After you install, restart your terminal so `ntn` is on your `PATH`.
 
 ## Verify installation
 
@@ -195,13 +173,43 @@ winget upgrade Notion.ntn
 ntn --version
 ```
 
-## Shell completions
+## Update
 
-Enable tab completions for your shell:
+If you used the install script, run:
 
 ```bash theme={null}
-ntn completions bash  # or fish, zsh, powershell, elvish
+ntn update
 ```
+
+If you used WinGet, run:
+
+```powershell theme={null}
+winget upgrade Notion.ntn
+```
+
+If you used npm, run:
+
+```bash theme={null}
+npm update --global ntn
+```
+
+## Shell completions
+
+`ntn completions <shell>` prints a completion script to stdout. It supports `bash`, `zsh`, `fish`, `powershell`, and `elvish`.
+
+To load completions in bash, add this line to `~/.bashrc`:
+
+```bash theme={null}
+source <(ntn completions bash)
+```
+
+To load completions in zsh, add this line to `~/.zshrc` after `compinit` runs:
+
+```zsh theme={null}
+source <(ntn completions zsh)
+```
+
+For fish, PowerShell, or elvish, run `ntn completions fish`, `ntn completions powershell`, or `ntn completions elvish`. Load its output the way your shell loads other completion scripts.
 
 ## Next steps
 
@@ -223,9 +231,41 @@ Install the Notion CLI and learn the core commands for authentication, Notion Wo
 
 ## Install
 
+**macOS and Linux**
+
 ```bash theme={null}
 curl -fsSL https://ntn.dev | bash
 ```
+
+If the installer says it couldn't install the Notion CLI to `/usr/local/bin`, pick a directory you can write to with `NTN_INSTALL_DIR`:
+
+```bash theme={null}
+curl -fsSL https://ntn.dev | NTN_INSTALL_DIR="$HOME/.local/bin" bash
+```
+
+If that directory isn't on your `PATH`, the installer prints the line to add to your shell startup file.
+
+To inspect the installer before you run it, view the [install script](https://ntn.dev/install.sh).
+
+**Windows**
+
+The install script doesn't support Windows. In PowerShell or Command Prompt, install with WinGet:
+
+```powershell theme={null}
+winget install Notion.ntn
+```
+
+The WinGet package supports only Windows x64 (x86-64/AMD64). To confirm the package installed, run `winget list --exact --id Notion.ntn`.
+
+**npm**
+
+Use npm on macOS, Linux, or Windows. This requires Node.js 22+ and npm 10+.
+
+```bash theme={null}
+npm install --global ntn
+```
+
+After you install, restart your terminal so `ntn` is on your `PATH`.
 
 Verify the installation:
 
@@ -235,7 +275,7 @@ ntn --version
 
 > [!TIP]
 >
-> See [Installation](/cli/get-started/installation) for more installation options.
+> See [Installation](/cli/get-started/installation) for update steps and shell completions.
 
 ## Authenticate
 
@@ -2691,7 +2731,7 @@ A single [data source query](/reference/query-a-data-source) returns at most **1
 
 This trips up full exports. A loop that just follows `next_cursor` until `has_more` is `false` looks like it finished, but on a 25,000-row database it quietly returns 10,000 rows. This guide shows how to detect the limit and read every row past it.
 
-A runnable version of everything here is in the [query-large-data-sources cookbook example](https://github.com/makenotion/notion-cookbook/tree/main/examples/javascript/query-large-data-sources).
+A runnable version of everything here is in the [query-large-data-sources cookbook example](https://github.com/makenotion/notion-cookbook/tree/main/examples/query-large-data-sources).
 
 ## Detect when a query was cut off
 
@@ -2865,7 +2905,7 @@ const rows = await queryAllRows({
 
 * [Query a data source](/reference/query-a-data-source) endpoint reference
 * [Pagination](/reference/intro#pagination) conventions
-* [query-large-data-sources cookbook example](https://github.com/makenotion/notion-cookbook/tree/main/examples/javascript/query-large-data-sources)
+* [query-large-data-sources cookbook example](https://github.com/makenotion/notion-cookbook/tree/main/examples/query-large-data-sources)
 
 
 # Read every item in a page property
@@ -5149,8 +5189,8 @@ Let's start with a simple example, a [paragraph block](/reference/block#paragrap
   "object": "block",
   "id": "380c78c0-e0f5-4565-bdbd-c4ccb079050d",
   "type": "paragraph",
-  "created_time": "",
-  "last_edited_time": "",
+  "created_time": "2022-03-01T19:05:00.000Z",
+  "last_edited_time": "2022-03-01T19:05:00.000Z",
   "has_children": false,
 
   "paragraph": {
@@ -5171,8 +5211,8 @@ Now let's look at an example where the block has child blocks: a paragraph follo
   "object": "block",
   "id": "380c78c0-e0f5-4565-bdbd-c4ccb079050d",
   "type": "paragraph",
-  "created_time": "",
-  "last_edited_time": "",
+  "created_time": "2022-03-01T19:05:00.000Z",
+  "last_edited_time": "2022-03-01T19:05:00.000Z",
   "has_children": true,
 
   "paragraph": {
@@ -5185,8 +5225,8 @@ Now let's look at an example where the block has child blocks: a paragraph follo
         "object": "block",
         "id": "6d5b2463-a1c1-4e22-9b3b-49b3fe7ad384",
         "type": "to_do",
-        "created_time": "",
-        "last_edited_time": "",
+        "created_time": "2022-03-01T19:05:00.000Z",
+        "last_edited_time": "2022-03-01T19:05:00.000Z",
         "has_children": false,
 
         "to_do": {
@@ -7753,7 +7793,7 @@ Use an environment variable for local development. Add `.env` files to `.gitigno
 
 ```bash theme={null}
 # .env file (never commit this file)
-NOTION_API_KEY=ntn_abc123def456ghi789jkl012mno345pqr
+NOTION_API_KEY=ntn_...
 ```
 
 ```typescript TypeScript theme={null}
@@ -7768,7 +7808,7 @@ Use a secret manager for deployed applications. Limit who can read production se
 
 The Notion API sends cross-origin resource sharing (CORS) headers, so browser code can call the API directly.
 
-Never ship an internal connection token or a client secret in page source that strangers can load. Anyone who can view the source can use that secret to act as the connection.
+Never ship an internal connection token or a client secret in page source that strangers can load. Anyone who can view the source can use that secret to act as the connection. Build tools copy some environment variables into the browser bundle, such as ones that start with `VITE_` or `NEXT_PUBLIC_`. Don't give a token one of those names.
 
 For apps that other people use, create a [public connection](/guides/get-started/public-connections), which uses OAuth. Exchange the OAuth code for a token on a server you control. For a personal or local tool, putting a token in a page that only you can open is a risk you must choose whether to accept.
 
@@ -11768,6 +11808,10 @@ Connect an MCP client to your Notion workspace.
 
 Follow the instructions for your MCP client. After you authorize the connection, the client can read and update content that you can access in the selected Notion workspace.
 
+> [!NOTE]
+>
+> Install your MCP client first and make sure its command is on your `PATH`, or you'll see `command not found` for `claude` or `codex`. See the [Claude Code setup guide](https://code.claude.com/docs/en/setup) or the [Codex CLI guide](https://developers.openai.com/codex/cli). An admin in your organization can also block adding MCP servers, which shows up as an enterprise policy error.
+
 ## Codex (ChatGPT)
 
 Codex is OpenAI's coding agent. See the [Codex MCP documentation](https://developers.openai.com/codex/mcp/) for more details.
@@ -13907,7 +13951,7 @@ View an archive of Notion Developers updates prior to September 2023
 **August 8 - August 22, 2023**
 
 * The [Build your first integration](/guides/get-started/quick-start) guide was rewritten with new demo code to help developers learn how to use Notion’s API even faster.
-  * A new [sample app](https://github.com/makenotion/notion-cookbook/tree/main/examples/javascript/web-form-with-express) was added to the [Notion SDK for JavaScript](https://github.com/makenotion/notion-sdk-js) `/examples` directory. This completed sample app is referenced in the new [Build your first integration](/guides/get-started/quick-start) guide.
+  * A new [sample app](https://github.com/makenotion/notion-cookbook/tree/main/examples/web-form-with-express) was added to the [Notion SDK for JavaScript](https://github.com/makenotion/notion-sdk-js) `/examples` directory. This completed sample app is referenced in the new [Build your first integration](/guides/get-started/quick-start) guide.
 * The description for the `block_id` path parameter was updated for the [Append block children](/reference/patch-block-children) endpoint to indicate that a block ID or page ID can be used.
 * A clarification was added to [documentation](/reference/retrieve-a-database) for retrieving/updating database properties: If a property is based on a relation to another database, the related database also needs to be shared with the integration.
 * A clarification was added to documentation for [querying databases](/reference/post-database-query-filter#multi-select). When filtering a multi-select property, the `contains` field will filter for exact matches for the string provided.
@@ -13992,7 +14036,7 @@ Keep an eye on this changelog for when the update becomes available in the Publi
 
 **July 11 - July 24, 2023**
 
-* A new integration [example](https://github.com/makenotion/notion-cookbook/tree/main/examples/javascript/parse-text-from-any-block-type) was added to the Notion SDK for JavaScript repo. This example shows how to get the plain text from any block type currently supported by the public API.
+* A new integration [example](https://github.com/makenotion/notion-cookbook/tree/main/examples/parse-text-from-any-block-type) was added to the Notion SDK for JavaScript repo. This example shows how to get the plain text from any block type currently supported by the public API.
 * The new unique ID page property was added to the [Page properties](/reference/page-property-values) documentation. When used, the unique ID (`unique_id`) auto-increments for every new page created in a database. An optional prefix can be included that will be applied to the ID values.
 
 ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/c599280-unique_id.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=92437cad7aa45d267c0f0a3d82874be2)
@@ -18840,7 +18884,7 @@ Revised **Section 3.1** of the [Developer Terms](https://www.notion.so/Developer
   * [Formulas 2.0: How to use Notion's new and improved formulas with your existing setups](https://www.notion.so/help/guides/new-formulas-whats-changed)
   * [How to write Notion formulas that extend the capabilities of your databases](https://www.notion.so/help/guides/write-formulas-that-extend-capabilities-of-databases)
 * The example for the [Formula database property](/reference/property-object#formula) was updated to align with the new Formula 2.0 launch.
-* [New sample code](https://github.com/makenotion/notion-cookbook/tree/main/examples/javascript/intro-to-notion-api) was added to the [Notion SDK for JavaScript's `examples`](https://github.com/makenotion/notion-cookbook/tree/main/examples/javascript) directory. This new example demonstrates how to use the Public API with basic and intermediate levels of difficulty.
+* [New sample code](https://github.com/makenotion/notion-cookbook/tree/main/examples/intro-to-notion-api) was added to the [Notion SDK for JavaScript's `examples`](https://github.com/makenotion/notion-cookbook/tree/main/examples) directory. This new example demonstrates how to use the Public API with basic and intermediate levels of difficulty.
 
 > [!NOTE]
 >
@@ -29190,7 +29234,7 @@ Check `request_status.type === "incomplete"` on every response page to know whet
 
 For connections that need to process all pages in a large data source, we recommend:
 
-* Reading every row past the limit by partitioning the query into `created_time` windows. See [Query large data sources](/guides/data-apis/query-large-data-sources) for the technique and a [runnable cookbook example](https://github.com/makenotion/notion-cookbook/tree/main/examples/javascript/query-large-data-sources).
+* Reading every row past the limit by partitioning the query into `created_time` windows. See [Query large data sources](/guides/data-apis/query-large-data-sources) for the technique and a [runnable cookbook example](https://github.com/makenotion/notion-cookbook/tree/main/examples/query-large-data-sources).
 * Using [filters](/reference/filter-data-source-entries) to narrow the result set (e.g. filter by `last_edited_time` to fetch only recently changed pages).
 * Setting up [connection webhooks](/reference/webhooks) for incremental sync instead of polling the full data source on a schedule.
 
@@ -31870,7 +31914,7 @@ Set the version by including a `Notion-Version` header. Setting this header is *
 
 ```bash cURL theme={null}
 curl https://api.notion.com/v1/users/01da9b00-e400-4959-91ce-af55307647e5 \
-  -H "Authorization: Bearer secret_t1CdN9S8yicG5eWLUOfhcWaOscVnFXns"
+  -H "Authorization: Bearer ntn_..." \
   -H "Notion-Version: 2026-03-11"
 ```
 
@@ -34023,9 +34067,41 @@ Get up and running with Workers in a few steps.
 
 **1. Install the CLI**
 
+**macOS and Linux**
+
 ```bash theme={null}
 curl -fsSL https://ntn.dev | bash
 ```
+
+If the installer says it couldn't install the Notion CLI to `/usr/local/bin`, pick a directory you can write to with `NTN_INSTALL_DIR`:
+
+```bash theme={null}
+curl -fsSL https://ntn.dev | NTN_INSTALL_DIR="$HOME/.local/bin" bash
+```
+
+If that directory isn't on your `PATH`, the installer prints the line to add to your shell startup file.
+
+To inspect the installer before you run it, view the [install script](https://ntn.dev/install.sh).
+
+**Windows**
+
+The install script doesn't support Windows. In PowerShell or Command Prompt, install with WinGet:
+
+```powershell theme={null}
+winget install Notion.ntn
+```
+
+The WinGet package supports only Windows x64 (x86-64/AMD64). To confirm the package installed, run `winget list --exact --id Notion.ntn`.
+
+**npm**
+
+Use npm on macOS, Linux, or Windows. This requires Node.js 22+ and npm 10+.
+
+```bash theme={null}
+npm install --global ntn
+```
+
+After you install, restart your terminal so `ntn` is on your `PATH`.
 
 **2. Initialize a new project**
 
@@ -34057,6 +34133,10 @@ Execute the included sample tool:
 ```bash theme={null}
 ntn workers exec sayHello -d '{"name": "World"}'
 ```
+
+> [!NOTE]
+>
+> Run `exec` from the `my-worker` directory after you deploy. The CLI reads the worker ID from `workers.json` in the current directory. From anywhere else, pass `--worker-id`.
 
 ## What's in a worker?
 

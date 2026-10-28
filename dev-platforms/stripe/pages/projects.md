@@ -515,7 +515,9 @@ stripe projects spend [provider]
 
 ### Set a spend limit 
 
-Use `stripe projects billing update` to set spend limits on your payment method. You can set a global limit that applies across all providers, or a per-provider limit for more granular control.
+Use `stripe projects billing update` to set spend limits on your payment method. You can set a global limit that applies to each provider, or a per-provider limit for more control.
+
+Stripe Projects enforces every limit separately for each provider. A global limit is the default cap for each provider, not a shared budget that all providers draw from. For example, if you set a global limit of 100 USD and use three providers, each provider can charge up to 100 USD, so your combined spend can reach 300 USD.
 
 Run the command interactively to choose the limit type and enter your values:
 
@@ -523,7 +525,7 @@ Run the command interactively to choose the limit type and enter your values:
 stripe projects billing update
 ```
 
-You can also include the `--limit` flag directly to skip the prompts. To set a global limit across all providers:
+You can also include the `--limit` flag directly to skip the prompts. To set a global limit that applies to each provider:
 
 ```bash
 stripe projects billing update --limit <amount>
@@ -535,7 +537,9 @@ To set a limit for a specific provider:
 stripe projects billing update --limit <amount> --provider <provider>
 ```
 
-Per-provider limits take precedence over a global limit when both are set. Run the command once for each provider you want to cap individually.
+Per-provider limits take precedence over a global limit when both are set. Run the command once for each provider you want to cap individually. For example, if you set a global limit of 100 USD and a 20 USD limit for one provider, that provider can charge up to 20 USD and each of your other providers can charge up to 100 USD.
+
+To cap your combined spend across providers, set a per-provider limit for each provider so that the limits add up to your total budget.
 
 ## Generate LLM context 
 

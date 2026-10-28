@@ -4,152 +4,88 @@ source: https://docs.fireworks.ai/fine-tuning/finetuning-intro
 path: fine-tuning/finetuning-intro
 ---
 
-Choose managed SFT, DPO, or ORPO, or run RL on the Training API, then pick serverless or dedicated infrastructure.
+Train an open model on your own data with Fireworks. Start in five minutes with agent skills, then choose Managed Training or the Training API.
 
-Training adapts a base model to your task by training it on your own data, so it learns your formats, tone, tools, and edge cases instead of relying on prompt instructions alone. Fireworks runs the training for you, without the burden of building and maintaining your own GPU or training infrastructure.
+Training adapts an open model to your task with your own data. A trained model can beat a larger general-purpose model on quality while costing less and responding faster. Read [when to train your own model](https://fireworks.ai/blog/specialized-intelligence-train-your-own-model).
 
-Training is worth it when you want:
+**Muse Glimmer 30B SFT is free to train until 11/30.**\
+No credit card required. [Start here](https://app.fireworks.ai/dashboard/fine-tuning/create?type=supervised\&baseModel=accounts/fireworks/models/muse-glimmer-30b)
 
-* **Higher task quality** - beat a general-purpose model on your specific workload, and often match or exceed a larger closed model.
-* **Lower latency and cost** - a smaller specialized model can replace a bigger one at a fraction of the per-token cost.
-* **Consistent behavior** - bake in formats, style, and tool-use so you stop paying for long prompts and few-shot examples on every request.
-* **Ownership and no infra** - you keep the resulting weights, and Fireworks handles the GPUs, scheduling, and checkpointing.
+## Quickstart
 
-> [!NOTE]
->
-> **Coming from OpenAI?** Fireworks uses the same **OpenAI-compatible chat completion format** for training data — the same `messages` array with `role`, `content`, `tool_calls`, and `weight` fields. You can use your existing SFT datasets with no conversion required. See the [SFT dataset format](/fine-tuning/fine-tuning-models#fine-tuning-a-model-using-sft) for the full schema and examples.
+Train your first model in about five minutes with a coding agent such as Cursor, Claude Code, or Codex.
 
-## Choose a method
+**Step 1: Install the training skills.** Paste this into your agent:
 
-Pick a method based on the data or signal you have. SFT and DPO run as standard jobs on [Managed Training](/fine-tuning/managed-finetuning-intro), or as custom loops you write yourself on the [Training API](/fine-tuning/training-api/introduction); RL runs on the Training API only.
+```text wrap theme={null}
+Set up Fireworks training for me. Fetch https://docs.fireworks.ai/fine-tuning/agent/use-with-coding-agents.md and follow it.
+```
 
-| | SFT | DPO | RL |
-| - | - | - | - |
-| **Good for** | Classification, extraction, format and tone adherence, distillation | Steering the model toward a goal you cannot measure objectively, such as style, helpfulness, or safety | Tasks where you have no verified outputs to learn from, but you can tell whether an outcome was good or bad. Pushing the model beyond state-of-the-art |
-| **Data you supply** | Verified input/output pairs, or successful trajectories | Preference pairs, single-turn only: one prompt, a chosen and a rejected response | Prompts, plus an evaluator that can tell a good outcome from a bad one |
-| **Dataset size** | Hundreds of examples, or roughly 10M+ tokens | Hundreds to thousands of pairs | Dozens to thousands of prompts, sometimes more. Often fewer than 100 is enough |
-| **Consider alternatives if** | You have very few examples, or no high-quality verified outputs to learn from | Outputs can be judged objectively, or you already have high-quality verified pairs. Both point to SFT or RL | You have no way at all to judge an outcome, including an LLM judge. Simpler methods are untried, or you want a quick training experiment |
-| **Guides** | [Text](/fine-tuning/fine-tuning-models) · [Vision](/fine-tuning/fine-tuning-models#vision-training) · [Cookbook](/fine-tuning/training-api/cookbook/sft) | [Managed DPO / ORPO](/fine-tuning/dpo-fine-tuning) · [Cookbook](/fine-tuning/training-api/cookbook/dpo) | [Cookbook](/fine-tuning/training-api/cookbook/rl) · [Agentic RL](/fine-tuning/training-api/cookbook/agentic-rl) |
+**Step 2: Run your first job.** Ask the agent:
 
-> [!TIP]
->
-> **Verifiable** means you can reliably judge whether a model output is good (rules, unit tests, programmatic checks). RL fits reasoning and agentic tasks where full ground-truth labels are hard to write.
+```text wrap theme={null}
+Fine-tune Muse Glimmer 30B on the onboarding-prompt-router example dataset.
+```
 
-The Training API also supports custom methods (GRPO, distillation, and others) via the Python SDK. See [Cookbook recipes](/fine-tuning/training-api/cookbook/overview) and [Managed Training](/fine-tuning/managed-finetuning-intro) for model support and pricing.
+The agent shows you the parameters and cost, then waits for your approval before it starts anything.
 
-## Choose a surface
+**That's it! Now try your own use case.** In the same agent, ask:
 
-Pick a **surface** (managed or Training API, serverless or dedicated). The surface decides how much of the model you update and which **interfaces** are available to you.
+```text wrap theme={null}
+Train a model to [describe your task] using [your data file or dataset].
+```
 
-Answer the question below and the flow takes you to your surface, which links to its guide. Click any answered question to change it, or show every path at once.
+The skills suggest a method, data format, and evaluation, then plan the job for your approval.
 
-Compare the last branch in detail on [serverless versus dedicated](/fine-tuning/training-api/introduction#infrastructure), and check per-model support on [Models](/fine-tuning/models).
+Prefer the UI? Start a job in the [training dashboard](https://app.fireworks.ai/dashboard/fine-tuning).\
 
-### Managed Training vs Training API
+Prefer code? Follow [Cookbook: Muse Glimmer First Fine-Tune](/fine-tuning/training-api/cookbook/muse-glimmer).
 
-Fireworks offers two ways to train: **Managed Training** (Fireworks runs the loop) and the **Training API** (you write the loop in Python).
+## Ways to train
 
-| Choose Managed Training when | Choose the Training API when |
-| - | - |
-| You need a standard SFT, DPO, or ORPO job | You need a custom loss, reward, rollout, trajectory, or optimizer-step loop |
-| You want Fireworks to own scheduling, training, and checkpointing | You want to fork or write Python training logic |
-| A supported model and managed configuration cover the task | You need inference in the loop, distillation, per-step diagnostics, or research algorithms |
-
-Managed RFT is paused and does not accept new jobs. Run RL on the [Training API](/fine-tuning/training-api/cookbook/rl).
+From self-serve to building with our team:
 
 > **[Managed Training](/fine-tuning/managed-finetuning-intro)**
 >
-> Standard jobs with a platform-managed loop.
-
-> **[Training API](/fine-tuning/training-api/introduction)**
->
-> Programmable loops built from cookbook recipes or the SDK.
-
-### Serverless vs Dedicated infrastructure
-
-Infrastructure applies to the **Training API** only. Managed Training uses platform-managed compute.
-
-| Choose Serverless Training when | Choose Dedicated Training when |
-| - | - |
-| LoRA covers the workload (SFT, DPO, ORPO, RL, or distillation) on a model in the serverless pool | You need full-parameter training or a model outside the serverless pool |
-| You want shared pooled compute with no trainer or sampler deployment provisioning | You need explicit trainer, deployment, checkpoint, reconnect, or promotion control |
-| Per-token billing fits a small or bursty experiment | A sustained, highly utilized time-based run fits the workload |
-| Sampling on the shared pool is sufficient | You need provisioned rollout or evaluation deployments |
+> Bring a dataset and Fireworks runs SFT or DPO for you. Billed per token.
 
 > **[Serverless Training](/fine-tuning/training-api/serverless)**
 >
-> Shared pooled trainer, no provisioning, per-token billing.
+> Write your own training loop on a shared trainer pool. Nothing to provision, billed per token.
 
 > **[Dedicated Training](/fine-tuning/training-api/dedicated)**
 >
-> Provisioned trainer and deployment resources with explicit lifecycle control.
+> Your own loop on GPUs reserved for your run, with full-parameter training and more models. Billed per GPU hour.
 
-See the detailed [serverless versus dedicated comparison](/fine-tuning/training-api/introduction#infrastructure).
-
-## Choose how to interact
-
-* **Skill** — the only interface that drives both surfaces. Your coding agent configures, runs, and troubleshoots training through the [Fireworks training skill](/fine-tuning/agent/use-with-coding-agents).
-* **Fireworks UI, `firectl`, or the REST API** — managed jobs only. Guided creation and monitoring in the UI, reproducible job and resource automation from the CLI or API.
-* **Python SDK** — Training API loops only, on serverless or dedicated. Start from a [cookbook recipe](/fine-tuning/training-api/cookbook/overview).
-
-> [!NOTE]
+> **[Fireworks Lab](https://fireworks.ai/contact-training)**
 >
-> **CLI or API vs Python SDK:** `firectl` and the REST API manage **managed** jobs and platform resources. The **Python SDK** runs **Training API** loops you author yourself (loss, rollouts, optimizer steps).
+> Our researchers and engineers build the model with your team, from co-design to a custom build.
 
-### GPU quota prerequisite
+Not sure? Start with Managed Training. Move to the Training API when you need a custom loss, reinforcement learning, or inference in the loop ([compare serverless and dedicated](/fine-tuning/training-api/introduction#infrastructure)). Choose Fireworks Lab when you want our team to help design and build the model.
 
-Managed jobs and dedicated Training API runs need training GPU quota. Add a [payment method](https://fireworks.ai/billing) and your account gets **32 GPUs of each type** (H200, B200, and B300). Accounts without a payment method have 0 training GPUs.
+## Choose a method
 
-[Serverless Training](/fine-tuning/training-api/serverless) uses a shared pool with its own model, concurrency, and rate limits instead of dedicated training GPU quota.
-
-Before you launch, estimate the job with the [training cost estimator](/fine-tuning/cost-estimator) and confirm your account has enough credits to cover it.
-
-Check quota with `firectl quota list`. HTTP 403 `quota_exceeded` or `tier_required` means you need a payment method or more training GPU quota, not a dataset or config fix.
-
-> [!NOTE]
->
-> Need more than 32 GPUs of a type? [Reach out for enterprise support](https://fireworks.ai/contact-training) and we'll help size the right allocation for your workload.
-
-## Models
-
-Model availability is decided per model and per surface — managed jobs by method (SFT, DPO, ORPO), Training API jobs by parameter mode (LoRA or full-parameter). Managed RFT is paused. Check the live catalog before you launch.
-
-> **[Models](/fine-tuning/models)**
->
-> Browse the base model catalog with per-model surface, method, and training-shape support.
-
-## Training security
-
-Across every training surface, one principle holds: **your training data is never used to train Fireworks-owned or shared models**. Inference follows [Zero Data Retention](/guides/security_compliance/data_handling) by default. This section summarizes the training surfaces; step-by-step BYOB IAM setup, CMEK KMS setup, and secure RFT are in [Secure Training](/guides/security_compliance/secure_training) and [CMEK](/guides/security_compliance/secure_training/cmek).
-
-### Choose a surface by data-privacy needs
-
-| Surface | Where your training data lives | What Fireworks retains | Your deletion controls |
+| | Supervised Fine-Tuning (SFT) | Preference Optimization (DPO) | Reinforcement Learning (RL) |
 | - | - | - | - |
-| **Managed Training** | Fireworks-managed storage (GCS); reference link in our database | Dataset, checkpoints, traces | Delete dataset after job; request checkpoint/trace deletion |
-| **Managed + BYOB** | Your cloud bucket; read in-place during training only | Checkpoints and traces only | Revoke bucket access after job; request checkpoint/trace deletion |
-| **Training API** | No dataset file on Fireworks — transient tokenized batches only | Checkpoints and traces only | Request checkpoint/trace deletion |
+| **Use it for** | Classification, extraction, format and tone, distillation | Style, helpfulness, or safety, where there is no single right answer | Reasoning and agent tasks where you can score an outcome but can't write the answer |
+| **You supply** | Hundreds of good input/output examples | Hundreds to thousands of single-turn chosen and rejected responses | Prompts, often fewer than 100, and a way to score outputs |
+| **Runs on** | Managed Training or Training API | Managed Training or Training API | Training API |
+| **Guides** | [Text](/fine-tuning/fine-tuning-models) · [Vision](/fine-tuning/fine-tuning-models#vision-training) · [Cookbook](/fine-tuning/training-api/cookbook/sft) | [Managed DPO / ORPO](/fine-tuning/dpo-fine-tuning) · [Cookbook](/fine-tuning/training-api/cookbook/dpo) | [Agentic RL](/fine-tuning/training-api/cookbook/agentic-rl) · [Cookbook](/fine-tuning/training-api/cookbook/rl) |
 
-Checkpoints and traces are retained \~30 days by default (deletable on request). Strictest governance: [BYOB](#dataset-storage-byob) (dataset never copied to Fireworks) or the [Training API](/fine-tuning/training-api/introduction) (no stored dataset file).
+The Training API also runs custom methods such as GRPO and distillation. See [Cookbook recipes](/fine-tuning/training-api/cookbook/overview).
 
-### Bring your own bucket (BYOB)
+## Other ways to run jobs
 
-Register an external URL so Fireworks reads your dataset during the job without persisting a copy, then revoke access after the job:
+The agent is the fastest path, and every job is also available directly:
 
-```bash theme={null}
-firectl dataset create my-dataset --external-url gs://your-bucket/path/train.jsonl
-```
+* **Fireworks UI:** create and monitor managed jobs in the [dashboard](https://app.fireworks.ai/dashboard/fine-tuning).
+* **`firectl` or the REST API:** script managed jobs and datasets.
+* **Python SDK:** write Training API loops, starting from a [cookbook recipe](/fine-tuning/training-api/cookbook/overview).
 
-Supported: GCS, AWS S3, and Azure Blob, with least-privilege IAM to Fireworks service accounts provided at onboarding. For AWS S3, lock the IAM trust policy with both `accounts.google.com:sub` and `accounts.google.com:oaud` (your Fireworks account ID) so tokens for other accounts are rejected. Full IAM trust policies, OIDC audience, and rotation are in [Secure Training](/guides/security_compliance/secure_training/byob).
+## Next steps
 
-### Customer-managed encryption keys (CMEK)
-
-CMEK encrypts datasets and checkpoints on Fireworks-managed storage with **your** cloud KMS key — revoke the key and Fireworks cannot decrypt. Supported on AWS KMS, Google Cloud KMS, and Azure Key Vault. It does not cover in-memory training compute or inference request/response. Setup, IAM, and rotation detail: [CMEK](/guides/security_compliance/secure_training/cmek) · [Data Security Overview](/guides/security_compliance/data_security).
-
-### Secure RL and customer controls
-
-For RL under strict governance, combine a [BYOB](#dataset-storage-byob) dataset with a [Training API](/fine-tuning/training-api/cookbook/rl) rollout function that keeps environments and scoring inside your own infrastructure. To delete checkpoints, traces, or rollout data, contact your Fireworks account team; datasets are deletable from the console or API after a job completes.
-
-## Before launch
-
-Verify current model support, shapes, access status, pricing, limits, and quota in the linked live pages. A coding agent asks for confirmation before upload, registration, paid inference, job creation, promotion, deployment, or another mutation. Material changes require approval again; promotion and deployment are confirmed separately.
+* [Evaluating Trained Models](/fine-tuning/evaluating-fine-tuned-models) and [Deploying Trained Models](/fine-tuning/deploying-loras) — test your trained model, then serve it
+* [Models](/fine-tuning/models) — which models each method and surface supports
+* [Training cost estimator](/fine-tuning/cost-estimator) — estimate a job before you launch it
+* [Training GPU quota](/guides/quotas_usage/account-quotas#training-gpu-quota) — what your account gets and how to raise it
+* [Secure Training](/guides/security_compliance/secure_training) — where your data lives, bring your own bucket, and customer-managed keys

@@ -595,7 +595,7 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 - [Set up EAS Observe](https://docs.expo.dev/eas/observe/get-started.md)
 - [EAS Observe dashboard](https://docs.expo.dev/eas/observe/dashboard.md)
 - [Querying with EAS CLI](https://docs.expo.dev/eas/observe/eas-cli.md)
-- [Querying with the Expo MCP Server](https://docs.expo.dev/eas/observe/mcp.md)
+- [Analyze EAS Observe data with AI](https://docs.expo.dev/eas/observe/ai-agents.md)
 - [EAS Update download performance](https://docs.expo.dev/eas/observe/eas-update.md)
 - [User-defined events](https://docs.expo.dev/eas/observe/events.md)
 - [Error reporting](https://docs.expo.dev/eas/observe/errors.md)

@@ -6,65 +6,43 @@ path: cli/get-started/installation
 
 Install the Notion CLI on your machine.
 
-## Install via script (recommended)
+## Install
 
-The recommended way to install `ntn` on macOS and Linux:
+**macOS and Linux**
 
 ```bash theme={null}
 curl -fsSL https://ntn.dev | bash
 ```
 
-To inspect the installer before running it, view the [install script](https://ntn.dev/install.sh).
-
-To update:
+If the installer says it couldn't install the Notion CLI to `/usr/local/bin`, pick a directory you can write to with `NTN_INSTALL_DIR`:
 
 ```bash theme={null}
-ntn update
+curl -fsSL https://ntn.dev | NTN_INSTALL_DIR="$HOME/.local/bin" bash
 ```
 
-## Install via npm
+If that directory isn't on your `PATH`, the installer prints the line to add to your shell startup file.
 
-Use macOS, Linux, or Windows to install:
+To inspect the installer before you run it, view the [install script](https://ntn.dev/install.sh).
 
-```bash theme={null}
-npm install --global ntn
-```
+**Windows**
 
-To update:
-
-```bash theme={null}
-npm update --global ntn
-```
-
-> [!NOTE]
->
-> Requires Node.js 22+ and npm 10+.
-
-## Install via Winget (Windows)
-
-In PowerShell or Command Prompt, including either shell in Windows Terminal:
+The install script doesn't support Windows. In PowerShell or Command Prompt, install with WinGet:
 
 ```powershell theme={null}
 winget install Notion.ntn
 ```
 
-You can also confirm the WinGet package:
+The WinGet package supports only Windows x64 (x86-64/AMD64). To confirm the package installed, run `winget list --exact --id Notion.ntn`.
 
-```powershell theme={null}
-winget list --exact --id Notion.ntn
+**npm**
+
+Use npm on macOS, Linux, or Windows. This requires Node.js 22+ and npm 10+.
+
+```bash theme={null}
+npm install --global ntn
 ```
 
-Restart your terminal to verify.
-
-To update:
-
-```powershell theme={null}
-winget upgrade Notion.ntn
-```
-
-> [!NOTE]
->
-> We currently only support Windows x64 (x86-64/AMD64)
+After you install, restart your terminal so `ntn` is on your `PATH`.
 
 ## Verify installation
 
@@ -72,13 +50,43 @@ winget upgrade Notion.ntn
 ntn --version
 ```
 
-## Shell completions
+## Update
 
-Enable tab completions for your shell:
+If you used the install script, run:
 
 ```bash theme={null}
-ntn completions bash  # or fish, zsh, powershell, elvish
+ntn update
 ```
+
+If you used WinGet, run:
+
+```powershell theme={null}
+winget upgrade Notion.ntn
+```
+
+If you used npm, run:
+
+```bash theme={null}
+npm update --global ntn
+```
+
+## Shell completions
+
+`ntn completions <shell>` prints a completion script to stdout. It supports `bash`, `zsh`, `fish`, `powershell`, and `elvish`.
+
+To load completions in bash, add this line to `~/.bashrc`:
+
+```bash theme={null}
+source <(ntn completions bash)
+```
+
+To load completions in zsh, add this line to `~/.zshrc` after `compinit` runs:
+
+```zsh theme={null}
+source <(ntn completions zsh)
+```
+
+For fish, PowerShell, or elvish, run `ntn completions fish`, `ntn completions powershell`, or `ntn completions elvish`. Load its output the way your shell loads other completion scripts.
 
 ## Next steps
 

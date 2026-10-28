@@ -121,6 +121,7 @@ In general, the number of allowed digits limits the maximum amount you can charg
 For card payments, the maximum charge amount is determined by the card network. The `amount` value supports up to:
 
 - 12 digits for most card payments, for a maximum of 999,999,999,999 in minor units
+- 10 digits for card payments processed over the Cartes Bancaires network, for a maximum of 9,999,999,999 in minor units
 - 9 digits for American Express in most currencies, for a maximum of 999,999,999 in minor units
 
 Card networks can impose charge amount limits that are more restrictive than digit number, depending on currency and region.

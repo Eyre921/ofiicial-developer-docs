@@ -8,6 +8,10 @@ Connect an MCP client to your Notion workspace.
 
 Follow the instructions for your MCP client. After you authorize the connection, the client can read and update content that you can access in the selected Notion workspace.
 
+> [!NOTE]
+>
+> Install your MCP client first and make sure its command is on your `PATH`, or you'll see `command not found` for `claude` or `codex`. See the [Claude Code setup guide](https://code.claude.com/docs/en/setup) or the [Codex CLI guide](https://developers.openai.com/codex/cli). An admin in your organization can also block adding MCP servers, which shows up as an enterprise policy error.
+
 ## Codex (ChatGPT)
 
 Codex is OpenAI's coding agent. See the [Codex MCP documentation](https://developers.openai.com/codex/mcp/) for more details.

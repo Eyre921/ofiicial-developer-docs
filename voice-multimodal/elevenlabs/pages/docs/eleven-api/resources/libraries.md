@@ -110,6 +110,7 @@ These libraries are designed for use with ElevenLabs [Agents Platform](/docs/ele
 | Swift        | [Docs](/docs/eleven-agents/libraries/swift)              | [Github](https://github.com/elevenlabs/ElevenLabsSwift)                         |
 | Kotlin       | [Docs](/docs/eleven-agents/libraries/kotlin)             | [Maven](https://central.sonatype.com/artifact/io.elevenlabs/elevenlabs-android) |
 | Flutter      | [Docs](https://github.com/elevenlabs/elevenlabs-flutter) | [Pub](https://pub.dev/packages/elevenlabs_agents)                               |
+| Unity        | [Docs](/docs/eleven-agents/libraries/unity)              | [GitHub](https://github.com/elevenlabs/unity)                                   |
 
 ## Third-party libraries
 

@@ -37,7 +37,7 @@ Connect charge types offer different ways to orchestrate payments to your connec
 
 The countries where you can have connected accounts depends on the business location of your platform’s country:
 
-- [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md): If your platform qualifies, you can pay out connected accounts in their local currencies. Stripe determines if your platform meets the criteria to support cross-border payouts.
+- [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md): If your platform qualifies, you can pay out connected accounts in their local currencies. Stripe determines if your platform meets the criteria to support cross-border payouts.
 
 - Extra features: If using Connect with additional payment methods or with [Stripe Terminal](https://docs.stripe.com/terminal.md), country availability is also dependent on those features.
 

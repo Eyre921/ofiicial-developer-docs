@@ -21,13 +21,14 @@ Bedrock uses the same account-admin workflow as Anthropic and OpenAI, but each m
 | Claude Opus 5 | `claude-opus-5` | `global.anthropic.claude-opus-5` | [Model ID](https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-opus-5.html#model-card-anthropic-claude-opus-5-programmatic-access) · [Regions](https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-opus-5.html#model-card-anthropic-claude-opus-5-regional-availability) |
 | Claude Opus 5.5 | `claude-opus-5-5` | `global.anthropic.claude-opus-5-5` | [Model ID](https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-opus-5-5.html#model-card-anthropic-claude-opus-5-5-programmatic-access) · [Regions](https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-opus-5-5.html#model-card-anthropic-claude-opus-5-5-regional-availability) |
 | GPT-5.6 Sol | `gpt-5.6-sol` | `global.openai.gpt-5.6-sol` | [Model ID](https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-56-sol.html#model-card-openai-gpt-56-sol-programmatic-access) · [Regions](https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-56-sol.html#model-card-openai-gpt-56-sol-regional-availability) |
-| GPT-6 Sol | `gpt-6-sol` | `global.openai.gpt-6-sol` (confirm in your account) | [AWS launch announcement](https://aws.amazon.com/blogs/machine-learning/bring-more-intelligence-to-everyday-work-with-gpt-6-sol-and-gpt-6-luna-on-amazon-bedrock/). AWS has not yet published a model card for this model. |
+| GPT-6 Sol | `gpt-6-sol` | `global.openai.gpt-6-sol` | [Model ID](https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-sol.html#model-card-openai-gpt-6-sol-programmatic-access) · [Regions](https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-sol.html#model-card-openai-gpt-6-sol-regional-availability) |
+| GPT-6.1 Sol | `gpt-6.1-sol` | `global.openai.gpt-6.1-sol` | [Model ID](https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-1-sol.html#model-card-openai-gpt-6-1-sol-programmatic-access) · [Regions](https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-1-sol.html#model-card-openai-gpt-6-1-sol-regional-availability) |
 | GPT-6 Astra | `gpt-6-astra` | `global.openai.gpt-6-astra` | [Model ID](https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-astra.html#model-card-openai-gpt-6-astra-programmatic-access) · [Regions](https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-astra.html#model-card-openai-gpt-6-astra-regional-availability) |
 
 Where each column is used:
 
 * **Model:** the name shown in the dashboard model picker. You select it; you never type an ID.
-* **Served model ID:** the ID in the response `model` field, such as `claude-opus-5-5`. Your application still sends `auto`, or the model ID itself to pin that model. `firectl` uses the served ID as `routes[].firerouter_model_id`. You do not type it in the dashboard.
+* **Served model ID:** the ID in the response `model` field, such as `claude-opus-5-5`. Your application still sends `auto`, or the model ID itself to pin that model. `firectl` uses the served ID as `routes[].nexus_model_id`. You do not type it in the dashboard.
 * **Bedrock model ID:** the AWS identifier. Copy it exactly from AWS. Paste it into each route's **Model ID** field, or set `routes[].bedrock.model_id`. Any geo/global profile or ARN that AWS lists for the model also works, as long as your region can invoke it.
 * **Region:** the AWS source region. In Fireworks, select it in each route's **Region** field, or set `routes[].bedrock.aws_region`. The supported regions are `us-east-1`, `us-east-2`, `us-west-1`, and `us-west-2`.
 
@@ -54,7 +55,7 @@ In **AWS IAM → Roles → Create role**, choose **Custom trust policy** and pas
     {
       "Effect": "Allow",
       "Principal": {
-        "AWS": "arn:aws:iam::843780049090:role/firerouter-byok"
+        "AWS": "arn:aws:iam::843780049090:role/nexus-bedrock-byok"
       },
       "Action": "sts:AssumeRole",
       "Condition": {
@@ -67,7 +68,7 @@ In **AWS IAM → Roles → Create role**, choose **Custom trust policy** and pas
 }
 ```
 
-![Configuring the Fireworks principal ARN and account-specific External ID in an AWS IAM custom trust policy](https://mintcdn.com/fireworksai/5EvfarxWLqhpXYL9/images/fireworks-nexus/provider-keys/bedrock/iam-role-trust-policy.png?fit=max\&auto=format\&n=5EvfarxWLqhpXYL9\&q=85\&s=08e52085e1a92a0ec3f143b3a4b7fd70)
+![Configuring the Fireworks principal ARN and account-specific External ID in an AWS IAM custom trust policy](https://mintcdn.com/fireworksai/ujMDJFNEX7NdyBj0/images/fireworks-nexus/provider-keys/bedrock/iam-role-trust-policy.png?fit=max\&auto=format\&n=ujMDJFNEX7NdyBj0\&q=85\&s=977912ddca8bbf7719bd5adb75aea2ca)
 
 **2. Add Bedrock permissions**
 
@@ -91,13 +92,13 @@ In **Step 2: Add permissions**, select **Create inline policy** and paste:
 
 `Resource: "*"` covers all Bedrock inference targets and the default project. SCPs, permission boundaries, and explicit denies still apply.
 
-![Adding an inline Bedrock invocation policy in the AWS IAM Create role wizard](https://mintcdn.com/fireworksai/Vlf8OtCu4-U4nVi7/images/fireworks-nexus/provider-keys/bedrock/iam-role-permissions.png?fit=max\&auto=format\&n=Vlf8OtCu4-U4nVi7\&q=85\&s=9d81ef24e46e0cb1b348acdc1d0e36ec)
+![Adding an inline Bedrock invocation policy in the AWS IAM Create role wizard](https://mintcdn.com/fireworksai/ujMDJFNEX7NdyBj0/images/fireworks-nexus/provider-keys/bedrock/iam-role-permissions.png?fit=max\&auto=format\&n=ujMDJFNEX7NdyBj0\&q=85\&s=2fb6955992a2124b3d3652a4680c8b45)
 
 **3. Create the role**
 
 In **Step 3**, name the role `FireworksBedrockBYOK` or use another name that begins with `FireworksBedrock`. Use the default IAM path; custom role paths are not supported. Review the trust policy and permissions, then create the role.
 
-![Reviewing the FireworksBedrockBYOK role name and trust policy before creating the AWS IAM role](https://mintcdn.com/fireworksai/5EvfarxWLqhpXYL9/images/fireworks-nexus/provider-keys/bedrock/iam-role-review.png?fit=max\&auto=format\&n=5EvfarxWLqhpXYL9\&q=85\&s=4a77b9b1241d85310c383163ee0919ba)
+![Reviewing the FireworksBedrockBYOK role name and trust policy before creating the AWS IAM role](https://mintcdn.com/fireworksai/ujMDJFNEX7NdyBj0/images/fireworks-nexus/provider-keys/bedrock/iam-role-review.png?fit=max\&auto=format\&n=ujMDJFNEX7NdyBj0\&q=85\&s=ce2cbb20fe7c9ebcced2054215a82aa4)
 
 Copy the role ARN from the role summary.
 
@@ -110,7 +111,7 @@ Copy the role ARN from the role summary.
 > ```bash wrap theme={null}
 > export AWS_PROFILE="customer-admin"
 > export ROLE_NAME="FireworksBedrockBYOK"
-> export FIREWORKS_PRINCIPAL_ARN="arn:aws:iam::843780049090:role/firerouter-byok"
+> export FIREWORKS_PRINCIPAL_ARN="arn:aws:iam::843780049090:role/nexus-bedrock-byok"
 > export EXTERNAL_ID="<FIREWORKS_ACCOUNT_ID>"
 > ```
 >
@@ -285,14 +286,14 @@ Create `routes.json`. Each entry maps one Nexus Auto model to one Bedrock region
 {
   "routes": [
     {
-      "firerouter_model_id": "claude-opus-5-5",
+      "nexus_model_id": "claude-opus-5-5",
       "bedrock": {
         "aws_region": "us-east-1",
         "model_id": "global.anthropic.claude-opus-5-5"
       }
     },
     {
-      "firerouter_model_id": "gpt-5.6-sol",
+      "nexus_model_id": "gpt-5.6-sol",
       "bedrock": {
         "aws_region": "us-east-1",
         "model_id": "global.openai.gpt-5.6-sol"
@@ -307,6 +308,7 @@ Rules:
 * Use only the served model IDs in [Supported models](#supported-models).
 * Each model appears once and maps to one `(aws_region, model_id)` target.
 * Copy `model_id` exactly from AWS; geo/global prefixes and ARNs are significant.
+* Older route files that use the deprecated `firerouter_model_id` field still work.
 
 ### Bind the key and routes
 

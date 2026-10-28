@@ -2734,6 +2734,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/rest/interactions/repos
 /en/rest/interactions/user
 /en/rest/issues
+/en/rest/issues/artifacts
 /en/rest/issues/assignees
 /en/rest/issues/comments
 /en/rest/issues/events

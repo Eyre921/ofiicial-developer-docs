@@ -5184,6 +5184,31 @@ This method gets the previously created embedded form instance, if it exists. Yo
 Get the embedded form
 ```
 
+## Get values from the embedded form
+
+`checkoutForm.getValue(options?: object)`
+
+Validates and retrieves the current values from the embedded form. If there are any input validation errors,
+the errors display by their respective fields. Call this method after [mounting the embedded form](https://docs.stripe.com/js/custom_checkout/create_form.md).
+
+- `options`
+  An optional object to control the format of the returned values.
+    - `address`
+      Options for the returned billing and shipping addresses.
+      - `format`
+        Controls the format of the `state` field in the returned billing and shipping addresses.
+
+* `latin`: Return the state in Latin characters (for example, "Tokyo").
+* `localized`: Return the state in the locale's native script (for example, "東京").
+
+If unspecified in Stripe.js Clover and below, format is determined by a heuristic based on the customer's browser language. If unspecified in Stripe.js Dahlia and above, defaults to `latin`.
+
+### Example
+
+```title
+Get values from the embedded form
+```
+
 ## Get the Currency Selector Element
 
 `checkoutFormSdk.getCurrencySelectorElement()`

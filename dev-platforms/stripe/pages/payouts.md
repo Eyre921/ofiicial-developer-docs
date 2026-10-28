@@ -29,7 +29,7 @@ The account details required depend on your bank’s location. The bank account 
 | SWIFT / BIC Code | AAAAALTXXXX (8-11 characters) |
 | IBAN | AL35202111090000000001234567 (28 characters) |
 
-Albania is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Albania is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Algeria (DZ)
 
@@ -38,7 +38,7 @@ Albania is only available for [Cross-border payouts](https://docs.stripe.com/con
 | SWIFT / BIC Code | AAAADZDZXXX (8-11 characters) |
 | Account Number | 00001234567890123456 (20 characters) |
 
-Algeria is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Algeria is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Angola (AO)
 
@@ -47,7 +47,7 @@ Algeria is only available for [Cross-border payouts](https://docs.stripe.com/con
 | SWIFT / BIC Code | AAAAAOAOXXX (8-11 characters) |
 | IBAN | AO06004400006729503010102 (25 characters) |
 
-Angola is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Angola is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Antigua and Barbuda (AG)
 
@@ -56,7 +56,7 @@ Angola is only available for [Cross-border payouts](https://docs.stripe.com/conn
 | SWIFT / BIC Code | AAAAAGAGXYZ (8-11 characters) |
 | Account number | 000123456789 (1-32 characters) |
 
-Antigua and Barbuda is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Antigua and Barbuda is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Argentina (AR)
 
@@ -64,7 +64,7 @@ Antigua and Barbuda is only available for [Cross-border payouts](https://docs.st
 | --- | --- |
 | CBU | 0110000600000000000000 (22 digits) |
 
-Argentina is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Argentina is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Armenia (AM)
 
@@ -73,7 +73,7 @@ Argentina is only available for [Cross-border payouts](https://docs.stripe.com/c
 | SWIFT / BIC Code | AAAAAMNNXXX (8-11 digits) |
 | Account number | 00001234567 (11-16 digits) |
 
-Armenia is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Armenia is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Australia (AU)
 
@@ -97,7 +97,7 @@ Armenia is only available for [Cross-border payouts](https://docs.stripe.com/con
 | Branch code | 123456 (6 digits) |
 | IBAN | AZ77ADJE12345678901234567890 (28 characters) |
 
-Azerbaijan is only available for [cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Azerbaijan is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Bahamas (BS)
 
@@ -106,7 +106,7 @@ Azerbaijan is only available for [cross-border payouts](https://docs.stripe.com/
 | SWIFT / BIC Code | AAAABSNSXXX (8-11 characters) |
 | Account Number | 0001234 (1-10 digits) |
 
-Bahamas is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Bahamas is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Bahrain (BH)
 
@@ -115,7 +115,7 @@ Bahamas is only available for [Cross-border payouts](https://docs.stripe.com/con
 | SWIFT / BIC Code | AAAABHBMXYZ (8-11 characters) |
 | IBAN | BH29BMAG1299123456BH00 (22 characters) |
 
-Bahrain is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Bahrain is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Bangladesh (BD)
 
@@ -124,7 +124,7 @@ Bahrain is only available for [Cross-border payouts](https://docs.stripe.com/con
 | Bank code | 110000000 (9 characters) |
 | Account Number | 0000123456789 (13-17 digits) |
 
-Bangladesh is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Bangladesh is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Belgium (BE)
 
@@ -138,7 +138,7 @@ Bangladesh is only available for [Cross-border payouts](https://docs.stripe.com/
 | --- | --- |
 | IBAN | BJ66BJ0610100100144390000769 (28 characters) |
 
-Benin is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Benin is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Bhutan (BT)
 
@@ -147,7 +147,7 @@ Benin is only available for [Cross-border payouts](https://docs.stripe.com/conne
 | SWIFT / BIC Code | AAAABTBTXXX (8-11 digits) |
 | Account number | 0000123456789 (1-17 digits) |
 
-Bhutan is only available for [cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Bhutan is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Bolivia (BO)
 
@@ -156,7 +156,7 @@ Bhutan is only available for [cross-border payouts](https://docs.stripe.com/conn
 | Bank code | 040 (1-3 digits) |
 | Account number | 000123456789 (10-15 digits) |
 
-Bolivia is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Bolivia is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Bosnia and Herzegovina (BA)
 
@@ -165,7 +165,7 @@ Bolivia is only available for [Cross-border payouts](https://docs.stripe.com/con
 | SWIFT / BIC Code | AAAABABAXXX (8-11 characters) |
 | IBAN | BA095520001234567812 (20 characters) |
 
-Bosnia and Herzegovina is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Bosnia and Herzegovina is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Botswana (BW)
 
@@ -174,7 +174,7 @@ Bosnia and Herzegovina is only available for [Cross-border payouts](https://docs
 | SWIFT / BIC Code | AAAABWBWXXX (8-11 characters) |
 | Account Number | 000123456789 (1-16 digits) |
 
-Botswana is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Botswana is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Brazil (BR)
 
@@ -191,7 +191,7 @@ Botswana is only available for [Cross-border payouts](https://docs.stripe.com/co
 | SWIFT / BIC Code | AAAABNBBXXX (8-11 digits) |
 | Account number | 0000123456789 (1-13 digits) |
 
-Brunei is only available for [cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Brunei is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Bulgaria (BG)
 
@@ -206,7 +206,7 @@ Brunei is only available for [cross-border payouts](https://docs.stripe.com/conn
 | SWIFT / BIC Code | AAAAKHKHXXX (8-11 characters) |
 | Account Number | 000123456789 (5-15 characters) |
 
-Cambodia is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Cambodia is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Canada (CA)
 
@@ -226,7 +226,7 @@ Cambodia is only available for [Cross-border payouts](https://docs.stripe.com/co
 
 There are two valid bank account types: “checking” and “savings”.
 
-Chile is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Chile is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Colombia (CO)
 
@@ -238,7 +238,7 @@ Chile is only available for [Cross-border payouts](https://docs.stripe.com/conne
 
 There are two valid bank account types: “checking” and “savings”.
 
-Colombia is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Colombia is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Costa Rica (CR)
 
@@ -246,7 +246,7 @@ Colombia is only available for [Cross-border payouts](https://docs.stripe.com/co
 | --- | --- |
 | IBAN | CR04010212367856709123 (22 characters) |
 
-Costa Rica is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Costa Rica is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Côte d'Ivoire (CI)
 
@@ -254,7 +254,7 @@ Costa Rica is only available for [Cross-border payouts](https://docs.stripe.com/
 | --- | --- |
 | IBAN | CI93CI0080111301134291200589 (28 characters) |
 
-Côte d’Ivoire is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Côte d’Ivoire is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Croatia (HR)
 
@@ -288,7 +288,7 @@ Côte d’Ivoire is only available for [Cross-border payouts](https://docs.strip
 | Branch Code | 4232 (0-5 digits) |
 | Account number | 000123456788 (Up to 28 digits) |
 
-Dominican Republic is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Dominican Republic is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Ecuador (EC)
 
@@ -297,7 +297,7 @@ Dominican Republic is only available for [Cross-border payouts](https://docs.str
 | SWIFT / BIC Code | AAAAECE1XXX (8-11 digits) |
 | Account number | 000123456789 (5-18 digits) |
 
-Ecuador is only available for [cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Ecuador is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Egypt (EG)
 
@@ -306,7 +306,7 @@ Ecuador is only available for [cross-border payouts](https://docs.stripe.com/con
 | SWIFT / BIC Code | NBEGEGCX331 (8-11 characters) |
 | IBAN | EG573456789012345678901111111 (29 characters) |
 
-Egypt is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Egypt is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### El Salvador (SV)
 
@@ -315,7 +315,7 @@ Egypt is only available for [Cross-border payouts](https://docs.stripe.com/conne
 | SWIFT / BIC | AAAASVS1XXX (8-11 characters) |
 | IBAN | SV44BCIE12345678901234567890 (28 characters) |
 
-El Salvador is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+El Salvador is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Estonia (EE)
 
@@ -330,7 +330,7 @@ El Salvador is only available for [Cross-border payouts](https://docs.stripe.com
 | SWIFT / BIC Code | AAAAETETXXX (8-11 characters) |
 | Account Number | 0000000012345 (13-16 characters) |
 
-Ethiopia is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Ethiopia is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Finland (FI)
 
@@ -351,7 +351,7 @@ Ethiopia is only available for [Cross-border payouts](https://docs.stripe.com/co
 | SWIFT / BIC Code | AAAAGAGAXXX (8-11 characters) |
 | Account Number | 00001234567890123456789 (23 digits) |
 
-Gabon is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Gabon is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Gambia (GM)
 
@@ -360,7 +360,7 @@ Gabon is only available for [Cross-border payouts](https://docs.stripe.com/conne
 | SWIFT / BIC Code | AGIXGMGM (8 - 11 characters) |
 | Account number | 000123000456000789 (18 characters) |
 
-Gambia is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Gambia is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Germany (DE)
 
@@ -375,7 +375,7 @@ Gambia is only available for [Cross-border payouts](https://docs.stripe.com/conn
 | Bank sort code | 022112 (6 digits) |
 | Account number | 000123456789 (8-20 digits) |
 
-Ghana is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Ghana is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Gibraltar (GI)
 
@@ -399,7 +399,7 @@ The information required for GI-based bank accounts depends on the currency bein
 | SWIFT / BIC Code | AAAAGTGCXYZ (8-11 characters) |
 | IBAN | GT82TRAJ01020000001210029690 (28 characters) |
 
-Guatemala is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Guatemala is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Guyana (GY)
 
@@ -408,7 +408,7 @@ Guatemala is only available for [Cross-border payouts](https://docs.stripe.com/c
 | SWIFT / BIC Code | AAAAGYGGXYZ (8-11 characters) |
 | Account number | 000123456789 (1-32 characters) |
 
-Guyana is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Guyana is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Hong Kong (HK)
 
@@ -432,7 +432,7 @@ Guyana is only available for [Cross-border payouts](https://docs.stripe.com/conn
 
 Stripe only supports EUR bank accounts in Iceland.
 
-Iceland is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Iceland is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### India (IN)
 
@@ -449,7 +449,7 @@ Iceland is only available for [Cross-border payouts](https://docs.stripe.com/con
 | Bank code | 023 (3-4 characters) |
 | Account number | Format varies by bank |
 
-Indonesia is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Indonesia is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Ireland (IE)
 
@@ -463,7 +463,7 @@ Indonesia is only available for [Cross-border payouts](https://docs.stripe.com/c
 | --- | --- |
 | IBAN | IL620108000000099999999  (23 characters) |
 
-Israel is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Israel is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Italy (IT)
 
@@ -479,7 +479,7 @@ Israel is only available for [Cross-border payouts](https://docs.stripe.com/conn
 | Branch Code | 00000 (5 digits) |
 | Account number | 000123456789 (Up to 18 digits) |
 
-Jamaica is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Jamaica is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Japan (JP)
 
@@ -501,7 +501,7 @@ Stripe supports futsū (普通預金) or tōza (当座預金) type bank accounts
 | SWIFT / BIC Code | AAAAJOJOXXX (8-11 characters) |
 | IBAN | JO32ABCJ0010123456789012345678 (30 characters) |
 
-Jordan is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Jordan is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Kazakhstan (KZ)
 
@@ -510,7 +510,7 @@ Jordan is only available for [Cross-border payouts](https://docs.stripe.com/conn
 | SWIFT / BIC Code | AAAAKZKZXXX (8-11 characters) |
 | IBAN | KZ221251234567890123 (20 characters) |
 
-Kazakhstan is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Kazakhstan is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Kenya (KE)
 
@@ -519,7 +519,7 @@ Kazakhstan is only available for [Cross-border payouts](https://docs.stripe.com/
 | SWIFT / BIC Code | BARCKENXMDR (8 - 11 characters) |
 | Account number | 0123456789 (up to 32 characters) |
 
-Kenya is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Kenya is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Kuwait (KW)
 
@@ -528,7 +528,7 @@ Kenya is only available for [Cross-border payouts](https://docs.stripe.com/conne
 | SWIFT / BIC Code | AAAAKWKWXYZ (8-11 characters) |
 | IBAN | KW81CBKU0000000000001234560101 (30 characters) |
 
-Kuwait is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Kuwait is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Laos (LA)
 
@@ -537,7 +537,7 @@ Kuwait is only available for [Cross-border payouts](https://docs.stripe.com/conn
 | SWIFT / BIC Code | AAAALALAXXX (8-11 characters) |
 | Account Number | 000123456789 (1-18 digits) |
 
-Laos is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Laos is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Latvia (LV)
 
@@ -570,7 +570,7 @@ Laos is only available for [Cross-border payouts](https://docs.stripe.com/connec
 | SWIFT / BIC Code | AAAAMOMXXXX (11 digits) |
 | Account number | 0000000001234567897 (1-19 digits) |
 
-Macau is only available for [cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Macau is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Madagascar (MG)
 
@@ -579,7 +579,7 @@ Macau is only available for [cross-border payouts](https://docs.stripe.com/conne
 | SWIFT / BIC Code | AAAAMGMGXXX (8-11 characters) |
 | IBAN | MG4800005000011234567890123 (27 characters) |
 
-Madagascar is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Madagascar is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Malaysia (MY)
 
@@ -602,7 +602,7 @@ Madagascar is only available for [Cross-border payouts](https://docs.stripe.com/
 | SWIFT / BIC Code | AAAAMUMUXYZ (8-11 characters) |
 | IBAN | MU17BOMM0101101030300200000MUR (30 characters) |
 
-Mauritius is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Mauritius is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Mexico (MX)
 
@@ -617,7 +617,7 @@ Mauritius is only available for [Cross-border payouts](https://docs.stripe.com/c
 | SWIFT / BIC Code | AAAAMDMDXXX (11 digits) |
 | Account number | MD07AG123456789012345678 (24 digits) |
 
-Moldova is only available for [cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Moldova is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Monaco (MC)
 
@@ -625,7 +625,7 @@ Moldova is only available for [cross-border payouts](https://docs.stripe.com/con
 | --- | --- |
 | IBAN | MC5810096180790123456789085 (27 characters) |
 
-Monaco is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Monaco is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Mongolia (MN)
 
@@ -634,7 +634,7 @@ Monaco is only available for [Cross-border payouts](https://docs.stripe.com/conn
 | SWIFT / BIC Code | AAAAMNUBXXX (8-11 characters) |
 | Account Number | 0002222001 (1-12 digits) |
 
-Mongolia is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Mongolia is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Morocco (MA)
 
@@ -643,7 +643,7 @@ Mongolia is only available for [Cross-border payouts](https://docs.stripe.com/co
 | SWIFT / BIC Code | AAAAMAMAXXX (8-11 characters) |
 | Account Number | MA64011519000001205000534921 (28 digits) |
 
-Morocco is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Morocco is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Mozambique (MZ)
 
@@ -652,7 +652,7 @@ Morocco is only available for [Cross-border payouts](https://docs.stripe.com/con
 | SWIFT / BIC Code | AAAAMZMXXXX (8-11 characters) |
 | Account Number | 001234567890123456789 (21 digits) |
 
-Mozambique is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Mozambique is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Namibia (NA)
 
@@ -661,7 +661,7 @@ Mozambique is only available for [Cross-border payouts](https://docs.stripe.com/
 | SWIFT / BIC Code | AAAANANXXYZ (8-11 characters) |
 | Account number | 000123456789 (8-13 characters) |
 
-Namibia is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Namibia is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Netherlands (NL)
 
@@ -681,7 +681,7 @@ Namibia is only available for [Cross-border payouts](https://docs.stripe.com/con
 | --- | --- |
 | IBAN | NE58NE0380100100130305000268 (28 characters) |
 
-Niger is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Niger is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Nigeria (NG)
 
@@ -690,7 +690,7 @@ Niger is only available for [Cross-border payouts](https://docs.stripe.com/conne
 | SWIFT / BIC Code | AAAANGLAXXX (11 digits) |
 | Account number (NUBAN) | 1111111112 (10 digits) |
 
-Nigeria is only available for [cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Nigeria is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### North Macedonia (MK)
 
@@ -699,7 +699,7 @@ Nigeria is only available for [cross-border payouts](https://docs.stripe.com/con
 | SWIFT / BIC Code | AAAAMK2XXXX (11 digits) |
 | Account number | MK49250120000058907 (19 digits) |
 
-North Macedonia is only available for [cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+North Macedonia is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Norway (NO)
 
@@ -714,7 +714,7 @@ North Macedonia is only available for [cross-border payouts](https://docs.stripe
 | SWIFT / BIC Code | AAAAOMOMXXX (8-11 characters) |
 | Account number | 000123456789 (6-16 digits) |
 
-Oman is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Oman is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Pakistan (PK)
 
@@ -723,7 +723,7 @@ Oman is only available for [Cross-border payouts](https://docs.stripe.com/connec
 | SWIFT / BIC Code | AAAAPKKAXXX (8-11 characters) |
 | IBAN | PK36SCBL0000001123456702 (24 characters) |
 
-Pakistan is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Pakistan is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Panama (PA)
 
@@ -732,7 +732,7 @@ Pakistan is only available for [Cross-border payouts](https://docs.stripe.com/co
 | SWIFT / BIC Code | AAAAPAPAXXX (11 digits) |
 | Account number | 000123456789 (1-18 digits) |
 
-Panama is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Panama is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Paraguay (PY)
 
@@ -741,7 +741,7 @@ Panama is only available for [Cross-border payouts](https://docs.stripe.com/conn
 | Bank code | 27 (1-2 digits) |
 | Account number | 0000000123456789 (up to 16 digits) |
 
-Paraguay is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Paraguay is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Peru (PE)
 
@@ -749,7 +749,7 @@ Paraguay is only available for [Cross-border payouts](https://docs.stripe.com/co
 | --- | --- |
 | CCI | 99934500012345670024 (20 digits) |
 
-Peru is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Peru is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Philippines (PH)
 
@@ -758,7 +758,7 @@ Peru is only available for [Cross-border payouts](https://docs.stripe.com/connec
 | SWIFT / BIC Code | BOPIPHMM (8-11 characters) |
 | Account number | 0123456789010 (up to 17 digits) |
 
-Philippines is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Philippines is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Poland (PL)
 
@@ -779,7 +779,7 @@ Philippines is only available for [Cross-border payouts](https://docs.stripe.com
 | SWIFT / BIC Code | AAAAMK2XXXX (11 digits) |
 | Account number | QA87CITI123456789012345678901 (29 digits) |
 
-Qatar is only available for [cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Qatar is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Romania (RO)
 
@@ -794,7 +794,7 @@ Qatar is only available for [cross-border payouts](https://docs.stripe.com/conne
 | SWIFT / BIC Code | AAAARWRWXXX (8-11 characters) |
 | Account Number | 000123456789 (1-15 digits) |
 
-Rwanda is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Rwanda is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Saint Lucia (LC)
 
@@ -803,7 +803,7 @@ Rwanda is only available for [Cross-border payouts](https://docs.stripe.com/conn
 | SWIFT / BIC Code | AAAALCLCXYZ (8-11 characters) |
 | Account number | 000123456789 (1-32 characters) |
 
-Saint Lucia is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Saint Lucia is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Saudi Arabia (SA)
 
@@ -812,7 +812,7 @@ Saint Lucia is only available for [Cross-border payouts](https://docs.stripe.com
 | SWIFT / BIC Code | NCBKSAJE101 (8-11 characters) |
 | IBAN | SA0380000000608010167519 (24 characters) |
 
-Saudi Arabia is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Saudi Arabia is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### San Marino (SM)
 
@@ -821,7 +821,7 @@ Saudi Arabia is only available for [Cross-border payouts](https://docs.stripe.co
 | SWIFT / BIC Code | AAAASMSMXXX (8-11 characters) |
 | IBAN | SM86U0322509800000000270100 (27 characters) |
 
-San Marino is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+San Marino is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Senegal (SN)
 
@@ -829,7 +829,7 @@ San Marino is only available for [Cross-border payouts](https://docs.stripe.com/
 | --- | --- |
 | IBAN | SN08SN0100152000048500003035 (28 characters) |
 
-Senegal is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Senegal is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Serbia (RS)
 
@@ -838,7 +838,7 @@ Senegal is only available for [Cross-border payouts](https://docs.stripe.com/con
 | SWIFT / BIC Code | BKCHRSBG (8 - 11 characters) |
 | Account number | RS35260005601001611379 (22 characters) |
 
-Serbia is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Serbia is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Singapore (SG)
 
@@ -867,7 +867,7 @@ Serbia is only available for [Cross-border payouts](https://docs.stripe.com/conn
 | SWIFT / BIC Code | FIRNZAJJ (8 - 11 characters) |
 | Account number | 2140000054 (up to 16 digits) |
 
-South Africa is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+South Africa is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### South Korea (KR)
 
@@ -876,7 +876,7 @@ South Africa is only available for [Cross-border payouts](https://docs.stripe.co
 | SWIFT / BIC Code | TESTKR00123 (8 - 11 characters) |
 | Account number | 012345678912 (11-15 characters) |
 
-South Korea is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+South Korea is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Spain (ES)
 
@@ -892,7 +892,7 @@ South Korea is only available for [Cross-border payouts](https://docs.stripe.com
 | Branch code | 7010999 (7 characters) |
 | Account Number | 0000012345 (10-18 digits) |
 
-Sri Lanka is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Sri Lanka is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Sweden (SE)
 
@@ -913,7 +913,7 @@ Sri Lanka is only available for [Cross-border payouts](https://docs.stripe.com/c
 | SWIFT / BIC Code | AAAATWTXXXX (8-11 characters) |
 | Account number | 0001234567 (10-14 digits) |
 
-Taiwan is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Taiwan is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Tanzania (TZ)
 
@@ -922,7 +922,7 @@ Taiwan is only available for [Cross-border payouts](https://docs.stripe.com/conn
 | SWIFT / BIC Code | AAAATZTXXXX (8-11 characters) |
 | Account Number | 0000123456789 (10-14 characters) |
 
-Tanzania is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Tanzania is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Thailand (TH)
 
@@ -940,7 +940,7 @@ Tanzania is only available for [Cross-border payouts](https://docs.stripe.com/co
 | Branch code | 00001 (5 characters) |
 | Account number | 00001234123456788 (up to 17 characters) |
 
-Trinidad & Tobago is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Trinidad & Tobago is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Tunisia (TN)
 
@@ -948,7 +948,7 @@ Trinidad & Tobago is only available for [Cross-border payouts](https://docs.stri
 | --- | --- |
 | IBAN | TN5904018104004942712345 (24 characters) |
 
-Tunisia is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Tunisia is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Türkiye (TR)
 
@@ -957,7 +957,7 @@ Tunisia is only available for [Cross-border payouts](https://docs.stripe.com/con
 | SWIFT / BIC Code | ADABTRIS (8-11 characters) |
 | IBAN | TR330006100519786457841326 (26 characters) |
 
-Türkiye is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Türkiye is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### United Kingdom (GB)
 
@@ -981,7 +981,7 @@ The information required for UK-based bank accounts depends on the currency bein
 | --- | --- |
 | IBAN | AE070331234567890123456 (23 digits) |
 
-United Arab Emirates is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+United Arab Emirates is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Uruguay (UY)
 
@@ -990,7 +990,7 @@ United Arab Emirates is only available for [Cross-border payouts](https://docs.s
 | Bank code | 091 (3 digits) |
 | Account number | 000123456788 (Up to 12 digits) |
 
-Uruguay is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Uruguay is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Uzbekistan (UZ)
 
@@ -1000,7 +1000,7 @@ Uruguay is only available for [Cross-border payouts](https://docs.stripe.com/con
 | Branch Code | 00000 (5 digits) |
 | Account Number | 99934500012345670024 (5-20 digits) |
 
-Uzbekistan is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Uzbekistan is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 #### Vietnam (VN)
 
@@ -1009,7 +1009,7 @@ Uzbekistan is only available for [Cross-border payouts](https://docs.stripe.com/
 | Bank code | 01101100 (8 digits) |
 | Account number | 000123456789 (1-17 digits) |
 
-Vietnam is only available for [Cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md) accounts.
+Vietnam is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.
 
 ### Supported bank account types 
 
@@ -1077,7 +1077,7 @@ Some countries have preset payout schedules because of local regulations:
 - Japan: Daily payouts aren’t available. The default schedule is manual. You can also choose weekly and monthly payout schedules.
 - Thailand: The default schedule is daily automatic payouts.
 
-These restrictions might differ if you use [cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients.md).
+These restrictions might differ if you use [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md).
 
 ### Manual payouts
 
