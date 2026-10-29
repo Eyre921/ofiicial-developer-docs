@@ -61,7 +61,7 @@
 - [Migrate to GPT-Live](https://docs.vapi.ai/gpt-live/migrate.md): Migrate a Vapi assistant or squad to GPT-Live. Check fit, convert a copy, split prompts between the speaker and reasoner, map squad members to reasoner skills, compare results, and roll back safely.
 - [Test and improve GPT-Live assistants](https://docs.vapi.ai/gpt-live/testing.md): Test GPT-Live assistants with representative scenarios, Voice Simulations, and call records. Measure latency and cost, monitor production calls, and troubleshoot common symptoms.
 - [GPT-Live settings and compatibility](https://docs.vapi.ai/gpt-live/configuration.md): Reference for GPT-Live in Vapi. Feature compatibility, speaker and reasoner fields, reasoner skills, personality packs, voices with previews, greetings, idle-message hooks, call connections, and live call control.
-- [Keywords and keyterm prompting](https://docs.vapi.ai/customization/custom-keywords.md): Boost Vapi transcription accuracy for domain terms and proper nouns using Deepgram keyword boosting and AssemblyAI keyterm prompting on your assistant.
+- [Keywords and keyterm prompting](https://docs.vapi.ai/customization/custom-keywords.md): Boost Vapi transcription accuracy for domain terms and proper nouns using Deepgram keyword boosting, AssemblyAI keyterm prompting, and OpenAI keywords on your assistant.
 - [Custom voices](https://docs.vapi.ai/customization/custom-voices/custom-voice.md): Use a custom voice from any supported provider in Vapi by setting the voice property in your assistant configuration with the provider's voice details.
 - [ElevenLabs](https://docs.vapi.ai/customization/custom-voices/elevenlabs.md): Set up a custom or cloned ElevenLabs voice in Vapi, subscribing to an ElevenLabs API plan and adding your API key and voice ID to your assistant.
 - [PlayHT](https://docs.vapi.ai/customization/custom-voices/playht.md): Set up a custom PlayHT voice in Vapi, subscribing to a PlayHT API plan and adding your credentials and voice details to your assistant configuration.
@@ -160,7 +160,8 @@
 - [Phone Calling](https://docs.vapi.ai/phone-calling.md): Create and configure phone numbers in Vapi. Use a free US number to receive inbound calls, or import a number from a provider to place outbound and international calls.
 - [Outbound Calling](https://docs.vapi.ai/calls/outbound-calling.md): Send outbound calls from Vapi programmatically, placing single or batch calls and scheduling them for reminders, surveys, and automated call campaigns.
 - [WebSocket Transport](https://docs.vapi.ai/calls/websocket-transport.md): Stream audio directly via WebSockets for real-time, bidirectional communication
-- [Live Call Control](https://docs.vapi.ai/calls/call-features.md): Control live Vapi calls in real time with Call Control to inject conversation elements and Call Listen to stream call audio over a WebSocket connection.
+- [Live call control](https://docs.vapi.ai/calls/call-features.md): Use a call's controlUrl to speak, add messages, mute, transfer, hand off, or end a live Vapi call from your server.
+- [Listen to live calls](https://docs.vapi.ai/calls/call-listen.md): Use a call's listenUrl to stream live Vapi call audio and real-time events, such as transcripts, over a WebSocket to record, monitor, or analyze calls from your server.
 - [Customer Join Timeout](https://docs.vapi.ai/calls/customer-join-timeout.md): Set maximum time for users to join web calls before automatic termination
 - [Voicemail Detection](https://docs.vapi.ai/calls/voicemail-detection.md): Detect voicemail on outbound Vapi calls to handle it faster and more flexibly, keeping your voice agents efficient when a call reaches an answering machine.
 - [Dynamic call transfers](https://docs.vapi.ai/calls/call-dynamic-transfers.md): Learn how Vapi's dynamic call transfers work and explore implementation patterns for intelligent call routing.
@@ -423,10 +424,9 @@
 - API reference > Simulation Suites [Get Simulation Suite](https://docs.vapi.ai/api-reference/simulation-suites/simulation-suite-controller-find-one.md)
 - API reference > Simulation Suites [Delete Simulation Suite](https://docs.vapi.ai/api-reference/simulation-suites/simulation-suite-controller-remove.md)
 - API reference > Simulation Suites [Update Simulation Suite](https://docs.vapi.ai/api-reference/simulation-suites/simulation-suite-controller-update.md)
-- API reference > Simulations [Generate Scenarios with AI](https://docs.vapi.ai/api-reference/simulations/simulation-generate-controller-generate.md)
-- API reference > Simulations [Draft simulation requirements](https://docs.vapi.ai/api-reference/simulations/simulation-onboarding-controller-requirements-draft.md)
-- API reference > Simulations [Generate a simulation suite](https://docs.vapi.ai/api-reference/simulations/simulation-onboarding-controller-suite-create.md)
-- API reference > Simulations [Edit a generated simulation suite](https://docs.vapi.ai/api-reference/simulations/simulation-onboarding-controller-suite-update.md)
+- API reference > Simulation Suites [Draft simulation requirements](https://docs.vapi.ai/api-reference/simulation-suites/simulation-onboarding-controller-requirements-draft.md)
+- API reference > Simulation Suites [Generate a simulation suite](https://docs.vapi.ai/api-reference/simulation-suites/simulation-onboarding-controller-suite-create.md)
+- API reference > Simulation Suites [Edit a generated simulation suite](https://docs.vapi.ai/api-reference/simulation-suites/simulation-onboarding-controller-suite-update.md)
 - API reference > Simulations [List Simulations](https://docs.vapi.ai/api-reference/simulations/simulation-controller-find-all.md)
 - API reference > Simulations [Create Simulation](https://docs.vapi.ai/api-reference/simulations/simulation-controller-create.md)
 - API reference > Simulations [Get Simulation Concurrency](https://docs.vapi.ai/api-reference/simulations/simulation-controller-get-concurrency.md)

@@ -764,7 +764,7 @@ When you're ready to cutover to your new serverless index:
 1. Your new serverless index has a different name and unique endpoint than your pod-based index. Update your code to target the new serverless index:
 
    ```Python Python theme={null}
-   index = pc.Index("YOUR_SERVERLESS_INDEX_NAME")  
+   index = pc.index(name="YOUR_SERVERLESS_INDEX_NAME", grpc=True)
    ```
 
    ```JavaScript JavaScript theme={null}

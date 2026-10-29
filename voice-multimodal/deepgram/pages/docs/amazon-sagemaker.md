@@ -82,7 +82,45 @@ The skill needs AWS credentials for the target account and [`uv`](https://docs.a
 
 ## Pricing
 
-Deepgram on SageMaker is billed per request, at the same rates shown on [deepgram.com/pricing](https://deepgram.com/pricing). The AWS pricing page may list the dimension `inference.count.m.i.c Inference Pricing` at a cost of `$0.001/request`. When the cost of a request exceeds \$0.001, Deepgram automatically emits a charge for multiple units for that single request.
+Deepgram on SageMaker is billed per request through AWS Marketplace. Each product has a rate per audio hour or per 1,000 characters, listed under Deepgram license rates below. The AWS pricing page may list the dimension `inference.count.m.i.c Inference Pricing` at a cost of `$0.001/request`. When the cost of a request exceeds \$0.001, Deepgram automatically emits a charge for multiple units for that single request.
+
+### Estimate your cost
+
+Your monthly cost is the AWS charge for the instances that run the endpoint plus the Deepgram license charge for the audio or text you process. Pick a product, Region, and instance type to estimate both. AWS prices come from the public AWS Price List and include [Machine Learning Savings Plans](https://aws.amazon.com/savingsplans/ml-pricing/).
+
+The interactive calculator on this page adds two charges for one month:
+
+* **AWS infrastructure:** instance price per hour × instance count × hours the endpoint runs. The endpoint bills while running, even when idle. Prices vary by Region and instance type; get them from [Amazon SageMaker AI pricing](https://aws.amazon.com/sagemaker/ai/pricing/) (real-time inference) or the AWS Price List API, and use the [Machine Learning Savings Plans](https://aws.amazon.com/savingsplans/ml-pricing/) rate if you have one. Instance count is not derived from usage; size it from load tests or ask a Deepgram representative.
+* **Deepgram license:** for Speech-to-Text, (product rate + billable feature rates) per audio hour × audio hours × audio channels. For streaming, audio hours = concurrent streams × active hours per day × 30.4 days. For Text-to-Speech, characters ÷ 1,000 × the per-1,000-character rate. Rates are in the Deepgram license rates table below. Each request bills at least 1 unit (\$0.001). Flux STT is mono only.
+
+Example (us-east-1, On-Demand \$1.222 per hour for `ml.g6.2xlarge` as of October 2026): one instance running 730 hours costs \$892.06. Nova-3 Monolingual streaming with 10 concurrent streams, 24 hours a day, is 7,300 audio hours × \$0.29 = \$2,117.00. The total is \$3,009.06 per month.
+
+### Deepgram license rates
+
+These are the rates that currently apply, and Deepgram may adjust them at any time. Each Marketplace unit costs \$0.001, and every non-empty request bills at least 1 unit.
+
+| Product                            | Rate                         |
+| ---------------------------------- | ---------------------------- |
+| Nova-3 Monolingual STT, streaming  | \$0.29 per audio hour        |
+| Nova-3 Multilingual STT, streaming | \$0.35 per audio hour        |
+| Flux STT English, streaming        | \$0.39 per audio hour        |
+| Flux STT Multilingual, streaming   | \$0.47 per audio hour        |
+| Nova-3 Monolingual STT, batch      | \$0.26 per audio hour        |
+| Nova-3 Multilingual STT, batch     | \$0.31 per audio hour        |
+| Aura-2 TTS                         | \$0.030 per 1,000 characters |
+| Flux TTS                           | \$0.045 per 1,000 characters |
+
+These Speech-to-Text features cost extra. Their rates are added to the product rate, and multichannel audio bills per channel.
+
+| Feature                                   | Streaming              | Batch                                                    |
+| ----------------------------------------- | ---------------------- | -------------------------------------------------------- |
+| Diarization (Nova-3)                      | +\$0.12 per audio hour | Included                                                 |
+| Keyterm prompting                         | +\$0.08 per audio hour | +\$0.08 per audio hour                                   |
+| Redaction                                 | +\$0.12 per audio hour | +\$0.12 per audio hour                                   |
+| Entity detection (Nova-3)                 | +\$0.10 per audio hour | +\$0.10 per audio hour                                   |
+| Summarization, topics, intents, sentiment | Not available          | \$0.30 per 1M input tokens + \$0.60 per 1M output tokens |
+
+Flux STT supports keyterm prompting and redaction only.
 
 ### Private offers
 

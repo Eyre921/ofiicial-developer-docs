@@ -15,10 +15,10 @@ First, log in to your [Resend Account](https://resend.com/login) and [add a doma
 > [!TIP]
 >
 > It is [best practice to use a
-> subdomain](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain)
-> (updates.example.com) instead of the root domain (example.com). Using a
-> subdomain allows for proper reputation segmentation based on topics or purpose
-> (e.g. marketing) and is especially important if receiving emails with Resend.
+> subdomain](/docs/dashboard/domains/introduction#subdomains) (updates.example.com)
+> instead of the root domain (example.com). Using a subdomain allows for proper
+> reputation segmentation based on topics or purpose (e.g. marketing) and is
+> especially important if receiving emails with Resend.
 
 ## Log in to Squarespace
 

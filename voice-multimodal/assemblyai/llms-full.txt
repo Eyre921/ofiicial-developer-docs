@@ -515,7 +515,7 @@ The two URLs cover different things:
 - [**agent-instructions.md**](/agent-instructions.md) — the **rules of the road**: operating rules, discovery questions, recommendation template, feature selection, quickstarts for every product surface, error handling, and the gotchas that trip up most integrations.
 - [**llms.txt**](/llms.txt) — the **documentation index**: every page's title, URL, and one-line description so the agent can navigate to detail pages.
 
-For deep lookups, [llms-full.txt](/llms-full.txt) returns the full concatenated documentation content. Narrow with `?lang=python` or `?lang=typescript` to save tokens, or add `?excludeSpec=true` to skip the API reference.
+For deep lookups, [llms-full.txt](/llms-full.txt) returns the full concatenated documentation content. It is too large for most agents to read in one fetch, so `llms.txt` also links section files under 100 KB each; fetch only the sections you need.
 
 ## Copy the integration prompt
 
@@ -539,7 +539,7 @@ This is a public API. The developer creates their own key at [assemblyai.com/das
    The API has changed — do not rely on memorized parameter names.
    ```
 
-   `llms.txt` is the structured index. For full content use `llms-full.txt`; narrow with `?lang=python` or `?lang=typescript`, or add `?excludeSpec=true` to skip the API spec.
+   `llms.txt` is the structured index. For full content, fetch the section files it links (each under 100 KB) rather than the whole `llms-full.txt`.
 
 2. **Docs MCP server** (on-demand lookups): `https://assemblyai.com/docs/mcp` — Streamable HTTP transport. Lets the agent search and fetch AssemblyAI documentation pages on demand.
 
@@ -566,7 +566,7 @@ This is a public API. The developer creates their own key at [assemblyai.com/das
 10. **If the developer's answers are inconsistent, stop and surface the conflict.** Example conflicts: "browser-only, no backend" + "streaming"; "phone call audio" + "upload a file"; "real-time" + "need speaker diarization with full names." Don't paper over these — ask.
 11. **Be flexible.** If something the developer says doesn't match the shape of the API (e.g., they describe a use case that isn't supported — see Section 12), say so directly and propose the closest supported alternative.
 12. **Verify parameters against live docs before recommending.** This file is a snapshot — features move between beta and GA, model-specific behaviors change, and new knobs ship regularly. Before posting the Section 2 recommendation, confirm each parameter you plan to use is supported for the chosen **mode** (pre-recorded vs streaming) *and* **model** (U3 Pro, U2, U3 Pro Streaming, Universal-Streaming). Do not assume a pre-recorded flag works on streaming, or that a parameter supported on U2 still behaves the same on U3 Pro. Pull the current reference rather than memorizing. Primary sources, in order of preference:
-    - `https://www.assemblyai.com/docs/llms-full.txt` — the canonical machine-readable reference
+    - `https://www.assemblyai.com/docs/llms.txt` — the machine-readable index; fetch the section files it links (each under 100 KB) for full content
     - Per-mode docs: `/docs/pre-recorded-audio/*` (pre-recorded) and `/docs/streaming/*` (streaming), including the model-specific overview page (e.g., `/docs/streaming/getting-started/transcribe-streaming-audio` and `/docs/streaming/select-the-speech-model`) which lists *exactly* which parameters are honored/ignored by that model
     - The OpenAPI-backed API reference at `/docs/api-reference/*` for request/response schemas
     - For LLM Gateway: `/docs/llm-gateway/quickstart` lists the current valid `model` strings — don't guess short names like `claude-sonnet-4`
@@ -580,9 +580,10 @@ This is a public API. The developer creates their own key at [assemblyai.com/das
 Ask these **one at a time**, in order. Skip any question already answered in the conversation. Adapt wording to sound natural, but cover the substance of each.
 
 1. **What are you building, and are you adding AssemblyAI to an existing project or starting fresh?** (A short description of the product is usually enough.)
-2. **What do you need: pre-recorded transcription, real-time STT?**
+2. **What do you need: pre-recorded transcription, real-time STT, text to speech?**
    - Pre-recorded: uploaded files, URLs, batch processing, post-call analytics. → Section 6.
-   - Real-time STT: live transcripts only (you bring your own LLM/TTS). Live captioning, voice-agent STT, meeting notetaking, dictation. → Section 9.
+   - Real-time STT: live transcripts only (you bring your own LLM). Live captioning, voice-agent STT, meeting notetaking, dictation. → Section 9.
+   - Text to speech: spoken audio from text, such as voice-agent replies. → [Streaming TTS quickstart](/tts/getting-started/quickstart).
 3. **Where is your audio coming from?** (e.g., uploaded files, public URLs, browser microphone, mobile app, Twilio/Telnyx phone numbers, SIP trunks.)
 4. **What language and framework are you using?** (e.g., Python + FastAPI, Node + Next.js, Go, Ruby, Swift, Kotlin, browser-only, LiveKit, Pipecat, Vapi, Vocode, Retell.)
 5. **Do you already have an AssemblyAI API key, or do you need to create one?** (If needed: [assemblyai.com/dashboard/api-keys](https://www.assemblyai.com/dashboard/home).)
@@ -662,7 +663,7 @@ Use this to build the recommendation. Do not dump it on the user.
 | Chapters or summaries | Transcribe first, then LLM Gateway (Section 8) |
 | Word timestamps / confidence | Included by default on `words[]` |
 | Webhook delivery (skip polling) | `webhook_url: "..."` (Section 7) |
-| Custom voice agent (your LLM + TTS) | Real-time STT + framework integration (Section 10) |
+| Custom voice agent (your LLM + AssemblyAI TTS) | Real-time STT + framework integration (Section 10) + [Streaming TTS](/tts/getting-started/quickstart) |
 | Multilingual streaming | Universal-3.6 Pro Realtime (native code-switching; `language_codes` to steer toward known languages) |
 
 ---
@@ -986,7 +987,7 @@ async def run(audio_source):
 
 ## 10. Voice Agent framework configs (real-time STT + your own pipeline)
 
-This section is for developers who are wiring AssemblyAI Real-time STT into LiveKit, Pipecat, Vapi, Vocode, Retell, or similar, and bringing their own LLM and TTS.
+This section is for developers who are wiring AssemblyAI Real-time STT into LiveKit, Pipecat, Vapi, Vocode, Retell, or similar, and bringing their own LLM. For the agent's voice, use AssemblyAI [Streaming TTS](/tts/getting-started/quickstart), which has plugins for [LiveKit](/tts/livekit) and [Pipecat](/tts/pipecat).
 
 The defaults will not be good enough. Common tuning:
 
@@ -1078,8 +1079,7 @@ If a developer asks for any of these, say so directly and propose the closest su
 
 - **Real-time translation.** AssemblyAI transcribes, it doesn't translate. Suggest: transcribe with U3 Pro, then translate via LLM Gateway.
 - **On-device / offline STT.** Cloud API only.
-- **Speaker identification (matching voices to known people).** `speaker_labels` does diarization (Speaker A, B, C) but does not recognize specific individuals.
-- **Standalone TTS.** Not an AssemblyAI product *as a separate API*. If they need TTS, point them to a dedicated provider.
+- **Speaker identification (matching voices to known people).** `speaker_labels` does diarization (Speaker A, B, C) but does not recognize specific individuals. For pre-recorded (async) audio, add the Speech Understanding [Speaker Identification](/speech-understanding/speaker-identification) task (`speech_understanding.request.speaker_identification` with `speaker_labels: true`) to replace the generic labels with the names or roles you provide. Speaker Identification isn't available for streaming or other products yet.
 - **Voice activity detection as a standalone product.** VAD is internal to the streaming pipeline and surfaced via `SpeechStarted` / turn events, not exposed separately.
 
 ---
@@ -1338,7 +1338,7 @@ AssemblyAI offers several state-of-the-art speech recognition models, each optim
 ## Text to Speech
 
   
-    <ul style={{ fontSize: "14px", lineHeight: "2", paddingLeft: "20px", margin: 0 }}>
+    <ul>
       <li>Streams audio back as it is synthesized</li>
       <li>Built for real-time voice agents</li>
       <li>Thousands of voices, plus voice cloning</li>
@@ -1352,7 +1352,7 @@ Pair [AssemblyAI-TTS-1](/tts/getting-started/quickstart) with Universal-3.6 Pro 
 ## Pre-recorded Speech to Text
 
   
-    <ul style={{ fontSize: "14px", lineHeight: "2", paddingLeft: "20px", margin: 0 }}>
+    <ul>
       <li>Highest accuracy, fastest model</li>
       <li>Supports 18 languages</li>
       <li>Native code switching</li>
@@ -1361,7 +1361,7 @@ Pair [AssemblyAI-TTS-1](/tts/getting-started/quickstart) with Universal-3.6 Pro 
     </ul>
   
   
-    <ul style={{ fontSize: "14px", lineHeight: "2", paddingLeft: "20px", margin: 0 }}>
+    <ul>
       <li>High accuracy, low latency</li>
       <li>Support across 99 languages</li>
       <li>Keyterms prompting up to 200 words</li>
@@ -1374,7 +1374,7 @@ We recommend [Universal-3.5 Pro](/pre-recorded-audio/universal-3-5-pro) for pre-
 ## Streaming Speech to Text
 
   
-    <ul style={{ fontSize: "14px", lineHeight: "2", paddingLeft: "20px", margin: 0 }}>
+    <ul>
       <li>Highest accuracy for voice agents</li>
       <li>Fastest word emissions</li>
       <li>Advanced prompting capabilities</li>
@@ -1383,7 +1383,7 @@ We recommend [Universal-3.5 Pro](/pre-recorded-audio/universal-3-5-pro) for pre-
     </ul>
   
   
-    <ul style={{ fontSize: "14px", lineHeight: "2", paddingLeft: "20px", margin: 0 }}>
+    <ul>
       <li>Good balance of speed and cost-effectiveness</li>
       <li>Multilingual real-time transcription</li>
       <li>Keyterms prompting up to 100 words</li>
@@ -1391,7 +1391,7 @@ We recommend [Universal-3.5 Pro](/pre-recorded-audio/universal-3-5-pro) for pre-
     </ul>
   
   
-    <ul style={{ fontSize: "14px", lineHeight: "2", paddingLeft: "20px", margin: 0 }}>
+    <ul>
       <li>Good balance of speed and cost-effectiveness</li>
       <li>English transcription</li>
       <li>Keyterms prompting up to 100 words</li>
@@ -1406,7 +1406,7 @@ We recommend [Universal-3.6 Pro Realtime](/streaming/getting-started/transcribe-
 Add-on models enhance transcription accuracy for specialized domains. They work alongside your chosen speech model and are billed separately.
 
   
-    <ul style={{ fontSize: "14px", lineHeight: "2", paddingLeft: "20px", margin: 0 }}>
+    <ul>
       <li>Improved accuracy for medical terminology</li>
       <li>Medications, procedures, conditions, and dosages</li>
       <li>Works with pre-recorded and streaming models</li>
@@ -4181,8 +4181,6 @@ The model training environment differs from the production environment. You can 
 
 We use Anthropic models through Amazon Bedrock. Amazon Bedrock doesn't store or log your prompts and completions. Amazon Bedrock doesn't use your prompts and completions to train any AWS models and doesn't distribute them to third parties. See [here](https://docs.aws.amazon.com/bedrock/latest/userguide/data-protection.html) for more information on Amazon Bedrock data protection policies.
 
-If Amazon Bedrock fails, for non-EU customers we may send your request to the Anthropic API, where we have 0-day retention configured. Please see Anthropic's commercial terms [here](https://www.anthropic.com/legal/commercial-terms).
-
 **OpenAI GPT models**
 
 OpenAI models have ZDR (zero data retention). See OpenAI's policy [here](https://developers.openai.com/api/docs/guides/your-data#zero-data-retention) for more information on how OpenAI defines ZDR.
@@ -5792,12 +5790,6 @@ You can constrain the number of speakers with `speakers_expected`, or with `min_
 - If you have a rough idea, use `min_speakers_expected` and `max_speakers_expected` to set a range. Set `max_speakers_expected` a little higher than the number of speakers you expect so the model has room to identify any additional speakers. Setting it too high can cause the model to over-split and return more speaker labels than are actually present.
 
 <table>
-  <colgroup>
-    <col style={{ width: "22%" }} />
-    <col style={{ width: "10%" }} />
-    <col style={{ width: "28%" }} />
-    <col style={{ width: "40%" }} />
-  </colgroup>
   <thead>
     <tr>
       <th>Key</th>
@@ -62734,9 +62726,9 @@ console.log(result.choices[0].message.content);
 
 ## Streamed responses
 
-You can stream responses from OpenAI models by setting `stream` to `true`. This returns partial responses as server-sent events (SSE), allowing you to display output as it's generated.
+You can stream responses by setting `stream` to `true`. This returns partial responses as server-sent events (SSE), allowing you to display output as it's generated.
 
-  Streamed responses are currently supported on OpenAI models only.
+  Streamed responses are supported on models that list `stream` under **Supported parameters** in [Available models](/llm-gateway/available-models), including OpenAI, Claude, and Gemini models.
 
 ```python expandable
 import requests
@@ -62822,7 +62814,7 @@ curl -X POST \
 | `model`       | string  | Yes       | The model to use for completion. See [Available models](/llm-gateway/available-models) for supported values. |
 | `messages`    | array   | Yes\*     | An array of message objects representing the conversation history. Either `messages` or `prompt` is required.             |
 | `prompt`      | string  | Yes\*     | A simple string prompt for single request/response interactions. Either `messages` or `prompt` is required.               |
-| `stream`      | boolean | No        | When `true`, responses are streamed as server-sent events (SSE). Supported on OpenAI models only.                        |
+| `stream`      | boolean | No        | When `true`, responses are streamed as server-sent events (SSE). Supported on models that list `stream` in [Available models](/llm-gateway/available-models). |
 | `max_tokens`  | number  | No        | The maximum number of tokens to generate. Default: 1000. Range: [1, context_length).                                      |
 | `temperature` | number  | No        | Controls randomness in the output. Higher values make output more random. Range: [0, 2].                                  |
 | `post_processing_steps` | array | No | An ordered list of post-processing steps to apply to the response. See [Post-processing](/llm-gateway/structured-outputs#post-processing). |
@@ -63758,12 +63750,12 @@ The `metadata.errors` array lists every field that failed validation:
 
 **Causes:**
 
-- Streaming is currently supported on OpenAI models only. Other providers ignore the `stream` flag and return a regular response.
+- The model doesn't support streaming. Not every model lists `stream` as a supported parameter. For example, GPT OSS models don't support streaming.
 - The HTTP client isn't reading the response body as a stream of server-sent events (SSE).
 
 **Fixes:**
 
-- Confirm the model is from OpenAI. See [Available models](/llm-gateway/available-models).
+- Confirm the model lists `stream` under **Supported parameters** in [Available models](/llm-gateway/available-models).
 - Use a client that reads SSE chunks (e.g. `response.iter_lines()` in Python `requests`, or the streaming `fetch` body reader in JavaScript). See [Basic chat completions — Streamed responses](/llm-gateway/chat-completions#streamed-responses).
 
 ---
@@ -75181,7 +75173,7 @@ This is a public API. The developer creates their own key at [assemblyai.com/das
    The API has changed — do not rely on memorized parameter names.
    ```
 
-   `llms.txt` is the structured index. For full content use `llms-full.txt`; narrow with `?lang=python` or `?lang=typescript`, or add `?excludeSpec=true` to skip the API spec.
+   `llms.txt` is the structured index. For full content, fetch the section files it links (each under 100 KB) rather than the whole `llms-full.txt`.
 
 2. **Docs MCP server** (on-demand lookups): `https://assemblyai.com/docs/mcp` — Streamable HTTP transport. Lets the agent search and fetch AssemblyAI documentation pages on demand.
 
@@ -75208,7 +75200,7 @@ This is a public API. The developer creates their own key at [assemblyai.com/das
 10. **If the developer's answers are inconsistent, stop and surface the conflict.** Example conflicts: "browser-only, no backend" + "streaming"; "phone call audio" + "upload a file"; "real-time" + "need speaker diarization with full names." Don't paper over these — ask.
 11. **Be flexible.** If something the developer says doesn't match the shape of the API (e.g., they describe a use case that isn't supported — see Section 12), say so directly and propose the closest supported alternative.
 12. **Verify parameters against live docs before recommending.** This file is a snapshot — features move between beta and GA, model-specific behaviors change, and new knobs ship regularly. Before posting the Section 2 recommendation, confirm each parameter you plan to use is supported for the chosen **mode** (pre-recorded vs streaming) *and* **model** (U3 Pro, U2, U3 Pro Streaming, Universal-Streaming). Do not assume a pre-recorded flag works on streaming, or that a parameter supported on U2 still behaves the same on U3 Pro. Pull the current reference rather than memorizing. Primary sources, in order of preference:
-    - `https://www.assemblyai.com/docs/llms-full.txt` — the canonical machine-readable reference
+    - `https://www.assemblyai.com/docs/llms.txt` — the machine-readable index; fetch the section files it links (each under 100 KB) for full content
     - Per-mode docs: `/docs/pre-recorded-audio/*` (pre-recorded) and `/docs/streaming/*` (streaming), including the model-specific overview page (e.g., `/docs/streaming/getting-started/transcribe-streaming-audio` and `/docs/streaming/select-the-speech-model`) which lists *exactly* which parameters are honored/ignored by that model
     - The OpenAPI-backed API reference at `/docs/api-reference/*` for request/response schemas
     - For LLM Gateway: `/docs/llm-gateway/quickstart` lists the current valid `model` strings — don't guess short names like `claude-sonnet-4`
@@ -75222,9 +75214,10 @@ This is a public API. The developer creates their own key at [assemblyai.com/das
 Ask these **one at a time**, in order. Skip any question already answered in the conversation. Adapt wording to sound natural, but cover the substance of each.
 
 1. **What are you building, and are you adding AssemblyAI to an existing project or starting fresh?** (A short description of the product is usually enough.)
-2. **What do you need: pre-recorded transcription, real-time STT?**
+2. **What do you need: pre-recorded transcription, real-time STT, text to speech?**
    - Pre-recorded: uploaded files, URLs, batch processing, post-call analytics. → Section 6.
-   - Real-time STT: live transcripts only (you bring your own LLM/TTS). Live captioning, voice-agent STT, meeting notetaking, dictation. → Section 9.
+   - Real-time STT: live transcripts only (you bring your own LLM). Live captioning, voice-agent STT, meeting notetaking, dictation. → Section 9.
+   - Text to speech: spoken audio from text, such as voice-agent replies. → [Streaming TTS quickstart](/tts/getting-started/quickstart).
 3. **Where is your audio coming from?** (e.g., uploaded files, public URLs, browser microphone, mobile app, Twilio/Telnyx phone numbers, SIP trunks.)
 4. **What language and framework are you using?** (e.g., Python + FastAPI, Node + Next.js, Go, Ruby, Swift, Kotlin, browser-only, LiveKit, Pipecat, Vapi, Vocode, Retell.)
 5. **Do you already have an AssemblyAI API key, or do you need to create one?** (If needed: [assemblyai.com/dashboard/api-keys](https://www.assemblyai.com/dashboard/home).)
@@ -75304,7 +75297,7 @@ Use this to build the recommendation. Do not dump it on the user.
 | Chapters or summaries | Transcribe first, then LLM Gateway (Section 8) |
 | Word timestamps / confidence | Included by default on `words[]` |
 | Webhook delivery (skip polling) | `webhook_url: "..."` (Section 7) |
-| Custom voice agent (your LLM + TTS) | Real-time STT + framework integration (Section 10) |
+| Custom voice agent (your LLM + AssemblyAI TTS) | Real-time STT + framework integration (Section 10) + [Streaming TTS](/tts/getting-started/quickstart) |
 | Multilingual streaming | Universal-3.6 Pro Realtime (native code-switching; `language_codes` to steer toward known languages) |
 
 ---
@@ -75628,7 +75621,7 @@ async def run(audio_source):
 
 ## 10. Voice Agent framework configs (real-time STT + your own pipeline)
 
-This section is for developers who are wiring AssemblyAI Real-time STT into LiveKit, Pipecat, Vapi, Vocode, Retell, or similar, and bringing their own LLM and TTS.
+This section is for developers who are wiring AssemblyAI Real-time STT into LiveKit, Pipecat, Vapi, Vocode, Retell, or similar, and bringing their own LLM. For the agent's voice, use AssemblyAI [Streaming TTS](/tts/getting-started/quickstart), which has plugins for [LiveKit](/tts/livekit) and [Pipecat](/tts/pipecat).
 
 The defaults will not be good enough. Common tuning:
 
@@ -75720,8 +75713,7 @@ If a developer asks for any of these, say so directly and propose the closest su
 
 - **Real-time translation.** AssemblyAI transcribes, it doesn't translate. Suggest: transcribe with U3 Pro, then translate via LLM Gateway.
 - **On-device / offline STT.** Cloud API only.
-- **Speaker identification (matching voices to known people).** `speaker_labels` does diarization (Speaker A, B, C) but does not recognize specific individuals.
-- **Standalone TTS.** Not an AssemblyAI product *as a separate API*. If they need TTS, point them to a dedicated provider.
+- **Speaker identification (matching voices to known people).** `speaker_labels` does diarization (Speaker A, B, C) but does not recognize specific individuals. For pre-recorded (async) audio, add the Speech Understanding [Speaker Identification](/speech-understanding/speaker-identification) task (`speech_understanding.request.speaker_identification` with `speaker_labels: true`) to replace the generic labels with the names or roles you provide. Speaker Identification isn't available for streaming or other products yet.
 - **Voice activity detection as a standalone product.** VAD is internal to the streaming pipeline and surfaced via `SpeechStarted` / turn events, not exposed separately.
 
 ---

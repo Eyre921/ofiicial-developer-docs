@@ -26,7 +26,7 @@ The account must not use a Stripe-hosted dashboard and you must be responsible f
 ```curl
 curl -X POST https://api.stripe.com/v2/core/accounts \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-09-30.preview" \
+  -H "Stripe-Version: 2026-10-28.preview" \
   --json '{
     "include": [
         "configuration.money_manager"
@@ -598,7 +598,7 @@ The Stripe-Context header in this request is the path `{{CONNECTED_ACCOUNT_ID}}/
 ```curl
 curl https://api.stripe.com/v2/money_management/payout_methods \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-09-30.preview" \
+  -H "Stripe-Version: 2026-10-28.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}"
 ```
 

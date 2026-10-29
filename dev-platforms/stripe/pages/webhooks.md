@@ -61,7 +61,7 @@ To listen to [snapshot events](https://docs.stripe.com/api/events/types.md) from
 ```curl
 curl -X POST https://api.stripe.com/v2/core/event_destinations \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-09-30.preview" \
+  -H "Stripe-Version: 2026-10-28.preview" \
   --json '{
     "name": "My event destination",
     "type": "webhook_endpoint",
@@ -93,7 +93,7 @@ To listen to [thin events](https://docs.stripe.com/api/v2/core/events/event-type
 ```curl
 curl -X POST https://api.stripe.com/v2/core/event_destinations \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-09-30.preview" \
+  -H "Stripe-Version: 2026-10-28.preview" \
   --json '{
     "name": "My event destination",
     "type": "webhook_endpoint",
@@ -686,11 +686,6 @@ If you get a signature verification error, read our [troubleshooting guide](http
 #### Ruby
 
 ```ruby
-
-# Don't put any keys in code. See https://docs.stripe.com/keys-best-practices.
-# Find your keys at https://dashboard.stripe.com/apikeys.
-client = Stripe::StripeClient.new('<<YOUR_SECRET_KEY>>')
-
 require 'stripe'
 require 'sinatra'
 

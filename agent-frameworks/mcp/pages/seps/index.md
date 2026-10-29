@@ -17,13 +17,14 @@ Each SEP is reachable by number at `/seps/<number>` (for example, [/seps/1850](/
 ## Summary
 
 * **Accepted**: 1
-* **Final**: 43
+* **Final**: 44
 
 ## All SEPs
 
 | SEP | Title | Status | Type | Created |
 | - | - | - | - | - |
 | [SEP-3398](/seps/3398-release-cycle-updates) | Release Cycle Updates | Accepted | Process | 2026-09-17 |
+| [SEP-3392](/seps/3392-extension-lifecycle) | Extension Lifecycle | Final | Process | 2026-09-25 |
 | [SEP-2663](/seps/2663-tasks-extension) | Tasks Extension | Final | Extensions Track | 2026-04-27 |
 | [SEP-2640](/seps/2640-skills-extension) | Skills Extension | Final | Extensions Track | 2026-04-23 |
 | [SEP-2596](/seps/2596-spec-feature-lifecycle-and-deprecation) | Specification Feature Lifecycle and Deprecation Policy | Final | Process | 2026-04-17 |

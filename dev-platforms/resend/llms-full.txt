@@ -38468,11 +38468,12 @@ An introduction to verified domains in Resend.
 
 Resend sends emails using a domain you own (i.e., not a shared or public domain). You must [add and verify at least one domain](/docs/add-a-domain) to send emails with Resend. You can optionally [configure your domain to receive emails](/docs/dashboard/receiving/custom-domains).
 
+You can add and verify multiple [subdomains](#subdomains) from the same root domain (e.g., `newsletter.example.com` and `account.example.com`) to identify different sending purposes and still assure recipients and inbox providers that the emails come from you. This can protect the sending reputation of your transactional emails from any negative recipient response to your marketing emails, and allows you to configure different domain settings such as open and click tracking for each subdomain.
+
 ## Domain features
 
 When you add a domain, you can choose to:
 
-* Add a [subdomain](#subdomains) instead of your root domain to communicate the kind of emails you send and receive, and for proper reputation segmentation.
 * Enable [open and click tracking](/docs/dashboard/domains/tracking) for your emails.
 * Configure [Enforced Transport Layer Security (TLS)](/docs/dashboard/domains/tls) to ensure that you only send encrypted emails.
 * Set a custom subdomain for the [Return-Path address](/docs/dashboard/domains/custom-return-path).
@@ -38487,11 +38488,17 @@ After your domain is verified, you can:
 
 We recommend sending your emails from one or more subdomains (e.g., `updates.example.com`) instead of your root domain to isolate your sending reputation and to clearly communicate your intent to your recipients.
 
-You can [add and verify](/docs/add-a-domain) multiple subdomains of the same domain (e.g. `newsletter.example.com` and `account.example.com`) for different sending purposes.
+You must [add each subdomain](/docs/add-a-domain) individually, and they will be displayed in the [**Domains** Dashboard page](https://resend.com/domains) as separate entries where you can manage and configure them independently.
 
-For example, you can configure your newsletter for open and click tracking while keeping tracking disabled for your important transactional emails such as password resets.
+There are several benefits to sending from a subdomain:
 
-Learn more about [the benefits of sending emails from a subdomain](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain).
+* **Sender intent:** clearly communicate your intent to your recipients, increasing trust through transparency.
+* **Reputation control:** Using separate subdomains can help segment sending reputation.
+* **Configuration settings**: [Enabling open and click tracking](/docs/dashboard/domains/tracking) for your marketing emails, while keeping it disabled for your important transactional emails such as password resets.
+
+Subdomains of your main domain also help reinforce your brand identity and build trust with inbox providers.
+
+Domains that look like your main brand but aren’t actually your main brand (e.g., `example-alerts.com` instead of `alerts.example.com`) can appear suspicious to spam filters and confusing to your recipients. Inbox providers may flag them as phishing or spoofing attempts, and your users are more likely to ignore, delete, or even report the emails as spam.
 
 ## Domain management
 
@@ -52171,7 +52178,8 @@ DNS records stay untouched. Don't remove them.
 Once the record verifies, the Forge section of your domain's page shows an
 **Enabled** tag. From there, Resend gradually moves your sending onto Forge to
 keep deliverability high, and the share of your email going through Forge
-grows over time.
+grows over time. Once your email is routing through Forge, the tag changes to
+**Active**.
 
 ## Domain Connect
 
@@ -53097,10 +53105,10 @@ First, log in to your [Resend Account](https://resend.com/login) and [add a doma
 > [!TIP]
 >
 > It is [best practice to use a
-> subdomain](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain)
-> (updates.example.com) instead of the root domain (example.com). Using a
-> subdomain allows for proper reputation segmentation based on topics or purpose
-> (e.g. marketing) and is especially important if receiving emails with Resend.
+> subdomain](/docs/dashboard/domains/introduction#subdomains) (updates.example.com)
+> instead of the root domain (example.com). Using a subdomain allows for proper
+> reputation segmentation based on topics or purpose (e.g. marketing) and is
+> especially important if receiving emails with Resend.
 
 ## Automatic Setup (Recommended)
 
@@ -53297,10 +53305,10 @@ First, log in to your [Resend Account](https://resend.com/login) and [add a doma
 > [!TIP]
 >
 > It is [best practice to use a
-> subdomain](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain)
-> (updates.example.com) instead of the root domain (example.com). Using a
-> subdomain allows for proper reputation segmentation based on topics or purpose
-> (e.g. marketing) and is especially important if receiving emails with Resend.
+> subdomain](/docs/dashboard/domains/introduction#subdomains) (updates.example.com)
+> instead of the root domain (example.com). Using a subdomain allows for proper
+> reputation segmentation based on topics or purpose (e.g. marketing) and is
+> especially important if receiving emails with Resend.
 
 ## Log in to DreamHost
 
@@ -53457,10 +53465,10 @@ First, log in to your [Resend Account](https://resend.com/login) and [add a doma
 > [!TIP]
 >
 > It is [best practice to use a
-> subdomain](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain)
-> (updates.example.com) instead of the root domain (example.com). Using a
-> subdomain allows for proper reputation segmentation based on topics or purpose
-> (e.g. marketing) and is especially important if receiving emails with Resend.
+> subdomain](/docs/dashboard/domains/introduction#subdomains) (updates.example.com)
+> instead of the root domain (example.com). Using a subdomain allows for proper
+> reputation segmentation based on topics or purpose (e.g. marketing) and is
+> especially important if receiving emails with Resend.
 
 ## Log in to Gandi
 
@@ -53639,10 +53647,10 @@ First, log in to your [Resend Account](https://resend.com/login) and [add a doma
 > [!TIP]
 >
 > It is [best practice to use a
-> subdomain](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain)
-> (updates.example.com) instead of the root domain (example.com). Using a
-> subdomain allows for proper reputation segmentation based on topics or purpose
-> (e.g. marketing) and is especially important if receiving emails with Resend.
+> subdomain](/docs/dashboard/domains/introduction#subdomains) (updates.example.com)
+> instead of the root domain (example.com). Using a subdomain allows for proper
+> reputation segmentation based on topics or purpose (e.g. marketing) and is
+> especially important if receiving emails with Resend.
 
 ## Automatic Setup (Recommended)
 
@@ -53843,10 +53851,10 @@ First, log in to your [Resend Account](https://resend.com/login) and [add a doma
 > [!TIP]
 >
 > It is [best practice to use a
-> subdomain](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain)
-> (updates.example.com) instead of the root domain (example.com). Using a
-> subdomain allows for proper reputation segmentation based on topics or purpose
-> (e.g. marketing) and is especially important if receiving emails with Resend.
+> subdomain](/docs/dashboard/domains/introduction#subdomains) (updates.example.com)
+> instead of the root domain (example.com). Using a subdomain allows for proper
+> reputation segmentation based on topics or purpose (e.g. marketing) and is
+> especially important if receiving emails with Resend.
 
 ## Log in to Hetzner Console
 
@@ -54041,10 +54049,10 @@ First, log in to your [Resend Account](https://resend.com/login) and [add a doma
 > [!TIP]
 >
 > It is [best practice to use a
-> subdomain](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain)
-> (updates.example.com) instead of the root domain (example.com). Using a
-> subdomain allows for proper reputation segmentation based on topics or purpose
-> (e.g. marketing) and is especially important if receiving emails with Resend.
+> subdomain](/docs/dashboard/domains/introduction#subdomains) (updates.example.com)
+> instead of the root domain (example.com). Using a subdomain allows for proper
+> reputation segmentation based on topics or purpose (e.g. marketing) and is
+> especially important if receiving emails with Resend.
 
 ## Log in to Hostinger
 
@@ -54224,10 +54232,10 @@ First, log in to your [Resend Account](https://resend.com/login) and [add a doma
 > [!TIP]
 >
 > It is [best practice to use a
-> subdomain](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain)
-> (updates.example.com) instead of the root domain (example.com). Using a
-> subdomain allows for proper reputation segmentation based on topics or purpose
-> (e.g. marketing) and is especially important if receiving emails with Resend.
+> subdomain](/docs/dashboard/domains/introduction#subdomains) (updates.example.com)
+> instead of the root domain (example.com). Using a subdomain allows for proper
+> reputation segmentation based on topics or purpose (e.g. marketing) and is
+> especially important if receiving emails with Resend.
 
 ## Log in to IONOS
 
@@ -54406,10 +54414,10 @@ First, log in to your [Resend Account](https://resend.com/login) and [add a doma
 > [!TIP]
 >
 > It is [best practice to use a
-> subdomain](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain)
-> (updates.example.com) instead of the root domain (example.com). Using a
-> subdomain allows for proper reputation segmentation based on topics or purpose
-> (e.g. marketing) and is especially important if receiving emails with Resend.
+> subdomain](/docs/dashboard/domains/introduction#subdomains) (updates.example.com)
+> instead of the root domain (example.com). Using a subdomain allows for proper
+> reputation segmentation based on topics or purpose (e.g. marketing) and is
+> especially important if receiving emails with Resend.
 
 ## Log in to Namecheap
 
@@ -54599,10 +54607,10 @@ First, log in to your [Resend Account](https://resend.com/login) and [add a doma
 > [!TIP]
 >
 > It is [best practice to use a
-> subdomain](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain)
-> (updates.example.com) instead of the root domain (example.com). Using a
-> subdomain allows for proper reputation segmentation based on topics or purpose
-> (e.g. marketing) and is especially important if receiving emails with Resend.
+> subdomain](/docs/dashboard/domains/introduction#subdomains) (updates.example.com)
+> instead of the root domain (example.com). Using a subdomain allows for proper
+> reputation segmentation based on topics or purpose (e.g. marketing) and is
+> especially important if receiving emails with Resend.
 
 ## Log in to Porkbun
 
@@ -54774,10 +54782,10 @@ First, log in to your [Resend Account](https://resend.com/login) and [add a doma
 > [!TIP]
 >
 > It is [best practice to use a
-> subdomain](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain)
-> (updates.example.com) instead of the root domain (example.com). Using a
-> subdomain allows for proper reputation segmentation based on topics or purpose
-> (e.g. marketing) and is especially important if receiving emails with Resend.
+> subdomain](/docs/dashboard/domains/introduction#subdomains) (updates.example.com)
+> instead of the root domain (example.com). Using a subdomain allows for proper
+> reputation segmentation based on topics or purpose (e.g. marketing) and is
+> especially important if receiving emails with Resend.
 
 ## Log in to Route 53
 
@@ -54949,10 +54957,10 @@ First, log in to your [Resend Account](https://resend.com/login) and [add a doma
 > [!TIP]
 >
 > It is [best practice to use a
-> subdomain](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain)
-> (updates.example.com) instead of the root domain (example.com). Using a
-> subdomain allows for proper reputation segmentation based on topics or purpose
-> (e.g. marketing) and is especially important if receiving emails with Resend.
+> subdomain](/docs/dashboard/domains/introduction#subdomains) (updates.example.com)
+> instead of the root domain (example.com). Using a subdomain allows for proper
+> reputation segmentation based on topics or purpose (e.g. marketing) and is
+> especially important if receiving emails with Resend.
 
 ## Log in to Squarespace
 
@@ -55130,10 +55138,10 @@ First, log in to your [Resend Account](https://resend.com/login) and [add a doma
 > [!TIP]
 >
 > It is [best practice to use a
-> subdomain](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain)
-> (updates.example.com) instead of the root domain (example.com). Using a
-> subdomain allows for proper reputation segmentation based on topics or purpose
-> (e.g. marketing) and is especially important if receiving emails with Resend.
+> subdomain](/docs/dashboard/domains/introduction#subdomains) (updates.example.com)
+> instead of the root domain (example.com). Using a subdomain allows for proper
+> reputation segmentation based on topics or purpose (e.g. marketing) and is
+> especially important if receiving emails with Resend.
 
 ## Log in to Strato
 
@@ -55319,10 +55327,10 @@ First, log in to your [Resend Account](https://resend.com/login) and [add a doma
 > [!TIP]
 >
 > It is [best practice to use a
-> subdomain](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain)
-> (updates.example.com) instead of the root domain (example.com). Using a
-> subdomain allows for proper reputation segmentation based on topics or purpose
-> (e.g. marketing) and is especially important if receiving emails with Resend.
+> subdomain](/docs/dashboard/domains/introduction#subdomains) (updates.example.com)
+> instead of the root domain (example.com). Using a subdomain allows for proper
+> reputation segmentation based on topics or purpose (e.g. marketing) and is
+> especially important if receiving emails with Resend.
 
 ## Automatic Setup (Recommended)
 
@@ -58016,7 +58024,7 @@ To send emails with your Supabase project, you'll need to first verify it in Res
 
 Go to [the Domains page](https://resend.com/domains) and click on **Add Domain**.
 
-1. Add your domain name. We recommend [using a subdomain](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain) like `updates.example.com` instead of the root domain.
+1. Add your domain name. We recommend [using a subdomain](/docs/dashboard/domains/introduction#subdomains) like `updates.example.com` instead of the root domain.
 2. Add the DNS records to your DNS provider ([learn more about these records](/docs/dashboard/domains/introduction)).
 
    ![Resend Domains page](https://mintcdn.com/resend/_kGPo-rF0-rO9nI4/images/resend-domain-records.png?fit=max\&auto=format\&n=_kGPo-rF0-rO9nI4\&q=85\&s=24107151c9a59db661aca80c64338bfe)
@@ -59239,11 +59247,6 @@ Step-by-step instructions for verifying your domain with popular DNS providers.
 >
 > Troubleshoot emails landing in spam or getting quarantined.
 
-> **[Is it better to send from a subdomain or root domain?](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain)**
->
-> Discover why sending emails from a subdomain can be better than using a root
-> domain.
-
 > **[Why are my emails landing on the suppression list?](/docs/knowledge-base/why-are-my-emails-landing-on-the-suppression-list)**
 >
 > Learn why your emails land on the suppression list, and how to remove them.
@@ -59371,42 +59374,6 @@ Step-by-step instructions for verifying your domain with popular DNS providers.
 > **[What email addresses to use for testing?](/docs/knowledge-base/what-email-addresses-to-use-for-testing)**
 >
 > Use Resend's test email addresses to simulate different delivery scenarios.
-
-
-# Is it better to send emails from a subdomain or the root domain?
-Source: https://resend.com/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain
-
-Discover why sending emails from a subdomain can be better than using a root domain.
-
-We recommend sending emails from a subdomain (`notifications.acme.com`) instead of your root/apex domain (`acme.com`).
-
-There are **two main goals to achieve with your domain setup**:
-
-* Reputation Isolation
-* Sending Purpose Transparency
-
-## Reputation Isolation
-
-Things happen. Maybe someone decides to DDOS your signup page and you get stuck sending tens of thousands of bounced verification emails to burner addresses. Or maybe a cold outreach campaign gets out of hand and your sending gets pegged as spam.
-
-Whatever it is, you want to be consistently hedging your reputation. One way to do this is by not using your root domain. This allows you to quarantine a compromised subdomain if needed. If your root domain ends up with a jeopardized reputation, it can be a long road to recovery.
-
-## Sending Purpose Transparency
-
-All of us want all of our emails to go right to the top of the priority folder of the inbox, but the reality is, not all of our email belongs there. A password reset email carries higher priority than a monthly product update. Inbox providers like Outlook and Gmail are constantly trying to triage incoming mail to put only the most important stuff in that priority spot, and move the rest towards Promotional or even Spam.
-
-By segmenting your sending purposes by subdomain, you give Inbox Providers clear indication of where to place your emails, which builds trust and confidence.
-
-## Avoid "Lookalike" Domains
-
-Never use domains that look like your main brand but aren’t actually your main brand. These brand-adjacent domains like `getacme-mail.com` or `acme-alerts.com` can appear suspicious to spam filters and confusing to your recipients. Inbox providers may flag them as phishing or spoofing attempts, and your users are more likely to ignore, delete, or even report the emails as spam.
-
-If you’re launching a new project or sending for a different purpose, again use a subdomain of your main domain. Sticking with clear, consistent subdomains helps reinforce your brand identity and builds trust with inbox providers and recipients alike.
-
-> [!NOTE]
->
-> We cover this in depth in our [deliverability
-> guide](https://resend.com/guides/email/deliverability/avoid-gmail-spam-folder#establish-sending-patterns).
 
 
 # Send emails with n8n and Resend
@@ -59802,7 +59769,7 @@ With **Option A**, all tenants share the same sender reputation. If a single ten
 
 With **Option B**, each tenant has a fully independent sender reputation. A problem with one tenant has zero impact on others. However, each tenant is responsible for following best practices on their own.
 
-Regardless of which approach you choose, each new tenant domain must follow a [warm-up schedule](/docs/knowledge-base/warming-up). Using a [subdomain](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain) for sending is also a good practice to protect the tenant's root domain reputation.
+Regardless of which approach you choose, each new tenant domain must follow a [warm-up schedule](/docs/knowledge-base/warming-up). Using a [subdomain](/docs/dashboard/domains/introduction#subdomains) for sending is also a good practice to protect the tenant's root domain reputation.
 
 ## Webhook routing
 
@@ -61725,7 +61692,7 @@ We recommend not pasting API keys into the chat. Instead, use one of these two m
 
 ### Step 3: Verify a domain
 
-Next, your agent needs to know the email address it will use to send and receive emails. [Strongly consider](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain) using a subdomain (`agent.example.com`) instead of the root domain (`example.com`), especially if you want to receive emails.
+Next, your agent needs to know the email address it will use to send and receive emails. Strongly consider using a [subdomain](/docs/dashboard/domains/introduction#subdomains) (`agent.example.com`) instead of the root domain (`example.com`), especially if you want to receive emails.
 
 You can also use the [Resend CLI](/docs/cli) to verify a domain, although you will need to manually add the DNS records to your DNS provider.
 

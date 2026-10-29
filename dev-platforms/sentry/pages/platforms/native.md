@@ -13,7 +13,16 @@ url: https://docs.sentry.io/platforms/native/
 
 The Sentry Native SDK is intended for C and C++. However, since it builds as a dynamic library and exposes C-bindings, it can be used by any language that supports interoperability with C, such as the Foreign Function Interface (FFI).
 
-Using the `sentry-native` SDK in a standalone use case is currently an experimental feature. The SDK’s primary function is to fuel our other SDKs, like [`sentry-java`](https://github.com/getsentry/sentry-java) or [`sentry-unreal`](https://github.com/getsentry/sentry-unreal). Support from our side is best effort and we do what we can to respond to issues in a timely fashion, but please understand if we won’t be able to address your issues or feature suggestions.
+It also provides native crash reporting for other Sentry SDKs:
+
+* [*Android (NDK)*](https://docs.sentry.io/platforms/android/configuration/using-ndk.md)
+* [*Flutter*](https://docs.sentry.io/platforms/dart/guides/flutter.md)
+* [*Godot*](https://docs.sentry.io/platforms/godot.md)
+* [*.NET*](https://docs.sentry.io/platforms/dotnet.md)
+* [*Unity*](https://docs.sentry.io/platforms/unity.md)
+* [*Unreal Engine*](https://docs.sentry.io/platforms/unreal.md)
+
+Sentry's console SDKs also build on the Native SDK. See the [Nintendo Switch](https://docs.sentry.io/platforms/nintendo-switch.md), [PlayStation](https://docs.sentry.io/platforms/playstation.md), and [Xbox](https://docs.sentry.io/platforms/xbox.md) documentation to get access.
 
 Sentry also offers higher-level SDKs for platforms with built-in support for native crashes:
 
@@ -33,29 +42,30 @@ Don't already have an account and Sentry project established? Head over to [sent
 
 Sentry captures data by using an SDK within your application’s runtime.
 
-The Native SDK currently supports **Windows**, **macOS**, and **Linux**. The Native SDK also acts as an **Android** NDK support library in downstream SDKs via the [Android SDK](https://docs.sentry.io/platforms/android/configuration/using-ndk.md), but currently does not directly support the platform.
+The Native SDK currently supports **Windows**, **macOS**, and **Linux**. The Native SDK also acts as an **Android** NDK support library in downstream SDKs via the [Android SDK](https://docs.sentry.io/platforms/android/configuration/using-ndk.md), but currently does not directly support the platform. **Nintendo Switch**, **PlayStation**, and **Xbox** are supported via Sentry's console SDKs. See the [Nintendo Switch](https://docs.sentry.io/platforms/nintendo-switch.md), [PlayStation](https://docs.sentry.io/platforms/playstation.md), and [Xbox](https://docs.sentry.io/platforms/xbox.md) documentation to get access.
 
 To build the SDK, download the latest sources from the [Releases page](https://github.com/getsentry/sentry-native/releases). The SDK is managed as a [CMake](https://cmake.org/cmake/help/latest/) project, which additionally supports several configuration options, such as the backend to use.
 
-For example, `CMake` can be used like this (on macOS):
+For example, `CMake` can be used like this:
+
+**macOS**
 
 ```shell
 # When using CMake 4 ensure you have valid SDKROOT defined in your environment.
 export SDKROOT=$(xcrun --sdk macosx --show-sdk-path)
-# Configure the CMake build into the `build` directory with crashpad (the default
-# backend on macOS, thus optional to specify). Specifying `RelWithDebInfo` as the
-# `CMAKE_BUILD_TYPE` is also optional because it is the default in sentry-native
-# for all generators supporting it.
-cmake -B build -D SENTRY_BACKEND=crashpad -D CMAKE_BUILD_TYPE=RelWithDebInfo
+# Configure the CMake build into the `build` directory with the desired backend.
+# Specifying `RelWithDebInfo` as the `CMAKE_BUILD_TYPE` is optional because it
+# is the default in sentry-native for all generators supporting it.
+cmake -B build -D SENTRY_BACKEND=native -D CMAKE_BUILD_TYPE=RelWithDebInfo
 # build the project
 cmake --build build --parallel
 # install the resulting artifacts into a specific prefix
 cmake --install build --prefix install
-# which will result in the following (on macOS):
-exa --tree install --level 2
+# which will result in the following:
+eza --tree install --level 2
 install
 ├── bin
-│  └── crashpad_handler
+│  └── sentry-crash
 ├── include
 │  └── sentry.h
 └── lib
@@ -64,15 +74,37 @@ install
    └── libsentry.dylib.dSYM
 ```
 
-(For further details on the `SDKROOT` usage with CMake please consult the [macOS build section in the SDK README](https://github.com/getsentry/sentry-native?tab=readme-ov-file#building-and-installation))
+**Linux**
 
-Contrast the above with the build-steps for a typical `msbuild` project on Windows:
+```shell
+# Configure the CMake build into the `build` directory with the desired backend.
+# Specifying `RelWithDebInfo` as the `CMAKE_BUILD_TYPE` is optional because it
+# is the default in sentry-native for all generators supporting it.
+cmake -B build -D SENTRY_BACKEND=native -D CMAKE_BUILD_TYPE=RelWithDebInfo
+# build the project
+cmake --build build --parallel
+# install the resulting artifacts into a specific prefix
+cmake --install build --prefix install
+# which will result in the following:
+tree install -L 2
+install
+├── bin
+│   └── sentry-crash
+├── include
+│   └── sentry.h
+└── lib
+    ├── cmake
+    └── libsentry.so
+
+5 directories, 3 files
+```
+
+**Windows**
 
 ```shell
 # The msbuild generator ignores the CMAKE_BUILD_TYPE because it contains all
-# build-types. Here we leave out the backend specification and rely on CMake
-# selecting crashpad as Windows' default backend.
-cmake -B build
+# build-types.
+cmake -B build -D SENTRY_BACKEND=native
 # The actual build step then requires we specify which build-type we want
 # to apply via the `--config` parameter. Please be aware that in msbuild
 # projects, the `--parallel` option has no effect.
@@ -82,8 +114,9 @@ cmake --install build --prefix install --config RelWithDebInfo
 # which will result in the following output (ignoring non-essential lines):
 tree /f install
 ├───bin
-│       crashpad_handler.exe
-│       crashpad_handler.pdb
+│       sentry-crash.exe
+│       sentry-wer.dll
+│       sentry-wer.pdb
 │       sentry.dll
 │       sentry.pdb
 │
@@ -92,11 +125,15 @@ tree /f install
 │
 └───lib
     │   sentry.lib
+    │
+    └───cmake
 ```
 
-##### Bundling crashpad\_handler
+(For further details on the `SDKROOT` usage with CMake please consult the [macOS build section in the SDK README](https://github.com/getsentry/sentry-native?tab=readme-ov-file#building-and-installation))
 
-When using the *Crashpad backend*, which is the default on all supported Desktop platforms (Windows, Linux and macOS), the `crashpad_handler` binary has to be shipped alongside the application binary. See the [Crashpad documentation](https://docs.sentry.io/platforms/native/configuration/backends/crashpad.md) for more information.
+##### Bundling out-of-process backends
+
+The out-of-process *Native* and *Crashpad* backends require shipping `sentry-crash` or `crashpad_handler`, respectively, alongside the application binary. See the [Native](https://docs.sentry.io/platforms/native/configuration/backends/native.md) and [Crashpad](https://docs.sentry.io/platforms/native/configuration/backends/crashpad.md) backend documentation for more information.
 
 ## [Configure](https://docs.sentry.io/platforms/native.md#configure)
 

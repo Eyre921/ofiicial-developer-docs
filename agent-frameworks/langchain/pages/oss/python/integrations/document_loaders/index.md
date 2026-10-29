@@ -206,7 +206,9 @@ The below document loaders allow you to load data from common data formats.
 | [`XNSLoader`](https://docs.xns.tech) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-xns/month)](https://pypi.org/project/langchain-xns/) |
 | [`Google el carro for Oracle workloads`](https://github.com/googleapis/langchain-google-el-carro-python/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-google-el-carro/month)](https://pypi.org/project/langchain-google-el-carro/) |
 | [`PowerScaleDocumentLoader`](/oss/python/integrations/document_loaders/powerscale) | [  ![Downloads per month](https://static.pepy.tech/badge/powerscale-rag-connector/month)](https://pypi.org/project/powerscale-rag-connector/) |
+| [`SectionAnythingLoader`](https://github.com/Omniwot/section-anything/tree/main/packages/langchain-section-anything) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-section-anything/month)](https://pypi.org/project/langchain-section-anything/) |
 | [`LangSmithLoader`](/oss/python/integrations/document_loaders/langsmith) | N/A |
+| [`TranscriptFetchLoader`](https://transcriptfetch.com/docs/langchain) | N/A |
 
 ***
 

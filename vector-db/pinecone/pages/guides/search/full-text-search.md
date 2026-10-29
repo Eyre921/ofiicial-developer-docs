@@ -10,7 +10,7 @@ Full-text search ranks documents by keyword and phrase relevance using **BM25** 
 
 ## When to use it
 
-Reach for full-text search when exact words, phrases, names, codes, or identifiers matter, not just semantic similarity. For semantic-only or vector-only workloads, an [index with dense vectors](/guides/core-concepts/key-terms#index-with-dense-vectors) (the Vectors API) is simpler. See [Search overview](/guides/search/search-overview) to choose the right approach.
+Reach for full-text search when exact words, phrases, names, codes, or identifiers matter, not just semantic similarity. For semantic-only or vector-only workloads, a [vector index](/guides/core-concepts/key-terms#vector-index) (the Vectors API) is simpler. See [Search overview](/guides/search/search-overview) to choose the right approach.
 
 > [!NOTE]
 >
@@ -110,7 +110,7 @@ pc.indexes.create(name="articles-quickstart", schema=schema)
 while not pc.indexes.describe(name="articles-quickstart").status.ready:
     time.sleep(2)
 
-index = pc.Index(name="articles-quickstart")
+index = pc.index(name="articles-quickstart")
 
 # 2. Upsert documents. Fields declared in the schema (`title`, `body`) are
 #    BM25-indexed; any extra fields (`category`, `year`) are stored on the

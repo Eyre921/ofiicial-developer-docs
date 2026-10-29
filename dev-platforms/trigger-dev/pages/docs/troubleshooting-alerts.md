@@ -44,6 +44,45 @@ Click on the triple dot menu on the right side of the table row and select "Disa
 
 ![Disable and delete alerts](https://mintcdn.com/trigger/0bD0UfsjaINxS6Tw/images/troubleshooting-alerts-disable-delete.png?fit=max\&auto=format\&n=0bD0UfsjaINxS6Tw\&q=85\&s=f3455ed01b0d4c7a66c855a3b7d0cc53)
 
+## Limits alerts
+
+> [!WARNING]
+>
+> **Private beta.** This feature is only available to some organizations right now.
+
+A **Limits** alert watches limits that can interrupt or degrade runtime flow. Pick one limit for a single alert, or several (or "Watch all limits") for one combined alert.
+
+| Group | What you can watch |
+| - | - |
+| Platform | API rate limit running out, Environment concurrency filling up, Queue size nearing its limit |
+| Webhooks | Webhook processing saturating, Webhook ingress getting rate-limited, Webhook endpoint getting rate-limited, Webhook waiters running out |
+
+### Signals
+
+Each limit has up to two signals. Choose one or both:
+
+* **Limit reached**: the limit is already affecting traffic, for example requests are being rejected.
+* **Approaching the limit**: usage has reached a share of the limit. The default is 80%, and you can change it.
+
+Queue size only has the approaching signal.
+
+### Any or all
+
+When you watch more than one limit, choose when the alert raises:
+
+* **Any**: raise when at least one selected limit is true.
+* **All**: raise only when every selected limit is true at the same time.
+
+### Queue metrics
+
+Environment concurrency and queue size need queue metrics for your environment. If they aren't available, they aren't offered when you create the alert.
+
+### No data
+
+A limit shows "No data" until its metrics exist, for example before your environment has made any API requests or received any webhooks. You can query these metrics yourself, see [Platform limit metrics](/docs/observability/query#platform-limit-metrics).
+
+You can also create these alerts with the [API](/docs/management/alerts/create).
+
 ## Error group alerts
 
 Error group alerts are **issue-based**, not run-based. They are created from the **Errors** page in the dashboard (the "Configure alerts…" button), not from the New alert modal on the Alerts page. Once created they show up in the Alerts table alongside your other alerts, labelled "Error group".

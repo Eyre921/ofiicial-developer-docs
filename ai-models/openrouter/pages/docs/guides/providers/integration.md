@@ -1074,7 +1074,7 @@ To keep your metrics competitive:
 
 Auto Exacto shifts tool-calling traffic toward providers that perform well on tool-use quality signals. Providers with strong metrics are moved to the front of the routing order and will receive more tool-calling requests, while providers with weaker signals are deprioritized and will see less.
 
-Non-tool-calling traffic is **not affected** by Auto Exacto -- it continues to follow the standard [price-weighted routing](https://openrouter.ai/docs/guides/routing/provider-selection.md#price-based-load-balancing-default-strategy).
+Non-tool-calling traffic is **not affected** by Auto Exacto -- it continues to follow [default routing](https://openrouter.ai/docs/guides/routing/provider-selection.md#default-routing).
 
 #### How ranking factors are determined
 

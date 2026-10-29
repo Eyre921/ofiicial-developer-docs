@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/manage-data/manage-indexes
 path: guides/manage-data/manage-indexes
 ---
 
-List, describe, configure, and delete serverless indexes in Pinecone, including tags, deletion protection, and metadata index configuration.
+List, describe, configure, and delete serverless indexes in Pinecone, including tags and deletion protection.
 
 This page shows you how to manage your existing serverless indexes.
 

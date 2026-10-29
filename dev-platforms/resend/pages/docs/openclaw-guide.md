@@ -71,7 +71,7 @@ We recommend not pasting API keys into the chat. Instead, use one of these two m
 
 ### Step 3: Verify a domain
 
-Next, your agent needs to know the email address it will use to send and receive emails. [Strongly consider](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain) using a subdomain (`agent.example.com`) instead of the root domain (`example.com`), especially if you want to receive emails.
+Next, your agent needs to know the email address it will use to send and receive emails. Strongly consider using a [subdomain](/docs/dashboard/domains/introduction#subdomains) (`agent.example.com`) instead of the root domain (`example.com`), especially if you want to receive emails.
 
 You can also use the [Resend CLI](/docs/cli) to verify a domain, although you will need to manually add the DNS records to your DNS provider.
 

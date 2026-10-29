@@ -20,6 +20,7 @@ POST /v1/prices {"currency":"usd","unit_amount":1000,"recurring":{"interval":"mo
 ```curl
 curl https://api.stripe.com/v1/checkout/sessions \
   -u "<<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2026-10-28.endive" \
   --data-urlencode "success_url=https://example.com/success" \
   -d "line_items[0][price]={{PRICE_ID}}" \
   -d "line_items[0][quantity]=2" \
@@ -122,6 +123,64 @@ curl https://api.stripe.com/v1/checkout/sessions \
   A list of the types of payment methods (e.g., `card`) this Checkout Session can accept.
 
   Unlike `payment_method_types`, this acts as a filter on the dynamically computed set of eligible payment methods rather than an explicit static list. Only payment methods that are both dynamically eligible and present in this list will be offered to the customer.
+Possible enum values:
+  - `acss_debit`
+  - `affirm`
+  - `afterpay_clearpay`
+  - `alipay`
+  - `alma`
+  - `amazon_pay`
+  - `au_becs_debit`
+  - `bacs_debit`
+  - `bancontact`
+  - `billie`
+  - `bizum`
+  - `blik`
+  - `boleto`
+  - `card`
+  - `cashapp`
+  - `crypto`
+  - `customer_balance`
+  - `eps`
+  - `fpx`
+  - `giropay`
+  - `grabpay`
+  - `ideal`
+  - `kakao_pay`
+  - `klarna`
+  - `konbini`
+  - `kr_card`
+  - `link`
+  - `mb_way`
+  - `mobilepay`
+  - `multibanco`
+  - `naver_pay`
+  - `nz_bank_account`
+  - `oxxo`
+  - `p24`
+  - `pay_by_bank`
+  - `payco`
+  - `paynow`
+  - `paypal`
+  - `paypay`
+  - `payto`
+  - `pix`
+  - `promptpay`
+  - `revolut_pay`
+  - `samsung_pay`
+  - `satispay`
+  - `scalapay`
+  - `sepa_debit`
+  - `sequra`
+  - `sofort`
+  - `sunbit`
+  - `swish`
+  - `twint`
+  - `upi`
+  - `us_bank_account`
+  - `wechat_pay`
+  - `wero`
+  - `zip`
 
 - [`automatic_tax`](https://docs.stripe.com/api/checkout/sessions/create.md?query=automatic_tax) (object, optional)
   Settings for automatic tax lookup for this session and resulting payments, invoices, and subscriptions.
@@ -198,6 +257,63 @@ Possible enum values:
 
 - `excluded_payment_method_types` (array of enums, optional)
   A list of the types of payment methods (e.g., `card`) that should be excluded from this Checkout Session. This should only be used when payment methods for this Checkout Session are managed through the [Stripe Dashboard](https://dashboard.stripe.com/settings/payment_methods).
+Possible enum values:
+  - `acss_debit`
+  - `affirm`
+  - `afterpay_clearpay`
+  - `alipay`
+  - `alma`
+  - `amazon_pay`
+  - `au_becs_debit`
+  - `bacs_debit`
+  - `bancontact`
+  - `billie`
+  - `bizum`
+  - `blik`
+  - `boleto`
+  - `card`
+  - `cashapp`
+  - `crypto`
+  - `customer_balance`
+  - `eps`
+  - `fpx`
+  - `giropay`
+  - `grabpay`
+  - `ideal`
+  - `kakao_pay`
+  - `klarna`
+  - `konbini`
+  - `kr_card`
+  - `mb_way`
+  - `mobilepay`
+  - `multibanco`
+  - `naver_pay`
+  - `nz_bank_account`
+  - `oxxo`
+  - `p24`
+  - `pay_by_bank`
+  - `payco`
+  - `paynow`
+  - `paypal`
+  - `paypay`
+  - `payto`
+  - `pix`
+  - `promptpay`
+  - `revolut_pay`
+  - `samsung_pay`
+  - `satispay`
+  - `scalapay`
+  - `sepa_debit`
+  - `sequra`
+  - `sofort`
+  - `sunbit`
+  - `swish`
+  - `twint`
+  - `upi`
+  - `us_bank_account`
+  - `wechat_pay`
+  - `wero`
+  - `zip`
 
 - `expires_at` (timestamp, optional)
   The Epoch time in seconds at which the Checkout Session will expire. It can be anywhere from 30 minutes to 24 hours after Checkout Session creation. By default, this value is 24 hours from creation.
@@ -264,6 +380,9 @@ Possible enum values:
 
 - [`managed_payments`](https://docs.stripe.com/api/checkout/sessions/create.md?query=managed_payments) (object, optional)
   Settings for Managed Payments for this Checkout Session and resulting [PaymentIntents](https://docs.stripe.com/api/payment_intents/object.md), [Invoices](https://docs.stripe.com/api/invoices/object.md), and [Subscriptions](https://docs.stripe.com/api/subscriptions/object.md).
+
+- [`marketing_attributions`](https://docs.stripe.com/api/checkout/sessions/create.md?query=marketing_attributions) (array of objects, optional)
+  Advertising attribution information for this Checkout Session. Only one attribution is supported.
 
 - `metadata` (map, optional)
   Set of [key-value pairs](https://docs.stripe.com/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.

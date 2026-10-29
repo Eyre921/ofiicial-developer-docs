@@ -109,15 +109,15 @@ The Stripe Reader S700/S710 software consists of four components: the reader app
 
 | Countries | Reader | Firmware | Configuration | ROM |
 | --- | --- | --- | --- | --- |
-| US | `2.46.4.0` | `1.00.08.01` | `szzz_us_v11` | `2.2.24` |
-| CA | `2.46.4.0` | `1.00.08.01` | `szzz_ca_v4` | `2.2.24` |
-| AU | `2.46.4.0` | `1.00.08.01` | `szzz_prod_au_v11` | `2.2.24` |
-| MYNZ | `2.46.4.0` | `1.00.08.01` | `szzz_prod_apac_on_v5` | `2.2.24` |
-| SG | `2.46.4.0` | `1.00.08.01` | `szzz_prod_apac_on_v5` | `2.2.24` |
-| HK | `2.46.4.0` | `1.00.08.01` | `szzz_hk_v1` | `2.2.24` |
-| GBIEFI | `2.46.4.0` | `1.00.08.01` | `szzz_prod_eu_off_v3` | `2.2.24` |
-| ATBEDKFRITDENLESSECZLUPTCHNO | `2.46.4.0` | `1.00.08.01` | `szzz_prod_eu_on_v5` | `2.2.24` |
-| BGHRCYEEHULVLILTMTROSKSI | `2.46.4.0` | `1.00.08.01` | `szzz_prod_roeu_on_v2` | `2.2.24` |
+| US | `2.46.4.0` | `1.00.08.01` | `szzz_us_v11` | `2.2.24.1002` |
+| CA | `2.46.4.0` | `1.00.08.01` | `szzz_ca_v4` | `2.2.24.1002` |
+| AU | `2.46.4.0` | `1.00.08.01` | `szzz_prod_au_v11` | `2.2.24.1002` |
+| MYNZ | `2.46.4.0` | `1.00.08.01` | `szzz_prod_apac_on_v5` | `2.2.24.1002` |
+| SG | `2.46.4.0` | `1.00.08.01` | `szzz_prod_apac_on_v5` | `2.2.24.1002` |
+| HK | `2.46.4.0` | `1.00.08.01` | `szzz_hk_v1` | `2.2.24.1002` |
+| GBIEFI | `2.46.4.0` | `1.00.08.01` | `szzz_prod_eu_off_v3` | `2.2.24.1002` |
+| ATBEDKFRITDENLESSECZLUPTCHNO | `2.46.4.0` | `1.00.08.01` | `szzz_prod_eu_on_v5` | `2.2.24.1002` |
+| BGHRCYEEHULVLILTMTROSKSI | `2.46.4.0` | `1.00.08.01` | `szzz_prod_roeu_on_v2` | `2.2.24.1002` |
 
 ### Changelog 
 

@@ -278,7 +278,7 @@ Upload the generated directory tree to Amazon S3, Google Cloud Storage, or Azure
 ```python Python theme={null}
 from pinecone import ImportErrorMode
 
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 operation = index.start_import(
     uri="s3://BUCKET_NAME/IMPORT_ROOT",
@@ -316,7 +316,7 @@ python sync.py sync --strategy changelog
 Compare the source row count for each table with the record count for its target namespace:
 
 ```python Python theme={null}
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 stats = index.describe_index_stats()
 
 print(stats.total_vector_count)
@@ -342,7 +342,7 @@ pc = Pinecone(
     api_key=os.environ["PINECONE_API_KEY"],
     source_tag="pinecone_io:docs:pgvector_migration",
 )
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 query_vector = conn.execute(
     "SELECT embedding FROM documents WHERE embedding IS NOT NULL LIMIT 1"

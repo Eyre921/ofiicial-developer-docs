@@ -12,7 +12,7 @@ path: docs/guides/routing/model-variants/exacto
 
 > Route requests with quality-first provider sorting
 
-Exacto is a virtual model variant that explicitly applies quality-first provider sorting. When you add `:exacto` to a model slug, OpenRouter prefers providers with stronger tool-calling quality signals for that model instead of using the default price-weighted ordering.
+Exacto is a virtual model variant that explicitly applies quality-first provider sorting. When you add `:exacto` to a model slug, OpenRouter prefers providers with stronger tool-calling quality signals for that model instead of using [default routing](https://openrouter.ai/docs/guides/routing/provider-selection.md#default-routing).
 
 ## Using the Exacto variant
 
@@ -91,7 +91,7 @@ Exacto is a routing shortcut for quality-first provider ordering. Unlike standar
 
 ### Why we built it
 
-Providers serving the same model can vary meaningfully in tool-use behavior. Exacto gives you an explicit, request-level way to prefer higher-quality providers when you care more about tool-calling reliability than the default price-weighted route.
+Providers serving the same model can vary meaningfully in tool-use behavior. Exacto gives you an explicit, request-level way to prefer higher-quality providers when you care more about tool-calling reliability than default routing.
 
 ### Recommended use cases
 

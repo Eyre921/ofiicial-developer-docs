@@ -23,7 +23,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 documents = [{"_id": f"doc{i}", "chunk_text": f"Paragraph {i}"} for i in range(1000)]
 
@@ -52,7 +52,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 queries = ["Disease prevention", "Healthy digestion", "Immune support"]
 

@@ -256,6 +256,7 @@ paths:
               - io-net
               - ionstream
               - krea
+              - kt
               - liquid
               - makora
               - mancer
@@ -818,6 +819,7 @@ components:
         - io-net
         - ionstream
         - krea
+        - kt
         - liquid
         - makora
         - mancer

@@ -335,11 +335,11 @@ import { defineConfig } from "@trigger.dev/sdk";
 export default defineConfig({
   project: "<project ref>",
   // Your other config settings...
-  runtime: "bun",
+  runtime: "bun-1.4",
 });
 ```
 
-`bun` runs on Bun 1.3 with a Node.js binary alongside it. `bun-1.4` runs on a Bun-only image with no Node.js binary. See our [Bun guide](/docs/guides/frameworks/bun) for the differences.
+`bun-1.4` runs on a Bun-only image with no Node.js binary. `bun` (Bun 1.3 with a Node.js binary alongside it) is deprecated, and deploys that use it will be rejected from January 5, 2027. See our [Bun guide](/docs/guides/frameworks/bun) for the differences.
 
 ### Node.js versions
 
@@ -349,8 +349,8 @@ Trigger.dev runs your deployed tasks on one of these runtimes:
 * Node.js `node-22` — `22.23.4`
 * Node.js `node-24` — `24.22.1`
 * Node.js `node-26` — `26.12.1`
-* Bun `bun` — `1.3.3` with Node.js `20` alongside it (also spelled `bun-legacy`)
 * Bun `bun-1.4` — `1.4.4`, no Node.js binary
+* Bun `bun` — `1.3.3` with Node.js `20` alongside it (also spelled `bun-legacy`). Deprecated: deploys are rejected from January 5, 2027
 
 If you don't set a `runtime`, or you set `runtime: "node"`, your tasks run on the current Node.js LTS. That version moves forward as new LTS releases land, so set an explicit version — for example `runtime: "node-24"` — if you need it to stay fixed.
 

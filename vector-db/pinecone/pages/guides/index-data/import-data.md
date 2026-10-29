@@ -213,7 +213,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 root = "s3://example_bucket/import"
 
 index.start_import(
@@ -354,7 +354,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 index.describe_import(id="101")
 ```
@@ -625,7 +625,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 # List using a generator that handles pagination
 for i in index.list_imports():
@@ -764,7 +764,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 index.cancel_import(id="101")
 ```

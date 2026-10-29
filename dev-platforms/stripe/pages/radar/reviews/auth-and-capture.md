@@ -19,6 +19,10 @@ When we place an uncaptured payment in review, the Stripe Dashboard shows a **Ca
 > Approving the review doesn’t automatically capture the charge. You still need to click **Capture**.
 ![](https://b.stripecdn.com/docs-statics-srv/assets/uncaptured-payment.b9aab5781bebea8e1cc8f349dc2092bf.png)
 
+## Use Workflows to automatically capture approved payments 
+
+To automatically capture approved payments without writing code, use [Workflows](https://docs.stripe.com/workflows.md) with the [Capture payments after Radar review approval](https://dashboard.stripe.com/workflows/create?workflow=eyJkZWVwX2xpbmtfdmVyc2lvbiI6MSwibmFtZSI6IkNhcHR1cmUgcGF5bWVudHMgYWZ0ZXIgUmFkYXIgcmV2aWV3IGFwcHJvdmFsIiwiZGVmaW5pdGlvbiI6IkNyRURFbk1LR1hKbGRISnBaWFpsWDJGZmNHRjViV1Z1ZEY5cGJuUmxiblFRQVJwVUNpbHpkSEpwY0dVdVlYQnBYMk5oYkd4ZloyVjBYM1l4WDNCaGVXMWxiblJmYVc1MFpXNTBjMTlwWkJJbkNpVUtBbWxrRWg4YUhTUjdleUIwY21sbloyVnlMbkJoZVcxbGJuUmZhVzUwWlc1MElIMTlFdGtCQ2daaWNtRnVZMmdRQXlyTUFRckpBUW85YzNSbGNITXVjbVYwY21sbGRtVmZZVjl3WVhsdFpXNTBYMmx1ZEdWdWRDNXpkR0YwZFhNZ1BUMDlJQ0p5WlhGMWFYSmxjMTlqWVhCMGRYSmxJaEtIQVFvWVkyRndkSFZ5WlY5aFgzQmhlVzFsYm5SZmFXNTBaVzUwRUFFYWFRb3ljM1J5YVhCbExtRndhVjlqWVd4c1gzQnZjM1JmZGpGZmNHRjViV1Z1ZEY5cGJuUmxiblJ6WDJsa1gyTmhjSFIxY21VU013b3hDZ0pwWkJJckdpa2tlM3NnYzNSbGNITXVjbVYwY21sbGRtVmZZVjl3WVhsdFpXNTBYMmx1ZEdWdWRDNXBaQ0I5ZlJwZUNBSVNXZ29OY21WMmFXVjNMbU5zYjNObFpCSkdkSEpwWjJkbGNpNXlaV0Z6YjI0Z1BUMDlJQ0poY0hCeWIzWmxaQ0lnSmlZZ0tIUnlhV2RuWlhJdWNHRjViV1Z1ZEY5cGJuUmxiblFwTG1selRtOTBSVzF3ZEhrb0tSb0JBUklSTWpBeU5pMHdPUzB6TUM1bGJtUnBkbVUiLCJzdHJpcGVfYXBpX3ZlcnNpb24iOiIyMDI2LTA5LTMwLmVuZGl2ZSJ9) template. It triggers when a review closes, checks that the review is approved and the payment is awaiting capture, and then captures the payment.
+
 ## Use the API to automatically capture approved payments 
 
 Through the API, you can set up your integration to:

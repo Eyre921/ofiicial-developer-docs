@@ -23,13 +23,14 @@ For example:
 
 ## Supported LLM providers
 
-| Parameter                   | `open_ai` | `anthropic` | `aws_bedrock` | `google` | `groq`   | `nvidia` |
-| --------------------------- | --------- | ----------- | ------------- | -------- | -------- | -------- |
-| `agent.think.provider.type` | `open_ai` | `anthropic` | `aws_bedrock` | `google` | `groq`   | `nvidia` |
-| `agent.think.endpoint`      | optional  | optional    | required      | optional | required | optional |
+| Parameter                   | `deepgram` | `open_ai` | `anthropic` | `aws_bedrock` | `google` | `groq`   | `nvidia` |
+| --------------------------- | ---------- | --------- | ----------- | ------------- | -------- | -------- | -------- |
+| `agent.think.provider.type` | `deepgram` | `open_ai` | `anthropic` | `aws_bedrock` | `google` | `groq`   | `nvidia` |
+| `agent.think.endpoint`      | omit       | optional  | optional    | required      | optional | required | optional |
 
 The `agent.think.endpoint` is optional or required based on the provider type:
 
+* For `deepgram`, omit `endpoint`. Deepgram hosts these models. The `deepgram` provider is in Early Access; see [Deepgram](#deepgram-early-access).
 * For `open_ai`, `anthropic`, `google`, and `nvidia`, the `endpoint` field is optional because Deepgram provides managed LLMs for these providers.
 * For `groq` and `aws_bedrock` provider types, `endpoint` is required because Deepgram does not manage those LLMs.
 * If an `endpoint` is provided the `url` is required but `headers` are optional.
@@ -41,6 +42,42 @@ The `agent.think.endpoint` is optional or required based on the provider type:
 See the [Amazon Bedrock](#amazon-bedrock) section below for credentials and endpoint configuration. To fetch the current list of providers and models programmatically, see [Listing supported models via the API](#listing-supported-models-via-the-api).
 
 ## Supported LLM models
+
+### Deepgram (Early Access)
+
+> **Warning**
+>
+> **Early Access.** Deepgram LLMs are available only to current Deepgram contract customers enrolled in the Early Access program ([talk to sales](https://deepgram.com/contact-us) for access). Usage is free during Early Access, requests run on the global endpoint only, SDKs do not support the endpoint yet, and the API can change before general availability. Do not run production traffic on it.
+
+Deepgram's own LLMs, hosted by Deepgram. Use provider type `deepgram` for every Deepgram model. See [Deepgram LLMs](/docs/llm) for model details.
+
+| Provider   | Model                       |
+| ---------- | --------------------------- |
+| `deepgram` | `think-fast`                |
+| `deepgram` | `phonellm-mini-alpha-2-fp8` |
+
+Think-Fast can only be used with the Model Improvement Program. A `Settings` message that selects `think-fast` in a session opted out of MIP (`mip_opt_out: true` at the top level of `Settings`, or a project that requires opt-out) is rejected with `INVALID_SETTINGS`. Use `phonellm-mini-alpha-2-fp8` for sessions that opt out. See [Data retention and MIP](/docs/llm/data-retention).
+
+With `think-fast`, Deepgram places instructions on spoken response style ahead of your prompt and sends a `VOICE_PROMPT_ADDED` warning. Set `agent.think.provider.voice_prompt_opt_out` to `true` to send your prompt unchanged. See [Use in the Voice Agent](/docs/llm/voice-agent#voice-style-instructions).
+
+#### Example using a Deepgram LLM
+
+**`JSON`**
+
+```json JSON
+{
+  "type": "Settings",
+  "agent": {
+    "think": {
+      "provider": {
+        "type": "deepgram",
+        "model": "think-fast",
+        "temperature": 0.7
+      }
+    }
+  }
+}
+```
 
 ### OpenAI
 

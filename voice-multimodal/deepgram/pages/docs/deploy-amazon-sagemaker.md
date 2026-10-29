@@ -51,7 +51,7 @@ Order the pool as follows:
 1. **The listing's recommended type first** (for example `ml.g6.2xlarge` for Speech-to-Text). It is the type Deepgram validated the model on and the best price/performance.
 2. **Same-or-newer generation with similar per-instance capacity next** (`g6` → `g6e` → `g7`). Keeping capacity similar matters if you auto-scale, because the predefined scaling metrics are per instance and do not account for a mixed fleet.
 3. **Older generations last, as insurance** (`g5`, and `g4dn` where supported).
-4. **Never include a type the product does not support**: `g4dn` for Flux, `g5`/`g4dn` for Flux TTS, or any single-GPU type for Aura-2. See [Instance types](/docs/supported-products-sagemaker#instance-types).
+4. **Never include a type the product does not support.** See [Instance types](/docs/supported-products-sagemaker#instance-types).
 5. **Up to 5 types.** Three is the sweet spot.
 
 `VariantInstanceProvisionTimeoutInSeconds` is the per-type wait: SageMaker tries each type for that long before moving to the next. `300` is recommended (AWS allows `60`–`3600`), so a three-type pool can stay in `Creating` for up to about 15 minutes before it fails.

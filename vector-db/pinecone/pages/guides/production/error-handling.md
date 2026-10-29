@@ -50,7 +50,7 @@ from pinecone import Pinecone
 from pinecone.exceptions import PineconeException
 
 pc = Pinecone(api_key="YOUR_API_KEY")
-index = pc.Index("your-index")
+index = pc.index(name="your-index")
 
 try:
     index.upsert(

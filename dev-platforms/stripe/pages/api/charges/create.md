@@ -13,6 +13,7 @@ This method is deprecated and will be removed soon. If your integration uses it,
 ```curl
 curl https://api.stripe.com/v1/charges \
   -u "<<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2026-10-28.endive" \
   -d amount=1099 \
   -d currency=usd \
   -d source=tok_visa
@@ -108,17 +109,17 @@ curl https://api.stripe.com/v1/charges \
 
 ## Parameters
 
-- `amount` (integer, required)
+- `amount` (integer, optional)
   Amount intended to be collected by this payment. A positive integer representing how much to charge in the [smallest currency unit](https://docs.stripe.com/currencies.md#zero-decimal) (e.g., 100 cents to charge $1.00 or 100 to charge ¥100, a zero-decimal currency). The minimum amount is $0.50 US or [equivalent in charge currency](https://docs.stripe.com/currencies.md#minimum-and-maximum-charge-amounts). The amount value supports up to eight digits (e.g., a value of 99999999 for a USD charge of $999,999.99).
-
-- `currency` (enum, required)
-  Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
 - `application_fee_amount` (integer, optional)
   A fee in the smallest currency unit that will be applied to the charge and transferred to the application owner’s Stripe account. The request must be made with an OAuth key or the `Stripe-Account` header in order to take an application fee. For more information, see the application fees [documentation](https://docs.stripe.com/connect/direct-charges.md#collect-fees).
 
 - `capture` (boolean, optional)
   Whether to immediately capture the charge. Defaults to `true`. When `false`, the charge issues an authorization (or pre-authorization), and will need to be [captured](https://docs.stripe.com/api/charges/create.md#capture_charge) later. Uncaptured charges expire after a set number of days (7 by default). For more information, see the [authorizing charges and settling later](https://docs.stripe.com/charges/placing-a-hold.md) documentation.
+
+- `currency` (enum, optional)
+  Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
 - `customer` (string, optional)
   The ID of an existing customer that will be charged in this request.
@@ -138,7 +139,7 @@ curl https://api.stripe.com/v1/charges \
   Options to configure Radar. See [Radar Session](https://docs.stripe.com/radar/radar-session.md) for more information.
 
 - `receipt_email` (string, optional)
-  The email address to which this charge’s [receipt](https://docs.stripe.com/dashboard/receipts.md) will be sent. The receipt will not be sent until the charge is paid, and no receipts will be sent for test mode charges. If this charge is for a [Customer](https://docs.stripe.com/api/customers/object.md), the email address specified here will override the customer’s email address. If `receipt_email` is specified for a charge in live mode, a receipt will be sent regardless of your [email settings](https://dashboard.stripe.com/account/emails).
+  The email address to which this charge’s [receipt](https://docs.stripe.com/dashboard/receipts.md) will be sent. The receipt will not be sent until the charge is paid, and receipts are only sent for payments in live mode. If this charge is for a [Customer](https://docs.stripe.com/api/customers/object.md), the email address specified here will override the customer’s email address. If `receipt_email` is specified for a charge in live mode, a receipt will be sent regardless of your [email settings](https://dashboard.stripe.com/account/emails).
 
   The maximum length is 800 characters.
 
@@ -146,15 +147,19 @@ curl https://api.stripe.com/v1/charges \
   Shipping information for the charge. Helps prevent fraud on charges for physical goods.
 
 - `source` (string, optional)
-  A payment source to be charged. This can be the ID of a [card](https://docs.stripe.com/api.md#cards) (i.e., credit or debit card), a [bank account](https://docs.stripe.com/api.md#bank_accounts), a [source](https://docs.stripe.com/api.md#sources), a [token](https://docs.stripe.com/api.md#tokens), or a [connected account](https://docs.stripe.com/connect/account-debits.md#charging-a-connected-account). For certain sources—namely, [cards](https://docs.stripe.com/api.md#cards), [bank accounts](https://docs.stripe.com/api.md#bank_accounts), and attached [sources](https://docs.stripe.com/api.md#sources)—you must also pass the ID of the associated customer.
+  A payment source to be charged. This can be the ID of a [card](https://docs.stripe.com/api/charges/create.md#cards) (i.e., credit or debit card), a [bank account](https://docs.stripe.com/api/charges/create.md#bank_accounts), a [source](https://docs.stripe.com/api/charges/create.md#sources), a [token](https://docs.stripe.com/api/charges/create.md#tokens), or a [connected account](https://docs.stripe.com/connect/account-debits.md#charging-a-connected-account). For certain sources—namely, [cards](https://docs.stripe.com/api/charges/create.md#cards), [bank accounts](https://docs.stripe.com/api/charges/create.md#bank_accounts), and attached [sources](https://docs.stripe.com/api/charges/create.md#sources)—you must also pass the ID of the associated customer.
 
 - `statement_descriptor` (string, optional)
   For a non-card charge, text that appears on the customer’s statement as the statement descriptor. This value overrides the account’s default statement descriptor. For information about requirements, including the 22-character limit, see [the Statement Descriptor docs](https://docs.stripe.com/get-started/account/statement-descriptors.md).
 
   For a card charge, this value is ignored unless you don’t specify a `statement_descriptor_suffix`, in which case this value is used as the suffix.
 
+  The maximum length is 22 characters.
+
 - `statement_descriptor_suffix` (string, optional)
   Provides information about a card charge. Concatenated to the account’s [statement descriptor prefix](https://docs.stripe.com/get-started/account/statement-descriptors.md#static) to form the complete statement descriptor that appears on the customer’s statement. If the account has no prefix value, the suffix is concatenated to the account’s statement descriptor.
+
+  The maximum length is 22 characters.
 
 - [`transfer_data`](https://docs.stripe.com/api/charges/create.md?query=transfer_data) (object, optional)
   An optional dictionary including the account to automatically transfer to as part of a destination charge. [See the Connect documentation](https://docs.stripe.com/connect/destination-charges.md) for details.

@@ -39,11 +39,12 @@ Add the target to the Prometheus configuration file in the `prometheus.yml` file
 ```yaml yaml
 scrape_configs:
   - job_name: "dg_self_hosted_instance"
+    scrape_interval: "15s"
     static_configs:
       - targets: ["<ENGINE_INSTANCE_URI>:9991"]
 ```
 
-Replace `<ENGINE_INSTANCE_URI>` with the IP address or hostname of the Engine container. Save the configuration file.
+Replace `<ENGINE_INSTANCE_URI>` with the IP address or hostname of the Engine container. Keep `scrape_interval` at 15 seconds or less; the Prometheus default of 1 minute is too long for `engine_estimated_stream_capacity`. Save the configuration file.
 
 #### Step 2: Reload Prometheus Configuration
 

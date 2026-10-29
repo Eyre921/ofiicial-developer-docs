@@ -1,6 +1,6 @@
 # agent-frameworks/mcp 文档索引
 
-> 共 158 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 159 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -140,6 +140,7 @@
 - `seps/2596-spec-feature-lifecycle-and-deprecation` — [SEP-2596: Specification Feature Lifecycle and Deprecation Policy](pages/seps/2596-spec-feature-lifecycle-and-deprecation.md) · [原文](https://modelcontextprotocol.io/seps/2596-spec-feature-lifecycle-and-deprecation)
 - `seps/2640-skills-extension` — [SEP-2640: Skills Extension](pages/seps/2640-skills-extension.md) · [原文](https://modelcontextprotocol.io/seps/2640-skills-extension)
 - `seps/2663-tasks-extension` — [SEP-2663: Tasks Extension](pages/seps/2663-tasks-extension.md) · [原文](https://modelcontextprotocol.io/seps/2663-tasks-extension)
+- `seps/3392-extension-lifecycle` — [SEP-3392: Extension Lifecycle](pages/seps/3392-extension-lifecycle.md) · [原文](https://modelcontextprotocol.io/seps/3392-extension-lifecycle)
 - `seps/3398-release-cycle-updates` — [SEP-3398: Release Cycle Updates](pages/seps/3398-release-cycle-updates.md) · [原文](https://modelcontextprotocol.io/seps/3398-release-cycle-updates)
 - `seps/414-request-meta` — [SEP-414: Document OpenTelemetry Trace Context Propagation Conventions](pages/seps/414-request-meta.md) · [原文](https://modelcontextprotocol.io/seps/414-request-meta)
 - `seps/932-model-context-protocol-governance` — [SEP-932: Model Context Protocol Governance](pages/seps/932-model-context-protocol-governance.md) · [原文](https://modelcontextprotocol.io/seps/932-model-context-protocol-governance)

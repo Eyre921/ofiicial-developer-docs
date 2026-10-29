@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 394 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 402 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -155,6 +155,14 @@
 - `docs/license-proxy` — [License Proxy](pages/docs/license-proxy.md) · [原文](https://developers.deepgram.com/docs/license-proxy.md)
 - `docs/live-streaming-audio` — [Getting Started](pages/docs/live-streaming-audio.md) · [原文](https://developers.deepgram.com/docs/live-streaming-audio.md)
 - `docs/livekit-integration` — [LiveKit and Deepgram](pages/docs/livekit-integration.md) · [原文](https://developers.deepgram.com/docs/livekit-integration.md)
+- `docs/llm` — [Deepgram LLMs overview](pages/docs/llm.md) · [原文](https://developers.deepgram.com/docs/llm.md)
+- `docs/llm/cascaded-agent` — [Build a cascaded agent](pages/docs/llm/cascaded-agent.md) · [原文](https://developers.deepgram.com/docs/llm/cascaded-agent.md)
+- `docs/llm/data-retention` — [Data retention and MIP](pages/docs/llm/data-retention.md) · [原文](https://developers.deepgram.com/docs/llm/data-retention.md)
+- `docs/llm/getting-started` — [Get started with Deepgram LLMs](pages/docs/llm/getting-started.md) · [原文](https://developers.deepgram.com/docs/llm/getting-started.md)
+- `docs/llm/models` — [Models overview](pages/docs/llm/models.md) · [原文](https://developers.deepgram.com/docs/llm/models.md)
+- `docs/llm/prompting` — [Prompting Deepgram LLMs](pages/docs/llm/prompting.md) · [原文](https://developers.deepgram.com/docs/llm/prompting.md)
+- `docs/llm/request-response-format` — [Request and response format](pages/docs/llm/request-response-format.md) · [原文](https://developers.deepgram.com/docs/llm/request-response-format.md)
+- `docs/llm/voice-agent` — [Use in the Voice Agent](pages/docs/llm/voice-agent.md) · [原文](https://developers.deepgram.com/docs/llm/voice-agent.md)
 - `docs/log-formats` — [Log Formats](pages/docs/log-formats.md) · [原文](https://developers.deepgram.com/docs/log-formats.md)
 - `docs/lower-level-websockets` — [Using Lower-Level Websockets with the Streaming API](pages/docs/lower-level-websockets.md) · [原文](https://developers.deepgram.com/docs/lower-level-websockets.md)
 - `docs/maintaining` — [System Maintenance](pages/docs/maintaining.md) · [原文](https://developers.deepgram.com/docs/maintaining.md)

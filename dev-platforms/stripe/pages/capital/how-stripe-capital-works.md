@@ -175,7 +175,7 @@ Paying off your active financing offer doesn’t automatically qualify you for a
 
 We assess every business regularly, even those actively paying on a financing offer. Even if you aren’t eligible for a new offer today, you might be eligible in the future. For questions regarding eligibility, contact our partner, YouLend, at [stripecapital@youlend.com](mailto:stripecapital@youlend.com). To receive emails regarding new offers, update [your email settings](https://go.stripe.global/subscribe?tmp_source=none) to opt in to receiving Stripe Capital emails.
 
-You might see a banner in the Stripe Dashboard that indicates that you’re on track for a future offer. This isn’t a guarantee of a future offer or of specific terms and doesn’t reflect a credit decision or evaluation.
+You might see a banner in the Stripe Dashboard that indicates that you’re on track for a future offer. This isn’t a guarantee of a future offer, specific terms, or timing, and doesn’t reflect a credit decision or evaluation.
 
 If your business has multiple Stripe accounts, a financing offer might be generated based on the combined information from those accounts. Changes to one account without corresponding updates to others might affect your financing eligibility. This includes changes to your business name, business identification number, and business address.
 
@@ -209,13 +209,11 @@ The more information we can see about the health of your business, the better we
 
 Our underwriting model is based on the payment volume that you process on Stripe. Shifting transaction volume from other payment sources onto Stripe increases your overall Stripe processing volume and improves your likelihood of receiving an offer.
 
-### Get feedback on your eligibility
-
-If you have any questions regarding your offer eligibility, contact us directly at [capital@stripe.com](mailto:capital@stripe.com). See our [Privacy Center](https://stripe.com/gb/legal/privacy-center#stripe-capital-direct-and-capital-for-platforms) for more information. All financing requests are subject to final review before approval. Financing is provided by YouLend.
+See our [Privacy Center](https://stripe.com/gb/legal/privacy-center#stripe-capital-direct-and-capital-for-platforms) for more information. All financing requests are subject to final review before approval. Financing is provided by YouLend.
 
 ## Review your offer
 
-When you log in to the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard, you can use a slider to choose a custom amount (up to the maximum offer amount). The financing fee and payment percentage adjust based on the amount you choose.
+When you log in to the [Capital tab](https://dashboard.stripe.com/capital) of the Dashboard, you can use a slider to choose a custom amount (up to the maximum offer amount). The financing fee and payment percentage adjust based on the amount you choose. The amount and terms shown in the Dashboard reflect the financing offer available to your business at that time. If a future offer becomes available, its amount and terms might differ from a previous offer.
 
 Your offer is available for 30 days. After that point, your business is automatically re-evaluated to see if you’re eligible for an additional offer. If you’re seeking financing at a later time, check the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard to see if you have another offer. We also send you an email if you have an offer.
 
@@ -268,7 +266,7 @@ Paying off your active financing offer doesn’t automatically qualify you for a
 
 We assess every business regularly, even those actively paying on a financing offer. Even if you aren’t eligible for a new offer today, you might be eligible in the future. For questions regarding eligibility, contact our partner, YouLend, at [stripecapital@youlend.com](mailto:stripecapital@youlend.com). To receive emails regarding new offers, update [your email settings](https://go.stripe.global/subscribe?tmp_source=none) to opt in to receiving Stripe Capital emails.
 
-You might see a banner in the Stripe Dashboard that indicates that you’re on track for a future offer. This isn’t a guarantee of a future offer or of specific terms and doesn’t reflect a credit decision or evaluation.
+You might see a banner in the Stripe Dashboard that indicates that you’re on track for a future offer. This isn’t a guarantee of a future offer, specific terms, or timing, and doesn’t reflect a credit decision or evaluation.
 
 > If your business has multiple Stripe accounts, a financing offer might be generated based on the combined information from those accounts. Changes to one account without corresponding updates to others might affect your financing eligibility. This includes changes to your business name, business identification number, and business address.
 
@@ -304,13 +302,11 @@ The more information we can see about the health of your business, the better we
 
 Our underwriting model is based on the payment volume that you process on Stripe. Shifting transaction volume from other payment sources onto Stripe increases your overall Stripe processing volume and improves your likelihood of receiving an offer.
 
-### Get feedback on your eligibility
-
-If you have any questions regarding your offer eligibility, contact us directly at [capital@stripe.com](mailto:capital@stripe.com). See our [Privacy Center](https://stripe.com/fr/legal/privacy-center#stripe-capital-direct-and-capital-for-platforms) for more information. All financing requests are subject to final review before approval. Financing is provided by YouLend.
+See our [Privacy Center](https://stripe.com/fr/legal/privacy-center#stripe-capital-direct-and-capital-for-platforms) for more information. All financing requests are subject to final review before approval. Financing is provided by YouLend.
 
 ## Review your offer
 
-When you log in to the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard, you can use a slider to choose a custom amount (up to the maximum offer amount). The financing fee and payment percentage adjust based on the amount you choose.
+When you log in to the [Capital tab](https://dashboard.stripe.com/capital) of the Dashboard, you can use a slider to choose a custom amount (up to the maximum offer amount). The financing fee and payment percentage adjust based on the amount you choose. The amount and terms shown in your Dashboard reflect the financing offer available to your business at that time. If a future offer becomes available, its amount and terms might differ from a previous offer.
 
 Your offer is available for 30 days. After that point, your business is automatically re-evaluated to see if you’re eligible for an additional offer. If you’re seeking financing at a later time, check the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard to see if you have another offer. We also send you an email if you have an offer.
 
@@ -335,7 +331,7 @@ The total amount you owe is your financing amount plus a fixed fee, which is pai
 
 ## Additional financing
 
-As you pay your financing, we automatically evaluate your business for a new offer. Paying your financing early doesn’t automatically qualify you for a new offer. When you’re eligible for a new offer, it appears automatically in your Dashboard.
+As you pay your financing, we automatically evaluate your business for a new offer. Paying your financing early doesn’t automatically qualify you for a new offer. When you’re eligible for a new offer, it appears automatically in your Dashboard. The timing and terms of any future offer vary based on your business profile at that time.
 
 If you’re approved for additional financing offers before you pay off your current financing offer, you’ll receive a standardized payment percentage rate across your active financing offers to match your most recently accepted financing offer. Payment of your newly accepted offer begins after your active financing offer is paid off so you’ll only pay off one financing offer at a time.
 
@@ -363,7 +359,7 @@ When you’re eligible for a new offer, it appears automatically in your [Dashbo
 
 We assess every business regularly, even those actively paying on a financing offer. Even if you aren’t eligible for a new offer today, you might be eligible in the future. For questions regarding eligibility, contact our partner, YouLend, at [stripecapital@youlend.com](mailto:stripecapital@youlend.com). To receive emails regarding new offers, update [your email settings](https://go.stripe.global/subscribe?tmp_source=none) to opt in to receiving Stripe Capital emails.
 
-You might see a banner in the Stripe Dashboard that indicates that you’re on track for a future offer. This isn’t a guarantee of a future offer or of specific terms and doesn’t reflect a credit decision or evaluation.
+You might see a banner in the Stripe Dashboard that indicates that you’re on track for a future offer. This isn’t a guarantee of a future offer, specific terms, or timing, and doesn’t reflect a credit decision or evaluation.
 
 If your business has multiple Stripe accounts, a financing offer might be generated based on the combined information from those accounts. Changes to one account without corresponding updates to others might affect your financing eligibility. This includes changes to your business name, business identification number, and business address.
 
@@ -399,13 +395,11 @@ The more information we can see about the health of your business, the better we
 
 Our underwriting model is based on the payment volume that you process on Stripe. Shifting transaction volume from other payment sources onto Stripe increases your overall Stripe processing volume and improves your likelihood of receiving an offer.
 
-### Get feedback on your eligibility
-
-If you have any questions regarding your offer eligibility, contact us directly at [capital@stripe.com](mailto:capital@stripe.com). See our [Privacy Center](https://stripe.com/de/legal/privacy-center#stripe-capital-direct-and-capital-for-platforms) for more information. All financing requests are subject to final review before approval. Financing is provided by YouLend.
+See our [Privacy Center](https://stripe.com/de/legal/privacy-center#stripe-capital-direct-and-capital-for-platforms) for more information. All financing requests are subject to final review before approval. Financing is provided by YouLend.
 
 ## Review your offer
 
-When you log in to the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard, you can use a slider to choose a custom amount (up to the maximum offer amount). The financing fee and payment percentage adjust based on the amount you choose.
+When you log in to the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard, you can use a slider to choose a custom amount (up to the maximum offer amount). The financing fee and payment percentage adjust based on the amount you choose. The amount and terms shown in your Dashboard reflect the financing offer currently available to your business.
 
 Your offer is available for 30 days. After 30 days, we automatically re-evaluate your business to see if you’re eligible for an additional offer. If you’re seeking financing at a later time, check the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard to see if you have another offer. We also send you an email if you have an offer.
 
@@ -564,7 +558,7 @@ When you’re eligible for a new Stripe Capital offer, it appears automatically 
 
 For questions regarding eligibility, [email our partner, Fundbox](mailto:stripe-capital-ca@fundbox.com). To receive emails regarding new offers, update [your email settings](https://go.stripe.global/subscribe?tmp_source=none) to opt in to receiving Stripe Capital emails.
 
-You might see a banner in the Stripe Dashboard that indicates that you could be eligible for a future offer. This isn’t a guarantee of a future offer, or a promise of specific terms, and it doesn’t reflect a credit decision or evaluation.
+You might see a banner in the Stripe Dashboard that indicates that you could be eligible for a future offer. This isn’t a guarantee of a future offer, specific terms, or timing, and doesn’t reflect a credit decision or evaluation.
 
 If your business has multiple Stripe accounts, we might generate a financing offer based on the combined information from those accounts. Changes to one account without corresponding updates to others might affect your financing eligibility. This includes changes to your business name, business identification number, and business address.
 
@@ -603,13 +597,11 @@ The more information we can see about the health of your business, the better we
 
 We base our underwriting model on the payment volume that you process on Stripe. Shifting transaction volume from other payment sources onto Stripe increases your overall Stripe processing volume and improves your likelihood of receiving an offer.
 
-### Get feedback on your eligibility
-
-If you have any questions regarding your offer eligibility, [contact us directly](mailto:capital@stripe.com). See our [Privacy Center](https://stripe.com/en-ca/legal/privacy-center#stripe-capital-direct-and-capital-for-platforms) for more information. All financing requests are subject to final review before approval. Financing is provided by Fundbox.
+See our [Privacy Center](https://stripe.com/en-ca/legal/privacy-center#stripe-capital-direct-and-capital-for-platforms) for more information. All financing requests are subject to final review before approval. Financing is provided by Fundbox.
 
 ## Review your offer
 
-When you log in to the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard, you can use a slider to choose a custom amount (up to the maximum offer amount). The financing fee and payment percentage adjust based on the amount you choose.
+When you log in to the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard, you can use a slider to choose a custom amount (up to the maximum offer amount). The financing fee and payment percentage adjust based on the amount you choose. The amount and terms shown in the Dashboard reflect the financing offer available to your business at that time.
 
 Your offer is available for 30 days. After 30 days, we automatically re-evaluate your business to see if you’re eligible for an additional offer. If you’re seeking financing at a later time, check the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard to see if you have another offer. We also send you an email if you have an offer.
 

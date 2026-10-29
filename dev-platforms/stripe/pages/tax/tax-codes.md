@@ -8,7 +8,9 @@ path: tax/tax-codes
 
 Stripe Tax uses product tax codes to determine a product's tax rate.
 
-> [Log in](https://dashboard.stripe.com/settings/tax) or [sign up](https://dashboard.stripe.com/register) for Stripe to enable Stripe Tax.
+> #### Sign in to enable Stripe Tax
+> 
+> [Log in](https://dashboard.stripe.com/settings/tax) or [sign up](https://dashboard.stripe.com/register) to enable Stripe Tax.
 
 Stripe only calculates tax in jurisdictions where you have an active [tax registration](https://docs.stripe.com/tax/registering.md). Without a registration in the customer’s location, the calculation returns zero tax. To learn more, see [Understand zero tax amounts](https://docs.stripe.com/tax/zero-tax.md).
 

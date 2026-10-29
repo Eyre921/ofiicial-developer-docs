@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1398 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1401 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -159,6 +159,7 @@
 - `docs/api-reference/knowledge-base/compute-rag-index-batch` — [Compute RAG index in batch](pages/docs/api-reference/knowledge-base/compute-rag-index-batch.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/compute-rag-index-batch.md)
 - `docs/api-reference/knowledge-base/create-crawl-job` — [Create crawl job](pages/docs/api-reference/knowledge-base/create-crawl-job.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/create-crawl-job.md)
 - `docs/api-reference/knowledge-base/create-folder` — [Create folder](pages/docs/api-reference/knowledge-base/create-folder.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/create-folder.md)
+- `docs/api-reference/knowledge-base/create-from-file` — [Create knowledge base document from file](pages/docs/api-reference/knowledge-base/create-from-file.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/create-from-file.md)
 - `docs/api-reference/knowledge-base/create-from-text` — [Create knowledge base document from text](pages/docs/api-reference/knowledge-base/create-from-text.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/create-from-text.md)
 - `docs/api-reference/knowledge-base/create-from-url` — [Create knowledge base document from URL](pages/docs/api-reference/knowledge-base/create-from-url.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/create-from-url.md)
 - `docs/api-reference/knowledge-base/delete` — [Delete knowledge base document](pages/docs/api-reference/knowledge-base/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/delete.md)
@@ -610,6 +611,7 @@
 - `docs/eleven-agents/best-practices/prompting-guide` — [Prompting guide](pages/docs/eleven-agents/best-practices/prompting-guide.md) · [原文](https://elevenlabs.io/docs/eleven-agents/best-practices/prompting-guide.md)
 - `docs/eleven-agents/build/overview` — [Build](pages/docs/eleven-agents/build/overview.md) · [原文](https://elevenlabs.io/docs/eleven-agents/build/overview.md)
 - `docs/eleven-agents/customization/agent-analysis` — [Conversation analysis](pages/docs/eleven-agents/customization/agent-analysis.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/agent-analysis.md)
+- `docs/eleven-agents/customization/agent-analysis/analysis-library` — [Analysis library](pages/docs/eleven-agents/customization/agent-analysis/analysis-library.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/agent-analysis/analysis-library.md)
 - `docs/eleven-agents/customization/agent-analysis/data-collection` — [Data collection](pages/docs/eleven-agents/customization/agent-analysis/data-collection.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/agent-analysis/data-collection.md)
 - `docs/eleven-agents/customization/agent-analysis/sentiment-analysis` — [Sentiment analysis](pages/docs/eleven-agents/customization/agent-analysis/sentiment-analysis.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/agent-analysis/sentiment-analysis.md)
 - `docs/eleven-agents/customization/agent-analysis/smart-search` — [Searching conversations](pages/docs/eleven-agents/customization/agent-analysis/smart-search.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/agent-analysis/smart-search.md)
@@ -1109,6 +1111,7 @@
 - `docs/help-center/product/distribution-publishing/gen-fm/how-do-i-use-gen-fm` — [How do I use GenFM?](pages/docs/help-center/product/distribution-publishing/gen-fm/how-do-i-use-gen-fm.md) · [原文](https://elevenlabs.io/docs/help-center/product/distribution-publishing/gen-fm/how-do-i-use-gen-fm.md)
 - `docs/help-center/product/distribution-publishing/gen-fm/how-much-does-gen-fm-cost` — [How much does GenFM cost?](pages/docs/help-center/product/distribution-publishing/gen-fm/how-much-does-gen-fm-cost.md) · [原文](https://elevenlabs.io/docs/help-center/product/distribution-publishing/gen-fm/how-much-does-gen-fm-cost.md)
 - `docs/help-center/product/distribution-publishing/gen-fm/what-is-gen-fm` — [What is GenFM?](pages/docs/help-center/product/distribution-publishing/gen-fm/what-is-gen-fm.md) · [原文](https://elevenlabs.io/docs/help-center/product/distribution-publishing/gen-fm/what-is-gen-fm.md)
+- `docs/help-center/product/dubbing` — [Dubbing FAQ](pages/docs/help-center/product/dubbing.md) · [原文](https://elevenlabs.io/docs/help-center/product/dubbing.md)
 - `docs/help-center/product/dubbing/can-i-edit-and-regenerate-dubbing-v-2-via-the-api` — [Can I edit and regenerate Dubbing v2 via the API?](pages/docs/help-center/product/dubbing/can-i-edit-and-regenerate-dubbing-v-2-via-the-api.md) · [原文](https://elevenlabs.io/docs/help-center/product/dubbing/can-i-edit-and-regenerate-dubbing-v-2-via-the-api.md)
 - `docs/help-center/product/dubbing/do-you-offer-lip-sync-in-dubbing` — [Do you offer lip sync in Dubbing?](pages/docs/help-center/product/dubbing/do-you-offer-lip-sync-in-dubbing.md) · [原文](https://elevenlabs.io/docs/help-center/product/dubbing/do-you-offer-lip-sync-in-dubbing.md)
 - `docs/help-center/product/dubbing/how-do-i-access-dubbing-studio` — [How do I access Dubbing Studio?](pages/docs/help-center/product/dubbing/how-do-i-access-dubbing-studio.md) · [原文](https://elevenlabs.io/docs/help-center/product/dubbing/how-do-i-access-dubbing-studio.md)

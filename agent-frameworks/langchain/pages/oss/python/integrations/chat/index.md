@@ -32,11 +32,11 @@ Arrows show a typical retrieval flow. The highlighted component is the one this 
 | [`ChatGoogleGenerativeAI`](/oss/python/integrations/chat/google_generative_ai) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-google-genai/month)](https://pypi.org/project/langchain-google-genai/) |
 | [`ChatOllama`](/oss/python/integrations/chat/ollama) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ollama/month)](https://pypi.org/project/langchain-ollama/) |
 | [`ChatGroq`](/oss/python/integrations/chat/groq) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-groq/month)](https://pypi.org/project/langchain-groq/) |
+| [`ChatHuggingFace`](/oss/python/integrations/chat/huggingface) | ❌ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-huggingface/month)](https://pypi.org/project/langchain-huggingface/) |
 | [`ChatLiteLLM`](/oss/python/integrations/chat/litellm) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-litellm/month)](https://pypi.org/project/langchain-litellm/) |
 | [`ChatMistralAI`](/oss/python/integrations/chat/mistralai) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mistralai/month)](https://pypi.org/project/langchain-mistralai/) |
-| [`ChatHuggingFace`](/oss/python/integrations/chat/huggingface) | ❌ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-huggingface/month)](https://pypi.org/project/langchain-huggingface/) |
-| [`ChatOpenRouter`](/oss/python/integrations/chat/openrouter) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-openrouter/month)](https://pypi.org/project/langchain-openrouter/) |
 | [`ChatXAI`](/oss/python/integrations/chat/xai) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-xai/month)](https://pypi.org/project/langchain-xai/) |
+| [`ChatOpenRouter`](/oss/python/integrations/chat/openrouter) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-openrouter/month)](https://pypi.org/project/langchain-openrouter/) |
 | [`ChatDeepSeek`](/oss/python/integrations/chat/deepseek) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-deepseek/month)](https://pypi.org/project/langchain-deepseek/) |
 | [`ChatCohere`](/oss/python/integrations/chat/cohere) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-cohere/month)](https://pypi.org/project/langchain-cohere/) |
 | [`ChatNVIDIA`](/oss/python/integrations/chat/nvidia_ai_endpoints) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nvidia-ai-endpoints/month)](https://pypi.org/project/langchain-nvidia-ai-endpoints/) |
@@ -80,16 +80,16 @@ Certain model providers offer endpoints that are compatible with OpenAI's [Chat 
 | [`ChatBedrock`](/oss/python/integrations/chat/bedrock) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-aws/month)](https://pypi.org/project/langchain-aws/) |
 | [`ChatOllama`](/oss/python/integrations/chat/ollama) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ollama/month)](https://pypi.org/project/langchain-ollama/) |
 | [`ChatGroq`](/oss/python/integrations/chat/groq) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-groq/month)](https://pypi.org/project/langchain-groq/) |
+| [`ChatHuggingFace`](/oss/python/integrations/chat/huggingface) | ❌ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-huggingface/month)](https://pypi.org/project/langchain-huggingface/) |
 | [`ChatLiteLLM`](/oss/python/integrations/chat/litellm) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-litellm/month)](https://pypi.org/project/langchain-litellm/) |
 | [`ChatMistralAI`](/oss/python/integrations/chat/mistralai) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mistralai/month)](https://pypi.org/project/langchain-mistralai/) |
-| [`ChatHuggingFace`](/oss/python/integrations/chat/huggingface) | ❌ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-huggingface/month)](https://pypi.org/project/langchain-huggingface/) |
-| [`ChatOpenRouter`](/oss/python/integrations/chat/openrouter) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-openrouter/month)](https://pypi.org/project/langchain-openrouter/) |
 | [`ChatXAI`](/oss/python/integrations/chat/xai) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-xai/month)](https://pypi.org/project/langchain-xai/) |
+| [`ChatOpenRouter`](/oss/python/integrations/chat/openrouter) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-openrouter/month)](https://pypi.org/project/langchain-openrouter/) |
 | [`ChatDeepSeek`](/oss/python/integrations/chat/deepseek) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-deepseek/month)](https://pypi.org/project/langchain-deepseek/) |
 | [`ChatCohere`](/oss/python/integrations/chat/cohere) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-cohere/month)](https://pypi.org/project/langchain-cohere/) |
 | [`ChatFireworks`](/oss/python/integrations/chat/fireworks) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-fireworks/month)](https://pypi.org/project/langchain-fireworks/) |
-| [`ChatNVIDIA`](/oss/python/integrations/chat/nvidia_ai_endpoints) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nvidia-ai-endpoints/month)](https://pypi.org/project/langchain-nvidia-ai-endpoints/) |
 | [`AzureAIChatCompletionsModel`](/oss/python/integrations/chat/azure_ai) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-azure-ai/month)](https://pypi.org/project/langchain-azure-ai/) |
+| [`ChatNVIDIA`](/oss/python/integrations/chat/nvidia_ai_endpoints) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nvidia-ai-endpoints/month)](https://pypi.org/project/langchain-nvidia-ai-endpoints/) |
 | [`ChatDatabricks`](/oss/python/integrations/chat/databricks) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/databricks-langchain/month)](https://pypi.org/project/databricks-langchain/) |
 | [`ChatWatsonx`](/oss/python/integrations/chat/ibm_watsonx) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ibm/month)](https://pypi.org/project/langchain-ibm/) |
 | [`ChatPerplexity`](/oss/python/integrations/chat/perplexity) | ✅ | ❌ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-perplexity/month)](https://pypi.org/project/langchain-perplexity/) |
@@ -109,6 +109,7 @@ Certain model providers offer endpoints that are compatible with OpenAI's [Chat 
 | [`Inferrail`](https://github.com/domondi1/inferrail/blob/main/docs/recipes/agent-run-budget.md?ref=langchain-docs#langchain) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/inferrail/month)](https://pypi.org/project/inferrail/) |
 | [`ChatNebius`](https://github.com/nebius/langchain-nebius) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nebius/month)](https://pypi.org/project/langchain-nebius/) |
 | [`ChatGradient`](https://docs.digitalocean.com/products/ai-platform/) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-gradient/month)](https://pypi.org/project/langchain-gradient/) |
+| [`Donkey Kit (governed ChatOpenAI)`](https://docs.donkey-kit.dev/frameworks/langgraph) | ✅ | ✅ | | | [  ![Downloads per month](https://static.pepy.tech/badge/donkey-kit/month)](https://pypi.org/project/donkey-kit/) |
 | [`ChatAmazonNova`](/oss/python/integrations/chat/amazon_nova) | ✅ | ✅ | ✅ | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-amazon-nova/month)](https://pypi.org/project/langchain-amazon-nova/) |
 | [`ChatEmpirioLabs`](https://docs.empiriolabs.ai) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-empiriolabs/month)](https://pypi.org/project/langchain-empiriolabs/) |
 | [`ChatWriter`](https://dev.writer.com/home/introduction) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-writer/month)](https://pypi.org/project/langchain-writer/) |
@@ -122,15 +123,16 @@ Certain model providers offer endpoints that are compatible with OpenAI's [Chat 
 | [`ChatDiffbot`](https://github.com/diffbot/langchain-diffbot) | ✅ | ❌ | ❌ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-diffbot/month)](https://pypi.org/project/langchain-diffbot/) |
 | [`ChatAimlapi`](https://docs.aimlapi.com/) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-aimlapi/month)](https://pypi.org/project/langchain-aimlapi/) |
 | [`RecallMiddleware`](https://recallmem.dev/guides/langchain) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-recall/month)](https://pypi.org/project/langchain-recall/) |
+| [`ChatObscurify`](https://github.com/Obscurify-ai/langchain-obscurify) | ✅ | ✅ | ✅ | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-obscurify/month)](https://pypi.org/project/langchain-obscurify/) |
 | [`ChatContextual`](https://docs.contextual.ai/) | ❌ | ❌ | ❌ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-contextual/month)](https://pypi.org/project/langchain-contextual/) |
 | [`ChatHeabsy`](https://heabsy.com/integrations/langchain) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-heabsy/month)](https://pypi.org/project/langchain-heabsy/) |
 | [`ChatDoubleword`](https://docs.doubleword.ai/inference-api/intro-to-doubleword-inference) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-doubleword/month)](https://pypi.org/project/langchain-doubleword/) |
 | [`ChatAISL`](https://github.com/StudioPlatforms/aistupidlevel-sdk/blob/main/langchain-python/README.md) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-aistupidlevel/month)](https://pypi.org/project/langchain-aistupidlevel/) |
 | [`ChatAbso`](https://github.com/lunary-ai/langchain-abso) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-abso/month)](https://pypi.org/project/langchain-abso/) |
+| [`ModelScopeChatEndpoint`](https://github.com/modelscope/langchain-modelscope) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-modelscope-integration/month)](https://pypi.org/project/langchain-modelscope-integration/) |
 | [`ChatBrainiall`](https://app.brainiall.com/docs) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-brainiall/month)](https://pypi.org/project/langchain-brainiall/) |
 | [`ChatKServe`](https://gitlab.com/bitkaio/langchain/kserve-provider) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-kserve/month)](https://pypi.org/project/langchain-kserve/) |
 | [`ChatHubris`](https://hubris.pw/docs/integrations/langchain) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-hubris/month)](https://pypi.org/project/langchain-hubris/) |
-| [`ModelScopeChatEndpoint`](https://github.com/modelscope/langchain-modelscope) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-modelscope-integration/month)](https://pypi.org/project/langchain-modelscope-integration/) |
 | [`ChatSarvam`](https://docs.sarvam.ai/api/integration/langchain) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-sarvamcloud/month)](https://pypi.org/project/langchain-sarvamcloud/) |
 | [`ChatFeatherlessAI`](https://github.com/featherless-ai-integrations/langchain-featherless-ai) | ✅ | ❌ | ❌ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-featherless-ai/month)](https://pypi.org/project/langchain-featherless-ai/) |
 | [`ChatKinetica`](https://github.com/kineticadb/langchain-kinetica) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-kinetica/month)](https://pypi.org/project/langchain-kinetica/) |
@@ -139,25 +141,23 @@ Certain model providers offer endpoints that are compatible with OpenAI's [Chat 
 | [`ChatRunPod`](https://docs.runpod.io/overview) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-runpod/month)](https://pypi.org/project/langchain-runpod/) |
 | [`SpendGuardChatModel`](https://agenticspendguard.dev) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/spendguard-sdk/month)](https://pypi.org/project/spendguard-sdk/) |
 | [`ChatOpenZoo`](https://github.com/staccDOTsol/langchain-openzoo) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-openzoo/month)](https://pypi.org/project/langchain-openzoo/) |
-| [`ChatAppleFoundationModels`](https://github.com/rajanshxrma/langchain-apple-foundation-models) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-apple-foundation-models/month)](https://pypi.org/project/langchain-apple-foundation-models/) |
 | [`Apertis`](https://docs.apertis.ai/api/sdks/langchain/) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-apertis/month)](https://pypi.org/project/langchain-apertis/) |
-| [`ChatAlephantAI`](https://alephant.io/) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-alephantai/month)](https://pypi.org/project/langchain-alephantai/) |
+| [`ChatAppleFoundationModels`](https://github.com/rajanshxrma/langchain-apple-foundation-models) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-apple-foundation-models/month)](https://pypi.org/project/langchain-apple-foundation-models/) |
 | [`ChatPipeshift`](https://github.com/pipeshift-org/langchain-pipeshift) | ✅ | ❌ | ❌ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-pipeshift/month)](https://pypi.org/project/langchain-pipeshift/) |
 | [`ChatInterfaze`](https://interfaze.ai/docs) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/interfaze-langchain/month)](https://pypi.org/project/interfaze-langchain/) |
-| [`ChatGreenNode`](https://github.com/greennode-ai/langchain-greennode) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-greennode/month)](https://pypi.org/project/langchain-greennode/) |
 | [`ChatTelnyx`](https://developers.telnyx.com/docs/inference/models) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-telnyx/month)](https://pypi.org/project/langchain-telnyx/) |
-| [`ChatNeuralwatt`](https://neuralwatt.com) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-neuralwatt/month)](https://pypi.org/project/langchain-neuralwatt/) |
+| [`ChatGreenNode`](https://github.com/greennode-ai/langchain-greennode) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-greennode/month)](https://pypi.org/project/langchain-greennode/) |
 | [`ChatThalam`](https://thalam.ai/docs) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-thalam/month)](https://pypi.org/project/langchain-thalam/) |
 | [`ChatNetmind`](https://github.com/protagolabs/langchain-netmind) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-netmind/month)](https://pypi.org/project/langchain-netmind/) |
-| [`ChatDuel`](https://duelagents.com) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-duel/month)](https://pypi.org/project/langchain-duel/) |
+| [`ChatNeuralwatt`](https://neuralwatt.com) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-neuralwatt/month)](https://pypi.org/project/langchain-neuralwatt/) |
 | [`ChatSeekrFlow`](https://github.com/benfaircloth/langchain-seekrflow) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-seekrflow/month)](https://pypi.org/project/langchain-seekrflow/) |
 | [`ChatKalibr`](https://kalibr.systems/docs) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-kalibr/month)](https://pypi.org/project/langchain-kalibr/) |
 | [`1Claw`](https://docs.1claw.xyz) | ✅ | ✅ | ✅ | ❌ | N/A |
 | [`API-Route`](https://www.api-route.com/docs/overview) | | | | | N/A |
 | [`Auxen`](https://auxen.ai) | ✅ | ✅ | ✅ | ❌ | N/A |
+| [`ChatLlamay`](https://github.com/kosa8ai/langchain-llamay#readme) | ✅ | ✅ | ✅ | ❌ | N/A |
 | [`Cheaper Inference`](https://cheaperinference.com/docs) | ✅ | ✅ | ✅ | ✅ | N/A |
 | [`DaoXE`](https://daoxe.com) | ✅ | ✅ | ✅ | ✅ | N/A |
-| [`FuturMix`](https://futurmix.ai/) | ✅ | ✅ | ✅ | ✅ | N/A |
 | [`GPTZZZ`](https://gptzzz.ai/docs/) | ✅ | ✅ | ✅ | ✅ | N/A |
 | [`Snowflake Cortex REST API`](https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-rest-api) | ✅ | ✅ | ✅ | ❌ | N/A |
 | [`Synthorai`](https://synthorai.io/docs/) | | | | | N/A |

@@ -4737,7 +4737,7 @@ Source: https://docs.fireworks.ai/faq-new/account-access/i-have-multiple-firewor
 
 
 
-If you log in with Google, account management is controlled by Google. You can log in through an incognito mode or create separate Chrome/browser profiles to log in with different Google accounts. You could also follow the steps in this [guide](https://support.google.com/accounts/answer/13533235?hl=en#zippy=%2Csign-in-with-google) to disassociate Fireworks.ai with a particular Google account sign-in. If you have more complex issues please contact us on Discord.
+If you log in with Google, account management is controlled by Google. You can log in through an incognito mode or create separate Chrome/browser profiles to log in with different Google accounts. You could also follow the steps in this [guide](https://support.google.com/accounts/answer/13533235?hl=en#zippy=%2Csign-in-with-google) to disassociate Fireworks.ai from a particular Google account sign-in. If you have more complex issues please contact us on Discord.
 
 
 # What email does GitHub authentication use?
@@ -5366,7 +5366,7 @@ Deployment barriers should be **minimal** and **pricing is based on usage**.
 However there are trade-offs with this approach, namely that in order to ensure users have **consistent access** to the most in-demand models, users are also subject to **minor latency and performance variability** during **high-volume periods**.
 With **on-demand deployments**, users are reserving GPUs (which are **billed by rented time** instead of usage volume) and don't have to worry about traffic spikes.
 
-Which is why our two recommended ways to address timeout and response time issues is:
+Which is why our two recommended ways to address timeout and response time issues are:
 
 ### Current solution (recommended for production)
 

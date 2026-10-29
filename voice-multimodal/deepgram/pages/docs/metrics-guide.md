@@ -107,7 +107,7 @@ Upon startup of the containers, a limited set of metrics will be available until
 
 #### Initial Metrics
 
-`engine_estimated_stream_capacity` increases as you open more streams until you reach GPU capacity. When it stops increasing, you have reached the GPU stream capacity.
+`engine_estimated_stream_capacity` is the Engine's running estimate of how many streams it can serve with acceptable latency. It's recalculated on each scrape over a 30-second window, so scrape the Engine every 15 seconds or more often. Treat it as a load-balancing signal; size deployments from your own load tests and enforce limits with `max_active_requests`.
 
 ```
 # HELP engine_estimated_stream_capacity The number of streams the node believes it can serve with acceptable latency.

@@ -79,151 +79,23 @@ The key terms and objects in Pinecone and how they relate to each other.
 
 This page defines the key terms and objects in Pinecone. For how these objects nest together, see [Architecture](/guides/core-concepts/architecture#resource-hierarchy).
 
-## Organization
+## Account and billing
 
-An organization is a group of one or more [projects](#project) that use the same billing. Organizations allow one or more [users](#user) to control billing and permissions for all of the projects belonging to the organization.
+### Organization
+
+An organization is a group of one or more [projects](#project) that use the same billing. Organizations allow one or more [users](/admin/organizations/manage-organization-members) to control billing and permissions for all of the projects belonging to the organization.
 
 For more information, see [Organizations overview](/admin/organizations/understanding-organizations).
 
-## Project
+### Project
 
-A project belongs to an [organization](#organization) and contains one or more [indexes](#index). Each project belongs to exactly one organization, but only [users](#user) who belong to the project can access the indexes in that project. [API keys](#api-key) and [Assistants](/guides/assistant/overview) are project-specific.
+A project belongs to an [organization](#organization) and contains one or more [indexes](#index). Each project belongs to exactly one organization, but only [users](/admin/projects/manage-project-members) who belong to the project can access the indexes in that project. [API keys](#api-key) and [assistants](/guides/assistant/overview) are project-specific.
 
 For more information, see [Projects overview](/admin/projects/understanding-projects).
-
-## Index
-
-Pinecone [serverless indexes](/guides/index-data/indexing-overview) hold your data as [documents](#document) or [records](#record), depending on how the index was created: an index created with a document schema (a document index) holds documents, while an index created with a dense or sparse vector type (a vector index) holds records. A document is a JSON object with ranking fields that Pinecone indexes according to a schema you define, plus any number of metadata fields. A single index with a document schema can mix multiple ranking field types: a `dense_vector` field for [semantic search](#index-with-dense-vectors), a `sparse_vector` field for [sparse-vector retrieval](#index-with-sparse-vectors), and one or more `string` fields with `full_text_search` enabled for [full-text search](#full-text-search) with BM25 and Lucene queries. Metadata fields (anything else you upsert) are auto-indexed for filtering at upsert time, no schema declaration required.
-
-One index per use case is the typical pattern. Because a document can combine vectors, text, and metadata in the same record, a single index often covers what previously required two. Pick the ranking signal per query with `score_by`.
-
-### Full-text search
-
-Full-text search is **BM25 token matching with Lucene query syntax** over text fields in your schema, `string` fields you've declared with `full_text_search` so their content is indexed for token-level retrieval. "Text field" is the colloquial name; the JSON `type` is `string`. No model required: Pinecone handles tokenization, IDF, and length normalization at index time and BM25 scoring at query time. "Token" here means a unit produced by Pinecone's text analyzer (whitespace + punctuation split, lowercased, optionally stemmed), not the subword unit a dense or sparse embedding model uses internally. See [Tokens and analyzers](/guides/search/full-text-search/text-processing#tokens-and-analyzers) for the full pipeline.
-
-How it works:
-
-1. You upsert data as JSON [documents](#document).
-2. You declare each ranking field's type in the index schema: `dense_vector`, `sparse_vector`, or `string` with `full_text_search` (indexed for BM25 ranking and Lucene queries). Metadata fields aren't declared in the schema.
-3. Pinecone indexes each ranking field according to its declared type and auto-indexes any other fields on the document for metadata filtering.
-
-When you search, you choose a scoring method via `score_by`. The literal value of `type` selects the method: `text` (BM25 token matching over one or more text fields), `query_string` ([Lucene query syntax](/guides/search/full-text-search/query-syntax) across one or more text fields, including cross-field boolean queries), `dense_vector` (vector similarity), or `sparse_vector` (sparse-vector similarity). Any scoring method can be combined with metadata filters, including logical operators (`$and`, `$or`, `$not`), existence checks (`$exists`), and the text-match operators (`$match_phrase`, `$match_all`, `$match_any`) for phrase and token matching against text fields.
-
-Use full-text search for keyword and phrase search over text content — product names, identifiers, technical terms, code, and other cases where queries and documents share specific tokens. For sparse-vector retrieval with a learned encoder (such as [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0)), see [Index with sparse vectors](#index-with-sparse-vectors). For semantic similarity over natural-language queries, see [Index with dense vectors](#index-with-dense-vectors).
-
-Learn more:
-
-* [Full-text search](/guides/search/full-text-search)
-* [Document](#document)
-
-### Index with dense vectors
-
-These indexes store records that each have one [dense vector](#dense-vector). A dense vector is a series of numbers that represent the meaning and relationships of text, images, or other data. Each vector is a point in a multidimensional space; each number is a coordinate in that space. Vectors that are closer together in that space are semantically similar.
-
-When you query an index with dense vectors, Pinecone retrieves records whose vectors are most semantically similar to the query. This is often called **semantic search**, nearest neighbor search, similarity search, or just vector search.
-
-Records that also carry a [sparse vector](#sparse-vector) support single-index [hybrid search](/guides/search/hybrid-search/single-index) on the Vectors API.
-
-### Index with sparse vectors
-
-These indexes store records that each have one [sparse vector](#sparse-vector), a vector with very high dimensionality but only a small number of non-zero values. Each dimension typically corresponds to a token in a vocabulary; the non-zero values represent the importance of those tokens in a document.
-
-When you search an index with sparse vectors, Pinecone retrieves records whose vectors share the most weighted tokens with the query vector. This is often called **sparse-vector retrieval** or **sparse-vector search**.
-
-Sparse vectors are produced by a sparse embedding model. Pinecone hosts [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0), a learned-sparse encoder that predicts per-token weights and includes term expansion (related concepts that don't appear in the source text). You can also bring your own sparse model.
-
-Sparse-vector search and [full-text search](#full-text-search) both retrieve on token-level signals, but they weight tokens differently: full-text search uses BM25, a statistical function with no model, while sparse-vector search uses a learned encoder that weights tokens at index time and can expand to related terms. Reach for full-text search when you want a strong baseline with nothing to manage, and for sparse vectors when a learned encoder better captures your domain's term importance and synonyms.
-
-## Namespace
-
-A namespace is a partition within an index. It divides [records](#record) into separate groups so that each query scans only one namespace (faster lookups) and each customer's data can be isolated from another customer's (multitenant isolation).
-
-All [upserts](/guides/index-data/upsert-data), [queries](/guides/search/search-overview), and other data read and write operations always target one namespace:
-
-![](https://mintcdn.com/pinecone/pBbXhyz41iPzpfh0/images/quickstart-upsert.png?fit=max\&auto=format\&n=pBbXhyz41iPzpfh0\&q=85\&s=c852ca55745a70ed51e5892330751830)
-
-For more information, see [Use namespaces](/guides/index-data/indexing-overview#namespaces).
-
-## Record
-
-A record is the unit of data for [indexes with dense vectors](#index-with-dense-vectors) and [indexes with sparse vectors](#index-with-sparse-vectors): a [record ID](#record-id), one vector (or both vector types for single-index [hybrid search](/guides/search/hybrid-search)), and optional [metadata](#metadata). With [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding) you can upsert raw text instead of a vector, and Pinecone embeds it at index time. When an item has more than one searchable field — say, a text field ranked by BM25 alongside a `dense_vector` field for similarity — model it as a [document](#document).
-
-For more information, see [Upsert data](/guides/index-data/upsert-data).
-
-### Record ID
-
-A record ID is a record's unique ID. [Use ID prefixes](/guides/index-data/data-modeling#use-structured-ids) that reflect the type of data you're storing.
-
-### Dense vector
-
-A dense vector, also referred to as a vector embedding or simply a vector, is a series of numbers that represent the meaning and relationships of data. Each vector is a point in a multidimensional space; each number is a coordinate in that space. Vectors that are closer together in that space are semantically similar.
-
-Dense vectors are stored in indexes (see [Index with dense vectors](#index-with-dense-vectors)).
-
-You use a dense embedding model to convert data to dense vectors. The embedding model can be external to Pinecone or [hosted on Pinecone infrastructure](/guides/index-data/index-configuration#embedding-models) and integrated with an index.
-
-For more information about dense vectors, see [What are vector embeddings?](https://www.pinecone.io/learn/vector-embeddings/).
-
-### Sparse vector
-
-Sparse vectors are often used to represent documents or queries in a way that captures keyword information. Each dimension in a sparse vector typically represents a word from a dictionary, and the non-zero values represent the importance of these words in the document.
-
-Sparse vectors have a large number of dimensions, but a small number of those values are non-zero. Because most values are zero, Pinecone stores sparse vectors efficiently by keeping only the non-zero values along with their corresponding indices.
-
-Sparse vectors are stored in indexes (see [Index with sparse vectors](#index-with-sparse-vectors)) and can also coexist with dense vectors in a single index for [hybrid search](/guides/search/hybrid-search/single-index) on the Vectors API. To combine a keyword signal with a dense signal in an index with a document schema, restrict a dense search with a text-match filter on a `string` field with `full_text_search` enabled or run separate searches and merge the results client-side. To convert data to sparse vectors, use a sparse embedding model. The embedding model can be external to Pinecone or [hosted on Pinecone infrastructure](/guides/index-data/index-configuration#embedding-models) and integrated with an index.
-
-For more information about sparse vectors, see [Sparse retrieval](https://www.pinecone.io/learn/sparse-retrieval/).
-
-### Metadata
-
-Metadata is additional information included in a record to provide more context and enable additional [filtering capabilities](/guides/index-data/indexing-overview#metadata). For example, the original text that was embedded can be stored in the metadata.
-
-## Document
-
-A document is the unit of data in an index with a document schema, a JSON object with a required `_id` field, the ranking fields declared in the index's schema, and any number of metadata fields. Documents support multiple ranking field types in a single record: a `dense_vector` field (for [semantic search](#index-with-dense-vectors)), a `sparse_vector` field (for [sparse-vector retrieval](#index-with-sparse-vectors)), and one or more `string` fields with `full_text_search` enabled (for [full-text search](#full-text-search)). A single document can carry vectors, text, and metadata together, and you choose the scoring method per query via `score_by`. Documents are the recommended shape for new multi-field and full-text workloads; vector-only indexes continue to use [records](#record). Both APIs are fully supported.
-
-Document fields can hold structured values: a metadata `string_list` field holds an array of strings; a `dense_vector` field holds an array of floats; a `sparse_vector` field is an object with two parallel arrays, `indices` (token positions) and `values` (token weights).
-
-A schema can declare up to 100 `string` fields with `full_text_search` enabled, but at most one `dense_vector` field and at most one `sparse_vector` field per index.
-
-Metadata fields aren't declared in the schema. Any field on an upserted document that's not declared in the schema is stored, returned via `include_fields`, and automatically indexed for filtering. Pinecone infers metadata field types (string, number, boolean, array of strings) from the values you upsert.
-
-Field names must be unique, non-empty strings, must not start with `_` (reserved for system-managed fields like `_id` and `_score`) or `$` (reserved for filter operators), and are limited to 64 bytes.
-
-For more information, see [Full-text search](/guides/search/full-text-search).
-
-## Other concepts
-
-Pinecone also includes the following concepts:
-
-* [API key](#api-key)
-* [User](#user)
-* [Backup or collection](#backup-or-collection)
-* [Pinecone Inference](#pinecone-inference)
-* [Read unit (RU)](#read-unit-ru)
-* [Write unit (WU)](#write-unit-wu)
 
 ### API key
 
 An API key is a unique token that [authenticates](/reference/api/authentication) and authorizes access to the [Pinecone APIs](/reference/api/introduction). API keys are project-specific.
-
-### User
-
-A user is a member of organizations and projects. Users are assigned specific roles at the organization and project levels that determine the user's permissions in the [Pinecone console](https://app.pinecone.io).
-
-For more information, see [Manage organization members](/admin/organizations/manage-organization-members) and [Manage project members](/admin/projects/manage-project-members).
-
-### Backup or collection
-
-A backup is a static copy of a serverless index.
-
-Backups only consume storage. They're non-queryable representations of a set of records. You can create a backup from an index, and you can create a new index from that backup. The new index configuration can differ from the original source index: for example, it can have a different name. However, it must have the same number of dimensions and similarity metric as the source index.
-
-For more information, see [Understanding backups](/guides/manage-data/backups-overview).
-
-### Pinecone Inference
-
-Pinecone Inference is an API service that provides access to [embedding models](/guides/index-data/index-configuration#embedding-models) and [reranking models](/guides/search/rerank-results#reranking-models) hosted on Pinecone's infrastructure.
 
 ### Read unit (RU)
 
@@ -237,14 +109,153 @@ A write unit (WU) is the unit Pinecone uses to measure and price the cost of wri
 
 For how write units are calculated, see [Understand Pinecone cost](/guides/manage-cost/understanding-cost#write-units).
 
-## Learn more
+## Index
 
-* [Vector database](https://www.pinecone.io/learn/vector-database/)
-* [Pinecone APIs](/reference/api/introduction)
-* [Approximate nearest neighbor (ANN) algorithms](https://www.pinecone.io/learn/a-developers-guide-to-ann-algorithms/)
-* [Retrieval augmented generation (RAG)](https://www.pinecone.io/learn/retrieval-augmented-generation/)
-* [Image search](https://www.pinecone.io/learn/series/image-search/)
-* [Tokenization](https://www.pinecone.io/learn/tokenization/)
+Pinecone [serverless indexes](/guides/index-data/indexing-overview) hold your data as [documents](#document) or [records](#record), depending on how the index was created. One index per use case is the typical pattern.
+
+### Document index
+
+A document index is an index created with a document schema. It holds [documents](#document) and is served by the Documents API. Because a document can combine vectors, text, and metadata, a single document index often covers what previously required two indexes. Pick the ranking signal per query with `score_by`.
+
+### Vector index
+
+A vector index is an index created with a dense or sparse vector type. It holds [records](#record) and is served by the Vectors API.
+
+* In an index with dense vectors, each record has one [dense vector](#dense-vector). Records can also carry a [sparse vector](#sparse-vector) for single-index [hybrid search](/guides/search/hybrid-search/single-index).
+* In an index with sparse vectors, each record has one sparse vector.
+
+### Namespace
+
+A namespace is a partition within an index. It divides [documents](#document) or [records](#record) into separate groups so that each query scans only one namespace (faster lookups) and each customer's data can be isolated from another customer's (multitenant isolation).
+
+All [upserts](/guides/index-data/upsert-data), [queries](/guides/search/search-overview), and other data read and write operations always target one namespace.
+
+For more information, see [Use namespaces](/guides/index-data/indexing-overview#namespaces).
+
+### Backup
+
+A backup is a static copy of an index, including its schema. Backups only consume storage and can't be queried. You can create a backup from an index, and you can create a new index from that backup. The new index inherits the source index's schema, so it has the same fields, dimensions, and similarity metric, but it can have a different name.
+
+For more information, see [Understanding backups](/guides/manage-data/backups-overview).
+
+## Data
+
+### Document
+
+A document is a JSON object with a required `_id` field, the ranking fields declared in the index's schema, and any number of metadata fields. It's the unit of data in a [document index](#document-index). A document can combine these ranking fields:
+
+* `string` fields with `full_text_search` enabled, for [full-text search](#full-text-search).
+* A `dense_vector` field, or a `string` field with `embed`, for [semantic search](#semantic-search).
+* A `sparse_vector` field, or a `string` field with `sparse_embed`, for [sparse-vector search](#sparse-vector-search).
+
+With `embed` and `sparse_embed`, Pinecone generates the vectors from your text using [integrated embedding](/guides/search/integrated-embedding). You choose the [scoring method](#scoring-methods) per query with `score_by`.
+
+Documents are the recommended shape for new multi-field and full-text workloads. Vector-only indexes continue to use [records](#record). The Documents API and the Vectors API are both fully supported.
+
+For more information, see [Full-text search](/guides/search/full-text-search).
+
+#### Document fields
+
+* **Schema limits**: Up to 100 `string` fields with `full_text_search` enabled, at most one dense field (a `dense_vector` field or a `string` field with `embed`), and at most one sparse field (a `sparse_vector` field or a `string` field with `sparse_embed`) per index.
+* **Value shapes**: A `dense_vector` field holds an array of floats. A `sparse_vector` field is an object with two parallel arrays, `indices` (token positions) and `values` (token weights). A metadata `string_list` field holds an array of strings.
+* **Metadata fields**: Any field on an upserted document that's not declared in the schema is stored, returned via `include_fields`, and automatically indexed for filtering. Pinecone infers metadata field types (string, number, boolean, array of strings) from the values you upsert.
+* **Field names**: Names must be unique, non-empty strings of 64 bytes or less. They can't start with `_` (reserved for system-managed fields like `_id` and `_score`) or `$` (reserved for filter operators).
+
+### Record
+
+A record is the unit of data in a [vector index](#vector-index). It contains:
+
+* A [record ID](#record-id).
+* One vector, or a dense and a sparse vector for single-index [hybrid search](/guides/search/hybrid-search).
+* Optional [metadata](#metadata).
+
+In a [legacy integrated index](/guides/index-data/indexing-overview#integrated-embedding) created with `create_index_for_model`, you can upsert raw text instead of a vector, and Pinecone embeds it at index time. When an item has more than one searchable field, such as a text field ranked by BM25 and a `dense_vector` field for similarity, model it as a [document](#document).
+
+For more information, see [Upsert data](/guides/index-data/upsert-data).
+
+#### Record ID
+
+A record ID is a record's unique ID. [Use ID prefixes](/guides/index-data/data-modeling#use-structured-ids) that reflect the type of data you're storing.
+
+### Dense vector
+
+A dense vector, also referred to as a vector embedding or simply a vector, is a series of numbers that represent the meaning and relationships of data. Each vector is a point in a multidimensional space, and each number is a coordinate in that space. Vectors that are closer together in that space are semantically similar.
+
+Dense vectors power [semantic search](#semantic-search).
+
+You use a dense embedding model to convert data to dense vectors. The embedding model can be external to Pinecone or [hosted on Pinecone infrastructure](/guides/index-data/index-configuration#embedding-models) and integrated with an index.
+
+For more information about dense vectors, see [What are vector embeddings?](https://www.pinecone.io/learn/vector-embeddings/).
+
+### Sparse vector
+
+Sparse vectors are often used to represent documents or queries in a way that captures keyword information. Each dimension in a sparse vector typically represents a word from a dictionary, and the non-zero values represent the importance of these words in the document.
+
+Sparse vectors have a large number of dimensions, but a small number of those values are non-zero. Because most values are zero, Pinecone stores sparse vectors efficiently by keeping only the non-zero values along with their corresponding indices.
+
+Sparse vectors power [sparse-vector search](#sparse-vector-search), and they can coexist with dense vectors in a single vector index for [hybrid search](/guides/search/hybrid-search/single-index) on the Vectors API. To convert data to sparse vectors, use a sparse embedding model. The embedding model can be external to Pinecone or [hosted on Pinecone infrastructure](/guides/index-data/index-configuration#embedding-models) and integrated with an index.
+
+For more information about sparse vectors, see [Sparse retrieval](https://www.pinecone.io/learn/sparse-retrieval/).
+
+### Metadata
+
+Metadata is additional information included in a document or record to provide more context and enable additional [filtering capabilities](/guides/index-data/indexing-overview#metadata). For example, the original text that was embedded can be stored in the metadata.
+
+## Search
+
+### Full-text search
+
+Full-text search ranks documents by BM25 token matching, with optional Lucene query syntax, over `string` fields declared with `full_text_search`. These are often called text fields. Full-text search doesn't need a model.
+
+* **At index time**: Pinecone tokenizes text and records term frequencies and field lengths.
+* **At query time**: Pinecone computes BM25 scores, including inverse document frequency (IDF).
+* **Tokens**: A token is a unit produced by Pinecone's text analyzer (split on whitespace and punctuation, lowercased by default, and optionally stemmed), not the subword unit an embedding model uses internally. See [Tokens and analyzers](/guides/search/full-text-search/text-processing#tokens-and-analyzers) for the full pipeline.
+
+Use full-text search for keyword and phrase search over text content — product names, identifiers, technical terms, code, and other cases where queries and documents share specific tokens.
+
+For more information, see [Full-text search](/guides/search/full-text-search).
+
+### Semantic search
+
+When you search with a [dense vector](#dense-vector), Pinecone retrieves the documents or records whose dense vectors are most semantically similar to the query. This is also called nearest neighbor search, similarity search, or vector search.
+
+### Sparse-vector search
+
+When you search with a [sparse vector](#sparse-vector), Pinecone retrieves the documents or records whose sparse vectors share the most weighted tokens with the query vector. This is also called sparse-vector retrieval.
+
+Sparse vectors are produced by a sparse embedding model. Pinecone hosts [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0), a learned-sparse encoder that predicts per-token weights and includes term expansion (related concepts that don't appear in the source text). You can also bring your own sparse model.
+
+Sparse-vector search and [full-text search](#full-text-search) both retrieve on token-level signals, but they weight tokens differently:
+
+* **Full-text search**: Uses BM25, a statistical function with no model. Use it when you want a strong baseline with nothing to manage.
+* **Sparse-vector search**: Uses a learned encoder that weights tokens at index time and can expand to related terms. Use it when a learned encoder better captures your domain's term importance and synonyms.
+
+### Scoring methods
+
+On a document index, you choose a scoring method per query with `score_by`. The value of `type` selects the method:
+
+* `text`: BM25 token matching over one or more text fields.
+* `query_string`: [Lucene query syntax](/guides/search/full-text-search/query-syntax) across one or more text fields, including cross-field boolean queries.
+* `dense_vector`: Vector similarity.
+* `sparse_vector`: Sparse-vector similarity.
+* `embed`: Vector similarity, with Pinecone embedding the query text using the field's `embed` model.
+* `sparse_embed`: Sparse-vector similarity, with Pinecone embedding the query text using the field's `sparse_embed` model.
+
+You can combine several `text` and `query_string` clauses in one query. Any other type must be the only clause. To combine a keyword signal with a dense signal, restrict a dense search with a text-match [filter](#metadata-filters), or run separate searches and merge the results client-side.
+
+### Metadata filters
+
+You can combine any scoring method with a metadata filter. Filters support:
+
+* **Logical operators**: `$and`, `$or`, and `$not`.
+* **Existence checks**: `$exists`.
+* **Text-match operators**: `$match_phrase`, `$match_all`, and `$match_any` match phrases and tokens in text fields.
+
+For more information, see [Metadata filter expressions](/guides/index-data/indexing-overview#metadata-filter-expressions).
+
+### Pinecone Inference
+
+Pinecone Inference is an API service that provides access to [embedding models](/guides/index-data/index-configuration#embedding-models) and [reranking models](/guides/search/rerank-results#reranking-models) hosted on Pinecone's infrastructure.
 
 
 # Pinecone Database
@@ -430,7 +441,7 @@ if not pc.indexes.exists(name="byo-vectors"):
 while not pc.indexes.describe(name="byo-vectors").status.ready:
     time.sleep(2)
 
-index = pc.Index(name="byo-vectors")
+index = pc.index(name="byo-vectors")
 ```
 
 **3. Upsert your vectors**
@@ -522,7 +533,7 @@ if not pc.indexes.exists(name="quickstart"):
 while not pc.indexes.describe(name="quickstart").status.ready:
     time.sleep(2)
 
-index = pc.Index(name="quickstart")
+index = pc.index(name="quickstart")
 ```
 
 **3. Load sample documents**
@@ -676,7 +687,7 @@ if not pc.indexes.exists(name="my-files"):
 while not pc.indexes.describe(name="my-files").status.ready:
     time.sleep(2)
 
-index = pc.Index(name="my-files")
+index = pc.index(name="my-files")
 ```
 
 **5. Embed the chunks and upsert**
@@ -959,7 +970,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 index.describe_index_stats()
 ```
@@ -4300,7 +4311,7 @@ To [create a namespace for a tenant](/guides/index-data/indexing-overview#namesp
 from pinecone.grpc import PineconeGRPC as Pinecone
 
 pc = Pinecone(api_key="YOUR_API_KEY")
-index = pc.Index("multitenant-app")
+index = pc.index(name="multitenant-app", grpc=True)
 
 index.upsert(
   vectors=[
@@ -4534,7 +4545,7 @@ When upserting additional records for a tenant, or when [updating](/guides/manag
 from pinecone.grpc import PineconeGRPC as Pinecone
 
 pc = Pinecone(api_key="YOUR_API_KEY")
-index = pc.Index("multitenant-app")
+index = pc.index(name="multitenant-app", grpc=True)
 
 index.update(id="A", values=[0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8], namespace="tenant1")
 ```
@@ -4608,7 +4619,7 @@ For example, the following code queries only `tenant2` for the 3 vectors that ar
 from pinecone.grpc import PineconeGRPC as Pinecone
 
 pc = Pinecone(api_key="YOUR_API_KEY")
-index = pc.Index("multitenant-app")
+index = pc.index(name="multitenant-app", grpc=True)
 
 query_results = index.query(
     namespace="tenant2",
@@ -4856,7 +4867,7 @@ For example, the following code deletes the namespace and all records for `tenan
 from pinecone.grpc import PineconeGRPC as Pinecone
 
 pc = Pinecone(api_key="YOUR_API_KEY")
-index = pc.Index("multitenant-app")
+index = pc.index(name="multitenant-app", grpc=True)
 
 index.delete(delete_all=True, namespace='tenant1')
 ```
@@ -5138,7 +5149,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 root = "s3://example_bucket/import"
 
 index.start_import(
@@ -5279,7 +5290,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 index.describe_import(id="101")
 ```
@@ -5550,7 +5561,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 # List using a generator that handles pagination
 for i in index.list_imports():
@@ -5689,7 +5700,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 index.cancel_import(id="101")
 ```
@@ -6219,7 +6230,7 @@ Learn more:
 
 A sparse vector represents tokens (or token-like features) and their weights, with the vast majority of dimensions zero. A query returns records that share the most weighted tokens with the query vector, which is called **sparse-vector search**.
 
-Sparse vectors come from a sparse embedding model. Pinecone hosts [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0); you can also bring your own. For the underlying concept and the distinction from full-text search, see [Index with sparse vectors](/guides/core-concepts/key-terms#index-with-sparse-vectors).
+Sparse vectors come from a sparse embedding model. Pinecone hosts [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0); you can also bring your own. For the underlying concept and the distinction from full-text search, see [Sparse-vector search](/guides/core-concepts/key-terms#sparse-vector-search).
 
 Learn more:
 
@@ -6253,13 +6264,38 @@ Within an index, records or documents are partitioned into namespaces, and all [
 
 * **Faster queries:** When you divide your data into namespaces in a logical way, you speed up queries by ensuring only relevant records or documents are scanned. The same applies to fetching them, listing their IDs, and other data operations.
 
-Namespaces are created automatically during [upsert](/guides/index-data/upsert-data). If a namespace doesn't exist, it's created implicitly.
+Namespaces are created automatically during [upsert](/guides/index-data/upsert-data), or you can create one ahead of time. To create, list, describe, or delete namespaces, see [Manage namespaces](/guides/manage-data/manage-namespaces). To give a namespace a stable name you can repoint without a code change, see [Namespace aliases](/guides/manage-data/namespace-aliases/overview).
+
+In this document index, an upsert writes to one namespace and a query reads from another:
+
+```mermaid theme={null}
+flowchart LR
+    upsert["Upsert"] --> ns1
+    query["Query"] --> ns2
+    subgraph index["Document index"]
+        direction TB
+        subgraph ns3["Namespace 3"]
+            direction LR
+            c1["Document 1"] ~~~ cn["Document n"]
+        end
+        subgraph ns2["Namespace 2"]
+            direction LR
+            b1["Document 1"] ~~~ bn["Document n"]
+        end
+        subgraph ns1["Namespace 1"]
+            direction LR
+            a1["Document 1"] ~~~ an["Document n"]
+        end
+    end
+    class upsert,query pc-mermaid-action
+    class a1,an,b1,bn,c1,cn pc-mermaid-item
+    class ns1,ns2,ns3 pc-mermaid-group
+    class index pc-mermaid-frame
+```
 
 > [!NOTE]
 >
 > [Namespaces per serverless index](/reference/api/database-limits/object-limits) vary by plan (100 on Starter to 1,000,000 on Enterprise). Pinecone can accommodate more for specific use cases. If your application needs a higher limit, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
-
-![](https://mintcdn.com/pinecone/pBbXhyz41iPzpfh0/images/quickstart-upsert.png?fit=max\&auto=format\&n=pBbXhyz41iPzpfh0\&q=85\&s=c852ca55745a70ed51e5892330751830)
 
 ## Vector embedding
 
@@ -6656,7 +6692,7 @@ Upload the generated directory tree to Amazon S3, Google Cloud Storage, or Azure
 ```python Python theme={null}
 from pinecone import ImportErrorMode
 
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 operation = index.start_import(
     uri="s3://BUCKET_NAME/IMPORT_ROOT",
@@ -6694,7 +6730,7 @@ python sync.py sync --strategy changelog
 Compare the source row count for each table with the record count for its target namespace:
 
 ```python Python theme={null}
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 stats = index.describe_index_stats()
 
 print(stats.total_vector_count)
@@ -6720,7 +6756,7 @@ pc = Pinecone(
     api_key=os.environ["PINECONE_API_KEY"],
     source_tag="pinecone_io:docs:pgvector_migration",
 )
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 query_vector = conn.execute(
     "SELECT embedding FROM documents WHERE embedding IS NOT NULL LIMIT 1"
@@ -6818,7 +6854,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 index.documents.upsert(
     namespace="articles",
@@ -6964,7 +7000,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 index.documents.upsert(
     namespace="example-namespace",
@@ -7112,7 +7148,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 index.upsert(
   vectors=[
@@ -7382,7 +7418,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 # Upsert records into a namespace
 # `chunk_text` fields are converted to dense vectors
@@ -7600,7 +7636,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 index.documents.upsert(
     namespace="example-namespace",
@@ -7820,7 +7856,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 index.upsert(
     namespace="example-namespace",
@@ -8256,7 +8292,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 # Upsert records into a namespace
 # `chunk_text` fields are converted to sparse vectors
@@ -8492,7 +8528,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 # Example data: 10,000 documents with a 128-dimension `embedding` field
 documents = [
@@ -8592,7 +8628,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 def chunks(iterable, batch_size=200):
     """A helper function to break an iterable into chunks of size batch_size."""
@@ -8773,7 +8809,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 # Example data: 10,000 documents with a 128-dimension `embedding` field
 documents = [
@@ -8900,7 +8936,7 @@ pc = Pinecone(api_key="YOUR_API_KEY", pool_threads=30)
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 def chunks(iterable, batch_size=200):
     """A helper function to break an iterable into chunks of size batch_size."""
@@ -8917,7 +8953,7 @@ example_data_generator = map(lambda i: (f'id-{i}', [random.random() for _ in ran
 
 # Upsert data with 200 vectors per upsert request asynchronously
 # - Pass async_req=True to index.upsert()
-with pc.Index(host="INDEX_HOST", pool_threads=30) as index:
+with pc.index(host="INDEX_HOST", pool_threads=30) as index:
     # Send requests in parallel
     async_results = [
         index.upsert(vectors=ids_vectors_chunk, async_req=True)
@@ -9105,7 +9141,7 @@ pc = Pinecone(api_key='YOUR_API_KEY')
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 ```
 
 To send multiple upserts in parallel, use `upsert_async`, which returns a future for each request:
@@ -10537,7 +10573,7 @@ NAMESPACE = 'NAMESPACE_NAME'
 # Consider using smaller batches if you have a high RPS for read operations
 BATCH = 1000
 
-index = pc.Index(name=INDEX_NAME)
+index = pc.index(name=INDEX_NAME)
 dimensions = index.describe_index_stats()['dimension']
 
 # Create the query vector
@@ -10564,7 +10600,7 @@ NAMESPACE = 'NAMESPACE_NAME'
 # Consider using smaller batches if you have a high RPS for read operations
 BATCH = 1000
 
-index = pc.Index(name=INDEX_NAME)
+index = pc.index(name=INDEX_NAME)
 dimensions = index.describe_index_stats()['dimension']
 
 METADATA_FILTER = {}
@@ -10599,7 +10635,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 index.delete(
     filter={
@@ -11670,7 +11706,7 @@ When you're ready to cutover to your new serverless index:
 1. Your new serverless index has a different name and unique endpoint than your pod-based index. Update your code to target the new serverless index:
 
    ```Python Python theme={null}
-   index = pc.Index("YOUR_SERVERLESS_INDEX_NAME")  
+   index = pc.index(name="YOUR_SERVERLESS_INDEX_NAME", grpc=True)
    ```
 
    ```JavaScript JavaScript theme={null}
@@ -12454,7 +12490,7 @@ Example query request:
 from pinecone.grpc import PineconeGRPC as Pinecone
 
 pc = Pinecone(api_key="YOUR_API_KEY")
-index = pc.Index("example-index")
+index = pc.index(name="example-index", grpc=True)
 
 # Replace with your query embedding, which must match the index's dimension (1536 in this example)
 query_vector = [0.1] * 1536
@@ -14859,7 +14895,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 index.documents.delete(namespace="articles", ids=["doc-1", "doc-2"])
 ```
@@ -14953,7 +14989,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 index.delete(ids=["id-1", "id-2"], namespace='example-namespace')
 ```
@@ -15059,7 +15095,7 @@ To delete records from a namespace based on their metadata values, pass a [metad
 
 For example, the following code deletes all records with a `genre` field set to `documentary` from namespace `example-namespace`:
 
-```Python Python theme={null} theme={null} theme={null} theme={null}
+```Python Python theme={null}
 # pip install pinecone
 from pinecone.grpc import PineconeGRPC as Pinecone
 
@@ -15067,7 +15103,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 index.delete(
     filter={
@@ -15077,7 +15113,7 @@ index.delete(
 )
 ```
 
-```JavaScript JavaScript theme={null} theme={null} theme={null} theme={null}
+```JavaScript JavaScript theme={null}
 import { Pinecone } from '@pinecone-database/pinecone'
 
 const pc = new Pinecone({ apiKey: "YOUR_API_KEY" })
@@ -15093,7 +15129,7 @@ await ns.deleteMany({
 });
 ```
 
-```java Java theme={null} theme={null} theme={null} theme={null}
+```java Java theme={null}
 import com.google.protobuf.Struct;
 import com.google.protobuf.Value;
 import io.pinecone.clients.Index;
@@ -15125,7 +15161,7 @@ public class DeleteExample {
 }
 ```
 
-```go Go theme={null} theme={null} theme={null} theme={null}
+```go Go theme={null}
 package main
 
 import (
@@ -15170,7 +15206,7 @@ func main() {
 }
 ```
 
-```bash curl theme={null} theme={null} theme={null} theme={null}
+```bash curl theme={null}
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
 PINECONE_API_KEY="YOUR_API_KEY"
@@ -15198,7 +15234,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 index.delete(delete_all=True, namespace='example-namespace')
 ```
@@ -15351,7 +15387,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 response = index.documents.fetch(
     namespace="articles",
@@ -15441,7 +15477,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 index.fetch(ids=["id-1", "id-2"], namespace="example-namespace")
 ```
@@ -15649,7 +15685,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 results = index.fetch_by_metadata(
     filter={"genre": {"$eq": "Action/Adventure"}},
@@ -15938,7 +15974,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 for doc in index.documents.list(namespace="articles"):
     print(doc._id)
@@ -16013,7 +16049,7 @@ pc = Pinecone(api_key='YOUR_API_KEY')
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 for ids in index.list(namespace='example-namespace'):
     print(ids)
@@ -16201,7 +16237,7 @@ pc = Pinecone(api_key='YOUR_API_KEY')
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 for ids in index.list(namespace='example-namespace'):
     print(ids)
@@ -16223,7 +16259,7 @@ pc = Pinecone(api_key='YOUR_API_KEY')
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 namespace = 'example-namespace'
 
@@ -16402,7 +16438,7 @@ pc = Pinecone(api_key='YOUR_API_KEY')
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 namespace = 'example-namespace'
 
@@ -16569,7 +16605,7 @@ from pinecone.grpc import PineconeGRPC as Pinecone
 
 pc = Pinecone(api_key='YOUR_API_KEY')
 
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 namespace = 'example-namespace'
 
@@ -16719,7 +16755,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 # Pinecone embeds `chunk_text` on write.
 # The other fields are stored as metadata.
@@ -16769,7 +16805,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 # Replace with each chunk's embedding, which must match the index's dimension (1536 in this example)
 chunk1_vector = [0.1, 0.2] * 768
@@ -16835,7 +16871,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 filtered_results = index.documents.search(
     namespace="example-namespace",
@@ -16860,7 +16896,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 # Replace with your query embedding, which must match the index's dimension (1536 in this example)
 query_vector = [0.1, 0.2] * 768
@@ -16892,7 +16928,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 # List all chunks for document1 using ID prefix
 chunk_ids = []
@@ -16923,7 +16959,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 # List all chunks for document1 using ID prefix.
 # Each iteration yields one page of IDs.
@@ -16956,7 +16992,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 # Delete chunks 1 and 3
 index.documents.delete(
@@ -16985,7 +17021,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 # Delete chunks 1 and 3
 index.delete(
@@ -17022,7 +17058,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 # Step 1: Delete all existing chunks for the document
 index.documents.delete(
@@ -17076,7 +17112,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 # Step 1: Delete all existing chunks for the document
 index.delete(
@@ -17134,7 +17170,7 @@ print("Successfully updated document1 with new chunks")
 # Manage serverless indexes
 Source: https://docs.pinecone.io/guides/manage-data/manage-indexes
 
-List, describe, configure, and delete serverless indexes in Pinecone, including tags, deletion protection, and metadata index configuration.
+List, describe, configure, and delete serverless indexes in Pinecone, including tags and deletion protection.
 
 This page shows you how to manage your existing serverless indexes.
 
@@ -18798,7 +18834,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 namespace = index.create_namespace(
     name="example-namespace",
@@ -19000,7 +19036,7 @@ from pinecone import Pinecone
 
 pc = Pinecone(api_key="YOUR_API_KEY")
 
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 # Implicit pagination using a generator function that yields one page at a time
 for page in index.list_namespaces():
@@ -19203,7 +19239,7 @@ from pinecone import Pinecone
 
 pc = Pinecone(api_key="YOUR_API_KEY")
 
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 namespace = index.describe_namespace(namespace="example-namespace")
 
@@ -19351,7 +19387,7 @@ from pinecone import Pinecone
 
 pc = Pinecone(api_key="YOUR_API_KEY")
 
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 index.delete_namespace(namespace="example-namespace")
 ```
@@ -20462,7 +20498,7 @@ from pinecone.grpc import PineconeGRPC as Pinecone
 
 pc = Pinecone(api_key="YOUR_API_KEY")
 
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 ```
 
 ```javascript JavaScript {6} theme={null}
@@ -20728,7 +20764,7 @@ from pinecone.grpc import PineconeGRPC as Pinecone
 
 pc = Pinecone(api_key="YOUR_API_KEY")
 
-index = pc.Index("docs-example")
+index = pc.index(name="docs-example", grpc=True)
 ```
 
 ```javascript JavaScript theme={null}
@@ -20788,7 +20824,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 index.documents.update(
     namespace="articles",
@@ -20893,7 +20929,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 index.update(
 	namespace="example-namespace",
@@ -21080,7 +21116,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 # Use dry_run to check how many records match the filter
 dry_run_response = index.update(
@@ -21494,7 +21530,7 @@ if not pc.has_index("knowledge"):
         }
     )
 
-index = pc.Index("knowledge")
+index = pc.index(name="knowledge")
 
 # Load your knowledge base
 index.upsert_records(
@@ -21533,7 +21569,7 @@ if not pc.has_index("knowledge"):
         }
     )
 
-index = pc.Index("knowledge")
+index = pc.index(name="knowledge")
 
 # Load your knowledge base
 index.upsert_records(
@@ -22447,7 +22483,7 @@ from pinecone.grpc import PineconeGRPC as Pinecone
 
 pc = Pinecone(api_key="YOUR_API_KEY")
 
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 ```
 
 ```javascript JavaScript {6} theme={null}
@@ -22640,7 +22676,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 documents = [{"_id": f"doc{i}", "chunk_text": f"Paragraph {i}"} for i in range(1000)]
 
@@ -22669,7 +22705,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 queries = ["Disease prevention", "Healthy digestion", "Immune support"]
 
@@ -22848,7 +22884,7 @@ Start the import:
 from pinecone import Pinecone, ImportErrorMode
 
 pc = Pinecone(api_key="{{YOUR_API_KEY}}")
-index = pc.Index("search-10m")
+index = pc.index(name="search-10m")
 
 import_response = index.start_import(
     uri="s3://fe-customer-pocs/search/search_10M/dense/",
@@ -22864,7 +22900,7 @@ from pinecone import Pinecone
 import time 
 
 pc = Pinecone(api_key="{{YOUR_API_KEY}}")
-index = pc.Index("search-10m")
+index = pc.index(name="search-10m")
 
 while True:
     status = index.describe_import(id="IMPORT_ID")
@@ -24512,7 +24548,7 @@ Learn how Pinecone permanently deletes customer data, including soft deletion, t
 
 Pinecone follows a secure process to ensure that customer data is permanently deleted from our system. This page gives an overview of the process.
 
-As defined in the [Master Subscription Agreement](https://www.pinecone.io/legal/master-subscription-agreement/), customer data is data that you provide to Pinecone through the services of the Pinecone system, or such data provided on your behalf by connected systems. This includes objects such as [records](/guides/core-concepts/key-terms#record), [indexes](/guides/core-concepts/key-terms#index), [backups](/guides/core-concepts/key-terms#backup-or-collection), [projects](/guides/core-concepts/key-terms#project), [API keys](/guides/core-concepts/key-terms#api-key), [users](/guides/core-concepts/key-terms#user), [assistants](/guides/assistant/overview), and [organizations](/guides/core-concepts/key-terms#organization).
+As defined in the [Master Subscription Agreement](https://www.pinecone.io/legal/master-subscription-agreement/), customer data is data that you provide to Pinecone through the services of the Pinecone system, or such data provided on your behalf by connected systems. This includes objects such as [records](/guides/core-concepts/key-terms#record), [indexes](/guides/core-concepts/key-terms#index), [backups](/guides/core-concepts/key-terms#backup), [projects](/guides/core-concepts/key-terms#project), [API keys](/guides/core-concepts/key-terms#api-key), [users](/admin/organizations/manage-organization-members), [assistants](/guides/assistant/overview), and [organizations](/guides/core-concepts/key-terms#organization).
 
 ## Deletion request
 
@@ -24592,7 +24628,7 @@ from pinecone import Pinecone
 from pinecone.exceptions import PineconeException
 
 pc = Pinecone(api_key="YOUR_API_KEY")
-index = pc.Index("your-index")
+index = pc.index(name="your-index")
 
 try:
     index.upsert(
@@ -25383,7 +25419,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 filtered_results = index.documents.search(
     namespace="example-namespace",
@@ -25499,7 +25535,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 # Replace with your query embedding, which must match the index's dimension (1536 in this example)
 query_vector = [0.1] * 1536
@@ -25678,7 +25714,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 filtered_results = index.search(
     namespace="example-namespace", 
@@ -25907,7 +25943,7 @@ Full-text search ranks documents by keyword and phrase relevance using **BM25** 
 
 ## When to use it
 
-Reach for full-text search when exact words, phrases, names, codes, or identifiers matter, not just semantic similarity. For semantic-only or vector-only workloads, an [index with dense vectors](/guides/core-concepts/key-terms#index-with-dense-vectors) (the Vectors API) is simpler. See [Search overview](/guides/search/search-overview) to choose the right approach.
+Reach for full-text search when exact words, phrases, names, codes, or identifiers matter, not just semantic similarity. For semantic-only or vector-only workloads, a [vector index](/guides/core-concepts/key-terms#vector-index) (the Vectors API) is simpler. See [Search overview](/guides/search/search-overview) to choose the right approach.
 
 > [!NOTE]
 >
@@ -26007,7 +26043,7 @@ pc.indexes.create(name="articles-quickstart", schema=schema)
 while not pc.indexes.describe(name="articles-quickstart").status.ready:
     time.sleep(2)
 
-index = pc.Index(name="articles-quickstart")
+index = pc.index(name="articles-quickstart")
 
 # 2. Upsert documents. Fields declared in the schema (`title`, `body`) are
 #    BM25-indexed; any extra fields (`category`, `year`) are stored on the
@@ -26990,8 +27026,8 @@ records = [
 # Target both indexes
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-dense_index = pc.Index(host="INDEX_HOST")
-sparse_index = pc.Index(host="INDEX_HOST")
+dense_index = pc.index(host="INDEX_HOST")
+sparse_index = pc.index(host="INDEX_HOST")
 
 # Upsert the records
 # The `chunk_text` fields are converted to dense and sparse vectors
@@ -27821,7 +27857,7 @@ Use the [Upsert records](/reference/api/latest/data-plane/upsert) operation, spe
 # Target the index
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 # Each record contains an ID, a dense vector, a sparse vector, and the original text as metadata
 records = []
@@ -28395,7 +28431,7 @@ import os
 from pinecone import Pinecone
 
 pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
-index = pc.Index(name="docs-example")
+index = pc.index(name="docs-example")
 
 query = "how do I reset my password?"
 fetch_k = 50  # fetch deeper than the final top_k so weaker-but-present signals still count
@@ -28483,7 +28519,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 ranked_results = index.search(
     namespace="example-namespace", 
@@ -29809,7 +29845,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 results = index.documents.search(
     namespace="example-namespace",
@@ -29922,7 +29958,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 # Replace with your query embedding, which must match the index's dimension (1536 in this example)
 query_vector = [0.1] * 1536
@@ -30063,7 +30099,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 # Replace with your query embedding, which must match the index's dimension (1536 in this example)
 query_vector = [0.1] * 1536
@@ -30429,7 +30465,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 index.query(
     namespace="example-namespace",
@@ -30567,7 +30603,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 results = index.search(
     namespace="example-namespace", 
@@ -30866,7 +30902,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 results = index.documents.search(
     namespace="example-namespace",
@@ -30989,7 +31025,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 results = index.documents.search(
     namespace="articles",
@@ -31134,7 +31170,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 results = index.query(
     namespace="example-namespace",
@@ -31549,7 +31585,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 index.query(
     namespace="example-namespace",
@@ -31688,7 +31724,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 results = index.search(
     namespace="example-namespace", 
@@ -83978,7 +84014,7 @@ Source: https://docs.pinecone.io/guides/nexus/models
 
 Learn how Pinecone Nexus uses models for generation, curation, and retrieval, and how to choose the right one.
 
-Pinecone Nexus uses models at several points, which you select based on your deployment: You bring your own models in BYOC, or use a Pinecone-managed catalog during the invite-only trial. Everything on this page applies to both.
+Pinecone Nexus uses models at several points, and you choose them based on your deployment. You bring your own models in BYOC, or use a Pinecone-managed catalog during the invite-only trial. Everything on this page applies to both.
 
 ## Where Nexus uses models
 
@@ -84008,7 +84044,7 @@ The tiers are suggested defaults, not the whole catalog. In a context's **Query*
 
 ## Curation models
 
-Curation runs your configured embedding and generation models across your sources to build artifacts, the same models a query uses. Because it processes every source, curation is the most cost-sensitive step, so weigh curation cost when you choose your generation model. See [Data flows and residency](/guides/nexus/byoc/reference#data-flows-and-residency) for what content each model sees.
+Curation runs your configured embedding and generation models, the same ones a query uses, across your sources to build artifacts. Because it processes every source, curation is the most cost-sensitive step, so weigh curation cost when you choose your generation model. See [Data flows and residency](/guides/nexus/byoc/reference#data-flows-and-residency) for what content each model sees.
 
 ## Configure models in BYOC
 
@@ -84018,6 +84054,14 @@ In your own deployment, you configure the models yourself. You assign your own m
 * **AWS** deployments typically use Amazon Bedrock models.
 
 You don't have to stay within one provider. Because the available models depend on your deployment and the keys you provide, model selection for BYOC happens with Pinecone during setup rather than from a fixed published list.
+
+### Bedrock on AWS
+
+Bedrock models don't need a key. A Bedrock model can sign its calls with the inference proxy's own AWS identity, an IAM role attached to the proxy's Kubernetes service account, so no long-lived AWS secret sits in your model configuration. This role is attached during BYOC setup and needs `bedrock:InvokeModel*` for generation and embedding models and `bedrock:Rerank` for rerank models.
+
+Name a Bedrock rerank model by its full foundation-model ARN, for example `bedrock/arn:aws:bedrock:<region>::foundation-model/cohere.rerank-v3-5:0`.
+
+### Default models
 
 On the **Deployment** tab of the console's **Settings** page, the **Default models** card sets the chat model for each work area:
 

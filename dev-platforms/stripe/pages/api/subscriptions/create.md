@@ -30,6 +30,7 @@ POST /v1/prices {"product":"${node.prerequisites.createProduct.createProduct:id}
 ```curl
 curl https://api.stripe.com/v1/subscriptions \
   -u "<<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2026-10-28.endive" \
   -d customer={{CUSTOMER_ID}} \
   -d "items[0][price]={{PRICE_ID}}"
 ```
@@ -287,7 +288,7 @@ Possible enum values:
   Determines how to handle [prorations](https://docs.stripe.com/billing/subscriptions/prorations.md) resulting from the `billing_cycle_anchor`. If no value is passed, the default is `create_prorations`.
 Possible enum values:
   - `always_invoice`
-    **Unsupported** for subscription creation.
+    \**Unsupported*\* for subscription creation.
 
   - `create_prorations`
     Will cause proration invoice items to be created when applicable.

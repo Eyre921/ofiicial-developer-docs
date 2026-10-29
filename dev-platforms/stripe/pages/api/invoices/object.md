@@ -342,6 +342,12 @@ Possible enum values:
 
 - `status` (enum, nullable)
   The status of the invoice, one of `draft`, `open`, `paid`, `uncollectible`, or `void`. [Learn more](https://docs.stripe.com/billing/invoices/workflow.md#workflow-overview)
+Possible enum values:
+  - `draft`
+  - `open`
+  - `paid`
+  - `uncollectible`
+  - `void`
 
 - [`status_details`](https://docs.stripe.com/api/invoices/object.md?query=status_details) (object, nullable)
   Details about the invoice’s status.

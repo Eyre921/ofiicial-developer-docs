@@ -31,7 +31,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 for doc in index.documents.list(namespace="articles"):
     print(doc._id)
@@ -106,7 +106,7 @@ pc = Pinecone(api_key='YOUR_API_KEY')
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 for ids in index.list(namespace='example-namespace'):
     print(ids)
@@ -294,7 +294,7 @@ pc = Pinecone(api_key='YOUR_API_KEY')
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 for ids in index.list(namespace='example-namespace'):
     print(ids)
@@ -316,7 +316,7 @@ pc = Pinecone(api_key='YOUR_API_KEY')
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 namespace = 'example-namespace'
 
@@ -495,7 +495,7 @@ pc = Pinecone(api_key='YOUR_API_KEY')
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 namespace = 'example-namespace'
 
@@ -662,7 +662,7 @@ from pinecone.grpc import PineconeGRPC as Pinecone
 
 pc = Pinecone(api_key='YOUR_API_KEY')
 
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 namespace = 'example-namespace'
 

@@ -70,7 +70,7 @@ Learn more:
 
 A sparse vector represents tokens (or token-like features) and their weights, with the vast majority of dimensions zero. A query returns records that share the most weighted tokens with the query vector, which is called **sparse-vector search**.
 
-Sparse vectors come from a sparse embedding model. Pinecone hosts [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0); you can also bring your own. For the underlying concept and the distinction from full-text search, see [Index with sparse vectors](/guides/core-concepts/key-terms#index-with-sparse-vectors).
+Sparse vectors come from a sparse embedding model. Pinecone hosts [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0); you can also bring your own. For the underlying concept and the distinction from full-text search, see [Sparse-vector search](/guides/core-concepts/key-terms#sparse-vector-search).
 
 Learn more:
 
@@ -104,13 +104,38 @@ Within an index, records or documents are partitioned into namespaces, and all [
 
 * **Faster queries:** When you divide your data into namespaces in a logical way, you speed up queries by ensuring only relevant records or documents are scanned. The same applies to fetching them, listing their IDs, and other data operations.
 
-Namespaces are created automatically during [upsert](/guides/index-data/upsert-data). If a namespace doesn't exist, it's created implicitly.
+Namespaces are created automatically during [upsert](/guides/index-data/upsert-data), or you can create one ahead of time. To create, list, describe, or delete namespaces, see [Manage namespaces](/guides/manage-data/manage-namespaces). To give a namespace a stable name you can repoint without a code change, see [Namespace aliases](/guides/manage-data/namespace-aliases/overview).
+
+In this document index, an upsert writes to one namespace and a query reads from another:
+
+```mermaid theme={null}
+flowchart LR
+    upsert["Upsert"] --> ns1
+    query["Query"] --> ns2
+    subgraph index["Document index"]
+        direction TB
+        subgraph ns3["Namespace 3"]
+            direction LR
+            c1["Document 1"] ~~~ cn["Document n"]
+        end
+        subgraph ns2["Namespace 2"]
+            direction LR
+            b1["Document 1"] ~~~ bn["Document n"]
+        end
+        subgraph ns1["Namespace 1"]
+            direction LR
+            a1["Document 1"] ~~~ an["Document n"]
+        end
+    end
+    class upsert,query pc-mermaid-action
+    class a1,an,b1,bn,c1,cn pc-mermaid-item
+    class ns1,ns2,ns3 pc-mermaid-group
+    class index pc-mermaid-frame
+```
 
 > [!NOTE]
 >
 > [Namespaces per serverless index](/reference/api/database-limits/object-limits) vary by plan (100 on Starter to 1,000,000 on Enterprise). Pinecone can accommodate more for specific use cases. If your application needs a higher limit, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
-
-![](https://mintcdn.com/pinecone/pBbXhyz41iPzpfh0/images/quickstart-upsert.png?fit=max\&auto=format\&n=pBbXhyz41iPzpfh0\&q=85\&s=c852ca55745a70ed51e5892330751830)
 
 ## Vector embedding
 

@@ -6,13 +6,25 @@ path: prompts/setup/changelog
 
 See what changed in each version of the Notion MCP setup prompt.
 
-The [latest setup prompt](/prompts/setup) is version **0.0.4**.
+The [latest setup prompt](/prompts/setup) is version **0.0.5**.
+
+**Version 0.0.5, October 29, 2026**
+
+* Added rules for talking with the user: one short step at a time, plain language, and one clear next step.
+* Rewrote the prompt in simpler language and reorganized setup into six steps, starting with connecting the Notion MCP.
+* Moved the daily memory and setup check earlier, to step 3.
+* Moved the Agent Operating Guide and custom instructions to the start of setup, with click paths for Claude and ChatGPT.
+* Replaced the standing rules with a short Agent Operating Guide template that records the workspace, destinations, preferences, and version history.
+* Added an `instructions_version` parameter to Notion MCP tool calls in the custom instructions.
+* Added a `notion-complete-mcp-setup` call after saving Skills.
+
+[View version 0.0.5](/prompts/setup)
 
 **Version 0.0.4, October 13, 2026**
 
 * Added a rule to fetch the user's enabled Notion Skills with `notion-get-enabled-skills` at the start of every session, in the custom instructions and the standing rules.
 
-[View version 0.0.4](/prompts/setup)
+[View version 0.0.4](/prompts/setup/versions/0.0.4)
 
 **Version 0.0.3, October 7, 2026**
 

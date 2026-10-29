@@ -141,7 +141,7 @@ const stream = chat({
 
 #### Provider Sorting
 
-Sort providers by price, throughput, or latency instead of using the default load balancing:
+Sort providers by price, throughput, or latency instead of using default routing:
 
 ```typescript title="TypeScript" lines theme={null}
 import { chat } from "@tanstack/ai";

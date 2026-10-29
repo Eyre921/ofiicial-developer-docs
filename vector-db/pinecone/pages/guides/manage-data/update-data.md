@@ -31,7 +31,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 index.documents.update(
     namespace="articles",
@@ -136,7 +136,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 index.update(
 	namespace="example-namespace",
@@ -323,7 +323,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 # Use dry_run to check how many records match the filter
 dry_run_response = index.update(

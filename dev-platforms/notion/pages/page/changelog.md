@@ -4,6 +4,14 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+**October 29, 2026**
+
+### Property IDs on property comments
+
+Comments on a database page property now include `property_id`, the ID of that property. It matches the property's `id` in the [page object](/reference/page-property-values). The [Comment object](/reference/comment-object) and the [`comment.created`](/reference/webhooks/comment-created), [`comment.updated`](/reference/webhooks/comment-updated), and [`comment.deleted`](/reference/webhooks/comment-deleted) webhook payloads carry it. Other comments omit it.
+
+**SDK support**: `@notionhq/client` [`v5.29.0`](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.29.0) adds `property_id` to the comment response and comment webhook types.
+
 **October 27, 2026**
 
 ### Suggest edits in Notion MCP

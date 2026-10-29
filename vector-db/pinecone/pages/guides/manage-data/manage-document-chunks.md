@@ -27,7 +27,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 # Pinecone embeds `chunk_text` on write.
 # The other fields are stored as metadata.
@@ -77,7 +77,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 # Replace with each chunk's embedding, which must match the index's dimension (1536 in this example)
 chunk1_vector = [0.1, 0.2] * 768
@@ -143,7 +143,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 filtered_results = index.documents.search(
     namespace="example-namespace",
@@ -168,7 +168,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 # Replace with your query embedding, which must match the index's dimension (1536 in this example)
 query_vector = [0.1, 0.2] * 768
@@ -200,7 +200,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 # List all chunks for document1 using ID prefix
 chunk_ids = []
@@ -231,7 +231,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 # List all chunks for document1 using ID prefix.
 # Each iteration yields one page of IDs.
@@ -264,7 +264,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 # Delete chunks 1 and 3
 index.documents.delete(
@@ -293,7 +293,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 # Delete chunks 1 and 3
 index.delete(
@@ -330,7 +330,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 # Step 1: Delete all existing chunks for the document
 index.documents.delete(
@@ -384,7 +384,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 # Step 1: Delete all existing chunks for the document
 index.delete(

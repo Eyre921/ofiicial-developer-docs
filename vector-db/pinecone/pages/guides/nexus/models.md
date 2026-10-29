@@ -6,7 +6,7 @@ path: guides/nexus/models
 
 Learn how Pinecone Nexus uses models for generation, curation, and retrieval, and how to choose the right one.
 
-Pinecone Nexus uses models at several points, which you select based on your deployment: You bring your own models in BYOC, or use a Pinecone-managed catalog during the invite-only trial. Everything on this page applies to both.
+Pinecone Nexus uses models at several points, and you choose them based on your deployment. You bring your own models in BYOC, or use a Pinecone-managed catalog during the invite-only trial. Everything on this page applies to both.
 
 ## Where Nexus uses models
 
@@ -36,7 +36,7 @@ The tiers are suggested defaults, not the whole catalog. In a context's **Query*
 
 ## Curation models
 
-Curation runs your configured embedding and generation models across your sources to build artifacts, the same models a query uses. Because it processes every source, curation is the most cost-sensitive step, so weigh curation cost when you choose your generation model. See [Data flows and residency](/guides/nexus/byoc/reference#data-flows-and-residency) for what content each model sees.
+Curation runs your configured embedding and generation models, the same ones a query uses, across your sources to build artifacts. Because it processes every source, curation is the most cost-sensitive step, so weigh curation cost when you choose your generation model. See [Data flows and residency](/guides/nexus/byoc/reference#data-flows-and-residency) for what content each model sees.
 
 ## Configure models in BYOC
 
@@ -46,6 +46,14 @@ In your own deployment, you configure the models yourself. You assign your own m
 * **AWS** deployments typically use Amazon Bedrock models.
 
 You don't have to stay within one provider. Because the available models depend on your deployment and the keys you provide, model selection for BYOC happens with Pinecone during setup rather than from a fixed published list.
+
+### Bedrock on AWS
+
+Bedrock models don't need a key. A Bedrock model can sign its calls with the inference proxy's own AWS identity, an IAM role attached to the proxy's Kubernetes service account, so no long-lived AWS secret sits in your model configuration. This role is attached during BYOC setup and needs `bedrock:InvokeModel*` for generation and embedding models and `bedrock:Rerank` for rerank models.
+
+Name a Bedrock rerank model by its full foundation-model ARN, for example `bedrock/arn:aws:bedrock:<region>::foundation-model/cohere.rerank-v3-5:0`.
+
+### Default models
 
 On the **Deployment** tab of the console's **Settings** page, the **Default models** card sets the chat model for each work area:
 

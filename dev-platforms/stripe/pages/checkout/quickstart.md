@@ -224,7 +224,7 @@ Add your publishable and secret keys to a `.env` file. Next.js automatically loa
 
 ### Before you run the application
 
-Add `"proxy": "<http://localhost:4242>"` to your `package.json` file during local development.
+Add `"proxy": "http://localhost:4242"` to your `package.json` file during local development.
 
 ### Run the application
 

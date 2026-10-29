@@ -161,8 +161,8 @@ records = [
 # Target both indexes
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-dense_index = pc.Index(host="INDEX_HOST")
-sparse_index = pc.Index(host="INDEX_HOST")
+dense_index = pc.index(host="INDEX_HOST")
+sparse_index = pc.index(host="INDEX_HOST")
 
 # Upsert the records
 # The `chunk_text` fields are converted to dense and sparse vectors

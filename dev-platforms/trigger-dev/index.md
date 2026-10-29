@@ -1,6 +1,6 @@
 # dev-platforms/trigger-dev 文档索引
 
-> 共 367 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 369 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -132,6 +132,7 @@
 - `docs/guides/example-projects/product-image-generator` — [Product image generator using Replicate and Trigger.dev](pages/docs/guides/example-projects/product-image-generator.md) · [原文](https://trigger.dev/docs/guides/example-projects/product-image-generator)
 - `docs/guides/example-projects/realtime-csv-importer` — [Next.js Realtime CSV Importer](pages/docs/guides/example-projects/realtime-csv-importer.md) · [原文](https://trigger.dev/docs/guides/example-projects/realtime-csv-importer)
 - `docs/guides/example-projects/realtime-fal-ai` — [Image generation with Fal.ai and Trigger.dev Realtime](pages/docs/guides/example-projects/realtime-fal-ai.md) · [原文](https://trigger.dev/docs/guides/example-projects/realtime-fal-ai)
+- `docs/guides/example-projects/resend-email-agent` — [Resend email agent with Slack approval](pages/docs/guides/example-projects/resend-email-agent.md) · [原文](https://trigger.dev/docs/guides/example-projects/resend-email-agent)
 - `docs/guides/example-projects/smart-spreadsheet` — [Smart Spreadsheet](pages/docs/guides/example-projects/smart-spreadsheet.md) · [原文](https://trigger.dev/docs/guides/example-projects/smart-spreadsheet)
 - `docs/guides/example-projects/turborepo-monorepo-prisma` — [Turborepo monorepo with Prisma](pages/docs/guides/example-projects/turborepo-monorepo-prisma.md) · [原文](https://trigger.dev/docs/guides/example-projects/turborepo-monorepo-prisma)
 - `docs/guides/example-projects/vercel-ai-sdk-deep-research` — [Deep research agent using Vercel's AI SDK](pages/docs/guides/example-projects/vercel-ai-sdk-deep-research.md) · [原文](https://trigger.dev/docs/guides/example-projects/vercel-ai-sdk-deep-research)
@@ -198,6 +199,7 @@
 - `docs/logging` — [Logging, tracing & metrics](pages/docs/logging.md) · [原文](https://trigger.dev/docs/logging)
 - `docs/machines` — [Machines](pages/docs/machines.md) · [原文](https://trigger.dev/docs/machines)
 - `docs/management/advanced-usage` — [Advanced usage](pages/docs/management/advanced-usage.md) · [原文](https://trigger.dev/docs/management/advanced-usage)
+- `docs/management/alerts/create` — [Create an alert](pages/docs/management/alerts/create.md) · [原文](https://trigger.dev/docs/management/alerts/create)
 - `docs/management/authentication` — [Authentication](pages/docs/management/authentication.md) · [原文](https://trigger.dev/docs/management/authentication)
 - `docs/management/auto-pagination` — [Auto-pagination](pages/docs/management/auto-pagination.md) · [原文](https://trigger.dev/docs/management/auto-pagination)
 - `docs/management/batches/create` — [Create batch](pages/docs/management/batches/create.md) · [原文](https://trigger.dev/docs/management/batches/create)

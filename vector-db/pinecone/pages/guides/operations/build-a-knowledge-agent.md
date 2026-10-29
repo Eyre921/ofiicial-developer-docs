@@ -45,7 +45,7 @@ if not pc.has_index("knowledge"):
         }
     )
 
-index = pc.Index("knowledge")
+index = pc.index(name="knowledge")
 
 # Load your knowledge base
 index.upsert_records(
@@ -84,7 +84,7 @@ if not pc.has_index("knowledge"):
         }
     )
 
-index = pc.Index("knowledge")
+index = pc.index(name="knowledge")
 
 # Load your knowledge base
 index.upsert_records(

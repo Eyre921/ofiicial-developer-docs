@@ -31,7 +31,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 index.documents.delete(namespace="articles", ids=["doc-1", "doc-2"])
 ```
@@ -125,7 +125,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 index.delete(ids=["id-1", "id-2"], namespace='example-namespace')
 ```
@@ -231,7 +231,7 @@ To delete records from a namespace based on their metadata values, pass a [metad
 
 For example, the following code deletes all records with a `genre` field set to `documentary` from namespace `example-namespace`:
 
-```Python Python theme={null} theme={null} theme={null} theme={null}
+```Python Python theme={null}
 # pip install pinecone
 from pinecone.grpc import PineconeGRPC as Pinecone
 
@@ -239,7 +239,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 index.delete(
     filter={
@@ -249,7 +249,7 @@ index.delete(
 )
 ```
 
-```JavaScript JavaScript theme={null} theme={null} theme={null} theme={null}
+```JavaScript JavaScript theme={null}
 import { Pinecone } from '@pinecone-database/pinecone'
 
 const pc = new Pinecone({ apiKey: "YOUR_API_KEY" })
@@ -265,7 +265,7 @@ await ns.deleteMany({
 });
 ```
 
-```java Java theme={null} theme={null} theme={null} theme={null}
+```java Java theme={null}
 import com.google.protobuf.Struct;
 import com.google.protobuf.Value;
 import io.pinecone.clients.Index;
@@ -297,7 +297,7 @@ public class DeleteExample {
 }
 ```
 
-```go Go theme={null} theme={null} theme={null} theme={null}
+```go Go theme={null}
 package main
 
 import (
@@ -342,7 +342,7 @@ func main() {
 }
 ```
 
-```bash curl theme={null} theme={null} theme={null} theme={null}
+```bash curl theme={null}
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
 PINECONE_API_KEY="YOUR_API_KEY"
@@ -370,7 +370,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 index.delete(delete_all=True, namespace='example-namespace')
 ```

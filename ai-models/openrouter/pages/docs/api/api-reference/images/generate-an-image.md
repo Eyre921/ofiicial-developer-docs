@@ -1409,6 +1409,7 @@ components:
         - Io Net
         - Inferact vLLM
         - Inflection
+        - KT
         - Liquid
         - Makora
         - Mara
@@ -1691,6 +1692,9 @@ components:
           additionalProperties: {}
           type: object
         krea:
+          additionalProperties: {}
+          type: object
+        kt:
           additionalProperties: {}
           type: object
         lambda:

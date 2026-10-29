@@ -74,7 +74,7 @@ This rule will use the "IPA" alphabet and update the pronunciation for `tomato` 
 
 Create a new file named `example.py` or `example.mts`, depending on your language of choice and add the following code:
 
-```python maxLines=0
+```python
 from elevenlabs import ElevenLabs, PronunciationDictionaryVersionLocator
 from elevenlabs.play import play
 
@@ -89,13 +89,13 @@ with open("dictionary.pls", "rb") as f:
 audio_1 = elevenlabs.text_to_speech.convert(
     text="Without the dictionary: tomato",
     voice_id="aMSt68OGf4xUZAnLpTU8",
-    model_id="eleven_flash_v2",
+    model_id="eleven_v4_turbo",
 )
 
 audio_2 = elevenlabs.text_to_speech.convert(
     text="With the dictionary: tomato",
     voice_id="aMSt68OGf4xUZAnLpTU8",
-    model_id="eleven_flash_v2",
+    model_id="eleven_v4_turbo",
     pronunciation_dictionary_locators=[
         PronunciationDictionaryVersionLocator(
             pronunciation_dictionary_id=pronunciation_dictionary.id,
@@ -107,9 +107,10 @@ audio_2 = elevenlabs.text_to_speech.convert(
 # play the audio
 play(audio_1)
 play(audio_2)
+
 ```
 
-```typescript maxLines=0
+```typescript
 import { ElevenLabsClient, play } from "@elevenlabs/elevenlabs-js";
 import "dotenv/config";
 import fs from "node:fs";
@@ -118,16 +119,19 @@ const elevenlabs = new ElevenLabsClient();
 
 const pronunciationDictionary = await elevenlabs.pronunciationDictionaries.createFromFile({
     file: fs.createReadStream("dictionary.pls"),
+    name: "example",
 });
 
-const audio1 = await elevenlabs.textToSpeech.convert("Without the dictionary: tomato", {
-    voiceId: "aMSt68OGf4xUZAnLpTU8",
-    modelId: "eleven_flash_v2",
+const voiceId = "aMSt68OGf4xUZAnLpTU8";
+
+const audio1 = await elevenlabs.textToSpeech.convert(voiceId, {
+    text: "Without the dictionary: tomato",
+    modelId: "eleven_v4_turbo",
 });
 
-const audio2 = await elevenlabs.textToSpeech.convert("With the dictionary: tomato", {
-    voiceId: "aMSt68OGf4xUZAnLpTU8",
-    modelId: "eleven_flash_v2",
+const audio2 = await elevenlabs.textToSpeech.convert(voiceId, {
+    text: "With the dictionary: tomato",
+    modelId: "eleven_v4_turbo",
     pronunciationDictionaryLocators: [
         {
             pronunciationDictionaryId: pronunciationDictionary.id,
@@ -138,6 +142,7 @@ const audio2 = await elevenlabs.textToSpeech.convert("With the dictionary: tomat
 
 play(audio1);
 play(audio2);
+
 ```
 
 #### Execute the code

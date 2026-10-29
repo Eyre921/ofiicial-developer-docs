@@ -33,11 +33,11 @@ In the **Analysis** tab of your agent settings, navigate to the **Data collectio
 
 #### Add data collection items
 
-Click **Add item** to create a new data extraction rule.
+Click **Add data collection** to create a new data extraction rule, or to attach one from your workspace's [analysis library](/docs/eleven-agents/customization/agent-analysis/analysis-library).
 
 Configure each item with:
 
-* **Identifier**: Unique name for the data field (e.g., `email`, `customer_rating`)
+* **Name**: Unique name for the data field (e.g., `email`, `customer_rating`)
 * **Data type**: Select from string, boolean, integer, or number
 * **Description**: Detailed instructions on how to extract the data from the transcript
 
@@ -47,7 +47,7 @@ Configure each item with:
 
 > **Note**
 >
-> Data collection items are limited to 40 per agent for Trial and Enterprise plans, and 25 per agent for other plans.
+> Data collection items are limited to 50 per agent for Trial and Enterprise plans, and 25 per agent for other plans.
 
 #### Review extracted data
 

@@ -916,6 +916,9 @@ components:
         krea:
           additionalProperties: {}
           type: object
+        kt:
+          additionalProperties: {}
+          type: object
         lambda:
           additionalProperties: {}
           type: object

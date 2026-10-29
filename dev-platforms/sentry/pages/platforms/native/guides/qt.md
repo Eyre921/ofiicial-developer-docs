@@ -34,13 +34,13 @@ To enable the Qt integration set the `SENTRY_INTEGRATION_QT` option to `YES`.
 
 If the Qt libraries are not installed in one of the predefined `CMake` [system prefix paths](https://cmake.org/cmake/help/latest/variable/CMAKE_SYSTEM_PREFIX_PATH.html), where they can be found by `CMake`, you will need to set [`CMAKE_PREFIX_PATH`](https://cmake.org/cmake/help/latest/variable/CMAKE_PREFIX_PATH.html) explicitly.
 
-For example (on macOS):
+For example:
 
 ```shell
 # Configure the cmake build into the `build` directory,
-# with crashpad, and Qt integration (on macOS).
+# with the desired backend, and Qt integration.
 cmake -B build \
-    -D SENTRY_BACKEND=crashpad \
+    -D SENTRY_BACKEND=native \
     -D SENTRY_INTEGRATION_QT=YES
 
 # Build the project
@@ -50,10 +50,10 @@ cmake --build build --parallel
 cmake --install build --prefix install
 
 # Which will result in the following (on macOS):
-exa --tree install --level 2
+eza --tree install --level 2
 install
 ├── bin
-│  └── crashpad_handler
+│  └── sentry-crash
 ├── include
 │  └── sentry.h
 └── lib
@@ -64,9 +64,9 @@ install
 
 You can configure the Qt build for Windows analogous to the [regular build instructions](https://docs.sentry.io/platforms/native.md#install).
 
-##### Bundling crashpad\_handler
+##### Bundling out-of-process backends
 
-When using the *Crashpad backend*, which is the default on Windows and macOS, the `crashpad_handler` binary has to be shipped alongside the application binary. See the [Crashpad documentation](https://docs.sentry.io/platforms/native/configuration/backends/crashpad.md) for more information.
+The out-of-process *Native* and *Crashpad* backends require shipping `sentry-crash` or `crashpad_handler`, respectively, alongside the application binary. See the [Native](https://docs.sentry.io/platforms/native/configuration/backends/native.md) and [Crashpad](https://docs.sentry.io/platforms/native/configuration/backends/crashpad.md) backend documentation for more information.
 
 ## [Configure](https://docs.sentry.io/platforms/native/guides/qt.md#configure)
 
@@ -102,7 +102,7 @@ Alternatively, the DSN can be passed as `SENTRY_DSN` environment variable during
 
 ##### Warning
 
-Calling `sentry_close()` (formerly `sentry_shutdown()`) before exiting the application is critical. It ensures that events can be sent to Sentry before execution stops. Otherwise, event data may be lost.
+Calling `sentry_close()` before exiting the application is critical. It ensures that events can be sent to Sentry before execution stops. Otherwise, event data may be lost.
 
 ## [Verify](https://docs.sentry.io/platforms/native/guides/qt.md#verify)
 

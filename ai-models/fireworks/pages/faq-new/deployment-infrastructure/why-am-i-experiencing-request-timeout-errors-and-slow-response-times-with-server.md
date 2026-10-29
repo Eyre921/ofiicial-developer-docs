@@ -13,7 +13,7 @@ Deployment barriers should be **minimal** and **pricing is based on usage**.
 However there are trade-offs with this approach, namely that in order to ensure users have **consistent access** to the most in-demand models, users are also subject to **minor latency and performance variability** during **high-volume periods**.
 With **on-demand deployments**, users are reserving GPUs (which are **billed by rented time** instead of usage volume) and don't have to worry about traffic spikes.
 
-Which is why our two recommended ways to address timeout and response time issues is:
+Which is why our two recommended ways to address timeout and response time issues are:
 
 ### Current solution (recommended for production)
 

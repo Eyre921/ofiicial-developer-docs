@@ -134,7 +134,7 @@ Start the import:
 from pinecone import Pinecone, ImportErrorMode
 
 pc = Pinecone(api_key="{{YOUR_API_KEY}}")
-index = pc.Index("search-10m")
+index = pc.index(name="search-10m")
 
 import_response = index.start_import(
     uri="s3://fe-customer-pocs/search/search_10M/dense/",
@@ -150,7 +150,7 @@ from pinecone import Pinecone
 import time 
 
 pc = Pinecone(api_key="{{YOUR_API_KEY}}")
-index = pc.Index("search-10m")
+index = pc.index(name="search-10m")
 
 while True:
     status = index.describe_import(id="IMPORT_ID")

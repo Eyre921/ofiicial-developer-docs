@@ -96,7 +96,7 @@ You must collect the requirements from your connected accounts to enable the req
    ```curl
    curl -X POST https://api.stripe.com/v2/core/accounts \
      -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-     -H "Stripe-Version: 2026-09-30.preview" \
+     -H "Stripe-Version: 2026-10-28.preview" \
      --json '{
        "include": [
            "configuration.money_manager",
@@ -170,7 +170,7 @@ You must collect the requirements from your connected accounts to enable the req
    ```curl
    curl -X POST https://api.stripe.com/v2/core/accounts \
      -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-     -H "Stripe-Version: 2026-09-30.preview" \
+     -H "Stripe-Version: 2026-10-28.preview" \
      --json '{
        "include": [
            "configuration.money_manager",
@@ -271,7 +271,7 @@ Create an [AccountSession](https://docs.stripe.com/api/account_sessions.md) on y
 ```curl
 curl https://api.stripe.com/v1/account_sessions \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -H "Stripe-Version: 2026-09-30.preview; embedded_connect_beta=v2" \
+  -H "Stripe-Version: 2026-10-28.preview; embedded_connect_beta=v2" \
   --data-urlencode "account=identifier(connectedAccount)" \
   -d "components[notification_banner][enabled]=true" \
   -d "components[financial_accounts][enabled]=true" \

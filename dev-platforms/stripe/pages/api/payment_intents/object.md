@@ -214,9 +214,6 @@ Possible enum values:
   - `kriya`
     Kriya is a payment method.
 
-  - `line_pay`
-    LINE Pay is a Thai mobile wallet payment method.
-
   - `link`
     [Link (also known as Onelink in the UK)](https://docs.stripe.com/payments/link.md) allows customers to pay with their saved payment details.
 
@@ -511,9 +508,6 @@ Possible enum values:
   - `card`
     [Card payments](https://docs.stripe.com/payments/payment-methods/overview.md#cards) are supported through many networks, card brands, and select Link funding sources (Link is also known as Onelink in the UK).
 
-  - `card_present`
-    [Stripe Terminal](https://docs.stripe.com/terminal/payments/collect-card-payment.md) is used to collect in-person card payments.
-
   - `cashapp`
     [Cash App Pay](https://docs.stripe.com/payments/cash-app-pay.md) enables customers to frictionlessly authenticate payments in the Cash App using their stored balance or linked card.
 
@@ -537,9 +531,6 @@ Possible enum values:
 
   - `ideal`
     [iDEAL](https://docs.stripe.com/payments/ideal.md) is a Netherlands-based bank redirect payment method.
-
-  - `interac_present`
-    [Stripe Terminal](https://docs.stripe.com/terminal/payments/collect-card-payment.md) accepts [Interac](https://docs.stripe.com/terminal/payments/regional.md?integration-country=CA#interac-payments) debit cards for in-person payments in Canada.
 
   - `kakao_pay`
     [Kakao Pay](https://docs.stripe.com/payments/kakao-pay/accept-a-payment.md) is a digital wallet payment method used in South Korea.

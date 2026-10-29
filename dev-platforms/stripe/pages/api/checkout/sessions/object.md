@@ -254,6 +254,9 @@ Possible enum values:
 - [`managed_payments`](https://docs.stripe.com/api/checkout/sessions/object.md?query=managed_payments) (object, nullable)
   Settings for Managed Payments for this Checkout Session and resulting [PaymentIntents](https://docs.stripe.com/api/payment_intents/object.md), [Invoices](https://docs.stripe.com/api/invoices/object.md), and [Subscriptions](https://docs.stripe.com/api/subscriptions/object.md).
 
+- [`marketing_attributions`](https://docs.stripe.com/api/checkout/sessions/object.md?query=marketing_attributions) (array of objects, nullable)
+  Advertising attribution information for this Checkout Session.
+
 - `metadata` (map, nullable)
   Set of [key-value pairs](https://docs.stripe.com/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
@@ -291,7 +294,7 @@ Possible enum values:
   The ID of the Payment Link that created this Session.
 
 - `payment_method_collection` (enum, nullable)
-  Configure whether a Checkout Session should collect a payment method for sessions with mode `payment`. Defaults to `always`.
+  Configure whether a Checkout Session should collect a payment method. Can only be set in `subscription` mode. Defaults to `always`.
 Possible enum values:
   - `always`
     The Checkout Session will always collect a PaymentMethod.

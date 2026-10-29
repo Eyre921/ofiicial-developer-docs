@@ -10,7 +10,7 @@ path: docs/request-sagemaker-quota
 
 # Requesting SageMaker Quota
 
-> How to check and increase AWS service quotas for SageMaker endpoint instance types (ml.g4dn.2xlarge, ml.g5.2xlarge, ml.g6.2xlarge, ml.g6e.2xlarge, ml.g7.2xlarge, ml.g7e.2xlarge) required by Deepgram deployments.
+> How to check and increase AWS service quotas for SageMaker endpoint instance types (ml.g4dn.2xlarge, ml.g5.2xlarge, ml.g6.2xlarge, ml.g6e.2xlarge, ml.g7.2xlarge, ml.g7e.2xlarge, and the ml.g6e.4xlarge, ml.g7.4xlarge, and ml.g7e.4xlarge types used by non-English Flux TTS, and the *.12xlarge types used by Aura-2) required by Deepgram deployments.
 
 AWS enforces default [service quotas](https://docs.aws.amazon.com/general/latest/gr/sagemaker.html) on the number of SageMaker endpoint instances you can run per account per region. Before you can deploy Deepgram on Amazon SageMaker, you may need to request a quota increase for the GPU-accelerated instance types that Deepgram requires.
 
@@ -18,14 +18,25 @@ AWS enforces default [service quotas](https://docs.aws.amazon.com/general/latest
 
 Deepgram SageMaker deployments use the following instance types. Each maps to a separate service quota.
 
-| Instance type     | GPU                           | Quota name                           |
-| ----------------- | ----------------------------- | ------------------------------------ |
-| `ml.g4dn.2xlarge` | NVIDIA T4                     | `ml.g4dn.2xlarge for endpoint usage` |
-| `ml.g5.2xlarge`   | NVIDIA A10G                   | `ml.g5.2xlarge for endpoint usage`   |
-| `ml.g6.2xlarge`   | NVIDIA L4                     | `ml.g6.2xlarge for endpoint usage`   |
-| `ml.g6e.2xlarge`  | NVIDIA L40S                   | `ml.g6e.2xlarge for endpoint usage`  |
-| `ml.g7.2xlarge`   | NVIDIA RTX PRO 4500 Blackwell | `ml.g7.2xlarge for endpoint usage`   |
-| `ml.g7e.2xlarge`  | NVIDIA RTX PRO 6000 Blackwell | `ml.g7e.2xlarge for endpoint usage`  |
+| Instance type      | GPU                           | Quota name                            |
+| ------------------ | ----------------------------- | ------------------------------------- |
+| `ml.g4dn.2xlarge`  | NVIDIA T4                     | `ml.g4dn.2xlarge for endpoint usage`  |
+| `ml.g5.2xlarge`    | NVIDIA A10G                   | `ml.g5.2xlarge for endpoint usage`    |
+| `ml.g6.2xlarge`    | NVIDIA L4                     | `ml.g6.2xlarge for endpoint usage`    |
+| `ml.g6e.2xlarge`   | NVIDIA L40S                   | `ml.g6e.2xlarge for endpoint usage`   |
+| `ml.g7.2xlarge`    | NVIDIA RTX PRO 4500 Blackwell | `ml.g7.2xlarge for endpoint usage`    |
+| `ml.g7e.2xlarge`   | NVIDIA RTX PRO 6000 Blackwell | `ml.g7e.2xlarge for endpoint usage`   |
+| `ml.g6e.4xlarge`   | NVIDIA L40S                   | `ml.g6e.4xlarge for endpoint usage`   |
+| `ml.g7.4xlarge`    | NVIDIA RTX PRO 4500 Blackwell | `ml.g7.4xlarge for endpoint usage`    |
+| `ml.g7e.4xlarge`   | NVIDIA RTX PRO 6000 Blackwell | `ml.g7e.4xlarge for endpoint usage`   |
+| `ml.g4dn.12xlarge` | NVIDIA T4                     | `ml.g4dn.12xlarge for endpoint usage` |
+| `ml.g5.12xlarge`   | NVIDIA A10G                   | `ml.g5.12xlarge for endpoint usage`   |
+| `ml.g6.12xlarge`   | NVIDIA L4                     | `ml.g6.12xlarge for endpoint usage`   |
+| `ml.g6e.12xlarge`  | NVIDIA L40S                   | `ml.g6e.12xlarge for endpoint usage`  |
+| `ml.g7.12xlarge`   | NVIDIA RTX PRO 4500 Blackwell | `ml.g7.12xlarge for endpoint usage`   |
+| `ml.g7e.12xlarge`  | NVIDIA RTX PRO 6000 Blackwell | `ml.g7e.12xlarge for endpoint usage`  |
+
+The `*.4xlarge` types are needed only for the non-English Flux TTS version. The `*.12xlarge` types are needed only for Aura-2, which requires multiple GPUs per instance.
 
 > **Info**
 >
@@ -63,7 +74,7 @@ aws service-quotas list-service-quotas \
 To check all supported instance types at once:
 
 ```bash
-for INSTANCE in g4dn.2xlarge g5.2xlarge g6.2xlarge g6e.2xlarge g7.2xlarge g7e.2xlarge; do
+for INSTANCE in g4dn.2xlarge g5.2xlarge g6.2xlarge g6e.2xlarge g7.2xlarge g7e.2xlarge g6e.4xlarge g7.4xlarge g7e.4xlarge g4dn.12xlarge g5.12xlarge g6.12xlarge g6e.12xlarge g7.12xlarge g7e.12xlarge; do
   echo "=== ml.$INSTANCE ==="
   aws service-quotas list-service-quotas \
     --service-code sagemaker \
@@ -96,7 +107,7 @@ Select **Request**. AWS reviews most SageMaker quota requests within a few hours
 
 #### Repeat for each instance type
 
-If you need quota for additional instance types (`ml.g4dn.2xlarge`, `ml.g6.2xlarge`, `ml.g6e.2xlarge`, `ml.g7.2xlarge`, `ml.g7e.2xlarge`), repeat these steps for each.
+If you need quota for additional instance types (such as `ml.g6e.2xlarge`, `ml.g7.4xlarge`, or `ml.g6.12xlarge`), repeat these steps for each. See [Instance types used by Deepgram](#instance-types-used-by-deepgram) for the full list.
 
 #### AWS CLI
 

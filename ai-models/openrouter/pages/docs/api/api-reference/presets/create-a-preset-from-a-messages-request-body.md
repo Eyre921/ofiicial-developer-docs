@@ -1916,8 +1916,10 @@ components:
             each at most 1024 characters, with 65536 total characters across all
             patterns. When omitted or empty, every model in the pool is a
             candidate; when no pool model matches, the list is ignored and the
-            whole pool is used (`excluded_models` still apply). `allowed_models`
-            is an alias; entries from both fields are combined.
+            whole pool is used (`excluded_models` still apply). When no entry
+            matches any catalog model, for example a misspelled slug, the
+            request fails with 404 instead. `allowed_models` is an alias;
+            entries from both fields are combined.
           example:
             - anthropic/*
             - openai/gpt-5.6-sol
@@ -3615,6 +3617,7 @@ components:
         - Io Net
         - Inferact vLLM
         - Inflection
+        - KT
         - Liquid
         - Makora
         - Mara
@@ -3897,6 +3900,9 @@ components:
           additionalProperties: {}
           type: object
         krea:
+          additionalProperties: {}
+          type: object
+        kt:
           additionalProperties: {}
           type: object
         lambda:

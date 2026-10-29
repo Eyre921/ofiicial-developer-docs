@@ -47,7 +47,7 @@ import os
 from pinecone import Pinecone
 
 pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
-index = pc.Index(name="docs-example")
+index = pc.index(name="docs-example")
 
 query = "how do I reset my password?"
 fetch_k = 50  # fetch deeper than the final top_k so weaker-but-present signals still count

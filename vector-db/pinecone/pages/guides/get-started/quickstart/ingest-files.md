@@ -80,7 +80,7 @@ if not pc.indexes.exists(name="my-files"):
 while not pc.indexes.describe(name="my-files").status.ready:
     time.sleep(2)
 
-index = pc.Index(name="my-files")
+index = pc.index(name="my-files")
 ```
 
 **5. Embed the chunks and upsert**

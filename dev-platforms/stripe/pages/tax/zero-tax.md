@@ -8,7 +8,9 @@ path: tax/zero-tax
 
 Learn about cases when Stripe Tax calculates zero tax.
 
-> [Log in](https://dashboard.stripe.com/settings/tax) or [sign up](https://dashboard.stripe.com/register) for Stripe to enable Stripe Tax.
+> #### Sign in to enable Stripe Tax
+> 
+> [Log in](https://dashboard.stripe.com/settings/tax) or [sign up](https://dashboard.stripe.com/register) to enable Stripe Tax.
 
 Stripe Tax returns a tax calculation result on every request. However, tax isn’t collected on a transaction in some situations, and the resulting tax amount is zero. For example, if you’re expanding `tax_amounts` on an *invoice* (Invoices are statements of amounts owed by a customer. They track the status of payments from draft through paid or otherwise finalized. Subscriptions automatically generate invoices, or you can manually create a one-off invoice), you might see something like:
 

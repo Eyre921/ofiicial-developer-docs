@@ -45,7 +45,7 @@ if not pc.indexes.exists(name="byo-vectors"):
 while not pc.indexes.describe(name="byo-vectors").status.ready:
     time.sleep(2)
 
-index = pc.Index(name="byo-vectors")
+index = pc.index(name="byo-vectors")
 ```
 
 **3. Upsert your vectors**

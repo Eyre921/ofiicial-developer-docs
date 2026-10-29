@@ -15,6 +15,7 @@ Instead of creating a PaymentMethod directly, we recommend using the [PaymentInt
 ```curl
 curl https://api.stripe.com/v1/payment_methods \
   -u "<<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2026-10-28.endive" \
   -d type=us_bank_account \
   -d "us_bank_account[account_holder_type]=individual" \
   -d "us_bank_account[account_number]=000123456789" \
@@ -68,7 +69,196 @@ curl https://api.stripe.com/v1/payment_methods \
 
 ## Parameters
 
-- `type` (enum, required)
+- [`acss_debit`](https://docs.stripe.com/api/payment_methods/create.md?query=acss_debit) (object, optional)
+  If this is an `acss_debit` PaymentMethod, this hash contains details about the ACSS Debit payment method.
+
+- `affirm` (object, optional)
+  If this is an `affirm` PaymentMethod, this hash contains details about the Affirm payment method.
+
+- `afterpay_clearpay` (object, optional)
+  If this is an `AfterpayClearpay` PaymentMethod, this hash contains details about the AfterpayClearpay payment method.
+
+- `alipay` (object, optional)
+  If this is an `Alipay` PaymentMethod, this hash contains details about the Alipay payment method.
+
+- `allow_redisplay` (enum, optional)
+  This field indicates whether this payment method can be shown again to its customer in a checkout flow. Stripe products such as Checkout and Elements use this field to determine whether a payment method can be shown as a saved payment method in a checkout flow. The field defaults to `unspecified`.
+Possible enum values:
+  - `always`
+    Use `always` to indicate that this payment method can always be shown to a customer in a checkout flow.
+
+  - `limited`
+    Use `limited` to indicate that this payment method can’t always be shown to a customer in a checkout flow. For example, it can only be shown in the context of a specific subscription.
+
+  - `unspecified`
+    This is the default value for payment methods where `allow_redisplay` wasn’t set.
+
+- `alma` (object, optional)
+  If this is an Alma PaymentMethod, this hash contains details about the Alma payment method.
+
+- `amazon_pay` (object, optional)
+  If this is an AmazonPay PaymentMethod, this hash contains details about the AmazonPay payment method.
+
+- [`au_becs_debit`](https://docs.stripe.com/api/payment_methods/create.md?query=au_becs_debit) (object, optional)
+  If this is an `au_becs_debit` PaymentMethod, this hash contains details about the bank account.
+
+- [`bacs_debit`](https://docs.stripe.com/api/payment_methods/create.md?query=bacs_debit) (object, optional)
+  If this is a `bacs_debit` PaymentMethod, this hash contains details about the Bacs Direct Debit bank account.
+
+- `bancontact` (object, optional)
+  If this is a `bancontact` PaymentMethod, this hash contains details about the Bancontact payment method.
+
+- `billie` (object, optional)
+  If this is a `billie` PaymentMethod, this hash contains details about the Billie payment method.
+
+- [`billing_details`](https://docs.stripe.com/api/payment_methods/create.md?query=billing_details) (object, optional)
+  Billing information associated with the PaymentMethod that may be used or required by particular types of payment methods.
+
+- `bizum` (object, optional)
+  If this is a `bizum` PaymentMethod, this hash contains details about the Bizum payment method.
+
+- `blik` (object, optional)
+  If this is a `blik` PaymentMethod, this hash contains details about the BLIK payment method.
+
+- [`boleto`](https://docs.stripe.com/api/payment_methods/create.md?query=boleto) (object, optional)
+  If this is a `boleto` PaymentMethod, this hash contains details about the Boleto payment method.
+
+- [`card`](https://docs.stripe.com/api/payment_methods/create.md?query=card) (object, optional)
+  If this is a `card` PaymentMethod, this hash contains the user’s card details. For backwards compatibility, you can alternatively provide a Stripe token (e.g., for Apple Pay, Amex Express Checkout, or legacy Checkout) into the card hash with format `card: {token: "tok_visa"}`. When providing a card number, you must meet the requirements for [PCI compliance](https://docs.stripe.com/security.md#validating-pci-compliance). We strongly recommend using Stripe.js instead of interacting with this API directly.
+
+- `cashapp` (object, optional)
+  If this is a `cashapp` PaymentMethod, this hash contains details about the Cash App Pay payment method.
+
+- `crypto` (object, optional)
+  If this is a Crypto PaymentMethod, this hash contains details about the Crypto payment method.
+
+- [`custom`](https://docs.stripe.com/api/payment_methods/create.md?query=custom) (object, optional)
+  If this is a `custom` PaymentMethod, this hash contains details about the Custom payment method.
+
+- `customer` (string, optional)
+  The `Customer` to whom the original PaymentMethod is attached.
+
+- `customer_balance` (object, optional)
+  If this is a `customer_balance` PaymentMethod, this hash contains details about the CustomerBalance payment method.
+
+- [`eps`](https://docs.stripe.com/api/payment_methods/create.md?query=eps) (object, optional)
+  If this is an `eps` PaymentMethod, this hash contains details about the EPS payment method.
+
+- [`fpx`](https://docs.stripe.com/api/payment_methods/create.md?query=fpx) (object, optional)
+  If this is an `fpx` PaymentMethod, this hash contains details about the FPX payment method.
+
+- `giropay` (object, optional)
+  If this is a `giropay` PaymentMethod, this hash contains details about the Giropay payment method.
+
+- `grabpay` (object, optional)
+  If this is a `grabpay` PaymentMethod, this hash contains details about the GrabPay payment method.
+
+- [`ideal`](https://docs.stripe.com/api/payment_methods/create.md?query=ideal) (object, optional)
+  If this is an `ideal` PaymentMethod, this hash contains details about the iDEAL payment method.
+
+- `interac_present` (object, optional)
+  If this is an `interac_present` PaymentMethod, this hash contains details about the Interac Present payment method.
+
+- `kakao_pay` (object, optional)
+  If this is a `kakao_pay` PaymentMethod, this hash contains details about the Kakao Pay payment method.
+
+- [`klarna`](https://docs.stripe.com/api/payment_methods/create.md?query=klarna) (object, optional)
+  If this is a `klarna` PaymentMethod, this hash contains details about the Klarna payment method.
+
+- `konbini` (object, optional)
+  If this is a `konbini` PaymentMethod, this hash contains details about the Konbini payment method.
+
+- `kr_card` (object, optional)
+  If this is a `kr_card` PaymentMethod, this hash contains details about the Korean Card payment method.
+
+- `link` (object, optional)
+  If this is an `Link` PaymentMethod, this hash contains details about the Link payment method (Link is also known as Onelink in the UK).
+
+- `mb_way` (object, optional)
+  If this is a MB WAY PaymentMethod, this hash contains details about the MB WAY payment method.
+
+- `metadata` (map, optional)
+  Set of [key-value pairs](https://docs.stripe.com/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
+
+- `mobilepay` (object, optional)
+  If this is a `mobilepay` PaymentMethod, this hash contains details about the MobilePay payment method.
+
+- `multibanco` (object, optional)
+  If this is a `multibanco` PaymentMethod, this hash contains details about the Multibanco payment method.
+
+- [`naver_pay`](https://docs.stripe.com/api/payment_methods/create.md?query=naver_pay) (object, optional)
+  If this is a `naver_pay` PaymentMethod, this hash contains details about the Naver Pay payment method.
+
+- [`nz_bank_account`](https://docs.stripe.com/api/payment_methods/create.md?query=nz_bank_account) (object, optional)
+  If this is an nz_bank_account PaymentMethod, this hash contains details about the nz_bank_account payment method.
+
+- `oxxo` (object, optional)
+  If this is an `oxxo` PaymentMethod, this hash contains details about the OXXO payment method.
+
+- [`p24`](https://docs.stripe.com/api/payment_methods/create.md?query=p24) (object, optional)
+  If this is a `p24` PaymentMethod, this hash contains details about the P24 payment method.
+
+- `pay_by_bank` (object, optional)
+  If this is a `pay_by_bank` PaymentMethod, this hash contains details about the PayByBank payment method.
+
+- `payco` (object, optional)
+  If this is a `payco` PaymentMethod, this hash contains details about the PAYCO payment method.
+
+- `payment_method` (string, optional)
+  The PaymentMethod to share.
+
+- `paynow` (object, optional)
+  If this is a `paynow` PaymentMethod, this hash contains details about the PayNow payment method.
+
+- `paypal` (object, optional)
+  If this is a `paypal` PaymentMethod, this hash contains details about the PayPal payment method.
+
+- `paypay` (object, optional)
+  If this is a `paypay` PaymentMethod, this hash contains details about the PayPay payment method.
+
+- [`payto`](https://docs.stripe.com/api/payment_methods/create.md?query=payto) (object, optional)
+  If this is a `payto` PaymentMethod, this hash contains details about the PayTo payment method.
+
+- `pix` (object, optional)
+  If this is a `pix` PaymentMethod, this hash contains details about the Pix payment method.
+
+- `promptpay` (object, optional)
+  If this is a `promptpay` PaymentMethod, this hash contains details about the PromptPay payment method.
+
+- [`radar_options`](https://docs.stripe.com/api/payment_methods/create.md?query=radar_options) (object, optional)
+  Options to configure Radar. See [Radar Session](https://docs.stripe.com/radar/radar-session.md) for more information.
+
+- `revolut_pay` (object, optional)
+  If this is a `revolut_pay` PaymentMethod, this hash contains details about the Revolut Pay payment method.
+
+- `samsung_pay` (object, optional)
+  If this is a `samsung_pay` PaymentMethod, this hash contains details about the SamsungPay payment method.
+
+- `satispay` (object, optional)
+  If this is a `satispay` PaymentMethod, this hash contains details about the Satispay payment method.
+
+- `scalapay` (object, optional)
+  If this is a Scalapay PaymentMethod, this hash contains details about the Scalapay payment method.
+
+- [`sepa_debit`](https://docs.stripe.com/api/payment_methods/create.md?query=sepa_debit) (object, optional)
+  If this is a `sepa_debit` PaymentMethod, this hash contains details about the SEPA debit bank account.
+
+- `sequra` (object, optional)
+  If this is a SeQura PaymentMethod, this hash contains details about the SeQura payment method.
+
+- [`sofort`](https://docs.stripe.com/api/payment_methods/create.md?query=sofort) (object, optional)
+  If this is a `sofort` PaymentMethod, this hash contains details about the SOFORT payment method.
+
+- `sunbit` (object, optional)
+  If this is a `sunbit` PaymentMethod, this hash contains details about the Sunbit payment method.
+
+- `swish` (object, optional)
+  If this is a `swish` PaymentMethod, this hash contains details about the Swish payment method.
+
+- `twint` (object, optional)
+  If this is a TWINT PaymentMethod, this hash contains details about the TWINT payment method.
+
+- `type` (enum, optional)
   The type of the PaymentMethod. An additional hash is included on the PaymentMethod with a name matching this value. It contains additional information specific to the PaymentMethod type.
 Possible enum values:
   - `acss_debit`
@@ -113,9 +303,6 @@ Possible enum values:
   - `card`
     [Card payments](https://docs.stripe.com/payments/payment-methods/overview.md#cards) are supported through many networks, card brands, and select Link funding sources (Link is also known as Onelink in the UK).
 
-  - `card_present`
-    [Stripe Terminal](https://docs.stripe.com/terminal/payments/collect-card-payment.md) is used to collect in-person card payments.
-
   - `cashapp`
     [Cash App Pay](https://docs.stripe.com/payments/cash-app-pay.md) enables customers to frictionlessly authenticate payments in the Cash App using their stored balance or linked card.
 
@@ -142,9 +329,6 @@ Possible enum values:
 
   - `ideal`
     [iDEAL](https://docs.stripe.com/payments/ideal.md) is a Netherlands-based bank redirect payment method.
-
-  - `interac_present`
-    [Stripe Terminal](https://docs.stripe.com/terminal/payments/collect-card-payment.md) accepts [Interac](https://docs.stripe.com/terminal/payments/regional.md?integration-country=CA#interac-payments) debit cards for in-person payments in Canada.
 
   - `kakao_pay`
     [Kakao Pay](https://docs.stripe.com/payments/kakao-pay/accept-a-payment.md) is a digital wallet payment method used in South Korea.
@@ -250,189 +434,6 @@ Possible enum values:
 
   - `zip`
     [Zip](https://docs.stripe.com/payments/zip.md) is a Buy now, pay later Payment Method
-
-- [`acss_debit`](https://docs.stripe.com/api/payment_methods/create.md?query=acss_debit) (object, optional)
-  If this is an `acss_debit` PaymentMethod, this hash contains details about the ACSS Debit payment method.
-
-- `affirm` (object, optional)
-  If this is an `affirm` PaymentMethod, this hash contains details about the Affirm payment method.
-
-- `afterpay_clearpay` (object, optional)
-  If this is an `AfterpayClearpay` PaymentMethod, this hash contains details about the AfterpayClearpay payment method.
-
-- `alipay` (object, optional)
-  If this is an `Alipay` PaymentMethod, this hash contains details about the Alipay payment method.
-
-- `allow_redisplay` (enum, optional)
-  This field indicates whether this payment method can be shown again to its customer in a checkout flow. Stripe products such as Checkout and Elements use this field to determine whether a payment method can be shown as a saved payment method in a checkout flow. The field defaults to `unspecified`.
-Possible enum values:
-  - `always`
-    Use `always` to indicate that this payment method can always be shown to a customer in a checkout flow.
-
-  - `limited`
-    Use `limited` to indicate that this payment method can’t always be shown to a customer in a checkout flow. For example, it can only be shown in the context of a specific subscription.
-
-  - `unspecified`
-    This is the default value for payment methods where `allow_redisplay` wasn’t set.
-
-- `alma` (object, optional)
-  If this is an Alma PaymentMethod, this hash contains details about the Alma payment method.
-
-- `amazon_pay` (object, optional)
-  If this is an AmazonPay PaymentMethod, this hash contains details about the AmazonPay payment method.
-
-- [`au_becs_debit`](https://docs.stripe.com/api/payment_methods/create.md?query=au_becs_debit) (object, optional)
-  If this is an `au_becs_debit` PaymentMethod, this hash contains details about the bank account.
-
-- [`bacs_debit`](https://docs.stripe.com/api/payment_methods/create.md?query=bacs_debit) (object, optional)
-  If this is a `bacs_debit` PaymentMethod, this hash contains details about the Bacs Direct Debit bank account.
-
-- `bancontact` (object, optional)
-  If this is a `bancontact` PaymentMethod, this hash contains details about the Bancontact payment method.
-
-- `billie` (object, optional)
-  If this is a `billie` PaymentMethod, this hash contains details about the Billie payment method.
-
-- [`billing_details`](https://docs.stripe.com/api/payment_methods/create.md?query=billing_details) (object, optional)
-  Billing information associated with the PaymentMethod that may be used or required by particular types of payment methods.
-
-- `bizum` (object, optional)
-  If this is a `bizum` PaymentMethod, this hash contains details about the Bizum payment method.
-
-- `blik` (object, optional)
-  If this is a `blik` PaymentMethod, this hash contains details about the BLIK payment method.
-
-- [`boleto`](https://docs.stripe.com/api/payment_methods/create.md?query=boleto) (object, optional)
-  If this is a `boleto` PaymentMethod, this hash contains details about the Boleto payment method.
-
-- [`card`](https://docs.stripe.com/api/payment_methods/create.md?query=card) (object, optional)
-  If this is a `card` PaymentMethod, this hash contains the user’s card details. For backwards compatibility, you can alternatively provide a Stripe token (e.g., for Apple Pay, Amex Express Checkout, or legacy Checkout) into the card hash with format `card: {token: "tok_visa"}`. When providing a card number, you must meet the requirements for [PCI compliance](https://docs.stripe.com/security.md#validating-pci-compliance). We strongly recommend using Stripe.js instead of interacting with this API directly.
-
-- `cashapp` (object, optional)
-  If this is a `cashapp` PaymentMethod, this hash contains details about the Cash App Pay payment method.
-
-- `crypto` (object, optional)
-  If this is a Crypto PaymentMethod, this hash contains details about the Crypto payment method.
-
-- [`custom`](https://docs.stripe.com/api/payment_methods/create.md?query=custom) (object, optional)
-  If this is a `custom` PaymentMethod, this hash contains details about the Custom payment method.
-
-- `customer_balance` (object, optional)
-  If this is a `customer_balance` PaymentMethod, this hash contains details about the CustomerBalance payment method.
-
-- [`eps`](https://docs.stripe.com/api/payment_methods/create.md?query=eps) (object, optional)
-  If this is an `eps` PaymentMethod, this hash contains details about the EPS payment method.
-
-- [`fpx`](https://docs.stripe.com/api/payment_methods/create.md?query=fpx) (object, optional)
-  If this is an `fpx` PaymentMethod, this hash contains details about the FPX payment method.
-
-- `giropay` (object, optional)
-  If this is a `giropay` PaymentMethod, this hash contains details about the Giropay payment method.
-
-- `grabpay` (object, optional)
-  If this is a `grabpay` PaymentMethod, this hash contains details about the GrabPay payment method.
-
-- [`ideal`](https://docs.stripe.com/api/payment_methods/create.md?query=ideal) (object, optional)
-  If this is an `ideal` PaymentMethod, this hash contains details about the iDEAL payment method.
-
-- `interac_present` (object, optional)
-  If this is an `interac_present` PaymentMethod, this hash contains details about the Interac Present payment method.
-
-- `kakao_pay` (object, optional)
-  If this is a `kakao_pay` PaymentMethod, this hash contains details about the Kakao Pay payment method.
-
-- [`klarna`](https://docs.stripe.com/api/payment_methods/create.md?query=klarna) (object, optional)
-  If this is a `klarna` PaymentMethod, this hash contains details about the Klarna payment method.
-
-- `konbini` (object, optional)
-  If this is a `konbini` PaymentMethod, this hash contains details about the Konbini payment method.
-
-- `kr_card` (object, optional)
-  If this is a `kr_card` PaymentMethod, this hash contains details about the Korean Card payment method.
-
-- `link` (object, optional)
-  If this is an `Link` PaymentMethod, this hash contains details about the Link payment method (Link is also known as Onelink in the UK).
-
-- `mb_way` (object, optional)
-  If this is a MB WAY PaymentMethod, this hash contains details about the MB WAY payment method.
-
-- `metadata` (map, optional)
-  Set of [key-value pairs](https://docs.stripe.com/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
-
-- `mobilepay` (object, optional)
-  If this is a `mobilepay` PaymentMethod, this hash contains details about the MobilePay payment method.
-
-- `multibanco` (object, optional)
-  If this is a `multibanco` PaymentMethod, this hash contains details about the Multibanco payment method.
-
-- [`naver_pay`](https://docs.stripe.com/api/payment_methods/create.md?query=naver_pay) (object, optional)
-  If this is a `naver_pay` PaymentMethod, this hash contains details about the Naver Pay payment method.
-
-- [`nz_bank_account`](https://docs.stripe.com/api/payment_methods/create.md?query=nz_bank_account) (object, optional)
-  If this is an nz_bank_account PaymentMethod, this hash contains details about the nz_bank_account payment method.
-
-- `oxxo` (object, optional)
-  If this is an `oxxo` PaymentMethod, this hash contains details about the OXXO payment method.
-
-- [`p24`](https://docs.stripe.com/api/payment_methods/create.md?query=p24) (object, optional)
-  If this is a `p24` PaymentMethod, this hash contains details about the P24 payment method.
-
-- `pay_by_bank` (object, optional)
-  If this is a `pay_by_bank` PaymentMethod, this hash contains details about the PayByBank payment method.
-
-- `payco` (object, optional)
-  If this is a `payco` PaymentMethod, this hash contains details about the PAYCO payment method.
-
-- `paynow` (object, optional)
-  If this is a `paynow` PaymentMethod, this hash contains details about the PayNow payment method.
-
-- `paypal` (object, optional)
-  If this is a `paypal` PaymentMethod, this hash contains details about the PayPal payment method.
-
-- `paypay` (object, optional)
-  If this is a `paypay` PaymentMethod, this hash contains details about the PayPay payment method.
-
-- [`payto`](https://docs.stripe.com/api/payment_methods/create.md?query=payto) (object, optional)
-  If this is a `payto` PaymentMethod, this hash contains details about the PayTo payment method.
-
-- `pix` (object, optional)
-  If this is a `pix` PaymentMethod, this hash contains details about the Pix payment method.
-
-- `promptpay` (object, optional)
-  If this is a `promptpay` PaymentMethod, this hash contains details about the PromptPay payment method.
-
-- [`radar_options`](https://docs.stripe.com/api/payment_methods/create.md?query=radar_options) (object, optional)
-  Options to configure Radar. See [Radar Session](https://docs.stripe.com/radar/radar-session.md) for more information.
-
-- `revolut_pay` (object, optional)
-  If this is a `revolut_pay` PaymentMethod, this hash contains details about the Revolut Pay payment method.
-
-- `samsung_pay` (object, optional)
-  If this is a `samsung_pay` PaymentMethod, this hash contains details about the SamsungPay payment method.
-
-- `satispay` (object, optional)
-  If this is a `satispay` PaymentMethod, this hash contains details about the Satispay payment method.
-
-- `scalapay` (object, optional)
-  If this is a Scalapay PaymentMethod, this hash contains details about the Scalapay payment method.
-
-- [`sepa_debit`](https://docs.stripe.com/api/payment_methods/create.md?query=sepa_debit) (object, optional)
-  If this is a `sepa_debit` PaymentMethod, this hash contains details about the SEPA debit bank account.
-
-- `sequra` (object, optional)
-  If this is a SeQura PaymentMethod, this hash contains details about the SeQura payment method.
-
-- [`sofort`](https://docs.stripe.com/api/payment_methods/create.md?query=sofort) (object, optional)
-  If this is a `sofort` PaymentMethod, this hash contains details about the SOFORT payment method.
-
-- `sunbit` (object, optional)
-  If this is a `sunbit` PaymentMethod, this hash contains details about the Sunbit payment method.
-
-- `swish` (object, optional)
-  If this is a `swish` PaymentMethod, this hash contains details about the Swish payment method.
-
-- `twint` (object, optional)
-  If this is a TWINT PaymentMethod, this hash contains details about the TWINT payment method.
 
 - [`upi`](https://docs.stripe.com/api/payment_methods/create.md?query=upi) (object, optional)
   If this is a `upi` PaymentMethod, this hash contains details about the UPI payment method.

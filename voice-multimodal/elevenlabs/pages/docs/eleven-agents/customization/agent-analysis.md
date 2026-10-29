@@ -19,6 +19,10 @@ satisfaction.
 
 Extract structured information from conversations such as contact details and business data.
 
+#### [Analysis library](/docs/eleven-agents/customization/agent-analysis/analysis-library)
+
+Manage criteria and data collection fields in one place and share them across agents.
+
 #### [Sentiment analysis](/docs/eleven-agents/customization/agent-analysis/sentiment-analysis)
 
 Understand whether users are having positive, neutral, or negative conversations.
@@ -33,6 +37,7 @@ ElevenAgents provides several complementary analysis capabilities:
 
 * **Success evaluation**: Define custom criteria to assess conversation quality, goal achievement, and customer satisfaction
 * **Data collection**: Extract specific data points from conversations such as contact information, issue details, or any structured information
+* **Analysis library**: Keep criteria and data collection fields in one workspace library and attach them to any agent
 * **Sentiment analysis**: Understand user sentiment across completed conversations
 * **Searching conversations**: Find relevant messages across conversation history
 

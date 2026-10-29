@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 519 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 520 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -175,6 +175,7 @@
 - `docs/api_reference/embeddings` — [Embeddings](pages/docs/api_reference/embeddings.md) · [原文](https://openrouter.ai/docs/api_reference/embeddings.md)
 - `docs/api_reference/errors-and-debugging` — [Errors and Debugging](pages/docs/api_reference/errors-and-debugging.md) · [原文](https://openrouter.ai/docs/api_reference/errors-and-debugging.md)
 - `docs/api_reference/limits` — [Limits](pages/docs/api_reference/limits.md) · [原文](https://openrouter.ai/docs/api_reference/limits.md)
+- `docs/api_reference/overview` — [API Reference](pages/docs/api_reference/overview.md) · [原文](https://openrouter.ai/docs/api_reference/overview.md)
 - `docs/api_reference/parameters` — [Parameters](pages/docs/api_reference/parameters.md) · [原文](https://openrouter.ai/docs/api_reference/parameters.md)
 - `docs/api_reference/responses/basic-usage` — [Basic Usage](pages/docs/api_reference/responses/basic-usage.md) · [原文](https://openrouter.ai/docs/api_reference/responses/basic-usage.md)
 - `docs/api_reference/responses/error-handling` — [Error Handling](pages/docs/api_reference/responses/error-handling.md) · [原文](https://openrouter.ai/docs/api_reference/responses/error-handling.md)

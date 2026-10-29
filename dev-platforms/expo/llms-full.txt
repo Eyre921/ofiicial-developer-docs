@@ -457,6 +457,7 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 
 - [Introduction to EAS Workflows](https://docs.expo.dev/eas/workflows/introduction.md): EAS Workflows is a CI/CD service for automating builds, updates, submissions, and tests for React Native and Expo apps.
 - [Get started with EAS Workflows](https://docs.expo.dev/eas/workflows/get-started.md)
+- [Manage workflow runs in EAS Workflows](https://docs.expo.dev/eas/workflows/manage-workflow-runs.md)
 - [Pre-packaged jobs in EAS Workflows](https://docs.expo.dev/eas/workflows/pre-packaged-jobs.md)
 - [Syntax for EAS Workflows](https://docs.expo.dev/eas/workflows/syntax.md)
 - [Custom functions in EAS Workflows](https://docs.expo.dev/eas/workflows/custom-functions.md)

@@ -182,7 +182,7 @@ To [create a namespace for a tenant](/guides/index-data/indexing-overview#namesp
 from pinecone.grpc import PineconeGRPC as Pinecone
 
 pc = Pinecone(api_key="YOUR_API_KEY")
-index = pc.Index("multitenant-app")
+index = pc.index(name="multitenant-app", grpc=True)
 
 index.upsert(
   vectors=[
@@ -416,7 +416,7 @@ When upserting additional records for a tenant, or when [updating](/guides/manag
 from pinecone.grpc import PineconeGRPC as Pinecone
 
 pc = Pinecone(api_key="YOUR_API_KEY")
-index = pc.Index("multitenant-app")
+index = pc.index(name="multitenant-app", grpc=True)
 
 index.update(id="A", values=[0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8], namespace="tenant1")
 ```
@@ -490,7 +490,7 @@ For example, the following code queries only `tenant2` for the 3 vectors that ar
 from pinecone.grpc import PineconeGRPC as Pinecone
 
 pc = Pinecone(api_key="YOUR_API_KEY")
-index = pc.Index("multitenant-app")
+index = pc.index(name="multitenant-app", grpc=True)
 
 query_results = index.query(
     namespace="tenant2",
@@ -738,7 +738,7 @@ For example, the following code deletes the namespace and all records for `tenan
 from pinecone.grpc import PineconeGRPC as Pinecone
 
 pc = Pinecone(api_key="YOUR_API_KEY")
-index = pc.Index("multitenant-app")
+index = pc.index(name="multitenant-app", grpc=True)
 
 index.delete(delete_all=True, namespace='tenant1')
 ```

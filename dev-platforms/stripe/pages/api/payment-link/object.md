@@ -179,6 +179,53 @@ Possible enum values:
 
 - `payment_method_types` (array of enums, nullable)
   The list of payment method types that customers can use. When `null`, Stripe will dynamically show relevant payment methods you’ve enabled in your [payment method settings](https://dashboard.stripe.com/settings/payment_methods).
+Possible enum values:
+  - `affirm`
+  - `afterpay_clearpay`
+  - `alipay`
+  - `alma`
+  - `au_becs_debit`
+  - `bacs_debit`
+  - `bancontact`
+  - `billie`
+  - `bizum`
+  - `blik`
+  - `boleto`
+  - `card`
+  - `cashapp`
+  - `eps`
+  - `fpx`
+  - `giropay`
+  - `grabpay`
+  - `ideal`
+  - `klarna`
+  - `konbini`
+  - `link`
+  - `mb_way`
+  - `mobilepay`
+  - `multibanco`
+  - `oxxo`
+  - `p24`
+  - `pay_by_bank`
+  - `paynow`
+  - `paypal`
+  - `paypay`
+  - `payto`
+  - `pix`
+  - `promptpay`
+  - `satispay`
+  - `scalapay`
+  - `sepa_debit`
+  - `sequra`
+  - `sofort`
+  - `sunbit`
+  - `swish`
+  - `twint`
+  - `upi`
+  - `us_bank_account`
+  - `wechat_pay`
+  - `wero`
+  - `zip`
 
 - [`phone_number_collection`](https://docs.stripe.com/api/payment-link/object.md?query=phone_number_collection) (object)
   Controls phone number collection settings during checkout.

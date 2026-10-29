@@ -27,7 +27,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 index.documents.upsert(
     namespace="articles",
@@ -173,7 +173,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 index.documents.upsert(
     namespace="example-namespace",
@@ -321,7 +321,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 index.upsert(
   vectors=[
@@ -591,7 +591,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 # Upsert records into a namespace
 # `chunk_text` fields are converted to dense vectors
@@ -809,7 +809,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 index.documents.upsert(
     namespace="example-namespace",
@@ -1029,7 +1029,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 index.upsert(
     namespace="example-namespace",
@@ -1465,7 +1465,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 # Upsert records into a namespace
 # `chunk_text` fields are converted to sparse vectors
@@ -1701,7 +1701,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 # Example data: 10,000 documents with a 128-dimension `embedding` field
 documents = [
@@ -1801,7 +1801,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 def chunks(iterable, batch_size=200):
     """A helper function to break an iterable into chunks of size batch_size."""
@@ -1982,7 +1982,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index,
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 # Example data: 10,000 documents with a 128-dimension `embedding` field
 documents = [
@@ -2109,7 +2109,7 @@ pc = Pinecone(api_key="YOUR_API_KEY", pool_threads=30)
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 def chunks(iterable, batch_size=200):
     """A helper function to break an iterable into chunks of size batch_size."""
@@ -2126,7 +2126,7 @@ example_data_generator = map(lambda i: (f'id-{i}', [random.random() for _ in ran
 
 # Upsert data with 200 vectors per upsert request asynchronously
 # - Pass async_req=True to index.upsert()
-with pc.Index(host="INDEX_HOST", pool_threads=30) as index:
+with pc.index(host="INDEX_HOST", pool_threads=30) as index:
     # Send requests in parallel
     async_results = [
         index.upsert(vectors=ids_vectors_chunk, async_req=True)
@@ -2314,7 +2314,7 @@ pc = Pinecone(api_key='YOUR_API_KEY')
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 ```
 
 To send multiple upserts in parallel, use `upsert_async`, which returns a future for each request:

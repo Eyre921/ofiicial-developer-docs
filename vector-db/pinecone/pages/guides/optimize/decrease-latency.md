@@ -31,7 +31,7 @@ from pinecone.grpc import PineconeGRPC as Pinecone
 
 pc = Pinecone(api_key="YOUR_API_KEY")
 
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 ```
 
 ```javascript JavaScript {6} theme={null}

@@ -8,7 +8,9 @@ path: tax/products-prices-tax-codes-tax-behavior
 
 Add tax codes and tax behavior to your products and prices to automatically calculate tax.
 
-> [Log in](https://dashboard.stripe.com/settings/tax) or [sign up](https://dashboard.stripe.com/register) for Stripe to enable Stripe Tax.
+> #### Sign in to enable Stripe Tax
+> 
+> [Log in](https://dashboard.stripe.com/settings/tax) or [sign up](https://dashboard.stripe.com/register) to enable Stripe Tax.
 
 Stripe Tax uses product tax codes to associate products with their applicable tax rates. Assign each of your [products a tax code](https://docs.stripe.com/tax/products-prices-tax-codes-tax-behavior.md#tax-code-on-product) to automatically apply the rate and other taxability rules.
 

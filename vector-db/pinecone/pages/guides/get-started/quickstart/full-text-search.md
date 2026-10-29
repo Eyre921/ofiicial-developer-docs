@@ -45,7 +45,7 @@ if not pc.indexes.exists(name="quickstart"):
 while not pc.indexes.describe(name="quickstart").status.ready:
     time.sleep(2)
 
-index = pc.Index(name="quickstart")
+index = pc.index(name="quickstart")
 ```
 
 **3. Load sample documents**

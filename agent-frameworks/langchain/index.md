@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1684 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1686 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -159,6 +159,7 @@
 - `langsmith/analyze-an-experiment` — [Analyze an experiment](pages/langsmith/analyze-an-experiment.md) · [原文](https://docs.langchain.com/langsmith/analyze-an-experiment)
 - `langsmith/annotate-code` — [Custom instrumentation](pages/langsmith/annotate-code.md) · [原文](https://docs.langchain.com/langsmith/annotate-code)
 - `langsmith/annotate-traces-inline` — [Annotate traces and runs inline](pages/langsmith/annotate-traces-inline.md) · [原文](https://docs.langchain.com/langsmith/annotate-traces-inline)
+- `langsmith/annotation-queue-custom-views` — [Build custom views for annotation queues](pages/langsmith/annotation-queue-custom-views.md) · [原文](https://docs.langchain.com/langsmith/annotation-queue-custom-views)
 - `langsmith/annotation-queues` — [Use annotation queues](pages/langsmith/annotation-queues.md) · [原文](https://docs.langchain.com/langsmith/annotation-queues)
 - `langsmith/annotation-queues-sdk` — [Manage feedback & annotation queues programmatically](pages/langsmith/annotation-queues-sdk.md) · [原文](https://docs.langchain.com/langsmith/annotation-queues-sdk)
 - `langsmith/api-ref-control-plane` — [Control plane API reference for LangSmith Deployment](pages/langsmith/api-ref-control-plane.md) · [原文](https://docs.langchain.com/langsmith/api-ref-control-plane)
@@ -400,25 +401,26 @@
 - `langsmith/llm-as-judge-sdk` — [How to define an LLM-as-a-judge evaluator](pages/langsmith/llm-as-judge-sdk.md) · [原文](https://docs.langchain.com/langsmith/llm-as-judge-sdk)
 - `langsmith/llm-auth-proxy-self-hosted` — [Set up the LLM auth proxy](pages/langsmith/llm-auth-proxy-self-hosted.md) · [原文](https://docs.langchain.com/langsmith/llm-auth-proxy-self-hosted)
 - `langsmith/llm-gateway` — [LLM Gateway](pages/langsmith/llm-gateway.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway)
-- `langsmith/llm-gateway-access` — [Traces and access control](pages/langsmith/llm-gateway-access.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-access)
-- `langsmith/llm-gateway-admin-setup` — [Admin setup](pages/langsmith/llm-gateway-admin-setup.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-admin-setup)
+- `langsmith/llm-gateway-admin-setup` — [Set up the LLM Gateway](pages/langsmith/llm-gateway-admin-setup.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-admin-setup)
 - `langsmith/llm-gateway-api-formats` — [API formats](pages/langsmith/llm-gateway-api-formats.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-api-formats)
+- `langsmith/llm-gateway-authentication` — [Authenticate to the LLM Gateway](pages/langsmith/llm-gateway-authentication.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-authentication)
 - `langsmith/llm-gateway-coding-agents` — [Set up coding agents](pages/langsmith/llm-gateway-coding-agents.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-coding-agents)
 - `langsmith/llm-gateway-credits` — [Gateway Credits](pages/langsmith/llm-gateway-credits.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-credits)
-- `langsmith/llm-gateway-data-policy` — [Data policy](pages/langsmith/llm-gateway-data-policy.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-data-policy)
+- `langsmith/llm-gateway-data-policy` — [Data policies](pages/langsmith/llm-gateway-data-policy.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-data-policy)
 - `langsmith/llm-gateway-decision-models` — [Decision models](pages/langsmith/llm-gateway-decision-models.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-decision-models)
 - `langsmith/llm-gateway-direct-model-access` — [Direct model access](pages/langsmith/llm-gateway-direct-model-access.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-direct-model-access)
 - `langsmith/llm-gateway-fallbacks` — [Model fallbacks](pages/langsmith/llm-gateway-fallbacks.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-fallbacks)
-- `langsmith/llm-gateway-header-policies` — [Per-customer policies](pages/langsmith/llm-gateway-header-policies.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-header-policies)
+- `langsmith/llm-gateway-first-request` — [Send your first LLM Gateway request](pages/langsmith/llm-gateway-first-request.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-first-request)
+- `langsmith/llm-gateway-header-policies` — [Header-based policies](pages/langsmith/llm-gateway-header-policies.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-header-policies)
 - `langsmith/llm-gateway-how-it-works` — [How the LLM Gateway works](pages/langsmith/llm-gateway-how-it-works.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-how-it-works)
 - `langsmith/llm-gateway-model-access-policies` — [Model access policies](pages/langsmith/llm-gateway-model-access-policies.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-model-access-policies)
 - `langsmith/llm-gateway-model-configurations` — [Custom model configurations](pages/langsmith/llm-gateway-model-configurations.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-model-configurations)
 - `langsmith/llm-gateway-monitoring` — [Monitor LLM Gateway spend](pages/langsmith/llm-gateway-monitoring.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-monitoring)
 - `langsmith/llm-gateway-provider-authentication` — [Provider authentication](pages/langsmith/llm-gateway-provider-authentication.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-provider-authentication)
-- `langsmith/llm-gateway-quickstart` — [LLM Gateway quickstart](pages/langsmith/llm-gateway-quickstart.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-quickstart)
 - `langsmith/llm-gateway-rate-limit-policies` — [Rate limit policies](pages/langsmith/llm-gateway-rate-limit-policies.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-rate-limit-policies)
 - `langsmith/llm-gateway-self-hosted` — [Enable the LLM Gateway](pages/langsmith/llm-gateway-self-hosted.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-self-hosted)
 - `langsmith/llm-gateway-spend-policies` — [Spend policies](pages/langsmith/llm-gateway-spend-policies.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-spend-policies)
+- `langsmith/llm-gateway-traces` — [View LLM Gateway traces](pages/langsmith/llm-gateway-traces.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-traces)
 - `langsmith/local` — [How to run an evaluation locally (Python only)](pages/langsmith/local.md) · [原文](https://docs.langchain.com/langsmith/local)
 - `langsmith/local-dev-testing` — [Local development & testing](pages/langsmith/local-dev-testing.md) · [原文](https://docs.langchain.com/langsmith/local-dev-testing)
 - `langsmith/log-llm-trace` — [Log LLM calls](pages/langsmith/log-llm-trace.md) · [原文](https://docs.langchain.com/langsmith/log-llm-trace)

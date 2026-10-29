@@ -19,6 +19,7 @@ Rules:
 - Escape literal tags in text as \<tag> or &lt;tag&gt;; never inside code or mention labels, which are already literal.
 - Always fence code blocks; never indent them. One-copyable-block rule: make the opening and closing fence longer than the longest backtick run in the content. Triple-backtick content requires four-backtick outer fences; never use triple backticks both outside and inside.
 - Hard line break = trailing \ replacing the space before it. Empty paragraph = <p />.
+- Blocks (tables, lists, headings, etc.) start on new lines after blank lines, never inline.
 
 Inline tags:
 - <b>, <i>, <s>, <u> (the only underline); required when styled text has leading/trailing spaces.
@@ -42,6 +43,8 @@ Callout body child
 </quote>
 
 The title/label is body text right after the opening tag, never an attribute. Children follow a blank line — plain Markdown, no <p> wrappers or > prefixes. Blank lines touching the opening or closing tags become stray whitespace; never pad. <p /> = empty title.
+
+Plain <h1>-<h4> have no children: nested blocks become siblings. For children, use <toggle heading="h1|h2|h3|h4">.
 
 Other blocks:
 - <todo checked="true|false"> when a todo needs color; else - [ ] / - [x].

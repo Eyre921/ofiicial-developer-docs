@@ -17,6 +17,7 @@ When you use `confirm=true` during creation, it’s equivalent to creating and c
 ```curl
 curl https://api.stripe.com/v1/payment_intents \
   -u "<<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2026-10-28.endive" \
   -d amount=2000 \
   -d currency=usd \
   -d "automatic_payment_methods[enabled]=true"
@@ -85,12 +86,6 @@ curl https://api.stripe.com/v1/payment_intents \
 ```
 
 ## Parameters
-
-- `amount` (integer, required)
-  Amount intended to be collected by this PaymentIntent. A positive integer representing how much to charge in the [smallest currency unit](https://docs.stripe.com/currencies.md#zero-decimal) (e.g., 100 cents to charge $1.00 or 100 to charge ¥100, a zero-decimal currency). The minimum amount is $0.50 US or [equivalent in charge currency](https://docs.stripe.com/currencies.md#minimum-and-maximum-charge-amounts). The amount value supports up to eight digits (e.g., a value of 99999999 for a USD charge of $999,999.99).
-
-- `currency` (enum, required)
-  Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
 - `allowed_payment_method_types` (array of enums, optional)
   The list of payment method types allowed for use with this payment. Stripe automatically returns compatible payment methods from this list in the `payment_method_types` field of the response, based on the other PaymentIntent parameters, such as `currency`, `amount`, and `customer`.
@@ -229,9 +224,6 @@ Possible enum values:
 
   - `kriya`
     Kriya is a payment method.
-
-  - `line_pay`
-    LINE Pay is a Thai mobile wallet payment method.
 
   - `link`
     [Link (also known as Onelink in the UK)](https://docs.stripe.com/payments/link.md) allows customers to pay with their saved payment details.
@@ -395,6 +387,9 @@ Possible enum values:
   - `zip`
     [Zip](https://docs.stripe.com/payments/zip.md) is a Buy now, pay later Payment Method
 
+- `amount` (integer, optional)
+  Amount intended to be collected by this PaymentIntent. A positive integer representing how much to charge in the [smallest currency unit](https://docs.stripe.com/currencies.md#zero-decimal) (e.g., 100 cents to charge $1.00 or 100 to charge ¥100, a zero-decimal currency). The minimum amount is $0.50 US or [equivalent in charge currency](https://docs.stripe.com/currencies.md#minimum-and-maximum-charge-amounts). The amount value supports up to eight digits (e.g., a value of 99999999 for a USD charge of $999,999.99).
+
 - [`amount_details`](https://docs.stripe.com/api/payment_intents/create.md?query=amount_details) (object, optional)
   Provides industry-specific information about the amount.
 
@@ -432,6 +427,9 @@ Possible enum values:
   ID of the ConfirmationToken used to confirm this PaymentIntent.
 
   If the provided ConfirmationToken contains properties that are also being provided in this request, such as `payment_method`, then the values in this request will take precedence.
+
+- `currency` (enum, optional)
+  Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
 - `customer` (string, optional)
   ID of the Customer this PaymentIntent belongs to, if one exists.
@@ -498,9 +496,6 @@ Possible enum values:
   - `card`
     [Card payments](https://docs.stripe.com/payments/payment-methods/overview.md#cards) are supported through many networks, card brands, and select Link funding sources (Link is also known as Onelink in the UK).
 
-  - `card_present`
-    [Stripe Terminal](https://docs.stripe.com/terminal/payments/collect-card-payment.md) is used to collect in-person card payments.
-
   - `cashapp`
     [Cash App Pay](https://docs.stripe.com/payments/cash-app-pay.md) enables customers to frictionlessly authenticate payments in the Cash App using their stored balance or linked card.
 
@@ -524,9 +519,6 @@ Possible enum values:
 
   - `ideal`
     [iDEAL](https://docs.stripe.com/payments/ideal.md) is a Netherlands-based bank redirect payment method.
-
-  - `interac_present`
-    [Stripe Terminal](https://docs.stripe.com/terminal/payments/collect-card-payment.md) accepts [Interac](https://docs.stripe.com/terminal/payments/regional.md?integration-country=CA#interac-payments) debit cards for in-person payments in Canada.
 
   - `kakao_pay`
     [Kakao Pay](https://docs.stripe.com/payments/kakao-pay/accept-a-payment.md) is a digital wallet payment method used in South Korea.
@@ -642,8 +634,11 @@ Possible enum values:
 - `metadata` (map, optional)
   Set of [key-value pairs](https://docs.stripe.com/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
 
-- `off_session` (boolean | string, optional)
+- `off_session` (boolean | enum, optional)
   Set to `true` to indicate that the customer isn’t in your checkout flow during this payment attempt and can’t authenticate. Use this parameter in scenarios where you collect payment method details and [charge them later](https://docs.stripe.com/payments/save-during-payment.md). This parameter can only be used with [`confirm=true`](https://docs.stripe.com/api/payment_intents/create.md#create_payment_intent-confirm).
+Possible enum values:
+  - `one_off`
+  - `recurring`
 
 - `on_behalf_of` (string, optional)
   The Stripe account ID that these funds are intended for. Learn more about the [use case for connected accounts](https://docs.stripe.com/payments/connected-accounts.md).
@@ -652,7 +647,7 @@ Possible enum values:
   Provides industry-specific information about the charge.
 
 - `payment_method` (string, optional)
-  ID of the payment method (a PaymentMethod, Card, or [compatible Source](https://docs.stripe.com/payments/payment-methods/transitioning.md#compatibility) object) to attach to this PaymentIntent.
+  The ID of a PaymentMethod to attach to this PaymentIntent.
 
   If you omit this parameter with `confirm=true`, `customer.default_source` attaches as this PaymentIntent’s payment instrument to improve migration for users of the Charges API. We recommend that you explicitly provide the `payment_method` moving forward. If the payment method is attached to a Customer, you must also provide the ID of that Customer as the [customer](https://docs.stripe.com/api/payment_intents/create.md#create_payment_intent-customer) parameter of this PaymentIntent.
 
@@ -699,8 +694,12 @@ Possible enum values:
 
   Setting this value for a card charge returns an error. For card charges, set the [statement_descriptor_suffix](https://docs.stripe.com/get-started/account/statement-descriptors.md#dynamic) instead.
 
+  The maximum length is 22 characters.
+
 - `statement_descriptor_suffix` (string, optional)
   Provides information about a card charge. Concatenated to the account’s [statement descriptor prefix](https://docs.stripe.com/get-started/account/statement-descriptors.md#static) to form the complete statement descriptor that appears on the customer’s statement.
+
+  The maximum length is 22 characters.
 
 - [`transfer_data`](https://docs.stripe.com/api/payment_intents/create.md?query=transfer_data) (object, optional)
   The parameters that you can use to automatically create a Transfer. Learn more about the [use case for connected accounts](https://docs.stripe.com/payments/connected-accounts.md).

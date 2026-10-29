@@ -144,12 +144,12 @@ import "dotenv/config";
 
 const elevenlabs = new ElevenLabsClient();
 const audio = await elevenlabs.textToSpeech.convert(
-	"JBFqnCBsd6RMkjVDRZzb", // "George" - browse voices at elevenlabs.io/app/voice-library
-	{
-		text: "The first move is what sets everything in motion.",
-		modelId: "eleven_v4",
-		outputFormat: "mp3_44100_128",
-	},
+  "JBFqnCBsd6RMkjVDRZzb", // "George" - browse voices at elevenlabs.io/app/voice-library
+  {
+    text: "The first move is what sets everything in motion.",
+    modelId: "eleven_v4",
+    outputFormat: "mp3_44100_128",
+  }
 );
 
 await play(audio);

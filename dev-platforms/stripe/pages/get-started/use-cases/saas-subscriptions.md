@@ -74,7 +74,7 @@ This is a page on your site that shows the customer a summary of their order bef
 
 ### Test your checkout page
 
-1. Add `"proxy": "<http://localhost:4242>"` to your `package.json` file during local development.
+1. Add `"proxy": "http://localhost:4242"` to your `package.json` file during local development.
 2. Run `npm start` and go to <http://localhost:3000/checkout>.
 3. In your checkout page, enter the test card `4242424242424242` to submit a test payment as a customer.
 4. (Optional) To sign up for a [Link](https://docs.stripe.com/payments/link.md) account, select **Save my information for faster checkout**. You can test Link as the payment method to see the checkout flow for a returning customer.

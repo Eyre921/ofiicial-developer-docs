@@ -2051,6 +2051,8 @@ Google Pay makes a best effort to return the phone number registered to the wall
 If `true`, you must also supply a valid `shippingRates` option in either the `create`, `click`, or `shippingaddresschange` events.
     - `shippingRates`
       An array of ShippingRate objects. The first shipping rate listed appears in the payment interface as the default option.
+
+PayPal will display only the first 10 shipping rates provided.
       - `id`
         Unique identifier for the object.
       - `amount`
@@ -2265,6 +2267,8 @@ Collect the customer's shipping address by setting this option to `true`.
 If `true`, you must also supply a valid `shippingRates` option in either the `create`, `click`, or `shippingaddresschange` events.
       - `shippingRates`
         An array of ShippingRate objects. The first shipping rate listed appears in the payment interface as the default option.
+
+PayPal will display only the first 10 shipping rates provided.
         - `id`
           Unique identifier for the object.
         - `amount`
@@ -2498,6 +2502,8 @@ with the following properties:
           The amount in the currency's subunit (for example, cents, yen, etc.).
       - `shippingRates`
         An array of ShippingRate objects. The first shipping rate listed appears in the payment interface as the default option.
+
+PayPal will display only the first 10 shipping rates provided.
         - `id`
           Unique identifier for the object.
         - `amount`
@@ -2597,6 +2603,8 @@ with the following properties:
           The amount in the currency's subunit (for example, cents, yen, etc.).
       - `shippingRates`
         An array of ShippingRate objects. The first shipping rate listed appears in the payment interface as the default option.
+
+PayPal will display only the first 10 shipping rates provided.
         - `id`
           Unique identifier for the object.
         - `amount`
@@ -9926,6 +9934,8 @@ Google Pay makes a best effort to return the phone number registered to the wall
 If `true`, you must also supply a valid `shippingRates` option in either the `create`, `click`, or `shippingaddresschange` events.
     - `shippingRates`
       An array of ShippingRate objects. The first shipping rate listed appears in the payment interface as the default option.
+
+PayPal will display only the first 10 shipping rates provided.
       - `id`
         Unique identifier for the object.
       - `amount`

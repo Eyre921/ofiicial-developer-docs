@@ -21,6 +21,10 @@ path: home
 
 ## Build with Deepgram
 
+> **Note**
+>
+> **Deepgram LLMs are in Early Access.** Think-Fast and phoneLLM mini are free during Early Access and available only to current Deepgram contract customers. [Talk to sales](https://deepgram.com/contact-us) to get access. The API can change before general availability. Do not run production traffic on it.
+
 * [End-to-end Voice Agent API](/docs/voice-agent)
 * [Chain LLMs with STT and TTS APIs](/docs/flux/agent)
 * [Streaming: Conversational STT for voice agents (Flux STT)](/docs/flux/quickstart)
@@ -30,6 +34,9 @@ path: home
 * [Single text request](/docs/text-to-speech)
 * [Continuous text stream](/docs/streaming-text-to-speech)
 * [Voices and languages](/docs/tts-models)
+* [Deepgram LLMs overview (Early Access)](/docs/llm)
+* [Send your first request to a Deepgram LLM](/docs/llm/getting-started)
+* [Deepgram LLM models](/docs/llm/models)
 
 ## SDKs
 

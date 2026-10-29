@@ -44,11 +44,11 @@ Navigate to your agent's dashboard and select the **Analysis** tab to configure 
 
 #### Add evaluation criteria
 
-Click **Add criteria** to create a new evaluation criterion.
+Click **Add evaluation** to create a new evaluation criterion, or to attach one from your workspace's [analysis library](/docs/eleven-agents/customization/agent-analysis/analysis-library).
 
 Define your criterion with:
 
-* **Identifier**: A unique name for the criterion (e.g., `user_was_not_upset`)
+* **Name**: A name for the criterion (e.g., User was not upset)
 * **Description**: Detailed prompt describing what should be evaluated
 
 ![Setting up evaluation criteria](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/0e1ad5eec745d5733701dcf8cbf4f413473f55a0b5f26add4faac540dbbd086a/assets/images/conversational-ai/evaluation.gif)

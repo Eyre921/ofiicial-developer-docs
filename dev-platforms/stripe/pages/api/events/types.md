@@ -25,17 +25,17 @@ Stripe creates event types marked as **Selection required** only when at least o
   Occurs whenever a user deauthorizes an application. Sent to the related application only.
 
 - `account.external_account.created`
-  `data.object` is one of: `alipay_account`, [`bank_account`](https://docs.stripe.com/api#customer_bank_account_object), `bitcoin_receiver`, [`card`](https://docs.stripe.com/api#card_object), [`source`](https://docs.stripe.com/api#payment_provider_source_object), `blockchain_address`
+  `data.object` is one of: `alipay_account`, [`bank_account`](https://docs.stripe.com/api#customer_bank_account_object), `bitcoin_receiver`, [`card`](https://docs.stripe.com/api#card_object), [`source`](https://docs.stripe.com/api#source_object)
 
   Occurs whenever an external account is created.
 
 - `account.external_account.deleted`
-  `data.object` is one of: `alipay_account`, [`bank_account`](https://docs.stripe.com/api#customer_bank_account_object), `bitcoin_receiver`, [`card`](https://docs.stripe.com/api#card_object), [`source`](https://docs.stripe.com/api#payment_provider_source_object), `blockchain_address`
+  `data.object` is one of: `alipay_account`, [`bank_account`](https://docs.stripe.com/api#customer_bank_account_object), `bitcoin_receiver`, [`card`](https://docs.stripe.com/api#card_object), [`source`](https://docs.stripe.com/api#source_object)
 
   Occurs whenever an external account is deleted.
 
 - `account.external_account.updated`
-  `data.object` is one of: `alipay_account`, [`bank_account`](https://docs.stripe.com/api#customer_bank_account_object), `bitcoin_receiver`, [`card`](https://docs.stripe.com/api#card_object), [`source`](https://docs.stripe.com/api#payment_provider_source_object), `blockchain_address`
+  `data.object` is one of: `alipay_account`, [`bank_account`](https://docs.stripe.com/api#customer_bank_account_object), `bitcoin_receiver`, [`card`](https://docs.stripe.com/api#card_object), [`source`](https://docs.stripe.com/api#source_object)
 
   Occurs whenever an external account is updated.
 
@@ -74,30 +74,15 @@ Stripe creates event types marked as **Selection required** only when at least o
 
   Occurs whenever a user updates a Stripe app. Sent to the app developer, embedding platform, and installing merchant.
 
-- `balance_settings.updated`
-  `data.object` is one of: [`balance_settings`](https://docs.stripe.com/api#balance_settings_object)
-
-  Occurs whenever a balance settings status or property has changed.
-
 - `balance.available`
   `data.object` is one of: [`balance`](https://docs.stripe.com/api#balance_object)
 
   Occurs whenever your Stripe balance has been updated (e.g., when a charge is available to be paid out). By default, Stripe automatically transfers funds in your balance to your bank account on a daily basis. This event is not fired for negative transactions.
 
-- `billing_portal.configuration.created`
-  `data.object` is one of: [`billing_portal.configuration`](https://docs.stripe.com/api#portal_configuration_object)
+- `balance_settings.updated`
+  `data.object` is one of: [`balance_settings`](https://docs.stripe.com/api#balance_settings_object)
 
-  Occurs whenever a portal configuration is created.
-
-- `billing_portal.configuration.updated`
-  `data.object` is one of: [`billing_portal.configuration`](https://docs.stripe.com/api#portal_configuration_object)
-
-  Occurs whenever a portal configuration is updated.
-
-- `billing_portal.session.created`
-  `data.object` is one of: [`billing_portal.session`](https://docs.stripe.com/api#portal_session_object)
-
-  Occurs whenever a portal session is created.
+  Occurs whenever a balance settings status or property has changed.
 
 - `billing.alert.triggered`
   `data.object` is one of: `billing.alert_triggered`
@@ -138,6 +123,21 @@ Stripe creates event types marked as **Selection required** only when at least o
   `data.object` is one of: [`billing.meter`](https://docs.stripe.com/api#billing_meter_object)
 
   Occurs when a meter is updated
+
+- `billing_portal.configuration.created`
+  `data.object` is one of: [`billing_portal.configuration`](https://docs.stripe.com/api#portal_configuration_object)
+
+  Occurs whenever a portal configuration is created.
+
+- `billing_portal.configuration.updated`
+  `data.object` is one of: [`billing_portal.configuration`](https://docs.stripe.com/api#portal_configuration_object)
+
+  Occurs whenever a portal configuration is updated.
+
+- `billing_portal.session.created`
+  `data.object` is one of: [`billing_portal.session`](https://docs.stripe.com/api#portal_session_object)
+
+  Occurs whenever a portal session is created.
 
 - `capability.updated`
   `data.object` is one of: [`capability`](https://docs.stripe.com/api#capability_object)
@@ -299,11 +299,6 @@ Stripe creates event types marked as **Selection required** only when at least o
 
   Occurs whenever a credit note is voided.
 
-- `customer_cash_balance_transaction.created`
-  `data.object` is one of: [`customer_cash_balance_transaction`](https://docs.stripe.com/api#customer_cash_balance_transaction_object)
-
-  Occurs whenever a new customer cash balance transactions is created.
-
 - `customer.created`
   `data.object` is one of: [`customer`](https://docs.stripe.com/api#customer_object)
 
@@ -330,22 +325,22 @@ Stripe creates event types marked as **Selection required** only when at least o
   Occurs whenever a customer is switched from one coupon to another.
 
 - `customer.source.created`
-  `data.object` is one of: `alipay_account`, [`bank_account`](https://docs.stripe.com/api#customer_bank_account_object), `bitcoin_receiver`, [`card`](https://docs.stripe.com/api#card_object), [`source`](https://docs.stripe.com/api#payment_provider_source_object)
+  `data.object` is one of: `alipay_account`, [`bank_account`](https://docs.stripe.com/api#customer_bank_account_object), `bitcoin_receiver`, [`card`](https://docs.stripe.com/api#card_object), [`source`](https://docs.stripe.com/api#source_object)
 
   Occurs whenever a new source is created for a customer.
 
 - `customer.source.deleted`
-  `data.object` is one of: `alipay_account`, [`bank_account`](https://docs.stripe.com/api#customer_bank_account_object), `bitcoin_receiver`, [`card`](https://docs.stripe.com/api#card_object), [`source`](https://docs.stripe.com/api#payment_provider_source_object)
+  `data.object` is one of: `alipay_account`, [`bank_account`](https://docs.stripe.com/api#customer_bank_account_object), `bitcoin_receiver`, [`card`](https://docs.stripe.com/api#card_object), [`source`](https://docs.stripe.com/api#source_object)
 
   Occurs whenever a source is removed from a customer.
 
 - `customer.source.expiring`
-  `data.object` is one of: [`card`](https://docs.stripe.com/api#card_object), [`source`](https://docs.stripe.com/api#payment_provider_source_object)
+  `data.object` is one of: [`card`](https://docs.stripe.com/api#card_object), [`source`](https://docs.stripe.com/api#source_object)
 
   Occurs whenever a card or source will expire at the end of the month. This event only works with legacy integrations using Card or Source objects. If you use the PaymentMethod API, this event won’t occur.
 
 - `customer.source.updated`
-  `data.object` is one of: `alipay_account`, [`bank_account`](https://docs.stripe.com/api#customer_bank_account_object), `bitcoin_receiver`, [`card`](https://docs.stripe.com/api#card_object), [`source`](https://docs.stripe.com/api#payment_provider_source_object)
+  `data.object` is one of: `alipay_account`, [`bank_account`](https://docs.stripe.com/api#customer_bank_account_object), `bitcoin_receiver`, [`card`](https://docs.stripe.com/api#card_object), [`source`](https://docs.stripe.com/api#source_object)
 
   Occurs whenever a source’s details are changed.
 
@@ -408,6 +403,11 @@ Stripe creates event types marked as **Selection required** only when at least o
   `data.object` is one of: [`customer`](https://docs.stripe.com/api#customer_object)
 
   Occurs whenever any property of a customer changes.
+
+- `customer_cash_balance_transaction.created`
+  `data.object` is one of: [`customer_cash_balance_transaction`](https://docs.stripe.com/api#customer_cash_balance_transaction_object)
+
+  Occurs whenever a new customer cash balance transactions is created.
 
 - `entitlements.active_entitlement_summary.updated`
   `data.object` is one of: `entitlements.active_entitlement_summary`
@@ -519,11 +519,6 @@ Stripe creates event types marked as **Selection required** only when at least o
 
   Occurs whenever a VerificationSession transitions to verified
 
-- `invoice_payment.paid`
-  `data.object` is one of: [`invoice_payment`](https://docs.stripe.com/api#invoice_payment_object)
-
-  Occurs when an InvoicePayment is successfully paid.
-
 - `invoice.created`
   `data.object` is one of: [`invoice`](https://docs.stripe.com/api#invoice_object)
 
@@ -608,6 +603,11 @@ Stripe creates event types marked as **Selection required** only when at least o
   `data.object` is one of: [`invoice`](https://docs.stripe.com/api#invoice_object)
 
   Occurs X number of days before an invoice becomes due—where X is determined by Automations
+
+- `invoice_payment.paid`
+  `data.object` is one of: [`invoice_payment`](https://docs.stripe.com/api#invoice_payment_object)
+
+  Occurs when an InvoicePayment is successfully paid.
 
 - `invoiceitem.created`
   `data.object` is one of: [`invoiceitem`](https://docs.stripe.com/api#invoiceitem_object)
@@ -1045,27 +1045,27 @@ Stripe creates event types marked as **Selection required** only when at least o
   Occurs whenever a Sigma scheduled query run finishes.
 
 - `source.canceled`
-  `data.object` is one of: [`source`](https://docs.stripe.com/api#payment_provider_source_object)
+  `data.object` is one of: [`source`](https://docs.stripe.com/api#source_object)
 
   Occurs whenever a source is canceled.
 
 - `source.chargeable`
-  `data.object` is one of: [`source`](https://docs.stripe.com/api#payment_provider_source_object)
+  `data.object` is one of: [`source`](https://docs.stripe.com/api#source_object)
 
   Occurs whenever a source transitions to chargeable.
 
 - `source.failed`
-  `data.object` is one of: [`source`](https://docs.stripe.com/api#payment_provider_source_object)
+  `data.object` is one of: [`source`](https://docs.stripe.com/api#source_object)
 
   Occurs whenever a source fails.
 
 - `source.mandate_notification`
-  `data.object` is one of: [`source_mandate_notification`](https://docs.stripe.com/api#payment_provider_source_mandate_notification_object)
+  `data.object` is one of: `source_mandate_notification`
 
   Occurs whenever a source mandate notification method is set to manual.
 
 - `source.refund_attributes_required`
-  `data.object` is one of: [`source`](https://docs.stripe.com/api#payment_provider_source_object)
+  `data.object` is one of: [`source`](https://docs.stripe.com/api#source_object)
 
   Occurs whenever the refund attributes are required on a receiver source to process a refund or a mispayment.
 
@@ -1114,6 +1114,11 @@ Stripe creates event types marked as **Selection required** only when at least o
 
   Occurs whenever a subscription schedule is updated.
 
+- `tax.settings.updated`
+  `data.object` is one of: [`tax.settings`](https://docs.stripe.com/api#tax_settings_object)
+
+  Occurs whenever tax settings is updated.
+
 - `tax_rate.created`
   `data.object` is one of: [`tax_rate`](https://docs.stripe.com/api#tax_rate_object)
 
@@ -1123,11 +1128,6 @@ Stripe creates event types marked as **Selection required** only when at least o
   `data.object` is one of: [`tax_rate`](https://docs.stripe.com/api#tax_rate_object)
 
   Occurs whenever a tax rate is updated.
-
-- `tax.settings.updated`
-  `data.object` is one of: [`tax.settings`](https://docs.stripe.com/api#tax_settings_object)
-
-  Occurs whenever tax settings is updated.
 
 - `terminal.reader.action_failed`
   `data.object` is one of: [`terminal.reader`](https://docs.stripe.com/api#terminal_reader_object)
@@ -1168,6 +1168,41 @@ Stripe creates event types marked as **Selection required** only when at least o
   `data.object` is one of: [`test_helpers.test_clock`](https://docs.stripe.com/api#test_clock_object)
 
   Occurs whenever a test clock transitions to a ready status.
+
+- `three_d_secure.authentication.canceled`
+  `data.object` is one of: [`three_d_secure.authentication`](https://docs.stripe.com/api#three_d_secure_authentication_object)
+
+  Occurs when a 3DS Authentication’s status transitions to ‘canceled’
+
+- `three_d_secure.authentication.challenge_started`
+  `data.object` is one of: [`three_d_secure.authentication`](https://docs.stripe.com/api#three_d_secure_authentication_object)
+
+  Occurs when a 3DS Authentication’s ‘challenge_url’ was loaded.
+
+- `three_d_secure.authentication.errored`
+  `data.object` is one of: [`three_d_secure.authentication`](https://docs.stripe.com/api#three_d_secure_authentication_object)
+
+  Occurs when a 3DS Authentication’s status transitions to ‘error’
+
+- `three_d_secure.authentication.failed`
+  `data.object` is one of: [`three_d_secure.authentication`](https://docs.stripe.com/api#three_d_secure_authentication_object)
+
+  Occurs when a 3DS Authentication’s status transitions to ‘failed’
+
+- `three_d_secure.authentication.requires_challenge`
+  `data.object` is one of: [`three_d_secure.authentication`](https://docs.stripe.com/api#three_d_secure_authentication_object)
+
+  Occurs when a 3DS Authentication’s status transitions to ‘requires_challenge’
+
+- `three_d_secure.authentication.requires_submission`
+  `data.object` is one of: [`three_d_secure.authentication`](https://docs.stripe.com/api#three_d_secure_authentication_object)
+
+  Occurs when a 3DS Authentication’s status transitions to ‘requires_submission’
+
+- `three_d_secure.authentication.succeeded`
+  `data.object` is one of: [`three_d_secure.authentication`](https://docs.stripe.com/api#three_d_secure_authentication_object)
+
+  Occurs when a 3DS Authentication’s status transitions to ‘succeeded’
 
 - `topup.canceled`
   `data.object` is one of: [`topup`](https://docs.stripe.com/api#topup_object)

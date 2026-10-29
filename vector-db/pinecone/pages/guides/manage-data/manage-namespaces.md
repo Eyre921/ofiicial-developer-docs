@@ -21,7 +21,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 namespace = index.create_namespace(
     name="example-namespace",
@@ -223,7 +223,7 @@ from pinecone import Pinecone
 
 pc = Pinecone(api_key="YOUR_API_KEY")
 
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 # Implicit pagination using a generator function that yields one page at a time
 for page in index.list_namespaces():
@@ -426,7 +426,7 @@ from pinecone import Pinecone
 
 pc = Pinecone(api_key="YOUR_API_KEY")
 
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 namespace = index.describe_namespace(namespace="example-namespace")
 
@@ -574,7 +574,7 @@ from pinecone import Pinecone
 
 pc = Pinecone(api_key="YOUR_API_KEY")
 
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST")
 
 index.delete_namespace(namespace="example-namespace")
 ```

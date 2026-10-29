@@ -757,7 +757,7 @@ NAMESPACE = 'NAMESPACE_NAME'
 # Consider using smaller batches if you have a high RPS for read operations
 BATCH = 1000
 
-index = pc.Index(name=INDEX_NAME)
+index = pc.index(name=INDEX_NAME)
 dimensions = index.describe_index_stats()['dimension']
 
 # Create the query vector
@@ -784,7 +784,7 @@ NAMESPACE = 'NAMESPACE_NAME'
 # Consider using smaller batches if you have a high RPS for read operations
 BATCH = 1000
 
-index = pc.Index(name=INDEX_NAME)
+index = pc.index(name=INDEX_NAME)
 dimensions = index.describe_index_stats()['dimension']
 
 METADATA_FILTER = {}
@@ -819,7 +819,7 @@ pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 index.delete(
     filter={

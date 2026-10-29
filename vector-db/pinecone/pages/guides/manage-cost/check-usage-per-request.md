@@ -24,7 +24,7 @@ Example query request:
 from pinecone.grpc import PineconeGRPC as Pinecone
 
 pc = Pinecone(api_key="YOUR_API_KEY")
-index = pc.Index("example-index")
+index = pc.index(name="example-index", grpc=True)
 
 # Replace with your query embedding, which must match the index's dimension (1536 in this example)
 query_vector = [0.1] * 1536

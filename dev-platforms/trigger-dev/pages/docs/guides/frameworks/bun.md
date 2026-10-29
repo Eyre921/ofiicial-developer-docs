@@ -11,28 +11,30 @@ This guide will show you how to setup Trigger.dev in your existing Bun project, 
 > The trigger.dev CLI does not yet support Bun. So you will need to run the CLI using Node.js. Bun
 > will still be used to execute your tasks, even in the `dev` environment.
 
-> [!NOTE]
+> [!WARNING]
 >
-> **Supported Bun versions:** `runtime: "bun"` deploys on Bun 1.3.3 with a Node.js 20 binary
-> alongside it. Opt in to `runtime: "bun-1.4"` (Bun 1.4.4) for a
-> Bun-only image. For local development, match the Bun minor you deploy on.
+> **`runtime: "bun"` is deprecated.** It deploys on Bun 1.3.3 with a Node.js 20 binary alongside it
+> (`bun-legacy` is the same runtime). Deploys that use it will be rejected from **January 5, 2027**.
+> Switch to `runtime: "bun-1.4"` (Bun 1.4.4) and redeploy; already-deployed versions keep their
+> original image until you do. For local development, match the Bun minor you deploy on.
 
 ## Choosing a Bun runtime
 
 | `runtime` | Bun | Node.js binary in the image | Notes |
 | - | - | - | - |
-| `bun` | 1.3.3 | Yes (Node.js 20) | The default, also spelled `bun-legacy`. Use this if a task shells out to `node`. |
-| `bun-1.4` | 1.4.4 | No | Bun-only image. See the Bun 1.4 note below. |
+| `bun-1.4` | 1.4.4 | No | Recommended. Bun-only image. See the Bun 1.4 note below. |
+| `bun` | 1.3.3 | Yes (Node.js 20) | Deprecated, also spelled `bun-legacy`. Rejected from January 5, 2027. |
 
 The `bun-1.4` image contains **no Node.js binary**. Anything in your task that spawns
-`node` (a CLI tool, a `postinstall` script, a library that shells out) will fail on it. Keep those
-projects on `bun`, or install Node.js yourself with a build extension.
+`node` (a CLI tool, a `postinstall` script, a library that shells out) will fail on it. Install
+Node.js yourself with a build extension before moving those projects off `bun`.
 
 > [!NOTE]
 >
 > **Bun 1.4:** Bun 1.4.x has an open regression in its `node:http2` client
 > ([oven-sh/bun#39796](https://github.com/oven-sh/bun/issues/39796)). If your tasks use HTTP/2
-> clients, for example some gRPC or Google Cloud SDKs, use `bun` until it is fixed.
+> clients, for example some gRPC or Google Cloud SDKs, you can stay on `bun` until it is fixed,
+> but no later than January 5, 2027.
 
 ## Prerequisites
 
@@ -59,15 +61,15 @@ The easiest way to get started is to use the CLI. It will add Trigger.dev to you
 Run this command in the root of your project to get started:
 
 ```bash npm theme={"theme":"css-variables"}
-npx trigger.dev@latest init --runtime bun
+npx trigger.dev@latest init --runtime bun-1.4
 ```
 
 ```bash pnpm theme={"theme":"css-variables"}
-pnpm dlx trigger.dev@latest init --runtime bun
+pnpm dlx trigger.dev@latest init --runtime bun-1.4
 ```
 
 ```bash yarn theme={"theme":"css-variables"}
-yarn dlx trigger.dev@latest init --runtime bun
+yarn dlx trigger.dev@latest init --runtime bun-1.4
 ```
 
 It will do a few things:

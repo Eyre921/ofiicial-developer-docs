@@ -197,11 +197,6 @@ First, find your webhook endpoint secret. If you’re testing locally with the S
 #### Ruby
 
 ```ruby
-
-# Don't put any keys in code. See https://docs.stripe.com/keys-best-practices.
-# Find your keys at https://dashboard.stripe.com/apikeys.
-client = Stripe::StripeClient.new('<<YOUR_SECRET_KEY>>')
-
 require 'stripe'
 require 'sinatra'
 

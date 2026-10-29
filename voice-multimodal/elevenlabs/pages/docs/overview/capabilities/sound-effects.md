@@ -22,7 +22,12 @@ Listen to an example:
 
 ## Usage
 
-Sound effects are generated using text descriptions & two optional parameters:
+Sound effects are generated using text descriptions & optional parameters:
+
+* **Model**: Choose the model that generates the sound effect
+
+  * `eleven_text_to_sound_v2`: The default model
+  * `eleven_text_to_sound_v3` (SFX v3): Follows multi-part prompts more closely and handles vocal and musical sounds better. See [SFX v3](#sfx-v3)
 
 * **Duration**: Set a specific length for the generated audio (in seconds)
 
@@ -52,6 +57,27 @@ Learn how to integrate sound effects into your application.
 #### [API reference](/docs/api-reference/text-to-sound-effects/convert)
 
 Full API reference for the Sound Effects endpoint.
+
+### SFX v3
+
+SFX v3 is our newest sound effects model. Compared with `eleven_text_to_sound_v2`, it follows prompts that contain several instructions more closely, handles prompts with music or vocals better, sounds more natural, and is less likely to clip on high-frequency sounds such as chimes and whistles. Results vary by prompt, so compare both models on your own prompts.
+
+SFX v3 is available in the API and in ElevenCreative, in Sound Effects, Flows and Studio. In the API, set `model_id` to `eleven_text_to_sound_v3`.
+
+> **Warning**
+>
+> SFX v3 is in limited access and may not be available in every region. Requests from accounts
+> without access return an `Unknown model` error.
+
+When prompting SFX v3, describe the action, setting, atmosphere and performance you want rather than a broad sound category:
+
+* "Rain against a window in a quiet apartment"
+* "Footsteps on gravel approaching slowly"
+* "Football crowd cheering, hearing a ball drop, crowd booing"
+
+Wording affects results. For example, "a couple arguing in French" produced better results than "a couple fighting in French". Prompts that ask for an exact number of repetitions, such as "triangle hit 4 times", are not always followed.
+
+Learn more about SFX v3 on the [models page](/docs/overview/models#sfx-v3).
 
 ### Prompting guide
 

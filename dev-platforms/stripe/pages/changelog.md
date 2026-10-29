@@ -10,6 +10,112 @@ Keep track of changes and upgrades to the Stripe API.
 
 # Endive
 [Learn what's changing in Endive](https://docs.stripe.com/changelog/endive.md)
+## 2026-10-28.preview
+
+### Payments
+
+| Title | Affected Products | Breaking change? | Category |
+| --- | --- | --- | --- |
+| [Adds support for the Wero bank redirect payment method](https://docs.stripe.com/changelog/endive/2026-10-28/wero-bank-redirect-payment-method-support.md) | Payments, Paymentlinks, Checkout | Non-breaking | api |
+| [Adds settlement currency management to Balance Settings](https://docs.stripe.com/changelog/endive/2026-10-28/settlement-currency-management-balance-settings.md) | Payments | Non-breaking | api |
+| [Adds Plaid processor tokens for ACH Direct Debit payment methods](https://docs.stripe.com/changelog/endive/2026-10-28/us-bank-account-external-token-parameter-support.md) | Payments | Non-breaking | api |
+| [Adds fingerprint properties to v2 bank account objects](https://docs.stripe.com/changelog/endive/2026-10-28/v2-bank-account-fingerprint-properties.md) | Payouts, Payments | Non-breaking | api |
+
+### Treasury and money management
+
+| Title | Affected Products | Breaking change? | Category |
+| --- | --- | --- | --- |
+| [Removes deposit insurance eligibility from the create parameters for Financial Accounts](https://docs.stripe.com/changelog/endive/2026-10-28/deposit-insurance-eligibility-financial-accounts-create-removal.md) | Treasury | Breaking | api |
+| [Updates the Financial Addresses v2 API shape](https://docs.stripe.com/changelog/endive/2026-10-28/financial-addresses-v2-api-shape-updates.md) | All products | Breaking | api |
+| [Adds support for EUR currency and SEPA networks to Financial Addresses](https://docs.stripe.com/changelog/endive/2026-10-28/financial-addresses-eur-currency-sepa-networks-support.md) | All products | Breaking | api |
+| [Updates the Received Credits v2 API shape](https://docs.stripe.com/changelog/endive/2026-10-28/received-credits-v2-api-shape-updates.md) | All products | Breaking | api |
+| [Updates the settlement currency property on Financial Addresses](https://docs.stripe.com/changelog/endive/2026-10-28/financial-addresses-settlement-currency.md) | All products | Breaking | api |
+| [Adds APIs and capabilities for outbound payments and transfers](https://docs.stripe.com/changelog/endive/2026-10-28/outbound-flows-api-updates.md) | Treasury | Breaking | api |
+| [Adds SEPA Instant Credit Transfer as a received credit network type](https://docs.stripe.com/changelog/endive/2026-10-28/sepa-instant-credit-transfer-received-credit-network-type.md) | All products | Non-breaking | api |
+
+### Additional updates
+
+| Title | Affected Products | Breaking change? | Category |
+| --- | --- | --- | --- |
+| [Updates the Vaulted bank account credentials and Payout Methods v2 APIs](https://docs.stripe.com/changelog/endive/2026-10-28/vaulted-bank-account-credentials-payout-methods-apis.md) | Payouts | Breaking | api |
+| [Renames the wire network value to fedwire for Financial Address credit simulations](https://docs.stripe.com/changelog/endive/2026-10-28/wire-network-value-fedwire-rename-financial-address-credit-simulations.md) | All products | Non-breaking | api |
+| [Adds the Queries and Reports API for querying your Stripe data with SQL](https://docs.stripe.com/changelog/endive/2026-10-28/data-api.md) | Sigma | Non-breaking | api |
+
+## 2026-10-28.endive
+
+### Billing and invoicing
+
+| Title | Affected Products | Breaking change? | Category |
+| --- | --- | --- | --- |
+| [Adds session recovery for expired customer portal sessions](https://docs.stripe.com/changelog/endive/2026-10-28/session-recovery-for-expired-customer-portal-sessions.md) | Billing | Non-breaking | api |
+| [Adds support for the SeQura payment method for invoices and subscriptions](https://docs.stripe.com/changelog/endive/2026-10-28/sequra-payment-method-support-invoices-subscriptions.md) | Invoicing | Non-breaking | api |
+| [Adds subscription pausing to the customer portal](https://docs.stripe.com/changelog/endive/2026-10-28/customer-portal-subscription-pausing.md) | Billing | Non-breaking | api |
+| [Adds an error code for billing cycle anchor and trial validation on subscriptions](https://docs.stripe.com/changelog/endive/2026-10-28/error-code-billing-cycle-trial-end-validation-subscriptions.md) | Billing | Non-breaking | api |
+
+### Connect
+
+| Title | Affected Products | Breaking change? | Category |
+| --- | --- | --- | --- |
+| [Adds Connect embedded components for buying Terminal hardware](https://docs.stripe.com/changelog/endive/2026-10-28/connect-embedded-components-ordering-terminal-hardware.md) | Terminal | Non-breaking | api |
+| [Adds the Reporting Chart embedded component](https://docs.stripe.com/changelog/endive/2026-10-28/reporting-chart-embedded-component.md) | Connect | Non-breaking | api |
+| [Adds alternative requirements to the Accounts v2 API](https://docs.stripe.com/changelog/endive/2026-10-28/alternative-requirements-accounts-v2-api.md) | Connect | Non-breaking | api |
+
+### Payments
+
+| Title | Affected Products | Breaking change? | Category |
+| --- | --- | --- | --- |
+| [Adds payment intent data configuration when updating Checkout Sessions](https://docs.stripe.com/changelog/endive/2026-10-28/adds-payment-intent-data-configuration-when-updating-checkout-sessions.md) | Checkout, Payments | Non-breaking | api |
+| [Adds Open USD (OUSD) as a supported token currency for crypto payments](https://docs.stripe.com/changelog/endive/2026-10-28/ousd-token-currency.md) | Crypto | Non-breaking | api |
+| [Adds support for requesting Scalapay Payment Links](https://docs.stripe.com/changelog/endive/2026-10-28/scalapay-payment-method-support-payment-links.md) | Paymentlinks | Non-breaking | api |
+| [Adds the evidence submission method property to Disputes](https://docs.stripe.com/changelog/endive/2026-10-28/evidence-submission-method-property-disputes.md) | Payments | Non-breaking | api |
+| [Adds the ability to specify the intended submission method for Disputes](https://docs.stripe.com/changelog/endive/2026-10-28/adds-intended-submission-method-for-disputes.md) | Payments | Non-breaking | api |
+| [Adds invoice settings parameters for Checkout Sessions and Payment Links subscriptions](https://docs.stripe.com/changelog/endive/2026-10-28/invoice-settings-parameters-checkout-sessions-payment-links-subscriptions.md) | Checkout, Paymentlinks | Non-breaking | api |
+| [Adds support for submitting evidence to appeal dispute decisions](https://docs.stripe.com/changelog/endive/2026-10-28/evidence-submission-appeal-dispute-decisions.md) | Payments | Non-breaking | api |
+| [Adds refund reference tracking for Klarna, PayPal, and Afterpay Clearpay](https://docs.stripe.com/changelog/endive/2026-10-28/refund-reference-klarna-paypal-afterpay.md) | Payments | Non-breaking | api |
+| [Adds support for specifying card-on-file usage when saving or charging cards](https://docs.stripe.com/changelog/endive/2026-10-28/card-on-file-usage-indicators-support.md) | Payments | Non-breaking | api |
+| [Adds RTP and FedNow as US bank transfer network types for cash balance transactions](https://docs.stripe.com/changelog/endive/2026-10-28/rtp-fednow-support-us-bank-transfer-network-types.md) | Payments | Non-breaking | api |
+| [Adds webhook events and error messages for the Standalone 3DS API](https://docs.stripe.com/changelog/endive/2026-10-28/standalone-3ds-error-messages-and-webhook-events.md) | Payments | Non-breaking | api |
+
+### Tax
+
+| Title | Affected Products | Breaking change? | Category |
+| --- | --- | --- | --- |
+| [Adds tax registration support for Botswana, Ghana, Ivory Coast, and Mauritius](https://docs.stripe.com/changelog/endive/2026-10-28/tax-registration-support-ghana-botswana-mauritius-ivory-coast.md) | Tax | Non-breaking | api |
+| [Adds Ghana levy tax types](https://docs.stripe.com/changelog/endive/2026-10-28/ghana-levy-tax-types.md) | Tax | Non-breaking | api |
+| [Adds customer tax ID types](https://docs.stripe.com/changelog/endive/2026-10-28/customer-tax-id-types.md) | Invoicing, Tax | Non-breaking | api |
+| [Adds tax ID support for Botswana, Ghana, and Ivory Coast](https://docs.stripe.com/changelog/endive/2026-10-28/tax-id-support-botswana-ghana-ivory-coast.md) | Tax | Non-breaking | api |
+| [Adds tax type values for events and ticketing to the Tax Rate object](https://docs.stripe.com/changelog/endive/2026-10-28/tax-type-values-events-ticketing.md) | Tax | Non-breaking | api |
+
+### Terminal
+
+| Title | Affected Products | Breaking change? | Category |
+| --- | --- | --- | --- |
+| [Adds support for the Stripe Terminal T600 reader](https://docs.stripe.com/changelog/endive/2026-10-28/stripe-terminal-t600-reader-availability.md) | Terminal | Non-breaking | api |
+| [Adds admin menu passcode to Terminal configurations](https://docs.stripe.com/changelog/endive/2026-10-28/terminal-configuration-admin-menu-passcode.md) | Terminal | Non-breaking | api |
+
+### Treasury and money management
+
+| Title | Affected Products | Breaking change? | Category |
+| --- | --- | --- | --- |
+| [Adds support for the Inbound Transfers v2 API](https://docs.stripe.com/changelog/endive/2026-10-28/inbound-transfers-v2-api.md) | All products | Non-breaking | api |
+| [Adds the Outbound Payments, Payout Intents, and Recipient Verifications APIs for programmatic outbound flows](https://docs.stripe.com/changelog/endive/2026-10-28/outbound-flows-api-support.md) | Treasury | Non-breaking | api |
+| [Adds the Financial Addresses v2 API for receiving funds in your financial accounts](https://docs.stripe.com/changelog/endive/2026-10-28/financial-addresses-v2-api.md) | All products | Non-breaking | api |
+| [Adds a sandbox test helper to simulate credits to Financial Addresses](https://docs.stripe.com/changelog/endive/2026-10-28/sandbox-test-helper-simulate-credits-to-financial-addresses.md) | All products | Non-breaking | api |
+| [Adds the Received Credits v2 API for tracking funds received in a financial account](https://docs.stripe.com/changelog/endive/2026-10-28/received-credits-v2-api.md) | All products | Non-breaking | api |
+
+### Additional updates
+
+| Title | Affected Products | Breaking change? | Category |
+| --- | --- | --- | --- |
+| [Adds semantic thin events for subscriptions, invoicing, and Financial Connections](https://docs.stripe.com/changelog/endive/2026-10-28/semantic-thin-events-subscriptions-invoicing-financial-connections.md) | All products | Non-breaking | api |
+| [Adds support for vaulted bank account credentials, payout methods, and outbound setup intents in API v2](https://docs.stripe.com/changelog/endive/2026-10-28/vaulted-bank-account-credentials-payout-methods-outbound-setup-intents.md) | Payouts, Treasury | Non-breaking | api |
+| [Adds regulatory receipt URLs to transactions](https://docs.stripe.com/changelog/endive/2026-10-28/transaction-regulatory-receipts.md) | Treasury | Non-breaking | api |
+| [Adds digital excise tax and utility users tax as supported US registration types](https://docs.stripe.com/changelog/endive/2026-10-28/digital-excise-tax-utility-users-tax-registration-types.md) | Tax | Non-breaking | api |
+| [Adds validation for Smart Disputes availability when submitting a dispute](https://docs.stripe.com/changelog/endive/2026-10-28/smart-disputes-availability-validation.md) | Payments | Non-breaking | api |
+| [Adds support for Global Payouts capabilities in the Accounts v2 API](https://docs.stripe.com/changelog/endive/2026-10-28/global-payouts-capabilities-accounts-api-v2.md) | Connect, Payouts | Non-breaking | api |
+| [Adds money management APIs for Global Payouts](https://docs.stripe.com/changelog/endive/2026-10-28/v2-financial-accounts-transactions-adjustments.md) | Treasury | Non-breaking | api |
+| [Adds shipping timestamps to Issuing Cards](https://docs.stripe.com/changelog/endive/2026-10-28/issuing-cards-shipping-timestamps.md) | Issuing | Non-breaking | api |
+
 ## 2026-09-30.endive
 
 ### Billing and invoicing

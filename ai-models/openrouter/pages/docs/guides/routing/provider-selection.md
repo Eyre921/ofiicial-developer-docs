@@ -12,7 +12,7 @@ path: docs/guides/routing/provider-selection
 
 > Route requests to the best provider
 
-OpenRouter routes requests to the best available providers for your model. By default, [requests are load balanced](#price-based-load-balancing-default-strategy) across the top providers to maximize uptime.
+OpenRouter routes requests to the best available providers for your model. By default, [OpenRouter routes each request](#default-routing) based on each provider's measured price, throughput, latency, and reliability.
 
 You can customize how your requests are routed using the `provider` object in the request body for [Chat Completions](https://openrouter.ai/docs/api/api-reference/chat/create-a-chat-completion.md).
 
@@ -40,39 +40,38 @@ The `provider` object can contain the following fields:
 >
 > OpenRouter supports in-region routing in the EU and US on the Business and Enterprise plans. There is no provider preference or setting to turn on: send the request to `https://eu.openrouter.ai` or `https://us.openrouter.ai`, and its prompts and completions are processed entirely within that region. Learn more in the [In-Region Routing guide](https://openrouter.ai/docs/guides/features/in-region-routing.md).
 
-## Price-Based Load Balancing (Default Strategy)
+## Default Routing
 
-For each model in your request, OpenRouter's default behavior is to load balance requests across providers, prioritizing price.
+For each model in your request, OpenRouter picks a provider by comparing what a good response would actually cost you at each one, not by list price alone. Each input is measured from recent production traffic, so routing reacts within minutes when a provider gets faster, slower, or less reliable:
 
-If you are more sensitive to throughput than price, you can use the `sort` field to explicitly prioritize throughput.
+* **Effective price**: the price the provider actually charges, reflecting its real cache hit rate and its typical mix of input and output tokens.
+* **Throughput**: end-to-end output tokens per second. A faster provider can charge more and still win your request.
+* **Time to first token (TTFT)**: how long you wait before the response starts streaming.
+* **Rate limits**: how often the provider rejects requests with a 429 because it is out of capacity.
+* **Reliability**: how often requests fail because of the provider.
+* **Quality**: whether the provider's tool calls come back well formed.
+
+Providers close to the best share most of the traffic, and each request picks one at random, weighted by those shares. Providers far behind still get a small share, so routing notices when they improve. On top of the shares:
+
+* A provider whose errors or 429s are far worse than the model's other providers gets no traffic until it recovers.
+* Routing learns how much load each provider can take before it returns 429s, and sends the rest to other providers.
+* A burst of 429s or a jump in latency briefly lowers a provider's share.
+
+If a request fails, the retry is picked the same way from the providers that are left. Follow-up requests in a conversation stay with the same provider while its [prompt cache](https://openrouter.ai/docs/guides/best-practices/prompt-caching.md) is warm.
+
+For more detail on each input, see [How OpenRouter Routes Traffic Between Providers](https://openrouter.ai/docs/guides/providers/traffic-routing.md).
 
 > [!TIP]
 >
 > When you send a request with `tools` or `tool_choice`, OpenRouter makes a best effort to route to providers known to support tool use. Similarly, if you set a `max_tokens`, then OpenRouter will only route to providers that support a response of that length.
 
-Here is OpenRouter's default load balancing strategy:
-
-1. Prioritize providers that have not seen significant outages in the last 30 seconds.
-2. For the stable providers, look at the lowest-cost candidates and select one weighted by inverse square of the price (example below).
-3. Use the remaining providers as fallbacks.
-
-> [!NOTE]
->
-> **A Load Balancing Example**
->
-> If Provider A costs \$1 per million tokens, Provider B costs \$2, and Provider C costs \$3, and Provider B recently saw a few outages.
->
-> * Your request is most likely routed to Provider A first. Provider A is 9x more likely than Provider C to be routed to first, because each provider is weighted by the inverse square of its price: $1 / 1^2 = 1$ for Provider A vs. $1 / 3^2 = 1/9$ for Provider C.
-> * If Provider A fails, then Provider C will be tried next.
-> * If Provider C also fails, Provider B will be tried last.
-
-If you have `sort` or `order` set in your provider preferences, load balancing will be disabled.
+Default routing applies whenever you leave the choice of provider to OpenRouter. It is bypassed when you set `sort` (or a default provider sort in your [account settings](https://openrouter.ai/settings/preferences)), use the `:floor` or `:nitro` shortcuts, set `order`, or use your own provider key. If you set `only` or `ignore` and two or more providers remain, default routing picks among them.
 
 ## Provider Sorting
 
-As described above, OpenRouter load balances based on price, while taking uptime into account.
+As described above, default routing balances price against throughput, latency, and reliability.
 
-If you instead want to *explicitly* prioritize a particular provider attribute, you can include the `sort` field in the `provider` preferences. Load balancing will be disabled, and the router will try providers in order.
+If you instead want to *explicitly* prioritize a particular provider attribute, you can include the `sort` field in the `provider` preferences. Default routing is bypassed, and the router will try providers in that order.
 
 The three sort options are:
 
@@ -137,9 +136,9 @@ response = requests.post('https://openrouter.ai/api/v1/chat/completions', header
 })
 ```
 
-To *always* prioritize low prices, and not apply any load balancing, set `sort` to `"price"`.
+To *always* prioritize low prices instead of using default routing, set `sort` to `"price"`.
 
-To *always* prioritize low latency, and not apply any load balancing, set `sort` to `"latency"`.
+To *always* prioritize low latency instead of using default routing, set `sort` to `"latency"`.
 
 ## Nitro Shortcut
 
@@ -823,7 +822,7 @@ You can set the providers that OpenRouter will prioritize for your request using
 | - | - | - | - |
 | `order` | string\[] | - | List of provider slugs to try in order (e.g. `["anthropic", "openai"]`). |
 
-The router will prioritize providers in this list, and in this order, for the model you're using. The order also outranks the priority your [BYOK keys](https://openrouter.ai/docs/guides/overview/auth/byok.md#byok-with-provider-ordering) would otherwise get: within each provider you name, your own key is tried before OpenRouter's shared capacity. If you don't set this field, the router will [load balance](#price-based-load-balancing-default-strategy) across the top providers to maximize uptime.
+The router will prioritize providers in this list, and in this order, for the model you're using. The order also outranks the priority your [BYOK keys](https://openrouter.ai/docs/guides/overview/auth/byok.md#byok-with-provider-ordering) would otherwise get: within each provider you name, your own key is tried before OpenRouter's shared capacity. If you don't set this field, the router uses [default routing](#default-routing).
 
 > [!TIP]
 >
@@ -1358,7 +1357,7 @@ response = requests.post('https://openrouter.ai/api/v1/chat/completions', header
 
 ## Disabling Fallbacks
 
-To guarantee that your request is only served by the top (lowest-cost) provider, you can disable fallbacks.
+To guarantee that your request is only served by the top-ranked provider, you can disable fallbacks.
 
 This is combined with the `order` field from [Ordering Specific Providers](#ordering-specific-providers) to restrict the providers that OpenRouter will prioritize to just your chosen list.
 
@@ -1423,6 +1422,8 @@ You can allow only specific providers for a request by setting the `only` field 
 | Field | Type | Default | Description |
 | - | - | - | - |
 | `only` | string\[] | - | List of provider slugs to allow for this request. |
+
+If two or more of the allowed providers can serve the model, [default routing](#default-routing) picks among them.
 
 > [!WARNING]
 >
@@ -1504,6 +1505,8 @@ You can ignore providers for a request by setting the `ignore` field in the `pro
 | Field | Type | Default | Description |
 | - | - | - | - |
 | `ignore` | string\[] | - | List of provider slugs to skip for this request. |
+
+If two or more providers remain, [default routing](#default-routing) picks among them.
 
 > [!WARNING]
 >
@@ -1594,7 +1597,7 @@ Providers can support various quantization levels for open-weight models.
 
 ### Quantization Levels
 
-By default, requests are load-balanced across all available providers, ordered by price. To filter providers by quantization level, specify the `quantizations` field in the `provider` parameter with the following values:
+By default, requests use [default routing](#default-routing) across all available providers. To filter providers by quantization level, specify the `quantizations` field in the `provider` parameter with the following values:
 
 * `int4`: Integer (4 bit)
 * `int8`: Integer (8 bit)

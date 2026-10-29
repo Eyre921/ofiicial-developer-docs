@@ -1,6 +1,6 @@
 # dev-platforms/resend 文档索引
 
-> 共 422 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 421 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -305,7 +305,6 @@
 - `docs/knowledge-base/how-to-handle-a-leaked-api-key` — [How to handle a leaked API key](pages/docs/knowledge-base/how-to-handle-a-leaked-api-key.md) · [原文](https://resend.com/docs/knowledge-base/how-to-handle-a-leaked-api-key)
 - `docs/knowledge-base/how-to-handle-api-keys` — [How to handle API keys](pages/docs/knowledge-base/how-to-handle-api-keys.md) · [原文](https://resend.com/docs/knowledge-base/how-to-handle-api-keys)
 - `docs/knowledge-base/introduction` — [Introduction](pages/docs/knowledge-base/introduction.md) · [原文](https://resend.com/docs/knowledge-base/introduction)
-- `docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain` — [Is it better to send emails from a subdomain or the root domain?](pages/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain.md) · [原文](https://resend.com/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain)
 - `docs/knowledge-base/n8n-integration` — [Send emails with n8n and Resend](pages/docs/knowledge-base/n8n-integration.md) · [原文](https://resend.com/docs/knowledge-base/n8n-integration)
 - `docs/knowledge-base/sending-apple-private-relay` — [How to prevent bounces with @privaterelay.appleid.com recipients?](pages/docs/knowledge-base/sending-apple-private-relay.md) · [原文](https://resend.com/docs/knowledge-base/sending-apple-private-relay)
 - `docs/knowledge-base/setting-up-resend-for-multi-tenants` — [Setting up Resend for Multi-Tenant Applications](pages/docs/knowledge-base/setting-up-resend-for-multi-tenants.md) · [原文](https://resend.com/docs/knowledge-base/setting-up-resend-for-multi-tenants)

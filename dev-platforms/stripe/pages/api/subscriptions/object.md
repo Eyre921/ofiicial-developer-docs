@@ -285,6 +285,15 @@ Possible enum values:
   If subscription `collection_method=charge_automatically`, it becomes `past_due` when payment is required but cannot be paid (due to failed payment or awaiting additional user actions). Once Stripe has exhausted all payment retry attempts, the subscription will become `canceled` or `unpaid` (depending on your subscriptions settings).
 
   If subscription `collection_method=send_invoice` it becomes `past_due` when its invoice is not paid by the due date, and `canceled` or `unpaid` if it is still not paid by an additional deadline after that. Note that when a subscription has a status of `unpaid`, no subsequent invoices will be attempted (invoices will be created, but then immediately automatically closed). After receiving updated payment information from a customer, you may choose to reopen and pay their closed invoices.
+Possible enum values:
+  - `active`
+  - `canceled`
+  - `incomplete`
+  - `incomplete_expired`
+  - `past_due`
+  - `paused`
+  - `trialing`
+  - `unpaid`
 
 - [`status_details`](https://docs.stripe.com/api/subscriptions/object.md?query=status_details) (object, nullable)
   Describes when and why the subscription’s status changed over time.

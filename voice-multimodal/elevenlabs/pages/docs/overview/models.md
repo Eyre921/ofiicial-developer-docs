@@ -212,6 +212,7 @@ The ElevenLabs API offers a range of audio models optimized for different use ca
 | `scribe_v2_realtime`         | Real-time speech recognition model                                                                                                                                                     | [90+ languages](/docs/overview/capabilities/speech-to-text#supported-languages)                                                                                               |
 | `scribe_v2`                  | State-of-the-art speech recognition model                                                                                                                                              | [90+ languages](/docs/overview/capabilities/speech-to-text#supported-languages)                                                                                               |
 | `scribe_v2_medical`          | Speech recognition model specialized for medical and clinical audio                                                                                                                    | [90+ languages](/docs/overview/capabilities/speech-to-text#supported-languages)                                                                                               |
+| `eleven_text_to_sound_v3`    | Sound effects generation from text prompts, with closer prompt following and better vocal and musical sounds than `eleven_text_to_sound_v2`. Limited access                            | N/A                                                                                                                                                                           |
 | `eleven_realtime_v1_mini`    | Complete voice agent model configuration, optimized for fast, natural conversation                                                                                                     | [90+ languages](/docs/overview/models#supported-languages)                                                                                                                    |
 | `eleven_realtime_v1_max`     | Complete voice agent model configuration, optimized for complex, multi-step tasks                                                                                                      | [90+ languages](/docs/overview/models#supported-languages)                                                                                                                    |
 | `eleven_text_to_sound_v2`    | Sound effects generation from text prompts                                                                                                                                             | N/A                                                                                                                                                                           |
@@ -523,6 +524,30 @@ Scribe v2 Medical is eligible for HIPAA, with Business Associate Agreements avai
 > sending protected health information.
 
 Read more about Speech to Text [here](/docs/overview/capabilities/speech-to-text).
+
+## SFX v3
+
+SFX v3 (`eleven_text_to_sound_v3`) is our newest sound effects model. It uses the same [Sound Effects API](/docs/api-reference/text-to-sound-effects/convert) as `eleven_text_to_sound_v2`: set `model_id` to `eleven_text_to_sound_v3` to use it. `eleven_text_to_sound_v2` remains the default.
+
+> **Warning**
+>
+> SFX v3 is in limited access and may not be available in every region. Requests from accounts
+> without access return an `Unknown model` error.
+
+Compared with `eleven_text_to_sound_v2`, SFX v3:
+
+* Follows several instructions in one prompt, such as "Football crowd cheering, hearing a ball drop, crowd booing".
+* Handles prompts that include music or vocals, such as "Gospel choir singing hello".
+* Produces more natural-sounding results.
+* Is less likely to clip on high-frequency sounds such as gongs, chimes and whistles.
+
+Results vary by prompt, so compare both models on your own prompts before switching.
+
+SFX v3 supports looping. Set `loop` to `true` to generate a sound effect that loops smoothly.
+
+In ElevenCreative, SFX v3 is available in Sound Effects, Flows and Studio.
+
+Read more about sound effects [here](/docs/overview/capabilities/sound-effects).
 
 ## Eleven Realtime
 

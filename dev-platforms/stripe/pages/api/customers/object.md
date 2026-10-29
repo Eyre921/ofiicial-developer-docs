@@ -108,6 +108,9 @@ path: api/customers/object
 - `livemode` (boolean)
   If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
 
+- [`marketing_attributions`](https://docs.stripe.com/api/customers/object.md?query=marketing_attributions) (array of objects, nullable)
+  Advertising attribution information for this customer.
+
 - `metadata` (map)
   Set of [key-value pairs](https://docs.stripe.com/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 

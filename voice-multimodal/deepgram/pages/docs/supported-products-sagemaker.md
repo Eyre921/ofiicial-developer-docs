@@ -26,18 +26,21 @@ For Text-to-Speech (TTS), Deepgram publishes a single product listing per model 
 
 Within a listing, individual languages are delivered as **versions** of the model package. A monolingual listing may offer one version covering English and French, and another covering Vietnamese and Thai. Read the version name and its release notes to understand the set of languages each version provides, and select the version that matches the languages you need when deploying.
 
+Flux TTS is one listing with two versions: English, and German, Spanish, French, Hindi, Italian, Japanese, Dutch, Portuguese and Russian. Each endpoint serves only the voices of the version it was deployed from, so a voice from the other version (for example `flux-alexis-en` on the non-English version) returns `400`. The two versions also need different instance types; see the table below.
+
 *Language Requests*: If there is a transcription language that is not currently available on the AWS Marketplace, please work with your account manager to request additional language models to be added. For a full list of the Deepgram supported transcription languages, [check out this document](/docs/models-languages-overview). You can also view the [Changelog](https://developers.deepgram.com/changelog) to see recent product announcements.
 
 ## Instance types
 
 Every Deepgram SageMaker product requires a GPU-accelerated instance. Choose an instance type from the table for the product you are deploying, and request [SageMaker quota](/docs/request-sagemaker-quota) for it before you create an endpoint.
 
-| Product           | Recommended      | Also supported                                                                               | Not supported                           |
-| ----------------- | ---------------- | -------------------------------------------------------------------------------------------- | --------------------------------------- |
-| Nova-3 STT        | `ml.g6.2xlarge`  | `ml.g7.2xlarge`, `ml.g7e.2xlarge`, `ml.g6e.2xlarge`, `ml.g5.2xlarge`, `ml.g4dn.2xlarge`      | —                                       |
-| Flux STT          | `ml.g6.2xlarge`  | `ml.g7.2xlarge`, `ml.g7e.2xlarge`, `ml.g6e.2xlarge`, `ml.g5.2xlarge`                         | `ml.g4dn.*` (no sm_75 kernel)           |
-| Aura-2 TTS        | `ml.g6.12xlarge` | `ml.g7.12xlarge`, `ml.g7e.12xlarge`, `ml.g5.12xlarge`, `ml.g6e.12xlarge`, `ml.g4dn.12xlarge` | Single-GPU types (Aura-2 needs 2+ GPUs) |
-| Flux TTS (Aura-3) | `ml.g6e.2xlarge` | `ml.g7.2xlarge`, `ml.g7e.2xlarge`, `ml.g6.2xlarge`                                           | `ml.g5.*`, `ml.g4dn.*`                  |
+| Product                       | Recommended      | Also supported                                                                               | Not supported                                  |
+| ----------------------------- | ---------------- | -------------------------------------------------------------------------------------------- | ---------------------------------------------- |
+| Nova-3 STT                    | `ml.g6.2xlarge`  | `ml.g7.2xlarge`, `ml.g7e.2xlarge`, `ml.g6e.2xlarge`, `ml.g5.2xlarge`, `ml.g4dn.2xlarge`      | —                                              |
+| Flux STT                      | `ml.g6.2xlarge`  | `ml.g7.2xlarge`, `ml.g7e.2xlarge`, `ml.g6e.2xlarge`, `ml.g5.2xlarge`                         | `ml.g4dn.*` (no sm_75 kernel)                  |
+| Aura-2 TTS                    | `ml.g6.12xlarge` | `ml.g7.12xlarge`, `ml.g7e.12xlarge`, `ml.g5.12xlarge`, `ml.g6e.12xlarge`, `ml.g4dn.12xlarge` | Single-GPU types (Aura-2 needs 2+ GPUs)        |
+| Flux TTS, English version     | `ml.g6e.2xlarge` | `ml.g7.2xlarge`, `ml.g7e.2xlarge`, `ml.g6.2xlarge`                                           | `ml.g5.*`, `ml.g4dn.*`                         |
+| Flux TTS, non-English version | `ml.g7.4xlarge`  | `ml.g7e.4xlarge`, `ml.g6e.4xlarge`                                                           | `*.2xlarge`, `ml.g6.*`, `ml.g5.*`, `ml.g4dn.*` |
 
 > **Note**
 >

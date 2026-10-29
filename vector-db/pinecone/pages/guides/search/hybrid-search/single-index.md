@@ -192,7 +192,7 @@ Use the [Upsert records](/reference/api/latest/data-plane/upsert) operation, spe
 # Target the index
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.Index(host="INDEX_HOST")
+index = pc.index(host="INDEX_HOST", grpc=True)
 
 # Each record contains an ID, a dense vector, a sparse vector, and the original text as metadata
 records = []
