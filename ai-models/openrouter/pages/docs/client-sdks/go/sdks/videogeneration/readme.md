@@ -1,5 +1,5 @@
 ---
-title: "VideoGeneration"
+title: "Video Generation"
 source: https://openrouter.ai/docs/client-sdks/go/sdks/videogeneration/README.md
 path: docs/client-sdks/go/sdks/videogeneration/readme
 ---
@@ -8,7 +8,7 @@ path: docs/client-sdks/go/sdks/videogeneration/readme
 > Fetch the complete documentation index at: https://openrouter.ai/docs/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-# VideoGeneration
+# Video Generation
 
 > Video Generation endpoints
 
@@ -67,8 +67,8 @@ func main() {
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. |
-| `request` | [components.VideoGenerationRequest](../../models/components/videogenerationrequest.mdx) | ✅ | The request object to use for the request. |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. |
+| `request` | [components.VideoGenerationRequest](../../models/components/videogenerationrequest.mdx) | ✔️ | The request object to use for the request. |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. |
 
 ### Response
@@ -128,8 +128,8 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
-| `jobID` | `string` | ✅ | N/A | job-abc123 |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. | |
+| `jobID` | `string` | ✔️ | N/A | job-abc123 |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
@@ -184,8 +184,8 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
-| `jobID` | `string` | ✅ | N/A | job-abc123 |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. | |
+| `jobID` | `string` | ✔️ | N/A | job-abc123 |
 | `index` | optionalnullable.OptionalNullable\[`int64`] | ➖ | N/A | 0 |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
@@ -244,7 +244,7 @@ func main() {
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. |
 
 ### Response

@@ -194,6 +194,18 @@ Register for Parking tax if you have customers in a US state that requires this 
 
 Register for Mass transit parking tax if you have customers in a US state that requires this tax on parking fees for a vehicle in a public street space, a commercial lot, or a garage.
 
+### Digital excise tax registration type
+
+**API value**: `digital_excise_tax`
+
+Register for Digital Excise Tax if you have customers in Utah and must collect this tax.
+
+### Utility users tax registration type
+
+**API value**: `utility_users_tax`
+
+Register for Utility Users Tax in a supported California city. Add a separate registration for each city where you need to collect the tax.
+
 #### European Union
 
 > To learn more, see [Navigating the VAT registration process in Europe](https://stripe.com/guides/tax-registration-process-europe).

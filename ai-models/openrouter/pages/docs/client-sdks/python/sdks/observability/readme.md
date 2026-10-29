@@ -110,9 +110,9 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `config` | Dict\[str, *Any*] | ✅ | Provider-specific configuration. The shape depends on `type` and is validated server-side. | \{ "baseUrl": "[https://us.cloud.langfuse.com](https://us.cloud.langfuse.com)", "publicKey": "pk-l...EfGh", "secretKey": "sk-l...AbCd" } |
-| `name` | *str* | ✅ | Human-readable name for the destination. | Production Langfuse |
-| `type` | [components.CreateObservabilityDestinationRequestType](../../components/createobservabilitydestinationrequesttype.mdx) | ✅ | The destination type. Only stable destination types are accepted. | langfuse |
+| `config` | Dict\[str, *Any*] | ✔️ | Provider-specific configuration. The shape depends on `type` and is validated server-side. | \{ "baseUrl": "[https://us.cloud.langfuse.com](https://us.cloud.langfuse.com)", "publicKey": "pk-l...EfGh", "secretKey": "sk-l...AbCd" } |
+| `name` | *str* | ✔️ | Human-readable name for the destination. | Production Langfuse |
+| `type` | [components.CreateObservabilityDestinationRequestType](../../components/createobservabilitydestinationrequesttype.mdx) | ✔️ | The destination type. Only stable destination types are accepted. | langfuse |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -173,7 +173,7 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `id` | *str* | ✅ | The destination ID (UUID). | 99999999-aaaa-bbbb-cccc-dddddddddddd |
+| `id` | *str* | ✔️ | The destination ID (UUID). | 99999999-aaaa-bbbb-cccc-dddddddddddd |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -222,7 +222,7 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `id` | *str* | ✅ | The destination ID (UUID). | 99999999-aaaa-bbbb-cccc-dddddddddddd |
+| `id` | *str* | ✔️ | The destination ID (UUID). | 99999999-aaaa-bbbb-cccc-dddddddddddd |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -271,7 +271,7 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `id` | *str* | ✅ | The destination ID (UUID). | 99999999-aaaa-bbbb-cccc-dddddddddddd |
+| `id` | *str* | ✔️ | The destination ID (UUID). | 99999999-aaaa-bbbb-cccc-dddddddddddd |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |

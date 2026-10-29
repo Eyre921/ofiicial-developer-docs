@@ -12,12 +12,12 @@ Website scraping lets your receptionist learn from your existing website: FAQs, 
 
 ## Source types
 
-When adding a website source, choose:
+Open **Business knowledge** from the **Overview** tab of your business page, then choose **Website** or **Single page**. If you have no sources yet, the options read **Add your website** and **Add a single page**.
 
-| Type               | What it does                                                             | Best for                                |
-| ------------------ | ------------------------------------------------------------------------ | --------------------------------------- |
-| **Single page**    | Reads one specific URL                                                   | FAQ page, pricing page, specific policy |
-| **Entire website** | Finds and reads the pages on your site that contain business information | Your main website                       |
+| Type            | What it does                                                             | Best for                                |
+| --------------- | ------------------------------------------------------------------------ | --------------------------------------- |
+| **Single page** | Reads one specific URL                                                   | FAQ page, pricing page, specific policy |
+| **Website**     | Finds and reads the pages on your site that contain business information | Your main website                       |
 
 URLs must use HTTPS.
 
@@ -25,10 +25,10 @@ URLs must use HTTPS.
 
 Reception.ai reads your sitemap and homepage links, then selects the pages most likely to contain business information, such as services, pricing, team, locations, and help articles. Pages such as galleries, blog posts, and legal notices are skipped.
 
-| Scan           | When it runs                                                  | Pages read |
-| -------------- | ------------------------------------------------------------- | ---------- |
-| **Quick scan** | During onboarding                                             | Up to 15   |
-| **Deep scan**  | When you add an entire website, or read the rest of your site | Up to 80   |
+| Scan           | When it runs                                          | Pages read |
+| -------------- | ----------------------------------------------------- | ---------- |
+| **Quick scan** | During onboarding                                     | Up to 15   |
+| **Deep scan**  | When you add a website, or read the rest of your site | Up to 80   |
 
 Booking platforms and social profiles, such as Facebook, Yelp, Vagaro, Booksy, or Calendly pages, are always read as a single page.
 
@@ -40,10 +40,10 @@ Onboarding runs a quick scan only, so it's done in under a minute. To import the
 
 While processing, a source shows its current step, such as crawling or extracting. When done, it shows **Ready** or **Error**.
 
-Select **Show scraped pages** on a source to see which pages were read.
+Select the page count on a website source, such as **12 pages**, to see which pages were read.
 
 If a website can't be read, check the address. Some sites block automated access, for example with anti-bot protection. In that case, add individual pages or [upload the content as a file](/docs/reception-ai/knowledge-base/file-uploads).
 
 ## Keeping content current
 
-Websites change over time. For a single page, select **Reprocess** to read it again. For an entire website, select **Read more pages** to refresh everything. Do this after changing pricing, services, or policies on your site.
+Websites change over time. Select **Refresh** on a website or page source to read it again. A website that has only had a quick scan shows **Read more pages** instead. If a source failed, select **Try again**. Refresh after changing pricing, services, or policies on your site.

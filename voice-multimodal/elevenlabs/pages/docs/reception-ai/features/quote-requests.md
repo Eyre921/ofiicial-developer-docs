@@ -21,13 +21,13 @@ Group sessions cannot be quote-only.
 
 ## How customers request a quote
 
-**By phone**: when a caller asks for a quote-only item, the receptionist asks your intake questions, then collects preferred timing in the caller's own words, any budget, and notes.
+**By phone**: when a caller asks for a quote-only item, the receptionist asks your intake questions, then collects preferred timing in the caller's own words, any budget, and notes. If the caller adds details later in the same call, the receptionist updates the request instead of filing a second one.
 
 **On the booking page**: quote-only services show **We'll quote you**. Customers fill in the intake questions, preferred timing, name, phone number, and optionally email and notes.
 
 ## Reviewing quote requests
 
-Open **Conversations** → **Quote requests**. Unread requests show a badge.
+Open **Inbox** and select **Needs attention**. Unread requests show a badge.
 
 Each request shows the requested items, the answers to your intake questions, the customer's notes, and a summary from the receptionist. Filter by status (open, booked, or ordered), read state, and date received, and use **Mark all as read**.
 

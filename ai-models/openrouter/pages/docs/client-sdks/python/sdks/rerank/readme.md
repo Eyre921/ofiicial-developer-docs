@@ -52,9 +52,9 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `documents` | List\[[operations.Document](../../operations/document.mdx)] | ✅ | The list of documents to rerank. Documents may be plain strings, or structured objects with `text` and/or `image` for multimodal models. | \[ "Paris is the capital of France.", "Berlin is the capital of Germany." ] |
-| `model` | *str* | ✅ | The rerank model to use | cohere/rerank-v3.5 |
-| `query` | *str* | ✅ | The search query to rerank documents against | What is the capital of France? |
+| `documents` | List\[[operations.Document](../../operations/document.mdx)] | ✔️ | The list of documents to rerank. Documents may be plain strings, or structured objects with `text` and/or `image` for multimodal models. | \[ "Paris is the capital of France.", "Berlin is the capital of Germany." ] |
+| `model` | *str* | ✔️ | The rerank model to use | cohere/rerank-v3.5 |
+| `query` | *str* | ✔️ | The search query to rerank documents against | What is the capital of France? |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |

@@ -254,7 +254,6 @@ Products:
   ✓ Managed Payments
   ✗ Billing
   ✗ Invoicing
-  ✓ Adaptive Pricing
   ✗ Customer Portal
   ✗ Radar
   ✗ Terminal

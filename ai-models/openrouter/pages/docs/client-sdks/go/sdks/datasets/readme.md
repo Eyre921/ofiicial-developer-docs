@@ -96,8 +96,8 @@ func main() {
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. |
-| `request` | [operations.GetAppRankingsRequest](../../models/operations/getapprankingsrequest.mdx) | ✅ | The request object to use for the request. |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. |
+| `request` | [operations.GetAppRankingsRequest](../../models/operations/getapprankingsrequest.mdx) | ✔️ | The request object to use for the request. |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. |
 
 ### Response
@@ -178,8 +178,8 @@ func main() {
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. |
-| `request` | [operations.GetRankingsDailyRequest](../../models/operations/getrankingsdailyrequest.mdx) | ✅ | The request object to use for the request. |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. |
+| `request` | [operations.GetRankingsDailyRequest](../../models/operations/getrankingsdailyrequest.mdx) | ✔️ | The request object to use for the request. |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. |
 
 ### Response
@@ -254,8 +254,8 @@ func main() {
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. |
-| `request` | [operations.GetSessionCostRequest](../../models/operations/getsessioncostrequest.mdx) | ✅ | The request object to use for the request. |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. |
+| `request` | [operations.GetSessionCostRequest](../../models/operations/getsessioncostrequest.mdx) | ✔️ | The request object to use for the request. |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. |
 
 ### Response

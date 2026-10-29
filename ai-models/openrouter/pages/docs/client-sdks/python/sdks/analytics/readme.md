@@ -51,7 +51,7 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.GetUserActivityRequest](../../operations/getuseractivityrequest.mdx) | ✅ | The request object to use for the request. |
+| `request` | [operations.GetUserActivityRequest](../../operations/getuseractivityrequest.mdx) | ✔️ | The request object to use for the request. |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. |
 
 ### Response
@@ -153,7 +153,7 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `metrics` | List\[*str*] | ✅ | N/A | |
+| `metrics` | List\[*str*] | ✔️ | N/A | |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |

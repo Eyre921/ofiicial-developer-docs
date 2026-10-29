@@ -100,7 +100,7 @@ Historical activity, logs, and billing records are kept. Your other workspaces a
 
 ## Organization Permissions
 
-* **Org admins** have admin permissions across all workspaces. Organization admins and account owners can create or delete workspaces. Workspace admins can add or remove member access within their workspace; assigning workspace roles requires an Enterprise plan.
+* **Org admins** have admin permissions across all workspaces. Organization admins and account owners can create or delete workspaces. Workspace admins can add or remove member access within their workspace; assigning workspace roles additionally requires a Pro or Enterprise plan.
 * **Org members** have member permissions in each workspace they've been added to. Members can belong to multiple workspaces, and their API keys in each workspace are governed by that workspace's settings.
 * **Workspace admins** who aren't org admins get management rights in their workspace, such as managing members, classifiers, and settings. They have the same read access as members: they can't view other people's prompt and response content or classification tags.
 * All org members automatically have member access to the **Default workspace**. Chat and Fusion requests run in the member's active workspace, which they can change via the [workspace switcher](https://openrouter.ai/docs/guides/features/workspaces/switching.md). The Default workspace is the initial active workspace.
@@ -113,7 +113,7 @@ Historical activity, logs, and billing records are kept. Your other workspaces a
 
 > **What can my organization admins see? What can they edit?**
 >
-> Org admins have admin permissions across all workspaces: they can view and manage everything in every workspace, including API keys, guardrails, BYOK, routing, presets, plugins, observability, members, and settings. Organization admins and account owners can create or delete workspaces. Org admins and workspace admins can control members' access to their workspaces; assigning workspace roles requires an Enterprise plan. At the account level, org admins manage billing and credits, organization membership and roles, management API keys, and account-level data policies and allowed providers/models.
+> Org admins have admin permissions across all workspaces: they can view and manage everything in every workspace, including API keys, guardrails, BYOK, routing, presets, plugins, observability, members, and settings. Organization admins and account owners can create or delete workspaces. Org admins and workspace admins can control members' access to their workspaces; assigning workspace roles additionally requires a Pro or Enterprise plan. At the account level, org admins manage billing and credits, organization membership and roles, management API keys, and account-level data policies and allowed providers/models.
 
 > **Can management keys be used across workspaces?**
 >

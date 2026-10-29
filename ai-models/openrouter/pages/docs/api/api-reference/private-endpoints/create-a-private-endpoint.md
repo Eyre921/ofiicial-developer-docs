@@ -90,6 +90,8 @@ tags:
     name: Presets
   - description: Private Endpoints endpoints
     name: Private Endpoints
+  - description: Private Providers endpoints
+    name: Private Providers
   - description: Provider information endpoints
     name: Providers
   - description: Rerank endpoints
@@ -363,6 +365,8 @@ components:
           example: azure
           minLength: 1
           type: string
+        settings:
+          $ref: '#/components/schemas/UpdatePrivateEndpointSettingsRequest'
         upstream_model_id:
           description: Model or deployment identifier sent to the upstream provider.
           example: gpt-4o-prod
@@ -687,6 +691,149 @@ components:
         - prompt
         - completion
       type: object
+    UpdatePrivateEndpointSettingsRequest:
+      description: >-
+        Capabilities and limits to set over the ones copied from the public
+        endpoint for this model and provider (or from the model). Omitted fields
+        keep the copied values.
+      example:
+        context_length: 128000
+        reasoning:
+          supported: true
+      properties:
+        completions:
+          properties:
+            chat:
+              description: Serves `/chat/completions`; `null` uses the provider default.
+              type:
+                - boolean
+                - 'null'
+            text:
+              description: Serves `/completions`; `null` uses the provider default.
+              type:
+                - boolean
+                - 'null'
+          type: object
+        context_length:
+          description: >-
+            Longest prompt plus completion, in tokens, or `null` to keep the
+            model default.
+          example: 128000
+          minimum: 1
+          type:
+            - integer
+            - 'null'
+        excluded_parameters:
+          description: >-
+            Request parameters the upstream rejects even though the model
+            supports them; requests using one do not route here. Cannot name a
+            tested parameter.
+          example:
+            - logit_bias
+          items:
+            enum:
+              - temperature
+              - top_p
+              - top_k
+              - min_p
+              - top_a
+              - frequency_penalty
+              - presence_penalty
+              - repetition_penalty
+              - max_tokens
+              - max_completion_tokens
+              - logit_bias
+              - logprobs
+              - top_logprobs
+              - prediction
+              - seed
+              - response_format
+              - structured_outputs
+              - stop
+              - tools
+              - tool_choice
+              - parallel_tool_calls
+              - include_reasoning
+              - reasoning
+              - reasoning_effort
+              - web_search_options
+              - verbosity
+            type: string
+          type: array
+        inputs:
+          properties:
+            audio:
+              description: Accepts audio input. `null` keeps the provider default.
+              type:
+                - boolean
+                - 'null'
+            base64_files:
+              description: Accepts base64 file data. `null` keeps the provider default.
+              type:
+                - boolean
+                - 'null'
+            base64_images:
+              description: Accepts base64 image data. `null` keeps the provider default.
+              type:
+                - boolean
+                - 'null'
+            file_urls:
+              description: Accepts file URLs. `null` keeps the provider default.
+              type:
+                - boolean
+                - 'null'
+            image_urls:
+              description: Accepts image URLs. `null` keeps the provider default.
+              type:
+                - boolean
+                - 'null'
+          type: object
+        max_completion_tokens:
+          description: >-
+            Longest completion the upstream returns, in tokens, or `null` to
+            keep the model default.
+          example: 16384
+          minimum: 1
+          type:
+            - integer
+            - 'null'
+        max_prompt_tokens:
+          description: >-
+            Longest prompt, in tokens, or `null` for no cap below the context
+            length. Cannot exceed `context_length`, or the model context length
+            while `context_length` is `null`.
+          example: null
+          minimum: 1
+          type:
+            - integer
+            - 'null'
+        quantization:
+          $ref: '#/components/schemas/PrivateEndpointQuantization'
+        reasoning:
+          properties:
+            return_mechanism:
+              $ref: '#/components/schemas/PrivateEndpointReasoningReturnMechanism'
+            supported:
+              description: Whether requests with `reasoning` route to this endpoint.
+              example: true
+              type: boolean
+          type: object
+        tool_choice:
+          properties:
+            auto:
+              description: 'Accepts `tool_choice: "auto"`.'
+              type: boolean
+            function:
+              description: Accepts a named function in `tool_choice`.
+              type: boolean
+            none:
+              description: 'Accepts `tool_choice: "none"`.'
+              type: boolean
+            required:
+              description: 'Accepts `tool_choice: "required"`.'
+              type: boolean
+          type: object
+      type: object
     ManagedPrivateEndpoint:
       allOf:
         - $ref: '#/components/schemas/PrivateEndpointSummary'
@@ -911,6 +1058,39 @@ components:
         - code
         - message
       type: object
+    PrivateEndpointQuantization:
+      description: Weight precision the deployment runs at; `unknown` when not stated.
+      enum:
+        - int4
+        - int8
+        - fp4
+        - mxfp4
+        - nvfp4
+        - fp6
+        - fp8
+        - mxfp8
+        - fp16
+        - bf16
+        - fp32
+        - unknown
+      example: bf16
+      type: string
+    PrivateEndpointReasoningReturnMechanism:
+      description: >-
+        Where the upstream puts reasoning tokens in its response: `reasoning`
+        and `reasoning-content` are response fields, `content-string` is inline
+        in the message, `none` returns no reasoning. `null` uses the provider
+        default.
+      enum:
+        - content-string
+        - reasoning-content
+        - reasoning
+        - none
+        - null
+      example: reasoning
+      type:
+        - string
+        - 'null'
     PrivateEndpointSummary:
       properties:
         created_at:

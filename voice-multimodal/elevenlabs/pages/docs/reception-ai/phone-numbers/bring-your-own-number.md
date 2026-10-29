@@ -35,7 +35,7 @@ Reception.ai updates the number's voice and SMS webhooks in Twilio to route call
 
 Turn on **Enable inbound SMS** to route texts sent to the number to Reception.ai. This is required to process replies such as STOP.
 
-Twilio numbers also enable [SMS sending](/docs/reception-ai/features/notifications#sms), [caller ID on transfers](/docs/reception-ai/receptionist/call-handling#caller-id-on-transfers), and transfers outside the US.
+Twilio numbers also enable [SMS sending](/docs/reception-ai/features/notifications#sms), [transfer settings](/docs/reception-ai/receptionist/call-handling#transfer-settings), and transfers outside the US.
 
 ## SIP trunk
 

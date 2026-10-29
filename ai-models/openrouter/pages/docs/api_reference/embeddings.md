@@ -83,7 +83,7 @@ Search results:
 
 ## Best practices
 
-**Choose the right model**: Different embedding models have different strengths. Smaller models (like qwen/qwen3-embedding-0.6b or openai/text-embedding-3-small) are faster and cheaper, while larger models (like openai/text-embedding-3-large) provide better quality. Test multiple models to find the best fit for your use case.
+**Choose the right model**: Different embedding models have different strengths. Smaller models (like perplexity/pplx-embed-v1-0.6b or openai/text-embedding-3-small) are faster and cheaper, while larger models (like openai/text-embedding-3-large) provide better quality. Test multiple models to find the best fit for your use case.
 
 **Batch your requests**: When processing multiple texts, send them in a single request rather than making individual API calls. This reduces latency and costs.
 

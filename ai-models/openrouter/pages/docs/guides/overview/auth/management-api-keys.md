@@ -30,7 +30,7 @@ Management keys cannot be used to make API calls to OpenRouter's completion endp
 Management API keys operate at the account level and, for organizations, can only be created by **Organization Admins**. They are unscoped: one key covers administrative actions across all of the account's workspaces.
 
 * **Programmatic Management:** Endpoints for managing workspace members (`POST /api/v1/workspaces/{id}/members/add`), keys, and budgets require a Management API key. Members added via the API automatically inherit their organization role (Org Admins become Workspace Admins; Org Members become Workspace Members).
-* **Dashboard UI:** Within the OpenRouter dashboard, **Workspace Admins** can add members on the workspace Members page without requiring a Management API key. Assigning workspace roles there additionally requires an Enterprise plan.
+* **Dashboard UI:** Within the OpenRouter dashboard, **Workspace Admins** can add members on the workspace Members page without requiring a Management API key. Assigning workspace roles there additionally requires a Pro or Enterprise plan.
 
 ### Expiration
 
@@ -393,13 +393,23 @@ The following documented routes reject regular API keys and must be called with 
 | `POST` | `/api/v1/private-endpoints` | [Create a private endpoint](https://openrouter.ai/docs/api/api-reference/private-endpoints/create-a-private-endpoint.md) |
 | `GET` | `/api/v1/private-endpoints/{id}` | [Get a private endpoint](https://openrouter.ai/docs/api/api-reference/private-endpoints/get-a-private-endpoint.md) |
 | `DELETE` | `/api/v1/private-endpoints/{id}` | [Delete a private endpoint](https://openrouter.ai/docs/api/api-reference/private-endpoints/delete-a-private-endpoint.md) |
-| `PATCH` | `/api/v1/private-endpoints/{id}` | [Update a draft private endpoint](https://openrouter.ai/docs/api/api-reference/private-endpoints/update-a-draft-private-endpoint.md) |
+| `PATCH` | `/api/v1/private-endpoints/{id}` | [Update a private endpoint](https://openrouter.ai/docs/api/api-reference/private-endpoints/update-a-private-endpoint.md) |
 | `POST` | `/api/v1/private-endpoints/{id}/activate` | [Activate a validated private endpoint](https://openrouter.ai/docs/api/api-reference/private-endpoints/activate-a-validated-private-endpoint.md) |
 | `POST` | `/api/v1/private-endpoints/{id}/disable` | [Disable a private endpoint](https://openrouter.ai/docs/api/api-reference/private-endpoints/disable-a-private-endpoint.md) |
 | `POST` | `/api/v1/private-endpoints/{id}/enable` | [Enable a private endpoint](https://openrouter.ai/docs/api/api-reference/private-endpoints/enable-a-private-endpoint.md) |
-| `PUT` | `/api/v1/private-endpoints/{id}/parameters` | [Set private endpoint supported parameters](https://openrouter.ai/docs/api/api-reference/private-endpoints/set-private-endpoint-supported-parameters.md) |
-| `PUT` | `/api/v1/private-endpoints/{id}/pricing` | [Set private endpoint pricing](https://openrouter.ai/docs/api/api-reference/private-endpoints/set-private-endpoint-pricing.md) |
+| `PUT` | `/api/v1/private-endpoints/{id}/parameters` | [Set private endpoint supported parameters (deprecated)](https://openrouter.ai/docs/api/api-reference/private-endpoints/set-private-endpoint-supported-parameters-deprecated.md) |
+| `PUT` | `/api/v1/private-endpoints/{id}/pricing` | [Set private endpoint pricing (deprecated)](https://openrouter.ai/docs/api/api-reference/private-endpoints/set-private-endpoint-pricing-deprecated.md) |
 | `POST` | `/api/v1/private-endpoints/{id}/validate` | [Validate a draft private endpoint](https://openrouter.ai/docs/api/api-reference/private-endpoints/validate-a-draft-private-endpoint.md) |
+
+### Private Providers
+
+| Method | Route | Reference |
+| - | - | - |
+| `GET` | `/api/v1/private-providers` | [List private providers](https://openrouter.ai/docs/api/api-reference/private-providers/list-private-providers.md) |
+| `POST` | `/api/v1/private-providers` | [Create a private provider](https://openrouter.ai/docs/api/api-reference/private-providers/create-a-private-provider.md) |
+| `GET` | `/api/v1/private-providers/{slug}` | [Get a private provider](https://openrouter.ai/docs/api/api-reference/private-providers/get-a-private-provider.md) |
+| `DELETE` | `/api/v1/private-providers/{slug}` | [Delete a private provider](https://openrouter.ai/docs/api/api-reference/private-providers/delete-a-private-provider.md) |
+| `PATCH` | `/api/v1/private-providers/{slug}` | [Update a private provider](https://openrouter.ai/docs/api/api-reference/private-providers/update-a-private-provider.md) |
 
 ### SCIM
 

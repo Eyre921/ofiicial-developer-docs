@@ -16,9 +16,11 @@ When you integrate with Stripe Tax, you need to update existing subscriptions to
 
 First, you need to activate Stripe Tax. To learn how, read the [setup guide](https://docs.stripe.com/tax/set-up.md).
 
+> The automated migration tool is available only in live mode. It doesn’t support sandboxes, test subscriptions, or legacy test mode for existing users. To test automatic tax on future invoices in a sandbox, [edit each subscription](https://docs.stripe.com/tax/subscriptions/update.md#update-manually) in the Dashboard and turn on **Calculate tax automatically**.
+
 To use the tooling, follow these steps:
 
-1. Go to the [Dashboard](https://dashboard.stripe.com/tax/migrations).
+1. In live mode, open the [tax migration tool](https://dashboard.stripe.com/tax/migrations) in the Dashboard.
 2. Review the subscriptions you need to update.
 3. Review the recommended actions.
 4. Choose whether to include subscriptions without a billing address, where Stripe supplies an [inferred location](https://docs.stripe.com/tax/subscriptions/update.md#inferred-locations). Stripe enables this option by default, but you can disable it to exclude these subscriptions.
@@ -46,8 +48,6 @@ The automated tool might not be able to update some subscriptions. This might in
 
 - The customer doesn’t have an email address on file.
 - The email address doesn’t match a previous transaction on the Stripe network.
-
-> The automated tool doesn’t work with test subscriptions.
 
 After using the automated tool, you have to wait a few days before you can run it again. During that time, check and fix the subscriptions that failed in the first attempt.
 

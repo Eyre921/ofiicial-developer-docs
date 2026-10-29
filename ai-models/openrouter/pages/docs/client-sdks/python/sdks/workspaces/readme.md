@@ -111,8 +111,8 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `name` | *str* | ✅ | Name for the new workspace | Production |
-| `slug` | *str* | ✅ | URL-friendly slug (lowercase alphanumeric segments separated by single hyphens, no leading/trailing hyphens) | production |
+| `name` | *str* | ✔️ | Name for the new workspace | Production |
+| `slug` | *str* | ✔️ | URL-friendly slug (lowercase alphanumeric segments separated by single hyphens, no leading/trailing hyphens) | production |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -171,7 +171,7 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `id` | *str* | ✅ | The workspace ID (UUID) or slug | production |
+| `id` | *str* | ✔️ | The workspace ID (UUID) or slug | production |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -222,7 +222,7 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `id` | *str* | ✅ | The workspace ID (UUID) or slug | production |
+| `id` | *str* | ✔️ | The workspace ID (UUID) or slug | production |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -271,7 +271,7 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `id` | *str* | ✅ | The workspace ID (UUID) or slug | production |
+| `id` | *str* | ✔️ | The workspace ID (UUID) or slug | production |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -335,7 +335,7 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `id` | *str* | ✅ | The workspace ID (UUID) or slug | production |
+| `id` | *str* | ✔️ | The workspace ID (UUID) or slug | production |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -389,8 +389,8 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `id` | *str* | ✅ | The workspace ID (UUID) or slug | production |
-| `user_ids` | List\[*str*] | ✅ | List of user IDs to add to the workspace. Members are assigned the same role they hold in the organization. | \[ "user\_abc123", "user\_def456" ] |
+| `id` | *str* | ✔️ | The workspace ID (UUID) or slug | production |
+| `user_ids` | List\[*str*] | ✔️ | List of user IDs to add to the workspace. Members are assigned the same role they hold in the organization. | \[ "user\_abc123", "user\_def456" ] |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -443,8 +443,8 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `id` | *str* | ✅ | The workspace ID (UUID) or slug | production |
-| `user_ids` | List\[*str*] | ✅ | List of user IDs to remove from the workspace | \[ "user\_abc123", "user\_def456" ] |
+| `id` | *str* | ✔️ | The workspace ID (UUID) or slug | production |
+| `user_ids` | List\[*str*] | ✔️ | List of user IDs to remove from the workspace | \[ "user\_abc123", "user\_def456" ] |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -494,7 +494,7 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `workspace_ref` | *str* | ✅ | The workspace ID (UUID) or slug | production |
+| `workspace_ref` | *str* | ✔️ | The workspace ID (UUID) or slug | production |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -543,8 +543,8 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `workspace_ref` | *str* | ✅ | The workspace ID (UUID) or slug | production |
-| `interval` | [components.WorkspaceBudgetInterval](../../components/workspacebudgetinterval.mdx) | ✅ | Budget reset interval. Use "lifetime" for a one-time budget that never resets. | monthly |
+| `workspace_ref` | *str* | ✔️ | The workspace ID (UUID) or slug | production |
+| `interval` | [components.WorkspaceBudgetInterval](../../components/workspacebudgetinterval.mdx) | ✔️ | Budget reset interval. Use "lifetime" for a one-time budget that never resets. | monthly |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -594,8 +594,8 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `workspace_ref` | *str* | ✅ | The workspace ID (UUID) or slug | production |
-| `interval` | [components.WorkspaceBudgetInterval](../../components/workspacebudgetinterval.mdx) | ✅ | Budget reset interval. Use "lifetime" for a one-time budget that never resets. | monthly |
+| `workspace_ref` | *str* | ✔️ | The workspace ID (UUID) or slug | production |
+| `interval` | [components.WorkspaceBudgetInterval](../../components/workspacebudgetinterval.mdx) | ✔️ | Budget reset interval. Use "lifetime" for a one-time budget that never resets. | monthly |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -634,7 +634,7 @@ with OpenRouter(
     api_key=os.getenv("OPENROUTER_API_KEY", ""),
 ) as open_router:
 
-    res = open_router.workspaces.set_budget(workspace_ref="production", interval="monthly", limit_usd=100, include_byok_in_budgets=True)
+    res = open_router.workspaces.set_budget(workspace_ref="production", interval="monthly", limit_usd=100.0, include_byok_in_budgets=True)
 
     # Handle response
     print(res)
@@ -645,9 +645,9 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `workspace_ref` | *str* | ✅ | The workspace ID (UUID) or slug | production |
-| `interval` | [components.WorkspaceBudgetInterval](../../components/workspacebudgetinterval.mdx) | ✅ | Budget reset interval. Use "lifetime" for a one-time budget that never resets. | monthly |
-| `limit_usd` | *float* | ✅ | Spending limit in USD. Must be greater than 0. | 100 |
+| `workspace_ref` | *str* | ✔️ | The workspace ID (UUID) or slug | production |
+| `interval` | [components.WorkspaceBudgetInterval](../../components/workspacebudgetinterval.mdx) | ✔️ | Budget reset interval. Use "lifetime" for a one-time budget that never resets. | monthly |
+| `limit_usd` | *float* | ✔️ | Spending limit in USD. Must be greater than 0. | 100 |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |

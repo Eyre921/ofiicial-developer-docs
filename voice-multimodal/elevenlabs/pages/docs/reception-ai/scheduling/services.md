@@ -86,4 +86,4 @@ Time-limited discounts on a service, a specific variant, or a specific add-on. E
 
 ## Groups and display order
 
-Organize services into groups, and order them within each group. This order determines how services appear on your booking page and how your receptionist lists them to callers. Turn off **Display on booking page** to offer a service by phone only.
+Organize services into groups, and order them within each group. This order determines how services appear on your booking page and how your receptionist lists them to callers.

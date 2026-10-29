@@ -106,7 +106,7 @@ After your application applies (or rejects) the patch, send the result back on t
 
 ```json lines theme={null}
 {
-  "model": "openai/codex-mini",
+  "model": "openai/gpt-5.1-codex-mini",
   "input": [
     {
       "type": "apply_patch_call_output",

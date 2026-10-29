@@ -60,8 +60,9 @@ When a call arrives, the system processes it in this order:
 1. **Held number check**: numbers awaiting regulatory approval reject calls.
 2. **Entitlement check**: requires an active subscription or remaining trial credits.
 3. **Blocked number check**: blocked callers are rejected.
-4. **Answering order**: if staff first is on and within staff answering hours, the staff phone rings first.
-5. **AI receptionist**: greets the caller and handles the conversation.
+4. **Spam check**: with [spam protection](/docs/reception-ai/receptionist/call-handling#verify-caller-identity) on, callers whose number can't be verified are asked to press a key to be connected. Clients already on file go straight through.
+5. **Who answers first**: when staff answer first and the call is inside those hours, the staff phone rings first.
+6. **AI receptionist**: greets the caller and handles the conversation.
 
 When a trial runs out of credits, callers hear a message that the number's free trial has ended.
 

@@ -32,7 +32,7 @@ const response = await fetch('https://openrouter.ai/api/v1/responses', {
     'Content-Type': 'application/json',
   },
   body: JSON.stringify({
-    model: 'openai/o4-mini',
+    model: 'openai/o3',
     input: 'What is OpenRouter?',
     plugins: [{ id: 'web', max_results: 3 }],
     max_output_tokens: 9000,
@@ -53,7 +53,7 @@ response = requests.post(
         'Content-Type': 'application/json',
     },
     json={
-        'model': 'openai/o4-mini',
+        'model': 'openai/o3',
         'input': 'What is OpenRouter?',
         'plugins': [{'id': 'web', 'max_results': 3}],
         'max_output_tokens': 9000,
@@ -69,7 +69,7 @@ curl -X POST https://openrouter.ai/api/v1/responses \
   -H "Authorization: Bearer YOUR_OPENROUTER_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "openai/o4-mini",
+    "model": "openai/o3",
     "input": "What is OpenRouter?",
     "plugins": [{"id": "web", "max_results": 3}],
     "max_output_tokens": 9000
@@ -92,11 +92,11 @@ See the [Web Search plugin docs](https://openrouter.ai/docs/guides/features/plug
 
 ## X Search (SpaceXAI only)
 
-On SpaceXAI models (e.g. `x-ai/grok-4.1-fast`), web search sends only SpaceXAI's `web_search` tool. Add an `x_search` object to the plugin to also search X/Twitter. An empty object enables it with no filters:
+On SpaceXAI models (e.g. `x-ai/grok-4.3`), web search sends only SpaceXAI's `web_search` tool. Add an `x_search` object to the plugin to also search X/Twitter. An empty object enables it with no filters:
 
 ```json lines theme={null}
 {
-  "model": "x-ai/grok-4.1-fast",
+  "model": "~x-ai/grok-latest",
   "input": "What are people saying about AI?",
   "plugins": [
     {
@@ -138,7 +138,7 @@ const response = await fetch('https://openrouter.ai/api/v1/responses', {
     'Content-Type': 'application/json',
   },
   body: JSON.stringify({
-    model: 'openai/o4-mini',
+    model: 'openai/o3',
     input: [
       {
         type: 'message',
@@ -170,7 +170,7 @@ response = requests.post(
         'Content-Type': 'application/json',
     },
     json={
-        'model': 'openai/o4-mini',
+        'model': 'openai/o3',
         'input': [
             {
                 'type': 'message',
@@ -210,7 +210,7 @@ const response = await fetch('https://openrouter.ai/api/v1/responses', {
     'Content-Type': 'application/json',
   },
   body: JSON.stringify({
-    model: 'openai/o4-mini:online',
+    model: 'openai/o3:online',
     input: 'What was a positive news story from today?',
     max_output_tokens: 9000,
   }),
@@ -230,7 +230,7 @@ response = requests.post(
         'Content-Type': 'application/json',
     },
     json={
-        'model': 'openai/o4-mini:online',
+        'model': 'openai/o3:online',
         'input': 'What was a positive news story from today?',
         'max_output_tokens': 9000,
     }
@@ -249,7 +249,7 @@ Web search responses include citation annotations:
   "id": "resp_1234567890",
   "object": "response",
   "created_at": 1234567890,
-  "model": "openai/o4-mini",
+  "model": "openai/o3",
   "output": [
     {
       "type": "message",
@@ -315,7 +315,7 @@ const response = await fetch('https://openrouter.ai/api/v1/responses', {
     'Content-Type': 'application/json',
   },
   body: JSON.stringify({
-    model: 'openai/o4-mini',
+    model: 'openai/o3',
     input: [
       {
         type: 'message',
@@ -347,7 +347,7 @@ response = requests.post(
         'Content-Type': 'application/json',
     },
     json={
-        'model': 'openai/o4-mini',
+        'model': 'openai/o3',
         'input': [
             {
                 'type': 'message',
@@ -381,7 +381,7 @@ const response = await fetch('https://openrouter.ai/api/v1/responses', {
     'Content-Type': 'application/json',
   },
   body: JSON.stringify({
-    model: 'openai/o4-mini',
+    model: 'openai/o3',
     input: [
       {
         type: 'message',
@@ -436,7 +436,7 @@ response = requests.post(
         'Content-Type': 'application/json',
     },
     json={
-        'model': 'openai/o4-mini',
+        'model': 'openai/o3',
         'input': [
             {
                 'type': 'message',
@@ -493,7 +493,7 @@ const response = await fetch('https://openrouter.ai/api/v1/responses', {
     'Content-Type': 'application/json',
   },
   body: JSON.stringify({
-    model: 'openai/o4-mini',
+    model: 'openai/o3',
     input: [
       {
         type: 'message',
@@ -559,7 +559,7 @@ response = requests.post(
         'Content-Type': 'application/json',
     },
     json={
-        'model': 'openai/o4-mini',
+        'model': 'openai/o3',
         'input': [
             {
                 'type': 'message',

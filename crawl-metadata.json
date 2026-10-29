@@ -30,8 +30,7 @@
     "status": "ok"
   },
   "agent-frameworks/vercel-ai-sdk": {
-    "pages": 0,
-    "status": "ok"
+    "status": "error: curl failed (28) for https://ai-sdk.dev/llms-full.txt: curl: (28) Operation timed out after 90034 milliseconds with 1347384 bytes received\ncurl: (28) Operation timed out after 90002 milliseconds with 0 bytes received\ncurl: (28) Operation timed out after 9"
   },
   "agent-frameworks/mcp": {
     "pages": 158,
@@ -46,7 +45,7 @@
     "status": "ok"
   },
   "agent-frameworks/langchain": {
-    "pages": 1679,
+    "pages": 1684,
     "status": "ok"
   },
   "voice-multimodal/assemblyai": {
@@ -58,8 +57,7 @@
     "status": "ok"
   },
   "vector-db/pinecone": {
-    "pages": 564,
-    "status": "ok"
+    "status": "error: curl failed (16) for https://docs.pinecone.io/llms-full.txt: curl: (28) Operation timed out after 90000 milliseconds with 1552384 bytes received\ncurl: (28) Operation timed out after 90000 milliseconds with 0 bytes received\ncurl: (16) Error in the HTTP2 framing "
   },
   "vector-db/qdrant": {
     "pages": 0,
@@ -70,7 +68,7 @@
     "status": "ok"
   },
   "vector-db/weaviate": {
-    "pages": 2,
+    "pages": 3,
     "status": "ok"
   },
   "coding-agents/windsurf": {
@@ -152,7 +150,7 @@
     "status": "ok"
   },
   "dev-platforms/notion": {
-    "pages": 253,
+    "pages": 254,
     "status": "ok"
   },
   "dev-platforms/twilio": {
@@ -176,7 +174,8 @@
     "status": "ok"
   },
   "dev-platforms/netlify": {
-    "status": "error: curl failed (35) for https://docs.netlify.com/llms.txt: curl: (35) TLS connect error: error:0A000126:SSL routines::unexpected eof while reading\n"
+    "pages": 104,
+    "status": "ok"
   },
   "libraries/zod": {
     "pages": 0,
@@ -186,15 +185,15 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 100,
+    "pages": 78,
     "status": "ok"
   },
   "dev-platforms/stripe": {
-    "pages": 470,
+    "pages": 471,
     "status": "ok"
   },
   "ai-models/openrouter": {
-    "pages": 511,
+    "pages": 519,
     "status": "ok"
   },
   "voice-multimodal/deepgram": {
@@ -202,8 +201,8 @@
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 1403,
+    "pages": 1398,
     "status": "ok"
   },
-  "_last_crawl": "2026-10-28T23:30:39Z"
+  "_last_crawl": "2026-10-29T11:30:48Z"
 }

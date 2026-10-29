@@ -6,7 +6,7 @@ path: platforms/python/integrations/flask
 
 ---
 title: "Flask"
-description: "Learn how to set up Sentry in your Flask app, capture your first errors and traces, and view them in Sentry."
+description: "Learn how to set up Sentry in your Flask app, capture your first events and traces, and view them in Sentry."
 url: https://docs.sentry.io/platforms/python/integrations/flask/
 ---
 
@@ -42,11 +42,11 @@ pip install "sentry-sdk"
 
 *Other available variations of the above snippet: uv, poetry*
 
+This guide requires `sentry-sdk` version 2.70.0 or later. If you already have the SDK installed, upgrade it with `pip install --upgrade sentry-sdk`.
+
 ## [Configure](https://docs.sentry.io/platforms/python/integrations/flask.md#configure)
 
-Choose the features you want to configure, and this guide will show you how:
-
-Error Monitoring\[ ]Tracing\[ ]Profiling\[ ]Logs\[ ]Metrics
+**Error Monitoring** starts working as soon as you call `sentry_sdk.init()`. **Logs** and **Application Metrics** need no extra configuration when using `sentry_sdk.logger` and `sentry_sdk.metrics`, and you'll learn how to send them in steps [#3](https://docs.sentry.io/platforms/python/integrations/flask.md#send-logs) and [#4](https://docs.sentry.io/platforms/python/integrations/flask.md#send-application-metrics-). This guide also enables **Tracing** and **Profiling**.
 
 Want to learn more about these features?
 
@@ -64,31 +64,35 @@ If you have the `flask` package in your dependencies, the Flask integration will
 
 Import and initialize the SDK in your app's entry point:
 
+The snippet also turns on:
+
+* Collection of user data, such as the user's IP address: via [`data_collection`](https://docs.sentry.io/platforms/python/configuration/options.md#data_collection)
+* Tracing: via [`traces_sample_rate`](https://docs.sentry.io/platforms/python/configuration/options.md#traces_sample_rate)
+* Profiling: via [`profile_session_sample_rate`](https://docs.sentry.io/platforms/python/configuration/options.md#profile_session_sample_rate) and [`profile_lifecycle`](https://docs.sentry.io/platforms/python/configuration/options.md#profile_lifecycle)
+
+Don't need a feature? Remove its options from the snippet.
+
 ```python
 import sentry_sdk
-# ___PRODUCT_OPTION_START___ metrics
-from sentry_sdk import metrics
-# ___PRODUCT_OPTION_END___ metrics
 
 sentry_sdk.init(
     dsn="https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
+
     # Check https://docs.sentry.io/platforms/python/data-management/data-collected/ to configure what data is collected
     data_collection={
         "user_info": True,
     },
-    # ___PRODUCT_OPTION_START___ performance
-    # Set traces_sample_rate to 1.0 to capture 100%
-    # of transactions for tracing.
+
+    # Enables Tracing.
+    # Set to 1.0 to capture 100% of spans for tracing.
+    # We recommend reducing this value in production.
     traces_sample_rate=1.0,
-    # ___PRODUCT_OPTION_END___ performance
-    # ___PRODUCT_OPTION_START___ profiling
-    # To collect profiles for all profile sessions,
-    # set `profile_session_sample_rate` to 1.0.
+
+    # Enables Profiling.
+    # Set to 1.0 to profile 100% of sessions.
     profile_session_sample_rate=1.0,
-    # Profiles will be automatically collected while
-    # there is an active span.
+    # Profiles are collected while a transaction is active.
     profile_lifecycle="trace",
-    # ___PRODUCT_OPTION_END___ profiling
 )
 ```
 
@@ -110,66 +114,45 @@ To enable threading support in uWSGI, make sure you have both `--enable-threads`
 
 Note that automatic tracing on file-like responses when `offloading` is configured is disabled (see [here](https://github.com/getsentry/sentry-python/pull/5556) for why). If you wish to enable tracing on these types of responses, you will need to [manually instrument](https://docs.sentry.io/platforms/python/tracing/instrumentation/custom-instrumentation.md) them.
 
+## [Send Logs](https://docs.sentry.io/platforms/python/integrations/flask.md#send-logs)
+
+Use `sentry_sdk.logger` to send structured logs at different levels. You can include searchable attributes with each message.
+
+To capture records from Python's standard-library `logging` module or Loguru, configure `capture_sentry_logs=True` on the corresponding integration. See the [standard logging](https://docs.sentry.io/platforms/python/integrations/logging.md) and [Loguru](https://docs.sentry.io/platforms/python/integrations/loguru.md) integration guides.
+
+See [Set Up Logs](https://docs.sentry.io/platforms/python/logs.md) for all available logging methods and formatting options.
+
+```python
+import sentry_sdk
+
+sentry_sdk.logger.info("Order processed {order_id}", order_id="order-123")
+sentry_sdk.logger.warning("Rate limit reached", attributes={"endpoint": "/api/orders"})
+```
+
+## [Send Application Metrics NEW](https://docs.sentry.io/platforms/python/integrations/flask.md#send-application-metrics-)
+
+Use `sentry_sdk.metrics` to send counters, gauges, and distributions from your app. Metrics are enabled by default after you initialize the SDK.
+
+See [Set Up Metrics](https://docs.sentry.io/platforms/python/metrics.md) for all available metric types and configuration options.
+
+```python
+import sentry_sdk
+
+sentry_sdk.metrics.count("checkout.failed", 1)
+sentry_sdk.metrics.gauge("active_connections", 42)
+sentry_sdk.metrics.distribution("api_latency", 187, unit="millisecond")
+```
+
 ## [Verify Your Setup](https://docs.sentry.io/platforms/python/integrations/flask.md#verify-your-setup)
 
 Let's test your setup and confirm that data reaches your Sentry project.
 
-Errors triggered from a Python shell like IPython will not trigger Sentry's error monitoring. Make sure you're running the examples from a file instead.
-
-### [Issues](https://docs.sentry.io/platforms/python/integrations/flask.md#issues)
-
-To verify that Sentry captures errors and creates issues in your Sentry project, add this intentional error to your application:
+Add this route to your Flask app, then request `/sentry-debug`:
 
 ```python
-import sentry_sdk
-from flask import Flask
-
-sentry_sdk.init(...)  # same as above
-
-app = Flask(__name__)
-
-@app.route("/")
-def hello_world():
-    1 / 0  # raises an error
-    return "<p>Hello, World!</p>"
-```
-
-### [Tracing](https://docs.sentry.io/platforms/python/integrations/flask.md#tracing)
-
-To test your tracing configuration, create a custom transaction and span:
-
-```py
-import sentry_sdk
-
-with sentry_sdk.start_transaction(op="task", name="Transaction Name"):
-    span = sentry_sdk.start_span(name="Custom Span Name")
-    span.finish()
-```
-
-*Other available variations of the above snippet: Stream Mode*
-
-### [Logs](https://docs.sentry.io/platforms/python/integrations/flask.md#logs)
-
-To verify that Sentry catches your logs (which are enabled by default), add some log statements to your application:
-
-```python
-import sentry_sdk
-
-sentry_sdk.logger.info("This is an info log message")
-sentry_sdk.logger.warning("This is a warning message")
-sentry_sdk.logger.error("This is an error message")
-```
-
-### [Application Metrics NEW](https://docs.sentry.io/platforms/python/integrations/flask.md#application-metrics-)
-
-Send test metrics from your app to verify that metrics are arriving in Sentry:
-
-```py
-from sentry_sdk import metrics
-
-metrics.count("checkout.failed", 1)
-metrics.gauge("queue.depth", 42)
-metrics.distribution("cart.amount_usd", 187.5)
+@app.route("/sentry-debug")
+def trigger_error():
+    1 / 0
 ```
 
 ### [View Captured Data in Sentry](https://docs.sentry.io/platforms/python/integrations/flask.md#view-captured-data-in-sentry)
@@ -239,14 +222,11 @@ Note that `OPTIONS` and `HEAD` are excluded by default.
 
 ## [Next Steps](https://docs.sentry.io/platforms/python/integrations/flask.md#next-steps)
 
-At this point, you should have integrated Sentry into your application and should already be sending data to your Sentry project.
-
-Now's a good time to customize your setup and look into more advanced topics. Our next recommended steps for you are:
+At this point, you should have integrated Sentry into your Flask application. Here's what to explore next:
 
 * Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
-* Continue to [customize your configuration](https://docs.sentry.io/platforms/python/configuration.md)
-* Learn more about [manually capturing errors or messages](https://docs.sentry.io/platforms/python/usage.md)
-* Dive straight into the API with our [API docs](https://getsentry.github.io/sentry-python/)
+* [Set up Agent Tracing](https://docs.sentry.io/platforms/python/agent-tracing.md) to monitor your AI systems
+* Learn how to [manually capture errors](https://docs.sentry.io/platforms/python/usage.md)
 
 Are you having problems setting up the SDK?
 

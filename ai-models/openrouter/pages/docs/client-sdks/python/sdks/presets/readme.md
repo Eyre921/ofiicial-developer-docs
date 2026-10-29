@@ -108,7 +108,7 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `slug` | *str* | ✅ | URL-safe slug identifying the preset. | my-preset |
+| `slug` | *str* | ✔️ | URL-safe slug identifying the preset. | my-preset |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -168,8 +168,8 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `slug` | *str* | ✅ | URL-safe slug identifying the preset. Created if it does not exist. | my-preset |
-| `messages` | List\[[components.ChatMessages](../../components/chatmessages.mdx)] | ✅ | List of messages for the conversation | \[ \{ "content": "Hello!", "role": "user" } ] |
+| `slug` | *str* | ✔️ | URL-safe slug identifying the preset. Created if it does not exist. | my-preset |
+| `messages` | List\[[components.ChatMessages](../../components/chatmessages.mdx)] | ✔️ | List of messages for the conversation | \[ \{ "content": "Hello!", "role": "user" } ] |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -266,9 +266,9 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `slug` | *str* | ✅ | URL-safe slug identifying the preset. Created if it does not exist. | my-preset |
-| `messages` | List\[[components.MessagesMessageParam](../../components/messagesmessageparam.mdx)] | ✅ | N/A | |
-| `model` | *str* | ✅ | N/A | |
+| `slug` | *str* | ✔️ | URL-safe slug identifying the preset. Created if it does not exist. | my-preset |
+| `messages` | List\[[components.MessagesMessageParam](../../components/messagesmessageparam.mdx)] | ✔️ | N/A | |
+| `model` | *str* | ✔️ | N/A | |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -345,7 +345,7 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `slug` | *str* | ✅ | URL-safe slug identifying the preset. Created if it does not exist. | my-preset |
+| `slug` | *str* | ✔️ | URL-safe slug identifying the preset. Created if it does not exist. | my-preset |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -438,7 +438,7 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `slug` | *str* | ✅ | URL-safe slug identifying the preset. | my-preset |
+| `slug` | *str* | ✔️ | URL-safe slug identifying the preset. | my-preset |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -491,8 +491,8 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `slug` | *str* | ✅ | URL-safe slug identifying the preset. | my-preset |
-| `version` | *str* | ✅ | Version number of the preset. | 1 |
+| `slug` | *str* | ✔️ | URL-safe slug identifying the preset. | my-preset |
+| `version` | *str* | ✔️ | Version number of the preset. | 1 |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |

@@ -1,5 +1,5 @@
 ---
-title: "VideoGeneration"
+title: "Video Generation"
 source: https://openrouter.ai/docs/client-sdks/typescript/sdks/videogeneration/README.md
 path: docs/client-sdks/typescript/sdks/videogeneration/readme
 ---
@@ -8,7 +8,7 @@ path: docs/client-sdks/typescript/sdks/videogeneration/readme
 > Fetch the complete documentation index at: https://openrouter.ai/docs/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-# VideoGeneration
+# Video Generation
 
 > Video Generation endpoints
 

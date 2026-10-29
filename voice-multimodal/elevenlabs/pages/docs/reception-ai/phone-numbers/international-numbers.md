@@ -63,3 +63,5 @@ UK businesses get a held number automatically when they finish onboarding.
 | **Rejected**  | The documents were not accepted. Review the reason and resubmit. |
 
 Reception.ai emails you when a request is approved or rejected.
+
+If you are on the free trial, Reception.ai keeps at least 14 days left on your trial while a request is **In review**, and emails you when it extends the trial. Trial credits don't refill. The extension stops once the request is approved or rejected, so after a rejection you still have time to fix and resubmit. See [Plans and pricing](/docs/reception-ai/billing/plans-and-pricing#free-trial).

@@ -57,7 +57,7 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `intern_id` | *str* | ✅ | UUID of an intern in the workspace selected by the API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
+| `intern_id` | *str* | ✔️ | UUID of an intern in the workspace selected by the API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -112,7 +112,7 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `intern_id` | *str* | ✅ | UUID of an intern in the workspace selected by the API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
+| `intern_id` | *str* | ✔️ | UUID of an intern in the workspace selected by the API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -169,7 +169,7 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `intern_id` | *str* | ✅ | UUID of an intern in the workspace selected by the API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
+| `intern_id` | *str* | ✔️ | UUID of an intern in the workspace selected by the API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -225,8 +225,8 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `intern_id` | *str* | ✅ | UUID of an intern in the workspace selected by the API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
-| `name` | *str* | ✅ | Secret name. Lowercase letters, digits and single underscores, starting with a letter and not ending with an underscore, 1 to 255 characters. | github\_token |
+| `intern_id` | *str* | ✔️ | UUID of an intern in the workspace selected by the API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
+| `name` | *str* | ✔️ | Secret name. Lowercase letters, digits and single underscores, starting with a letter and not ending with an underscore, 1 to 255 characters. | github\_token |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -648,10 +648,10 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `intern_id` | *str* | ✅ | UUID of an intern in the workspace selected by the API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
-| `name` | *str* | ✅ | Secret name. Lowercase letters, digits and single underscores, starting with a letter and not ending with an underscore, 1 to 255 characters. | github\_token |
-| `hosts` | List\[*str*] | ✅ | Exact DNS hostnames the secret may be sent to, 1 to 100 entries. Each entry is lowercased and a trailing dot is removed, so `API.Example.com.` is stored as `api.example.com`. Schemes, ports, paths, wildcards and empty values are rejected. Duplicates after normalization are collapsed. Matching is exact: a secret bound to `api.example.com` is never released to `example.com` or any other hostname. | |
-| `value` | *str* | ✅ | Secret value, 1 to 65536 characters. It is encrypted at rest and never returned. | |
+| `intern_id` | *str* | ✔️ | UUID of an intern in the workspace selected by the API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
+| `name` | *str* | ✔️ | Secret name. Lowercase letters, digits and single underscores, starting with a letter and not ending with an underscore, 1 to 255 characters. | github\_token |
+| `hosts` | List\[*str*] | ✔️ | Exact DNS hostnames the secret may be sent to, 1 to 100 entries. Each entry is lowercased and a trailing dot is removed, so `API.Example.com.` is stored as `api.example.com`. Schemes, ports, paths, wildcards and empty values are rejected. Duplicates after normalization are collapsed. Matching is exact: a secret bound to `api.example.com` is never released to `example.com` or any other hostname. | |
+| `value` | *str* | ✔️ | Secret value, 1 to 65536 characters. It is encrypted at rest and never returned. | |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -1055,8 +1055,8 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `intern_id` | *str* | ✅ | UUID of an intern in the workspace selected by the API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
-| `names` | List\[*str*] | ✅ | Names of workspace secrets to copy, 1 to 100 unique entries. Every name must exist in the workspace scope. | |
+| `intern_id` | *str* | ✔️ | UUID of an intern in the workspace selected by the API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
+| `names` | List\[*str*] | ✔️ | Names of workspace secrets to copy, 1 to 100 unique entries. Every name must exist in the workspace scope. | |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -1168,7 +1168,7 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `name` | *str* | ✅ | Secret name. Lowercase letters, digits and single underscores, starting with a letter and not ending with an underscore, 1 to 255 characters. | github\_token |
+| `name` | *str* | ✔️ | Secret name. Lowercase letters, digits and single underscores, starting with a letter and not ending with an underscore, 1 to 255 characters. | github\_token |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -1567,9 +1567,9 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `name` | *str* | ✅ | Secret name. Lowercase letters, digits and single underscores, starting with a letter and not ending with an underscore, 1 to 255 characters. | github\_token |
-| `hosts` | List\[*str*] | ✅ | Exact DNS hostnames the secret may be sent to, 1 to 100 entries. Each entry is lowercased and a trailing dot is removed, so `API.Example.com.` is stored as `api.example.com`. Schemes, ports, paths, wildcards and empty values are rejected. Duplicates after normalization are collapsed. Matching is exact: a secret bound to `api.example.com` is never released to `example.com` or any other hostname. | |
-| `value` | *str* | ✅ | Secret value, 1 to 65536 characters. It is encrypted at rest and never returned. | |
+| `name` | *str* | ✔️ | Secret name. Lowercase letters, digits and single underscores, starting with a letter and not ending with an underscore, 1 to 255 characters. | github\_token |
+| `hosts` | List\[*str*] | ✔️ | Exact DNS hostnames the secret may be sent to, 1 to 100 entries. Each entry is lowercased and a trailing dot is removed, so `API.Example.com.` is stored as `api.example.com`. Schemes, ports, paths, wildcards and empty values are rejected. Duplicates after normalization are collapsed. Matching is exact: a secret bound to `api.example.com` is never released to `example.com` or any other hostname. | |
+| `value` | *str* | ✔️ | Secret value, 1 to 65536 characters. It is encrypted at rest and never returned. | |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |

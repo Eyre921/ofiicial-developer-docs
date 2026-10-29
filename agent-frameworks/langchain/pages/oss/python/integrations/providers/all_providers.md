@@ -1660,6 +1660,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Real-time web search API for AI applications.
 
+> **[QVeris](https://qveris.ai/docs/python-sdk#framework-integrations)**
+>
+> QVeris exposes professional data discovery, parameter inspection, and capability execution as async LangChain tools.
+
 > **[Ray Serve](/oss/python/integrations/providers/ray_serve)**
 >
 > Scalable model serving framework.
@@ -1739,6 +1743,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > **[Runpod](https://docs.runpod.io/overview)**
 >
 > GPU cloud platform for AI workloads.
+
+> **[RuthlessSchemaGuard](https://github.com/moltbot-den/openentity/tree/main/integrations/langchain)**
+>
+> Agent middleware that validates tool and HTTP responses against Pydantic or JSON Schema and raises on violations.
 
 > **[Runtime](https://withruntime.com/docs/langchain)**
 >
@@ -2295,6 +2303,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > **[Whoosh](https://github.com/priya-sundaram-dev/whoosh/tree/main/integrations/langchain-whoosh#readme)**
 >
 > Retriever backed by Whoosh, a pure-Python full-text search library with BM25F ranking and on-disk indexes.
+
+> **[WitanToolkit](https://github.com/witanmarkets/langchain-witan#readme)**
+>
+> Read-only tools to look up errors and operational facts other AI agents measured, and to query versioned datasets, on WITAN.
 
 > **[Wity](https://github.com/info-alphanimble/langchain-wity#readme)**
 >

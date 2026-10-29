@@ -36,6 +36,8 @@ In Reception.ai, go to **Integrations**, select **Add integration**, and choose 
 
 Open the **Tools** tab. Reception.ai lists the available actions. Assign each to the **Client** (receptionist), the **Assistant**, or both, or select **Enable all**. Select **Refresh tools** after adding actions in Zapier.
 
+If an action changes in Zapier after you enabled it, it shows a **Changed** badge and Reception.ai stops using it until you select **Update** to save the tool assignments again.
+
 ## What you can do
 
 Example automations your receptionist can trigger during a call:
@@ -49,3 +51,8 @@ Example automations your receptionist can trigger during a call:
 | Caller requests a callback            | Create a task in Asana or Notion   |
 
 Each workspace can connect one Zapier account. Zapier is available on every plan.
+
+> **Note**
+>
+> Changing the **MCP URL** after setup removes the stored secret token. To add a token for the new
+> address, disconnect and reconnect the integration.

@@ -51,7 +51,7 @@ During the trial, a warning appears when 25% or less of your credits remain, and
 | Resource               | Trial | Basic | Plus | Premium |
 | ---------------------- | ----- | ----- | ---- | ------- |
 | Phone numbers          | 1     | 1     | 3    | 5       |
-| Concurrent calls       | 20    | 1     | 3    | 10      |
+| Concurrent calls       | 1     | 1     | 3    | 10      |
 | Locations              | 20    | 1     | 1    | 20      |
 | Knowledge sources      | 5     | 5     | 10   | 20      |
 | Assistant messages/day | 150   | 150   | 300  | 500     |
@@ -62,6 +62,10 @@ Other limits that apply on every plan:
 
 * 50 rules, 20 procedures, and 100 transfer rules per receptionist
 * 10 transfer rule changes per day during the free trial
+
+## Call length limit
+
+Calls on Reception.ai numbers end after 30 minutes during the free trial and after 45 minutes on paid plans. The limit covers the whole call, including when your staff phone rings first and after a transfer. Calls on numbers from your own Twilio account or SIP trunk are not limited.
 
 ## Assistant daily limit
 

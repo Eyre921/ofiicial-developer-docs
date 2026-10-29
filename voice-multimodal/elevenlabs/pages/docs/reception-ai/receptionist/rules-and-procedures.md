@@ -66,6 +66,8 @@ A procedure is a step-by-step flow that runs when a caller's request matches its
 
 In the steps, type **@** or select **Reference** to insert a reference to another procedure, a service, a staff member, a location, a tool, a variable, or a knowledge base file.
 
+Tools include those from your [MCP server](/docs/reception-ai/integrations/mcp-server) and [Zapier](/docs/reception-ai/integrations/zapier) integrations, but only the ones assigned to the **Client** on the integration's **Tools** tab. MCP tools are listed with the integration's name first, for example **Inventory: Check stock**.
+
 ### Default procedures
 
 New workspaces start with procedures for the flows the business supports, such as:

@@ -25,7 +25,7 @@ If your browser blocks the microphone, allow microphone access for the site and 
 
 For a full end-to-end test, call your receptionist's phone number from any phone. The test dialog shows the number under **Or call**.
 
-Phone calls are the only way to test [transfers](/docs/reception-ai/receptionist/call-handling#transfer-to-a-human), [staff first answering](/docs/reception-ai/receptionist/call-handling#answering-order), and secure mode for known callers. These features do not work in browser conversations.
+Phone calls are the only way to test [transfers](/docs/reception-ai/receptionist/call-handling#transfer-to-a-human), [who answers first](/docs/reception-ai/receptionist/call-handling#who-answers-first), and secure mode for known callers. These features do not work in browser conversations.
 
 ## What to test
 
@@ -69,5 +69,5 @@ From a phone, trigger a transfer rule and verify the call reaches the correct nu
 
 > **Tip**
 >
-> After each test, open **Conversations** to review the transcript and outcome. If the header shows
-> a configuration warning, open it to review findings about your instructions.
+> After each test, open **Inbox** to review the transcript and outcome. If the header shows a
+> configuration warning, open it to review findings about your instructions.

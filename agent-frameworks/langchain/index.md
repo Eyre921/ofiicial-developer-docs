@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1679 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1684 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -358,6 +358,7 @@
 - `langsmith/interrupt-concurrent` — [Interrupt concurrent](pages/langsmith/interrupt-concurrent.md) · [原文](https://docs.langchain.com/langsmith/interrupt-concurrent)
 - `langsmith/javascript/managed-deep-agents-agent-definition` — [Define a Managed Deep Agent](pages/langsmith/javascript/managed-deep-agents-agent-definition.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-agent-definition)
 - `langsmith/javascript/managed-deep-agents-agent-owned-interrupts` — [Prompt Slack users with agent-owned interrupts](pages/langsmith/javascript/managed-deep-agents-agent-owned-interrupts.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-agent-owned-interrupts)
+- `langsmith/javascript/managed-deep-agents-browser-use` — [Browser use](pages/langsmith/javascript/managed-deep-agents-browser-use.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-browser-use)
 - `langsmith/javascript/managed-deep-agents-channels` — [Connect Managed Deep Agents to channels](pages/langsmith/javascript/managed-deep-agents-channels.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-channels)
 - `langsmith/javascript/managed-deep-agents-channels-http` — [Connect a Managed Deep Agent over HTTP](pages/langsmith/javascript/managed-deep-agents-channels-http.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-channels-http)
 - `langsmith/javascript/managed-deep-agents-channels-slack` — [Connect a Managed Deep Agent to Slack](pages/langsmith/javascript/managed-deep-agents-channels-slack.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-channels-slack)
@@ -478,6 +479,7 @@
 - `langsmith/pytest` — [How to run evaluations with pytest](pages/langsmith/pytest.md) · [原文](https://docs.langchain.com/langsmith/pytest)
 - `langsmith/python/managed-deep-agents-agent-definition` — [Define a Managed Deep Agent](pages/langsmith/python/managed-deep-agents-agent-definition.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-agent-definition)
 - `langsmith/python/managed-deep-agents-agent-owned-interrupts` — [Prompt Slack users with agent-owned interrupts](pages/langsmith/python/managed-deep-agents-agent-owned-interrupts.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-agent-owned-interrupts)
+- `langsmith/python/managed-deep-agents-browser-use` — [Browser use](pages/langsmith/python/managed-deep-agents-browser-use.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-browser-use)
 - `langsmith/python/managed-deep-agents-channels` — [Connect Managed Deep Agents to channels](pages/langsmith/python/managed-deep-agents-channels.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-channels)
 - `langsmith/python/managed-deep-agents-channels-http` — [Connect a Managed Deep Agent over HTTP](pages/langsmith/python/managed-deep-agents-channels-http.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-channels-http)
 - `langsmith/python/managed-deep-agents-channels-slack` — [Connect a Managed Deep Agent to Slack](pages/langsmith/python/managed-deep-agents-channels-slack.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-channels-slack)
@@ -1316,6 +1318,7 @@
 - `oss/javascript/deepagents/ag-ui` — [Agent User Interaction Protocol (AG-UI)](pages/oss/javascript/deepagents/ag-ui.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/ag-ui)
 - `oss/javascript/deepagents/async-subagents` — [Async subagents](pages/oss/javascript/deepagents/async-subagents.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/async-subagents)
 - `oss/javascript/deepagents/backends` — [Backends](pages/oss/javascript/deepagents/backends.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/backends)
+- `oss/javascript/deepagents/browser-use` — [Browser use](pages/oss/javascript/deepagents/browser-use.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/browser-use)
 - `oss/javascript/deepagents/comparison` — [Comparison with Claude Agent SDK](pages/oss/javascript/deepagents/comparison.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/comparison)
 - `oss/javascript/deepagents/content-builder` — [Build a content builder agent](pages/oss/javascript/deepagents/content-builder.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/content-builder)
 - `oss/javascript/deepagents/context-engineering` — [Context engineering in Deep Agents](pages/oss/javascript/deepagents/context-engineering.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/context-engineering)
@@ -1523,6 +1526,7 @@
 - `oss/python/deepagents/ag-ui` — [Agent User Interaction Protocol (AG-UI)](pages/oss/python/deepagents/ag-ui.md) · [原文](https://docs.langchain.com/oss/python/deepagents/ag-ui)
 - `oss/python/deepagents/async-subagents` — [Async subagents](pages/oss/python/deepagents/async-subagents.md) · [原文](https://docs.langchain.com/oss/python/deepagents/async-subagents)
 - `oss/python/deepagents/backends` — [Backends](pages/oss/python/deepagents/backends.md) · [原文](https://docs.langchain.com/oss/python/deepagents/backends)
+- `oss/python/deepagents/browser-use` — [Browser use](pages/oss/python/deepagents/browser-use.md) · [原文](https://docs.langchain.com/oss/python/deepagents/browser-use)
 - `oss/python/deepagents/comparison` — [Comparison with Claude Agent SDK](pages/oss/python/deepagents/comparison.md) · [原文](https://docs.langchain.com/oss/python/deepagents/comparison)
 - `oss/python/deepagents/content-builder` — [Build a content builder agent](pages/oss/python/deepagents/content-builder.md) · [原文](https://docs.langchain.com/oss/python/deepagents/content-builder)
 - `oss/python/deepagents/context-engineering` — [Context engineering in Deep Agents](pages/oss/python/deepagents/context-engineering.md) · [原文](https://docs.langchain.com/oss/python/deepagents/context-engineering)
@@ -1564,6 +1568,7 @@
 - `oss/python/integrations/providers/all_providers` — [All LangChain Python integration providers](pages/oss/python/integrations/providers/all_providers.md) · [原文](https://docs.langchain.com/oss/python/integrations/providers/all_providers)
 - `oss/python/integrations/providers/anthropic` — [Anthropic (Claude) integrations](pages/oss/python/integrations/providers/anthropic.md) · [原文](https://docs.langchain.com/oss/python/integrations/providers/anthropic)
 - `oss/python/integrations/providers/aws` — [AWS (Amazon) integrations](pages/oss/python/integrations/providers/aws.md) · [原文](https://docs.langchain.com/oss/python/integrations/providers/aws)
+- `oss/python/integrations/providers/browserbase` — [Browserbase integrations](pages/oss/python/integrations/providers/browserbase.md) · [原文](https://docs.langchain.com/oss/python/integrations/providers/browserbase)
 - `oss/python/integrations/providers/fireworks` — [Fireworks integrations](pages/oss/python/integrations/providers/fireworks.md) · [原文](https://docs.langchain.com/oss/python/integrations/providers/fireworks)
 - `oss/python/integrations/providers/google` — [Google integrations](pages/oss/python/integrations/providers/google.md) · [原文](https://docs.langchain.com/oss/python/integrations/providers/google)
 - `oss/python/integrations/providers/groq` — [Groq integrations](pages/oss/python/integrations/providers/groq.md) · [原文](https://docs.langchain.com/oss/python/integrations/providers/groq)

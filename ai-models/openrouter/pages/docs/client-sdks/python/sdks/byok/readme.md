@@ -107,8 +107,8 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `key` | *str* | ✅ | The raw provider API key or credential. This value is encrypted at rest and never returned in API responses. | sk-proj-abc123... |
-| `provider` | [components.BYOKProviderSlug](../../components/byokproviderslug.mdx) | ✅ | The upstream provider this credential authenticates against, as a lowercase slug (e.g. `openai`, `anthropic`, `amazon-bedrock`). | openai |
+| `key` | *str* | ✔️ | The raw provider API key or credential. This value is encrypted at rest and never returned in API responses. | sk-proj-abc123... |
+| `provider` | [components.BYOKProviderSlug](../../components/byokproviderslug.mdx) | ✔️ | The upstream provider this credential authenticates against, as a lowercase slug (e.g. `openai`, `anthropic`, `amazon-bedrock`). | openai |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -168,7 +168,7 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `id` | *str* | ✅ | The BYOK credential ID (UUID). | 11111111-2222-3333-4444-555555555555 |
+| `id` | *str* | ✔️ | The BYOK credential ID (UUID). | 11111111-2222-3333-4444-555555555555 |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -217,7 +217,7 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `id` | *str* | ✅ | The BYOK credential ID (UUID). | 11111111-2222-3333-4444-555555555555 |
+| `id` | *str* | ✔️ | The BYOK credential ID (UUID). | 11111111-2222-3333-4444-555555555555 |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -266,7 +266,7 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `id` | *str* | ✅ | The BYOK credential ID (UUID). | 11111111-2222-3333-4444-555555555555 |
+| `id` | *str* | ✔️ | The BYOK credential ID (UUID). | 11111111-2222-3333-4444-555555555555 |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |

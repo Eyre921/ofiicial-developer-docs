@@ -53,8 +53,8 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `input_audio` | [components.STTInputAudio](../../components/sttinputaudio.mdx) | ✅ | Audio to transcribe: inline base64 bytes, or a URL the provider downloads directly. | |
-| `model` | *str* | ✅ | STT model identifier | openai/whisper-large-v3 |
+| `input_audio` | [components.STTInputAudio](../../components/sttinputaudio.mdx) | ✔️ | Audio to transcribe: inline base64 bytes, or a URL the provider downloads directly. | |
+| `model` | *str* | ✔️ | STT model identifier | openai/whisper-large-v3 |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -125,7 +125,7 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `model` | *str* | ✅ | The model to use for transcription. |
+| `model` | *str* | ✔️ | The model to use for transcription. |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  |

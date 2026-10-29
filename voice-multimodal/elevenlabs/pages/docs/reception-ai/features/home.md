@@ -23,6 +23,8 @@ The top of the page shows whether your receptionist is taking calls:
 
 Select **Test** to talk to your receptionist, or **Configure** to open its settings. If your business has no name yet, select **Add your business name**.
 
+For a business in the US with a phone number connected, the status shows **Spam protection off** when spam protection is off. Select it to turn spam protection on. See [Call handling](/docs/reception-ai/receptionist/call-handling#verify-caller-identity).
+
 ## Activity summary
 
 Switch between **Today** and **7 days** to see:
@@ -34,18 +36,23 @@ Switch between **Today** and **7 days** to see:
 
 ## Latest conversations
 
-Recent conversations and messages, each with outcome labels such as booked, order, new client, urgent, message, or unanswered question. Select one to open it.
+Recent conversations and messages, each with outcome labels such as booking, order, quote request, new client, urgent, message, or question. Spam calls show **Spam** as their status. Select one to open it.
 
 ## Needs your attention
 
-A list of items that need action:
+A list of items that need action, with emergency and urgent items first:
 
 * **Connect a phone number**
-* **Urgent messages**
-* **Unread messages**
+* Open messages
+* Open [quote requests](/docs/reception-ai/features/quote-requests)
 * **Unanswered questions** from your [FAQ](/docs/reception-ai/knowledge-base/faq)
+* Calls marked urgent or emergency
 
-When everything is handled, the list shows **All caught up**.
+Select **View all** to open **Needs attention** in the [Inbox](/docs/reception-ai/features/inbox). When everything is handled, the list shows **All caught up**.
+
+## Next appointment
+
+**Next appointment** shows the time and date of the next booking, with its service, duration, and how it was made: **Booked by receptionist**, **Booked online**, or **Booked by SMS**. Select **Open calendar** to see the full calendar. When nothing is coming up, the card shows **Nothing booked**. The card appears when services are turned on for your business.
 
 ## Setup checklist
 

@@ -24,6 +24,26 @@ OpenRouter tracks which models allow their outputs to be used for training purpo
 
 > [!TIP]
 >
+> OpenRouter provides distillation information o> ## Documentation Index
+> Fetch the complete documentation index at: https://openrouter.ai/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Distillation
+
+> Ensure compliance with provider and model creator policies for distillation
+
+Model distillation is the process of training a smaller, more efficient model using outputs from a larger model. While this technique is powerful for creating specialized models, it's important to respect the terms of service set by model providers and creators.
+
+Some model providers and creators explicitly prohibit using their model outputs to train other models, while others allow it. OpenRouter makes it easy to filter for models that permit distillation, helping you stay compliant with these policies.
+
+## Why Distillation Compliance Matters
+
+When you use model outputs to train or fine-tune other models, you need to ensure you have permission to do so. Using outputs from models that prohibit distillation could violate terms of service agreements and potentially expose you to legal liability.
+
+OpenRouter tracks which models allow their outputs to be used for training purposes through the `is_trainable_text` property. Models where the author has explicitly allowed text distillation are marked as distillable.
+
+> [!TIP]
+>
 > OpenRouter provides distillation information on a best-effort basis. You should always verify the specific license terms for your use case, as licensing requirements may vary depending on how you intend to use the model outputs.
 
 ## Finding Distillable Models on the Model Page

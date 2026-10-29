@@ -80,7 +80,7 @@ const client = new OpenRouter();
 
 const completion = await client.chat.send({
   chatRequest: {
-    model: 'anthropic/claude-sonnet-4',
+    model: '~anthropic/claude-sonnet-latest',
     messages: [
       { role: 'user', content: 'Hello!' }
     ]
@@ -99,7 +99,7 @@ const client = new OpenRouter();
 
 const stream = await client.chat.send({
   chatRequest: {
-    model: 'anthropic/claude-sonnet-4',
+    model: '~anthropic/claude-sonnet-latest',
     messages: [{ role: 'user', content: 'Tell me a story' }],
     stream: true
   },

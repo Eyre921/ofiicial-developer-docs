@@ -175,13 +175,13 @@ Without the advisor installed, start from https://skills.qdrant.tech/llms.txt.
   - [Edge vs. Qdrant Cluster](https://qdrant.tech/documentation/edge/edge-vs-qdrant-cluster.md): Compare Qdrant Edge and Qdrant Server across architecture, deployment, operations, and API surface.
   - [Edge API](https://qdrant.tech/documentation/edge/edge-api.md): Reference for the Qdrant Edge API: the EdgeShard methods available in Python and Rust, with their parameters and return values.
     - [Shard Lifecycle](https://qdrant.tech/documentation/edge/edge-api/shard-lifecycle.md): Create, load, inspect, flush, and close a Qdrant Edge Shard, and read its metadata with info.
-    - [Configuration](https://qdrant.tech/documentation/edge/edge-api/configuration.md): Configure a Qdrant Edge Shard with EdgeConfig: vector params, quantization, optimizers, WAL, and search threads.
+    - [Configuration](https://qdrant.tech/documentation/edge/edge-api/configuration.md): Configure a Qdrant Edge Shard with EdgeConfig: vector params, memory tiers, quantization, optimizers, WAL, and search threads.
     - [Updating Data](https://qdrant.tech/documentation/edge/edge-api/updating-data.md): Write to a Qdrant Edge Shard with the update method and the full set of update operations.
-    - [Reading Data](https://qdrant.tech/documentation/edge/edge-api/reading-data.md): Read from a Qdrant Edge Shard with query, scroll, retrieve, count, and facet.
+    - [Reading Data](https://qdrant.tech/documentation/edge/edge-api/reading-data.md): Read from a Qdrant Edge Shard with query, query_batch, scroll, retrieve, count, and facet.
     - [Snapshots](https://qdrant.tech/documentation/edge/edge-api/snapshots.md): Move data between a Qdrant Edge Shard and a server collection with snapshot methods.
   - [Quickstart](https://qdrant.tech/documentation/edge/edge-quickstart.md): Get started with Qdrant Edge: install the Python or Rust bindings, configure a shard, and run local vector search in minutes.
   - [On-Device Embeddings](https://qdrant.tech/documentation/edge/edge-fastembed-embeddings.md): Generate text and image embeddings on-device by pairing FastEmbed with Qdrant Edge for fully offline vector search.
-  - [BM25](https://qdrant.tech/documentation/edge/edge-bm25.md): Generate BM25 sparse embeddings for keyword search with Qdrant Edge, compatible with server-side BM25 collections.
+  - [BM25](https://qdrant.tech/documentation/edge/edge-bm25.md): Rank points by BM25 relevance with Qdrant Edge, using a full-text index on a payload field.
   - [Data Synchronization Patterns](https://qdrant.tech/documentation/edge/edge-data-synchronization-patterns.md): Sync Qdrant Edge Shards with server collections using snapshots, partial updates, and dual-write patterns for offline-first apps.
   - [Synchronize with a Server](https://qdrant.tech/documentation/edge/edge-synchronization-guide.md): Combine mutable and immutable Qdrant Edge Shards with a server to offload indexing, back up data, and synchronize edge devices.
 - [Qdrant Web UI](https://qdrant.tech/documentation/web-ui.md): Manage Qdrant collections, run REST calls, and explore data through the Qdrant Web UI for local and Cloud deployments.

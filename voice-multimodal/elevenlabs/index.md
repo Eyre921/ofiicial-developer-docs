@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1403 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1398 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -159,7 +159,6 @@
 - `docs/api-reference/knowledge-base/compute-rag-index-batch` — [Compute RAG index in batch](pages/docs/api-reference/knowledge-base/compute-rag-index-batch.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/compute-rag-index-batch.md)
 - `docs/api-reference/knowledge-base/create-crawl-job` — [Create crawl job](pages/docs/api-reference/knowledge-base/create-crawl-job.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/create-crawl-job.md)
 - `docs/api-reference/knowledge-base/create-folder` — [Create folder](pages/docs/api-reference/knowledge-base/create-folder.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/create-folder.md)
-- `docs/api-reference/knowledge-base/create-from-file` — [Create knowledge base document from file](pages/docs/api-reference/knowledge-base/create-from-file.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/create-from-file.md)
 - `docs/api-reference/knowledge-base/create-from-text` — [Create knowledge base document from text](pages/docs/api-reference/knowledge-base/create-from-text.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/create-from-text.md)
 - `docs/api-reference/knowledge-base/create-from-url` — [Create knowledge base document from URL](pages/docs/api-reference/knowledge-base/create-from-url.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/create-from-url.md)
 - `docs/api-reference/knowledge-base/delete` — [Delete knowledge base document](pages/docs/api-reference/knowledge-base/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/delete.md)
@@ -411,8 +410,6 @@
 - `docs/api-reference/workspace/secrets/list` — [Get secrets](pages/docs/api-reference/workspace/secrets/list.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/secrets/list.md)
 - `docs/api-reference/workspace/secrets/update` — [Update secret](pages/docs/api-reference/workspace/secrets/update.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/secrets/update.md)
 - `docs/api-reference/workspace/update` — [Update settings](pages/docs/api-reference/workspace/update.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/update.md)
-- `docs/asyncapi.json` — [AsyncAPI JSON](pages/docs/asyncapi.json.md) · [原文](https://elevenlabs.io/docs/asyncapi.json.md)
-- `docs/asyncapi.yaml` — [AsyncAPI YAML](pages/docs/asyncapi.yaml.md) · [原文](https://elevenlabs.io/docs/asyncapi.yaml.md)
 - `docs/changelog/llms.txt` — [Changelog](pages/docs/changelog/llms.txt.md) · [原文](https://elevenlabs.io/docs/changelog/llms.txt)
 - `docs/eleven-agents/api-reference/agents/branches/create` — [Create agent branch](pages/docs/eleven-agents/api-reference/agents/branches/create.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/create.md)
 - `docs/eleven-agents/api-reference/agents/branches/get` — [Get agent branch](pages/docs/eleven-agents/api-reference/agents/branches/get.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/get.md)
@@ -1112,7 +1109,6 @@
 - `docs/help-center/product/distribution-publishing/gen-fm/how-do-i-use-gen-fm` — [How do I use GenFM?](pages/docs/help-center/product/distribution-publishing/gen-fm/how-do-i-use-gen-fm.md) · [原文](https://elevenlabs.io/docs/help-center/product/distribution-publishing/gen-fm/how-do-i-use-gen-fm.md)
 - `docs/help-center/product/distribution-publishing/gen-fm/how-much-does-gen-fm-cost` — [How much does GenFM cost?](pages/docs/help-center/product/distribution-publishing/gen-fm/how-much-does-gen-fm-cost.md) · [原文](https://elevenlabs.io/docs/help-center/product/distribution-publishing/gen-fm/how-much-does-gen-fm-cost.md)
 - `docs/help-center/product/distribution-publishing/gen-fm/what-is-gen-fm` — [What is GenFM?](pages/docs/help-center/product/distribution-publishing/gen-fm/what-is-gen-fm.md) · [原文](https://elevenlabs.io/docs/help-center/product/distribution-publishing/gen-fm/what-is-gen-fm.md)
-- `docs/help-center/product/dubbing` — [Dubbing FAQ](pages/docs/help-center/product/dubbing.md) · [原文](https://elevenlabs.io/docs/help-center/product/dubbing.md)
 - `docs/help-center/product/dubbing/can-i-edit-and-regenerate-dubbing-v-2-via-the-api` — [Can I edit and regenerate Dubbing v2 via the API?](pages/docs/help-center/product/dubbing/can-i-edit-and-regenerate-dubbing-v-2-via-the-api.md) · [原文](https://elevenlabs.io/docs/help-center/product/dubbing/can-i-edit-and-regenerate-dubbing-v-2-via-the-api.md)
 - `docs/help-center/product/dubbing/do-you-offer-lip-sync-in-dubbing` — [Do you offer lip sync in Dubbing?](pages/docs/help-center/product/dubbing/do-you-offer-lip-sync-in-dubbing.md) · [原文](https://elevenlabs.io/docs/help-center/product/dubbing/do-you-offer-lip-sync-in-dubbing.md)
 - `docs/help-center/product/dubbing/how-do-i-access-dubbing-studio` — [How do I access Dubbing Studio?](pages/docs/help-center/product/dubbing/how-do-i-access-dubbing-studio.md) · [原文](https://elevenlabs.io/docs/help-center/product/dubbing/how-do-i-access-dubbing-studio.md)
@@ -1323,8 +1319,6 @@
 - `docs/help-center/website/website-problems-with-safari-ios-iphone-macos-mac` — [Website problems with Safari, iOS (iPhone), macOS (Mac)](pages/docs/help-center/website/website-problems-with-safari-ios-iphone-macos-mac.md) · [原文](https://elevenlabs.io/docs/help-center/website/website-problems-with-safari-ios-iphone-macos-mac.md)
 - `docs/help-center/website/when-using-the-website-why-am-i-getting-a-client-side-error` — [When using the website, why am I getting a client-side error?](pages/docs/help-center/website/when-using-the-website-why-am-i-getting-a-client-side-error.md) · [原文](https://elevenlabs.io/docs/help-center/website/when-using-the-website-why-am-i-getting-a-client-side-error.md)
 - `docs/help-center/website/why-is-the-website-refreshing-and-logging-me-out` — [Why is the website refreshing and logging me out?](pages/docs/help-center/website/why-is-the-website-refreshing-and-logging-me-out.md) · [原文](https://elevenlabs.io/docs/help-center/website/why-is-the-website-refreshing-and-logging-me-out.md)
-- `docs/openapi.json` — [OpenAPI JSON](pages/docs/openapi.json.md) · [原文](https://elevenlabs.io/docs/openapi.json.md)
-- `docs/openapi.yaml` — [OpenAPI YAML](pages/docs/openapi.yaml.md) · [原文](https://elevenlabs.io/docs/openapi.yaml.md)
 - `docs/overview/administration/account` — [Account](pages/docs/overview/administration/account.md) · [原文](https://elevenlabs.io/docs/overview/administration/account.md)
 - `docs/overview/administration/assets` — [Assets](pages/docs/overview/administration/assets.md) · [原文](https://elevenlabs.io/docs/overview/administration/assets.md)
 - `docs/overview/administration/billing` — [Billing](pages/docs/overview/administration/billing.md) · [原文](https://elevenlabs.io/docs/overview/administration/billing.md)
@@ -1375,11 +1369,12 @@
 - `docs/reception-ai/features/assistant` — [Business assistant](pages/docs/reception-ai/features/assistant.md) · [原文](https://elevenlabs.io/docs/reception-ai/features/assistant.md)
 - `docs/reception-ai/features/booking-page` — [Booking page](pages/docs/reception-ai/features/booking-page.md) · [原文](https://elevenlabs.io/docs/reception-ai/features/booking-page.md)
 - `docs/reception-ai/features/clients` — [Clients](pages/docs/reception-ai/features/clients.md) · [原文](https://elevenlabs.io/docs/reception-ai/features/clients.md)
-- `docs/reception-ai/features/conversations` — [Conversations](pages/docs/reception-ai/features/conversations.md) · [原文](https://elevenlabs.io/docs/reception-ai/features/conversations.md)
 - `docs/reception-ai/features/home` — [Home](pages/docs/reception-ai/features/home.md) · [原文](https://elevenlabs.io/docs/reception-ai/features/home.md)
+- `docs/reception-ai/features/inbox` — [Inbox](pages/docs/reception-ai/features/inbox.md) · [原文](https://elevenlabs.io/docs/reception-ai/features/inbox.md)
 - `docs/reception-ai/features/notifications` — [Notifications and SMS](pages/docs/reception-ai/features/notifications.md) · [原文](https://elevenlabs.io/docs/reception-ai/features/notifications.md)
 - `docs/reception-ai/features/orders` — [Orders and shop](pages/docs/reception-ai/features/orders.md) · [原文](https://elevenlabs.io/docs/reception-ai/features/orders.md)
 - `docs/reception-ai/features/quote-requests` — [Quote requests](pages/docs/reception-ai/features/quote-requests.md) · [原文](https://elevenlabs.io/docs/reception-ai/features/quote-requests.md)
+- `docs/reception-ai/features/team` — [Team](pages/docs/reception-ai/features/team.md) · [原文](https://elevenlabs.io/docs/reception-ai/features/team.md)
 - `docs/reception-ai/integrations/cal-com` — [Cal.com](pages/docs/reception-ai/integrations/cal-com.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/cal-com.md)
 - `docs/reception-ai/integrations/calendly` — [Calendly](pages/docs/reception-ai/integrations/calendly.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/calendly.md)
 - `docs/reception-ai/integrations/google-calendar` — [Google Calendar](pages/docs/reception-ai/integrations/google-calendar.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/google-calendar.md)

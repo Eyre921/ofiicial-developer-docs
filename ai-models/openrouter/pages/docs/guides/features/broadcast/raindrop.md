@@ -66,7 +66,7 @@ Raindrop receives events with custom metadata included as event properties. Use 
 
 ```json lines theme={null}
 {
-  "model": "anthropic/claude-sonnet-4",
+  "model": "~anthropic/claude-sonnet-latest",
   "messages": [{ "role": "user", "content": "What time is it?" }],
   "user": "user_35",
   "session_id": "session_abc",

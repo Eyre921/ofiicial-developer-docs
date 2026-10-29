@@ -14,7 +14,7 @@ The knowledge base contains everything your receptionist knows about your busine
 
 * **Website content**: pages read from your website.
 * **Uploaded files**: PDFs, documents, and other files you provide.
-* **FAQ answers**: your answers to questions the receptionist could not answer. See [FAQ](/docs/reception-ai/knowledge-base/faq).
+* **Learned from calls**: your answers to questions the receptionist could not answer. See [FAQ](/docs/reception-ai/knowledge-base/faq).
 * **Business configuration**: your services, hours, locations, and staff, added automatically.
 
 ## How your receptionist uses it
@@ -23,17 +23,19 @@ When a caller asks a question, the receptionist:
 
 1. Searches the knowledge base for relevant information.
 2. Answers based on what it finds.
-3. If nothing relevant is found, adds the question to your FAQ for you to answer.
+3. If nothing relevant is found, saves the question to your inbox for you to answer.
 
 If your knowledge base is under 2,000,000 characters and 2,000 documents, you can turn on **Skip retrieval (RAG)** in [Advanced settings](/docs/reception-ai/receptionist/advanced-settings) to include the whole knowledge base in every response instead of searching. This lowers response time.
 
 ## Managing knowledge sources
 
-Open your business page from the sidebar (labeled with your business name) and go to **Knowledge Sources**. Select **Add new** and choose **Upload file**, **Entire website**, or **Single page**. Filter the list by files, websites, or pages, or search by name.
+Open your business page from the sidebar (labeled with your business name) and select the **Business knowledge** card on the **Overview** tab. In the dialog, choose **Add your website**, **Add a single page**, or **Upload a file**. Once you have sources, add more with **Website**, **Single page**, or **Upload file** at the top of the list, next to a count of your sources against your plan's limit, such as **3 of 5 sources**. You can also drop a file onto the dialog.
 
 ### Importing business details
 
 When a website or file finishes processing, Reception.ai extracts business details such as contact information, locations, services, products, assets, and staff. Open the source to review them, then select **Import all** or **Import selection** to add them to your business. Each source can be imported once.
+
+Before importing, select an item to correct it. You can change details such as the **Name**, **Description**, and **Groups**, the **Type** of a service (**Appointment** or **Group session**), and the **Pricing** of a service or product (**Fixed price** or **Quote on request**). Your edits are imported instead of what was found.
 
 #### [Website scraping](/docs/reception-ai/knowledge-base/website-scraping)
 

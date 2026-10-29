@@ -38,7 +38,7 @@ The timeline lists everything that has happened with the client: calls, website 
 
 From the timeline you can:
 
-* **Send SMS** to the client. See [Notifications and SMS](/docs/reception-ai/features/notifications#sending-an-sms-to-a-client).
+* **Send SMS** to the client. Choose the number to send from under **From**; if you have one number, it is already selected. See [Notifications and SMS](/docs/reception-ai/features/notifications#sending-an-sms-to-a-client).
 * **Add** a manual interaction, such as a walk-in visit, with type, channel, description, date, service, staff member, and asset.
 * Open the related booking, order, or conversation.
 

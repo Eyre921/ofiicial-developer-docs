@@ -1,5 +1,5 @@
 ---
-title: "EndUsers"
+title: "End Users"
 source: https://openrouter.ai/docs/client-sdks/typescript/sdks/endusers/README.md
 path: docs/client-sdks/typescript/sdks/endusers/readme
 ---
@@ -8,7 +8,7 @@ path: docs/client-sdks/typescript/sdks/endusers/readme
 > Fetch the complete documentation index at: https://openrouter.ai/docs/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-# EndUsers
+# End Users
 
 > Deprecated alias of externalUsers. Use externalUsers instead; scheduled for removal (sunset date TBD).
 

@@ -42,6 +42,12 @@ Open the **Tools** tab to see the tools your server provides. Assign each tool t
 
 Select **Refresh tools** after adding tools to your server.
 
+If your server changes a tool after you enabled it, the tool shows a **Changed** badge and Reception.ai stops using it. Review the tool and select **Update** to save the tool assignments again.
+
+## Changing the server URL
+
+You can edit the **Server URL** after setup. Changing it removes the stored secret token, and any HTTP headers you don't re-enter in the same save, so they are never sent to the new address. To use a secret token with the new server, disconnect and reconnect the integration.
+
 ## Use cases
 
 * **Custom booking logic**: connect to your existing reservation system.

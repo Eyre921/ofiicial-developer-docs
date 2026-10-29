@@ -59,8 +59,8 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
-| `id` | `string` | ✅ | The generation ID | gen-1234567890 |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. | |
+| `id` | `string` | ✔️ | The generation ID | gen-1234567890 |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
@@ -120,8 +120,8 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
-| `id` | `string` | ✅ | The generation ID | gen-1234567890 |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. | |
+| `id` | `string` | ✔️ | The generation ID | gen-1234567890 |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
@@ -185,8 +185,8 @@ func main() {
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. |
-| `request` | [components.SubmitGenerationFeedbackRequest](../../models/components/submitgenerationfeedbackrequest.mdx) | ✅ | The request object to use for the request. |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. |
+| `request` | [components.SubmitGenerationFeedbackRequest](../../models/components/submitgenerationfeedbackrequest.mdx) | ✔️ | The request object to use for the request. |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. |
 
 ### Response

@@ -41,6 +41,7 @@ Currently, the following models are natively supported and can be configured via
 |                | Gemini 2.5 Flash       |
 |                | Gemini 2.5 Flash Lite  |
 | **OpenAI**     | GPT-6.1 Sol            |
+|                | GPT-6.1 Terra          |
 |                | GPT-6 Astra            |
 |                | GPT-6 Sol              |
 |                | GPT-6 Luna             |

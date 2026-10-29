@@ -92,7 +92,7 @@ const weatherTool = tool({
 });
 
 const result = openrouter.callModel({
-  model: 'anthropic/claude-sonnet-4',
+  model: '~anthropic/claude-sonnet-latest',
   input: 'What is the weather in San Francisco?',
   tools: [weatherTool],
 });
@@ -147,7 +147,7 @@ const openrouter = new OpenRouter({
 });
 
 const result = openrouter.callModel({
-  model: 'anthropic/claude-sonnet-4',
+  model: '~anthropic/claude-sonnet-latest',
   input: 'Research this topic thoroughly',
   tools: [searchTool],
   stopWhen: [stepCountIs(10), maxCost(0.50)],

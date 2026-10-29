@@ -648,6 +648,10 @@ Connect LangGraph agents to front ends and observability platforms.
 >
 > Long-term memory for create\_agent agents: adds what Recall learned about the user to the system prompt and records each exchange.
 
+> **[RuthlessSchemaGuard](https://github.com/moltbot-den/openentity/tree/main/integrations/langchain)**
+>
+> Agent middleware that validates tool and HTTP responses against Pydantic or JSON Schema and raises on violations.
+
 ## Callbacks
 
 > **[OpenInference](https://arize.com/docs/ax/integrations/python-agent-frameworks/langchain/langchain-tracing)**

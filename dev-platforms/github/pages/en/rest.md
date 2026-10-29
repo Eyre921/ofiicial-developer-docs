@@ -708,6 +708,10 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 
   Use the REST API to manage Project views
 
+* [REST API endpoints for Agent Merge](/en/rest/pulls/agent-merge)
+
+  Use the REST API to get, update, and disable Agent Merge for pull requests.
+
 * [REST API endpoints for pull request review comments](/en/rest/pulls/comments)
 
   Use the REST API to interact with pull request review comments.

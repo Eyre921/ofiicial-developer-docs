@@ -25,12 +25,12 @@ Choose a time range of **Today**, **7 days** (default), **30 days**, or **90 day
 
 ### Outcomes
 
-A breakdown of what conversations resulted in: bookings, orders, new clients, messages left, transfers, unanswered questions, and no further action. One conversation can count toward several outcomes.
+A breakdown of what conversations resulted in: bookings, orders, new clients, messages left, transfers, unanswered questions, spam (when there is any), and no further action. One conversation can count toward several outcomes.
 
 ### Trends and patterns
 
 * **Outcomes per day or week**
-* **Top topics**: the most common caller intents
+* **Top topics**: the most common caller intents, not counting spam calls
 * **Sentiment**: happy, neutral, or unhappy callers
 * **Peak hours**: a heatmap of when conversations happen
 

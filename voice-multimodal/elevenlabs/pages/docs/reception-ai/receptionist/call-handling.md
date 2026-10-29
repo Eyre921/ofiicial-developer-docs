@@ -10,35 +10,38 @@ path: docs/reception-ai/receptionist/call-handling
 
 The **On the call** group on the Receptionists page controls what happens during a phone call: who picks up first, when calls are transferred to your team, how callers are verified, and which numbers are blocked.
 
-## Answering order
+## Who answers first
 
-**Answering order** decides who answers inbound calls first. It applies to every receptionist in your workspace.
+**Who answers first** decides whether your staff phone rings before the receptionist. It applies to every receptionist in your workspace. Under **Staff answers first**, choose:
 
-| Option                           | Behavior                                                                              |
-| -------------------------------- | ------------------------------------------------------------------------------------- |
-| **Receptionist first** (default) | The AI receptionist answers immediately. Best for full 24/7 coverage.                 |
-| **Staff first**                  | Your staff phone rings first. If nobody answers in time, the receptionist takes over. |
+| Option              | Behavior                                                                                                                                                 |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Never** (default) | Every call goes straight to the receptionist.                                                                                                            |
+| **Business hours**  | During your business hours, your staff phone rings first. If nobody answers, the receptionist takes over. Outside those hours, the receptionist answers. |
+| **Always**          | Every call rings your staff phone first. If nobody answers, the receptionist takes over.                                                                 |
+| **Custom hours**    | Staff answer first during the hours you set. Outside those hours, the receptionist answers.                                                              |
 
-When **Staff first** is selected, configure:
+**Business hours** follows your business hours. With more than one location, choose which location's hours to follow. **Custom hours** includes a timezone.
 
-| Setting                          | Description                                                                                                 |
-| -------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| **Staff phone number**           | The number to ring first                                                                                    |
-| **Maximum ring time**            | How long to ring before the receptionist answers: 10, 15 (default), 20, or 30 seconds                       |
-| **Ring music**                   | What the caller hears while waiting: soft rock (default), ambient, classical, electronica, rock, or guitars |
-| **Staff connection message**     | Spoken to the caller while staff is ringing (up to 200 characters)                                          |
-| **Receptionist connect message** | Spoken when staff does not answer and the receptionist takes over (up to 200 characters)                    |
-| **Staff answering hours**        | When staff first is active, with a timezone. Outside these hours, the receptionist answers directly.        |
+When staff answer first, open **Staff phone**:
+
+| Setting                    | Description                                                                                                                          |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| **Staff phone number**     | The number to ring first. Your own or office phone, not the number clients dial. Premium-rate and shared-cost numbers can't be used. |
+| **Message before ringing** | Spoken to the caller before the phone rings (up to 200 characters).                                                                  |
+| **Ring music**             | What the caller hears while waiting: **Soft Rock** (default), **Ambient**, **Classical**, **Electronica**, **Rock**, or **Guitars**. |
+| **Maximum ring time**      | How long to ring before the receptionist answers: 10, 15 (default), 20, 30, 45, or 60 seconds.                                       |
+| **Handover message**       | Spoken when staff does not answer and the receptionist takes over (up to 200 characters).                                            |
 
 > **Note**
 >
-> Staff first places an outbound call to your staff phone. It is available for US businesses, and
-> for any business whose receptionist uses only numbers from your own Twilio account or SIP trunk.
-> See [Bring your own number](/docs/reception-ai/phone-numbers/bring-your-own-number).
+> Staff answering first places an outbound call to your staff phone. It is unavailable on a
+> Reception.ai number in Canada unless every number on the receptionist comes from your own Twilio
+> account or SIP Trunk. See [Bring your own number](/docs/reception-ai/phone-numbers/bring-your-own-number).
 
 ## Forward an existing number
 
-To keep your current business line, forward calls you don't answer to your receptionist's number. Forwarding is set up with your phone carrier and works independently of the answering order.
+To keep your current business line, forward calls you don't answer to your receptionist's number. Forwarding is set up with your phone carrier and works independently of who answers first.
 
 Open **Forward an existing number**, choose the country of the phone you will forward from, and dial the codes shown. For most mobile carriers:
 
@@ -79,28 +82,34 @@ Each rule has:
 ### Transfer availability and limits
 
 * Transfers work on phone calls only, not on web conversations.
-* Transfers are available for US businesses, and for any business whose receptionist uses only numbers from your own Twilio account or SIP trunk.
-* Transferring to a number outside your business's country requires your own Twilio number or a paid plan.
+* Transfers are unavailable on a Reception.ai number in Canada unless every number on the receptionist comes from your own Twilio account or SIP Trunk.
+* Transferring to a number outside your business's country requires your own Twilio number or the Premium plan.
+* Premium-rate and shared-cost numbers can't be used as transfer destinations, even with your own Twilio number.
 * During the free trial, you can add or edit up to 10 transfer rules per day.
 
-## Caller ID on transfers
+## Transfer settings
 
 By default, the person receiving a transferred call sees the caller's own number. This is a blind transfer: the call is handed over directly.
 
 Turn on **Show your business number instead** to show your business number. The person receiving the call then hears a summary of the conversation before being connected, and the caller hears hold music while they wait.
 
-This option is available when all of the receptionist's numbers are Twilio numbers.
+Turn on **Keep recording after a transfer** to record the rest of the call after your receptionist transfers it and add it to the end of the call recording. This only applies while call recordings are stored. New businesses start with it on.
+
+**Transfer settings** is available when all of the receptionist's numbers are Twilio numbers.
 
 ## Verify caller identity
 
-Protect client data by requiring callers to prove who they are before the receptionist reads or changes their records.
+Protect client data by requiring callers to prove who they are before the receptionist reads or changes their records, and keep your receptionist from answering spam calls.
 
-| Setting                        | Default | Behavior                                                                                                                                                                 |
-| ------------------------------ | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Secure mode**                | Off     | The receptionist only looks up or changes a client's details when the caller's number matches the one on file. Clients created during the same conversation are trusted. |
-| **Identity verification tool** | Off     | The receptionist can send a one-time code to the client's email or phone number on file and ask the caller to read it back.                                              |
+| Setting                        | Default               | Behavior                                                                                                                                                                                                              |
+| ------------------------------ | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Secure mode**                | Off                   | The receptionist only looks up or changes a client's details when the caller's number matches the one on file. Clients created during the same conversation are trusted.                                              |
+| **Identity verification tool** | Off                   | The receptionist can send a one-time code to the client's email or phone number on file and ask the caller to read it back.                                                                                           |
+| **Spam protection**            | On for new businesses | Checks callers before your receptionist answers. Callers whose number can't be verified are asked to press a key to be connected. Callers whose number is verified, and clients already on file, go straight through. |
 
 With secure mode on, callers from an unknown number and website visitors must pass verification before accessing their records. Codes are sent by email by default. Sending by SMS requires an SMS-capable Twilio number. See [Notifications and SMS](/docs/reception-ai/features/notifications).
+
+**Spam protection** is available to businesses in the US. It does not appear when every number on the receptionist is a SIP trunk number.
 
 ## Blocked numbers
 

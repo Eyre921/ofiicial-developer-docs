@@ -100,7 +100,7 @@ Detailed troubleshooting and on-demand support require an on-going support contr
 
 ## Initial Setup
 
-To setup your deployment environment and successfully self-host Deepgram products for the first time, the guides in this "Self-Hosted Deployments" section will take you through step by step.
+To set up your deployment environment and successfully self-host Deepgram products for the first time, the guides in this "Self-hosted deployments" section will take you through step by step.
 
 Starting with this guide, you can use the "What's Next" section at the bottom of each page to take you from one guide to another until you have a working environment. Unless specifically indicated, each step in a given guide is required - skipping steps will leave you with an incomplete or broken environment.
 

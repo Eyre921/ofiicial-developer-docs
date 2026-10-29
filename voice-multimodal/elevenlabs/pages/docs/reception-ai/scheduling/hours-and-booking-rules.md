@@ -46,17 +46,17 @@ Time off cannot be saved while bookings exist during that period. Reception.ai l
 
 The **Booking rules** card applies to both your receptionist and your booking page. Bookings you create from the dashboard are not restricted by these rules.
 
-| Rule                            | Options                                               | Default    |
-| ------------------------------- | ----------------------------------------------------- | ---------- |
-| **Slot length**                 | 10, 15, 20, 30, or 60 minutes                         | 15 minutes |
-| **Book up to**                  | 7, 14, 30, 60, 90, or 365 days ahead                  | 14 days    |
-| **Minimum notice**              | None, 15 or 30 minutes, 1, 2, or 4 hours, 1 or 2 days | None       |
-| **Reschedule or cancel notice** | Same options as minimum notice                        | None       |
-| **Overlapping**                 | Limit overlapping appointments per location           | Off        |
+| Rule                                        | Options                                                     | Default    |
+| ------------------------------------------- | ----------------------------------------------------------- | ---------- |
+| **Slot length**                             | 10, 15, 20, 30, or 60 minutes                               | 15 minutes |
+| **Book up to**                              | 1 week, 2 weeks, 1 month, 2 months, 3 months, or 1 year     | 2 months   |
+| **Minimum notice**                          | No minimum, 15 or 30 minutes, 1, 2, or 4 hours, 1 or 2 days | No minimum |
+| **Reschedule or cancel notice**             | Same options as minimum notice                              | No minimum |
+| **Set a limit on overlapping appointments** | Limit overlapping appointments per location                 | Off        |
 
 * **Minimum notice** is the soonest a new booking can start.
 * **Reschedule or cancel notice** is the latest a client can reschedule or cancel before the appointment starts.
-* **Overlapping** caps how many appointments can run at the same time at one location.
+* **Set a limit on overlapping appointments** caps how many appointments can run at the same time at one location.
 
 > **Note**
 >

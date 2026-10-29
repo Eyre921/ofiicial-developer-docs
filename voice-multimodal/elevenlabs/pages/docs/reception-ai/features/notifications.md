@@ -45,15 +45,16 @@ SMS lets you send confirmations, reminders, and updates by text message.
 
 ### Sending numbers
 
-| Your number                                                                                           | Can send SMS                             |
-| ----------------------------------------------------------------------------------------------------- | ---------------------------------------- |
-| A number from your own Twilio account ([BYO](/docs/reception-ai/phone-numbers/bring-your-own-number)) | Yes, in any country                      |
-| A Reception.ai number in Canada                                                                       | Yes                                      |
-| A Reception.ai number in the US or elsewhere                                                          | No. Connect a Twilio number to send SMS. |
+| Your number                                                                                           | Can send SMS                                                                                                       |
+| ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| A number from your own Twilio account ([BYO](/docs/reception-ai/phone-numbers/bring-your-own-number)) | Yes, in any country                                                                                                |
+| A Reception.ai number in Canada                                                                       | Yes for automatic messages. A message you type needs a Twilio number.                                              |
+| A Reception.ai number in the United States                                                            | No. Connect a Twilio number to send SMS.                                                                           |
+| A Reception.ai number from a regulatory request                                                       | Yes. A number waiting on registration can send once it is approved. Typed messages in Israel need a Twilio number. |
 
 Choose the number to send from under **SMS phone number** in the notification settings.
 
-Reception.ai numbers have a daily SMS limit: Trial 100, Basic 300, Plus 750, Premium 1,500. Numbers from your own Twilio account are not limited.
+Reception.ai numbers have a daily SMS limit: Trial 10, Basic 30, Plus 75, Premium 150. Numbers from your own Twilio account are not limited.
 
 ### SMS templates
 
@@ -61,7 +62,9 @@ In the **SMS** tab, choose a style for each message type: **Professional**, **Fr
 
 ### Consent and opt-out
 
-Clients receive SMS only when they are opted in. A client who replies STOP, STOPALL, UNSUBSCRIBE, CANCEL, END, or QUIT is opted out. Only the client can opt back in, by texting START or UNSTOP. A reply of HELP or INFO receives an automatic help message.
+Clients receive SMS only when they are opted in. When any client notification is set to send by SMS, the receptionist offers text reminders on calls: right after the first booking on a call, it asks a client who isn't opted in whether they want a text before each appointment, mentioning that message and data rates may apply and that they can reply STOP at any time. The client is opted in only after a clear yes, and isn't asked again once opted in. Callers can also ask the receptionist to stop text reminders.
+
+A client who replies STOP, STOPALL, UNSUBSCRIBE, CANCEL, END, or QUIT is opted out. Only the client can opt back in, by texting START or UNSTOP. A reply of HELP or INFO receives an automatic help message.
 
 > **Note**
 >
@@ -70,7 +73,7 @@ Clients receive SMS only when they are opted in. A client who replies STOP, STOP
 
 ### Sending an SMS to a client
 
-Open a client and select **Send SMS** on their timeline. Messages can be up to 459 characters, and your workspace can send up to 30 per hour. Sending requires a number from your own Twilio account. The message is logged on the client's timeline.
+Open a client and select **Send SMS** on their timeline. Messages can be up to 459 characters, and your workspace can send up to 30 per hour. Messages are sent from a Twilio number you connected, or from a Reception.ai number when your country allows it. Where that number needs regulatory registration, it can send once the registration is approved. The message is logged on the client's timeline.
 
 ### Incoming texts
 

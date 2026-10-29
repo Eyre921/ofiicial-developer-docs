@@ -833,7 +833,7 @@ OpenRouter will try them one at a time and proceed to other providers if none ar
 
 ### Example: Specifying providers with fallbacks
 
-This example skips over OpenAI (which doesn't host Mixtral), tries Together, and then falls back to the normal list of providers on OpenRouter:
+This example skips over OpenAI (which doesn't host Mistral Small 3.2), tries DeepInfra, and then falls back to the normal list of providers on OpenRouter:
 
 ```typescript title="TypeScript SDK" lines theme={null}
 import { OpenRouter } from '@openrouter/sdk';
@@ -844,10 +844,10 @@ const openRouter = new OpenRouter({
 
 const completion = await openRouter.chat.send({
   chatRequest: {
-    model: 'mistralai/mixtral-8x7b-instruct',
+    model: 'mistralai/mistral-small-3.2-24b-instruct',
     messages: [{ role: 'user', content: 'Hello' }],
     provider: {
-      order: ['openai', 'together'],
+      order: ['openai', 'deepinfra'],
     },
     stream: false,
   },
@@ -864,10 +864,10 @@ fetch('https://openrouter.ai/api/v1/chat/completions', {
     'Content-Type': 'application/json',
   },
   body: JSON.stringify({
-    model: 'mistralai/mixtral-8x7b-instruct',
+    model: 'mistralai/mistral-small-3.2-24b-instruct',
     messages: [{ role: 'user', content: 'Hello' }],
     provider: {
-      order: ['openai', 'together'],
+      order: ['openai', 'deepinfra'],
     },
   }),
 });
@@ -884,17 +884,17 @@ headers = {
 }
 
 response = requests.post('https://openrouter.ai/api/v1/chat/completions', headers=headers, json={
-  'model': 'mistralai/mixtral-8x7b-instruct',
+  'model': 'mistralai/mistral-small-3.2-24b-instruct',
   'messages': [{ 'role': 'user', 'content': 'Hello' }],
   'provider': {
-    'order': ['openai', 'together'],
+    'order': ['openai', 'deepinfra'],
   },
 })
 ```
 
 ### Example: Specifying providers with fallbacks disabled
 
-Here's an example with `allow_fallbacks` set to `false` that skips over OpenAI (which doesn't host Mixtral), tries Together, and then fails if Together fails:
+Here's an example with `allow_fallbacks` set to `false` that skips over OpenAI (which doesn't host Mistral Small 3.2), tries DeepInfra, and then fails if DeepInfra fails:
 
 ```typescript title="TypeScript SDK" lines theme={null}
 import { OpenRouter } from '@openrouter/sdk';
@@ -905,10 +905,10 @@ const openRouter = new OpenRouter({
 
 const completion = await openRouter.chat.send({
   chatRequest: {
-    model: 'mistralai/mixtral-8x7b-instruct',
+    model: 'mistralai/mistral-small-3.2-24b-instruct',
     messages: [{ role: 'user', content: 'Hello' }],
     provider: {
-      order: ['openai', 'together'],
+      order: ['openai', 'deepinfra'],
       allowFallbacks: false,
     },
     stream: false,
@@ -926,10 +926,10 @@ fetch('https://openrouter.ai/api/v1/chat/completions', {
     'Content-Type': 'application/json',
   },
   body: JSON.stringify({
-    model: 'mistralai/mixtral-8x7b-instruct',
+    model: 'mistralai/mistral-small-3.2-24b-instruct',
     messages: [{ role: 'user', content: 'Hello' }],
     provider: {
-      order: ['openai', 'together'],
+      order: ['openai', 'deepinfra'],
       allow_fallbacks: false,
     },
   }),
@@ -947,10 +947,10 @@ headers = {
 }
 
 response = requests.post('https://openrouter.ai/api/v1/chat/completions', headers=headers, json={
-  'model': 'mistralai/mixtral-8x7b-instruct',
+  'model': 'mistralai/mistral-small-3.2-24b-instruct',
   'messages': [{ 'role': 'user', 'content': 'Hello' }],
   'provider': {
-    'order': ['openai', 'together'],
+    'order': ['openai', 'deepinfra'],
     'allow_fallbacks': False,
   },
 })
@@ -972,14 +972,14 @@ Every endpoint slug has the shape `provider[/variant][/region][/tier]`, with eac
 | - | - |
 | `"google-vertex"` | All Google Vertex endpoints (every region) |
 | `"google-vertex/us-east5"` | Only the `us-east5` region endpoint |
-| `"deepinfra"` | All DeepInfra endpoints (default + turbo) |
+| `"deepinfra"` | All DeepInfra endpoints (for example, fp8 and turbo) |
 | `"deepinfra/turbo"` | Only the DeepInfra turbo endpoint |
 
 ### Example: Targeting a specific endpoint variant
 
-For example, DeepInfra offers DeepSeek R1 through multiple endpoints:
+For example, DeepInfra offers Gemma 4 31B through multiple endpoints, including:
 
-* Default endpoint with slug `deepinfra`
+* FP8 endpoint with slug `deepinfra/fp8`
 * Turbo endpoint with slug `deepinfra/turbo`
 
 By copying the exact provider slug and using it in your request's `order` array, you can ensure your request is routed to the specific endpoint you want:
@@ -993,7 +993,7 @@ const openRouter = new OpenRouter({
 
 const completion = await openRouter.chat.send({
   chatRequest: {
-    model: 'deepseek/deepseek-r1',
+    model: 'google/gemma-4-31b-it',
     messages: [{ role: 'user', content: 'Hello' }],
     provider: {
       order: ['deepinfra/turbo'],
@@ -1014,7 +1014,7 @@ fetch('https://openrouter.ai/api/v1/chat/completions', {
     'Content-Type': 'application/json',
   },
   body: JSON.stringify({
-    model: 'deepseek/deepseek-r1',
+    model: 'google/gemma-4-31b-it',
     messages: [{ role: 'user', content: 'Hello' }],
     provider: {
       order: ['deepinfra/turbo'],
@@ -1035,7 +1035,7 @@ headers = {
 }
 
 response = requests.post('https://openrouter.ai/api/v1/chat/completions', headers=headers, json={
-  'model': 'deepseek/deepseek-r1',
+  'model': 'google/gemma-4-31b-it',
   'messages': [{ 'role': 'user', 'content': 'Hello' }],
   'provider': {
     'order': ['deepinfra/turbo'],

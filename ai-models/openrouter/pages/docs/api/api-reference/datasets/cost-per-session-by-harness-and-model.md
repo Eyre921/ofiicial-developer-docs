@@ -98,6 +98,8 @@ tags:
     name: Presets
   - description: Private Endpoints endpoints
     name: Private Endpoints
+  - description: Private Providers endpoints
+    name: Private Providers
   - description: Provider information endpoints
     name: Providers
   - description: Rerank endpoints

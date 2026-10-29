@@ -129,17 +129,17 @@ The BBPOS WisePOS E software consists of four components: the reader application
 
 | Countries | Reader | Firmware | Configuration | ROM |
 | --- | --- | --- | --- | --- |
-| US | `2.46.4.0` | `5.01.06.01` | `szzz_us_v19` | `1.8.9.1` |
-| CA | `2.46.4.0` | `5.01.06.01` | `szzz_ca_v17` | `1.8.9.1` |
-| AU | `2.46.4.0` | `5.01.06.01.eftpos` | `szzz_prod_au_v11` | `1.8.9.1` |
-| MYNZ | `2.46.4.0` | `5.01.06.01` | `szzz_prod_apac_on_v4` | `1.8.9.1` |
-| HKSG | `2.46.4.0` | `5.01.06.01` | `szzz_prod_apac_off_v4` | `1.8.9.1` |
-| GBIEFI | `2.46.4.0` | `5.01.06.01` | `szzz_prod_eu_off_v11` | `1.8.9.1` |
-| ATBEDKFRITDENLESSECZLUPTCHNO | `2.46.4.0` | `5.01.06.01` | `szzz_prod_eu_on_v7` | `1.8.9.1` |
+| US | `2.46.4.0` | `5.01.06.01` | `szzz_us_v19` | `1.8.9.3` |
+| CA | `2.46.4.0` | `5.01.06.01` | `szzz_ca_v17` | `1.8.9.3` |
+| AU | `2.46.4.0` | `5.01.06.01.eftpos` | `szzz_prod_au_v11` | `1.8.9.3` |
+| MYNZ | `2.46.4.0` | `5.01.06.01` | `szzz_prod_apac_on_v4` | `1.8.9.3` |
+| HKSG | `2.46.4.0` | `5.01.06.01` | `szzz_prod_apac_off_v4` | `1.8.9.3` |
+| GBIEFI | `2.46.4.0` | `5.01.06.01` | `szzz_prod_eu_off_v11` | `1.8.9.3` |
+| ATBEDKFRITDENLESSECZLUPTCHNO | `2.46.4.0` | `5.01.06.01` | `szzz_prod_eu_on_v7` | `1.8.9.3` |
 
 ### Changelog 
 
-#### 2026-09-08 (version 2.46.4.0)
+#### 2026-10-20 (version 2.46.4.0)
 
 - General bug fixes and improvements.
 

@@ -1,5 +1,5 @@
 ---
-title: "ExternalUsers"
+title: "External Users"
 source: https://openrouter.ai/docs/client-sdks/typescript/sdks/externalusers/README.md
 path: docs/client-sdks/typescript/sdks/externalusers/readme
 ---
@@ -8,7 +8,7 @@ path: docs/client-sdks/typescript/sdks/externalusers/readme
 > Fetch the complete documentation index at: https://openrouter.ai/docs/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-# ExternalUsers
+# External Users
 
 > External Users endpoints
 

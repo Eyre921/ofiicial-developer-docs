@@ -1,6 +1,6 @@
 # dev-platforms/notion 文档索引
 
-> 共 253 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 254 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## cli
@@ -114,6 +114,7 @@
 - `reference/admin/revoke-personal-access-token` — [Revoke a personal access token in a workspace](pages/reference/admin/revoke-personal-access-token.md) · [原文](https://developers.notion.com/reference/admin/revoke-personal-access-token)
 - `reference/admin/revoke-user-session` — [Revoke a managed user's sessions](pages/reference/admin/revoke-user-session.md) · [原文](https://developers.notion.com/reference/admin/revoke-user-session)
 - `reference/admin/scopes` — [Scopes](pages/reference/admin/scopes.md) · [原文](https://developers.notion.com/reference/admin/scopes)
+- `reference/admin/update-agent` — [Update an agent in a space](pages/reference/admin/update-agent.md) · [原文](https://developers.notion.com/reference/admin/update-agent)
 - `reference/admin/update-agent-creation-policy` — [Update who can create agents in a space](pages/reference/admin/update-agent-creation-policy.md) · [原文](https://developers.notion.com/reference/admin/update-agent-creation-policy)
 - `reference/admin/update-agent-credit-limit` — [Update credit limit for an agent in a space](pages/reference/admin/update-agent-credit-limit.md) · [原文](https://developers.notion.com/reference/admin/update-agent-credit-limit)
 - `reference/admin/update-agent-permissions` — [Update a custom agent's sharing permissions](pages/reference/admin/update-agent-permissions.md) · [原文](https://developers.notion.com/reference/admin/update-agent-permissions)

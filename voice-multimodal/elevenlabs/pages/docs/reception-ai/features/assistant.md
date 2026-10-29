@@ -23,15 +23,19 @@ The business assistant is a built-in AI chat for managing your business. Ask it 
 | **Booking page** | "Change the booking page slug to downtown-salon", "Make the header dark blue"                   |
 | **Analytics**    | "What's my revenue this week vs last week?", "How many bookings came from the website?"         |
 | **Products**     | "Add a product: Organic Shampoo, \$24.99"                                                       |
+| **Plan**         | "Am I still on the trial?", "How many phone numbers can I add on my plan?"                      |
 
 The assistant can also manage procedures, group sessions, and holidays, and look up an appointment by confirmation number.
 
-It cannot manage messages, orders, quote requests, SMS, or FAQ answers. To answer unanswered questions, go to **Business** → **FAQ**.
+For plan questions, it checks your current plan, whether you are on a trial, and your limits for receptionists, phone numbers, locations, team members, and concurrent calls, along with how much of each you use. For prices, invoices, and your trial or renewal date, it points you to **Settings** → **Billing**.
+
+It cannot manage messages, orders, quote requests, SMS, or FAQ answers. To answer unanswered questions, go to **Inbox** → **Needs attention**. See [FAQ](/docs/reception-ai/knowledge-base/faq).
 
 ## How to access it
 
 * **Docked panel**: select **Assistant** in the header on any page.
 * **Full page**: open **Assistant** from the **More** menu in the sidebar. Pin it to keep it in the sidebar.
+* **On mobile**: select **Assistant** in the bottom bar. It opens full screen with suggested starting requests, such as **Connect my phone number** or **Add a rule for my receptionist**.
 
 ## Confirming changes
 

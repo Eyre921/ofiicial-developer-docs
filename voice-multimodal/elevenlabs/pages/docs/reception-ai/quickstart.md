@@ -58,7 +58,7 @@ Nothing here is final. You can change every setting later.
 
 ### Start your trial
 
-Select **Start free trial** to finish. Reception.ai creates your workspace, receptionist, and booking page, and imports what it found on your website.
+Select **Start free trial**, then pick an answer to **How did you hear about us?** to finish. Reception.ai creates your workspace, receptionist, and booking page, and imports what it found on your website.
 
 #### Enter information manually
 

@@ -51,7 +51,7 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `id` | *str* | ✅ | The generation ID | gen-1234567890 |
+| `id` | *str* | ✔️ | The generation ID | gen-1234567890 |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -106,7 +106,7 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `id` | *str* | ✅ | The generation ID | gen-1234567890 |
+| `id` | *str* | ✔️ | The generation ID | gen-1234567890 |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -160,8 +160,8 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `category` | [components.SubmitGenerationFeedbackRequestCategory](../../components/submitgenerationfeedbackrequestcategory.mdx) | ✅ | The category of feedback being reported | incorrect\_response |
-| `generation_id` | *str* | ✅ | The generation to submit feedback on | gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG |
+| `category` | [components.SubmitGenerationFeedbackRequestCategory](../../components/submitgenerationfeedbackrequestcategory.mdx) | ✔️ | The category of feedback being reported | incorrect\_response |
+| `generation_id` | *str* | ✔️ | The generation to submit feedback on | gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |

@@ -1,6 +1,6 @@
 # dev-platforms/stripe 文档索引
 
-> 共 470 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 471 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -290,6 +290,7 @@
 - `issuing/adding-funds-to-your-card-program` — [Add funds to your card program](pages/issuing/adding-funds-to-your-card-program.md) · [原文](https://docs.stripe.com/issuing/adding-funds-to-your-card-program.md)
 - `issuing/cards/choose-bundle` — [Choose your physical bundle](pages/issuing/cards/choose-bundle.md) · [原文](https://docs.stripe.com/issuing/cards/choose-bundle.md)
 - `issuing/cards/digital-wallets` — [Use digital wallets with Issuing](pages/issuing/cards/digital-wallets.md) · [原文](https://docs.stripe.com/issuing/cards/digital-wallets.md)
+- `issuing/cards/physical` — [Physical cards](pages/issuing/cards/physical.md) · [原文](https://docs.stripe.com/issuing/cards/physical.md)
 - `issuing/cards/physical/card-bundle-selections` — [Customize card bundle](pages/issuing/cards/physical/card-bundle-selections.md) · [原文](https://docs.stripe.com/issuing/cards/physical/card-bundle-selections.md)
 - `issuing/cards/physical/create-design` — [Create a design](pages/issuing/cards/physical/create-design.md) · [原文](https://docs.stripe.com/issuing/cards/physical/create-design.md)
 - `issuing/cards/physical/order-custom-bundle` — [Order a custom bundle](pages/issuing/cards/physical/order-custom-bundle.md) · [原文](https://docs.stripe.com/issuing/cards/physical/order-custom-bundle.md)

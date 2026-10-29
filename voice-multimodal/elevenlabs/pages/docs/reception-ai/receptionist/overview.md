@@ -35,13 +35,13 @@ When a call comes in:
 
 Open **Receptionists** in the sidebar. The top of the page shows the receptionist's status, its phone numbers, and its languages. Below that, settings are grouped into cards:
 
-| Group              | Cards                                                                                                                             | Details                                                                        |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| **Personality**    | Voice, Tone, Greeting                                                                                                             | [Voice and personality](/docs/reception-ai/receptionist/voice-and-personality) |
-| **On the call**    | Answering order, Forward an existing number, Transfer to a human, Caller ID on transfers, Verify caller identity, Blocked numbers | [Call handling](/docs/reception-ai/receptionist/call-handling)                 |
-| **Instructions**   | Teach your receptionist, Additional instructions                                                                                  | [Rules and procedures](/docs/reception-ai/receptionist/rules-and-procedures)   |
-| **How it works**   | Knows your business from, Integrations, Advanced settings                                                                         | [Advanced settings](/docs/reception-ai/receptionist/advanced-settings)         |
-| **Communications** | Appointment reminders, Booking confirmations, Staff notifications, Call summaries                                                 | [Notifications and SMS](/docs/reception-ai/features/notifications)             |
+| Group              | Cards                                                                                                                          | Details                                                                        |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
+| **Personality**    | Voice, Tone, Greeting                                                                                                          | [Voice and personality](/docs/reception-ai/receptionist/voice-and-personality) |
+| **On the call**    | Who answers first, Forward an existing number, Transfer to a human, Transfer settings, Verify caller identity, Blocked numbers | [Call handling](/docs/reception-ai/receptionist/call-handling)                 |
+| **Instructions**   | Teach your receptionist, Additional instructions                                                                               | [Rules and procedures](/docs/reception-ai/receptionist/rules-and-procedures)   |
+| **How it works**   | Knows your business from, Integrations, Advanced settings                                                                      | [Advanced settings](/docs/reception-ai/receptionist/advanced-settings)         |
+| **Communications** | Appointment reminders, Booking confirmations, Staff notifications, Call summaries                                              | [Notifications and SMS](/docs/reception-ai/features/notifications)             |
 
 Cards marked **Workspace** apply to every receptionist in your workspace, not only the one you are editing.
 
@@ -63,6 +63,8 @@ You can create more than one receptionist, each with its own voice, rules, proce
 * Run a separate receptionist per language or brand
 
 To add one, open the receptionist switcher at the top of the page and select **Create a new receptionist**. Settings are copied from the selected receptionist, and you can change them after creation. You can delete a receptionist, but you must keep at least one.
+
+You can have up to 10 active receptionists on every plan. Deactivated receptionists don't count toward the limit.
 
 ## Configuration review
 

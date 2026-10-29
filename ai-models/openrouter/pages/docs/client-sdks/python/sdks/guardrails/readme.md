@@ -109,7 +109,7 @@ with OpenRouter(
         "openai",
         "anthropic",
         "deepseek",
-    ], description="A guardrail for limiting API usage", enforce_zdr_anthropic=True, enforce_zdr_google=False, enforce_zdr_openai=True, enforce_zdr_other=False, enforce_zdr_xai=False, ignored_models=None, ignored_providers=None, limit_usd=50, reset_interval="monthly")
+    ], description="A guardrail for limiting API usage", enforce_zdr_anthropic=True, enforce_zdr_google=False, enforce_zdr_openai=True, enforce_zdr_other=False, enforce_zdr_xai=False, ignored_models=None, ignored_providers=None, limit_usd=50.0, reset_interval="monthly")
 
     # Handle response
     print(res)
@@ -120,7 +120,7 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `name` | *str* | ✅ | Name for the new guardrail | My New Guardrail |
+| `name` | *str* | ✔️ | Name for the new guardrail | My New Guardrail |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -136,7 +136,7 @@ with OpenRouter(
 | `enable_free_model_training` | *OptionalNullable\[bool]* | ➖ | Whether this guardrail allows free endpoints that train on request data. | true |
 | `enable_paid_model_training` | *OptionalNullable\[bool]* | ➖ | Whether this guardrail allows paid endpoints that train on request data. | true |
 | `enforce_first_party_harness_models` | *OptionalNullable\[bool]* | ➖ | Whether coding harnesses list only their vendor's own models: Codex lists OpenAI models and Claude Code and Claude Desktop list Anthropic models. Affects only the model list those harnesses request from GET /models; a model the client names directly is still routed. Any true across the workspace default, member, and API key guardrails applies. | false |
-| `enforce_zdr` | *OptionalNullable\[bool]* | ➖ | : warning: \*\* DEPRECATED \*\*: This will be removed in a future release, please migrate away from it as soon as possible. Deprecated. Use enforce\_zdr\_anthropic, enforce\_zdr\_openai, enforce\_zdr\_google, enforce\_zdr\_xai, and enforce\_zdr\_other instead. When provided, its value is copied into any of those per-provider fields that are not explicitly specified on the request. | false |
+| `enforce_zdr` | *OptionalNullable\[bool]* | ➖ | ⚠️ **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible. Deprecated. Use enforce\_zdr\_anthropic, enforce\_zdr\_openai, enforce\_zdr\_google, enforce\_zdr\_xai, and enforce\_zdr\_other instead. When provided, its value is copied into any of those per-provider fields that are not explicitly specified on the request. | false |
 | `enforce_zdr_anthropic` | *OptionalNullable\[bool]* | ➖ | Whether to enforce zero data retention for Anthropic models. Falls back to enforce\_zdr when not provided. | false |
 | `enforce_zdr_google` | *OptionalNullable\[bool]* | ➖ | Whether to enforce zero data retention for Google models. Falls back to enforce\_zdr when not provided. | false |
 | `enforce_zdr_openai` | *OptionalNullable\[bool]* | ➖ | Whether to enforce zero data retention for OpenAI models. Falls back to enforce\_zdr when not provided. | false |
@@ -193,7 +193,7 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `id` | *str* | ✅ | The unique identifier of the guardrail to delete | 550e8400-e29b-41d4-a716-446655440000 |
+| `id` | *str* | ✔️ | The unique identifier of the guardrail to delete | 550e8400-e29b-41d4-a716-446655440000 |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -242,7 +242,7 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `id` | *str* | ✅ | The unique identifier of the guardrail to retrieve | 550e8400-e29b-41d4-a716-446655440000 |
+| `id` | *str* | ✔️ | The unique identifier of the guardrail to retrieve | 550e8400-e29b-41d4-a716-446655440000 |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -280,7 +280,7 @@ with OpenRouter(
     api_key=os.getenv("OPENROUTER_API_KEY", ""),
 ) as open_router:
 
-    res = open_router.guardrails.update(id="550e8400-e29b-41d4-a716-446655440000", description="Updated description", limit_usd=75, name="Updated Guardrail Name", reset_interval="weekly")
+    res = open_router.guardrails.update(id="550e8400-e29b-41d4-a716-446655440000", description="Updated description", limit_usd=75.0, name="Updated Guardrail Name", reset_interval="weekly")
 
     # Handle response
     print(res)
@@ -291,7 +291,7 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `id` | *str* | ✅ | The unique identifier of the guardrail to update | 550e8400-e29b-41d4-a716-446655440000 |
+| `id` | *str* | ✔️ | The unique identifier of the guardrail to update | 550e8400-e29b-41d4-a716-446655440000 |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -307,7 +307,7 @@ with OpenRouter(
 | `enable_free_model_training` | *OptionalNullable\[bool]* | ➖ | Whether this guardrail allows free endpoints that train on request data. | true |
 | `enable_paid_model_training` | *OptionalNullable\[bool]* | ➖ | Whether this guardrail allows paid endpoints that train on request data. | true |
 | `enforce_first_party_harness_models` | *OptionalNullable\[bool]* | ➖ | Whether coding harnesses list only their vendor's own models: Codex lists OpenAI models and Claude Code and Claude Desktop list Anthropic models. Affects only the model list those harnesses request from GET /models; a model the client names directly is still routed. Any true across the workspace default, member, and API key guardrails applies. | true |
-| `enforce_zdr` | *OptionalNullable\[bool]* | ➖ | : warning: \*\* DEPRECATED \*\*: This will be removed in a future release, please migrate away from it as soon as possible. Deprecated. Use enforce\_zdr\_anthropic, enforce\_zdr\_openai, enforce\_zdr\_google, enforce\_zdr\_xai, and enforce\_zdr\_other instead. When provided, its value is copied into any of those per-provider fields that are not explicitly specified on the request. | true |
+| `enforce_zdr` | *OptionalNullable\[bool]* | ➖ | ⚠️ **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible. Deprecated. Use enforce\_zdr\_anthropic, enforce\_zdr\_openai, enforce\_zdr\_google, enforce\_zdr\_xai, and enforce\_zdr\_other instead. When provided, its value is copied into any of those per-provider fields that are not explicitly specified on the request. | true |
 | `enforce_zdr_anthropic` | *OptionalNullable\[bool]* | ➖ | Whether to enforce zero data retention for Anthropic models. Falls back to enforce\_zdr when not provided. | true |
 | `enforce_zdr_google` | *OptionalNullable\[bool]* | ➖ | Whether to enforce zero data retention for Google models. Falls back to enforce\_zdr when not provided. | true |
 | `enforce_zdr_openai` | *OptionalNullable\[bool]* | ➖ | Whether to enforce zero data retention for OpenAI models. Falls back to enforce\_zdr when not provided. | true |
@@ -368,7 +368,7 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `id` | *str* | ✅ | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
+| `id` | *str* | ✔️ | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -421,8 +421,8 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `id` | *str* | ✅ | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
-| `key_hashes` | List\[*str*] | ✅ | Array of API key hashes to assign to the guardrail | \[ "c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93" ] |
+| `id` | *str* | ✔️ | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
+| `key_hashes` | List\[*str*] | ✔️ | Array of API key hashes to assign to the guardrail | \[ "c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93" ] |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -474,8 +474,8 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `id` | *str* | ✅ | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
-| `key_hashes` | List\[*str*] | ✅ | Array of API key hashes to unassign from the guardrail | \[ "c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93" ] |
+| `id` | *str* | ✔️ | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
+| `key_hashes` | List\[*str*] | ✔️ | Array of API key hashes to unassign from the guardrail | \[ "c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93" ] |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -527,7 +527,7 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `id` | *str* | ✅ | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
+| `id` | *str* | ✔️ | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -581,8 +581,8 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `id` | *str* | ✅ | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
-| `member_user_ids` | List\[*str*] | ✅ | Array of member user IDs to assign to the guardrail | \[ "user\_abc123", "user\_def456" ] |
+| `id` | *str* | ✔️ | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
+| `member_user_ids` | List\[*str*] | ✔️ | Array of member user IDs to assign to the guardrail | \[ "user\_abc123", "user\_def456" ] |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -635,8 +635,8 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `id` | *str* | ✅ | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
-| `member_user_ids` | List\[*str*] | ✅ | Array of member user IDs to unassign from the guardrail | \[ "user\_abc123", "user\_def456" ] |
+| `id` | *str* | ✔️ | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
+| `member_user_ids` | List\[*str*] | ✔️ | Array of member user IDs to unassign from the guardrail | \[ "user\_abc123", "user\_def456" ] |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |

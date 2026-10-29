@@ -15,13 +15,15 @@ Reception.ai offers a free trial and three paid plans. You can upgrade at any ti
 |                            | Free Trial    | Basic                   | Plus                    | Premium                    |
 | -------------------------- | ------------- | ----------------------- | ----------------------- | -------------------------- |
 | **Price**                  | \$0 (14 days) | \$29/month              | \$79/month              | \$199/month                |
-| **Annual price**           | —             | \$290/year (\$24/month) | \$790/year (\$66/month) | \$1,990/year (\$166/month) |
+| **Annual price**           | —             | \$288/year (\$24/month) | \$792/year (\$66/month) | \$1,992/year (\$166/month) |
 | **Included credits**       | 30            | 75                      | 275                     | 1,000                      |
 | **Phone numbers**          | 1             | 1                       | 3                       | 5                          |
 | **Locations**              | 20            | 1                       | 1                       | 20                         |
 | **Knowledge sources**      | 5             | 5                       | 10                      | 20                         |
 | **Assistant messages/day** | 150           | 150                     | 300                     | 500                        |
-| **Concurrent calls**       | 20            | 1                       | 3                       | 10                         |
+| **Concurrent calls**       | 1             | 1                       | 3                       | 10                         |
+| **Receptionists**          | 10            | 10                      | 10                      | 10                         |
+| **Team members**           | 3             | 3                       | 5                       | 10                         |
 | **Overage rate**           | —             | \$0.40/min              | \$0.32/min              | \$0.22/min                 |
 | **Zapier**                 | Yes           | Yes                     | Yes                     | Yes                        |
 | **Webhooks and MCP**       | Yes           | Yes                     | Yes                     | Yes                        |
@@ -39,6 +41,8 @@ Every new workspace can start a **14-day free trial** that includes:
 * No credit card required
 
 Select **Start free trial** at the end of onboarding or on the subscription screen. Each workspace can use one trial. Trial credits are a hard cap: when they run out, your receptionist stops answering until you upgrade. See [Usage and limits](/docs/reception-ai/billing/usage-and-limits#low-credit-warnings).
+
+If you are waiting on a [regulatory request](/docs/reception-ai/phone-numbers/international-numbers) for a phone number, Reception.ai keeps at least 14 days left on your trial while the request is in review, and emails you when it extends your trial. Only the end date moves: your trial credits don't refill.
 
 ## How credits work
 
@@ -70,6 +74,7 @@ When you downgrade to a lower plan:
 
 * Changes take effect at the end of your current billing period.
 * Resources beyond the new plan's limits are deactivated, such as extra phone numbers and locations.
+* Team members beyond the new plan's limit are suspended, not removed. See [Team](/docs/reception-ai/features/team#suspended-members).
 * To keep your current plan, select **Undo downgrade** before it takes effect.
 
 ## Cancellation

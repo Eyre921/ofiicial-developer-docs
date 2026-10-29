@@ -8,15 +8,21 @@ path: docs/reception-ai/knowledge-base/faq
 
 # FAQ
 
-When a caller asks something your receptionist can't find in its knowledge base, it adds the question to your **FAQ**. Answering these questions is the most direct way to improve your receptionist.
+When a caller asks something your receptionist can't find in its knowledge base, it saves the question for you to answer. Answering these questions is the most direct way to improve your receptionist.
 
 ## Reviewing questions
 
-Open your business page from the sidebar and go to **FAQ**. Each question shows whether it is **Answered** or **Unanswered**. Select **View conversation** to see the call it came from. The number of unanswered questions also appears on the [Home](/docs/reception-ai/features/home) page.
+Unanswered questions appear in the [Inbox](/docs/reception-ai/features/inbox) under **Needs attention**, with the conversation they came from. They also appear in **Needs your attention** on the [Home](/docs/reception-ai/features/home) page.
 
 ## Answering a question
 
-Write an answer of up to 2,000 characters and save it. Your receptionist uses the answer in future conversations. Select **Edit** to change an answer at any time, or **Delete** to remove the question.
+Open the conversation and select **Teach receptionist** on the question. Write an answer of up to 2,000 characters in **Your answer** and select **Save answer**. Your receptionist uses the answer in future conversations. The caller is not notified.
+
+If a question doesn't need an answer, select **Skip** to move it out of **Needs attention**. Select **Bring back** to answer it later.
+
+## Managing answers
+
+Answered questions are listed in **Business knowledge** under **Learned from calls**. Open your business page from the sidebar, select the **Business knowledge** card on the **Overview** tab, then select **Learned from calls**. Select an answer to edit it, or select **Delete answer** to remove it. Deleting an answer also removes the question from your inbox.
 
 Your receptionist uses your 50 most recently updated answers. Your workspace can store up to 200 questions.
 

@@ -1,5 +1,5 @@
 ---
-title: "PrivateEndpoints"
+title: "Private Endpoints"
 source: https://openrouter.ai/docs/client-sdks/go/sdks/privateendpoints/README.md
 path: docs/client-sdks/go/sdks/privateendpoints/readme
 ---
@@ -8,7 +8,7 @@ path: docs/client-sdks/go/sdks/privateendpoints/readme
 > Fetch the complete documentation index at: https://openrouter.ai/docs/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-# PrivateEndpoints
+# Private Endpoints
 
 > Private Endpoints endpoints
 
@@ -22,12 +22,12 @@ Private Endpoints endpoints
 * [Create](#create) - Create a private endpoint
 * [Delete](#delete) - Delete a private endpoint
 * [Get](#get) - Get a private endpoint
-* [Update](#update) - Update a draft private endpoint
+* [Update](#update) - Update a private endpoint
 * [Activate](#activate) - Activate a validated private endpoint
 * [Disable](#disable) - Disable a private endpoint
 * [Enable](#enable) - Enable a private endpoint
-* [UpdateParameters](#updateparameters) - Set private endpoint supported parameters
-* [UpdatePricing](#updatepricing) - Set private endpoint pricing
+* [~~UpdateParameters~~](#updateparameters) - Set private endpoint supported parameters (deprecated) ⚠️ **Deprecated**
+* [~~UpdatePricing~~](#updatepricing) - Set private endpoint pricing (deprecated) ⚠️ **Deprecated**
 * [Validate](#validate) - Validate a draft private endpoint
 
 ## List
@@ -67,7 +67,7 @@ func main() {
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. |
 
 ### Response
@@ -126,8 +126,8 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
-| `createPrivateEndpointRequest` | [components.CreatePrivateEndpointRequest](../../models/components/createprivateendpointrequest.mdx) | ✅ | N/A | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. | |
+| `createPrivateEndpointRequest` | [components.CreatePrivateEndpointRequest](../../models/components/createprivateendpointrequest.mdx) | ✔️ | N/A | |
 | `idempotencyKey` | `*string` | ➖ | Retry-safe create: a repeated create with the same key from the same organization returns the endpoint the first request created instead of creating another. The endpoint is returned as it is now. Reusing a key with a different request body (model, provider, base URL, upstream model ID, declared ZDR or region, pricing, or declared parameters) is rejected with 422 `idempotency_key_reused`. Declared parameters are compared as a set, so a retry that reorders or repeats a name replays the endpoint. `activate` and `max_completion_tokens` are not compared, and later edits to the endpoint do not affect the comparison. | wayfair-gpt-4o-eastus-2026-09 |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
@@ -187,8 +187,8 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
-| `id` | `string` | ✅ | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. | |
+| `id` | `string` | ✔️ | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
 | `draftOnly` | [\*operations.DraftOnly](../../models/operations/draftonly.mdx) | ➖ | When `true`, only delete the endpoint if it is still a draft (409 otherwise). | |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
@@ -248,8 +248,8 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
-| `id` | `string` | ✅ | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. | |
+| `id` | `string` | ✔️ | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
@@ -269,7 +269,7 @@ func main() {
 
 ## Update
 
-Replace a draft endpoint's upstream configuration: send `upstream_model_id`, and `base_url` to change it (an omitted `base_url` keeps the stored one). Omitted data-policy declarations are kept while the upstream is unchanged and cleared when it changes. Any change clears earlier validation. Active endpoints return 409; delete and re-create them instead. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Change any of the endpoint fields you own in one call; only the fields present change, and the response is the whole endpoint. `pricing` and `declared_parameters` replace their stored value, `settings` changes only the fields it names (`null` clears a limit or restores the provider default); routing picks these up for subsequent requests on drafts and active endpoints alike. `upstream_model_id`, `base_url`, `declared_zdr` and `declared_region` re-point a draft: an omitted `upstream_model_id` or `base_url` keeps the stored one, omitted data-policy declarations are kept while the upstream is unchanged and cleared when it changes, and any upstream change clears earlier validation. Naming an upstream field on an active endpoint returns 409 `already_active` and writes nothing; delete and re-create instead. Every group is checked before anything is written: 400 `parameters_invalid` when `tool_choice` is declared without `tools` tested or declared, 400 `settings_invalid` when `max_prompt_tokens` exceeds the context length, both completion APIs are off, or `excluded_parameters` names a tested parameter, 422 `pricing_invalid` for rates the provider strategy cannot represent. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -291,9 +291,7 @@ func main() {
         openrouter.WithSecurity(os.Getenv("OPENROUTER_API_KEY")),
     )
 
-    res, err := s.PrivateEndpoints.Update(ctx, "5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11", components.UpdatePrivateEndpointRequest{
-        UpstreamModelID: "gpt-4o-prod",
-    })
+    res, err := s.PrivateEndpoints.Update(ctx, "5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11", components.UpdatePrivateEndpointRequest{})
     if err != nil {
         log.Fatal(err)
     }
@@ -307,9 +305,9 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
-| `id` | `string` | ✅ | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
-| `updatePrivateEndpointRequest` | [components.UpdatePrivateEndpointRequest](../../models/components/updateprivateendpointrequest.mdx) | ✅ | N/A | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. | |
+| `id` | `string` | ✔️ | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
+| `updatePrivateEndpointRequest` | [components.UpdatePrivateEndpointRequest](../../models/components/updateprivateendpointrequest.mdx) | ✔️ | N/A | \{ "declared\_parameters": \[ "seed" ], "settings": \{ "context\_length": 128000 } } |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
@@ -368,8 +366,8 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
-| `id` | `string` | ✅ | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. | |
+| `id` | `string` | ✔️ | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
@@ -428,8 +426,8 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
-| `id` | `string` | ✅ | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. | |
+| `id` | `string` | ✔️ | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
@@ -488,8 +486,8 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
-| `id` | `string` | ✅ | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. | |
+| `id` | `string` | ✔️ | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
@@ -511,9 +509,11 @@ func main() {
 | sdkerrors.BadGatewayResponseError | 502 | application/json |
 | sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
-## UpdateParameters
+## ~~UpdateParameters~~
 
-Declare which request parameters the upstream supports beyond the ones validation proved. Applies to drafts and active endpoints; routing picks the change up for subsequent requests. The body replaces the earlier declaration and is read as a set: order and repeated names do not matter, but the list holds at most as many entries as there are declarable parameters, repeats included. `tested_parameters` stay. Returns 400 `parameters_invalid` when `tool_choice` is declared without `tools` being tested or declared. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Deprecated: send `declared_parameters` to `PATCH /private-endpoints/{id}` instead; this route behaves exactly like that call and will be removed. The body replaces the earlier declaration and is read as a set; `tested_parameters` stay. Returns 400 `parameters_invalid` when `tool_choice` is declared without `tools` being tested or declared. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+
+> ⚠️ **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.
 
 ### Example Usage
 
@@ -554,9 +554,9 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
-| `id` | `string` | ✅ | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
-| `updatePrivateEndpointParametersRequest` | [components.UpdatePrivateEndpointParametersRequest](../../models/components/updateprivateendpointparametersrequest.mdx) | ✅ | N/A | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. | |
+| `id` | `string` | ✔️ | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
+| `updatePrivateEndpointParametersRequest` | [components.UpdatePrivateEndpointParametersRequest](../../models/components/updateprivateendpointparametersrequest.mdx) | ✔️ | N/A | |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
@@ -578,9 +578,11 @@ func main() {
 | sdkerrors.BadGatewayResponseError | 502 | application/json |
 | sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
-## UpdatePricing
+## ~~UpdatePricing~~
 
-Set the negotiated per-token rates reported for requests routed to this endpoint. Applies to drafts and active endpoints; new rates take effect for subsequent requests. The body replaces the whole pricing object: omitting `cache_read` or `cache_write` reverts that rate to the provider pricing strategy's default, even if it was set before. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Deprecated: send `pricing` to `PATCH /private-endpoints/{id}` instead; this route behaves exactly like that call and will be removed. The body replaces the whole pricing object: omitting `cache_read` or `cache_write` reverts that rate to the provider pricing strategy default. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+
+> ⚠️ **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.
 
 ### Example Usage
 
@@ -621,9 +623,9 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
-| `id` | `string` | ✅ | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
-| `updatePrivateEndpointPricingRequest` | [components.UpdatePrivateEndpointPricingRequest](../../models/components/updateprivateendpointpricingrequest.mdx) | ✅ | N/A | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. | |
+| `id` | `string` | ✔️ | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
+| `updatePrivateEndpointPricingRequest` | [components.UpdatePrivateEndpointPricingRequest](../../models/components/updateprivateendpointpricingrequest.mdx) | ✔️ | N/A | |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
@@ -685,9 +687,9 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
-| `id` | `string` | ✅ | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
-| `validatePrivateEndpointRequest` | [components.ValidatePrivateEndpointRequest](../../models/components/validateprivateendpointrequest.mdx) | ✅ | N/A | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. | |
+| `id` | `string` | ✔️ | Stable identifier of the private endpoint. | 5b1c4c4e-7d0a-4a8e-9f3a-2d6c1b0e8a11 |
+| `validatePrivateEndpointRequest` | [components.ValidatePrivateEndpointRequest](../../models/components/validateprivateendpointrequest.mdx) | ✔️ | N/A | |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
