@@ -8,7 +8,7 @@ Pinecone Nexus queries gather evidence and compose a grounded, cited answer.
 
 A query is a single turn: a question in, a grounded answer out. A multi-turn conversation is a session. Rather than stuffing raw chunks into a prompt, Pinecone Nexus runs an agent loop in which the model writes Python against a retrieval SDK to gather just the evidence it needs, then composes a grounded answer with citations.
 
-![A query turn: the agent loops, writing code against a retrieval SDK to gather evidence, then composes a cited answer](https://mintcdn.com/pinecone/bwL8cw818L345VAB/images/nexus/queries-light.svg?fit=max\&auto=format\&n=bwL8cw818L345VAB\&q=85\&s=b562c8d591dbb06085e6a36831b6b393)
+![A query turn: the agent loops, writing code against a retrieval SDK to gather evidence, then composes a cited answer](https://mintcdn.com/pinecone/EWF4J3kPxqsT4ELV/images/nexus/queries-light.svg?fit=max\&auto=format\&n=EWF4J3kPxqsT4ELV\&q=85\&s=fbb7818dc5c26a7ede110869e776d556)
 
 ## Retrieval as code
 

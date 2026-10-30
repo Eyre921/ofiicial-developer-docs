@@ -153,7 +153,7 @@ With Payment Element—The payment method must be configured on the Dashboard se
 Available with `card_payments` | Yes | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/connect/account-capabilities.md#google-pay-country-availability). | Yes |
 | [GrabPay](https://docs.stripe.com/payments/grabpay.md)
 
-`grabpay_payments` | Yes | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/grabpay.md?pm-info=business-locations). | Yes |
+`grabpay_payments` | Yes | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/grabpay.md#grabpay-business-locations). | Yes |
 | [iDEAL](https://docs.stripe.com/payments/ideal.md)
 
 `ideal_payments` | Yes | Yes | Yes, tax ID required for sole proprietors. | Connected account must be in a [supported business location](https://docs.stripe.com/payments/ideal.md?pm-info=business-locations). | Yes |
@@ -277,7 +277,7 @@ Available with `card_payments` | Yes | Yes | No | Connected account must be in a
 Available with `card_payments` | Yes | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/google-pay.md?pm-info=business-locations). | Yes |
 | [GrabPay](https://docs.stripe.com/payments/grabpay.md)
 
-`grabpay_payments` | Yes | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/grabpay.md?pm-info=business-locations). | Yes |
+`grabpay_payments` | Yes | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/grabpay.md#grabpay-business-locations). | Yes |
 | [iDEAL](https://docs.stripe.com/payments/ideal.md)
 
 `ideal_payments` | Yes | Yes | Yes, tax ID required for sole proprietors. | Connected account must be in a [supported business location](https://docs.stripe.com/payments/ideal.md?pm-info=business-locations). | Yes |

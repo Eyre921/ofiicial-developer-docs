@@ -64,6 +64,7 @@ Refer to the following table to see where each [payment method](https://docs.str
 | [PayNow](https://docs.stripe.com/payments/paynow.md) | SGD | SG | SG |
 | [PayPal](https://docs.stripe.com/payments/paypal.md) | AUD, CAD, CHF, CZK, DKK, EUR, GBP, HKD, NOK, NZD, PLN, SEK, SGD, USD | AT, BE, BG, HR, CY, CZ, DK, EE, FI, FR, DE, GR, IE, IT, LV, LI, LT, LU, MT, NL, NO, PL, PT, RO, SK, SI, ES, SE, CH, GB | Worldwide |
 | [PayPay](https://docs.stripe.com/payments/paypay.md) | JPY | JP | JP |
+| [PayTo](https://docs.stripe.com/payments/payto.md) | AUD | AU | AU |
 | [Pix](https://docs.stripe.com/payments/pix.md) | BRL | BR (Invite only), US | BR |
 | [Pre-authorized debit in Canada](https://docs.stripe.com/payments/acss-debit.md) | CAD, USD | CA, US | CA |
 | [PromptPay](https://docs.stripe.com/payments/promptpay.md) | THB | TH | TH |

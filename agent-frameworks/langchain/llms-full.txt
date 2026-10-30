@@ -57727,7 +57727,7 @@ This differs from the platform-owned interrupts that `interrupt_on` creates. Tho
 
 ## How it works
 
-1. A run starts from a Slack message. Your tool reads the conversation from `runtime.channel` and posts a Block Kit message into the same Slack thread, using the deployment's bot token.
+1. A run starts from a Slack message. Your tool reads the conversation from `runtime.thread.origin.channel` and posts a Block Kit message into the same Slack thread, using the deployment's bot token.
 2. The tool calls `interrupt()` with a value that carries a correlation ID. The thread parks at a checkpoint.
 3. The user presses a button or submits a modal. Slack sends the interaction to Managed Deep Agents, which forwards it to the deployment as a `user_prompt_response` event.
 4. The SDK matches the event to the parked interrupt and resumes the run. `interrupt()` returns the user's response, and the tool continues.
@@ -57738,11 +57738,11 @@ A tool that pauses this way runs again from the top when the run resumes, which 
 
 The tool needs three things: the Slack conversation to post into, the bot token, and a correlation ID that ties the form to the interrupt.
 
-* **Conversation**: `runtime.channel.rawEvent` is the Slack event that started the run. It carries `channel`, `ts`, and, for a threaded message, `thread_ts`. Post into that thread so the answer routes back to the same agent thread.
+* **Conversation**: `runtime.thread.origin.channel.rawEvent` is the Slack event that started the run. It carries `channel`, `ts`, and, for a threaded message, `thread_ts`. Post into that thread so the answer routes back to the same agent thread.
 * **Bot token**: `connections.get("mda/slack-bot-token", { type: "agent" })` resolves the token of the Slack app that Managed Deep Agents provisioned for the deployment. The slug is reserved and cannot be created with `mda connections create`.
 * **Correlation ID**: put the same string under `INTERRUPT_CORRELATION_KEY` in each button's `value` (as JSON) and in the value you pass to `interrupt()`.
 
-The built-in Slack channel's `runtime.channel.post` sends text only, so post Block Kit through the Slack Web API directly.
+The built-in Slack channel's `post` sends text only, so post Block Kit through the Slack Web API directly.
 
 ```ts tools/approval.ts expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { randomUUID } from "node:crypto";
@@ -57761,14 +57761,14 @@ type SlackEvent = { channel: string; ts: string; thread_ts?: string };
 
 export const requestApproval = tool(
   async ({ amount }, runtime: ManagedDeepAgentRuntime) => {
-    const channel = runtime.channel;
+    const channel = runtime.thread?.origin?.channel;
     if (!channel || channel.provider !== "slack") {
       return "Approval forms are available only in Slack.";
     }
 
     const correlationId = randomUUID();
-    // The tool runs again when the interrupt resumes. Post only on the first pass.
-    if (channel.event.type !== "user_prompt_response") {
+    // The tool runs again when the interrupt resumes. Post only in the run the Slack message started.
+    if (channel.event?.type === "message") {
       await postApprovalForm(channel.rawEvent as SlackEvent, amount, correlationId);
     }
 
@@ -57847,7 +57847,7 @@ Any `action_id` works for a button in a message, except one that starts with `md
 | `value` | JSON, optional | The button's `value` string, or the modal's `state.values` object. Opaque to the platform. |
 | `correlation_id` | `string`, optional | Present when the button's `value` was JSON with an `mda_correlation_id` key. Modal submissions never carry one. |
 
-The same response is available on run context as `runtime.channel.event`, with `type` set to `user_prompt_response`. Slack's verbatim interaction payload is on `runtime.channel.rawEvent`. For a form with inputs inside the message, the user's entries are at `rawEvent.state.values`, keyed by block ID and action ID.
+The same response is available on run context as `runtime.thread.origin.channel.event`, with `type` set to `user_prompt_response`. Slack's verbatim interaction payload is on `runtime.thread.origin.channel.rawEvent`. For a form with inputs inside the message, the user's entries are at `rawEvent.state.values`, keyed by block ID and action ID.
 
 Managed Deep Agents reads only the first action in a Slack interaction payload, so one press must mean one event.
 
@@ -57861,7 +57861,7 @@ Slack does not know which interrupt a button belongs to, so the SDK reads the in
 | One or more | Present and matches exactly one | Resumes the matching interrupt. |
 | Several | Absent | Nothing runs. The SDK logs the ambiguity and acknowledges the event. |
 | One or more | Present but matches none, or matches several | Nothing runs. Starting a turn would abandon the parked checkpoints. |
-| None | Any | Starts a fresh run with no new message. The response is reachable only on `runtime.channel.event`. |
+| None | Any | Starts a fresh run with no new message. The response is reachable only on `runtime.thread.origin.channel.event`. |
 
 Carry a correlation ID whenever an agent might have more than one interrupt parked on a thread. Without one, a thread can only be answered while exactly one interrupt is pending.
 
@@ -57897,7 +57897,7 @@ The entire view has to fit inside the button's `value`, which Slack caps at 2000
 
 ## Post without pausing
 
-A tool can post a form and let the run end instead of calling `interrupt()`. The submission then starts a fresh run with no new message, and your code reads the answer from `runtime.channel.event`. Nothing on the platform tracks that a prompt was outstanding, so your application owns the state of pending forms, expiry, and what a later chat message means while a form is open.
+A tool can post a form and let the run end instead of calling `interrupt()`. The submission then starts a fresh run with no new message, and your code reads the answer from `runtime.thread.origin.channel.event`. Nothing on the platform tracks that a prompt was outstanding, so your application owns the state of pending forms, expiry, and what a later chat message means while a form is open.
 
 Prefer `interrupt()` when the next thing the user does is expected to be answering the prompt.
 
@@ -58410,13 +58410,13 @@ A `202` means the run was accepted, not that it finished. The agent's answer arr
 
 ## Read the event in the agent
 
-Tools and middleware read the delivery from [`runtime.channel`](/langsmith/javascript/managed-deep-agents-runtime#channel). For the parser examples, `runtime.channel.provider` is `"orders"`.
+Tools and middleware read the delivery from [`runtime.thread.origin.channel`](/langsmith/javascript/managed-deep-agents-runtime#channel). For the parser examples, its `provider` is `"orders"`.
 
-Return `rawEvent` from `parse` to expose JSON provider data at `runtime.channel.rawEvent`. If omitted, `runtime.channel.rawEvent` is `undefined`.
+Return `rawEvent` from `parse` to expose JSON provider data at `runtime.thread.origin.channel.rawEvent`. If omitted, `rawEvent` is `undefined`.
 
-The reply `target` stays private. Code cannot read it from `runtime.channel`.
+The reply `target` stays private. Code cannot read it from the channel.
 
-Managed Deep Agents builds `runtime.channel.event` from the parsed message. It does not decode the body again or preserve the provider event automatically.
+Managed Deep Agents builds the channel's `event` from the parsed message. It does not decode the body again or preserve the provider event automatically.
 
 ## Deploy the agent
 
@@ -62491,7 +62491,7 @@ Open that URL. You should see the deployment in a ready state. Send the same res
 # Managed Deep Agents runtime
 Source: https://docs.langchain.com/langsmith/javascript/managed-deep-agents-runtime
 
-Read run context, the verified caller, the channel delivery, and the sandbox from the native runtime types that agent factories, tools, and middleware receive.
+Read run context, the verified caller, the thread, and the sandbox from the native runtime types that agent factories, tools, and middleware receive.
 
 Agent factories, tools, and middleware hooks each receive a runtime. It is the native LangChain or LangGraph runtime with three managed fields added. Context, state, and the store work as they do in [LangChain](/oss/javascript/langchain/runtime), and your type checker sees your own context type.
 
@@ -62514,7 +62514,7 @@ Type parameters follow the native order, so `ManagedToolRuntime` takes state fir
 Each type keeps every native field and method, such as `context`, `state`, `store`, `writer`, and `toolCallId`. Managed Deep Agents adds three fields:
 
 * **`serverInfo`**: Native server metadata plus the verified caller. Tools and middleware receive it.
-* **`channel`**: The verified channel delivery that started the run. `undefined` on direct API and schedule runs.
+* **`thread`**: The run's thread and the channel conversation it came from. See [Thread](#thread).
 * **`backend`**: The thread's [sandbox](/langsmith/javascript/managed-deep-agents-sandboxes) filesystem. `undefined` when the project declares no sandbox.
 
 ## Separate context, caller, and delivery
@@ -62523,7 +62523,7 @@ Context, the caller, and the channel delivery come from different sources and ha
 
 * **Context** comes from the `context` parameter of an API call. LangGraph validates it against your context schema. Use it to select behavior, not to grant access.
 * **Server info** comes from [identity](/langsmith/javascript/managed-deep-agents-identity), which resolves the caller from a verified token. Managed Deep Agents strips identity keys that a client sends through `configurable`, so use this field for authorization.
-* **Channel** comes from managed [channel](/langsmith/javascript/managed-deep-agents-channels) ingress, which verifies the delivery before the run starts. A `channel` key in a direct API call's context does not create `runtime.channel`.
+* **Channel** comes from managed [channel](/langsmith/javascript/managed-deep-agents-channels) ingress, which verifies the delivery before the run starts. A `channel` key in a direct API call's context does not create `runtime.thread.origin`.
 
 API callers pass context next to the input:
 
@@ -62540,15 +62540,15 @@ A channel delivery carries no application context. Managed Deep Agents removes d
 
 On channel runs, context is `undefined` in the agent factory and tools, and an empty object in native middleware.
 
-To tell a channel run from a direct run, check `runtime.channel`.
+To tell a channel run from a direct run, check `runtime.thread.origin`.
 
 ## Read the runtime in the agent factory
 
-An agent factory receives a `ManagedServerRuntime`: the native [`ServerRuntime`](/langsmith/graph-rebuild) plus `channel` and `backend`. To write a factory, see [Select configuration per run](/langsmith/javascript/managed-deep-agents-agent-definition#select-configuration-per-run).
+An agent factory receives a `ManagedServerRuntime`: the native [`ServerRuntime`](/langsmith/graph-rebuild) plus `thread` and `backend`. To write a factory, see [Select configuration per run](/langsmith/javascript/managed-deep-agents-agent-definition#select-configuration-per-run).
 
 Agent Server also calls the factory to read schemas and state. `accessContext` names the operation. [`executionRuntime`](/langsmith/graph-rebuild#access-contexts) is `null` outside `threads.create_run`, so read run context from `executionRuntime.context`. Return the same graph structure and schemas from every call.
 
-`channel` is available, so a factory can choose configuration per channel. `backend` is always `undefined`, because the factory selects the sandbox.
+`thread` is available, so a factory can choose configuration per channel. `backend` is always `undefined`, because the factory selects the sandbox.
 
 ## Read the runtime in tools
 
@@ -62565,7 +62565,7 @@ export const checkOrder = tool(
   async ({ orderId }, runtime: ManagedToolRuntime<unknown, AppContext>) => {
     const principal = runtime.serverInfo?.principal;
     if (!principal) return "Sign in to check orders.";
-    await runtime.channel?.post?.({
+    await runtime.thread?.origin?.channel.post?.({
       type: "content",
       content: "Checking that order now.",
     });
@@ -62595,9 +62595,9 @@ type AppContext = { region?: string };
 export const logCaller = createMiddleware({
   name: "LogCaller",
   beforeModel: (_state, runtime) => {
-    const { serverInfo, channel } = runtime as ManagedRuntime<AppContext>;
+    const { serverInfo, thread } = runtime as ManagedRuntime<AppContext>;
     const caller = serverInfo?.principal?.id ?? "anonymous";
-    console.log(`${caller} via ${channel?.provider ?? "api"}`);
+    console.log(`${caller} via ${thread?.origin?.channel.provider ?? "api"}`);
     return undefined;
   },
 });
@@ -62618,13 +62618,25 @@ Tool-call hooks receive a `ManagedToolRuntime`. Declarative subagents receive th
 
 Read the caller from `principal`, not from the native `user`. For identity providers and claim mapping, see [Identity](/langsmith/javascript/managed-deep-agents-identity).
 
+### Thread
+
+`runtime.thread` is a `ManagedThread`:
+
+* **`id`**: The LangGraph thread ID.
+* **`origin`**: The channel conversation the thread came from, with its `channel` and the `sender` of the latest message. Not set on a thread that no channel message reached.
+* **`participants`**: The people on the thread. Each has an `id` and a `role`, `"owner"` or `"member"`.
+
+> [!WARNING]
+>
+> `runtime.channel` is deprecated and will be removed in `managed-deepagents` 0.11. Read `runtime.thread.origin.channel` instead.
+
 ### Channel
 
-`runtime.channel` is a `RuntimeChannel`:
+`runtime.thread.origin.channel` is a `RuntimeChannel`:
 
 * **`name`**: The configured channel name.
 * **`provider`**: The provider label, such as `"slack"`.
-* **`event`**: The typed delivery. See the event types below.
+* **`event`**: The typed delivery. `null` in a run that no channel event started, such as a Studio resume. See the event types below.
 * **`rawEvent`**: The original provider payload, when the channel supplies one. For Slack, this is the inner Slack event without HTTP headers or the Trigger envelope. A resume can omit it.
 * **`post`**: An async function that sends a message to the conversation that started the run. `undefined` when the channel cannot send.
 
@@ -86626,7 +86638,7 @@ This differs from the platform-owned interrupts that `interrupt_on` creates. Tho
 
 ## How it works
 
-1. A run starts from a Slack message. Your tool reads the conversation from `runtime.channel` and posts a Block Kit message into the same Slack thread, using the deployment's bot token.
+1. A run starts from a Slack message. Your tool reads the conversation from `runtime.thread.origin.channel` and posts a Block Kit message into the same Slack thread, using the deployment's bot token.
 2. The tool calls `interrupt()` with a value that carries a correlation ID. The thread parks at a checkpoint.
 3. The user presses a button or submits a modal. Slack sends the interaction to Managed Deep Agents, which forwards it to the deployment as a `user_prompt_response` event.
 4. The SDK matches the event to the parked interrupt and resumes the run. `interrupt()` returns the user's response, and the tool continues.
@@ -86637,11 +86649,11 @@ A tool that pauses this way runs again from the top when the run resumes, which 
 
 The tool needs three things: the Slack conversation to post into, the bot token, and a correlation ID that ties the form to the interrupt.
 
-* **Conversation**: `runtime.channel.raw_event` is the Slack event that started the run. It carries `channel`, `ts`, and, for a threaded message, `thread_ts`. Post into that thread so the answer routes back to the same agent thread.
+* **Conversation**: `runtime.thread.origin.channel.raw_event` is the Slack event that started the run. It carries `channel`, `ts`, and, for a threaded message, `thread_ts`. Post into that thread so the answer routes back to the same agent thread.
 * **Bot token**: `connections.get("mda/slack-bot-token", {"type": "agent"})` resolves the token of the Slack app that Managed Deep Agents provisioned for the deployment. The slug is reserved and cannot be created with `mda connections create`.
 * **Correlation ID**: put the same string under `INTERRUPT_CORRELATION_KEY` in each button's `value` (as JSON) and in the value you pass to `interrupt()`.
 
-The built-in Slack channel's `runtime.channel.post` sends text only, so post Block Kit through the Slack Web API directly.
+The built-in Slack channel's `post` sends text only, so post Block Kit through the Slack Web API directly.
 
 ```python tools/approval.py expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import json
@@ -86663,13 +86675,14 @@ async def request_approval(amount: str, runtime: ManagedDeepAgentRuntime) -> str
     Args:
         amount: The spend to approve, such as "$1,200".
     """
-    channel = runtime.channel
-    if channel is None or channel.provider != "slack":
+    origin = runtime.thread.origin
+    if origin is None or origin.channel.provider != "slack":
         return "Approval forms are available only in Slack."
+    channel = origin.channel
 
     correlation_id = str(uuid7())
-    # The tool runs again when the interrupt resumes. Post only on the first pass.
-    if channel.event["type"] != "user_prompt_response":
+    # The tool runs again when the interrupt resumes. Post only in the run the Slack message started.
+    if channel.event is not None and channel.event["type"] == "message":
         await post_approval_form(channel.raw_event, amount, correlation_id)
 
     response = interrupt({INTERRUPT_CORRELATION_KEY: correlation_id, "amount": amount})
@@ -86733,7 +86746,7 @@ Any `action_id` works for a button in a message, except one that starts with `md
 | `value` | JSON, optional | The button's `value` string, or the modal's `state.values` object. Opaque to the platform. |
 | `correlation_id` | `string`, optional | Present when the button's `value` was JSON with an `mda_correlation_id` key. Modal submissions never carry one. |
 
-The same response is available on run context as `runtime.channel.event`, with `type` set to `user_prompt_response`. Slack's verbatim interaction payload is on `runtime.channel.raw_event`. For a form with inputs inside the message, the user's entries are at `raw_event["state"]["values"]`, keyed by block ID and action ID.
+The same response is available on run context as `runtime.thread.origin.channel.event`, with `type` set to `user_prompt_response`. Slack's verbatim interaction payload is on `runtime.thread.origin.channel.raw_event`. For a form with inputs inside the message, the user's entries are at `raw_event["state"]["values"]`, keyed by block ID and action ID.
 
 Managed Deep Agents reads only the first action in a Slack interaction payload, so one press must mean one event.
 
@@ -86747,7 +86760,7 @@ Slack does not know which interrupt a button belongs to, so the SDK reads the in
 | One or more | Present and matches exactly one | Resumes the matching interrupt. |
 | Several | Absent | Nothing runs. The SDK logs the ambiguity and acknowledges the event. |
 | One or more | Present but matches none, or matches several | Nothing runs. Starting a turn would abandon the parked checkpoints. |
-| None | Any | Starts a fresh run with no new message. The response is reachable only on `runtime.channel.event`. |
+| None | Any | Starts a fresh run with no new message. The response is reachable only on `runtime.thread.origin.channel.event`. |
 
 Carry a correlation ID whenever an agent might have more than one interrupt parked on a thread. Without one, a thread can only be answered while exactly one interrupt is pending.
 
@@ -86783,7 +86796,7 @@ The entire view has to fit inside the button's `value`, which Slack caps at 2000
 
 ## Post without pausing
 
-A tool can post a form and let the run end instead of calling `interrupt()`. The submission then starts a fresh run with no new message, and your code reads the answer from `runtime.channel.event`. Nothing on the platform tracks that a prompt was outstanding, so your application owns the state of pending forms, expiry, and what a later chat message means while a form is open.
+A tool can post a form and let the run end instead of calling `interrupt()`. The submission then starts a fresh run with no new message, and your code reads the answer from `runtime.thread.origin.channel.event`. Nothing on the platform tracks that a prompt was outstanding, so your application owns the state of pending forms, expiry, and what a later chat message means while a form is open.
 
 Prefer `interrupt()` when the next thing the user does is expected to be answering the prompt.
 
@@ -87280,13 +87293,13 @@ A `202` means the run was accepted, not that it finished. The agent's answer arr
 
 ## Read the event in the agent
 
-Tools and middleware read the delivery from [`runtime.channel`](/langsmith/python/managed-deep-agents-runtime#channel). For the parser examples, `runtime.channel.provider` is `"orders"`.
+Tools and middleware read the delivery from [`runtime.thread.origin.channel`](/langsmith/python/managed-deep-agents-runtime#channel). For the parser examples, its `provider` is `"orders"`.
 
-Return `raw_event` from `parse` to expose JSON provider data at `runtime.channel.raw_event`. If omitted, `runtime.channel.raw_event` is `None`.
+Return `raw_event` from `parse` to expose JSON provider data at `runtime.thread.origin.channel.raw_event`. If omitted, `raw_event` is `None`.
 
-The reply `target` stays private. Code cannot read it from `runtime.channel`.
+The reply `target` stays private. Code cannot read it from the channel.
 
-Managed Deep Agents builds `runtime.channel.event` from the parsed message. It does not decode the body again or preserve the provider event automatically.
+Managed Deep Agents builds the channel's `event` from the parsed message. It does not decode the body again or preserve the provider event automatically.
 
 ## Deploy the agent
 
@@ -91251,7 +91264,7 @@ Open that URL. You should see the deployment in a ready state. Send the same res
 # Managed Deep Agents runtime
 Source: https://docs.langchain.com/langsmith/python/managed-deep-agents-runtime
 
-Read run context, the verified caller, the channel delivery, and the sandbox from the native runtime types that agent factories, tools, and middleware receive.
+Read run context, the verified caller, the thread, and the sandbox from the native runtime types that agent factories, tools, and middleware receive.
 
 Agent factories, tools, and middleware hooks each receive a runtime. It is the native LangChain or LangGraph runtime with three managed fields added. Context, state, and the store work as they do in [LangChain](/oss/python/langchain/runtime), and your type checker sees your own context type.
 
@@ -91274,7 +91287,7 @@ Type parameters follow the native order, so `ManagedToolRuntime` takes context f
 Each type keeps every native field and method, such as `context`, `state`, `store`, `stream_writer`, and `tool_call_id`. Managed Deep Agents adds three fields:
 
 * **`server_info`**: Native server metadata plus the verified caller. Tools and middleware receive it.
-* **`channel`**: The verified channel delivery that started the run. `None` on direct API and schedule runs.
+* **`thread`**: The run's thread and the channel conversation it came from. See [Thread](#thread).
 * **`backend`**: The thread's [sandbox](/langsmith/python/managed-deep-agents-sandboxes) filesystem. `None` when the project declares no sandbox.
 
 ## Separate context, caller, and delivery
@@ -91283,7 +91296,7 @@ Context, the caller, and the channel delivery come from different sources and ha
 
 * **Context** comes from the `context` parameter of an API call. LangGraph validates it against your context schema. Use it to select behavior, not to grant access.
 * **Server info** comes from [identity](/langsmith/python/managed-deep-agents-identity), which resolves the caller from a verified token. Managed Deep Agents strips identity keys that a client sends through `configurable`, so use this field for authorization.
-* **Channel** comes from managed [channel](/langsmith/python/managed-deep-agents-channels) ingress, which verifies the delivery before the run starts. A `channel` key in a direct API call's context does not create `runtime.channel`.
+* **Channel** comes from managed [channel](/langsmith/python/managed-deep-agents-channels) ingress, which verifies the delivery before the run starts. A `channel` key in a direct API call's context does not create `runtime.thread.origin`.
 
 API callers pass context next to the input:
 
@@ -91302,15 +91315,15 @@ A channel delivery carries no application context. Managed Deep Agents removes d
 
 On channel runs, context is `None` in the agent factory, tools, and middleware.
 
-To tell a channel run from a direct run, check `runtime.channel`.
+To tell a channel run from a direct run, check `runtime.thread.origin`.
 
 ## Read the runtime in the agent factory
 
-An agent factory receives a `ManagedServerRuntime`: the native [`ServerRuntime`](/langsmith/graph-rebuild) plus `channel` and `backend`. To write a factory, see [Select configuration per run](/langsmith/python/managed-deep-agents-agent-definition#select-configuration-per-run).
+An agent factory receives a `ManagedServerRuntime`: the native [`ServerRuntime`](/langsmith/graph-rebuild) plus `thread` and `backend`. To write a factory, see [Select configuration per run](/langsmith/python/managed-deep-agents-agent-definition#select-configuration-per-run).
 
 Agent Server also calls the factory to read schemas and state. `access_context` names the operation. [`execution_runtime`](/langsmith/graph-rebuild#access-contexts) is `None` outside `threads.create_run`, so read run context from `execution_runtime.context`. Return the same graph structure and schemas from every call.
 
-`channel` is available, so a factory can choose configuration per channel. `backend` is always `None`, because the factory selects the sandbox. The native `user`, `store`, and `ensure_user()` remain available.
+`thread` is available, so a factory can choose configuration per channel. `backend` is always `None`, because the factory selects the sandbox. The native `user`, `store`, and `ensure_user()` remain available.
 
 ## Read the runtime in tools
 
@@ -91334,8 +91347,9 @@ async def check_order(order_id: str, runtime: ManagedToolRuntime[AppContext]) ->
     principal = runtime.server_info.principal if runtime.server_info else None
     if principal is None:
         return "Sign in to check orders."
-    if runtime.channel is not None and runtime.channel.post is not None:
-        await runtime.channel.post({"type": "content", "content": "Checking that order now."})
+    origin = runtime.thread.origin
+    if origin is not None and origin.channel.post is not None:
+        await origin.channel.post({"type": "content", "content": "Checking that order now."})
     region = runtime.context.region if runtime.context else "us"
     return f"Order {order_id} for {principal.id} ships from {region}."
 ```
@@ -91364,7 +91378,7 @@ def log_caller(state: AgentState, runtime: Runtime[AppContext]) -> None:
     if not isinstance(runtime, ManagedRuntime):
         return None
     principal = runtime.server_info.principal if runtime.server_info else None
-    source = runtime.channel.provider if runtime.channel else "api"
+    source = runtime.thread.origin.channel.provider if runtime.thread.origin else "api"
     print(f"{principal.id if principal else 'anonymous'} via {source}")
     return None
 ```
@@ -91384,13 +91398,25 @@ Tool-call hooks receive a `ManagedToolRuntime`. Declarative subagents receive th
 
 Read the caller from `principal`, not from the native `user`. For identity providers and claim mapping, see [Identity](/langsmith/python/managed-deep-agents-identity).
 
+### Thread
+
+`runtime.thread` is a `ManagedThread`:
+
+* **`id`**: The LangGraph thread ID.
+* **`origin`**: The channel conversation the thread came from, with its `channel` and the `sender` of the latest message. Not set on a thread that no channel message reached.
+* **`participants`**: The people on the thread. Each has an `id` and a `role`, `"owner"` or `"member"`.
+
+> [!WARNING]
+>
+> `runtime.channel` is deprecated and will be removed in `managed-deepagents` 0.11. Read `runtime.thread.origin.channel` instead.
+
 ### Channel
 
-`runtime.channel` is a `RuntimeChannel`:
+`runtime.thread.origin.channel` is a `RuntimeChannel`:
 
 * **`name`**: The configured channel name.
 * **`provider`**: The provider label, such as `"slack"`.
-* **`event`**: The typed delivery. See the event types below.
+* **`event`**: The typed delivery. `None` in a run that no channel event started, such as a Studio resume. See the event types below.
 * **`raw_event`**: The original provider payload, when the channel supplies one. For Slack, this is the inner Slack event without HTTP headers or the Trigger envelope. A resume can omit it.
 * **`post`**: An async function that sends a message to the conversation that started the run. `None` when the channel cannot send.
 
@@ -129232,7 +129258,7 @@ Update an existing evaluator's name, LLM configuration, or code configuration. R
 Source: https://docs.langchain.com/langsmith/smith-api/examples/count-examples
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/examples/count
-Count all examples by query params
+Count the examples that match the filters.
 
 
 
@@ -129613,7 +129639,7 @@ Create a new feedback with a token.
 Source: https://docs.langchain.com/langsmith/smith-api/feedback/create-feedback-with-token-post
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/feedback/tokens/{token}
-Create a new feedback with a token.
+Submit feedback for the token's run and key. The token is the credential, so anyone with it can submit feedback.
 
 
 
@@ -129727,9 +129753,16 @@ Optional `ejection: {"failure_threshold": <1-1000>, "cooldown_seconds": <1-300>}
 `limits` must be non-empty; each `metric`/`window` pair may appear at most once. `value` is 1..1000000000000000.
 
 **subject_matchers** is a list of `{key, value}` pairs. Built-in
-keys are `organization_id`, `workspace_id`, `user_id`, `api_key_id`,
-and `run_rule_id`. Values under the same key are ORed; distinct keys
-are ANDed. A default policy uses an empty built-in matcher value so
+keys are `organization_id`, `workspace_id`, `agent_id`,
+`agent_environment`, `user_id`, `api_key_id`, and `run_rule_id`.
+Values under the same key are ORed; distinct keys are ANDed.
+`agent_id` and `agent_environment` target requests from Agent
+deployments and must be combined with exactly one `workspace_id`
+matcher: `agent_id` alone targets those Agents, `agent_environment`
+(`LOCAL`, `DEVELOPMENT`, `STAGING`, or `PRODUCTION`) alone targets
+every Agent in those environments, and both together target those
+Agents in those environments. Agent keys are
+not supported in default policies. A default policy uses an empty built-in matcher value so
 the runtime materializes a child for each subject it sees. A
 `default_spend_cap` and `default_rate_limit` may add one empty custom
 metadata key to bucket each subject by the corresponding
@@ -130196,31 +130229,66 @@ Valid fields:
 
 
 
-# Create new model price
-Source: https://docs.langchain.com/langsmith/smith-api/model-price-map/create-new-model-price
+# Create a model price
+Source: https://docs.langchain.com/langsmith/smith-api/model-price-map/create-a-model-price
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/model-price-map
+Create a custom model price for this workspace.
+
+The entry prices LLM runs whose model name matches `match_pattern`. It
+applies to runs ingested after it takes effect, which can take a few
+minutes; costs already recorded on existing runs are not recomputed.
+Costs are in US dollars per token.
+
+Returns 409 if the workspace already has an entry with the same name,
+match pattern, match path, provider, start time, and prompt token
+threshold.
 
 
 
-# Delete model price
-Source: https://docs.langchain.com/langsmith/smith-api/model-price-map/delete-model-price
+# Delete a model price
+Source: https://docs.langchain.com/langsmith/smith-api/model-price-map/delete-a-model-price
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/model-price-map/{id}
+Delete a custom model price from this workspace.
+
+Only the workspace's own entries can be deleted; LangSmith default entries
+cannot. Deleting an ID that does not belong to the workspace succeeds
+without changing anything. Existing run costs are not recomputed.
 
 
 
-# Read model price map
-Source: https://docs.langchain.com/langsmith/smith-api/model-price-map/read-model-price-map
+# List model prices
+Source: https://docs.langchain.com/langsmith/smith-api/model-price-map/list-model-prices
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/model-price-map
+List the model prices LangSmith uses to compute run costs in this workspace.
+
+Returns both the workspace's custom entries (`tenant_id` set) and the
+LangSmith default entries (`tenant_id` null). Default entries can be read
+but not updated or deleted; to price a model differently, for example
+because of a negotiated rate with an inference provider, create a custom
+entry with the same match pattern.
+
+The total number of matching entries is returned in the
+`X-Pagination-Total` response header.
 
 
 
-# Update model price
-Source: https://docs.langchain.com/langsmith/smith-api/model-price-map/update-model-price
+# Replace a model price
+Source: https://docs.langchain.com/langsmith/smith-api/model-price-map/replace-a-model-price
 
 /langsmith/langsmith-platform-openapi.json put /api/v1/model-price-map/{id}
+Replace every field of a custom model price in this workspace.
+
+The request body is the full entry, not a partial update: omitted
+optional fields are reset to their defaults. Only the workspace's own
+entries can be updated; LangSmith default entries cannot. Costs already
+recorded on existing runs are not recomputed.
+
+Returns 404 if the workspace has no entry with this ID, including
+LangSmith default entries. Returns 409 if the change would duplicate
+another entry's match conditions.
 
 
 
@@ -131283,6 +131351,16 @@ Update a repo.
 
 
 
+# Create decision model rule
+Source: https://docs.langchain.com/langsmith/smith-api/run/create-decision-model-rule
+
+/langsmith/langsmith-platform-openapi.json post /api/v1/runs/rules/decision-models
+Create a decision-model evaluator (Jev, SemIf or OpenAI Decisions) from
+its prompt and questions, and attach it to a project or dataset. Each
+question's key becomes a feedback key.
+
+
+
 # Create rule
 Source: https://docs.langchain.com/langsmith/smith-api/run/create-rule
 
@@ -131305,12 +131383,7 @@ Source: https://docs.langchain.com/langsmith/smith-api/run/delete-runs
 /langsmith/langsmith-platform-openapi.json post /api/v1/runs/delete
 DELETE with body payload — removes the runs identified by the request payload.
 
-Delete runs by trace ID, or every run in a time range.
-
-Supply `session_id` and `trace_ids` to delete a known list of traces, or
-`metadata` with `start_time` to delete matching traces from that time
-onward. Add `end_time` to bound the range; with both bounds set `metadata`
-is optional, and omitting it deletes every trace that started in the range.
+Delete specific runs by supplying `session_id` and `trace_ids`.
 
 
 
@@ -131342,7 +131415,7 @@ Get the last applied rule.
 Source: https://docs.langchain.com/langsmith/smith-api/run/group-runs
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/runs/group
-Get runs grouped by an expression
+Deprecated; sunset January 31, 2027. Use POST /api/v2/threads/query to query threads instead.
 
 
 
@@ -131648,6 +131721,14 @@ Create a snapshot by capturing the current state of a sandbox or promoting an ex
 
 
 
+# Clone a volume (Beta)
+Source: https://docs.langchain.com/langsmith/smith-api/sandboxes/clone-a-volume-beta
+
+/langsmith/langsmith-platform-openapi.json post /api/v2/sandboxes/volumes/{volume}/clone
+**Beta:** This API is in active development and may change without notice. Requires sandbox volumes to be enabled for your workspace. Create a new volume holding a copy-on-write copy of an existing one. A volume attached read-write to a sandbox that is not stopped cannot be cloned. Only the volume's creator, or a role with sandboxes:exec, may clone it.
+
+
+
 # Close a tab in a browser window (Beta)
 Source: https://docs.langchain.com/langsmith/smith-api/sandboxes/close-a-tab-in-a-browser-window-beta
 
@@ -131688,11 +131769,19 @@ Create a snapshot from a Docker image (async build). Names use lowercase registr
 
 
 
+# Create a volume (Beta)
+Source: https://docs.langchain.com/langsmith/smith-api/sandboxes/create-a-volume-beta
+
+/langsmith/langsmith-platform-openapi.json post /api/v2/sandboxes/volumes
+**Beta:** This API is in active development and may change without notice. Requires sandbox volumes to be enabled for your workspace. Create an empty volume that can be attached to sandboxes at a mount path. The size is rounded up to a whole GiB.
+
+
+
 # Create links to a browser window (Beta)
 Source: https://docs.langchain.com/langsmith/smith-api/sandboxes/create-links-to-a-browser-window-beta
 
 /langsmith/langsmith-platform-openapi.json post /api/v2/sandboxes/browsers/{name}/attachments/{attachment_id}/links
-Beta: mint a view link and an act link for one window, as every attachment response does, with a chosen lifetime and the origins allowed to embed the window's pages in an iframe. Without embed_origins no page may frame them. An embedded page sends its parent window messages when control changes and when it connects or disconnects (see the browser guide). Either link opens the window to anyone who holds it until it expires; detaching the window ends it early. A stopped browser starts when links are minted and when a link is opened, and resumes with its windows. Minting takes being the browser's creator or a role with sandboxes:exec.
+Beta: mint a view link and an act link for one window, as every attachment response does, with a chosen lifetime and the origins allowed to embed the window's pages in an iframe. Without embed_origins no page may frame them. view_embed_url and act_embed_url carry the same tokens in the URL fragment, for an iframe, so no server sees them. An embedded page sends its parent window messages when control changes and when it connects or disconnects (see the browser guide). Either link opens the window to anyone who holds it until it expires; detaching the window ends it early. A stopped browser starts when links are minted and when a link is opened, and resumes with its windows. Minting takes being the browser's creator or a role with sandboxes:exec.
 
 
 
@@ -131717,6 +131806,14 @@ Source: https://docs.langchain.com/langsmith/smith-api/sandboxes/delete-a-snapsh
 
 /langsmith/langsmith-platform-openapi.json delete /api/v2/sandboxes/snapshots/{snapshot_id}
 Delete a snapshot by ID or by a Docker-style name[:tag] reference. The underlying storage is reclaimed asynchronously.
+
+
+
+# Delete a volume (Beta)
+Source: https://docs.langchain.com/langsmith/smith-api/sandboxes/delete-a-volume-beta
+
+/langsmith/langsmith-platform-openapi.json delete /api/v2/sandboxes/volumes/{volume}
+**Beta:** This API is in active development and may change without notice. Requires sandbox volumes to be enabled for your workspace. Delete a volume and its data. A volume attached to any sandbox cannot be deleted. Storage is reclaimed asynchronously. Only the volume's creator, or a role with sandboxes:exec, may delete it.
 
 
 
@@ -131772,7 +131869,7 @@ Generate a tokenized link that downloads a single file from a sandbox with no fu
 Source: https://docs.langchain.com/langsmith/smith-api/sandboxes/generate-a-service-access-token
 
 /langsmith/langsmith-platform-openapi.json post /api/v2/sandboxes/boxes/{name}/service-url
-Create a short-lived JWT for accessing an HTTP service running on a specific port inside a sandbox. Returns a browser_url (sets auth cookie via redirect), a service_url (for use with the X-Langsmith-Sandbox-Service-Token header), the raw token, and its expiry. Set access=restricted|workspace to instead enable durable LangSmith login (no token; users authenticate with their normal LangSmith session), or access=off to disable it. With LangSmith login, embed_origins names the pages that may show the URL in an iframe; a viewer signs in from inside the frame through a LangSmith popup. LangSmith login and token access are mutually exclusive per service URL.
+Create a short-lived JWT for accessing an HTTP service running on a specific port inside a sandbox. Returns a browser_url (sets auth cookie via redirect), an embed_url (for an iframe; carries the token in the URL fragment, so no server or Referer sees it), a service_url (for use with the X-Langsmith-Sandbox-Service-Token header), the raw token, and its expiry. Set access=restricted|workspace to instead enable durable LangSmith login (no token; users authenticate with their normal LangSmith session), or access=off to disable it. embed_origins names the pages that may show the URL in an iframe. In token mode they are bound into the minted token; with LangSmith login they are stored on the grant and a viewer signs in from inside the frame through a LangSmith popup. LangSmith login and token access are mutually exclusive per service URL.
 
 
 
@@ -131813,6 +131910,14 @@ Source: https://docs.langchain.com/langsmith/smith-api/sandboxes/get-a-snapshot-
 
 /langsmith/langsmith-platform-openapi.json get /api/v2/sandboxes/snapshots-by-name/{name}
 Get a snapshot name and every tag under it, with the snapshot each tag resolves to. To fetch one snapshot, use /api/v2/sandboxes/snapshots/{snapshot_id}.
+
+
+
+# Get a volume (Beta)
+Source: https://docs.langchain.com/langsmith/smith-api/sandboxes/get-a-volume-beta
+
+/langsmith/langsmith-platform-openapi.json get /api/v2/sandboxes/volumes/{volume}
+**Beta:** This API is in active development and may change without notice. Requires sandbox volumes to be enabled for your workspace. Get a sandbox volume by ID or name, with its current attachments.
 
 
 
@@ -131895,6 +132000,14 @@ Cursors are opaque and only valid on this endpoint; do not parse or construct on
 
 
 
+# List volumes (Beta)
+Source: https://docs.langchain.com/langsmith/smith-api/sandboxes/list-volumes-beta
+
+/langsmith/langsmith-platform-openapi.json get /api/v2/sandboxes/volumes
+**Beta:** This API is in active development and may change without notice. Requires sandbox volumes to be enabled for your workspace. List the workspace's sandbox volumes with their current attachments.
+
+
+
 # Load a browser's extensions (Beta)
 Source: https://docs.langchain.com/langsmith/smith-api/sandboxes/load-a-browsers-extensions-beta
 
@@ -131947,7 +132060,7 @@ Beta: give the window to a person ("user") or back to the attached sandbox ("age
 Source: https://docs.langchain.com/langsmith/smith-api/sandboxes/start-a-sandbox
 
 /langsmith/langsmith-platform-openapi.json post /api/v2/sandboxes/boxes/{name}/start
-Start a stopped or failed sandbox. This endpoint is not idempotent.
+Start a stopped or failed sandbox. This endpoint is not idempotent. The optional volumes field is beta and requires sandbox volumes to be enabled for your workspace. Omit it to keep attachments, or send an empty array to detach all volumes. Changing attachments requires a stopped or failed sandbox, runtime access to it (its creator or sandboxes:exec), and, for each newly attached volume, being its creator or holding sandboxes:exec. A start whose volumes differ from those the sandbox's saved memory was captured with fails with 409 unless discard_memory is set, which cold-boots the sandbox without that memory.
 
 
 
@@ -131988,6 +132101,14 @@ Source: https://docs.langchain.com/langsmith/smith-api/sandboxes/update-a-sandbo
 
 /langsmith/langsmith-platform-openapi.json patch /api/v2/sandboxes/boxes/{name}
 Update a sandbox's display name, retention, resources, tags, or proxy configuration. The name must be unique within the tenant. Proxy configuration sent to a sandbox that is not running is stored and applied when it next starts.
+
+
+
+# Update a volume (Beta)
+Source: https://docs.langchain.com/langsmith/smith-api/sandboxes/update-a-volume-beta
+
+/langsmith/langsmith-platform-openapi.json patch /api/v2/sandboxes/volumes/{volume}
+**Beta:** This API is in active development and may change without notice. Requires sandbox volumes to be enabled for your workspace. Update a volume's description or labels. Each field sent replaces the stored value; omitted fields are unchanged. Null, an empty description, or an empty labels object clears it. Only the volume's creator, or a role with sandboxes:exec, may update it.
 
 
 
@@ -132071,11 +132192,11 @@ Returns all agent versions (commit SHAs) seen in the given tracing project, orde
 
 
 
-# Resolve an address to its tracing project (Beta)
-Source: https://docs.langchain.com/langsmith/smith-api/sessions/resolve-an-address-to-its-tracing-project-beta
+# Resolve an address to its tracing project
+Source: https://docs.langchain.com/langsmith/smith-api/sessions/resolve-an-address-to-its-tracing-project
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/sessions/resolutions
-**Beta:** This endpoint is in active development and may change without notice. Returns the tracing project (session) an address names. An address is an AGENT (`id` and `environment`), an EXPERIMENT (`id`), or an EVALUATOR (no `id`: evaluator traces share one project per workspace). Send `kind` and `environment` in upper case, as listed; they are matched case-insensitively, while the Agent `id` is case-sensitive. An address that does not exist, or whose project you cannot read, is a 404. Pass the returned `session_id` to any endpoint that takes a project (session) ID. This is not supported on a BYOC data plane yet, and is a 501 there.
+Returns the tracing project (session) an address names. An address is an AGENT (`id` and `environment`), an EXPERIMENT (`id`), or an EVALUATOR (no `id`: evaluator traces share one project per workspace). Send `kind` and `environment` in upper case, as listed; they are matched case-insensitively, while the Agent `id` is case-sensitive. An address that does not exist, or whose project you cannot read, is a 404. Pass the returned `session_id` to any endpoint that takes a project (session) ID. This is not supported on a BYOC data plane yet, and is a 501 there. Self-hosted deployments need LangSmith v0.18 or later.
 
 
 
@@ -132244,8 +132365,8 @@ Self-hosted deployments require LangSmith `v0.16` or later.
 Source: https://docs.langchain.com/langsmith/smith-api/threads/query-threads
 
 /langsmith/langsmith-platform-openapi.json post /api/v2/threads/query
-Query threads within a project (session), with cursor-based pagination.
-Returns threads matching the given time range and optional filters.
+GET with body payload — no resources created. Returns the threads in a tracing project matching the query passed as the request payload.
+Results are filtered by the given time range and optional filters, with cursor-based pagination.
 
 When `ai_search` is set, `Accept: text/event-stream` is required; requests without it return 406. AI search is unavailable on deployments that route queries to the v1 backend and returns 501 there.
 
@@ -132748,6 +132869,10 @@ Source: https://docs.langchain.com/langsmith/smith-api/workspaces/delete-tagging
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/delete-workspace
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/workspaces/{workspace_id}
+Delete a workspace and its data.
+
+Only the workspace the request is scoped to (the X-Tenant-Id header, or the API key's workspace)
+can be deleted; any other ID returns 403. Requires the workspace delete permission.
 
 
 
@@ -132908,7 +133033,9 @@ Update the role on a pending workspace member invite.
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/patch-workspace
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/workspaces/{workspace_id}
-Update a workspace.
+Rename a workspace in the current organization.
+
+Requires the workspace settings manage permission. A name that is already taken returns 409.
 
 
 
@@ -303832,6 +303959,7 @@ Middleware enables context engineering, harness customization, and runtime safet
 | [`DeepKeep middleware`](https://docs.deepkeep.ai) | DeepKeep AI Firewall pre-moderation and post-moderation for LangChain agents. | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-deepkeep/month)](https://pypi.org/project/langchain-deepkeep/) |
 | [`CTRLRunMiddleware`](https://docs.ctrlrun.dev/guides/langchain-middleware) | Policy-gated tool calls through wrap\_tool\_call: a refused call never reaches the tool and the model is told which rule refused it; an effect key executes at most once across processes sharing a store; a tool that raises leaves the effect unresolved rather than retried; an approve decision holds the call for a person; a receipt for every decision, refusals included. | [`CTRLRun/ctrlrun`](https://github.com/CTRLRun/ctrlrun/tree/main/adapters/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/ctrlrun-langchain/month)](https://pypi.org/project/ctrlrun-langchain/) |
 | [`AxioRank`](https://axiorank.com/docs/integrations/langchain) | Security gateway for AI agents: score tool calls and model turns against policy with allow, deny, and redact. | [`AxioRank/langchain-axiorank`](https://github.com/AxioRank/langchain-axiorank) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-axiorank/month)](https://pypi.org/project/langchain-axiorank/) |
+| [`Nace middleware`](https://github.com/nace-ai/langchain-nace#readme) | Drex decision models return typed answers with calibrated probabilities for model routing and tool-call gating from text and images. | [`nace-ai/langchain-nace`](https://github.com/nace-ai/langchain-nace) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nace/month)](https://pypi.org/project/langchain-nace/) |
 | [`langchain-distil`](https://github.com/dshakes/distil) | Reversible, certified context compression. Digests large tool outputs and message history before the model call (tool and function messages reversibly, human and system losslessly, the model messages never rewritten), with byte-exact recovery of every digest. Decision-equivalence between compressed and full context is certified offline by a statistical non-inferiority gate. | [`dshakes/distil`](https://github.com/dshakes/distil) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-distil/month)](https://pypi.org/project/langchain-distil/) |
 | [`langchain-pop`](https://github.com/joy7758/persona-object-protocol/tree/main/integrations/langchain-pop) | Portable persona loading, legacy migration, and boundary-aware tool filtering for LangChain agents. | [`joy7758/persona-object-protocol`](https://github.com/joy7758/persona-object-protocol/tree/main/integrations/langchain-pop) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-pop/month)](https://pypi.org/project/langchain-pop/) |
 | [`comply54`](https://comply54.io/langchain) | Runtime compliance enforcement for AI agents under African data protection and financial-sector regulations (deny, escalate, audit, or allow). | [Comply54](https://comply54.io/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-comply54/month)](https://pypi.org/project/langchain-comply54/) |
@@ -305162,6 +305290,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > **[MrScraper](https://docs.mrscraper.com)**
 >
 > Web scraping APIs for rendered HTML, AI extraction, scraper reruns, and result management.
+
+> **[Nace](https://github.com/nace-ai/langchain-nace#readme)**
+>
+> Drex decision models by Nace: typed answers with calibrated probabilities for routing, model selection and tool-call gating, from text and images.
 
 > **[Nano Banana by Ace Data Cloud](https://github.com/AceDataCloud/LangChain/tree/main/packages/nano-banana)**
 >

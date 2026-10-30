@@ -1304,6 +1304,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Web scraping APIs for rendered HTML, AI extraction, scraper reruns, and result management.
 
+> **[Nace](https://github.com/nace-ai/langchain-nace#readme)**
+>
+> Drex decision models by Nace: typed answers with calibrated probabilities for routing, model selection and tool-call gating, from text and images.
+
 > **[Nano Banana by Ace Data Cloud](https://github.com/AceDataCloud/LangChain/tree/main/packages/nano-banana)**
 >
 > Image generation submission and same-ID task retrieval tools provided by Ace Data Cloud for Nano Banana.

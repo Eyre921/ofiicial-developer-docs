@@ -1,4 +1,4 @@
-> This is part 1 of 14 of the full documentation (pages 1–100 of 1380).
+> This is part 1 of 14 of the full documentation (pages 1–100 of 1384).
 > The content is paginated: fetch every part to see all of it.
 > Next part: https://docs.n8n.io/llms-full.txt/1
 > Page index: https://docs.n8n.io/llms.txt
@@ -2344,7 +2344,7 @@ Before proceeding, install Docker:
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.45.6 Current `beta`: 2.46.2
+Current `stable`: 2.45.7 Current `beta`: 2.46.3
 {% endhint %}
 
 ### Starting n8n <a href="#starting-n8n" id="starting-n8n"></a>
@@ -2601,7 +2601,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.45.6 Current `beta`: 2.46.2
+Current `stable`: 2.45.7 Current `beta`: 2.46.3
 {% endhint %}
 
 ## Create a Droplet <a href="#create-a-droplet" id="create-a-droplet"></a>
@@ -2973,7 +2973,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.45.6 Current `beta`: 2.46.2
+Current `stable`: 2.45.7 Current `beta`: 2.46.3
 {% endhint %}
 
 ## Use the deployment template to create a Heroku project <a href="#use-the-deployment-template-to-create-a-heroku-project" id="use-the-deployment-template-to-create-a-heroku-project"></a>
@@ -3075,7 +3075,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.45.6 Current `beta`: 2.46.2
+Current `stable`: 2.45.7 Current `beta`: 2.46.3
 {% endhint %}
 
 ## Create a server <a href="#create-a-server" id="create-a-server"></a>
@@ -3439,7 +3439,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.45.6 Current `beta`: 2.46.2
+Current `stable`: 2.45.7 Current `beta`: 2.46.3
 {% endhint %}
 
 ## Create a cluster <a href="#create-a-cluster" id="create-a-cluster"></a>
@@ -3654,7 +3654,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.45.6 Current `beta`: 2.46.2
+Current `stable`: 2.45.7 Current `beta`: 2.46.3
 {% endhint %}
 
 ## Hosting options <a href="#hosting-options" id="hosting-options"></a>
@@ -3870,7 +3870,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.45.6 Current `beta`: 2.46.2
+Current `stable`: 2.45.7 Current `beta`: 2.46.3
 {% endhint %}
 
 ## Before you begin: get a Google Cloud project <a href="#before-you-begin-get-a-google-cloud-project" id="before-you-begin-get-a-google-cloud-project"></a>
@@ -4153,7 +4153,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.45.6 Current `beta`: 2.46.2
+Current `stable`: 2.45.7 Current `beta`: 2.46.3
 {% endhint %}
 
 ## Create project <a href="#create-project" id="create-project"></a>
@@ -5447,7 +5447,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.45.6 Current `beta`: 2.46.2
+Current `stable`: 2.45.7 Current `beta`: 2.46.3
 {% endhint %}
 
 ## 1. Install Docker and Docker Compose <a href="#id-1-install-docker-and-docker-compose" id="id-1-install-docker-and-docker-compose"></a>
@@ -8959,14 +8959,25 @@ n8n execute --id <ID>
 You can publish or unpublish a workflow using the CLI. In n8n 2.0, the [previous active/inactive toggle](/changelog/v20-breaking-changes) was replaced by a publish/unpublish model. Use `publish:workflow` and `unpublish:workflow` to change a workflow's published state from the CLI.
 
 {% hint style="info" %}
-**Restart required**
+**When changes take effect**
 
-These commands operate on your n8n database. If you execute them while n8n is running, the changes don't take effect until you restart n8n.
-{% endhint %}
+These commands change your n8n database. When a running n8n applies the change depends on your setup:
+
+* If `N8N_USE_WORKFLOW_PUBLICATION_SERVICE` is on (the default), the running instance applies the change without a restart. It checks for changes every 15 seconds by default. If n8n isn't running, it applies the change when it starts.
+* Otherwise, restart n8n to apply the change.
+  {% endhint %}
 
 ### Publish a workflow <a href="#publish-a-workflow" id="publish-a-workflow"></a>
 
 Use `publish:workflow` to publish a workflow by its ID. You can optionally publish a specific historical version by passing its `versionId`.
+
+`publish:workflow` runs the same checks as publishing from the editor, such as node validation and webhook path conflicts. If the workflow fails a check, the command doesn't publish it and prints the reason.
+
+{% hint style="warning" %}
+**Republishing a published workflow**
+
+If `N8N_USE_WORKFLOW_PUBLICATION_SERVICE` is `false`, `publish:workflow` refuses to publish a workflow that's already published. Unpublish the workflow first, publish it again, and then restart n8n.
+{% endhint %}
 
 Command flags:
 
@@ -9037,6 +9048,8 @@ Set the active status of a workflow by its ID to true:
 ```bash
 n8n update:workflow --id=<ID> --active=true
 ```
+
+This publishes the current version of the workflow, with the same checks and limits as [`publish:workflow`](#publish-a-workflow).
 
 Set the active status to false for all the workflows:
 

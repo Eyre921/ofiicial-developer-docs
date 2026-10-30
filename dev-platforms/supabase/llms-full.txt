@@ -38548,30 +38548,30 @@ show "statement_timeout";
 
 ### Superuser settings
 
-Some settings can only be modified by a superuser. Supabase pre-enables the [`supautils` extension](https://supabase.com/blog/roles-postgres-hooks#setting-up-the-supautils-extension), which allows the `postgres` role to retain certain superuser privileges. It enables modification of the below reserved configurations at the `role` level:
+Some settings can only be modified by a superuser. Supabase pre-enables the [`supautils` extension](https://supabase.com/blog/roles-postgres-hooks#setting-up-the-supautils-extension), which allows the `postgres` role to retain certain superuser privileges. It enables modification of the following reserved configurations at the `role` level:
 
-| Setting                      | Description                                                                                                                                                                                                           |
-| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `auto_explain.*`             | Configures the [auto\_explain module](https://www.postgresql.org/docs/current/auto-explain.html). Can be configured to log execution plans for queries expected to exceed x seconds, including function queries.      |
-| `deadlock_timeout`           | Sets the time to wait on a lock before checking for deadlock.                                                                                                                                                         |
-| `log_duration`               | Logs how long a query ran for, but not the entire query itself.                                                                                                                                                       |
-| `log_lock_waits`             | Controls whether a log message is produced when a session waits longer than [deadlock\_timeout](https://www.postgresql.org/docs/current/runtime-config-locks.html#GUC-DEADLOCK-TIMEOUT) to acquire a lock.            |
-| `log_min_duration_statement` | Logs the duration and text of completed statements whose execution time meets or exceeds the specified threshold                                                                                                      |
-| `log_min_error_statement`    | Determines if the query that induced a log should be recorded as a subfield based on the event's [severity level](https://www.postgresql.org/docs/current/runtime-config-logging.html#RUNTIME-CONFIG-SEVERITY-LEVELS) |
-| `log_min_messages`           | Minimum severity level of messages to log.                                                                                                                                                                            |
-| `log_parameter_max_length`   | Sets the maximum length in bytes of data logged for bind parameter values when logging statements.                                                                                                                    |
-| `log_replication_commands`   | Logs all replication commands                                                                                                                                                                                         |
-| `log_statement`              | Controls which SQL statements are logged. Valid values are `none` (off), `ddl`, `mod`, and `all` (all statements).                                                                                                    |
-| `log_temp_files`             | Controls logging of temporary file names and sizes.                                                                                                                                                                   |
-| `pg_stat_statements.*`       | Configures the [pg\_stat\_statements extension](https://www.postgresql.org/docs/current/pgstatstatements.html).                                                                                                       |
-| `pgaudit.*`                  | Configures the [PGAudit extension](https://supabase.com/docs/guides/database/extensions/pgaudit). The `log_parameter` is still restricted to protect secrets                                                          |
-| `pgrst.*`                    | [`PostgREST` settings](https://docs.postgrest.org/en/stable/references/configuration.html#db-aggregates-enabled)                                                                                                      |
-| `plan_filter.*`              | Configures the [pg\_plan\_filter extension](https://supabase.com/docs/guides/database/extensions/pg_plan_filter)                                                                                                      |
-| `safeupdate.enabled`         | Enables the [safeupdate extension](https://github.com/eradman/pg-safeupdate), which requires a `WHERE` clause on `UPDATE` and `DELETE` statements.                                                                    |
-| `session_replication_role`   | Sets the session's behavior for triggers and rewrite rules.                                                                                                                                                           |
-| `track_functions`            | Controls whether function call counts and timing are tracked. Valid values are `none`, `pl` (only procedural-language functions), and `all`.                                                                          |
-| `track_io_timing`            | Collects timing statistics for database I/O activity.                                                                                                                                                                 |
-| `wal_compression`            | This parameter enables compression of WAL using the specified compression method.                                                                                                                                     |
+| Setting                      | Description                                                                                                                                                                                                                                                                                                                  |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `auto_explain.*`             | Configures the [auto\_explain module](https://www.postgresql.org/docs/current/auto-explain.html). It can log the execution plan of each query, including function queries, whose run time meets or exceeds a threshold. See [Log slow and failing queries](https://supabase.com/docs/guides/observability/log-slow-queries). |
+| `deadlock_timeout`           | Sets the time to wait on a lock before checking for deadlock.                                                                                                                                                                                                                                                                |
+| `log_duration`               | Logs how long a query ran for, but not the entire query itself.                                                                                                                                                                                                                                                              |
+| `log_lock_waits`             | Controls whether a log message is produced when a session waits longer than [deadlock\_timeout](https://www.postgresql.org/docs/current/runtime-config-locks.html#GUC-DEADLOCK-TIMEOUT) to acquire a lock.                                                                                                                   |
+| `log_min_duration_statement` | Logs the duration and text of completed statements whose execution time meets or exceeds the specified threshold. See [Log slow and failing queries](https://supabase.com/docs/guides/observability/log-slow-queries).                                                                                                       |
+| `log_min_error_statement`    | Records the query that caused a log event when the event's [severity level](https://www.postgresql.org/docs/current/runtime-config-logging.html#RUNTIME-CONFIG-SEVERITY-LEVELS) meets or exceeds this setting. See [Log slow and failing queries](https://supabase.com/docs/guides/observability/log-slow-queries).          |
+| `log_min_messages`           | Minimum severity level of messages to log.                                                                                                                                                                                                                                                                                   |
+| `log_parameter_max_length`   | Sets the maximum length in bytes of data logged for bind parameter values when logging statements.                                                                                                                                                                                                                           |
+| `log_replication_commands`   | Logs all replication commands.                                                                                                                                                                                                                                                                                               |
+| `log_statement`              | Controls which SQL statements are logged. Valid values are `none` (off), `ddl`, `mod`, and `all` (all statements).                                                                                                                                                                                                           |
+| `log_temp_files`             | Controls logging of temporary file names and sizes.                                                                                                                                                                                                                                                                          |
+| `pg_stat_statements.*`       | Configures the [pg\_stat\_statements extension](https://www.postgresql.org/docs/current/pgstatstatements.html).                                                                                                                                                                                                              |
+| `pgaudit.*`                  | Configures the [PGAudit extension](https://supabase.com/docs/guides/database/extensions/pgaudit). The `log_parameter` setting is restricted to protect secrets.                                                                                                                                                              |
+| `pgrst.*`                    | [`PostgREST` settings](https://docs.postgrest.org/en/stable/references/configuration.html#db-aggregates-enabled)                                                                                                                                                                                                             |
+| `plan_filter.*`              | Configures the [pg\_plan\_filter extension](https://supabase.com/docs/guides/database/extensions/pg_plan_filter)                                                                                                                                                                                                             |
+| `safeupdate.enabled`         | Enables the [safeupdate extension](https://github.com/eradman/pg-safeupdate), which requires a `WHERE` clause on `UPDATE` and `DELETE` statements.                                                                                                                                                                           |
+| `session_replication_role`   | Sets the session's behavior for triggers and rewrite rules.                                                                                                                                                                                                                                                                  |
+| `track_functions`            | Controls whether function call counts and timing are tracked. Valid values are `none`, `pl` (only procedural-language functions), and `all`.                                                                                                                                                                                 |
+| `track_io_timing`            | Collects timing statistics for database I/O activity.                                                                                                                                                                                                                                                                        |
+| `wal_compression`            | Compresses the write-ahead log (WAL) with the specified compression method.                                                                                                                                                                                                                                                  |
 
 For example, to enable `log_nested_statements` for the `postgres` role, execute:
 
@@ -64189,26 +64189,7 @@ postgres-config update --config cron.log_statement=false --no-restart \
 
 ### `auto_explain.*`
 
-[auto\_explain](https://www.postgresql.org/docs/current/auto-explain.html) is a Postgres module that is installed on all Supabase projects. It logs the statements and [explain plans](https://www.postgresql.org/docs/current/sql-explain.html) of queries that took more than the setting's limit.
-
-**Useful for:**
-
-- Monitoring and optimizing slow queries
-
-**Example log:**
-
-```sh
-duration: 1661.934 ms plan: Query Text: SELECT * FROM example;
-Seq Scan on example (cost=0.00..1443.00 rows=100000 width=36)
-```
-
-**Configuration examples**
-
-Note: `auto_explain` is a family of configurations. The primary one is `auto_explain.log_min_duration`. However, there are other configs of note, such as `auto_explain.log_analyze` and `auto_explain.log_buffers` that control the details of the query plan recorded. Reference the module's [official docs](https://www.postgresql.org/docs/current/auto-explain.html) for more information.
-
-```sql name=SQL
-alter role "postgres" set "auto_explain.log_min_duration" to '2s';
-```
+Logs the query plan of each statement that runs longer than a threshold. To set it up, see [Log slow and failing queries](https://supabase.com/docs/guides/observability/log-slow-queries).
 
 ### `log_duration`
 
@@ -64239,49 +64220,11 @@ alter role "postgres" set "log_duration" to true;
 
 ### `log_min_duration_statement`
 
-It is similar to `auto_explain.log_min_duration`, but it lighter weight. It only logs query statements that run longer than the setting's limit.
-
-**Useful for:**
-
-- Monitoring and optimizing slow queries
-
-**Example log:**
-
-```sh
-duration: 1.097 ms statement: select * from example_table limit 100;
-```
-
-**Configuration examples**
-
-```sql name=SQL
-alter role "postgres" set "log_min_duration_statement" to '2s';
-```
+Logs each statement that runs longer than a threshold. To set it up, see [Log slow and failing queries](https://supabase.com/docs/guides/observability/log-slow-queries).
 
 ### `log_min_error_statement`
 
-When an event is logged, beyond the primary message, multiple subfields are also captured, such as the [status code](https://www.postgresql.org/docs/current/errcodes-appendix.html). The `log_min_error_statement` field determines if the query responsible for the log should be recorded, too, under the `query` subfield.
-
-If the event is equally or more severe than `log_min_error_statement`, the query will be captured. To view the varying severity levels, reference [log\_min\_messages](#logminmessages).
-
-**Useful for:**
-
-- Detecting what queries induced specific logs
-- Detecting what queries induced a specific error
-
-**Example log:**
-
-```sh
-duplicate key value violates unique constraint "example_pkey"
-...
-# affiliated subfield
-query: "insert into example (id) values (1), (1);
-```
-
-**Configuration examples**
-
-```sql name=SQL
-alter role "postgres" set "log_min_error_statement" to 'error';
-```
+Records the statement behind each error, and is on by default. To find that statement in your logs, see [Log slow and failing queries](https://supabase.com/docs/guides/observability/log-slow-queries).
 
 ### `log_min_messages`
 
@@ -64803,7 +64746,7 @@ Enable RLS, then set the grants to match what each role does in your app:
 4. Write the test file for the table, and run the suite.
 
    ```bash
-   supabase test new reports_rls.test
+   supabase test new reports_rls
    supabase test db
    ```
 
@@ -64822,9 +64765,9 @@ to anon, authenticated
 using ( true );
 ```
 
-```sql supabase/tests/announcements_rls.test.sql
--- File: supabase/tests/announcements_rls.test.sql
--- Create: supabase test new announcements_rls.test
+```sql supabase/tests/announcements_rls_test.sql
+-- File: supabase/tests/announcements_rls_test.sql
+-- Create: supabase test new announcements_rls
 -- Run:    supabase test db
 -- Repeat for every public-read table you secured.
 begin;
@@ -64971,11 +64914,11 @@ using ( (select auth.uid()) = user_id );
 
 #### Policy tests
 
-When you adapt those four policies to a table, add this file for that table. The path is `supabase/tests/<table>_rls.test.sql`. For a table users share, also assert that a member who is not the owner can perform the operations its policies allow, and that a non-member cannot.
+When you adapt those four policies to a table, add this file for that table. The path is `supabase/tests/<table>_rls_test.sql`. For a table users share, also assert that a member who is not the owner can perform the operations its policies allow, and that a non-member cannot.
 
-```sql supabase/tests/profiles_rls.test.sql
--- File: supabase/tests/profiles_rls.test.sql
--- Create: supabase test new profiles_rls.test
+```sql supabase/tests/profiles_rls_test.sql
+-- File: supabase/tests/profiles_rls_test.sql
+-- Create: supabase test new profiles_rls
 -- Run:    supabase test db
 -- One file per table you enabled RLS on. Name that table in the assertions.
 -- Do not create a table only the tests use.
@@ -65137,7 +65080,9 @@ This prevents the policy `( (select auth.uid()) = user_id )` from running for an
 
 ### Run the test suite
 
-The files above live under `supabase/tests/` and run through [pgTAP](https://supabase.com/docs/guides/database/extensions/pgtap). Create them with `supabase test new <table>_rls.test`, and run them with `supabase test db`.
+The files above live under `supabase/tests/` and run through [pgTAP](https://supabase.com/docs/guides/database/extensions/pgtap). Create them with `supabase test new <table>_rls`, and run them with `supabase test db`.
+
+For more information about writing a policy test and running it against your local database, see [Test Row Level Security policies with pgTAP](https://supabase.com/docs/guides/database/postgres/testing-row-level-security).
 
 [`supabase-test-helpers`](https://github.com/usebasejump/supabase-test-helpers/tree/main) adds `tests.create_supabase_user()`, `tests.authenticate_as()`, and `tests.rls_enabled()`. See [Advanced pgTAP testing](https://supabase.com/docs/guides/local-development/testing/pgtap-extended) and [Testing your database](https://supabase.com/docs/guides/database/testing).
 
@@ -65472,6 +65417,310 @@ select * from pg_stat_replication;
 
 Note: You can add more tables to the initial publication, but you're going to need to do a REFRESH on the subscribing database.
 See [https://www.postgresql.org/docs/current/sql-alterpublication.html](https://www.postgresql.org/docs/current/sql-alterpublication.html)
+
+
+---
+
+# Test Row Level Security policies with pgTAP
+
+Catch policy mistakes before they reach production.
+
+Write pgTAP tests that check which rows each role can read and change.
+
+Prove each Row Level Security (RLS) policy allows and blocks what you meant by running [pgTAP](https://pgtap.org) tests against your local database.
+
+For more information about how policies work, see [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security).
+
+Copy the following prompt to write RLS policy tests for your application:
+
+**Agent Prompt**
+
+```text
+Help me write pgTAP tests for my Row Level Security policies.
+1. Read all of
+   https://supabase.com/docs/guides/database/postgres/testing-row-level-security.md,
+   not only its first lines. Follow the rules in "Write quality tests with agents".
+2. Before you write any tests, list the access rules to prove and confirm them
+   with me.
+3. Write one test at a time. Run `supabase test db` and show that each test
+   fails when the policy it covers is broken.
+4. Don't change a policy to make a test pass. Tell me which assertion and
+   policy disagree.
+```
+
+## Write and run a policy test
+
+The example tests a `todos` table whose policy lets each user access only their own rows.
+
+1. Open a terminal in your project and start the local stack:
+
+   ```bash
+   supabase start
+   ```
+
+2. Create a migration for the table and its policy:
+
+   ```bash
+   supabase migration new create_todos
+   ```
+
+   In the new `supabase/migrations/<timestamp>_create_todos.sql` file, add the following SQL:
+
+   ```sql
+   create table todos (
+     id uuid primary key default gen_random_uuid(),
+     task text not null,
+     user_id uuid references auth.users not null,
+     completed boolean default false
+   );
+
+   alter table todos enable row level security;
+
+   create policy "Users can only access their own todos"
+   on todos for all
+   to authenticated
+   using ((select auth.uid()) = user_id);
+
+   -- index the column the policy filters on
+   create index todos_user_id_idx on todos using btree (user_id);
+   ```
+
+   Apply the migration to your local database:
+
+   ```bash
+   supabase db reset
+   ```
+
+   `supabase db reset` recreates the local database from your migrations and seed file, so it deletes any data they don't create. To apply only the new migration, run `supabase migration up` instead.
+
+3. Create the test file:
+
+   ```bash
+   supabase test new todos_rls
+   ```
+
+4. In `supabase/tests/todos_rls_test.sql`, write the tests:
+
+   ```sql supabase/tests/todos_rls_test.sql
+   begin;
+   create extension if not exists pgtap with schema extensions;
+   select plan(4);
+
+   insert into auth.users (id, email)
+   values
+     ('123e4567-e89b-12d3-a456-426614174000', 'user1@test.com'),
+     ('987fcdeb-51a2-43d7-9012-345678901234', 'user2@test.com');
+
+   insert into public.todos (task, user_id)
+   values
+     ('User 1 Task 1', '123e4567-e89b-12d3-a456-426614174000'),
+     ('User 1 Task 2', '123e4567-e89b-12d3-a456-426614174000'),
+     ('User 2 Task 1', '987fcdeb-51a2-43d7-9012-345678901234');
+
+   -- as user 1
+   set local role authenticated;
+   set local request.jwt.claim.sub = '123e4567-e89b-12d3-a456-426614174000';
+
+   select results_eq(
+     'select count(*) from todos',
+     array[2::bigint],
+     'User 1 sees only their 2 todos'
+   );
+
+   -- returning proves the row was written, not only that nothing failed
+   select results_eq(
+     $$insert into todos (task, user_id)
+       values ('New Task', '123e4567-e89b-12d3-a456-426614174000'::uuid)
+       returning task$$,
+     array['New Task'],
+     'User 1 can create their own todo'
+   );
+
+   -- as user 2
+   set local request.jwt.claim.sub = '987fcdeb-51a2-43d7-9012-345678901234';
+
+   select results_eq(
+     'select count(*) from todos',
+     array[1::bigint],
+     'User 2 sees only their 1 todo'
+   );
+
+   select is_empty(
+     $$update todos set task = 'Hacked!'
+       where user_id = '123e4567-e89b-12d3-a456-426614174000'::uuid
+       returning 1$$,
+     'User 2 cannot modify User 1 todos'
+   );
+
+   select * from finish();
+   rollback;
+   ```
+
+   The file runs in one transaction that rolls back at the end, so the test data never persists. `set local role` and `request.jwt.claim.sub` set the role and user each assertion runs as, the way a signed-in user's request does.
+
+5. Run the tests:
+
+   ```bash
+   supabase test db
+   ```
+
+   ```text
+   psql:todos_rls_test.sql:2: NOTICE:  extension "pgtap" already exists, skipping
+   ./todos_rls_test.sql .. ok
+   All tests successful.
+   Files=1, Tests=4,  0 wallclock secs ( 0.01 usr +  0.00 sys =  0.01 CPU)
+   Result: PASS
+   ```
+
+   If any assertion fails, fix the policy or the test, then rerun `supabase test db` until the output ends with `Result: PASS`.
+
+The policy now has a test that fails if a change lets one user read or edit another user's todos.
+
+## Test the policy from your application
+
+Test the same policy through the Supabase client your app uses. Unlike pgTAP tests, application-level tests can't use a transaction to keep their data from persisting.
+
+Caution: Don't rely on a clean database state. Resetting the database before each test is slow and keeps tests from running in parallel. Give each test suite its own user IDs instead.
+
+The following Vitest suite mirrors the pgTAP tests above. It needs `@supabase/supabase-js` and `vitest` installed. Set `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, and `SUPABASE_SECRET_KEY` to the `API_URL`, `PUBLISHABLE_KEY`, and `SECRET_KEY` values that `supabase status -o env` prints.
+
+```typescript
+import crypto from 'crypto'
+import { createClient } from '@supabase/supabase-js'
+import { beforeAll, describe, expect, it } from 'vitest'
+
+describe('Todos RLS', () => {
+  // Generate unique IDs for this test suite to avoid conflicts with other tests
+  const USER_1_ID = crypto.randomUUID()
+  const USER_2_ID = crypto.randomUUID()
+
+  const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_PUBLISHABLE_KEY!)
+
+  beforeAll(async () => {
+    // Setup test data specific to this test suite
+    const adminSupabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SECRET_KEY!)
+
+    // Create test users with unique IDs
+    await adminSupabase.auth.admin.createUser({
+      id: USER_1_ID,
+      email: `user1-${USER_1_ID}@test.com`,
+      password: 'password123',
+      // We want the user to be usable right away without email confirmation
+      email_confirm: true,
+    })
+    await adminSupabase.auth.admin.createUser({
+      id: USER_2_ID,
+      email: `user2-${USER_2_ID}@test.com`,
+      password: 'password123',
+      email_confirm: true,
+    })
+
+    // Create initial todos
+    await adminSupabase.from('todos').insert([
+      { task: 'User 1 Task 1', user_id: USER_1_ID },
+      { task: 'User 1 Task 2', user_id: USER_1_ID },
+      { task: 'User 2 Task 1', user_id: USER_2_ID },
+    ])
+  })
+
+  it('should allow User 1 to only see their own todos', async () => {
+    // Sign in as User 1
+    await supabase.auth.signInWithPassword({
+      email: `user1-${USER_1_ID}@test.com`,
+      password: 'password123',
+    })
+
+    const { data: todos } = await supabase.from('todos').select('*')
+
+    expect(todos).toHaveLength(2)
+    todos?.forEach((todo) => {
+      expect(todo.user_id).toBe(USER_1_ID)
+    })
+  })
+
+  it('should allow User 1 to create their own todo', async () => {
+    await supabase.auth.signInWithPassword({
+      email: `user1-${USER_1_ID}@test.com`,
+      password: 'password123',
+    })
+
+    const { error } = await supabase.from('todos').insert({ task: 'New Task', user_id: USER_1_ID })
+
+    expect(error).toBeNull()
+  })
+
+  it('should allow User 2 to only see their own todos', async () => {
+    // Sign in as User 2
+    await supabase.auth.signInWithPassword({
+      email: `user2-${USER_2_ID}@test.com`,
+      password: 'password123',
+    })
+
+    const { data: todos } = await supabase.from('todos').select('*')
+    expect(todos).toHaveLength(1)
+    todos?.forEach((todo) => {
+      expect(todo.user_id).toBe(USER_2_ID)
+    })
+  })
+
+  it('should prevent User 2 from modifying User 1 todos', async () => {
+    await supabase.auth.signInWithPassword({
+      email: `user2-${USER_2_ID}@test.com`,
+      password: 'password123',
+    })
+
+    // Attempt to update the todos we shouldn't have access to
+    // RLS filters out the rows, so the update succeeds but changes nothing
+    const { error: updateError } = await supabase
+      .from('todos')
+      .update({ task: 'Hacked!' })
+      .eq('user_id', USER_1_ID)
+    expect(updateError).toBeNull()
+
+    // Log back in as User 1 to verify their todos weren't changed
+    await supabase.auth.signInWithPassword({
+      email: `user1-${USER_1_ID}@test.com`,
+      password: 'password123',
+    })
+
+    // Fetch the todos seeded in beforeAll, so other tests' rows don't matter
+    const { data: todos, error } = await supabase
+      .from('todos')
+      .select('task')
+      .eq('user_id', USER_1_ID)
+      .in('task', ['User 1 Task 1', 'User 1 Task 2'])
+
+    // Verify that User 1 still sees both seeded todos, unchanged
+    expect(error).toBeNull()
+    expect(todos?.map((todo) => todo.task).sort()).toEqual(['User 1 Task 1', 'User 1 Task 2'])
+  })
+})
+```
+
+### Keep application tests independent
+
+Use the following approaches so tests don't collide over shared data:
+
+- **Unique identifiers:** generate unique IDs for each test suite.
+- **Cleanup:** delete the data a suite creates in an `afterAll` or `afterEach` hook.
+- **Isolated data sets:** use prefixes or namespaces in data to separate test cases.
+
+## Write quality tests with agents
+
+Give the following rules to the agent that writes your tests. Each rule keeps the suite focused on the mistakes a policy test exists to catch.
+
+- **Agree on the rules first.** List each role and operation the policy must allow or block, such as "a signed-in user can't read another user's todo." Write one test per rule. A rule with no test is a gap, however many assertions the file has.
+- **Test the cross-user case.** RLS exists to stop one user from reaching another user's rows. For each table that holds user data, assert that a second user can't read, update, or delete the first user's rows.
+- **Break each policy and watch the suite fail.** For a policy that already exists, add a temporary policy on the same table that uses `using (true)`, run `supabase test db`, and check that a test fails. Then drop the temporary policy. Dropping the real policy instead proves nothing, because with no policy every read is denied and denial tests still pass.
+- **Don't change a policy to make a test pass.** When a test and a policy disagree, report which assertion failed and which policy it covers, and let the owner decide which one is wrong.
+- **Test through roles.** Run each assertion as `anon` or `authenticated` with `request.jwt.claim.sub` set, and check the rows returned or the error raised. A check on `pg_policies` passes while the policy is still wrong.
+- **Filter reads on tables everyone can read.** Select only the rows your test inserted, by ID. An exact match on the whole table fails once other data exists.
+
+## Related content
+
+- [Policy tests](https://supabase.com/docs/guides/database/postgres/row-level-security#policy-tests) in Row Level Security cover all four operations
+- [Advanced pgTAP testing](https://supabase.com/docs/guides/local-development/testing/pgtap-extended)
+- [pgTAP extension](https://supabase.com/docs/guides/database/extensions/pgtap)
 
 
 ---
@@ -80683,6 +80932,8 @@ Unlike publishable keys, secret keys allow elevated access to your project's dat
 
 Danger: A secret key bypasses every Row Level Security policy you have. Never put one in a browser, a shipped application, or source control. For the full list of places a secret key must never go, see [Handling secret keys safely](#handling-secret-keys-safely).
 
+If a secret key leaks, see [Rotate a leaked or compromised API key](https://supabase.com/docs/guides/security/rotate-leaked-api-keys).
+
 Secret keys authorize access to your project's data through the built-in `service_role` Postgres role. By design, this role has full access to your project's data. It also has the [`BYPASSRLS` attribute](https://www.postgresql.org/docs/current/ddl-rowsecurity.html#:~:text=BYPASSRLS), so it skips every Row Level Security policy you attach.
 
 Secret keys improve on the old JWT-based `service_role` key, and we recommend them wherever possible. They add checks that prevent misuse:
@@ -80846,14 +81097,7 @@ If you are replacing legacy keys in an existing application rather than starting
 
 ### Rotate a leaked or compromised key
 
-This procedure covers both a leaked secret key and a leaked `service_role` key.
-
-Don't rush. Fix the root cause of the leak before you rotate anything. The [OWASP Risk Rating Methodology](https://owasp.org/www-community/OWASP_Risk_Rating_Methodology) helps you judge the severity of the incident and plan your next steps.
-
-1. Create a new secret key in the [**Settings > API Keys**](https://supabase.com/dashboard/project/_/settings/api-keys/) section of the Dashboard.
-2. Replace the compromised key with the new one everywhere your application uses it. If the compromised key is a JWT-based `service_role` key, replace it with the new secret key.
-3. Confirm that every component now uses the new key.
-4. Retire the compromised key. Delete a secret key, which can't be undone, so don't start until step 3 is done. For a legacy `anon` or `service_role` key, deactivate the legacy keys in the same Dashboard section instead. Deactivation is reversible, so you can re-enable them if you find a client you missed.
+To replace a leaked secret key or `service_role` key and retire the compromised one, see [Rotate a leaked or compromised API key](https://supabase.com/docs/guides/security/rotate-leaked-api-keys).
 
 ## Security reference
 
@@ -80906,7 +81150,7 @@ Exposing a secret key puts all of your project's data at risk. The rules below a
 **Limiting the damage of a leak**
 
 - Use a separate secret key for each backend component. If one component leaks its key, you only rotate that one.
-- Delete a leaked key immediately. The browser block returns HTTP 401 Unauthorized, but an attacker can still use the key from other tools.
+- Rotate a leaked key as soon as you fix the cause of the leak. The browser block returns HTTP 401 Unauthorized, but an attacker can still use the key from other tools. For the steps, see [Rotate a leaked or compromised API key](https://supabase.com/docs/guides/security/rotate-leaked-api-keys).
 
 Handle secret keys using [secure coding practices](https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/stable-en/).
 
@@ -102118,237 +102362,15 @@ Testing is a critical part of database development, especially when working with
 
 ### Database unit testing with pgTAP
 
-[pgTAP](https://pgtap.org) is a unit testing framework for Postgres that allows testing:
+[pgTAP](https://pgtap.org) is a unit testing framework for Postgres. It tests database structure, Row Level Security (RLS) policies, functions and procedures, and data integrity.
 
-- Database structure: tables, columns, constraints
-- Row Level Security (RLS) policies
-- Functions and procedures
-- Data integrity
-
-This example demonstrates setting up and testing RLS policies for a basic todo application:
-
-1. Create a test table with RLS enabled:
-
-   ```sql
-   -- Create a todos table
-   create table todos (
-   id uuid primary key default gen_random_uuid(),
-   task text not null,
-   user_id uuid references auth.users not null,
-   completed boolean default false
-   );
-
-   -- Enable RLS
-   alter table todos enable row level security;
-
-   -- Create a policy
-   create policy "Users can only access their own todos"
-   on todos for all -- this policy applies to all operations
-   to authenticated
-   using ((select auth.uid()) = user_id);
-   ```
-
-2. Set up your testing environment:
-
-   ```bash
-   # Create a new test for our policies using supabase cli
-   supabase test new todos_rls.test
-   ```
-
-3. Write your RLS tests:
-
-   ```sql
-   begin;
-   -- install tests utilities
-   -- install pgtap extension for testing
-   create extension if not exists pgtap with schema extensions;
-   -- Start declare we'll have 4 test cases in our test suite
-   select plan(4);
-
-   -- Setup our testing data
-   -- Set up auth.users entries
-   insert into auth.users (id, email) values
-   	('123e4567-e89b-12d3-a456-426614174000', 'user1@test.com'),
-   	('987fcdeb-51a2-43d7-9012-345678901234', 'user2@test.com');
-
-   -- Create test todos
-   insert into public.todos (task, user_id) values
-   	('User 1 Task 1', '123e4567-e89b-12d3-a456-426614174000'),
-   	('User 1 Task 2', '123e4567-e89b-12d3-a456-426614174000'),
-   	('User 2 Task 1', '987fcdeb-51a2-43d7-9012-345678901234');
-
-   -- as User 1
-   set local role authenticated;
-   set local request.jwt.claim.sub = '123e4567-e89b-12d3-a456-426614174000';
-
-   -- Test 1: User 1 should only see their own todos
-   select results_eq(
-   	'select count(*) from todos',
-   	ARRAY[2::bigint],
-   	'User 1 should only see their 2 todos'
-   );
-
-   -- Test 2: User 1 can create their own todo
-   select lives_ok(
-   	$$insert into todos (task, user_id) values ('New Task', '123e4567-e89b-12d3-a456-426614174000'::uuid)$$,
-   	'User 1 can create their own todo'
-   );
-
-   -- as User 2
-   set local request.jwt.claim.sub = '987fcdeb-51a2-43d7-9012-345678901234';
-
-   -- Test 3: User 2 should only see their own todos
-   select results_eq(
-   	'select count(*) from todos',
-   	ARRAY[1::bigint],
-   	'User 2 should only see their 1 todo'
-   );
-
-   -- Test 4: User 2 cannot modify User 1's todo
-   SELECT results_ne(
-   	$$ update todos set task = 'Hacked!' where user_id = '123e4567-e89b-12d3-a456-426614174000'::uuid returning 1 $$,
-   	$$ values(1) $$,
-   	'User 2 cannot modify User 1 todos'
-   );
-
-   select * from finish();
-   rollback;
-   ```
-
-4. Run the tests:
-
-   ```bash
-   supabase test db
-   psql:todos_rls.test.sql:4: NOTICE:  extension "pgtap" already exists, skipping
-   ./todos_rls.test.sql .. ok
-   All tests successful.
-   Files=1, Tests=6,  0 wallclock secs ( 0.01 usr +  0.00 sys =  0.01 CPU)
-   Result: PASS
-   ```
+For more information about writing and running pgTAP tests for an RLS policy, see [Test Row Level Security policies with pgTAP](https://supabase.com/docs/guides/database/postgres/testing-row-level-security).
 
 ### Application-Level testing
 
-Testing through application code provides end-to-end verification. Unlike database-level testing with pgTAP, application-level tests cannot use transactions for isolation.
+Application-level tests check your policies end to end, through the same client your app uses.
 
-Caution: Application-level tests should not rely on a clean database state, as resetting the database before each test can be slow and makes tests difficult to parallelize.
-Instead, design your tests to be independent by using unique user IDs for each test case.
-
-Here's an example using TypeScript that mirrors the pgTAP tests above:
-
-```typescript
-import crypto from 'crypto'
-import { createClient } from '@supabase/supabase-js'
-import { beforeAll, describe, expect, it } from 'vitest'
-
-describe('Todos RLS', () => {
-  // Generate unique IDs for this test suite to avoid conflicts with other tests
-  const USER_1_ID = crypto.randomUUID()
-  const USER_2_ID = crypto.randomUUID()
-
-  const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_PUBLISHABLE_KEY!)
-
-  beforeAll(async () => {
-    // Setup test data specific to this test suite
-    const adminSupabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SECRET_KEY!)
-
-    // Create test users with unique IDs
-    await adminSupabase.auth.admin.createUser({
-      id: USER_1_ID,
-      email: `user1-${USER_1_ID}@test.com`,
-      password: 'password123',
-      // We want the user to be usable right away without email confirmation
-      email_confirm: true,
-    })
-    await adminSupabase.auth.admin.createUser({
-      id: USER_2_ID,
-      email: `user2-${USER_2_ID}@test.com`,
-      password: 'password123',
-      email_confirm: true,
-    })
-
-    // Create initial todos
-    await adminSupabase.from('todos').insert([
-      { task: 'User 1 Task 1', user_id: USER_1_ID },
-      { task: 'User 1 Task 2', user_id: USER_1_ID },
-      { task: 'User 2 Task 1', user_id: USER_2_ID },
-    ])
-  })
-
-  it('should allow User 1 to only see their own todos', async () => {
-    // Sign in as User 1
-    await supabase.auth.signInWithPassword({
-      email: `user1-${USER_1_ID}@test.com`,
-      password: 'password123',
-    })
-
-    const { data: todos } = await supabase.from('todos').select('*')
-
-    expect(todos).toHaveLength(2)
-    todos?.forEach((todo) => {
-      expect(todo.user_id).toBe(USER_1_ID)
-    })
-  })
-
-  it('should allow User 1 to create their own todo', async () => {
-    await supabase.auth.signInWithPassword({
-      email: `user1-${USER_1_ID}@test.com`,
-      password: 'password123',
-    })
-
-    const { error } = await supabase.from('todos').insert({ task: 'New Task', user_id: USER_1_ID })
-
-    expect(error).toBeNull()
-  })
-
-  it('should allow User 2 to only see their own todos', async () => {
-    // Sign in as User 2
-    await supabase.auth.signInWithPassword({
-      email: `user2-${USER_2_ID}@test.com`,
-      password: 'password123',
-    })
-
-    const { data: todos } = await supabase.from('todos').select('*')
-    expect(todos).toHaveLength(1)
-    todos?.forEach((todo) => {
-      expect(todo.user_id).toBe(USER_2_ID)
-    })
-  })
-
-  it('should prevent User 2 from modifying User 1 todos', async () => {
-    await supabase.auth.signInWithPassword({
-      email: `user2-${USER_2_ID}@test.com`,
-      password: 'password123',
-    })
-
-    // Attempt to update the todos we shouldn't have access to
-    // result will be a no-op
-    await supabase.from('todos').update({ task: 'Hacked!' }).eq('user_id', USER_1_ID)
-
-    // Log back in as User 1 to verify their todos weren't changed
-    await supabase.auth.signInWithPassword({
-      email: `user1-${USER_1_ID}@test.com`,
-      password: 'password123',
-    })
-
-    // Fetch User 1's todos
-    const { data: todos } = await supabase.from('todos').select('*')
-
-    // Verify that none of the todos were changed to "Hacked!"
-    expect(todos).toBeDefined()
-    todos?.forEach((todo) => {
-      expect(todo.task).not.toBe('Hacked!')
-    })
-  })
-})
-```
-
-#### Test isolation strategies
-
-For application-level testing, consider these approaches for test isolation:
-
-1. **Unique Identifiers**: Generate unique IDs for each test suite to prevent data conflicts
-2. **Cleanup After Tests**: If necessary, clean up created data in an `afterAll` or `afterEach` hook
-3. **Isolated Data Sets**: Use prefixes or namespaces in data to separate test cases
+For more information about testing RLS policies from TypeScript, see [Test the policy from your application](https://supabase.com/docs/guides/database/postgres/testing-row-level-security#test-the-policy-from-your-application).
 
 ### Continuous integration testing
 
@@ -107424,6 +107446,123 @@ Source: `multigres_logs`
 
 ---
 
+# Log slow and failing queries
+
+Log slow queries, their query plans, and the queries behind errors in your Postgres logs.
+
+Find slow and failing queries by recording them in your Postgres logs.
+
+Use this guide when a statement runs slowly and you want to know which one. It covers anything that connects as the `postgres` role, such as a backend service, an ORM, or a migration. Postgres records each slow statement with how long it took and, if you want it, how it ran the query. When an error shows up in your logs, you can also find the query that caused it.
+
+The slow query settings don't cover requests through the [Data API](https://supabase.com/docs/guides/api), such as supabase-js calls, which connect as other roles. If your slow queries come from your app that way, start with the [Query Performance](https://supabase.com/dashboard/project/_/observability/query-performance?preset=slowest_execution) page and filter by role. To see the plan of a slow Data API query, use [`explain()`](https://supabase.com/docs/guides/database/debugging-performance). Query Performance doesn't show queries that time out or fail. For those, see [Find the query behind an error](#find-the-query-behind-an-error), which covers every role.
+
+To read the logs, see [Logs in Studio](https://supabase.com/docs/guides/observability/logs). To search them with SQL, see [Query logs with SQL](https://supabase.com/docs/guides/observability/advanced-log-filtering). For every log setting, see [Postgres log configurations](https://supabase.com/docs/guides/database/postgres/postgres-log-config).
+
+Logging a large amount of query activity can slow your queries and increase logging costs. Lower a threshold while you investigate, and raise it again when you're done.
+
+Danger: Logged statements include their literal values, which can contain personal data or secrets. Check who can read your logs before you lower a threshold.
+
+## Log slow queries
+
+To log the statements that run longer than a threshold:
+
+1. Set the threshold. Postgres logs each statement whose run time meets or exceeds the threshold. Run the following SQL using the [SQL Editor](https://supabase.com/dashboard/project/_/sql) in the Supabase Dashboard or with `psql` over a direct connection. To connect with `psql`, see [Direct connection](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connection).
+
+   ```sql
+   alter role "postgres" set "log_min_duration_statement" to '2s';
+   ```
+
+2. Open a new connection, or restart your app's connection pool, and run the queries you want to investigate. The setting applies only to connections opened after you change it, and a pool can keep reusing older ones.
+
+3. In the [Postgres logs](https://supabase.com/dashboard/project/_/logs/postgres-logs), find the entries that start with `duration:`. To search them with SQL instead, see [Query logs with SQL](https://supabase.com/docs/guides/observability/advanced-log-filtering).
+
+Each slow statement produces a log like this:
+
+```sh
+duration: 2107.797 ms  statement: select count(*), pg_sleep(2.1) from example
+```
+
+If a slow query is missing from the logs, see [How query logging works](#how-query-logging-works).
+
+## Log the query plans of slow queries
+
+To log the query plan of each query that runs longer than a threshold:
+
+1. Set the threshold. The auto\_explain module logs the statement and the query plan of each query whose run time meets or exceeds the threshold. For how it works, see [auto\_explain](https://www.postgresql.org/docs/current/auto-explain.html) in the Postgres documentation.
+
+   ```sql
+   alter role "postgres" set "auto_explain.log_min_duration" to '2s';
+   ```
+
+2. Open a new connection, or restart your app's connection pool, and run the queries you want to investigate.
+
+3. In the [Postgres logs](https://supabase.com/dashboard/project/_/logs/postgres-logs), find the entries that contain `plan:`. To search them with SQL instead, see [Query logs with SQL](https://supabase.com/docs/guides/observability/advanced-log-filtering).
+
+Each slow query produces a log like this:
+
+```sh
+duration: 2107.319 ms  plan:
+  Query Text: select count(*), pg_sleep(2.1) from example
+  Aggregate  (cost=1855.06..1855.08 rows=1 width=12)
+    ->  Seq Scan on example  (cost=0.00..1572.65 rows=112965 width=0)
+```
+
+Other auto\_explain settings, such as `auto_explain.log_analyze` and `auto_explain.log_buffers`, control how much detail each plan records. For every setting, see [auto\_explain](https://www.postgresql.org/docs/current/auto-explain.html) in the Postgres documentation.
+
+## Find the query behind an error
+
+Postgres records the query behind every error by default, so you don't need to change a setting.
+
+To find the query that caused an error:
+
+1. In the [Postgres logs](https://supabase.com/dashboard/project/_/logs/postgres-logs), open the error's entry.
+2. Read its `query` subfield.
+
+A failed insert produces a log like this:
+
+```sh
+duplicate key value violates unique constraint "example_pkey"
+...
+query: "insert into example (id) values (1), (1);"
+```
+
+## Restore the defaults
+
+If the `postgres` role had its own value for either setting before you started, set it back to that value instead. To see the role's current settings, run `select rolconfig from pg_roles where rolname = 'postgres';`.
+
+To return the `postgres` role to its default logging:
+
+1. Reset both settings on the `postgres` role:
+
+   ```sql
+   alter role "postgres" set "log_min_duration_statement" to default;
+   alter role "postgres" set "auto_explain.log_min_duration" to default;
+   ```
+
+2. Open new connections, or restart your app's connection pool, so the change applies.
+
+The default plan threshold logs the query plan of each query that runs longer than 10 seconds. To stop logging query plans entirely, set the threshold to `-1`:
+
+```sql
+alter role "postgres" set "auto_explain.log_min_duration" to '-1';
+```
+
+The change applies to new connections.
+
+## How query logging works
+
+`log_min_duration_statement` records each statement that runs longer than its threshold, with its duration and nothing else, so it's lighter than logging query plans. It logs only statements that finish. A statement canceled by a [timeout](https://supabase.com/docs/guides/database/postgres/timeouts) produces an error log instead, which records the query as described in [Find the query behind an error](#find-the-query-behind-an-error).
+
+Two cases log less than you might expect:
+
+- If `log_statement` already logged a statement, its duration entry leaves the statement out. `log_statement` defaults to `ddl`, so a slow schema change, such as one in a migration, appears as two entries: the statement, and then its duration. To match the two, compare their `session_id`.
+- With the extended query protocol, which most drivers and ORMs use, Postgres times the parse, bind, and execute steps separately. A query whose steps each stay under the threshold isn't logged, even when their total is over it.
+
+When Postgres logs an event, it also records subfields, such as the [error code](https://www.postgresql.org/docs/current/errcodes-appendix.html). `log_min_error_statement` decides whether the query that caused the event is recorded too, in the `query` subfield. Postgres records the query when the event is as severe as the setting or more. The setting defaults to `error`. For the severity levels, see [`log_min_messages`](https://supabase.com/docs/guides/database/postgres/postgres-log-config#logminmessages).
+
+
+---
+
 # Logs in Studio
 
 Filter, inspect, and export project events in the Logs view
@@ -111855,7 +111994,7 @@ You change all of the Postgres settings below through [Custom Postgres Configura
 Consider these options first. They are responsible for most log volume on most projects.
 
 - **[`log_statement`](https://supabase.com/docs/guides/database/postgres/postgres-log-config#logstatement)** — set to `none` if you don't manually read through raw query logs to debug your application, for example if your team relies on an AI coding assistant, an APM tool, or the Query Performance dashboard instead. Keep `all` on if you routinely read query text in the Logs Explorer to debug issues, or you have a compliance requirement to retain a full statement audit trail; `mod` is a lighter-volume option if you only need a record of data changes.
-- **[`log_min_duration_statement`](https://supabase.com/docs/guides/database/postgres/postgres-log-config#logmindurationstatement)** — raise the threshold (for example, from a few milliseconds to 1-2 seconds) if you only care about queries that are slow enough to notice. Keep it low only while you're actively in a performance-tuning phase, and raise it back up once that investigation is done.
+- **[`log_min_duration_statement`](https://supabase.com/docs/guides/observability/log-slow-queries#log-slow-queries)** — raise the threshold (for example, from a few milliseconds to 1-2 seconds) if you only care about queries that are slow enough to notice. Keep it low only while you're actively in a performance-tuning phase, and raise it back up once that investigation is done.
 - **[pgAudit](https://supabase.com/docs/guides/database/extensions/pgaudit)**, if enabled — this extension can be very verbose independently of `log_statement`. Turn off a broad `pgaudit.log` or `pgaudit.role` configuration if you don't need a dedicated audit trail beyond what `log_statement` already gives you.
 
 Danger: Enabling `log_statement=all`, or setting `log_min_duration_statement` to a low or `0` threshold, logs the full text of statements — including plaintext values such as passwords passed as query parameters. Before enabling either, check whether your queries carry sensitive data, and confirm who can access these logs and how long they're retained.
@@ -128547,7 +128686,7 @@ Talk to the Supabase Functions team if your security posture depends on a featur
 Act promptly. Order of operations:
 
 1. **Treat the install host as potentially compromised.** Anything readable by the user that ran the install — env vars, files, secrets in memory — should be assumed stolen.
-2. **Rotate credentials reachable from that host**: cloud provider keys (AWS, GCP, Azure), Kubernetes / Vault tokens, GitHub tokens, npm tokens, SSH keys, and any Supabase service-role keys or anon keys that touched the box.
+2. **Rotate credentials reachable from that host**: cloud provider keys (AWS, GCP, Azure), Kubernetes / Vault tokens, GitHub tokens, npm tokens, SSH keys, and any Supabase service-role keys or anon keys that touched the box. For Supabase keys, see [Rotate a leaked or compromised API key](https://supabase.com/docs/guides/security/rotate-leaked-api-keys).
 3. **Wipe `node_modules`** and your package manager cache (`npm cache clean --force`, `pnpm store prune`, `yarn cache clean`).
 4. **Pin to a known-good version** in `package.json` and reinstall against a fresh cache.
 5. **Check `npm audit` and the [GitHub Advisory Database](https://github.com/advisories)** for the package.
@@ -128715,6 +128854,112 @@ Various products at Supabase have their own hardening and configuration guides, 
 ## Realtime
 
 - [Authorization](https://supabase.com/docs/guides/realtime/authorization)
+
+
+---
+
+# Rotate a leaked or compromised API key
+
+Stop a leaked API key from granting access to your project without breaking the components that use it.
+
+Replace a leaked secret key or `service_role` key with a new secret key, then retire the compromised key so it stops granting access to your project. To learn what each key type can access, see [API keys](https://supabase.com/docs/guides/getting-started/api-keys).
+
+## Prerequisites
+
+Fix the root cause of the leak before you rotate anything. Otherwise the new key can leak the same way. The [OWASP Risk Rating Methodology](https://owasp.org/www-community/OWASP_Risk_Rating_Methodology) helps you judge the severity of the incident and plan your next steps. If someone is actively using the leaked key, retire it right away with the steps in [Retire the compromised key](#retire-the-compromised-key), even though components that still use it stop working until you replace it.
+
+To follow the Management API path, you also need:
+
+- A [personal access token](https://supabase.com/dashboard/account/tokens). If you use a [scoped personal access token](https://supabase.com/docs/guides/platform/personal-access-tokens), it needs the **API Keys** permission with **Read-write** access. An OAuth application needs the `secrets:read` and `secrets:write` scopes.
+- [`jq`](https://jqlang.org/), to filter the responses.
+
+If you use the Management API, set your project reference and access token in your terminal:
+
+```bash
+export PROJECT_REF="your-project-ref"
+export SUPABASE_ACCESS_TOKEN="your-personal-access-token"
+```
+
+## Create a new secret key
+
+**Dashboard**
+
+Create a new secret key in the [**Settings > API Keys**](https://supabase.com/dashboard/project/_/settings/api-keys/) section of the Dashboard.
+
+**Management API**
+
+Create the key. Run this in a local terminal rather than in CI, because the command prints the key value:
+
+```bash
+curl --fail-with-body -X POST "https://api.supabase.com/v1/projects/$PROJECT_REF/api-keys?reveal=true" \
+  -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"type": "secret", "name": "rotated_secret_key"}' \
+  | jq -er '.api_key'
+```
+
+## Replace the compromised key
+
+To move your application to the new key:
+
+1. Replace the compromised key with the new secret key everywhere your application uses it. If an Edge Function checks the key with `withSupabase({ auth: 'secret' })`, it accepts only the secret key named `default`. Update it to accept the new key by name, for example `auth: 'secret:rotated_secret_key'`. For details, see [Service-to-service calls](https://supabase.com/docs/guides/functions/auth#service-to-service-calls). If a Database Webhook or `pg_net` call sends the legacy `service_role` key on the `Authorization: Bearer` header, send the new secret key on the `apikey` header instead. For details, see [Database Webhooks and `pg_net`](https://supabase.com/docs/guides/getting-started/migrating-to-new-api-keys#database-webhooks-and-pgnet).
+2. If the compromised key is a legacy `service_role` key, also replace the legacy `anon` key with a [publishable key](https://supabase.com/docs/guides/getting-started/migrating-to-new-api-keys) in your browser and mobile clients. Retiring the compromised key deactivates both legacy keys.
+3. Confirm that every component now uses the new key.
+
+## Retire the compromised key
+
+Unless someone is actively using the leaked key, wait until every component uses the new key before you start. Deleting a secret key can't be undone. If you find a client you missed after you deactivate the legacy keys, move it to a new key rather than re-enabling them, because re-enabling restores the compromised key.
+
+**Dashboard**
+
+In the [**Settings > API Keys**](https://supabase.com/dashboard/project/_/settings/api-keys/) section of the Dashboard, do one of the following:
+
+- For a secret key, delete it.
+- For a legacy `anon` or `service_role` key, deactivate the legacy keys.
+
+**Management API**
+
+For a secret key:
+
+1. Find the ID of the compromised key:
+
+   ```bash
+   curl "https://api.supabase.com/v1/projects/$PROJECT_REF/api-keys" \
+     -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
+     | jq '.[] | {id, name, type}'
+   ```
+
+   Copy the `id` of the compromised key.
+
+2. Delete the key:
+
+   ```bash
+   export KEY_ID="id-of-the-compromised-key"
+   curl --fail -X DELETE "https://api.supabase.com/v1/projects/$PROJECT_REF/api-keys/$KEY_ID" \
+     -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN"
+   ```
+
+3. List the keys again, and confirm the compromised key is gone.
+
+For a legacy `anon` or `service_role` key:
+
+1. Deactivate the legacy keys:
+
+   ```bash
+   curl --fail -X PUT "https://api.supabase.com/v1/projects/$PROJECT_REF/api-keys/legacy?enabled=false" \
+     -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN"
+   ```
+
+2. Confirm that the response shows `"enabled": false`:
+
+   ```bash
+   curl --fail "https://api.supabase.com/v1/projects/$PROJECT_REF/api-keys/legacy" \
+     -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN"
+   ```
+
+If the compromised key is a legacy `service_role` key, also revoke the legacy JWT secret. The legacy keys are JWTs signed by that secret, so anything that still trusts the secret can accept the leaked key. To move to JWT signing keys and revoke the legacy secret, see [Getting started](https://supabase.com/docs/guides/auth/signing-keys#getting-started) in the JWT signing keys guide.
+
+The compromised key no longer grants access to your project.
 
 
 ---

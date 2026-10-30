@@ -83890,7 +83890,7 @@ Curation is how Pinecone Nexus turns a context's source documents into the chunk
 
 Curation does the hard work *up front* so retrieval gets a head start at query time. Sources aren't just chopped into chunks. They're reorganized into typed artifacts (summaries, entities, events) connected by edges, with structure captured for exact answers.
 
-![Sources curated by the runtime under a manifest into a knowledge tree of chunks, artifacts, edges, and structured tables](https://mintcdn.com/pinecone/bwL8cw818L345VAB/images/nexus/curation-light.svg?fit=max\&auto=format\&n=bwL8cw818L345VAB\&q=85\&s=2065936462acb85fa9d7109bd615fe94)
+![Sources curated by the runtime under a manifest into a knowledge tree of chunks, artifacts, edges, and structured tables](https://mintcdn.com/pinecone/EWF4J3kPxqsT4ELV/images/nexus/curation-light.svg?fit=max\&auto=format\&n=EWF4J3kPxqsT4ELV\&q=85\&s=e2c821f6de36cc8323d1b4630e5fa8cd)
 
 ## The curation runtime
 
@@ -83940,7 +83940,7 @@ Most RAG systems chop documents into chunks and hope the right ones surface at q
 
 At a high level, your data flows through connectors into contexts, tasks curate each context into knowledge, and agents query it through a single KnowQL interface:
 
-![Pinecone Nexus architecture: your data enters through connectors into a workspace of contexts and tasks, is curated into knowledge in a sandbox, then queried through KnowQL to serve your AI application.](https://mintcdn.com/pinecone/bwL8cw818L345VAB/images/nexus/nexus-architecture-light.svg?fit=max\&auto=format\&n=bwL8cw818L345VAB\&q=85\&s=da34c6e0db4cd6740f8575a0cf64dead)
+![The Pinecone Nexus architecture from top to bottom. Your data (docs and wikis, databases, APIs and SaaS, object storage, event streams, code repos) flows through connectors such as Google Drive, Box, Slack, GitHub, Notion, Confluence, and S3 into the Nexus knowledge engine. Inside a workspace, each dataset becomes a context of sources, a manifest, and knowledge, maintained by sandboxed tasks (import, curate, explore, optimize, search). A single KnowQL interface queries it to serve your AI application, from chatbots and Q\&A to search, agents, recommendations, and reporting.](https://mintcdn.com/pinecone/EWF4J3kPxqsT4ELV/images/nexus/nexus-architecture-light.svg?fit=max\&auto=format\&n=EWF4J3kPxqsT4ELV\&q=85\&s=968e4074b4b6b479bab6ebae47fecf73)
 
 The rest of this page zooms into the two ideas that make that work: curated artifacts for retrieval, and answering with code.
 
@@ -83948,7 +83948,7 @@ The rest of this page zooms into the two ideas that make that work: curated arti
 
 Raw chunks are noisy. The same fact is scattered across pages, counts require reading everything, and relationships are implicit. Curation reorganizes the corpus into artifacts, which are condensed, typed units of knowledge, so retrieval gets a head start.
 
-![Raw chunks reorganized into curated artifacts](https://mintcdn.com/pinecone/bwL8cw818L345VAB/images/nexus/how-it-works-1-light.svg?fit=max\&auto=format\&n=bwL8cw818L345VAB\&q=85\&s=52b9ccf254dcd8a04c9498c26755a22e)
+![Raw chunks reorganized into curated artifacts](https://mintcdn.com/pinecone/EWF4J3kPxqsT4ELV/images/nexus/how-it-works-1-light.svg?fit=max\&auto=format\&n=EWF4J3kPxqsT4ELV\&q=85\&s=eef0fc626b3d0ce21845757867d5381f)
 
 * **Pre-computed, typed knowledge.** Curation produces artifacts by kind: summaries, topics, entities, events, per-doc and per-page units. Each is small, focused, and describes itself, so the right one is easy to retrieve.
 * **Structure for exact answers.** Structured artifact types become queryable tables, so "how many" and "list every…" questions get exact answers instead of a guess from prose.
@@ -83958,7 +83958,7 @@ Raw chunks are noisy. The same fact is scattered across pages, counts require re
 
 Curated artifacts are only half the story. At query time the model doesn't just stuff chunks into a prompt. It writes Python against a retrieval SDK to gather exactly the evidence it needs, then answers from that.
 
-![Question to generated retrieval code over artifacts to evidence to answer](https://mintcdn.com/pinecone/bwL8cw818L345VAB/images/nexus/queries-light.svg?fit=max\&auto=format\&n=bwL8cw818L345VAB\&q=85\&s=b562c8d591dbb06085e6a36831b6b393)
+![Question to generated retrieval code over artifacts to evidence to answer](https://mintcdn.com/pinecone/EWF4J3kPxqsT4ELV/images/nexus/queries-light.svg?fit=max\&auto=format\&n=EWF4J3kPxqsT4ELV\&q=85\&s=fbb7818dc5c26a7ede110869e776d556)
 
 * **The model orchestrates retrieval.** One turn can read artifacts off disk, run semantic and keyword search, walk the relationship graph, and query structured tables, composing several operations instead of a single top-k lookup.
 * **Only evidence enters the prompt.** Raw tool output stays in the code sandbox. Just the distilled evidence the agent selected reaches the model. That keeps context small and answers grounded, and every claim traces to a source.
@@ -84158,7 +84158,7 @@ Pinecone Nexus queries gather evidence and compose a grounded, cited answer.
 
 A query is a single turn: a question in, a grounded answer out. A multi-turn conversation is a session. Rather than stuffing raw chunks into a prompt, Pinecone Nexus runs an agent loop in which the model writes Python against a retrieval SDK to gather just the evidence it needs, then composes a grounded answer with citations.
 
-![A query turn: the agent loops, writing code against a retrieval SDK to gather evidence, then composes a cited answer](https://mintcdn.com/pinecone/bwL8cw818L345VAB/images/nexus/queries-light.svg?fit=max\&auto=format\&n=bwL8cw818L345VAB\&q=85\&s=b562c8d591dbb06085e6a36831b6b393)
+![A query turn: the agent loops, writing code against a retrieval SDK to gather evidence, then composes a cited answer](https://mintcdn.com/pinecone/EWF4J3kPxqsT4ELV/images/nexus/queries-light.svg?fit=max\&auto=format\&n=EWF4J3kPxqsT4ELV\&q=85\&s=fbb7818dc5c26a7ede110869e776d556)
 
 ## Retrieval as code
 
