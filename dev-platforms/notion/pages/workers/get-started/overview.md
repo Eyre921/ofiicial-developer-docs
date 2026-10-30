@@ -18,15 +18,15 @@ Workers are designed to be built with AI coding agents. Scaffold a project, desc
 
 ## What you can build
 
-> **[Sync data](/workers/guides/syncs)**
+> [card] [Sync data](/workers/guides/syncs)
 >
 > Pull data from Salesforce, Stripe, GitHub, or any API into Notion databases — kept in sync automatically.
 
-> **[Agent tools](/workers/guides/tools)**
+> [card] [Agent tools](/workers/guides/tools)
 >
 > Give Notion Custom Agents functions like "create a Jira ticket" or "look up a customer in our CRM."
 
-> **[Webhooks](/workers/guides/webhooks)**
+> [card] [Webhooks](/workers/guides/webhooks)
 >
 > Receive HTTP events from GitHub pushes, Stripe payments, or any service that sends webhooks.
 
@@ -92,14 +92,14 @@ Edit your code and redeploy.
 
 ## Next steps
 
-> **[Quickstart](/workers/get-started/quickstart)**
+> [card] [Quickstart](/workers/get-started/quickstart)
 >
 > Create and deploy your first worker in less than five minutes.
 
-> **[CLI reference](/cli/get-started/overview)**
+> [card] [CLI reference](/cli/get-started/overview)
 >
 > Install and configure the Notion CLI.
 
-> **[Limits](/workers/reference/limits)**
+> [card] [Limits](/workers/reference/limits)
 >
 > Rate limits for runs, webhooks, and sync database writes.

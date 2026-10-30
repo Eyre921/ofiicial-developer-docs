@@ -223,59 +223,59 @@ In the assistant's response, the message string is contained in the following JS
 
 You can extract the message content and print it to the console:
 
-**Default response**
+> [tab] Default response
+>
+> ```python Python theme={null}
+> print(response.choices[0].message.content)
+> ```
+>
+> ```bash curl theme={null}
+> | jq '.choices.[0].message.content'
+> ```
+>
+> This creates output like the following:
+>
+> ```bash theme={null}
+> A red pine, scientifically known as *Pinus resinosa*, is a medium-sized tree that can grow up to 25 meters high and 75 centimeters in diameter. [1, pp. 1]
+> ```
 
-```python Python theme={null}
-print(response.choices[0].message.content)
-```
-
-```bash curl theme={null}
-| jq '.choices.[0].message.content'
-```
-
-This creates output like the following:
-
-```bash theme={null}
-A red pine, scientifically known as *Pinus resinosa*, is a medium-sized tree that can grow up to 25 meters high and 75 centimeters in diameter. [1, pp. 1]
-```
-
-**Streaming response**
-
-```python Python theme={null}
-for text in response.text():
-    print(text)
-```
-
-```bash curl theme={null}
-|  sed -u 's/.*"content":"\([^"]*\)".*/\1/'
-```
-
-This creates output like the following:
-
-```bash Streaming response theme={null}
-The
- maximum
- height
- of
- a
- red
- pine
- (
-Pin
-us
- resin
-osa
-)
- is
- up
- to
- twenty
--five
- meters
-
- [1, pp. 1]
-.
-```
+> [tab] Streaming response
+>
+> ```python Python theme={null}
+> for text in response.text():
+>     print(text)
+> ```
+>
+> ```bash curl theme={null}
+> |  sed -u 's/.*"content":"\([^"]*\)".*/\1/'
+> ```
+>
+> This creates output like the following:
+>
+> ```bash Streaming response theme={null}
+> The
+>  maximum
+>  height
+>  of
+>  a
+>  red
+>  pine
+>  (
+> Pin
+> us
+>  resin
+> osa
+> )
+>  is
+>  up
+>  to
+>  twenty
+> -five
+>  meters
+>
+>  [1, pp. 1]
+> .
+> ```
 
 ## Choose a model
 

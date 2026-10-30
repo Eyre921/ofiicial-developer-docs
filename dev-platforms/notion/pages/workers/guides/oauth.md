@@ -208,14 +208,14 @@ const salesforceAuth = worker.oauth("salesforceAuth", {
 
 ## Next steps
 
-> **[Secrets](/workers/guides/secrets)**
+> [card] [Secrets](/workers/guides/secrets)
 >
 > Store API keys and OAuth credentials securely.
 
-> **[Syncs](/workers/guides/syncs)**
+> [card] [Syncs](/workers/guides/syncs)
 >
 > Sync external data into Notion databases.
 
-> **[Webhooks](/workers/guides/webhooks)**
+> [card] [Webhooks](/workers/guides/webhooks)
 >
 > Receive HTTP events from external services.

@@ -1045,7 +1045,7 @@ If your Stripe Capital application is approved, you can choose to receive your f
 
 During the Capital application process, select your financial account as the payout destination. You can also choose your default external bank account if you prefer.
 
-New Stripe users aren’t immediately eligible for Capital. To learn more about Capital financing and payout options, see [How Stripe Capital works](https://docs.stripe.com/capital/how-stripe-capital-works.md).
+New Stripe users aren’t immediately eligible for Capital. To learn more about Capital financing and payout options, see [How Stripe Capital works](https://docs.stripe.com/capital.md).
 
 ## Payout schedule 
 

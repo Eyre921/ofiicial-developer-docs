@@ -7584,7 +7584,7 @@ If you need to style something that Svelte can't identify at compile time, you w
 
 New features aren't being added to it, and bugs will probably only be fixed if they are extremely nasty or present some sort of security vulnerability.
 
-The documentation is still available [here](https://v2.svelte.dev/guide).
+The documentation is still available [here](https://github.com/sveltejs/v2.svelte.dev/tree/master/content).
 
 ## How do I do hot module reloading?
 
@@ -23311,7 +23311,7 @@ export const config = {
 
 You can set the following options:
 
-- `runtime`: `'nodejs22.x'`, `'nodejs24.x'` or `bun1.x`. By default, the adapter will select the runtime used for the build, which corresponds to the Node version your project is configured to use on the Vercel dashboard unless you [build the app with Bun](https://bun.com/docs/guides/ecosystem/vite)
+- `runtime`: Even Node versions (for example `'nodejs22.x'`, `'nodejs24.x'`, `'nodejs26.x'`), `bun1.x` or `bun1.4.x`. By default, the adapter will select the runtime used for the build, which corresponds to the Node version your project is configured to use on the Vercel dashboard unless you [build the app with Bun](https://bun.com/docs/guides/ecosystem/vite)
 - `regions`: an array of [edge network regions](https://vercel.com/docs/concepts/edge-network/regions) (defaulting to `["iad1"]`). Note that multiple regions for serverless functions are only supported on Enterprise plans
 - `split`: if `true`, causes a route to be deployed as an individual function. If `split` is set to `true` at the adapter level, all routes will be deployed as individual functions
 - `memory`: the amount of memory available to the function. Defaults to `1024` Mb, and can be decreased to `128` Mb or [increased](https://vercel.com/docs/concepts/limits/overview#serverless-function-memory) in 64Mb increments up to `3008` Mb on Pro or Enterprise accounts
@@ -25997,6 +25997,14 @@ Please see [the Svelte FAQ](../svelte/faq) and [`vite-plugin-svelte` FAQ](https:
 ## What can I make with SvelteKit?
 
 See [the documentation regarding project types](project-types) for more details.
+
+## Which browsers does SvelteKit support?
+
+SvelteKit's client runtime targets the same browsers as [Vite's default `build.target`](https://vite.dev/config/build-options#build-target), `'baseline-widely-available'`. With Vite 8 this means Chrome 111, Edge 111, Firefox 114 and Safari 16.4 or later. 
+
+The client runtime is not polyfilled. Setting a lower `build.target` only changes how syntax is transformed — it does not add missing APIs — so if you need to support older browsers you will need to add polyfills yourself, for example with [`@vitejs/plugin-legacy`](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy).
+
+[Service workers](service-workers) are registered with `type: 'module'`, so browsers without support for module service workers will not register them.
 
 ## How do I include details from package.json in my application?
 

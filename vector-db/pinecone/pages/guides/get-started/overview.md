@@ -10,15 +10,15 @@ Pinecone Database powers retrieval for AI agents and applications, including sea
 
 ## Get started
 
-> **[Quickstart](/guides/get-started/quickstart)**
+> [card] [Quickstart](/guides/get-started/quickstart)
 >
 > Pick a search path and run your first search in minutes
 
-> **[AI coding tools](/integrations/ai-coding-tools)**
+> [card] [AI coding tools](/integrations/ai-coding-tools)
 >
 > Use Pinecone with Claude Code, Codex, Cursor, and other agentic tools
 
-> **[MCP server](/guides/operations/mcp-server)**
+> [card] [MCP server](/guides/operations/mcp-server)
 >
 > Connect any MCP-compatible agent to Pinecone for search and index management
 
@@ -35,50 +35,50 @@ With Pinecone Database, you can:
 
 ## Learn
 
-> **[Key terms](/guides/core-concepts/key-terms)**
+> [card] [Key terms](/guides/core-concepts/key-terms)
 >
 > Organizations, projects, indexes, namespaces, documents, and records
 
-> **[Data modeling](/guides/index-data/data-modeling)**
+> [card] [Data modeling](/guides/index-data/data-modeling)
 >
 > Design the fields your index needs for the searches you'll run
 
-> **[Search overview](/guides/search/search-overview)**
+> [card] [Search overview](/guides/search/search-overview)
 >
 > Compare search types and choose the right approach for each query
 
 ## Resources
 
-> **[API reference](/reference)**
+> [card] [API reference](/reference)
 >
 > Details about the Pinecone APIs, SDKs, and architecture
 
-> **[Examples](/examples)**
+> [card] [Examples](/examples)
 >
 > Notebooks and sample apps with common AI patterns
 
-> **[Models](/models/overview)**
+> [card] [Models](/models/overview)
 >
 > Embedding and reranking models hosted by Pinecone
 
-> **[Integrations](/integrations/overview)**
+> [card] [Integrations](/integrations/overview)
 >
 > Third-party integrations for LangChain, LlamaIndex, and more
 
-> **[Troubleshooting](/admin/support/contact-support)**
+> [card] [Troubleshooting](/admin/support/contact-support)
 >
 > Common errors, account help, and how to contact support
 
-> **[Changelog](/release-notes)**
+> [card] [Changelog](/release-notes)
 >
 > What's new in Pinecone
 
 ## Other Pinecone products
 
-> **[Pinecone Assistant](/guides/assistant/overview)**
+> [card] [Pinecone Assistant](/guides/assistant/overview)
 >
 > A managed service for RAG chat and agent applications grounded in your data
 
-> **[Pinecone Nexus](/guides/nexus/overview)**
+> [card] [Pinecone Nexus](/guides/nexus/overview)
 >
 > The knowledge engine for agents, serving grounded, cited answers in one call

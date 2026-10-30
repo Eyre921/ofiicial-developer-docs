@@ -58,18 +58,18 @@ You can't convert an existing index to a schema-based one. To use a schema (and 
 
 ## FAQ
 
-> **I use hybrid search (dense + sparse, Vectors API). What happens?**
+> [accordion] I use hybrid search (dense + sparse, Vectors API). What happens?
 >
 > Your existing hybrid indexes keep working through the Vectors API, with the same single combined query. On the Documents API, a schema can declare both a `dense_vector` and a `sparse_vector` field, so one index holds both, but a search ranks by one scoring type per request. There's no single combined dense + sparse query, so to combine results, run each search separately and fuse them client-side with [reciprocal rank fusion](/guides/search/reciprocal-rank-fusion).
 
-> **I use integrated embedding (the Records API). Does anything change?**
+> [accordion] I use integrated embedding (the Records API). Does anything change?
 >
 > Your existing indexes are unaffected. The legacy Records API and `create_index_for_model` keep working exactly as they do today. What's changed is that document indexes now support integrated embedding too. Declare a `string` field with `embed` or `sparse_embed` and Pinecone embeds its text for you. For new work, prefer that path. See [Integrated embedding](/guides/search/integrated-embedding).
 
-> **Can I keep creating indexes on the old Vectors API?**
+> [accordion] Can I keep creating indexes on the old Vectors API?
 >
 > Yes. In the `2026-07` SDK, your existing `create_index(dimension=..., metric=..., vector_type=..., spec=...)` code works unchanged and still creates a vector index, so you don't have to downgrade. If you call the REST API directly on `2026-07`, use a schema with the reserved `_values`/`_sparse_values` fields, or pin an earlier API version (`X-Pinecone-Api-Version: 2026-04`) to send the original request body. Indexes you create either way stay on the `/vectors/*` data plane.
 
-> **I'm on 2026-01.alpha. What changed for me?**
+> [accordion] I'm on 2026-01.alpha. What changed for me?
 >
 > `2026-01.alpha` is now a mirror of `2026-07`. If you were already using a schema and the Documents API, nothing changes.

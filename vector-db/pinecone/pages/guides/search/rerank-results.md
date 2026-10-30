@@ -1190,14 +1190,14 @@ The following reranking models are hosted by Pinecone.
 >
 > To understand how cost is calculated for reranking, see [Reranking cost](/guides/manage-cost/understanding-cost#reranking). To get model details via the API, see [List models](/reference/api/latest/inference/list-available-models) and [Describe a model](/reference/api/latest/inference/describe-a-model).
 
-> **cohere-rerank-4-fast**
+> [accordion] cohere-rerank-4-fast
 >
 > [`cohere-rerank-4-fast`](/models/cohere-rerank-4-fast) is Cohere's latest reranking model (Cohere Rerank 4.0 Fast), improving relevance quality for a wide range of enterprise search applications. Cohere Rerank 4.0 is hosted on Azure AI under the Global Standard deployment type, and requests may be processed in regions outside the United States.
 >
 > **Details**
 >
 > * Modality: Text
-> * Max tokens per document: 8,192
+> * Max tokens per document: 4,096
 > * Max documents: 250
 >
 > The relevance scores produced by `cohere-rerank-4-fast` aren't directly comparable to those from `cohere-rerank-3.5`. This doesn't affect sorting, but any application logic that uses a fixed score threshold to make decisions must be re-calibrated for the new model.
@@ -1213,7 +1213,7 @@ The following reranking models are hosted by Pinecone.
 > | `max_tokens_per_doc` | integer | Optional | Documents longer than this are truncated. Max `4096`. | `1024` |
 > | `rank_fields` | array of strings | Optional | The fields to use for reranking, in priority order (e.g., `["field1", "field2"]`). | `["text"]` |
 
-> **cohere-rerank-3.5**
+> [accordion] cohere-rerank-3.5
 >
 > > [!NOTE]
 > >
@@ -1238,7 +1238,7 @@ The following reranking models are hosted by Pinecone.
 > | `max_chunks_per_doc` | integer | Optional | Long documents will be automatically truncated to the specified number of chunks. Accepted range: `1 - 3072`. | |
 > | `rank_fields` | array of strings | Optional | The fields to use for reranking. The model reranks based on the order of the fields specified (e.g., `["field1", "field2", "field3"]`). | `["text"]` |
 
-> **bge-reranker-v2-m3**
+> [accordion] bge-reranker-v2-m3
 >
 > [`bge-reranker-v2-m3`](/models/bge-reranker-v2-m3) is a high-performance, multilingual reranking model that works well on messy data and short queries expected to return medium-length passages of text (1-2 paragraphs).
 >
@@ -1259,7 +1259,7 @@ The following reranking models are hosted by Pinecone.
 > | `truncate` | string | Optional | How to handle inputs longer than those supported by the model. Accepted values: `END` or `NONE`. `END` truncates the input sequence at the input token limit. `NONE` returns an error when the input exceeds the input token limit. | `NONE` |
 > | `rank_fields` | array of strings | Optional | The field to use for reranking. The model supports only a single rerank field. | `["text"]` |
 
-> **pinecone-rerank-v0**
+> [accordion] pinecone-rerank-v0
 >
 > [`pinecone-rerank-v0`](/models/pinecone-rerank-v0) is a reranking model that can handle chunks up to 512 tokens (1-2 paragraphs).
 >

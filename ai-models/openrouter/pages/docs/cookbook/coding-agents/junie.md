@@ -30,25 +30,25 @@ path: docs/cookbook/coding-agents/junie
 
 ### Step 1: Install Junie CLI
 
-**Linux / macOS**
+> [tab] Linux / macOS
+>
+> ```bash lines theme={null}
+> curl -fsSL https://junie.jetbrains.com/install.sh | bash
+> ```
 
-```bash lines theme={null}
-curl -fsSL https://junie.jetbrains.com/install.sh | bash
-```
+> [tab] Windows
+>
+> ```powershell lines theme={null}
+> powershell -NoProfile -ExecutionPolicy Bypass -Command "iex (irm 'https://junie.jetbrains.com/install.ps1')"
+> ```
 
-**Windows**
-
-```powershell lines theme={null}
-powershell -NoProfile -ExecutionPolicy Bypass -Command "iex (irm 'https://junie.jetbrains.com/install.ps1')"
-```
-
-**Homebrew**
-
-```bash lines theme={null}
-brew tap jetbrains-junie/junie
-brew update
-brew install junie
-```
+> [tab] Homebrew
+>
+> ```bash lines theme={null}
+> brew tap jetbrains-junie/junie
+> brew update
+> brew install junie
+> ```
 
 Verify the installation:
 
@@ -60,36 +60,36 @@ junie --version
 
 Junie supports OpenRouter as a built-in BYOK (Bring Your Own Key) provider. Set the `JUNIE_OPENROUTER_API_KEY` environment variable to connect Junie to OpenRouter:
 
-**Shell Profile (Recommended)**
+> [tab] Shell Profile (Recommended)
+>
+> Add the environment variable to your shell profile for persistent configuration:
+>
+> ```bash lines theme={null}
+> # Open your shell profile
+> nano ~/.zshrc  # or ~/.bashrc for Bash users
+>
+> # Add this line:
+> export JUNIE_OPENROUTER_API_KEY="<your-openrouter-api-key>"
+> ```
+>
+> After saving, restart your terminal or run `source ~/.zshrc` for changes to take effect.
 
-Add the environment variable to your shell profile for persistent configuration:
+> [tab] Inline
+>
+> You can also pass the API key directly when running Junie:
+>
+> ```bash lines theme={null}
+> junie --openrouter-api-key "<your-openrouter-api-key>"
+> ```
 
-```bash lines theme={null}
-# Open your shell profile
-nano ~/.zshrc  # or ~/.bashrc for Bash users
-
-# Add this line:
-export JUNIE_OPENROUTER_API_KEY="<your-openrouter-api-key>"
-```
-
-After saving, restart your terminal or run `source ~/.zshrc` for changes to take effect.
-
-**Inline**
-
-You can also pass the API key directly when running Junie:
-
-```bash lines theme={null}
-junie --openrouter-api-key "<your-openrouter-api-key>"
-```
-
-**CI/CD**
-
-In CI/CD pipelines, set the environment variable in your runner configuration:
-
-```bash lines theme={null}
-export JUNIE_OPENROUTER_API_KEY="<your-openrouter-api-key>"
-junie "Review and fix any code quality issues in the latest commit"
-```
+> [tab] CI/CD
+>
+> In CI/CD pipelines, set the environment variable in your runner configuration:
+>
+> ```bash lines theme={null}
+> export JUNIE_OPENROUTER_API_KEY="<your-openrouter-api-key>"
+> junie "Review and fix any code quality issues in the latest commit"
+> ```
 
 > [!NOTE]
 >

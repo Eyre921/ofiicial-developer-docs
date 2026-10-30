@@ -175,10 +175,10 @@ ntn api "v1/file_uploads/$FILE_UPLOAD_ID/send" \
 
 ## Next steps
 
-> **[API request syntax](/cli/guides/api-requests)**
+> [card] [API request syntax](/cli/guides/api-requests)
 >
 > Build Notion API requests with `ntn api`.
 
-> **[File Upload reference](/reference/file-upload)**
+> [card] [File Upload reference](/reference/file-upload)
 >
 > See File Upload statuses, fields, size limits, and endpoints.

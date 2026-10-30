@@ -18,17 +18,17 @@ The Notion API exposes views as first-class resources. This means connections ca
 
 In this guide, you'll learn:
 
-> **[How views relate to databases and data sources.](#structure)**
+> [card] [How views relate to databases and data sources.](#structure)
 
-> **[What happens by default when you create a database.](#default-behavior)**
+> [card] [What happens by default when you create a database.](#default-behavior)
 
-> **[How to list, create, and delete views.](#listing-views)**
+> [card] [How to list, create, and delete views.](#listing-views)
 
-> **[How to configure view-specific settings.](#view-configuration)**
+> [card] [How to configure view-specific settings.](#view-configuration)
 
-> **[How to create and manage dashboard views.](#dashboard-views)**
+> [card] [How to create and manage dashboard views.](#dashboard-views)
 
-> **[How to query data through a view.](#querying-a-view)**
+> [card] [How to query data through a view.](#querying-a-view)
 
 ## Structure
 

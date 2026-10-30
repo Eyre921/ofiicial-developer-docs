@@ -48,52 +48,52 @@ Your generated API key:
 
 Create an on-demand index that matches the dimensions and similarity metric of the dataset you'll import in later steps.
 
-**Console**
+> [tab] Console
+>
+> 1. In the Pinecone console, go to the [Indexes](https://app.pinecone.io/organizations/-/projects/-/indexes) page.
+> 2. Click **Create index**.
+> 3. Check **Custom settings**.
+> 4. Configure the index with the following settings:
+>    * **Name**: `search-10m`
+>    * **Vector type**: Dense
+>    * **Dimensions**: `1024`
+>    * **Metric**: cosine
+>    * **Capacity mode**: Serverless (on-demand)
+>    * **Cloud**: AWS (required for this test)
+>    * **Region**: Use an AWS region appropriate for your use case (for example, `us-east-1`)
+> 5. Click **Create index**.
 
-1. In the Pinecone console, go to the [Indexes](https://app.pinecone.io/organizations/-/projects/-/indexes) page.
-2. Click **Create index**.
-3. Check **Custom settings**.
-4. Configure the index with the following settings:
-   * **Name**: `search-10m`
-   * **Vector type**: Dense
-   * **Dimensions**: `1024`
-   * **Metric**: cosine
-   * **Capacity mode**: Serverless (on-demand)
-   * **Cloud**: AWS (required for this test)
-   * **Region**: Use an AWS region appropriate for your use case (for example, `us-east-1`)
-5. Click **Create index**.
-
-**Code**
-
-If using code to create an index, first install the [Python SDK](/reference/python-sdk):
-
-```shell Terminal theme={null}
-pip install pinecone
-```
-
-Then, create the index:
-
-```python Python theme={null}
-from pinecone import Pinecone, ServerlessSpec
-
-pc = Pinecone(api_key="{{YOUR_API_KEY}}")
-
-index_name = "search-10m"
-
-if not pc.has_index(index_name):
-    pc.create_index(
-        name=index_name,
-        vector_type="dense",
-        dimension=1024,
-        metric="cosine",
-        spec=ServerlessSpec(
-            # AWS is required for this test
-            cloud="aws",   
-            # Use an AWS region appropriate for your use case
-            region="us-east-1" 
-        )
-    )
-```
+> [tab] Code
+>
+> If using code to create an index, first install the [Python SDK](/reference/python-sdk):
+>
+> ```shell Terminal theme={null}
+> pip install pinecone
+> ```
+>
+> Then, create the index:
+>
+> ```python Python theme={null}
+> from pinecone import Pinecone, ServerlessSpec
+>
+> pc = Pinecone(api_key="{{YOUR_API_KEY}}")
+>
+> index_name = "search-10m"
+>
+> if not pc.has_index(index_name):
+>     pc.create_index(
+>         name=index_name,
+>         vector_type="dense",
+>         dimension=1024,
+>         metric="cosine",
+>         spec=ServerlessSpec(
+>             # AWS is required for this test
+>             cloud="aws",   
+>             # Use an AWS region appropriate for your use case
+>             region="us-east-1" 
+>         )
+>     )
+> ```
 
 ## 3. Import the dataset
 
@@ -111,69 +111,69 @@ s3://fe-customer-pocs/search/search_10M/dense/
 
 For this dataset, the import should take less than 30 minutes.
 
-**Console**
-
-1. In the Pinecone console, go to the [Indexes](https://app.pinecone.io/organizations/-/projects/-/indexes) page.
-2. Find your `search-10m` index and click **... > Import data**.
-3. For **Storage integration**, select **No integration (public bucket)**.
-4. Enter the import URL: `s3://fe-customer-pocs/search/search_10M/dense/`.
-5. For **Error handling**, select **Abort on error (default)**.
-6. Click **Start import**.
-
-To monitor progress, open your index in the Pinecone console and navigate to the **Imports** tab. After the import completes, compare the **Started time** and **End time** timestamps to see the total time required.
-
-> [!NOTE]
+> [tab] Console
 >
-> For this dataset, the import should take around 30 minutes. While the import is running, you can continue with the next step to provision a VM and install VSB. However, wait for the import to complete before running the benchmark.
-
-**Code**
-
-Start the import:
-
-```python Python theme={null}
-from pinecone import Pinecone, ImportErrorMode
-
-pc = Pinecone(api_key="{{YOUR_API_KEY}}")
-index = pc.index(name="search-10m")
-
-import_response = index.start_import(
-    uri="s3://fe-customer-pocs/search/search_10M/dense/",
-    error_mode=ImportErrorMode.ABORT 
-)
-print(f"Import started: {import_response['id']}")
-```
-
-Monitor import progress:
-
-```python Python theme={null}
-from pinecone import Pinecone
-import time 
-
-pc = Pinecone(api_key="{{YOUR_API_KEY}}")
-index = pc.index(name="search-10m")
-
-while True:
-    status = index.describe_import(id="IMPORT_ID")
-    print(f"Status: {status['status']}, Progress: {status['percent_complete']:.1f}%")
-    if status['status'] == "Completed":
-        print("Import completed successfully!")
-        break
-    elif status['status'] == "Failed":
-        print("Import failed. Check error details.")
-        break
-    elif status['status'] == "Cancelled":
-        print("Import cancelled.")
-        break
-    time.sleep(15) # Check every 15 seconds
-```
-
-> [!NOTE]
+> 1. In the Pinecone console, go to the [Indexes](https://app.pinecone.io/organizations/-/projects/-/indexes) page.
+> 2. Find your `search-10m` index and click **... > Import data**.
+> 3. For **Storage integration**, select **No integration (public bucket)**.
+> 4. Enter the import URL: `s3://fe-customer-pocs/search/search_10M/dense/`.
+> 5. For **Error handling**, select **Abort on error (default)**.
+> 6. Click **Start import**.
 >
-> There are three ways to find the import ID:
+> To monitor progress, open your index in the Pinecone console and navigate to the **Imports** tab. After the import completes, compare the **Started time** and **End time** timestamps to see the total time required.
 >
-> * It's returned when the import is started
-> * In the Pinecone console, on the **Imports** tab for your index
-> * By calling [List imports](/reference/api/latest/data-plane/list_imports)
+> > [!NOTE]
+> >
+> > For this dataset, the import should take around 30 minutes. While the import is running, you can continue with the next step to provision a VM and install VSB. However, wait for the import to complete before running the benchmark.
+
+> [tab] Code
+>
+> Start the import:
+>
+> ```python Python theme={null}
+> from pinecone import Pinecone, ImportErrorMode
+>
+> pc = Pinecone(api_key="{{YOUR_API_KEY}}")
+> index = pc.index(name="search-10m")
+>
+> import_response = index.start_import(
+>     uri="s3://fe-customer-pocs/search/search_10M/dense/",
+>     error_mode=ImportErrorMode.ABORT 
+> )
+> print(f"Import started: {import_response['id']}")
+> ```
+>
+> Monitor import progress:
+>
+> ```python Python theme={null}
+> from pinecone import Pinecone
+> import time 
+>
+> pc = Pinecone(api_key="{{YOUR_API_KEY}}")
+> index = pc.index(name="search-10m")
+>
+> while True:
+>     status = index.describe_import(id="IMPORT_ID")
+>     print(f"Status: {status['status']}, Progress: {status['percent_complete']:.1f}%")
+>     if status['status'] == "Completed":
+>         print("Import completed successfully!")
+>         break
+>     elif status['status'] == "Failed":
+>         print("Import failed. Check error details.")
+>         break
+>     elif status['status'] == "Cancelled":
+>         print("Import cancelled.")
+>         break
+>     time.sleep(15) # Check every 15 seconds
+> ```
+>
+> > [!NOTE]
+> >
+> > There are three ways to find the import ID:
+> >
+> > * It's returned when the import is started
+> > * In the Pinecone console, on the **Imports** tab for your index
+> > * By calling [List imports](/reference/api/latest/data-plane/list_imports)
 
 ## 4. Run the benchmark
 

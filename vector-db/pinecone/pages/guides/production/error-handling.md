@@ -79,9 +79,9 @@ const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
 
 try {
   const index = pc.index('your-index');
-  await index.upsert([
+  await index.upsert({ records: [
     { id: 'vec1', values: [0.1, 0.2, 0.3] }
-  ]);
+  ] });
 } catch (error) {
   console.error('Error upserting data:', error);
   // Handle the error appropriately

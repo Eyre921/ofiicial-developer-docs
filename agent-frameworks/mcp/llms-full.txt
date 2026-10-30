@@ -656,9 +656,11 @@ async processQuery(query: string) {
         messages,
       });
 
-      finalText.push(
-        response.content[0].type === "text" ? response.content[0].text : ""
-      );
+      for (const block of response.content) {
+        if (block.type === "text") {
+          finalText.push(block.text);
+        }
+      }
     }
   }
 
@@ -912,7 +914,6 @@ spring:
         type: SYNC
         request-timeout: 20s
         stdio:
-          root-change-notification: true
           servers-configuration: classpath:/mcp-servers-config.json
         toolcallback:
           enabled: true
@@ -1243,7 +1244,9 @@ suspend fun processQuery(query: String): String {
                         .build(),
                 )
 
-                finalText.add(aiResponse.content().first().text().get().text())
+                aiResponse.content().forEach { block ->
+                    if (block.isText()) finalText.add(block.text().get().text())
+                }
             }
         }
     }
@@ -1481,7 +1484,6 @@ using Microsoft.Extensions.AI;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using ModelContextProtocol.Client;
-using ModelContextProtocol.Protocol.Transport;
 
 var builder = Host.CreateApplicationBuilder(args);
 
@@ -1653,7 +1655,7 @@ cd mcp-client
 bundle init
 
 # Add required dependencies
-bundle add anthropic base64 dotenv mcp
+bundle add anthropic dotenv mcp
 
 # Create our main file
 touch client.rb
@@ -1668,7 +1670,7 @@ cd mcp-client
 bundle init
 
 # Add required dependencies
-bundle add anthropic base64 dotenv mcp
+bundle add anthropic dotenv mcp
 
 # Create our main file
 new-item client.rb
@@ -1775,7 +1777,10 @@ def process_query(query)
     messages << { role: "assistant", content: assistant_content }
   end
 
-  response.content.each_with_object([]) do |content, response_parts|
+  response_parts = []
+  tool_results = []
+
+  response.content.each do |content|
     case content
     when Anthropic::Models::TextBlock
       response_parts << content.text
@@ -1791,23 +1796,23 @@ def process_query(query)
         tool_result_content.to_s
       end
 
-      messages << {
-        role: "user",
-        content: [{
-          type: "tool_result",
-          tool_use_id: content.id,
-          content: result_text
-        }]
-      }
-
-      # Get next response from Claude.
-      response = chat(messages)
-
-      response.content.each do |content_block|
-        response_parts << content_block.text if content_block.is_a?(Anthropic::Models::TextBlock)
-      end
+      tool_results << { type: "tool_result", tool_use_id: content.id, content: result_text }
     end
-  end.join("\n")
+  end
+
+  unless tool_results.empty?
+    # Every tool_use block needs a matching tool_result in a single user message.
+    messages << { role: "user", content: tool_results }
+
+    # Get next response from Claude.
+    response = chat(messages)
+
+    response.content.each do |content_block|
+      response_parts << content_block.text if content_block.is_a?(Anthropic::Models::TextBlock)
+    end
+  end
+
+  response_parts.join("\n")
 end
 
 def chat(messages, tools: nil)
@@ -4926,7 +4931,7 @@ fmt.Fprintln(os.Stderr, "Processing request")
 
 ### System requirements
 
-* Go 1.24 or higher installed.
+* Go 1.25 or higher installed.
 
 ### Set up your environment
 
@@ -5919,6 +5924,7 @@ This action creates a new configuration file if one doesn't exist, or opens your
 
 * **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
 * **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+* **Linux**: `~/.config/Claude/claude_desktop_config.json`
 
 **3. Configure the Filesystem Server**
 
@@ -6015,7 +6021,7 @@ If you encounter issues setting up or using the Filesystem Server, these solutio
 > 1. Restart Claude Desktop completely
 > 2. Check your `claude_desktop_config.json` file syntax
 > 3. Make sure the file paths included in `claude_desktop_config.json` are valid and that they are absolute and not relative
-> 4. Look at [logs](#getting-logs-from-claude-for-desktop) to see why the server is not connecting
+> 4. Look at [logs](#getting-logs-from-claude-desktop) to see why the server is not connecting
 > 5. In your command line, try manually running the server (replacing `username` as you did in `claude_desktop_config.json`) to see if you get any errors:
 >
 > ```bash macOS/Linux theme={null}
@@ -6034,14 +6040,20 @@ If you encounter issues setting up or using the Filesystem Server, these solutio
 >
 > * Windows: `%APPDATA%\Claude\logs`
 >
+> * Linux: `~/.config/Claude/logs`
+>
 > * `mcp.log` will contain general logging about MCP connections and connection failures.
 >
 > * Files named `mcp-server-SERVERNAME.log` will contain the stderr output from the named server. Stdio servers may use stderr for all their logging, so these files are not limited to errors.
 >
 > You can run the following command to list recent logs and follow along with any new ones (on Windows, it will only show recent logs):
 >
-> ```bash macOS/Linux theme={null}
+> ```bash macOS theme={null}
 > tail -n 20 -f ~/Library/Logs/Claude/mcp*.log
+> ```
+>
+> ```bash Linux theme={null}
+> tail -n 20 -f ~/.config/Claude/logs/mcp*.log
 > ```
 >
 > ```powershell Windows theme={null}
@@ -11690,7 +11702,7 @@ possible:
    consent screen
 6. The MCP authorization code is redirected to the attacker's server
    (specified in the malicious `redirect_uri` parameter during
-   [dynamic client registration](/specification/latest/basic/authorization#dynamic-client-registration))
+   [dynamic client registration](/specification/latest/basic/authorization/client-registration#dynamic-client-registration))
 7. The attacker exchanges the stolen authorization code for access
    tokens for the MCP server without the user's explicit approval
 8. The attacker now has access to the third-party API as the compromised
@@ -12552,13 +12564,9 @@ Visit the [servers-archived repository](https://github.com/modelcontextprotocol/
 
 They are provided for historical reference only.
 
-## Official integrations
+## More servers
 
-Visit the [MCP Servers Repository (Official Integrations section)](https://github.com/modelcontextprotocol/servers?tab=readme-ov-file#%EF%B8%8F-official-integrations) for a list of MCP servers maintained by companies for their platforms.
-
-## Community implementations
-
-Visit the [MCP Servers Repository (Community section)](https://github.com/modelcontextprotocol/servers?tab=readme-ov-file#-community-servers) for a list of MCP servers maintained by community members.
+Visit the MCP Registry at [registry.modelcontextprotocol.io](https://registry.modelcontextprotocol.io/) for servers published by companies and community members.
 
 ## Getting started
 
@@ -12599,21 +12607,12 @@ To use an MCP server with Claude, add it to your configuration:
         "@modelcontextprotocol/server-filesystem",
         "/path/to/allowed/files"
       ]
-    },
-    "github": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-github"],
-      "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "<YOUR_TOKEN>"
-      }
     }
   }
 }
 ```
 
 ## Additional resources
-
-Visit the [MCP Servers Repository (Resources section)](https://github.com/modelcontextprotocol/servers?tab=readme-ov-file#-resources) for a collection of other resources and projects related to MCP.
 
 Visit our [GitHub Discussions](https://github.com/modelcontextprotocol/modelcontextprotocol/discussions) to engage with the MCP community.
 
@@ -12645,13 +12644,9 @@ Visit the [servers-archived repository](https://github.com/modelcontextprotocol/
 
 They are provided for historical reference only.
 
-## Official integrations
+## More servers
 
-Visit the [MCP Servers Repository (Official Integrations section)](https://github.com/modelcontextprotocol/servers?tab=readme-ov-file#%EF%B8%8F-official-integrations) for a list of MCP servers maintained by companies for their platforms.
-
-## Community implementations
-
-Visit the [MCP Servers Repository (Community section)](https://github.com/modelcontextprotocol/servers?tab=readme-ov-file#-community-servers) for a list of MCP servers maintained by community members.
+Visit the MCP Registry at [registry.modelcontextprotocol.io](https://registry.modelcontextprotocol.io/) for servers published by companies and community members.
 
 ## Getting started
 
@@ -12692,21 +12687,12 @@ To use an MCP server with Claude, add it to your configuration:
         "@modelcontextprotocol/server-filesystem",
         "/path/to/allowed/files"
       ]
-    },
-    "github": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-github"],
-      "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "<YOUR_TOKEN>"
-      }
     }
   }
 }
 ```
 
 ## Additional resources
-
-Visit the [MCP Servers Repository (Resources section)](https://github.com/modelcontextprotocol/servers?tab=readme-ov-file#-resources) for a collection of other resources and projects related to MCP.
 
 Visit our [GitHub Discussions](https://github.com/modelcontextprotocol/modelcontextprotocol/discussions) to engage with the MCP community.
 
@@ -21946,7 +21932,7 @@ Getting started guide for building interactive UI applications with MCP Apps
 
 ## Prerequisites
 
-You'll need [Node.js](https://nodejs.org/en/download) 18 or higher. Familiarity
+You'll need [Node.js](https://nodejs.org/en/download) 20 or higher. Familiarity
 with [MCP tools](/specification/latest/server/tools) and
 [resources](/specification/latest/server/resources) is recommended since MCP
 Apps combine both primitives. Experience with the
@@ -23047,6 +23033,8 @@ pip install mcp
 
 Choose the credential format that matches your setup:
 
+Each sample pins the issuer of the authorization server that provisioned the credentials, so the client refuses to send them to any other authorization server the MCP server might advertise.
+
 #### Using a client secret
 
 **TypeScript**
@@ -23061,6 +23049,7 @@ import {
 const provider = new ClientCredentialsProvider({
   clientId: "my-service",
   clientSecret: "s3cr3t",
+  expectedIssuer: "https://auth.example.com",
 });
 
 const client = new Client(
@@ -23123,7 +23112,8 @@ provider = ClientCredentialsOAuthProvider(
     storage=InMemoryTokenStorage(),
     client_id="my-service",
     client_secret="s3cr3t",
-    scopes="read write",
+    scope="read write",
+    issuer="https://auth.example.com",
 )
 
 
@@ -23158,6 +23148,7 @@ const provider = new PrivateKeyJwtProvider({
   clientId: "my-service",
   privateKey: process.env.CLIENT_PRIVATE_KEY_PEM,
   algorithm: "RS256",
+  expectedIssuer: "https://auth.example.com",
 });
 
 const client = new Client(
@@ -23231,7 +23222,8 @@ provider = PrivateKeyJWTOAuthProvider(
     storage=InMemoryTokenStorage(),
     client_id="my-service",
     assertion_provider=jwt_params.create_assertion_provider(),
-    scopes="read write",
+    scope="read write",
+    issuer="https://auth.example.com",
 )
 
 
@@ -23946,7 +23938,9 @@ declares `directoryRead: true`.
         "name": "checklist.md",
         "mimeType": "text/markdown"
       }
-    ]
+    ],
+    "ttlMs": 300000,
+    "cacheScope": "public"
   }
 }
 ```

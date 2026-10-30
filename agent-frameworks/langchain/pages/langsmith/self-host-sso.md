@@ -317,7 +317,7 @@ ISSUER_SUB_CLAIM_OVERRIDES='{"https://login.microsoftonline.com/": "oid", "https
 >
 > SSO Groups Sync on self-hosted requires LangSmith chart version **0.15.0-rc.3** (application version **0.15.2rc1**) or later.
 
-[SSO Groups Sync](/langsmith/user-management#sso-groups-sync-alternative) lets LangSmith assign org and workspace roles from a group membership claim on the OIDC token, as a simpler alternative to [SCIM](/langsmith/user-management#set-up-scim-for-your-organization). On self-hosted, you must configure the IdP to include groups in the OIDC ID token before LangSmith can read them.
+[SSO Groups Sync](/langsmith/user-management#sso-groups-sync-alternative) lets LangSmith assign org and workspace roles from a group membership claim on the OIDC token, as a simpler alternative to [SCIM](/langsmith/user-management#set-up-scim-for-your-organization). On self-hosted, you must configure the IdP to include groups in the OIDC ID token before LangSmith can read them. Groups in the token can also set membership in [synced teams](/langsmith/teams#sync-team-members-from-your-identity-provider).
 
 **IdP-side configuration (varies by provider):**
 
@@ -347,34 +347,34 @@ The exact scope name (`groups`, `roles`, etc.) depends on your IdP. Check your I
 
 Per-provider SSO Groups Sync settings are stored on the SSO provider record and toggled via the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-self-host-sso) or [API](/langsmith/reference) (not via Helm values).
 
-**UI**
-
-Once your IdP emits the groups claim, configure SSO Groups Sync from the UI: go to **Settings** > **SSO configuration** and scroll to the **SSO Groups Sync** section. The claim name configured in the **Groups claim field** must match the claim emitted by your IdP.
-
-**API**
-
-To configure SSO Groups Sync via the API, first `GET` the current SSO settings to retrieve the provider `id`, then `PATCH` using that `id`:
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# 1. Fetch the current SSO settings (and the id required for PATCH)
-curl -s "$SELF_HOSTED_LANGSMITH_ENDPOINT/api/v1/orgs/current/sso-settings" \
-  -H "X-Api-Key: $LANGSMITH_API_KEY" | jq .
-
-# 2. PATCH using the id returned above
-curl -s -X PATCH "$SELF_HOSTED_LANGSMITH_ENDPOINT/api/v1/orgs/current/sso-settings/<id>" \
-  -H "X-Api-Key: $LANGSMITH_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "sso_groups_enabled": true,
-    "sso_groups_claim_field": "groups",
-    "sso_groups_required": true,
-    "sso_groups_role_sync_enabled": true
-  }' | jq .
-```
-
-> [!WARNING]
+> [tab] UI
 >
-> `DELETE` is also available on this resource but is not covered here. `DELETE` removes the SSO provider entirely and locks out login if the org has **Login via SSO only** enabled, or if no other authentication providers (for example, social login) are configured.
+> Once your IdP emits the groups claim, configure SSO Groups Sync from the UI: go to **Settings** > **SSO configuration** and scroll to the **SSO Groups Sync** section. The claim name configured in the **Groups claim field** must match the claim emitted by your IdP.
+
+> [tab] API
+>
+> To configure SSO Groups Sync via the API, first `GET` the current SSO settings to retrieve the provider `id`, then `PATCH` using that `id`:
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> # 1. Fetch the current SSO settings (and the id required for PATCH)
+> curl -s "$SELF_HOSTED_LANGSMITH_ENDPOINT/api/v1/orgs/current/sso-settings" \
+>   -H "X-Api-Key: $LANGSMITH_API_KEY" | jq .
+>
+> # 2. PATCH using the id returned above
+> curl -s -X PATCH "$SELF_HOSTED_LANGSMITH_ENDPOINT/api/v1/orgs/current/sso-settings/<id>" \
+>   -H "X-Api-Key: $LANGSMITH_API_KEY" \
+>   -H "Content-Type: application/json" \
+>   -d '{
+>     "sso_groups_enabled": true,
+>     "sso_groups_claim_field": "groups",
+>     "sso_groups_required": true,
+>     "sso_groups_role_sync_enabled": true
+>   }' | jq .
+> ```
+>
+> > [!WARNING]
+> >
+> > `DELETE` is also available on this resource but is not covered here. `DELETE` removes the SSO provider entirely and locks out login if the org has **Login via SSO only** enabled, or if no other authentication providers (for example, social login) are configured.
 
 #### Emit the groups claim from Microsoft Entra ID
 

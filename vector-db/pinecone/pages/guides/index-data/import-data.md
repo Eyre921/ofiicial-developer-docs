@@ -63,98 +63,98 @@ For example, to import data into the namespaces `example_namespace1` and `exampl
 
 For each namespace, create one or more files defining the data to import. The file format and required fields depend on the index type:
 
-**Document schema**
-
-To import into a namespace in an [index with a document schema](/guides/index-data/data-modeling#documents), use JSONL (`.jsonl`, or gzip-compressed `.jsonl.gz`) files instead of Parquet. Each line is one [document](/guides/core-concepts/key-terms#document), identical in shape to a document you would pass to the [Upsert documents](/reference/api/latest/data-plane/upsert_documents) operation:
-
-| Field | JSON type | Description |
-| - | - | - |
-| `_id` | `string` | Required. Unique identifier for each document within the namespace. |
-| Each schema field | Depends on the field's type | Encode each schema-declared field by its type: a full-text `string` field as a JSON string; a `dense_vector` field as an array of floats matching the schema's `dimension`; a `sparse_vector` field as `{"indices": [...], "values": [...]}`. A document doesn't need to populate every declared field, but it must include `_id` and at least one schema field. |
-| Any other field | `string`, number, boolean, or array of strings | Optional. Stored and auto-indexed as filterable [metadata](/guides/core-concepts/key-terms#metadata). Field names can't start with `_` or `$`. |
-
-> [!NOTE]
+> [tab] Document schema
 >
-> Unlike Parquet imports, fields not declared in the schema aren't ignored: they're stored and auto-indexed as filterable metadata.
-
-For example, for a schema with a full-text `body` field and a `dense_vector` `embedding` field:
-
-```jsonl theme={null}
-{"_id": "doc1", "body": "Machine learning models are revolutionizing natural language processing", "embedding": [0.12, 0.34, 0.56], "category": "technology", "year": 2024}
-{"_id": "doc2", "body": "Vector databases enable fast similarity search across embeddings", "embedding": [0.91, 0.05, 0.44], "category": "technology", "year": 2023}
-```
-
-For the full file format, per-field encoding, and directory layout, see [Prepare document-schema files](#prepare-document-schema-files-jsonl).
-
-**Dense vectors**
-
-To import into a namespace in an [index of dense vectors](/guides/index-data/indexing-overview#indexes-with-dense-vectors), the Parquet file must contain the following columns:
-
-| Column name | Parquet type | Description |
-| - | - | - |
-| `id` | `STRING` | Required. The unique [identifier for each record](/guides/core-concepts/key-terms#record-id). |
-| `values` | `LIST<FLOAT>` | Required. A list of floating-point values that make up the [dense vector embedding](/guides/core-concepts/key-terms#dense-vector). |
-| `metadata` | `STRING` | Optional. Additional [metadata](/guides/core-concepts/key-terms#metadata) for each record. To omit from specific rows, use `NULL`. |
-
-> [!NOTE]
+> To import into a namespace in an [index with a document schema](/guides/index-data/data-modeling#documents), use JSONL (`.jsonl`, or gzip-compressed `.jsonl.gz`) files instead of Parquet. Each line is one [document](/guides/core-concepts/key-terms#document), identical in shape to a document you would pass to the [Upsert documents](/reference/api/latest/data-plane/upsert_documents) operation:
 >
-> Additional columns in the Parquet file are silently ignored during import; only `id`, `values`, and `metadata` are processed.
-
-For example:
-
-```parquet theme={null}
-id | values                   | metadata
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-1  | [ 3.82  2.48 -4.15 ... ] | {"year": 1984, "month": 6, "source": "source1", "title": "Example1", "text": "When ..."}
-2  | [ 1.82  3.48 -2.15 ... ] | {"year": 1990, "month": 4, "source": "source2", "title": "Example2", "text": "Who ..."}
-```
-
-**Sparse vectors**
-
-To import into a namespace in an [index of sparse vectors](/guides/index-data/indexing-overview#indexes-with-sparse-vectors), the Parquet file must contain the following columns:
-
-| Column name | Parquet type | Description |
-| - | - | - |
-| `id` | `STRING` | Required. The unique [identifier for each record](/guides/core-concepts/key-terms#record-id). |
-| `sparse_values` | `STRUCT<indices: LIST<UINT_32>, values: LIST<FLOAT>>` | Required. A list of floating-point values (sparse values) and a list of integer values (sparse indices) that make up the [sparse vector embedding](/guides/core-concepts/key-terms#sparse-vector). |
-| `metadata` | `STRING` | Optional. Additional [metadata](/guides/core-concepts/key-terms#metadata) for each record. To omit from specific rows, use `NULL`. |
-
-> [!NOTE]
+> | Field | JSON type | Description |
+> | - | - | - |
+> | `_id` | `string` | Required. Unique identifier for each document within the namespace. |
+> | Each schema field | Depends on the field's type | Encode each schema-declared field by its type: a full-text `string` field as a JSON string; a `dense_vector` field as an array of floats matching the schema's `dimension`; a `sparse_vector` field as `{"indices": [...], "values": [...]}`. A document doesn't need to populate every declared field, but it must include `_id` and at least one schema field. |
+> | Any other field | `string`, number, boolean, or array of strings | Optional. Stored and auto-indexed as filterable [metadata](/guides/core-concepts/key-terms#metadata). Field names can't start with `_` or `$`. |
 >
-> Additional columns in the Parquet file are silently ignored during import; only `id`, `sparse_values`, and `metadata` are processed.
-
-For example:
-
-```parquet theme={null}
-id | sparse_values                                                                                       | metadata
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-1  | {"indices": [ 822745112 1009084850 1221765879 ... ], "values": [1.7958984 0.41577148 2.828125 ...]} | {"year": 1984, "month": 6, "source": "source1", "title": "Example1", "text": "When ..."}
-2  | {"indices": [ 504939989 1293001993 3201939490 ... ], "values": [1.4383747 0.72849722 1.384775 ...]} | {"year": 1990, "month": 4, "source": "source2", "title": "Example2", "text": "Who ..."}
-```
-
-**Dense + sparse**
-
-To import into a namespace in an [index with both dense and sparse vectors](/guides/search/hybrid-search/single-index), the Parquet file must contain the following columns:
-
-| Column name | Parquet type | Description |
-| - | - | - |
-| `id` | `STRING` | Required. The unique [identifier for each record](/guides/core-concepts/key-terms#record-id). |
-| `values` | `LIST<FLOAT>` | Required. A list of floating-point values that make up the [dense vector embedding](/guides/core-concepts/key-terms#dense-vector). |
-| `sparse_values` | `STRUCT<indices: LIST<UINT_32>, values: LIST<FLOAT>>` | Optional. A list of floating-point values that make up the [sparse vector embedding](/guides/core-concepts/key-terms#sparse-vector). To omit from specific rows, use `NULL`. |
-| `metadata` | `STRING` | Optional. Additional [metadata](/guides/core-concepts/key-terms#metadata) for each record. To omit from specific rows, use `NULL`. |
-
-> [!NOTE]
+> > [!NOTE]
+> >
+> > Unlike Parquet imports, fields not declared in the schema aren't ignored: they're stored and auto-indexed as filterable metadata.
 >
-> Additional columns in the Parquet file are silently ignored during import; only `id`, `values`, `sparse_values`, and `metadata` are processed.
+> For example, for a schema with a full-text `body` field and a `dense_vector` `embedding` field:
+>
+> ```jsonl theme={null}
+> {"_id": "doc1", "body": "Machine learning models are revolutionizing natural language processing", "embedding": [0.12, 0.34, 0.56], "category": "technology", "year": 2024}
+> {"_id": "doc2", "body": "Vector databases enable fast similarity search across embeddings", "embedding": [0.91, 0.05, 0.44], "category": "technology", "year": 2023}
+> ```
+>
+> For the full file format, per-field encoding, and directory layout, see [Prepare document-schema files](#prepare-document-schema-files-jsonl).
 
-For example:
+> [tab] Dense vectors
+>
+> To import into a namespace in an [index of dense vectors](/guides/index-data/indexing-overview#indexes-with-dense-vectors), the Parquet file must contain the following columns:
+>
+> | Column name | Parquet type | Description |
+> | - | - | - |
+> | `id` | `STRING` | Required. The unique [identifier for each record](/guides/core-concepts/key-terms#record-id). |
+> | `values` | `LIST<FLOAT>` | Required. A list of floating-point values that make up the [dense vector embedding](/guides/core-concepts/key-terms#dense-vector). |
+> | `metadata` | `STRING` | Optional. Additional [metadata](/guides/core-concepts/key-terms#metadata) for each record. To omit from specific rows, use `NULL`. |
+>
+> > [!NOTE]
+> >
+> > Additional columns in the Parquet file are silently ignored during import; only `id`, `values`, and `metadata` are processed.
+>
+> For example:
+>
+> ```parquet theme={null}
+> id | values                   | metadata
+> --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+> 1  | [ 3.82  2.48 -4.15 ... ] | {"year": 1984, "month": 6, "source": "source1", "title": "Example1", "text": "When ..."}
+> 2  | [ 1.82  3.48 -2.15 ... ] | {"year": 1990, "month": 4, "source": "source2", "title": "Example2", "text": "Who ..."}
+> ```
 
-```parquet theme={null}
-id | values                   | sparse_values                                                                          | metadata
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-1  | [ 3.82  2.48 -4.15 ... ] | {"indices": [1082468256, 1009084850, 1221765879, ...], "values": [2.0, 3.0, 4.0, ...]} | {"year": 1984, "month": 6, "source": "source1", "title": "Example1", "text": "When ..."}
-2  | [ 1.82  3.48 -2.15 ... ] | {"indices": [2225824123, 1293001993, 3201939490, ...], "values": [5.0, 2.0, 3.0, ...]} | {"year": 1990, "month": 4, "source": "source2", "title": "Example2", "text": "Who ..."}
-```
+> [tab] Sparse vectors
+>
+> To import into a namespace in an [index of sparse vectors](/guides/index-data/indexing-overview#indexes-with-sparse-vectors), the Parquet file must contain the following columns:
+>
+> | Column name | Parquet type | Description |
+> | - | - | - |
+> | `id` | `STRING` | Required. The unique [identifier for each record](/guides/core-concepts/key-terms#record-id). |
+> | `sparse_values` | `STRUCT<indices: LIST<UINT_32>, values: LIST<FLOAT>>` | Required. A list of floating-point values (sparse values) and a list of integer values (sparse indices) that make up the [sparse vector embedding](/guides/core-concepts/key-terms#sparse-vector). |
+> | `metadata` | `STRING` | Optional. Additional [metadata](/guides/core-concepts/key-terms#metadata) for each record. To omit from specific rows, use `NULL`. |
+>
+> > [!NOTE]
+> >
+> > Additional columns in the Parquet file are silently ignored during import; only `id`, `sparse_values`, and `metadata` are processed.
+>
+> For example:
+>
+> ```parquet theme={null}
+> id | sparse_values                                                                                       | metadata
+> --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+> 1  | {"indices": [ 822745112 1009084850 1221765879 ... ], "values": [1.7958984 0.41577148 2.828125 ...]} | {"year": 1984, "month": 6, "source": "source1", "title": "Example1", "text": "When ..."}
+> 2  | {"indices": [ 504939989 1293001993 3201939490 ... ], "values": [1.4383747 0.72849722 1.384775 ...]} | {"year": 1990, "month": 4, "source": "source2", "title": "Example2", "text": "Who ..."}
+> ```
+
+> [tab] Dense + sparse
+>
+> To import into a namespace in an [index with both dense and sparse vectors](/guides/search/hybrid-search/single-index), the Parquet file must contain the following columns:
+>
+> | Column name | Parquet type | Description |
+> | - | - | - |
+> | `id` | `STRING` | Required. The unique [identifier for each record](/guides/core-concepts/key-terms#record-id). |
+> | `values` | `LIST<FLOAT>` | Required. A list of floating-point values that make up the [dense vector embedding](/guides/core-concepts/key-terms#dense-vector). |
+> | `sparse_values` | `STRUCT<indices: LIST<UINT_32>, values: LIST<FLOAT>>` | Optional. A list of floating-point values that make up the [sparse vector embedding](/guides/core-concepts/key-terms#sparse-vector). To omit from specific rows, use `NULL`. |
+> | `metadata` | `STRING` | Optional. Additional [metadata](/guides/core-concepts/key-terms#metadata) for each record. To omit from specific rows, use `NULL`. |
+>
+> > [!NOTE]
+> >
+> > Additional columns in the Parquet file are silently ignored during import; only `id`, `values`, `sparse_values`, and `metadata` are processed.
+>
+> For example:
+>
+> ```parquet theme={null}
+> id | values                   | sparse_values                                                                          | metadata
+> --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+> 1  | [ 3.82  2.48 -4.15 ... ] | {"indices": [1082468256, 1009084850, 1221765879, ...], "values": [2.0, 3.0, 4.0, ...]} | {"year": 1984, "month": 6, "source": "source1", "title": "Example1", "text": "When ..."}
+> 2  | [ 1.82  3.48 -2.15 ... ] | {"indices": [2225824123, 1293001993, 3201939490, ...], "values": [5.0, 2.0, 3.0, ...]} | {"year": 1990, "month": 4, "source": "source2", "title": "Example2", "text": "Who ..."}
+> ```
 
 **3. Upload the files**
 
@@ -614,144 +614,144 @@ with gzip.open("0.jsonl.gz", "wt") as f:
 
 Use the [List imports](/reference/api/latest/data-plane/list_imports) operation to list all of the recent and ongoing imports. By default, the operation returns up to 100 imports per page. If the `limit` parameter is passed, the operation returns up to that number of imports per page instead. For example, if `limit=3`, up to 3 imports are returned per page. Whenever there are additional imports to return, the response includes a `pagination_token` for fetching the next page of imports.
 
-**Python SDK**
-
-When using the Python SDK, `list_import` paginates automatically.
-
-```python Python theme={null}
-from pinecone import Pinecone, ImportErrorMode
-
-pc = Pinecone(api_key="YOUR_API_KEY")
-
-# To get the unique host for an index, 
-# see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.index(host="INDEX_HOST")
-
-# List using a generator that handles pagination
-for i in index.list_imports():
-    print(f"id: {i.id} status: {i.status}")
-
-# List using a generator that fetches all results at once
-operations = list(index.list_imports())
-print(operations)
-```
-
-```json Response theme={null}
-{
-  "data": [
-    {
-      "id": "1",
-      "uri": "s3://BUCKET_NAME/PATH/TO/DIR",
-      "status": "Pending",
-      "started_at": "2024-08-19T20:49:00.754Z",
-      "finished_at": "2024-08-19T20:49:00.754Z",
-      "percent_complete": 42.2,
-      "records_imported": 1000000
-    }
-  ],
-  "pagination": {
-    "next": "Tm90aGluZyB0byBzZWUgaGVyZQo="
-  }
-}
-```
-
-> [!TIP]
+> [tab] Python SDK
 >
-> You can view the list of imports for an index in the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/indexes/). Select the index and navigate to the **Imports** tab.
+> When using the Python SDK, `list_import` paginates automatically.
+>
+> ```python Python theme={null}
+> from pinecone import Pinecone, ImportErrorMode
+>
+> pc = Pinecone(api_key="YOUR_API_KEY")
+>
+> # To get the unique host for an index, 
+> # see https://docs.pinecone.io/guides/manage-data/target-an-index
+> index = pc.index(host="INDEX_HOST")
+>
+> # List using a generator that handles pagination
+> for i in index.list_imports():
+>     print(f"id: {i.id} status: {i.status}")
+>
+> # List using a generator that fetches all results at once
+> operations = list(index.list_imports())
+> print(operations)
+> ```
+>
+> ```json Response theme={null}
+> {
+>   "data": [
+>     {
+>       "id": "1",
+>       "uri": "s3://BUCKET_NAME/PATH/TO/DIR",
+>       "status": "Pending",
+>       "started_at": "2024-08-19T20:49:00.754Z",
+>       "finished_at": "2024-08-19T20:49:00.754Z",
+>       "percent_complete": 42.2,
+>       "records_imported": 1000000
+>     }
+>   ],
+>   "pagination": {
+>     "next": "Tm90aGluZyB0byBzZWUgaGVyZQo="
+>   }
+> }
+> ```
+>
+> > [!TIP]
+> >
+> > You can view the list of imports for an index in the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/indexes/). Select the index and navigate to the **Imports** tab.
 
-**Other SDKs**
-
-When using the Node.js SDK, Java SDK, Go SDK, or REST API to list recent and ongoing imports, you must manually fetch each page of results. To view the next page of results, include the `paginationToken` provided in the response.
-
-```javascript JavaScript theme={null}
-import { Pinecone } from '@pinecone-database/pinecone';
-
-const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
-
-// To get the unique host for an index, 
-// see https://docs.pinecone.io/guides/manage-data/target-an-index
-const index = pc.index("INDEX_NAME", "INDEX_HOST")
-
-const results = await index.listImports({ limit: 10, paginationToken: 'Tm90aGluZyB0byBzZWUgaGVyZQo' });
-console.log(results);
-```
-
-```java Java theme={null}
-import io.pinecone.clients.Pinecone;
-import io.pinecone.clients.AsyncIndex;
-import org.openapitools.db_data.client.ApiException;
-import org.openapitools.db_data.client.model.ListImportsResponse;
-
-public class ListImports {
-    public static void main(String[] args) throws ApiException {
-        // Initialize a Pinecone client with your API key
-        Pinecone pinecone = new Pinecone.Builder("YOUR_API_KEY").build();
-
-        // Get async imports connection object
-        AsyncIndex asyncIndex = pinecone.getAsyncIndexConnection("docs-example");
-
-        // List imports
-        ListImportsResponse response = asyncIndex.listImports(10, "Tm90aGluZyB0byBzZWUgaGVyZQo");
-
-        System.out.println(response);
-    }
-}
-```
-
-```go Go theme={null}
-package main
-
-import (
-    "context"
-    "fmt"
-    "log"
-
-    "github.com/pinecone-io/go-pinecone/v7/pinecone"
-)
-
-func main() {
-    ctx := context.Background()
-
-    pc, err := pinecone.NewClient(pinecone.NewClientParams{
-        ApiKey: "YOUR_API_KEY",
-    })
-    if err != nil {
-        log.Fatalf("Failed to create Client: %v", err)
-    }
-
-    // To get the unique host for an index, 
-    // see https://docs.pinecone.io/guides/manage-data/target-an-index
-    idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST"})
-    if err != nil {
-        log.Fatalf("Failed to create IndexConnection for Host: %v", err)
-  	}
-
-    limit := int32(10)
-    firstImportPage, err := idxConnection.ListImports(ctx, &pinecone.ListImportsRequest{Limit: &limit})
-    if err != nil {
-        log.Fatalf("Failed to list imports: %v", err)
-    }
-    fmt.Printf("First page of imports: %+v", firstImportPage.Imports)
-
-    paginationToken := firstImportPage.NextPaginationToken
-    nextImportPage, err := idxConnection.ListImports(ctx, &pinecone.ListImportsRequest{Limit: &limit, PaginationToken: paginationToken})
-    if err != nil {
-        log.Fatalf("Failed to list imports: %v", err)
-    }
-    fmt.Printf("Second page of imports: %+v", nextImportPage.Imports)
-}
-```
-
-```bash curl theme={null}
-# To get the unique host for an index,
-# see https://docs.pinecone.io/guides/manage-data/target-an-index
-PINECONE_API_KEY="YOUR_API_KEY"
-INDEX_HOST="INDEX_HOST"
-
-curl -X GET "https://$INDEX_HOST/bulk/imports?paginationToken=Tm90aGluZyB0byBzZWUgaGVyZQo" \
-  -H "Api-Key: $PINECONE_API_KEY" \
-  -H "X-Pinecone-Api-Version: 2026-07"
-```
+> [tab] Other SDKs
+>
+> When using the Node.js SDK, Java SDK, Go SDK, or REST API to list recent and ongoing imports, you must manually fetch each page of results. To view the next page of results, include the `paginationToken` provided in the response.
+>
+> ```javascript JavaScript theme={null}
+> import { Pinecone } from '@pinecone-database/pinecone';
+>
+> const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+>
+> // To get the unique host for an index, 
+> // see https://docs.pinecone.io/guides/manage-data/target-an-index
+> const index = pc.index("INDEX_NAME", "INDEX_HOST")
+>
+> const results = await index.listImports({ limit: 10, paginationToken: 'Tm90aGluZyB0byBzZWUgaGVyZQo' });
+> console.log(results);
+> ```
+>
+> ```java Java theme={null}
+> import io.pinecone.clients.Pinecone;
+> import io.pinecone.clients.AsyncIndex;
+> import org.openapitools.db_data.client.ApiException;
+> import org.openapitools.db_data.client.model.ListImportsResponse;
+>
+> public class ListImports {
+>     public static void main(String[] args) throws ApiException {
+>         // Initialize a Pinecone client with your API key
+>         Pinecone pinecone = new Pinecone.Builder("YOUR_API_KEY").build();
+>
+>         // Get async imports connection object
+>         AsyncIndex asyncIndex = pinecone.getAsyncIndexConnection("docs-example");
+>
+>         // List imports
+>         ListImportsResponse response = asyncIndex.listImports(10, "Tm90aGluZyB0byBzZWUgaGVyZQo");
+>
+>         System.out.println(response);
+>     }
+> }
+> ```
+>
+> ```go Go theme={null}
+> package main
+>
+> import (
+>     "context"
+>     "fmt"
+>     "log"
+>
+>     "github.com/pinecone-io/go-pinecone/v7/pinecone"
+> )
+>
+> func main() {
+>     ctx := context.Background()
+>
+>     pc, err := pinecone.NewClient(pinecone.NewClientParams{
+>         ApiKey: "YOUR_API_KEY",
+>     })
+>     if err != nil {
+>         log.Fatalf("Failed to create Client: %v", err)
+>     }
+>
+>     // To get the unique host for an index, 
+>     // see https://docs.pinecone.io/guides/manage-data/target-an-index
+>     idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST"})
+>     if err != nil {
+>         log.Fatalf("Failed to create IndexConnection for Host: %v", err)
+>   	}
+>
+>     limit := int32(10)
+>     firstImportPage, err := idxConnection.ListImports(ctx, &pinecone.ListImportsRequest{Limit: &limit})
+>     if err != nil {
+>         log.Fatalf("Failed to list imports: %v", err)
+>     }
+>     fmt.Printf("First page of imports: %+v", firstImportPage.Imports)
+>
+>     paginationToken := firstImportPage.NextPaginationToken
+>     nextImportPage, err := idxConnection.ListImports(ctx, &pinecone.ListImportsRequest{Limit: &limit, PaginationToken: paginationToken})
+>     if err != nil {
+>         log.Fatalf("Failed to list imports: %v", err)
+>     }
+>     fmt.Printf("Second page of imports: %+v", nextImportPage.Imports)
+> }
+> ```
+>
+> ```bash curl theme={null}
+> # To get the unique host for an index,
+> # see https://docs.pinecone.io/guides/manage-data/target-an-index
+> PINECONE_API_KEY="YOUR_API_KEY"
+> INDEX_HOST="INDEX_HOST"
+>
+> curl -X GET "https://$INDEX_HOST/bulk/imports?paginationToken=Tm90aGluZyB0byBzZWUgaGVyZQo" \
+>   -H "Api-Key: $PINECONE_API_KEY" \
+>   -H "X-Pinecone-Api-Version: 2026-07"
+> ```
 
 ### Cancel an import
 
@@ -892,7 +892,7 @@ Also:
 
 When an import fails, you'll see an error message with the reason for the failure in the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/import) or in the response to the [describe an import](/reference/api/latest/data-plane/describe_import) operation.
 
-> **Namespace already exists**
+> [accordion] Namespace already exists
 >
 > You can't import data into an existing namespace. If your import directory structure contains a folder with the name of an existing namespace in your index, the import will fail with the following error:
 >
@@ -902,7 +902,7 @@ When an import fails, you'll see an error message with the reason for the failur
 >
 > To fix this, rename the folder to use a namespace name that doesn't yet exist.
 
-> **No namespace found**
+> [accordion] No namespace found
 >
 > In object storage, your directory structure must be as follows:
 >
@@ -929,7 +929,7 @@ When an import fails, you'll see an error message with the reason for the failur
 >
 > To fix this, move the Parquet file to a namespace subdirectory.
 
-> **Parquet files not found**
+> [accordion] Parquet files not found
 >
 > Each namespace subdirectory must contain Parquet files with data to import. If a namespace subdirectory doesn't include Parquet files, the import will fail with the following error:
 >
@@ -939,13 +939,13 @@ When an import fails, you'll see an error message with the reason for the failur
 >
 > To fix this, add Parquet files to the namespace subdirectory.
 
-> **Namespace not created (empty subdirectory)**
+> [accordion] Namespace not created (empty subdirectory)
 >
 > For document-schema (JSONL) imports, an empty namespace subdirectory behaves differently than for Parquet. A namespace subdirectory that contains no `.jsonl` or `.jsonl.gz` files is silently skipped: the import doesn't create that namespace and doesn't raise an error for it. If a namespace is missing after an import that otherwise succeeded, confirm its subdirectory actually contains importable files.
 >
 > If no importable files are found anywhere under the dataset prefix, the import fails with the same `No Parquet files found` error shown above, which says "Parquet files" even for JSONL imports.
 
-> **Invalid import URI**
+> [accordion] Invalid import URI
 >
 > In your [start import](/reference/api/latest/data-plane/start_import) request, the import `uri` must specify only the bucket and import directory containing the namespaces and Parquet files you want to import. If the `uri` also contains a namespaces directory or a Parquet filename, the import will fail with the following error:
 >
@@ -955,7 +955,7 @@ When an import fails, you'll see an error message with the reason for the failur
 >
 > To fix this, remove the namespaces directory or Parquet filename from the `uri`.
 
-> **Invalid Parquet files**
+> [accordion] Invalid Parquet files
 >
 > When a Parquet file isn't formatted correctly, the import will fail with a message like one of the following:
 >
@@ -977,7 +977,7 @@ When an import fails, you'll see an error message with the reason for the failur
 >
 > To fix these errors, check the specific error message and follow the instructions in the [Prepare your data](#3-prepare-your-data) section.
 
-> **Invalid JSONL files or documents**
+> [accordion] Invalid JSONL files or documents
 >
 > For document-schema indexes, import files are JSONL: each line is one JSON document, validated against the index's [schema](#file-format). A line fails if it isn't valid JSON, or if the document doesn't conform to the schema. Each per-document error identifies the file name, row number, and document `_id`:
 >
@@ -1013,7 +1013,7 @@ When an import fails, you'll see an error message with the reason for the failur
 >
 > To fix these errors, validate your documents against the [file-format rules](#file-format) before importing.
 
-> **Invalid records**
+> [accordion] Invalid records
 >
 > When the `error_mode` is `abort` and a file contains invalid records, the import will stop processing on the first invalid record and return an error message identifying the file name and row:
 >
@@ -1043,7 +1043,7 @@ When an import fails, you'll see an error message with the reason for the failur
 >
 > To fix these errors, check the specific error message and follow the instructions in the [Prepare your data](#3-prepare-your-data) section.
 
-> **Duplicate records**
+> [accordion] Duplicate records
 >
 > Bulk import deduplicates by record ID, not by vector value. If an import contains more than one record with the same ID in the same namespace, only one is kept and the rest are counted as skipped. Which record is kept isn't deterministic. Records that share identical vector values but have different IDs are all imported.
 >
@@ -1062,7 +1062,7 @@ When an import fails, you'll see an error message with the reason for the failur
 >
 > Two records are imported: `2`, and one of the two records with ID `1`.
 
-> **Import exceeds maximum data size for on-demand**
+> [accordion] Import exceeds maximum data size for on-demand
 >
 > On-demand indexes have a maximum total input data size of 1 TB per import. If your import exceeds this limit, it will fail with the following error:
 >

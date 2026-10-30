@@ -18,15 +18,15 @@ Use the Database API to store and query records in [Pinecone Database](/guides/g
 
 The following Pinecone SDKs support the Database API:
 
-> **[CLI](/reference/cli/overview)**
+> [card] [CLI](/reference/cli/overview)
 
-> **[Python SDK](/reference/sdks/python/overview)**
+> [card] [Python SDK](/reference/sdks/python/overview)
 
-> **[Node.js SDK](/reference/sdks/node/overview)**
+> [card] [Node.js SDK](/reference/sdks/node/overview)
 
-> **[Java SDK](/reference/sdks/java/overview)**
+> [card] [Java SDK](/reference/sdks/java/overview)
 
-> **[Go SDK](/reference/sdks/go/overview)**
+> [card] [Go SDK](/reference/sdks/go/overview)
 
 ## Inference
 
@@ -39,10 +39,10 @@ There are two ways to use the Inference API:
 
 The following Pinecone SDKs support using the Inference API:
 
-> **[Python SDK](/reference/sdks/python/overview)**
+> [card] [Python SDK](/reference/sdks/python/overview)
 
-> **[Node.js SDK](/reference/sdks/node/overview)**
+> [card] [Node.js SDK](/reference/sdks/node/overview)
 
-> **[Java SDK](/reference/sdks/java/overview)**
+> [card] [Java SDK](/reference/sdks/java/overview)
 
-> **[Go SDK](/reference/sdks/go/overview)**
+> [card] [Go SDK](/reference/sdks/go/overview)

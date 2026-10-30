@@ -25,155 +25,155 @@ The following steps assume you have:
 
 In the [AWS console](https://console.aws.amazon.com/console/home), create a role that Pinecone can use to access the AWS Key Management System (KMS) key. You can either grant Pinecone access to a key in your account, or if your customers provide their own keys, you can grant access to keys that are outside of your account.
 
-**Grant access to key in your account**
+> [tab] Grant access to key in your account
+>
+> 1. Open the [Amazon Identity and Access Management (IAM) console](https://console.aws.amazon.com/iam/).
+>
+> 2. In the navigation pane, click **Roles**.
+>
+> 3. Click **Create role**.
+>
+> 4. In the **Trusted entity type** section, select **Custom trust policy**.
+>
+> 5. In the **Custom trust policy** section, enter one of the following JSON snippets.
+>
+>    Pick a snippet based on whether you want to allow Pinecone to assume a role from all regions or from explicit regions. Add an optional external ID for additional security. If you use an external ID, you must provide it to Pinecone when [adding a CMEK key](#add-a-key).
+>
+>    > [accordion] Explicit regions + external ID
+>    >
+>    > ```jsonc JSON theme={null}
+>    > {
+>    >     "Version": "2012-10-17",
+>    >     "Statement": [
+>    >         {
+>    >             "Sid": "AllowPineconeToAssumeIntoRoleFromExplicitRegionswithID",
+>    >             "Effect": "Allow",
+>    >             "Principal": {
+>    >                 "AWS": [
+>    >                     // Explicit role per Pinecone region. Replace XXXXXXXXXXXX with Pinecone's AWS account number.
+>    >                     "arn:aws:iam::XXXXXXXXXXXX:role/pinecone_cmek_access_us-east-1",
+>    >                     "arn:aws:iam::XXXXXXXXXXXX:role/pinecone_cmek_access_us-west-2",
+>    >                     "arn:aws:iam::XXXXXXXXXXXX:role/pinecone_cmek_access_eu-west-1",
+>    >                     "arn:aws:iam::XXXXXXXXXXXX:role/pinecone_cmek_access_eu-central-1",
+>    >                     "arn:aws:iam::XXXXXXXXXXXX:role/pinecone_cmek_access_ap-southeast-1"
+>    >                 ]
+>    >             },
+>    >             "Action": "sts:AssumeRole",
+>    >             "Condition": {
+>    >                 "StringEquals": {
+>    >                     // Optional. Replace with a UUID v4 for additional security. If you use an external ID, you must provide it to Pinecone when adding an API key.
+>    >                     "sts:ExternalId": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
+>    >                 }
+>    >             }
+>    >         }
+>    >     ]
+>    > }
+>    > ```
+>
+>    > [accordion] Explicit regions + no external ID
+>    >
+>    > ```jsonc JSON theme={null}
+>    > {
+>    >     "Version": "2012-10-17",
+>    >     "Statement": [
+>    >         {
+>    >             "Sid": "AllowPineconeToAssumeIntoRoleFromExplicitRegions",
+>    >             "Effect": "Allow",
+>    >             "Principal": {
+>    >                 "AWS": [
+>    >                     // Explicit role per Pinecone region. Replace XXXXXXXXXXXX with Pinecone's AWS account number.
+>    >                     "arn:aws:iam::XXXXXXXXXXXX:role/pinecone_cmek_access_us-east-1",
+>    >                     "arn:aws:iam::XXXXXXXXXXXX:role/pinecone_cmek_access_us-west-2",
+>    >                     "arn:aws:iam::XXXXXXXXXXXX:role/pinecone_cmek_access_eu-west-1",
+>    >                     "arn:aws:iam::XXXXXXXXXXXX:role/pinecone_cmek_access_eu-central-1",
+>    >                     "arn:aws:iam::XXXXXXXXXXXX:role/pinecone_cmek_access_ap-southeast-1"
+>    >                 ]
+>    >             },
+>    >             "Action": "sts:AssumeRole"
+>    >         }
+>    >     ]
+>    > }
+>    > ```
+>
+>    > [accordion] All regions + external ID
+>    >
+>    > ```jsonc JSON theme={null}
+>    > {
+>    >     "Version": "2012-10-17",
+>    >     "Statement": [
+>    >         {
+>    >             "Sid": "AllowPineconeToAssumeIntoRoleFromAllRegions",
+>    >             "Effect": "Allow",
+>    >             "Principal": {
+>    >                 "AWS": "*"
+>    >             },
+>    >             "Action": "sts:AssumeRole",
+>    >             "Condition": {
+>    >                 "StringEquals": {
+>    >                     // Optional. Replace with a UUID v4 for additional security. If you use an external ID, you must provide it to Pinecone when adding an API key.
+>    >                     "sts:ExternalId": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
+>    >                 },
+>    >                 "StringLike": {
+>    >                     // Replace XXXXXXXXXXXX with Pinecone's AWS account number.
+>    >                     "aws:PrincipalArn": "arn:aws:iam::XXXXXXXXXXXX:role/pinecone_cmek_access_*"
+>    >                 }
+>    >             }
+>    >         }
+>    >     ]
+>    > }
+>    > ```
+>
+>    > [!NOTE]
+>    >
+>    > Replace `XXXXXXXXXXXX` with Pinecone's AWS account number, which can be found by going to [**Manage > CMEK**](https://app.pinecone.io/organizations/-/projects/-/cmek-encryption) in the Pinecone console and clicking **Add CMEK**.
+>
+> 6. Click **Next**.
+>
+> 7. Keep the default permissions as is and click **Next**.
+>
+> 8. Enter a **Role name** and click **Create role**.
+>
+> 9. Copy the **Role ARN** (e.g., `arn:aws:iam::XXXXXX:role/YYYYYY`). This will be used to [create a CMEK-enabled project](#3-create-a-cmek-enabled-project).
 
-1. Open the [Amazon Identity and Access Management (IAM) console](https://console.aws.amazon.com/iam/).
-
-2. In the navigation pane, click **Roles**.
-
-3. Click **Create role**.
-
-4. In the **Trusted entity type** section, select **Custom trust policy**.
-
-5. In the **Custom trust policy** section, enter one of the following JSON snippets.
-
-   Pick a snippet based on whether you want to allow Pinecone to assume a role from all regions or from explicit regions. Add an optional external ID for additional security. If you use an external ID, you must provide it to Pinecone when [adding a CMEK key](#add-a-key).
-
-   > **Explicit regions + external ID**
-   >
-   > ```jsonc JSON theme={null}
-   > {
-   >     "Version": "2012-10-17",
-   >     "Statement": [
-   >         {
-   >             "Sid": "AllowPineconeToAssumeIntoRoleFromExplicitRegionswithID",
-   >             "Effect": "Allow",
-   >             "Principal": {
-   >                 "AWS": [
-   >                     // Explicit role per Pinecone region. Replace XXXXXXXXXXXX with Pinecone's AWS account number.
-   >                     "arn:aws:iam::XXXXXXXXXXXX:role/pinecone_cmek_access_us-east-1",
-   >                     "arn:aws:iam::XXXXXXXXXXXX:role/pinecone_cmek_access_us-west-2",
-   >                     "arn:aws:iam::XXXXXXXXXXXX:role/pinecone_cmek_access_eu-west-1",
-   >                     "arn:aws:iam::XXXXXXXXXXXX:role/pinecone_cmek_access_eu-central-1",
-   >                     "arn:aws:iam::XXXXXXXXXXXX:role/pinecone_cmek_access_ap-southeast-1"
-   >                 ]
-   >             },
-   >             "Action": "sts:AssumeRole",
-   >             "Condition": {
-   >                 "StringEquals": {
-   >                     // Optional. Replace with a UUID v4 for additional security. If you use an external ID, you must provide it to Pinecone when adding an API key.
-   >                     "sts:ExternalId": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
-   >                 }
-   >             }
-   >         }
-   >     ]
-   > }
-   > ```
-
-   > **Explicit regions + no external ID**
-   >
-   > ```jsonc JSON theme={null}
-   > {
-   >     "Version": "2012-10-17",
-   >     "Statement": [
-   >         {
-   >             "Sid": "AllowPineconeToAssumeIntoRoleFromExplicitRegions",
-   >             "Effect": "Allow",
-   >             "Principal": {
-   >                 "AWS": [
-   >                     // Explicit role per Pinecone region. Replace XXXXXXXXXXXX with Pinecone's AWS account number.
-   >                     "arn:aws:iam::XXXXXXXXXXXX:role/pinecone_cmek_access_us-east-1",
-   >                     "arn:aws:iam::XXXXXXXXXXXX:role/pinecone_cmek_access_us-west-2",
-   >                     "arn:aws:iam::XXXXXXXXXXXX:role/pinecone_cmek_access_eu-west-1",
-   >                     "arn:aws:iam::XXXXXXXXXXXX:role/pinecone_cmek_access_eu-central-1",
-   >                     "arn:aws:iam::XXXXXXXXXXXX:role/pinecone_cmek_access_ap-southeast-1"
-   >                 ]
-   >             },
-   >             "Action": "sts:AssumeRole"
-   >         }
-   >     ]
-   > }
-   > ```
-
-   > **All regions + external ID**
-   >
-   > ```jsonc JSON theme={null}
-   > {
-   >     "Version": "2012-10-17",
-   >     "Statement": [
-   >         {
-   >             "Sid": "AllowPineconeToAssumeIntoRoleFromAllRegions",
-   >             "Effect": "Allow",
-   >             "Principal": {
-   >                 "AWS": "*"
-   >             },
-   >             "Action": "sts:AssumeRole",
-   >             "Condition": {
-   >                 "StringEquals": {
-   >                     // Optional. Replace with a UUID v4 for additional security. If you use an external ID, you must provide it to Pinecone when adding an API key.
-   >                     "sts:ExternalId": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
-   >                 },
-   >                 "StringLike": {
-   >                     // Replace XXXXXXXXXXXX with Pinecone's AWS account number.
-   >                     "aws:PrincipalArn": "arn:aws:iam::XXXXXXXXXXXX:role/pinecone_cmek_access_*"
-   >                 }
-   >             }
-   >         }
-   >     ]
-   > }
-   > ```
-
-   > [!NOTE]
-   >
-   > Replace `XXXXXXXXXXXX` with Pinecone's AWS account number, which can be found by going to [**Manage > CMEK**](https://app.pinecone.io/organizations/-/projects/-/cmek-encryption) in the Pinecone console and clicking **Add CMEK**.
-
-6. Click **Next**.
-
-7. Keep the default permissions as is and click **Next**.
-
-8. Enter a **Role name** and click **Create role**.
-
-9. Copy the **Role ARN** (e.g., `arn:aws:iam::XXXXXX:role/YYYYYY`). This will be used to [create a CMEK-enabled project](#3-create-a-cmek-enabled-project).
-
-**Grant access to keys outside your account**
-
-1. Open the [Amazon Identity and Access Management (IAM) console](https://console.aws.amazon.com/iam/).
-
-2. In the navigation pane, click **Roles**.
-
-3. Click **Create role**.
-
-4. In the **Trusted entity type** section, select **Custom trust policy**.
-
-5. In the **Custom trust policy** section, enter the following JSON:
-
-   ```json JSON theme={null}
-   {
-       "Version": "2012-10-17",
-       "Statement": [
-           {
-               "Sid": "VisualEditor0",
-               "Effect": "Allow",
-               "Action": [
-                   "kms:Decrypt",
-                   "kms:Encrypt"
-               ],
-               "Resource": "arn:aws:kms:*:XXXXXX:key/*"
-           }
-       ]
-   }
-   ```
-
-   * Replace `XXXXXX` with the account ID of the customer who owns the key.
-   * Add a `Statement` array for each customer account ID.
-
-6. Click **Next**.
-
-7. Keep the default permissions as is and click **Next**.
-
-8. Enter a **Role name** and click **Create role**.
-
-9. Copy the **Role ARN** (e.g., `arn:aws:iam::XXXXXX:role/YYYYYY`). This will be used to [create a CMEK-enabled project](#3-create-a-cmek-enabled-project).
+> [tab] Grant access to keys outside your account
+>
+> 1. Open the [Amazon Identity and Access Management (IAM) console](https://console.aws.amazon.com/iam/).
+>
+> 2. In the navigation pane, click **Roles**.
+>
+> 3. Click **Create role**.
+>
+> 4. In the **Trusted entity type** section, select **Custom trust policy**.
+>
+> 5. In the **Custom trust policy** section, enter the following JSON:
+>
+>    ```json JSON theme={null}
+>    {
+>        "Version": "2012-10-17",
+>        "Statement": [
+>            {
+>                "Sid": "VisualEditor0",
+>                "Effect": "Allow",
+>                "Action": [
+>                    "kms:Decrypt",
+>                    "kms:Encrypt"
+>                ],
+>                "Resource": "arn:aws:kms:*:XXXXXX:key/*"
+>            }
+>        ]
+>    }
+>    ```
+>
+>    * Replace `XXXXXX` with the account ID of the customer who owns the key.
+>    * Add a `Statement` array for each customer account ID.
+>
+> 6. Click **Next**.
+>
+> 7. Keep the default permissions as is and click **Next**.
+>
+> 8. Enter a **Role name** and click **Create role**.
+>
+> 9. Copy the **Role ARN** (e.g., `arn:aws:iam::XXXXXX:role/YYYYYY`). This will be used to [create a CMEK-enabled project](#3-create-a-cmek-enabled-project).
 
 ### 2. Create an AWS KMS key
 

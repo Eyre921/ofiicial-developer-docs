@@ -68,71 +68,71 @@ Max Pods            5
 
 ## Rename a project
 
-**Pinecone console**
-
-1. In the Pinecone console, go to [**Settings > Projects**](https://app.pinecone.io/organizations/-/settings/projects).
-
-2. Click the **ellipsis (...) menu > Configure** icon next to the project you want to update.
-
-3. Enter a new **Name**.
-
-   > [!NOTE]
-   >
-   > A project name can contain up to 512 characters.
-
-4. Click **Save changes**.
-
-**Code**
-
-> [!NOTE]
+> [tab] Pinecone console
 >
-> To complete this action through the Admin API, you need an [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token).
+> 1. In the Pinecone console, go to [**Settings > Projects**](https://app.pinecone.io/organizations/-/settings/projects).
+>
+> 2. Click the **ellipsis (...) menu > Configure** icon next to the project you want to update.
+>
+> 3. Enter a new **Name**.
+>
+>    > [!NOTE]
+>    >
+>    > A project name can contain up to 512 characters.
+>
+> 4. Click **Save changes**.
 
-```bash curl theme={null}
-PROJECT_ID="YOUR_PROJECT_ID"
-PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
-
-curl -X PATCH "https://api.pinecone.io/admin/projects/$PROJECT_ID" \
-     -H "accept: application/json" \
-     -H "Content-Type: application/json" \
-     -H "X-Pinecone-Api-Version: 2026-07" \
-     -d '{
-           "name": "updated-example-project"
-         }'
-```
-
-```bash CLI theme={null}
-PROJECT_ID="YOUR_PROJECT_ID"
-
-# Target the project to update.
-pc target -o "example-org" "example-project"
-# Update the project name.
-pc project update -i $PROJECT_ID -n "updated-example-project"
-```
-
-The example returns a response like the following:
-
-```json curl theme={null}
-{
-  "id": "32c8235a-5220-4a80-a9f1-69c24109e6f2",
-  "name": "updated-example-project",
-  "max_pods": 5,
-  "force_encryption_with_cmek": false,
-  "organization_id": "-NM7af6f234168c4e44a",
-  "created_at": "2025-10-27T23:27:46.370088Z"
-}
-```
-
-```text CLI theme={null}
-[SUCCESS] Project 32c8235a-5220-4a80-a9f1-69c24109e6f2 updated successfully.
-ATTRIBUTE           VALUE
-Name                updated-example-project
-ID                  32c8235a-5220-4a80-a9f1-69c24109e6f2
-Organization ID     -NM7af6f234168c4e44a
-Created At          2025-10-27 23:27:46.370088 +0000 UTC
-Force Encryption    false
-Max Pods            5
-```
+> [tab] Code
+>
+> > [!NOTE]
+> >
+> > To complete this action through the Admin API, you need an [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token).
+>
+> ```bash curl theme={null}
+> PROJECT_ID="YOUR_PROJECT_ID"
+> PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
+>
+> curl -X PATCH "https://api.pinecone.io/admin/projects/$PROJECT_ID" \
+>      -H "accept: application/json" \
+>      -H "Content-Type: application/json" \
+>      -H "X-Pinecone-Api-Version: 2026-07" \
+>      -d '{
+>            "name": "updated-example-project"
+>          }'
+> ```
+>
+> ```bash CLI theme={null}
+> PROJECT_ID="YOUR_PROJECT_ID"
+>
+> # Target the project to update.
+> pc target -o "example-org" "example-project"
+> # Update the project name.
+> pc project update -i $PROJECT_ID -n "updated-example-project"
+> ```
+>
+> The example returns a response like the following:
+>
+> ```json curl theme={null}
+> {
+>   "id": "32c8235a-5220-4a80-a9f1-69c24109e6f2",
+>   "name": "updated-example-project",
+>   "max_pods": 5,
+>   "force_encryption_with_cmek": false,
+>   "organization_id": "-NM7af6f234168c4e44a",
+>   "created_at": "2025-10-27T23:27:46.370088Z"
+> }
+> ```
+>
+> ```text CLI theme={null}
+> [SUCCESS] Project 32c8235a-5220-4a80-a9f1-69c24109e6f2 updated successfully.
+> ATTRIBUTE           VALUE
+> Name                updated-example-project
+> ID                  32c8235a-5220-4a80-a9f1-69c24109e6f2
+> Organization ID     -NM7af6f234168c4e44a
+> Created At          2025-10-27 23:27:46.370088 +0000 UTC
+> Force Encryption    false
+> Max Pods            5
+> ```
 
 ## Add project tags
 
@@ -153,34 +153,34 @@ To add project tags, use the Pinecone console.
 
 To delete a project, you must first [delete all data](/guides/manage-data/delete-data), [indexes](/guides/manage-data/manage-indexes#delete-an-index), [collections](/guides/indexes/pods/back-up-a-pod-based-index#delete-a-collection), [backups](/guides/manage-data/back-up-an-index#delete-a-backup), and [assistants](/guides/assistant/manage-assistants#delete-an-assistant) associated with the project. Then you can delete the project itself.
 
-**Pinecone console**
-
-1. In the Pinecone console, go to [**Settings > Projects**](https://app.pinecone.io/organizations/-/settings/projects).
-2. For the project you want to delete, click the **ellipsis (...) menu > Delete**.
-3. Enter the project name to confirm the deletion.
-4. Click **Delete project**.
-
-**Code**
-
-> [!NOTE]
+> [tab] Pinecone console
 >
-> To complete this action through the Admin API, you need an [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token).
+> 1. In the Pinecone console, go to [**Settings > Projects**](https://app.pinecone.io/organizations/-/settings/projects).
+> 2. For the project you want to delete, click the **ellipsis (...) menu > Delete**.
+> 3. Enter the project name to confirm the deletion.
+> 4. Click **Delete project**.
 
-```bash curl theme={null}
-PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
-PROJECT_ID="32c8235a-5220-4a80-a9f1-69c24109e6f2"
-
-curl -X DELETE "https://api.pinecone.io/admin/projects/$PROJECT_ID" \
-     -H "X-Pinecone-Api-Version: 2026-07" \
-     -H "Authorization: Bearer $PINECONE_ACCESS_TOKEN"
-```
-
-```bash CLI theme={null}
-PINECONE_PROJECT_ID="32c8235a-5220-4a80-a9f1-69c24109e6f2"
-
-# Target the organization that contains the project.
-pc target -o "example-org" 
-# Delete the project. Use --skip-confirmation to skip 
-# the confirmation prompt.
-pc project delete -i $PINECONE_PROJECT_ID
-```
+> [tab] Code
+>
+> > [!NOTE]
+> >
+> > To complete this action through the Admin API, you need an [access token](/admin/organizations/manage-service-accounts#retrieve-an-access-token).
+>
+> ```bash curl theme={null}
+> PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
+> PROJECT_ID="32c8235a-5220-4a80-a9f1-69c24109e6f2"
+>
+> curl -X DELETE "https://api.pinecone.io/admin/projects/$PROJECT_ID" \
+>      -H "X-Pinecone-Api-Version: 2026-07" \
+>      -H "Authorization: Bearer $PINECONE_ACCESS_TOKEN"
+> ```
+>
+> ```bash CLI theme={null}
+> PINECONE_PROJECT_ID="32c8235a-5220-4a80-a9f1-69c24109e6f2"
+>
+> # Target the organization that contains the project.
+> pc target -o "example-org" 
+> # Delete the project. Use --skip-confirmation to skip 
+> # the confirmation prompt.
+> pc project delete -i $PINECONE_PROJECT_ID
+> ```

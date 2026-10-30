@@ -10,13 +10,13 @@ Browse official Pinecone SDKs for Python, Node.js, Java, and Go, including the v
 
 Official Pinecone SDKs provide convenient access to the [Pinecone APIs](/reference/api/introduction).
 
-> **[Python SDK](/reference/sdks/python/overview)**
+> [card] [Python SDK](/reference/sdks/python/overview)
 
-> **[Node.js SDK](/reference/sdks/node/overview)**
+> [card] [Node.js SDK](/reference/sdks/node/overview)
 
-> **[Java SDK](/reference/sdks/java/overview)**
+> [card] [Java SDK](/reference/sdks/java/overview)
 
-> **[Go SDK](/reference/sdks/go/overview)**
+> [card] [Go SDK](/reference/sdks/go/overview)
 
 ## SDK versions
 

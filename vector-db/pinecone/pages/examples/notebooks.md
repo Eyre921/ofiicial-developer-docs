@@ -22,7 +22,7 @@ gemini-embedding-2
 
 Implement semantic search over an index with dense vectors to find records that are similar in meaning to a given query.
 
-Pinecone Integrated Inference
+Integrated embedding
 
 ![](/images/examples/huggingface-icon.svg)
 Hugging Face Datasets
@@ -33,7 +33,9 @@ llama-text-embed-v2
 
 Implement lexical search over an index of sparse vectors to find records that most exactly match the words or phrases in a query.
 
-Pinecone Integrated Inference
+Integrated embedding
+
+Integrated reranking
 
 pinecone-sparse-english-v0
 
@@ -43,7 +45,9 @@ bge-reranker-v2-m3
 
 Implement cascading retrieval (hybrid search with two indexes) to combine the benefits of semantic and lexical search.
 
-Pinecone Integrated Inference
+Integrated embedding
+
+Standalone reranking
 
 llama-text-embed-v2
 
@@ -55,7 +59,7 @@ bge-reranker-v2-m3
 
 Use Pinecone's reranking feature to enhance the accuracy of search results.
 
-Pinecone Inference
+Standalone reranking
 
 ![](https://cdn.sanity.io/images/vr8gru94/production/40b1d05ee1325e6d9e4886af4e76ff06d844faff-188x188.jpg)
 bge-reranker-v2-m3

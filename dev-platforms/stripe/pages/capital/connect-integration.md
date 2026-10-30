@@ -115,7 +115,7 @@ Stripe initiates a separate payout from the financing source balance to the conn
 
 ### Connected accounts pay the financing
 
-Stripe automatically applies a percentage of eligible payments to the financing balance. Connected accounts can also make additional or manual payments. For financing products with a minimum or fixed periodic payment, Stripe might debit the connected account’s bank account to cover a shortfall. See [how Stripe Capital payments work](https://docs.stripe.com/capital/how-stripe-capital-works.md?capital-country=US#pay-down-your-financing).
+Stripe automatically applies a percentage of eligible payments to the financing balance. Connected accounts can also make additional or manual payments. For financing products with a minimum or fixed periodic payment, Stripe might debit the connected account’s bank account to cover a shortfall. See [how Stripe Capital payments work](https://docs.stripe.com/capital.md?capital-country=US#pay-down-your-financing).
 
 Your [Connect charge type](https://docs.stripe.com/connect/charges.md) determines which amount Stripe withholds from.
 

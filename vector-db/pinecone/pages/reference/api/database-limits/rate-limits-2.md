@@ -37,7 +37,7 @@ Monthly rerank request limits vary by model:
 
 Reaching a monthly usage limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade your plan](/admin/billing/upgrade-billing-plan) to continue.
 
-> **Example error**
+> [accordion] Example error
 >
 > ```
 > Request failed. You've reached your read unit limit for the current month.
@@ -67,7 +67,7 @@ Reaching a monthly usage limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade you
 
 Exceeding a per-second throughput limit returns a `429 - TOO_MANY_REQUESTS`. [Implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic), pace your requests, consider [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) (which aren't subject to per-second read limits) for high-throughput reads, or [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to raise a limit.
 
-> **Example error**
+> [accordion] Example error
 >
 > ```
 > Request failed. You've reached the query QPS limit for namespace {namespace_name} ({limit} QPS). Pace your queries, consider Dedicated Read Nodes for your index, or contact Pinecone Support (https://app.pinecone.io/organizations/-/settings/support/ticket) to request a higher limit.
@@ -97,7 +97,7 @@ Per-minute request limits for reranking models:
 
 Reaching a per-minute model limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade your plan](/admin/billing/upgrade-billing-plan) to increase it, or [implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic).
 
-> **Example error**
+> [accordion] Example error
 >
 > ```
 > Request failed. You've reached the max embedding tokens per minute (<limit>) model '<model name>' and input type '<passage|query>' for the current project.
@@ -113,7 +113,7 @@ Reaching a per-minute model limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade 
 
 Exceeding the per-second or per-minute limit returns a `429 - TOO_MANY_REQUESTS`. [Implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic) to handle it.
 
-> **Example error**
+> [accordion] Example error
 >
 > ```
 > Request failed. You've reached the max inference requests per second (<limit>) for the current project.

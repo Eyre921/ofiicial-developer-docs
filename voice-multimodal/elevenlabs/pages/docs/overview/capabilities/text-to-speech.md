@@ -48,7 +48,7 @@ What changed in Eleven v4, with voice cloning comparisons.
 
 ### Voice quality
 
-For real-time applications, Flash v2.5 provides ultra-low 75ms latency, while Multilingual v2 delivers the highest quality audio with more nuanced expression.
+For real-time applications, Eleven v4 Turbo and Flash v2.5 provide ultra-low latency, while Multilingual v2 delivers the highest quality audio with more nuanced expression.
 
 #### [Eleven v4](/docs/overview/models#eleven-v4)
 
@@ -66,7 +66,7 @@ Support for natural multi-speaker dialogue
 
 Our most emotive, real-time speech synthesis model
 
-Ultra-low latency (median inference latency of \~100ms†)
+Ultra-low latency (median latency of \~100ms†)
 
 Exceptional voice cloning capabilities
 
@@ -90,7 +90,7 @@ Support for natural multi-speaker dialogue
 
 Our expressive, realtime speech synthesis model
 
-Low latency (\~280ms)
+Low latency (\~165ms†)
 
 Dramatic delivery and performance
 
@@ -114,7 +114,7 @@ Most stable on long-form generations
 
 Our fast, affordable speech synthesis model
 
-Ultra-low latency (\~75ms†)
+Ultra-low latency (\~100ms†)
 
 32 languages supported
 

@@ -8,7 +8,7 @@ Getting started guide for building interactive UI applications with MCP Apps
 
 ## Prerequisites
 
-You'll need [Node.js](https://nodejs.org/en/download) 18 or higher. Familiarity
+You'll need [Node.js](https://nodejs.org/en/download) 20 or higher. Familiarity
 with [MCP tools](/specification/latest/server/tools) and
 [resources](/specification/latest/server/resources) is recommended since MCP
 Apps combine both primitives. Experience with the

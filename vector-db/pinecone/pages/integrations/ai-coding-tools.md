@@ -10,27 +10,27 @@ Pinecone provides official plugins and agent skills for AI coding tools. Use the
 
 ## Choose your tool
 
-> **[Claude Code plugin](/integrations/claude-code)**
+> [card] [Claude Code plugin](/integrations/claude-code)
 >
 > Official Pinecone plugin for Claude Code with skills, MCP tools, and slash commands.
 
-> **[Codex plugin](/integrations/codex)**
+> [card] [Codex plugin](/integrations/codex)
 >
 > Official Pinecone plugin for Codex with skills and MCP tools.
 
-> **[Cursor plugin](/integrations/cursor)**
+> [card] [Cursor plugin](/integrations/cursor)
 >
 > Official Pinecone plugin for Cursor with skills, MCP tools, and slash commands.
 
-> **[Agent Skills](/integrations/agent-skills)**
+> [card] [Agent Skills](/integrations/agent-skills)
 >
 > Universal skills library for GitHub Copilot and other agentic IDEs.
 
-> **[MCP server](/guides/operations/mcp-server)**
+> [card] [MCP server](/guides/operations/mcp-server)
 >
 > Connect any MCP-compatible client to Pinecone for index management and search.
 
-> **[Pinecone CLI](/reference/cli/quickstart)**
+> [card] [Pinecone CLI](/reference/cli/quickstart)
 >
 > Direct terminal access to Pinecone. Manage indexes, namespaces, and records with `pc` commands.
 

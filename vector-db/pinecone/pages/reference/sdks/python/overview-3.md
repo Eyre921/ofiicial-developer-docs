@@ -265,68 +265,68 @@ Each query is limited to a single [namespace](/guides/index-data/indexing-overvi
 
 The `query_namespaces` method accepts most of the same arguments as `query` with the addition of a required `namespaces` parameter.
 
-**Python SDK without gRPC**
+> [tab] Python SDK without gRPC
+>
+> When using the Python SDK without gRPC, to get good performance, it's important to set values for the `pool_threads` and `connection_pool_maxsize` properties on the index client. The `pool_threads` setting is the number of threads available to execute requests, while `connection_pool_maxsize` is the number of cached http connections that will be held. Since these tasks aren't computationally heavy and are mainly i/o bound, it should be okay to have a high ratio of threads to cpus.
+>
+> The combined results include the sum of all read unit usage used to perform the underlying queries for each namespace.
+>
+> ```python Python theme={null}
+> from pinecone import Pinecone
+>
+> pc = Pinecone(api_key="YOUR_API_KEY")
+> index = pc.Index(
+>     name="docs-example",
+>     pool_threads=50,             # <-- make sure to set these
+>     connection_pool_maxsize=50,  # <-- make sure to set these
+> )
+>
+> query_vec = [ 0.1, ...] # an embedding vector with same dimension as the index
+> combined_results = index.query_namespaces(
+>     vector=query_vec,
+>     namespaces=['ns1', 'ns2', 'ns3', 'ns4'],
+>     metric="cosine",
+>     top_k=10,
+>     include_values=False,
+>     include_metadata=True,
+>     filter={"genre": { "$eq": "comedy" }},
+>     show_progress=False,
+> )
+>
+> for scored_vec in combined_results.matches:
+>     print(scored_vec)
+> print(combined_results.usage)
+> ```
 
-When using the Python SDK without gRPC, to get good performance, it's important to set values for the `pool_threads` and `connection_pool_maxsize` properties on the index client. The `pool_threads` setting is the number of threads available to execute requests, while `connection_pool_maxsize` is the number of cached http connections that will be held. Since these tasks aren't computationally heavy and are mainly i/o bound, it should be okay to have a high ratio of threads to cpus.
-
-The combined results include the sum of all read unit usage used to perform the underlying queries for each namespace.
-
-```python Python theme={null}
-from pinecone import Pinecone
-
-pc = Pinecone(api_key="YOUR_API_KEY")
-index = pc.Index(
-    name="docs-example",
-    pool_threads=50,             # <-- make sure to set these
-    connection_pool_maxsize=50,  # <-- make sure to set these
-)
-
-query_vec = [ 0.1, ...] # an embedding vector with same dimension as the index
-combined_results = index.query_namespaces(
-    vector=query_vec,
-    namespaces=['ns1', 'ns2', 'ns3', 'ns4'],
-    metric="cosine",
-    top_k=10,
-    include_values=False,
-    include_metadata=True,
-    filter={"genre": { "$eq": "comedy" }},
-    show_progress=False,
-)
-
-for scored_vec in combined_results.matches:
-    print(scored_vec)
-print(combined_results.usage)
-```
-
-**Python SDK with gRPC**
-
-When using the Python SDK with gRPC, there is no need to set the `connection_pool_maxsize` because grpc makes efficient use of open connections by default.
-
-```python Python theme={null}
-from pinecone.grpc import PineconeGRPC
-
-pc = PineconeGRPC(api_key="YOUR_API_KEY")
-index = pc.Index(
-    name="docs-example",
-    pool_threads=50, # <-- make sure to set this
-)
-
-query_vec = [ 0.1, ...] # an embedding vector with same dimension as the index
-combined_results = index.query_namespaces(
-    vector=query_vec,
-    namespaces=['ns1', 'ns2', 'ns3', 'ns4'],
-    metric="cosine",
-    top_k=10,
-    include_values=False,
-    include_metadata=True,
-    filter={"genre": { "$eq": "comedy" }},
-    show_progress=False,
-)
-
-for scored_vec in combined_results.matches:
-    print(scored_vec)
-print(combined_results.usage)
-```
+> [tab] Python SDK with gRPC
+>
+> When using the Python SDK with gRPC, there is no need to set the `connection_pool_maxsize` because grpc makes efficient use of open connections by default.
+>
+> ```python Python theme={null}
+> from pinecone.grpc import PineconeGRPC
+>
+> pc = PineconeGRPC(api_key="YOUR_API_KEY")
+> index = pc.Index(
+>     name="docs-example",
+>     pool_threads=50, # <-- make sure to set this
+> )
+>
+> query_vec = [ 0.1, ...] # an embedding vector with same dimension as the index
+> combined_results = index.query_namespaces(
+>     vector=query_vec,
+>     namespaces=['ns1', 'ns2', 'ns3', 'ns4'],
+>     metric="cosine",
+>     top_k=10,
+>     include_values=False,
+>     include_metadata=True,
+>     filter={"genre": { "$eq": "comedy" }},
+>     show_progress=False,
+> )
+>
+> for scored_vec in combined_results.matches:
+>     print(scored_vec)
+> print(combined_results.usage)
+> ```
 
 ## Upsert from a dataframe
 

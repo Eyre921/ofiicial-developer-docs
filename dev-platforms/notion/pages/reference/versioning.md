@@ -112,7 +112,7 @@ When a beta becomes generally available, the header is no longer required. We ac
 
 ## Frequently asked questions
 
-> **How do releases of the JavaScript SDK work?**
+> [accordion] How do releases of the JavaScript SDK work?
 >
 > Releases of the [Notion SDK for JavaScript](https://github.com/makenotion/notion-sdk-js) are published to NPM as [`@notionhq/client`](https://www.npmjs.com/package/@notionhq/client)
 > and use a separate [semantic versioning](https://semver.org/) scheme.
@@ -136,7 +136,7 @@ When a beta becomes generally available, the header is no longer required. We ac
 > > See the [compatibility table](https://github.com/makenotion/notion-sdk-js?tab=readme-ov-file#requirements-and-compatibility) in the README to see which versions
 > > of the SDK are compatible with which versions of the API.
 
-> **Will staying on an older API version work indefinitely?**
+> [accordion] Will staying on an older API version work indefinitely?
 >
 > We don't currently have any plans to stop supporting older API versions. If this changes in the future, we'll communicate this with all affected
 > users and provide a time window and migration guidance. However, we recommend upgrading to the latest version

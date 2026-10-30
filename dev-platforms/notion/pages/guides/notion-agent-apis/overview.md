@@ -16,23 +16,23 @@ Build apps and integrations that bring Custom Agents into the tools and workflow
 
 Use sessions to start a chat, stream the Agent's reply, submit an action when needed, and read its event history. These endpoints let you bring Custom Agents into a Slack bot, internal tool, or mobile client.
 
-> **[Create or update a session](/reference/notion-agent-apis/update-session)**
+> [card] [Create or update a session](/reference/notion-agent-apis/update-session)
 >
 > Start a session, send a message, submit an action, or stream a turn.
 
-> **[Retrieve a session](/reference/notion-agent-apis/retrieve-session)**
+> [card] [Retrieve a session](/reference/notion-agent-apis/retrieve-session)
 >
 > Read the current state of a session.
 
-> **[Query sessions](/reference/notion-agent-apis/query-sessions)**
+> [card] [Query sessions](/reference/notion-agent-apis/query-sessions)
 >
 > Find accessible sessions.
 
-> **[Query session events](/reference/notion-agent-apis/query-session-events)**
+> [card] [Query session events](/reference/notion-agent-apis/query-session-events)
 >
 > Page through a session's event history.
 
-> **[Cancel a session](/reference/notion-agent-apis/cancel-session)**
+> [card] [Cancel a session](/reference/notion-agent-apis/cancel-session)
 >
 > Stop an in-progress session.
 
@@ -40,31 +40,31 @@ Use sessions to start a chat, stream the Agent's reply, submit an action when ne
 
 Find the Custom Agents your token can access, track their usage, and manage their status and credit limits. Use these endpoints to build a usage dashboard or an administrative console for Custom Agents.
 
-> **[Query agents](/reference/notion-agent-apis/query-agents)**
+> [card] [Query agents](/reference/notion-agent-apis/query-agents)
 >
 > Find Custom Agents the integration can access.
 
-> **[Retrieve an agent](/reference/notion-agent-apis/retrieve-agent)**
+> [card] [Retrieve an agent](/reference/notion-agent-apis/retrieve-agent)
 >
 > Get one Custom Agent's metadata.
 
-> **[Retrieve agent insights](/reference/notion-agent-apis/retrieve-agent-insights)**
+> [card] [Retrieve agent insights](/reference/notion-agent-apis/retrieve-agent-insights)
 >
 > Read credits used and runs completed for a Custom Agent or your personal agent.
 
-> **[Update agent status](/reference/notion-agent-apis/update-agent-status)**
+> [card] [Update agent status](/reference/notion-agent-apis/update-agent-status)
 >
 > Enable or disable a Custom Agent.
 
-> **[Update an agent credit limit](/reference/notion-agent-apis/update-agent-credit-limit)**
+> [card] [Update an agent credit limit](/reference/notion-agent-apis/update-agent-credit-limit)
 >
 > Set or clear a Custom Agent's credit limit.
 
-> **[Batch manage agent](/reference/notion-agent-apis/batch-manage-agent)**
+> [card] [Batch manage agent](/reference/notion-agent-apis/batch-manage-agent)
 >
 > Apply several agent management operations asynchronously.
 
-> **[Delete an agent](/reference/notion-agent-apis/delete-agent)**
+> [card] [Delete an agent](/reference/notion-agent-apis/delete-agent)
 >
 > Soft-delete a Custom Agent you no longer need.
 

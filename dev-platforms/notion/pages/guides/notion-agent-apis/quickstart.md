@@ -232,21 +232,21 @@ That's a full round trip: you sent a message to a Custom Agent and read its resp
 
 ## Common questions
 
-> **I don't see Agents in the sidebar**
+> [accordion] I don't see Agents in the sidebar
 >
 > Custom Agents are available on Business and Enterprise plans. Ask a workspace owner whether your workspace is on an eligible plan.
 
-> **I don't see the option to create a token**
+> [accordion] I don't see the option to create a token
 >
 > On Business and Enterprise plans, PAT creation is restricted by default. Ask a workspace owner to enable it in **Settings → Connections**.
 >
 > See [Who can create PATs](/guides/get-started/personal-access-tokens#who-can-create-pats).
 
-> **How do I use the examples in PowerShell?**
+> [accordion] How do I use the examples in PowerShell?
 >
 > The `curl` examples are written for a Unix shell. In PowerShell, refer to the variables as `$env:NOTION_API_KEY`, `$env:AGENT_ID`, and `$env:SESSION_ID`.
 
-> **How else can I find a Custom Agent?**
+> [accordion] How else can I find a Custom Agent?
 >
 > [Query agents](/reference/notion-agent-apis/query-agents) also takes a free-text `query` that matches names and descriptions, along with filters on fields like `id`, `agent_type`, `created_time`, and `connections`. Sorting is available on `created_time` and `last_run_at`.
 

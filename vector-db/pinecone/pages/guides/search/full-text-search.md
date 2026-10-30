@@ -417,7 +417,7 @@ For the full request and response schema, see [Search documents](/reference/api/
 
 ## Troubleshooting
 
-> **Document not appearing in search results**
+> [accordion] Document not appearing in search results
 >
 > * Check indexing latency: new documents may take up to 1 minute to become searchable; schemas with multiple indexed fields may take slightly longer.
 > * Verify the upsert response shows the expected `upserted_count`.
@@ -425,13 +425,13 @@ For the full request and response schema, see [Search documents](/reference/api/
 > * With `type: "text"`, multi-word queries use **token OR** matching — documents need not contain the full phrase. Try a single-term query first to confirm the document is searchable.
 > * If using filters, ensure the document's field values match your filter conditions. Metadata fields are auto-indexed at upsert time, so any field present on a document can be filtered on; filtering on a field that no document contains returns no results.
 
-> **Unexpected search results**
+> [accordion] Unexpected search results
 >
 > * **`type: "text"` uses OR across terms.** `machine learning` matches documents that contain "machine", "learning", or both (BM25 ranking). For an **exact phrase**, use `type: "query_string"` with `body:("machine learning")` or a `$match_phrase` filter.
 > * **`type: "query_string"` defaults to OR for unquoted terms.** `body:(machine learning)` matches documents containing either term. Use `AND` or `+` for required terms.
 > * Operators like `AND`, `OR`, `NOT`, `*`, `~`, and `^` only work with `type: "query_string"`. With `type: "text"`, they're treated as literal words.
 
-> **Query syntax errors**
+> [accordion] Query syntax errors
 >
 > Query syntax errors only apply to `type: "query_string"`. With `type: "text"`, any input is valid as a literal string to be tokenized.
 >
@@ -441,26 +441,26 @@ For the full request and response schema, see [Search documents](/reference/api/
 > * Unbalanced parentheses: Match all opening and closing parens.
 > * Unknown field name: Field names in the query must match text-searchable fields in the schema.
 
-> **API errors**
+> [accordion] API errors
 >
 > * `401 Unauthorized`: Check the `Api-Key` header.
 > * `400 Bad Request`: Check JSON syntax and required fields. Examples: `fields` array with more than one element for `dense_vector`/`sparse_vector`; missing mutually-exclusive field for Fetch/Delete.
 > * `404 Not Found`: Verify the index name and host URL.
 > * Missing API version: Add `X-Pinecone-Api-Version: 2026-07`.
 
-> **Upsert errors**
+> [accordion] Upsert errors
 >
 > * Type mismatch: Ensure values match declared schema types.
 > * Invalid `_id`: Every document must have a non-empty `_id` string.
 > * Reserved names: Field names can't start with `_` (reserved for system-managed fields like `_id` and `_score`) or `$` (reserved for filter operators), and must be at most 64 bytes.
 
-> **Slow search performance**
+> [accordion] Slow search performance
 >
 > * Reduce query complexity: Boolean operators and large phrase slop are more expensive than simple term queries.
 > * Simplify filters: Filters are applied before scoring, so broad filters increase the search space.
 > * For cost-sensitive workloads, use `read_capacity.mode: "Dedicated"` to get predictable latency.
 
-> **Common request-shape pitfalls**
+> [accordion] Common request-shape pitfalls
 >
 > When a request is rejected with a 4xx that doesn't seem to match your intent, the cause is usually one of these:
 >

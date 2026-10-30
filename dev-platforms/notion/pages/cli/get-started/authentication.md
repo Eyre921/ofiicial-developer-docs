@@ -110,18 +110,18 @@ Run `ntn login --help` for the full list.
 
 ## Next steps
 
-> **[Workers quickstart](/workers/get-started/quickstart)**
+> [card] [Workers quickstart](/workers/get-started/quickstart)
 >
 > Create and deploy your first Notion Worker.
 
-> **[API requests](/cli/guides/api-requests)**
+> [card] [API requests](/cli/guides/api-requests)
 >
 > Make Notion API requests from the terminal.
 
-> **[Command reference](/cli/reference/commands)**
+> [card] [Command reference](/cli/reference/commands)
 >
 > Full reference for every ntn command.
 
-> **[Personal access tokens](/guides/get-started/personal-access-tokens)**
+> [card] [Personal access tokens](/guides/get-started/personal-access-tokens)
 >
 > Create tokens for scripts and CI.

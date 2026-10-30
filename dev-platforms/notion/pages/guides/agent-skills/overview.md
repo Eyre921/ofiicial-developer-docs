@@ -15,21 +15,21 @@ For some examples of how to use the API, see:
 * the [notion-skills-github-sync](https://github.com/makenotion/notion-skills-github-sync) sample repo, which sets up a recurring script that syncs skills from Notion into a GitHub plugin marketplace, which can further be synced into Claude, ChatGPT, or other agents.
 * the Vercel [skills CLI](https://github.com/vercel-labs/skills), which uses the Skills API to help users install skills for local agents.
 
-> **[List plugins](/reference/agent-skills/list-skills-plugins)**
+> [card] [List plugins](/reference/agent-skills/list-skills-plugins)
 >
 > List available plugins
 
 &#x20;
 
-> **[Get a plugin](/reference/agent-skills/get-plugin-directory)**
+> [card] [Get a plugin](/reference/agent-skills/get-plugin-directory)
 >
 > Download a single plugin
 
-> **[Get a skill](/reference/agent-skills/get-skill-directory)**
+> [card] [Get a skill](/reference/agent-skills/get-skill-directory)
 >
 > Download a single skill
 
-> **[Upload a skill](/reference/agent-skills/upload-skill)**
+> [card] [Upload a skill](/reference/agent-skills/upload-skill)
 >
 > Import a skill directory
 

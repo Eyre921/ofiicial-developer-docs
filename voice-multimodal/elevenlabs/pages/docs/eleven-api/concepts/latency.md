@@ -14,9 +14,9 @@ Latency in audio generation is deceptively simple-sounding but involves several 
 
 When people ask "what is the latency of this API?", they often mean different things.
 
-**Model inference latency** is the time the model spends generating audio. ElevenLabs Flash models achieve \~75ms model inference for typical short inputs. This is an internal measurement, excluding network round-trips and application overhead.
+**Server-side latency** is the time ElevenLabs takes to return the first audio, from receiving a request to sending a response. The latency figures ElevenLabs publishes for its models are server-side latency, measured on production traffic and excluding network round-trips and application overhead. [How latency is measured](/docs/eleven-api/concepts/latency-methodology) lists each figure and the conditions behind it.
 
-**Time-to-first-audio (TTFA)** is the elapsed time from when your application initiates a request to when the first audio sample actually plays for the end user. This is almost always the number that matters for user experience, and it is always larger - often substantially larger - than model inference latency alone.
+**Time-to-first-audio (TTFA)** is the elapsed time from when your application initiates a request to when the first audio sample actually plays for the end user. This is almost always the number that matters for user experience, and it is always larger - often substantially larger - than server-side latency alone.
 
 The gap between these two numbers is where most latency problems live.
 
@@ -28,7 +28,7 @@ Latency accumulates across several stages:
 
 **Server processing** - before the model begins generating, there is a small overhead for authentication, request validation, and scheduling. This is typically negligible (single-digit milliseconds) but is non-zero.
 
-**Model inference** - the actual generation time. This varies by model, input length, and server load. The \~75ms Flash figure is representative for short inputs under normal conditions.
+**Model inference** - the actual generation time. This varies by model, input length, voice type, and server load.
 
 **Audio player buffering** - most audio players do not begin playback at the first byte. They buffer a small amount to prevent stuttering if the stream briefly slows down. A 500ms buffer is common; reducing it trades a small increase in stutter risk for lower perceived latency.
 
@@ -40,7 +40,7 @@ The latency difference between model families is architectural, not merely a spe
 
 Flash models are smaller and use more aggressive approximations. They sacrifice some quality headroom to substantially reduce inference time. Eleven v3 uses a larger model with a higher-fidelity voice codec, which takes longer to run but produces richer, more emotionally nuanced audio.
 
-This is a genuine tradeoff, not a technical limitation that will eventually go away. The \~75ms Flash latency and the higher-quality output of Eleven v3 are both consequences of deliberate architectural choices. When you choose a model, you are choosing where you sit on that tradeoff curve.
+This is a genuine tradeoff, not a technical limitation that will eventually go away. The low latency of Flash models and the higher-quality output of Eleven v3 are both consequences of deliberate architectural choices. When you choose a model, you are choosing where you sit on that tradeoff curve.
 
 The practical implication: there is no way to get Eleven v3 quality at Flash speeds, because the quality comes from the additional computation. If your application requires both low latency and high voice quality, Flash models with the best available voices represent the upper bound of what is currently achievable.
 
@@ -58,11 +58,11 @@ Not all voices are equally fast to synthesise. Default voices, synthetic voices,
 
 This is worth knowing when designing your system: if you have both strict latency requirements and quality goals, the combination of a Flash model with an IVC or default voice will outperform the same model with a PVC voice, though the quality ceiling is also lower.
 
-## The \~75ms figure in context
+## Published figures in context
 
-The 75ms model inference figure for Flash models is a benchmark under representative conditions. It will be higher for longer inputs (the model processes more tokens), under high server load (requests queue), and when generating with complex voices.
+Published latency figures are benchmarks under specific conditions, which [How latency is measured](/docs/eleven-api/concepts/latency-methodology) lists for each model. They rise with longer inputs because the model processes more tokens, with server load because requests queue, and with more complex voices.
 
-It is a useful reference point for comparing models, not a guarantee for every request. When diagnosing latency in your application, measure from your application, not from API benchmark figures. The numbers that matter are the ones your users experience.
+That makes them useful for comparing models but not for predicting what your users experience. When diagnosing latency in your application, measure from your application: the numbers that matter are the ones your users experience.
 
 ## Streaming and latency
 
@@ -85,6 +85,10 @@ How streaming reduces time-to-first-audio and when to use WebSockets.
 #### [Models reference](/docs/overview/models)
 
 Latency figures and tradeoffs for each available model.
+
+#### [How latency is measured](/docs/eleven-api/concepts/latency-methodology)
+
+What the published latency figures measure and the conditions behind them.
 
 #### [Streaming how-to guide](/docs/eleven-api/guides/how-to/text-to-speech/streaming)
 

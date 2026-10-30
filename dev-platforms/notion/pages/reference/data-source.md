@@ -42,6 +42,64 @@ As of API version `2025-09-03`, there's a suite of APIs for managing data source
 | `icon` | [Emoji](/reference/emoji-and-icon#emoji), [Icon](/reference/emoji-and-icon#icon), [Custom emoji](/reference/emoji-and-icon#custom-emoji), or [File](/reference/file-object) | Data source icon. See [Icon](/reference/emoji-and-icon) for all supported types. | |
 | `archived` | `boolean` | **Deprecated.** Use `in_trash` instead. This is an alias for `in_trash` and always returns the same value. | `false` |
 | `in_trash` | `boolean` | Whether the data source has been trashed. | `false` |
+| `sync_metadata` | `object` | Optional, read-only stored sync information included when listing or retrieving a data source. See [Sync metadata](#sync-metadata). | `{"sync_id": "2f26ee68-df30-4251-aad4-8ddc420cba3d"}` |
+
+## Sync metadata
+
+The optional, read-only `sync_metadata` field describes stored sync information. It is returned when retrieving or listing a readable synced data source. [Retrieve a database](/reference/retrieve-database) also includes it on each readable entry in `data_sources`. Search, create, and update responses do not include it.
+
+The field requires read access to the data source and a read capability on the connection. It is omitted from partial responses and when stored metadata is unavailable or invalid. Its absence does not prove that the data source is not synced. These reads do not refresh the sync or query its provider, so the metadata is not a live health check.
+
+The object has one of these stored representations:
+
+| Field | Type | Meaning |
+| - | - | - |
+| `external_database_sync` | object | An external database sync's identity: `sync_id` is a UUID and `provider` is one of `github` (GitHub), `jira` (Jira), or `salesforce` (Salesforce). |
+| `external_collection_type` | string enum | A legacy synced data source's provider: `Jira` or `Salesforce`. These values are case-sensitive. An optional `sync_state` may accompany this field. |
+| `sync_id` | string (UUID) | A stored sync ID when provider details are unavailable, including older synced data sources. |
+| `synced_collection_key` | string | An opaque, developer-defined collection key for a worker sync, such as `issues`. It is not a fixed enum or a globally unique identifier. Worker status is not included. |
+
+Sync IDs and collection keys are identifiers, not credentials, and do not grant access to manage a sync. This field does not include credentials, errors from the provider, or sync configuration.
+
+For example, an external database sync returns:
+
+```json theme={null}
+{
+  "sync_metadata": {
+    "external_database_sync": {
+      "sync_id": "2f26ee68-df30-4251-aad4-8ddc420cba3d",
+      "provider": "github"
+    }
+  }
+}
+```
+
+### Legacy sync state
+
+`sync_state` is optional and applies only to legacy synced data sources. When present, it contains a required `syncing` field and may contain the timestamps below.
+
+All timestamps are UTC ISO 8601 strings. Missing timestamps and timestamps that cannot be represented are omitted rather than returned as `null`.
+
+| Field | Type | Meaning |
+| - | - | - |
+| `syncing` | boolean or string enum | `true` means syncing, `false` means not syncing, and `"row_limit_exceeded"` means the row limit stopped syncing. `false` does not guarantee that the last sync succeeded. |
+| `last_synced_at` | string (date-time) | The stored legacy sync update time. It does not guarantee that all source changes have been imported. |
+| `last_sync_checkpoint_at` | string (date-time) | The stored checkpoint used by the legacy sync to track progress. |
+| `last_sync_heartbeat_at` | string (date-time) | The last stored heartbeat from the legacy sync. |
+
+```json theme={null}
+{
+  "sync_metadata": {
+    "external_collection_type": "Jira",
+    "sync_state": {
+      "syncing": false,
+      "last_synced_at": "2026-10-29T12:34:56.789Z",
+      "last_sync_checkpoint_at": "2026-10-29T12:30:00.000Z",
+      "last_sync_heartbeat_at": "2026-10-29T12:34:50.000Z"
+    }
+  }
+}
+```
 
 > [!WARNING]
 >

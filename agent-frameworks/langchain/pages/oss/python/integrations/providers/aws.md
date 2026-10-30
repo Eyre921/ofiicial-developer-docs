@@ -222,7 +222,7 @@ finally:
 
 ## Sandboxes
 
-> **[AgentCoreSandbox](/oss/python/integrations/sandboxes/aws)**
+> [card] [AgentCoreSandbox](/oss/python/integrations/sandboxes/aws)
 >
 > Amazon Bedrock AgentCore Code Interpreter sandbox backend for deepagents.
 

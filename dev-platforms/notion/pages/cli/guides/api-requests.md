@@ -246,10 +246,10 @@ Verbose output includes the final method, URL, request headers, JSON request bod
 
 ## Next steps
 
-> **[File uploads](/cli/guides/file-uploads)**
+> [card] [File uploads](/cli/guides/file-uploads)
 >
 > Upload local files or import external files into Notion.
 
-> **[API reference](/reference/intro)**
+> [card] [API reference](/reference/intro)
 >
 > Browse Notion API endpoints and schemas.

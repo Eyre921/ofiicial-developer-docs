@@ -20,7 +20,7 @@ Use this guide when you want to turn a document, changelog, or article into a sh
 
 A four-sentence paragraph about tides, scripted by a chat model and voiced by two speakers in one request. 49 seconds, \$0.0074.
 
-> **Transcript**
+> [accordion] Transcript
 >
 > **Host:** Welcome back! Today we're talking tides. Most people know the Moon causes them, but why do we get two high tides a day instead of just one?
 >

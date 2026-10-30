@@ -153,7 +153,7 @@ The Vectors API methods, such as `upsert`, `query`, and `fetch`, work against th
 
 ## Mock inference calls
 
-The Pinecone Inference endpoints, such as `embed` and `rerank`, are in a separate spec, so they're served from a separate port. Create a second client with the inference mock as its host:
+The standalone embedding and reranking endpoints, such as `embed` and `rerank`, are in a separate spec, so they're served from a separate port. Create a second client with the inference mock as its host:
 
 ```python Python theme={null}
 from pinecone import Pinecone

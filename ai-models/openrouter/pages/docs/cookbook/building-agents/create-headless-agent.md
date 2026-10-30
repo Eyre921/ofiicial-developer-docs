@@ -37,24 +37,24 @@ If you need an interactive terminal experience, use the [Agent TUI skill](https:
 
 The create-headless-agent skill is part of the [OpenRouter Skills](https://github.com/OpenRouterTeam/skills) collection. Install it with your AI coding agent of choice:
 
-**GitHub CLI**
+> [tab] GitHub CLI
+>
+> Requires [GitHub CLI](https://cli.github.com/) v2.90.0+. Works with Claude Code, Cursor, OpenCode, Codex, Gemini CLI, Windsurf, and [many more agents](https://cli.github.com/manual/gh_skill_install):
+>
+> ```bash lines theme={null}
+> gh skill install OpenRouterTeam/skills create-headless-agent
+> ```
 
-Requires [GitHub CLI](https://cli.github.com/) v2.90.0+. Works with Claude Code, Cursor, OpenCode, Codex, Gemini CLI, Windsurf, and [many more agents](https://cli.github.com/manual/gh_skill_install):
+> [tab] Claude Code
+>
+> ```lines theme={null}
+> /plugin marketplace add OpenRouterTeam/skills
+> /plugin install openrouter@openrouter
+> ```
 
-```bash lines theme={null}
-gh skill install OpenRouterTeam/skills create-headless-agent
-```
-
-**Claude Code**
-
-```lines theme={null}
-/plugin marketplace add OpenRouterTeam/skills
-/plugin install openrouter@openrouter
-```
-
-**Cursor**
-
-Add via **Settings > Rules > Add Rule > Remote Rule (Github)** with `OpenRouterTeam/skills`.
+> [tab] Cursor
+>
+> Add via **Settings > Rules > Add Rule > Remote Rule (Github)** with `OpenRouterTeam/skills`.
 
 Once installed, ask your agent something like *"scaffold a headless agent"* or *"build me a CLI agent"* and the skill activates automatically.
 

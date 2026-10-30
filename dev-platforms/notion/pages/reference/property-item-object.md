@@ -60,96 +60,96 @@ Single-item responses use the same value shape as page responses. Follow a type 
 
 Status is a single property item. The response is not wrapped in a property name or a `properties` object.
 
-**Schema**
+> [tab] Schema
+>
+> ```json Schema theme={null}
+> {
+>   "Status": {
+>     "id": "stat",
+>     "name": "Status",
+>     "description": null,
+>     "type": "status",
+>     "status": {
+>       "default_option": "In progress",
+>       "options": [
+>         {
+>           "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3",
+>           "name": "In progress",
+>           "color": "blue",
+>           "description": null
+>         }
+>       ],
+>       "groups": [
+>         {
+>           "id": "b9d42483-e576-4858-a26f-ed940a5f678f",
+>           "name": "To-do",
+>           "color": "gray",
+>           "option_ids": []
+>         },
+>         {
+>           "id": "cf4952eb-1265-46ec-86ab-4bded4fa2e3b",
+>           "name": "In progress",
+>           "color": "blue",
+>           "option_ids": [
+>             "330aeafb-598c-4e1c-bc13-1148aa5963d3"
+>           ]
+>         },
+>         {
+>           "id": "4fa7348e-ae74-46d9-9585-e773caca6f40",
+>           "name": "Complete",
+>           "color": "green",
+>           "option_ids": []
+>         }
+>       ]
+>     }
+>   }
+> }
+> ```
 
-```json Schema theme={null}
-{
-  "Status": {
-    "id": "stat",
-    "name": "Status",
-    "description": null,
-    "type": "status",
-    "status": {
-      "default_option": "In progress",
-      "options": [
-        {
-          "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3",
-          "name": "In progress",
-          "color": "blue",
-          "description": null
-        }
-      ],
-      "groups": [
-        {
-          "id": "b9d42483-e576-4858-a26f-ed940a5f678f",
-          "name": "To-do",
-          "color": "gray",
-          "option_ids": []
-        },
-        {
-          "id": "cf4952eb-1265-46ec-86ab-4bded4fa2e3b",
-          "name": "In progress",
-          "color": "blue",
-          "option_ids": [
-            "330aeafb-598c-4e1c-bc13-1148aa5963d3"
-          ]
-        },
-        {
-          "id": "4fa7348e-ae74-46d9-9585-e773caca6f40",
-          "name": "Complete",
-          "color": "green",
-          "option_ids": []
-        }
-      ]
-    }
-  }
-}
-```
+> [tab] Page value
+>
+> ```json Page value theme={null}
+> {
+>   "Status": {
+>     "id": "stat",
+>     "type": "status",
+>     "status": {
+>       "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3",
+>       "name": "In progress",
+>       "color": "blue"
+>     }
+>   }
+> }
+> ```
 
-**Page value**
+> [tab] Page write
+>
+> ```json Page write theme={null}
+> {
+>   "properties": {
+>     "Status": {
+>       "status": {
+>         "name": "In progress"
+>       }
+>     }
+>   }
+> }
+> ```
 
-```json Page value theme={null}
-{
-  "Status": {
-    "id": "stat",
-    "type": "status",
-    "status": {
-      "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3",
-      "name": "In progress",
-      "color": "blue"
-    }
-  }
-}
-```
-
-**Page write**
-
-```json Page write theme={null}
-{
-  "properties": {
-    "Status": {
-      "status": {
-        "name": "In progress"
-      }
-    }
-  }
-}
-```
-
-**Property item**
-
-```json Property item theme={null}
-{
-  "object": "property_item",
-  "id": "stat",
-  "type": "status",
-  "status": {
-    "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3",
-    "name": "In progress",
-    "color": "blue"
-  }
-}
-```
+> [tab] Property item
+>
+> ```json Property item theme={null}
+> {
+>   "object": "property_item",
+>   "id": "stat",
+>   "type": "status",
+>   "status": {
+>     "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3",
+>     "name": "In progress",
+>     "color": "blue"
+>   }
+> }
+> ```
 
 ## Paginated values
 

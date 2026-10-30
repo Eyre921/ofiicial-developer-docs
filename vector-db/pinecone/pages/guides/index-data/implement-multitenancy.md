@@ -32,7 +32,7 @@ In cases where you have different workload patterns (e.g., RAG and semantic sear
 
 ![](https://mintcdn.com/pinecone/r0TaYXrfSrAYZYUj/images/multitenant-saas-indexes.png?fit=max\&auto=format\&n=r0TaYXrfSrAYZYUj\&q=85\&s=d30f68fcbf1b6e259850350461f10e3c)
 
-> **Understand the benefits**
+> [accordion] Understand the benefits
 >
 > * **Tenant isolation:** In the [serverless architecture](/guides/core-concepts/architecture), each namespace is stored separately, so using namespaces provides physical isolation of data between tenants/customers. This reduces the risk of application bugs that could query the wrong tenant's data.
 >
@@ -211,7 +211,7 @@ import { Pinecone } from '@pinecone-database/pinecone'
 const pc = new Pinecone({ apiKey: "YOUR_API_KEY" });
 const index = pc.index("multitenant-app");
 
-await index.namespace("tenant1").upsert([
+await index.namespace("tenant1").upsert({ records: [
   {
     "id": "A", 
     "values": [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
@@ -228,9 +228,9 @@ await index.namespace("tenant1").upsert([
     "id": "D", 
     "values": [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4]
   }
-]);
+] });
 
-await index.namespace("tenant2").upsert([
+await index.namespace("tenant2").upsert({ records: [
   {
     "id": "E", 
     "values": [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]
@@ -247,7 +247,7 @@ await index.namespace("tenant2").upsert([
     "id": "H", 
     "values": [0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8]
   }
-]);
+] });
 ```
 
 ```java Java theme={null}

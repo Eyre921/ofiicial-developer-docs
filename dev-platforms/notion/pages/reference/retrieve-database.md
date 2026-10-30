@@ -14,6 +14,8 @@ The most important fields in the database object response to highlight:
   * These data source IDs can be used with the [Retrieve a data source](/reference/retrieve-a-data-source), [Update a data source](/reference/update-a-data-source), and [Query a data source](/reference/query-a-data-source) APIs
 * `parent`: The direct parent of the database; generally a `page_id` or `workspace: true`
 
+Each readable entry in `data_sources` may also include [stored sync metadata](/reference/data-source#sync-metadata). Metadata is omitted for sources the connection cannot read, even when it can read the containing database.
+
 To find a database ID, navigate to the database URL in your Notion workspace. The ID is the 32-character alphanumeric string between the slash following the workspace name (if applicable) and the question mark.
 
 ![Notion database ID](https://mintcdn.com/notion-demo/S-I3qLQnwRa7HjdK/images/reference/image-2.png?fit=max\&auto=format\&n=S-I3qLQnwRa7HjdK\&q=85\&s=3b244159a0dd487845b013fdfab22954)

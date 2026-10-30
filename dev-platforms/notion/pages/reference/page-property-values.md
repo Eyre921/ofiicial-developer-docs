@@ -60,183 +60,183 @@ Writes must fit the [request limits](/reference/request-limits). A successful re
 
 A Button property returns `button: {}`. The API does not expose its actions or let you press it by updating a page.
 
-**Schema**
+> [tab] Schema
+>
+> ```json Schema theme={null}
+> {
+>   "Send update": {
+>     "id": "btnA",
+>     "name": "Send update",
+>     "description": null,
+>     "type": "button",
+>     "button": {}
+>   }
+> }
+> ```
 
-```json Schema theme={null}
-{
-  "Send update": {
-    "id": "btnA",
-    "name": "Send update",
-    "description": null,
-    "type": "button",
-    "button": {}
-  }
-}
-```
+> [tab] Page value
+>
+> ```json Page value theme={null}
+> {
+>   "Send update": {
+>     "id": "btnA",
+>     "type": "button",
+>     "button": {}
+>   }
+> }
+> ```
 
-**Page value**
-
-```json Page value theme={null}
-{
-  "Send update": {
-    "id": "btnA",
-    "type": "button",
-    "button": {}
-  }
-}
-```
-
-**Property item**
-
-```json Property item theme={null}
-{
-  "object": "property_item",
-  "id": "btnA",
-  "type": "button",
-  "button": {}
-}
-```
+> [tab] Property item
+>
+> ```json Property item theme={null}
+> {
+>   "object": "property_item",
+>   "id": "btnA",
+>   "type": "button",
+>   "button": {}
+> }
+> ```
 
 ### Checkbox
 
 `checkbox` is `true` when checked and `false` when unchecked.
 
-**Schema**
+> [tab] Schema
+>
+> ```json Schema theme={null}
+> {
+>   "Done": {
+>     "id": "done",
+>     "name": "Done",
+>     "description": null,
+>     "type": "checkbox",
+>     "checkbox": {}
+>   }
+> }
+> ```
 
-```json Schema theme={null}
-{
-  "Done": {
-    "id": "done",
-    "name": "Done",
-    "description": null,
-    "type": "checkbox",
-    "checkbox": {}
-  }
-}
-```
+> [tab] Page value
+>
+> ```json Page value theme={null}
+> {
+>   "Done": {
+>     "id": "done",
+>     "type": "checkbox",
+>     "checkbox": true
+>   }
+> }
+> ```
 
-**Page value**
+> [tab] Page write
+>
+> ```json Page write theme={null}
+> {
+>   "properties": {
+>     "Done": {
+>       "checkbox": true
+>     }
+>   }
+> }
+> ```
 
-```json Page value theme={null}
-{
-  "Done": {
-    "id": "done",
-    "type": "checkbox",
-    "checkbox": true
-  }
-}
-```
-
-**Page write**
-
-```json Page write theme={null}
-{
-  "properties": {
-    "Done": {
-      "checkbox": true
-    }
-  }
-}
-```
-
-**Property item**
-
-```json Property item theme={null}
-{
-  "object": "property_item",
-  "id": "done",
-  "type": "checkbox",
-  "checkbox": true
-}
-```
+> [tab] Property item
+>
+> ```json Property item theme={null}
+> {
+>   "object": "property_item",
+>   "id": "done",
+>   "type": "checkbox",
+>   "checkbox": true
+> }
+> ```
 
 ### Created by
 
 `created_by` is a [user object](/reference/user) for the page’s creator. Notion sets this read-only value. The user object may contain only `object` and `id`.
 
-**Schema**
+> [tab] Schema
+>
+> ```json Schema theme={null}
+> {
+>   "Created by": {
+>     "id": "crtB",
+>     "name": "Created by",
+>     "description": null,
+>     "type": "created_by",
+>     "created_by": {}
+>   }
+> }
+> ```
 
-```json Schema theme={null}
-{
-  "Created by": {
-    "id": "crtB",
-    "name": "Created by",
-    "description": null,
-    "type": "created_by",
-    "created_by": {}
-  }
-}
-```
+> [tab] Page value
+>
+> ```json Page value theme={null}
+> {
+>   "Created by": {
+>     "id": "crtB",
+>     "type": "created_by",
+>     "created_by": {
+>       "object": "user",
+>       "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
+>     }
+>   }
+> }
+> ```
 
-**Page value**
-
-```json Page value theme={null}
-{
-  "Created by": {
-    "id": "crtB",
-    "type": "created_by",
-    "created_by": {
-      "object": "user",
-      "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
-    }
-  }
-}
-```
-
-**Property item**
-
-```json Property item theme={null}
-{
-  "object": "property_item",
-  "id": "crtB",
-  "type": "created_by",
-  "created_by": {
-    "object": "user",
-    "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
-  }
-}
-```
+> [tab] Property item
+>
+> ```json Property item theme={null}
+> {
+>   "object": "property_item",
+>   "id": "crtB",
+>   "type": "created_by",
+>   "created_by": {
+>     "object": "user",
+>     "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
+>   }
+> }
+> ```
 
 ### Created time
 
 `created_time` is the page’s creation time as an ISO 8601 timestamp. Notion sets this read-only value.
 
-**Schema**
+> [tab] Schema
+>
+> ```json Schema theme={null}
+> {
+>   "Created time": {
+>     "id": "crtT",
+>     "name": "Created time",
+>     "description": null,
+>     "type": "created_time",
+>     "created_time": {}
+>   }
+> }
+> ```
 
-```json Schema theme={null}
-{
-  "Created time": {
-    "id": "crtT",
-    "name": "Created time",
-    "description": null,
-    "type": "created_time",
-    "created_time": {}
-  }
-}
-```
+> [tab] Page value
+>
+> ```json Page value theme={null}
+> {
+>   "Created time": {
+>     "id": "crtT",
+>     "type": "created_time",
+>     "created_time": "2026-09-01T09:00:00.000Z"
+>   }
+> }
+> ```
 
-**Page value**
-
-```json Page value theme={null}
-{
-  "Created time": {
-    "id": "crtT",
-    "type": "created_time",
-    "created_time": "2026-09-01T09:00:00.000Z"
-  }
-}
-```
-
-**Property item**
-
-```json Property item theme={null}
-{
-  "object": "property_item",
-  "id": "crtT",
-  "type": "created_time",
-  "created_time": "2026-09-01T09:00:00.000Z"
-}
-```
+> [tab] Property item
+>
+> ```json Property item theme={null}
+> {
+>   "object": "property_item",
+>   "id": "crtT",
+>   "type": "created_time",
+>   "created_time": "2026-09-01T09:00:00.000Z"
+> }
+> ```
 
 ### Date
 
@@ -250,64 +250,64 @@ A Button property returns `button: {}`. The API does not expose its actions or l
 
 When you provide `time_zone`, include a time in `start` and `end`, without a UTC offset. Otherwise, use an offset in a timestamp or a date such as `2026-09-15`. Omitted `end` and `time_zone` fields return as `null`.
 
-**Schema**
+> [tab] Schema
+>
+> ```json Schema theme={null}
+> {
+>   "Due date": {
+>     "id": "dueD",
+>     "name": "Due date",
+>     "description": null,
+>     "type": "date",
+>     "date": {}
+>   }
+> }
+> ```
 
-```json Schema theme={null}
-{
-  "Due date": {
-    "id": "dueD",
-    "name": "Due date",
-    "description": null,
-    "type": "date",
-    "date": {}
-  }
-}
-```
+> [tab] Page value
+>
+> ```json Page value theme={null}
+> {
+>   "Due date": {
+>     "id": "dueD",
+>     "type": "date",
+>     "date": {
+>       "start": "2026-09-15",
+>       "end": null,
+>       "time_zone": null
+>     }
+>   }
+> }
+> ```
 
-**Page value**
+> [tab] Page write
+>
+> ```json Page write theme={null}
+> {
+>   "properties": {
+>     "Due date": {
+>       "date": {
+>         "start": "2026-09-15"
+>       }
+>     }
+>   }
+> }
+> ```
 
-```json Page value theme={null}
-{
-  "Due date": {
-    "id": "dueD",
-    "type": "date",
-    "date": {
-      "start": "2026-09-15",
-      "end": null,
-      "time_zone": null
-    }
-  }
-}
-```
-
-**Page write**
-
-```json Page write theme={null}
-{
-  "properties": {
-    "Due date": {
-      "date": {
-        "start": "2026-09-15"
-      }
-    }
-  }
-}
-```
-
-**Property item**
-
-```json Property item theme={null}
-{
-  "object": "property_item",
-  "id": "dueD",
-  "type": "date",
-  "date": {
-    "start": "2026-09-15",
-    "end": null,
-    "time_zone": null
-  }
-}
-```
+> [tab] Property item
+>
+> ```json Property item theme={null}
+> {
+>   "object": "property_item",
+>   "id": "dueD",
+>   "type": "date",
+>   "date": {
+>     "start": "2026-09-15",
+>     "end": null,
+>     "time_zone": null
+>   }
+> }
+> ```
 
 ```json Date range theme={null}
 {"date":{"start":"2026-09-15","end":"2026-09-18"}}
@@ -325,54 +325,54 @@ When you provide `time_zone`, include a time in `start` and `end`, without a UTC
 
 `email` is an email address string or `null`.
 
-**Schema**
+> [tab] Schema
+>
+> ```json Schema theme={null}
+> {
+>   "Contact email": {
+>     "id": "emlA",
+>     "name": "Contact email",
+>     "description": null,
+>     "type": "email",
+>     "email": {}
+>   }
+> }
+> ```
 
-```json Schema theme={null}
-{
-  "Contact email": {
-    "id": "emlA",
-    "name": "Contact email",
-    "description": null,
-    "type": "email",
-    "email": {}
-  }
-}
-```
+> [tab] Page value
+>
+> ```json Page value theme={null}
+> {
+>   "Contact email": {
+>     "id": "emlA",
+>     "type": "email",
+>     "email": "alex@example.com"
+>   }
+> }
+> ```
 
-**Page value**
+> [tab] Page write
+>
+> ```json Page write theme={null}
+> {
+>   "properties": {
+>     "Contact email": {
+>       "email": "alex@example.com"
+>     }
+>   }
+> }
+> ```
 
-```json Page value theme={null}
-{
-  "Contact email": {
-    "id": "emlA",
-    "type": "email",
-    "email": "alex@example.com"
-  }
-}
-```
-
-**Page write**
-
-```json Page write theme={null}
-{
-  "properties": {
-    "Contact email": {
-      "email": "alex@example.com"
-    }
-  }
-}
-```
-
-**Property item**
-
-```json Property item theme={null}
-{
-  "object": "property_item",
-  "id": "emlA",
-  "type": "email",
-  "email": "alex@example.com"
-}
-```
+> [tab] Property item
+>
+> ```json Property item theme={null}
+> {
+>   "object": "property_item",
+>   "id": "emlA",
+>   "type": "email",
+>   "email": "alex@example.com"
+> }
+> ```
 
 ### Files
 
@@ -382,78 +382,78 @@ An external file uses `external: { "url": "https://example.com/file.pdf" }`. A f
 
 To attach an uploaded file, use `type: "file_upload"` and `file_upload: { "id": "..." }` with a completed [file upload](/guides/data-apis/uploading-small-files). Reads return the attached file as `type: "file"`, not `file_upload`. A file update replaces the full list, so include files you want to keep.
 
-**Schema**
+> [tab] Schema
+>
+> ```json Schema theme={null}
+> {
+>   "Attachments": {
+>     "id": "file",
+>     "name": "Attachments",
+>     "description": null,
+>     "type": "files",
+>     "files": {}
+>   }
+> }
+> ```
 
-```json Schema theme={null}
-{
-  "Attachments": {
-    "id": "file",
-    "name": "Attachments",
-    "description": null,
-    "type": "files",
-    "files": {}
-  }
-}
-```
+> [tab] Page value
+>
+> ```json Page value theme={null}
+> {
+>   "Attachments": {
+>     "id": "file",
+>     "type": "files",
+>     "files": [
+>       {
+>         "name": "Project brief.pdf",
+>         "type": "external",
+>         "external": {
+>           "url": "https://example.com/project-brief.pdf"
+>         }
+>       }
+>     ]
+>   }
+> }
+> ```
 
-**Page value**
+> [tab] Page write
+>
+> ```json Page write theme={null}
+> {
+>   "properties": {
+>     "Attachments": {
+>       "files": [
+>         {
+>           "name": "Project brief.pdf",
+>           "type": "external",
+>           "external": {
+>             "url": "https://example.com/project-brief.pdf"
+>           }
+>         }
+>       ]
+>     }
+>   }
+> }
+> ```
 
-```json Page value theme={null}
-{
-  "Attachments": {
-    "id": "file",
-    "type": "files",
-    "files": [
-      {
-        "name": "Project brief.pdf",
-        "type": "external",
-        "external": {
-          "url": "https://example.com/project-brief.pdf"
-        }
-      }
-    ]
-  }
-}
-```
-
-**Page write**
-
-```json Page write theme={null}
-{
-  "properties": {
-    "Attachments": {
-      "files": [
-        {
-          "name": "Project brief.pdf",
-          "type": "external",
-          "external": {
-            "url": "https://example.com/project-brief.pdf"
-          }
-        }
-      ]
-    }
-  }
-}
-```
-
-**Property item**
-
-```json Property item theme={null}
-{
-  "object": "property_item",
-  "id": "file",
-  "type": "files",
-  "files": [
-    {
-      "name": "Project brief.pdf",
-      "type": "external",
-      "external": {
-        "url": "https://example.com/project-brief.pdf"
-      }
-    }
-  ]
-}
-```
+> [tab] Property item
+>
+> ```json Property item theme={null}
+> {
+>   "object": "property_item",
+>   "id": "file",
+>   "type": "files",
+>   "files": [
+>     {
+>       "name": "Project brief.pdf",
+>       "type": "external",
+>       "external": {
+>         "url": "https://example.com/project-brief.pdf"
+>       }
+>     }
+>   ]
+> }
+> ```
 
 ### Formula
 
@@ -461,50 +461,50 @@ To attach an uploaded file, use `type: "file_upload"` and `file_upload: { "id": 
 
 The result’s `type` is `string`, `number`, `boolean`, `date`, or `unsupported`. Read the field with that name. A supported result can be `null` when it has no value.
 
-**Schema**
+> [tab] Schema
+>
+> ```json Schema theme={null}
+> {
+>   "Double estimate": {
+>     "id": "calc",
+>     "name": "Double estimate",
+>     "description": null,
+>     "type": "formula",
+>     "formula": {
+>       "expression": "prop(\"Estimate\") * 2"
+>     }
+>   }
+> }
+> ```
 
-```json Schema theme={null}
-{
-  "Double estimate": {
-    "id": "calc",
-    "name": "Double estimate",
-    "description": null,
-    "type": "formula",
-    "formula": {
-      "expression": "prop(\"Estimate\") * 2"
-    }
-  }
-}
-```
+> [tab] Page value
+>
+> ```json Page value theme={null}
+> {
+>   "Double estimate": {
+>     "id": "calc",
+>     "type": "formula",
+>     "formula": {
+>       "type": "number",
+>       "number": 16
+>     }
+>   }
+> }
+> ```
 
-**Page value**
-
-```json Page value theme={null}
-{
-  "Double estimate": {
-    "id": "calc",
-    "type": "formula",
-    "formula": {
-      "type": "number",
-      "number": 16
-    }
-  }
-}
-```
-
-**Property item**
-
-```json Property item theme={null}
-{
-  "object": "property_item",
-  "id": "calc",
-  "type": "formula",
-  "formula": {
-    "type": "number",
-    "number": 16
-  }
-}
-```
+> [tab] Property item
+>
+> ```json Property item theme={null}
+> {
+>   "object": "property_item",
+>   "id": "calc",
+>   "type": "formula",
+>   "formula": {
+>     "type": "number",
+>     "number": 16
+>   }
+> }
+> ```
 
 #### Formula result types
 
@@ -544,89 +544,89 @@ For data source queries, [filter the returned properties](/guides/data-apis/quer
 
 `last_edited_by` is a [user object](/reference/user) for the page’s last editor. Notion sets this read-only value. The user object may contain only `object` and `id`.
 
-**Schema**
+> [tab] Schema
+>
+> ```json Schema theme={null}
+> {
+>   "Last edited by": {
+>     "id": "edtB",
+>     "name": "Last edited by",
+>     "description": null,
+>     "type": "last_edited_by",
+>     "last_edited_by": {}
+>   }
+> }
+> ```
 
-```json Schema theme={null}
-{
-  "Last edited by": {
-    "id": "edtB",
-    "name": "Last edited by",
-    "description": null,
-    "type": "last_edited_by",
-    "last_edited_by": {}
-  }
-}
-```
+> [tab] Page value
+>
+> ```json Page value theme={null}
+> {
+>   "Last edited by": {
+>     "id": "edtB",
+>     "type": "last_edited_by",
+>     "last_edited_by": {
+>       "object": "user",
+>       "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
+>     }
+>   }
+> }
+> ```
 
-**Page value**
-
-```json Page value theme={null}
-{
-  "Last edited by": {
-    "id": "edtB",
-    "type": "last_edited_by",
-    "last_edited_by": {
-      "object": "user",
-      "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
-    }
-  }
-}
-```
-
-**Property item**
-
-```json Property item theme={null}
-{
-  "object": "property_item",
-  "id": "edtB",
-  "type": "last_edited_by",
-  "last_edited_by": {
-    "object": "user",
-    "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
-  }
-}
-```
+> [tab] Property item
+>
+> ```json Property item theme={null}
+> {
+>   "object": "property_item",
+>   "id": "edtB",
+>   "type": "last_edited_by",
+>   "last_edited_by": {
+>     "object": "user",
+>     "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
+>   }
+> }
+> ```
 
 ### Last edited time
 
 `last_edited_time` is the page’s last edit time as an ISO 8601 timestamp. Notion sets this read-only value.
 
-**Schema**
+> [tab] Schema
+>
+> ```json Schema theme={null}
+> {
+>   "Last edited time": {
+>     "id": "edtT",
+>     "name": "Last edited time",
+>     "description": null,
+>     "type": "last_edited_time",
+>     "last_edited_time": {}
+>   }
+> }
+> ```
 
-```json Schema theme={null}
-{
-  "Last edited time": {
-    "id": "edtT",
-    "name": "Last edited time",
-    "description": null,
-    "type": "last_edited_time",
-    "last_edited_time": {}
-  }
-}
-```
+> [tab] Page value
+>
+> ```json Page value theme={null}
+> {
+>   "Last edited time": {
+>     "id": "edtT",
+>     "type": "last_edited_time",
+>     "last_edited_time": "2026-09-04T14:30:00.000Z"
+>   }
+> }
+> ```
 
-**Page value**
-
-```json Page value theme={null}
-{
-  "Last edited time": {
-    "id": "edtT",
-    "type": "last_edited_time",
-    "last_edited_time": "2026-09-04T14:30:00.000Z"
-  }
-}
-```
-
-**Property item**
-
-```json Property item theme={null}
-{
-  "object": "property_item",
-  "id": "edtT",
-  "type": "last_edited_time",
-  "last_edited_time": "2026-09-04T14:30:00.000Z"
-}
-```
+> [tab] Property item
+>
+> ```json Property item theme={null}
+> {
+>   "object": "property_item",
+>   "id": "edtT",
+>   "type": "last_edited_time",
+>   "last_edited_time": "2026-09-04T14:30:00.000Z"
+> }
+> ```
 
 ### Multi-select
 
@@ -634,134 +634,134 @@ For data source queries, [filter the returned properties](/guides/data-apis/quer
 
 A new option name adds an option to the schema if your connection can write to the parent data source. Option names cannot contain commas. To edit the available options, see [Multi-select schemas](/reference/property-object#multi-select).
 
-**Schema**
+> [tab] Schema
+>
+> ```json Schema theme={null}
+> {
+>   "Tags": {
+>     "id": "tags",
+>     "name": "Tags",
+>     "description": null,
+>     "type": "multi_select",
+>     "multi_select": {
+>       "options": [
+>         {
+>           "id": "ff8e9269-9579-47f7-8f6e-83a84716863c",
+>           "name": "High",
+>           "color": "red",
+>           "description": null
+>         }
+>       ]
+>     }
+>   }
+> }
+> ```
 
-```json Schema theme={null}
-{
-  "Tags": {
-    "id": "tags",
-    "name": "Tags",
-    "description": null,
-    "type": "multi_select",
-    "multi_select": {
-      "options": [
-        {
-          "id": "ff8e9269-9579-47f7-8f6e-83a84716863c",
-          "name": "High",
-          "color": "red",
-          "description": null
-        }
-      ]
-    }
-  }
-}
-```
+> [tab] Page value
+>
+> ```json Page value theme={null}
+> {
+>   "Tags": {
+>     "id": "tags",
+>     "type": "multi_select",
+>     "multi_select": [
+>       {
+>         "id": "ff8e9269-9579-47f7-8f6e-83a84716863c",
+>         "name": "High",
+>         "color": "red"
+>       }
+>     ]
+>   }
+> }
+> ```
 
-**Page value**
+> [tab] Page write
+>
+> ```json Page write theme={null}
+> {
+>   "properties": {
+>     "Tags": {
+>       "multi_select": [
+>         {
+>           "name": "High"
+>         }
+>       ]
+>     }
+>   }
+> }
+> ```
 
-```json Page value theme={null}
-{
-  "Tags": {
-    "id": "tags",
-    "type": "multi_select",
-    "multi_select": [
-      {
-        "id": "ff8e9269-9579-47f7-8f6e-83a84716863c",
-        "name": "High",
-        "color": "red"
-      }
-    ]
-  }
-}
-```
-
-**Page write**
-
-```json Page write theme={null}
-{
-  "properties": {
-    "Tags": {
-      "multi_select": [
-        {
-          "name": "High"
-        }
-      ]
-    }
-  }
-}
-```
-
-**Property item**
-
-```json Property item theme={null}
-{
-  "object": "property_item",
-  "id": "tags",
-  "type": "multi_select",
-  "multi_select": [
-    {
-      "id": "ff8e9269-9579-47f7-8f6e-83a84716863c",
-      "name": "High",
-      "color": "red"
-    }
-  ]
-}
-```
+> [tab] Property item
+>
+> ```json Property item theme={null}
+> {
+>   "object": "property_item",
+>   "id": "tags",
+>   "type": "multi_select",
+>   "multi_select": [
+>     {
+>       "id": "ff8e9269-9579-47f7-8f6e-83a84716863c",
+>       "name": "High",
+>       "color": "red"
+>     }
+>   ]
+> }
+> ```
 
 ### Number
 
 `number` is a JSON number or `null`. The [schema’s number format](/reference/property-object#number) controls its display in Notion. For example, `0.25` displays as 25% with the `percent` format.
 
-**Schema**
+> [tab] Schema
+>
+> ```json Schema theme={null}
+> {
+>   "Estimate": {
+>     "id": "estM",
+>     "name": "Estimate",
+>     "description": null,
+>     "type": "number",
+>     "number": {
+>       "format": "number"
+>     }
+>   }
+> }
+> ```
 
-```json Schema theme={null}
-{
-  "Estimate": {
-    "id": "estM",
-    "name": "Estimate",
-    "description": null,
-    "type": "number",
-    "number": {
-      "format": "number"
-    }
-  }
-}
-```
+> [tab] Page value
+>
+> ```json Page value theme={null}
+> {
+>   "Estimate": {
+>     "id": "estM",
+>     "type": "number",
+>     "number": 8
+>   }
+> }
+> ```
 
-**Page value**
+> [tab] Page write
+>
+> ```json Page write theme={null}
+> {
+>   "properties": {
+>     "Estimate": {
+>       "number": 8
+>     }
+>   }
+> }
+> ```
 
-```json Page value theme={null}
-{
-  "Estimate": {
-    "id": "estM",
-    "type": "number",
-    "number": 8
-  }
-}
-```
-
-**Page write**
-
-```json Page write theme={null}
-{
-  "properties": {
-    "Estimate": {
-      "number": 8
-    }
-  }
-}
-```
-
-**Property item**
-
-```json Property item theme={null}
-{
-  "object": "property_item",
-  "id": "estM",
-  "type": "number",
-  "number": 8
-}
-```
+> [tab] Property item
+>
+> ```json Property item theme={null}
+> {
+>   "object": "property_item",
+>   "id": "estM",
+>   "type": "number",
+>   "number": 8
+> }
+> ```
 
 ### People
 
@@ -769,119 +769,119 @@ The Person property uses the API key `people`. A page response contains an array
 
 Writes accept user IDs, including bots that appear as user objects in the API. Bots used internally by Notion may not be assignable. [Retrieve a page property item](/reference/retrieve-a-page-property) returns a paginated list with one user in each item’s `people` field. Use it when a page response omits people.
 
-**Schema**
+> [tab] Schema
+>
+> ```json Schema theme={null}
+> {
+>   "Owner": {
+>     "id": "ownR",
+>     "name": "Owner",
+>     "description": null,
+>     "type": "people",
+>     "people": {}
+>   }
+> }
+> ```
 
-```json Schema theme={null}
-{
-  "Owner": {
-    "id": "ownR",
-    "name": "Owner",
-    "description": null,
-    "type": "people",
-    "people": {}
-  }
-}
-```
+> [tab] Page value
+>
+> ```json Page value theme={null}
+> {
+>   "Owner": {
+>     "id": "ownR",
+>     "type": "people",
+>     "people": [
+>       {
+>         "object": "user",
+>         "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
+>       }
+>     ]
+>   }
+> }
+> ```
 
-**Page value**
+> [tab] Page write
+>
+> ```json Page write theme={null}
+> {
+>   "properties": {
+>     "Owner": {
+>       "people": [
+>         {
+>           "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
+>         }
+>       ]
+>     }
+>   }
+> }
+> ```
 
-```json Page value theme={null}
-{
-  "Owner": {
-    "id": "ownR",
-    "type": "people",
-    "people": [
-      {
-        "object": "user",
-        "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
-      }
-    ]
-  }
-}
-```
-
-**Page write**
-
-```json Page write theme={null}
-{
-  "properties": {
-    "Owner": {
-      "people": [
-        {
-          "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
-        }
-      ]
-    }
-  }
-}
-```
-
-**Property item**
-
-```json Property item theme={null}
-{
-  "object": "property_item",
-  "id": "ownR",
-  "type": "people",
-  "people": {
-    "object": "user",
-    "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
-  }
-}
-```
+> [tab] Property item
+>
+> ```json Property item theme={null}
+> {
+>   "object": "property_item",
+>   "id": "ownR",
+>   "type": "people",
+>   "people": {
+>     "object": "user",
+>     "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
+>   }
+> }
+> ```
 
 ### Phone number
 
 The Phone property uses the API key `phone_number`. Its value is a string or `null`. The API does not enforce a phone-number format.
 
-**Schema**
+> [tab] Schema
+>
+> ```json Schema theme={null}
+> {
+>   "Contact phone": {
+>     "id": "phon",
+>     "name": "Contact phone",
+>     "description": null,
+>     "type": "phone_number",
+>     "phone_number": {}
+>   }
+> }
+> ```
 
-```json Schema theme={null}
-{
-  "Contact phone": {
-    "id": "phon",
-    "name": "Contact phone",
-    "description": null,
-    "type": "phone_number",
-    "phone_number": {}
-  }
-}
-```
+> [tab] Page value
+>
+> ```json Page value theme={null}
+> {
+>   "Contact phone": {
+>     "id": "phon",
+>     "type": "phone_number",
+>     "phone_number": "+1 415 555 0123"
+>   }
+> }
+> ```
 
-**Page value**
+> [tab] Page write
+>
+> ```json Page write theme={null}
+> {
+>   "properties": {
+>     "Contact phone": {
+>       "phone_number": "+1 415 555 0123"
+>     }
+>   }
+> }
+> ```
 
-```json Page value theme={null}
-{
-  "Contact phone": {
-    "id": "phon",
-    "type": "phone_number",
-    "phone_number": "+1 415 555 0123"
-  }
-}
-```
-
-**Page write**
-
-```json Page write theme={null}
-{
-  "properties": {
-    "Contact phone": {
-      "phone_number": "+1 415 555 0123"
-    }
-  }
-}
-```
-
-**Property item**
-
-```json Property item theme={null}
-{
-  "object": "property_item",
-  "id": "phon",
-  "type": "phone_number",
-  "phone_number": "+1 415 555 0123"
-}
-```
+> [tab] Property item
+>
+> ```json Property item theme={null}
+> {
+>   "object": "property_item",
+>   "id": "phon",
+>   "type": "phone_number",
+>   "phone_number": "+1 415 555 0123"
+> }
+> ```
 
 ### Place
 
@@ -896,72 +896,72 @@ The Phone property uses the API key `phone_number`. Its value is a string or `nu
 
 The API does not look up coordinates from a name or address. Provide `lat` and `lon` when writing a value.
 
-**Schema**
+> [tab] Schema
+>
+> ```json Schema theme={null}
+> {
+>   "Office": {
+>     "id": "plce",
+>     "name": "Office",
+>     "description": null,
+>     "type": "place",
+>     "place": {}
+>   }
+> }
+> ```
 
-```json Schema theme={null}
-{
-  "Office": {
-    "id": "plce",
-    "name": "Office",
-    "description": null,
-    "type": "place",
-    "place": {}
-  }
-}
-```
+> [tab] Page value
+>
+> ```json Page value theme={null}
+> {
+>   "Office": {
+>     "id": "plce",
+>     "type": "place",
+>     "place": {
+>       "lat": 37.7749,
+>       "lon": -122.4194,
+>       "name": "San Francisco",
+>       "address": null,
+>       "aws_place_id": null,
+>       "google_place_id": null
+>     }
+>   }
+> }
+> ```
 
-**Page value**
+> [tab] Page write
+>
+> ```json Page write theme={null}
+> {
+>   "properties": {
+>     "Office": {
+>       "place": {
+>         "lat": 37.7749,
+>         "lon": -122.4194,
+>         "name": "San Francisco"
+>       }
+>     }
+>   }
+> }
+> ```
 
-```json Page value theme={null}
-{
-  "Office": {
-    "id": "plce",
-    "type": "place",
-    "place": {
-      "lat": 37.7749,
-      "lon": -122.4194,
-      "name": "San Francisco",
-      "address": null,
-      "aws_place_id": null,
-      "google_place_id": null
-    }
-  }
-}
-```
-
-**Page write**
-
-```json Page write theme={null}
-{
-  "properties": {
-    "Office": {
-      "place": {
-        "lat": 37.7749,
-        "lon": -122.4194,
-        "name": "San Francisco"
-      }
-    }
-  }
-}
-```
-
-**Property item**
-
-```json Property item theme={null}
-{
-  "object": "property_item",
-  "id": "plce",
-  "type": "place",
-  "place": {
-    "lat": 37.7749,
-    "lon": -122.4194,
-    "name": "San Francisco",
-    "address": null,
-    "aws_place_id": null,
-    "google_place_id": null
-  }
-}
-```
+> [tab] Property item
+>
+> ```json Property item theme={null}
+> {
+>   "object": "property_item",
+>   "id": "plce",
+>   "type": "place",
+>   "place": {
+>     "lat": 37.7749,
+>     "lon": -122.4194,
+>     "name": "San Francisco",
+>     "address": null,
+>     "aws_place_id": null,
+>     "google_place_id": null
+>   }
+> }
+> ```
 
 ### Relation
 
@@ -971,71 +971,71 @@ In a page response, `has_more: true` means the relation has more than 25 page re
 
 Share the related database with your connection too. Missing access can leave relation values empty or make formula and rollup results incomplete. Check access before treating an empty result as missing data.
 
-**Schema**
+> [tab] Schema
+>
+> ```json Schema theme={null}
+> {
+>   "Projects": {
+>     "id": "proj",
+>     "name": "Projects",
+>     "description": null,
+>     "type": "relation",
+>     "relation": {
+>       "database_id": "668d797c-76fa-4934-9b05-ad288df2d136",
+>       "data_source_id": "6c4240a9-a3ce-413e-9fd0-8a51a4d0a49b",
+>       "limit": null,
+>       "type": "single_property",
+>       "single_property": {}
+>     }
+>   }
+> }
+> ```
 
-```json Schema theme={null}
-{
-  "Projects": {
-    "id": "proj",
-    "name": "Projects",
-    "description": null,
-    "type": "relation",
-    "relation": {
-      "database_id": "668d797c-76fa-4934-9b05-ad288df2d136",
-      "data_source_id": "6c4240a9-a3ce-413e-9fd0-8a51a4d0a49b",
-      "limit": null,
-      "type": "single_property",
-      "single_property": {}
-    }
-  }
-}
-```
+> [tab] Page value
+>
+> ```json Page value theme={null}
+> {
+>   "Projects": {
+>     "id": "proj",
+>     "type": "relation",
+>     "relation": [
+>       {
+>         "id": "dd456007-6c66-4bba-957e-ea501dcda3a6"
+>       }
+>     ],
+>     "has_more": false
+>   }
+> }
+> ```
 
-**Page value**
+> [tab] Page write
+>
+> ```json Page write theme={null}
+> {
+>   "properties": {
+>     "Projects": {
+>       "relation": [
+>         {
+>           "id": "dd456007-6c66-4bba-957e-ea501dcda3a6"
+>         }
+>       ]
+>     }
+>   }
+> }
+> ```
 
-```json Page value theme={null}
-{
-  "Projects": {
-    "id": "proj",
-    "type": "relation",
-    "relation": [
-      {
-        "id": "dd456007-6c66-4bba-957e-ea501dcda3a6"
-      }
-    ],
-    "has_more": false
-  }
-}
-```
-
-**Page write**
-
-```json Page write theme={null}
-{
-  "properties": {
-    "Projects": {
-      "relation": [
-        {
-          "id": "dd456007-6c66-4bba-957e-ea501dcda3a6"
-        }
-      ]
-    }
-  }
-}
-```
-
-**Property item**
-
-```json Property item theme={null}
-{
-  "object": "property_item",
-  "id": "proj",
-  "type": "relation",
-  "relation": {
-    "id": "dd456007-6c66-4bba-957e-ea501dcda3a6"
-  }
-}
-```
+> [tab] Property item
+>
+> ```json Property item theme={null}
+> {
+>   "object": "property_item",
+>   "id": "proj",
+>   "type": "relation",
+>   "relation": {
+>     "id": "dd456007-6c66-4bba-957e-ea501dcda3a6"
+>   }
+> }
+> ```
 
 ### Rich text
 
@@ -1043,95 +1043,95 @@ The Text property uses the API key `rich_text`. Its value is an array of [rich t
 
 Writes use the input fields for each rich text type. Responses also include `annotations`, `plain_text`, and `href`. Text in a page property is separate from the page’s [content blocks](/reference/block).
 
-**Schema**
+> [tab] Schema
+>
+> ```json Schema theme={null}
+> {
+>   "Summary": {
+>     "id": "text",
+>     "name": "Summary",
+>     "description": null,
+>     "type": "rich_text",
+>     "rich_text": {}
+>   }
+> }
+> ```
 
-```json Schema theme={null}
-{
-  "Summary": {
-    "id": "text",
-    "name": "Summary",
-    "description": null,
-    "type": "rich_text",
-    "rich_text": {}
-  }
-}
-```
+> [tab] Page value
+>
+> ```json Page value theme={null}
+> {
+>   "Summary": {
+>     "id": "text",
+>     "type": "rich_text",
+>     "rich_text": [
+>       {
+>         "type": "text",
+>         "text": {
+>           "content": "Launch checklist",
+>           "link": null
+>         },
+>         "annotations": {
+>           "bold": false,
+>           "italic": false,
+>           "strikethrough": false,
+>           "underline": false,
+>           "code": false,
+>           "color": "default"
+>         },
+>         "plain_text": "Launch checklist",
+>         "href": null
+>       }
+>     ]
+>   }
+> }
+> ```
 
-**Page value**
+> [tab] Page write
+>
+> ```json Page write theme={null}
+> {
+>   "properties": {
+>     "Summary": {
+>       "rich_text": [
+>         {
+>           "type": "text",
+>           "text": {
+>             "content": "Launch checklist"
+>           }
+>         }
+>       ]
+>     }
+>   }
+> }
+> ```
 
-```json Page value theme={null}
-{
-  "Summary": {
-    "id": "text",
-    "type": "rich_text",
-    "rich_text": [
-      {
-        "type": "text",
-        "text": {
-          "content": "Launch checklist",
-          "link": null
-        },
-        "annotations": {
-          "bold": false,
-          "italic": false,
-          "strikethrough": false,
-          "underline": false,
-          "code": false,
-          "color": "default"
-        },
-        "plain_text": "Launch checklist",
-        "href": null
-      }
-    ]
-  }
-}
-```
-
-**Page write**
-
-```json Page write theme={null}
-{
-  "properties": {
-    "Summary": {
-      "rich_text": [
-        {
-          "type": "text",
-          "text": {
-            "content": "Launch checklist"
-          }
-        }
-      ]
-    }
-  }
-}
-```
-
-**Property item**
-
-```json Property item theme={null}
-{
-  "object": "property_item",
-  "id": "text",
-  "type": "rich_text",
-  "rich_text": {
-    "type": "text",
-    "text": {
-      "content": "Launch checklist",
-      "link": null
-    },
-    "annotations": {
-      "bold": false,
-      "italic": false,
-      "strikethrough": false,
-      "underline": false,
-      "code": false,
-      "color": "default"
-    },
-    "plain_text": "Launch checklist",
-    "href": null
-  }
-}
-```
+> [tab] Property item
+>
+> ```json Property item theme={null}
+> {
+>   "object": "property_item",
+>   "id": "text",
+>   "type": "rich_text",
+>   "rich_text": {
+>     "type": "text",
+>     "text": {
+>       "content": "Launch checklist",
+>       "link": null
+>     },
+>     "annotations": {
+>       "bold": false,
+>       "italic": false,
+>       "strikethrough": false,
+>       "underline": false,
+>       "code": false,
+>       "color": "default"
+>     },
+>     "plain_text": "Launch checklist",
+>     "href": null
+>   }
+> }
+> ```
 
 ### Rollup
 
@@ -1148,72 +1148,72 @@ A page response puts array values in `rollup.array`. The property-item endpoint 
 
 Share the related database with your connection too. Missing access can leave relation values empty or make formula and rollup results incomplete. Check access before treating an empty result as missing data.
 
-**Schema**
+> [tab] Schema
+>
+> ```json Schema theme={null}
+> {
+>   "Total estimate": {
+>     "id": "roll",
+>     "name": "Total estimate",
+>     "description": null,
+>     "type": "rollup",
+>     "rollup": {
+>       "relation_property_id": "proj",
+>       "relation_property_name": "Projects",
+>       "rollup_property_id": "estM",
+>       "rollup_property_name": "Estimate",
+>       "function": "sum"
+>     }
+>   }
+> }
+> ```
 
-```json Schema theme={null}
-{
-  "Total estimate": {
-    "id": "roll",
-    "name": "Total estimate",
-    "description": null,
-    "type": "rollup",
-    "rollup": {
-      "relation_property_id": "proj",
-      "relation_property_name": "Projects",
-      "rollup_property_id": "estM",
-      "rollup_property_name": "Estimate",
-      "function": "sum"
-    }
-  }
-}
-```
+> [tab] Page value
+>
+> ```json Page value theme={null}
+> {
+>   "Total estimate": {
+>     "id": "roll",
+>     "type": "rollup",
+>     "rollup": {
+>       "type": "number",
+>       "number": 8,
+>       "function": "sum"
+>     }
+>   }
+> }
+> ```
 
-**Page value**
-
-```json Page value theme={null}
-{
-  "Total estimate": {
-    "id": "roll",
-    "type": "rollup",
-    "rollup": {
-      "type": "number",
-      "number": 8,
-      "function": "sum"
-    }
-  }
-}
-```
-
-**Property item**
-
-```json Property item theme={null}
-{
-  "object": "list",
-  "results": [
-    {
-      "object": "property_item",
-      "id": "proj",
-      "type": "relation",
-      "relation": {
-        "id": "dd456007-6c66-4bba-957e-ea501dcda3a6"
-      }
-    }
-  ],
-  "next_cursor": null,
-  "has_more": false,
-  "type": "property_item",
-  "property_item": {
-    "id": "roll",
-    "next_url": null,
-    "type": "rollup",
-    "rollup": {
-      "type": "number",
-      "number": 8,
-      "function": "sum"
-    }
-  }
-}
-```
+> [tab] Property item
+>
+> ```json Property item theme={null}
+> {
+>   "object": "list",
+>   "results": [
+>     {
+>       "object": "property_item",
+>       "id": "proj",
+>       "type": "relation",
+>       "relation": {
+>         "id": "dd456007-6c66-4bba-957e-ea501dcda3a6"
+>       }
+>     }
+>   ],
+>   "next_cursor": null,
+>   "has_more": false,
+>   "type": "property_item",
+>   "property_item": {
+>     "id": "roll",
+>     "next_url": null,
+>     "type": "rollup",
+>     "rollup": {
+>       "type": "number",
+>       "number": 8,
+>       "function": "sum"
+>     }
+>   }
+> }
+> ```
 
 ```json Date rollup field theme={null}
 {"type":"date","date":{"start":"2026-09-15","end":null,"time_zone":null},"function":"earliest_date"}
@@ -1241,73 +1241,73 @@ Some rollup functions also have [endpoint-specific limits](/reference/property-i
 
 A new option name adds an option to the schema if your connection can write to the parent data source. Option names cannot contain commas. Option colors belong to the [schema](/reference/property-object#select), not the page value.
 
-**Schema**
+> [tab] Schema
+>
+> ```json Schema theme={null}
+> {
+>   "Priority": {
+>     "id": "prio",
+>     "name": "Priority",
+>     "description": null,
+>     "type": "select",
+>     "select": {
+>       "options": [
+>         {
+>           "id": "ff8e9269-9579-47f7-8f6e-83a84716863c",
+>           "name": "High",
+>           "color": "red",
+>           "description": null
+>         }
+>       ]
+>     }
+>   }
+> }
+> ```
 
-```json Schema theme={null}
-{
-  "Priority": {
-    "id": "prio",
-    "name": "Priority",
-    "description": null,
-    "type": "select",
-    "select": {
-      "options": [
-        {
-          "id": "ff8e9269-9579-47f7-8f6e-83a84716863c",
-          "name": "High",
-          "color": "red",
-          "description": null
-        }
-      ]
-    }
-  }
-}
-```
+> [tab] Page value
+>
+> ```json Page value theme={null}
+> {
+>   "Priority": {
+>     "id": "prio",
+>     "type": "select",
+>     "select": {
+>       "id": "ff8e9269-9579-47f7-8f6e-83a84716863c",
+>       "name": "High",
+>       "color": "red"
+>     }
+>   }
+> }
+> ```
 
-**Page value**
+> [tab] Page write
+>
+> ```json Page write theme={null}
+> {
+>   "properties": {
+>     "Priority": {
+>       "select": {
+>         "name": "High"
+>       }
+>     }
+>   }
+> }
+> ```
 
-```json Page value theme={null}
-{
-  "Priority": {
-    "id": "prio",
-    "type": "select",
-    "select": {
-      "id": "ff8e9269-9579-47f7-8f6e-83a84716863c",
-      "name": "High",
-      "color": "red"
-    }
-  }
-}
-```
-
-**Page write**
-
-```json Page write theme={null}
-{
-  "properties": {
-    "Priority": {
-      "select": {
-        "name": "High"
-      }
-    }
-  }
-}
-```
-
-**Property item**
-
-```json Property item theme={null}
-{
-  "object": "property_item",
-  "id": "prio",
-  "type": "select",
-  "select": {
-    "id": "ff8e9269-9579-47f7-8f6e-83a84716863c",
-    "name": "High",
-    "color": "red"
-  }
-}
-```
+> [tab] Property item
+>
+> ```json Property item theme={null}
+> {
+>   "object": "property_item",
+>   "id": "prio",
+>   "type": "select",
+>   "select": {
+>     "id": "ff8e9269-9579-47f7-8f6e-83a84716863c",
+>     "name": "High",
+>     "color": "red"
+>   }
+> }
+> ```
 
 ### Status
 
@@ -1315,96 +1315,96 @@ A new option name adds an option to the schema if your connection can write to t
 
 A page write does not create a new status option or set its group. Use [Update data source properties](/reference/update-data-source-properties#status-configuration-updates) to manage status options.
 
-**Schema**
+> [tab] Schema
+>
+> ```json Schema theme={null}
+> {
+>   "Status": {
+>     "id": "stat",
+>     "name": "Status",
+>     "description": null,
+>     "type": "status",
+>     "status": {
+>       "default_option": "In progress",
+>       "options": [
+>         {
+>           "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3",
+>           "name": "In progress",
+>           "color": "blue",
+>           "description": null
+>         }
+>       ],
+>       "groups": [
+>         {
+>           "id": "b9d42483-e576-4858-a26f-ed940a5f678f",
+>           "name": "To-do",
+>           "color": "gray",
+>           "option_ids": []
+>         },
+>         {
+>           "id": "cf4952eb-1265-46ec-86ab-4bded4fa2e3b",
+>           "name": "In progress",
+>           "color": "blue",
+>           "option_ids": [
+>             "330aeafb-598c-4e1c-bc13-1148aa5963d3"
+>           ]
+>         },
+>         {
+>           "id": "4fa7348e-ae74-46d9-9585-e773caca6f40",
+>           "name": "Complete",
+>           "color": "green",
+>           "option_ids": []
+>         }
+>       ]
+>     }
+>   }
+> }
+> ```
 
-```json Schema theme={null}
-{
-  "Status": {
-    "id": "stat",
-    "name": "Status",
-    "description": null,
-    "type": "status",
-    "status": {
-      "default_option": "In progress",
-      "options": [
-        {
-          "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3",
-          "name": "In progress",
-          "color": "blue",
-          "description": null
-        }
-      ],
-      "groups": [
-        {
-          "id": "b9d42483-e576-4858-a26f-ed940a5f678f",
-          "name": "To-do",
-          "color": "gray",
-          "option_ids": []
-        },
-        {
-          "id": "cf4952eb-1265-46ec-86ab-4bded4fa2e3b",
-          "name": "In progress",
-          "color": "blue",
-          "option_ids": [
-            "330aeafb-598c-4e1c-bc13-1148aa5963d3"
-          ]
-        },
-        {
-          "id": "4fa7348e-ae74-46d9-9585-e773caca6f40",
-          "name": "Complete",
-          "color": "green",
-          "option_ids": []
-        }
-      ]
-    }
-  }
-}
-```
+> [tab] Page value
+>
+> ```json Page value theme={null}
+> {
+>   "Status": {
+>     "id": "stat",
+>     "type": "status",
+>     "status": {
+>       "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3",
+>       "name": "In progress",
+>       "color": "blue"
+>     }
+>   }
+> }
+> ```
 
-**Page value**
+> [tab] Page write
+>
+> ```json Page write theme={null}
+> {
+>   "properties": {
+>     "Status": {
+>       "status": {
+>         "name": "In progress"
+>       }
+>     }
+>   }
+> }
+> ```
 
-```json Page value theme={null}
-{
-  "Status": {
-    "id": "stat",
-    "type": "status",
-    "status": {
-      "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3",
-      "name": "In progress",
-      "color": "blue"
-    }
-  }
-}
-```
-
-**Page write**
-
-```json Page write theme={null}
-{
-  "properties": {
-    "Status": {
-      "status": {
-        "name": "In progress"
-      }
-    }
-  }
-}
-```
-
-**Property item**
-
-```json Property item theme={null}
-{
-  "object": "property_item",
-  "id": "stat",
-  "type": "status",
-  "status": {
-    "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3",
-    "name": "In progress",
-    "color": "blue"
-  }
-}
-```
+> [tab] Property item
+>
+> ```json Property item theme={null}
+> {
+>   "object": "property_item",
+>   "id": "stat",
+>   "type": "status",
+>   "status": {
+>     "id": "330aeafb-598c-4e1c-bc13-1148aa5963d3",
+>     "name": "In progress",
+>     "color": "blue"
+>   }
+> }
+> ```
 
 ### Title
 
@@ -1412,95 +1412,95 @@ The Name property uses the API key `title`. Its value is an array of [rich text 
 
 For a page whose parent is another page, use `title` as the property key. This is separate from the name of the data source itself.
 
-**Schema**
+> [tab] Schema
+>
+> ```json Schema theme={null}
+> {
+>   "Name": {
+>     "id": "title",
+>     "name": "Name",
+>     "description": null,
+>     "type": "title",
+>     "title": {}
+>   }
+> }
+> ```
 
-```json Schema theme={null}
-{
-  "Name": {
-    "id": "title",
-    "name": "Name",
-    "description": null,
-    "type": "title",
-    "title": {}
-  }
-}
-```
+> [tab] Page value
+>
+> ```json Page value theme={null}
+> {
+>   "Name": {
+>     "id": "title",
+>     "type": "title",
+>     "title": [
+>       {
+>         "type": "text",
+>         "text": {
+>           "content": "Launch checklist",
+>           "link": null
+>         },
+>         "annotations": {
+>           "bold": false,
+>           "italic": false,
+>           "strikethrough": false,
+>           "underline": false,
+>           "code": false,
+>           "color": "default"
+>         },
+>         "plain_text": "Launch checklist",
+>         "href": null
+>       }
+>     ]
+>   }
+> }
+> ```
 
-**Page value**
+> [tab] Page write
+>
+> ```json Page write theme={null}
+> {
+>   "properties": {
+>     "Name": {
+>       "title": [
+>         {
+>           "type": "text",
+>           "text": {
+>             "content": "Launch checklist"
+>           }
+>         }
+>       ]
+>     }
+>   }
+> }
+> ```
 
-```json Page value theme={null}
-{
-  "Name": {
-    "id": "title",
-    "type": "title",
-    "title": [
-      {
-        "type": "text",
-        "text": {
-          "content": "Launch checklist",
-          "link": null
-        },
-        "annotations": {
-          "bold": false,
-          "italic": false,
-          "strikethrough": false,
-          "underline": false,
-          "code": false,
-          "color": "default"
-        },
-        "plain_text": "Launch checklist",
-        "href": null
-      }
-    ]
-  }
-}
-```
-
-**Page write**
-
-```json Page write theme={null}
-{
-  "properties": {
-    "Name": {
-      "title": [
-        {
-          "type": "text",
-          "text": {
-            "content": "Launch checklist"
-          }
-        }
-      ]
-    }
-  }
-}
-```
-
-**Property item**
-
-```json Property item theme={null}
-{
-  "object": "property_item",
-  "id": "title",
-  "type": "title",
-  "title": {
-    "type": "text",
-    "text": {
-      "content": "Launch checklist",
-      "link": null
-    },
-    "annotations": {
-      "bold": false,
-      "italic": false,
-      "strikethrough": false,
-      "underline": false,
-      "code": false,
-      "color": "default"
-    },
-    "plain_text": "Launch checklist",
-    "href": null
-  }
-}
-```
+> [tab] Property item
+>
+> ```json Property item theme={null}
+> {
+>   "object": "property_item",
+>   "id": "title",
+>   "type": "title",
+>   "title": {
+>     "type": "text",
+>     "text": {
+>       "content": "Launch checklist",
+>       "link": null
+>     },
+>     "annotations": {
+>       "bold": false,
+>       "italic": false,
+>       "strikethrough": false,
+>       "underline": false,
+>       "code": false,
+>       "color": "default"
+>     },
+>     "plain_text": "Launch checklist",
+>     "href": null
+>   }
+> }
+> ```
 
 ### Unique ID
 
@@ -1508,103 +1508,103 @@ The ID property uses the API key `unique_id`. It contains `number` and `prefix`.
 
 The [schema’s prefix](/reference/property-object#unique-id) controls labels such as `TASK-42`.
 
-**Schema**
+> [tab] Schema
+>
+> ```json Schema theme={null}
+> {
+>   "Task ID": {
+>     "id": "task",
+>     "name": "Task ID",
+>     "description": null,
+>     "type": "unique_id",
+>     "unique_id": {
+>       "prefix": "TASK"
+>     }
+>   }
+> }
+> ```
 
-```json Schema theme={null}
-{
-  "Task ID": {
-    "id": "task",
-    "name": "Task ID",
-    "description": null,
-    "type": "unique_id",
-    "unique_id": {
-      "prefix": "TASK"
-    }
-  }
-}
-```
+> [tab] Page value
+>
+> ```json Page value theme={null}
+> {
+>   "Task ID": {
+>     "id": "task",
+>     "type": "unique_id",
+>     "unique_id": {
+>       "number": 42,
+>       "prefix": "TASK"
+>     }
+>   }
+> }
+> ```
 
-**Page value**
-
-```json Page value theme={null}
-{
-  "Task ID": {
-    "id": "task",
-    "type": "unique_id",
-    "unique_id": {
-      "number": 42,
-      "prefix": "TASK"
-    }
-  }
-}
-```
-
-**Property item**
-
-```json Property item theme={null}
-{
-  "object": "property_item",
-  "id": "task",
-  "type": "unique_id",
-  "unique_id": {
-    "number": 42,
-    "prefix": "TASK"
-  }
-}
-```
+> [tab] Property item
+>
+> ```json Property item theme={null}
+> {
+>   "object": "property_item",
+>   "id": "task",
+>   "type": "unique_id",
+>   "unique_id": {
+>     "number": 42,
+>     "prefix": "TASK"
+>   }
+> }
+> ```
 
 ### URL
 
 `url` is a URL string or `null`.
 
-**Schema**
+> [tab] Schema
+>
+> ```json Schema theme={null}
+> {
+>   "Project link": {
+>     "id": "link",
+>     "name": "Project link",
+>     "description": null,
+>     "type": "url",
+>     "url": {}
+>   }
+> }
+> ```
 
-```json Schema theme={null}
-{
-  "Project link": {
-    "id": "link",
-    "name": "Project link",
-    "description": null,
-    "type": "url",
-    "url": {}
-  }
-}
-```
+> [tab] Page value
+>
+> ```json Page value theme={null}
+> {
+>   "Project link": {
+>     "id": "link",
+>     "type": "url",
+>     "url": "https://example.com/projects/launch"
+>   }
+> }
+> ```
 
-**Page value**
+> [tab] Page write
+>
+> ```json Page write theme={null}
+> {
+>   "properties": {
+>     "Project link": {
+>       "url": "https://example.com/projects/launch"
+>     }
+>   }
+> }
+> ```
 
-```json Page value theme={null}
-{
-  "Project link": {
-    "id": "link",
-    "type": "url",
-    "url": "https://example.com/projects/launch"
-  }
-}
-```
-
-**Page write**
-
-```json Page write theme={null}
-{
-  "properties": {
-    "Project link": {
-      "url": "https://example.com/projects/launch"
-    }
-  }
-}
-```
-
-**Property item**
-
-```json Property item theme={null}
-{
-  "object": "property_item",
-  "id": "link",
-  "type": "url",
-  "url": "https://example.com/projects/launch"
-}
-```
+> [tab] Property item
+>
+> ```json Property item theme={null}
+> {
+>   "object": "property_item",
+>   "id": "link",
+>   "type": "url",
+>   "url": "https://example.com/projects/launch"
+> }
+> ```
 
 ### Verification
 
@@ -1622,82 +1622,82 @@ An unverified value has `date: null` and `verified_by: null`. A verified page be
 
 You can write verification through [Create page](/reference/post-page) or [Update page](/reference/patch-page). The acting connection is recorded as the verifier. Omit `verified_by` and do not set the wiki’s verification Owner property in the same request.
 
-**Schema**
+> [tab] Schema
+>
+> ```json Schema theme={null}
+> {
+>   "Verification": {
+>     "id": "vrfy",
+>     "name": "Verification",
+>     "description": null,
+>     "type": "verification",
+>     "verification": {}
+>   }
+> }
+> ```
 
-```json Schema theme={null}
-{
-  "Verification": {
-    "id": "vrfy",
-    "name": "Verification",
-    "description": null,
-    "type": "verification",
-    "verification": {}
-  }
-}
-```
+> [tab] Page value
+>
+> ```json Page value theme={null}
+> {
+>   "Verification": {
+>     "id": "vrfy",
+>     "type": "verification",
+>     "verification": {
+>       "state": "verified",
+>       "date": {
+>         "start": "2026-09-01T09:00:00.000Z",
+>         "end": "2026-10-01T09:00:00.000Z",
+>         "time_zone": null
+>       },
+>       "verified_by": {
+>         "object": "user",
+>         "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
+>       }
+>     }
+>   }
+> }
+> ```
 
-**Page value**
+> [tab] Page write
+>
+> ```json Page write theme={null}
+> {
+>   "properties": {
+>     "Verification": {
+>       "verification": {
+>         "state": "verified",
+>         "date": {
+>           "start": "2026-09-01T09:00:00.000Z",
+>           "end": "2026-10-01T09:00:00.000Z"
+>         }
+>       }
+>     }
+>   }
+> }
+> ```
 
-```json Page value theme={null}
-{
-  "Verification": {
-    "id": "vrfy",
-    "type": "verification",
-    "verification": {
-      "state": "verified",
-      "date": {
-        "start": "2026-09-01T09:00:00.000Z",
-        "end": "2026-10-01T09:00:00.000Z",
-        "time_zone": null
-      },
-      "verified_by": {
-        "object": "user",
-        "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
-      }
-    }
-  }
-}
-```
-
-**Page write**
-
-```json Page write theme={null}
-{
-  "properties": {
-    "Verification": {
-      "verification": {
-        "state": "verified",
-        "date": {
-          "start": "2026-09-01T09:00:00.000Z",
-          "end": "2026-10-01T09:00:00.000Z"
-        }
-      }
-    }
-  }
-}
-```
-
-**Property item**
-
-```json Property item theme={null}
-{
-  "object": "property_item",
-  "id": "vrfy",
-  "type": "verification",
-  "verification": {
-    "state": "verified",
-    "date": {
-      "start": "2026-09-01T09:00:00.000Z",
-      "end": "2026-10-01T09:00:00.000Z",
-      "time_zone": null
-    },
-    "verified_by": {
-      "object": "user",
-      "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
-    }
-  }
-}
-```
+> [tab] Property item
+>
+> ```json Property item theme={null}
+> {
+>   "object": "property_item",
+>   "id": "vrfy",
+>   "type": "verification",
+>   "verification": {
+>     "state": "verified",
+>     "date": {
+>       "start": "2026-09-01T09:00:00.000Z",
+>       "end": "2026-10-01T09:00:00.000Z",
+>       "time_zone": null
+>     },
+>     "verified_by": {
+>       "object": "user",
+>       "id": "c2f20311-9e54-4d11-8c79-7398424ae41e"
+>     }
+>   }
+> }
+> ```
 
 ### Unsupported properties
 

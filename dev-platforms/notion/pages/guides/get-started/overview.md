@@ -52,9 +52,9 @@ Notion supports three authentication models:
 >
 > Enterprise identity management (user provisioning, group management, and Single Sign-On) is covered in Notion's Help Center, not in these API docs.
 >
-> > **[Provision users and groups with SCIM](https://www.notion.com/help/provision-users-and-groups-with-scim)**
+> > [card] [Provision users and groups with SCIM](https://www.notion.com/help/provision-users-and-groups-with-scim)
 >
-> > **[SAML SSO configuration](https://www.notion.com/help/saml-sso-configuration)**
+> > [card] [SAML SSO configuration](https://www.notion.com/help/saml-sso-configuration)
 
 ## Shared concepts
 
@@ -64,35 +64,35 @@ All connection and token types share a few core concepts.
 
 Every connection or token has a set of capabilities that control what it can do — read content, update content, insert content, read comments, and more. You configure capabilities when you create a connection or PAT. See the [Capabilities reference](/reference/capabilities) for the full list.
 
-> **[Pages](/guides/data-apis/working-with-page-content)**
+> [card] [Pages](/guides/data-apis/working-with-page-content)
 >
 > Create, update, and retrieve page content.
 
-> **[Databases](/guides/data-apis/working-with-databases)**
+> [card] [Databases](/guides/data-apis/working-with-databases)
 >
 > Manage database, properties, entries, and schemas.
 
-> **[Views](/guides/data-apis/working-with-views)**
+> [card] [Views](/guides/data-apis/working-with-views)
 >
 > Create and configure database views programmatically.
 
-> **[Data sources](/reference/data-source)**
+> [card] [Data sources](/reference/data-source)
 >
 > Manage data sources, properties, entries, and schemas.
 
-> **[File uploads](/guides/data-apis/working-with-files-and-media)**
+> [card] [File uploads](/guides/data-apis/working-with-files-and-media)
 >
 > Upload and attach files to pages and databases.
 
-> **[Comments](/guides/data-apis/working-with-comments)**
+> [card] [Comments](/guides/data-apis/working-with-comments)
 >
 > Handle page and inline comments.
 
-> **[Content queries](/reference/post-search)**
+> [card] [Content queries](/reference/post-search)
 >
 > Search through workspace content.
 
-> **[Users](/reference/user)**
+> [card] [Users](/reference/user)
 >
 > Access user profiles and permissions.
 
@@ -148,14 +148,14 @@ Once you're ready to build further, choose the authentication model that fits yo
 
 Explore the links below to get started, and join the [Notion Devs Slack community](https://join.slack.com/t/notiondevs/shared_invite/zt-3u9oid9q8-HLUBmMVWYK~g9HFo4U4raA) to share your projects and connect with fellow developers.
 
-> **[API reference](/reference/intro)**
+> [card] [API reference](/reference/intro)
 
-> **[Notion SDK for JavaScript](https://github.com/makenotion/notion-sdk-js)**
+> [card] [Notion SDK for JavaScript](https://github.com/makenotion/notion-sdk-js)
 
-> **[Starter templates](https://github.com/makenotion/notion-sdk-typescript-starter)**
+> [card] [Starter templates](https://github.com/makenotion/notion-sdk-typescript-starter)
 
-> **[Postman collection](https://www.postman.com/notionhq/notion-s-api-workspace/collection/52041987-03f70d8f-b6e5-4306-805c-f95f7cdf05b9)**
+> [card] [Postman collection](https://www.postman.com/notionhq/notion-s-api-workspace/collection/52041987-03f70d8f-b6e5-4306-805c-f95f7cdf05b9)
 
-> **[FAQs](/page/frequently-asked-questions)**
+> [card] [FAQs](/page/frequently-asked-questions)
 
-> **[Notion Devs Slack](https://join.slack.com/t/notiondevs/shared_invite/zt-3u9oid9q8-HLUBmMVWYK~g9HFo4U4raA)**
+> [card] [Notion Devs Slack](https://join.slack.com/t/notiondevs/shared_invite/zt-3u9oid9q8-HLUBmMVWYK~g9HFo4U4raA)

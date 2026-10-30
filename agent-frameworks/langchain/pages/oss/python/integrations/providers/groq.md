@@ -12,7 +12,7 @@ Integrate with Groq using LangChain Python.
 
 ## Model interfaces
 
-> **[ChatGroq](/oss/python/integrations/chat/groq)**
+> [card] [ChatGroq](/oss/python/integrations/chat/groq)
 >
 > Interface to chat models hosted on the Groq platform.
 

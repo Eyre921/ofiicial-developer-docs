@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1693 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1695 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -84,6 +84,7 @@
 - `langsmith/aes-encryption` — [Configure AES encryption at rest](pages/langsmith/aes-encryption.md) · [原文](https://docs.langchain.com/langsmith/aes-encryption)
 - `langsmith/agent-auth` — [Set up Agent Auth](pages/langsmith/agent-auth.md) · [原文](https://docs.langchain.com/langsmith/agent-auth)
 - `langsmith/agent-environments` — [Agent environments](pages/langsmith/agent-environments.md) · [原文](https://docs.langchain.com/langsmith/agent-environments)
+- `langsmith/agent-registry` — [Agent Registry](pages/langsmith/agent-registry.md) · [原文](https://docs.langchain.com/langsmith/agent-registry)
 - `langsmith/agent-server` — [Agent Server](pages/langsmith/agent-server.md) · [原文](https://docs.langchain.com/langsmith/agent-server)
 - `langsmith/agent-server-api/a2a/a2a-json-rpc` — [A2A JSON-RPC](pages/langsmith/agent-server-api/a2a/a2a-json-rpc.md) · [原文](https://docs.langchain.com/langsmith/agent-server-api/a2a/a2a-json-rpc)
 - `langsmith/agent-server-api/assistants/count-assistants` — [Count Assistants](pages/langsmith/agent-server-api/assistants/count-assistants.md) · [原文](https://docs.langchain.com/langsmith/agent-server-api/assistants/count-assistants)
@@ -154,7 +155,6 @@
 - `langsmith/agent-server-feedback` — [How to collect user feedback for Agent Server runs](pages/langsmith/agent-server-feedback.md) · [原文](https://docs.langchain.com/langsmith/agent-server-feedback)
 - `langsmith/agent-server-overview` — [Agent Server](pages/langsmith/agent-server-overview.md) · [原文](https://docs.langchain.com/langsmith/agent-server-overview)
 - `langsmith/agent-server-scale` — [Configure Agent Server for scale](pages/langsmith/agent-server-scale.md) · [原文](https://docs.langchain.com/langsmith/agent-server-scale)
-- `langsmith/agents` — [Agents](pages/langsmith/agents.md) · [原文](https://docs.langchain.com/langsmith/agents)
 - `langsmith/alerts` — [Alerts in LangSmith](pages/langsmith/alerts.md) · [原文](https://docs.langchain.com/langsmith/alerts)
 - `langsmith/analyze-an-experiment` — [Analyze an experiment](pages/langsmith/analyze-an-experiment.md) · [原文](https://docs.langchain.com/langsmith/analyze-an-experiment)
 - `langsmith/annotate-code` — [Custom instrumentation](pages/langsmith/annotate-code.md) · [原文](https://docs.langchain.com/langsmith/annotate-code)
@@ -338,7 +338,7 @@
 - `langsmith/fleet/schedules` — [Schedules](pages/langsmith/fleet/schedules.md) · [原文](https://docs.langchain.com/langsmith/fleet/schedules)
 - `langsmith/fleet/skills` — [Skills](pages/langsmith/fleet/skills.md) · [原文](https://docs.langchain.com/langsmith/fleet/skills)
 - `langsmith/fleet/slack-app` — [Integrate Slack with an agent](pages/langsmith/fleet/slack-app.md) · [原文](https://docs.langchain.com/langsmith/fleet/slack-app)
-- `langsmith/fleet/teams-app` — [Integrate Teams with an agent](pages/langsmith/fleet/teams-app.md) · [原文](https://docs.langchain.com/langsmith/fleet/teams-app)
+- `langsmith/fleet/teams-app` — [Integrate Microsoft Teams with an agent](pages/langsmith/fleet/teams-app.md) · [原文](https://docs.langchain.com/langsmith/fleet/teams-app)
 - `langsmith/fleet/templates` — [Templates](pages/langsmith/fleet/templates.md) · [原文](https://docs.langchain.com/langsmith/fleet/templates)
 - `langsmith/fleet/tools` — [Tool integrations](pages/langsmith/fleet/tools.md) · [原文](https://docs.langchain.com/langsmith/fleet/tools)
 - `langsmith/fleet/webhooks` — [Fleet webhooks](pages/langsmith/fleet/webhooks.md) · [原文](https://docs.langchain.com/langsmith/fleet/webhooks)
@@ -574,6 +574,7 @@
 - `langsmith/self-host-sandbox-egress-proxy` — [Route self-hosted Sandbox egress through a forward proxy](pages/langsmith/self-host-sandbox-egress-proxy.md) · [原文](https://docs.langchain.com/langsmith/self-host-sandbox-egress-proxy)
 - `langsmith/self-host-sandbox-operations` — [Operate self-hosted Sandboxes](pages/langsmith/self-host-sandbox-operations.md) · [原文](https://docs.langchain.com/langsmith/self-host-sandbox-operations)
 - `langsmith/self-host-sandbox-scaling` — [Scale self-hosted Sandboxes](pages/langsmith/self-host-sandbox-scaling.md) · [原文](https://docs.langchain.com/langsmith/self-host-sandbox-scaling)
+- `langsmith/self-host-sandbox-separate-cluster` — [Run self-hosted Sandboxes in a separate cluster](pages/langsmith/self-host-sandbox-separate-cluster.md) · [原文](https://docs.langchain.com/langsmith/self-host-sandbox-separate-cluster)
 - `langsmith/self-host-scale` — [Configure LangSmith for scale](pages/langsmith/self-host-scale.md) · [原文](https://docs.langchain.com/langsmith/self-host-scale)
 - `langsmith/self-host-slack` — [Connect self-hosted and BYOC LangSmith to Slack](pages/langsmith/self-host-slack.md) · [原文](https://docs.langchain.com/langsmith/self-host-slack)
 - `langsmith/self-host-smithdb` — [Enable SmithDB on self-hosted LangSmith](pages/langsmith/self-host-smithdb.md) · [原文](https://docs.langchain.com/langsmith/self-host-smithdb)
@@ -1220,6 +1221,7 @@
 - `langsmith/streaming` — [Streaming API](pages/langsmith/streaming.md) · [原文](https://docs.langchain.com/langsmith/streaming)
 - `langsmith/studio` — [LangSmith Studio](pages/langsmith/studio.md) · [原文](https://docs.langchain.com/langsmith/studio)
 - `langsmith/summary` — [How to define a summary evaluator](pages/langsmith/summary.md) · [原文](https://docs.langchain.com/langsmith/summary)
+- `langsmith/teams` — [Teams](pages/langsmith/teams.md) · [原文](https://docs.langchain.com/langsmith/teams)
 - `langsmith/test-from-playground` — [Test from the Playground](pages/langsmith/test-from-playground.md) · [原文](https://docs.langchain.com/langsmith/test-from-playground)
 - `langsmith/test-react-agent-pytest` — [Test a ReAct agent with Pytest/Vitest and LangSmith](pages/langsmith/test-react-agent-pytest.md) · [原文](https://docs.langchain.com/langsmith/test-react-agent-pytest)
 - `langsmith/threads` — [Configure threads](pages/langsmith/threads.md) · [原文](https://docs.langchain.com/langsmith/threads)

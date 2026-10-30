@@ -44,48 +44,48 @@ The downgrade process is different depending on how you're paying for Pinecone.
 >
 > Start the downgrade in the Pinecone console, as described below. The console walks you through what to keep and cleans up the rest. If you start the downgrade in a cloud marketplace instead, that cleanup doesn't run, so Pinecone deactivates your account and you'll need to [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
 
-**Credit card**
+> [tab] Credit card
+>
+> 1. In the Pinecone console, go to [**Settings > Billing > Plans**](https://app.pinecone.io/organizations/-/settings/billing/plans).
+> 2. Click **Downgrade** in the **Starter** plan section.
+>
+> Your billing ends immediately, but you'll receive a final invoice for any charges accrued in the current month.
 
-1. In the Pinecone console, go to [**Settings > Billing > Plans**](https://app.pinecone.io/organizations/-/settings/billing/plans).
-2. Click **Downgrade** in the **Starter** plan section.
+> [tab] Google Cloud Marketplace
+>
+> 1. In the Pinecone console, go to [**Settings > Billing > Plans**](https://app.pinecone.io/organizations/-/settings/billing/plans).
+> 2. In the **Starter** section, click **Downgrade**.
+> 3. Click **Confirm downgrade**.
+> 4. On the **Continue your downgrade on GCP Marketplace** modal, click **Continue to marketplace**. This takes you to your orders page in Google Cloud Marketplace.
+> 5. [Cancel the order](https://cloud.google.com/marketplace/docs/manage-billing#saas-products) for your Pinecone subscription.
+>
+>    > [!TIP]
+>    >
+>    > If you don't see the order, check that the correct billing account is selected.
+>
+> Your billing ends immediately, but you'll receive a final invoice for any charges accrued in the current month.
 
-Your billing ends immediately, but you'll receive a final invoice for any charges accrued in the current month.
+> [tab] AWS Marketplace
+>
+> 1. In the Pinecone console, go to [**Settings > Billing > Plans**](https://app.pinecone.io/organizations/-/settings/billing/plans).
+> 2. In the **Starter** section, click **Downgrade**.
+> 3. Click **Confirm downgrade**.
+> 4. On the **Continue your downgrade on AWS Marketplace** modal, click **Continue to marketplace**. This takes you to the [Manage subscriptions](https://console.aws.amazon.com/marketplace) page in the AWS Marketplace.
+> 5. [Cancel the subscription](https://docs.aws.amazon.com/marketplace/latest/buyerguide/cancel-subscription.html#cancel-saas-subscription) to Pinecone.
+>
+> Your billing ends immediately, but you'll receive a final invoice for any charges accrued in the current month.
 
-**Google Cloud Marketplace**
-
-1. In the Pinecone console, go to [**Settings > Billing > Plans**](https://app.pinecone.io/organizations/-/settings/billing/plans).
-2. In the **Starter** section, click **Downgrade**.
-3. Click **Confirm downgrade**.
-4. On the **Continue your downgrade on GCP Marketplace** modal, click **Continue to marketplace**. This takes you to your orders page in Google Cloud Marketplace.
-5. [Cancel the order](https://cloud.google.com/marketplace/docs/manage-billing#saas-products) for your Pinecone subscription.
-
-   > [!TIP]
-   >
-   > If you don't see the order, check that the correct billing account is selected.
-
-Your billing ends immediately, but you'll receive a final invoice for any charges accrued in the current month.
-
-**AWS Marketplace**
-
-1. In the Pinecone console, go to [**Settings > Billing > Plans**](https://app.pinecone.io/organizations/-/settings/billing/plans).
-2. In the **Starter** section, click **Downgrade**.
-3. Click **Confirm downgrade**.
-4. On the **Continue your downgrade on AWS Marketplace** modal, click **Continue to marketplace**. This takes you to the [Manage subscriptions](https://console.aws.amazon.com/marketplace) page in the AWS Marketplace.
-5. [Cancel the subscription](https://docs.aws.amazon.com/marketplace/latest/buyerguide/cancel-subscription.html#cancel-saas-subscription) to Pinecone.
-
-Your billing ends immediately, but you'll receive a final invoice for any charges accrued in the current month.
-
-**Microsoft Marketplace**
-
-1. In the Pinecone console, go to [**Settings > Billing > Plans**](https://app.pinecone.io/organizations/-/settings/billing/plans).
-2. In the **Starter** section, click **Downgrade**.
-3. Click **Confirm downgrade**.
-4. On the **Continue your downgrade on Azure Marketplace** modal, click **Continue to marketplace**.
-5. On the **SaaS** page, click your subscription to Pinecone.
-6. Click **Cancel subscription**.
-7. Confirm the cancellation.
-
-Your billing ends immediately, but you'll receive a final invoice for any charges accrued in the current month.
+> [tab] Microsoft Marketplace
+>
+> 1. In the Pinecone console, go to [**Settings > Billing > Plans**](https://app.pinecone.io/organizations/-/settings/billing/plans).
+> 2. In the **Starter** section, click **Downgrade**.
+> 3. Click **Confirm downgrade**.
+> 4. On the **Continue your downgrade on Azure Marketplace** modal, click **Continue to marketplace**.
+> 5. On the **SaaS** page, click your subscription to Pinecone.
+> 6. Click **Cancel subscription**.
+> 7. Confirm the cancellation.
+>
+> Your billing ends immediately, but you'll receive a final invoice for any charges accrued in the current month.
 
 ## Switch from Standard to Builder
 

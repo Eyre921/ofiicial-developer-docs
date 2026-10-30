@@ -1326,7 +1326,7 @@ Additionally, you can install Supabase agent skills alongside the MCP server, us
 
 ## Available tools
 
-The Supabase MCP server provides tools organized into feature groups. All groups except Storage are enabled by default. You can enable or disable specific groups using the [configuration panel above](#configure-your-ai-tool).
+The Supabase MCP server provides tools organized into feature groups. Groups that your connection supports are enabled by default, except Storage. You can enable or disable specific groups using the [configuration panel above](#configure-your-ai-tool).
 
 ### Database
 
@@ -1373,6 +1373,13 @@ Note: Requires a paid plan.
 
 - `create_branch` / `list_branches` / `delete_branch` - Branch management
 - `merge_branch` / `reset_branch` / `rebase_branch` - Branch operations
+
+### Feedback
+
+Disabled in read-only mode (`read_only` parameter).
+
+- `submit_feedback` - Send feedback about Supabase tools to the Supabase team
+- `delete_feedback` - Delete feedback using the token returned by `submit_feedback`
 
 ### Storage (disabled by default)
 
@@ -24558,6 +24565,8 @@ const { data, error } = await supabase.auth.signInWithOAuth({
 })
 ```
 
+To point each preview deployment at its own Supabase preview branch, see [Preview branches on Vercel](https://supabase.com/docs/guides/integrations/vercel-preview-branches).
+
 ## Email templates when using `redirectTo`
 
 When using a `redirectTo` option, you may need to replace the `{{ .SiteURL }}` with `{{ .RedirectTo }}` in your email templates. See the [Email Templates guide](https://supabase.com/docs/guides/auth/auth-email-templates) for more information.
@@ -38354,6 +38363,10 @@ You can change how many database connections each pooler can open by altering th
 The general rule is that if you are heavily using the PostgREST database API, you should be conscientious about raising your pool size past 40% of the Database Max Connections. Otherwise, you can commit 80% to the pool. This leaves adequate room for the Authentication server and other utilities.
 
 These numbers are generalizations and depends on other Supabase products that you use and the extent of their usage. The actual values depend on your concurrent peak connection usage. For instance, if you were only using 80 connections in a week period and your database max connections is set to 500, then realistically you could allocate the difference of 420 (minus a reasonable buffer) to service more demand.
+
+This pool size applies per database user (role), not as a single total for the whole project. Each distinct role that connects through a pooler gets its own pool of up to this many direct Postgres connections, so the total connections poolers can open scale with the number of roles in use.
+
+The value defaults to a size based on your project's [Compute add-on](https://supabase.com/docs/guides/platform/compute-and-disk#limits-and-constraints).
 
 ## Monitoring connections
 
@@ -67779,8 +67792,6 @@ Destination-specific limitations, such as row size and type mappings, are docume
 
 # BigQuery destination
 
-Replicate Supabase Postgres tables to BigQuery.
-
 Configure BigQuery as a Supabase Pipelines destination.
 
 Note: Supabase Pipelines is currently in public alpha. Features and behavior may change as we continue developing the product.
@@ -68164,8 +68175,6 @@ Use [pipeline monitoring](https://supabase.com/docs/guides/database/replication/
 ---
 
 # DuckLake destination
-
-Replicate Supabase Postgres tables to DuckLake.
 
 Configure DuckLake as a Supabase Pipelines destination.
 
@@ -69429,7 +69438,7 @@ Result: PASS
 
 # Vault
 
-Managing secrets in Postgres.
+Manage secrets in Postgres
 
 Vault is a Postgres extension and accompanying Supabase UI that makes it safe and easy to store encrypted secrets.
 
@@ -70638,20 +70647,7 @@ Branching works with hosting providers that support preview deployments. Learn h
 
 With the Supabase branching integration, you can sync the Git branch used by the hosting provider with the corresponding Supabase preview branch. This means that the preview deployment built by your hosting provider is matched to the correct database schema, edge functions, and other Supabase configurations.
 
-### Vercel
-
-Install the Vercel integration:
-
-- From the [Vercel marketplace](https://vercel.com/integrations/supabase) or
-- By clicking the blue `Deploy` button in a Supabase example app's `README` file
-
-Note: For branching to work with Vercel, you also need the [Vercel GitHub integration](https://vercel.com/docs/deployments/git/vercel-for-github).
-
-And make sure you have [connected](https://supabase.com/dashboard/org/_/integrations) your Supabase project to your Vercel project.
-
-Supabase automatically updates your Vercel project with the correct environment variables for the corresponding preview branches. The synchronization happens at the time of Pull Request being opened, not at the time of branch creation.
-
-As branching integration is tied to the Preview Deployments feature in Vercel, there are possible race conditions between Supabase setting correct variables, and Vercel running a deployment process. Because of that, Supabase is always automatically re-deploying the most recent deployment of the given pull request.
+The Vercel integration points each Vercel preview deployment at its Supabase preview branch. To set it up, see [Preview branches on Vercel](https://supabase.com/docs/guides/integrations/vercel-preview-branches).
 
 
 ---
@@ -73763,8 +73759,6 @@ Caution: Edge functions have a runtime memory limit of 256MB. Overly large compr
 ---
 
 # Integrating with Supabase Database (Postgres)
-
-Connect to your Postgres database from Edge Functions.
 
 Connecting to Postgres from Edge Functions.
 
@@ -99579,6 +99573,46 @@ When you use the Vercel Marketplace, the following limitations apply:
 
 ---
 
+# Preview branches on Vercel
+
+Keep Vercel preview deployments off your production database.
+
+Match each Vercel preview deployment to its Supabase preview branch, so every preview runs against the right database schema, Edge Functions, and other Supabase configuration.
+
+Use this guide when you already get a Supabase preview branch for each pull request, and your frontend deploys a Vercel preview for each pull request too. Without this integration, those previews use the Supabase URL and keys set on your Vercel project, which usually point at your production project. A preview built to test a schema change then reads and writes production data.
+
+If you don't have preview branches yet, start with [Branching](https://supabase.com/docs/guides/deployment/branching). To manage Supabase projects from your Vercel account instead, see [Vercel Marketplace](https://supabase.com/docs/guides/integrations/vercel-marketplace).
+
+## Prerequisites
+
+Before you connect Vercel, you need the following:
+
+- [Branching](https://supabase.com/docs/guides/deployment/branching) set up on your Supabase project.
+- Your Vercel project connected to its GitHub repository through the [Vercel GitHub integration](https://vercel.com/docs/deployments/git/vercel-for-github).
+
+## Connect Vercel
+
+To connect Vercel to your Supabase project:
+
+1. On your organization's [**Integrations**](https://supabase.com/dashboard/org/_/integrations) page in the Supabase Dashboard, click **Install Vercel integration** and finish the installation in Vercel. You can also click **Deploy** in a Supabase example app's `README` file.
+2. Click **Add new project connection**, then select your Supabase project and your Vercel project.
+
+## After you connect
+
+Supabase updates your Vercel project with the environment variables for each preview branch. It syncs them when a pull request opens, not when the branch is created. The variables are:
+
+- **Postgres connection:** `POSTGRES_URL`, `POSTGRES_PRISMA_URL`, `POSTGRES_URL_NON_POOLING`, `POSTGRES_USER`, `POSTGRES_HOST`, `POSTGRES_PASSWORD`, and `POSTGRES_DATABASE`.
+- **Supabase API:** `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY`, and `SUPABASE_JWT_SECRET`.
+- **Public copies:** `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`. To change the `NEXT_PUBLIC_` prefix, edit the project connection on the **Integrations** page.
+- **Legacy API keys**, while they're enabled on your project: `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, and `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+
+The integration depends on Vercel preview deployments, so Vercel can start a deployment before Supabase sets the variables. Supabase always redeploys the most recent deployment of the pull request to cover this.
+
+To let users sign in on preview deployments, add a wildcard pattern for your Vercel preview URLs to the redirect allowlist. For the pattern, see [Vercel preview URLs](https://supabase.com/docs/guides/auth/redirect-urls#vercel-preview-urls).
+
+
+---
+
 # Local Development & CLI
 
 Learn how to develop locally and use the Supabase CLI
@@ -109725,19 +109759,19 @@ Note: Compute instance size changes will not change your selected disk type or d
 
 The maximum number of replication slots, WAL senders, database connections, and pooler clients depends on your compute instance size, as follows:
 
-| Compute instance | Max Replication Slots | Max WAL Senders | Database Max Connections[^1] | Connection Pooler Max Clients |
-| ---------------- | --------------------- | --------------- | ---------------------------- | ----------------------------- |
-| Nano (free)      | 5                     | 5               | 60                           | 200                           |
-| Micro            | 5                     | 5               | 60                           | 200                           |
-| Small            | 5                     | 5               | 90                           | 400                           |
-| Medium           | 5                     | 5               | 120                          | 600                           |
-| Large            | 8                     | 8               | 160                          | 800                           |
-| XL               | 24                    | 24              | 240                          | 1,000                         |
-| 2XL              | 80                    | 80              | 380                          | 1,500                         |
-| 4XL              | 80                    | 80              | 480                          | 3,000                         |
-| 8XL              | 80                    | 80              | 490                          | 6,000                         |
-| 12XL             | 80                    | 80              | 500                          | 9,000                         |
-| 16XL             | 80                    | 80              | 500                          | 12,000                        |
+| Compute instance | Max Replication Slots | Max WAL Senders | Database Max Connections[^1] | Connection Pooler Max Clients | Default Pool Size |
+| ---------------- | --------------------- | --------------- | ---------------------------- | ----------------------------- | ----------------- |
+| Nano (free)      | 5                     | 5               | 60                           | 200                           | 15                |
+| Micro            | 5                     | 5               | 60                           | 200                           | 15                |
+| Small            | 5                     | 5               | 90                           | 400                           | 15                |
+| Medium           | 5                     | 5               | 120                          | 600                           | 15                |
+| Large            | 8                     | 8               | 160                          | 800                           | 20                |
+| XL               | 24                    | 24              | 240                          | 1,000                         | 20                |
+| 2XL              | 80                    | 80              | 380                          | 1,500                         | 25                |
+| 4XL              | 80                    | 80              | 480                          | 3,000                         | 32                |
+| 8XL              | 80                    | 80              | 490                          | 6,000                         | 64                |
+| 12XL             | 80                    | 80              | 500                          | 9,000                         | 96                |
+| 16XL             | 80                    | 80              | 500                          | 12,000                        | 128               |
 
 Caution: As mentioned in the Postgres [documentation](https://postgresqlco.nf/doc/en/param/max_replication_slots/), setting `max_replication_slots` to a lower value than the current number of replication slots will prevent the server from starting. If you are downgrading your compute instance, ensure that you are using fewer slots than the maximum number of replication slots available for the new compute instance.
 
@@ -110519,7 +110553,7 @@ The required project configuration is outlined in the [shared responsibility mod
 
 These include:
 
-- Enabling [Point in Time Recovery](https://supabase.com/docs/guides/platform/backups#point-in-time-recovery) which requires at least a [small compute add-on](https://supabase.com/docs/guides/platform/compute-and-disk).
+- Enabling [Point in Time Recovery](https://supabase.com/docs/guides/platform/backups#point-in-time-recovery).
 - Turning on [SSL Enforcement](https://supabase.com/docs/guides/platform/ssl-enforcement).
 - Enabling [Network Restrictions](https://supabase.com/docs/guides/platform/network-restrictions).
 - Keeping [Postgres connection logging](https://supabase.com/docs/guides/platform/postgres-connection-logging) enabled.

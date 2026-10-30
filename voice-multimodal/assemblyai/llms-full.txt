@@ -683,7 +683,7 @@ Use this to build the recommendation. Do not dump it on the user.
 Core REST endpoints:
 - `POST /v2/upload` — upload a local file (raw binary body, **not multipart**). Returns `{ "upload_url": "..." }`. Max 2.2 GB.
 - `POST /v2/transcript` — submit a job. Returns transcript object with `id` and `status: "queued"`. Max 5 GB / 10 hours.
-- `GET /v2/transcript/{id}` — poll. Statuses: `queued`, `processing`, `completed`, `error`.
+- `GET /v2/transcript/{id}` — poll. Statuses: `queued`, `processing`, `completed`, `error`. Limited to 60 requests per minute per API key and transcript ID; over the limit returns `429` with a `Retry-After` header. Poll every few seconds, not in a tight loop.
 
 Streaming:
 - `wss://streaming.assemblyai.com/v3/ws?sample_rate=16000&speech_model=universal-3-6-pro`
@@ -13924,6 +13924,7 @@ else:
 
 - **HTTP rate limit:** 20,000 requests per 5-minute window, counted across submissions (POST) and polling (GET) combined
 - **Exceeding the limit:** returns a `403` response
+- **Transcript polling limit:** 60 `GET /v2/transcript/{transcript_id}` requests per minute for each API key and transcript; exceeding it returns a `429` with a `Retry-After` header — see [Transcript polling limit](/pre-recorded-audio/rate-limits#transcript-polling-limit)
 - **Parallel transcriptions (rate limit):** 200+ for paid accounts (queued beyond that)
 - **Ramp up gradually:** start at 10-50 parallel requests, double incrementally
 - **Avoid the rate limit:** use [webhooks](/pre-recorded-audio/webhooks) or jittered, widened polling — see [Polling without exceeding the rate limit](/pre-recorded-audio/guides/bulk-transcription-and-load-tests-at-scale#polling-without-exceeding-the-rate-limit)
@@ -15326,6 +15327,7 @@ def process_completed_call(transcript):
 
 - **HTTP rate limit:** 20,000 requests per 5-minute window, counted across submissions (POST) and polling (GET) combined
 - **Exceeding the limit:** returns a `403` response
+- **Transcript polling limit:** 60 `GET /v2/transcript/{transcript_id}` requests per minute for each API key and transcript; exceeding it returns a `429` with a `Retry-After` header — see [Transcript polling limit](/pre-recorded-audio/rate-limits#transcript-polling-limit)
 - **Parallel transcriptions (rate limit):** 200+ for paid accounts (queued beyond that)
 - **Ramp up gradually:** start at 10-50 parallel requests, double incrementally
 - **Avoid the rate limit:** use [webhooks](/pre-recorded-audio/webhooks) or jittered, widened polling — see [Polling without exceeding the rate limit](/pre-recorded-audio/guides/bulk-transcription-and-load-tests-at-scale#polling-without-exceeding-the-rate-limit)
@@ -16123,8 +16125,8 @@ For every run — bulk or load test — track completion and record per-request 
 
 - **Use webhooks when possible.** You get a clean completion signal without polling overhead. See the [Webhooks documentation](/pre-recorded-audio/webhooks) for setup, retry behavior, and authentication.
 - **Run a polling fallback alongside webhooks.** Webhooks can drop for many reasons — receiver downtime, signature mismatches, transient network failures. For every submitted job, record an expected completion deadline (around 2× mean TaT from your pilot) and `GET /v2/transcript/{id}` for any job whose webhook hasn't arrived by then. The fallback protects you from silent data loss without materially increasing your rate-limit usage.
-- **Polling-only** every 1–2 seconds measures closer to actual completion but adds to your rate-limit budget. Use it when webhooks aren't available or when you need precise TaT during a load test.
-- **Retry failures** with exponential backoff for `5xx` responses — see [Implement retry server error logic](/pre-recorded-audio/guides/retry-server-error). Investigate `4xx` responses; they indicate a client-side issue that retrying won't fix.
+- **Polling-only** every 2–3 seconds measures closer to actual completion but adds to your rate-limit budget. Each transcript can be polled at most 60 times per minute (see [Transcript polling limit](/pre-recorded-audio/rate-limits#transcript-polling-limit)), so don't poll a single job more than once per second. Use it when webhooks aren't available or when you need precise TaT during a load test.
+- **Retry failures** with exponential backoff for `5xx` responses — see [Implement retry server error logic](/pre-recorded-audio/guides/retry-server-error). For a `429`, wait for the `Retry-After` interval and retry. Investigate other `4xx` responses; they indicate a client-side issue that retrying won't fix.
 
 Record these fields per request:
 
@@ -16155,6 +16157,8 @@ If webhooks aren't an option, stay within that budget. As an illustration: at a 
 
 When many jobs share the same polling interval they tend to cluster at the same second boundaries, spiking your rate-limit usage and occasionally returning `403` errors. Stagger each job's polling by ±25% of the interval (for example, `interval × random.uniform(0.75, 1.25)`) so GETs spread evenly across the window.
 
+Separately, `GET /v2/transcript/{transcript_id}` is limited to 60 requests per minute for each API key and transcript ID. This rarely matters at the intervals above, but it does if you poll a single job more than once per second or send concurrent GETs for the same transcript. Exceeding it returns a `429` with a `Retry-After` header. See [Transcript polling limit](/pre-recorded-audio/rate-limits#transcript-polling-limit).
+
 ### If you're running a bulk job
 
 Monitor for these signals during the run:
@@ -16174,6 +16178,7 @@ Monitor for these signals during the run:
 | Signal | Meaning | Response |
 | --- | --- | --- |
 | `403` HTTP error | You've exceeded the 20,000 requests per 5 minutes HTTP rate limit (polling counts) | Increase polling interval or switch to webhooks; slow your submission rate |
+| `429` on `GET /v2/transcript/{id}` | You've polled the same transcript more than 60 times in a minute | Wait for the number of seconds in the `Retry-After` header, then poll that transcript less often |
 | `4xx` submission error (other than 403) | Client-side issue (bad request, auth, invalid audio URL, etc.) | Inspect the response body and fix the request; retrying won't help |
 | `5xx` submission error | Transient server-side issue | Retry with exponential backoff — see the [retry guide](/pre-recorded-audio/guides/retry-server-error) |
 | TaT rises with no errors | Submission rate is outpacing available capacity | Slow the ramp or extend its duration; verify you're within your rate limit |
@@ -34053,6 +34058,7 @@ else:
 
 - **HTTP rate limit:** 20,000 requests per 5-minute window, counted across submissions (POST) and polling (GET) combined
 - **Exceeding the limit:** returns a `403` response
+- **Transcript polling limit:** 60 `GET /v2/transcript/{transcript_id}` requests per minute for each API key and transcript; exceeding it returns a `429` with a `Retry-After` header — see [Transcript polling limit](/pre-recorded-audio/rate-limits#transcript-polling-limit)
 - **Parallel transcriptions (rate limit):** 200+ for paid accounts (queued beyond that)
 - **Ramp up gradually:** start at 10-50 parallel requests, double incrementally
 - **Avoid the rate limit:** use [webhooks](/pre-recorded-audio/webhooks) or jittered, widened polling — see [Polling without exceeding the rate limit](/pre-recorded-audio/guides/bulk-transcription-and-load-tests-at-scale#polling-without-exceeding-the-rate-limit)
@@ -36055,6 +36061,7 @@ def process_completed_call(transcript):
 
 - **HTTP rate limit:** 20,000 requests per 5-minute window, counted across submissions (POST) and polling (GET) combined
 - **Exceeding the limit:** returns a `403` response
+- **Transcript polling limit:** 60 `GET /v2/transcript/{transcript_id}` requests per minute for each API key and transcript; exceeding it returns a `429` with a `Retry-After` header — see [Transcript polling limit](/pre-recorded-audio/rate-limits#transcript-polling-limit)
 - **Parallel transcriptions (rate limit):** 200+ for paid accounts (queued beyond that)
 - **Ramp up gradually:** start at 10-50 parallel requests, double incrementally
 - **Avoid the rate limit:** use [webhooks](/pre-recorded-audio/webhooks) or jittered, widened polling — see [Polling without exceeding the rate limit](/pre-recorded-audio/guides/bulk-transcription-and-load-tests-at-scale#polling-without-exceeding-the-rate-limit)
@@ -75317,7 +75324,7 @@ Use this to build the recommendation. Do not dump it on the user.
 Core REST endpoints:
 - `POST /v2/upload` — upload a local file (raw binary body, **not multipart**). Returns `{ "upload_url": "..." }`. Max 2.2 GB.
 - `POST /v2/transcript` — submit a job. Returns transcript object with `id` and `status: "queued"`. Max 5 GB / 10 hours.
-- `GET /v2/transcript/{id}` — poll. Statuses: `queued`, `processing`, `completed`, `error`.
+- `GET /v2/transcript/{id}` — poll. Statuses: `queued`, `processing`, `completed`, `error`. Limited to 60 requests per minute per API key and transcript ID; over the limit returns `429` with a `Retry-After` header. Poll every few seconds, not in a tight loop.
 
 Streaming:
 - `wss://streaming.assemblyai.com/v3/ws?sample_rate=16000&speech_model=universal-3-6-pro`

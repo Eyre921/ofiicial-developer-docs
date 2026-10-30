@@ -50,7 +50,7 @@ Certain APIs are explicitly marked as "internal" in a couple of ways:
 
 ## Release cycles
 
-> **Major releases**
+> [accordion] Major releases
 >
 > Major releases (e.g., `1.0.0` → `2.0.0`) may include:
 >
@@ -64,7 +64,7 @@ Certain APIs are explicitly marked as "internal" in a couple of ways:
 > * Automated migration tools when possible
 > * Extended support period for the previous major version
 
-> **Minor releases**
+> [accordion] Minor releases
 >
 > Minor releases (e.g., `1.0.0` → `1.1.0`) include:
 >
@@ -73,7 +73,7 @@ Certain APIs are explicitly marked as "internal" in a couple of ways:
 > * New optional parameters
 > * Backward-compatible enhancements
 
-> **Patch releases**
+> [accordion] Patch releases
 >
 > Patch releases (e.g., `1.0.0` → `1.0.1`) include:
 >

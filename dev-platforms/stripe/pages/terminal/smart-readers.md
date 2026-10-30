@@ -16,7 +16,7 @@ Terminal’s smart readers are compatible with the JavaScript, iOS, Android, and
 | --- | --- |
 | [Stripe Reader T600](https://docs.stripe.com/terminal/readers/stripe-reader-t600.md) | Available in: AT, AU, BE, BG, CA, CH, CY, CZ, DK, EE, ES, FI, FR, GB, HK, HR, HU, IE, IT, JP, LI, LT, LU, LV, MT, MY, NL, NO, NZ, PL, PT, RO, SE, SG, SI, SK, US |
 | [Stripe Reader S700](https://docs.stripe.com/terminal/readers/stripe-reader-s700-s710.md) | Available in: US, CA, GB, IE, SG, AU, NZ, FR, DE, NL, BE, AT, ES, DK, SE, NO, CH, IT, LU, PT, FI, MY, CZ, PL, JP |
-| [Stripe Reader S710](https://docs.stripe.com/terminal/readers/stripe-reader-s700-s710.md) | Available in: AU, BE, BG, CA, HR, CY, EE, FR, HK, HU, IE, LV, LI, LT, MY, MT, NZ, RO, SG, SK, SI, GB, US |
+| [Stripe Reader S710](https://docs.stripe.com/terminal/readers/stripe-reader-s700-s710.md) | Available in: AU, BE, BG, CA, HR, CY, EE, FR, HK, HU, IE, LV, LI, LT, MX, MY, MT, NZ, RO, SG, SK, SI, GB, US |
 | [BBPOS WisePOS E](https://docs.stripe.com/terminal/readers/bbpos-wisepos-e.md) | Available in: US, CA, GB, IE, SG, AU, NZ, FR, DE, NL, BE, AT, ES, DK, SE, NO, CH, IT, LU, PT, FI, MY, CZ, PL |
 | [Verifone V660p](https://docs.stripe.com/terminal/payments/setup-reader/v660p.md) | Available in: US, CA, GB, IE, SG |
 | [Verifone UX700](https://docs.stripe.com/terminal/payments/setup-reader/ux700.md) | Available in: US, CA, GB, IE |

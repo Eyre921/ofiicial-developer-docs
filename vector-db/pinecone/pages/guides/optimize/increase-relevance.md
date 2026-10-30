@@ -58,7 +58,7 @@ pc.configure_index(
 Note the trade-offs:
 
 * This setting degrades true semantic search, since queries no longer use the input type the model was trained to expect.
-* It applies to the whole index. With integrated inference you can't choose `query` or `passage` per request. If you need that control, embed text yourself with the [Inference API](/reference/api/latest/inference/generate-vectors) and search with the [Search with a vector](/reference/api/latest/data-plane/query) operation using your own vectors.
+* It applies to the whole index. With integrated embedding you can't choose `query` or `passage` per request. If you need that control, embed text yourself with [standalone embedding](/reference/api/latest/inference/generate-vectors) and search with the [Search with a vector](/reference/api/latest/data-plane/query) operation using your own vectors.
 
 For pure exact-match retrieval, a [sparse index](/guides/index-data/indexing-overview#indexes-with-sparse-vectors) or [full-text search](/guides/search/full-text-search) is usually a better fit than forcing dense embeddings through the passage path. See [Use full-text search for keyword matching](#use-full-text-search-for-keyword-matching) above for when keyword and phrase matching is the right tool.
 

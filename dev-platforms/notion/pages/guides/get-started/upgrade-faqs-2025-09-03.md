@@ -6,7 +6,7 @@ path: guides/get-started/upgrade-faqs-2025-09-03
 
 Commonly asked questions about migrating to 2025-09-03.
 
-> **What is a datasource and how does it relate to a database?**
+> [accordion] What is a datasource and how does it relate to a database?
 >
 > In September 2025, Notion is launching several features to improve what you can do with databases. This includes support for multiple **data sources** under a single **database**, each of which can have a different set of properties (schemas). The **database** becomes a *container* for one or more **data sources**.
 >
@@ -16,13 +16,13 @@ Commonly asked questions about migrating to 2025-09-03.
 >
 > To learn more about data sources in the Notion app and related features, visit our [help center page](https://www.notion.com/help/data-sources-and-linked-databases).
 
-> **Is a datasource a new concept?**
+> [accordion] Is a datasource a new concept?
 >
 > Prior to this release, **databases** were limited to one **data source**, so the **data source ID** was hidden. Now that multiple data sources are supported, we need a way to identify the specific data source for a request. Starting from the `2025-09-03` API version, Notion is providing a new set of APIs under `/v1/data_sources` for managing each **data source**. Most of your connection's existing database operations should move to this set of APIs.
 >
 > The `/v1/databases` family of endpoints now refers to the **database** (container) as of `2025-09-03`. To discover the data sources available for a database, the database object includes a `data_sources` array, each having an `id` and a `name`. The data source ID can then by used with the `/v1/data_sources` APIs.
 
-> **How does this impact database URLs?**
+> [accordion] How does this impact database URLs?
 >
 > The concept of a database ID in the Notion app stays the same, and continues to be shown in the URL for a database followed by the ID of the specific view you're looking at. For example, in a link like `https://notion.so/workspace/248104cd477e80fdb757e945d38000bd?v=148104cd477e80bb928f000ce197ddf2`:
 >
@@ -36,7 +36,7 @@ Commonly asked questions about migrating to 2025-09-03.
 > >
 > > The ID of the specific **data source** you're looking at isn't embedded in the URL, but will be listed in a separate dropdown menu.
 
-> **Can I see an example of how parent & child relationships work?**
+> [accordion] Can I see an example of how parent & child relationships work?
 >
 > Here's a diagram of a scenario where a workspace has a top-level page that has a database with two data sources:
 >
@@ -63,11 +63,11 @@ Commonly asked questions about migrating to 2025-09-03.
 >   * `parent` is `{"type": "data_source_id", "data_source_id": "<id of Data Source>"}`
 >   * No changes to how the page's Block children work.
 
-> **How do permissions work for data sources?**
+> [accordion] How do permissions work for data sources?
 >
 > User and bot permissions are managed at the **database** level, not per data source. This means that the level of access a Notion user or connection has (or doesn't have) is the same across all data sources in a database.
 
-> **How do these changes work with wikis?**
+> [accordion] How do these changes work with wikis?
 >
 > Unlike other databases, wikis won't support multiple data sources as part of the September 2025 launch. For this reason, and due to limited support in Notion's API, we recommend using alternative ways to structure your knowledge in Notion that don't involve wikis.
 >
@@ -77,7 +77,7 @@ Commonly asked questions about migrating to 2025-09-03.
 >
 > Diagram showing single-source databases nested under one another as part of a wiki structure.
 
-> **Which APIs are & aren't affected?**
+> [accordion] Which APIs are & aren't affected?
 >
 > * Each family of APIs is summarized in the table below.
 > * Ones that are affected are marked in **bold** in the first column, and the `2025-09-03` changes are outlined in the second column.
@@ -95,7 +95,7 @@ Commonly asked questions about migrating to 2025-09-03.
 > | **Search** | Filter value parameter refers to `"data_source"` instead of `"database"`; response results include each `"data_source"` object instead of `"database"` objects |
 > | Users | None |
 
-> **When can I start using the `2025-09-03` version?**
+> [accordion] When can I start using the `2025-09-03` version?
 >
 > The API version is already available to use for Notion API requests as of late August. We recommend starting the upgrade process detailed above at your earliest convenience if your connection is affected by the changes.
 >
@@ -107,7 +107,7 @@ Commonly asked questions about migrating to 2025-09-03.
 >
 > We're also extending the concept of API versioning to [connection webhooks](/reference/webhooks) to allow Notion to introduce backwards-incompatible changes without affecting your endpoint until you upgrade the API version in the connection settings. Ensure your webhook URL can handle events of both the old and new shape for a short period of time before making the upgrade.
 
-> **How long will the `2022-06-28` version continue to work?**
+> [accordion] How long will the `2022-06-28` version continue to work?
 >
 > We don't currently have any process for halting support of old Notion API versions. If we introduce a "minimum versioning" program in the future, we'll communicate this with all affected users with ample notice period (e.g. 6 months) and start with versions that came before `2022-06-28`.
 >
@@ -141,7 +141,7 @@ Commonly asked questions about migrating to 2025-09-03.
 >
 > The `additional_data` in the response can help you identify the relevant data source IDs to use instead, as you upgrade your connection.
 
-> **Why is this the first version upgrade since 2022?**
+> [accordion] Why is this the first version upgrade since 2022?
 >
 > We aim to improve functionality in our API through backwards-compatible features first and foremost. We've shipped several changes since 2022, including the [File Upload](/reference/file-upload) API, but generally aim to avoid having large sets of users have to go through a detailed upgrade progress when possible.
 >
@@ -151,10 +151,10 @@ Commonly asked questions about migrating to 2025-09-03.
 
 Upgrade your connections, learn more about connection webhooks, and stay tuned for any future updates to Notion's API:
 
-> **[Changes by version](/reference/changes-by-version)**
+> [card] [Changes by version](/reference/changes-by-version)
 
-> **[Webhooks](/reference/webhooks)**
+> [card] [Webhooks](/reference/webhooks)
 
-> **[Typed API SDK for JS](/api-sdk-for-typescript-and-javascript)**
+> [card] [Typed API SDK for JS](/api-sdk-for-typescript-and-javascript)
 
-> **[Upgrading to Version 2025-09-03](/guides/get-started/upgrade-guide-2025-09-03)**
+> [card] [Upgrading to Version 2025-09-03](/guides/get-started/upgrade-guide-2025-09-03)

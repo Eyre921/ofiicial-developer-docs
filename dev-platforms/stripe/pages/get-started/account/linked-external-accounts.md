@@ -34,7 +34,7 @@ Stripe products use this data in the following ways:
 - **Payouts**: Stripe uses your financial account information, specifically the account number and routing number, to verify your account for [payouts](https://docs.stripe.com/payouts.md). You can link this account during onboarding or from the **Linked external accounts** settings in your Dashboard.
 - **Risk**: Stripe uses your financial account information to determine whether a [reserve](https://support.stripe.com/topics/reserves) is required and, if so, the appropriate amount. Linking your financial account allows Stripe to reassess your risk profile, which might reduce or eliminate the need for a reserve.
 - **Issuing**: We use your financial account information during underwriting and on an ongoing basis to determine your [Issuing card](https://docs.stripe.com/issuing.md) credit limit. This limit can change when your financial account information changes. If you unlink a financial account, it might affect your ability to use your card.
-- **Capital**: [Stripe Capital](https://docs.stripe.com/capital/how-stripe-capital-works.md) uses your financial account information to evaluate your loan eligibility and the details of your loan offer.
+- **Capital**: [Stripe Capital](https://docs.stripe.com/capital.md) uses your financial account information to evaluate your loan eligibility and the details of your loan offer.
 
 The data available to Stripe can vary based on your financial account, your permissions, and the Stripe products you use. Go to your [Linked external accounts settings](https://dashboard.stripe.com/settings/linked-accounts) to see the accounts you linked to Stripe and what information you’ve shared with different Stripe products.
 
@@ -61,7 +61,7 @@ To remove a linked account, go to [Linked external accounts](https://dashboard.s
 
 After you remove an account, Stripe stops obtaining data from it.
 
-Removing a linked account doesn’t affect your payouts. Your payout bank account is managed separately in [Payout settings](https://dashboard.stripe.com/settings/money-management). However, unlinking might affect your eligibility for products like [Issuing](https://docs.stripe.com/issuing.md) or [Stripe Capital](https://docs.stripe.com/capital/how-stripe-capital-works.md) that rely on linked account data. In some cases, Stripe might request alternative information, such as financial statements.
+Removing a linked account doesn’t affect your payouts. Your payout bank account is managed separately in [Payout settings](https://dashboard.stripe.com/settings/money-management). However, unlinking might affect your eligibility for products like [Issuing](https://docs.stripe.com/issuing.md) or [Stripe Capital](https://docs.stripe.com/capital.md) that rely on linked account data. In some cases, Stripe might request alternative information, such as financial statements.
 
 ## How Stripe protects your data
 

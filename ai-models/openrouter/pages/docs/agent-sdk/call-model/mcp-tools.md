@@ -223,7 +223,7 @@ Pass an `AbortSignal` to `createMCPTools({ signal })` and every in-flight tool c
 
 ## Resources and elicitation
 
-> **Resources as synthetic tools**
+> [accordion] Resources as synthetic tools
 >
 > When the MCP server advertises resources, `@openrouter/mcp` exposes them as two synthetic tools the model can call directly:
 >
@@ -232,7 +232,7 @@ Pass an `AbortSignal` to `createMCPTools({ signal })` and every in-flight tool c
 >
 > These are on by default. Set `resources: false` to hide them, or `resources: { mode: 'synthetic-tools' }` to configure future modes.
 
-> **Handling elicitation requests**
+> [accordion] Handling elicitation requests
 >
 > Some MCP servers pause a tool call to ask the caller for structured input (`elicitation/create`). Pass an `onElicitation` handler to answer them:
 >

@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1401 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1403 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -788,6 +788,7 @@
 - `docs/eleven-api/choosing-the-right-model` — [How to choose the right model](pages/docs/eleven-api/choosing-the-right-model.md) · [原文](https://elevenlabs.io/docs/eleven-api/choosing-the-right-model.md)
 - `docs/eleven-api/concepts/audio-streaming` — [Understanding audio streaming](pages/docs/eleven-api/concepts/audio-streaming.md) · [原文](https://elevenlabs.io/docs/eleven-api/concepts/audio-streaming.md)
 - `docs/eleven-api/concepts/latency` — [Understanding latency](pages/docs/eleven-api/concepts/latency.md) · [原文](https://elevenlabs.io/docs/eleven-api/concepts/latency.md)
+- `docs/eleven-api/concepts/latency-methodology` — [How ElevenLabs latency figures are measured](pages/docs/eleven-api/concepts/latency-methodology.md) · [原文](https://elevenlabs.io/docs/eleven-api/concepts/latency-methodology.md)
 - `docs/eleven-api/concepts/voice-cloning` — [Voice cloning: how it works](pages/docs/eleven-api/concepts/voice-cloning.md) · [原文](https://elevenlabs.io/docs/eleven-api/concepts/voice-cloning.md)
 - `docs/eleven-api/guides/cookbooks/dubbing` — [Dubbing quickstart](pages/docs/eleven-api/guides/cookbooks/dubbing.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/cookbooks/dubbing.md)
 - `docs/eleven-api/guides/cookbooks/forced-alignment` — [Forced Alignment quickstart](pages/docs/eleven-api/guides/cookbooks/forced-alignment.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/cookbooks/forced-alignment.md)
@@ -833,6 +834,7 @@
 - `docs/eleven-api/guides/how-to/text-to-speech/twilio` — [Sending generated audio through Twilio](pages/docs/eleven-api/guides/how-to/text-to-speech/twilio.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/text-to-speech/twilio.md)
 - `docs/eleven-api/guides/how-to/voices/instant-voice-cloning` — [Instant Voice Cloning quickstart](pages/docs/eleven-api/guides/how-to/voices/instant-voice-cloning.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/voices/instant-voice-cloning.md)
 - `docs/eleven-api/guides/how-to/voices/professional-voice-cloning` — [Professional Voice Cloning quickstart](pages/docs/eleven-api/guides/how-to/voices/professional-voice-cloning.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/voices/professional-voice-cloning.md)
+- `docs/eleven-api/guides/how-to/voices/remix-a-voice` — [Voice Remixing quickstart](pages/docs/eleven-api/guides/how-to/voices/remix-a-voice.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/voices/remix-a-voice.md)
 - `docs/eleven-api/guides/how-to/voices/voice-design` — [Voice Design quickstart](pages/docs/eleven-api/guides/how-to/voices/voice-design.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/voices/voice-design.md)
 - `docs/eleven-api/guides/how-to/websockets/multi-context-web-socket` — [Multi-Context Websocket](pages/docs/eleven-api/guides/how-to/websockets/multi-context-web-socket.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/websockets/multi-context-web-socket.md)
 - `docs/eleven-api/guides/how-to/websockets/realtime-tdd` — [Stream dialogue in real-time](pages/docs/eleven-api/guides/how-to/websockets/realtime-tdd.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/websockets/realtime-tdd.md)

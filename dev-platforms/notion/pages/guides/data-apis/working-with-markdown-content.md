@@ -4,23 +4,23 @@ source: https://developers.notion.com/guides/data-apis/working-with-markdown-con
 path: guides/data-apis/working-with-markdown-content
 ---
 
-Learn how to create, read, and update Notion page content using enhanced markdown instead of the block API.
+Learn how to create, read, and update Notion page content using markdown instead of the block API.
 
 ## Overview
 
-The Notion API supports reading, writing, and updating page content using **enhanced markdown** as an alternative to the [block-based API](/guides/data-apis/working-with-page-content). This is especially useful for agentic systems and developer tools that work natively with markdown.
+The Notion API supports reading, writing, and updating page content using **markdown** as an alternative to the [block-based API](/guides/data-apis/working-with-page-content). This is especially useful for agentic systems and developer tools that work natively with markdown.
 
 Three API surfaces are available:
 
 | Operation | Endpoint | Description |
 | - | - | - |
-| Create | `POST /v1/pages` | Create a page with markdown content (via `markdown` body param) |
-| Read | `GET /v1/pages/:page_id/markdown` | Retrieve a page's full content as markdown |
-| Update | `PATCH /v1/pages/:page_id/markdown` | Insert or replace content using markdown |
+| Create | [`POST /v1/pages`](/reference/post-page) | Create a page with markdown content (via `markdown` body param) |
+| Read | [`GET /v1/pages/:page_id/markdown`](/reference/retrieve-page-markdown) | Retrieve a page's full content as markdown |
+| Update | [`PATCH /v1/pages/:page_id/markdown`](/reference/update-page-markdown) | Insert or replace content using markdown |
 
 > [!TIP]
 >
-> All three endpoints use the same **enhanced markdown** format by default. See the [Enhanced markdown format reference](/guides/data-apis/enhanced-markdown) for the full specification.
+> All three endpoints use [enhanced markdown](/guides/data-apis/enhanced-markdown) (`v1`) by default on current Notion-Versions. Set `markdown_version` to `v2` to use [Notion-flavored Markdown](/guides/data-apis/notion-flavored-markdown) (`v2`), the recommended syntax. See [Markdown versions](#markdown-versions).
 
 ## Markdown versions
 
@@ -28,19 +28,23 @@ The markdown endpoints accept an optional `markdown_version` parameter. It picks
 
 | Value | Syntax | Status |
 | - | - | - |
-| `v1` | Enhanced markdown | Default |
-| `v2` | [Notion-flavored Markdown](/guides/data-apis/notion-flavored-markdown) | Opt-in preview |
+| `v1` | [Enhanced markdown](/guides/data-apis/enhanced-markdown) | Default on current Notion-Versions; deprecated |
+| `v2` | [Notion-flavored Markdown](/guides/data-apis/notion-flavored-markdown) | Recommended; default in the next Notion-Version |
 
-Leave `markdown_version` out, or set it to `v1`, to keep today's behavior. Set it to `v2` to read and write Notion-flavored Markdown. The version applies to the whole request: `v2` content is parsed as `v2`, and `v2` responses are rendered as `v2`.
+Set `markdown_version` to `v2` to read and write Notion-flavored Markdown. On current Notion-Versions, leaving it out or setting it to `v1` uses enhanced markdown. The version applies to the whole request: `v2` content is parsed as `v2`, and `v2` responses are rendered as `v2`.
+
+> [!WARNING]
+>
+> Enhanced markdown (`v1`) is deprecated. The next Notion-Version makes `v2` the default and rejects `markdown_version: "v1"` with a `400` `validation_error`. Current Notion-Versions keep `v1` as the default for now. We'll post the new version's name and release date in the [changelog](/page/changelog) before it ships. We plan to retire `v1` on every Notion-Version about three months after that, and we'll post the retirement date in the changelog at least three months ahead. Set `markdown_version` to `v2` now and test your integration. See [Migrate to Notion-flavored Markdown](/guides/data-apis/migrate-to-notion-flavored-markdown) for the syntax changes.
 
 Where to send it:
 
 | Endpoint | Where |
 | - | - |
-| `GET /v1/pages/:page_id/markdown` | Query parameter |
-| `PATCH /v1/pages/:page_id/markdown` | Body parameter |
-| `POST /v1/pages` | Body parameter, next to `markdown` |
-| `POST /v1/comments` and `PATCH /v1/comments/:comment_id` | Body parameter, next to `markdown` |
+| [`GET /v1/pages/:page_id/markdown`](/reference/retrieve-page-markdown) | Query parameter |
+| [`PATCH /v1/pages/:page_id/markdown`](/reference/update-page-markdown) | Body parameter |
+| [`POST /v1/pages`](/reference/post-page) | Body parameter, next to `markdown` |
+| [`POST /v1/comments`](/reference/create-a-comment) and [`PATCH /v1/comments/:comment_id`](/reference/update-a-comment) | Body parameter, next to `markdown` |
 
 Any other value returns a `400` `validation_error`. On `POST /v1/pages` and the comment endpoints, `markdown_version` only applies to `markdown`. Sending it without `markdown` (for example, with `children` or `rich_text`) also returns a `400` `validation_error`.
 
@@ -179,7 +183,7 @@ The response is a standard [page object](/reference/page).
 
 ## Retrieving a page as markdown
 
-Use `GET /v1/pages/:page_id/markdown` to retrieve a page's content as markdown. It uses enhanced markdown unless you set `markdown_version=v2`.
+Use `GET /v1/pages/:page_id/markdown` to retrieve a page's content as markdown. It uses the syntax set by `markdown_version`. See [Markdown versions](#markdown-versions) for the default.
 
 ```bash cURL theme={null}
 curl 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown' \
@@ -329,7 +333,7 @@ The request body uses a **discriminated union** with four command variants. We r
 
 > [!TIP]
 >
-> The `content` field expects markdown in the request's `markdown_version` syntax (enhanced markdown by default) with actual newline characters. In your JSON request body, use `\n` to encode newlines — for example, `"## Heading\nParagraph text"` creates a heading followed by a paragraph block. To create a line break inside a single paragraph block, use `<br>`. Literal backslash-n sequences (like typing `\n` into a form field) will not be interpreted as newlines.
+> The `content` field expects markdown in the request's `markdown_version` syntax with actual newline characters. In your JSON request body, use `\n` to encode newlines — for example, `"## Heading\nParagraph text"` creates a heading followed by a paragraph block. To create a line break inside a single paragraph block, use `<br>`. Literal backslash-n sequences (like typing `\n` into a form field) will not be interpreted as newlines.
 >
 > When using cURL, wrap the `--data` body in **single quotes** so that `\n` is preserved for the JSON parser. Avoid `$'...'` quoting, which converts `\n` into a literal newline and produces invalid JSON.
 
@@ -407,7 +411,7 @@ const response = await notion.pages.updateMarkdown({
 >
 > The `insert_content` and `replace_content_range` commands are still supported but are no longer recommended. They use an ellipsis-based selection format that is less precise than the search-and-replace approach of `update_content`. New connections should use `update_content` or `replace_content` instead.
 
-> **insert\_content (legacy)**
+> [accordion] insert\_content (legacy)
 >
 > Insert new markdown content at the start of a page, after a specific point in the page, or at the end.
 >
@@ -490,7 +494,7 @@ const response = await notion.pages.updateMarkdown({
 >
 > The `after` parameter uses an **ellipsis-based selection** format: `"start text...end text"`. This matches a range from the first occurrence of the start text to the end text. Do not provide `after` and `position` in the same request.
 
-> **replace\_content\_range (legacy)**
+> [accordion] replace\_content\_range (legacy)
 >
 > Replace a matched range of existing content with new markdown.
 >

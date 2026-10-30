@@ -43,7 +43,7 @@ Dedicated read nodes are ideal for workloads with millions to billions of record
 
 There's no universal formula for choosing between on-demand and dedicated read nodes. Performance and cost vary by workload (vector dimensionality, metadata filtering, and query patterns). Consider the following factors when making your decision:
 
-> **Predictable, consistent performance and cost**
+> [accordion] Predictable, consistent performance and cost
 >
 > With dedicated read nodes, you allocate dedicated read hardware for your index, and your data is cached in memory and on local SSDs. This provides:
 >
@@ -55,7 +55,7 @@ There's no universal formula for choosing between on-demand and dedicated read n
 >
 > If predictable performance and cost are critical for your application, dedicated read nodes may be a better fit than on-demand.
 
-> **High throughput without rate limits or throttling**
+> [accordion] High throughput without rate limits or throttling
 >
 > On-demand indexes are subject to [read unit rate limits](/reference/api/database-limits/rate-limits) (default: 2,000 RU/second per index).
 >
@@ -63,7 +63,7 @@ There's no universal formula for choosing between on-demand and dedicated read n
 >
 > Dedicated read nodes have no read rate limits and provide dedicated capacity for predictable QPS without throttling (bounded only by CPU capacity), making them better suited for high-throughput workloads.
 
-> **Recommendation engines and real-time use cases**
+> [accordion] Recommendation engines and real-time use cases
 >
 > Recommendation engines for use cases such as e-commerce and media require very high throughput and low latency to maintain positive user experiences. Dedicated read nodes are purpose-built for these use cases, providing:
 >
@@ -74,7 +74,7 @@ There's no universal formula for choosing between on-demand and dedicated read n
 >
 > Similar requirements apply to other real-time use cases like semantic search at scale, personalization engines, and mission-critical services with strict performance SLOs.
 
-> **Single namespace workload**
+> [accordion] Single namespace workload
 >
 > Dedicated read nodes indexes support only a single namespace. If your application requires multiple namespaces, on-demand is a better fit.
 >
@@ -82,6 +82,8 @@ There's no universal formula for choosing between on-demand and dedicated read n
 > >
 > > To request early access to multi-namespace support, [contact support](https://app.pinecone.io/organizations/-/settings/support/ticket).
 
+> [accordion] When *not* to use dedicated read nodes
+>
 > On-demand indexes are better suited for workloads with unpredictable or highly variable traffic patterns. For example:
 >
 > * RAG systems with variable query volumes
@@ -97,7 +99,7 @@ There's no universal formula for choosing between on-demand and dedicated read n
 > >
 > > Dedicated read nodes *can* handle predictable traffic spikes efficiently if you scale replicas proactively via the API. For example, you can provision extra replicas before a scheduled email campaign and scale back down afterward.
 
-> **Cost considerations**
+> [accordion] Cost considerations
 >
 > On-demand and dedicated read nodes have different cost structures. The key difference is read costs: on-demand uses usage-based pricing, while dedicated read nodes use a fixed hourly rate based on provisioned hardware. Write, storage, and egress costs are usage-based for both modes.
 >
@@ -105,7 +107,7 @@ There's no universal formula for choosing between on-demand and dedicated read n
 >
 > For detailed cost information, comparison tables, and estimation tools, see the [Cost](#cost) section of this guide.
 
-> **Test results for your workload**
+> [accordion] Test results for your workload
 >
 > Performance depends on your specific workload: index size, vector dimensionality, metadata filtering, query patterns, throughput requirements, and latency requirements. Testing is the only way to know for sure whether dedicated read nodes are right for your scenario.
 >

@@ -38,27 +38,27 @@ This guide will get you running [Claude Code](https://code.claude.com/docs/en/ov
 
 ### Step 1: Install Claude Code
 
-**Native Install (Recommended)**
+> [tab] Native Install (Recommended)
+>
+> **macOS, Linux, WSL:**
+>
+> ```bash lines theme={null}
+> curl -fsSL https://claude.ai/install.sh | bash
+> ```
+>
+> **Windows PowerShell:**
+>
+> ```powershell lines theme={null}
+> irm https://claude.ai/install.ps1 | iex
+> ```
 
-**macOS, Linux, WSL:**
-
-```bash lines theme={null}
-curl -fsSL https://claude.ai/install.sh | bash
-```
-
-**Windows PowerShell:**
-
-```powershell lines theme={null}
-irm https://claude.ai/install.ps1 | iex
-```
-
-**npm**
-
-Requires [Node.js 18 or newer](https://nodejs.org/en/download/).
-
-```bash lines theme={null}
-npm install -g @anthropic-ai/claude-code
-```
+> [tab] npm
+>
+> Requires [Node.js 18 or newer](https://nodejs.org/en/download/).
+>
+> ```bash lines theme={null}
+> npm install -g @anthropic-ai/claude-code
+> ```
 
 ### Step 2: Connect Claude to OpenRouter
 
@@ -74,60 +74,60 @@ Requirements:
 >
 > **Why `ANTHROPIC_AUTH_TOKEN`:** OpenRouter is an LLM gateway that authenticates requests with a bearer token, and Claude Code sends `ANTHROPIC_AUTH_TOKEN` as `Authorization: Bearer <token>` — the credential variable [Anthropic documents for bearer-authenticated gateways](https://code.claude.com/docs/en/llm-gateway-connect#set-the-credential-variable). `ANTHROPIC_API_KEY` is instead sent as `x-api-key`, is treated as a direct-Anthropic credential, and prompts you once in interactive mode to approve it over a saved login. Setting it to an empty string keeps Claude Code from falling back to authenticating against Anthropic directly.
 
-**Shell Profile**
-
-Add these environment variables to your shell profile:
-
-```bash lines theme={null}
-# Open your shell profile in nano
-nano ~/.zshrc  # or ~/.bashrc for Bash users
-
-# Add these lines to the file:
-export OPENROUTER_API_KEY="<your-openrouter-api-key>"
-export ANTHROPIC_BASE_URL="https://openrouter.ai/api"
-export ANTHROPIC_AUTH_TOKEN="$OPENROUTER_API_KEY"
-export ANTHROPIC_API_KEY="" # Important: Must be explicitly empty
-export CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY=1 # Optional: enables the gateway model picker
-```
-
-Then reload your shell so the new values are live — otherwise you will keep testing the old environment and conclude the configuration does not work:
-
-```bash lines theme={null}
-source ~/.zshrc  # or ~/.bashrc, or open a new terminal
-```
-
-> [!NOTE]
+> [tab] Shell Profile
 >
-> **Persistence:** We recommend adding these lines to your shell profile (`~/.bashrc`, `~/.zshrc`, or `~/.config/fish/config.fish`).
-
-> [!WARNING]
+> Add these environment variables to your shell profile:
 >
-> **Ordering matters:** `ANTHROPIC_AUTH_TOKEN="$OPENROUTER_API_KEY"` is expanded when the profile is sourced. If `OPENROUTER_API_KEY` is defined *later* in the file, in a different file, or injected by a secrets manager after your profile runs, the auth token expands to an empty string and every request fails with an auth error. Ensure the key is defined **before** it is consumed by `ANTHROPIC_AUTH_TOKEN`, or put it in a file that loads earlier (e.g. `~/.zshenv` for zsh).
-
-> [!NOTE]
+> ```bash lines theme={null}
+> # Open your shell profile in nano
+> nano ~/.zshrc  # or ~/.bashrc for Bash users
 >
-> **Secret hygiene:** This puts a plaintext API key in your shell profile — a file that is easy to accidentally commit to a dotfiles repo or paste into a gist. Consider loading the key from your OS keychain instead, e.g. on macOS: `export OPENROUTER_API_KEY="$(security find-generic-password -s openrouter -w)"`. If a key does leak, revoke and rotate it at [openrouter.ai/settings/keys](https://openrouter.ai/settings/keys).
-
-**Project Settings File**
-
-Alternatively, you can configure Claude Code using a project-level settings file at `.claude/settings.local.json` in your project root:
-
-```json lines theme={null}
-{
-  "env": {
-    "ANTHROPIC_BASE_URL": "https://openrouter.ai/api",
-    "ANTHROPIC_AUTH_TOKEN": "<your-openrouter-api-key>",
-    "ANTHROPIC_API_KEY": "",
-    "CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY": "1"
-  }
-}
-```
-
-Replace `<your-openrouter-api-key>` with your actual OpenRouter API key.
-
-> [!NOTE]
+> # Add these lines to the file:
+> export OPENROUTER_API_KEY="<your-openrouter-api-key>"
+> export ANTHROPIC_BASE_URL="https://openrouter.ai/api"
+> export ANTHROPIC_AUTH_TOKEN="$OPENROUTER_API_KEY"
+> export ANTHROPIC_API_KEY="" # Important: Must be explicitly empty
+> export CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY=1 # Optional: enables the gateway model picker
+> ```
 >
-> **Note:** This method keeps your configuration scoped to the project, making it easy to share OpenRouter settings with your team via version control (just be careful not to commit your API key).
+> Then reload your shell so the new values are live — otherwise you will keep testing the old environment and conclude the configuration does not work:
+>
+> ```bash lines theme={null}
+> source ~/.zshrc  # or ~/.bashrc, or open a new terminal
+> ```
+>
+> > [!NOTE]
+> >
+> > **Persistence:** We recommend adding these lines to your shell profile (`~/.bashrc`, `~/.zshrc`, or `~/.config/fish/config.fish`).
+>
+> > [!WARNING]
+> >
+> > **Ordering matters:** `ANTHROPIC_AUTH_TOKEN="$OPENROUTER_API_KEY"` is expanded when the profile is sourced. If `OPENROUTER_API_KEY` is defined *later* in the file, in a different file, or injected by a secrets manager after your profile runs, the auth token expands to an empty string and every request fails with an auth error. Ensure the key is defined **before** it is consumed by `ANTHROPIC_AUTH_TOKEN`, or put it in a file that loads earlier (e.g. `~/.zshenv` for zsh).
+>
+> > [!NOTE]
+> >
+> > **Secret hygiene:** This puts a plaintext API key in your shell profile — a file that is easy to accidentally commit to a dotfiles repo or paste into a gist. Consider loading the key from your OS keychain instead, e.g. on macOS: `export OPENROUTER_API_KEY="$(security find-generic-password -s openrouter -w)"`. If a key does leak, revoke and rotate it at [openrouter.ai/settings/keys](https://openrouter.ai/settings/keys).
+
+> [tab] Project Settings File
+>
+> Alternatively, you can configure Claude Code using a project-level settings file at `.claude/settings.local.json` in your project root:
+>
+> ```json lines theme={null}
+> {
+>   "env": {
+>     "ANTHROPIC_BASE_URL": "https://openrouter.ai/api",
+>     "ANTHROPIC_AUTH_TOKEN": "<your-openrouter-api-key>",
+>     "ANTHROPIC_API_KEY": "",
+>     "CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY": "1"
+>   }
+> }
+> ```
+>
+> Replace `<your-openrouter-api-key>` with your actual OpenRouter API key.
+>
+> > [!NOTE]
+> >
+> > **Note:** This method keeps your configuration scoped to the project, making it easy to share OpenRouter settings with your team via version control (just be careful not to commit your API key).
 
 > [!WARNING]
 >

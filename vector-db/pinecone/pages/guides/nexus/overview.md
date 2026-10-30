@@ -10,27 +10,27 @@ You point Nexus at your sources and curate them into a context. Agents then quer
 
 Traditional RAG hands an agent ranked chunks and leaves it to search, stitch, and re-search. Nexus does that work once, upstream, so agents spend their budget on reasoning instead of re-orienting.
 
-> **[Quickstart](/guides/nexus/quickstart)**
+> [card] [Quickstart](/guides/nexus/quickstart)
 >
 > Prepare your first context, then query it
 
-> **[Key concepts](/guides/nexus/concepts)**
+> [card] [Key concepts](/guides/nexus/concepts)
 >
 > Contexts, manifests, artifacts, sessions, and the Query API
 
-> **[How Nexus works](/guides/nexus/how-it-works)**
+> [card] [How Nexus works](/guides/nexus/how-it-works)
 >
 > Curated artifacts for retrieval, then answers composed over a retrieval SDK
 
-> **[Context design](/guides/nexus/context-design)**
+> [card] [Context design](/guides/nexus/context-design)
 >
 > How a context's manifest turns your sources into queryable knowledge
 
-> **[Bring Your Own Cloud](/guides/nexus/byoc/overview)**
+> [card] [Bring Your Own Cloud](/guides/nexus/byoc/overview)
 >
 > Deploy Nexus in your own cloud account
 
-> **[MCP server](/guides/nexus/mcp-server)**
+> [card] [MCP server](/guides/nexus/mcp-server)
 >
 > Query your contexts from any MCP client
 
@@ -61,20 +61,20 @@ Nexus is sometimes confused with other kinds of AI tools. Here's how it differs:
 
 ## Resources
 
-> **[API reference](/reference/api/nexus/introduction)**
+> [card] [API reference](/reference/api/nexus/introduction)
 >
 > Details about the Nexus control plane and data plane APIs
 
-> **[Changelog](/release-notes)**
+> [card] [Changelog](/release-notes)
 >
 > What's new in Pinecone
 
 ## Other Pinecone products
 
-> **[Pinecone Database](/guides/get-started/overview)**
+> [card] [Pinecone Database](/guides/get-started/overview)
 >
 > The retrieval foundation, bringing full-text and semantic search with metadata filtering into one managed database
 
-> **[Pinecone Assistant](/guides/assistant/overview)**
+> [card] [Pinecone Assistant](/guides/assistant/overview)
 >
 > A managed service for RAG chat and agent applications grounded in your data

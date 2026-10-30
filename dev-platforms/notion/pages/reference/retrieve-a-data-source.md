@@ -8,6 +8,8 @@ get /v1/data_sources/{data_source_id}
 
 Retrieves a [data source](/reference/data-source) object — information that describes the structure and columns of a data source — for a provided data source ID. The response adheres to any limits to a connection’s capabilities and the permissions of the data source and its containing database.
 
+Readable synced data sources may also include optional [stored sync metadata](/reference/data-source#sync-metadata), with provider information and ISO 8601 timestamps when available.
+
 To fetch data source *rows* (i.e. the child pages of a data source) rather than columns, use the [Query a data source](/reference/query-a-data-source) endpoint.
 
 ### Finding a data source ID

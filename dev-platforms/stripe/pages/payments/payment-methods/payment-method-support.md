@@ -109,7 +109,6 @@ To determine which payment methods each Stripe product supports, refer to the fo
 | [FPX](https://docs.stripe.com/payments/fpx.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | ✓ Supported 7 | ✓ Supported | - Unsupported |
 | [iDEAL | Wero](https://docs.stripe.com/payments/ideal.md) | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | ✓ Supported 5,6,7 | ✓ Supported 6 | - Unsupported |
 | [P24](https://docs.stripe.com/payments/p24.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | ✓ Supported 7 | Invite only | - Unsupported |
-| [TWINT](https://docs.stripe.com/payments/twint.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported |
 
 1 Not supported when using Checkout in subscription mode.2 Not supported when using Checkout in setup mode.3 Not supported when [collecting payment details before creating a PaymentIntent](https://docs.stripe.com/payments/accept-a-payment-deferred.md).4 Not supported when using [Elements with the Checkout Sessions API](https://docs.stripe.com/payments/quickstart.md).5 Only supported when using [Checkout in subscription mode](https://docs.stripe.com/billing/subscriptions/ideal.md).6 Not supported when using `charge_automatically` for subscriptions or invoices. iDEAL | Wero is a [single use](https://docs.stripe.com/payments/payment-methods.md#usage) payment method where customers are required to [authenticate](https://docs.stripe.com/payments/payment-methods.md#customer-actions) each payment.7 Invoices and Subscriptions only support the [send_invoice](https://docs.stripe.com/api/invoices/object.md#invoice_object-collection_method) collection method.
 
@@ -204,6 +203,7 @@ To determine which payment methods each Stripe product supports, refer to the fo
 | [Samsung Pay](https://docs.stripe.com/payments/samsung-pay/accept-a-payment.md) | - Unsupported | ✓ Supported 1,2 | - Unsupported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | ✓ Supported |
 | [Satispay](https://docs.stripe.com/payments/satispay.md) | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | N/A (online payments only) |
 | [Stablecoins and crypto](https://docs.stripe.com/payments/stablecoin-payments.md) | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | Invite only | ✓ Supported | ✓ Supported | N/A (online payments only) |
+| [TWINT](https://docs.stripe.com/payments/twint.md) | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | N/A (online payments only) |
 | [Vipps](https://docs.stripe.com/payments/vipps.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | N/A (online payments only) |
 | [WeChat Pay](https://docs.stripe.com/payments/wechat-pay.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | - Unsupported | (Private preview) 4 | ✓ Supported 4 | - Unsupported | ✓ Supported 10 |
 
@@ -244,7 +244,6 @@ The following payment methods support `on_behalf_of` in private preview:
 | [iDEAL | Wero](https://docs.stripe.com/payments/ideal.md) | `ideal` | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | Yes |
 | [P24](https://docs.stripe.com/payments/p24.md) | `p24` | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | Yes |
 | [Pay by Bank](https://docs.stripe.com/payments/pay-by-bank.md) | `pay_by_bank` | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | Yes |
-| [TWINT](https://docs.stripe.com/payments/twint.md) | `twint` | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | Yes |
 
 1 Cards and bank debit methods including SEPA debit, AU BECS direct debit, and ACSS debit support both `on_session` and `off_session` with [setup future usage](https://docs.stripe.com/api/payment_intents/create.md#create_payment_intent-setup_future_usage). All other payment method types either don’t support `setup_future_usage` or only support `off_session`.2 Payment methods might require confirmation with [return_url](https://docs.stripe.com/api/payment_intents/confirm.md#confirm_payment_intent-return_url) to indicate where Stripe should redirect your customer after they complete the payment.3 Bancontact supports `setup_future_usage` by saving the customer’s bank details as a SEPA Direct Debit payment method.4 BLIK doesn’t support the [deferred intent](https://docs.stripe.com/payments/accept-a-payment-deferred.md) creation integration path.
 
@@ -338,6 +337,7 @@ The following payment methods support `on_behalf_of` in private preview:
 | [Samsung Pay](https://docs.stripe.com/payments/samsung-pay/accept-a-payment.md) | `samsung_pay` | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | Yes |
 | [Secure Remote Commerce](https://docs.stripe.com/secure-remote-commerce.md) | A comma-separated list of accepted card brands | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | Yes |
 | [Stablecoins and crypto](https://docs.stripe.com/payments/stablecoin-payments.md) | `crypto` | ✓ Supported | Invite only | - Unsupported | Invite only | Yes |
+| [TWINT](https://docs.stripe.com/payments/twint.md) | `twint` | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | Yes |
 | [Vipps](https://docs.stripe.com/payments/vipps.md) | `vipps` | ✓ Supported | - Unsupported | ✓ Supported | - Unsupported | Yes |
 | [WeChat Pay](https://docs.stripe.com/payments/wechat-pay.md) | `wechat_pay` | ✓ Supported | (Private preview) | - Unsupported | (Private preview) | Yes |
 

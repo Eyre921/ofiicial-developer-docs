@@ -53,181 +53,181 @@ Migrating a pod-based index to serverless can take anywhere from a few minutes t
 
 ## 3. Start migration
 
-**Pinecone console**
+> [tab] Pinecone console
+>
+> 1. In the [Pinecone console](https://app.pinecone.io/), go to your pod-based index and click the **ellipsis (...) menu > Migrate to serverless**.
+>
+>    ![](https://mintcdn.com/pinecone/r0TaYXrfSrAYZYUj/images/migrate-to-serverless.png?fit=max\&auto=format\&n=r0TaYXrfSrAYZYUj\&q=85\&s=24217a2e791ffce162686b8fdef47948)
+>
+>    > [!NOTE]
+>    >
+>    > The dropdown won't display **Migrate to serverless** if the index has any of the listed [limitations](#limitations).
+>
+> 2. To save the legacy index and create a new serverless index now, follow the prompts.
+>
+>    Depending on the size of the index, migration can take anywhere from a few minutes to several hours. While migration is in progress, you'll see the yellow **Initializing** status:
+>
+>    ![create index from collection - initializing status](https://mintcdn.com/pinecone/9qvQp5nU6duJvusQ/images/create-serverless-from-collection-initializing.png?fit=max\&auto=format\&n=9qvQp5nU6duJvusQ\&q=85\&s=acffe738f1cbe2e08e4bc2fad7e957dd)
+>
+>    When the new serverless index is ready, the status will change to green:
+>
+>    ![create index from collection - ready status](https://mintcdn.com/pinecone/9qvQp5nU6duJvusQ/images/create-serverless-from-collection-ready.png?fit=max\&auto=format\&n=9qvQp5nU6duJvusQ\&q=85\&s=e04b6b0d892301435be282e5c4fa394b)
 
-1. In the [Pinecone console](https://app.pinecone.io/), go to your pod-based index and click the **ellipsis (...) menu > Migrate to serverless**.
-
-   ![](https://mintcdn.com/pinecone/r0TaYXrfSrAYZYUj/images/migrate-to-serverless.png?fit=max\&auto=format\&n=r0TaYXrfSrAYZYUj\&q=85\&s=24217a2e791ffce162686b8fdef47948)
-
-   > [!NOTE]
-   >
-   > The dropdown won't display **Migrate to serverless** if the index has any of the listed [limitations](#limitations).
-
-2. To save the legacy index and create a new serverless index now, follow the prompts.
-
-   Depending on the size of the index, migration can take anywhere from a few minutes to several hours. While migration is in progress, you'll see the yellow **Initializing** status:
-
-   ![create index from collection - initializing status](https://mintcdn.com/pinecone/9qvQp5nU6duJvusQ/images/create-serverless-from-collection-initializing.png?fit=max\&auto=format\&n=9qvQp5nU6duJvusQ\&q=85\&s=acffe738f1cbe2e08e4bc2fad7e957dd)
-
-   When the new serverless index is ready, the status will change to green:
-
-   ![create index from collection - ready status](https://mintcdn.com/pinecone/9qvQp5nU6duJvusQ/images/create-serverless-from-collection-ready.png?fit=max\&auto=format\&n=9qvQp5nU6duJvusQ\&q=85\&s=e04b6b0d892301435be282e5c4fa394b)
-
-**API/SDK**
-
-1. Use the [Create a collection](/reference/api/latest/control-plane/create_collection) operation to create a backup of your pod-based index:
-
-   ```javascript JavaScript theme={null}
-   // Requires Node.js SDK v6.1.2 or later
-   import { Pinecone } from '@pinecone-database/pinecone'
-
-   const pc = new Pinecone({
-     apiKey: 'YOUR_API_KEY'
-   });
-
-   await pc.createCollection({
-     name: "pod-collection",
-     source: "pod-index"
-   });
-   ```
-
-   ```go Go theme={null}
-   // Requires Go SDK v4.1.2 or later
-   package main
-
-   import (
-       "context"
-       "fmt"
-       "log"
-
-       "github.com/pinecone-io/go-pinecone/v4/pinecone"
-   )
-
-   func main() {
-       ctx := context.Background()
-
-       pc, err := pinecone.NewClient(pinecone.NewClientParams{
-           ApiKey: "YOUR_API_KEY",
-       })
-       if err != nil {
-           log.Fatalf("Failed to create Client: %v", err)
-       }
-
-       collection, err := pc.CreateCollection(ctx, &pinecone.CreateCollectionRequest{
-           Name: "pod-collection", 
-           Source: "pod-index",
-       })
-       if err != nil {
-           log.Fatalf("Failed to create collection: %v", err)
-       } else {
-           fmt.Printf("Successfully created collection: %v", collection.Name)
-       }
-   }
-   ```
-
-   ```shell curl theme={null}
-   PINECONE_API_KEY="YOUR_API_KEY"
-
-   curl -s POST "https://api.pinecone.io/collections" \
-   -H "Accept: application/json" \
-   -H "Content-Type: application/json" \
-   -H "Api-Key: $PINECONE_API_KEY" \
-   -H "X-Pinecone-Api-Version: 2025-10" \
-   -d '{
-           "name": "pod-collection",
-           "source": "pod-index"
-   }'
-   ```
-
-2. Use the [Create an index](/reference/api/2026-04/control-plane/create_index) operation to create a new serverless index from the collection:
-
-   * Use API version `2025-04` or later. Creating a serverless index from a collection isn't supported in earlier versions.
-   * Set `dimension` to the same dimension as the pod-based index. Changing the dimension isn't supported.
-   * Set `cloud` to the cloud where the pod-based index is hosted. Migrating to a different cloud isn't supported.
-   * Set `source_collection` to the name of the collection you created in step 1.
-
-   ```javascript JavaScript theme={null}
-   import { Pinecone } from '@pinecone-database/pinecone'
-
-   const pc = new Pinecone({
-     apiKey: 'YOUR_API_KEY'
-   });
-
-   await pc.createIndex({
-     name: 'serverless-index',
-     vectorType: 'dense',
-     dimension: 1536,
-     metric: 'cosine',
-     spec: {
-       serverless: {
-         cloud: 'aws',
-         region: 'us-east-1',
-         sourceCollection: 'pod-collection'
-       }
-     }
-   });
-   ```
-
-   ```go Go theme={null}
-   package main
-
-   import (
-       "context"
-       "fmt"
-       "log"
-
-       "github.com/pinecone-io/go-pinecone/v4/pinecone"
-   )
-
-   func main() {
-       ctx := context.Background()
-
-       pc, err := pinecone.NewClient(pinecone.NewClientParams{
-           ApiKey: "YOUR_API_KEY",
-       })
-       if err != nil {
-           log.Fatalf("Failed to create Client: %v", err)
-       }
-
-       idx, err := pc.CreateServerlessIndex(ctx, &pinecone.CreateServerlessIndexRequest{
-           Name:      "serverless-index",
-           VectorType: "dense",
-           Dimension: 1536,
-           Metric:    pinecone.Cosine,
-           Cloud:     pinecone.Aws,
-           Region:    "us-east-1",
-           SourceCollection: "pod-collection",
-       })
-       if err != nil {
-           log.Fatalf("Failed to create serverless index: %v", err)
-       } else {
-           fmt.Printf("Successfully created serverless index: %v", idx.Name)
-       }
-   }
-   ```
-
-   ```shell curl theme={null}
-   PINECONE_API_KEY="YOUR_API_KEY"
-
-   curl -s "https://api.pinecone.io/indexes" \
-   -H "Accept: application/json" \
-   -H "Content-Type: application/json" \
-   -H "Api-Key: $PINECONE_API_KEY" \
-   -H "X-Pinecone-Api-Version: 2025-10" \
-   -d '{
-           "name": "serverless-index",
-           "vector_type": "dense",
-           "dimension": 1536,
-           "metric": "cosine",
-           "spec": {
-               "serverless": {
-                   "cloud": "aws",
-                   "region": "us-east-1",
-                   "source_collection": "pod-collection"
-               }
-           }
-       }'
-   ```
+> [tab] API/SDK
+>
+> 1. Use the [Create a collection](/reference/api/latest/control-plane/create_collection) operation to create a backup of your pod-based index:
+>
+>    ```javascript JavaScript theme={null}
+>    // Requires Node.js SDK v6.1.2 or later
+>    import { Pinecone } from '@pinecone-database/pinecone'
+>
+>    const pc = new Pinecone({
+>      apiKey: 'YOUR_API_KEY'
+>    });
+>
+>    await pc.createCollection({
+>      name: "pod-collection",
+>      source: "pod-index"
+>    });
+>    ```
+>
+>    ```go Go theme={null}
+>    // Requires Go SDK v4.1.2 or later
+>    package main
+>
+>    import (
+>        "context"
+>        "fmt"
+>        "log"
+>
+>        "github.com/pinecone-io/go-pinecone/v4/pinecone"
+>    )
+>
+>    func main() {
+>        ctx := context.Background()
+>
+>        pc, err := pinecone.NewClient(pinecone.NewClientParams{
+>            ApiKey: "YOUR_API_KEY",
+>        })
+>        if err != nil {
+>            log.Fatalf("Failed to create Client: %v", err)
+>        }
+>
+>        collection, err := pc.CreateCollection(ctx, &pinecone.CreateCollectionRequest{
+>            Name: "pod-collection", 
+>            Source: "pod-index",
+>        })
+>        if err != nil {
+>            log.Fatalf("Failed to create collection: %v", err)
+>        } else {
+>            fmt.Printf("Successfully created collection: %v", collection.Name)
+>        }
+>    }
+>    ```
+>
+>    ```shell curl theme={null}
+>    PINECONE_API_KEY="YOUR_API_KEY"
+>
+>    curl -s POST "https://api.pinecone.io/collections" \
+>    -H "Accept: application/json" \
+>    -H "Content-Type: application/json" \
+>    -H "Api-Key: $PINECONE_API_KEY" \
+>    -H "X-Pinecone-Api-Version: 2025-10" \
+>    -d '{
+>            "name": "pod-collection",
+>            "source": "pod-index"
+>    }'
+>    ```
+>
+> 2. Use the [Create an index](/reference/api/2026-04/control-plane/create_index) operation to create a new serverless index from the collection:
+>
+>    * Use API version `2025-04` or later. Creating a serverless index from a collection isn't supported in earlier versions.
+>    * Set `dimension` to the same dimension as the pod-based index. Changing the dimension isn't supported.
+>    * Set `cloud` to the cloud where the pod-based index is hosted. Migrating to a different cloud isn't supported.
+>    * Set `source_collection` to the name of the collection you created in step 1.
+>
+>    ```javascript JavaScript theme={null}
+>    import { Pinecone } from '@pinecone-database/pinecone'
+>
+>    const pc = new Pinecone({
+>      apiKey: 'YOUR_API_KEY'
+>    });
+>
+>    await pc.createIndex({
+>      name: 'serverless-index',
+>      vectorType: 'dense',
+>      dimension: 1536,
+>      metric: 'cosine',
+>      spec: {
+>        serverless: {
+>          cloud: 'aws',
+>          region: 'us-east-1',
+>          sourceCollection: 'pod-collection'
+>        }
+>      }
+>    });
+>    ```
+>
+>    ```go Go theme={null}
+>    package main
+>
+>    import (
+>        "context"
+>        "fmt"
+>        "log"
+>
+>        "github.com/pinecone-io/go-pinecone/v4/pinecone"
+>    )
+>
+>    func main() {
+>        ctx := context.Background()
+>
+>        pc, err := pinecone.NewClient(pinecone.NewClientParams{
+>            ApiKey: "YOUR_API_KEY",
+>        })
+>        if err != nil {
+>            log.Fatalf("Failed to create Client: %v", err)
+>        }
+>
+>        idx, err := pc.CreateServerlessIndex(ctx, &pinecone.CreateServerlessIndexRequest{
+>            Name:      "serverless-index",
+>            VectorType: "dense",
+>            Dimension: 1536,
+>            Metric:    pinecone.Cosine,
+>            Cloud:     pinecone.Aws,
+>            Region:    "us-east-1",
+>            SourceCollection: "pod-collection",
+>        })
+>        if err != nil {
+>            log.Fatalf("Failed to create serverless index: %v", err)
+>        } else {
+>            fmt.Printf("Successfully created serverless index: %v", idx.Name)
+>        }
+>    }
+>    ```
+>
+>    ```shell curl theme={null}
+>    PINECONE_API_KEY="YOUR_API_KEY"
+>
+>    curl -s "https://api.pinecone.io/indexes" \
+>    -H "Accept: application/json" \
+>    -H "Content-Type: application/json" \
+>    -H "Api-Key: $PINECONE_API_KEY" \
+>    -H "X-Pinecone-Api-Version: 2025-10" \
+>    -d '{
+>            "name": "serverless-index",
+>            "vector_type": "dense",
+>            "dimension": 1536,
+>            "metric": "cosine",
+>            "spec": {
+>                "serverless": {
+>                    "cloud": "aws",
+>                    "region": "us-east-1",
+>                    "source_collection": "pod-collection"
+>                }
+>            }
+>        }'
+>    ```
 
 ## 4. Update SDKs
 

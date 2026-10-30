@@ -9,15 +9,15 @@ Retrieve the content of a page rendered as markdown.
 
 ### Use cases
 
-Use this endpoint to retrieve the full content of a Notion page as markdown ([enhanced markdown](/guides/data-apis/enhanced-markdown) by default), instead of working with the [block-based API](/reference/get-block-children). This is especially useful for agentic systems and developer tools that work natively with markdown.
+Use this endpoint to retrieve the full content of a Notion page as markdown, instead of working with the [block-based API](/reference/get-block-children). This is especially useful for agentic systems and developer tools that work natively with markdown.
 
 The endpoint also accepts non-navigable block IDs returned in `unknown_block_ids` from a previous truncated response. Pass these IDs to fetch additional subtrees of a large page.
 
 ### General behavior
 
-Returns a `page_markdown` object containing the page content as a markdown string. It uses enhanced markdown by default.
+Returns a `page_markdown` object containing the page content as a markdown string.
 
-Set the `markdown_version` query parameter to `v2` to get [Notion-flavored Markdown](/guides/data-apis/notion-flavored-markdown) instead. This is an opt-in preview; `v1` (enhanced markdown) is the default. See [Markdown versions](/guides/data-apis/working-with-markdown-content#markdown-versions).
+Set the `markdown_version` query parameter to `v2` to get [Notion-flavored Markdown](/guides/data-apis/notion-flavored-markdown) instead. `v2` is recommended. `v1` is deprecated. It's the default on current Notion-Versions. See [Markdown versions](/guides/data-apis/working-with-markdown-content#markdown-versions).
 
 > [!NOTE]
 >

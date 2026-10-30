@@ -321,102 +321,102 @@ In the assistant's response, the message string is contained in the following JS
 
 You can extract the message content and print it to the console:
 
-**Default response**
+> [tab] Default response
+>
+> ```python Python theme={null}
+> response = pc.assistants.chat(
+>     assistant_name="example-assistant",
+>     messages=[{"role": "user", "content": "What is the maximum height of a red pine?"}],
+> )
+>
+> print(response.message.content)
+> ```
+>
+> ```javascript JavaScript theme={null}
+> const assistant = pc.assistant({ name: 'example-assistant' });
+> const response = await assistant.chat({
+>   messages: [{ role: 'user', content: 'What is the maximum height of a red pine?' }],
+> });
+> console.log(response.message.content);
+> ```
+>
+> ```bash curl theme={null}
+> | jq '.message.content'
+> ```
+>
+> This creates output like the following:
+>
+> ```bash theme={null}
+> A red pine, scientifically known as *Pinus resinosa*, is a medium-sized tree that can grow up to 25 meters high and 75 centimeters in diameter. [1, pp. 1]
+> ```
 
-```python Python theme={null}
-response = pc.assistants.chat(
-    assistant_name="example-assistant",
-    messages=[{"role": "user", "content": "What is the maximum height of a red pine?"}],
-)
+> [tab] Streaming response
+>
+> ```python Python theme={null}
+> response = pc.assistants.chat(
+>     assistant_name="example-assistant",
+>     messages=[{"role": "user", "content": "What is the maximum height of a red pine?"}],
+>     stream=True,
+> )
+>
+> for text in response.text():
+>     print(text)
+> ```
+>
+> ```bash curl theme={null}
+> |  sed -u 's/.*"content":"\([^"]*\)".*/\1/'
+> ```
+>
+> This creates output like the following:
+>
+> ```bash Streaming response theme={null}
+> The
+>  maximum
+>  height
+>  of
+>  a
+>  red
+>  pine
+>  (
+> Pin
+> us
+>  resin
+> osa
+> )
+>  is
+>  up
+>  to
+>  twenty
+> -five
+>  meters
+>
+>  [1, pp. 1]
+> .
+> ```
 
-print(response.message.content)
-```
-
-```javascript JavaScript theme={null}
-const assistant = pc.assistant({ name: 'example-assistant' });
-const response = await assistant.chat({
-  messages: [{ role: 'user', content: 'What is the maximum height of a red pine?' }],
-});
-console.log(response.message.content);
-```
-
-```bash curl theme={null}
-| jq '.message.content'
-```
-
-This creates output like the following:
-
-```bash theme={null}
-A red pine, scientifically known as *Pinus resinosa*, is a medium-sized tree that can grow up to 25 meters high and 75 centimeters in diameter. [1, pp. 1]
-```
-
-**Streaming response**
-
-```python Python theme={null}
-response = pc.assistants.chat(
-    assistant_name="example-assistant",
-    messages=[{"role": "user", "content": "What is the maximum height of a red pine?"}],
-    stream=True,
-)
-
-for text in response.text():
-    print(text)
-```
-
-```bash curl theme={null}
-|  sed -u 's/.*"content":"\([^"]*\)".*/\1/'
-```
-
-This creates output like the following:
-
-```bash Streaming response theme={null}
-The
- maximum
- height
- of
- a
- red
- pine
- (
-Pin
-us
- resin
-osa
-)
- is
- up
- to
- twenty
--five
- meters
-
- [1, pp. 1]
-.
-```
-
-**JSON response**
-
-```python Python theme={null}
-import json
-
-response = pc.assistants.chat(
-    assistant_name="example-assistant",
-    messages=[{"role": "user", "content": "What is the maximum height of a red pine?"}],
-    json_response=True,
-)
-
-print(json.loads(response.message.content))
-```
-
-```bash curl theme={null}
-|  sed -u 's/.*"content":"\([^"]*\)".*/\1/'
-```
-
-This creates output like the following:
-
-```bash JSON response theme={null}
-{'red pine': 'A red pine, scientifically known as *Pinus resinosa*, is a medium-sized tree that can grow up to 25 meters high and 75 centimeters in diameter.'}
-```
+> [tab] JSON response
+>
+> ```python Python theme={null}
+> import json
+>
+> response = pc.assistants.chat(
+>     assistant_name="example-assistant",
+>     messages=[{"role": "user", "content": "What is the maximum height of a red pine?"}],
+>     json_response=True,
+> )
+>
+> print(json.loads(response.message.content))
+> ```
+>
+> ```bash curl theme={null}
+> |  sed -u 's/.*"content":"\([^"]*\)".*/\1/'
+> ```
+>
+> This creates output like the following:
+>
+> ```bash JSON response theme={null}
+> {'red pine': 'A red pine, scientifically known as *Pinus resinosa*, is a medium-sized tree that can grow up to 25 meters high and 75 centimeters in diameter.'}
+> ```
 
 ## Choose a model
 

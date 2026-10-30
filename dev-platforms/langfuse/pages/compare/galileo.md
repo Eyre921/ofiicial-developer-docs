@@ -38,6 +38,8 @@ Galileo AI positions itself as an enterprise-grade evaluation and governance sol
 
 ## Langfuse
 
+_[Video: Inspect a trace](https://static.langfuse.com/docs-videos/trace-new-ui.mp4): Trace detail of a RAG answer with the generation selected. Hover the cost and token values in the generation header to see the cost and usage breakdowns, expand the collapsed chat history, then select the retrieval span in the tree to see the context it returned._
+
 Langfuse is the open-source standard for LLM observability. It is designed for engineering teams that want to treat LLM traces like any other application log - providing full visibility without vendor black boxes.
 
 - **Observability:** Langfuse captures the full lifecycle of an LLM interaction - prompts, model responses, tool calls, and latency.

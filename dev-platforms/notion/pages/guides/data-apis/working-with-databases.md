@@ -98,56 +98,56 @@ The tabs compare the same property across API objects. Schema and Page value exa
 
 For `title`, `rich_text`, `people`, and `relation`, the Property item tab shows one entry in a paginated `results` array. For other types, it shows the endpoint response. Replace example names and IDs with values from your workspace.
 
-**Schema**
+> [tab] Schema
+>
+> ```json Schema theme={null}
+> {
+>   "Estimate": {
+>     "id": "estM",
+>     "name": "Estimate",
+>     "description": null,
+>     "type": "number",
+>     "number": {
+>       "format": "number"
+>     }
+>   }
+> }
+> ```
 
-```json Schema theme={null}
-{
-  "Estimate": {
-    "id": "estM",
-    "name": "Estimate",
-    "description": null,
-    "type": "number",
-    "number": {
-      "format": "number"
-    }
-  }
-}
-```
+> [tab] Page value
+>
+> ```json Page value theme={null}
+> {
+>   "Estimate": {
+>     "id": "estM",
+>     "type": "number",
+>     "number": 8
+>   }
+> }
+> ```
 
-**Page value**
+> [tab] Page write
+>
+> ```json Page write theme={null}
+> {
+>   "properties": {
+>     "Estimate": {
+>       "number": 8
+>     }
+>   }
+> }
+> ```
 
-```json Page value theme={null}
-{
-  "Estimate": {
-    "id": "estM",
-    "type": "number",
-    "number": 8
-  }
-}
-```
-
-**Page write**
-
-```json Page write theme={null}
-{
-  "properties": {
-    "Estimate": {
-      "number": 8
-    }
-  }
-}
-```
-
-**Property item**
-
-```json Property item theme={null}
-{
-  "object": "property_item",
-  "id": "estM",
-  "type": "number",
-  "number": 8
-}
-```
+> [tab] Property item
+>
+> ```json Property item theme={null}
+> {
+>   "object": "property_item",
+>   "id": "estM",
+>   "type": "number",
+>   "number": 8
+> }
+> ```
 
 The [property schema reference](/reference/property-object) defines each type’s settings. The [page value reference](/reference/page-property-values) defines its values and write rules. The [property-item reference](/reference/property-item-object) defines responses when reading one property, including paginated values.
 

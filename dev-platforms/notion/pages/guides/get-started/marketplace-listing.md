@@ -77,28 +77,28 @@ For guidance on the review process and best practices to get your connection app
 
 ## Frequently asked questions
 
-> **How long will it take for Notion to publish my submitted connection?**
+> [accordion] How long will it take for Notion to publish my submitted connection?
 >
 > After submission, expect to hear back from our team within 5-10 business days via email. Check the status of your connection submission from the **Listings > Connections** page in the Marketplace listing dashboard.
 
-> **What if my connection doesn't meet the requirements?**
+> [accordion] What if my connection doesn't meet the requirements?
 >
 > The Notion team sends an email explaining why your listing was not approved. Check the status from the **Listings > Connections** page.
 
-> **What if my connection is rejected?**
+> [accordion] What if my connection is rejected?
 >
 > Connections are rejected for various reasons, from brand/trademark issues to quality concerns to situations where the baseline connection criteria isn't met. We encourage developers to review our feedback, make necessary changes, and resubmit. Our goal is to help you create high-quality and valuable tools for the Notion community.
 
-> **Do I need to list my public connection on the Marketplace?**
+> [accordion] Do I need to list my public connection on the Marketplace?
 >
 > No. Public connections work independently of Marketplace listings. Listing on the Marketplace is optional and helps your connection reach a wider audience, but your connection can be used via its OAuth flow without being listed.
 
-> **Can you point me to other helpful resources?**
+> [accordion] Can you point me to other helpful resources?
 >
-> > **[Notion Developers](/)**
+> > [card] [Notion Developers](/)
 >
-> > **[Overview](/guides/get-started/overview)**
+> > [card] [Overview](/guides/get-started/overview)
 >
-> > **[Create connections with the Notion API](https://www.notion.com/help/create-integrations-with-the-notion-api)**
+> > [card] [Create connections with the Notion API](https://www.notion.com/help/create-integrations-with-the-notion-api)
 >
-> > **[Authorization guide](/guides/get-started/authorization)**
+> > [card] [Authorization guide](/guides/get-started/authorization)

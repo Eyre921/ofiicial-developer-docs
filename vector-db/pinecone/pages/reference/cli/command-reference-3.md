@@ -71,7 +71,7 @@ This section describes all commands offered by the Pinecone CLI.
 
 ### Top-level commands
 
-> **pc login (Authenticate via user login)**
+> [accordion] pc login (Authenticate via user login)
 >
 > **Description**
 >
@@ -110,7 +110,7 @@ This section describes all commands offered by the Pinecone CLI.
 > >
 > > This is an alias for `pc auth login`. Both commands perform the same operation.
 
-> **pc logout (Clear credentials / log out)**
+> [accordion] pc logout (Clear credentials / log out)
 >
 > **Description**
 >
@@ -151,7 +151,7 @@ This section describes all commands offered by the Pinecone CLI.
 > >
 > > This is an alias for `pc auth logout`. Both commands perform the same operation. Does not delete managed API keys from Pinecone's servers. Run `pc auth local-keys prune` before logging out to fully clean up.
 
-> **pc target (Set target organization and project)**
+> [accordion] pc target (Set target organization and project)
 >
 > **Description**
 >
@@ -200,7 +200,7 @@ This section describes all commands offered by the Pinecone CLI.
 > pc target --clear
 > ```
 
-> **pc version (Show CLI version)**
+> [accordion] pc version (Show CLI version)
 >
 > **Description**
 >
@@ -231,7 +231,7 @@ This section describes all commands offered by the Pinecone CLI.
 > pc version
 > ```
 
-> **pc whoami (Show current user)**
+> [accordion] pc whoami (Show current user)
 >
 > **Description**
 >
@@ -267,7 +267,7 @@ This section describes all commands offered by the Pinecone CLI.
 
 ### Authentication
 
-> **pc auth clear (Clear specific credentials)**
+> [accordion] pc auth clear (Clear specific credentials)
 >
 > **Description**
 >
@@ -309,7 +309,7 @@ This section describes all commands offered by the Pinecone CLI.
 > >
 > > More surgical than `pc auth logout`. Does not clear user login token or managed keys. For those, use `pc auth logout` or `pc auth local-keys prune`.
 
-> **pc auth configure (Configure service account or API key)**
+> [accordion] pc auth configure (Configure service account or API key)
 >
 > **Description**
 >
@@ -364,7 +364,7 @@ This section describes all commands offered by the Pinecone CLI.
 > >
 > > `pc auth configure --api-key "YOUR_API_KEY"` does the same thing as `pc config set-api-key "YOUR_API_KEY"`. To learn about targeting a project after authenticating with a service account, see [CLI target context](/reference/cli/target-context).
 
-> **pc auth local-keys list (List managed keys)**
+> [accordion] pc auth local-keys list (List managed keys)
 >
 > **Description**
 >
@@ -405,7 +405,7 @@ This section describes all commands offered by the Pinecone CLI.
 > pc auth local-keys list
 > ```
 
-> **pc auth local-keys prune (Delete managed keys)**
+> [accordion] pc auth local-keys prune (Delete managed keys)
 >
 > **Description**
 >
@@ -457,7 +457,7 @@ This section describes all commands offered by the Pinecone CLI.
 > >
 > > This deletes keys from both local storage and Pinecone servers. Use `--dry-run` to preview before committing.
 
-> **pc auth login (Authenticate via user login)**
+> [accordion] pc auth login (Authenticate via user login)
 >
 > **Description**
 >
@@ -495,7 +495,7 @@ This section describes all commands offered by the Pinecone CLI.
 > >
 > > Tokens refresh automatically and remain valid for up to 120 days. If you're inactive for more than 30 days, you must re-authenticate. Logging in clears any existing service account credentials. This command does the same thing as `pc login`.
 
-> **pc auth logout (Clear authentication credentials)**
+> [accordion] pc auth logout (Clear authentication credentials)
 >
 > **Description**
 >
@@ -536,7 +536,7 @@ This section describes all commands offered by the Pinecone CLI.
 > >
 > > This command does the same thing as `pc logout`. Does not delete managed API keys from Pinecone's servers. Run `pc auth local-keys prune` before logging out to fully clean up.
 
-> **pc auth status (Show authentication status)**
+> [accordion] pc auth status (Show authentication status)
 >
 > **Description**
 >
@@ -573,7 +573,7 @@ This section describes all commands offered by the Pinecone CLI.
 > pc auth status --json
 > ```
 
-> **pc auth whoami (Show current user information)**
+> [accordion] pc auth whoami (Show current user information)
 >
 > **Description**
 >
@@ -609,7 +609,7 @@ This section describes all commands offered by the Pinecone CLI.
 
 ### Indexes
 
-> **pc index configure (Update index configuration)**
+> [accordion] pc index configure (Update index configuration)
 >
 > **Description**
 >
@@ -675,7 +675,7 @@ This section describes all commands offered by the Pinecone CLI.
 > >
 > > Configuration changes may take some time to take effect.
 
-> **pc index create (Create a new index)**
+> [accordion] pc index create (Create a new index)
 >
 > **Description**
 >
@@ -792,7 +792,7 @@ This section describes all commands offered by the Pinecone CLI.
 > >
 > > For a list of valid regions for a serverless index, see [Create a serverless index](/guides/index-data/create-an-index).
 
-> **pc index delete (Delete an index)**
+> [accordion] pc index delete (Delete an index)
 >
 > **Description**
 >
@@ -839,7 +839,7 @@ This section describes all commands offered by the Pinecone CLI.
 > >
 > > This command prompts for confirmation before deleting. Pass `--skip-confirmation` (or `--json`) to bypass the prompt in non-interactive contexts.
 
-> **pc index describe (Show index details)**
+> [accordion] pc index describe (Show index details)
 >
 > **Description**
 >
@@ -882,7 +882,7 @@ This section describes all commands offered by the Pinecone CLI.
 > pc index describe -i test-index
 > ```
 
-> **pc index stats (Show index statistics)**
+> [accordion] pc index stats (Show index statistics)
 >
 > **Description**
 >
@@ -926,7 +926,7 @@ This section describes all commands offered by the Pinecone CLI.
 > pc index stats -i my-index -j
 > ```
 
-> **pc index list (List all indexes)**
+> [accordion] pc index list (List all indexes)
 >
 > **Description**
 >
@@ -972,7 +972,7 @@ This section describes all commands offered by the Pinecone CLI.
 
 ### Namespaces
 
-> **pc index namespace create (Create a namespace)**
+> [accordion] pc index namespace create (Create a namespace)
 >
 > **Description**
 >
@@ -1014,7 +1014,7 @@ This section describes all commands offered by the Pinecone CLI.
 > pc index namespace create -i my-index --name tenant-c -j
 > ```
 
-> **pc index namespace delete (Delete a namespace)**
+> [accordion] pc index namespace delete (Delete a namespace)
 >
 > **Description**
 >
@@ -1060,7 +1060,7 @@ This section describes all commands offered by the Pinecone CLI.
 > >
 > > Deleting a namespace removes all vectors in that namespace. This operation cannot be undone.
 
-> **pc index namespace describe (Show namespace details)**
+> [accordion] pc index namespace describe (Show namespace details)
 >
 > **Description**
 >
@@ -1101,7 +1101,7 @@ This section describes all commands offered by the Pinecone CLI.
 > pc index namespace describe -i my-index --name tenant-a -j
 > ```
 
-> **pc index namespace list (List namespaces)**
+> [accordion] pc index namespace list (List namespaces)
 >
 > **Description**
 >
@@ -1149,7 +1149,7 @@ This section describes all commands offered by the Pinecone CLI.
 
 ### Vectors
 
-> **pc index vector delete (Delete vectors)**
+> [accordion] pc index vector delete (Delete vectors)
 >
 > **Description**
 >
@@ -1208,7 +1208,7 @@ This section describes all commands offered by the Pinecone CLI.
 > >
 > > Vector deletion is permanent and cannot be undone.
 
-> **pc index vector fetch (Fetch vectors by ID or filter)**
+> [accordion] pc index vector fetch (Fetch vectors by ID or filter)
 >
 > **Description**
 >
@@ -1264,7 +1264,7 @@ This section describes all commands offered by the Pinecone CLI.
 > >
 > > Use either `--ids` or `--filter`, not both. When using `--ids`, pagination flags are not applicable.
 
-> **pc index vector list (List vector IDs)**
+> [accordion] pc index vector list (List vector IDs)
 >
 > **Description**
 >
@@ -1307,7 +1307,7 @@ This section describes all commands offered by the Pinecone CLI.
 > pc index vector list -i my-index -j
 > ```
 
-> **pc index vector query (Query vectors)**
+> [accordion] pc index vector query (Query vectors)
 >
 > **Description**
 >
@@ -1385,7 +1385,7 @@ This section describes all commands offered by the Pinecone CLI.
 > >
 > > Use `--id`, `--vector`, or sparse vectors (`--sparse-indices` and `--sparse-values`) to specify what to query against. These options are mutually exclusive.
 
-> **pc index vector update (Update vectors)**
+> [accordion] pc index vector update (Update vectors)
 >
 > **Description**
 >
@@ -1453,7 +1453,7 @@ This section describes all commands offered by the Pinecone CLI.
 > >
 > > Use either `--id` for single vector updates or `--filter` for bulk updates. These options are mutually exclusive.
 
-> **pc index vector upsert (Upsert vectors)**
+> [accordion] pc index vector upsert (Upsert vectors)
 >
 > **Description**
 >
@@ -1513,7 +1513,7 @@ This section describes all commands offered by the Pinecone CLI.
 
 ### Records
 
-> **pc index record search (Search records in an index)**
+> [accordion] pc index record search (Search records in an index)
 >
 > **Description**
 >
@@ -1593,7 +1593,7 @@ This section describes all commands offered by the Pinecone CLI.
 > rec-002     0.887210    {"category":"health","chunk_text":"disease prevention..."}
 > ```
 
-> **pc index record upsert (Upsert records into an integrated index)**
+> [accordion] pc index record upsert (Upsert records into an integrated index)
 >
 > **Description**
 >
@@ -1642,7 +1642,7 @@ This section describes all commands offered by the Pinecone CLI.
 
 ### Collections
 
-> **pc index collection create (Create a collection from a pod-based index)**
+> [accordion] pc index collection create (Create a collection from a pod-based index)
 >
 > **Description**
 >
@@ -1687,7 +1687,7 @@ This section describes all commands offered by the Pinecone CLI.
 > Environment   us-east-1-aws
 > ```
 
-> **pc index collection delete (Delete a collection)**
+> [accordion] pc index collection delete (Delete a collection)
 >
 > **Description**
 >
@@ -1729,7 +1729,7 @@ This section describes all commands offered by the Pinecone CLI.
 > >
 > > This command prompts for confirmation before deleting. Pass `--skip-confirmation` (or `--json`) to bypass the prompt in non-interactive contexts.
 
-> **pc index collection describe (Describe a collection by name)**
+> [accordion] pc index collection describe (Describe a collection by name)
 >
 > **Description**
 >
@@ -1773,7 +1773,7 @@ This section describes all commands offered by the Pinecone CLI.
 > Environment   us-east-1-aws
 > ```
 
-> **pc index collection list (List collections in your project)**
+> [accordion] pc index collection list (List collections in your project)
 >
 > **Description**
 >
@@ -1813,7 +1813,7 @@ This section describes all commands offered by the Pinecone CLI.
 
 ### Backups
 
-> **pc index backup create (Create a backup)**
+> [accordion] pc index backup create (Create a backup)
 >
 > **Description**
 >
@@ -1855,7 +1855,7 @@ This section describes all commands offered by the Pinecone CLI.
 > pc index backup create -i my-index -j
 > ```
 
-> **pc index backup delete (Delete a backup)**
+> [accordion] pc index backup delete (Delete a backup)
 >
 > **Description**
 >
@@ -1901,7 +1901,7 @@ This section describes all commands offered by the Pinecone CLI.
 > >
 > > Backup deletion is permanent and cannot be undone.
 
-> **pc index backup describe (Show backup details)**
+> [accordion] pc index backup describe (Show backup details)
 >
 > **Description**
 >
@@ -1938,7 +1938,7 @@ This section describes all commands offered by the Pinecone CLI.
 > pc index backup describe -i c84725e5-5956-41ba-ab62-21ac7b5f2a2f -j
 > ```
 
-> **pc index backup list (List backups)**
+> [accordion] pc index backup list (List backups)
 >
 > **Description**
 >
@@ -1983,7 +1983,7 @@ This section describes all commands offered by the Pinecone CLI.
 > pc index backup list -j
 > ```
 
-> **pc index restore (Restore an index from a backup)**
+> [accordion] pc index restore (Restore an index from a backup)
 >
 > **Description**
 >
@@ -2028,7 +2028,7 @@ This section describes all commands offered by the Pinecone CLI.
 > pc index restore -i c84725e5-5956-41ba-ab62-21ac7b5f2a2f -n restored-index -j
 > ```
 
-> **pc index restore describe (Show restore job details)**
+> [accordion] pc index restore describe (Show restore job details)
 >
 > **Description**
 >
@@ -2065,7 +2065,7 @@ This section describes all commands offered by the Pinecone CLI.
 > pc index restore describe -i rj-abc123 -j
 > ```
 
-> **pc index restore list (List restore jobs)**
+> [accordion] pc index restore list (List restore jobs)
 >
 > **Description**
 >
@@ -2108,7 +2108,7 @@ This section describes all commands offered by the Pinecone CLI.
 
 ### Imports
 
-> **pc index import start (Start an import from a storage URI)**
+> [accordion] pc index import start (Start an import from a storage URI)
 >
 > **Description**
 >
@@ -2164,7 +2164,7 @@ This section describes all commands offered by the Pinecone CLI.
 > Import ID    imp-abc123
 > ```
 
-> **pc index import describe (Describe an import operation)**
+> [accordion] pc index import describe (Describe an import operation)
 >
 > **Description**
 >
@@ -2215,7 +2215,7 @@ This section describes all commands offered by the Pinecone CLI.
 > Error             None
 > ```
 
-> **pc index import list (List import operations for an index)**
+> [accordion] pc index import list (List import operations for an index)
 >
 > **Description**
 >
@@ -2266,7 +2266,7 @@ This section describes all commands offered by the Pinecone CLI.
 > imp-def456    InProgress  s3://other-bucket/data/ 45.0%    450      2024-01-15 13:00:00  -
 > ```
 
-> **pc index import cancel (Cancel an in-progress import operation)**
+> [accordion] pc index import cancel (Cancel an in-progress import operation)
 >
 > **Description**
 >
@@ -2311,7 +2311,7 @@ This section describes all commands offered by the Pinecone CLI.
 
 ### Projects
 
-> **pc project create (Create a new project)**
+> [accordion] pc project create (Create a new project)
 >
 > **Description**
 >
@@ -2347,7 +2347,7 @@ This section describes all commands offered by the Pinecone CLI.
 > pc project create -n "demo-project"
 > ```
 
-> **pc project delete (Delete a project)**
+> [accordion] pc project delete (Delete a project)
 >
 > **Description**
 >
@@ -2392,7 +2392,7 @@ This section describes all commands offered by the Pinecone CLI.
 > >
 > > Must delete all indexes and collections in the project first. If the deleted project is your current target, set a new target after deleting it.
 
-> **pc project describe (Show project details)**
+> [accordion] pc project describe (Show project details)
 >
 > **Description**
 >
@@ -2433,7 +2433,7 @@ This section describes all commands offered by the Pinecone CLI.
 > pc project describe -i proj-abc123
 > ```
 
-> **pc project list (List all projects)**
+> [accordion] pc project list (List all projects)
 >
 > **Description**
 >
@@ -2474,7 +2474,7 @@ This section describes all commands offered by the Pinecone CLI.
 > pc project list
 > ```
 
-> **pc project update (Update project settings)**
+> [accordion] pc project update (Update project settings)
 >
 > **Description**
 >
@@ -2512,7 +2512,7 @@ This section describes all commands offered by the Pinecone CLI.
 
 ### Organizations
 
-> **pc organization delete (Delete an organization)**
+> [accordion] pc organization delete (Delete an organization)
 >
 > **Description**
 >
@@ -2554,7 +2554,7 @@ This section describes all commands offered by the Pinecone CLI.
 > >
 > > This is a highly destructive action. Deletion is permanent. If the deleted organization is your current [target](/reference/cli/target-context), set a new target after deleting.
 
-> **pc organization describe (Show organization details)**
+> [accordion] pc organization describe (Show organization details)
 >
 > **Description**
 >
@@ -2595,7 +2595,7 @@ This section describes all commands offered by the Pinecone CLI.
 > pc organization describe -i org-abc123
 > ```
 
-> **pc organization list (List organizations)**
+> [accordion] pc organization list (List organizations)
 >
 > **Description**
 >
@@ -2635,7 +2635,7 @@ This section describes all commands offered by the Pinecone CLI.
 > pc organization list
 > ```
 
-> **pc organization update (Update organization settings)**
+> [accordion] pc organization update (Update organization settings)
 >
 > **Description**
 >
@@ -2676,7 +2676,7 @@ This section describes all commands offered by the Pinecone CLI.
 
 ### API keys
 
-> **pc api-key create (Create a new API key)**
+> [accordion] pc api-key create (Create a new API key)
 >
 > **Description**
 >
@@ -2726,7 +2726,7 @@ This section describes all commands offered by the Pinecone CLI.
 > >
 > > API keys are scoped to a specific organization and project.
 
-> **pc api-key delete (Delete an API key)**
+> [accordion] pc api-key delete (Delete an API key)
 >
 > **Description**
 >
@@ -2771,7 +2771,7 @@ This section describes all commands offered by the Pinecone CLI.
 > >
 > > Deletion is permanent. Applications using this key immediately lose access to Pinecone.
 
-> **pc api-key describe (Show API key details)**
+> [accordion] pc api-key describe (Show API key details)
 >
 > **Description**
 >
@@ -2816,7 +2816,7 @@ This section describes all commands offered by the Pinecone CLI.
 > >
 > > Does not display the actual key value.
 
-> **pc api-key list (List all API keys)**
+> [accordion] pc api-key list (List all API keys)
 >
 > **Description**
 >
@@ -2860,7 +2860,7 @@ This section describes all commands offered by the Pinecone CLI.
 > >
 > > Does not display key values.
 
-> **pc api-key update (Update API key settings)**
+> [accordion] pc api-key update (Update API key settings)
 >
 > **Description**
 >
@@ -2909,7 +2909,7 @@ This section describes all commands offered by the Pinecone CLI.
 
 ### Config
 
-> **pc config list (List all configuration settings and their current values)**
+> [accordion] pc config list (List all configuration settings and their current values)
 >
 > **Description**
 >
@@ -2952,7 +2952,7 @@ This section describes all commands offered by the Pinecone CLI.
 > color       true                                                     Enable colored output
 > ```
 
-> **pc config get \<key> (Get the current value of a configuration setting)**
+> [accordion] pc config get \<key> (Get the current value of a configuration setting)
 >
 > **Description**
 >
@@ -2988,7 +2988,7 @@ This section describes all commands offered by the Pinecone CLI.
 > pc config get color
 > ```
 
-> **pc config describe \<key> (Show detailed information about a configuration setting)**
+> [accordion] pc config describe \<key> (Show detailed information about a configuration setting)
 >
 > **Description**
 >
@@ -3032,7 +3032,7 @@ This section describes all commands offered by the Pinecone CLI.
 > DESCRIPTION       Default API key for authenticating with Pinecone
 > ```
 
-> **pc config set \<key> \<value> (Set a configuration value)**
+> [accordion] pc config set \<key> \<value> (Set a configuration value)
 >
 > **Description**
 >
@@ -3066,7 +3066,7 @@ This section describes all commands offered by the Pinecone CLI.
 > pc config set color false
 > ```
 
-> **pc config unset \<key> (Reset a configuration value to its default)**
+> [accordion] pc config unset \<key> (Reset a configuration value to its default)
 >
 > **Description**
 >

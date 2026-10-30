@@ -43,10 +43,10 @@ Sync upserts and deletes (the `changes` your `execute` function returns) are lim
 
 ## Next steps
 
-> **[Syncs](/workers/guides/syncs)**
+> [card] [Syncs](/workers/guides/syncs)
 >
 > Configure sync schedules and pace outbound requests to third-party APIs.
 
-> **[Webhooks](/workers/guides/webhooks)**
+> [card] [Webhooks](/workers/guides/webhooks)
 >
 > Receive HTTP events and understand webhook delivery behavior.

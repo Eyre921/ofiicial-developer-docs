@@ -6,7 +6,7 @@ path: guides/data-apis/notion-flavored-markdown
 
 Reference for Notion-flavored Markdown, the syntax used by markdown_version v2.
 
-Notion-flavored Markdown is the syntax for `markdown_version: "v2"`, an opt-in preview on the markdown endpoints. See [Markdown versions](/guides/data-apis/working-with-markdown-content#markdown-versions) for where to send the parameter. The default, `v1`, uses [enhanced markdown](/guides/data-apis/enhanced-markdown).
+Notion-flavored Markdown is the syntax for `markdown_version: "v2"` on the markdown endpoints. It's the recommended syntax, and it becomes the default in the next Notion-Version. See [Markdown versions](/guides/data-apis/working-with-markdown-content#markdown-versions) for where to send the parameter. Current Notion-Versions default to `v1`, the deprecated [enhanced markdown](/guides/data-apis/enhanced-markdown) syntax. To switch from `v1`, see [Migrate to Notion-flavored Markdown](/guides/data-apis/migrate-to-notion-flavored-markdown).
 
 The specification below comes from the same source as the Notion MCP server's Markdown spec. It is written for AI agents, so it is terse. You can paste it into your own agent's prompt.
 

@@ -24,7 +24,7 @@ Object limits are restrictions on the number or size of objects in Pinecone. The
 
 When you exceed an object limit, API operations return a `403 - QUOTA_EXCEEDED`. [Upgrade your plan](/admin/billing/upgrade-billing-plan) to increase the limit. If a higher plan still doesn't cover what you need, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) with details about your use case, since most object limits can be raised on request.
 
-> **Example error**
+> [accordion] Example error
 >
 > ```
 > Request failed. You've reached the max projects allowed in organization <org name>.

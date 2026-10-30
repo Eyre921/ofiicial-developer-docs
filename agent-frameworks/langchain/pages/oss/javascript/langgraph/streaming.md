@@ -70,33 +70,33 @@ const graph = new StateGraph(State)
   .compile();
 ```
 
-**updates**
+> [tab] updates
+>
+> Use this to stream only the **state updates** returned by the nodes after each step. The streamed outputs include the name of the node as well as the update.
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> for await (const chunk of await graph.stream(
+>   { topic: "ice cream" },
+>   { streamMode: "updates" }
+> )) {
+>   for (const [nodeName, state] of Object.entries(chunk)) {
+>     console.log(`Node ${nodeName} updated:`, state);
+>   }
+> }
+> ```
 
-Use this to stream only the **state updates** returned by the nodes after each step. The streamed outputs include the name of the node as well as the update.
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-for await (const chunk of await graph.stream(
-  { topic: "ice cream" },
-  { streamMode: "updates" }
-)) {
-  for (const [nodeName, state] of Object.entries(chunk)) {
-    console.log(`Node ${nodeName} updated:`, state);
-  }
-}
-```
-
-**values**
-
-Use this to stream the **full state** of the graph after each step.
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-for await (const chunk of await graph.stream(
-  { topic: "ice cream" },
-  { streamMode: "values" }
-)) {
-  console.log(`topic: ${chunk.topic}, joke: ${chunk.joke}`);
-}
-```
+> [tab] values
+>
+> Use this to stream the **full state** of the graph after each step.
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> for await (const chunk of await graph.stream(
+>   { topic: "ice cream" },
+>   { streamMode: "values" }
+> )) {
+>   console.log(`topic: ${chunk.topic}, joke: ${chunk.joke}`);
+> }
+> ```
 
 ### LLM tokens
 
@@ -182,7 +182,7 @@ for await (const [msg, metadata] of await graph.stream(
 }
 ```
 
-> **Extended example: filtering by tags**
+> [accordion] Extended example: filtering by tags
 >
 > ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { ChatOpenAI } from "@langchain/openai";
@@ -322,7 +322,7 @@ const stream = await graph.streamEvents(
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/ba51f3a8-41b5-4403-bf37-5978e9fadb99/r)**
+> [card] [View example trace](https://smith.langchain.com/public/b2aab4a2-0d5e-49c2-8b99-c89f3de9348d/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -346,7 +346,7 @@ for await (const [msg, metadata] of await graph.stream(
 }
 ```
 
-> **Extended example: streaming LLM tokens from specific nodes**
+> [accordion] Extended example: streaming LLM tokens from specific nodes
 >
 > ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { ChatOpenAI } from "@langchain/openai";
@@ -407,68 +407,68 @@ To send **custom user-defined data** from inside a LangGraph node or tool, follo
 1. Use the `writer` parameter from the `LangGraphRunnableConfig` to emit custom data.
 2. Set `streamMode: "custom"` when calling `.stream()` to get the custom data in the stream. You can combine multiple modes (e.g., `["updates", "custom"]`), but at least one must be `"custom"`.
 
-**node**
+> [tab] node
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { StateGraph, StateSchema, GraphNode, START, LangGraphRunnableConfig } from "@langchain/langgraph";
+> import * as z from "zod";
+>
+> const State = new StateSchema({
+>   query: z.string(),
+>   answer: z.string(),
+> });
+>
+> const node: GraphNode<typeof State> = async (state, config) => {
+>   // Use the writer to emit a custom key-value pair (e.g., progress update)
+>   config.writer({ custom_key: "Generating custom data inside node" });
+>   return { answer: "some data" };
+> };
+>
+> const graph = new StateGraph(State)
+>   .addNode("node", node)
+>   .addEdge(START, "node")
+>   .compile();
+>
+> const inputs = { query: "example" };
+>
+> // Set streamMode: "custom" to receive the custom data in the stream
+> for await (const chunk of await graph.stream(inputs, { streamMode: "custom" })) {
+>   console.log(chunk);
+> }
+> ```
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { StateGraph, StateSchema, GraphNode, START, LangGraphRunnableConfig } from "@langchain/langgraph";
-import * as z from "zod";
-
-const State = new StateSchema({
-  query: z.string(),
-  answer: z.string(),
-});
-
-const node: GraphNode<typeof State> = async (state, config) => {
-  // Use the writer to emit a custom key-value pair (e.g., progress update)
-  config.writer({ custom_key: "Generating custom data inside node" });
-  return { answer: "some data" };
-};
-
-const graph = new StateGraph(State)
-  .addNode("node", node)
-  .addEdge(START, "node")
-  .compile();
-
-const inputs = { query: "example" };
-
-// Set streamMode: "custom" to receive the custom data in the stream
-for await (const chunk of await graph.stream(inputs, { streamMode: "custom" })) {
-  console.log(chunk);
-}
-```
-
-**tool**
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { tool } from "@langchain/core/tools";
-import { LangGraphRunnableConfig } from "@langchain/langgraph";
-import * as z from "zod";
-
-const queryDatabase = tool(
-  async (input, config: LangGraphRunnableConfig) => {
-    // Use the writer to emit a custom key-value pair (e.g., progress update)
-    config.writer({ data: "Retrieved 0/100 records", type: "progress" });
-    // perform query
-    // Emit another custom key-value pair
-    config.writer({ data: "Retrieved 100/100 records", type: "progress" });
-    return "some-answer";
-  },
-  {
-    name: "query_database",
-    description: "Query the database.",
-    schema: z.object({
-      query: z.string().describe("The query to execute."),
-    }),
-  }
-);
-
-const graph = // ... define a graph that uses this tool
-
-// Set streamMode: "custom" to receive the custom data in the stream
-for await (const chunk of await graph.stream(inputs, { streamMode: "custom" })) {
-  console.log(chunk);
-}
-```
+> [tab] tool
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { tool } from "@langchain/core/tools";
+> import { LangGraphRunnableConfig } from "@langchain/langgraph";
+> import * as z from "zod";
+>
+> const queryDatabase = tool(
+>   async (input, config: LangGraphRunnableConfig) => {
+>     // Use the writer to emit a custom key-value pair (e.g., progress update)
+>     config.writer({ data: "Retrieved 0/100 records", type: "progress" });
+>     // perform query
+>     // Emit another custom key-value pair
+>     config.writer({ data: "Retrieved 100/100 records", type: "progress" });
+>     return "some-answer";
+>   },
+>   {
+>     name: "query_database",
+>     description: "Query the database.",
+>     schema: z.object({
+>       query: z.string().describe("The query to execute."),
+>     }),
+>   }
+> );
+>
+> const graph = // ... define a graph that uses this tool
+>
+> // Set streamMode: "custom" to receive the custom data in the stream
+> for await (const chunk of await graph.stream(inputs, { streamMode: "custom" })) {
+>   console.log(chunk);
+> }
+> ```
 
 ### Tool progress
 
@@ -607,7 +607,7 @@ function Chat() {
 }
 ```
 
-> **Extended example: travel planning agent with tool progress**
+> [accordion] Extended example: travel planning agent with tool progress
 >
 > This example shows a complete agent with async-generator tools that stream search progress to a React UI.
 >
@@ -801,7 +801,7 @@ for await (const chunk of await graph.stream(
 > }
 > ```
 
-> **Extended example: streaming from subgraphs**
+> [accordion] Extended example: streaming from subgraphs
 >
 > ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { StateGraph, StateSchema, START } from "@langchain/langgraph";
@@ -926,7 +926,7 @@ for await (const chunk of await graph.stream(
 }
 ```
 
-> **Extended example: streaming arbitrary chat model**
+> [accordion] Extended example: streaming arbitrary chat model
 >
 > ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { StateGraph, StateSchema, MessagesValue, GraphNode, START, LangGraphRunnableConfig } from "@langchain/langgraph";

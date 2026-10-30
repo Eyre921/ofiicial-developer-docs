@@ -267,14 +267,14 @@ print(ask("What approval do I need for a $15,000 vendor invoice?"))
 
 ### Next steps
 
-> **[Use the MCP server](/guides/operations/mcp-server)**
+> [card] [Use the MCP server](/guides/operations/mcp-server)
 >
 > Give agents Pinecone access over the Model Context Protocol
 
-> **[Search methods](/guides/search/search-overview)**
+> [card] [Search methods](/guides/search/search-overview)
 >
 > Explore semantic, hybrid, and full-text search
 
-> **[Data modeling](/guides/index-data/data-modeling)**
+> [card] [Data modeling](/guides/index-data/data-modeling)
 >
 > Model your data for efficient retrieval

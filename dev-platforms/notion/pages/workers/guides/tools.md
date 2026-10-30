@@ -269,18 +269,18 @@ See the [CLI command reference](/cli/reference/commands) for all `ntn workers ex
 
 ## Next steps
 
-> **[Schema and builders](/workers/reference/schema)**
+> [card] [Schema and builders](/workers/reference/schema)
 >
 > Full reference for the j schema builder and all input types.
 
-> **[SDK reference](/workers/reference/sdk#worker-tool)**
+> [card] [SDK reference](/workers/reference/sdk#worker-tool)
 >
 > Detailed API docs for worker.tool(), hints, and output schemas.
 
-> **[Secrets](/workers/guides/secrets)**
+> [card] [Secrets](/workers/guides/secrets)
 >
 > Store API keys and credentials for your tools.
 
-> **[Notion API](/workers/guides/api-client)**
+> [card] [Notion API](/workers/guides/api-client)
 >
 > Read and write Notion data from inside a tool.

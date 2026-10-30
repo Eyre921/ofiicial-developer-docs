@@ -10,11 +10,11 @@ Notion provides robust compliance and security features for organizations that n
 
 ## Available compliance features
 
-> **[SIEM events](/compliance/siem-events)**
+> [card] [SIEM events](/compliance/siem-events)
 >
 > Webhook events sent to your SIEM platform for real-time security monitoring and alerting.
 
-> **[Audit log events](/compliance/audit-log-events)**
+> [card] [Audit log events](/compliance/audit-log-events)
 >
 > Comprehensive event logs accessible through the Notion admin dashboard for compliance auditing.
 

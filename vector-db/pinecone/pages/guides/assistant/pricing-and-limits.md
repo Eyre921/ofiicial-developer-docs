@@ -34,7 +34,7 @@ The minimum is a commitment you grow into rather than an extra charge. Once your
 
 **Examples**
 
-> **Usage below monthly minimum**
+> [accordion] Usage below monthly minimum
 >
 > * You are on the Standard plan.
 > * Your usage for the month of August amounts to \$20.
@@ -42,7 +42,7 @@ The minimum is a commitment you grow into rather than an extra charge. Once your
 >
 > In this case, the August invoice would include line items for each service you used (totaling \$20), plus a single line item covering the rest of the minimum usage commitment (\$30).
 
-> **Usage exceeds monthly minimum**
+> [accordion] Usage exceeds monthly minimum
 >
 > * You are on the Standard plan.
 > * Your usage for the month of August amounts to \$100.

@@ -47,10 +47,9 @@ Stripe recommends including the following recurring revenue recovery options in 
 - [ ] Set up automations
       You can set up more automations for custom logic and revenue recovery without writing code, including workflows such as:
 
-      - [Custom dunning flow for annual subscribers](https://docs.stripe.com/billing/automation-recipes.md#custom-dunning-flow)
-      - [Notify your team when high value invoices are overdue](https://docs.stripe.com/billing/automation-recipes.md#invoice-overdue-notifications)
-      - [Email a confirmation when a subscription is canceled](https://docs.stripe.com/billing/automation-recipes.md#subscription-cancellation-confirmation)
+      - [Custom dunning flow for annual subscribers](https://docs.stripe.com/billing/automations.md#custom-dunning-flow)
+      - [Notify your team when high value invoices are overdue](https://docs.stripe.com/billing/automations.md#invoice-overdue-notifications)
+      - [Email a confirmation when a subscription is canceled](https://docs.stripe.com/billing/automations.md#subscription-cancellation-confirmation)
 
-      - [Automation recipes](https://docs.stripe.com/billing/automation-recipes.md)
       - [Automations](https://docs.stripe.com/billing/automations.md)
 

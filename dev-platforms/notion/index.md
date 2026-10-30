@@ -1,6 +1,6 @@
 # dev-platforms/notion 文档索引
 
-> 共 254 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 257 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## cli
@@ -24,8 +24,9 @@
 - `guides/agent-skills/overview` — [Agent Skills API](pages/guides/agent-skills/overview.md) · [原文](https://developers.notion.com/guides/agent-skills/overview)
 - `guides/data-apis/create-pages-in-a-data-source` — [Create a page in a data source](pages/guides/data-apis/create-pages-in-a-data-source.md) · [原文](https://developers.notion.com/guides/data-apis/create-pages-in-a-data-source)
 - `guides/data-apis/creating-pages-from-templates` — [Creating pages from templates](pages/guides/data-apis/creating-pages-from-templates.md) · [原文](https://developers.notion.com/guides/data-apis/creating-pages-from-templates)
-- `guides/data-apis/enhanced-markdown` — [Enhanced markdown format](pages/guides/data-apis/enhanced-markdown.md) · [原文](https://developers.notion.com/guides/data-apis/enhanced-markdown)
+- `guides/data-apis/enhanced-markdown` — [Enhanced markdown format (v1, deprecated)](pages/guides/data-apis/enhanced-markdown.md) · [原文](https://developers.notion.com/guides/data-apis/enhanced-markdown)
 - `guides/data-apis/importing-external-files` — [Importing external files](pages/guides/data-apis/importing-external-files.md) · [原文](https://developers.notion.com/guides/data-apis/importing-external-files)
+- `guides/data-apis/migrate-to-notion-flavored-markdown` — [Migrate to Notion-flavored Markdown (v2)](pages/guides/data-apis/migrate-to-notion-flavored-markdown.md) · [原文](https://developers.notion.com/guides/data-apis/migrate-to-notion-flavored-markdown)
 - `guides/data-apis/notion-flavored-markdown` — [Notion-flavored Markdown format](pages/guides/data-apis/notion-flavored-markdown.md) · [原文](https://developers.notion.com/guides/data-apis/notion-flavored-markdown)
 - `guides/data-apis/query-large-data-sources` — [Query large data sources](pages/guides/data-apis/query-large-data-sources.md) · [原文](https://developers.notion.com/guides/data-apis/query-large-data-sources)
 - `guides/data-apis/read-page-property-values` — [Read every item in a page property](pages/guides/data-apis/read-page-property-values.md) · [原文](https://developers.notion.com/guides/data-apis/read-page-property-values)
@@ -105,6 +106,8 @@
 - `reference/admin/list-permission-groups` — [List groups](pages/reference/admin/list-permission-groups.md) · [原文](https://developers.notion.com/reference/admin/list-permission-groups)
 - `reference/admin/list-personal-access-tokens` — [List personal access tokens in a workspace](pages/reference/admin/list-personal-access-tokens.md) · [原文](https://developers.notion.com/reference/admin/list-personal-access-tokens)
 - `reference/admin/list-spaces` — [List workspaces in the organization](pages/reference/admin/list-spaces.md) · [原文](https://developers.notion.com/reference/admin/list-spaces)
+- `reference/admin/list-user-credit-usage` — [Get credit usage for users in a space](pages/reference/admin/list-user-credit-usage.md) · [原文](https://developers.notion.com/reference/admin/list-user-credit-usage)
+- `reference/admin/list-user-credit-usage-periods` — [Get credit usage for a user in a space](pages/reference/admin/list-user-credit-usage-periods.md) · [原文](https://developers.notion.com/reference/admin/list-user-credit-usage-periods)
 - `reference/admin/list-users` — [List users](pages/reference/admin/list-users.md) · [原文](https://developers.notion.com/reference/admin/list-users)
 - `reference/admin/release-legal-hold` — [Release a legal hold](pages/reference/admin/release-legal-hold.md) · [原文](https://developers.notion.com/reference/admin/release-legal-hold)
 - `reference/admin/remove-legal-hold-user` — [Remove a user from a legal hold](pages/reference/admin/remove-legal-hold-user.md) · [原文](https://developers.notion.com/reference/admin/remove-legal-hold-user)

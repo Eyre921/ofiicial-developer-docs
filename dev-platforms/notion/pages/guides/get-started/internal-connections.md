@@ -136,10 +136,10 @@ For the full details on internal connection authentication, see the [Authorizati
 
 ## Next steps
 
-> **[Getting started](/guides/get-started/quick-start)**
+> [card] [Getting started](/guides/get-started/quick-start)
 >
 > Build your first connection with a hands-on tutorial.
 
-> **[API reference](/reference/intro)**
+> [card] [API reference](/reference/intro)
 >
 > Explore all available endpoints.

@@ -948,42 +948,42 @@ When configuring an index, you can tag the index to help with index organization
 
 To control costs, [project owners](/admin/projects/understanding-projects#project-roles) can set the maximum total number of pods allowed across all pod-based indexes in a project. The default pod limit is 5.
 
-**Pinecone console**
+> [tab] Pinecone console
+>
+> 1. Go to [Settings > Projects](https://app.pinecone.io/organizations/-/settings/projects).
+> 2. For the project you want to update, click the **ellipsis (...) menu > Configure**.
+> 3. In the **Pod Limit** section, update the number of pods.
+> 4. Click **Save Changes**.
 
-1. Go to [Settings > Projects](https://app.pinecone.io/organizations/-/settings/projects).
-2. For the project you want to update, click the **ellipsis (...) menu > Configure**.
-3. In the **Pod Limit** section, update the number of pods.
-4. Click **Save Changes**.
-
-**API**
-
-<token />
-
-```bash curl theme={null}
-PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
-PROJECT_ID="YOUR_PROJECT_ID"
-
-curl -X PATCH "https://api.pinecone.io/admin/projects/$PROJECT_ID" \
-  -H "accept: application/json" \
-  -H "Content-Type: application/json" \
-	-H "X-Pinecone-Api-Version: 2025-10" \
-  -d '{
-    "max_pods": 5
-    }'
-```
-
-The example returns a response like the following:
-
-```json theme={null}
-{
-  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "name": "example-project",
-  "max_pods": 5,
-  "force_encryption_with_cmek": false,
-  "organization_id": "string",
-  "created_at": "2025-03-17T00:42:31.912Z"
-}
-```
+> [tab] API
+>
+> <token />
+>
+> ```bash curl theme={null}
+> PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
+> PROJECT_ID="YOUR_PROJECT_ID"
+>
+> curl -X PATCH "https://api.pinecone.io/admin/projects/$PROJECT_ID" \
+>   -H "accept: application/json" \
+>   -H "Content-Type: application/json" \
+> 	-H "X-Pinecone-Api-Version: 2025-10" \
+>   -d '{
+>     "max_pods": 5
+>     }'
+> ```
+>
+> The example returns a response like the following:
+>
+> ```json theme={null}
+> {
+>   "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+>   "name": "example-project",
+>   "max_pods": 5,
+>   "force_encryption_with_cmek": false,
+>   "organization_id": "string",
+>   "created_at": "2025-03-17T00:42:31.912Z"
+> }
+> ```
 
 ### Back up inactive pod-based indexes
 

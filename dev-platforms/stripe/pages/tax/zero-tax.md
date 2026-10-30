@@ -151,8 +151,7 @@ For details on territories where Stripe Tax applies the parent country tax treat
 - Svalbard |
 | Portugal | - Azores
 - Madeira |
-| Spain | - Canary Islands
-- Ceuta
+| Spain | - Ceuta
 - Melilla |
 | United Kingdom | - British Virgin Islands
 - Channel Islands (Guernsey and Jersey)

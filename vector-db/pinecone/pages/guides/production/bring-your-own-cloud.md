@@ -88,7 +88,7 @@ The Pinecone BYOC agent running in your cluster measures node usage, periodicall
 
 Answers to common questions about BYOC:
 
-> **Does Pinecone have access to my cloud account?**
+> [accordion] Does Pinecone have access to my cloud account?
 >
 > No. BYOC uses a zero-access model, so Pinecone never needs direct access to your infrastructure. Specifically:
 >
@@ -99,15 +99,15 @@ Answers to common questions about BYOC:
 >
 > Operations are executed via a pull-based model where your cluster retrieves and runs operations locally. All communication is outbound from your cluster. Pinecone monitors cluster health through operational metrics such as CPU and latency, without seeing your data. You choose what logs to share with [Pinecone support](https://app.pinecone.io/organizations/-/settings/support/ticket).
 
-> **What is the difference between on-demand and dedicated read nodes in BYOC?**
+> [accordion] What is the difference between on-demand and dedicated read nodes in BYOC?
 >
 > On-demand indexes share one pool of nodes that starts with two `od1` nodes, and Pinecone adds nodes when you need more capacity. Each dedicated read nodes index gets its own nodes. For how the two modes differ, see [On-demand vs. dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview#on-demand-vs-dedicated-read-nodes).
 
-> **Can I use on-demand indexes in an existing BYOC environment?**
+> [accordion] Can I use on-demand indexes in an existing BYOC environment?
 >
 > Yes. On-demand is available in new and existing BYOC environments on AWS, GCP, and Azure. If on-demand isn't available in your environment, contact your Pinecone account team to enable it.
 
-> **What data leaves my cluster?**
+> [accordion] What data leaves my cluster?
 >
 > **Does not leave your cloud account:**
 >
@@ -122,27 +122,27 @@ Answers to common questions about BYOC:
 >
 > Customer data is filtered out before transmission and never leaves your cloud account.
 
-> **What is the difference between BYOC and Pinecone's standard service?**
+> [accordion] What is the difference between BYOC and Pinecone's standard service?
 >
 > In the standard service, Pinecone manages all cloud resources and includes their cost in the service fee. In BYOC, you provision and pay for cloud resources directly through your own cloud account, providing greater control, data sovereignty, and access to available cloud credits or discounts. For a cost breakdown, see [Pricing](#pricing).
 
-> **How does authentication work?**
+> [accordion] How does authentication work?
 >
 > You use API keys from the Pinecone console, just like with the standard Pinecone service. Authentication is handled by Pinecone's global control plane, and your data plane caches API keys locally. This means you manage users and API keys through the console as usual.
 
-> **How is data secured in BYOC?**
+> [accordion] How is data secured in BYOC?
 >
 > Data is stored and processed exclusively within your cloud account, with encryption at rest and in transit. You control at-rest encryption for the underlying resources (including KMS keys in your account) the same way you do for other infrastructure. Communication between the data plane and control plane is encrypted using TLS. Private connectivity (AWS PrivateLink, GCP Private Service Connect, or Azure Private Link) can be used for additional network isolation. For how this relates to hosted [CMEK](/guides/production/configure-cmek), see [Encryption and customer-managed keys](#encryption-and-customer-managed-keys).
 
-> **Which cloud providers does BYOC support?**
+> [accordion] Which cloud providers does BYOC support?
 >
 > BYOC is available on AWS, GCP, and Azure.
 
-> **What happens if I destroy the cluster before deleting indexes?**
+> [accordion] What happens if I destroy the cluster before deleting indexes?
 >
 > Indexes cannot be properly terminated if the cluster is destroyed first. Always delete indexes via the Pinecone API or console before running `pulumi destroy`.
 
-> **What is the **SLI** project in my organization?**
+> [accordion] What is the **SLI** project in my organization?
 >
 > Deploying a BYOC environment creates an internal project named `__SLI__` in your organization. This is used by Pinecone to enforce SLAs for your BYOC environment. Do not modify or delete this project.
 

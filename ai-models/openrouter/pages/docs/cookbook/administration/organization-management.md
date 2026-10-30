@@ -164,23 +164,23 @@ Organizations support role-based access control:
 
 ## Frequently Asked Questions
 
-> **Can I convert my personal account to an organization?**
+> [accordion] Can I convert my personal account to an organization?
 >
 > No, organizations are separate entities. You'll need to create a new organization and transfer resources as needed. Contact [support@openrouter.ai](mailto:support@openrouter.ai) for assistance with credit transfers.
 
-> **How many members can an organization have?**
+> [accordion] How many members can an organization have?
 >
 > An organization can only have 10 members. Contact support if you need more.
 
-> **Can organization members see each other's usage data?**
+> [accordion] Can organization members see each other's usage data?
 >
 > Organization members can see usage metadata (model used, cost, timing) for all organization activity in the activity feed. OpenRouter does not store prompts or responses unless you opt in to logging or content is flagged for CSAM review.
 
-> **What happens if I leave an organization?**
+> [accordion] What happens if I leave an organization?
 >
 > When you leave an organization, you lose access to organization resources, credits, and API keys. Your personal account remains unaffected.
 
-> **Can I be a member of multiple organizations?**
+> [accordion] Can I be a member of multiple organizations?
 >
 > Yes, you can be a member of multiple organizations and switch between them using the organization switcher.
 

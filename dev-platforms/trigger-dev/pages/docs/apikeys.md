@@ -13,6 +13,11 @@ Authenticate backend requests with environment-specific API keys.
 > API keys grant access to your Trigger.dev environment. Store them in a secret manager or backend
 > environment variable, never commit them to source control, and never expose them in frontend code.
 
+> [!TIP]
+>
+> To access AWS or another external service from a deployed task without stored cloud keys, use
+> [workload identity](/docs/oidc). Trigger.dev API keys cannot mint OIDC tokens.
+
 ## Create an API key
 
 Create a separate named key for each service or integration that accesses Trigger.dev.

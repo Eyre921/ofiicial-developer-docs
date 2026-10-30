@@ -1158,62 +1158,62 @@ Instead of creating backups manually, you can define a recurring schedule that a
 
 ### Create a backup schedule
 
-**Pinecone console**
-
-1. Open the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/backups) and go to the **Backups** tab.
-2. Find your index and, in the **Schedule** column, click **add**. Alternatively, select **Schedule backups** from the actions menu of the index.
-3. In the **Add a backup schedule** modal, select a **Frequency** (daily, weekly, or monthly).
-4. Select a **Retention** period. Each backup created by the schedule is automatically deleted after this period.
-5. Click **Add schedule**.
-
-Pinecone names the schedule and assigns its run time automatically.
-
-**API**
-
-> [!NOTE]
+> [tab] Pinecone console
 >
-> Scheduled backups require [API version](/reference/api/versioning) `2026-04` or later.
+> 1. Open the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/backups) and go to the **Backups** tab.
+> 2. Find your index and, in the **Schedule** column, click **add**. Alternatively, select **Schedule backups** from the actions menu of the index.
+> 3. In the **Add a backup schedule** modal, select a **Frequency** (daily, weekly, or monthly).
+> 4. Select a **Retention** period. Each backup created by the schedule is automatically deleted after this period.
+> 5. Click **Add schedule**.
+>
+> Pinecone names the schedule and assigns its run time automatically.
 
-To [create a backup schedule](/reference/api/latest/control-plane/create_backup_schedule):
-
-```bash curl theme={null}
-curl -sS -X POST "https://api.pinecone.io/indexes/${INDEX_NAME}/backup-schedules" \
-  -H "api-key: ${PINECONE_API_KEY}" \
-  -H "X-Pinecone-Api-Version: 2026-07" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "my-nightly-backup",
-    "schedule": {
-      "type": "time-based",
-      "frequency": "daily"
-    },
-    "retention": {
-      "expire_after_days": 7
-    }
-  }'
-```
-
-Use `"frequency": "weekly"` or `"monthly"` as needed. The retention policy (`expire_after_days`) is required.
+> [tab] API
+>
+> > [!NOTE]
+> >
+> > Scheduled backups require [API version](/reference/api/versioning) `2026-04` or later.
+>
+> To [create a backup schedule](/reference/api/latest/control-plane/create_backup_schedule):
+>
+> ```bash curl theme={null}
+> curl -sS -X POST "https://api.pinecone.io/indexes/${INDEX_NAME}/backup-schedules" \
+>   -H "api-key: ${PINECONE_API_KEY}" \
+>   -H "X-Pinecone-Api-Version: 2026-07" \
+>   -H "Content-Type: application/json" \
+>   -d '{
+>     "name": "my-nightly-backup",
+>     "schedule": {
+>       "type": "time-based",
+>       "frequency": "daily"
+>     },
+>     "retention": {
+>       "expire_after_days": 7
+>     }
+>   }'
+> ```
+>
+> Use `"frequency": "weekly"` or `"monthly"` as needed. The retention policy (`expire_after_days`) is required.
 
 ### Manage backup schedules
 
-**Pinecone console**
-
-1. Open the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/backups) and go to the **Backups** tab.
-2. Find your index and, in the **Schedule** column, click the schedule. This opens the **Scheduled backups** page for the index.
-
-For each schedule, the page shows the frequency, retention period, and next scheduled run time. From here, you can:
-
-* **Pause or resume a schedule**: Use the toggle on the schedule. An index can have up to three schedules, but only one can be enabled at a time.
-* **Edit a schedule**: Expand the schedule, change the **Frequency** or **Retention**, and click **Update**.
-* **Delete a schedule**: Select **Delete** from the actions menu of the schedule.
-
-**API**
-
-> [!NOTE]
+> [tab] Pinecone console
 >
-> Scheduled backups require [API version](/reference/api/versioning) `2026-04` or later.
+> 1. Open the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/backups) and go to the **Backups** tab.
+> 2. Find your index and, in the **Schedule** column, click the schedule. This opens the **Scheduled backups** page for the index.
+>
+> For each schedule, the page shows the frequency, retention period, and next scheduled run time. From here, you can:
+>
+> * **Pause or resume a schedule**: Use the toggle on the schedule. An index can have up to three schedules, but only one can be enabled at a time.
+> * **Edit a schedule**: Expand the schedule, change the **Frequency** or **Retention**, and click **Update**.
+> * **Delete a schedule**: Select **Delete** from the actions menu of the schedule.
 
-You can [list schedules](/reference/api/latest/control-plane/list_backup_schedules), [update a schedule](/reference/api/latest/control-plane/update_backup_schedule) (e.g., to pause it or change the frequency), [delete a schedule](/reference/api/latest/control-plane/delete_backup_schedule), and [view the backup history](/reference/api/latest/control-plane/list_backup_schedule_history) for a schedule.
+> [tab] API
+>
+> > [!NOTE]
+> >
+> > Scheduled backups require [API version](/reference/api/versioning) `2026-04` or later.
+>
+> You can [list schedules](/reference/api/latest/control-plane/list_backup_schedules), [update a schedule](/reference/api/latest/control-plane/update_backup_schedule) (e.g., to pause it or change the frequency), [delete a schedule](/reference/api/latest/control-plane/delete_backup_schedule), and [view the backup history](/reference/api/latest/control-plane/list_backup_schedule_history) for a schedule.
 
 Deleting a schedule doesn't delete any backups that were previously created by it. For more details, see [Scheduled backups](/guides/manage-data/backups-overview#scheduled-backups).

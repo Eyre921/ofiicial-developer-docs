@@ -6,5 +6,5 @@
 ## (根目录)
 
 - `auth` — [auth.md](pages/auth.md) · [原文](https://weaviate.io/auth.md)
-- `enterprise-edition` — [Enterprise Edition license request](pages/enterprise-edition.md) · [原文](https://weaviate.io/enterprise-edition.md)
+- `enterprise-edition` — [30-day Weaviate Enterprise Edition trial](pages/enterprise-edition.md) · [原文](https://weaviate.io/enterprise-edition.md)
 - `pricing` — [Pricing](pages/pricing.md) · [原文](https://weaviate.io/pricing.md)

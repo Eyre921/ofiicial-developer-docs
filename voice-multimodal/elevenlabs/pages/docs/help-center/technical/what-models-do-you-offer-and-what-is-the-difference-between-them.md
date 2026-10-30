@@ -153,9 +153,8 @@ Multilingual v2 supports 29 languages:
 
 
 
-**Flash v2.5 - (model_id = eleven_flash_v2_5) -** our latest, ultra-low-latency model,
-generating speech in under 75ms.  Best for developer use cases requiring speed and multiple
-languages.
+**Flash v2.5 - (model_id = eleven_flash_v2_5) -** our latest, ultra-low-latency model. 
+Best for developer use cases requiring speed and multiple languages.
 
 For UI generations, 1 character costs 1 credit, excluding credit multipliers. API generations are discounted - for details, see our [API Pricing.](https://elevenlabs.io/pricing)
 
@@ -197,7 +196,7 @@ It supports 32 languages:
 
 
 **Flash v2 - (model_id = eleven_flash_v2)**- our latest, ultra-low-latency English-only
-model, generating speech in under 75ms.  Best for developer use cases requiring speed.
+model.  Best for developer use cases requiring speed.
 
 For UI generations, 1 character costs 1 credit, excluding credit multipliers. API generations are discounted - for details, see our [API Pricing.](https://elevenlabs.io/pricing)
 

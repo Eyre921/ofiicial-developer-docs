@@ -168,7 +168,7 @@ curl https://api.pinecone.io/indexes \
 
 ## Troubleshooting
 
-> **Initialization errors due to outdated SDKs**
+> [accordion] Initialization errors due to outdated SDKs
 >
 > Older versions of Pinecone required you to initialize a client with an `init` method that takes both `api_key` and `environment` parameters, for example:
 >

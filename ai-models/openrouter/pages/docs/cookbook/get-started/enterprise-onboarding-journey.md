@@ -187,11 +187,11 @@ The shared channel remains open between quarterly reviews.
 
 Two documents cover the configuration decisions that are cheapest to get right early and most expensive to correct once your developers are active:
 
-> **[Enterprise Quickstart](https://openrouter.ai/docs/cookbook/get-started/enterprise-quickstart.md)**
+> [card] [Enterprise Quickstart](https://openrouter.ai/docs/cookbook/get-started/enterprise-quickstart.md)
 >
 > Organization, workspaces, key management, security controls, presets, and observability, step by step.
 
-> **[Organization Management](https://openrouter.ai/docs/cookbook/administration/organization-management.md)**
+> [card] [Organization Management](https://openrouter.ai/docs/cookbook/administration/organization-management.md)
 >
 > Roles, shared credits, member management, and centralized usage tracking.
 

@@ -105,7 +105,7 @@ To see additional Stripe products in the Dashboard, click **More**:
 
 - [Financial connections](https://dashboard.stripe.com/settings/financial-connections): Allow users to securely share their financial data with your business. To learn more, see [Financial Connections](https://docs.stripe.com/financial-connections.md) to learn more.
 
-- [Capital](https://dashboard.stripe.com/capital): Financing offers for eligible businesses processing payments through Stripe. To learn more, see [Capital](https://docs.stripe.com/capital/how-stripe-capital-works.md).
+- [Capital](https://dashboard.stripe.com/capital): Financing offers for eligible businesses processing payments through Stripe. To learn more, see [Capital](https://docs.stripe.com/capital.md).
 
 - [Climate](https://dashboard.stripe.com/climate): Remove carbon as you grow your business. To learn more, see [Climate](https://docs.stripe.com/climate.md).
 

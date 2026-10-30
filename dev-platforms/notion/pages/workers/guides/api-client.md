@@ -140,22 +140,22 @@ For full SDK documentation, see the [Notion API reference](/reference/intro) and
 
 ## Next steps
 
-> **[Syncs](/workers/guides/syncs)**
+> [card] [Syncs](/workers/guides/syncs)
 >
 > Sync external data into Notion databases.
 
-> **[Agent tools](/workers/guides/tools)**
+> [card] [Agent tools](/workers/guides/tools)
 >
 > Build custom tools for Notion AI.
 
-> **[Webhooks](/workers/guides/webhooks)**
+> [card] [Webhooks](/workers/guides/webhooks)
 >
 > Receive HTTP events from external services.
 
-> **[OAuth](/workers/guides/oauth)**
+> [card] [OAuth](/workers/guides/oauth)
 >
 > Connect to third-party APIs with user authorization.
 
-> **[Secrets](/workers/guides/secrets)**
+> [card] [Secrets](/workers/guides/secrets)
 >
 > Store API keys and credentials securely.

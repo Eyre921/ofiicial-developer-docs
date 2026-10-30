@@ -30,7 +30,7 @@ Support for natural multi-speaker dialogue
 
 Our most emotive, real-time speech synthesis model
 
-Ultra-low latency (median inference latency of \~100ms†)
+Ultra-low latency (median latency of \~100ms†)
 
 Exceptional voice cloning capabilities
 
@@ -54,7 +54,7 @@ Support for natural multi-speaker dialogue
 
 Our expressive, realtime speech synthesis model
 
-Low latency (\~280ms)
+Low latency (\~165ms†)
 
 Dramatic delivery and performance
 
@@ -78,7 +78,7 @@ Most stable on long-form generations
 
 Our fast, affordable speech synthesis model
 
-Ultra-low latency (\~75ms†)
+Ultra-low latency (\~100ms†)
 
 32 languages supported
 
@@ -201,11 +201,11 @@ The ElevenLabs API offers a range of audio models optimized for different use ca
 | `eleven_v4`                  | Our most emotionally rich, expressive speech synthesis model                                                                                                                           | [90+ languages](/docs/overview/models#supported-languages)                                                                                                                    |
 | `eleven_v4_turbo`            | Our most expressive, real-time speech synthesis model (\~100ms†)                                                                                                                       | [90+ languages](/docs/overview/models#supported-languages)                                                                                                                    |
 | `eleven_v3`                  | Human-like and expressive speech generation                                                                                                                                            | [70+ languages](/docs/overview/models#supported-languages-2)                                                                                                                  |
-| `eleven_v3_conversational`   | Our most expressive, realtime speech synthesis model (\~280ms†)                                                                                                                        | [70+ languages](/docs/overview/models#supported-languages-2)                                                                                                                  |
+| `eleven_v3_conversational`   | Our most expressive, realtime speech synthesis model (\~165ms†)                                                                                                                        | [70+ languages](/docs/overview/models#supported-languages-2)                                                                                                                  |
 | `eleven_ttv_v3`              | Human-like and expressive voice design model (Text to Voice)                                                                                                                           | [70+ languages](/docs/overview/models#supported-languages-2)                                                                                                                  |
 | `eleven_multilingual_v2`     | Our lifelike model with rich emotional expression                                                                                                                                      | `en`, `ja`, `zh`, `de`, `hi`, `fr`, `ko`, `pt`, `it`, `es`, `id`, `nl`, `tr`, `fil`, `pl`, `sv`, `bg`, `ro`, `ar`, `cs`, `el`, `fi`, `hr`, `ms`, `sk`, `da`, `ta`, `uk`, `ru` |
-| `eleven_flash_v2_5`          | Ultra-fast model optimized for real-time use (\~75ms†)                                                                                                                                 | All `eleven_multilingual_v2` languages plus: `hu`, `no`, `vi`                                                                                                                 |
-| `eleven_flash_v2`            | Ultra-fast model optimized for real-time use (\~75ms†)                                                                                                                                 | `en`                                                                                                                                                                          |
+| `eleven_flash_v2_5`          | Ultra-fast model optimized for real-time use (\~100ms†)                                                                                                                                | All `eleven_multilingual_v2` languages plus: `hu`, `no`, `vi`                                                                                                                 |
+| `eleven_flash_v2`            | Ultra-fast model optimized for real-time use (\~135ms†)                                                                                                                                | `en`                                                                                                                                                                          |
 | `eleven_multilingual_sts_v2` | State-of-the-art multilingual voice changer model (Speech to Speech)                                                                                                                   | `en`, `ja`, `zh`, `de`, `hi`, `fr`, `ko`, `pt`, `it`, `es`, `id`, `nl`, `tr`, `fil`, `pl`, `sv`, `bg`, `ro`, `ar`, `cs`, `el`, `fi`, `hr`, `ms`, `sk`, `da`, `ta`, `uk`, `ru` |
 | `eleven_multilingual_ttv_v2` | State-of-the-art multilingual voice designer model (Text to Voice)                                                                                                                     | `en`, `ja`, `zh`, `de`, `hi`, `fr`, `ko`, `pt`, `it`, `es`, `id`, `nl`, `tr`, `fil`, `pl`, `sv`, `bg`, `ro`, `ar`, `cs`, `el`, `fi`, `hr`, `ms`, `sk`, `da`, `ta`, `uk`, `ru` |
 | `eleven_english_sts_v2`      | English-only voice changer model (Speech to Speech)                                                                                                                                    | `en`                                                                                                                                                                          |
@@ -220,7 +220,7 @@ The ElevenLabs API offers a range of audio models optimized for different use ca
 | `music_v2`                   | Studio-grade music generation from text prompts, composition plans and previously generated songs                                                                                      | `en`, `es`, `de`, `ja`, and more                                                                                                                                              |
 | `music_v1`                   | Studio-grade music generation from text prompts. Outclassed by `music_v2` and `music_v2_5`                                                                                             | `en`, `es`, `de`, `ja`, and more                                                                                                                                              |
 
-† Excluding application & network latency. See [Understanding latency](/docs/eleven-api/concepts/latency).
+† Median, excluding application & network latency. See [how latency is measured](/docs/eleven-api/concepts/latency-methodology).
 
 ### Deprecated models
 
@@ -264,7 +264,7 @@ The Eleven v4 model family supports 90+ languages, including:
 
 ## Eleven v4 Turbo
 
-Eleven v4 Turbo is our state of the art model for real-time speech synthesis, delivering high quality audio, expressiveness, and control over how voices are performed. Eleven v4 Turbo supports high-fidelity voice cloning and delivers results in median inference latency of \~100ms latency.
+Eleven v4 Turbo is our state of the art model for real-time speech synthesis, delivering high quality audio, expressiveness, and control over how voices are performed. Eleven v4 Turbo supports high-fidelity voice cloning and has a median latency of \~100ms. See [how latency is measured](/docs/eleven-api/concepts/latency-methodology).
 
 This model works well in the following scenarios:
 
@@ -349,7 +349,7 @@ Our multilingual v2 models support 29 languages:
 
 ## Flash v2.5
 
-Eleven Flash v2.5 is our fastest speech synthesis model, designed for real-time applications and Agents Platform. It delivers high-quality speech with ultra-low latency (\~75ms†) across 32 languages.
+Eleven Flash v2.5 is a low-latency speech synthesis model designed for real-time applications and Agents Platform. It delivers high-quality speech with a median latency of \~100ms† across 32 languages.
 
 The model balances speed and quality, making it ideal for interactive applications while maintaining natural-sounding output and consistent voice characteristics across languages.
 
@@ -359,13 +359,13 @@ This model is particularly well-suited for:
 * **Interactive Applications**: Ideal for games and applications requiring immediate response.
 * **Large-Scale Processing**: Efficient for bulk text-to-speech conversion.
 
-With its lower price point for API generations and 75ms latency, Flash v2.5 is the cost-effective option for anyone needing fast, reliable speech synthesis across multiple languages.
+With its lower price point for API generations and low latency, Flash v2.5 is the cost-effective option for anyone needing fast, reliable speech synthesis across multiple languages.
 
 Flash v2.5 supports 32 languages - all languages from v2 models plus:
 
 *Hungarian, Norwegian & Vietnamese*
 
-† Excluding application & network latency. See [Understanding latency](/docs/eleven-api/concepts/latency).
+† Median, excluding application & network latency. See [how latency is measured](/docs/eleven-api/concepts/latency-methodology).
 
 ### Considerations
 
@@ -395,7 +395,7 @@ Best for high-fidelity audio output with rich emotional expression
 
 Use `eleven_v4_turbo`
 
-Optimized for real-time applications (\~100ms latency)
+Optimized for real-time applications (\~100ms median latency)
 
 #### Use case
 
@@ -461,7 +461,7 @@ Read more about Scribe v2 [here](/docs/overview/capabilities/speech-to-text).
 
 ## Scribe v2 Realtime
 
-Scribe v2 Realtime, our fastest and most accurate live speech recognition model, delivers state-of-the-art accuracy in over 90 languages with an ultra-low 150ms of latency.
+Scribe v2 Realtime, our fastest and most accurate live speech recognition model, delivers state-of-the-art accuracy in over 90 languages with a median time to committed transcript of \~150ms. See [how latency is measured](/docs/eleven-api/concepts/latency-methodology).
 
 This model excels in conversational use cases:
 
@@ -471,7 +471,7 @@ This model excels in conversational use cases:
 
 Key features:
 
-* Ultra-low latency: Get partial transcriptions in \~150 milliseconds
+* Ultra-low latency: Get committed transcripts with a median latency of \~150 milliseconds
 * Streaming support: Send audio in chunks while receiving transcripts in real-time
 * Multiple audio formats: Support for PCM (8kHz to 48kHz) and μ-law encoding
 * Voice Activity Detection (VAD): Automatic speech segmentation based on silence detection

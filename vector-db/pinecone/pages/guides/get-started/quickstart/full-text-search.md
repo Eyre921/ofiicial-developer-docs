@@ -105,15 +105,15 @@ For large sets, use [Bulk import](/guides/index-data/import-data) instead of ups
 
 ## Next steps
 
-> **[Rank by meaning](/guides/search/full-text-search#schema-definition)**
+> [card] [Rank by meaning](/guides/search/full-text-search#schema-definition)
 >
 > Add a `dense_vector` field to your schema for semantic search, or combine it with text for hybrid search.
 
-> **[Ingest your own files](/guides/get-started/quickstart/ingest-files)**
+> [card] [Ingest your own files](/guides/get-started/quickstart/ingest-files)
 >
 > Embed your own files with Pinecone Inference and search by meaning
 
-> **[Bring your own vectors](/guides/get-started/quickstart/bring-your-own-vectors)**
+> [card] [Bring your own vectors](/guides/get-started/quickstart/bring-your-own-vectors)
 >
 > Upsert embeddings you already have directly.
 

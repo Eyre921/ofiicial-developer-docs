@@ -14,7 +14,7 @@ The most efficient way to implement multitenancy is to use [namespaces](/guides/
 
 For a complete implementation guide with examples across all SDKs, see [Implement multitenancy](/guides/index-data/implement-multitenancy).
 
-> **Why namespaces are more efficient**
+> [accordion] Why namespaces are more efficient
 >
 > When you use namespaces for multitenancy:
 >

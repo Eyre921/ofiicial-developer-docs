@@ -27,194 +27,182 @@ To change from credit card to marketplace billing, you'll need to:
 3. Add your team members to the new Pinecone organization
 4. Downgrade your original Pinecone organization once migration is complete
 
-**Credit card → Google Cloud**
-
-1. Subscribe to Pinecone in the Google Cloud Marketplace:
-
-   1. In the Google Cloud Marketplace, go to the [Pinecone listing](https://console.cloud.google.com/marketplace/product/pinecone-public/pinecone).
-   2. Click **Subscribe**.
-   3. On the **Order Summary** page, select a billing account, accept the terms and conditions, and click **Subscribe**.
-
-      > [!NOTE]
-      >
-      > The billing unit listed doesn't reflect the actual cost or metering of costs for Pinecone. See the [Pinecone pricing page](https://www.pinecone.io/pricing/) for accurate details.
-   4. On the **Your order request has been sent to Pinecone** modal, click **Sign up with Pinecone**. This takes you to a Google-specific Pinecone sign-up page.
-   5. Sign up using the same authentication method as your existing Pinecone organization.
-
-2. Create a new Pinecone organization and connect it to your Google Cloud Marketplace account:
-
-   1. On the **Connect GCP to Pinecone** page, choose **Select an organization > + Create New Organization**.
-
-      > [!NOTE]
-      >
-      > If you see a message saying that the subscription is still in process, wait a few minutes, refresh the page, and proceed only when the message has disappeared.
-   2. Enter the name of the new organization and click **Connect to Pinecone**.
-   3. On the **Confirm GCP Marketplace Connection** modal, click **Connect**. This takes you to your new organization in the Pinecone console.
-
-3. Migrate your projects to the new Pinecone organization:
-
-   1. In the Pinecone console, go to [**Settings > Access > Members**](https://app.pinecone.io/organizations/-/settings/access/members).
-   2. Make sure the **Owner** email address for your original organization is set as an **Owner** or **Billing Admin** for your new organization. This allows Pinecone to verify that both the original and new organizations are owned by the same person.
-   3. Go to [**Settings > Manage**](https://app.pinecone.io/organizations/-/settings/manage) and copy your new organization ID.
-   4. Go to [**Settings > Support > Tickets**](https://app.pinecone.io/organizations/-/settings/support/ticket) and click **Create a ticket**.
-   5. For **Topic**, select **Billing**, and for **Subtopic**, select **Change payment method**.
-   6. For **Subject**, enter "Migrate projects to a new organization".
-   7. For **Description**, enter the following:
-
-      ```
-      I am changing my payment method from credit card to Google Cloud Marketplace. 
-      Please migrate my projects to my new organization: `<NEW_ORG_ID>`
-      ```
-   8. Click **Submit**.
-
-4. Add your team members to the new organization:
-
-   1. In the Pinecone console, go to [**Settings > Access > Members**](https://app.pinecone.io/organizations/-/settings/access/members).
-   2. [Add your team members to the new organization](/admin/organizations/manage-organization-members#add-a-member-to-an-organization).
-
-5. Downgrade your original Pinecone organization:
-
-   > [!WARNING]
-   >
-   > Don't downgrade your original organization until you receive a confirmation that Pinecone has finished the migration to your new organization.
-
-   1. In the Pinecone console, go to your original organization.
-   2. Go to **Settings > Billing > Plans**.
-   3. In the **Starter** section, click **Downgrade**.
-   4. Click **Confirm downgrade**.
-
-Your Pinecone usage is now billed through the Google Cloud Marketplace.
-
-> [!WARNING]
+> [tab] Credit card → Google Cloud
 >
-> You can [delete your original organization](/admin/organizations/delete-your-organization). However, before deleting, make sure to [download your past invoices](/admin/billing/access-your-invoices) since you will lose access to them once the organization is deleted.
-
-**Credit card → AWS**
-
-1. Subscribe to Pinecone in the AWS Marketplace:
-
-   1. In the AWS Marketplace, go to the [Pinecone listing](https://aws.amazon.com/marketplace/pp/prodview-xhgyscinlz4jk).
-   2. Click **View purchase options**.
-   3. On the **Subscribe to Pinecone Vector Database** page, review the offer and then click **Subscribe**.
-
-      > [!NOTE]
-      >
-      > The billing unit listed doesn't reflect the actual cost or metering of costs for Pinecone. See the [Pinecone pricing page](https://www.pinecone.io/pricing/) for accurate details.
-   4. You'll see a message stating that your subscription is in process. Click **Set up your account**. This takes you to an AWS-specific Pinecone sign-up page.
-   5. Sign up using the same authentication method as your existing Pinecone organization.
-
-2. Create a new Pinecone organization and connect it to your AWS account:
-
-   1. On the **Connect AWS to Pinecone** page, choose **Select an organization > + Create New Organization**.
-
-      > [!NOTE]
-      >
-      > If you see a message saying that the subscription is still in process, wait a few minutes, refresh the page, and proceed only when the message has disappeared.
-   2. Enter the name of the new organization and click **Connect to Pinecone**.
-   3. On the **Confirm AWS Marketplace Connection** modal, click **Connect**. This takes you to your new organization in the Pinecone console.
-
-3. Migrate your projects to the new Pinecone organization:
-
-   1. In the Pinecone console, go to [**Settings > Access > Members**](https://app.pinecone.io/organizations/-/settings/access/members).
-   2. Make sure the **Owner** email address for your original organization is set as an **Owner** or **Billing Admin** for your new organization. This allows Pinecone to verify that both the original and new organizations are owned by the same person.
-   3. Go to [**Settings > Manage**](https://app.pinecone.io/organizations/-/settings/manage) and copy your new organization ID.
-   4. Go to [**Settings > Support > Tickets**](https://app.pinecone.io/organizations/-/settings/support/ticket) and click **Create a ticket**.
-   5. For **Topic**, select **Billing**, and for **Subtopic**, select **Change payment method**.
-   6. For **Subject**, enter "Migrate projects to a new organization".
-   7. For **Description**, enter the following:
-
-      ```
-      I am changing my payment method from credit card to AWS Marketplace. 
-      Please migrate my projects to my new organization: `<NEW_ORG_ID>`
-      ```
-   8. Click **Submit**.
-
-4. Add your team members to the new organization:
-
-   1. In the Pinecone console, go to [**Settings > Access > Members**](https://app.pinecone.io/organizations/-/settings/access/members).
-   2. [Add your team members to the new organization](/admin/organizations/manage-organization-members#add-a-member-to-an-organization).
-
-5. Downgrade your original Pinecone organization:
-
-   > [!WARNING]
-   >
-   > Don't downgrade your original organization until you receive a confirmation that Pinecone has finished the migration to your new organization.
-
-   1. In the Pinecone console, go to your original organization.
-   2. Go to **Settings > Billing > Plans**.
-   3. In the **Starter** section, click **Downgrade**.
-   4. Click **Confirm downgrade**.
-
-Your Pinecone usage is now billed through the AWS Marketplace.
-
-> [!WARNING]
+> 1. Subscribe to Pinecone in the Google Cloud Marketplace:
 >
-> You can [delete your original organization](/admin/organizations/delete-your-organization). However, before deleting, make sure to [download your past invoices](/admin/billing/access-your-invoices) since you will lose access to them once the organization is deleted.
-
-**Credit card → Microsoft**
-
-1. Subscribe to Pinecone in the Microsoft Marketplace:
-
-   1. In the Microsoft Marketplace, go to the [Pinecone listing](https://marketplace.microsoft.com/product/saas/pineconesystemsinc1688761585469.pineconesaas).
-   2. Click **Get it now**.
-   3. Select the **Pinecone - Pay As You Go** plan.
-   4. Click **Subscribe**.
-   5. On the **Subscribe to Pinecone** page, select the required details and click **Review + subscribe**.
-
-      > [!NOTE]
-      >
-      > The billing unit listed doesn't reflect the actual cost or metering of costs for Pinecone. See the [Pinecone pricing page](https://www.pinecone.io/pricing/) for accurate details.
-   6. Click **Subscribe**.
-   7. After the subscription is approved, click **Configure account now**. This redirects you to a Microsoft-specific Pinecone login page.
-   8. Sign up using the same authentication method as your existing Pinecone organization.
-
-2. Create a new Pinecone organization and connect it to your Microsoft Marketplace account:
-
-   1. On the **Connect Azure to Pinecone** page, choose **Select an organization > + Create New Organization**.
-
-      > [!NOTE]
-      >
-      > If you see a message saying that the subscription is still in process, wait a few minutes, refresh the page, and proceed only when the message has disappeared.
-   2. Enter the name of the new organization and click **Connect to Pinecone**.
-   3. On the **Confirm Azure Marketplace Connection** modal, click **Connect**. This takes you to your new organization in the Pinecone console.
-
-3. Migrate your projects to the new Pinecone organization:
-
-   1. In the Pinecone console, go to [**Settings > Access > Members**](https://app.pinecone.io/organizations/-/settings/access/members).
-   2. Make sure the **Owner** email address for your original organization is set as an **Owner** or **Billing Admin** for your new organization. This allows Pinecone to verify that both the original and new organizations are owned by the same person.
-   3. Go to [**Settings > Manage**](https://app.pinecone.io/organizations/-/settings/manage) and copy your new organization ID.
-   4. Go to [**Settings > Support > Tickets**](https://app.pinecone.io/organizations/-/settings/support/ticket) and click **Create a ticket**.
-   5. For **Topic**, select **Billing**, and for **Subtopic**, select **Change payment method**.
-   6. For **Subject**, enter "Migrate projects to a new organization".
-   7. For **Description**, enter the following:
-
-      ```
-      I am changing my payment method from credit card to Microsoft Marketplace. 
-      Please migrate my projects to my new organization: `<NEW_ORG_ID>`
-      ```
-   8. Click **Submit**.
-
-4. Add your team members to the new organization:
-
-   1. In the Pinecone console, go to [**Settings > Access > Members**](https://app.pinecone.io/organizations/-/settings/access/members).
-   2. [Add your team members to the new organization](/admin/organizations/manage-organization-members#add-a-member-to-an-organization).
-
-5. Downgrade your original Pinecone organization:
-
-   > [!WARNING]
-   >
-   > Don't downgrade your original organization until you receive a confirmation that Pinecone has finished the migration to your new organization.
-
-   1. In the Pinecone console, go to your original organization.
-   2. Go to **Settings > Billing > Plans**.
-   3. In the **Starter** section, click **Downgrade**.
-   4. Click **Confirm downgrade**.
-
-Your Pinecone usage is now billed through the Microsoft Marketplace.
-
-> [!WARNING]
+>    1. In the Google Cloud Marketplace, go to the [Pinecone listing](https://console.cloud.google.com/marketplace/product/pinecone-public/pinecone).
+>    2. Click **Subscribe**.
+>    3. On the **Order Summary** page, select a billing account, accept the terms and conditions, and click **Subscribe**.
 >
-> You can [delete your original organization](/admin/organizations/delete-your-organization). However, before deleting, make sure to [download your past invoices](/admin/billing/access-your-invoices) since you will lose access to them once the organization is deleted.
+>       > [!NOTE]
+>       >
+>       > The billing unit listed doesn't reflect the actual cost or metering of costs for Pinecone. See the [Pinecone pricing page](https://www.pinecone.io/pricing/) for accurate details.
+>    4. On the **Your order request has been sent to Pinecone** modal, click **Sign up with Pinecone**. This takes you to a Google-specific Pinecone sign-up page.
+>    5. Sign up using the same authentication method as your existing Pinecone organization.
+> 2. Create a new Pinecone organization and connect it to your Google Cloud Marketplace account:
+>
+>    1. On the **Connect GCP to Pinecone** page, choose **Select an organization > + Create New Organization**.
+>
+>       > [!NOTE]
+>       >
+>       > If you see a message saying that the subscription is still in process, wait a few minutes, refresh the page, and proceed only when the message has disappeared.
+>    2. Enter the name of the new organization and click **Connect to Pinecone**.
+>    3. On the **Confirm GCP Marketplace Connection** modal, click **Connect**. This takes you to your new organization in the Pinecone console.
+> 3. Migrate your projects to the new Pinecone organization:
+>
+>    1. In the Pinecone console, go to [**Settings > Access > Members**](https://app.pinecone.io/organizations/-/settings/access/members).
+>    2. Make sure the **Owner** email address for your original organization is set as an **Owner** or **Billing Admin** for your new organization. This allows Pinecone to verify that both the original and new organizations are owned by the same person.
+>    3. Go to [**Settings > Manage**](https://app.pinecone.io/organizations/-/settings/manage) and copy your new organization ID.
+>    4. Go to [**Settings > Support > Tickets**](https://app.pinecone.io/organizations/-/settings/support/ticket) and click **Create a ticket**.
+>    5. For **Topic**, select **Billing**, and for **Subtopic**, select **Change payment method**.
+>    6. For **Subject**, enter "Migrate projects to a new organization".
+>    7. For **Description**, enter the following:
+>
+>       ```
+>       I am changing my payment method from credit card to Google Cloud Marketplace. 
+>       Please migrate my projects to my new organization: `<NEW_ORG_ID>`
+>       ```
+>    8. Click **Submit**.
+> 4. Add your team members to the new organization:
+>
+>    1. In the Pinecone console, go to [**Settings > Access > Members**](https://app.pinecone.io/organizations/-/settings/access/members).
+>    2. [Add your team members to the new organization](/admin/organizations/manage-organization-members#add-a-member-to-an-organization).
+> 5. Downgrade your original Pinecone organization:
+>
+>    > [!WARNING]
+>    >
+>    > Don't downgrade your original organization until you receive a confirmation that Pinecone has finished the migration to your new organization.
+>
+>    1. In the Pinecone console, go to your original organization.
+>    2. Go to **Settings > Billing > Plans**.
+>    3. In the **Starter** section, click **Downgrade**.
+>    4. Click **Confirm downgrade**.
+>
+> Your Pinecone usage is now billed through the Google Cloud Marketplace.
+>
+> > [!WARNING]
+> >
+> > You can [delete your original organization](/admin/organizations/delete-your-organization). However, before deleting, make sure to [download your past invoices](/admin/billing/access-your-invoices) since you will lose access to them once the organization is deleted.
+
+> [tab] Credit card → AWS
+>
+> 1. Subscribe to Pinecone in the AWS Marketplace:
+>
+>    1. In the AWS Marketplace, go to the [Pinecone listing](https://aws.amazon.com/marketplace/pp/prodview-xhgyscinlz4jk).
+>    2. Click **View purchase options**.
+>    3. On the **Subscribe to Pinecone Vector Database** page, review the offer and then click **Subscribe**.
+>
+>       > [!NOTE]
+>       >
+>       > The billing unit listed doesn't reflect the actual cost or metering of costs for Pinecone. See the [Pinecone pricing page](https://www.pinecone.io/pricing/) for accurate details.
+>    4. You'll see a message stating that your subscription is in process. Click **Set up your account**. This takes you to an AWS-specific Pinecone sign-up page.
+>    5. Sign up using the same authentication method as your existing Pinecone organization.
+> 2. Create a new Pinecone organization and connect it to your AWS account:
+>
+>    1. On the **Connect AWS to Pinecone** page, choose **Select an organization > + Create New Organization**.
+>
+>       > [!NOTE]
+>       >
+>       > If you see a message saying that the subscription is still in process, wait a few minutes, refresh the page, and proceed only when the message has disappeared.
+>    2. Enter the name of the new organization and click **Connect to Pinecone**.
+>    3. On the **Confirm AWS Marketplace Connection** modal, click **Connect**. This takes you to your new organization in the Pinecone console.
+> 3. Migrate your projects to the new Pinecone organization:
+>
+>    1. In the Pinecone console, go to [**Settings > Access > Members**](https://app.pinecone.io/organizations/-/settings/access/members).
+>    2. Make sure the **Owner** email address for your original organization is set as an **Owner** or **Billing Admin** for your new organization. This allows Pinecone to verify that both the original and new organizations are owned by the same person.
+>    3. Go to [**Settings > Manage**](https://app.pinecone.io/organizations/-/settings/manage) and copy your new organization ID.
+>    4. Go to [**Settings > Support > Tickets**](https://app.pinecone.io/organizations/-/settings/support/ticket) and click **Create a ticket**.
+>    5. For **Topic**, select **Billing**, and for **Subtopic**, select **Change payment method**.
+>    6. For **Subject**, enter "Migrate projects to a new organization".
+>    7. For **Description**, enter the following:
+>
+>       ```
+>       I am changing my payment method from credit card to AWS Marketplace. 
+>       Please migrate my projects to my new organization: `<NEW_ORG_ID>`
+>       ```
+>    8. Click **Submit**.
+> 4. Add your team members to the new organization:
+>
+>    1. In the Pinecone console, go to [**Settings > Access > Members**](https://app.pinecone.io/organizations/-/settings/access/members).
+>    2. [Add your team members to the new organization](/admin/organizations/manage-organization-members#add-a-member-to-an-organization).
+> 5. Downgrade your original Pinecone organization:
+>
+>    > [!WARNING]
+>    >
+>    > Don't downgrade your original organization until you receive a confirmation that Pinecone has finished the migration to your new organization.
+>
+>    1. In the Pinecone console, go to your original organization.
+>    2. Go to **Settings > Billing > Plans**.
+>    3. In the **Starter** section, click **Downgrade**.
+>    4. Click **Confirm downgrade**.
+>
+> Your Pinecone usage is now billed through the AWS Marketplace.
+>
+> > [!WARNING]
+> >
+> > You can [delete your original organization](/admin/organizations/delete-your-organization). However, before deleting, make sure to [download your past invoices](/admin/billing/access-your-invoices) since you will lose access to them once the organization is deleted.
+
+> [tab] Credit card → Microsoft
+>
+> 1. Subscribe to Pinecone in the Microsoft Marketplace:
+>
+>    1. In the Microsoft Marketplace, go to the [Pinecone listing](https://marketplace.microsoft.com/product/saas/pineconesystemsinc1688761585469.pineconesaas).
+>    2. Click **Get it now**.
+>    3. Select the **Pinecone - Pay As You Go** plan.
+>    4. Click **Subscribe**.
+>    5. On the **Subscribe to Pinecone** page, select the required details and click **Review + subscribe**.
+>
+>       > [!NOTE]
+>       >
+>       > The billing unit listed doesn't reflect the actual cost or metering of costs for Pinecone. See the [Pinecone pricing page](https://www.pinecone.io/pricing/) for accurate details.
+>    6. Click **Subscribe**.
+>    7. After the subscription is approved, click **Configure account now**. This redirects you to a Microsoft-specific Pinecone login page.
+>    8. Sign up using the same authentication method as your existing Pinecone organization.
+> 2. Create a new Pinecone organization and connect it to your Microsoft Marketplace account:
+>
+>    1. On the **Connect Azure to Pinecone** page, choose **Select an organization > + Create New Organization**.
+>
+>       > [!NOTE]
+>       >
+>       > If you see a message saying that the subscription is still in process, wait a few minutes, refresh the page, and proceed only when the message has disappeared.
+>    2. Enter the name of the new organization and click **Connect to Pinecone**.
+>    3. On the **Confirm Azure Marketplace Connection** modal, click **Connect**. This takes you to your new organization in the Pinecone console.
+> 3. Migrate your projects to the new Pinecone organization:
+>
+>    1. In the Pinecone console, go to [**Settings > Access > Members**](https://app.pinecone.io/organizations/-/settings/access/members).
+>    2. Make sure the **Owner** email address for your original organization is set as an **Owner** or **Billing Admin** for your new organization. This allows Pinecone to verify that both the original and new organizations are owned by the same person.
+>    3. Go to [**Settings > Manage**](https://app.pinecone.io/organizations/-/settings/manage) and copy your new organization ID.
+>    4. Go to [**Settings > Support > Tickets**](https://app.pinecone.io/organizations/-/settings/support/ticket) and click **Create a ticket**.
+>    5. For **Topic**, select **Billing**, and for **Subtopic**, select **Change payment method**.
+>    6. For **Subject**, enter "Migrate projects to a new organization".
+>    7. For **Description**, enter the following:
+>
+>       ```
+>       I am changing my payment method from credit card to Microsoft Marketplace. 
+>       Please migrate my projects to my new organization: `<NEW_ORG_ID>`
+>       ```
+>    8. Click **Submit**.
+> 4. Add your team members to the new organization:
+>
+>    1. In the Pinecone console, go to [**Settings > Access > Members**](https://app.pinecone.io/organizations/-/settings/access/members).
+>    2. [Add your team members to the new organization](/admin/organizations/manage-organization-members#add-a-member-to-an-organization).
+> 5. Downgrade your original Pinecone organization:
+>
+>    > [!WARNING]
+>    >
+>    > Don't downgrade your original organization until you receive a confirmation that Pinecone has finished the migration to your new organization.
+>
+>    1. In the Pinecone console, go to your original organization.
+>    2. Go to **Settings > Billing > Plans**.
+>    3. In the **Starter** section, click **Downgrade**.
+>    4. Click **Confirm downgrade**.
+>
+> Your Pinecone usage is now billed through the Microsoft Marketplace.
+>
+> > [!WARNING]
+> >
+> > You can [delete your original organization](/admin/organizations/delete-your-organization). However, before deleting, make sure to [download your past invoices](/admin/billing/access-your-invoices) since you will lose access to them once the organization is deleted.
 
 ## Marketplace → credit card
 
@@ -226,179 +214,179 @@ To change from marketplace billing to credit card, you'll need to:
 4. Add your team members to the new organization
 5. Downgrade your original organization once migration is complete
 
-**Google Cloud → credit card**
-
-1. Create a new organization in your Pinecone account:
-
-   1. In the Pinecone console, go to [**Organizations**](https://app.pinecone.io/organizations/-/settings/account/organizations).
-   2. Click **+ Create organization**.
-   3. Enter the name of the new organization and click **Create**.
-
-2. Upgrade the new organization:
-
-   1. Go to [**Settings > Billing > Plans**](https://app.pinecone.io/organizations/-/settings/billing/plans).
-   2. Click **Upgrade** in the **Standard** or **Enterprise** plan section.
-   3. Click **Credit / Debit card**.
-   4. Enter your credit card information.
-   5. Click **Upgrade**.
-
-   The new organization is now set up with credit card billing. You'll use this organization after completing the rest of this process.
-
-3. Migrate your projects to the new Pinecone organization:
-
-   1. Go to [**Settings > Manage**](https://app.pinecone.io/organizations/-/settings/manage) and copy your new organization ID.
-   2. Go to [**Settings > Support > Tickets**](https://app.pinecone.io/organizations/-/settings/support/ticket) and click **Create a ticket**.
-   3. For **Topic**, select **Billing**, and for **Subtopic**, select **Change payment method**.
-   4. For **Subject**, enter "Migrate projects to a new organization".
-   5. For **Description**, enter the following:
-
-      ```
-      I am changing my payment method from Google Cloud Marketplace to credit card. 
-      Please migrate my projects to my new organization: `<NEW_ORG_ID>`
-      ```
-   6. Click **Submit**.
-
-4. Add your team members to the new organization:
-
-   1. In the Pinecone console, go to [**Settings > Access > Members**](https://app.pinecone.io/organizations/-/settings/access/members).
-   2. [Add your team members to the new organization](/admin/organizations/manage-organization-members#add-a-member-to-an-organization).
-
-5. Downgrade your original Pinecone organization:
-
-   > [!WARNING]
-   >
-   > Don't downgrade your original organization until you receive a confirmation that Pinecone has finished the migration to your new organization.
-
-   1. In the Pinecone console, go to your original organization.
-   2. Go to [**Settings > Billing > Plans**](https://app.pinecone.io/organizations/-/settings/billing/plans).
-   3. In the **Starter** section, click **Downgrade**.
-   4. Click **Confirm downgrade**.
-   5. On the **Continue your downgrade on GCP Marketplace** modal, click **Continue to marketplace**. This takes you to your orders page in Google Cloud Marketplace.
-   6. [Cancel the order](https://cloud.google.com/marketplace/docs/manage-billing#saas-products) for your original organization.
-
-      > [!TIP]
-      >
-      > If you don't see the order, check that the correct billing account is selected.
-
-From now on, use your new organization. Your usage is billed to the credit card you provided.
-
-> [!WARNING]
+> [tab] Google Cloud → credit card
 >
-> You can [delete your original organization](/admin/organizations/delete-your-organization). However, before deleting, make sure to [download your past invoices](/admin/billing/access-your-invoices) since you will lose access to them once the organization is deleted.
-
-**AWS → credit card**
-
-1. Create a new organization in your Pinecone account:
-
-   1. In the Pinecone console, go to [**Organizations**](https://app.pinecone.io/organizations/-/settings/account/organizations).
-   2. Click **+ Create organization**.
-   3. Enter the name of the new organization and click **Create**.
-
-2. Upgrade the new organization:
-
-   1. Go to [**Settings > Billing > Plans**](https://app.pinecone.io/organizations/-/settings/billing/plans).
-   2. Click **Upgrade** in the **Standard** or **Enterprise** plan section.
-   3. Click **Credit / Debit card**.
-   4. Enter your credit card information.
-   5. Click **Upgrade**.
-
-   The new organization is now set up with credit card billing. You'll use this organization after completing the rest of this process.
-
-3. Migrate your projects to the new Pinecone organization:
-
-   1. Go to [**Settings > Manage**](https://app.pinecone.io/organizations/-/settings/manage) and copy your new organization ID.
-   2. Go to [**Settings > Support > Tickets**](https://app.pinecone.io/organizations/-/settings/support/ticket) and click **Create a ticket**.
-   3. For **Topic**, select **Billing**, and for **Subtopic**, select **Change payment method**.
-   4. For **Subject**, enter "Migrate projects to a new organization".
-   5. For **Description**, enter the following:
-
-      ```
-      I am changing my payment method from AWS Marketplace to credit card. 
-      Please migrate my projects to my new organization: `<NEW_ORG_ID>`
-      ```
-   6. Click **Submit**.
-
-4. Add your team members to the new organization:
-
-   1. In the Pinecone console, go to [**Settings > Access > Members**](https://app.pinecone.io/organizations/-/settings/access/members).
-   2. [Add your team members to the new organization](/admin/organizations/manage-organization-members#add-a-member-to-an-organization).
-
-5. Downgrade your original Pinecone organization:
-
-   > [!WARNING]
-   >
-   > Don't downgrade your original organization until you receive a confirmation that Pinecone has finished the migration to your new organization.
-
-   1. In the Pinecone console, go to your original organization.
-   2. Go to [**Settings > Billing > Plans**](https://app.pinecone.io/organizations/-/settings/billing/plans).
-   3. In the **Starter** section, click **Downgrade**.
-   4. Click **Confirm downgrade**.
-   5. On the **Continue your downgrade on AWS Marketplace** modal, click **Continue to marketplace**. This takes you to the [Manage subscriptions](https://console.aws.amazon.com/marketplace) page in the AWS Marketplace.
-   6. [Cancel the subscription](https://docs.aws.amazon.com/marketplace/latest/buyerguide/cancel-subscription.html#cancel-saas-subscription) to Pinecone.
-
-From now on, use your new organization. Your usage is billed to the credit card you provided.
-
-> [!WARNING]
+> 1. Create a new organization in your Pinecone account:
 >
-> You can [delete your original organization](/admin/organizations/delete-your-organization). However, before deleting, make sure to [download your past invoices](/admin/billing/access-your-invoices) since you will lose access to them once the organization is deleted.
-
-**Microsoft → credit card**
-
-1. Create a new organization in your Pinecone account:
-
-   1. In the Pinecone console, go to [**Organizations**](https://app.pinecone.io/organizations/-/settings/account/organizations).
-   2. Click **+ Create organization**.
-   3. Enter the name of the new organization and click **Create**.
-
-2. Upgrade the new organization:
-
-   1. Go to [**Settings > Billing > Plans**](https://app.pinecone.io/organizations/-/settings/billing/plans).
-   2. Click **Upgrade** in the **Standard** or **Enterprise** plan section.
-   3. Click **Credit / Debit card**.
-   4. Enter your credit card information.
-   5. Click **Upgrade**.
-
-   The new organization is now set up with credit card billing. You'll use this organization after completing the rest of this process.
-
-3. Migrate your projects to the new Pinecone organization:
-
-   1. Go to [**Settings > Manage**](https://app.pinecone.io/organizations/-/settings/manage) and copy your new organization ID.
-   2. Go to [**Settings > Support > Tickets**](https://app.pinecone.io/organizations/-/settings/support/ticket) and click **Create a ticket**.
-   3. For **Topic**, select **Billing**, and for **Subtopic**, select **Change payment method**.
-   4. For **Subject**, enter "Migrate projects to a new organization".
-   5. For **Description**, enter the following:
-
-      ```
-      I am changing my payment method from Microsoft Marketplace to credit card. 
-      Please migrate my projects to my new organization: `<NEW_ORG_ID>`
-      ```
-   6. Click **Submit**.
-
-4. Add your team members to the new organization:
-
-   1. In the Pinecone console, go to [**Settings > Access > Members**](https://app.pinecone.io/organizations/-/settings/access/members).
-   2. [Add your team members to the new organization](/admin/organizations/manage-organization-members#add-a-member-to-an-organization).
-
-5. Downgrade your original Pinecone organization:
-
-   > [!WARNING]
-   >
-   > Don't downgrade your original organization until you receive a confirmation that Pinecone has finished the migration to your new organization.
-
-   1. In the Pinecone console, go to your original organization.
-   2. Go to [**Settings > Billing > Plans**](https://app.pinecone.io/organizations/-/settings/billing/plans).
-   3. In the **Starter** section, click **Downgrade**.
-   4. Click **Confirm downgrade**.
-   5. On the **Continue your downgrade on Azure Marketplace** modal, click **Continue to marketplace**.
-   6. On the **SaaS** page, click your subscription to Pinecone.
-   7. Click **Cancel subscription**.
-   8. Confirm the cancellation.
-
-From now on, use your new organization. Your usage is billed to the credit card you provided.
-
-> [!WARNING]
+>    1. In the Pinecone console, go to [**Organizations**](https://app.pinecone.io/organizations/-/settings/account/organizations).
+>    2. Click **+ Create organization**.
+>    3. Enter the name of the new organization and click **Create**.
 >
-> You can [delete your original organization](/admin/organizations/delete-your-organization). However, before deleting, make sure to [download your past invoices](/admin/billing/access-your-invoices) since you will lose access to them once the organization is deleted.
+> 2. Upgrade the new organization:
+>
+>    1. Go to [**Settings > Billing > Plans**](https://app.pinecone.io/organizations/-/settings/billing/plans).
+>    2. Click **Upgrade** in the **Standard** or **Enterprise** plan section.
+>    3. Click **Credit / Debit card**.
+>    4. Enter your credit card information.
+>    5. Click **Upgrade**.
+>
+>    The new organization is now set up with credit card billing. You'll use this organization after completing the rest of this process.
+>
+> 3. Migrate your projects to the new Pinecone organization:
+>
+>    1. Go to [**Settings > Manage**](https://app.pinecone.io/organizations/-/settings/manage) and copy your new organization ID.
+>    2. Go to [**Settings > Support > Tickets**](https://app.pinecone.io/organizations/-/settings/support/ticket) and click **Create a ticket**.
+>    3. For **Topic**, select **Billing**, and for **Subtopic**, select **Change payment method**.
+>    4. For **Subject**, enter "Migrate projects to a new organization".
+>    5. For **Description**, enter the following:
+>
+>       ```
+>       I am changing my payment method from Google Cloud Marketplace to credit card. 
+>       Please migrate my projects to my new organization: `<NEW_ORG_ID>`
+>       ```
+>    6. Click **Submit**.
+>
+> 4. Add your team members to the new organization:
+>
+>    1. In the Pinecone console, go to [**Settings > Access > Members**](https://app.pinecone.io/organizations/-/settings/access/members).
+>    2. [Add your team members to the new organization](/admin/organizations/manage-organization-members#add-a-member-to-an-organization).
+>
+> 5. Downgrade your original Pinecone organization:
+>
+>    > [!WARNING]
+>    >
+>    > Don't downgrade your original organization until you receive a confirmation that Pinecone has finished the migration to your new organization.
+>
+>    1. In the Pinecone console, go to your original organization.
+>    2. Go to [**Settings > Billing > Plans**](https://app.pinecone.io/organizations/-/settings/billing/plans).
+>    3. In the **Starter** section, click **Downgrade**.
+>    4. Click **Confirm downgrade**.
+>    5. On the **Continue your downgrade on GCP Marketplace** modal, click **Continue to marketplace**. This takes you to your orders page in Google Cloud Marketplace.
+>    6. [Cancel the order](https://cloud.google.com/marketplace/docs/manage-billing#saas-products) for your original organization.
+>
+>       > [!TIP]
+>       >
+>       > If you don't see the order, check that the correct billing account is selected.
+>
+> From now on, use your new organization. Your usage is billed to the credit card you provided.
+>
+> > [!WARNING]
+> >
+> > You can [delete your original organization](/admin/organizations/delete-your-organization). However, before deleting, make sure to [download your past invoices](/admin/billing/access-your-invoices) since you will lose access to them once the organization is deleted.
+
+> [tab] AWS → credit card
+>
+> 1. Create a new organization in your Pinecone account:
+>
+>    1. In the Pinecone console, go to [**Organizations**](https://app.pinecone.io/organizations/-/settings/account/organizations).
+>    2. Click **+ Create organization**.
+>    3. Enter the name of the new organization and click **Create**.
+>
+> 2. Upgrade the new organization:
+>
+>    1. Go to [**Settings > Billing > Plans**](https://app.pinecone.io/organizations/-/settings/billing/plans).
+>    2. Click **Upgrade** in the **Standard** or **Enterprise** plan section.
+>    3. Click **Credit / Debit card**.
+>    4. Enter your credit card information.
+>    5. Click **Upgrade**.
+>
+>    The new organization is now set up with credit card billing. You'll use this organization after completing the rest of this process.
+>
+> 3. Migrate your projects to the new Pinecone organization:
+>
+>    1. Go to [**Settings > Manage**](https://app.pinecone.io/organizations/-/settings/manage) and copy your new organization ID.
+>    2. Go to [**Settings > Support > Tickets**](https://app.pinecone.io/organizations/-/settings/support/ticket) and click **Create a ticket**.
+>    3. For **Topic**, select **Billing**, and for **Subtopic**, select **Change payment method**.
+>    4. For **Subject**, enter "Migrate projects to a new organization".
+>    5. For **Description**, enter the following:
+>
+>       ```
+>       I am changing my payment method from AWS Marketplace to credit card. 
+>       Please migrate my projects to my new organization: `<NEW_ORG_ID>`
+>       ```
+>    6. Click **Submit**.
+>
+> 4. Add your team members to the new organization:
+>
+>    1. In the Pinecone console, go to [**Settings > Access > Members**](https://app.pinecone.io/organizations/-/settings/access/members).
+>    2. [Add your team members to the new organization](/admin/organizations/manage-organization-members#add-a-member-to-an-organization).
+>
+> 5. Downgrade your original Pinecone organization:
+>
+>    > [!WARNING]
+>    >
+>    > Don't downgrade your original organization until you receive a confirmation that Pinecone has finished the migration to your new organization.
+>
+>    1. In the Pinecone console, go to your original organization.
+>    2. Go to [**Settings > Billing > Plans**](https://app.pinecone.io/organizations/-/settings/billing/plans).
+>    3. In the **Starter** section, click **Downgrade**.
+>    4. Click **Confirm downgrade**.
+>    5. On the **Continue your downgrade on AWS Marketplace** modal, click **Continue to marketplace**. This takes you to the [Manage subscriptions](https://console.aws.amazon.com/marketplace) page in the AWS Marketplace.
+>    6. [Cancel the subscription](https://docs.aws.amazon.com/marketplace/latest/buyerguide/cancel-subscription.html#cancel-saas-subscription) to Pinecone.
+>
+> From now on, use your new organization. Your usage is billed to the credit card you provided.
+>
+> > [!WARNING]
+> >
+> > You can [delete your original organization](/admin/organizations/delete-your-organization). However, before deleting, make sure to [download your past invoices](/admin/billing/access-your-invoices) since you will lose access to them once the organization is deleted.
+
+> [tab] Microsoft → credit card
+>
+> 1. Create a new organization in your Pinecone account:
+>
+>    1. In the Pinecone console, go to [**Organizations**](https://app.pinecone.io/organizations/-/settings/account/organizations).
+>    2. Click **+ Create organization**.
+>    3. Enter the name of the new organization and click **Create**.
+>
+> 2. Upgrade the new organization:
+>
+>    1. Go to [**Settings > Billing > Plans**](https://app.pinecone.io/organizations/-/settings/billing/plans).
+>    2. Click **Upgrade** in the **Standard** or **Enterprise** plan section.
+>    3. Click **Credit / Debit card**.
+>    4. Enter your credit card information.
+>    5. Click **Upgrade**.
+>
+>    The new organization is now set up with credit card billing. You'll use this organization after completing the rest of this process.
+>
+> 3. Migrate your projects to the new Pinecone organization:
+>
+>    1. Go to [**Settings > Manage**](https://app.pinecone.io/organizations/-/settings/manage) and copy your new organization ID.
+>    2. Go to [**Settings > Support > Tickets**](https://app.pinecone.io/organizations/-/settings/support/ticket) and click **Create a ticket**.
+>    3. For **Topic**, select **Billing**, and for **Subtopic**, select **Change payment method**.
+>    4. For **Subject**, enter "Migrate projects to a new organization".
+>    5. For **Description**, enter the following:
+>
+>       ```
+>       I am changing my payment method from Microsoft Marketplace to credit card. 
+>       Please migrate my projects to my new organization: `<NEW_ORG_ID>`
+>       ```
+>    6. Click **Submit**.
+>
+> 4. Add your team members to the new organization:
+>
+>    1. In the Pinecone console, go to [**Settings > Access > Members**](https://app.pinecone.io/organizations/-/settings/access/members).
+>    2. [Add your team members to the new organization](/admin/organizations/manage-organization-members#add-a-member-to-an-organization).
+>
+> 5. Downgrade your original Pinecone organization:
+>
+>    > [!WARNING]
+>    >
+>    > Don't downgrade your original organization until you receive a confirmation that Pinecone has finished the migration to your new organization.
+>
+>    1. In the Pinecone console, go to your original organization.
+>    2. Go to [**Settings > Billing > Plans**](https://app.pinecone.io/organizations/-/settings/billing/plans).
+>    3. In the **Starter** section, click **Downgrade**.
+>    4. Click **Confirm downgrade**.
+>    5. On the **Continue your downgrade on Azure Marketplace** modal, click **Continue to marketplace**.
+>    6. On the **SaaS** page, click your subscription to Pinecone.
+>    7. Click **Cancel subscription**.
+>    8. Confirm the cancellation.
+>
+> From now on, use your new organization. Your usage is billed to the credit card you provided.
+>
+> > [!WARNING]
+> >
+> > You can [delete your original organization](/admin/organizations/delete-your-organization). However, before deleting, make sure to [download your past invoices](/admin/billing/access-your-invoices) since you will lose access to them once the organization is deleted.
 
 ## Marketplace → marketplace
 
@@ -408,117 +396,108 @@ To change from one marketplace to another, you'll need to:
 2. Connect your existing org to the new marketplace
 3. Cancel your subscription in the old marketplace
 
-**Any marketplace → Google Cloud**
+> [tab] Any marketplace → Google Cloud
+>
+> 1. Subscribe to Pinecone in the Google Cloud Marketplace:
+>
+>    1. In the Google Cloud Marketplace, go to the [Pinecone listing](https://console.cloud.google.com/marketplace/product/pinecone-public/pinecone).
+>    2. Click **Subscribe**.
+>    3. On the **Order Summary** page, select a billing account, accept the terms and conditions, and click **Subscribe**.
+>
+>       > [!NOTE]
+>       >
+>       > The billing unit listed doesn't reflect the actual cost or metering of costs for Pinecone. See the [Pinecone pricing page](https://www.pinecone.io/pricing/) for accurate details.
+>    4. On the **Your order request has been sent to Pinecone** modal, click **Sign up with Pinecone**. This takes you to a Google-specific Pinecone login page.
+>    5. Log in to your Pinecone account. Use the same authentication method as your existing Pinecone organization.
+> 2. Connect your existing org to your Google account:
+>
+>    1. On the **Connect GCP to Pinecone** page, select the Pinecone organization that you want to change to Google Cloud Marketplace.
+>
+>       > [!NOTE]
+>       >
+>       > If you see a message saying that the subscription is still in process, wait a few minutes, refresh the page, and proceed only when the message has disappeared.
+>    2. On the **Confirm GCP Marketplace Connection** modal, click **Connect**. This takes you to your organization in the Pinecone console.
+>
+>       Your Pinecone usage is now billed through the Google Cloud Marketplace.
+> 3. Cancel your subscription in your previous marketplace:
+>
+>    * For AWS:
+>      1. Go to the [Manage subscriptions](https://console.aws.amazon.com/marketplace) page in the AWS Marketplace.
+>      2. [Cancel the subscription](https://docs.aws.amazon.com/marketplace/latest/buyerguide/cancel-subscription.html#cancel-saas-subscription) to Pinecone.
+>    * For Microsoft:
+>      1. Go to [Azure SaaS Resource Management](https://portal.azure.com/#blade/HubsExtension/BrowseResourceBlade/resourceType/Microsoft.SaaS%2Fresources).
+>      2. Select your subscription to Pinecone.
+>      3. Click **Cancel subscription**.
+>      4. Confirm the cancellation.
 
-1. Subscribe to Pinecone in the Google Cloud Marketplace:
+> [tab] Any marketplace → AWS
+>
+> 1. Subscribe to Pinecone in the AWS Marketplace:
+>
+>    1. In the AWS Marketplace, go to the [Pinecone listing](https://aws.amazon.com/marketplace/pp/prodview-xhgyscinlz4jk).
+>    2. Click **View purchase options**.
+>    3. On the **Subscribe to Pinecone Vector Database** page, review the offer and then click **Subscribe**.
+>
+>       > [!NOTE]
+>       >
+>       > The billing unit listed doesn't reflect the actual cost or metering of costs for Pinecone. See the [Pinecone pricing page](https://www.pinecone.io/pricing/) for accurate details.
+>    4. You'll see a message stating that your subscription is in process. Click **Set up your account**. This takes you to an AWS-specific Pinecone login page.
+>    5. Log in to your Pinecone account. Use the same authentication method as your existing Pinecone organization.
+> 2. Connect your existing org to your AWS account:
+>
+>    1. On the **Connect AWS to Pinecone** page, select the Pinecone organization that you want to change to AWS Marketplace.
+>
+>       > [!NOTE]
+>       >
+>       > If you see a message saying that the subscription is still in process, wait a few minutes, refresh the page, and proceed only when the message has disappeared.
+>    2. On the **Confirm AWS Marketplace Connection** modal, click **Connect**. This takes you to your organization in the Pinecone console.
+>
+>       Your Pinecone usage is now billed through the AWS Marketplace.
+> 3. Cancel your subscription in your previous marketplace:
+>
+>    * For Google Cloud Marketplace:
+>      1. Go to the [Orders](https://console.cloud.google.com/marketplace/orders) page.
+>      2. [Cancel the order](https://cloud.google.com/marketplace/docs/manage-billing#saas-products) for Pinecone.
+>    * For Microsoft Marketplace:
+>      1. Go to [Azure SaaS Resource Management](https://portal.azure.com/#blade/HubsExtension/BrowseResourceBlade/resourceType/Microsoft.SaaS%2Fresources).
+>      2. Select your subscription to Pinecone.
+>      3. Click **Cancel subscription**.
+>      4. Confirm the cancellation.
 
-   1. In the Google Cloud Marketplace, go to the [Pinecone listing](https://console.cloud.google.com/marketplace/product/pinecone-public/pinecone).
-   2. Click **Subscribe**.
-   3. On the **Order Summary** page, select a billing account, accept the terms and conditions, and click **Subscribe**.
-
-      > [!NOTE]
-      >
-      > The billing unit listed doesn't reflect the actual cost or metering of costs for Pinecone. See the [Pinecone pricing page](https://www.pinecone.io/pricing/) for accurate details.
-   4. On the **Your order request has been sent to Pinecone** modal, click **Sign up with Pinecone**. This takes you to a Google-specific Pinecone login page.
-   5. Log in to your Pinecone account. Use the same authentication method as your existing Pinecone organization.
-
-2. Connect your existing org to your Google account:
-
-   1. On the **Connect GCP to Pinecone** page, select the Pinecone organization that you want to change to Google Cloud Marketplace.
-
-      > [!NOTE]
-      >
-      > If you see a message saying that the subscription is still in process, wait a few minutes, refresh the page, and proceed only when the message has disappeared.
-   2. On the **Confirm GCP Marketplace Connection** modal, click **Connect**. This takes you to your organization in the Pinecone console.
-
-      Your Pinecone usage is now billed through the Google Cloud Marketplace.
-
-3. Cancel your subscription in your previous marketplace:
-
-   * For AWS:
-     1. Go to the [Manage subscriptions](https://console.aws.amazon.com/marketplace) page in the AWS Marketplace.
-     2. [Cancel the subscription](https://docs.aws.amazon.com/marketplace/latest/buyerguide/cancel-subscription.html#cancel-saas-subscription) to Pinecone.
-
-   * For Microsoft:
-     1. Go to [Azure SaaS Resource Management](https://portal.azure.com/#blade/HubsExtension/BrowseResourceBlade/resourceType/Microsoft.SaaS%2Fresources).
-     2. Select your subscription to Pinecone.
-     3. Click **Cancel subscription**.
-     4. Confirm the cancellation.
-
-**Any marketplace → AWS**
-
-1. Subscribe to Pinecone in the AWS Marketplace:
-
-   1. In the AWS Marketplace, go to the [Pinecone listing](https://aws.amazon.com/marketplace/pp/prodview-xhgyscinlz4jk).
-   2. Click **View purchase options**.
-   3. On the **Subscribe to Pinecone Vector Database** page, review the offer and then click **Subscribe**.
-
-      > [!NOTE]
-      >
-      > The billing unit listed doesn't reflect the actual cost or metering of costs for Pinecone. See the [Pinecone pricing page](https://www.pinecone.io/pricing/) for accurate details.
-   4. You'll see a message stating that your subscription is in process. Click **Set up your account**. This takes you to an AWS-specific Pinecone login page.
-   5. Log in to your Pinecone account. Use the same authentication method as your existing Pinecone organization.
-
-2. Connect your existing org to your AWS account:
-
-   1. On the **Connect AWS to Pinecone** page, select the Pinecone organization that you want to change to AWS Marketplace.
-
-      > [!NOTE]
-      >
-      > If you see a message saying that the subscription is still in process, wait a few minutes, refresh the page, and proceed only when the message has disappeared.
-   2. On the **Confirm AWS Marketplace Connection** modal, click **Connect**. This takes you to your organization in the Pinecone console.
-
-      Your Pinecone usage is now billed through the AWS Marketplace.
-
-3. Cancel your subscription in your previous marketplace:
-
-   * For Google Cloud Marketplace:
-     1. Go to the [Orders](https://console.cloud.google.com/marketplace/orders) page.
-     2. [Cancel the order](https://cloud.google.com/marketplace/docs/manage-billing#saas-products) for Pinecone.
-
-   * For Microsoft Marketplace:
-     1. Go to [Azure SaaS Resource Management](https://portal.azure.com/#blade/HubsExtension/BrowseResourceBlade/resourceType/Microsoft.SaaS%2Fresources).
-     2. Select your subscription to Pinecone.
-     3. Click **Cancel subscription**.
-     4. Confirm the cancellation.
-
-**Any marketplace → Microsoft**
-
-1. Subscribe to Pinecone in the Microsoft Marketplace:
-
-   1. In the Microsoft Marketplace, go to the [Pinecone listing](https://marketplace.microsoft.com/product/saas/pineconesystemsinc1688761585469.pineconesaas).
-   2. Click **Get it now**.
-   3. Select the **Pinecone - Pay As You Go** plan.
-   4. Click **Subscribe**.
-   5. On the **Subscribe to Pinecone** page, select the required details and click **Review + subscribe**.
-
-      > [!NOTE]
-      >
-      > The billing unit listed doesn't reflect the actual cost or metering of costs for Pinecone. See the [Pinecone pricing page](https://www.pinecone.io/pricing/) for accurate details.
-   6. Click **Subscribe**.
-   7. After the subscription is approved, click **Configure account now**. This redirects you to a Microsoft-specific Pinecone login page.
-   8. Log in to your Pinecone account. Use the same authentication method as your existing Pinecone organization.
-
-2. Connect your existing org to your Microsoft account:
-
-   1. On the **Connect Azure to Pinecone** page, select the Pinecone organization that you want to change to Microsoft Marketplace.
-
-      > [!NOTE]
-      >
-      > If you see a message saying that the subscription is still in process, wait a few minutes, refresh the page, and proceed only when the message has disappeared.
-   2. On the **Confirm Azure Marketplace Connection** modal, click **Connect**. This takes you to your organization in the Pinecone console.
-
-      Your Pinecone usage is now billed through the Microsoft Marketplace.
-
-3. Cancel your subscription in your previous marketplace:
-
-   * For Google Cloud Marketplace:
-     1. Go to the [Orders](https://console.cloud.google.com/marketplace/orders) page.
-     2. [Cancel the order](https://cloud.google.com/marketplace/docs/manage-billing#saas-products) for Pinecone.
-
-   * For AWS Marketplace:
-     1. Go to the [Manage subscriptions](https://console.aws.amazon.com/marketplace) page in the AWS Marketplace.
-     2. [Cancel the subscription](https://docs.aws.amazon.com/marketplace/latest/buyerguide/cancel-subscription.html#cancel-saas-subscription) to Pinecone.
+> [tab] Any marketplace → Microsoft
+>
+> 1. Subscribe to Pinecone in the Microsoft Marketplace:
+>
+>    1. In the Microsoft Marketplace, go to the [Pinecone listing](https://marketplace.microsoft.com/product/saas/pineconesystemsinc1688761585469.pineconesaas).
+>    2. Click **Get it now**.
+>    3. Select the **Pinecone - Pay As You Go** plan.
+>    4. Click **Subscribe**.
+>    5. On the **Subscribe to Pinecone** page, select the required details and click **Review + subscribe**.
+>
+>       > [!NOTE]
+>       >
+>       > The billing unit listed doesn't reflect the actual cost or metering of costs for Pinecone. See the [Pinecone pricing page](https://www.pinecone.io/pricing/) for accurate details.
+>    6. Click **Subscribe**.
+>    7. After the subscription is approved, click **Configure account now**. This redirects you to a Microsoft-specific Pinecone login page.
+>    8. Log in to your Pinecone account. Use the same authentication method as your existing Pinecone organization.
+> 2. Connect your existing org to your Microsoft account:
+>
+>    1. On the **Connect Azure to Pinecone** page, select the Pinecone organization that you want to change to Microsoft Marketplace.
+>
+>       > [!NOTE]
+>       >
+>       > If you see a message saying that the subscription is still in process, wait a few minutes, refresh the page, and proceed only when the message has disappeared.
+>    2. On the **Confirm Azure Marketplace Connection** modal, click **Connect**. This takes you to your organization in the Pinecone console.
+>
+>       Your Pinecone usage is now billed through the Microsoft Marketplace.
+> 3. Cancel your subscription in your previous marketplace:
+>
+>    * For Google Cloud Marketplace:
+>      1. Go to the [Orders](https://console.cloud.google.com/marketplace/orders) page.
+>      2. [Cancel the order](https://cloud.google.com/marketplace/docs/manage-billing#saas-products) for Pinecone.
+>    * For AWS Marketplace:
+>      1. Go to the [Manage subscriptions](https://console.aws.amazon.com/marketplace) page in the AWS Marketplace.
+>      2. [Cancel the subscription](https://docs.aws.amazon.com/marketplace/latest/buyerguide/cancel-subscription.html#cancel-saas-subscription) to Pinecone.
 
 ## Credit card → credit card
 

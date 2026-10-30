@@ -28,23 +28,23 @@ Both the terminal and desktop apps read the same `opencode.json` config and the 
 
 ### Step 1: Install OpenCode
 
-**Install Script**
+> [tab] Install Script
+>
+> ```bash lines theme={null}
+> curl -fsSL https://opencode.ai/install | bash
+> ```
 
-```bash lines theme={null}
-curl -fsSL https://opencode.ai/install | bash
-```
+> [tab] npm
+>
+> ```bash lines theme={null}
+> npm install -g opencode-ai
+> ```
 
-**npm**
-
-```bash lines theme={null}
-npm install -g opencode-ai
-```
-
-**Homebrew**
-
-```bash lines theme={null}
-brew install anomalyco/tap/opencode
-```
+> [tab] Homebrew
+>
+> ```bash lines theme={null}
+> brew install anomalyco/tap/opencode
+> ```
 
 For additional installation methods (Bun, pnpm, Yarn, Arch Linux, Windows), see the [OpenCode installation docs](https://opencode.ai/docs).
 
@@ -81,21 +81,21 @@ The desktop app organizes projects and active sessions into tabs, and configures
 
 ### Step 1: Install OpenCode Desktop
 
-**macOS**
+> [tab] macOS
+>
+> ```bash lines theme={null}
+> brew install --cask opencode-desktop
+> ```
+>
+> Or download the DMG for Apple Silicon or Intel from the [OpenCode download page](https://opencode.ai/download).
 
-```bash lines theme={null}
-brew install --cask opencode-desktop
-```
+> [tab] Windows
+>
+> Download the x64 installer from the [OpenCode download page](https://opencode.ai/download).
 
-Or download the DMG for Apple Silicon or Intel from the [OpenCode download page](https://opencode.ai/download).
-
-**Windows**
-
-Download the x64 installer from the [OpenCode download page](https://opencode.ai/download).
-
-**Linux**
-
-Download the `.deb` or `.rpm` package from the [OpenCode download page](https://opencode.ai/download).
+> [tab] Linux
+>
+> Download the `.deb` or `.rpm` package from the [OpenCode download page](https://opencode.ai/download).
 
 ### Step 2: Connect OpenRouter
 

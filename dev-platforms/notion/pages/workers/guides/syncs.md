@@ -95,68 +95,68 @@ Once a database is under sync control, the sync is the only writer to the data i
 
 Workers support two sync modes. Pick the one that fits your needs:
 
-**Replace (default)**
+> [tab] Replace (default)
+>
+> Each sync cycle returns the **full dataset**. After the final `hasMore: false`, any rows not seen during that cycle are automatically deleted.
+>
+> Best for smaller datasets (under 10k records) or APIs that don't support change tracking. Also used as the [backfill half](#combine-backfill-and-delta-syncs) of a backfill + delta pair.
+>
+> ```typescript theme={null}
+> worker.sync("teamsSync", {
+>   database: teams,
+>   mode: "replace",
+>   execute: async (state) => {
+>     const page = state?.page ?? 1;
+>     const { items, hasMore } = await fetchPage(page, 100);
+>     return {
+>       changes: items.map((item) => ({
+>         type: "upsert" as const,
+>         key: item.id,
+>         properties: {
+>           Name: Builder.title(item.name),
+>           ID: Builder.richText(item.id),
+>         },
+>       })),
+>       hasMore,
+>       nextState: hasMore ? { page: page + 1 } : undefined,
+>     };
+>   },
+> });
+> ```
 
-Each sync cycle returns the **full dataset**. After the final `hasMore: false`, any rows not seen during that cycle are automatically deleted.
-
-Best for smaller datasets (under 10k records) or APIs that don't support change tracking. Also used as the [backfill half](#combine-backfill-and-delta-syncs) of a backfill + delta pair.
-
-```typescript theme={null}
-worker.sync("teamsSync", {
-  database: teams,
-  mode: "replace",
-  execute: async (state) => {
-    const page = state?.page ?? 1;
-    const { items, hasMore } = await fetchPage(page, 100);
-    return {
-      changes: items.map((item) => ({
-        type: "upsert" as const,
-        key: item.id,
-        properties: {
-          Name: Builder.title(item.name),
-          ID: Builder.richText(item.id),
-        },
-      })),
-      hasMore,
-      nextState: hasMore ? { page: page + 1 } : undefined,
-    };
-  },
-});
-```
-
-**Incremental**
-
-Each sync cycle returns only **changes since the last run**. Rows not mentioned are left as-is. Deletions must be explicit.
-
-Best for large datasets (10k+ records) or APIs that provide a changes endpoint or cursor. Typically used as the [delta half](#combine-backfill-and-delta-syncs) of a backfill + delta pair.
-
-```typescript theme={null}
-worker.sync("eventsSync", {
-  database: events,
-  mode: "incremental",
-  execute: async (state) => {
-    const { upserts, deletes, nextCursor } = await fetchChanges(state?.cursor);
-    return {
-      changes: [
-        ...upserts.map((item) => ({
-          type: "upsert" as const,
-          key: item.id,
-          properties: {
-            Name: Builder.title(item.name),
-            ID: Builder.richText(item.id),
-          },
-        })),
-        ...deletes.map((id) => ({
-          type: "delete" as const,
-          key: id,
-        })),
-      ],
-      hasMore: Boolean(nextCursor),
-      nextState: nextCursor ? { cursor: nextCursor } : undefined,
-    };
-  },
-});
-```
+> [tab] Incremental
+>
+> Each sync cycle returns only **changes since the last run**. Rows not mentioned are left as-is. Deletions must be explicit.
+>
+> Best for large datasets (10k+ records) or APIs that provide a changes endpoint or cursor. Typically used as the [delta half](#combine-backfill-and-delta-syncs) of a backfill + delta pair.
+>
+> ```typescript theme={null}
+> worker.sync("eventsSync", {
+>   database: events,
+>   mode: "incremental",
+>   execute: async (state) => {
+>     const { upserts, deletes, nextCursor } = await fetchChanges(state?.cursor);
+>     return {
+>       changes: [
+>         ...upserts.map((item) => ({
+>           type: "upsert" as const,
+>           key: item.id,
+>           properties: {
+>             Name: Builder.title(item.name),
+>             ID: Builder.richText(item.id),
+>           },
+>         })),
+>         ...deletes.map((id) => ({
+>           type: "delete" as const,
+>           key: id,
+>         })),
+>       ],
+>       hasMore: Boolean(nextCursor),
+>       nextState: nextCursor ? { cursor: nextCursor } : undefined,
+>     };
+>   },
+> });
+> ```
 
 ## Paginate large datasets
 
@@ -523,22 +523,22 @@ See the [CLI command reference](/cli/reference/commands) for the full list of `n
 
 ## Next steps
 
-> **[Schema and builders](/workers/reference/schema)**
+> [card] [Schema and builders](/workers/reference/schema)
 >
 > Full reference for database property types and value builders.
 
-> **[SDK reference](/workers/reference/sdk)**
+> [card] [SDK reference](/workers/reference/sdk)
 >
 > Detailed API docs for worker.sync(), worker.database(), and worker.pacer().
 
-> **[Secrets](/workers/guides/secrets)**
+> [card] [Secrets](/workers/guides/secrets)
 >
 > Store API keys and credentials for your sync.
 
-> **[OAuth](/workers/guides/oauth)**
+> [card] [OAuth](/workers/guides/oauth)
 >
 > Connect to APIs that require user authorization.
 
-> **[Limits](/workers/reference/limits)**
+> [card] [Limits](/workers/reference/limits)
 >
 > Sync run and database write rate limits.

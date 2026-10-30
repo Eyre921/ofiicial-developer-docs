@@ -58,23 +58,23 @@ supports_websockets = false
 
 Codex reads the key from the `OPENROUTER_API_KEY` environment variable named by `env_key`. An `export` in `~/.zshrc` or `~/.bashrc` only reaches terminal processes, so set the variable at the session level instead, then fully quit and reopen the app.
 
-**macOS**
+> [tab] macOS
+>
+> Set the variable in the user launchd session so GUI apps inherit it:
+>
+> ```bash lines theme={null}
+> launchctl setenv OPENROUTER_API_KEY "sk-or-..."
+> ```
+>
+> This does not survive a reboot or logout. To make it permanent, add the same command to a login item or a launchd agent that runs at login.
 
-Set the variable in the user launchd session so GUI apps inherit it:
-
-```bash lines theme={null}
-launchctl setenv OPENROUTER_API_KEY "sk-or-..."
-```
-
-This does not survive a reboot or logout. To make it permanent, add the same command to a login item or a launchd agent that runs at login.
-
-**Windows**
-
-Set a user-level environment variable. Processes started after this inherit it, so restart the app afterwards:
-
-```powershell lines theme={null}
-setx OPENROUTER_API_KEY "sk-or-..."
-```
+> [tab] Windows
+>
+> Set a user-level environment variable. Processes started after this inherit it, so restart the app afterwards:
+>
+> ```powershell lines theme={null}
+> setx OPENROUTER_API_KEY "sk-or-..."
+> ```
 
 ### Step 5: Restart and Start a Task
 

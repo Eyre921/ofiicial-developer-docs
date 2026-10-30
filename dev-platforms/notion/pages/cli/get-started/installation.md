@@ -8,39 +8,39 @@ Install the Notion CLI on your machine.
 
 ## Install
 
-**macOS and Linux**
+> [tab] macOS and Linux
+>
+> ```bash theme={null}
+> curl -fsSL https://ntn.dev | bash
+> ```
+>
+> If the installer says it couldn't install the Notion CLI to `/usr/local/bin`, pick a directory you can write to with `NTN_INSTALL_DIR`:
+>
+> ```bash theme={null}
+> curl -fsSL https://ntn.dev | NTN_INSTALL_DIR="$HOME/.local/bin" bash
+> ```
+>
+> If that directory isn't on your `PATH`, the installer prints the line to add to your shell startup file.
+>
+> To inspect the installer before you run it, view the [install script](https://ntn.dev/install.sh).
 
-```bash theme={null}
-curl -fsSL https://ntn.dev | bash
-```
+> [tab] Windows
+>
+> The install script doesn't support Windows. In PowerShell or Command Prompt, install with WinGet:
+>
+> ```powershell theme={null}
+> winget install Notion.ntn
+> ```
+>
+> The WinGet package supports only Windows x64 (x86-64/AMD64). To confirm the package installed, run `winget list --exact --id Notion.ntn`.
 
-If the installer says it couldn't install the Notion CLI to `/usr/local/bin`, pick a directory you can write to with `NTN_INSTALL_DIR`:
-
-```bash theme={null}
-curl -fsSL https://ntn.dev | NTN_INSTALL_DIR="$HOME/.local/bin" bash
-```
-
-If that directory isn't on your `PATH`, the installer prints the line to add to your shell startup file.
-
-To inspect the installer before you run it, view the [install script](https://ntn.dev/install.sh).
-
-**Windows**
-
-The install script doesn't support Windows. In PowerShell or Command Prompt, install with WinGet:
-
-```powershell theme={null}
-winget install Notion.ntn
-```
-
-The WinGet package supports only Windows x64 (x86-64/AMD64). To confirm the package installed, run `winget list --exact --id Notion.ntn`.
-
-**npm**
-
-Use npm on macOS, Linux, or Windows. This requires Node.js 22+ and npm 10+.
-
-```bash theme={null}
-npm install --global ntn
-```
+> [tab] npm
+>
+> Use npm on macOS, Linux, or Windows. This requires Node.js 22+ and npm 10+.
+>
+> ```bash theme={null}
+> npm install --global ntn
+> ```
 
 After you install, restart your terminal so `ntn` is on your `PATH`.
 
@@ -90,10 +90,10 @@ For fish, PowerShell, or elvish, run `ntn completions fish`, `ntn completions po
 
 ## Next steps
 
-> **[Authentication](/cli/get-started/authentication)**
+> [card] [Authentication](/cli/get-started/authentication)
 >
 > Log in to your Notion workspace.
 
-> **[Workers quickstart](/workers/get-started/quickstart)**
+> [card] [Workers quickstart](/workers/get-started/quickstart)
 >
 > Create and deploy your first Notion Worker.

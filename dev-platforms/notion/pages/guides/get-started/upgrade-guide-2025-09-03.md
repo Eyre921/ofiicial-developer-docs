@@ -242,13 +242,13 @@ The next step is to migrate each existing use of database APIs to their new data
 
 The following APIs are affected. Each of them is covered by a sub-section below, with more specific Before vs. After explanations and code snippets:
 
-> **[Retrieve a database](/reference/retrieve-a-database)**
+> [card] [Retrieve a database](/reference/retrieve-a-database)
 
-> **[Create a database](/reference/create-a-database)**
+> [card] [Create a database](/reference/create-a-database)
 
-> **[Update a database](/reference/update-a-database)**
+> [card] [Update a database](/reference/update-a-database)
 
-> **[Search](/reference/post-search)**
+> [card] [Search](/reference/post-search)
 
 #### Retrieve database
 

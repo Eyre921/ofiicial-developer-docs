@@ -156,7 +156,7 @@ Putting the above flow together, your webhook handler can implement logic as fol
 
 ## Frequently asked questions
 
-> **Can I use any page as a template?**
+> [accordion] Can I use any page as a template?
 >
 > In Step 2, the `template_id` parameter can be set to any page, not necessarily a page officially designated as a "template" in the same data source.
 >
@@ -164,13 +164,13 @@ Putting the above flow together, your webhook handler can implement logic as fol
 >
 > When using a `type` of `default` instead of `template_id`, the conditions are more strict: the page you're creating must be under a data source that has a template marked as "default". Use the [List data source templates](/reference/list-data-source-templates) API
 
-> **If I already created a page, can I still apply a template using the API?**
+> [accordion] If I already created a page, can I still apply a template using the API?
 >
 > Yes! The [Update page](/reference/patch-page) API also supports a `template` body parameter, with a `type` of either `default` or `template_id`. You can also pass `template[timezone]` to control the timezone for template variable resolution.
 >
 > When applying a template to an existing page, the template's content is appended to any existing page content. There's another optional body parameter, `erase_content`, that can be set to `true` if you instead want the template's content to fully replace any existing page content. Use caution with this flag, as this is a destructive operation that cannot be reversed in the API!
 
-> **Why am I not seeing these new APIs in the JavaScript SDK?**
+> [accordion] Why am I not seeing these new APIs in the JavaScript SDK?
 >
 > If you're using the Notion TypeScript SDK, upgrade to [version 5.3.0](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.3.0) or newer to get access to the APIs described in this guide.
 >
@@ -178,11 +178,11 @@ Putting the above flow together, your webhook handler can implement logic as fol
 >
 > Until you upgrade to the latest version of the SDK, the only way to use these APIs is to craft [custom requests](https://github.com/makenotion/notion-sdk-js?tab=readme-ov-file#custom-requests) using `notion.request(...)`, which may result in degraded static type safety.
 
-> **Can I see an example of how to use this?**
+> [accordion] Can I see an example of how to use this?
 >
 > Yes! Refer to example `intermediate:6` in the [`intro-to-notion-api` example project](https://github.com/makenotion/notion-sdk-js/tree/9ed31fd7b47b8e799d1a66ee2ae19e89841b8194/examples/intro-to-notion-api).
 
-> **Can I use templates with the Notion MCP?**
+> [accordion] Can I use templates with the Notion MCP?
 >
 > Yes! The [Notion MCP](/guides/mcp/overview) supports templates in the `notion-create-pages` and `notion-update-page` tools.
 >

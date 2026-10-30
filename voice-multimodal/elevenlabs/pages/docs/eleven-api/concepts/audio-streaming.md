@@ -55,7 +55,7 @@ ElevenLabs' `auto_mode` attempts to find a good balance automatically by analysi
 
 It is easy to conflate these two, but they are different numbers.
 
-**Generation latency** is how long the model takes to produce audio. This is what the \~75ms Flash model figure refers to: the model's inference time for a short text input, excluding network round-trips and application overhead.
+**Generation latency** is how long the model takes to produce audio. The published model latency figures measure this from the server side: the time ElevenLabs takes to return the first audio, excluding network round-trips and application overhead.
 
 **Time-to-first-audio** is the elapsed time from when your application initiates a request to when the first audio sample actually plays for the end user. This includes network latency, server processing time, and any buffering your audio player introduces.
 

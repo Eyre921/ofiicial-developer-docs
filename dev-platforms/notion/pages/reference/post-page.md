@@ -45,7 +45,7 @@ When applying a template, the `children` parameter is **not** allowed. The page 
 
 Returns a new [page object](/reference/page).
 
-When creating a page with the `markdown` body parameter, set `markdown_version: "v2"` to write [Notion-flavored Markdown](/guides/data-apis/notion-flavored-markdown) instead of enhanced markdown. This is an opt-in preview; `v1` is the default. Sending `markdown_version` without `markdown` returns a `400` `validation_error`. See [Markdown versions](/guides/data-apis/working-with-markdown-content#markdown-versions).
+When creating a page with the `markdown` body parameter, set `markdown_version: "v2"` to write [Notion-flavored Markdown](/guides/data-apis/notion-flavored-markdown) instead of enhanced markdown. `v2` is recommended. `v1` is deprecated. It's the default on current Notion-Versions. Sending `markdown_version` without `markdown` returns a `400` `validation_error`. See [Markdown versions](/guides/data-apis/working-with-markdown-content#markdown-versions).
 
 When creating a page with the `markdown` body parameter, you can set `allow_async: true` to receive an HTTP `202` response with an `async_task` object instead of waiting for the page creation to finish in the original request. This is useful for high-block markdown requests that may take longer than typical HTTP client timeout budgets.
 

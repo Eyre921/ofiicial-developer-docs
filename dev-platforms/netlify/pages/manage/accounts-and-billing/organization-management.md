@@ -146,3 +146,7 @@ From the **Organization overview** page, select **Audit log**. Choose a team fro
 
 ![](/images/accounts-and-billing-org-audit-logs.png)
 
+## Organization webhooks
+
+Organization Owners can get a webhook whenever a project is created or published in any of the organization's teams, and use it to automate security, governance, and inventory across all teams. Check out our [organization webhooks docs](/manage/accounts-and-billing/organization-webhooks) to learn more.
+

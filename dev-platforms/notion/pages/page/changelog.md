@@ -4,6 +4,34 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+**October 30, 2026**
+
+### Stored sync metadata on data sources
+
+Data source list and retrieval responses now include optional [stored sync metadata](/reference/data-source#sync-metadata), with documented provider values and ISO 8601 timestamps. [Retrieve a database](/reference/retrieve-database) also includes this metadata for each readable data source.
+
+### Notion-flavored Markdown becomes the default in the next Notion-Version
+
+The next Notion-Version will make Notion-flavored Markdown (`markdown_version: "v2"`) the default on the markdown endpoints: [`POST /v1/pages`](/reference/post-page), [`GET /v1/pages/:page_id/markdown`](/reference/retrieve-page-markdown), [`PATCH /v1/pages/:page_id/markdown`](/reference/update-page-markdown), [`POST /v1/comments`](/reference/create-a-comment), and [`PATCH /v1/comments/:comment_id`](/reference/update-a-comment). On that version, requests without `markdown_version` will use `v2`. Requests that set `markdown_version` to `v1` will return a `400` `validation_error`.
+
+For now, nothing changes for requests that send a current `Notion-Version`. They keep enhanced markdown (`v1`) as the default, and you can still opt in to `v2` with the parameter.
+
+Enhanced markdown (`v1`) is now deprecated. We'll post the new version's name and release date in this changelog before it ships. We plan to retire `v1` on every Notion-Version about three months after that, and we'll post the retirement date here at least three months ahead.
+
+To get ready, set `markdown_version` to `v2` on your markdown requests now and test the results. See [Markdown versions](/guides/data-apis/working-with-markdown-content#markdown-versions) for where to send the parameter, and the [Notion-flavored Markdown format reference](/guides/data-apis/notion-flavored-markdown) for the syntax.
+
+**SDK support**: `@notionhq/client` [`v5.29.0`](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.29.0) adds `markdown_version` to the page markdown and comment methods.
+
+### Fractional credit usage in the Notion Agent APIs
+
+Credit usage fields in the Notion Agent APIs now report fractional credits, and each field rounds the same way every time. Both rules below round down.
+
+`credits_used` in [Retrieve a session](/reference/notion-agent-apis/retrieve-session) and [Query sessions](/reference/notion-agent-apis/query-sessions) has at most two decimal places, so 12.456789 credits reads as `12.45`.
+
+`total_credits_used` in [Retrieve agent insights](/reference/notion-agent-apis/retrieve-agent-insights) is a whole number from 1 up, so 12.7 credits reads as `12`. Below 1, it has at most two significant figures, so 0.456789 credits reads as `0.45`.
+
+These fields were already typed as numbers. If your code assumes they're integers, update it to handle decimals.
+
 **October 29, 2026**
 
 ### Property IDs on property comments
@@ -11,6 +39,10 @@ path: page/changelog
 Comments on a database page property now include `property_id`, the ID of that property. It matches the property's `id` in the [page object](/reference/page-property-values). The [Comment object](/reference/comment-object) and the [`comment.created`](/reference/webhooks/comment-created), [`comment.updated`](/reference/webhooks/comment-updated), and [`comment.deleted`](/reference/webhooks/comment-deleted) webhook payloads carry it. Other comments omit it.
 
 **SDK support**: `@notionhq/client` [`v5.29.0`](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.29.0) adds `property_id` to the comment response and comment webhook types.
+
+### See version changes in Notion MCP
+
+`notion-get-version-changes` lists what changed in a page or database between two times and who changed it. See [Get version changes](/guides/mcp/mcp-supported-tools#get-version-changes).
 
 **October 27, 2026**
 

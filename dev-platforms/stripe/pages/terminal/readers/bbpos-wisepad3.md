@@ -40,6 +40,7 @@ The software on the BBPOS WisePad 3 consists of a firmware version, configuratio
 | SI | `4.01.07.00_SZZZ_EU_SI_v2_511001` |
 | IEGBFI | `4.01.07.00_Prod_EU_W1_off_v23_510001` |
 | CA | `4.01.07.00_Prod_NA_off_v30_480001` |
+| MX | `4.01.07.00_SZZZ_MX_v6_481001` |
 
 ### Changelog
 
@@ -160,6 +161,7 @@ The software on the BBPOS WisePad 3 consists of a firmware version, configuratio
 | `Prod_NA_off_v7` | 2021-05-19 | Updated config for North American countries. |
 | `Prod_NA_off_v6` | 2021-04-21 | Updated config for North American countries. |
 | `Prod_NA_off_v5` | 2021-02-22 | Initial North American config. |
+| **MX** MX | `SZZZ_MX_v6` | 2026-10-02 | Initial config for Mexico. |
 
 #### Key identifiers 
 
@@ -169,6 +171,7 @@ The software on the BBPOS WisePad 3 consists of a firmware version, configuratio
 | `491001` | HK | The key identifier used in Hong Kong on this device. |
 | `510001` | ATBEDKFRDEIENLNOSEESCHGB | The initial key identifier available for the European region on this device. |
 | `480001` | CA | The initial key identifier available for the North American region on this device. |
+| `481001` | MX | The key identifier used in Mexico on this device. |
 
 ## Accessories for the reader 
 

@@ -4,12 +4,12 @@ source: https://docs.pinecone.io/integrations/jina
 path: integrations/jina
 ---
 
-Use Jina AI long-context embeddings with Pinecone for multilingual semantic search, RAG chatbots, and domain-specific retrieval up to 8K tokens.
+Use Jina AI multimodal embeddings with Pinecone for multilingual semantic search, RAG chatbots, and retrieval over text, images, and documents.
 
-Jina Embeddings models generate text embeddings and can process inputs up to 8,000 tokens. They cover domain-specific use cases, such as e-commerce, and language-specific needs, including Chinese and German. Jina AI provides the models and the expertise to fine-tune them for specific requirements, which helps developers improve search, natural language understanding, and data analysis.
+Jina Embeddings models embed text, images, and visually rich documents with charts and tables. `jina-embeddings-v4` accepts inputs up to 32768 tokens and supports more than 30 languages. Jina AI provides the models and the expertise to fine-tune them for specific requirements, which helps developers improve search, natural language understanding, and data analysis.
 
 By integrating Pinecone with Jina, you can add knowledge to LLMs with retrieval-augmented generation (RAG) for autonomous agents, chatbots, question-answering, and multi-agent systems.
 
 [Get started](https://jina.ai/embeddings/#apiform)
 
-[Try the model](https://www.pinecone.io/models/jina-embeddings-v2-base-en/)
+[Try the model](/models/jina-embeddings-v4)

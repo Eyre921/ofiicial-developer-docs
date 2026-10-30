@@ -94,7 +94,7 @@ The following equation calculates the total costs accrued over time:
 
 To see a calculation of your current usage and costs, go to [**Settings > Usage**](https://app.pinecone.io/organizations/-/settings/usage) in the Pinecone console.
 
-> **Example**
+> [accordion] Example
 >
 > While our pricing page lists rates on an hourly basis for ease of comparison, this example lists prices per minute, as this is how Pinecone calculates billing.
 >

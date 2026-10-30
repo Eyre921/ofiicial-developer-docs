@@ -12,459 +12,459 @@ Narrow Pinecone search results with metadata filter expressions such as $eq, $in
 
 The following code searches for the 3 documents or records that are most semantically similar to a query and that have a `category` metadata field with the value `digestive system`.
 
-**Document index**
-
-On a document index with [integrated embedding](/guides/search/integrated-embedding), you search with query text, and Pinecone embeds it with the model declared on the field. This example assumes a `chunk_text` field declared with `embed`.
-
-```python Python theme={null}
-from pinecone import Pinecone
-
-pc = Pinecone(api_key="YOUR_API_KEY")
-
-# To get the unique host for an index,
-# see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.index(host="INDEX_HOST")
-
-filtered_results = index.documents.search(
-    namespace="example-namespace",
-    top_k=3,
-    score_by=[
-        {"type": "embed", "fields": ["chunk_text"], "query": "Disease prevention"}
-    ],
-    filter={"category": {"$eq": "digestive system"}},
-    include_fields=["category", "chunk_text"],
-)
-
-print(filtered_results)
-```
-
-```javascript JavaScript theme={null}
-import { Pinecone } from '@pinecone-database/pinecone';
-
-const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
-
-// To get the unique host for an index,
-// see https://docs.pinecone.io/guides/manage-data/target-an-index
-const index = pc.index({ host: 'INDEX_HOST', namespace: 'example-namespace' });
-
-const response = await index.documents.search({
-  topK: 3,
-  scoreBy: [
-    { type: 'embed', fields: ['chunk_text'], query: 'Disease prevention' },
-  ],
-  filter: { category: { $eq: 'digestive system' } },
-  includeFields: ['category', 'chunk_text'],
-});
-
-console.log(response);
-```
-
-```go Go theme={null}
-package main
-
-import (
-	"context"
-	"encoding/json"
-	"fmt"
-	"log"
-
-	"github.com/pinecone-io/go-pinecone/v7/pinecone"
-)
-
-func prettifyStruct(obj interface{}) string {
-	bytes, _ := json.MarshalIndent(obj, "", "  ")
-	return string(bytes)
-}
-
-func main() {
-	ctx := context.Background()
-
-	pc, err := pinecone.NewClient(pinecone.NewClientParams{
-		ApiKey: "YOUR_API_KEY",
-	})
-	if err != nil {
-		log.Fatalf("Failed to create Client: %v", err)
-	}
-
-	// To get the unique host for an index,
-	// see https://docs.pinecone.io/guides/manage-data/target-an-index
-	idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST", Namespace: "example-namespace"})
-	if err != nil {
-		log.Fatalf("Failed to create IndexConnection for Host: %v", err)
-	}
-
-	query := "Disease prevention"
-	res, err := idxConnection.SearchDocuments(ctx, &pinecone.SearchDocumentsRequest{
-		TopK: 3,
-		ScoreBy: []pinecone.DocumentScoringMethod{
-			{Type: pinecone.DocumentScoringTypeEmbed, Fields: []string{"chunk_text"}, Query: &query},
-		},
-		Filter: map[string]interface{}{
-			"category": map[string]interface{}{"$eq": "digestive system"},
-		},
-		IncludeFields: []string{"category", "chunk_text"},
-	})
-	if err != nil {
-		log.Fatalf("Failed to search documents: %v", err)
-	}
-	fmt.Println(prettifyStruct(res))
-}
-```
-
-```bash curl theme={null}
-INDEX_HOST="INDEX_HOST"
-NAMESPACE="example-namespace"
-PINECONE_API_KEY="YOUR_API_KEY"
-
-curl "https://$INDEX_HOST/namespaces/$NAMESPACE/documents/search" \
-  -H "Api-Key: $PINECONE_API_KEY" \
-  -H "Content-Type: application/json" \
-  -H "X-Pinecone-Api-Version: 2026-07" \
-  -d '{
-    "top_k": 3,
-    "score_by": [
-      { "type": "embed", "fields": ["chunk_text"], "query": "Disease prevention" }
-    ],
-    "filter": { "category": { "$eq": "digestive system" } },
-    "include_fields": ["category", "chunk_text"]
-  }'
-```
-
-**Vector index**
-
-```Python Python theme={null}
-from pinecone.grpc import PineconeGRPC as Pinecone
-
-pc = Pinecone(api_key="YOUR_API_KEY")
-
-# To get the unique host for an index, 
-# see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.index(host="INDEX_HOST", grpc=True)
-
-# Replace with your query embedding, which must match the index's dimension (1536 in this example)
-query_vector = [0.1] * 1536
-
-index.query(
-    namespace="example-namespace",
-    vector=query_vector,
-    top_k=3,
-    filter={
-        "category": {"$eq": "digestive system"}
-    },
-    include_metadata=True,
-    include_values=False
-)
-```
-
-```JavaScript JavaScript theme={null}
-import { Pinecone } from '@pinecone-database/pinecone'
-
-const pc = new Pinecone({ apiKey: "YOUR_API_KEY" })
-
-// To get the unique host for an index, 
-// see https://docs.pinecone.io/guides/manage-data/target-an-index
-const index = pc.index("INDEX_NAME", "INDEX_HOST")
-
-// Replace with your query embedding, which must match the index's dimension (1536 in this example)
-const queryVector = new Array(1536).fill(0.1);
-
-const queryResponse = await index.namespace('example-namespace').query({
-    vector: queryVector,
-    topK: 3,
-    filter: {
-        "category": { "$eq": "digestive system" }
-    },
-    includeValues: false,
-    includeMetadata: true,
-});
-```
-
-```java Java theme={null}
-import com.google.protobuf.Struct;
-import com.google.protobuf.Value;
-import io.pinecone.clients.Index;
-import io.pinecone.configs.PineconeConfig;
-import io.pinecone.configs.PineconeConnection;
-import io.pinecone.unsigned_indices_model.QueryResponseWithUnsignedIndices;
-
-import java.util.Collections;
-import java.util.List;
-
-public class QueryExample {
-    public static void main(String[] args) {
-        PineconeConfig config = new PineconeConfig("YOUR_API_KEY");
-        // To get the unique host for an index, 
-        // see https://docs.pinecone.io/guides/manage-data/target-an-index
-        config.setHost("INDEX_HOST");
-        PineconeConnection connection = new PineconeConnection(config);
-        Index index = new Index(config, connection, "INDEX_NAME");
-        // Replace with your query embedding, which must match the index's dimension (1536 in this example)
-        List<Float> query = Collections.nCopies(1536, 0.1f);
-        Struct filter = Struct.newBuilder()
-                .putFields("category", Value.newBuilder()
-                        .setStructValue(Struct.newBuilder()
-                                .putFields("$eq", Value.newBuilder()
-                                        .setStringValue("digestive system")
-                                        .build()))
-                        .build())
-                .build();
-
-        QueryResponseWithUnsignedIndices queryResponse = index.query(3, query, null, null, null, "example-namespace", filter, false, true);
-        System.out.println(queryResponse);
-    }
-}
-```
-
-```go Go theme={null}
-package main
-
-import (
-    "context"
-    "encoding/json"
-    "fmt"
-    "log"
-
-    "github.com/pinecone-io/go-pinecone/v7/pinecone"
-    "google.golang.org/protobuf/types/known/structpb"
-)
-
-func prettifyStruct(obj interface{}) string {
-	bytes, _ := json.MarshalIndent(obj, "", "  ")
-	return string(bytes)
-}
-
-func main() {
-    ctx := context.Background()
-
-    pc, err := pinecone.NewClient(pinecone.NewClientParams{
-        ApiKey: "YOUR_API_KEY",
-    })
-    if err != nil {
-        log.Fatalf("Failed to create Client: %v", err)
-    }
-
-    // To get the unique host for an index, 
-    // see https://docs.pinecone.io/guides/manage-data/target-an-index
-    idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST", Namespace: "example-namespace"})
-    if err != nil {
-        log.Fatalf("Failed to create IndexConnection for Host: %v", err)
-  	}
-
-    // Replace with your query embedding, which must match the index's dimension (1536 in this example)
-    queryVector := make([]float32, 1536)
-    for i := range queryVector {
-        queryVector[i] = 0.1
-    }
-
-    metadataMap := map[string]interface{}{
-        "category": map[string]interface{}{
-            "$eq": "digestive system",
-        },
-    }
-
-    metadataFilter, err := structpb.NewStruct(metadataMap)
-    if err != nil {
-        log.Fatalf("Failed to create metadata map: %v", err)
-    }
-
-    res, err := idxConnection.QueryByVectorValues(ctx, &pinecone.QueryByVectorValuesRequest{
-        Vector:          queryVector,
-        TopK:            3,
-        MetadataFilter: metadataFilter,
-        IncludeValues:   false,
-        IncludeMetadata: true,
-    })
-    if err != nil {
-        log.Fatalf("Error encountered when querying by vector: %v", err)
-    } else {
-        fmt.Printf(prettifyStruct(res))
-    }
-}
-```
-
-```bash curl theme={null}
-# To get the unique host for an index,
-# see https://docs.pinecone.io/guides/manage-data/target-an-index
-PINECONE_API_KEY="YOUR_API_KEY"
-INDEX_HOST="INDEX_HOST"
-
-# Stand-in built with jq. Replace with your query embedding, which must match the index's dimension (1536 in this example)
-QUERY_VECTOR=$(jq -nc '[range(1536) | 0.1]')
-
-curl "https://$INDEX_HOST/query" \
-  -H "Api-Key: $PINECONE_API_KEY" \
-  -H 'Content-Type: application/json' \
-  -H "X-Pinecone-Api-Version: 2026-07" \
-  -d '{
-        "vector": '"$QUERY_VECTOR"',
-        "namespace": "example-namespace",
-        "topK": 3,
-        "filter": {"category": {"$eq": "digestive system"}},
-        "includeMetadata": true,
-        "includeValues": false
-    }'
-```
-
-**Legacy integrated index**
-
-> [!NOTE]
+> [tab] Document index
 >
-> This example uses the legacy Records API, which works only with [legacy integrated indexes](/guides/index-data/create-an-index#integrated-embedding-legacy) created with `create_index_for_model`. For new projects, use a document index with [integrated embedding](/guides/search/integrated-embedding) instead, which you can combine with full-text search on the same field.
+> On a document index with [integrated embedding](/guides/search/integrated-embedding), you search with query text, and Pinecone embeds it with the model declared on the field. This example assumes a `chunk_text` field declared with `embed`.
+>
+> ```python Python theme={null}
+> from pinecone import Pinecone
+>
+> pc = Pinecone(api_key="YOUR_API_KEY")
+>
+> # To get the unique host for an index,
+> # see https://docs.pinecone.io/guides/manage-data/target-an-index
+> index = pc.index(host="INDEX_HOST")
+>
+> filtered_results = index.documents.search(
+>     namespace="example-namespace",
+>     top_k=3,
+>     score_by=[
+>         {"type": "embed", "fields": ["chunk_text"], "query": "Disease prevention"}
+>     ],
+>     filter={"category": {"$eq": "digestive system"}},
+>     include_fields=["category", "chunk_text"],
+> )
+>
+> print(filtered_results)
+> ```
+>
+> ```javascript JavaScript theme={null}
+> import { Pinecone } from '@pinecone-database/pinecone';
+>
+> const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+>
+> // To get the unique host for an index,
+> // see https://docs.pinecone.io/guides/manage-data/target-an-index
+> const index = pc.index({ host: 'INDEX_HOST', namespace: 'example-namespace' });
+>
+> const response = await index.documents.search({
+>   topK: 3,
+>   scoreBy: [
+>     { type: 'embed', fields: ['chunk_text'], query: 'Disease prevention' },
+>   ],
+>   filter: { category: { $eq: 'digestive system' } },
+>   includeFields: ['category', 'chunk_text'],
+> });
+>
+> console.log(response);
+> ```
+>
+> ```go Go theme={null}
+> package main
+>
+> import (
+> 	"context"
+> 	"encoding/json"
+> 	"fmt"
+> 	"log"
+>
+> 	"github.com/pinecone-io/go-pinecone/v7/pinecone"
+> )
+>
+> func prettifyStruct(obj interface{}) string {
+> 	bytes, _ := json.MarshalIndent(obj, "", "  ")
+> 	return string(bytes)
+> }
+>
+> func main() {
+> 	ctx := context.Background()
+>
+> 	pc, err := pinecone.NewClient(pinecone.NewClientParams{
+> 		ApiKey: "YOUR_API_KEY",
+> 	})
+> 	if err != nil {
+> 		log.Fatalf("Failed to create Client: %v", err)
+> 	}
+>
+> 	// To get the unique host for an index,
+> 	// see https://docs.pinecone.io/guides/manage-data/target-an-index
+> 	idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST", Namespace: "example-namespace"})
+> 	if err != nil {
+> 		log.Fatalf("Failed to create IndexConnection for Host: %v", err)
+> 	}
+>
+> 	query := "Disease prevention"
+> 	res, err := idxConnection.SearchDocuments(ctx, &pinecone.SearchDocumentsRequest{
+> 		TopK: 3,
+> 		ScoreBy: []pinecone.DocumentScoringMethod{
+> 			{Type: pinecone.DocumentScoringTypeEmbed, Fields: []string{"chunk_text"}, Query: &query},
+> 		},
+> 		Filter: map[string]interface{}{
+> 			"category": map[string]interface{}{"$eq": "digestive system"},
+> 		},
+> 		IncludeFields: []string{"category", "chunk_text"},
+> 	})
+> 	if err != nil {
+> 		log.Fatalf("Failed to search documents: %v", err)
+> 	}
+> 	fmt.Println(prettifyStruct(res))
+> }
+> ```
+>
+> ```bash curl theme={null}
+> INDEX_HOST="INDEX_HOST"
+> NAMESPACE="example-namespace"
+> PINECONE_API_KEY="YOUR_API_KEY"
+>
+> curl "https://$INDEX_HOST/namespaces/$NAMESPACE/documents/search" \
+>   -H "Api-Key: $PINECONE_API_KEY" \
+>   -H "Content-Type: application/json" \
+>   -H "X-Pinecone-Api-Version: 2026-07" \
+>   -d '{
+>     "top_k": 3,
+>     "score_by": [
+>       { "type": "embed", "fields": ["chunk_text"], "query": "Disease prevention" }
+>     ],
+>     "filter": { "category": { "$eq": "digestive system" } },
+>     "include_fields": ["category", "chunk_text"]
+>   }'
+> ```
 
-```python Python theme={null}
-from pinecone import Pinecone
+> [tab] Vector index
+>
+> ```Python Python theme={null}
+> from pinecone.grpc import PineconeGRPC as Pinecone
+>
+> pc = Pinecone(api_key="YOUR_API_KEY")
+>
+> # To get the unique host for an index, 
+> # see https://docs.pinecone.io/guides/manage-data/target-an-index
+> index = pc.index(host="INDEX_HOST", grpc=True)
+>
+> # Replace with your query embedding, which must match the index's dimension (1536 in this example)
+> query_vector = [0.1] * 1536
+>
+> index.query(
+>     namespace="example-namespace",
+>     vector=query_vector,
+>     top_k=3,
+>     filter={
+>         "category": {"$eq": "digestive system"}
+>     },
+>     include_metadata=True,
+>     include_values=False
+> )
+> ```
+>
+> ```JavaScript JavaScript theme={null}
+> import { Pinecone } from '@pinecone-database/pinecone'
+>
+> const pc = new Pinecone({ apiKey: "YOUR_API_KEY" })
+>
+> // To get the unique host for an index, 
+> // see https://docs.pinecone.io/guides/manage-data/target-an-index
+> const index = pc.index("INDEX_NAME", "INDEX_HOST")
+>
+> // Replace with your query embedding, which must match the index's dimension (1536 in this example)
+> const queryVector = new Array(1536).fill(0.1);
+>
+> const queryResponse = await index.namespace('example-namespace').query({
+>     vector: queryVector,
+>     topK: 3,
+>     filter: {
+>         "category": { "$eq": "digestive system" }
+>     },
+>     includeValues: false,
+>     includeMetadata: true,
+> });
+> ```
+>
+> ```java Java theme={null}
+> import com.google.protobuf.Struct;
+> import com.google.protobuf.Value;
+> import io.pinecone.clients.Index;
+> import io.pinecone.configs.PineconeConfig;
+> import io.pinecone.configs.PineconeConnection;
+> import io.pinecone.unsigned_indices_model.QueryResponseWithUnsignedIndices;
+>
+> import java.util.Collections;
+> import java.util.List;
+>
+> public class QueryExample {
+>     public static void main(String[] args) {
+>         PineconeConfig config = new PineconeConfig("YOUR_API_KEY");
+>         // To get the unique host for an index, 
+>         // see https://docs.pinecone.io/guides/manage-data/target-an-index
+>         config.setHost("INDEX_HOST");
+>         PineconeConnection connection = new PineconeConnection(config);
+>         Index index = new Index(config, connection, "INDEX_NAME");
+>         // Replace with your query embedding, which must match the index's dimension (1536 in this example)
+>         List<Float> query = Collections.nCopies(1536, 0.1f);
+>         Struct filter = Struct.newBuilder()
+>                 .putFields("category", Value.newBuilder()
+>                         .setStructValue(Struct.newBuilder()
+>                                 .putFields("$eq", Value.newBuilder()
+>                                         .setStringValue("digestive system")
+>                                         .build()))
+>                         .build())
+>                 .build();
+>
+>         QueryResponseWithUnsignedIndices queryResponse = index.query(3, query, null, null, null, "example-namespace", filter, false, true);
+>         System.out.println(queryResponse);
+>     }
+> }
+> ```
+>
+> ```go Go theme={null}
+> package main
+>
+> import (
+>     "context"
+>     "encoding/json"
+>     "fmt"
+>     "log"
+>
+>     "github.com/pinecone-io/go-pinecone/v7/pinecone"
+>     "google.golang.org/protobuf/types/known/structpb"
+> )
+>
+> func prettifyStruct(obj interface{}) string {
+> 	bytes, _ := json.MarshalIndent(obj, "", "  ")
+> 	return string(bytes)
+> }
+>
+> func main() {
+>     ctx := context.Background()
+>
+>     pc, err := pinecone.NewClient(pinecone.NewClientParams{
+>         ApiKey: "YOUR_API_KEY",
+>     })
+>     if err != nil {
+>         log.Fatalf("Failed to create Client: %v", err)
+>     }
+>
+>     // To get the unique host for an index, 
+>     // see https://docs.pinecone.io/guides/manage-data/target-an-index
+>     idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST", Namespace: "example-namespace"})
+>     if err != nil {
+>         log.Fatalf("Failed to create IndexConnection for Host: %v", err)
+>   	}
+>
+>     // Replace with your query embedding, which must match the index's dimension (1536 in this example)
+>     queryVector := make([]float32, 1536)
+>     for i := range queryVector {
+>         queryVector[i] = 0.1
+>     }
+>
+>     metadataMap := map[string]interface{}{
+>         "category": map[string]interface{}{
+>             "$eq": "digestive system",
+>         },
+>     }
+>
+>     metadataFilter, err := structpb.NewStruct(metadataMap)
+>     if err != nil {
+>         log.Fatalf("Failed to create metadata map: %v", err)
+>     }
+>
+>     res, err := idxConnection.QueryByVectorValues(ctx, &pinecone.QueryByVectorValuesRequest{
+>         Vector:          queryVector,
+>         TopK:            3,
+>         MetadataFilter: metadataFilter,
+>         IncludeValues:   false,
+>         IncludeMetadata: true,
+>     })
+>     if err != nil {
+>         log.Fatalf("Error encountered when querying by vector: %v", err)
+>     } else {
+>         fmt.Printf(prettifyStruct(res))
+>     }
+> }
+> ```
+>
+> ```bash curl theme={null}
+> # To get the unique host for an index,
+> # see https://docs.pinecone.io/guides/manage-data/target-an-index
+> PINECONE_API_KEY="YOUR_API_KEY"
+> INDEX_HOST="INDEX_HOST"
+>
+> # Stand-in built with jq. Replace with your query embedding, which must match the index's dimension (1536 in this example)
+> QUERY_VECTOR=$(jq -nc '[range(1536) | 0.1]')
+>
+> curl "https://$INDEX_HOST/query" \
+>   -H "Api-Key: $PINECONE_API_KEY" \
+>   -H 'Content-Type: application/json' \
+>   -H "X-Pinecone-Api-Version: 2026-07" \
+>   -d '{
+>         "vector": '"$QUERY_VECTOR"',
+>         "namespace": "example-namespace",
+>         "topK": 3,
+>         "filter": {"category": {"$eq": "digestive system"}},
+>         "includeMetadata": true,
+>         "includeValues": false
+>     }'
+> ```
 
-pc = Pinecone(api_key="YOUR_API_KEY")
-
-# To get the unique host for an index, 
-# see https://docs.pinecone.io/guides/manage-data/target-an-index
-index = pc.index(host="INDEX_HOST")
-
-filtered_results = index.search(
-    namespace="example-namespace", 
-    query={
-        "inputs": {"text": "Disease prevention"}, 
-        "top_k": 3,
-        "filter": {"category": "digestive system"},
-    },
-    fields=["category", "chunk_text"]
-)
-
-print(filtered_results)
-```
-
-```javascript JavaScript theme={null}
-import { Pinecone } from '@pinecone-database/pinecone'
-
-const pc = new Pinecone({ apiKey: "YOUR_API_KEY" })
-
-// To get the unique host for an index, 
-// see https://docs.pinecone.io/guides/manage-data/target-an-index
-const namespace = pc.index("INDEX_NAME", "INDEX_HOST").namespace("example-namespace");
-
-const response = await namespace.searchRecords({
-  query: {
-    topK: 3,
-    inputs: { text: "Disease prevention" },
-    filter: { category: "digestive system" }
-  },
-  fields: ['chunk_text', 'category']
-});
-
-console.log(response);
-```
-
-```java Java theme={null}
-import io.pinecone.clients.Index;
-import io.pinecone.configs.PineconeConfig;
-import io.pinecone.configs.PineconeConnection;
-import org.openapitools.db_data.client.ApiException;
-import org.openapitools.db_data.client.model.SearchRecordsResponse;
-
-import java.util.*;
-
-public class SearchText {
-    public static void main(String[] args) throws ApiException {
-        PineconeConfig config = new PineconeConfig("YOUR_API_KEY");
-        // To get the unique host for an index, 
-        // see https://docs.pinecone.io/guides/manage-data/target-an-index
-        config.setHost("INDEX_HOST");
-        PineconeConnection connection = new PineconeConnection(config);
-
-        Index index = new Index(config, connection, "integrated-dense-java");
-
-        String query = "Disease prevention";
-        List<String> fields = new ArrayList<>();
-        fields.add("category");
-        fields.add("chunk_text");
-
-        Map<String, Object> filter = new HashMap<>();
-        filter.put("category", "digestive system");
-
-        // Search the index
-        SearchRecordsResponse recordsResponse = index.searchRecordsByText(query,  "example-namespace", fields, 3, filter, null);
-
-        // Print the results
-        System.out.println(recordsResponse);
-    }
-}
-```
-
-```go Go theme={null}
-package main
-
-import (
-    "context"
-    "encoding/json"
-    "fmt"
-    "log"
-
-    "github.com/pinecone-io/go-pinecone/v7/pinecone"
-)
-
-func prettifyStruct(obj interface{}) string {
-  	bytes, _ := json.MarshalIndent(obj, "", "  ")
-    return string(bytes)
-}
-
-func main() {
-    ctx := context.Background()
-
-    pc, err := pinecone.NewClient(pinecone.NewClientParams{
-        ApiKey: "YOUR_API_KEY",
-    })
-    if err != nil {
-        log.Fatalf("Failed to create Client: %v", err)
-    }
-
-    // To get the unique host for an index, 
-    // see https://docs.pinecone.io/guides/manage-data/target-an-index
-    idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST", Namespace: "example-namespace"})
-    if err != nil {
-        log.Fatalf("Failed to create IndexConnection for Host: %v", err)
-    } 
-
-    metadataMap := map[string]interface{}{
-        "category": map[string]interface{}{
-            "$eq": "digestive system",
-        },
-    }
-    res, err := idxConnection.SearchRecords(ctx, &pinecone.SearchRecordsRequest{
-        Query: pinecone.SearchRecordsQuery{
-            TopK: 3,
-            Inputs: &map[string]interface{}{
-                "text": "Disease prevention",
-            },
-            Filter: &metadataMap,
-        },
-        Fields: &[]string{"chunk_text", "category"},
-    })
-    if err != nil {
-        log.Fatalf("Failed to search records: %v", err)
-    }
-    fmt.Printf(prettifyStruct(res))
-}
-```
-
-```shell curl theme={null}
-INDEX_HOST="INDEX_HOST"
-NAMESPACE="YOUR_NAMESPACE"
-PINECONE_API_KEY="YOUR_API_KEY"
-
-curl "https://$INDEX_HOST/records/namespaces/$NAMESPACE/search" \
-  -H "Accept: application/json" \
-  -H "Content-Type: application/json" \
-  -H "Api-Key: $PINECONE_API_KEY" \
-  -H "X-Pinecone-Api-Version: 2026-07" \
-  -d '{
-        "query": {
-            "inputs": {"text": "Disease prevention"},
-            "top_k": 3,
-            "filter": {"category": "digestive system"}
-        },
-        "fields": ["category", "chunk_text"]
-     }'
-```
+> [tab] Legacy integrated index
+>
+> > [!NOTE]
+> >
+> > This example uses the legacy Records API, which works only with [legacy integrated indexes](/guides/index-data/create-an-index#integrated-embedding-legacy) created with `create_index_for_model`. For new projects, use a document index with [integrated embedding](/guides/search/integrated-embedding) instead, which you can combine with full-text search on the same field.
+>
+> ```python Python theme={null}
+> from pinecone import Pinecone
+>
+> pc = Pinecone(api_key="YOUR_API_KEY")
+>
+> # To get the unique host for an index, 
+> # see https://docs.pinecone.io/guides/manage-data/target-an-index
+> index = pc.index(host="INDEX_HOST")
+>
+> filtered_results = index.search(
+>     namespace="example-namespace", 
+>     query={
+>         "inputs": {"text": "Disease prevention"}, 
+>         "top_k": 3,
+>         "filter": {"category": "digestive system"},
+>     },
+>     fields=["category", "chunk_text"]
+> )
+>
+> print(filtered_results)
+> ```
+>
+> ```javascript JavaScript theme={null}
+> import { Pinecone } from '@pinecone-database/pinecone'
+>
+> const pc = new Pinecone({ apiKey: "YOUR_API_KEY" })
+>
+> // To get the unique host for an index, 
+> // see https://docs.pinecone.io/guides/manage-data/target-an-index
+> const namespace = pc.index("INDEX_NAME", "INDEX_HOST").namespace("example-namespace");
+>
+> const response = await namespace.searchRecords({
+>   query: {
+>     topK: 3,
+>     inputs: { text: "Disease prevention" },
+>     filter: { category: "digestive system" }
+>   },
+>   fields: ['chunk_text', 'category']
+> });
+>
+> console.log(response);
+> ```
+>
+> ```java Java theme={null}
+> import io.pinecone.clients.Index;
+> import io.pinecone.configs.PineconeConfig;
+> import io.pinecone.configs.PineconeConnection;
+> import org.openapitools.db_data.client.ApiException;
+> import org.openapitools.db_data.client.model.SearchRecordsResponse;
+>
+> import java.util.*;
+>
+> public class SearchText {
+>     public static void main(String[] args) throws ApiException {
+>         PineconeConfig config = new PineconeConfig("YOUR_API_KEY");
+>         // To get the unique host for an index, 
+>         // see https://docs.pinecone.io/guides/manage-data/target-an-index
+>         config.setHost("INDEX_HOST");
+>         PineconeConnection connection = new PineconeConnection(config);
+>
+>         Index index = new Index(config, connection, "integrated-dense-java");
+>
+>         String query = "Disease prevention";
+>         List<String> fields = new ArrayList<>();
+>         fields.add("category");
+>         fields.add("chunk_text");
+>
+>         Map<String, Object> filter = new HashMap<>();
+>         filter.put("category", "digestive system");
+>
+>         // Search the index
+>         SearchRecordsResponse recordsResponse = index.searchRecordsByText(query,  "example-namespace", fields, 3, filter, null);
+>
+>         // Print the results
+>         System.out.println(recordsResponse);
+>     }
+> }
+> ```
+>
+> ```go Go theme={null}
+> package main
+>
+> import (
+>     "context"
+>     "encoding/json"
+>     "fmt"
+>     "log"
+>
+>     "github.com/pinecone-io/go-pinecone/v7/pinecone"
+> )
+>
+> func prettifyStruct(obj interface{}) string {
+>   	bytes, _ := json.MarshalIndent(obj, "", "  ")
+>     return string(bytes)
+> }
+>
+> func main() {
+>     ctx := context.Background()
+>
+>     pc, err := pinecone.NewClient(pinecone.NewClientParams{
+>         ApiKey: "YOUR_API_KEY",
+>     })
+>     if err != nil {
+>         log.Fatalf("Failed to create Client: %v", err)
+>     }
+>
+>     // To get the unique host for an index, 
+>     // see https://docs.pinecone.io/guides/manage-data/target-an-index
+>     idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST", Namespace: "example-namespace"})
+>     if err != nil {
+>         log.Fatalf("Failed to create IndexConnection for Host: %v", err)
+>     } 
+>
+>     metadataMap := map[string]interface{}{
+>         "category": map[string]interface{}{
+>             "$eq": "digestive system",
+>         },
+>     }
+>     res, err := idxConnection.SearchRecords(ctx, &pinecone.SearchRecordsRequest{
+>         Query: pinecone.SearchRecordsQuery{
+>             TopK: 3,
+>             Inputs: &map[string]interface{}{
+>                 "text": "Disease prevention",
+>             },
+>             Filter: &metadataMap,
+>         },
+>         Fields: &[]string{"chunk_text", "category"},
+>     })
+>     if err != nil {
+>         log.Fatalf("Failed to search records: %v", err)
+>     }
+>     fmt.Printf(prettifyStruct(res))
+> }
+> ```
+>
+> ```shell curl theme={null}
+> INDEX_HOST="INDEX_HOST"
+> NAMESPACE="YOUR_NAMESPACE"
+> PINECONE_API_KEY="YOUR_API_KEY"
+>
+> curl "https://$INDEX_HOST/records/namespaces/$NAMESPACE/search" \
+>   -H "Accept: application/json" \
+>   -H "Content-Type: application/json" \
+>   -H "Api-Key: $PINECONE_API_KEY" \
+>   -H "X-Pinecone-Api-Version: 2026-07" \
+>   -d '{
+>         "query": {
+>             "inputs": {"text": "Disease prevention"},
+>             "top_k": 3,
+>             "filter": {"category": "digestive system"}
+>         },
+>         "fields": ["category", "chunk_text"]
+>      }'
+> ```
 
 ## Metadata filter expressions
 

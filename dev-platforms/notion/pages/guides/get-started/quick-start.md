@@ -102,7 +102,7 @@ main();
 
 The `markdown` field accepts [enhanced markdown](/guides/data-apis/enhanced-markdown) — headings, lists, code blocks, links, and more. The API converts it to Notion blocks for you.
 
-> **Under the hood: markdown → blocks**
+> [accordion] Under the hood: markdown → blocks
 >
 > Notion pages are made up of **blocks** — headings, paragraphs, lists, and more. When you send `markdown`, the API converts it into this block structure automatically.
 >
@@ -180,7 +180,7 @@ To see your new page:
 
 Open the page and you should see your heading, paragraph, and bullet list inside.
 
-> **Getting an error?**
+> [accordion] Getting an error?
 >
 > Error responses return a JSON object with a `code` and `message`:
 >
@@ -204,10 +204,10 @@ Open the page and you should see your heading, paragraph, and bullet list inside
 
 Now that you've made your first request, explore what else you can build — create databases, query content, manage comments, upload files, and more.
 
-> **[API reference](/reference/intro)**
+> [card] [API reference](/reference/intro)
 >
 > Browse every endpoint, request parameter, and response field.
 
-> **[JavaScript SDK](https://github.com/makenotion/notion-sdk-js)**
+> [card] [JavaScript SDK](https://github.com/makenotion/notion-sdk-js)
 >
 > Official client library for Node.js.

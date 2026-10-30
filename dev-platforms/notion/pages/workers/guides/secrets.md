@@ -180,18 +180,18 @@ See the [CLI command reference](/cli/reference/commands) for all `ntn workers en
 
 ## Next steps
 
-> **[OAuth](/workers/guides/oauth)**
+> [card] [OAuth](/workers/guides/oauth)
 >
 > Authenticate with third-party APIs using OAuth.
 
-> **[Syncs](/workers/guides/syncs)**
+> [card] [Syncs](/workers/guides/syncs)
 >
 > Sync external data into Notion databases.
 
-> **[Agent tools](/workers/guides/tools)**
+> [card] [Agent tools](/workers/guides/tools)
 >
 > Build custom tools for Notion AI.
 
-> **[Webhooks](/workers/guides/webhooks)**
+> [card] [Webhooks](/workers/guides/webhooks)
 >
 > Receive HTTP events from external services.

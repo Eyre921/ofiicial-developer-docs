@@ -8,19 +8,19 @@ pg_pinecone is an open-source PostgreSQL extension that runs the search engine P
 
 pg\_pinecone is an open-source PostgreSQL extension, licensed under [Apache 2.0](https://github.com/pinecone-io/pg_pinecone/blob/main/LICENSE), that brings Pinecone's vector search into the Postgres database you already run. It runs on PostgreSQL 17 and 18 servers you manage yourself, because installing it needs superuser access. The `remote` engine and full-text search also need a server setting.
 
-> **[Quickstart](/guides/pg-pinecone/quickstart)**
+> [card] [Quickstart](/guides/pg-pinecone/quickstart)
 >
 > Install the extension and search a table with a native index.
 
-> **[Storage engines](/guides/pg-pinecone/storage-engines)**
+> [card] [Storage engines](/guides/pg-pinecone/storage-engines)
 >
 > The pgvector, native, and remote engines, and when to use each.
 
-> **[Switch from pgvector to native](/guides/pg-pinecone/switch-from-pgvector)**
+> [card] [Switch from pgvector to native](/guides/pg-pinecone/switch-from-pgvector)
 >
 > Replace a table's pgvector index with a native index.
 
-> **[Switch from native to remote](/guides/pg-pinecone/switch-to-remote)**
+> [card] [Switch from native to remote](/guides/pg-pinecone/switch-to-remote)
 >
 > Switch a table to the remote engine when it outgrows one server.
 

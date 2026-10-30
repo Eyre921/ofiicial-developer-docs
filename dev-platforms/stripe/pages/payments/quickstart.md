@@ -1193,13 +1193,13 @@ async function handleSubmit(e) {
     "express": "^4.17.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.16.0",
-    "stripe": "^8.202.0"
+    "react-router-dom": "^7.18.4",
+    "stripe": "^23.0.0"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.3.0",
-    "concurrently": "^8.2.0",
-    "vite": "^5.2.11"
+    "@vitejs/plugin-react": "^6.1.1",
+    "concurrently": "^10.0.5",
+    "vite": "^8.3.1"
   },
   "scripts": {
     "start-client": "vite",
@@ -1217,11 +1217,11 @@ async function handleSubmit(e) {
     "@stripe/stripe-js": "^9.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.16.0"
+    "react-router-dom": "^7.18.4"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.3.0",
-    "vite": "^5.2.11"
+    "@vitejs/plugin-react": "^6.1.1",
+    "vite": "^8.3.1"
   },
   "scripts": {
     "start": "vite",

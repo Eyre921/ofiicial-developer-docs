@@ -38,100 +38,100 @@ If your index is at around 90% fullness, we recommend increasing its size. This 
 
 You can increase the pod size in the Pinecone console or using the API.
 
-**Console**
+> [tab] Console
+>
+> 1. Open the [Pinecone console](https://app.pinecone.io/organizations/-/projects).
+> 2. Select the project containing the index you want to configure.
+> 3. Go to **Database > Indexes**.
+> 4. Select the index.
+> 5. Click **ellipsis (...) menu > Configure**.
+> 6. In the dropdown, choose the pod size to use.
+> 7. Click **Confirm**.
 
-1. Open the [Pinecone console](https://app.pinecone.io/organizations/-/projects).
-2. Select the project containing the index you want to configure.
-3. Go to **Database > Indexes**.
-4. Select the index.
-5. Click **ellipsis (...) menu > Configure**.
-6. In the dropdown, choose the pod size to use.
-7. Click **Confirm**.
-
-**API**
-
-Use the [Configure an index](/reference/api/latest/control-plane/configure_index) operation and append the new size to the `pod_type` parameter, separated by a period (.).
-
-**Example**
-
-The following example assumes that `docs-example` has size `x1` and increases the size to `x2`.
-
-```Python Python theme={null}
-from pinecone.grpc import PineconeGRPC as Pinecone
-
-pc = Pinecone(api_key="YOUR_API_KEY")
-
-pc.configure_index("docs-example", pod_type="s1.x2")
-```
-
-```JavaScript JavaScript theme={null}
-import { Pinecone } from '@pinecone-database/pinecone'
-
-const pinecone = new Pinecone({
-  apiKey: 'YOUR_API_KEY'
-});
-
-await pc.configureIndex('docs-example', {
-  spec: {
-    pod: {
-      podType: 's1.x2',
-    },
-  },
-});
-```
-
-```java Java theme={null}
-import io.pinecone.clients.Pinecone;
-
-public class ConfigureIndexExample {
-    public static void main(String[] args) {
-        Pinecone pc = new Pinecone.Builder("PINECONE_API_KEY").build();
-        pc.configurePodsIndex("docs-example", "s1.x2");
-    }
-}
-```
-
-```go Go theme={null}
-package main
-
-import (
-    "context"
-    "fmt"
-    "log"
-
-    "github.com/pinecone-io/go-pinecone/v7/pinecone"
-)
-
-func main() {
-    ctx := context.Background()
-
-    pc, err := pinecone.NewClient(pinecone.NewClientParams{
-        ApiKey: "YOUR_API_KEY",
-    })
-    if err != nil {
-        log.Fatalf("Failed to create Client: %v", err)
-    }
-
-    idx, err := pc.ConfigureIndex(ctx, "docs-example", pinecone.ConfigureIndexParams{PodType: "s1.x2"})
-  	if err != nil {
-        log.Fatalf("Failed to configure index \"%v\": %v", idx.Name, err)
-    } else {
-        fmt.Printf("Successfully configured index \"%v\"", idx.Name)
-    }
-}
-```
-
-```bash curl theme={null}
-PINECONE_API_KEY="YOUR_API_KEY"
-
-curl -s -X PATCH "https://api.pinecone.io/indexes/docs-example-curl" \
-  -H "Content-Type: application/json" \
-  -H "Api-Key: $PINECONE_API_KEY" \
-  -H "X-Pinecone-Api-Version: 2025-10" \
-  -d '{
-         "pod_type": "s1.x2"
-      }'
-```
+> [tab] API
+>
+> Use the [Configure an index](/reference/api/latest/control-plane/configure_index) operation and append the new size to the `pod_type` parameter, separated by a period (.).
+>
+> **Example**
+>
+> The following example assumes that `docs-example` has size `x1` and increases the size to `x2`.
+>
+> ```Python Python theme={null}
+> from pinecone.grpc import PineconeGRPC as Pinecone
+>
+> pc = Pinecone(api_key="YOUR_API_KEY")
+>
+> pc.configure_index("docs-example", pod_type="s1.x2")
+> ```
+>
+> ```JavaScript JavaScript theme={null}
+> import { Pinecone } from '@pinecone-database/pinecone'
+>
+> const pinecone = new Pinecone({
+>   apiKey: 'YOUR_API_KEY'
+> });
+>
+> await pc.configureIndex('docs-example', {
+>   spec: {
+>     pod: {
+>       podType: 's1.x2',
+>     },
+>   },
+> });
+> ```
+>
+> ```java Java theme={null}
+> import io.pinecone.clients.Pinecone;
+>
+> public class ConfigureIndexExample {
+>     public static void main(String[] args) {
+>         Pinecone pc = new Pinecone.Builder("PINECONE_API_KEY").build();
+>         pc.configurePodsIndex("docs-example", "s1.x2");
+>     }
+> }
+> ```
+>
+> ```go Go theme={null}
+> package main
+>
+> import (
+>     "context"
+>     "fmt"
+>     "log"
+>
+>     "github.com/pinecone-io/go-pinecone/v7/pinecone"
+> )
+>
+> func main() {
+>     ctx := context.Background()
+>
+>     pc, err := pinecone.NewClient(pinecone.NewClientParams{
+>         ApiKey: "YOUR_API_KEY",
+>     })
+>     if err != nil {
+>         log.Fatalf("Failed to create Client: %v", err)
+>     }
+>
+>     idx, err := pc.ConfigureIndex(ctx, "docs-example", pinecone.ConfigureIndexParams{PodType: "s1.x2"})
+>   	if err != nil {
+>         log.Fatalf("Failed to configure index \"%v\": %v", idx.Name, err)
+>     } else {
+>         fmt.Printf("Successfully configured index \"%v\"", idx.Name)
+>     }
+> }
+> ```
+>
+> ```bash curl theme={null}
+> PINECONE_API_KEY="YOUR_API_KEY"
+>
+> curl -s -X PATCH "https://api.pinecone.io/indexes/docs-example-curl" \
+>   -H "Content-Type: application/json" \
+>   -H "Api-Key: $PINECONE_API_KEY" \
+>   -H "X-Pinecone-Api-Version: 2025-10" \
+>   -d '{
+>          "pod_type": "s1.x2"
+>       }'
+> ```
 
 > [!NOTE]
 >

@@ -54,37 +54,37 @@ npm install --save-dev @types/node
 
 ### Alternative libraries for other languages
 
-> **Python**
+> [accordion] Python
 >
 > * **MCP SDK**: [python-sdk](https://github.com/modelcontextprotocol/python-sdk) (official)
 > * **OAuth 2.0**: [`authlib`](https://docs.authlib.org) (recommended) or [`requests-oauthlib`](https://requests-oauthlib.readthedocs.io)
 > * **PKCE**: Built into both `authlib` and `requests-oauthlib`
 
-> **Go**
+> [accordion] Go
 >
 > * **MCP SDK**: [go-sdk](https://github.com/modelcontextprotocol/go-sdk) (official)
 > * **OAuth 2.0**: [`golang.org/x/oauth2`](https://pkg.go.dev/golang.org/x/oauth2) (official extended package)
 > * **PKCE**: Supported via `oauth2.SetAuthURLParam("code_challenge", ...)` and `oauth2.SetAuthURLParam("code_challenge_method", "S256")`
 
-> **Rust**
+> [accordion] Rust
 >
 > * **MCP SDK**: [rust-sdk](https://github.com/modelcontextprotocol/rust-sdk) (official)
 > * **OAuth 2.0**: [`oauth2`](https://docs.rs/oauth2) crate
 > * **PKCE**: Built into `oauth2` crate via `PkceCodeChallenge` and `PkceCodeVerifier`
 
-> **Java**
+> [accordion] Java
 >
 > * **MCP SDK**: Use HTTP client libraries (Apache HttpClient, OkHttp, or Java 11+ `HttpClient`)
 > * **OAuth 2.0**: [`Spring Security OAuth2`](https://docs.spring.io/spring-security/reference/servlet/oauth2/index.html) (recommended) or [`ScribeJava`](https://github.com/scribejava/scribejava)
 > * **PKCE**: Built into Spring Security OAuth2 Client; supported in ScribeJava via `PKCE` configuration
 
-> **C# / .NET**
+> [accordion] C# / .NET
 >
 > * **MCP SDK**: Use `HttpClient` with [`System.Net.Http.Json`](https://learn.microsoft.com/en-us/dotnet/api/system.net.http.json)
 > * **OAuth 2.0**: [`IdentityModel.OidcClient`](https://github.com/IdentityModel/IdentityModel.OidcClient) or [`Microsoft.Identity.Web`](https://learn.microsoft.com/en-us/azure/active-directory/develop/microsoft-identity-web)
 > * **PKCE**: Built into both libraries
 
-> **Ruby**
+> [accordion] Ruby
 >
 > * **MCP SDK**: Use `Net::HTTP` (standard library) or [`Faraday`](https://lostisland.github.io/faraday/)
 > * **OAuth 2.0**: [`oauth2`](https://github.com/oauth-xx/oauth2) gem
@@ -1064,31 +1064,31 @@ class NotionMcpClient {
 
 ## Troubleshooting
 
-> **Invalid state parameter**
+> [accordion] Invalid state parameter
 >
 > * Store the state securely and validate on callback
 > * Expire after \~10 minutes
 
-> **Invalid code\_verifier**
+> [accordion] Invalid code\_verifier
 >
 > * Use the exact verifier that produced the code\_challenge
 > * Ensure base64url encoding (no +, /, =)
 
-> **Discovery fails**
+> [accordion] Discovery fails
 >
 > * Use RFC 9470 (protected resource) then RFC 8414 (authorization server)
 > * Confirm server supports OAuth and your URL is correct
 
-> **Connection timeout**
+> [accordion] Connection timeout
 >
 > * Prefer Streamable HTTP; fall back to SSE
 > * Check proxy or firewall rules
 
-> **CORS errors in browser**
+> [accordion] CORS errors in browser
 >
 > * Do token exchange server-side; browser should only handle redirects
 
-> **Token refresh fails with invalid\_grant**
+> [accordion] Token refresh fails with invalid\_grant
 >
 > When refresh returns `{ "error": "invalid_grant" }`, the refresh token is
 > invalid, expired, revoked, or superseded by rotation. Do not retry refresh;

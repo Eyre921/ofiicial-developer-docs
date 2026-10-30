@@ -20,7 +20,7 @@ Use this guide when you want users to hold a button, ask your app a question out
 
 The finished button in Chrome. Hold it, ask, release, and the answer plays back in about ten seconds; the wait while it thinks is shortened in this clip. The follow-up says only “it”, and the agent knows it means the sky.
 
-> **Transcript**
+> [accordion] Transcript
 >
 > **You:** Why is the sky blue?
 >

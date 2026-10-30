@@ -52,27 +52,27 @@ SELECT table_name, mode, index_name, backlog FROM pinecone.status();
 
 Run the quickstart's query again, unchanged:
 
-**Your own vectors**
+> [tab] Your own vectors
+>
+> ```sql SQL theme={null}
+> SET enable_seqscan = off;
+>
+> SELECT id, body
+> FROM docs
+> ORDER BY embedding <=> '[1, 0, 0]'
+> LIMIT 2;
+> ```
 
-```sql SQL theme={null}
-SET enable_seqscan = off;
-
-SELECT id, body
-FROM docs
-ORDER BY embedding <=> '[1, 0, 0]'
-LIMIT 2;
-```
-
-**Pinecone embeddings**
-
-```sql SQL theme={null}
-SET enable_seqscan = off;
-
-SELECT id, body
-FROM docs
-ORDER BY embedding <=> (SELECT pinecone.embed('What should I order for breakfast at a cafe?')::vector)
-LIMIT 2;
-```
+> [tab] Pinecone embeddings
+>
+> ```sql SQL theme={null}
+> SET enable_seqscan = off;
+>
+> SELECT id, body
+> FROM docs
+> ORDER BY embedding <=> (SELECT pinecone.embed('What should I order for breakfast at a cafe?')::vector)
+> LIMIT 2;
+> ```
 
 Pinecone now serves the results. The new index also appears in the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/indexes) under the name `pinecone.status()` reports.
 

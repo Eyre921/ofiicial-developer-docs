@@ -385,22 +385,22 @@ See the [CLI command reference](/cli/reference/commands) for all `ntn workers` f
 
 ## Next steps
 
-> **[Secrets](/workers/guides/secrets)**
+> [card] [Secrets](/workers/guides/secrets)
 >
 > Store webhook signing secrets and API keys.
 
-> **[Notion API](/workers/guides/api-client)**
+> [card] [Notion API](/workers/guides/api-client)
 >
 > Read and write Notion data from a webhook handler.
 
-> **[OAuth](/workers/guides/oauth)**
+> [card] [OAuth](/workers/guides/oauth)
 >
 > Authenticate with third-party APIs from your webhook.
 
-> **[SDK reference](/workers/reference/sdk#worker-webhook)**
+> [card] [SDK reference](/workers/reference/sdk#worker-webhook)
 >
 > Detailed API docs for worker.webhook() and WebhookVerificationError.
 
-> **[Limits](/workers/reference/limits)**
+> [card] [Limits](/workers/reference/limits)
 >
 > Webhook ingress and run rate limits.

@@ -16945,6 +16945,11 @@ Authenticate backend requests with environment-specific API keys.
 > API keys grant access to your Trigger.dev environment. Store them in a secret manager or backend
 > environment variable, never commit them to source control, and never expose them in frontend code.
 
+> [!TIP]
+>
+> To access AWS or another external service from a deployed task without stored cloud keys, use
+> [workload identity](/docs/oidc). Trigger.dev API keys cannot mint OIDC tokens.
+
 ## Create an API key
 
 Create a separate named key for each service or integration that accesses Trigger.dev.
@@ -18137,11 +18142,17 @@ pnpm dlx trigger.dev@latest login
 yarn dlx trigger.dev@latest login
 ```
 
+When the CLI opens your browser, approving the login sends you back to the CLI automatically. If the browser is on another machine, for example when you're connected over SSH, use `--no-browser`: after you approve, the page shows a code to paste into the terminal.
+
 ## Options
 
 **No browser** `--no-browser`
 
-Do not open the browser. Print the URL only.
+Do not open the browser. Print the URL only, and finish the login by pasting the code shown after you approve.
+
+**Code** `--code \<code\>`
+
+Finish a pending login with the code shown in your browser. Use this after `--no-wait`, or when the terminal can't prompt for the code.
 
 **Email** `--email \<email\>`
 
@@ -18788,6 +18799,142 @@ The directory that contains the `package.json` file. Defaults to `.`.
 ### Common options
 
 These options are available on most commands.
+
+**Log level** `--log-level | -l`
+
+The CLI log level to use. Options are `debug`, `info`, `log`, `warn`, `error`, and `none`. This does not affect the log level of your trigger.dev tasks. Defaults to `log`.
+
+**Skip telemetry** `--skip-telemetry`
+
+Opt-out of sending telemetry data. This can also be done via the `TRIGGER_TELEMETRY_DISABLED` environment variable. Just set it to anything other than an empty string.
+
+**Help** `--help | -h`
+
+Shows the help information for the command.
+
+**Version** `--version | -v`
+
+Displays the version number of the CLI.
+
+
+# CLI webhooks commands
+Source: https://trigger.dev/docs/cli-webhooks-commands
+
+Set or generate the signing secret of a hosted webhook endpoint from your terminal, without printing it.
+
+**These commands store a [webhook endpoint's](/docs/webhooks/overview) signing secret without printing it, so the value stays out of your terminal history, logs and AI agent transcripts.** `endpoint` is the endpoint's declared id (the `id` passed to `webhooks.endpoint.define`) or its `wh_` id.
+
+## Replacing an existing secret
+
+When the endpoint already has a secret, both commands ask how long the old one keeps working, with the same choices as the dashboard: stop immediately, 1 hour, 24 hours (the default) or 7 days. In a script or an AI agent, where there's no prompt, pass `--previous-secret-ttl` instead; the command refuses to replace the secret without it, so a rotation can't cut the provider off by accident:
+
+```bash theme={"theme":"css-variables"}
+npx trigger.dev@latest webhooks set-secret stripe --env prod --from-env STRIPE_WEBHOOK_SECRET --previous-secret-ttl 24h
+```
+
+## webhooks set-secret
+
+Stores the signing secret or public key a provider issued, such as the `whsec_` secret Stripe returns when you create a webhook endpoint. It replaces the endpoint's current secret.
+
+Pipe the secret in from the provider's CLI or a file:
+
+```bash npm theme={"theme":"css-variables"}
+stripe webhook_endpoints create -d url="$WEBHOOK_URL" -d "enabled_events[]=checkout.session.completed" \
+  | jq -r .secret \
+  | npx trigger.dev@latest webhooks set-secret stripe --env prod
+```
+
+```bash pnpm theme={"theme":"css-variables"}
+stripe webhook_endpoints create -d url="$WEBHOOK_URL" -d "enabled_events[]=checkout.session.completed" \
+  | jq -r .secret \
+  | pnpm dlx trigger.dev@latest webhooks set-secret stripe --env prod
+```
+
+```bash bun theme={"theme":"css-variables"}
+stripe webhook_endpoints create -d url="$WEBHOOK_URL" -d "enabled_events[]=checkout.session.completed" \
+  | jq -r .secret \
+  | bunx trigger.dev@latest webhooks set-secret stripe --env prod
+```
+
+Or read it from an environment variable. Without `--from-file`, the command checks the shell environment, then the project's `.env`, `.env.development`, `.env.local` and `.env.development.local` files:
+
+```bash theme={"theme":"css-variables"}
+npx trigger.dev@latest webhooks set-secret stripe --env prod --from-env STRIPE_WEBHOOK_SECRET
+```
+
+Run it in a terminal without either option and it asks for the secret with a masked prompt.
+
+**From env** `--from-env`
+
+Read the secret from this environment variable.
+
+**From file** `--from-file`
+
+With `--from-env`, read the variable from this `.env` file only.
+
+**Previous secret TTL** `--previous-secret-ttl`
+
+When the endpoint already has a secret, how long the old one keeps working while the provider switches to the new one: seconds (`3600`) or a duration (`1h`, `24h`, `7d`), at most 7 days. `0` stops it straight away, for a secret that leaked.
+
+## webhooks generate-secret
+
+Generates a new signing secret, for providers that accept a secret you choose, such as GitHub. It replaces the endpoint's current secret.
+
+Save it to an env file, then hand it to the provider by variable name:
+
+```bash theme={"theme":"css-variables"}
+npx trigger.dev@latest webhooks generate-secret github --env prod --to-env GITHUB_WEBHOOK_SECRET
+```
+
+The command writes `GITHUB_WEBHOOK_SECRET` to `.env.local`, creating the file if needed, and prints only where it saved the value. Or pipe it straight into the provider's CLI with `--print`, which outputs the secret and nothing else.
+
+When the output isn't a terminal, the command refuses to print the secret unless you pass `--to-env` or `--print`, so an AI agent running it doesn't capture the value by accident.
+
+**To env** `--to-env`
+
+Save the secret as this variable in an env file.
+
+**To file** `--to-file`
+
+With `--to-env`, the file to save to. Defaults to `.env.local`.
+
+**Print** `--print`
+
+Print only the secret, for piping it into another command.
+
+**Previous secret TTL** `--previous-secret-ttl`
+
+When the endpoint already has a secret, how long the old one keeps working while the provider switches to the new one: seconds (`3600`) or a duration (`1h`, `24h`, `7d`), at most 7 days. `0` stops it straight away, for a secret that leaked.
+
+## Options
+
+**Environment** `--env | -e`
+
+The environment to use: `dev`, `prod`, `staging` or `preview`. Defaults to `prod`.
+
+**Config file** `--config | -c`
+
+The name of the config file found at the project path. Defaults to `trigger.config.ts`
+
+**Project ref** `--project-ref | -p`
+
+The project ref. Required if there is no config file.
+
+**Branch** `--branch | -b`
+
+The branch to use. Required with `--env preview`.
+
+### Common options
+
+These options are available on most commands.
+
+**Login profile** `--profile`
+
+The login profile to use. Defaults to the current profile, which is set by your last `login` or `switch` (initially "default").
+
+**API URL** `--api-url | -a`
+
+Override the default API URL. If not specified, it uses `https://api.trigger.dev`. This can also be set via the `TRIGGER_API_URL` environment variable.
 
 **Log level** `--log-level | -l`
 
@@ -25240,6 +25387,27 @@ The name of the preview branch matches the branch name of the pull request.
 > [!NOTE]
 >
 > Preview branch deployments require the preview environment to be enabled on your project. Learn more about [preview branches](/docs/deployment/preview-branches).
+
+## Ignored paths
+
+Skip builds for pushes that only touch files your tasks do not depend on, such as docs or another app in a monorepo.
+
+Open **Integrations** in your project settings and add the patterns in the git settings panel below the branch fields, one per line. A push builds unless every file changed by the pushed commits matches a pattern. A newly opened pull request compares every file it changes against its base branch in the same way. Some pushes build regardless of the patterns, such as force pushes or pushes that change 300 or more files. Use **Test a path** to check which pattern, if any, ignores a given file.
+
+```text theme={"theme":"css-variables"}
+docs/**
+**/*.md
+apps/web/**
+.github/**
+```
+
+Patterns are globs relative to the repository root and match like `paths-ignore` in GitHub Actions. `**` matches across folders and also matches dotfiles, so `**/*.md` ignores `.github/PULL_REQUEST_TEMPLATE.md`. Negation (`!`), braces (`{a,b}`), extglob groups like `+(...)` and `[!...]` are not supported; use `[^...]` to exclude characters. You can add up to 100 patterns of up to 256 characters each.
+
+When a build is skipped, no deployment is created and the commit's Trigger.dev check is marked as skipped, with the matched patterns in its summary. Re-run that check from GitHub to build the commit anyway.
+
+> [!NOTE]
+>
+> Projects connected to Vercel always build. See [production waits for your tasks](/docs/vercel-integration#production-waits-for-your-tasks).
 
 ## Version skew protection
 
@@ -46783,6 +46951,273 @@ We have several limits to prevent abuse and ensure performance:
 See [Limits](/docs/limits) for current quota details.
 
 
+# Workload identity
+Source: https://trigger.dev/docs/oidc
+
+Access AWS from your tasks without storing long-lived credentials.
+
+> [!NOTE]
+>
+> Workload identity is in private beta on Trigger.dev Cloud. [Contact us](https://trigger.dev/contact)
+> to request access.
+
+Workload identity lets a deployed task on Trigger.dev Cloud access AWS and other services without storing long-lived credentials. It uses OIDC-based workload identity federation: Trigger.dev issues a short-lived OpenID Connect (OIDC) token, and the service validates it before granting the permissions configured for that identity.
+
+## Prerequisites
+
+* Use `@trigger.dev/sdk` and the Trigger.dev CLI (`trigger.dev`) **4.8.3 or later**, including the CLI used by your CI or deployment integration.
+* **Redeploy after upgrading the CLI**, then start a new run on the new deployment. Updating the SDK alone does not update the runner in an existing deployment. Replaying a run against an old deployment does not upgrade it.
+* Request tokens inside the executing task attempt, in Production, Staging, or a Preview environment. Development runs do not receive internal run tokens.
+
+## Set up AWS
+
+**1. Select your deployed environment**
+
+Open your project in the dashboard, select the Production, Staging, or Preview environment that
+needs AWS access, then open [**Workload identity**](https://cloud.trigger.dev/_/oidc) in the environment menu. Configure each environment separately.
+
+**2. Create an IAM OIDC identity provider**
+
+In the AWS IAM console, open **Identity providers → Add provider → OpenID Connect**. Paste the
+**Issuer URL** from the dashboard into **Provider URL** and use `sts.amazonaws.com` as the
+**Audience**. You only need one provider per issuer in an AWS account; reuse it if it already exists.
+
+Alternatively, use the AWS CLI with the exact issuer URL from the dashboard:
+
+```bash theme={"theme":"css-variables"}
+aws iam create-open-id-connect-provider \
+  --url "https://oidc.trigger.dev" \
+  --client-id-list sts.amazonaws.com
+```
+
+For Terraform-managed infrastructure, see [Terraform setup](#terraform-setup) below.
+
+**3. Create an IAM role with the exact trust policy**
+
+Enter your AWS account ID in the dashboard setup page, then copy its trust policy into an IAM
+role's **Trust relationships**. The policy allows `sts:AssumeRoleWithWebIdentity` only when both
+the audience and the complete environment subject match.
+
+Exact matching is the default. Keep the organization ID, project reference, environment type,
+and audience fixed. To share a role across all Preview branches in one project, keep the
+audience under `StringEquals` and use `StringLike` for only the subject. Replace the trust
+policy's `Condition` with:
+
+```json theme={"theme":"css-variables"}
+{
+  "StringEquals": {
+    "oidc.trigger.dev:aud": "sts.amazonaws.com"
+  },
+  "StringLike": {
+    "oidc.trigger.dev:sub": "org:YOUR_ORG_ID:project:YOUR_PROJECT_REF:env:PREVIEW:*"
+  }
+}
+```
+
+Replace the organization ID and project reference with the exact values from your dashboard
+subject. This deliberately trusts all
+current and future Preview branches in that project, including anyone allowed to deploy them.
+Never wildcard the organization or project portions. Keep `PREVIEW` fixed so the role does not
+also trust Production or Staging.
+
+For a single Preview branch, use its persisted environment slug, not the parent environment's
+identity or a branch display name. No session tags or `sts:TagSession` permission are required.
+
+**4. Attach a least-privilege permissions policy**
+
+The trust policy controls who can assume the role. Attach a separate permissions policy that
+controls what the role can do. For example, to read objects under one S3 prefix:
+
+```json theme={"theme":"css-variables"}
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::YOUR_BUCKET/trigger/*"
+    }
+  ]
+}
+```
+
+**5. Install the SDK and AWS dependencies**
+
+```bash theme={"theme":"css-variables"}
+npm install @trigger.dev/sdk@latest @aws-sdk/client-sts @aws-sdk/client-s3
+```
+
+`@aws-sdk/client-sts` is an optional peer dependency of the Trigger.dev SDK. Install it explicitly
+when using the AWS credential provider. Install the AWS service clients your task uses as well.
+
+**6. Use the credential provider and redeploy**
+
+Replace the role ARN, AWS region, bucket, and object key below, or copy the personalized code
+from the dashboard:
+
+```typescript theme={"theme":"css-variables"}
+import { task } from "@trigger.dev/sdk";
+import { awsCredentialProvider } from "@trigger.dev/sdk/oidc/aws";
+import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
+
+export const readFromS3 = task({
+  id: "read-from-s3",
+  run: async () => {
+    const s3 = new S3Client({
+      region: "us-east-1",
+      credentials: awsCredentialProvider({
+        roleArn: "arn:aws:iam::YOUR_AWS_ACCOUNT_ID:role/YOUR_ROLE_NAME",
+        region: "us-east-1",
+      }),
+    });
+
+    const result = await s3.send(
+      new GetObjectCommand({ Bucket: "YOUR_BUCKET", Key: "trigger/example.txt" })
+    );
+    return { contents: await result.Body?.transformToString() };
+  },
+});
+```
+
+```bash theme={"theme":"css-variables"}
+npx trigger.dev@latest deploy
+```
+
+> [!WARNING]
+>
+> Create the AWS client inside `run` and reuse it only within that run. A module-scope client can
+> reuse a previous run's cached credentials and attribute AWS activity to that run.
+
+The provider requires `roleArn` and `region`, and accepts optional `roleSessionName` and `durationSeconds`. The AWS service client's region does not configure the separate STS client. AWS sessions default to 3,600 seconds (one hour), subject to the role's allowed session duration. The default role session name is the current run ID, sanitized to AWS's allowed characters and limited to 64 characters, so AWS activity can be attributed to a run. A role session name is not a session tag.
+
+## Terraform setup
+
+Use these resources instead of creating the provider and role through the console. Copy the exact
+issuer URL and subject from the environment's Workload identity page into the input variables. This
+example uses exact subject matching; attach a least-privilege permissions policy to the role separately,
+as in the setup steps above.
+
+```hcl theme={"theme":"css-variables"}
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+    }
+  }
+}
+
+provider "aws" {
+  region = "us-east-1"
+}
+
+variable "trigger_oidc_issuer" {
+  type = string
+}
+
+variable "trigger_oidc_subject" {
+  type = string
+}
+
+locals {
+  issuer_host = trimsuffix(trimprefix(var.trigger_oidc_issuer, "https://"), "/")
+}
+
+resource "aws_iam_openid_connect_provider" "trigger" {
+  url            = var.trigger_oidc_issuer
+  client_id_list = ["sts.amazonaws.com"]
+}
+
+resource "aws_iam_role" "trigger" {
+  name = "trigger-s3-reader"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow"
+      Action = "sts:AssumeRoleWithWebIdentity"
+      Principal = {
+        Federated = aws_iam_openid_connect_provider.trigger.arn
+      }
+      Condition = {
+        StringEquals = {
+          "${local.issuer_host}:aud" = "sts.amazonaws.com"
+          "${local.issuer_host}:sub" = var.trigger_oidc_subject
+        }
+      }
+    }]
+  })
+}
+```
+
+If the IAM provider already exists, import it into Terraform state rather than creating a duplicate:
+
+```bash theme={"theme":"css-variables"}
+terraform import aws_iam_openid_connect_provider.trigger \
+  arn:aws:iam::YOUR_AWS_ACCOUNT_ID:oidc-provider/oidc.trigger.dev
+```
+
+## Other OIDC integrations
+
+> [!NOTE]
+>
+> More first-party OIDC integrations will be added soon.
+
+For a service that accepts OIDC, request a token with that service's expected audience inside your task:
+
+```typescript theme={"theme":"css-variables"}
+import { auth, task } from "@trigger.dev/sdk";
+
+export const federatedTask = task({
+  id: "federated-task",
+  run: async () => {
+    const { token } = await auth.getOIDCToken({ audience: "https://service.example.com" });
+    // Exchange this token using your service's federation API. Never log the token.
+    const response = await fetch("https://service.example.com/federated-resource", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!response.ok) throw new Error(`Service request failed: ${response.status}`);
+    return response.json();
+  },
+});
+```
+
+`auth.getOIDCToken({ audience })` returns `Promise<{ token: string; expiresAt: Date }>`. If you cache tokens, leave enough time before `expiresAt` to complete the exchange. Configure the external service to validate the issuer's signature, audience, expiry, and exact environment subject. Do not use an OIDC token to call Trigger.dev APIs.
+
+Token-request failures throw `OIDCTokenError`, exported from `@trigger.dev/sdk`, for both local validation and API errors. It extends `ApiError` and preserves the error code, message, HTTP status and headers; API failures retain the original error as `cause`.
+
+## Local development
+
+`trigger dev` does not receive internal run tokens and cannot mint external OIDC tokens. Use your own development credentials, such as an AWS SSO profile. If the same task needs to work locally and deployed, explicitly choose local credentials for Development:
+
+```typescript theme={"theme":"css-variables"}
+import { task } from "@trigger.dev/sdk";
+import { awsCredentialProvider } from "@trigger.dev/sdk/oidc/aws";
+import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
+
+export const readFromS3 = task({
+  id: "read-from-s3",
+  run: async (_, { ctx }) => {
+    const s3 = new S3Client({
+      region: "us-east-1",
+      credentials:
+        ctx.environment.type === "DEVELOPMENT"
+          ? undefined // Use your own local AWS credential chain, for example AWS_PROFILE.
+          : awsCredentialProvider({
+              roleArn: "arn:aws:iam::YOUR_AWS_ACCOUNT_ID:role/YOUR_ROLE_NAME",
+              region: "us-east-1",
+            }),
+    });
+    const result = await s3.send(
+      new GetObjectCommand({ Bucket: "YOUR_BUCKET", Key: "trigger/example.txt" })
+    );
+    return { contents: await result.Body?.transformToString() };
+  },
+});
+```
+
+Authenticate locally with your AWS tooling before running the task. Do not catch OIDC errors and fall back to static credentials in deployed environments.
+
+
 # Contributing
 Source: https://trigger.dev/docs/open-source-contributing
 
@@ -61574,6 +62009,18 @@ The prompt tells the agent to use the Trigger.dev MCP server (`npx trigger.dev@l
 | `generate_webhook_secret` | Generates a signing secret and returns it once, for providers where you choose the secret. Optionally keeps accepting the old secret (`previousSecretTtlSeconds`). |
 | `set_webhook_secret` | Stores a secret the provider issued. Optionally keeps accepting the old secret (`previousSecretTtlSeconds`). |
 
+### Keep the secret out of the agent's context
+
+A secret passed to `set_webhook_secret`, or returned by `generate_webhook_secret`, becomes part of the agent's conversation. The [CLI webhooks commands](/docs/cli-webhooks-commands) store the secret without printing it, and the MCP tool descriptions point agents that can run shell commands to them:
+
+```bash theme={"theme":"css-variables"}
+# Store a secret the provider issued, from an env file or a pipe
+npx trigger.dev@latest webhooks set-secret stripe --env prod --from-env STRIPE_WEBHOOK_SECRET
+
+# Generate one and save it to .env.local for the agent to pass to the provider by name
+npx trigger.dev@latest webhooks generate-secret github --env prod --to-env GITHUB_WEBHOOK_SECRET
+```
+
 Without the MCP server, the same operations are available on the REST API with the environment's secret key:
 
 | Request | What it does |
@@ -62369,6 +62816,69 @@ Every endpoint can produce a setup prompt for an AI coding agent. It holds the U
 > **[Human-in-the-loop](/docs/webhooks/human-in-the-loop)**
 >
 > Approvals and interactive controls over a channel.
+
+
+# Webhooks public beta
+Source: https://trigger.dev/docs/webhooks/public-beta
+
+Webhooks are available to every organization in the normal Trigger.dev release. Install the packages, see what may change before general availability, and send feedback.
+
+**Webhooks are in public beta: every organization can use them, and they ship in the normal Trigger.dev release.** Endpoints you declare sync when you deploy or run `trigger dev`, and they show up on each environment's **Webhooks** page.
+
+## What public beta means
+
+* The API may still change before general availability. We announce changes in the [changelog](https://trigger.dev/changelog).
+* Webhooks are open source, so they work self-hosted too. See [Self-hosting webhooks](/docs/self-hosting/env/webapp#webhooks) to turn them on.
+
+## Install the packages
+
+Webhooks are in `@trigger.dev/sdk` 4.8.1 and later. Install the SDK and the CLI from `@latest`:
+
+```bash npm theme={"theme":"css-variables"}
+npm i @trigger.dev/sdk@latest
+npm i -D trigger.dev@latest
+```
+
+```bash pnpm theme={"theme":"css-variables"}
+pnpm add @trigger.dev/sdk@latest
+pnpm add -D trigger.dev@latest
+```
+
+```bash bun theme={"theme":"css-variables"}
+bun add @trigger.dev/sdk@latest
+bun add -D trigger.dev@latest
+```
+
+Add the connector packages if you're building Slack or Linear agents:
+
+```bash npm theme={"theme":"css-variables"}
+npm i @trigger.dev/slack@latest @trigger.dev/linear@latest
+```
+
+```bash pnpm theme={"theme":"css-variables"}
+pnpm add @trigger.dev/slack@latest @trigger.dev/linear@latest
+```
+
+```bash bun theme={"theme":"css-variables"}
+bun add @trigger.dev/slack@latest @trigger.dev/linear@latest
+```
+
+The webhook tools in the [MCP server](/docs/mcp-introduction) come with the CLI, so a current `trigger.dev` install has them.
+
+## Moving from a private beta build
+
+If you installed from the `webhooks` npm tag, switch every Trigger.dev package to `@latest`, including `@trigger.dev/build` if your project has it. Versions like `4.8.0-webhooks.20261020092920` are older than 4.8.1. You can also remove any minimum release age exemption you added for the beta builds, and reinstall the MCP server without `--tag webhooks`.
+
+## Get started
+
+* [Overview](/docs/webhooks/overview): endpoints, sources, and what can subscribe.
+* [Connect a provider](/docs/webhooks/connect): register the URL and signing secret, then check that events arrive.
+* [Slack agents](/docs/webhooks/slack) and [Linear agents](/docs/webhooks/linear): turn a `chat.agent` into an agent that lives in Slack or Linear.
+* [Deliveries and endpoints](/docs/webhooks/deliveries): inspect payloads, replay deliveries, and see the runs each one started.
+
+## Feedback
+
+Send bugs, questions and ideas to [eric@trigger.dev](mailto:eric@trigger.dev). Delivery ids (`whd_...`) and run ids help us find what happened.
 
 
 # Routing to a session

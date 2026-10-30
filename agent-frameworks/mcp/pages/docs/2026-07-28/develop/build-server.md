@@ -2424,7 +2424,7 @@ fmt.Fprintln(os.Stderr, "Processing request")
 
 ### System requirements
 
-* Go 1.24 or higher installed.
+* Go 1.25 or higher installed.
 
 ### Set up your environment
 

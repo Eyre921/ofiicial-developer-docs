@@ -103,10 +103,10 @@ After creation, visit the **Configuration** tab to retrieve your **OAuth client 
 
 ## Next steps
 
-> **[Set up OAuth authorization](/guides/get-started/authorization)**
+> [card] [Set up OAuth authorization](/guides/get-started/authorization)
 >
 > Implement the full OAuth 2.0 flow for your public connection.
 
-> **[Preparing for users](/guides/get-started/preparing-for-users)**
+> [card] [Preparing for users](/guides/get-started/preparing-for-users)
 >
 > Automate user onboarding after they install your connection.

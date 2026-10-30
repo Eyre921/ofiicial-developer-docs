@@ -1,6 +1,6 @@
 # dev-platforms/trigger-dev 文档索引
 
-> 共 369 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 372 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -72,6 +72,7 @@
 - `docs/cli-switch` — [CLI switch command](pages/docs/cli-switch.md) · [原文](https://trigger.dev/docs/cli-switch)
 - `docs/cli-tasks-commands` — [CLI tasks commands](pages/docs/cli-tasks-commands.md) · [原文](https://trigger.dev/docs/cli-tasks-commands)
 - `docs/cli-update-commands` — [CLI update command](pages/docs/cli-update-commands.md) · [原文](https://trigger.dev/docs/cli-update-commands)
+- `docs/cli-webhooks-commands` — [CLI webhooks commands](pages/docs/cli-webhooks-commands.md) · [原文](https://trigger.dev/docs/cli-webhooks-commands)
 - `docs/cli-whoami-commands` — [CLI whoami command](pages/docs/cli-whoami-commands.md) · [原文](https://trigger.dev/docs/cli-whoami-commands)
 - `docs/community` — [Discord Community](pages/docs/community.md) · [原文](https://trigger.dev/docs/community)
 - `docs/concurrency` — [Concurrency](pages/docs/concurrency.md) · [原文](https://trigger.dev/docs/concurrency)
@@ -301,6 +302,7 @@
 - `docs/migration-n8n` — [Migrating from n8n](pages/docs/migration-n8n.md) · [原文](https://trigger.dev/docs/migration-n8n)
 - `docs/observability/dashboards` — [Dashboards](pages/docs/observability/dashboards.md) · [原文](https://trigger.dev/docs/observability/dashboards)
 - `docs/observability/query` — [Query](pages/docs/observability/query.md) · [原文](https://trigger.dev/docs/observability/query)
+- `docs/oidc` — [Workload identity](pages/docs/oidc.md) · [原文](https://trigger.dev/docs/oidc)
 - `docs/open-source-contributing` — [Contributing](pages/docs/open-source-contributing.md) · [原文](https://trigger.dev/docs/open-source-contributing)
 - `docs/private-networking/aws-console-setup` — [Setting up PrivateLink in the AWS Console](pages/docs/private-networking/aws-console-setup.md) · [原文](https://trigger.dev/docs/private-networking/aws-console-setup)
 - `docs/private-networking/overview` — [Private networking](pages/docs/private-networking/overview.md) · [原文](https://trigger.dev/docs/private-networking/overview)
@@ -369,6 +371,7 @@
 - `docs/webhooks/human-in-the-loop` — [Human-in-the-loop](pages/docs/webhooks/human-in-the-loop.md) · [原文](https://trigger.dev/docs/webhooks/human-in-the-loop)
 - `docs/webhooks/linear` — [Linear agents](pages/docs/webhooks/linear.md) · [原文](https://trigger.dev/docs/webhooks/linear)
 - `docs/webhooks/overview` — [Webhooks overview](pages/docs/webhooks/overview.md) · [原文](https://trigger.dev/docs/webhooks/overview)
+- `docs/webhooks/public-beta` — [Webhooks public beta](pages/docs/webhooks/public-beta.md) · [原文](https://trigger.dev/docs/webhooks/public-beta)
 - `docs/webhooks/session-routing` — [Routing to a session](pages/docs/webhooks/session-routing.md) · [原文](https://trigger.dev/docs/webhooks/session-routing)
 - `docs/webhooks/slack` — [Slack agents](pages/docs/webhooks/slack.md) · [原文](https://trigger.dev/docs/webhooks/slack)
 - `docs/webhooks/sources` — [Sources and verification](pages/docs/webhooks/sources.md) · [原文](https://trigger.dev/docs/webhooks/sources)

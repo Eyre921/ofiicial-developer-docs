@@ -84,10 +84,10 @@ for m in resp.matches:
 
 ## Next steps
 
-> **[Match keywords](/guides/search/full-text-search#schema-definition)**
+> [card] [Match keywords](/guides/search/full-text-search#schema-definition)
 >
 > Add a `full_text_search` field to your schema for keyword search, or combine it with your vectors for hybrid search.
 
-> **[Data modeling](/guides/index-data/data-modeling)**
+> [card] [Data modeling](/guides/index-data/data-modeling)
 >
 > How to design a schema for your workload

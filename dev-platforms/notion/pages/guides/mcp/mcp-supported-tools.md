@@ -18,7 +18,7 @@ An MCP client can call several tools in one task. For example, it can search for
 >
 > Workspace-owned MCP connections list only the tools an admin selected for the connection, from this set: `notion-search`, `notion-ai-search`, `notion-fetch`, `notion-get-self`, `notion-get-tool-access`, `notion-create-attachment`, `notion-create-file-upload`, `notion-download-attachment`, `notion-get-file-download-urls`, `notion-create-pages`, `notion-create-database`, `notion-update-page`, `notion-convert-page-to-skill`, `notion-update-data-source`, `notion-create-view`, `notion-update-view`, `notion-move-pages`, `notion-duplicate-page`, `notion-create-comment`, `notion-get-comments`, `notion-get-async-task`, `notion-get-users`, `notion-query-data-sources`, and `notion-query-multiple-data-sources`. Other tools on this page aren't available in workspace-owned connections.
 
-> **Search Notion**
+> [accordion] Search Notion
 >
 > `notion-search`
 >
@@ -47,7 +47,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "What decisions have we made about the mobile launch?"
 > * "Look up the workspace user with the email [ada@example.com](mailto:ada@example.com)"
 
-> **Search connected sources**
+> [accordion] Search connected sources
 >
 > `notion-connector-search`
 >
@@ -68,7 +68,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Find discussions about this launch in my connected Slack and Mail"
 > * "Search Google Drive and GitHub for the API migration plan"
 
-> **Search personal memories**
+> [accordion] Search personal memories
 >
 > `notion-memory-search`
 >
@@ -81,7 +81,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "What do you remember about how I like status updates written?"
 > * "Check my memories for the decision on the launch date"
 
-> **Check tool access**
+> [accordion] Check tool access
 >
 > `notion-get-tool-access`
 >
@@ -104,7 +104,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Which Notion tools can I use on this workspace's plan?"
 > * "Which search filters aren't available on this workspace's plan?"
 
-> **Identify the current connection**
+> [accordion] Identify the current connection
 >
 > `notion-get-self`
 >
@@ -122,7 +122,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Which Notion workspace and user are connected?"
 > * "Show the name and email address for this Notion connection"
 
-> **Download a Notion Skill**
+> [accordion] Download a Notion Skill
 >
 > `notion-download-skill`
 >
@@ -133,7 +133,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Download this Skill and its supporting files for my local agent"
 > * "Get the complete directory for this Skill"
 
-> **Upload a Notion Skill**
+> [accordion] Upload a Notion Skill
 >
 > `notion-upload-skill`
 >
@@ -152,7 +152,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Upload my local `release-notes` skill to this Notion Skill page"
 > * "Replace this Skill with the updated version from my repo"
 
-> **Manage enabled Skills**
+> [accordion] Manage enabled Skills
 >
 > `notion-get-enabled-skills` lists the Notion Skills the user has enabled for MCP clients. It takes no arguments. Each entry has the Skill page's `id`, a `name`, and a `description` of when to use it when one exists. Fetch a Skill's `id` to read it. The list holds at most 30 Skills and has no cursor, so a user with more enabled Skills doesn't see all of them. Long names and descriptions are shortened.
 >
@@ -165,7 +165,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Which Notion Skills have I enabled for you?"
 > * "Turn on the 'Weekly report' Skill for MCP clients only"
 
-> **Fetch Notion content**
+> [accordion] Fetch Notion content
 >
 > `notion-fetch`
 >
@@ -198,7 +198,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Fetch the view `view://8ac3f3d0-1f2b-4c7e-9d51-4b0c0a9f2e77` to see how it's filtered and sorted"
 > * "Fetch the bug tracking database so I can see the available templates"
 
-> **Get file download URLs**
+> [accordion] Get file download URLs
 >
 > `notion-get-file-download-urls`
 >
@@ -211,7 +211,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Download the diagram attached to this spec page"
 > * "Get links to every file on this page"
 
-> **List sidebar pages**
+> [accordion] List sidebar pages
 >
 > These tools list pages and databases from the user's sidebar:
 >
@@ -232,7 +232,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Open the page I was looking at this morning"
 > * "List my favorite pages"
 
-> **List page backlinks**
+> [accordion] List page backlinks
 >
 > `notion-list-page-backlinks`
 >
@@ -258,7 +258,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Which pages link to our launch plan?"
 > * "Find comments that mention this spec"
 
-> **View a past version**
+> [accordion] View a past version
 >
 > `notion-view-version`
 >
@@ -269,7 +269,18 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Show me what our launch plan looked like last Monday"
 > * "What rows were in the bug tracker on October 1?"
 
-> **Create a file upload URL**
+> [accordion] Get version changes
+>
+> `notion-get-version-changes`
+>
+> Lists what changed in a page or database between two times and who made each change, including edits from Notion AI, Custom Agents, and MCP clients. The range defaults to the last 24 hours. Requires edit access to the page, and can only read as far back as the workspace's plan keeps version history.
+>
+> **Example prompts:**
+>
+> * "What changed on this page since yesterday?"
+> * "Who edited our roadmap this week?"
+
+> [accordion] Create a file upload URL
 >
 > `notion-create-file-upload`
 >
@@ -283,7 +294,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Attach `report.pdf` to a new page"
 > * "Upload this file and include it in my comment"
 
-> **Create an attachment**
+> [accordion] Create an attachment
 >
 > `notion-create-attachment`
 >
@@ -297,7 +308,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Attach the PDF at this direct download URL to my meeting notes"
 > * "Add the file I just uploaded to a comment"
 
-> **Download a text attachment**
+> [accordion] Download a text attachment
 >
 > `notion-download-attachment`
 >
@@ -311,7 +322,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Read the contents of this Markdown attachment"
 > * "Retrieve the text attachment with this file upload ID"
 
-> **Create pages**
+> [accordion] Create pages
 >
 > `notion-create-pages`
 >
@@ -357,7 +368,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Create a page with the 🚀 icon and a cover image"
 > * "Draft a private launch plan; we'll decide where it belongs later"
 
-> **Update a page**
+> [accordion] Update a page
 >
 > `notion-update-page`
 >
@@ -393,7 +404,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Set the page icon to 🎯 and add a cover image"
 > * "Remove the icon from this page"
 
-> **Convert a page to a skill**
+> [accordion] Convert a page to a skill
 >
 > `notion-convert-page-to-skill`
 >
@@ -404,7 +415,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Convert this page into a skill: `https://www.notion.so/example-page-url`"
 > * "Make our engineering guidelines page available as an AI skill"
 
-> **Move pages**
+> [accordion] Move pages
 >
 > `notion-move-pages`
 >
@@ -415,7 +426,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Move my weekly meeting notes page to the 'Team Meetings' page"
 > * "Reorganize all project documents under the 'Active Projects' section"
 
-> **Delete pages**
+> [accordion] Delete pages
 >
 > `notion-delete-pages`
 >
@@ -428,7 +439,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Delete the 'Q3 offsite draft' page"
 > * "Move these three duplicate rows to Trash"
 
-> **Delete databases**
+> [accordion] Delete databases
 >
 > `notion-delete-databases`
 >
@@ -441,7 +452,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Delete the 'Old sprint tracker' database"
 > * "Move the 'Q2 leads' database to Trash"
 
-> **Restore pages**
+> [accordion] Restore pages
 >
 > `notion-restore-pages`
 >
@@ -454,7 +465,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Restore the 'Q3 offsite draft' page I just deleted"
 > * "Undo that deletion"
 
-> **Duplicate a page**
+> [accordion] Duplicate a page
 >
 > `notion-duplicate-page`
 >
@@ -465,7 +476,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Duplicate my project template page so I can use it for the new Q3 initiative"
 > * "Make a copy of the meeting agenda template for next week's planning session"
 
-> **Create a database**
+> [accordion] Create a database
 >
 > `notion-create-database`
 >
@@ -476,7 +487,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Create a new database to track our customer feedback with fields for customer name, feedback type, priority, and status"
 > * "Set up a content calendar database with columns for publish date, content type, and approval status"
 
-> **Create a folder**
+> [accordion] Create a folder
 >
 > `notion-create-folder`
 >
@@ -487,7 +498,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Create a folder named 'Project files' under this page"
 > * "Create a folder named 'Supporting documents' under this project page"
 
-> **Update a folder**
+> [accordion] Update a folder
 >
 > `notion-update-folder`
 >
@@ -504,7 +515,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Add the report I just uploaded to the 'Project files' folder"
 > * "Create a 'Drafts' subfolder in this folder"
 
-> **Update a data source**
+> [accordion] Update a data source
 >
 > `notion-update-data-source`
 >
@@ -519,7 +530,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Add a status field to track project completion"
 > * "Update the task database to include priority levels"
 
-> **Create a view**
+> [accordion] Create a view
 >
 > `notion-create-view`
 >
@@ -541,7 +552,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Add a form view to the feedback database for collecting responses"
 > * "Create a map view of office locations using the Address property"
 
-> **Update a view**
+> [accordion] Update a view
 >
 > `notion-update-view`
 >
@@ -554,7 +565,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Clear the filters on this view and add a sort by created date"
 > * "Change the view to group by priority and only show Name and Status columns"
 
-> **Query across data sources**
+> [accordion] Query across data sources
 >
 > `notion-query-data-sources`
 >
@@ -582,7 +593,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Show all risks from Engineering and Product databases this month, grouped by owner."
 > * "Read the in-progress rows from the Specs data source. Keep mentions and links in Notes."
 
-> **Query multiple data sources**
+> [accordion] Query multiple data sources
 >
 > `notion-query-multiple-data-sources`
 >
@@ -599,7 +610,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Join the Projects and Tasks data sources and count open tasks per project"
 > * "Compare this quarter's deals across the Sales and Partnerships databases"
 
-> **Query meeting notes**
+> [accordion] Query meeting notes
 >
 > `notion-query-meeting-notes`
 >
@@ -615,7 +626,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "What were the action items from my sprint planning meetings?"
 > * "Show my 1:1 meeting notes with Alice"
 
-> **Work with Custom Agent sessions**
+> [accordion] Work with Custom Agent sessions
 >
 > Use `notion-search-agents` to find a Custom Agent by name or description,
 > or to browse the user's favorite agents and the workspace's newest agents.
@@ -683,7 +694,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Wait for the agent session to finish, then show me its answer"
 > * "Search my past agent sessions for the launch decision"
 
-> **Add a comment**
+> [accordion] Add a comment
 >
 > `notion-create-comment`
 >
@@ -697,7 +708,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Reply to the discussion about deadline concerns"
 > * "Leave a note on the meeting notes about the action items"
 
-> **Get comments**
+> [accordion] Get comments
 >
 > `notion-get-comments`
 >
@@ -713,7 +724,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Show me the comments on the Requirements section"
 > * "Get all feedback comments from last week's review"
 
-> **Edit and react to comments**
+> [accordion] Edit and react to comments
 >
 > These tools change existing comments and discussions. Get comment and discussion IDs from `notion-get-comments` or `notion-create-comment`. Comment IDs work with or without dashes.
 >
@@ -737,7 +748,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Resolve the discussion about the launch date"
 > * "React with 👍 to Ada's comment"
 
-> **Suggest edits**
+> [accordion] Suggest edits
 >
 > These tools propose changes to a page that a person accepts or rejects in Notion. A suggestion doesn't change the page until someone accepts it. `notion-fetch` shows only accepted content, so pending suggestions don't appear in fetched page text.
 >
@@ -761,7 +772,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Propose changing the launch date in the title to June 12"
 > * "Show me the pending suggestion on the FAQ and accept it"
 
-> **Get teams**
+> [accordion] Get teams
 >
 > `notion-get-teams`
 >
@@ -772,7 +783,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Search for teams by name, and your membership status in each team"
 > * "Get a team's ID to use as a filter for a search"
 
-> **Get groups**
+> [accordion] Get groups
 >
 > `notion-get-groups`
 >
@@ -785,7 +796,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Which group is set in the Owner property of this page?"
 > * "Find the Design group so I can assign it to this task"
 
-> **Get users**
+> [accordion] Get users
 >
 > `notion-get-users`
 >
@@ -798,7 +809,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Find users whose name or email matches 'john'"
 > * "What's my Notion user ID and email?"
 
-> **Get async task status**
+> [accordion] Get async task status
 >
 > `notion-get-async-task`
 >
@@ -811,7 +822,7 @@ An MCP client can call several tools in one task. For example, it can search for
 > * "Check whether the page I just duplicated is ready"
 > * "Poll this async task until it completes and show me the result"
 
-> **List calendars**
+> [accordion] List calendars
 >
 > `notion-calendar-list-calendars`
 >
@@ -823,7 +834,7 @@ An MCP client can call several tools in one task. For example, it can search for
 >
 > * "Which calendars are connected to my account?"
 
-> **List calendar events**
+> [accordion] List calendar events
 >
 > `notion-calendar-list-events`
 >
@@ -835,7 +846,7 @@ An MCP client can call several tools in one task. For example, it can search for
 >
 > * "What's on my calendar tomorrow?"
 
-> **List coworkers' events**
+> [accordion] List coworkers' events
 >
 > `notion-calendar-list-coworkers-events`
 >
@@ -845,7 +856,7 @@ An MCP client can call several tools in one task. For example, it can search for
 >
 > * "Show Casey's calendar for tomorrow."
 
-> **Find calendar resources**
+> [accordion] Find calendar resources
 >
 > `notion-calendar-list-calendar-resources`
 >
@@ -855,7 +866,7 @@ An MCP client can call several tools in one task. For example, it can search for
 >
 > * "Which meeting rooms are available tomorrow at 2 PM for 30 minutes?"
 
-> **Find contacts**
+> [accordion] Find contacts
 >
 > `notion-calendar-list-contacts`
 >
@@ -865,7 +876,7 @@ An MCP client can call several tools in one task. For example, it can search for
 >
 > * "Find Casey's email address in my Calendar contacts."
 
-> **Create calendar events**
+> [accordion] Create calendar events
 >
 > `notion-calendar-create-events`
 >
@@ -877,7 +888,7 @@ An MCP client can call several tools in one task. For example, it can search for
 >
 > * "Create a 30-minute project review on my work calendar this Friday at 10 AM."
 
-> **Update calendar events**
+> [accordion] Update calendar events
 >
 > `notion-calendar-update-events`
 >
@@ -889,7 +900,7 @@ An MCP client can call several tools in one task. For example, it can search for
 >
 > * "Move my project review from 10 AM to 11 AM this Friday."
 
-> **Cancel calendar events**
+> [accordion] Cancel calendar events
 >
 > `notion-calendar-cancel-events`
 >

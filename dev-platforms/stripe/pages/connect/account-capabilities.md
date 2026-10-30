@@ -165,7 +165,7 @@ Available with `card_payments` | Yes | Yes | No | Connected account must be in a
 `klarna_payments` | No, see [prohibited businesses](https://docs.stripe.com/payments/klarna/compliance.md#prohibited-business-categories). | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/klarna.md?pm-info=business-locations). | Yes |
 | [Konbini](https://docs.stripe.com/payments/konbini.md)
 
-`konbini_payments` | No, see [prohibited businesses](https://docs.stripe.com/payments/konbini.md#prohibited-business-categories). | The payment method must be activated on the Dashboard settings page. | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/konbini.md?pm-info=business-locations). | Yes |
+`konbini_payments` | No, see [prohibited businesses](https://docs.stripe.com/payments/konbini.md#unsupported-businesses). | The payment method must be activated on the Dashboard settings page. | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/konbini.md#konbini-business-locations). | Yes |
 | [Link](https://docs.stripe.com/payments/link.md)
 
 `link_payments` | Yes | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/link.md). | Yes |

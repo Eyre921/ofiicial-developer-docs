@@ -28,7 +28,7 @@ Individual data sources don't have permissions settings, so the set of Notion us
 | :- | :- | :- | :- |
 | `object` | `string` | Always `"database"`. | `"database"` |
 | `id` | `string` (UUID) | Unique identifier for the database. | `"2f26ee68-df30-4251-aad4-8ddc420cba3d"` |
-| `data_sources` | array of data source objects | List of child data sources, each of which is a JSON object with an `id` and `name`.   Use [Retrieve a data source](/reference/retrieve-a-data-source) to get more details on the data source, including its `properties`. | `[{"id": "c174b72c-d782-432f-8dc0-b647e1c96df6", "name": "Tasks data source"}]` |
+| `data_sources` | array of data source objects | List of child data sources, each of which is a JSON object with an `id` and `name`. [Retrieve a database](/reference/retrieve-database) may also include optional [stored sync metadata](/reference/data-source#sync-metadata) for each readable source.   Use [Retrieve a data source](/reference/retrieve-a-data-source) to get more details on the data source, including its `properties`. | `[{"id": "c174b72c-d782-432f-8dc0-b647e1c96df6", "name": "Tasks data source"}]` |
 | `created_time` | `string` ([ISO 8601 date and time](https://en.wikipedia.org/wiki/ISO_8601)) | Date and time when this database was created. Formatted as an [ISO 8601 date time](https://en.wikipedia.org/wiki/ISO_8601) string. | `"2020-03-17T19:10:04.968Z"` |
 | `created_by` | [Partial User](/reference/user) | User who created the database. | `{"object": "user","id": "45ee8d13-687b-47ce-a5ca-6e2e45548c4b"}` |
 | `last_edited_time` | `string` ([ISO 8601 date and time](https://en.wikipedia.org/wiki/ISO_8601)) | Date and time when this database was updated. Formatted as an [ISO 8601 date time](https://en.wikipedia.org/wiki/ISO_8601) string. | `"2020-03-17T21:49:37.913Z"` |
@@ -48,8 +48,8 @@ Individual data sources don't have permissions settings, so the set of Notion us
 
 **What’s Next**
 
-> **[Data source](/reference/data-source)**
+> [card] [Data source](/reference/data-source)
 
-> **[Data source properties](/reference/property-object)**
+> [card] [Data source properties](/reference/property-object)
 
-> **[Page](/reference/page)**
+> [card] [Page](/reference/page)

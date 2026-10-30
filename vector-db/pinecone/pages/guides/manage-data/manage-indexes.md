@@ -669,7 +669,7 @@ Before you can delete such an index, you must first [disable deletion protection
 
 ## Associate an embedding model
 
-[Integrated inference](/guides/index-data/indexing-overview#integrated-embedding) lets you upsert and search without extra steps for embedding data and reranking results.
+On a legacy integrated index, [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding) lets you upsert and search without extra steps for embedding data.
 
 To configure an existing serverless index for an embedding model, use the [Configure an index](/reference/api/latest/control-plane/configure_index) operation as follows:
 

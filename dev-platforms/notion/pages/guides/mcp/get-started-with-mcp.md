@@ -35,7 +35,7 @@ codex mcp login notion
 
 Complete the OAuth flow to connect your Notion workspace.
 
-> **Project-level configuration**
+> [accordion] Project-level configuration
 >
 > To share the Notion MCP configuration with your team, create a `.codex/config.toml` file in your project root with the same server configuration.
 
@@ -51,7 +51,7 @@ claude mcp add --transport http notion https://mcp.notion.com/mcp
 
 Then authenticate by running `/mcp` in Claude Code and following the OAuth flow.
 
-> **Using --scope flag for different installation scopes**
+> [accordion] Using --scope flag for different installation scopes
 >
 > * `--scope local` (default): Available only to you in the current project
 > * `--scope project`: Shared with your team via `.mcp.json` file
@@ -85,7 +85,7 @@ Create a `.cursor/mcp.json` file in your project root:
 
 Open **Customize** in Cursor's sidebar, then enable Notion and complete the OAuth flow to connect your workspace.
 
-> **Global configuration**
+> [accordion] Global configuration
 >
 > To configure Notion across all projects, add the same server configuration to `~/.cursor/mcp.json`:
 >
@@ -123,7 +123,7 @@ Add the Notion server:
 
 In the same session, run `/mcp auth notion --open` and complete the OAuth flow.
 
-> **JSON configuration**
+> [accordion] JSON configuration
 >
 > To configure Notion MCP without the CLI, add it to `~/.fx/mcp.json`:
 >
@@ -165,7 +165,7 @@ hermes mcp login notion
 
 Complete the OAuth flow to connect your Notion workspace.
 
-> **Global configuration**
+> [accordion] Global configuration
 >
 > The `~/.hermes/config.yaml` configuration above applies to all projects for the current Hermes profile. See the [Hermes configuration documentation](https://hermes-agent.nousresearch.com/docs/user-guide/configuration) for more details.
 
@@ -217,7 +217,7 @@ In Pi, run `/mcp setup`, then choose **Notion** to add the server.
 
 Authenticate by running `/mcp-auth notion` and completing the OAuth flow to connect your Notion workspace.
 
-> **Global and team configuration**
+> [accordion] Global and team configuration
 >
 > To use Notion in every Pi project, add this configuration to `~/.config/mcp/mcp.json`. To share it with a team, commit the same configuration in a project-root `.mcp.json`; each teammate then completes the OAuth flow locally.
 >
@@ -259,7 +259,7 @@ Open the Command Palette (`Cmd+Shift+P` / `Ctrl+Shift+P`) and run **MCP: List Se
 
 Start the Notion server and complete the OAuth flow when prompted
 
-> **User-level configuration**
+> [accordion] User-level configuration
 >
 > To configure Notion MCP across all workspaces, run **MCP: Open User Configuration** from the Command Palette and add the server configuration there.
 
@@ -334,7 +334,7 @@ Use the STDIO configuration if your client doesn't support remote HTTP connectio
 
 ## Troubleshooting
 
-> **My MCP client doesn't support remote MCP servers**
+> [accordion] My MCP client doesn't support remote MCP servers
 >
 > Some MCP clients only support local stdio servers. You can still connect to Notion MCP using the [mcp-remote](https://www.npmjs.com/package/mcp-remote) bridge:
 >
@@ -351,25 +351,25 @@ Use the STDIO configuration if your client doesn't support remote HTTP connectio
 >
 > As a last resort, you can run our [open-source MCP server](https://github.com/makenotion/notion-mcp-server) locally, though this package is no longer actively maintained.
 
-> **Authentication issues**
+> [accordion] Authentication issues
 >
 > * Complete the OAuth flow when prompted.
 > * Disconnect and reconnect the client. Look for **Clear authentication** or **Disconnect** in its MCP settings.
 > * Check your permissions in the Notion workspace that you're trying to access.
 
-> **My MCP client isn't listed here**
+> [accordion] My MCP client isn't listed here
 >
 > See [Other MCP clients](#other-mcp-clients) for the Notion MCP endpoints and JSON configuration examples. If the client doesn't support MCP, contact its developer.
 
 ## FAQs
 
-> **Can I use Notion MCP without interactive authorization?**
+> [accordion] Can I use Notion MCP without interactive authorization?
 >
 > Yes, on Business and Enterprise plans. A workspace owner can create an MCP token with **New MCP token** in the Developer portal. The MCP client sends the token as a bearer token to `https://mcp.notion.com/mcp`, with no browser sign-in.
 >
 > Enterprise workspaces that use SAML SSO can also use [enterprise-managed authorization](/guides/mcp/enterprise-managed-authorization), where the company's identity provider grants access without a consent screen.
 
-> **Which Notion plans can use Notion MCP?**
+> [accordion] Which Notion plans can use Notion MCP?
 >
 > Notion MCP works on every plan. Some features depend on the workspace's plan:
 >
@@ -380,17 +380,17 @@ Use the STDIO configuration if your client doesn't support remote HTTP connectio
 > * **Some search filters**, such as last edited by and last edited date: Business and Enterprise. On other plans these filters are dropped, and the result says so.
 > * **Request limits**: higher on Business and Enterprise. See [rate limits](/guides/mcp/mcp-supported-tools#rate-limits).
 
-> **Can workspace guests use Notion MCP?**
+> [accordion] Can workspace guests use Notion MCP?
 >
 > No. Only workspace members can connect Notion MCP. A guest who tries to connect sees a message that guests can't connect, and Notion refuses the authorization.
 
-> **Does Notion MCP support file uploads?**
+> [accordion] Does Notion MCP support file uploads?
 >
 > Yes. Use the [`notion-create-file-upload` tool](/guides/mcp/mcp-supported-tools#create-a-file-upload-url) to upload images and other files up to 20 MiB. Workspace file-size limits still apply.
 >
 > The tool returns a short-lived upload URL and the headers and form field that the MCP client must use to send the file. After the upload succeeds, pass the response's `suggested_markdown` directly to `notion-create-pages` or `notion-update-page`, or include it on a separate line in `notion-create-comment` markdown to attach the file. For larger files, use the [file upload API](/guides/data-apis/working-with-files-and-media).
 
-> **What's the difference between Notion MCP and the open-source server?**
+> [accordion] What's the difference between Notion MCP and the open-source server?
 >
 > **Notion MCP** (`https://mcp.notion.com/mcp`) is our hosted, actively maintained server. It supports OAuth authorization and MCP tokens, and requires no infrastructure setup.
 >
@@ -398,7 +398,7 @@ Use the STDIO configuration if your client doesn't support remote HTTP connectio
 >
 > For most users, we recommend Notion MCP.
 
-> **I'm building my own MCP client**
+> [accordion] I'm building my own MCP client
 >
 > If you're integrating Notion MCP into your own application, see
 > [Build an MCP client for Notion](/guides/mcp/build-mcp-client) for OAuth

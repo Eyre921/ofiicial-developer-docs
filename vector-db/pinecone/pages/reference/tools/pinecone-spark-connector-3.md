@@ -10,46 +10,46 @@ Use the [`spark-pinecone` connector](https://github.com/pinecone-io/spark-pineco
 
 ## Install the Spark-Pinecone connector
 
-**Databricks platform**
+> [tab] Databricks platform
+>
+> 1. [Install the Spark-Pinecone connector as a library](https://docs.databricks.com/en/libraries/cluster-libraries.html#install-a-library-on-a-cluster).
+> 2. Configure the library as follows:
+>    1. Select **File path/S3** as the **Library Source**.
+>
+>    2. Enter the S3 URI for the Pinecone assembly JAR file:
+>
+>       ```
+>       s3://pinecone-jars/1.2.0/spark-pinecone-uberjar.jar  
+>       ```
+>
+>       > [!NOTE]
+>       >
+>       > Databricks platform users must use the Pinecone assembly jar listed above to ensure that the proper dependecies are installed.
+>
+>    3. Click **Install**.
 
-1. [Install the Spark-Pinecone connector as a library](https://docs.databricks.com/en/libraries/cluster-libraries.html#install-a-library-on-a-cluster).
-2. Configure the library as follows:
-   1. Select **File path/S3** as the **Library Source**.
+> [tab] Databricks on AWS
+>
+> 1. [Install the Spark-Pinecone connector as a library](https://docs.databricks.com/en/libraries/cluster-libraries.html#install-a-library-on-a-cluster).
+> 2. Configure the library as follows:
+>    1. Select **File path/S3** as the **Library Source**.
+>
+>    2. Enter the S3 URI for the Pinecone assembly JAR file:
+>
+>       ```
+>       s3://pinecone-jars/1.2.0/spark-pinecone-uberjar.jar  
+>       ```
+>
+>    3. Click **Install**.
 
-   2. Enter the S3 URI for the Pinecone assembly JAR file:
-
-      ```
-      s3://pinecone-jars/1.2.0/spark-pinecone-uberjar.jar  
-      ```
-
-      > [!NOTE]
-      >
-      > Databricks platform users must use the Pinecone assembly jar listed above to ensure that the proper dependecies are installed.
-
-   3. Click **Install**.
-
-**Databricks on AWS**
-
-1. [Install the Spark-Pinecone connector as a library](https://docs.databricks.com/en/libraries/cluster-libraries.html#install-a-library-on-a-cluster).
-2. Configure the library as follows:
-   1. Select **File path/S3** as the **Library Source**.
-
-   2. Enter the S3 URI for the Pinecone assembly JAR file:
-
-      ```
-      s3://pinecone-jars/1.2.0/spark-pinecone-uberjar.jar  
-      ```
-
-   3. Click **Install**.
-
-**Databricks on GCP / Azure**
-
-1. [Install the Spark-Pinecone connector as a library](https://docs.databricks.com/en/libraries/cluster-libraries.html#install-a-library-on-a-cluster).
-2. Configure the library as follows:
-   1. [Download the Pinecone assembly JAR file](https://repo1.maven.org/maven2/io/pinecone/spark-pinecone_2.12/1.2.0/).
-   2. Select **Workspace** as the **Library Source**.
-   3. Upload the JAR file.
-   4. Click **Install**.
+> [tab] Databricks on GCP / Azure
+>
+> 1. [Install the Spark-Pinecone connector as a library](https://docs.databricks.com/en/libraries/cluster-libraries.html#install-a-library-on-a-cluster).
+> 2. Configure the library as follows:
+>    1. [Download the Pinecone assembly JAR file](https://repo1.maven.org/maven2/io/pinecone/spark-pinecone_2.12/1.2.0/).
+>    2. Select **Workspace** as the **Library Source**.
+>    3. Upload the JAR file.
+>    4. Click **Install**.
 
 ## Batch upsert
 

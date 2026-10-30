@@ -6,7 +6,17 @@ path: prompts/setup/changelog
 
 See what changed in each version of the Notion MCP setup prompt.
 
-The [latest setup prompt](/prompts/setup) is version **0.0.5**.
+The [latest setup prompt](/prompts/setup) is version **0.0.6**.
+
+**Version 0.0.6, October 30, 2026**
+
+* Added a setup card after connecting Notion, with two choices: Shared context layer and Basic setup. The agent remembers the user's choice, and Shared context layer approves the private guide and saves without asking again.
+* Basic setup creates the Agent Operating Guide and custom instructions, and skips the daily loop and saving existing context.
+* Replaced fixed version numbers and dates with placeholders filled from the page header.
+* Added guidance on tracking projects and tasks in Notion.
+* Added a final card that offers the Notion app for desktop or mobile.
+
+[View version 0.0.6](/prompts/setup)
 
 **Version 0.0.5, October 29, 2026**
 
@@ -18,7 +28,7 @@ The [latest setup prompt](/prompts/setup) is version **0.0.5**.
 * Added an `instructions_version` parameter to Notion MCP tool calls in the custom instructions.
 * Added a `notion-complete-mcp-setup` call after saving Skills.
 
-[View version 0.0.5](/prompts/setup)
+[View version 0.0.5](/prompts/setup/versions/0.0.5)
 
 **Version 0.0.4, October 13, 2026**
 

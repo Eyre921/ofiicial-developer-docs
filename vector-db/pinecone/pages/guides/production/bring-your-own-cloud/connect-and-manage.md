@@ -32,82 +32,82 @@ With public access disabled, you can only connect from within your VPC via priva
 
 After deployment, the Pulumi stack outputs include the service name needed to create a private endpoint for your cloud provider. Use this service name to set up private connectivity:
 
-**AWS**
+> [tab] AWS
+>
+> **1. Create a VPC endpoint**
+>
+> Follow the instructions in the AWS documentation to [create a VPC endpoint](https://docs.aws.amazon.com/vpc/latest/privatelink/create-interface-endpoint.html#create-interface-endpoint-aws) for connecting to your indexes via AWS PrivateLink.
+>
+> For **Resource configurations**, use the VPC endpoint service name from the Pulumi stack outputs.
+>
+> **2. Select network settings**
+>
+> For **Network settings**, select the VPC for your BYOC deployment.
+>
+> **3. Enable DNS name**
+>
+> In **Additional settings**, select **Enable DNS name** to allow you to access your indexes using a DNS name.
 
-**1. Create a VPC endpoint**
+> [tab] GCP
+>
+> **1. Create a private endpoint**
+>
+> Follow the instructions in the GCP documentation to [create a private endpoint](https://cloud.google.com/vpc/docs/configure-private-service-connect-services#create-endpoint) for connecting to your indexes via GCP Private Service Connect.
+>
+> * Set the **Target service** to the service attachment from the Pulumi stack outputs.
+> * Copy the IP address of the private endpoint. You'll need it later.
+>
+> **2. Create a private DNS zone**
+>
+> Follow the instructions in the GCP documentation to [create a private DNS zone](https://cloud.google.com/dns/docs/zones#create-private-zone).
+>
+> * Set the **DNS name** to the following:
+>
+>   ```
+>   <YOUR-BYOC-ENVIRONMENT>.byoc.pinecone.io
+>   ```
+> * Select the same VPC network as the private endpoint.
+>
+> **3. Add a resource record set**
+>
+> Follow the instructions in the GCP documentation to [add a resource record set](https://cloud.google.com/dns/docs/records#add-rrset).
+>
+> * Set the **DNS name** to **\***.
+>
+> * Set the **Resource record type** to **A**.
+>
+> * Set the **Ipv4 Address** to the IP address of the private endpoint.
 
-Follow the instructions in the AWS documentation to [create a VPC endpoint](https://docs.aws.amazon.com/vpc/latest/privatelink/create-interface-endpoint.html#create-interface-endpoint-aws) for connecting to your indexes via AWS PrivateLink.
-
-For **Resource configurations**, use the VPC endpoint service name from the Pulumi stack outputs.
-
-**2. Select network settings**
-
-For **Network settings**, select the VPC for your BYOC deployment.
-
-**3. Enable DNS name**
-
-In **Additional settings**, select **Enable DNS name** to allow you to access your indexes using a DNS name.
-
-**GCP**
-
-**1. Create a private endpoint**
-
-Follow the instructions in the GCP documentation to [create a private endpoint](https://cloud.google.com/vpc/docs/configure-private-service-connect-services#create-endpoint) for connecting to your indexes via GCP Private Service Connect.
-
-* Set the **Target service** to the service attachment from the Pulumi stack outputs.
-* Copy the IP address of the private endpoint. You'll need it later.
-
-**2. Create a private DNS zone**
-
-Follow the instructions in the GCP documentation to [create a private DNS zone](https://cloud.google.com/dns/docs/zones#create-private-zone).
-
-* Set the **DNS name** to the following:
-
-  ```
-  <YOUR-BYOC-ENVIRONMENT>.byoc.pinecone.io
-  ```
-* Select the same VPC network as the private endpoint.
-
-**3. Add a resource record set**
-
-Follow the instructions in the GCP documentation to [add a resource record set](https://cloud.google.com/dns/docs/records#add-rrset).
-
-* Set the **DNS name** to **\***.
-
-* Set the **Resource record type** to **A**.
-
-* Set the **Ipv4 Address** to the IP address of the private endpoint.
-
-**Azure**
-
-**1. Create a private endpoint**
-
-Follow the instructions in the Azure documentation to [create a private endpoint](https://learn.microsoft.com/en-us/azure/private-link/create-private-endpoint-portal) for connecting to your indexes via Azure Private Link.
-
-* Set the **Resource type** to `Microsoft.Network/privateLinkServices`.
-* Select the Private Link Service name from the Pulumi stack outputs.
-* Copy the IP address of the private endpoint. You'll need it later.
-
-**2. Create a private DNS zone**
-
-Follow the instructions in the Azure documentation to [create a private DNS zone](https://learn.microsoft.com/en-us/azure/dns/private-dns-getstarted-portal).
-
-* Set the **Name** to the following:
-
-  ```
-  <YOUR-BYOC-ENVIRONMENT>.byoc.pinecone.io
-  ```
-* Link the zone to the VNet containing the private endpoint.
-
-**3. Add a wildcard A record**
-
-Follow the instructions in the Azure documentation to [add a record set](https://learn.microsoft.com/en-us/azure/dns/private-dns-getstarted-portal#create-an-additional-dns-record).
-
-* Set the **Name** to **\***.
-
-* Set the **Type** to **A**.
-
-* Set the **IP address** to the IP address of the private endpoint.
+> [tab] Azure
+>
+> **1. Create a private endpoint**
+>
+> Follow the instructions in the Azure documentation to [create a private endpoint](https://learn.microsoft.com/en-us/azure/private-link/create-private-endpoint-portal) for connecting to your indexes via Azure Private Link.
+>
+> * Set the **Resource type** to `Microsoft.Network/privateLinkServices`.
+> * Select the Private Link Service name from the Pulumi stack outputs.
+> * Copy the IP address of the private endpoint. You'll need it later.
+>
+> **2. Create a private DNS zone**
+>
+> Follow the instructions in the Azure documentation to [create a private DNS zone](https://learn.microsoft.com/en-us/azure/dns/private-dns-getstarted-portal).
+>
+> * Set the **Name** to the following:
+>
+>   ```
+>   <YOUR-BYOC-ENVIRONMENT>.byoc.pinecone.io
+>   ```
+> * Link the zone to the VNet containing the private endpoint.
+>
+> **3. Add a wildcard A record**
+>
+> Follow the instructions in the Azure documentation to [add a record set](https://learn.microsoft.com/en-us/azure/dns/private-dns-getstarted-portal#create-an-additional-dns-record).
+>
+> * Set the **Name** to **\***.
+>
+> * Set the **Type** to **A**.
+>
+> * Set the **IP address** to the IP address of the private endpoint.
 
 Once configured, use the `private_host` URL from the Pinecone console or the [Describe an index](/reference/api/latest/control-plane/describe_index) API response. For example:
 
@@ -134,15 +134,15 @@ This model ensures Pinecone never needs direct access to your infrastructure. Al
 
 You can monitor your BYOC deployment through multiple channels:
 
-> **Pinecone console**
+> [accordion] Pinecone console
 >
 > View index metrics (read/write units, latency, storage) in the Pinecone console. Control plane operations and metrics work regardless of your network access mode.
 
-> **Prometheus**
+> [accordion] Prometheus
 >
 > To use [Prometheus](/guides/production/monitoring#monitor-with-prometheus), configure your monitoring tool within your VPC to scrape metrics from the cluster. Your Prometheus instance must have network access to the BYOC VPC. The deployment output includes the metrics endpoint URL and port for configuration.
 
-> **Audit logs**
+> [accordion] Audit logs
 >
 > All cluster operations are persisted as Kubernetes CRDs for compliance and auditing:
 >

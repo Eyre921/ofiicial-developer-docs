@@ -6,7 +6,7 @@ path: examples/reference-architectures
 
 Official AWS reference architecture for building high-scale production systems with Pinecone, including Pulumi IaC, documentation, and video tutorial.
 
-> **AWS Reference Architecture**
+> [card] AWS Reference Architecture
 >
 > The official AWS Reference Architecture for high-scale systems using Pinecone.
 >

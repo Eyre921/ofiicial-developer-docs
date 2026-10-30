@@ -19,7 +19,7 @@ Expressive mode is enabled automatically when you select Eleven v4 Turbo as your
 
 ## Eleven v4 Turbo
 
-[Eleven v4 Turbo](/docs/overview/capabilities/text-to-speech/eleven-v4) is the real-time variant of Eleven v4, with median inference latency of \~100ms, optimized for live, back-and-forth dialogue. It maintains conversational context across turns and adapts delivery to match the tone and intent of each exchange.
+[Eleven v4 Turbo](/docs/overview/capabilities/text-to-speech/eleven-v4) is the real-time variant of Eleven v4, with a median latency of \~100ms, optimized for live, back-and-forth dialogue. It maintains conversational context across turns and adapts delivery to match the tone and intent of each exchange.
 
 * **Context-aware delivery**: Agents adapt tone based on conversational context — responding more calmly when a user sounds worried, or more directly when clarity matters.
 * **Explicit emotional control**: Guide delivery through system prompt rules, from precise triggers to broader scenarios, to align with brand voice and compliance requirements.

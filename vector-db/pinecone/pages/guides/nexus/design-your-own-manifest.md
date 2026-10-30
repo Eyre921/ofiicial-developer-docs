@@ -89,7 +89,7 @@ curl -fsS -X POST "$NEXUS_BASE_URL/query" \
 
 Each of these is a `curate.artifacts` manifest for a different corpus. Supply one in the `manifest` field the same way, and adjust the types to your own documents.
 
-> **Contracts, obligations, and key dates**
+> [accordion] Contracts, obligations, and key dates
 >
 > Shows the `event` kind, a `coverage` list on a type, and edge `attributes`.
 >
@@ -122,7 +122,7 @@ Each of these is a `curate.artifacts` manifest for a different corpus. Supply on
 > }
 > ```
 
-> **Papers and citations**
+> [accordion] Papers and citations
 >
 > Shows a per-document summary and a self-referential edge (a paper cites another paper).
 >
@@ -150,7 +150,7 @@ Each of these is a `curate.artifacts` manifest for a different corpus. Supply on
 > }
 > ```
 
-> **Code and technical docs**
+> [accordion] Code and technical docs
 >
 > Shows a dependency graph: a self-referential `depends_on` edge, plus edge `attributes`.
 >

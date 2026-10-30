@@ -182,6 +182,6 @@ You can combine any scoring method with a metadata filter. Filters support:
 
 For more information, see [Metadata filter expressions](/guides/index-data/indexing-overview#metadata-filter-expressions).
 
-### Pinecone Inference
+### Standalone embedding and reranking
 
-Pinecone Inference is an API service that provides access to [embedding models](/guides/index-data/index-configuration#embedding-models) and [reranking models](/guides/search/rerank-results#reranking-models) hosted on Pinecone's infrastructure.
+Standalone embedding and reranking let you call [embedding models](/guides/index-data/index-configuration#embedding-models) and [reranking models](/guides/search/rerank-results#reranking-models) hosted on Pinecone's infrastructure directly, separately from index operations.

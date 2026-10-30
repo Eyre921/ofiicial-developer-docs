@@ -22,7 +22,7 @@ The flagship model with the highest fidelity, richest emotional expression, and 
 
 Use `eleven_v4_turbo`
 
-Optimised for real-time applications with \~100ms latency.
+Optimised for real-time applications with a median latency of \~100ms.
 
 ## By use case
 
@@ -34,7 +34,7 @@ Ideal for professional content, audiobooks, and video narration.
 
 #### Conversational agents
 
-Use `eleven_v4_turbo` for the most expressive delivery, or `eleven_flash_v2_5` and `eleven_flash_v2` for the lowest latency.
+Use `eleven_v4_turbo` for the most expressive delivery. `eleven_flash_v2_5` and `eleven_flash_v2` are also optimised for low latency.
 
 Use the 2.5 model for language support outside of English.
 

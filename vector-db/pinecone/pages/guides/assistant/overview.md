@@ -8,27 +8,27 @@ Pinecone Assistant is a managed service for building production-grade RAG chat a
 
 Pinecone Assistant answers questions about your proprietary data. You upload files to an assistant, then chat with it or retrieve context snippets, and get back answers grounded in your data.
 
-> **[Quickstart](/guides/assistant/quickstart/sdk-quickstart)**
+> [card] [Quickstart](/guides/assistant/quickstart/sdk-quickstart)
 >
 > Create an assistant, upload a file, and chat with it
 
-> **[Files](/guides/assistant/files-overview)**
+> [card] [Files](/guides/assistant/files-overview)
 >
 > Supported file types, metadata, and how files are processed
 
-> **[Chat with an assistant](/guides/assistant/chat-with-assistant)**
+> [card] [Chat with an assistant](/guides/assistant/chat-with-assistant)
 >
 > Ask questions and get grounded answers with citations
 
-> **[Context snippets](/guides/assistant/context-snippets-overview)**
+> [card] [Context snippets](/guides/assistant/context-snippets-overview)
 >
 > Retrieve relevant context to use with your own LLM or agent
 
-> **[Pricing and limits](/guides/assistant/pricing-and-limits)**
+> [card] [Pricing and limits](/guides/assistant/pricing-and-limits)
 >
 > Costs for ingestion, chat, and storage, plus plan limits
 
-> **[MCP server](/guides/assistant/mcp-server)**
+> [card] [MCP server](/guides/assistant/mcp-server)
 >
 > Connect AI agents to your assistant through its MCP server
 
@@ -59,24 +59,24 @@ To try these steps with the Python or Node.js SDK, see the [SDK quickstart](/gui
 
 ## Resources
 
-> **[API reference](/reference/api/assistant/introduction)**
+> [card] [API reference](/reference/api/assistant/introduction)
 >
 > Details about the Assistant API and its SDK support
 
-> **[Examples](/examples/assistant)**
+> [card] [Examples](/examples/assistant)
 >
 > Sample apps and notebooks built with Pinecone Assistant
 
-> **[Changelog](/release-notes)**
+> [card] [Changelog](/release-notes)
 >
 > What's new in Pinecone
 
 ## Other Pinecone products
 
-> **[Pinecone Database](/guides/get-started/overview)**
+> [card] [Pinecone Database](/guides/get-started/overview)
 >
 > The retrieval foundation, bringing full-text and semantic search with metadata filtering into one managed database
 
-> **[Pinecone Nexus](/guides/nexus/overview)**
+> [card] [Pinecone Nexus](/guides/nexus/overview)
 >
 > The knowledge engine for agents, serving grounded, cited answers in one call

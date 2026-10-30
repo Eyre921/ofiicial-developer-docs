@@ -41,7 +41,7 @@ When creating an index that stores dense vectors, you can choose from the follow
 >
 > Indexes that store [sparse vectors](/guides/core-concepts/key-terms#sparse-vector) must use the `dotproduct` metric.
 
-> **Euclidean**
+> [accordion] Euclidean
 >
 > Querying indexes with this metric returns a similarity score equal to the squared Euclidean distance between the result and query vectors.
 >
@@ -49,11 +49,11 @@ When creating an index that stores dense vectors, you can choose from the follow
 >
 > When you use `metric='euclidean'`, the most similar results are those with the **lowest similarity score**.
 
-> **Cosine**
+> [accordion] Cosine
 >
 > This is often used to find similarities between different documents. The advantage is that the scores are normalized to \[-1,1] range. For an example, see the [generative question answering example](https://colab.research.google.com/github/pinecone-io/examples/blob/master/docs/gen-qa-openai.ipynb).
 
-> **Dotproduct**
+> [accordion] Dotproduct
 >
 > This multiplies two vectors to measure how similar they are. The more positive the result, the closer the two vectors are in direction. For an example, see the [semantic search example](https://colab.research.google.com/github/pinecone-io/examples/blob/master/docs/semantic-search.ipynb).
 

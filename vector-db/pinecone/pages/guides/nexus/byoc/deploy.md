@@ -59,29 +59,29 @@ To deploy Nexus BYOC, follow these steps.
 
 The setup script checks your credentials but doesn't log you in, so authenticate to your cloud and to Pulumi first.
 
-**AWS**
+> [tab] AWS
+>
+> ```bash theme={null}
+> aws configure                  # or: aws sso login / exported AWS_* env vars
+> aws sts get-caller-identity    # verify
+> pulumi login                   # or: pulumi login --local
+> ```
 
-```bash theme={null}
-aws configure                  # or: aws sso login / exported AWS_* env vars
-aws sts get-caller-identity    # verify
-pulumi login                   # or: pulumi login --local
-```
+> [tab] GCP
+>
+> ```bash theme={null}
+> gcloud auth login
+> gcloud auth application-default login
+> pulumi login                   # or: pulumi login --local
+> ```
 
-**GCP**
-
-```bash theme={null}
-gcloud auth login
-gcloud auth application-default login
-pulumi login                   # or: pulumi login --local
-```
-
-**Azure**
-
-```bash theme={null}
-az login
-az account show                # verify
-pulumi login                   # or: pulumi login --local
-```
+> [tab] Azure
+>
+> ```bash theme={null}
+> az login
+> az account show                # verify
+> pulumi login                   # or: pulumi login --local
+> ```
 
 If you use the local Pulumi backend, choose a passphrase for encrypting stack secrets and export it as `PULUMI_CONFIG_PASSPHRASE`. Every `pulumi` command needs it.
 
@@ -98,7 +98,7 @@ Use `--cloud aws` or `--cloud azure` for the other clouds, and `--stack-name <na
 
 The script selects your cloud provider, checks that required tools are installed, verifies your cloud credentials, prompts for the project directory and name, then launches an interactive wizard that collects your configuration, validates your quotas, and generates a Pulumi project in an adjacent directory (default: `pinecone-nexus-byoc`). No cloud resources are created during this step.
 
-> **Setup wizard prompts**
+> [accordion] Setup wizard prompts
 >
 > The wizard prompts you for the following:
 >
@@ -148,7 +148,7 @@ When complete, the output displays:
 >
 > The first `pulumi up` creates a `default` workspace automatically and waits for it to become ready before printing the links. Later `pulumi up` runs never recreate or modify it.
 
-> **Infrastructure provisioned**
+> [accordion] Infrastructure provisioned
 >
 > The deployment creates the following in your cloud account:
 >
@@ -169,23 +169,23 @@ When complete, the output displays:
 
 Configure `kubectl` using the `update_kubeconfig_command` from the deployment output:
 
-**AWS**
+> [tab] AWS
+>
+> ```bash theme={null}
+> aws eks update-kubeconfig --region <region> --name <cluster-name>
+> ```
 
-```bash theme={null}
-aws eks update-kubeconfig --region <region> --name <cluster-name>
-```
+> [tab] GCP
+>
+> ```bash theme={null}
+> gcloud container clusters get-credentials <cluster-name> --region <region> --project <project-id>
+> ```
 
-**GCP**
-
-```bash theme={null}
-gcloud container clusters get-credentials <cluster-name> --region <region> --project <project-id>
-```
-
-**Azure**
-
-```bash theme={null}
-az aks get-credentials --resource-group <resource-group> --name <cluster-name>
-```
+> [tab] Azure
+>
+> ```bash theme={null}
+> az aks get-credentials --resource-group <resource-group> --name <cluster-name>
+> ```
 
 Cluster access is for administrative tasks like viewing operations and troubleshooting. Everyday work (creating contexts, curating sources, and running queries) uses the Nexus console, CLI, or API.
 
@@ -246,15 +246,15 @@ pulumi up
 
 You can monitor your deployment through multiple channels:
 
-> **Pinecone console**
+> [accordion] Pinecone console
 >
 > View workspace and index metrics in the Pinecone console. Control plane operations and metrics work regardless of your network access mode.
 
-> **Prometheus**
+> [accordion] Prometheus
 >
 > To use Prometheus, configure your monitoring tool within your VPC to scrape metrics from the cluster. Your Prometheus instance must have network access to the BYOC VPC. The deployment output includes the metrics endpoint URL and port.
 
-> **Audit logs**
+> [accordion] Audit logs
 >
 > Cluster operations are persisted as Kubernetes CRDs for compliance and auditing:
 >
@@ -280,7 +280,7 @@ If `deletion-protection` is enabled (the default), you must either disable it in
 
 ## Troubleshooting
 
-> **Preflight check failures**
+> [accordion] Preflight check failures
 >
 > The setup wizard validates cloud quotas before deployment. If checks fail:
 >
@@ -293,7 +293,7 @@ If `deletion-protection` is enabled (the default), you must either disable it in
 > | vCPU quota | Request a regional vCPU increase |
 > | Required APIs / providers | Enable the cloud APIs (GCP) or register the resource providers (Azure) the installer requires |
 
-> **Deployment failures**
+> [accordion] Deployment failures
 >
 > If `pulumi up` fails partway through:
 >
@@ -304,30 +304,30 @@ If `deletion-protection` is enabled (the default), you must either disable it in
 >
 > On AWS, the slowest single step is VPC endpoint service private DNS verification: roughly 15 minutes of `Waiting for domain verification (pendingVerification)` polling is normal, not a hang. Let it finish.
 
-> **Cluster access issues**
+> [accordion] Cluster access issues
 >
 > Ensure your cloud credentials match the account where the cluster is deployed:
 >
-> **AWS**
+> > [tab] AWS
+> >
+> > ```bash theme={null}
+> > aws sts get-caller-identity
+> > ```
 >
-> ```bash theme={null}
-> aws sts get-caller-identity
-> ```
+> > [tab] GCP
+> >
+> > ```bash theme={null}
+> > gcloud auth list
+> > gcloud config get-value project
+> > ```
 >
-> **GCP**
->
-> ```bash theme={null}
-> gcloud auth list
-> gcloud config get-value project
-> ```
->
-> **Azure**
->
-> ```bash theme={null}
-> az account show
-> ```
+> > [tab] Azure
+> >
+> > ```bash theme={null}
+> > az account show
+> > ```
 
-> **Workspace stuck initializing**
+> [accordion] Workspace stuck initializing
 >
 > The first-run `default` workspace is created asynchronously and becomes ready only once the Nexus services in your deployment are up. If `pulumi up` times out waiting for it, re-run `pulumi up` once the cluster pods are `Running`. If it remains stuck, contact [Pinecone support](https://app.pinecone.io/organizations/-/settings/support/ticket).
 

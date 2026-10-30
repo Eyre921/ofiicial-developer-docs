@@ -24,14 +24,14 @@ While there are many individual techniques, we'll group them into **four princip
 > Enterprise customers benefit from increased concurrency limits and priority access to our rendering queue. [Contact sales](https://elevenlabs.io/contact-sales) to learn more about our enterprise
 > plans.
 
-## Use Flash models
+## Use a real-time model
 
-[Flash models](/docs/overview/models#flash-v25) deliver \~75ms inference speeds, making them ideal for real-time applications. The trade-off is a slight reduction in audio quality compared to [Multilingual v2](/docs/overview/models#multilingual-v2).
+[Eleven v4 Turbo](/docs/overview/models#eleven-v4-turbo) and [Flash v2.5](/docs/overview/models#flash-v25) are designed for real-time use, with a median latency of \~100ms. Flash models come with a slight reduction in audio quality compared to [Multilingual v2](/docs/overview/models#multilingual-v2).
 
 > **Info**
 >
-> 75ms refers to model inference time only. Actual end-to-end latency will vary with factors such as
-> your location & endpoint type used.
+> These figures exclude network time and your application. Actual end-to-end latency will vary with
+> factors such as your location & endpoint type used. See [how latency is measured](/docs/eleven-api/concepts/latency-methodology).
 
 ## Leverage streaming
 

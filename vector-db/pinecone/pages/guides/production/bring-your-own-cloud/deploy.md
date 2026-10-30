@@ -64,7 +64,7 @@ curl -fsSL https://raw.githubusercontent.com/pinecone-io/pulumi-pinecone-byoc/ma
 
 The script selects your cloud provider, checks that required tools are installed, verifies your cloud credentials, then launches an interactive wizard that collects your configuration choices, validates your quotas, and generates a Pulumi project. No cloud resources are created during this step.
 
-> **Setup wizard prompts**
+> [accordion] Setup wizard prompts
 >
 > The wizard prompts you for the following:
 >
@@ -88,52 +88,52 @@ The script selects your cloud provider, checks that required tools are installed
 
 After completing the wizard, a Pulumi project is generated in your project directory.
 
-> **Generated configuration file**
+> [accordion] Generated configuration file
 >
 > The wizard creates a `Pulumi.<stack>.yaml` file with configurable options. The options vary by cloud provider:
 >
-> **AWS**
+> > [tab] AWS
+> >
+> > | Option | Description | Default |
+> > | - | - | - |
+> > | `pinecone-version` | Pinecone release version | - |
+> > | `region` | AWS region | `us-east-1` |
+> > | `availability-zones` | Availability zones for high availability | `["us-east-1a", "us-east-1b"]` |
+> > | `vpc-cidr` | VPC IP range | `10.0.0.0/16` |
+> > | `deletion-protection` | Protect S3 buckets from accidental deletion | `true` |
+> > | `public-access-enabled` | Enable public endpoint (`false` = PrivateLink only) | `true` |
+> > | `custom-ami-id` | Custom AMI ID for EKS nodes | Default AWS AMI |
+> > | `tags` | Custom tags for all AWS resources | `{}` |
 >
-> | Option | Description | Default |
-> | - | - | - |
-> | `pinecone-version` | Pinecone release version | - |
-> | `region` | AWS region | `us-east-1` |
-> | `availability-zones` | Availability zones for high availability | `["us-east-1a", "us-east-1b"]` |
-> | `vpc-cidr` | VPC IP range | `10.0.0.0/16` |
-> | `deletion-protection` | Protect S3 buckets from accidental deletion | `true` |
-> | `public-access-enabled` | Enable public endpoint (`false` = PrivateLink only) | `true` |
-> | `custom-ami-id` | Custom AMI ID for EKS nodes | Default AWS AMI |
-> | `tags` | Custom tags for all AWS resources | `{}` |
+> > [tab] GCP
+> >
+> > | Option | Description | Default |
+> > | - | - | - |
+> > | `gcp:project` | GCP project ID | - |
+> > | `pinecone-version` | Pinecone release version | - |
+> > | `region` | GCP region | `us-central1` |
+> > | `availability-zones` | Zones for high availability | `["us-central1-a", "us-central1-b"]` |
+> > | `vpc-cidr` | VPC IP range | `10.112.0.0/12` |
+> > | `deletion-protection` | Protect GCS buckets from accidental deletion | `true` |
+> > | `public-access-enabled` | Enable public endpoint (`false` = Private Service Connect only) | `true` |
+> > | `labels` | Custom labels for all GCP resources | `{}` |
 >
-> **GCP**
->
-> | Option | Description | Default |
-> | - | - | - |
-> | `gcp:project` | GCP project ID | - |
-> | `pinecone-version` | Pinecone release version | - |
-> | `region` | GCP region | `us-central1` |
-> | `availability-zones` | Zones for high availability | `["us-central1-a", "us-central1-b"]` |
-> | `vpc-cidr` | VPC IP range | `10.112.0.0/12` |
-> | `deletion-protection` | Protect GCS buckets from accidental deletion | `true` |
-> | `public-access-enabled` | Enable public endpoint (`false` = Private Service Connect only) | `true` |
-> | `labels` | Custom labels for all GCP resources | `{}` |
->
-> **Azure**
->
-> | Option | Description | Default |
-> | - | - | - |
-> | `subscription-id` | Azure subscription ID | - |
-> | `pinecone-version` | Pinecone release version | - |
-> | `region` | Azure region | `eastus` |
-> | `availability-zones` | Zones for high availability | `["1", "2"]` |
-> | `vpc-cidr` | VNet IP range | `10.0.0.0/16` |
-> | `deletion-protection` | Protect storage accounts from accidental deletion | `true` |
-> | `public-access-enabled` | Enable public endpoint (`false` = Private Link only) | `true` |
-> | `tags` | Custom tags for all Azure resources | `{}` |
+> > [tab] Azure
+> >
+> > | Option | Description | Default |
+> > | - | - | - |
+> > | `subscription-id` | Azure subscription ID | - |
+> > | `pinecone-version` | Pinecone release version | - |
+> > | `region` | Azure region | `eastus` |
+> > | `availability-zones` | Zones for high availability | `["1", "2"]` |
+> > | `vpc-cidr` | VNet IP range | `10.0.0.0/16` |
+> > | `deletion-protection` | Protect storage accounts from accidental deletion | `true` |
+> > | `public-access-enabled` | Enable public endpoint (`false` = Private Link only) | `true` |
+> > | `tags` | Custom tags for all Azure resources | `{}` |
 >
 > To change configuration after initial setup, edit `Pulumi.<stack>.yaml` and run `pulumi up`.
 
-> **Programmatic usage**
+> [accordion] Programmatic usage
 >
 > For advanced users who want to integrate BYOC into existing Pulumi infrastructure, the `pulumi-pinecone-byoc` package is available on [PyPI](https://pypi.org/project/pulumi-pinecone-byoc/). Install with cloud-specific dependencies:
 >
@@ -179,7 +179,7 @@ When complete, the output displays:
 * Your BYOC **environment name** (used when creating indexes).
 * The **kubectl command** to configure cluster access.
 
-> **Infrastructure provisioned**
+> [accordion] Infrastructure provisioned
 >
 > The deployment creates the following resources in your cloud account:
 >
@@ -201,23 +201,23 @@ When complete, the output displays:
 
 Configure `kubectl` to connect to your cluster using the command from the deployment output:
 
-**AWS**
+> [tab] AWS
+>
+> ```bash theme={null}
+> aws eks update-kubeconfig --region <region> --name <cluster-name>
+> ```
 
-```bash theme={null}
-aws eks update-kubeconfig --region <region> --name <cluster-name>
-```
+> [tab] GCP
+>
+> ```bash theme={null}
+> gcloud container clusters get-credentials <cluster-name> --region <region> --project <project-id>
+> ```
 
-**GCP**
-
-```bash theme={null}
-gcloud container clusters get-credentials <cluster-name> --region <region> --project <project-id>
-```
-
-**Azure**
-
-```bash theme={null}
-az aks get-credentials --resource-group <resource-group> --name <cluster-name>
-```
+> [tab] Azure
+>
+> ```bash theme={null}
+> az aks get-credentials --resource-group <resource-group> --name <cluster-name>
+> ```
 
 This command configures your local `kubectl` tool to communicate with your Kubernetes cluster. You'll use cluster access for administrative tasks like viewing operations and troubleshooting. Creating indexes and reading/writing vectors still use the standard Pinecone API.
 
@@ -242,7 +242,7 @@ It's normal to see "No resources found" on a fresh deployment. Operations appear
 
 Common issues and how to resolve them:
 
-> **Preflight check failures**
+> [accordion] Preflight check failures
 >
 > The setup wizard validates cloud quotas before deployment. If checks fail:
 >
@@ -257,7 +257,7 @@ Common issues and how to resolve them:
 > | Resource providers (Azure) | Register required providers: `Microsoft.Compute`, `Microsoft.ContainerService`, `Microsoft.Storage`, `Microsoft.Network`, `Microsoft.KeyVault`, `Microsoft.ManagedIdentity`, `Microsoft.Authorization` |
 > | Required APIs (GCP only) | Enable Compute Engine, GKE, Cloud Storage, and Cloud DNS |
 
-> **Deployment failures**
+> [accordion] Deployment failures
 >
 > If `pulumi up` fails partway through:
 >
@@ -266,30 +266,30 @@ Common issues and how to resolve them:
 > pulumi up       # Retry deployment
 > ```
 
-> **Cluster access issues**
+> [accordion] Cluster access issues
 >
 > Ensure your cloud credentials match the account where the cluster is deployed:
 >
-> **AWS**
+> > [tab] AWS
+> >
+> > ```bash theme={null}
+> > aws sts get-caller-identity
+> > ```
 >
-> ```bash theme={null}
-> aws sts get-caller-identity
-> ```
+> > [tab] GCP
+> >
+> > ```bash theme={null}
+> > gcloud auth list
+> > gcloud config get-value project
+> > ```
 >
-> **GCP**
->
-> ```bash theme={null}
-> gcloud auth list
-> gcloud config get-value project
-> ```
->
-> **Azure**
->
-> ```bash theme={null}
-> az account show
-> ```
+> > [tab] Azure
+> >
+> > ```bash theme={null}
+> > az account show
+> > ```
 
-> **Index stuck in terminating state**
+> [accordion] Index stuck in terminating state
 >
 > If you destroyed the cluster before deleting indexes, indexes may be stuck in a "terminating" state. Contact [Pinecone support](https://app.pinecone.io/organizations/-/settings/support/ticket) for assistance.
 

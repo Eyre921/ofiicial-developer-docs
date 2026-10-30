@@ -98,7 +98,7 @@ Support for natural multi-speaker dialogue
 
 Our most emotive, real-time speech synthesis model
 
-Ultra-low latency (median inference latency of \~100ms†)
+Ultra-low latency (median latency of \~100ms†)
 
 Exceptional voice cloning capabilities
 
@@ -122,7 +122,7 @@ Support for natural multi-speaker dialogue
 
 Our expressive, realtime speech synthesis model
 
-Low latency (\~280ms)
+Low latency (\~165ms†)
 
 Dramatic delivery and performance
 
@@ -146,7 +146,7 @@ Most stable on long-form generations
 
 Our fast, affordable speech synthesis model
 
-Ultra-low latency (\~75ms†)
+Ultra-low latency (\~100ms†)
 
 32 languages supported
 
@@ -431,7 +431,7 @@ We are working on more advanced workflows to allow you to influence the AI's del
 
       Our Flash and Turbo models have been specially developed for low-latency applications.
 
-      Flash v2 and Flash v2.5 are our ultra-low-latency models, generating audio in less than 75ms. Flash v2 is English only, while Flash v2.5 supports 32 languages. You can see a full list of all supported languages
+      Flash v2 and Flash v2.5 are our ultra-low-latency models. Flash v2 is English only, while Flash v2.5 supports 32 languages. You can see a full list of all supported languages
       [here](/docs/help-center/other/what-languages-do-you-support).
 
       Our Turbo models are also low-latency, but as the Flash models give very similar results, we recommend using the Flash models over Turbo. Turbo v2 is English only, while Turbo v2.5 supports 32 languages, and is 25% faster than Turbo v2, generating audio in around 300ms.

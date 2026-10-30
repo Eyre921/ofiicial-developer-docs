@@ -50,6 +50,15 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 - [agent-device and Expo](https://docs.expo.dev/agents/agent-device.md)
 - [Argent and Expo](https://docs.expo.dev/agents/argent.md)
 
+## Agentic workflows
+
+- [Introduction to agentic workflows](https://docs.expo.dev/agentic-workflows/introduction.md): Learn how a coding agent can test your app on a cloud simulator and return evidence for you to review.
+- [Set up a project for agentic workflows](https://docs.expo.dev/agentic-workflows/setup.md)
+- [Test pull requests with an AI agent](https://docs.expo.dev/agentic-workflows/agentic-ci.md)
+- [Build a feature from an issue with an AI agent](https://docs.expo.dev/agentic-workflows/issue-to-pr.md)
+- [Triage a bug report with an AI agent](https://docs.expo.dev/agentic-workflows/bug-triage.md)
+- [Test your app with a swarm of AI agents](https://docs.expo.dev/agentic-workflows/qa-swarm.md)
+
 ## Develop
 
 - [Tools for development](https://docs.expo.dev/develop/tools.md): An overview of Expo tools and websites that will help you during various aspects of your project-building journey.

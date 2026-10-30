@@ -178,6 +178,8 @@ pip install mcp
 
 Choose the credential format that matches your setup:
 
+Each sample pins the issuer of the authorization server that provisioned the credentials, so the client refuses to send them to any other authorization server the MCP server might advertise.
+
 #### Using a client secret
 
 **TypeScript**
@@ -192,6 +194,7 @@ import {
 const provider = new ClientCredentialsProvider({
   clientId: "my-service",
   clientSecret: "s3cr3t",
+  expectedIssuer: "https://auth.example.com",
 });
 
 const client = new Client(
@@ -254,7 +257,8 @@ provider = ClientCredentialsOAuthProvider(
     storage=InMemoryTokenStorage(),
     client_id="my-service",
     client_secret="s3cr3t",
-    scopes="read write",
+    scope="read write",
+    issuer="https://auth.example.com",
 )
 
 
@@ -289,6 +293,7 @@ const provider = new PrivateKeyJwtProvider({
   clientId: "my-service",
   privateKey: process.env.CLIENT_PRIVATE_KEY_PEM,
   algorithm: "RS256",
+  expectedIssuer: "https://auth.example.com",
 });
 
 const client = new Client(
@@ -362,7 +367,8 @@ provider = PrivateKeyJWTOAuthProvider(
     storage=InMemoryTokenStorage(),
     client_id="my-service",
     assertion_provider=jwt_params.create_assertion_provider(),
-    scopes="read write",
+    scope="read write",
+    issuer="https://auth.example.com",
 )
 
 

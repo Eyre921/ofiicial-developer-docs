@@ -1,6 +1,6 @@
 # dev-platforms/upstash 文档索引
 
-> 共 1004 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1005 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -73,6 +73,7 @@
 - `docs/box/guides/nextjs-setup` — [Run a Next.js App in a Cloud Sandbox with a Public URL](pages/docs/box/guides/nextjs-setup.md) · [原文](https://upstash.com/docs/box/guides/nextjs-setup)
 - `docs/box/guides/openai-agents-api` — [Self-Hosted Sandboxes for the OpenAI Agents API](pages/docs/box/guides/openai-agents-api.md) · [原文](https://upstash.com/docs/box/guides/openai-agents-api)
 - `docs/box/guides/openclaw-setup` — [Self-Host an Always-On OpenClaw Agent in the Cloud](pages/docs/box/guides/openclaw-setup.md) · [原文](https://upstash.com/docs/box/guides/openclaw-setup)
+- `docs/box/guides/orca-setup` — [Run Orca Workspaces in Upstash Box](pages/docs/box/guides/orca-setup.md) · [原文](https://upstash.com/docs/box/guides/orca-setup)
 - `docs/box/guides/pi-setup` — [Run Pi Agent Tool Calls in a Remote Sandbox](pages/docs/box/guides/pi-setup.md) · [原文](https://upstash.com/docs/box/guides/pi-setup)
 - `docs/box/guides/remote-development` — [Remote Development Environment for AI Coding Agents](pages/docs/box/guides/remote-development.md) · [原文](https://upstash.com/docs/box/guides/remote-development)
 - `docs/box/guides/t3-code-setup` — [Host T3 Code in a Remote Sandbox](pages/docs/box/guides/t3-code-setup.md) · [原文](https://upstash.com/docs/box/guides/t3-code-setup)

@@ -131,6 +131,8 @@ Events are split into the following categories:
 * **Custom emoji created**: That a custom emoji was created.
 * **Custom emoji deleted**: That a custom emoji was deleted.
 * **Custom emoji updated**: That a custom emoji was updated.
+* **Custom MCP server creation setting updated**: That a group's custom MCP server creation setting was updated.
+* **Custom MCP server creation settings updated**: That the policy controlling who can create connections to custom MCP servers was updated.
 * **Custom MCP servers setting updated**: That custom MCP servers were enabled or disabled for the workspace. Disabling also disconnects custom MCP servers that were already added.
 * **DEK rotation completed**: That data encryption key rotation was completed.
 * **DEK rotation started**: That data encryption key rotation was started.

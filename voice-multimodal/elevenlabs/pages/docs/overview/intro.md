@@ -58,7 +58,7 @@ Learn how to integrate with the ElevenLabs API with examples and tutorials
 
 **Voices** are the speech persona used in audio generation. Each voice has a unique ID — for example, `JBFqnCBsd6RMkjVDRZzb` — that you select in the dashboard or pass in API requests. ElevenLabs maintains a [library of 10,000+ voices](https://elevenlabs.io/app/voice-library). You can also clone a voice from an audio recording or generate one from a text description.
 
-**Models** control the quality, latency, and language coverage of generated audio. [`eleven_v4`](/docs/overview/models) produces the most expressive output across 90+ languages. [`eleven_v4_turbo`](/docs/overview/models) targets real-time use at median inference latency of \~100ms. Each capability — speech-to-text, music, sound effects — has its own dedicated model. See [Which model should I use?](#which-model-should-i-use) to pick one.
+**Models** control the quality, latency, and language coverage of generated audio. [`eleven_v4`](/docs/overview/models) produces the most expressive output across 90+ languages. [`eleven_v4_turbo`](/docs/overview/models) targets real-time use at a median latency of \~100ms. Each capability — speech-to-text, music, sound effects — has its own dedicated model. See [Which model should I use?](#which-model-should-i-use) to pick one.
 
 ## How does pricing work?
 
@@ -70,7 +70,7 @@ To use the API without a monthly subscription, [Pay As You Go](/docs/overview/ad
 
 ### How fast is ElevenLabs text to speech?
 
-Eleven Flash v2.5 generates audio with \~75ms of model inference latency, and Eleven v4 Turbo with a median of \~100ms. Scribe v2 Realtime returns partial transcripts in \~150ms. These figures exclude application and network latency, so the time until your users hear audio is higher. [Understanding latency](/docs/eleven-api/concepts/latency) explains what the figures cover, and [Latency optimization](/docs/eleven-api/guides/how-to/best-practices/latency-optimization) covers how to reduce end-to-end latency.
+Eleven v4 Turbo and Eleven Flash v2.5 both return the first audio with a median latency of \~100ms. Scribe v2 Realtime returns committed transcripts with a median latency of \~150ms. These figures exclude application and network latency, so the time until your users hear audio is higher. [How latency is measured](/docs/eleven-api/concepts/latency-methodology) explains what the figures cover, and [Latency optimization](/docs/eleven-api/guides/how-to/best-practices/latency-optimization) covers how to reduce end-to-end latency.
 
 ### How does ElevenLabs handle scale?
 
@@ -185,7 +185,7 @@ Start from your use case. Each model ID below is the value to pass as `model_id`
 
 | Use case                          | Recommended model  | Model ID             | Why                                                                                                                                                                                                        |
 | --------------------------------- | ------------------ | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Real-time voice agents            | Eleven v4 Turbo    | `eleven_v4_turbo`    | Median inference latency of \~100ms† with the most expressive real-time delivery. For the lowest latency, use `eleven_flash_v2_5` (\~75ms†).                                                               |
+| Real-time voice agents            | Eleven v4 Turbo    | `eleven_v4_turbo`    | Median latency of \~100ms† with the most expressive real-time delivery. `eleven_flash_v2_5` has a similar median latency.                                                                                  |
 | Expressive or long-form narration | Eleven v4          | `eleven_v4`          | The most expressive model, suited to audiobooks and character voiceovers. Up to 10,000 characters (\~10 minutes of audio) per request. For the most stable long-form output, use `eleven_multilingual_v2`. |
 | Multilingual content              | Eleven v4          | `eleven_v4`          | 90+ languages with consistent voice quality across language switches. `eleven_v4_turbo` covers the same languages in real time.                                                                            |
 | Lowest cost                       | Eleven Flash v2.5  | `eleven_flash_v2_5`  | 50% lower price per character for API generations, 32 languages, and up to 40,000 characters per request.                                                                                                  |
@@ -210,7 +210,7 @@ Support for natural multi-speaker dialogue
 
 Our most emotive, real-time speech synthesis model
 
-Ultra-low latency (median inference latency of \~100ms†)
+Ultra-low latency (median latency of \~100ms†)
 
 Exceptional voice cloning capabilities
 
@@ -234,7 +234,7 @@ Support for natural multi-speaker dialogue
 
 Our expressive, realtime speech synthesis model
 
-Low latency (\~280ms)
+Low latency (\~165ms†)
 
 Dramatic delivery and performance
 
@@ -258,7 +258,7 @@ Most stable on long-form generations
 
 Our fast, affordable speech synthesis model
 
-Ultra-low latency (\~75ms†)
+Ultra-low latency (\~100ms†)
 
 32 languages supported
 
@@ -314,7 +314,7 @@ Same features, languages, pricing, and API as Scribe v2
 
 [Explore all](/docs/overview/models)
 
-† Excluding application & network latency. See [Understanding latency](/docs/eleven-api/concepts/latency).
+† Median, excluding application & network latency. See [how latency is measured](/docs/eleven-api/concepts/latency-methodology).
 
 ## Browse by capability
 

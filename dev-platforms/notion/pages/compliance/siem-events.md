@@ -176,6 +176,7 @@ When available, applicable events include a top-level `team_ids` array containin
 * **workspace.group.ai\_credit\_overage\_updated**: AI credit overage access for a group was updated.
 * **workspace.group.created**: A new group was created. A group is a defined collection of workspace members.
 * **workspace.group.custom\_agent\_creation\_updated**: The custom agent creation permission for a group was enabled or disabled.
+* **workspace.group.custom\_mcp\_server\_creation\_updated**: A permission group's ability to create connections to custom MCP servers was updated.
 * **workspace.group.deleted**: A group was deleted from the workspace.
 * **workspace.group.internal\_integration\_creation\_updated**: A permission group's ability to create internal integrations was updated.
 * **workspace.group.notion\_mcp\_personal\_access\_token\_updated**: A permission group's ability to use personal access tokens with Notion MCP was updated.
@@ -242,6 +243,7 @@ When available, applicable events include a top-level `team_ids` array containin
 * **workspace.settings.allow\_workspace\_creation\_setting\_updated**: A workspace owner restricted creation of new workspaces by users with the claimed enterprise email domain.
 * **workspace.settings.analytics\_tracking\_setting\_updated**: A user enabled or disabled workspace analytics tracking within the workspace.
 * **workspace.settings.custom\_agent\_default\_model\_updated**: The default model for new Custom Agents was updated. `previous_model` and `model` contain the prior and current model, or `Auto` when no workspace default is set.
+* **workspace.settings.custom\_mcp\_server\_creation\_policy\_updated**: The workspace policy controlling who can create connections to custom MCP servers was updated.
 * **workspace.settings.delete\_from\_trash\_delay**: The [custom data retention](https://www.notion.com/help/custom-data-retention-settings) delete from trash delay setting was updated.
 * **workspace.settings.disallow\_webhook\_automation\_action\_toggled**: A workspace owner enabled or disabled the use of webhook automation actions in the workspace.
 * **workspace.settings.duplicate\_pages\_to\_workspaces\_setting\_updated**: A workspace owner enabled or disabled moving pages to other workspaces.

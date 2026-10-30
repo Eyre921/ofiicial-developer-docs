@@ -151,7 +151,7 @@ Multilingual v2 supports 29 languages:
 * **tr** Turkish
 * **uk** Ukrainian
 
-**Flash v2.5** - our latest, ultra-low-latency model, generating speech in under 75ms.
+**Flash v2.5** - our latest, ultra-low-latency model.
 
 It supports 32 languages:
 
@@ -188,8 +188,8 @@ It supports 32 languages:
 * **uk** Ukrainian
 * **vi** Vietnamese
 
-**Flash v2** - our latest, ultra-low-latency English-only model, generating speech in
-under 75ms. Best for developer use cases requiring speed.
+**Flash v2** - our latest, ultra-low-latency English-only model. Best for developer use
+cases requiring speed.
 
 * **en** English
 
