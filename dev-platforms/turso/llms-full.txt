@@ -1431,6 +1431,1439 @@ async def main():
 
     # Use key-value store
     await agent.kv.set('config', {'debug': True})
+    config# Audit Filesystem Changes
+Source: https://docs.turso.tech/agentfs/guides/auditing
+
+Inspect and analyze what an agent did during a session
+
+AgentFS records every file operation and tool call, giving you complete visibility into agent behavior. This is essential for debugging, compliance, and understanding how agents work.
+
+## Viewing the Timeline
+
+See a chronological list of tool calls:
+
+```bash theme={null}
+agentfs timeline my-session
+```
+
+Output:
+
+```
+ID   TOOL                 STATUS       DURATION STARTED
+4    execute_code         pending            -- 2024-01-05 09:44:20
+3    api_call             error           300ms 2024-01-05 09:44:15
+2    read_file            success          50ms 2024-01-05 09:44:10
+1    web_search           success        1200ms 2024-01-05 09:43:45
+```
+
+### Filtering Results
+
+Show only specific tool types:
+
+```bash theme={null}
+agentfs timeline my-session --filter web_search
+```
+
+Show only errors:
+
+```bash theme={null}
+agentfs timeline my-session --status error
+```
+
+Limit number of entries:
+
+```bash theme={null}
+agentfs timeline my-session --limit 20
+```
+
+### JSON Output
+
+For programmatic analysis:
+
+```bash theme={null}
+agentfs timeline my-session --format json
+```
+
+```json theme={null}
+[
+  {
+    "id": 1,
+    "name": "web_search",
+    "status": "success",
+    "started_at": 1704447825,
+    "completed_at": 1704447826,
+    "duration_ms": 1200,
+    "parameters": {"query": "AI agents"},
+    "result": {"results": ["result1", "result2"]}
+  }
+]
+```
+
+## Inspecting Files
+
+List all files in a session:
+
+```bash theme={null}
+agentfs fs ls my-session
+```
+
+Output:
+
+```
+d artifacts
+f config.json
+f output.txt
+```
+
+List a subdirectory:
+
+```bash theme={null}
+agentfs fs ls my-session /artifacts
+```
+
+Read file contents:
+
+```bash theme={null}
+agentfs fs cat my-session /output.txt
+```
+
+## Viewing Changes (Diff)
+
+See what changed compared to the original filesystem:
+
+```bash theme={null}
+agentfs diff my-session
+```
+
+This shows:
+
+* New files created
+* Modified files
+* Deleted files
+
+## Querying with SQL
+
+Since AgentFS uses SQLite, you can run arbitrary queries:
+
+**Turso**
+
+```bash theme={null}
+tursodb .agentfs/my-session.db
+```
+
+**SQLite**
+
+```bash theme={null}
+sqlite3 .agentfs/my-session.db
+```
+
+Example queries:
+
+```sql theme={null}
+-- Find all tool calls that took longer than 1 second
+SELECT name, duration_ms
+FROM toolcalls
+WHERE duration_ms > 1000;
+
+-- Count tool usage by type
+SELECT name, COUNT(*) as count
+FROM toolcalls
+GROUP BY name
+ORDER BY count DESC;
+
+-- Find files modified in the last hour
+SELECT path, mtime
+FROM fs_inode
+WHERE mtime > strftime('%s', 'now', '-1 hour');
+
+-- Get total bytes written
+SELECT SUM(size) as total_bytes
+FROM fs_inode
+WHERE mode & 0170000 = 0100000;  -- regular files only
+```
+
+## Use Cases
+
+### Debugging Agent Failures
+
+When an agent fails, use the timeline to understand what happened:
+
+```bash theme={null}
+# See recent activity
+agentfs timeline my-session --limit 20
+
+# Focus on errors
+agentfs timeline my-session --status error
+
+# Check what files were created/modified
+agentfs fs ls my-session
+```
+
+### Performance Analysis
+
+Find slow operations:
+
+```sql theme={null}
+SELECT name, AVG(duration_ms) as avg_ms, COUNT(*) as count
+FROM toolcalls
+GROUP BY name
+ORDER BY avg_ms DESC;
+```
+
+### Compliance Auditing
+
+Export a complete record of agent activity:
+
+```bash theme={null}
+agentfs timeline my-session --format json > audit-log.json
+```
+
+## Next Steps
+
+> **[Overlay Filesystem](/agentfs/guides/overlay)**
+>
+> Understanding copy-on-write
+
+> **[Syncing](/agentfs/guides/sync)**
+>
+> Sync sessions to Turso Cloud
+
+
+# MCP Server Integration
+Source: https://docs.turso.tech/agentfs/guides/mcp
+
+Use AgentFS as an MCP server for AI assistants
+
+AgentFS can run as an [MCP (Model Context Protocol)](https://modelcontextprotocol.io/) server, exposing filesystem and key-value operations to AI assistants like Claude Desktop.
+
+## Starting the MCP Server
+
+```bash theme={null}
+agentfs serve mcp my-agent
+```
+
+This starts an MCP server that exposes AgentFS tools over stdio.
+
+## Available Tools
+
+### Filesystem Tools
+
+| Tool | Description |
+| - | - |
+| `read_file` | Read file contents |
+| `write_file` | Write file contents |
+| `readdir` | List directory contents |
+| `mkdir` | Create directory |
+| `remove` | Remove file or directory |
+| `rename` | Rename file or directory |
+| `stat` | Get file metadata |
+| `access` | Check file access permissions |
+
+### Key-Value Tools
+
+| Tool | Description |
+| - | - |
+| `kv_get` | Get value by key |
+| `kv_set` | Set key-value pair |
+| `kv_delete` | Delete key |
+| `kv_list` | List all keys |
+
+## Limiting Exposed Tools
+
+For security, you can limit which tools are available:
+
+```bash theme={null}
+# Read-only mode
+agentfs serve mcp my-agent --tools read_file,readdir,stat,kv_get,kv_list
+
+# Filesystem only
+agentfs serve mcp my-agent --tools read_file,write_file,readdir,mkdir,remove
+
+# Key-value only
+agentfs serve mcp my-agent --tools kv_get,kv_set,kv_delete,kv_list
+```
+
+## Security Considerations
+
+> [!WARNING]
+>
+> The MCP server gives AI assistants direct access to the AgentFS filesystem. Consider these security practices:
+>
+> * **Limit tools** - Only expose tools the assistant needs
+> * **Use overlays** - Create overlay filesystems instead of giving access to real directories
+> * **Review the agent database** - Check `.agentfs/*.db` periodically
+
+## Debugging
+
+Check if the MCP server is working:
+
+```bash theme={null}
+# Run manually to see output
+agentfs serve mcp my-agent
+
+# Check if the database exists
+ls -la .agentfs/my-agent.db
+```
+
+## Next Steps
+
+> **[NFS Server](/agentfs/guides/nfs)**
+>
+> Remote access via NFS
+
+> **[Copy-on-Write Overlays](/agentfs/guides/overlay)**
+>
+> How isolation works
+
+
+# NFS Server Access
+Source: https://docs.turso.tech/agentfs/guides/nfs
+
+Export AgentFS over the network via NFS
+
+AgentFS can expose filesystems over NFS, enabling remote access from other machines, containers, or virtual machines.
+
+## Starting the NFS Server
+
+```bash theme={null}
+agentfs serve nfs my-agent
+```
+
+By default, this listens on `127.0.0.1:11111`.
+
+### Binding to All Interfaces
+
+To allow remote access:
+
+```bash theme={null}
+agentfs serve nfs my-agent --bind 0.0.0.0 --port 2049
+```
+
+> [!WARNING]
+>
+> Exposing NFS on `0.0.0.0` makes the filesystem accessible to anyone who can reach your machine. Use firewall rules or a VPN for production deployments.
+
+## Mounting the Filesystem
+
+### From the Same Machine
+
+```bash theme={null}
+mkdir /mnt/agentfs
+mount -t nfs -o vers=3,tcp,port=11111,mountport=11111,nolock 127.0.0.1:/ /mnt/agentfs
+```
+
+### From a Remote Machine
+
+```bash theme={null}
+mount -t nfs -o vers=3,tcp,port=2049,mountport=2049,nolock server-ip:/ /mnt/agentfs
+```
+
+### Mount Options Explained
+
+| Option | Description |
+| - | - |
+| `vers=3` | Use NFSv3 protocol |
+| `tcp` | Use TCP transport |
+| `port=11111` | NFS server port |
+| `mountport=11111` | Mount protocol port |
+| `nolock` | Disable file locking (single-user) |
+
+## Unmounting
+
+```bash theme={null}
+umount /mnt/agentfs
+```
+
+If the mount is busy:
+
+```bash theme={null}
+umount -f /mnt/agentfs  # Force unmount
+# or
+umount -l /mnt/agentfs  # Lazy unmount
+```
+
+## Next Steps
+
+> **[MCP Server](/agentfs/guides/mcp)**
+>
+> Expose AgentFS via MCP
+
+> **[Sync with Turso Cloud](/agentfs/guides/sync)**
+>
+> Back up and share agent state
+
+
+# Copy-on-Write Overlays
+Source: https://docs.turso.tech/agentfs/guides/overlay
+
+How copy-on-write isolation works in AgentFS
+
+AgentFS uses an overlay filesystem to provide copy-on-write isolation. This lets agents freely modify files while keeping your original data safe.
+
+## How Overlay Works
+
+An overlay filesystem combines two layers:
+
+```
+┌────────────────────────────────────┐
+│         Merged View (what you see) │
+├────────────────────────────────────┤
+│  Delta Layer (AgentFS database)    │  ← Writes go here
+├────────────────────────────────────┤
+│  Base Layer (original directory)   │  ← Read-only
+└────────────────────────────────────┘
+```
+
+**Reading a file:**
+
+1. Check delta layer first
+2. If not found, read from base layer
+
+**Writing a file:**
+
+1. Copy file to delta layer (if from base)
+2. Write changes to delta layer
+3. Base layer is never modified
+
+**Deleting a file:**
+
+1. Create a "whiteout" marker in delta layer
+2. File appears deleted in merged view
+3. Original file in base layer is untouched
+
+## Creating an Overlay Filesystem
+
+### With `agentfs run`
+
+The simplest way - automatically creates an overlay over your current directory:
+
+```bash theme={null}
+cd /path/to/project
+agentfs run /bin/bash
+```
+
+### With `agentfs init --base`
+
+Create an overlay explicitly:
+
+```bash theme={null}
+agentfs init my-overlay --base /path/to/project
+```
+
+Then mount it:
+
+```bash theme={null}
+agentfs mount my-overlay ./workspace
+```
+
+Or run a command in it:
+
+```bash theme={null}
+agentfs run --session my-overlay /bin/bash
+```
+
+## Viewing Changes
+
+See what's different from the base:
+
+```bash theme={null}
+agentfs diff my-overlay
+```
+
+## Practical Examples
+
+### Safe Refactoring
+
+Let an agent refactor your code without risk:
+
+```bash theme={null}
+cd my-project
+agentfs run --session refactor python3 refactor_agent.py
+
+# Review what changed
+agentfs diff refactor
+
+# Happy? Apply changes manually or via script
+# Not happy? Just delete the session
+rm .agentfs/refactor.db
+```
+
+### Testing Destructive Operations
+
+Try something dangerous safely:
+
+```bash theme={null}
+agentfs run --session test /bin/bash
+$ rm -rf src/  # Yikes!
+$ exit
+
+# Original files are fine
+ls src/  # Still there!
+
+# Only the overlay was affected
+agentfs fs ls test  # Shows the deletion
+```
+
+### Parallel Experiments
+
+Run multiple experiments on the same codebase:
+
+```bash theme={null}
+# Experiment A
+agentfs run --session exp-a python3 approach_a.py
+
+# Experiment B (same base, different changes)
+agentfs run --session exp-b python3 approach_b.py
+
+# Compare results
+agentfs diff exp-a
+agentfs diff exp-b
+```
+
+## Storage Efficiency
+
+The overlay only stores:
+
+* **Modified files** - Full copy after first write
+* **New files** - Stored entirely in delta
+* **Deleted files** - Small whiteout marker
+
+Original files are never duplicated. A 10GB project with 1MB of changes only uses \~1MB in the delta layer.
+
+## Technical Details
+
+### File Operations
+
+| Operation | Behavior |
+| - | - |
+| Read existing file | Pass through to base |
+| Write existing file | Copy to delta, then write |
+| Create new file | Write directly to delta |
+| Delete file | Create whiteout in delta |
+| Rename file | Delete old + create new |
+
+### Whiteouts
+
+When you delete a base file, AgentFS creates a "whiteout" - a marker that hides the file:
+
+```sql theme={null}
+-- Whiteouts in the database
+SELECT * FROM fs_inode WHERE whiteout = 1;
+```
+
+### Database Schema
+
+The delta layer is stored in SQLite:
+
+```sql theme={null}
+-- Files and directories
+CREATE TABLE fs_inode (
+    ino INTEGER PRIMARY KEY,
+    parent_ino INTEGER,
+    name TEXT,
+    mode INTEGER,
+    size INTEGER,
+    ...
+    whiteout INTEGER DEFAULT 0
+);
+
+-- File contents
+CREATE TABLE fs_block (
+    ino INTEGER,
+    block_num INTEGER,
+    data BLOB
+);
+```
+
+See the [AgentFS Specification](https://github.com/tursodatabase/agentfs/blob/main/SPEC.md) for the complete schema.
+
+## Next Steps
+
+> **[Sessions](/agentfs/guides/sessions)**
+>
+> Share state between agents
+
+> **[Syncing](/agentfs/guides/sync)**
+>
+> Sync overlays to Turso Cloud
+
+
+# Agentic Coding
+Source: https://docs.turso.tech/agentfs/guides/sandbox
+
+Run AI coding agents safely with AgentFS sandboxing
+
+AgentFS lets you run AI coding agents like Claude Code, Codex, and OpenCode in a sandboxed environment where file changes are isolated from your original source tree.
+
+## Supported Agents
+
+| Agent | Command |
+| - | - |
+| [Claude Code](https://code.claude.com/docs/en/overview) | `agentfs run claude` |
+| [Codex](https://openai.com/codex/) | `agentfs run codex` |
+| [OpenCode](https://opencode.ai/) | `agentfs run opencode` |
+| Any CLI tool | `agentfs run <command>` |
+
+## Workflow
+
+Here's a typical agentic coding workflow. This example uses Claude Code, but the workflow is the same with OpenCode, Codex, and others.
+
+### Step 1: Clone the Repository
+
+Clone the git repository to a host directory. Keep this source tree clean from build artifacts. When there's a merge to main, pull to this repository to keep it up-to-date.
+
+```bash theme={null}
+git clone https://github.com/tursodatabase/agentfs.git
+cd agentfs
+```
+
+### Step 2: Start an AgentFS Session
+
+Use `agentfs run` with the `--session` flag to start a session. Pick a name that can eventually become your git branch name.
+
+**Claude Code**
+
+```bash theme={null}
+agentfs run --session fix-bug-123 claude
+```
+
+**Codex**
+
+```bash theme={null}
+agentfs run --session fix-bug-123 codex
+```
+
+**OpenCode**
+
+```bash theme={null}
+agentfs run --session fix-bug-123 opencode
+```
+
+The agent now runs in a copy-on-write environment. Your original source tree remains untouched while the agent works.
+
+### Step 3 (Optional): Manual Investigation
+
+If the agent does something unusual, open another terminal and join the same session to investigate:
+
+```bash theme={null}
+agentfs run --session fix-bug-123 bash
+```
+
+The filesystem is shared between the shell and the agent. You can browse files, run tests, or check what's happening while the agent works.
+
+### Step 4: Push to Branch
+
+Once the agent has completed the work, ask it to create a branch, commit the code, and push:
+
+> "Create a branch called fix-bug-123, commit these changes, and push to origin"
+
+You can then create a PR manually from the pushed branch.
+
+## Why This Workflow?
+
+* **Clean source tree** - Your original clone stays pristine and easy to update from upstream
+* **Isolated changes** - Each task gets its own session, preventing cross-contamination
+* **Easy investigation** - Join any session to see what's happening in real-time
+* **Standard git flow** - Push branches and create PRs as usual
+
+## Next Steps
+
+> **[Multi-Agent Sessions](/agentfs/guides/sessions)**
+>
+> Share state between agents and terminals
+
+> **[Auditing](/agentfs/guides/auditing)**
+>
+> Inspect what an agent did with diff and timeline
+
+
+# Shared Agent Sessions
+Source: https://docs.turso.tech/agentfs/guides/sessions
+
+Share state between multiple agents and terminals with named sessions
+
+Named sessions let you share a filesystem between multiple agents, terminals, or runs. All participants see the same copy-on-write view of your project.
+
+## Creating a Session
+
+Use `--session` to create a named session:
+
+```bash theme={null}
+agentfs run --session my-project /bin/bash
+```
+
+This creates a session called `my-project`. All changes are stored in `.agentfs/my-project.db`.
+
+## Resuming a Session
+
+Run the same command to resume where you left off:
+
+```bash theme={null}
+# First run - make some changes
+agentfs run --session my-project /bin/bash
+$ echo "hello" > test.txt
+$ exit
+
+# Second run - changes are still there
+agentfs run --session my-project /bin/bash
+$ cat test.txt
+hello
+```
+
+## Multi-Terminal Collaboration
+
+Multiple terminals can share the same session simultaneously:
+
+```bash theme={null}
+# Terminal 1
+agentfs run --session shared-work /bin/bash
+
+# Terminal 2 - joins the same filesystem
+agentfs run --session shared-work python3 agent.py
+
+# Terminal 3 - also sees the same files
+agentfs run --session shared-work vim
+```
+
+All terminals share the same copy-on-write filesystem. Changes made in one terminal are immediately visible in others.
+
+## Use Cases
+
+### Iterative Development
+
+Work on a task across multiple sessions:
+
+```bash theme={null}
+# Morning session
+agentfs run --session feature-x /bin/bash
+# ... work on the feature, then exit for lunch
+
+# Afternoon session - continue where you left off
+agentfs run --session feature-x /bin/bash
+```
+
+### Safe Experimentation
+
+Create a session, try something risky, then decide whether to keep it:
+
+```bash theme={null}
+agentfs run --session experiment /bin/bash
+# ... try some changes
+
+# Option A: Happy with changes
+agentfs diff experiment  # Review
+# Apply changes to real filesystem (manually or via script)
+
+# Option B: Discard everything
+rm .agentfs/experiment.db
+```
+
+### Agent Supervision
+
+Run an agent and monitor its work from another terminal:
+
+```bash theme={null}
+# Terminal 1: Run the agent
+agentfs run --session agent-task python3 agent.py
+
+# Terminal 2: Watch what it's doing
+agentfs run --session agent-task /bin/bash
+$ watch ls -la  # See files being created
+$ tail -f agent.log  # Monitor logs
+```
+
+## Managing Sessions
+
+List files in a session:
+
+```bash theme={null}
+agentfs fs ls my-session
+```
+
+View session changes:
+
+```bash theme={null}
+agentfs diff my-session
+```
+
+Delete a session:
+
+```bash theme={null}
+rm .agentfs/my-session.db
+```
+
+## Session Storage
+
+Sessions are stored as SQLite databases in `.agentfs/`:
+
+```
+.agentfs/
+├── my-project.db
+├── experiment.db
+└── shared-work.db
+```
+
+Each database contains:
+
+* All modified files
+* Deleted file markers (whiteouts)
+* Tool call audit log
+* Key-value store data
+
+## Next Steps
+
+> **[Auditing](/agentfs/guides/auditing)**
+>
+> Inspect what happened in a session
+
+> **[Overlay Filesystem](/agentfs/guides/overlay)**
+>
+> How copy-on-write works
+
+
+# Sync with Turso Cloud
+Source: https://docs.turso.tech/agentfs/guides/sync
+
+Synchronize agent filesystems with remote Turso databases
+
+AgentFS can sync with [Turso Cloud](https://turso.tech), enabling backup, collaboration, and distributed agent deployments.
+
+## Setting Up Sync
+
+### 1. Create a Turso Database
+
+If you don't have a Turso account, [sign up](https://turso.tech) first.
+
+Create a database for your agent:
+
+```bash theme={null}
+turso db create my-agent-db
+```
+
+Get the database URL:
+
+```bash theme={null}
+turso db show my-agent-db --url
+# Output: libsql://my-agent-db-username.turso.io
+```
+
+### 2. Initialize with Sync
+
+Create a new agent filesystem with sync enabled:
+
+```bash theme={null}
+agentfs init my-agent --sync-remote-url libsql://my-agent-db-username.turso.io
+```
+
+Or add sync to an existing agent:
+
+```bash theme={null}
+# Edit the database to add sync configuration
+# (Feature coming soon)
+```
+
+## Sync Commands
+
+### Pull Remote Changes
+
+Download changes from Turso Cloud:
+
+```bash theme={null}
+agentfs sync my-agent pull
+```
+
+### Push Local Changes
+
+Upload local changes to Turso Cloud:
+
+```bash theme={null}
+agentfs sync my-agent push
+```
+
+### View Sync Status
+
+Check sync statistics:
+
+```bash theme={null}
+agentfs sync my-agent stats
+```
+
+### Create Checkpoint
+
+Force a sync checkpoint:
+
+```bash theme={null}
+agentfs sync my-agent checkpoint
+```
+
+## Use Cases
+
+### Backup and Recovery
+
+Automatically back up agent state:
+
+```bash theme={null}
+# After important work
+agentfs sync my-agent push
+
+# On a new machine
+agentfs init my-agent --sync-remote-url libsql://...
+agentfs sync my-agent pull
+```
+
+### Multi-Machine Agents
+
+Run agents on multiple machines with shared state:
+
+```bash theme={null}
+# Machine A
+agentfs run --session shared-agent python3 agent.py
+agentfs sync shared-agent push
+
+# Machine B
+agentfs sync shared-agent pull
+agentfs run --session shared-agent python3 agent.py
+```
+
+## Partial Sync
+
+For large filesystems, use partial sync to only fetch what's needed:
+
+```bash theme={null}
+agentfs init my-agent \
+  --sync-remote-url libsql://... \
+  --sync-partial-prefetch \
+  --sync-partial-segment-size 1000
+```
+
+### Partial Sync Options
+
+| Option | Description |
+| - | - |
+| `--sync-partial-prefetch` | Enable prefetching |
+| `--sync-partial-segment-size` | Segment size for partial sync |
+| `--sync-partial-bootstrap-query` | Custom bootstrap query |
+| `--sync-partial-bootstrap-length` | Bootstrap prefix length |
+
+## Authentication
+
+Sync requires a Turso auth token. Set it via environment variable:
+
+```bash theme={null}
+export TURSO_AUTH_TOKEN=$(turso db tokens create my-agent-db)
+```
+
+Or create a long-lived token:
+
+```bash theme={null}
+turso db tokens create my-agent-db --expiration none
+```
+
+## Conflict Resolution
+
+AgentFS uses last-write-wins for conflicts. If the same file is modified on multiple machines:
+
+1. Push from Machine A succeeds
+2. Push from Machine B fails (conflict)
+3. Machine B must pull first, then push
+
+## Next Steps
+
+> **[Turso Cloud](https://turso.tech)**
+>
+> Learn more about Turso Cloud
+
+> **[NFS Server](/agentfs/guides/nfs)**
+>
+> Remote access via NFS
+
+
+# Installation
+Source: https://docs.turso.tech/agentfs/installation
+
+Install the AgentFS CLI on Linux, macOS, and Windows
+
+## Quick Install
+
+The fastest way to install AgentFS:
+
+```bash theme={null}
+curl -fsSL https://github.com/tursodatabase/agentfs/releases/latest/download/agentfs-installer.sh | sh
+```
+
+This installs the `agentfs` binary to `~/.cargo/bin`.
+
+## Platform-Specific Instructions
+
+**macOS**
+
+```bash theme={null}
+curl -fsSL https://github.com/tursodatabase/agentfs/releases/latest/download/agentfs-installer.sh | sh
+```
+
+After installation, restart your terminal or run:
+
+```bash theme={null}
+source ~/.zshrc  # or ~/.bashrc
+```
+
+**Linux**
+
+**Using the installer:**
+
+```bash theme={null}
+curl -fsSL https://github.com/tursodatabase/agentfs/releases/latest/download/agentfs-installer.sh | sh
+```
+
+After installation, restart your terminal or run:
+
+```bash theme={null}
+source ~/.bashrc  # or ~/.zshrc
+```
+
+**Requirements:**
+
+* FUSE must be available for filesystem mounting
+* On Ubuntu/Debian: `sudo apt install fuse3`
+* On Fedora: `sudo dnf install fuse3`
+
+**Windows**
+
+**Using PowerShell:**
+
+```powershell theme={null}
+irm https://github.com/tursodatabase/agentfs/releases/latest/download/agentfs-installer.ps1 | iex
+```
+
+Or download the binary directly from the [releases page](https://github.com/tursodatabase/agentfs/releases).
+
+## Verify Installation
+
+```bash theme={null}
+agentfs --version
+```
+
+## Shell Completions
+
+Enable tab completion for your shell:
+
+```bash theme={null}
+# Auto-detect shell
+agentfs completions install
+
+# Or specify shell explicitly
+agentfs completions install bash
+agentfs completions install zsh
+agentfs completions install fish
+```
+
+Restart your shell after installing completions.
+
+## Building from Source
+
+Requires Rust 1.70+:
+
+```bash theme={null}
+git clone https://github.com/tursodatabase/agentfs.git
+cd agentfs/cli
+cargo install --path .
+```
+
+## Next Steps
+
+> **[Agentic Coding](/agentfs/guides/sandbox)**
+>
+> Run AI coding agents safely
+
+> **[CLI Reference](/agentfs/reference/cli)**
+>
+> Full command reference
+
+
+# AgentFS
+Source: https://docs.turso.tech/agentfs/introduction
+
+A filesystem for AI agents, built on Turso
+
+AgentFS is a filesystem for AI agents. It provides copy-on-write isolation, letting agents safely modify files while keeping your original data untouched.
+It is available both as a CLI, that wraps an existing program in a sandboxed session, and an SDK that allows you to build custom agents with a filesystem
+abstraction.
+
+## Key Features
+
+* **Copy-on-Write Isolation** — Run agents in sandboxed environments where changes are isolated from your source tree
+* **Single File Storage** — Everything stored in one portable SQLite database for easy sharing and snapshotting
+* **Built-in Auditing** — Every file operation is recorded and queryable
+* **Cloud Sync** — Optionally sync agent state to Turso Cloud
+
+## Quick Start
+
+```bash theme={null}
+# Install
+curl -fsSL https://agentfs.ai/install | bash
+
+# Run a shell in an isolated environment
+cd /path/to/project
+agentfs run bash
+
+# Any changes are isolated - your original files are safe
+```
+
+## Next Steps
+
+> **[Installation](/agentfs/installation)**
+>
+> Install the AgentFS CLI
+
+> **[Agentic Coding](/agentfs/guides/sandbox)**
+>
+> Run AI coding agents safely
+
+> **[AgentFS SDKs](/agentfs/sdk)**
+>
+> Build custom agents with the AgentFS SDKs
+
+> [!WARNING]
+>
+> This software is in BETA. It may still contain bugs and unexpected behavior. Use caution with production data and ensure you have backups.
+
+
+# CLI Reference
+Source: https://docs.turso.tech/agentfs/reference/cli
+
+Complete reference for the AgentFS command-line interface
+
+Complete reference for the `agentfs` command-line tool.
+
+> [!NOTE]
+>
+> For the latest reference, see [MANUAL.md](https://github.com/tursodatabase/agentfs/blob/main/MANUAL.md) in the repository.
+
+## Installation
+
+```bash theme={null}
+curl -fsSL https://github.com/tursodatabase/agentfs/releases/latest/download/agentfs-installer.sh | sh
+```
+
+## Commands
+
+### agentfs init
+
+Initialize a new agent filesystem.
+
+```bash theme={null}
+agentfs init [OPTIONS] [ID]
+```
+
+**Arguments:**
+
+* `ID` - Agent identifier (default: `agent-{timestamp}`)
+
+**Options:**
+
+| Option | Description |
+| - | - |
+| `--force` | Overwrite existing agent filesystem |
+| `--base <PATH>` | Base directory for overlay filesystem |
+| `--sync-remote-url <URL>` | Remote Turso database URL |
+
+**Example:**
+
+```bash theme={null}
+agentfs init my-agent
+agentfs init my-overlay --base /path/to/project
+```
+
+***
+
+### agentfs run
+
+Execute a program in a sandboxed environment.
+
+```bash theme={null}
+agentfs run [OPTIONS] <COMMAND> [ARGS]...
+```
+
+**Options:**
+
+| Option | Description |
+| - | - |
+| `--session <ID>` | Named session for persistence |
+| `--allow <PATH>` | Allow write access to directory |
+| `--no-default-allows` | Disable default allowed directories |
+| `--experimental-sandbox` | Use ptrace sandbox (Linux) |
+| `--strace` | Show intercepted syscalls |
+
+**Examples:**
+
+```bash theme={null}
+agentfs run /bin/bash
+agentfs run --session my-project python3 agent.py
+agentfs run --allow /tmp --allow ~/.cache /bin/bash
+```
+
+***
+
+### agentfs mount
+
+Mount an agent filesystem or list mounts.
+
+```bash theme={null}
+agentfs mount [OPTIONS] [ID_OR_PATH] [MOUNT_POINT]
+```
+
+Without arguments, lists all mounted filesystems.
+
+**Options:**
+
+| Option | Description |
+| - | - |
+| `-a, --auto-unmount` | Automatically unmount on exit |
+| `--allow-root` | Allow root user access |
+| `-f, --foreground` | Run in foreground |
+| `--uid <UID>` | User ID for files |
+| `--gid <GID>` | Group ID for files |
+
+**Examples:**
+
+```bash theme={null}
+agentfs mount                              # List mounts
+agentfs mount my-agent ./mnt               # Mount agent
+agentfs mount my-agent ./mnt -a -f         # Foreground with auto-unmount
+```
+
+**Unmounting:**
+
+* Linux: `fusermount -u <MOUNT_POINT>`
+* macOS: `umount <MOUNT_POINT>`
+
+***
+
+### agentfs serve mcp
+
+Start an MCP (Model Context Protocol) server.
+
+```bash theme={null}
+agentfs serve mcp <ID_OR_PATH> [OPTIONS]
+```
+
+**Options:**
+
+| Option | Description |
+| - | - |
+| `--tools <TOOLS>` | Comma-separated list of tools |
+
+**Available Tools:**
+
+| Category | Tools |
+| - | - |
+| Filesystem | `read_file`, `write_file`, `readdir`, `mkdir`, `remove`, `rename`, `stat`, `access` |
+| Key-Value | `kv_get`, `kv_set`, `kv_delete`, `kv_list` |
+
+**Examples:**
+
+```bash theme={null}
+agentfs serve mcp my-agent
+agentfs serve mcp my-agent --tools read_file,readdir,stat
+```
+
+***
+
+### agentfs serve nfs
+
+Start an NFS server.
+
+```bash theme={null}
+agentfs serve nfs <ID_OR_PATH> [OPTIONS]
+```
+
+**Options:**
+
+| Option | Description |
+| - | - |
+| `--bind <IP>` | IP to bind (default: `127.0.0.1`) |
+| `--port <PORT>` | Port (default: `11111`) |
+
+**Example:**
+
+```bash theme={null}
+agentfs serve nfs my-agent --bind 0.0.0.0 --port 2049
+```
+
+**Mounting:**
+
+```bash theme={null}
+mount -t nfs -o vers=3,tcp,port=11111,mountport=11111,nolock localhost:/ /mnt
+```
+
+***
+
+### agentfs sync
+
+Synchronize with a remote Turso database.
+
+```bash theme={null}
+agentfs sync <ID_OR_PATH> <SUBCOMMAND>
+```
+
+**Subcommands:**
+
+| Command | Description |
+| - | - |
+| `pull` | Pull remote changes |
+| `push` | Push local changes |
+| `stats` | View sync statistics |
+| `checkpoint` | Create checkpoint |
+
+**Example:**
+
+```bash theme={null}
+agentfs sync my-agent pull
+agentfs sync my-agent push
+```
+
+***
+
+### agentfs fs
+
+Filesystem operations on agent databases.
+
+#### agentfs fs ls
+
+```bash theme={null}
+agentfs fs ls <ID_OR_PATH> [FS_PATH]
+```
+
+List files. Output: `f <name>` for files, `d <name>` for directories.
+
+#### agentfs fs cat
+
+```bash theme={null}
+agentfs fs cat <ID_OR_PATH> <FILE_PATH>
+```
+
+Display file contents.
+
+#### agentfs fs write
+
+```bash theme={null}
+agentfs fs write <ID_OR_PATH> <FILE_PATH> <CONTENT>
+```
+
+Write content to a file.
+
+**Examples:**
+
+```bash theme={null}
+agentfs fs ls my-agent
+agentfs fs cat my-agent /config.json
+agentfs fs write my-agent /hello.txt "Hello, world!"
+```
+
+***
+
+### agentfs diff
+
+Show filesystem changes in overlay mode.
+
+```bash theme={null}
+agentfs diff <ID_OR_PATH>
+```
+
+***
+
+### agentfs timeline
+
+Display agent action timeline.
+
+```bash theme={null}
+agentfs timeline [OPTIONS] <ID_OR_PATH>
+```
+
+**Options:**
+
+| Option | Description |
+| - | - |
+| `--limit <N>` | Limit entries (default: 100) |
+| `--filter <TOOL>` | Filter by tool name |
+| `--status <STATUS>` | Filter: `pending`, `success`, `error` |
+| `--format <FORMAT>` | Output: `table`, `json` |
+
+**Examples:**
+
+```bash theme={null}
+agentfs timeline my-agent
+agentfs timeline my-agent --filter web_search --status error
+agentfs timeline my-agent --format json
+```
+
+***
+
+### agentfs completions
+
+Manage shell completions.
+
+```bash theme={null}
+agentfs completions install [SHELL]
+agentfs completions uninstall [SHELL]
+agentfs completions show
+```
+
+Supported: `bash`, `zsh`, `fish`, `powershell`
+
+## Environment Variables
+
+Variables set inside the sandbox:
+
+| Variable | Description |
+| - | - |
+| `AGENTFS` | Set to `1` inside sandbox |
+| `AGENTFS_SANDBOX` | Sandbox type |
+| `AGENTFS_SESSION` | Session ID |
+
+## Files
+
+| Path | Description |
+| - | - |
+| `.agentfs/<ID>.db` | Agent filesystem database |
+| `~/.config/agentfs/` | Configuration directory |
+
+## See Also
+
+> **[Installation](/agentfs/installation)**
+>
+> Installation instructions
+
+> **[Sandbox Guide](/agentfs/guides/sandbox)**
+>
+> Running agents in sandboxes
+
+
+# Python SDK
+Source: https://docs.turso.tech/agentfs/sdk/python
+
+AgentFS Python SDK for building AI agents
+
+The AgentFS Python SDK provides an async interface for building AI agents with persistent storage.
+
+## Installation
+
+```bash theme={null}
+pip install agentfs-sdk
+```
+
+## Quick Start
+
+```python theme={null}
+import asyncio
+from agentfs_sdk import AgentFS, AgentFSOptions
+
+async def main():
+    # Open an agent filesystem
+    agent = await AgentFS.open(AgentFSOptions(id='my-agent'))
+
+    # Use key-value store
+    await agent.kv.set('config', {'debug': True})
     config = await agent.kv.get('config')
 
     # Use filesystem

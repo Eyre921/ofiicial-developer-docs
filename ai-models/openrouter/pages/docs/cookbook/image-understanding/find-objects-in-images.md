@@ -20,7 +20,7 @@ Use this guide when you need to know where something is in an image, not only wh
 
 Boxes around every screwdriver and a point on each hammer, from two requests to Moondream 3.1. Each request took under two seconds.
 
-Moondream models answer two slash commands in an ordinary chat completions request. Start the text of a user message with `/detect {"object":"screwdriver"}` and the model returns a bounding box for every match. Start it with `/point {"object":"hammer"}` and it returns one point per match. Both come back as JSON in `message.content`, with coordinates from 0 to 1 relative to the image, so you need no detection API, schema, or prompt engineering.
+Moondream models answer two slash commands in an ordinary [Responses API](https://openrouter.ai/docs/api_reference/responses/overview.md) request. Start the text of a user message with `/detect {"object":"screwdriver"}` and the model returns a bounding box for every match. Start it with `/point {"object":"hammer"}` and it returns one point per match. Both come back as JSON in the `output_text` part of the `message` output item, with coordinates from 0 to 1 relative to the image, so you need no detection API, schema, or prompt engineering.
 
 By the end, you will have a script that:
 
@@ -82,7 +82,7 @@ async function locate(
   skill: "detect" | "point",
   object: string,
 ): Promise<unknown[]> {
-  const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+  const response = await fetch("https://openrouter.ai/api/v1/responses", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${apiKey}`,
@@ -90,14 +90,15 @@ async function locate(
     },
     body: JSON.stringify({
       model: MODEL,
-      messages: [
+      input: [
         {
           role: "user",
           content: [
-            { type: "text", text: `/${skill} ${JSON.stringify({ object })}` },
+            { type: "input_text", text: `/${skill} ${JSON.stringify({ object })}` },
             {
-              type: "image_url",
-              image_url: { url: `data:${image.mime};base64,${image.data.toString("base64")}` },
+              type: "input_image",
+              image_url: `data:${image.mime};base64,${image.data.toString("base64")}`,
+              detail: "auto",
             },
           ],
         },
@@ -107,8 +108,10 @@ async function locate(
 
   if (!response.ok) throw new Error(await response.text());
 
-  const completion = await response.json();
-  const content: string = completion.choices[0].message.content;
+  const result = await response.json();
+  const content: string = result.output
+    .find((item: { type: string }) => item.type === "message")
+    .content.find((part: { type: string }) => part.type === "output_text").text;
   const key = skill === "detect" ? "objects" : "points";
   const matches = JSON.parse(content)[key];
   if (!Array.isArray(matches)) {

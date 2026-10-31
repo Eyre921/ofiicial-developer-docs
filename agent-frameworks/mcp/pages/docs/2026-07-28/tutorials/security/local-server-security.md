@@ -423,19 +423,19 @@ For a fleet:
 
 ## Next Steps
 
-> **[Security Best Practices](/docs/2026-07-28/tutorials/security/security_best_practices)**
+> [card] [Security Best Practices](/docs/2026-07-28/tutorials/security/security_best_practices)
 >
 > The protocol threat model: confused deputy, token passthrough, and session
 > hijacking
 
-> **[Authorization](/docs/2026-07-28/tutorials/security/authorization)**
+> [card] [Authorization](/docs/2026-07-28/tutorials/security/authorization)
 >
 > How OAuth-based authorization works for remote MCP servers
 
-> **[SEP-1024](/seps/1024-mcp-client-security-requirements-for-local-server-)**
+> [card] [SEP-1024](/seps/1024-mcp-client-security-requirements-for-local-server-)
 >
 > Client security requirements for local server installation consent
 
-> **[Connect to local servers](/docs/2026-07-28/develop/connect-local-servers)**
+> [card] [Connect to local servers](/docs/2026-07-28/develop/connect-local-servers)
 >
 > Set up local servers in your client — the workflow this guide secures

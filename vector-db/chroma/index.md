@@ -1,31 +1,48 @@
 # vector-db/chroma 文档索引
 
-> 共 147 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 164 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## api-reference
 
 - `api-reference/collection/fork-collection` — [Fork collection](pages/api-reference/collection/fork-collection.md) · [原文](https://docs.trychroma.com/api-reference/collection/fork-collection)
 - `api-reference/function/attach-function` — [Attach function](pages/api-reference/function/attach-function.md) · [原文](https://docs.trychroma.com/api-reference/function/attach-function)
+- `api-reference/function/attach-function` — [Attach function](pages/api-reference/function/attach-function-2.md) · [原文](https://docs.trychroma.com/api-reference/function/attach-function)
 - `api-reference/function/detach-function` — [Detach function](pages/api-reference/function/detach-function.md) · [原文](https://docs.trychroma.com/api-reference/function/detach-function)
+- `api-reference/function/detach-function` — [Detach function](pages/api-reference/function/detach-function-2.md) · [原文](https://docs.trychroma.com/api-reference/function/detach-function)
 - `api-reference/function/get-attached-function` — [Get attached function](pages/api-reference/function/get-attached-function.md) · [原文](https://docs.trychroma.com/api-reference/function/get-attached-function)
+- `api-reference/function/get-attached-function` — [Get attached function](pages/api-reference/function/get-attached-function-2.md) · [原文](https://docs.trychroma.com/api-reference/function/get-attached-function)
 
 ## cloud
 
 - `cloud/features/collection-forking` — [Collection Forking](pages/cloud/features/collection-forking.md) · [原文](https://docs.trychroma.com/cloud/features/collection-forking)
+- `cloud/features/collection-forking` — [Collection Forking](pages/cloud/features/collection-forking-2.md) · [原文](https://docs.trychroma.com/cloud/features/collection-forking)
 - `cloud/getting-started` — [Chroma Cloud](pages/cloud/getting-started.md) · [原文](https://docs.trychroma.com/cloud/getting-started)
+- `cloud/getting-started` — [Chroma Cloud](pages/cloud/getting-started-2.md) · [原文](https://docs.trychroma.com/cloud/getting-started)
 - `cloud/package-search/mcp` — [Package Search MCP Server](pages/cloud/package-search/mcp.md) · [原文](https://docs.trychroma.com/cloud/package-search/mcp)
+- `cloud/package-search/mcp` — [Package Search MCP Server](pages/cloud/package-search/mcp-2.md) · [原文](https://docs.trychroma.com/cloud/package-search/mcp)
 - `cloud/package-search/registry` — [Package Search Registry](pages/cloud/package-search/registry.md) · [原文](https://docs.trychroma.com/cloud/package-search/registry)
+- `cloud/package-search/registry` — [Package Search Registry](pages/cloud/package-search/registry-2.md) · [原文](https://docs.trychroma.com/cloud/package-search/registry)
 - `cloud/pricing` — [Pricing](pages/cloud/pricing.md) · [原文](https://docs.trychroma.com/cloud/pricing)
+- `cloud/pricing` — [Pricing](pages/cloud/pricing-2.md) · [原文](https://docs.trychroma.com/cloud/pricing)
 - `cloud/quotas-limits` — [Quotas & Limits](pages/cloud/quotas-limits.md) · [原文](https://docs.trychroma.com/cloud/quotas-limits)
+- `cloud/quotas-limits` — [Quotas & Limits](pages/cloud/quotas-limits-2.md) · [原文](https://docs.trychroma.com/cloud/quotas-limits)
 - `cloud/schema/index-reference` — [Index Configuration Reference](pages/cloud/schema/index-reference.md) · [原文](https://docs.trychroma.com/cloud/schema/index-reference)
+- `cloud/schema/index-reference` — [Index Configuration Reference](pages/cloud/schema/index-reference-2.md) · [原文](https://docs.trychroma.com/cloud/schema/index-reference)
 - `cloud/schema/overview` — [Schema Overview](pages/cloud/schema/overview.md) · [原文](https://docs.trychroma.com/cloud/schema/overview)
+- `cloud/schema/overview` — [Schema Overview](pages/cloud/schema/overview-2.md) · [原文](https://docs.trychroma.com/cloud/schema/overview)
 - `cloud/schema/schema-basics` — [Schema Basics](pages/cloud/schema/schema-basics.md) · [原文](https://docs.trychroma.com/cloud/schema/schema-basics)
+- `cloud/schema/schema-basics` — [Schema Basics](pages/cloud/schema/schema-basics-2.md) · [原文](https://docs.trychroma.com/cloud/schema/schema-basics)
 - `cloud/schema/sparse-vector-search` — [Sparse Vector Search Setup](pages/cloud/schema/sparse-vector-search.md) · [原文](https://docs.trychroma.com/cloud/schema/sparse-vector-search)
+- `cloud/schema/sparse-vector-search` — [Sparse Vector Search Setup](pages/cloud/schema/sparse-vector-search-2.md) · [原文](https://docs.trychroma.com/cloud/schema/sparse-vector-search)
 - `cloud/search-api/batch-operations` — [Batch Operations](pages/cloud/search-api/batch-operations.md) · [原文](https://docs.trychroma.com/cloud/search-api/batch-operations)
+- `cloud/search-api/batch-operations` — [Batch Operations](pages/cloud/search-api/batch-operations-2.md) · [原文](https://docs.trychroma.com/cloud/search-api/batch-operations)
 - `cloud/search-api/examples` — [Examples & Patterns](pages/cloud/search-api/examples.md) · [原文](https://docs.trychroma.com/cloud/search-api/examples)
+- `cloud/search-api/examples` — [Examples & Patterns](pages/cloud/search-api/examples-2.md) · [原文](https://docs.trychroma.com/cloud/search-api/examples)
 - `cloud/search-api/filtering` — [Filtering with Where](pages/cloud/search-api/filtering.md) · [原文](https://docs.trychroma.com/cloud/search-api/filtering)
+- `cloud/search-api/filtering` — [Filtering with Where](pages/cloud/search-api/filtering-2.md) · [原文](https://docs.trychroma.com/cloud/search-api/filtering)
 - `cloud/search-api/group-by` — [Group By & Aggregation](pages/cloud/search-api/group-by.md) · [原文](https://docs.trychroma.com/cloud/search-api/group-by)
+- `cloud/search-api/group-by` — [Group By & Aggregation](pages/cloud/search-api/group-by-2.md) · [原文](https://docs.trychroma.com/cloud/search-api/group-by)
 - `cloud/search-api/hybrid-search` — [Hybrid Search with RRF](pages/cloud/search-api/hybrid-search.md) · [原文](https://docs.trychroma.com/cloud/search-api/hybrid-search)
 - `cloud/search-api/migration` — [Migration Guide](pages/cloud/search-api/migration.md) · [原文](https://docs.trychroma.com/cloud/search-api/migration)
 - `cloud/search-api/overview` — [Search API Overview](pages/cloud/search-api/overview.md) · [原文](https://docs.trychroma.com/cloud/search-api/overview)

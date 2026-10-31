@@ -24,8 +24,8 @@ Each primitive can be summarized in the following control hierarchy:
 
 Explore these key primitives in more detail below:
 
-> **[Prompts](/specification/2026-07-28/server/prompts)**
+> [card] [Prompts](/specification/2026-07-28/server/prompts)
 
-> **[Resources](/specification/2026-07-28/server/resources)**
+> [card] [Resources](/specification/2026-07-28/server/resources)
 
-> **[Tools](/specification/2026-07-28/server/tools)**
+> [card] [Tools](/specification/2026-07-28/server/tools)

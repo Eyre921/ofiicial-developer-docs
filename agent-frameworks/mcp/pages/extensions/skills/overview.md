@@ -16,7 +16,7 @@ see the [client support matrix](/extensions/client-matrix) and
 [implementations list](https://github.com/modelcontextprotocol/ext-skills/blob/main/docs/implementations.md)
 for current coverage.
 
-> **[modelcontextprotocol/ext-skills](https://github.com/modelcontextprotocol/ext-skills)**
+> [card] [modelcontextprotocol/ext-skills](https://github.com/modelcontextprotocol/ext-skills)
 >
 > Specification and documentation for Skills over MCP.
 

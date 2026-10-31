@@ -1,6 +1,6 @@
 {
   "ai-models/xai-grok": {
-    "status": "error: curl failed (7) for https://docs.x.ai/llms.txt: curl: (7) Failed to connect to docs.x.ai port 443 after 9 ms: Could not connect to server\n"
+    "status": "error: curl failed (28) for https://docs.x.ai/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/mistral": {
     "status": "error: curl failed (28) for https://docs.mistral.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
@@ -66,7 +66,7 @@
     "status": "ok"
   },
   "vector-db/chroma": {
-    "pages": 147,
+    "pages": 164,
     "status": "ok"
   },
   "vector-db/weaviate": {
@@ -78,8 +78,7 @@
     "status": "ok"
   },
   "dev-platforms/vercel": {
-    "pages": 0,
-    "status": "ok"
+    "status": "error: curl failed (28) for https://vercel.com/docs/llms-full.txt: curl: (28) Operation timed out after 90001 milliseconds with 85930 out of 11728207 bytes received\ncurl: (28) Operation timed out after 90002 milliseconds with 0 bytes received\ncurl: (28) Operation tim"
   },
   "dev-platforms/supabase": {
     "pages": 0,
@@ -117,7 +116,7 @@
     "status": "ok"
   },
   "dev-platforms/turso": {
-    "pages": 283,
+    "pages": 293,
     "status": "ok"
   },
   "dev-platforms/upstash": {
@@ -148,7 +147,7 @@
     "status": "ok"
   },
   "dev-platforms/sentry": {
-    "pages": 174,
+    "pages": 236,
     "status": "ok"
   },
   "dev-platforms/notion": {
@@ -187,11 +186,11 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 99,
+    "pages": 79,
     "status": "ok"
   },
   "dev-platforms/stripe": {
-    "pages": 471,
+    "pages": 468,
     "status": "ok"
   },
   "ai-models/openrouter": {
@@ -203,8 +202,8 @@
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 1403,
+    "pages": 1402,
     "status": "ok"
   },
-  "_last_crawl": "2026-10-30T23:30:42Z"
+  "_last_crawl": "2026-10-31T11:30:47Z"
 }

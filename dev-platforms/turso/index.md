@@ -1,6 +1,6 @@
 # dev-platforms/turso 文档索引
 
-> 共 283 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 293 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -15,15 +15,25 @@
 
 - `agentfs/guides/auditing` — [Audit Filesystem Changes](pages/agentfs/guides/auditing.md) · [原文](https://docs.turso.tech/agentfs/guides/auditing)
 - `agentfs/guides/mcp` — [MCP Server Integration](pages/agentfs/guides/mcp.md) · [原文](https://docs.turso.tech/agentfs/guides/mcp)
+- `agentfs/guides/mcp` — [MCP Server Integration](pages/agentfs/guides/mcp-2.md) · [原文](https://docs.turso.tech/agentfs/guides/mcp)
 - `agentfs/guides/nfs` — [NFS Server Access](pages/agentfs/guides/nfs.md) · [原文](https://docs.turso.tech/agentfs/guides/nfs)
+- `agentfs/guides/nfs` — [NFS Server Access](pages/agentfs/guides/nfs-2.md) · [原文](https://docs.turso.tech/agentfs/guides/nfs)
 - `agentfs/guides/overlay` — [Copy-on-Write Overlays](pages/agentfs/guides/overlay.md) · [原文](https://docs.turso.tech/agentfs/guides/overlay)
+- `agentfs/guides/overlay` — [Copy-on-Write Overlays](pages/agentfs/guides/overlay-2.md) · [原文](https://docs.turso.tech/agentfs/guides/overlay)
 - `agentfs/guides/sandbox` — [Agentic Coding](pages/agentfs/guides/sandbox.md) · [原文](https://docs.turso.tech/agentfs/guides/sandbox)
+- `agentfs/guides/sandbox` — [Agentic Coding](pages/agentfs/guides/sandbox-2.md) · [原文](https://docs.turso.tech/agentfs/guides/sandbox)
 - `agentfs/guides/sessions` — [Shared Agent Sessions](pages/agentfs/guides/sessions.md) · [原文](https://docs.turso.tech/agentfs/guides/sessions)
+- `agentfs/guides/sessions` — [Shared Agent Sessions](pages/agentfs/guides/sessions-2.md) · [原文](https://docs.turso.tech/agentfs/guides/sessions)
 - `agentfs/guides/sync` — [Sync with Turso Cloud](pages/agentfs/guides/sync.md) · [原文](https://docs.turso.tech/agentfs/guides/sync)
+- `agentfs/guides/sync` — [Sync with Turso Cloud](pages/agentfs/guides/sync-2.md) · [原文](https://docs.turso.tech/agentfs/guides/sync)
 - `agentfs/installation` — [Installation](pages/agentfs/installation.md) · [原文](https://docs.turso.tech/agentfs/installation)
+- `agentfs/installation` — [Installation](pages/agentfs/installation-2.md) · [原文](https://docs.turso.tech/agentfs/installation)
 - `agentfs/introduction` — [AgentFS](pages/agentfs/introduction.md) · [原文](https://docs.turso.tech/agentfs/introduction)
+- `agentfs/introduction` — [AgentFS](pages/agentfs/introduction-2.md) · [原文](https://docs.turso.tech/agentfs/introduction)
 - `agentfs/reference/cli` — [CLI Reference](pages/agentfs/reference/cli.md) · [原文](https://docs.turso.tech/agentfs/reference/cli)
+- `agentfs/reference/cli` — [CLI Reference](pages/agentfs/reference/cli-2.md) · [原文](https://docs.turso.tech/agentfs/reference/cli)
 - `agentfs/sdk/python` — [Python SDK](pages/agentfs/sdk/python.md) · [原文](https://docs.turso.tech/agentfs/sdk/python)
+- `agentfs/sdk/python` — [Python SDK](pages/agentfs/sdk/python-2.md) · [原文](https://docs.turso.tech/agentfs/sdk/python)
 - `agentfs/sdk/rust` — [Rust SDK](pages/agentfs/sdk/rust.md) · [原文](https://docs.turso.tech/agentfs/sdk/rust)
 - `agentfs/sdk/typescript` — [TypeScript/JavaScript SDK](pages/agentfs/sdk/typescript.md) · [原文](https://docs.turso.tech/agentfs/sdk/typescript)
 

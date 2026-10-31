@@ -187,33 +187,33 @@ If you bind-mount a host directory instead of a named volume, it keeps its host 
 
 Hand the key to the container **as a file** with `MCP_INSPECTOR_SECRET_KEY_FILE`, not as an environment variable. A key passed with `-e MCP_INSPECTOR_SECRET_KEY=…` is readable by anyone who can run `docker inspect` or `docker exec`.
 
-**docker run**
+> [tab] docker run
+>
+> ```bash theme={null}
+> docker run --rm -p 127.0.0.1:6274:6274 \
+>   -v mcp-inspector-data:/home/node/.mcp-inspector \
+>   -v "$HOME/.config/mcp-inspector/secret-key:/run/secrets/mcp_inspector_secret_key:ro" \
+>   -e MCP_INSPECTOR_SECRET_KEY_FILE=/run/secrets/mcp_inspector_secret_key \
+>   ghcr.io/modelcontextprotocol/inspector
+> ```
 
-```bash theme={null}
-docker run --rm -p 127.0.0.1:6274:6274 \
-  -v mcp-inspector-data:/home/node/.mcp-inspector \
-  -v "$HOME/.config/mcp-inspector/secret-key:/run/secrets/mcp_inspector_secret_key:ro" \
-  -e MCP_INSPECTOR_SECRET_KEY_FILE=/run/secrets/mcp_inspector_secret_key \
-  ghcr.io/modelcontextprotocol/inspector
-```
-
-**Compose secrets**
-
-```yaml theme={null}
-services:
-  inspector:
-    image: ghcr.io/modelcontextprotocol/inspector
-    ports: ["127.0.0.1:6274:6274"]
-    volumes: ["mcp-inspector-data:/home/node/.mcp-inspector"]
-    environment:
-      MCP_INSPECTOR_SECRET_KEY_FILE: /run/secrets/mcp_inspector_secret_key
-    secrets: [mcp_inspector_secret_key]
-secrets:
-  mcp_inspector_secret_key:
-    file: ${HOME}/.config/mcp-inspector/secret-key
-volumes:
-  mcp-inspector-data:
-```
+> [tab] Compose secrets
+>
+> ```yaml theme={null}
+> services:
+>   inspector:
+>     image: ghcr.io/modelcontextprotocol/inspector
+>     ports: ["127.0.0.1:6274:6274"]
+>     volumes: ["mcp-inspector-data:/home/node/.mcp-inspector"]
+>     environment:
+>       MCP_INSPECTOR_SECRET_KEY_FILE: /run/secrets/mcp_inspector_secret_key
+>     secrets: [mcp_inspector_secret_key]
+> secrets:
+>   mcp_inspector_secret_key:
+>     file: ${HOME}/.config/mcp-inspector/secret-key
+> volumes:
+>   mcp-inspector-data:
+> ```
 
 Without Swarm, Compose secrets are bind mounts that keep the host file's owner and mode, so the `0600` key file must be owned by uid `1000`. On a Linux host where your uid is different, run `sudo chown 1000 ~/.config/mcp-inspector/secret-key` rather than loosening its mode. Supply the **same** key on every run.
 
@@ -246,7 +246,7 @@ The Inspector refuses to bind the **wildcard** all-interfaces addresses (`0.0.0.
 | Goal | What to do |
 | - | - |
 | **Reach it from another machine on the LAN** | `HOST=192.168.1.50`. The default origin allow-list follows the bind host, so `http://192.168.1.50:6274` is accepted with no further config. |
-| **Behind TLS or a reverse proxy** | The browser's `Origin` becomes the public origin, which won't match the bind host. Set `ALLOWED_ORIGINS=https://inspector.example.com`, and for MCP Apps set `MCP_SANDBOX_FULL_ADDRESS` (see below). |
+| **Behind TLS or a reverse proxy** | The browser's `Origin` becomes the public origin, which won't match the bind host. Set `ALLOWED_ORIGINS=https://inspector.example.com`, and for MCP Apps set `MCP_SANDBOX_FULL_ADDRESS` (see below). If the proxy rewrites `Host` to a name that is not in `ALLOWED_ORIGINS`, also set `MCP_INSPECTOR_ALLOWED_HOSTS=inspector.example.com` (or `.example.com` for a domain and its subdomains), or the backend answers `403`. Without a proxy, `INSPECTOR_TLS_KEY_PATH` and `INSPECTOR_TLS_CERT_PATH` serve the UI itself over `https`. |
 | **Wildcard bind (containers)** | Set `DANGEROUSLY_BIND_ALL_INTERFACES=true`. Loopback access still works out of the box; reaching it at a non-loopback address needs `ALLOWED_ORIGINS`. |
 
 > [!WARNING]
@@ -273,7 +273,7 @@ When an exploration spans many calls (a multi-step flow over one session, a log 
 
 ```bash theme={null}
 mcpdo connect my-server
-mcpdo @my-server tools/call --task start_job size:=large   # task-augmented; blocks until the task finishes
+mcpdo @my-server tools/call --task start_job size:=large   # task-augmented on a legacy connection, blocks until the task finishes
 mcpdo @my-server tools/call get_job_report
 mcpdo @my-server logging/tail          # long-lived; Ctrl-C to stop
 mcpdo disconnect my-server

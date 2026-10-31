@@ -1,6 +1,6 @@
 # dev-platforms/stripe 文档索引
 
-> 共 471 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 468 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -25,7 +25,6 @@
 - `stripe-reports` — [reports](pages/stripe-reports.md) · [原文](https://docs.stripe.com/stripe-reports.md)
 - `tax` — [Stripe Tax](pages/tax.md) · [原文](https://docs.stripe.com/tax.md)
 - `terminal` — [features](pages/terminal.md) · [原文](https://docs.stripe.com/terminal.md)
-- `testing` — [Testing](pages/testing.md) · [原文](https://docs.stripe.com/testing.md)
 - `testing-use-cases` — [testing environment comparison](pages/testing-use-cases.md) · [原文](https://docs.stripe.com/testing-use-cases.md)
 - `upgrades` — [API upgrades](pages/upgrades.md) · [原文](https://docs.stripe.com/upgrades.md)
 - `webhooks` — [Receive Stripe events in your webhook endpoint](pages/webhooks.md) · [原文](https://docs.stripe.com/webhooks.md)
@@ -235,7 +234,6 @@
 
 - `get-started/account/add-funds` — [Add funds to your Stripe balance](pages/get-started/account/add-funds.md) · [原文](https://docs.stripe.com/get-started/account/add-funds.md)
 - `get-started/account/linked-external-accounts` — [Linked external accounts](pages/get-started/account/linked-external-accounts.md) · [原文](https://docs.stripe.com/get-started/account/linked-external-accounts.md)
-- `get-started/account/teams` — [Start a team](pages/get-started/account/teams.md) · [原文](https://docs.stripe.com/get-started/account/teams.md)
 - `get-started/checklist/go-live` — [Go-live checklist](pages/get-started/checklist/go-live.md) · [原文](https://docs.stripe.com/get-started/checklist/go-live.md)
 - `get-started/data-migrations/overview` — [Overview](pages/get-started/data-migrations/overview.md) · [原文](https://docs.stripe.com/get-started/data-migrations/overview.md)
 - `get-started/data-migrations/pan-import` — [the migration process](pages/get-started/data-migrations/pan-import.md) · [原文](https://docs.stripe.com/get-started/data-migrations/pan-import.md)
@@ -406,7 +404,6 @@
 - `payments/payment-methods/integration-options` — [Payment method integration options](pages/payments/payment-methods/integration-options.md) · [原文](https://docs.stripe.com/payments/payment-methods/integration-options.md)
 - `payments/payment-methods/payment-method-support` — [more than 20 payment methods](pages/payments/payment-methods/payment-method-support.md) · [原文](https://docs.stripe.com/payments/payment-methods/payment-method-support.md)
 - `payments/place-a-hold-on-a-payment-method` — [Place a hold on a payment method](pages/payments/place-a-hold-on-a-payment-method.md) · [原文](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md)
-- `payments/quickstart` — [Build a custom checkout page](pages/payments/quickstart.md) · [原文](https://docs.stripe.com/payments/quickstart.md)
 - `payments/real-time` — [Real-time payments](pages/payments/real-time.md) · [原文](https://docs.stripe.com/payments/real-time.md)
 - `payments/save-and-reuse` — [Save a customer’s payment method without making a payment](pages/payments/save-and-reuse.md) · [原文](https://docs.stripe.com/payments/save-and-reuse.md)
 - `payments/save-during-payment` — [Save a customer’s payment method when they use it for a payment](pages/payments/save-during-payment.md) · [原文](https://docs.stripe.com/payments/save-during-payment.md)

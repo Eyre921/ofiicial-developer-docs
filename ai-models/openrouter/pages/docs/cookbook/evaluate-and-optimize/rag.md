@@ -18,7 +18,7 @@ OpenRouter provides all three building blocks for a RAG pipeline through a singl
 
 1. **Embeddings** — convert documents and queries into vectors for semantic search
 2. **Rerank** — re-score retrieved candidates for higher precision
-3. **Chat Completions** — generate a final answer using the retrieved context
+3. **[Responses](https://openrouter.ai/docs/api_reference/responses/overview.md)** — generate a final answer using the retrieved context
 
 ## How RAG Works
 

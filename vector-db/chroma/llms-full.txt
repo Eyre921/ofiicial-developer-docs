@@ -3751,6 +3751,3759 @@ Group by one metadata field and keep the top results from each group.
 Group by combinations of metadata fields for finer-grained control.
 
 <CodeGroup>
+  ```python # Fork collection
+Source: https://docs.trychroma.com/api-reference/collection/fork-collection
+
+https://api.trychroma.com/openapi.json post /api/v2/tenants/{tenant}/databases/{database}/collections/{collection_id}/fork
+Creates a fork of an existing collection.
+
+
+
+# Attach function
+Source: https://docs.trychroma.com/api-reference/function/attach-function
+
+https://api.trychroma.com/openapi.json post /api/v2/tenants/{tenant}/databases/{database}/collections/{collection_id}/functions/attach
+Attaches a function to a collection.
+
+
+
+# Detach function
+Source: https://docs.trychroma.com/api-reference/function/detach-function
+
+https://api.trychroma.com/openapi.json post /api/v2/tenants/{tenant}/databases/{database}/collections/{collection_id}/attached_functions/{name}/detach
+Detaches a function from a collection.
+
+
+
+# Get attached function
+Source: https://docs.trychroma.com/api-reference/function/get-attached-function
+
+https://api.trychroma.com/openapi.json get /api/v2/tenants/{tenant}/databases/{database}/collections/{collection_id}/functions/{function_name}
+Returns an attached function by name.
+
+
+
+# Collection Forking
+Source: https://docs.trychroma.com/cloud/features/collection-forking
+
+Instant copy-on-write collection forking in Chroma Cloud.
+
+Forking lets you create a new collection from an existing one instantly, using copy-on-write under the hood. The forked collection initially shares its data with the source and only incurs additional storage for incremental changes you make afterward.
+
+<Callout>
+  **Forking is available in Chroma Cloud only.** The storage engine on single-node Chroma does not support forking.
+</Callout>
+
+## How it works
+
+* **Copy-on-write**: Forks share data blocks with the source collection. New writes to either branch allocate new blocks; unchanged data remains shared.
+* **Instant**: Forking a collection of any size completes quickly.
+* **Isolation**: Changes to a fork do not affect the source, and vice versa.
+
+## Try it
+
+* **Cloud UI**: Open any collection and click the "Fork" button.
+* **SDKs**: Use the fork API from Python or JavaScript.
+
+### Examples
+
+<CodeGroup>
+  ```python Python theme={null}
+  source_collection = client.get_collection(name="main-repo-index")
+
+  # Create a forked collection. Name must be unique within the database.
+  forked_collection = source_collection.fork(new_name="main-repo-index-pr-1234")
+
+  # Forked collection is immediately queryable; changes are isolated
+  forked_collection.add(documents=["new content"], ids=["doc-pr-1"])  # billed as incremental storage
+  ```
+
+  ```typescript TypeScript theme={null}
+  const sourceCollection = await client.getCollection({
+    name: "main-repo-index",
+  });
+
+  // Create a forked collection. Name must be unique within the database.
+  const forkedCollection = await sourceCollection.fork({
+    name: "main-repo-index-pr-1234",
+  });
+
+  await forkedCollection.add({
+    ids: ["doc-pr-1"],
+    documents: ["new content"], // billed as incremental storage
+  });
+  ```
+
+  ```rust Rust theme={null}
+  let source_collection = client.get_collection("main-repo-index").await?;
+
+  // Create a forked collection. Name must be unique within the database.
+  let forked_collection = source_collection
+      .fork("main-repo-index-pr-1234")
+      .await?;
+
+  // Changes are billed as incremental storage
+  forked_collection
+      .add(
+          vec!["doc-pr-1".to_string()],
+          vec![vec![0.1, 0.2, 0.3]],
+          Some(vec![Some("new content".to_string())]),
+          None,
+          None,
+      )
+      .await?;
+  ```
+</CodeGroup>
+
+[In this notebook](https://github.com/chroma-core/chroma/blob/main/examples/advanced/forking.ipynb) you can find a comprehensive demo, where we index a codebase in a Chroma collection, and use forking to efficiently create collections for new branches.
+
+## Pricing
+
+* **\$0.03 per fork call**
+* **Storage**: You only pay for incremental blocks written after the fork (copy-on-write). Unchanged data remains shared across branches.
+
+## Quotas and errors
+
+Chroma limits the number of fork edges in your fork tree. Every time you call "fork", a new edge is created from the parent to the child. The count includes edges created by forks on the root collection and on any of its descendants; see the diagram below. The current default limit is **256** edges per tree. If you delete a collection, its edge remains in the tree and still counts.
+
+If you exceed the limit, the request returns a quota error for the NUM\_FORKS rule. In that case, create a new collection with a full copy to start a fresh root.
+
+<img alt="Fork edges diagram" />
+
+<img alt="Fork edges diagram" />
+
+## When to use forking
+
+* **Data versioning/checkpointing**: Maintain consistent snapshots as your data evolves.
+* **Git-like workflows**: For example, index a branch by forking from its divergence point, then apply the diff to the fork. This saves both write and storage costs compared to re-ingesting the entire dataset.
+
+## Notes
+
+* Your forked collections will belong to the same database as the source collection.
+
+
+# Chroma Cloud
+Source: https://docs.trychroma.com/cloud/getting-started
+
+
+
+Our fully managed hosted service, **Chroma Cloud** is here. [Sign up for free](https://trychroma.com/signup?utm_source=docs-getting-started).
+
+**Chroma Cloud** is a managed offering of [Distributed Chroma](/reference/architecture/distributed), operated by the same database engineers who build Chroma. Chroma Cloud implements the same APIs as open-source Chroma, but runs on a distributed vector indexing system to support much larger scale than a single instance of open-source Chroma. Chroma Cloud runs in [multiple regions](#regions) across AWS and GCP — each database stays entirely within the region you choose. Chroma Cloud is serverless - you don't have to provision servers or think about operations, and is billed [based on usage](/cloud/pricing)
+
+### Easy to use and operate
+
+Chroma Cloud is designed to require minimal configuration while still delivering top-tier performance, scale, and reliability. You can get started in under 30 seconds, and as your workload grows, Chroma Cloud handles scaling automatically-no tuning, provisioning, or operations required. Its architecture is built around a custom Rust-based execution engine and high-performance vector and full-text indexes, enabling fast query performance even under heavy loads.
+
+### Reliability
+
+Reliability and accuracy are core to the design. Chroma Cloud is thoroughly tested, with production systems achieving over 90% recall and being continuously monitored for correctness. Thanks to its object storage-based persistence layer, Chroma Cloud is often an order of magnitude more cost-effective than alternatives, without compromising on performance or durability.
+
+### Security and Deployment
+
+Chroma Cloud is SOC 2 Type II certified, and offers deployment flexibility to match your needs. You can sign up for our fully-managed multi-tenant cluster running in AWS `us-east-1` or GCP `europe-west1`, or contact us for single-tenant deployment managed by Chroma or hosted in your own VPC (BYOC). If you ever want to self-host open source Chroma, we will help you transition your data from Cloud to your self-managed deployment.
+
+### Regions
+
+Chroma Cloud's multi-tenant offering currently runs in two regions:
+
+| Region | Slug | Endpoint |
+| - | - | - |
+| AWS US East (N. Virginia) | `aws-us-east-1` | `api.trychroma.com` (default) |
+| GCP Europe West 1 (Belgium) | `gcp-europe-west1` | `europe-west1.gcp.trychroma.com` |
+
+Each database is created in a single region and stays there — your data is stored and processed entirely within the region you select. Pick the region when creating a database in the dashboard, or pass it when creating a database via the API. Existing US databases are unaffected; to move data to the EU, create a new database in `gcp-europe-west1` and reindex.
+
+Connecting to a non-default region only requires pointing the client at the right host. See [Connecting to a non-default region](/docs/run-chroma/clients#connecting-to-a-non-default-region) for SDK examples.
+
+#### Feature availability by region
+
+| Feature | `aws-us-east-1` | `gcp-europe-west1` |
+| - | - | - |
+| Core API (collections, search, forking) | ✓ | ✓ |
+| Chroma Sync (S3, GitHub, Web, file upload) | ✓ | — |
+| Chroma CLI (`chroma db`, `chroma browse`) | ✓ | — |
+| Chroma Search Agent | ✓ | — |
+
+### Dashboard
+
+Our web dashboard lets your team work together to view your data, and ensure data quality in your collections with ease. It also serves as a touchpoint for you to view billing data and usage telemetry.
+
+### Advanced Search API
+
+Chroma Cloud introduces a powerful [Search API](/cloud/search-api/overview) that enables hybrid search with advanced filtering, custom ranking expressions, and batch operations. Combine vector similarity with metadata filtering using an intuitive builder pattern or flexible dictionary syntax.
+
+Chroma Cloud is open-source at its core, expanded to support high availability and distributed workloads. Whether you're building a prototype or running a mission-critical production workload, Chroma Cloud is the fastest path to reliable, scalable, and accurate retrieval.
+
+
+# Package Search MCP Server
+Source: https://docs.trychroma.com/cloud/package-search/mcp
+
+
+
+The Package Search MCP Server is an [MCP](https://modelcontextprotocol.io/docs/getting-started/intro) server designed to add ground truth context about code packages to AI agents. Our research demonstrates that by exposing the source code of a project's dependencies to a model, we improve its performance on coding tasks and reduce its potential for hallucination. Chroma's Package Search MCP server achieves this by exposing tools to allow the model to retrieve necessary context:
+
+| Tool Name | Usage |
+| - | - |
+| `package_search_grep` | Use regex pattern matching to retrieve relevant lines from source code |
+| `package_search_hybrid` | Use semantic search with optional regex filtering to explore source code without existing knowledge of its structure |
+| `package_search_read_file` | Reads specific lines from a single file in the code package |
+
+## Getting Started
+
+<Warning>
+  To guarantee that your model uses package search when desired, add `use package search` to either the system prompt (to use the MCP server whenever applicable) or to each task prompt (to use it only when you instruct the model to do so).
+</Warning>
+
+<Tabs>
+  <Tab title="Anthropic SDK">
+    <Steps>
+      <Step>Visit Chroma's [Package Search](http://trychroma.com/package-search) page.</Step>
+      <Step>Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.</Step>
+      <Step>After issuing your API key, click the "Other" tab and copy your API key.</Step>
+      <Step>Connect to the Chroma MCP server to search code packages. In this example, we search for how the Fast Fourier Transform algorithm is implemented in the `numpy` package from PyPI.</Step>
+    </Steps>
+
+    <CodeGroup>
+      ```python Python theme={null}
+      import anthropic
+
+      client = anthropic.Anthropic(
+          api_key="<YOUR_ANTHROPIC_API_KEY>"
+      )
+
+      response = client.beta.messages.create(
+          model="claude-sonnet-5",
+          max_tokens=4096,
+          messages=[
+              {
+                  "role": "user",
+                  "content": "Explain how numpy implements its FFT. Use package search.",
+              }
+          ],
+          mcp_servers=[
+              {
+                  "type": "url",
+                  "url": "https://mcp.trychroma.com/package-search/v1",
+                  "name": "package-search",
+                  "authorization_token": "<YOUR_CHROMA_API_KEY>",
+              }
+          ],
+          tools=[{"type": "mcp_toolset", "mcp_server_name": "package-search"}],
+          betas=["mcp-client-2025-11-20"],
+      )
+
+      print(response)
+      ```
+
+      ```go Go theme={null}
+      package main
+
+      import (
+      	"context"
+      	"fmt"
+      	"log"
+
+      	"github.com/anthropics/anthropic-sdk-go"
+      	"github.com/anthropics/anthropic-sdk-go/option"
+      	"github.com/anthropics/anthropic-sdk-go/packages/param"
+      )
+
+      func main() {
+      	client := anthropic.NewClient(
+      		option.WithAPIKey("<YOUR_ANTHROPIC_API_KEY>"),
+      	)
+
+      	content := "Explain how numpy implements its FFT. Use package search."
+      	fmt.Println("[user]:", content)
+
+      	messages := []anthropic.BetaMessageParam{
+      		anthropic.NewBetaUserMessage(
+      			anthropic.NewBetaTextBlock(content),
+      		),
+      	}
+
+      	mcpServers := []anthropic.BetaRequestMCPServerURLDefinitionParam{
+      		{
+      			URL:                "https://mcp.trychroma.com/package-search/v1",
+      			Name:               "package-search",
+      			AuthorizationToken: param.NewOpt("<YOUR_CHROMA_API_KEY>"),
+      		},
+      	}
+
+      	tools := []anthropic.BetaToolUnionParam{
+      		{OfMCPToolset: &anthropic.BetaMCPToolsetParam{MCPServerName: "package-search"}},
+      	}
+
+      	message, err := client.Beta.Messages.New(
+      		context.TODO(),
+      		anthropic.BetaMessageNewParams{
+      			MaxTokens:  4096,
+      			Messages:   messages,
+      			Model:      anthropic.ModelClaudeSonnet5,
+      			MCPServers: mcpServers,
+      			Tools:      tools,
+      			Betas:      []anthropic.AnthropicBeta{anthropic.AnthropicBetaMCPClient2025_11_20},
+      		},
+      	)
+      	if err != nil {
+      		log.Fatalf("request failed: %v", err)
+      	}
+
+      	for _, block := range message.Content {
+      		if block.Type == "text" {
+      			fmt.Println("[assistant]:", block.AsText().Text)
+      		}
+      	}
+      }
+      ```
+    </CodeGroup>
+  </Tab>
+
+  <Tab title="OpenAI SDK">
+    <Steps>
+      <Step>Visit Chroma's [Package Search](http://trychroma.com/package-search) page.</Step>
+      <Step>Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.</Step>
+      <Step>After issuing your API key, click the "Other" tab and copy your API key.</Step>
+      <Step>Connect to the Chroma MCP server to search code packages. In this example, we search for class definitions in the `numpy` package from PyPI.</Step>
+    </Steps>
+
+    ```python theme={null}
+    from openai import OpenAI
+
+    client = OpenAI(
+        api_key="<YOUR_OPENAI_API_KEY>"
+    )
+
+    resp = client.responses.create(
+        model="gpt-5-chat-latest",
+        input="Explain how numpy implements its FFT. Use package search.",
+        tools=[
+            {
+                "type": "mcp",
+                "server_label": "package-search",
+                "server_url": "https://mcp.trychroma.com/package-search/v1",
+                "headers": {
+                    "x-chroma-token": "<YOUR_CHROMA_API_KEY>"
+                },
+                "require_approval": "never",
+            }
+        ],
+    )
+
+    print(resp)
+    ```
+  </Tab>
+
+  <Tab title="Google Gemini SDK">
+    <Steps>
+      <Step>Visit Chroma's [Package Search](http://trychroma.com/package-search) page.</Step>
+      <Step>Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.</Step>
+      <Step>After issuing your API key, click the "Other" tab and copy your API key.</Step>
+      <Step>Get a Gemini API key in [Google's AI Studio](https://aistudio.google.com/app/apikey)</Step>
+      <Step>Connect the Chroma MCP server with Gemini to enable AI-powered code searches. In this example, we ask Gemini to explain how the Fast Fourier Transform algorithm is implemented in `numpy`, using the Chroma MCP tools to search and analyze the code.</Step>
+    </Steps>
+
+    ```python theme={null}
+    import asyncio
+    from mcp import ClientSession
+    from mcp.client.streamable_http import streamablehttp_client
+    from google import genai
+
+    client = genai.Client(api_key="<YOUR_GEMINI_API_KEY>")
+
+    async def run():
+        async with streamablehttp_client(
+            "https://mcp.trychroma.com/package-search/v1",
+            headers={"x-chroma-token": "<YOUR_CHROMA_API_KEY>"},
+        ) as (read, write, _):
+            async with ClientSession(read, write) as session:
+                await session.initialize()
+                try:
+                    prompt = f"Explain how numpy implements its FFT. Use package search."
+                    response = await client.aio.models.generate_content(
+                        model="gemini-2.5-flash",
+                        contents=prompt,
+                        config=genai.types.GenerateContentConfig(
+                            temperature=0,
+                            tools=[session],
+                        ),
+                    )
+                    try:
+                        if response.text:
+                            print("--- Generated Text ---")
+                            print(response.text)
+                        else:
+                            print("Model did not return text.")
+                            print(f"Finish Reason: {response.candidates[0].finish_reason.name}")
+                    except ValueError:
+                        print("Could not access response.text.")
+                except Exception as e:
+                    print(f"An error occurred: {e}")
+
+    asyncio.run(run())
+    ```
+  </Tab>
+
+  <Tab title="Claude Code">
+    <Steps>
+      <Step>Visit Chroma's [Package Search](http://trychroma.com/package-search) page.</Step>
+      <Step>Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.</Step>
+      <Step>After issuing your API key, click the "Other" tab and copy your API key.</Step>
+      <Step>Add the Chroma MCP server to Claude Code with your Chroma API key:</Step>
+    </Steps>
+
+    ```terminal theme={null}
+    claude mcp add --transport http package-search https://mcp.trychroma.com/package-search/v1 --header "x-chroma-token: <YOUR_CHROMA_API_KEY>"
+    ```
+  </Tab>
+
+  <Tab title="Codex">
+    <Steps>
+      <Step>Visit Chroma's [Package Search](http://trychroma.com/package-search) page.</Step>
+      <Step>Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.</Step>
+      <Step>After issuing your API key, click the "Other" tab and copy your API key.</Step>
+      <Step>Add the following to your `~/.codex/config.toml` file with your Chroma Cloud API key:</Step>
+    </Steps>
+
+    ```TOML theme={null}
+    [mcp_servers.package-search]
+    command = "npx"
+    args = ["mcp-remote", "https://mcp.trychroma.com/package-search/v1", "--header", "x-chroma-token: ${X_CHROMA_TOKEN}"]
+    env = { "X_CHROMA_TOKEN" = "<YOUR_CHROMA_API_KEY>" }
+    ```
+  </Tab>
+
+  <Tab title="Cursor">
+    <Steps>
+      <Step>Visit Chroma's [Package Search](http://trychroma.com/package-search) page.</Step>
+      <Step>Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.</Step>
+      <Step>After issuing your API key, click the "Other" tab and copy your API key.</Step>
+      <Step>In Cursor's settings, search for "MCP" and add the following configuration with your Chroma Cloud API key:</Step>
+    </Steps>
+
+    ```JSON theme={null}
+    {
+      "mcpServers": {
+        "package-search": {
+          "transport": "streamable_http",
+          "url": "https://mcp.trychroma.com/package-search/v1",
+          "headers": {
+            "x-chroma-token": "<YOUR_CHROMA_API_KEY>"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Windsurf">
+    <Steps>
+      <Step>Visit Chroma's [Package Search](http://trychroma.com/package-search) page.</Step>
+      <Step>Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.</Step>
+      <Step>After issuing your API key, click the "Other" tab and copy your API key.</Step>
+      <Step>In Windsurf's settings, search for "MCP" and add the following configuration with your Chroma Cloud API key:</Step>
+    </Steps>
+
+    ```JSON theme={null}
+    {
+      "mcpServers": {
+        "package-search": {
+          "serverUrl": "https://mcp.trychroma.com/package-search/v1",
+          "headers": {
+            "x-chroma-token": "<YOUR_CHROMA_API_KEY>"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Claude Desktop">
+    <Steps>
+      <Step>Visit Chroma's [Package Search](http://trychroma.com/package-search) page.</Step>
+      <Step>Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.</Step>
+      <Step>After issuing your API key, click the "Other" tab and copy your API key.</Step>
+      <Step>Add the following to your `~/Library/Application Support/Claude/claude_desktop_config.json`:</Step>
+    </Steps>
+
+    ```JSON theme={null}
+    {
+        "mcpServers": {
+          "package-search": {
+            "command": "npx",
+            "args": ["mcp-remote", "https://mcp.trychroma.com/package-search/v1", "--header", "x-chroma-token: ${X_CHROMA_TOKEN}"],
+            "env": {
+              "X_CHROMA_TOKEN": "<YOUR_CHROMA_API_KEY>"
+            }
+          }
+        }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Warp">
+    <Steps>
+      <Step>Visit Chroma's [Package Search](http://trychroma.com/package-search) page.</Step>
+      <Step>Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.</Step>
+      <Step>After issuing your API key, click the "Other" tab and copy your API key.</Step>
+      <Step>Add the following to your Warp MCP config. Make sure to click "Start" on the server after adding.</Step>
+    </Steps>
+
+    ```JSON theme={null}
+    {
+        "package-search": {
+          "command": "npx",
+          "args": ["mcp-remote", "https://mcp.trychroma.com/package-search/v1", "--header", "x-chroma-token: ${X_CHROMA_TOKEN}"],
+          "env": {
+            "X_CHROMA_TOKEN": "<YOUR_CHROMA_API_KEY>"
+          }
+        }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Open Code">
+    <Steps>
+      <Step>Visit Chroma's [Package Search](http://trychroma.com/package-search) page.</Step>
+      <Step>Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.</Step>
+      <Step>After issuing your API key, click the "Other" tab and copy your API key.</Step>
+      <Step>Add the following to your `~/.config/opencode/opencode.json` file with your Chroma Cloud API key:</Step>
+    </Steps>
+
+    ```JSON theme={null}
+    {
+      "$schema": "https://opencode.ai/config.json",
+      "mcp": {
+        "code-packages": {
+          "type": "remote",
+          "url": "https://mcp.trychroma.com/package-search/v1",
+          "enabled": true,
+          "headers": {
+            "x-chroma-token": "<YOUR_CHROMA_API_KEY>"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Ollama">
+    <Steps>
+      <Step>Visit Chroma's [Package Search](http://trychroma.com/package-search) page.</Step>
+      <Step>Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.</Step>
+      <Step>After issuing your API key, click the "Other" tab and copy your API key.</Step>
+      <Step>Install the `ollmcp` package:</Step>
+    </Steps>
+
+    ```bash theme={null}
+    pip install ollmcp
+    ```
+
+    <Steps>
+      <Step>Create an `mcp_config.json` file with the following content and your Chroma Cloud API key:</Step>
+    </Steps>
+
+    ```JSON theme={null}
+    {
+    	"mcpServers": {
+    		"code-packages": {
+    			"type": "streamable_http",
+    			"url": "https://mcp.trychroma.com/package-search/v1",
+    			"headers": {
+    				"x-chroma-token": "<YOUR_CHROMA_API_KEY>"
+    			},
+    			"disabled": false
+    		}
+    	}
+    }
+    ```
+
+    <Steps>
+      <Step>Start an Ollama MCP session with the path to your `mcp_config.json` file and model of choice:</Step>
+    </Steps>
+
+    ```terminal theme={null}
+    ollmcp --servers-json <path/to/mcp_config.json> --model <model>
+    ```
+  </Tab>
+
+  <Tab title="MCP SDK">
+    <Steps>
+      <Step>Visit Chroma's [Package Search](http://trychroma.com/package-search) page.</Step>
+      <Step>Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.</Step>
+      <Step>After issuing your API key, click the "Other" tab and copy your API key.</Step>
+      <Step>Connect to the Chroma MCP server to search code packages. In this example, we search for the Fast Fourier Transform function in the `numpy` package from PyPI using the `package_search_grep` tool.</Step>
+    </Steps>
+
+    ```python theme={null}
+    import asyncio
+    from mcp import ClientSession
+    from mcp.client.streamable_http import streamablehttp_client
+
+    async def main():
+        async with streamablehttp_client(
+            "https://mcp.trychroma.com/package-search/v1",
+            headers={"x-chroma-token": "<YOUR_CHROMA_API_KEY>"},
+        ) as (
+            read_stream,
+            write_stream,
+            _,
+        ):
+            async with ClientSession(read_stream, write_stream) as session:
+                await session.initialize()
+                tools = await session.list_tools()
+                result = await session.call_tool(
+                    name="package_search_grep",
+                    arguments={
+                        "package_name": "numpy",
+                        "registry_name": "py_pi",
+                        "pattern": "\bdef fft\b",
+                    },
+                )
+                print(f"Got result: {result}")
+                print(f"Available tools: {[tool.name for tool in tools.tools]}")
+
+    asyncio.run(main())
+    ```
+  </Tab>
+
+  <Tab title="Roo Code">
+    <Steps>
+      <Step>Visit Chroma's [Package Search](http://trychroma.com/package-search) page.</Step>
+      <Step>Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.</Step>
+      <Step>After issuing your API key, click the "Other" tab and copy your API key.</Step>
+      <Step>Add this to your Roo Code MCP server configuration:</Step>
+    </Steps>
+
+    ```JSON theme={null}
+    {
+      "mcpServers": {
+        "code-collections": {
+          "type": "streamable-http",
+          "url": "https://mcp.trychroma.com/package-search/v1",
+          "headers": {
+            "x-chroma-token": "<YOUR_CHROMA_API_KEY>"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+
+# Package Search Registry
+Source: https://docs.trychroma.com/cloud/package-search/registry
+
+
+
+[Chroma Package Search](https://github.com/chroma-core/package-search) is the index of public code packages that powers the [Package Search MCP server](/cloud/package-search/mcp). It is the source of truth for which packages and versions Chroma indexes for code search and retrieval.
+
+Chroma currently indexes about 13k versions of 3k packages across multiple registries.
+
+## How it works
+
+The registry is maintained in the [Package Search repository](https://github.com/chroma-core/package-search). It defines what should be indexed and how to locate each package's source at a specific version.
+
+* [`index.json`](https://github.com/chroma-core/package-search/blob/main/index.json) declares which packages should be indexed.
+* [`versions.json`](https://github.com/chroma-core/package-search/blob/main/versions.json) is a generated output that lists all packages and versions currently indexed. It is automatically updated by the indexing service.
+
+Chroma's indexer reads these files, resolves each version to a git tag according to the package's `tag_formats`, fetches the source, and indexes only files matching the package's `include` globs.
+
+## Supported registries
+
+Chroma supports these registries and identifiers:
+
+* [`npm`](https://www.npmjs.com/) - JavaScript + TypeScript packages
+* [`py_pi`](https://pypi.org/) - Python packages
+* [`crates_io`](https://crates.io/) - Rust crates
+* [`golang_proxy`](https://proxy.golang.org/) - Go modules
+* [`github_releases`](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases) - Packages distributed via GitHub Releases
+
+## Indexed versions
+
+Version discovery is driven by the package's tag formats and the underlying registry. The indexer resolves published versions to git tags (annotated or lightweight) using the configured formats. Historical indexing is bounded by the sentinel timestamp, so versions published before that time are ignored.
+
+## How to add a package
+
+Anyone can request additional packages by opening a Pull Request against the Package Search repository.
+
+[Follow the directions in the README](https://github.com/chroma-core/package-search/blob/main/README.md#adding-new-packages) to add a new package.
+
+
+# Pricing
+Source: https://docs.trychroma.com/cloud/pricing
+
+
+
+Chroma Cloud uses a simple, transparent, usage-based pricing model. You pay for what you use across **writes**, **reads**, and **storage**-with no hidden fees or tiered feature gating.
+
+Need an estimate? Try our [pricing calculator](https://trychroma.com/pricing).
+
+## Writes
+
+Chroma Cloud charges **\$2.50 per logical GiB** written via an add, update, or upsert.
+
+* A *logical GiB* is the raw, uncompressed size of the data you send to Chroma-regardless of how it's stored or indexed internally.
+* You are only billed once per write, not for background compactions or reindexing.
+
+## Forking
+
+* Forking a collection costs **\$0.03 per fork request**.
+* Forks are copy-on-write. You only pay for incremental storage written after the fork; unchanged data remains shared.
+* Forking is available on Chroma Cloud. Learn more on the [Collection Forking](/cloud/features/collection-forking) page.
+
+## Reads
+
+Read costs are based on both the amount of data queried and the volume of data returned:
+
+* **\$0.0075 per TiB queried**
+* **\$0.09 per GiB returned**
+
+**How queries are counted:**
+
+* A single vector similarity query counts as one query.
+* Each metadata or full-text predicate in a query counts as an additional query.
+* Full-text and regex filters are billed as *(N - 2)* queries, where *N* is the number of characters in the search string.
+
+**Example:**
+
+<CodeGroup>
+  ```python Python theme={null}
+  collection.query(
+     query_embeddings=[[1.0, 2.3, 1.1, ...]],
+     where_document={"$contains": "hello world"}
+  )
+  ```
+
+  ```typescript TypeScript theme={null}
+  await collection.query({
+      queryEmbeddings: [[1.0, 2.3, 1.1, ...]],
+      whereDocument: { "$contains": "hello world" }
+  });
+  ```
+
+  ```rust Rust theme={null}
+  use chroma::types::{Key, QueryVector, RankExpr, SearchPayload};
+
+  let search = SearchPayload::default()
+      .r#where(Key::Document.contains("hello world"))
+      .rank(RankExpr::Knn {
+          query: QueryVector::Dense(vec![1.0, 2.3, 1.1]),
+          key: Key::Embedding,
+          limit: 10,
+          default: None,
+          return_rank: false,
+      })
+      .limit(Some(10), 0);
+
+  let results = collection.search(vec![search]).await?;
+  ```
+</CodeGroup>
+
+For the query above (a single vector search and a 10-character full-text search), querying against 10 GiB of data incurs:
+
+* 10,000 queries × 10 units (1 vector + 9 full-text) = 100,000 query units
+* 10 GiB = 0.01 TiB scanned → 100,000 × 0.01 TiB × $0.0075 = **$7.50\*\*
+
+## Storage
+
+Storage is billed at **\$0.33 per GiB per month**, prorated by the hour:
+
+* Storage usage is measured in **GiB-hours** to account for fluctuations over time.
+* Storage is billed based on the logical amount of data written.
+* All caching, including SSD caches used internally by Chroma, are not billed to you.
+
+## Sync
+
+Sync pricing is usage-based:
+
+* **\$0.04 per GiB processed** — data processed through Sync, including S3 files, code repositories, and web pages.
+* **\$0.01 per document page extracted** — applies to document file types (PDF, Office documents, images, ebooks, HTML) that require conversion. See [S3 Sync](/cloud/sync/s3#supported-file-types) for the full list.
+* **\$0.01 per page scraped** — applies to web pages crawled during [Web Sync](/cloud/sync/web).
+
+## Frequently Asked Questions
+
+<AccordionGroup>
+  <Accordion title="Is there a free tier?">
+    We offer \$5 in credits to new users.
+  </Accordion>
+
+  <Accordion title="How is multi-tenancy handled for billing?">
+    Billing is account-based. All data across your collections and tenants within a Chroma Cloud account is aggregated for pricing.
+  </Accordion>
+
+  <Accordion title="Can I deploy Chroma in my own VPC?">
+    Yes. We offer a BYOC (bring your own cloud) option for single-tenant deployments. [Contact us](/cloud) for more details.
+  </Accordion>
+
+  <Accordion title="Do I get charged for background indexing?">
+    No. You're only billed for the logical data you write and the storage you consume. Background jobs like compaction or reindexing do not generate additional write or read charges.
+  </Accordion>
+</AccordionGroup>
+
+
+# Quotas & Limits
+Source: https://docs.trychroma.com/cloud/quotas-limits
+
+
+
+To ensure the stability and fairness in a multi-tenant environment, Chroma Cloud enforces input and query quotas across all user-facing operations. These limits are designed to strike a balance between performance, reliability, and ease of use for the majority of workloads.
+
+<Callout>
+  Most quotas can be increased upon request. If your application requires higher limits, please [contact us](mailto:support@trychroma.com).
+</Callout>
+
+| **Quota** | **Value** |
+| - | - |
+| Maximum embedding dimensions | 4,096 |
+| Maximum document bytes | 16,384 |
+| Maximum URI bytes | 256 |
+| Maximum ID size bytes | 128 |
+| Maximum database name size bytes | 128 |
+| Maximum collection name size bytes | 128 |
+| Maximum record metadata value size bytes | 8,182 |
+| Maximum collection metadata value size bytes | 256 |
+| Maximum metadata key size bytes | 36 |
+| Maximum number of record metadata keys | 32 |
+| Maximum number of collection metadata keys | 32 |
+| Maximum number of where predicates | 8 |
+| Maximum size of full text search or regex search | 256 |
+| Maximum number of results returned | 300 |
+| Maximum number of concurrent reads per collection | 10 |
+| Maximum number of concurrent writes per collection | 10 |
+| Maximum number of collections | 1,000,000 |
+| Maximum number of records per collection | 5,000,000 |
+| Maximum fork edges from root | 256 |
+| Maximum number of records per write | 300 |
+
+These limits apply per request or per collection as appropriate. For example, concurrent read/write limits are tracked independently per collection, and full-text query limits apply to the length of the input string, not the number of documents searched.
+
+For details about the fork edges limit and quota error handling when forking, see [Collection Forking](/cloud/features/collection-forking).
+
+If you expect to approach these limits, we recommend reaching out early so we can ensure your account is configured accordingly.
+
+
+# Index Configuration Reference
+Source: https://docs.trychroma.com/cloud/schema/index-reference
+
+Comprehensive reference for all index types and their configuration parameters.
+
+## Index Types Overview
+
+Schema recognizes six value types, each with associated index types. Without providing a Schema, collections use these built-in defaults:
+
+| Config Class | Value Type | Default Behavior | Use Case |
+| - | - | - | - |
+| `StringInvertedIndexConfig` | `string` | Enabled for all metadata | Filter on string values |
+| `FtsIndexConfig` | `string` | Enabled for `K.DOCUMENT` only | Full-text search on documents |
+| `VectorIndexConfig` | `float_list` | Enabled for `K.EMBEDDING` only | Similarity search on embeddings |
+| `SparseVectorIndexConfig` | `sparse_vector` | Disabled (requires config) | Keyword-based search |
+| `IntInvertedIndexConfig` | `int_value` | Enabled for all metadata | Filter on integer values |
+| `FloatInvertedIndexConfig` | `float_value` | Enabled for all metadata | Filter on float values |
+| `BoolInvertedIndexConfig` | `boolean` | Enabled for all metadata | Filter on boolean values |
+
+## Simple Index Configs
+
+These index types have no configuration parameters.
+
+### FtsIndexConfig
+
+**Use Case**: Full-text search and regular expression search on documents (e.g., `where(K.DOCUMENT.contains("search term"))`).
+
+**Limitations**: Cannot be deleted. Applies to `K.DOCUMENT` only.
+
+### StringInvertedIndexConfig
+
+**Use Case**: Exact and prefix string matching on metadata fields (e.g., `where(K("category") == "science")`).
+
+### IntInvertedIndexConfig
+
+**Use Case**: Range and equality queries on integer metadata (e.g., `where(K("year") >= 2020)`).
+
+### FloatInvertedIndexConfig
+
+**Use Case**: Range and equality queries on float metadata (e.g., `where(K("price") < 99.99)`).
+
+### BoolInvertedIndexConfig
+
+**Use Case**: Filtering on boolean metadata (e.g., `where(K("published") == True)`).
+
+## VectorIndexConfig
+
+**Use Case**: Semantic similarity search on dense embeddings for finding conceptually similar content.
+
+**Parameters**:
+
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `space` | string | No | Distance function: `l2` (geometric), `ip` (inner product), or `cosine` (angle-based, most common for text). Default: `l2` |
+| `embedding_function` | EmbeddingFunction | No | Function to auto-generate embeddings from `K.DOCUMENT`. If not provided, supply embeddings manually |
+| `source_key` | string | No | Reserved for future use. Currently always uses `K.DOCUMENT` |
+| `hnsw` | HnswConfig | No | Advanced: HNSW algorithm tuning for single-node deployments |
+| `spann` | SpannConfig | No | Advanced: SPANN algorithm tuning (clustering, probing) for Chroma Cloud |
+
+**Limitations**:
+
+* Cannot be deleted
+* Applies to `K.EMBEDDING` only
+
+<Callout>
+  **Advanced tuning:** HNSW and SPANN parameters control index build and search behavior. They are pre-optimized for most use cases. Only adjust if you have specific performance requirements and understand the tradeoffs between recall, speed, and resource usage. Incorrect tuning can degrade performance.
+</Callout>
+
+## SparseVectorIndexConfig
+
+**Use Case**: Keyword-based search for exact term matching, domain-specific terminology, and technical terms. Ideal for hybrid search when combined with dense embeddings.
+
+**Parameters**:
+
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `source_key` | string | No | Field to generate sparse embeddings from. Typically `K.DOCUMENT`, but can be any text field |
+| `embedding_function` | SparseEmbeddingFunction | No | Sparse embedding function (e.g., `ChromaCloudSpladeEmbeddingFunction`, `HuggingFaceSparseEmbeddingFunction`, `Bm25EmbeddingFunction`) |
+| `bm25` | boolean | No | Set to `true` when using `Bm25EmbeddingFunction` to enable inverse document frequency (IDF) scaling for queries. Not applicable for SPLADE |
+
+**Limitations**:
+
+* Must specify a metadata key name (per-key configuration required)
+* Sparse vector indices must be declared at collection creation and cannot be added later
+* Cannot be deleted once created
+
+<Callout>
+  For complete sparse vector search setup and querying examples, see [Sparse Vector Search Setup](./sparse-vector-search).
+</Callout>
+
+## Next Steps
+
+* Apply these configurations in [Schema Basics](./schema-basics)
+* Set up [sparse vector search](./sparse-vector-search) with sparse vectors and hybrid search
+
+
+# Schema Overview
+Source: https://docs.trychroma.com/cloud/schema/overview
+
+
+
+Schema enables fine-grained control over index configuration on collections. Control which indexes are created, optimize for your workload, and enable advanced capabilities like hybrid search.
+
+## What is Schema?
+
+Schema allows you to configure which indexes are created for different data types in your Chroma collections. You can enable or disable indexes globally or per-field, configure vector index parameters, and set up sparse vector indexes for keyword-based search.
+
+## Why Use Schema?
+
+* **Enable Hybrid Search**: Combine dense and sparse embeddings for better retrieval quality
+* **Optimize Performance**: Disable unused indexes to speed up writes and reduce index build time
+* **Fine-Tune Configuration**: Adjust vector index parameters for your workload
+
+## Quick Start
+
+Here's a simple example creating a collection with a custom schema:
+
+<CodeGroup>
+  ```python Python theme={null}
+  import chromadb
+  from chromadb import Schema, StringInvertedIndexConfig
+
+  # Connect to Chroma Cloud
+  client = chromadb.CloudClient(
+      tenant="your-tenant",
+      database="your-database",
+      api_key="your-api-key"
+  )
+
+  # Create a schema and disable string indexing globally
+  schema = Schema()
+  schema.delete_index(config=StringInvertedIndexConfig())
+
+  # Create collection with the schema
+  collection = client.create_collection(
+      name="my_collection",
+      schema=schema
+  )
+
+  # Add data - string metadata won't be indexed
+  collection.add(
+      ids=["id1", "id2"],
+      documents=["Document 1", "Document 2"],
+      metadatas=[
+          {"category": "science", "year": 2024},
+          {"category": "tech", "year": 2023}
+      ]
+  )
+
+  # Querying on disabled index will raise an error
+  try:
+      collection.query(
+          query_texts=["query"],
+          where={"category": "science"}  # Error: string index is disabled
+      )
+  except Exception as e:
+      print(f"Error: {e}")
+  ```
+
+  ```typescript TypeScript theme={null}
+  import { CloudClient, Schema, StringInvertedIndexConfig } from 'chromadb';
+
+  // Connect to Chroma Cloud
+  const client = new CloudClient({
+    tenant: "your-tenant",
+    database: "your-database",
+    apiKey: "your-api-key"
+  });
+
+  // Create a schema and disable string indexing globally
+  const schema = new Schema();
+  schema.deleteIndex(new StringInvertedIndexConfig());
+
+  // Create collection with the schema
+  const collection = await client.createCollection({
+    name: "my_collection",
+    schema: schema
+  });
+
+  // Add data - string metadata won't be indexed
+  await collection.add({
+    ids: ["id1", "id2"],
+    documents: ["Document 1", "Document 2"],
+    metadatas: [
+      { category: "science", year: 2024 },
+      { category: "tech", year: 2023 }
+    ]
+  });
+
+  // Querying on disabled index will raise an error
+  try {
+    await collection.query({
+      queryTexts: ["query"],
+      where: { category: "science" }  // Error: string index is disabled
+    });
+  } catch (e) {
+    console.log(`Error: ${e}`);
+  }
+  ```
+</CodeGroup>
+
+<Callout>
+  **Important:** Schema is only configurable in `create_collection`. We are working on supporting schema update via collection `modify`
+</Callout>
+
+## Feature Highlights
+
+* **Default Indexes**: Collections start with sensible defaults - inverted indexes for scalar types, vector index for embeddings, full text search index for documents
+* **Global Configuration**: Set index defaults that apply to all metadata keys of a given type during collection creation
+* **Per-Key Configuration**: Override defaults for specific metadata fields
+* **Sparse Vector Support**: Enable sparse embeddings for hybrid search with BM25-style retrieval
+* **Index Deletion**: Disable indexes you don't need to improve write performance
+* **Dynamic Schema Evolution**: New metadata keys added during writes automatically inherit from global defaults
+
+## Next Steps
+
+* [Schema Basics](./schema-basics) - Learn the structure and how to use Schema
+* [Sparse Vector Search Setup](./sparse-vector-search) - Configure sparse vectors and hybrid search
+* [Index Configuration Reference](./index-reference) - Complete index type reference
+
+
+# Schema Basics
+Source: https://docs.trychroma.com/cloud/schema/schema-basics
+
+Learn how to create and use Schema to configure indexes on your Chroma collections.
+
+## Schema Structure
+
+A Schema has two main components that work together to control indexing behavior:
+
+### Defaults
+
+Defaults define index configuration for **all keys** of a given data type. When you add metadata to your collection, Chroma looks at the value type (string, int, float, etc.) and applies the default index configuration for that type.
+
+For example, if you disable string inverted indexes globally, no string metadata fields will be indexed unless you create a key-specific override.
+
+### Keys
+
+Keys define index configuration for **specific metadata fields**. These override the defaults for individual fields, giving you fine-grained control.
+
+For example, you might disable string indexing globally but enable it specifically for a "category" field that you frequently filter on.
+
+### How They Work Together
+
+When determining whether to index a field, Chroma follows this precedence:
+
+1. **Key-specific configuration** (if exists) - highest priority
+2. **Default configuration** (for that value type) - fallback
+3. **Built-in defaults** (if no Schema provided) - final fallback
+
+This means you can set broad defaults and then override them for specific fields as needed.
+
+## Default Index Behavior
+
+Without providing a Schema, collections use built-in defaults for indexing. For a complete overview of all value types, index types, and their defaults, see the [Index Configuration Reference](./index-reference#index-types-overview).
+
+### Special Keys
+
+Chroma uses two reserved key names:
+
+**`K.DOCUMENT`** (`#document`) stores document text content with FTS enabled and String Inverted Index disabled. This allows full-text search while avoiding redundant indexing.
+
+**`K.EMBEDDING`** (`#embedding`) stores dense vector embeddings with Vector Index enabled, sourcing from `K.DOCUMENT`. This enables semantic similarity search.
+
+<Callout>
+  Use `K.DOCUMENT` and `K.EMBEDDING` in your code (they correspond to internal keys `#document` and `#embedding`). These special keys are automatically configured and cannot be manually modified. See the [Search API field reference](../search-api/pagination-selection#available-fields) for more details.
+</Callout>
+
+### Example: Using Defaults
+
+<CodeGroup>
+  ```python Python theme={null}
+  # Without Schema - uses defaults from table above
+  collection = client.create_collection(name="my_collection")
+
+  collection.add(
+      ids=["id1"],
+      documents=["Some text"],    # FTS index
+      embeddings=[[1.0, 2.0]],    # Vector index
+      metadatas=[{
+          "category": "science",  # String inverted index
+          "year": 2024,           # Int inverted index
+          "score": 0.95,          # Float inverted index
+          "published": True       # Bool inverted index
+      }]
+  )
+  ```
+
+  ```typescript TypeScript theme={null}
+  // Without Schema - uses defaults from table above
+  const collection = await client.createCollection({ name: "my_collection" });
+
+  await collection.add({
+    ids: ["id1"],
+    documents: ["Some text"],
+    metadatas: [{
+      category: "science",  // String inverted index
+      year: 2024,           // Int inverted index
+      score: 0.95,          // Float inverted index
+      published: true       // Bool inverted index
+    }]
+  });
+  ```
+</CodeGroup>
+
+## Creating Schema Objects
+
+Create a Schema object to customize index configuration:
+
+<CodeGroup>
+  ```python Python theme={null}
+  from chromadb import Schema
+
+  # Create an empty schema (starts with defaults)
+  schema = Schema()
+
+  # The schema is now ready to be configured
+  ```
+
+  ```typescript TypeScript theme={null}
+  import { Schema } from 'chromadb';
+
+  // Create an empty schema (starts with defaults)
+  const schema = new Schema();
+
+  // The schema is now ready to be configured
+  ```
+</CodeGroup>
+
+## Creating Indexes
+
+### The create\_index() Method
+
+Use `create_index()` to enable or configure indexes. The method takes:
+
+* `config`: An index configuration object (or `None` to enable all indexes for a key)
+* `key`: Optional - specify a metadata field name for key-specific configuration
+
+The method returns the Schema object, enabling method chaining.
+
+### Creating Global Indexes
+
+Create indexes that apply globally. This example shows configuring the vector index with custom settings:
+
+<CodeGroup>
+  ```python Python theme={null}
+  from chromadb import Schema, VectorIndexConfig
+  from chromadb.utils.embedding_functions import OpenAIEmbeddingFunction
+
+  schema = Schema()
+
+  # Configure vector index with custom embedding function
+  embedding_function = OpenAIEmbeddingFunction(
+      api_key_env_var="OPENAI_API_KEY",
+      model_name="text-embedding-3-small"
+  )
+
+  schema.create_index(config=VectorIndexConfig(
+      space="cosine",
+      embedding_function=embedding_function
+  ))
+  ```
+
+  ```typescript TypeScript theme={null}
+  import { Schema, VectorIndexConfig } from 'chromadb';
+  import { OpenAIEmbeddingFunction } from '@chroma-core/openai';
+
+  const schema = new Schema();
+
+  // Configure vector index with custom embedding function
+  const embeddingFunction = new OpenAIEmbeddingFunction({
+    apiKeyEnvVar: "OPENAI_API_KEY",
+    modelName: "text-embedding-3-small"
+  });
+
+  schema.createIndex(new VectorIndexConfig({
+    space: "cosine",
+    embeddingFunction: embeddingFunction
+  }));
+  ```
+</CodeGroup>
+
+### Creating Key-Specific Indexes
+
+Configure indexes for specific metadata fields. This example shows configuring the sparse vector index with custom settings:
+
+<CodeGroup>
+  ```python Python theme={null}
+  from chromadb import Schema, SparseVectorIndexConfig, K
+  from chromadb.utils.embedding_functions import ChromaCloudSpladeEmbeddingFunction
+
+  schema = Schema()
+
+  # Add sparse vector index for a specific key (required for hybrid search)
+  sparse_ef = ChromaCloudSpladeEmbeddingFunction()
+  schema.create_index(
+      config=SparseVectorIndexConfig(
+          source_key=K.DOCUMENT,
+          embedding_function=sparse_ef
+      ),
+      key="sparse_embedding"
+  )
+  ```
+
+  ```typescript TypeScript theme={null}
+  import { Schema, SparseVectorIndexConfig, K } from 'chromadb';
+  import { ChromaCloudSpladeEmbeddingFunction } from '@chroma-core/chroma-cloud-splade';
+
+  const schema = new Schema();
+
+  // Add sparse vector index for a specific key (required for hybrid search)
+  const sparseEf = new ChromaCloudSpladeEmbeddingFunction({
+    apiKeyEnvVar: "CHROMA_API_KEY"
+  });
+
+  schema.createIndex(
+    new SparseVectorIndexConfig({
+      sourceKey: K.DOCUMENT,
+      embeddingFunction: sparseEf
+    }),
+    "sparse_embedding"
+  );
+  ```
+</CodeGroup>
+
+<Callout>
+  This example uses `ChromaCloudSpladeEmbeddingFunction`, but you can use other sparse embedding functions like `HuggingFaceSparseEmbeddingFunction` or `FastembedSparseEmbeddingFunction` depending on your needs.
+</Callout>
+
+## Disabling Indexes
+
+### The delete\_index() Method
+
+Use `delete_index()` to disable indexes. Like `create_index()`, it takes:
+
+* `config`: An index configuration object (or `None` to disable all indexes for a key)
+* `key`: Optional - specify a metadata field name for key-specific configuration
+
+Returns the Schema object for method chaining.
+
+### Examples
+
+<CodeGroup>
+  ```python Python theme={null}
+  from chromadb import Schema, StringInvertedIndexConfig, IntInvertedIndexConfig
+
+  schema = Schema()
+
+  # Disable string inverted index globally
+  schema.delete_index(config=StringInvertedIndexConfig())
+
+  # Disable int inverted index for a specific key
+  schema.delete_index(config=IntInvertedIndexConfig(), key="unimportant_count")
+
+  # Disable all indexes for a specific key
+  schema.delete_index(key="temporary_field")
+  ```
+
+  ```typescript TypeScript theme={null}
+  import { Schema, StringInvertedIndexConfig, IntInvertedIndexConfig } from 'chromadb';
+
+  const schema = new Schema();
+
+  // Disable string inverted index globally
+  schema.deleteIndex(new StringInvertedIndexConfig());
+
+  // Disable int inverted index for a specific key
+  schema.deleteIndex(new IntInvertedIndexConfig(), "unimportant_count");
+
+  // Disable all indexes for a specific key
+  schema.deleteIndex(undefined, "temporary_field");
+  ```
+</CodeGroup>
+
+<Callout>
+  **Note:** Not all indexes can be deleted. Vector indexes currently cannot be disabled.
+</Callout>
+
+<Callout>
+  **Array metadata and indexes:** Array metadata (e.g. `[1, 2, 3]` or `["action", "comedy"]`) shares the same inverted index as its scalar counterpart. Disabling `IntInvertedIndexConfig` will also prevent `$contains` and `$not_contains` queries on integer arrays, and similarly for other types.
+</Callout>
+
+## Method Chaining
+
+Both `create_index()` and `delete_index()` return the Schema object, enabling fluent method chaining:
+
+<CodeGroup>
+  ```python Python theme={null}
+  from chromadb import Schema, StringInvertedIndexConfig, IntInvertedIndexConfig
+
+  schema = (Schema()
+      .delete_index(config=StringInvertedIndexConfig())  # Disable globally
+      .create_index(config=StringInvertedIndexConfig(), key="category")  # Enable for category
+      .create_index(config=StringInvertedIndexConfig(), key="tags")  # Enable for tags
+      .delete_index(config=IntInvertedIndexConfig()))  # Disable int indexing
+  ```
+
+  ```typescript TypeScript theme={null}
+  import { Schema, StringInvertedIndexConfig, IntInvertedIndexConfig } from 'chromadb';
+
+  const schema = new Schema()
+    .deleteIndex(new StringInvertedIndexConfig())  // Disable globally
+    .createIndex(new StringInvertedIndexConfig(), "category")  // Enable for category
+    .createIndex(new StringInvertedIndexConfig(), "tags")  // Enable for tags
+    .deleteIndex(new IntInvertedIndexConfig());  // Disable int indexing
+  ```
+</CodeGroup>
+
+## Using Schema with Collections
+
+Pass the configured schema to `create_collection()` or `get_or_create_collection()`:
+
+<CodeGroup>
+  ```python Python theme={null}
+  # Create collection with schema
+  collection = client.create_collection(
+      name="my_collection",
+      schema=schema
+  )
+
+  # Or use get_or_create_collection
+  collection = client.get_or_create_collection(
+      name="my_collection",
+      schema=schema
+  )
+  ```
+
+  ```typescript TypeScript theme={null}
+  // Create collection with schema
+  const collection = await client.createCollection({
+    name: "my_collection",
+    schema: schema
+  });
+
+  // Or use getOrCreateCollection
+  const collection = await client.getOrCreateCollection({
+    name: "my_collection",
+    schema: schema
+  });
+  ```
+</CodeGroup>
+
+### Schema Persistence
+
+Schema configuration is automatically saved with the collection. When you retrieve a collection with `get_collection()` or `get_or_create_collection()`, the schema is loaded automatically. You don't need to provide the schema again.
+
+## Next Steps
+
+* Set up [sparse vector search](./sparse-vector-search) with sparse vectors
+* Browse the complete [index configuration reference](./index-reference)
+
+
+# Sparse Vector Search Setup
+Source: https://docs.trychroma.com/cloud/schema/sparse-vector-search
+
+Learn how to configure and use sparse vectors for keyword-based search, and combine them with dense embeddings for powerful hybrid search capabilities.
+
+## What are Sparse Vectors?
+
+Sparse vectors are high-dimensional vectors with mostly zero values, designed for keyword-based retrieval. Unlike dense embeddings which capture semantic meaning, sparse vectors excel at:
+
+* **Exact keyword matching**: Finding documents containing specific terms
+* **Domain-specific terminology**: Better at matching technical terms, proper nouns, and rare words
+* **Lexical retrieval**: BM25-style retrieval patterns
+
+Sparse vectors use models like SPLADE that assign importance weights to specific tokens, making them complementary to dense semantic embeddings.
+
+## Enabling Sparse Vector Index
+
+To use sparse vectors, add a sparse vector index to your schema. The `key` parameter is the metadata field name where sparse embeddings will be stored - you can name it whatever you want:
+
+<CodeGroup>
+  ```python Python theme={null}
+  from chromadb import Schema, SparseVectorIndexConfig, K
+  from chromadb.utils.embedding_functions import ChromaCloudSpladeEmbeddingFunction
+
+  schema = Schema()
+
+  # Add sparse vector index for keyword-based search
+  # "sparse_embedding" is just a metadata key name - use any name you prefer
+  sparse_ef = ChromaCloudSpladeEmbeddingFunction()
+  schema.create_index(
+      config=SparseVectorIndexConfig(
+          source_key=K.DOCUMENT,
+          embedding_function=sparse_ef
+      ),
+      key="sparse_embedding"
+  )
+  ```
+
+  ```typescript TypeScript theme={null}
+  import { Schema, SparseVectorIndexConfig, K } from 'chromadb';
+  import { ChromaCloudSpladeEmbeddingFunction } from '@chroma-core/chroma-cloud-splade';
+
+  const schema = new Schema();
+
+  // Add sparse vector index for keyword-based search
+  // "sparse_embedding" is just a metadata key name - use any name you prefer
+  const sparseEf = new ChromaCloudSpladeEmbeddingFunction({
+    apiKeyEnvVar: "CHROMA_API_KEY"
+  });
+  schema.createIndex(
+    new SparseVectorIndexConfig({
+      sourceKey: K.DOCUMENT,
+      embeddingFunction: sparseEf
+    }),
+    "sparse_embedding"
+  );
+  ```
+</CodeGroup>
+
+<Callout>
+  The `source_key` specifies which field to generate sparse embeddings from (typically `K.DOCUMENT` for document text), and `embedding_function` specifies the function to generate the sparse embeddings. This example uses `ChromaCloudSpladeEmbeddingFunction`, but you can also use other sparse embedding functions like `HuggingFaceSparseEmbeddingFunction` or `FastembedSparseEmbeddingFunction`. The sparse embeddings are automatically generated and stored in the metadata field you specify as the `key`.
+</Callout>
+
+## Create Collection and Add Data
+
+### Create Collection with Schema
+
+<CodeGroup>
+  ```python Python theme={null}
+  import chromadb
+
+  client = chromadb.CloudClient(
+      tenant="your-tenant",
+      database="your-database",
+      api_key="your-api-key"
+  )
+
+  collection = client.create_collection(
+      name="hybrid_search_collection",
+      schema=schema
+  )
+  ```
+
+  ```typescript TypeScript theme={null}
+  import { CloudClient } from 'chromadb';
+
+  const client = new CloudClient({
+    tenant: "your-tenant",
+    database: "your-database",
+    apiKey: "your-api-key"
+  });
+
+  const collection = await client.createCollection({
+    name: "hybrid_search_collection",
+    schema: schema
+  });
+  ```
+</CodeGroup>
+
+### Add Data
+
+When you add documents, sparse embeddings are automatically generated from the source key:
+
+<CodeGroup>
+  ```python Python theme={null}
+  collection.add(
+      ids=["doc1", "doc2", "doc3"],
+      documents=[
+          "The quick brown fox jumps over the lazy dog",
+          "A fast auburn fox leaps over a sleepy canine",
+          "Machine learning is a subset of artificial intelligence"
+      ],
+      metadatas=[
+          {"category": "animals"},
+          {"category": "animals"},
+          {"category": "technology"}
+      ]
+  )
+
+  # Sparse embeddings for "sparse_embedding" are generated automatically
+  # from the documents (source_key=K.DOCUMENT)
+  ```
+
+  ```typescript TypeScript theme={null}
+  await collection.add({
+    ids: ["doc1", "doc2", "doc3"],
+    documents: [
+      "The quick brown fox jumps over the lazy dog",
+      "A fast auburn fox leaps over a sleepy canine",
+      "Machine learning is a subset of artificial intelligence"
+    ],
+    metadatas: [
+      { category: "animals" },
+      { category: "animals" },
+      { category: "technology" }
+    ]
+  });
+
+  // Sparse embeddings for "sparse_embedding" are generated automatically
+  // from the documents (source_key=K.DOCUMENT)
+  ```
+</CodeGroup>
+
+## Using Sparse Vectors for Search
+
+Once configured, you can search using sparse vectors alone or combine them with dense embeddings for hybrid search.
+
+### Sparse Vector Search
+
+Use sparse vectors for keyword-based retrieval:
+
+<CodeGroup>
+  ```python Python theme={null}
+  from chromadb import Search, K, Knn
+
+  # Search using sparse embeddings only
+  sparse_rank = Knn(query="fox animal", key="sparse_embedding")
+
+  # Build and execute search
+  search = (Search()
+      .rank(sparse_rank)
+      .limit(10)
+      .select(K.DOCUMENT, K.SCORE))
+
+  results = collection.search(search)
+
+  # Process results
+  for row in results.rows()[0]:
+      print(f"Score: {row['score']:.3f} - {row['document']}")
+  ```
+
+  ```typescript TypeScript theme={null}
+  import { Search, K, Knn } from 'chromadb';
+
+  // Search using sparse embeddings only
+  const sparseRank = Knn({ query: "fox animal", key: "sparse_embedding" });
+
+  // Build and execute search
+  const search = new Search()
+    .rank(sparseRank)
+    .limit(10)
+    .select(K.DOCUMENT, K.SCORE);
+
+  const results = await collection.search(search);
+
+  // Process results
+  for (const row of results.rows()[0]) {
+    console.log(`Score: ${row.score.toFixed(3)} - ${row.document}`);
+  }
+  ```
+</CodeGroup>
+
+## Hybrid Search
+
+Hybrid search combines dense semantic embeddings with sparse keyword embeddings for improved retrieval quality. By merging results from both approaches using Reciprocal Rank Fusion (RRF), you often achieve better results than either approach alone.
+
+### Benefits of Hybrid Search
+
+* **Semantic + Lexical**: Dense embeddings capture meaning while sparse vectors catch exact keywords
+* **Improved recall**: Finds relevant documents that either semantic or keyword search might miss alone
+* **Balanced results**: Combines the strengths of both retrieval methods
+
+### Combining Dense and Sparse with RRF
+
+Use RRF (Reciprocal Rank Fusion) to merge dense and sparse search results:
+
+<CodeGroup>
+  ```python Python theme={null}
+  from chromadb import Search, K, Knn, Rrf
+
+  # Create RRF ranking combining dense and sparse embeddings
+  hybrid_rank = Rrf(
+      ranks=[
+          Knn(query="fox animal", return_rank=True),           # Dense semantic search
+          Knn(query="fox animal", key="sparse_embedding", return_rank=True)  # Sparse keyword search
+      ],
+      weights=[0.7, 0.3],  # 70% semantic, 30% keyword
+      k=60
+  )
+
+  # Build and execute search
+  search = (Search()
+      .rank(hybrid_rank)
+      .limit(10)
+      .select(K.DOCUMENT, K.SCORE))
+
+  results = collection.search(search)
+
+  # Process results
+  for row in results.rows()[0]:
+      print(f"Score: {row['score']:.3f} - {row['document']}")
+  ```
+
+  ```typescript TypeScript theme={null}
+  import { Search, K, Knn, Rrf } from 'chromadb';
+
+  // Create RRF ranking combining dense and sparse embeddings
+  const hybridRank = Rrf({
+    ranks: [
+      Knn({ query: "fox animal", returnRank: true }),           // Dense semantic search
+      Knn({ query: "fox animal", key: "sparse_embedding", returnRank: true })  // Sparse keyword search
+    ],
+    weights: [0.7, 0.3],  // 70% semantic, 30% keyword
+    k: 60
+  });
+
+  // Build and execute search
+  const search = new Search()
+    .rank(hybridRank)
+    .limit(10)
+    .select(K.DOCUMENT, K.SCORE);
+
+  const results = await collection.search(search);
+
+  // Process results
+  for (const row of results.rows()[0]) {
+    console.log(`Score: ${row.score.toFixed(3)} - ${row.document}`);
+  }
+  ```
+</CodeGroup>
+
+<Callout>
+  For comprehensive details on RRF parameters, weight tuning, and advanced hybrid search strategies, see the [Search API Hybrid Search documentation](../search-api/hybrid-search).
+</Callout>
+
+## Next Steps
+
+* **[Search API Hybrid Search with RRF](../search-api/hybrid-search)** - Learn RRF parameters, weight tuning, and advanced strategies
+* [Index Configuration Reference](./index-reference) - Detailed parameters for all index types
+* [Schema Basics](./schema-basics) - General Schema usage and patterns
+
+
+# Batch Operations
+Source: https://docs.trychroma.com/cloud/search-api/batch-operations
+
+Execute multiple searches in a single API call for better performance and easier comparison of results.
+
+## Running Multiple Searches
+
+Pass a list of Search objects to execute them in a single request. Each search operates independently and returns its own results.
+
+<CodeGroup>
+  ```python Python theme={null}
+  from chromadb import Search, K, Knn
+
+  # Execute multiple searches in one call
+  searches = [
+      # Search 1: Recent articles
+      (Search()
+          .where((K("type") == "article") & (K("year") >= 2024))
+          .rank(Knn(query="machine learning applications"))
+          .limit(5)
+          .select(K.DOCUMENT, K.SCORE, "title")),
+
+      # Search 2: Papers by specific authors
+      (Search()
+          .where(K("author").is_in(["Smith", "Jones"]))
+          .rank(Knn(query="neural network research"))
+          .limit(10)
+          .select(K.DOCUMENT, K.SCORE, "title", "author")),
+
+      # Search 3: Featured content (no ranking)
+      Search()
+          .where(K("status") == "featured")
+          .limit(20)
+          .select("title", "date")
+  ]
+
+  # Execute all searches in one request
+  results = collection.search(searches)
+  ```
+
+  ```typescript TypeScript theme={null}
+  import { Search, K, Knn } from 'chromadb';
+
+  // Execute multiple searches in one call
+  const searches = [
+    // Search 1: Recent articles
+    new Search()
+      .where(K("type").eq("article").and(K("year").gte(2024)))
+      .rank(Knn({ query: "machine learning applications" }))
+      .limit(5)
+      .select(K.DOCUMENT, K.SCORE, "title"),
+
+    // Search 2: Papers by specific authors
+    new Search()
+      .where(K("author").isIn(["Smith", "Jones"]))
+      .rank(Knn({ query: "neural network research" }))
+      .limit(10)
+      .select(K.DOCUMENT, K.SCORE, "title", "author"),
+
+    // Search 3: Featured content (no ranking)
+    new Search()
+      .where(K("status").eq("featured"))
+      .limit(20)
+      .select("title", "date")
+  ];
+
+  // Execute all searches in one request
+  const results = await collection.search(searches);
+  ```
+
+  ```rust Rust theme={null}
+  use chroma::types::{Key, QueryVector, RankExpr, SearchPayload};
+
+  let searches = vec![
+      SearchPayload::default()
+          .r#where(Key::field("type").eq("article") & Key::field("year").gte(2024))
+          .rank(RankExpr::Knn {
+              query: QueryVector::Dense(vec![0.1, 0.2, 0.3]),
+              key: Key::Embedding,
+              limit: 16,
+              default: None,
+              return_rank: false,
+          })
+          .limit(Some(5), 0)
+          .select([Key::Document, Key::Score, Key::field("title")]),
+      SearchPayload::default()
+          .r#where(Key::field("author").is_in(["Smith", "Jones"]))
+          .rank(RankExpr::Knn {
+              query: QueryVector::Dense(vec![0.2, 0.3, 0.4]),
+              key: Key::Embedding,
+              limit: 16,
+              default: None,
+              return_rank: false,
+          })
+          .limit(Some(10), 0)
+          .select([Key::Document, Key::Score, Key::field("title"), Key::field("author")]),
+      SearchPayload::default()
+          .r#where(Key::field("status").eq("featured"))
+          .limit(Some(20), 0)
+          .select([Key::field("title"), Key::field("date")]),
+  ];
+
+  let results = collection.search(searches).await?;
+  ```
+</CodeGroup>
+
+## Why Use Batch Operations
+
+* **Single round trip** - All searches execute in one API call
+* **Easy comparison** - Compare results from different queries or strategies
+* **Parallel execution** - Server processes searches simultaneously
+
+## Understanding Batch Results
+
+Results from batch operations maintain the same order as your searches. Each search's results are accessed by its index.
+
+### Result Structure
+
+Each field in the SearchResult maintains a list where each index corresponds to a search:
+
+* `results.ids[i]` - IDs from search at index i
+* `results.documents[i]` - Documents from search at index i (if selected)
+* `results.embeddings[i]` - Embeddings from search at index i (if selected)
+* `results.metadatas[i]` - Metadata from search at index i (if selected)
+* `results.scores[i]` - Scores from search at index i (if ranking was used)
+
+<CodeGroup>
+  ```python Python theme={null}
+  # Batch search returns multiple result sets
+  results = collection.search([search1, search2, search3])
+
+  # Access results by index
+  ids_1 = results.ids[0]    # IDs from search1
+  ids_2 = results.ids[1]    # IDs from search2
+  ids_3 = results.ids[2]    # IDs from search3
+
+  # Using rows() for easier processing
+  all_rows = results.rows()  # Returns list of lists
+  rows_1 = all_rows[0]      # Rows from search1
+  rows_2 = all_rows[1]      # Rows from search2
+  rows_3 = all_rows[2]      # Rows from search3
+
+  # Process each search's results
+  for search_index, rows in enumerate(all_rows):
+      print(f"Results from search {search_index + 1}:")
+      for row in rows:
+          print(f"  - {row['id']}: {row.get('metadata', {}).get('title', 'N/A')}")
+  ```
+
+  ```typescript TypeScript theme={null}
+  // Batch search returns multiple result sets
+  const results = await collection.search([search1, search2, search3]);
+
+  // Access results by index
+  const ids1 = results.ids[0];    // IDs from search1
+  const ids2 = results.ids[1];    // IDs from search2
+  const ids3 = results.ids[2];    // IDs from search3
+
+  // Using rows() for easier processing
+  const allRows = results.rows();  // Returns list of lists
+  const rows1 = allRows[0];       // Rows from search1
+  const rows2 = allRows[1];       // Rows from search2
+  const rows3 = allRows[2];       // Rows from search3
+
+  // Process each search's results
+  for (const [searchIndex, rows] of allRows.entries()) {
+    console.log(`Results from search ${searchIndex + 1}:`);
+    for (const row of rows) {
+      console.log(`  - ${row.id}: ${row.metadata?.title ?? 'N/A'}`);
+    }
+  }
+  ```
+
+  ```rust Rust theme={null}
+  let results = collection.search(vec![search1, search2, search3]).await?;
+
+  let ids_1 = &results.ids[0]; // IDs from search1
+  let ids_2 = &results.ids[1]; // IDs from search2
+  let ids_3 = &results.ids[2]; // IDs from search3
+  ```
+</CodeGroup>
+
+## Common Use Cases
+
+### Comparing Different Queries
+
+Test multiple query variations to find the most relevant results.
+
+<CodeGroup>
+  ```python Python theme={null}
+  # Compare different query variations
+  query_variations = [
+      "machine learning",
+      "machine learning algorithms and applications",
+      "modern machine learning techniques"
+  ]
+
+  searches = [
+      Search()
+          .rank(Knn(query=q))
+          .limit(10)
+          .select(K.DOCUMENT, K.SCORE, "title")
+      for q in query_variations
+  ]
+
+  results = collection.search(searches)
+
+  # Compare top results from each variation
+  for i, query_name in enumerate(["Original", "Expanded", "Refined"]):
+      print(f"{query_name} Query Top Result:")
+      if results.scores[i]:
+          print(f"  Score: {results.scores[i][0]:.3f}")
+  ```
+
+  ```typescript TypeScript theme={null}
+  // Compare different query variations
+  const queryVariations = [
+    "machine learning",
+    "machine learning algorithms and applications",
+    "modern machine learning techniques"
+  ];
+
+  const searches = queryVariations.map(q =>
+    new Search()
+      .rank(Knn({ query: q }))
+      .limit(10)
+      .select(K.DOCUMENT, K.SCORE, "title")
+  );
+
+  const results = await collection.search(searches);
+
+  // Compare top results from each variation
+  ["Original", "Expanded", "Refined"].forEach((queryName, i) => {
+    console.log(`${queryName} Query Top Result:`);
+    if (results.scores[i] && results.scores[i].length > 0) {
+      console.log(`  Score: ${results.scores[i][0].toFixed(3)}`);
+    }
+  });
+  ```
+</CodeGroup>
+
+### A/B Testing Ranking Strategies
+
+Compare different ranking approaches on the same query.
+
+<CodeGroup>
+  ```python Python theme={null}
+  # Test different ranking strategies
+  searches = [
+      # Strategy A: Pure KNN
+      Search()
+          .rank(Knn(query="artificial intelligence"))
+          .limit(10)
+          .select(K.SCORE, "title"),
+
+      # Strategy B: Weighted KNN
+      Search()
+          .rank(Knn(query="artificial intelligence") * 0.8 + 0.2)
+          .limit(10)
+          .select(K.SCORE, "title"),
+
+      # Strategy C: Hybrid with RRF
+      Search()
+          .rank(Rrf([
+              Knn(query="artificial intelligence", return_rank=True),
+              Knn(query="artificial intelligence", key="sparse_embedding", return_rank=True)
+          ]))
+          .limit(10)
+          .select(K.SCORE, "title")
+  ]
+
+  results = collection.search(searches)
+  ```
+
+  ```typescript TypeScript theme={null}
+  // Test different ranking strategies
+  const searches = [
+    // Strategy A: Pure KNN
+    new Search()
+      .rank(Knn({ query: "artificial intelligence" }))
+      .limit(10)
+      .select(K.SCORE, "title"),
+
+    // Strategy B: Weighted KNN
+    new Search()
+      .rank(Knn({ query: "artificial intelligence" }).multiply(0.8).add(0.2))
+      .limit(10)
+      .select(K.SCORE, "title"),
+
+    // Strategy C: Hybrid with RRF
+    new Search()
+      .rank(Rrf({
+        ranks: [
+          Knn({ query: "artificial intelligence", returnRank: true }),
+          Knn({ query: "artificial intelligence", key: "sparse_embedding", returnRank: true })
+        ]
+      }))
+      .limit(10)
+      .select(K.SCORE, "title")
+  ];
+
+  const results = await collection.search(searches);
+  ```
+</CodeGroup>
+
+### Multiple Filters on Same Data
+
+Apply different filters to explore different subsets of your data.
+
+<CodeGroup>
+  ```python Python theme={null}
+  # Different category filters
+  categories = ["technology", "science", "business"]
+
+  searches = [
+      Search()
+          .where(K("category") == category)
+          .rank(Knn(query="artificial intelligence"))
+          .limit(5)
+          .select("title", "category", K.SCORE)
+      for category in categories
+  ]
+
+  results = collection.search(searches)
+  ```
+
+  ```typescript TypeScript theme={null}
+  // Different category filters
+  const categories = ["technology", "science", "business"];
+
+  const searches = categories.map(category =>
+    new Search()
+      .where(K("category").eq(category))
+      .rank(Knn({ query: "artificial intelligence" }))
+      .limit(5)
+      .select("title", "category", K.SCORE)
+  );
+
+  const results = await collection.search(searches);
+  ```
+</CodeGroup>
+
+## Performance Benefits
+
+Batch operations are significantly faster than running searches sequentially:
+
+<CodeGroup>
+  ```python Python theme={null}
+  # Sequential execution (slow)
+  results = []
+  for search in searches:
+      result = collection.search(search)  # Separate API call each time
+      results.append(result)
+
+  # Batch execution (fast)
+  results = collection.search(searches)  # Single API call for all
+  ```
+
+  ```typescript TypeScript theme={null}
+  // Sequential execution (slow)
+  const results = [];
+  for (const search of searches) {
+    const result = await collection.search(search);  // Separate API call each time
+    results.push(result);
+  }
+
+  // Batch execution (fast)
+  const results2 = await collection.search(searches);  // Single API call for all
+  ```
+</CodeGroup>
+
+Batch operations reduce network overhead and enable server-side parallelization, often providing 3-10x speedup depending on the number and complexity of searches.
+
+## Edge Cases
+
+### Empty Searches Array
+
+Passing an empty list returns an empty result.
+
+### Batch Size Limits
+
+For Chroma Cloud users, batch operations may be subject to quota limits on the total number of searches per request.
+
+### Mixed Field Selection
+
+Different searches can select different fields - each search's results will contain only its requested fields.
+
+<CodeGroup>
+  ```python Python theme={null}
+  searches = [
+      Search().limit(5).select(K.DOCUMENT),       # Only documents
+      Search().limit(5).select(K.SCORE, "title"), # Scores and title
+      Search().limit(5).select_all()              # Everything
+  ]
+
+  results = collection.search(searches)
+  # results.documents[0] will have values
+  # results.documents[1] will be None (not selected)
+  # results.documents[2] will have values
+  ```
+
+  ```typescript TypeScript theme={null}
+  const searches = [
+    new Search().limit(5).select(K.DOCUMENT),       // Only documents
+    new Search().limit(5).select(K.SCORE, "title"), // Scores and title
+    new Search().limit(5).selectAll()               // Everything
+  ];
+
+  const results = await collection.search(searches);
+  // results.documents[0] will have values
+  // results.documents[1] will be null (not selected)
+  // results.documents[2] will have values
+  ```
+</CodeGroup>
+
+## Complete Example
+
+Here's a practical example using batch operations to find and compare relevant documents across different categories:
+
+<CodeGroup>
+  ```python Python theme={null}
+  from chromadb import Search, K, Knn
+
+  def compare_category_relevance(collection, query_text, categories):
+      """Find top results in each category for the same query"""
+
+      # Build searches for each category
+      searches = [
+          Search()
+              .where(K("category") == cat)
+              .rank(Knn(query=query_text))
+              .limit(3)
+              .select(K.DOCUMENT, K.SCORE, "title", "category")
+          for cat in categories
+      ]
+
+      # Execute batch search
+      results = collection.search(searches)
+      all_rows = results.rows()
+
+      # Process and display results
+      for cat_index, category in enumerate(categories):
+          print(f"\nTop results in {category}:")
+          rows = all_rows[cat_index]
+
+          if not rows:
+              print("  No results found")
+              continue
+
+          for i, row in enumerate(rows, 1):
+              title = row.get('metadata', {}).get('title', 'Untitled')
+              score = row.get('score', 0)
+              preview = row.get('document', '')[:100]
+
+              print(f"  {i}. {title}")
+              print(f"     Score: {score:.3f}")
+              print(f"     Preview: {preview}...")
+
+  # Usage
+  categories = ["technology", "science", "business", "health"]
+  query_text = "artificial intelligence applications"
+
+  compare_category_relevance(collection, query_text, categories)
+  ```
+
+  ```typescript TypeScript theme={null}
+  import { Search, K, Knn, type Collection } from 'chromadb';
+
+  async function compareCategoryRelevance(
+    collection: Collection,
+    queryText: string,
+    categories: string[]
+  ) {
+    // Find top results in each category for the same query
+
+    // Build searches for each category
+    const searches = categories.map(cat =>
+      new Search()
+        .where(K("category").eq(cat))
+        .rank(Knn({ query: queryText }))
+        .limit(3)
+        .select(K.DOCUMENT, K.SCORE, "title", "category")
+    );
+
+    // Execute batch search
+    const results = await collection.search(searches);
+    const allRows = results.rows();
+
+    // Process and display results
+    for (const [catIndex, category] of categories.entries()) {
+      console.log(`\nTop results in ${category}:`);
+      const rows = allRows[catIndex];
+
+      if (!rows || rows.length === 0) {
+        console.log("  No results found");
+        continue;
+      }
+
+      for (const [i, row] of rows.entries()) {
+        const title = row.metadata?.title ?? 'Untitled';
+        const score = row.score ?? 0;
+        const preview = row.document?.substring(0, 100) ?? '';
+
+        console.log(`  ${i+1}. ${title}`);
+        console.log(`     Score: ${score.toFixed(3)}`);
+        console.log(`     Preview: ${preview}...`);
+      }
+    }
+  }
+
+  // Usage
+  const categories = ["technology", "science", "business", "health"];
+  const queryText = "artificial intelligence applications";
+
+  await compareCategoryRelevance(collection, queryText, categories);
+  ```
+</CodeGroup>
+
+Example output:
+
+```
+Top results in technology:
+  1. AI in Software Development
+     Score: 0.234
+     Preview: The integration of artificial intelligence in modern software development has revolutionized...
+  2. Machine Learning Frameworks
+     Score: 0.312
+     Preview: Popular frameworks for building AI applications include TensorFlow, PyTorch, and...
+
+Top results in science:
+  1. Neural Networks Research
+     Score: 0.289
+     Preview: Recent advances in neural network architectures have enabled breakthrough applications...
+```
+
+## Tips and Best Practices
+
+* **Keep batch sizes reasonable** - Very large batches may hit quota limits
+* **Use consistent field selection** when possible for easier result processing
+* **Index alignment** - Results maintain the same order as input searches
+* **Consider memory usage** - Large batches with `select_all()` can consume significant memory
+* **Use `rows()` method** for easier result processing in batch operations
+
+## Next Steps
+
+* See [practical examples](./examples) of batch operations in production
+* Learn about [performance optimization](./search-basics) for complex queries
+* Explore [migration guide](./migration) for transitioning from legacy methods
+
+
+# Examples & Patterns
+Source: https://docs.trychroma.com/cloud/search-api/examples
+
+Complete end-to-end examples demonstrating real-world use cases of the Search API.
+
+## Example 1: E-commerce Product Search
+
+A complete example showing how to build a product search with filters, ranking, and pagination.
+
+<CodeGroup>
+  ```python Python theme={null}
+  from chromadb import Search, K, Knn, And
+
+  def search_products(collection, user_query, min_price=None, max_price=None,
+                     category=None, in_stock_only=True, page=0, page_size=20):
+      """
+      Search for products with semantic search and filters.
+
+      Args:
+          collection: Chroma collection
+          user_query: Natural language search query (e.g., "wireless headphones")
+          min_price: Minimum price filter
+          max_price: Maximum price filter
+          category: Product category filter
+          in_stock_only: Only show in-stock items
+          page: Page number (0-indexed)
+          page_size: Results per page
+      """
+
+      # Build filter conditions
+      from chromadb import And
+
+      combined_filter = And([])
+
+      if in_stock_only:
+          combined_filter &= K("in_stock") == True
+
+      if category:
+          combined_filter &= K("category") == category
+
+      if min_price is not None:
+          combined_filter &= K("price") >= min_price
+
+      if max_price is not None:
+          combined_filter &= K("price") <= max_price
+
+      # Build search
+      search = Search().where(combined_filter)
+
+      search = (search
+          .rank(Knn(query=user_query))
+          .limit(page_size, offset=page * page_size)
+          .select(K.DOCUMENT, K.SCORE, "name", "price", "category", "rating", "image_url"))
+
+      # Execute search
+      results = collection.search(search)
+      rows = results.rows()[0]
+
+      # Format results for display
+      products = []
+      for row in rows:
+          products.append({
+              "id": row["id"],
+              "name": row["metadata"]["name"],
+              "description": row["document"][:200] + "...",
+              "price": row["metadata"]["price"],
+              "category": row["metadata"]["category"],
+              "rating": row["metadata"]["rating"],
+              "image_url": row["metadata"]["image_url"],
+              "relevance_score": row["score"]
+          })
+
+      return products
+
+  # Example usage
+  products = search_products(
+      collection,
+      user_query="noise cancelling headphones for travel",
+      min_price=50,
+      max_price=300,
+      category="electronics",
+      page=0,
+      page_size=20
+  )
+
+  for i, product in enumerate(products, 1):
+      print(f"{i}. {product['name']}")
+      print(f"   Price: ${product['price']:.2f} | Rating: {product['rating']}/5")
+      print(f"   {product['description']}")
+      print(f"   Relevance: {product['relevance_score']:.3f}")
+      print()
+  ```
+
+  ```typescript TypeScript theme={null}
+  import { Search, K, Knn, type Collection } from 'chromadb';
+
+  interface ProductSearchOptions {
+    userQuery: string;
+    minPrice?: number;
+    maxPrice?: number;
+    category?: string;
+    inStockOnly?: boolean;
+    page?: number;
+    pageSize?: number;
+  }
+
+  async function searchProducts(
+    collection: Collection,
+    options: ProductSearchOptions
+  ) {
+    const {
+      userQuery,
+      minPrice,
+      maxPrice,
+      category,
+      inStockOnly = true,
+      page = 0,
+      pageSize = 20
+    } = options;
+
+    // Build filter conditions
+    let combinedFilter = inStockOnly ? K("in_stock").eq(true) : undefined;
+
+    if (category) {
+      const categoryFilter = K("category").eq(category);
+      combinedFilter = combinedFilter ? combinedFilter.and(categoryFilter) : categoryFilter;
+    }
+
+    if (minPrice !== undefined) {
+      const minPriceFilter = K("price").gte(minPrice);
+      combinedFilter = combinedFilter ? combinedFilter.and(minPriceFilter) : minPriceFilter;
+    }
+
+    if (maxPrice !== undefined) {
+      const maxPriceFilter = K("price").lte(maxPrice);
+      combinedFilter = combinedFilter ? combinedFilter.and(maxPriceFilter) : maxPriceFilter;
+    }
+
+    // Build search
+    let search = new Search();
+    if (combinedFilter) {
+      search = search.where(combinedFilter);
+    }
+
+    search = search
+      .rank(Knn({ query: userQuery }))
+      .limit(pageSize, page * pageSize)
+      .select(K.DOCUMENT, K.SCORE, "name", "price", "category", "rating", "image_url");
+
+    // Execute search
+    const results = await collection.search(search);
+    const rows = results.rows()[0];
+
+    // Format results for display
+    const products = rows.map((row: any) => ({
+      id: row.id,
+      name: row.metadata?.name,
+      description: row.document?.substring(0, 200) + "...",
+      price: row.metadata?.price,
+      category: row.metadata?.category,
+      rating: row.metadata?.rating,
+      imageUrl: row.metadata?.image_url,
+      relevanceScore: row.score
+    }));
+
+    return products;
+  }
+
+  // Example usage
+  const products = await searchProducts(collection, {
+    userQuery: "noise cancelling headphones for travel",
+    minPrice: 50,
+    maxPrice: 300,
+    category: "electronics",
+    page: 0,
+    pageSize: 20
+  });
+
+  for (const [i, product] of products.entries()) {
+    console.log(`${i + 1}. ${product.name}`);
+    console.log(`   Price: $${product.price.toFixed(2)} | Rating: ${product.rating}/5`);
+    console.log(`   ${product.description}`);
+    console.log(`   Relevance: ${product.relevanceScore.toFixed(3)}`);
+    console.log();
+  }
+  ```
+
+  ```rust Rust theme={null}
+  use chroma::types::{Key, QueryVector, RankExpr, SearchPayload};
+
+  let search = SearchPayload::default()
+      .r#where(
+          Key::field("in_stock").eq(true)
+              & Key::field("category").eq("electronics")
+              & Key::field("price").gte(50)
+              & Key::field("price").lte(300),
+      )
+      .rank(RankExpr::Knn {
+          query: QueryVector::Dense(vec![0.1, 0.2, 0.3]),
+          key: Key::Embedding,
+          limit: 20,
+          default: None,
+          return_rank: false,
+      })
+      .limit(Some(20), 0)
+      .select([
+          Key::Document,
+          Key::Score,
+          Key::field("name"),
+          Key::field("price"),
+          Key::field("category"),
+          Key::field("rating"),
+      ]);
+
+  let results = collection.search(vec![search]).await?;
+  ```
+</CodeGroup>
+
+Example output:
+
+```
+1. Sony WH-1000XM5 Wireless Headphones
+   Price: $279.99 | Rating: 4.8/5
+   Premium noise cancelling headphones with exceptional sound quality, perfect for long flights and commutes. Features 30-hour battery life...
+   Relevance: 0.234
+
+2. Bose QuietComfort 45
+   Price: $249.99 | Rating: 4.7/5
+   Industry-leading noise cancellation with comfortable over-ear design. Ideal for frequent travelers with adjustable ANC levels...
+   Relevance: 0.267
+```
+
+## Example 2: Content Recommendation System
+
+Build a personalized content recommendation system that excludes already-seen items and respects user preferences.
+
+<CodeGroup>
+  ```python Python theme={null}
+  from chromadb import Search, K, Knn, Rrf
+
+  def get_recommendations(collection, user_id, user_preferences,
+                         seen_content_ids, num_recommendations=10):
+      """
+      Get personalized content recommendations for a user.
+
+      Args:
+          collection: Chroma collection
+          user_id: User identifier
+          user_preferences: Dict with user interests and preferences
+          seen_content_ids: List of content IDs the user has already seen
+          num_recommendations: Number of recommendations to return
+      """
+
+      # Build filter to exclude seen content and match preferences
+      combined_filter = K.ID.not_in(seen_content_ids)
+
+      # Filter by preferred categories
+      if user_preferences.get("categories"):
+          combined_filter &= K("category").is_in(user_preferences["categories"])
+
+      # Filter by language preference
+      if user_preferences.get("language"):
+          combined_filter &= K("language") == user_preferences["language"]
+
+      # Filter by minimum rating
+      min_rating = user_preferences.get("min_rating", 3.5)
+      combined_filter &= K("rating") >= min_rating
+
+      # Only show published content
+      combined_filter &= K("status") == "published"
+
+      # Create hybrid search combining multiple signals
+      # Signal 1: User interest embedding
+      user_interest_query = " ".join(user_preferences.get("interests", ["general"]))
+
+      # Signal 2: Similar to user's favorite content
+      favorite_topics_query = " ".join(user_preferences.get("favorite_topics", []))
+
+      # Use RRF to combine both signals
+      hybrid_rank = Rrf(
+          ranks=[
+              Knn(query=user_interest_query, return_rank=True, limit=200),
+              Knn(query=favorite_topics_query, return_rank=True, limit=200)
+          ],
+          weights=[0.6, 0.4],  # User interests weighted higher
+          k=60
+      )
+
+      search = (Search()
+          .where(combined_filter)
+          .rank(hybrid_rank)
+          .limit(num_recommendations)
+          .select(K.DOCUMENT, K.SCORE, "title", "category", "author",
+                  "rating", "published_date", "thumbnail_url"))
+
+      results = collection.search(search)
+      rows = results.rows()[0]
+
+      # Format recommendations
+      recommendations = []
+      for row in rows:
+          recommendations.append({
+              "id": row["id"],
+              "title": row["metadata"]["title"],
+              "description": row["document"][:150] + "...",
+              "category": row["metadata"]["category"],
+              "author": row["metadata"]["author"],
+              "rating": row["metadata"]["rating"],
+              "published_date": row["metadata"]["published_date"],
+              "thumbnail_url": row["metadata"]["thumbnail_url"],
+              "relevance_score": row["score"]
+          })
+
+      return recommendations
+
+  # Example usage
+  user_preferences = {
+      "interests": ["machine learning", "artificial intelligence", "data science"],
+      "favorite_topics": ["neural networks", "deep learning", "transformers"],
+      "categories": ["technology", "science", "research"],
+      "language": "en",
+      "min_rating": 4.0
+  }
+
+  seen_content = ["content_001", "content_045", "content_123"]
+
+  recommendations = get_recommendations(
+      collection,
+      user_id="user_42",
+      user_preferences=user_preferences,
+      seen_content_ids=seen_content,
+      num_recommendations=10
+  )
+
+  print("Personalized Recommendations:")
+  for i, rec in enumerate(recommendations, 1):
+      print(f"\n{i}. {rec['title']}")
+      print(f"   Category: {rec['category']} | Author: {rec['author']}")
+      print(f"   Rating: {rec['rating']}/5 | Published: {rec['published_date']}")
+      print(f"   {rec['description']}")
+      print(f"   Match Score: {rec['relevance_score']:.3f}")
+  ```
+
+  ```typescript TypeScript theme={null}
+  import { Search, K, Knn, Rrf, type Collection } from 'chromadb';
+
+  interface UserPreferences {
+    interests?: string[];
+    favoriteTopics?: string[];
+    categories?: string[];
+    language?: string;
+    minRating?: number;
+  }
+
+  async function getRecommendations(
+    collection: Collection,
+    userId: string,
+    userPreferences: UserPreferences,
+    seenContentIds: string[],
+    numRecommendations: number = 10
+  ) {
+    // Build filter to exclude seen content
+    let combinedFilter = K.ID.notIn(seenContentIds);
+
+    // Filter by preferred categories
+    if (userPreferences.categories && userPreferences.categories.length > 0) {
+      combinedFilter = combinedFilter.and(K("category").isIn(userPreferences.categories));
+    }
+
+    // Filter by language preference
+    if (userPreferences.language) {
+      combinedFilter = combinedFilter.and(K("language").eq(userPreferences.language));
+    }
+
+    // Filter by minimum rating
+    const minRating = userPreferences.minRating ?? 3.5;
+    combinedFilter = combinedFilter.and(K("rating").gte(minRating));
+
+    // Only show published content
+    combinedFilter = combinedFilter.and(K("status").eq("published"));
+
+    // Create hybrid search combining multiple signals
+    const userInterestQuery = (userPreferences.interests ?? ["general"]).join(" ");
+    const favoriteTopicsQuery = (userPreferences.favoriteTopics ?? []).join(" ");
+
+    // Use RRF to combine both signals
+    const hybridRank = Rrf({
+      ranks: [
+        Knn({ query: userInterestQuery, returnRank: true, limit: 200 }),
+        Knn({ query: favoriteTopicsQuery, returnRank: true, limit: 200 })
+      ],
+      weights: [0.6, 0.4],  // User interests weighted higher
+      k: 60
+    });
+
+    const search = new Search()
+      .where(combinedFilter)
+      .rank(hybridRank)
+      .limit(numRecommendations)
+      .select(K.DOCUMENT, K.SCORE, "title", "category", "author",
+              "rating", "published_date", "thumbnail_url");
+
+    const results = await collection.search(search);
+    const rows = results.rows()[0];
+
+    // Format recommendations
+    const recommendations = rows.map((row: any) => ({
+      id: row.id,
+      title: row.metadata?.title,
+      description: row.document?.substring(0, 150) + "...",
+      category: row.metadata?.category,
+      author: row.metadata?.author,
+      rating: row.metadata?.rating,
+      publishedDate: row.metadata?.published_date,
+      thumbnailUrl: row.metadata?.thumbnail_url,
+      relevanceScore: row.score
+    }));
+
+    return recommendations;
+  }
+
+  // Example usage
+  const userPreferences: UserPreferences = {
+    interests: ["machine learning", "artificial intelligence", "data science"],
+    favoriteTopics: ["neural networks", "deep learning", "transformers"],
+    categories: ["technology", "science", "research"],
+    language: "en",
+    minRating: 4.0
+  };
+
+  const seenContent = ["content_001", "content_045", "content_123"];
+
+  const recommendations = await getRecommendations(
+    collection,
+    "user_42",
+    userPreferences,
+    seenContent,
+    10
+  );
+
+  console.log("Personalized Recommendations:");
+  for (const [i, rec] of recommendations.entries()) {
+    console.log(`\n${i + 1}. ${rec.title}`);
+    console.log(`   Category: ${rec.category} | Author: ${rec.author}`);
+    console.log(`   Rating: ${rec.rating}/5 | Published: ${rec.publishedDate}`);
+    console.log(`   ${rec.description}`);
+    console.log(`   Match Score: ${rec.relevanceScore.toFixed(3)}`);
+  }
+  ```
+</CodeGroup>
+
+Example output:
+
+```
+Personalized Recommendations:
+
+1. Advanced Transformer Architectures in 2024
+   Category: technology | Author: Dr. Sarah Chen
+   Rating: 4.5/5 | Published: 2024-10-15
+   An in-depth exploration of the latest transformer models and their applications in modern NLP tasks. This article covers attention mechanisms, positional encodings...
+   Match Score: -0.0342
+
+2. Practical Guide to Neural Network Optimization
+   Category: research | Author: Prof. James Wilson
+   Rating: 4.7/5 | Published: 2024-09-28
+   Learn cutting-edge techniques for optimizing deep neural networks, including adaptive learning rates, batch normalization strategies, and efficient backpropagation...
+   Match Score: -0.0389
+```
+
+## Example 3: Multi-Category Search with Batch Operations
+
+Use batch operations to search across multiple categories simultaneously and compare results.
+
+<CodeGroup>
+  ```python Python theme={null}
+  from chromadb import Search, K, Knn
+
+  def search_across_categories(collection, user_query, categories, results_per_category=5):
+      """
+      Search across multiple categories in parallel using batch operations.
+
+      Args:
+          collection: Chroma collection
+          user_query: User's search query
+          categories: List of categories to search
+          results_per_category: Number of results per category
+      """
+
+      # Build a search for each category
+      searches = []
+      for category in categories:
+          search = (Search()
+              .where(K("category") == category)
+              .rank(Knn(query=user_query))
+              .limit(results_per_category)
+              .select(K.DOCUMENT, K.SCORE, "title", "category", "date"))
+          searches.append(search)
+
+      # Execute all searches in one batch
+      results = collection.search(searches)
+
+      # Process results by category
+      category_results = {}
+      for i, category in enumerate(categories):
+          rows = results.rows()[i]
+          category_results[category] = [
+              {
+                  "id": row["id"],
+                  "title": row["metadata"]["title"],
+                  "description": row["document"][:100] + "...",
+                  "date": row["metadata"]["date"],
+                  "score": row["score"]
+              }
+              for row in rows
+          ]
+
+      return category_results
+
+  # Example usage
+  query = "latest developments in renewable energy"
+  categories = ["technology", "science", "news", "research"]
+
+  results_by_category = search_across_categories(
+      collection,
+      user_query=query,
+      categories=categories,
+      results_per_category=3
+  )
+
+  # Display results
+  for category, results in results_by_category.items():
+      print(f"\n{'='*60}")
+      print(f"Category: {category.upper()}")
+      print('='*60)
+
+      if not results:
+          print("  No results found")
+          continue
+
+      for i, result in enumerate(results, 1):
+          print(f"\n  {i}. {result['title']}")
+          print(f"     Date: {result['date']}")
+          print(f"     {result['description']}")
+          print(f"     Relevance: {result['score']:.3f}")
+  ```
+
+  ```typescript TypeScript theme={null}
+  import { Search, K, Knn, type Collection } from 'chromadb';
+
+  async function searchAcrossCategories(
+    collection: Collection,
+    userQuery: string,
+    categories: string[],
+    resultsPerCategory: number = 5
+  ) {
+    // Build a search for each category
+    const searches = categories.map(category =>
+      new Search()
+        .where(K("category").eq(category))
+        .rank(Knn({ query: userQuery }))
+        .limit(resultsPerCategory)
+        .select(K.DOCUMENT, K.SCORE, "title", "category", "date")
+    );
+
+    // Execute all searches in one batch
+    const results = await collection.search(searches);
+
+    // Process results by category
+    const categoryResults: Record<string, any[]> = {};
+    for (const [i, category] of categories.entries()) {
+      const rows = results.rows()[i];
+      categoryResults[category] = rows.map((row: any) => ({
+        id: row.id,
+        title: row.metadata?.title,
+        description: row.document?.substring(0, 100) + "...",
+        date: row.metadata?.date,
+        score: row.score
+      }));
+    }
+
+    return categoryResults;
+  }
+
+  // Example usage
+  const query = "latest developments in renewable energy";
+  const categories = ["technology", "science", "news", "research"];
+
+  const resultsByCategory = await searchAcrossCategories(
+    collection,
+    query,
+    categories,
+    3
+  );
+
+  // Display results
+  for (const [category, results] of Object.entries(resultsByCategory)) {
+    console.log(`\n${'='.repeat(60)}`);
+    console.log(`Category: ${category.toUpperCase()}`);
+    console.log('='.repeat(60));
+
+    if (results.length === 0) {
+      console.log("  No results found");
+      continue;
+    }
+
+    for (const [i, result] of results.entries()) {
+      console.log(`\n  ${i + 1}. ${result.title}`);
+      console.log(`     Date: ${result.date}`);
+      console.log(`     ${result.description}`);
+      console.log(`     Relevance: ${result.score.toFixed(3)}`);
+    }
+  }
+  ```
+</CodeGroup>
+
+Example output:
+
+```
+============================================================
+Category: TECHNOLOGY
+============================================================
+
+  1. Solar Panel Efficiency Breakthrough
+     Date: 2024-10-20
+     New silicon-carbon composite cells achieve 31% efficiency, setting industry records. Researchers at MIT have developed...
+     Relevance: 0.245
+
+  2. Wind Turbine Design Innovations
+     Date: 2024-10-15
+     Advanced blade designs increase energy capture by 18% while reducing noise pollution. The new turbines feature...
+     Relevance: 0.289
+
+============================================================
+Category: SCIENCE
+============================================================
+
+  1. Photosynthesis-Inspired Energy Storage
+     Date: 2024-10-18
+     Scientists develop bio-inspired battery system that mimics natural photosynthesis for efficient solar energy storage...
+     Relevance: 0.256
+```
+
+## Best Practices
+
+Based on these examples, here are key best practices:
+
+1. **Build filters incrementally** - Construct complex filters by combining simpler conditions
+2. **Use batch operations** - When searching multiple variations, use batch operations for better performance
+3. **Select only needed fields** - Reduce data transfer by selecting only the fields you'll use
+4. **Handle empty results gracefully** - Always check if results exist before processing
+5. **Use hybrid search for personalization** - Combine multiple ranking signals with RRF for better recommendations
+6. **Paginate large result sets** - Use limit and offset for efficient pagination
+7. **Format results for your use case** - Transform raw results into application-specific formats
+
+## Next Steps
+
+* Review [Search Basics](./search-basics) for core concepts
+* Learn about [Filtering](./filtering) for advanced filter expressions
+* Explore [Ranking](./ranking) for custom scoring strategies
+* See [Hybrid Search](./hybrid-search) for combining multiple ranking methods
+
+
+# Filtering with Where
+Source: https://docs.trychroma.com/cloud/search-api/filtering
+
+Learn how to filter search results using Where expressions and the Key/K class to narrow down your search to specific documents, IDs, or metadata values.
+
+## The Key/K Class
+
+The `Key` class (aliased as `K` for brevity) provides a fluent interface for building filter expressions. Use `K` to reference document fields, IDs, and metadata properties.
+
+<CodeGroup>
+  ```python Python theme={null}
+  from chromadb import K
+
+  # K is an alias for Key - use K for more concise code
+  # Filter by metadata field
+  K("status") == "active"
+
+  # Filter by document content
+  K.DOCUMENT.contains("machine learning")
+
+  # Filter by document IDs
+  K.ID.is_in(["doc1", "doc2", "doc3"])
+  ```
+
+  ```typescript TypeScript theme={null}
+  import { K } from 'chromadb';
+
+  // K is an alias for Key - use K for more concise code
+  // Filter by metadata field
+  K("status").eq("active");
+
+  // Filter by document content
+  K.DOCUMENT.contains("machine learning");
+
+  // Filter by document IDs
+  K.ID.isIn(["doc1", "doc2", "doc3"]);
+  ```
+
+  ```rust Rust theme={null}
+  use chroma::types::Key;
+
+  Key::field("status").eq("active");
+  Key::Document.contains("machine learning");
+  Key::Id.is_in(["doc1", "doc2", "doc3"]);
+  ```
+</CodeGroup>
+
+## Filterable Fields
+
+| Field | Usage | Description |
+| - | - | - |
+| `K.ID` | `K.ID.is_in(["id1", "id2"])` | Filter by document IDs |
+| `K.DOCUMENT` | `K.DOCUMENT.contains("text")` | Filter by document content |
+| `K("field_name")` | `K("status") == "active"` | Filter by any metadata field |
+
+## Comparison Operators
+
+**Supported operators:**
+
+* `==` - Equality (all types: string, numeric, boolean)
+* `!=` - Inequality (all types: string, numeric, boolean)
+* `>` - Greater than (numeric only)
+* `>=` - Greater than or equal (numeric only)
+* `<` - Less than (numeric only)
+* `<=` - Less than or equal (numeric only)
+
+<CodeGroup>
+  ```python Python theme={null}
+  # Equality and inequality (all types)
+  K("status") == "published"     # String equality
+  K("views") != 0                # Numeric inequality
+  K("featured") == True          # Boolean equality
+
+  # Numeric comparisons (numbers only)
+  K("price") > 100               # Greater than
+  K("rating") >= 4.5             # Greater than or equal
+  K("stock") < 10                # Less than
+  K("discount") <= 0.25          # Less than or equal
+  ```
+
+  ```typescript TypeScript theme={null}
+  // Equality and inequality (all types)
+  K("status").eq("published");     // String equality
+  K("views").ne(0);                // Numeric inequality
+  K("featured").eq(true);          // Boolean equality
+
+  // Numeric comparisons (numbers only)
+  K("price").gt(100);              // Greater than
+  K("rating").gte(4.5);            // Greater than or equal
+  K("stock").lt(10);               // Less than
+  K("discount").lte(0.25);         // Less than or equal
+  ```
+
+  ```rust Rust theme={null}
+  use chroma::types::Key;
+
+  Key::field("status").eq("published");
+  Key::field("views").ne(0);
+  Key::field("featured").eq(true);
+  Key::field("price").gt(100);
+  Key::field("rating").gte(4.5);
+  Key::field("stock").lt(10);
+  Key::field("discount").lte(0.25);
+  ```
+</CodeGroup>
+
+<Callout>
+  Chroma supports three data types for metadata: strings, numbers (int/float), and booleans. Order comparison operators (`>`, `<`, `>=`, `<=`) currently only work with numeric types.
+</Callout>
+
+## Set and String Operators
+
+**Supported operators:**
+
+* `is_in()` - Value matches any in the list
+* `not_in()` - Value doesn't match any in the list
+* `contains()` - On `K.DOCUMENT`: substring search (case-sensitive). On metadata fields: checks if an array contains a scalar value.
+* `not_contains()` - On `K.DOCUMENT`: excludes by substring. On metadata fields: checks that an array does not contain a scalar value.
+* `regex()` - String matches regex pattern (currently K.DOCUMENT only)
+* `not_regex()` - String doesn't match regex pattern (currently K.DOCUMENT only)
+
+<CodeGroup>
+  ```python Python theme={null}
+  # Set membership operators (works on all fields)
+  K.ID.is_in(["doc1", "doc2", "doc3"])           # Match any ID in list
+  K("category").is_in(["tech", "science"])       # Match any category
+  K("status").not_in(["draft", "deleted"])       # Exclude specific values
+
+  # String content operators (K.DOCUMENT only)
+  K.DOCUMENT.contains("machine learning")        # Substring search in document
+  K.DOCUMENT.not_contains("deprecated")          # Exclude documents with text
+  K.DOCUMENT.regex(r"\bAPI\b")                   # Match whole word "API" in document
+
+  # Array membership operators (metadata fields)
+  K("tags").contains("action")                   # Array contains value
+  K("tags").not_contains("draft")                # Array does not contain value
+  K("scores").contains(42)                       # Works with numbers
+  K("flags").contains(True)                      # Works with booleans
+
+  # Note: String pattern matching on metadata scalar fields not yet supported
+  # K("title").regex(r".*Python.*")              # NOT YET SUPPORTED
+  ```
+
+  ```typescript TypeScript theme={null}
+  // Set membership operators (works on all fields)
+  K.ID.isIn(["doc1", "doc2", "doc3"]);           // Match any ID in list
+  K("category").isIn(["tech", "science"]);       // Match any category
+  K("status").notIn(["draft", "deleted"]);       // Exclude specific values
+
+  // String content operators (K.DOCUMENT only)
+  K.DOCUMENT.contains("machine learning");       // Substring search in document
+  K.DOCUMENT.notContains("deprecated");          // Exclude documents with text
+  K.DOCUMENT.regex("\\bAPI\\b");                 // Match whole word "API" in document
+
+  // Array membership operators (metadata fields)
+  K("tags").contains("action");                  // Array contains value
+  K("tags").notContains("draft");                // Array does not contain value
+  K("scores").contains(42);                      // Works with numbers
+  K("flags").contains(true);                     // Works with booleans
+
+  // Note: String pattern matching on metadata scalar fields not yet supported
+  // K("title").regex(".*Python.*")              // NOT YET SUPPORTED
+  ```
+
+  ```rust Rust theme={null}
+  use chroma::types::Key;
+
+  Key::Id.is_in(["doc1", "doc2", "doc3"]);
+  Key::field("category").is_in(["tech", "science"]);
+  Key::field("status").not_in(["draft", "deleted"]);
+  Key::Document.contains("machine learning");
+  Key::Document.not_contains("deprecated");
+  Key::Document.regex(r"\bAPI\b");
+
+  // Array membership operators (metadata fields)
+  Key::field("tags").contains_value("action");
+  Key::field("tags").not_contains_value("draft");
+  Key::field("scores").contains_value(42);
+  Key::field("flags").contains_value(true);
+  ```
+</CodeGroup>
+
+<Callout>
+  String operations like `contains()` and `regex()` on `K.DOCUMENT` are case-sensitive by default. When used on metadata fields, `contains()` checks array membership rather than substring matching. The `is_in()` operator is efficient even with large lists.
+</Callout>
+
+## Array Metadata
+
+Chroma supports storing arrays of values in metadata fields. You can use `contains()` / `not_contains()` (or `$contains` / `$not_contains` in dictionary syntax) to filter records based on whether an array includes a specific scalar value.
+
+### Storing Array Metadata
+
+Arrays can contain strings, numbers, or booleans. All elements in an array must be the same type. Empty arrays are not allowed.
+
+<CodeGroup>
+  ```python Python theme={null}
+  collection.add(
+      ids=["m1", "m2", "m3"],
+      embeddings=[[1, 0, 0], [0, 1, 0], [0, 0, 1]],
+      metadatas=[
+          {"genres": ["action", "comedy"], "year": 2020},
+          {"genres": ["drama"], "year": 2021},
+          {"genres": ["action", "thriller"], "year": 2022},
+      ],
+  )
+  ```
+
+  ```typescript TypeScript theme={null}
+  await collection.add({
+      ids: ["m1", "m2", "m3"],
+      embeddings: [[1, 0, 0], [0, 1, 0], [0, 0, 1]],
+      metadatas: [
+          { genres: ["action", "comedy"], year: 2020 },
+          { genres: ["drama"], year: 2021 },
+          { genres: ["action", "thriller"], year: 2022 },
+      ],
+  });
+  ```
+
+  ```rust Rust theme={null}
+  use chroma::types::{Metadata, MetadataValue};
+
+  let mut m = Metadata::new();
+  m.insert(
+      "genres".into(),
+      MetadataValue::StringArray(vec!["action".to_string(), "comedy".to_string()]),
+  );
+  m.insert("year".into(), MetadataValue::Int(2020));
+
+  // Also supports IntArray, FloatArray, and BoolArray
+  let mut m2 = Metadata::new();
+  m2.insert("scores".into(), MetadataValue::IntArray(vec![10, 20, 30]));
+  ```
+</CodeGroup>
+
+### Filtering Arrays
+
+Use `contains()` to check if a metadata array includes a value, and `not_contains()` to check that it does not.
+
+<CodeGroup>
+  ```python Python theme={null}
+  from chromadb import Search, K
+
+  # Find all records where genres contains "action"
+  search = Search().where(K("genres").contains("action"))
+
+  # Exclude records with a specific tag
+  search = Search().where(K("tags").not_contains("draft"))
+
+  # Works with numbers and booleans too
+  search = Search().where(K("scores").contains(42))
+
+  # Combine with other filters
+  search = Search().where(
+      K("genres").contains("action") &
+      (K("year") >= 2021)
+  )
+  ```
+
+  ```typescript TypeScript theme={null}
+  import { Search, K } from 'chromadb';
+
+  // Find all records where genres contains "action"
+  const search1 = new Search().where(K("tags").contains("action"));
+
+  // Exclude records with a specific tag
+  const search2 = new Search().where(K("tags").notContains("draft"));
+
+  // Works with numbers and booleans too
+  const search3 = new Search().where(K("scores").contains(42));
+
+  // Combine with other filters
+  const search4 = new Search().where(
+      K("genres").contains("action")
+          .and(K("year").gte(2021))
+  );
+  ```
+
+  ```rust Rust theme={null}
+  use chroma::types::{Key, SearchPayload};
+
+  // Find all records where genres contains "action"
+  let search = SearchPayload::default()
+      .r#where(Key::field("tags").contains_value("action"));
+
+  // Exclude records with a specific tag
+  let search = SearchPayload::default()
+      .r#where(Key::field("tags").not_contains_value("draft"));
+
+  // Works with numbers and booleans too
+  let search = SearchPayload::default()
+      .r#where(Key::field("scores").contains_value(42));
+
+  // Combine with other filters
+  let search = SearchPayload::default()
+      .r#where(
+          Key::field("genres").contains_value("action")
+              & Key::field("year").gte(2021i64),
+      );
+
+  let results = collection.search(vec![search]).await?;
+  ```
+</CodeGroup>
+
+### Supported Array Types
+
+| Type | Python | TypeScript | Rust |
+| - | - | - | - |
+| String | `["a", "b"]` | `["a", "b"]` | `MetadataValue::StringArray(...)` |
+| Integer | `[1, 2, 3]` | `[1, 2, 3]` | `MetadataValue::IntArray(...)` |
+| Float | `[1.5, 2.5]` | `[1.5, 2.5]` | `MetadataValue::FloatArray(...)` |
+| Boolean | `[true, false]` | `[true, false]` | `MetadataValue::BoolArray(...)` |
+
+<Warning>
+  The `$contains` value must be a scalar that matches the array's element type. All elements in an array must be the same type, and nested arrays are not supported.
+</Warning>
+
+## Logical Operators
+
+**Supported operators:**
+
+* `&` - Logical AND (all conditions must match)
+* `|` - Logical OR (any condition can match)
+
+Combine multiple conditions using these operators. Always use parentheses to ensure correct precedence.
+
+<CodeGroup>
+  ```python Python theme={null}
+  # AND operator (&) - all conditions must match
+  (K("status") == "published") & (K("year") >= 2020)
+
+  # OR operator (|) - any condition can match
+  (K("category") == "tech") | (K("category") == "science")
+
+  # Combining with document and ID filters
+  (K.DOCUMENT.contains("AI")) & (K("author") == "Smith")
+  (K.ID.is_in(["id1", "id2"])) | (K("featured") == True)
+
+  # Complex nesting - use parentheses for clarity
+  (
+      (K("status") == "published") &
+      ((K("category") == "tech") | (K("category") == "science")) &
+      (K("rating") >= 4.0)
+  )
+  ```
+
+  ```typescript TypeScript theme={null}
+  // AND operator - all conditions must match
+  K("status").eq("published").and(K("year").gte(2020));
+
+  // OR operator - any condition can match
+  K("category").eq("tech").or(K("category").eq("science"));
+
+  // Combining with document and ID filters
+  K.DOCUMENT.contains("AI").and(K("author").eq("Smith"));
+  K.ID.isIn(["id1", "id2"]).or(K("featured").eq(true));
+
+  // Complex nesting - use chaining for clarity
+  K("status").eq("published")
+    .and(
+      K("category").eq("tech").or(K("category").eq("science"))
+    )
+    .and(K("rating").gte(4.0));
+  ```
+
+  ```rust Rust theme={null}
+  use chroma::types::Key;
+
+  (Key::field("status").eq("published")) & (Key::field("year").gte(2020));
+  (Key::field("category").eq("tech")) | (Key::field("category").eq("science"));
+  Key::Document.contains("AI") & Key::field("author").eq("Smith");
+  Key::Id.is_in(["id1", "id2"]) | Key::field("featured").eq(true);
+  ```
+</CodeGroup>
+
+<Warning>
+  Always use parentheses around each condition when using logical operators. Python's operator precedence may not work as expected without them.
+</Warning>
+
+## Common Filtering Patterns
+
+<CodeGroup>
+  ```python Python theme={null}
+  # Filter by specific document IDs
+  search = Search().where(K.ID.is_in(["doc_001", "doc_002", "doc_003"]))
+
+  # Exclude already processed documents
+  processed_ids = ["doc_100", "doc_101"]
+  search = Search().where(K.ID.not_in(processed_ids))
+
+  # Full-text search in documents
+  search = Search().where(K.DOCUMENT.contains("quantum computing"))
+
+  # Combine document search with metadata
+  search = Search().where(
+      K.DOCUMENT.contains("machine learning") &
+      (K("language") == "en")
+  )
+
+  # Price range filtering
+  search = Search().where(
+      (K("price") >= 100) &
+      (K("price") <= 500)
+  )
+
+  # Multi-field filtering
+  search = Search().where(
+      (K("status") == "active") &
+      (K("category").is_in(["tech", "ai", "ml"])) &
+      (K("score") >= 0.8)
+  )
+  ```
+
+  ```typescript TypeScript theme={null}
+  // Filter by specific document IDs
+  const search1 = new Search().where(K.ID.isIn(["doc_001", "doc_002", "doc_003"]));
+
+  // Exclude already processed documents
+  const processedIds = ["doc_100", "doc_101"];
+  const search2 = new Search().where(K.ID.notIn(processedIds));
+
+  // Full-text search in documents
+  const search3 = new Search().where(K.DOCUMENT.contains("quantum computing"));
+
+  // Combine document search with metadata
+  const search4 = new Search().where(
+    K.DOCUMENT.contains("machine learning")
+      .and(K("language").eq("en"))
+  );
+
+  // Price range filtering
+  const search5 = new Search().where(
+    K("price").gte(100)
+      .and(K("price").lte(500))
+  );
+
+  // Multi-field filtering
+  const search6 = new Search().where(
+    K("status").eq("active")
+      .and(K("category").isIn(["tech", "ai", "ml"]))
+      .and(K("score").gte(0.8))
+  );
+  ```
+</CodeGroup>
+
+## Edge Cases and Important Behavior
+
+### Missing Keys
+
+When filtering on a metadata field that doesn't exist for a document:
+
+* Most operators (`==`, `>`, `<`, `>=`, `<=`, `is_in()`) evaluate to `false` - the document won't match
+* `!=` evaluates to `true` - documents without the field are considered "not equal" to any value
+* `not_in()` evaluates to `true` - documents without the field are not in any list
+
+<CodeGroup>
+  ```python Python theme={null}
+  # If a document doesn't have a "category" field:
+  K("category") == "tech"         # false - won't match
+  K("category") != "tech"         # true - will match
+  K("category").is_in(["tech"])   # false - won't match
+  K("category").not_in(["tech"])  # true - will match
+  ```
+
+  ```typescript TypeScript theme={null}
+  // If a document doesn't have a "category" field:
+  K("category").eq("tech");        // false - won't match
+  K("category").ne("tech");        // true - will match
+  K("category").isIn(["tech"]);    // false - won't match
+  K("category").notIn(["tech"]);   // true - will match
+  ```
+</CodeGroup>
+
+### Mixed Types
+
+Avoid storing different data types under the same metadata key across documents. Query behavior is undefined when comparing values of different types.
+
+<CodeGroup>
+  ```python Python theme={null}
+  # DON'T DO THIS - undefined behavior
+  # Document 1: {"score": 95}      (numeric)
+  # Document 2: {"score": "95"}    (string)
+  # Document 3: {"score": true}    (boolean)
+
+  K("score") > 90  # Undefined results when mixed types exist
+
+  # DO THIS - consistent types
+  # All documents: {"score": <numeric>} or all {"score": <string>}
+  ```
+
+  ```typescript TypeScript theme={null}
+  // DON'T DO THIS - undefined behavior
+  // Document 1: {score: 95}       (numeric)
+  // Document 2: {score: "95"}     (string)
+  // Document 3: {score: true}     (boolean)
+
+  K("score").gt(90);  // Undefined results when mixed types exist
+
+  // DO THIS - consistent types
+  // All documents: {score: <numeric>} or all {score: <string>}
+  ```
+</CodeGroup>
+
+### String Pattern Matching Limitations
+
+**`regex()` and `not_regex()` only work on `K.DOCUMENT`**. These operators do not yet support metadata fields.
+
+`contains()` and `not_contains()` have different behavior depending on the field:
+
+* On `K.DOCUMENT`: substring search (the pattern must have at least 3 literal characters)
+* On metadata fields: array membership check (see [Array Metadata](#array-metadata) above)
+
+Substring matching on metadata scalar fields (e.g. checking if a string field contains a substring) is not yet supported.
+
+<CodeGroup>
+  ```python Python theme={null}
+  # Substring search on K.DOCUMENT - works
+  K.DOCUMENT.contains("API")              # Works
+  K.DOCUMENT.regex(r"v\d\.\d\.\d")       # Works
+
+  # Array membership on metadata fields - works
+  K("tags").contains("action")            # Works - checks if array contains value
+
+  # Substring/regex on metadata scalar fields - NOT YET SUPPORTED
+  # K("title").regex(r".*Python.*")       # Not supported yet
+
+  # Pattern length requirements (for K.DOCUMENT substring search)
+  K.DOCUMENT.contains("API")              # 3 characters - good
+  K.DOCUMENT.contains("AI")               # Only 2 characters - may give incorrect results
+  K.DOCUMENT.regex(r"\d+")                # No literal characters - may give incorrect results
+  ```
+
+  ```typescript TypeScript theme={null}
+  // Substring search on K.DOCUMENT - works
+  K.DOCUMENT.contains("API");              // Works
+  K.DOCUMENT.regex("v\\d\\.\\d\\.\\d");    // Works
+
+  // Array membership on metadata fields - works
+  K("tags").contains("action");            // Works - checks if array contains value
+
+  // Substring/regex on metadata scalar fields - NOT YET SUPPORTED
+  // K("title").regex(".*Python.*")        // Not supported yet
+
+  // Pattern length requirements (for K.DOCUMENT substring search)
+  K.DOCUMENT.contains("API");              // 3 characters - good
+  K.DOCUMENT.contains("AI");               // Only 2 characters - may give incorrect results
+  K.DOCUMENT.regex("\\d+");                // No literal characters - may give incorrect results
+  ```
+</CodeGroup>
+
+<Warning>
+  `regex()` and `not_regex()` currently only work on `K.DOCUMENT`. Substring matching on metadata scalar fields is not yet available. Also, patterns with fewer than 3 literal characters may return incorrect results.
+</Warning>
+
+<Callout>
+  Substring and regex matching on metadata scalar fields is not currently supported. Full support is coming in a future release, which will allow users to opt-in to additional indexes for string pattern matching on specific metadata fields.
+</Callout>
+
+## Complete Example
+
+Here's a practical example combining different filter types:
+
+<CodeGroup>
+  ```python Python theme={null}
+  from chromadb import Search, K, Knn
+
+  # Complex filter combining IDs, document content, and metadata
+  search = (Search()
+      .where(
+          # Exclude specific documents
+          K.ID.not_in(["excluded_001", "excluded_002"]) &
+
+          # Must contain specific content
+          K.DOCUMENT.contains("artificial intelligence") &
+
+          # Metadata conditions
+          (K("status") == "published") &
+          (K("quality_score") >= 0.75) &
+          (
+              (K("category") == "research") |
+              (K("category") == "tutorial")
+          ) &
+          (K("year") >= 2023)
+      )
+      .rank(Knn(query="latest AI research developments"))
+      .limit(10)
+      .select(K.DOCUMENT, "title", "author", "year")
+  )
+
+  results = collection.search(search)
+  ```
+
+  ```typescript TypeScript theme={null}
+  import { Search, K, Knn } from 'chromadb';
+
+  // Complex filter combining IDs, document content, and metadata
+  const search = new Search()
+    .where(
+      // Exclude specific documents
+      K.ID.notIn(["excluded_001", "excluded_002"])
+
+        // Must contain specific content
+        .and(K.DOCUMENT.contains("artificial intelligence"))
+
+        // Metadata conditions
+        .and(K("status").eq("published"))
+        .and(K("quality_score").gte(0.75))
+        .and(
+          K("category").eq("research")
+            .or(K("category").eq("tutorial"))
+        )
+        .and(K("year").gte(2023))
+    )
+    .rank(Knn({ query: "latest AI research developments" }))
+    .limit(10)
+    .select(K.DOCUMENT, "title", "author", "year");
+
+  const results = await collection.search(search);
+  ```
+</CodeGroup>
+
+## Tips and Best Practices
+
+* **Use parentheses liberally** when combining conditions with `&` and `|` to avoid precedence issues
+* **Filter before ranking** when possible to reduce the number of vectors to score
+* **Be specific with ID filters** - using `K.ID.is_in()` with a small list is very efficient
+* **String matching is case-sensitive** - normalize your data if case-insensitive matching is needed
+* **Use the right operator** - `is_in()` for multiple exact matches, `contains()` for substring search
+
+## Next Steps
+
+* Learn about [ranking and scoring](./ranking) to order your filtered results
+* See [practical examples](./examples) of filtering in real-world scenarios
+* Explore [batch operations](./batch-operations) for running multiple filtered searches
+
+
+# Group By & Aggregation
+Source: https://docs.trychroma.com/cloud/search-api/group-by
+
+Learn how to group search results by metadata keys and select the top results from each group. GroupBy is useful for diversifying results, deduplication, and category-aware ranking.
+
+<Callout>
+  GroupBy currently requires a ranking expression to be specified. Support for grouping without ranking is planned for a future release.
+</Callout>
+
+## How Grouping Works
+
+GroupBy organizes ranked results into groups based on metadata keys, then performs aggregation on each group. Currently, aggregation supports `MinK` and `MaxK`, which select the top k results from each group based on the specified sorting keys.
+
+After grouping and aggregation, results from all groups are flattened and sorted by score. The `limit()` method operates on this flattened list.
+
+<CodeGroup>
+  ```python Python theme={null}
+  from chromadb import Search, K, Knn, GroupBy, MinK
+
+  # Get top 3 results per category, ordered by score
+  search = (Search()
+      .rank(Knn(query="machine learning research"))
+      .group_by(GroupBy(
+          keys=K("category"),
+          aggregate=MinK(keys=K.SCORE, k=3)
+      ))
+      .limit(30)
+      .select(K.DOCUMENT, K.SCORE, "category"))
+
+  results = collection.search(search)
+  ```
+
+  ```typescript TypeScript theme={null}
+  import { Search, K, Knn, GroupBy, MinK } from 'chromadb';
+
+  // Get top 3 results per category, ordered by score
+  const search = new Search()
+    .rank(Knn({ query: "machine learning research" }))
+    .groupBy(new GroupBy(
+      [K("category")],
+      new MinK([K.SCORE], 3)
+    ))
+    .limit(30)
+    .select(K.DOCUMENT, K.SCORE, "category");
+
+  const results = await collection.search(search);
+  ```
+
+  ```rust Rust theme={null}
+  use chroma::types::{Aggregate, GroupBy, Key, QueryVector, RankExpr, SearchPayload};
+
+  let search = SearchPayload::default()
+      .rank(RankExpr::Knn {
+          query: QueryVector::Dense(vec![0.1, 0.2, 0.3]),
+          key: Key::Embedding,
+          limit: 16,
+          default: None,
+          return_rank: false,
+      })
+      .group_by(GroupBy {
+          keys: vec![Key::field("category")],
+          aggregate: Some(Aggregate::MinK {
+              keys: vec![Key::Score],
+              k: 3,
+          }),
+      })
+      .limit(Some(30), 0)
+      .select([Key::Document, Key::Score, Key::field("category")]);
+
+  let results = collection.search(vec![search]).await?;
+  ```
+</CodeGroup>
+
+## The GroupBy Class
+
+The `GroupBy` class specifies how to partition results and which records to keep from each partition.
+
+<CodeGroup>
+  ```python Python theme={null}
+  from chromadb import GroupBy, MinK, K
+
+  # Single grouping key
+  GroupBy(
+      keys=K("category"),
+      aggregate=MinK(keys=K.SCORE, k=3)
+  )
+
+  # Multiple grouping keys
+  GroupBy(
+      keys=[K("category"), K("year")],
+      aggregate=MinK(keys=K.SCORE, k=1)
+  )
+  ```
+
+  ```typescript TypeScript theme={null}
+  import { GroupBy, MinK, K } from 'chromadb';
+
+  // Single grouping key
+  new GroupBy(
+    [K("category")],
+    new MinK([K.SCORE], 3)
+  );
+
+  // Multiple grouping keys
+  new GroupBy(
+    [K("category"), K("year")],
+    new MinK([K.SCORE], 1)
+  );
+  ```
+</CodeGroup>
+
+## GroupBy Parameters
+
+| Parameter | Type | Description |
+| - | - | - |
+| `keys` | Key or List\[Key] | Metadata key(s) to group by |
+| `aggregate` | MinK or MaxK | Aggregation function to select top k records within each group |
+
+## Aggregation Functions
+
+### MinK
+
+Keeps the k records with the **smallest** values for the specified keys. Use `MinK` when lower values are better (e.g., distance scores, prices, priorities).
+
+<CodeGroup>
+  ```python Python theme={null}
+  from chromadb import MinK, K
+
+  # Keep 3 records with lowest scores per group
+  MinK(keys=K.SCORE, k=3)
+
+  # Keep 2 records with lowest priority, then lowest score as tiebreaker
+  MinK(keys=[K("priority"), K.SCORE], k=2)
+  ```
+
+  ```typescript TypeScript theme={null}
+  import { MinK, K } from 'chromadb';
+
+  // Keep 3 records with lowest scores per group
+  new MinK([K.SCORE], 3);
+
+  // Keep 2 records with lowest priority, then lowest score as tiebreaker
+  new MinK([K("priority"), K.SCORE], 2);
+  ```
+</CodeGroup>
+
+| Parameter | Type | Description |
+| - | - | - |
+| `keys` | Key or List\[Key] | Key(s) to sort by in ascending order |
+| `k` | int | Number of records to keep from each group |
+
+### MaxK
+
+Keeps the k records with the **largest** values for the specified keys. Use `MaxK` when higher values are better (e.g., ratings, relevance scores, dates).
+
+<CodeGroup>
+  ```python Python theme={null}
+  from chromadb import MaxK, K
+
+  # Keep 3 records with highest ratings per group
+  MaxK(keys=K("rating"), k=3)
+
+  # Keep 2 records with highest year, then highest rating as tiebreaker
+  MaxK(keys=[K("year"), K("rating")], k=2)
+  ```
+
+  ```typescript TypeScript theme={null}
+  import { MaxK, K } from 'chromadb';
+
+  // Keep 3 records with highest ratings per group
+  new MaxK([K("rating")], 3);
+
+  // Keep 2 records with highest year, then highest rating as tiebreaker
+  new MaxK([K("year"), K("rating")], 2);
+  ```
+</CodeGroup>
+
+| Parameter | Type | Description |
+| - | - | - |
+| `keys` | Key or List\[Key] | Key(s) to sort by in descending order |
+| `k` | int | Number of records to keep from each group |
+
+## Key References
+
+Use `K.SCORE` to reference the search score, or `K("field_name")` for metadata fields.
+
+<CodeGroup>
+  ```python Python theme={null}
+  from chromadb import K
+
+  # Built-in score key
+  K.SCORE  # References "#score" - the search/ranking score
+
+  # Metadata field keys
+  K("category")   # References the "category" metadata field
+  K("priority")   # References the "priority" metadata field
+  K("year")       # References the "year" metadata field
+  ```
+
+  ```typescript TypeScript theme={null}
+  import { K } from 'chromadb';
+
+  // Built-in score key
+  K.SCORE;  // References "#score" - the search/ranking score
+
+  // Metadata field keys
+  K("category");   // References the "category" metadata field
+  K("priority");   // References the "priority" metadata field
+  K("year");       // References the "year" metadata field
+  ```
+</CodeGroup>
+
+## Common Patterns
+
+### Single Key Grouping
+
+Group by one metadata field and keep the top results from each group.
+
+<CodeGroup>
+  ```python Python theme={null}
+  # Top 2 articles per category by relevance
+  search = (Search()
+      .rank(Knn(query="climate change impacts"))
+      .group_by(GroupBy(
+          keys=K("category"),
+          aggregate=MinK(keys=K.SCORE, k=2)
+      ))
+      .limit(20))
+  ```
+
+  ```typescript TypeScript theme={null}
+  // Top 2 articles per category by relevance
+  const search = new Search()
+    .rank(Knn({ query: "climate change impacts" }))
+    .groupBy(new GroupBy(
+      [K("category")],
+      new MinK([K.SCORE], 2)
+    ))
+    .limit(20);
+  ```
+</CodeGroup>
+
+### Multiple Key Grouping
+
+Group by combinations of metadata fields for finer-grained control.
+
+<CodeGroup>
   ```python Python theme={null}
   # Top 1 article per (category, year) combination
   search = (Search()

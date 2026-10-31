@@ -31,13 +31,16 @@ The best indication that your transaction has been submitted to the network is t
 
 ### Transaction timing terms
 
-- Submission cutoff: The time that you must submit a transaction by so that it appears in the subsequent columns on-time.
-- Processing time: The time the Stripe partner bank submits the transaction to the network.
-- Tracking details received: The time Stripe receives settlement confirmation of these transactions. Settlement confirmation means a transaction has completed its process through the network and is deposited into the destination account, barring any complications at the receiving institution.
+- Submission cutoff: The time when you must submit a transaction so that it appears in the subsequent columns on-time.
+- Processing time: The time when the Stripe partner bank submits the transaction to the network.
+- Tracking details received: The time when Stripe receives settlement confirmation of these transactions. Settlement confirmation means a transaction has completed its process through the network and is deposited into the destination account, barring any complications at the receiving institution.
+- Federal Reserve settlement time (Direct FedACH): The time when the Federal Reserve settles funds at the receiving institution. Exact time of funds deposit in the recipient destination account might vary.
 
 Stripe estimates the expected arrival date based on bank partner cutoff timing, payment method, and network speed. Slight delays can occur. You can programmatically access the `expected_arrival_date` attribute on the [OutboundPayment](https://docs.stripe.com/api/v2/money-management/outbound-payments/object.md?api-version=preview#v2_outbound_payment_object-expected_arrival_date) or the [OutboundTransfer](https://docs.stripe.com/api/v2/money-management/outbound-transfers/object.md?api-version=preview#v2_outbound_transfer_object-expected_arrival_date) to reference when Stripe expects the funds to arrive at their destination based on bank partner cutoff times.
 
 Requests, including default speed requests, received after the cutoff time are processed the following business day. Same-day ACH requests received after the cutoff time arrive by the end of the following business day.
+
+#### Legacy ACH timing
 
 ### Same-day ACH timing
 
@@ -58,6 +61,32 @@ All times in this table are in Eastern Time.
 | Submission cutoff (ET) | Processing time (ET) | Time tracking details are received (ET) |
 | --- | --- | --- |
 | 8:30 PM | Every 1-2 hours between 9:30 AM and 12:00 AM (T+1) | 5:00 AM (T+2) |
+
+#### Direct FedACH timing [Private preview]
+
+Stripe integrates directly with the Federal Reserve to provide FedACH with extended submission windows, more visibility on settlement times, and flexible control over your originated ACH credit outflows.
+
+### Same-day ACH timing 
+
+All times are in Eastern Time. Funds settlement at recipient institution is in local time of the recipient institution.
+
+| Submission cutoff | Processing time | Time tracking details are received | Federal Reserve Settlement Time | When funds settle at recipient institution (Local Time) |
+| --- | --- | --- | --- | --- |
+| By 9:30 AM | 9:35 AM | 10:45 AM | 1:00 PM | 1:30 PM |
+| By 1:45 PM | 1:50 PM | 3:00 PM | 5:00 PM | 5:00 PM |
+| By 3:45 PM | 3:50 PM | 5:00 PM | 6:30 PM | End Of Processing Day, set by the recipient institution |
+
+### Future-dated ACH timing 
+
+The following times apply to ACH transactions you schedule for settlement on the next day business day. All times are in Eastern Time. Funds settlement at recipient institution is in local time of the recipient institution. T+1 indicates the next business day.
+
+| Submission cutoff | Processing time | Time tracking details are received | Federal Reserve Settlement Time | When funds settle at recipient institution (Local Time) |
+| --- | --- | --- | --- | --- |
+| By 11:50PM | Every 1-2 hours between 9:30 AM and 11:59PM | Within 15 minutes of each Fed transmission batch: 10:30AM, 2:45PM, 4:45PM, 8PM, 10:45PM, 2:15AM (T+1) | 8:30 AM (T+1) | 9:00 AM (T+1) |
+
+> #### Request access
+> 
+> Direct FedACH requires separate access in addition to Treasury for platforms. If you already use Treasury for platforms, contact your Stripe representative to request this feature.
 
 ### Wire timing
 

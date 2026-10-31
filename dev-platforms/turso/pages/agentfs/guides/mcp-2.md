@@ -1,0 +1,88 @@
+---
+title: "MCP Server Integration"
+source: https://docs.turso.tech/agentfs/guides/mcp
+path: agentfs/guides/mcp
+---
+
+Use AgentFS as an MCP server for AI assistants
+
+AgentFS can run as an [MCP (Model Context Protocol)](https://modelcontextprotocol.io/) server, exposing filesystem and key-value operations to AI assistants like Claude Desktop.
+
+## Starting the MCP Server
+
+```bash theme={null}
+agentfs serve mcp my-agent
+```
+
+This starts an MCP server that exposes AgentFS tools over stdio.
+
+## Available Tools
+
+### Filesystem Tools
+
+| Tool | Description |
+| - | - |
+| `read_file` | Read file contents |
+| `write_file` | Write file contents |
+| `readdir` | List directory contents |
+| `mkdir` | Create directory |
+| `remove` | Remove file or directory |
+| `rename` | Rename file or directory |
+| `stat` | Get file metadata |
+| `access` | Check file access permissions |
+
+### Key-Value Tools
+
+| Tool | Description |
+| - | - |
+| `kv_get` | Get value by key |
+| `kv_set` | Set key-value pair |
+| `kv_delete` | Delete key |
+| `kv_list` | List all keys |
+
+## Limiting Exposed Tools
+
+For security, you can limit which tools are available:
+
+```bash theme={null}
+# Read-only mode
+agentfs serve mcp my-agent --tools read_file,readdir,stat,kv_get,kv_list
+
+# Filesystem only
+agentfs serve mcp my-agent --tools read_file,write_file,readdir,mkdir,remove
+
+# Key-value only
+agentfs serve mcp my-agent --tools kv_get,kv_set,kv_delete,kv_list
+```
+
+## Security Considerations
+
+> [!WARNING]
+>
+> The MCP server gives AI assistants direct access to the AgentFS filesystem. Consider these security practices:
+>
+> * **Limit tools** - Only expose tools the assistant needs
+> * **Use overlays** - Create overlay filesystems instead of giving access to real directories
+> * **Review the agent database** - Check `.agentfs/*.db` periodically
+
+## Debugging
+
+Check if the MCP server is working:
+
+```bash theme={null}
+# Run manually to see output
+agentfs serve mcp my-agent
+
+# Check if the database exists
+ls -la .agentfs/my-agent.db
+```
+
+## Next Steps
+
+> **[NFS Server](/agentfs/guides/nfs)**
+>
+> Remote access via NFS
+
+> **[Copy-on-Write Overlays](/agentfs/guides/overlay)**
+>
+> How isolation works

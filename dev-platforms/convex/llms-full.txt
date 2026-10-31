@@ -98,7 +98,7 @@
 - [Accessing File Metadata](/file-storage/file-metadata.md): Access file metadata stored in Convex
 - [File Storage](/file-storage/overview.md): Store and serve files of any type
 - [Serving Files](/file-storage/serve-files.md): Serve files stored in Convex to users
-- [Storing Generated Files](/file-storage/store-files.md): Store files generated in Convex actions
+- [Storing Generated Files](/file-storage/store-files.md): Store files generated in Convex functions
 - [Uploading and Storing Files](/file-storage/upload-files.md): Upload files to Convex storage
 
 ## search
@@ -222,6 +222,7 @@
 - [npx convex logout](/cli/reference/logout.md): Log out of Convex on this machine
 - [npx convex logs](/cli/reference/logs.md): Watch logs from your deployment
 - [npx convex mcp](/cli/reference/mcp.md): Manage the Model Context Protocol server for Convex [BETA]
+- [npx convex plugins](/cli/reference/plugins.md): Manage Convex plugins for coding agents
 - [npx convex project](/cli/reference/project.md): Manage projects
 - [npx convex run](/cli/reference/run.md): Run a function or evaluate an inline readonly query on your deployment
 - [npx convex update](/cli/reference/update.md): Print instructions for updating the convex package
@@ -310,6 +311,7 @@
 - [Class: VBytes<Type, IsOptional>](/api/classes/values.VBytes.md): values.VBytes
 - [Class: VCommitTs<Type, IsOptional>](/api/classes/values.VCommitTs.md): values.VCommitTs
 - [Class: VFloat64<Type, IsOptional>](/api/classes/values.VFloat64.md): values.VFloat64
+- [Class: VFunction<Type, IsOptional>](/api/classes/values.VFunction.md): values.VFunction
 - [Class: VId<Type, IsOptional>](/api/classes/values.VId.md): values.VId
 - [Class: VInt64<Type, IsOptional>](/api/classes/values.VInt64.md): values.VInt64
 - [Class: VLiteral<Type, IsOptional>](/api/classes/values.VLiteral.md): values.VLiteral
@@ -403,27 +405,33 @@
 ## deployment-api
 
 - [Convex Deployment API](/deployment-api/convex-deployment-api.md): Admin API for interacting with deployments.
+- [Create integration](/deployment-api/create-integration.md): Create a new integration for the deployment. Errors if a integration of the
 - [Create log stream](/deployment-api/create-log-stream.md): Create a new log stream for the deployment. Errors if a log stream of the
 - [Create usage limit](/deployment-api/create-usage-limit.md): Create a new usage limit config for a deployment.
 - [Data sync](/deployment-api/data-sync.md): :::info[Requires a Convex Pro plan]
+- [Delete integration](/deployment-api/delete-integration.md): Delete the deployment's integration with the given id.
 - [Delete log stream](/deployment-api/delete-log-stream.md): Delete the deployment's log stream with the given id.
 - [Delete usage limit](/deployment-api/delete-usage-limit.md): Delete an existing usage limit config for a deployment.
 - [Get an active data sync](/deployment-api/get-active-sync.md): :::info[Requires a Convex Pro plan]
 - [Get canonical URLs](/deployment-api/get-canonical-urls.md): Get the canonical URLs for a deployment.
 - [Get current usage](/deployment-api/get-current-usage.md): :::info[Beta]
 - [Get deployment info](/deployment-api/get-deployment-info.md): Returns identity information about this deployment.
+- [Get integration](/deployment-api/get-integration.md): Get the config for a specific integration by id.
 - [Get log stream](/deployment-api/get-log-stream.md): Get the config for a specific log stream by id.
 - [List active data syncs](/deployment-api/list-active-syncs.md): :::info[Requires a Convex Pro plan]
 - [List audit log events](/deployment-api/list-audit-log-events.md): List a deployment's audit log events on or after a timestamp, from least to
 - [List environment variables](/deployment-api/list-environment-variables.md): Get all environment variables in a deployment.
+- [List integrations](/deployment-api/list-integrations.md): List configs for all existing integrations in a deployment.
 - [List log streams](/deployment-api/list-log-streams.md): List configs for all existing log streams in a deployment.
 - [List usage limits](/deployment-api/list-usage-limits.md): Get all usage limit configs for a deployment.
 - [Deployment API](/deployment-api/overview.md): Deployment API
 - [Pause deployment](/deployment-api/pause-deployment.md): Disables a deployment without deleting any data. The deployment will not
+- [Rotate webhook integration secret](/deployment-api/rotate-integration-webhook-secret.md): Rotate the secret for the webhook integration.
 - [Rotate webhook log stream secret](/deployment-api/rotate-webhook-secret.md): Rotate the secret for the webhook log stream.
 - [Unpause deployment](/deployment-api/unpause-deployment.md): Reenables a deployment that was previously paused. The deployment will
 - [Update canonical URL](/deployment-api/update-canonical-url.md): Set or unset the canonical URL for a deployment's convex.cloud or
 - [Update environment variables](/deployment-api/update-environment-variables.md): Update one or many environment variables in a deployment.
+- [Update integration](/deployment-api/update-integration.md): Update an existing integration for the deployment. Omit a field to keep the
 - [Update log stream](/deployment-api/update-log-stream.md): Update an existing log stream for the deployment. Omit a field to keep the
 - [Update usage limit](/deployment-api/update-usage-limit.md): Replace an existing usage limit config for a deployment.
 
@@ -471,6 +479,7 @@
 - [List pending team invitations](/management-api/list-pending-team-invites.md): List the pending invitations for the given team.
 - [List personal access tokens](/management-api/list-personal-access-tokens.md): Lists all personal access tokens for the authenticated user.
 - [List preview deploy keys](/management-api/list-preview-deploy-keys.md): Lists all preview deploy keys for the specified project.
+- [List project tags](/management-api/list-project-tags.md): List a page of the distinct tags used by a team's projects, ordered by tag
 - [List projects](/management-api/list-projects.md): List a page of projects for a team, ordered by descending project ID. Pass
 - [List team access tokens](/management-api/list-team-access-tokens.md): Lists the team access tokens created by the authenticated member for the
 - [List team members](/management-api/list-team-members.md): List the members of the given team.
@@ -481,7 +490,7 @@
 - [Update a custom role](/management-api/update-custom-role.md): Updates an existing custom role's name, description, and permission
 - [Update default environment variables](/management-api/update-default-environment-variables.md): Creates, updates, or deletes default environment variables for the specified
 - [Update deployment](/management-api/update-deployment.md): Updates properties of an existing deployment. Only the fields provided in
-- [Update project](/management-api/update-project.md): Update a project's name and/or slug. Returns the updated project.
+- [Update project](/management-api/update-project.md): Update a project's name, slug, and/or tags. Returns the updated project.
 - [Update a team member's role](/management-api/update-team-member-role.md): Sets either the member's built-in `role` (admin/developer) or their
 
 ## platform-apis
@@ -1542,8 +1551,6 @@ Rationale:
 
 It's better to submit a message in a mutation vs. an action because you can use an optimistic update on the client side to show the sent message immediately and have it disappear exactly when the message comes down in the query.
 
-However, you can't save to file storage from a mutation, so the file needs to already exist (hence the fileId).
-
 You can then asynchronously generate the response (with retries / etc) without the client waiting.
 
 ### 1: Saving the file[​](#1-saving-the-file "Direct link to 1: Saving the file")
@@ -2215,7 +2222,11 @@ If you want to get MessageDocs, you can use `listMessages` instead.
 
 ## Showing messages in React[​](#showing-messages-in-react "Direct link to Showing messages in React")
 
-See [ChatStreaming.tsx](https://github.com/convex/agent/blob/main/example/ui/chat/ChatStreaming.tsx) for a streaming example, or [ChatBasic.tsx](https://github.com/convex/agent/blob/main/example/ui/chat/ChatBasic.tsx) for a non-streaming example.
+Examples:
+
+* [ChatBasic.tsx](https://github.com/convex/agent/blob/main/example/ui/chat/ChatBasic.tsx): non-streaming messages.
+* [ChatStreaming.tsx](https://github.com/convex/agent/blob/main/example/ui/chat/ChatStreaming.tsx): streaming messages with custom React components.
+* [ChatAssistantUI.tsx](https://github.com/convex/agent/blob/main/example/ui/chat/ChatAssistantUI.tsx): streaming messages and tool approvals with [assistant-ui](https://www.assistant-ui.com/).
 
 ### `useUIMessages` hook[​](#useuimessages-hook "Direct link to useuimessages-hook")
 
@@ -3391,6 +3402,7 @@ Example:
 
 * Server: [streaming.ts](https://github.com/convex/agent/blob/main/example/convex/chat/streaming.ts)
 * Client: [ChatStreaming.tsx](https://github.com/convex/agent/blob/main/example/ui/chat/ChatStreaming.tsx)
+* Client with assistant-ui: [ChatAssistantUI.tsx](https://github.com/convex/agent/blob/main/example/ui/chat/ChatAssistantUI.tsx)
 
 ## Streaming message deltas[​](#streaming-message-deltas "Direct link to Streaming message deltas")
 
@@ -4184,7 +4196,7 @@ The typical approval flow involves four server functions:
 1. **Save the user's message** and schedule generation.
 2. **Generate a response.** If the model calls a tool that needs approval, generation pauses and the `tool-approval-request` is persisted in the thread.
 3. **Submit an approval or denial** for each pending tool call. `approveToolCall` and `denyToolCall` work from both mutations and actions.
-4. **Continue generation** from the returned message ID.
+4. **Continue generation** by running the same action with the returned message ID as the prompt. Schedule it from the mutation that saves the last pending decision in the step, so continuation does not depend on the client staying connected.
 
 ```
 import { approvalAgent } from "../agents/approval";
@@ -4223,7 +4235,7 @@ export const sendMessage = mutation({
 
 
 
-// 2. Generate (stops if approval is needed)
+// 2. Generate (stops if approval is needed). Also continues after approvals.
 
 export const generateResponse = internalAction({
 
@@ -4291,37 +4303,13 @@ export const submitApproval = mutation({
 
         });
 
+    // 4. If no approval request in this step is still undecided, schedule
+
+    // generateResponse with promptMessageId: messageId. See the example
+
+    // files below.
+
     return { messageId };
-
-  },
-
-});
-
-
-
-// 4. Continue generation from the saved approval decision.
-
-//    Pass the last approval message ID as promptMessageId so the agent
-
-//    resumes generation from where the approval was issued.
-
-export const continueAfterApprovals = internalAction({
-
-  args: { threadId: v.string(), lastApprovalMessageId: v.string() },
-
-  handler: async (ctx, { threadId, lastApprovalMessageId }) => {
-
-    const result = await approvalAgent.streamText(
-
-      ctx,
-
-      { threadId },
-
-      { promptMessageId: lastApprovalMessageId },
-
-    );
-
-    await result.consumeStream();
 
   },
 
@@ -4373,8 +4361,6 @@ This does not apply when resuming approvals: on that continuation, earlier appro
 On the client, use `useUIMessages` to detect pending approvals and show Approve/Deny buttons. Tool parts with `state === "approval-requested"` are waiting for a decision.
 
 ```
-import { useEffect, useRef } from "react";
-
 import { useMutation } from "convex/react";
 
 import { useUIMessages, type UIMessage } from "@convex-dev/agent/react";
@@ -4384,10 +4370,6 @@ import type { ToolUIPart } from "ai";
 
 
 function Chat({ threadId }: { threadId: string }) {
-
-  const lastApprovalMessageIdRef = useRef<string | null>(null);
-
-
 
   const { results: messages } = useUIMessages(
 
@@ -4402,12 +4384,6 @@ function Chat({ threadId }: { threadId: string }) {
 
 
   const submitApproval = useMutation(api.chat.approval.submitApproval);
-
-  const triggerContinuation = useMutation(
-
-    api.chat.approval.triggerContinuation,
-
-  );
 
 
 
@@ -4427,29 +4403,9 @@ function Chat({ threadId }: { threadId: string }) {
 
 
 
-  // When all approvals are resolved, trigger continuation
-
-  useEffect(() => {
-
-    if (!hasPendingApprovals && lastApprovalMessageIdRef.current) {
-
-      void triggerContinuation({
-
-        threadId,
-
-        lastApprovalMessageId: lastApprovalMessageIdRef.current,
-
-      });
-
-      lastApprovalMessageIdRef.current = null;
-
-    }
-
-  }, [hasPendingApprovals, threadId, triggerContinuation]);
-
-
-
   // Render approval buttons for tool parts with state "approval-requested"
+
+  // and call submitApproval. The server continues generation.
 
   // ...
 
@@ -5938,16 +5894,13 @@ Enable [ZDR routing](/ai-gateway/api.md#provider-preferences) on each request th
 
 <!-- -->
 
-ZDR endpoint catalog checked: 2026-10-23.
+ZDR endpoint catalog checked: 2026-10-30.
 
 ## OpenAI[​](#openai "Direct link to OpenAI")
 
-* `openai/gpt-3.5-turbo`
 * `openai/gpt-3.5-turbo-0613` · ZDR
 * `openai/gpt-3.5-turbo-16k` · ZDR
-* `openai/gpt-3.5-turbo-instruct`
 * `openai/gpt-4` · ZDR
-* `openai/gpt-4-turbo`
 * `openai/gpt-4.1` · ZDR
 * `openai/gpt-4.1-mini` · ZDR
 * `openai/gpt-4.1-nano` · ZDR
@@ -5970,7 +5923,6 @@ ZDR endpoint catalog checked: 2026-10-23.
 * `openai/gpt-5.1-codex-max` · ZDR
 * `openai/gpt-5.1-codex-mini` · ZDR
 * `openai/gpt-5.2` · ZDR
-* `openai/gpt-5.2-chat` · ZDR
 * `openai/gpt-5.2-codex` · ZDR
 * `openai/gpt-5.2-pro`
 * `openai/gpt-5.3-codex` · ZDR
@@ -5996,6 +5948,8 @@ ZDR endpoint catalog checked: 2026-10-23.
 * `openai/gpt-6-sol-pro` · ZDR
 * `openai/gpt-6.1-sol` · ZDR
 * `openai/gpt-6.1-sol-pro` · ZDR
+* `openai/gpt-6.1-terra` · ZDR
+* `openai/gpt-6.1-terra-pro` · ZDR
 * `openai/gpt-audio`
 * `openai/gpt-audio-mini`
 * `openai/gpt-chat-latest`
@@ -6008,14 +5962,8 @@ ZDR endpoint catalog checked: 2026-10-23.
 * `openai/gpt-oss-20b` · ZDR
 * `openai/gpt-oss-safeguard-20b` · ZDR
 * `openai/gpt-transcribe`
-* `openai/o1`
-* `openai/o1-pro`
 * `openai/o3`
-* `openai/o3-mini`
-* `openai/o3-mini-high`
 * `openai/o3-pro`
-* `openai/o4-mini`
-* `openai/o4-mini-high`
 * `openai/text-embedding-3-large` · ZDR
 * `openai/text-embedding-3-small` · ZDR
 * `openai/text-embedding-ada-002`
@@ -6150,9 +6098,7 @@ ZDR endpoint catalog checked: 2026-10-23.
 * `meta/muse-image`
 * `meta/muse-spark-1.1`
 * `meta/muse-spark-1.2`
-* `meta/muse-spark-1.2-contributor`
 * `meta/muse-spark-1.3`
-* `meta/muse-spark-1.3-contributor`
 * `meta/muse-spark-open` · ZDR
 * `meta/muse-voice-transcribe-1.0`
 * `meta/muse-wonder`
@@ -6198,6 +6144,7 @@ ZDR endpoint catalog checked: 2026-10-23.
 * `moonshotai/kimi-k2.6` · ZDR
 * `moonshotai/kimi-k2.7-code` · ZDR
 * `moonshotai/kimi-k3` · ZDR
+* `moonshotai/kimi-k3.1-pro` · ZDR
 * `~moonshotai/kimi-latest`
 
 ## Amazon[​](#amazon "Direct link to Amazon")
@@ -6207,6 +6154,9 @@ ZDR endpoint catalog checked: 2026-10-23.
 * `amazon/nova-micro-v1` · ZDR
 * `amazon/nova-premier-v1` · ZDR
 * `amazon/nova-pro-v1` · ZDR
+* `amazon/titan-embed-image-v1` · ZDR
+* `amazon/titan-embed-text-v1` · ZDR
+* `amazon/titan-embed-text-v2` · ZDR
 
 ## Qwen[​](#qwen "Direct link to Qwen")
 
@@ -6236,7 +6186,6 @@ ZDR endpoint catalog checked: 2026-10-23.
 * `qwen/qwen3-embedding-4b` · ZDR
 * `qwen/qwen3-embedding-8b` · ZDR
 * `qwen/qwen3-next-80b-a3b-instruct` · ZDR
-* `qwen/qwen3-next-80b-a3b-thinking` · ZDR
 * `qwen/qwen3-reranker-8b` · ZDR
 * `qwen/qwen3-vl-235b-a22b-instruct` · ZDR
 * `qwen/qwen3-vl-30b-a3b-instruct` · ZDR
@@ -6305,7 +6254,6 @@ ZDR endpoint catalog checked: 2026-10-23.
 * `nvidia/nemotron-3-nano-30b-a3b` · ZDR
 * `nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free`
 * `nvidia/nemotron-3-super-120b-a12b` · ZDR
-* `nvidia/nemotron-3-super-120b-a12b:free`
 * `nvidia/nemotron-3-ultra-550b-a55b` · ZDR
 * `nvidia/nemotron-3-ultra-550b-a55b:free`
 * `nvidia/nemotron-3.5-asr-streaming-multilingual-0.6b` · ZDR
@@ -6318,6 +6266,7 @@ ZDR endpoint catalog checked: 2026-10-23.
 * `nvidia/nemotron-3.5-rerank-8b:free`
 * `nvidia/nemotron-3.5-super-vl` · ZDR
 * `nvidia/nemotron-3.5-super-vl:free`
+* `nvidia/nemotron-3.5-transcribe` · ZDR
 * `nvidia/parakeet-tdt-0.6b-v3` · ZDR
 * `nvidia/switchyard`
 
@@ -6395,7 +6344,6 @@ ZDR endpoint catalog checked: 2026-10-23.
 
 ## IBM Granite[​](#ibm-granite "Direct link to IBM Granite")
 
-* `ibm-granite/granite-4.0-h-micro` · ZDR
 * `ibm-granite/granite-4.2-8b` · ZDR
 
 ## OpenRouter[​](#openrouter "Direct link to OpenRouter")
@@ -6419,10 +6367,6 @@ ZDR endpoint catalog checked: 2026-10-23.
 ## Anthracite[​](#anthracite "Direct link to Anthracite")
 
 * `anthracite-org/magnum-v4-72b` · ZDR
-
-## Arcee AI[​](#arcee-ai "Direct link to Arcee AI")
-
-* `arcee-ai/trinity-large-thinking`
 
 ## ByteDance Seed[​](#bytedance-seed "Direct link to ByteDance Seed")
 
@@ -6456,7 +6400,6 @@ ZDR endpoint catalog checked: 2026-10-23.
 * `inception/mercury-2.5` · ZDR
 * `inception/mercury-3` · ZDR
 * `inception/mercury-decide` · ZDR
-* `inception/mercury-decide:free`
 
 ## Inclusion AI[​](#inclusion-ai "Direct link to Inclusion AI")
 
@@ -6473,6 +6416,7 @@ ZDR endpoint catalog checked: 2026-10-23.
 
 * `liquid/d1` · ZDR
 * `liquid/d1-ultra` · ZDR
+* `liquid/d1.1` · ZDR
 * `liquid/lfm-2.5-2.6b:free`
 * `liquid/lfm-2.5-24b-a2b` · ZDR
 * `liquid/lfm-2.5-embedding-350m:free`
@@ -6516,6 +6460,7 @@ ZDR endpoint catalog checked: 2026-10-23.
 ## Prism ML[​](#prism-ml "Direct link to Prism ML")
 
 * `prism-ml/ternary-bonsai-2-27b`
+* `prism-ml/ternary-bonsai-2-9b`
 
 ## Reka AI[​](#reka-ai "Direct link to Reka AI")
 
@@ -6532,7 +6477,6 @@ ZDR endpoint catalog checked: 2026-10-23.
 * `sakana/fugu-max`
 * `sakana/fugu-ultra`
 * `sakana/fugu-ultra-v2`
-* `sakana/sakana-namazu`
 
 ## Sao10k[​](#sao10k "Direct link to Sao10k")
 
@@ -6572,7 +6516,6 @@ ZDR endpoint catalog checked: 2026-10-23.
 * `upstage/solar-decide` · ZDR
 * `upstage/solar-decide-flash` · ZDR
 * `upstage/solar-mini4` · ZDR
-* `upstage/solar-pro-3`
 * `upstage/solar-pro4` · ZDR
 
 ## Writer[​](#writer "Direct link to Writer")
@@ -6590,6 +6533,7 @@ ZDR endpoint catalog checked: 2026-10-23.
 
 ## assemblyai[​](#assemblyai "Direct link to assemblyai")
 
+* `assemblyai/assemblyai-tts-1`
 * `assemblyai/universal-3-5-pro` · ZDR
 * `assemblyai/universal-3-6-pro` · ZDR
 
@@ -6601,8 +6545,9 @@ ZDR endpoint catalog checked: 2026-10-23.
 
 ## baseten[​](#baseten "Direct link to baseten")
 
-* `baseten/elephant-1:free` · ZDR
-* `baseten/mammoth-1:free` · ZDR
+* `baseten/elephant-1` · ZDR
+* `baseten/joey-1` · ZDR
+* `baseten/mammoth-1` · ZDR
 
 ## black-forest-labs[​](#black-forest-labs "Direct link to black-forest-labs")
 
@@ -6674,6 +6619,7 @@ ZDR endpoint catalog checked: 2026-10-23.
 * `heygen/heygen-video-1`
 * `heygen/heygen-voice-1`
 * `heygen/heygen-voice-1-turbo`
+* `heygen/heygen-voice-1-turbo:free`
 
 ## intfloat[​](#intfloat "Direct link to intfloat")
 
@@ -6708,6 +6654,10 @@ ZDR endpoint catalog checked: 2026-10-23.
 * `nace-ai/drex-max` · ZDR
 * `nace-ai/drex-v1.5` · ZDR
 * `nace-ai/drex-v2.0` · ZDR
+
+## particle-ai[​](#particle-ai "Direct link to particle-ai")
+
+* `particle-ai/particle-1` · ZDR
 
 ## recraft[​](#recraft "Direct link to recraft")
 
@@ -6772,6 +6722,11 @@ ZDR endpoint catalog checked: 2026-10-23.
 * `sourceful/riverflow-v2-pro`
 * `sourceful/riverflow-v2.5-fast`
 * `sourceful/riverflow-v2.5-pro`
+* `sourceful/riverflow-v2.6-pro`
+
+## tbc[​](#tbc "Direct link to tbc")
+
+* `tbc/mischief-1`
 
 ## thenlper[​](#thenlper "Direct link to thenlper")
 
@@ -6803,6 +6758,11 @@ ZDR endpoint catalog checked: 2026-10-23.
 ## xingchen-agi[​](#xingchen-agi "Direct link to xingchen-agi")
 
 * `xingchen-agi/xing4.0-29b-a4b:free` · ZDR
+
+## \~liquid[​](#liquid "Direct link to ~liquid")
+
+* `~liquid/d1-latest`
+* `~liquid/d1-ultra-latest`
 
 ## \~perplexity[​](#perplexity-1 "Direct link to ~perplexity")
 
@@ -7271,7 +7231,7 @@ See [Usage limits](/production/usage-limits.md) for thresholds and reset windows
 
 ## How billing works[​](#how-billing-works "Direct link to How billing works")
 
-We charge the same rates as [OpenRouter](https://openrouter.ai/models). Price per token depends on the model, when you use it, and whether the tokens are cached. Image and video prices depend on the model and generation options, such as resolution and duration. Voice models charge per character of input, per second of audio, or per token. Cancelling a video request after submission can still incur its generation cost. The charge appears as an AI Gateway line item on your Convex invoice, in dollars.
+Price per token depends on the model, when you use it, and whether the tokens are cached. Image and video prices depend on the model and generation options, such as resolution and duration. Voice models charge per character of input, per second of audio, or per token. Cancelling a video request after submission can still incur its generation cost. The charge appears as an AI Gateway line item on your Convex invoice, in dollars.
 
 [Spending limits](/dashboard/teams/teams.md#spending-limits) apply to AI Gateway spend like any other usage. Set a limit on the team billing page to cap what your team pays per month.
 
@@ -11116,7 +11076,7 @@ Error.stackTraceLimit
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-../../node\_modules/.pnpm/@types+node\@18.19.130/node\_modules/@types/node/globals.d.ts:68
+../../node\_modules/.pnpm/@types+node\@22.19.1/node\_modules/@types/node/globals.d.ts:68
 
 ***
 
@@ -11243,7 +11203,7 @@ Error.captureStackTrace
 
 #### Defined in[​](#defined-in-8 "Direct link to Defined in")
 
-../../node\_modules/.pnpm/@types+node\@18.19.130/node\_modules/@types/node/globals.d.ts:52
+../../node\_modules/.pnpm/@types+node\@22.19.1/node\_modules/@types/node/globals.d.ts:52
 
 ***
 
@@ -11272,7 +11232,7 @@ Error.prepareStackTrace
 
 #### Defined in[​](#defined-in-9 "Direct link to Defined in")
 
-../../node\_modules/.pnpm/@types+node\@18.19.130/node\_modules/@types/node/globals.d.ts:56
+../../node\_modules/.pnpm/@types+node\@22.19.1/node\_modules/@types/node/globals.d.ts:56
 
 
 ---
@@ -11326,7 +11286,7 @@ BaseValidator\<Type, IsOptional, FieldPaths>.constructor
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[values/validators.ts:54](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L54)
+[values/validators.ts:56](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L56)
 
 ## Properties[​](#properties "Direct link to Properties")
 
@@ -11342,7 +11302,7 @@ BaseValidator.type
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[values/validators.ts:37](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L37)
+[values/validators.ts:39](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L39)
 
 ***
 
@@ -11358,7 +11318,7 @@ BaseValidator.fieldPaths
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[values/validators.ts:42](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L42)
+[values/validators.ts:44](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L44)
 
 ***
 
@@ -11374,7 +11334,7 @@ BaseValidator.isOptional
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[values/validators.ts:47](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L47)
+[values/validators.ts:49](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L49)
 
 ***
 
@@ -11390,7 +11350,7 @@ BaseValidator.isConvexValidator
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[values/validators.ts:52](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L52)
+[values/validators.ts:54](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L54)
 
 ***
 
@@ -11402,7 +11362,7 @@ The kind of validator, `"any"`.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:319](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L319)
+[values/validators.ts:395](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L395)
 
 ## Methods[​](#methods "Direct link to Methods")
 
@@ -11422,7 +11382,7 @@ BaseValidator.optional
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[values/validators.ts:328](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L328)
+[values/validators.ts:404](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L404)
 
 
 ---
@@ -11479,7 +11439,7 @@ BaseValidator\&lt;Type, IsOptional\&gt;.constructor
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[values/validators.ts:560](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L560)
+[values/validators.ts:636](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L636)
 
 ## Properties[​](#properties "Direct link to Properties")
 
@@ -11495,7 +11455,7 @@ BaseValidator.type
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[values/validators.ts:37](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L37)
+[values/validators.ts:39](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L39)
 
 ***
 
@@ -11511,7 +11471,7 @@ BaseValidator.fieldPaths
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[values/validators.ts:42](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L42)
+[values/validators.ts:44](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L44)
 
 ***
 
@@ -11527,7 +11487,7 @@ BaseValidator.isOptional
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[values/validators.ts:47](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L47)
+[values/validators.ts:49](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L49)
 
 ***
 
@@ -11543,7 +11503,7 @@ BaseValidator.isConvexValidator
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[values/validators.ts:52](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L52)
+[values/validators.ts:54](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L54)
 
 ***
 
@@ -11555,7 +11515,7 @@ The validator for the elements of the array.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:550](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L550)
+[values/validators.ts:626](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L626)
 
 ***
 
@@ -11567,7 +11527,7 @@ The kind of validator, `"array"`.
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[values/validators.ts:555](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L555)
+[values/validators.ts:631](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L631)
 
 ## Methods[​](#methods "Direct link to Methods")
 
@@ -11587,7 +11547,7 @@ BaseValidator.optional
 
 #### Defined in[​](#defined-in-7 "Direct link to Defined in")
 
-[values/validators.ts:581](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L581)
+[values/validators.ts:657](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L657)
 
 
 ---
@@ -11639,7 +11599,7 @@ BaseValidator\<Type, IsOptional>.constructor
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[values/validators.ts:54](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L54)
+[values/validators.ts:56](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L56)
 
 ## Properties[​](#properties "Direct link to Properties")
 
@@ -11655,7 +11615,7 @@ BaseValidator.type
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[values/validators.ts:37](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L37)
+[values/validators.ts:39](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L39)
 
 ***
 
@@ -11671,7 +11631,7 @@ BaseValidator.fieldPaths
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[values/validators.ts:42](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L42)
+[values/validators.ts:44](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L44)
 
 ***
 
@@ -11687,7 +11647,7 @@ BaseValidator.isOptional
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[values/validators.ts:47](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L47)
+[values/validators.ts:49](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L49)
 
 ***
 
@@ -11703,7 +11663,7 @@ BaseValidator.isConvexValidator
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[values/validators.ts:52](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L52)
+[values/validators.ts:54](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L54)
 
 ***
 
@@ -11715,7 +11675,7 @@ The kind of validator, `"boolean"`.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:210](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L210)
+[values/validators.ts:286](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L286)
 
 ## Methods[​](#methods "Direct link to Methods")
 
@@ -11735,7 +11695,7 @@ BaseValidator.optional
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[values/validators.ts:217](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L217)
+[values/validators.ts:293](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L293)
 
 
 ---
@@ -11787,7 +11747,7 @@ BaseValidator\<Type, IsOptional>.constructor
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[values/validators.ts:54](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L54)
+[values/validators.ts:56](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L56)
 
 ## Properties[​](#properties "Direct link to Properties")
 
@@ -11803,7 +11763,7 @@ BaseValidator.type
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[values/validators.ts:37](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L37)
+[values/validators.ts:39](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L39)
 
 ***
 
@@ -11819,7 +11779,7 @@ BaseValidator.fieldPaths
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[values/validators.ts:42](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L42)
+[values/validators.ts:44](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L44)
 
 ***
 
@@ -11835,7 +11795,7 @@ BaseValidator.isOptional
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[values/validators.ts:47](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L47)
+[values/validators.ts:49](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L49)
 
 ***
 
@@ -11851,7 +11811,7 @@ BaseValidator.isConvexValidator
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[values/validators.ts:52](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L52)
+[values/validators.ts:54](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L54)
 
 ***
 
@@ -11863,7 +11823,7 @@ The kind of validator, `"bytes"`.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:238](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L238)
+[values/validators.ts:314](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L314)
 
 ## Methods[​](#methods "Direct link to Methods")
 
@@ -11883,7 +11843,7 @@ BaseValidator.optional
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[values/validators.ts:245](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L245)
+[values/validators.ts:321](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L321)
 
 
 ---
@@ -11935,7 +11895,7 @@ BaseValidator\<Type, IsOptional>.constructor
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[values/validators.ts:54](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L54)
+[values/validators.ts:56](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L56)
 
 ## Properties[​](#properties "Direct link to Properties")
 
@@ -11951,7 +11911,7 @@ BaseValidator.type
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[values/validators.ts:37](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L37)
+[values/validators.ts:39](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L39)
 
 ***
 
@@ -11967,7 +11927,7 @@ BaseValidator.fieldPaths
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[values/validators.ts:42](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L42)
+[values/validators.ts:44](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L44)
 
 ***
 
@@ -11983,7 +11943,7 @@ BaseValidator.isOptional
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[values/validators.ts:47](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L47)
+[values/validators.ts:49](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L49)
 
 ***
 
@@ -11999,7 +11959,7 @@ BaseValidator.isConvexValidator
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[values/validators.ts:52](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L52)
+[values/validators.ts:54](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L54)
 
 ***
 
@@ -12011,7 +11971,7 @@ The kind of validator, `"commitTs"`.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:182](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L182)
+[values/validators.ts:184](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L184)
 
 ## Methods[​](#methods "Direct link to Methods")
 
@@ -12031,7 +11991,7 @@ BaseValidator.optional
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[values/validators.ts:189](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L189)
+[values/validators.ts:191](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L191)
 
 
 ---
@@ -12083,7 +12043,7 @@ BaseValidator\<Type, IsOptional>.constructor
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[values/validators.ts:54](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L54)
+[values/validators.ts:56](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L56)
 
 ## Properties[​](#properties "Direct link to Properties")
 
@@ -12099,7 +12059,7 @@ BaseValidator.type
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[values/validators.ts:37](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L37)
+[values/validators.ts:39](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L39)
 
 ***
 
@@ -12115,7 +12075,7 @@ BaseValidator.fieldPaths
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[values/validators.ts:42](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L42)
+[values/validators.ts:44](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L44)
 
 ***
 
@@ -12131,7 +12091,7 @@ BaseValidator.isOptional
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[values/validators.ts:47](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L47)
+[values/validators.ts:49](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L49)
 
 ***
 
@@ -12147,7 +12107,7 @@ BaseValidator.isConvexValidator
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[values/validators.ts:52](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L52)
+[values/validators.ts:54](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L54)
 
 ***
 
@@ -12159,7 +12119,7 @@ The kind of validator, `"float64"`.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:126](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L126)
+[values/validators.ts:128](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L128)
 
 ## Methods[​](#methods "Direct link to Methods")
 
@@ -12179,7 +12139,194 @@ BaseValidator.optional
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[values/validators.ts:134](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L134)
+[values/validators.ts:136](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L136)
+
+
+---
+
+# Class: VFunction\<Type, IsOptional>
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
+[values](/api/modules/values.md).VFunction
+
+The type of the `v.function()` validator.
+
+## Type parameters[​](#type-parameters "Direct link to Type parameters")
+
+| Name         | Type                                                                                 |
+| ------------ | ------------------------------------------------------------------------------------ |
+| `Type`       | [`FunctionHandle_future`](/api/modules/server.md#functionhandle_future)<`any`>       |
+| `IsOptional` | extends [`OptionalProperty`](/api/modules/values.md#optionalproperty) = `"required"` |
+
+## Hierarchy[​](#hierarchy "Direct link to Hierarchy")
+
+* `BaseValidator`<`Type`, `IsOptional`>
+
+  ↳ **`VFunction`**
+
+## Constructors[​](#constructors "Direct link to Constructors")
+
+### constructor[​](#constructor "Direct link to constructor")
+
+• **new VFunction**<`Type`, `IsOptional`>(`«destructured»`)
+
+#### Type parameters[​](#type-parameters-1 "Direct link to Type parameters")
+
+| Name         | Type                                                                                 |
+| ------------ | ------------------------------------------------------------------------------------ |
+| `Type`       | [`FunctionHandle_future`](/api/modules/server.md#functionhandle_future)<`any`>       |
+| `IsOptional` | extends [`OptionalProperty`](/api/modules/values.md#optionalproperty) = `"required"` |
+
+#### Parameters[​](#parameters "Direct link to Parameters")
+
+| Name             | Type                                                          |
+| ---------------- | ------------------------------------------------------------- |
+| `«destructured»` | `Object`                                                      |
+| › `isOptional`   | `IsOptional`                                                  |
+| › `fnType?`      | [`FunctionType`](/api/modules/server.md#functiontype)         |
+| › `args?`        | [`GenericValidator`](/api/modules/values.md#genericvalidator) |
+| › `returns?`     | [`GenericValidator`](/api/modules/values.md#genericvalidator) |
+
+#### Overrides[​](#overrides "Direct link to Overrides")
+
+BaseValidator\&lt;Type, IsOptional\&gt;.constructor
+
+#### Defined in[​](#defined-in "Direct link to Defined in")
+
+[values/validators.ts:235](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L235)
+
+## Properties[​](#properties "Direct link to Properties")
+
+### type[​](#type "Direct link to type")
+
+• `Readonly` **type**: `Type`
+
+Only for TypeScript, the TS type of the JS values validated by this validator.
+
+#### Inherited from[​](#inherited-from "Direct link to Inherited from")
+
+BaseValidator.type
+
+#### Defined in[​](#defined-in-1 "Direct link to Defined in")
+
+[values/validators.ts:39](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L39)
+
+***
+
+### fieldPaths[​](#fieldpaths "Direct link to fieldPaths")
+
+• `Readonly` **fieldPaths**: `never`
+
+Only for TypeScript, if this an Object validator, then this is the TS type of its property names.
+
+#### Inherited from[​](#inherited-from-1 "Direct link to Inherited from")
+
+BaseValidator.fieldPaths
+
+#### Defined in[​](#defined-in-2 "Direct link to Defined in")
+
+[values/validators.ts:44](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L44)
+
+***
+
+### isOptional[​](#isoptional "Direct link to isOptional")
+
+• `Readonly` **isOptional**: `IsOptional`
+
+Whether this is an optional Object property value validator.
+
+#### Inherited from[​](#inherited-from-2 "Direct link to Inherited from")
+
+BaseValidator.isOptional
+
+#### Defined in[​](#defined-in-3 "Direct link to Defined in")
+
+[values/validators.ts:49](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L49)
+
+***
+
+### isConvexValidator[​](#isconvexvalidator "Direct link to isConvexValidator")
+
+• `Readonly` **isConvexValidator**: `true`
+
+Always `"true"`.
+
+#### Inherited from[​](#inherited-from-3 "Direct link to Inherited from")
+
+BaseValidator.isConvexValidator
+
+#### Defined in[​](#defined-in-4 "Direct link to Defined in")
+
+[values/validators.ts:54](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L54)
+
+***
+
+### kind[​](#kind "Direct link to kind")
+
+• `Readonly` **kind**: `"function"`
+
+The kind of validator, `"function"`.
+
+#### Defined in[​](#defined-in-5 "Direct link to Defined in")
+
+[values/validators.ts:212](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L212)
+
+***
+
+### fnType[​](#fntype "Direct link to fnType")
+
+• `Readonly` **fnType**: `undefined` | [`FunctionType`](/api/modules/server.md#functiontype)
+
+The type of function the handle names, if one was given. This is only enforced during typechecking and will not be validated at runtime.
+
+#### Defined in[​](#defined-in-6 "Direct link to Defined in")
+
+[values/validators.ts:219](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L219)
+
+***
+
+### args[​](#args "Direct link to args")
+
+• `Readonly` **args**: `undefined` | [`GenericValidator`](/api/modules/values.md#genericvalidator)
+
+The validator for the function's arguments, if one was given. This is only enforced during typechecking and will not be validated at runtime.
+
+#### Defined in[​](#defined-in-7 "Direct link to Defined in")
+
+[values/validators.ts:226](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L226)
+
+***
+
+### returns[​](#returns "Direct link to returns")
+
+• `Readonly` **returns**: `undefined` | [`GenericValidator`](/api/modules/values.md#genericvalidator)
+
+The validator for the function's return value, if one was given. This is only enforced during typechecking and will not be validated at runtime.
+
+#### Defined in[​](#defined-in-8 "Direct link to Defined in")
+
+[values/validators.ts:233](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L233)
+
+## Methods[​](#methods "Direct link to Methods")
+
+### optional[​](#optional "Direct link to optional")
+
+▸ **optional**(): [`VFunction`](/api/classes/values.VFunction.md)<`undefined` | `Type`, `"optional"`>
+
+Allow this validated field to be absent.
+
+#### Returns[​](#returns-1 "Direct link to Returns")
+
+[`VFunction`](/api/classes/values.VFunction.md)<`undefined` | `Type`, `"optional"`>
+
+#### Overrides[​](#overrides-1 "Direct link to Overrides")
+
+BaseValidator.optional
+
+#### Defined in[​](#defined-in-9 "Direct link to Defined in")
+
+[values/validators.ts:262](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L262)
 
 
 ---
@@ -12234,7 +12381,7 @@ BaseValidator\&lt;Type, IsOptional\&gt;.constructor
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[values/validators.ts:86](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L86)
+[values/validators.ts:88](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L88)
 
 ## Properties[​](#properties "Direct link to Properties")
 
@@ -12250,7 +12397,7 @@ BaseValidator.type
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[values/validators.ts:37](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L37)
+[values/validators.ts:39](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L39)
 
 ***
 
@@ -12266,7 +12413,7 @@ BaseValidator.fieldPaths
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[values/validators.ts:42](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L42)
+[values/validators.ts:44](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L44)
 
 ***
 
@@ -12282,7 +12429,7 @@ BaseValidator.isOptional
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[values/validators.ts:47](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L47)
+[values/validators.ts:49](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L49)
 
 ***
 
@@ -12298,7 +12445,7 @@ BaseValidator.isConvexValidator
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[values/validators.ts:52](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L52)
+[values/validators.ts:54](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L54)
 
 ***
 
@@ -12310,7 +12457,7 @@ The name of the table that the validated IDs must belong to.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:76](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L76)
+[values/validators.ts:78](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L78)
 
 ***
 
@@ -12322,7 +12469,7 @@ The kind of validator, `"id"`.
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[values/validators.ts:81](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L81)
+[values/validators.ts:83](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L83)
 
 ## Methods[​](#methods "Direct link to Methods")
 
@@ -12342,7 +12489,7 @@ BaseValidator.optional
 
 #### Defined in[​](#defined-in-7 "Direct link to Defined in")
 
-[values/validators.ts:104](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L104)
+[values/validators.ts:106](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L106)
 
 
 ---
@@ -12394,7 +12541,7 @@ BaseValidator\<Type, IsOptional>.constructor
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[values/validators.ts:54](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L54)
+[values/validators.ts:56](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L56)
 
 ## Properties[​](#properties "Direct link to Properties")
 
@@ -12410,7 +12557,7 @@ BaseValidator.type
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[values/validators.ts:37](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L37)
+[values/validators.ts:39](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L39)
 
 ***
 
@@ -12426,7 +12573,7 @@ BaseValidator.fieldPaths
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[values/validators.ts:42](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L42)
+[values/validators.ts:44](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L44)
 
 ***
 
@@ -12442,7 +12589,7 @@ BaseValidator.isOptional
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[values/validators.ts:47](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L47)
+[values/validators.ts:49](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L49)
 
 ***
 
@@ -12458,7 +12605,7 @@ BaseValidator.isConvexValidator
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[values/validators.ts:52](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L52)
+[values/validators.ts:54](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L54)
 
 ***
 
@@ -12470,7 +12617,7 @@ The kind of validator, `"int64"`.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:155](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L155)
+[values/validators.ts:157](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L157)
 
 ## Methods[​](#methods "Direct link to Methods")
 
@@ -12490,7 +12637,7 @@ BaseValidator.optional
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[values/validators.ts:163](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L163)
+[values/validators.ts:165](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L165)
 
 
 ---
@@ -12545,7 +12692,7 @@ BaseValidator\&lt;Type, IsOptional\&gt;.constructor
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[values/validators.ts:507](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L507)
+[values/validators.ts:583](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L583)
 
 ## Properties[​](#properties "Direct link to Properties")
 
@@ -12561,7 +12708,7 @@ BaseValidator.type
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[values/validators.ts:37](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L37)
+[values/validators.ts:39](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L39)
 
 ***
 
@@ -12577,7 +12724,7 @@ BaseValidator.fieldPaths
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[values/validators.ts:42](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L42)
+[values/validators.ts:44](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L44)
 
 ***
 
@@ -12593,7 +12740,7 @@ BaseValidator.isOptional
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[values/validators.ts:47](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L47)
+[values/validators.ts:49](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L49)
 
 ***
 
@@ -12609,7 +12756,7 @@ BaseValidator.isConvexValidator
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[values/validators.ts:52](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L52)
+[values/validators.ts:54](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L54)
 
 ***
 
@@ -12621,7 +12768,7 @@ The value that the validated values must be equal to.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:497](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L497)
+[values/validators.ts:573](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L573)
 
 ***
 
@@ -12633,7 +12780,7 @@ The kind of validator, `"literal"`.
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[values/validators.ts:502](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L502)
+[values/validators.ts:578](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L578)
 
 ## Methods[​](#methods "Direct link to Methods")
 
@@ -12653,7 +12800,7 @@ BaseValidator.optional
 
 #### Defined in[​](#defined-in-7 "Direct link to Defined in")
 
-[values/validators.ts:527](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L527)
+[values/validators.ts:603](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L603)
 
 
 ---
@@ -12705,7 +12852,7 @@ BaseValidator\<Type, IsOptional>.constructor
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[values/validators.ts:54](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L54)
+[values/validators.ts:56](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L56)
 
 ## Properties[​](#properties "Direct link to Properties")
 
@@ -12721,7 +12868,7 @@ BaseValidator.type
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[values/validators.ts:37](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L37)
+[values/validators.ts:39](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L39)
 
 ***
 
@@ -12737,7 +12884,7 @@ BaseValidator.fieldPaths
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[values/validators.ts:42](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L42)
+[values/validators.ts:44](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L44)
 
 ***
 
@@ -12753,7 +12900,7 @@ BaseValidator.isOptional
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[values/validators.ts:47](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L47)
+[values/validators.ts:49](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L49)
 
 ***
 
@@ -12769,7 +12916,7 @@ BaseValidator.isConvexValidator
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[values/validators.ts:52](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L52)
+[values/validators.ts:54](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L54)
 
 ***
 
@@ -12781,7 +12928,7 @@ The kind of validator, `"null"`.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:292](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L292)
+[values/validators.ts:368](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L368)
 
 ## Methods[​](#methods "Direct link to Methods")
 
@@ -12801,7 +12948,7 @@ BaseValidator.optional
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[values/validators.ts:299](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L299)
+[values/validators.ts:375](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L375)
 
 
 ---
@@ -12860,7 +13007,7 @@ BaseValidator\&lt;Type, IsOptional, FieldPaths\&gt;.constructor
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[values/validators.ts:366](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L366)
+[values/validators.ts:442](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L442)
 
 ## Properties[​](#properties "Direct link to Properties")
 
@@ -12876,7 +13023,7 @@ BaseValidator.type
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[values/validators.ts:37](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L37)
+[values/validators.ts:39](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L39)
 
 ***
 
@@ -12892,7 +13039,7 @@ BaseValidator.fieldPaths
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[values/validators.ts:42](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L42)
+[values/validators.ts:44](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L44)
 
 ***
 
@@ -12908,7 +13055,7 @@ BaseValidator.isOptional
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[values/validators.ts:47](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L47)
+[values/validators.ts:49](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L49)
 
 ***
 
@@ -12924,7 +13071,7 @@ BaseValidator.isConvexValidator
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[values/validators.ts:52](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L52)
+[values/validators.ts:54](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L54)
 
 ***
 
@@ -12936,7 +13083,7 @@ An object with the validator for each property.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:356](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L356)
+[values/validators.ts:432](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L432)
 
 ***
 
@@ -12948,7 +13095,7 @@ The kind of validator, `"object"`.
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[values/validators.ts:361](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L361)
+[values/validators.ts:437](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L437)
 
 ## Methods[​](#methods "Direct link to Methods")
 
@@ -12968,7 +13115,7 @@ BaseValidator.optional
 
 #### Defined in[​](#defined-in-7 "Direct link to Defined in")
 
-[values/validators.ts:400](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L400)
+[values/validators.ts:476](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L476)
 
 ***
 
@@ -12996,7 +13143,7 @@ Create a new VObject with the specified fields omitted.
 
 #### Defined in[​](#defined-in-8 "Direct link to Defined in")
 
-[values/validators.ts:415](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L415)
+[values/validators.ts:491](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L491)
 
 ***
 
@@ -13024,7 +13171,7 @@ Create a new VObject with only the specified fields.
 
 #### Defined in[​](#defined-in-9 "Direct link to Defined in")
 
-[values/validators.ts:432](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L432)
+[values/validators.ts:508](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L508)
 
 ***
 
@@ -13040,7 +13187,7 @@ Create a new VObject with all fields marked as optional.
 
 #### Defined in[​](#defined-in-10 "Direct link to Defined in")
 
-[values/validators.ts:452](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L452)
+[values/validators.ts:528](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L528)
 
 ***
 
@@ -13068,7 +13215,7 @@ Create a new VObject with additional fields merged in.
 
 #### Defined in[​](#defined-in-11 "Direct link to Defined in")
 
-[values/validators.ts:473](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L473)
+[values/validators.ts:549](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L549)
 
 
 ---
@@ -13130,7 +13277,7 @@ BaseValidator\&lt;Type, IsOptional, FieldPaths\&gt;.constructor
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[values/validators.ts:621](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L621)
+[values/validators.ts:697](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L697)
 
 ## Properties[​](#properties "Direct link to Properties")
 
@@ -13146,7 +13293,7 @@ BaseValidator.type
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[values/validators.ts:37](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L37)
+[values/validators.ts:39](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L39)
 
 ***
 
@@ -13162,7 +13309,7 @@ BaseValidator.fieldPaths
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[values/validators.ts:42](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L42)
+[values/validators.ts:44](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L44)
 
 ***
 
@@ -13178,7 +13325,7 @@ BaseValidator.isOptional
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[values/validators.ts:47](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L47)
+[values/validators.ts:49](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L49)
 
 ***
 
@@ -13194,7 +13341,7 @@ BaseValidator.isConvexValidator
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[values/validators.ts:52](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L52)
+[values/validators.ts:54](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L54)
 
 ***
 
@@ -13206,7 +13353,7 @@ The validator for the keys of the record.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:606](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L606)
+[values/validators.ts:682](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L682)
 
 ***
 
@@ -13218,7 +13365,7 @@ The validator for the values of the record.
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[values/validators.ts:611](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L611)
+[values/validators.ts:687](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L687)
 
 ***
 
@@ -13230,7 +13377,7 @@ The kind of validator, `"record"`.
 
 #### Defined in[​](#defined-in-7 "Direct link to Defined in")
 
-[values/validators.ts:616](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L616)
+[values/validators.ts:692](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L692)
 
 ## Methods[​](#methods "Direct link to Methods")
 
@@ -13250,7 +13397,7 @@ BaseValidator.optional
 
 #### Defined in[​](#defined-in-8 "Direct link to Defined in")
 
-[values/validators.ts:662](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L662)
+[values/validators.ts:738](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L738)
 
 
 ---
@@ -13302,7 +13449,7 @@ BaseValidator\<Type, IsOptional>.constructor
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[values/validators.ts:54](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L54)
+[values/validators.ts:56](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L56)
 
 ## Properties[​](#properties "Direct link to Properties")
 
@@ -13318,7 +13465,7 @@ BaseValidator.type
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[values/validators.ts:37](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L37)
+[values/validators.ts:39](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L39)
 
 ***
 
@@ -13334,7 +13481,7 @@ BaseValidator.fieldPaths
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[values/validators.ts:42](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L42)
+[values/validators.ts:44](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L44)
 
 ***
 
@@ -13350,7 +13497,7 @@ BaseValidator.isOptional
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[values/validators.ts:47](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L47)
+[values/validators.ts:49](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L49)
 
 ***
 
@@ -13366,7 +13513,7 @@ BaseValidator.isConvexValidator
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[values/validators.ts:52](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L52)
+[values/validators.ts:54](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L54)
 
 ***
 
@@ -13378,7 +13525,7 @@ The kind of validator, `"string"`.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:264](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L264)
+[values/validators.ts:340](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L340)
 
 ## Methods[​](#methods "Direct link to Methods")
 
@@ -13398,7 +13545,7 @@ BaseValidator.optional
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[values/validators.ts:271](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L271)
+[values/validators.ts:347](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L347)
 
 
 ---
@@ -13457,7 +13604,7 @@ BaseValidator\&lt;Type, IsOptional, FieldPaths\&gt;.constructor
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[values/validators.ts:697](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L697)
+[values/validators.ts:773](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L773)
 
 ## Properties[​](#properties "Direct link to Properties")
 
@@ -13473,7 +13620,7 @@ BaseValidator.type
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[values/validators.ts:37](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L37)
+[values/validators.ts:39](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L39)
 
 ***
 
@@ -13489,7 +13636,7 @@ BaseValidator.fieldPaths
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[values/validators.ts:42](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L42)
+[values/validators.ts:44](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L44)
 
 ***
 
@@ -13505,7 +13652,7 @@ BaseValidator.isOptional
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[values/validators.ts:47](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L47)
+[values/validators.ts:49](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L49)
 
 ***
 
@@ -13521,7 +13668,7 @@ BaseValidator.isConvexValidator
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[values/validators.ts:52](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L52)
+[values/validators.ts:54](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L54)
 
 ***
 
@@ -13533,7 +13680,7 @@ The array of validators, one of which must match the value.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:687](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L687)
+[values/validators.ts:763](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L763)
 
 ***
 
@@ -13545,7 +13692,7 @@ The kind of validator, `"union"`.
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[values/validators.ts:692](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L692)
+[values/validators.ts:768](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L768)
 
 ## Methods[​](#methods "Direct link to Methods")
 
@@ -13565,7 +13712,7 @@ BaseValidator.optional
 
 #### Defined in[​](#defined-in-7 "Direct link to Defined in")
 
-[values/validators.ts:717](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L717)
+[values/validators.ts:793](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L793)
 
 
 ---
@@ -15583,7 +15730,7 @@ const user = await ctx.runQuery(internal.users.get, { userId });
 
 | Name    | Type                                                                                                                                                                                                                                   |
 | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Query` | extends [`FunctionReference`](/api/modules/server.md#functionreference)<`"query"`, `"public"` \| `"internal"`> \| [`FunctionReference_future`](/api/modules/server.md#functionreference_future)<`"query"`, `"public"` \| `"internal"`> |
+| `Query` | extends [`FunctionReference`](/api/modules/server.md#functionreference)<`"query"`, `"internal"` \| `"public"`> \| [`FunctionReference_future`](/api/modules/server.md#functionreference_future)<`"query"`, `"internal"` \| `"public"`> |
 
 #### Parameters[​](#parameters "Direct link to Parameters")
 
@@ -15622,7 +15769,7 @@ await ctx.runMutation(internal.orders.markPaid, { id: orderId });
 
 | Name       | Type                                                                                                                                                                                                                                         |
 | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Mutation` | extends [`FunctionReference`](/api/modules/server.md#functionreference)<`"mutation"`, `"public"` \| `"internal"`> \| [`FunctionReference_future`](/api/modules/server.md#functionreference_future)<`"mutation"`, `"public"` \| `"internal"`> |
+| `Mutation` | extends [`FunctionReference`](/api/modules/server.md#functionreference)<`"mutation"`, `"internal"` \| `"public"`> \| [`FunctionReference_future`](/api/modules/server.md#functionreference_future)<`"mutation"`, `"internal"` \| `"public"`> |
 
 #### Parameters[​](#parameters-1 "Direct link to Parameters")
 
@@ -15657,7 +15804,7 @@ Consider using an internalAction to prevent users from calling the action direct
 
 | Name     | Type                                                                                                                                                                                                                                     |
 | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Action` | extends [`FunctionReference`](/api/modules/server.md#functionreference)<`"action"`, `"public"` \| `"internal"`> \| [`FunctionReference_future`](/api/modules/server.md#functionreference_future)<`"action"`, `"public"` \| `"internal"`> |
+| `Action` | extends [`FunctionReference`](/api/modules/server.md#functionreference)<`"action"`, `"internal"` \| `"public"`> \| [`FunctionReference_future`](/api/modules/server.md#functionreference_future)<`"action"`, `"internal"` \| `"public"`> |
 
 #### Parameters[​](#parameters-2 "Direct link to Parameters")
 
@@ -16780,7 +16927,7 @@ const user = await ctx.runQuery(internal.users.getUser, { userId });
 
 | Name    | Type                                                                                                                                                                                                                                   |
 | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Query` | extends [`FunctionReference`](/api/modules/server.md#functionreference)<`"query"`, `"public"` \| `"internal"`> \| [`FunctionReference_future`](/api/modules/server.md#functionreference_future)<`"query"`, `"public"` \| `"internal"`> |
+| `Query` | extends [`FunctionReference`](/api/modules/server.md#functionreference)<`"query"`, `"internal"` \| `"public"`> \| [`FunctionReference_future`](/api/modules/server.md#functionreference_future)<`"query"`, `"internal"` \| `"public"`> |
 
 ##### Parameters[​](#parameters "Direct link to Parameters")
 
@@ -16817,7 +16964,7 @@ NOTE: Often you can extract shared logic into a helper function instead. `runMut
 
 | Name       | Type                                                                                                                                                                                                                                         |
 | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Mutation` | extends [`FunctionReference`](/api/modules/server.md#functionreference)<`"mutation"`, `"public"` \| `"internal"`> \| [`FunctionReference_future`](/api/modules/server.md#functionreference_future)<`"mutation"`, `"public"` \| `"internal"`> |
+| `Mutation` | extends [`FunctionReference`](/api/modules/server.md#functionreference)<`"mutation"`, `"internal"` \| `"public"`> \| [`FunctionReference_future`](/api/modules/server.md#functionreference_future)<`"mutation"`, `"internal"` \| `"public"`> |
 
 ##### Parameters[​](#parameters-1 "Direct link to Parameters")
 
@@ -16963,7 +17110,7 @@ NOTE: Often you can extract shared logic into a helper function instead. `runQue
 
 | Name    | Type                                                                                                                                                                                                                                   |
 | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Query` | extends [`FunctionReference`](/api/modules/server.md#functionreference)<`"query"`, `"public"` \| `"internal"`> \| [`FunctionReference_future`](/api/modules/server.md#functionreference_future)<`"query"`, `"public"` \| `"internal"`> |
+| `Query` | extends [`FunctionReference`](/api/modules/server.md#functionreference)<`"query"`, `"internal"` \| `"public"`> \| [`FunctionReference_future`](/api/modules/server.md#functionreference_future)<`"query"`, `"internal"` \| `"public"`> |
 
 ##### Parameters[​](#parameters "Direct link to Parameters")
 
@@ -25264,7 +25411,7 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 | Name                | Type                                                                                                                                                                                                                                                                 |
 | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `functionReference` | [`FunctionReference`](/api/modules/server.md#functionreference)<`Type`, `"public"` \| `"internal"`, `Args`, `ReturnType`> \| [`FunctionReference_future`](/api/modules/server.md#functionreference_future)<`Type`, `"public"` \| `"internal"`, `Args`, `ReturnType`> |
+| `functionReference` | [`FunctionReference`](/api/modules/server.md#functionreference)<`Type`, `"internal"` \| `"public"`, `Args`, `ReturnType`> \| [`FunctionReference_future`](/api/modules/server.md#functionreference_future)<`Type`, `"internal"` \| `"public"`, `Args`, `ReturnType`> |
 
 #### Returns[​](#returns-10 "Direct link to Returns")
 
@@ -26434,6 +26581,7 @@ You can see the full set of supported types at [Types](https://docs.convex.dev/u
 * [VFloat64](/api/classes/values.VFloat64.md)
 * [VInt64](/api/classes/values.VInt64.md)
 * [VCommitTs](/api/classes/values.VCommitTs.md)
+* [VFunction](/api/classes/values.VFunction.md)
 * [VBoolean](/api/classes/values.VBoolean.md)
 * [VBytes](/api/classes/values.VBytes.md)
 * [VString](/api/classes/values.VString.md)
@@ -26456,7 +26604,7 @@ The type that all validators must extend.
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[values/validator.ts:28](https://github.com/convex/convex-js/blob/main/src/values/validator.ts#L28)
+[values/validator.ts:31](https://github.com/convex/convex-js/blob/main/src/values/validator.ts#L31)
 
 ***
 
@@ -26474,7 +26622,7 @@ Coerce an object with validators as properties to a validator. If a validator is
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[values/validator.ts:64](https://github.com/convex/convex-js/blob/main/src/values/validator.ts#L64)
+[values/validator.ts:67](https://github.com/convex/convex-js/blob/main/src/values/validator.ts#L67)
 
 ***
 
@@ -26488,7 +26636,7 @@ This is represented as an object mapping the property name to its [Validator](/a
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[values/validator.ts:439](https://github.com/convex/convex-js/blob/main/src/values/validator.ts#L439)
+[values/validator.ts:491](https://github.com/convex/convex-js/blob/main/src/values/validator.ts#L491)
 
 ***
 
@@ -26506,7 +26654,7 @@ Compute the type of an object from [PropertyValidators](/api/modules/values.md#p
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[values/validator.ts:449](https://github.com/convex/convex-js/blob/main/src/values/validator.ts#L449)
+[values/validator.ts:501](https://github.com/convex/convex-js/blob/main/src/values/validator.ts#L501)
 
 ***
 
@@ -26540,13 +26688,13 @@ The type of a [Validator](/api/modules/values.md#validator) constructed with [v]
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[values/validator.ts:491](https://github.com/convex/convex-js/blob/main/src/values/validator.ts#L491)
+[values/validator.ts:543](https://github.com/convex/convex-js/blob/main/src/values/validator.ts#L543)
 
 ***
 
 ### VOptional[​](#voptional "Direct link to VOptional")
 
-Ƭ **VOptional**<`T`>: `T` extends [`VId`](/api/classes/values.VId.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VId`](/api/classes/values.VId.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VString`](/api/classes/values.VString.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VString`](/api/classes/values.VString.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VFloat64`](/api/classes/values.VFloat64.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VFloat64`](/api/classes/values.VFloat64.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VInt64`](/api/classes/values.VInt64.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VInt64`](/api/classes/values.VInt64.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VCommitTs`](/api/classes/values.VCommitTs.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VCommitTs`](/api/classes/values.VCommitTs.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VBoolean`](/api/classes/values.VBoolean.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VBoolean`](/api/classes/values.VBoolean.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VNull`](/api/classes/values.VNull.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VNull`](/api/classes/values.VNull.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VAny`](/api/classes/values.VAny.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VAny`](/api/classes/values.VAny.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VLiteral`](/api/classes/values.VLiteral.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VLiteral`](/api/classes/values.VLiteral.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VBytes`](/api/classes/values.VBytes.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VBytes`](/api/classes/values.VBytes.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VObject`](/api/classes/values.VObject.md)\<infer Type, infer Fields, [`OptionalProperty`](/api/modules/values.md#optionalproperty), infer FieldPaths> ? [`VObject`](/api/classes/values.VObject.md)<`Type` | `undefined`, `Fields`, `"optional"`, `FieldPaths`> : `T` extends [`VArray`](/api/classes/values.VArray.md)\<infer Type, infer Element, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VArray`](/api/classes/values.VArray.md)<`Type` | `undefined`, `Element`, `"optional"`> : `T` extends [`VRecord`](/api/classes/values.VRecord.md)\<infer Type, infer Key, infer Value, [`OptionalProperty`](/api/modules/values.md#optionalproperty), infer FieldPaths> ? [`VRecord`](/api/classes/values.VRecord.md)<`Type` | `undefined`, `Key`, `Value`, `"optional"`, `FieldPaths`> : `T` extends [`VUnion`](/api/classes/values.VUnion.md)\<infer Type, infer Members, [`OptionalProperty`](/api/modules/values.md#optionalproperty), infer FieldPaths> ? [`VUnion`](/api/classes/values.VUnion.md)<`Type` | `undefined`, `Members`, `"optional"`, `FieldPaths`> : `never`
+Ƭ **VOptional**<`T`>: `T` extends [`VId`](/api/classes/values.VId.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VId`](/api/classes/values.VId.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VString`](/api/classes/values.VString.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VString`](/api/classes/values.VString.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VFloat64`](/api/classes/values.VFloat64.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VFloat64`](/api/classes/values.VFloat64.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VInt64`](/api/classes/values.VInt64.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VInt64`](/api/classes/values.VInt64.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VCommitTs`](/api/classes/values.VCommitTs.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VCommitTs`](/api/classes/values.VCommitTs.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VFunction`](/api/classes/values.VFunction.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VFunction`](/api/classes/values.VFunction.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VBoolean`](/api/classes/values.VBoolean.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VBoolean`](/api/classes/values.VBoolean.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VNull`](/api/classes/values.VNull.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VNull`](/api/classes/values.VNull.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VAny`](/api/classes/values.VAny.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VAny`](/api/classes/values.VAny.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VLiteral`](/api/classes/values.VLiteral.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VLiteral`](/api/classes/values.VLiteral.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VBytes`](/api/classes/values.VBytes.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VBytes`](/api/classes/values.VBytes.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VObject`](/api/classes/values.VObject.md)\<infer Type, infer Fields, [`OptionalProperty`](/api/modules/values.md#optionalproperty), infer FieldPaths> ? [`VObject`](/api/classes/values.VObject.md)<`Type` | `undefined`, `Fields`, `"optional"`, `FieldPaths`> : `T` extends [`VArray`](/api/classes/values.VArray.md)\<infer Type, infer Element, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VArray`](/api/classes/values.VArray.md)<`Type` | `undefined`, `Element`, `"optional"`> : `T` extends [`VRecord`](/api/classes/values.VRecord.md)\<infer Type, infer Key, infer Value, [`OptionalProperty`](/api/modules/values.md#optionalproperty), infer FieldPaths> ? [`VRecord`](/api/classes/values.VRecord.md)<`Type` | `undefined`, `Key`, `Value`, `"optional"`, `FieldPaths`> : `T` extends [`VUnion`](/api/classes/values.VUnion.md)\<infer Type, infer Members, [`OptionalProperty`](/api/modules/values.md#optionalproperty), infer FieldPaths> ? [`VUnion`](/api/classes/values.VUnion.md)<`Type` | `undefined`, `Members`, `"optional"`, `FieldPaths`> : `never`
 
 #### Type parameters[​](#type-parameters-3 "Direct link to Type parameters")
 
@@ -26556,7 +26704,7 @@ The type of a [Validator](/api/modules/values.md#validator) constructed with [v]
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:730](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L730)
+[values/validators.ts:806](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L806)
 
 ***
 
@@ -26568,13 +26716,13 @@ Type representing whether a property in an object is optional or required.
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[values/validators.ts:765](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L765)
+[values/validators.ts:843](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L843)
 
 ***
 
 ### Validator[​](#validator "Direct link to Validator")
 
-Ƭ **Validator**<`Type`, `IsOptional`, `FieldPaths`>: [`VId`](/api/classes/values.VId.md)<`Type`, `IsOptional`> | [`VString`](/api/classes/values.VString.md)<`Type`, `IsOptional`> | [`VFloat64`](/api/classes/values.VFloat64.md)<`Type`, `IsOptional`> | [`VInt64`](/api/classes/values.VInt64.md)<`Type`, `IsOptional`> | [`VCommitTs`](/api/classes/values.VCommitTs.md)<`Type`, `IsOptional`> | [`VBoolean`](/api/classes/values.VBoolean.md)<`Type`, `IsOptional`> | [`VNull`](/api/classes/values.VNull.md)<`Type`, `IsOptional`> | [`VAny`](/api/classes/values.VAny.md)<`Type`, `IsOptional`> | [`VLiteral`](/api/classes/values.VLiteral.md)<`Type`, `IsOptional`> | [`VBytes`](/api/classes/values.VBytes.md)<`Type`, `IsOptional`> | [`VObject`](/api/classes/values.VObject.md)<`Type`, `Record`<`string`, [`Validator`](/api/modules/values.md#validator)<`any`, [`OptionalProperty`](/api/modules/values.md#optionalproperty), `any`>>, `IsOptional`, `FieldPaths`> | [`VArray`](/api/classes/values.VArray.md)<`Type`, [`Validator`](/api/modules/values.md#validator)<`any`, `"required"`, `any`>, `IsOptional`> | [`VRecord`](/api/classes/values.VRecord.md)<`Type`, [`Validator`](/api/modules/values.md#validator)<`string`, `"required"`, `any`>, [`Validator`](/api/modules/values.md#validator)<`any`, `"required"`, `any`>, `IsOptional`, `FieldPaths`> | [`VUnion`](/api/classes/values.VUnion.md)<`Type`, [`Validator`](/api/modules/values.md#validator)<`any`, `"required"`, `any`>\[], `IsOptional`, `FieldPaths`>
+Ƭ **Validator**<`Type`, `IsOptional`, `FieldPaths`>: [`VId`](/api/classes/values.VId.md)<`Type`, `IsOptional`> | [`VString`](/api/classes/values.VString.md)<`Type`, `IsOptional`> | [`VFloat64`](/api/classes/values.VFloat64.md)<`Type`, `IsOptional`> | [`VInt64`](/api/classes/values.VInt64.md)<`Type`, `IsOptional`> | [`VCommitTs`](/api/classes/values.VCommitTs.md)<`Type`, `IsOptional`> | [`VFunction`](/api/classes/values.VFunction.md)<`Type`, `IsOptional`> | [`VBoolean`](/api/classes/values.VBoolean.md)<`Type`, `IsOptional`> | [`VNull`](/api/classes/values.VNull.md)<`Type`, `IsOptional`> | [`VAny`](/api/classes/values.VAny.md)<`Type`, `IsOptional`> | [`VLiteral`](/api/classes/values.VLiteral.md)<`Type`, `IsOptional`> | [`VBytes`](/api/classes/values.VBytes.md)<`Type`, `IsOptional`> | [`VObject`](/api/classes/values.VObject.md)<`Type`, `Record`<`string`, [`Validator`](/api/modules/values.md#validator)<`any`, [`OptionalProperty`](/api/modules/values.md#optionalproperty), `any`>>, `IsOptional`, `FieldPaths`> | [`VArray`](/api/classes/values.VArray.md)<`Type`, [`Validator`](/api/modules/values.md#validator)<`any`, `"required"`, `any`>, `IsOptional`> | [`VRecord`](/api/classes/values.VRecord.md)<`Type`, [`Validator`](/api/modules/values.md#validator)<`string`, `"required"`, `any`>, [`Validator`](/api/modules/values.md#validator)<`any`, `"required"`, `any`>, `IsOptional`, `FieldPaths`> | [`VUnion`](/api/classes/values.VUnion.md)<`Type`, [`Validator`](/api/modules/values.md#validator)<`any`, `"required"`, `any`>\[], `IsOptional`, `FieldPaths`>
 
 A validator for a Convex value.
 
@@ -26601,7 +26749,7 @@ More validators can be added in future releases so an exhaustive switch statemen
 
 #### Defined in[​](#defined-in-7 "Direct link to Defined in")
 
-[values/validators.ts:790](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L790)
+[values/validators.ts:868](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L868)
 
 ***
 
@@ -26618,17 +26766,17 @@ More validators can be added in future releases so an exhaustive switch statemen
 
 #### Defined in[​](#defined-in-8 "Direct link to Defined in")
 
-[values/validators.ts:832](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L832)
+[values/validators.ts:911](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L911)
 
 ***
 
 ### ValidatorJSON[​](#validatorjson "Direct link to ValidatorJSON")
 
-Ƭ **ValidatorJSON**: { `type`: `"null"` } | { `type`: `"number"` } | { `type`: `"bigint"` } | { `type`: `"commitTs"` } | { `type`: `"boolean"` } | { `type`: `"string"` } | { `type`: `"bytes"` } | { `type`: `"any"` } | { `type`: `"literal"` ; `value`: [`JSONValue`](/api/modules/values.md#jsonvalue) } | { `type`: `"id"` ; `tableName`: `string` } | { `type`: `"array"` ; `value`: [`ValidatorJSON`](/api/modules/values.md#validatorjson) } | { `type`: `"record"` ; `keys`: [`RecordKeyValidatorJSON`](/api/modules/values.md#recordkeyvalidatorjson) ; `values`: [`RecordValueValidatorJSON`](/api/modules/values.md#recordvaluevalidatorjson) } | { `type`: `"object"` ; `value`: `Record`<`string`, [`ObjectFieldType`](/api/modules/values.md#objectfieldtype)> } | { `type`: `"union"` ; `value`: [`ValidatorJSON`](/api/modules/values.md#validatorjson)\[] }
+Ƭ **ValidatorJSON**: { `type`: `"null"` } | { `type`: `"number"` } | { `type`: `"bigint"` } | { `type`: `"commitTs"` } | { `type`: `"function"` ; `fnType?`: [`FunctionType`](/api/modules/server.md#functiontype) ; `args?`: [`ValidatorJSON`](/api/modules/values.md#validatorjson) ; `returns?`: [`ValidatorJSON`](/api/modules/values.md#validatorjson) } | { `type`: `"boolean"` } | { `type`: `"string"` } | { `type`: `"bytes"` } | { `type`: `"any"` } | { `type`: `"literal"` ; `value`: [`JSONValue`](/api/modules/values.md#jsonvalue) } | { `type`: `"id"` ; `tableName`: `string` } | { `type`: `"array"` ; `value`: [`ValidatorJSON`](/api/modules/values.md#validatorjson) } | { `type`: `"record"` ; `keys`: [`RecordKeyValidatorJSON`](/api/modules/values.md#recordkeyvalidatorjson) ; `values`: [`RecordValueValidatorJSON`](/api/modules/values.md#recordvaluevalidatorjson) } | { `type`: `"object"` ; `value`: `Record`<`string`, [`ObjectFieldType`](/api/modules/values.md#objectfieldtype)> } | { `type`: `"union"` ; `value`: [`ValidatorJSON`](/api/modules/values.md#validatorjson)\[] }
 
 #### Defined in[​](#defined-in-9 "Direct link to Defined in")
 
-[values/validators.ts:834](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L834)
+[values/validators.ts:913](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L913)
 
 ***
 
@@ -26638,7 +26786,7 @@ More validators can be added in future releases so an exhaustive switch statemen
 
 #### Defined in[​](#defined-in-10 "Direct link to Defined in")
 
-[values/validators.ts:854](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L854)
+[values/validators.ts:939](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L939)
 
 ***
 
@@ -26648,7 +26796,7 @@ More validators can be added in future releases so an exhaustive switch statemen
 
 #### Defined in[​](#defined-in-11 "Direct link to Defined in")
 
-[values/validators.ts:859](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L859)
+[values/validators.ts:944](https://github.com/convex/convex-js/blob/main/src/values/validators.ts#L944)
 
 ***
 
@@ -26802,30 +26950,31 @@ export const createUser = mutation({
 
 #### Type declaration[​](#type-declaration-1 "Direct link to Type declaration")
 
-| Name       | Type                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`       | \<TableName>(`tableName`: `TableName`) => [`VId`](/api/classes/values.VId.md)<[`GenericId`](/api/modules/values.md#genericid)<`TableName`>, `"required"`>                                                                                                                                                                                                                                                                                    |
-| `null`     | () => [`VNull`](/api/classes/values.VNull.md)<`null`, `"required"`>                                                                                                                                                                                                                                                                                                                                                                          |
-| `number`   | () => [`VFloat64`](/api/classes/values.VFloat64.md)<`number`, `"required"`>                                                                                                                                                                                                                                                                                                                                                                  |
-| `float64`  | () => [`VFloat64`](/api/classes/values.VFloat64.md)<`number`, `"required"`>                                                                                                                                                                                                                                                                                                                                                                  |
-| `bigint`   | () => [`VInt64`](/api/classes/values.VInt64.md)<`bigint`, `"required"`>                                                                                                                                                                                                                                                                                                                                                                      |
-| `int64`    | () => [`VInt64`](/api/classes/values.VInt64.md)<`bigint`, `"required"`>                                                                                                                                                                                                                                                                                                                                                                      |
-| `commitTs` | () => [`VCommitTs`](/api/classes/values.VCommitTs.md)<`bigint` \| [`CommitTsPlaceholder`](/api/classes/values.CommitTsPlaceholder.md), `"required"`>                                                                                                                                                                                                                                                                                         |
-| `boolean`  | () => [`VBoolean`](/api/classes/values.VBoolean.md)<`boolean`, `"required"`>                                                                                                                                                                                                                                                                                                                                                                 |
-| `string`   | () => [`VString`](/api/classes/values.VString.md)<`string`, `"required"`>                                                                                                                                                                                                                                                                                                                                                                    |
-| `bytes`    | () => [`VBytes`](/api/classes/values.VBytes.md)<`ArrayBuffer`, `"required"`>                                                                                                                                                                                                                                                                                                                                                                 |
-| `literal`  | \<T>(`literal`: `T`) => [`VLiteral`](/api/classes/values.VLiteral.md)<`T`, `"required"`>                                                                                                                                                                                                                                                                                                                                                     |
-| `array`    | \<T>(`element`: `T`) => [`VArray`](/api/classes/values.VArray.md)<`T`\[`"type"`]\[], `T`, `"required"`>                                                                                                                                                                                                                                                                                                                                      |
-| `object`   | \<T>(`fields`: `T`) => [`VObject`](/api/classes/values.VObject.md)<[`Expand`](/api/modules/server.md#expand)<{ \[Property in string \| number \| symbol]?: Exclude\<Infer\<T\[Property]>, undefined> } & { \[Property in string \| number \| symbol]: Infer\<T\[Property]> }>, `T`, `"required"`, { \[Property in string \| number \| symbol]: Property \| \`${Property & string}.${T\[Property]\["fieldPaths"]}\` }\[keyof `T`] & `string`> |
-| `record`   | \<Key, Value>(`keys`: `Key`, `values`: `Value`) => [`VRecord`](/api/classes/values.VRecord.md)<`Record`<[`Infer`](/api/modules/values.md#infer)<`Key`>, `Value`\[`"type"`]>, `Key`, `Value`, `"required"`, `string`>                                                                                                                                                                                                                         |
-| `union`    | \<T>(...`members`: `T`) => [`VUnion`](/api/classes/values.VUnion.md)<`T`\[`number`]\[`"type"`], `T`, `"required"`, `T`\[`number`]\[`"fieldPaths"`]>                                                                                                                                                                                                                                                                                          |
-| `any`      | () => [`VAny`](/api/classes/values.VAny.md)<`any`, `"required"`, `string`>                                                                                                                                                                                                                                                                                                                                                                   |
-| `optional` | \<T>(`value`: `T`) => [`VOptional`](/api/modules/values.md#voptional)<`T`>                                                                                                                                                                                                                                                                                                                                                                   |
-| `nullable` | \<T>(`value`: `T`) => [`VUnion`](/api/classes/values.VUnion.md)<`T` \| [`VNull`](/api/classes/values.VNull.md)<`null`, `"required"`>\[`"type"`], \[`T`, [`VNull`](/api/classes/values.VNull.md)<`null`, `"required"`>], `"required"`, `T` \| [`VNull`](/api/classes/values.VNull.md)<`null`, `"required"`>\[`"fieldPaths"`]>                                                                                                                 |
+| Name       | Type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `id`       | \<TableName>(`tableName`: `TableName`) => [`VId`](/api/classes/values.VId.md)<[`GenericId`](/api/modules/values.md#genericid)<`TableName`>, `"required"`>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| `null`     | () => [`VNull`](/api/classes/values.VNull.md)<`null`, `"required"`>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `number`   | () => [`VFloat64`](/api/classes/values.VFloat64.md)<`number`, `"required"`>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `float64`  | () => [`VFloat64`](/api/classes/values.VFloat64.md)<`number`, `"required"`>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `bigint`   | () => [`VInt64`](/api/classes/values.VInt64.md)<`bigint`, `"required"`>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `int64`    | () => [`VInt64`](/api/classes/values.VInt64.md)<`bigint`, `"required"`>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `commitTs` | () => [`VCommitTs`](/api/classes/values.VCommitTs.md)<`bigint` \| [`CommitTsPlaceholder`](/api/classes/values.CommitTsPlaceholder.md), `"required"`>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `function` | \<Type, ArgsValidator, ReturnsValidator>(`signature?`: { `fnType?`: `Type` ; `args?`: `ArgsValidator` ; `returns?`: `ReturnsValidator` }) => [`VFunction`](/api/classes/values.VFunction.md)<[`FunctionHandle_future`](/api/modules/server.md#functionhandle_future)<`Type` extends [`FunctionType`](/api/modules/server.md#functiontype) ? `Type` : `any`, `ArgsValidator` extends [`GenericValidator`](/api/modules/values.md#genericvalidator) \| [`PropertyValidators`](/api/modules/values.md#propertyvalidators) ? [`Infer`](/api/modules/values.md#infer)<[`AsObjectValidator`](/api/modules/values.md#asobjectvalidator-1)<`ArgsValidator`>> : `any`, `ReturnsValidator` extends [`GenericValidator`](/api/modules/values.md#genericvalidator) \| [`PropertyValidators`](/api/modules/values.md#propertyvalidators) ? [`Infer`](/api/modules/values.md#infer)<[`AsObjectValidator`](/api/modules/values.md#asobjectvalidator-1)<`ReturnsValidator`>> : `any`>, `"required"`> |
+| `boolean`  | () => [`VBoolean`](/api/classes/values.VBoolean.md)<`boolean`, `"required"`>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `string`   | () => [`VString`](/api/classes/values.VString.md)<`string`, `"required"`>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| `bytes`    | () => [`VBytes`](/api/classes/values.VBytes.md)<`ArrayBuffer`, `"required"`>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `literal`  | \<T>(`literal`: `T`) => [`VLiteral`](/api/classes/values.VLiteral.md)<`T`, `"required"`>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `array`    | \<T>(`element`: `T`) => [`VArray`](/api/classes/values.VArray.md)<`T`\[`"type"`]\[], `T`, `"required"`>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `object`   | \<T>(`fields`: `T`) => [`VObject`](/api/classes/values.VObject.md)<[`Expand`](/api/modules/server.md#expand)<{ \[Property in string \| number \| symbol]?: Exclude\<Infer\<T\[Property]>, undefined> } & { \[Property in string \| number \| symbol]: Infer\<T\[Property]> }>, `T`, `"required"`, { \[Property in string \| number \| symbol]: Property \| \`${Property & string}.${T\[Property]\["fieldPaths"]}\` }\[keyof `T`] & `string`>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `record`   | \<Key, Value>(`keys`: `Key`, `values`: `Value`) => [`VRecord`](/api/classes/values.VRecord.md)<`Record`<[`Infer`](/api/modules/values.md#infer)<`Key`>, `Value`\[`"type"`]>, `Key`, `Value`, `"required"`, `string`>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `union`    | \<T>(...`members`: `T`) => [`VUnion`](/api/classes/values.VUnion.md)<`T`\[`number`]\[`"type"`], `T`, `"required"`, `T`\[`number`]\[`"fieldPaths"`]>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `any`      | () => [`VAny`](/api/classes/values.VAny.md)<`any`, `"required"`, `string`>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `optional` | \<T>(`value`: `T`) => [`VOptional`](/api/modules/values.md#voptional)<`T`>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `nullable` | \<T>(`value`: `T`) => [`VUnion`](/api/classes/values.VUnion.md)<`T` \| [`VNull`](/api/classes/values.VNull.md)<`null`, `"required"`>\[`"type"`], \[`T`, [`VNull`](/api/classes/values.VNull.md)<`null`, `"required"`>], `"required"`, `T` \| [`VNull`](/api/classes/values.VNull.md)<`null`, `"required"`>\[`"fieldPaths"`]>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 
 #### Defined in[​](#defined-in-16 "Direct link to Defined in")
 
-[values/validator.ts:137](https://github.com/convex/convex-js/blob/main/src/values/validator.ts#L137)
+[values/validator.ts:140](https://github.com/convex/convex-js/blob/main/src/values/validator.ts#L140)
 
 ## Functions[​](#functions "Direct link to Functions")
 
@@ -26927,7 +27076,7 @@ Coerce an object with validators as properties to a validator. If a validator is
 
 #### Defined in[​](#defined-in-20 "Direct link to Defined in")
 
-[values/validator.ts:42](https://github.com/convex/convex-js/blob/main/src/values/validator.ts#L42)
+[values/validator.ts:45](https://github.com/convex/convex-js/blob/main/src/values/validator.ts#L45)
 
 ***
 
@@ -32582,6 +32731,9 @@ The available CLI commands are:
 * [`npx convex ai-files`](/cli/reference/ai-files.md) —
   <!-- -->
   Manage Convex AI files
+* [`npx convex plugins`](/cli/reference/plugins.md) —
+  <!-- -->
+  Manage Convex plugins for coding agents
 
 ## Configure[​](#configure "Direct link to Configure")
 
@@ -34348,6 +34500,40 @@ npx convex mcp start [options]
   * `dev` (for your personal dev deployment)
   * `prod` (for your project’s default production deployment)
   * `local` (for your local dev deployment). You can also select deployments in other projects with `project-slug:reference` or `team-slug:project-slug:reference`.
+
+
+---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
+# `npx convex plugins`
+
+Manage Convex plugins for coding agents
+
+## Syntax[​](#syntax "Direct link to Syntax")
+
+```
+npx convex plugins [options] [command]
+```
+
+## Subcommands[​](#subcommands "Direct link to Subcommands")
+
+* [`npx convex plugins install`](#install) — Install or upgrade the Convex plugin for Claude Code and Codex
+
+## `npx convex plugins install`[​](#install "Direct link to install")
+
+Installs or upgrades the Convex plugin for Claude Code and Codex, in the terminal, the desktop app and the VS Code extension:
+
+* Claude Code: convex\@claude-plugins-official
+* Codex: convex\@convex-codex-plugin
+
+Claude Code or Codex is skipped when it isn't installed. Windows isn't supported yet.
+
+### Syntax[​](#syntax-1 "Direct link to Syntax")
+
+```
+npx convex plugins install [options]
+```
 
 
 ---
@@ -40086,6 +40272,8 @@ Within a component’s implementation, the same applies to the component's table
 
 For this reason, all `Id` types in the `ComponentApi` become simple strings.
 
+Function handles validated with `v.function()` keep their signature in the `ComponentApi`, since a handle can be called from anywhere. See [Function Handles](#function-handles).
+
 ### Generated code[​](#generated-code "Direct link to Generated code")
 
 Each component has its own `_generated` directory in addition to the `convex/_generated` directory. They are similar, but its contents are specific to the component and its schema. In general, code outside of the component should not import from this directory with the exception of `_generated/component`.
@@ -40339,23 +40527,159 @@ A function reference is something like api.foo.bar or `internal.foo.bar` or `com
 const handle = await createFunctionHandle(api.foo.bar);
 ```
 
-This handle is a string.
+This handle is a string branded with the `FunctionReference` type, and you can use it as you would use a function reference. Argument and return value validation still run at runtime, so don't worry about losing guarantees.
 
-Since it’s a string, you can pass it between functions and even store it in a table. You would use `v.string()` in args/schema validators.
-
-When you want to use it, cast it back to FunctionHandle and use it as you would use a function reference. Note argument and return value validation still run at runtime, so don't worry about losing guarantees.
+jobs/lib.ts
 
 ```
-const handle = handleString as FunctionHandle<"mutation">;
-
-
-
-const result = await ctx.runMutation(handle, args);
+await ctx.runMutation(handle, { event });
 
 // or run it asynchronously via the scheduler:
 
-await ctx.scheduler.runAfter(0, handle, args);
+await ctx.scheduler.runAfter(0, handle, { event });
 ```
+
+You can use the `v.function()` validator to validate that a value is a well-formed function handle:
+
+jobs/schema.ts
+
+```
+hooks: defineTable({
+
+  handle: v.function(),
+
+}),
+```
+
+jobs/lib.ts
+
+```
+export const addHook = mutation({
+
+  args: { handle: v.function() },
+
+  handler: async (ctx, { handle }) => {
+
+    return await ctx.db.insert("hooks", { handle });
+
+  },
+
+});
+
+
+
+export const listHooks = query({
+
+  args: {},
+
+  returns: v.array(v.function()),
+
+  handler: async (ctx) => {
+
+    const hooks = await ctx.db.query("hooks").collect();
+
+    return hooks.map((hook) => hook.handle);
+
+  },
+
+});
+```
+
+You can describe the signature of the function for `v.function()` to use in typechecking and codegen. At runtime, `v.function()` only checks that the value is a well-formed function handle, not that the function exists or matches the signature.
+
+jobs/lib.ts
+
+```
+export const enqueue = mutation({
+
+  args: {
+
+    input: v.string(),
+
+    onComplete: v.function({
+
+      fnType: "mutation",
+
+      args: { jobId: v.string(), result: v.string() },
+
+      returns: v.null(),
+
+    }),
+
+  },
+
+  handler: async () => {
+
+    // ...
+
+  },
+
+});
+```
+
+The specified signature will appear in the component's generated `ComponentApi`. This can be convenient for typechecking user-provided callbacks, as users will get a type error if they pass a handle to the wrong kind of function:
+
+convex/jobs.ts
+
+```
+export const start = mutation({
+
+  args: {},
+
+  handler: async (ctx) => {
+
+    await ctx.runMutation(components.jobs.lib.enqueue, {
+
+      input: "hello",
+
+      onComplete: await createFunctionHandle(internal.jobs.saveResult),
+
+    });
+
+    await ctx.runMutation(components.jobs.lib.enqueue, {
+
+      input: "hello",
+
+      // @ts-expect-error `saveCount` takes `count: number`, not `result: string`.
+
+      onComplete: await createFunctionHandle(internal.jobs.saveCount),
+
+    });
+
+  },
+
+});
+
+
+
+export const saveResult = internalMutation({
+
+  args: { jobId: v.string(), result: v.string() },
+
+  handler: async () => {
+
+    // ...
+
+  },
+
+});
+
+
+
+export const saveCount = internalMutation({
+
+  args: { jobId: v.string(), count: v.number() },
+
+  handler: async () => {
+
+    // ...
+
+  },
+
+});
+```
+
+The inferred type of a `v.function()` value is `FunctionHandle_future`, which is a function handle that has the semantics of [`FunctionReference_future`](/api/modules/server.md#functionreference_future). `FunctionHandle` is assignable to `FunctionHandle_future`, but `FunctionHandle_future` is not assignable to `FunctionHandle`, so helper functions that accept function handles should use the `FunctionHandle_future` type.
 
 [Here](https://github.com/convex/workpool/blob/aebe2db49fc3ec50ded6892ed27f464450b3d31e/src/component/worker.ts#L26-L28) is an example of using function handles in the [Workpool](https://www.convex.dev/components/workpool) component.
 
@@ -42714,6 +43038,10 @@ A commit timestamp represents the time (in nanoseconds) when a mutation commits.
 
 This can be used to to model a queue, or to implement an `updatedAt` field. You could define an index on a field that captures the commit time, then use that to iterate over new or updated documents without worrying about missing changes due to out-of-order commits. For tips on using CommitTs for efficient iteration, see the notes in the [Batch Worker Component README](https://github.com/convex/batch-worker).
 
+For a whiteboard walkthrough of why commit timestamps exist, and how they differ from `Date.now()` and `_creationTime`, watch this video:
+
+[Your database is lying to you about time](https://www.youtube.com/embed/pHrxmSjxLg8)
+
 convex/work.ts
 
 ```
@@ -43821,6 +44149,62 @@ One consequence of this is that **page sizes in Convex may change!** If you requ
 ### Experimental: paginated query result object[​](#experimental-paginated-query-result-object "Direct link to Experimental: paginated query result object")
 
 [`usePaginatedQuery_experimental`](/api/modules/react.md#usepaginatedquery_experimental) introduces a couple of changes that may become standard in the future. First, much of the pagination logic has been pushed down into the client layer so the hook has fewer responsibilities. Second, there's an overload that accepts an object argument and returns a result object with `status` (`"pending" | "success" | "error"`), `data`, `error`, and a `canLoadMore` boolean. See the [API reference](/api/modules/react.md#usepaginatedquery_experimental) for details.
+
+## Cursors are bound to the query[​](#cursors-are-bound-to-the-query "Direct link to Cursors are bound to the query")
+
+A cursor is only valid for the exact database query that produced it: the same table or index, the same index range, the same order, and the same `.filter()` expressions. If any of these differ when the cursor is passed back in, the query throws an `InvalidCursor` error. `usePaginatedQuery` catches this error, logs a warning, and restarts from the first page, discarding every page it had loaded.
+
+This matters when the database query is built from data the function reads:
+
+```
+export const listEmails = query({
+
+  args: { userId: v.id("users"), paginationOpts: paginationOptsValidator },
+
+  handler: async (ctx, args) => {
+
+    const user = await ctx.db.get(args.userId);
+
+    return await ctx.db
+
+      .query("emails")
+
+      .withIndex("by_address", (q) => q.eq("address", user!.emailAddress))
+
+      .paginate(args.paginationOpts);
+
+  },
+
+});
+```
+
+If the user changes their email address, cursors from earlier pages point into the old address's index range and are rejected. The reset is intentional: continuing from those cursors would return pages from the wrong range.
+
+### Queries that depend on changing data[​](#queries-that-depend-on-changing-data "Direct link to Queries that depend on changing data")
+
+* **Pass the dependency as an argument.** `usePaginatedQuery` restarts from the first page whenever its arguments change, so passing `address` as an argument gives the same reset without the warning, and the component can show a loading state while it happens.
+
+* **Avoid data-dependent `.filter()` calls on paginated queries.** The filter determines how many documents a page spans. A page of ten matches from a sparse filter can cover thousands of index entries, and any write to those documents re-runs the whole page. Index the dependency instead, or paginate the relationship and load each referenced document:
+
+  ```
+  const favorites = await ctx.db
+
+    .query("favorites")
+
+    .withIndex("by_user", (q) => q.eq("userId", args.userId))
+
+    .paginate(args.paginationOpts);
+
+  const items = await Promise.all(
+
+    favorites.page.map((favorite) => ctx.db.get(favorite.itemId)),
+
+  );
+
+  return { ...favorites, page: items.filter((item) => item !== null) };
+  ```
+
+* **Filter the `page` array in JavaScript to keep loaded pages.** Filtering after `paginate` doesn't change the database query, so cursors stay valid. Some pages may come back empty while there are still more to load, so keep calling `loadMore` until the hook's `status` is `"Exhausted"`.
 
 ## Paginating manually[​](#paginating-manually "Direct link to Paginating manually")
 
@@ -45381,6 +45765,32 @@ defineTable({
 
 This corresponds to the `any` type in TypeScript.
 
+#### Function handles[​](#function-handles "Direct link to Function handles")
+
+[Function handles](/components/authoring.md#function-handles) can be stored in fields validated with `v.function()`:
+
+jobs/schema.ts
+
+```
+jobs: defineTable({
+
+  input: v.string(),
+
+  onComplete: v.function({
+
+    fnType: "mutation",
+
+    args: { jobId: v.string(), result: v.string() },
+
+    returns: v.null(),
+
+  }),
+
+}),
+```
+
+Schema validation only checks that the value is a well-formed function handle string. `fnType`, `args`, and `returns` are used for TypeScript typechecking and codegen but aren't checked when a document is written, and changing them will not revalidate existing stored function handles. A stored handle might also point to a function that no longer exists.
+
 ### Options[​](#options "Direct link to Options")
 
 These options are passed as part of the [options](/api/interfaces/server.DefineSchemaOptions.md) argument to [`defineSchema`](/api/modules/server.md#defineschema).
@@ -46286,6 +46696,26 @@ Created in the dashboard under team settings for any team you can manage. Use th
 
 > For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
+# Create integration
+
+```
+POST 
+/integrations
+```
+
+Create a new integration for the deployment. Errors if a integration of the given type already exists.
+
+## Request[​](#request "Direct link to request")
+
+## Responses[​](#responses "Direct link to Responses")
+
+* 200
+
+
+---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Create log stream
 
 ```
@@ -46346,6 +46776,26 @@ Apply each page's `truncates` before its `values`, and persist these changes ato
 To do a one time data sync, keep fetching pages until reaching an `upToDate` page. For a continuous streaming export, continue fetching pages periodically. It's recommended to sleep between `upToDate` pages to reduce overhead.
 
 The caller must have the `deployment:data:view` permission.
+
+## Request[​](#request "Direct link to request")
+
+## Responses[​](#responses "Direct link to Responses")
+
+* 200
+
+
+---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
+# Delete integration
+
+```
+DELETE 
+/integrations/:id
+```
+
+Delete the deployment's integration with the given id.
 
 ## Request[​](#request "Direct link to request")
 
@@ -46486,6 +46936,26 @@ Returns identity information about this deployment.
 
 > For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
+# Get integration
+
+```
+GET 
+/integrations/:id
+```
+
+Get the config for a specific integration by id.
+
+## Request[​](#request "Direct link to request")
+
+## Responses[​](#responses "Direct link to Responses")
+
+* 200
+
+
+---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Get log stream
 
 ```
@@ -46570,6 +47040,24 @@ Get all environment variables in a deployment. In the future this might not incl
 
 > For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
+# List integrations
+
+```
+GET 
+/integrations
+```
+
+List configs for all existing integrations in a deployment.
+
+## Responses[​](#responses "Direct link to Responses")
+
+* 200
+
+
+---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # List log streams
 
 ```
@@ -46629,6 +47117,26 @@ POST
 ```
 
 Disables a deployment without deleting any data. The deployment will not operate until it is unpaused. While a deployment is paused, new functions calls will return an error, scheduled jobs will queue and run when the deployment is resumed, and cron jobs will be skipped. This means that no function calls or bandwidth usage will be charged while the deployment is paused, but storage costs will still apply.
+
+## Responses[​](#responses "Direct link to Responses")
+
+* 200
+
+
+---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
+# Rotate webhook integration secret
+
+```
+POST 
+/integrations/:id/rotate_webhook_secret
+```
+
+Rotate the secret for the webhook integration.
+
+## Request[​](#request "Direct link to request")
 
 ## Responses[​](#responses "Direct link to Responses")
 
@@ -46705,6 +47213,26 @@ POST
 ```
 
 Update one or many environment variables in a deployment. This will invalidate all subscriptions, since environment variables are accessible in queries but are not part of the cache key of a query result.
+
+## Request[​](#request "Direct link to request")
+
+## Responses[​](#responses "Direct link to Responses")
+
+* 200
+
+
+---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
+# Update integration
+
+```
+PATCH 
+/integrations/:id
+```
+
+Update an existing integration for the deployment. Omit a field to keep the existing value, and use `null` to unset a field.
 
 ## Request[​](#request "Direct link to request")
 
@@ -47022,6 +47550,8 @@ Files stored in Convex can be deleted from [mutations](/functions/mutation-funct
 
 Storage IDs correspond to documents in the `"_storage"` system table (see [Metadata](/file-storage/file-metadata.md)), so they can be validated using the `v.id("_storage")`.
 
+If a mutation deletes a file it stored earlier in the same transaction, the file is never stored.
+
 convex/images.ts
 
 ```
@@ -47181,8 +47711,8 @@ If you need file URLs that automatically expire after some time, consider the [C
 ## Features[​](#features "Direct link to Features")
 
 * [Upload](/file-storage/upload-files.md) files to store them in Convex and reference them in your database documents
-* [Store](/file-storage/store-files.md) files generated or fetched from third-party APIs
-* [Serve](/file-storage/serve-files.md) files via URL
+* [Store](/file-storage/store-files.md) files generated in your functions or fetched from third-party APIs
+* [Serve](/file-storage/serve-files.md) files via URL, or read their contents from a mutation or action
 * [Delete](/file-storage/delete-files.md) files stored in Convex
 * Access file [metadata](/file-storage/file-metadata.md)
 
@@ -47275,7 +47805,7 @@ If you need file URLs that automatically expire after some time, consider the [C
 
 The small example below passes a storage ID in the URL so it can focus on `storage.get()`. For private files, add authentication and authorization checks before returning the file.
 
-A file [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) object can be generated from a storage ID by the [`storage.get`](/api/interfaces/server.StorageActionWriter.md#get) function of the [`ActionCtx`](/api/interfaces/server.GenericActionCtx.md) object, which can be returned in a `Response`:
+A file [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) object can be generated from a storage ID by the [`storage.get`](/api/interfaces/server.StorageWriter.md#get) function of the [`ActionCtx`](/api/interfaces/server.GenericActionCtx.md) object, which can be returned in a `Response`:
 
 convex/http.ts
 
@@ -47351,6 +47881,44 @@ function Image({ storageId }: { storageId: string }) {
 }
 ```
 
+## Reading files in mutations[​](#reading-files-in-mutations "Direct link to Reading files in mutations")
+
+Mutations can also read the contents of a file using [`storage.get()`](/api/interfaces/server.StorageWriter.md#get). For example, a mutation can parse an uploaded file and write documents based on its contents in a single transaction:
+
+convex/filesInMutations.ts
+
+```
+export const importTasks = mutation({
+
+  args: { storageId: v.id("_storage") },
+
+  handler: async (ctx, args) => {
+
+    const blob = await ctx.storage.get(args.storageId);
+
+    if (blob === null) {
+
+      throw new Error("File not found");
+
+    }
+
+    const texts: string[] = JSON.parse(await blob.text());
+
+    for (const text of texts) {
+
+      await ctx.db.insert("tasks", { text });
+
+    }
+
+  },
+
+});
+```
+
+See the [limits](/production/state/limits.md#transactions) for the number and total size of files a mutation can read, including in mutations it calls with `ctx.runMutation`. Reading the same file more than once or reading a file stored earlier in the same mutation doesn't count toward the limits again. To read larger files, use an [action](/functions/actions.md).
+
+Queries can't read file contents.
+
 
 ---
 
@@ -47360,7 +47928,7 @@ function Image({ storageId }: { storageId: string }) {
 
 Files can be uploaded to Convex from a client and stored directly, see [Upload](/file-storage/upload-files.md).
 
-Alternatively files can also be stored after they've been fetched or generated in [actions](/functions/actions.md) and [HTTP actions](/functions/http-actions.md). For example you might call a third-party API to generate an image based on a user prompt and then store that image in Convex.
+Alternatively files can also be stored inside [actions](/functions/actions.md), [HTTP actions](/functions/http-actions.md), and [mutations](/functions/mutation-functions.md). For example, an action might call a third-party API to generate an image based on a user prompt and then store that image in Convex.
 
 **Example:** [Dall-E Storage & Action](https://github.com/convex/convex-demos/tree/main/dall-e-storage-action)
 
@@ -47371,7 +47939,7 @@ Storing files in actions is similar to [uploading a file via an HTTP action](/fi
 The action takes these steps:
 
 1. Fetch or generate an image.
-2. Store the image using [`storage.store()`](/api/interfaces/server.StorageActionWriter.md#store) and receive a storage ID.
+2. Store the image using [`storage.store()`](/api/interfaces/server.StorageWriter.md#store) and receive a storage ID.
 3. Save the storage ID into your data model via a mutation.
 
 Storage IDs correspond to documents in the `"_storage"` system table (see [Metadata](/file-storage/file-metadata.md)), so they can be validated using the `v.id("_storage")` validator and typed as `Id<"_storage">` in TypeScript.
@@ -47451,6 +48019,50 @@ export const storeResult = internalMutation({
 
 });
 ```
+
+## Storing files in mutations[​](#storing-files-in-mutations "Direct link to Storing files in mutations")
+
+Mutations can also store files using [`storage.store()`](/api/interfaces/server.StorageWriter.md#store). The file is stored as part of the mutation's transaction, so you can store it and write its storage ID to a document atomically:
+
+convex/filesInMutations.ts
+
+```
+export const exportTasks = mutation({
+
+  args: {},
+
+  handler: async (ctx) => {
+
+    const tasks = await ctx.db.query("tasks").take(100);
+
+    const json = JSON.stringify(tasks.map((task) => task.text ?? ""));
+
+
+
+    // Store the file in Convex
+
+    const storageId = await ctx.storage.store(
+
+      new Blob([json], { type: "application/json" }),
+
+    );
+
+
+
+    // Write `storageId` to a document in the same transaction
+
+    await ctx.db.insert("exports", { storageId });
+
+  },
+
+});
+```
+
+If the mutation throws an error the file will not be stored. Other functions only see the file once the mutation commits.
+
+See the [limits](/production/state/limits.md#transactions) for the number and total size of files a mutation can store, including in mutations it calls with `ctx.runMutation`.
+
+To store larger files, [upload](/file-storage/upload-files.md) them from the client or store them in an action.
 
 
 ---
@@ -47741,9 +48353,9 @@ export default function App() {
 
 ### Defining the upload HTTP action[​](#defining-the-upload-http-action "Direct link to Defining the upload HTTP action")
 
-A file sent in the HTTP request body can be stored using the [`storage.store`](/api/interfaces/server.StorageActionWriter.md#store) function of the [`ActionCtx`](/api/interfaces/server.GenericActionCtx.md) object. This function returns an `Id<"_storage">` of the stored file.
+A file sent in the HTTP request body can be stored using the [`storage.store`](/api/interfaces/server.StorageWriter.md#store) function of the [`ActionCtx`](/api/interfaces/server.GenericActionCtx.md) object. This function returns an `Id<"_storage">` of the stored file.
 
-From the HTTP action you can call a mutation to write the storage ID to a document in your database.
+From the HTTP action you can call a mutation to write the storage ID to a document in your database. For files that fit within the [mutation limits](/production/state/limits.md#transactions), you can instead [store the file in a mutation](/file-storage/store-files.md#storing-files-in-mutations) and write the storage ID in the same transaction.
 
 To confirm success back to your hosted website, you will need to set the right [CORS headers](/functions/http-actions.md#cors):
 
@@ -49702,7 +50314,7 @@ Which part of the mutation context is used depends on what your mutation needs t
 
   Read on about [Writing Data](/database/writing-data.md).
 
-* To generate upload URLs for storing files use the `storage` field. Read on about [File Storage](/file-storage/overview.md).
+* To generate upload URLs and to store, read, and delete files, use the `storage` field. Read on about [File Storage](/file-storage/overview.md).
 
 * To check user authentication use the `auth` field. Read on about [Authentication](/auth/overview.md).
 
@@ -50389,6 +51001,8 @@ export const updateSomething = mutation({
 });
 ```
 
+For why `Date.now()` is frozen, and how it relates to `_creationTime` and [commit timestamps](/database/advanced/commit-timestamp.md), see [this whiteboard session](https://www.youtube.com/watch?v=pHrxmSjxLg8).
+
 Likewise, `performance.now()` is fixed to same result during query function execution. However, `performance.now()` will increment inside mutations. [`Performance.timeOrigin`](https://developer.mozilla.org/en-US/docs/Web/API/Performance/timeOrigin) is fixed to the deploy timestamp, both globally and during execution for all functions (except for in the [Node.js runtime](#nodejs-runtime)).
 
 ### Actions[​](#actions "Direct link to Actions")
@@ -50641,6 +51255,42 @@ export default mutation({
 ```
 
 This corresponds to the `any` type in TypeScript.
+
+### Function handles[​](#function-handles "Direct link to Function handles")
+
+[Function handles](/components/authoring.md#function-handles) can be represented with `v.function()`, optionally describing the function's type, arguments, and return value:
+
+jobs/lib.ts
+
+```
+export const enqueue = mutation({
+
+  args: {
+
+    input: v.string(),
+
+    onComplete: v.function({
+
+      fnType: "mutation",
+
+      args: { jobId: v.string(), result: v.string() },
+
+      returns: v.null(),
+
+    }),
+
+  },
+
+  handler: async () => {
+
+    // ...
+
+  },
+
+});
+```
+
+`fnType`, `args`, and `returns` are only used for TypeScript typechecking and codegen. At runtime, Convex currently only checks that the value is a well-formed function handle string, not the signature of the function it points to or that the function exists.
 
 ### Optional fields[​](#optional-fields "Direct link to Optional fields")
 
@@ -53252,6 +53902,26 @@ Lists all preview deploy keys for the specified project.
 
 > For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
+# List project tags
+
+```
+GET 
+/teams/:team_id/list_project_tags
+```
+
+List a page of the distinct tags used by a team's projects, ordered by tag name. Pass the `nextCursor` from the previous response as `cursor` to fetch the next page.
+
+## Request[​](#request "Direct link to request")
+
+## Responses[​](#responses "Direct link to Responses")
+
+* 200
+
+
+---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # List projects
 
 ```
@@ -53454,7 +54124,7 @@ POST
 /projects/:project_id/update_default_environment_variables
 ```
 
-Creates, updates, or deletes default environment variables for the specified project. When `value` is a string, the variable is upserted. When `value` is null, the variable is deleted.
+Creates, updates, or deletes default environment variables for the specified project. When `value` is a string, the variable is upserted. When `value` is null, the variable is deleted. Each item in `changes` can set `applyToExistingDeployments` to true to asynchronously upsert or delete the variable on every existing cloud deployment of that item's `deploymentType`.
 
 ## Request[​](#request "Direct link to request")
 
@@ -53494,7 +54164,7 @@ PATCH
 /projects/:project_id
 ```
 
-Update a project's name and/or slug. Returns the updated project.
+Update a project's name, slug, and/or tags. Returns the updated project.
 
 ## Request[​](#request "Direct link to request")
 
@@ -55261,6 +55931,8 @@ Example event for `console.log("Sent message!")` from a mutation:
 
       "request_id": "d064ef901f7ec0b7",
 
+      "runtime": "convex",
+
       "type": "mutation"
 
     },
@@ -55360,6 +56032,8 @@ Example event for a query:
       "path": "message:list",
 
       "request_id": "892104e63bd39d9a",
+
+      "runtime": "convex",
 
       "type": "query"
 
@@ -55513,6 +56187,7 @@ The following fields are added under `function` for all `console` and `function_
 
 * `type`: string, one of `["query", "mutation", "action", "http_action"]`
 * `path`: string, e.g. `"myDir/myFile:myFunction"`, or `"POST /my_endpoint"`
+* `runtime`: string, one of `["convex", "node"]`, the [runtime](/functions/runtimes.md) the function ran in. Queries, mutations, and HTTP actions always run in the Convex runtime. `null` for actions that failed with a system error before starting.
 * `cached`: optional boolean, for queries this denotes whether this event came from a cached function execution
 * `request_id`: string, the [request ID](/functions/debugging.md#finding-relevant-logs-by-request-id) of the function.
 
@@ -56589,8 +57264,9 @@ Applied to every [Convex value](/database/types.md), including values in documen
 | Function argument size                                           | 16 MiB                                                                                                  | 16 MiB                                                      | 16 MiB                                                                     | 16 MiB                                                                     | Node actions only support arguments up to 5MiB.                                                               |
 | Function return value size                                       | 16 MiB                                                                                                  | 16 MiB                                                      | 16 MiB                                                                     | 16 MiB                                                                     |                                                                                                               |
 | HTTP action response size                                        | 100 MiB                                                                                                 | 100 MiB                                                     | 100 MiB                                                                    | 100 MiB                                                                    | There is no specific limit on request size                                                                    |
-| Length of a console.log line                                     | 4 KiB                                                                                                   | 4 KiB                                                       | 4 KiB                                                                      | 4 KiB                                                                      |                                                                                                               |
-| Log lines per function                                           | 256                                                                                                     | 256                                                         | 256                                                                        | 256                                                                        | Additional logs will be dropped.                                                                              |
+| Length of a console.log line                                     | 32 KiB                                                                                                  | 32 KiB                                                      | 32 KiB                                                                     | 32 KiB                                                                     |                                                                                                               |
+| Log lines per query / mutation                                   | 256                                                                                                     | 256                                                         | 256                                                                        | 256                                                                        | Additional logs will be dropped.                                                                              |
+| Log lines per action                                             | 1024                                                                                                    | 1024                                                        | 1024                                                                       | 1024                                                                       | Additional logs will be dropped.                                                                              |
 | [Log streaming](/production/integrations/log-streams/.md) limits | 4096 logs, flushed every 5 seconds                                                                      | 4096 logs, flushed every 5 seconds                          | 4096 logs, flushed every 5 seconds                                         | 4096 logs, flushed every 5 seconds                                         | How many logs can be buffered when streaming                                                                  |
 
 ## Deployment Classes[​](#deployment-classes "Direct link to Deployment Classes")
@@ -56656,14 +57332,18 @@ Number of functions you can run at a time for each function type.
 
 These limits apply to each `query` or `mutation` function. To ensure you're within the limits, there are [tools to calculate and limit consumption within a transaction](/database/writing-data.md#write-performance-and-limits).
 
-|                            |        | Notes                                                     |
-| -------------------------- | ------ | --------------------------------------------------------- |
-| Data read                  | 16 MiB | Data not returned due to a `filter` counts as scanned     |
-| Data written               | 16 MiB |                                                           |
-| Documents scanned          | 32,000 | Documents not returned due to a `filter` count as scanned |
-| Index ranges read          | 4,096  | The number of calls to `db.get` and `db.query`.           |
-| Documents written          | 16,000 |                                                           |
-| Function return value size | 16 MiB |                                                           |
+|                                            |        | Notes                                                     |
+| ------------------------------------------ | ------ | --------------------------------------------------------- |
+| Data read                                  | 16 MiB | Data not returned due to a `filter` counts as scanned     |
+| Data written                               | 16 MiB |                                                           |
+| Documents scanned                          | 32,000 | Documents not returned due to a `filter` count as scanned |
+| Index ranges read                          | 4,096  | The number of calls to `db.get` and `db.query`.           |
+| Documents written                          | 16,000 |                                                           |
+| Function return value size                 | 16 MiB |                                                           |
+| Files stored from a mutation               | 10     |                                                           |
+| Total size of files stored from a mutation | 16 MiB |                                                           |
+| Files read from a mutation                 | 10     |                                                           |
+| Total size of files read from a mutation   | 16 MiB |                                                           |
 
 ## Environment Variables[​](#environment-variables "Direct link to Environment Variables")
 
@@ -62281,12 +62961,13 @@ Cells use these markers:
 
 Resource leaf: `team:*`.
 
-| Action               | Description                    | Team Admin | Team Developer |
-| -------------------- | ------------------------------ | ---------- | -------------- |
-| `team:update`        | Change the team name and slug. | ✓          | ✗              |
-| `team:delete`        | Delete the team.               | ✓          | ✗              |
-| `team:auditLog:view` | View the team's audit log.     | ✓          | ✓              |
-| `team:usage:view`    | View the team's usage page.    | ✓          | ✓              |
+| Action                  | Description                                                        | Team Admin | Team Developer |
+| ----------------------- | ------------------------------------------------------------------ | ---------- | -------------- |
+| `team:update`           | Change the team name and slug.                                     | ✓          | ✗              |
+| `team:delete`           | Delete the team.                                                   | ✓          | ✗              |
+| `team:auditLog:view`    | View the team's audit log.                                         | ✓          | ✓              |
+| `team:projectTags:view` | View the tags on the team's projects, and list every tag they use. | ✓          | ✓              |
+| `team:usage:view`       | View the team's usage page.                                        | ✓          | ✓              |
 
 info
 
@@ -63987,9 +64668,9 @@ After that we'll see how to connect to external services and set up your product
 
 ## Start developing with Convex[​](#start-developing-with-convex "Direct link to Start developing with Convex")
 
-Before you begin: You'll need Node.js 20+ and Git
+Before you begin: You'll need Node.js 22+ and Git
 
-Ensure you have Node.js version 20 or greater installed on your computer. You can check your version of Node.js by running `node --version` in your terminal. If you don't have the appropriate version of Node.js installed, [install it from the Node.js website.](https://nodejs.org/en)
+Ensure you have Node.js version 22 or greater installed on your computer. You can check your version of Node.js by running `node --version` in your terminal. If you don't have the appropriate version of Node.js installed, [install it from the Node.js website.](https://nodejs.org/en)
 
 In addition, this walkthrough requires Git, so verify you have it installed by running `git -v` in your terminal. If not, head over to the [Git website](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) for installation instructions.
 

@@ -39,7 +39,7 @@ npm install --save-dev tsx
 
 ## 2. Send your first message
 
-Create `chat.ts` with a client instance and a single chat completion request. The `apiKey` reads from the environment so you never hard-code credentials.
+Create `chat.ts` with a client instance and a single [Responses API](https://openrouter.ai/docs/api_reference/responses/overview.md) request. The `apiKey` reads from the environment so you never hard-code credentials.
 
 ```typescript lines theme={null}
 import { OpenRouter } from '@openrouter/sdk';
@@ -48,19 +48,23 @@ const client = new OpenRouter({
   apiKey: process.env.OPENROUTER_API_KEY,
 });
 
-const completion = await client.chat.send({
-  chatRequest: {
+const response = await client.responses.send({
+  responsesRequest: {
     model: 'google/gemini-3.1-flash-lite',
-    messages: [
-      { role: 'user', content: 'Say hello in one sentence.' },
-    ],
+    input: 'Say hello in one sentence.',
   },
 });
 
-console.log(completion.choices[0]?.message.content);
+if (!('output' in response)) {
+  throw new Error('Expected a non-streaming response');
+}
+
+const message = [...response.output].reverse().find((item) => item.type === 'message');
+const text = message?.content.find((part) => part.type === 'output_text');
+console.log(text?.text);
 console.log({
-  promptTokens: completion.usage?.promptTokens,
-  completionTokens: completion.usage?.completionTokens,
+  inputTokens: response.usage?.inputTokens,
+  outputTokens: response.usage?.outputTokens,
 });
 ```
 
@@ -70,11 +74,11 @@ Run it with your API key:
 OPENROUTER_API_KEY=sk-or-v1-... npx tsx chat.ts
 ```
 
-You should see a single text response printed to the console. The SDK returns token usage in camelCase fields such as `promptTokens` and `completionTokens`. The `completion.choices` array follows the same shape as the [Chat Completions response](https://openrouter.ai/docs/api/api-reference/chat/create-a-chat-completion.md).
+You should see a single text response printed to the console. The text is in the `output_text` part of the `message` item in `response.output`, and the SDK returns token usage in camelCase fields such as `inputTokens` and `outputTokens`. The `response.output` array follows the same shape as the [Responses API response](https://openrouter.ai/docs/api/api-reference/responses/create-a-response.md). Without `stream: true`, `client.responses.send` is typed to return the full response, so the `'output' in response` check is only a runtime safety guard.
 
 ## 3. Stream the response
 
-Streaming returns text as it is generated instead of waiting for the full response. Pass `stream: true` and iterate over the returned async iterable. Each chunk contains a `delta` with the new text fragment.
+Streaming returns text as it is generated instead of waiting for the full response. Pass `stream: true` and iterate over the returned event stream. Each `response.output_text.delta` event contains a `delta` with the new text fragment.
 
 ```typescript expandable lines theme={null}
 import { OpenRouter } from '@openrouter/sdk';
@@ -83,19 +87,22 @@ const client = new OpenRouter({
   apiKey: process.env.OPENROUTER_API_KEY,
 });
 
-const stream = await client.chat.send({
-  chatRequest: {
+const stream = await client.responses.send({
+  responsesRequest: {
     model: 'google/gemini-3.1-flash-lite',
-    messages: [
-      { role: 'user', content: 'Explain how routers work in three sentences.' },
-    ],
+    input: 'Explain how routers work in three sentences.',
     stream: true,
   },
 });
 
-for await (const chunk of stream) {
-  const delta = chunk.choices[0]?.delta?.content;
-  if (delta) process.stdout.write(delta);
+if ('output' in stream) {
+  throw new Error('Expected a streaming response');
+}
+
+for await (const event of stream) {
+  if (event.type === 'response.output_text.delta') {
+    process.stdout.write(event.delta);
+  }
 }
 console.log();
 ```
@@ -104,7 +111,7 @@ Text now prints incrementally. See the [Streaming reference](https://openrouter.
 
 ## 4. Add multi-turn conversation
 
-Multi-turn works by sending the full message history with each request. The model uses all previous messages as context. Append each user input and assistant response to a `messages` array before the next call.
+Multi-turn works by sending the full conversation history with each request. The model uses all previous turns as context. Append each user input and assistant response to an `input` array of `{ role, content }` items before the next call.
 
 ```typescript expandable lines theme={null}
 import { OpenRouter } from '@openrouter/sdk';
@@ -114,7 +121,7 @@ const client = new OpenRouter({
   apiKey: process.env.OPENROUTER_API_KEY,
 });
 
-const messages: { role: 'user' | 'assistant'; content: string }[] = [];
+const input: { role: 'user' | 'assistant'; content: string }[] = [];
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -122,34 +129,47 @@ const rl = readline.createInterface({
 });
 
 function ask(): void {
-  rl.question('You: ', async (input) => {
-    if (input.toLowerCase() === 'exit') {
+  rl.question('You: ', async (line) => {
+    if (line.toLowerCase() === 'exit') {
       rl.close();
       return;
     }
 
-    messages.push({ role: 'user', content: input });
+    input.push({ role: 'user', content: line });
 
-    const stream = await client.chat.send({
-      chatRequest: {
+    const stream = await client.responses.send({
+      responsesRequest: {
         model: 'google/gemini-3.1-flash-lite',
-        messages,
+        input,
         stream: true,
       },
     });
+    if ('output' in stream) {
+      throw new Error('Expected a streaming response');
+    }
 
     let response = '';
+    let completed = false;
     process.stdout.write('Assistant: ');
-    for await (const chunk of stream) {
-      const delta = chunk.choices[0]?.delta?.content;
-      if (delta) {
-        process.stdout.write(delta);
-        response += delta;
+    for await (const event of stream) {
+      if (event.type === 'response.output_text.delta') {
+        process.stdout.write(event.delta);
+        response += event.delta;
+      }
+      if (event.type === 'response.completed') {
+        completed = true;
       }
     }
     console.log();
 
-    messages.push({ role: 'assistant', content: response });
+    // A stream that ends with response.failed or response.incomplete leaves a
+    // partial answer; keep only completed turns in the history.
+    if (completed) {
+      input.push({ role: 'assistant', content: response });
+    } else {
+      input.pop();
+      console.log('(The response did not complete, so that turn was not saved.)');
+    }
     ask();
   });
 }
@@ -157,7 +177,7 @@ function ask(): void {
 ask();
 ```
 
-Run the file and type messages. The model remembers prior turns because the full `messages` array is sent with each request. Type `exit` to quit.
+Run the file and type messages. The model remembers prior turns because the full `input` array is sent with each request. Type `exit` to quit.
 
 ## 5. Swap models
 
@@ -181,7 +201,7 @@ Browse all available models at [openrouter.ai/models](https://openrouter.ai/mode
 * `npx tsx chat.ts` prints a streamed response to the console
 * A multi-turn conversation maintains context across turns (ask a follow-up that references a previous answer)
 * Changing the `model` string switches to a different provider with no other code changes
-* The non-streaming response includes a `usage` object with `promptTokens` and `completionTokens`
+* The non-streaming response includes a `usage` object with `inputTokens` and `outputTokens`
 
 ## Next steps
 

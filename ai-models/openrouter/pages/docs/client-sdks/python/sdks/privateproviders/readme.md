@@ -105,7 +105,6 @@ with OpenRouter(
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `base_url` | *Optional\[str]* | ➖ | HTTPS base URL of an OpenAI-compatible API, used by private endpoints under this provider that set no URL of their own. Without it, each endpoint must set its own. Private, internal, metadata and OpenRouter hosts are rejected. | [https://inference.example.com/v1](https://inference.example.com/v1) |
-| `data_policy` | [Optional\[components.PrivateProviderDataPolicy\]](../../components/privateproviderdatapolicy.mdx) | ➖ | Defaults to training on and retaining prompts, the most conservative declaration. Your own declaration; it applies to your own traffic and OpenRouter does not verify it. | \{ "prompt\_retention\_days": null, "retains\_prompts": false, "training": false } |
 | `display_name` | *Optional\[str]* | ➖ | Defaults to `name`. | Acme |
 | `slug` | *Optional\[str]* | ➖ | 2-64 lowercase letters and numbers, separated by single hyphens. Cannot be changed later. Defaults to the name lowercased, with every run of other characters replaced by a hyphen (`Acme Inference` becomes `acme-inference`). | acme |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
@@ -236,7 +235,7 @@ with OpenRouter(
 
 ## update
 
-Update a private provider’s details or declared data policy. The name and slug cannot change. Refuses (409) a data-policy change while OpenRouter pins the declared policy on one of its endpoints. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Update a private provider’s display name or base URL. The name and slug cannot change, and the data policy is fixed by OpenRouter, so a body with no editable field is rejected (400). [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -268,7 +267,6 @@ with OpenRouter(
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `base_url` | *Optional\[str]* | ➖ | HTTPS base URL of an OpenAI-compatible API, used by private endpoints under this provider that set no URL of their own. Without it, each endpoint must set its own. Private, internal, metadata and OpenRouter hosts are rejected. | [https://inference.example.com/v1](https://inference.example.com/v1) |
-| `data_policy` | [Optional\[components.UpdatePrivateProviderRequestDataPolicy\]](../../components/updateprivateproviderrequestdatapolicy.mdx) | ➖ | N/A | |
 | `display_name` | *Optional\[str]* | ➖ | N/A | Acme |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 

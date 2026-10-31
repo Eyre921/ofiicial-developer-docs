@@ -18,14 +18,12 @@ User tracking enables you to specify an arbitrary string identifier for your end
 
 ## How It Works
 
-Include a `user` parameter in chat-completions or image-generation requests with a stable identifier for your end user. This can be a user ID, client-side hash, pseudonym, or another stable identifier. OpenRouter folds it into the hashed identity sent upstream and never forwards it raw.
+Include a `user` parameter in [Responses API](https://openrouter.ai/docs/api_reference/responses/overview.md), chat-completions, or image-generation requests with a stable identifier for your end user. This can be a user ID, client-side hash, pseudonym, or another stable identifier. OpenRouter folds it into the hashed identity sent upstream and never forwards it raw.
 
 ```json lines theme={null}
 {
   "model": "~openai/gpt-sol-latest",
-  "messages": [
-    {"role": "user", "content": "Hello, how are you?"}
-  ],
+  "input": "Hello, how are you?",
   "user": "user_12345"
 }
 ```
@@ -59,7 +57,7 @@ Registration alone does not attribute requests. Continue sending the same identi
 
 ## Per-User Abuse Isolation
 
-Send a stable per-end-user identifier with every request: `user` on chat completions and image generation, or `safety_identifier` on the Responses API. A client-side hash or pseudonym works — when a provider requires a user identity, OpenRouter folds it into the hashed identity sent upstream and never forwards the raw value. Requests that include neither field share a single account-level identity upstream, so a provider policy block triggered by one end user can affect your whole account.
+Send a stable per-end-user identifier with every request as `user` on chat completions, image generation, and the Responses API. On the Responses API, `safety_identifier` sets only the upstream abuse-isolation identity. A client-side hash or pseudonym works — when a provider requires a user identity, OpenRouter folds it into the hashed identity sent upstream and never forwards the raw value. Requests that include neither field share a single account-level identity upstream, so a provider policy block triggered by one end user can affect your whole account.
 
 ## Best Practices
 

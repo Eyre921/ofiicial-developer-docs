@@ -55,25 +55,25 @@ The server prints its URL on stderr. If the config's port is already in use, it 
 
 ## Logging
 
-**Legacy**
+> [tab] Legacy
+>
+> Logging is **session-scoped**. The client sends `logging/setLevel` once, and the server emits `notifications/message` at or above that level for the rest of the session.
+>
+> The **Logs** tab shows a **Set Active Level** selector plus a **Set** button. Choose a level, click Set, and subsequent server logs stream into the panel.
+>
+> Reproduce with `test-servers/configs/logging-legacy-http.json`.
 
-Logging is **session-scoped**. The client sends `logging/setLevel` once, and the server emits `notifications/message` at or above that level for the rest of the session.
-
-The **Logs** tab shows a **Set Active Level** selector plus a **Set** button. Choose a level, click Set, and subsequent server logs stream into the panel.
-
-Reproduce with `test-servers/configs/logging-legacy-http.json`.
-
-**Modern**
-
-`logging/setLevel` is **gone**. Instead the client opts in **per request**, by stamping `_meta["io.modelcontextprotocol/logLevel"]` on each outgoing request. A server MUST NOT emit `notifications/message` for a request that did not opt in.
-
-The **Logs** tab therefore shows a **Log Level per Request** control instead. Pick a level and every subsequent request carries the stamp, visible in the Network tab's request body. Logs emitted while handling a request ride that request's SSE response stream.
-
-Set the control to **Off** and the `logLevel` key is omitted entirely, so the same tool call produces no logs at all. That silence is correct behavior, not a bug.
-
-The per-server default is `debug` (opted in at the most verbose level, since the Inspector is a debugging tool); set `modernLogLevel: "off"` on a server to opt back out by default.
-
-Reproduce with `test-servers/configs/logging-modern-http.json`.
+> [tab] Modern
+>
+> `logging/setLevel` is **gone**. Instead the client opts in **per request**, by stamping `_meta["io.modelcontextprotocol/logLevel"]` on each outgoing request. A server MUST NOT emit `notifications/message` for a request that did not opt in.
+>
+> The **Logs** tab therefore shows a **Log Level per Request** control instead. Pick a level and every subsequent request carries the stamp, visible in the Network tab's request body. Logs emitted while handling a request ride that request's SSE response stream.
+>
+> Set the control to **Off** and the `logLevel` key is omitted entirely, so the same tool call produces no logs at all. That silence is correct behavior, not a bug.
+>
+> The per-server default is `debug` (opted in at the most verbose level, since the Inspector is a debugging tool); set `modernLogLevel: "off"` on a server to opt back out by default.
+>
+> Reproduce with `test-servers/configs/logging-modern-http.json`.
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/logs-legacy.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=ec5fddd86d1fe7ecc1ef83549798f33e)
 
@@ -87,19 +87,19 @@ Modern: the same tab instead offers Log Level per Request. The level is stamped 
 
 ## Resource subscriptions
 
-**Legacy**
+> [tab] Legacy
+>
+> Clicking **Subscribe** on a resource sends `resources/subscribe`. The Subscriptions section lists the URI with no stream chrome. When the resource changes, the server emits `notifications/resources/updated` and the subscribed tile's last-updated time is stamped.
+>
+> Reproduce with `test-servers/configs/subscriptions-legacy-http.json`, which also serves an `update_resource` tool so you can drive the notification round-trip yourself.
 
-Clicking **Subscribe** on a resource sends `resources/subscribe`. The Subscriptions section lists the URI with no stream chrome. When the resource changes, the server emits `notifications/resources/updated` and the subscribed tile's last-updated time is stamped.
-
-Reproduce with `test-servers/configs/subscriptions-legacy-http.json`, which also serves an `update_resource` tool so you can drive the notification round-trip yourself.
-
-**Modern**
-
-The same **Subscribe** button instead sends **`subscriptions/listen`**, with a filter carrying `resourceSubscriptions` plus whichever `*ListChanged` opt-ins apply (such as `resourcesListChanged`). The subscription is confirmed when the server sends `notifications/subscriptions/acknowledged`.
-
-Because the subscription is now a long-lived stream rather than a session flag, the Subscriptions section grows a **stream-status badge** in its header that moves from `Connecting...` to `Listening`. If the stream drops, the badge shows `Reconnecting...` while the Inspector re-sends `subscriptions/listen`. It shows `Stream ended` once the stream closes for good. It shows `Not acknowledged` when the server answers the listen with a plain result and never sends the acknowledgement; the Inspector does not retry in that case.
-
-Reproduce with `test-servers/configs/subscriptions-modern-http.json`. To see the `Not acknowledged` state, use `test-servers/configs/subscriptions-never-acknowledged-http.json`. That server acknowledges your first subscription, then refuses every later listen, so subscribing to a second resource trips the badge.
+> [tab] Modern
+>
+> The same **Subscribe** button instead sends **`subscriptions/listen`**, with a filter carrying `resourceSubscriptions` plus whichever `*ListChanged` opt-ins apply (such as `resourcesListChanged`). The subscription is confirmed when the server sends `notifications/subscriptions/acknowledged`.
+>
+> Because the subscription is now a long-lived stream rather than a session flag, the Subscriptions section grows a **stream-status badge** in its header that moves from `Connecting...` to `Listening`. If the stream drops, the badge shows `Reconnecting...` while the Inspector re-sends `subscriptions/listen`. It shows `Stream ended` once the stream closes for good. It shows `Not acknowledged` when the server answers the listen with a plain result and never sends the acknowledgement; the Inspector does not retry in that case.
+>
+> Reproduce with `test-servers/configs/subscriptions-modern-http.json`. To see the `Not acknowledged` state, use `test-servers/configs/subscriptions-never-acknowledged-http.json`. That server acknowledges your first subscription, then refuses every later listen, so subscribing to a second resource trips the badge.
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/resources-subscriptions-modern.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=5ca4c64c6783eb210fe54248f03de144)
 
@@ -111,21 +111,21 @@ A modern subscription: the Subscriptions section carries a LISTENING stream-stat
 
 Tasks change the most between protocol eras, including *how the Inspector UI tab is gated*.
 
-**Legacy**
+> [tab] Legacy
+>
+> The **Tasks** tab appears when the server advertises `capabilities.tasks`. Run a tool with **Run as task** enabled and the tab lists it, populated by `tasks/list` and polled with `tasks/get`. The completed payload is fetched with a **blocking `tasks/result`**, and **Cancel** sends `tasks/cancel`.
+>
+> Reproduce with `test-servers/configs/tasks-legacy-http.json`.
 
-The **Tasks** tab appears when the server advertises `capabilities.tasks`. Run a tool with **Run as task** enabled and the tab lists it, populated by `tasks/list` and polled with `tasks/get`. The completed payload is fetched with a **blocking `tasks/result`**, and **Cancel** sends `tasks/cancel`.
-
-Reproduce with `test-servers/configs/tasks-legacy-http.json`.
-
-**Modern**
-
-Tasks are an **extension** (`io.modelcontextprotocol/tasks`, [SEP-2663](/seps/2663-tasks-extension)), so the tab is gated on the server *advertising that extension* rather than on `capabilities.tasks`.
-
-Run a tool as a task and `tools/call` returns a `CreateTaskResult` (`resultType: "task"`, visible in the Protocol and Network tabs). The Inspector polls **`tasks/get`** only; there is no `tasks/list`, so **Refresh** re-polls the handles the client already knows about. A completed task **inlines its result**, with no blocking `tasks/result` call.
-
-A task that needs more information moves to `input_required` and surfaces an embedded [elicitation](/specification/draft/client/elicitation) in the pending-request modal (the dialog the web client opens whenever a request is waiting on you). Answering it sends **`tasks/update`** carrying the `inputResponses`, and the next poll completes.
-
-Reproduce with `test-servers/configs/tasks-modern-http.json` (tools `modern_task` and `modern_input_task`).
+> [tab] Modern
+>
+> Tasks are an **extension** (`io.modelcontextprotocol/tasks`, [SEP-2663](/seps/2663-tasks-extension)), so the tab is gated on the server *advertising that extension* rather than on `capabilities.tasks`.
+>
+> There is no **Run as task** control on a modern connection. Task creation is server-directed, so the server decides per request whether `tools/call` returns a `CreateTaskResult` (`resultType: "task"`, visible in the Protocol and Network tabs). The Inspector polls **`tasks/get`** only; there is no `tasks/list`, so **Refresh** re-polls the handles the client already knows about. A completed task **inlines its result**, with no blocking `tasks/result` call.
+>
+> A task that needs more information moves to `input_required` and surfaces an embedded [elicitation](/specification/2026-07-28/client/elicitation) in the pending-request modal (the dialog the web client opens whenever a request is waiting on you). Answering it sends **`tasks/update`** carrying the `inputResponses`, and the next poll completes.
+>
+> Reproduce with `test-servers/configs/tasks-modern-http.json` (tools `modern_task` and `modern_input_task`).
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/tasks-legacy.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=777729bfc1b58b359808c8120d9597d3)
 
@@ -139,7 +139,7 @@ Modern: the client polls tasks/get on handles it already holds, and the complete
 
 ## Multi-round tool results (MRTR)
 
-On the modern era a tool can return `input_required` instead of a final result, embedding an [elicitation](/specification/draft/client/elicitation), a [sampling](/specification/draft/client/sampling) request, or a [`roots/list`](/specification/draft/client/roots) request. The client answers that embedded request and retries the `tools/call` under a fresh JSON-RPC id until the call reaches `complete`.
+On the modern era a tool can return `input_required` instead of a final result, embedding an [elicitation](/specification/2026-07-28/client/elicitation), a [sampling](/specification/2026-07-28/client/sampling) request, or a [`roots/list`](/specification/2026-07-28/client/roots) request. The client answers that embedded request and retries the `tools/call` under a fresh JSON-RPC id until the call reaches `complete`.
 
 The Inspector drives MRTR **manually**, so each round pauses at the **pending-request modal**, tagged `input_required`, for you to answer. The Protocol view groups the whole exchange as one MRTR conversation rather than as unrelated calls.
 

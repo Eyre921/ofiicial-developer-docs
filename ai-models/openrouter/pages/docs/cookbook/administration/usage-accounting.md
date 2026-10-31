@@ -16,22 +16,51 @@ The OpenRouter API provides built-in **Usage Accounting** that allows you to tra
 
 OpenRouter automatically returns detailed usage information with every response, including:
 
-1. Prompt and completion token counts using the model's native tokenizer
+1. Input and output token counts using the model's native tokenizer
 2. Cost in credits
 3. Reasoning token counts (if applicable)
 4. Cached token counts (if available)
 
-This information is included in the last SSE message for streaming responses, or in the complete response for non-streaming requests. No additional parameters are required.
+This information is included in the terminal `response.completed` or `response.incomplete` event for streaming responses, or in the terminal response for non-streaming requests. No additional parameters are required. The examples on this page use the [Responses API](https://openrouter.ai/docs/api_reference/responses/overview.md).
 
 > [!NOTE]
 >
 > **Deprecated Parameters**
 >
-> The `usage: { include: true }` and `stream_options: { include_usage: true }` parameters are deprecated and have no effect. Full usage details are now always included automatically in every response.
+> On Chat Completions, the `usage: { include: true }` and `stream_options: { include_usage: true }` parameters are deprecated and have no effect. The Responses API has no equivalent parameter. Full usage details are always included automatically in every response on both APIs.
 
 ## Response Format
 
-Every response includes a `usage` object with detailed token information:
+Every response includes a `usage` object with detailed token information. The field names follow the API you call.
+
+### Responses API
+
+```json lines theme={null}
+{
+  "object": "response",
+  "usage": {
+    "input_tokens": 194,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 100
+    },
+    "output_tokens": 2,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 196,
+    "cost": 0.95,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": null,
+      "upstream_inference_input_cost": 18,
+      "upstream_inference_output_cost": 1
+    }
+  }
+}
+```
+
+### Chat Completions
 
 ```json lines theme={null}
 {
@@ -63,14 +92,14 @@ Every response includes a `usage` object with detailed token information:
 The usage response includes detailed cost information:
 
 * `cost`: The total amount charged to your account
-* `cost_details.upstream_inference_cost`: The actual cost charged by the upstream AI provider
+* `cost_details.upstream_inference_cost`: The actual cost charged by the upstream AI provider, split into `upstream_inference_input_cost` and `upstream_inference_output_cost` on the Responses API (`upstream_inference_prompt_cost` and `upstream_inference_completions_cost` on Chat Completions)
 
 ## Benefits
 
 1. **Efficiency**: Get usage information without making separate API calls
 2. **Accuracy**: Token counts are calculated using the model's native tokenizer
 3. **Transparency**: Track costs and cached token usage in real-time
-4. **Detailed Breakdown**: Separate counts for prompt, completion, reasoning, and cached tokens
+4. **Detailed Breakdown**: Separate counts for input, output, reasoning, and cached tokens
 
 ## Best Practices
 
@@ -84,7 +113,7 @@ You can also retrieve usage information asynchronously by using the generation I
 
 To use this method:
 
-1. Make your chat completion request as normal
+1. Make your Responses API request as normal
 2. Note the `id` field in the response
 3. Use that ID to fetch usage information via the `/generation` endpoint
 

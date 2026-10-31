@@ -127,12 +127,12 @@ implementors **SHOULD**:
 
 Explore the detailed specification for each protocol component:
 
-> **[Architecture](/specification/2026-07-28/architecture)**
+> [card] [Architecture](/specification/2026-07-28/architecture)
 
-> **[Base Protocol](/specification/2026-07-28/basic)**
+> [card] [Base Protocol](/specification/2026-07-28/basic)
 
-> **[Server Features](/specification/2026-07-28/server)**
+> [card] [Server Features](/specification/2026-07-28/server)
 
-> **[Client Features](/specification/2026-07-28/client)**
+> [card] [Client Features](/specification/2026-07-28/client)
 
-> **[Contributing](/community/contributing)**
+> [card] [Contributing](/community/contributing)

@@ -27,7 +27,7 @@ See [SDK Tiering System](/community/sdk-tiers) for details on what each tier mea
 
 ## Getting Started
 
-Each SDK provides the same functionality but follows the idioms and best practices of its language. All SDKs support:
+Each SDK follows the idioms and best practices of its language. SDKs adopt new protocol revisions on their own schedules, so check each SDK's documentation for the revisions it supports. All SDKs support:
 
 * Creating MCP servers that expose tools, resources, and prompts
 * Building MCP clients that can connect to any MCP server
@@ -40,10 +40,10 @@ Visit the SDK page for your chosen language to find installation instructions, d
 
 Ready to start building with MCP? Choose your path:
 
-> **[Build a Server](/docs/2026-07-28/develop/build-server)**
+> [card] [Build a Server](/docs/2026-07-28/develop/build-server)
 >
 > Learn how to create your first MCP server
 
-> **[Build a Client](/docs/2026-07-28/develop/build-client)**
+> [card] [Build a Client](/docs/2026-07-28/develop/build-client)
 >
 > Create applications that connect to MCP servers

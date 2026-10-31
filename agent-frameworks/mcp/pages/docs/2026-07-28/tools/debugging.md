@@ -221,9 +221,14 @@ Log files are written to:
 
 * macOS: `~/Library/Logs/Claude`
 * Windows: `%APPDATA%\Claude\logs`
+* Linux: `~/.config/Claude/logs`
 
 ```bash macOS theme={null}
 tail -n 20 -F ~/Library/Logs/Claude/mcp*.log
+```
+
+```bash Linux theme={null}
+tail -n 20 -F ~/.config/Claude/logs/mcp*.log
 ```
 
 ```powershell Windows theme={null}
@@ -351,14 +356,14 @@ When encountering issues:
 
 ## Next steps
 
-> **[MCP Inspector](/docs/2026-07-28/tools/inspector)**
+> [card] [MCP Inspector](/docs/2026-07-28/tools/inspector)
 >
 > Learn to use the MCP Inspector
 
-> **[Build an MCP server](/docs/2026-07-28/develop/build-server)**
+> [card] [Build an MCP server](/docs/2026-07-28/develop/build-server)
 >
 > Walk through building a server from scratch
 
-> **[Connect local servers](/docs/2026-07-28/develop/connect-local-servers)**
+> [card] [Connect local servers](/docs/2026-07-28/develop/connect-local-servers)
 >
 > Full claude\_desktop\_config.json reference and troubleshooting

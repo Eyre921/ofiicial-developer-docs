@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1403 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1402 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -1241,7 +1241,6 @@
 - `docs/help-center/product/studio/studio/what-is-studio` — [What is Studio?](pages/docs/help-center/product/studio/studio/what-is-studio.md) · [原文](https://elevenlabs.io/docs/help-center/product/studio/studio/what-is-studio.md)
 - `docs/help-center/product/studio/studio/what-is-the-timeline-in-studio` — [What is the timeline in Studio?](pages/docs/help-center/product/studio/studio/what-is-the-timeline-in-studio.md) · [原文](https://elevenlabs.io/docs/help-center/product/studio/studio/what-is-the-timeline-in-studio.md)
 - `docs/help-center/product/studio/studio/which-file-formats-can-i-import-with-studio` — [Which file formats can I import with Studio?](pages/docs/help-center/product/studio/studio/which-file-formats-can-i-import-with-studio.md) · [原文](https://elevenlabs.io/docs/help-center/product/studio/studio/which-file-formats-can-i-import-with-studio.md)
-- `docs/help-center/product/studio/studio/why-arent-my-changes-reflected-in-my-download-from-studio` — [Why aren't my changes reflected in my download from Studio?](pages/docs/help-center/product/studio/studio/why-arent-my-changes-reflected-in-my-download-from-studio.md) · [原文](https://elevenlabs.io/docs/help-center/product/studio/studio/why-arent-my-changes-reflected-in-my-download-from-studio.md)
 - `docs/help-center/product/studio/studio/why-cant-i-download-from-studio` — [Why can't I download from Studio?](pages/docs/help-center/product/studio/studio/why-cant-i-download-from-studio.md) · [原文](https://elevenlabs.io/docs/help-center/product/studio/studio/why-cant-i-download-from-studio.md)
 - `docs/help-center/product/voices` — [Voices](pages/docs/help-center/product/voices.md) · [原文](https://elevenlabs.io/docs/help-center/product/voices.md)
 - `docs/help-center/product/voices/my-voices` — [My Voices FAQ](pages/docs/help-center/product/voices/my-voices.md) · [原文](https://elevenlabs.io/docs/help-center/product/voices/my-voices.md)

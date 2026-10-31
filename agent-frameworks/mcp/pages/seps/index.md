@@ -10,7 +10,7 @@ Specification Enhancement Proposals (SEPs) are the primary mechanism for proposi
 
 Each SEP is reachable by number at `/seps/<number>` (for example, [/seps/1850](/seps/1850)).
 
-> **[Submit a SEP](/community/sep-guidelines)**
+> [card] [Submit a SEP](/community/sep-guidelines)
 >
 > Learn how to submit your own Specification Enhancement Proposal
 

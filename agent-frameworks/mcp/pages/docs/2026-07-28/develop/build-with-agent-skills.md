@@ -89,14 +89,14 @@ distribute.
 Once your agent scaffolds the server, iterate on tool descriptions and error
 handling, then test and ship:
 
-> **[MCP Inspector](/docs/2026-07-28/tools/inspector)**
+> [card] [MCP Inspector](/docs/2026-07-28/tools/inspector)
 >
 > Test your server's tools, resources, and prompts interactively
 
-> **[Connect to a client](/docs/2026-07-28/develop/connect-local-servers)**
+> [card] [Connect to a client](/docs/2026-07-28/develop/connect-local-servers)
 >
 > Wire your server into an MCP client via local or remote configuration
 
-> **[Publish to the Registry](/registry/quickstart)**
+> [card] [Publish to the Registry](/registry/quickstart)
 >
 > Make your server discoverable in the MCP Registry

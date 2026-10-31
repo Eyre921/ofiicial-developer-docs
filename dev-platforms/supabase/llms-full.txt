@@ -98741,13 +98741,13 @@ Supabase provides several integration points:
 Integrations are assessed on the following criteria:
 
 - **Business viability**
-  While we welcome everyone to built an integration, we only list companies that are deemed to be long-term viable. This includes an official business registration and bank account, meaningful revenue, or Venture Capital backing. We require this criteria to ensure the health of the catalog.
+  While we welcome everyone to build an integration, we only list companies that are deemed to be long-term viable. This includes an official business registration and bank account, meaningful revenue, or Venture Capital backing. We require these criteria to ensure the health of the catalog.
 - **Compliance**
   Integrations should not infringe on the Supabase brand/trademark. In short, you cannot use "Supabase" in the name. As the listing appears on the Supabase domain, we don't want to mislead developers into thinking that an integration is an official product.
 - **Service Level Agreements**
   All listings are required to have their own Terms and Conditions, Privacy Policy, and Acceptable Use Policy, and the company must have resources to meet their SLAs.
 - **Maintainability**
-  All integrations are required to be maintained and functional with Supabase, and the company may be assessed on your ability to remain functional over a long time horizon.
+  All integrations are required to be maintained and functional with Supabase, and the company may be assessed on its ability to remain functional over a long time horizon.
 
 
 ---
@@ -107678,6 +107678,7 @@ Note: The Metrics API is currently in beta. Metric names and labels might evolve
 
 - Stream database CPU, IO, WAL, connection, and query stats into Prometheus-compatible systems.
 - Combine Supabase metrics with application signals in Grafana, Datadog, or any other observability vendor.
+- For Grafana, you can use the [Grafana Cloud integration](https://supabase.com/dashboard/project/_/integrations/grafana-cloud/overview?utm_source=metrics-api\&utm_medium=docs\&utm_campaign=supabase_grafana_cloud_one_click_integration) in the Supabase Dashboard to get a configured instance and prebuilt dashboard in one click.
 - Reuse our [supabase-grafana dashboard JSON](https://github.com/supabase/supabase-grafana) to bootstrap over 200 ready-made charts.
 - Build your own alerting policies (right-sizing, saturation detection, index regression, and more).
 
@@ -107731,7 +107732,7 @@ Pick the workflow that best matches your tooling. Cards link to Supabase-authore
 ## Additional resources
 
 - [Supabase Grafana repository](https://github.com/supabase/supabase-grafana) for dashboard JSON and alert examples.
-- [Grafana Cloud’s Supabase integration doc](https://grafana.com/docs/grafana-cloud/monitor-infrastructure/integrations/integration-reference/integration-supabase/) (community-maintained, built on this Metrics API).
+- [Grafana Cloud integration](https://supabase.com/docs/guides/observability/metrics/grafana-cloud) for the one-click setup, plus [Grafana’s integration reference](https://grafana.com/docs/grafana-cloud/monitor-infrastructure/integrations/integration-reference/integration-supabase/) for manual configuration.
 - [Datadog’s Supabase integration doc](https://docs.datadoghq.com/integrations/supabase/) (community-maintained, built on this Metrics API).
 - [Elastic’s Supabase integration doc](https://www.elastic.co/docs/reference/integrations/supabase) (community-maintained).
 - [Log Drains ](https://supabase.com/docs/guides/observability/log-drains) for exporting event-based telemetry alongside metrics.
@@ -107752,6 +107753,8 @@ The Grafana Cloud integration is available in the Supabase Dashboard. [Add the i
 
 By integrating Supabase with Grafana Cloud, users gain monitoring capabilities for Supabase performance and operations. The included dashboard offers a comprehensive overview of Supabase performance, supplemented with Postgres metrics.
 
+Note: You can add the integration without creating a Grafana Cloud account first.
+
 ## Manual setup
 
 The [Grafana Cloud integration](https://supabase.com/dashboard/project/_/integrations/grafana-cloud/overview?utm_source=metrics-api\&utm_medium=docs\&utm_campaign=supabase_grafana_cloud_one_click_integration) available in the Supabase Dashboard is the recommended path. You can still configure and run the setup manually by following the steps below.
@@ -107767,7 +107770,7 @@ Prometheus or non-standard auth).
 
 ### 1. Create a Grafana Cloud stack
 
-1. Sign in to [Grafana Cloud](https://grafana.com/auth/sign-in).
+1. Sign in to [Grafana Cloud](https://grafana.com/auth/sign-in). If you don’t need manual control, you can also skip this guide and use the [one-click integration](https://supabase.com/dashboard/project/_/integrations/grafana-cloud/overview?utm_source=metrics-api\&utm_medium=docs\&utm_campaign=supabase_grafana_cloud_one_click_integration).
 2. Create or select a stack that has **Prometheus Metrics** enabled.
 
 ### 2. Install the Supabase integration for Grafana Cloud
@@ -112383,7 +112386,9 @@ password: 'example-password-1',
 
 2. **Sign User-1 out on January 4**
 
-`javascript const {error} = await supabase.auth.signOut() `
+```javascript
+const {error} = await supabase.auth.signOut()
+```
 
 3. **Sign User-1 in again on January 17**
 
@@ -118121,6 +118126,114 @@ If you encounter issues not covered in this guide, contact your Supabase support
 
 ---
 
+# Map team members to Postgres roles
+
+Give team members database access through their own access tokens instead of a shared password.
+
+Let a team member connect to your project database as a [Postgres role](https://supabase.com/docs/guides/database/postgres/roles), using their own [access token](https://supabase.com/docs/guides/platform/personal-access-tokens) instead of a shared password. This follows security best practices, allowing each person to only access what they need for as long as they need it.
+
+A role mapping authorizes a team member to assume one or more Postgres roles. It creates no new role or user in the database, and the assumed role's permissions apply. The role's own password keeps working, so long-lived service connections don't change. A team member who knows the role's password can connect with it after you remove their mapping. To end that access, change the role's password. For the `postgres` role, see [Changing your project password](https://supabase.com/docs/guides/database/postgres/roles#changing-your-project-password).
+
+Use this guide when:
+
+- Your team shares the `postgres` password, and you want each person to connect with their own credentials.
+- Someone needs database access that [ends on a date you set](#restrict-a-team-members-access).
+- You want to [remove one person's access](#remove-a-team-members-access) without changing a password everyone else uses.
+
+For how temporary access works and how to connect with it, see [Temporary access](https://supabase.com/docs/guides/platform/temporary-access).
+
+## Prerequisites
+
+Before you authorize a team member, set up the following:
+
+- [Enable temporary access](https://supabase.com/docs/guides/platform/temporary-access#manage-temporary-access-via-the-management-api) on the project.
+- Create a personal access token in the [Supabase Dashboard](https://supabase.com/dashboard/account/tokens) to call the Management API. If you scope the token, give it **Organization Members** with **Read** access and **Database JIT** with **Read-write** access.
+- Confirm that the team member has access to the project.
+
+## Authorize a team member
+
+To authorize a team member:
+
+1. Set your access token, project ref, and organization slug:
+
+   ```bash
+   export SUPABASE_MANAGEMENT_API_TOKEN="your-access-token"
+   export PROJECT_REF="your-project-ref"
+   export ORG_SLUG="your-org-slug"
+   ```
+
+   The organization slug is the part of your organization's URL in the Supabase Dashboard that follows `/org/`.
+
+2. List the organization's members, and copy the `user_id` of the team member you want to authorize:
+
+   ```bash
+   curl "https://api.supabase.com/v1/organizations/$ORG_SLUG/members" \
+     -H "Authorization: Bearer $SUPABASE_MANAGEMENT_API_TOKEN"
+   ```
+
+3. Map the team member to the roles they can assume. Each request replaces the team member's mappings, so list every role they need. To restrict access from the start, add the fields from [Restrict a team member's access](#restrict-a-team-members-access) to this request:
+
+   ```bash
+   export MEMBER_USER_ID="the-member-user-id"
+
+   curl -X PUT "https://api.supabase.com/v1/projects/$PROJECT_REF/database/jit" \
+     -H "Authorization: Bearer $SUPABASE_MANAGEMENT_API_TOKEN" \
+     -H "Content-Type: application/json" \
+     -d @- <<EOF
+   {
+     "user_id": "$MEMBER_USER_ID",
+     "roles": [{ "role": "postgres" }]
+   }
+   EOF
+   ```
+
+   This example maps the `postgres` role, which has broad privileges on your database. If the team member needs less, map a narrower role.
+
+The team member can now connect as the `postgres` role, with their access token as the password. For connection strings, see [Using temporary access](https://supabase.com/docs/guides/platform/temporary-access#using-temporary-access).
+
+## Restrict a team member's access
+
+Each role in the mapping takes two optional restrictions:
+
+- `expires_at`: a Unix timestamp in seconds. After it passes, the database rejects the connection, even if the access token is still valid.
+- `allowed_networks`: the CIDR ranges the team member can connect from. Put IPv4 ranges in `allowed_cidrs` and IPv6 ranges in `allowed_cidrs_v6`.
+
+This example uses the variables from [Authorize a team member](#authorize-a-team-member). It limits the `postgres` role to one IPv4 address for seven days. Replace `203.0.113.10/32` with the address or range the team member connects from:
+
+```bash
+export EXPIRES_AT=$(( $(date +%s) + 7 * 24 * 60 * 60 ))
+
+curl -X PUT "https://api.supabase.com/v1/projects/$PROJECT_REF/database/jit" \
+  -H "Authorization: Bearer $SUPABASE_MANAGEMENT_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d @- <<EOF
+{
+  "user_id": "$MEMBER_USER_ID",
+  "roles": [
+    {
+      "role": "postgres",
+      "expires_at": $EXPIRES_AT,
+      "allowed_networks": {
+        "allowed_cidrs": [{ "cidr": "203.0.113.10/32" }]
+      }
+    }
+  ]
+}
+EOF
+```
+
+## Remove a team member's access
+
+To remove all of a team member's role mappings, send a delete request:
+
+```bash
+curl -X DELETE "https://api.supabase.com/v1/projects/$PROJECT_REF/database/jit/$MEMBER_USER_ID" \
+  -H "Authorization: Bearer $SUPABASE_MANAGEMENT_API_TOKEN"
+```
+
+
+---
+
 # Temporary access
 
 Enable temporary access for short-lived database connections tied to a Supabase user.
@@ -118169,47 +118282,7 @@ curl -X PUT "https://api.supabase.com/v1/projects/$PROJECT_REF/jit-access" \
 
 ## Configure user access
 
-Once temporary access has been enabled, project users must be authorized and mapped to [Postgres roles](https://supabase.com/docs/guides/database/postgres/roles) they are allowed to access. Each user can be authorized to "assume" one or more Postgres roles using temporary access.
-
-When a user is authorized to assume a Postgres role, the user's Personal Access Token (PAT) will be used as the password for the Postgres role.
-
-Note: Postgres roles can still be accessed using the password configured on the role. This allows long-lived service connections to continue using the existing credentials.
-
-Temporary access authentication only applies for Supabase project users authenticating to the database, and assuming the given Postgres role. No new roles or users are created in the Postgres database and the assumed role's permissions will still apply.
-
-### Apply temporary access restrictions
-
-A user's temporary access can also be restricted to a validity period, after which their temporary access will expire and even though the access token is still valid, the database will reject the connection.
-
-IP address restrictions can also be applied, ensuring that temporary access will only be authorized from allowed network ranges (IPv4 and/or IPv6).
-
-#### Applying restrictions with the management API
-
-Restrictions can also be applied through the Management API.
-
-```bash
-# Get your access token from https://supabase.com/dashboard/account/tokens
-export SUPABASE_MANAGEMENT_API_TOKEN="your-access-token"
-export PROJECT_REF="your-project-ref"
-
-# Restrict temporary access to IPv4 ranges and expiry date
-# user_id is the gotrue_id of the user with access to the project
-curl -X PUT "https://api.supabase.com/v1/projects/$PROJECT_REF/database/jit" \
-  -H "Authorization: Bearer $SUPABASE_MANAGEMENT_API_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "user_id": "00000000-1111-2222-3333-444444444444",
-    "user_roles": [
-      {
-        "role": "postgres",
-        "allowed_networks": {
-          "allowed_cidrs": [{ "cidr": "176.1.12.1/32" }]
-        },
-        "expires_at": 1758721065775
-      }
-    ]
-  }'
-```
+After you enable temporary access, map each team member to the Postgres roles they can assume. You can also limit each role by expiry and by network. For more information, see [Map team members to Postgres roles](https://supabase.com/docs/guides/platform/team-database-access).
 
 ## Using temporary access
 

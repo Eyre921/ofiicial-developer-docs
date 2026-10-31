@@ -36,15 +36,14 @@ You need:
 
 Tilde-latest aliases like `~anthropic/claude-haiku-latest` auto-resolve to the newest version in that model family. Find available aliases on each model's page at [/models](https://openrouter.ai/models). You can also use exact slugs (e.g. `anthropic/claude-haiku-5.5`) when you need to pin a specific version.
 
-If you're starting a new TypeScript agent, use the [Agent SDK `callModel` API](https://openrouter.ai/docs/sdks/typescript/call-model/overview) for the orchestrator loop. The samples below use Chat Completions so the server-tool request shape is visible, but the delegation pattern works the same way inside an Agent SDK workflow.
+If you're starting a new TypeScript agent, use the [Agent SDK `callModel` API](https://openrouter.ai/docs/sdks/typescript/call-model/overview) for the orchestrator loop. The samples below use the [Responses API](https://openrouter.ai/docs/api_reference/responses/overview.md) so the server-tool request shape is visible, but the delegation pattern works the same way inside an Agent SDK workflow.
 
 Use these references for exact schemas:
 
 * [Subagent server tool](https://openrouter.ai/docs/guides/features/server-tools/subagent.md)
 * [Agent SDK `callModel` overview](https://openrouter.ai/docs/sdks/typescript/call-model/overview)
-* [Create a chat completion](https://openrouter.ai/docs/api/api-reference/chat/create-a-chat-completion.md)
 * [Create a response](https://openrouter.ai/docs/api/api-reference/responses/create-a-response.md)
-* [TypeScript SDK Chat reference](https://openrouter.ai/docs/client-sdks/typescript/sdks/chat/README.md)
+* [TypeScript SDK Responses reference](https://openrouter.ai/docs/client-sdks/typescript/sdks/responses/README.md)
 
 ## What you're building
 
@@ -71,20 +70,12 @@ The minimal setup: one `openrouter:subagent` entry in the `tools` array with the
 ```js title="JavaScript" expandable lines theme={null}
 const buildDelegationRequest = ({ task, orchestratorModel, workerModel }) => ({
   model: orchestratorModel,
-  messages: [
-    {
-      role: "system",
-      content:
-        "You are a senior orchestrator. Break complex tasks into focused subtasks. " +
-        "Delegate routine work (summarization, extraction, reformatting, drafting) " +
-        "to the subagent. Include all context the worker needs in task_description — " +
-        "it cannot see this conversation. Keep planning and integration for yourself.",
-    },
-    {
-      role: "user",
-      content: task,
-    },
-  ],
+  instructions:
+    "You are a senior orchestrator. Break complex tasks into focused subtasks. " +
+    "Delegate routine work (summarization, extraction, reformatting, drafting) " +
+    "to the subagent. Include all context the worker needs in task_description — " +
+    "it cannot see this conversation. Keep planning and integration for yourself.",
+  input: task,
   tools: [
     {
       type: "openrouter:subagent",
@@ -110,18 +101,13 @@ import requests
 def build_delegation_request(task, orchestrator_model, worker_model):
     return {
         "model": orchestrator_model,
-        "messages": [
-            {
-                "role": "system",
-                "content": (
-                    "You are a senior orchestrator. Break complex tasks into focused subtasks. "
-                    "Delegate routine work (summarization, extraction, reformatting, drafting) "
-                    "to the subagent. Include all context the worker needs in task_description "
-                    "- it cannot see this conversation. Keep planning and integration for yourself."
-                ),
-            },
-            {"role": "user", "content": task},
-        ],
+        "instructions": (
+            "You are a senior orchestrator. Break complex tasks into focused subtasks. "
+            "Delegate routine work (summarization, extraction, reformatting, drafting) "
+            "to the subagent. Include all context the worker needs in task_description "
+            "- it cannot see this conversation. Keep planning and integration for yourself."
+        ),
+        "input": task,
         "tools": [
             {
                 "type": "openrouter:subagent",
@@ -145,22 +131,29 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const client = new OpenRouter({ apiKey: process.env.OPENROUTER_API_KEY });
 
-const result = await client.chat.send({
-  chatRequest: {
-    ...requestBody,
+// The SDK uses camelCase field names and drops unknown keys, so map the
+// fetch-shaped body explicitly instead of spreading it.
+const result = await client.responses.send({
+  responsesRequest: {
+    model: requestBody.model,
+    instructions: requestBody.instructions,
+    input: requestBody.input,
+    tools: requestBody.tools,
+    toolChoice: 'auto',
   },
 });
 
-if (result instanceof ReadableStream) {
+if (!("output" in result)) {
   throw new Error("Expected a non-streaming response");
 }
 
-const message = result.choices?.[0]?.message;
+const message = [...result.output].reverse().find((item) => item.type === "message");
+const answer = message?.content.find((part) => part.type === "output_text")?.text;
 ```
 
 ```js title="JavaScript (fetch)" lines theme={null}
 const sendDelegationRequest = async (body) => {
-  const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+  const response = await fetch("https://openrouter.ai/api/v1/responses", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -178,13 +171,14 @@ const sendDelegationRequest = async (body) => {
 };
 
 const result = await sendDelegationRequest(requestBody);
-const message = result.choices?.[0]?.message;
+const message = [...result.output].reverse().find((item) => item.type === "message");
+const answer = message?.content.find((part) => part.type === "output_text")?.text;
 ```
 
 ```python title="Python" lines theme={null}
 def send_delegation_request(body):
     response = requests.post(
-        "https://openrouter.ai/api/v1/chat/completions",
+        "https://openrouter.ai/api/v1/responses",
         headers={
             "Content-Type": "application/json",
             "Authorization": f"Bearer {os.environ['OPENROUTER_API_KEY']}",
@@ -195,19 +189,18 @@ def send_delegation_request(body):
     return response.json()
 
 result = send_delegation_request(request_body)
-message = result["choices"][0]["message"]
+message = next(item for item in reversed(result["output"]) if item["type"] == "message")
+answer = next(part["text"] for part in message["content"] if part["type"] == "output_text")
 ```
 
 ```bash title="cURL" lines theme={null}
-curl -s https://openrouter.ai/api/v1/chat/completions \
+curl -s https://openrouter.ai/api/v1/responses \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $OPENROUTER_API_KEY" \
   -d '{
     "model": "~anthropic/claude-opus-latest",
-    "messages": [
-      {"role": "system", "content": "You are a senior orchestrator. Delegate routine subtasks to the subagent."},
-      {"role": "user", "content": "Summarize each section of this changelog and list breaking changes."}
-    ],
+    "instructions": "You are a senior orchestrator. Delegate routine subtasks to the subagent.",
+    "input": "Summarize each section of this changelog and list breaking changes.",
     "tools": [
       {
         "type": "openrouter:subagent",
@@ -218,7 +211,7 @@ curl -s https://openrouter.ai/api/v1/chat/completions \
   }'
 ```
 
-The response follows the standard [Chat Completions format](https://openrouter.ai/docs/api/api-reference/chat/create-a-chat-completion.md). Server tools resolve server-side: the orchestrator's subagent calls happen inside OpenRouter's agentic loop, so the client response contains only the final integrated answer in `message.content`. The `usage` object reflects the combined token spend per [Server tools: Usage Tracking](https://openrouter.ai/docs/guides/features/server-tools.md#usage-tracking).
+The response follows the standard [Responses API format](https://openrouter.ai/docs/api_reference/responses/overview.md). Server tools resolve server-side: the orchestrator's subagent calls happen inside OpenRouter's agentic loop, and you don't execute them. The response `output` records each delegation as an `openrouter:subagent` item, followed by a `message` item whose `output_text` part holds the final integrated answer. The `usage` object reflects the combined token spend per [Server tools: Usage Tracking](https://openrouter.ai/docs/guides/features/server-tools.md#usage-tracking).
 
 The orchestrator decides whether and when to delegate. Each delegation passes two arguments:
 
@@ -250,6 +243,21 @@ On failure:
 }
 ```
 
+In the response `output`, each delegation appears as an `openrouter:subagent` item with the worker's model, the task, and its outcome:
+
+```json lines theme={null}
+{
+  "type": "openrouter:subagent",
+  "id": "st_tmp_dgy29rn5qvk",
+  "status": "completed",
+  "model": "anthropic/claude-haiku-5.5",
+  "task_name": "summarize-breaking-changes",
+  "task_description": "Summarize the breaking changes in this changelog...",
+  "outcome": "Breaking changes in v3.0:\n1. Removed deprecated /v1/legacy endpoint...",
+  "call_id": "call_xvWTB916fUfn6eNGQfvbvhod"
+}
+```
+
 The orchestrator receives the result as a tool response and continues generating. It can delegate more tasks, integrate outcomes it already has, or finish the response. Subagent calls are capped per request (see the [reference page](https://openrouter.ai/docs/guides/features/server-tools/subagent.md) for current limits).
 
 ## 3. Give the worker its own tools
@@ -259,12 +267,7 @@ When a subtask needs external data, pass server tools to the worker. The worker 
 ```js expandable lines theme={null}
 const requestBody = {
   model: "~anthropic/claude-opus-latest",
-  messages: [
-    {
-      role: "user",
-      content: "Research competitors mentioned in our Q2 report and draft a competitive analysis.",
-    },
-  ],
+  input: "Research competitors mentioned in our Q2 report and draft a competitive analysis.",
   tools: [
     {
       type: "openrouter:subagent",
@@ -323,24 +326,25 @@ The full parameter reference is at [Subagent server tool](https://openrouter.ai/
 
 > [!NOTE]
 >
-> Subagent works with both non-streaming and streaming requests. With streaming (`stream: true`), the server sends `: OPENROUTER PROCESSING` SSE comments as heartbeats while workers execute. Content chunks resume once the orchestrator continues generating. The final chunk includes the aggregated `usage` object. See [Server tools overview](https://openrouter.ai/docs/guides/features/server-tools.md) for how server tool usage appears in the response.
+> Subagent works with both non-streaming and streaming requests. With streaming (`stream: true`), the server sends SSE comment lines as heartbeats while workers execute. Text deltas resume once the orchestrator continues generating. The `response.completed` event includes the aggregated `usage` object. See [Server tools overview](https://openrouter.ai/docs/guides/features/server-tools.md) for how server tool usage appears in the response.
 
 With `stream: true`, expect this pattern in the SSE stream:
 
 ```text lines theme={null}
-: OPENROUTER PROCESSING      ← heartbeat comments during worker execution
-: OPENROUTER PROCESSING      ← (repeats until delegation completes)
-data: {"choices":[{"delta":{"content":"Here","role":"assistant"}}]}
-data: {"choices":[{"delta":{"content":"'s the summary:"}}]}
-...content chunks...
-data: {"choices":[{"delta":{"content":""}}],"usage":{...}}  ← final chunk with aggregated usage
+data: {"type":"response.output_item.added","item":{"type":"openrouter:subagent",...}}
+:                            ← heartbeat comments during worker execution
+data: {"type":"response.output_item.done","item":{"type":"openrouter:subagent","outcome":"...",...}}
+data: {"type":"response.output_text.delta","delta":"Here"}
+data: {"type":"response.output_text.delta","delta":"'s the summary:"}
+...text deltas...
+data: {"type":"response.completed","response":{...,"usage":{...}}}  ← aggregated usage
 data: [DONE]
 ```
 
 Most SSE client libraries ignore comment lines (lines starting with `:`) automatically. Here's a minimal consumer:
 
 ```js expandable lines theme={null}
-const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+const response = await fetch("https://openrouter.ai/api/v1/responses", {
   method: "POST",
   headers: {
     Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
@@ -370,14 +374,22 @@ while (true) {
 
   let streamDone = false;
   for (const line of lines) {
-    if (line.startsWith(": OPENROUTER PROCESSING")) continue; // heartbeat
+    if (line.startsWith(":")) continue; // heartbeat comment
     if (!line.startsWith("data: ")) continue;
     const payload = line.slice(6);
     if (payload === "[DONE]") { streamDone = true; break; }
-    let chunk;
-    try { chunk = JSON.parse(payload); } catch { continue; }
-    const content = chunk.choices?.[0]?.delta?.content;
-    if (content) process.stdout.write(content);
+    let event;
+    try { event = JSON.parse(payload); } catch { continue; }
+    if (event.type === "response.failed") {
+      throw new Error(event.response.error?.message ?? "Delegation failed");
+    }
+    if (event.type === "response.incomplete") {
+      throw new Error(
+        `Delegation incomplete: ${event.response.incomplete_details?.reason ?? "unknown reason"}`,
+      );
+    }
+    if (event.type === "error") throw new Error(event.message);
+    if (event.type === "response.output_text.delta") process.stdout.write(event.delta);
   }
   if (streamDone) break;
 }
@@ -392,8 +404,8 @@ Log:
 * `orchestrator_model`
 * `worker_model`
 * `did_enable_delegation` (whether you configured the subagent tool on this request)
-* `finish_reason`
-* `usage.prompt_tokens` (or `usage.input_tokens`), `usage.completion_tokens` (or `usage.output_tokens`), `usage.total_tokens`, and `usage.cost` when returned
+* `status` (and `incomplete_details.reason` when the response is incomplete)
+* `usage.input_tokens`, `usage.output_tokens`, `usage.total_tokens`, and `usage.cost` when returned
 * route or feature name, such as `delegated_analysis`
 
 Do not log:
@@ -408,17 +420,15 @@ The `usage` object in the response reflects the combined token spend of the orch
 
 ```js lines theme={null}
 const logDelegation = (response, context) => {
-  const choice = response.choices?.[0];
   const usage = response.usage ?? {};
   return {
     orchestrator_model: context.orchestratorModel,
     worker_model: context.workerModel,
     did_enable_delegation: true,
-    finish_reason: choice?.finish_reason,
-    // Chat Completions uses prompt_tokens/completion_tokens;
-    // some responses also include input_tokens/output_tokens.
-    usage_prompt_tokens: usage.prompt_tokens ?? usage.input_tokens,
-    usage_completion_tokens: usage.completion_tokens ?? usage.output_tokens,
+    status: response.status,
+    incomplete_reason: response.incomplete_details?.reason,
+    usage_input_tokens: usage.input_tokens,
+    usage_output_tokens: usage.output_tokens,
     usage_total_tokens: usage.total_tokens,
     usage_cost: usage.cost,
     route: "delegated_analysis",
