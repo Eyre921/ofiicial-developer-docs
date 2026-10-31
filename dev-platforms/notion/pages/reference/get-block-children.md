@@ -15,7 +15,7 @@ Returns only the first level of children for the specified block. See [block obj
 
 The response may contain fewer than `page_size` of results.
 
-See [Pagination](/reference/intro#pagination) for details about how to use a cursor to iterate through the list.
+See [Pagination](/reference/pagination) for details about how to use a cursor to iterate through the list.
 
 > [!NOTE]
 >

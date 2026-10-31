@@ -110311,6 +110311,20 @@ Reference the TaskDB Secret and enable migration. The block below collects every
 
 Apply the chart through your normal workflow. It creates TaskDB and a one-shot migration Job that runs to completion and exits.
 
+## Pause and resume migration
+
+Suspending migration stops its pods but keeps the Job, TaskDB, and migration progress.
+
+> [!NOTE]
+>
+> Available in all 0.17 Helm charts and version 0.16.40 or later on the 0.16 line.
+
+Set `smithdb.migration.job.suspend: true` and apply the chart to pause. Keep `smithdb.langsmith.migration.enabled: true`. To resume from saved progress, set `smithdb.migration.job.suspend: false` and apply again.
+
+> [!WARNING]
+>
+> Do not pause with `smithdb.langsmith.migration.enabled: false`. This removes the Job, chart-managed TaskDB, and, by default, the TaskDB PVC holding migration progress.
+
 ## Wait for completion
 
 Keep SmithDB-backed queries disabled until the historical migration Job reports Kubernetes condition `Complete`.
@@ -110674,7 +110688,7 @@ Use this section to route LangSmith traffic back to ClickHouse and disable the S
 
 > [!WARNING]
 >
-> If a historical migration is active or its progress must be preserved, stop before disabling SmithDB. Disabling migration removes chart-managed TaskDB resources and, by default, its PVC. Contact LangChain through the [Support Portal](https://support.langchain.com/) if you need to preserve migration progress.
+> Disabling migration removes chart-managed TaskDB and, by default, its PVC holding migration progress. To pause without losing progress, keep migration enabled and use `smithdb.migration.job.suspend: true`. See [Pause and resume migration](/langsmith/self-host-smithdb-migrate#pause-and-resume-migration).
 
 If you re-enable SmithDB ingestion later, you need to run another migration to bring it back in sync with ClickHouse.
 

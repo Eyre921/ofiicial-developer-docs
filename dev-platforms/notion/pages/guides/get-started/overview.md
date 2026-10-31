@@ -1,36 +1,20 @@
 ---
-title: "Overview"
+title: "Notion connections"
 source: https://developers.notion.com/guides/get-started/overview
 path: guides/get-started/overview
 ---
 
-Discover what Notion connections are, when to use each type, and what you can build.
-
-## Using Notion API
-
-Notion connections let you connect your workspace to external tools and automate workflows through code. With the REST API, you can read, create, and update nearly everything in a workspace — pages, databases, users, comments, and more.
-
-When you create a connection, you define what it can do: which API endpoints it can call, what content it can read or write, and how it authenticates. Each connection gets its own credentials and its own set of permissions.
+Compare internal connections, public connections, and personal access tokens.
 
 ## What is a Notion connection?
 
-A Notion [connection](https://www.notion.com/help/add-and-manage-connections-with-the-api) — sometimes called an integration — connects your workspace to external apps and tools. That could be a SaaS product, an automation script, or a custom tool you've built.
+A [connection](https://www.notion.com/help/add-and-manage-connections-with-the-api) gives an app access to content in a Notion workspace. For example, a connection can add tasks to a database or post a comment on a page. You can also call the same API as yourself with a personal access token.
 
-Connections are added to Notion workspaces and require **explicit permission** from users to access Notion pages and databases.
-
-![](https://mintcdn.com/notion-demo/LHm9qfrJYJOPRxs6/images/docs/0f06356-notion_overview.jpg?fit=max\&auto=format\&n=LHm9qfrJYJOPRxs6\&q=85\&s=ab31886c0c84514c8db8a2801d4fffe4)
-
-Create Notion connections that unlock new possibilities for teams.
-
-Notion already has a [library](https://www.notion.com/integrations/all) of connections you can browse. For developers who want to build their own, Notion supports internal connections, public connections, and personal access tokens — all powered by the same REST API.
+![A connection links a Notion workspace to tools that a team uses.](https://mintcdn.com/notion-demo/LHm9qfrJYJOPRxs6/images/docs/0f06356-notion_overview.jpg?fit=max\&auto=format\&n=LHm9qfrJYJOPRxs6\&q=85\&s=ab31886c0c84514c8db8a2801d4fffe4)
 
 ## Connection types
 
-Notion supports three authentication models:
-
-* **Internal connections** are scoped to a single workspace and use a static credential called an internal connection API token. They're ideal for custom automations and workflows — things like syncing data, sending notifications, or building internal dashboards.
-* **Public connections** use OAuth 2.0 for authentication. At creation time, you choose their [installation scope](/guides/get-started/public-connections#installation-scope): **Any workspace** (any Notion user can install; Marketplace-eligible) or **Selected workspaces only** (restricted to workspaces you select; not Marketplace-eligible).
-* **Personal access tokens (PATs)** are user-scoped tokens for scripts, CLI workflows, Workers, and tools that should act as one Notion user. A PAT uses the creator's workspace membership and page permissions. See [Personal access tokens](/guides/get-started/personal-access-tokens).
+Use an [internal connection](/guides/get-started/internal-connections) for a team automation in one workspace. A [public connection](/guides/get-started/public-connections#installation-scope) uses OAuth so other people can install your app. A [personal access token](/guides/get-started/personal-access-tokens) runs a script or tool with your own access.
 
 > [!NOTE]
 >
@@ -58,11 +42,9 @@ Notion supports three authentication models:
 
 ## Shared concepts
 
-All connection and token types share a few core concepts.
-
 ### Capabilities
 
-Every connection or token has a set of capabilities that control what it can do — read content, update content, insert content, read comments, and more. You configure capabilities when you create a connection or PAT. See the [Capabilities reference](/reference/capabilities) for the full list.
+[Capabilities](/reference/capabilities) control which operations a connection or token can perform, such as reading content or adding comments.
 
 > [card] [Pages](/guides/data-apis/working-with-page-content)
 >
@@ -70,7 +52,7 @@ Every connection or token has a set of capabilities that control what it can do 
 
 > [card] [Databases](/guides/data-apis/working-with-databases)
 >
-> Manage database, properties, entries, and schemas.
+> Create a database and find its data sources.
 
 > [card] [Views](/guides/data-apis/working-with-views)
 >
@@ -90,11 +72,11 @@ Every connection or token has a set of capabilities that control what it can do 
 
 > [card] [Content queries](/reference/post-search)
 >
-> Search through workspace content.
+> Find pages and data sources by title.
 
 > [card] [Users](/reference/user)
 >
-> Access user profiles and permissions.
+> Read user profiles available to your connection.
 
 ### Content access
 
@@ -112,41 +94,9 @@ Connections can subscribe to real-time events — like page updates, property ch
 
 ## Getting started
 
-The fastest way to start building is the [**Quickstart**](/guides/get-started/quick-start) — create a personal access token, make your first API request, and see a new page appear in your workspace in under two minutes.
-
-Once you're ready to build further, choose the authentication model that fits your use case:
-
-**Step 1**
-
-[**Personal access tokens**](/guides/get-started/personal-access-tokens) — Authenticate as yourself for scripts, CLI workflows, Workers, or trusted tools.
-
-**Step 2**
-
-[**Internal connections**](/guides/get-started/internal-connections) — Build team-owned automations with a dedicated bot identity scoped to one workspace.
-
-**Step 3**
-
-[**Public connections**](/guides/get-started/public-connections) — Build apps for other Notion users with OAuth 2.0.
-
-**Step 4**
-
-[**Authorization**](/guides/get-started/authorization) — Implement the OAuth 2.0 flow for public connections.
-
-**Step 5**
-
-[**Secure API credentials**](/guides/get-started/handling-api-keys) — Secure and manage your API credentials in production.
-
-**Step 6**
-
-[**Preparing for users**](/guides/get-started/preparing-for-users) — Set up databases, pages, and views automatically when users install your connection.
-
-**Step 7**
-
-[**List on the Marketplace**](/guides/get-started/marketplace-listing) — Make your public connection discoverable to all Notion users.
+Follow the [API quickstart](/guides/get-started/quick-start) to create a private page. If you’re building a public connection, see how to [authorize users](/guides/get-started/authorization), [store credentials](/guides/get-started/handling-api-keys), and [set up content for new users](/guides/get-started/preparing-for-users).
 
 ## Resources
-
-Explore the links below to get started, and join the [Notion Devs Slack community](https://join.slack.com/t/notiondevs/shared_invite/zt-3u9oid9q8-HLUBmMVWYK~g9HFo4U4raA) to share your projects and connect with fellow developers.
 
 > [card] [API reference](/reference/intro)
 

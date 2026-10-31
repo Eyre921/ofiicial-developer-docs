@@ -110,7 +110,7 @@ Keep an eye on this changelog for when the update becomes available in the Publi
 * A new integration [example](https://github.com/makenotion/notion-cookbook/tree/main/examples/parse-text-from-any-block-type) was added to the Notion SDK for JavaScript repo. This example shows how to get the plain text from any block type currently supported by the public API.
 * The new unique ID page property was added to the [Page properties](/reference/page-property-values) documentation. When used, the unique ID (`unique_id`) auto-increments for every new page created in a database. An optional prefix can be included that will be applied to the ID values.
 
-![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/c599280-unique_id.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=92437cad7aa45d267c0f0a3d82874be2)
+![A page property shows a generated ID with a prefix and a number.](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/c599280-unique_id.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=92437cad7aa45d267c0f0a3d82874be2)
 
 The unique ID in a Notion page's properties
 
@@ -243,7 +243,7 @@ We don’t have any updates to share right now. Stay tuned for the next changelo
 
 * Added a token `Refresh` button to the settings page for internal integrations. Click `Refresh` to generate a new token for your internal integration.
 
-![](https://mintcdn.com/notion-demo/SXcROsTox2NhPn9o/images/docs/b1d6c0c-2023-01-13_10.58.16.gif?s=2a2a1e3671c7b1fec00590b7aba51afd)
+![Internal integration settings offer a control to refresh the token.](https://mintcdn.com/notion-demo/SXcROsTox2NhPn9o/images/docs/b1d6c0c-2023-01-13_10.58.16.gif?s=2a2a1e3671c7b1fec00590b7aba51afd)
 
 You can now refresh an internal integration token from the integration settings page.
 
@@ -3538,11 +3538,11 @@ We also updated the page picker to only show pages for which the user has Full A
 
 Other OAuth behavior has not changed: only admins can go through OAuth, and only the original person originally added an integration via OAuth can go through the flow again.
 
-![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/15c452e-oauth_improvements.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=3279ba235d3640e80fe9a0bac2b9b8ff)
+![The page picker shows nested pages that match the search text.](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/15c452e-oauth_improvements.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=3279ba235d3640e80fe9a0bac2b9b8ff)
 
 The search bar now lets you search for and select nested pages to share with an integration.
 
-![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/63ac8e6-oauth2.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=73927dbfab4f1b327dd80d5235c4b34f)
+![Selected nested pages appear under Manually added.](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/63ac8e6-oauth2.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=73927dbfab4f1b327dd80d5235c4b34f)
 
 Once selected, any nested pages appear in the "Manually Added" section.
 

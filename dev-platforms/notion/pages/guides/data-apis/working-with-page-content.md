@@ -16,7 +16,7 @@ In this guide, you'll learn about how the building blocks of page content are re
 
 In general, **page properties** are best for capturing structured information such as a due date, a category, or a relationship to another page. **Page content** is best for looser structures or free form content. Page content is where users compose their thoughts or tell a story. Page properties are where users capture data and build systems. Your connection should aim to use each in the way users expect.
 
-![](https://mintcdn.com/notion-demo/LHm9qfrJYJOPRxs6/images/docs/369b6a5-page-properties-and-content.png?fit=max\&auto=format\&n=LHm9qfrJYJOPRxs6\&q=85\&s=0887fcbaa5537be57e38124ee0fa409c)
+![Page properties appear above the page body. The paragraphs and image below are content blocks.](https://mintcdn.com/notion-demo/LHm9qfrJYJOPRxs6/images/docs/369b6a5-page-properties-and-content.png?fit=max\&auto=format\&n=LHm9qfrJYJOPRxs6\&q=85\&s=0887fcbaa5537be57e38124ee0fa409c)
 
 Visualizing page properties versus page content
 
@@ -547,4 +547,4 @@ Nearly everything users see inside Notion is represented as blocks. Now that you
 * This guide explains working with page content. Take a look at [working with database properties](/guides/data-apis/working-with-databases#database-properties).
 * Explore the [block object](/reference/block) to see other types of blocks you can create.
 * Learn more about the various kinds of [rich text objects](/reference/rich-text).
-* Learn more about [pagination](/reference/intro#pagination).
+* Learn more about [pagination](/reference/pagination).

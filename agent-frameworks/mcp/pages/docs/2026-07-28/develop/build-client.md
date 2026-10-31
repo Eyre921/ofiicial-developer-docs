@@ -824,6 +824,10 @@ Before you begin, it helps to have gone through our [Build an MCP Server](/docs/
 >
 > > [!NOTE]
 > >
+> > This client uses MCP protocol version 2025-11-25, as supported by the latest stable release of the Java SDK. It connects to servers that accept that version, but not to servers that accept only 2026-07-28. See [backward compatibility](/specification/2026-07-28/basic/versioning#backward-compatibility-with-initialization-based-versions).
+>
+> > [!NOTE]
+> >
 > > This is a quickstart demo based on Spring AI MCP auto-configuration and boot starters.
 > > To learn how to create sync and async MCP Clients manually, consult the [Java SDK Client](https://java.sdk.modelcontextprotocol.io/) documentation.
 >
@@ -854,7 +858,7 @@ Before you begin, it helps to have gone through our [Build an MCP Server](/docs/
 >
 >    ```bash theme={null}
 >    git clone https://github.com/spring-projects/spring-ai-examples.git
->    cd model-context-protocol/web-search/brave-chatbot
+>    cd spring-ai-examples/model-context-protocol/web-search/brave-chatbot
 >    ```
 >
 > 3. Set up your API keys:
@@ -920,7 +924,7 @@ Before you begin, it helps to have gone through our [Build an MCP Server](/docs/
 >
 > This activates the `spring-ai-starter-mcp-client` to create one or more `McpClient`s based on the provided server configuration.
 > The `spring.ai.mcp.client.toolcallback.enabled=true` property enables the tool callback mechanism, that automatically registers all MCP tool as spring ai tools.
-> It is disabled by default.
+> It is enabled by default.
 >
 > 3. MCP Server Configuration (`mcp-servers-config.json`):
 >
@@ -945,8 +949,8 @@ Before you begin, it helps to have gone through our [Build an MCP Server](/docs/
 > ```java theme={null}
 > var chatClient = chatClientBuilder
 >     .defaultSystem("You are useful assistant, expert in AI and Java.")
->     .defaultToolCallbacks((Object[]) mcpToolAdapter.toolCallbacks())
->     .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
+>     .defaultTools(SyncMcpToolCallbackProvider.builder().mcpClients(mcpSyncClients).build())
+>     .defaultAdvisors(MessageChatMemoryAdvisor.builder(MessageWindowChatMemory.builder().build()).build())
 >     .build();
 > ```
 >
@@ -954,7 +958,7 @@ Before you begin, it helps to have gone through our [Build an MCP Server](/docs/
 >
 > * Uses Claude AI model for natural language understanding
 > * Integrates Brave Search through MCP for real-time web search capabilities
-> * Maintains conversation memory using InMemoryChatMemory
+> * Maintains conversation memory using MessageWindowChatMemory
 > * Runs as an interactive command-line application
 >
 > ### Build and run

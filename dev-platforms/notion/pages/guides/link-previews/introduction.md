@@ -8,9 +8,9 @@ Learn how link previews work in Notion.
 
 A Link Preview is a real-time excerpt of authenticated content that unfurls in Notion when an authenticated user shares an enabled link. Instead of logging in to multiple tools at a time, collaborators can use Link Previews to centralize their work in Notion.
 
-<video />
+<video aria-label="GitHub link preview in Notion" />
 
-An example Link Preview for a GitHub workflow
+Pasting a GitHub link into Notion displays a preview of the linked item.
 
 Notion supports Link Previews for selected partner services. For example:
 
@@ -23,7 +23,7 @@ Notion supports Link Previews for selected partner services. For example:
 
 A user shares a Link Preview enabled URL. Notion detects supported URLs based on the Link Preview connection settings for that service. If it’s the first time that a user has shared a supported URL, then Notion kicks off an auth flow to authenticate with the source service. After the user authenticates, Notion and the source service exchange tokens that allow Notion to show a Link Preview in the user’s workspace.
 
-![](https://mintcdn.com/notion-demo/LHm9qfrJYJOPRxs6/images/docs/e121163-lp_overview.png?fit=max\&auto=format\&n=LHm9qfrJYJOPRxs6\&q=85\&s=ca57bf5daad1fda57bb7f369a94f7109)
+![A user shares a service URL in Notion. Notion and the service exchange the information needed to display the preview.](https://mintcdn.com/notion-demo/LHm9qfrJYJOPRxs6/images/docs/e121163-lp_overview.png?fit=max\&auto=format\&n=LHm9qfrJYJOPRxs6\&q=85\&s=ca57bf5daad1fda57bb7f369a94f7109)
 
 A diagram of the Link Preview flow
 

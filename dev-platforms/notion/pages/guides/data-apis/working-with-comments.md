@@ -17,7 +17,7 @@ Notion offers the ability for developers to add [comments](https://www.notion.co
 >
 > When using the public API, inline comments can be used to respond to *existing* [discussions](#responding-to-a-discussion-thread).
 
-![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/bec3d37-Screen_Shot_2023-05-22_at_3.38.28_PM.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=81d81afaab9f6101c9949bc6fbb3233e)
+![A page discussion appears below the title. A second comment is attached to an individual block.](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/bec3d37-Screen_Shot_2023-05-22_at_3.38.28_PM.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=81d81afaab9f6101c9949bc6fbb3233e)
 
 The Notion UI with a page and inline/block comment added.
 
@@ -51,7 +51,7 @@ There are two relevant capabilities when it comes to comments — the ability to
 
 Edit your connection's capabilities in the [Developer portal](https://app.notion.com/developers/connections). If these capabilities are not added to your connection, REST API requests related to comments will respond with an error.
 
-![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/497c553-Configuring_capabilities_on_the_integration_settings_page.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=e7f94d1dc39268815b010a9373c00e26)
+![Read comments and Insert comments have separate checkboxes.](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/497c553-Configuring_capabilities_on_the_integration_settings_page.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=e7f94d1dc39268815b010a9373c00e26)
 
 Configuring capabilities on the connection settings page.
 
@@ -109,7 +109,7 @@ const notion = new Client({ auth: process.env.NOTION_API_KEY });
 })();
 ```
 
-By default, the response from this endpoint returns a maximum of 100 items. To retrieve additional items, use [pagination](/reference/intro#pagination).
+By default, the response from this endpoint returns a maximum of 100 items. To retrieve additional items, use [pagination](/reference/pagination).
 
 ## Adding a comment to a page
 
@@ -347,7 +347,7 @@ There are two possible ways to get the `discussion_id` for a discussion thread.
 1. You can use the [Retrieve comments](/reference/list-comments) endpoint, which will return a list of open comments on the page or block.
 2. You can also get a `discussion_id` manually by navigating to the page with the discussion you’re responding to. Next, click the "Copy link to discussion" menu option next to the discussion.
 
-![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/8536d28-Screen_Shot_2023-05-22_at_7.27.12_PM.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=60a344208b6ad82c124bc7e40c34592d)
+![The comment menu includes Copy link to discussion.](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/8536d28-Screen_Shot_2023-05-22_at_7.27.12_PM.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=60a344208b6ad82c124bc7e40c34592d)
 
 "Copy link to discussion" menu option in Notion UI.
 

@@ -16,7 +16,7 @@ To use an internal connection, start by creating your connection in the [Develop
 
 The internal connection will be associated with the workspace of your choice. You are required to be a workspace owner to create a connection.
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/docs/fd25d1f-integrations_7.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=6fcebc5334c9c3499b58208b91b798ae)
+![The integrations list includes a New integration button.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/docs/fd25d1f-integrations_7.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=6fcebc5334c9c3499b58208b91b798ae)
 
 Create a new connection from the Developer portal.
 
@@ -24,7 +24,7 @@ Once the connection is created, you can update its settings as needed under the 
 
 The API token will be used to authenticate REST API requests. The connection sends the same token in every API request.
 
-![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/69c7487-integrations_8.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=34d293a88ef5911ff43aefe4dde91e2d)
+![The internal integration settings show a masked token with a Show button.](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/69c7487-integrations_8.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=34d293a88ef5911ff43aefe4dde91e2d)
 
 Find the API token in the Configuration tab.
 
@@ -142,7 +142,7 @@ Store the access token for future API requests. View the [API reference docs](/r
 
 After creating a public connection in the [Developer portal](https://app.notion.com/developers/connections), access the connection’s secrets in the **Configuration** tab. Similarly to the internal connections, these values should be protected and should never be included in source code or version control.
 
-![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/c535461-integrations_10.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=ef1174a58a78b04444bea74627ede083)
+![The public connection settings show a URL to start authorization.](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/c535461-integrations_10.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=ef1174a58a78b04444bea74627ede083)
 
 The Authorization URL field populates after a public connection is submitted for review
 
@@ -180,7 +180,7 @@ Once the authorization URL is visited, the user will be shown a prompt that vari
 
 In the standard connection permissions flow, a prompt describes the connection [capabilities](/reference/capabilities), presented to the user as what the connection would like to be able to do in the workspace. A user can either select pages to grant the connection access to, or cancel the request.
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/docs/ec39f97-Screen_Shot_2021-07-22_at_2.58.28_PM.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=3a82bcb02f006753164c1334e664b500)
+![The authorization prompt lists what the connection can do before the user selects pages.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/docs/ec39f97-Screen_Shot_2021-07-22_at_2.58.28_PM.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=3a82bcb02f006753164c1334e664b500)
 
 Prompt for authorizing a standard connection (no template option)
 
@@ -198,7 +198,7 @@ If the user opts to `Select pages`, then a page picker interface opens. A user c
 >
 > The page picker only displays pages or databases to which a user has [full access](https://www.notion.com/help/sharing-and-permissions), because a user needs full access to a resource in order to be able to share it with a connection.
 
-![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/a4009ce-Screen_Shot_2021-07-22_at_3.09.51_PM.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=94186f31f22938dc1c7d850e227e061a)
+![Checkboxes let the user choose which pages to share.](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/a4009ce-Screen_Shot_2021-07-22_at_3.09.51_PM.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=94186f31f22938dc1c7d850e227e061a)
 
 Page picker interface
 
@@ -218,7 +218,7 @@ To add a template to your workspace, complete the following steps:
 * Navigate to your connection in the [Developer portal](https://app.notion.com/developers/connections) and open the **Configuration** tab, then scroll to the Basic information section.
 * Scroll to the bottom of your distribution settings and add the URL of the Notion page you selected to the **Notion URL for optional template** input.
 
-![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/b4ae671-integrations11.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=d83bd80077b7fb6bdab6c38cbadb6579)
+![The distribution settings include a field for an optional template URL.](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/b4ae671-integrations11.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=d83bd80077b7fb6bdab6c38cbadb6579)
 
 Notion URL for optional template input in connection settings.
 
@@ -226,13 +226,13 @@ Once this URL is added, your auth flow prompt appearance will be updated.
 
 Going back to your prompt view, if the connection offers a Notion template option, the first step in the permissions flow will describe the connection [capabilities](/reference/capabilities). This is presented to the user as what the connection would be able to do in the workspace, and it prompts the user to click `Next`.
 
-![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/77076c7-template_prompt1.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=bce36d9f1a69a618dc886d1baf46d50f)
+![The authorization prompt offers to duplicate a template when connecting the account.](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/77076c7-template_prompt1.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=bce36d9f1a69a618dc886d1baf46d50f)
 
 Prompt for a connection with a Notion template option
 
 In the next step, a user can either choose to duplicate the template that you provided or to select existing pages to share with the connection.
 
-![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/9788bdb-template_prompt_2.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=d5ff31ef9083f78b60e615758b6f580e)
+![The user can choose the template or select existing pages to share.](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/9788bdb-template_prompt_2.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=d5ff31ef9083f78b60e615758b6f580e)
 
 A user can select to duplicate a template or to share existing pages with the connection
 

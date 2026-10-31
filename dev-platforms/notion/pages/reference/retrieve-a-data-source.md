@@ -16,7 +16,7 @@ To fetch data source *rows* (i.e. the child pages of a data source) rather than 
 
 First, find the containing database's ID in its Notion URL. The database ID is the 32-character alphanumeric string between the slash following the workspace name (if applicable) and the question mark.
 
-![](https://mintcdn.com/notion-demo/S-I3qLQnwRa7HjdK/images/reference/image-3.png?fit=max\&auto=format\&n=S-I3qLQnwRa7HjdK\&q=85\&s=051ded818c1263e52bb87f66a3d05ce5)
+![The database ID appears in the URL path before the question mark.](https://mintcdn.com/notion-demo/S-I3qLQnwRa7HjdK/images/reference/image-3.png?fit=max\&auto=format\&n=S-I3qLQnwRa7HjdK\&q=85\&s=051ded818c1263e52bb87f66a3d05ce5)
 
 Notion database ID
 
@@ -24,7 +24,7 @@ Use [Retrieve a database](/reference/retrieve-database) with that database ID. I
 
 To get a data source ID from the Notion app directly, the settings menu for a database includes a "Copy data source ID" button under "Manage data sources":
 
-![](https://mintcdn.com/notion-demo/S-I3qLQnwRa7HjdK/images/reference/image-4.png?fit=max\&auto=format\&n=S-I3qLQnwRa7HjdK\&q=85\&s=292ed34c84b1b7161b282444678c3bc6)
+![The Tasks data source menu offers Copy data source ID.](https://mintcdn.com/notion-demo/S-I3qLQnwRa7HjdK/images/reference/image-4.png?fit=max\&auto=format\&n=S-I3qLQnwRa7HjdK\&q=85\&s=292ed34c84b1b7161b282444678c3bc6)
 
 Screenshot of the 'Manage data sources' menu for a database in Notion, with 'Copy data source ID' button.
 
@@ -38,7 +38,7 @@ Each Public API endpoint can return several possible error codes. See the [Error
 
 ### Additional resources
 
-* [How to share a database with your connection](/guides/get-started/quick-start#give-your-connection-page-permissions)
+* [How to share a database with your connection](/guides/get-started/overview#content-access)
 * [Working with databases guide](/guides/data-apis/working-with-databases)
 
 > [!NOTE]

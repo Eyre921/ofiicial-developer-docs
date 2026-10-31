@@ -3406,6 +3406,7 @@ The **Billing** page shows:
 
 - Your current account balance.
 - Credit card on file (add or update your payment method).
+- Billing details, such as your company name, address, and VAT number, which appear on your invoices.
 - Auto-pay configuration.
 - Billing history and invoices.
 
@@ -3827,7 +3828,7 @@ AssemblyAI accepts all major credit cards. ACH transfers are available in some c
 
 To update the credit card on your account, log in to the [dashboard](https://www.assemblyai.com/dashboard/home), go to **Workspace** > **Settings** > **Billing**, and update your payment details. You can also click **View billing details** in the bottom-left corner of the dashboard to jump straight to this page.
 
-To change the company information shown on your invoices, email [support@assemblyai.com](mailto:support@assemblyai.com) with the details you'd like to appear.
+To add or change the company information shown on your invoices, such as your company name, address, and VAT number, go to **Workspace** > **Settings** > **Billing** in the [dashboard](https://www.assemblyai.com/dashboard/home) and update your details on the **Billing Details** page.
 
 ## Pre-recorded Speech-to-Text billing
 

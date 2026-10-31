@@ -7,7 +7,7 @@ path: reference/list-comments
 get /v1/comments
 Retrieves a list of un-resolved [Comment objects](/reference/comment-object) from a page or block.
 
-See [Pagination](/reference/intro#pagination) for details about how to use a cursor to iterate through the list.
+See [Pagination](/reference/pagination) for details about how to use a cursor to iterate through the list.
 
 ### Errors
 

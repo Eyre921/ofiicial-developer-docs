@@ -16,7 +16,7 @@ The [Security settings page](https://openrouter.ai/docs/guides/overview/auth/sec
 
 ## Prerequisites
 
-* A [Management API key](https://openrouter.ai/docs/guides/overview/auth/management-api-keys.md). For organizations, only organization admins can create one.
+* An organization-scoped [Management API key](https://openrouter.ai/docs/guides/overview/auth/management-api-keys.md). For organizations, only organization admins can create one; the script audits every workspace, so a [workspace-scoped](https://openrouter.ai/docs/guides/overview/auth/management-api-keys.md) key cannot run it.
 * Python 3 with the `requests` package, or any HTTP client.
 
 ## Fields to check

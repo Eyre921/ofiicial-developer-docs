@@ -14,7 +14,7 @@ For example, a bug tracking database can have templates for various types of bug
 
 The Notion app can be used to create and manage templates, and designate one as the "default" template:
 
-![](https://mintcdn.com/notion-demo/kjidwljTiCgFD8sF/images/docs/4e4dc1ca48f4d22267992e055b3567692746d67d8383ae96b5a6c74e3154770c-image.png?fit=max\&auto=format\&n=kjidwljTiCgFD8sF\&q=85\&s=0c0b17961daf421c0d1816be33cfe158)
+![The arrow next to New opens the list of templates for Engineering tasks.](https://mintcdn.com/notion-demo/kjidwljTiCgFD8sF/images/docs/4e4dc1ca48f4d22267992e055b3567692746d67d8383ae96b5a6c74e3154770c-image.png?fit=max\&auto=format\&n=kjidwljTiCgFD8sF\&q=85\&s=0c0b17961daf421c0d1816be33cfe158)
 
 To take advantage of templates when creating pages in the API, the three main steps are:
 

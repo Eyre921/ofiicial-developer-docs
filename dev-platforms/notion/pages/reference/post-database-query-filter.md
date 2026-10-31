@@ -54,32 +54,7 @@ const filteredRows = async () => {
 }
 ```
 
-Filters can be chained with the `and` and `or` keys so that multiple filters are applied at the same time. (See [Query a database](/reference/post-database-query) for additional examples.)
-
-```json JSON theme={null}
-{
-  "and": [
-    {
-      "property": "Done",
-      "checkbox": {
-        "equals": true
-      }
-    },
-    {
-      "or": [
-        {
-          "property": "Tags",
-          "contains": "A"
-        },
-        {
-          "property": "Tags",
-          "contains": "B"
-        }
-      ]
-    }
-  ]
-}
-```
+Use [compound filter conditions](#compound-filter-conditions) to combine filters with `and` or `or`.
 
 If no filter is provided, non-archived pages in the database will be returned with pagination.
 
@@ -550,31 +525,20 @@ Use a timestamp filter condition to filter results based on the `unique_id` valu
 
 You can use a compound filter condition to limit the results of a database query based on multiple conditions. This mimics filter chaining in the Notion UI.
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/14ec7e8-Untitled.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=f7a7a738dcd526d2c1180c7f479fda31)
+![The filter requires Done to be checked and Tags to contain A or B.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/14ec7e8-Untitled.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=f7a7a738dcd526d2c1180c7f479fda31)
 
 An example filter chain in the Notion UI
 
 The above filters in the Notion UI are equivalent to the following compound filter condition via the API:
 
-```json JSON theme={null}
+```json Filter object theme={null}
 {
   "and": [
-    {
-      "property": "Done",
-      "checkbox": {
-        "equals": true
-      }
-    },
+    { "property": "Done", "checkbox": { "equals": true } },
     {
       "or": [
-        {
-          "property": "Tags",
-          "contains": "A"
-        },
-        {
-          "property": "Tags",
-          "contains": "B"
-        }
+        { "property": "Tags", "multi_select": { "contains": "A" } },
+        { "property": "Tags", "multi_select": { "contains": "B" } }
       ]
     }
   ]

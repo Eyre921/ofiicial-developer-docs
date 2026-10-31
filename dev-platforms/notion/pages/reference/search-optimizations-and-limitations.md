@@ -4,22 +4,16 @@ source: https://developers.notion.com/reference/search-optimizations-and-limitat
 path: reference/search-optimizations-and-limitations
 ---
 
+Find out what search can return and how to narrow the results.
+
 ## Optimizations
 
-Search works best when the request is as specific as possible. We recommend filtering by object (such as `page` or `database`) and providing a text `query` to narrow down results.
+[Search](/reference/post-search) matches page and data source titles. Pass a `query` to narrow the matches. To return only pages or only data sources, set `filter.property` to `"object"` and `filter.value` to `"page"` or `"data_source"`.
 
-To speed up results, try reducing the `page_size`. The default `page_size` is 100.
-
-If you only need a few properties from each page, such as its title, use the `filter_properties` query parameter. It makes each page result smaller and faster to build. See [Return fewer page properties](/reference/post-search#return-fewer-page-properties).
-
-Our implementation of the search endpoint includes an optimization where any pages or databases that are directly shared with a connection are guaranteed to be returned. If your use case requires pages or databases to immediately be available in search without an indexing delay, we recommend that you share relevant pages/databases with your connection directly.
+Use a smaller `page_size` if you only need a few matches. To reduce the size of each page result, [request only the properties you need](/reference/post-search#return-fewer-page-properties).
 
 ## Limitations
 
-The search endpoint works best when it's being used to query for pages and databases by name. It is not optimized for the following use cases:
+Search results can change as you paginate. The index takes time to reflect changes, including pages shared after authorization and pages moved to the trash. Search can't provide a complete inventory of the content a connection can access. If your app uses search to show newly shared pages, give users a way to refresh the results.
 
-* **Exhaustively enumerating through all the documents that a bot has access to in a workspace.** Search is not guaranteed to return everything, and the index may change as your connection iterates through pages and databases.
-* **Searching or filtering within a particular database.** This use case is much better served by finding the database ID and using the [Query a data source](/reference/query-a-data-source) endpoint.
-* **Immediate and complete results.** Search indexing is not immediate. If a connection performs a search quickly after a page is shared with the connection (such as immediately after a user performs OAuth), then the response may not contain the page.
-  * When a connection needs to present a user interface that depends on search results, we recommend including a *Refresh* button to retry the search. This will allow users to determine if the expected result is present or not, and give them a way to try again.
-* **Listing content in the trash.** Trash results are search-index-backed and eventually consistent. Results include only content the connection can access.
+To find rows in a specific data source, use [Query a data source](/reference/query-a-data-source) with the data source ID.

@@ -26,6 +26,29 @@ Integrations connect your receptionist to your calendar, CRM, phone system, and 
 
 All integrations are available on every plan, including the free trial.
 
+## Setup guides
+
+These services have no built-in integration, but you can connect them with a SIP trunk, a webhook tool, an MCP server, or Zapier. They take more setup, so they appear after the built-in integrations in the catalog. Selecting one opens its guide.
+
+| Guide                                                      | Category      | Connects through        |
+| ---------------------------------------------------------- | ------------- | ----------------------- |
+| [RingCentral](/docs/reception-ai/integrations/ringcentral) | Telephony     | Call forwarding or SIP  |
+| [Telnyx](/docs/reception-ai/integrations/telnyx)           | Telephony     | SIP trunk               |
+| [Plivo](/docs/reception-ai/integrations/plivo)             | Telephony     | SIP trunk               |
+| [Ozonetel](/docs/reception-ai/integrations/ozonetel)       | Telephony     | Call forwarding or SIP  |
+| [n8n](/docs/reception-ai/integrations/n8n)                 | Automation    | Webhook tool or MCP     |
+| [Make](/docs/reception-ai/integrations/make)               | Automation    | Webhook tool            |
+| [Pipedrive](/docs/reception-ai/integrations/pipedrive)     | CRM           | Webhook tools           |
+| [Jotform](/docs/reception-ai/integrations/jotform)         | Forms         | Webhook tools           |
+| [Monday.com](/docs/reception-ai/integrations/monday)       | Productivity  | Webhook tools           |
+| [Asana](/docs/reception-ai/integrations/asana)             | Productivity  | Zapier and webhook tool |
+| [Airtable](/docs/reception-ai/integrations/airtable)       | Productivity  | Webhook tools           |
+| [Stripe](/docs/reception-ai/integrations/stripe)           | Payments      | MCP server              |
+| [Slack](/docs/reception-ai/integrations/slack)             | Communication | Webhook tool            |
+| [Mailchimp](/docs/reception-ai/integrations/mailchimp)     | Communication | Webhook tool            |
+| [Shopify](/docs/reception-ai/integrations/shopify)         | E-commerce    | MCP server              |
+| [Supabase](/docs/reception-ai/integrations/supabase)       | Developer     | Webhook tools           |
+
 ## Adding an integration
 
 Go to **Integrations** and select **Add integration** to browse the catalog by category. Select an integration to open its settings, then select **Enable**. Most integrations have **Settings**, **Tools**, and **About** tabs.

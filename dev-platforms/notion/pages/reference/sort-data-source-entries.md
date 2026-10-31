@@ -6,64 +6,30 @@ path: reference/sort-data-source-entries
 
 A sort is a condition used to order the entries returned from a data source query.
 
-A [data source query](/reference/query-a-data-source) can be sorted by a property and/or timestamp and in a given direction. For example, a library data source can be sorted by the "Name of a book" (i.e. property) and in `ascending` (i.e. direction).
+Pass a `sorts` array to [Query a data source](/reference/query-a-data-source). The first sort takes priority. This example sorts by **Food group** in descending order, then by **Name** in ascending order within each group.
 
-Here is an example of a sort on a data source property.
-
-```json Sorting by "Name" property in ascending direction theme={null}
+```json Request body theme={null}
 {
   "sorts": [
-    {
-      "property": "created_time",
-      "direction": "ascending"
-    },
+    { "property": "Food group", "direction": "descending" },
+    { "property": "Name", "direction": "ascending" }
   ]
 }
 ```
-
-If you’re using the [Notion SDK for JavaScript](https://github.com/makenotion/notion-sdk-js), you can apply this sorting property to your query like so:
 
 ```javascript JavaScript theme={null}
-const { Client } = require('@notionhq/client');
+import { Client } from "@notionhq/client";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
-// replace with your own data source ID
-const dataSourceId = 'd9824bdc-8445-4327-be8b-5b47500af6ce';
-
-const sortedRows = async () => {
-  const response = await notion.dataSources.query({
-    database_id: databaseId,
-    sorts: [
-      {
-        property: "Name",
-        direction: "ascending"
-      }
-    ],
-  });
-  return response;
-}
+const response = await notion.dataSources.query({
+  data_source_id: process.env.NOTION_DATA_SOURCE_ID,
+  sorts: [
+    { property: "Food group", direction: "descending" },
+    { property: "Name", direction: "ascending" },
+  ],
+});
+console.log(response.results);
 ```
-
-Data source queries can also be sorted by two or more properties, which is formally called a nested sort. The sort object listed first in the nested sort list takes precedence.
-
-Here is an example of a nested sort.
-
-```json JSON theme={null}
-{
-  "sorts": [
-        {
-      "property": "Food group",
-      "direction": "descending"
-    },
-    {
-      "property": "Name",
-      "direction": "ascending"
-    }
-  ]
-}
-```
-
-In this example, the data source query will first be sorted by "Food group" and the set with the same food group is then sorted by "Name".
 
 ## Sort object
 

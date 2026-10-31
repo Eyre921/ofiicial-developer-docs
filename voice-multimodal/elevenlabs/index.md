@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1402 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1419 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -1241,6 +1241,7 @@
 - `docs/help-center/product/studio/studio/what-is-studio` — [What is Studio?](pages/docs/help-center/product/studio/studio/what-is-studio.md) · [原文](https://elevenlabs.io/docs/help-center/product/studio/studio/what-is-studio.md)
 - `docs/help-center/product/studio/studio/what-is-the-timeline-in-studio` — [What is the timeline in Studio?](pages/docs/help-center/product/studio/studio/what-is-the-timeline-in-studio.md) · [原文](https://elevenlabs.io/docs/help-center/product/studio/studio/what-is-the-timeline-in-studio.md)
 - `docs/help-center/product/studio/studio/which-file-formats-can-i-import-with-studio` — [Which file formats can I import with Studio?](pages/docs/help-center/product/studio/studio/which-file-formats-can-i-import-with-studio.md) · [原文](https://elevenlabs.io/docs/help-center/product/studio/studio/which-file-formats-can-i-import-with-studio.md)
+- `docs/help-center/product/studio/studio/why-arent-my-changes-reflected-in-my-download-from-studio` — [Why aren't my changes reflected in my download from Studio?](pages/docs/help-center/product/studio/studio/why-arent-my-changes-reflected-in-my-download-from-studio.md) · [原文](https://elevenlabs.io/docs/help-center/product/studio/studio/why-arent-my-changes-reflected-in-my-download-from-studio.md)
 - `docs/help-center/product/studio/studio/why-cant-i-download-from-studio` — [Why can't I download from Studio?](pages/docs/help-center/product/studio/studio/why-cant-i-download-from-studio.md) · [原文](https://elevenlabs.io/docs/help-center/product/studio/studio/why-cant-i-download-from-studio.md)
 - `docs/help-center/product/voices` — [Voices](pages/docs/help-center/product/voices.md) · [原文](https://elevenlabs.io/docs/help-center/product/voices.md)
 - `docs/help-center/product/voices/my-voices` — [My Voices FAQ](pages/docs/help-center/product/voices/my-voices.md) · [原文](https://elevenlabs.io/docs/help-center/product/voices/my-voices.md)
@@ -1379,12 +1380,28 @@
 - `docs/reception-ai/features/orders` — [Orders and shop](pages/docs/reception-ai/features/orders.md) · [原文](https://elevenlabs.io/docs/reception-ai/features/orders.md)
 - `docs/reception-ai/features/quote-requests` — [Quote requests](pages/docs/reception-ai/features/quote-requests.md) · [原文](https://elevenlabs.io/docs/reception-ai/features/quote-requests.md)
 - `docs/reception-ai/features/team` — [Team](pages/docs/reception-ai/features/team.md) · [原文](https://elevenlabs.io/docs/reception-ai/features/team.md)
+- `docs/reception-ai/integrations/airtable` — [Airtable](pages/docs/reception-ai/integrations/airtable.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/airtable.md)
+- `docs/reception-ai/integrations/asana` — [Asana](pages/docs/reception-ai/integrations/asana.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/asana.md)
 - `docs/reception-ai/integrations/cal-com` — [Cal.com](pages/docs/reception-ai/integrations/cal-com.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/cal-com.md)
 - `docs/reception-ai/integrations/calendly` — [Calendly](pages/docs/reception-ai/integrations/calendly.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/calendly.md)
 - `docs/reception-ai/integrations/google-calendar` — [Google Calendar](pages/docs/reception-ai/integrations/google-calendar.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/google-calendar.md)
 - `docs/reception-ai/integrations/hubspot` — [HubSpot](pages/docs/reception-ai/integrations/hubspot.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/hubspot.md)
+- `docs/reception-ai/integrations/jotform` — [Jotform](pages/docs/reception-ai/integrations/jotform.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/jotform.md)
+- `docs/reception-ai/integrations/mailchimp` — [Mailchimp](pages/docs/reception-ai/integrations/mailchimp.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/mailchimp.md)
+- `docs/reception-ai/integrations/make` — [Make](pages/docs/reception-ai/integrations/make.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/make.md)
 - `docs/reception-ai/integrations/mcp-server` — [MCP server](pages/docs/reception-ai/integrations/mcp-server.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/mcp-server.md)
+- `docs/reception-ai/integrations/monday` — [Monday.com](pages/docs/reception-ai/integrations/monday.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/monday.md)
+- `docs/reception-ai/integrations/n8n` — [n8n](pages/docs/reception-ai/integrations/n8n.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/n8n.md)
 - `docs/reception-ai/integrations/overview` — [Integrations](pages/docs/reception-ai/integrations/overview.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/overview.md)
+- `docs/reception-ai/integrations/ozonetel` — [Ozonetel](pages/docs/reception-ai/integrations/ozonetel.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/ozonetel.md)
+- `docs/reception-ai/integrations/pipedrive` — [Pipedrive](pages/docs/reception-ai/integrations/pipedrive.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/pipedrive.md)
+- `docs/reception-ai/integrations/plivo` — [Plivo](pages/docs/reception-ai/integrations/plivo.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/plivo.md)
+- `docs/reception-ai/integrations/ringcentral` — [RingCentral](pages/docs/reception-ai/integrations/ringcentral.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/ringcentral.md)
+- `docs/reception-ai/integrations/shopify` — [Shopify](pages/docs/reception-ai/integrations/shopify.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/shopify.md)
+- `docs/reception-ai/integrations/slack` — [Slack](pages/docs/reception-ai/integrations/slack.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/slack.md)
+- `docs/reception-ai/integrations/stripe` — [Stripe](pages/docs/reception-ai/integrations/stripe.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/stripe.md)
+- `docs/reception-ai/integrations/supabase` — [Supabase](pages/docs/reception-ai/integrations/supabase.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/supabase.md)
+- `docs/reception-ai/integrations/telnyx` — [Telnyx](pages/docs/reception-ai/integrations/telnyx.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/telnyx.md)
 - `docs/reception-ai/integrations/webhooks` — [Webhooks](pages/docs/reception-ai/integrations/webhooks.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/webhooks.md)
 - `docs/reception-ai/integrations/zapier` — [Zapier](pages/docs/reception-ai/integrations/zapier.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/zapier.md)
 - `docs/reception-ai/knowledge-base/faq` — [FAQ](pages/docs/reception-ai/knowledge-base/faq.md) · [原文](https://elevenlabs.io/docs/reception-ai/knowledge-base/faq.md)

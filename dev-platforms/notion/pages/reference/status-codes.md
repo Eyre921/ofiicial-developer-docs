@@ -4,7 +4,7 @@ source: https://developers.notion.com/reference/status-codes
 path: reference/status-codes
 ---
 
-Responses from the API use HTTP response codes to indicate general classes of success and error.
+Look up HTTP status codes and the error details returned by the Notion API.
 
 ## Success codes
 
@@ -14,7 +14,7 @@ Responses from the API use HTTP response codes to indicate general classes of su
 
 ## Error codes
 
-Error responses contain more detail about the error in the response body, in the `"code"` and `"message"` properties. Some error responses may also include an `"additional_data"` object with extra context, such as retry guidance or endpoint-specific details.
+For a standard API error, use `code` to identify the error and `message` for details about this request. If you contact support, include the `request_id` from the response when available. Some errors also include `additional_data`, such as [guidance on retrying a write](/reference/request-limits#retry-a-write-that-returns-503).
 
 To see which error codes a connection received in the last 24 hours, check the **Error codes** list on its [Health tab](/guides/manage-connections/connection-health).
 

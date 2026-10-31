@@ -47,13 +47,13 @@ In the **Build** section of the sidebar, select **Internal connections**.
 
 Click **Create a new connection**, enter a connection name, and choose the workspace where the connection can be installed.
 
-![](https://mintcdn.com/notion-demo/LHm9qfrJYJOPRxs6/images/docs/aef3bab-new_integrations_2.png?fit=max\&auto=format\&n=LHm9qfrJYJOPRxs6\&q=85\&s=d55ed2a2949f8b719643d18be3bbbb04)
+![The new integration form asks for a name and a workspace.](https://mintcdn.com/notion-demo/LHm9qfrJYJOPRxs6/images/docs/aef3bab-new_integrations_2.png?fit=max\&auto=format\&n=LHm9qfrJYJOPRxs6\&q=85\&s=d55ed2a2949f8b719643d18be3bbbb04)
 
 **Step 4**
 
 After creation, visit the **Configuration** tab to retrieve your **API token**.
 
-![](https://mintcdn.com/notion-demo/LHm9qfrJYJOPRxs6/images/docs/7ec836a-integrations_3.png?fit=max\&auto=format\&n=LHm9qfrJYJOPRxs6\&q=85\&s=177eb1a48ba6864af95ee77c30f09d6b)
+![The Configuration tab shows the masked internal integration token.](https://mintcdn.com/notion-demo/LHm9qfrJYJOPRxs6/images/docs/7ec836a-integrations_3.png?fit=max\&auto=format\&n=LHm9qfrJYJOPRxs6\&q=85\&s=177eb1a48ba6864af95ee77c30f09d6b)
 
 You can also configure the connection's [capabilities](/reference/capabilities) — such as whether it can read content, update content, insert content, or read user information — from the **Configuration** tab.
 

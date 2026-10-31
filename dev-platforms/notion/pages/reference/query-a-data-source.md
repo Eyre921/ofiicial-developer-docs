@@ -8,7 +8,7 @@ post /v1/data_sources/{data_source_id}/query
 
 ### Overview
 
-Gets a list of [pages](/reference/page) contained in the data source, filtered and ordered according to the filter conditions and sort criteria provided in the request. The response may contain fewer than `page_size` of results. If the response includes a `next_cursor` value, refer to the [pagination reference](/reference/intro#pagination) for details about how to use a cursor to iterate through the list.
+Gets a list of [pages](/reference/page) contained in the data source, filtered and ordered according to the filter conditions and sort criteria provided in the request. The response may contain fewer than `page_size` of results. If the response includes a `next_cursor` value, refer to the [pagination reference](/reference/pagination) for details about how to use a cursor to iterate through the list.
 
 > [!NOTE]
 >
@@ -22,34 +22,22 @@ Gets a list of [pages](/reference/page) contained in the data source, filtered a
 
 ### Filtering
 
-[**Filters**](/reference/filter-data-source-entries) are similar to the [filters provided in the Notion UI](https://www.notion.com/help/views-filters-and-sorts) where the set of filters and filter groups chained by "And" in the UI is equivalent to having each filter in the array of the compound `"and"` filter. Similar a set of filters chained by "Or" in the UI would be represented as filters in the array of the `"or"` compound filter.
-Filters operate on data source properties and can be combined. If no filter is provided, non-archived pages in the data source are returned with pagination.
+Use [filters](/reference/filter-data-source-entries) to match property values. Combine conditions with `and` or `or`. This filter returns rows where **Done** is checked and **Tags** contains A or B.
 
-![](https://mintcdn.com/notion-demo/S-I3qLQnwRa7HjdK/images/reference/image-6.png?fit=max\&auto=format\&n=S-I3qLQnwRa7HjdK\&q=85\&s=27e3bc94089d8d763ae7de032ded2fa3)
+![The filter requires Done to be checked and Tags to contain A or B.](https://mintcdn.com/notion-demo/S-I3qLQnwRa7HjdK/images/reference/image-6.png?fit=max\&auto=format\&n=S-I3qLQnwRa7HjdK\&q=85\&s=27e3bc94089d8d763ae7de032ded2fa3)
 
 The above filters in the UI can be represented as the following filter object
 
-```json Filter object expandable theme={null}
+```json Filter object theme={null}
 {
   "and": [
-    {
-      "property": "Done",
-      "checkbox": {
-        "equals": true
-      }
-    },
+    { "property": "Done", "checkbox": { "equals": true } },
     {
       "or": [
-        {
-          "property": "Tags",
-          "contains": "A"
-        },
-        {
-          "property": "Tags",
-          "contains": "B"
-        }
+        { "property": "Tags", "multi_select": { "contains": "A" } },
+        { "property": "Tags", "multi_select": { "contains": "B" } }
       ]
-  	}
+    }
   ]
 }
 ```
@@ -114,27 +102,25 @@ For connections that need to process all pages in a large data source, we recomm
 
 ### Recommendations for performance
 
-Use the `filter_properties` query parameter whenever you don't need every property from every result. This endpoint returns only the properties you list. For example:
+Pass `filter_properties` once per property in the query string, or pass an array of strings in the SDK. Use property names or IDs from [Retrieve a data source](/reference/retrieve-a-data-source). For example, for a data source with a **Status** property:
 
-```bash theme={null}
-https://api.notion.com/v1/data_sources/[DATA_SOURCE_ID]/query?filter_properties[]=title
+```bash curl theme={null}
+curl -X POST "https://api.notion.com/v1/data_sources/$NOTION_DATA_SOURCE_ID/query?filter_properties=title&filter_properties=Status" \
+  -H "Authorization: Bearer $NOTION_API_KEY" \
+  -H "Notion-Version: 2026-03-11" \
+  -H "Content-Type: application/json" \
+  --data '{}'
 ```
 
-Multiple filter properties can be provided by chaining the `filter_properties` query param. For example:
+```javascript JavaScript theme={null}
+import { Client } from "@notionhq/client";
 
-```bash theme={null}
-https://api.notion.com/v1/data_sources/[DATA_SOURCE_ID]/query?filter_properties[]=title&filter_properties[]=status
-```
-
-This parameter accepts property IDs or property names. Property IDs can be determined with the [Retrieve a data source](/reference/retrieve-a-data-source) endpoint.
-
-If you are using the [Notion JavaScript SDK](https://github.com/makenotion/notion-sdk-js), the `filter_properties` endpoint expects an array of strings. For example:
-
-```typescript TypeScript theme={null}
-notion.dataSources.query({
-	data_source_id: id,
-	filter_properties: ["title", "status"]
-})
+const notion = new Client({ auth: process.env.NOTION_API_KEY });
+const response = await notion.dataSources.query({
+  data_source_id: process.env.NOTION_DATA_SOURCE_ID,
+  filter_properties: ["title", "Status"],
+});
+console.log(response.results);
 ```
 
 Using `filter_properties` can speed up the query and reduce its response size, especially for data sources with many properties, formulas, rollups, or relations. Use this endpoint to find pages and return only the properties your list shows. Fetch more data after you select a page:

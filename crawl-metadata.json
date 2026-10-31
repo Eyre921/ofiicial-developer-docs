@@ -66,7 +66,7 @@
     "status": "ok"
   },
   "vector-db/chroma": {
-    "pages": 164,
+    "pages": 147,
     "status": "ok"
   },
   "vector-db/weaviate": {
@@ -78,7 +78,8 @@
     "status": "ok"
   },
   "dev-platforms/vercel": {
-    "status": "error: curl failed (28) for https://vercel.com/docs/llms-full.txt: curl: (28) Operation timed out after 90001 milliseconds with 85930 out of 11728207 bytes received\ncurl: (28) Operation timed out after 90002 milliseconds with 0 bytes received\ncurl: (28) Operation tim"
+    "pages": 0,
+    "status": "ok"
   },
   "dev-platforms/supabase": {
     "pages": 0,
@@ -101,7 +102,7 @@
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
@@ -116,7 +117,7 @@
     "status": "ok"
   },
   "dev-platforms/turso": {
-    "pages": 293,
+    "pages": 283,
     "status": "ok"
   },
   "dev-platforms/upstash": {
@@ -151,7 +152,7 @@
     "status": "ok"
   },
   "dev-platforms/notion": {
-    "pages": 257,
+    "pages": 258,
     "status": "ok"
   },
   "dev-platforms/twilio": {
@@ -186,11 +187,11 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 79,
+    "pages": 100,
     "status": "ok"
   },
   "dev-platforms/stripe": {
-    "pages": 468,
+    "pages": 471,
     "status": "ok"
   },
   "ai-models/openrouter": {
@@ -202,8 +203,8 @@
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 1402,
+    "pages": 1419,
     "status": "ok"
   },
-  "_last_crawl": "2026-10-31T11:30:47Z"
+  "_last_crawl": "2026-10-31T23:30:40Z"
 }

@@ -14,13 +14,13 @@ Link Previews can be displayed in their full format, or they can be shown as a "
 
 Let's first look at an example of a full-format Link Preview:
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/a034247-link_preview.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=ce1abef0ec570f35bd482fdd8c6dc552)
+![A preview card shows the issue title, status, and a short description.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/a034247-link_preview.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=ce1abef0ec570f35bd482fdd8c6dc552)
 
 Example Link Preview in a Notion workspace
 
 Here is the same link again but now as a Mention — a miniature version of a Link Preview that uses the same data.
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/f588a6f-mention.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=8fb360ddae135021a789f072cc2ba88d)
+![An inline mention shows the issue title and status within a line of text.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/f588a6f-mention.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=8fb360ddae135021a789f072cc2ba88d)
 
 Example Mention in a Notion workspace
 
@@ -142,7 +142,7 @@ Using the same Link Preview and Mention we saw above, let's look at the array of
 
 Each unfurl attribute object in this array maps to a different customizable section of a Link Preview. (To learn more about each section, jump to [The `section` value](/reference/unfurl-attribute-object#the-section-value).
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/3d6f5ec-Untitled_1.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=4c9dc387fecc9d2d606377e68d06d9b3)
+![A preview card has areas for an image, title, primary attributes, and secondary attributes.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/3d6f5ec-Untitled_1.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=4c9dc387fecc9d2d606377e68d06d9b3)
 
 Anatomy of a Link Preview in Notion
 
@@ -208,7 +208,7 @@ Every array of attribute objects that is sent to Notion to render a Link Preview
 
 The `embed` sub-type object adds rich content like JPGs, GIFs, or iFrames to a Link Preview.
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/d482801-embed.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=23c25fb4d7c3eb461655767f2dffb63a)
+![A preview card shows Kermit the Frog above the linked item’s title and details.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/d482801-embed.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=23c25fb4d7c3eb461655767f2dffb63a)
 
 An example Link Preview that embeds an image of Kermit the Frog
 
@@ -229,11 +229,11 @@ All embed sub-type objects contain: a `src_url` field that is a link to the embe
 
 The `section` value of an unfurl attribute object defines where an attribute is rendered in the Link Preview or Mention.
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/121dcba-sections_lp.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=3aeb3186980cfe813930568826de3adf)
+![The preview places the image above the title, primary attributes, and secondary attributes.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/121dcba-sections_lp.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=3aeb3186980cfe813930568826de3adf)
 
 The sections of a Link Preview
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/1de6886-sections_mention.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=103ce514aa4462c145d50c0ac95653d7)
+![The mention shows the icon, identifier, title, and primary attributes on one line.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/1de6886-sections_mention.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=103ce514aa4462c145d50c0ac95653d7)
 
 The sections of a Mention
 

@@ -2103,7 +2103,7 @@ For example, a bug tracking database can have templates for various types of bug
 
 The Notion app can be used to create and manage templates, and designate one as the "default" template:
 
-![](https://mintcdn.com/notion-demo/kjidwljTiCgFD8sF/images/docs/4e4dc1ca48f4d22267992e055b3567692746d67d8383ae96b5a6c74e3154770c-image.png?fit=max\&auto=format\&n=kjidwljTiCgFD8sF\&q=85\&s=0c0b17961daf421c0d1816be33cfe158)
+![The arrow next to New opens the list of templates for Engineering tasks.](https://mintcdn.com/notion-demo/kjidwljTiCgFD8sF/images/docs/4e4dc1ca48f4d22267992e055b3567692746d67d8383ae96b5a6c74e3154770c-image.png?fit=max\&auto=format\&n=kjidwljTiCgFD8sF\&q=85\&s=0c0b17961daf421c0d1816be33cfe158)
 
 To take advantage of templates when creating pages in the API, the three main steps are:
 
@@ -2631,7 +2631,7 @@ After Step 1, Notion begins processing the file import asynchronously. To wait f
 
    3. For both success and failure, the `entity` of the webhook payload will contain a `type` of `"file_upload"` and an `id` containing the ID of the FileUpload from Step 1.
 
-![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/0413bdbb8e6e8351c9d7fd9c4e855c79f258a643e4a3f51d4468e31810faba5b-image.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=b86cbafc1f843b1e6cbceffc02b5dfd3)
+![The Webhooks tab lists subscriptions for this connection.](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/0413bdbb8e6e8351c9d7fd9c4e855c79f258a643e4a3f51d4468e31810faba5b-image.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=b86cbafc1f843b1e6cbceffc02b5dfd3)
 
 Screenshot of webhook settings in the Notion creator profile connection settings page.
 
@@ -3080,7 +3080,7 @@ const rows = await queryAllRows({
 ## Related
 
 * [Query a data source](/reference/query-a-data-source) endpoint reference
-* [Pagination](/reference/intro#pagination) conventions
+* [Pagination](/reference/pagination) conventions
 * [query-large-data-sources cookbook example](https://github.com/makenotion/notion-cookbook/tree/main/examples/query-large-data-sources)
 
 
@@ -3802,7 +3802,7 @@ Notion offers the ability for developers to add [comments](https://www.notion.co
 >
 > When using the public API, inline comments can be used to respond to *existing* [discussions](#responding-to-a-discussion-thread).
 
-![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/bec3d37-Screen_Shot_2023-05-22_at_3.38.28_PM.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=81d81afaab9f6101c9949bc6fbb3233e)
+![A page discussion appears below the title. A second comment is attached to an individual block.](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/bec3d37-Screen_Shot_2023-05-22_at_3.38.28_PM.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=81d81afaab9f6101c9949bc6fbb3233e)
 
 The Notion UI with a page and inline/block comment added.
 
@@ -3836,7 +3836,7 @@ There are two relevant capabilities when it comes to comments — the ability to
 
 Edit your connection's capabilities in the [Developer portal](https://app.notion.com/developers/connections). If these capabilities are not added to your connection, REST API requests related to comments will respond with an error.
 
-![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/497c553-Configuring_capabilities_on_the_integration_settings_page.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=e7f94d1dc39268815b010a9373c00e26)
+![Read comments and Insert comments have separate checkboxes.](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/497c553-Configuring_capabilities_on_the_integration_settings_page.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=e7f94d1dc39268815b010a9373c00e26)
 
 Configuring capabilities on the connection settings page.
 
@@ -3894,7 +3894,7 @@ const notion = new Client({ auth: process.env.NOTION_API_KEY });
 })();
 ```
 
-By default, the response from this endpoint returns a maximum of 100 items. To retrieve additional items, use [pagination](/reference/intro#pagination).
+By default, the response from this endpoint returns a maximum of 100 items. To retrieve additional items, use [pagination](/reference/pagination).
 
 ## Adding a comment to a page
 
@@ -4132,7 +4132,7 @@ There are two possible ways to get the `discussion_id` for a discussion thread.
 1. You can use the [Retrieve comments](/reference/list-comments) endpoint, which will return a list of open comments on the page or block.
 2. You can also get a `discussion_id` manually by navigating to the page with the discussion you’re responding to. Next, click the "Copy link to discussion" menu option next to the discussion.
 
-![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/8536d28-Screen_Shot_2023-05-22_at_7.27.12_PM.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=60a344208b6ad82c124bc7e40c34592d)
+![The comment menu includes Copy link to discussion.](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/8536d28-Screen_Shot_2023-05-22_at_7.27.12_PM.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=60a344208b6ad82c124bc7e40c34592d)
 
 "Copy link to discussion" menu option in Notion UI.
 
@@ -5356,7 +5356,7 @@ In this guide, you'll learn about how the building blocks of page content are re
 
 In general, **page properties** are best for capturing structured information such as a due date, a category, or a relationship to another page. **Page content** is best for looser structures or free form content. Page content is where users compose their thoughts or tell a story. Page properties are where users capture data and build systems. Your connection should aim to use each in the way users expect.
 
-![](https://mintcdn.com/notion-demo/LHm9qfrJYJOPRxs6/images/docs/369b6a5-page-properties-and-content.png?fit=max\&auto=format\&n=LHm9qfrJYJOPRxs6\&q=85\&s=0887fcbaa5537be57e38124ee0fa409c)
+![Page properties appear above the page body. The paragraphs and image below are content blocks.](https://mintcdn.com/notion-demo/LHm9qfrJYJOPRxs6/images/docs/369b6a5-page-properties-and-content.png?fit=max\&auto=format\&n=LHm9qfrJYJOPRxs6\&q=85\&s=0887fcbaa5537be57e38124ee0fa409c)
 
 Visualizing page properties versus page content
 
@@ -5887,7 +5887,7 @@ Nearly everything users see inside Notion is represented as blocks. Now that you
 * This guide explains working with page content. Take a look at [working with database properties](/guides/data-apis/working-with-databases#database-properties).
 * Explore the [block object](/reference/block) to see other types of blocks you can create.
 * Learn more about the various kinds of [rich text objects](/reference/rich-text).
-* Learn more about [pagination](/reference/intro#pagination).
+* Learn more about [pagination](/reference/pagination).
 
 
 # Working with views
@@ -7490,7 +7490,7 @@ To use an internal connection, start by creating your connection in the [Develop
 
 The internal connection will be associated with the workspace of your choice. You are required to be a workspace owner to create a connection.
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/docs/fd25d1f-integrations_7.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=6fcebc5334c9c3499b58208b91b798ae)
+![The integrations list includes a New integration button.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/docs/fd25d1f-integrations_7.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=6fcebc5334c9c3499b58208b91b798ae)
 
 Create a new connection from the Developer portal.
 
@@ -7498,7 +7498,7 @@ Once the connection is created, you can update its settings as needed under the 
 
 The API token will be used to authenticate REST API requests. The connection sends the same token in every API request.
 
-![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/69c7487-integrations_8.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=34d293a88ef5911ff43aefe4dde91e2d)
+![The internal integration settings show a masked token with a Show button.](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/69c7487-integrations_8.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=34d293a88ef5911ff43aefe4dde91e2d)
 
 Find the API token in the Configuration tab.
 
@@ -7616,7 +7616,7 @@ Store the access token for future API requests. View the [API reference docs](/r
 
 After creating a public connection in the [Developer portal](https://app.notion.com/developers/connections), access the connection’s secrets in the **Configuration** tab. Similarly to the internal connections, these values should be protected and should never be included in source code or version control.
 
-![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/c535461-integrations_10.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=ef1174a58a78b04444bea74627ede083)
+![The public connection settings show a URL to start authorization.](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/c535461-integrations_10.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=ef1174a58a78b04444bea74627ede083)
 
 The Authorization URL field populates after a public connection is submitted for review
 
@@ -7654,7 +7654,7 @@ Once the authorization URL is visited, the user will be shown a prompt that vari
 
 In the standard connection permissions flow, a prompt describes the connection [capabilities](/reference/capabilities), presented to the user as what the connection would like to be able to do in the workspace. A user can either select pages to grant the connection access to, or cancel the request.
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/docs/ec39f97-Screen_Shot_2021-07-22_at_2.58.28_PM.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=3a82bcb02f006753164c1334e664b500)
+![The authorization prompt lists what the connection can do before the user selects pages.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/docs/ec39f97-Screen_Shot_2021-07-22_at_2.58.28_PM.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=3a82bcb02f006753164c1334e664b500)
 
 Prompt for authorizing a standard connection (no template option)
 
@@ -7672,7 +7672,7 @@ If the user opts to `Select pages`, then a page picker interface opens. A user c
 >
 > The page picker only displays pages or databases to which a user has [full access](https://www.notion.com/help/sharing-and-permissions), because a user needs full access to a resource in order to be able to share it with a connection.
 
-![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/a4009ce-Screen_Shot_2021-07-22_at_3.09.51_PM.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=94186f31f22938dc1c7d850e227e061a)
+![Checkboxes let the user choose which pages to share.](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/a4009ce-Screen_Shot_2021-07-22_at_3.09.51_PM.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=94186f31f22938dc1c7d850e227e061a)
 
 Page picker interface
 
@@ -7692,7 +7692,7 @@ To add a template to your workspace, complete the following steps:
 * Navigate to your connection in the [Developer portal](https://app.notion.com/developers/connections) and open the **Configuration** tab, then scroll to the Basic information section.
 * Scroll to the bottom of your distribution settings and add the URL of the Notion page you selected to the **Notion URL for optional template** input.
 
-![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/b4ae671-integrations11.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=d83bd80077b7fb6bdab6c38cbadb6579)
+![The distribution settings include a field for an optional template URL.](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/b4ae671-integrations11.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=d83bd80077b7fb6bdab6c38cbadb6579)
 
 Notion URL for optional template input in connection settings.
 
@@ -7700,13 +7700,13 @@ Once this URL is added, your auth flow prompt appearance will be updated.
 
 Going back to your prompt view, if the connection offers a Notion template option, the first step in the permissions flow will describe the connection [capabilities](/reference/capabilities). This is presented to the user as what the connection would be able to do in the workspace, and it prompts the user to click `Next`.
 
-![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/77076c7-template_prompt1.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=bce36d9f1a69a618dc886d1baf46d50f)
+![The authorization prompt offers to duplicate a template when connecting the account.](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/77076c7-template_prompt1.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=bce36d9f1a69a618dc886d1baf46d50f)
 
 Prompt for a connection with a Notion template option
 
 In the next step, a user can either choose to duplicate the template that you provided or to select existing pages to share with the connection.
 
-![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/9788bdb-template_prompt_2.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=d5ff31ef9083f78b60e615758b6f580e)
+![The user can choose the template or select existing pages to share.](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/9788bdb-template_prompt_2.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=d5ff31ef9083f78b60e615758b6f580e)
 
 A user can select to duplicate a template or to share existing pages with the connection
 
@@ -8091,13 +8091,13 @@ In the **Build** section of the sidebar, select **Internal connections**.
 
 Click **Create a new connection**, enter a connection name, and choose the workspace where the connection can be installed.
 
-![](https://mintcdn.com/notion-demo/LHm9qfrJYJOPRxs6/images/docs/aef3bab-new_integrations_2.png?fit=max\&auto=format\&n=LHm9qfrJYJOPRxs6\&q=85\&s=d55ed2a2949f8b719643d18be3bbbb04)
+![The new integration form asks for a name and a workspace.](https://mintcdn.com/notion-demo/LHm9qfrJYJOPRxs6/images/docs/aef3bab-new_integrations_2.png?fit=max\&auto=format\&n=LHm9qfrJYJOPRxs6\&q=85\&s=d55ed2a2949f8b719643d18be3bbbb04)
 
 **Step 4**
 
 After creation, visit the **Configuration** tab to retrieve your **API token**.
 
-![](https://mintcdn.com/notion-demo/LHm9qfrJYJOPRxs6/images/docs/7ec836a-integrations_3.png?fit=max\&auto=format\&n=LHm9qfrJYJOPRxs6\&q=85\&s=177eb1a48ba6864af95ee77c30f09d6b)
+![The Configuration tab shows the masked internal integration token.](https://mintcdn.com/notion-demo/LHm9qfrJYJOPRxs6/images/docs/7ec836a-integrations_3.png?fit=max\&auto=format\&n=LHm9qfrJYJOPRxs6\&q=85\&s=177eb1a48ba6864af95ee77c30f09d6b)
 
 You can also configure the connection's [capabilities](/reference/capabilities) — such as whether it can read content, update content, insert content, or read user information — from the **Configuration** tab.
 
@@ -8292,36 +8292,20 @@ For guidance on the review process and best practices to get your connection app
 > > [card] [Authorization guide](/guides/get-started/authorization)
 
 
-# Overview
+# Notion connections
 Source: https://developers.notion.com/guides/get-started/overview
 
-Discover what Notion connections are, when to use each type, and what you can build.
-
-## Using Notion API
-
-Notion connections let you connect your workspace to external tools and automate workflows through code. With the REST API, you can read, create, and update nearly everything in a workspace — pages, databases, users, comments, and more.
-
-When you create a connection, you define what it can do: which API endpoints it can call, what content it can read or write, and how it authenticates. Each connection gets its own credentials and its own set of permissions.
+Compare internal connections, public connections, and personal access tokens.
 
 ## What is a Notion connection?
 
-A Notion [connection](https://www.notion.com/help/add-and-manage-connections-with-the-api) — sometimes called an integration — connects your workspace to external apps and tools. That could be a SaaS product, an automation script, or a custom tool you've built.
+A [connection](https://www.notion.com/help/add-and-manage-connections-with-the-api) gives an app access to content in a Notion workspace. For example, a connection can add tasks to a database or post a comment on a page. You can also call the same API as yourself with a personal access token.
 
-Connections are added to Notion workspaces and require **explicit permission** from users to access Notion pages and databases.
-
-![](https://mintcdn.com/notion-demo/LHm9qfrJYJOPRxs6/images/docs/0f06356-notion_overview.jpg?fit=max\&auto=format\&n=LHm9qfrJYJOPRxs6\&q=85\&s=ab31886c0c84514c8db8a2801d4fffe4)
-
-Create Notion connections that unlock new possibilities for teams.
-
-Notion already has a [library](https://www.notion.com/integrations/all) of connections you can browse. For developers who want to build their own, Notion supports internal connections, public connections, and personal access tokens — all powered by the same REST API.
+![A connection links a Notion workspace to tools that a team uses.](https://mintcdn.com/notion-demo/LHm9qfrJYJOPRxs6/images/docs/0f06356-notion_overview.jpg?fit=max\&auto=format\&n=LHm9qfrJYJOPRxs6\&q=85\&s=ab31886c0c84514c8db8a2801d4fffe4)
 
 ## Connection types
 
-Notion supports three authentication models:
-
-* **Internal connections** are scoped to a single workspace and use a static credential called an internal connection API token. They're ideal for custom automations and workflows — things like syncing data, sending notifications, or building internal dashboards.
-* **Public connections** use OAuth 2.0 for authentication. At creation time, you choose their [installation scope](/guides/get-started/public-connections#installation-scope): **Any workspace** (any Notion user can install; Marketplace-eligible) or **Selected workspaces only** (restricted to workspaces you select; not Marketplace-eligible).
-* **Personal access tokens (PATs)** are user-scoped tokens for scripts, CLI workflows, Workers, and tools that should act as one Notion user. A PAT uses the creator's workspace membership and page permissions. See [Personal access tokens](/guides/get-started/personal-access-tokens).
+Use an [internal connection](/guides/get-started/internal-connections) for a team automation in one workspace. A [public connection](/guides/get-started/public-connections#installation-scope) uses OAuth so other people can install your app. A [personal access token](/guides/get-started/personal-access-tokens) runs a script or tool with your own access.
 
 > [!NOTE]
 >
@@ -8349,11 +8333,9 @@ Notion supports three authentication models:
 
 ## Shared concepts
 
-All connection and token types share a few core concepts.
-
 ### Capabilities
 
-Every connection or token has a set of capabilities that control what it can do — read content, update content, insert content, read comments, and more. You configure capabilities when you create a connection or PAT. See the [Capabilities reference](/reference/capabilities) for the full list.
+[Capabilities](/reference/capabilities) control which operations a connection or token can perform, such as reading content or adding comments.
 
 > [card] [Pages](/guides/data-apis/working-with-page-content)
 >
@@ -8361,7 +8343,7 @@ Every connection or token has a set of capabilities that control what it can do 
 
 > [card] [Databases](/guides/data-apis/working-with-databases)
 >
-> Manage database, properties, entries, and schemas.
+> Create a database and find its data sources.
 
 > [card] [Views](/guides/data-apis/working-with-views)
 >
@@ -8381,11 +8363,11 @@ Every connection or token has a set of capabilities that control what it can do 
 
 > [card] [Content queries](/reference/post-search)
 >
-> Search through workspace content.
+> Find pages and data sources by title.
 
 > [card] [Users](/reference/user)
 >
-> Access user profiles and permissions.
+> Read user profiles available to your connection.
 
 ### Content access
 
@@ -8403,41 +8385,9 @@ Connections can subscribe to real-time events — like page updates, property ch
 
 ## Getting started
 
-The fastest way to start building is the [**Quickstart**](/guides/get-started/quick-start) — create a personal access token, make your first API request, and see a new page appear in your workspace in under two minutes.
-
-Once you're ready to build further, choose the authentication model that fits your use case:
-
-**Step 1**
-
-[**Personal access tokens**](/guides/get-started/personal-access-tokens) — Authenticate as yourself for scripts, CLI workflows, Workers, or trusted tools.
-
-**Step 2**
-
-[**Internal connections**](/guides/get-started/internal-connections) — Build team-owned automations with a dedicated bot identity scoped to one workspace.
-
-**Step 3**
-
-[**Public connections**](/guides/get-started/public-connections) — Build apps for other Notion users with OAuth 2.0.
-
-**Step 4**
-
-[**Authorization**](/guides/get-started/authorization) — Implement the OAuth 2.0 flow for public connections.
-
-**Step 5**
-
-[**Secure API credentials**](/guides/get-started/handling-api-keys) — Secure and manage your API credentials in production.
-
-**Step 6**
-
-[**Preparing for users**](/guides/get-started/preparing-for-users) — Set up databases, pages, and views automatically when users install your connection.
-
-**Step 7**
-
-[**List on the Marketplace**](/guides/get-started/marketplace-listing) — Make your public connection discoverable to all Notion users.
+Follow the [API quickstart](/guides/get-started/quick-start) to create a private page. If you’re building a public connection, see how to [authorize users](/guides/get-started/authorization), [store credentials](/guides/get-started/handling-api-keys), and [set up content for new users](/guides/get-started/preparing-for-users).
 
 ## Resources
-
-Explore the links below to get started, and join the [Notion Devs Slack community](https://join.slack.com/t/notiondevs/shared_invite/zt-3u9oid9q8-HLUBmMVWYK~g9HFo4U4raA) to share your projects and connect with fellow developers.
 
 > [card] [API reference](/reference/intro)
 
@@ -9087,14 +9037,14 @@ Copy the token and save it somewhere secure. You won't be able to see it again.
 >
 > See [Who can create PATs](/guides/get-started/personal-access-tokens#who-can-create-pats).
 
-Set the token as an environment variable so you can use it in the examples below. This lasts for your current terminal session — run it again if you open a new window.
+Set the token as an environment variable so you can use it in the examples below. Set it again if you open a new terminal. Keep the token out of browser code and public repositories.
 
 ```bash macOS / Linux theme={null}
-export NOTION_API_KEY=ntn_***
+export NOTION_API_KEY=ntn_...
 ```
 
 ```powershell Windows (PowerShell) theme={null}
-$env:NOTION_API_KEY = "ntn_***"
+$env:NOTION_API_KEY = "ntn_..."
 ```
 
 ## Step 2: Create a page
@@ -9128,7 +9078,10 @@ Notion-Version: 2026-03-11
 // Save as quickstart.mjs after running: npm install @notionhq/client
 import { Client } from "@notionhq/client";
 
-const notion = new Client({ auth: process.env.NOTION_API_KEY });
+const notion = new Client({
+  auth: process.env.NOTION_API_KEY,
+  notionVersion: "2026-03-11",
+});
 
 async function main() {
   const page = await notion.pages.create({
@@ -9273,9 +9226,9 @@ Commonly asked questions about migrating to 2025-09-03.
 >
 > In September 2025, Notion is launching several features to improve what you can do with databases. This includes support for multiple **data sources** under a single **database**, each of which can have a different set of properties (schemas). The **database** becomes a *container* for one or more **data sources**.
 >
-> ![](https://mintcdn.com/notion-demo/kjidwljTiCgFD8sF/images/docs/acf8104f9bb0b15e37e8f03cef3699eb19cf43c608fa4769ea04fc00468bb069-image.png?fit=max\&auto=format\&n=kjidwljTiCgFD8sF\&q=85\&s=8d4f9e6731559c09bf0f0aadec57d404)
+> ![One database contains two data sources. Each data source has its own rows, shown as pages.](https://mintcdn.com/notion-demo/Muj7K3D7I6gj-QAA/images/reference/6dc5c7eccb432e908290e2642c84579936d55ee79c6cd60a5b0807e70cdeb55a-image.png?fit=max\&auto=format\&n=Muj7K3D7I6gj-QAA\&q=85\&s=732ada865d8d25def0ba61090c6e9f2e)
 >
-> Diagram of the new Notion API data model. A database is a parent of one or more data sources, each of which parents zero or more pages. Previously, databases could only have one data source, so the concepts were combined in the API until 2025
+> Database structure since API version 2025-09-03
 >
 > To learn more about data sources in the Notion app and related features, visit our [help center page](https://www.notion.com/help/data-sources-and-linked-databases).
 
@@ -9303,7 +9256,7 @@ Commonly asked questions about migrating to 2025-09-03.
 >
 > Here's a diagram of a scenario where a workspace has a top-level page that has a database with two data sources:
 >
-> ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/16252219aa29c1b45f8db4a8a0ecffb7455954075ce15ffd1407388de62a3d1f-image.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=84dc88593a360a864b658849c8a4cd6c)
+> ![A database on a workspace page contains two data sources. Each source has two child pages.](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/16252219aa29c1b45f8db4a8a0ecffb7455954075ce15ffd1407388de62a3d1f-image.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=84dc88593a360a864b658849c8a4cd6c)
 >
 > Diagram showing a page in a workspace with a database child. The database has two data sources, each of which have two rows (child pages).
 >
@@ -9336,7 +9289,7 @@ Commonly asked questions about migrating to 2025-09-03.
 >
 > However, for completeness, here's a diagram of how parent/child relationships work in an example wiki scenario:
 >
-> ![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/41afb783e9b0060cf2bba81da964c08359100231e43f54fa3a38e98d69c4ce4f-image.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=be6ff0852c38631907b4dff7a5ffb02c)
+> ![A wiki data source can contain a page and another database with its own data source.](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/41afb783e9b0060cf2bba81da964c08359100231e43f54fa3a38e98d69c4ce4f-image.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=be6ff0852c38631907b4dff7a5ffb02c)
 >
 > Diagram showing single-source databases nested under one another as part of a wiki structure.
 
@@ -9568,7 +9521,7 @@ notion = new Client({
 
 To get a data source ID in the Notion app, the settings menu for a database includes a "Copy data source ID" button under "Manage data sources":
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/docs/f2d0303a35d08c014d2ed7a171994fe410a8bd5a5b47706fe4b340a161d38c20-image.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=e2eea5d743e68898fd37f15118baad1f)
+![The menu beside the Tasks data source includes Copy data source ID.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/docs/f2d0303a35d08c014d2ed7a171994fe410a8bd5a5b47706fe4b340a161d38c20-image.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=e2eea5d743e68898fd37f15118baad1f)
 
 Having access to the data source ID (or rather, *IDs*, once Notion users start adding 2nd sources for their existing databases) for a database lets you continue onto the next few steps.
 
@@ -10050,7 +10003,7 @@ Note that the [List databases (deprecated)](/reference/get-databases) endpoint, 
 
 When creating, editing, or viewing an [connection webhook subscription](/reference/webhooks) in Notion's connection settings, there's a new option to set the **API version** that applies to events delivered to your webhook URL:
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/docs/dea8af87f7abbb9f51a0cce55aa59a6087fb3641376471a2168d4636c84f8a9e-image.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=888f2764b88466f438b9439807d7e0ad)
+![The Edit subscription dialog includes an API version field for webhook events.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/docs/dea8af87f7abbb9f51a0cce55aa59a6087fb3641376471a2168d4636c84f8a9e-image.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=888f2764b88466f438b9439807d7e0ad)
 
 Screenshot of the connection webhook "Edit subscription" form, with the new "API version" dropdown menu.
 
@@ -10425,9 +10378,9 @@ Learn how link previews work in Notion.
 
 A Link Preview is a real-time excerpt of authenticated content that unfurls in Notion when an authenticated user shares an enabled link. Instead of logging in to multiple tools at a time, collaborators can use Link Previews to centralize their work in Notion.
 
-<video />
+<video aria-label="GitHub link preview in Notion" />
 
-An example Link Preview for a GitHub workflow
+Pasting a GitHub link into Notion displays a preview of the linked item.
 
 Notion supports Link Previews for selected partner services. For example:
 
@@ -10440,7 +10393,7 @@ Notion supports Link Previews for selected partner services. For example:
 
 A user shares a Link Preview enabled URL. Notion detects supported URLs based on the Link Preview connection settings for that service. If it’s the first time that a user has shared a supported URL, then Notion kicks off an auth flow to authenticate with the source service. After the user authenticates, Notion and the source service exchange tokens that allow Notion to show a Link Preview in the user’s workspace.
 
-![](https://mintcdn.com/notion-demo/LHm9qfrJYJOPRxs6/images/docs/e121163-lp_overview.png?fit=max\&auto=format\&n=LHm9qfrJYJOPRxs6\&q=85\&s=ca57bf5daad1fda57bb7f369a94f7109)
+![A user shares a service URL in Notion. Notion and the service exchange the information needed to display the preview.](https://mintcdn.com/notion-demo/LHm9qfrJYJOPRxs6/images/docs/e121163-lp_overview.png?fit=max\&auto=format\&n=LHm9qfrJYJOPRxs6\&q=85\&s=ca57bf5daad1fda57bb7f369a94f7109)
 
 A diagram of the Link Preview flow
 
@@ -14243,7 +14196,7 @@ Keep an eye on this changelog for when the update becomes available in the Publi
 * A new integration [example](https://github.com/makenotion/notion-cookbook/tree/main/examples/parse-text-from-any-block-type) was added to the Notion SDK for JavaScript repo. This example shows how to get the plain text from any block type currently supported by the public API.
 * The new unique ID page property was added to the [Page properties](/reference/page-property-values) documentation. When used, the unique ID (`unique_id`) auto-increments for every new page created in a database. An optional prefix can be included that will be applied to the ID values.
 
-![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/c599280-unique_id.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=92437cad7aa45d267c0f0a3d82874be2)
+![A page property shows a generated ID with a prefix and a number.](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/c599280-unique_id.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=92437cad7aa45d267c0f0a3d82874be2)
 
 The unique ID in a Notion page's properties
 
@@ -14376,7 +14329,7 @@ We don’t have any updates to share right now. Stay tuned for the next changelo
 
 * Added a token `Refresh` button to the settings page for internal integrations. Click `Refresh` to generate a new token for your internal integration.
 
-![](https://mintcdn.com/notion-demo/SXcROsTox2NhPn9o/images/docs/b1d6c0c-2023-01-13_10.58.16.gif?s=2a2a1e3671c7b1fec00590b7aba51afd)
+![Internal integration settings offer a control to refresh the token.](https://mintcdn.com/notion-demo/SXcROsTox2NhPn9o/images/docs/b1d6c0c-2023-01-13_10.58.16.gif?s=2a2a1e3671c7b1fec00590b7aba51afd)
 
 You can now refresh an internal integration token from the integration settings page.
 
@@ -17671,11 +17624,11 @@ We also updated the page picker to only show pages for which the user has Full A
 
 Other OAuth behavior has not changed: only admins can go through OAuth, and only the original person originally added an integration via OAuth can go through the flow again.
 
-![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/15c452e-oauth_improvements.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=3279ba235d3640e80fe9a0bac2b9b8ff)
+![The page picker shows nested pages that match the search text.](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/15c452e-oauth_improvements.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=3279ba235d3640e80fe9a0bac2b9b8ff)
 
 The search bar now lets you search for and select nested pages to share with an integration.
 
-![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/63ac8e6-oauth2.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=73927dbfab4f1b327dd80d5235c4b34f)
+![Selected nested pages appear under Manually added.](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/63ac8e6-oauth2.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=73927dbfab4f1b327dd80d5235c4b34f)
 
 Once selected, any nested pages appear in the "Manually Added" section.
 
@@ -21884,7 +21837,7 @@ All connections and [personal access tokens](/guides/get-started/personal-access
 These capabilities when put together enforce which API endpoints a connection or token can call, and what content and user related information they are able to see.
 To set your connection's capabilities see the [Authorization](/guides/get-started/authorization) guide or navigate to the [Developer portal](https://app.notion.com/developers/connections). For PATs, choose capabilities when you create the token.
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/06dcfeb-Screen_Shot_2022-07-15_at_11.48.40_AM.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=39659d0a5b57cb5c43367283263c0565)
+![The configuration form groups permissions for content, comments, and user information.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/06dcfeb-Screen_Shot_2022-07-15_at_11.48.40_AM.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=39659d0a5b57cb5c43367283263c0565)
 
 A screenshot of the capability configuration screen.
 
@@ -22515,9 +22468,9 @@ Learn more about Notion's data source object.
 
 **Data sources** are the individual tables of data that live under a Notion database. [Pages](/reference/page) are the items (or children) in a data source. [Page property values](/reference/page-property-values) must conform to the [property objects](/reference/property-object) laid out in the parent data source object.
 
-![](https://mintcdn.com/notion-demo/Muj7K3D7I6gj-QAA/images/reference/6dc5c7eccb432e908290e2642c84579936d55ee79c6cd60a5b0807e70cdeb55a-image.png?fit=max\&auto=format\&n=Muj7K3D7I6gj-QAA\&q=85\&s=732ada865d8d25def0ba61090c6e9f2e)
+![One database contains two data sources. Each data source has its own rows, shown as pages.](https://mintcdn.com/notion-demo/Muj7K3D7I6gj-QAA/images/reference/6dc5c7eccb432e908290e2642c84579936d55ee79c6cd60a5b0807e70cdeb55a-image.png?fit=max\&auto=format\&n=Muj7K3D7I6gj-QAA\&q=85\&s=732ada865d8d25def0ba61090c6e9f2e)
 
-Diagram of the new Notion API data model. A database is a parent of one or more data sources, each of which parents zero or more pages. Previously, databases could only have one data source, so the concepts were combined in the API until 2025.
+Database structure since API version 2025-09-03
 
 As of API version `2025-09-03`, there's a suite of APIs for managing data sources:
 
@@ -22620,7 +22573,7 @@ Source: https://developers.notion.com/reference/database
 
 Learn more about Notion's database object.
 
-A **database** is an object that contains one or more [data sources](/reference/create-a-data-source). Databases can either be displayed inline in the parent page (`is_inline: true`) or as a full page (`is_inline: false`). The properties (schema) of each data source under a database can be maintained independently, and each data source has its own set of rows (pages).
+A **database** is an object that contains one or more [data sources](/reference/data-source). Databases can either be displayed inline in the parent page (`is_inline: true`) or as a full page (`is_inline: false`). The properties (schema) of each data source under a database can be maintained independently, and each data source has its own set of rows (pages).
 
 Individual data sources don't have permissions settings, so the set of Notion users and bots that have access to data source children is managed through **databases**.
 
@@ -22632,9 +22585,9 @@ Individual data sources don't have permissions settings, so the set of Notion us
 >
 > In September 2025, the [Data source](/reference/data-source) object was introduced, and includes the `properties` that used to exist here at the database level.
 >
-> ![](https://mintcdn.com/notion-demo/Muj7K3D7I6gj-QAA/images/reference/6dc5c7eccb432e908290e2642c84579936d55ee79c6cd60a5b0807e70cdeb55a-image.png?fit=max\&auto=format\&n=Muj7K3D7I6gj-QAA\&q=85\&s=732ada865d8d25def0ba61090c6e9f2e)
+> ![One database contains two data sources. Each data source has its own rows, shown as pages.](https://mintcdn.com/notion-demo/Muj7K3D7I6gj-QAA/images/reference/6dc5c7eccb432e908290e2642c84579936d55ee79c6cd60a5b0807e70cdeb55a-image.png?fit=max\&auto=format\&n=Muj7K3D7I6gj-QAA\&q=85\&s=732ada865d8d25def0ba61090c6e9f2e)
 >
-> Diagram of the new Notion API data model. A database is a parent of one or more data sources, each of which parents zero or more pages. Previously, databases could only have one data source, so the concepts were combined in the API until 2025.
+> Database structure since API version 2025-09-03
 >
 > After [upgrading your API](/guides/get-started/upgrade-guide-2025-09-03) connection to `2025-09-03`, the new database object shape is displayed, including an array of child `data_sources` but **not** the data source `properties`.
 
@@ -23221,72 +23174,28 @@ Source: https://developers.notion.com/reference/filter-data-source-entries
 
 Learn how to specify which pages from a data source to return.
 
-When you [query a data source](/reference/query-a-data-source), you can send a `filter` object in the body of the request that limits the returned entries based on the specified criteria.
+Pass a `filter` in the body of a [data source query](/reference/query-a-data-source). This example returns rows where the **Task completed** checkbox is checked. Set `NOTION_API_KEY` and `NOTION_DATA_SOURCE_ID` before running it.
 
-For example, the below query limits the response to entries where the `"Task completed"` `checkbox` property value is `true`:
-
-```bash cURL theme={null}
-curl -X POST 'https://api.notion.com/v1/data_sources/897e5a76ae524b489fdfe71f5945d1af/query' \
-  -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
-  -H 'Notion-Version: 2026-03-11' \
+```bash curl theme={null}
+curl -X POST "https://api.notion.com/v1/data_sources/$NOTION_DATA_SOURCE_ID/query" \
+  -H "Authorization: Bearer $NOTION_API_KEY" \
+  -H "Notion-Version: 2026-03-11" \
   -H "Content-Type: application/json" \
---data '{
-  "filter": {
-    "property": "Task completed",
-    "checkbox": {
-        "equals": true
-   }
-  }
-}'
+  --data '{"filter":{"property":"Task completed","checkbox":{"equals":true}}}'
 ```
 
 ```javascript JavaScript theme={null}
-const { Client } = require('@notionhq/client');
+import { Client } from "@notionhq/client";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
-// replace with your own data source ID
-const dataSourceId = 'd9824bdc-8445-4327-be8b-5b47500af6ce';
-
-const filteredRows = async () => {
-	const response = await notion.databases.query({
-	  data_source_id: dataSourceId,
-	  filter: {
-	    property: "Task completed",
-	    checkbox: {
-	      equals: true
-	    }
-	  },
-	});
-  return response;
-}
+const response = await notion.dataSources.query({
+  data_source_id: process.env.NOTION_DATA_SOURCE_ID,
+  filter: { property: "Task completed", checkbox: { equals: true } },
+});
+console.log(response.results);
 ```
 
-Filters can be chained with the `and` and `or` keys so that multiple filters are applied at the same time. (See [Query a data source](/reference/query-a-data-source) for additional examples.)
-
-```json JSON theme={null}
-{
-  "and": [
-    {
-      "property": "Done",
-      "checkbox": {
-        "equals": true
-      }
-    },
-    {
-      "or": [
-        {
-          "property": "Tags",
-          "contains": "A"
-        },
-        {
-          "property": "Tags",
-          "contains": "B"
-        }
-      ]
-    }
-  ]
-}
-```
+Use [compound filter conditions](#compound-filter-conditions) to combine filters with `and` or `or`.
 
 If no filter is provided, non-archived pages in the data source will be returned with pagination. To query archived pages, set `is_archived` to `true` in the [Query a data source](/reference/query-a-data-source) request body.
 
@@ -23796,31 +23705,20 @@ Use a timestamp filter condition to filter results based on the `unique_id` valu
 
 You can use a compound filter condition to limit the results of a data source query based on multiple conditions. This mimics filter chaining in the Notion UI.
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/14ec7e8-Untitled.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=f7a7a738dcd526d2c1180c7f479fda31)
+![The filter requires Done to be checked and Tags to contain A or B.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/14ec7e8-Untitled.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=f7a7a738dcd526d2c1180c7f479fda31)
 
 An example filter chain in the Notion UI
 
 The above filters in the Notion UI are equivalent to the following compound filter condition via the API:
 
-```json JSON theme={null}
+```json Filter object theme={null}
 {
   "and": [
-    {
-      "property": "Done",
-      "checkbox": {
-        "equals": true
-      }
-    },
+    { "property": "Done", "checkbox": { "equals": true } },
     {
       "or": [
-        {
-          "property": "Tags",
-          "contains": "A"
-        },
-        {
-          "property": "Tags",
-          "contains": "B"
-        }
+        { "property": "Tags", "multi_select": { "contains": "A" } },
+        { "property": "Tags", "multi_select": { "contains": "B" } }
       ]
     }
   ]
@@ -23903,7 +23801,7 @@ Returns only the first level of children for the specified block. See [block obj
 
 The response may contain fewer than `page_size` of results.
 
-See [Pagination](/reference/intro#pagination) for details about how to use a cursor to iterate through the list.
+See [Pagination](/reference/pagination) for details about how to use a cursor to iterate through the list.
 
 > [!NOTE]
 >
@@ -23999,7 +23897,7 @@ Returns a paginated list of [Users](/reference/user) for the workspace. The resp
 Guests are not included in the response.
 If you already know a guest's ID, [Retrieve a user](/reference/get-user) can return that guest when they belong to the connected workspace.
 
-See [Pagination](/reference/intro#pagination) for details about how to use a cursor to iterate through the list.
+See [Pagination](/reference/pagination) for details about how to use a cursor to iterate through the list.
 
 The API does not guarantee a particular sort order for returned users.
 
@@ -24070,135 +23968,35 @@ Returns a 400 or 429 HTTP response if the request exceeds the [request limits](/
 # Introduction
 Source: https://developers.notion.com/reference/intro
 
-Learn the conventions, authentication, and pagination patterns used across the Notion API.
+Find the base URL, headers, and data formats for Notion API requests.
 
-Connections use the API to access Notion's pages, databases, and users. Connections can connect services to Notion and build interactive experiences for users within Notion. Use the navigation on the left to find details for objects and endpoints used in the API.
-
-> [!NOTE]
->
-> A bearer token is required to interact with the Notion API. Use an internal connection API token, an OAuth access token from a public connection, or a [personal access token](/guides/get-started/personal-access-tokens). If this is your first look at the Notion API, begin with the [Getting started guide](/guides/get-started/overview) to learn which connection type to use.
->
-> To work on a specific internal connection without access to its token, confirm that you are an admin in the workspace where the connection was created. Check inside the Notion UI via `Settings & Members` in the left sidebar. If you're not an admin in any of your workspaces, create a personal workspace for free or use a PAT where workspace policy allows it.
+Send requests over HTTPS to `https://api.notion.com`. To make your first request, follow the [API quickstart](/guides/get-started/quick-start).
 
 ## Conventions
 
-The base URL to send all API requests is `https://api.notion.com`. HTTPS is required for all API requests.
+For requests to pages, databases, and other workspace resources, send an `Authorization: Bearer` header with your token and a [`Notion-Version` header](/reference/versioning). The [authentication reference](/reference/authentication) lists the supported token types.
 
-The Notion API follows RESTful conventions when possible, with most operations performed via `GET`, `POST`, `PATCH`, and `DELETE` requests on page and database resources. Request and response bodies are encoded as JSON.
+Most endpoints use JSON. Set `Content-Type: application/json` when you send a JSON body. [Sending a file](/reference/upload-file) uses multipart form data instead.
 
 ### JSON conventions
 
-* Top-level resources have an `"object"` property. This property can be used to determine the type of the resource (e.g. `"database"`, `"user"`, etc.)
-* Top-level resources are addressable by a UUIDv4 `"id"` property. You may omit dashes from the ID when making requests to the API, e.g. when copying the ID from a Notion URL.
-* Property names are in `snake_case` (not `camelCase` or `kebab-case`).
-* Temporal values (dates and datetimes) are encoded in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) strings. Datetimes will include the time value (`2020-08-12T02:12:33.231Z`) while dates will include only the date (`2020-08-12`)
-* The Notion API does not support empty strings. To unset a string value for properties like a `url` [page property value](/reference/page-property-values), for example, use an explicit `null` instead of `""`.
+* The `object` field identifies a resource, such as a `page` or `user`.
+* You can send page and database IDs with or without dashes.
+* Property names use `snake_case`.
+* Dates and timestamps use ISO 8601, such as `2026-03-11` or `2026-03-11T09:30:00.000Z`.
+* To clear a [URL page property](/reference/page-property-values#url), send `null`.
 
 ## Code samples & SDKs
 
-Samples requests and responses are shown for each endpoint. Requests are shown using the Notion [JavaScript SDK](https://github.com/makenotion/notion-sdk-js), and [cURL](https://curl.se/). These samples make it easy to copy, paste, and modify as you build your connection.
-
-Notion SDKs are open source projects that you can install to easily start building. You may also choose any other language or library that allows you to make HTTP requests.
+Use the [JavaScript SDK](https://github.com/makenotion/notion-sdk-js), curl, or any client that can send HTTPS requests. Each endpoint reference lists its parameters and response fields. See [status codes](/reference/status-codes) to interpret an error response.
 
 ## Pagination
 
-Endpoints that return lists of objects support cursor-based pagination requests. By default, Notion returns ten items per API call. If the number of items in a response from a support endpoint exceeds the default, then a connection can use pagination to request a specific set of the results and/or to limit the number of returned items.
+For lists with more than one page, pass the response’s `next_cursor` as `start_cursor` in the next request. See the [pagination reference](/reference/pagination).
 
-### Supported endpoints
-
-| HTTP method | Endpoint |
-| :- | :- |
-| GET | [List all users](/reference/get-users) |
-| GET | [List block children](/reference/get-block-children) |
-| GET | [List comments](/reference/list-comments) |
-| GET | [Retrieve a page property item](/reference/retrieve-a-page-property) |
-| GET | [List file uploads](/reference/list-file-uploads) |
-| GET | [List data source templates](/reference/list-data-source-templates) |
-| GET | [List views](/reference/list-views) |
-| GET | [Get view query results](/reference/get-view-query-results) |
-| POST | [Query a data source](/reference/query-a-data-source) |
-| POST | [Create a view query](/reference/create-view-query) |
-| POST | [Search](/reference/post-search) |
-
-### Responses
-
-If an endpoint supports pagination, then the response object contains the below fields.
-
-| Field | Type | Description |
-| :- | :- | :- |
-| `has_more` | `boolean` | Whether the response includes the end of the list. `false` if there are no more results. Otherwise, `true`. |
-| `next_cursor` | `string` | A string that can be used to retrieve the next page of results by passing the value as the `start_cursor` [parameter](#parameters-for-paginated-requests) to the same endpoint.  Only available when `has_more` is true. |
-| `object` | `"list"` | The constant string `"list"`. |
-| `results` | `array of objects` | The list, or partial list, of endpoint-specific results. Refer to a [supported endpoint](#supported-endpoints)'s individual documentation for details. |
-| `type` | `"block"` `"comment"` `"data_source"` `"file_upload"` `"page"` `"page_or_database"` `"property_item"` `"template"` `"user"` `"view"` | A constant string that represents the type of the objects in `results`. |
-| `{type}` | [`paginated list object`](/reference/page-property-values#paginated-page-properties) | An object containing type-specific pagination information. For `property_item`s, the value corresponds to the [paginated page property type](/reference/page-property-values#paginated-page-properties). For all other types, the value is an empty object. |
-
-### Parameters for paginated requests
-
-> [!WARNING]
->
-> **Parameter location varies by endpoint**
->
-> `GET` requests accept parameters in the query string.
->
-> `POST` requests receive parameters in the request body.
-
-| Parameter | Type | Description |
-| :- | :- | :- |
-| `page_size` | `number` | The number of items from the full list to include in the response.   **Default**: `100` **Maximum**: `100`   The response may contain fewer than the default number of results. |
-| `start_cursor` | `string` | A `next_cursor` value returned in a previous [response](#responses). Treat this as an opaque value.   Defaults to `undefined`, which returns results from the beginning of the list. |
-
-### How to send a paginated request
-
-**Step 1**
-
-Send an initial request to a [supported endpoint](#supported-endpoints).
-
-**Step 2**
-
-Retrieve the `next_cursor` value from the response (only available when `has_more` is `true`).
-
-**Step 3**
-
-Send a follow up request to the endpoint that includes the `next_cursor` param in either the query string (for `GET` requests) or in the body params (`POST` requests).
-
-#### Example: paginate through query results from a data source
-
-```bash cURL theme={null}
-curl -X POST 'https://api.notion.com/v1/data_sources/<data_source_id>/query' \
-  -H 'Authorization: Bearer <secret_bot>' \
-  -H 'Notion-Version: 2026-03-11' \
-  -H 'Content-Type: application/json' \
-  --data '{
-    "start_cursor": "33e19cb9-751f-4993-b74d-234d67d0d534"
-  }'
-```
-
-```javascript JavaScript SDK theme={null}
-import { Client, iteratePaginatedAPI } from "@notionhq/client";
-
-const notion = new Client({
-  auth: process.env.NOTION_API_KEY,
-  notionVersion: "2026-03-11",
-});
-
-// Option 1: iterate one page of results at a time (async iterator)
-for await (const page of iteratePaginatedAPI(
-  notion.dataSources.query,
-  { data_source_id: "<data_source_id>" }
-)) {
-  // Process each page result as it arrives
-  console.log(page);
-}
-
-// Option 2: collect all results into an array
-import { collectPaginatedAPI } from "@notionhq/client";
-
-const allPages = await collectPaginatedAPI(
-  notion.dataSources.query,
-  { data_source_id: "<data_source_id>" }
-);
-```
+* [Request parameters](/reference/pagination#requests) and [response fields](/reference/pagination#responses)
+* [Paginated endpoints](/reference/pagination#paginated-endpoints)
+* [Examples in curl and JavaScript](/reference/pagination#example)
 
 
 # Introspect a token
@@ -24215,7 +24013,7 @@ Source: https://developers.notion.com/reference/list-comments
 get /v1/comments
 Retrieves a list of un-resolved [Comment objects](/reference/comment-object) from a page or block.
 
-See [Pagination](/reference/intro#pagination) for details about how to use a cursor to iterate through the list.
+See [Pagination](/reference/pagination) for details about how to use a cursor to iterate through the list.
 
 ### Errors
 
@@ -24238,7 +24036,7 @@ Source: https://developers.notion.com/reference/list-custom-emojis
 get /v1/custom_emojis
 Retrieves a list of custom emojis in the workspace.
 
-See [Pagination](/reference/intro#pagination) for details about how to use a cursor to iterate through the list.
+See [Pagination](/reference/pagination) for details about how to use a cursor to iterate through the list.
 
 Use the `name` query parameter to filter by exact name match, which is useful for resolving a custom emoji name to its ID.
 
@@ -24247,9 +24045,9 @@ Use the `name` query parameter to filter by exact name match, which is useful fo
 Source: https://developers.notion.com/reference/list-data-source-templates
 
 get /v1/data_sources/{data_source_id}/templates
-Use this API to retrieve details of all page templates available for a data source.
+List the page templates your connection can read in a data source.
 
-The response contains a `templates` array with up to 100 results per page. Each template has the following fields:
+The response contains a `templates` array with up to 100 results per page. To filter by name, pass all or part of a template name in the `name` query parameter. Matching ignores case.
 
 | Field | Type | Description |
 | :- | :- | :- |
@@ -24261,11 +24059,24 @@ The response contains a `templates` array with up to 100 results per page. Each 
 
 If more templates are available, `has_more` is `true` and `next_cursor` contains the cursor for the next page. Pass that value as `start_cursor` in the next request.
 
+In the [JavaScript SDK](https://github.com/makenotion/notion-sdk-js) v5.3.0 or later, use `iterateDataSourceTemplates` to follow the cursors. The example reads your token from `NOTION_API_KEY` and the data source ID from `NOTION_DATA_SOURCE_ID`.
+
+```javascript theme={null}
+import { Client, iterateDataSourceTemplates } from "@notionhq/client";
+
+const notion = new Client({ auth: process.env.NOTION_API_KEY });
+for await (const template of iterateDataSourceTemplates(notion, {
+  data_source_id: process.env.NOTION_DATA_SOURCE_ID,
+})) {
+  console.log(template.name, template.id);
+}
+```
+
 ### Permissions
 
 This endpoint returns only templates under the specified data source that the connection can access. Sharing the parent database with the connection generally grants access to its child templates.
 
-Templates are also Notion pages. Use [Retrieve a page](/reference/retrieve-a-page) to get a template's properties and content. You can also open a template in Notion and copy its URL to find its ID.
+Templates are also Notion pages. Use [Retrieve a page](/reference/retrieve-a-page) for its properties or [Retrieve a page as markdown](/reference/retrieve-page-markdown) for its content. You can also open a template in Notion and copy its URL to find its ID.
 
 ### Errors
 
@@ -26392,6 +26203,64 @@ Use [Retrieve a page property item](/reference/retrieve-a-page-property) when yo
 The list response and cursor fields are defined in [Page property items](/reference/property-item-object#paginated-values). For a complete SDK example, see [Read every item in a page property](/guides/data-apis/read-page-property-values).
 
 
+# Pagination
+Source: https://developers.notion.com/reference/pagination
+
+Read lists of results with cursor-based pagination in the Notion API.
+
+A paginated endpoint returns part of a list at a time. Read `has_more` to tell whether another page is available. A page can contain fewer items than you requested even when more remain.
+
+## Requests
+
+| Parameter | Meaning |
+| :- | :- |
+| `start_cursor` | Omit it on the first request. For the next page, pass the previous response's `next_cursor` unchanged. |
+| `page_size` | The maximum number of items to return in one response. Most list endpoints default to 100 and accept values from 1 to 100. |
+
+For GET requests, pass these parameters in the query string. For [search](/reference/post-search) and [data source queries](/reference/query-a-data-source), pass them in the POST body. Keep the same filters and sort order between requests.
+
+## Responses
+
+| Field | Meaning |
+| :- | :- |
+| `results` | The items on this page of a standard list response. |
+| `has_more` | `true` if another page of results is available. |
+| `next_cursor` | The cursor for the next page, or `null` at the end of a standard list. |
+
+A standard list has `object: "list"`. Its `type` identifies the kind of result. For [paginated page properties](/reference/property-item-object#paginated-values), the response also includes information about the property.
+
+[List data source templates](/reference/list-data-source-templates) returns items in `templates`. When you [create a view query](/reference/create-view-query), use its `query_id` with [Get view query results](/reference/get-view-query-results) to read subsequent pages.
+
+## Paginated endpoints
+
+The endpoint reference gives the shape of each result. Common examples include [block children](/reference/get-block-children), [users](/reference/get-users), [comments](/reference/list-comments), [file uploads](/reference/list-file-uploads), [custom emojis](/reference/list-custom-emojis), and [views](/reference/list-views).
+
+## Example
+
+Set `NOTION_API_KEY` to your token and `NOTION_BLOCK_ID` to a page or block your token can read. The curl request requests up to two children. The JavaScript SDK example follows each cursor and prints one child ID at a time.
+
+```bash curl theme={null}
+curl --get "https://api.notion.com/v1/blocks/$NOTION_BLOCK_ID/children" \
+  -H "Authorization: Bearer $NOTION_API_KEY" \
+  -H "Notion-Version: 2026-03-11" \
+  --data-urlencode "page_size=2"
+```
+
+```javascript JavaScript SDK theme={null}
+import { Client, iteratePaginatedAPI } from "@notionhq/client";
+
+const notion = new Client({ auth: process.env.NOTION_API_KEY });
+for await (const block of iteratePaginatedAPI(notion.blocks.children.list, {
+  block_id: process.env.NOTION_BLOCK_ID,
+  page_size: 2,
+})) {
+  console.log(block.id);
+}
+```
+
+For a large data source, a single query can reach its result limit even when `has_more` is false. See [Query large data sources](/guides/data-apis/query-large-data-sources) to detect the limit and read the remaining rows.
+
+
 # Parent
 Source: https://developers.notion.com/reference/parent-object
 
@@ -26704,7 +26573,7 @@ post /v1/databases/{database_id}/query
 >
 > * [Query a data source](/reference/query-a-data-source)
 
-Gets a list of [Pages](/reference/page) and/or [Databases](/reference/database) contained in the database, filtered and ordered according to the filter conditions and sort criteria provided in the request. The response may contain fewer than `page_size` of results. If the response includes a `next_cursor` value, refer to the [pagination reference](/reference/intro#pagination) for details about how to use a cursor to iterate through the list.
+Gets a list of [Pages](/reference/page) and/or [Databases](/reference/database) contained in the database, filtered and ordered according to the filter conditions and sort criteria provided in the request. The response may contain fewer than `page_size` of results. If the response includes a `next_cursor` value, refer to the [pagination reference](/reference/pagination) for details about how to use a cursor to iterate through the list.
 
 > [!NOTE]
 >
@@ -26713,31 +26582,20 @@ Gets a list of [Pages](/reference/page) and/or [Databases](/reference/database) 
 [**Filters**](/reference/post-database-query-filter) are similar to the [filters provided in the Notion UI](https://www.notion.com/help/views-filters-and-sorts) where the set of filters and filter groups chained by "And" in the UI is equivalent to having each filter in the array of the compound `"and"` filter. Similar a set of filters chained by "Or" in the UI would be represented as filters in the array of the `"or"` compound filter.
 Filters operate on database properties and can be combined. If no filter is provided, non-archived pages in the database will be returned with pagination.
 
-![1340](https://mintcdn.com/notion-demo/S-I3qLQnwRa7HjdK/images/reference/image-1.png?fit=max\&auto=format\&n=S-I3qLQnwRa7HjdK\&q=85\&s=00a19b68b92cd013cdc0f8867427eb44)
+![Done is checked and Tags contains A or B.](https://mintcdn.com/notion-demo/S-I3qLQnwRa7HjdK/images/reference/image-1.png?fit=max\&auto=format\&n=S-I3qLQnwRa7HjdK\&q=85\&s=00a19b68b92cd013cdc0f8867427eb44)
 
 The above filters in the UI can be represented as the following filter object
 
-```json Filter Object theme={null}
+```json Filter object theme={null}
 {
   "and": [
-    {
-      "property": "Done",
-      "checkbox": {
-        "equals": true
-      }
-    },
+    { "property": "Done", "checkbox": { "equals": true } },
     {
       "or": [
-        {
-          "property": "Tags",
-          "contains": "A"
-        },
-        {
-          "property": "Tags",
-          "contains": "B"
-        }
+        { "property": "Tags", "multi_select": { "contains": "A" } },
+        { "property": "Tags", "multi_select": { "contains": "B" } }
       ]
-  	}
+    }
   ]
 }
 ```
@@ -26870,32 +26728,7 @@ const filteredRows = async () => {
 }
 ```
 
-Filters can be chained with the `and` and `or` keys so that multiple filters are applied at the same time. (See [Query a database](/reference/post-database-query) for additional examples.)
-
-```json JSON theme={null}
-{
-  "and": [
-    {
-      "property": "Done",
-      "checkbox": {
-        "equals": true
-      }
-    },
-    {
-      "or": [
-        {
-          "property": "Tags",
-          "contains": "A"
-        },
-        {
-          "property": "Tags",
-          "contains": "B"
-        }
-      ]
-    }
-  ]
-}
-```
+Use [compound filter conditions](#compound-filter-conditions) to combine filters with `and` or `or`.
 
 If no filter is provided, non-archived pages in the database will be returned with pagination.
 
@@ -27366,31 +27199,20 @@ Use a timestamp filter condition to filter results based on the `unique_id` valu
 
 You can use a compound filter condition to limit the results of a database query based on multiple conditions. This mimics filter chaining in the Notion UI.
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/14ec7e8-Untitled.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=f7a7a738dcd526d2c1180c7f479fda31)
+![The filter requires Done to be checked and Tags to contain A or B.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/14ec7e8-Untitled.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=f7a7a738dcd526d2c1180c7f479fda31)
 
 An example filter chain in the Notion UI
 
 The above filters in the Notion UI are equivalent to the following compound filter condition via the API:
 
-```json JSON theme={null}
+```json Filter object theme={null}
 {
   "and": [
-    {
-      "property": "Done",
-      "checkbox": {
-        "equals": true
-      }
-    },
+    { "property": "Done", "checkbox": { "equals": true } },
     {
       "or": [
-        {
-          "property": "Tags",
-          "contains": "A"
-        },
-        {
-          "property": "Tags",
-          "contains": "B"
-        }
+        { "property": "Tags", "multi_select": { "contains": "A" } },
+        { "property": "Tags", "multi_select": { "contains": "B" } }
       ]
     }
   ]
@@ -27656,13 +27478,15 @@ Each Public API endpoint can return several possible error codes. See the [Error
 Source: https://developers.notion.com/reference/post-search
 
 post /v1/search
-Searches all parent or child pages and data_sources that have been shared with a connection.
+Find pages and data sources by title.
 
-Returns all [pages](/reference/page) or [data\_sources](/reference/data-source) , excluding duplicated linked databases, that have titles that include the `query` param. If no `query` param is provided, then the response contains all pages or data\_sources that have been shared with the connection. The results adhere to any limitations related to an [connection’s capabilities](/reference/capabilities).
+Search returns [pages](/reference/page) and [data sources](/reference/data-source) that the connection can access. Omit `query` to search without a title filter. Search excludes duplicate linked databases. See [search limitations](/reference/search-optimizations-and-limitations#limitations) before using the results as an inventory.
 
 To limit the request to pages or data sources, use the `filter` parameter with `property: "object"` and a `value` of `"page"` or `"data_source"`.
 
 To list content in the trash, set `filter.in_trash` to `true`. You can combine `in_trash` with the object filter or use it by itself.
+
+Results use [cursor-based pagination](/reference/pagination). To filter rows in one data source, use [Query a data source](/reference/query-a-data-source).
 
 ### Return fewer page properties
 
@@ -27670,7 +27494,7 @@ Use the `filter_properties` query parameter to return only the page properties y
 
 ```bash theme={null}
 curl -X POST 'https://api.notion.com/v1/search?filter_properties=title&filter_properties=Status' \
-  -H 'Authorization: Bearer ntn_...' \
+  -H "Authorization: Bearer $NOTION_API_KEY" \
   -H 'Content-Type: application/json' \
   -H 'Notion-Version: 2026-03-11' \
   --data '{"query": "Roadmap", "filter": {"property": "object", "value": "page"}}'
@@ -27678,15 +27502,7 @@ curl -X POST 'https://api.notion.com/v1/search?filter_properties=title&filter_pr
 
 ### Errors
 
-Each Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) of the Status codes documentation for more information.
-
-> [!NOTE]
->
-> The Search endpoint supports pagination. To learn more about working with [paginated](/reference/intro#pagination) responses, see the pagination section of the Notion API Introduction.
-
-> [!WARNING]
->
-> To search a specific data\_source — not all sources shared with the connection — use the [Query a data\_source](/reference/query-a-data-source) endpoint instead.
+See [status codes](/reference/status-codes#error-codes) for error responses.
 
 
 # Page property items
@@ -29579,7 +29395,7 @@ post /v1/data_sources/{data_source_id}/query
 
 ### Overview
 
-Gets a list of [pages](/reference/page) contained in the data source, filtered and ordered according to the filter conditions and sort criteria provided in the request. The response may contain fewer than `page_size` of results. If the response includes a `next_cursor` value, refer to the [pagination reference](/reference/intro#pagination) for details about how to use a cursor to iterate through the list.
+Gets a list of [pages](/reference/page) contained in the data source, filtered and ordered according to the filter conditions and sort criteria provided in the request. The response may contain fewer than `page_size` of results. If the response includes a `next_cursor` value, refer to the [pagination reference](/reference/pagination) for details about how to use a cursor to iterate through the list.
 
 > [!NOTE]
 >
@@ -29593,34 +29409,22 @@ Gets a list of [pages](/reference/page) contained in the data source, filtered a
 
 ### Filtering
 
-[**Filters**](/reference/filter-data-source-entries) are similar to the [filters provided in the Notion UI](https://www.notion.com/help/views-filters-and-sorts) where the set of filters and filter groups chained by "And" in the UI is equivalent to having each filter in the array of the compound `"and"` filter. Similar a set of filters chained by "Or" in the UI would be represented as filters in the array of the `"or"` compound filter.
-Filters operate on data source properties and can be combined. If no filter is provided, non-archived pages in the data source are returned with pagination.
+Use [filters](/reference/filter-data-source-entries) to match property values. Combine conditions with `and` or `or`. This filter returns rows where **Done** is checked and **Tags** contains A or B.
 
-![](https://mintcdn.com/notion-demo/S-I3qLQnwRa7HjdK/images/reference/image-6.png?fit=max\&auto=format\&n=S-I3qLQnwRa7HjdK\&q=85\&s=27e3bc94089d8d763ae7de032ded2fa3)
+![The filter requires Done to be checked and Tags to contain A or B.](https://mintcdn.com/notion-demo/S-I3qLQnwRa7HjdK/images/reference/image-6.png?fit=max\&auto=format\&n=S-I3qLQnwRa7HjdK\&q=85\&s=27e3bc94089d8d763ae7de032ded2fa3)
 
 The above filters in the UI can be represented as the following filter object
 
-```json Filter object expandable theme={null}
+```json Filter object theme={null}
 {
   "and": [
-    {
-      "property": "Done",
-      "checkbox": {
-        "equals": true
-      }
-    },
+    { "property": "Done", "checkbox": { "equals": true } },
     {
       "or": [
-        {
-          "property": "Tags",
-          "contains": "A"
-        },
-        {
-          "property": "Tags",
-          "contains": "B"
-        }
+        { "property": "Tags", "multi_select": { "contains": "A" } },
+        { "property": "Tags", "multi_select": { "contains": "B" } }
       ]
-  	}
+    }
   ]
 }
 ```
@@ -29685,27 +29489,25 @@ For connections that need to process all pages in a large data source, we recomm
 
 ### Recommendations for performance
 
-Use the `filter_properties` query parameter whenever you don't need every property from every result. This endpoint returns only the properties you list. For example:
+Pass `filter_properties` once per property in the query string, or pass an array of strings in the SDK. Use property names or IDs from [Retrieve a data source](/reference/retrieve-a-data-source). For example, for a data source with a **Status** property:
 
-```bash theme={null}
-https://api.notion.com/v1/data_sources/[DATA_SOURCE_ID]/query?filter_properties[]=title
+```bash curl theme={null}
+curl -X POST "https://api.notion.com/v1/data_sources/$NOTION_DATA_SOURCE_ID/query?filter_properties=title&filter_properties=Status" \
+  -H "Authorization: Bearer $NOTION_API_KEY" \
+  -H "Notion-Version: 2026-03-11" \
+  -H "Content-Type: application/json" \
+  --data '{}'
 ```
 
-Multiple filter properties can be provided by chaining the `filter_properties` query param. For example:
+```javascript JavaScript theme={null}
+import { Client } from "@notionhq/client";
 
-```bash theme={null}
-https://api.notion.com/v1/data_sources/[DATA_SOURCE_ID]/query?filter_properties[]=title&filter_properties[]=status
-```
-
-This parameter accepts property IDs or property names. Property IDs can be determined with the [Retrieve a data source](/reference/retrieve-a-data-source) endpoint.
-
-If you are using the [Notion JavaScript SDK](https://github.com/makenotion/notion-sdk-js), the `filter_properties` endpoint expects an array of strings. For example:
-
-```typescript TypeScript theme={null}
-notion.dataSources.query({
-	data_source_id: id,
-	filter_properties: ["title", "status"]
-})
+const notion = new Client({ auth: process.env.NOTION_API_KEY });
+const response = await notion.dataSources.query({
+  data_source_id: process.env.NOTION_DATA_SOURCE_ID,
+  filter_properties: ["title", "Status"],
+});
+console.log(response.results);
 ```
 
 Using `filter_properties` can speed up the query and reduce its response size, especially for data sources with many properties, formulas, rollups, or relations. Use this endpoint to find pages and return only the properties your list shows. Fetch more data after you select a page:
@@ -30256,7 +30058,7 @@ To fetch data source *rows* (i.e. the child pages of a data source) rather than 
 
 First, find the containing database's ID in its Notion URL. The database ID is the 32-character alphanumeric string between the slash following the workspace name (if applicable) and the question mark.
 
-![](https://mintcdn.com/notion-demo/S-I3qLQnwRa7HjdK/images/reference/image-3.png?fit=max\&auto=format\&n=S-I3qLQnwRa7HjdK\&q=85\&s=051ded818c1263e52bb87f66a3d05ce5)
+![The database ID appears in the URL path before the question mark.](https://mintcdn.com/notion-demo/S-I3qLQnwRa7HjdK/images/reference/image-3.png?fit=max\&auto=format\&n=S-I3qLQnwRa7HjdK\&q=85\&s=051ded818c1263e52bb87f66a3d05ce5)
 
 Notion database ID
 
@@ -30264,7 +30066,7 @@ Use [Retrieve a database](/reference/retrieve-database) with that database ID. I
 
 To get a data source ID from the Notion app directly, the settings menu for a database includes a "Copy data source ID" button under "Manage data sources":
 
-![](https://mintcdn.com/notion-demo/S-I3qLQnwRa7HjdK/images/reference/image-4.png?fit=max\&auto=format\&n=S-I3qLQnwRa7HjdK\&q=85\&s=292ed34c84b1b7161b282444678c3bc6)
+![The Tasks data source menu offers Copy data source ID.](https://mintcdn.com/notion-demo/S-I3qLQnwRa7HjdK/images/reference/image-4.png?fit=max\&auto=format\&n=S-I3qLQnwRa7HjdK\&q=85\&s=292ed34c84b1b7161b282444678c3bc6)
 
 Screenshot of the 'Manage data sources' menu for a database in Notion, with 'Copy data source ID' button.
 
@@ -30278,7 +30080,7 @@ Each Public API endpoint can return several possible error codes. See the [Error
 
 ### Additional resources
 
-* [How to share a database with your connection](/guides/get-started/quick-start#give-your-connection-page-permissions)
+* [How to share a database with your connection](/guides/get-started/overview#content-access)
 * [Working with databases guide](/guides/data-apis/working-with-databases)
 
 > [!NOTE]
@@ -30330,7 +30132,7 @@ Each Public API endpoint can return several possible error codes. See the [Error
 
 ### Additional resources
 
-* [How to share a database with your connection](/guides/get-started/quick-start#give-your-connection-page-permissions)
+* [How to share a database with your connection](/guides/get-started/overview#content-access)
 * [Working with databases guide](/guides/data-apis/working-with-databases)
 
 > [!NOTE]
@@ -30611,7 +30413,7 @@ Each Public API endpoint can return several possible error codes. See the [Error
 
 ### Additional resources
 
-* [How to share a database with your connection](/guides/get-started/quick-start#give-your-connection-page-permissions)
+* [How to share a database with your connection](/guides/get-started/overview#content-access)
 * [Working with databases guide](/guides/data-apis/working-with-databases)
 
 
@@ -31065,27 +30867,19 @@ If a rich text object’s `type` value is `"text"`, then the corresponding `text
 # Search optimizations and limitations
 Source: https://developers.notion.com/reference/search-optimizations-and-limitations
 
-
+Find out what search can return and how to narrow the results.
 
 ## Optimizations
 
-Search works best when the request is as specific as possible. We recommend filtering by object (such as `page` or `database`) and providing a text `query` to narrow down results.
+[Search](/reference/post-search) matches page and data source titles. Pass a `query` to narrow the matches. To return only pages or only data sources, set `filter.property` to `"object"` and `filter.value` to `"page"` or `"data_source"`.
 
-To speed up results, try reducing the `page_size`. The default `page_size` is 100.
-
-If you only need a few properties from each page, such as its title, use the `filter_properties` query parameter. It makes each page result smaller and faster to build. See [Return fewer page properties](/reference/post-search#return-fewer-page-properties).
-
-Our implementation of the search endpoint includes an optimization where any pages or databases that are directly shared with a connection are guaranteed to be returned. If your use case requires pages or databases to immediately be available in search without an indexing delay, we recommend that you share relevant pages/databases with your connection directly.
+Use a smaller `page_size` if you only need a few matches. To reduce the size of each page result, [request only the properties you need](/reference/post-search#return-fewer-page-properties).
 
 ## Limitations
 
-The search endpoint works best when it's being used to query for pages and databases by name. It is not optimized for the following use cases:
+Search results can change as you paginate. The index takes time to reflect changes, including pages shared after authorization and pages moved to the trash. Search can't provide a complete inventory of the content a connection can access. If your app uses search to show newly shared pages, give users a way to refresh the results.
 
-* **Exhaustively enumerating through all the documents that a bot has access to in a workspace.** Search is not guaranteed to return everything, and the index may change as your connection iterates through pages and databases.
-* **Searching or filtering within a particular database.** This use case is much better served by finding the database ID and using the [Query a data source](/reference/query-a-data-source) endpoint.
-* **Immediate and complete results.** Search indexing is not immediate. If a connection performs a search quickly after a page is shared with the connection (such as immediately after a user performs OAuth), then the response may not contain the page.
-  * When a connection needs to present a user interface that depends on search results, we recommend including a *Refresh* button to retry the search. This will allow users to determine if the expected result is present or not, and give them a way to try again.
-* **Listing content in the trash.** Trash results are search-index-backed and eventually consistent. Results include only content the connection can access.
+To find rows in a specific data source, use [Query a data source](/reference/query-a-data-source) with the data source ID.
 
 
 # Sort data source entries
@@ -31093,64 +30887,30 @@ Source: https://developers.notion.com/reference/sort-data-source-entries
 
 A sort is a condition used to order the entries returned from a data source query.
 
-A [data source query](/reference/query-a-data-source) can be sorted by a property and/or timestamp and in a given direction. For example, a library data source can be sorted by the "Name of a book" (i.e. property) and in `ascending` (i.e. direction).
+Pass a `sorts` array to [Query a data source](/reference/query-a-data-source). The first sort takes priority. This example sorts by **Food group** in descending order, then by **Name** in ascending order within each group.
 
-Here is an example of a sort on a data source property.
-
-```json Sorting by "Name" property in ascending direction theme={null}
+```json Request body theme={null}
 {
   "sorts": [
-    {
-      "property": "created_time",
-      "direction": "ascending"
-    },
+    { "property": "Food group", "direction": "descending" },
+    { "property": "Name", "direction": "ascending" }
   ]
 }
 ```
-
-If you’re using the [Notion SDK for JavaScript](https://github.com/makenotion/notion-sdk-js), you can apply this sorting property to your query like so:
 
 ```javascript JavaScript theme={null}
-const { Client } = require('@notionhq/client');
+import { Client } from "@notionhq/client";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
-// replace with your own data source ID
-const dataSourceId = 'd9824bdc-8445-4327-be8b-5b47500af6ce';
-
-const sortedRows = async () => {
-  const response = await notion.dataSources.query({
-    database_id: databaseId,
-    sorts: [
-      {
-        property: "Name",
-        direction: "ascending"
-      }
-    ],
-  });
-  return response;
-}
+const response = await notion.dataSources.query({
+  data_source_id: process.env.NOTION_DATA_SOURCE_ID,
+  sorts: [
+    { property: "Food group", direction: "descending" },
+    { property: "Name", direction: "ascending" },
+  ],
+});
+console.log(response.results);
 ```
-
-Data source queries can also be sorted by two or more properties, which is formally called a nested sort. The sort object listed first in the nested sort list takes precedence.
-
-Here is an example of a nested sort.
-
-```json JSON theme={null}
-{
-  "sorts": [
-        {
-      "property": "Food group",
-      "direction": "descending"
-    },
-    {
-      "property": "Name",
-      "direction": "ascending"
-    }
-  ]
-}
-```
-
-In this example, the data source query will first be sorted by "Food group" and the set with the same food group is then sorted by "Name".
 
 ## Sort object
 
@@ -31180,7 +30940,7 @@ The sort object must contain the following properties:
 # Status codes
 Source: https://developers.notion.com/reference/status-codes
 
-Responses from the API use HTTP response codes to indicate general classes of success and error.
+Look up HTTP status codes and the error details returned by the Notion API.
 
 ## Success codes
 
@@ -31190,7 +30950,7 @@ Responses from the API use HTTP response codes to indicate general classes of su
 
 ## Error codes
 
-Error responses contain more detail about the error in the response body, in the `"code"` and `"message"` properties. Some error responses may also include an `"additional_data"` object with extra context, such as retry guidance or endpoint-specific details.
+For a standard API error, use `code` to identify the error and `message` for details about this request. If you contact support, include the `request_id` from the response when available. Some errors also include `additional_data`, such as [guidance on retrying a write](/reference/request-limits#retry-a-write-that-returns-503).
 
 To see which error codes a connection received in the last 24 hours, check the **Error codes** list on its [Health tab](/guides/manage-connections/connection-health).
 
@@ -31378,13 +31138,13 @@ Link Previews can be displayed in their full format, or they can be shown as a "
 
 Let's first look at an example of a full-format Link Preview:
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/a034247-link_preview.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=ce1abef0ec570f35bd482fdd8c6dc552)
+![A preview card shows the issue title, status, and a short description.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/a034247-link_preview.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=ce1abef0ec570f35bd482fdd8c6dc552)
 
 Example Link Preview in a Notion workspace
 
 Here is the same link again but now as a Mention — a miniature version of a Link Preview that uses the same data.
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/f588a6f-mention.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=8fb360ddae135021a789f072cc2ba88d)
+![An inline mention shows the issue title and status within a line of text.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/f588a6f-mention.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=8fb360ddae135021a789f072cc2ba88d)
 
 Example Mention in a Notion workspace
 
@@ -31506,7 +31266,7 @@ Using the same Link Preview and Mention we saw above, let's look at the array of
 
 Each unfurl attribute object in this array maps to a different customizable section of a Link Preview. (To learn more about each section, jump to [The `section` value](/reference/unfurl-attribute-object#the-section-value).
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/3d6f5ec-Untitled_1.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=4c9dc387fecc9d2d606377e68d06d9b3)
+![A preview card has areas for an image, title, primary attributes, and secondary attributes.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/3d6f5ec-Untitled_1.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=4c9dc387fecc9d2d606377e68d06d9b3)
 
 Anatomy of a Link Preview in Notion
 
@@ -31572,7 +31332,7 @@ Every array of attribute objects that is sent to Notion to render a Link Preview
 
 The `embed` sub-type object adds rich content like JPGs, GIFs, or iFrames to a Link Preview.
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/d482801-embed.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=23c25fb4d7c3eb461655767f2dffb63a)
+![A preview card shows Kermit the Frog above the linked item’s title and details.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/d482801-embed.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=23c25fb4d7c3eb461655767f2dffb63a)
 
 An example Link Preview that embeds an image of Kermit the Frog
 
@@ -31593,11 +31353,11 @@ All embed sub-type objects contain: a `src_url` field that is a link to the embe
 
 The `section` value of an unfurl attribute object defines where an attribute is rendered in the Link Preview or Mention.
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/121dcba-sections_lp.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=3aeb3186980cfe813930568826de3adf)
+![The preview places the image above the title, primary attributes, and secondary attributes.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/121dcba-sections_lp.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=3aeb3186980cfe813930568826de3adf)
 
 The sections of a Link Preview
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/1de6886-sections_mention.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=103ce514aa4462c145d50c0ac95653d7)
+![The mention shows the icon, identifier, title, and primary attributes on one line.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/1de6886-sections_mention.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=103ce514aa4462c145d50c0ac95653d7)
 
 The sections of a Mention
 
@@ -32550,7 +32310,7 @@ Learn how your connection can automatically respond to workspace activity in rea
 
 Webhooks let your connection receive real-time updates from Notion. Whenever a page or database changes, Notion sends a secure HTTP POST request to your webhook endpoint. This allows your application to respond to workspace activity as it happens — whether that's syncing data, triggering automation, or keeping your UI in sync with user activity.
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/cf4e4b4cbb5de9c5b1277b35386a21574b4960af36c14fe7d648d905377db478-image.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=1c744340e3bd893d14a8a63faeee7e69)
+![When a page or database changes, Notion sends an event to the subscribed endpoint.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/cf4e4b4cbb5de9c5b1277b35386a21574b4960af36c14fe7d648d905377db478-image.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=1c744340e3bd893d14a8a63faeee7e69)
 
 **Think of it like this:** Instead of repeatedly polling the Notion API to check if anything has changed, Notion will tell you the moment something important happens.
 
@@ -32604,13 +32364,13 @@ Either create a new connection or select an existing one.
 
 Navigate to the **Webhooks** tab and click **+ Create a subscription**.
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/522e40363df1bd7437239b25a1caacc8cc607426f45fc90febfff5f00647aeb4-webhooks-1.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=d749482045c385e3bd2b0200208e1cb3)
+![The Webhooks tab offers a button to start a subscription.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/522e40363df1bd7437239b25a1caacc8cc607426f45fc90febfff5f00647aeb4-webhooks-1.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=d749482045c385e3bd2b0200208e1cb3)
 
 **Step 4**
 
 Enter your public **Webhook URL** — this is the public endpoint where you want Notion to send events. It must be a secure (SSL) and publicly available endpoint. Endpoints in localhost are not reachable.
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/1ef497d7b9b3622de379e6907cd722167766413693ac9f1885b59eb028b4e7dd-webhooks-2.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=b0448cd6aabad1fb6be140e4cfddddd9)
+![The subscription form asks for a webhook URL and the event types to send.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/1ef497d7b9b3622de379e6907cd722167766413693ac9f1885b59eb028b4e7dd-webhooks-2.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=b0448cd6aabad1fb6be140e4cfddddd9)
 
 **Step 5**
 
@@ -32620,7 +32380,7 @@ Choose which event types you'd like to subscribe to. You can modify these later 
 
 Click **Create subscription**.
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/6e68cad7be75acc8165e29eb2a56a282edba31fdcba78238831466b83a115b8f-webhooks-3.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=d3b26ec8514419ade5461e627d40def9)
+![The subscription is listed with a Verify control while verification is pending.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/6e68cad7be75acc8165e29eb2a56a282edba31fdcba78238831466b83a115b8f-webhooks-3.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=d3b26ec8514419ade5461e627d40def9)
 
 At this point, your webhook is created but not yet verified. To complete the setup, you’ll need to confirm that your endpoint can receive and respond to verification.
 
@@ -32648,13 +32408,13 @@ Inspect the incoming request at your endpoint and extract the `verification_toke
 
 Go back to the **Webhooks** tab within your Notion connection UI and click **⚠️ Verify** on the bottom left of the page
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/6e68cad7be75acc8165e29eb2a56a282edba31fdcba78238831466b83a115b8f-webhooks-3.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=d3b26ec8514419ade5461e627d40def9)
+![The subscription is listed with a Verify control while verification is pending.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/6e68cad7be75acc8165e29eb2a56a282edba31fdcba78238831466b83a115b8f-webhooks-3.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=d3b26ec8514419ade5461e627d40def9)
 
 **Step 3**
 
 Paste the `verification_token` value into the form and click **Verify subscription.**
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/42b82e16a49278f78ecfdfb6a8f5acafe1ae251376bdc636d43c68abf4f685e5-webhooks-4.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=88f55f71314ea42a4ca48806f1921e29)
+![The verification dialog asks for the token sent to the webhook URL.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/42b82e16a49278f78ecfdfb6a8f5acafe1ae251376bdc636d43c68abf4f685e5-webhooks-4.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=88f55f71314ea42a4ca48806f1921e29)
 
 If you did not receive a `verification_token`, you can click **Resend token** from the webhook verification modal.
 
@@ -34682,14 +34442,16 @@ ntn workers env pull
 
 The examples below use `{ notion }` destructured from the second argument to `execute`. They work the same way in tools, syncs, and webhooks:
 
-### Query a database
+### Query a data source
+
+Pass the [data source ID](/reference/retrieve-a-data-source#finding-a-data-source-id) to [Query a data source](/reference/query-a-data-source).
 
 ```typescript theme={null}
-const response = await notion.databases.query({
-  database_id: "...",
+const response = await notion.dataSources.query({
+  data_source_id: "...",
   filter: {
     property: "Status",
-    select: { equals: "Active" },
+    status: { equals: "Active" },
   },
 });
 

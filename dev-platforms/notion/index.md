@@ -1,6 +1,6 @@
 # dev-platforms/notion 文档索引
 
-> 共 257 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 258 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## cli
@@ -44,7 +44,7 @@
 - `guides/get-started/handling-api-keys` — [Secure API credentials](pages/guides/get-started/handling-api-keys.md) · [原文](https://developers.notion.com/guides/get-started/handling-api-keys)
 - `guides/get-started/internal-connections` — [Internal connections](pages/guides/get-started/internal-connections.md) · [原文](https://developers.notion.com/guides/get-started/internal-connections)
 - `guides/get-started/marketplace-listing` — [List on the Marketplace](pages/guides/get-started/marketplace-listing.md) · [原文](https://developers.notion.com/guides/get-started/marketplace-listing)
-- `guides/get-started/overview` — [Overview](pages/guides/get-started/overview.md) · [原文](https://developers.notion.com/guides/get-started/overview)
+- `guides/get-started/overview` — [Notion connections](pages/guides/get-started/overview.md) · [原文](https://developers.notion.com/guides/get-started/overview)
 - `guides/get-started/personal-access-tokens` — [Personal access tokens](pages/guides/get-started/personal-access-tokens.md) · [原文](https://developers.notion.com/guides/get-started/personal-access-tokens)
 - `guides/get-started/preparing-for-users` — [Preparing your connection for users](pages/guides/get-started/preparing-for-users.md) · [原文](https://developers.notion.com/guides/get-started/preparing-for-users)
 - `guides/get-started/public-connections` — [Public connections](pages/guides/get-started/public-connections.md) · [原文](https://developers.notion.com/guides/get-started/public-connections)
@@ -186,6 +186,7 @@
 - `reference/notion-agent-apis/update-session` — [Create or update a session](pages/reference/notion-agent-apis/update-session.md) · [原文](https://developers.notion.com/reference/notion-agent-apis/update-session)
 - `reference/page` — [Page](pages/reference/page.md) · [原文](https://developers.notion.com/reference/page)
 - `reference/page-property-values` — [Page property values](pages/reference/page-property-values.md) · [原文](https://developers.notion.com/reference/page-property-values)
+- `reference/pagination` — [Pagination](pages/reference/pagination.md) · [原文](https://developers.notion.com/reference/pagination)
 - `reference/parent-object` — [Parent](pages/reference/parent-object.md) · [原文](https://developers.notion.com/reference/parent-object)
 - `reference/patch-block-children` — [Append block children](pages/reference/patch-block-children.md) · [原文](https://developers.notion.com/reference/patch-block-children)
 - `reference/patch-page` — [Update page](pages/reference/patch-page.md) · [原文](https://developers.notion.com/reference/patch-page)

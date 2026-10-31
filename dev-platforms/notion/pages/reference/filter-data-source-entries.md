@@ -6,72 +6,28 @@ path: reference/filter-data-source-entries
 
 Learn how to specify which pages from a data source to return.
 
-When you [query a data source](/reference/query-a-data-source), you can send a `filter` object in the body of the request that limits the returned entries based on the specified criteria.
+Pass a `filter` in the body of a [data source query](/reference/query-a-data-source). This example returns rows where the **Task completed** checkbox is checked. Set `NOTION_API_KEY` and `NOTION_DATA_SOURCE_ID` before running it.
 
-For example, the below query limits the response to entries where the `"Task completed"` `checkbox` property value is `true`:
-
-```bash cURL theme={null}
-curl -X POST 'https://api.notion.com/v1/data_sources/897e5a76ae524b489fdfe71f5945d1af/query' \
-  -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
-  -H 'Notion-Version: 2026-03-11' \
+```bash curl theme={null}
+curl -X POST "https://api.notion.com/v1/data_sources/$NOTION_DATA_SOURCE_ID/query" \
+  -H "Authorization: Bearer $NOTION_API_KEY" \
+  -H "Notion-Version: 2026-03-11" \
   -H "Content-Type: application/json" \
---data '{
-  "filter": {
-    "property": "Task completed",
-    "checkbox": {
-        "equals": true
-   }
-  }
-}'
+  --data '{"filter":{"property":"Task completed","checkbox":{"equals":true}}}'
 ```
 
 ```javascript JavaScript theme={null}
-const { Client } = require('@notionhq/client');
+import { Client } from "@notionhq/client";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
-// replace with your own data source ID
-const dataSourceId = 'd9824bdc-8445-4327-be8b-5b47500af6ce';
-
-const filteredRows = async () => {
-	const response = await notion.databases.query({
-	  data_source_id: dataSourceId,
-	  filter: {
-	    property: "Task completed",
-	    checkbox: {
-	      equals: true
-	    }
-	  },
-	});
-  return response;
-}
+const response = await notion.dataSources.query({
+  data_source_id: process.env.NOTION_DATA_SOURCE_ID,
+  filter: { property: "Task completed", checkbox: { equals: true } },
+});
+console.log(response.results);
 ```
 
-Filters can be chained with the `and` and `or` keys so that multiple filters are applied at the same time. (See [Query a data source](/reference/query-a-data-source) for additional examples.)
-
-```json JSON theme={null}
-{
-  "and": [
-    {
-      "property": "Done",
-      "checkbox": {
-        "equals": true
-      }
-    },
-    {
-      "or": [
-        {
-          "property": "Tags",
-          "contains": "A"
-        },
-        {
-          "property": "Tags",
-          "contains": "B"
-        }
-      ]
-    }
-  ]
-}
-```
+Use [compound filter conditions](#compound-filter-conditions) to combine filters with `and` or `or`.
 
 If no filter is provided, non-archived pages in the data source will be returned with pagination. To query archived pages, set `is_archived` to `true` in the [Query a data source](/reference/query-a-data-source) request body.
 
@@ -581,31 +537,20 @@ Use a timestamp filter condition to filter results based on the `unique_id` valu
 
 You can use a compound filter condition to limit the results of a data source query based on multiple conditions. This mimics filter chaining in the Notion UI.
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/14ec7e8-Untitled.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=f7a7a738dcd526d2c1180c7f479fda31)
+![The filter requires Done to be checked and Tags to contain A or B.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/14ec7e8-Untitled.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=f7a7a738dcd526d2c1180c7f479fda31)
 
 An example filter chain in the Notion UI
 
 The above filters in the Notion UI are equivalent to the following compound filter condition via the API:
 
-```json JSON theme={null}
+```json Filter object theme={null}
 {
   "and": [
-    {
-      "property": "Done",
-      "checkbox": {
-        "equals": true
-      }
-    },
+    { "property": "Done", "checkbox": { "equals": true } },
     {
       "or": [
-        {
-          "property": "Tags",
-          "contains": "A"
-        },
-        {
-          "property": "Tags",
-          "contains": "B"
-        }
+        { "property": "Tags", "multi_select": { "contains": "A" } },
+        { "property": "Tags", "multi_select": { "contains": "B" } }
       ]
     }
   ]

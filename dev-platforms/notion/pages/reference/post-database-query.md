@@ -16,7 +16,7 @@ post /v1/databases/{database_id}/query
 >
 > * [Query a data source](/reference/query-a-data-source)
 
-Gets a list of [Pages](/reference/page) and/or [Databases](/reference/database) contained in the database, filtered and ordered according to the filter conditions and sort criteria provided in the request. The response may contain fewer than `page_size` of results. If the response includes a `next_cursor` value, refer to the [pagination reference](/reference/intro#pagination) for details about how to use a cursor to iterate through the list.
+Gets a list of [Pages](/reference/page) and/or [Databases](/reference/database) contained in the database, filtered and ordered according to the filter conditions and sort criteria provided in the request. The response may contain fewer than `page_size` of results. If the response includes a `next_cursor` value, refer to the [pagination reference](/reference/pagination) for details about how to use a cursor to iterate through the list.
 
 > [!NOTE]
 >
@@ -25,31 +25,20 @@ Gets a list of [Pages](/reference/page) and/or [Databases](/reference/database) 
 [**Filters**](/reference/post-database-query-filter) are similar to the [filters provided in the Notion UI](https://www.notion.com/help/views-filters-and-sorts) where the set of filters and filter groups chained by "And" in the UI is equivalent to having each filter in the array of the compound `"and"` filter. Similar a set of filters chained by "Or" in the UI would be represented as filters in the array of the `"or"` compound filter.
 Filters operate on database properties and can be combined. If no filter is provided, non-archived pages in the database will be returned with pagination.
 
-![1340](https://mintcdn.com/notion-demo/S-I3qLQnwRa7HjdK/images/reference/image-1.png?fit=max\&auto=format\&n=S-I3qLQnwRa7HjdK\&q=85\&s=00a19b68b92cd013cdc0f8867427eb44)
+![Done is checked and Tags contains A or B.](https://mintcdn.com/notion-demo/S-I3qLQnwRa7HjdK/images/reference/image-1.png?fit=max\&auto=format\&n=S-I3qLQnwRa7HjdK\&q=85\&s=00a19b68b92cd013cdc0f8867427eb44)
 
 The above filters in the UI can be represented as the following filter object
 
-```json Filter Object theme={null}
+```json Filter object theme={null}
 {
   "and": [
-    {
-      "property": "Done",
-      "checkbox": {
-        "equals": true
-      }
-    },
+    { "property": "Done", "checkbox": { "equals": true } },
     {
       "or": [
-        {
-          "property": "Tags",
-          "contains": "A"
-        },
-        {
-          "property": "Tags",
-          "contains": "B"
-        }
+        { "property": "Tags", "multi_select": { "contains": "A" } },
+        { "property": "Tags", "multi_select": { "contains": "B" } }
       ]
-  	}
+    }
   ]
 }
 ```

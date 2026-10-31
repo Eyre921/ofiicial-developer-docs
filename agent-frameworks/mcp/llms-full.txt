@@ -821,6 +821,10 @@ Before you begin, it helps to have gone through our [Build an MCP Server](/docs/
 >
 > > [!NOTE]
 > >
+> > This client uses MCP protocol version 2025-11-25, as supported by the latest stable release of the Java SDK. It connects to servers that accept that version, but not to servers that accept only 2026-07-28. See [backward compatibility](/specification/2026-07-28/basic/versioning#backward-compatibility-with-initialization-based-versions).
+>
+> > [!NOTE]
+> >
 > > This is a quickstart demo based on Spring AI MCP auto-configuration and boot starters.
 > > To learn how to create sync and async MCP Clients manually, consult the [Java SDK Client](https://java.sdk.modelcontextprotocol.io/) documentation.
 >
@@ -851,7 +855,7 @@ Before you begin, it helps to have gone through our [Build an MCP Server](/docs/
 >
 >    ```bash theme={null}
 >    git clone https://github.com/spring-projects/spring-ai-examples.git
->    cd model-context-protocol/web-search/brave-chatbot
+>    cd spring-ai-examples/model-context-protocol/web-search/brave-chatbot
 >    ```
 >
 > 3. Set up your API keys:
@@ -917,7 +921,7 @@ Before you begin, it helps to have gone through our [Build an MCP Server](/docs/
 >
 > This activates the `spring-ai-starter-mcp-client` to create one or more `McpClient`s based on the provided server configuration.
 > The `spring.ai.mcp.client.toolcallback.enabled=true` property enables the tool callback mechanism, that automatically registers all MCP tool as spring ai tools.
-> It is disabled by default.
+> It is enabled by default.
 >
 > 3. MCP Server Configuration (`mcp-servers-config.json`):
 >
@@ -942,8 +946,8 @@ Before you begin, it helps to have gone through our [Build an MCP Server](/docs/
 > ```java theme={null}
 > var chatClient = chatClientBuilder
 >     .defaultSystem("You are useful assistant, expert in AI and Java.")
->     .defaultToolCallbacks((Object[]) mcpToolAdapter.toolCallbacks())
->     .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
+>     .defaultTools(SyncMcpToolCallbackProvider.builder().mcpClients(mcpSyncClients).build())
+>     .defaultAdvisors(MessageChatMemoryAdvisor.builder(MessageWindowChatMemory.builder().build()).build())
 >     .build();
 > ```
 >
@@ -951,7 +955,7 @@ Before you begin, it helps to have gone through our [Build an MCP Server](/docs/
 >
 > * Uses Claude AI model for natural language understanding
 > * Integrates Brave Search through MCP for real-time web search capabilities
-> * Maintains conversation memory using InMemoryChatMemory
+> * Maintains conversation memory using MessageWindowChatMemory
 > * Runs as an interactive command-line application
 >
 > ### Build and run
@@ -3548,6 +3552,10 @@ This tutorial will primarily focus on tools.
 >
 > > [!NOTE]
 > >
+> > This server uses MCP protocol version 2025-11-25, as supported by the latest stable release of the Java SDK. Clients that also support that version can connect to it, but clients that support only 2026-07-28 cannot. See [backward compatibility](/specification/2026-07-28/basic/versioning#backward-compatibility-with-initialization-based-versions).
+>
+> > [!NOTE]
+> >
 > > This is a quickstart demo based on Spring AI MCP auto-configuration and boot starters.
 > > To learn how to create sync and async MCP Servers, manually, consult the [Java SDK Server](https://java.sdk.modelcontextprotocol.io/) documentation.
 >
@@ -3573,7 +3581,7 @@ This tutorial will primarily focus on tools.
 > ### System requirements
 >
 > * Java 17 or higher installed.
-> * [Spring Boot 3.3.x](https://docs.spring.io/spring-boot/installing.html) or higher
+> * [Spring Boot 4.1.x](https://docs.spring.io/spring-boot/installing.html) or higher
 >
 > ### Set up your environment
 >
@@ -3785,7 +3793,7 @@ This tutorial will primarily focus on tools.
 >   .args("-jar", "/ABSOLUTE/PATH/TO/PARENT/FOLDER/mcp-weather-stdio-server-0.0.1-SNAPSHOT.jar")
 >   .build();
 >
-> var stdioTransport = new StdioClientTransport(stdioParams);
+> var stdioTransport = new StdioClientTransport(stdioParams, McpJsonDefaults.getMapper());
 >
 > var mcpClient = McpClient.sync(stdioTransport).build();
 >
@@ -3832,6 +3840,10 @@ This tutorial will primarily focus on tools.
 > It showcases how to define and register MCP Tools, Resources, and Prompts, using the Spring Boot's auto-configuration capabilities.
 
 > [tab] Kotlin
+>
+> > [!NOTE]
+> >
+> > This server uses MCP protocol version 2025-11-25, as supported by the latest stable release of the Kotlin SDK. Clients that also support that version can connect to it, but clients that support only 2026-07-28 cannot. See [backward compatibility](/specification/2026-07-28/basic/versioning#backward-compatibility-with-initialization-based-versions).
 >
 > Let's get started with building our weather server! [You can find the complete code for what we'll be building here.](https://github.com/modelcontextprotocol/kotlin-sdk/tree/main/samples/weather-stdio-server)
 >
@@ -3896,7 +3908,7 @@ This tutorial will primarily focus on tools.
 >
 > ```kotlin build.gradle.kts theme={null}
 > // Check latest versions at https://github.com/modelcontextprotocol/kotlin-sdk/releases
-> val mcpVersion = "0.9.0"
+> val mcpVersion = "0.16.0"
 > val ktorVersion = "3.2.3"
 > val slf4jVersion = "2.0.17"
 >
@@ -3905,6 +3917,10 @@ This tutorial will primarily focus on tools.
 >     kotlin("plugin.serialization") version "2.3.20"
 >     id("com.gradleup.shadow") version "8.3.9"
 >     application
+> }
+>
+> repositories {
+>     mavenCentral()
 > }
 >
 > application {
@@ -4127,7 +4143,7 @@ This tutorial will primarily focus on tools.
 >
 > ```bash theme={null}
 > ./gradlew build
-> java -jar build/libs/weather-0.1.0-all.jar
+> java -jar build/libs/weather-all.jar
 > ```
 >
 > Let's now test your server from an existing MCP host, Claude for Desktop.
@@ -4167,7 +4183,7 @@ This tutorial will primarily focus on tools.
 >       "command": "java",
 >       "args": [
 >         "-jar",
->         "/ABSOLUTE/PATH/TO/PARENT/FOLDER/weather/build/libs/weather-0.1.0-all.jar"
+>         "/ABSOLUTE/PATH/TO/PARENT/FOLDER/weather/build/libs/weather-all.jar"
 >       ]
 >     }
 >   }
@@ -4181,7 +4197,7 @@ This tutorial will primarily focus on tools.
 >       "command": "java",
 >       "args": [
 >         "-jar",
->         "C:\\PATH\\TO\\PARENT\\FOLDER\\weather\\build\\libs\\weather-0.1.0-all.jar"
+>         "C:\\PATH\\TO\\PARENT\\FOLDER\\weather\\build\\libs\\weather-all.jar"
 >       ]
 >     }
 >   }
@@ -4191,7 +4207,7 @@ This tutorial will primarily focus on tools.
 > This tells Claude for Desktop:
 >
 > 1. There's an MCP server named "weather"
-> 2. Launch it by running `java -jar /ABSOLUTE/PATH/TO/PARENT/FOLDER/weather/build/libs/weather-0.1.0-all.jar`
+> 2. Launch it by running `java -jar /ABSOLUTE/PATH/TO/PARENT/FOLDER/weather/build/libs/weather-all.jar`
 >
 > Save the file, and restart **Claude for Desktop**.
 
@@ -31130,13 +31146,16 @@ Charter for the MCP Security Interest Group.
 
 ## Mission Statement
 
-The Security Interest Group catalogs MCP-specific threats, reviews security-relevant proposals, and
-scopes validated problems into focused Working Groups or [SEPs](/community/sep-guidelines).
+The Security Interest Group is the first stop for MCP-specific security topics. It vets incoming
+threats, security-relevant proposals, and disclosure questions, then routes validated work to the
+Working Group or [SEP](/community/sep-guidelines) that owns it.
 
 ## Scope
 
 ### In Scope
 
+* **Triage and routing**: receiving security topics raised on Discord or GitHub and handing them
+  to the owning group (Auth IG, Transports WG, Registry WG, Tool Annotations IG, SDK maintainers)
 * **Threat modeling**: developing and maintaining a shared, layered view of MCP attack surfaces
   spanning admission and identity, caller governance, runtime behavior, interception and enforcement,
   and auditability, to give individual proposals a common frame of reference
@@ -31210,17 +31229,20 @@ scopes validated problems into focused Working Groups or [SEPs](/community/sep-g
 | Stefano Ortolani | Broadcom | [@ostefano](https://github.com/ostefano) | `ostefano.` | Participant |
 
 Open to anyone. Join the `#security-ig` channel on the
-[MCP Contributors Discord](/community/communication#discord). Calls are open and active
-participation is highly encouraged. The group is looking for contributors who will engage with
-proposals and help drive work forward rather than observe.
+[MCP Contributors Discord](/community/communication#discord). Discussion runs asynchronously in
+the channel between calls, and the agenda for each monthly call is assembled there. The group is
+looking for contributors who will engage with proposals and help drive work forward rather than
+observe.
 
 ## Operations
 
 | Meeting | Frequency | Duration | Purpose |
 | - | - | - | - |
-| Office Hours | Every 2 weeks | 45 min | Threat review, proposal triage, deployment reports, WG-proposal scoping |
+| Forum call | Monthly | 45 min | Triage and routing of topics on the published agenda, WG proposal scoping |
+| Digest | Monthly | n/a | Summary of routed items, open topics, and advisories |
 
-An agenda is shared in `#security-ig` ahead of each call.
+The facilitators post a call for agenda in `#security-ig` ahead of each monthly call, and anyone
+can add topics to it.
 
 Discord: [#security-ig](https://discord.com/channels/1358869848138059966/1379811011669921883)
 
@@ -31246,6 +31268,7 @@ evolve as the group identifies new areas of interest.
 
 | Date | Change |
 | - | - |
+| 2026-08-26 | Restructured as a routing group, replaced biweekly office hours with a monthly agenda-driven call and digest (core maintainer meeting, [discussion #3316](https://github.com/modelcontextprotocol/modelcontextprotocol/discussions/3316)) |
 | 2026-06-13 | Initial charter |
 
 
@@ -31556,9 +31579,9 @@ boundary. The SDK's stdio transport is not a sandbox.
 
 ## Security Interest Group
 
-The [Security Interest Group](/community/interest-groups/security) is the venue for
-discussing MCP-specific threats, reviewing security-relevant proposals, and routing
-disclosure questions that don't fit a single repository.
+The [Security Interest Group](/community/interest-groups/security) is where you raise MCP-specific
+security topics, including disclosure questions that don't fit a single repository, and where
+facilitators route them to the group that owns the work.
 
 
 # SEP Guidelines

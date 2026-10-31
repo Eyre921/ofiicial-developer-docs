@@ -4,132 +4,32 @@ source: https://developers.notion.com/reference/intro
 path: reference/intro
 ---
 
-Learn the conventions, authentication, and pagination patterns used across the Notion API.
+Find the base URL, headers, and data formats for Notion API requests.
 
-Connections use the API to access Notion's pages, databases, and users. Connections can connect services to Notion and build interactive experiences for users within Notion. Use the navigation on the left to find details for objects and endpoints used in the API.
-
-> [!NOTE]
->
-> A bearer token is required to interact with the Notion API. Use an internal connection API token, an OAuth access token from a public connection, or a [personal access token](/guides/get-started/personal-access-tokens). If this is your first look at the Notion API, begin with the [Getting started guide](/guides/get-started/overview) to learn which connection type to use.
->
-> To work on a specific internal connection without access to its token, confirm that you are an admin in the workspace where the connection was created. Check inside the Notion UI via `Settings & Members` in the left sidebar. If you're not an admin in any of your workspaces, create a personal workspace for free or use a PAT where workspace policy allows it.
+Send requests over HTTPS to `https://api.notion.com`. To make your first request, follow the [API quickstart](/guides/get-started/quick-start).
 
 ## Conventions
 
-The base URL to send all API requests is `https://api.notion.com`. HTTPS is required for all API requests.
+For requests to pages, databases, and other workspace resources, send an `Authorization: Bearer` header with your token and a [`Notion-Version` header](/reference/versioning). The [authentication reference](/reference/authentication) lists the supported token types.
 
-The Notion API follows RESTful conventions when possible, with most operations performed via `GET`, `POST`, `PATCH`, and `DELETE` requests on page and database resources. Request and response bodies are encoded as JSON.
+Most endpoints use JSON. Set `Content-Type: application/json` when you send a JSON body. [Sending a file](/reference/upload-file) uses multipart form data instead.
 
 ### JSON conventions
 
-* Top-level resources have an `"object"` property. This property can be used to determine the type of the resource (e.g. `"database"`, `"user"`, etc.)
-* Top-level resources are addressable by a UUIDv4 `"id"` property. You may omit dashes from the ID when making requests to the API, e.g. when copying the ID from a Notion URL.
-* Property names are in `snake_case` (not `camelCase` or `kebab-case`).
-* Temporal values (dates and datetimes) are encoded in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) strings. Datetimes will include the time value (`2020-08-12T02:12:33.231Z`) while dates will include only the date (`2020-08-12`)
-* The Notion API does not support empty strings. To unset a string value for properties like a `url` [page property value](/reference/page-property-values), for example, use an explicit `null` instead of `""`.
+* The `object` field identifies a resource, such as a `page` or `user`.
+* You can send page and database IDs with or without dashes.
+* Property names use `snake_case`.
+* Dates and timestamps use ISO 8601, such as `2026-03-11` or `2026-03-11T09:30:00.000Z`.
+* To clear a [URL page property](/reference/page-property-values#url), send `null`.
 
 ## Code samples & SDKs
 
-Samples requests and responses are shown for each endpoint. Requests are shown using the Notion [JavaScript SDK](https://github.com/makenotion/notion-sdk-js), and [cURL](https://curl.se/). These samples make it easy to copy, paste, and modify as you build your connection.
-
-Notion SDKs are open source projects that you can install to easily start building. You may also choose any other language or library that allows you to make HTTP requests.
+Use the [JavaScript SDK](https://github.com/makenotion/notion-sdk-js), curl, or any client that can send HTTPS requests. Each endpoint reference lists its parameters and response fields. See [status codes](/reference/status-codes) to interpret an error response.
 
 ## Pagination
 
-Endpoints that return lists of objects support cursor-based pagination requests. By default, Notion returns ten items per API call. If the number of items in a response from a support endpoint exceeds the default, then a connection can use pagination to request a specific set of the results and/or to limit the number of returned items.
+For lists with more than one page, pass the response’s `next_cursor` as `start_cursor` in the next request. See the [pagination reference](/reference/pagination).
 
-### Supported endpoints
-
-| HTTP method | Endpoint |
-| :- | :- |
-| GET | [List all users](/reference/get-users) |
-| GET | [List block children](/reference/get-block-children) |
-| GET | [List comments](/reference/list-comments) |
-| GET | [Retrieve a page property item](/reference/retrieve-a-page-property) |
-| GET | [List file uploads](/reference/list-file-uploads) |
-| GET | [List data source templates](/reference/list-data-source-templates) |
-| GET | [List views](/reference/list-views) |
-| GET | [Get view query results](/reference/get-view-query-results) |
-| POST | [Query a data source](/reference/query-a-data-source) |
-| POST | [Create a view query](/reference/create-view-query) |
-| POST | [Search](/reference/post-search) |
-
-### Responses
-
-If an endpoint supports pagination, then the response object contains the below fields.
-
-| Field | Type | Description |
-| :- | :- | :- |
-| `has_more` | `boolean` | Whether the response includes the end of the list. `false` if there are no more results. Otherwise, `true`. |
-| `next_cursor` | `string` | A string that can be used to retrieve the next page of results by passing the value as the `start_cursor` [parameter](#parameters-for-paginated-requests) to the same endpoint.  Only available when `has_more` is true. |
-| `object` | `"list"` | The constant string `"list"`. |
-| `results` | `array of objects` | The list, or partial list, of endpoint-specific results. Refer to a [supported endpoint](#supported-endpoints)'s individual documentation for details. |
-| `type` | `"block"` `"comment"` `"data_source"` `"file_upload"` `"page"` `"page_or_database"` `"property_item"` `"template"` `"user"` `"view"` | A constant string that represents the type of the objects in `results`. |
-| `{type}` | [`paginated list object`](/reference/page-property-values#paginated-page-properties) | An object containing type-specific pagination information. For `property_item`s, the value corresponds to the [paginated page property type](/reference/page-property-values#paginated-page-properties). For all other types, the value is an empty object. |
-
-### Parameters for paginated requests
-
-> [!WARNING]
->
-> **Parameter location varies by endpoint**
->
-> `GET` requests accept parameters in the query string.
->
-> `POST` requests receive parameters in the request body.
-
-| Parameter | Type | Description |
-| :- | :- | :- |
-| `page_size` | `number` | The number of items from the full list to include in the response.   **Default**: `100` **Maximum**: `100`   The response may contain fewer than the default number of results. |
-| `start_cursor` | `string` | A `next_cursor` value returned in a previous [response](#responses). Treat this as an opaque value.   Defaults to `undefined`, which returns results from the beginning of the list. |
-
-### How to send a paginated request
-
-**Step 1**
-
-Send an initial request to a [supported endpoint](#supported-endpoints).
-
-**Step 2**
-
-Retrieve the `next_cursor` value from the response (only available when `has_more` is `true`).
-
-**Step 3**
-
-Send a follow up request to the endpoint that includes the `next_cursor` param in either the query string (for `GET` requests) or in the body params (`POST` requests).
-
-#### Example: paginate through query results from a data source
-
-```bash cURL theme={null}
-curl -X POST 'https://api.notion.com/v1/data_sources/<data_source_id>/query' \
-  -H 'Authorization: Bearer <secret_bot>' \
-  -H 'Notion-Version: 2026-03-11' \
-  -H 'Content-Type: application/json' \
-  --data '{
-    "start_cursor": "33e19cb9-751f-4993-b74d-234d67d0d534"
-  }'
-```
-
-```javascript JavaScript SDK theme={null}
-import { Client, iteratePaginatedAPI } from "@notionhq/client";
-
-const notion = new Client({
-  auth: process.env.NOTION_API_KEY,
-  notionVersion: "2026-03-11",
-});
-
-// Option 1: iterate one page of results at a time (async iterator)
-for await (const page of iteratePaginatedAPI(
-  notion.dataSources.query,
-  { data_source_id: "<data_source_id>" }
-)) {
-  // Process each page result as it arrives
-  console.log(page);
-}
-
-// Option 2: collect all results into an array
-import { collectPaginatedAPI } from "@notionhq/client";
-
-const allPages = await collectPaginatedAPI(
-  notion.dataSources.query,
-  { data_source_id: "<data_source_id>" }
-);
-```
+* [Request parameters](/reference/pagination#requests) and [response fields](/reference/pagination#responses)
+* [Paginated endpoints](/reference/pagination#paginated-endpoints)
+* [Examples in curl and JavaScript](/reference/pagination#example)

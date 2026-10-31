@@ -146,7 +146,7 @@ notion = new Client({
 
 To get a data source ID in the Notion app, the settings menu for a database includes a "Copy data source ID" button under "Manage data sources":
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/docs/f2d0303a35d08c014d2ed7a171994fe410a8bd5a5b47706fe4b340a161d38c20-image.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=e2eea5d743e68898fd37f15118baad1f)
+![The menu beside the Tasks data source includes Copy data source ID.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/docs/f2d0303a35d08c014d2ed7a171994fe410a8bd5a5b47706fe4b340a161d38c20-image.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=e2eea5d743e68898fd37f15118baad1f)
 
 Having access to the data source ID (or rather, *IDs*, once Notion users start adding 2nd sources for their existing databases) for a database lets you continue onto the next few steps.
 
@@ -628,7 +628,7 @@ Note that the [List databases (deprecated)](/reference/get-databases) endpoint, 
 
 When creating, editing, or viewing an [connection webhook subscription](/reference/webhooks) in Notion's connection settings, there's a new option to set the **API version** that applies to events delivered to your webhook URL:
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/docs/dea8af87f7abbb9f51a0cce55aa59a6087fb3641376471a2168d4636c84f8a9e-image.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=888f2764b88466f438b9439807d7e0ad)
+![The Edit subscription dialog includes an API version field for webhook events.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/docs/dea8af87f7abbb9f51a0cce55aa59a6087fb3641376471a2168d4636c84f8a9e-image.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=888f2764b88466f438b9439807d7e0ad)
 
 Screenshot of the connection webhook "Edit subscription" form, with the new "API version" dropdown menu.
 

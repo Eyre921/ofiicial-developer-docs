@@ -183,5 +183,5 @@ const rows = await queryAllRows({
 ## Related
 
 * [Query a data source](/reference/query-a-data-source) endpoint reference
-* [Pagination](/reference/intro#pagination) conventions
+* [Pagination](/reference/pagination) conventions
 * [query-large-data-sources cookbook example](https://github.com/makenotion/notion-cookbook/tree/main/examples/query-large-data-sources)

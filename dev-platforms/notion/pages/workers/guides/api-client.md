@@ -56,14 +56,16 @@ ntn workers env pull
 
 The examples below use `{ notion }` destructured from the second argument to `execute`. They work the same way in tools, syncs, and webhooks:
 
-### Query a database
+### Query a data source
+
+Pass the [data source ID](/reference/retrieve-a-data-source#finding-a-data-source-id) to [Query a data source](/reference/query-a-data-source).
 
 ```typescript theme={null}
-const response = await notion.databases.query({
-  database_id: "...",
+const response = await notion.dataSources.query({
+  data_source_id: "...",
   filter: {
     property: "Status",
-    select: { equals: "Active" },
+    status: { equals: "Active" },
   },
 });
 

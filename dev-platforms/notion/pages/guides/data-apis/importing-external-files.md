@@ -55,7 +55,7 @@ After Step 1, Notion begins processing the file import asynchronously. To wait f
 
    3. For both success and failure, the `entity` of the webhook payload will contain a `type` of `"file_upload"` and an `id` containing the ID of the FileUpload from Step 1.
 
-![](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/0413bdbb8e6e8351c9d7fd9c4e855c79f258a643e4a3f51d4468e31810faba5b-image.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=b86cbafc1f843b1e6cbceffc02b5dfd3)
+![The Webhooks tab lists subscriptions for this connection.](https://mintcdn.com/notion-demo/9OFhQspLr8njnajd/images/docs/0413bdbb8e6e8351c9d7fd9c4e855c79f258a643e4a3f51d4468e31810faba5b-image.png?fit=max\&auto=format\&n=9OFhQspLr8njnajd\&q=85\&s=b86cbafc1f843b1e6cbceffc02b5dfd3)
 
 Screenshot of webhook settings in the Notion creator profile connection settings page.
 

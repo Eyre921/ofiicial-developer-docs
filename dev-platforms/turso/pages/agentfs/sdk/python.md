@@ -26,199 +26,303 @@ async def main():
 
     # Use key-value store
     await agent.kv.set('config', {'debug': True})
-    config# Audit Filesystem Changes
-Source: https://docs.turso.tech/agentfs/guides/auditing
+    config = await agent.kv.get('config')
 
-Inspect and analyze what an agent did during a session
+    # Use filesystem
+    await agent.fs.write_file('/notes.txt', 'Hello, AgentFS!')
+    content = await agent.fs.read_file('/notes.txt')
 
-AgentFS records every file operation and tool call, giving you complete visibility into agent behavior. This is essential for debugging, compliance, and understanding how agents work.
+    # Track tool calls
+    call_id = await agent.tools.start('search', {'query': 'Python'})
+    await agent.tools.success(call_id, {'results': ['result1']})
 
-## Viewing the Timeline
+    await agent.close()
 
-See a chronological list of tool calls:
-
-```bash theme={null}
-agentfs timeline my-session
+asyncio.run(main())
 ```
 
-Output:
+## Opening a Filesystem
 
-```
-ID   TOOL                 STATUS       DURATION STARTED
-4    execute_code         pending            -- 2024-01-05 09:44:20
-3    api_call             error           300ms 2024-01-05 09:44:15
-2    read_file            success          50ms 2024-01-05 09:44:10
-1    web_search           success        1200ms 2024-01-05 09:43:45
-```
+### By Agent ID
 
-### Filtering Results
+Creates database at `.agentfs/{id}.db`:
 
-Show only specific tool types:
-
-```bash theme={null}
-agentfs timeline my-session --filter web_search
+```python theme={null}
+agent = await AgentFS.open(AgentFSOptions(id='my-agent'))
 ```
 
-Show only errors:
+### By Path
 
-```bash theme={null}
-agentfs timeline my-session --status error
+Specify a custom database path:
+
+```python theme={null}
+agent = await AgentFS.open(AgentFSOptions(path='./data/mydb.db'))
 ```
 
-Limit number of entries:
+### Context Manager
 
-```bash theme={null}
-agentfs timeline my-session --limit 20
+Automatically closes the database:
+
+```python theme={null}
+async with await AgentFS.open(AgentFSOptions(id='my-agent')) as agent:
+    await agent.kv.set('key', 'value')
+    # Database is closed when exiting
 ```
 
-### JSON Output
+## Key-Value Store
 
-For programmatic analysis:
+Simple key-value storage with JSON serialization.
 
-```bash theme={null}
-agentfs timeline my-session --format json
+### Set a Value
+
+```python theme={null}
+await agent.kv.set('user:123', {'name': 'Alice', 'age': 30})
+await agent.kv.set('counter', 42)
+await agent.kv.set('active', True)
 ```
 
-```json theme={null}
-[
-  {
-    "id": 1,
-    "name": "web_search",
-    "status": "success",
-    "started_at": 1704447825,
-    "completed_at": 1704447826,
-    "duration_ms": 1200,
-    "parameters": {"query": "AI agents"},
-    "result": {"results": ["result1", "result2"]}
-  }
-]
+### Get a Value
+
+```python theme={null}
+user = await agent.kv.get('user:123')
+# Returns None if key doesn't exist
 ```
 
-## Inspecting Files
+### List Keys
 
-List all files in a session:
-
-```bash theme={null}
-agentfs fs ls my-session
+```python theme={null}
+# List all keys with prefix
+keys = await agent.kv.list('user:')
+# Returns: ['user:123', 'user:456', ...]
 ```
 
-Output:
+### Delete a Key
 
-```
-d artifacts
-f config.json
-f output.txt
+```python theme={null}
+await agent.kv.delete('user:123')
 ```
 
-List a subdirectory:
+## Filesystem
 
-```bash theme={null}
-agentfs fs ls my-session /artifacts
+POSIX-like filesystem operations.
+
+### Write a File
+
+Creates parent directories automatically:
+
+```python theme={null}
+await agent.fs.write_file('/data/config.json', '{"key": "value"}')
+
+# Write bytes
+await agent.fs.write_file('/data/image.png', image_bytes)
 ```
 
-Read file contents:
+### Read a File
 
-```bash theme={null}
-agentfs fs cat my-session /output.txt
+```python theme={null}
+# Read as string (default)
+content = await agent.fs.read_file('/data/config.json')
+
+# Read as bytes
+data = await agent.fs.read_file('/data/image.png', encoding=None)
 ```
 
-## Viewing Changes (Diff)
+### List Directory
 
-See what changed compared to the original filesystem:
-
-```bash theme={null}
-agentfs diff my-session
+```python theme={null}
+entries = await agent.fs.readdir('/data')
+# Returns: ['config.json', 'image.png', ...]
 ```
 
-This shows:
+### Get File Stats
 
-* New files created
-* Modified files
-* Deleted files
-
-## Querying with SQL
-
-Since AgentFS uses SQLite, you can run arbitrary queries:
-
-**Turso**
-
-```bash theme={null}
-tursodb .agentfs/my-session.db
+```python theme={null}
+stats = await agent.fs.stat('/data/config.json')
+print(f"Size: {stats.size} bytes")
+print(f"Modified: {stats.mtime}")
+print(f"Is file: {stats.is_file()}")
+print(f"Is directory: {stats.is_dir()}")
 ```
 
-**SQLite**
+### Delete a File
 
-```bash theme={null}
-sqlite3 .agentfs/my-session.db
+```python theme={null}
+await agent.fs.delete_file('/data/config.json')
 ```
 
-Example queries:
+### Create Directory
 
-```sql theme={null}
--- Find all tool calls that took longer than 1 second
-SELECT name, duration_ms
-FROM toolcalls
-WHERE duration_ms > 1000;
-
--- Count tool usage by type
-SELECT name, COUNT(*) as count
-FROM toolcalls
-GROUP BY name
-ORDER BY count DESC;
-
--- Find files modified in the last hour
-SELECT path, mtime
-FROM fs_inode
-WHERE mtime > strftime('%s', 'now', '-1 hour');
-
--- Get total bytes written
-SELECT SUM(size) as total_bytes
-FROM fs_inode
-WHERE mode & 0170000 = 0100000;  -- regular files only
+```python theme={null}
+await agent.fs.mkdir('/data/subdir')
 ```
 
-## Use Cases
+## Tool Calls
 
-### Debugging Agent Failures
+Track and analyze tool/function calls for debugging and auditing.
 
-When an agent fails, use the timeline to understand what happened:
+### Start and Complete
 
-```bash theme={null}
-# See recent activity
-agentfs timeline my-session --limit 20
+```python theme={null}
+# Start a tool call
+call_id = await agent.tools.start('search', {'query': 'Python'})
 
-# Focus on errors
-agentfs timeline my-session --status error
+# ... perform the operation ...
 
-# Check what files were created/modified
-agentfs fs ls my-session
+# Mark as successful
+await agent.tools.success(call_id, {'results': ['result1', 'result2']})
+
+# Or mark as failed
+await agent.tools.error(call_id, 'Connection timeout')
 ```
 
-### Performance Analysis
+### Record Completed Call
 
-Find slow operations:
+If you have start and end times:
 
-```sql theme={null}
-SELECT name, AVG(duration_ms) as avg_ms, COUNT(*) as count
-FROM toolcalls
-GROUP BY name
-ORDER BY avg_ms DESC;
+```python theme={null}
+await agent.tools.record(
+    name='search',
+    started_at=1234567890.0,
+    completed_at=1234567892.0,
+    parameters={'query': 'Python'},
+    result={'results': ['result1']}
+)
 ```
 
-### Compliance Auditing
+### Query Tool Calls
 
-Export a complete record of agent activity:
+```python theme={null}
+# Get by name
+calls = await agent.tools.get_by_name('search', limit=10)
 
-```bash theme={null}
-agentfs timeline my-session --format json > audit-log.json
+# Get recent calls
+recent = await agent.tools.get_recent(since=1234567890.0)
+
+# Get by ID
+call = await agent.tools.get(42)
 ```
+
+### Get Statistics
+
+```python theme={null}
+stats = await agent.tools.get_stats()
+for stat in stats:
+    print(f"{stat.name}:")
+    print(f"  Total calls: {stat.total_calls}")
+    print(f"  Successful: {stat.successful}")
+    print(f"  Failed: {stat.failed}")
+    print(f"  Avg duration: {stat.avg_duration_ms:.2f}ms")
+```
+
+## Complete Example
+
+```python theme={null}
+import asyncio
+import time
+from agentfs_sdk import AgentFS, AgentFSOptions
+
+async def main():
+    async with await AgentFS.open(AgentFSOptions(id='demo-agent')) as agent:
+        # Store configuration
+        await agent.kv.set('agent:config', {
+            'model': 'gpt-4',
+            'temperature': 0.7
+        })
+
+        # Create a research document
+        research = """
+        # Research Notes
+
+        ## Topic: AgentFS
+
+        AgentFS provides persistent storage for AI agents.
+        """
+
+        await agent.fs.write_file('/research/agentfs.md', research)
+
+        # Track a simulated tool call
+        call_id = await agent.tools.start('web_search', {
+            'query': 'AgentFS documentation'
+        })
+
+        # Simulate some work
+        await asyncio.sleep(0.1)
+
+        await agent.tools.success(call_id, {
+            'results_count': 5,
+            'top_result': 'https://docs.turso.tech/agentfs'
+        })
+
+        # List what we created
+        files = await agent.fs.readdir('/research')
+        print(f"Files: {files}")
+
+        # Get tool stats
+        stats = await agent.tools.get_stats()
+        for stat in stats:
+            print(f"{stat.name}: {stat.total_calls} calls")
+
+asyncio.run(main())
+```
+
+## API Reference
+
+### AgentFS
+
+| Method | Description |
+| - | - |
+| `AgentFS.open(options)` | Open or create an agent filesystem |
+| `agent.close()` | Close the database connection |
+| `agent.kv` | Key-value store interface |
+| `agent.fs` | Filesystem interface |
+| `agent.tools` | Tool calls interface |
+
+### AgentFSOptions
+
+| Property | Type | Description |
+| - | - | - |
+| `id` | `str` | Agent identifier (creates `.agentfs/{id}.db`) |
+| `path` | `str` | Custom database path |
+
+### KvStore
+
+| Method | Description |
+| - | - |
+| `set(key, value)` | Store a value |
+| `get(key)` | Retrieve a value |
+| `delete(key)` | Delete a key |
+| `list(prefix)` | List keys with prefix |
+
+### Filesystem
+
+| Method | Description |
+| - | - |
+| `write_file(path, content)` | Write file contents |
+| `read_file(path, encoding)` | Read file contents |
+| `readdir(path)` | List directory entries |
+| `stat(path)` | Get file metadata |
+| `delete_file(path)` | Delete a file |
+| `mkdir(path)` | Create directory |
+
+### ToolCalls
+
+| Method | Description |
+| - | - |
+| `start(name, params)` | Start tracking a call |
+| `success(id, result)` | Mark call as successful |
+| `error(id, message)` | Mark call as failed |
+| `record(...)` | Record a completed call |
+| `get(id)` | Get call by ID |
+| `get_by_name(name, limit)` | Query by tool name |
+| `get_recent(since)` | Get recent calls |
+| `get_stats()` | Get usage statistics |
 
 ## Next Steps
 
-> **[Overlay Filesystem](/agentfs/guides/overlay)**
+> **[OpenAI Agents](/agentfs/integrations/openai-agents)**
 >
-> Understanding copy-on-write
+> Using AgentFS with OpenAI Agents SDK
 
-> **[Syncing](/agentfs/guides/sync)**
+> **[LlamaIndex](/agentfs/integrations/llamaindex)**
 >
-> Sync sessions to Turso Cloud
+> Using AgentFS with LlamaIndex

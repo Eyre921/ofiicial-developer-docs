@@ -36,14 +36,14 @@ Copy the token and save it somewhere secure. You won't be able to see it again.
 >
 > See [Who can create PATs](/guides/get-started/personal-access-tokens#who-can-create-pats).
 
-Set the token as an environment variable so you can use it in the examples below. This lasts for your current terminal session — run it again if you open a new window.
+Set the token as an environment variable so you can use it in the examples below. Set it again if you open a new terminal. Keep the token out of browser code and public repositories.
 
 ```bash macOS / Linux theme={null}
-export NOTION_API_KEY=ntn_***
+export NOTION_API_KEY=ntn_...
 ```
 
 ```powershell Windows (PowerShell) theme={null}
-$env:NOTION_API_KEY = "ntn_***"
+$env:NOTION_API_KEY = "ntn_..."
 ```
 
 ## Step 2: Create a page
@@ -77,7 +77,10 @@ Notion-Version: 2026-03-11
 // Save as quickstart.mjs after running: npm install @notionhq/client
 import { Client } from "@notionhq/client";
 
-const notion = new Client({ auth: process.env.NOTION_API_KEY });
+const notion = new Client({
+  auth: process.env.NOTION_API_KEY,
+  notionVersion: "2026-03-11",
+});
 
 async function main() {
   const page = await notion.pages.create({

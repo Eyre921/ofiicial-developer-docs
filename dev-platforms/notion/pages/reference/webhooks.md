@@ -8,7 +8,7 @@ Learn how your connection can automatically respond to workspace activity in rea
 
 Webhooks let your connection receive real-time updates from Notion. Whenever a page or database changes, Notion sends a secure HTTP POST request to your webhook endpoint. This allows your application to respond to workspace activity as it happens — whether that's syncing data, triggering automation, or keeping your UI in sync with user activity.
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/cf4e4b4cbb5de9c5b1277b35386a21574b4960af36c14fe7d648d905377db478-image.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=1c744340e3bd893d14a8a63faeee7e69)
+![When a page or database changes, Notion sends an event to the subscribed endpoint.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/cf4e4b4cbb5de9c5b1277b35386a21574b4960af36c14fe7d648d905377db478-image.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=1c744340e3bd893d14a8a63faeee7e69)
 
 **Think of it like this:** Instead of repeatedly polling the Notion API to check if anything has changed, Notion will tell you the moment something important happens.
 
@@ -62,13 +62,13 @@ Either create a new connection or select an existing one.
 
 Navigate to the **Webhooks** tab and click **+ Create a subscription**.
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/522e40363df1bd7437239b25a1caacc8cc607426f45fc90febfff5f00647aeb4-webhooks-1.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=d749482045c385e3bd2b0200208e1cb3)
+![The Webhooks tab offers a button to start a subscription.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/522e40363df1bd7437239b25a1caacc8cc607426f45fc90febfff5f00647aeb4-webhooks-1.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=d749482045c385e3bd2b0200208e1cb3)
 
 **Step 4**
 
 Enter your public **Webhook URL** — this is the public endpoint where you want Notion to send events. It must be a secure (SSL) and publicly available endpoint. Endpoints in localhost are not reachable.
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/1ef497d7b9b3622de379e6907cd722167766413693ac9f1885b59eb028b4e7dd-webhooks-2.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=b0448cd6aabad1fb6be140e4cfddddd9)
+![The subscription form asks for a webhook URL and the event types to send.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/1ef497d7b9b3622de379e6907cd722167766413693ac9f1885b59eb028b4e7dd-webhooks-2.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=b0448cd6aabad1fb6be140e4cfddddd9)
 
 **Step 5**
 
@@ -78,7 +78,7 @@ Choose which event types you'd like to subscribe to. You can modify these later 
 
 Click **Create subscription**.
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/6e68cad7be75acc8165e29eb2a56a282edba31fdcba78238831466b83a115b8f-webhooks-3.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=d3b26ec8514419ade5461e627d40def9)
+![The subscription is listed with a Verify control while verification is pending.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/6e68cad7be75acc8165e29eb2a56a282edba31fdcba78238831466b83a115b8f-webhooks-3.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=d3b26ec8514419ade5461e627d40def9)
 
 At this point, your webhook is created but not yet verified. To complete the setup, you’ll need to confirm that your endpoint can receive and respond to verification.
 
@@ -106,13 +106,13 @@ Inspect the incoming request at your endpoint and extract the `verification_toke
 
 Go back to the **Webhooks** tab within your Notion connection UI and click **⚠️ Verify** on the bottom left of the page
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/6e68cad7be75acc8165e29eb2a56a282edba31fdcba78238831466b83a115b8f-webhooks-3.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=d3b26ec8514419ade5461e627d40def9)
+![The subscription is listed with a Verify control while verification is pending.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/6e68cad7be75acc8165e29eb2a56a282edba31fdcba78238831466b83a115b8f-webhooks-3.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=d3b26ec8514419ade5461e627d40def9)
 
 **Step 3**
 
 Paste the `verification_token` value into the form and click **Verify subscription.**
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/42b82e16a49278f78ecfdfb6a8f5acafe1ae251376bdc636d43c68abf4f685e5-webhooks-4.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=88f55f71314ea42a4ca48806f1921e29)
+![The verification dialog asks for the token sent to the webhook URL.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/42b82e16a49278f78ecfdfb6a8f5acafe1ae251376bdc636d43c68abf4f685e5-webhooks-4.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=88f55f71314ea42a4ca48806f1921e29)
 
 If you did not receive a `verification_token`, you can click **Resend token** from the webhook verification modal.
 

@@ -10,7 +10,7 @@ All connections and [personal access tokens](/guides/get-started/personal-access
 These capabilities when put together enforce which API endpoints a connection or token can call, and what content and user related information they are able to see.
 To set your connection's capabilities see the [Authorization](/guides/get-started/authorization) guide or navigate to the [Developer portal](https://app.notion.com/developers/connections). For PATs, choose capabilities when you create the token.
 
-![](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/06dcfeb-Screen_Shot_2022-07-15_at_11.48.40_AM.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=39659d0a5b57cb5c43367283263c0565)
+![The configuration form groups permissions for content, comments, and user information.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/06dcfeb-Screen_Shot_2022-07-15_at_11.48.40_AM.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=39659d0a5b57cb5c43367283263c0565)
 
 A screenshot of the capability configuration screen.
 
