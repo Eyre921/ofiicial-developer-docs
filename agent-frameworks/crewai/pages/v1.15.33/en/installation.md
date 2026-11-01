@@ -208,16 +208,16 @@ If you haven't installed `uv` yet, follow **step 1** to quickly get it set up on
 >
 > * Integration with your existing security systems
 >
-> > **[Explore Enterprise Options](https://share.hsforms.com/1Ooo2UViKQ22UOzdr7i77iwr87kg)**
+> > [card] [Explore Enterprise Options](https://share.hsforms.com/1Ooo2UViKQ22UOzdr7i77iwr87kg)
 > >
 > > Learn about CrewAI's enterprise offerings and schedule a demo
 
 ## Next Steps
 
-> **[Quickstart: Flow + agent](/en/quickstart)**
+> [card] [Quickstart: Flow + agent](/en/quickstart)
 >
 > Follow the quickstart to scaffold a Flow, run a one-agent crew, and produce a report.
 
-> **[Join the Community](https://community.crewai.com)**
+> [card] [Join the Community](https://community.crewai.com)
 >
 > Connect with other developers, get help, and share your CrewAI experiences.

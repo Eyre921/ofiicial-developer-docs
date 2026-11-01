@@ -14,22 +14,22 @@ CrewAI integrates with multiple LLM providers through providers native sdks, giv
 
 Large Language Models (LLMs) are the core intelligence behind CrewAI agents. They enable agents to understand context, make decisions, and generate human-like responses. Here's what you need to know:
 
-> **LLM Basics**
+> [card] LLM Basics
 >
 > Large Language Models are AI systems trained on vast amounts of text data. They power the intelligence of your CrewAI agents, enabling them to understand and generate human-like text.
 
-> **Context Window**
+> [card] Context Window
 >
 > The context window determines how much text an LLM can process at once. Larger windows (e.g., 128K tokens) allow for more context but may be more expensive and slower.
 
-> **Temperature**
+> [card] Temperature
 >
 > Temperature is a sampling control supported by some models. Lower values
 > generally make sampling more focused, while higher values increase
 > variability. Some newer reasoning models ignore, deprecate, or reject this
 > parameter, so check the selected model's documentation before setting it.
 
-> **Provider Selection**
+> [card] Provider Selection
 >
 > Each LLM provider (e.g., OpenAI, Anthropic, Google) offers different models with varying capabilities, pricing, and features. Choose based on your needs for accuracy, speed, and cost.
 
@@ -37,75 +37,75 @@ Large Language Models (LLMs) are the core intelligence behind CrewAI agents. The
 
 There are different places in CrewAI code where you can specify the model to use. Once you specify the model you are using, you will need to provide the configuration (like an API key) for each of the model providers you use. See the [provider configuration examples](#provider-configuration-examples) section for your provider.
 
-**1. Environment Variables**
-
-The simplest way to get started. Set the model in your environment directly, through an `.env` file or in your app code. If you used `crewai create` to bootstrap your project, it will be set already.
-
-```bash .env theme={null}
-MODEL=provider/model-id  # e.g. openai/gpt-5.6-terra
-
-# Be sure to set your API keys here too. See the Provider
-# section below.
-```
-
-> [!WARNING]
+> [tab] 1. Environment Variables
 >
-> Never commit API keys to version control. Use environment files (.env) or your system's secret management.
-
-**2. YAML Configuration**
-
-Create a YAML file to define your agent configurations. This method is great for version control and team collaboration:
-
-```yaml agents.yaml {6} theme={null}
-researcher:
-    role: Research Specialist
-    goal: Conduct comprehensive research and analysis
-    backstory: A dedicated research professional with years of experience
-    verbose: true
-    llm: provider/model-id  # e.g. anthropic/claude-sonnet-4-6
-    # (see provider configuration examples below for more)
-```
-
-> [!NOTE]
+> The simplest way to get started. Set the model in your environment directly, through an `.env` file or in your app code. If you used `crewai create` to bootstrap your project, it will be set already.
 >
-> The YAML configuration allows you to:
+> ```bash .env theme={null}
+> MODEL=provider/model-id  # e.g. openai/gpt-5.6-terra
 >
-> * Version control your agent settings
-> * Easily switch between different models
-> * Share configurations across team members
-> * Document model choices and their purposes
-
-**3. Direct Code**
-
-For maximum flexibility, configure LLMs directly in your Python code:
-
-```python {4,8} theme={null}
-from crewai import LLM
-
-# Basic configuration
-llm = LLM(model="provider/model-id")  # e.g. gemini/gemini-3.6-flash
-
-# Advanced configuration with detailed parameters
-llm = LLM(
-    model="provider/model-id",
-    timeout=120,
-    max_tokens=4000,
-    response_format={"type": "json"},  # For structured outputs
-)
-```
-
-> [!NOTE]
+> # Be sure to set your API keys here too. See the Provider
+> # section below.
+> ```
 >
-> Parameter explanations:
+> > [!WARNING]
+> >
+> > Never commit API keys to version control. Use environment files (.env) or your system's secret management.
+
+> [tab] 2. YAML Configuration
 >
-> * `timeout`: Maximum wait time for response
-> * `max_tokens`: Limits response length
-> * `response_format`: Specifies output structure
+> Create a YAML file to define your agent configurations. This method is great for version control and team collaboration:
 >
-> Sampling controls such as `temperature` and `top_p`, penalty parameters,
-> token-limit names, and reasoning controls are model-specific. Add them
-> only when the selected provider and model support them. See the provider
-> examples below and the provider's model documentation.
+> ```yaml agents.yaml {6} theme={null}
+> researcher:
+>     role: Research Specialist
+>     goal: Conduct comprehensive research and analysis
+>     backstory: A dedicated research professional with years of experience
+>     verbose: true
+>     llm: provider/model-id  # e.g. anthropic/claude-sonnet-4-6
+>     # (see provider configuration examples below for more)
+> ```
+>
+> > [!NOTE]
+> >
+> > The YAML configuration allows you to:
+> >
+> > * Version control your agent settings
+> > * Easily switch between different models
+> > * Share configurations across team members
+> > * Document model choices and their purposes
+
+> [tab] 3. Direct Code
+>
+> For maximum flexibility, configure LLMs directly in your Python code:
+>
+> ```python {4,8} theme={null}
+> from crewai import LLM
+>
+> # Basic configuration
+> llm = LLM(model="provider/model-id")  # e.g. gemini/gemini-3.6-flash
+>
+> # Advanced configuration with detailed parameters
+> llm = LLM(
+>     model="provider/model-id",
+>     timeout=120,
+>     max_tokens=4000,
+>     response_format={"type": "json"},  # For structured outputs
+> )
+> ```
+>
+> > [!NOTE]
+> >
+> > Parameter explanations:
+> >
+> > * `timeout`: Maximum wait time for response
+> > * `max_tokens`: Limits response length
+> > * `response_format`: Specifies output structure
+> >
+> > Sampling controls such as `temperature` and `top_p`, penalty parameters,
+> > token-limit names, and reasoning controls are model-specific. Add them
+> > only when the selected provider and model support them. See the provider
+> > examples below and the provider's model documentation.
 
 > [!NOTE]
 >
@@ -129,7 +129,7 @@ In this section, you'll find detailed examples that help you select, configure, 
 > writing, but they are not exhaustive support lists. Before deploying, verify
 > the model ID and lifecycle status in the provider's linked model catalog.
 
-> **OpenAI**
+> [accordion] OpenAI
 >
 > CrewAI provides native integration with OpenAI through the OpenAI Python SDK.
 >
@@ -268,7 +268,7 @@ In this section, you'll find detailed examples that help you select, configure, 
 > uv add "crewai[openai]"
 > ```
 
-> **Meta-Llama**
+> [accordion] Meta-Llama
 >
 > Meta's Llama API provides access to Meta's family of large language models.
 > The API is available through the [Meta Llama API](https://llama.developer.meta.com?utm_source=partner-crewai\&utm_medium=website).
@@ -302,7 +302,7 @@ In this section, you'll find detailed examples that help you select, configure, 
 > uv add 'crewai[litellm]'
 > ```
 
-> **Snowflake Cortex**
+> [accordion] Snowflake Cortex
 >
 > CrewAI provides native integration with the Snowflake Cortex REST API through its OpenAI-compatible Chat Completions endpoint. This avoids LiteLLM fallback for `snowflake/...` models. Snowflake Cortex currently supports Chat Completions only in CrewAI, so use the default `api` mode and do not set `api="responses"`.
 >
@@ -355,7 +355,7 @@ In this section, you'll find detailed examples that help you select, configure, 
 > * Function calling for Snowflake-hosted OpenAI and Claude models
 > * Automatic removal of invalid trailing assistant prefill for Snowflake Claude models
 
-> **Anthropic**
+> [accordion] Anthropic
 >
 > CrewAI provides native integration with Anthropic through the Anthropic Python SDK.
 >
@@ -490,7 +490,7 @@ In this section, you'll find detailed examples that help you select, configure, 
 > uv add "crewai[anthropic]"
 > ```
 
-> **Google (Gemini API)**
+> [accordion] Google (Gemini API)
 >
 > CrewAI provides native integration with Google Gemini through the Google Gen AI Python SDK.
 >
@@ -610,7 +610,7 @@ In this section, you'll find detailed examples that help you select, configure, 
 > uv add "crewai[google-genai]"
 > ```
 
-> **Google (Vertex AI)**
+> [accordion] Google (Vertex AI)
 >
 > Authenticate with [Application Default Credentials](https://cloud.google.com/docs/authentication/provide-credentials-adc), then configure the native Gemini provider for Vertex AI:
 >
@@ -640,7 +640,7 @@ In this section, you'll find detailed examples that help you select, configure, 
 > uv add "crewai[google-genai]"
 > ```
 
-> **Azure**
+> [accordion] Azure
 >
 > CrewAI provides native integration with Azure AI Inference and Azure OpenAI through the Azure AI Inference Python SDK.
 >
@@ -715,7 +715,7 @@ In this section, you'll find detailed examples that help you select, configure, 
 > uv add "crewai[azure-ai-inference]"
 > ```
 
-> **AWS Bedrock**
+> [accordion] AWS Bedrock
 >
 > CrewAI provides native integration with AWS Bedrock through the boto3 SDK using the Converse API.
 >
@@ -804,7 +804,7 @@ In this section, you'll find detailed examples that help you select, configure, 
 > uv add "crewai[bedrock]"
 > ```
 
-> **Amazon SageMaker**
+> [accordion] Amazon SageMaker
 >
 > ```toml Code theme={null}
 > AWS_ACCESS_KEY_ID=<your-access-key>
@@ -826,7 +826,7 @@ In this section, you'll find detailed examples that help you select, configure, 
 > uv add 'crewai[litellm]'
 > ```
 
-> **Mistral**
+> [accordion] Mistral
 >
 > Set the following environment variables in your `.env` file:
 >
@@ -849,7 +849,7 @@ In this section, you'll find detailed examples that help you select, configure, 
 > uv add 'crewai[litellm]'
 > ```
 
-> **Nvidia NIM**
+> [accordion] Nvidia NIM
 >
 > Set the following environment variables in your `.env` file:
 >
@@ -876,7 +876,7 @@ In this section, you'll find detailed examples that help you select, configure, 
 > uv add 'crewai[litellm]'
 > ```
 
-> **NVIDIA Nemotron**
+> [accordion] NVIDIA Nemotron
 >
 > NVIDIA Nemotron models are designed for demanding agentic workloads, including complex reasoning, long-context analysis, tool use, multilingual tasks, and high-stakes RAG.
 >
@@ -934,7 +934,7 @@ In this section, you'll find detailed examples that help you select, configure, 
 > uv add 'crewai[litellm]'
 > ```
 
-> **Local NVIDIA NIM Deployed using WSL2**
+> [accordion] Local NVIDIA NIM Deployed using WSL2
 >
 > NVIDIA NIM enables you to run powerful LLMs locally on your Windows machine using WSL2 (Windows Subsystem for Linux).
 > This approach allows you to leverage your NVIDIA GPU for private, secure, and cost-effective AI inference without relying on cloud services.
@@ -979,7 +979,7 @@ In this section, you'll find detailed examples that help you select, configure, 
 > uv add 'crewai[litellm]'
 > ```
 
-> **Groq**
+> [accordion] Groq
 >
 > Set the following environment variables in your `.env` file:
 >
@@ -1007,7 +1007,7 @@ In this section, you'll find detailed examples that help you select, configure, 
 > uv add 'crewai[litellm]'
 > ```
 
-> **IBM watsonx.ai**
+> [accordion] IBM watsonx.ai
 >
 > Set the following environment variables in your `.env` file:
 >
@@ -1037,7 +1037,7 @@ In this section, you'll find detailed examples that help you select, configure, 
 > uv add 'crewai[litellm]'
 > ```
 
-> **Ollama (Local LLMs)**
+> [accordion] Ollama (Local LLMs)
 >
 > 1. Install Ollama: [ollama.ai](https://ollama.ai/)
 > 2. Run a model: `ollama run llama3`
@@ -1056,7 +1056,7 @@ In this section, you'll find detailed examples that help you select, configure, 
 > uv add 'crewai[litellm]'
 > ```
 
-> **Fireworks AI**
+> [accordion] Fireworks AI
 >
 > Set the following environment variables in your `.env` file:
 >
@@ -1079,7 +1079,7 @@ In this section, you'll find detailed examples that help you select, configure, 
 > uv add 'crewai[litellm]'
 > ```
 
-> **Perplexity AI**
+> [accordion] Perplexity AI
 >
 > Set the following environment variables in your `.env` file:
 >
@@ -1105,7 +1105,7 @@ In this section, you'll find detailed examples that help you select, configure, 
 > uv add 'crewai[litellm]'
 > ```
 
-> **Hugging Face**
+> [accordion] Hugging Face
 >
 > Set the following environment variables in your `.env` file:
 >
@@ -1127,7 +1127,7 @@ In this section, you'll find detailed examples that help you select, configure, 
 > uv add 'crewai[litellm]'
 > ```
 
-> **SambaNova**
+> [accordion] SambaNova
 >
 > Set the following environment variables in your `.env` file:
 >
@@ -1155,7 +1155,7 @@ In this section, you'll find detailed examples that help you select, configure, 
 > uv add 'crewai[litellm]'
 > ```
 
-> **Cerebras**
+> [accordion] Cerebras
 >
 > Set the following environment variables in your `.env` file:
 >
@@ -1193,7 +1193,7 @@ In this section, you'll find detailed examples that help you select, configure, 
 > uv add 'crewai[litellm]'
 > ```
 
-> **Open Router**
+> [accordion] Open Router
 >
 > Set the following environment variables in your `.env` file:
 >
@@ -1224,7 +1224,7 @@ In this section, you'll find detailed examples that help you select, configure, 
 > uv add 'crewai[litellm]'
 > ```
 
-> **Nebius AI Studio**
+> [accordion] Nebius AI Studio
 >
 > Set the following environment variables in your `.env` file:
 >
@@ -1255,7 +1255,7 @@ In this section, you'll find detailed examples that help you select, configure, 
 > uv add 'crewai[litellm]'
 > ```
 
-> **DeepInfra**
+> [accordion] DeepInfra
 >
 > CrewAI talks to DeepInfra through its native OpenAI client, so no LiteLLM install is needed.
 >
@@ -1295,137 +1295,137 @@ In this section, you'll find detailed examples that help you select, configure, 
 
 CrewAI supports streaming responses from LLMs, allowing your application to receive and process outputs in real-time as they're generated.
 
-**Basic Setup**
-
-Enable streaming by setting the `stream` parameter to `True` when initializing your LLM:
-
-```python theme={null}
-from crewai import LLM
-
-# Create an LLM with streaming enabled
-llm = LLM(
-    model="openai/gpt-5.6-terra",
-    stream=True  # Enable streaming
-)
-```
-
-When streaming is enabled, responses are delivered in chunks as they're generated, creating a more responsive user experience.
-
-**Event Handling**
-
-CrewAI emits events for each chunk received during streaming:
-
-```python theme={null}
-from crewai.events import (
-  LLMStreamChunkEvent
-)
-from crewai.events import BaseEventListener
-
-class MyCustomListener(BaseEventListener):
-    def setup_listeners(self, crewai_event_bus):
-        @crewai_event_bus.on(LLMStreamChunkEvent)
-        def on_llm_stream_chunk(self, event: LLMStreamChunkEvent):
-          # Process each chunk as it arrives
-          print(f"Received chunk: {event.chunk}")
-
-my_listener = MyCustomListener()
-```
-
-> [!TIP]
+> [tab] Basic Setup
 >
-> [Click here](/en/concepts/event-listener#creating-a-custom-event-listener) for more details
-
-**Agent & Task Tracking**
-
-All LLM events in CrewAI include agent and task information, allowing you to track and filter LLM interactions by specific agents or tasks:
-
-```python theme={null}
-from crewai import LLM, Agent, Task, Crew
-from crewai.events import LLMStreamChunkEvent
-from crewai.events import BaseEventListener
-
-class MyCustomListener(BaseEventListener):
-    def setup_listeners(self, crewai_event_bus):
-        @crewai_event_bus.on(LLMStreamChunkEvent)
-        def on_llm_stream_chunk(source, event):
-            if researcher.id == event.agent_id:
-                print("\n==============\n Got event:", event, "\n==============\n")
-
-
-my_listener = MyCustomListener()
-
-llm = LLM(model="openai/gpt-5.6-terra", stream=True)
-
-researcher = Agent(
-    role="About User",
-    goal="You know everything about the user.",
-    backstory="""You are a master at understanding people and their preferences.""",
-    llm=llm,
-)
-
-search = Task(
-    description="Answer the following questions about the user: {question}",
-    expected_output="An answer to the question.",
-    agent=researcher,
-)
-
-crew = Crew(agents=[researcher], tasks=[search])
-
-result = crew.kickoff(
-    inputs={"question": "..."}
-)
-```
-
-> [!NOTE]
+> Enable streaming by setting the `stream` parameter to `True` when initializing your LLM:
 >
-> This feature is particularly useful for:
+> ```python theme={null}
+> from crewai import LLM
 >
-> * Debugging specific agent behaviors
-> * Logging LLM usage by task type
-> * Auditing which agents are making what types of LLM calls
-> * Performance monitoring of specific tasks
+> # Create an LLM with streaming enabled
+> llm = LLM(
+>     model="openai/gpt-5.6-terra",
+>     stream=True  # Enable streaming
+> )
+> ```
+>
+> When streaming is enabled, responses are delivered in chunks as they're generated, creating a more responsive user experience.
+
+> [tab] Event Handling
+>
+> CrewAI emits events for each chunk received during streaming:
+>
+> ```python theme={null}
+> from crewai.events import (
+>   LLMStreamChunkEvent
+> )
+> from crewai.events import BaseEventListener
+>
+> class MyCustomListener(BaseEventListener):
+>     def setup_listeners(self, crewai_event_bus):
+>         @crewai_event_bus.on(LLMStreamChunkEvent)
+>         def on_llm_stream_chunk(self, event: LLMStreamChunkEvent):
+>           # Process each chunk as it arrives
+>           print(f"Received chunk: {event.chunk}")
+>
+> my_listener = MyCustomListener()
+> ```
+>
+> > [!TIP]
+> >
+> > [Click here](/en/concepts/event-listener#creating-a-custom-event-listener) for more details
+
+> [tab] Agent & Task Tracking
+>
+> All LLM events in CrewAI include agent and task information, allowing you to track and filter LLM interactions by specific agents or tasks:
+>
+> ```python theme={null}
+> from crewai import LLM, Agent, Task, Crew
+> from crewai.events import LLMStreamChunkEvent
+> from crewai.events import BaseEventListener
+>
+> class MyCustomListener(BaseEventListener):
+>     def setup_listeners(self, crewai_event_bus):
+>         @crewai_event_bus.on(LLMStreamChunkEvent)
+>         def on_llm_stream_chunk(source, event):
+>             if researcher.id == event.agent_id:
+>                 print("\n==============\n Got event:", event, "\n==============\n")
+>
+>
+> my_listener = MyCustomListener()
+>
+> llm = LLM(model="openai/gpt-5.6-terra", stream=True)
+>
+> researcher = Agent(
+>     role="About User",
+>     goal="You know everything about the user.",
+>     backstory="""You are a master at understanding people and their preferences.""",
+>     llm=llm,
+> )
+>
+> search = Task(
+>     description="Answer the following questions about the user: {question}",
+>     expected_output="An answer to the question.",
+>     agent=researcher,
+> )
+>
+> crew = Crew(agents=[researcher], tasks=[search])
+>
+> result = crew.kickoff(
+>     inputs={"question": "..."}
+> )
+> ```
+>
+> > [!NOTE]
+> >
+> > This feature is particularly useful for:
+> >
+> > * Debugging specific agent behaviors
+> > * Logging LLM usage by task type
+> > * Auditing which agents are making what types of LLM calls
+> > * Performance monitoring of specific tasks
 
 ## Async LLM Calls
 
 CrewAI supports asynchronous LLM calls for improved performance and concurrency in your AI workflows. Async calls allow you to run multiple LLM requests concurrently without blocking, making them ideal for high-throughput applications and parallel agent operations.
 
-**Basic Usage**
+> [tab] Basic Usage
+>
+> Use the `acall` method for asynchronous LLM requests:
+>
+> ```python theme={null}
+> import asyncio
+> from crewai import LLM
+>
+> async def main():
+>     llm = LLM(model="openai/gpt-4o")
+>
+>     # Single async call
+>     response = await llm.acall("What is the capital of France?")
+>     print(response)
+>
+> asyncio.run(main())
+> ```
+>
+> The `acall` method supports all the same parameters as the synchronous `call` method, including messages, tools, and callbacks.
 
-Use the `acall` method for asynchronous LLM requests:
-
-```python theme={null}
-import asyncio
-from crewai import LLM
-
-async def main():
-    llm = LLM(model="openai/gpt-4o")
-
-    # Single async call
-    response = await llm.acall("What is the capital of France?")
-    print(response)
-
-asyncio.run(main())
-```
-
-The `acall` method supports all the same parameters as the synchronous `call` method, including messages, tools, and callbacks.
-
-**With Streaming**
-
-Combine async calls with streaming for real-time concurrent responses:
-
-```python theme={null}
-import asyncio
-from crewai import LLM
-
-async def stream_async():
-    llm = LLM(model="openai/gpt-4o", stream=True)
-
-    response = await llm.acall("Write a short story about AI")
-
-    print(response)
-
-asyncio.run(stream_async())
-```
+> [tab] With Streaming
+>
+> Combine async calls with streaming for real-time concurrent responses:
+>
+> ```python theme={null}
+> import asyncio
+> from crewai import LLM
+>
+> async def stream_async():
+>     llm = LLM(model="openai/gpt-4o", stream=True)
+>
+>     response = await llm.acall("Write a short story about AI")
+>
+>     print(response)
+>
+> asyncio.run(stream_async())
+> ```
 
 ## Structured LLM Calls
 
@@ -1460,7 +1460,7 @@ print(response)
 
 Learn how to get the most out of your LLM configuration:
 
-> **Context Window Management**
+> [accordion] Context Window Management
 >
 > CrewAI includes smart context management features:
 >
@@ -1487,7 +1487,7 @@ Learn how to get the most out of your LLM configuration:
 > > 3. Use chunking for large documents
 > > 4. Monitor token usage to optimize costs
 
-> **Performance Optimization**
+> [accordion] Performance Optimization
 >
 > **1. Token Usage Optimization**
 >
@@ -1527,7 +1527,7 @@ Learn how to get the most out of your LLM configuration:
 > >
 > > Remember to regularly monitor your token usage and adjust your configuration as needed to optimize costs and performance.
 
-> **Drop Additional Parameters**
+> [accordion] Drop Additional Parameters
 >
 > CrewAI internally uses native sdks for LLM calls, which allows you to drop additional parameters that are not needed for your specific use case. This can help simplify your code and reduce the complexity of your LLM configuration.
 > For example, if you don't need to send the `stop` parameter, you can simply omit it from your LLM call:
@@ -1545,7 +1545,7 @@ Learn how to get the most out of your LLM configuration:
 > )
 > ```
 
-> **Transport Interceptors**
+> [accordion] Transport Interceptors
 >
 > CrewAI provides message interceptors for several providers, allowing you to hook into request/response cycles at the transport layer.
 >
@@ -1599,74 +1599,74 @@ Learn how to get the most out of your LLM configuration:
 
 ## Common Issues and Solutions
 
-**Authentication**
-
-> [!WARNING]
+> [tab] Authentication
 >
-> Most authentication issues can be resolved by checking API key format and environment variable names.
-
-```bash theme={null}
-# OpenAI
-OPENAI_API_KEY=sk-...
-
-# Anthropic
-ANTHROPIC_API_KEY=sk-ant-...
-```
-
-**Model Names**
-
-> [!TIP]
+> > [!WARNING]
+> >
+> > Most authentication issues can be resolved by checking API key format and environment variable names.
 >
-> Always include the provider prefix in model names
-
-```python theme={null}
-# Correct
-llm = LLM(model="openai/gpt-4")
-
-# Incorrect
-llm = LLM(model="gpt-4")
-```
-
-**Gateway Errors**
-
-> [!TIP]
+> ```bash theme={null}
+> # OpenAI
+> OPENAI_API_KEY=sk-...
 >
-> Gateways such as OpenRouter return `200 OK` as soon as the upstream provider accepts the request, so a provider timeout arrives in the response body instead of the status code.
+> # Anthropic
+> ANTHROPIC_API_KEY=sk-ant-...
+> ```
 
-CrewAI raises the same exception the upstream code would have produced as a real HTTP status, so a masked failure is caught by the retry handling you already have:
-
-```python theme={null}
-import openai
-from pydantic import BaseModel
-
-from crewai import LLM
-
-
-class Report(BaseModel):
-    summary: str
-
-
-llm = LLM(model="openrouter/z-ai/glm-5.3", response_format=Report)
-
-try:
-    result = llm.call("Summarize the incident", response_model=Report)
-except openai.InternalServerError as e:
-    # "z-ai/glm-5.3 via openrouter.ai returned HTTP 200 with an upstream error
-    #  and no choices: The operation was aborted (upstream code 504)"
-    print(f"Upstream provider failed, safe to retry: {e}")
-```
-
-> [!WARNING]
+> [tab] Model Names
 >
-> A large or deeply nested `response_model` makes upstream timeouts more likely. Treat these as transient provider failures, not as the model producing malformed structured output.
-
-**Context Length**
-
-> [!TIP]
+> > [!TIP]
+> >
+> > Always include the provider prefix in model names
 >
-> Use larger context models for extensive tasks
+> ```python theme={null}
+> # Correct
+> llm = LLM(model="openai/gpt-4")
+>
+> # Incorrect
+> llm = LLM(model="gpt-4")
+> ```
 
-```python theme={null}
-# Large context model
-llm = LLM(model="openai/gpt-4o")  # 128K tokens
-```
+> [tab] Gateway Errors
+>
+> > [!TIP]
+> >
+> > Gateways such as OpenRouter return `200 OK` as soon as the upstream provider accepts the request, so a provider timeout arrives in the response body instead of the status code.
+>
+> CrewAI raises the same exception the upstream code would have produced as a real HTTP status, so a masked failure is caught by the retry handling you already have:
+>
+> ```python theme={null}
+> import openai
+> from pydantic import BaseModel
+>
+> from crewai import LLM
+>
+>
+> class Report(BaseModel):
+>     summary: str
+>
+>
+> llm = LLM(model="openrouter/z-ai/glm-5.3", response_format=Report)
+>
+> try:
+>     result = llm.call("Summarize the incident", response_model=Report)
+> except openai.InternalServerError as e:
+>     # "z-ai/glm-5.3 via openrouter.ai returned HTTP 200 with an upstream error
+>     #  and no choices: The operation was aborted (upstream code 504)"
+>     print(f"Upstream provider failed, safe to retry: {e}")
+> ```
+>
+> > [!WARNING]
+> >
+> > A large or deeply nested `response_model` makes upstream timeouts more likely. Treat these as transient provider failures, not as the model producing malformed structured output.
+
+> [tab] Context Length
+>
+> > [!TIP]
+> >
+> > Use larger context models for extensive tasks
+>
+> ```python theme={null}
+> # Large context model
+> llm = LLM(model="openai/gpt-4o")  # 128K tokens
+> ```

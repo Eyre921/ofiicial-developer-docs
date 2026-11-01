@@ -169,7 +169,7 @@ The `embedding_model` parameter accepts a `crewai.rag.embeddings.types.ProviderS
 
 ### Supported Providers
 
-> **OpenAI**
+> [accordion] OpenAI
 >
 > ```python main.py theme={null}
 > from crewai.rag.embeddings.providers.openai.types import OpenAIProviderSpec
@@ -207,7 +207,7 @@ The `embedding_model` parameter accepts a `crewai.rag.embeddings.types.ProviderS
 > * `OPENAI_API_VERSION` or `EMBEDDINGS_OPENAI_API_VERSION`: `api_version`
 > * `OPENAI_DIMENSIONS` or `EMBEDDINGS_OPENAI_DIMENSIONS`: `dimensions`
 
-> **Cohere**
+> [accordion] Cohere
 >
 > ```python main.py theme={null}
 > from crewai.rag.embeddings.providers.cohere.types import CohereProviderSpec
@@ -231,7 +231,7 @@ The `embedding_model` parameter accepts a `crewai.rag.embeddings.types.ProviderS
 > * `COHERE_API_KEY` or `EMBEDDINGS_COHERE_API_KEY`: `api_key`
 > * `EMBEDDINGS_COHERE_MODEL_NAME`: `model_name`
 
-> **VoyageAI**
+> [accordion] VoyageAI
 >
 > ```python main.py theme={null}
 > from crewai.rag.embeddings.providers.voyageai.types import VoyageAIProviderSpec
@@ -273,7 +273,7 @@ The `embedding_model` parameter accepts a `crewai.rag.embeddings.types.ProviderS
 > * `VOYAGEAI_MAX_RETRIES` or `EMBEDDINGS_VOYAGEAI_MAX_RETRIES`: `max_retries`
 > * `VOYAGEAI_TIMEOUT` or `EMBEDDINGS_VOYAGEAI_TIMEOUT`: `timeout`
 
-> **Ollama**
+> [accordion] Ollama
 >
 > ```python main.py theme={null}
 > from crewai.rag.embeddings.providers.ollama.types import OllamaProviderSpec
@@ -297,7 +297,7 @@ The `embedding_model` parameter accepts a `crewai.rag.embeddings.types.ProviderS
 > * `OLLAMA_MODEL` or `EMBEDDINGS_OLLAMA_MODEL`: `model_name`
 > * `OLLAMA_URL` or `EMBEDDINGS_OLLAMA_URL`: `url`
 
-> **Amazon Bedrock**
+> [accordion] Amazon Bedrock
 >
 > ```python main.py theme={null}
 > from crewai.rag.embeddings.providers.aws.types import BedrockProviderSpec
@@ -322,7 +322,7 @@ The `embedding_model` parameter accepts a `crewai.rag.embeddings.types.ProviderS
 > * `AWS_SECRET_ACCESS_KEY`: AWS secret key
 > * `AWS_REGION`: AWS region (e.g., `us-east-1`)
 
-> **Azure OpenAI**
+> [accordion] Azure OpenAI
 >
 > ```python main.py theme={null}
 > from crewai.rag.embeddings.providers.microsoft.types import AzureProviderSpec
@@ -361,7 +361,7 @@ The `embedding_model` parameter accepts a `crewai.rag.embeddings.types.ProviderS
 > * `EMBEDDINGS_AZURE_API_TYPE`: `api_type`
 > * `EMBEDDINGS_AZURE_DIMENSIONS`: `dimensions`
 
-> **Google Generative AI**
+> [accordion] Google Generative AI
 >
 > ```python main.py theme={null}
 > from crewai.rag.embeddings.providers.google.types import GenerativeAiProviderSpec
@@ -388,7 +388,7 @@ The `embedding_model` parameter accepts a `crewai.rag.embeddings.types.ProviderS
 > * `EMBEDDINGS_GOOGLE_GENERATIVE_AI_MODEL_NAME`: `model_name`
 > * `EMBEDDINGS_GOOGLE_GENERATIVE_AI_TASK_TYPE`: `task_type`
 
-> **Google Vertex AI**
+> [accordion] Google Vertex AI
 >
 > ```python main.py theme={null}
 > from crewai.rag.embeddings.providers.google.types import VertexAIProviderSpec
@@ -419,7 +419,7 @@ The `embedding_model` parameter accepts a `crewai.rag.embeddings.types.ProviderS
 > * `EMBEDDINGS_GOOGLE_VERTEX_REGION`: `region`
 > * `EMBEDDINGS_GOOGLE_VERTEX_API_KEY`: `api_key`
 
-> **Jina AI**
+> [accordion] Jina AI
 >
 > ```python main.py theme={null}
 > from crewai.rag.embeddings.providers.jina.types import JinaProviderSpec
@@ -443,7 +443,7 @@ The `embedding_model` parameter accepts a `crewai.rag.embeddings.types.ProviderS
 > * `JINA_API_KEY` or `EMBEDDINGS_JINA_API_KEY`: `api_key`
 > * `EMBEDDINGS_JINA_MODEL_NAME`: `model_name`
 
-> **HuggingFace**
+> [accordion] HuggingFace
 >
 > ```python main.py theme={null}
 > from crewai.rag.embeddings.providers.huggingface.types import HuggingFaceProviderSpec
@@ -464,7 +464,7 @@ The `embedding_model` parameter accepts a `crewai.rag.embeddings.types.ProviderS
 >
 > * `HUGGINGFACE_URL` or `EMBEDDINGS_HUGGINGFACE_URL`: `url`
 
-> **Instructor**
+> [accordion] Instructor
 >
 > ```python main.py theme={null}
 > from crewai.rag.embeddings.providers.instructor.types import InstructorProviderSpec
@@ -491,7 +491,7 @@ The `embedding_model` parameter accepts a `crewai.rag.embeddings.types.ProviderS
 > * `EMBEDDINGS_INSTRUCTOR_DEVICE`: `device`
 > * `EMBEDDINGS_INSTRUCTOR_INSTRUCTION`: `instruction`
 
-> **Sentence Transformer**
+> [accordion] Sentence Transformer
 >
 > ```python main.py theme={null}
 > from crewai.rag.embeddings.providers.sentence_transformer.types import SentenceTransformerProviderSpec
@@ -518,7 +518,7 @@ The `embedding_model` parameter accepts a `crewai.rag.embeddings.types.ProviderS
 > * `EMBEDDINGS_SENTENCE_TRANSFORMER_DEVICE`: `device`
 > * `EMBEDDINGS_SENTENCE_TRANSFORMER_NORMALIZE_EMBEDDINGS`: `normalize_embeddings`
 
-> **ONNX**
+> [accordion] ONNX
 >
 > ```python main.py theme={null}
 > from crewai.rag.embeddings.providers.onnx.types import ONNXProviderSpec
@@ -539,7 +539,7 @@ The `embedding_model` parameter accepts a `crewai.rag.embeddings.types.ProviderS
 >
 > * `EMBEDDINGS_ONNX_PREFERRED_PROVIDERS`: `preferred_providers` (comma-separated list)
 
-> **OpenCLIP**
+> [accordion] OpenCLIP
 >
 > ```python main.py theme={null}
 > from crewai.rag.embeddings.providers.openclip.types import OpenCLIPProviderSpec
@@ -566,7 +566,7 @@ The `embedding_model` parameter accepts a `crewai.rag.embeddings.types.ProviderS
 > * `EMBEDDINGS_OPENCLIP_CHECKPOINT`: `checkpoint`
 > * `EMBEDDINGS_OPENCLIP_DEVICE`: `device`
 
-> **Text2Vec**
+> [accordion] Text2Vec
 >
 > ```python main.py theme={null}
 > from crewai.rag.embeddings.providers.text2vec.types import Text2VecProviderSpec
@@ -587,7 +587,7 @@ The `embedding_model` parameter accepts a `crewai.rag.embeddings.types.ProviderS
 >
 > * `EMBEDDINGS_TEXT2VEC_MODEL_NAME`: `model_name`
 
-> **Roboflow**
+> [accordion] Roboflow
 >
 > ```python main.py theme={null}
 > from crewai.rag.embeddings.providers.roboflow.types import RoboflowProviderSpec
@@ -611,7 +611,7 @@ The `embedding_model` parameter accepts a `crewai.rag.embeddings.types.ProviderS
 > * `ROBOFLOW_API_KEY` or `EMBEDDINGS_ROBOFLOW_API_KEY`: `api_key`
 > * `ROBOFLOW_API_URL` or `EMBEDDINGS_ROBOFLOW_API_URL`: `api_url`
 
-> **WatsonX (IBM)**
+> [accordion] WatsonX (IBM)
 >
 > ```python main.py theme={null}
 > from crewai.rag.embeddings.providers.ibm.types import WatsonXProviderSpec
@@ -653,7 +653,7 @@ The `embedding_model` parameter accepts a `crewai.rag.embeddings.types.ProviderS
 > * `EMBEDDINGS_WATSONX_CONCURRENCY_LIMIT`: `concurrency_limit`
 > * `EMBEDDINGS_WATSONX_PERSISTENT_CONNECTION`: `persistent_connection`
 
-> **Custom**
+> [accordion] Custom
 >
 > ```python main.py theme={null}
 > from crewai.rag.core.base_embeddings_callable import EmbeddingFunction

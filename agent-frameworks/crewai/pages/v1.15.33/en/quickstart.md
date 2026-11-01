@@ -231,10 +231,10 @@ crewai deploy remove -u <deployment_uuid>
 >
 > The first deploy usually takes **around 1 minute**. Full prerequisites and the web UI flow are in [Deploy to AMP](https://docs-platform.crewai.com/platform/en/guides/deploy-to-amp).
 
-> **[Deploy guide](https://docs-platform.crewai.com/platform/en/guides/deploy-to-amp)**
+> [card] [Deploy guide](https://docs-platform.crewai.com/platform/en/guides/deploy-to-amp)
 >
 > Step-by-step AMP deployment (CLI and dashboard).
 
-> **[Join the Community](https://community.crewai.com)**
+> [card] [Join the Community](https://community.crewai.com)
 >
 > Discuss ideas, share projects, and connect with other CrewAI developers.

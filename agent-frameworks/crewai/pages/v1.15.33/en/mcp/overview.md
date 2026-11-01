@@ -630,39 +630,39 @@ class CrewWithCustomTimeout:
 
 ## Explore MCP Integrations
 
-> **[Simple DSL Integration](/en/mcp/dsl-integration)**
+> [card] [Simple DSL Integration](/en/mcp/dsl-integration)
 >
 > **Recommended**: Use the simple `mcps=[]` field syntax for effortless MCP
 > integration.
 
-> **[Stdio Transport](/en/mcp/stdio)**
+> [card] [Stdio Transport](/en/mcp/stdio)
 >
 > Connect to local MCP servers via standard input/output. Ideal for scripts
 > and local executables.
 
-> **[SSE Transport](/en/mcp/sse)**
+> [card] [SSE Transport](/en/mcp/sse)
 >
 > Integrate with remote MCP servers using Server-Sent Events for real-time
 > data streaming.
 
-> **[Streamable HTTP Transport](/en/mcp/streamable-http)**
+> [card] [Streamable HTTP Transport](/en/mcp/streamable-http)
 >
 > Utilize flexible Streamable HTTP for robust communication with remote MCP
 > servers.
 
-> **[Connecting to Multiple Servers](/en/mcp/multiple-servers)**
+> [card] [Connecting to Multiple Servers](/en/mcp/multiple-servers)
 >
 > Aggregate tools from several MCP servers simultaneously using a single
 > adapter.
 
-> **[Security Considerations](/en/mcp/security)**
+> [card] [Security Considerations](/en/mcp/security)
 >
 > Review important security best practices for MCP integration to keep your
 > agents safe.
 
 Checkout this repository for full demos and examples of MCP integration with CrewAI! 👇
 
-> **[GitHub Repository](https://github.com/tonykipkemboi/crewai-mcp-demo)**
+> [card] [GitHub Repository](https://github.com/tonykipkemboi/crewai-mcp-demo)
 >
 > CrewAI MCP Demo
 

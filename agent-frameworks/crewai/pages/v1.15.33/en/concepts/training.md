@@ -126,62 +126,62 @@ flowchart TD
 
 ### Limitations of Small Models in Training Evaluation
 
-> **JSON Output Accuracy**
+> [card] JSON Output Accuracy
 >
 > Smaller models often struggle with producing valid JSON responses needed for structured training evaluations, leading to parsing errors and incomplete data.
 
-> **Evaluation Quality**
+> [card] Evaluation Quality
 >
 > Models under 7B parameters may provide less nuanced evaluations with limited reasoning depth compared to larger models.
 
-> **Instruction Following**
+> [card] Instruction Following
 >
 > Complex training evaluation criteria may not be fully followed or considered by smaller models.
 
-> **Consistency**
+> [card] Consistency
 >
 > Evaluations across multiple training iterations may lack consistency with smaller models.
 
 ### Recommendations for Training
 
-**Best Practice**
-
-For optimal training quality and reliable evaluations, we strongly recommend using models with at least 7B parameters or larger:
-
-```python theme={null}
-from crewai import Agent, Crew, Task, LLM
-
-# Recommended minimum for training evaluation
-llm = LLM(model="mistral/open-mistral-7b")
-
-# Better options for reliable training evaluation
-llm = LLM(model="anthropic/claude-3-sonnet-20240229-v1:0")
-llm = LLM(model="gpt-4o")
-
-# Use this LLM with your agents
-agent = Agent(
-    role="Training Evaluator",
-    goal="Provide accurate training feedback",
-    llm=llm
-)
-```
-
-> [!TIP]
+> [tab] Best Practice
 >
-> More powerful models provide higher quality feedback with better reasoning, leading to more effective training iterations.
-
-**Small Model Usage**
-
-If you must use smaller models for training evaluation, be aware of these constraints:
-
-```python theme={null}
-# Using a smaller model (expect some limitations)
-llm = LLM(model="huggingface/microsoft/Phi-3-mini-4k-instruct")
-```
-
-> [!WARNING]
+> For optimal training quality and reliable evaluations, we strongly recommend using models with at least 7B parameters or larger:
 >
-> While CrewAI includes optimizations for small models, expect less reliable and less nuanced evaluation results that may require more human intervention during training.
+> ```python theme={null}
+> from crewai import Agent, Crew, Task, LLM
+>
+> # Recommended minimum for training evaluation
+> llm = LLM(model="mistral/open-mistral-7b")
+>
+> # Better options for reliable training evaluation
+> llm = LLM(model="anthropic/claude-3-sonnet-20240229-v1:0")
+> llm = LLM(model="gpt-4o")
+>
+> # Use this LLM with your agents
+> agent = Agent(
+>     role="Training Evaluator",
+>     goal="Provide accurate training feedback",
+>     llm=llm
+> )
+> ```
+>
+> > [!TIP]
+> >
+> > More powerful models provide higher quality feedback with better reasoning, leading to more effective training iterations.
+
+> [tab] Small Model Usage
+>
+> If you must use smaller models for training evaluation, be aware of these constraints:
+>
+> ```python theme={null}
+> # Using a smaller model (expect some limitations)
+> llm = LLM(model="huggingface/microsoft/Phi-3-mini-4k-instruct")
+> ```
+>
+> > [!WARNING]
+> >
+> > While CrewAI includes optimizations for small models, expect less reliable and less nuanced evaluation results that may require more human intervention during training.
 
 ### Key Points to Note
 

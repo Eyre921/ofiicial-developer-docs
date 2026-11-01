@@ -141593,7 +141593,7 @@ Last updated Apr 17, 2026|Copy as Markdown| [View as Markdown](https://developer
 | [Detect MCP traffic in Gateway logs](https://developers.cloudflare.com/cloudflare-one/tutorials/detect-mcp-traffic-gateway-logs/) | 7 months ago | Advanced |
 | [Implement regional private DNS servers with Gateway resolver policies](https://developers.cloudflare.com/cloudflare-one/tutorials/regional-private-dns-resolver-policies/) | 12 months ago | Advanced |
 | [Deploy the Cloudflare One Client on headless Linux machines](https://developers.cloudflare.com/cloudflare-one/tutorials/deploy-client-headless-linux/) | last year | Beginner |
-| [Create and secure an AI agent wrapper using AI Gateway and Zero Trust](https://developers.cloudflare.com/cloudflare-one/tutorials/ai-wrapper-tenant-control/) | last year | Advanced |
+| [Create and secure an AI agent wrapper using AI Gateway and Zero Trust](https://developers.cloudflare.com/cloudflare-one/tutorials/ai-wrapper-tenant-control/) | 2 years ago | Advanced |
 | [Use Cloudflare Tunnels with Kubernetes client-go credential plugins](https://developers.cloudflare.com/cloudflare-one/tutorials/tunnel-kubectl/) | 2 years ago | Intermediate |
 | [Send SSO attributes to Access-protected origins with Workers](https://developers.cloudflare.com/cloudflare-one/tutorials/extend-sso-with-workers/) | 2 years ago | Advanced |
 | [Protect an R2 Bucket with Cloudflare Access](https://developers.cloudflare.com/r2/tutorials/cloudflare-access/) | 3 years ago | Intermediate |
@@ -401174,6 +401174,12 @@ Type: `string`
 
 Status of any associated forensic copies that may have been captured during the request.
 
+## ForwardAction
+
+Type: `object`
+
+The Forward policy that matched the request. worker\_id is the ID of the Worker the policy sent the request to. error\_code is empty if there was no error, otherwise one of *internalError* | *workerNotFound* | *entrypointNotFound* | *workerLimitExceeded* | *workerException*. Empty ({}) if no Forward policy matched.
+
 ## HTTPHost
 
 Type: `string`
@@ -634028,7 +634034,7 @@ image: https://developers.cloudflare.com/dynamic-workers/og.png?v=51a25a49ca35a1
 
 # Dynamic Workers
 
-Last updated Oct 12, 2026|Copy as Markdown| [View as Markdown](https://developers.cloudflare.com/dynamic-workers/index.md)| [Agent setup](https://developers.cloudflare.com/agent-setup/)
+Last updated Oct 31, 2026|Copy as Markdown| [View as Markdown](https://developers.cloudflare.com/dynamic-workers/index.md)| [Agent setup](https://developers.cloudflare.com/agent-setup/)
 
 Spin up Workers at runtime to execute code on-demand in a secure, sandboxed environment.
 
@@ -634056,6 +634062,7 @@ Use Dynamic Workers when code needs to run quickly in a secure, isolated environ
 
 Because you compose the Worker that runs the code at runtime, you control how that Worker is configured and what it can access.
 
+- **[Authentication and authorization](https://developers.cloudflare.com/dynamic-workers/usage/authentication/)**: Enforce route policies and protect data access outside app code.
 - **[Bindings](https://developers.cloudflare.com/dynamic-workers/usage/bindings/)**: Decide which bindings and structured data the dynamic Worker receives.
 - **[Observability](https://developers.cloudflare.com/dynamic-workers/usage/observability/)**: Attach Tail Workers and capture logs for each run.
 - **[Network access](https://developers.cloudflare.com/dynamic-workers/usage/egress-control/)**: Intercept or block Internet access for outbound requests.
@@ -634071,7 +634078,7 @@ YesNo
 [![](https://developers.cloudflare.com/_astro/logo.te5VL_aD.svg)Docs](https://developers.cloudflare.com/)
 
 ```json
-{"@context":"https://schema.org","@type":"WebPage","@id":"https://developers.cloudflare.com/dynamic-workers/#page","headline":"Dynamic Workers","description":"Spin up isolated Workers on demand to execute code.","url":"https://developers.cloudflare.com/dynamic-workers/","inLanguage":"en","image":"https://developers.cloudflare.com/dynamic-workers/og.png?v=51a25a49ca35a178","dateModified":"2026-10-12","publisher":{"@type":"Organization","name":"Cloudflare","description":"One platform for your apps, agents, and workforce. Build, secure, and scale without managing infrastructure","url":"https://www.cloudflare.com/","sameAs":["https://github.com/cloudflare","https://www.linkedin.com/company/cloudflare","https://x.com/cloudflare"],"logo":{"@type":"ImageObject","url":"https://developers.cloudflare.com/logo.svg"},"address":{"@type":"PostalAddress","streetAddress":"101 Townsend St","addressLocality":"San Francisco","addressRegion":"CA","postalCode":"94107","addressCountry":"US"},"contactPoint":[{"@type":"ContactPoint","contactType":"Customer Support","url":"https://support.cloudflare.com/","availableLanguage":["English"]},{"@type":"ContactPoint","contactType":"Sales","url":"https://www.cloudflare.com/contact/","availableLanguage":["English"]}]},"isPartOf":{"@type":"WebSite","@id":"https://developers.cloudflare.com/#website","name":"Cloudflare Docs","url":"https://developers.cloudflare.com/"}}
+{"@context":"https://schema.org","@type":"WebPage","@id":"https://developers.cloudflare.com/dynamic-workers/#page","headline":"Dynamic Workers","description":"Spin up isolated Workers on demand to execute code.","url":"https://developers.cloudflare.com/dynamic-workers/","inLanguage":"en","image":"https://developers.cloudflare.com/dynamic-workers/og.png?v=51a25a49ca35a178","dateModified":"2026-10-31","publisher":{"@type":"Organization","name":"Cloudflare","description":"One platform for your apps, agents, and workforce. Build, secure, and scale without managing infrastructure","url":"https://www.cloudflare.com/","sameAs":["https://github.com/cloudflare","https://www.linkedin.com/company/cloudflare","https://x.com/cloudflare"],"logo":{"@type":"ImageObject","url":"https://developers.cloudflare.com/logo.svg"},"address":{"@type":"PostalAddress","streetAddress":"101 Townsend St","addressLocality":"San Francisco","addressRegion":"CA","postalCode":"94107","addressCountry":"US"},"contactPoint":[{"@type":"ContactPoint","contactType":"Customer Support","url":"https://support.cloudflare.com/","availableLanguage":["English"]},{"@type":"ContactPoint","contactType":"Sales","url":"https://www.cloudflare.com/contact/","availableLanguage":["English"]}]},"isPartOf":{"@type":"WebSite","@id":"https://developers.cloudflare.com/#website","name":"Cloudflare Docs","url":"https://developers.cloudflare.com/"}}
 ```
 
 ---
@@ -723377,7 +723384,7 @@ export class Browser extends DurableObject {
 }
 ```
 
-[Run Worker in Playground](https://workers.cloudflare.com/playground#LYVwNgLglgDghgJwgegGYHsHALQBM4RwDcABAEbogB2+CAngLzbPYZb6HbW5QDGU2AAwB2AJwBGCQFYALDIAcAJgDMALhYs2wDnC40+AkROlylygLAAoAMLoqEAKb3sAESgBnGOndRod1SRaeATEJFRwwA4MAERQNA4AHgB0AFbu0aSoUGBOEVGx8clp0Va29k4Q2AAqdDAOAXAwMGB8BFB2yClwAG5w7rwIsBAA1MDouOAOVlZQwF5IJADeJC4gCHBkOQDyZCkOvBAkAL6BCOjAJNG8YJS4qGCI9QDumADWDgjpRJaz84cAVCQ+iQYCAmg5HB9TudLgABa63e6PZCg8GQhAZSyWRJ-Ei4ByoODgQ6LSwASD6dCovECEN4AAsABQIBwARxADncEAANCQnN0AJRLclk3h2LkkdC7EgMPlUbpJABCACUtgB1ADKAFFlUkAOYQxV0AByeUZ0TIZye7g+0QF3xFyGQJA1TlwQJILPZnMOEHQJAg9IcKzWGxyJB2ewOvMDTiBTzgvhIvncns5XioNpFYszhxZnhl8cThylKSSqDpTK9HK59qxZLJLIgayoac83zJR25liODpzEoA0lqtQAFAD6KvV2uVY4AggAZACSADUtWPF8ax9rrFtjS4NYWAGyCB04zCHa59VOKq02hB8hKOGip1brTYOSP7Enky3oa0fDt3hgCBZxaboHEXKhXRzXBU1lE9yS5TA4ANB1RXFCAEBAA5MEZLkCAcXl+SFUkG3cMEPjwwhHCI+U6wbQMPCSJD1gNQt8McZi-VYhwOyOetKWpWkIAZZk2RrCASMdZ0NQGBw43zdAwBAPxMwDf1HAlSgIGzDCSCeKBcEDQsAG1JEUQReXEZRD0PKypBs3kbMskgZHEGQAF0O3Q3MSCDKA9XpQ5ZTMwR5Bc4RD3kXl5EPGReTilz5FEQ8vPrMknRIABVG0AyDEheDWFl7DxAigRoANZmDP0CpZMq4ECJT8XvLksIONZgzYEhlUUXTfKoP8XDK2UqAcJ4VgIxl6J8iUxQJVBC3EQRlpIQFj1WkgpG8-s80oeJcCGxxC1G8bDocRkRTJABZAh6SSM5uEZAanjO-UISqKqppIZ05tQVAhUBX7UG7BsBSSP0NUwuI9Sm7a9IwMBmsLB79tezwWggc0SAAcSuqo7RMwQ0ukkhFwW2MWWTVMGt-f8Ws5Hw7ElOoqF5FkuFy3wRSgBbGQAQkY9wklpu8SAAHzFkgBfpJiRY+JIc1Gg4HFwKSGxmpSHCSG4YYAAxvP9RZcLYAkhxBoCoPUwjG5NczgakHF16ayUwuhhXVl2ZaFuX71lOAEyTVE6nRbWiWpJlBaSfkkiugBNSdNR1Z2Tl4AgGRIRkHDV9X+017X0Bhy6G3128oWNgJbHAd0BsOfCFh9238IdpISC1BAzgQAIABJFgcI5dZB9Xk5FfiSeVTkIRIICQLA4M4FQRx7wcOB09TsAwHUvLg2NkVI+n0CoHAyDoLsWDCwQknrCDXhXmTBaG8SDwIFTMgCUwYN0BZ6GQRQhxud56WstS4IAFJdJsLZrbjXHp4cU51ogGzpiQB41B06EmyCraIvJlgcRAO4AIUgVpHDrH1CU8A2J+wDr6L2wtgFJBOiOX+sN0qZSqHAd4JB+gsicO4ek6Bn6SgWsvdOnD5Kth8AALz-g2LqjIciHCgOfUgCiAA8+lDKBm1k4PUgYlHDGGNnCklCf4GmYhCZcUAxp-EZMsAyRl6QBFsYGEyUAPK8n8oFCAAR3FBWcR5Y4zt-bFmMVrPUfD0DmiChAGAeCnQvAQO8T4CsbggDuA8FkCtzjIDtN5Gahwsg5FNJEQsusRHcN4RAMcPdHH0l8UcBIPdvEQFqbrHJO0OE0goUEshWtSmZnKUwy6gSkyR2joqLK1ghxVCSKCTGuse4I2akcZA8z0GFL7qkGAeoB7tOmqPBsmVrA3FyoQMg+kgytgpsGDwYR-RjEpnE2+NVX54jsB-C5+VukiiGYcbpSTvDnWIfs500DJ771nkCBeUI6gIC0N-Qg7hXiphqrGFYWxd7ULBYfCCUF9inzgiQC+QKXSTxRVkT4hw4BpIuDVd4DgYCoqBLPEhF4ioVFAogC4nThnUJYr-N6M8OVMIbDzDOhV25sqpTKEa4AwAGNzjkfOesEFGxNhwiEFsraUo5U7Vpekqhak3NuXc+5FqCA2ktZaOTvl5SYrykxNoBVYEZK9Z6X1hgkH1YarUO49wal2elcBCBWwnW6umWB5pyK8F4AzbJ5I9mCRpFqp12c950pnli4+uLnwkGGLKJaaEMrOi1I+N05BgEMpaBWf+GdU3AQPkfHFMFUyqKHKOCcqpE4zgXCuNcG4tzeuNX692DZ5Vax1hdD2JdDZl1VfSYEr84zT0ZVixq94e61vTQ2k+z4Tg2ibS3YtT4eCWyQTzdM9skgD0ugEoxkc7U9IhOyp1Lq-xupIEtc1y1BDO0yrHSgBV7ZynIpTFF1oCp2CVqpKmU803LvAuQN21YfTf3cOcCEMtLaXUypgEgKRcGHDkcmC8Ry54qXOG0NeYA3ZPHOVvSm1yBr6TeJvZ5uBXlYedF1RIERmiERILra1kcfZJHAp8doVApq6xHnyMAuVSIjvFHncdRcp2IPLg+aNKsVanorAIkgPdW3jgTtOOcS5Vzri9T6-cRwhZXqHjkkVjIhPAIMRrBV47daHO8N-YTOqi6CeocJhENohUNn4mFuNPZLBWA0MwLQOg9A8H4EIMQkhxCyAUCoUodgnyVDcDAnwqkAhBB0KQcIkQYiREIDoDIgR0HlfyJsKUJQbA5YqNUWo9QgRNBaKnVSnRUNUGmJYRY0RgCJioGOMYEwcjRFUAUfERR0hHBi7F+LIREsGBS8YdLpgVDMCsEAA)
+[Run Worker in Playground](https://workers.cloudflare.com/playground#LYVwNgLglgDghgJwgegGYHsHALQBM4RwDcABAEbogB2+CAngLzbPYZb6HbW5QDGU2AAwB2ACwBWAGzDxgkeIAcALhYs2wDnC40+AkROmz5CgLAAoAMLoqEAKY3sAESgBnGOhdRo1pSXV4CYhIqOGBbBgAiKBpbAA8AOgArFwjSVCgwe1DwqJiE5IjzKxt7CGwAFToYW184GBgwPgIoa2REuAA3OBdeBFgIAGpgdFxwW3NzKGB3JBIAbxJHEAQ4MkyAeTJE214IEgBfPwR0YBII3jBKXFQwRBqAd0wAa1sEFKIzKZm9gCoSbpIMBA9VsdleRxOZwAAhcrjc7sggSCwQhUmYzHFviRcLZUHBwHs5mYAJDdOhUXh+UG8AAWAAoELYAI4gWwuCAAGhI9g6AEp5iTibxrOySOgtiQGNyqB14gAhABK6wA6gBlACiCviAHNQXK6AA5bJ0iJkY73FyvCK8j6C5DIEiq+y4f4kRkstl7CDoEgQGm2RbLVaZEibba7Ll++z-e5wLwkLwuN1s9xUS2C4VpvaMtySmNxvbixLxVDU+nu1nsm3o4nExkQZZUZNuD7E-Ycsz7W2Z0UAaXV6oACgB9RUqjUK4cAQQAMgBJABq6uHc4Nw41FnWBscqrzkkEtsxmD2F26Sbl5stCG5sTsNCTSxWa1sYZ2hJJZvQFterZeMAgU6NB0thzlQTqZrgSZSgeJLspgcC6raQoihACAgLsmB0uyBC2FyPL8kStYuMCrxYYQdh4TK1a1n6rjxHBKy6nm2F2PR3qMbYrb7DWZIUlSEC0gyzKVhABF2g6qq9LY0Y5ugYAgN4aa+j6diipQEAZihJD3FAuB+nmADaACMACcABMghckZADMkiSFZ4i2VytmWSQohGaIAC6rbIVmJD+lA2o0nsUrGYICiucIkgKFyCiSKIXLxa5CgmZI3k1sS9okAAqpavr+iQvDLIyNjYjh-w0L6UwBt6hWMuVcB+HJOLXuyaG7MsAZsCQCpmZpflUF+jjlVKVC2Pciw4XS1G+aKwq4qgeZGXIggkH8+5rSQ4g+T22aUDEuDDXYeZjRNR22HSgrEgAsgQNLxMc3B0oN9znTqoLlNV00kA682oKg-J-H9qAdrWvLxN6qqodE2rTTtWkYGALV5o9B1vW4jQQCaJAAOLXeU1oGYI6XiSQc6LVGjIJkmjWft+rVsp41hitUVBcoyXB5V4gpQItdIAIS0S48R01eJAAD7iyQgs0nRouvPEmZjbsti4GJtazXJtjxJcsMAAYXl+YuOOsvhQ4g0BUNqwTjQmWZwBSth6zNxKoXQAoa67svC-L15SnAsbxki1Qojr+IUvSQvxDy8TXQAmmOaqai7hy8AQtIkHStjqxrPZazr6Cw1dtYG5e4Im74VjgC6g17Nhsy+3b2GO-EJDqggxwIL4AAkcy2PseugxrKeCtxpMKmyoIkH+AFAQGcCoHY162HAGdp2AYDKflAYm4KUcz4BUDAaB4HWJBeYwaTFj+rwTwJotjdxK4EBJmQuKYAG6CszDgIIbYPN8xlnLMuCBeRXXrI2G2E0J5uBFBdCIht6YkFuNQDOeIMiqwiFyBYLEQAuF8EYA41Z+qingExf2gcvTexFiA+Ip1Bx-zhhlLK5Q4AvBID0Rk9gXA0nQC-MUi0V4Z04dJJsngABe-9azdTpJkPYUAL6kAUQAHm0rpP0Ot7Daj9EogYAwc6kkob-XU9FQQLigONb4dIFg6T0jSXwti-QGSgJ5LkAUgoQF8O44KzjPJEJ8oYgsxjtbaj4egE0wUIAwHwfaR4CAXhvEVpcEA1xbiMkVicZA1oAm7T8Bgo0YQ8x6xEdw3hEBhy90cTSXx+xYi928RAGpesclaR6HmAOQSyHaxKWmMpTCrodPjFHGOcpsoWH7OUeIQIsZ617ojFq+xkBzPydkfYSQYDakHhw3gM0x61iyhYS4eVCBkG0v6JslMAyuGCD6YYVM4l31qm-bE1hP4XIKl0wUgy9hdKSR4C6xD9kOhgVPA+c9-iL3BNUBA6gf6EBcE8JMtUoyLHWHvahYKj4gTAjsM+UESCXyBY6KeKL0hvD2HANJpxaovFsDAVF-w54kJPMVUogFECnAoUEqODE-7vVnhyphtZeaZyKh3NlVLJSjXAGAAxedMgF31og42psOGgkttbSlHLnYtL8uUdUa4Nxbh3EtVafxlpyACd8-KdFeUmMtAKrAdI3ovW+gMEg+rDXqk3NuVUuyMoQIQE2U6PUUxwJNMRXgvBGbZJJHs3ilItVOpzvvOls8sUn1xfeEgAwpTLSQplB06pbzOnICAhljRSwAMzqm-8h9j44ogkmVR-YhyjiVEnScs5FzLlXOub1xq-Ue1rPK7WutLqe1LkbcuqqaQAjftGGejKsVNWvL3Wt6aG2n3vIcS0TbW7FrvDwK2yDeYpgdvEQeV0XbWp5exPlDr2VOpdV+N1JBlqbQtYIF2WU46UEKg7aUxEqYootIVawytFLU2nmm5dwFyDuwrJ6H+LgTiglllbK6WVMAkESHgvYciEwniOfPBSJxmjrzAO7e45zt5U2uYNbSzwt7PNwK8rDDpupxFCA0XCJA9a3uob7eIwE3gtCoNNPWo9uRgDyoREdIp87juLlOpBFcbzRtVqrU9pYBEkF7q2kcicJzTnnEuFcXqfU7n2MLK9w8AkirpFHX2BjNYKvHXrQ5Hgf7CZ1cXQTwDp0ID+ZaIVtZuLhbjZ2Mw5hVDMHUJobQPB+BCDEFIGQcgZCmEsNYO8ZRnCwM8IpXw-hNCkBCGESIYRCCaFSHkzIFWchrHFIUHLJQHCVGqLUeojQ06KTaKhqgEwzBzAiMAOMVBhzDFGJkCIShcg4nyCkfYsW4sJcCEl3QqWDAZeMMwcwQA)
 
 ```ts
 import { DurableObject } from "cloudflare:workers";
@@ -728762,6 +728769,418 @@ YesNo
 ---
 
 ---
+description: Authenticate requests in a dispatch Worker and authorize data access outside customer app code with Workers for Platforms.
+title: Authentication and authorization
+image: https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/authentication/og.png?v=4b202c4a67329b69
+---
+
+[Skip to content](#main-content)
+
+> Documentation Index  
+> Fetch the complete documentation index at: https://developers.cloudflare.com/cloudflare-for-platforms/llms.txt  
+> Use this file to discover all available pages before exploring further.
+
+# Authentication and authorization
+
+Last updated Oct 31, 2026|Copy as Markdown| [View as Markdown](https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/authentication/index.md)| [Agent setup](https://developers.cloudflare.com/agent-setup/)
+
+When you build a platform that runs customer apps, you need to control who can use each app and which data they can access. An app may have both public and private endpoints.
+
+Customers can add routes and change app code independently of your platform. Enforce permissions for routes and data operations in platform-owned code.
+
+Enforce access at two points:
+
+- **Before the app runs:** require a list of public and private routes when the app is published. Validate that list and enforce its rules before invoking app code.
+- **When the app accesses data:** check permissions inside platform-owned operations. Signing in must not let Bob read Alice's private report.
+
+With Workers for Platforms, check requests in the dispatch Worker and pass scoped data operations to user Workers.
+
+```
+flowchart TB
+  Request --> Gate[Dispatch Worker<br/>Authenticate and check route]
+  Gate -->|Denied| Reject[Return 401, 403, or 404<br/>App does not run]
+  Gate -->|Allowed| App[User Worker]
+  App --> Capability[Platform capability<br/>Check access to this record]
+  Capability --> Data[(Private data)]
+
+```
+
+Authentication establishes identity. Authorization determines which routes, actions, and records that identity can access.
+
+## Choose where to enforce access
+
+Choose checks according to what needs protection:
+
+| Requirement | Enforcement point |
+| --- | --- |
+| The whole app requires sign-in | [Dispatch Worker, before invocation](https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/authentication/#authenticate-before-invoking-the-app) |
+| Routes mix public and private access | [Platform-owned method/path policy](https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/authentication/#publish-code-and-route-policy-together) |
+| Routes are unknown, but data permissions are known | [Platform-owned data operations](https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/authentication/#protect-data-even-when-routes-change) |
+| Routing and policy must stay together | [Registered handlers with access metadata](https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/authentication/#adapt-the-pattern) |
+| Public code needs fewer privileges | [Separate Workers with different capabilities](https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/authentication/#adapt-the-pattern) |
+| App libraries call HTTP APIs | [Outbound Worker](https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/outbound-workers/) |
+
+Combine route checks with data-operation checks for mixed-access apps.
+
+## Publish code and route policy together
+
+Your platform does not need to predict every future route. Require each app to declare its routes when it publishes:
+
+*routes.jsonjson*
+
+```json
+[
+	{ "method": "GET", "path": "/", "access": "public" },
+	{ "method": "GET", "path": "/profile", "access": "member" },
+	{ "method": "GET", "path": "/admin", "access": "reports:admin" }
+]
+```
+
+This manifest is a policy format your platform implements. Workers does not infer intended access from app code.
+
+```
+flowchart LR
+  Upload[Customer submits code + policy] --> Validate[Platform validates policy]
+  Validate --> Release[Version code + policy together]
+  Release --> Publish[Publish the matching release]
+
+```
+
+The platform owns these publication rules:
+
+- Match the tenant to the authenticated app owner.
+- Reject duplicate or ambiguous routes.
+- Restrict which routes can become public.
+- Prevent changes that weaken required permissions.
+- Keep code and policy versions consistent during rollouts.
+
+Upload a new script name first. Then switch the dispatch Worker to that script and its matching policy.
+
+### Deny undeclared routes
+
+Match both method and path. A new route stays inaccessible until the platform accepts its policy.
+
+*policy.jsjs*
+
+```js
+export function checkRoute(request, routes, tenant, identity) {
+	const path = new URL(request.url).pathname;
+	const route = routes.find(
+		(route) => route.method === request.method && route.path === path,
+	);
+	if (!route) return new Response("Route not published", { status: 404 });
+	if (route.access === "public") return null;
+	if (!identity) return new Response("Sign in", { status: 401 });
+	if (
+		identity.tenant !== tenant ||
+		(route.access !== "member" && !identity.permissions.includes(route.access))
+	) {
+		return new Response("Forbidden", { status: 403 });
+	}
+	return null;
+}
+```
+
+*policy.tsts*
+
+```ts
+export type Identity = {
+	userId: string;
+	tenant: string;
+	permissions: string[];
+};
+
+export type Route = {
+	method: string;
+	path: string;
+	access: "public" | "member" | "reports:admin";
+};
+
+export function checkRoute(
+	request: Request,
+	routes: Route[],
+	tenant: string,
+	identity: Identity | null,
+): Response | null {
+	const path = new URL(request.url).pathname;
+	const route = routes.find(
+		(route) => route.method === request.method && route.path === path,
+	);
+	if (!route) return new Response("Route not published", { status: 404 });
+	if (route.access === "public") return null;
+	if (!identity) return new Response("Sign in", { status: 401 });
+	if (
+		identity.tenant !== tenant ||
+		(route.access !== "member" && !identity.permissions.includes(route.access))
+	) {
+		return new Response("Forbidden", { status: 403 });
+	}
+	return null;
+}
+```
+
+Here, `member` means membership in the app tenant. Add an app-membership check if only some tenant members may enter.
+
+Use one path interpretation across the gate and app. This example matches exact URL paths; it grants no wildcard access.
+
+## Authenticate before invoking the app
+
+Implement `authenticate(request)` in `auth.ts` using your existing identity provider or session service. This integration must:
+
+- Verify the session or token, including expiry and intended audience.
+- Return a verified identity, or `null` when credentials are absent.
+- Reject invalid credentials rather than trust caller-supplied identity headers.
+
+Resolve `deployment` from your platform's app registry. Its tenant, routes, and script name must not come from app code.
+
+Place this gate in the dispatch Worker request handler:
+
+*gateway.jsjs*
+
+```js
+import { checkRoute } from "./policy";
+import { authenticate } from "./auth";
+
+let identity;
+try {
+	identity = await authenticate(request);
+} catch {
+	return new Response("Invalid session", { status: 401 });
+}
+
+const denied = checkRoute(
+	request,
+	deployment.routes,
+	deployment.tenant,
+	identity,
+);
+if (denied) return denied;
+
+// Forward only what this GET-only example needs. Keep session credentials out.
+const appRequest = new Request(request.url, { method: "GET" });
+```
+
+*gateway.tsts*
+
+```ts
+import { checkRoute, type Identity } from "./policy";
+import { authenticate } from "./auth";
+
+let identity: Identity | null;
+try {
+	identity = await authenticate(request);
+} catch {
+	return new Response("Invalid session", { status: 401 });
+}
+
+const denied = checkRoute(
+	request,
+	deployment.routes,
+	deployment.tenant,
+	identity,
+);
+if (denied) return denied;
+
+// Forward only what this GET-only example needs. Keep session credentials out.
+const appRequest = new Request(request.url, { method: "GET" });
+```
+
+After the gate succeeds, invoke the app through the [dispatch namespace binding](https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/dynamic-dispatch/):
+
+*gateway.jsjs*
+
+```js
+const app = env.DISPATCHER.get(deployment.scriptName, {
+	props: { identity },
+});
+return app.fetch(appRequest);
+```
+
+*gateway.tsts*
+
+```ts
+const app = env.DISPATCHER.get(deployment.scriptName, {
+	props: { identity },
+});
+return app.fetch(appRequest);
+```
+
+All app ingress must pass through the dispatch Worker.
+
+For a wholly private app, require membership on every request. For mixed-access apps, use the route policy to select public exceptions.
+
+## Protect data even when routes change
+
+A route check can require Bob to sign in, but it cannot prevent app code from requesting Alice's report. Keep permission checks inside the platform operations that read private data, so every new route uses the same checks.
+
+An app can omit `checkAuth()` or ignore its result. Give it an operation that performs authorization and data access together.
+
+```
+sequenceDiagram
+  participant Caller as Bob
+  participant Platform as Dispatch Worker
+  participant App as User Worker
+  participant Reports as Platform Reports capability
+  Caller->>Platform: Request with Bob's session
+  Platform->>App: Capability scoped to Bob
+  App->>Reports: read("alice")
+  Reports-->>App: 404 — record does not belong to Bob
+  App-->>Caller: 404
+
+```
+
+Keep the data and implementation in the dispatch Worker. This example uses synthetic records:
+
+*gateway.jsjs*
+
+```js
+import { WorkerEntrypoint } from "cloudflare:workers";
+
+const records = [
+	{ id: "alice", tenant: "acme", owner: "alice", text: "Alice's report" },
+	{ id: "bob", tenant: "acme", owner: "bob", text: "Bob's report" },
+];
+
+export class Reports extends WorkerEntrypoint {
+	read(id) {
+		const { identity, tenant } = this.ctx.props;
+		if (!identity) return { status: 401, error: "Sign in" };
+		if (
+			identity.tenant !== tenant ||
+			!identity.permissions.includes("reports:read")
+		) {
+			return { status: 403, error: "Forbidden" };
+		}
+		const report = records.find(
+			(record) =>
+				record.id === id &&
+				record.tenant === tenant &&
+				record.owner === identity.userId,
+		);
+		if (!report) return { status: 404, error: "Report not found" };
+		return { status: 200, report: { text: report.text } };
+	}
+}
+```
+
+*gateway.tsts*
+
+```ts
+import { WorkerEntrypoint } from "cloudflare:workers";
+
+const records = [
+	{ id: "alice", tenant: "acme", owner: "alice", text: "Alice's report" },
+	{ id: "bob", tenant: "acme", owner: "bob", text: "Bob's report" },
+];
+
+type Scope = { identity: Identity | null; tenant: string };
+
+export class Reports extends WorkerEntrypoint<Cloudflare.Env, Scope> {
+	read(id: string) {
+		const { identity, tenant } = this.ctx.props;
+		if (!identity) return { status: 401, error: "Sign in" };
+		if (
+			identity.tenant !== tenant ||
+			!identity.permissions.includes("reports:read")
+		) {
+			return { status: 403, error: "Forbidden" };
+		}
+		const report = records.find(
+			(record) =>
+				record.id === id &&
+				record.tenant === tenant &&
+				record.owner === identity.userId,
+		);
+		if (!report) return { status: 404, error: "Report not found" };
+		return { status: 200, report: { text: report.text } };
+	}
+}
+```
+
+Create the capability using verified platform context. The app can choose a record ID, but cannot choose the capability's identity:
+
+*gateway.jsjs*
+
+```js
+const reports = ctx.exports.Reports({
+	props: { identity, tenant: deployment.tenant },
+});
+```
+
+*gateway.tsts*
+
+```ts
+const reports = ctx.exports.Reports({
+	props: { identity, tenant: deployment.tenant },
+});
+```
+
+Pass the capability with the invocation:
+
+*gateway.jsjs*
+
+```js
+const app = env.DISPATCHER.get(deployment.scriptName, {
+	props: { reports },
+});
+return app.fetch(appRequest);
+```
+
+*gateway.tsts*
+
+```ts
+const app = env.DISPATCHER.get(deployment.scriptName, {
+	props: { reports },
+});
+return app.fetch(appRequest);
+```
+
+The customer app calls the capability through [RPC](https://developers.cloudflare.com/workers/runtime-apis/rpc/):
+
+*app.jsjs*
+
+```js
+const result = await this.ctx.props.reports.read(reportId);
+return Response.json(result, { status: result.status });
+```
+
+*app.tsts*
+
+```ts
+const result = await this.ctx.props.reports.read(reportId);
+return Response.json(result, { status: result.status });
+```
+
+Use [Outbound Workers](https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/outbound-workers/) to restrict network access to authorized destinations and operations. Otherwise, another data-access path could bypass the capability.
+
+## Adapt the pattern
+
+Use these variations when the app interface requires them:
+
+| Pattern | Example | Why |
+| --- | --- | --- |
+| Registered handlers | `{ method: "GET", path: "/profile", access: "member", handler: "profile" }` | Select policy and handler from the same platform-owned entry. A handler name does not grant data access. |
+| Public app shell | Public HTML; protected report reads through `reports.read(id)` | The platform can protect data without enumerating every frontend route. |
+| Separate components | Public Worker receives `{}`; private Worker receives `{ reports }` | Public code has no private capability. Keep their storage separate too. |
+| Outbound HTTP gateway | Allow `GET https://reports.internal/reports/:id`, then check record access | Existing HTTP clients can use the same authorization model. Ignore identity headers supplied by app code. |
+
+If the outbound gateway injects credentials, authorize the destination and operation first. Hiding a token does not limit what that token can do.
+
+Was this helpful?
+
+YesNo
+
+## On this page
+
+[![](https://developers.cloudflare.com/_astro/logo.te5VL_aD.svg)Docs](https://developers.cloudflare.com/)
+
+```json
+{"@context":"https://schema.org","@type":"TechArticle","@id":"https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/authentication/#page","headline":"Authentication and authorization","description":"Authenticate requests in a dispatch Worker and authorize data access outside customer app code with Workers for Platforms.","url":"https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/authentication/","inLanguage":"en","image":"https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/authentication/og.png?v=4b202c4a67329b69","dateModified":"2026-10-31","publisher":{"@type":"Organization","name":"Cloudflare","description":"One platform for your apps, agents, and workforce. Build, secure, and scale without managing infrastructure","url":"https://www.cloudflare.com/","sameAs":["https://github.com/cloudflare","https://www.linkedin.com/company/cloudflare","https://x.com/cloudflare"],"logo":{"@type":"ImageObject","url":"https://developers.cloudflare.com/logo.svg"},"address":{"@type":"PostalAddress","streetAddress":"101 Townsend St","addressLocality":"San Francisco","addressRegion":"CA","postalCode":"94107","addressCountry":"US"},"contactPoint":[{"@type":"ContactPoint","contactType":"Customer Support","url":"https://support.cloudflare.com/","availableLanguage":["English"]},{"@type":"ContactPoint","contactType":"Sales","url":"https://www.cloudflare.com/contact/","availableLanguage":["English"]}]},"isPartOf":{"@type":"WebSite","@id":"https://developers.cloudflare.com/#website","name":"Cloudflare Docs","url":"https://developers.cloudflare.com/"}}
+```
+
+---
+
+---
 description: Attach KV, R2, D1, and other resource bindings to user Workers deployed through Workers for Platforms.
 title: Bindings
 image: https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/bindings/og.png?v=390ed50248b25a2e
@@ -728775,7 +729194,7 @@ image: https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-pl
 
 # Bindings
 
-Last updated Sep 16, 2026|Copy as Markdown| [View as Markdown](https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/bindings/index.md)| [Agent setup](https://developers.cloudflare.com/agent-setup/)
+Last updated Oct 31, 2026|Copy as Markdown| [View as Markdown](https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/bindings/index.md)| [Agent setup](https://developers.cloudflare.com/agent-setup/)
 
 When you deploy User Workers through Workers for Platforms, you can attach [bindings](https://developers.cloudflare.com/workers/runtime-apis/bindings/) to give them access to resources like [KV namespaces](https://developers.cloudflare.com/kv/), [D1 databases](https://developers.cloudflare.com/d1/), [R2 buckets](https://developers.cloudflare.com/r2/), and more. This enables your end customers to build more powerful applications without you having to build the infrastructure components yourself.
 
@@ -728788,6 +729207,8 @@ With bindings, each User Worker can extend functionality to:
 - **Run containers** with [Containers](https://developers.cloudflare.com/containers/) (bound as a [Durable Object](https://developers.cloudflare.com/durable-objects/))
 - **Connect to private networks** with [VPC Services](https://developers.cloudflare.com/workers-vpc/configuration/vpc-services/), [VPC Networks](https://developers.cloudflare.com/workers-vpc/configuration/vpc-networks/), and [Hyperdrive](https://developers.cloudflare.com/hyperdrive/)
 - **Collect metrics** with [Analytics Engine](https://developers.cloudflare.com/analytics/analytics-engine/)
+
+For an example that checks both tenant and record ownership, refer to [Protect data even when routes change](https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/authentication/#protect-data-even-when-routes-change).
 
 #### Resource isolation
 
@@ -728863,7 +729284,7 @@ YesNo
 [![](https://developers.cloudflare.com/_astro/logo.te5VL_aD.svg)Docs](https://developers.cloudflare.com/)
 
 ```json
-{"@context":"https://schema.org","@type":"TechArticle","@id":"https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/bindings/#page","headline":"Bindings","description":"Attach KV, R2, D1, and other resource bindings to user Workers deployed through Workers for Platforms.","url":"https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/bindings/","inLanguage":"en","image":"https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/bindings/og.png?v=390ed50248b25a2e","dateModified":"2026-09-16","publisher":{"@type":"Organization","name":"Cloudflare","description":"One platform for your apps, agents, and workforce. Build, secure, and scale without managing infrastructure","url":"https://www.cloudflare.com/","sameAs":["https://github.com/cloudflare","https://www.linkedin.com/company/cloudflare","https://x.com/cloudflare"],"logo":{"@type":"ImageObject","url":"https://developers.cloudflare.com/logo.svg"},"address":{"@type":"PostalAddress","streetAddress":"101 Townsend St","addressLocality":"San Francisco","addressRegion":"CA","postalCode":"94107","addressCountry":"US"},"contactPoint":[{"@type":"ContactPoint","contactType":"Customer Support","url":"https://support.cloudflare.com/","availableLanguage":["English"]},{"@type":"ContactPoint","contactType":"Sales","url":"https://www.cloudflare.com/contact/","availableLanguage":["English"]}]},"isPartOf":{"@type":"WebSite","@id":"https://developers.cloudflare.com/#website","name":"Cloudflare Docs","url":"https://developers.cloudflare.com/"},"keywords":["Bindings"]}
+{"@context":"https://schema.org","@type":"TechArticle","@id":"https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/bindings/#page","headline":"Bindings","description":"Attach KV, R2, D1, and other resource bindings to user Workers deployed through Workers for Platforms.","url":"https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/bindings/","inLanguage":"en","image":"https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/bindings/og.png?v=390ed50248b25a2e","dateModified":"2026-10-31","publisher":{"@type":"Organization","name":"Cloudflare","description":"One platform for your apps, agents, and workforce. Build, secure, and scale without managing infrastructure","url":"https://www.cloudflare.com/","sameAs":["https://github.com/cloudflare","https://www.linkedin.com/company/cloudflare","https://x.com/cloudflare"],"logo":{"@type":"ImageObject","url":"https://developers.cloudflare.com/logo.svg"},"address":{"@type":"PostalAddress","streetAddress":"101 Townsend St","addressLocality":"San Francisco","addressRegion":"CA","postalCode":"94107","addressCountry":"US"},"contactPoint":[{"@type":"ContactPoint","contactType":"Customer Support","url":"https://support.cloudflare.com/","availableLanguage":["English"]},{"@type":"ContactPoint","contactType":"Sales","url":"https://www.cloudflare.com/contact/","availableLanguage":["English"]}]},"isPartOf":{"@type":"WebSite","@id":"https://developers.cloudflare.com/#website","name":"Cloudflare Docs","url":"https://developers.cloudflare.com/"},"keywords":["Bindings"]}
 ```
 
 ---
@@ -728944,7 +729365,7 @@ image: https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-pl
 
 # Dynamic dispatch Worker
 
-Last updated Sep 16, 2026|Copy as Markdown| [View as Markdown](https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/dynamic-dispatch/index.md)| [Agent setup](https://developers.cloudflare.com/agent-setup/)
+Last updated Oct 31, 2026|Copy as Markdown| [View as Markdown](https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/dynamic-dispatch/index.md)| [Agent setup](https://developers.cloudflare.com/agent-setup/)
 
 A [dynamic dispatch Worker](https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/how-workers-for-platforms-works/#dynamic-dispatch-worker) is a specialized routing Worker that directs incoming requests to the appropriate user Workers in your dispatch namespace. Instead of using [Workers Routes](https://developers.cloudflare.com/workers/configuration/routing/routes/), dispatch Workers let you programmatically control request routing through code.
 
@@ -728953,6 +729374,8 @@ A [dynamic dispatch Worker](https://developers.cloudflare.com/cloudflare-for-pla
 Note
 
 You can also create a dispatch Worker from the Cloudflare dashboard. Go to **Workers for Platforms**, select your namespace, and click **Create** > **Dispatch Worker**. The dashboard provides templates for path-based and subdomain-based routing.
+
+For apps with public and private routes, refer to [Authentication and authorization](https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/authentication/). The guide combines route policies with scoped data access.
 
 #### Why use a dynamic dispatch Worker?
 
@@ -729423,7 +729846,7 @@ YesNo
 [![](https://developers.cloudflare.com/_astro/logo.te5VL_aD.svg)Docs](https://developers.cloudflare.com/)
 
 ```json
-{"@context":"https://schema.org","@type":"TechArticle","@id":"https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/dynamic-dispatch/#page","headline":"Dynamic dispatch Worker","description":"Create a dynamic dispatch Worker to route incoming requests to user Workers in your dispatch namespace.","url":"https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/dynamic-dispatch/","inLanguage":"en","image":"https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/dynamic-dispatch/og.png?v=d1d1e631671f98a1","dateModified":"2026-09-16","publisher":{"@type":"Organization","name":"Cloudflare","description":"One platform for your apps, agents, and workforce. Build, secure, and scale without managing infrastructure","url":"https://www.cloudflare.com/","sameAs":["https://github.com/cloudflare","https://www.linkedin.com/company/cloudflare","https://x.com/cloudflare"],"logo":{"@type":"ImageObject","url":"https://developers.cloudflare.com/logo.svg"},"address":{"@type":"PostalAddress","streetAddress":"101 Townsend St","addressLocality":"San Francisco","addressRegion":"CA","postalCode":"94107","addressCountry":"US"},"contactPoint":[{"@type":"ContactPoint","contactType":"Customer Support","url":"https://support.cloudflare.com/","availableLanguage":["English"]},{"@type":"ContactPoint","contactType":"Sales","url":"https://www.cloudflare.com/contact/","availableLanguage":["English"]}]},"isPartOf":{"@type":"WebSite","@id":"https://developers.cloudflare.com/#website","name":"Cloudflare Docs","url":"https://developers.cloudflare.com/"}}
+{"@context":"https://schema.org","@type":"TechArticle","@id":"https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/dynamic-dispatch/#page","headline":"Dynamic dispatch Worker","description":"Create a dynamic dispatch Worker to route incoming requests to user Workers in your dispatch namespace.","url":"https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/dynamic-dispatch/","inLanguage":"en","image":"https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/dynamic-dispatch/og.png?v=d1d1e631671f98a1","dateModified":"2026-10-31","publisher":{"@type":"Organization","name":"Cloudflare","description":"One platform for your apps, agents, and workforce. Build, secure, and scale without managing infrastructure","url":"https://www.cloudflare.com/","sameAs":["https://github.com/cloudflare","https://www.linkedin.com/company/cloudflare","https://x.com/cloudflare"],"logo":{"@type":"ImageObject","url":"https://developers.cloudflare.com/logo.svg"},"address":{"@type":"PostalAddress","streetAddress":"101 Townsend St","addressLocality":"San Francisco","addressRegion":"CA","postalCode":"94107","addressCountry":"US"},"contactPoint":[{"@type":"ContactPoint","contactType":"Customer Support","url":"https://support.cloudflare.com/","availableLanguage":["English"]},{"@type":"ContactPoint","contactType":"Sales","url":"https://www.cloudflare.com/contact/","availableLanguage":["English"]}]},"isPartOf":{"@type":"WebSite","@id":"https://developers.cloudflare.com/#website","name":"Cloudflare Docs","url":"https://developers.cloudflare.com/"}}
 ```
 
 ---
@@ -765670,7 +766093,7 @@ YesNo
 ---
 
 ---
-description: Use wrangler d1 insights or cf sql query to find the D1 databases and queries that cost the most, then fix them.
+description: Use cf sql query or wrangler d1 insights to find the D1 databases and queries that cost the most, then fix them.
 title: Find slow and expensive queries
 image: https://developers.cloudflare.com/d1/observability/find-expensive-queries/og.png?v=3937662d09bd63f0
 ---
@@ -765683,11 +766106,11 @@ image: https://developers.cloudflare.com/d1/observability/find-expensive-queries
 
 # Find slow and expensive queries
 
-Last updated Oct 30, 2026|Copy as Markdown| [View as Markdown](https://developers.cloudflare.com/d1/observability/find-expensive-queries/index.md)| [Agent setup](https://developers.cloudflare.com/agent-setup/)
+Last updated Oct 31, 2026|Copy as Markdown| [View as Markdown](https://developers.cloudflare.com/d1/observability/find-expensive-queries/index.md)| [Agent setup](https://developers.cloudflare.com/agent-setup/)
 
 A small number of databases and queries usually cause most of the rows read and written in an account. These rows are what you pay for, and these queries make your databases slow. A query is usually slow when it reads many more rows than it returns. A read query that runs many times also puts load on a database. Many small queries that your Worker sends one after another also make a request slow, because each query is a separate round trip to D1.
 
-To find these databases and queries, use `wrangler d1 insights` or the [`cf sql query`](https://developers.cloudflare.com/analytics/sql-api/get-started/#use-the-cloudflare-cli) command of the Cloudflare CLI. `wrangler d1 insights` returns the top queries from the GraphQL Analytics API. For all its options, refer to [Query `insights`](https://developers.cloudflare.com/d1/observability/metrics-analytics/#query-insights). `cf sql query` sends SQL to the [SQL API](https://developers.cloudflare.com/analytics/sql-api/). You can change the SQL in the examples to get different results.
+To find these databases and queries, use the [`cf sql query`](https://developers.cloudflare.com/analytics/sql-api/get-started/#use-the-cloudflare-cli) command of the Cloudflare CLI, or `wrangler d1 insights`. `cf sql query` sends SQL to the [SQL API](https://developers.cloudflare.com/analytics/sql-api/). You can change the SQL in the examples to get different results. `wrangler d1 insights` returns the top queries from the GraphQL Analytics API. For all its options, refer to [Query `insights`](https://developers.cloudflare.com/d1/observability/metrics-analytics/#query-insights).
 
 If you use an API token, the token must have the **Account Analytics Read** permission. Both commands return JSON, so an AI agent can run them and read the results.
 
@@ -765700,12 +766123,6 @@ The `events.d1Queries` dataset is sampled. The SQL API applies the sample weight
 ## Find the most expensive databases
 
 Find the databases that read the most rows in your account during the last 7 days:
-
-```sh
-npx wrangler d1 insights --sort-by=reads --time-period=7d --limit=20 --json
-```
-
-`wrangler d1 insights` returns queries, not databases. Each result includes the `databaseId` of the database that ran the query. Add the `totalRowsRead` of the results that have the same `databaseId` to find the most expensive databases.
 
 ```sh
 npx cf sql query --scope-account <account_id> "
@@ -765726,46 +766143,17 @@ npx cf sql query --scope-account <account_id> "
 
 To find the databases that write the most rows, change `ORDER BY` to `totalRowsWritten`. To find the slowest databases, change `ORDER BY` to `avgDurationMs`.
 
-To get the name of a database, run `npx wrangler d1 info <database_id>`. To find out how rows read and rows written affect your bill, refer to [Pricing](https://developers.cloudflare.com/d1/platform/pricing/).
+```sh
+npx wrangler d1 insights --sort-by=reads --time-period=7d --limit=20 --json
+```
+
+`wrangler d1 insights` returns queries, not databases. Each result includes the `databaseId` of the database that ran the query. Add the `totalRowsRead` of the results that have the same `databaseId` to find the most expensive databases.
+
+To get the name of a database, run `npx cf d1 get <database_id>` or `npx wrangler d1 info <database_id>`. To find out how rows read and rows written affect your bill, refer to [Pricing](https://developers.cloudflare.com/d1/platform/pricing/).
 
 ## Find queries that need an index
 
 1. Find the queries that read the most rows in your account during the last 7 days:
-
-   ```sh
-   npx wrangler d1 insights --sort-by=reads --time-period=7d --json
-   ```
-
-   The following example output shows the first two of the five results:
-
-   ```sh
-   [
-     {
-       "query": "SELECT \"Order\".Id, \"Order\".CustomerId, \"Order\".OrderDate,\n            SUM(OrderDetail.UnitPrice * OrderDetail.Quantity) AS TotalAmount\n          FROM \"Order\"\n          JOIN OrderDetail ON OrderDetail.OrderId = \"Order\".Id\n          GROUP BY \"Order\".Id\n          ORDER BY \"Order\".Id DESC\n          LIMIT ?",
-       "avgRowsRead": 1244521,
-       "totalRowsRead": 75268630080,
-       "avgRowsWritten": 0,
-       "totalRowsWritten": 0,
-       "avgDurationMs": 283.471346125992,
-       "totalDurationMs": 17144347.013699997,
-       "numberOfTimesRun": 60480,
-       "queryEfficiency": 1.6070439952399358e-05,
-       "databaseId": "7c9e2b14-3f6a-4d8e-9b21-5a0c8f3e6d47"
-     },
-     {
-       "query": "SELECT \"Order\".Id, \"Order\".CustomerId, \"Order\".OrderDate,\n            SUM(OrderDetail.UnitPrice * OrderDetail.Quantity) AS TotalAmount\n          FROM \"Order\"\n          JOIN OrderDetail ON OrderDetail.OrderId = \"Order\".Id\n          GROUP BY \"Order\".Id\n          ORDER BY \"Order\".Id DESC\n          LIMIT ?",
-       "avgRowsRead": 1244521,
-       "totalRowsRead": 74719796319,
-       "avgRowsWritten": 0,
-       "totalRowsWritten": 0,
-       "avgDurationMs": 257.3288101250854,
-       "totalDurationMs": 15449764.431100003,
-       "numberOfTimesRun": 60039,
-       "queryEfficiency": 1.6070439952399358e-05,
-       "databaseId": "2e4f6a81-9c3d-4b7e-a512-8d0f3c6b9e15"
-     }
-   ]
-   ```
 
    ```sh
    npx cf sql query --scope-account <account_id> "
@@ -765817,12 +766205,43 @@ To get the name of a database, run `npx wrangler d1 info <database_id>`. To find
    }
    ```
 
-   Each result includes the `databaseId` of the database that ran the query. In the example output, the same `JOIN` query runs on more than one database.
-2. Get the top queries for the database that you want to fix. Use the `databaseId` from step 1, or from [Find the most expensive databases](#find-the-most-expensive-databases):
+   ```sh
+   npx wrangler d1 insights --sort-by=reads --time-period=7d --json
+   ```
+
+   The following example output shows the first two of the five results:
 
    ```sh
-   npx wrangler d1 insights <database_id> --sort-by=reads --time-period=7d --json
+   [
+     {
+       "query": "SELECT \"Order\".Id, \"Order\".CustomerId, \"Order\".OrderDate,\n            SUM(OrderDetail.UnitPrice * OrderDetail.Quantity) AS TotalAmount\n          FROM \"Order\"\n          JOIN OrderDetail ON OrderDetail.OrderId = \"Order\".Id\n          GROUP BY \"Order\".Id\n          ORDER BY \"Order\".Id DESC\n          LIMIT ?",
+       "avgRowsRead": 1244521,
+       "totalRowsRead": 75268630080,
+       "avgRowsWritten": 0,
+       "totalRowsWritten": 0,
+       "avgDurationMs": 283.471346125992,
+       "totalDurationMs": 17144347.013699997,
+       "numberOfTimesRun": 60480,
+       "queryEfficiency": 1.6070439952399358e-05,
+       "databaseId": "7c9e2b14-3f6a-4d8e-9b21-5a0c8f3e6d47"
+     },
+     {
+       "query": "SELECT \"Order\".Id, \"Order\".CustomerId, \"Order\".OrderDate,\n            SUM(OrderDetail.UnitPrice * OrderDetail.Quantity) AS TotalAmount\n          FROM \"Order\"\n          JOIN OrderDetail ON OrderDetail.OrderId = \"Order\".Id\n          GROUP BY \"Order\".Id\n          ORDER BY \"Order\".Id DESC\n          LIMIT ?",
+       "avgRowsRead": 1244521,
+       "totalRowsRead": 74719796319,
+       "avgRowsWritten": 0,
+       "totalRowsWritten": 0,
+       "avgDurationMs": 257.3288101250854,
+       "totalDurationMs": 15449764.431100003,
+       "numberOfTimesRun": 60039,
+       "queryEfficiency": 1.6070439952399358e-05,
+       "databaseId": "2e4f6a81-9c3d-4b7e-a512-8d0f3c6b9e15"
+     }
+   ]
    ```
+
+   Each result includes the `databaseId` of the database that ran the query. In the example output, the same `JOIN` query runs on more than one database.
+2. Get the top queries for the database that you want to fix. Use the `databaseId` from step 1, or from [Find the most expensive databases](#find-the-most-expensive-databases):
 
    ```sh
    npx cf sql query --scope-account <account_id> "
@@ -765845,11 +766264,21 @@ To get the name of a database, run `npx wrangler d1 info <database_id>`. To find
    "
    ```
 
+   ```sh
+   npx wrangler d1 insights <database_id> --sort-by=reads --time-period=7d --json
+   ```
+
 3. Find the queries with a high `avgRowsRead` and a `queryEfficiency` much lower than `1`. These queries read many rows to return a small number of rows. Usually, a column in the `WHERE`, `JOIN`, or `ORDER BY` clause does not have an index.
 
    In the example output in step 1, the `JOIN` query reads 1,244,521 rows each time it runs, and its `queryEfficiency` is approximately `0.000016`. The `OrderDetail.OrderId` column in the `JOIN` clause does not have an index.
 4. Find the index that fixes the query. To find the correct fix for each query pattern, refer to [Indexes and your bill](https://developers.cloudflare.com/d1/best-practices/use-indexes/#indexes-and-your-bill). For the example query, add an index on the `OrderId` column of the `OrderDetail` table.
-5. Create a [migration](https://developers.cloudflare.com/d1/reference/migrations/) for the index. The database must be in your [Wrangler configuration file](https://developers.cloudflare.com/d1/get-started/#3-bind-your-worker-to-your-d1-database):
+5. Create a [migration](https://developers.cloudflare.com/d1/reference/migrations/) for the index:
+
+   ```sh
+   npx cf d1 migrations create add_orderdetail_orderid_index
+   ```
+
+   The database must be in your [Wrangler configuration file](https://developers.cloudflare.com/d1/get-started/#3-bind-your-worker-to-your-d1-database).
 
    ```sh
    npx wrangler d1 migrations create <database_name> add_orderdetail_orderid_index
@@ -765859,7 +766288,7 @@ To get the name of a database, run `npx wrangler d1 info <database_id>`. To find
    ✅ Successfully created Migration '0001_add_orderdetail_orderid_index.sql'!
    ```
 
-   The number at the start of the file name depends on the migrations that you already have.
+   The command creates a file in the `migrations` directory. The number at the start of the file name depends on the migrations that you already have.
 6. Add the `CREATE INDEX` statement to the new migration file:
 
    *migrations/0001\_add\_orderdetail\_orderid\_index.sqlsql*
@@ -765872,6 +766301,10 @@ To get the name of a database, run `npx wrangler d1 info <database_id>`. To find
    ```
 
 7. Apply the migration to your remote database:
+
+   ```sh
+   npx cf d1 migrations apply <database_id>
+   ```
 
    ```sh
    npx wrangler d1 migrations apply <database_name> --remote
@@ -765888,11 +766321,15 @@ To get the name of a database, run `npx wrangler d1 info <database_id>`. To find
 8. Make sure that D1 uses the new index. Put `EXPLAIN QUERY PLAN` in front of the query and run it:
 
    ```sh
+   npx cf d1 query <database_id> --sql "EXPLAIN QUERY PLAN <query>"
+   ```
+
+   ```sh
    npx wrangler d1 execute <database_name> --remote --command="EXPLAIN QUERY PLAN <query>"
    ```
 
    The line for the table that you added the index to should show `SEARCH ... USING INDEX`, not `SCAN`. For the example query, `SCAN OrderDetail` changes to `SEARCH OrderDetail USING INDEX idx_orderdetail_orderid (OrderId=?)`. For more information, refer to [Test an index](https://developers.cloudflare.com/d1/best-practices/use-indexes/#test-an-index).
-9. Make sure that the number of rows read decreases. Run the command from step 2 again with a shorter time period, such as `--time-period=1h` or `INTERVAL '1' HOUR`.
+9. Make sure that the number of rows read decreases. Run the command from step 2 again with a shorter time period, such as `INTERVAL '1' HOUR` or `--time-period=1h`.
 
    The results include all the queries in the time period. Queries that ran before you added the index increase the totals of a long time period.
 
@@ -765901,41 +766338,6 @@ To get the name of a database, run `npx wrangler d1 info <database_id>`. To find
 A read query that runs many times often returns the same data each time. If you keep the result in a cache, your Worker does not send the query to D1 each time. This decreases the load on your database and the number of rows read.
 
 1. Find the queries that run the most in your account during the last day:
-
-   ```sh
-   npx wrangler d1 insights --sort-by=count --time-period=1d --json
-   ```
-
-   The following example output shows the first two of the five results:
-
-   ```sh
-   [
-     {
-       "query": "SELECT * FROM Customer WHERE Id = ?",
-       "avgRowsRead": 1,
-       "totalRowsRead": 41876,
-       "avgRowsWritten": 0,
-       "totalRowsWritten": 0,
-       "avgDurationMs": 0.312,
-       "totalDurationMs": 13065.312,
-       "numberOfTimesRun": 41876,
-       "queryEfficiency": 1,
-       "databaseId": "b5d18e3a-6f29-4c04-8e7b-1a9c2d5f7e60"
-     },
-     {
-       "query": "SELECT * FROM Category",
-       "avgRowsRead": 8,
-       "totalRowsRead": 191232,
-       "avgRowsWritten": 0,
-       "totalRowsWritten": 0,
-       "avgDurationMs": 0.274,
-       "totalDurationMs": 6549.696,
-       "numberOfTimesRun": 23904,
-       "queryEfficiency": 1,
-       "databaseId": "2e4f6a81-9c3d-4b7e-a512-8d0f3c6b9e15"
-     }
-   ]
-   ```
 
    ```sh
    npx cf sql query --scope-account <account_id> "
@@ -765984,6 +766386,41 @@ A read query that runs many times often returns the same data each time. If you 
    }
    ```
 
+   ```sh
+   npx wrangler d1 insights --sort-by=count --time-period=1d --json
+   ```
+
+   The following example output shows the first two of the five results:
+
+   ```sh
+   [
+     {
+       "query": "SELECT * FROM Customer WHERE Id = ?",
+       "avgRowsRead": 1,
+       "totalRowsRead": 41876,
+       "avgRowsWritten": 0,
+       "totalRowsWritten": 0,
+       "avgDurationMs": 0.312,
+       "totalDurationMs": 13065.312,
+       "numberOfTimesRun": 41876,
+       "queryEfficiency": 1,
+       "databaseId": "b5d18e3a-6f29-4c04-8e7b-1a9c2d5f7e60"
+     },
+     {
+       "query": "SELECT * FROM Category",
+       "avgRowsRead": 8,
+       "totalRowsRead": 191232,
+       "avgRowsWritten": 0,
+       "totalRowsWritten": 0,
+       "avgDurationMs": 0.274,
+       "totalDurationMs": 6549.696,
+       "numberOfTimesRun": 23904,
+       "queryEfficiency": 1,
+       "databaseId": "2e4f6a81-9c3d-4b7e-a512-8d0f3c6b9e15"
+     }
+   ]
+   ```
+
    The SQL query returns only queries that do not write rows. The Wrangler output includes all queries. To find the read queries in the Wrangler output, look for a `totalRowsWritten` of `0`.
 2. Find the queries with a high `numberOfTimesRun` that return the same data each time. Cache the result if the data does not change frequently, or if your application can show data that is a short time old.
 
@@ -765997,6 +766434,24 @@ If a query must always return the newest data, do not cache it.
 Each time your Worker calls `run()`, `all()`, `first()`, or `raw()` on a statement, it sends a separate request to D1 and waits for the response. If your Worker sends many queries one after another in the same request, such as an `INSERT` for each item in a list, the round trips add up. To send many statements to D1 in one round trip, use [`batch()`](https://developers.cloudflare.com/d1/worker-api/d1-database/#batch).
 
 1. Find the write queries that write the most rows in your account during the last day:
+
+   ```sh
+   npx cf sql query --scope-account <account_id> "
+     SELECT
+       databaseId,
+       query,
+       COUNT(*) AS numberOfTimesRun,
+       SUM(rowsWritten) AS totalRowsWritten,
+       AVG(rowsWritten) AS avgRowsWritten
+     FROM events.d1Queries
+     WHERE timestamp >= NOW() - INTERVAL '1' DAY
+       AND rowsWritten > 0
+       AND error = ''
+     GROUP BY databaseId, query
+     ORDER BY totalRowsWritten DESC
+     LIMIT 5
+   "
+   ```
 
    ```sh
    npx wrangler d1 insights --sort-by=writes --time-period=1d --json
@@ -766031,24 +766486,6 @@ Each time your Worker calls `run()`, `all()`, `first()`, or `raw()` on a stateme
        "databaseId": "7c9e2b14-3f6a-4d8e-9b21-5a0c8f3e6d47"
      }
    ]
-   ```
-
-   ```sh
-   npx cf sql query --scope-account <account_id> "
-     SELECT
-       databaseId,
-       query,
-       COUNT(*) AS numberOfTimesRun,
-       SUM(rowsWritten) AS totalRowsWritten,
-       AVG(rowsWritten) AS avgRowsWritten
-     FROM events.d1Queries
-     WHERE timestamp >= NOW() - INTERVAL '1' DAY
-       AND rowsWritten > 0
-       AND error = ''
-     GROUP BY databaseId, query
-     ORDER BY totalRowsWritten DESC
-     LIMIT 5
-   "
    ```
 
 2. Find the write queries with a high `numberOfTimesRun` and a small `avgRowsWritten`. Each time these queries run, they insert or update only one row of a table. The value of `avgRowsWritten` includes the rows written to the indexes of the table, so a query that inserts one row into a table with two indexes has an `avgRowsWritten` of `3`.
@@ -766090,7 +766527,7 @@ YesNo
 [![](https://developers.cloudflare.com/_astro/logo.te5VL_aD.svg)Docs](https://developers.cloudflare.com/)
 
 ```json
-{"@context":"https://schema.org","@type":"TechArticle","@id":"https://developers.cloudflare.com/d1/observability/find-expensive-queries/#page","headline":"Find slow and expensive queries","description":"Use wrangler d1 insights or cf sql query to find the D1 databases and queries that cost the most, then fix them.","url":"https://developers.cloudflare.com/d1/observability/find-expensive-queries/","inLanguage":"en","image":"https://developers.cloudflare.com/d1/observability/find-expensive-queries/og.png?v=3937662d09bd63f0","dateModified":"2026-10-30","publisher":{"@type":"Organization","name":"Cloudflare","description":"One platform for your apps, agents, and workforce. Build, secure, and scale without managing infrastructure","url":"https://www.cloudflare.com/","sameAs":["https://github.com/cloudflare","https://www.linkedin.com/company/cloudflare","https://x.com/cloudflare"],"logo":{"@type":"ImageObject","url":"https://developers.cloudflare.com/logo.svg"},"address":{"@type":"PostalAddress","streetAddress":"101 Townsend St","addressLocality":"San Francisco","addressRegion":"CA","postalCode":"94107","addressCountry":"US"},"contactPoint":[{"@type":"ContactPoint","contactType":"Customer Support","url":"https://support.cloudflare.com/","availableLanguage":["English"]},{"@type":"ContactPoint","contactType":"Sales","url":"https://www.cloudflare.com/contact/","availableLanguage":["English"]}]},"isPartOf":{"@type":"WebSite","@id":"https://developers.cloudflare.com/#website","name":"Cloudflare Docs","url":"https://developers.cloudflare.com/"}}
+{"@context":"https://schema.org","@type":"TechArticle","@id":"https://developers.cloudflare.com/d1/observability/find-expensive-queries/#page","headline":"Find slow and expensive queries","description":"Use cf sql query or wrangler d1 insights to find the D1 databases and queries that cost the most, then fix them.","url":"https://developers.cloudflare.com/d1/observability/find-expensive-queries/","inLanguage":"en","image":"https://developers.cloudflare.com/d1/observability/find-expensive-queries/og.png?v=3937662d09bd63f0","dateModified":"2026-10-31","publisher":{"@type":"Organization","name":"Cloudflare","description":"One platform for your apps, agents, and workforce. Build, secure, and scale without managing infrastructure","url":"https://www.cloudflare.com/","sameAs":["https://github.com/cloudflare","https://www.linkedin.com/company/cloudflare","https://x.com/cloudflare"],"logo":{"@type":"ImageObject","url":"https://developers.cloudflare.com/logo.svg"},"address":{"@type":"PostalAddress","streetAddress":"101 Townsend St","addressLocality":"San Francisco","addressRegion":"CA","postalCode":"94107","addressCountry":"US"},"contactPoint":[{"@type":"ContactPoint","contactType":"Customer Support","url":"https://support.cloudflare.com/","availableLanguage":["English"]},{"@type":"ContactPoint","contactType":"Sales","url":"https://www.cloudflare.com/contact/","availableLanguage":["English"]}]},"isPartOf":{"@type":"WebSite","@id":"https://developers.cloudflare.com/#website","name":"Cloudflare Docs","url":"https://developers.cloudflare.com/"}}
 ```
 
 ---
@@ -789253,7 +789690,7 @@ image: https://developers.cloudflare.com/dynamic-workers/og.png?v=51a25a49ca35a1
 
 # Dynamic Workers
 
-Last updated Oct 12, 2026|Copy as Markdown| [View as Markdown](https://developers.cloudflare.com/dynamic-workers/index.md)| [Agent setup](https://developers.cloudflare.com/agent-setup/)
+Last updated Oct 31, 2026|Copy as Markdown| [View as Markdown](https://developers.cloudflare.com/dynamic-workers/index.md)| [Agent setup](https://developers.cloudflare.com/agent-setup/)
 
 Spin up Workers at runtime to execute code on-demand in a secure, sandboxed environment.
 
@@ -789281,6 +789718,7 @@ Use Dynamic Workers when code needs to run quickly in a secure, isolated environ
 
 Because you compose the Worker that runs the code at runtime, you control how that Worker is configured and what it can access.
 
+- **[Authentication and authorization](https://developers.cloudflare.com/dynamic-workers/usage/authentication/)**: Enforce route policies and protect data access outside app code.
 - **[Bindings](https://developers.cloudflare.com/dynamic-workers/usage/bindings/)**: Decide which bindings and structured data the dynamic Worker receives.
 - **[Observability](https://developers.cloudflare.com/dynamic-workers/usage/observability/)**: Attach Tail Workers and capture logs for each run.
 - **[Network access](https://developers.cloudflare.com/dynamic-workers/usage/egress-control/)**: Intercept or block Internet access for outbound requests.
@@ -789296,7 +789734,7 @@ YesNo
 [![](https://developers.cloudflare.com/_astro/logo.te5VL_aD.svg)Docs](https://developers.cloudflare.com/)
 
 ```json
-{"@context":"https://schema.org","@type":"WebPage","@id":"https://developers.cloudflare.com/dynamic-workers/#page","headline":"Dynamic Workers","description":"Spin up isolated Workers on demand to execute code.","url":"https://developers.cloudflare.com/dynamic-workers/","inLanguage":"en","image":"https://developers.cloudflare.com/dynamic-workers/og.png?v=51a25a49ca35a178","dateModified":"2026-10-12","publisher":{"@type":"Organization","name":"Cloudflare","description":"One platform for your apps, agents, and workforce. Build, secure, and scale without managing infrastructure","url":"https://www.cloudflare.com/","sameAs":["https://github.com/cloudflare","https://www.linkedin.com/company/cloudflare","https://x.com/cloudflare"],"logo":{"@type":"ImageObject","url":"https://developers.cloudflare.com/logo.svg"},"address":{"@type":"PostalAddress","streetAddress":"101 Townsend St","addressLocality":"San Francisco","addressRegion":"CA","postalCode":"94107","addressCountry":"US"},"contactPoint":[{"@type":"ContactPoint","contactType":"Customer Support","url":"https://support.cloudflare.com/","availableLanguage":["English"]},{"@type":"ContactPoint","contactType":"Sales","url":"https://www.cloudflare.com/contact/","availableLanguage":["English"]}]},"isPartOf":{"@type":"WebSite","@id":"https://developers.cloudflare.com/#website","name":"Cloudflare Docs","url":"https://developers.cloudflare.com/"}}
+{"@context":"https://schema.org","@type":"WebPage","@id":"https://developers.cloudflare.com/dynamic-workers/#page","headline":"Dynamic Workers","description":"Spin up isolated Workers on demand to execute code.","url":"https://developers.cloudflare.com/dynamic-workers/","inLanguage":"en","image":"https://developers.cloudflare.com/dynamic-workers/og.png?v=51a25a49ca35a178","dateModified":"2026-10-31","publisher":{"@type":"Organization","name":"Cloudflare","description":"One platform for your apps, agents, and workforce. Build, secure, and scale without managing infrastructure","url":"https://www.cloudflare.com/","sameAs":["https://github.com/cloudflare","https://www.linkedin.com/company/cloudflare","https://x.com/cloudflare"],"logo":{"@type":"ImageObject","url":"https://developers.cloudflare.com/logo.svg"},"address":{"@type":"PostalAddress","streetAddress":"101 Townsend St","addressLocality":"San Francisco","addressRegion":"CA","postalCode":"94107","addressCountry":"US"},"contactPoint":[{"@type":"ContactPoint","contactType":"Customer Support","url":"https://support.cloudflare.com/","availableLanguage":["English"]},{"@type":"ContactPoint","contactType":"Sales","url":"https://www.cloudflare.com/contact/","availableLanguage":["English"]}]},"isPartOf":{"@type":"WebSite","@id":"https://developers.cloudflare.com/#website","name":"Cloudflare Docs","url":"https://developers.cloudflare.com/"}}
 ```
 
 ---
@@ -789590,6 +790028,422 @@ YesNo
 ---
 
 ---
+description: Authenticate requests in a loader Worker and authorize data access outside customer app code with Dynamic Workers.
+title: Authentication and authorization
+image: https://developers.cloudflare.com/dynamic-workers/usage/authentication/og.png?v=39b7769909b8b5eb
+---
+
+[Skip to content](#main-content)
+
+> Documentation Index  
+> Fetch the complete documentation index at: https://developers.cloudflare.com/dynamic-workers/llms.txt  
+> Use this file to discover all available pages before exploring further.
+
+# Authentication and authorization
+
+Last updated Oct 31, 2026|Copy as Markdown| [View as Markdown](https://developers.cloudflare.com/dynamic-workers/usage/authentication/index.md)| [Agent setup](https://developers.cloudflare.com/agent-setup/)
+
+When you build a platform that runs customer apps, you need to control who can use each app and which data they can access. An app may have both public and private endpoints.
+
+Customers can add routes and change app code independently of your platform. Enforce permissions for routes and data operations in platform-owned code.
+
+Enforce access at two points:
+
+- **Before the app runs:** require a list of public and private routes when the app is published. Validate that list and enforce its rules before invoking app code.
+- **When the app accesses data:** check permissions inside platform-owned operations. Signing in must not let Bob read Alice's private report.
+
+With Dynamic Workers, check requests in the loader Worker and pass scoped data operations to the Worker it loads.
+
+```
+flowchart TB
+  Request --> Gate[Loader Worker<br/>Authenticate and check route]
+  Gate -->|Denied| Reject[Return 401, 403, or 404<br/>App does not run]
+  Gate -->|Allowed| App[Dynamic Worker]
+  App --> Capability[Platform capability<br/>Check access to this record]
+  Capability --> Data[(Private data)]
+
+```
+
+Authentication establishes identity. Authorization determines which routes, actions, and records that identity can access.
+
+## Choose where to enforce access
+
+Choose checks according to what needs protection:
+
+| Requirement | Enforcement point |
+| --- | --- |
+| The whole app requires sign-in | [Loader Worker, before invocation](https://developers.cloudflare.com/dynamic-workers/usage/authentication/#authenticate-before-invoking-the-app) |
+| Routes mix public and private access | [Platform-owned method/path policy](https://developers.cloudflare.com/dynamic-workers/usage/authentication/#publish-code-and-route-policy-together) |
+| Routes are unknown, but data permissions are known | [Platform-owned data operations](https://developers.cloudflare.com/dynamic-workers/usage/authentication/#protect-data-even-when-routes-change) |
+| Routing and policy must stay together | [Registered handlers with access metadata](https://developers.cloudflare.com/dynamic-workers/usage/authentication/#adapt-the-pattern) |
+| Public code needs fewer privileges | [Separate Workers with different capabilities](https://developers.cloudflare.com/dynamic-workers/usage/authentication/#adapt-the-pattern) |
+| App libraries call HTTP APIs | [`globalOutbound` gateway](https://developers.cloudflare.com/dynamic-workers/usage/egress-control/#intercept-outbound-requests) |
+
+Combine route checks with data-operation checks for mixed-access apps.
+
+## Publish code and route policy together
+
+Your platform does not need to predict every future route. Require each app to declare its routes when it publishes:
+
+*routes.jsonjson*
+
+```json
+[
+	{ "method": "GET", "path": "/", "access": "public" },
+	{ "method": "GET", "path": "/profile", "access": "member" },
+	{ "method": "GET", "path": "/admin", "access": "reports:admin" }
+]
+```
+
+This manifest is a policy format your platform implements. Workers does not infer intended access from app code.
+
+```
+flowchart LR
+  Upload[Customer submits code + policy] --> Validate[Platform validates policy]
+  Validate --> Release[Version code + policy together]
+  Release --> Publish[Publish the matching release]
+
+```
+
+The platform owns these publication rules:
+
+- Match the tenant to the authenticated app owner.
+- Reject duplicate or ambiguous routes.
+- Restrict which routes can become public.
+- Prevent changes that weaken required permissions.
+- Keep code and policy versions consistent during rollouts.
+
+Store each app's code and route policy as one versioned deployment. Resolve both from that deployment before calling the loader.
+
+### Deny undeclared routes
+
+Match both method and path. A new route stays inaccessible until the platform accepts its policy.
+
+*policy.jsjs*
+
+```js
+export function checkRoute(request, routes, tenant, identity) {
+	const path = new URL(request.url).pathname;
+	const route = routes.find(
+		(route) => route.method === request.method && route.path === path,
+	);
+	if (!route) return new Response("Route not published", { status: 404 });
+	if (route.access === "public") return null;
+	if (!identity) return new Response("Sign in", { status: 401 });
+	if (
+		identity.tenant !== tenant ||
+		(route.access !== "member" && !identity.permissions.includes(route.access))
+	) {
+		return new Response("Forbidden", { status: 403 });
+	}
+	return null;
+}
+```
+
+*policy.tsts*
+
+```ts
+export type Identity = {
+	userId: string;
+	tenant: string;
+	permissions: string[];
+};
+
+export type Route = {
+	method: string;
+	path: string;
+	access: "public" | "member" | "reports:admin";
+};
+
+export function checkRoute(
+	request: Request,
+	routes: Route[],
+	tenant: string,
+	identity: Identity | null,
+): Response | null {
+	const path = new URL(request.url).pathname;
+	const route = routes.find(
+		(route) => route.method === request.method && route.path === path,
+	);
+	if (!route) return new Response("Route not published", { status: 404 });
+	if (route.access === "public") return null;
+	if (!identity) return new Response("Sign in", { status: 401 });
+	if (
+		identity.tenant !== tenant ||
+		(route.access !== "member" && !identity.permissions.includes(route.access))
+	) {
+		return new Response("Forbidden", { status: 403 });
+	}
+	return null;
+}
+```
+
+Here, `member` means membership in the app tenant. Add an app-membership check if only some tenant members may enter.
+
+Use one path interpretation across the gate and app. This example matches exact URL paths; it grants no wildcard access.
+
+## Authenticate before invoking the app
+
+Implement `authenticate(request)` in `auth.ts` using your existing identity provider or session service. This integration must:
+
+- Verify the session or token, including expiry and intended audience.
+- Return a verified identity, or `null` when credentials are absent.
+- Reject invalid credentials rather than trust caller-supplied identity headers.
+
+Resolve `deployment` from your platform's app registry. Its tenant, routes, and code must not come from app code.
+
+Place this gate in the loader Worker request handler:
+
+*gateway.jsjs*
+
+```js
+import { checkRoute } from "./policy";
+import { authenticate } from "./auth";
+
+let identity;
+try {
+	identity = await authenticate(request);
+} catch {
+	return new Response("Invalid session", { status: 401 });
+}
+
+const denied = checkRoute(
+	request,
+	deployment.routes,
+	deployment.tenant,
+	identity,
+);
+if (denied) return denied;
+
+// Forward only what this GET-only example needs. Keep session credentials out.
+const appRequest = new Request(request.url, { method: "GET" });
+```
+
+*gateway.tsts*
+
+```ts
+import { checkRoute, type Identity } from "./policy";
+import { authenticate } from "./auth";
+
+let identity: Identity | null;
+try {
+	identity = await authenticate(request);
+} catch {
+	return new Response("Invalid session", { status: 401 });
+}
+
+const denied = checkRoute(
+	request,
+	deployment.routes,
+	deployment.tenant,
+	identity,
+);
+if (denied) return denied;
+
+// Forward only what this GET-only example needs. Keep session credentials out.
+const appRequest = new Request(request.url, { method: "GET" });
+```
+
+After the gate succeeds, load and invoke the app with the [Worker Loader](https://developers.cloudflare.com/dynamic-workers/api-reference/):
+
+*gateway.jsjs*
+
+```js
+const app = env.LOADER.load({
+	compatibilityDate: "2026-10-31",
+	mainModule: "app.js",
+	modules: { "app.js": deployment.code },
+	globalOutbound: null,
+});
+return app.getEntrypoint(undefined, { props: { identity } }).fetch(appRequest);
+```
+
+*gateway.tsts*
+
+```ts
+const app = env.LOADER.load({
+	compatibilityDate: "2026-10-31",
+	mainModule: "app.js",
+	modules: { "app.js": deployment.code },
+	globalOutbound: null,
+});
+return app.getEntrypoint(undefined, { props: { identity } }).fetch(appRequest);
+```
+
+`load()` creates a fresh Worker. With `get()`, keep code and configuration identical for each cache ID. Do not cache one visitor's credentials or private data for other visitors.
+
+A cached Worker can retain returned data between requests. Passing a new capability does not clear that app memory.
+
+If isolation must hold independently of app code, use `load()` per request or separate cache IDs by user. Scope any exposed storage to the same user.
+
+For a wholly private app, require membership on every request. For mixed-access apps, use the route policy to select public exceptions.
+
+## Protect data even when routes change
+
+A route check can require Bob to sign in, but it cannot prevent app code from requesting Alice's report. Keep permission checks inside the platform operations that read private data, so every new route uses the same checks.
+
+An app can omit `checkAuth()` or ignore its result. Give it an operation that performs authorization and data access together.
+
+```
+sequenceDiagram
+  participant Caller as Bob
+  participant Platform as Loader Worker
+  participant App as Dynamic Worker
+  participant Reports as Platform Reports capability
+  Caller->>Platform: Request with Bob's session
+  Platform->>App: Capability scoped to Bob
+  App->>Reports: read("alice")
+  Reports-->>App: 404 — record does not belong to Bob
+  App-->>Caller: 404
+
+```
+
+Keep the data and implementation in the loader Worker. This example uses synthetic records:
+
+*gateway.jsjs*
+
+```js
+import { WorkerEntrypoint } from "cloudflare:workers";
+
+const records = [
+	{ id: "alice", tenant: "acme", owner: "alice", text: "Alice's report" },
+	{ id: "bob", tenant: "acme", owner: "bob", text: "Bob's report" },
+];
+
+export class Reports extends WorkerEntrypoint {
+	read(id) {
+		const { identity, tenant } = this.ctx.props;
+		if (!identity) return { status: 401, error: "Sign in" };
+		if (
+			identity.tenant !== tenant ||
+			!identity.permissions.includes("reports:read")
+		) {
+			return { status: 403, error: "Forbidden" };
+		}
+		const report = records.find(
+			(record) =>
+				record.id === id &&
+				record.tenant === tenant &&
+				record.owner === identity.userId,
+		);
+		if (!report) return { status: 404, error: "Report not found" };
+		return { status: 200, report: { text: report.text } };
+	}
+}
+```
+
+*gateway.tsts*
+
+```ts
+import { WorkerEntrypoint } from "cloudflare:workers";
+
+const records = [
+	{ id: "alice", tenant: "acme", owner: "alice", text: "Alice's report" },
+	{ id: "bob", tenant: "acme", owner: "bob", text: "Bob's report" },
+];
+
+type Scope = { identity: Identity | null; tenant: string };
+
+export class Reports extends WorkerEntrypoint<Cloudflare.Env, Scope> {
+	read(id: string) {
+		const { identity, tenant } = this.ctx.props;
+		if (!identity) return { status: 401, error: "Sign in" };
+		if (
+			identity.tenant !== tenant ||
+			!identity.permissions.includes("reports:read")
+		) {
+			return { status: 403, error: "Forbidden" };
+		}
+		const report = records.find(
+			(record) =>
+				record.id === id &&
+				record.tenant === tenant &&
+				record.owner === identity.userId,
+		);
+		if (!report) return { status: 404, error: "Report not found" };
+		return { status: 200, report: { text: report.text } };
+	}
+}
+```
+
+Create the capability using verified platform context. The app can choose a record ID, but cannot choose the capability's identity:
+
+*gateway.jsjs*
+
+```js
+const reports = ctx.exports.Reports({
+	props: { identity, tenant: deployment.tenant },
+});
+```
+
+*gateway.tsts*
+
+```ts
+const reports = ctx.exports.Reports({
+	props: { identity, tenant: deployment.tenant },
+});
+```
+
+Pass the capability with the invocation:
+
+*gateway.jsjs*
+
+```js
+return app.getEntrypoint(undefined, { props: { reports } }).fetch(appRequest);
+```
+
+*gateway.tsts*
+
+```ts
+return app.getEntrypoint(undefined, { props: { reports } }).fetch(appRequest);
+```
+
+The customer app calls the capability through [RPC](https://developers.cloudflare.com/workers/runtime-apis/rpc/):
+
+*app.jsjs*
+
+```js
+const result = await this.ctx.props.reports.read(reportId);
+return Response.json(result, { status: result.status });
+```
+
+*app.tsts*
+
+```ts
+const result = await this.ctx.props.reports.read(reportId);
+return Response.json(result, { status: result.status });
+```
+
+Keep `globalOutbound: null` to block network access, or mediate requests through a [gateway](https://developers.cloudflare.com/dynamic-workers/usage/egress-control/#intercept-outbound-requests). Otherwise, another data-access path could bypass the capability.
+
+## Adapt the pattern
+
+Use these variations when the app interface requires them:
+
+| Pattern | Example | Why |
+| --- | --- | --- |
+| Registered handlers | `{ method: "GET", path: "/profile", access: "member", handler: "profile" }` | Select policy and handler from the same platform-owned entry. A handler name does not grant data access. |
+| Public app shell | Public HTML; protected report reads through `reports.read(id)` | The platform can protect data without enumerating every frontend route. |
+| Separate components | Public Dynamic Worker receives `{}`; private Dynamic Worker receives `{ reports }` | Public code has no private capability. Keep their storage separate too. |
+| Outbound HTTP gateway | Allow `GET https://reports.internal/reports/:id`, then check record access | Existing HTTP clients can use the same authorization model. Ignore identity headers supplied by app code. |
+
+If the outbound gateway injects credentials, authorize the destination and operation first. Hiding a token does not limit what that token can do.
+
+Was this helpful?
+
+YesNo
+
+## On this page
+
+[![](https://developers.cloudflare.com/_astro/logo.te5VL_aD.svg)Docs](https://developers.cloudflare.com/)
+
+```json
+{"@context":"https://schema.org","@type":"TechArticle","@id":"https://developers.cloudflare.com/dynamic-workers/usage/authentication/#page","headline":"Authentication and authorization","description":"Authenticate requests in a loader Worker and authorize data access outside customer app code with Dynamic Workers.","url":"https://developers.cloudflare.com/dynamic-workers/usage/authentication/","inLanguage":"en","image":"https://developers.cloudflare.com/dynamic-workers/usage/authentication/og.png?v=39b7769909b8b5eb","dateModified":"2026-10-31","publisher":{"@type":"Organization","name":"Cloudflare","description":"One platform for your apps, agents, and workforce. Build, secure, and scale without managing infrastructure","url":"https://www.cloudflare.com/","sameAs":["https://github.com/cloudflare","https://www.linkedin.com/company/cloudflare","https://x.com/cloudflare"],"logo":{"@type":"ImageObject","url":"https://developers.cloudflare.com/logo.svg"},"address":{"@type":"PostalAddress","streetAddress":"101 Townsend St","addressLocality":"San Francisco","addressRegion":"CA","postalCode":"94107","addressCountry":"US"},"contactPoint":[{"@type":"ContactPoint","contactType":"Customer Support","url":"https://support.cloudflare.com/","availableLanguage":["English"]},{"@type":"ContactPoint","contactType":"Sales","url":"https://www.cloudflare.com/contact/","availableLanguage":["English"]}]},"isPartOf":{"@type":"WebSite","@id":"https://developers.cloudflare.com/#website","name":"Cloudflare Docs","url":"https://developers.cloudflare.com/"}}
+```
+
+---
+
+---
 description: Give Dynamic Workers access to external APIs.
 title: Bindings
 image: https://developers.cloudflare.com/dynamic-workers/usage/bindings/og.png?v=439992d543a1e32f
@@ -789603,7 +790457,7 @@ image: https://developers.cloudflare.com/dynamic-workers/usage/bindings/og.png?v
 
 # Bindings
 
-Last updated Oct 12, 2026|Copy as Markdown| [View as Markdown](https://developers.cloudflare.com/dynamic-workers/usage/bindings/index.md)| [Agent setup](https://developers.cloudflare.com/agent-setup/)
+Last updated Oct 31, 2026|Copy as Markdown| [View as Markdown](https://developers.cloudflare.com/dynamic-workers/usage/bindings/index.md)| [Agent setup](https://developers.cloudflare.com/agent-setup/)
 
 Bindings let you control what a Dynamic Worker can access. When you create a Dynamic Worker, you decide exactly what resources and operations it can use.
 
@@ -789612,6 +790466,8 @@ This allows you to:
 - **Give each Dynamic Worker its own resources**: Partition a [KV](https://developers.cloudflare.com/kv/) namespace, [R2](https://developers.cloudflare.com/r2/) bucket, or database so each Dynamic Worker only sees its own data.
 - **Expose custom capabilities**: Define your own methods that Dynamic Workers can call, such as posting to a chat room, sending an email, or querying an internal service. You design the interface, and the Dynamic Worker calls it.
 - **Restrict and control access**: Inspect, transform, or reject calls before they reach the underlying resource.
+
+For apps with public and private routes, refer to [Authentication and authorization](https://developers.cloudflare.com/dynamic-workers/usage/authentication/). The guide checks requests before invocation and permissions inside platform-owned operations.
 
 ## Custom bindings with Dynamic Workers
 
@@ -789822,7 +790678,7 @@ YesNo
 [![](https://developers.cloudflare.com/_astro/logo.te5VL_aD.svg)Docs](https://developers.cloudflare.com/)
 
 ```json
-{"@context":"https://schema.org","@type":"TechArticle","@id":"https://developers.cloudflare.com/dynamic-workers/usage/bindings/#page","headline":"Bindings","description":"Give Dynamic Workers access to external APIs.","url":"https://developers.cloudflare.com/dynamic-workers/usage/bindings/","inLanguage":"en","image":"https://developers.cloudflare.com/dynamic-workers/usage/bindings/og.png?v=439992d543a1e32f","dateModified":"2026-10-12","publisher":{"@type":"Organization","name":"Cloudflare","description":"One platform for your apps, agents, and workforce. Build, secure, and scale without managing infrastructure","url":"https://www.cloudflare.com/","sameAs":["https://github.com/cloudflare","https://www.linkedin.com/company/cloudflare","https://x.com/cloudflare"],"logo":{"@type":"ImageObject","url":"https://developers.cloudflare.com/logo.svg"},"address":{"@type":"PostalAddress","streetAddress":"101 Townsend St","addressLocality":"San Francisco","addressRegion":"CA","postalCode":"94107","addressCountry":"US"},"contactPoint":[{"@type":"ContactPoint","contactType":"Customer Support","url":"https://support.cloudflare.com/","availableLanguage":["English"]},{"@type":"ContactPoint","contactType":"Sales","url":"https://www.cloudflare.com/contact/","availableLanguage":["English"]}]},"isPartOf":{"@type":"WebSite","@id":"https://developers.cloudflare.com/#website","name":"Cloudflare Docs","url":"https://developers.cloudflare.com/"}}
+{"@context":"https://schema.org","@type":"TechArticle","@id":"https://developers.cloudflare.com/dynamic-workers/usage/bindings/#page","headline":"Bindings","description":"Give Dynamic Workers access to external APIs.","url":"https://developers.cloudflare.com/dynamic-workers/usage/bindings/","inLanguage":"en","image":"https://developers.cloudflare.com/dynamic-workers/usage/bindings/og.png?v=439992d543a1e32f","dateModified":"2026-10-31","publisher":{"@type":"Organization","name":"Cloudflare","description":"One platform for your apps, agents, and workforce. Build, secure, and scale without managing infrastructure","url":"https://www.cloudflare.com/","sameAs":["https://github.com/cloudflare","https://www.linkedin.com/company/cloudflare","https://x.com/cloudflare"],"logo":{"@type":"ImageObject","url":"https://developers.cloudflare.com/logo.svg"},"address":{"@type":"PostalAddress","streetAddress":"101 Townsend St","addressLocality":"San Francisco","addressRegion":"CA","postalCode":"94107","addressCountry":"US"},"contactPoint":[{"@type":"ContactPoint","contactType":"Customer Support","url":"https://support.cloudflare.com/","availableLanguage":["English"]},{"@type":"ContactPoint","contactType":"Sales","url":"https://www.cloudflare.com/contact/","availableLanguage":["English"]}]},"isPartOf":{"@type":"WebSite","@id":"https://developers.cloudflare.com/#website","name":"Cloudflare Docs","url":"https://developers.cloudflare.com/"}}
 ```
 
 ---
@@ -1052603,7 +1053459,7 @@ View tutorials to help you get started with Workers.
 | [Build a Slackbot](https://developers.cloudflare.com/workers/tutorials/build-a-slackbot/) | 2 years ago | Beginner |
 | [Use Workers KV directly from Rust](https://developers.cloudflare.com/workers/tutorials/workers-kv-from-rust/) | 2 years ago | Intermediate |
 | [Build a todo list Jamstack application](https://developers.cloudflare.com/workers/tutorials/build-a-jamstack-app/) | 2 years ago | Beginner |
-| [Send Emails With Postmark](https://developers.cloudflare.com/workers/tutorials/send-emails-with-postmark/) | 2 years ago | Beginner |
+| [Send Emails With Postmark](https://developers.cloudflare.com/workers/tutorials/send-emails-with-postmark/) | 3 years ago | Beginner |
 | [Send Emails With Resend](https://developers.cloudflare.com/workers/tutorials/send-emails-with-resend/) | 3 years ago | Beginner |
 | [Log and store upload events in R2 with event notifications](https://developers.cloudflare.com/r2/tutorials/upload-logs-event-notifications/) | 3 years ago | Beginner |
 | [Create custom headers for Cloudflare Access-protected origins with Workers](https://developers.cloudflare.com/cloudflare-one/tutorials/access-workers/) | 3 years ago | Intermediate |
@@ -1084678,7 +1085534,7 @@ image: https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-pl
 
 # Dynamic dispatch Worker
 
-Last updated Sep 16, 2026|Copy as Markdown| [View as Markdown](https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/dynamic-dispatch/index.md)| [Agent setup](https://developers.cloudflare.com/agent-setup/)
+Last updated Oct 31, 2026|Copy as Markdown| [View as Markdown](https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/dynamic-dispatch/index.md)| [Agent setup](https://developers.cloudflare.com/agent-setup/)
 
 A [dynamic dispatch Worker](https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/how-workers-for-platforms-works/#dynamic-dispatch-worker) is a specialized routing Worker that directs incoming requests to the appropriate user Workers in your dispatch namespace. Instead of using [Workers Routes](https://developers.cloudflare.com/workers/configuration/routing/routes/), dispatch Workers let you programmatically control request routing through code.
 
@@ -1084687,6 +1085543,8 @@ A [dynamic dispatch Worker](https://developers.cloudflare.com/cloudflare-for-pla
 Note
 
 You can also create a dispatch Worker from the Cloudflare dashboard. Go to **Workers for Platforms**, select your namespace, and click **Create** > **Dispatch Worker**. The dashboard provides templates for path-based and subdomain-based routing.
+
+For apps with public and private routes, refer to [Authentication and authorization](https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/authentication/). The guide combines route policies with scoped data access.
 
 #### Why use a dynamic dispatch Worker?
 
@@ -1085157,7 +1086015,7 @@ YesNo
 [![](https://developers.cloudflare.com/_astro/logo.te5VL_aD.svg)Docs](https://developers.cloudflare.com/)
 
 ```json
-{"@context":"https://schema.org","@type":"TechArticle","@id":"https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/dynamic-dispatch/#page","headline":"Dynamic dispatch Worker","description":"Create a dynamic dispatch Worker to route incoming requests to user Workers in your dispatch namespace.","url":"https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/dynamic-dispatch/","inLanguage":"en","image":"https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/dynamic-dispatch/og.png?v=d1d1e631671f98a1","dateModified":"2026-09-16","publisher":{"@type":"Organization","name":"Cloudflare","description":"One platform for your apps, agents, and workforce. Build, secure, and scale without managing infrastructure","url":"https://www.cloudflare.com/","sameAs":["https://github.com/cloudflare","https://www.linkedin.com/company/cloudflare","https://x.com/cloudflare"],"logo":{"@type":"ImageObject","url":"https://developers.cloudflare.com/logo.svg"},"address":{"@type":"PostalAddress","streetAddress":"101 Townsend St","addressLocality":"San Francisco","addressRegion":"CA","postalCode":"94107","addressCountry":"US"},"contactPoint":[{"@type":"ContactPoint","contactType":"Customer Support","url":"https://support.cloudflare.com/","availableLanguage":["English"]},{"@type":"ContactPoint","contactType":"Sales","url":"https://www.cloudflare.com/contact/","availableLanguage":["English"]}]},"isPartOf":{"@type":"WebSite","@id":"https://developers.cloudflare.com/#website","name":"Cloudflare Docs","url":"https://developers.cloudflare.com/"}}
+{"@context":"https://schema.org","@type":"TechArticle","@id":"https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/dynamic-dispatch/#page","headline":"Dynamic dispatch Worker","description":"Create a dynamic dispatch Worker to route incoming requests to user Workers in your dispatch namespace.","url":"https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/dynamic-dispatch/","inLanguage":"en","image":"https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/dynamic-dispatch/og.png?v=d1d1e631671f98a1","dateModified":"2026-10-31","publisher":{"@type":"Organization","name":"Cloudflare","description":"One platform for your apps, agents, and workforce. Build, secure, and scale without managing infrastructure","url":"https://www.cloudflare.com/","sameAs":["https://github.com/cloudflare","https://www.linkedin.com/company/cloudflare","https://x.com/cloudflare"],"logo":{"@type":"ImageObject","url":"https://developers.cloudflare.com/logo.svg"},"address":{"@type":"PostalAddress","streetAddress":"101 Townsend St","addressLocality":"San Francisco","addressRegion":"CA","postalCode":"94107","addressCountry":"US"},"contactPoint":[{"@type":"ContactPoint","contactType":"Customer Support","url":"https://support.cloudflare.com/","availableLanguage":["English"]},{"@type":"ContactPoint","contactType":"Sales","url":"https://www.cloudflare.com/contact/","availableLanguage":["English"]}]},"isPartOf":{"@type":"WebSite","@id":"https://developers.cloudflare.com/#website","name":"Cloudflare Docs","url":"https://developers.cloudflare.com/"}}
 ```
 
 ---
@@ -1090246,7 +1091104,7 @@ image: https://developers.cloudflare.com/dynamic-workers/og.png?v=51a25a49ca35a1
 
 # Dynamic Workers
 
-Last updated Oct 12, 2026|Copy as Markdown| [View as Markdown](https://developers.cloudflare.com/dynamic-workers/index.md)| [Agent setup](https://developers.cloudflare.com/agent-setup/)
+Last updated Oct 31, 2026|Copy as Markdown| [View as Markdown](https://developers.cloudflare.com/dynamic-workers/index.md)| [Agent setup](https://developers.cloudflare.com/agent-setup/)
 
 Spin up Workers at runtime to execute code on-demand in a secure, sandboxed environment.
 
@@ -1090274,6 +1091132,7 @@ Use Dynamic Workers when code needs to run quickly in a secure, isolated environ
 
 Because you compose the Worker that runs the code at runtime, you control how that Worker is configured and what it can access.
 
+- **[Authentication and authorization](https://developers.cloudflare.com/dynamic-workers/usage/authentication/)**: Enforce route policies and protect data access outside app code.
 - **[Bindings](https://developers.cloudflare.com/dynamic-workers/usage/bindings/)**: Decide which bindings and structured data the dynamic Worker receives.
 - **[Observability](https://developers.cloudflare.com/dynamic-workers/usage/observability/)**: Attach Tail Workers and capture logs for each run.
 - **[Network access](https://developers.cloudflare.com/dynamic-workers/usage/egress-control/)**: Intercept or block Internet access for outbound requests.
@@ -1090289,7 +1091148,7 @@ YesNo
 [![](https://developers.cloudflare.com/_astro/logo.te5VL_aD.svg)Docs](https://developers.cloudflare.com/)
 
 ```json
-{"@context":"https://schema.org","@type":"WebPage","@id":"https://developers.cloudflare.com/dynamic-workers/#page","headline":"Dynamic Workers","description":"Spin up isolated Workers on demand to execute code.","url":"https://developers.cloudflare.com/dynamic-workers/","inLanguage":"en","image":"https://developers.cloudflare.com/dynamic-workers/og.png?v=51a25a49ca35a178","dateModified":"2026-10-12","publisher":{"@type":"Organization","name":"Cloudflare","description":"One platform for your apps, agents, and workforce. Build, secure, and scale without managing infrastructure","url":"https://www.cloudflare.com/","sameAs":["https://github.com/cloudflare","https://www.linkedin.com/company/cloudflare","https://x.com/cloudflare"],"logo":{"@type":"ImageObject","url":"https://developers.cloudflare.com/logo.svg"},"address":{"@type":"PostalAddress","streetAddress":"101 Townsend St","addressLocality":"San Francisco","addressRegion":"CA","postalCode":"94107","addressCountry":"US"},"contactPoint":[{"@type":"ContactPoint","contactType":"Customer Support","url":"https://support.cloudflare.com/","availableLanguage":["English"]},{"@type":"ContactPoint","contactType":"Sales","url":"https://www.cloudflare.com/contact/","availableLanguage":["English"]}]},"isPartOf":{"@type":"WebSite","@id":"https://developers.cloudflare.com/#website","name":"Cloudflare Docs","url":"https://developers.cloudflare.com/"}}
+{"@context":"https://schema.org","@type":"WebPage","@id":"https://developers.cloudflare.com/dynamic-workers/#page","headline":"Dynamic Workers","description":"Spin up isolated Workers on demand to execute code.","url":"https://developers.cloudflare.com/dynamic-workers/","inLanguage":"en","image":"https://developers.cloudflare.com/dynamic-workers/og.png?v=51a25a49ca35a178","dateModified":"2026-10-31","publisher":{"@type":"Organization","name":"Cloudflare","description":"One platform for your apps, agents, and workforce. Build, secure, and scale without managing infrastructure","url":"https://www.cloudflare.com/","sameAs":["https://github.com/cloudflare","https://www.linkedin.com/company/cloudflare","https://x.com/cloudflare"],"logo":{"@type":"ImageObject","url":"https://developers.cloudflare.com/logo.svg"},"address":{"@type":"PostalAddress","streetAddress":"101 Townsend St","addressLocality":"San Francisco","addressRegion":"CA","postalCode":"94107","addressCountry":"US"},"contactPoint":[{"@type":"ContactPoint","contactType":"Customer Support","url":"https://support.cloudflare.com/","availableLanguage":["English"]},{"@type":"ContactPoint","contactType":"Sales","url":"https://www.cloudflare.com/contact/","availableLanguage":["English"]}]},"isPartOf":{"@type":"WebSite","@id":"https://developers.cloudflare.com/#website","name":"Cloudflare Docs","url":"https://developers.cloudflare.com/"}}
 ```
 
 ---
@@ -1200624,6 +1201483,8 @@ Products
 
 [**Use BYOIP with Magic Transit and CDN** Service bindings allow BYOIP customers to selectively route traffic on a per-IP address basis to the CDN pipeline. It is important to note that traffic routed to the CDN pipeline is protected at Layers 3 and 4 by the inherent DDoS protection capabilities.](https://developers.cloudflare.com/byoip/service-bindings/magic-transit-with-cdn/)
 
+[**Authentication and authorization** Authenticate requests in a dispatch Worker and authorize data access outside customer app code with Workers for Platforms.](https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/authentication/)
+
 [**Business Continuity Guide** Build a business continuity strategy for the Cloudflare One Client using available disconnection mechanisms and decision guidance for service degradation scenarios.](https://developers.cloudflare.com/cloudflare-one/team-and-resources/devices/cloudflare-one-client/business-continuity/)
 
 [**Display a coaching page** Return a custom explanatory HTML page from a Gateway Worker without forwarding the request upstream.](https://developers.cloudflare.com/cloudflare-one/traffic-controls/integrate-workers/worker-templates/coaching-page/)
@@ -1200667,6 +1201528,8 @@ Products
 [**Set up outgoing zone transfers (Cloudflare as Primary)** With outgoing zone transfers, you can keep Cloudflare as your primary DNS provider and use one or more secondary providers for increased availability.](https://developers.cloudflare.com/dns/zone-setups/zone-transfers/cloudflare-as-primary/setup/)
 
 [**Set up incoming zone transfers (Cloudflare as Secondary)** With incoming zone transfers, you can keep your primary DNS provider and use Cloudflare as a secondary DNS provider.](https://developers.cloudflare.com/dns/zone-setups/zone-transfers/cloudflare-as-secondary/setup/)
+
+[**Authentication and authorization** Authenticate requests in a loader Worker and authorize data access outside customer app code with Dynamic Workers.](https://developers.cloudflare.com/dynamic-workers/usage/authentication/)
 
 [**Onboard a domain** Learn how to onboard your domain to Cloudflare, to speed up and protect your website or application.](https://developers.cloudflare.com/fundamentals/manage-domains/add-site/)
 
@@ -1260724,7 +1261587,7 @@ image: https://developers.cloudflare.com/style-guide/build-the-page/components/r
 
 Last updated Aug 25, 2026|Copy as Markdown| [View as Markdown](https://developers.cloudflare.com/style-guide/build-the-page/components/render/index.md)| [Agent setup](https://developers.cloudflare.com/agent-setup/)
 
-The `Render` component is used `3993` times on `1882` pages.
+The `Render` component is used `3997` times on `1884` pages.
 
 <details>
 
@@ -1260734,7 +1261597,7 @@ See all examples of pages that use Render
 
 </summary>
 
-Used **3993** times.
+Used **3997** times.
 
 **Pages**
 
@@ -1260966,6 +1261829,7 @@ Used **3993** times.
 - <a href="https://developers.cloudflare.com/cloudflare-for-platforms/cloudflare-for-saas/start/advanced-settings/custom-origin/">/cloudflare-for-platforms/cloudflare-for-saas/start/advanced-settings/custom-origin/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/cloudflare-for-platforms/cloudflare-for-saas/start/advanced-settings/custom-origin.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/cloudflare-for-platforms/cloudflare-for-saas/start/advanced-settings/worker-as-origin/">/cloudflare-for-platforms/cloudflare-for-saas/start/advanced-settings/worker-as-origin/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/cloudflare-for-platforms/cloudflare-for-saas/start/advanced-settings/worker-as-origin.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/cloudflare-for-platforms/cloudflare-for-saas/start/getting-started/">/cloudflare-for-platforms/cloudflare-for-saas/start/getting-started/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/cloudflare-for-platforms/cloudflare-for-saas/start/getting-started.mdx">Source</a>
+- <a href="https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/authentication/">/cloudflare-for-platforms/workers-for-platforms/configuration/authentication/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/cloudflare-for-platforms/workers-for-platforms/configuration/authentication.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/reference/limits/">/cloudflare-for-platforms/workers-for-platforms/reference/limits/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/cloudflare-for-platforms/workers-for-platforms/reference/limits.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/cloudflare-network-firewall/how-to/enable-roles/">/cloudflare-network-firewall/how-to/enable-roles/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/cloudflare-network-firewall/how-to/enable-roles.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/cloudflare-network-firewall/tutorials/graphql-analytics/">/cloudflare-network-firewall/tutorials/graphql-analytics/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/cloudflare-network-firewall/tutorials/graphql-analytics.mdx">Source</a>
@@ -1261442,6 +1262306,7 @@ Used **3993** times.
 - <a href="https://developers.cloudflare.com/durable-objects/tutorials/build-a-seat-booking-app/">/durable-objects/tutorials/build-a-seat-booking-app/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/durable-objects/tutorials/build-a-seat-booking-app.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/dynamic-workers/examples/dynamic-workers-playground/">/dynamic-workers/examples/dynamic-workers-playground/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/dynamic-workers/examples/dynamic-workers-playground.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/dynamic-workers/examples/dynamic-workers-starter/">/dynamic-workers/examples/dynamic-workers-starter/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/dynamic-workers/examples/dynamic-workers-starter.mdx">Source</a>
+- <a href="https://developers.cloudflare.com/dynamic-workers/usage/authentication/">/dynamic-workers/usage/authentication/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/dynamic-workers/usage/authentication.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/email-security/account-setup/escalation-contacts/">/email-security/account-setup/escalation-contacts/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/email-security/account-setup/escalation-contacts.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/email-security/account-setup/manage-account-members/">/email-security/account-setup/manage-account-members/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/email-security/account-setup/manage-account-members.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/email-security/account-setup/manage-parent-permissions/">/email-security/account-setup/manage-parent-permissions/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/email-security/account-setup/manage-parent-permissions.mdx">Source</a>
@@ -1264047,7 +1264912,7 @@ image: https://developers.cloudflare.com/style-guide/build-the-page/components/t
 
 Last updated Aug 20, 2026|Copy as Markdown| [View as Markdown](https://developers.cloudflare.com/style-guide/build-the-page/components/tabs/index.md)| [Agent setup](https://developers.cloudflare.com/agent-setup/)
 
-The `Tabs` component is used `1293` times on `665` pages.
+The `Tabs` component is used `1296` times on `665` pages.
 
 <details>
 
@@ -1264057,7 +1264922,7 @@ See all examples of pages that use Tabs
 
 </summary>
 
-Used **1293** times.
+Used **1296** times.
 
 **Pages**
 
@@ -1264980,7 +1265845,7 @@ image: https://developers.cloudflare.com/style-guide/build-the-page/components/t
 
 Last updated Aug 20, 2026|Copy as Markdown| [View as Markdown](https://developers.cloudflare.com/style-guide/build-the-page/components/typescript-example/index.md)| [Agent setup](https://developers.cloudflare.com/agent-setup/)
 
-The `TypeScriptExample` component is used `1546` times on `432` pages.
+The `TypeScriptExample` component is used `1558` times on `436` pages.
 
 <details>
 
@@ -1264990,7 +1265855,7 @@ See all examples of pages that use TypeScriptExample
 
 </summary>
 
-Used **1546** times.
+Used **1558** times.
 
 **Pages**
 
@@ -1265141,6 +1266006,7 @@ Used **1546** times.
 - <a href="https://developers.cloudflare.com/browser-run/reference/browser-binding-api/">/browser-run/reference/browser-binding-api/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/browser-run/reference/browser-binding-api.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/cf/get-started/first-worker/">/cf/get-started/first-worker/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/cf/get-started/first-worker.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/cloudflare-for-platforms/cloudflare-for-saas/domain-support/custom-metadata/">/cloudflare-for-platforms/cloudflare-for-saas/domain-support/custom-metadata/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/cloudflare-for-platforms/cloudflare-for-saas/domain-support/custom-metadata.mdx">Source</a>
+- <a href="https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/authentication/">/cloudflare-for-platforms/workers-for-platforms/configuration/authentication/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/cloudflare-for-platforms/workers-for-platforms/configuration/authentication.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/dynamic-dispatch/">/cloudflare-for-platforms/workers-for-platforms/configuration/dynamic-dispatch/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/cloudflare-for-platforms/workers-for-platforms/configuration/dynamic-dispatch.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/cloudflare-one/access-controls/applications/http-apps/authorization-cookie/validating-json/">/cloudflare-one/access-controls/applications/http-apps/authorization-cookie/validating-json/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/cloudflare-one/access-controls/applications/http-apps/authorization-cookie/validating-json.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/cloudflare-one/data-loss-prevention/detection-entries/custom-validation-workers/">/cloudflare-one/data-loss-prevention/detection-entries/custom-validation-workers/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/cloudflare-one/data-loss-prevention/detection-entries/custom-validation-workers.mdx">Source</a>
@@ -1265188,6 +1266054,7 @@ Used **1546** times.
 - <a href="https://developers.cloudflare.com/dynamic-workers/examples/dynamic-workers-playground/">/dynamic-workers/examples/dynamic-workers-playground/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/dynamic-workers/examples/dynamic-workers-playground.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/dynamic-workers/examples/dynamic-workers-starter/">/dynamic-workers/examples/dynamic-workers-starter/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/dynamic-workers/examples/dynamic-workers-starter.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/dynamic-workers/getting-started/">/dynamic-workers/getting-started/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/dynamic-workers/getting-started.mdx">Source</a>
+- <a href="https://developers.cloudflare.com/dynamic-workers/usage/authentication/">/dynamic-workers/usage/authentication/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/dynamic-workers/usage/authentication.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/dynamic-workers/usage/durable-object-facets/">/dynamic-workers/usage/durable-object-facets/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/dynamic-workers/usage/durable-object-facets.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/dynamic-workers/usage/dynamic-workflows/">/dynamic-workers/usage/dynamic-workflows/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/dynamic-workers/usage/dynamic-workflows.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/dynamic-workers/usage/static-assets/">/dynamic-workers/usage/static-assets/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/dynamic-workers/usage/static-assets.mdx">Source</a>
@@ -1265339,6 +1266206,8 @@ Used **1546** times.
 - <a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/partials/browser-run/example-quick-action-binding.mdx">src/content/partials/browser-run/example-quick-action-binding.mdx</a>
 - <a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/partials/workers/cloudflare-config.mdx">src/content/partials/workers/cloudflare-config.mdx</a>
 - <a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/partials/workers/navigation_requests.mdx">src/content/partials/workers/navigation\_requests.mdx</a>
+- <a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/partials/workers/platform-auth-reports.mdx">src/content/partials/workers/platform-auth-reports.mdx</a>
+- <a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/partials/workers/platform-auth-route-policy.mdx">src/content/partials/workers/platform-auth-route-policy.mdx</a>
 - <a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/partials/workers/request-signal-example.mdx">src/content/partials/workers/request-signal-example.mdx</a>
 - <a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/partials/workers/service-binding-rpc-example.mdx">src/content/partials/workers/service-binding-rpc-example.mdx</a>
 - <a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/partials/workers/service-binding-rpc-functions-example.mdx">src/content/partials/workers/service-binding-rpc-functions-example.mdx</a>
@@ -1270823,7 +1271692,7 @@ Used **1** times.
 
 ## Mermaid
 
-The `Mermaid` component is used `160` times on `116` pages.
+The `Mermaid` component is used `166` times on `118` pages.
 
 <details>
 
@@ -1270833,7 +1271702,7 @@ See all examples of pages that use Mermaid
 
 </summary>
 
-Used **160** times.
+Used **166** times.
 
 **Pages**
 
@@ -1270869,6 +1271738,7 @@ Used **160** times.
 - <a href="https://developers.cloudflare.com/byoip/service-bindings/">/byoip/service-bindings/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/byoip/service-bindings/index.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/cloudflare-for-platforms/cloudflare-for-saas/saas-customers/how-it-works/">/cloudflare-for-platforms/cloudflare-for-saas/saas-customers/how-it-works/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/cloudflare-for-platforms/cloudflare-for-saas/saas-customers/how-it-works.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/cloudflare-for-platforms/cloudflare-for-saas/start/getting-started/">/cloudflare-for-platforms/cloudflare-for-saas/start/getting-started/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/cloudflare-for-platforms/cloudflare-for-saas/start/getting-started.mdx">Source</a>
+- <a href="https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/authentication/">/cloudflare-for-platforms/workers-for-platforms/configuration/authentication/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/cloudflare-for-platforms/workers-for-platforms/configuration/authentication.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/cloudflare-one/access-controls/access-settings/session-management/">/cloudflare-one/access-controls/access-settings/session-management/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/cloudflare-one/access-controls/access-settings/session-management.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/cloudflare-one/access-controls/ai-controls/linked-apps/">/cloudflare-one/access-controls/ai-controls/linked-apps/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/cloudflare-one/access-controls/ai-controls/linked-apps.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/cloudflare-one/access-controls/applications/linked-app-token/">/cloudflare-one/access-controls/applications/linked-app-token/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/cloudflare-one/access-controls/applications/linked-app-token.mdx">Source</a>
@@ -1270906,6 +1271776,7 @@ Used **160** times.
 - <a href="https://developers.cloudflare.com/dns/zone-setups/partial-setup/dns-resolution/">/dns/zone-setups/partial-setup/dns-resolution/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/dns/zone-setups/partial-setup/dns-resolution.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/dns/zone-setups/subdomain-setup/setup/">/dns/zone-setups/subdomain-setup/setup/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/dns/zone-setups/subdomain-setup/setup/index.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/durable-objects/deployments/durable-objects-code-updates/">/durable-objects/deployments/durable-objects-code-updates/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/durable-objects/deployments/durable-objects-code-updates.mdx">Source</a>
+- <a href="https://developers.cloudflare.com/dynamic-workers/usage/authentication/">/dynamic-workers/usage/authentication/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/dynamic-workers/usage/authentication.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/fundamentals/concepts/accounts-and-zones/">/fundamentals/concepts/accounts-and-zones/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/fundamentals/concepts/accounts-and-zones.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/hyperdrive/configuration/connect-to-private-database-vpc/">/hyperdrive/configuration/connect-to-private-database-vpc/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/hyperdrive/configuration/connect-to-private-database-vpc.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/learning-paths/clientless-access/advanced-workflows/isolate-application/">/learning-paths/clientless-access/advanced-workflows/isolate-application/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/learning-paths/clientless-access/advanced-workflows/isolate-application.mdx">Source</a>
@@ -1272225,7 +1273096,7 @@ Used **232** times.
 
 ## Render
 
-The `Render` component is used `3993` times on `1882` pages.
+The `Render` component is used `3997` times on `1884` pages.
 
 <details>
 
@@ -1272235,7 +1273106,7 @@ See all examples of pages that use Render
 
 </summary>
 
-Used **3993** times.
+Used **3997** times.
 
 **Pages**
 
@@ -1272467,6 +1273338,7 @@ Used **3993** times.
 - <a href="https://developers.cloudflare.com/cloudflare-for-platforms/cloudflare-for-saas/start/advanced-settings/custom-origin/">/cloudflare-for-platforms/cloudflare-for-saas/start/advanced-settings/custom-origin/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/cloudflare-for-platforms/cloudflare-for-saas/start/advanced-settings/custom-origin.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/cloudflare-for-platforms/cloudflare-for-saas/start/advanced-settings/worker-as-origin/">/cloudflare-for-platforms/cloudflare-for-saas/start/advanced-settings/worker-as-origin/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/cloudflare-for-platforms/cloudflare-for-saas/start/advanced-settings/worker-as-origin.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/cloudflare-for-platforms/cloudflare-for-saas/start/getting-started/">/cloudflare-for-platforms/cloudflare-for-saas/start/getting-started/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/cloudflare-for-platforms/cloudflare-for-saas/start/getting-started.mdx">Source</a>
+- <a href="https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/authentication/">/cloudflare-for-platforms/workers-for-platforms/configuration/authentication/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/cloudflare-for-platforms/workers-for-platforms/configuration/authentication.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/reference/limits/">/cloudflare-for-platforms/workers-for-platforms/reference/limits/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/cloudflare-for-platforms/workers-for-platforms/reference/limits.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/cloudflare-network-firewall/how-to/enable-roles/">/cloudflare-network-firewall/how-to/enable-roles/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/cloudflare-network-firewall/how-to/enable-roles.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/cloudflare-network-firewall/tutorials/graphql-analytics/">/cloudflare-network-firewall/tutorials/graphql-analytics/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/cloudflare-network-firewall/tutorials/graphql-analytics.mdx">Source</a>
@@ -1272943,6 +1273815,7 @@ Used **3993** times.
 - <a href="https://developers.cloudflare.com/durable-objects/tutorials/build-a-seat-booking-app/">/durable-objects/tutorials/build-a-seat-booking-app/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/durable-objects/tutorials/build-a-seat-booking-app.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/dynamic-workers/examples/dynamic-workers-playground/">/dynamic-workers/examples/dynamic-workers-playground/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/dynamic-workers/examples/dynamic-workers-playground.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/dynamic-workers/examples/dynamic-workers-starter/">/dynamic-workers/examples/dynamic-workers-starter/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/dynamic-workers/examples/dynamic-workers-starter.mdx">Source</a>
+- <a href="https://developers.cloudflare.com/dynamic-workers/usage/authentication/">/dynamic-workers/usage/authentication/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/dynamic-workers/usage/authentication.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/email-security/account-setup/escalation-contacts/">/email-security/account-setup/escalation-contacts/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/email-security/account-setup/escalation-contacts.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/email-security/account-setup/manage-account-members/">/email-security/account-setup/manage-account-members/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/email-security/account-setup/manage-account-members.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/email-security/account-setup/manage-parent-permissions/">/email-security/account-setup/manage-parent-permissions/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/email-security/account-setup/manage-parent-permissions.mdx">Source</a>
@@ -1275147,7 +1276020,7 @@ Used **6** times.
 
 ## TabItem
 
-The `TabItem` component is used `2902` times on `665` pages.
+The `TabItem` component is used `2908` times on `665` pages.
 
 <details>
 
@@ -1275157,7 +1276030,7 @@ See all examples of pages that use TabItem
 
 </summary>
 
-Used **2902** times.
+Used **2908** times.
 
 **Pages**
 
@@ -1275831,7 +1276704,7 @@ Used **2902** times.
 
 ## Tabs
 
-The `Tabs` component is used `1293` times on `665` pages.
+The `Tabs` component is used `1296` times on `665` pages.
 
 <details>
 
@@ -1275841,7 +1276714,7 @@ See all examples of pages that use Tabs
 
 </summary>
 
-Used **1293** times.
+Used **1296** times.
 
 **Pages**
 
@@ -1276852,7 +1277725,7 @@ Used **1653** times.
 
 ## TypeScriptExample
 
-The `TypeScriptExample` component is used `1546` times on `432` pages.
+The `TypeScriptExample` component is used `1558` times on `436` pages.
 
 <details>
 
@@ -1276862,7 +1277735,7 @@ See all examples of pages that use TypeScriptExample
 
 </summary>
 
-Used **1546** times.
+Used **1558** times.
 
 **Pages**
 
@@ -1277013,6 +1277886,7 @@ Used **1546** times.
 - <a href="https://developers.cloudflare.com/browser-run/reference/browser-binding-api/">/browser-run/reference/browser-binding-api/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/browser-run/reference/browser-binding-api.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/cf/get-started/first-worker/">/cf/get-started/first-worker/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/cf/get-started/first-worker.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/cloudflare-for-platforms/cloudflare-for-saas/domain-support/custom-metadata/">/cloudflare-for-platforms/cloudflare-for-saas/domain-support/custom-metadata/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/cloudflare-for-platforms/cloudflare-for-saas/domain-support/custom-metadata.mdx">Source</a>
+- <a href="https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/authentication/">/cloudflare-for-platforms/workers-for-platforms/configuration/authentication/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/cloudflare-for-platforms/workers-for-platforms/configuration/authentication.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/configuration/dynamic-dispatch/">/cloudflare-for-platforms/workers-for-platforms/configuration/dynamic-dispatch/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/cloudflare-for-platforms/workers-for-platforms/configuration/dynamic-dispatch.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/cloudflare-one/access-controls/applications/http-apps/authorization-cookie/validating-json/">/cloudflare-one/access-controls/applications/http-apps/authorization-cookie/validating-json/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/cloudflare-one/access-controls/applications/http-apps/authorization-cookie/validating-json.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/cloudflare-one/data-loss-prevention/detection-entries/custom-validation-workers/">/cloudflare-one/data-loss-prevention/detection-entries/custom-validation-workers/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/cloudflare-one/data-loss-prevention/detection-entries/custom-validation-workers.mdx">Source</a>
@@ -1277060,6 +1277934,7 @@ Used **1546** times.
 - <a href="https://developers.cloudflare.com/dynamic-workers/examples/dynamic-workers-playground/">/dynamic-workers/examples/dynamic-workers-playground/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/dynamic-workers/examples/dynamic-workers-playground.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/dynamic-workers/examples/dynamic-workers-starter/">/dynamic-workers/examples/dynamic-workers-starter/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/dynamic-workers/examples/dynamic-workers-starter.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/dynamic-workers/getting-started/">/dynamic-workers/getting-started/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/dynamic-workers/getting-started.mdx">Source</a>
+- <a href="https://developers.cloudflare.com/dynamic-workers/usage/authentication/">/dynamic-workers/usage/authentication/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/dynamic-workers/usage/authentication.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/dynamic-workers/usage/durable-object-facets/">/dynamic-workers/usage/durable-object-facets/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/dynamic-workers/usage/durable-object-facets.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/dynamic-workers/usage/dynamic-workflows/">/dynamic-workers/usage/dynamic-workflows/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/dynamic-workers/usage/dynamic-workflows.mdx">Source</a>
 - <a href="https://developers.cloudflare.com/dynamic-workers/usage/static-assets/">/dynamic-workers/usage/static-assets/</a>-<a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/docs/dynamic-workers/usage/static-assets.mdx">Source</a>
@@ -1277211,6 +1278086,8 @@ Used **1546** times.
 - <a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/partials/browser-run/example-quick-action-binding.mdx">src/content/partials/browser-run/example-quick-action-binding.mdx</a>
 - <a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/partials/workers/cloudflare-config.mdx">src/content/partials/workers/cloudflare-config.mdx</a>
 - <a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/partials/workers/navigation_requests.mdx">src/content/partials/workers/navigation\_requests.mdx</a>
+- <a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/partials/workers/platform-auth-reports.mdx">src/content/partials/workers/platform-auth-reports.mdx</a>
+- <a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/partials/workers/platform-auth-route-policy.mdx">src/content/partials/workers/platform-auth-route-policy.mdx</a>
 - <a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/partials/workers/request-signal-example.mdx">src/content/partials/workers/request-signal-example.mdx</a>
 - <a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/partials/workers/service-binding-rpc-example.mdx">src/content/partials/workers/service-binding-rpc-example.mdx</a>
 - <a href="https://github.com/cloudflare/cloudflare-docs/blob/production/src/content/partials/workers/service-binding-rpc-functions-example.mdx">src/content/partials/workers/service-binding-rpc-functions-example.mdx</a>

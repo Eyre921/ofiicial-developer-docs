@@ -22,45 +22,45 @@ Observability is crucial for understanding how your CrewAI agents perform, ident
 
 ### Monitoring & Tracing Platforms
 
-> **[LangDB](/en/observability/langdb)**
+> [card] [LangDB](/en/observability/langdb)
 >
 > End-to-end tracing for CrewAI workflows with automatic agent interaction capture.
 
-> **[OpenLIT](/en/observability/openlit)**
+> [card] [OpenLIT](/en/observability/openlit)
 >
 > OpenTelemetry-native monitoring with cost tracking and performance analytics.
 
-> **[MLflow](/en/observability/mlflow)**
+> [card] [MLflow](/en/observability/mlflow)
 >
 > Machine learning lifecycle management with tracing and evaluation capabilities.
 
-> **[Langfuse](/en/observability/langfuse)**
+> [card] [Langfuse](/en/observability/langfuse)
 >
 > LLM engineering platform with detailed tracing and analytics.
 
-> **[Langtrace](/en/observability/langtrace)**
+> [card] [Langtrace](/en/observability/langtrace)
 >
 > Open-source observability for LLMs and agent frameworks.
 
-> **[Arize Phoenix](/en/observability/arize-phoenix)**
+> [card] [Arize Phoenix](/en/observability/arize-phoenix)
 >
 > AI observability platform for monitoring and troubleshooting.
 
-> **[Portkey](/en/observability/portkey)**
+> [card] [Portkey](/en/observability/portkey)
 >
 > AI gateway with comprehensive monitoring and reliability features.
 
-> **[Opik](/en/observability/opik)**
+> [card] [Opik](/en/observability/opik)
 >
 > Debug, evaluate, and monitor LLM applications with comprehensive tracing.
 
-> **[Weave](/en/observability/weave)**
+> [card] [Weave](/en/observability/weave)
 >
 > Weights & Biases platform for tracking and evaluating AI applications.
 
 ### Evaluation & Quality Assurance
 
-> **[Patronus AI](/en/observability/patronus-evaluation)**
+> [card] [Patronus AI](/en/observability/patronus-evaluation)
 >
 > Comprehensive evaluation platform for LLM outputs and agent behaviors.
 

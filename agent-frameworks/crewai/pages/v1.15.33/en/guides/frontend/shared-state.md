@@ -186,14 +186,14 @@ Putting the pieces together, a single recipe object is kept in sync in both dire
 
 ## Related
 
-> **[Agentic Generative UI](/edge/en/guides/frontend/agentic-generative-ui)**
+> [card] [Agentic Generative UI](/edge/en/guides/frontend/agentic-generative-ui)
 >
 > Render live agent state as it changes.
 
-> **[Predictive State](/edge/en/guides/frontend/predictive-state-updates)**
+> [card] [Predictive State](/edge/en/guides/frontend/predictive-state-updates)
 >
 > Stream in-progress state to the UI as the agent works.
 
-> **[Human-in-the-Loop](/edge/en/guides/frontend/human-in-the-loop)**
+> [card] [Human-in-the-Loop](/edge/en/guides/frontend/human-in-the-loop)
 >
 > Pause the agent to collect user approval or input mid-run.

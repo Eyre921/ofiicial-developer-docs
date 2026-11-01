@@ -14,37 +14,37 @@ This section provides comprehensive guides and tutorials to help you master Crew
 
 ### Core Concepts
 
-> **[Sequential Process](/en/learn/sequential-process)**
+> [card] [Sequential Process](/en/learn/sequential-process)
 >
 > Learn how to execute tasks in a sequential order for structured workflows.
 
-> **[Hierarchical Process](/en/learn/hierarchical-process)**
+> [card] [Hierarchical Process](/en/learn/hierarchical-process)
 >
 > Implement hierarchical task execution with manager agents overseeing workflows.
 
-> **[Conditional Tasks](/en/learn/conditional-tasks)**
+> [card] [Conditional Tasks](/en/learn/conditional-tasks)
 >
 > Create dynamic workflows with conditional task execution based on outcomes.
 
-> **[Async Kickoff](/en/learn/kickoff-async)**
+> [card] [Async Kickoff](/en/learn/kickoff-async)
 >
 > Execute crews asynchronously for improved performance and concurrency.
 
 ### Agent Development
 
-> **[Customizing Agents](/en/learn/customizing-agents)**
+> [card] [Customizing Agents](/en/learn/customizing-agents)
 >
 > Learn how to customize agent behavior, roles, and capabilities.
 
-> **[Coding Agents](/en/learn/coding-agents)**
+> [card] [Coding Agents](/en/learn/coding-agents)
 >
 > Build agents that can write, execute, and debug code automatically.
 
-> **[Multimodal Agents](/en/learn/multimodal-agents)**
+> [card] [Multimodal Agents](/en/learn/multimodal-agents)
 >
 > Create agents that can process text, images, and other media types.
 
-> **[Custom Manager Agent](/en/learn/custom-manager-agent)**
+> [card] [Custom Manager Agent](/en/learn/custom-manager-agent)
 >
 > Implement custom manager agents for complex hierarchical workflows.
 
@@ -52,37 +52,37 @@ This section provides comprehensive guides and tutorials to help you master Crew
 
 ### Workflow Control
 
-> **[Human in the Loop](/en/learn/human-in-the-loop)**
+> [card] [Human in the Loop](/en/learn/human-in-the-loop)
 >
 > Integrate human oversight and intervention into agent workflows.
 
-> **[Human Input on Execution](/en/learn/human-input-on-execution)**
+> [card] [Human Input on Execution](/en/learn/human-input-on-execution)
 >
 > Allow human input during task execution for dynamic decision making.
 
-> **[Replay Tasks](/en/learn/replay-tasks-from-latest-crew-kickoff)**
+> [card] [Replay Tasks](/en/learn/replay-tasks-from-latest-crew-kickoff)
 >
 > Replay and resume tasks from previous crew executions.
 
-> **[Kickoff for Each](/en/learn/kickoff-for-each)**
+> [card] [Kickoff for Each](/en/learn/kickoff-for-each)
 >
 > Execute crews multiple times with different inputs efficiently.
 
 ### Customization & Integration
 
-> **[Custom LLM](/en/learn/custom-llm)**
+> [card] [Custom LLM](/en/learn/custom-llm)
 >
 > Integrate custom language models and providers with CrewAI.
 
-> **[LLM Connections](/en/learn/llm-connections)**
+> [card] [LLM Connections](/en/learn/llm-connections)
 >
 > Configure and manage connections to various LLM providers.
 
-> **[Create Custom Tools](/en/learn/create-custom-tools)**
+> [card] [Create Custom Tools](/en/learn/create-custom-tools)
 >
 > Build custom tools to extend agent capabilities.
 
-> **[Using Annotations](/en/learn/using-annotations)**
+> [card] [Using Annotations](/en/learn/using-annotations)
 >
 > Use Python annotations for cleaner, more maintainable code.
 
@@ -90,17 +90,17 @@ This section provides comprehensive guides and tutorials to help you master Crew
 
 ### Content & Media
 
-> **[DALL-E Image Generation](/en/learn/dalle-image-generation)**
+> [card] [DALL-E Image Generation](/en/learn/dalle-image-generation)
 >
 > Generate images using DALL-E integration with your agents.
 
-> **[Bring Your Own Agent](/en/learn/bring-your-own-agent)**
+> [card] [Bring Your Own Agent](/en/learn/bring-your-own-agent)
 >
 > Integrate existing agents and models into CrewAI workflows.
 
 ### Tool Management
 
-> **[Force Tool Output as Result](/en/learn/force-tool-output-as-result)**
+> [card] [Force Tool Output as Result](/en/learn/force-tool-output-as-result)
 >
 > Configure tools to return their output directly as task results.
 

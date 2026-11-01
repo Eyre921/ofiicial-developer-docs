@@ -99,14 +99,14 @@ You can supply either one, or both. A `handler` with a `render` alongside it per
 
 ## Related
 
-> **[Tool-Based Generative UI](/edge/en/guides/frontend/tool-based-generative-ui)**
+> [card] [Tool-Based Generative UI](/edge/en/guides/frontend/tool-based-generative-ui)
 >
 > Map agent tool calls to React components.
 
-> **[Human-in-the-Loop](/edge/en/guides/frontend/human-in-the-loop)**
+> [card] [Human-in-the-Loop](/edge/en/guides/frontend/human-in-the-loop)
 >
 > Gate agent actions behind user approval.
 
-> **[Shared State](/edge/en/guides/frontend/shared-state)**
+> [card] [Shared State](/edge/en/guides/frontend/shared-state)
 >
 > Keep agent state and your app UI in two-way sync.

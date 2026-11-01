@@ -420,7 +420,7 @@ Both skills and knowledge modify the agent's prompt, but they serve different pu
 
 ## Common Questions
 
-> **Do I need to set skills AND tools?**
+> [accordion] Do I need to set skills AND tools?
 >
 > It depends on your use case. Skills and tools are **independent** — you can use either, both, or neither.
 >
@@ -428,14 +428,14 @@ Both skills and knowledge modify the agent's prompt, but they serve different pu
 > * **Tools alone**: When the agent needs actions but no special methodology (e.g., simple web search)
 > * **Both**: When the agent needs expertise AND actions (e.g., security audit with specific checklists AND ability to scan code)
 
-> **Do skills automatically provide tools?**
+> [accordion] Do skills automatically provide tools?
 >
 > **No.** The `allowed-tools` field in SKILL.md is experimental metadata only — it does not provision or inject any tools. You must always set tools separately via `tools=[]`, `mcps=[]`, or `apps=[]`.
 
-> **What happens if I set the same skill on both an agent and its crew?**
+> [accordion] What happens if I set the same skill on both an agent and its crew?
 >
 > The agent-level skill takes priority. Skills are deduplicated by name — the agent's skills are processed first, so if the same skill name appears at both levels, the agent's version is used.
 
-> **How large can a SKILL.md body be?**
+> [accordion] How large can a SKILL.md body be?
 >
 > There's a soft warning at 50,000 characters, but no hard limit. Keep skills focused and concise for best results — large prompt injections can dilute the agent's attention.

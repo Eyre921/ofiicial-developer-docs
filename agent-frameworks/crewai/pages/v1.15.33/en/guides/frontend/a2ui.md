@@ -92,11 +92,11 @@ The tool assembles the `createSurface` -> `updateComponents` -> `updateDataModel
 
 ## When to use which
 
-> **Dynamic**
+> [card] Dynamic
 >
 > The layout is not known ahead of time and you want the agent to compose novel surfaces from your primitives. You gain flexibility and pay for an LLM layout step.
 
-> **Fixed-schema**
+> [card] Fixed-schema
 >
 > The layout is known and only the data varies. More predictable and deterministic — no generation, no recovery, no LLM in the layout path.
 
@@ -104,14 +104,14 @@ Both modes share the same frontend: one catalog, registered once on the provider
 
 ## Related
 
-> **[Generative UI](/edge/en/guides/frontend/generative-ui)**
+> [card] [Generative UI](/edge/en/guides/frontend/generative-ui)
 >
 > The full spectrum — A2UI is its declarative tier.
 
-> **[Tool-Based Generative UI](/edge/en/guides/frontend/tool-based-generative-ui)**
+> [card] [Tool-Based Generative UI](/edge/en/guides/frontend/tool-based-generative-ui)
 >
 > Map one tool to one component (controlled).
 
-> **[Agentic Generative UI](/edge/en/guides/frontend/agentic-generative-ui)**
+> [card] [Agentic Generative UI](/edge/en/guides/frontend/agentic-generative-ui)
 >
 > Render live agent state (controlled).

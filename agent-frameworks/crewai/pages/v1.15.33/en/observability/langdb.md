@@ -261,27 +261,27 @@ LangDB Trace Dashboard
 
 ## Resources
 
-> **[LangDB Documentation](https://docs.langdb.ai)**
+> [card] [LangDB Documentation](https://docs.langdb.ai)
 >
 > Official LangDB documentation and guides
 
-> **[LangDB Guides](https://docs.langdb.ai/guides)**
+> [card] [LangDB Guides](https://docs.langdb.ai/guides)
 >
 > Step-by-step tutorials for building AI agents
 
-> **[GitHub Examples](https://github.com/langdb/langdb-samples/tree/main/examples/crewai)**
+> [card] [GitHub Examples](https://github.com/langdb/langdb-samples/tree/main/examples/crewai)
 >
 > Complete CrewAI integration examples
 
-> **[LangDB Dashboard](https://app.langdb.ai)**
+> [card] [LangDB Dashboard](https://app.langdb.ai)
 >
 > Access your traces and analytics
 
-> **[Model Catalog](https://app.langdb.ai/models)**
+> [card] [Model Catalog](https://app.langdb.ai/models)
 >
 > Browse 350+ available language models
 
-> **[Enterprise Features](https://docs.langdb.ai/enterprise)**
+> [card] [Enterprise Features](https://docs.langdb.ai/enterprise)
 >
 > Self-hosted options and enterprise capabilities
 

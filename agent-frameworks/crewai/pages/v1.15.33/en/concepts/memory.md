@@ -548,7 +548,7 @@ crew = Crew(
 
 ### Provider Examples
 
-> **OpenAI (default)**
+> [accordion] OpenAI (default)
 >
 > ```python theme={null}
 > memory = Memory(embedder={
@@ -560,7 +560,7 @@ crew = Crew(
 > })
 > ```
 
-> **Ollama (local, private)**
+> [accordion] Ollama (local, private)
 >
 > ```python theme={null}
 > memory = Memory(embedder={
@@ -572,7 +572,7 @@ crew = Crew(
 > })
 > ```
 
-> **Azure OpenAI**
+> [accordion] Azure OpenAI
 >
 > ```python theme={null}
 > memory = Memory(embedder={
@@ -586,7 +586,7 @@ crew = Crew(
 > })
 > ```
 
-> **Google AI**
+> [accordion] Google AI
 >
 > ```python theme={null}
 > memory = Memory(embedder={
@@ -598,7 +598,7 @@ crew = Crew(
 > })
 > ```
 
-> **Google Vertex AI**
+> [accordion] Google Vertex AI
 >
 > ```python theme={null}
 > memory = Memory(embedder={
@@ -611,7 +611,7 @@ crew = Crew(
 > })
 > ```
 
-> **Cohere**
+> [accordion] Cohere
 >
 > ```python theme={null}
 > memory = Memory(embedder={
@@ -623,7 +623,7 @@ crew = Crew(
 > })
 > ```
 
-> **VoyageAI**
+> [accordion] VoyageAI
 >
 > ```python theme={null}
 > memory = Memory(embedder={
@@ -635,7 +635,7 @@ crew = Crew(
 > })
 > ```
 
-> **AWS Bedrock**
+> [accordion] AWS Bedrock
 >
 > ```python theme={null}
 > memory = Memory(embedder={
@@ -647,7 +647,7 @@ crew = Crew(
 > })
 > ```
 
-> **Hugging Face**
+> [accordion] Hugging Face
 >
 > ```python theme={null}
 > memory = Memory(embedder={
@@ -658,7 +658,7 @@ crew = Crew(
 > })
 > ```
 
-> **Jina**
+> [accordion] Jina
 >
 > ```python theme={null}
 > memory = Memory(embedder={
@@ -670,7 +670,7 @@ crew = Crew(
 > })
 > ```
 
-> **IBM WatsonX**
+> [accordion] IBM WatsonX
 >
 > ```python theme={null}
 > memory = Memory(embedder={
@@ -684,7 +684,7 @@ crew = Crew(
 > })
 > ```
 
-> **Custom Embedder**
+> [accordion] Custom Embedder
 >
 > ```python theme={null}
 > # Pass any callable that takes a list of strings and returns a list of vectors

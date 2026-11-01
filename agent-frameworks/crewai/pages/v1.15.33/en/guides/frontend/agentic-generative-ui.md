@@ -182,14 +182,14 @@ Reading state is the foundation. Two guides build directly on it:
 
 ## Related
 
-> **[Shared State](/edge/en/guides/frontend/shared-state)**
+> [card] [Shared State](/edge/en/guides/frontend/shared-state)
 >
 > Sync agent state and app UI in both directions.
 
-> **[Predictive State](/edge/en/guides/frontend/predictive-state-updates)**
+> [card] [Predictive State](/edge/en/guides/frontend/predictive-state-updates)
 >
 > Stream in-progress tool arguments into state.
 
-> **[Tool-Based Generative UI](/edge/en/guides/frontend/tool-based-generative-ui)**
+> [card] [Tool-Based Generative UI](/edge/en/guides/frontend/tool-based-generative-ui)
 >
 > Map agent tool calls to components.

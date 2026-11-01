@@ -10,31 +10,31 @@ These tools integrate with AI and machine learning services to enhance your agen
 
 ## **Available Tools**
 
-> **[DALL-E Tool](/en/tools/ai-ml/dalletool)**
+> [card] [DALL-E Tool](/en/tools/ai-ml/dalletool)
 >
 > Generate AI images using OpenAI's DALL-E model.
 
-> **[Vision Tool](/en/tools/ai-ml/visiontool)**
+> [card] [Vision Tool](/en/tools/ai-ml/visiontool)
 >
 > Process and analyze images with computer vision capabilities.
 
-> **[AI Mind Tool](/en/tools/ai-ml/aimindtool)**
+> [card] [AI Mind Tool](/en/tools/ai-ml/aimindtool)
 >
 > Advanced AI reasoning and decision-making capabilities.
 
-> **[LlamaIndex Tool](/en/tools/ai-ml/llamaindextool)**
+> [card] [LlamaIndex Tool](/en/tools/ai-ml/llamaindextool)
 >
 > Build knowledge bases and retrieval systems with LlamaIndex.
 
-> **[LangChain Tool](/en/tools/ai-ml/langchaintool)**
+> [card] [LangChain Tool](/en/tools/ai-ml/langchaintool)
 >
 > Integrate with LangChain for complex AI workflows.
 
-> **[RAG Tool](/en/tools/ai-ml/ragtool)**
+> [card] [RAG Tool](/en/tools/ai-ml/ragtool)
 >
 > Implement Retrieval-Augmented Generation systems.
 
-> **[Code Interpreter Tool](/en/tools/ai-ml/codeinterpretertool)**
+> [card] [Code Interpreter Tool](/en/tools/ai-ml/codeinterpretertool)
 >
 > Execute Python code and perform data analysis.
 

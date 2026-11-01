@@ -120,14 +120,14 @@ The `document` field fills in progressively as the agent generates the `write_do
 
 ## Related
 
-> **[Shared State](/edge/en/guides/frontend/shared-state)**
+> [card] [Shared State](/edge/en/guides/frontend/shared-state)
 >
 > Read and write the agent's state two-way.
 
-> **[Agentic Generative UI](/edge/en/guides/frontend/agentic-generative-ui)**
+> [card] [Agentic Generative UI](/edge/en/guides/frontend/agentic-generative-ui)
 >
 > Render live agent state as it changes.
 
-> **[Tool-Based Generative UI](/edge/en/guides/frontend/tool-based-generative-ui)**
+> [card] [Tool-Based Generative UI](/edge/en/guides/frontend/tool-based-generative-ui)
 >
 > Map agent tool calls to components.

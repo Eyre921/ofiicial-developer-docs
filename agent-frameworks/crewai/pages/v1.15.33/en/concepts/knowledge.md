@@ -157,13 +157,13 @@ result = crew.kickoff(
 
 CrewAI supports various types of knowledge sources out of the box:
 
-> **Text Sources**
+> [card] Text Sources
 >
 > * Raw strings
 > * Text files (.txt)
 > * PDF documents
 
-> **Structured Data**
+> [card] Structured Data
 >
 > * CSV files
 > * Excel spreadsheets
@@ -713,11 +713,11 @@ CrewAI implements an intelligent query rewriting mechanism to optimize knowledge
 
 #### Benefits of Query Rewriting
 
-> **Improved Retrieval Accuracy**
+> [card] Improved Retrieval Accuracy
 >
 > By focusing on key concepts and removing irrelevant content, query rewriting helps retrieve more relevant information.
 
-> **Context Awareness**
+> [card] Context Awareness
 >
 > The rewritten queries are designed to be more specific and context-aware for vector database retrieval.
 
@@ -1094,26 +1094,26 @@ This is useful when you've updated your knowledge sources and want to ensure tha
 
 ## Best Practices
 
-> **Content Organization**
+> [accordion] Content Organization
 >
 > * Keep chunk sizes appropriate for your content type
 > * Consider content overlap for context preservation
 > * Organize related information into separate knowledge sources
 
-> **Performance Tips**
+> [accordion] Performance Tips
 >
 > * Adjust chunk sizes based on content complexity
 > * Configure appropriate embedding models
 > * Consider using local embedding providers for faster processing
 
-> **One Time Knowledge**
+> [accordion] One Time Knowledge
 >
 > * With the typical file structure provided by CrewAI, knowledge sources are embedded every time the kickoff is triggered.
 > * If the knowledge sources are large, this leads to inefficiency and increased latency, as the same data is embedded each time.
 > * To resolve this, directly initialize the knowledge parameter instead of the knowledge\_sources parameter.
 > * Link to the issue to get complete idea [Github Issue](https://github.com/crewAIInc/crewAI/issues/2755)
 
-> **Knowledge Management**
+> [accordion] Knowledge Management
 >
 > * Use agent-level knowledge for role-specific information
 > * Use crew-level knowledge for shared information all agents need
@@ -1123,7 +1123,7 @@ This is useful when you've updated your knowledge sources and want to ensure tha
 > * Monitor storage locations to understand where knowledge is stored
 > * Reset knowledge appropriately using the correct command types
 
-> **Production Best Practices**
+> [accordion] Production Best Practices
 >
 > * Set `CREWAI_STORAGE_DIR` to a known location in production
 > * Choose explicit embedding providers to match your LLM setup and avoid API key conflicts

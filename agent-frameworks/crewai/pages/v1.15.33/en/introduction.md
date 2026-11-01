@@ -72,19 +72,19 @@ Crews provide:
 
 ## Key Features
 
-> **Production-Grade Flows**
+> [card] Production-Grade Flows
 >
 > Build reliable, stateful workflows that can handle long-running processes and complex logic.
 
-> **Autonomous Crews**
+> [card] Autonomous Crews
 >
 > Deploy teams of agents that can plan, execute, and collaborate to achieve high-level goals.
 
-> **Flexible Tools**
+> [card] Flexible Tools
 >
 > Connect your agents to any API, database, or local tool.
 
-> **Enterprise Security**
+> [card] Enterprise Security
 >
 > Designed with security and compliance in mind for enterprise deployments.
 
@@ -114,22 +114,22 @@ For any production-ready application, **start with a Flow**.
 
 ## Ready to Start Building?
 
-> **[Build Your First Flow](/en/guides/flows/first-flow)**
+> [card] [Build Your First Flow](/en/guides/flows/first-flow)
 >
 > Learn how to create structured, event-driven workflows with precise control over execution.
 
-> **[Build Your First Crew](/en/guides/crews/first-crew)**
+> [card] [Build Your First Crew](/en/guides/crews/first-crew)
 >
 > Step-by-step tutorial to create a collaborative AI team that works together to solve complex problems.
 
-> **[Install CrewAI](/en/installation)**
+> [card] [Install CrewAI](/en/installation)
 >
 > Get started with CrewAI in your development environment.
 
-> **[Quick Start](en/quickstart)**
+> [card] [Quick Start](en/quickstart)
 >
 > Scaffold a Flow, run a crew with one agent, and generate a report end to end.
 
-> **[Join the Community](https://community.crewai.com)**
+> [card] [Join the Community](https://community.crewai.com)
 >
 > Connect with other developers, get help, and share your CrewAI experiences.

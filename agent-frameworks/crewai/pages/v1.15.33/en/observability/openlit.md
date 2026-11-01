@@ -61,114 +61,114 @@ pip install openlit
 
 Add the following two lines to your application code:
 
-**Setup using function arguments**
+> [tab] Setup using function arguments
+>
+> ```python theme={null}
+> import openlit
+> openlit.init(otlp_endpoint="http://127.0.0.1:4318")
+> ```
+>
+> Example Usage for monitoring a CrewAI Agent:
+>
+> ```python theme={null}
+> from crewai import Agent, Task, Crew, Process
+> import openlit
+>
+> openlit.init(disable_metrics=True)
+> # Define your agents
+> researcher = Agent(
+>     role="Researcher",
+>     goal="Conduct thorough research and analysis on AI and AI agents",
+>     backstory="You're an expert researcher, specialized in technology, software engineering, AI, and startups. You work as a freelancer and are currently researching for a new client.",
+>     allow_delegation=False,
+>     llm='command-r'
+> )
+>
+>
+> # Define your task
+> task = Task(
+>     description="Generate a list of 5 interesting ideas for an article, then write one captivating paragraph for each idea that showcases the potential of a full article on this topic. Return the list of ideas with their paragraphs and your notes.",
+>     expected_output="5 bullet points, each with a paragraph and accompanying notes.",
+> )
+>
+> # Define the manager agent
+> manager = Agent(
+>     role="Project Manager",
+>     goal="Efficiently manage the crew and ensure high-quality task completion",
+>     backstory="You're an experienced project manager, skilled in overseeing complex projects and guiding teams to success. Your role is to coordinate the efforts of the crew members, ensuring that each task is completed on time and to the highest standard.",
+>     allow_delegation=True,
+>     llm='command-r'
+> )
+>
+> # Instantiate your crew with a custom manager
+> crew = Crew(
+>     agents=[researcher],
+>     tasks=[task],
+>     manager_agent=manager,
+>     process=Process.hierarchical,
+> )
+>
+> # Start the crew's work
+> result = crew.kickoff()
+>
+> print(result)
+> ```
 
-```python theme={null}
-import openlit
-openlit.init(otlp_endpoint="http://127.0.0.1:4318")
-```
-
-Example Usage for monitoring a CrewAI Agent:
-
-```python theme={null}
-from crewai import Agent, Task, Crew, Process
-import openlit
-
-openlit.init(disable_metrics=True)
-# Define your agents
-researcher = Agent(
-    role="Researcher",
-    goal="Conduct thorough research and analysis on AI and AI agents",
-    backstory="You're an expert researcher, specialized in technology, software engineering, AI, and startups. You work as a freelancer and are currently researching for a new client.",
-    allow_delegation=False,
-    llm='command-r'
-)
-
-
-# Define your task
-task = Task(
-    description="Generate a list of 5 interesting ideas for an article, then write one captivating paragraph for each idea that showcases the potential of a full article on this topic. Return the list of ideas with their paragraphs and your notes.",
-    expected_output="5 bullet points, each with a paragraph and accompanying notes.",
-)
-
-# Define the manager agent
-manager = Agent(
-    role="Project Manager",
-    goal="Efficiently manage the crew and ensure high-quality task completion",
-    backstory="You're an experienced project manager, skilled in overseeing complex projects and guiding teams to success. Your role is to coordinate the efforts of the crew members, ensuring that each task is completed on time and to the highest standard.",
-    allow_delegation=True,
-    llm='command-r'
-)
-
-# Instantiate your crew with a custom manager
-crew = Crew(
-    agents=[researcher],
-    tasks=[task],
-    manager_agent=manager,
-    process=Process.hierarchical,
-)
-
-# Start the crew's work
-result = crew.kickoff()
-
-print(result)
-```
-
-**Setup using Environment Variables**
-
-Add the following two lines to your application code:
-
-```python theme={null}
-import openlit
-
-openlit.init()
-```
-
-Run the following command to configure the OTEL export endpoint:
-
-```shell theme={null}
-export OTEL_EXPORTER_OTLP_ENDPOINT = "http://127.0.0.1:4318"
-```
-
-Example Usage for monitoring a CrewAI Async Agent:
-
-```python theme={null}
-import asyncio
-from crewai import Crew, Agent, Task
-import openlit
-
-openlit.init(otlp_endpoint="http://127.0.0.1:4318")
-
-# Create an agent with code execution enabled
-coding_agent = Agent(
-  role="Python Data Analyst",
-  goal="Analyze data and provide insights using Python",
-  backstory="You are an experienced data analyst with strong Python skills.",
-  allow_code_execution=True,
-  llm="command-r"
-)
-
-# Create a task that requires code execution
-data_analysis_task = Task(
-  description="Analyze the given dataset and calculate the average age of participants. Ages: {ages}",
-  agent=coding_agent,
-  expected_output="5 bullet points, each with a paragraph and accompanying notes.",
-)
-
-# Create a crew and add the task
-analysis_crew = Crew(
-  agents=[coding_agent],
-  tasks=[data_analysis_task]
-)
-
-# Async function to kickoff the crew asynchronously
-async def async_crew_execution():
-    result = await analysis_crew.kickoff_async(inputs={"ages": [25, 30, 35, 40, 45]})
-    print("Crew Result:", result)
-
-# Run the async function
-asyncio.run(async_crew_execution())
-```
+> [tab] Setup using Environment Variables
+>
+> Add the following two lines to your application code:
+>
+> ```python theme={null}
+> import openlit
+>
+> openlit.init()
+> ```
+>
+> Run the following command to configure the OTEL export endpoint:
+>
+> ```shell theme={null}
+> export OTEL_EXPORTER_OTLP_ENDPOINT = "http://127.0.0.1:4318"
+> ```
+>
+> Example Usage for monitoring a CrewAI Async Agent:
+>
+> ```python theme={null}
+> import asyncio
+> from crewai import Crew, Agent, Task
+> import openlit
+>
+> openlit.init(otlp_endpoint="http://127.0.0.1:4318")
+>
+> # Create an agent with code execution enabled
+> coding_agent = Agent(
+>   role="Python Data Analyst",
+>   goal="Analyze data and provide insights using Python",
+>   backstory="You are an experienced data analyst with strong Python skills.",
+>   allow_code_execution=True,
+>   llm="command-r"
+> )
+>
+> # Create a task that requires code execution
+> data_analysis_task = Task(
+>   description="Analyze the given dataset and calculate the average age of participants. Ages: {ages}",
+>   agent=coding_agent,
+>   expected_output="5 bullet points, each with a paragraph and accompanying notes.",
+> )
+>
+> # Create a crew and add the task
+> analysis_crew = Crew(
+>   agents=[coding_agent],
+>   tasks=[data_analysis_task]
+> )
+>
+> # Async function to kickoff the crew asynchronously
+> async def async_crew_execution():
+>     result = await analysis_crew.kickoff_async(inputs={"ages": [25, 30, 35, 40, 45]})
+>     print("Crew Result:", result)
+>
+> # Run the async function
+> asyncio.run(async_crew_execution())
+> ```
 
 Refer to OpenLIT [Python SDK repository](https://github.com/openlit/openlit/tree/main/sdk/python) for more advanced configurations and use cases.
 

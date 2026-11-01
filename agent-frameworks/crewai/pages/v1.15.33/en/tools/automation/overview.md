@@ -10,23 +10,23 @@ These tools enable your agents to automate workflows, integrate with external pl
 
 ## **Available Tools**
 
-> **[Apify Actor Tool](/en/tools/automation/apifyactorstool)**
+> [card] [Apify Actor Tool](/en/tools/automation/apifyactorstool)
 >
 > Run Apify actors for web scraping and automation tasks.
 
-> **[Composio Tool](/en/tools/automation/composiotool)**
+> [card] [Composio Tool](/en/tools/automation/composiotool)
 >
 > Integrate with hundreds of apps and services through Composio.
 
-> **[Multion Tool](/en/tools/automation/multiontool)**
+> [card] [Multion Tool](/en/tools/automation/multiontool)
 >
 > Automate browser interactions and web-based workflows.
 
-> **[Wait Tool](/edge/en/tools/automation/waittool)**
+> [card] [Wait Tool](/edge/en/tools/automation/waittool)
 >
 > Pause before re-checking a long-running job such as a build or deployment.
 
-> **[Zapier Actions Adapter](/en/tools/automation/zapieractionstool)**
+> [card] [Zapier Actions Adapter](/en/tools/automation/zapieractionstool)
 >
 > Expose Zapier Actions as CrewAI tools for automation across thousands of apps.
 

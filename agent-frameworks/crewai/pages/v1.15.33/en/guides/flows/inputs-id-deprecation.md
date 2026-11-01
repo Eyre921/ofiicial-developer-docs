@@ -139,7 +139,7 @@ Migrating to `restoreFromStateId` keeps every kickoff as its own execution — w
 its own status, traces, and row in the list — while still hydrating state from a
 previous run.
 
-> **[Need Help?](mailto:support@crewai.com)**
+> [card] [Need Help?](mailto:support@crewai.com)
 >
 > Contact our support team if you're unsure which mode your flow needs or hit issues
 > during the migration.

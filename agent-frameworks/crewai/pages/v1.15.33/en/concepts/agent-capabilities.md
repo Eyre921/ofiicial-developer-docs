@@ -10,23 +10,23 @@ Understand the five ways to extend CrewAI agents: Tools, MCPs, Apps, Skills, and
 
 CrewAI agents can be extended with **five distinct capability types**, each serving a different purpose. Understanding when to use each one — and how they work together — is key to building effective agents.
 
-> **[Tools](/en/concepts/tools)**
+> [card] [Tools](/en/concepts/tools)
 >
 > **Callable functions** — give agents the ability to take action. Web searches, file operations, API calls, code execution.
 
-> **[MCP Servers](/en/mcp/overview)**
+> [card] [MCP Servers](/en/mcp/overview)
 >
 > **Remote tool servers** — connect agents to external tool servers via the Model Context Protocol. Same effect as tools, but hosted externally.
 
-> **Apps**
+> [card] Apps
 >
 > **Platform integrations** — connect agents to SaaS apps (Gmail, Slack, Jira, Salesforce) via CrewAI's platform. Runs locally with a platform integration token.
 
-> **[Skills](/en/concepts/skills)**
+> [card] [Skills](/en/concepts/skills)
 >
 > **Domain expertise** — inject instructions, guidelines, and reference material into agent prompts. Skills tell agents *how to think*.
 
-> **[Knowledge](/en/concepts/knowledge)**
+> [card] [Knowledge](/en/concepts/knowledge)
 >
 > **Retrieved facts** — provide agents with data from documents, files, and URLs via semantic search (RAG). Knowledge gives agents *what to know*.
 
@@ -134,18 +134,18 @@ researcher = Agent(
 
 Ready to learn more about each capability type?
 
-> **[Tools](/en/concepts/tools)**
+> [card] [Tools](/en/concepts/tools)
 >
 > Create custom tools, use the 75+ OSS catalog, configure caching and async execution.
 
-> **[MCP Integration](/en/mcp/overview)**
+> [card] [MCP Integration](/en/mcp/overview)
 >
 > Connect to MCP servers via stdio, SSE, or HTTP. Filter tools, configure auth.
 
-> **[Skills](/en/concepts/skills)**
+> [card] [Skills](/en/concepts/skills)
 >
 > Build skill packages with SKILL.md, inject domain expertise, use progressive disclosure.
 
-> **[Knowledge](/en/concepts/knowledge)**
+> [card] [Knowledge](/en/concepts/knowledge)
 >
 > Add knowledge from PDFs, CSVs, URLs, and more. Configure embedders and retrieval.

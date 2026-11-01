@@ -8,19 +8,19 @@ Automatically save execution state so crews, flows, and agents can resume after 
 
 Checkpointing saves a snapshot of execution state during a run so a crew, flow, or agent can resume after a failure or be forked into an alternate branch.
 
-> **[Explanation](#explanation)**
+> [card] [Explanation](#explanation)
 >
 > How checkpointing works: events, storage, and inheritance.
 
-> **[Tutorial](#tutorial-resume-a-failing-crew)**
+> [card] [Tutorial](#tutorial-resume-a-failing-crew)
 >
 > A 5-minute walkthrough: run, interrupt, resume.
 
-> **[How-to guides](#how-to-guides)**
+> [card] [How-to guides](#how-to-guides)
 >
 > Task-focused recipes for common workflows.
 
-> **[Reference](#reference)**
+> [card] [Reference](#reference)
 >
 > `CheckpointConfig`, events, providers, and CLI.
 
@@ -134,7 +134,7 @@ The research task is skipped, the writer runs against the saved research output,
 
 ## How-to guides
 
-> **Enable checkpointing with defaults**
+> [accordion] Enable checkpointing with defaults
 >
 > ```python theme={null}
 > crew = Crew(agents=[...], tasks=[...], checkpoint=True)
@@ -142,7 +142,7 @@ The research task is skipped, the writer runs against the saved research output,
 >
 > Writes to `./.checkpoints/` on every `task_completed`.
 
-> **Customize storage and frequency**
+> [accordion] Customize storage and frequency
 >
 > ```python theme={null}
 > from crewai import Crew, CheckpointConfig
@@ -158,7 +158,7 @@ The research task is skipped, the writer runs against the saved research output,
 > )
 > ```
 
-> **Choose a storage provider**
+> [accordion] Choose a storage provider
 >
 > ```python JsonProvider theme={null}
 > from crewai import Crew, CheckpointConfig
@@ -194,7 +194,7 @@ The research task is skipped, the writer runs against the saved research output,
 > >
 > > SQLite enables WAL journal mode for concurrent reads. Prefer it for high-frequency checkpointing.
 
-> **Opt one agent out**
+> [accordion] Opt one agent out
 >
 > ```python theme={null}
 > crew = Crew(
@@ -207,7 +207,7 @@ The research task is skipped, the writer runs against the saved research output,
 > )
 > ```
 
-> **Fork into a new branch**
+> [accordion] Fork into a new branch
 >
 > `fork()` restores a checkpoint under a fresh lineage so the new run does not collide with the original.
 >
@@ -219,60 +219,60 @@ The research task is skipped, the writer runs against the saved research output,
 >
 > The `branch` label is optional; one is generated if omitted.
 
-> **Checkpoint a Crew, Flow, or Agent**
+> [accordion] Checkpoint a Crew, Flow, or Agent
 >
-> **Crew**
+> > [tab] Crew
+> >
+> > ```python theme={null}
+> > crew = Crew(
+> >     agents=[researcher, writer],
+> >     tasks=[research_task, write_task, review_task],
+> >     checkpoint=CheckpointConfig(location="./crew_cp"),
+> > )
+> > ```
+> >
+> > Default trigger: `task_completed`.
 >
-> ```python theme={null}
-> crew = Crew(
->     agents=[researcher, writer],
->     tasks=[research_task, write_task, review_task],
->     checkpoint=CheckpointConfig(location="./crew_cp"),
-> )
-> ```
+> > [tab] Flow
+> >
+> > ```python theme={null}
+> > from crewai.flow.flow import Flow, start, listen
+> > from crewai import CheckpointConfig
+> >
+> > class MyFlow(Flow):
+> >     @start()
+> >     def step_one(self):
+> >         return "data"
+> >
+> >     @listen(step_one)
+> >     def step_two(self, data):
+> >         return process(data)
+> >
+> > flow = MyFlow(
+> >     checkpoint=CheckpointConfig(
+> >         location="./flow_cp",
+> >         on_events=["method_execution_finished"],
+> >     ),
+> > )
+> > result = flow.kickoff()
+> > ```
 >
-> Default trigger: `task_completed`.
->
-> **Flow**
->
-> ```python theme={null}
-> from crewai.flow.flow import Flow, start, listen
-> from crewai import CheckpointConfig
->
-> class MyFlow(Flow):
->     @start()
->     def step_one(self):
->         return "data"
->
->     @listen(step_one)
->     def step_two(self, data):
->         return process(data)
->
-> flow = MyFlow(
->     checkpoint=CheckpointConfig(
->         location="./flow_cp",
->         on_events=["method_execution_finished"],
->     ),
-> )
-> result = flow.kickoff()
-> ```
->
-> **Agent**
->
-> ```python theme={null}
-> agent = Agent(
->     role="Researcher",
->     goal="Research topics",
->     backstory="Expert researcher",
->     checkpoint=CheckpointConfig(
->         location="./agent_cp",
->         on_events=["lite_agent_execution_completed"],
->     ),
-> )
-> result = agent.kickoff(messages=[{"role": "user", "content": "Research AI trends"}])
-> ```
+> > [tab] Agent
+> >
+> > ```python theme={null}
+> > agent = Agent(
+> >     role="Researcher",
+> >     goal="Research topics",
+> >     backstory="Expert researcher",
+> >     checkpoint=CheckpointConfig(
+> >         location="./agent_cp",
+> >         on_events=["lite_agent_execution_completed"],
+> >     ),
+> > )
+> > result = agent.kickoff(messages=[{"role": "user", "content": "Research AI trends"}])
+> > ```
 
-> **Write a checkpoint manually**
+> [accordion] Write a checkpoint manually
 >
 > Register a handler on any event and call `state.checkpoint()`.
 >
@@ -314,7 +314,7 @@ The research task is skipped, the writer runs against the saved research output,
 >
 > A `state` argument is supplied automatically when the handler takes three parameters. See [Event Listeners](/en/concepts/event-listener) for the full event catalog.
 
-> **Browse, resume, and fork from the CLI**
+> [accordion] Browse, resume, and fork from the CLI
 >
 > ```bash theme={null}
 > crewai checkpoint
@@ -350,7 +350,7 @@ The research task is skipped, the writer runs against the saved research output,
 > >
 > > Useful for "what if" exploration: fork, tweak, observe.
 
-> **Inspect checkpoints without the TUI**
+> [accordion] Inspect checkpoints without the TUI
 >
 > ```bash theme={null}
 > crewai checkpoint list ./my_checkpoints

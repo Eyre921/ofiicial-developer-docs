@@ -159,6 +159,6 @@ HITL workflows are particularly valuable for:
 
 ## Enterprise Features
 
-> **[Flow HITL Management Platform](https://docs-platform.crewai.com/platform/en/features/flow-hitl-management)**
+> [card] [Flow HITL Management Platform](https://docs-platform.crewai.com/platform/en/features/flow-hitl-management)
 >
 > CrewAI Enterprise provides a comprehensive HITL management system for Flows with in-platform review, responder assignment, permissions, escalation policies, SLA management, dynamic routing, and full analytics. [Learn more →](https://docs-platform.crewai.com/platform/en/features/flow-hitl-management)

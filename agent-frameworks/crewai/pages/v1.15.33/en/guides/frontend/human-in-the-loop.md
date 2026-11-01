@@ -167,14 +167,14 @@ Once the user clicks Confirm, `respond()` fires, the run resumes, and the Flow's
 
 ## Related
 
-> **[Frontend Actions](/edge/en/guides/frontend/frontend-actions)**
+> [card] [Frontend Actions](/edge/en/guides/frontend/frontend-actions)
 >
 > Let the agent call functions that run in the browser.
 
-> **[Shared State](/edge/en/guides/frontend/shared-state)**
+> [card] [Shared State](/edge/en/guides/frontend/shared-state)
 >
 > Keep agent state and your app UI in two-way sync.
 
-> **[Agentic Generative UI](/edge/en/guides/frontend/agentic-generative-ui)**
+> [card] [Agentic Generative UI](/edge/en/guides/frontend/agentic-generative-ui)
 >
 > Render live agent state as custom components.

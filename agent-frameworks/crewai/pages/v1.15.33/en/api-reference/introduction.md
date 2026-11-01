@@ -98,11 +98,11 @@ Each endpoint page shows you:
 
 ### **To Test Your Actual API:**
 
-> **Copy cURL Examples**
+> [card] Copy cURL Examples
 >
 > Copy the cURL examples and replace the URL + token with your real values
 
-> **Use Postman/Insomnia**
+> [card] Use Postman/Insomnia
 >
 > Import the examples into your preferred API testing tool
 
@@ -115,10 +115,10 @@ Each endpoint page shows you:
 
 ## Need Help?
 
-> **[Enterprise Support](mailto:support@crewai.com)**
+> [card] [Enterprise Support](mailto:support@crewai.com)
 >
 > Get help with API integration and troubleshooting
 
-> **[Enterprise Dashboard](https://app.crewai.com)**
+> [card] [Enterprise Dashboard](https://app.crewai.com)
 >
 > Manage your crews and view execution logs

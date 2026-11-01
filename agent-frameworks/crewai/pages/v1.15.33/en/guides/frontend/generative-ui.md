@@ -92,18 +92,18 @@ MCP tool calls surface as standard tool-call UI — render them with `useRenderT
 
 ## Related
 
-> **[Tool-Based Generative UI](/edge/en/guides/frontend/tool-based-generative-ui)**
+> [card] [Tool-Based Generative UI](/edge/en/guides/frontend/tool-based-generative-ui)
 >
 > Map agent tool calls to components (controlled).
 
-> **[Agentic Generative UI](/edge/en/guides/frontend/agentic-generative-ui)**
+> [card] [Agentic Generative UI](/edge/en/guides/frontend/agentic-generative-ui)
 >
 > Render live agent state (controlled).
 
-> **[A2UI](/edge/en/guides/frontend/a2ui)**
+> [card] [A2UI](/edge/en/guides/frontend/a2ui)
 >
 > Let the agent assemble surfaces from your catalog (declarative).
 
-> **[Reasoning](/edge/en/guides/frontend/reasoning)**
+> [card] [Reasoning](/edge/en/guides/frontend/reasoning)
 >
 > Render the agent's thinking.

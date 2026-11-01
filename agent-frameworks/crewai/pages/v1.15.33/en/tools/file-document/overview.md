@@ -10,55 +10,55 @@ These tools enable your agents to work with various file formats and document ty
 
 ## **Available Tools**
 
-> **[File Read Tool](/en/tools/file-document/filereadtool)**
+> [card] [File Read Tool](/en/tools/file-document/filereadtool)
 >
 > Read content from any file type including text, markdown, and more.
 
-> **[File Write Tool](/en/tools/file-document/filewritetool)**
+> [card] [File Write Tool](/en/tools/file-document/filewritetool)
 >
 > Write content to files, create new documents, and save processed data.
 
-> **[PDF Search Tool](/en/tools/file-document/pdfsearchtool)**
+> [card] [PDF Search Tool](/en/tools/file-document/pdfsearchtool)
 >
 > Search and extract text content from PDF documents efficiently.
 
-> **[DOCX Search Tool](/en/tools/file-document/docxsearchtool)**
+> [card] [DOCX Search Tool](/en/tools/file-document/docxsearchtool)
 >
 > Search through Microsoft Word documents and extract relevant content.
 
-> **[JSON Search Tool](/en/tools/file-document/jsonsearchtool)**
+> [card] [JSON Search Tool](/en/tools/file-document/jsonsearchtool)
 >
 > Parse and search through JSON files with advanced query capabilities.
 
-> **[CSV Search Tool](/en/tools/file-document/csvsearchtool)**
+> [card] [CSV Search Tool](/en/tools/file-document/csvsearchtool)
 >
 > Process and search through CSV files, extract specific rows and columns.
 
-> **[XML Search Tool](/en/tools/file-document/xmlsearchtool)**
+> [card] [XML Search Tool](/en/tools/file-document/xmlsearchtool)
 >
 > Parse XML files and search for specific elements and attributes.
 
-> **[MDX Search Tool](/en/tools/file-document/mdxsearchtool)**
+> [card] [MDX Search Tool](/en/tools/file-document/mdxsearchtool)
 >
 > Search through MDX files and extract content from documentation.
 
-> **[TXT Search Tool](/en/tools/file-document/txtsearchtool)**
+> [card] [TXT Search Tool](/en/tools/file-document/txtsearchtool)
 >
 > Search through plain text files with pattern matching capabilities.
 
-> **[Directory Search Tool](/en/tools/file-document/directorysearchtool)**
+> [card] [Directory Search Tool](/en/tools/file-document/directorysearchtool)
 >
 > Search for files and folders within directory structures.
 
-> **[Directory Read Tool](/en/tools/file-document/directoryreadtool)**
+> [card] [Directory Read Tool](/en/tools/file-document/directoryreadtool)
 >
 > Read and list directory contents, file structures, and metadata.
 
-> **[OCR Tool](/en/tools/file-document/ocrtool)**
+> [card] [OCR Tool](/en/tools/file-document/ocrtool)
 >
 > Extract text from images (local files or URLs) using a vision‑capable LLM.
 
-> **[PDF Text Writing Tool](/en/tools/file-document/pdf-text-writing-tool)**
+> [card] [PDF Text Writing Tool](/en/tools/file-document/pdf-text-writing-tool)
 >
 > Write text at specific coordinates in PDFs, with optional custom fonts.
 

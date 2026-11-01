@@ -10,35 +10,35 @@ These tools enable your agents to interact with various database systems, from t
 
 ## **Available Tools**
 
-> **[MySQL Tool](/en/tools/database-data/mysqltool)**
+> [card] [MySQL Tool](/en/tools/database-data/mysqltool)
 >
 > Connect to and query MySQL databases with SQL operations.
 
-> **[PostgreSQL Search](/en/tools/database-data/pgsearchtool)**
+> [card] [PostgreSQL Search](/en/tools/database-data/pgsearchtool)
 >
 > Search and query PostgreSQL databases efficiently.
 
-> **[Snowflake Search](/en/tools/database-data/snowflakesearchtool)**
+> [card] [Snowflake Search](/en/tools/database-data/snowflakesearchtool)
 >
 > Access Snowflake data warehouse for analytics and reporting.
 
-> **[NL2SQL Tool](/en/tools/database-data/nl2sqltool)**
+> [card] [NL2SQL Tool](/en/tools/database-data/nl2sqltool)
 >
 > Convert natural language queries to SQL statements automatically.
 
-> **[Qdrant Vector Search](/en/tools/database-data/qdrantvectorsearchtool)**
+> [card] [Qdrant Vector Search](/en/tools/database-data/qdrantvectorsearchtool)
 >
 > Search vector embeddings using Qdrant vector database.
 
-> **[Weaviate Vector Search](/en/tools/database-data/weaviatevectorsearchtool)**
+> [card] [Weaviate Vector Search](/en/tools/database-data/weaviatevectorsearchtool)
 >
 > Perform semantic search with Weaviate vector database.
 
-> **[MongoDB Vector Search](/en/tools/database-data/mongodbvectorsearchtool)**
+> [card] [MongoDB Vector Search](/en/tools/database-data/mongodbvectorsearchtool)
 >
 > Vector similarity search on MongoDB Atlas with indexing helpers.
 
-> **[SingleStore Search](/en/tools/database-data/singlestoresearchtool)**
+> [card] [SingleStore Search](/en/tools/database-data/singlestoresearchtool)
 >
 > Safe SELECT/SHOW queries on SingleStore with pooling and validation.
 

@@ -66,31 +66,31 @@ This is the point to hold onto: **Conversational Flows run through the same even
 
 There is no Conversational-Flow-specific frontend API. Every feature in these guides works exactly the same way with a Conversational Flow as it does with a regular Flow, using the same hooks and components:
 
-> **[Tool-Based Generative UI](/edge/en/guides/frontend/tool-based-generative-ui)**
+> [card] [Tool-Based Generative UI](/edge/en/guides/frontend/tool-based-generative-ui)
 >
 > Map agent tool calls to your React components.
 
-> **[Agentic Generative UI](/edge/en/guides/frontend/agentic-generative-ui)**
+> [card] [Agentic Generative UI](/edge/en/guides/frontend/agentic-generative-ui)
 >
 > Render the Flow's live state as it works.
 
-> **[Shared State](/edge/en/guides/frontend/shared-state)**
+> [card] [Shared State](/edge/en/guides/frontend/shared-state)
 >
 > Keep agent state and app UI in two-way sync.
 
-> **[Human-in-the-Loop](/edge/en/guides/frontend/human-in-the-loop)**
+> [card] [Human-in-the-Loop](/edge/en/guides/frontend/human-in-the-loop)
 >
 > Pause the agent for user approval or input mid-turn.
 
-> **[Predictive State](/edge/en/guides/frontend/predictive-state-updates)**
+> [card] [Predictive State](/edge/en/guides/frontend/predictive-state-updates)
 >
 > Stream in-progress tool arguments into state.
 
-> **[Reasoning](/edge/en/guides/frontend/reasoning)**
+> [card] [Reasoning](/edge/en/guides/frontend/reasoning)
 >
 > Show the model's thinking in the chat.
 
-> **[A2UI](/edge/en/guides/frontend/a2ui)**
+> [card] [A2UI](/edge/en/guides/frontend/a2ui)
 >
 > Render agent-authored UI from a component catalog.
 
@@ -98,14 +98,14 @@ The only difference is on the backend: how you author the Flow (turn-based `stre
 
 ## Related
 
-> **[Frontend Overview](/edge/en/guides/frontend/overview)**
+> [card] [Frontend Overview](/edge/en/guides/frontend/overview)
 >
 > Wire a Crew or Flow to a Next.js frontend end to end.
 
-> **[Generative UI](/edge/en/guides/frontend/generative-ui)**
+> [card] [Generative UI](/edge/en/guides/frontend/generative-ui)
 >
 > Render tool calls and agent state as custom components.
 
-> **[Human-in-the-Loop](/edge/en/guides/frontend/human-in-the-loop)**
+> [card] [Human-in-the-Loop](/edge/en/guides/frontend/human-in-the-loop)
 >
 > Gate agent actions behind user approval.

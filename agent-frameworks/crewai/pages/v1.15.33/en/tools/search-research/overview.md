@@ -10,67 +10,67 @@ These tools enable your agents to search the web, research topics, and find info
 
 ## **Available Tools**
 
-> **[Serper Dev Tool](/en/tools/search-research/serperdevtool)**
+> [card] [Serper Dev Tool](/en/tools/search-research/serperdevtool)
 >
 > Google search API integration for comprehensive web search capabilities.
 
-> **[Brave Search Tool](/en/tools/search-research/bravesearchtool)**
+> [card] [Brave Search Tool](/en/tools/search-research/bravesearchtool)
 >
 > Privacy-focused search with Brave's independent search index.
 
-> **[Exa Search Tool](/en/tools/search-research/exasearchtool)**
+> [card] [Exa Search Tool](/en/tools/search-research/exasearchtool)
 >
 > AI-powered search for finding specific and relevant content.
 
-> **[LinkUp Search Tool](/en/tools/search-research/linkupsearchtool)**
+> [card] [LinkUp Search Tool](/en/tools/search-research/linkupsearchtool)
 >
 > Real-time web search with fresh content indexing.
 
-> **[GitHub Search Tool](/en/tools/search-research/githubsearchtool)**
+> [card] [GitHub Search Tool](/en/tools/search-research/githubsearchtool)
 >
 > Search GitHub repositories, code, issues, and documentation.
 
-> **[Website Search Tool](/en/tools/search-research/websitesearchtool)**
+> [card] [Website Search Tool](/en/tools/search-research/websitesearchtool)
 >
 > Search within specific websites and domains.
 
-> **[Code Docs Search Tool](/en/tools/search-research/codedocssearchtool)**
+> [card] [Code Docs Search Tool](/en/tools/search-research/codedocssearchtool)
 >
 > Search through code documentation and technical resources.
 
-> **[YouTube Channel Search](/en/tools/search-research/youtubechannelsearchtool)**
+> [card] [YouTube Channel Search](/en/tools/search-research/youtubechannelsearchtool)
 >
 > Search YouTube channels for specific content and creators.
 
-> **[YouTube Video Search](/en/tools/search-research/youtubevideosearchtool)**
+> [card] [YouTube Video Search](/en/tools/search-research/youtubevideosearchtool)
 >
 > Find and analyze YouTube videos by topic, keyword, or criteria.
 
-> **[Tavily Search Tool](/en/tools/search-research/tavilysearchtool)**
+> [card] [Tavily Search Tool](/en/tools/search-research/tavilysearchtool)
 >
 > Comprehensive web search using Tavily's AI-powered search API.
 
-> **[Tavily Extractor Tool](/en/tools/search-research/tavilyextractortool)**
+> [card] [Tavily Extractor Tool](/en/tools/search-research/tavilyextractortool)
 >
 > Extract structured content from web pages using the Tavily API.
 
-> **[Tavily Research Tool](/en/tools/search-research/tavilyresearchtool)**
+> [card] [Tavily Research Tool](/en/tools/search-research/tavilyresearchtool)
 >
 > Run multi-step research tasks and get cited reports using the Tavily Research API.
 
-> **[Tavily Get Research Tool](/en/tools/search-research/tavilygetresearchtool)**
+> [card] [Tavily Get Research Tool](/en/tools/search-research/tavilygetresearchtool)
 >
 > Retrieve the status and results of an existing Tavily research task.
 
-> **[Arxiv Paper Tool](/en/tools/search-research/arxivpapertool)**
+> [card] [Arxiv Paper Tool](/en/tools/search-research/arxivpapertool)
 >
 > Search arXiv and optionally download PDFs.
 
-> **[SerpApi Google Search](/en/tools/search-research/serpapi-googlesearchtool)**
+> [card] [SerpApi Google Search](/en/tools/search-research/serpapi-googlesearchtool)
 >
 > Google search via SerpApi with structured results.
 
-> **[SerpApi Google Shopping](/en/tools/search-research/serpapi-googleshoppingtool)**
+> [card] [SerpApi Google Shopping](/en/tools/search-research/serpapi-googleshoppingtool)
 >
 > Google Shopping queries via SerpApi.
 

@@ -10,59 +10,59 @@ These tools enable your agents to interact with the web, extract data from websi
 
 ## **Available Tools**
 
-> **[Scrape Website Tool](/en/tools/web-scraping/scrapewebsitetool)**
+> [card] [Scrape Website Tool](/en/tools/web-scraping/scrapewebsitetool)
 >
 > General-purpose web scraping tool for extracting content from any website.
 
-> **[Scrape Element Tool](/en/tools/web-scraping/scrapeelementfromwebsitetool)**
+> [card] [Scrape Element Tool](/en/tools/web-scraping/scrapeelementfromwebsitetool)
 >
 > Target specific elements on web pages with precision scraping capabilities.
 
-> **[Firecrawl Crawl Tool](/en/tools/web-scraping/firecrawlcrawlwebsitetool)**
+> [card] [Firecrawl Crawl Tool](/en/tools/web-scraping/firecrawlcrawlwebsitetool)
 >
 > Crawl entire websites systematically with Firecrawl's powerful engine.
 
-> **[Firecrawl Scrape Tool](/en/tools/web-scraping/firecrawlscrapewebsitetool)**
+> [card] [Firecrawl Scrape Tool](/en/tools/web-scraping/firecrawlscrapewebsitetool)
 >
 > High-performance web scraping with Firecrawl's advanced capabilities.
 
-> **[Firecrawl Search Tool](/en/tools/web-scraping/firecrawlsearchtool)**
+> [card] [Firecrawl Search Tool](/en/tools/web-scraping/firecrawlsearchtool)
 >
 > Search and extract specific content using Firecrawl's search features.
 
-> **[Selenium Scraping Tool](/en/tools/web-scraping/seleniumscrapingtool)**
+> [card] [Selenium Scraping Tool](/en/tools/web-scraping/seleniumscrapingtool)
 >
 > Browser automation and scraping with Selenium WebDriver capabilities.
 
-> **[ScrapFly Tool](/en/tools/web-scraping/scrapflyscrapetool)**
+> [card] [ScrapFly Tool](/en/tools/web-scraping/scrapflyscrapetool)
 >
 > Professional web scraping with ScrapFly's premium scraping service.
 
-> **[ScrapGraph Tool](/en/tools/web-scraping/scrapegraphscrapetool)**
+> [card] [ScrapGraph Tool](/en/tools/web-scraping/scrapegraphscrapetool)
 >
 > Graph-based web scraping for complex data relationships.
 
-> **[Spider Tool](/en/tools/web-scraping/spidertool)**
+> [card] [Spider Tool](/en/tools/web-scraping/spidertool)
 >
 > Comprehensive web crawling and data extraction capabilities.
 
-> **[BrowserBase Tool](/en/tools/web-scraping/browserbaseloadtool)**
+> [card] [BrowserBase Tool](/en/tools/web-scraping/browserbaseloadtool)
 >
 > Cloud-based browser automation with BrowserBase infrastructure.
 
-> **[HyperBrowser Tool](/en/tools/web-scraping/hyperbrowserloadtool)**
+> [card] [HyperBrowser Tool](/en/tools/web-scraping/hyperbrowserloadtool)
 >
 > Fast browser interactions with HyperBrowser's optimized engine.
 
-> **[Stagehand Tool](/en/tools/web-scraping/stagehandtool)**
+> [card] [Stagehand Tool](/en/tools/web-scraping/stagehandtool)
 >
 > Intelligent browser automation with natural language commands.
 
-> **[Oxylabs Scraper Tool](/en/tools/web-scraping/oxylabsscraperstool)**
+> [card] [Oxylabs Scraper Tool](/en/tools/web-scraping/oxylabsscraperstool)
 >
 > Access web data at scale with Oxylabs.
 
-> **[Bright Data Tools](/en/tools/web-scraping/brightdata-tools)**
+> [card] [Bright Data Tools](/en/tools/web-scraping/brightdata-tools)
 >
 > SERP search, Web Unlocker, and Dataset API integrations.
 

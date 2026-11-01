@@ -56,14 +56,14 @@ import { CopilotChat } from "@copilotkit/react-core/v2";
 
 ## Related
 
-> **[Generative UI](/edge/en/guides/frontend/generative-ui)**
+> [card] [Generative UI](/edge/en/guides/frontend/generative-ui)
 >
 > The full spectrum, from author-controlled to agent-invented UI.
 
-> **[Agentic Generative UI](/edge/en/guides/frontend/agentic-generative-ui)**
+> [card] [Agentic Generative UI](/edge/en/guides/frontend/agentic-generative-ui)
 >
 > Render live agent state as the Flow works.
 
-> **[Frontend Overview](/edge/en/guides/frontend/overview)**
+> [card] [Frontend Overview](/edge/en/guides/frontend/overview)
 >
 > Set up the chat surface and runtime.

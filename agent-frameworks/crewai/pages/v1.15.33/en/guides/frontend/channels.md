@@ -133,10 +133,10 @@ The managed Intelligence path covers **Slack** and **Microsoft Teams** today —
 
 ## Related
 
-> **[Frontend Overview](/edge/en/guides/frontend/overview)**
+> [card] [Frontend Overview](/edge/en/guides/frontend/overview)
 >
 > Serve your Crew or Flow over AG-UI — the foundation every channel builds on.
 
-> **[Human-in-the-Loop](/edge/en/guides/frontend/human-in-the-loop)**
+> [card] [Human-in-the-Loop](/edge/en/guides/frontend/human-in-the-loop)
 >
 > Pause the agent to collect user approval or input mid-run.

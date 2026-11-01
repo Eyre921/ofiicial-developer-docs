@@ -28,23 +28,23 @@ That pulls the official skill pack into your agent workflow so it can apply Crew
 
 ## Learn more on this site
 
-> **[Coding tools & AGENTS.md](/en/guides/coding-tools/agents-md)**
+> [card] [Coding tools & AGENTS.md](/en/guides/coding-tools/agents-md)
 >
 > How to use `AGENTS.md` and coding-agent workflows with CrewAI.
 
-> **[Quickstart](/en/quickstart)**
+> [card] [Quickstart](/en/quickstart)
 >
 > Build your first Flow and crew end-to-end.
 
-> **[Installation](/en/installation)**
+> [card] [Installation](/en/installation)
 >
 > Install the CrewAI CLI and Python package.
 
-> **[Skills registry (skills.sh)](https://skills.sh/crewaiinc/skills)**
+> [card] [Skills registry (skills.sh)](https://skills.sh/crewaiinc/skills)
 >
 > Official listing for `crewaiinc/skills`—skills, installs, and audits.
 
-> **[GitHub source](https://github.com/crewAIInc/skills)**
+> [card] [GitHub source](https://github.com/crewAIInc/skills)
 >
 > Source, updates, and issues for the skill pack.
 

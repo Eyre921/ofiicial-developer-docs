@@ -209,14 +209,14 @@ useRenderTool({
 
 ## Related
 
-> **[Agentic Generative UI](/edge/en/guides/frontend/agentic-generative-ui)**
+> [card] [Agentic Generative UI](/edge/en/guides/frontend/agentic-generative-ui)
 >
 > Render live agent state as it changes across a multi-step run.
 
-> **[Human-in-the-Loop](/edge/en/guides/frontend/human-in-the-loop)**
+> [card] [Human-in-the-Loop](/edge/en/guides/frontend/human-in-the-loop)
 >
 > Pause the agent to collect user approval or input mid-run.
 
-> **[Frontend Actions](/edge/en/guides/frontend/frontend-actions)**
+> [card] [Frontend Actions](/edge/en/guides/frontend/frontend-actions)
 >
 > Let the agent call functions that run in the browser.

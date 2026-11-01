@@ -50,35 +50,35 @@ theoretical benchmarks, so empirical testing is crucial.
 
 The most critical step in LLM selection is understanding what your task actually demands. Too often, teams select models based on general reputation or benchmark scores without carefully analyzing their specific requirements. This approach leads to either over-engineering simple tasks with expensive, complex models, or under-powering sophisticated work with models that lack the necessary capabilities.
 
-**Reasoning Complexity**
+> [tab] Reasoning Complexity
+>
+> * **Simple Tasks** represent the majority of everyday AI work and include basic instruction following, straightforward data processing, and simple formatting operations. These tasks typically have clear inputs and outputs with minimal ambiguity. The cognitive load is low, and the model primarily needs to follow explicit instructions rather than engage in complex reasoning.
+>
+> * **Complex Tasks** require multi-step reasoning, strategic thinking, and the ability to handle ambiguous or incomplete information. These might involve analyzing multiple data sources, developing comprehensive strategies, or solving problems that require breaking down into smaller components. The model needs to maintain context across multiple reasoning steps and often must make inferences that aren't explicitly stated.
+>
+> * **Creative Tasks** demand a different type of cognitive capability focused on generating novel, engaging, and contextually appropriate content. This includes storytelling, marketing copy creation, and creative problem-solving. The model needs to understand nuance, tone, and audience while producing content that feels authentic and engaging rather than formulaic.
 
-* **Simple Tasks** represent the majority of everyday AI work and include basic instruction following, straightforward data processing, and simple formatting operations. These tasks typically have clear inputs and outputs with minimal ambiguity. The cognitive load is low, and the model primarily needs to follow explicit instructions rather than engage in complex reasoning.
+> [tab] Output Requirements
+>
+> * **Structured Data** tasks require precision and consistency in format adherence. When working with JSON, XML, or database formats, the model must reliably produce syntactically correct output that can be programmatically processed. These tasks often have strict validation requirements and little tolerance for format errors, making reliability more important than creativity.
+>
+> * **Creative Content** outputs demand a balance of technical competence and creative flair. The model needs to understand audience, tone, and brand voice while producing content that engages readers and achieves specific communication goals. Quality here is often subjective and requires models that can adapt their writing style to different contexts and purposes.
+>
+> * **Technical Content** sits between structured data and creative content, requiring both precision and clarity. Documentation, code generation, and technical analysis need to be accurate and comprehensive while remaining accessible to the intended audience. The model must understand complex technical concepts and communicate them effectively.
 
-* **Complex Tasks** require multi-step reasoning, strategic thinking, and the ability to handle ambiguous or incomplete information. These might involve analyzing multiple data sources, developing comprehensive strategies, or solving problems that require breaking down into smaller components. The model needs to maintain context across multiple reasoning steps and often must make inferences that aren't explicitly stated.
-
-* **Creative Tasks** demand a different type of cognitive capability focused on generating novel, engaging, and contextually appropriate content. This includes storytelling, marketing copy creation, and creative problem-solving. The model needs to understand nuance, tone, and audience while producing content that feels authentic and engaging rather than formulaic.
-
-**Output Requirements**
-
-* **Structured Data** tasks require precision and consistency in format adherence. When working with JSON, XML, or database formats, the model must reliably produce syntactically correct output that can be programmatically processed. These tasks often have strict validation requirements and little tolerance for format errors, making reliability more important than creativity.
-
-* **Creative Content** outputs demand a balance of technical competence and creative flair. The model needs to understand audience, tone, and brand voice while producing content that engages readers and achieves specific communication goals. Quality here is often subjective and requires models that can adapt their writing style to different contexts and purposes.
-
-* **Technical Content** sits between structured data and creative content, requiring both precision and clarity. Documentation, code generation, and technical analysis need to be accurate and comprehensive while remaining accessible to the intended audience. The model must understand complex technical concepts and communicate them effectively.
-
-**Context Needs**
-
-* **Short Context** scenarios involve focused, immediate tasks where the model needs to process limited information quickly. These are often transactional interactions where speed and efficiency matter more than deep understanding. The model doesn't need to maintain extensive conversation history or process large documents.
-
-* **Long Context** requirements emerge when working with substantial documents, extended conversations, or complex multi-part tasks. The model needs to maintain coherence across thousands of tokens while referencing earlier information accurately. This capability becomes crucial for document analysis, comprehensive research, and sophisticated dialogue systems.
-
-* **Very Long Context** scenarios push the boundaries of what's currently possible, involving massive document processing, extensive research synthesis, or complex multi-session interactions. These use cases require models specifically designed for extended context handling and often involve trade-offs between context length and processing speed.
+> [tab] Context Needs
+>
+> * **Short Context** scenarios involve focused, immediate tasks where the model needs to process limited information quickly. These are often transactional interactions where speed and efficiency matter more than deep understanding. The model doesn't need to maintain extensive conversation history or process large documents.
+>
+> * **Long Context** requirements emerge when working with substantial documents, extended conversations, or complex multi-part tasks. The model needs to maintain coherence across thousands of tokens while referencing earlier information accurately. This capability becomes crucial for document analysis, comprehensive research, and sophisticated dialogue systems.
+>
+> * **Very Long Context** scenarios push the boundaries of what's currently possible, involving massive document processing, extensive research synthesis, or complex multi-session interactions. These use cases require models specifically designed for extended context handling and often involve trade-offs between context length and processing speed.
 
 ### b. Model Capability Mapping
 
 Understanding model capabilities requires looking beyond marketing claims and benchmark scores to understand the fundamental strengths and limitations of different model architectures and training approaches.
 
-> **Reasoning Models**
+> [accordion] Reasoning Models
 >
 > Reasoning models represent a specialized category designed specifically for complex, multi-step thinking tasks. These models excel when problems require careful analysis, strategic planning, or systematic problem decomposition. They typically employ techniques like chain-of-thought reasoning or tree-of-thought processing to work through complex problems step by step.
 >
@@ -86,7 +86,7 @@ Understanding model capabilities requires looking beyond marketing claims and be
 >
 > However, reasoning models often come with trade-offs in terms of speed and cost. They may also be less suitable for creative tasks or simple operations where their sophisticated reasoning capabilities aren't needed. Consider these models when your tasks involve genuine complexity that benefits from systematic, step-by-step analysis.
 
-> **General Purpose Models**
+> [accordion] General Purpose Models
 >
 > General purpose models offer the most balanced approach to LLM selection, providing solid performance across a wide range of tasks without extreme specialization in any particular area. These models are trained on diverse datasets and optimized for versatility rather than peak performance in specific domains.
 >
@@ -94,7 +94,7 @@ Understanding model capabilities requires looking beyond marketing claims and be
 >
 > While general purpose models may not achieve the peak performance of specialized alternatives in specific domains, they offer operational simplicity and reduced complexity in model management. They're often the best starting point for new projects, allowing teams to understand their specific needs before potentially optimizing with more specialized models.
 
-> **Fast & Efficient Models**
+> [accordion] Fast & Efficient Models
 >
 > Fast and efficient models prioritize speed, cost-effectiveness, and resource efficiency over sophisticated reasoning capabilities. These models are optimized for high-throughput scenarios where quick responses and low operational costs are more important than nuanced understanding or complex reasoning.
 >
@@ -102,7 +102,7 @@ Understanding model capabilities requires looking beyond marketing claims and be
 >
 > The key consideration with efficient models is ensuring that their capabilities align with your task requirements. While they can handle many routine operations effectively, they may struggle with tasks requiring nuanced understanding, complex reasoning, or sophisticated content generation. They're best used for well-defined, routine operations where speed and cost matter more than sophistication.
 
-> **Creative Models**
+> [accordion] Creative Models
 >
 > Creative models are specifically optimized for content generation, writing quality, and creative thinking tasks. These models typically excel at understanding nuance, tone, and style while producing engaging, contextually appropriate content that feels natural and authentic.
 >
@@ -110,7 +110,7 @@ Understanding model capabilities requires looking beyond marketing claims and be
 >
 > When selecting creative models, consider not just their ability to generate text, but their understanding of audience, context, and purpose. The best creative models can adapt their output to match specific brand voices, target different audience segments, and maintain consistency across extended content pieces.
 
-> **Open Source Models**
+> [accordion] Open Source Models
 >
 > Open source models offer unique advantages in terms of cost control, customization potential, data privacy, and deployment flexibility. These models can be run locally or on private infrastructure, providing complete control over data handling and model behavior.
 >
@@ -181,29 +181,29 @@ The key to successful multi-model implementation is understanding how different 
 
 ### b. Component-Specific Selection
 
-**Manager LLM**
+> [tab] Manager LLM
+>
+> The manager LLM plays a crucial role in hierarchical CrewAI processes, serving as the coordination point for multiple agents and tasks. This model needs to excel at delegation, task prioritization, and maintaining context across multiple concurrent operations.
+>
+> Effective manager LLMs require strong reasoning capabilities to make good delegation decisions, consistent performance to ensure predictable coordination, and excellent context management to track the state of multiple agents simultaneously. The model needs to understand the capabilities and limitations of different agents while optimizing task allocation for efficiency and quality.
+>
+> Cost considerations are particularly important for manager LLMs since they're involved in every operation. The model needs to provide sufficient capability for effective coordination while remaining cost-effective for frequent use. This often means finding models that offer good reasoning capabilities without the premium pricing of the most sophisticated options.
 
-The manager LLM plays a crucial role in hierarchical CrewAI processes, serving as the coordination point for multiple agents and tasks. This model needs to excel at delegation, task prioritization, and maintaining context across multiple concurrent operations.
+> [tab] Function Calling LLM
+>
+> Function calling LLMs handle tool usage across all agents, making them critical for crews that rely heavily on external tools and APIs. These models need to excel at understanding tool capabilities, extracting parameters accurately, and handling tool responses effectively.
+>
+> The most important characteristics for function calling LLMs are precision and reliability rather than creativity or sophisticated reasoning. The model needs to consistently extract the correct parameters from natural language requests and handle tool responses appropriately. Speed is also important since tool usage often involves multiple round trips that can impact overall performance.
+>
+> Many teams find that specialized function calling models or general purpose models with strong tool support work better than creative or reasoning-focused models for this role. The key is ensuring that the model can reliably bridge the gap between natural language instructions and structured tool calls.
 
-Effective manager LLMs require strong reasoning capabilities to make good delegation decisions, consistent performance to ensure predictable coordination, and excellent context management to track the state of multiple agents simultaneously. The model needs to understand the capabilities and limitations of different agents while optimizing task allocation for efficiency and quality.
-
-Cost considerations are particularly important for manager LLMs since they're involved in every operation. The model needs to provide sufficient capability for effective coordination while remaining cost-effective for frequent use. This often means finding models that offer good reasoning capabilities without the premium pricing of the most sophisticated options.
-
-**Function Calling LLM**
-
-Function calling LLMs handle tool usage across all agents, making them critical for crews that rely heavily on external tools and APIs. These models need to excel at understanding tool capabilities, extracting parameters accurately, and handling tool responses effectively.
-
-The most important characteristics for function calling LLMs are precision and reliability rather than creativity or sophisticated reasoning. The model needs to consistently extract the correct parameters from natural language requests and handle tool responses appropriately. Speed is also important since tool usage often involves multiple round trips that can impact overall performance.
-
-Many teams find that specialized function calling models or general purpose models with strong tool support work better than creative or reasoning-focused models for this role. The key is ensuring that the model can reliably bridge the gap between natural language instructions and structured tool calls.
-
-**Agent-Specific Overrides**
-
-Individual agents can override crew-level LLM settings when their specific needs differ significantly from the general crew requirements. This capability allows for fine-tuned optimization while maintaining operational simplicity for most agents.
-
-Consider agent-specific overrides when an agent's role requires capabilities that differ substantially from other crew members. For example, a creative writing agent might benefit from a model optimized for content generation, while a data analysis agent might perform better with a reasoning-focused model.
-
-The challenge with agent-specific overrides is balancing optimization with operational complexity. Each additional model adds complexity to deployment, monitoring, and cost management. Teams should focus overrides on agents where the performance improvement justifies the additional complexity.
+> [tab] Agent-Specific Overrides
+>
+> Individual agents can override crew-level LLM settings when their specific needs differ significantly from the general crew requirements. This capability allows for fine-tuned optimization while maintaining operational simplicity for most agents.
+>
+> Consider agent-specific overrides when an agent's role requires capabilities that differ substantially from other crew members. For example, a creative writing agent might benefit from a model optimized for content generation, while a data analysis agent might perform better with a reasoning-focused model.
+>
+> The challenge with agent-specific overrides is balancing optimization with operational complexity. Each additional model adds complexity to deployment, monitoring, and cost management. Teams should focus overrides on agents where the performance improvement justifies the additional complexity.
 
 ## Task Definition Framework
 
@@ -211,7 +211,7 @@ The challenge with agent-specific overrides is balancing optimization with opera
 
 Effective task definition is often more important than model selection in determining the quality of CrewAI outputs. Well-defined tasks provide clear direction and context that enable even modest models to perform well, while poorly defined tasks can cause even sophisticated models to produce unsatisfactory results.
 
-> **Effective Task Descriptions**
+> [accordion] Effective Task Descriptions
 >
 > The best task descriptions strike a balance between providing sufficient detail and maintaining clarity. They should define the specific objective clearly enough that there's no ambiguity about what success looks like, while explaining the approach or methodology in enough detail that the agent understands how to proceed.
 >
@@ -219,7 +219,7 @@ Effective task definition is often more important than model selection in determ
 >
 > Common mistakes include being too vague about objectives, failing to provide necessary context, setting unclear success criteria, or combining multiple unrelated tasks into a single description. The goal is to provide enough information for the agent to succeed while maintaining focus on a single, clear objective.
 
-> **Expected Output Guidelines**
+> [accordion] Expected Output Guidelines
 >
 > Expected output guidelines serve as a contract between the task definition and the agent, clearly specifying what the deliverable should look like and how it will be evaluated. These guidelines should describe both the format and structure needed, as well as the key elements that must be included for the output to be considered complete.
 >
@@ -229,21 +229,21 @@ Effective task definition is often more important than model selection in determ
 
 ### b. Task Sequencing Strategy
 
-**Sequential Dependencies**
+> [tab] Sequential Dependencies
+>
+> Sequential task dependencies are essential when tasks build upon previous outputs, information flows from one task to another, or quality depends on the completion of prerequisite work. This approach ensures that each task has access to the information and context it needs to succeed.
+>
+> Implementing sequential dependencies effectively requires using the context parameter to chain related tasks, building complexity gradually through task progression, and ensuring that each task produces outputs that serve as meaningful inputs for subsequent tasks. The goal is to maintain logical flow between dependent tasks while avoiding unnecessary bottlenecks.
+>
+> Sequential dependencies work best when there's a clear logical progression from one task to another and when the output of one task genuinely improves the quality or feasibility of subsequent tasks. However, they can create bottlenecks if not managed carefully, so it's important to identify which dependencies are truly necessary versus those that are merely convenient.
 
-Sequential task dependencies are essential when tasks build upon previous outputs, information flows from one task to another, or quality depends on the completion of prerequisite work. This approach ensures that each task has access to the information and context it needs to succeed.
-
-Implementing sequential dependencies effectively requires using the context parameter to chain related tasks, building complexity gradually through task progression, and ensuring that each task produces outputs that serve as meaningful inputs for subsequent tasks. The goal is to maintain logical flow between dependent tasks while avoiding unnecessary bottlenecks.
-
-Sequential dependencies work best when there's a clear logical progression from one task to another and when the output of one task genuinely improves the quality or feasibility of subsequent tasks. However, they can create bottlenecks if not managed carefully, so it's important to identify which dependencies are truly necessary versus those that are merely convenient.
-
-**Parallel Execution**
-
-Parallel execution becomes valuable when tasks are independent of each other, time efficiency is important, or different expertise areas are involved that don't require coordination. This approach can significantly reduce overall execution time while allowing specialized agents to work on their areas of strength simultaneously.
-
-Successful parallel execution requires identifying tasks that can truly run independently, grouping related but separate work streams effectively, and planning for result integration when parallel tasks need to be combined into a final deliverable. The key is ensuring that parallel tasks don't create conflicts or redundancies that reduce overall quality.
-
-Consider parallel execution when you have multiple independent research streams, different types of analysis that don't depend on each other, or content creation tasks that can be developed simultaneously. However, be mindful of resource allocation and ensure that parallel execution doesn't overwhelm your available model capacity or budget.
+> [tab] Parallel Execution
+>
+> Parallel execution becomes valuable when tasks are independent of each other, time efficiency is important, or different expertise areas are involved that don't require coordination. This approach can significantly reduce overall execution time while allowing specialized agents to work on their areas of strength simultaneously.
+>
+> Successful parallel execution requires identifying tasks that can truly run independently, grouping related but separate work streams effectively, and planning for result integration when parallel tasks need to be combined into a final deliverable. The key is ensuring that parallel tasks don't create conflicts or redundancies that reduce overall quality.
+>
+> Consider parallel execution when you have multiple independent research streams, different types of analysis that don't depend on each other, or content creation tasks that can be developed simultaneously. However, be mindful of resource allocation and ensure that parallel execution doesn't overwhelm your available model capacity or budget.
 
 ## Optimizing Agent Configuration for LLM Performance
 
@@ -417,41 +417,41 @@ content_agent = Agent(
 
 ### When to Use Different Model Types
 
-**Reasoning Models**
+> [tab] Reasoning Models
+>
+> Reasoning models become essential when tasks require genuine multi-step logical thinking, strategic planning, or high-level decision making that benefits from systematic analysis. These models excel when problems need to be broken down into components and analyzed systematically rather than handled through pattern matching or simple instruction following.
+>
+> Consider reasoning models for business strategy development, complex data analysis that requires drawing insights from multiple sources, multi-step problem solving where each step depends on previous analysis, and strategic planning tasks that require considering multiple variables and their interactions.
+>
+> However, reasoning models often come with higher costs and slower response times, so they're best reserved for tasks where their sophisticated capabilities provide genuine value rather than being used for simple operations that don't require complex reasoning.
 
-Reasoning models become essential when tasks require genuine multi-step logical thinking, strategic planning, or high-level decision making that benefits from systematic analysis. These models excel when problems need to be broken down into components and analyzed systematically rather than handled through pattern matching or simple instruction following.
+> [tab] Creative Models
+>
+> Creative models become valuable when content generation is the primary output and the quality, style, and engagement level of that content directly impact success. These models excel when writing quality and style matter significantly, creative ideation or brainstorming is needed, or brand voice and tone are important considerations.
+>
+> Use creative models for blog post writing and article creation, marketing copy that needs to engage and persuade, creative storytelling and narrative development, and brand communications where voice and tone are crucial. These models often understand nuance and context better than general purpose alternatives.
+>
+> Creative models may be less suitable for technical or analytical tasks where precision and factual accuracy are more important than engagement and style. They're best used when the creative and communicative aspects of the output are primary success factors.
 
-Consider reasoning models for business strategy development, complex data analysis that requires drawing insights from multiple sources, multi-step problem solving where each step depends on previous analysis, and strategic planning tasks that require considering multiple variables and their interactions.
+> [tab] Efficient Models
+>
+> Efficient models are ideal for high-frequency, routine operations where speed and cost optimization are priorities. These models work best when tasks have clear, well-defined parameters and don't require sophisticated reasoning or creative capabilities.
+>
+> Consider efficient models for data processing and transformation tasks, simple formatting and organization operations, function calling and tool usage where precision matters more than sophistication, and high-volume operations where cost per operation is a significant factor.
+>
+> The key with efficient models is ensuring that their capabilities align with task requirements. They can handle many routine operations effectively but may struggle with tasks requiring nuanced understanding, complex reasoning, or sophisticated content generation.
 
-However, reasoning models often come with higher costs and slower response times, so they're best reserved for tasks where their sophisticated capabilities provide genuine value rather than being used for simple operations that don't require complex reasoning.
-
-**Creative Models**
-
-Creative models become valuable when content generation is the primary output and the quality, style, and engagement level of that content directly impact success. These models excel when writing quality and style matter significantly, creative ideation or brainstorming is needed, or brand voice and tone are important considerations.
-
-Use creative models for blog post writing and article creation, marketing copy that needs to engage and persuade, creative storytelling and narrative development, and brand communications where voice and tone are crucial. These models often understand nuance and context better than general purpose alternatives.
-
-Creative models may be less suitable for technical or analytical tasks where precision and factual accuracy are more important than engagement and style. They're best used when the creative and communicative aspects of the output are primary success factors.
-
-**Efficient Models**
-
-Efficient models are ideal for high-frequency, routine operations where speed and cost optimization are priorities. These models work best when tasks have clear, well-defined parameters and don't require sophisticated reasoning or creative capabilities.
-
-Consider efficient models for data processing and transformation tasks, simple formatting and organization operations, function calling and tool usage where precision matters more than sophistication, and high-volume operations where cost per operation is a significant factor.
-
-The key with efficient models is ensuring that their capabilities align with task requirements. They can handle many routine operations effectively but may struggle with tasks requiring nuanced understanding, complex reasoning, or sophisticated content generation.
-
-**Open Source Models**
-
-Open source models become attractive when budget constraints are significant, data privacy requirements exist, customization needs are important, or local deployment is required for operational or compliance reasons.
-
-Consider open source models for internal company tools where data privacy is paramount, privacy-sensitive applications that can't use external APIs, cost-optimized deployments where per-token pricing is prohibitive, and situations requiring custom model modifications or fine-tuning.
-
-However, open source models require more technical expertise to deploy and maintain effectively. Consider the total cost of ownership including infrastructure, technical overhead, and ongoing maintenance when evaluating open source options.
+> [tab] Open Source Models
+>
+> Open source models become attractive when budget constraints are significant, data privacy requirements exist, customization needs are important, or local deployment is required for operational or compliance reasons.
+>
+> Consider open source models for internal company tools where data privacy is paramount, privacy-sensitive applications that can't use external APIs, cost-optimized deployments where per-token pricing is prohibitive, and situations requiring custom model modifications or fine-tuning.
+>
+> However, open source models require more technical expertise to deploy and maintain effectively. Consider the total cost of ownership including infrastructure, technical overhead, and ongoing maintenance when evaluating open source options.
 
 ## Common CrewAI Model Selection Pitfalls
 
-> **The 'One Model Fits All' Trap**
+> [accordion] The 'One Model Fits All' Trap
 >
 > **The Problem**: Using the same LLM for all agents in a crew, regardless of their specific roles and responsibilities. This is often the default approach but rarely optimal.
 >
@@ -467,7 +467,7 @@ However, open source models require more technical expertise to deploy and maint
 > processor = Agent(role="Data Processor", llm=LLM(model="gpt-4o-mini"))
 > ```
 
-> **Ignoring Crew-Level vs Agent-Level LLM Hierarchy**
+> [accordion] Ignoring Crew-Level vs Agent-Level LLM Hierarchy
 >
 > **The Problem**: Not understanding how CrewAI's LLM hierarchy works - crew LLM, manager LLM, and agent LLM settings can conflict or be poorly coordinated.
 >
@@ -487,7 +487,7 @@ However, open source models require more technical expertise to deploy and maint
 > agent1 = Agent(llm=LLM(model="claude-3-5-sonnet"))  # Override for specific needs
 > ```
 
-> **Function Calling Model Mismatch**
+> [accordion] Function Calling Model Mismatch
 >
 > **The Problem**: Choosing models based on general capabilities while ignoring function calling performance for tool-heavy CrewAI workflows.
 >
@@ -506,7 +506,7 @@ However, open source models require more technical expertise to deploy and maint
 > )
 > ```
 
-> **Premature Optimization Without Testing**
+> [accordion] Premature Optimization Without Testing
 >
 > **The Problem**: Making complex model selection decisions based on theoretical performance without validating with actual CrewAI workflows and tasks.
 >
@@ -522,7 +522,7 @@ However, open source models require more technical expertise to deploy and maint
 > # Use Enterprise platform testing to validate improvements
 > ```
 
-> **Overlooking Context and Memory Limitations**
+> [accordion] Overlooking Context and Memory Limitations
 >
 > **The Problem**: Not considering how model context windows interact with CrewAI's memory and context sharing between agents.
 >
@@ -594,37 +594,37 @@ Go to [app.crewai.com](https://app.crewai.com) to get started!
 
 ## Key Principles Summary
 
-> **Task-Driven Selection**
+> [card] Task-Driven Selection
 >
 > Choose models based on what the task actually requires, not theoretical capabilities or general reputation.
 
 &#x20;
 
-> **Capability Matching**
+> [card] Capability Matching
 >
 > Align model strengths with agent roles and responsibilities for optimal
 > performance.
 
 &#x20;
 
-> **Strategic Consistency**
+> [card] Strategic Consistency
 >
 > Maintain coherent model selection strategy across related components and
 > workflows.
 
 &#x20;
 
-> **Practical Testing**
+> [card] Practical Testing
 >
 > Validate choices through real-world usage rather than benchmarks alone.
 
 &#x20;
 
-> **Iterative Improvement**
+> [card] Iterative Improvement
 >
 > Start simple and optimize based on actual performance and needs.
 
-> **Operational Balance**
+> [card] Operational Balance
 >
 > Balance performance requirements with cost and complexity constraints.
 
@@ -656,83 +656,83 @@ The tables below show a representative sample of current top-performing models a
 > is to illustrate the types of capabilities to look for rather than provide a
 > complete catalog.
 
-**Reasoning & Planning**
+> [tab] Reasoning & Planning
+>
+> **Best for Manager LLMs and Complex Analysis**
+>
+> | Model | Intelligence Score | Cost (\$/M tokens) | Speed | Best Use in CrewAI |
+> | :- | :- | :- | :- | :- |
+> | **o3** | 70 | \$17.50 | Fast | Manager LLM for complex multi-agent coordination |
+> | **Gemini 2.5 Pro** | 69 | \$3.44 | Fast | Strategic planning agents, research coordination |
+> | **DeepSeek R1** | 68 | \$0.96 | Moderate | Cost-effective reasoning for budget-conscious crews |
+> | **Claude 4 Sonnet** | 53 | \$6.00 | Fast | Analysis agents requiring nuanced understanding |
+> | **Qwen3 235B (Reasoning)** | 62 | \$2.63 | Moderate | Open-source alternative for reasoning tasks |
+>
+> These models excel at multi-step reasoning and are ideal for agents that need to develop strategies, coordinate other agents, or analyze complex information.
 
-**Best for Manager LLMs and Complex Analysis**
+> [tab] Coding & Technical
+>
+> **Best for Development and Tool-Heavy Workflows**
+>
+> | Model | Coding Performance | Tool Use Score | Cost (\$/M tokens) | Best Use in CrewAI |
+> | :- | :- | :- | :- | :- |
+> | **Claude 4 Sonnet** | Excellent | 72.7% | \$6.00 | Primary coding agent, technical documentation |
+> | **Claude 4 Opus** | Excellent | 72.5% | \$30.00 | Complex software architecture, code review |
+> | **DeepSeek V3** | Very Good | High | \$0.48 | Cost-effective coding for routine development |
+> | **Qwen2.5 Coder 32B** | Very Good | Medium | \$0.15 | Budget-friendly coding agent |
+> | **Llama 3.1 405B** | Good | 81.1% | \$3.50 | Function calling LLM for tool-heavy workflows |
+>
+> These models are optimized for code generation, debugging, and technical problem-solving, making them ideal for development-focused crews.
 
-| Model | Intelligence Score | Cost (\$/M tokens) | Speed | Best Use in CrewAI |
-| :- | :- | :- | :- | :- |
-| **o3** | 70 | \$17.50 | Fast | Manager LLM for complex multi-agent coordination |
-| **Gemini 2.5 Pro** | 69 | \$3.44 | Fast | Strategic planning agents, research coordination |
-| **DeepSeek R1** | 68 | \$0.96 | Moderate | Cost-effective reasoning for budget-conscious crews |
-| **Claude 4 Sonnet** | 53 | \$6.00 | Fast | Analysis agents requiring nuanced understanding |
-| **Qwen3 235B (Reasoning)** | 62 | \$2.63 | Moderate | Open-source alternative for reasoning tasks |
+> [tab] Speed & Efficiency
+>
+> **Best for High-Throughput and Real-Time Applications**
+>
+> | Model | Speed (tokens/s) | Latency (TTFT) | Cost (\$/M tokens) | Best Use in CrewAI |
+> | :- | :- | :- | :- | :- |
+> | **Llama 4 Scout** | 2,600 | 0.33s | \$0.27 | High-volume processing agents |
+> | **Gemini 2.5 Flash** | 376 | 0.30s | \$0.26 | Real-time response agents |
+> | **DeepSeek R1 Distill** | 383 | Variable | \$0.04 | Cost-optimized high-speed processing |
+> | **Llama 3.3 70B** | 2,500 | 0.52s | \$0.60 | Balanced speed and capability |
+> | **Nova Micro** | High | 0.30s | \$0.04 | Simple, fast task execution |
+>
+> These models prioritize speed and efficiency, perfect for agents handling routine operations or requiring quick responses. **Pro tip**: Pairing these models with fast inference providers like Groq can achieve even better performance, especially for open-source models like Llama.
 
-These models excel at multi-step reasoning and are ideal for agents that need to develop strategies, coordinate other agents, or analyze complex information.
-
-**Coding & Technical**
-
-**Best for Development and Tool-Heavy Workflows**
-
-| Model | Coding Performance | Tool Use Score | Cost (\$/M tokens) | Best Use in CrewAI |
-| :- | :- | :- | :- | :- |
-| **Claude 4 Sonnet** | Excellent | 72.7% | \$6.00 | Primary coding agent, technical documentation |
-| **Claude 4 Opus** | Excellent | 72.5% | \$30.00 | Complex software architecture, code review |
-| **DeepSeek V3** | Very Good | High | \$0.48 | Cost-effective coding for routine development |
-| **Qwen2.5 Coder 32B** | Very Good | Medium | \$0.15 | Budget-friendly coding agent |
-| **Llama 3.1 405B** | Good | 81.1% | \$3.50 | Function calling LLM for tool-heavy workflows |
-
-These models are optimized for code generation, debugging, and technical problem-solving, making them ideal for development-focused crews.
-
-**Speed & Efficiency**
-
-**Best for High-Throughput and Real-Time Applications**
-
-| Model | Speed (tokens/s) | Latency (TTFT) | Cost (\$/M tokens) | Best Use in CrewAI |
-| :- | :- | :- | :- | :- |
-| **Llama 4 Scout** | 2,600 | 0.33s | \$0.27 | High-volume processing agents |
-| **Gemini 2.5 Flash** | 376 | 0.30s | \$0.26 | Real-time response agents |
-| **DeepSeek R1 Distill** | 383 | Variable | \$0.04 | Cost-optimized high-speed processing |
-| **Llama 3.3 70B** | 2,500 | 0.52s | \$0.60 | Balanced speed and capability |
-| **Nova Micro** | High | 0.30s | \$0.04 | Simple, fast task execution |
-
-These models prioritize speed and efficiency, perfect for agents handling routine operations or requiring quick responses. **Pro tip**: Pairing these models with fast inference providers like Groq can achieve even better performance, especially for open-source models like Llama.
-
-**Balanced Performance**
-
-**Best All-Around Models for General Crews**
-
-| Model | Overall Score | Versatility | Cost (\$/M tokens) | Best Use in CrewAI |
-| :- | :- | :- | :- | :- |
-| **GPT-4.1** | 53 | Excellent | \$3.50 | General-purpose crew LLM |
-| **Claude 3.7 Sonnet** | 48 | Very Good | \$6.00 | Balanced reasoning and creativity |
-| **Gemini 2.0 Flash** | 48 | Good | \$0.17 | Cost-effective general use |
-| **Llama 4 Maverick** | 51 | Good | \$0.37 | Open-source general purpose |
-| **Qwen3 32B** | 44 | Good | \$1.23 | Budget-friendly versatility |
-
-These models offer good performance across multiple dimensions, suitable for crews with diverse task requirements.
+> [tab] Balanced Performance
+>
+> **Best All-Around Models for General Crews**
+>
+> | Model | Overall Score | Versatility | Cost (\$/M tokens) | Best Use in CrewAI |
+> | :- | :- | :- | :- | :- |
+> | **GPT-4.1** | 53 | Excellent | \$3.50 | General-purpose crew LLM |
+> | **Claude 3.7 Sonnet** | 48 | Very Good | \$6.00 | Balanced reasoning and creativity |
+> | **Gemini 2.0 Flash** | 48 | Good | \$0.17 | Cost-effective general use |
+> | **Llama 4 Maverick** | 51 | Good | \$0.37 | Open-source general purpose |
+> | **Qwen3 32B** | 44 | Good | \$1.23 | Budget-friendly versatility |
+>
+> These models offer good performance across multiple dimensions, suitable for crews with diverse task requirements.
 
 ### Selection Framework for Current Models
 
-> **High-Performance Crews**
+> [accordion] High-Performance Crews
 >
 > **When performance is the priority**: Use top-tier models like **o3**, **Gemini 2.5 Pro**, or **Claude 4 Sonnet** for manager LLMs and critical agents. These models excel at complex reasoning and coordination but come with higher costs.
 >
 > **Strategy**: Implement a multi-model approach where premium models handle strategic thinking while efficient models handle routine operations.
 
-> **Cost-Conscious Crews**
+> [accordion] Cost-Conscious Crews
 >
 > **When budget is a primary constraint**: Focus on models like **DeepSeek R1**, **Llama 4 Scout**, or **Gemini 2.0 Flash**. These provide strong performance at significantly lower costs.
 >
 > **Strategy**: Use cost-effective models for most agents, reserving premium models only for the most critical decision-making roles.
 
-> **Specialized Workflows**
+> [accordion] Specialized Workflows
 >
 > **For specific domain expertise**: Choose models optimized for your primary use case. **Claude 4** series for coding, **Gemini 2.5 Pro** for research, **Llama 405B** for function calling.
 >
 > **Strategy**: Select models based on your crew's primary function, ensuring the core capability aligns with model strengths.
 
-> **Enterprise & Privacy**
+> [accordion] Enterprise & Privacy
 >
 > **For data-sensitive operations**: Consider open-source models like **Llama 4** series, **DeepSeek V3**, or **Qwen3** that can be deployed locally while maintaining competitive performance.
 >

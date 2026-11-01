@@ -12,19 +12,19 @@ CrewAI runs your agents. [CopilotKit](https://copilotkit.ai) gives them a fronte
 
 The two connect through the [AG-UI protocol](https://docs.ag-ui.com). The `ag-ui-crewai` package exposes any Crew or Flow as an AG-UI endpoint. CopilotKit's React hooks and components consume that endpoint. This unlocks experiences that go well beyond a chat box:
 
-> **[Generative UI](/edge/en/guides/frontend/generative-ui)**
+> [card] [Generative UI](/edge/en/guides/frontend/generative-ui)
 >
 > Render agent tool calls and state as your own React components.
 
-> **[Human-in-the-Loop](/edge/en/guides/frontend/human-in-the-loop)**
+> [card] [Human-in-the-Loop](/edge/en/guides/frontend/human-in-the-loop)
 >
 > Pause the agent to collect user approval or input mid-run.
 
-> **[Shared State](/edge/en/guides/frontend/shared-state)**
+> [card] [Shared State](/edge/en/guides/frontend/shared-state)
 >
 > Keep agent state and your app UI in two-way sync.
 
-> **[Channels](/edge/en/guides/frontend/channels)**
+> [card] [Channels](/edge/en/guides/frontend/channels)
 >
 > Run the same agent as a Slack, Discord, or Teams bot.
 
@@ -202,18 +202,18 @@ import { CopilotChat } from "@copilotkit/react-core/v2";
 
 ## Where to go next
 
-> **[Generative UI](/edge/en/guides/frontend/generative-ui)**
+> [card] [Generative UI](/edge/en/guides/frontend/generative-ui)
 >
 > Render tool calls and agent state as custom components.
 
-> **[Frontend Actions](/edge/en/guides/frontend/frontend-actions)**
+> [card] [Frontend Actions](/edge/en/guides/frontend/frontend-actions)
 >
 > Let the agent call functions that run in the browser.
 
-> **[Human-in-the-Loop](/edge/en/guides/frontend/human-in-the-loop)**
+> [card] [Human-in-the-Loop](/edge/en/guides/frontend/human-in-the-loop)
 >
 > Gate agent actions behind user approval.
 
-> **[Predictive State](/edge/en/guides/frontend/predictive-state-updates)**
+> [card] [Predictive State](/edge/en/guides/frontend/predictive-state-updates)
 >
 > Stream in-progress state to the UI as the agent works.

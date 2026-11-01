@@ -12,15 +12,15 @@ CrewAI is AI-native. This page brings together everything an AI coding agent nee
 
 ### Supported Coding Agents
 
-> **Claude Code**
+> [card] Claude Code
 
-> **Cursor**
+> [card] Cursor
 
-> **Codex**
+> [card] Codex
 
-> **Windsurf**
+> [card] Windsurf
 
-> **Gemini CLI**
+> [card] Gemini CLI
 
 > [!NOTE]
 >
@@ -32,36 +32,36 @@ CrewAI is AI-native. This page brings together everything an AI coding agent nee
 
 **Skills** are instruction packs that give coding agents deep CrewAI knowledge — how to scaffold Flows, configure Crews, use tools, and follow framework conventions.
 
-**Claude Code (Plugin Marketplace)**
+> [tab] Claude Code (Plugin Marketplace)
+>
+> ![Anthropic](https://cdn.simpleicons.org/anthropic/D97706)
+>
+> CrewAI skills are available in the **Claude Code plugin marketplace** — the same distribution channel used by top AI-native companies:
+>
+> ```shell theme={null}
+> /plugin marketplace add crewAIInc/skills
+> /plugin install crewai-skills@crewai-plugins
+> /reload-plugins
+> ```
+>
+> Four skills activate automatically when you ask relevant CrewAI questions:
+>
+> | Skill | When it runs |
+> | - | - |
+> | `getting-started` | Scaffolding new projects, choosing between `LLM.call()` / `Agent` / `Crew` / `Flow`, wiring `crew.jsonc` / `main.py` |
+> | `design-agent` | Configuring agents — role, goal, backstory, tools, LLMs, memory, guardrails |
+> | `design-task` | Writing task descriptions, dependencies, structured output (`output_pydantic`, `output_json`), human review |
+> | `ask-docs` | Querying the live [CrewAI docs MCP server](https://docs.crewai.com/mcp) for up-to-date API details |
 
-![Anthropic](https://cdn.simpleicons.org/anthropic/D97706)
-
-CrewAI skills are available in the **Claude Code plugin marketplace** — the same distribution channel used by top AI-native companies:
-
-```shell theme={null}
-/plugin marketplace add crewAIInc/skills
-/plugin install crewai-skills@crewai-plugins
-/reload-plugins
-```
-
-Four skills activate automatically when you ask relevant CrewAI questions:
-
-| Skill | When it runs |
-| - | - |
-| `getting-started` | Scaffolding new projects, choosing between `LLM.call()` / `Agent` / `Crew` / `Flow`, wiring `crew.jsonc` / `main.py` |
-| `design-agent` | Configuring agents — role, goal, backstory, tools, LLMs, memory, guardrails |
-| `design-task` | Writing task descriptions, dependencies, structured output (`output_pydantic`, `output_json`), human review |
-| `ask-docs` | Querying the live [CrewAI docs MCP server](https://docs.crewai.com/mcp) for up-to-date API details |
-
-**npx (Any Agent)**
-
-Works with Claude Code, Codex, Cursor, Gemini CLI, or any coding agent:
-
-```shell theme={null}
-npx skills add crewaiinc/skills
-```
-
-Pulls from the [skills.sh registry](https://skills.sh/crewaiinc/skills).
+> [tab] npx (Any Agent)
+>
+> Works with Claude Code, Codex, Cursor, Gemini CLI, or any coding agent:
+>
+> ```shell theme={null}
+> npx skills add crewaiinc/skills
+> ```
+>
+> Pulls from the [skills.sh registry](https://skills.sh/crewaiinc/skills).
 
 **1. Install the official skill pack**
 
@@ -81,19 +81,19 @@ The skill pack teaches your agent:
 
 Your agent can now scaffold and build CrewAI projects without you re-explaining the framework each session.
 
-> **[Skills concept](/en/concepts/skills)**
+> [card] [Skills concept](/en/concepts/skills)
 >
 > How skills work in CrewAI agents — injection, activation, and patterns.
 
-> **[Skills landing page](/en/skills)**
+> [card] [Skills landing page](/en/skills)
 >
 > Overview of the crewAIInc/skills pack and what it includes.
 
-> **[AGENTS.md & coding tools](/en/guides/coding-tools/agents-md)**
+> [card] [AGENTS.md & coding tools](/en/guides/coding-tools/agents-md)
 >
 > Set up AGENTS.md for Claude Code, Codex, Cursor, and Gemini CLI.
 
-> **[Skills registry (skills.sh)](https://skills.sh/crewaiinc/skills)**
+> [card] [Skills registry (skills.sh)](https://skills.sh/crewaiinc/skills)
 >
 > Official listing — skills, install stats, and audits.
 
@@ -107,28 +107,28 @@ CrewAI publishes an `llms.txt` file that gives AI assistants direct access to th
 https://docs.crewai.com/llms.txt
 ```
 
-**What is llms.txt?**
+> [tab] What is llms.txt?
+>
+> [`llms.txt`](https://llmstxt.org/) is an emerging standard for making documentation consumable by large language models. Instead of scraping HTML, your agent can fetch a single structured text file with all the content it needs.
+>
+> CrewAI's `llms.txt` is **already live** — your agent can use it right now.
 
-[`llms.txt`](https://llmstxt.org/) is an emerging standard for making documentation consumable by large language models. Instead of scraping HTML, your agent can fetch a single structured text file with all the content it needs.
+> [tab] How to use it
+>
+> Point your coding agent at the URL when it needs CrewAI reference docs:
+>
+> ```
+> Fetch https://docs.crewai.com/llms.txt for CrewAI documentation.
+> ```
+>
+> Many coding agents (Claude Code, Cursor, etc.) can fetch URLs directly. The file contains structured documentation covering all CrewAI concepts, APIs, and guides.
 
-CrewAI's `llms.txt` is **already live** — your agent can use it right now.
-
-**How to use it**
-
-Point your coding agent at the URL when it needs CrewAI reference docs:
-
-```
-Fetch https://docs.crewai.com/llms.txt for CrewAI documentation.
-```
-
-Many coding agents (Claude Code, Cursor, etc.) can fetch URLs directly. The file contains structured documentation covering all CrewAI concepts, APIs, and guides.
-
-**Why it matters**
-
-* **No scraping required** — clean, structured content in one request
-* **Always up-to-date** — served directly from docs.crewai.com
-* **Optimized for LLMs** — formatted for context windows, not browsers
-* **Complements skills** — skills teach patterns, llms.txt provides reference
+> [tab] Why it matters
+>
+> * **No scraping required** — clean, structured content in one request
+> * **Always up-to-date** — served directly from docs.crewai.com
+> * **Optimized for LLMs** — formatted for context windows, not browsers
+> * **Complements skills** — skills teach patterns, llms.txt provides reference
 
 ***
 
@@ -177,11 +177,11 @@ curl -X POST https://app.crewai.com/api/v1/crews/<crew-id>/kickoff \
   -d '{"inputs": {"topic": "AI agents"}}'
 ```
 
-> **[Deploy to AMP](https://docs-platform.crewai.com/platform/en/guides/deploy-to-amp)**
+> [card] [Deploy to AMP](https://docs-platform.crewai.com/platform/en/guides/deploy-to-amp)
 >
 > Full deployment guide — CLI, GitHub, and Crew Studio methods.
 
-> **[AMP introduction](https://docs-platform.crewai.com/platform/en/introduction)**
+> [card] [AMP introduction](https://docs-platform.crewai.com/platform/en/introduction)
 >
 > Platform overview — what AMP provides for production crews.
 
@@ -191,40 +191,40 @@ curl -X POST https://app.crewai.com/api/v1/crews/<crew-id>/kickoff \
 
 CrewAI AMP is built for production teams. Here's what you get beyond deployment.
 
-> **Observability**
+> [card] Observability
 >
 > Detailed execution traces, logs, and performance metrics for every crew run. Monitor agent decisions, tool calls, and task completion in real time.
 
-> **Crew Studio**
+> [card] Crew Studio
 >
 > No-code/low-code interface to create, customize, and deploy crews visually — then export to code or deploy directly.
 
-> **Webhook Streaming**
+> [card] Webhook Streaming
 >
 > Stream real-time events from crew executions to your systems. Integrate with Slack, Zapier, or any webhook consumer.
 
-> **Team Management**
+> [card] Team Management
 >
 > SSO, RBAC, and organization-level controls. Manage who can create, deploy, and access crews across your team.
 
-> **Tool Repository**
+> [card] Tool Repository
 >
 > Publish and share custom tools across your organization. Install community tools from the registry.
 
-> **Factory (Self-Hosted)**
+> [card] Factory (Self-Hosted)
 >
 > Run CrewAI AMP on your own infrastructure. Full platform capabilities with data residency and compliance controls.
 
-> **Who is AMP for?**
+> [accordion] Who is AMP for?
 >
 > AMP is for teams that need to move AI agent workflows from prototypes to production — with observability, access controls, and scalable infrastructure. Whether you're a startup or enterprise, AMP handles the operational complexity so you can focus on building agents.
 
-> **What deployment options are available?**
+> [accordion] What deployment options are available?
 >
 > * **Cloud (app.crewai.com)** — managed by CrewAI, fastest path to production
 > * **Factory (self-hosted)** — run on your own infrastructure for full data control
 > * **Hybrid** — mix cloud and self-hosted based on sensitivity requirements
 
-> **[Explore CrewAI AMP →](https://app.crewai.com)**
+> [card] [Explore CrewAI AMP →](https://app.crewai.com)
 >
 > Sign up and deploy your first crew to production.
