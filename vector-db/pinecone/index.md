@@ -301,7 +301,7 @@
 
 ## models
 
-- `models/overview` — [Pinecone model gallery](pages/models/overview.md) · [原文](https://docs.pinecone.io/models/overview)
+- `models/overview` — [Model gallery](pages/models/overview.md) · [原文](https://docs.pinecone.io/models/overview)
 
 ## reference
 
