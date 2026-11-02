@@ -295,34 +295,49 @@ Without the advisor installed, start from https://skills.qdrant.tech/llms.txt.
   - [Slow Request Log](https://qdrant.tech/documentation/ops-monitoring/slow-request-log.md): Identify the slowest queries in your Qdrant deployment with the built-in slow request log, which records the slowest unique operations on each node since startup.
   - [Monitoring with Grafana and Prometheus](https://qdrant.tech/documentation/ops-monitoring/hybrid-cloud-prometheus.md): Monitor Qdrant Hybrid Cloud and Private Cloud deployments by deploying Prometheus and Grafana into your Kubernetes cluster.
   - [Monitoring with Datadog](https://qdrant.tech/documentation/ops-monitoring/hybrid-cloud-datadog.md): Monitor Qdrant Hybrid Cloud and Private Cloud deployments by setting up the Datadog Operator and Agent in your Kubernetes cluster.
-- [Troubleshooting](https://qdrant.tech/documentation/common-errors.md): Diagnose and resolve common Qdrant errors, from open-file limits and quota rejections to incompatible file systems and corrupted collection metadata.
+- [Troubleshooting](https://qdrant.tech/documentation/common-errors.md): Diagnose and resolve common Qdrant errors, from open-file limits, quota rejections, and 401 and 403 authentication failures to incompatible file systems and corrupted collection metadata.
 
 ### Cloud
 
 - [Getting Started](https://qdrant.tech/documentation/cloud-getting-started.md): Get started with Qdrant Managed Cloud: prepare access, size your cluster, deploy, and prepare a workload for production.
 - [Account Setup](https://qdrant.tech/documentation/cloud-account-setup.md): Set up your Qdrant Cloud account: register, switch between accounts, invite teammates, and manage account settings and ownership.
 - [User Profile](https://qdrant.tech/documentation/cloud-user-profile.md): Manage your Qdrant Cloud user profile: profile details, color scheme, cookie consent, account invitations, multi-factor authentication, and deactivation.
+- [Managed Cloud](https://qdrant.tech/documentation/cloud.md): Run Qdrant as a managed SaaS on AWS, GCP, or Azure with high availability, automatic scaling, backups, and zero-downtime upgrades.
+  - [Create a Cluster](https://qdrant.tech/documentation/cloud/create-cluster.md): Launch a free or standard Qdrant Cloud cluster on AWS, GCP, or Azure, with options for high availability, GPUs, and Hybrid Cloud.
+  - [Cloud Production Checklist](https://qdrant.tech/documentation/cloud/production-checklist.md): Settings to verify before running production traffic on Qdrant Managed Cloud: availability, data layout, capacity, recovery, access, monitoring, and upgrades.
+  - [Authentication](https://qdrant.tech/documentation/cloud/authentication.md): Create Qdrant Cloud Database API keys with per-collection permissions, set expirations, rotate and revoke them, and tell them apart from Cloud Management Keys.
+  - [Connect to a Cluster](https://qdrant.tech/documentation/cloud/cluster-access.md): Connect to a Qdrant Cloud cluster: endpoint format, REST and gRPC ports, node-specific endpoints, the Cluster UI, IP allowlists, and connection troubleshooting.
+  - [Configure Clusters](https://qdrant.tech/documentation/cloud/configure-cluster.md): Tune Qdrant Cloud clusters with collection defaults, strict mode, replication factor, and advanced optimizer settings.
+  - [Scale Clusters](https://qdrant.tech/documentation/cloud/cluster-scaling.md): Scale Qdrant Cloud clusters vertically or horizontally with automatic shard rebalancing as your data and traffic grow.
+  - [Monitor Clusters](https://qdrant.tech/documentation/cloud/cluster-monitoring.md): Monitor Qdrant Cloud cluster health with built-in metrics and logs, email alerts, and Prometheus-compatible endpoints for your own monitoring stack.
+  - [Cluster Alerts](https://qdrant.tech/documentation/cloud/cluster-alerts.md): Reference for the email alerts Qdrant Cloud sends for memory, disk, CPU, availability, version, key expiry, and uneven load, with the cause and fix for each.
+  - [Scrape Metrics with Prometheus and Grafana](https://qdrant.tech/documentation/cloud/cluster-monitoring-prometheus.md): Scrape Qdrant Managed Cloud metrics with Prometheus and visualize them in Grafana, running in your own Kubernetes environment.
+  - [Cluster Metrics Reference](https://qdrant.tech/documentation/cloud/cluster-metrics-reference.md): Reference for every metric exposed by the Qdrant Cloud /sys_metrics endpoint, including database, container, and infrastructure metrics.
+  - [Update Clusters](https://qdrant.tech/documentation/cloud/cluster-upgrades.md): Upgrade Qdrant Cloud clusters to new versions with rolling, zero-downtime updates on multi-node clusters with replicated collections.
+  - [Backup Clusters](https://qdrant.tech/documentation/cloud/backups.md): Schedule backups of Qdrant Cloud clusters in the Console, CLI, API, or Terraform, and restore them in place, into a new cluster, or per collection.
+  - [Inference](https://qdrant.tech/documentation/cloud/inference.md): Generate dense, sparse, and multimodal embeddings inside Qdrant Cloud, or proxy to OpenAI, Cohere, Jina, and OpenRouter without external infrastructure.
+  - [Encryption at Rest](https://qdrant.tech/documentation/cloud/encryption.md): Use your own AWS KMS, GCP Cloud KMS, or Azure Key Vault key to encrypt Qdrant Managed Cloud storage volumes as a Premium customer.
 - [Cloud RBAC](https://qdrant.tech/documentation/cloud-rbac.md): Manage permissions for Qdrant Cloud resources with role-based access control across billing, IAM, clusters, and Hybrid Cloud.
   - [Role Management](https://qdrant.tech/documentation/cloud-rbac/role-management.md): Build custom Qdrant Cloud roles with fine-grained permissions, or assign built-in Base, Admin, and Owner roles to your team.
   - [User Management](https://qdrant.tech/documentation/cloud-rbac/user-management.md): Invite users, assign roles, and transfer account ownership in Qdrant Cloud through the User Management console.
   - [Permission Reference](https://qdrant.tech/documentation/cloud-rbac/permission-reference.md): Reference of Qdrant Cloud RBAC permissions for IAM, clusters, API keys, backups, Hybrid Cloud, billing, and account management.
-- [Managed Cloud](https://qdrant.tech/documentation/cloud.md): Run Qdrant as a managed SaaS on AWS, GCP, or Azure with high availability, automatic scaling, backups, and zero-downtime upgrades.
-  - [Create a Cluster](https://qdrant.tech/documentation/cloud/create-cluster.md): Launch a free or standard Qdrant Cloud cluster on AWS, GCP, or Azure, with options for high availability, GPUs, and Hybrid Cloud.
-  - [Authentication](https://qdrant.tech/documentation/cloud/authentication.md): Create Qdrant Cloud Database API keys with granular access control, set expirations, and connect securely to your clusters.
-  - [Cluster Access](https://qdrant.tech/documentation/cloud/cluster-access.md): Connect to Qdrant Cloud clusters through the Cluster UI, REST API, and gRPC API with load-balanced endpoints and IP allowlists.
-  - [Scale Clusters](https://qdrant.tech/documentation/cloud/cluster-scaling.md): Scale Qdrant Cloud clusters vertically or horizontally with automatic shard rebalancing as your data and traffic grow.
-  - [Configure Clusters](https://qdrant.tech/documentation/cloud/configure-cluster.md): Tune Qdrant Cloud clusters with collection defaults, strict mode, replication factor, and advanced optimizer settings.
-  - [Encryption at Rest](https://qdrant.tech/documentation/cloud/encryption.md): Use your own AWS KMS, GCP Cloud KMS, or Azure Key Vault key to encrypt Qdrant Managed Cloud storage volumes as a Premium customer.
-  - [Monitor Clusters](https://qdrant.tech/documentation/cloud/cluster-monitoring.md): Monitor Qdrant Cloud cluster health with built-in metrics, logs, and email alerts for memory, disk, and availability issues.
-  - [Update Clusters](https://qdrant.tech/documentation/cloud/cluster-upgrades.md): Upgrade Qdrant Cloud clusters to new versions with rolling, zero-downtime updates on multi-node clusters with replicated collections.
-  - [Backup Clusters](https://qdrant.tech/documentation/cloud/backups.md): Schedule automatic snapshots and restore Qdrant Cloud clusters for disaster recovery, with retention controls and point-in-time recovery.
-  - [Inference](https://qdrant.tech/documentation/cloud/inference.md): Generate dense, sparse, and multimodal embeddings inside Qdrant Cloud, or proxy to OpenAI, Cohere, Jina, and OpenRouter without external infrastructure.
+- [Cloud Security](https://qdrant.tech/documentation/cloud-security.md): Run Qdrant Cloud on isolated, encrypted infrastructure with RBAC, API keys, IP allowlists, and SOC 2 and HIPAA compliance.
+- [Shared Responsibility](https://qdrant.tech/documentation/shared-responsibility.md): Compare Managed Cloud, Hybrid Cloud, and Private Cloud: where the data plane runs, and who is responsible for infrastructure, upgrades, networking, access control, availability, and monitoring.
+- [Billing & Payments](https://qdrant.tech/documentation/cloud-pricing-payments.md): Understand Qdrant Cloud pricing based on CPU, memory, and storage, and pay by credit card or AWS, GCP, or Azure Marketplace.
+- [Premium Tier](https://qdrant.tech/documentation/cloud-premium.md): Qdrant Cloud Premium adds a 99.9% uptime SLA (99.95% multi-AZ), 24/7 support, SSO, private networking, and customer-managed encryption keys.
+- [Automate Qdrant Cloud](https://qdrant.tech/documentation/cloud-automation.md): Choose between the Cloud API, the qcloud CLI, Terraform, and Pulumi, and see the same cluster and key workflow in each.
+- [Qdrant Cloud API](https://qdrant.tech/documentation/cloud-api.md): Automate Qdrant Cloud with the gRPC and REST/JSON management API: provision clusters, backups, auth, and Hybrid Cloud resources.
+- [Qdrant Cloud CLI](https://qdrant.tech/documentation/cloud-cli.md): Manage Qdrant Cloud from your terminal with qcloud: create clusters, rotate keys, and switch between accounts and environments.
+- [Infrastructure Tools](https://qdrant.tech/documentation/cloud-tools.md): Provision and manage Qdrant Cloud clusters with infrastructure-as-code tools like Terraform and Pulumi for repeatable, version-controlled deployments.
+  - [Pulumi](https://qdrant.tech/documentation/cloud-tools/pulumi.md): Provision Qdrant Cloud clusters with Pulumi using your preferred language to define, deploy, and manage vector database infrastructure as code.
+  - [Terraform](https://qdrant.tech/documentation/cloud-tools/terraform.md): Manage the Qdrant Cloud lifecycle declaratively with the Terraform provider: version, share, and reuse vector database infrastructure across teams.
 - [Hybrid Cloud](https://qdrant.tech/documentation/hybrid-cloud.md): Run Qdrant in your own Kubernetes cluster while managing it through Qdrant Cloud, keeping all data inside your network.
   - [Setup Hybrid Cloud](https://qdrant.tech/documentation/hybrid-cloud/hybrid-cloud-setup.md): Set up a Qdrant Hybrid Cloud Environment by installing the Operator and Cloud Agent into your own Kubernetes cluster.
   - [Create a Cluster](https://qdrant.tech/documentation/hybrid-cloud/hybrid-cloud-cluster-creation.md): Create a Qdrant cluster in Hybrid Cloud with Kubernetes scheduling controls, node selectors, and secret-based API key authentication.
   - [Configure, Scale & Update Clusters](https://qdrant.tech/documentation/hybrid-cloud/configure-scale-upgrade.md): Configure, scale, reshard, and upgrade Qdrant Hybrid Cloud clusters with automatic shard rebalancing across your Kubernetes nodes.
   - [Configure the Qdrant Operator](https://qdrant.tech/documentation/hybrid-cloud/operator-configuration.md): Tune the Qdrant Operator in Hybrid Cloud with options for scheduling, security, ingress, networking, and snapshot management.
   - [Networking, Logging & Monitoring](https://qdrant.tech/documentation/hybrid-cloud/networking-logging-monitoring.md): Configure network policies, logs, and Prometheus-compatible metrics for Qdrant Hybrid Cloud, with a ready-made Grafana dashboard.
+  - [Troubleshooting](https://qdrant.tech/documentation/hybrid-cloud/troubleshooting.md): Troubleshoot Qdrant Hybrid Cloud: what to collect first, and the usual causes and checks for timeouts, transport errors, dead replicas, pods stuck in Pending, and CPU throttling.
   - [Deployment Platforms](https://qdrant.tech/documentation/hybrid-cloud/platform-deployment-options.md): Deploy Qdrant Hybrid Cloud on managed Kubernetes platforms including AWS EKS, GCP GKE, Azure AKS, and Linode LKE.
 - [Private Cloud](https://qdrant.tech/documentation/private-cloud.md): Run Qdrant Private Cloud in your own Kubernetes cluster with full control over scheduling, security, and disaster recovery.
   - [Setup Private Cloud](https://qdrant.tech/documentation/private-cloud/private-cloud-setup.md): Install Qdrant Private Cloud into your Kubernetes cluster with Helm, using the Qdrant Operator and container registry credentials.
@@ -332,14 +347,6 @@ Without the advisor installed, start from https://skills.qdrant.tech/llms.txt.
   - [Logging & Monitoring](https://qdrant.tech/documentation/private-cloud/logging-monitoring.md): Collect application logs, audit logs, and Prometheus-compatible metrics from Qdrant Private Cloud clusters, with a ready-made Grafana dashboard.
   - [API Reference](https://qdrant.tech/documentation/private-cloud/api-reference.md): Reference for Qdrant Private Cloud Kubernetes APIs covering clusters, snapshots, restores, scheduled backups, and authentication.
   - [Changelog](https://qdrant.tech/documentation/private-cloud/changelog.md): Release notes for Qdrant Private Cloud, including supported Qdrant versions, new features, and stability improvements.
-- [Infrastructure Tools](https://qdrant.tech/documentation/cloud-tools.md): Provision and manage Qdrant Cloud clusters with infrastructure-as-code tools like Terraform and Pulumi for repeatable, version-controlled deployments.
-  - [Pulumi](https://qdrant.tech/documentation/cloud-tools/pulumi.md): Provision Qdrant Cloud clusters with Pulumi using your preferred language to define, deploy, and manage vector database infrastructure as code.
-  - [Terraform](https://qdrant.tech/documentation/cloud-tools/terraform.md): Manage the Qdrant Cloud lifecycle declaratively with the Terraform provider — version, share, and reuse vector database infrastructure across teams.
-- [Cloud Security](https://qdrant.tech/documentation/cloud-security.md): Run Qdrant Cloud on isolated, encrypted infrastructure with RBAC, API keys, IP allowlists, and SOC 2 and HIPAA compliance.
-- [Qdrant Cloud API](https://qdrant.tech/documentation/cloud-api.md): Automate Qdrant Cloud with the gRPC and REST/JSON management API — provision clusters, backups, auth, and Hybrid Cloud resources.
-- [Qdrant Cloud CLI](https://qdrant.tech/documentation/cloud-cli.md): Manage Qdrant Cloud from your terminal with qcloud — create clusters, rotate keys, and switch between accounts and environments.
-- [Billing & Payments](https://qdrant.tech/documentation/cloud-pricing-payments.md): Understand Qdrant Cloud pricing based on CPU, memory, and storage, and pay by credit card or AWS, GCP, or Azure Marketplace.
-- [Premium Tier](https://qdrant.tech/documentation/cloud-premium.md): Qdrant Cloud Premium adds a 99.9% uptime SLA (99.95% multi-AZ), 24/7 support, SSO, private networking, and customer-managed encryption keys.
 
 ### Support
 
@@ -528,7 +535,6 @@ Without the advisor installed, start from https://skills.qdrant.tech/llms.txt.
   - [Configure Qdrant's Optimizer for Predictable Search Latency](https://qdrant.tech/documentation/production-operations/predictable-search-latency.md): Best practices for configuring Qdrant's optimizers, backed by search latency benchmarks.
   - [Data Privacy with Qdrant's Role-Based Access Control (RBAC)](https://qdrant.tech/documentation/production-operations/access-control.md): Secure Your Data with Qdrant: Implementing RBAC
   - [How to Implement Multitenancy and Custom Sharding in Qdrant](https://qdrant.tech/documentation/production-operations/multitenant-search.md): Explore how Qdrant's multitenancy and custom sharding streamline machine-learning operations, enhancing scalability and data security.
-  - [Managed Cloud Prometheus Monitoring](https://qdrant.tech/documentation/production-operations/managed-cloud-prometheus.md): Monitor Qdrant Managed Cloud clusters with Prometheus and Grafana running in your own Kubernetes environment for full visibility.
 
 ### Qdrant Academy
 

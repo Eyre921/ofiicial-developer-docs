@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1419 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1414 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -143,8 +143,6 @@
 - `docs/api-reference/history/get-audio` — [Get audio from history item](pages/docs/api-reference/history/get-audio.md) · [原文](https://elevenlabs.io/docs/api-reference/history/get-audio.md)
 - `docs/api-reference/history/list` — [Get generated items](pages/docs/api-reference/history/list.md) · [原文](https://elevenlabs.io/docs/api-reference/history/list.md)
 - `docs/api-reference/integrations/exotel/outbound-call` — [Outbound call via Exotel](pages/docs/api-reference/integrations/exotel/outbound-call.md) · [原文](https://elevenlabs.io/docs/api-reference/integrations/exotel/outbound-call.md)
-- `docs/api-reference/integrations/twilio/outbound-call` — [Outbound call via twilio](pages/docs/api-reference/integrations/twilio/outbound-call.md) · [原文](https://elevenlabs.io/docs/api-reference/integrations/twilio/outbound-call.md)
-- `docs/api-reference/integrations/twilio/register-call` — [Register call](pages/docs/api-reference/integrations/twilio/register-call.md) · [原文](https://elevenlabs.io/docs/api-reference/integrations/twilio/register-call.md)
 - `docs/api-reference/integrations/whats-app/accounts/delete` — [Delete WhatsApp account](pages/docs/api-reference/integrations/whats-app/accounts/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/integrations/whats-app/accounts/delete.md)
 - `docs/api-reference/integrations/whats-app/accounts/get` — [Get WhatsApp account](pages/docs/api-reference/integrations/whats-app/accounts/get.md) · [原文](https://elevenlabs.io/docs/api-reference/integrations/whats-app/accounts/get.md)
 - `docs/api-reference/integrations/whats-app/accounts/list` — [List WhatsApp accounts](pages/docs/api-reference/integrations/whats-app/accounts/list.md) · [原文](https://elevenlabs.io/docs/api-reference/integrations/whats-app/accounts/list.md)
@@ -226,7 +224,6 @@
 - `docs/api-reference/phone-numbers/create` — [Import phone number](pages/docs/api-reference/phone-numbers/create.md) · [原文](https://elevenlabs.io/docs/api-reference/phone-numbers/create.md)
 - `docs/api-reference/phone-numbers/delete` — [Delete phone number](pages/docs/api-reference/phone-numbers/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/phone-numbers/delete.md)
 - `docs/api-reference/phone-numbers/get` — [Get phone number](pages/docs/api-reference/phone-numbers/get.md) · [原文](https://elevenlabs.io/docs/api-reference/phone-numbers/get.md)
-- `docs/api-reference/phone-numbers/get-sip-messages` — [Get SIP messages for a phone number](pages/docs/api-reference/phone-numbers/get-sip-messages.md) · [原文](https://elevenlabs.io/docs/api-reference/phone-numbers/get-sip-messages.md)
 - `docs/api-reference/phone-numbers/list` — [List phone numbers](pages/docs/api-reference/phone-numbers/list.md) · [原文](https://elevenlabs.io/docs/api-reference/phone-numbers/list.md)
 - `docs/api-reference/phone-numbers/list-v-2` — [List Phone Numbers Page](pages/docs/api-reference/phone-numbers/list-v-2.md) · [原文](https://elevenlabs.io/docs/api-reference/phone-numbers/list-v-2.md)
 - `docs/api-reference/phone-numbers/update` — [Update phone number](pages/docs/api-reference/phone-numbers/update.md) · [原文](https://elevenlabs.io/docs/api-reference/phone-numbers/update.md)
@@ -405,7 +402,6 @@
 - `docs/api-reference/workspace/resources/share` — [Share Workspace Resource](pages/docs/api-reference/workspace/resources/share.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/resources/share.md)
 - `docs/api-reference/workspace/resources/unshare` — [Unshare Workspace Resource](pages/docs/api-reference/workspace/resources/unshare.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/resources/unshare.md)
 - `docs/api-reference/workspace/secrets/create` — [Create secret](pages/docs/api-reference/workspace/secrets/create.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/secrets/create.md)
-- `docs/api-reference/workspace/secrets/delete` — [Delete secret](pages/docs/api-reference/workspace/secrets/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/secrets/delete.md)
 - `docs/api-reference/workspace/secrets/get` — [Get secret](pages/docs/api-reference/workspace/secrets/get.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/secrets/get.md)
 - `docs/api-reference/workspace/secrets/get-dependencies` — [Get secret dependencies](pages/docs/api-reference/workspace/secrets/get-dependencies.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/secrets/get-dependencies.md)
 - `docs/api-reference/workspace/secrets/list` — [Get secrets](pages/docs/api-reference/workspace/secrets/list.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/secrets/list.md)
@@ -710,7 +706,6 @@
 - `docs/eleven-agents/guides/integrations/live-avatar` — [LiveAvatar](pages/docs/eleven-agents/guides/integrations/live-avatar.md) · [原文](https://elevenlabs.io/docs/eleven-agents/guides/integrations/live-avatar.md)
 - `docs/eleven-agents/guides/integrations/raspberry-pi-voice-assistant` — [Build a Voice Assistant with Agents Platform on a Raspberry Pi](pages/docs/eleven-agents/guides/integrations/raspberry-pi-voice-assistant.md) · [原文](https://elevenlabs.io/docs/eleven-agents/guides/integrations/raspberry-pi-voice-assistant.md)
 - `docs/eleven-agents/guides/integrations/upstash-redis` — [Data Collection and Analysis with Agents Platform in Next.js](pages/docs/eleven-agents/guides/integrations/upstash-redis.md) · [原文](https://elevenlabs.io/docs/eleven-agents/guides/integrations/upstash-redis.md)
-- `docs/eleven-agents/guides/no-code/framer` — [ElevenAgents in Framer](pages/docs/eleven-agents/guides/no-code/framer.md) · [原文](https://elevenlabs.io/docs/eleven-agents/guides/no-code/framer.md)
 - `docs/eleven-agents/guides/no-code/ghost` — [ElevenAgents in Ghost](pages/docs/eleven-agents/guides/no-code/ghost.md) · [原文](https://elevenlabs.io/docs/eleven-agents/guides/no-code/ghost.md)
 - `docs/eleven-agents/guides/no-code/squarespace` — [ElevenAgents in Squarespace](pages/docs/eleven-agents/guides/no-code/squarespace.md) · [原文](https://elevenlabs.io/docs/eleven-agents/guides/no-code/squarespace.md)
 - `docs/eleven-agents/guides/no-code/webflow` — [ElevenAgents in Webflow](pages/docs/eleven-agents/guides/no-code/webflow.md) · [原文](https://elevenlabs.io/docs/eleven-agents/guides/no-code/webflow.md)

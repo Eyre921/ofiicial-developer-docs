@@ -44,7 +44,7 @@ Use LangSmith to trace OpenAI Agents SDK runs, including agent steps, model call
 >
 > # Select the registered agent and environment
 > export LANGSMITH_AGENT_ID="<your-agent-id>"
-> export LANGSMITH_AGENT_ENVIRONMENT="production"
+> export LANGSMITH_AGENT_ENVIRONMENT="local"
 >
 > # For LangSmith API keys linked to multiple workspaces, set the LANGSMITH_WORKSPACE_ID environment variable to specify which workspace to use.
 > export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
@@ -111,7 +111,7 @@ Use LangSmith to trace OpenAI Agents SDK runs, including agent steps, model call
 >
 > # Select the registered agent and environment
 > export LANGSMITH_AGENT_ID="<your-agent-id>"
-> export LANGSMITH_AGENT_ENVIRONMENT="production"
+> export LANGSMITH_AGENT_ENVIRONMENT="local"
 >
 > # For LangSmith API keys linked to multiple workspaces, set the LANGSMITH_WORKSPACE_ID environment variable to specify which workspace to use.
 > export LANGSMITH_WORKSPACE_ID=<your-workspace-id>

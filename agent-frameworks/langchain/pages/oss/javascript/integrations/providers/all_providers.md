@@ -566,6 +566,10 @@ Connect LangGraph agents to front ends and observability platforms.
 >
 > Web page extraction API returning clean Markdown plus fixed-schema JSON for article metadata, product prices and tables.
 
+> [card] [x402checkToolkit](https://x402check.dev)
+>
+> Preflight x402 seller endpoints before an agent pays (ok|caution|avoid plus payTo history). \$0.01 USDC on Base.
+
 > [card] [You.com](https://you.com/docs/integrations/langchain)
 >
 > Real-time web search and content extraction for LLMs.

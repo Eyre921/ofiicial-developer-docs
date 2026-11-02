@@ -152,6 +152,7 @@ Certain model providers offer endpoints that are compatible with OpenAI's [Chat 
 | [`ChatNeuralwatt`](https://neuralwatt.com) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-neuralwatt/month)](https://pypi.org/project/langchain-neuralwatt/) |
 | [`ChatSeekrFlow`](https://github.com/benfaircloth/langchain-seekrflow) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-seekrflow/month)](https://pypi.org/project/langchain-seekrflow/) |
 | [`ChatKalibr`](https://kalibr.systems/docs) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-kalibr/month)](https://pypi.org/project/langchain-kalibr/) |
+| [`ChatRevana`](https://github.com/Aribk7/langchain-revana#readme) | ✅ | ✅ | ✅ | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-revana/month)](https://pypi.org/project/langchain-revana/) |
 | [`1Claw`](https://docs.1claw.xyz) | ✅ | ✅ | ✅ | ❌ | N/A |
 | [`API-Route`](https://www.api-route.com/docs/overview) | | | | | N/A |
 | [`Auxen`](https://auxen.ai) | ✅ | ✅ | ✅ | ❌ | N/A |

@@ -1,4 +1,4 @@
-> This is part 1 of 14 of the full documentation (pages 1–100 of 1384).
+> This is part 1 of 14 of the full documentation (pages 1–100 of 1390).
 > The content is paginated: fetch every part to see all of it.
 > Next part: https://docs.n8n.io/llms-full.txt/1
 > Page index: https://docs.n8n.io/llms.txt
@@ -190,10 +190,6 @@ On n8n Cloud Enterprise and self-hosted Enterprise, contact your Customer Succes
 {% endhint %}
 
 {% hint style="info" %}
-**Preview status**
-
-n8n Assistant is in Preview and may change in future releases.
-
 Your results may differ from the screenshots in this guide.
 {% endhint %}
 
@@ -522,7 +518,7 @@ Learn more: [MCP servers](/build/integrate-ai/mcp-servers) and [Set up and use n
 
 #### n8n Assistant
 
-n8n Assistant is a chat-based agent in n8n that helps you create, edit, test, and troubleshoot workflows from natural language. It can also build agents and help with instance tasks. n8n Assistant is in Preview. Learn more: [Use n8n Assistant](/build/ways-of-building-workflows/n8n-assistant).
+n8n Assistant is a chat-based agent in n8n that helps you create, edit, test, and troubleshoot workflows from natural language. It can also build agents and help with instance tasks. Learn more: [Use n8n Assistant](/build/ways-of-building-workflows/n8n-assistant).
 
 #### root node (n8n) <a href="#root-node-n8n" id="root-node-n8n"></a>
 
@@ -2370,7 +2366,7 @@ Before proceeding, install Docker:
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.45.7 Current `beta`: 2.46.3
+Current `stable`: 2.45.7 Current `beta`: 2.46.4
 {% endhint %}
 
 ### Starting n8n <a href="#starting-n8n" id="starting-n8n"></a>
@@ -2583,6 +2579,7 @@ Self-host with Google Cloud Run (with access to n8n workflow tools for Google Wo
 Starting points for a Kubernetes setup:
 
 * [AWS](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws): self-host n8n on Amazon Web Services with Postgres and Kubernetes.
+* [AWS with Terraform](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform): deploy a production-grade, highly available n8n instance on AWS using the official Terraform module.
 * [Azure](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-azure): self-host n8n on Azure with Postgres and Kubernetes.
 * [Google Kubernetes Engine (GKE)](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-google-kubernetes): self-host n8n on Google Kubernetes Engine.
 * [OpenShift Local (CRC)](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-openshift-local-crc): deploy n8n on a local OpenShift cluster for testing, without cloud costs.
@@ -2627,7 +2624,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.45.7 Current `beta`: 2.46.3
+Current `stable`: 2.45.7 Current `beta`: 2.46.4
 {% endhint %}
 
 ## Create a Droplet <a href="#create-a-droplet" id="create-a-droplet"></a>
@@ -2999,7 +2996,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.45.7 Current `beta`: 2.46.3
+Current `stable`: 2.45.7 Current `beta`: 2.46.4
 {% endhint %}
 
 ## Use the deployment template to create a Heroku project <a href="#use-the-deployment-template-to-create-a-heroku-project" id="use-the-deployment-template-to-create-a-heroku-project"></a>
@@ -3101,7 +3098,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.45.7 Current `beta`: 2.46.3
+Current `stable`: 2.45.7 Current `beta`: 2.46.4
 {% endhint %}
 
 ## Create a server <a href="#create-a-server" id="create-a-server"></a>
@@ -3441,6 +3438,12 @@ AWS offers several ways suitable for hosting n8n, including EC2 (virtual machine
 
 This guide uses [EKS](https://aws.amazon.com/eks/) as the hosting option. Using Kubernetes requires some additional complexity and configuration, but is the best method for scaling n8n as demand changes.
 
+{% hint style="info" %}
+**Looking for a production-grade, highly available setup?**
+
+For a multi-main deployment with managed PostgreSQL, Redis, and autoscaling workers, see [Deploy to AWS with Terraform](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform).
+{% endhint %}
+
 ## Prerequisites <a href="#prerequisites" id="prerequisites"></a>
 
 The steps in this guide use a mix of the AWS UI and [the eksctl CLI tool for EKS](https://eksctl.io).
@@ -3465,7 +3468,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.45.7 Current `beta`: 2.46.3
+Current `stable`: 2.45.7 Current `beta`: 2.46.4
 {% endhint %}
 
 ## Create a cluster <a href="#create-a-cluster" id="create-a-cluster"></a>
@@ -3644,6 +3647,7 @@ kubectl delete -f .
 ## Related resources
 
 * [Use a cloud provider](/deploy/host-n8n/install-options/use-a-cloud-provider)
+* [Deploy to AWS with Terraform](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform)
 * [DigitalOcean](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-digital-ocean)
 * [Heroku](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-heroku)
 * [Hetzner Cloud](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-hetzner)
@@ -3652,6 +3656,738 @@ kubectl delete -f .
 * [Google Kubernetes Engine](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-google-kubernetes)
 * [OpenShift Local (CRC)](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-openshift-local-crc)
 * [Use Docker Compose](/deploy/host-n8n/install-options/use-a-cloud-provider/use-docker-compose)
+
+
+# Deploy to AWS with Terraform
+
+Deploy a production-grade, highly available n8n instance on AWS using the official Terraform module.
+
+[terraform-aws-n8n](https://github.com/n8n-io/terraform-aws-n8n) is a Terraform module that deploys a production-grade, multi-main n8n instance to AWS. It provisions an Amazon EKS cluster running n8n's Helm chart, with managed PostgreSQL (RDS), Redis (ElastiCache), and S3 for shared file storage.
+
+This differs from the manual [Kubernetes setup](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws) n8n documents elsewhere: that guide walks you through hand-written manifests for a single n8n instance. This module automates a highly available, auto-scaling deployment, and it's maintained independently by the n8n Solutions team.
+
+{% hint style="warning" %}
+**Pre-release module**
+
+`terraform-aws-n8n` is in pre-release. Expect breaking changes before the module reaches its first stable (1.0) release.
+{% endhint %}
+
+{% hint style="info" %}
+**Feature availability**
+
+The default multi-main topology this module deploys is available on:
+
+* **Self-hosted:** Enterprise
+
+Setting `n8n_main_hpa_min_replicas = 1` runs a single main pod instead, which only requires a Business plan license. In that mode, the main pod's autoscaling maximum is forced to one, and upgrades use a `Recreate` strategy. Expect downtime for the editor, REST API, and scheduled triggers during upgrades and maintenance.
+{% endhint %}
+
+## Architecture
+
+Users and inbound webhooks reach an Application Load Balancer that fronts the EKS cluster. Inside the cluster, the n8n Helm chart runs three separate deployments:
+
+* **Main pods:** handle leader election, the editor UI, and the REST API.
+* **Webhook processor pods:** handle inbound triggers.
+* **Worker pods:** run workflow executions, and scale on Redis queue depth using [KEDA](https://keda.sh/).
+
+State lives in managed services outside the cluster: RDS PostgreSQL for workflow data, ElastiCache Redis for leader election and the worker queue, and S3 for binary data. AWS Certificate Manager (ACM) issues the TLS certificate for the load balancer.
+
+AWS grants pods permissions (for the Load Balancer Controller, Cluster Autoscaler, EBS CSI driver, and n8n's own S3 access) through EKS Pod Identity.
+
+## Prerequisites
+
+* An **n8n license key**: an Enterprise license for the default multi-main topology, or a Business license if you set `n8n_main_hpa_min_replicas = 1`.
+* A **pre-existing VPC** with public and private subnets tagged for EKS and ALB use. The module doesn't create a VPC. See [Customize the AWS infrastructure](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform/customize-the-infrastructure).
+* **Terraform CLI 1.11 or later**, with the `aws`, `kubernetes`, and `helm` providers configured.
+* A DNS option: either a Route 53 hosted zone (`route53_zone_id`), which lets the module issue the ACM certificate and manage the DNS record itself, or a pre-validated certificate from another provider (`certificate_arn`).
+
+## Usage
+
+For a step-by-step walkthrough that takes you from an empty folder to a running instance, see [Deploy your first n8n instance on AWS](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform/deploy-your-first-instance). The configuration below is the minimum set of inputs:
+
+```hcl
+module "n8n" {
+  source  = "n8n-io/n8n/aws"
+  version = "~> 0.5.0"
+
+  aws_region      = "us-east-1"
+  cluster_name    = "n8n-cluster"
+  n8n_domain      = "n8n.example.com"
+  n8n_license_key = var.n8n_license_key
+
+  # Bring your own VPC.
+  vpc_id          = module.vpc.vpc_id
+  private_subnets = module.vpc.private_subnets
+  public_subnets  = module.vpc.public_subnets
+  vpc_cidr_block  = module.vpc.vpc_cidr_block
+
+  # EKS node group autoscaling bounds. You pay for node_min nodes at all times.
+  node_min = 3
+  node_max = 6
+
+  # Set exactly one of these for DNS and TLS.
+  route53_zone_id = "Z0123456789ABCDEFGHIJ"
+  # certificate_arn = aws_acm_certificate_validation.n8n.certificate_arn
+}
+```
+
+Pass sensitive values such as `n8n_license_key` from a secrets manager, and store Terraform state in an encrypted, access-controlled backend because the module writes the key into the Helm release. Never hardcode the key in a `.tfvars` file you commit to version control.
+
+## Choose a starting size
+
+The module ships three sizing examples. Use one as your starting point, then tune node type, count, and database size from there.
+
+|                                  | [small](https://github.com/n8n-io/terraform-aws-n8n/tree/main/examples/small) (default) | [medium](https://github.com/n8n-io/terraform-aws-n8n/tree/main/examples/medium) | [large](https://github.com/n8n-io/terraform-aws-n8n/tree/main/examples/large) |
+| -------------------------------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| Target scale                     | Development or small team                                                               | \~5-15M executions/day                                                          | \~50-60M+ executions/day                                                      |
+| Node type                        | t3.xlarge                                                                               | m6i.2xlarge                                                                     | m7i.4xlarge                                                                   |
+| Nodes (min/max)                  | 3/6                                                                                     | 5/15                                                                            | 10/50                                                                         |
+| Database                         | RDS db.t3.small                                                                         | RDS db.m6g.2xlarge                                                              | Aurora PostgreSQL I/O-Optimized                                               |
+| Redis                            | cache.t3.medium                                                                         | cache.r6g.large                                                                 | cache.r6g.large                                                               |
+| Estimated cost/month (on-demand) | \~$440                                                                                  | \~$2,000                                                                        | \~$21,000+                                                                    |
+
+Two topology variants are also available as examples: [split-ingress](https://github.com/n8n-io/terraform-aws-n8n/tree/main/examples/split-ingress) (see [Customize the AWS infrastructure](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform/customize-the-infrastructure#customer-managed-ingress)) and [worker-pools](https://github.com/n8n-io/terraform-aws-n8n/tree/main/examples/worker-pools), an alpha n8n feature that runs separate labelled worker pools.
+
+## Support
+
+This module is open source, maintained by the n8n Solutions team independently of n8n's Enterprise support offering. Report bugs or request features on [GitHub issues](https://github.com/n8n-io/terraform-aws-n8n/issues); the maintainers triage on a best-effort basis, with no SLA. For general n8n questions unrelated to the module, use the [n8n community forum](https://community.n8n.io/).
+
+## In this section
+
+* [Deploy your first n8n instance on AWS](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform/deploy-your-first-instance): a step-by-step walkthrough, from an empty folder to a running instance.
+* [Scale and run at high availability on AWS](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform/scale-and-run-at-high-availability): configure multi-main, worker autoscaling, and Redis high availability.
+* [Configure Enterprise features on AWS](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform/use-enterprise-features-on-aws): wire up S3 execution data, Prometheus metrics, OpenTelemetry tracing, log streaming, and external secrets.
+* [Customize the AWS infrastructure](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform/customize-the-infrastructure): bring your own VPC, database, cache, or cluster, split ingress, or use a custom n8n image.
+* [Maintain and tear down the AWS deployment](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform/maintain-and-tear-down): manage encryption keys, verify database TLS, and configure deletion protection.
+
+## Related resources
+
+* [Use a cloud provider](/deploy/host-n8n/install-options/use-a-cloud-provider)
+* [Deploy to AWS](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws)
+* [DigitalOcean](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-digital-ocean)
+* [Heroku](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-heroku)
+* [Hetzner Cloud](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-hetzner)
+* [Azure](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-azure)
+* [Google Cloud Run](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-google-cloud-run)
+* [Google Kubernetes Engine](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-google-kubernetes)
+* [OpenShift Local (CRC)](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-openshift-local-crc)
+* [Use Docker Compose](/deploy/host-n8n/install-options/use-a-cloud-provider/use-docker-compose)
+* [Enable queue mode](/deploy/host-n8n/configure-n8n/scaling/enable-queue-mode)
+
+
+# Deploy your first n8n instance on AWS
+
+A step-by-step walkthrough that deploys a working n8n instance on AWS with the terraform-aws-n8n module, from an empty folder to a running editor.
+
+This walkthrough takes you from an empty folder to a running n8n instance on AWS in six steps, using the [terraform-aws-n8n](https://github.com/n8n-io/terraform-aws-n8n) module's `small` example. You write one file, `main.tf`, then run `terraform init`, `terraform plan`, and `terraform apply`.
+
+You don't clone a repository. The example lives in the Terraform Registry as [`n8n-io/n8n/aws`](https://registry.terraform.io/modules/n8n-io/n8n/aws/0.5.0), and `terraform init` downloads it for you. The example bundles the VPC and the provider setup, so the configuration on this page is all the Terraform you write.
+
+Expect about 30 minutes from `terraform apply` to a reachable editor.
+
+{% hint style="info" %}
+**Feature availability**
+
+The default multi-main topology this module deploys is available on:
+
+* **Self-hosted:** Enterprise
+
+A Business license also works if you set `n8n_main_hpa_min_replicas = 1` to run a single main pod. See [Scale and run at high availability on AWS](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform/scale-and-run-at-high-availability) for what that mode changes.
+{% endhint %}
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+* [Terraform CLI 1.11 or later](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli) installed.
+* The [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) installed and configured with credentials that can create EKS, RDS, ElastiCache, IAM, VPC, KMS, S3, ACM, and Route 53 resources.
+* A domain whose parent zone is hosted in AWS Route 53. You need the hosted zone ID. For example, to run n8n at `n8n.example.com`, you need the hosted zone for `example.com`.
+* An n8n Enterprise license key, or a Business license key if you set `n8n_main_hpa_min_replicas = 1`.
+
+## Step 1: Create a project folder
+
+Terraform works from the folder you run it in, so start with an empty one:
+
+```bash
+mkdir n8n-aws
+cd n8n-aws
+```
+
+## Step 2: Choose a deployment size
+
+The terraform-aws-n8n module ships three sizing examples. This walkthrough deploys `small`, which suits a development or small-team instance:
+
+|                                  | small (default)           | medium                 | large                    |
+| -------------------------------- | ------------------------- | ---------------------- | ------------------------ |
+| Target scale                     | Development or small team | \~5–15M executions/day | \~50–60M+ executions/day |
+| Node type                        | t3.xlarge                 | m6i.2xlarge            | m7i.4xlarge              |
+| Estimated cost/month (on-demand) | \~$440                    | \~$2,000               | \~$21,000+               |
+
+For the full comparison, including pod counts, database sizing, and reserved-instance pricing, see the sizing table on [Deploy to AWS with Terraform](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform). If you're unsure, start with `small`: moving from `small` to `medium` is straightforward, while moving to `large` involves infrastructure changes.
+
+To deploy a larger tier instead, point the module `source` in your `main.tf` at that example's subpath. [`examples/medium`](https://registry.terraform.io/modules/n8n-io/n8n/aws/0.5.0/examples/medium) takes the same inputs as `small`, and [`examples/large`](https://registry.terraform.io/modules/n8n-io/n8n/aws/0.5.0/examples/large) adds `certificate_arn` and `aurora_instance_class`.
+
+## Step 3: Create `main.tf`
+
+Create one file, `main.tf`, in your project folder. It references the registry's [small example](https://registry.terraform.io/modules/n8n-io/n8n/aws/0.5.0/examples/small) as a module, pinned to 0.5.0:
+
+{% code title="main.tf" %}
+
+```hcl
+variable "n8n_license_key" {
+  type      = string
+  sensitive = true
+}
+
+module "n8n" {
+  source  = "n8n-io/n8n/aws//examples/small"
+  version = "0.5.0"
+
+  n8n_domain      = "n8n.example.com"
+  route53_zone_id = "<hosted-zone-id>"
+  n8n_license_key = var.n8n_license_key
+
+  # Applied to every resource, for cost tracking and ownership.
+  tags = {
+    Environment = "development"
+    Owner       = "platform-team"
+  }
+
+  # aws_region   = "eu-west-1"   # optional, defaults to us-east-1
+  # cluster_name = "n8n-cluster" # optional, 14 characters or fewer
+}
+
+output "n8n_url" {
+  description = "The URL to open once the load balancer finishes provisioning."
+  value       = module.n8n.n8n_url
+}
+
+output "n8n_encryption_key" {
+  description = "Back this up in a password manager. n8n emits it once."
+  value       = module.n8n.n8n_encryption_key
+  sensitive   = true
+}
+```
+
+{% endcode %}
+
+`cluster_name` must be 14 characters or fewer. The module derives an ElastiCache cluster ID of `<cluster-name>-redis`, and AWS caps those at 20 characters.
+
+## Step 4: Set your values
+
+In `main.tf`, replace:
+
+* `n8n_domain` with the domain you want to run n8n on.
+* `route53_zone_id` with the hosted zone ID for that domain's parent zone.
+* `tags` with whatever your organization uses for cost tracking and ownership.
+
+Then provide your license key as an environment variable, so it stays out of the file:
+
+```bash
+export TF_VAR_n8n_license_key="<your-license-key>"
+```
+
+## Step 5: Initialize Terraform
+
+```bash
+terraform init
+```
+
+This downloads the n8n module, the VPC module, and the `aws`, `kubernetes`, and `helm` providers.
+
+## Step 6: Plan and apply
+
+Preview what Terraform creates:
+
+```bash
+terraform plan
+```
+
+Review the plan, then apply it:
+
+```bash
+terraform apply
+```
+
+Type `yes` when prompted, or add `-auto-approve` to skip the confirmation. Provisioning takes about 20 to 25 minutes, and the load balancer needs about five more minutes after that to become reachable.
+
+When it finishes, open the URL from the `n8n_url` output:
+
+```bash
+terraform output -raw n8n_url
+```
+
+n8n shows the setup screen. Enter your email, first and last name, and a password to create the owner account. Complete or skip the questionnaire to reach your workspace.
+
+{% hint style="danger" %}
+**Save your encryption key now**
+
+n8n generates the encryption key once. Without it, every stored credential becomes unreadable, and no one can recover it for you. Run `terraform output -raw n8n_encryption_key` and store the value in a password manager before you go any further.
+{% endhint %}
+
+## Protect your Terraform state file
+
+Terraform writes a `terraform.tfstate` file in your project folder. It records your infrastructure, and it stores secrets in plain text: the n8n encryption key, the database password, and your license key. Marking an output `sensitive` only hides it from the terminal, not from the state file.
+
+Follow two rules:
+
+* Never commit `terraform.tfstate` to version control.
+* For anything beyond a quick trial, store state remotely in HCP Terraform or an S3 bucket configured with encryption, versioning, state locking, and strict access controls.
+
+## Clean up
+
+To tear down everything this example created:
+
+```bash
+terraform destroy
+```
+
+Type `yes` when prompted, or add `-auto-approve`.
+
+The `small` example ships teardown-friendly defaults so that `terraform destroy` runs cleanly: the RDS instance skips its final snapshot, and the S3 bucket force-destroys. Review these before you promote the setup to production. See [Maintain and tear down the AWS deployment](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform/maintain-and-tear-down) for the production values, and note that the module schedules its KMS keys for deletion seven days after a destroy, which blocks recovery from any retained snapshot.
+
+## Related resources
+
+Your instance is running the module's defaults. From here:
+
+* [Scale and run at high availability on AWS](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform/scale-and-run-at-high-availability): tune multi-main, worker autoscaling, and Redis high availability.
+* [Configure Enterprise features on AWS](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform/use-enterprise-features-on-aws): wire up S3 execution data, Prometheus metrics, OpenTelemetry tracing, log streaming, and external secrets.
+* [Customize the AWS infrastructure](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform/customize-the-infrastructure): point the module at a VPC, database, cache, or cluster you already run, split ingress, or use a custom n8n image.
+
+
+# Scale and run at high availability on AWS
+
+Configure multi-main, worker autoscaling, and Redis high availability in the terraform-aws-n8n module.
+
+The [terraform-aws-n8n](https://github.com/n8n-io/terraform-aws-n8n) module deploys n8n in [queue mode](/deploy/host-n8n/configure-n8n/scaling/enable-queue-mode) by default, with a [multi-main setup](/deploy/host-n8n/configure-n8n/scaling/enable-queue-mode#multi-main-setup) for high availability. This page covers the module-specific settings for that topology: multi-main licensing, worker autoscaling, and Redis high availability.
+
+## Multi-main setup
+
+By default, the module runs more than one main pod and requires an Enterprise license. Set `n8n_main_hpa_min_replicas = 1` to run a single main pod instead, which only requires a Business plan license, since n8n's multi-main leader-election feature is disabled in that mode.
+
+{% hint style="warning" %}
+**Single-main mode has upgrade downtime**
+
+With `n8n_main_hpa_min_replicas = 1`, the main pod's autoscaling maximum is forced to one, upgrades use a `Recreate` strategy, and the pod disruption budget permits evicting the only main. Expect editor, REST API, and scheduled-trigger downtime during upgrades and maintenance. Plan a maintenance window.
+{% endhint %}
+
+Any load balancer or Ingress in front of the main pods needs session persistence (sticky sessions) enabled so a browser stays connected to one main pod. The module's own Ingress sets this by default. If you bring your own Ingress, see [Customize the AWS infrastructure](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform/customize-the-infrastructure#customer-managed-ingress).
+
+## Worker autoscaling
+
+Worker pods scale on Redis queue depth using [KEDA](https://keda.sh/), which the module installs automatically. To check whether a worker's autoscaler can reach Redis:
+
+```bash
+kubectl -n n8n get scaledobject
+```
+
+A healthy scaler reports `READY=True`. If it reports `READY=False`, check the KEDA operator logs for the reason:
+
+```bash
+kubectl -n keda logs -l app=keda-operator | grep -i 'connection to redis'
+```
+
+{% hint style="info" %}
+**The worker HPA's TARGETS column can be misleading**
+
+`kubectl get hpa` often shows `<unknown>` in the TARGETS column for KEDA-backed worker HPAs, even while autoscaling works correctly. Use `kubectl get scaledobject` instead to check scaler health.
+{% endhint %}
+
+If you enable [Redis in-transit encryption](#redis-in-transit-encryption-and-auth), KEDA's queue-depth triggers automatically use the same encrypted, authenticated connection as the workers.
+
+## Redis high availability
+
+By default, the module provisions Redis as a single-node `aws_elasticache_cluster`, which is a single point of failure for both the worker queue and multi-main leader election. Set `redis_high_availability_enabled = true` to provision a replication group (one primary and one replica) with automatic failover across two Availability Zones instead:
+
+```hcl
+module "n8n" {
+  # ...
+  redis_high_availability_enabled = true
+  redis_node_type                 = "cache.r6g.large"
+}
+```
+
+Both nodes use `redis_node_type`, so enabling high availability roughly doubles the Redis cost.
+
+{% hint style="warning" %}
+**High availability doesn't prevent pod restarts**
+
+A Redis failover promotes the replica in about twenty seconds, but Redis replication is asynchronous, so recent queue writes may be lost if the replica hasn't received them. However, every main, worker, and webhook pod still restarts: n8n's Redis client exits the process once Redis is unreachable for longer than `QUEUE_BULL_REDIS_TIMEOUT_THRESHOLD` (ten seconds by default). This is a fail-fast design, not a crash loop. Kubernetes brings each pod back immediately, and recovery typically completes within a minute if Redis is available.
+{% endhint %}
+
+### Avoid restarts during a failover
+
+Set `n8n_redis_timeout_threshold` to raise how long n8n waits for Redis before exiting. The useful budget is coarser than the number you set, because each failed connection attempt takes about 11.1 seconds (a 1-second retry interval plus a 10-second connection timeout):
+
+| You set           | Real budget  | Reconnect attempts before exit |
+| ----------------- | ------------ | ------------------------------ |
+| `10000` (default) | 11.1 seconds | 1                              |
+| `30000`           | 33.2 seconds | 3                              |
+| `60000`           | 66.4 seconds | 6                              |
+
+A stale Redis endpoint after a failover can take longer to resolve than the failover itself, due to DNS caching. Setting the threshold to `60000` clears this in practice, with pods logging `Recovered Redis connection` instead of restarting:
+
+```hcl
+module "n8n" {
+  # ...
+  redis_high_availability_enabled = true
+  n8n_redis_timeout_threshold     = 60000
+}
+```
+
+This is a trade-off, not a free win: the same threshold also decides how long a pod waits before restarting against a genuinely dead Redis. For a worker, that's usually an acceptable trade, since restarting doesn't help when Redis is unreachable either way.
+
+### Switching topologies
+
+Switching `redis_high_availability_enabled` on a live deployment destroys the existing cache and creates a new one. Everything queued or in progress at that moment is lost. Treat this as a maintenance-window operation: stop new work from reaching n8n, let the workers drain, and verify that `bull:jobs:wait`, `bull:jobs:active`, and `bull:jobs:delayed` are all empty in Redis before applying.
+
+## Redis eviction policy
+
+The module sets Redis's `maxmemory-policy` to `noeviction` (`redis_maxmemory_policy`), rather than ElastiCache's `volatile-lru` default. Under memory pressure, a `noeviction` Redis rejects new writes with an out-of-memory error instead of silently evicting queue keys, such as job locks. This makes a full Redis visible as failed writes and job-lock-renewal failures, rather than as queue data disappearing without explanation. Plan Redis memory for the queue and n8n's cache together, since both share the same instance.
+
+## Redis in-transit encryption and AUTH
+
+By default, Redis sits in private subnets behind a security group that only admits VPC traffic, with no TLS and no password. Set `redis_transit_encryption_enabled = true` to add both: the module enables TLS, generates an AUTH token, and wires it onto every n8n container.
+
+```bash
+terraform output -raw redis_auth_token
+```
+
+## Related resources
+
+* [Deploy to AWS with Terraform](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform)
+* [Deploy your first n8n instance on AWS](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform/deploy-your-first-instance)
+* [Configure Enterprise features on AWS](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform/use-enterprise-features-on-aws)
+* [Customize the AWS infrastructure](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform/customize-the-infrastructure)
+* [Maintain and tear down the AWS deployment](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform/maintain-and-tear-down)
+* [Enable queue mode](/deploy/host-n8n/configure-n8n/scaling/enable-queue-mode)
+
+
+# Configure Enterprise features on AWS
+
+Configure execution data in S3, Prometheus metrics, OpenTelemetry tracing, log streaming, and external secrets in the terraform-aws-n8n module.
+
+The [terraform-aws-n8n](https://github.com/n8n-io/terraform-aws-n8n) module provides Terraform inputs that wire up several of n8n's Enterprise features for the AWS deployment. This page covers each feature's module-specific setup. For what each feature does and how to use it, see the linked n8n feature pages.
+
+## Execution data in S3
+
+{% hint style="info" %}
+**Feature availability**
+
+Storing execution data in S3 requires n8n 2.27.0 or later, and an Enterprise license with the `feat:executionDataS3` entitlement.
+{% endhint %}
+
+The module always stores n8n's binary data in S3. From n8n 2.27.0, you can offload execution data to the same bucket instead of PostgreSQL, which relieves database write pressure at scale:
+
+```hcl
+module "n8n" {
+  # ...other inputs...
+
+  n8n_execution_data_storage_mode = "s3" # default: "database"
+  n8n_image_tag                   = "2.27.4"
+}
+```
+
+Only new executions move to S3: there's no backfill, and switching the mode back doesn't affect data already written under either mode. See [Use external storage](/deploy/host-n8n/configure-n8n/scaling/use-external-storage) for how n8n uses external storage.
+
+{% hint style="warning" %}
+**S3 execution data has no automatic backup**
+
+Unlike PostgreSQL, the module doesn't version or back up the S3 bucket. If execution history matters to you, add S3 versioning or a replication rule to the bucket (the `s3_bucket_name` output) yourself.
+{% endhint %}
+
+If you add a lifecycle rule, scope it to binary data objects only. n8n prunes execution data in S3 itself using its execution-pruning settings; don't add a lifecycle rule for it, because that can delete data n8n still references.
+
+## Prometheus metrics
+
+Set `n8n_metrics_enabled = true` to expose n8n's built-in Prometheus endpoint at `/metrics` on port `5678`, the same port the chart already uses for the UI and API. See [Enable Prometheus metrics](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples/enable-prometheus-metrics) for what n8n exposes. The module doesn't configure scraping: add scrape annotations to the `n8n-main` Service, or create a `ServiceMonitor` if you run the Prometheus Operator.
+
+n8n's own `/metrics` endpoint doesn't report a usable Bull queue depth in a multi-main topology. Set `redis_exporter_enabled = true` to deploy a [redis\_exporter](https://github.com/oliver006/redis_exporter) alongside the release, which exposes queue depth as `redis_key_size{key="<prefix>:jobs:wait"}` and `redis_key_size{key="<prefix>:jobs:active"}` on port `9121`. This is the same queue depth KEDA scales workers on.
+
+## OpenTelemetry tracing
+
+{% hint style="info" %}
+**Preview status**
+
+OpenTelemetry tracing in n8n may change and isn't recommended for production use.
+{% endhint %}
+
+Set `n8n_otel_enabled = true` to turn on n8n's workflow and node tracing on every n8n container. Point `n8n_otel_exporter_otlp_endpoint` at your OpenTelemetry collector's base URL (n8n appends `/v1/traces` itself):
+
+```hcl
+module "n8n" {
+  # ...other inputs...
+
+  n8n_otel_enabled                = true
+  n8n_otel_exporter_otlp_endpoint = "http://otel-collector.observability.svc.cluster.local:4318"
+}
+```
+
+The module doesn't deploy a collector. Deploy one separately, for example with the upstream `open-telemetry/opentelemetry-collector` Helm chart. See [Trace executions with OpenTelemetry](/deploy/host-n8n/keep-n8n-running/trace-executions-with-opentelemetry) for the available tuning variables and what n8n traces.
+
+## Log streaming
+
+{% hint style="info" %}
+**Feature availability**
+
+Log streaming requires n8n 2.19.0 or later, and an Enterprise license.
+{% endhint %}
+
+Set `n8n_log_streaming_managed_by_env = true` to configure [log streaming](/administer/observe-and-log/stream-logs-to-external-systems) destinations from Terraform instead of the UI:
+
+```hcl
+module "n8n" {
+  # ...other inputs...
+
+  n8n_log_streaming_managed_by_env = true
+  n8n_log_streaming_destinations = [
+    {
+      type             = "webhook"
+      label            = "Audit events"
+      enabled          = true
+      subscribedEvents = ["n8n.audit", "n8n.workflow"]
+      url              = "https://hooks.example.com/n8n"
+      method           = "POST"
+    },
+  ]
+}
+```
+
+n8n reapplies these destinations on every startup, and the Log Streaming settings in the UI become read-only. Setting `n8n_log_streaming_managed_by_env` back to `false` keeps the last applied destinations but restores UI access.
+
+## External secrets
+
+n8n's [External Secrets](/administer/manage-credentials/use-external-secret-stores) feature resolves workflow credential values from an external vault at runtime. It requires an Enterprise license with the `feat:externalSecrets` entitlement, and is on by default (`n8n_external_secrets_enabled = true`); set it to `false` to disable it even on a license that includes it.
+
+Connecting a vault provider is a manual step in the n8n UI (**Settings** > **External Secrets**) in every case. Terraform can't create that connection. What the module can do is grant the n8n pod's Pod Identity role read access to specific AWS Secrets Manager secrets, so you can choose automatic credential detection in the UI instead of pasting static IAM user keys:
+
+```hcl
+module "n8n" {
+  # ...other inputs...
+
+  n8n_external_secrets_aws_enabled      = true
+  n8n_external_secrets_aws_secret_names = ["prod/n8n/stripe", "prod/n8n/hubspot"]
+}
+```
+
+`n8n_external_secrets_aws_secret_names` is required and doesn't accept a wildcard: list every secret name explicitly, since n8n's AWS Secrets Manager integration otherwise has no other way to restrict which secrets it can read.
+
+## Credential overwrites
+
+[Credential overwrites](/administer/manage-credentials/credential-overwrites) let you preconfigure shared credential fields and hide them from users. Supply the JSON payload through a Kubernetes Secret you manage yourself, and reference it with `n8n_credentials_overwrite_secret_ref`:
+
+```hcl
+module "n8n" {
+  # ...other inputs...
+
+  n8n_credentials_overwrite_secret_ref = {
+    name = kubernetes_secret_v1.credentials_overwrite.metadata[0].name
+  }
+}
+```
+
+n8n reads this file once, at startup. After rotating the Secret's contents, restart the main, worker, and webhook processor deployments to pick up the change.
+
+## Related resources
+
+* [Deploy to AWS with Terraform](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform)
+* [Deploy your first n8n instance on AWS](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform/deploy-your-first-instance)
+* [Scale and run at high availability on AWS](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform/scale-and-run-at-high-availability)
+* [Customize the AWS infrastructure](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform/customize-the-infrastructure)
+* [Maintain and tear down the AWS deployment](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform/maintain-and-tear-down)
+* [Use external storage](/deploy/host-n8n/configure-n8n/scaling/use-external-storage)
+
+
+# Customize the AWS infrastructure
+
+Bring your own VPC, database, cache, or cluster, split ingress, or use a custom n8n image with the terraform-aws-n8n module.
+
+The [terraform-aws-n8n](https://github.com/n8n-io/terraform-aws-n8n) module can provision every layer of the deployment, or point at infrastructure you already run. This page covers the main customization points: pointing the module at existing infrastructure, splitting ingress traffic, and using a custom n8n image.
+
+## Customer-managed infrastructure
+
+Every layer the module can provision can instead point at infrastructure you already run. Each layer follows the same pattern: a `create_<x>` boolean (default `true`) that stops the module provisioning that layer, plus one or more reference inputs required only when it's `false`.
+
+| Layer                                                                                    | Toggle                                                                                   | Reference inputs                                                                                                      |
+| ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| RDS PostgreSQL                                                                           | `create_database`                                                                        | `db_host`, `db_password` (or `db_password_secret_ref`)                                                                |
+| EKS cluster and node group                                                               | `create_eks`                                                                             | `existing_eks_cluster_name`, `existing_eks_cluster_prerequisites_confirmed`                                           |
+| ElastiCache Redis                                                                        | `create_elasticache`                                                                     | `redis_host`, `redis_port`, `redis_auth_token` (or `redis_auth_token_secret_ref`), `redis_transit_encryption_enabled` |
+| S3 bucket                                                                                | `create_s3_bucket`                                                                       | `existing_s3_bucket_name`                                                                                             |
+| RDS KMS key                                                                              | `create_db_kms_key`                                                                      | `db_kms_key_arn`                                                                                                      |
+| S3 KMS key                                                                               | `create_s3_kms_key`                                                                      | `s3_kms_key_arn`                                                                                                      |
+| Cluster controllers (load balancer controller, Cluster Autoscaler, metrics-server, KEDA) | `install_lbc` / `install_cluster_autoscaler` / `install_metrics_server` / `install_keda` | none; assumes equivalents already run on the existing cluster                                                         |
+
+For example, to point the module at a Redis instance you already manage:
+
+```hcl
+module "n8n" {
+  # ...
+  create_elasticache = false
+  redis_host         = aws_elasticache_replication_group.shared.primary_endpoint_address
+  redis_port         = 6379
+  redis_auth_token   = var.shared_redis_auth_token
+}
+```
+
+{% hint style="warning" %}
+**Keep the toggle and its reference inputs in sync**
+
+Setting a reference input such as `redis_host` without also setting its `create_<x>` boolean to `false` doesn't fail: the module still provisions its own managed resource and points n8n at that instead, while the infrastructure you supplied sits unused. Always set both together.
+{% endhint %}
+
+If you're pointing two n8n deployments at the same Redis host, set a unique `redis_key_prefix` for each. Without it, both deployments share the same queue and leader-election channels, and activating a workflow on one instance can produce `webhook not registered` errors on the other.
+
+Runnable reference configurations for each customer-managed layer are available in the module's [examples](https://github.com/n8n-io/terraform-aws-n8n/tree/main/examples) folder (`customer-managed-redis`, `customer-managed-s3`, `customer-managed-cluster`, and `customer-managed-everything`).
+
+{% hint style="info" %}
+**VPC creation is always out of scope**
+
+The module always requires a pre-existing VPC (`vpc_id`, `private_subnets`, `public_subnets`). It never creates one.
+{% endhint %}
+
+## Customer-managed ingress
+
+By default, the module creates a single internet-facing Application Load Balancer that routes `/webhook` to the webhook processors and `/` to the main pods. Set `create_ingress = false` to manage your own ingress instead, for example to split public webhook traffic from an internal-only editor and API.
+
+Route traffic to the Services the module exposes as outputs:
+
+| Output                      | Serves                                                   |
+| --------------------------- | -------------------------------------------------------- |
+| `n8n_service_name`          | Editor UI, REST API                                      |
+| `n8n_webhook_service_name`  | Webhooks, forms, waiting resumptions, MCP                |
+| `n8n_webhook_path_prefixes` | The path prefixes that must reach the webhook processors |
+| `n8n_service_port`          | Both (`5678`)                                            |
+
+Route every prefix in `n8n_webhook_path_prefixes` to the webhook processors, not just `/webhook`: the module disables production webhook handling on the main pods, so `/webhook-waiting` (wait-node resumption), `/form` and `/form-waiting` (Form Trigger nodes), and `/mcp` (MCP server triggers) all return 404 if they reach the main pods instead. Declare these prefixes before any catch-all `/` rule.
+
+A caller-managed ingress also needs to:
+
+* **Enable session stickiness** to `n8n_service_name`, so each browser stays on one main pod. Without it, editor requests and WebSocket connections from one browser spread across main pods and the editor loses its connection.
+* **Set `n8n_proxy_hops`** to the number of proxies between the client and n8n that add an `X-Forwarded-For` header. The module sets this to `1` by default, which is correct if the module or your own load balancer is the only proxy. Add one for each additional HTTP proxy in the path, such as CloudFront.
+
+A complete, runnable example of a split ingress, including the certificate and both DNS records, is in [`examples/split-ingress`](https://github.com/n8n-io/terraform-aws-n8n/tree/main/examples/split-ingress).
+
+## Custom n8n images
+
+Set `n8n_image_repository` to point the Helm release at an image you build instead of the default n8n image. Common reasons include an internal base image or community nodes baked into the image:
+
+```hcl
+module "n8n" {
+  # ...other inputs...
+
+  n8n_image_repository = "123456789012.dkr.ecr.eu-west-1.amazonaws.com/n8n"
+  n8n_image_tag        = "2.27.4-mypackages"
+
+  # Pin to the n8n version the custom image is built from.
+  n8n_task_runner_image_tag = "2.27.4"
+
+  # Not needed when packages are already in the image.
+  n8n_reinstall_missing_packages = false
+}
+```
+
+{% hint style="warning" %}
+**Community packages installed through the UI don't load from a custom image**
+
+n8n only loads community nodes from a directory set by `N8N_CUSTOM_EXTENSIONS`, not from a plain `npm install` into the image's `node_modules`. Set `n8n_custom_extensions_path` to the directory your image populates with the packages, and install the packages there in your Dockerfile. Nodes loaded this way are also renamed to a `CUSTOM.*` type, so existing workflows built on a UI-installed copy of the same package won't resolve without updating their node types.
+{% endhint %}
+
+If rebuilding an image for every package change isn't practical, `n8n_extra_volumes` and `n8n_extra_volume_mounts` mount the same directory from a ConfigMap, Secret, or persistent volume claim instead of baking it into the image.
+
+## Pod DNS at scale
+
+`n8n_dns_config` sets the DNS options on the n8n pods. At a large pod count, Kubernetes' default DNS search-path behavior (`ndots:5`) sends every in-cluster or AWS-service hostname lookup, such as to S3 or ElastiCache, through up to four unnecessary search-domain queries before trying the name as written. Set `n8n_dns_config` to `ndots:1` if your deployment addresses every dependency by fully qualified domain name, which it does by default in this module:
+
+```hcl
+n8n_dns_config = {
+  options = [{ name = "ndots", value = "1" }]
+}
+```
+
+This reduces DNS query volume substantially at scale and removes failed requests caused by CoreDNS saturation, without making individual requests faster.
+
+## Related resources
+
+* [Deploy to AWS with Terraform](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform)
+* [Deploy your first n8n instance on AWS](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform/deploy-your-first-instance)
+* [Scale and run at high availability on AWS](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform/scale-and-run-at-high-availability)
+* [Configure Enterprise features on AWS](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform/use-enterprise-features-on-aws)
+* [Maintain and tear down the AWS deployment](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform/maintain-and-tear-down)
+
+
+# Maintain and tear down the AWS deployment
+
+Manage encryption keys, verify database TLS, and configure deletion protection in the terraform-aws-n8n module.
+
+The [terraform-aws-n8n](https://github.com/n8n-io/terraform-aws-n8n) module manages encryption keys and database protection settings that matter most when you upgrade, recover from an incident, or decommission a deployment. This page covers those settings. For step-by-step upgrade and destroy troubleshooting, see the module's [upgrade guide](https://github.com/n8n-io/terraform-aws-n8n/blob/main/docs/upgrading-n8n.md) and [destroy checklist](https://github.com/n8n-io/terraform-aws-n8n/blob/main/docs/destroy-cleanup.md) on GitHub.
+
+## Bring your own KMS key
+
+By default, the module creates and manages its own KMS key to encrypt the RDS instance and the S3 bucket. To encrypt with a key you already own instead, for example one a central security team controls:
+
+```hcl
+create_db_kms_key = false
+db_kms_key_arn    = "arn:aws:kms:eu-west-1:123456789012:key/1a2b3c4d-..."
+
+create_s3_kms_key = false
+s3_kms_key_arn    = "arn:aws:kms:eu-west-1:123456789012:key/1a2b3c4d-..."
+```
+
+Set both the boolean and the ARN together: the boolean alone stops the module creating its own key, and the ARN alone is ignored.
+
+{% hint style="info" %}
+**The CloudWatch Logs group needs its own key policy statement**
+
+RDS can use your key through a grant, but CloudWatch Logs rejects a key that doesn't explicitly name the regional Logs service principal in its key policy. Without that statement, the module's `postgresql` log group falls back to CloudWatch's own managed key instead of yours. Add a statement granting `kms:Encrypt`, `kms:Decrypt`, `kms:ReEncrypt*`, `kms:GenerateDataKey*`, and `kms:DescribeKey` to the `logs.<region>.amazonaws.com` principal, then set `db_logs_kms_key_enabled = true` and `db_logs_kms_key_arn` to the same key.
+{% endhint %}
+
+## Verify the PostgreSQL TLS certificate
+
+By default, the connection between n8n and the module's RDS instance is encrypted but unverified (`DB_POSTGRESDB_SSL_REJECT_UNAUTHORIZED=false`), because the RDS server certificate chains to Amazon's own certificate authority, which Node.js doesn't trust by default. To verify the server identity as well as encrypt the connection:
+
+```hcl
+db_postgresdb_ssl_reject_unauthorized = true
+db_postgresdb_ssl_ca_pem              = file("${path.module}/global-bundle.pem")
+```
+
+Download the combined CA bundle from AWS's trust store at `https://truststore.pki.rds.amazonaws.com`. The module mounts it read-only on every n8n pod and points `DB_POSTGRESDB_SSL_CA_FILE` at it.
+
+## KMS keys after terraform destroy
+
+The module schedules its managed KMS keys for deletion seven days after a `terraform destroy`, rather than deleting them immediately. A key becomes unusable as soon as deletion is scheduled, even though permanent loss only occurs once the seven-day window completes. To reuse a key after a completed destroy, cancel its deletion, enable it, and import it back into Terraform state before re-applying:
+
+```bash
+aws kms cancel-key-deletion --key-id <key-id>
+aws kms enable-key --key-id <key-id>
+```
+
+{% hint style="warning" %}
+**A pending-deletion key blocks recovery, even with a retained snapshot or S3 objects**
+
+RDS snapshots and S3 objects encrypted with the module's own KMS keys can't be decrypted once the key enters `PendingDeletion`. If you need encrypted backups to outlive a `terraform destroy`, manage a retained KMS key outside the module. For existing deployments, copy RDS snapshots with that key and re-encrypt or copy S3 objects before destroying; changing the configured key doesn't re-encrypt existing data.
+{% endhint %}
+
+## Deletion protection and teardown
+
+The module defaults to teardown-friendly settings, so example deployments can be destroyed cleanly:
+
+| Setting                       | Default | Production value                                  |
+| ----------------------------- | ------- | ------------------------------------------------- |
+| `db_deletion_protection`      | `false` | `true`                                            |
+| `db_skip_final_snapshot`      | `true`  | `false` (also set `db_final_snapshot_identifier`) |
+| `db_delete_automated_backups` | `true`  | `false`                                           |
+| `s3_force_destroy`            | `true`  | `false`                                           |
+
+All four are in-place changes on an existing deployment and don't force replacement. Apply these settings before running `terraform destroy`. Terraform uses the values in state, not un-applied configuration. Editing a `.tfvars` file and immediately running destroy therefore still uses the old values.
+
+## Related resources
+
+* [Deploy to AWS with Terraform](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform)
+* [Deploy your first n8n instance on AWS](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform/deploy-your-first-instance)
+* [Scale and run at high availability on AWS](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform/scale-and-run-at-high-availability)
+* [Configure Enterprise features on AWS](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform/use-enterprise-features-on-aws)
+* [Customize the AWS infrastructure](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform/customize-the-infrastructure)
 
 
 # Deploy to Azure
@@ -3680,7 +4416,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.45.7 Current `beta`: 2.46.3
+Current `stable`: 2.45.7 Current `beta`: 2.46.4
 {% endhint %}
 
 ## Hosting options <a href="#hosting-options" id="hosting-options"></a>
@@ -3896,7 +4632,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.45.7 Current `beta`: 2.46.3
+Current `stable`: 2.45.7 Current `beta`: 2.46.4
 {% endhint %}
 
 ## Before you begin: get a Google Cloud project <a href="#before-you-begin-get-a-google-cloud-project" id="before-you-begin-get-a-google-cloud-project"></a>
@@ -4179,7 +4915,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.45.7 Current `beta`: 2.46.3
+Current `stable`: 2.45.7 Current `beta`: 2.46.4
 {% endhint %}
 
 ## Create project <a href="#create-project" id="create-project"></a>
@@ -5473,7 +6209,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.45.7 Current `beta`: 2.46.3
+Current `stable`: 2.45.7 Current `beta`: 2.46.4
 {% endhint %}
 
 ## 1. Install Docker and Docker Compose <a href="#id-1-install-docker-and-docker-compose" id="id-1-install-docker-and-docker-compose"></a>
@@ -7507,6 +8243,8 @@ n8n_scaling_mode_queue_jobs_failed 0
 # TYPE n8n_scaling_mode_queue_jobs_waiting gauge <a href="#type-n8nscalingmodequeuejobswaiting-gauge" id="type-n8nscalingmodequeuejobswaiting-gauge"></a>
 n8n_scaling_mode_queue_jobs_waiting 0
 ```
+
+If you deploy n8n on AWS using the [terraform-aws-n8n](https://github.com/n8n-io/terraform-aws-n8n) module, see [Configure Enterprise features on AWS](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform/use-enterprise-features-on-aws#prometheus-metrics) for the module-specific setup, including Bull queue depth metrics.
 
 ## Related resources
 
@@ -10398,14 +11136,19 @@ n8n Assistant is available on:
 
 * **n8n Cloud:** Starter, Pro
 * **Self-hosted:** Community, Registered Community, Business
-
-It isn't ready for n8n Cloud Enterprise or self-hosted Enterprise yet. If you're an Enterprise customer, contact your Customer Success Manager about preview access.
-{% endhint %}
+  {% endhint %}
 
 {% hint style="info" %}
-**Preview status**
+**Limited enterprise readiness**
 
-n8n Assistant is in Preview. It can make mistakes, and behavior may change while the feature is in development. Always review generated workflows before using them in production.
+n8n Assistant has **Limited enterprise readiness**. It partially supports the following Enterprise capabilities:
+
+* **RBAC and project scoping**
+* **Data residency**
+* **Queue mode and multi-main**
+* **Environments and source control**
+
+It doesn't yet support all other relevant Enterprise capabilities.
 {% endhint %}
 
 ## What n8n Assistant needs
@@ -10876,360 +11619,6 @@ n8n keeps the following visible:
 ## Related resources
 
 * [Configure n8n](/deploy/host-n8n/configure-n8n)
-
-
-# Manage your license
-
-How to activate your license key.
-
-To enable certain licensed features, you must first activate your license. You can do this either through the UI or by setting environment variables.
-
-## Add a license key using the UI <a href="#add-a-license-key-using-the-ui" id="add-a-license-key-using-the-ui"></a>
-
-In your n8n instance:
-
-1. Log in as **Admin** or **Owner**.
-2. Select **Settings** > **Usage and plan**.
-3. Select **Enter activation key**.
-4. Paste in your license key.
-5. Select **Activate**.
-
-## Add a license key using an environment variable <a href="#add-a-license-key-using-an-environment-variables" id="add-a-license-key-using-an-environment-variables"></a>
-
-In your n8n configuration, set `N8N_LICENSE_ACTIVATION_KEY` to your license key. If the instance already has an activated license, this variable will have no effect.
-
-Refer to [Environment variables](/deploy/host-n8n/configure-n8n/basic-configuration) to learn more about configuring n8n.
-
-### Allowlist the license server IP addresses <a href="#allowlist-the-license-server-ip-addresses" id="allowlist-the-license-server-ip-addresses"></a>
-
-n8n uses Cloudflare to host the license server. As the specific IP addresses can change, you need to allowlist the [full range of Cloudflare IP addresses](https://www.cloudflare.com/ips/) to ensure n8n can always reach the license server.
-
-## Add a license certificate using an environment variable
-
-For certain use cases (for example air-gapped environments) n8n can issue a license certificate instead of a license key. A license certificate is a base64-encoded string that n8n provides.
-
-In your n8n configuration, set `N8N_LICENSE_CERT` to the string you received from n8n:
-
-```bash
-N8N_LICENSE_CERT=<base64-encoded-license-string>
-```
-
-Set either `N8N_LICENSE_CERT` or `N8N_LICENSE_ACTIVATION_KEY`, never both.
-
-## Related resources
-
-* [Configure n8n](/deploy/host-n8n/configure-n8n)
-
-
-# Security
-
-You can secure a self-hosted n8n instance to protect credentials and workflow data: run a security audit, set up SSL and SSO, restrict nodes and the public API, and redact execution data.
-
-Securing your n8n instance can take several forms.
-
-## In this section
-
-* [Manage security policies](/deploy/host-n8n/configure-n8n/security/manage-security-policies): manage instance-wide security policies including MFA enforcement and personal space controls.
-* [Run security audits](/deploy/host-n8n/configure-n8n/security/run-security-audits): run a security audit to identify security risks.
-* [Set up SSL](/deploy/host-n8n/configure-n8n/security/set-up-ssl): enforce secure connections.
-* [Configure SSO](/deploy/host-n8n/configure-n8n/security/configure-sso): set up SAML or OIDC Single Sign-On.
-* [Rotate encryption keys](/deploy/host-n8n/configure-n8n/security/rotate-encryption-keys): periodically replace the key that encrypts credentials and other sensitive data.
-* [Decrypt OAuth 2.0 tokens with JWE](/deploy/host-n8n/configure-n8n/security/decrypt-oauth-20-tokens-with-jwe): let your identity provider encrypt access and ID tokens that only your instance can decrypt.
-* [Harden task runners](/deploy/host-n8n/configure-n8n/security/harden-task-runners): better isolation for Code node executions.
-* [Redact execution data](/deploy/host-n8n/configure-n8n/security/redact-execution-data): hide input and output data from workflow executions.
-* [Disable the public API](/deploy/host-n8n/configure-n8n/security/disable-the-public-api): prevent others from using the n8n public REST API.
-* [Control telemetry](/deploy/host-n8n/configure-n8n/security/control-telemetry): opt out of the anonymous data n8n collects automatically.
-* [Block specific nodes](/deploy/host-n8n/configure-n8n/security/block-specific-nodes): prevent your n8n users from accessing specific nodes.
-* [Enable SSRF protection](/deploy/host-n8n/configure-n8n/security/enable-ssrf-protection): control which hosts and IP ranges workflow nodes can connect to.
-* [Verify user emails](/deploy/host-n8n/configure-n8n/security/verify-user-emails): restrict account registration to email-verified users.
-
-## Related resources
-
-* [Configure n8n](/deploy/host-n8n/configure-n8n)
-* [Set up token exchange](/deploy/host-n8n/deploy-as-an-oem-integration/set-up-token-exchange): authenticate users from your own identity provider when embedding n8n.
-* [Require two-factor auth](/administer/manage-users-and-access/verify-user-identity/require-two-factor-auth): enable 2FA for your users.
-
-
-# Manage security policies
-
-Manage instance-wide security policies including MFA enforcement and personal space controls.
-
-{% hint style="info" %}
-**Feature availability**
-
-Security settings are available on:
-
-* **n8n Cloud:** Enterprise
-* **Self-hosted:** Business, Enterprise
-
-Some settings require specific license features. Settings that aren't available on your plan display an **Upgrade** badge.
-{% endhint %}
-
-Security settings let you manage instance-wide security policies. You can enforce two-factor authentication for all users and control what users can do in their personal spaces.
-
-To access security settings, navigate to **Settings** > **Security**.
-
-## Enforce two-factor authentication <a href="#enforce-two-factor-authentication" id="enforce-two-factor-authentication"></a>
-
-You can require all users on your instance to set up two-factor authentication (2FA) when they sign in with email and password.
-
-{% hint style="info" %}
-**Applies to email and password logins only**
-
-2FA enforcement applies to users authenticating with email and password. Users signing in through SSO (SAML or OIDC) aren't affected by this setting.
-{% endhint %}
-
-To enforce 2FA:
-
-1. Navigate to **Settings** > **Security**.
-2. In the **Enforce two-factor authentication** section, toggle the switch on.
-
-When you enable this setting:
-
-* All users must set up 2FA before they can continue using the instance.
-* Users who haven't configured 2FA yet are prompted to do so on their next sign-in.
-
-To stop enforcing 2FA, toggle the switch off. Users who already set up 2FA keep it enabled but new users are no longer required to configure it.
-
-Refer to [Two-factor authentication](/administer/manage-users-and-access/verify-user-identity/require-two-factor-auth) for more information on how individual users can set up 2FA.
-
-## Personal space policies <a href="#personal-space-policies" id="personal-space-policies"></a>
-
-Personal space policies let instance admins control whether users can share and publish workflows and credentials from their personal spaces.
-
-### Sharing workflows and credentials <a href="#sharing-workflows-and-credentials" id="sharing-workflows-and-credentials"></a>
-
-Controls whether users can share workflows and credentials from their personal space with other users or projects.
-
-To manage sharing:
-
-1. Navigate to **Settings** > **Security**.
-2. In the **Personal Space** section, find **Sharing workflows and credentials**.
-3. Toggle the switch to enable or disable sharing.
-
-When you disable sharing:
-
-* Existing shares remain in place. The setting only affects new sharing actions.
-* The number of currently shared workflows and credentials is displayed below the toggle.
-
-### Publishing workflows <a href="#publishing-workflows" id="publishing-workflows"></a>
-
-Controls whether users can publish workflows from their personal space to make them available for execution.
-
-To manage publishing:
-
-1. Navigate to **Settings** > **Security**.
-2. In the **Personal Space** section, find **Publishing workflows**.
-3. Toggle the switch to enable or disable publishing.
-
-When you disable publishing:
-
-* Currently published workflows remain published. The setting only affects new publish actions.
-* The number of currently published personal workflows is displayed below the toggle.
-
-## Workflow reviews <a href="#workflow-reviews" id="workflow-reviews"></a>
-
-{% hint style="info" %}
-**Preview status**
-
-Workflow reviews are in Preview and may change before general availability. Avoid relying on them in production workflows.
-{% endhint %}
-
-{% hint style="info" %}
-**Feature availability**
-
-Workflow reviews are available on:
-
-* **n8n Cloud:** Enterprise
-* **Self-hosted:** Enterprise
-
-Workflow reviews are available from n8n 2.37.0.
-{% endhint %}
-
-With workflow reviews, teams can submit a workflow version for approval before publishing. Instance admins enable the feature for the whole instance.
-
-To enable workflow reviews:
-
-1. Navigate to **Settings** > **Security & policies**.
-2. In the **Workflow reviews** section, turn on **Enable workflow reviews**.
-
-When the setting is off, users can't create or manage reviews. Turning the feature off also lifts the publish block for workflows that still have an open review. For how to submit, approve, and publish after you enable the feature, refer to [Workflow reviews](/build/manage-workflows/workflow-reviews).
-
-## Enforce execution data redaction <a href="#enforce-execution-data-redaction" id="enforce-execution-data-redaction"></a>
-
-You can enforce [execution data redaction](/deploy/host-n8n/configure-n8n/security/redact-execution-data) for all workflows on the instance. Enforcement sets an instance-wide minimum redaction policy that individual workflow settings can't weaken.
-
-{% hint style="info" %}
-**Feature availability**
-
-Data redaction enforcement is available on:
-
-* **n8n Cloud:** Enterprise
-* **Self-hosted:** Enterprise
-
-Available from n8n 2.26.0.
-{% endhint %}
-
-To enforce data redaction:
-
-1. Navigate to **Settings** > **Security**.
-2. In the **Data redaction** section, toggle **Enforce data redaction** on.
-3. Under **Redact executions**, select the enforcement scope:
-   * **Production executions (Recommended)**: n8n redacts data from production executions in all workflows.
-   * **Manual and production executions**: n8n redacts data from both manual and production executions in all workflows.
-4. Confirm your choice in the dialog.
-
-When you enable enforcement:
-
-* n8n redacts execution data for all workflows within the selected scope, including workflows that don't have redaction enabled in their own settings.
-* Users can't set workflow-level redaction settings weaker than the enforced scope. Workflows can still opt into stricter redaction, for example redacting manual executions when only production enforcement is active.
-* New workflows start with the enforced scope as their redaction policy.
-
-Redaction enforcement requires an Enterprise license with the data redaction feature. For details on what redaction covers, revealing data, and permissions, refer to [Execution data redaction](/deploy/host-n8n/configure-n8n/security/redact-execution-data).
-
-## Configure security policy with environment variables <a href="#configure-security-policy-with-environment-variables" id="configure-security-policy-with-environment-variables"></a>
-
-You can also manage security policy settings from environment variables instead of through the UI. This option is available from n8n 2.18.0. Set `N8N_SECURITY_POLICY_MANAGED_BY_ENV` to `true` and provide the variables below. See [Manage instance settings using environment variables](/deploy/host-n8n/configure-n8n/manage-settings-using-environment-variables) for how the activation pattern works.
-
-When `N8N_SECURITY_POLICY_MANAGED_BY_ENV` is `true`, the **Enforce two-factor authentication** and **Personal Space** toggles on this page become read-only.
-
-| Variable                                | Type    | Default | Description                                                                                                                                                                         |
-| --------------------------------------- | ------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `N8N_SECURITY_POLICY_MANAGED_BY_ENV`    | Boolean | `false` | Set to `true` to manage the security policy from environment variables. When `true`, n8n applies the security policy variables on every startup and locks the matching UI controls. |
-| `N8N_MFA_ENFORCED_ENABLED`              | Boolean | `false` | Whether to enforce two-factor authentication for all users (`true`) or not (`false`).                                                                                               |
-| `N8N_PERSONAL_SPACE_PUBLISHING_ENABLED` | Boolean | `true`  | Whether users can publish from their personal space (`true`) or not (`false`).                                                                                                      |
-| `N8N_PERSONAL_SPACE_SHARING_ENABLED`    | Boolean | `true`  | Whether users can share resources from their personal space (`true`) or not (`false`).                                                                                              |
-
-## Related resources
-
-* [Security](/deploy/host-n8n/configure-n8n/security)
-
-
-# Set up SSL
-
-Set up SSL for your self-hosted n8n instance.
-
-There are two methods to support TLS/SSL in n8n.
-
-## Use a reverse proxy (recommended) <a href="#use-a-reverse-proxy-recommended" id="use-a-reverse-proxy-recommended"></a>
-
-Use a reverse proxy like [Traefik](https://doc.traefik.io/traefik/) or a Network Load Balancer (NLB) in front of the n8n instance. This should also take care of certificate renewals.
-
-Refer to [Security | Data encryption](https://n8n.io/legal/#security) for more information.
-
-## Pass certificates into n8n directly <a href="#pass-certificates-into-n8n-directly" id="pass-certificates-into-n8n-directly"></a>
-
-You can also choose to pass certificates into n8n directly. To do so, set the `N8N_SSL_CERT` and `N8N_SSL_KEY` environment variables to point to your generated certificate and key file.
-
-You'll need to make sure the certificate stays renewed and up to date.
-
-Refer to [Deployment environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/deployment) for more information on these variables and [Configuration](/deploy/host-n8n/configure-n8n/basic-configuration) for more information on setting environment variables.
-
-## Related resources
-
-* [Security](/deploy/host-n8n/configure-n8n/security)
-
-
-# Configure SSO
-
-Set up SAML or OIDC Single Sign-On for your self-hosted n8n instance.
-
-{% hint style="info" %}
-**Feature availability**
-
-Single sign-on is available on:
-
-* **n8n Cloud:** Enterprise
-* **Self-hosted:** Business, Enterprise
-
-You need to be an instance owner or admin to enable and configure SAML or OIDC.
-{% endhint %}
-
-n8n supports the SAML and OIDC authentication protocols for single sign-on (SSO). See [OIDC vs SAML](https://www.onelogin.com/learn/oidc-vs-saml) for more general information on the two protocols, the differences between them, and their respective benefits.
-
-* [Set up SAML](/administer/manage-users-and-access/verify-user-identity/use-saml/set-up-saml): a general guide to setting up SAML in n8n, and links to resources for common identity providers (IdPs).
-* [Set up OIDC](/administer/manage-users-and-access/verify-user-identity/use-oidc/set-up-oidc): a general guide to setting up OpenID Connect (OIDC) SSO in n8n.
-
-## Configure SSO with environment variables <a href="#configure-sso-with-environment-variables" id="configure-sso-with-environment-variables"></a>
-
-{% hint style="info" %}
-**Feature availability**
-
-Configuring SSO with environment variables is available from n8n 2.18.0.
-{% endhint %}
-
-You can also configure SSO from environment variables instead of through the UI. See [SSO environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/sso) for the full list of variables, and [Manage instance settings using environment variables](/deploy/host-n8n/configure-n8n/manage-settings-using-environment-variables) for how the activation pattern works.
-
-## Related resources
-
-* [Security](/deploy/host-n8n/configure-n8n/security)
-
-
-# Run security audits
-
-Run a security audit on your n8n instance.
-
-You can run a security audit on your n8n instance, to detect common security issues.
-
-## How do I run a security audit in n8n? <a href="#run-an-audit" id="run-an-audit"></a>
-
-You can run an audit using the CLI, the public API, or the n8n node.
-
-### CLI <a href="#cli" id="cli"></a>
-
-Run `n8n audit`.
-
-### API <a href="#api" id="api"></a>
-
-Make a `POST` call to the `/audit` endpoint. You must authenticate as the instance owner.
-
-### n8n node <a href="#n8n-node" id="n8n-node"></a>
-
-Add the [n8n node](/integrations/builtin/core-nodes/n8n-nodes-base.n8n) to your workflow. Select **Resource** > **Audit** and **Operation** > **Generate**.
-
-## What's in the security audit report? <a href="#report-contents" id="report-contents"></a>
-
-The audit generates five risk reports:
-
-### Credentials <a href="#credentials" id="credentials"></a>
-
-This report shows:
-
-* Credentials not used in a workflow.
-* Credentials not used in an active workflow.
-* Credentials not use in a recently active workflow.
-
-### Database <a href="#database" id="database"></a>
-
-This report shows:
-
-* Expressions used in **Execute Query** fields in SQL nodes.
-* Expressions used in **Query Parameters** fields in SQL nodes.
-* Unused **Query Parameters** fields in SQL nodes.
-
-### File system <a href="#file-system" id="file-system"></a>
-
-This report lists nodes that interact with the file system.
-
-### Nodes <a href="#nodes" id="nodes"></a>
-
-This report shows:
-
-* Official risky nodes. These are n8n built in nodes. You can use them to fetch and run any code on the host system, which exposes the instance to exploits. You can view the list in [n8n code | Audit constants](https://github.com/n8n-io/n8n/blob/master/packages/cli/src/security-audit/constants.ts#L51), under `OFFICIAL_RISKY_NODE_TYPES`.
-* Community nodes.
-* Custom nodes.
-
-### Instance <a href="#instance" id="instance"></a>
-
-This report shows:
-
-* Unprotected webhooks in the instance.
-* Missing security settings
-* If your instance is outdated.
-
-## Related resources
-
-* [Security](/deploy/host-n8n/configure-n8n/security)
 
 
 

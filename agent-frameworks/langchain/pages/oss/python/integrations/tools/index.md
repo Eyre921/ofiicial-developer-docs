@@ -381,6 +381,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`OnBaseToolkit`](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md#onbasetoolkit) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opendma/month)](https://pypi.org/project/langchain-opendma/) |
 | [`OpenDMAToolkit`](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opendma/month)](https://pypi.org/project/langchain-opendma/) |
 | [`Capsule`](https://github.com/mavdol/langchain-capsule) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-capsule/month)](https://pypi.org/project/langchain-capsule/) |
+| [`AHNLookupTool`](https://github.com/agent-help-network/agent-help-network/blob/main/clients/langchain-ahn/README.md) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ahn/month)](https://pypi.org/project/langchain-ahn/) |
 | [`TokPortalToolkit`](https://github.com/tokportal/langchain-tokportal) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tokportal/month)](https://pypi.org/project/langchain-tokportal/) |
 | [`TalorDataSerpTool`](https://docs.talordata.com/serp-api/integration/sdk-integration/how-to-set-up-talordata-with-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-talordata/month)](https://pypi.org/project/langchain-talordata/) |
 | [`generate_latam_financial_data`](https://github.com/jmendozapuche/langchain-latam-synth) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-latam-synth/month)](https://pypi.org/project/langchain-latam-synth/) |
@@ -526,12 +527,16 @@ The following table shows tools that generate video, image, or audio assets:
 | [`AgentLineToolkit`](https://docs.agentline.cloud/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentline/month)](https://pypi.org/project/langchain-agentline/) |
 | [`Delegare`](https://docs.delegare.dev/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-delegare/month)](https://pypi.org/project/langchain-delegare/) |
 | [`Toolstem`](https://toolstem.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-toolstem/month)](https://pypi.org/project/langchain-toolstem/) |
+| [`NextmailToolkit`](https://nextmail.sh/docs/python/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nextmail/month)](https://pypi.org/project/langchain-nextmail/) |
+| [`Arche`](https://pypi.org/project/langchain-arche/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-arche/month)](https://pypi.org/project/langchain-arche/) |
 | [`AgentRAMTools`](https://github.com/seanmarkwei/langgraph-agentram) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-agentram/month)](https://pypi.org/project/langgraph-agentram/) |
+| [`GroundTruthCompanyLookup`](https://pypi.org/project/langchain-groundtruth/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-groundtruth/month)](https://pypi.org/project/langchain-groundtruth/) |
 | [`scoutwyze_rank`](https://github.com/scoutwyze-max/scoutwyze-compute/blob/main/examples/README.md) | [  ![Downloads per month](https://static.pepy.tech/badge/scoutwyze-compute/month)](https://pypi.org/project/scoutwyze-compute/) |
 | [`Hlido`](https://hlido.eu/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/hlido-trust/month)](https://pypi.org/project/hlido-trust/) |
 | [`TempGuru`](https://tempguru.co/ai-agents) | [  ![Downloads per month](https://static.pepy.tech/badge/tempguru/month)](https://pypi.org/project/tempguru/) |
 | [`Solvecha`](https://github.com/Solvecha/solvecha-skills/tree/main/python) | [  ![Downloads per month](https://static.pepy.tech/badge/solvecha/month)](https://pypi.org/project/solvecha/) |
 | [`VideoGenToolkit`](https://github.com/video-gen/langchain-videogen#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-videogen/month)](https://pypi.org/project/langchain-videogen/) |
+| [`x402checkToolkit`](https://x402check.dev) | N/A |
 | [`AgentLair`](https://agentlair.dev/docs) | N/A |
 | [`Browserless`](https://browserless.io) | N/A |
 | [`FokalsToolkit`](https://github.com/fokals/langchain-fokals#readme) | N/A |

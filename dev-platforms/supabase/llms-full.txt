@@ -10519,6 +10519,8 @@ Audit logs contain detailed information about each authentication event:
 }
 ```
 
+`ip_address` is recorded only for some events, such as MFA, passkeys, identity linking, and recovery codes. It is empty for most sign-up, sign-in, sign-out, and token events. To see the IP address for a session, check the `ip` column in `auth.sessions`.
+
 ### Log actions reference
 
 | Action                          | Description                             |
@@ -16196,7 +16198,7 @@ curl -X PATCH "https://api.supabase.com/v1/projects/$PROJECT_REF/config/auth" \
     "mailer_autoconfirm": false,
     "smtp_admin_email": "no-reply@example.com",
     "smtp_host": "smtp.example.com",
-    "smtp_port": 587,
+    "smtp_port": "587",
     "smtp_user": "your-smtp-user",
     "smtp_pass": "your-smtp-password",
     "smtp_sender_name": "Your App Name"
@@ -67353,7 +67355,7 @@ See [Respond based on the slot status](#respond-based-on-the-slot-status) for re
 
 ## Viewing logs
 
-Open [**Logs > Replication**](https://supabase.com/dashboard/project/_/logs/replication-logs) for errors, retries, and performance warnings. Include the pipeline ID and relevant errors when [contacting support](https://supabase.com/dashboard/support/new).
+Open [**Logs > Pipelines**](https://supabase.com/dashboard/project/_/logs/pipelines-logs) for errors, retries, and performance warnings. Include the pipeline ID and relevant errors when [contacting support](https://supabase.com/dashboard/support/new).
 
 ## Handling errors
 
@@ -75928,7 +75930,7 @@ Note: Find the [example project on GitHub](https://github.com/elevenlabs/elevenl
 
 ## Requirements
 
-- An ElevenLabs account with an [API key](https://supabase.com/app/settings/api-keys).
+- An ElevenLabs account with an [API key](https://elevenlabs.io/app/developers/api-keys).
 - A [Supabase](https://supabase.com) account (you can sign up for a free account via [database.new](https://database.new)).
 - The [Supabase CLI](https://supabase.com/docs/guides/local-development) installed on your machine.
 - The [Deno runtime](https://docs.deno.com/runtime/getting_started/installation/) installed on your machine and optionally [setup in your favourite IDE](https://docs.deno.com/runtime/getting_started/setup_your_environment).
@@ -75983,7 +75985,7 @@ If you're using VS Code or Cursor, select `y` when the CLI prompts "Generate VS 
 Within the `supabase/functions` directory, create a new `.env` file and add the following variables:
 
 ```dotenv supabase/functions/.env
-# Find / create an API key at https://elevenlabs.io/app/settings/api-keys
+# Find / create an API key at https://elevenlabs.io/app/developers/api-keys
 ELEVENLABS_API_KEY=your_api_key
 ```
 
@@ -76163,7 +76165,7 @@ Note: Find the [example project on GitHub](https://github.com/elevenlabs/elevenl
 
 ## Requirements
 
-- An ElevenLabs account with an [API key](https://supabase.com/app/settings/api-keys).
+- An ElevenLabs account with an [API key](https://elevenlabs.io/app/developers/api-keys).
 - A [Supabase](https://supabase.com) account (you can sign up for a free account via [database.new](https://database.new)).
 - The [Supabase CLI](https://supabase.com/docs/guides/local-development) installed on your machine.
 - The [Deno runtime](https://docs.deno.com/runtime/getting_started/installation/) installed on your machine and optionally [setup in your favourite IDE](https://docs.deno.com/runtime/getting_started/setup_your_environment).
@@ -76227,7 +76229,7 @@ If you're using VS Code or Cursor, select `y` when the CLI prompts "Generate VS 
 Within the `supabase/functions` directory, create a new `.env` file and add the following variables:
 
 ```dotenv supabase/functions/.env
-# Find / create an API key at https://elevenlabs.io/app/settings/api-keys
+# Find / create an API key at https://elevenlabs.io/app/developers/api-keys
 ELEVENLABS_API_KEY=your_api_key
 
 # The bot token you received from the BotFather.
@@ -153763,8 +153765,8 @@ try await supabase.auth.resend(
 
 - `setSession()` takes in a refresh token and uses it to get a new session.
 - The refresh token can only be used once to obtain a new session.
-- [Refresh token rotation](https://supabase.com/docs/reference/auth/config#refresh_token_rotation_enabled) is enabled by default on all projects to guard against replay attacks.
-- You can configure the [`REFRESH_TOKEN_REUSE_INTERVAL`](https://supabase.com/docs/reference/auth/config#refresh_token_reuse_interval) which provides a short window in which the same refresh token can be used multiple times in the event of concurrency or offline issues.
+- [Refresh token rotation](https://supabase.com/docs/guides/local-development/cli/config#auth.enable_refresh_token_rotation) is enabled by default on all projects to guard against replay attacks.
+- You can configure the [`REFRESH_TOKEN_REUSE_INTERVAL`](https://supabase.com/docs/guides/local-development/cli/config#auth.refresh_token_reuse_interval) which provides a short window in which the same refresh token can be used multiple times in the event of concurrency or offline issues.
 
 ### Examples
 
@@ -157011,8 +157013,8 @@ supabase.gotrue.resendPhone(OtpType.Phone.PHONE_CHANGE, "1234567890")
 Changes the local session.
 
 - `importSession()` takes in a UserSession.
-- [Refresh token rotation](https://supabase.com/docs/reference/auth/config#refresh_token_rotation_enabled) is enabled by default on all projects to guard against replay attacks.
-- You can configure the [`REFRESH_TOKEN_REUSE_INTERVAL`](https://supabase.com/docs/reference/auth/config#refresh_token_reuse_interval) which provides a short window in which the same refresh token can be used multiple times in the event of concurrency or offline issues.
+- [Refresh token rotation](https://supabase.com/docs/guides/local-development/cli/config#auth.enable_refresh_token_rotation) is enabled by default on all projects to guard against replay attacks.
+- You can configure the [`REFRESH_TOKEN_REUSE_INTERVAL`](https://supabase.com/docs/guides/local-development/cli/config#auth.refresh_token_reuse_interval) which provides a short window in which the same refresh token can be used multiple times in the event of concurrency or offline issues.
 
 ### Examples
 

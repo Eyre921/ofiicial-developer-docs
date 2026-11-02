@@ -40,7 +40,7 @@ This way, you can invoke a workflow simply by passing the object to `context.inv
           workflow: workflowOne,
           body: "user-1"
         }
-      ),
+      );
     });
     ```
   </Step>
@@ -82,7 +82,7 @@ This way, you can invoke a workflow simply by passing the object to `context.inv
           // 👇 optionally label the invoked run; single string or array
           label: ["team-a", "high-priority"],
         }
-      ),
+      );
     });
     ```
 

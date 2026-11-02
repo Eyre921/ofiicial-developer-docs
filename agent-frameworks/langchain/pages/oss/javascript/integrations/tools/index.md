@@ -102,6 +102,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`Jigsawstack`](/oss/javascript/integrations/tools/jigsawstack) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/jigsawstack?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/jigsawstack) |
 | [`SIGNA`](https://github.com/codexvritra/signa/tree/main/sdk/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/signa-langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/signa-langchain) |
 | [`NiaToolkit`](/oss/javascript/integrations/tools/nia) | [  ![Downloads per month](https://img.shields.io/npm/dm/@nozomioai/langchain-nia?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@nozomioai/langchain-nia) |
+| [`x402checkToolkit`](https://x402check.dev) | [  ![Downloads per month](https://img.shields.io/npm/dm/x402check-langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/x402check-langchain) |
 | [`Agent with AWS lambda`](/oss/javascript/integrations/tools/lambda_agent) | N/A |
 | [`Browserless`](https://browserless.io) | N/A |
 | [`JSON agent toolkit`](/oss/javascript/integrations/tools/json) | N/A |

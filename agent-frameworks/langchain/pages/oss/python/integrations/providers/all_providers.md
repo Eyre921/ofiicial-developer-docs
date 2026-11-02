@@ -76,6 +76,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Open event-based protocol for connecting LangGraph agents to any frontend.
 
+> [card] [AHNLookupTool](https://github.com/agent-help-network/agent-help-network/blob/main/clients/langchain-ahn/README.md)
+>
+> Read-only lookup of a host's declared agent policy, official developer path, and provider status when a web step is blocked.
+
 > [card] [Agent Action Capsule](https://github.com/action-state-group/capsule-emit/blob/main/docs/adapters/langchain.md)
 >
 > Signed, independently verifiable action records for agent tool calls, chained planned to confirmed.
@@ -247,6 +251,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [ArcadeDB](https://docs.arcadedb.com)
 >
 > Multi-model database (graph, document, key-value, time-series, vector) with Cypher, SQL, and Gremlin support.
+
+> [card] [Arche](https://pypi.org/project/langchain-arche/)
+>
+> SEC EDGAR financial statements for U.S. public companies, point-in-time by filing acceptance, with replay tokens to verify answers.
 
 > [card] [Arcmira](https://github.com/arcmira/integrations/tree/master/packages/langchain-python)
 >
@@ -672,6 +680,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Distributed search and analytics engine.
 
+> [card] [EmptyResponseRetryMiddleware](https://github.com/bharatkhanna-dev/langchain-empty-response-retry#readme)
+>
+> LangChain agent middleware that retries with a corrective nudge when the model returns no text and no tool calls, with a configurable fallback.
+
 > [card] [EmpirioLabs AI](https://docs.empiriolabs.ai)
 >
 > Specialized AI model hosting for open, proprietary, and custom stacks, plus GPU Cloud and hosted AI agents.
@@ -863,6 +875,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [GridPin](https://github.com/gridpin/gridpin/tree/main/integrations/langchain)
 >
 > Offline geocoding and reverse geocoding from one local data file per country, with no API key and no network call per query.
+
+> [card] [GroundTruthCompanyLookup](https://pypi.org/project/langchain-groundtruth/)
+>
+> GroundTruth provides LangChain tools for company lookup by domain and published contact details, with registrar, DNS, tech stack, hiring, and source data.
 
 > [card] [Fireworks](/oss/python/integrations/providers/fireworks)
 >
@@ -1344,6 +1360,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Fundamentals and filing events for companies that file with the SEC, as MCP tools, each value linked to its filing.
 
+> [card] [Nextmail](https://nextmail.sh/docs/python/langchain)
+>
+> Email on your own domains, with agent tools to read and search mail, wait for verification codes, use disposable inboxes, save drafts, reply and send.
+
 > [card] [Nexus Shield](https://api.nexusshield.ai)
 >
 > Sub-10ms in-RAM PII sanitization and security guardrail proxy for LLM APIs.
@@ -1487,6 +1507,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [OpenTTT](https://github.com/Helm-Protocol/OpenTTT/tree/main/integrations/langchain)
 >
 > Cryptographic Proof-of-Time timestamps for LangChain LLM calls.
+
+> [card] [OpenVikingStore](/oss/python/integrations/stores/openviking)
+>
+> OpenViking provides persistent memory storage and semantic search for LangGraph agents.
 
 > [card] [OpenZoo](https://github.com/staccDOTsol/langchain-openzoo)
 >
@@ -1747,6 +1771,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Respan](https://www.respan.ai/docs)
 >
 > Observability, tracing, evaluation, and gateway routing for LangChain applications.
+
+> [card] [Revana](https://github.com/Aribk7/langchain-revana#readme)
+>
+> Revana serves Claude, Gemini, DeepSeek and other chat models from several labs behind one OpenAI-compatible API key, routed to the cheapest working provider.
 
 > [card] [Robocorp](https://github.com/robocorp/robocorp)
 >
@@ -2124,6 +2152,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Fast inference for open-source models.
 
+> [card] [TokenjuiceMiddleware](https://github.com/vincentkoc/tokenjuice/blob/main/docs/framework-integrations.md#langchain)
+>
+> Local LangChain tool middleware that compacts eligible successful shell output while preserving errors, exact reads, raw requests, and tool metadata.
+
 > [card] [TokenMix](https://tokenmix.ai/docs)
 >
 > OpenAI-compatible API gateway for DeepSeek, Qwen, Kimi, GLM, MiniMax, and more.
@@ -2367,6 +2399,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [x402](https://www.agentrails.io/docs)
 >
 > HTTP-native USDC payments so agents can pay for APIs per request.
+
+> [card] [x402checkToolkit](https://x402check.dev)
+>
+> Preflight x402 seller endpoints before an agent pays (ok|caution|avoid plus payTo history). \$0.01 USDC on Base.
 
 > [card] [xaidr](https://github.com/delphisecurity/xaidr#langchain-middleware)
 >

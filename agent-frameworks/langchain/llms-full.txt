@@ -25831,7 +25831,7 @@ Before tracing in an agent-based workspace, [register an agent](/langsmith/creat
 export LANGSMITH_API_KEY=<your-api-key>
 export LANGSMITH_TRACING=true
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 ```
 
 Remove legacy destination variables when using agent addressing. In project-based workspaces, including self-hosted LangSmith, use `LANGSMITH_PROJECT` instead of the two agent variables.
@@ -26017,7 +26017,7 @@ Use the agent identifier and environment as the tracing destination:
 export LANGSMITH_TRACING=true
 export LANGSMITH_API_KEY="<your-tracing-api-key>"
 export LANGSMITH_AGENT_ID="support-agent"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 ```
 
 Use the identifier returned by creation, not the display name. Remove legacy destination variables (`LANGSMITH_PROJECT`, `LANGCHAIN_PROJECT`, and `LANGCHAIN_SESSION`) from the environment where your code runs. For SDK versions and code-based configuration, see [Log traces to an agent](/langsmith/log-traces-to-agent).
@@ -71726,7 +71726,7 @@ Set both variables:
 export LANGSMITH_TRACING=true
 export LANGSMITH_API_KEY=<your-api-key>
 export LANGSMITH_AGENT_ID=checkout
-export LANGSMITH_AGENT_ENVIRONMENT=production
+export LANGSMITH_AGENT_ENVIRONMENT=local
 ```
 
 The first two are the usual tracing prerequisites rather than part of naming the agent. If only one of the two agent variables is set, the SDK logs a warning. Instead of picking an environment for you, it leaves untraced every call that names no destination in code, so nothing from those calls reaches LangSmith.
@@ -71737,19 +71737,19 @@ Pass an agent address.
 
 > [tab] Python
 >
-> Pass `ls.agent_address("checkout", "production")` as the `address` argument of [`@traceable`](https://reference.langchain.com/python/langsmith/run_helpers/traceable), or of [`tracing_context`](https://reference.langchain.com/python/langsmith/run_helpers/tracing_context) for everything traced inside a block:
+> Pass `ls.agent_address("checkout", "local")` as the `address` argument of [`@traceable`](https://reference.langchain.com/python/langsmith/run_helpers/traceable), or of [`tracing_context`](https://reference.langchain.com/python/langsmith/run_helpers/tracing_context) for everything traced inside a block:
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import langsmith as ls
 > from langsmith import traceable
 >
 >
-> @traceable(address=ls.agent_address("checkout", "production"))
+> @traceable(address=ls.agent_address("checkout", "local"))
 > def handle_order(order_id: str) -> dict:
 >     return {"order_id": order_id, "status": "charged"}
 > ```
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import langsmith as ls
 > from langsmith import traceable, tracing_context
 >
@@ -71759,29 +71759,29 @@ Pass an agent address.
 >     return {"order_id": order_id, "status": "charged"}
 >
 >
-> with tracing_context(address=ls.agent_address("checkout", "production")):
+> with tracing_context(address=ls.agent_address("checkout", "local")):
 >     handle_order("A-1")
 > ```
 
 > [tab] TypeScript
 >
-> Pass `new AgentAddress("checkout", "production")` as `address` in the config of [`traceable`](https://reference.langchain.com/javascript/langsmith/traceable):
+> Pass `new AgentAddress("checkout", "local")` as `address` in the config of [`traceable`](https://reference.langchain.com/javascript/langsmith/traceable):
 >
-> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { AgentAddress } from "langsmith";
 > import { traceable } from "langsmith/traceable";
 >
 > const handleOrder = traceable(
 >   async (orderId: string) => ({ orderId, status: "charged" }),
->   { name: "handle_order", address: new AgentAddress("checkout", "production") },
+>   { name: "handle_order", address: new AgentAddress("checkout", "local") },
 > );
 > ```
 
 > [tab] Java
 >
-> Pass `new AgentAddress("checkout", "production")` as `address` in the `TraceConfig` or `RunTree` builder:
+> Pass `new AgentAddress("checkout", "local")` as `address` in the `TraceConfig` or `RunTree` builder:
 >
-> ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import com.langchain.smith.address.AgentAddress;
 > import com.langchain.smith.tracing.TraceConfig;
 > import com.langchain.smith.tracing.Tracing;
@@ -71795,7 +71795,7 @@ Pass an agent address.
 >             orderId -> Map.of("order_id", orderId, "status", "charged"),
 >             TraceConfig.builder()
 >                 .name("handle_order")
->                 .address(new AgentAddress("checkout", "production"))
+>                 .address(new AgentAddress("checkout", "local"))
 >                 .build());
 >
 >     handleOrder.apply("A-1");
@@ -71805,9 +71805,9 @@ Pass an agent address.
 
 > [tab] Go
 >
-> Create the address with `langsmith.NewAgentAddress("checkout", "production")`, which returns an error for an invalid value, and set it as `Address` on a `RunCreate`. `WithTracingAddress` sets it for every run of a standalone tracing client:
+> Create the address with `langsmith.NewAgentAddress("checkout", "local")`, which returns an error for an invalid value, and set it as `Address` on a `RunCreate`. `WithTracingAddress` sets it for every run of a standalone tracing client:
 >
-> ```go theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```go theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > package main
 >
 > import (
@@ -71819,7 +71819,7 @@ Pass an agent address.
 > )
 >
 > func main() {
-> 	agent, err := langsmith.NewAgentAddress("checkout", "production")
+> 	agent, err := langsmith.NewAgentAddress("checkout", "local")
 > 	if err != nil {
 > 		panic(err.Error())
 > 	}
@@ -79613,7 +79613,7 @@ Before sending traces, create the agent in LangSmith:
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    export LANGSMITH_AGENT_ID="<your-agent-id>"
-   export LANGSMITH_AGENT_ENVIRONMENT="production"
+   export LANGSMITH_AGENT_ENVIRONMENT="local"
    ```
 
 Register the agent once, not for every trace. Remove `LANGSMITH_PROJECT`, `LANGCHAIN_PROJECT`, and `LANGCHAIN_SESSION` from the environment where your code runs. Do not combine legacy destination settings with agent addressing. To create the agent with an SDK call or API request, see [Create an agent programmatically](/langsmith/create-an-agent#create-an-agent-programmatically).
@@ -80172,7 +80172,7 @@ Select your provider in the tabs on each step. The Anthropic and Gemini examples
 
       ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       export LANGSMITH_AGENT_ID="<your-agent-id>"
-      export LANGSMITH_AGENT_ENVIRONMENT="production"
+      export LANGSMITH_AGENT_ENVIRONMENT="local"
       ```
 
    Register the agent once, not for every trace. Remove `LANGSMITH_PROJECT`, `LANGCHAIN_PROJECT`, and `LANGCHAIN_SESSION` from the environment where your code runs. Do not combine legacy destination settings with agent addressing. To create the agent with an SDK call or API request, see [Create an agent programmatically](/langsmith/create-an-agent#create-an-agent-programmatically).
@@ -81882,7 +81882,7 @@ Register the classifier agent, then configure its identifier and environment:
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
 os.environ["LANGSMITH_AGENT_ID"] = "<your-agent-id>"
-os.environ["LANGSMITH_AGENT_ENVIRONMENT"] = "production"
+os.environ["LANGSMITH_AGENT_ENVIRONMENT"] = "local"
 ```
 
 We can then create our initial agent. This will be a really simple function that just takes in a GitHub issue title and tries to label it.
@@ -100027,6 +100027,114 @@ Sandboxes burst to twice their requested CPU when the host has spare capacity. R
 > [!NOTE]
 >
 > Free-form `labels` (up to 128 per sandbox, 256 bytes per key and 4096 bytes per value) can be set through the REST API on create. Sandboxes inherit their snapshot's labels unless overridden. The `langsmith.sandbox` clients do not expose this field yet.
+
+## Create a non-persistent sandbox
+
+A non-persistent sandbox keeps filesystem writes only while it runs. Use it for disposable code execution or evaluations that do not need files after a stop. Non-persistent sandboxes incur no storage charges; compute usage still applies.
+
+Persistence is enabled by default. Set `persistent` to `false` when creating a sandbox to opt out. This setting applies to the new sandbox, not existing sandboxes.
+
+> [!NOTE]
+>
+> These examples use Python `langsmith` version 0.14.17 or later, TypeScript `langsmith` version 0.11.7 or later, Go `github.com/langchain-ai/langsmith-go` v0.29.3, and Java `com.langchain.smith:langsmith-java` version 0.1.0-beta.28.
+
+Set `LANGSMITH_API_KEY` and `LANGSMITH_ENDPOINT` as described in [Create and run a sandbox](#create-and-run-a-sandbox). Files remain available between commands while the sandbox runs:
+
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith.sandbox import SandboxClient
+
+client = SandboxClient()
+with client.sandbox(persistent=False) as sandbox:
+    sandbox.run("echo hello > /tmp/example.txt")
+    result = sandbox.run("cat /tmp/example.txt")
+    print(result.stdout)
+```
+
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { SandboxClient } from "langsmith/sandbox";
+
+const client = new SandboxClient();
+const sandbox = await client.createSandbox({ persistent: false });
+try {
+  await sandbox.run("echo hello > /tmp/example.txt");
+  const result = await sandbox.run("cat /tmp/example.txt");
+  console.log(result.stdout);
+} finally {
+  await sandbox.delete();
+}
+```
+
+```go Go theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+package main
+
+import (
+	"context"
+	"fmt"
+	"log"
+
+	langsmith "github.com/langchain-ai/langsmith-go"
+)
+
+func main() {
+	ctx := context.Background()
+	client := langsmith.NewClient()
+	sandbox, err := client.Sandboxes.Boxes.NewSandbox(ctx, langsmith.SandboxBoxNewParams{
+		Persistent: langsmith.F(false),
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer sandbox.Delete(ctx)
+
+	result, err := sandbox.Run(ctx, langsmith.SandboxBoxRunParams{
+		Command: langsmith.F("echo hello > /tmp/example.txt && cat /tmp/example.txt"),
+	})
+	if err != nil {
+		log.Print(err)
+		return
+	}
+	fmt.Print(result.Stdout)
+}
+```
+
+```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import com.langchain.smith.client.okhttp.OkHttpClient;
+import com.langchain.smith.core.ClientOptions;
+import com.langchain.smith.models.sandboxes.boxes.BoxCreateParams;
+import com.langchain.smith.sandbox.Sandbox;
+import com.langchain.smith.sandbox.SandboxClient;
+
+public class NonPersistentSandbox {
+    public static void main(String[] args) {
+        ClientOptions options = ClientOptions.builder()
+            .fromEnv()
+            .httpClient(OkHttpClient.builder().build())
+            .build();
+        try {
+            SandboxClient client = SandboxClient.of(options);
+            Sandbox sandbox = client.create(
+                BoxCreateParams.builder().persistent(false).build()
+            );
+            try {
+                sandbox.run("echo hello > /tmp/example.txt");
+                System.out.print(sandbox.run("cat /tmp/example.txt").stdoutString());
+            } finally {
+                sandbox.delete();
+            }
+        } finally {
+            options.close();
+        }
+    }
+}
+```
+
+The Python context manager deletes the sandbox when the block exits. For manual cleanup, use `client.create_sandbox(persistent=False)` and call `sandbox.delete()` when finished. The TypeScript `finally` block deletes the sandbox even if a command fails.
+
+> [!WARNING]
+>
+> Both an idle timeout and an explicit stop discard filesystem writes. The next start boots fresh from the snapshot. Save outputs outside the sandbox before it stops. Setting `delete_after_stop_seconds` does not preserve these writes.
+
+Non-persistent sandboxes cannot preserve memory on stop or capture their filesystem as a snapshot. Some snapshots captured from other sandboxes cannot boot a non-persistent sandbox. Use the default snapshot or a compatible [custom snapshot](/langsmith/sandbox-snapshots). Disk capacity is limited to 16 GiB per vCPU.
 
 ## Sandbox lifetime and retention
 
@@ -147381,14 +147489,14 @@ To send Claude SDK spans to LangSmith:
 
    * `x-api-key`: Your LangSmith API key.
    * `Langsmith-Agent-Id`: The registered agent identifier.
-   * `Langsmith-Agent-Environment`: The environment, such as `production`.
+   * `Langsmith-Agent-Environment`: The environment, such as `local`.
    * `X-Tenant-Id`: (Optional) The ID of the LangSmith workspace to send traces to. Without this header, traces go to the workspace that the API key belongs to. Organization-scoped service keys require it.
 
    For example, with the standard OTel environment variables:
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    export OTEL_EXPORTER_OTLP_ENDPOINT=https://api.smith.langchain.com/otel
-   export OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your-langsmith-api-key>,Langsmith-Agent-Id=<your-agent-id>,Langsmith-Agent-Environment=production"
+   export OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your-langsmith-api-key>,Langsmith-Agent-Id=<your-agent-id>,Langsmith-Agent-Environment=local"
    ```
 
    For more information on exporter setup, see [Trace a non-LangChain agent](/langsmith/trace-with-opentelemetry#trace-a-non-langchain-application).
@@ -147513,7 +147621,7 @@ Sending traces to an agent requires `langsmith>=0.14.9` in Python or `langsmith@
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY=<your_langsmith_api_key>
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 export LANGSMITH_TRACING=true
 ```
 
@@ -147658,19 +147766,19 @@ The [Claude Agent SDK](https://platform.claude.com/docs/en/agent-sdk/overview) i
 
 Install the LangSmith integration for Claude Agent SDK
 
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 uv add "langsmith[claude-agent-sdk]"
 ```
 
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 pip install langsmith[claude-agent-sdk]
 ```
 
-```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 pnpm add @anthropic-ai/claude-agent-sdk langsmith zod
 ```
 
-```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npm install @anthropic-ai/claude-agent-sdk langsmith zod
 ```
 
@@ -147685,7 +147793,7 @@ export LANGSMITH_TRACING=true
 export LANGSMITH_ENDPOINT=https://api.smith.langchain.com
 export LANGSMITH_API_KEY=<your_langsmith_api_key>
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 
 export ANTHROPIC_API_KEY=<your_anthropic_api_key>
 ```
@@ -147695,7 +147803,7 @@ LANGSMITH_TRACING=true
 LANGSMITH_ENDPOINT=https://api.smith.langchain.com
 LANGSMITH_API_KEY=<your_langsmith_api_key>
 LANGSMITH_AGENT_ID="<your-agent-id>"
-LANGSMITH_AGENT_ENVIRONMENT="production"
+LANGSMITH_AGENT_ENVIRONMENT="local"
 
 ANTHROPIC_API_KEY=<your_anthropic_api_key>
 ```
@@ -147708,7 +147816,7 @@ For an Anthropic API key, refer to the [Claude console](https://console.anthropi
 
 To enable LangSmith tracing for your Claude Agent SDK code, call `configure_claude_agent_sdk()` before running your agent:
 
-```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 from typing import Any
 
@@ -147765,7 +147873,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import * as originalSdk from '@anthropic-ai/claude-agent-sdk';
 
 import { wrapClaudeAgentSDK } from 'langsmith/experimental/anthropic';
@@ -148191,7 +148299,7 @@ Get your LangSmith API key from **Settings**, then configure the registered agen
 export LANGSMITH_API_KEY=<your-langsmith-api-key>
 export LANGSMITH_TRACING=true
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 ```
 
 ## Create a trace
@@ -148528,7 +148636,7 @@ Set your [API keys](/langsmith/create-account-api-key), agent identifier, and en
 export LANGSMITH_API_KEY="your-langsmith-api-key"
 export LANGSMITH_TRACING="true"
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 export DEEPSEEK_API_KEY="your-deepseek-api-key"
 ```
 
@@ -148745,7 +148853,7 @@ Sending traces to an agent requires `langsmith>=0.14.9`.
 LANGSMITH_API_KEY=<your-langsmith-api-key>
 LANGSMITH_TRACING=true
 LANGSMITH_AGENT_ID="<your-agent-id>"
-LANGSMITH_AGENT_ENVIRONMENT="production"
+LANGSMITH_AGENT_ENVIRONMENT="local"
 GOOGLE_API_KEY=<your-google-api-key>
 GEMINI_LIVE_MODEL=<your-gemini-live-model>
 ```
@@ -149074,7 +149182,7 @@ You can use `LANGSMITH_TRACING=true` together with `@traceable` for predictable 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    export LANGSMITH_API_KEY="your_api_key"
    export LANGSMITH_AGENT_ID="<your-agent-id>"
-   export LANGSMITH_AGENT_ENVIRONMENT="production"
+   export LANGSMITH_AGENT_ENVIRONMENT="local"
    export LANGSMITH_TRACING="true"
    ```
 
@@ -149409,7 +149517,7 @@ Sending traces to an agent requires `langsmith>=0.14.9`.
 LANGSMITH_API_KEY=<your-langsmith-api-key>
 LANGSMITH_TRACING=true
 LANGSMITH_AGENT_ID="<your-agent-id>"
-LANGSMITH_AGENT_ENVIRONMENT="production"
+LANGSMITH_AGENT_ENVIRONMENT="local"
 OPENAI_API_KEY=<your-openai-api-key>
 ```
 
@@ -150739,7 +150847,7 @@ Set your [API keys](/langsmith/create-account-api-key), agent identifier, and en
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY=<your_langsmith_api_key>
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 export OPENAI_API_KEY=<your_openai_api_key>
 ```
 
@@ -150918,7 +151026,7 @@ yarn add langsmith @anthropic-ai/sdk
 export LANGSMITH_TRACING=true
 export LANGSMITH_API_KEY=<your-langsmith-api-key>
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 export ANTHROPIC_API_KEY=<your-anthropic-api-key>
 ```
 
@@ -151203,7 +151311,7 @@ Set your [API keys](/langsmith/create-account-api-key), agent identifier, and en
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY=<your_langsmith_api_key>
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 export OPENAI_API_KEY=<your_openai_api_key>
 ```
 
@@ -151526,11 +151634,11 @@ This guide shows you how to trace [Google Agent Development Kit (ADK)](https://g
 
 Install the required packages using your preferred package manager:
 
-```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 uv add "langsmith[google-adk]"
 ```
 
-```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 pip install langsmith[google-adk]
 ```
 
@@ -151545,7 +151653,7 @@ export LANGSMITH_TRACING=true
 export LANGSMITH_ENDPOINT=https://api.smith.langchain.com
 export LANGSMITH_API_KEY=<your_langsmith_api_key>
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 
 export GOOGLE_API_KEY=<your_google_api_key>
 ```
@@ -151555,7 +151663,7 @@ LANGSMITH_TRACING=true
 LANGSMITH_ENDPOINT=https://api.smith.langchain.com
 LANGSMITH_API_KEY=<your_langsmith_api_key>
 LANGSMITH_AGENT_ID="<your-agent-id>"
-LANGSMITH_AGENT_ENVIRONMENT="production"
+LANGSMITH_AGENT_ENVIRONMENT="local"
 
 GOOGLE_API_KEY=<your_google_api_key>
 ```
@@ -151584,7 +151692,7 @@ The function accepts the following optional parameters:
 
 This example creates a weather agent with a tool, then runs it with tracing enabled:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 
 from dotenv import load_dotenv  # Optional
@@ -151675,7 +151783,7 @@ configure_google_adk(
 
 The integration automatically traces multi-agent workflows including sequential and parallel agent compositions:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 
 from dotenv import load_dotenv  # Optional
@@ -151789,7 +151897,7 @@ Set your [API keys](/langsmith/create-account-api-key), agent identifier, and en
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY=<your_langsmith_api_key>
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 export LANGSMITH_TRACING=true
 export GOOGLE_API_KEY=<your_google_api_key>
 ```
@@ -151912,7 +152020,7 @@ In order to use, you first need to set your LangSmith API key.
 ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY=<your-api-key>
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 # For LangSmith API keys linked to multiple workspaces, set the LANGSMITH_WORKSPACE_ID environment variable to specify which workspace to use.
 export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
 ```
@@ -152031,7 +152139,7 @@ pnpm add @langchain/openai @langchain/core
 export LANGSMITH_TRACING=true
 export LANGSMITH_API_KEY=<your-api-key>
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 # This example uses OpenAI, but you can use any LLM provider of choice
 export OPENAI_API_KEY=<your-openai-api-key>
 # For LangSmith API keys linked to multiple workspaces, set the LANGSMITH_WORKSPACE_ID environment variable to specify which workspace to use.
@@ -152146,7 +152254,7 @@ await chain.invoke({ question: question, context: context });
 
 ### 3. View your trace
 
-Open the registered agent in LangSmith and select its **Production** environment to view the trace.
+Open the registered agent in LangSmith and select its **Local** environment to view the trace.
 
 ## Trace selectively
 
@@ -152738,7 +152846,7 @@ pnpm add @langchain/openai @langchain/langgraph
 export LANGSMITH_TRACING=true
 export LANGSMITH_API_KEY=<your-api-key>
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 # This example uses OpenAI, but you can use any LLM provider of choice
 export OPENAI_API_KEY=<your-openai-api-key>
 # For LangSmith API keys linked to multiple workspaces, set the LANGSMITH_WORKSPACE_ID environment variable to specify which workspace to use.
@@ -152980,7 +153088,7 @@ pnpm add openai langsmith @langchain/langgraph
 export LANGSMITH_TRACING=true
 export LANGSMITH_API_KEY=<your-api-key>
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 # This example uses OpenAI, but you can use any LLM provider of choice
 export OPENAI_API_KEY=<your-openai-api-key>
 ```
@@ -153321,7 +153429,7 @@ The integration reads your LangSmith credentials from the environment and export
 LANGSMITH_API_KEY=<your-langsmith-api-key>
 LANGSMITH_TRACING=true
 LANGSMITH_AGENT_ID="<your-agent-id>"
-LANGSMITH_AGENT_ENVIRONMENT="production"
+LANGSMITH_AGENT_ENVIRONMENT="local"
 LIVEKIT_URL=<your-livekit-url>
 LIVEKIT_API_KEY=<your-livekit-api-key>
 LIVEKIT_API_SECRET=<your-livekit-api-secret>
@@ -153752,7 +153860,7 @@ Enable OpenTelemetry instrumentation of the agent and set the OpenTelemetry envi
 export ENABLE_INSTRUMENTATION=true
 export OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
 export OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=https://api.smith.langchain.com/otel/v1/traces
-export OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your_langsmith_api_key>,Langsmith-Agent-Id=<your-agent-id>,Langsmith-Agent-Environment=production"
+export OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your_langsmith_api_key>,Langsmith-Agent-Id=<your-agent-id>,Langsmith-Agent-Environment=local"
 ```
 
 ### 2. Enable OpenTelemetry in your agent
@@ -153836,7 +153944,7 @@ export MISTRAL_API_KEY="<your_mistral_api_key>"
 export LANGSMITH_TRACING="true"
 export LANGSMITH_API_KEY="<your_langsmith_api_key>"
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 ```
 
 * Ensure you have a Mistral API key from your [Mistral AI account](https://v2.auth.mistral.ai/login) (set this as `MISTRAL_API_KEY`).
@@ -154063,7 +154171,7 @@ Use LangSmith to trace OpenAI Agents SDK runs, including agent steps, model call
 >
 > # Select the registered agent and environment
 > export LANGSMITH_AGENT_ID="<your-agent-id>"
-> export LANGSMITH_AGENT_ENVIRONMENT="production"
+> export LANGSMITH_AGENT_ENVIRONMENT="local"
 >
 > # For LangSmith API keys linked to multiple workspaces, set the LANGSMITH_WORKSPACE_ID environment variable to specify which workspace to use.
 > export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
@@ -154130,7 +154238,7 @@ Use LangSmith to trace OpenAI Agents SDK runs, including agent steps, model call
 >
 > # Select the registered agent and environment
 > export LANGSMITH_AGENT_ID="<your-agent-id>"
-> export LANGSMITH_AGENT_ENVIRONMENT="production"
+> export LANGSMITH_AGENT_ENVIRONMENT="local"
 >
 > # For LangSmith API keys linked to multiple workspaces, set the LANGSMITH_WORKSPACE_ID environment variable to specify which workspace to use.
 > export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
@@ -154321,7 +154429,7 @@ npm install langsmith openai
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY=<your-api-key>
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 export LANGSMITH_TRACING=true
 ```
 
@@ -154658,7 +154766,7 @@ If you're using LangChain or LangGraph, use the built-in integration to trace yo
    LANGSMITH_ENDPOINT=https://api.smith.langchain.com
    LANGSMITH_API_KEY=<your_langsmith_api_key>
    LANGSMITH_AGENT_ID="<your-agent-id>"
-   LANGSMITH_AGENT_ENVIRONMENT="production"
+   LANGSMITH_AGENT_ENVIRONMENT="local"
    # For LangSmith API keys linked to multiple workspaces, set the LANGSMITH_WORKSPACE_ID environment variable to specify which workspace to use.
    ```
 
@@ -154712,7 +154820,7 @@ For non-LangChain agents or custom instrumentation, you can trace your agent in 
 
    ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    OTEL_EXPORTER_OTLP_ENDPOINT=https://api.smith.langchain.com/otel
-   OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your langsmith api key>,Langsmith-Agent-Id=<your-agent-id>,Langsmith-Agent-Environment=production"
+   OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your langsmith api key>,Langsmith-Agent-Id=<your-agent-id>,Langsmith-Agent-Environment=local"
    ```
 
    > [!NOTE]
@@ -155649,7 +155757,7 @@ The integration reads your LangSmith credentials from the environment and export
 LANGSMITH_API_KEY=<your-langsmith-api-key>
 LANGSMITH_TRACING=true
 LANGSMITH_AGENT_ID="<your-agent-id>"
-LANGSMITH_AGENT_ENVIRONMENT="production"
+LANGSMITH_AGENT_ENVIRONMENT="local"
 OPENAI_API_KEY=<your-openai-api-key>
 ```
 
@@ -155840,7 +155948,7 @@ Set your [API keys](/langsmith/create-account-api-key), agent identifier, and en
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY=<your_langsmith_api_key>
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 export OPENAI_API_KEY=<your_openai_api_key>
 ```
 
@@ -155950,7 +156058,7 @@ Set your [API keys](/langsmith/create-account-api-key), agent identifier, and en
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY=<your_langsmith_api_key>
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 export OPENAI_API_KEY=<your_openai_api_key>
 ```
 
@@ -156119,7 +156227,7 @@ Set your [LangSmith API key](/langsmith/create-account-api-key) and the agent id
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=https://api.smith.langchain.com/otel/v1/traces
-export OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your_langsmith_api_key>,Langsmith-Agent-Id=<your-agent-id>,Langsmith-Agent-Environment=production"
+export OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your_langsmith_api_key>,Langsmith-Agent-Id=<your-agent-id>,Langsmith-Agent-Environment=local"
 
 # Required when using Amazon Bedrock.
 export AWS_REGION=<your_aws_region>
@@ -156187,7 +156295,7 @@ exporter = create_langsmith_exporter(
     headers={
         "x-api-key": "<your_langsmith_api_key>",
         "Langsmith-Agent-Id": "<your-agent-id>",
-        "Langsmith-Agent-Environment": "production",
+        "Langsmith-Agent-Environment": "local",
     },
 )
 telemetry.tracer_provider.add_span_processor(BatchSpanProcessor(exporter))
@@ -156234,7 +156342,7 @@ Set the following environment variables for all implementations:
 | - | - | - |
 | `LANGSMITH_API_KEY` | Yes | Your LangSmith API key from Settings. |
 | `LANGSMITH_AGENT_ID` | Yes, for Python and TypeScript | Registered agent identifier. |
-| `LANGSMITH_AGENT_ENVIRONMENT` | Yes, for Python and TypeScript | Agent environment, such as `production`. |
+| `LANGSMITH_AGENT_ENVIRONMENT` | Yes, for Python and TypeScript | Agent environment, such as `local`. |
 
 > [!NOTE]
 >
@@ -156992,7 +157100,7 @@ Install the Vercel AI SDK, a model provider package, and LangSmith. This guide u
 export LANGSMITH_TRACING=true
 export LANGSMITH_API_KEY=<your-api-key>
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 
 # The examples use OpenAI, but you can use any LLM provider of choice
 export OPENAI_API_KEY=<your-openai-api-key>
@@ -157673,7 +157781,7 @@ export COPILOT_OTEL_ENABLED=true
 export COPILOT_OTEL_PROTOCOL=http
 export COPILOT_OTEL_ENDPOINT=https://api.smith.langchain.com/otel
 export COPILOT_OTEL_CAPTURE_CONTENT=true
-export OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your_langsmith_api_key>,Langsmith-Agent-Id=<your-agent-id>,Langsmith-Agent-Environment=production"
+export OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your_langsmith_api_key>,Langsmith-Agent-Id=<your-agent-id>,Langsmith-Agent-Environment=local"
 ```
 
 | Variable | Description |
@@ -157682,7 +157790,7 @@ export OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your_langsmith_api_key>,Langsmith-
 | `COPILOT_OTEL_PROTOCOL` | OTLP protocol. Use `http` to target LangSmith's HTTP OTLP ingestion endpoint. |
 | `COPILOT_OTEL_ENDPOINT` | LangSmith OTLP endpoint. Takes precedence over `OTEL_EXPORTER_OTLP_ENDPOINT`. |
 | `COPILOT_OTEL_CAPTURE_CONTENT` | Capture full prompts, responses, tool arguments, and tool results on spans. Off by default. |
-| `OTEL_EXPORTER_OTLP_HEADERS` | Authentication headers for the OTLP exporter. Use `x-api-key=<your_langsmith_api_key>` and `Langsmith-Agent-Id=<your-agent-id>,Langsmith-Agent-Environment=production` to route traces to the registered [agent and environment](/langsmith/log-traces-to-agent). |
+| `OTEL_EXPORTER_OTLP_HEADERS` | Authentication headers for the OTLP exporter. Use `x-api-key=<your_langsmith_api_key>` and `Langsmith-Agent-Id=<your-agent-id>,Langsmith-Agent-Environment=local` to route traces to the registered [agent and environment](/langsmith/log-traces-to-agent). |
 
 VS Code must inherit these environment variables, so export them in the shell session that launches VS Code (for example, by adding them to `~/.zshrc`, `~/.bashrc`, or a shell profile) before starting the editor.
 
@@ -157722,7 +157830,7 @@ When an agent invokes a subagent, Copilot Chat propagates trace context automati
 ## Troubleshooting
 
 * **No traces appear in LangSmith.** Confirm `COPILOT_OTEL_ENABLED=true` and that VS Code was launched from the shell where the variables are exported. Verify `OTEL_EXPORTER_OTLP_HEADERS` includes `x-api-key=<your_langsmith_api_key>` and that the API key belongs to the workspace you want to trace into. Restart VS Code after changing environment variables.
-* **Traces land in the wrong environment.** Set `Langsmith-Agent-Id=<your-agent-id>,Langsmith-Agent-Environment=production` in `OTEL_EXPORTER_OTLP_HEADERS`. Use the registered agent ID and the intended environment. Remove `Langsmith-Project` when using agent headers.
+* **Traces land in the wrong environment.** Set `Langsmith-Agent-Id=<your-agent-id>,Langsmith-Agent-Environment=local` in `OTEL_EXPORTER_OTLP_HEADERS`. Use the registered agent ID and the intended environment. Remove `Langsmith-Project` when using agent headers.
 * **Prompts and responses are missing.** Content capture is opt-in. Set `COPILOT_OTEL_CAPTURE_CONTENT=true` (or enable the `github.copilot.chat.otel.captureContent` setting).
 
 ## Related resources
@@ -157792,7 +157900,7 @@ def chat_pipeline(question: str):
   return chat_completion.choices[0].message.content
 
 # Can set to False to disable tracing here without changing code structure
-with tracing_context(enabled=True, address=agent_address("<your-agent-id>", "production")):
+with tracing_context(enabled=True, address=agent_address("<your-agent-id>", "local")):
   # Use langsmith_extra to pass in a custom client
   chat_pipeline("Can you summarize this morning's meetings?", langsmith_extra={"client": langsmith_client})
 ```
@@ -157828,7 +157936,7 @@ const pipeline = traceable(
 
         return completion.choices[0].message.content;
     },
-    { name: "Chat", client, tracingEnabled: true, address: new AgentAddress("<your-agent-id>", "production") }
+    { name: "Chat", client, tracingEnabled: true, address: new AgentAddress("<your-agent-id>", "local") }
 );
 
 await pipeline("Can you summarize this morning's meetings?");
@@ -191161,7 +191269,7 @@ Sign up at [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&ut
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 export LANGSMITH_TRACING=true
 export LANGSMITH_API_KEY="your-langsmith-api-key"
 ```
@@ -209574,6 +209682,10 @@ Connect LangGraph agents to front ends and observability platforms.
 >
 > Web page extraction API returning clean Markdown plus fixed-schema JSON for article metadata, product prices and tables.
 
+> [card] [x402checkToolkit](https://x402check.dev)
+>
+> Preflight x402 seller endpoints before an agent pays (ok|caution|avoid plus payTo history). \$0.01 USDC on Base.
+
 > [card] [You.com](https://you.com/docs/integrations/langchain)
 >
 > Real-time web search and content extraction for LLMs.
@@ -211615,6 +211727,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`Jigsawstack`](/oss/javascript/integrations/tools/jigsawstack) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/jigsawstack?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/jigsawstack) |
 | [`SIGNA`](https://github.com/codexvritra/signa/tree/main/sdk/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/signa-langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/signa-langchain) |
 | [`NiaToolkit`](/oss/javascript/integrations/tools/nia) | [  ![Downloads per month](https://img.shields.io/npm/dm/@nozomioai/langchain-nia?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@nozomioai/langchain-nia) |
+| [`x402checkToolkit`](https://x402check.dev) | [  ![Downloads per month](https://img.shields.io/npm/dm/x402check-langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/x402check-langchain) |
 | [`Agent with AWS lambda`](/oss/javascript/integrations/tools/lambda_agent) | N/A |
 | [`Browserless`](https://browserless.io) | N/A |
 | [`JSON agent toolkit`](/oss/javascript/integrations/tools/json) | N/A |
@@ -239969,7 +240082,7 @@ All LangChain agents automatically support LangSmith tracing. To enable it, set 
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 export LANGSMITH_TRACING=true
 export LANGSMITH_API_KEY=<your-api-key>
 ```
@@ -241498,7 +241611,7 @@ Sign up for a [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_mediu
 
 ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 export LANGSMITH_TRACING="true"
 export LANGSMITH_API_KEY="..."
 ```
@@ -245618,7 +245731,7 @@ Studio requires a LangSmith API key to connect your local agent. Create a `.env`
 ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_API_KEY=lsv2...
 LANGSMITH_AGENT_ID="<your-agent-id>"
-LANGSMITH_AGENT_ENVIRONMENT="production"
+LANGSMITH_AGENT_ENVIRONMENT="local"
 ```
 
 ### 4. Create a LangGraph config file
@@ -256361,7 +256474,7 @@ You will find a `.env.example` in the root of your new LangGraph app. Create a `
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_API_KEY=lsv2...
 LANGSMITH_AGENT_ID="<your-agent-id>"
-LANGSMITH_AGENT_ENVIRONMENT="production"
+LANGSMITH_AGENT_ENVIRONMENT="local"
 ```
 
 ## 5. Launch Agent server
@@ -256516,7 +256629,7 @@ To enable tracing for your agent, set the following environment variables:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 export LANGSMITH_TRACING=true
 export LANGSMITH_API_KEY=<your-api-key>
 ```
@@ -260221,7 +260334,7 @@ Studio requires a LangSmith API key to connect your local agent. Create a `.env`
 ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_API_KEY=lsv2...
 LANGSMITH_AGENT_ID="<your-agent-id>"
-LANGSMITH_AGENT_ENVIRONMENT="production"
+LANGSMITH_AGENT_ENVIRONMENT="local"
 ```
 
 ### 4. Create a LangGraph config file
@@ -292609,7 +292722,7 @@ Sign up at [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&ut
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 export LANGSMITH_TRACING=true
 export LANGSMITH_API_KEY="your-langsmith-api-key"
 ```
@@ -304509,6 +304622,7 @@ Certain model providers offer endpoints that are compatible with OpenAI's [Chat 
 | [`ChatNeuralwatt`](https://neuralwatt.com) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-neuralwatt/month)](https://pypi.org/project/langchain-neuralwatt/) |
 | [`ChatSeekrFlow`](https://github.com/benfaircloth/langchain-seekrflow) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-seekrflow/month)](https://pypi.org/project/langchain-seekrflow/) |
 | [`ChatKalibr`](https://kalibr.systems/docs) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-kalibr/month)](https://pypi.org/project/langchain-kalibr/) |
+| [`ChatRevana`](https://github.com/Aribk7/langchain-revana#readme) | ✅ | ✅ | ✅ | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-revana/month)](https://pypi.org/project/langchain-revana/) |
 | [`1Claw`](https://docs.1claw.xyz) | ✅ | ✅ | ✅ | ❌ | N/A |
 | [`API-Route`](https://www.api-route.com/docs/overview) | | | | | N/A |
 | [`Auxen`](https://auxen.ai) | ✅ | ✅ | ✅ | ❌ | N/A |
@@ -305117,6 +305231,7 @@ Arrows show a typical retrieval flow. The highlighted component is the one this 
 | [MongoDB](/oss/python/integrations/memory/mongodb-long-term-memory) | [`langgraph-store-mongodb`](https://pypi.org/project/langgraph-store-mongodb/) | [langchain-ai/langchain-mongodb](https://github.com/langchain-ai/langchain-mongodb/tree/main/libs/langgraph-store-mongodb) |
 | Upstash Redis | [`langgraph-store-upstash`](https://pypi.org/project/langgraph-store-upstash/) | [Tghez/langgraph-store-upstash](https://github.com/Tghez/langgraph-store-upstash) |
 | OMEM | [`omem-infrastructure`](https://pypi.org/project/omem-infrastructure/) | [OMEM docs](https://infrastructure.omem-cloud.com/docs) |
+| [OpenViking](/oss/python/integrations/stores/openviking) | [`langchain-openviking`](https://pypi.org/project/langchain-openviking/) | [volcengine/OpenViking](https://github.com/volcengine/OpenViking) |
 | [SingleStore](https://www.singlestore.com/docs/) | [`langgraph-singlestore`](https://pypi.org/project/langgraph-singlestore/) | [singlestore-labs/langchain-singlestore](https://github.com/singlestore-labs/langchain-singlestore) |
 | [Amazon DynamoDB (agentstate)](https://skamalj.github.io/agentstate-reducer/langgraph/stores/) | [`langgraph-store-dynamodb`](https://pypi.org/project/langgraph-store-dynamodb/) | [skamalj/langgraph-store](https://github.com/skamalj/langgraph-store/tree/main/providers/dynamodb) |
 | [PostgreSQL / pgvector (agentstate)](https://skamalj.github.io/agentstate-reducer/langgraph/stores/) | [`langgraph-store-postgres`](https://pypi.org/project/langgraph-store-postgres/) | [skamalj/langgraph-store](https://github.com/skamalj/langgraph-store/tree/main/providers/postgres) |
@@ -305230,12 +305345,14 @@ Middleware enables context engineering, harness customization, and runtime safet
 | [`DNS-AID`](https://github.com/IngmarVG-IB/langchain-dns-aid) | DNS-based agent discovery via the DNS-AID protocol. Auto-publishes agents on startup, auto-unpublishes on shutdown, and provides discovery tools. | [`IngmarVG-IB/langchain-dns-aid`](https://github.com/IngmarVG-IB/langchain-dns-aid) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-dns-aid/month)](https://pypi.org/project/langchain-dns-aid/) |
 | [`text2sql-framework`](https://github.com/Text2SqlAgent/text2sql-framework) | Replaces RAG with recursive tool use: the agent explores, writes, tests, and self-corrects using one execute\_sql tool. | [`Text2SqlAgent/text2sql-framework`](https://github.com/Text2SqlAgent/text2sql-framework) | [  ![Downloads per month](https://static.pepy.tech/badge/text2sql-framework/month)](https://pypi.org/project/text2sql-framework/) |
 | [`langgraph-state-machine`](https://github.com/mahmoud661/langgraph-state-machine) | Section-based flow control for LangGraph React agents. Divides conversations into discrete phases with scoped tools, prompts, auto-transitions, branching, and optional per-section LLM override. | [`mahmoud661/langgraph-state-machine`](https://github.com/mahmoud661/langgraph-state-machine) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-state-machine/month)](https://pypi.org/project/langgraph-state-machine/) |
+| [`EmptyResponseRetryMiddleware`](https://github.com/bharatkhanna-dev/langchain-empty-response-retry#readme) | LangChain agent middleware that retries with a corrective nudge when the model returns no text and no tool calls, with a configurable fallback. | [`bharatkhanna-dev/langchain-empty-response-retry`](https://github.com/bharatkhanna-dev/langchain-empty-response-retry) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-empty-response-retry/month)](https://pypi.org/project/langchain-empty-response-retry/) |
 | [`VecrContextCompressor`](https://github.com/h2cker/vecr) | Deterministic LLM context compression with a regex retention whitelist for structured tokens before the model call. | [`h2cker/vecr`](https://github.com/h2cker/vecr) | [  ![Downloads per month](https://static.pepy.tech/badge/vecr-compress/month)](https://pypi.org/project/vecr-compress/) |
 | [`ATR Guardrail`](https://github.com/Agent-Threat-Rule/agent-threat-rules/tree/main/integrations/langchain) | Runtime detection of prompt injection, tool poisoning, and unsafe tool calls using Agent Threat Rules. Halts the agent or blocks the tool call on a critical finding and keeps an audit trail. | [`Agent-Threat-Rule/agent-threat-rules`](https://github.com/Agent-Threat-Rule/agent-threat-rules/tree/main/integrations/langchain) | N/A |
 | [`eager-tools`](https://github.com/cloudthinker-ai/eager-tools) | Reduces agent wall-clock latency by dispatching each tool call the moment its streaming block closes, overlapping tool execution with LLM generation. | [`cloudthinker-ai/eager-tools`](https://github.com/cloudthinker-ai/eager-tools) | N/A |
 | [`Haldir`](https://github.com/ExposureGuard/haldir/tree/main/integrations/langchain-haldir) | Governance layer for LangChain agents with scoped sessions, encrypted secrets, hash-chained audit, and policy enforcement. | [`ExposureGuard/haldir`](https://github.com/ExposureGuard/haldir/tree/main/integrations/langchain-haldir) | N/A |
 | [`NVIDIA middleware`](/oss/python/integrations/middleware/nvidia) | Model routing and Nemotron 3 Ultra harness optimization | [`langchain-ai/langchain-nvidia`](https://github.com/langchain-ai/langchain-nvidia), [`langchain-ai/deepagents`](https://github.com/langchain-ai/deepagents) | N/A |
 | [`RuthlessSchemaGuard`](https://github.com/moltbot-den/openentity/tree/main/integrations/langchain) | Agent middleware that validates tool and HTTP responses against Pydantic or JSON Schema and raises on violations. | [`moltbot-den/openentity`](https://github.com/moltbot-den/openentity/tree/main/integrations/langchain) | N/A |
+| [`TokenjuiceMiddleware`](https://github.com/vincentkoc/tokenjuice/blob/main/docs/framework-integrations.md#langchain) | Local LangChain tool middleware that compacts eligible successful shell output while preserving errors, exact reads, raw requests, and tool metadata. | [`vincentkoc/tokenjuice`](https://github.com/vincentkoc/tokenjuice) | N/A |
 
 > [!NOTE]
 >
@@ -305324,6 +305441,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [AG-UI Protocol](https://docs.ag-ui.com/quickstart/applications)
 >
 > Open event-based protocol for connecting LangGraph agents to any frontend.
+
+> [card] [AHNLookupTool](https://github.com/agent-help-network/agent-help-network/blob/main/clients/langchain-ahn/README.md)
+>
+> Read-only lookup of a host's declared agent policy, official developer path, and provider status when a web step is blocked.
 
 > [card] [Agent Action Capsule](https://github.com/action-state-group/capsule-emit/blob/main/docs/adapters/langchain.md)
 >
@@ -305496,6 +305617,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [ArcadeDB](https://docs.arcadedb.com)
 >
 > Multi-model database (graph, document, key-value, time-series, vector) with Cypher, SQL, and Gremlin support.
+
+> [card] [Arche](https://pypi.org/project/langchain-arche/)
+>
+> SEC EDGAR financial statements for U.S. public companies, point-in-time by filing acceptance, with replay tokens to verify answers.
 
 > [card] [Arcmira](https://github.com/arcmira/integrations/tree/master/packages/langchain-python)
 >
@@ -305921,6 +306046,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Distributed search and analytics engine.
 
+> [card] [EmptyResponseRetryMiddleware](https://github.com/bharatkhanna-dev/langchain-empty-response-retry#readme)
+>
+> LangChain agent middleware that retries with a corrective nudge when the model returns no text and no tool calls, with a configurable fallback.
+
 > [card] [EmpirioLabs AI](https://docs.empiriolabs.ai)
 >
 > Specialized AI model hosting for open, proprietary, and custom stacks, plus GPU Cloud and hosted AI agents.
@@ -306112,6 +306241,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [GridPin](https://github.com/gridpin/gridpin/tree/main/integrations/langchain)
 >
 > Offline geocoding and reverse geocoding from one local data file per country, with no API key and no network call per query.
+
+> [card] [GroundTruthCompanyLookup](https://pypi.org/project/langchain-groundtruth/)
+>
+> GroundTruth provides LangChain tools for company lookup by domain and published contact details, with registrar, DNS, tech stack, hiring, and source data.
 
 > [card] [Fireworks](/oss/python/integrations/providers/fireworks)
 >
@@ -306593,6 +306726,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Fundamentals and filing events for companies that file with the SEC, as MCP tools, each value linked to its filing.
 
+> [card] [Nextmail](https://nextmail.sh/docs/python/langchain)
+>
+> Email on your own domains, with agent tools to read and search mail, wait for verification codes, use disposable inboxes, save drafts, reply and send.
+
 > [card] [Nexus Shield](https://api.nexusshield.ai)
 >
 > Sub-10ms in-RAM PII sanitization and security guardrail proxy for LLM APIs.
@@ -306736,6 +306873,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [OpenTTT](https://github.com/Helm-Protocol/OpenTTT/tree/main/integrations/langchain)
 >
 > Cryptographic Proof-of-Time timestamps for LangChain LLM calls.
+
+> [card] [OpenVikingStore](/oss/python/integrations/stores/openviking)
+>
+> OpenViking provides persistent memory storage and semantic search for LangGraph agents.
 
 > [card] [OpenZoo](https://github.com/staccDOTsol/langchain-openzoo)
 >
@@ -306996,6 +307137,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Respan](https://www.respan.ai/docs)
 >
 > Observability, tracing, evaluation, and gateway routing for LangChain applications.
+
+> [card] [Revana](https://github.com/Aribk7/langchain-revana#readme)
+>
+> Revana serves Claude, Gemini, DeepSeek and other chat models from several labs behind one OpenAI-compatible API key, routed to the cheapest working provider.
 
 > [card] [Robocorp](https://github.com/robocorp/robocorp)
 >
@@ -307373,6 +307518,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Fast inference for open-source models.
 
+> [card] [TokenjuiceMiddleware](https://github.com/vincentkoc/tokenjuice/blob/main/docs/framework-integrations.md#langchain)
+>
+> Local LangChain tool middleware that compacts eligible successful shell output while preserving errors, exact reads, raw requests, and tool metadata.
+
 > [card] [TokenMix](https://tokenmix.ai/docs)
 >
 > OpenAI-compatible API gateway for DeepSeek, Qwen, Kimi, GLM, MiniMax, and more.
@@ -307616,6 +307765,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [x402](https://www.agentrails.io/docs)
 >
 > HTTP-native USDC payments so agents can pay for APIs per request.
+
+> [card] [x402checkToolkit](https://x402check.dev)
+>
+> Preflight x402 seller endpoints before an agent pays (ok|caution|avoid plus payTo history). \$0.01 USDC on Base.
 
 > [card] [xaidr](https://github.com/delphisecurity/xaidr#langchain-middleware)
 >
@@ -310932,6 +311085,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`OnBaseToolkit`](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md#onbasetoolkit) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opendma/month)](https://pypi.org/project/langchain-opendma/) |
 | [`OpenDMAToolkit`](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opendma/month)](https://pypi.org/project/langchain-opendma/) |
 | [`Capsule`](https://github.com/mavdol/langchain-capsule) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-capsule/month)](https://pypi.org/project/langchain-capsule/) |
+| [`AHNLookupTool`](https://github.com/agent-help-network/agent-help-network/blob/main/clients/langchain-ahn/README.md) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ahn/month)](https://pypi.org/project/langchain-ahn/) |
 | [`TokPortalToolkit`](https://github.com/tokportal/langchain-tokportal) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tokportal/month)](https://pypi.org/project/langchain-tokportal/) |
 | [`TalorDataSerpTool`](https://docs.talordata.com/serp-api/integration/sdk-integration/how-to-set-up-talordata-with-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-talordata/month)](https://pypi.org/project/langchain-talordata/) |
 | [`generate_latam_financial_data`](https://github.com/jmendozapuche/langchain-latam-synth) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-latam-synth/month)](https://pypi.org/project/langchain-latam-synth/) |
@@ -311077,12 +311231,16 @@ The following table shows tools that generate video, image, or audio assets:
 | [`AgentLineToolkit`](https://docs.agentline.cloud/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentline/month)](https://pypi.org/project/langchain-agentline/) |
 | [`Delegare`](https://docs.delegare.dev/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-delegare/month)](https://pypi.org/project/langchain-delegare/) |
 | [`Toolstem`](https://toolstem.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-toolstem/month)](https://pypi.org/project/langchain-toolstem/) |
+| [`NextmailToolkit`](https://nextmail.sh/docs/python/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nextmail/month)](https://pypi.org/project/langchain-nextmail/) |
+| [`Arche`](https://pypi.org/project/langchain-arche/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-arche/month)](https://pypi.org/project/langchain-arche/) |
 | [`AgentRAMTools`](https://github.com/seanmarkwei/langgraph-agentram) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-agentram/month)](https://pypi.org/project/langgraph-agentram/) |
+| [`GroundTruthCompanyLookup`](https://pypi.org/project/langchain-groundtruth/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-groundtruth/month)](https://pypi.org/project/langchain-groundtruth/) |
 | [`scoutwyze_rank`](https://github.com/scoutwyze-max/scoutwyze-compute/blob/main/examples/README.md) | [  ![Downloads per month](https://static.pepy.tech/badge/scoutwyze-compute/month)](https://pypi.org/project/scoutwyze-compute/) |
 | [`Hlido`](https://hlido.eu/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/hlido-trust/month)](https://pypi.org/project/hlido-trust/) |
 | [`TempGuru`](https://tempguru.co/ai-agents) | [  ![Downloads per month](https://static.pepy.tech/badge/tempguru/month)](https://pypi.org/project/tempguru/) |
 | [`Solvecha`](https://github.com/Solvecha/solvecha-skills/tree/main/python) | [  ![Downloads per month](https://static.pepy.tech/badge/solvecha/month)](https://pypi.org/project/solvecha/) |
 | [`VideoGenToolkit`](https://github.com/video-gen/langchain-videogen#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-videogen/month)](https://pypi.org/project/langchain-videogen/) |
+| [`x402checkToolkit`](https://x402check.dev) | N/A |
 | [`AgentLair`](https://agentlair.dev/docs) | N/A |
 | [`Browserless`](https://browserless.io) | N/A |
 | [`FokalsToolkit`](https://github.com/fokals/langchain-fokals#readme) | N/A |
@@ -338912,7 +339070,7 @@ All LangChain agents automatically support LangSmith tracing. To enable it, set 
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 export LANGSMITH_TRACING=true
 export LANGSMITH_API_KEY=<your-api-key>
 ```
@@ -340287,7 +340445,7 @@ Sign up for a [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_mediu
 
 ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 export LANGSMITH_TRACING="true"
 export LANGSMITH_API_KEY="..."
 ```
@@ -344410,7 +344568,7 @@ Studio requires a LangSmith API key to connect your local agent. Create a `.env`
 ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_API_KEY=lsv2...
 LANGSMITH_AGENT_ID="<your-agent-id>"
-LANGSMITH_AGENT_ENVIRONMENT="production"
+LANGSMITH_AGENT_ENVIRONMENT="local"
 ```
 
 ### 4. Create a LangGraph config file
@@ -356400,7 +356558,7 @@ You will find a `.env.example` in the root of your new LangGraph app. Create a `
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_API_KEY=lsv2...
 LANGSMITH_AGENT_ID="<your-agent-id>"
-LANGSMITH_AGENT_ENVIRONMENT="production"
+LANGSMITH_AGENT_ENVIRONMENT="local"
 ```
 
 ## 5. Launch Agent server
@@ -356580,7 +356738,7 @@ To enable tracing for your agent, set the following environment variables:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_AGENT_ID="<your-agent-id>"
-export LANGSMITH_AGENT_ENVIRONMENT="production"
+export LANGSMITH_AGENT_ENVIRONMENT="local"
 export LANGSMITH_TRACING=true
 export LANGSMITH_API_KEY=<your-api-key>
 ```
@@ -360591,7 +360749,7 @@ Studio requires a LangSmith API key to connect your local agent. Create a `.env`
 ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_API_KEY=lsv2...
 LANGSMITH_AGENT_ID="<your-agent-id>"
-LANGSMITH_AGENT_ENVIRONMENT="production"
+LANGSMITH_AGENT_ENVIRONMENT="local"
 ```
 
 ### 4. Create a LangGraph config file

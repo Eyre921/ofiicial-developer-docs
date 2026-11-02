@@ -101,6 +101,103 @@ Validation Error
 
 ### ConvAiStoredSecretDependenciesMcpServersItems
 
+- `type`: `avail> This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.
+
+# Get secret
+
+GET https://api.elevenlabs.io/v1/convai/secrets/{secret_id}
+
+Get a workspace secret by ID
+
+Reference: https://elevenlabs.io/docs/api-reference/workspace/secrets/get
+
+## Servers
+
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
+
+## Request
+
+### Path parameters
+
+- `secret_id` (string, required)
+
+## Response
+
+### 200
+
+Successful Response
+
+- `type` ("stored", required)
+- `secret_id` (string, required)
+- `name` (string, required)
+- `used_by` (ConvAIStoredSecretDependencies, required)
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ConvAIStoredSecretDependencies
+
+- `tools` (list of ConvAiStoredSecretDependenciesToolsItems, required)
+- `agents` (list of ConvAiStoredSecretDependenciesAgentsItems, required)
+- `others` (list of enum, required)
+  - Allowed values: `conversation_initiation_webhook`
+- `tools_has_more` (boolean, optional, default: false) — Whether there are more tool dependents beyond the returned preview
+- `agents_has_more` (boolean, optional, default: false) — Whether there are more agent dependents beyond the returned preview
+- `phone_numbers` (list of DependentPhoneNumberIdentifier, optional)
+- `phone_numbers_has_more` (boolean, optional, default: false) — Whether there are more phone number dependents beyond the returned preview
+- `mcp_servers` (list of ConvAiStoredSecretDependenciesMcpServersItems, optional)
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ConvAiStoredSecretDependenciesToolsItems
+
+- `type`: `available` (DependentAvailableToolIdentifier)
+  - `access_level` (enum, required)
+    - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+  - `created_at_unix_secs` (integer, required)
+  - `id` (string, required)
+  - `name` (string, required)
+- `type`: `unknown` (DependentUnknownToolIdentifier)
+  - `id` (string, required)
+
+### ConvAiStoredSecretDependenciesAgentsItems
+
+- `type`: `available` (DependentAvailableAgentIdentifier)
+  - `access_level` (enum, required)
+    - Allowed values: `admin`, `editor`, `commenter`, `viewer`
+  - `created_at_unix_secs` (integer, required)
+  - `id` (string, required)
+  - `name` (string, required)
+  - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
+- `type`: `unknown` (DependentUnknownAgentIdentifier)
+  - `id` (string, required)
+  - `referenced_resource_ids` (list of string, optional) — If the agent is a transitive dependent, contains IDs of the resources that the agent depends on directly.
+
+### DependentPhoneNumberIdentifier
+
+- `phone_number_id` (string, required)
+- `phone_number` (string, required)
+- `label` (string, required)
+- `provider` (enum, required)
+  - Allowed values: `twilio`, `sip_trunk`, `exotel`
+
+### ConvAiStoredSecretDependenciesMcpServersItems
+
 - `type`: `available` (DependentAvailableMCPServerIdentifier)
   - `access_level` (enum, required)
     - Allowed values: `admin`, `editor`, `commenter`, `viewer`
