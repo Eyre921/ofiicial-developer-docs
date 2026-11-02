@@ -10,11 +10,11 @@ Fireworks AI integrates with industry-leading MLOps and observability platforms 
 
 ## Supported Platforms
 
-> **[Weights & Biases](/ecosystem/integrations/wandb)**
+> [card] [Weights & Biases](/ecosystem/integrations/wandb)
 >
 > Track training experiments and visualize training metrics with W\&B
 
-> **[MLflow](https://mlflow.org/docs/latest/genai/tracing/integrations/listing/fireworksai/)**
+> [card] [MLflow](https://mlflow.org/docs/latest/genai/tracing/integrations/listing/fireworksai/)
 >
 > Mlflow Tracing to track prompts, outputs, latency etc as your build AI applications with FireworksAI
 

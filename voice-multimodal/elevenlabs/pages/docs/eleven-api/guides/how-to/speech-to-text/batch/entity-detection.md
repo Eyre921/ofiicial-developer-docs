@@ -267,6 +267,11 @@ The `entity_redaction_mode` parameter controls the marker format:
 >
 > Entity detection and redaction are not supported with the `combined` multichannel output style.
 
+Entity redaction also works with Scribe v2 Realtime: pass `entity_redaction` and
+`entity_redaction_mode` as query parameters, in the same format as above. Each committed transcript
+is then followed by a `redacted_transcript` event carrying the original `text` and the
+`redacted_text`. See the [realtime event reference](/docs/eleven-api/guides/how-to/speech-to-text/realtime/event-reference).
+
 ## Next steps
 
 #### [API reference](/docs/api-reference/speech-to-text)

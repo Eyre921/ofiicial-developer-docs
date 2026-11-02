@@ -23,4 +23,4 @@ Use bracket encoding to filter by more than one status or creator:
 ?status[]=active&status[]=expired&creator_ids[]=aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa
 ```
 
-To learn how PATs work and how members create them, see [Personal access tokens](/guides/get-started/personal-access-tokens).
+To learn how PATs work and how members create them, see [Personal access tokens](/guides/connections-and-tokens/personal-access-tokens).

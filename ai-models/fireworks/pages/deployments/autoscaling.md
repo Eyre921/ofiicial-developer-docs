@@ -31,49 +31,49 @@ When multiple targets are specified, the maximum replica count across all is use
 
 ## Common patterns
 
-**Cost optimization**
+> [tab] Cost optimization
+>
+> Scale to zero when idle to minimize costs:
+>
+> ```bash theme={null}
+> firectl deployment create <MODEL_NAME> \
+>   --deployment-shape default \
+>   --min-replica-count 0 \
+>   --max-replica-count 3 \
+>   --scale-to-zero-window 1h
+> ```
+>
+> Best for: Development, testing, or intermittent production workloads.
 
-Scale to zero when idle to minimize costs:
+> [tab] Performance-focused
+>
+> Keep replicas running for instant response:
+>
+> ```bash theme={null}
+> firectl deployment create <MODEL_NAME> \
+>   --deployment-shape default \
+>   --min-replica-count 2 \
+>   --max-replica-count 10 \
+>   --scale-up-window 15s \
+>   --load-targets concurrent_requests=5
+> ```
+>
+> Best for: Low-latency requirements, avoiding cold starts, high-traffic applications.
 
-```bash theme={null}
-firectl deployment create <MODEL_NAME> \
-  --deployment-shape default \
-  --min-replica-count 0 \
-  --max-replica-count 3 \
-  --scale-to-zero-window 1h
-```
-
-Best for: Development, testing, or intermittent production workloads.
-
-**Performance-focused**
-
-Keep replicas running for instant response:
-
-```bash theme={null}
-firectl deployment create <MODEL_NAME> \
-  --deployment-shape default \
-  --min-replica-count 2 \
-  --max-replica-count 10 \
-  --scale-up-window 15s \
-  --load-targets concurrent_requests=5
-```
-
-Best for: Low-latency requirements, avoiding cold starts, high-traffic applications.
-
-**Predictable traffic**
-
-Match known traffic patterns:
-
-```bash theme={null}
-firectl deployment create <MODEL_NAME> \
-  --deployment-shape default \
-  --min-replica-count 3 \
-  --max-replica-count 5 \
-  --scale-down-window 30m \
-  --load-targets tokens_generated_per_second=150
-```
-
-Best for: Steady workloads where you know typical load ranges.
+> [tab] Predictable traffic
+>
+> Match known traffic patterns:
+>
+> ```bash theme={null}
+> firectl deployment create <MODEL_NAME> \
+>   --deployment-shape default \
+>   --min-replica-count 3 \
+>   --max-replica-count 5 \
+>   --scale-down-window 30m \
+>   --load-targets tokens_generated_per_second=150
+> ```
+>
+> Best for: Steady workloads where you know typical load ranges.
 
 ## Scaling from zero behavior
 
@@ -97,110 +97,110 @@ When a deployment is scaled to zero and receives a request, the system immediate
 
 Implement retry logic with exponential backoff to gracefully handle scale-up delays:
 
-**Python**
+> [tab] Python
+>
+> ```python theme={null}
+> import time
+> import requests
+>
+> def query_deployment_with_retry(url, payload, max_retries=30, initial_delay=5):
+>     """Query a deployment with retry logic for scale-from-zero scenarios."""
+>     delay = initial_delay
+>
+>     for attempt in range(max_retries):
+>         response = requests.post(url, json=payload, headers=headers)
+>
+>         # Only retry if deployment is scaling up
+>         if response.status_code == 503:
+>             error_code = response.json().get("error", {}).get("code")
+>             if error_code == "DEPLOYMENT_SCALING_UP":
+>                 print(f"Deployment scaling up, retrying in {delay}s...")
+>                 time.sleep(delay)
+>                 delay = min(delay * 1.5, 60)  # Cap at 60 seconds
+>                 continue
+>
+>         response.raise_for_status()
+>         return response.json()
+>
+>     raise Exception("Deployment did not scale up in time")
+> ```
 
-```python theme={null}
-import time
-import requests
+> [tab] JavaScript
+>
+> ```javascript theme={null}
+> async function queryDeploymentWithRetry(url, payload, maxRetries = 30, initialDelay = 5000) {
+>   let delay = initialDelay;
+>
+>   for (let attempt = 0; attempt < maxRetries; attempt++) {
+>     const response = await fetch(url, {
+>       method: 'POST',
+>       headers: { 'Content-Type': 'application/json', ...headers },
+>       body: JSON.stringify(payload)
+>     });
+>
+>     // Only retry if deployment is scaling up
+>     if (response.status === 503) {
+>       const body = await response.json();
+>       if (body.error?.code === 'DEPLOYMENT_SCALING_UP') {
+>         console.log(`Deployment scaling up, retrying in ${delay/1000}s...`);
+>         await new Promise(resolve => setTimeout(resolve, delay));
+>         delay = Math.min(delay * 1.5, 60000); // Cap at 60 seconds
+>         continue;
+>       }
+>     }
+>
+>     if (!response.ok) throw new Error(`HTTP ${response.status}`);
+>     return response.json();
+>   }
+>
+>   throw new Error('Deployment did not scale up in time');
+> }
+> ```
 
-def query_deployment_with_retry(url, payload, max_retries=30, initial_delay=5):
-    """Query a deployment with retry logic for scale-from-zero scenarios."""
-    delay = initial_delay
-    
-    for attempt in range(max_retries):
-        response = requests.post(url, json=payload, headers=headers)
-        
-        # Only retry if deployment is scaling up
-        if response.status_code == 503:
-            error_code = response.json().get("error", {}).get("code")
-            if error_code == "DEPLOYMENT_SCALING_UP":
-                print(f"Deployment scaling up, retrying in {delay}s...")
-                time.sleep(delay)
-                delay = min(delay * 1.5, 60)  # Cap at 60 seconds
-                continue
-            
-        response.raise_for_status()
-        return response.json()
-    
-    raise Exception("Deployment did not scale up in time")
-```
-
-**JavaScript**
-
-```javascript theme={null}
-async function queryDeploymentWithRetry(url, payload, maxRetries = 30, initialDelay = 5000) {
-  let delay = initialDelay;
-  
-  for (let attempt = 0; attempt < maxRetries; attempt++) {
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', ...headers },
-      body: JSON.stringify(payload)
-    });
-    
-    // Only retry if deployment is scaling up
-    if (response.status === 503) {
-      const body = await response.json();
-      if (body.error?.code === 'DEPLOYMENT_SCALING_UP') {
-        console.log(`Deployment scaling up, retrying in ${delay/1000}s...`);
-        await new Promise(resolve => setTimeout(resolve, delay));
-        delay = Math.min(delay * 1.5, 60000); // Cap at 60 seconds
-        continue;
-      }
-    }
-    
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    return response.json();
-  }
-  
-  throw new Error('Deployment did not scale up in time');
-}
-```
-
-**curl**
-
-```bash theme={null}
-# Simple retry loop for scale-from-zero
-MAX_RETRIES=30
-RETRY_DELAY=5
-
-for i in $(seq 1 $MAX_RETRIES); do
-  response=$(curl -s -w "\n%{http_code}" \
-    https://api.fireworks.ai/inference/v1/chat/completions \
-    -H "Content-Type: application/json" \
-    -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-    -d '{"model": "accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>", ...}')
-  
-  http_code=$(echo "$response" | tail -n1)
-  body=$(echo "$response" | head -n -1)
-  
-  # Only retry if deployment is scaling up
-  if [ "$http_code" -eq 503 ]; then
-    error_code=$(echo "$body" | jq -r '.error.code // empty')
-    if [ "$error_code" = "DEPLOYMENT_SCALING_UP" ]; then
-      echo "Deployment scaling up, retrying in ${RETRY_DELAY}s..."
-      sleep $RETRY_DELAY
-      RETRY_DELAY=$((RETRY_DELAY * 2))
-      continue
-    fi
-
-    echo "$body"
-    exit 1
-  fi
-  
-  # Check for success (2xx status codes)
-  if [ "$http_code" -ge 200 ] && [ "$http_code" -lt 300 ]; then
-    echo "$body"
-    exit 0
-  fi
-
-  echo "$body"
-  exit 1
-done
-
-echo "Deployment did not scale up in time"
-exit 1
-```
+> [tab] curl
+>
+> ```bash theme={null}
+> # Simple retry loop for scale-from-zero
+> MAX_RETRIES=30
+> RETRY_DELAY=5
+>
+> for i in $(seq 1 $MAX_RETRIES); do
+>   response=$(curl -s -w "\n%{http_code}" \
+>     https://api.fireworks.ai/inference/v1/chat/completions \
+>     -H "Content-Type: application/json" \
+>     -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+>     -d '{"model": "accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>", ...}')
+>
+>   http_code=$(echo "$response" | tail -n1)
+>   body=$(echo "$response" | head -n -1)
+>
+>   # Only retry if deployment is scaling up
+>   if [ "$http_code" -eq 503 ]; then
+>     error_code=$(echo "$body" | jq -r '.error.code // empty')
+>     if [ "$error_code" = "DEPLOYMENT_SCALING_UP" ]; then
+>       echo "Deployment scaling up, retrying in ${RETRY_DELAY}s..."
+>       sleep $RETRY_DELAY
+>       RETRY_DELAY=$((RETRY_DELAY * 2))
+>       continue
+>     fi
+>
+>     echo "$body"
+>     exit 1
+>   fi
+>
+>   # Check for success (2xx status codes)
+>   if [ "$http_code" -ge 200 ] && [ "$http_code" -lt 300 ]; then
+>     echo "$body"
+>     exit 0
+>   fi
+>
+>   echo "$body"
+>   exit 1
+> done
+>
+> echo "Deployment did not scale up in time"
+> exit 1
+> ```
 
 > [!TIP]
 >

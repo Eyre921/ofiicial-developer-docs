@@ -115,22 +115,22 @@ Before the first structured question, the skills show a one-line privacy notice.
 
 ## See also
 
-> **[Case studies](https://github.com/fw-ai/cookbook/tree/main/training/case-studies)**
+> [card] [Case studies](https://github.com/fw-ai/cookbook/tree/main/training/case-studies)
 >
 > Runnable notebooks research routes to.
 
-> **[Training Overview](/fine-tuning/finetuning-intro#choose-a-surface)**
+> [card] [Training Overview](/fine-tuning/finetuning-intro#choose-a-surface)
 >
 > Compare managed training and the Training API.
 
-> **[Managed Training](/fine-tuning/managed-finetuning-intro)**
+> [card] [Managed Training](/fine-tuning/managed-finetuning-intro)
 >
 > Drive the same training infra directly when you know your config.
 
-> **[Training API](/fine-tuning/training-api/introduction)**
+> [card] [Training API](/fine-tuning/training-api/introduction)
 >
 > Write your own Python training loop on Fireworks GPUs.
 
-> **[CLI reference](/tools-sdks/firectl/firectl)**
+> [card] [CLI reference](/tools-sdks/firectl/firectl)
 >
 > Inspect managed training yourself with `firectl`.

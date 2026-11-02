@@ -21,8 +21,8 @@ View an archive of Notion Developers updates prior to September 2023
 
 **August 8 - August 22, 2023**
 
-* The [Build your first integration](/guides/get-started/quick-start) guide was rewritten with new demo code to help developers learn how to use Notion’s API even faster.
-  * A new [sample app](https://github.com/makenotion/notion-cookbook/tree/main/examples/web-form-with-express) was added to the [Notion SDK for JavaScript](https://github.com/makenotion/notion-sdk-js) `/examples` directory. This completed sample app is referenced in the new [Build your first integration](/guides/get-started/quick-start) guide.
+* The [Build your first integration](/guides/notion-api/quick-start) guide was rewritten with new demo code to help developers learn how to use Notion’s API even faster.
+  * A new [sample app](https://github.com/makenotion/notion-cookbook/tree/main/examples/web-form-with-express) was added to the [Notion SDK for JavaScript](https://github.com/makenotion/notion-sdk-js) `/examples` directory. This completed sample app is referenced in the new [Build your first integration](/guides/notion-api/quick-start) guide.
 * The description for the `block_id` path parameter was updated for the [Append block children](/reference/patch-block-children) endpoint to indicate that a block ID or page ID can be used.
 * A clarification was added to [documentation](/reference/retrieve-a-database) for retrieving/updating database properties: If a property is based on a relation to another database, the related database also needs to be shared with the integration.
 * A clarification was added to documentation for [querying databases](/reference/post-database-query-filter#multi-select). When filtering a multi-select property, the `contains` field will filter for exact matches for the string provided.
@@ -103,7 +103,7 @@ Keep an eye on this changelog for when the update becomes available in the Publi
 
 * A number of sample cURL commands in our docs were still using an old [Notion Version](/reference/versioning) in their headers. These have all been updated.
 
-* A clarification was added to the [Authorization guide](/guides/get-started/authorization#making-api-requests-with-an-internal-connection) that the [Notion Version](/reference/versioning) is always required in public API request headers.
+* A clarification was added to the [Authorization guide](/guides/authorization/overview#making-api-requests-with-an-internal-connection) that the [Notion Version](/reference/versioning) is always required in public API request headers.
 
 **July 11 - July 24, 2023**
 
@@ -114,12 +114,12 @@ Keep an eye on this changelog for when the update becomes available in the Publi
 
 The unique ID in a Notion page's properties
 
-* Workspace Owners can now see *all* internal integrations created in a workspace via the [integration dashboard](https://app.notion.com/developers/connections). This includes integrations created by themselves and other Workspace Owners. We’ve included this information in our [Getting Started](/guides/get-started/overview#connection-types) guide.
+* Workspace Owners can now see *all* internal integrations created in a workspace via the [integration dashboard](https://app.notion.com/developers/connections). This includes integrations created by themselves and other Workspace Owners. We’ve included this information in our [Getting Started](/guides/connections-and-tokens/overview#connection-types) guide.
 * A [Notion SDK for JavaScript](https://github.com/makenotion/notion-sdk-js) code sample was added to the [Create a database](/reference/create-a-database) endpoint documentation.
 
 **June 13 - July 10, 2023**
 
-* We updated our [Getting started guide](/guides/get-started/overview) to help developers who are new to the public API better understand how the API relates to integrations.
+* We updated our [Getting started guide](/guides/connections-and-tokens/overview) to help developers who are new to the public API better understand how the API relates to integrations.
 * The [Block object](/reference/block#embed) docs were updated with a tip on how to embed Vimeo links in a Notion page via the API.
 * A new `after` parameter has been added to the [Append block children](/reference/patch-block-children) endpoint. Developers can now specific where to append a new block, instead of appending it to the end of a parent block by default.
   ```bash cURL theme={null}
@@ -134,7 +134,7 @@ The unique ID in a Notion page's properties
     ], after: "<block_id_to_append_after>"
   }'
   ```
-* The [Authorization guide](/guides/get-started/authorization) had a clarification added to help developers find the resources they need for Link Preview integrations.
+* The [Authorization guide](/guides/authorization/overview) had a clarification added to help developers find the resources they need for Link Preview integrations.
 * The new `public_url` property was added to the docs. When a page or database has been shared publicly, the response body will include a `public_url` value.
   ```json JSON theme={null}
   {
@@ -162,7 +162,7 @@ The unique ID in a Notion page's properties
 
 * Our guides and docs related to Link Preview integrations have been updated to help developers find the information they need faster. Improvements have been made to the following guides and API reference docs:
 
-  * [Getting started guide](/guides/get-started/overview)
+  * [Getting started guide](/guides/connections-and-tokens/overview)
   * [Introduction to Link Previews guide](/guides/link-previews/introduction)
   * Link Preview integration guide
   * [Unfurl attribute object docs](/reference/unfurl-attribute-object)
@@ -208,14 +208,14 @@ notion.databases.query({
 * Link Preview integration docs were updated to reflect a change regarding how link previews are enabled in the [integration dashboard](https://app.notion.com/developers/connections).
 * The [versioning page](/reference/versioning) was updated to clarify that the `Notion-Version` header is required in Notion REST API requests.
 * The [parent object page](/reference/parent-object) and API reference docs for [database POST requests](/reference/create-a-database) and [blocks PATCH requests](/reference/patch-block-children) were updated to better explain how parenting rules work.
-* The [Integration guide](/guides/get-started/quick-start) was updated with more links to help developers find resources faster.
+* The [Integration guide](/guides/notion-api/quick-start) was updated with more links to help developers find resources faster.
 * Number database properties now support the Peruvian sol as a currency format. To use it, set `"peruvian_sol"` as the value for a number’s `format` field when creating or updating a database property or [schema](/reference/property-schema-object#number-configuration).
 * General docs housekeeping, such reducing the number of callouts in our API reference docs to improve the readability.
 
 **March 14 - April 17, 2023**
 
 * Our developer community Slack invite link was updated. [Join here](https://join.slack.com/t/notiondevs/shared_invite/zt-3u9oid9q8-HLUBmMVWYK~g9HFo4U4raA) to connect with other developers building with the Notion API.
-* The [Authorization guide](/guides/get-started/authorization) was updated to include more information on creating integrations, adding templates to public integrations, and more code examples to get you started, faster.
+* The [Authorization guide](/guides/authorization/overview) was updated to include more information on creating integrations, adding templates to public integrations, and more code examples to get you started, faster.
 * We’ve added more code examples to our API reference docs, including [Archive a page](/reference/archive-a-page) and [Authentication](/reference/authentication).
 * General docs housekeeping, such reducing the number of callouts in our API reference docs to improve the readability.
 
@@ -280,7 +280,7 @@ We took advantage of the US Thanksgiving holiday to host a mini internal hackath
 
 Nothing to share from that, yet! It’s been a quiet few weeks.
 
-If you want something to read while you stay tuned for the next update, check out the revised [Get started](/guides/get-started/overview) guide.
+If you want something to read while you stay tuned for the next update, check out the revised [Get started](/guides/connections-and-tokens/overview) guide.
 
 **November 8 - 21, 2022**
 
@@ -292,7 +292,7 @@ If you want something to read while you stay tuned for the next update, check ou
 
 **October 11 - 24, 2022**
 
-* You can now add a Notion template option to a public integration from the [integration's settings page](https://app.notion.com/developers/connections). For details on what the permissions flow looks like for users who opt in to the template, refer to the [Authorization guide](/guides/get-started/authorization).
+* You can now add a Notion template option to a public integration from the [integration's settings page](https://app.notion.com/developers/connections). For details on what the permissions flow looks like for users who opt in to the template, refer to the [Authorization guide](/guides/authorization/overview).
 
 **September 26 - October 10, 2022**
 
@@ -306,7 +306,7 @@ Started an experiment to improve [search endpoint](/reference/post-search) perfo
 **August 29 - September 11, 2022**
 
 * Fixed a bug where date mentions ended in a `→` character even if they only represented a single date, not a date range.
-* Added an `Authorization URL` field to the public integration form. You can now click to copy the URL that allows users to authorize your integration (read more in the [Authorization guide](/guides/get-started/authorization)).
+* Added an `Authorization URL` field to the public integration form. You can now click to copy the URL that allows users to authorize your integration (read more in the [Authorization guide](/guides/authorization/overview)).
 * Corrected an error that caused the [`getProperty` endpoint](/reference/retrieve-a-page-property) to return only one item if the `property_id` belonged to a multi-item [`Files`](/reference/property-item-object#files) page property.
 
 **August 31, 2022**
@@ -1341,7 +1341,7 @@ All existing integrations will continue to have the same functionality as before
 
 ### Updating integrations
 
-Update the capabilities on an existing integration through [integrations dashboard](https://app.notion.com/developers/connections). After updating a public integration's capabilities, users will need to re-authenticate with the integration to apply the new capabilities to their installation. After re-authenticating a public integration with changed capabilities, or updating an internal integration with changed capabilities, the new capabilities will apply to all pages already shared with the integration. For more information on setting capabilities see the [Authorization](/guides/get-started/authorization) guide.
+Update the capabilities on an existing integration through [integrations dashboard](https://app.notion.com/developers/connections). After updating a public integration's capabilities, users will need to re-authenticate with the integration to apply the new capabilities to their installation. After re-authenticating a public integration with changed capabilities, or updating an internal integration with changed capabilities, the new capabilities will apply to all pages already shared with the integration. For more information on setting capabilities see the [Authorization](/guides/authorization/overview) guide.
 
 **December 14, 2021**
 
@@ -3204,7 +3204,7 @@ curl --location --request POST 'https://api.notion.com/v1/databases/' \
 
 ### OAuth token response now includes workspace ID and owner info
 
-We now return a `workspace_id` field and an `owner` in the [token response](/guides/get-started/authorization) at the very end of the OAuth authorization flow.
+We now return a `workspace_id` field and an `owner` in the [token response](/guides/authorization/overview) at the very end of the OAuth authorization flow.
 
 `workspace_id` is the ID of the workspace where the integration was authorized. As a reminder, this is **not** intended to be unique across tokens; in future iterations of our authorization flow users may be able to authorize your integration multiple times in the same workspace.
 
@@ -3955,7 +3955,7 @@ To illustrate this change, here is an example of how the [page object](/referenc
 
 ### Initial users may reauthorize a public integration using OAuth
 
-Public integrations use OAuth to [request authorization from a user](/guides/get-started/authorization) before being added to a Notion workspace. Previously, once an integration was added to a workspace, no users were able to reauthorize the same integration in that workspace. This change allows the user who initially added the integration to complete the authorization flow more than once. This improvement helps integrations avoid a potential dead end in user flows.
+Public integrations use OAuth to [request authorization from a user](/guides/authorization/overview) before being added to a Notion workspace. Previously, once an integration was added to a workspace, no users were able to reauthorize the same integration in that workspace. This change allows the user who initially added the integration to complete the authorization flow more than once. This improvement helps integrations avoid a potential dead end in user flows.
 
 Integrations do not need to make any updates to take advantage of this new capability. An integration may simply link or redirect a user to the authorization URL, the same as the first authorization. During reauthorization the user will not see the page picker. The access token received at the end of reauthorization will be the same as the initial access token. This capability is available immediately.
 
@@ -3967,7 +3967,7 @@ Please be aware that other previous limitations still exist. Only users with adm
 
 The Notion API is now available for all developers to explore and build upon. Integrations built on the API are available to all Notion users, on free or paid plans.
 
-In this public beta release, you'll find many of the fundamental parts of Notion: reading and writing to pages, working with users, and the deep and powerful world of Notion databases. The API itself offers foundational features such as authorization, pagination, limits, and more. This is enough to build many interesting integrations we've heard Notion users are excited to use. We're excited to see what you'll build for all of us. [→ Get started](/guides/get-started/overview)
+In this public beta release, you'll find many of the fundamental parts of Notion: reading and writing to pages, working with users, and the deep and powerful world of Notion databases. The API itself offers foundational features such as authorization, pagination, limits, and more. This is enough to build many interesting integrations we've heard Notion users are excited to use. We're excited to see what you'll build for all of us. [→ Get started](/guides/connections-and-tokens/overview)
 
 Our goal is to establish that the Notion API is robust, easy to use, and trustworthy. In public beta, we’ll continue to add new features and making significant changes based on your feedback. Once the most important improvements are included, the API will transition from public beta to general availability. you’ll have everything you need to build integrations teams and businesses can depend on.
 
@@ -3985,7 +3985,7 @@ Public integrations use OAuth to request permission to access pages and database
 
 Existing integrations are now known as internal integrations. We no longer call the bearer token you previously used an API Key. It's now known as an integration token. You can keep your bearer token around - it will continue to work just the same.
 
-Learn how to implement these changes in the [authorization guide](/guides/get-started/authorization).
+Learn how to implement these changes in the [authorization guide](/guides/authorization/overview).
 
 **May 3, 2021**
 

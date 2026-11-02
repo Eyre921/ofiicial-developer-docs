@@ -1,33 +1,65 @@
 ---
-title: "Notion MCP"
+title: "Overview"
 source: https://developers.notion.com/guides/mcp/overview
 path: guides/mcp/overview
 ---
 
-Learn how MCP clients connect to your Notion workspace.
+Connect your AI assistant to Notion with MCP to manage projects and tasks, work with meeting notes, and create documents with your team.
 
-Notion MCP lets an [MCP client](/guides/mcp/common-mcp-clients), such as Claude Code, Cursor, or Codex, connect to your Notion workspace through the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction).
+Notion MCP lets your AI assistant find answers in your workspace, turn notes into documents, and manage your projects in Notion. Connect an [MCP client](/guides/mcp/get-started-with-mcp), such as Claude, ChatGPT, and Gemini, through the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction).
 
-## How Notion MCP works
+## What you can do with Notion MCP
 
-Notion MCP is a remote MCP server hosted by Notion. After you authorize a connection with OAuth, the MCP client can use Notion MCP tools to read and update content that you can access.
+Notion MCP lets your AI assistant search your workspace, create and edit pages, and manage databases. Describe what you need, and your AI assistant can find the relevant pages in Notion.
 
-![Diagram showing an MCP client connecting to Notion's remote MCP server, which uses the Notion API.](https://mintcdn.com/notion-demo/LHm9qfrJYJOPRxs6/images/docs/97125b4c4172e71d0a2293523ebf17424f7fec9fab5852d4b6c0eba2eaa0200d-image.png?fit=max\&auto=format\&n=LHm9qfrJYJOPRxs6\&q=85\&s=d562ef536d8a47c8d67111577be2521b)
+> [tab] Manage a project
+>
+> Keep tasks, owners, deadlines, and decisions together so your team can see the next milestone and what needs attention.
+>
+> ![Project page in Notion with a milestone, team members, and a task database showing status, assignee, and due date.](https://mintcdn.com/notion-demo/o9cdC3F9gTOhAbYs/images/docs/mcp-project-example.png?fit=max\&auto=format\&n=o9cdC3F9gTOhAbYs\&q=85\&s=74bbf078578d0e31a5838e1b5827fb81)
+>
+> Set up my project in Notion with a task tracker, milestones, and linked docs and meeting notes. Use the project details from our conversation.
+>
+> Set up my project in Notion with a task tracker, milestones, and linked docs and meeting notes. Use the project details from our conversation.
 
-An MCP client connects to Notion's remote MCP server, which uses the [Notion API](/reference/intro).
+> [tab] Track a release
+>
+> Connect release tasks to specs and runbooks, and summarize progress and blockers before rollout.
+>
+> ![Release page in Notion showing a rollout decision, a work-by-status chart, and tasks with priorities and engineers.](https://mintcdn.com/notion-demo/o9cdC3F9gTOhAbYs/images/docs/mcp-release-example.png?fit=max\&auto=format\&n=o9cdC3F9gTOhAbYs\&q=85\&s=89eec06c5b30079cb30f51256ecb60e0)
+>
+> Create a release tracker in Notion from our specs and tasks. Show work by status, highlight blockers, and link the relevant decisions and runbooks.
+>
+> Create a release tracker in Notion from our specs and tasks. Show work by status, highlight blockers, and link the relevant decisions and runbooks.
 
-## What you can do
+> [tab] Manage content
+>
+> Connect campaign briefs, drafts, and brand resources so your team can track publish dates and see what’s ready for review.
+>
+> ![Campaign studio in Notion with active campaign cards showing status, dates, and owners, plus content ready for editorial review.](https://mintcdn.com/notion-demo/o9cdC3F9gTOhAbYs/images/docs/mcp-content-example.png?fit=max\&auto=format\&n=o9cdC3F9gTOhAbYs\&q=85\&s=891dfae88a5e631b9be0d796ea403c46)
+>
+> Organize our marketing content in Notion using the campaign details from our conversation. Connect campaign briefs and drafts, track owners and publish dates, and create a view of content ready for review.
+>
+> Organize our marketing content in Notion using the campaign details from our conversation. Connect campaign briefs and drafts, track owners and publish dates, and create a view of content ready for review.
 
-MCP clients can combine Notion MCP tools to:
+> [card] [Explore more skills](https://github.com/makenotion/notion-cookbook/tree/main/skills/mcp-clients)
+>
+> Find reusable skills and examples for preparing meetings, planning marketing campaigns, and writing project updates with your AI assistant.
 
-* Search content in Notion and connected sources.
-* Read, create, and update Notion content.
-* Create pages and databases.
+## Next steps
 
-See [Supported tools](/guides/mcp/mcp-supported-tools) for the current tool list, or [connect an MCP client](/guides/mcp/get-started-with-mcp).
+> [card] [Connect your AI assistant](/guides/mcp/get-started-with-mcp)
+>
+> Set up a connection to Notion MCP in your AI assistant.
 
-## Admin controls
+> [card] [Explore supported tools](/guides/mcp/mcp-supported-tools)
+>
+> See which tools Notion MCP provides and what each one can do.
 
-Workspace owners can manage MCP client access in **Settings** → **Notion MCP** → **Manage workspace clients**. Limiting which clients members can connect needs the Enterprise plan. Organization owners can also use the Admin API to [list](/reference/admin/list-mcp-client-connections) and [revoke](/reference/admin/revoke-mcp-client-connection) members' connections.
+> [card] [Use your Notion Skills](/guides/mcp/notion-skills)
+>
+> Create Skills in Notion, share them with teammates, and use them in any AI assistant connected to Notion MCP.
 
-See [Admin controls for MCP](https://www.notion.com/help/notion-mcp#admin-controls-for-mcp) in the Notion Help Center for workspace settings and allowlists.
+> [card] [Understand admin controls](https://www.notion.com/help/notion-mcp#admin-controls-for-mcp)
+>
+> Manage MCP clients and understand how workspace members use Notion MCP.

@@ -70,7 +70,7 @@ print(response.choices[0].message.tool_calls)
 >
 > For best results with tool calling, use a low temperature (0.0-0.3) to reduce hallucinated parameter values and ensure more deterministic tool selection.
 
-> **Complete workflow: Execute tools and get final response**
+> [accordion] Complete workflow: Execute tools and get final response
 >
 > ```python theme={null}
 > import json
@@ -161,7 +161,7 @@ JSON Schema supports: `string`, `number`, `integer`, `object`, `array`, `boolean
 >
 > The same JSON Schema feature set is supported in tool `parameters` and in `response_format={"type": "json_schema", ...}`. See [JSON Schema Support](/structured-responses/structured-response-formatting#json-schema-support) for the full list, including the rules for resolving `$ref` and how to reach definitions placed inside nested subschemas.
 
-> **Example: parameters that reuse a subschema via `$defs`**
+> [accordion] Example: parameters that reuse a subschema via `$defs`
 >
 > A common shape produced by pydantic v2, Instructor, and LangChain `TypeAdapter`. The `$defs` block holds the reusable subschemas and properties reference them by `$ref`:
 >
@@ -187,7 +187,7 @@ JSON Schema supports: `string`, `number`, `integer`, `object`, `array`, `boolean
 > }]
 > ```
 
-> **Example: Defining multiple tools**
+> [accordion] Example: Defining multiple tools
 >
 > ```python theme={null}
 > tools = [
@@ -269,7 +269,7 @@ response = client.chat.completions.create(
 
 ## Streaming
 
-> **Using tool calls with streaming responses**
+> [accordion] Using tool calls with streaming responses
 >
 > Tool calls work with streaming responses. Arguments are sent incrementally as the model generates them:
 >
@@ -327,27 +327,27 @@ response = client.chat.completions.create(
 
 ## Troubleshooting
 
-> **Model isn't calling tools when expected**
+> [accordion] Model isn't calling tools when expected
 >
 > * Check that your tool descriptions are clear and detailed
 > * Ensure the user query clearly indicates a need for the tool
 > * Try using `tool_choice="required"` to force tool usage
 > * Verify your model supports tool calling (check `supportsTools` field)
 
-> **Tool arguments are incorrect or malformed**
+> [accordion] Tool arguments are incorrect or malformed
 >
 > * Add more detailed parameter descriptions
 > * Use lower temperature (0.0-0.3) for more deterministic outputs
 > * Provide examples in parameter descriptions
 > * Use `enum` to constrain values to specific options
 
-> **Getting JSON parsing errors**
+> [accordion] Getting JSON parsing errors
 >
 > * Always validate tool call arguments before parsing
 > * Handle partial or malformed JSON gracefully in production
 > * Use try-catch blocks when parsing `tool_call.function.arguments`
 
-> **400 "Error resolving schema reference" or "Error validating JSON Schema"**
+> [accordion] 400 "Error resolving schema reference" or "Error validating JSON Schema"
 >
 > The schema in `parameters` (or `response_format`) is reaching a `$ref` Fireworks cannot resolve. Common causes:
 >
@@ -359,18 +359,18 @@ response = client.chat.completions.create(
 
 ## Next steps
 
-> **[Structured Outputs](/structured-responses/structured-response-formatting)**
+> [card] [Structured Outputs](/structured-responses/structured-response-formatting)
 >
 > Enforce JSON schemas for consistent responses
 
-> **[Text Models](/guides/querying-text-models)**
+> [card] [Text Models](/guides/querying-text-models)
 >
 > Learn about chat completions and other APIs
 
-> **[Deployments](/guides/ondemand-deployments)**
+> [card] [Deployments](/guides/ondemand-deployments)
 >
 > Deploy models on dedicated GPUs
 
-> **[API Reference](/api-reference/post-chatcompletions)**
+> [card] [API Reference](/api-reference/post-chatcompletions)
 >
 > Full chat completions API documentation

@@ -18,23 +18,23 @@ Fireworks Enterprise accounts can use additional governance and administration f
 
 ## Available features
 
-> **[Model access policy](/accounts/model-access-policy)**
+> [card] [Model access policy](/accounts/model-access-policy)
 >
 > Restrict which models users on your account can use for serverless inference, Fast mode, dedicated deployments, and training.
 
-> **[Data residency](/accounts/data-residency)**
+> [card] [Data residency](/accounts/data-residency)
 >
 > Restrict inference and training data processing to a selected region for the account.
 
-> **[Zero Data Retention policy](/accounts/zero-data-retention)**
+> [card] [Zero Data Retention policy](/accounts/zero-data-retention)
 >
 > Reject requests and jobs that would persist or log customer content.
 
-> **[Custom SSO](/accounts/sso)**
+> [card] [Custom SSO](/accounts/sso)
 >
 > Bring your own OpenID Connect or SAML identity provider for enterprise authentication.
 
-> **[Audit & access logs](/guides/security_compliance/audit_logs)**
+> [card] [Audit & access logs](/guides/security_compliance/audit_logs)
 >
 > Monitor API and data-access activity across your account for security review and compliance.
 

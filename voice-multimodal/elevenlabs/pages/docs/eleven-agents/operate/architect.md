@@ -70,7 +70,9 @@ Spotlight cards hand off to Architect with buttons such as **Analyze with Archit
 
 ## Availability
 
-Architect is in alpha. Some surfaces, such as the per-agent Architect tab and the triage queue, are being rolled out gradually and may not appear in every workspace yet. Architect is free to use during the alpha period, which runs through October 2026. During the alpha, Architect conversations do not count against your workspace's agent minutes or LLM cost. Check the [pricing page](https://elevenlabs.io/pricing) for terms after the alpha ends.
+Architect is available on paid plans.
+
+Architect usage is billed from your workspace's credits as its own Architect line item, separate from your agents' minutes and LLM cost. Self-serve plans include one Premium conversation per user per day, and Enterprise plans run on Premium by default. See [Pricing and usage](/docs/eleven-agents/operate/architect/pricing) for how billing works and how to control who can use Architect.
 
 Some limits apply:
 
@@ -118,6 +120,10 @@ Give Architect durable context about your agent and how you work.
 #### [Claude, Cursor, and other AI assistants](/docs/eleven-agents/operate/architect/external-assistants)
 
 Manage agents from outside the ElevenLabs dashboard.
+
+#### [Pricing and usage](/docs/eleven-agents/operate/architect/pricing)
+
+How Architect is billed, Premium and Lite, and controlling access.
 
 #### [Limitations and FAQ](/docs/eleven-agents/operate/architect/faq)
 

@@ -14,17 +14,17 @@ Before you begin, create an API key in the [Fireworks dashboard](https://app.fir
 
 Once you have your API key, export it as an environment variable in your terminal:
 
-**macOS / Linux**
+> [tab] macOS / Linux
+>
+> ```bash theme={null}
+> export FIREWORKS_API_KEY="your_api_key_here"
+> ```
 
-```bash theme={null}
-export FIREWORKS_API_KEY="your_api_key_here"
-```
-
-**Windows**
-
-```powershell theme={null}
-setx FIREWORKS_API_KEY "your_api_key_here"
-```
+> [tab] Windows
+>
+> ```powershell theme={null}
+> setx FIREWORKS_API_KEY "your_api_key_here"
+> ```
 
 ## Step 2: Install the CLI
 
@@ -124,105 +124,105 @@ Take note of the `Name:` field in the response, as it will be used in the next s
 
 Now you can query your on-demand deployment using the same API as serverless models, but using your dedicated deployment. Replace `<DEPLOYMENT_NAME>` in the below snippets with the value from the `Name:` field in the previous step:
 
-**Python (Fireworks SDK)**
-
-Install the [Fireworks Python SDK](/tools-sdks/python-sdk):
-
-> [!NOTE]
+> [tab] Python (Fireworks SDK)
 >
-> The SDK is currently in alpha. Use the `--pre` flag when installing to get the latest version.
+> Install the [Fireworks Python SDK](/tools-sdks/python-sdk):
+>
+> > [!NOTE]
+> >
+> > The SDK is currently in alpha. Use the `--pre` flag when installing to get the latest version.
+>
+> ```bash pip theme={null}
+> pip install --pre fireworks-ai
+> ```
+>
+> ```bash poetry theme={null}
+> poetry add --pre fireworks-ai
+> ```
+>
+> ```bash uv theme={null}
+> uv add --pre fireworks-ai
+> ```
+>
+> Then make your first on-demand API call:
+>
+> ```python theme={null}
+> from fireworks import Fireworks
+>
+> client = Fireworks()
+>
+> response = client.chat.completions.create(
+>     model="accounts/fireworks/models/gpt-oss-120b#<DEPLOYMENT_NAME>",
+>     messages=[{
+>         "role": "user",
+>         "content": "Explain quantum computing in simple terms",
+>     }],
+> )
+>
+> print(response.choices[0].message.content)
+> ```
 
-```bash pip theme={null}
-pip install --pre fireworks-ai
-```
+> [tab] Python (OpenAI SDK)
+>
+> ```python theme={null}
+> import os
+> from openai import OpenAI
+>
+> client = OpenAI(
+>     api_key=os.environ.get("FIREWORKS_API_KEY"),
+>     base_url="https://api.fireworks.ai/inference/v1"
+> )
+>
+> response = client.chat.completions.create(
+>     model="<DEPLOYMENT_NAME>",
+>     messages=[{
+>         "role": "user",
+>         "content": "Explain quantum computing in simple terms",
+>     }],
+> )
+>
+> print(response.choices[0].message.content)
+> ```
 
-```bash poetry theme={null}
-poetry add --pre fireworks-ai
-```
+> [tab] JavaScript
+>
+> ```javascript theme={null}
+> import OpenAI from "openai";
+>
+> const client = new OpenAI({
+>   apiKey: process.env.FIREWORKS_API_KEY,
+>   baseURL: "https://api.fireworks.ai/inference/v1",
+> });
+>
+> const response = await client.chat.completions.create({
+>   model: "<DEPLOYMENT_NAME>",
+>   messages: [
+>     {
+>       role: "user",
+>       content: "Explain quantum computing in simple terms",
+>     },
+>   ],
+> });
+>
+> console.log(response.choices[0].message.content);
+> ```
 
-```bash uv theme={null}
-uv add --pre fireworks-ai
-```
-
-Then make your first on-demand API call:
-
-```python theme={null}
-from fireworks import Fireworks
-
-client = Fireworks()
-
-response = client.chat.completions.create(
-    model="accounts/fireworks/models/gpt-oss-120b#<DEPLOYMENT_NAME>",
-    messages=[{
-        "role": "user",
-        "content": "Explain quantum computing in simple terms",
-    }],
-)
-
-print(response.choices[0].message.content)
-```
-
-**Python (OpenAI SDK)**
-
-```python theme={null}
-import os
-from openai import OpenAI
-
-client = OpenAI(
-    api_key=os.environ.get("FIREWORKS_API_KEY"),
-    base_url="https://api.fireworks.ai/inference/v1"
-)
-
-response = client.chat.completions.create(
-    model="<DEPLOYMENT_NAME>",
-    messages=[{
-        "role": "user",
-        "content": "Explain quantum computing in simple terms",
-    }],
-)
-
-print(response.choices[0].message.content)
-```
-
-**JavaScript**
-
-```javascript theme={null}
-import OpenAI from "openai";
-
-const client = new OpenAI({
-  apiKey: process.env.FIREWORKS_API_KEY,
-  baseURL: "https://api.fireworks.ai/inference/v1",
-});
-
-const response = await client.chat.completions.create({
-  model: "<DEPLOYMENT_NAME>",
-  messages: [
-    {
-      role: "user",
-      content: "Explain quantum computing in simple terms",
-    },
-  ],
-});
-
-console.log(response.choices[0].message.content);
-```
-
-**curl**
-
-```bash theme={null}
-curl https://api.fireworks.ai/inference/v1/chat/completions \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-  -d '{
-    "model": "<DEPLOYMENT_NAME>",
-    "messages": [
-      {
-        "role": "user",
-        "content": "Explain quantum computing in simple terms"
-      }
-    ]
-  }'
-```
+> [tab] curl
+>
+> ```bash theme={null}
+> curl https://api.fireworks.ai/inference/v1/chat/completions \
+>   -H "Content-Type: application/json" \
+>   -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+>   -d '{
+>     "model": "<DEPLOYMENT_NAME>",
+>     "messages": [
+>       {
+>         "role": "user",
+>         "content": "Explain quantum computing in simple terms"
+>       }
+>     ]
+>   }'
+> ```
 
 The examples from the Serverless quickstart will work with this deployment as well, just replace the model string with the deployment-specific model string from above.
 
@@ -262,26 +262,26 @@ firectl deployment create accounts/fireworks/models/gpt-oss-120b \
 
 Ready to scale to production, explore other modalities, or customize your models?
 
-> **[Upload a custom model](/models/uploading-custom-models)**
+> [card] [Upload a custom model](/models/uploading-custom-models)
 >
 > Bring your own model and deploy it on Fireworks
 
-> **[Train Models](/fine-tuning/finetuning-intro)**
+> [card] [Train Models](/fine-tuning/finetuning-intro)
 >
 > Improve model quality with supervised and reinforcement learning
 
-> **[Embeddings & Reranking](/guides/querying-embeddings-models)**
+> [card] [Embeddings & Reranking](/guides/querying-embeddings-models)
 >
 > Use embeddings & reranking in search & context retrieval
 
-> **[Batch Inference](/guides/batch-inference)**
+> [card] [Batch Inference](/guides/batch-inference)
 >
 > Run async inference jobs at scale, faster and cheaper
 
-> **[Browse 100+ Models](https://fireworks.ai/models)**
+> [card] [Browse 100+ Models](https://fireworks.ai/models)
 >
 > Explore all available models across modalities
 
-> **[API Reference](/api-reference/introduction)**
+> [card] [API Reference](/api-reference/introduction)
 >
 > Complete API documentation

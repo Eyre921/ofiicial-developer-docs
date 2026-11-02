@@ -38,7 +38,7 @@ curl https://api.fireworks.ai/inference/v1/chat/completions \
 
 `auto` works the same way on all three APIs.
 
-> **[Nexus Auto examples for every API and SDK](/nexus/auto#api-and-sdk)**
+> [card] [Nexus Auto examples for every API and SDK](/nexus/auto#api-and-sdk)
 >
 > cURL, OpenAI, Anthropic, and Fireworks SDK examples for Chat Completions,
 > Responses, and Messages, with provider-key headers.

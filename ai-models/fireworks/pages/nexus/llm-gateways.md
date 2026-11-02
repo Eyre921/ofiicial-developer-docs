@@ -107,7 +107,7 @@ curl http://localhost:4000/chat/completions \
 
 The gateway sends the `auto` model ID and your Fireworks API key to Fireworks. You do not need Nexus CLI. For supported models, see [Nexus Auto](/nexus/auto#supported-models).
 
-> **[Set up Nexus Auto in LiteLLM or Portkey](/nexus/auto#llm-gateway)**
+> [card] [Set up Nexus Auto in LiteLLM or Portkey](/nexus/auto#llm-gateway)
 >
 > Nexus Auto entries for LiteLLM, the Portkey model format, and a test request.
 
@@ -129,83 +129,83 @@ You do not need to pass provider keys from each client or harness. Store them in
 | **Keys in the gateway config** | The gateway's config or secret store | Only their gateway key |
 | **Keys from each client** | Each client or harness | Their gateway key and a provider-key header |
 
-**Provider Keys**
-
-An account admin connects the required [Provider Keys](/nexus/provider-keys)
-once from [Settings](https://app.fireworks.ai/settings/provider-keys). The
-gateway stores only the Fireworks key. No provider credential passes
-through the gateway.
-
-> [!NOTE]
+> [tab] Provider Keys
 >
-> Provider Keys isn't available on every account yet. If **Provider Keys**
-> doesn't appear in [Settings](https://app.fireworks.ai/settings/provider-keys),
-> [contact the Fireworks team](https://fireworks.ai/demo-request) to turn it on.
+> An account admin connects the required [Provider Keys](/nexus/provider-keys)
+> once from [Settings](https://app.fireworks.ai/settings/provider-keys). The
+> gateway stores only the Fireworks key. No provider credential passes
+> through the gateway.
+>
+> > [!NOTE]
+> >
+> > Provider Keys isn't available on every account yet. If **Provider Keys**
+> > doesn't appear in [Settings](https://app.fireworks.ai/settings/provider-keys),
+> > [contact the Fireworks team](https://fireworks.ai/demo-request) to turn it on.
+>
+> ```bash wrap theme={null}
+> curl http://localhost:4000/chat/completions \
+>   -H "Authorization: Bearer $LITELLM_VIRTUAL_KEY" \
+>   -H "Content-Type: application/json" \
+>   -d '{
+>     "model": "auto",
+>     "messages": [{"role": "user", "content": "Say pong in one word."}]
+>   }'
+> ```
 
-```bash wrap theme={null}
-curl http://localhost:4000/chat/completions \
-  -H "Authorization: Bearer $LITELLM_VIRTUAL_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "auto",
-    "messages": [{"role": "user", "content": "Say pong in one word."}]
-  }'
-```
+> [tab] Keys in the gateway config
+>
+> Use this option when Provider Keys is not enabled for your account. The
+> gateway adds the provider-key headers to every request for Nexus Auto, so
+> clients and harnesses send only their gateway key.
+>
+> In LiteLLM, add `extra_headers` to the `auto` entry. `os.environ/` reads
+> the key from the proxy's environment:
+>
+> ```yaml config.yaml theme={null}
+> model_list:
+>   - model_name: auto
+>     litellm_params:
+>       model: fireworks_ai/accounts/fireworks/routers/auto
+>       api_key: os.environ/FIREWORKS_API_KEY
+>       api_base: https://api.fireworks.ai/inference/v1
+>       extra_headers:
+>         x-anthropic-api-key: os.environ/ANTHROPIC_API_KEY
+> ```
+>
+> To give Nexus Auto an OpenAI key too, add
+> `x-openai-api-key: os.environ/OPENAI_API_KEY` under `extra_headers`.
+>
+> Clients call `auto` with only their LiteLLM virtual key. For
+> Portkey and other gateways, set the same headers as custom headers on the
+> Fireworks provider or integration.
 
-**Keys in the gateway config**
-
-Use this option when Provider Keys is not enabled for your account. The
-gateway adds the provider-key headers to every request for Nexus Auto, so
-clients and harnesses send only their gateway key.
-
-In LiteLLM, add `extra_headers` to the `auto` entry. `os.environ/` reads
-the key from the proxy's environment:
-
-```yaml config.yaml theme={null}
-model_list:
-  - model_name: auto
-    litellm_params:
-      model: fireworks_ai/accounts/fireworks/routers/auto
-      api_key: os.environ/FIREWORKS_API_KEY
-      api_base: https://api.fireworks.ai/inference/v1
-      extra_headers:
-        x-anthropic-api-key: os.environ/ANTHROPIC_API_KEY
-```
-
-To give Nexus Auto an OpenAI key too, add
-`x-openai-api-key: os.environ/OPENAI_API_KEY` under `extra_headers`.
-
-Clients call `auto` with only their LiteLLM virtual key. For
-Portkey and other gateways, set the same headers as custom headers on the
-Fireworks provider or integration.
-
-**Keys from each client**
-
-Use this option when each team or user should call closed models with
-their own provider key. The client sends `x-anthropic-api-key`,
-`x-openai-api-key`, or both to the gateway.
-
-LiteLLM does not forward client headers by default. Enable forwarding in
-`config.yaml`:
-
-```yaml theme={null}
-general_settings:
-  forward_client_headers_to_llm_api: true
-```
-
-```bash wrap theme={null}
-curl http://localhost:4000/chat/completions \
-  -H "Authorization: Bearer $LITELLM_VIRTUAL_KEY" \
-  -H "Content-Type: application/json" \
-  -H "x-anthropic-api-key: $ANTHROPIC_API_KEY" \
-  -d '{
-    "model": "auto",
-    "messages": [{"role": "user", "content": "Say pong in one word."}]
-  }'
-```
-
-See [Forward client headers](https://docs.litellm.ai/docs/proxy/forward_client_headers)
-in the LiteLLM docs.
+> [tab] Keys from each client
+>
+> Use this option when each team or user should call closed models with
+> their own provider key. The client sends `x-anthropic-api-key`,
+> `x-openai-api-key`, or both to the gateway.
+>
+> LiteLLM does not forward client headers by default. Enable forwarding in
+> `config.yaml`:
+>
+> ```yaml theme={null}
+> general_settings:
+>   forward_client_headers_to_llm_api: true
+> ```
+>
+> ```bash wrap theme={null}
+> curl http://localhost:4000/chat/completions \
+>   -H "Authorization: Bearer $LITELLM_VIRTUAL_KEY" \
+>   -H "Content-Type: application/json" \
+>   -H "x-anthropic-api-key: $ANTHROPIC_API_KEY" \
+>   -d '{
+>     "model": "auto",
+>     "messages": [{"role": "user", "content": "Say pong in one word."}]
+>   }'
+> ```
+>
+> See [Forward client headers](https://docs.litellm.ai/docs/proxy/forward_client_headers)
+> in the LiteLLM docs.
 
 A provider-key header sent with a request takes precedence over a Provider Key connected to the account.
 

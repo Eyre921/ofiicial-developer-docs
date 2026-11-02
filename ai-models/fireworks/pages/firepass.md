@@ -70,7 +70,7 @@ If your tool supports custom API endpoints, you can configure it manually using 
 context window and up to 131,072 output tokens. Recheck the [Fire Pass
 page](https://app.fireworks.ai/fire-pass) when the latest alias changes.
 
-> **OpenClaw**
+> [accordion] OpenClaw
 >
 > Add Fireworks as an OpenAI-compatible provider in
 > `~/.openclaw/openclaw.json`. Use the base URL, Fire Pass key, and
@@ -83,7 +83,7 @@ page](https://app.fireworks.ai/fire-pass) when the latest alias changes.
 > Follow the [OpenClaw provider documentation](https://openclaw.ai) to finish
 > configuring and testing the custom provider.
 
-> **OpenCode**
+> [accordion] OpenCode
 >
 > Add the Fire Pass router to `~/.config/opencode/opencode.json`, with your
 > Fire Pass key in `FIREWORKS_API_KEY`:
@@ -103,7 +103,7 @@ page](https://app.fireworks.ai/fire-pass) when the latest alias changes.
 > }
 > ```
 
-> **Cline**
+> [accordion] Cline
 >
 > To configure Cline with your Fire Pass:
 >
@@ -132,7 +132,7 @@ page](https://app.fireworks.ai/fire-pass) when the latest alias changes.
 >
 > 4. Save your settings and send a request. Fire Pass applies when the key and route are eligible.
 
-> **Claude Code**
+> [accordion] Claude Code
 >
 > Add these values to `~/.claude/settings.json`:
 >
@@ -157,7 +157,7 @@ page](https://app.fireworks.ai/fire-pass) when the latest alias changes.
 > and subagent requests to those slots, and a `claude-*` model ID fails with a
 > Fire Pass key. Claude Code's web search also needs a standard `fw_...` key.
 
-> **Kilo Code**
+> [accordion] Kilo Code
 >
 > To configure Kilo Code with your Fire Pass:
 >
@@ -185,7 +185,7 @@ page](https://app.fireworks.ai/fire-pass) when the latest alias changes.
 >
 > 4. Save your settings and send a request. Fire Pass applies when the key and route are eligible.
 
-> **LangChain Deep Agent**
+> [accordion] LangChain Deep Agent
 >
 > Set `FIREWORKS_API_KEY` to your Fire Pass key from [app.fireworks.ai/api-keys](https://app.fireworks.ai/api-keys). Install [LangChain Deep Agents](https://docs.langchain.com/oss/python/deepagents/models) with the Fireworks integration, then pass the latest Fire Pass router as `fireworks:accounts/fireworks/routers/kimi-fast-latest`:
 >
@@ -220,34 +220,34 @@ Fire Pass is intended for **non-production coding use only**. By activating Fire
 
 ## FAQ
 
-> **Can I use Fire Pass with any model?**
+> [accordion] Can I use Fire Pass with any model?
 >
 > No. Fire Pass covers only its enabled routes. Check the Fire Pass page for
 > the latest set.
 
-> **Do I need an invite code?**
+> [accordion] Do I need an invite code?
 >
 > Fire Pass is not currently open to new subscriptions. Existing users and
 > promo recipients can manage access on the Fire Pass page.
 
-> **Do I need to use a special model ID?**
+> [accordion] Do I need to use a special model ID?
 >
 > Use one of the routers enabled for Fire Pass, such as
 > `accounts/fireworks/routers/kimi-fast-latest`. Check the Fire Pass page for
 > the current set.
 
-> **Can I use Nexus Auto or Auto?**
+> [accordion] Can I use Nexus Auto or Auto?
 >
 > No. `auto` requires a standard Fireworks
 > key (`fw_...`). Fire Pass keys can use only Fire Pass-enabled routes.
 
-> **How will this appear on my billing dashboard?**
+> [accordion] How will this appear on my billing dashboard?
 >
 > Included usage remains visible while it is covered by your active pass.
 > View the pass status and expiration date on the [**Billing**
 > page](https://app.fireworks.ai/account/billing).
 
-> **Can I use other models with my agentic harness?**
+> [accordion] Can I use other models with my agentic harness?
 >
 > Yes, with a standard Fireworks key (`fw_...`). A Fire Pass key (`fpk_...`)
 > works only with routes enabled for Fire Pass. Other models use standard

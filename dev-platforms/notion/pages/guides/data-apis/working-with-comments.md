@@ -34,7 +34,7 @@ Before discussing how to use the public REST API to interact with comments, letâ
 
 When using the Notion UI, users must have `Can comment` access or higher (i.e. less restricted) to add comments to a page.
 
-[Connections](/guides/get-started/overview#what-is-a-notion-connection) must also have comment permissions, which can be set in the [Developer portal](https://app.notion.com/developers/connections).
+[Connections](/guides/connections-and-tokens/overview#what-is-a-notion-connection) must also have comment permissions, which can be set in the [Developer portal](https://app.notion.com/developers/connections).
 
 > [!NOTE]
 >

@@ -4,17 +4,65 @@ source: https://developers.notion.com/guides/mcp/get-started-with-mcp
 path: guides/mcp/get-started-with-mcp
 ---
 
-Connect an MCP client to your Notion workspace.
+Connect Notion to your AI assistant through its connector library, Notion’s directory, or manual MCP setup.
 
-Follow the instructions for your MCP client. After you authorize the connection, the client can read and update content that you can access in the selected Notion workspace.
+The easiest way to connect is through your AI assistant’s connector or plugin library. You can also browse available connections in Notion under **Settings** → **Notion MCP**.
+
+> [card] [From your AI assistant](#connect-from-your-ai-assistant)
+>
+> Find Notion in your assistant’s connector or plugin library.
+
+> [card] [From Notion](#connect-from-notion)
+>
+> Browse the directory in Notion’s settings.
+
+> [card] [Manual setup](#manual-setup)
+>
+> Add Notion MCP using a server URL or client configuration.
+
+## Connect from your AI assistant
+
+Open your AI assistant’s connector or plugin library and search for **Notion**. Select it and follow the prompts to authorize access to your Notion workspace.
+
+After you authorize the connection, your AI assistant can read and update content that you can access in the selected workspace.
+
+If Notion isn’t listed, check whether your assistant supports adding a custom MCP server and follow [manual setup](#manual-setup).
+
+## Connect from Notion
+
+In Notion, open **Settings** → **Notion MCP** and browse the directory. Select your AI assistant and follow its connection instructions.
+
+## Manual setup
+
+Use these instructions if you’re adding Notion as a custom MCP server or configuring a client directly. The remote server URL is `https://mcp.notion.com/mcp`.
+
+> [card] [Codex](#codex-chatgpt)
+
+> [card] [Claude Code](#claude-code)
+
+> [card] [Cursor](#cursor)
+
+> [card] [fx](#fx)
+
+> [card] [Hermes](#hermes)
+
+> [card] [Devin](#devin)
+
+> [card] [Pi](#pi)
+
+> [card] [VS Code](#vs-code-github-copilot)
+
+> [card] [Antigravity](#antigravity)
+
+> [card] [Other MCP clients](#other-mcp-clients)
+
+### Codex (ChatGPT)
+
+Codex is OpenAI's coding agent. See the [Codex MCP documentation](https://developers.openai.com/codex/mcp/) for more details.
 
 > [!NOTE]
 >
-> Install your MCP client first and make sure its command is on your `PATH`, or you'll see `command not found` for `claude` or `codex`. See the [Claude Code setup guide](https://code.claude.com/docs/en/setup) or the [Codex CLI guide](https://developers.openai.com/codex/cli). An admin in your organization can also block adding MCP servers, which shows up as an enterprise policy error.
-
-## Codex (ChatGPT)
-
-Codex is OpenAI's coding agent. See the [Codex MCP documentation](https://developers.openai.com/codex/mcp/) for more details.
+> Install the [Codex CLI](https://developers.openai.com/codex/cli) before running the commands below. If you see `command not found`, make sure `codex` is on your `PATH`.
 
 **Step 1**
 
@@ -39,9 +87,13 @@ Complete the OAuth flow to connect your Notion workspace.
 >
 > To share the Notion MCP configuration with your team, create a `.codex/config.toml` file in your project root with the same server configuration.
 
-## Claude Code
+### Claude Code
 
 Claude Code is Anthropic's agentic coding tool for the terminal. See the [Claude Code MCP documentation](https://docs.anthropic.com/en/docs/claude-code/mcp) for more details.
+
+> [!NOTE]
+>
+> Install [Claude Code](https://code.claude.com/docs/en/setup) before running the command below. If you see `command not found`, make sure `claude` is on your `PATH`.
 
 Run this command in your terminal:
 
@@ -63,7 +115,7 @@ Use the `/mcp` command to list and manage the MCP servers you have installed, an
 >
 > Install the [Notion plugin for Claude Code](https://github.com/makenotion/claude-code-notion-plugin) to add the MCP server, Skills, and slash commands for common Notion workflows.
 
-## Cursor
+### Cursor
 
 Cursor is an AI code editor that can connect to MCP servers. See the [Cursor MCP documentation](https://cursor.com/docs/mcp) for more details.
 
@@ -99,7 +151,7 @@ Open **Customize** in Cursor's sidebar, then enable Notion and complete the OAut
 > }
 > ```
 
-## fx
+### fx
 
 fx is an MCP client that makes configured servers available in its interactive shell and agent sessions. See the [fx MCP documentation](https://fx.sh/docs/capabilities/mcp) for more details.
 
@@ -140,7 +192,7 @@ In the same session, run `/mcp auth notion --open` and complete the OAuth flow.
 >
 > If a session is already open, run `/mcp reload` to pick up the change.
 
-## Hermes
+### Hermes
 
 Hermes is a coding agent from Nous Research that can be extended with MCP servers. See the [Hermes MCP documentation](https://hermes-agent.nousresearch.com/docs/user-guide/features/mcp) for more details.
 
@@ -169,7 +221,7 @@ Complete the OAuth flow to connect your Notion workspace.
 >
 > The `~/.hermes/config.yaml` configuration above applies to all projects for the current Hermes profile. See the [Hermes configuration documentation](https://hermes-agent.nousresearch.com/docs/user-guide/configuration) for more details.
 
-## Devin
+### Devin
 
 Devin is an AI software engineering agent that can connect to custom MCP servers. See the [Devin MCP documentation](https://docs.devin.ai/work-with-devin/mcp) for more details.
 
@@ -197,7 +249,7 @@ Save the server, then complete the OAuth flow when Devin prompts you.
 >
 > With **Organization** access, members share one authenticated connection. Use a Notion service account rather than a personal account, and have someone with the **Manage MCP Servers** permission complete the OAuth flow. With **Personal** access, each member authenticates their own Notion account.
 
-## Pi
+### Pi
 
 Pi is an open-source, terminal-based coding agent. It uses the third-party [Pi MCP Adapter](https://github.com/nicobailon/pi-mcp-adapter) to connect to MCP servers.
 
@@ -232,7 +284,7 @@ Authenticate by running `/mcp-auth notion` and completing the OAuth flow to conn
 > }
 > ```
 
-## VS Code (GitHub Copilot)
+### VS Code (GitHub Copilot)
 
 Visual Studio Code supports MCP servers in its agent customization experience. See the [VS Code MCP documentation](https://code.visualstudio.com/docs/agent-customization/mcp-servers) for more details.
 
@@ -263,7 +315,7 @@ Start the Notion server and complete the OAuth flow when prompted
 >
 > To configure Notion MCP across all workspaces, run **MCP: Open User Configuration** from the Command Palette and add the server configuration there.
 
-## Antigravity
+### Antigravity
 
 Antigravity supports MCP servers across its products. See the [Antigravity MCP documentation](https://antigravity.google/docs/mcp) for more details.
 
@@ -287,14 +339,14 @@ Follow the [Antigravity instructions for connecting custom MCP servers](https://
 
 Save the configuration. Antigravity will prompt you to complete the OAuth flow to connect your Notion workspace.
 
-## Other MCP clients
+### Other MCP clients
 
 If your MCP client isn't listed above, add Notion as a remote MCP server:
 
 * **Streamable HTTP (recommended):** `https://mcp.notion.com/mcp`
 * **SSE fallback:** `https://mcp.notion.com/sse` — use this only if the client doesn't support Streamable HTTP.
 
-### JSON configuration
+#### JSON configuration
 
 If your client accepts a JSON configuration, start with Streamable HTTP:
 
@@ -333,6 +385,10 @@ If your client accepts a JSON configuration, start with Streamable HTTP:
 Use the STDIO configuration if your client doesn't support remote HTTP connections.
 
 ## Troubleshooting
+
+> [accordion] An enterprise policy blocks the connection
+>
+> An admin in your organization may restrict adding MCP servers. If you see an enterprise policy error, ask your admin whether Notion MCP is allowed in your AI assistant. Notion workspace owners can also manage access through [admin controls](https://www.notion.com/help/notion-mcp#admin-controls-for-mcp).
 
 > [accordion] My MCP client doesn't support remote MCP servers
 >
@@ -378,7 +434,7 @@ Use the STDIO configuration if your client doesn't support remote HTTP connectio
 > * **Connected-source search** with `notion-connector-search`: Business or Enterprise with Notion AI. `notion-search` searches Notion on every plan.
 > * **Database queries** with `notion-query-data-sources`: querying a saved view works on every plan. SQL queries are unlimited on Business or Enterprise with Notion AI. Other plans get a limited number of SQL queries on one data source at a time.
 > * **Some search filters**, such as last edited by and last edited date: Business and Enterprise. On other plans these filters are dropped, and the result says so.
-> * **Request limits**: higher on Business and Enterprise. See [rate limits](/guides/mcp/mcp-supported-tools#rate-limits).
+> * **Request limits**: higher on Business and Enterprise. See [rate limits](/guides/mcp/rate-limits).
 
 > [accordion] Can workspace guests use Notion MCP?
 >
@@ -386,7 +442,7 @@ Use the STDIO configuration if your client doesn't support remote HTTP connectio
 
 > [accordion] Does Notion MCP support file uploads?
 >
-> Yes. Use the [`notion-create-file-upload` tool](/guides/mcp/mcp-supported-tools#create-a-file-upload-url) to upload images and other files up to 20 MiB. Workspace file-size limits still apply.
+> Yes. Use the [`notion-create-file-upload` tool](/guides/mcp/tools-files-reference#create-a-file-upload-url) to upload images and other files up to 20 MiB. Workspace file-size limits still apply.
 >
 > The tool returns a short-lived upload URL and the headers and form field that the MCP client must use to send the file. After the upload succeeds, pass the response's `suggested_markdown` directly to `notion-create-pages` or `notion-update-page`, or include it on a separate line in `notion-create-comment` markdown to attach the file. For larger files, use the [file upload API](/guides/data-apis/working-with-files-and-media).
 

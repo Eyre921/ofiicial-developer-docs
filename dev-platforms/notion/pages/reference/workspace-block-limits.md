@@ -14,7 +14,7 @@ Learn when the Free workspace block limit blocks an API write and how to handle 
 
 Free workspaces with more than one member have a limit of 1,000 lifetime blocks. Paid workspaces and single-member Free workspaces have unlimited blocks. Guests do not count as members. Deleting blocks does not restore capacity. See [Understanding block usage](https://www.notion.com/help/understanding-block-usage).
 
-The limit applies to internal connections and OAuth connections restricted to selected workspaces. It does not apply to [personal access tokens](/guides/get-started/personal-access-tokens) or OAuth connections that can be installed in any workspace. Notion MCP has a separate enforcement policy.
+The limit applies to internal connections and OAuth connections restricted to selected workspaces. It does not apply to [personal access tokens](/guides/connections-and-tokens/personal-access-tokens) or OAuth connections that can be installed in any workspace. Notion MCP has a separate enforcement policy.
 
 ## Creation and grace period
 

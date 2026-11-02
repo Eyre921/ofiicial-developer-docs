@@ -22,7 +22,7 @@ If you've already logged in to one or more workspaces, you can pick existing wor
 
 > [!NOTE]
 >
-> `ntn login` requires full workspace membership. [Guests](https://www.notion.com/help/whos-who-in-a-workspace) and [restricted members](https://www.notion.com/help/whos-who-in-a-workspace) cannot log in with the Notion CLI. If you need CLI access, ask a workspace admin to upgrade your role. See [Personal access tokens](/guides/get-started/personal-access-tokens) for more on who can create tokens.
+> `ntn login` requires full workspace membership. [Guests](https://www.notion.com/help/whos-who-in-a-workspace) and [restricted members](https://www.notion.com/help/whos-who-in-a-workspace) cannot log in with the Notion CLI. If you need CLI access, ask a workspace admin to upgrade your role. See [Personal access tokens](/guides/connections-and-tokens/personal-access-tokens) for more on who can create tokens.
 
 ## Log in without a browser
 
@@ -50,7 +50,7 @@ Workspace IDs are listed in the output of `ntn debug`.
 
 ## Use a personal access token
 
-For unattended use, authenticate with a [personal access token](/guides/get-started/personal-access-tokens) (PAT) by exporting it as `NOTION_API_TOKEN`:
+For unattended use, authenticate with a [personal access token](/guides/connections-and-tokens/personal-access-tokens) (PAT) by exporting it as `NOTION_API_TOKEN`:
 
 ```bash theme={null}
 export NOTION_API_TOKEN=ntn_xxx...
@@ -122,6 +122,6 @@ Run `ntn login --help` for the full list.
 >
 > Full reference for every ntn command.
 
-> [card] [Personal access tokens](/guides/get-started/personal-access-tokens)
+> [card] [Personal access tokens](/guides/connections-and-tokens/personal-access-tokens)
 >
 > Create tokens for scripts and CI.

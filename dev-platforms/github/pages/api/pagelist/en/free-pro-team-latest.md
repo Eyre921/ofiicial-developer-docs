@@ -37,6 +37,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/get-started/learning-about-github/types-of-github-accounts
 /en/get-started/learning-about-github/access-permissions-on-github
 /en/get-started/learning-about-github/about-github-advanced-security
+/en/get-started/learning-about-github/about-github-code-quality
 /en/get-started/learning-about-github/faq-about-changes-to-githubs-plans
 /en/get-started/learning-about-github/github-glossary
 /en/get-started/learning-to-code

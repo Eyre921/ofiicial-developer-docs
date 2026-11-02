@@ -116,7 +116,7 @@ All Fireworks on Foundry usage is billed through Azure. You do not need a separa
 
 Use your Foundry deployments from Claude Code, OpenCode, Cursor IDE, VS Code, and other coding harnesses.
 
-> **[Nexus for Microsoft Foundry](/nexus/microsoft-foundry)**
+> [card] [Nexus for Microsoft Foundry](/nexus/microsoft-foundry)
 >
 > Connect with Nexus CLI, configure a harness manually, or route Claude Code
 > through an LLM gateway.

@@ -13,7 +13,7 @@ Use this API to create a new [page](/reference/page) as a child of an existing p
 
 In most cases, provide a `page_id` or `data_source` under the `parent` parameter to create a page under an existing [page](/reference/page), or [data source](/reference/data-source), respectively.
 
-There is a 3rd option, available for [public connections](/guides/get-started/overview#connection-types) and [personal access tokens](/guides/get-started/personal-access-tokens): creating a private page at the workspace level. To do this, omit the `parent` parameter, or provide `parent[workspace]=true`. This can be useful for quickly creating pages that can then be organized manually in the Notion app later, helping you get to your life's work faster.
+There is a 3rd option, available for [public connections](/guides/connections-and-tokens/overview#connection-types) and [personal access tokens](/guides/connections-and-tokens/personal-access-tokens): creating a private page at the workspace level. To do this, omit the `parent` parameter, or provide `parent[workspace]=true`. This can be useful for quickly creating pages that can then be organized manually in the Notion app later, helping you get to your life's work faster.
 
 For internal connections, a page or data source parent is currently required in the API, because there is no one specific Notion user associated with them that could be used as the "owner" of the new private page.
 

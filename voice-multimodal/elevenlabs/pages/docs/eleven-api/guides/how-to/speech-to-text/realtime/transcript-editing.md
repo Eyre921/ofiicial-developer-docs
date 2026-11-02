@@ -28,8 +28,8 @@ Partial transcripts are never edited. The `committed_transcript` event is not ch
 
 > **Warning**
 >
-> Transcript editing cannot be combined with `entity_detection`. Connections that set both are
-> rejected with an `invalid_request` error.
+> Transcript editing cannot be combined with `entity_detection` or `entity_redaction`. Connections
+> that set both are rejected with an `invalid_request` error.
 
 ## Enabling transcript editing
 

@@ -18,6 +18,7 @@ Each scope combines a resource and a capability, such as `legal-hold:read`.
 
 | Scope resource | Controls access to |
 | :- | :- |
+| `credit-limit-policy` | Member credit access policies and their assignments |
 | `legal-hold` | Legal hold data and members |
 | `managed-user-session` | Managed users' active sessions |
 | `mcp-client-connection` | Members' MCP client connections |

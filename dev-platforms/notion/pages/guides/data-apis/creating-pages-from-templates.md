@@ -104,7 +104,7 @@ When using a template — either the `default` template or a specific `template_
 
 Afterwards, Notion's systems quickly begin applying the chosen template in the background, replacing the page content and merging in the template's properties. Any placeholder values (e.g. "Current time when duplicating template"), are appropriately populated, the same way they would be when a Notion user applies a template in the app. The key difference is that the API bot user (rather than a person) is set as the "created by" user (i.e. author) of the new page.
 
-**Timezone control**: Template variables like `@now` and `@today` resolve using a timezone. By default, public connections and [personal access tokens](/guides/get-started/personal-access-tokens) use the associated user's timezone, and internal connections use UTC. To override this, pass an [IANA timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) string in `template[timezone]` (e.g. `America/New_York`, `Europe/London`, `Asia/Tokyo`).
+**Timezone control**: Template variables like `@now` and `@today` resolve using a timezone. By default, public connections and [personal access tokens](/guides/connections-and-tokens/personal-access-tokens) use the associated user's timezone, and internal connections use UTC. To override this, pass an [IANA timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) string in `template[timezone]` (e.g. `America/New_York`, `Europe/London`, `Asia/Tokyo`).
 
 > [!NOTE]
 >

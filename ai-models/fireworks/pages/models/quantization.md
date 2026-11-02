@@ -34,35 +34,35 @@ The `Precisions` field indicates what precisions the model has been prepared for
 
 A model can be quantized to 8-bit floating-point (FP8) precision.
 
-**firectl**
+> [tab] firectl
+>
+> ```bash theme={null}
+> firectl prepare-model <MODEL_ID>
+> ```
 
-```bash theme={null}
-firectl prepare-model <MODEL_ID>
-```
-
-**Python (REST API)**
-
-```python theme={null}
-import os
-import requests
-
-ACCOUNT_ID = os.environ.get("FIREWORKS_ACCOUNT_ID")
-API_KEY = os.environ.get("FIREWORKS_API_KEY")
-MODEL_ID = "<YOUR_MODEL_ID>" # The ID of the model you want to prepare
-
-response = requests.post(
-  f"https://api.fireworks.ai/v1/accounts/{ACCOUNT_ID}/models/{MODEL_ID}:prepare",
-  headers={
-    "Authorization": f"Bearer {API_KEY}",
-    "Content-Type": "application/json"
-  },
-  json={
-    "precision": "FP8"
-  }
-)
-
-print(response.json())
-```
+> [tab] Python (REST API)
+>
+> ```python theme={null}
+> import os
+> import requests
+>
+> ACCOUNT_ID = os.environ.get("FIREWORKS_ACCOUNT_ID")
+> API_KEY = os.environ.get("FIREWORKS_API_KEY")
+> MODEL_ID = "<YOUR_MODEL_ID>" # The ID of the model you want to prepare
+>
+> response = requests.post(
+>   f"https://api.fireworks.ai/v1/accounts/{ACCOUNT_ID}/models/{MODEL_ID}:prepare",
+>   headers={
+>     "Authorization": f"Bearer {API_KEY}",
+>     "Content-Type": "application/json"
+>   },
+>   json={
+>     "precision": "FP8"
+>   }
+> )
+>
+> print(response.json())
+> ```
 
 > [!NOTE]
 >
@@ -70,31 +70,31 @@ print(response.json())
 
 You can check on the status of preparation by running:
 
-**firectl**
+> [tab] firectl
+>
+> ```bash theme={null}
+> firectl model get <MODEL_ID>
+> ```
 
-```bash theme={null}
-firectl model get <MODEL_ID>
-```
-
-**Python (REST API)**
-
-```python theme={null}
-import os
-import requests
-
-ACCOUNT_ID = os.environ.get("FIREWORKS_ACCOUNT_ID")
-API_KEY = os.environ.get("FIREWORKS_API_KEY")
-MODEL_ID = "<YOUR_MODEL_ID>" # The ID of the model you want to get
-
-response = requests.get(
-  f"https://api.fireworks.ai/v1/accounts/{ACCOUNT_ID}/models/{MODEL_ID}",
-  headers={
-    "Authorization": f"Bearer {API_KEY}"
-  }
-)
-
-print(response.json())
-```
+> [tab] Python (REST API)
+>
+> ```python theme={null}
+> import os
+> import requests
+>
+> ACCOUNT_ID = os.environ.get("FIREWORKS_ACCOUNT_ID")
+> API_KEY = os.environ.get("FIREWORKS_API_KEY")
+> MODEL_ID = "<YOUR_MODEL_ID>" # The ID of the model you want to get
+>
+> response = requests.get(
+>   f"https://api.fireworks.ai/v1/accounts/{ACCOUNT_ID}/models/{MODEL_ID}",
+>   headers={
+>     "Authorization": f"Bearer {API_KEY}"
+>   }
+> )
+>
+> print(response.json())
+> ```
 
 and checking if the state is still in `PREPARING`. A successfully prepared model will have the desired precision added
 to the `Precisions` list.
@@ -107,41 +107,41 @@ Do not deploy without a [deployment shape](/guides/ondemand-deployments#deployme
 
 If no FP8 shape exists for your model, start from the closest shape and override the precision with `--precision`. Do not create the deployment without a shape entirely: it skips validation, is the most common cause of failed deployment creations, and shapeless creation will soon require an explicit opt-in:
 
-**firectl**
+> [tab] firectl
+>
+> ```bash theme={null}
+> firectl deployment create <MODEL> --deployment-shape <shape> --precision FP8
+> ```
 
-```bash theme={null}
-firectl deployment create <MODEL> --deployment-shape <shape> --precision FP8
-```
-
-**Python (REST API)**
-
-```python theme={null}
-import os
-import requests
-
-ACCOUNT_ID = os.environ.get("FIREWORKS_ACCOUNT_ID")
-API_KEY = os.environ.get("FIREWORKS_API_KEY")
-# The ID of the model you want to deploy.
-# The model must be prepared for FP8 precision.
-MODEL_ID = "<YOUR_MODEL_ID>"
-DEPLOYMENT_NAME = "My FP8 Deployment"
-
-response = requests.post(
-  f"https://api.fireworks.ai/v1/accounts/{ACCOUNT_ID}/deployments",
-  headers={
-    "Authorization": f"Bearer {API_KEY}",
-    "Content-Type": "application/json"
-  },
-  json={
-    "displayName": DEPLOYMENT_NAME,
-    "baseModel": MODEL_ID,
-    "deploymentShape": "<SHAPE_ID>",
-    "precision": "FP8",
-  }
-)
-
-print(response.json())
-```
+> [tab] Python (REST API)
+>
+> ```python theme={null}
+> import os
+> import requests
+>
+> ACCOUNT_ID = os.environ.get("FIREWORKS_ACCOUNT_ID")
+> API_KEY = os.environ.get("FIREWORKS_API_KEY")
+> # The ID of the model you want to deploy.
+> # The model must be prepared for FP8 precision.
+> MODEL_ID = "<YOUR_MODEL_ID>"
+> DEPLOYMENT_NAME = "My FP8 Deployment"
+>
+> response = requests.post(
+>   f"https://api.fireworks.ai/v1/accounts/{ACCOUNT_ID}/deployments",
+>   headers={
+>     "Authorization": f"Bearer {API_KEY}",
+>     "Content-Type": "application/json"
+>   },
+>   json={
+>     "displayName": DEPLOYMENT_NAME,
+>     "baseModel": MODEL_ID,
+>     "deploymentShape": "<SHAPE_ID>",
+>     "precision": "FP8",
+>   }
+> )
+>
+> print(response.json())
+> ```
 
 > [!NOTE]
 >

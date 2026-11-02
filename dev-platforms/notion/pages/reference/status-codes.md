@@ -16,7 +16,7 @@ Look up HTTP status codes and the error details returned by the Notion API.
 
 For a standard API error, use `code` to identify the error and `message` for details about this request. If you contact support, include the `request_id` from the response when available. Some errors also include `additional_data`, such as [guidance on retrying a write](/reference/request-limits#retry-a-write-that-returns-503).
 
-To see which error codes a connection received in the last 24 hours, check the **Error codes** list on its [Health tab](/guides/manage-connections/connection-health).
+To see which error codes a connection received in the last 24 hours, check the **Error codes** list on its [Health tab](/guides/developer-tools/connection-health).
 
 | HTTP status code | `"code"` | Description | `"message"` example |
 | :- | :- | :- | :- |

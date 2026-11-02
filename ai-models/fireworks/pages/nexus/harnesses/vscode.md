@@ -87,7 +87,7 @@ See [what changes without the Nexus CLI](/nexus/manual-setup#what-changes-withou
 
 ## What the Nexus CLI writes
 
-> **See what Nexus CLI writes**
+> [accordion] See what Nexus CLI writes
 >
 > ```json chatLanguageModels.json theme={null}
 > [

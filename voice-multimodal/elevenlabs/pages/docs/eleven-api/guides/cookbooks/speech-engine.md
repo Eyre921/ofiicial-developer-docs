@@ -536,13 +536,13 @@ The first message is spoken by the agent as soon as the connection is establishe
 
 ## Configuring the maximum conversation duration
 
-By default, a conversation ends after 600 seconds (10 minutes). Speech Engine supports conversations of up to 2,400 seconds (40 minutes). To allow longer conversations, update the Speech Engine resource with a higher `max_duration_seconds`:
+By default, a conversation ends after 600 seconds (10 minutes). Speech Engine supports conversations of up to 7,200 seconds (2 hours). To allow longer conversations, update the Speech Engine resource with a higher `max_duration_seconds`:
 
 ```python
 engine = await elevenlabs.speech_engine.update(
     speech_engine_id="seng_8k3m9xr4hjnfg983brhmhkd98n6",
     conversation={
-        "max_duration_seconds": 2400,
+        "max_duration_seconds": 7200,
     },
 )
 ```
@@ -550,17 +550,12 @@ engine = await elevenlabs.speech_engine.update(
 ```typescript
 const engine = await elevenlabs.speechEngine.update("seng_8k3m9xr4hjnfg983brhmhkd98n6", {
   conversation: {
-    maxDurationSeconds: 2400,
+    maxDurationSeconds: 7200,
   },
 });
 ```
 
 You can also set this in the dashboard: open your Speech Engine, go to the **Advanced** tab, and set **Max conversation duration** under **Conversational behavior**.
-
-> **Warning**
->
-> Conversations longer than 40 minutes are not supported and may be disconnected, even if
-> `max_duration_seconds` is set to a higher value. If you need longer conversations, [contact our team](https://elevenlabs.io/contact-sales).
 
 ## Next steps
 

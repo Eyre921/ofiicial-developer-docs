@@ -42,27 +42,27 @@ Comments on a database page property now include `property_id`, the ID of that p
 
 ### See version changes in Notion MCP
 
-`notion-get-version-changes` lists what changed in a page or database between two times and who changed it. See [Get version changes](/guides/mcp/mcp-supported-tools#get-version-changes).
+`notion-get-version-changes` lists what changed in a page or database between two times and who changed it. See [Get version changes](/guides/mcp/tools-comments-reference#get-version-changes).
 
 **October 27, 2026**
 
 ### Suggest edits in Notion MCP
 
-Three new Notion MCP tools let an assistant propose changes that a person reviews in Notion. `notion-create-suggested-edit` adds a suggested edit to a page without changing its accepted content. `notion-get-suggested-edit` shows a pending suggestion's before-and-after diff, and `notion-resolve-suggested-edit` accepts or rejects it. `notion-get-comments` now lists pending suggestions too. The tools need a Business or Enterprise plan. See [Suggest edits](/guides/mcp/mcp-supported-tools#suggest-edits).
+Three new Notion MCP tools let an assistant propose changes that a person reviews in Notion. `notion-create-suggested-edit` adds a suggested edit to a page without changing its accepted content. `notion-get-suggested-edit` shows a pending suggestion's before-and-after diff, and `notion-resolve-suggested-edit` accepts or rejects it. `notion-get-comments` now lists pending suggestions too. The tools need a Business or Enterprise plan. See [Suggest edits](/guides/mcp/tools-comments-reference#suggest-edits).
 
 ### View past versions in Notion MCP
 
-`notion-view-version` shows a page or database as it looked at a past time. See [View a past version](/guides/mcp/mcp-supported-tools#view-a-past-version).
+`notion-view-version` shows a page or database as it looked at a past time. See [View a past version](/guides/mcp/tools-comments-reference#view-a-past-version).
 
 **October 26, 2026**
 
 ### See connection health in the Developer portal
 
-Internal and public connections now have a **Health** tab in the Developer portal. It shows the connection's API requests from the last 24 hours, including how many failed and why. A warning also appears when a connection's requests are blocked or receive a lot of client errors or rate-limit responses. See [Connection health](/guides/manage-connections/connection-health).
+Internal and public connections now have a **Health** tab in the Developer portal. It shows the connection's API requests from the last 24 hours, including how many failed and why. A warning also appears when a connection's requests are blocked or receive a lot of client errors or rate-limit responses. See [Connection health](/guides/developer-tools/connection-health).
 
 ### Open connected-source results with `notion-fetch`
 
-`notion-fetch` now opens results from `notion-connector-search` in hosted Notion MCP sessions. Pass a result's `id` or `url` to read the full item, such as a Slack thread, Google Drive file, or GitHub issue. The response has the item's `title`, `url`, and `text`, and `metadata.type` is `connector`. Fetch reads the item through the user's own connection to that source, so it returns only what that connection can see. It works for Notion MCP OAuth connections and personal access tokens when the user has the same AI access as `notion-connector-search`. Outlook, Google Calendar, and Confluence results still can't be fetched. See [Search connected sources](/guides/mcp/mcp-supported-tools#search-connected-sources).
+`notion-fetch` now opens results from `notion-connector-search` in hosted Notion MCP sessions. Pass a result's `id` or `url` to read the full item, such as a Slack thread, Google Drive file, or GitHub issue. The response has the item's `title`, `url`, and `text`, and `metadata.type` is `connector`. Fetch reads the item through the user's own connection to that source, so it returns only what that connection can see. It works for Notion MCP OAuth connections and personal access tokens when the user has the same AI access as `notion-connector-search`. Outlook, Google Calendar, and Confluence results still can't be fetched. See [Search connected sources](/guides/mcp/tools-search-reference#search-connected-sources).
 
 ### Page markdown ignores pending suggested edits
 
@@ -72,7 +72,7 @@ Internal and public connections now have a **Health** tab in the Developer porta
 
 ### Status properties show their default option
 
-[Status](/reference/property-object#status) property schemas now include a read-only `default_option`. It is the name of the option a page shows when it has no explicit Status value, or `null` when no default is configured. Look it up in `options` rather than assuming the first option is the default. It appears wherever the API returns a data source's properties, such as [Retrieve a data source](/reference/retrieve-a-data-source). In Notion MCP, [`notion-fetch`](/guides/mcp/mcp-supported-tools#fetch-notion-content) also shows the default in each data source's schema.
+[Status](/reference/property-object#status) property schemas now include a read-only `default_option`. It is the name of the option a page shows when it has no explicit Status value, or `null` when no default is configured. Look it up in `options` rather than assuming the first option is the default. It appears wherever the API returns a data source's properties, such as [Retrieve a data source](/reference/retrieve-a-data-source). In Notion MCP, [`notion-fetch`](/guides/mcp/tools-search-reference#fetch-notion-content) also shows the default in each data source's schema.
 
 **SDK support**: `@notionhq/client` [`v5.28.0`](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.28.0) adds `default_option` to the Status property response type.
 
@@ -84,7 +84,7 @@ Internal and public connections now have a **Health** tab in the Developer porta
 
 ### Separate Notion and connected-source search in Notion MCP
 
-`notion-search` now searches only Notion pages and databases in hosted Notion MCP sessions. The new `notion-connector-search` tool searches connected sources such as Slack, Google Drive, GitHub, mail, and calendar. Sessions list it when the user has AI search and the workspace has a connected source. Pass `sources` to search only some sources. The response lists the sources it searched and warns about any source that failed or timed out. `notion-ai-search` no longer appears in `tools/list`, but it stays callable by name. Workspace-owned connections keep their selected tools. If `notion-connector-search` doesn't appear, refresh the client's tool list or reconnect Notion MCP. In ChatGPT, it appears after OpenAI reviews the updated Notion app. See [Supported tools](/guides/mcp/mcp-supported-tools#mcp-tools).
+`notion-search` now searches only Notion pages and databases in hosted Notion MCP sessions. The new `notion-connector-search` tool searches connected sources such as Slack, Google Drive, GitHub, mail, and calendar. Sessions list it when the user has AI search and the workspace has a connected source. Pass `sources` to search only some sources. The response lists the sources it searched and warns about any source that failed or timed out. `notion-ai-search` no longer appears in `tools/list`, but it stays callable by name. Workspace-owned connections keep their selected tools. If `notion-connector-search` doesn't appear, refresh the client's tool list or reconnect Notion MCP. In ChatGPT, it appears after OpenAI reviews the updated Notion app. See [Supported tools](/guides/mcp/tools-search-reference).
 
 **October 16, 2026**
 
@@ -98,7 +98,7 @@ When some `update_content` edits match and others don't, [Update page markdown](
 
 ### Calendar tools in Notion MCP
 
-You can now read schedules and manage Calendar events through user-authorized Notion MCP connections on all Notion plans. See [Supported tools](/guides/mcp/mcp-supported-tools#mcp-tools).
+You can now read schedules and manage Calendar events through user-authorized Notion MCP connections on all Notion plans. See [Supported tools](/guides/mcp/tools-calendars).
 
 ### Icon-only and cover-only page updates in Notion MCP
 
@@ -118,11 +118,11 @@ You can now read schedules and manage Calendar events through user-authorized No
 
 ### List page backlinks in Notion MCP
 
-The new `notion-list-page-backlinks` tool lists the pages in the same workspace that link to or mention a page or database. It returns IDs, titles, and URLs, and only for pages the user can open. See [List page backlinks](/guides/mcp/mcp-supported-tools#list-page-backlinks).
+The new `notion-list-page-backlinks` tool lists the pages in the same workspace that link to or mention a page or database. It returns IDs, titles, and URLs, and only for pages the user can open. See [List page backlinks](/guides/mcp/tools-search-reference#list-page-backlinks).
 
 ### Look up permission groups in Notion MCP
 
-The new `notion-get-groups` tool lists the permission groups a user can see, with their IDs and names. People properties show a group only as `space_permission_group-<id>`, so assistants can now turn that ID into a name, or find a group by name before setting it. See [Get groups](/guides/mcp/mcp-supported-tools#get-groups).
+The new `notion-get-groups` tool lists the permission groups a user can see, with their IDs and names. People properties show a group only as `space_permission_group-<id>`, so assistants can now turn that ID into a name, or find a group by name before setting it. See [Get groups](/guides/mcp/tools-search-reference#get-groups).
 
 **October 13, 2026**
 
@@ -184,11 +184,11 @@ Send `Notion-Beta: status-group-filters-2026-10-06` to opt in. With the header, 
 
 ### No more tool-specific Notion MCP rate limits
 
-`notion-search` and `notion-query-data-sources` no longer have their own rate limits. Calls to these tools now count toward the standard [request limits](/reference/request-limits), like other Notion MCP tools. See [Supported tools](/guides/mcp/mcp-supported-tools#rate-limits).
+`notion-search` and `notion-query-data-sources` no longer have their own rate limits. Calls to these tools now count toward the standard [request limits](/reference/request-limits), like other Notion MCP tools. See [Supported tools](/guides/mcp/rate-limits).
 
 ### Create teamspace root pages with Notion MCP
 
-`notion-create-pages` now supports creating pages directly in a teamspace with `parent.teamspace_id`. Use a user-backed connection with permission to add top-level pages; see [Teamspace root pages](/guides/mcp/mcp-supported-tools#teamspace-root-pages) for details and an example.
+`notion-create-pages` now supports creating pages directly in a teamspace with `parent.teamspace_id`. Use a user-backed connection with permission to add top-level pages; see [Teamspace root pages](/guides/mcp/tools-pages-reference#teamspace-root-pages) for details and an example.
 
 **October 5, 2026**
 
@@ -228,7 +228,7 @@ The markdown endpoints accept a new optional `markdown_version` parameter. Set i
 
 ### Higher Notion MCP search and query limits
 
-Notion MCP now allows 20 search calls and 20 data source query calls per connection every 10 seconds. Rate-limit tool errors also include their structured JSON in the text response for clients that read only text. See [Supported tools](/guides/mcp/mcp-supported-tools#rate-limits).
+Notion MCP now allows 20 search calls and 20 data source query calls per connection every 10 seconds. Rate-limit tool errors also include their structured JSON in the text response for clients that read only text. See [Supported tools](/guides/mcp/rate-limits).
 
 **September 25, 2026**
 
@@ -492,7 +492,7 @@ The [`notion-fetch`](/guides/mcp/mcp-supported-tools) MCP tool's `self` response
 
 ### New identity fields in OAuth token responses
 
-[User objects](/reference/user) now include an `email_verified` boolean next to `person.email`, indicating whether Notion has verified that email address. The field appears anywhere person emails do, including the `owner` in [OAuth token responses](/guides/get-started/authorization) and [List all users](/reference/get-users) results.
+[User objects](/reference/user) now include an `email_verified` boolean next to `person.email`, indicating whether Notion has verified that email address. The field appears anywhere person emails do, including the `owner` in [OAuth token responses](/guides/authorization/overview) and [List all users](/reference/get-users) results.
 
 Notion MCP token responses now include top-level `user_id`, `workspace_id`, and `email_domain` fields on successful authorization-code exchanges, so MCP clients can associate a connection with a Notion user and workspace without an extra call. See [Integrating your own MCP client](/guides/mcp/build-mcp-client#step-6-exchange-authorization-code-for-tokens).
 
@@ -551,7 +551,7 @@ You can now create [HTML blocks](/reference/block#html-blocks) with the API. Upl
 
 ### Choose an expiration when creating a personal access token
 
-When creating a [personal access token](/guides/get-started/personal-access-tokens) in the [Developer portal](https://www.notion.so/developers), you can now pick an **Expiration** of 7 days, 30 days, 90 days, 180 days, or 1 year. The default stays at 1 year, matching the previous behavior. The create dialog previews the exact expiration date, and the reveal step shows the same date next to the token value.
+When creating a [personal access token](/guides/connections-and-tokens/personal-access-tokens) in the [Developer portal](https://www.notion.so/developers), you can now pick an **Expiration** of 7 days, 30 days, 90 days, 180 days, or 1 year. The default stays at 1 year, matching the previous behavior. The create dialog previews the exact expiration date, and the reveal step shows the same date next to the token value.
 
 The workspace admin view under **Settings & members → Connections** now also surfaces an **Expired** status and filter for PATs whose expiration has passed. Expired tokens stop authenticating and return an `unauthorized` error, and can still be revoked from the admin view or the Developer portal.
 
@@ -613,7 +613,7 @@ Bots that appear as [user objects](/reference/user) in API responses can now be 
 
 ### Unique access tokens per OAuth authorization
 
-New public connections now mint a fresh `access_token` and `refresh_token` for each successful OAuth authorization instead of returning the existing active token. Existing connections keep their previous behavior. Store the token pair from every successful response — including re-authorizations of the same connection — as described in the [Authorization guide](/guides/get-started/authorization#step-5-the-connection-stores-the-access_token-and-refresh_token-for-future-requests).
+New public connections now mint a fresh `access_token` and `refresh_token` for each successful OAuth authorization instead of returning the existing active token. Existing connections keep their previous behavior. Store the token pair from every successful response — including re-authorizations of the same connection — as described in the [Authorization guide](/guides/authorization/overview#step-5-the-connection-stores-the-access_token-and-refresh_token-for-future-requests).
 
 **May 15, 2026**
 
@@ -627,7 +627,7 @@ The [Update page markdown](/reference/update-page-markdown) endpoint now support
 
 The new [Developer portal](https://www.notion.so/developers) is now available as a single place to manage developer tools for Notion, including connections, Workers, and personal access tokens.
 
-[Personal access tokens](/guides/get-started/personal-access-tokens) (PATs) are user-scoped tokens for scripts, CLI workflows, Workers, and trusted tools that should act with one Notion user's permissions. PATs can be granted Notion API access, Workers access, or both.
+[Personal access tokens](/guides/connections-and-tokens/personal-access-tokens) (PATs) are user-scoped tokens for scripts, CLI workflows, Workers, and trusted tools that should act with one Notion user's permissions. PATs can be granted Notion API access, Workers access, or both.
 
 Workspace admins can now view and revoke PATs created in their workspace. On supported plans, admins can also configure who may create PATs with Notion API access. Defaults vary by plan: Free workspaces default to workspace owners only, Plus workspaces default to all workspace members, Business workspaces default to workspace owners only, and Enterprise workspaces default to workspace owners and selected groups.
 
@@ -725,7 +725,7 @@ The [Developer Terms](https://www.notion.so/notion/Developer-Terms-ba4131408d084
 
 ### "me" relative filter for people properties
 
-[People filter conditions](/reference/filter-data-source-entries#people) now accept `"me"` as a value for `contains` and `does_not_contain`, in addition to user UUIDs. For [public integrations](/guides/get-started/overview#connection-types), `"me"` resolves to the user who authorized the connection. For [internal integrations](/guides/get-started/overview#connection-types), `"me"` does not resolve to a user — a `contains: "me"` filter will return no results and a `does_not_contain: "me"` filter will match all entries. Works across [database queries](/reference/post-database-query-filter#people), [data source queries](/reference/filter-data-source-entries#people), [view filters, and quick filters](/guides/data-apis/working-with-views#quick-filters).
+[People filter conditions](/reference/filter-data-source-entries#people) now accept `"me"` as a value for `contains` and `does_not_contain`, in addition to user UUIDs. For [public integrations](/guides/connections-and-tokens/overview#connection-types), `"me"` resolves to the user who authorized the connection. For [internal integrations](/guides/connections-and-tokens/overview#connection-types), `"me"` does not resolve to a user — a `contains: "me"` filter will return no results and a `does_not_contain: "me"` filter will match all entries. Works across [database queries](/reference/post-database-query-filter#people), [data source queries](/reference/filter-data-source-entries#people), [view filters, and quick filters](/guides/data-apis/working-with-views#quick-filters).
 
 ### Relative date filter values
 
@@ -867,7 +867,7 @@ Highlighting recent changes to [Notion MCP](https://developers.notion.com/docs/m
 * Flattened `notion-update-page` tool parameters and fixed schema issues for improved compatibility with MCP clients.
 * **Enterprise governance**: audit logging for MCP tool usage and admin tool allowlisting.
 
-We recommend reconnecting Notion MCP in your third-party AI tools to ensure you have the most up-to-date tools and resources.
+We recommend reconnecting Notion MCP in your third-party AI assistants to ensure you have the most up-to-date tools and resources.
 
 **January 15, 2026**
 
@@ -881,14 +881,14 @@ We [released `v5.7.0`](https://github.com/makenotion/notion-sdk-js/releases/tag/
   * Introduce [`template` parameter](https://developers.notion.com/reference/post-page#setting-up-page-content) to Create Page API.
   * Introduce [`template`](https://developers.notion.com/reference/patch-page#applying-a-page-template) and [`erase_content` parameters](https://developers.notion.com/reference/patch-page#erasing-content-from-a-page) to Update Page API.
 
-Highlighting recent LLM-facing changes to [Notion MCP](https://developers.notion.com/docs/mcp), our remote Model Context Protocol (MCP) server for AI tools:
+Highlighting recent LLM-facing changes to [Notion MCP](https://developers.notion.com/docs/mcp), our remote Model Context Protocol (MCP) server for AI assistants:
 
 * Released `notion-query-data-sources` tool to Enterprise Notion workspaces with access to Notion AI.
 * Tool consolidation: `notion-get-user` has been removed & its functionality has been rolled into `notion-get-users`.
 * Fixed a bug causing child content to be deleted by the `notion-update-page` tool when using `replace_content` and `replace_content_range` modes.
 * Removed Notion-flavored Markdown specification from `notion-create-pages` tool to conserve context tokens, since it exists behind a dedicated MCP Resource as well.
 
-We recommend reconnecting Notion MCP in your third-party AI tools to ensure you have the most up-to-date tools and resources.
+We recommend reconnecting Notion MCP in your third-party AI assistants to ensure you have the most up-to-date tools and resources.
 
 **September 13, 2025**
 

@@ -211,70 +211,11 @@ const innerMiddleware = createMiddleware({
 
 ## Create middleware
 
-python
-An `AgentMiddleware` subclass can declare three class attributes that the agent factory picks up at compile time:
-
-* `state_schema` — extend the agent state with custom fields. See [Custom state schema](#custom-state-schema).
-* `tools` — register additional tools that ship with the middleware (e.g., `write_todos` on the to-do list middleware).
-* `transformers` — register scope-aware stream transformer factories. See [Custom stream transformers](#custom-stream-transformers).
-  :::
-
 `createMiddleware` accepts three configuration fields that the agent factory picks up at compile time:
 
 * `stateSchema` — extend the agent state with custom fields. See [Custom state schema](#custom-state-schema).
 * `tools` — register additional tools that ship with the middleware.
 * `streamTransformers` — register scope-aware stream transformer factories. See [Custom stream transformers](#custom-stream-transformers).
-
-**Example:**
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.agents.middleware import (
-    AgentMiddleware,
-    AgentState,
-    ModelRequest,
-    ModelResponse,
-)
-from langgraph.runtime import Runtime
-from typing import Any, Callable
-
-class LoggingMiddleware(AgentMiddleware):
-    def before_model(self, state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
-        print(f"About to call model with {len(state['messages'])} messages")
-        return None
-
-    def after_model(self, state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
-        print(f"Model returned: {state['messages'][-1].content}")
-        return None
-
-    async def abefore_model(
-        self, state: AgentState, runtime: Runtime
-    ) -> dict[str, Any] | None:
-        # Async version of before_model
-        return None
-
-    async def aafter_model(
-        self, state: AgentState, runtime: Runtime
-    ) -> dict[str, Any] | None:
-        # Async version of after_model
-        print(f"Model returned: {state['messages'][-1].content}")
-        return None
-
-
-agent = create_agent(
-    model="gpt-5.5",
-    middleware=[LoggingMiddleware()],
-    tools=[...],
-)
-```
-
-**When to use classes:**
-
-* Defining both sync and async implementations for the same hook
-* Multiple hooks needed in a single middleware
-* Complex configuration required (e.g., configurable thresholds, custom models)
-* Reuse across projects with init-time configuration
-
-:::
 
 Use the `createMiddleware` function to define custom middleware:
 
@@ -595,7 +536,7 @@ Dynamically modify the system prompt at runtime to inject context, user-specific
 
 Use the `systemMessage` field in `ModelRequest` to read and modify the system prompt. It contains a [`SystemMessage`](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage) object (even if the agent was created with a string [`systemPrompt`](https://reference.langchain.com/javascript/langchain/index/CreateAgentParams/systemPrompt)).
 
-```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createMiddleware, SystemMessage, createAgent } from "langchain";
 
 const addContextMiddleware = createMiddleware({
@@ -615,7 +556,7 @@ const agent = createAgent({
 });
 ```
 
-```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createMiddleware, SystemMessage, createAgent } from "langchain";
 
 const addContextMiddleware = createMiddleware({
@@ -635,7 +576,7 @@ const agent = createAgent({
 });
 ```
 
-```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createMiddleware, SystemMessage, createAgent } from "langchain";
 
 const addContextMiddleware = createMiddleware({
@@ -655,7 +596,7 @@ const agent = createAgent({
 });
 ```
 
-```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createMiddleware, SystemMessage, createAgent } from "langchain";
 
 const addContextMiddleware = createMiddleware({
@@ -675,7 +616,7 @@ const agent = createAgent({
 });
 ```
 
-```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createMiddleware, SystemMessage, createAgent } from "langchain";
 
 const addContextMiddleware = createMiddleware({
@@ -695,7 +636,7 @@ const agent = createAgent({
 });
 ```
 
-```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createMiddleware, SystemMessage, createAgent } from "langchain";
 
 const addContextMiddleware = createMiddleware({
@@ -715,7 +656,7 @@ const agent = createAgent({
 });
 ```
 
-```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createMiddleware, SystemMessage, createAgent } from "langchain";
 
 const addContextMiddleware = createMiddleware({
@@ -739,7 +680,7 @@ Use [`SystemMessage.concat`](https://reference.langchain.com/javascript/langchai
 
 ### Dynamic model selection
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createMiddleware, initChatModel } from "langchain";
 
 const models = {
@@ -793,7 +734,7 @@ const agent = createAgent({
 
 ### Tool call monitoring
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createMiddleware } from "langchain";
 
 const toolMonitoringMiddleware = createMiddleware({
@@ -814,71 +755,6 @@ const toolMonitoringMiddleware = createMiddleware({
 ```
 
 ### Prompt caching (Anthropic)
-
-When working with Anthropic models, use structured content blocks with cache control directives to cache large system prompts:
-
-> [tab] Decorator
->
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
-> from langchain.messages import SystemMessage
-> from typing import Callable
->
->
-> @wrap_model_call
-> def add_cached_context(
->     request: ModelRequest,
->     handler: Callable[[ModelRequest], ModelResponse],
-> ) -> ModelResponse:
->     # Always work with content blocks
->     new_content = list(request.system_message.content_blocks) + [
->         {
->             "type": "text",
->             "text": "Here is a large document to analyze:\n\n<document>...</document>",
->             # content up until this point is cached
->             "cache_control": {"type": "ephemeral"}
->         }
->     ]
->
->     new_system_message = SystemMessage(content=new_content)
->     return handler(request.override(system_message=new_system_message))
-> ```
-
-> [tab] Class
->
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> from langchain.agents.middleware import AgentMiddleware, ModelRequest, ModelResponse
-> from langchain.messages import SystemMessage
-> from typing import Callable
->
->
-> class CachedContextMiddleware(AgentMiddleware):
->     def wrap_model_call(
->         self,
->         request: ModelRequest,
->         handler: Callable[[ModelRequest], ModelResponse],
->     ) -> ModelResponse:
->         # Always work with content blocks
->         new_content = list(request.system_message.content_blocks) + [
->             {
->                 "type": "text",
->                 "text": "Here is a large document to analyze:\n\n<document>...</document>",
->                 "cache_control": {"type": "ephemeral"}  # This content will be cached
->             }
->         ]
->
->         new_system_message = SystemMessage(content=new_content)
->         return handler(request.override(system_message=new_system_message))
-> ```
-
-**Notes:**
-
-* `ModelRequest.system_message` is always a [`SystemMessage`](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage) object, even if the agent was created with `system_prompt="string"`
-* Use `SystemMessage.content_blocks` to access content as a list of blocks, regardless of whether the original content was a string or list
-* When modifying system messages, use `content_blocks` and append new blocks to preserve existing structure
-* You can pass [`SystemMessage`](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage) objects directly to `create_agent`'s `system_prompt` parameter for advanced use cases like cache control
-
-:::
 
 Modify system messages in middleware using the `systemMessage` field in `ModelRequest`. It contains a [`SystemMessage`](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage) object (even if the agent was created with a string [`systemPrompt`](https://reference.langchain.com/javascript/langchain/index/CreateAgentParams/systemPrompt)).
 

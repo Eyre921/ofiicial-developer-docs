@@ -6,7 +6,7 @@ path: reference/authentication
 
 Learn how to authenticate your connection requests using bearer tokens.
 
-Requests use the HTTP `Authorization` header to both authenticate and authorize operations. The Notion API accepts bearer tokens in this header. Bearer tokens are provided when you create an [internal connection](/guides/get-started/internal-connections), create a [personal access token](/guides/get-started/personal-access-tokens), or complete the OAuth flow for a [public connection](/guides/get-started/public-connections).
+Requests use the HTTP `Authorization` header to both authenticate and authorize operations. The Notion API accepts bearer tokens in this header. Bearer tokens are provided when you create an [internal connection](/guides/connections-and-tokens/internal-connections), create a [personal access token](/guides/connections-and-tokens/personal-access-tokens), or complete the OAuth flow for a [public connection](/guides/connections-and-tokens/public-integrations/overview).
 
 ```curl cURL theme={null}
 curl 'https://api.notion.com/v1/users' \
@@ -24,4 +24,4 @@ const { Client } = require('@notionhq/client');
 const client = new Client({ auth: process.env.NOTION_ACCESS_TOKEN });
 ```
 
-Learn more in the [Authorization guide](/guides/get-started/authorization).
+Learn more in the [Authorization guide](/guides/authorization/overview).

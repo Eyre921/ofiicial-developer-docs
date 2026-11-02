@@ -36,7 +36,7 @@ There is no serverless chat endpoint for your adapter. Open a **sampling client*
 
 Use the **sampler checkpoint** returned by `save_weights_for_sampler`, not a promoted model resource (`accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>`). Promoted models are for on-demand deployment and cannot be passed to `create_sampling_client`.
 
-The following save-and-sample sequence follows the [serverless quickstart](/fine-tuning/training-api/serverless#step-4-train-checkpoint-and-sample). Set up `prompt`, `tokenizer`, and `params` as you do for training rollouts.
+The following save-and-sample sequence follows [Train, checkpoint, and sample](/fine-tuning/training-api/serverless#train-checkpoint-and-sample) on the serverless training page. Set up `prompt`, `tokenizer`, and `params` as you do for training rollouts.
 
 ```python theme={null}
 snapshot = training_client.save_weights_for_sampler("eval").result().path
@@ -159,6 +159,6 @@ For more on preemptible capacity and guarantees, see [Preemptible deployments](/
 
 ## Next steps
 
-> **[Deploying Trained Models](/fine-tuning/deploying-loras)**
+> [card] [Deploying Trained Models](/fine-tuning/deploying-loras)
 >
 > Live merge or multi-LoRA for production serving

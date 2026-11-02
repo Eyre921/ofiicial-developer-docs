@@ -90,34 +90,34 @@ For dedicated infrastructure, see [On-demand deployments](/guides/ondemand-deplo
 
 ## Next steps
 
-> **[Serverless quickstart](/getting-started/quickstart)**
+> [card] [Serverless quickstart](/getting-started/quickstart)
 >
 > Make your first Serverless API call.
 
-> **[Serverless Modes](/serverless/serverless-modes)**
+> [card] [Serverless Modes](/serverless/serverless-modes)
 >
 > Higher-reliability and higher-speed modes.
 
-> **[US-only Serverless](/serverless/us-only-serverless)**
+> [card] [US-only Serverless](/serverless/us-only-serverless)
 >
 > Dedicated US routers for inference residency.
 
-> **[Pricing](/serverless/pricing)**
+> [card] [Pricing](/serverless/pricing)
 >
 > Per-token rates for text, vision, embeddings, and Priority.
 
-> **[Reserved Throughput](/serverless/reserved-throughput)**
+> [card] [Reserved Throughput](/serverless/reserved-throughput)
 >
 > SLA-backed throughput that adds to your adaptive rate limits.
 
-> **[Rate limits](/serverless/rate-limits)**
+> [card] [Rate limits](/serverless/rate-limits)
 >
 > Adaptive TPM bounds and how the limit ramps with usage.
 
-> **[Prompt caching](/guides/prompt-caching)**
+> [card] [Prompt caching](/guides/prompt-caching)
 >
 > How caching works and how to maximize hit rate.
 
-> **[On-demand deployments](/guides/ondemand-deployments)**
+> [card] [On-demand deployments](/guides/ondemand-deployments)
 >
 > Dedicated GPUs for predictable throughput and custom models.

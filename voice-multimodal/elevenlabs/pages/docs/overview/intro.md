@@ -300,6 +300,8 @@ Precise word-level timestamps
 
 Entity detection, 65 entity types
 
+Entity redaction
+
 Transcript editing with natural-language instructions
 
 #### [Scribe v2 Medical](/docs/overview/models#scribe-v2-medical)

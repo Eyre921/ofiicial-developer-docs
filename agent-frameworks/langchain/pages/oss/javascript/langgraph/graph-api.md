@@ -118,7 +118,7 @@ It is also possible to define explicit input and output schemas for a graph. In 
 
 Let's look at an example:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { END, START, StateGraph, StateSchema } from "@langchain/langgraph";
 import * as z from "zod";
 
@@ -172,7 +172,7 @@ await graph.invoke({ userInput: "My" });
 // { graphOutput: 'My name is Lance' }
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/24861731-481e-4b13-babb-d21813227380/r)
+> [card] [View example trace](https://smith.langchain.com/public/9e51e055-c781-40e7-9c11-ab0529e5a028/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -190,7 +190,7 @@ There are two subtle and important points to note here:
 >
 > When you stream with `streamMode: "values"`, the graph emits **all** of its state channels by default — including private ones — because values streaming defaults to the full set of state channels rather than the output schema. This is why a private channel like `bar` is hidden by `invoke` but visible while streaming:
 >
-> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { END, START, StateGraph, StateSchema } from "@langchain/langgraph";
 > import * as z from "zod";
 >
@@ -246,7 +246,7 @@ There are two subtle and important points to note here:
 > // { foo: 'My name', userInput: 'My', graphOutput: 'My name is Lance', bar: 'My name is' }
 > ```
 >
-> > [card] [View example trace](https://smith.langchain.com/public/9cbbe1f1-0913-498b-be17-fcf8cc1848c9/r)
+> > [card] [View example trace](https://smith.langchain.com/public/bdecebeb-78fe-4831-ac5d-3bae88b8ddf6/r)
 > >
 > > Open a public LangSmith run for this example.
 >
@@ -284,7 +284,7 @@ const newValue = reducer(currentState[key], nodeUpdate[key]); // left, right
 
 The left argument always comes from accumulated state. The right argument always comes from the latest node update. The following example names both arguments explicitly:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ReducedValue, StateSchema } from "@langchain/langgraph";
 import * as z from "zod";
 
@@ -301,13 +301,13 @@ const State = new StateSchema({
 });
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/7ec49f29-72d1-4308-8740-abc471d83569/r)
+> [card] [View example trace](https://smith.langchain.com/public/0eeebb28-e5e3-4fbd-b760-257fdd6bf8b4/r)
 >
 > Open a public LangSmith run for this example.
 
 Suppose the state is `{ tags: ["draft"] }` and a node returns `{ tags: ["review"] }`. LangGraph calls:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const reducer = (left: string[], right: string[]) => left.concat(right);
 
 reducer(["draft"], ["review"]); // left, right → ["draft", "review"]
@@ -321,7 +321,7 @@ Custom reducers combine the left and right arguments. The [default reducer](#def
 
 The default reducer ignores the left argument and replaces the state value with the right argument. This example shows how to use the default reducer:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { StateSchema } from "@langchain/langgraph";
 import * as z from "zod";
 
@@ -331,7 +331,7 @@ const State = new StateSchema({
 });
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/0f30e4c6-1a15-4dbf-ba92-761df436a4a9/r)
+> [card] [View example trace](https://smith.langchain.com/public/d4578c35-b26d-47d3-861c-25890705858c/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -343,7 +343,7 @@ In this example, no reducer functions are specified for any key. Let's assume th
 
 A custom reducer combines the left and right arguments instead of replacing the state value, which is useful for accumulating values, such as appending updates to a list. This example shows how to specify a custom reducer:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ReducedValue, StateSchema } from "@langchain/langgraph";
 import { z } from "zod/v4";
 
@@ -356,7 +356,7 @@ const State = new StateSchema({
 });
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/e2be75db-1c52-482a-b89f-ef30c15d08eb/r)
+> [card] [View example trace](https://smith.langchain.com/public/b02542b5-cb5d-4530-9ab8-6679bdbe2127/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -368,7 +368,7 @@ A common source of confusion with reducers: with a merging reducer, returning an
 
 This pattern matters for error buffers or retry counters that must be cleared between retry attempts:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ReducedValue, StateSchema } from "@langchain/langgraph";
 import { z } from "zod/v4";
 
@@ -384,13 +384,13 @@ const State = new StateSchema({
 // state.errors is still ["bad sql"]; the empty array is merged in, not cleared
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/9dca9849-c6f2-4e74-8c82-fdc44d6f6c22/r)
+> [card] [View example trace](https://smith.langchain.com/public/4eafb2c7-d0bc-431c-9616-3efc73a43a46/r)
 >
 > Open a public LangSmith run for this example.
 
 To let a node reset (clear) the field, define a custom reducer that replaces the accumulated value instead of merging it:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ReducedValue, StateSchema } from "@langchain/langgraph";
 import { z } from "zod/v4";
 
@@ -404,13 +404,13 @@ const State = new StateSchema({
 // node can now clear the field with { errors: [] }
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/f06a3f2e-6876-4ab1-9b29-3be0aac1cdac/r)
+> [card] [View example trace](https://smith.langchain.com/public/9a3650c7-8f46-4cb6-b05c-120ca7009ca7/r)
 >
 > Open a public LangSmith run for this example.
 
 Alternatively, wrap the update with `Overwrite` to bypass the reducer for a single update, while keeping the field's normal merging behavior for every other update:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { Overwrite, ReducedValue, StateSchema } from "@langchain/langgraph";
 import { z } from "zod/v4";
 
@@ -575,8 +575,6 @@ type MyUpdate = typeof MyStateSchema.Update;
 // { messages?: Messages, count?: number }
 ```
 
-:::
-
 ### Working with messages in graph state
 
 #### Why use messages?
@@ -696,7 +694,7 @@ If a [node](#nodes) contains multiple operations, you may find it easier to impl
 
 > [tab] Original
 >
-> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import * as z from "zod";
 > import { uuid7 } from "langsmith";
 >
@@ -735,13 +733,13 @@ If a [node](#nodes) contains multiple operations, you may find it easier to impl
 > await graph.invoke({ url: "https://www.example.com" }, config);
 > ```
 >
-> > [card] [View example trace](https://smith.langchain.com/public/f6485847-0dd8-471a-b79a-fd5a4d97f4eb/r)
+> > [card] [View example trace](https://smith.langchain.com/public/5b6ae6b8-f161-46df-b3ac-fe45c18aa959/r)
 > >
 > > Open a public LangSmith run for this example.
 
 > [tab] With task
 >
-> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import * as z from "zod";
 > import { uuid7 } from "langsmith";
 >
@@ -786,7 +784,7 @@ If a [node](#nodes) contains multiple operations, you may find it easier to impl
 > await graph.invoke({ urls: ["https://www.example.com"] }, config);
 > ```
 >
-> > [card] [View example trace](https://smith.langchain.com/public/551a4dee-6b2c-455f-97fc-11f2e1467a44/r)
+> > [card] [View example trace](https://smith.langchain.com/public/46d5934a-9231-4b50-b37b-0e79cae6a865/r)
 > >
 > > Open a public LangSmith run for this example.
 

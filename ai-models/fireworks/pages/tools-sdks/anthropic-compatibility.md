@@ -14,17 +14,17 @@ Fireworks exposes an Anthropic-compatible endpoint at `POST /v1/messages`.
 
 Install the Anthropic SDK for your language:
 
-**Python**
+> [tab] Python
+>
+> ```bash theme={null}
+> pip install anthropic
+> ```
 
-```bash theme={null}
-pip install anthropic
-```
-
-**JavaScript / TypeScript**
-
-```bash theme={null}
-npm install @anthropic-ai/sdk
-```
+> [tab] JavaScript / TypeScript
+>
+> ```bash theme={null}
+> npm install @anthropic-ai/sdk
+> ```
 
 Then make your first request:
 
@@ -377,14 +377,14 @@ for await (const event of stream) {
 
 ## Next steps
 
-> **[Quickstart](/getting-started/quickstart)**
+> [card] [Quickstart](/getting-started/quickstart)
 >
 > Get started with your first API call
 
-> **[Reasoning](/guides/reasoning)**
+> [card] [Reasoning](/guides/reasoning)
 >
 > Use reasoning with thinking models
 
-> **[API reference](/api-reference/anthropic-messages)**
+> [card] [API reference](/api-reference/anthropic-messages)
 >
 > Full Anthropic Messages API reference

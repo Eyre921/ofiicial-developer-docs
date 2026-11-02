@@ -10,27 +10,27 @@ Fireworks AI seamlessly integrates with the best open-source agent frameworks, e
 
 ## Supported Frameworks
 
-> **[LangChain](https://docs.langchain.com/oss/python/integrations/providers/fireworks)**
+> [card] [LangChain](https://docs.langchain.com/oss/python/integrations/providers/fireworks)
 >
 > Build LLM applications with powerful orchestration and tool integration
 
-> **[LlamaIndex](https://developers.llamaindex.ai/python/examples/llm/fireworks/)**
+> [card] [LlamaIndex](https://developers.llamaindex.ai/python/examples/llm/fireworks/)
 >
 > Efficient data retrieval and document indexing for LLM-based agents
 
-> **[CrewAI](https://docs.crewai.com/en/concepts/llms#fireworks-ai)**
+> [card] [CrewAI](https://docs.crewai.com/en/concepts/llms#fireworks-ai)
 >
 > Orchestrate collaborative multi-agent systems for complex tasks
 
-> **[PydanticAI](https://ai.pydantic.dev/models/openai/#fireworks-ai)**
+> [card] [PydanticAI](https://ai.pydantic.dev/models/openai/#fireworks-ai)
 >
 > Type-safe AI agent development with Pydantic validation
 
-> **[Strands Agents](https://strandsagents.com/latest/documentation/docs/community/model-providers/fireworksai/)**
+> [card] [Strands Agents](https://strandsagents.com/latest/documentation/docs/community/model-providers/fireworksai/)
 >
 > Modern agent orchestration with seamless OpenAI-compatible integration
 
-> **[AWS AgentCore](/ecosystem/integrations/agentcore)**
+> [card] [AWS AgentCore](/ecosystem/integrations/agentcore)
 >
 > Build and deploy production AI agents with Fireworks models on AgentCore Runtime
 

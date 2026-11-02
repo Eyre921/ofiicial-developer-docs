@@ -503,19 +503,19 @@ Detailed scope mismatch, checkpoint retention, promotion, and recovery procedure
 
 ## Next steps
 
-> **[Incremental snapshots & ARC2](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md)**
+> [card] [Incremental snapshots & ARC2](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md)
 >
 > Delta builds, per-file hints, and incremental signal bodies
 
-> **[Ledger & debugging](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md)**
+> [card] [Ledger & debugging](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md)
 >
 > Snapshot history, stuck swaps, and recovery playbooks
 
-> **[Inference for RL rollouts](/guides/rollout-inference)**
+> [card] [Inference for RL rollouts](/guides/rollout-inference)
 >
 > Session affinity, policy version, MoE Router Replay (R3)
 
-> **[Training API](/fine-tuning/training-api/introduction)**
+> [card] [Training API](/fine-tuning/training-api/introduction)
 >
 > Fireworks-hosted trainer alternative
 

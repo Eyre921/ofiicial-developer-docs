@@ -34,6 +34,10 @@ Control whether users can interrupt your assistant while speaking
 
 Adjust how quickly your assistant responds to user input
 
+#### [Noisy environment detection](#noisy-environment-detection)
+
+Ask users to move somewhere quieter when your assistant hears other voices
+
 ## Maximum conversation duration
 
 The **Max conversation duration** setting limits the total time a conversation can remain active.
@@ -464,6 +468,159 @@ await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd9
 * Use **Normal** mode as a default for general conversational flows
 * Combine with workflows to dynamically adjust turn eagerness based on conversation context
 * Test different settings with your specific use case to find the optimal balance
+
+## Noisy environment detection
+
+When **Noisy environment detection** is on, the agent listens for other people speaking in the user's background.
+If it hears them, it speaks a fixed message asking the user to move somewhere quieter.
+
+Background voices are a major cause of incorrect transcripts and false interruptions.
+Speech recognition transcribes them as if the user had said them, and they can make the agent stop in the middle of a response.
+Getting the user to a quieter place improves transcription and turn-taking for the rest of the conversation.
+The setting is most useful for agents whose users often call from busy places, such as shops or households.
+
+> **Note**
+>
+> Noisy environment detection is available for voice agents in Enterprise workspaces.
+
+### How it works
+
+A model analyzes the user's audio throughout the conversation and triggers when it hears a second voice alongside the user's.
+It detects voices only: other background noise, such as traffic or animals, does not trigger it.
+
+When detection triggers:
+
+1. If the agent is speaking, its current response stops. A response with interruptions disabled finishes first.
+2. The agent speaks the message. The user cannot interrupt it, because the background voices that triggered it could otherwise cut it short.
+3. The message is spoken at most once per conversation.
+
+This is separate from the **Filter background speech** setting under **Advanced** > **Automatic Speech Recognition**, which removes background speech from transcription.
+Noisy environment detection uses a different model that analyzes a longer stretch of audio.
+It detects background voices more slowly but more accurately, which suits its purpose better.
+
+### Configuration
+
+In the CLI and API, turn the setting on with `conversation_config.turn.noisy_environment_detection` and set the message with `conversation_config.turn.noisy_environment_message`.
+
+#### Update via the dashboard
+
+#### Open the conversational behavior settings
+
+Open your agent, go to the **Advanced** tab, and find **Conversational behavior**.
+
+#### Turn on the setting
+
+Turn on **Noisy environment detection**. A message field appears, containing a default message.
+
+#### Edit the message
+
+Replace the default message if you want different wording. Save your changes.
+
+#### Update via the CLI
+
+#### Pull the agent configuration
+
+```bash
+elevenlabs agents pull --agent agent_7101k5zvyjhmfg983brhmhkd98n6
+```
+
+#### Edit \`agent_configs/\<agent-name>.json\`
+
+Set `conversation_config.turn.noisy_environment_detection`, and `conversation_config.turn.noisy_environment_message` if you want different wording:
+
+```json
+{
+  "conversation_config": {
+    "turn": {
+      "noisy_environment_detection": true,
+      "noisy_environment_message": "Sorry, it's a bit noisy there. Could you move somewhere quieter?"
+    }
+  }
+}
+```
+
+#### Push the agent configuration
+
+```bash
+elevenlabs agents push --agent agent_7101k5zvyjhmfg983brhmhkd98n6
+```
+
+#### Update via the API
+
+```python
+from elevenlabs import ElevenLabs
+
+elevenlabs = ElevenLabs()
+
+elevenlabs.conversational_ai.agents.update(
+    agent_id="agent_7101k5zvyjhmfg983brhmhkd98n6",
+    conversation_config={
+        "turn": {
+            "noisy_environment_detection": True,
+            "noisy_environment_message": "Sorry, it's a bit noisy there. Could you move somewhere quieter?",
+        },
+    },
+)
+```
+
+```typescript
+import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+
+const elevenlabs = new ElevenLabsClient();
+
+await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd98n6", {
+  conversationConfig: {
+    turn: {
+      noisyEnvironmentDetection: true,
+      noisyEnvironmentMessage: "Sorry, it's a bit noisy there. Could you move somewhere quieter?",
+    },
+  },
+});
+```
+
+#### Languages
+
+The agent speaks the message in the conversation's current language, including after a switch with the [language detection](/docs/eleven-agents/customization/tools/system-tools/language-detection) tool.
+
+In the dashboard, translations work the same way as for the first message:
+
+* Turning the setting on translates the message into each [additional language](/docs/eleven-agents/customization/voice/customization/language).
+* Adding a language translates the message into that language.
+* To review or edit a translation, select the language in the message field's language dropdown.
+* After you edit the main message, click **Translate to all** to update the translations.
+
+The CLI and API do not translate the message.
+The default message is in English, so set `noisy_environment_message` in the agent's default language, and add a translation for each additional language in `language_presets`.
+
+#### Example: French translation
+
+```json
+{
+  "conversation_config": {
+    "agent": {
+      "language": "en"
+    },
+    "turn": {
+      "noisy_environment_detection": true,
+      "noisy_environment_message": "Sorry, it's a bit noisy there. Could you move somewhere quieter?"
+    },
+    "language_presets": {
+      "fr": {
+        "overrides": {
+          "turn": {
+            "noisy_environment_message": "Désolé, il y a un peu de bruit. Pourriez-vous aller dans un endroit plus calme ?"
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+### Best practices for noisy environment detection
+
+* Keep the message short. Users cannot interrupt it, so they hear all of it.
+* Test the message with outbound agents before turning it on widely.
 
 ## Recommended configurations
 

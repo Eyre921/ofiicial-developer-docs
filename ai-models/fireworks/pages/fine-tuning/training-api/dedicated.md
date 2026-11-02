@@ -44,19 +44,19 @@ The trainer and inference deployment are separate resources with separate billin
 
 ## What you can run
 
-> **SFT, DPO, and ORPO**
+> [card] SFT, DPO, and ORPO
 >
 > Use cookbook recipes with LoRA or full-parameter configurations supported by the selected training shape.
 
-> **RL and RFT**
+> [card] RL and RFT
 >
 > Run synchronous or asynchronous rollouts with custom rewards, losses, environments, and deployment sampling.
 
-> **Distillation**
+> [card] Distillation
 >
 > Provision student and teacher resources for sampled reverse KL, top-k forward KL, and related workflows.
 
-> **Custom loops**
+> [card] Custom loops
 >
 > Use the Tinker-compatible training client directly when a maintained recipe does not express the required behavior.
 
@@ -153,18 +153,18 @@ See [Serverless vs dedicated](/fine-tuning/training-api/introduction#infrastruct
 
 ## Next steps
 
-> **[Cookbook overview](/fine-tuning/training-api/cookbook/overview)**
+> [card] [Cookbook overview](/fine-tuning/training-api/cookbook/overview)
 >
 > Recipe entry points
 
-> **[Training Shapes](/fine-tuning/training-api/training-shapes)**
+> [card] [Training Shapes](/fine-tuning/training-api/training-shapes)
 >
 > What a shape pins
 
-> **[Models](/fine-tuning/models)**
+> [card] [Models](/fine-tuning/models)
 >
 > Per-model shape catalog
 
-> **[Cleanup](/fine-tuning/training-api/reference/cleanup)**
+> [card] [Cleanup](/fine-tuning/training-api/reference/cleanup)
 >
 > Teardown contract

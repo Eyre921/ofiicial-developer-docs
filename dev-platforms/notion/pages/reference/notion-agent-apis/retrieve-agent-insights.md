@@ -20,4 +20,4 @@ Pass `notion_ai` as the `agent_id` to read insights for the personal agent (Noti
 >
 > **Access**
 >
-> Only a [personal access token](/guides/get-started/personal-access-tokens) can read personal agent insights, and the totals always cover the user that token acts as — never another member's usage. Any other token receives a `404` `object_not_found`.
+> Only a [personal access token](/guides/connections-and-tokens/personal-access-tokens) can read personal agent insights, and the totals always cover the user that token acts as — never another member's usage. Any other token receives a `404` `object_not_found`.

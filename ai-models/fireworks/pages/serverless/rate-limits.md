@@ -180,23 +180,23 @@ These headers are not present on every response. Header values are tokens per mi
 
 ## FAQ
 
-> **Am I guaranteed successful responses up to my rate limit?**
+> [accordion] Am I guaranteed successful responses up to my rate limit?
 >
 > **No.** Staying within your rate limits does not guarantee that every request succeeds. When a deployment is busy, your traffic can still be **load shed**, and those responses are **`503 Service Overloaded`**. To **decrease the chance** of being load shed, you can use [Priority tier](/serverless/serverless-modes), which is prioritized during high load.
 
-> **How are rate limits scoped?**
+> [accordion] How are rate limits scoped?
 >
 > Rate limits — including adaptive rate limiting — are scoped **per account** and **per model**. Each model has its own TPM limits and its own adaptive limit, which grows, shrinks, and resets based only on your usage of that model. Traffic to one model does not consume, raise, or lower another model's limits. **Fast** and **regular** model variants have **separate** limits. **Priority tier** and **regular** requests share the **same** rate limits for a given model.
 
-> **How is my model's ceiling tier determined?**
+> [accordion] How is my model's ceiling tier determined?
 >
 > Ceiling tiers are based on the model's **total parameter count**: **Small** (\< 800B), **Medium** (800B – \< 1.6T), or **Large** (≥ 1.6T). See [Model size tiers](#model-size-tiers) for the ceiling values and [Models by tier](#models-by-tier) for where each Serverless model falls.
 
-> **What should I do first when I see 429s?**
+> [accordion] What should I do first when I see 429s?
 >
 > Honor the response's `Retry-After` header. If it is absent, retry with **exponential backoff and jitter**.
 
-> **How do I get higher limits sooner?**
+> [accordion] How do I get higher limits sooner?
 >
 > Reach out to [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) for a custom solution if either of these applies:
 >

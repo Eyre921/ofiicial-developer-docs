@@ -65,7 +65,7 @@ Fireworks supports two JSON mode variants:
 >
 > Always instruct the model to produce JSON in your prompt. Without this, the model may generate whitespace indefinitely until hitting token limits.
 
-> **Using arbitrary JSON mode**
+> [accordion] Using arbitrary JSON mode
 >
 > To force JSON output without a specific schema:
 >
@@ -82,7 +82,7 @@ Fireworks supports two JSON mode variants:
 >
 > This is similar to [OpenAI's JSON mode](https://platform.openai.com/docs/guides/text-generation/json-mode).
 
-> **Important notes and limitations**
+> [accordion] Important notes and limitations
 >
 > **Token limits:** If `finish_reason="length"`, the response may be truncated and invalid JSON. Increase `max_tokens` if needed.
 >
@@ -136,7 +136,7 @@ Fireworks supports most [JSON Schema 2020-12](https://json-schema.org/specificat
 >
 > For maximum portability, place all `$defs` at the document root and reference them with `#/$defs/<Name>`. This is the shape OpenAI, pydantic v2, and the JSON Schema spec recommend, and works on every conformant validator.
 
-> **Example: recursive schema (linked list)**
+> [accordion] Example: recursive schema (linked list)
 >
 > Self-recursive and mutually recursive schemas are supported. The example below is the canonical linked-list shape and works in both `response_format` and tool calling parameters:
 >
@@ -161,7 +161,7 @@ Fireworks supports most [JSON Schema 2020-12](https://json-schema.org/specificat
 > }
 > ```
 
-> **Example: pydantic v2 schemas with `$id`**
+> [accordion] Example: pydantic v2 schemas with `$id`
 >
 > Schemas emitted by `pydantic.BaseModel.model_json_schema()` typically carry a root `$id` annotation. This is treated as an identity annotation only — Fireworks never attempts to fetch the URI — and `#/$defs/...` references resolve correctly within the document:
 >
@@ -179,7 +179,7 @@ Fireworks supports most [JSON Schema 2020-12](https://json-schema.org/specificat
 > # Pass it directly into `response_format={"type": "json_schema", ...}`.
 > ```
 
-> **Advanced: Reasoning Model JSON Mode**
+> [accordion] Advanced: Reasoning Model JSON Mode
 >
 > Some models support generating structured JSON outputs alongside their reasoning process. The [Fireworks Python SDK](/tools-sdks/python-sdk) exposes the model's reasoning via the `reasoning_content` field, keeping it separate from the JSON output in the `content` field.
 >

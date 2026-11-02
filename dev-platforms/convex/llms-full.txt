@@ -1665,7 +1665,7 @@ Saving to the files has 3 components:
 
 1. Saving to file storage (in your app, not in the component's storage). This means you can access it directly with the `storageId` and generate URLs.
 2. Saving a reference (the storageId) to the file in the component. This will automatically keep track of how many messages are referencing the file, so you can vacuum files that are no longer used (see [files/vacuum.ts](https://github.com/convex/agent/blob/main/example/convex/files/vacuum.ts)).
-3. Inserting a URL in place of the data in the message sent to the LLM, along with the media type and other metadata provided. It will be inferred if not provided in [`guessMimeType`](https://github.com/convex/agent/blob/main/src/mapping.ts#L556).
+3. Inserting a URL in place of the data in the message sent to the LLM, along with the media type and other metadata provided. It will be inferred if not provided in [`guessMimeType`](https://github.com/convex/agent/blob/804c3101b94b4ca77374f49b2c6a7032002f0dda/src/vercel/mapping.ts#L1067).
 
 ### Can I just store the file myself and pass in a URL?[​](#can-i-just-store-the-file-myself-and-pass-in-a-url "Direct link to Can I just store the file myself and pass in a URL?")
 
@@ -5894,7 +5894,7 @@ Enable [ZDR routing](/ai-gateway/api.md#provider-preferences) on each request th
 
 <!-- -->
 
-ZDR endpoint catalog checked: 2026-10-30.
+ZDR endpoint catalog checked: 2026-11-02.
 
 ## OpenAI[​](#openai "Direct link to OpenAI")
 
@@ -6056,7 +6056,6 @@ ZDR endpoint catalog checked: 2026-10-30.
 * `x-ai/grok-4.7` · ZDR
 * `x-ai/grok-build-0.1` · ZDR
 * `x-ai/grok-imagine-image-2.0`
-* `x-ai/grok-imagine-image-quality`
 * `x-ai/grok-imagine-video`
 * `x-ai/grok-imagine-video-1.5`
 * `x-ai/grok-imagine-video-1.5-lite`
@@ -6229,6 +6228,7 @@ ZDR endpoint catalog checked: 2026-10-30.
 * `z-ai/glm-5.3` · ZDR
 * `z-ai/glm-5.3-flash` · ZDR
 * `z-ai/glm-5.3-flashx` · ZDR
+* `z-ai/glm-5.3-flashx-legal` · ZDR
 * `z-ai/glm-5.3-prime`
 * `z-ai/glm-5v-turbo` · ZDR
 * `~z-ai/glm-flash-latest`
@@ -6441,21 +6441,12 @@ ZDR endpoint catalog checked: 2026-10-30.
 
 ## Nous Research[​](#nous-research "Direct link to Nous Research")
 
-* `nousresearch/hermes-3-llama-3.1-405b` · ZDR
-* `nousresearch/hermes-3-llama-3.1-70b` · ZDR
 * `nousresearch/hermes-4-405b` · ZDR
 
 ## Perceptron[​](#perceptron "Direct link to Perceptron")
 
 * `perceptron/perceptron-mk1` · ZDR
 * `perceptron/perceptron-mk1.5` · ZDR
-
-## Poolside[​](#poolside "Direct link to Poolside")
-
-* `poolside/laguna-s-2.1`
-* `poolside/laguna-s-2.1:free`
-* `poolside/laguna-xs-2.1`
-* `poolside/laguna-xs-2.1:free`
 
 ## Prism ML[​](#prism-ml "Direct link to Prism ML")
 
@@ -24466,7 +24457,7 @@ Below are a few utility types to get the appropriate type constraints based on a
 Additional tricks:
 
 * We use Validator | void instead of Validator | undefined because the latter does not work with `strictNullChecks` since it's equivalent to just `Validator`.
-* We use a tuple type of length 1 to avoid distribution over the union <https://github.com/microsoft/TypeScript/issues/29368#issuecomment-453529532>
+* We use a tuple type of length 1 to avoid distribution over the union <https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#distributive-conditional-types>
 
 #### Type parameters[​](#type-parameters-40 "Direct link to Type parameters")
 
@@ -40186,7 +40177,7 @@ Follow the CLI's instructions to get started and keep the component's generated 
 
 Hybrid components define a local component, but use shared library code for some of the functionality. This allows you to provide a extra flexibility when users need to override or extend the schema or functions.
 
-An example of a hybrid component is the [Better Auth Component](https://convex-better-auth.netlify.app/features/local-install).
+An example of a hybrid component is the [Better Auth Component](https://labs.convex.dev/better-auth/features/local-install).
 
 Note: in general, components should be composed or designed to be extended explicitly, as hybrid components introduce a lot of complexity for maintaining and updating the component in backwards-compatible ways.
 
@@ -42820,7 +42811,19 @@ The **Delete Account** section at the bottom of the page permanently deletes you
 
 A project corresponds to a codebase that uses Convex, which contains a production deployment and one personal deployment for each team member.
 
-Clicking on a project in the [landing page](https://dashboard.convex.dev) will redirect you to project details.
+## The projects list[​](#the-projects-list "Direct link to The projects list")
+
+The [landing page](https://dashboard.convex.dev) lists your team's projects. Search by project name or slug, filter by [tag](#project-tags), and switch between grid and list views with the buttons next to the search box.
+
+Each project shows its name, slug, tags, and when it was created, along with quick links to its deployments:
+
+* **Production**: the project's default [production deployment](/dashboard/deployments/.md).
+* **Development**: your default personal development deployment in the project.
+* **Recently viewed**: the non-default deployment you most recently opened in the project.
+
+The icon after the quick links opens the list of deployments you've created in the project.
+
+![Project card with quick links to deployments](/screenshots/storybook/components_project_card_with_recent_deployment_light.webp)
 
 ## Creating a project[​](#creating-a-project "Direct link to Creating a project")
 
@@ -42832,6 +42835,28 @@ Once you're inside a project, click the project name at the top of the dashboard
 
 ![Project switcher](/screenshots/storybook/pages_project_deployment_data_project_switcher_light.webp)
 
+## Project tags[​](#project-tags "Direct link to Project tags")
+
+Tags are short labels, that you can attach to projects to organize them. Use them to [filter the projects list](#filtering-projects-by-tag) and to [grant custom-role access to groups of projects](/team-management/custom-roles.md#selectors-by-kind).
+
+### Adding tags[​](#adding-tags "Direct link to Adding tags")
+
+Tags can be added when a project is first created on the dashboard.
+
+![Adding tags to a new project](/screenshots/storybook/pages_projects_create_project_with_tags_light.webp)
+
+To change an existing project's tags, open its [Project Settings](#project-settings) page and edit the Tags field in the Edit Project form.
+
+![Editing tags in project settings](/screenshots/storybook/pages_project_project_settings_tags_light.webp)
+
+A project can have up to 5 tags. Each tag can be up to 32 characters long, and can contain only letters, numbers, `-`, and `_`.
+
+### Filtering projects by tag[​](#filtering-projects-by-tag "Direct link to Filtering projects by tag")
+
+To show only the projects with a given tag, pick it from the tag filter next to the search box on the projects list.
+
+![Projects list filtered by tag](/screenshots/storybook/pages_projects_filtered_by_tag_light.webp)
+
 ## Project Settings[​](#project-settings "Direct link to Project Settings")
 
 You can access project-level settings by clicking on the triple-dot `⋮` button on each Project card on the Projects page.
@@ -42840,7 +42865,7 @@ You can access project-level settings by clicking on the triple-dot `⋮` button
 
 On the [Project Settings page](https://dashboard.convex.dev/project/settings), you can:
 
-* Update your project's name and slug.
+* Update your project's name, slug, and [tags](#project-tags).
 * Manage the project's Admins. See [Roles and Permissions](/dashboard/teams/teams.md#roles-and-permissions) for more details.
 * View the amount of [usage metrics](/dashboard/teams/teams.md#usage) your project has consumed.
 * Manage [custom domains](/production/custom-domains.md) for your production deployment (in Deployment Settings).
@@ -61834,10 +61859,12 @@ Selector support is limited while custom roles is in beta. More selectors will b
 
 | Kind                                                                                                              | Selectors                                                                           |
 | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `project`                                                                                                         | `*`, `id=<project-id>`, `slug=<project-slug>`                                       |
+| `project`                                                                                                         | `*`, `id=<project-id>`, `slug=<project-slug>`, `tag=<tag>`                          |
 | `deployment`                                                                                                      | `*`, `id=<deployment-id>`, `type=prod\|dev\|preview\|custom`, `creator=<member-id>` |
 | `token`                                                                                                           | `*`, `creator=<member-id>`                                                          |
 | `team`, `member`, `customRole`, `billing`, `oauthApplication`, `sso`, `integration`, `defaultEnvironmentVariable` | `*` only: these resources do not currently support any selectors.                   |
+
+A `tag=<tag>` selector matches every project that carries the [tag](/dashboard/projects.md#project-tags).
 
 #### Nesting[​](#nesting "Direct link to Nesting")
 
@@ -61857,6 +61884,7 @@ Most resource kinds appear at the top level of a path. A few must be nested:
 | `member:*`                                | All team members.                                    |
 | `project:*`                               | All projects in the team.                            |
 | `project:slug=my-app`                     | The project whose slug is `my-app`.                  |
+| `project:tag=live-service`                | Every project tagged `live-service`.                 |
 | `project:*:deployment:*`                  | All deployments in any project.                      |
 | `project:*:deployment:type=prod`          | All production deployments.                          |
 | `project:*:deployment:type=dev,creator=5` | Dev deployments OR deployments created by member 5.  |
@@ -61884,7 +61912,7 @@ Be especially careful when granting these actions. Each one can be used to gain 
 
 **Resource scoping:** The built-in roles use a resource's team, project, and deployment type to decide what a member can do (for example, Developer can manage non-prod deployments via team membership, but production deployments require Team Admin or Project Admin). Any action that changes those bindings is a privilege escalation:
 
-* **`project:update`** lets the holder rename a project's slug. Custom-role resource specifiers that match by `slug=<project-slug>` are evaluated against the project's current slug, so renaming a project can move it into or out of an `allow` or `deny` rule. A holder could rename a project to match a more permissive `allow` selector, or away from a `deny` selector, to gain access the role would otherwise withhold. Selectors that use `id=<project-id>` are not affected, since project IDs are immutable.
+* **`project:update`** lets the holder rename a project's slug. Custom-role resource specifiers that match by `slug=<project-slug>` are evaluated against the project's current slug, so renaming a project can move it into or out of an `allow` or `deny` rule. A holder could rename a project to match a more permissive `allow` selector, or away from a `deny` selector, to gain access the role would otherwise withhold. Selectors that use `id=<project-id>` are not affected, since project IDs are immutable. The same applies to a project's [tags](/dashboard/projects.md#project-tags): `project:update` lets the holder add or remove tags, moving the project into or out of rules that match by `tag=<tag>`.
 * **`deployment:updateType`** lets the holder change a deployment's type. A holder who can manage non-prod deployments could create one, then promote it to `type=prod`, or downgrade an existing prod deployment to a less protected type to operate on it without prod gating.
 * **`deployment:transfer`** moves a deployment into another project. If the holder has Project Admin or a more permissive custom role on the destination project, they get that broader access on the transferred deployment.
 * **`project:transfer`** moves a project (and all its deployments) into another team. If the holder has Admin or a more permissive custom role on the destination team, they gain that broader access on the transferred project.

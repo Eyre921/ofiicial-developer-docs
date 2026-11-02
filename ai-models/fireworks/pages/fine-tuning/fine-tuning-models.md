@@ -43,7 +43,7 @@ Each message is an object:
 
 A `tool` message returns a tool result and should set `tool_call_id`. Assistant thinking can also be a string field, `thinking`, `reasoning`, or `reasoning_content`. When more than one is set, `thinking` is used, then a non-empty `reasoning`, then a non-empty `reasoning_content`. Whether earlier thinking remains in later turns depends on the base model.
 
-> **[Thinking history in training](/fine-tuning/thinking-history)**
+> [card] [Thinking history in training](/fine-tuning/thinking-history)
 >
 > Compare every supported model, understand per-user-turn unrolling, configure the job field, and preview what the trainer will see.
 
@@ -63,49 +63,49 @@ A `tool` message returns a tool result and should set `tool_call_id`. Assistant 
 
 Upload the dataset with the Fireworks UI, `firectl`, or the REST API.
 
-**UI**
+> [tab] UI
+>
+> * You can simply navigate to the dataset tab, click `Create Dataset` and follow the wizard.
+>
+>   ![Dataset Pn](https://mintcdn.com/fireworksai/3EhcJE4PKaydIoxl/images/fine-tuning/dataset.png?fit=max\&auto=format\&n=3EhcJE4PKaydIoxl\&q=85\&s=0b5955b3abbd38b2725fb2881d57b8ee)
 
-* You can simply navigate to the dataset tab, click `Create Dataset` and follow the wizard.
+> [tab] firectl
+>
+> ```bash theme={null}
+> firectl dataset create <DATASET_ID> /path/to/jsonl/file
+> ```
 
-  ![Dataset Pn](https://mintcdn.com/fireworksai/3EhcJE4PKaydIoxl/images/fine-tuning/dataset.png?fit=max\&auto=format\&n=3EhcJE4PKaydIoxl\&q=85\&s=0b5955b3abbd38b2725fb2881d57b8ee)
-
-**firectl**
-
-```bash theme={null}
-firectl dataset create <DATASET_ID> /path/to/jsonl/file
-```
-
-**Restful API**
-
-You need to make two separate HTTP requests. One for creating the dataset entry and one for uploading the dataset. Full reference here: [Create dataset](/api-reference/create-dataset). Note that the `exampleCount` parameter needs to be provided by the client.
-
-```jsx theme={null}
-// Create Dataset Entry
-const createDatasetPayload = {
-  datasetId: "trader-poe-sample-data",
-  dataset: { userUploaded: {} }
-  // Additional params such as exampleCount
-};
-const urlCreateDataset = `${BASE_URL}/datasets`;
-const response = await fetch(urlCreateDataset, {
-  method: "POST",
-  headers: HEADERS_WITH_CONTENT_TYPE,
-  body: JSON.stringify(createDatasetPayload)
-});
-```
-
-```jsx theme={null}
-// Upload JSONL file
-const urlUpload = `${BASE_URL}/datasets/${DATASET_ID}:upload`;
-const files = new FormData();
-files.append("file", localFileInput.files[0]);
-
-const uploadResponse = await fetch(urlUpload, {
-  method: "POST",
-  headers: HEADERS,
-  body: files
-});
-```
+> [tab] Restful API
+>
+> You need to make two separate HTTP requests. One for creating the dataset entry and one for uploading the dataset. Full reference here: [Create dataset](/api-reference/create-dataset). Note that the `exampleCount` parameter needs to be provided by the client.
+>
+> ```jsx theme={null}
+> // Create Dataset Entry
+> const createDatasetPayload = {
+>   datasetId: "trader-poe-sample-data",
+>   dataset: { userUploaded: {} }
+>   // Additional params such as exampleCount
+> };
+> const urlCreateDataset = `${BASE_URL}/datasets`;
+> const response = await fetch(urlCreateDataset, {
+>   method: "POST",
+>   headers: HEADERS_WITH_CONTENT_TYPE,
+>   body: JSON.stringify(createDatasetPayload)
+> });
+> ```
+>
+> ```jsx theme={null}
+> // Upload JSONL file
+> const urlUpload = `${BASE_URL}/datasets/${DATASET_ID}:upload`;
+> const files = new FormData();
+> files.append("file", localFileInput.files[0]);
+>
+> const uploadResponse = await fetch(urlUpload, {
+>   method: "POST",
+>   headers: HEADERS,
+>   body: files
+> });
+> ```
 
 While all of the above approaches should work, `UI` is more suitable for smaller datasets `< 500MB` while `firectl` might work better for bigger datasets.
 
@@ -115,33 +115,33 @@ Ensure the dataset ID conforms to the [resource id restrictions](/getting-starte
 
 There are also a couple ways to launch the training jobs. We highly recommend creating supervised fine-tuning jobs via `UI` .
 
-**UI**
-
-Simply navigate to the `Training` tab, click `New job` and follow the wizard from there. You can even pick a LoRA model to start the training for continued training.
-
-![Training Pn](https://mintcdn.com/fireworksai/3EhcJE4PKaydIoxl/images/fine-tuning/training.png?fit=max\&auto=format\&n=3EhcJE4PKaydIoxl\&q=85\&s=bef1ff769c8e3f39269fa7943f5d330d)
-
-![Training Pn](https://mintcdn.com/fireworksai/3EhcJE4PKaydIoxl/images/fine-tuning/train-dialog.png?fit=max\&auto=format\&n=3EhcJE4PKaydIoxl\&q=85\&s=5fd7197004e661df42c147f6aa79106f)
-
-![Create Sftj Pn](https://mintcdn.com/fireworksai/3EhcJE4PKaydIoxl/images/fine-tuning/create-sftj.png?fit=max\&auto=format\&n=3EhcJE4PKaydIoxl\&q=85\&s=a7e40e746253b43f3d641024e75406a4)
-
-**firectl**
-
-Ensure the trained model ID conforms to the [resource id restrictions](/getting-started/concepts#resource-names-and-ids). This will return a training job ID. For a full explanation of the settings available to control the training process, including learning rate and epochs, consult [additional managed training job settings](#additional-managed-training-job-settings).
-
-```bash theme={null}
-firectl sftj create --base-model <MODEL_ID> --dataset <DATASET_ID> --output-model <FINE_TUNED_MODEL_ID>
-```
-
-> [!TIP]
+> [tab] UI
 >
-> Similar to UI, instead of tuning a base model, you can also start tuning from a previous LoRA model using
+> Simply navigate to the `Training` tab, click `New job` and follow the wizard from there. You can even pick a LoRA model to start the training for continued training.
+>
+> ![Training Pn](https://mintcdn.com/fireworksai/3EhcJE4PKaydIoxl/images/fine-tuning/training.png?fit=max\&auto=format\&n=3EhcJE4PKaydIoxl\&q=85\&s=bef1ff769c8e3f39269fa7943f5d330d)
+>
+> ![Training Pn](https://mintcdn.com/fireworksai/3EhcJE4PKaydIoxl/images/fine-tuning/train-dialog.png?fit=max\&auto=format\&n=3EhcJE4PKaydIoxl\&q=85\&s=5fd7197004e661df42c147f6aa79106f)
+>
+> ![Create Sftj Pn](https://mintcdn.com/fireworksai/3EhcJE4PKaydIoxl/images/fine-tuning/create-sftj.png?fit=max\&auto=format\&n=3EhcJE4PKaydIoxl\&q=85\&s=a7e40e746253b43f3d641024e75406a4)
+
+> [tab] firectl
+>
+> Ensure the trained model ID conforms to the [resource id restrictions](/getting-started/concepts#resource-names-and-ids). This will return a training job ID. For a full explanation of the settings available to control the training process, including learning rate and epochs, consult [additional managed training job settings](#additional-managed-training-job-settings).
 >
 > ```bash theme={null}
-> firectl sftj create --warm-start-from <FINE_TUNED_MODEL_ID> --dataset <DATASET_ID> --output-model <FINE_TUNED_MODEL_ID>
+> firectl sftj create --base-model <MODEL_ID> --dataset <DATASET_ID> --output-model <FINE_TUNED_MODEL_ID>
 > ```
 >
-> Notice that we use `--warm-start-from` instead of `--base-model` when creating this job.
+> > [!TIP]
+> >
+> > Similar to UI, instead of tuning a base model, you can also start tuning from a previous LoRA model using
+> >
+> > ```bash theme={null}
+> > firectl sftj create --warm-start-from <FINE_TUNED_MODEL_ID> --dataset <DATASET_ID> --output-model <FINE_TUNED_MODEL_ID>
+> > ```
+> >
+> > Notice that we use `--warm-start-from` instead of `--base-model` when creating this job.
 
 With `UI`, once the job is created, it will show in the list of jobs. Clicking to view the job details to monitor the job progress.
 
@@ -192,7 +192,7 @@ This creates a dedicated deployment with performance matching the base model. To
 
 Additional tuning settings are available when starting an SFT or preference (DPO/ORPO) job. All of the settings below are optional and have reasonable defaults. For settings that affect tuning quality, such as `epochs` and `learning_rate`, use the defaults first and change them only when the results indicate a clear need. Examples use SFT unless otherwise noted.
 
-> **Evaluation**
+> [accordion] Evaluation
 >
 > By default, the training job will run evaluation by running the trained model against an evaluation set that's created by automatically carving out a portion of your training set. You have the option to explicitly specify a separate evaluation dataset to use instead of carving out training data.
 >
@@ -206,7 +206,7 @@ Additional tuning settings are available when starting an SFT or preference (DPO
 >   --output-model my-tuned-model
 > ```
 
-> **Max Context Length**
+> [accordion] Max Context Length
 >
 > Depending on the size of the model, the default context size will be different. For most models, the default context size is >= 32768. Training examples will be cut-off at 32768 tokens. Usually you do not need to set the max context length unless out of memory error is encountered with higher lora rank and large max context length.
 >
@@ -218,7 +218,7 @@ Additional tuning settings are available when starting an SFT or preference (DPO
 >   --output-model my-tuned-model
 > ```
 
-> **Batch Size (Samples)**
+> [accordion] Batch Size (Samples)
 >
 > Managed SFT and preference tuning use sample-count batching. `batch_size_samples` is the number of SFT samples or preference pairs included in each optimizer step. It is independent of `max_context_length`, which limits the token length of each sample. The UI defaults are 32 samples for SFT and 4 preference pairs for DPO/ORPO.
 >
@@ -230,7 +230,7 @@ Additional tuning settings are available when starting an SFT or preference (DPO
 >   --output-model my-tuned-model
 > ```
 
-> **Epochs**
+> [accordion] Epochs
 >
 > Epochs are the number of passes over the training data. Our default value is 1. If the model does not follow the training data as much as expected, increase the number of epochs by 1 or 2. Epochs must be a whole number.
 >
@@ -244,7 +244,7 @@ Additional tuning settings are available when starting an SFT or preference (DPO
 >   --output-model my-tuned-model
 > ```
 
-> **Learning rate**
+> [accordion] Learning rate
 >
 > Learning rate controls how fast the model updates from data. We generally do not recommend changing learning rate. The default value is automatically based on your selected model.
 >
@@ -256,7 +256,7 @@ Additional tuning settings are available when starting an SFT or preference (DPO
 >   --output-model my-tuned-model
 > ```
 
-> **Learning rate warmup steps**
+> [accordion] Learning rate warmup steps
 >
 > Learning rate warmup steps controls the number of training steps during which the learning rate will be linearly ramped up to the set learning rate.
 >
@@ -269,7 +269,7 @@ Additional tuning settings are available when starting an SFT or preference (DPO
 >   --output-model my-tuned-model
 > ```
 
-> **Learning rate scheduler**
+> [accordion] Learning rate scheduler
 >
 > Configure how the learning rate changes over training. Supported schedulers are `constant`, `linear`, and `cosine`. When unset, the trainer uses its legacy constant schedule. The same flags apply to SFT and preference tuning jobs (DPO/ORPO).
 >
@@ -310,7 +310,7 @@ Additional tuning settings are available when starting an SFT or preference (DPO
 > };
 > ```
 
-> **LoRA Rank**
+> [accordion] LoRA Rank
 >
 > LoRA rank refers to the number of parameters that will be tuned in your LoRA add-on. Higher LoRA rank increases the amount of information that can be captured while tuning. The maximum rank depends on the base model's training shape, up to 128; higher values are rejected. `firectl` defaults to 8.
 >
@@ -324,7 +324,7 @@ Additional tuning settings are available when starting an SFT or preference (DPO
 >   --output-model my-tuned-model
 > ```
 
-> **Training progress and monitoring**
+> [accordion] Training progress and monitoring
 >
 > The training service integrates with Weights & Biases to provide observability into the tuning process. To use this feature, you must have a Weights & Biases account and have provisioned an API key.
 >
@@ -338,7 +338,7 @@ Additional tuning settings are available when starting an SFT or preference (DPO
 >   --output-model my-tuned-model
 > ```
 
-> **Model ID**
+> [accordion] Model ID
 >
 > By default, the training job will generate a random unique ID for the model. This ID is used to refer to the model at inference time. You can optionally specify a custom ID, within [ID constraints](/getting-started/concepts#resource-names-and-ids).
 >
@@ -349,7 +349,7 @@ Additional tuning settings are available when starting an SFT or preference (DPO
 >   --dataset cancerset
 > ```
 
-> **Job ID**
+> [accordion] Job ID
 >
 > By default, the training job will generate a random unique ID for the training job. You can optionally choose a custom ID.
 >
@@ -361,7 +361,7 @@ Additional tuning settings are available when starting an SFT or preference (DPO
 >   --output-model my-tuned-model
 > ```
 
-> **Reservation placement**
+> [accordion] Reservation placement
 >
 > Reservation placement is off unless you request it. If you request it and your account has an active reservation for the job's accelerator type, the job runs only on that reservation, not on shared trainer capacity. If the account has no matching reservation, the setting is ignored and the job uses shared capacity.
 >

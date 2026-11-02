@@ -84,8 +84,14 @@ manage your agents, applies changes directly, and relies on your client's tool a
 
 #### How much does Architect cost?
 
-Architect is free during the alpha, which runs through October 2026. Usage doesn't count against
-your workspace's agent minutes or LLM cost. Check the [pricing page](https://elevenlabs.io/pricing) for terms after the alpha ends.
+Architect is billed on usage from your workspace's credits, as its own Architect line item.
+Usage doesn't count against your agents' minutes or LLM cost. See [Pricing and usage](/docs/eleven-agents/operate/architect/pricing).
+
+#### Can I limit who in my workspace uses Architect?
+
+Yes. Workspace admins can choose which members can use Architect from **Agents** > **Architect**
+
+> **Usage** > **Access**. See [Control who can use Architect](/docs/eleven-agents/operate/architect/pricing#control-who-can-use-architect).
 
 #### How do I give feedback on Architect?
 

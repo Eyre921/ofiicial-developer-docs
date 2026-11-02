@@ -104,6 +104,10 @@ If you set the subscription to cancel at period end, any pending prorations are 
 
 When you cancel a subscription, all `open` and `draft` invoices for that subscription have their `auto_advance` property set to `false`. This [pauses automatic collection](https://docs.stripe.com/invoicing/integration/automatic-advancement-collection.md) for these invoices and prevents automatic reminder emails from sending. You can still manually attempt to collect payment and send emails.
 
+## Use Workflows to delete pending invoice items 
+
+To delete pending invoice items after a subscription is canceled—without writing code—use the [Delete pending invoice items after subscription cancellation](https://dashboard.stripe.com/workflows/create?workflow=eyJkZWVwX2xpbmtfdmVyc2lvbiI6MSwibmFtZSI6IkRlbGV0ZSBwZW5kaW5nIGludm9pY2UgaXRlbXMgYWZ0ZXIgc3Vic2NyaXB0aW9uIGNhbmNlbGxhdGlvbiIsImRlZmluaXRpb24iOiJDb0VERW5VS0VteHBjM1JmYVc1MmIybGpaVjlwZEdWdGN4QUJHbDBLSTNOMGNtbHdaUzVoY0dsZlkyRnNiRjluWlhSZmRqRmZhVzUyYjJsalpXbDBaVzF6RWpZS0pRb0lZM1Z6ZEc5dFpYSVNHUm9YSkh0N0lIUnlhV2RuWlhJdVkzVnpkRzl0WlhJZ2ZYMEtEUW9IY0dWdVpHbHVaeElDSUFFUzN3RUtDR1p2Y2w5bFlXTm9FQVF5MEFFS0dITjBaWEJ6TG14cGMzUmZhVzUyYjJsalpWOXBkR1Z0Y3hnQklyRUJDZ1ppY21GdVkyZ1FBeXFrQVFxaEFRbzhhWFJsYlM1d1lYSmxiblF1YzNWaWMyTnlhWEIwYVc5dVgyUmxkR0ZwYkhNdWMzVmljMk55YVhCMGFXOXVJRDA5UFNCMGNtbG5aMlZ5TG1sa0VtRUtGbVJsYkdWMFpWOWhibDlwYm5admFXTmxYMmwwWlcwUUFScEZDaWx6ZEhKcGNHVXVZWEJwWDJOaGJHeGZaR1ZzWlhSbFgzWXhYMmx1ZG05cFkyVnBkR1Z0YzE5cFpCSVlDaFlLQW1sa0VoQWFEaVI3ZXlCcGRHVnRMbWxrSUgxOUdpWUlBaElpQ2gxamRYTjBiMjFsY2k1emRXSnpZM0pwY0hScGIyNHVaR1ZzWlhSbFpCb0JBUklSTWpBeU5pMHdPUzB6TUM1bGJtUnBkbVUiLCJzdHJpcGVfYXBpX3ZlcnNpb24iOiIyMDI2LTA5LTMwLmVuZGl2ZSJ9) template in [Workflows](https://docs.stripe.com/workflows.md). The workflow runs when the subscription ends and deletes only its pending invoice items.
+
 ## Identify cancellation events 
 
 Stripe sends the following events for canceled subscriptions.

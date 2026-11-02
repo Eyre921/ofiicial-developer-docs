@@ -157,14 +157,14 @@ client.chat.completions.create(
 
 ## Next steps
 
-> **[Reasoning](/guides/reasoning)**
+> [card] [Reasoning](/guides/reasoning)
 >
 > Native reasoning\_effort, streaming, and tool use
 
-> **[Structured responses](/structured-responses/structured-response-formatting)**
+> [card] [Structured responses](/structured-responses/structured-response-formatting)
 >
 > json\_schema and grammar response\_format
 
-> **[OpenAI compatibility](/tools-sdks/openai-compatibility)**
+> [card] [OpenAI compatibility](/tools-sdks/openai-compatibility)
 >
 > Use the OpenAI SDK with Fireworks

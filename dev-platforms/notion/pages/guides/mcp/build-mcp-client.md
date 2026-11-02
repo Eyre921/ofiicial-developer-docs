@@ -4,7 +4,7 @@ source: https://developers.notion.com/guides/mcp/build-mcp-client
 path: guides/mcp/build-mcp-client
 ---
 
-Connect a custom MCP client to Notion MCP with OAuth 2.0 and PKCE.
+Connect your app or AI assistant to Notion MCP with OAuth 2.0, PKCE, and support for Notion’s tools.
 
 Build an
 [MCP client](https://modelcontextprotocol.io/docs/develop/build-client) that

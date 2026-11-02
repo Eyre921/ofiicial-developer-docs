@@ -10,6 +10,12 @@ path: docs/overview/capabilities/sound-effects
 
 ## Overview
 
+> **Error**
+>
+> The `eleven_text_to_sound_v2` model is deprecated and will be removed on **March 1, 2027**. Please
+> migrate to `eleven_text_to_sound_v3` for continued service. If your requests don't set `model_id`,
+> set it explicitly. See [deprecated models](/docs/overview/models#deprecated-models).
+
 ElevenLabs [sound effects](/docs/api-reference/text-to-sound-effects/convert) API turns text descriptions into high-quality sound effects with precise control over timing, style and complexity. The model understands both natural language and audio terminology, enabling you to:
 
 * Generate cinematic sound design for films & trailers
@@ -26,7 +32,7 @@ Sound effects are generated using text descriptions & optional parameters:
 
 * **Model**: Choose the model that generates the sound effect
 
-  * `eleven_text_to_sound_v2`: The default model
+  * `eleven_text_to_sound_v2`: The default model. Deprecated, and will be removed on March 1, 2027
   * `eleven_text_to_sound_v3` (SFX v3): Follows multi-part prompts more closely and handles vocal and musical sounds better. See [SFX v3](#sfx-v3)
 
 * **Duration**: Set a specific length for the generated audio (in seconds)
@@ -63,11 +69,6 @@ Full API reference for the Sound Effects endpoint.
 SFX v3 is our newest sound effects model. Compared with `eleven_text_to_sound_v2`, it follows prompts that contain several instructions more closely, handles prompts with music or vocals better, sounds more natural, and is less likely to clip on high-frequency sounds such as chimes and whistles. Results vary by prompt, so compare both models on your own prompts.
 
 SFX v3 is available in the API and in ElevenCreative, in Sound Effects, Flows and Studio. In the API, set `model_id` to `eleven_text_to_sound_v3`.
-
-> **Warning**
->
-> SFX v3 is in limited access and may not be available in every region. Requests from accounts
-> without access return an `Unknown model` error.
 
 When prompting SFX v3, describe the action, setting, atmosphere and performance you want rather than a broad sound category:
 

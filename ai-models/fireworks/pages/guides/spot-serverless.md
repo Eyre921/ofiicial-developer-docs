@@ -27,82 +27,82 @@ Select Spot with its model identifier. `service_tier` does not select Spot.
 
 ## Make a request
 
-**Python (Fireworks SDK)**
+> [tab] Python (Fireworks SDK)
+>
+> ```python theme={null}
+> from fireworks import Fireworks
+>
+> client = Fireworks()
+>
+> response = client.chat.completions.create(
+>   model="accounts/fireworks/models/kimi-k3-spot",
+>   messages=[{"role": "user", "content": "Explain mixture-of-experts models."}]
+> )
+>
+> print(response.choices[0].message.content)
+> ```
 
-```python theme={null}
-from fireworks import Fireworks
+> [tab] Python (OpenAI SDK)
+>
+> ```python theme={null}
+> import os
+> from openai import OpenAI
+>
+> client = OpenAI(
+>     api_key=os.environ.get("FIREWORKS_API_KEY"),
+>     base_url="https://api.fireworks.ai/inference/v1"
+> )
+>
+> response = client.chat.completions.create(
+>     model="accounts/fireworks/models/kimi-k3-spot",
+>     messages=[{
+>         "role": "user",
+>         "content": "Explain mixture-of-experts models."
+>     }]
+> )
+>
+> print(response.choices[0].message.content)
+> ```
 
-client = Fireworks()
+> [tab] JavaScript
+>
+> ```javascript theme={null}
+> import OpenAI from "openai";
+>
+> const client = new OpenAI({
+>   apiKey: process.env.FIREWORKS_API_KEY,
+>   baseURL: "https://api.fireworks.ai/inference/v1",
+> });
+>
+> const response = await client.chat.completions.create({
+>   model: "accounts/fireworks/models/kimi-k3-spot",
+>   messages: [
+>     {
+>       role: "user",
+>       content: "Explain mixture-of-experts models.",
+>     },
+>   ],
+> });
+>
+> console.log(response.choices[0].message.content);
+> ```
 
-response = client.chat.completions.create(
-  model="accounts/fireworks/models/kimi-k3-spot",
-  messages=[{"role": "user", "content": "Explain mixture-of-experts models."}]
-)
-
-print(response.choices[0].message.content)
-```
-
-**Python (OpenAI SDK)**
-
-```python theme={null}
-import os
-from openai import OpenAI
-
-client = OpenAI(
-    api_key=os.environ.get("FIREWORKS_API_KEY"),
-    base_url="https://api.fireworks.ai/inference/v1"
-)
-
-response = client.chat.completions.create(
-    model="accounts/fireworks/models/kimi-k3-spot",
-    messages=[{
-        "role": "user",
-        "content": "Explain mixture-of-experts models."
-    }]
-)
-
-print(response.choices[0].message.content)
-```
-
-**JavaScript**
-
-```javascript theme={null}
-import OpenAI from "openai";
-
-const client = new OpenAI({
-  apiKey: process.env.FIREWORKS_API_KEY,
-  baseURL: "https://api.fireworks.ai/inference/v1",
-});
-
-const response = await client.chat.completions.create({
-  model: "accounts/fireworks/models/kimi-k3-spot",
-  messages: [
-    {
-      role: "user",
-      content: "Explain mixture-of-experts models.",
-    },
-  ],
-});
-
-console.log(response.choices[0].message.content);
-```
-
-**curl**
-
-```bash theme={null}
-curl https://api.fireworks.ai/inference/v1/chat/completions \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-  -d '{
-    "model": "accounts/fireworks/models/kimi-k3-spot",
-    "messages": [
-      {
-        "role": "user",
-        "content": "Explain mixture-of-experts models."
-      }
-    ]
-  }'
-```
+> [tab] curl
+>
+> ```bash theme={null}
+> curl https://api.fireworks.ai/inference/v1/chat/completions \
+>   -H "Content-Type: application/json" \
+>   -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+>   -d '{
+>     "model": "accounts/fireworks/models/kimi-k3-spot",
+>     "messages": [
+>       {
+>         "role": "user",
+>         "content": "Explain mixture-of-experts models."
+>       }
+>     ]
+>   }'
+> ```
 
 ## Pricing
 

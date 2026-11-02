@@ -225,7 +225,7 @@ A pinned model serves every turn. A full model ID such as `glm-5p3` stays on tha
 
 ## Troubleshooting
 
-> **Nexus Auto never uses an Anthropic or OpenAI model**
+> [accordion] Nexus Auto never uses an Anthropic or OpenAI model
 >
 > No closed-model credential is reaching Nexus Auto. Save a key with `nexus auto --anthropic-api-key` or `--openai-api-key`, then run your harness command again. Or connect the matching [Provider Key](/nexus/provider-keys).
 >

@@ -132,7 +132,7 @@ Anthropic lists these limits in its [third-party feature matrix](https://claude.
 
 ## What the Nexus CLI writes
 
-> **See what Nexus CLI writes**
+> [accordion] See what Nexus CLI writes
 >
 > * `on` writes a third-party inference provider profile, Claude Desktop's own supported mechanism. The profile points at a small local gateway that Nexus CLI runs as a background service. It starts at login and restarts after a crash.
 > * The service is a launchd agent on macOS (`~/Library/LaunchAgents/ai.fireworks.nexus.claude-desktop-shim.plist`) or a systemd user unit on Linux (`~/.config/systemd/user/ai.fireworks.nexus.claude-desktop-shim.service`).

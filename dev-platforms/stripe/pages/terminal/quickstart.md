@@ -20,7 +20,7 @@ When you’re ready to use a physical reader, you only need to update the [reade
 
 ### Install the Stripe Node library
 
-Install the package and import it in your code. Alternatively, if you’re starting from scratch and need a package.json file, download the project files using the Download link in the code editor.
+Install the package and import it in your code. Alternatively, if you’re starting from scratch and need a `package.json` file, download the project files using the Download link in the code editor.
 
 #### npm
 
@@ -100,7 +100,7 @@ Download the stripe-python library source code directly [from GitHub](https://gi
 
 ### Install the Stripe PHP library
 
-Install the library with composer and initialize with your secret API key. Alternatively, if you’re starting from scratch and need a composer.json file, download the files using the link in the code editor.
+Install the library with composer and initialize with your secret API key. Alternatively, if you’re starting from scratch and need a `composer.json` file, download the files using the link in the code editor.
 
 #### Composer
 
@@ -225,7 +225,7 @@ You can configure the simulated reader to test different flows within your point
 
 ### Install the Stripe Node library
 
-Install the package and import it in your code. Alternatively, if you’re starting from scratch and need a package.json file, download the project files using the Download link in the code editor.
+Install the package and import it in your code. Alternatively, if you’re starting from scratch and need a `package.json` file, download the project files using the Download link in the code editor.
 
 #### npm
 
@@ -305,7 +305,7 @@ Download the stripe-python library source code directly [from GitHub](https://gi
 
 ### Install the Stripe PHP library
 
-Install the library with composer and initialize with your secret API key. Alternatively, if you’re starting from scratch and need a composer.json file, download the files using the link in the code editor.
+Install the library with composer and initialize with your secret API key. Alternatively, if you’re starting from scratch and need a `composer.json` file, download the files using the link in the code editor.
 
 #### Composer
 
@@ -442,7 +442,7 @@ You can configure the simulated reader to test different flows within your point
 
 ### Install the Stripe Node library
 
-Install the package and import it in your code. Alternatively, if you’re starting from scratch and need a package.json file, download the project files using the Download link in the code editor.
+Install the package and import it in your code. Alternatively, if you’re starting from scratch and need a `package.json` file, download the project files using the Download link in the code editor.
 
 #### npm
 
@@ -522,7 +522,7 @@ Download the stripe-python library source code directly [from GitHub](https://gi
 
 ### Install the Stripe PHP library
 
-Install the library with composer and initialize with your secret API key. Alternatively, if you’re starting from scratch and need a composer.json file, download the files using the link in the code editor.
+Install the library with composer and initialize with your secret API key. Alternatively, if you’re starting from scratch and need a `composer.json` file, download the files using the link in the code editor.
 
 #### Composer
 
@@ -702,7 +702,7 @@ You can configure the simulated reader to test different flows within your point
 
 ### Install the Stripe Node library
 
-Install the package and import it in your code. Alternatively, if you’re starting from scratch and need a package.json file, download the project files using the Download link in the code editor.
+Install the package and import it in your code. Alternatively, if you’re starting from scratch and need a `package.json` file, download the project files using the Download link in the code editor.
 
 #### npm
 
@@ -782,7 +782,7 @@ Download the stripe-python library source code directly [from GitHub](https://gi
 
 ### Install the Stripe PHP library
 
-Install the library with composer and initialize with your secret API key. Alternatively, if you’re starting from scratch and need a composer.json file, download the files using the link in the code editor.
+Install the library with composer and initialize with your secret API key. Alternatively, if you’re starting from scratch and need a `composer.json` file, download the files using the link in the code editor.
 
 #### Composer
 
@@ -964,7 +964,7 @@ You can configure the simulated reader to test different flows within your point
 
 ### Install the Stripe Node library
 
-Install the package and import it in your code. Alternatively, if you’re starting from scratch and need a package.json file, download the project files using the Download link in the code editor.
+Install the package and import it in your code. Alternatively, if you’re starting from scratch and need a `package.json` file, download the project files using the Download link in the code editor.
 
 #### npm
 
@@ -1044,7 +1044,7 @@ Download the stripe-python library source code directly [from GitHub](https://gi
 
 ### Install the Stripe PHP library
 
-Install the library with composer and initialize with your secret API key. Alternatively, if you’re starting from scratch and need a composer.json file, download the files using the link in the code editor.
+Install the library with composer and initialize with your secret API key. Alternatively, if you’re starting from scratch and need a `composer.json` file, download the files using the link in the code editor.
 
 #### Composer
 

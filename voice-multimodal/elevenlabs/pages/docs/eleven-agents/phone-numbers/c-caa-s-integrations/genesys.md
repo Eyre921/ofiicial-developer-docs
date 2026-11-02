@@ -215,6 +215,7 @@ The following tools and features are not supported in the Genesys integration:
 #### WebSocket connection fails
 
 Verify that your API key is correctly configured in the Audio Connector integration and the ElevenLabs agent ID is correctly configured in the Connector ID field in your Architect flow.
+If [authentication](/docs/eleven-agents/customization/authentication) is enabled for your agent, the owner of the API key used for the connection must have access to the agent. See [sharing resources](/docs/overview/administration/workspaces/sharing-resources) for more information.
 If there are any dynamic variables defined on your agent, they must be passed in as input session variables.
 
 #### Session variables not working

@@ -122,6 +122,8 @@ Precise word-level timestamps
 
 Entity detection, 65 entity types
 
+Entity redaction
+
 Transcript editing with natural-language instructions
 
 #### [Scribe v2 Medical](/docs/overview/models#scribe-v2-medical)
@@ -212,17 +214,22 @@ The ElevenLabs API offers a range of audio models optimized for different use ca
 | `scribe_v2_realtime`         | Real-time speech recognition model                                                                                                                                                     | [90+ languages](/docs/overview/capabilities/speech-to-text#supported-languages)                                                                                               |
 | `scribe_v2`                  | State-of-the-art speech recognition model                                                                                                                                              | [90+ languages](/docs/overview/capabilities/speech-to-text#supported-languages)                                                                                               |
 | `scribe_v2_medical`          | Speech recognition model specialized for medical and clinical audio                                                                                                                    | [90+ languages](/docs/overview/capabilities/speech-to-text#supported-languages)                                                                                               |
-| `eleven_text_to_sound_v3`    | Sound effects generation from text prompts, with closer prompt following and better vocal and musical sounds than `eleven_text_to_sound_v2`. Limited access                            | N/A                                                                                                                                                                           |
+| `eleven_text_to_sound_v3`    | Sound effects generation from text prompts, with closer prompt following and better vocal and musical sounds than `eleven_text_to_sound_v2`.                                           | N/A                                                                                                                                                                           |
 | `eleven_realtime_v1_mini`    | Complete voice agent model configuration, optimized for fast, natural conversation                                                                                                     | [90+ languages](/docs/overview/models#supported-languages)                                                                                                                    |
 | `eleven_realtime_v1_max`     | Complete voice agent model configuration, optimized for complex, multi-step tasks                                                                                                      | [90+ languages](/docs/overview/models#supported-languages)                                                                                                                    |
-| `eleven_text_to_sound_v2`    | Sound effects generation from text prompts                                                                                                                                             | N/A                                                                                                                                                                           |
 | `music_v2_5`                 | Our most advanced music model. Studio-grade generation from text prompts, composition plans and previously generated songs, with improved quality and prompt adherence over `music_v2` | `en`, `es`, `de`, `ja`, and more                                                                                                                                              |
 | `music_v2`                   | Studio-grade music generation from text prompts, composition plans and previously generated songs                                                                                      | `en`, `es`, `de`, `ja`, and more                                                                                                                                              |
-| `music_v1`                   | Studio-grade music generation from text prompts. Outclassed by `music_v2` and `music_v2_5`                                                                                             | `en`, `es`, `de`, `ja`, and more                                                                                                                                              |
 
 † Median, excluding application & network latency. See [how latency is measured](/docs/eleven-api/concepts/latency-methodology).
 
 ### Deprecated models
+
+> **Error**
+>
+> The `music_v1` model is deprecated and will be removed on **January 31, 2027**. The
+> `eleven_text_to_sound_v2` model is deprecated and will be removed on **March 1, 2027**. Please
+> migrate to the replacement models below for continued service. If your requests don't set
+> `model_id`, set it explicitly to the replacement model.
 
 > **Warning**
 >
@@ -231,11 +238,13 @@ The ElevenLabs API offers a range of audio models optimized for different use ca
 > models is lower on average. We recommend using the Flash models over Turbo models in all use
 > cases.
 
-| Model ID            | Description                                                     | Languages                                                                                                                                                                                       | Replacement model suggestion |
-| ------------------- | --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- |
-| `eleven_turbo_v2_5` | First generation low-latency model (outclassed by Flash models) | `en`, `ja`, `zh`, `de`, `hi`, `fr`, `ko`, `pt`, `it`, `es`, `id`, `nl`, `tr`, `fil`, `pl`, `sv`, `bg`, `ro`, `ar`, `cs`, `el`, `fi`, `hr`, `ms`, `sk`, `da`, `ta`, `uk`, `ru`, `hu`, `no`, `vi` | `eleven_flash_v2_5`          |
-| `eleven_turbo_v2`   | First generation low-latency model (outclassed by Flash models) | `en`                                                                                                                                                                                            | `eleven_flash_v2`            |
-| `scribe_v1`         | First generation speech recognition (outclassed by v2 models)   | [90+ languages](/docs/overview/capabilities/speech-to-text#supported-languages)                                                                                                                 | `scribe_v2`                  |
+| Model ID                  | Description                                                     | Languages                                                                                                                                                                                       | Replacement model suggestion |
+| ------------------------- | --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- |
+| `eleven_turbo_v2_5`       | First generation low-latency model (outclassed by Flash models) | `en`, `ja`, `zh`, `de`, `hi`, `fr`, `ko`, `pt`, `it`, `es`, `id`, `nl`, `tr`, `fil`, `pl`, `sv`, `bg`, `ro`, `ar`, `cs`, `el`, `fi`, `hr`, `ms`, `sk`, `da`, `ta`, `uk`, `ru`, `hu`, `no`, `vi` | `eleven_flash_v2_5`          |
+| `eleven_turbo_v2`         | First generation low-latency model (outclassed by Flash models) | `en`                                                                                                                                                                                            | `eleven_flash_v2`            |
+| `scribe_v1`               | First generation speech recognition (outclassed by v2 models)   | [90+ languages](/docs/overview/capabilities/speech-to-text#supported-languages)                                                                                                                 | `scribe_v2`                  |
+| `music_v1`                | First generation music generation (outclassed by v2 models)     | `en`, `es`, `de`, `ja`, and more                                                                                                                                                                | `music_v2_5`                 |
+| `eleven_text_to_sound_v2` | Sound effects generation from text prompts (outclassed by v3)   | N/A                                                                                                                                                                                             | `eleven_text_to_sound_v3`    |
 
 ## Eleven v4
 
@@ -477,6 +486,7 @@ Key features:
 * Voice Activity Detection (VAD): Automatic speech segmentation based on silence detection
 * Manual commit control: Full control over when to finalize transcript segments
 * Entity detection
+* Entity redaction
 * Transcript editing
 
 Read more about Scribe v2 Realtime [here](/docs/overview/capabilities/speech-to-text).
@@ -527,12 +537,7 @@ Read more about Speech to Text [here](/docs/overview/capabilities/speech-to-text
 
 ## SFX v3
 
-SFX v3 (`eleven_text_to_sound_v3`) is our newest sound effects model. It uses the same [Sound Effects API](/docs/api-reference/text-to-sound-effects/convert) as `eleven_text_to_sound_v2`: set `model_id` to `eleven_text_to_sound_v3` to use it. `eleven_text_to_sound_v2` remains the default.
-
-> **Warning**
->
-> SFX v3 is in limited access and may not be available in every region. Requests from accounts
-> without access return an `Unknown model` error.
+SFX v3 (`eleven_text_to_sound_v3`) is our newest sound effects model. It uses the same [Sound Effects API](/docs/api-reference/text-to-sound-effects/convert) as `eleven_text_to_sound_v2`: set `model_id` to `eleven_text_to_sound_v3` to use it. `eleven_text_to_sound_v2` is still the default but is deprecated and will be removed on March 1, 2027.
 
 Compared with `eleven_text_to_sound_v2`, SFX v3:
 

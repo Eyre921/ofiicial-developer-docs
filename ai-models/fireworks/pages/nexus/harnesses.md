@@ -14,53 +14,53 @@ Harnesses marked Preview work, but they may change and some features are limited
 
 ### Code
 
-> **[Claude Code](/nexus/harnesses/claude-code)**
+> [card] [Claude Code](/nexus/harnesses/claude-code)
 >
 > Messages API
 
-> **[Claude Agent SDK](/nexus/harnesses/claude-code#claude-agent-sdk)**
+> [card] [Claude Agent SDK](/nexus/harnesses/claude-code#claude-agent-sdk)
 >
 > Messages API
 
-> **[Codex](/nexus/harnesses/codex)**
+> [card] [Codex](/nexus/harnesses/codex)
 >
 > Responses API
 
-> **[OpenCode](/nexus/harnesses/opencode)**
+> [card] [OpenCode](/nexus/harnesses/opencode)
 >
 > Chat Completions
 
-> **[Pi](/nexus/harnesses/pi)**
+> [card] [Pi](/nexus/harnesses/pi)
 >
 > Chat Completions
 
-> **[DeepSeek Harness](/nexus/harnesses/deepseek)**
+> [card] [DeepSeek Harness](/nexus/harnesses/deepseek)
 >
 > Chat Completions
 
-> **[Cursor IDE](/nexus/harnesses/cursor)**
+> [card] [Cursor IDE](/nexus/harnesses/cursor)
 >
 > Chat Completions
 
-> **[VS Code](/nexus/harnesses/vscode)**
+> [card] [VS Code](/nexus/harnesses/vscode)
 >
 > Chat Completions
 
-> **[Copilot App](/nexus/harnesses/copilot-app)**
+> [card] [Copilot App](/nexus/harnesses/copilot-app)
 >
 > Chat Completions
 
-> **[Copilot CLI](/nexus/harnesses/copilot-cli)**
+> [card] [Copilot CLI](/nexus/harnesses/copilot-cli)
 >
 > Chat Completions
 
 ### Cowork
 
-> **[ChatGPT desktop app](/nexus/harnesses/chatgpt)**
+> [card] [ChatGPT desktop app](/nexus/harnesses/chatgpt)
 >
 > Responses API
 
-> **[Claude Desktop](/nexus/harnesses/claude-desktop)**
+> [card] [Claude Desktop](/nexus/harnesses/claude-desktop)
 >
 > macOS and Linux
 

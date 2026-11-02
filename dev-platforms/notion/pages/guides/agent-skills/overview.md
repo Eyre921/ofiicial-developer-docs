@@ -35,7 +35,7 @@ For some examples of how to use the API, see:
 
 ## Requirements
 
-* You have a [connection](/guides/get-started/authorization) token or [personal access token](/guides/get-started/personal-access-tokens) with the **Read content** capability.
+* You have a [connection](/guides/authorization/overview) token or [personal access token](/guides/connections-and-tokens/personal-access-tokens) with the **Read content** capability.
 * The connection has access to the skill databases you expect to see. Skills not shared with the connection are omitted.
 * Requests send `Notion-Version: 2026-03-11`.
 

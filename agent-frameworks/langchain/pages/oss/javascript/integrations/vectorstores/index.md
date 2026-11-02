@@ -110,10 +110,10 @@ Filtering by metadata (e.g., source, date) can refine search results:
 vectorStore.similaritySearch("query", 2, { source: "tweets" });
 ```
 
-<important>
-  Support for metadata-based filtering varies between implementations.
-  Check the documentation of your chosen vector store for details.
-</important>
+> [!NOTE]
+>
+> Support for metadata-based filtering varies between implementations.
+> Check the documentation of your chosen vector store for details.
 
 ## Top integrations
 

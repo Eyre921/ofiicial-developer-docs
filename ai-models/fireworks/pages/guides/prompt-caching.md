@@ -56,76 +56,76 @@ in the `x-session-affinity` header.
 > `x-multi-turn-session-id`. See [Inference for RL
 > rollouts](/guides/rollout-inference#session-affinity).
 
-**Python**
+> [tab] Python
+>
+> ```python theme={null}
+> import os
+> from openai import OpenAI
+>
+> client = OpenAI(
+>     api_key=os.environ.get("FIREWORKS_API_KEY"),
+>     base_url="https://api.fireworks.ai/inference/v1",
+> )
+>
+> response = client.chat.completions.create(
+>     model="accounts/fireworks/models/<MODEL_ID>",
+>     messages=[{
+>         "role": "user",
+>         "content": "Explain quantum computing in simple terms"
+>     }],
+>     # A single client can make requests with different sessions.
+>     extra_headers={
+>         "x-session-affinity": "session-id-123"
+>     }
+> )
+>
+> print(response.choices[0].message.content)
+> ```
 
-```python theme={null}
-import os
-from openai import OpenAI
+> [tab] JavaScript
+>
+> ```javascript theme={null}
+> import OpenAI from "openai";
+>
+> const client = new OpenAI({
+>   apiKey: process.env.FIREWORKS_API_KEY,
+>   baseURL: "https://api.fireworks.ai/inference/v1",
+> });
+>
+> const response = await client.chat.completions.create({
+>   model: "accounts/fireworks/models/<MODEL_ID>",
+>   messages: [
+>     {
+>       role: "user",
+>       content: "Explain quantum computing in simple terms",
+>     },
+>   ],
+>   // A single client can make requests with different sessions.
+>   extra_headers: {
+>     x-session-affinity: "session-id-123"
+>   }
+> });
+>
+> console.log(response.choices[0].message.content);
+> ```
 
-client = OpenAI(
-    api_key=os.environ.get("FIREWORKS_API_KEY"),
-    base_url="https://api.fireworks.ai/inference/v1",
-)
-
-response = client.chat.completions.create(
-    model="accounts/fireworks/models/<MODEL_ID>",
-    messages=[{
-        "role": "user",
-        "content": "Explain quantum computing in simple terms"
-    }],
-    # A single client can make requests with different sessions.
-    extra_headers={
-        "x-session-affinity": "session-id-123"
-    }
-)
-
-print(response.choices[0].message.content)
-```
-
-**JavaScript**
-
-```javascript theme={null}
-import OpenAI from "openai";
-
-const client = new OpenAI({
-  apiKey: process.env.FIREWORKS_API_KEY,
-  baseURL: "https://api.fireworks.ai/inference/v1",
-});
-
-const response = await client.chat.completions.create({
-  model: "accounts/fireworks/models/<MODEL_ID>",
-  messages: [
-    {
-      role: "user",
-      content: "Explain quantum computing in simple terms",
-    },
-  ],
-  // A single client can make requests with different sessions.
-  extra_headers: {
-    x-session-affinity: "session-id-123"
-  }
-});
-
-console.log(response.choices[0].message.content);
-```
-
-**curl**
-
-```bash theme={null}
-curl https://api.fireworks.ai/inference/v1/chat/completions \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-  -H "x-session-affinity: session-id-123" \
-  -d '{
-    "model": "accounts/fireworks/models/",
-    "messages": [
-      {
-        "role": "user",
-        "content": "Explain quantum computing in simple terms"
-      }
-    ]
-  }'
-```
+> [tab] curl
+>
+> ```bash theme={null}
+> curl https://api.fireworks.ai/inference/v1/chat/completions \
+>   -H "Content-Type: application/json" \
+>   -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+>   -H "x-session-affinity: session-id-123" \
+>   -d '{
+>     "model": "accounts/fireworks/models/",
+>     "messages": [
+>       {
+>         "role": "user",
+>         "content": "Explain quantum computing in simple terms"
+>       }
+>     ]
+>   }'
+> ```
 
 ### Resetting or isolating cache state
 

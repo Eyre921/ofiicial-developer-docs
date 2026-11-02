@@ -26,7 +26,7 @@ Fireworks supports most popular model architectures, including:
 * [Gemma](https://huggingface.co/docs/transformers/en/model_doc/gemma)
 * [GPT-OSS 120B and 20B](https://huggingface.co/openai/gpt-oss-120b)
 
-> **View all supported architectures**
+> [accordion] View all supported architectures
 >
 > * [DBRX](https://huggingface.co/docs/transformers/en/model_doc/dbrx)
 > * [DeepSeek V1, V2 & V3](https://huggingface.co/deepseek-ai)
@@ -49,7 +49,7 @@ Fireworks supports most popular model architectures, including:
 
 You'll need standard Hugging Face model files: `config.json`, model weights (`.safetensors` or `.bin`), and tokenizer files.
 
-> **View detailed file requirements**
+> [accordion] View detailed file requirements
 >
 > The model files you will need to provide depend on the model architecture. In general, you will need:
 >
@@ -98,80 +98,80 @@ You can also use a `fireworks.json` file with base models. If present, `firework
 
 For larger models, you can upload directly from cloud storage (S3 or Azure Blob Storage) for faster transfer instead of uploading from your local machine.
 
-**Local files (CLI)**
-
-Upload from your local machine:
-
-```bash theme={null}
-firectl model create <MODEL_ID> /path/to/files/
-```
-
-**S3 bucket (CLI)**
-
-Upload directly from an Amazon S3 bucket:
-
-```bash theme={null}
-firectl model create <MODEL_ID> s3://<BUCKET_NAME>/<PATH_TO_MODEL>/ \
-  --aws-access-key-id <ACCESS_KEY_ID> \
-  --aws-secret-access-key <SECRET_ACCESS_KEY>
-```
-
-See the [AWS documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id-credentials-access-keys-update.html) for how to generate an access key ID and secret access key pair.
-
-> [!NOTE]
+> [tab] Local files (CLI)
 >
-> Ensure the IAM user has read access to the S3 bucket containing the model.
-
-**Azure Blob Storage (CLI)**
-
-Upload directly from Azure Blob Storage using either SAS token or federated identity authentication.
-
-**SAS token**
-
-First, create a Fireworks secret containing your Azure SAS token:
-
-```bash theme={null}
-firectl secret create --name <SECRET_NAME> --value <SAS_TOKEN>
-```
-
-Then, upload the model using the secret:
-
-```bash theme={null}
-firectl model create <MODEL_ID> https://<STORAGE_ACCOUNT>.blob.core.windows.net/<CONTAINER>/<PATH> \
-  --azure-sas-token-secret accounts/<ACCOUNT_ID>/secrets/<SECRET_NAME>
-```
-
-See the [Azure documentation](https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview) for how to generate a SAS token.
-
-> [!NOTE]
+> Upload from your local machine:
 >
-> Ensure the SAS token has read access to the Azure Blob Storage container containing the model.
+> ```bash theme={null}
+> firectl model create <MODEL_ID> /path/to/files/
+> ```
 
-**Federated identity**
+> [tab] S3 bucket (CLI)
+>
+> Upload directly from an Amazon S3 bucket:
+>
+> ```bash theme={null}
+> firectl model create <MODEL_ID> s3://<BUCKET_NAME>/<PATH_TO_MODEL>/ \
+>   --aws-access-key-id <ACCESS_KEY_ID> \
+>   --aws-secret-access-key <SECRET_ACCESS_KEY>
+> ```
+>
+> See the [AWS documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id-credentials-access-keys-update.html) for how to generate an access key ID and secret access key pair.
+>
+> > [!NOTE]
+> >
+> > Ensure the IAM user has read access to the S3 bucket containing the model.
 
-Use Azure AD federated identity for passwordless authentication.
+> [tab] Azure Blob Storage (CLI)
+>
+> Upload directly from Azure Blob Storage using either SAS token or federated identity authentication.
+>
+> > [tab] SAS token
+> >
+> > First, create a Fireworks secret containing your Azure SAS token:
+> >
+> > ```bash theme={null}
+> > firectl secret create --name <SECRET_NAME> --value <SAS_TOKEN>
+> > ```
+> >
+> > Then, upload the model using the secret:
+> >
+> > ```bash theme={null}
+> > firectl model create <MODEL_ID> https://<STORAGE_ACCOUNT>.blob.core.windows.net/<CONTAINER>/<PATH> \
+> >   --azure-sas-token-secret accounts/<ACCOUNT_ID>/secrets/<SECRET_NAME>
+> > ```
+> >
+> > See the [Azure documentation](https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview) for how to generate a SAS token.
+> >
+> > > [!NOTE]
+> > >
+> > > Ensure the SAS token has read access to the Azure Blob Storage container containing the model.
+>
+> > [tab] Federated identity
+> >
+> > Use Azure AD federated identity for passwordless authentication.
+> >
+> > **Setup:** Register an Azure AD application and add a federated credential with values provided by Fireworks during onboarding:
+> >
+> > * **Issuer:** `https://accounts.google.com`
+> > * **Subject:** `<FIREWORKS_GCP_SERVICE_ACCOUNT_UNIQUE_ID>`
+> > * **Audience:** `api://AzureADTokenExchange`
+> >
+> > Contact [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) if you need the exact subject identifier.
+> >
+> > Then grant **Storage Blob Data Reader** role to the application on your storage account.
+> >
+> > ```bash theme={null}
+> > firectl model create <MODEL_ID> https://<STORAGE_ACCOUNT>.blob.core.windows.net/<CONTAINER>/<PATH> \
+> >   --azure-client-id <CLIENT_ID> \
+> >   --azure-tenant-id <TENANT_ID>
+> > ```
 
-**Setup:** Register an Azure AD application and add a federated credential with values provided by Fireworks during onboarding:
-
-* **Issuer:** `https://accounts.google.com`
-* **Subject:** `<FIREWORKS_GCP_SERVICE_ACCOUNT_UNIQUE_ID>`
-* **Audience:** `api://AzureADTokenExchange`
-
-Contact [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) if you need the exact subject identifier.
-
-Then grant **Storage Blob Data Reader** role to the application on your storage account.
-
-```bash theme={null}
-firectl model create <MODEL_ID> https://<STORAGE_ACCOUNT>.blob.core.windows.net/<CONTAINER>/<PATH> \
-  --azure-client-id <CLIENT_ID> \
-  --azure-tenant-id <TENANT_ID>
-```
-
-**REST API**
-
-For programmatic uploads (automation, CI/CD pipelines, notebooks), use the Fireworks REST API.
-
-See [Upload via REST API](/models/uploading-custom-models-api) for the full pipeline and a ready-to-use Python example.
+> [tab] REST API
+>
+> For programmatic uploads (automation, CI/CD pipelines, notebooks), use the Fireworks REST API.
+>
+> See [Upload via REST API](/models/uploading-custom-models-api) for the full pipeline and a ready-to-use Python example.
 
 > [!NOTE]
 >
@@ -303,7 +303,7 @@ Add a `fireworks.json` file to the directory containing your adapter files:
 }
 ```
 
-> **defaults options**
+> [accordion] defaults options
 >
 > These defaults are applied when the user doesn't specify values in their API request:
 >
@@ -320,7 +320,7 @@ Add a `fireworks.json` file to the directory containing your adapter files:
 > | `presence_penalty` | float | `0.0` | Default presence penalty |
 > | `repetition_penalty` | float | `1.0` | Default repetition penalty |
 
-> **Additional options**
+> [accordion] Additional options
 >
 > | Field | Default | Description |
 > | - | - | - |
@@ -347,14 +347,14 @@ firectl model create <MODEL_ID> /path/to/files/ --base-model "accounts/fireworks
 
 ## Next steps
 
-> **[Deploy your model](/guides/ondemand-deployments)**
+> [card] [Deploy your model](/guides/ondemand-deployments)
 >
 > Configure GPU types, autoscaling, and optimization
 
-> **[Quantization](/models/quantization)**
+> [card] [Quantization](/models/quantization)
 >
 > Reduce serving costs with model quantization
 
-> **[Training](/fine-tuning/finetuning-intro)**
+> [card] [Training](/fine-tuning/finetuning-intro)
 >
 > Train models before deploying them

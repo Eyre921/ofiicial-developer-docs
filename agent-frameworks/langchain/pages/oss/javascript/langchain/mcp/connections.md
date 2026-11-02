@@ -48,7 +48,7 @@ async function runAgent(serverUrl: string) {
 }
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/80510373-9970-43bf-bb13-5aa9b7715cba/r)
+> [card] [View example trace](https://smith.langchain.com/public/2ec0a05d-a8c6-429f-a716-7f8a9711da39/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -83,7 +83,7 @@ async function listServerTools(calendarUrl: string, filesServerPath: string) {
 }
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/545c62ba-f5c4-4127-9132-b8fbe8c152f8/r)
+> [card] [View example trace](https://smith.langchain.com/public/f2bcc0d1-3bb6-4e73-a7b9-1871bce5c026/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -117,7 +117,7 @@ export async function makeGraph() {
 }
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/a67437b5-3eef-41ee-8a90-7947c5897d31/r)
+> [card] [View example trace](https://smith.langchain.com/public/283db6d7-054c-44f5-8a64-03892137528d/r)
 >
 > Open a public LangSmith run for this example.
 
@@ -173,7 +173,7 @@ async function listToolsAcrossEras(modernUrl: string, legacyUrl: string) {
 }
 ```
 
-> [card] [View example trace](https://smith.langchain.com/public/9302383c-3aa9-451e-b588-41a94c35dd3b/r)
+> [card] [View example trace](https://smith.langchain.com/public/8f10d935-eb3b-4b32-a323-4c27859e63e8/r)
 >
 > Open a public LangSmith run for this example.
 

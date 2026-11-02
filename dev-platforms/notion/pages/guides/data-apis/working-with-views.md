@@ -1583,4 +1583,4 @@ The connection must also have access to the parent database. If it doesn't, the 
 * Explore the [database object](/reference/database) and [data source object](/reference/data-source) reference docs for the parent resources that views live under.
 * Learn about [filters](/reference/filter-data-source-entries) and [sorts](/reference/sort-data-source-entries) — these shapes are shared between data source queries and view configuration.
 * Review [Working with databases](/guides/data-apis/working-with-databases) for a broader overview of database concepts.
-* See [Preparing your connection for users](/guides/get-started/preparing-for-users) to learn how to set up databases, views, and pages automatically when users install your connection.
+* See [Preparing your connection for users](/guides/connections-and-tokens/oauth-integrations/preparing-for-users) to learn how to set up databases, views, and pages automatically when users install your connection.

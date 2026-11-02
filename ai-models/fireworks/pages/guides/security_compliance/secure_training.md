@@ -112,22 +112,22 @@ For inference-side controls — disabling Response API storage (`store=False`) o
 
 ## Related Resources
 
-> **[Zero Data Retention](/guides/security_compliance/data_handling)**
+> [card] [Zero Data Retention](/guides/security_compliance/data_handling)
 >
 > How Fireworks handles inference data by default
 
-> **[Customer-Managed Encryption Keys (CMEK)](/guides/security_compliance/secure_training/cmek)**
+> [card] [Customer-Managed Encryption Keys (CMEK)](/guides/security_compliance/secure_training/cmek)
 >
 > Encrypt managed training data with your own KMS key
 
-> **[Data Security Overview](/guides/security_compliance/data_security)**
+> [card] [Data Security Overview](/guides/security_compliance/data_security)
 >
 > Learn about our comprehensive security measures
 
-> **[Reinforcement Fine Tuning](/fine-tuning/reinforcement-fine-tuning-models)**
+> [card] [Reinforcement Fine Tuning](/fine-tuning/reinforcement-fine-tuning-models)
 >
 > Full guide to reinforcement fine-tuning
 
-> **[Training API](/fine-tuning/training-api/introduction)**
+> [card] [Training API](/fine-tuning/training-api/introduction)
 >
 > Custom training loops that keep your data on your side

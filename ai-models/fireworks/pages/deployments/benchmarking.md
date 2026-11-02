@@ -69,10 +69,10 @@ You can also develop custom performance testing scripts or integrate with monito
 
 ## Next steps
 
-> **[Autoscaling](/deployments/autoscaling)**
+> [card] [Autoscaling](/deployments/autoscaling)
 >
 > Configure autoscaling to handle variable load
 
-> **[Client-side optimization](/deployments/client-side-performance-optimization)**
+> [card] [Client-side optimization](/deployments/client-side-performance-optimization)
 >
 > Optimize your client code for maximum throughput

@@ -7,7 +7,7 @@ path: reference/get-self
 get /v1/users/me
 Retrieves the [User](/reference/user) associated with the token provided in the authorization header.
 
-For [personal access tokens](/guides/get-started/personal-access-tokens), this endpoint returns the token's bot user. Its `bot.owner.user` is the user who created the token.
+For [personal access tokens](/guides/connections-and-tokens/personal-access-tokens), this endpoint returns the token's bot user. Its `bot.owner.user` is the user who created the token.
 
 ### Errors
 

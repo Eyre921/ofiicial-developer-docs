@@ -147,6 +147,6 @@ Renderer tests pin upstream Hugging Face template revisions and verify token-for
 
 The relevant upstream templates are [GLM 5.1](https://huggingface.co/zai-org/GLM-5.1/blob/main/chat_template.jinja), [GLM 5.2](https://huggingface.co/zai-org/GLM-5.2/blob/main/chat_template.jinja), [Qwen 3.5](https://huggingface.co/Qwen/Qwen3.5-35B-A3B/blob/main/tokenizer_config.json), [Qwen 3.6](https://huggingface.co/Qwen/Qwen3.6-27B/blob/main/tokenizer_config.json), [Kimi K2.5](https://huggingface.co/moonshotai/Kimi-K2.5/blob/main/chat_template.jinja), [Kimi K2.6](https://huggingface.co/moonshotai/Kimi-K2.6/blob/main/chat_template.jinja), and [Kimi K2.7 Code](https://huggingface.co/moonshotai/Kimi-K2.7-Code/blob/main/chat_template.jinja).
 
-> **[Prepare an SFT dataset](/fine-tuning/fine-tuning-models)**
+> [card] [Prepare an SFT dataset](/fine-tuning/fine-tuning-models)
 >
 > Add `reasoning_content` to assistant messages in your JSONL dataset.

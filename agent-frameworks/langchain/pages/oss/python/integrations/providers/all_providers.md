@@ -436,6 +436,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Verifies a factual claim against live web evidence and returns a stance, confidence, and an offline-verifiable signed receipt.
 
+> [card] [CleaveToolkit](https://cleave.fi/docs/agents/langchain)
+>
+> DEX aggregator tools for split-route and one-step cross-chain swaps on six EVM chains.
+
 > [card] [cloro](https://cloro.dev/docs)
 >
 > The scraper for SEO and AI SEO.
@@ -703,6 +707,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [ERC-8004](https://github.com/Conrad-sudo/langchain-erc8004)
 >
 > Verify an ERC-8004 agent's on-chain identity and reputation feedback, and prepare registry writes as execution plans.
+
+> [card] [EU Nordic Open Data](https://github.com/itulo/eu-nordic-open-data-mcp/tree/main/packages/langchain-eu-nordic-open-data)
+>
+> LangChain tools for official EU, Finnish, and Norwegian open data via hosted Apify actors.
 
 > [card] [Exa Search](/oss/python/integrations/providers/exa_search)
 >
@@ -972,6 +980,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Web automation and scraping platform.
 
+> [card] [HyperresearchAnswerTool](https://hyperresearch.ai/docs/answers/langchain)
+>
+> Hyperresearch Answers returns quote-checked answers to factual questions, or not\_found, plus ranked web and structured sources with verbatim passages.
+
 > [card] [IBM](/oss/python/integrations/providers/ibm)
 >
 > IBM Watson AI and enterprise solutions.
@@ -1152,6 +1164,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Bitemporal agent memory with point-in-time recall for LangChain and LangGraph.
 
+> [card] [LiquidVisionToolkit](https://github.com/lv-analytics/liquidvision-mcp/tree/main/integrations/langchain)
+>
+> LiquidVision provides read-only crypto derivatives data tools for LangChain agents with no API key required.
+
 > [card] [LiteLLM](/oss/python/integrations/providers/litellm)
 >
 > Unified interface for 100+ LLM APIs.
@@ -1243,6 +1259,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Memstate AI](https://memstate.ai/docs/integrations/langchain)
 >
 > Structured, versioned long-term memory for AI agents.
+
+> [card] [MemtomemHybridStore](https://github.com/memtomem/memtomem/blob/main/docs/guides/langgraph-hybrid-store.md)
+>
+> SQLite-backed LangGraph BaseStore with BM25, exact dense, weighted RRF hybrid search, TTL, and search diagnostics.
 
 > [card] [Mengram](https://mengram.io/docs)
 >
@@ -1608,6 +1628,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Google Play Store app details and user reviews retrievers for LangChain.
 
+> [card] [PlaceholderGuardMiddleware](https://github.com/bharatkhanna-dev/langchain-placeholder-guard#readme)
+>
+> Detects unfilled placeholders and forbidden terms in LangChain agent output and tool arguments, then retries, blocks, or flags responses.
+
 > [card] [PolarDB PG](https://github.com/polardb/langchain-polardb-pg)
 >
 > PolarDB for PostgreSQL provides in-database embeddings, a LangChain vector store, and SQL-based registration and invocation of external AI models.
@@ -1791,6 +1815,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Runloop](https://docs.runloop.ai/)
 >
 > Disposable devboxes for running code in isolated environments.
+
+> [card] [Runcrate](https://www.runcrate.ai/docs/sdks/langchain?utm_source=langchain\&utm_medium=directory\&utm_campaign=integrations)
+>
+> Runcrate serves open-weight models such as DeepSeek, Qwen, Llama and Kimi through one OpenAI-compatible API, billed per token.
 
 > [card] [Runcycles](https://runcycles.io)
 >
@@ -1976,6 +2004,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Open-source LLM observability with a LangChain and LangGraph callback handler.
 
+> [card] [SpecStream](https://specstream.ai/docs/langchain)
+>
+> SpecStream finds lists of companies, places, filings, and other live web records from plain-language requests with source pages and code-set price caps.
+
 > [card] [SpiceDB](https://github.com/authzed/langchain-spicedb)
 >
 > Authorization system for fine-grained permissions filtering in RAG applications.
@@ -2011,6 +2043,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [SunoToolkit](https://github.com/AceDataCloud/LangChain/tree/main/packages/suno)
 >
 > Suno music generation submission and same-ID task retrieval tools provided by Ace Data Cloud.
+
+> [card] [Surgemesh](https://pypi.org/project/langchain-surgemesh/)
+>
+> Social publishing API for agents: quote a post's price, schedule it to social networks, and track delivery.
 
 > [card] [Supadata](/oss/python/integrations/providers/supadata)
 >
@@ -2159,6 +2195,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [TokenMix](https://tokenmix.ai/docs)
 >
 > OpenAI-compatible API gateway for DeepSeek, Qwen, Kimi, GLM, MiniMax, and more.
+
+> [card] [TokenUsageToolkit](https://tokenusage.dev/langchain)
+>
+> Read-only LangChain tools for Codex reset announcements and Nerf Watch model scores and history from tokenusage.dev.
 
 > [card] [TokPortal](https://github.com/tokportal/langchain-tokportal)
 >
@@ -2323,6 +2363,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Vercel](https://vercel.com/docs/vercel-sandbox)
 >
 > Ephemeral, isolated Linux sandboxes for running untrusted code.
+
+> [card] [viaSocket](https://github.com/Walkover-Web-Solution/viasocket-apps/tree/main/python#langchain)
+>
+> viaSocket lets LangChain agents run actions in 2,300+ connected apps through each user's own connection.
 
 > [card] [VideoGenToolkit](https://github.com/video-gen/langchain-videogen#readme)
 >

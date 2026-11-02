@@ -99,7 +99,7 @@ See [what changes without the Nexus CLI](/nexus/manual-setup#what-changes-withou
 
 ## What the Nexus CLI writes
 
-> **See what Nexus CLI writes**
+> [accordion] See what Nexus CLI writes
 >
 > Cursor IDE stores AI settings in SQLite, in `User/globalStorage/state.vscdb` under `~/.config/Cursor` (Linux), `~/Library/Application Support/Cursor` (macOS), or `%APPDATA%\Cursor` (Windows):
 >

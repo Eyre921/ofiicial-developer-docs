@@ -15,8 +15,8 @@ The Comment Display Name object represents the author name that shows up for a c
 | `type` | `string` (enum) | Possible type values are:`"connection"`, `"user"`, or `"custom"` | `"user"` |
 | `custom` | `object` | If the type is `"custom"`, include a custom object specifying the custom name`"custom": { "name": <Custom Name> }` | `"custom": { "name": "Notion Bot" }` |
 
-* `"connection"`: name of the [connection](/guides/get-started/overview)
-* `"user"`: name of the user who authenticated the connection or token (for [public connections](/guides/get-started/overview#connection-types) and [personal access tokens](/guides/get-started/personal-access-tokens))
+* `"connection"`: name of the [connection](/guides/connections-and-tokens/overview)
+* `"user"`: name of the user who authenticated the connection or token (for [public connections](/guides/connections-and-tokens/overview#connection-types) and [personal access tokens](/guides/connections-and-tokens/personal-access-tokens))
 * `"custom"`: any custom name
 
 Example of a Create Comment request with custom display name:

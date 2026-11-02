@@ -4,7 +4,7 @@ source: https://developers.notion.com/guides/mcp/enterprise-managed-authorizatio
 path: guides/mcp/enterprise-managed-authorization
 ---
 
-Reference for getting Notion MCP access tokens with an identity provider's ID-JAG instead of the browser OAuth flow.
+Connect to Notion MCP through your identity provider using ID-JAG token exchange instead of browser-based OAuth.
 
 Notion MCP accepts an **ID-JAG** (Identity Assertion JWT Authorization Grant) at its token endpoint. An ID-JAG is a short-lived JWT that your company's identity provider (IdP) signs for one user and one MCP client. Your MCP client trades it for a Notion MCP access token without opening a browser or showing a consent screen.
 

@@ -146,7 +146,7 @@ See [what changes without the Nexus CLI](/nexus/manual-setup#what-changes-withou
 
 **fireworks-model-catalog.json**
 
-> **See what Nexus CLI writes**
+> [accordion] See what Nexus CLI writes
 >
 > ```toml ~/.codex/config.toml theme={null}
 > model_provider = "fireworks-ai"

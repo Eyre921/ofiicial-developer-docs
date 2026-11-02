@@ -238,7 +238,7 @@ ntn workers exec lookupCustomer --local --dotenv .env.local -d '{"email":"ada@ex
 > The Workers runtime injects a preauthenticated Notion SDK client when your
 > tool runs in Notion, but that client is not available during local execution.
 > When testing locally, we recommend setting `NOTION_API_TOKEN` to a
-> [personal access token](/guides/get-started/personal-access-tokens) in your
+> [personal access token](/guides/connections-and-tokens/personal-access-tokens) in your
 > `.env` file, which the SDK uses to create the client.
 
 If you do not want to load a `.env` file, pass `--no-dotenv`:

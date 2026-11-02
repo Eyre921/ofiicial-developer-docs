@@ -16,7 +16,7 @@ Build a checkout page on your website using Stripe Elements and the Checkout Ses
 
 ### Install the Stripe Node library
 
-Install the package and import it in your code. Alternatively, if you’re starting from scratch and need a package.json file, download the project files using the Download link in the code editor.
+Install the package and import it in your code. Alternatively, if you’re starting from scratch and need a `package.json` file, download the project files using the Download link in the code editor.
 
 #### npm
 
@@ -96,7 +96,7 @@ Download the stripe-python library source code directly [from GitHub](https://gi
 
 ### Install the Stripe PHP library
 
-Install the library with composer and initialize with your secret API key. Alternatively, if you’re starting from scratch and need a composer.json file, download the files using the link in the code editor.
+Install the library with composer and initialize with your secret API key. Alternatively, if you’re starting from scratch and need a `composer.json` file, download the files using the link in the code editor.
 
 #### Composer
 

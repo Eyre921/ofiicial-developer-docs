@@ -21,72 +21,72 @@ Multi-turn rollouts typically reuse a long prefix between turns (same system pro
 * `x-multi-turn-session-id` — identifies the agent trajectory. Set this once per trajectory and keep it constant across turns. If both headers are present, Fireworks currently prefers this value when deriving the request's session-affinity key.
 * `x-session-affinity` — fallback sticky routing key when `x-multi-turn-session-id` is absent. In most RL rollout setups, set it to the same trajectory ID.
 
-**OpenAI SDK**
+> [tab] OpenAI SDK
+>
+> ```python theme={null}
+> from openai import OpenAI
+>
+> client = OpenAI(
+>     api_key="<FIREWORKS_API_KEY>",
+>     base_url="https://api.fireworks.ai/inference/v1",
+> )
+>
+> trajectory_id = "traj-42f1"
+>
+> for turn in trajectory:
+>     response = client.chat.completions.create(
+>         model="accounts/<account_id>/models/<model_id>",
+>         messages=turn.messages,
+>         extra_headers={
+>             "x-multi-turn-session-id": trajectory_id,
+>             "x-session-affinity": trajectory_id,
+>             "fireworks-deployment": "accounts/<account_id>/deployments/<deployment_id>",
+>         },
+>     )
+> ```
 
-```python theme={null}
-from openai import OpenAI
+> [tab] Training SDK
+>
+> ```python theme={null}
+> import secrets
+>
+> sampling_client = service.create_sampling_client(
+>     model_path=snapshot,
+>     tokenizer=tokenizer,
+> )
+> sampler = sampling_client.deployment_sampler
+>
+> trajectory_id = f"rl-session-{secrets.token_hex(16)}"
+>
+> try:
+>     for prompt_token_ids in trajectory_prompt_token_ids:
+>         completions = await sampler.sample_with_prompt_tokens(
+>             prompt_token_ids,
+>             n=1,
+>             max_tokens=4096,
+>             temperature=1.0,
+>             logprobs=True,
+>             user=trajectory_id,
+>         )
+> finally:
+>     sampling_client.close()
+> ```
 
-client = OpenAI(
-    api_key="<FIREWORKS_API_KEY>",
-    base_url="https://api.fireworks.ai/inference/v1",
-)
-
-trajectory_id = "traj-42f1"
-
-for turn in trajectory:
-    response = client.chat.completions.create(
-        model="accounts/<account_id>/models/<model_id>",
-        messages=turn.messages,
-        extra_headers={
-            "x-multi-turn-session-id": trajectory_id,
-            "x-session-affinity": trajectory_id,
-            "fireworks-deployment": "accounts/<account_id>/deployments/<deployment_id>",
-        },
-    )
-```
-
-**Training SDK**
-
-```python theme={null}
-import secrets
-
-sampling_client = service.create_sampling_client(
-    model_path=snapshot,
-    tokenizer=tokenizer,
-)
-sampler = sampling_client.deployment_sampler
-
-trajectory_id = f"rl-session-{secrets.token_hex(16)}"
-
-try:
-    for prompt_token_ids in trajectory_prompt_token_ids:
-        completions = await sampler.sample_with_prompt_tokens(
-            prompt_token_ids,
-            n=1,
-            max_tokens=4096,
-            temperature=1.0,
-            logprobs=True,
-            user=trajectory_id,
-        )
-finally:
-    sampling_client.close()
-```
-
-**curl**
-
-```bash theme={null}
-curl https://api.fireworks.ai/inference/v1/chat/completions \
-  -H "Authorization: Bearer <fireworks_api_key>" \
-  -H "fireworks-model: accounts/<account_id>/models/<model_id>" \
-  -H "fireworks-deployment: accounts/<account_id>/deployments/<deployment_id>" \
-  -H "x-multi-turn-session-id: traj-42f1" \
-  -H "x-session-affinity: traj-42f1" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "accounts/<account_id>/models/<model_id>",
-    "messages": [{"role": "user", "content": "..."}]
-  }'
-```
+> [tab] curl
+>
+> ```bash theme={null}
+> curl https://api.fireworks.ai/inference/v1/chat/completions \
+>   -H "Authorization: Bearer <fireworks_api_key>" \
+>   -H "fireworks-model: accounts/<account_id>/models/<model_id>" \
+>   -H "fireworks-deployment: accounts/<account_id>/deployments/<deployment_id>" \
+>   -H "x-multi-turn-session-id: traj-42f1" \
+>   -H "x-session-affinity: traj-42f1" \
+>   -H "Content-Type: application/json" \
+>   -d '{
+>     "model": "accounts/<account_id>/models/<model_id>",
+>     "messages": [{"role": "user", "content": "..."}]
+>   }'
+> ```
 
 The Training SDK's Tinker-compatible `sampler.sample(...)` method does not expose arbitrary completions request fields. Use the underlying `DeploymentSampler`, as shown above, to pass the trajectory ID in `user`. For independent trajectories, use distinct IDs and separate `n=1` calls; see [`DeploymentSampler`: RL rollout sampling](/fine-tuning/training-api/reference/deployment-sampler#rl-rollout-sampling) for a batched example. Serverless sampling requires `fireworks-ai[training]` 1.2.9 or later for per-request affinity.
 
@@ -258,18 +258,18 @@ Non-streaming responses are adding the same `model@snapshot_identity` convention
 
 ## Related pages
 
-> **[Quickstart (BYOT)](/fine-tuning/rl-rollout-integration)**
+> [card] [Quickstart (BYOT)](/fine-tuning/rl-rollout-integration)
 >
 > Prerequisites, hot-load deployment, and rollout loop.
 
-> **[Incremental snapshots](/fine-tuning/rl-rollout-integration#arc2)**
+> [card] [Incremental snapshots](/fine-tuning/rl-rollout-integration#arc2)
 >
 > ARC2 compression and incremental hot-load signals.
 
-> **[Ledger & checkpoint swap](/fine-tuning/rl-rollout-integration#ledger-debugging)**
+> [card] [Ledger & checkpoint swap](/fine-tuning/rl-rollout-integration#ledger-debugging)
 >
 > Detailed semantics of request behavior across weight swaps.
 
-> **[Prompt caching](/guides/prompt-caching)**
+> [card] [Prompt caching](/guides/prompt-caching)
 >
 > Session-affinity patterns for general cache hit optimization.

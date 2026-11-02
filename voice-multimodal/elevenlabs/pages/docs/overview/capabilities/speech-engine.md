@@ -71,12 +71,11 @@ If you want a fully hosted solution where ElevenLabs provides the LLM, knowledge
 
 ## Conversation duration
 
-Speech Engine supports conversations of up to 40 minutes (2,400 seconds). By default, a
+Speech Engine supports conversations of up to 2 hours (7,200 seconds). By default, a
 conversation ends after 600 seconds (10 minutes). To allow longer conversations, raise
 `conversation.max_duration_seconds` in the API or **Max conversation duration** in the dashboard's
 **Advanced** tab. See
 [Configuring the maximum conversation duration](/docs/eleven-api/guides/cookbooks/speech-engine#configuring-the-maximum-conversation-duration).
-If you need conversations longer than 40 minutes, [contact our team](https://elevenlabs.io/contact-sales).
 
 ## IP allowlisting
 

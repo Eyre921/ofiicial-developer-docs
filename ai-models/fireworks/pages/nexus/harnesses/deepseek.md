@@ -127,7 +127,7 @@ Your key goes to `~/.dsh/.credentials.yaml` as `FIREWORKS_API_KEY`.
 
 **cordis.patch.yml**
 
-> **See what Nexus CLI writes**
+> [accordion] See what Nexus CLI writes
 >
 > ```yaml ~/.dsh/settings.yaml theme={null}
 > llm-pi-ai:

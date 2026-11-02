@@ -93,22 +93,22 @@ On a [dedicated deployment](/guides/ondemand-deployments), a precision profile c
 
 ## Related reading
 
-> **[Evaluating quantization](https://fireworks.ai/blog/fireworks-quantization)**
+> [card] [Evaluating quantization](https://fireworks.ai/blog/fireworks-quantization)
 >
 > How Fireworks evaluates quantization precisely and interpretably.
 
-> **[GLM 5.3 Flash](https://x.com/dzhulgakov/status/2093739346423947644)**
+> [card] [GLM 5.3 Flash](https://x.com/dzhulgakov/status/2093739346423947644)
 >
 > Benchmark scores are not the only indicator of performance.
 
-> **[DeepSeek V4 Pro](https://fireworks.ai/blog/deepseek-v4-pro-validating-frontier-models-for-production)**
+> [card] [DeepSeek V4 Pro](https://fireworks.ai/blog/deepseek-v4-pro-validating-frontier-models-for-production)
 >
 > Validating frontier models for production.
 
-> **[Kimi K2.5](https://fireworks.ai/blog/quality-first-with-kimi-k2p5)**
+> [card] [Kimi K2.5](https://fireworks.ai/blog/quality-first-with-kimi-k2p5)
 >
 > The benchmark gap: what it takes to ship Kimi K2.5.
 
-> **[gpt-oss](https://fireworks.ai/blog/gpt-oss-on-fireworks-ai)**
+> [card] [gpt-oss](https://fireworks.ai/blog/gpt-oss-on-fireworks-ai)
 >
 > Quality first: how Fireworks is the go-to place for gpt-oss.

@@ -351,6 +351,10 @@ If you don’t have a customer’s address or can’t collect it, disable Stripe
 2. Update the affected [Subscription](https://docs.stripe.com/api/subscriptions/update.md#update_subscription-automatic_tax-enabled) with `automatic_tax[enabled]=false`.
 3. Finalize the [Invoice](https://docs.stripe.com/api/invoices/finalize.md).
 
+### Use Workflows to notify your team about invalid tax locations 
+
+To notify your team about invalid customer tax locations—without writing code—use the [Notify your team about invalid tax locations](https://dashboard.stripe.com/workflows/create?workflow=eyJkZWVwX2xpbmtfdmVyc2lvbiI6MSwibmFtZSI6Ik5vdGlmeSB5b3VyIHRlYW0gYWJvdXQgaW52YWxpZCB0YXggbG9jYXRpb25zIiwiZGVmaW5pdGlvbiI6IkNwRURFcDRDQ2hGbGJXRnBiRjkwWldGdFgyMWxiV0psY2hBQkdvWUNDaXB6ZEhKcGNHVXVjMlZ1WkY5dFpYSmphR0Z1ZEY5dWIzUnBabWxqWVhScGIyNWZaVzFoYVd4ZmRqSVMxd0VLMUFFS0JHMWxiVzhTeXdFYXlBRkpiblp2YVdObElHWnBibUZzYVhwaGRHbHZiaUJtWVdsc1pXUWdZbVZqWVhWelpTQjBhR1VnWTNWemRHOXRaWElnZEdGNElHeHZZMkYwYVc5dUlHbHpJR2x1ZG1Gc2FXUXVJRU52Ykd4bFkzUWdiM0lnWTI5eWNtVmpkQ0IwYUdVZ1kzVnpkRzl0WlhJZ1lXUmtjbVZ6Y3l3Z2RtRnNhV1JoZEdVZ2RHaGxJR3h2WTJGMGFXOXVMQ0IwYUdWdUlHWnBibUZzYVhwbElIUm9aU0JwYm5admFXTmxJRzFoYm5WaGJHeDVMaUJKYm5admFXTmxPaUFrZTNzZ2RISnBaMmRsY2k1cFpDQjlmUnB1Q0FJU2Fnb2JhVzUyYjJsalpTNW1hVzVoYkdsNllYUnBiMjVmWm1GcGJHVmtFa2gwY21sbloyVnlMbXhoYzNSZlptbHVZV3hwZW1GMGFXOXVYMlZ5Y205eUxtTnZaR1VnUFQwOUlDSmpkWE4wYjIxbGNsOTBZWGhmYkc5allYUnBiMjVmYVc1MllXeHBaQ0lhQVFFU0VUSXdNall0TURrdE16QXVaVzVrYVhabCIsInN0cmlwZV9hcGlfdmVyc2lvbiI6IjIwMjYtMDktMzAuZW5kaXZlIn0) template in [Workflows](https://docs.stripe.com/workflows.md). When invoice finalization fails with the `customer_tax_location_invalid` error, the workflow emails a team member to collect or correct the customer’s address. Choose the recipient in the email action before publishing the workflow.
+
 ## See also
 
 - [Understanding zero tax](https://docs.stripe.com/tax/zero-tax.md)

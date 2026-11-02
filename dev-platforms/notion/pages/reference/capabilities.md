@@ -6,9 +6,9 @@ path: reference/capabilities
 
 Learn about the capabilities that control what a connection can do and see in a Notion workspace.
 
-All connections and [personal access tokens](/guides/get-started/personal-access-tokens) have associated capabilities which enforce what they can do and see in a Notion workspace.
+All connections and [personal access tokens](/guides/connections-and-tokens/personal-access-tokens) have associated capabilities which enforce what they can do and see in a Notion workspace.
 These capabilities when put together enforce which API endpoints a connection or token can call, and what content and user related information they are able to see.
-To set your connection's capabilities see the [Authorization](/guides/get-started/authorization) guide or navigate to the [Developer portal](https://app.notion.com/developers/connections). For PATs, choose capabilities when you create the token.
+To set your connection's capabilities see the [Authorization](/guides/authorization/overview) guide or navigate to the [Developer portal](https://app.notion.com/developers/connections). For PATs, choose capabilities when you create the token.
 
 ![The configuration form groups permissions for content, comments, and user information.](https://mintcdn.com/notion-demo/kSI9TVzPayvF1_1o/images/reference/06dcfeb-Screen_Shot_2022-07-15_at_11.48.40_AM.png?fit=max\&auto=format\&n=kSI9TVzPayvF1_1o\&q=85\&s=39659d0a5b57cb5c43367283263c0565)
 
@@ -56,7 +56,7 @@ User capabilities control what user objects show, and they grant access to [List
 
 For public connections, users will need to re-authenticate with a connection if the capabilities are changed in the time since the user last authenticated with the connection.
 
-To learn more about setting your connection's capabilities refer to the [Authorization](/guides/get-started/authorization) guide.
+To learn more about setting your connection's capabilities refer to the [Authorization](/guides/authorization/overview) guide.
 
 In general, you want to request minimum capabilities that your connection needs in order to function. The fewer capabilities you request, the more likely a workspace admin will be able to install your connection.
 

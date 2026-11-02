@@ -49,19 +49,19 @@ For workloads where Fireworks-managed infrastructure already satisfies your comp
 
 BYOC is not a raw self-hosting kit. Fireworks brings the managed serving experience to infrastructure you own, so your team can focus on applications instead of rebuilding model serving operations.
 
-> **Inference performance focus**
+> [card] Inference performance focus
 >
 > Fireworks continuously optimizes serving performance across model configuration, deployment shape, scheduling, quantization, speculative decoding, and workload-specific tuning such as FireOptimizer where enabled.
 
-> **Managed operations and upgrades**
+> [card] Managed operations and upgrades
 >
 > Fireworks handles serving-stack installation, rollout, maintenance, upgrades, and day-to-day operations so your team does not have to rebuild a self-hosted inference platform.
 
-> **GPU reliability operations**
+> [card] GPU reliability operations
 >
 > Fireworks monitors GPU and node health, detects unhealthy capacity, and safely remediates issues to reduce the operational burden of running inference on large GPU fleets.
 
-> **Current models and GPU generations**
+> [card] Current models and GPU generations
 >
 > Fireworks tracks new model releases and new GPU generations, including day-0 enablement for supported models and kernel-level optimizations for supported hardware, so your BYOC environment can adopt supported updates without your team rebuilding the serving stack.
 
@@ -98,10 +98,10 @@ At a high level, BYOC requires:
 
 If BYOC may be a fit, [contact us](https://fireworks.ai/contact) to review your requirements and preview eligibility.
 
-> **[How setup works](/ecosystem/integrations/byoc/how-setup-works)**
+> [card] [How setup works](/ecosystem/integrations/byoc/how-setup-works)
 >
 > Understand prerequisites, setup access, installation, and validation.
 
-> **[Operational model](/ecosystem/integrations/byoc/operational-model)**
+> [card] [Operational model](/ecosystem/integrations/byoc/operational-model)
 >
 > Learn how Fireworks operates BYOC clusters after onboarding.

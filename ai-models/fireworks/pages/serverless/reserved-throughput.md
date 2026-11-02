@@ -74,23 +74,23 @@ The uplift is not a single price ratio. MiniMax M3 is 4.7 times cheaper on uncac
 
 ## Pricing and SLAs
 
-> **How is Reserved Throughput priced?**
+> [accordion] How is Reserved Throughput priced?
 >
 > Reserved throughput is priced per token
 
-> **How should I size my reservation?**
+> [accordion] How should I size my reservation?
 >
 > Size your reservation against per-minute TPM levels, such as your peak or p95 usage.
 
-> **What happens once I hit my reserved amount?**
+> [accordion] What happens once I hit my reserved amount?
 >
 > Usage above your reservation is processed pay-as-you-go and billed at list price. Overage carries no SLA and is subject to your current [Serverless rate limits](/serverless/rate-limits).
 
-> **Is my reserved traffic subject to an SLA?**
+> [accordion] Is my reserved traffic subject to an SLA?
 >
 > Yes. Traffic within your reservation is covered by a throughput SLA.
 
-> **Does unused reserved throughput roll over?**
+> [accordion] Does unused reserved throughput roll over?
 >
 > No. Reserved throughput is use-it-or-lose-it on a per-minute basis.
 
@@ -100,18 +100,18 @@ The uplift is not a single price ratio. MiniMax M3 is 4.7 times cheaper on uncac
 
 The diagram does not show Elastic Burst separately. When available, Elastic Burst can increase the adaptive portion without changing your reserved amount.
 
-> **How do I enable calls to use Reserved Throughput?**
+> [accordion] How do I enable calls to use Reserved Throughput?
 >
 > This happens automatically for models chosen in coordination with Fireworks. Eligible traffic on your account is counted against your reserved amount—no new endpoint, parameter, or code change is required.
 
-> **How does this affect my rate limits?**
+> [accordion] How does this affect my rate limits?
 >
 > Usage within your reservation does not count against adaptive rate limits. Elastic Burst can add temporary capacity above the base ceiling, but it does not change your reserved amount.
 
-> **How does my cache hit rate affect what I get?**
+> [accordion] How does my cache hit rate affect what I get?
 >
 > Cached input is priced well below uncached input, so a higher cache hit rate means more throughput per dollar reserved. See [prompt caching](/guides/prompt-caching).
 
-> **Can I reserve throughput for custom or fine-tuned models?**
+> [accordion] Can I reserve throughput for custom or fine-tuned models?
 >
 > Yes. [Contact us](https://fireworks.ai/contact) to discuss your requirements.

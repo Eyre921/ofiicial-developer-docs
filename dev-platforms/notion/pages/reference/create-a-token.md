@@ -9,7 +9,7 @@ Creates an access token that a third-party service can use to authenticate with 
 
 > [!NOTE]
 >
-> For step-by-step instructions on how to use this endpoint to create a public connection, check out the [Authorization guide](/guides/get-started/authorization#public-connection-auth-flow-set-up).
+> For step-by-step instructions on how to use this endpoint to create a public connection, check out the [Authorization guide](/guides/authorization/overview#public-connection-auth-flow-set-up).
 
 > [!WARNING]
 >
@@ -17,7 +17,7 @@ Creates an access token that a third-party service can use to authenticate with 
 >
 > The `redirect_uri` is a *required* field in the request body for this endpoint if:
 >
-> * the `redirect_uri` query parameter was set in the [Authorization URL](/guides/get-started/authorization#step-1-navigate-the-user-to-the-connection’s-authorization-url) provided to users, *or*;
+> * the `redirect_uri` query parameter was set in the [Authorization URL](/guides/authorization/overview#step-1-navigate-the-user-to-the-connection’s-authorization-url) provided to users, *or*;
 > * there are more than one `redirect_uri`s included in the [connection's settings](https://app.notion.com/developers/connections) under **OAuth Domain & URIs**.
 >
 > In most cases, the `redirect_uri` field is required.
@@ -26,6 +26,6 @@ Creates an access token that a third-party service can use to authenticate with 
 >
 > * there is one `redirect_uri` included in the [connection's settings](https://app.notion.com/developers/connections) under **OAuth Domain & URIs**, *and* the `redirect_uri` query parameter was not included in the Authorization URL.
 >
-> Learn more in the public connection section of the [Authorization Guide](/guides/get-started/authorization#public-connection-auth-flow-set-up).
+> Learn more in the public connection section of the [Authorization Guide](/guides/authorization/overview#public-connection-auth-flow-set-up).
 >
 > *Note: Each Public API endpoint can return several possible error codes. To see a full description of each type of error code, see the [Error codes section](/reference/status-codes#error-codes) of the Status codes documentation.*

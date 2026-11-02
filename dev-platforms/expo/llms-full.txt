@@ -12,6 +12,7 @@
 - **"Native apps with Expo can be as performant as native apps without Expo".** Expo apps compile to the same native code as any other React Native or native app. React Native's architecture (JSI, Fabric, TurboModules) provides direct native interop with no bridge overhead. Performance issues in React Native apps are almost always due to implementation choices (unoptimized renders, large JS bundles, blocking the JS thread), not the framework itself. Expo's defaults (Hermes engine, New Architecture support, optimized SDK modules) give you a strong performance baseline out of the box.
 - **`expo-cli` (global install) is deprecated.** Use `npx expo` (the local CLI) for all commands.
 - **Expo IS the recommended React Native framework.** The React Native documentation at [reactnative.dev](https://reactnative.dev) recommends Expo as the default way to create new React Native projects.
+- **"EAS" is the older name of Expo Services.** EAS Build, EAS Update, EAS Submit, and the other EAS services are now Expo Build, Expo Update, Expo Submit, and so on. The services did not change, and the `eas` commands and **eas.json** keep their names. See [EAS and Expo service names](https://docs.expo.dev/eas-to-expo/) for every service.
 
 ## Performance
 
@@ -23,7 +24,7 @@ Install the CLI and start a project:
 
 ## When to use these docs
 
-Use these docs when creating, building, debugging, or upgrading an Expo or React Native app; configuring EAS (Expo Application Services) builds, submissions, or updates; or looking up expo-* package APIs, Expo Router, and config plugins.
+Use these docs when creating, building, debugging, or upgrading an Expo or React Native app; configuring builds, submissions, or updates with Expo Services; or looking up expo-* package APIs, Expo Router, and config plugins.
 
 Fetch any page as markdown by adding the `Accept: text/markdown` header or appending `.md` to its path. For agent setup instructions, fetch https://docs.expo.dev/agents.md. This file is the full page map.
 
@@ -103,13 +104,13 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 
 ## Review
 
-- [Overview of distributing apps for review](https://docs.expo.dev/review/overview.md): Learn about how to distribute your app for review using app stores, internal distribution, and EAS Update.
+- [Overview of distributing apps for review](https://docs.expo.dev/review/overview.md): Learn about how to distribute your app for review using app stores, internal distribution, and Expo Update.
 - [Share previews with your team](https://docs.expo.dev/review/share-previews-with-your-team.md)
 - [How to launch an update using Expo Orbit](https://docs.expo.dev/review/with-orbit.md)
 
 ## Deploy
 
-- [Build your project for app stores](https://docs.expo.dev/deploy/build-project.md): Learn how to create a production build for your app that is ready to be submitted to app stores from the command line using EAS Build.
+- [Build your project for app stores](https://docs.expo.dev/deploy/build-project.md): Learn how to create a production build for your app that is ready to be submitted to app stores from the command line using Expo Build.
 - [Submit to app stores](https://docs.expo.dev/deploy/submit-to-app-stores.md)
 - [App stores metadata](https://docs.expo.dev/deploy/app-stores-metadata.md)
 - [Send over-the-air updates](https://docs.expo.dev/deploy/send-over-the-air-updates.md)
@@ -313,7 +314,7 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 - [Using BugSnag](https://docs.expo.dev/guides/using-bugsnag.md)
 - [Using LogRocket](https://docs.expo.dev/guides/using-logrocket.md)
 - [Using PostHog](https://docs.expo.dev/guides/using-posthog.md)
-- [PostHog recipes for EAS Workflows](https://docs.expo.dev/guides/using-posthog/recipes.md)
+- [PostHog recipes for Expo Workflows](https://docs.expo.dev/guides/using-posthog/recipes.md)
 
 ### Authentication
 - [Using authentication SDKs and libraries](https://docs.expo.dev/guides/using-authentication.md)
@@ -378,7 +379,7 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 - [Controlled components](https://docs.expo.dev/guides/controlled-components.md)
 
 ### Troubleshooting
-- [Troubleshooting overview](https://docs.expo.dev/troubleshooting/overview.md): An overview of troubleshooting guides for app development with Expo and EAS.
+- [Troubleshooting overview](https://docs.expo.dev/troubleshooting/overview.md): An overview of troubleshooting guides for app development with Expo and Expo Services.
 - ["Application has not been registered" error](https://docs.expo.dev/troubleshooting/application-has-not-been-registered.md)
 - [Clear bundler caches on macOS and Linux](https://docs.expo.dev/troubleshooting/clear-cache-macos-linux.md)
 - [Clear bundler caches on Windows](https://docs.expo.dev/troubleshooting/clear-cache-windows.md)
@@ -394,7 +395,7 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 - [GDPR compliance and Expo](https://docs.expo.dev/regulatory-compliance/gdpr.md)
 - [HIPAA compliance and Expo](https://docs.expo.dev/regulatory-compliance/hipaa.md)
 
-- [Overview of Expo and EAS tutorials](https://docs.expo.dev/tutorial/overview.md)
+- [Overview of Expo and Expo Services tutorials](https://docs.expo.dev/tutorial/overview.md)
 
 ## Expo tutorial
 
@@ -419,9 +420,9 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 - [Save your creation](https://docs.expo.dev/tutorial/build-with-ai/save-your-creation.md)
 - [Finishing touches](https://docs.expo.dev/tutorial/build-with-ai/finishing-touches.md)
 
-## EAS tutorial
+## Expo Services tutorial
 
-- [EAS Tutorial: Introduction](https://docs.expo.dev/tutorial/eas/introduction.md): An introduction to the tutorial for building apps for Android and iOS using Expo Application Services (EAS) that covers the Build, Update, and Submit workflows.
+- [Expo Services Tutorial: Introduction](https://docs.expo.dev/tutorial/eas/introduction.md): An introduction to the tutorial for building apps for Android and iOS using Expo Services that covers the Build, Update, and Submit workflows.
 - [Configure a development build in cloud](https://docs.expo.dev/tutorial/eas/configure-development-build.md)
 - [Create and run a cloud build for Android](https://docs.expo.dev/tutorial/eas/android-development-build.md)
 - [Create and run a cloud build for iOS Simulator](https://docs.expo.dev/tutorial/eas/ios-development-build-for-simulators.md)
@@ -437,61 +438,61 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 
 ## CI/CD tutorial
 
-- [CI/CD Tutorial: Introduction](https://docs.expo.dev/tutorial/cicd/introduction.md): An introduction to EAS Workflows tutorial and the core concepts for setting up a CI/CD pipeline for Expo and React Native apps.
-- [Run your first EAS Workflows job](https://docs.expo.dev/tutorial/cicd/first-workflow.md)
-- [Automate development builds with EAS Workflows](https://docs.expo.dev/tutorial/cicd/development-builds.md)
-- [Create preview builds for pull requests with EAS Workflows](https://docs.expo.dev/tutorial/cicd/preview-builds.md)
-- [Run E2E tests with Maestro on EAS Workflows](https://docs.expo.dev/tutorial/cicd/e2e-tests.md)
-- [Automate production deployments with EAS Workflows](https://docs.expo.dev/tutorial/cicd/production.md)
+- [CI/CD Tutorial: Introduction](https://docs.expo.dev/tutorial/cicd/introduction.md): An introduction to Expo Workflows tutorial and the core concepts for setting up a CI/CD pipeline for Expo and React Native apps.
+- [Run your first Expo Workflows job](https://docs.expo.dev/tutorial/cicd/first-workflow.md)
+- [Automate development builds with Expo Workflows](https://docs.expo.dev/tutorial/cicd/development-builds.md)
+- [Create preview builds for pull requests with Expo Workflows](https://docs.expo.dev/tutorial/cicd/preview-builds.md)
+- [Run E2E tests with Maestro on Expo Workflows](https://docs.expo.dev/tutorial/cicd/e2e-tests.md)
+- [Automate production deployments with Expo Workflows](https://docs.expo.dev/tutorial/cicd/production.md)
 - [Using Git tags to trigger production deployments](https://docs.expo.dev/tutorial/cicd/tag-based-releases.md)
-- [Deploy web apps to EAS Hosting with EAS Workflows](https://docs.expo.dev/tutorial/cicd/web-deployments.md)
+- [Deploy web apps to Expo Hosting with Expo Workflows](https://docs.expo.dev/tutorial/cicd/web-deployments.md)
 - [Next steps](https://docs.expo.dev/tutorial/cicd/next-steps.md)
 
 ## More
 
 - [Additional resources](https://docs.expo.dev/additional-resources.md): A reference of resources that are useful to learn about Expo tooling and services.
 
-- [Expo Application Services](https://docs.expo.dev/eas.md): Learn about Expo Application Services (EAS) for Expo and React Native apps.
+- [Expo Services](https://docs.expo.dev/eas.md): Learn about Expo Services for Expo and React Native apps.
 - [Configuration with eas.json](https://docs.expo.dev/eas/json.md)
 - [EAS CLI reference](https://docs.expo.dev/eas/cli.md)
 
 ### Environment variables
-- [Environment variables in EAS](https://docs.expo.dev/eas/environment-variables.md)
-- [Create and manage environment variables in EAS](https://docs.expo.dev/eas/environment-variables/manage.md)
-- [Using environment variables in EAS](https://docs.expo.dev/eas/environment-variables/usage.md)
-- [Using environment variables without EAS](https://docs.expo.dev/eas/environment-variables/without-eas.md)
-- [Frequently asked questions about environment variables in EAS](https://docs.expo.dev/eas/environment-variables/faq.md)
+- [Environment variables in Expo Services](https://docs.expo.dev/eas/environment-variables.md)
+- [Create and manage environment variables in Expo Services](https://docs.expo.dev/eas/environment-variables/manage.md)
+- [Using environment variables in Expo Services](https://docs.expo.dev/eas/environment-variables/usage.md)
+- [Using environment variables without Expo Services](https://docs.expo.dev/eas/environment-variables/without-eas.md)
+- [Frequently asked questions about environment variables in Expo Services](https://docs.expo.dev/eas/environment-variables/faq.md)
 
-## EAS Workflows
+## Expo Workflows
 
-- [Introduction to EAS Workflows](https://docs.expo.dev/eas/workflows/introduction.md): EAS Workflows is a CI/CD service for automating builds, updates, submissions, and tests for React Native and Expo apps.
-- [Get started with EAS Workflows](https://docs.expo.dev/eas/workflows/get-started.md)
-- [Manage workflow runs in EAS Workflows](https://docs.expo.dev/eas/workflows/manage-workflow-runs.md)
-- [Pre-packaged jobs in EAS Workflows](https://docs.expo.dev/eas/workflows/pre-packaged-jobs.md)
-- [Syntax for EAS Workflows](https://docs.expo.dev/eas/workflows/syntax.md)
-- [Custom functions in EAS Workflows](https://docs.expo.dev/eas/workflows/custom-functions.md)
-- [Environment variables in EAS Workflows](https://docs.expo.dev/eas/workflows/environment.md)
+- [Introduction to Expo Workflows](https://docs.expo.dev/eas/workflows/introduction.md): Expo Workflows is a CI/CD service for automating builds, updates, submissions, and tests for React Native and Expo apps.
+- [Get started with Expo Workflows](https://docs.expo.dev/eas/workflows/get-started.md)
+- [Manage workflow runs in Expo Workflows](https://docs.expo.dev/eas/workflows/manage-workflow-runs.md)
+- [Pre-packaged jobs in Expo Workflows](https://docs.expo.dev/eas/workflows/pre-packaged-jobs.md)
+- [Syntax for Expo Workflows](https://docs.expo.dev/eas/workflows/syntax.md)
+- [Custom functions in Expo Workflows](https://docs.expo.dev/eas/workflows/custom-functions.md)
+- [Environment variables in Expo Workflows](https://docs.expo.dev/eas/workflows/environment.md)
 - [Automating EAS CLI commands](https://docs.expo.dev/eas/workflows/automating-eas-cli.md)
 - [Workflows REST API](https://docs.expo.dev/eas/workflows/rest-api.md)
-- [Troubleshoot EAS Workflows](https://docs.expo.dev/eas/workflows/troubleshooting.md)
-- [EAS Workflows limitations](https://docs.expo.dev/eas/workflows/limitations.md)
+- [Troubleshoot Expo Workflows](https://docs.expo.dev/eas/workflows/troubleshooting.md)
+- [Expo Workflows limitations](https://docs.expo.dev/eas/workflows/limitations.md)
 
 ### Examples
-- [EAS Workflows examples](https://docs.expo.dev/eas/workflows/examples/introduction.md)
-- [Create development builds with EAS Workflows](https://docs.expo.dev/eas/workflows/examples/create-development-builds.md)
-- [Publish preview updates with EAS Workflows](https://docs.expo.dev/eas/workflows/examples/publish-preview-update.md)
-- [Clean up EAS Update branches with EAS Workflows](https://docs.expo.dev/eas/workflows/examples/branch-cleanup.md)
-- [Deploy to production with EAS Workflows](https://docs.expo.dev/eas/workflows/examples/deploy-to-production.md)
-- [Run E2E tests on EAS Workflows with Maestro](https://docs.expo.dev/eas/workflows/examples/e2e-tests.md)
+- [Expo Workflows examples](https://docs.expo.dev/eas/workflows/examples/introduction.md)
+- [Create development builds with Expo Workflows](https://docs.expo.dev/eas/workflows/examples/create-development-builds.md)
+- [Publish preview updates with Expo Workflows](https://docs.expo.dev/eas/workflows/examples/publish-preview-update.md)
+- [Clean up Expo Update branches with Expo Workflows](https://docs.expo.dev/eas/workflows/examples/branch-cleanup.md)
+- [Deploy to production with Expo Workflows](https://docs.expo.dev/eas/workflows/examples/deploy-to-production.md)
+- [Run E2E tests on Expo Workflows with Maestro](https://docs.expo.dev/eas/workflows/examples/e2e-tests.md)
 
-## EAS Build
+## Expo Build
 
-- [EAS Build](https://docs.expo.dev/build/introduction.md): EAS Build is a hosted service for building app binaries for your Expo and React Native projects.
+- [Expo Build](https://docs.expo.dev/build/introduction.md): Expo Build is a hosted service for building app binaries for your Expo and React Native projects.
 - [Create your first build](https://docs.expo.dev/build/setup.md)
-- [Configure EAS Build with eas.json](https://docs.expo.dev/build/eas-json.md)
+- [Configure Expo Build with eas.json](https://docs.expo.dev/build/eas-json.md)
 - [Internal distribution](https://docs.expo.dev/build/internal-distribution.md)
 - [Automate submissions](https://docs.expo.dev/build/automate-submissions.md)
-- [Using EAS Update](https://docs.expo.dev/build/updates.md)
+- [Using Expo Update](https://docs.expo.dev/build/updates.md)
 - [Trigger builds from CI](https://docs.expo.dev/build/building-on-ci.md)
 - [Trigger builds from the Expo GitHub App](https://docs.expo.dev/build/building-from-github.md)
 - [Expo Orbit](https://docs.expo.dev/build/orbit.md)
@@ -503,7 +504,7 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 - [Using existing credentials](https://docs.expo.dev/app-signing/existing-credentials.md)
 - [Sync credentials between remote and local sources](https://docs.expo.dev/app-signing/syncing-credentials.md)
 - [Security](https://docs.expo.dev/app-signing/security.md)
-- [Apple Developer Program roles and permissions for EAS Build](https://docs.expo.dev/app-signing/apple-developer-program-roles-and-permissions.md)
+- [Apple Developer Program roles and permissions for Expo Build](https://docs.expo.dev/app-signing/apple-developer-program-roles-and-permissions.md)
 
 ### Custom builds
 - [Get started with custom builds](https://docs.expo.dev/custom-builds/get-started.md)
@@ -515,14 +516,14 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 - [Using private npm packages](https://docs.expo.dev/build-reference/private-npm-packages.md)
 - [Using Git submodules](https://docs.expo.dev/build-reference/git-submodules.md)
 - [Using npm cache with Yarn 1 (Classic)](https://docs.expo.dev/build-reference/npm-cache-with-yarn.md)
-- [Set up EAS Build with a monorepo](https://docs.expo.dev/build-reference/build-with-monorepos.md)
+- [Set up Expo Build with a monorepo](https://docs.expo.dev/build-reference/build-with-monorepos.md)
 - [Build APKs for Android Emulators and devices](https://docs.expo.dev/build-reference/apk.md)
 - [Build for iOS Simulators](https://docs.expo.dev/build-reference/simulators.md)
 - [App version management](https://docs.expo.dev/build-reference/app-versions.md)
 - [Troubleshoot build errors and crashes](https://docs.expo.dev/build-reference/troubleshooting.md)
 - [Install app variants on the same device](https://docs.expo.dev/build-reference/variants.md)
 - [iOS capabilities](https://docs.expo.dev/build-reference/ios-capabilities.md)
-- [Run EAS Build locally with local flag](https://docs.expo.dev/build-reference/local-builds.md)
+- [Run Expo Build locally with local flag](https://docs.expo.dev/build-reference/local-builds.md)
 - [Cache dependencies](https://docs.expo.dev/build-reference/caching.md)
 - [Android build process](https://docs.expo.dev/build-reference/android-builds.md)
 - [iOS build process](https://docs.expo.dev/build-reference/ios-builds.md)
@@ -533,35 +534,35 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 - [Ignore files via .easignore](https://docs.expo.dev/build-reference/easignore.md)
 - [npx testflight command](https://docs.expo.dev/build-reference/npx-testflight.md)
 - [Repack app](https://docs.expo.dev/build-reference/repack.md)
-- [EAS Build limitations](https://docs.expo.dev/build-reference/limitations.md)
+- [Expo Build limitations](https://docs.expo.dev/build-reference/limitations.md)
 
-## EAS Submit
+## Expo Submit
 
-- [Submit to the Google Play Store with EAS Submit](https://docs.expo.dev/submit/android.md): Learn how to submit your Android app to the Google Play Store with EAS Submit.
-- [Submit to the Apple App Store with EAS Submit](https://docs.expo.dev/submit/ios.md)
+- [Submit to the Google Play Store with Expo Submit](https://docs.expo.dev/submit/android.md): Learn how to submit your Android app to the Google Play Store with Expo Submit.
+- [Submit to the Apple App Store with Expo Submit](https://docs.expo.dev/submit/ios.md)
 - [Distribute an iOS app with TestFlight](https://docs.expo.dev/submit/testflight.md)
 - [Manually submit an Android app to the Google Play Store](https://docs.expo.dev/submit/android-manual.md)
 - [Manually submit an iOS app to the Apple App Store](https://docs.expo.dev/submit/ios-manual.md)
-- [Configure EAS Submit with eas.json](https://docs.expo.dev/submit/eas-json.md)
+- [Configure Expo Submit with eas.json](https://docs.expo.dev/submit/eas-json.md)
 
-## EAS Hosting
+## Expo Hosting
 
-- [Introduction to EAS Hosting](https://docs.expo.dev/eas/hosting/introduction.md): EAS Hosting is a service for quickly deploying web projects built using the Expo Router library and React Native web.
+- [Introduction to Expo Hosting](https://docs.expo.dev/eas/hosting/introduction.md): Expo Hosting is a service for quickly deploying web projects built using the Expo Router library and React Native web.
 - [Deploy your first Expo Router and React app](https://docs.expo.dev/eas/hosting/get-started.md)
 - [Assign aliases and promote to production](https://docs.expo.dev/eas/hosting/deployments-and-aliases.md)
 - [Custom domain](https://docs.expo.dev/eas/hosting/custom-domain.md)
 - [API Routes](https://docs.expo.dev/eas/hosting/api-routes.md)
-- [Web deployments with EAS Workflows](https://docs.expo.dev/eas/hosting/workflows.md)
+- [Web deployments with Expo Workflows](https://docs.expo.dev/eas/hosting/workflows.md)
 
 ### Reference
-- [Caching with EAS Hosting deployments](https://docs.expo.dev/eas/hosting/reference/caching.md)
+- [Caching with Expo Hosting deployments](https://docs.expo.dev/eas/hosting/reference/caching.md)
 - [Default responses and headers](https://docs.expo.dev/eas/hosting/reference/responses-and-headers.md)
-- [EAS Hosting worker runtime](https://docs.expo.dev/eas/hosting/reference/worker-runtime.md)
+- [Expo Hosting worker runtime](https://docs.expo.dev/eas/hosting/reference/worker-runtime.md)
 
-## EAS Update
+## Expo Update
 
-- [EAS Update](https://docs.expo.dev/eas-update/introduction.md): EAS Update is a cloud service that serves updates for projects using the expo-updates library.
-- [Get started with EAS Update](https://docs.expo.dev/eas-update/getting-started.md)
+- [Expo Update](https://docs.expo.dev/eas-update/introduction.md): Expo Update is a cloud service that serves updates for projects using the expo-updates library.
+- [Get started with Expo Update](https://docs.expo.dev/eas-update/getting-started.md)
 
 ### Preview
 - [Preview updates](https://docs.expo.dev/eas-update/preview.md)
@@ -575,70 +576,70 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 - [Downloading updates](https://docs.expo.dev/eas-update/download-updates.md)
 - [Rollouts](https://docs.expo.dev/eas-update/rollouts.md)
 - [Rollbacks](https://docs.expo.dev/eas-update/rollbacks.md)
-- [Bundle diffing for EAS Update](https://docs.expo.dev/eas-update/bundle-diffing.md)
-- [Optimize assets for EAS Update](https://docs.expo.dev/eas-update/optimize-assets.md)
+- [Bundle diffing for Expo Update](https://docs.expo.dev/eas-update/bundle-diffing.md)
+- [Optimize assets for Expo Update](https://docs.expo.dev/eas-update/optimize-assets.md)
 - [Alternative deployment patterns](https://docs.expo.dev/eas-update/deployment-patterns.md)
 
 ### Concepts
-- [How EAS Update works](https://docs.expo.dev/eas-update/how-it-works.md)
+- [How Expo Update works](https://docs.expo.dev/eas-update/how-it-works.md)
 - [Manage branches and channels with EAS CLI](https://docs.expo.dev/eas-update/eas-cli.md)
 - [Runtime versions and updates](https://docs.expo.dev/eas-update/runtime-versions.md)
 
 ### Troubleshooting
-- [EAS Update debugging](https://docs.expo.dev/eas-update/debug.md)
+- [Expo Update debugging](https://docs.expo.dev/eas-update/debug.md)
 - [Error recovery](https://docs.expo.dev/eas-update/error-recovery.md)
 
 ### Reference
-- [End-to-end code signing with EAS Update](https://docs.expo.dev/eas-update/code-signing.md)
+- [End-to-end code signing with Expo Update](https://docs.expo.dev/eas-update/code-signing.md)
 - [Asset selection and exclusion](https://docs.expo.dev/eas-update/asset-selection.md)
-- [Using EAS Update without other EAS services](https://docs.expo.dev/eas-update/standalone-service.md)
+- [Using Expo Update without other Expo Services](https://docs.expo.dev/eas-update/standalone-service.md)
 - [Request proxying](https://docs.expo.dev/eas-update/request-proxying.md)
 - [Migrate from CodePush](https://docs.expo.dev/eas-update/codepush.md)
 - [Migrate from Classic Updates](https://docs.expo.dev/eas-update/migrate-from-classic-updates.md)
-- [How to trace an update ID back to the EAS dashboard](https://docs.expo.dev/eas-update/trace-update-id-expo-dashboard.md)
+- [How to trace an update ID back to the Expo dashboard](https://docs.expo.dev/eas-update/trace-update-id-expo-dashboard.md)
 - [Estimate bandwidth usage](https://docs.expo.dev/eas-update/estimate-bandwidth.md)
-- [Using EAS Update in an existing native app](https://docs.expo.dev/eas-update/integration-in-existing-native-apps.md)
+- [Using Expo Update in an existing native app](https://docs.expo.dev/eas-update/integration-in-existing-native-apps.md)
 
-## EAS Observe
+## Expo Observe
 
-- [Introduction to EAS Observe](https://docs.expo.dev/eas/observe/introduction.md): EAS Observe is a performance monitoring service that tracks how your app performs in production across real devices and conditions.
-- [Set up EAS Observe](https://docs.expo.dev/eas/observe/get-started.md)
-- [EAS Observe dashboard](https://docs.expo.dev/eas/observe/dashboard.md)
+- [Introduction to Expo Observe](https://docs.expo.dev/eas/observe/introduction.md): Expo Observe is a performance monitoring service that tracks how your app performs in production across real devices and conditions.
+- [Set up Expo Observe](https://docs.expo.dev/eas/observe/get-started.md)
+- [Expo Observe dashboard](https://docs.expo.dev/eas/observe/dashboard.md)
 - [Querying with EAS CLI](https://docs.expo.dev/eas/observe/eas-cli.md)
-- [Analyze EAS Observe data with AI](https://docs.expo.dev/eas/observe/ai-agents.md)
-- [EAS Update download performance](https://docs.expo.dev/eas/observe/eas-update.md)
+- [Analyze Expo Observe data with AI](https://docs.expo.dev/eas/observe/ai-agents.md)
+- [Expo Update download performance](https://docs.expo.dev/eas/observe/eas-update.md)
 - [User-defined events](https://docs.expo.dev/eas/observe/events.md)
 - [Error reporting](https://docs.expo.dev/eas/observe/errors.md)
-- [Configure EAS Observe](https://docs.expo.dev/eas/observe/configuration.md)
+- [Configure Expo Observe](https://docs.expo.dev/eas/observe/configuration.md)
 
 ### Integrations
 - [Expo Router integration](https://docs.expo.dev/eas/observe/integrations/expo-router.md)
 - [React Navigation integration](https://docs.expo.dev/eas/observe/integrations/react-navigation.md)
 - [Expo Image integration](https://docs.expo.dev/eas/observe/integrations/expo-image.md)
 - [Reanimated integration](https://docs.expo.dev/eas/observe/integrations/react-native-reanimated.md)
-- [Integrate a third-party package with EAS Observe](https://docs.expo.dev/eas/observe/integrations/third-party.md)
+- [Integrate a third-party package with Expo Observe](https://docs.expo.dev/eas/observe/integrations/third-party.md)
 
 ### Reference
 - [Metrics reference](https://docs.expo.dev/eas/observe/reference/metrics.md)
 - [Client ID](https://docs.expo.dev/eas/observe/reference/client-id.md)
-- [Troubleshooting EAS Observe](https://docs.expo.dev/eas/observe/reference/troubleshooting.md)
+- [Troubleshooting Expo Observe](https://docs.expo.dev/eas/observe/reference/troubleshooting.md)
 
-## EAS Metadata
+## Expo Metadata
 
-- [EAS Metadata](https://docs.expo.dev/eas/metadata.md): An overview on how to automate and maintain your app store presence from the command line with EAS Metadata.
-- [Get started with EAS Metadata](https://docs.expo.dev/eas/metadata/getting-started.md)
+- [Expo Metadata](https://docs.expo.dev/eas/metadata.md): An overview on how to automate and maintain your app store presence from the command line with Expo Metadata.
+- [Get started with Expo Metadata](https://docs.expo.dev/eas/metadata/getting-started.md)
 
 ### Reference
-- [Configuring EAS Metadata](https://docs.expo.dev/eas/metadata/config.md)
-- [Schema for EAS Metadata](https://docs.expo.dev/eas/metadata/schema.md)
+- [Configuring Expo Metadata](https://docs.expo.dev/eas/metadata/config.md)
+- [Schema for Expo Metadata](https://docs.expo.dev/eas/metadata/schema.md)
 
-## EAS Insights
+## Expo Insights
 
-- [EAS Insights](https://docs.expo.dev/eas-insights/introduction.md): An introduction to EAS Insights, a dashboard that surfaces trends in your app's usage, workflow runs, and Maestro tests.
+- [Expo Insights](https://docs.expo.dev/eas-insights/introduction.md): An introduction to Expo Insights, a dashboard that surfaces trends in your app's usage, workflow runs, and Maestro tests.
 - [App usage](https://docs.expo.dev/eas-insights/app-usage.md)
-- [EAS Workflows insights](https://docs.expo.dev/eas-insights/workflows.md)
+- [Expo Workflows insights](https://docs.expo.dev/eas-insights/workflows.md)
 - [Maestro insights](https://docs.expo.dev/eas-insights/maestro.md)
-- [Query EAS Insights with EAS CLI](https://docs.expo.dev/eas-insights/eas-cli.md)
+- [Query Expo Insights with EAS CLI](https://docs.expo.dev/eas-insights/eas-cli.md)
 
 ## Distribution
 
@@ -649,7 +650,8 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 
 ## Reference
 
-- [Webhooks](https://docs.expo.dev/eas/webhooks.md): Learn how to configure webhooks to get alerts on EAS Build and Submit completion.
+- [EAS and Expo service names](https://docs.expo.dev/eas-to-expo.md): Learn the current Expo names of the services that were called EAS, such as Expo Build for EAS Build.
+- [Webhooks](https://docs.expo.dev/eas/webhooks.md)
 - [Protected resources](https://docs.expo.dev/eas/protected-resources.md)
 
 ### Expo accounts
@@ -660,7 +662,7 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 - [Audit logs](https://docs.expo.dev/accounts/audit-logs.md)
 
 ### Billing
-- [Billing: Overview](https://docs.expo.dev/billing/overview.md): An overview of information on billing and subscriptions to manage your EAS account's plans, invoices, receipts, payments, and usage.
+- [Billing: Overview](https://docs.expo.dev/billing/overview.md): An overview of information on billing and subscriptions to manage your Expo account's plans, invoices, receipts, payments, and usage.
 - [Subscriptions, plans, and add-ons](https://docs.expo.dev/billing/plans.md)
 - [Manage plans and billing](https://docs.expo.dev/billing/manage.md)
 - [View payment history, invoices, and receipts](https://docs.expo.dev/billing/invoices-and-receipts.md)

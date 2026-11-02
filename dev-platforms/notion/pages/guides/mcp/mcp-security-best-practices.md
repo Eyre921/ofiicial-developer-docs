@@ -4,14 +4,14 @@ source: https://developers.notion.com/guides/mcp/mcp-security-best-practices
 path: guides/mcp/mcp-security-best-practices
 ---
 
-Learn how to keep your workspace secure when using Notion MCP.
+Protect your Notion workspace when connecting AI assistants, manage client access, and reduce the risks of prompt injection.
 
 Use Notion's official MCP endpoints:
 
 1. [https://mcp.notion.com/mcp](https://mcp.notion.com/mcp) for Streamable HTTP (recommended).
 2. [https://mcp.notion.com/sse](https://mcp.notion.com/sse) for Server-Sent Events (SSE).
 
-Review the [documentation for common MCP clients](/guides/mcp/common-mcp-clients), and only connect clients you trust. A connected client can use Notion MCP to access content that you can access. Before installing a client from a third-party marketplace, verify the marketplace and the MCP server URL.
+Review the [MCP connection guide](/guides/mcp/get-started-with-mcp), and only connect clients you trust. A connected client can use Notion MCP to access content that you can access. Before installing a client from a third-party marketplace, verify the marketplace and the MCP server URL.
 
 ## Protect against prompt injection
 

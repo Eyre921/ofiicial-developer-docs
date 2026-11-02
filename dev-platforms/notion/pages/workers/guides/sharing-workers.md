@@ -52,4 +52,4 @@ Use a continuous integration (CI) workflow, such as GitHub Actions, to deploy Wo
 
 For non-interactive deployments, set `NOTION_API_TOKEN` to a personal access token with the **Workers** capability and store it as a GitHub Actions secret. Set `NOTION_WORKSPACE_ID` in the workflow or `workspaceId` in `workers.json` so the command does not prompt for a workspace.
 
-The workflow uses the token owner's permissions. Use an approved account and a separate token for each environment, and rotate tokens before they expire. See [Personal access tokens](/guides/get-started/personal-access-tokens) and the [CLI command reference](/cli/reference/commands) for details.
+The workflow uses the token owner's permissions. Use an approved account and a separate token for each environment, and rotate tokens before they expire. See [Personal access tokens](/guides/connections-and-tokens/personal-access-tokens) and the [CLI command reference](/cli/reference/commands) for details.

@@ -20,7 +20,7 @@ To create a new Custom Agent, see [Build a Custom Agent](https://www.notion.com/
 
 **A token to authenticate requests**
 
-Each request needs a token. You can use a [personal access token](/guides/get-started/personal-access-tokens) (PAT), which lets you authenticate as yourself without setting up OAuth and carries your own access, so it can reach exactly the Custom Agents you can reach in Notion. Alternatively, you can use an internal connection API token, described below.
+Each request needs a token. You can use a [personal access token](/guides/connections-and-tokens/personal-access-tokens) (PAT), which lets you authenticate as yourself without setting up OAuth and carries your own access, so it can reach exactly the Custom Agents you can reach in Notion. Alternatively, you can use an internal connection API token, described below.
 
 **Step 1**
 
@@ -240,7 +240,7 @@ That's a full round trip: you sent a message to a Custom Agent and read its resp
 >
 > On Business and Enterprise plans, PAT creation is restricted by default. Ask a workspace owner to enable it in **Settings → Connections**.
 >
-> See [Who can create PATs](/guides/get-started/personal-access-tokens#who-can-create-pats).
+> See [Who can create PATs](/guides/connections-and-tokens/personal-access-tokens#who-can-create-pats).
 
 > [accordion] How do I use the examples in PowerShell?
 >

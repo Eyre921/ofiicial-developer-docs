@@ -21,69 +21,69 @@ The completions API provides raw text generation without automatic message forma
 
 ## Basic usage
 
-**Python (Fireworks SDK)**
+> [tab] Python (Fireworks SDK)
+>
+> ```python theme={null}
+> from fireworks import Fireworks
+>
+> client = Fireworks()
+>
+> response = client.completions.create(
+>   model="accounts/fireworks/models/glm-5p3-flash",
+>   prompt="Once upon a time"
+> )
+>
+> print(response.choices[0].text)
+> ```
 
-```python theme={null}
-from fireworks import Fireworks
+> [tab] Python (OpenAI SDK)
+>
+> ```python theme={null}
+> import os
+> from openai import OpenAI
+>
+> client = OpenAI(
+>     api_key=os.environ.get("FIREWORKS_API_KEY"),
+>     base_url="https://api.fireworks.ai/inference/v1"
+> )
+>
+> response = client.completions.create(
+>     model="accounts/fireworks/models/glm-5p3-flash",
+>     prompt="Once upon a time"
+> )
+>
+> print(response.choices[0].text)
+> ```
 
-client = Fireworks()
+> [tab] JavaScript
+>
+> ```javascript theme={null}
+> import OpenAI from "openai";
+>
+> const client = new OpenAI({
+>   apiKey: process.env.FIREWORKS_API_KEY,
+>   baseURL: "https://api.fireworks.ai/inference/v1",
+> });
+>
+> const response = await client.completions.create({
+>   model: "accounts/fireworks/models/glm-5p3-flash",
+>   prompt: "Once upon a time",
+> });
+>
+> console.log(response.choices[0].text);
+> ```
 
-response = client.completions.create(
-  model="accounts/fireworks/models/glm-5p3-flash",
-  prompt="Once upon a time"
-)
-
-print(response.choices[0].text)
-```
-
-**Python (OpenAI SDK)**
-
-```python theme={null}
-import os
-from openai import OpenAI
-
-client = OpenAI(
-    api_key=os.environ.get("FIREWORKS_API_KEY"),
-    base_url="https://api.fireworks.ai/inference/v1"
-)
-
-response = client.completions.create(
-    model="accounts/fireworks/models/glm-5p3-flash",
-    prompt="Once upon a time"
-)
-
-print(response.choices[0].text)
-```
-
-**JavaScript**
-
-```javascript theme={null}
-import OpenAI from "openai";
-
-const client = new OpenAI({
-  apiKey: process.env.FIREWORKS_API_KEY,
-  baseURL: "https://api.fireworks.ai/inference/v1",
-});
-
-const response = await client.completions.create({
-  model: "accounts/fireworks/models/glm-5p3-flash",
-  prompt: "Once upon a time",
-});
-
-console.log(response.choices[0].text);
-```
-
-**curl**
-
-```bash theme={null}
-curl https://api.fireworks.ai/inference/v1/completions \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-  -d '{
-    "model": "accounts/fireworks/models/glm-5p3-flash",
-    "prompt": "Once upon a time"
-  }'
-```
+> [tab] curl
+>
+> ```bash theme={null}
+> curl https://api.fireworks.ai/inference/v1/completions \
+>   -H "Content-Type: application/json" \
+>   -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+>   -d '{
+>     "model": "accounts/fireworks/models/glm-5p3-flash",
+>     "prompt": "Once upon a time"
+>   }'
+> ```
 
 > [!NOTE]
 >
@@ -141,14 +141,14 @@ response = client.completions.create(
 
 ## Next steps
 
-> **[Chat Completions](/guides/querying-text-models)**
+> [card] [Chat Completions](/guides/querying-text-models)
 >
 > Use chat completions for most use cases
 
-> **[Streaming](/guides/querying-text-models#streaming-responses)**
+> [card] [Streaming](/guides/querying-text-models#streaming-responses)
 >
 > Stream responses for real-time UX
 
-> **[API Reference](/api-reference/post-completions)**
+> [card] [API Reference](/api-reference/post-completions)
 >
 > Complete API documentation

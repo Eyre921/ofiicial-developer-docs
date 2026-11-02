@@ -74,51 +74,51 @@ Save this dataset as jsonl file locally, for example `einstein_dpo.jsonl`.
 
 Upload the dataset with the Fireworks UI, `firectl`, or the REST API.
 
-**UI**
+> [tab] UI
+>
+> * You can simply navigate to the dataset tab, click `Create Dataset` and follow the wizard.
+>
+>   ![Dataset Pn](https://mintcdn.com/fireworksai/3EhcJE4PKaydIoxl/images/fine-tuning/dataset.png?fit=max\&auto=format\&n=3EhcJE4PKaydIoxl\&q=85\&s=0b5955b3abbd38b2725fb2881d57b8ee)
 
-* You can simply navigate to the dataset tab, click `Create Dataset` and follow the wizard.
+> [tab] firectl
+>
+> * Upload dataset using `firectl`
+>
+> ```bash theme={null}
+> firectl dataset create <dataset-id> /path/to/file.jsonl
+> ```
 
-  ![Dataset Pn](https://mintcdn.com/fireworksai/3EhcJE4PKaydIoxl/images/fine-tuning/dataset.png?fit=max\&auto=format\&n=3EhcJE4PKaydIoxl\&q=85\&s=0b5955b3abbd38b2725fb2881d57b8ee)
-
-**firectl**
-
-* Upload dataset using `firectl`
-
-```bash theme={null}
-firectl dataset create <dataset-id> /path/to/file.jsonl
-```
-
-**Restful API**
-
-You need to make two separate HTTP requests. One for creating the dataset entry and one for uploading the dataset. Full reference here: [Create dataset](/api-reference/create-dataset). Note that the `exampleCount` parameter needs to be provided by the client.
-
-```jsx theme={null}
-// Create Dataset Entry
-const createDatasetPayload = {
-  datasetId: "trader-poe-sample-data",
-  dataset: { userUploaded: {} }
-  // Additional params such as exampleCount
-};
-const urlCreateDataset = `${BASE_URL}/datasets`;
-const response = await fetch(urlCreateDataset, {
-  method: "POST",
-  headers: HEADERS_WITH_CONTENT_TYPE,
-  body: JSON.stringify(createDatasetPayload)
-});
-```
-
-```jsx theme={null}
-// Upload JSONL file
-const urlUpload = `${BASE_URL}/datasets/${DATASET_ID}:upload`;
-const files = new FormData();
-files.append("file", localFileInput.files[0]);
-
-const uploadResponse = await fetch(urlUpload, {
-  method: "POST",
-  headers: HEADERS,
-  body: files
-});
-```
+> [tab] Restful API
+>
+> You need to make two separate HTTP requests. One for creating the dataset entry and one for uploading the dataset. Full reference here: [Create dataset](/api-reference/create-dataset). Note that the `exampleCount` parameter needs to be provided by the client.
+>
+> ```jsx theme={null}
+> // Create Dataset Entry
+> const createDatasetPayload = {
+>   datasetId: "trader-poe-sample-data",
+>   dataset: { userUploaded: {} }
+>   // Additional params such as exampleCount
+> };
+> const urlCreateDataset = `${BASE_URL}/datasets`;
+> const response = await fetch(urlCreateDataset, {
+>   method: "POST",
+>   headers: HEADERS_WITH_CONTENT_TYPE,
+>   body: JSON.stringify(createDatasetPayload)
+> });
+> ```
+>
+> ```jsx theme={null}
+> // Upload JSONL file
+> const urlUpload = `${BASE_URL}/datasets/${DATASET_ID}:upload`;
+> const files = new FormData();
+> files.append("file", localFileInput.files[0]);
+>
+> const uploadResponse = await fetch(urlUpload, {
+>   method: "POST",
+>   headers: HEADERS,
+>   body: files
+> });
+> ```
 
 While all of the above approaches should work, `UI` is more suitable for smaller datasets `< 500MB` while `firectl` might work better for bigger datasets.
 
@@ -126,68 +126,68 @@ Ensure the dataset ID conforms to the [resource id restrictions](/getting-starte
 
 **3. Create a DPO or ORPO Job**
 
-**UI**
+> [tab] UI
+>
+> In the `Training` tab, click `New job` and choose **Direct Preference**, which is how the UI labels DPO. Select your base model and preference dataset, then follow the wizard.
 
-In the `Training` tab, click `New job` and choose **Direct Preference**, which is how the UI labels DPO. Select your base model and preference dataset, then follow the wizard.
+> [tab] firectl
+>
+> ```bash theme={null}
+> firectl dpo-job create \
+>   --loss-method DPO \
+>   --base-model accounts/account-id/models/base-model-id \
+>   --dataset accounts/my-account-id/datasets/my-dataset-id \
+>   --output-model new-model-id
+> ```
+>
+> For ORPO, use the same preference dataset and select the ORPO objective:
+>
+> ```bash theme={null}
+> firectl dpo-job create \
+>   --loss-method ORPO \
+>   --orpo-lambda <approved-value> \
+>   --base-model accounts/account-id/models/base-model-id \
+>   --dataset accounts/my-account-id/datasets/my-dataset-id \
+>   --output-model new-model-id
+> ```
 
-**firectl**
+> [tab] REST API
+>
+> ```bash theme={null}
+> curl -X POST "https://api.fireworks.ai/v1/accounts/<ACCOUNT_ID>/dpoJobs" \
+>   -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+>   -H "Content-Type: application/json" \
+>   -d '{
+>     "dataset": "accounts/<ACCOUNT_ID>/datasets/<DATASET_ID>",
+>     "trainingConfig": {
+>       "baseModel": "accounts/fireworks/models/<BASE_MODEL_ID>",
+>       "outputModel": "accounts/<ACCOUNT_ID>/models/<OUTPUT_MODEL_ID>",
+>       "loraRank": 8
+>     },
+>     "lossConfig": {"method": "DPO"}
+>   }'
+> ```
+>
+> For ORPO, set `"method": "ORPO"`. If `lossConfig` is omitted, the job uses DPO.
 
-```bash theme={null}
-firectl dpo-job create \
-  --loss-method DPO \
-  --base-model accounts/account-id/models/base-model-id \
-  --dataset accounts/my-account-id/datasets/my-dataset-id \
-  --output-model new-model-id
-```
-
-For ORPO, use the same preference dataset and select the ORPO objective:
-
-```bash theme={null}
-firectl dpo-job create \
-  --loss-method ORPO \
-  --orpo-lambda <approved-value> \
-  --base-model accounts/account-id/models/base-model-id \
-  --dataset accounts/my-account-id/datasets/my-dataset-id \
-  --output-model new-model-id
-```
-
-**REST API**
-
-```bash theme={null}
-curl -X POST "https://api.fireworks.ai/v1/accounts/<ACCOUNT_ID>/dpoJobs" \
-  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "dataset": "accounts/<ACCOUNT_ID>/datasets/<DATASET_ID>",
-    "trainingConfig": {
-      "baseModel": "accounts/fireworks/models/<BASE_MODEL_ID>",
-      "outputModel": "accounts/<ACCOUNT_ID>/models/<OUTPUT_MODEL_ID>",
-      "loraRank": 8
-    },
-    "lossConfig": {"method": "DPO"}
-  }'
-```
-
-For ORPO, set `"method": "ORPO"`. If `lossConfig` is omitted, the job uses DPO.
-
-**Python SDK**
-
-```python theme={null}
-from fireworks import Fireworks
-
-client = Fireworks()  # reads FIREWORKS_API_KEY and FIREWORKS_ACCOUNT_ID
-
-job = client.dpo_jobs.create(
-    dataset="accounts/<ACCOUNT_ID>/datasets/<DATASET_ID>",
-    training_config={
-        "base_model": "accounts/fireworks/models/<BASE_MODEL_ID>",
-        "output_model": "accounts/<ACCOUNT_ID>/models/<OUTPUT_MODEL_ID>",
-        "lora_rank": 8,
-    },
-    loss_config={"method": "DPO"},  # "ORPO" for ORPO
-)
-print(job.name)
-```
+> [tab] Python SDK
+>
+> ```python theme={null}
+> from fireworks import Fireworks
+>
+> client = Fireworks()  # reads FIREWORKS_API_KEY and FIREWORKS_ACCOUNT_ID
+>
+> job = client.dpo_jobs.create(
+>     dataset="accounts/<ACCOUNT_ID>/datasets/<DATASET_ID>",
+>     training_config={
+>         "base_model": "accounts/fireworks/models/<BASE_MODEL_ID>",
+>         "output_model": "accounts/<ACCOUNT_ID>/models/<OUTPUT_MODEL_ID>",
+>         "lora_rank": 8,
+>     },
+>     loss_config={"method": "DPO"},  # "ORPO" for ORPO
+> )
+> print(job.name)
+> ```
 
 `firectl` trains a LoRA adapter with rank 8 by default. With the REST API or the Python SDK, always set the rank to train a LoRA adapter: `trainingConfig.loraRank` in the job body, or `training_config={"lora_rank": 8}` in `dpo_jobs.create(...)`. An omitted rank is sent as 0, which requests full-parameter training.
 
@@ -199,25 +199,25 @@ To run DPO or ORPO from your own Python training loop instead of a managed job, 
 
 **4. Monitor the preference job**
 
-**firectl**
+> [tab] firectl
+>
+> ```bash theme={null}
+> firectl dpo-job get dpo-job-id
+> ```
 
-```bash theme={null}
-firectl dpo-job get dpo-job-id
-```
+> [tab] REST API
+>
+> ```bash theme={null}
+> curl "https://api.fireworks.ai/v1/accounts/<ACCOUNT_ID>/dpoJobs/<DPO_JOB_ID>" \
+>   -H "Authorization: Bearer $FIREWORKS_API_KEY"
+> ```
 
-**REST API**
-
-```bash theme={null}
-curl "https://api.fireworks.ai/v1/accounts/<ACCOUNT_ID>/dpoJobs/<DPO_JOB_ID>" \
-  -H "Authorization: Bearer $FIREWORKS_API_KEY"
-```
-
-**Python SDK**
-
-```python theme={null}
-job = client.dpo_jobs.get("<DPO_JOB_ID>")
-print(job.state)
-```
+> [tab] Python SDK
+>
+> ```python theme={null}
+> job = client.dpo_jobs.get("<DPO_JOB_ID>")
+> print(job.state)
+> ```
 
 Once the job is complete, the state is `JOB_STATE_COMPLETED`, and the trained model can be deployed.
 
@@ -229,14 +229,14 @@ Once training completes, you can create a deployment to interact with the traine
 
 Explore other training methods to improve model output for different use cases.
 
-> **[Supervised Fine-Tuning - Text](/fine-tuning/fine-tuning-models)**
+> [card] [Supervised Fine-Tuning - Text](/fine-tuning/fine-tuning-models)
 >
 > Train models on input-output examples to improve task-specific performance.
 
-> **[Reinforcement Learning](/fine-tuning/training-api/cookbook/rl)**
+> [card] [Reinforcement Learning](/fine-tuning/training-api/cookbook/rl)
 >
 > Optimize models against a reward function on the Training API.
 
-> **[Supervised Fine-Tuning - Vision](/fine-tuning/fine-tuning-models#vision-training)**
+> [card] [Supervised Fine-Tuning - Vision](/fine-tuning/fine-tuning-models#vision-training)
 >
 > Train vision-language models to understand both images and text.

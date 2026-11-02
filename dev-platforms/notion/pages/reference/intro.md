@@ -6,7 +6,7 @@ path: reference/intro
 
 Find the base URL, headers, and data formats for Notion API requests.
 
-Send requests over HTTPS to `https://api.notion.com`. To make your first request, follow the [API quickstart](/guides/get-started/quick-start).
+Send requests over HTTPS to `https://api.notion.com`. To make your first request, follow the [API quickstart](/guides/notion-api/quick-start).
 
 ## Conventions
 

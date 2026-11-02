@@ -10,19 +10,19 @@ Fireworks AI is the fastest platform for building with open source AI models. Ge
 
 ## Get started in minutes
 
-> **[Start fast with Serverless](/getting-started/quickstart)**
+> [card] [Start fast with Serverless](/getting-started/quickstart)
 >
 > Use popular models instantly with pay-per-token pricing. Perfect for quality vibe testing and prototyping.
 
-> **[Deploy models & autoscale on dedicated GPUs](/getting-started/ondemand-quickstart)**
+> [card] [Deploy models & autoscale on dedicated GPUs](/getting-started/ondemand-quickstart)
 >
 > Deploy with high performance on dedicated GPUs with fast autoscaling and minimal cold starts. Optimize deployments for speed and throughput.
 
-> **[Train models for best quality](/fine-tuning/finetuning-intro)**
+> [card] [Train models for best quality](/fine-tuning/finetuning-intro)
 >
 > Boost model quality with supervised and reinforcement fine-tuning of models up to 1T+ parameters. Start training in minutes, deploy immediately.
 
-> **[Connect your coding tools with Nexus](/nexus)**
+> [card] [Connect your coding tools with Nexus](/nexus)
 >
 > Connect coding tools with Nexus CLI, choose Fireworks models directly or through Nexus Auto, and manage supported serverless usage.
 
@@ -36,60 +36,60 @@ Fireworks AI is the fastest platform for building with open source AI models. Ge
 
 ## What you can build
 
-> **[100+ Supported Models](https://fireworks.ai/models)**
+> [card] [100+ Supported Models](https://fireworks.ai/models)
 >
 > Text, vision, audio, image, and embeddings
 
-> **[Migrate from OpenAI](/tools-sdks/openai-compatibility)**
+> [card] [Migrate from OpenAI](/tools-sdks/openai-compatibility)
 >
 > Drop-in replacement for inference and training — same API, same SFT data format
 
-> **[Function Calling](/guides/function-calling)**
+> [card] [Function Calling](/guides/function-calling)
 >
 > Connect models to tools and APIs
 
-> **[Structured Outputs](/structured-responses/structured-response-formatting)**
+> [card] [Structured Outputs](/structured-responses/structured-response-formatting)
 >
 > Reliable JSON responses for agentic workflows
 
-> **[Vision Models](/guides/querying-vision-language-models)**
+> [card] [Vision Models](/guides/querying-vision-language-models)
 >
 > Analyze images and documents
 
-> **[Embeddings & Reranking](/guides/querying-embeddings-models)**
+> [card] [Embeddings & Reranking](/guides/querying-embeddings-models)
 >
 > Use embeddings & reranking in search & context retrieval
 
-> **[Batch Inference](/guides/batch-inference)**
+> [card] [Batch Inference](/guides/batch-inference)
 >
 > Run async inference jobs at scale, faster and cheaper
 
 ## Resources & help
 
-> **[Which model should I use?](/guides/recommended-models)**
+> [card] [Which model should I use?](/guides/recommended-models)
 >
 > Find the best model for your use case
 
-> **[Cookbook](https://github.com/fw-ai/cookbook)**
+> [card] [Cookbook](https://github.com/fw-ai/cookbook)
 >
 > Code examples and tutorials
 
-> **[API Reference](/api-reference/introduction)**
+> [card] [API Reference](/api-reference/introduction)
 >
 > Complete API documentation
 
-> **[Discord Community](https://discord.gg/fireworks-ai)**
+> [card] [Discord Community](https://discord.gg/fireworks-ai)
 >
 > Ask questions and get help from developers
 
-> **[Security & Compliance](https://trust.fireworks.ai/)**
+> [card] [Security & Compliance](https://trust.fireworks.ai/)
 >
 > SOC 2, HIPAA, and audit reports
 
-> **[System Status](https://status.fireworks.ai/)**
+> [card] [System Status](https://status.fireworks.ai/)
 >
 > Check service uptime
 
-> **[Talk to Sales](https://fireworks.ai/company/contact-us)**
+> [card] [Talk to Sales](https://fireworks.ai/company/contact-us)
 >
 > Talk to our team

@@ -156,7 +156,7 @@ See [what changes without the Nexus CLI](/nexus/manual-setup#what-changes-withou
 
 **backup for off**
 
-> **See what Nexus CLI writes**
+> [accordion] See what Nexus CLI writes
 >
 > ```json ~/.claude/settings.json theme={null}
 > {

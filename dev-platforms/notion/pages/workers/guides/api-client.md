@@ -29,8 +29,8 @@ How the client is authenticated depends on how the capability runs:
 
 To set a token for syncs, webhooks, or local development, you have two options:
 
-* **[Personal access token](/guides/get-started/personal-access-tokens):** acts as you and uses your page permissions. You don't need to connect it to each page.
-* **[Internal connection API token](/guides/get-started/internal-connections):** acts as a bot, with access limited to pages explicitly connected via the Connections menu.
+* **[Personal access token](/guides/connections-and-tokens/personal-access-tokens):** acts as you and uses your page permissions. You don't need to connect it to each page.
+* **[Internal connection API token](/guides/connections-and-tokens/internal-connections):** acts as a bot, with access limited to pages explicitly connected via the Connections menu.
 
 **1. Create a token**
 

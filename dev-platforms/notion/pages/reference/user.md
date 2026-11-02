@@ -27,7 +27,7 @@ User objects appear in nearly all objects returned by the API, including:
 * [Rich text object](/reference/rich-text), as user mentions.
 * [Property object](/reference/property-object) when the property is a `people` property.
 
-User objects will **always** contain `object` and `id` keys, as described below. The remaining properties may appear if the user is being rendered in a rich text or page property context, and the bot has the correct capabilities to access those properties. For more about capabilities, see the [Capabilities guide](/reference/capabilities) and the [Authorization guide](/guides/get-started/authorization).
+User objects will **always** contain `object` and `id` keys, as described below. The remaining properties may appear if the user is being rendered in a rich text or page property context, and the bot has the correct capabilities to access those properties. For more about capabilities, see the [Capabilities guide](/reference/capabilities) and the [Authorization guide](/guides/authorization/overview).
 
 ## All users
 

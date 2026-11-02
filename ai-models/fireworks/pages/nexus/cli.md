@@ -22,31 +22,31 @@ You don't host a service or edit config files by hand. Claude Desktop is the one
 
 ### Code
 
-> **[Claude Code](/nexus/harnesses/claude-code)**
+> [card] [Claude Code](/nexus/harnesses/claude-code)
 
-> **[Claude Agent SDK](/nexus/harnesses/claude-code#claude-agent-sdk)**
+> [card] [Claude Agent SDK](/nexus/harnesses/claude-code#claude-agent-sdk)
 
-> **[Codex CLI](/nexus/harnesses/codex)**
+> [card] [Codex CLI](/nexus/harnesses/codex)
 
-> **[OpenCode](/nexus/harnesses/opencode)**
+> [card] [OpenCode](/nexus/harnesses/opencode)
 
-> **[Pi](/nexus/harnesses/pi)**
+> [card] [Pi](/nexus/harnesses/pi)
 
-> **[DeepSeek Harness](/nexus/harnesses/deepseek)**
+> [card] [DeepSeek Harness](/nexus/harnesses/deepseek)
 
-> **[Cursor IDE](/nexus/harnesses/cursor)**
+> [card] [Cursor IDE](/nexus/harnesses/cursor)
 
-> **[VS Code](/nexus/harnesses/vscode)**
+> [card] [VS Code](/nexus/harnesses/vscode)
 
-> **[Copilot App](/nexus/harnesses/copilot-app)**
+> [card] [Copilot App](/nexus/harnesses/copilot-app)
 
-> **[Copilot CLI](/nexus/harnesses/copilot-cli)**
+> [card] [Copilot CLI](/nexus/harnesses/copilot-cli)
 
 ### Cowork
 
-> **[ChatGPT desktop app](/nexus/harnesses/chatgpt)**
+> [card] [ChatGPT desktop app](/nexus/harnesses/chatgpt)
 
-> **[Claude Desktop](/nexus/harnesses/claude-desktop)**
+> [card] [Claude Desktop](/nexus/harnesses/claude-desktop)
 
 ## Quick start
 
@@ -64,7 +64,7 @@ nexus login
 
 Sign in with your browser, or paste a Fireworks API key (`fw_...`).
 
-> **Alternative installer**
+> [accordion] Alternative installer
 >
 > ```bash wrap theme={null}
 > curl -fsSL \
@@ -123,7 +123,7 @@ Web search works through Fireworks with no extra setup. See [Web Search](/nexus/
 
 ## MCP servers
 
-> **Your servers stay**
+> [card] Your servers stay
 >
 > Nexus CLI keeps every MCP server you configured, and
 > `nexus <harness> off` leaves them in place. Claude Desktop is the
@@ -132,13 +132,13 @@ Web search works through Fireworks with no extra setup. See [Web Search](/nexus/
 > `nexus claude-desktop mcp`. See
 > [Connectors](/nexus/harnesses/claude-desktop#connectors).
 
-> **Tool search stays on**
+> [card] Tool search stays on
 >
 > In Claude Code, Nexus CLI sets `ENABLE_TOOL_SEARCH`. In Codex and the
 > ChatGPT desktop app, it turns on tool search for every model. Large
 > MCP tool sets still load on demand.
 
-> **[Web search is built in](/nexus/web-search)**
+> [card] [Web search is built in](/nexus/web-search)
 >
 > Native web search works through Fireworks in Claude Code, Claude Desktop,
 > Codex, and the ChatGPT desktop app.

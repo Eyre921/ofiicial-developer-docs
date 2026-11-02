@@ -32,5 +32,5 @@ Each Public API endpoint can return several possible error codes. See the [Error
 
 ### Additional resources
 
-* [How to share a database with your connection](/guides/get-started/overview#content-access)
+* [How to share a database with your connection](/guides/connections-and-tokens/overview#content-access)
 * [Working with databases guide](/guides/data-apis/working-with-databases)

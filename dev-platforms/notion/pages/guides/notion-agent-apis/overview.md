@@ -70,9 +70,9 @@ Find the Custom Agents your token can access, track their usage, and manage thei
 
 ## Authentication and access
 
-You can authenticate API requests with either a personal access token or a [connection token](/guides/get-started/authorization):
+You can authenticate API requests with either a personal access token or a [connection token](/guides/authorization/overview):
 
-* A **[personal access token](/guides/get-started/personal-access-tokens)** acts as you and uses your existing access to Custom Agents.
+* A **[personal access token](/guides/connections-and-tokens/personal-access-tokens)** acts as you and uses your existing access to Custom Agents.
 * A **connection token** needs the **View sessions and interact with agents** capability and can access Custom Agents shared with its connection.
 
 **Access requirements**

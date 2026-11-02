@@ -333,18 +333,18 @@ Set `wire_api = "responses"` so Codex targets this endpoint rather than chat com
 
 ## Cookbook examples
 
-> **[MCP examples](https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/fireworks_mcp_examples.ipynb)**
+> [card] [MCP examples](https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/fireworks_mcp_examples.ipynb)
 >
 > Calling MCP servers from the Responses API
 
-> **[Continuing conversations](https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/fireworks_previous_response_cookbook.ipynb)**
+> [card] [Continuing conversations](https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/fireworks_previous_response_cookbook.ipynb)
 >
 > Using `previous_response_id`
 
-> **[Streaming](https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/fireworks_streaming_example.ipynb)**
+> [card] [Streaming](https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/fireworks_streaming_example.ipynb)
 >
 > Streaming responses end to end
 
-> **[Stateless requests](https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/mcp_server_with_store_false_argument.ipynb)**
+> [card] [Stateless requests](https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/mcp_server_with_store_false_argument.ipynb)
 >
 > Using `store=false`

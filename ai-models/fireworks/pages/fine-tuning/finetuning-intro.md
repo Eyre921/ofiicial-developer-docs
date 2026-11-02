@@ -45,19 +45,19 @@ Prefer code? Follow [Cookbook: Muse Glimmer First Fine-Tune](/fine-tuning/traini
 
 From self-serve to building with our team:
 
-> **[Managed Training](/fine-tuning/managed-finetuning-intro)**
+> [card] [Managed Training](/fine-tuning/managed-finetuning-intro)
 >
 > Bring a dataset and Fireworks runs SFT or DPO for you. Billed per token.
 
-> **[Serverless Training](/fine-tuning/training-api/serverless)**
+> [card] [Serverless Training](/fine-tuning/training-api/serverless)
 >
 > Write your own training loop on a shared trainer pool. Nothing to provision, billed per token.
 
-> **[Dedicated Training](/fine-tuning/training-api/dedicated)**
+> [card] [Dedicated Training](/fine-tuning/training-api/dedicated)
 >
 > Your own loop on GPUs reserved for your run, with full-parameter training and more models. Billed per GPU hour.
 
-> **[Fireworks Lab](https://fireworks.ai/contact-training)**
+> [card] [Fireworks Lab](https://fireworks.ai/contact-training)
 >
 > Our researchers and engineers build the model with your team, from co-design to a custom build.
 

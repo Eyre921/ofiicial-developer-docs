@@ -114,7 +114,7 @@ See [what changes without the Nexus CLI](/nexus/manual-setup#what-changes-withou
 
 ## What the Nexus CLI writes
 
-> **See what Nexus CLI writes**
+> [accordion] See what Nexus CLI writes
 >
 > ```json ~/.config/opencode/opencode.json theme={null}
 > {

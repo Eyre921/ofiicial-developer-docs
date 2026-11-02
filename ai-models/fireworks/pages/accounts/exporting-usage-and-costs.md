@@ -49,76 +49,76 @@ For the CLI, run `firectl login` once and `firectl` reads credentials from `~/.f
 
 Get a 30-day account-wide breakdown (defaults to all usage types, grouped by model for serverless and by deployment + accelerator for dedicated):
 
-**firectl**
+> [tab] firectl
+>
+> ```bash theme={null}
+> firectl billing get-usage \
+>   --start-time 2026-05-01 \
+>   --end-time   2026-06-01
+> ```
+>
+> Add `-o json` for machine-readable output.
 
-```bash theme={null}
-firectl billing get-usage \
-  --start-time 2026-05-01 \
-  --end-time   2026-06-01
-```
-
-Add `-o json` for machine-readable output.
-
-**cURL**
-
-```bash theme={null}
-curl -sG "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/billingUsage" \
-  -H "Authorization: Bearer ${FIREWORKS_API_KEY}" \
-  --data-urlencode "startTime=2026-05-01T00:00:00Z" \
-  --data-urlencode "endTime=2026-06-01T00:00:00Z"
-```
+> [tab] cURL
+>
+> ```bash theme={null}
+> curl -sG "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/billingUsage" \
+>   -H "Authorization: Bearer ${FIREWORKS_API_KEY}" \
+>   --data-urlencode "startTime=2026-05-01T00:00:00Z" \
+>   --data-urlencode "endTime=2026-06-01T00:00:00Z"
+> ```
 
 ## Examples
 
 ### Serverless usage by model
 
-**firectl**
+> [tab] firectl
+>
+> ```bash theme={null}
+> firectl billing get-usage \
+>   --start-time 2026-05-01 --end-time 2026-06-01 \
+>   --usage-type serverless \
+>   --group-by model_name
+> ```
 
-```bash theme={null}
-firectl billing get-usage \
-  --start-time 2026-05-01 --end-time 2026-06-01 \
-  --usage-type serverless \
-  --group-by model_name
-```
-
-**cURL**
-
-```bash theme={null}
-curl -sG "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/billingUsage" \
-  -H "Authorization: Bearer ${FIREWORKS_API_KEY}" \
-  --data-urlencode "startTime=2026-05-01T00:00:00Z" \
-  --data-urlencode "endTime=2026-06-01T00:00:00Z" \
-  --data-urlencode "usageType=SERVERLESS" \
-  --data-urlencode "groupBy=model_name"
-```
+> [tab] cURL
+>
+> ```bash theme={null}
+> curl -sG "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/billingUsage" \
+>   -H "Authorization: Bearer ${FIREWORKS_API_KEY}" \
+>   --data-urlencode "startTime=2026-05-01T00:00:00Z" \
+>   --data-urlencode "endTime=2026-06-01T00:00:00Z" \
+>   --data-urlencode "usageType=SERVERLESS" \
+>   --data-urlencode "groupBy=model_name"
+> ```
 
 ### Serverless usage by API key
 
 Breaks out serverless token consumption per API key. Pass both `api_key_id` (stable internal ID) and `api_key_name` (human-readable label from the console / `firectl api-key create --name`) so the response carries both.
 
-**firectl**
+> [tab] firectl
+>
+> ```bash theme={null}
+> firectl billing get-usage \
+>   --start-time 2026-05-01 --end-time 2026-06-01 \
+>   --usage-type serverless \
+>   --group-by api_key_id \
+>   --group-by api_key_name \
+>   --group-by model_name
+> ```
 
-```bash theme={null}
-firectl billing get-usage \
-  --start-time 2026-05-01 --end-time 2026-06-01 \
-  --usage-type serverless \
-  --group-by api_key_id \
-  --group-by api_key_name \
-  --group-by model_name
-```
-
-**cURL**
-
-```bash theme={null}
-curl -sG "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/billingUsage" \
-  -H "Authorization: Bearer ${FIREWORKS_API_KEY}" \
-  --data-urlencode "startTime=2026-05-01T00:00:00Z" \
-  --data-urlencode "endTime=2026-06-01T00:00:00Z" \
-  --data-urlencode "usageType=SERVERLESS" \
-  --data-urlencode "groupBy=api_key_id" \
-  --data-urlencode "groupBy=api_key_name" \
-  --data-urlencode "groupBy=model_name"
-```
+> [tab] cURL
+>
+> ```bash theme={null}
+> curl -sG "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/billingUsage" \
+>   -H "Authorization: Bearer ${FIREWORKS_API_KEY}" \
+>   --data-urlencode "startTime=2026-05-01T00:00:00Z" \
+>   --data-urlencode "endTime=2026-06-01T00:00:00Z" \
+>   --data-urlencode "usageType=SERVERLESS" \
+>   --data-urlencode "groupBy=api_key_id" \
+>   --data-urlencode "groupBy=api_key_name" \
+>   --data-urlencode "groupBy=model_name"
+> ```
 
 Sample row from the API response:
 
@@ -148,101 +148,101 @@ Multiple values for the same dimension are OR'ed; different dimensions are AND'e
 
 Over HTTP, filter with **`POST /billingUsage:query`**, which takes the same request in a JSON body, where `filter` is a map of dimension → `{ "values": [...] }`.
 
-**firectl**
+> [tab] firectl
+>
+> ```bash theme={null}
+> firectl billing get-usage \
+>   --start-time 2026-05-01 --end-time 2026-06-01 \
+>   --usage-type serverless \
+>   --group-by model_name \
+>   --filter api_key_name=prod-eng
+> ```
 
-```bash theme={null}
-firectl billing get-usage \
-  --start-time 2026-05-01 --end-time 2026-06-01 \
-  --usage-type serverless \
-  --group-by model_name \
-  --filter api_key_name=prod-eng
-```
-
-**cURL**
-
-```bash theme={null}
-curl -sS -X POST "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/billingUsage:query" \
-  -H "Authorization: Bearer ${FIREWORKS_API_KEY}" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "startTime": "2026-05-01T00:00:00Z",
-    "endTime":   "2026-06-01T00:00:00Z",
-    "usageType": "SERVERLESS",
-    "groupBy":   ["model_name"],
-    "filter":    { "api_key_name": { "values": ["prod-eng"] } }
-  }'
-```
+> [tab] cURL
+>
+> ```bash theme={null}
+> curl -sS -X POST "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/billingUsage:query" \
+>   -H "Authorization: Bearer ${FIREWORKS_API_KEY}" \
+>   -H "Content-Type: application/json" \
+>   -d '{
+>     "startTime": "2026-05-01T00:00:00Z",
+>     "endTime":   "2026-06-01T00:00:00Z",
+>     "usageType": "SERVERLESS",
+>     "groupBy":   ["model_name"],
+>     "filter":    { "api_key_name": { "values": ["prod-eng"] } }
+>   }'
+> ```
 
 ### Dedicated deployment usage by deployment and GPU type
 
-**firectl**
+> [tab] firectl
+>
+> ```bash theme={null}
+> firectl billing get-usage \
+>   --start-time 2026-05-01 --end-time 2026-06-01 \
+>   --usage-type dedicated-deployment \
+>   --group-by deployment_name \
+>   --group-by accelerator_type
+> ```
 
-```bash theme={null}
-firectl billing get-usage \
-  --start-time 2026-05-01 --end-time 2026-06-01 \
-  --usage-type dedicated-deployment \
-  --group-by deployment_name \
-  --group-by accelerator_type
-```
-
-**cURL**
-
-```bash theme={null}
-curl -sG "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/billingUsage" \
-  -H "Authorization: Bearer ${FIREWORKS_API_KEY}" \
-  --data-urlencode "startTime=2026-05-01T00:00:00Z" \
-  --data-urlencode "endTime=2026-06-01T00:00:00Z" \
-  --data-urlencode "usageType=DEDICATED_DEPLOYMENT" \
-  --data-urlencode "groupBy=deployment_name" \
-  --data-urlencode "groupBy=accelerator_type"
-```
+> [tab] cURL
+>
+> ```bash theme={null}
+> curl -sG "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/billingUsage" \
+>   -H "Authorization: Bearer ${FIREWORKS_API_KEY}" \
+>   --data-urlencode "startTime=2026-05-01T00:00:00Z" \
+>   --data-urlencode "endTime=2026-06-01T00:00:00Z" \
+>   --data-urlencode "usageType=DEDICATED_DEPLOYMENT" \
+>   --data-urlencode "groupBy=deployment_name" \
+>   --data-urlencode "groupBy=accelerator_type"
+> ```
 
 ### Filter to a single deployment
 
-**firectl**
+> [tab] firectl
+>
+> ```bash theme={null}
+> firectl billing get-usage \
+>   --start-time 2026-05-01 --end-time 2026-06-01 \
+>   --filter deployment_name=accounts/my-account/deployments/my-deployment
+> ```
 
-```bash theme={null}
-firectl billing get-usage \
-  --start-time 2026-05-01 --end-time 2026-06-01 \
-  --filter deployment_name=accounts/my-account/deployments/my-deployment
-```
-
-**cURL**
-
-```bash theme={null}
-curl -sS -X POST "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/billingUsage:query" \
-  -H "Authorization: Bearer ${FIREWORKS_API_KEY}" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "startTime": "2026-05-01T00:00:00Z",
-    "endTime":   "2026-06-01T00:00:00Z",
-    "filter":    { "deployment_name": { "values": ["accounts/my-account/deployments/my-deployment"] } }
-  }'
-```
+> [tab] cURL
+>
+> ```bash theme={null}
+> curl -sS -X POST "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/billingUsage:query" \
+>   -H "Authorization: Bearer ${FIREWORKS_API_KEY}" \
+>   -H "Content-Type: application/json" \
+>   -d '{
+>     "startTime": "2026-05-01T00:00:00Z",
+>     "endTime":   "2026-06-01T00:00:00Z",
+>     "filter":    { "deployment_name": { "values": ["accounts/my-account/deployments/my-deployment"] } }
+>   }'
+> ```
 
 ### Account-level cost totals only
 
 Get just the rated costs, without the usage rows:
 
-**firectl**
+> [tab] firectl
+>
+> ```bash theme={null}
+> firectl billing get-usage \
+>   --start-time 2026-05-01 --end-time 2026-06-01 \
+>   --account-costs-only
+> ```
 
-```bash theme={null}
-firectl billing get-usage \
-  --start-time 2026-05-01 --end-time 2026-06-01 \
-  --account-costs-only
-```
-
-**cURL**
-
-```bash theme={null}
-curl -sG "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/billing/summary" \
-  -H "Authorization: Bearer ${FIREWORKS_API_KEY}" \
-  --data-urlencode "startTime=2026-05-01T00:00:00Z" \
-  --data-urlencode "endTime=2026-06-01T00:00:00Z" \
-  --data-urlencode "granularity=DAILY"
-```
-
-The companion [`GET /v1/accounts/{account_id}/billing/summary`](/api-reference/get-billing-summary) endpoint returns rated billing line items. Grouping comes from your billing configuration rather than a caller-supplied `groupBy` or `filter`, so line items follow billing categories (serverless, dedicated, training) instead of arbitrary dimensions. Each `lineItem` carries a `series` and its rated `totalCost`, and `granularity=DAILY` adds a per-day `usageBuckets` breakdown. These are rated line items, so they may differ from the final invoice once credits or adjustments are applied.
+> [tab] cURL
+>
+> ```bash theme={null}
+> curl -sG "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/billing/summary" \
+>   -H "Authorization: Bearer ${FIREWORKS_API_KEY}" \
+>   --data-urlencode "startTime=2026-05-01T00:00:00Z" \
+>   --data-urlencode "endTime=2026-06-01T00:00:00Z" \
+>   --data-urlencode "granularity=DAILY"
+> ```
+>
+> The companion [`GET /v1/accounts/{account_id}/billing/summary`](/api-reference/get-billing-summary) endpoint returns rated billing line items. Grouping comes from your billing configuration rather than a caller-supplied `groupBy` or `filter`, so line items follow billing categories (serverless, dedicated, training) instead of arbitrary dimensions. Each `lineItem` carries a `series` and its rated `totalCost`, and `granularity=DAILY` adds a per-day `usageBuckets` breakdown. These are rated line items, so they may differ from the final invoice once credits or adjustments are applied.
 
 ## Reference
 

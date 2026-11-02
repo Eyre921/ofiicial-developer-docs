@@ -26,15 +26,15 @@ Per-step loss and learning-rate artifacts are retained for 7 days after they are
 
 ## Methods
 
-> **[Supervised Fine-Tuning](/fine-tuning/fine-tuning-models)**
+> [card] [Supervised Fine-Tuning](/fine-tuning/fine-tuning-models)
 >
 > Train text and vision models with labeled examples of desired outputs
 
-> **[Preference Optimization (DPO / ORPO)](/fine-tuning/dpo-fine-tuning)**
+> [card] [Preference Optimization (DPO / ORPO)](/fine-tuning/dpo-fine-tuning)
 >
 > Train on preferred and non-preferred response pairs using DPO or ORPO
 
-> **[Reinforcement Learning](/fine-tuning/training-api/cookbook/rl)**
+> [card] [Reinforcement Learning](/fine-tuning/training-api/cookbook/rl)
 >
 > Train against a reward function on the Training API. Managed RFT is paused.
 

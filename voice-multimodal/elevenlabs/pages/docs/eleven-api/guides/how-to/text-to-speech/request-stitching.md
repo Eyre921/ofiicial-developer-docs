@@ -37,6 +37,11 @@ Request Stitching is easiest when using the ElevenLabs SDKs.
 
 Create a new file named `example.py` or `example.mts`, depending on your language of choice and add the following code:
 
+> **Warning**
+>
+> You can provide at most 3 request IDs in `previous_request_ids`. Requests with more return a
+> `400` error. Pass the 3 most recent IDs, with the request closest to the current one last.
+
 ```python
 import os
 from io import BytesIO
@@ -72,7 +77,8 @@ for paragraph in paragraphs:
         text=paragraph,
         voice_id="T7QGPtToiqH4S8VlIkMJ",
         model_id="eleven_v4",
-        previous_request_ids=request_ids
+        # The API accepts at most 3 previous request IDs
+        previous_request_ids=request_ids[-3:]
     ) as response:
         request_ids.append(response._response.headers.get("request-id"))
 
@@ -116,7 +122,8 @@ for (const paragraph of paragraphs) {
         .convert("T7QGPtToiqH4S8VlIkMJ", {
             text: paragraph,
             modelId: "eleven_v4",
-            previousRequestIds: requestIds,
+            // The API accepts at most 3 previous request IDs
+            previousRequestIds: requestIds.slice(-3),
         })
         .withRawResponse();
 

@@ -290,7 +290,7 @@ The people filter condition contains the following fields:
 
 > [!NOTE]
 >
-> The `"me"` value resolves to the user associated with the token. For [public connections](/guides/get-started/overview#connection-types), this is the user who completed the OAuth flow. For [personal access tokens](/guides/get-started/personal-access-tokens), this is the user who created the token. For [internal connections](/guides/get-started/overview#connection-types), there is no associated user — `contains: "me"` returns no results and `does_not_contain: "me"` matches all entries.
+> The `"me"` value resolves to the user associated with the token. For [public connections](/guides/connections-and-tokens/overview#connection-types), this is the user who completed the OAuth flow. For [personal access tokens](/guides/connections-and-tokens/personal-access-tokens), this is the user who created the token. For [internal connections](/guides/connections-and-tokens/overview#connection-types), there is no associated user — `contains: "me"` returns no results and `does_not_contain: "me"` matches all entries.
 
 ### Relation
 

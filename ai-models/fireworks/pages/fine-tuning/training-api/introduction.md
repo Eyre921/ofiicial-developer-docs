@@ -34,11 +34,11 @@ After choosing the Training API, decide how compute is provided:
 * [**Serverless Training**](/fine-tuning/training-api/serverless): shared pooled trainer for LoRA SFT, DPO, ORPO, RL, distillation, and custom loops on supported models, with no provisioning and per-token billing.
 * [**Dedicated Training**](/fine-tuning/training-api/dedicated): provisioned trainer and deployment resources, broader model and parameter-mode support, explicit checkpoint/resume/deployment control.
 
-> **[Serverless Training](/fine-tuning/training-api/serverless)**
+> [card] [Serverless Training](/fine-tuning/training-api/serverless)
 >
 > Attach to a shared pooled trainer. There is no trainer or rollout deployment to provision.
 
-> **[Dedicated Training](/fine-tuning/training-api/dedicated)**
+> [card] [Dedicated Training](/fine-tuning/training-api/dedicated)
 >
 > Provision trainer and deployment resources for your run, with broader model and parameter-mode support.
 
@@ -124,11 +124,17 @@ Your Python process stays on your laptop throughout the run. It sends model oper
 
 The shape of the loop is the same on both infrastructures. Toggle between them to see what changes at each stage:
 
+> [card]
+
 Training infrastructure
 
 Runs on Fireworks GPUs
 
 Train and sample repeat every training step
+
+> [card]
+
+> [card]
 
 `forward_backward()` runs a built-in trainer-side loss and is what most loops
 use. `forward_backward_custom()` is only for a custom Python loss function.

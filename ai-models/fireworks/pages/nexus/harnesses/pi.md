@@ -94,7 +94,7 @@ See [what changes without the Nexus CLI](/nexus/manual-setup#what-changes-withou
 
 **models.json**
 
-> **See what Nexus CLI writes**
+> [accordion] See what Nexus CLI writes
 >
 > ```json ~/.pi/agent/settings.json theme={null}
 > {

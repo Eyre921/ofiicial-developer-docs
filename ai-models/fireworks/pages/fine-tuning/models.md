@@ -27,26 +27,26 @@ Vision support is model- and surface-specific. Use the catalog above to confirm 
 
 ## Next steps
 
-> **[Managed Training](/fine-tuning/managed-finetuning-intro)**
+> [card] [Managed Training](/fine-tuning/managed-finetuning-intro)
 >
 > Hand Fireworks your data and let the platform run the job
 
-> **[Training API](/fine-tuning/training-api/introduction)**
+> [card] [Training API](/fine-tuning/training-api/introduction)
 >
 > Write your own training loop against a Tinker-compatible API
 
-> **[Serverless Training](/fine-tuning/training-api/serverless)**
+> [card] [Serverless Training](/fine-tuning/training-api/serverless)
 >
 > Train on shared pooled infrastructure with per-token billing
 
-> **[Training Shapes](/fine-tuning/training-api/training-shapes)**
+> [card] [Training Shapes](/fine-tuning/training-api/training-shapes)
 >
 > What a shape pins and how to reference one
 
-> **[Dedicated Training](/fine-tuning/training-api/dedicated)**
+> [card] [Dedicated Training](/fine-tuning/training-api/dedicated)
 >
 > Provision a trainer and sampler on reserved GPU capacity
 
-> **[Pricing](https://fireworks.ai/pricing)**
+> [card] [Pricing](https://fireworks.ai/pricing)
 >
 > Current rates across training and inference

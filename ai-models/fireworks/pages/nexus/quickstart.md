@@ -28,34 +28,34 @@ Next, pick your tool and follow its setup.
 
 ## Featured connections
 
-> **[Claude Code CLI](/nexus/harnesses/claude-code)**
+> [card] [Claude Code CLI](/nexus/harnesses/claude-code)
 >
 > Nexus Auto sends each turn to an open model or an Anthropic model. Anthropic turns use your Claude login.
 
-> **[ChatGPT](/nexus/harnesses/chatgpt)**
+> [card] [ChatGPT](/nexus/harnesses/chatgpt)
 >
 > Open models appear next to your OpenAI models. The same connection sets up the Codex CLI.
 
 ### Code
 
-> **[Claude Agent SDK](/nexus/harnesses/claude-code#claude-agent-sdk)**
+> [card] [Claude Agent SDK](/nexus/harnesses/claude-code#claude-agent-sdk)
 
-> **[Codex CLI](/nexus/harnesses/codex)**
+> [card] [Codex CLI](/nexus/harnesses/codex)
 
-> **[OpenCode](/nexus/harnesses/opencode)**
+> [card] [OpenCode](/nexus/harnesses/opencode)
 
-> **[Pi](/nexus/harnesses/pi)**
+> [card] [Pi](/nexus/harnesses/pi)
 
-> **[DeepSeek Harness](/nexus/harnesses/deepseek)**
+> [card] [DeepSeek Harness](/nexus/harnesses/deepseek)
 
-> **[Cursor IDE](/nexus/harnesses/cursor)**
+> [card] [Cursor IDE](/nexus/harnesses/cursor)
 
-> **[VS Code](/nexus/harnesses/vscode)**
+> [card] [VS Code](/nexus/harnesses/vscode)
 
-> **[Copilot App](/nexus/harnesses/copilot-app)**
+> [card] [Copilot App](/nexus/harnesses/copilot-app)
 
-> **[Copilot CLI](/nexus/harnesses/copilot-cli)**
+> [card] [Copilot CLI](/nexus/harnesses/copilot-cli)
 
 ### Cowork
 
-> **[Claude Desktop](/nexus/harnesses/claude-desktop)**
+> [card] [Claude Desktop](/nexus/harnesses/claude-desktop)

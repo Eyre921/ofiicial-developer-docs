@@ -40,118 +40,41 @@ In the AWS account that will pay for inference, [request or verify access to eac
 * For restricted models, complete any additional AWS or provider approval.
 * Confirm that the account can invoke the selected model or inference profile.
 
-**IAM role**
-
-Set `sts:ExternalId` to your exact Fireworks account ID.
-
-**1. Configure the trust policy**
-
-In **AWS IAM → Roles → Create role**, choose **Custom trust policy** and paste:
-
-```json theme={null}
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "arn:aws:iam::843780049090:role/nexus-bedrock-byok"
-      },
-      "Action": "sts:AssumeRole",
-      "Condition": {
-        "StringEquals": {
-          "sts:ExternalId": "<FIREWORKS_ACCOUNT_ID>"
-        }
-      }
-    }
-  ]
-}
-```
-
-![Configuring the Fireworks principal ARN and account-specific External ID in an AWS IAM custom trust policy](https://mintcdn.com/fireworksai/ujMDJFNEX7NdyBj0/images/fireworks-nexus/provider-keys/bedrock/iam-role-trust-policy.png?fit=max\&auto=format\&n=ujMDJFNEX7NdyBj0\&q=85\&s=977912ddca8bbf7719bd5adb75aea2ca)
-
-**2. Add Bedrock permissions**
-
-In **Step 2: Add permissions**, select **Create inline policy** and paste:
-
-```json theme={null}
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "bedrock:InvokeModel",
-        "bedrock:InvokeModelWithResponseStream"
-      ],
-      "Resource": "*"
-    }
-  ]
-}
-```
-
-`Resource: "*"` covers all Bedrock inference targets and the default project. SCPs, permission boundaries, and explicit denies still apply.
-
-![Adding an inline Bedrock invocation policy in the AWS IAM Create role wizard](https://mintcdn.com/fireworksai/ujMDJFNEX7NdyBj0/images/fireworks-nexus/provider-keys/bedrock/iam-role-permissions.png?fit=max\&auto=format\&n=ujMDJFNEX7NdyBj0\&q=85\&s=2fb6955992a2124b3d3652a4680c8b45)
-
-**3. Create the role**
-
-In **Step 3**, name the role `FireworksBedrockBYOK` or use another name that begins with `FireworksBedrock`. Use the default IAM path; custom role paths are not supported. Review the trust policy and permissions, then create the role.
-
-![Reviewing the FireworksBedrockBYOK role name and trust policy before creating the AWS IAM role](https://mintcdn.com/fireworksai/ujMDJFNEX7NdyBj0/images/fireworks-nexus/provider-keys/bedrock/iam-role-review.png?fit=max\&auto=format\&n=ujMDJFNEX7NdyBj0\&q=85\&s=ce2cbb20fe7c9ebcced2054215a82aa4)
-
-Copy the role ARN from the role summary.
-
-![AWS IAM role summary showing the FireworksBedrockBYOK role ARN and inline policy](https://mintcdn.com/fireworksai/5EvfarxWLqhpXYL9/images/fireworks-nexus/provider-keys/bedrock/iam-role-summary.png?fit=max\&auto=format\&n=5EvfarxWLqhpXYL9\&q=85\&s=82e0dbc8c85917cc761c7d17048b4b40)
-
-> **Create the role with AWS CLI**
+> [tab] IAM role
 >
-> Set the External ID to your exact Fireworks account ID:
+> Set `sts:ExternalId` to your exact Fireworks account ID.
 >
-> ```bash wrap theme={null}
-> export AWS_PROFILE="customer-admin"
-> export ROLE_NAME="FireworksBedrockBYOK"
-> export FIREWORKS_PRINCIPAL_ARN="arn:aws:iam::843780049090:role/nexus-bedrock-byok"
-> export EXTERNAL_ID="<FIREWORKS_ACCOUNT_ID>"
-> ```
+> **1. Configure the trust policy**
 >
-> Create the role and trust policy:
+> In **AWS IAM → Roles → Create role**, choose **Custom trust policy** and paste:
 >
-> ```bash wrap theme={null}
-> cat >/tmp/fireworks-bedrock-trust.json <<EOF
+> ```json theme={null}
 > {
 >   "Version": "2012-10-17",
 >   "Statement": [
 >     {
 >       "Effect": "Allow",
 >       "Principal": {
->         "AWS": "${FIREWORKS_PRINCIPAL_ARN}"
+>         "AWS": "arn:aws:iam::843780049090:role/nexus-bedrock-byok"
 >       },
 >       "Action": "sts:AssumeRole",
 >       "Condition": {
 >         "StringEquals": {
->           "sts:ExternalId": "${EXTERNAL_ID}"
+>           "sts:ExternalId": "<FIREWORKS_ACCOUNT_ID>"
 >         }
 >       }
 >     }
 >   ]
 > }
-> EOF
->
-> export CUSTOMER_ROLE_ARN="$(
->   aws iam create-role \
->     --profile "$AWS_PROFILE" \
->     --role-name "$ROLE_NAME" \
->     --assume-role-policy-document file:///tmp/fireworks-bedrock-trust.json \
->     --query 'Role.Arn' \
->     --output text
-> )"
 > ```
 >
-> Add the Bedrock permission policy:
+> ![Configuring the Fireworks principal ARN and account-specific External ID in an AWS IAM custom trust policy](https://mintcdn.com/fireworksai/ujMDJFNEX7NdyBj0/images/fireworks-nexus/provider-keys/bedrock/iam-role-trust-policy.png?fit=max\&auto=format\&n=ujMDJFNEX7NdyBj0\&q=85\&s=977912ddca8bbf7719bd5adb75aea2ca)
 >
-> ```bash wrap theme={null}
-> cat >/tmp/fireworks-bedrock-permissions.json <<'EOF'
+> **2. Add Bedrock permissions**
+>
+> In **Step 2: Add permissions**, select **Create inline policy** and paste:
+>
+> ```json theme={null}
 > {
 >   "Version": "2012-10-17",
 >   "Statement": [
@@ -165,80 +88,157 @@ Copy the role ARN from the role summary.
 >     }
 >   ]
 > }
-> EOF
->
-> aws iam put-role-policy \
->   --profile "$AWS_PROFILE" \
->   --role-name "$ROLE_NAME" \
->   --policy-name FireworksBedrockBYOKPolicy \
->   --policy-document file:///tmp/fireworks-bedrock-permissions.json
->
-> echo "$CUSTOMER_ROLE_ARN"
 > ```
-
-**API key**
-
-Generate a long-term key in **Amazon Bedrock console → API keys**, then copy it. See [Generate an Amazon Bedrock API key](https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys-generate.html).
-
-> [!NOTE]
 >
-> Short-term keys are valid only in the Region where they were generated and for at most 12 hours. Fireworks does not refresh them. Use a long-term key.
+> `Resource: "*"` covers all Bedrock inference targets and the default project. SCPs, permission boundaries, and explicit denies still apply.
+>
+> ![Adding an inline Bedrock invocation policy in the AWS IAM Create role wizard](https://mintcdn.com/fireworksai/ujMDJFNEX7NdyBj0/images/fireworks-nexus/provider-keys/bedrock/iam-role-permissions.png?fit=max\&auto=format\&n=ujMDJFNEX7NdyBj0\&q=85\&s=2fb6955992a2124b3d3652a4680c8b45)
+>
+> **3. Create the role**
+>
+> In **Step 3**, name the role `FireworksBedrockBYOK` or use another name that begins with `FireworksBedrock`. Use the default IAM path; custom role paths are not supported. Review the trust policy and permissions, then create the role.
+>
+> ![Reviewing the FireworksBedrockBYOK role name and trust policy before creating the AWS IAM role](https://mintcdn.com/fireworksai/ujMDJFNEX7NdyBj0/images/fireworks-nexus/provider-keys/bedrock/iam-role-review.png?fit=max\&auto=format\&n=ujMDJFNEX7NdyBj0\&q=85\&s=ce2cbb20fe7c9ebcced2054215a82aa4)
+>
+> Copy the role ARN from the role summary.
+>
+> ![AWS IAM role summary showing the FireworksBedrockBYOK role ARN and inline policy](https://mintcdn.com/fireworksai/5EvfarxWLqhpXYL9/images/fireworks-nexus/provider-keys/bedrock/iam-role-summary.png?fit=max\&auto=format\&n=5EvfarxWLqhpXYL9\&q=85\&s=82e0dbc8c85917cc761c7d17048b4b40)
+>
+> > [accordion] Create the role with AWS CLI
+> >
+> > Set the External ID to your exact Fireworks account ID:
+> >
+> > ```bash wrap theme={null}
+> > export AWS_PROFILE="customer-admin"
+> > export ROLE_NAME="FireworksBedrockBYOK"
+> > export FIREWORKS_PRINCIPAL_ARN="arn:aws:iam::843780049090:role/nexus-bedrock-byok"
+> > export EXTERNAL_ID="<FIREWORKS_ACCOUNT_ID>"
+> > ```
+> >
+> > Create the role and trust policy:
+> >
+> > ```bash wrap theme={null}
+> > cat >/tmp/fireworks-bedrock-trust.json <<EOF
+> > {
+> >   "Version": "2012-10-17",
+> >   "Statement": [
+> >     {
+> >       "Effect": "Allow",
+> >       "Principal": {
+> >         "AWS": "${FIREWORKS_PRINCIPAL_ARN}"
+> >       },
+> >       "Action": "sts:AssumeRole",
+> >       "Condition": {
+> >         "StringEquals": {
+> >           "sts:ExternalId": "${EXTERNAL_ID}"
+> >         }
+> >       }
+> >     }
+> >   ]
+> > }
+> > EOF
+> >
+> > export CUSTOMER_ROLE_ARN="$(
+> >   aws iam create-role \
+> >     --profile "$AWS_PROFILE" \
+> >     --role-name "$ROLE_NAME" \
+> >     --assume-role-policy-document file:///tmp/fireworks-bedrock-trust.json \
+> >     --query 'Role.Arn' \
+> >     --output text
+> > )"
+> > ```
+> >
+> > Add the Bedrock permission policy:
+> >
+> > ```bash wrap theme={null}
+> > cat >/tmp/fireworks-bedrock-permissions.json <<'EOF'
+> > {
+> >   "Version": "2012-10-17",
+> >   "Statement": [
+> >     {
+> >       "Effect": "Allow",
+> >       "Action": [
+> >         "bedrock:InvokeModel",
+> >         "bedrock:InvokeModelWithResponseStream"
+> >       ],
+> >       "Resource": "*"
+> >     }
+> >   ]
+> > }
+> > EOF
+> >
+> > aws iam put-role-policy \
+> >   --profile "$AWS_PROFILE" \
+> >   --role-name "$ROLE_NAME" \
+> >   --policy-name FireworksBedrockBYOKPolicy \
+> >   --policy-document file:///tmp/fireworks-bedrock-permissions.json
+> >
+> > echo "$CUSTOMER_ROLE_ARN"
+> > ```
+
+> [tab] API key
+>
+> Generate a long-term key in **Amazon Bedrock console → API keys**, then copy it. See [Generate an Amazon Bedrock API key](https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys-generate.html).
+>
+> > [!NOTE]
+> >
+> > Short-term keys are valid only in the Region where they were generated and for at most 12 hours. Fireworks does not refresh them. Use a long-term key.
 
 ## Connect in the dashboard
 
-**IAM role**
+> [tab] IAM role
+>
+> **1. Connect the key**
+>
+> Open **Settings → [Provider Keys](https://app.fireworks.ai/settings/provider-keys)**. On the **Amazon Bedrock** row, click **Connect**.
+>
+> Select **IAM Role**. Keep the External ID exactly as shown, then complete the AWS steps. Paste the IAM role ARN, not the permission policy ARN, and click **Continue**.
+>
+> ![Connecting an Amazon Bedrock IAM role in the Provider Keys dashboard](https://mintcdn.com/fireworksai/Vlf8OtCu4-U4nVi7/images/fireworks-nexus/provider-keys/bedrock/connect-iam-role.gif?s=242f3a45151be8bb98d6c637bdd8d618)
+>
+> In **Add models to Amazon Bedrock**, select the models that should use this credential, then click **Connect**. You must select at least one.
+>
+> ![Selecting models for an Amazon Bedrock Provider Key](https://mintcdn.com/fireworksai/JD1KCHWcNDNUqemu/images/fireworks-nexus/provider-keys/bedrock/paste-key.gif?s=246b94c64f1430eb0cf535a058160dae)
+>
+> The card shows **Connecting** for about a minute while Fireworks finishes setup.
+>
+> **2. Fill in the model routes**
+>
+> Connecting stores the credential but does not route traffic yet. Once the card is connected, the models you picked appear as empty rows for you to complete.
+>
+> 1. For each row under **Models using Bedrock**, paste the AWS **Model ID** and select a **Region**.
+> 2. Click **Save**. Save stays disabled until every row has both values.
+>
+> ![Bedrock model rows with Model ID and Region fields after saving an IAM role connection](https://mintcdn.com/fireworksai/Vlf8OtCu4-U4nVi7/images/fireworks-nexus/provider-keys/bedrock/fill-routes-saved.gif?s=aa80530686a9af1582f78c4410190170)
+>
+> After saving, each row displays its Model ID and Region. Traffic for those models is now billed to your AWS account. Every other model keeps its current provider.
 
-**1. Connect the key**
-
-Open **Settings → [Provider Keys](https://app.fireworks.ai/settings/provider-keys)**. On the **Amazon Bedrock** row, click **Connect**.
-
-Select **IAM Role**. Keep the External ID exactly as shown, then complete the AWS steps. Paste the IAM role ARN, not the permission policy ARN, and click **Continue**.
-
-![Connecting an Amazon Bedrock IAM role in the Provider Keys dashboard](https://mintcdn.com/fireworksai/Vlf8OtCu4-U4nVi7/images/fireworks-nexus/provider-keys/bedrock/connect-iam-role.gif?s=242f3a45151be8bb98d6c637bdd8d618)
-
-In **Add models to Amazon Bedrock**, select the models that should use this credential, then click **Connect**. You must select at least one.
-
-![Selecting models for an Amazon Bedrock Provider Key](https://mintcdn.com/fireworksai/JD1KCHWcNDNUqemu/images/fireworks-nexus/provider-keys/bedrock/paste-key.gif?s=246b94c64f1430eb0cf535a058160dae)
-
-The card shows **Connecting** for about a minute while Fireworks finishes setup.
-
-**2. Fill in the model routes**
-
-Connecting stores the credential but does not route traffic yet. Once the card is connected, the models you picked appear as empty rows for you to complete.
-
-1. For each row under **Models using Bedrock**, paste the AWS **Model ID** and select a **Region**.
-2. Click **Save**. Save stays disabled until every row has both values.
-
-![Bedrock model rows with Model ID and Region fields after saving an IAM role connection](https://mintcdn.com/fireworksai/Vlf8OtCu4-U4nVi7/images/fireworks-nexus/provider-keys/bedrock/fill-routes-saved.gif?s=aa80530686a9af1582f78c4410190170)
-
-After saving, each row displays its Model ID and Region. Traffic for those models is now billed to your AWS account. Every other model keeps its current provider.
-
-**API key**
-
-**1. Connect the key**
-
-Open **Settings → [Provider Keys](https://app.fireworks.ai/settings/provider-keys)**. On the **Amazon Bedrock** row, click **Connect**.
-
-Select **API Key**, paste the Bedrock key, and click **Continue**.
-
-![Connecting a Bedrock API key in the Provider Keys dashboard](https://mintcdn.com/fireworksai/Vlf8OtCu4-U4nVi7/images/fireworks-nexus/provider-keys/bedrock/connect-api-key.gif?s=8d09d6d7e550e8df456342535e6c966a)
-
-In **Add models to Amazon Bedrock**, select the models that should use this credential, then click **Connect**. You must select at least one.
-
-![Selecting models for an Amazon Bedrock Provider Key](https://mintcdn.com/fireworksai/JD1KCHWcNDNUqemu/images/fireworks-nexus/provider-keys/bedrock/paste-key.gif?s=246b94c64f1430eb0cf535a058160dae)
-
-The card shows **Connecting** for about a minute while Fireworks finishes setup.
-
-**2. Fill in the model routes**
-
-Connecting stores the credential but does not route traffic yet. Once the card is connected, the models you picked appear as empty rows for you to complete.
-
-1. For each row under **Models using Bedrock**, paste the AWS **Model ID** and select a **Region**.
-2. Click **Save**. Save stays disabled until every row has both values.
-
-![Bedrock model rows with Model ID and Region fields before saving](https://mintcdn.com/fireworksai/JD1KCHWcNDNUqemu/images/fireworks-nexus/provider-keys/bedrock/fill-routes.gif?s=22d2174e64925389d090620a2bc5e144)
-
-After saving, each row displays its Model ID and Region. Traffic for those models is now billed to your AWS account. Every other model keeps its current provider.
+> [tab] API key
+>
+> **1. Connect the key**
+>
+> Open **Settings → [Provider Keys](https://app.fireworks.ai/settings/provider-keys)**. On the **Amazon Bedrock** row, click **Connect**.
+>
+> Select **API Key**, paste the Bedrock key, and click **Continue**.
+>
+> ![Connecting a Bedrock API key in the Provider Keys dashboard](https://mintcdn.com/fireworksai/Vlf8OtCu4-U4nVi7/images/fireworks-nexus/provider-keys/bedrock/connect-api-key.gif?s=8d09d6d7e550e8df456342535e6c966a)
+>
+> In **Add models to Amazon Bedrock**, select the models that should use this credential, then click **Connect**. You must select at least one.
+>
+> ![Selecting models for an Amazon Bedrock Provider Key](https://mintcdn.com/fireworksai/JD1KCHWcNDNUqemu/images/fireworks-nexus/provider-keys/bedrock/paste-key.gif?s=246b94c64f1430eb0cf535a058160dae)
+>
+> The card shows **Connecting** for about a minute while Fireworks finishes setup.
+>
+> **2. Fill in the model routes**
+>
+> Connecting stores the credential but does not route traffic yet. Once the card is connected, the models you picked appear as empty rows for you to complete.
+>
+> 1. For each row under **Models using Bedrock**, paste the AWS **Model ID** and select a **Region**.
+> 2. Click **Save**. Save stays disabled until every row has both values.
+>
+> ![Bedrock model rows with Model ID and Region fields before saving](https://mintcdn.com/fireworksai/JD1KCHWcNDNUqemu/images/fireworks-nexus/provider-keys/bedrock/fill-routes.gif?s=22d2174e64925389d090620a2bc5e144)
+>
+> After saving, each row displays its Model ID and Region. Traffic for those models is now billed to your AWS account. Every other model keeps its current provider.
 
 ### Change model routes later
 
@@ -252,29 +252,29 @@ Use **Update Key** to replace the API key or IAM role ARN without changing the r
 
 ### Upload the key
 
-**IAM role**
+> [tab] IAM role
+>
+> ```bash wrap theme={null}
+> firectl provider-key upload \
+>   --provider-type bedrock \
+>   --aws-iam-role-arn arn:aws:iam::123456789012:role/FireworksBedrockBYOK \
+>   --display-name production-bedrock
+> ```
+>
+> Fireworks returns the full role ARN in `KEY_HINT` for list output and `key_hint` for JSON. A role ARN is an identifier, not a secret.
 
-```bash wrap theme={null}
-firectl provider-key upload \
-  --provider-type bedrock \
-  --aws-iam-role-arn arn:aws:iam::123456789012:role/FireworksBedrockBYOK \
-  --display-name production-bedrock
-```
-
-Fireworks returns the full role ARN in `KEY_HINT` for list output and `key_hint` for JSON. A role ARN is an identifier, not a secret.
-
-**API key**
-
-Save the bearer key to a local file, then upload it with `--from-file`. This keeps the key out of your shell history and process list. See [Manage keys with `firectl`](/nexus/provider-keys#manage-keys-with-firectl).
-
-```bash wrap theme={null}
-firectl provider-key upload \
-  --provider-type bedrock \
-  --from-file ./bedrock.key \
-  --display-name production-bedrock
-```
-
-Delete the local file after upload.
+> [tab] API key
+>
+> Save the bearer key to a local file, then upload it with `--from-file`. This keeps the key out of your shell history and process list. See [Manage keys with `firectl`](/nexus/provider-keys#manage-keys-with-firectl).
+>
+> ```bash wrap theme={null}
+> firectl provider-key upload \
+>   --provider-type bedrock \
+>   --from-file ./bedrock.key \
+>   --display-name production-bedrock
+> ```
+>
+> Delete the local file after upload.
 
 Save the returned key ID as `KEY_ID`. `upload` stores the credential but does not route traffic.
 

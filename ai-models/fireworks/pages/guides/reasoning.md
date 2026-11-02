@@ -183,135 +183,135 @@ You can preserve reasoning context in two ways:
 
 Here's how to preserve reasoning context using both approaches:
 
-**Pass Message object**
+> [tab] Pass Message object
+>
+> ```python theme={null}
+> # First turn: Get a response with reasoning_content
+> first_response = client.chat.completions.create(
+>     messages=[{"role": "user", "content": "What is 15 + 27?"}],
+>     model="accounts/fireworks/models/<reasoning-model>",
+>     tools=tools,
+> )
+>
+> # The assistant message contains reasoning_content, content, and tool_calls
+> assistant_message = first_response.choices[0].message
+> # assistant_message.reasoning_content -> "The user is asking for addition..."
+> # assistant_message.tool_calls -> [ToolCall(id="...", function=...)]
+>
+> # Second turn: Pass the Message object directly
+> # This automatically includes reasoning_content alongside the message
+> second_response = client.chat.completions.create(
+>     messages=[
+>         {"role": "user", "content": "What is 15 + 27?"},
+>         assistant_message,  # Pass the complete Message object
+>         {"role": "tool", "content": "42", "tool_call_id": assistant_message.tool_calls[0].id},
+>     ],
+>     model="accounts/fireworks/models/<reasoning-model>",
+>     tools=tools,
+> )
+> ```
 
-```python theme={null}
-# First turn: Get a response with reasoning_content
-first_response = client.chat.completions.create(
-    messages=[{"role": "user", "content": "What is 15 + 27?"}],
-    model="accounts/fireworks/models/<reasoning-model>",
-    tools=tools,
-)
+> [tab] Manual dictionary
+>
+> ```python theme={null}
+> # First turn: Get a response with reasoning_content
+> first_response = client.chat.completions.create(
+>     messages=[{"role": "user", "content": "What is 15 + 27?"}],
+>     model="accounts/fireworks/models/<reasoning-model>",
+>     tools=tools,
+> )
+>
+> assistant_message = first_response.choices[0].message
+>
+> # Second turn: Manually construct the assistant message dict
+> # Include reasoning_content explicitly alongside role, content, and tool_calls
+> second_response = client.chat.completions.create(
+>     messages=[
+>         {"role": "user", "content": "What is 15 + 27?"},
+>         {
+>             "role": "assistant",
+>             "content": assistant_message.content,
+>             "reasoning_content": assistant_message.reasoning_content,  # Include reasoning
+>             "tool_calls": assistant_message.tool_calls,
+>         },
+>         {"role": "tool", "content": "42", "tool_call_id": assistant_message.tool_calls[0].id},
+>     ],
+>     model="accounts/fireworks/models/<reasoning-model>",
+>     tools=tools,
+> )
+> ```
 
-# The assistant message contains reasoning_content, content, and tool_calls
-assistant_message = first_response.choices[0].message
-# assistant_message.reasoning_content -> "The user is asking for addition..."
-# assistant_message.tool_calls -> [ToolCall(id="...", function=...)]
-
-# Second turn: Pass the Message object directly
-# This automatically includes reasoning_content alongside the message
-second_response = client.chat.completions.create(
-    messages=[
-        {"role": "user", "content": "What is 15 + 27?"},
-        assistant_message,  # Pass the complete Message object
-        {"role": "tool", "content": "42", "tool_call_id": assistant_message.tool_calls[0].id},
-    ],
-    model="accounts/fireworks/models/<reasoning-model>",
-    tools=tools,
-)
-```
-
-**Manual dictionary**
-
-```python theme={null}
-# First turn: Get a response with reasoning_content
-first_response = client.chat.completions.create(
-    messages=[{"role": "user", "content": "What is 15 + 27?"}],
-    model="accounts/fireworks/models/<reasoning-model>",
-    tools=tools,
-)
-
-assistant_message = first_response.choices[0].message
-
-# Second turn: Manually construct the assistant message dict
-# Include reasoning_content explicitly alongside role, content, and tool_calls
-second_response = client.chat.completions.create(
-    messages=[
-        {"role": "user", "content": "What is 15 + 27?"},
-        {
-            "role": "assistant",
-            "content": assistant_message.content,
-            "reasoning_content": assistant_message.reasoning_content,  # Include reasoning
-            "tool_calls": assistant_message.tool_calls,
-        },
-        {"role": "tool", "content": "42", "tool_call_id": assistant_message.tool_calls[0].id},
-    ],
-    model="accounts/fireworks/models/<reasoning-model>",
-    tools=tools,
-)
-```
-
-**Anthropic SDK**
-
-The Anthropic SDK uses `thinking` content blocks instead of `reasoning_content`. Pass the full `content` array (including thinking blocks) back as the assistant message, and send tool results as `tool_result` content blocks:
-
-```python theme={null}
-import anthropic
-
-client = anthropic.Anthropic(
-    api_key=os.environ.get("FIREWORKS_API_KEY"),
-    base_url="https://api.fireworks.ai/inference",
-)
-
-tools = [
-    {
-        "name": "calculator",
-        "description": "Perform basic arithmetic operations",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "operation": {"type": "string", "enum": ["add", "subtract", "multiply", "divide"]},
-                "a": {"type": "number"},
-                "b": {"type": "number"},
-            },
-            "required": ["operation", "a", "b"],
-        },
-    }
-]
-
-# First turn: thinking + tool_use
-first_response = client.messages.create(
-    model="accounts/fireworks/models/<reasoning-model>",
-    max_tokens=16000,
-    thinking={"type": "enabled", "budget_tokens": 4096},
-    messages=[{"role": "user", "content": "What is 15 + 27? Use the calculator."}],
-    tools=tools,
-)
-
-# Response content includes [thinking_block, tool_use_block]
-for block in first_response.content:
-    if block.type == "thinking":
-        print(f"Thinking: {block.thinking[:100]}...")
-    elif block.type == "tool_use":
-        print(f"Tool: {block.name}({block.input})")
-
-tool_use = next(b for b in first_response.content if b.type == "tool_use")
-
-# Second turn: pass back the full content array (with thinking blocks) + tool result
-second_response = client.messages.create(
-    model="accounts/fireworks/models/<reasoning-model>",
-    max_tokens=16000,
-    thinking={"type": "enabled", "budget_tokens": 4096},
-    messages=[
-        {"role": "user", "content": "What is 15 + 27? Use the calculator."},
-        {"role": "assistant", "content": first_response.content},
-        {
-            "role": "user",
-            "content": [
-                {"type": "tool_result", "tool_use_id": tool_use.id, "content": "42"}
-            ],
-        },
-    ],
-    tools=tools,
-)
-
-# The model thinks again (interleaved) and produces a text answer
-for block in second_response.content:
-    if block.type == "thinking":
-        print(f"Thinking: {block.thinking[:100]}...")
-    elif block.type == "text":
-        print(f"Answer: {block.text}")
-```
+> [tab] Anthropic SDK
+>
+> The Anthropic SDK uses `thinking` content blocks instead of `reasoning_content`. Pass the full `content` array (including thinking blocks) back as the assistant message, and send tool results as `tool_result` content blocks:
+>
+> ```python theme={null}
+> import anthropic
+>
+> client = anthropic.Anthropic(
+>     api_key=os.environ.get("FIREWORKS_API_KEY"),
+>     base_url="https://api.fireworks.ai/inference",
+> )
+>
+> tools = [
+>     {
+>         "name": "calculator",
+>         "description": "Perform basic arithmetic operations",
+>         "input_schema": {
+>             "type": "object",
+>             "properties": {
+>                 "operation": {"type": "string", "enum": ["add", "subtract", "multiply", "divide"]},
+>                 "a": {"type": "number"},
+>                 "b": {"type": "number"},
+>             },
+>             "required": ["operation", "a", "b"],
+>         },
+>     }
+> ]
+>
+> # First turn: thinking + tool_use
+> first_response = client.messages.create(
+>     model="accounts/fireworks/models/<reasoning-model>",
+>     max_tokens=16000,
+>     thinking={"type": "enabled", "budget_tokens": 4096},
+>     messages=[{"role": "user", "content": "What is 15 + 27? Use the calculator."}],
+>     tools=tools,
+> )
+>
+> # Response content includes [thinking_block, tool_use_block]
+> for block in first_response.content:
+>     if block.type == "thinking":
+>         print(f"Thinking: {block.thinking[:100]}...")
+>     elif block.type == "tool_use":
+>         print(f"Tool: {block.name}({block.input})")
+>
+> tool_use = next(b for b in first_response.content if b.type == "tool_use")
+>
+> # Second turn: pass back the full content array (with thinking blocks) + tool result
+> second_response = client.messages.create(
+>     model="accounts/fireworks/models/<reasoning-model>",
+>     max_tokens=16000,
+>     thinking={"type": "enabled", "budget_tokens": 4096},
+>     messages=[
+>         {"role": "user", "content": "What is 15 + 27? Use the calculator."},
+>         {"role": "assistant", "content": first_response.content},
+>         {
+>             "role": "user",
+>             "content": [
+>                 {"type": "tool_result", "tool_use_id": tool_use.id, "content": "42"}
+>             ],
+>         },
+>     ],
+>     tools=tools,
+> )
+>
+> # The model thinks again (interleaved) and produces a text answer
+> for block in second_response.content:
+>     if block.type == "thinking":
+>         print(f"Thinking: {block.thinking[:100]}...")
+>     elif block.type == "text":
+>         print(f"Answer: {block.text}")
+> ```
 
 > [!WARNING]
 >

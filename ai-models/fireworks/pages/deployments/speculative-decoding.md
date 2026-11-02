@@ -100,27 +100,27 @@ checkpoint or discuss a drafter adapted to your traffic.
 
 ## Examples
 
-**Draft model**
+> [tab] Draft model
+>
+> Create a deployment with an explicit small base-model drafter:
+>
+> ```bash theme={null}
+> firectl deployment create accounts/fireworks/models/llama-v3p3-70b-instruct \
+>   --deployment-shape default \
+>   --draft-model="accounts/fireworks/models/llama-v3p2-1b-instruct" \
+>   --draft-token-count=4
+> ```
 
-Create a deployment with an explicit small base-model drafter:
-
-```bash theme={null}
-firectl deployment create accounts/fireworks/models/llama-v3p3-70b-instruct \
-  --deployment-shape default \
-  --draft-model="accounts/fireworks/models/llama-v3p2-1b-instruct" \
-  --draft-token-count=4
-```
-
-**N-gram speculation**
-
-Use N-gram speculation without a separate draft model:
-
-```bash theme={null}
-firectl deployment create accounts/fireworks/models/llama-v3p3-70b-instruct \
-  --deployment-shape default \
-  --ngram-speculation-length=3 \
-  --draft-token-count=4
-```
+> [tab] N-gram speculation
+>
+> Use N-gram speculation without a separate draft model:
+>
+> ```bash theme={null}
+> firectl deployment create accounts/fireworks/models/llama-v3p3-70b-instruct \
+>   --deployment-shape default \
+>   --ngram-speculation-length=3 \
+>   --draft-token-count=4
+> ```
 
 You can change the explicit drafter and draft-token count on an existing
 deployment:

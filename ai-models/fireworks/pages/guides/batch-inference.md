@@ -43,7 +43,7 @@ Not all models support the Batch API. Before submitting a batch job, verify your
 
 ## Getting Started
 
-> **1. Prepare Your Dataset**
+> [accordion] 1. Prepare Your Dataset
 >
 > Datasets must be in JSONL format (one JSON object per line):
 >
@@ -88,157 +88,157 @@ Not all models support the Batch API. Before submitting a batch job, verify your
 >
 > Save as `batch_input_data.jsonl` locally.
 
-> **2. Upload Your Dataset**
+> [accordion] 2. Upload Your Dataset
 >
-> **UI**
+> > [tab] UI
+> >
+> > You can simply navigate to the dataset tab, click `Create Dataset` and follow the wizard.
+> >
+> > ![Dataset Upload](https://mintcdn.com/fireworksai/3EhcJE4PKaydIoxl/images/fine-tuning/dataset.png?fit=max\&auto=format\&n=3EhcJE4PKaydIoxl\&q=85\&s=0b5955b3abbd38b2725fb2881d57b8ee)
 >
-> You can simply navigate to the dataset tab, click `Create Dataset` and follow the wizard.
+> > [tab] firectl
+> >
+> > ```bash theme={null}
+> > firectl dataset create batch-input-dataset ./batch_input_data.jsonl
+> > ```
 >
-> ![Dataset Upload](https://mintcdn.com/fireworksai/3EhcJE4PKaydIoxl/images/fine-tuning/dataset.png?fit=max\&auto=format\&n=3EhcJE4PKaydIoxl\&q=85\&s=0b5955b3abbd38b2725fb2881d57b8ee)
->
-> **firectl**
->
-> ```bash theme={null}
-> firectl dataset create batch-input-dataset ./batch_input_data.jsonl
-> ```
->
-> **HTTP API**
->
-> You need to make two separate HTTP requests. One for creating the dataset entry and one for uploading the dataset. Full reference here: [Create dataset](/api-reference/create-dataset).
->
-> ```bash theme={null}
-> # Create Dataset Entry
-> curl -X POST "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/datasets" \
->   -H "Authorization: Bearer ${API_KEY}" \
->   -H "Content-Type: application/json" \
->   -d '{
->     "datasetId": "batch-input-dataset",
->     "dataset": { "userUploaded": {} }
->   }'
->
-> # Upload JSONL file
-> curl -X POST "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/datasets/batch-input-dataset:upload" \
->   -H "Authorization: Bearer ${API_KEY}" \
->   -F "file=@./batch_input_data.jsonl"
-> ```
+> > [tab] HTTP API
+> >
+> > You need to make two separate HTTP requests. One for creating the dataset entry and one for uploading the dataset. Full reference here: [Create dataset](/api-reference/create-dataset).
+> >
+> > ```bash theme={null}
+> > # Create Dataset Entry
+> > curl -X POST "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/datasets" \
+> >   -H "Authorization: Bearer ${API_KEY}" \
+> >   -H "Content-Type: application/json" \
+> >   -d '{
+> >     "datasetId": "batch-input-dataset",
+> >     "dataset": { "userUploaded": {} }
+> >   }'
+> >
+> > # Upload JSONL file
+> > curl -X POST "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/datasets/batch-input-dataset:upload" \
+> >   -H "Authorization: Bearer ${API_KEY}" \
+> >   -F "file=@./batch_input_data.jsonl"
+> > ```
 
-> **3. Create a Batch Job**
+> [accordion] 3. Create a Batch Job
 >
-> **UI**
+> > [tab] UI
+> >
+> > Navigate to the Batch Inference tab and click "Create Batch Inference Job". Choose your batch-eligible model from the dropdown selector:
+> >
+> > ![BIJ Model Selector](https://mintcdn.com/fireworksai/YH2uwOIOrmQeCBpB/images/batch-inference/BIJ_Model_Selector.png?fit=max\&auto=format\&n=YH2uwOIOrmQeCBpB\&q=85\&s=2176934ba84ff4cee49b0df6a2d58afe)
+> >
+> > Select your dataset:
+> >
+> > ![BIJ Dataset Selector](https://mintcdn.com/fireworksai/YH2uwOIOrmQeCBpB/images/batch-inference/BIJ_Dataset_Selector.png?fit=max\&auto=format\&n=YH2uwOIOrmQeCBpB\&q=85\&s=3951881558624efca09290a05a935f30)
+> >
+> > Configure optional settings:
+> >
+> > ![BIJ Optional Settings Selector](https://mintcdn.com/fireworksai/YH2uwOIOrmQeCBpB/images/batch-inference/BIJ_Optional_Settings_Selector.png?fit=max\&auto=format\&n=YH2uwOIOrmQeCBpB\&q=85\&s=d8809531f0557b468439e553be78c674)
 >
-> Navigate to the Batch Inference tab and click "Create Batch Inference Job". Choose your batch-eligible model from the dropdown selector:
+> > [tab] firectl
+> >
+> > ```bash theme={null}
+> > firectl batch-inference-job create \
+> >   --model accounts/fireworks/models/llama-v3p1-8b-instruct \
+> >   --input-dataset-id batch-input-dataset
+> > ```
+> >
+> > With additional parameters:
+> >
+> > ```bash theme={null}
+> > firectl batch-inference-job create \
+> >   --job-id my-batch-job \
+> >   --model accounts/fireworks/models/llama-v3p1-8b-instruct \
+> >   --input-dataset-id batch-input-dataset \
+> >   --output-dataset-id batch-output-dataset \
+> >   --system-prompt "You are a helpful assistant." \
+> >   --max-tokens 1024 \
+> >   --temperature 0.7 \
+> >   --top-p 0.9
+> > ```
 >
-> ![BIJ Model Selector](https://mintcdn.com/fireworksai/YH2uwOIOrmQeCBpB/images/batch-inference/BIJ_Model_Selector.png?fit=max\&auto=format\&n=YH2uwOIOrmQeCBpB\&q=85\&s=2176934ba84ff4cee49b0df6a2d58afe)
->
-> Select your dataset:
->
-> ![BIJ Dataset Selector](https://mintcdn.com/fireworksai/YH2uwOIOrmQeCBpB/images/batch-inference/BIJ_Dataset_Selector.png?fit=max\&auto=format\&n=YH2uwOIOrmQeCBpB\&q=85\&s=3951881558624efca09290a05a935f30)
->
-> Configure optional settings:
->
-> ![BIJ Optional Settings Selector](https://mintcdn.com/fireworksai/YH2uwOIOrmQeCBpB/images/batch-inference/BIJ_Optional_Settings_Selector.png?fit=max\&auto=format\&n=YH2uwOIOrmQeCBpB\&q=85\&s=d8809531f0557b468439e553be78c674)
->
-> **firectl**
->
-> ```bash theme={null}
-> firectl batch-inference-job create \
->   --model accounts/fireworks/models/llama-v3p1-8b-instruct \
->   --input-dataset-id batch-input-dataset
-> ```
->
-> With additional parameters:
->
-> ```bash theme={null}
-> firectl batch-inference-job create \
->   --job-id my-batch-job \
->   --model accounts/fireworks/models/llama-v3p1-8b-instruct \
->   --input-dataset-id batch-input-dataset \
->   --output-dataset-id batch-output-dataset \
->   --system-prompt "You are a helpful assistant." \
->   --max-tokens 1024 \
->   --temperature 0.7 \
->   --top-p 0.9
-> ```
->
-> **HTTP API**
->
-> ```bash theme={null}
-> curl -X POST "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/batchInferenceJobs?batchInferenceJobId=my-batch-job" \
->   -H "Authorization: Bearer ${API_KEY}" \
->   -H "Content-Type: application/json" \
->   -d '{
->     "model": "accounts/fireworks/models/llama-v3p1-8b-instruct",
->     "inputDatasetId": "accounts/'${ACCOUNT_ID}'/datasets/batch-input-dataset",
->     "outputDatasetId": "accounts/'${ACCOUNT_ID}'/datasets/batch-output-dataset",
->     "systemPrompt": "You are a helpful assistant.",
->     "inferenceParameters": {
->       "maxTokens": 1024,
->       "temperature": 0.7,
->       "topP": 0.9
->     }
->   }'
-> ```
+> > [tab] HTTP API
+> >
+> > ```bash theme={null}
+> > curl -X POST "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/batchInferenceJobs?batchInferenceJobId=my-batch-job" \
+> >   -H "Authorization: Bearer ${API_KEY}" \
+> >   -H "Content-Type: application/json" \
+> >   -d '{
+> >     "model": "accounts/fireworks/models/llama-v3p1-8b-instruct",
+> >     "inputDatasetId": "accounts/'${ACCOUNT_ID}'/datasets/batch-input-dataset",
+> >     "outputDatasetId": "accounts/'${ACCOUNT_ID}'/datasets/batch-output-dataset",
+> >     "systemPrompt": "You are a helpful assistant.",
+> >     "inferenceParameters": {
+> >       "maxTokens": 1024,
+> >       "temperature": 0.7,
+> >       "topP": 0.9
+> >     }
+> >   }'
+> > ```
 
-> **4. Monitor Your Job**
+> [accordion] 4. Monitor Your Job
 >
-> **UI**
+> > [tab] UI
+> >
+> > View all your batch inference jobs in the dashboard:
+> >
+> > ![BIJ List](https://mintcdn.com/fireworksai/YH2uwOIOrmQeCBpB/images/batch-inference/BIJ_List.png?fit=max\&auto=format\&n=YH2uwOIOrmQeCBpB\&q=85\&s=f205ca5d4e7fdfbb706ead3d0e30f86e)
 >
-> View all your batch inference jobs in the dashboard:
+> > [tab] firectl
+> >
+> > ```bash theme={null}
+> > # Get job status
+> > firectl batch-inference-job get my-batch-job
+> >
+> > # List all batch jobs
+> > firectl batch-inference-job list
+> > ```
 >
-> ![BIJ List](https://mintcdn.com/fireworksai/YH2uwOIOrmQeCBpB/images/batch-inference/BIJ_List.png?fit=max\&auto=format\&n=YH2uwOIOrmQeCBpB\&q=85\&s=f205ca5d4e7fdfbb706ead3d0e30f86e)
->
-> **firectl**
->
-> ```bash theme={null}
-> # Get job status
-> firectl batch-inference-job get my-batch-job
->
-> # List all batch jobs
-> firectl batch-inference-job list
-> ```
->
-> **HTTP API**
->
-> ```bash theme={null}
-> # Get specific job
-> curl -X GET "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/batchInferenceJobs/my-batch-job" \
->   -H "Authorization: Bearer ${API_KEY}"
->
-> # List all jobs
-> curl -X GET "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/batchInferenceJobs" \
->   -H "Authorization: Bearer ${API_KEY}"
-> ```
+> > [tab] HTTP API
+> >
+> > ```bash theme={null}
+> > # Get specific job
+> > curl -X GET "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/batchInferenceJobs/my-batch-job" \
+> >   -H "Authorization: Bearer ${API_KEY}"
+> >
+> > # List all jobs
+> > curl -X GET "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/batchInferenceJobs" \
+> >   -H "Authorization: Bearer ${API_KEY}"
+> > ```
 
-> **5. Download Results**
+> [accordion] 5. Download Results
 >
-> **UI**
+> > [tab] UI
+> >
+> > Navigate to the output dataset and download the results:
+> >
+> > ![BIJ Download Output](https://mintcdn.com/fireworksai/YH2uwOIOrmQeCBpB/images/batch-inference/BIJ_Download_Output.png?fit=max\&auto=format\&n=YH2uwOIOrmQeCBpB\&q=85\&s=e8e05a3aef8d35a49e8124d5b9ad7ecc)
 >
-> Navigate to the output dataset and download the results:
+> > [tab] firectl
+> >
+> > ```bash theme={null}
+> > firectl dataset download batch-output-dataset
+> > ```
 >
-> ![BIJ Download Output](https://mintcdn.com/fireworksai/YH2uwOIOrmQeCBpB/images/batch-inference/BIJ_Download_Output.png?fit=max\&auto=format\&n=YH2uwOIOrmQeCBpB\&q=85\&s=e8e05a3aef8d35a49e8124d5b9ad7ecc)
->
-> **firectl**
->
-> ```bash theme={null}
-> firectl dataset download batch-output-dataset
-> ```
->
-> **HTTP API**
->
-> ```bash theme={null}
-> # Get download endpoint and save response
-> curl -s -X GET "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/datasets/batch-output-dataset:getDownloadEndpoint" \
->   -H "Authorization: Bearer ${API_KEY}" \
->   -d '{}' > download.json
->
-> # Extract and download all files
-> jq -r '.filenameToSignedUrls | to_entries[] | "\(.key) \(.value)"' download.json | \
-> while read -r object_path signed_url; do
->     fname=$(basename "$object_path")
->     echo "Downloading → $fname"
->     curl -L -o "$fname" "$signed_url"
-> done
-> ```
+> > [tab] HTTP API
+> >
+> > ```bash theme={null}
+> > # Get download endpoint and save response
+> > curl -s -X GET "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/datasets/batch-output-dataset:getDownloadEndpoint" \
+> >   -H "Authorization: Bearer ${API_KEY}" \
+> >   -d '{}' > download.json
+> >
+> > # Extract and download all files
+> > jq -r '.filenameToSignedUrls | to_entries[] | "\(.key) \(.value)"' download.json | \
+> > while read -r object_path signed_url; do
+> >     fname=$(basename "$object_path")
+> >     echo "Downloading → $fname"
+> >     curl -L -o "$fname" "$signed_url"
+> > done
+> > ```
 >
 > > [!TIP]
 > >
@@ -282,7 +282,7 @@ The equivalent HTTP field is `systemPrompt`:
 
 ## Reference
 
-> **Job states**
+> [accordion] Job states
 >
 > Batch jobs progress through several states:
 >
@@ -295,21 +295,21 @@ The equivalent HTTP field is `systemPrompt`:
 > | **FAILED** | Unrecoverable error occurred (check status message) |
 > | **EXPIRED** | Exceeded chosen time limit (12, 24, 48, 72 hrs). Completed requests are saved. |
 
-> **Supported models**
+> [accordion] Supported models
 >
 > * **Base Models** – Any model that supports [On-Demand Deployments](https://docs.fireworks.ai/guides/ondemand-deployments) in the [Model Library](https://fireworks.ai/models)
 > * **Custom Models** – Your uploaded or trained models built on a batch-compatible base model
 >
 > *Note: Newly added models may have a delay before being supported. See [Quantization](/models/quantization) for precision info.*
 
-> **Limits and constraints**
+> [accordion] Limits and constraints
 >
 > * **Per-request limits:** Same as [Chat Completion API limits](/api-reference/post-chatcompletions)
 > * **Input dataset:** Up to 80 GiB
 > * **Output dataset:** Max 8GB (job may expire early if limit is reached)
 > * **Job expiration:** Select from 12, 24, 48, 72 hours maximum in Optional Settings
 
-> **Handling expired jobs**
+> [accordion] Handling expired jobs
 >
 > Jobs expire after 24 hours. Completed rows are billed and saved to the output dataset.
 >
@@ -332,7 +332,7 @@ The equivalent HTTP field is `systemPrompt`:
 >
 > Downloads all datasets in the continuation chain.
 
-> **Best practices**
+> [accordion] Best practices
 >
 > * **Validate thoroughly:** Check dataset format before uploading
 > * **Descriptive IDs:** Use meaningful `custom_id` values for tracking
@@ -343,14 +343,14 @@ The equivalent HTTP field is `systemPrompt`:
 
 ## Next Steps
 
-> **[Prompt Caching](/guides/prompt-caching)**
+> [card] [Prompt Caching](/guides/prompt-caching)
 >
 > Maximize cost savings with automatic prompt caching
 
-> **[Training](/fine-tuning/finetuning-intro)**
+> [card] [Training](/fine-tuning/finetuning-intro)
 >
 > Create custom models for your batch workloads
 
-> **[API Reference](/api-reference/create-batch-inference-job)**
+> [card] [API Reference](/api-reference/create-batch-inference-job)
 >
 > Full API documentation for Batch API

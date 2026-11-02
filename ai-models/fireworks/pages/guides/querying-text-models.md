@@ -16,82 +16,82 @@ Fireworks provides fast, cost-effective access to leading open-source text model
 
 ## Chat Completions API
 
-**Python (Fireworks SDK)**
+> [tab] Python (Fireworks SDK)
+>
+> ```python theme={null}
+> from fireworks import Fireworks
+>
+> client = Fireworks()
+>
+> response = client.chat.completions.create(
+>   model="accounts/fireworks/models/glm-5p3-flash",
+>   messages=[{"role": "user", "content": "Explain quantum computing in simple terms"}]
+> )
+>
+> print(response.choices[0].message.content)
+> ```
 
-```python theme={null}
-from fireworks import Fireworks
+> [tab] Python (OpenAI SDK)
+>
+> ```python theme={null}
+> import os
+> from openai import OpenAI
+>
+> client = OpenAI(
+>     api_key=os.environ.get("FIREWORKS_API_KEY"),
+>     base_url="https://api.fireworks.ai/inference/v1"
+> )
+>
+> response = client.chat.completions.create(
+>     model="accounts/fireworks/models/glm-5p3-flash",
+>     messages=[{
+>         "role": "user",
+>         "content": "Explain quantum computing in simple terms"
+>     }]
+> )
+>
+> print(response.choices[0].message.content)
+> ```
 
-client = Fireworks()
+> [tab] JavaScript
+>
+> ```javascript theme={null}
+> import OpenAI from "openai";
+>
+> const client = new OpenAI({
+>   apiKey: process.env.FIREWORKS_API_KEY,
+>   baseURL: "https://api.fireworks.ai/inference/v1",
+> });
+>
+> const response = await client.chat.completions.create({
+>   model: "accounts/fireworks/models/glm-5p3-flash",
+>   messages: [
+>     {
+>       role: "user",
+>       content: "Explain quantum computing in simple terms",
+>     },
+>   ],
+> });
+>
+> console.log(response.choices[0].message.content);
+> ```
 
-response = client.chat.completions.create(
-  model="accounts/fireworks/models/glm-5p3-flash",
-  messages=[{"role": "user", "content": "Explain quantum computing in simple terms"}]
-)
-
-print(response.choices[0].message.content)
-```
-
-**Python (OpenAI SDK)**
-
-```python theme={null}
-import os
-from openai import OpenAI
-
-client = OpenAI(
-    api_key=os.environ.get("FIREWORKS_API_KEY"),
-    base_url="https://api.fireworks.ai/inference/v1"
-)
-
-response = client.chat.completions.create(
-    model="accounts/fireworks/models/glm-5p3-flash",
-    messages=[{
-        "role": "user",
-        "content": "Explain quantum computing in simple terms"
-    }]
-)
-
-print(response.choices[0].message.content)
-```
-
-**JavaScript**
-
-```javascript theme={null}
-import OpenAI from "openai";
-
-const client = new OpenAI({
-  apiKey: process.env.FIREWORKS_API_KEY,
-  baseURL: "https://api.fireworks.ai/inference/v1",
-});
-
-const response = await client.chat.completions.create({
-  model: "accounts/fireworks/models/glm-5p3-flash",
-  messages: [
-    {
-      role: "user",
-      content: "Explain quantum computing in simple terms",
-    },
-  ],
-});
-
-console.log(response.choices[0].message.content);
-```
-
-**curl**
-
-```bash theme={null}
-curl https://api.fireworks.ai/inference/v1/chat/completions \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-  -d '{
-    "model": "accounts/fireworks/models/glm-5p3-flash",
-    "messages": [
-      {
-        "role": "user",
-        "content": "Explain quantum computing in simple terms"
-      }
-    ]
-  }'
-```
+> [tab] curl
+>
+> ```bash theme={null}
+> curl https://api.fireworks.ai/inference/v1/chat/completions \
+>   -H "Content-Type: application/json" \
+>   -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+>   -d '{
+>     "model": "accounts/fireworks/models/glm-5p3-flash",
+>     "messages": [
+>       {
+>         "role": "user",
+>         "content": "Explain quantum computing in simple terms"
+>       }
+>     ]
+>   }'
+> ```
 
 > [!TIP]
 >
@@ -192,64 +192,64 @@ for chunk in stream:
 
 Use async clients to make multiple concurrent requests for better throughput:
 
-**Python (Fireworks SDK)**
+> [tab] Python (Fireworks SDK)
+>
+> ```python theme={null}
+> from fireworks import AsyncFireworks
+>
+> client = AsyncFireworks()
+>
+> async def main():
+>   response = await client.chat.completions.create(
+>     model="accounts/fireworks/models/glm-5p3-flash",
+>     messages=[{"role": "user", "content": "Hello"}]
+>   )
+>   print(response.choices[0].message.content)
+>
+> asyncio.run(main())
+> ```
 
-```python theme={null}
-from fireworks import AsyncFireworks
+> [tab] Python (OpenAI SDK)
+>
+> ```python theme={null}
+> import asyncio
+> from openai import AsyncOpenAI
+>
+> client = AsyncOpenAI(
+>     api_key=os.environ.get("FIREWORKS_API_KEY"),
+>     base_url="https://api.fireworks.ai/inference/v1"
+> )
+>
+> async def main():
+>     response = await client.chat.completions.create(
+>         model="accounts/fireworks/models/glm-5p3-flash",
+>         messages=[{"role": "user", "content": "Hello"}]
+>     )
+>     print(response.choices[0].message.content)
+>
+> asyncio.run(main())
+> ```
 
-client = AsyncFireworks()
-
-async def main():
-  response = await client.chat.completions.create(
-    model="accounts/fireworks/models/glm-5p3-flash",
-    messages=[{"role": "user", "content": "Hello"}]
-  )
-  print(response.choices[0].message.content)
-
-asyncio.run(main())
-```
-
-**Python (OpenAI SDK)**
-
-```python theme={null}
-import asyncio
-from openai import AsyncOpenAI
-
-client = AsyncOpenAI(
-    api_key=os.environ.get("FIREWORKS_API_KEY"),
-    base_url="https://api.fireworks.ai/inference/v1"
-)
-
-async def main():
-    response = await client.chat.completions.create(
-        model="accounts/fireworks/models/glm-5p3-flash",
-        messages=[{"role": "user", "content": "Hello"}]
-    )
-    print(response.choices[0].message.content)
-
-asyncio.run(main())
-```
-
-**JavaScript**
-
-```javascript theme={null}
-import OpenAI from "openai";
-
-const client = new OpenAI({
-  apiKey: process.env.FIREWORKS_API_KEY,
-  baseURL: "https://api.fireworks.ai/inference/v1",
-});
-
-async function main() {
-  const response = await client.chat.completions.create({
-    model: "accounts/fireworks/models/glm-5p3-flash",
-    messages: [{ role: "user", content: "Hello" }],
-  });
-  console.log(response.choices[0].message.content);
-}
-
-main();
-```
+> [tab] JavaScript
+>
+> ```javascript theme={null}
+> import OpenAI from "openai";
+>
+> const client = new OpenAI({
+>   apiKey: process.env.FIREWORKS_API_KEY,
+>   baseURL: "https://api.fireworks.ai/inference/v1",
+> });
+>
+> async function main() {
+>   const response = await client.chat.completions.create({
+>     model: "accounts/fireworks/models/glm-5p3-flash",
+>     messages: [{ role: "user", content: "Hello" }],
+>   });
+>   console.log(response.choices[0].message.content);
+> }
+>
+> main();
+> ```
 
 ### Usage & performance tracking
 
@@ -267,63 +267,63 @@ Every response includes token usage information and performance metrics for debu
 
 **Performance metrics** (latency, time-to-first-token, etc.) are included in response headers for non-streaming requests. For streaming requests, use the [`perf_metrics_in_response`](/api-reference/post-chatcompletions) parameter to include all metrics in the response body.
 
-**Non-streaming**
+> [tab] Non-streaming
+>
+> ```python theme={null}
+> response = client.chat.completions.create(
+>     model="accounts/fireworks/models/glm-5p3-flash",
+>     messages=[{"role": "user", "content": "Hello"}]
+> )
+>
+> # Token usage (always included)
+> print(response.usage.prompt_tokens)      # Tokens in your prompt
+> print(response.usage.completion_tokens)  # Tokens generated
+> print(response.usage.total_tokens)       # Total tokens billed
+>
+> # Performance metrics are in response headers:
+> # fireworks-prompt-tokens, fireworks-server-time-to-first-token, etc.
+> ```
 
-```python theme={null}
-response = client.chat.completions.create(
-    model="accounts/fireworks/models/glm-5p3-flash",
-    messages=[{"role": "user", "content": "Hello"}]
-)
+> [tab] Streaming (usage only)
+>
+> ```python theme={null}
+> stream = client.chat.completions.create(
+>     model="accounts/fireworks/models/glm-5p3-flash",
+>     messages=[{"role": "user", "content": "Hello"}],
+>     stream=True
+> )
+>
+> for chunk in stream:
+>     if chunk.choices[0].delta.content:
+>         print(chunk.choices[0].delta.content, end="")
+>
+>     # Usage is included in the final chunk
+>     if chunk.usage:
+>         print(f"\n\nTokens used: {chunk.usage.total_tokens}")
+>         print(f"Prompt: {chunk.usage.prompt_tokens}, Completion: {chunk.usage.completion_tokens}")
+> ```
 
-# Token usage (always included)
-print(response.usage.prompt_tokens)      # Tokens in your prompt
-print(response.usage.completion_tokens)  # Tokens generated
-print(response.usage.total_tokens)       # Total tokens billed
-
-# Performance metrics are in response headers:
-# fireworks-prompt-tokens, fireworks-server-time-to-first-token, etc.
-```
-
-**Streaming (usage only)**
-
-```python theme={null}
-stream = client.chat.completions.create(
-    model="accounts/fireworks/models/glm-5p3-flash",
-    messages=[{"role": "user", "content": "Hello"}],
-    stream=True
-)
-
-for chunk in stream:
-    if chunk.choices[0].delta.content:
-        print(chunk.choices[0].delta.content, end="")
-    
-    # Usage is included in the final chunk
-    if chunk.usage:
-        print(f"\n\nTokens used: {chunk.usage.total_tokens}")
-        print(f"Prompt: {chunk.usage.prompt_tokens}, Completion: {chunk.usage.completion_tokens}")
-```
-
-**Streaming (with performance metrics)**
-
-```python theme={null}
-stream = client.chat.completions.create(
-    model="accounts/fireworks/models/glm-5p3-flash",
-    messages=[{"role": "user", "content": "Hello, world!"}],
-    stream=True,
-    extra_body={"perf_metrics_in_response": True}
-)
-
-for chunk in stream:
-    if chunk.choices[0].delta.content:
-        print(chunk.choices[0].delta.content, end="")
-    
-    # Both usage and performance metrics are in the final chunk
-    if chunk.choices[0].finish_reason:
-        if chunk.usage:
-            print(f"\n\nTokens: {chunk.usage.total_tokens}")
-        if hasattr(chunk, 'perf_metrics'):
-            print(f"Performance: {chunk.perf_metrics}")
-```
+> [tab] Streaming (with performance metrics)
+>
+> ```python theme={null}
+> stream = client.chat.completions.create(
+>     model="accounts/fireworks/models/glm-5p3-flash",
+>     messages=[{"role": "user", "content": "Hello, world!"}],
+>     stream=True,
+>     extra_body={"perf_metrics_in_response": True}
+> )
+>
+> for chunk in stream:
+>     if chunk.choices[0].delta.content:
+>         print(chunk.choices[0].delta.content, end="")
+>
+>     # Both usage and performance metrics are in the final chunk
+>     if chunk.choices[0].finish_reason:
+>         if chunk.usage:
+>             print(f"\n\nTokens: {chunk.usage.total_tokens}")
+>         if hasattr(chunk, 'perf_metrics'):
+>             print(f"Performance: {chunk.perf_metrics}")
+> ```
 
 > [!NOTE]
 >
@@ -339,33 +339,33 @@ For all available metrics and details, see the [API reference documentation](/ap
 
 Extend text models with additional features for structured outputs, tool integration, and performance optimization:
 
-> **[Tool calling](/guides/function-calling)**
+> [card] [Tool calling](/guides/function-calling)
 >
 > Connect models to external tools and APIs with type-safe parameters
 
-> **[Structured outputs](/structured-responses/structured-response-formatting)**
+> [card] [Structured outputs](/structured-responses/structured-response-formatting)
 >
 > Enforce JSON schemas for reliable data extraction
 
-> **[Responses API](/guides/response-api)**
+> [card] [Responses API](/guides/response-api)
 >
 > Multi-step reasoning for complex problem-solving
 
-> **[Predicted outputs](/guides/predicted-outputs)**
+> [card] [Predicted outputs](/guides/predicted-outputs)
 >
 > Speed up edits by predicting unchanged sections
 
-> **[Prompt caching](/guides/prompt-caching)**
+> [card] [Prompt caching](/guides/prompt-caching)
 >
 > Cache common prompts to reduce latency and cost
 
-> **[Batch inference](/guides/batch-inference)**
+> [card] [Batch inference](/guides/batch-inference)
 >
 > Process large volumes of requests asynchronously
 
 ## Configuration & debugging
 
-> **Sampling parameters**
+> [accordion] Sampling parameters
 >
 > Control how the model generates text. Fireworks automatically uses recommended sampling parameters from each model's HuggingFace `generation_config.json` when you don't specify them explicitly, ensuring optimal performance out-of-the-box.
 >
@@ -449,48 +449,48 @@ Extend text models with additional features for structured outputs, tool integra
 >
 > The `fireworks-sampling-options` header contains the actual default sampling parameters used for the model, including values from the model's HuggingFace `generation_config.json`:
 >
-> **Python**
+> > [tab] Python
+> >
+> > ```python theme={null}
+> > response = client.chat.completions.with_raw_response.create(
+> >   model="accounts/fireworks/models/glm-5p3-flash",
+> >   messages=[{"role": "user", "content": "Hello"}]
+> > )
+> >
+> > # Access headers from the raw response
+> > sampling_options = response.headers.get('fireworks-sampling-options')
+> > print(sampling_options)  # e.g., '{"temperature": 0.7, "top_p": 0.9}'
+> >
+> > completion = response.parse()  # get the parsed response object
+> > print(completion.choices[0].message.content)
+> > ```
 >
-> ```python theme={null}
-> response = client.chat.completions.with_raw_response.create(
->   model="accounts/fireworks/models/glm-5p3-flash",
->   messages=[{"role": "user", "content": "Hello"}]
-> )
->
-> # Access headers from the raw response
-> sampling_options = response.headers.get('fireworks-sampling-options')
-> print(sampling_options)  # e.g., '{"temperature": 0.7, "top_p": 0.9}'
->
-> completion = response.parse()  # get the parsed response object
-> print(completion.choices[0].message.content)
-> ```
->
-> **JavaScript**
->
-> ```javascript theme={null}
-> import OpenAI from "openai";
->
-> const client = new OpenAI({
->   apiKey: process.env.FIREWORKS_API_KEY,
->   baseURL: "https://api.fireworks.ai/inference/v1",
-> });
->
-> const response = await client.chat.completions.with_raw_response.create({
->   model: "accounts/fireworks/models/glm-5p3-flash",
->   messages: [{ role: "user", content: "Hello" }],
-> });
->
-> // Access headers from the raw response
-> const samplingOptions = response.headers.get('fireworks-sampling-options');
-> console.log(samplingOptions); // e.g., '{"temperature": 0.7, "top_p": 0.9}'
->
-> const completion = response.parse(); // get the parsed response object
-> console.log(completion.choices[0].message.content);
-> ```
+> > [tab] JavaScript
+> >
+> > ```javascript theme={null}
+> > import OpenAI from "openai";
+> >
+> > const client = new OpenAI({
+> >   apiKey: process.env.FIREWORKS_API_KEY,
+> >   baseURL: "https://api.fireworks.ai/inference/v1",
+> > });
+> >
+> > const response = await client.chat.completions.with_raw_response.create({
+> >   model: "accounts/fireworks/models/glm-5p3-flash",
+> >   messages: [{ role: "user", content: "Hello" }],
+> > });
+> >
+> > // Access headers from the raw response
+> > const samplingOptions = response.headers.get('fireworks-sampling-options');
+> > console.log(samplingOptions); // e.g., '{"temperature": 0.7, "top_p": 0.9}'
+> >
+> > const completion = response.parse(); // get the parsed response object
+> > console.log(completion.choices[0].message.content);
+> > ```
 >
 > See the [API reference](/api-reference/post-chatcompletions) for detailed parameter descriptions.
 
-> **Multiple generations**
+> [accordion] Multiple generations
 >
 > Generate multiple completions in one request:
 >
@@ -505,7 +505,7 @@ Extend text models with additional features for structured outputs, tool integra
 >     print(choice.message.content)
 > ```
 
-> **Token probabilities (logprobs)**
+> [accordion] Token probabilities (logprobs)
 >
 > Inspect token probabilities for debugging or analysis:
 >
@@ -521,7 +521,7 @@ Extend text models with additional features for structured outputs, tool integra
 >     print(f"Token: {content.token}, Logprob: {content.logprob}")
 > ```
 
-> **Prompt inspection (echo & raw\_output)**
+> [accordion] Prompt inspection (echo & raw\_output)
 >
 > Verify how your prompt was formatted:
 >
@@ -564,7 +564,7 @@ Extend text models with additional features for structured outputs, tool integra
 > print(response.choices[0].raw_output.completion)  # Raw completion
 > ```
 
-> **Ignore EOS token**
+> [accordion] Ignore EOS token
 >
 > Force generation to continue past the end-of-sequence token (useful for benchmarking):
 >
@@ -581,7 +581,7 @@ Extend text models with additional features for structured outputs, tool integra
 > >
 > > Output quality may degrade when ignoring EOS. This API is experimental and should not be relied upon for production use cases.
 
-> **Logit bias**
+> [accordion] Logit bias
 >
 > Modify token probabilities to encourage or discourage specific tokens:
 >
@@ -596,7 +596,7 @@ Extend text models with additional features for structured outputs, tool integra
 > )
 > ```
 
-> **Mirostat sampling**
+> [accordion] Mirostat sampling
 >
 > Control perplexity dynamically using the [Mirostat algorithm](https://arxiv.org/abs/2007.14966):
 >
@@ -627,26 +627,26 @@ Fireworks provides an OpenAI-compatible API, making migration from OpenAI straig
 
 ## Next steps
 
-> **[Vision models](/guides/querying-vision-language-models)**
+> [card] [Vision models](/guides/querying-vision-language-models)
 >
 > Process images alongside text
 
-> **[Embeddings](/guides/querying-embeddings-models)**
+> [card] [Embeddings](/guides/querying-embeddings-models)
 >
 > Generate vector representations for search
 
-> **[On-demand deployments](/guides/ondemand-deployments)**
+> [card] [On-demand deployments](/guides/ondemand-deployments)
 >
 > Deploy models on dedicated GPUs
 
-> **[Training](/fine-tuning/finetuning-intro)**
+> [card] [Training](/fine-tuning/finetuning-intro)
 >
 > Customize models for your use case
 
-> **[Error codes](/guides/inference-error-codes)**
+> [card] [Error codes](/guides/inference-error-codes)
 >
 > Troubleshoot common inference errors
 
-> **[API Reference](/api-reference/post-chatcompletions)**
+> [card] [API Reference](/api-reference/post-chatcompletions)
 >
 > Complete API documentation

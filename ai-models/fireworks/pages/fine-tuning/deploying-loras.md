@@ -77,37 +77,37 @@ Over the API, call [Match Deployment Shape Versions](/api-reference/match-deploy
 
 Send inference requests to your live-merge deployment by referencing the deployment directly:
 
-**Python (Fireworks SDK)**
+> [tab] Python (Fireworks SDK)
+>
+> ```python theme={null}
+> from fireworks import Fireworks
+>
+> client = Fireworks()
+>
+> response = client.chat.completions.create(
+>   model="accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>",
+>   messages=[{"role": "user", "content": "Hello!"}]
+> )
+>
+> print(response.choices[0].message.content)
+> ```
 
-```python theme={null}
-from fireworks import Fireworks
-
-client = Fireworks()
-
-response = client.chat.completions.create(
-  model="accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>",
-  messages=[{"role": "user", "content": "Hello!"}]
-)
-
-print(response.choices[0].message.content)
-```
-
-**curl**
-
-```bash theme={null}
-curl https://api.fireworks.ai/inference/v1/chat/completions \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-  -d '{
-    "model": "accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>",
-    "messages": [
-      {
-        "role": "user",
-        "content": "Hello!"
-      }
-    ]
-  }'
-```
+> [tab] curl
+>
+> ```bash theme={null}
+> curl https://api.fireworks.ai/inference/v1/chat/completions \
+>   -H "Content-Type: application/json" \
+>   -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+>   -d '{
+>     "model": "accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>",
+>     "messages": [
+>       {
+>         "role": "user",
+>         "content": "Hello!"
+>       }
+>     ]
+>   }'
+> ```
 
 ### When to use live merge
 
@@ -215,79 +215,79 @@ To route inference requests to a specific LoRA adapter on a multi-LoRA deploymen
 >
 > **Deprecation notice:** The `deployedModel` request key for routing to LoRA addons is deprecated and will not be supported for any new deployments. Use the `model` field with the `<model_name>#<deployment_name>` format shown below.
 
-**Python (Fireworks SDK)**
+> [tab] Python (Fireworks SDK)
+>
+> ```python theme={null}
+> from fireworks import Fireworks
+>
+> client = Fireworks()
+>
+> response = client.chat.completions.create(
+>   model="accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>#accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>",
+>   messages=[{"role": "user", "content": "Hello!"}]
+> )
+>
+> print(response.choices[0].message.content)
+> ```
 
-```python theme={null}
-from fireworks import Fireworks
+> [tab] Python (OpenAI SDK)
+>
+> ```python theme={null}
+> import os
+> from openai import OpenAI
+>
+> client = OpenAI(
+>     api_key=os.environ.get("FIREWORKS_API_KEY"),
+>     base_url="https://api.fireworks.ai/inference/v1"
+> )
+>
+> response = client.chat.completions.create(
+>     model="accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>#accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>",
+>     messages=[{"role": "user", "content": "Hello!"}]
+> )
+>
+> print(response.choices[0].message.content)
+> ```
 
-client = Fireworks()
+> [tab] JavaScript
+>
+> ```javascript theme={null}
+> import OpenAI from "openai";
+>
+> const client = new OpenAI({
+>   apiKey: process.env.FIREWORKS_API_KEY,
+>   baseURL: "https://api.fireworks.ai/inference/v1",
+> });
+>
+> const response = await client.chat.completions.create({
+>   model: "accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>#accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>",
+>   messages: [
+>     {
+>       role: "user",
+>       content: "Hello!",
+>     },
+>   ],
+> });
+>
+> console.log(response.choices[0].message.content);
+> ```
 
-response = client.chat.completions.create(
-  model="accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>#accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>",
-  messages=[{"role": "user", "content": "Hello!"}]
-)
-
-print(response.choices[0].message.content)
-```
-
-**Python (OpenAI SDK)**
-
-```python theme={null}
-import os
-from openai import OpenAI
-
-client = OpenAI(
-    api_key=os.environ.get("FIREWORKS_API_KEY"),
-    base_url="https://api.fireworks.ai/inference/v1"
-)
-
-response = client.chat.completions.create(
-    model="accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>#accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>",
-    messages=[{"role": "user", "content": "Hello!"}]
-)
-
-print(response.choices[0].message.content)
-```
-
-**JavaScript**
-
-```javascript theme={null}
-import OpenAI from "openai";
-
-const client = new OpenAI({
-  apiKey: process.env.FIREWORKS_API_KEY,
-  baseURL: "https://api.fireworks.ai/inference/v1",
-});
-
-const response = await client.chat.completions.create({
-  model: "accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>#accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>",
-  messages: [
-    {
-      role: "user",
-      content: "Hello!",
-    },
-  ],
-});
-
-console.log(response.choices[0].message.content);
-```
-
-**curl**
-
-```bash theme={null}
-curl https://api.fireworks.ai/inference/v1/chat/completions \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-  -d '{
-    "model": "accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>#accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>",
-    "messages": [
-      {
-        "role": "user",
-        "content": "Hello!"
-      }
-    ]
-  }'
-```
+> [tab] curl
+>
+> ```bash theme={null}
+> curl https://api.fireworks.ai/inference/v1/chat/completions \
+>   -H "Content-Type: application/json" \
+>   -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+>   -d '{
+>     "model": "accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>#accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>",
+>     "messages": [
+>       {
+>         "role": "user",
+>         "content": "Hello!"
+>       }
+>     ]
+>   }'
+> ```
 
 ### When to use multi-LoRA
 
@@ -412,10 +412,10 @@ Signs you have hit this failure mode:
 
 ## Next steps
 
-> **[On-Demand Deployments](/guides/ondemand-deployments)**
+> [card] [On-Demand Deployments](/guides/ondemand-deployments)
 >
 > Deployment configuration, scaling, and hardware
 
-> **[Import Trained Models](/models/uploading-custom-models#importing-trained-models)**
+> [card] [Import Trained Models](/models/uploading-custom-models#importing-trained-models)
 >
 > Upload LoRA models trained outside Fireworks

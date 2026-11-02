@@ -110,79 +110,79 @@ accounts/alice/deployments/12345678
 
 ### Code examples
 
-**Python (Fireworks SDK)**
+> [tab] Python (Fireworks SDK)
+>
+> ```python theme={null}
+> from fireworks import Fireworks
+>
+> client = Fireworks()
+>
+> response = client.chat.completions.create(
+>   model="accounts/fireworks/models/gpt-oss-120b#<DEPLOYMENT_NAME>",
+>   messages=[{"role": "user", "content": "Explain quantum computing in simple terms"}]
+> )
+>
+> print(response.choices[0].message.content)
+> ```
 
-```python theme={null}
-from fireworks import Fireworks
+> [tab] Python (OpenAI SDK)
+>
+> ```python theme={null}
+> import os
+> from openai import OpenAI
+>
+> client = OpenAI(
+>     api_key=os.environ.get("FIREWORKS_API_KEY"),
+>     base_url="https://api.fireworks.ai/inference/v1"
+> )
+>
+> response = client.chat.completions.create(
+>     model="accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>",
+>     messages=[{"role": "user", "content": "Explain quantum computing in simple terms"}]
+> )
+>
+> print(response.choices[0].message.content)
+> ```
 
-client = Fireworks()
+> [tab] JavaScript
+>
+> ```javascript theme={null}
+> import OpenAI from "openai";
+>
+> const client = new OpenAI({
+>   apiKey: process.env.FIREWORKS_API_KEY,
+>   baseURL: "https://api.fireworks.ai/inference/v1",
+> });
+>
+> const response = await client.chat.completions.create({
+>   model: "accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>",
+>   messages: [
+>     {
+>       role: "user",
+>       content: "Explain quantum computing in simple terms",
+>     },
+>   ],
+> });
+>
+> console.log(response.choices[0].message.content);
+> ```
 
-response = client.chat.completions.create(
-  model="accounts/fireworks/models/gpt-oss-120b#<DEPLOYMENT_NAME>",
-  messages=[{"role": "user", "content": "Explain quantum computing in simple terms"}]
-)
-
-print(response.choices[0].message.content)
-```
-
-**Python (OpenAI SDK)**
-
-```python theme={null}
-import os
-from openai import OpenAI
-
-client = OpenAI(
-    api_key=os.environ.get("FIREWORKS_API_KEY"),
-    base_url="https://api.fireworks.ai/inference/v1"
-)
-
-response = client.chat.completions.create(
-    model="accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>",
-    messages=[{"role": "user", "content": "Explain quantum computing in simple terms"}]
-)
-
-print(response.choices[0].message.content)
-```
-
-**JavaScript**
-
-```javascript theme={null}
-import OpenAI from "openai";
-
-const client = new OpenAI({
-  apiKey: process.env.FIREWORKS_API_KEY,
-  baseURL: "https://api.fireworks.ai/inference/v1",
-});
-
-const response = await client.chat.completions.create({
-  model: "accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>",
-  messages: [
-    {
-      role: "user",
-      content: "Explain quantum computing in simple terms",
-    },
-  ],
-});
-
-console.log(response.choices[0].message.content);
-```
-
-**curl**
-
-```bash theme={null}
-curl https://api.fireworks.ai/inference/v1/chat/completions \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-  -d '{
-    "model": "accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>",
-    "messages": [
-      {
-        "role": "user",
-        "content": "Explain quantum computing in simple terms"
-      }
-    ]
-  }'
-```
+> [tab] curl
+>
+> ```bash theme={null}
+> curl https://api.fireworks.ai/inference/v1/chat/completions \
+>   -H "Content-Type: application/json" \
+>   -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+>   -d '{
+>     "model": "accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>",
+>     "messages": [
+>       {
+>         "role": "user",
+>         "content": "Explain quantum computing in simple terms"
+>       }
+>     ]
+>   }'
+> ```
 
 ### Deployment status states
 
@@ -246,39 +246,39 @@ firectl deployment-shape-version get <full-deployment-shape-version-id>
 
 Every client surface accepts a special value that has the server pick a validated shape for the model and apply it, the same as passing that shape explicitly:
 
-**firectl**
+> [tab] firectl
+>
+> ```bash theme={null}
+> firectl deployment create accounts/fireworks/models/gpt-oss-120b \
+>   --deployment-shape default
+> ```
 
-```bash theme={null}
-firectl deployment create accounts/fireworks/models/gpt-oss-120b \
-  --deployment-shape default
-```
+> [tab] REST API
+>
+> Pass `"default"` as `deploymentShape`:
+>
+> ```bash theme={null}
+> curl -X POST "https://api.fireworks.ai/v1/accounts/YOUR_ACCOUNT_ID/deployments" \
+>   -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+>   -H "Content-Type: application/json" \
+>   -d '{
+>     "baseModel": "accounts/fireworks/models/gpt-oss-120b",
+>     "deploymentShape": "default"
+>   }'
+> ```
 
-**REST API**
-
-Pass `"default"` as `deploymentShape`:
-
-```bash theme={null}
-curl -X POST "https://api.fireworks.ai/v1/accounts/YOUR_ACCOUNT_ID/deployments" \
-  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "baseModel": "accounts/fireworks/models/gpt-oss-120b",
-    "deploymentShape": "default"
-  }'
-```
-
-**Python SDK**
-
-```python theme={null}
-from fireworks import Fireworks
-
-client = Fireworks()
-client.deployments.create(
-    account_id="YOUR_ACCOUNT_ID",
-    base_model="accounts/fireworks/models/gpt-oss-120b",
-    deployment_shape="default",
-)
-```
+> [tab] Python SDK
+>
+> ```python theme={null}
+> from fireworks import Fireworks
+>
+> client = Fireworks()
+> client.deployments.create(
+>     account_id="YOUR_ACCOUNT_ID",
+>     base_model="accounts/fireworks/models/gpt-oss-120b",
+>     deployment_shape="default",
+> )
+> ```
 
 The pick never silently overrides fields you set. If every compatible shape conflicts with fields in your request (for example an `acceleratorType` no shape validates), the request fails with an error naming the conflicting fields, the compatible shapes, and how to create the deployment without a shape. If no shape is compatible with the model at all, the request also fails — in that case, [contact us](https://fireworks.ai/contact) and we'll help you find or add one.
 
@@ -286,38 +286,38 @@ The pick never silently overrides fields you set. If every compatible shape conf
 
 Every surface accepts an explicit opt-out that creates the deployment without a shape. Setting it together with a shape is an error — a deployment is either shaped or explicitly shapeless.
 
-**firectl**
+> [tab] firectl
+>
+> ```bash theme={null}
+> firectl deployment create accounts/fireworks/models/gpt-oss-120b \
+>   --accept-shapeless-risk
+> ```
 
-```bash theme={null}
-firectl deployment create accounts/fireworks/models/gpt-oss-120b \
-  --accept-shapeless-risk
-```
+> [tab] REST API
+>
+> Pass `acceptShapelessRisk=true` as a query parameter:
+>
+> ```bash theme={null}
+> curl -X POST "https://api.fireworks.ai/v1/accounts/YOUR_ACCOUNT_ID/deployments?acceptShapelessRisk=true" \
+>   -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+>   -H "Content-Type: application/json" \
+>   -d '{
+>     "baseModel": "accounts/fireworks/models/gpt-oss-120b"
+>   }'
+> ```
 
-**REST API**
-
-Pass `acceptShapelessRisk=true` as a query parameter:
-
-```bash theme={null}
-curl -X POST "https://api.fireworks.ai/v1/accounts/YOUR_ACCOUNT_ID/deployments?acceptShapelessRisk=true" \
-  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "baseModel": "accounts/fireworks/models/gpt-oss-120b"
-  }'
-```
-
-**Python SDK**
-
-```python theme={null}
-from fireworks import Fireworks
-
-client = Fireworks()
-client.deployments.create(
-    account_id="YOUR_ACCOUNT_ID",
-    base_model="accounts/fireworks/models/gpt-oss-120b",
-    accept_shapeless_risk=True,
-)
-```
+> [tab] Python SDK
+>
+> ```python theme={null}
+> from fireworks import Fireworks
+>
+> client = Fireworks()
+> client.deployments.create(
+>     account_id="YOUR_ACCOUNT_ID",
+>     base_model="accounts/fireworks/models/gpt-oss-120b",
+>     accept_shapeless_risk=True,
+> )
+> ```
 
 > [!WARNING]
 >
@@ -474,26 +474,26 @@ firectl deployment delete <NAME> -a <ACCOUNT_ID>
 
 ## Next steps
 
-> **[Autoscaling](/deployments/autoscaling)**
+> [card] [Autoscaling](/deployments/autoscaling)
 >
 > Configure autoscaling for optimal cost and performance
 
-> **[Upload custom models](/models/uploading-custom-models)**
+> [card] [Upload custom models](/models/uploading-custom-models)
 >
 > Deploy your own models from Hugging Face
 
-> **[Quantization](/models/quantization)**
+> [card] [Quantization](/models/quantization)
 >
 > Reduce costs with model quantization
 
-> **[Regions](/deployments/regions)**
+> [card] [Regions](/deployments/regions)
 >
 > Choose deployment regions for optimal latency
 
-> **[Reserved capacity](/deployments/reservations)**
+> [card] [Reserved capacity](/deployments/reservations)
 >
 > Purchase reserved GPUs for guaranteed capacity
 
-> **[Training](/fine-tuning/finetuning-intro)**
+> [card] [Training](/fine-tuning/finetuning-intro)
 >
 > Train models for your specific use case

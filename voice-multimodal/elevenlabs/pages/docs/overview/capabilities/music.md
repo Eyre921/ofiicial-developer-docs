@@ -10,6 +10,12 @@ path: docs/overview/capabilities/music
 
 ## Overview
 
+> **Error**
+>
+> The `music_v1` model is deprecated and will be removed on **January 31, 2027**. Please migrate to
+> `music_v2_5` for continued service. If your requests don't set `model_id`, set it explicitly. See
+> [deprecated models](/docs/overview/models#deprecated-models).
+
 Eleven Music is a Text to Music model that generates studio-grade music with natural language prompts in any style. It's designed to understand intent and generate complete, context-aware audio based on your goals. The model understands both natural language and musical terminology, providing you with state-of-the-art features:
 
 * Complete control over genre, style, and structure

@@ -1,5 +1,5 @@
 ---
-title: "Docs (154 pages)"
+title: "Docs (156 pages)"
 source: https://openrouter.ai/docs/_llms/docs.txt
 path: docs/_llms/docs.txt
 ---
@@ -114,6 +114,8 @@ path: docs/_llms/docs.txt
 #### Guardrails
 
 - [Guardrails](https://openrouter.ai/docs/guides/features/guardrails.md): Control spending and model access for your organization
+- [Guardrail Policies](https://openrouter.ai/docs/guides/features/guardrails/policies.md): Control spending, model access, and content moderation with separate guardrail policies
+- [Migrating to Guardrail Policies](https://openrouter.ai/docs/guides/features/guardrails/policies-migration.md): What changes for API and Terraform users moving from guardrails to Guardrail Policies
 - [Sensitive Info Guardrail](https://openrouter.ai/docs/guides/features/guardrails/sensitive-info.md): Automatically detect and handle sensitive information in API requests
 - [Detected Secret Formats](https://openrouter.ai/docs/guides/features/guardrails/secret-formats.md): Full list of API key and credential formats detected by the Secrets guardrail preset
 

@@ -4,9 +4,13 @@ source: https://developers.notion.com/guides/mcp/notion-skills
 path: guides/mcp/notion-skills
 ---
 
-Learn how MCP clients create, find, and use reusable instructions stored as Notion pages.
+Create reusable instructions as Skills in Notion, share them with teammates, and use them across AI assistants connected to Notion MCP.
 
-A Notion Skill is a page you own with instructions for a repeatable workflow. You can maintain it yourself or ask an assistant to do it for you.
+A Notion Skill is a page of instructions your AI assistant can follow for a repeatable task, like preparing a meeting or writing a project update.
+
+Create and edit Skills in Notion, share them with teammates, and use them with any AI assistant connected to Notion MCP. Your team can maintain one shared set of instructions and reuse it across assistants.
+
+Your assistant can only access Skills you have permission to view. You can edit the instructions yourself or ask your assistant to update them.
 
 ## Create a Skill
 

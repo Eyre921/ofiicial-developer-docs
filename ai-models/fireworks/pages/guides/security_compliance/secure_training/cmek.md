@@ -89,84 +89,84 @@ Create a symmetric encryption key in your cloud KMS (or pick an existing one). O
 
 Authorize the Fireworks identity to call `Encrypt` and `Decrypt` on your key. You grant access to the federated identity — you never share a secret.
 
-**AWS KMS**
+> [tab] AWS KMS
+>
+> Create an IAM role the Fireworks identity can assume via web-identity federation, and allow that role `Encrypt`/`Decrypt` on your key. You do **not** need to register an OIDC identity provider — `accounts.google.com` is a built-in federated principal in AWS STS.
+>
+> Trust policy on the role, locked to the Fireworks identity:
+>
+> ```json theme={null}
+> {
+>   "Effect": "Allow",
+>   "Principal": { "Federated": "accounts.google.com" },
+>   "Action": "sts:AssumeRoleWithWebIdentity",
+>   "Condition": {
+>     "StringEquals": {
+>       "accounts.google.com:sub": "<FIREWORKS_CMEK_OIDC_SUBJECT>",
+>       "accounts.google.com:oaud": "<YOUR_FIREWORKS_ACCOUNT_ID>"
+>     }
+>   }
+> }
+> ```
+>
+> The `sub` condition locks assumption to the Fireworks identity; the `oaud` condition pins the token's audience to your Fireworks account, so a token issued for any other account is rejected.
+>
+> AWS KMS authorizes against both IAM and the key policy, so grant `kms:Encrypt` and `kms:Decrypt` on the specific key in **both** the role's permissions policy **and** the key policy.
+>
+> You'll register the account ID, region, key ARN, and role ARN with Fireworks in the next step.
 
-Create an IAM role the Fireworks identity can assume via web-identity federation, and allow that role `Encrypt`/`Decrypt` on your key. You do **not** need to register an OIDC identity provider — `accounts.google.com` is a built-in federated principal in AWS STS.
+> [tab] Google Cloud KMS
+>
+> Create a workload identity pool with an OIDC provider that trusts the Fireworks identity, then grant the federated principal `Encrypt`/`Decrypt` on your key. The principal lives in your own project, so this works even under org policies that forbid granting roles to service accounts outside your organization.
+>
+> ```bash theme={null}
+> # 1. Create a workload identity pool
+> gcloud iam workload-identity-pools create fireworks-cmek \
+>   --location="global" --display-name="Fireworks CMEK"
+>
+> # 2. Add an OIDC provider that trusts the Fireworks identity,
+> #    scoped to your Fireworks account ID as the allowed audience
+> gcloud iam workload-identity-pools providers create-oidc fireworks-cmek \
+>   --location="global" \
+>   --workload-identity-pool="fireworks-cmek" \
+>   --issuer-uri="https://accounts.google.com" \
+>   --allowed-audiences="<YOUR_FIREWORKS_ACCOUNT_ID>" \
+>   --attribute-mapping="google.subject=assertion.sub" \
+>   --attribute-condition="assertion.sub == '<FIREWORKS_CMEK_OIDC_SUBJECT>'"
+>
+> # 3. Grant Encrypt/Decrypt on the key to the federated principal
+> gcloud kms keys add-iam-policy-binding <YOUR_KEY> \
+>   --keyring="<YOUR_KEYRING>" --location="<LOCATION>" \
+>   --member="principal://iam.googleapis.com/projects/<YOUR_PROJECT_NUMBER>/locations/global/workloadIdentityPools/fireworks-cmek/subject/<FIREWORKS_CMEK_OIDC_SUBJECT>" \
+>   --role="roles/cloudkms.cryptoKeyEncrypterDecrypter"
+> ```
+>
+> The predefined `cryptoKeyEncrypterDecrypter` role is exactly `useToEncrypt` + `useToDecrypt`. If you prefer to pin the permission set yourself, create a custom role with just those two permissions and bind that instead.
+>
+> You'll register your project number, workload identity pool and provider IDs, and the key resource name with Fireworks in the next step.
 
-Trust policy on the role, locked to the Fireworks identity:
-
-```json theme={null}
-{
-  "Effect": "Allow",
-  "Principal": { "Federated": "accounts.google.com" },
-  "Action": "sts:AssumeRoleWithWebIdentity",
-  "Condition": {
-    "StringEquals": {
-      "accounts.google.com:sub": "<FIREWORKS_CMEK_OIDC_SUBJECT>",
-      "accounts.google.com:oaud": "<YOUR_FIREWORKS_ACCOUNT_ID>"
-    }
-  }
-}
-```
-
-The `sub` condition locks assumption to the Fireworks identity; the `oaud` condition pins the token's audience to your Fireworks account, so a token issued for any other account is rejected.
-
-AWS KMS authorizes against both IAM and the key policy, so grant `kms:Encrypt` and `kms:Decrypt` on the specific key in **both** the role's permissions policy **and** the key policy.
-
-You'll register the account ID, region, key ARN, and role ARN with Fireworks in the next step.
-
-**Google Cloud KMS**
-
-Create a workload identity pool with an OIDC provider that trusts the Fireworks identity, then grant the federated principal `Encrypt`/`Decrypt` on your key. The principal lives in your own project, so this works even under org policies that forbid granting roles to service accounts outside your organization.
-
-```bash theme={null}
-# 1. Create a workload identity pool
-gcloud iam workload-identity-pools create fireworks-cmek \
-  --location="global" --display-name="Fireworks CMEK"
-
-# 2. Add an OIDC provider that trusts the Fireworks identity,
-#    scoped to your Fireworks account ID as the allowed audience
-gcloud iam workload-identity-pools providers create-oidc fireworks-cmek \
-  --location="global" \
-  --workload-identity-pool="fireworks-cmek" \
-  --issuer-uri="https://accounts.google.com" \
-  --allowed-audiences="<YOUR_FIREWORKS_ACCOUNT_ID>" \
-  --attribute-mapping="google.subject=assertion.sub" \
-  --attribute-condition="assertion.sub == '<FIREWORKS_CMEK_OIDC_SUBJECT>'"
-
-# 3. Grant Encrypt/Decrypt on the key to the federated principal
-gcloud kms keys add-iam-policy-binding <YOUR_KEY> \
-  --keyring="<YOUR_KEYRING>" --location="<LOCATION>" \
-  --member="principal://iam.googleapis.com/projects/<YOUR_PROJECT_NUMBER>/locations/global/workloadIdentityPools/fireworks-cmek/subject/<FIREWORKS_CMEK_OIDC_SUBJECT>" \
-  --role="roles/cloudkms.cryptoKeyEncrypterDecrypter"
-```
-
-The predefined `cryptoKeyEncrypterDecrypter` role is exactly `useToEncrypt` + `useToDecrypt`. If you prefer to pin the permission set yourself, create a custom role with just those two permissions and bind that instead.
-
-You'll register your project number, workload identity pool and provider IDs, and the key resource name with Fireworks in the next step.
-
-**Azure Key Vault**
-
-Add a federated credential to an Entra app registration (or a user-assigned managed identity) that trusts the Fireworks identity, then grant that identity crypto permissions on your key. Works with both Standard vaults and Managed HSM.
-
-```bash theme={null}
-# 1. Trust the Fireworks identity on your app registration
-az identity federated-credential create \
-  --name fireworks-cmek \
-  --identity-name <YOUR_MANAGED_IDENTITY> \
-  --resource-group <YOUR_RESOURCE_GROUP> \
-  --issuer "https://accounts.google.com" \
-  --subject "<FIREWORKS_CMEK_OIDC_SUBJECT>" \
-  --audiences "<YOUR_FIREWORKS_ACCOUNT_ID>"
-
-# 2. Grant Encrypt/Decrypt on the key
-az role assignment create \
-  --assignee <YOUR_CLIENT_ID> \
-  --role "Key Vault Crypto User" \
-  --scope <YOUR_KEY_VAULT_KEY_ID>
-```
-
-Fireworks authenticates as one app registration per Fireworks account. You'll register the tenant ID, client ID, and the fully versioned Key Vault key identifier (including the version segment) with Fireworks in the next step.
+> [tab] Azure Key Vault
+>
+> Add a federated credential to an Entra app registration (or a user-assigned managed identity) that trusts the Fireworks identity, then grant that identity crypto permissions on your key. Works with both Standard vaults and Managed HSM.
+>
+> ```bash theme={null}
+> # 1. Trust the Fireworks identity on your app registration
+> az identity federated-credential create \
+>   --name fireworks-cmek \
+>   --identity-name <YOUR_MANAGED_IDENTITY> \
+>   --resource-group <YOUR_RESOURCE_GROUP> \
+>   --issuer "https://accounts.google.com" \
+>   --subject "<FIREWORKS_CMEK_OIDC_SUBJECT>" \
+>   --audiences "<YOUR_FIREWORKS_ACCOUNT_ID>"
+>
+> # 2. Grant Encrypt/Decrypt on the key
+> az role assignment create \
+>   --assignee <YOUR_CLIENT_ID> \
+>   --role "Key Vault Crypto User" \
+>   --scope <YOUR_KEY_VAULT_KEY_ID>
+> ```
+>
+> Fireworks authenticates as one app registration per Fireworks account. You'll register the tenant ID, client ID, and the fully versioned Key Vault key identifier (including the version segment) with Fireworks in the next step.
 
 **3. Register the key with your Fireworks account**
 
@@ -240,10 +240,10 @@ Every `Encrypt` and `Decrypt` call Fireworks makes against your key is recorded 
 
 ## Related Resources
 
-> **[Bring Your Own Bucket (BYOB)](/guides/security_compliance/secure_training/byob)**
+> [card] [Bring Your Own Bucket (BYOB)](/guides/security_compliance/secure_training/byob)
 >
 > Keep training datasets in your own cloud storage
 
-> **[Data Security Overview](/guides/security_compliance/data_security)**
+> [card] [Data Security Overview](/guides/security_compliance/data_security)
 >
 > Learn about our comprehensive security measures
