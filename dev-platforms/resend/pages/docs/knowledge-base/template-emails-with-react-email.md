@@ -204,19 +204,19 @@ Run the React Email preview server and visit the **Resend** tab of the toolbar. 
 
 If you want to remove the Resend integration, run `npx react-email@latest resend reset`.
 
-> **[React Email components](https://react.email/docs/components/html)**
+> [card] [React Email components](https://react.email/docs/components/html)
 >
 > Browse every available component — Button, Container, Tailwind, and more.
 
-> **[Resend CLI reference](/docs/cli)**
+> [card] [Resend CLI reference](/docs/cli)
 >
 > See every CLI command and flag, including templates, automations, and
 > webhooks.
 
-> **[Templates introduction](/docs/dashboard/templates/introduction)**
+> [card] [Templates introduction](/docs/dashboard/templates/introduction)
 >
 > Learn how Templates, variables, and version history work in Resend.
 
-> **[Embed the React Email editor](/docs/knowledge-base/embed-react-email-editor)**
+> [card] [Embed the React Email editor](/docs/knowledge-base/embed-react-email-editor)
 >
 > Add the open-source visual editor to your own app.

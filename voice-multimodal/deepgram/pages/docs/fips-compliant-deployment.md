@@ -6,7 +6,6 @@ path: docs/fips-compliant-deployment
 
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
-> For AI client integration (Claude Code, Cursor, etc.), connect to the MCP server at https://developers.deepgram.com/_mcp/server.
 
 # FIPS-Compliant Deployment
 
@@ -70,7 +69,7 @@ Your Deepgram account team provides download links for the FIPS-encrypted models
 
 ### Model Support
 
-**Flux STT is not currently supported on FIPS images.** [Flux STT](/docs/flux-self-hosted) can only be run on standard (non-FIPS) images.
+**Flux STT runs on FIPS images starting with `release-261020`.** [Flux STT](/docs/flux-self-hosted) loads `.dgv2` Flux model files from that release onward. All Engine images require NVIDIA driver `>=580` (open kernel modules). The FIPS Engine image enforces this: on an older driver it falls back to CPU, and with Flux enabled it restarts repeatedly and Flux requests return `503`. See [Drivers and Containerization Platforms](/docs/drivers-and-containerization-platforms). Earlier releases run Flux STT on standard (non-FIPS) images only.
 
 **Flux TTS runs on FIPS images.** [Flux TTS](/docs/deploy-flux-tts) is subject to the [MP3 and FLAC output](#mp3-and-flac-output) issue below: batch `/v2/speak` requests return MP3 unless they set `encoding`, so set it explicitly. Streaming `/v2/speak` output is unaffected.
 

@@ -32,7 +32,6 @@ Keep track of changes and upgrades to the Stripe API.
 | [Updates the settlement currency property on Financial Addresses](https://docs.stripe.com/changelog/endive/2026-10-28/financial-addresses-settlement-currency.md) | All products | Breaking | api |
 | [Updates the Vaulted bank account credentials and Payout Methods v2 APIs](https://docs.stripe.com/changelog/endive/2026-10-28/vaulted-bank-account-credentials-payout-methods-apis.md) | Payouts | Breaking | api |
 | [Adds APIs and capabilities for outbound payments and transfers](https://docs.stripe.com/changelog/endive/2026-10-28/outbound-flows-api-updates.md) | Treasury | Breaking | api |
-| [Adds SEPA Instant Credit Transfer as a received credit network type](https://docs.stripe.com/changelog/endive/2026-10-28/sepa-instant-credit-transfer-received-credit-network-type.md) | All products | Non-breaking | api |
 | [Renames the wire network value to fedwire for Financial Address credit simulations](https://docs.stripe.com/changelog/endive/2026-10-28/wire-network-value-fedwire-rename-financial-address-credit-simulations.md) | All products | Non-breaking | api |
 
 ### Additional updates

@@ -50,6 +50,8 @@ Only connections that act as a user can open these results: Notion MCP OAuth con
 
 Retrieves content from a Notion page, database, data source, or saved database view by its URL or ID. You can pass a data source ID (from `collection://...` tags in database responses) to fetch details about that specific data source, including its schema and properties. When fetching a database, the response includes available templates for each data source, which can be used with the create-pages and update-page tools.
 
+For [personal memories](/guides/mcp/tools-skills-agents-reference#read-save-and-update-memories), pass `id: "memory"` to read the connected user's About page and Memories database in this workspace. This doesn't create them.
+
 Fetched pages include `path`, `page_last_edited_at`, and, when available, `verification.state` and `verification.expires_at`. These fields help distinguish pages with similar titles and identify sources that Notion marks as verified.
 
 Fetched pages, including database items, include `cover` separately from database properties. It is `null` when there is no cover. Otherwise, it uses the REST API's [file object](/reference/file-object) shape: `type: "external"` with `external.url` for linked or Notion gallery images, or `type: "file"` with `file.url` and `file.expiry_time` for uploaded images.

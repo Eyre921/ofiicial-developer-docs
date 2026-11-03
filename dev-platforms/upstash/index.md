@@ -1,6 +1,6 @@
 # dev-platforms/upstash 文档索引
 
-> 共 1005 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1006 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -67,6 +67,7 @@
 - `docs/box/guides/crabbox-setup` — [Run Your Test Suite in a Cloud Sandbox with Crabbox](pages/docs/box/guides/crabbox-setup.md) · [原文](https://upstash.com/docs/box/guides/crabbox-setup)
 - `docs/box/guides/eve-setup` — [Vercel Eve Sandbox for Isolated Code Execution](pages/docs/box/guides/eve-setup.md) · [原文](https://upstash.com/docs/box/guides/eve-setup)
 - `docs/box/guides/herdr-setup` — [Run Herdr Coding Agents in Isolated Cloud Sandboxes](pages/docs/box/guides/herdr-setup.md) · [原文](https://upstash.com/docs/box/guides/herdr-setup)
+- `docs/box/guides/hermes-plugin-setup` — [Run Hermes Agent's Terminal in Upstash Box](pages/docs/box/guides/hermes-plugin-setup.md) · [原文](https://upstash.com/docs/box/guides/hermes-plugin-setup)
 - `docs/box/guides/hermes-setup` — [Host Hermes Agent in a Cloud Sandbox and Connect from Hermes Desktop](pages/docs/box/guides/hermes-setup.md) · [原文](https://upstash.com/docs/box/guides/hermes-setup)
 - `docs/box/guides/langchain-deep-agents` — [Sandbox Backend for LangChain Deep Agents](pages/docs/box/guides/langchain-deep-agents.md) · [原文](https://upstash.com/docs/box/guides/langchain-deep-agents)
 - `docs/box/guides/neon-ai-gateway` — [Run Box Agents on Neon AI Gateway Models](pages/docs/box/guides/neon-ai-gateway.md) · [原文](https://upstash.com/docs/box/guides/neon-ai-gateway)

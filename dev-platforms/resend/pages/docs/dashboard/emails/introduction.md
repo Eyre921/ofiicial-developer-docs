@@ -66,22 +66,22 @@ Learn more about [managing your sent emails](/docs/dashboard/emails/manage-email
 
 See how to use Resend's sending features.
 
-> **[View and manage sent emails](/docs/dashboard/emails/manage-emails)**
+> [card] [View and manage sent emails](/docs/dashboard/emails/manage-emails)
 
-> **[Send test emails](/docs/dashboard/emails/send-test-emails)**
+> [card] [Send test emails](/docs/dashboard/emails/send-test-emails)
 
-> **[Include attachments](/docs/dashboard/emails/attachments)**
+> [card] [Include attachments](/docs/dashboard/emails/attachments)
 
-> **[Embed inline images](/docs/dashboard/emails/embed-inline-images)**
+> [card] [Embed inline images](/docs/dashboard/emails/embed-inline-images)
 
-> **[Schedule emails](/docs/dashboard/emails/schedule-email)**
+> [card] [Schedule emails](/docs/dashboard/emails/schedule-email)
 
-> **[Batch sending](/docs/dashboard/emails/batch-sending)**
+> [card] [Batch sending](/docs/dashboard/emails/batch-sending)
 
-> **[Customize headers](/docs/dashboard/emails/custom-headers)**
+> [card] [Customize headers](/docs/dashboard/emails/custom-headers)
 
-> **[Prevent duplicate emails](/docs/dashboard/emails/idempotency-keys)**
+> [card] [Prevent duplicate emails](/docs/dashboard/emails/idempotency-keys)
 
-> **[Add an unsubscribe link](/docs/dashboard/emails/add-unsubscribe-to-transactional-emails)**
+> [card] [Add an unsubscribe link](/docs/dashboard/emails/add-unsubscribe-to-transactional-emails)
 
-> **[Add identifier tags](/docs/dashboard/emails/tags)**
+> [card] [Add identifier tags](/docs/dashboard/emails/tags)

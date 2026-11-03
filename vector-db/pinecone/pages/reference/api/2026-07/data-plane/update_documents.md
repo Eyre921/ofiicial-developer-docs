@@ -5,16 +5,12 @@ path: reference/api/2026-07/data-plane/update_documents
 ---
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/db_data_2026-07.oas.yaml post /namespaces/{namespace}/documents/update
-Apply partial updates to documents in a namespace. Documents are selected either per ID with `documents`, or in bulk with `filter`.
+Update documents in a namespace, either by ID with `documents` or in bulk with `filter`. You can't use both in one request.
 
-- `documents`: Each update is identified by its `_id`. Any other fields set new values for those fields, and fields listed in `_remove_fields` are removed from the document. Fields that are not mentioned are left unchanged. Updates to a document that does not exist are accepted but have no effect.
-- `filter`: The same patch is applied to every document matching a metadata filter expression. The patch is given by `set_fields` and/or `remove_fields`, at least one of which must be specified. Text-match operators (`$match_phrase`, `$match_all`, `$match_any`) are not supported in a filtered update; they are only supported in search. The response reports `matched_records`, the number of documents the filter matched.
+- `documents`: Each entry is identified by `_id`. Fields you set get new values, fields listed in `_remove_fields` are removed, and other fields don't change.
+- `filter`: Applies `set_fields` and/or `remove_fields` to every matching document. It can change only metadata fields. The response reports `matched_records`.
 
-`documents` and the by-filter fields (`filter`, `set_fields`, `remove_fields`) are mutually exclusive.
-
-On an index whose schema declares `embed` or `sparse_embed`, a per-ID update that sets such a field provides its new text, and Pinecone re-embeds it with the field's model; an update that does not set the field leaves its text and vectors unchanged. A by-filter update can set or remove only metadata fields: it refuses every data field, that is, vector fields, full-text-searchable text and embedded text. An index that embeds a field accepts at most 96 documents per request.
-
-Pinecone embeds the text on every request that sets such a field, so a retried update is embedded, and metered, again. A per-ID update of a document that does not exist still embeds the text it sets. When the request embedded text, the response's `usage.embed_total_tokens` reports the tokens it consumed.
+Setting a field that declares `embed` or `sparse_embed` re-embeds its text. Every request that does this is metered, including retries, and the response reports the tokens used in `usage.embed_total_tokens`. An update to an `_id` that doesn't exist has no effect, but any text it sets is still embedded and metered. An index that embeds a field accepts at most 96 documents per request.
 
 ```python Python theme={null}
 # pip install --upgrade pinecone

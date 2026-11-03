@@ -983,7 +983,7 @@ To [rerank results](/reference/api/latest/inference/rerank-results) on a field o
 
 > [!NOTE]
 >
-> The [`bge-reranker-v2-m3`](#bge-reranker-v2-m3) and [`pinecone-rerank-v0`](#pinecone-rerank-v0) models support only a single rerank field. [`cohere-rerank-4-fast`](#cohere-rerank-4-fast) and [`cohere-rerank-3.5`](#cohere-rerank-3-5) support multiple rerank fields, ranked based on the order of the fields specified.
+> [`bge-reranker-v2-m3`](#bge-reranker-v2-m3) and [`pinecone-rerank-v0`](#pinecone-rerank-v0) support only a single rerank field. [`cohere-rerank-4-fast`](#cohere-rerank-4-fast) supports multiple rerank fields, ranked based on the order of the fields specified.
 
 For example, the following request reranks documents based on the values of the `documents.my_field` field:
 
@@ -1213,31 +1213,6 @@ The following reranking models are hosted by Pinecone.
 > | `max_tokens_per_doc` | integer | Optional | Documents longer than this are truncated. Max `4096`. | `1024` |
 > | `rank_fields` | array of strings | Optional | The fields to use for reranking, in priority order (e.g., `["field1", "field2"]`). | `["text"]` |
 
-> [accordion] cohere-rerank-3.5
->
-> > [!NOTE]
-> >
-> > `cohere-rerank-3.5` is deprecated as of July 1, 2026. Since August 31, 2026, requests to `cohere-rerank-3.5` are served by [`cohere-rerank-4-fast`](#cohere-rerank-4-fast). Update your rerank requests to specify `cohere-rerank-4-fast` directly. Because `cohere-rerank-4-fast` returns different relevance scores, re-tune any hard-coded score thresholds against it.
->
-> [`cohere-rerank-3.5`](/models/cohere-rerank-3.5) is Cohere's previous-generation reranking model, balancing performance and latency for a wide range of enterprise search applications.
->
-> **Details**
->
-> * Modality: Text
-> * Max tokens per query and document pair: 40,000
-> * Max documents: 200
->
-> For rate limits, see [Rerank requests per minute](/reference/api/database-limits/rate-limits#model-throughput-limits) and [Rerank request per month](/reference/api/database-limits/rate-limits#monthly-usage-limits).
->
-> **Parameters**
->
-> The `cohere-rerank-3.5` model supports the following parameters:
->
-> | Parameter | Type | Required/Optional | Description | |
-> | :- | :- | :- | :- | - |
-> | `max_chunks_per_doc` | integer | Optional | Long documents will be automatically truncated to the specified number of chunks. Accepted range: `1 - 3072`. | |
-> | `rank_fields` | array of strings | Optional | The fields to use for reranking. The model reranks based on the order of the fields specified (e.g., `["field1", "field2", "field3"]`). | `["text"]` |
-
 > [accordion] bge-reranker-v2-m3
 >
 > [`bge-reranker-v2-m3`](/models/bge-reranker-v2-m3) is a high-performance, multilingual reranking model that works well on messy data and short queries expected to return medium-length passages of text (1-2 paragraphs).
@@ -1260,6 +1235,10 @@ The following reranking models are hosted by Pinecone.
 > | `rank_fields` | array of strings | Optional | The field to use for reranking. The model supports only a single rerank field. | `["text"]` |
 
 > [accordion] pinecone-rerank-v0
+>
+> > [!WARNING]
+> >
+> > `pinecone-rerank-v0` is deprecated. It still serves rerank requests, but don't use it for new projects. Use another reranking model instead.
 >
 > [`pinecone-rerank-v0`](/models/pinecone-rerank-v0) is a reranking model that can handle chunks up to 512 tokens (1-2 paragraphs).
 >

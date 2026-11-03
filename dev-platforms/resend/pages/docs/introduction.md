@@ -24,46 +24,46 @@ Then, you'll be ready to send [both types of emails](/docs/explore-sending-featu
 
 Learn how to get Resend set up in your project.
 
-> **[Node.js Quickstart](/docs/send-with-nodejs)**
+> [card] [Node.js Quickstart](/docs/send-with-nodejs)
 
-> **[Next.js Quickstart](/docs/send-with-nextjs)**
+> [card] [Next.js Quickstart](/docs/send-with-nextjs)
 
-> **[Express Quickstart](send-with-express/)**
+> [card] [Express Quickstart](send-with-express/)
 
-> **[PHP Quickstart](send-with-php/)**
+> [card] [PHP Quickstart](send-with-php/)
 
-> **[Laravel Quickstart](send-with-laravel/)**
+> [card] [Laravel Quickstart](send-with-laravel/)
 
-> **[Python Quickstart](/docs/send-with-python)**
+> [card] [Python Quickstart](/docs/send-with-python)
 
-> **[Ruby Quickstart](/docs/send-with-ruby)**
+> [card] [Ruby Quickstart](/docs/send-with-ruby)
 
-> **[Rails Quickstart](/docs/send-with-rails)**
+> [card] [Rails Quickstart](/docs/send-with-rails)
 
-> **[Go Quickstart](/docs/send-with-go)**
+> [card] [Go Quickstart](/docs/send-with-go)
 
-> **[Rust Quickstart](/docs/send-with-rust)**
+> [card] [Rust Quickstart](/docs/send-with-rust)
 
-> **[Elixir Quickstart](/docs/send-with-elixir)**
+> [card] [Elixir Quickstart](/docs/send-with-elixir)
 
-> **[Java Quickstart](/docs/send-with-java)**
+> [card] [Java Quickstart](/docs/send-with-java)
 
-> **[.NET Quickstart](/docs/send-with-dotnet)**
+> [card] [.NET Quickstart](/docs/send-with-dotnet)
 
-> **[CLI Quickstart](/docs/cli-quickstart)**
+> [card] [CLI Quickstart](/docs/cli-quickstart)
 
 ## Explore
 
 Discover the full range of features and capabilities.
 
-> **[Emails](dashboard/emails)**
+> [card] [Emails](dashboard/emails)
 >
 > Visualize all the activity in your account.
 
-> **[Domains](dashboard/domains/introduction)**
+> [card] [Domains](dashboard/domains/introduction)
 >
 > Ensure deliverability of your emails.
 
-> **[Webhooks](/docs/webhooks/introduction)**
+> [card] [Webhooks](/docs/webhooks/introduction)
 >
 > Notify your application about email events.

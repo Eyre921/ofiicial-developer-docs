@@ -4,9 +4,9 @@ source: https://docs.fireworks.ai/accounts/data-residency
 path: accounts/data-residency
 ---
 
-Restrict inference for your Fireworks Enterprise account to a selected region such as US-only, with regional API endpoints, SDK configuration, and compliance.
+Restrict inference and dedicated training for your Fireworks Enterprise account to a selected region such as US-only, with regional API endpoints, SDK configuration, and compliance.
 
-Data residency restricts inference on your account to a single region. Once a region is set, every request must use that region's API endpoint and a model served in that region.
+Data residency restricts inference and dedicated training on your account to a single region. Once a region is set, every request must use that region's API endpoint and a model served in that region, and every dedicated training job must run in that region.
 
 It does not change how your requests are routed. Turning it on will not move existing traffic into the region. This setting *enforces* all requests to be in the set region, and rejects the ones that are not.
 
@@ -54,6 +54,14 @@ firectl deployment list
 * **New deployments outside the region are rejected** when you create them.
 * **Existing deployments are not checked, moved, or stopped** when you switch the setting on. One outside the region keeps running and keeps costing you money, but requests to it are rejected. Replace it first.
 * **You can move a deployment to another region inside your residency region, but not out of it.**
+
+### Dedicated training
+
+Supervised fine-tuning, DPO, reinforcement fine-tuning, and RLOR trainer jobs must set an explicit training region inside the selected region, for example with firectl's `--region US_IOWA_1` flag. See [Regions](/deployments/regions).
+
+* **Jobs without a region are rejected**, including jobs created from the console, which does not set one.
+* **Jobs with a region outside the selected region are rejected**, both when you create them and when you resume them.
+* **Only where the job runs is enforced.** Where its checkpoints and outputs are stored is not.
 
 ## Configure in the console
 
@@ -105,7 +113,7 @@ Regional models are priced at a premium over the base serverless price for the s
 
 The following are not supported while a region is set: calls are rejected, and stay rejected until you clear the setting.
 
-* **Training.** Fine-tuning and training jobs are blocked. Support is coming soon.
+* **Serverless training.** [Serverless Training](/fine-tuning/training-api/serverless) sessions, runs, and their samplers are blocked. Support is coming soon. [Dedicated training](#dedicated-training) is supported.
 * **Nexus Auto outside the US.** With US residency, `auto` works and serves open-model turns from US-only Serverless. Anthropic and OpenAI turns run on your own provider account, where that provider's data policies apply. With other regions, `auto` is rejected. See [Enterprise Controls](/nexus/enterprise-controls#control-models-and-regions).
 * **BYOC.** [BYOC](/ecosystem/integrations/byoc/overview) deployments run in your own cloud account, so Fireworks cannot enforce where they run.
 

@@ -6,7 +6,7 @@ path: build/edge-functions/api
 
 ---
 title: "Edge Functions API"
-description: "Use this API reference to write edge function files with JavaScript or TypeScript that export default functions responsible for processing requests."
+description: "Use this API reference to write edge function files with JavaScript or TypeScript that export a default handler responsible for processing requests."
 ---
 
 > For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
@@ -15,7 +15,14 @@ This page provides an overview of key concepts as well as a full reference.
 
 ## Writing and structuring edge functions
 
-Use TypeScript or JavaScript to create an edge function file that exports a default function responsible for processing a request.
+Use TypeScript or JavaScript to create an edge function file that exports a default handler responsible for processing a request.
+
+The file can have one of these two shapes:
+
+- a function as a default export
+- a [Fetchable module](https://fetchable.org/): an object with a `fetch` method
+
+Netlify calls the function, or the `fetch` method, with the same arguments and uses the return value in the same way. In a `fetch` method, `this` refers to the exported object.
 
 When the function is invoked, it receives two arguments:
 
@@ -32,6 +39,10 @@ The expected return value is one of the following:
 
 For TypeScript, you can import the types for the `Context` and `Config` objects from `@netlify/edge-functions`. The types for the `Request` and `Response` objects are in the global scope.
 
+### Tabs Component:
+
+<TabItem label="Default function">
+
 ```ts
 import type { Config, Context } from "@netlify/edge-functions";
 
@@ -43,6 +54,29 @@ export const config: Config = {
   path: "/",
 };
 ```
+
+</TabItem>
+<TabItem label="Fetchable module">
+
+```ts
+import type { Config, Context } from "@netlify/edge-functions";
+
+export default {
+  async fetch(request: Request, context: Context) {
+    // ...
+  },
+};
+
+export const config: Config = {
+  path: "/",
+};
+```
+
+</TabItem>
+
+A Fetchable module is a common shape for fetch-style handlers across JavaScript frameworks and runtimes. Use it to share one handler between Netlify and other platforms that accept Fetchable modules.
+
+Declare the `config` export as a named export for both shapes.
 
 ### Request handling
 

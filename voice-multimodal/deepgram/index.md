@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 402 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 403 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -328,6 +328,7 @@
 - `docs/voice-agent-speculative-replies` — [Speculative Replies & Turn Confirmation](pages/docs/voice-agent-speculative-replies.md) · [原文](https://developers.deepgram.com/docs/voice-agent-speculative-replies.md)
 - `docs/voice-agent-stt-models` — [STT Models](pages/docs/voice-agent-stt-models.md) · [原文](https://developers.deepgram.com/docs/voice-agent-stt-models.md)
 - `docs/voice-agent-template-apps` — [Template Apps](pages/docs/voice-agent-template-apps.md) · [原文](https://developers.deepgram.com/docs/voice-agent-template-apps.md)
+- `docs/voice-agent-think-live` — [Think Live](pages/docs/voice-agent-think-live.md) · [原文](https://developers.deepgram.com/docs/voice-agent-think-live.md)
 - `docs/voice-agent-tts-controls` — [Voice Agent TTS Controls](pages/docs/voice-agent-tts-controls.md) · [原文](https://developers.deepgram.com/docs/voice-agent-tts-controls.md)
 - `docs/voice-agent-tts-models` — [TTS Models](pages/docs/voice-agent-tts-models.md) · [原文](https://developers.deepgram.com/docs/voice-agent-tts-models.md)
 - `docs/voice-agent-update-listen` — [Update Listen](pages/docs/voice-agent-update-listen.md) · [原文](https://developers.deepgram.com/docs/voice-agent-update-listen.md)

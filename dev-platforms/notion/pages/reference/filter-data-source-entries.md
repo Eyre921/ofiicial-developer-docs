@@ -140,6 +140,29 @@ The `after`, `before`, `equals`, `on_or_after`, and `on_or_before` fields accept
 }
 ```
 
+A date filter condition takes one operator. To filter a date range, put each bound in its own filter inside an [`and` compound filter](#compound-filter-conditions). The API returns a `validation_error` if one condition has more than one operator.
+
+```json Example date range filter theme={null}
+{
+  "filter": {
+    "and": [
+      {
+        "timestamp": "created_time",
+        "created_time": {
+          "on_or_after": "2025-01-01T00:00:00Z"
+        }
+      },
+      {
+        "timestamp": "created_time",
+        "created_time": {
+          "on_or_before": "2025-01-31T23:59:59Z"
+        }
+      }
+    ]
+  }
+}
+```
+
 ### Files
 
 | Field | Type | Description | Example value |

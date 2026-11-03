@@ -72,26 +72,26 @@ The reply goes out from the inbox address and stays in the same thread.
 
 ## Related Guides
 
-> **[Create inboxes](/docs/dashboard/inboxes/create-inboxes)**
+> [card] [Create inboxes](/docs/dashboard/inboxes/create-inboxes)
 >
 > Create an address on a verified domain, or forward an existing address.
 
-> **[Manage inboxes](/docs/dashboard/inboxes/manage-inboxes)**
+> [card] [Manage inboxes](/docs/dashboard/inboxes/manage-inboxes)
 >
 > Rename, update, and delete inboxes.
 
-> **[Manage threads](/docs/dashboard/inboxes/threads)**
+> [card] [Manage threads](/docs/dashboard/inboxes/threads)
 >
 > Read, search, and organize conversations, and reply to or forward emails.
 
-> **[Drafts](/docs/dashboard/inboxes/drafts)**
+> [card] [Drafts](/docs/dashboard/inboxes/drafts)
 >
 > Write a message now and send it later.
 
-> **[Labels](/docs/dashboard/inboxes/labels)**
+> [card] [Labels](/docs/dashboard/inboxes/labels)
 >
 > Tag threads with colored labels to keep them organized.
 
-> **[Inbox agent](/docs/dashboard/inboxes/agent)**
+> [card] [Inbox agent](/docs/dashboard/inboxes/agent)
 >
 > Let the built-in agent triage incoming threads from your instructions.

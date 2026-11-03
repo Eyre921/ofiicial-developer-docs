@@ -77,6 +77,7 @@ The table below lists the tools documented in these guides, in alphabetical orde
 | [`notion-read-session-event`](/guides/mcp/tools-skills-agents-reference#work-with-custom-agent-sessions) | Read an event from a Custom Agent session. |
 | [`notion-resolve-suggested-edit`](/guides/mcp/tools-comments-reference#suggest-edits) | Apply a proposed change or discard it. |
 | [`notion-restore-pages`](/guides/mcp/tools-comments-reference#restore-pages) | Recover pages from Trash. |
+| [`notion-restore-version`](/guides/mcp/tools-comments-reference#restore-a-past-version) | Put a page or database back to how it looked at a past time. |
 | [`notion-search`](/guides/mcp/tools-search-reference#search-notion) | Find pages and databases by topic or title. |
 | [`notion-search-agents`](/guides/mcp/tools-skills-agents-reference#work-with-custom-agent-sessions) | Find an agent shared with you that can take on a task. |
 | [`notion-search-sessions`](/guides/mcp/tools-skills-agents-reference#work-with-custom-agent-sessions) | Search existing Custom Agent sessions. |

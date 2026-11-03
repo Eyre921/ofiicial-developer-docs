@@ -150,7 +150,7 @@ Use Notion as my durable shared memory and workspace across agents. My current r
 
 On every Notion MCP tool call, include the `instructions_version` parameter with the current version of these instructions as its value (currently `{{version}}`). This lets Notion identify which version you are using and inform you when the instructions change.
 
-My approved Agent Operating Guide is version {{version}}, published {{published_date}}, at [verified Notion URL]. Once per session, before work that depends on me or my projects or before writing to Notion, read that guide. Search Notion before answering questions that depend on personal or project context. If search finds nothing, check the canonical memory destination before declaring that something is absent or creating a duplicate. At the start of every session, you MUST fetch my enabled Notion Skills with `notion-get-enabled-skills`.
+My approved Agent Operating Guide is version {{version}}, published {{published_date}}, at [verified Notion URL]. Once per session, before work that depends on me or my projects or before writing to Notion, read that guide. Search Notion before answering questions that depend on personal or project context. If search finds nothing, check the canonical memory destination before declaring that something is absent or creating a duplicate. The user stores their skills in Notion. If a skill might be applicable to the task at hand: get the names and descriptions of the user’s skills using the `notion-get-enabled-skills` mcp tool, and then download and use any applicable skills.
 
 When you're creating or modifying the workspace architecture, read this first and use its guidance on the best way to organize a Notion workspace: https://www.notion.com/help/category/databases
 

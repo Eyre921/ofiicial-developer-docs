@@ -64,24 +64,24 @@ Resend allows you to choose both a Transactional and a Marketing plan, each at t
 
 ## Learn more
 
-> **[Send Email API](/docs/api-reference/emails/send-email)**
+> [card] [Send Email API](/docs/api-reference/emails/send-email)
 >
 > Send, list, retrieve, update, and cancel transactional emails with the Send
 > Email API.
 
-> **[Broadcasts](/docs/dashboard/broadcasts/introduction)**
+> [card] [Broadcasts](/docs/dashboard/broadcasts/introduction)
 >
 > Create and send marketing emails with Resend's no-code editor or the
 > Broadcasts API.
 
 ## Next steps
 
-> **[Import or add email contacts](/docs/dashboard/contacts/add-contacts)**
+> [card] [Import or add email contacts](/docs/dashboard/contacts/add-contacts)
 >
 > Add existing subscribers to your Resend contact list programmatically,
 > manually, or by uploading a `.csv` file.
 
-> **[Quickstart tutorials](/docs/introduction)**
+> [card] [Quickstart tutorials](/docs/introduction)
 >
 > Send your first transactional email with a quick tutorial for your language
 > or framework.

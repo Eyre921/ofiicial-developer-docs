@@ -43,18 +43,18 @@ If you do call the API directly, remember to set the required
 
 ## Next steps
 
-> **[Official SDKs](/docs/sdks)**
+> [card] [Official SDKs](/docs/sdks)
 >
 > Install the SDK for your language.
 
-> **[Quickstart](/docs/introduction)**
+> [card] [Quickstart](/docs/introduction)
 >
 > Send your first email in minutes.
 
-> **[API Reference](/docs/api-reference/introduction)**
+> [card] [API Reference](/docs/api-reference/introduction)
 >
 > Full HTTP API documentation.
 
-> **[MCP Server](/docs/mcp-server)**
+> [card] [MCP Server](/docs/mcp-server)
 >
 > Give your AI agent access to Resend.

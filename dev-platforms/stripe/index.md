@@ -1,6 +1,6 @@
 # dev-platforms/stripe 文档索引
 
-> 共 471 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 472 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -66,6 +66,7 @@
 
 - `atlas/83b-election` — [Section 83(b) elections](pages/atlas/83b-election.md) · [原文](https://docs.stripe.com/atlas/83b-election.md)
 - `atlas/83b-elections-non-us-founders` — [File Section 83(b) elections as a non-US founder](pages/atlas/83b-elections-non-us-founders.md) · [原文](https://docs.stripe.com/atlas/83b-elections-non-us-founders.md)
+- `atlas/agents` — [Prepare an Atlas application with an agent or CLI](pages/atlas/agents.md) · [原文](https://docs.stripe.com/atlas/agents.md)
 - `atlas/business-taxes` — [Business taxes](pages/atlas/business-taxes.md) · [原文](https://docs.stripe.com/atlas/business-taxes.md)
 - `atlas/company-types` — [Company types](pages/atlas/company-types.md) · [原文](https://docs.stripe.com/atlas/company-types.md)
 - `atlas/incorporation-documents` — [Incorporation documents](pages/atlas/incorporation-documents.md) · [原文](https://docs.stripe.com/atlas/incorporation-documents.md)

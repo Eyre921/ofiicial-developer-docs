@@ -50,11 +50,15 @@ Each index supports exactly one data plane. A request sent to the wrong data-pla
 
 ## Adopt schema-based indexes
 
-You can't convert an existing index to a schema-based one. To use a schema (and full-text search), create a new index with the schema you want and ingest your data into it.
+To move your data into a schema-based index, create a new index and ingest into it, or convert an existing serverless index.
+
+To create and ingest:
 
 1. Upgrade to a `2026-07` SDK (Python v10 or later, Node.js v9 or later, or Go v7 or later), or use the REST API. Support in other SDKs is coming soon.
 2. [Create a new index](/guides/index-data/create-an-index) with the [schema](/guides/index-data/data-modeling) you want. Add a `deployment` only if you need a specific deployment type, cloud, or region; otherwise it defaults to managed serverless.
 3. Ingest your data into it.
+
+To convert instead, see [Convert an index](/guides/index-data/convert-an-index). Pinecone creates a new document index with the schema you choose and fills it from the source serverless index's records, and the source index is left unchanged. Conversion is available on Standard and Enterprise plans.
 
 ## FAQ
 

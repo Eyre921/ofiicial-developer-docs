@@ -42,8 +42,8 @@ Shared, Fireworks-managed inference. You send a request and pay per token. You d
 **On-demand deployment**\
 A deployment on GPUs reserved for your account. You pay for GPU time, including idle replicas, and you choose the model, hardware, and scaling. Docs also call this a dedicated deployment. LoRA adapters run on on-demand deployments.
 
-**Standard, Priority, and Fast**\
-Three Serverless modes. Standard is the default. Priority is more likely to stay available when Fireworks is busy, at a higher price. Fast is a separate high-speed model ID, such as `accounts/fireworks/routers/glm-5p3-fast`. See [Serverless Modes](/serverless/serverless-modes).
+**Standard, Priority, Fast, and Ultra-fast (Preview)**\
+Four Serverless modes. Standard is the default. Priority is more likely to stay available when Fireworks is busy, at a higher price. Fast is a separate high-speed model ID, such as `accounts/fireworks/routers/glm-5p3-fast`. Ultra-fast (Preview) is an even faster model ID for highly latency-sensitive workloads, such as `accounts/fireworks/routers/deepseek-v4p1-flash-1017-ultrafast`, with a higher price and lower rate limits. See [Serverless Modes](/serverless/serverless-modes).
 
 **Prompt caching**\
 Reuse of a repeated prompt prefix so the next request starts faster. It is on by default. Cached prompt tokens are billed at a model-specific discount. See [Prompt caching](/guides/prompt-caching).

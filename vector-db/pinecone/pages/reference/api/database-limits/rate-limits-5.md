@@ -25,13 +25,13 @@ Request-per-second limits are enforced per namespace or per index, as noted in t
 | Read units per month per org | 1,000,000 | 2,000,000 | Unlimited | Unlimited |
 | Write units per month per org | 2,000,000 | 5,000,000 | Unlimited | Unlimited |
 | Embedding tokens per month per model | 5,000,000 | 10,000,000 | Unlimited | Unlimited |
+| `gemini-embedding-2` embedding tokens per month | Not available | 10,000,000 | Unlimited | Unlimited |
 
 Monthly rerank request limits vary by model:
 
 | Reranking model | Starter plan | Builder plan | Standard plan | Enterprise plan |
 | :- | :- | :- | :- | :- |
 | `cohere-rerank-4-fast` | Not available | Not available | Unlimited | Unlimited |
-| `cohere-rerank-3.5` | Not available | Not available | Unlimited | Unlimited |
 | `bge-reranker-v2-m3` | 500 | 1,000 | Unlimited | Unlimited |
 | `pinecone-rerank-v0` | 500 | Not available | Unlimited | Unlimited |
 
@@ -83,6 +83,12 @@ Per-minute token limits for embedding models:
 | | Query | 50,000 | 50,000 | 250,000 | 250,000 |
 | `multilingual-e5-large` | Passage | 250,000 | 250,000 | 1,000,000 | 1,000,000 |
 | | Query | 50,000 | 50,000 | 250,000 | 250,000 |
+| `gemini-embedding-2` | Passage | Not available | 250,000 | 2,000,000 | 2,000,000 |
+| | Query | Not available | 50,000 | 250,000 | 250,000 |
+| `text-embedding-3-small` | Passage | 250,000 | 250,000 | 2,000,000 | 2,000,000 |
+| | Query | 50,000 | 50,000 | 250,000 | 250,000 |
+| `text-embedding-3-large` | Passage | 250,000 | 250,000 | 2,000,000 | 2,000,000 |
+| | Query | 50,000 | 50,000 | 250,000 | 250,000 |
 | `pinecone-sparse-english-v0` | Passage | 250,000 | 250,000 | 3,000,000 | 3,000,000 |
 | | Query | 250,000 | 250,000 | 3,000,000 | 3,000,000 |
 
@@ -91,7 +97,6 @@ Per-minute request limits for reranking models:
 | Reranking model | Starter plan | Builder plan | Standard plan | Enterprise plan |
 | :- | :- | :- | :- | :- |
 | `cohere-rerank-4-fast` | Not available | Not available | 300 | 300 |
-| `cohere-rerank-3.5` | Not available | Not available | 300 | 300 |
 | `bge-reranker-v2-m3` | 60 | 60 | 60 | 60 |
 | `pinecone-rerank-v0` | 60 | Not available | 60 | 60 |
 

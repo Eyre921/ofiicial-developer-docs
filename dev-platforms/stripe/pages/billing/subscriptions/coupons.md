@@ -90,6 +90,10 @@ The following table contains coupon parameters.
 | `redeem_by` (optional) | The latest date at which you can apply this coupon to customers. |
 | `applies_to` (optional) | Limits the items in an invoice that the coupon can apply to. |
 
+### Customize discount calculations
+
+To customize how a coupon calculates discounts, configure a [Stripe-authored discount calculation script](https://docs.stripe.com/billing/scripts/stripe-authored/discount-calculation.md) or [author your own discount calculation script](https://docs.stripe.com/billing/scripts/discount-calculation.md).
+
 ### Set eligible products
 
 #### Dashboard

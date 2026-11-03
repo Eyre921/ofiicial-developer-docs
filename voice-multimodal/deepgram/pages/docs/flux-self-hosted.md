@@ -6,7 +6,6 @@ path: docs/flux-self-hosted
 
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
-> For AI client integration (Claude Code, Cursor, etc.), connect to the MCP server at https://developers.deepgram.com/_mcp/server.
 
 # Using the Flux Model
 
@@ -20,6 +19,8 @@ Please familiarize yourself with these general requirements before attempting to
 * Flux doesn't require and is not compatible with any other models (e.g. diarizer, entity detector)
 * You must use Deepgram container images from October 2025 or later (`release-251015`)
 * The Flux model file must be added to your `engine` models directory. Starting with `release-261020`, Engine loads only `.dgv2` Flux model files; see [Flux Model Files](#flux-model-files)
+* Starting with `release-261020`, Flux runs on both the standard and the FIPS-compliant images. Earlier releases support Flux on standard (non-FIPS) images only. See [FIPS-Compliant Deployment](/docs/fips-compliant-deployment)
+* All Engine images require NVIDIA driver `>=580` (open kernel modules). The FIPS Engine image enforces this: on an older driver it falls back to CPU, and with Flux enabled it restarts repeatedly and Flux requests return `503`. See [Drivers and Containerization Platforms](/docs/drivers-and-containerization-platforms)
 
 > **Warning**
 >

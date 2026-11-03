@@ -55,7 +55,7 @@ You can get started quickly with the [Resend Webhook Ingester](/docs/webhooks/in
 * **Idempotent storage** that handles duplicate deliveries
 * **8 database connectors** including PostgreSQL, MySQL, MongoDB, and data warehouses
 
-> **[Webhook Ingester](/docs/webhooks/ingester)**
+> [card] [Webhook Ingester](/docs/webhooks/ingester)
 >
 > Deploy a production-ready webhook storage solution in minutes
 
@@ -135,27 +135,27 @@ High-volume senders can generate significant data. Plan for:
 
 ## FAQ
 
-> **How much data will I generate?**
+> [accordion] How much data will I generate?
 >
 > Each email can generate multiple events (sent, delivered, opened, clicked).
 > A rough estimate: if you send 10,000 emails/month with average engagement,
 > expect 30,000-50,000 events/month. Each event is typically 1-2 KB, so about
 > 50-100 MB/month of raw data.
 
-> **Will storing webhooks slow down my application?**
+> [accordion] Will storing webhooks slow down my application?
 >
 > No. Webhook processing happens asynchronously. Your email sending is not
 > affected by how you handle webhooks. If you use the Webhook Ingester, it
 > runs as a separate service.
 
-> **What if I miss a webhook?**
+> [accordion] What if I miss a webhook?
 >
 > Resend automatically retries failed webhook deliveries for up to 24 hours.
 > If your endpoint returns a 5xx error, we'll retry. If you need to recover
 > older events, check the [Resend Dashboard](https://resend.com/webhooks)
 > where you can manually replay recent events.
 
-> **Can I store webhooks in multiple databases?**
+> [accordion] Can I store webhooks in multiple databases?
 >
 > The Webhook Ingester supports one database per deployment. If you need to
 > store in multiple databases, you can either deploy multiple instances or
@@ -163,18 +163,18 @@ High-volume senders can generate significant data. Plan for:
 
 ## Learn More
 
-> **[Webhook Ingester](/docs/webhooks/ingester)**
+> [card] [Webhook Ingester](/docs/webhooks/ingester)
 >
 > Deploy a production-ready webhook storage solution
 
-> **[Webhook Event Types](/docs/webhooks/event-types)**
+> [card] [Webhook Event Types](/docs/webhooks/event-types)
 >
 > See all available event types and their payloads
 
-> **[Verify Webhooks](/docs/webhooks/verify-webhooks-requests)**
+> [card] [Verify Webhooks](/docs/webhooks/verify-webhooks-requests)
 >
 > Learn about webhook signature verification
 
-> **[Webhook Introduction](/docs/webhooks/introduction)**
+> [card] [Webhook Introduction](/docs/webhooks/introduction)
 >
 > Get started with webhooks in your application

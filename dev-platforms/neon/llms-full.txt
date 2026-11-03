@@ -14879,7 +14879,7 @@ Or install it from the command line with [`npx neon@latest plugins --agent claud
 
 ### Codex plugin
 
-If you're using OpenAI Codex, install the **Neon** plugin from the [Codex plugin directory](https://developers.openai.com/codex/plugins/) (in the Codex app under **Plugins**, or in the Codex CLI with `/plugins`). It includes the Neon app (MCP), the main Neon skill, and the egress optimizer skill.
+If you're using OpenAI Codex, install the **Neon** plugin from the [Codex plugin directory](https://developers.openai.com/codex/plugins/) (in the Codex app under **Plugins**, or in the Codex CLI with `/plugins`). It includes the Neon app (MCP) and the Neon agent skills.
 
 To install from the command line instead, run [`npx neon@latest plugins --agent codex`](https://neon.com/docs/cli/plugins). See [Codex plugin for Neon](https://neon.com/docs/ai/ai-codex-plugin) for details.
 
@@ -15401,11 +15401,10 @@ Once everything is installed, Codex can help you:
 
 The Neon plugin bundles these parts (as shown in Codex):
 
-| Component                 | Type  | What it does                                                                                                                                                                                                                                               |
-| ------------------------- | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Neon**                  | App   | Manage Lakebase Postgres databases. Backed by the **Neon MCP Server** for project and database operations.                                                                                                                                                 |
-| **Neon**                  | Skill | Guides and best practices for Neon: connection methods, branching, autoscaling, Managed Better Auth, and related topics. This corresponds to the **`neon-postgres`** skill in the [Agent Skills repository](https://github.com/neondatabase/agent-skills). |
-| **Neon Egress Optimizer** | Skill | Diagnose and reduce excessive Postgres **data transfer (egress)** costs.                                                                                                                                                                                   |
+| Component | Type  | What it does                                                                                                                                                                                                                                                                    |
+| --------- | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Neon**  | App   | Manage Lakebase Postgres databases. Backed by the **Neon MCP Server** for project and database operations.                                                                                                                                                                      |
+| **Neon**  | Skill | Guides and best practices for Neon: connection methods, branching, autoscaling, egress optimization, Managed Better Auth, and related topics. This corresponds to the **`neon-postgres`** skill in the [Agent Skills repository](https://github.com/neondatabase/agent-skills). |
 
 Together, the app gives Codex tools to act on your Neon organization and projects, while the skills steer workflows and deep dives (including cost optimization).
 
@@ -15420,7 +15419,7 @@ The **Neon** app connects Codex to Neon's APIs through MCP so it can, for exampl
 - Validate connection strings
 - Run SQL queries and migrations
 
-The **Neon Egress Optimizer** skill is for tasks focused on finding and fixing high egress, not for everyday CRUD.
+The **Neon** skill also includes an egress optimization workflow. Ask Codex to find and fix high data transfer (egress) costs, and it audits your queries for overfetching. See [Use an agent skill to find egress anti-patterns](https://neon.com/docs/introduction/network-transfer#use-an-agent-skill-to-find-egress-anti-patterns).
 
 ## Install the plugin in Codex
 
@@ -16799,7 +16798,7 @@ Be sure to test different index tuning parameter settings to find the right bala
 
 Connect MCP clients like Cursor, Claude Code, VS Code, and ChatGPT to your Lakebase Postgres database on Neon.
 
-Last updated: 2026-09-11
+Last updated: 2026-11-03
 
 Connect MCP clients to the Neon MCP Server to interact with your Lakebase Postgres databases in natural language.
 
@@ -16837,28 +16836,37 @@ This writes the MCP config to your editor. Add `-g` for global (user-level) inst
 
 **add-mcp** is the CLI Neon uses to patch each tool's MCP config. Use **`npx add-mcp list-agents`** for the live list from your installed version. As of the current [add-mcp](https://github.com/neondatabase/add-mcp) release, **`--agent`** values include:
 
-| Assistant                 | `--agent`            |
-| :------------------------ | :------------------- |
-| Antigravity               | `antigravity`        |
-| Claude Code               | `claude-code`        |
-| Claude Desktop            | `claude-desktop`     |
-| Cline (VS Code extension) | `cline`              |
-| Cline CLI                 | `cline-cli`          |
-| Codex                     | `codex`              |
-| Cursor                    | `cursor`             |
-| fx                        | `fx`                 |
-| Gemini CLI                | `gemini-cli`         |
-| GitHub Copilot CLI        | `github-copilot-cli` |
-| Goose                     | `goose`              |
-| Kilo Code                 | `kilo-code`          |
-| Kimi Code                 | `kimi-code`          |
-| Kiro CLI                  | `kiro-cli`           |
-| MCPorter                  | `mcporter`           |
-| OpenCode                  | `opencode`           |
-| VS Code                   | `vscode`             |
-| Zed                       | `zed`                |
+| Assistant                 | `--agent`            | Setup                                                                                       |
+| :------------------------ | :------------------- | :------------------------------------------------------------------------------------------ |
+| Antigravity               | `antigravity`        | [Other MCP clients](https://neon.com/docs/ai/connect-mcp-clients-to-neon#other-mcp-clients) |
+| Claude Code               | `claude-code`        | [Claude Code](https://neon.com/docs/ai/connect-mcp-clients-to-neon#claude-code)             |
+| Claude Desktop            | `claude-desktop`     | [Claude Desktop](https://neon.com/docs/ai/connect-mcp-clients-to-neon#claude-desktop)       |
+| Cline (VS Code extension) | `cline`              | [Cline](https://neon.com/docs/ai/connect-mcp-clients-to-neon#cline-vs-code-extension)       |
+| Cline CLI                 | `cline-cli`          | [Other MCP clients](https://neon.com/docs/ai/connect-mcp-clients-to-neon#other-mcp-clients) |
+| Codex                     | `codex`              | [Codex](https://neon.com/docs/ai/connect-mcp-clients-to-neon#codex)                         |
+| Cursor                    | `cursor`             | [Cursor](https://neon.com/docs/ai/connect-mcp-clients-to-neon#cursor)                       |
+| Factory Droid             | `factory-droid`      | [Other MCP clients](https://neon.com/docs/ai/connect-mcp-clients-to-neon#other-mcp-clients) |
+| fx                        | `fx`                 | [fx](https://neon.com/docs/ai/connect-mcp-clients-to-neon#fx)                               |
+| Gemini CLI                | `gemini-cli`         | [Other MCP clients](https://neon.com/docs/ai/connect-mcp-clients-to-neon#other-mcp-clients) |
+| GitHub Copilot CLI        | `github-copilot-cli` | [Other MCP clients](https://neon.com/docs/ai/connect-mcp-clients-to-neon#other-mcp-clients) |
+| Goose                     | `goose`              | [Other MCP clients](https://neon.com/docs/ai/connect-mcp-clients-to-neon#other-mcp-clients) |
+| Grok Build                | `grok-build`         | [Other MCP clients](https://neon.com/docs/ai/connect-mcp-clients-to-neon#other-mcp-clients) |
+| Hermes Agent              | `hermes`             | [Other MCP clients](https://neon.com/docs/ai/connect-mcp-clients-to-neon#other-mcp-clients) |
+| Junie                     | `junie`              | [Other MCP clients](https://neon.com/docs/ai/connect-mcp-clients-to-neon#other-mcp-clients) |
+| Kilo Code                 | `kilo-code`          | [Other MCP clients](https://neon.com/docs/ai/connect-mcp-clients-to-neon#other-mcp-clients) |
+| Kimi Code                 | `kimi-code`          | [Kimi Code](https://neon.com/docs/ai/connect-mcp-clients-to-neon#kimi-code)                 |
+| Kiro CLI                  | `kiro-cli`           | [Kiro](https://neon.com/docs/ai/connect-mcp-clients-to-neon#kiro)                           |
+| Mastra Code               | `mastracode`         | [Other MCP clients](https://neon.com/docs/ai/connect-mcp-clients-to-neon#other-mcp-clients) |
+| MCPorter                  | `mcporter`           | [Other MCP clients](https://neon.com/docs/ai/connect-mcp-clients-to-neon#other-mcp-clients) |
+| OpenCode                  | `opencode`           | [Other MCP clients](https://neon.com/docs/ai/connect-mcp-clients-to-neon#other-mcp-clients) |
+| Pi                        | `pi`                 | [Other MCP clients](https://neon.com/docs/ai/connect-mcp-clients-to-neon#other-mcp-clients) |
+| VS Code                   | `vscode`             | [VS Code](https://neon.com/docs/ai/connect-mcp-clients-to-neon#vs-code-with-github-copilot) |
+| Windsurf                  | `windsurf`           | [Windsurf](https://neon.com/docs/ai/connect-mcp-clients-to-neon#windsurf-codeium)           |
+| Zed                       | `zed`                | [Zed](https://neon.com/docs/ai/connect-mcp-clients-to-neon#zed)                             |
 
-**Aliases:** `cline-vscode` → `cline`, `gemini` → `gemini-cli`, `github-copilot` → `vscode`, `kilo`/`kilocode` → `kilo-code`, `kimi` → `kimi-code`, `kiro` → `kiro-cli`. Config paths differ by agent and by project vs global (`-g`); see the [add-mcp README](https://github.com/neondatabase/add-mcp#supported-agents).
+**Aliases:** `cline-vscode` → `cline`, `droid`/`factory` → `factory-droid`, `gemini` → `gemini-cli`, `github-copilot` → `vscode`, `grok` → `grok-build`, `hermes-agent` → `hermes`, `kilo`/`kilocode` → `kilo-code`, `kimi` → `kimi-code`, `kiro` → `kiro-cli`, `mastra` → `mastracode`, `pi-agent` → `pi`, `codeium`/`cascade` → `windsurf`. Config paths differ by agent and by project vs global (`-g`); see the [add-mcp README](https://github.com/neondatabase/add-mcp#supported-agents).
+
+The **Setup** column links to client-specific instructions where a client needs them. For the rest, `npx add-mcp https://mcp.neon.tech/mcp -a <agent>` is all you need (see [Other MCP clients](https://neon.com/docs/ai/connect-mcp-clients-to-neon#other-mcp-clients)). ChatGPT, Gamut, and Jules aren't configured through add-mcp. Their setup steps are in their own sections below.
 
 ## ChatGPT
 
@@ -17014,6 +17022,16 @@ For more, see [Get started with Neon MCP server with Claude Desktop](https://neo
 4. Save the file. Cline should reload the configuration automatically.
 
 For more, see [Get started with Cline and Neon MCP Server](https://neon.com/guides/cline-mcp-neon).
+
+## Codex
+
+Install the [Neon Codex plugin](https://neon.com/docs/ai/ai-codex-plugin), which bundles the Neon MCP Server with Neon agent skills. To add only the MCP server, run:
+
+```bash
+npx add-mcp https://mcp.neon.tech/mcp -a codex
+```
+
+This adds a `neon` entry to `.codex/config.toml` (add `-g` to write `~/.codex/config.toml` instead). Restart Codex. If Codex doesn't prompt you to sign in, run `codex mcp login neon` and click **Authorize** in the OAuth window. You can also run [`npx neon@latest mcp --agent codex`](https://neon.com/docs/cli/mcp).
 
 ## Cursor
 
@@ -17347,8 +17365,6 @@ This tool auto-detects supported clients and configures them. Use `-a <agent>` t
 ```
 
 The local stdio package (`@neondatabase/mcp-server-neon`) is deprecated. If your client only supports stdio, use one of the `mcp-remote` configs above. See [Deprecated local stdio](https://neon.com/docs/ai/neon-mcp-server#deprecated-stdio).
-
-For Windows-specific configurations, see [Other MCP clients](https://neon.com/docs/ai/connect-mcp-clients-to-neon#other-mcp-clients).
 
 ## Troubleshooting
 
@@ -29876,7 +29892,7 @@ Create, deploy, list, inspect, and delete Neon Functions, and manage their custo
 
 Last updated: 2026-10-26
 
-The `functions` command manages [Neon Functions](https://neon.com/docs/compute/functions/overview) on a branch. This is the command reference; for the full deployment workflow, see [Deploy functions](https://neon.com/docs/compute/functions/deploy). To run functions locally, see [`neon dev`](https://neon.com/docs/cli/dev). To add a function from a template, browse [Function Registry templates](https://neon.com/functions/templates).
+The `functions` command manages [Neon Functions](https://neon.com/docs/compute/functions/overview) on a branch. This is the command reference; for the full deployment workflow, see [Deploy functions](https://neon.com/docs/compute/functions/deploy). To run functions locally, see [`neon dev`](https://neon.com/docs/cli/dev). To add a function from a template, see [Use function templates](https://neon.com/docs/compute/functions/templates).
 
 Subcommands: [delete](https://neon.com/docs/cli/functions#delete), [deploy](https://neon.com/docs/cli/functions#deploy), [domains](https://neon.com/docs/cli/functions#domains), [get](https://neon.com/docs/cli/functions#get), [list](https://neon.com/docs/cli/functions#list), [new](https://neon.com/docs/cli/functions#new), [templates](https://neon.com/docs/cli/functions#templates)
 
@@ -29956,7 +29972,7 @@ Templates live in [`registry/`](https://github.com/neondatabase/examples/tree/ma
 
 ## neon functions templates
 
-Browse the templates at [neon.com/functions/templates](https://neon.com/functions/templates). The live catalog is [registry.json](https://neon.com/functions/registry/registry.json). To publish your own, see [Create a Function Registry template](https://neon.com/docs/compute/functions/registry).
+Browse the templates at [neon.com/functions/templates](https://neon.com/functions/templates). For the end-to-end workflow, see [Use function templates](https://neon.com/docs/compute/functions/templates). The live catalog is [registry.json](https://neon.com/functions/registry/registry.json). To contribute your own, see [Contribute a function template](https://neon.com/docs/compute/functions/registry).
 
 Subcommands: [list](https://neon.com/docs/cli/functions#templates-list)
 
@@ -31402,7 +31418,7 @@ Like the CLI, this API reads logs only on branches in a supported region: AWS US
 
 Install the Neon MCP Server into your coding agents
 
-Last updated: 2026-11-01
+Last updated: 2026-11-03
 
 The `mcp` command installs the [Neon MCP Server](https://neon.com/docs/ai/neon-mcp-server) into your coding agents by writing their MCP config for you. It points each agent at the hosted server (`https://mcp.neon.tech/mcp`), sets up authentication, and can narrow which tools the agent sees.
 
@@ -31451,7 +31467,7 @@ The supported agents are `antigravity`, `cline`, `cline-cli`, `claude-code`, `co
 By default the server exposes every MCP tool. Use these flags to narrow what an agent can do:
 
 - `--read-only` hides the write tools by adding `?readonly=true` to the server URL.
-- `--category <name>` limits tools to one or more categories (repeatable, or comma-separated). Categories are `projects`, `branches`, `endpoints`, `snapshots`, `schema`, `querying`, `neon_auth`, `data_api`, `observability`, `docs`, `functions`, `storage`, and `realtime`.
+- `--category <name>` limits tools to one or more categories (repeatable, or comma-separated). Categories are `projects`, `branches`, `endpoints`, `snapshots`, `schema`, `querying`, `neon_auth`, `data_api`, `observability`, `docs`, `functions`, `storage`, and `realtime`. The flag currently accepts only `projects`, `branches`, `schema`, `querying`, `neon_auth`, `data_api`, `observability`, and `docs`. For the other categories, add `?category=<name>` to the server URL in your agent's config yourself (see [Category filtering](https://neon.com/docs/ai/neon-mcp-server#category-filtering)).
 - `--project-id <id>` pins the tools to a single Neon project with `?projectId=`, and limits a newly minted key to that project.
 
 `--read-only` and `--category` shape the server URL only; they don't change a key's scope, and neither does reusing an already-configured key.
@@ -38807,27 +38823,13 @@ const { data: deployment } = await neon.functions.deploy({
 
 ## Deploy a function from a template
 
-The Neon Function Registry is a catalog of function templates you can add with the Neon CLI (8.11 or later). A [`neon bootstrap`](https://neon.com/docs/compute/functions/overview#starter-templates) template scaffolds a complete app. A registry template adds one function to the project in your current directory. To see what's available, run:
-
-```bash
-neon functions templates list
-```
-
-To add the `basic` template, run it locally, and deploy it:
+A function template adds a ready-made function to your project. Browse the catalog at [neon.com/functions/templates](https://neon.com/functions/templates), then add one with [`neon functions new`](https://neon.com/docs/cli/functions#new):
 
 ```bash
 neon functions new basic   # writes functions/basic/ and declares it in neon.ts
-npm install @neon/config @neon/env
-neon link                  # if the directory isn't linked to a Neon project yet
-neon dev                   # serves the function at http://localhost:8787
-neon deploy
 ```
 
-The function name is the template ID with any hyphens removed, so `neon functions new context-dev` creates a `contextdev` function in `functions/contextdev/`.
-
-`neon functions new` ends with a `Next:` list of the exact commands for that template, including the packages to install. The list may end with `neon config apply`, which does the same thing as `neon deploy`. If a template needs environment variables, such as an API key for a third-party service, it adds their names to `.env.example`. Set the values in `.env.local`, which `neon dev` loads automatically, and deploy with `neon deploy --env .env.local`. Without `--env`, the deploy fails because the variables are undefined.
-
-Templates live in the [`registry/`](https://github.com/neondatabase/examples/tree/main/registry) folder of the `neondatabase/examples` repository. Anyone can propose a new template by opening a pull request. Neon reviews each one before it's published. See the registry's [contributing guide](https://github.com/neondatabase/examples/blob/main/registry/CONTRIBUTING.md). For all command options, see [`neon functions new`](https://neon.com/docs/cli/functions#new).
+From there, it deploys like any other function. Some templates also need services such as AI Gateway or Object Storage enabled first. For the full workflow, see [Use function templates](https://neon.com/docs/compute/functions/templates).
 
 ## Slugs
 
@@ -39431,6 +39433,10 @@ Last updated: 2026-11-02
 
 A function takes a request and returns a web response, running on long-lived Node.js compute next to your database. The request can come over HTTP, or from a [Function Trigger](https://neon.com/docs/compute/functions/triggers/overview) on a schedule or object upload.
 
+**Prefer to start from a working example?:**
+
+Browse the [function templates](https://neon.com/functions/templates) for ready-made APIs, MCP servers, AI agents, and bots, then add one to your project with `neon functions new`. See [Use function templates](https://neon.com/docs/compute/functions/templates). To scaffold a complete app instead, use [`neon bootstrap`](https://neon.com/docs/cli/bootstrap).
+
 ## Hello world
 
 Write a file and deploy it:
@@ -39531,7 +39537,7 @@ export default defineConfig({
 
 The slug is permanent: it can't be renamed after the first deploy. See the [neon.ts reference](https://neon.com/docs/reference/neon-ts) for all options.
 
-As a shortcut, `neon config add function hello` creates this `neon.ts` and a starter `functions/hello.ts` handler for you. See [`neon config add`](https://neon.com/docs/cli/config#add). To start from a [Function Registry template](https://neon.com/functions/templates) instead, use [`neon functions new`](https://neon.com/docs/cli/functions#new).
+As a shortcut, `neon config add function hello` creates this `neon.ts` and a starter `functions/hello.ts` handler for you. See [`neon config add`](https://neon.com/docs/cli/config#add). To start from a ready-made [function template](https://neon.com/functions/templates) instead, see [Use function templates](https://neon.com/docs/compute/functions/templates).
 
 Install dependencies:
 
@@ -39644,7 +39650,7 @@ The response is a JSON object with your branch's Postgres version:
 
 ## Next steps
 
-- [Function Registry templates](https://neon.com/functions/templates): add a ready-made function instead of writing one by hand
+- [Use function templates](https://neon.com/docs/compute/functions/templates): add a ready-made function from the [template catalog](https://neon.com/functions/templates) instead of writing one by hand
 - [Function Triggers](https://neon.com/docs/compute/functions/triggers/overview): invoke a function on a cron schedule or an object upload instead of over HTTP
 - [Deploy and manage](https://neon.com/docs/compute/functions/deploy): the CLI and API for managing deployed functions
 - [Authentication](https://neon.com/docs/compute/functions/authentication): verify callers before a function runs
@@ -39761,7 +39767,7 @@ Host APIs, agents, and webhooks at an HTTP URL, with no servers to manage, runni
 ## Get started
 
 - [Quickstart](https://neon.com/docs/compute/functions/get-started): Deploy your first function and call it over HTTP in under 5 minutes.
-- [Function Registry](https://neon.com/docs/compute/functions/registry): Install reusable functions from the catalog with neon functions new.
+- [Function templates](https://neon.com/docs/compute/functions/templates): Add a ready-made API, MCP server, AI agent, or bot to your project with one command.
 - [Function Triggers](https://neon.com/docs/compute/functions/triggers/overview): Invoke a function on a cron schedule or an object upload, with no external scheduler.
 - [Custom domains](https://neon.com/docs/compute/functions/custom-domains): Serve a function from a domain you own with automatic TLS.
 - [AI agents](https://neon.com/docs/compute/functions/agents): Run streaming, tool-calling AI agents next to your data.
@@ -39836,7 +39842,7 @@ Functions are backend primitives, not full-stack app hosting. Host your app on V
 
 ## Starter templates
 
-Each example is a complete, runnable build. Read the source on GitHub, or scaffold one with `neon bootstrap --template <id>` (it copies the files, links a Neon project, and pulls env vars). You can also browse them at [build-on-neon.vercel.app](https://build-on-neon.vercel.app/). To add one function to an existing project, use a [Function Registry template](https://neon.com/functions/templates) with `neon functions new` instead of bootstrap.
+Each example is a complete, runnable build. Read the source on GitHub, or scaffold one with `neon bootstrap --template <id>` (it copies the files, links a Neon project, and pulls env vars). You can also browse them at [build-on-neon.vercel.app](https://build-on-neon.vercel.app/). To add one function to an existing project, use a [function template](https://neon.com/docs/compute/functions/templates) instead of bootstrap.
 
 | Example                  | `--template`        | Source                                                                                                                  | Neon services                                   | Stack                 |
 | ------------------------ | ------------------- | ----------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- | --------------------- |
@@ -39926,15 +39932,15 @@ See [Environment variables](https://neon.com/docs/compute/functions/environment-
 
 > Summary: How to contribute a template to the Neon Function Registry: module format, template.json and registry.json fields, layouts, categories, limits, local testing with NEON_FUNCTION_REGISTRY_DIR, and the review checklist.
 
-# Create a Function Registry template
+# Contribute a function template
 
-Publish a reusable Neon Function that anyone can add to their project with neon functions new.
+Share a reusable Neon Function that anyone can add to their project with neon functions new.
 
 Last updated: 2026-10-26
 
 The Function Registry is the public catalog behind [`neon functions new`](https://neon.com/docs/cli/functions#new). Each template is a folder in [`registry/`](https://github.com/neondatabase/examples/tree/main/registry) in `neondatabase/examples`. To add one, you open a pull request with the template folder and an index entry. Neon reviews it, and after it merges to `main`, the template shows up in the CLI and on [neon.com/functions/templates](https://neon.com/functions/templates) within about an hour. You don't publish anything yourself.
 
-Merged files get copied straight into people's projects, so every template goes through review before it lands.
+Merged files get copied straight into people's projects, so every template goes through review before it lands. To use a template rather than publish one, see [Use function templates](https://neon.com/docs/compute/functions/templates).
 
 ## How a template is laid out
 
@@ -39946,7 +39952,7 @@ registry/
 │   └── template.schema.json
 └── <template-id>/
     ├── template.json        # metadata, no inline source
-    ├── README.md            # optional
+    ├── README.md            # setup and usage instructions
     └── functions/
         └── <operation>.ts   # one module per operation
 ```
@@ -40117,6 +40123,7 @@ Registry commands need Neon CLI 8.11.0 or later.
 - Every `process.env` read is declared in `environment`, and no secret or default key is hard-coded.
 - There are no network calls at import time and no telemetry the user didn't ask for.
 - The recommended operations are the ones most users want on day one.
+- `README.md` explains how to use the template: the Neon services to enable (for example, `neon config add ai-gateway`), environment variables to set, whether to deploy before running `neon dev`, and an example request. The `Next:` list from `neon functions new` doesn't cover services, so users rely on the README for them.
 
 ## Where the catalog is served
 
@@ -40531,6 +40538,7 @@ The template stores Telegram user IDs, display names and usage counts in the `pr
 
 ## Related templates
 
+- [Telegram AI chat bot](https://neon.com/functions/templates/telegram-bot): a [function template](https://neon.com/docs/compute/functions/templates) that adds AI Gateway chat to a Telegram bot.
 - [Discord HTTP bot](https://github.com/neondatabase/examples/tree/main/bots/discord-bot-http)
 - [WhatsApp HTTP bot](https://github.com/neondatabase/examples/tree/main/bots/whatsapp-bot-http)
 
@@ -40544,6 +40552,142 @@ cd my-telegram-bot
 ```
 
 You can find the example in [`bots/telegram-bot-http`](https://github.com/neondatabase/examples/tree/main/bots/telegram-bot-http).
+
+--- [Document source](https://neon.com/docs/compute/functions/templates.md) ---
+
+> Summary: How to find and use Neon Function Registry templates: browse the catalog at neon.com/functions/templates or with neon functions templates list, add a template with neon functions new, enable the services it needs, run it locally with neon dev, and deploy it. Also explains how registry templates differ from neon bootstrap starter apps.
+
+# Use function templates
+
+Add a ready-made Neon Function to your project with one command, then run and deploy it.
+
+Function templates are ready-made [Neon Functions](https://neon.com/docs/compute/functions/overview) you can add to your project instead of writing one from scratch. There are templates for REST APIs, MCP servers, authenticated APIs, AI agents, image generation and analysis, and chat bots. Some are built by Neon and some by partners such as Mastra, TanStack, and Telegram.
+
+A template adds one function to the project in your current directory. The source lands in your repo, so you can read it, change it, and deploy it like any function you wrote yourself.
+
+## Browse the templates
+
+Browse the full catalog at [neon.com/functions/templates](https://neon.com/functions/templates). You can search and filter by category. Each template has a page with its install command and a link to its source on GitHub.
+
+- [Browse function templates](https://neon.com/functions/templates): Search and filter every template in the Function Registry
+
+You can also list them from the terminal:
+
+```bash
+neon functions templates list
+```
+
+```text filename="Output"
+ID                 Title                                                Provider     Description
+basic              Basic function                                       Neon         A minimal Neon Function with a JSON response.
+mcp-postgres       MCP server backed by Postgres                        Neon         A Hono MCP server exposing create, list, update, and delete tools backed by a Postgres database.
+rest-api-postgres  REST API with Hono and Postgres                      Neon         A CRUD REST API on Neon Functions with Hono, backed by Lakebase Postgres.
+image-generation   AI image generation API                              Neon         Generate an image with AI Gateway, store it in Object Storage, and return a presigned URL.
+...
+```
+
+The `ID` column is what you pass to `neon functions new`.
+
+## Before you start
+
+Templates need the [Neon CLI](https://neon.com/docs/cli/install) 8.11.0 or later. To deploy one, you also need a Neon project and a directory [linked](https://neon.com/docs/cli/link) to it.
+
+Read the template's README before you install it. Open **Template source** on the template's page, or browse [`registry/`](https://github.com/neondatabase/examples/tree/main/registry) in `neondatabase/examples`. The README lists what the template needs, such as other Neon services or third-party API keys, and how to call the function once it's running.
+
+## Add the template
+
+From your project directory, run `neon functions new` with the template ID:
+
+```bash
+neon functions new image-generation
+```
+
+The command copies the template into `functions/<slug>/` and declares the function in [`neon.ts`](https://neon.com/docs/reference/neon-ts), creating the file if needed. The slug is the template ID with hyphens removed, so this example creates `functions/imagegeneration/`. Pass `--slug` to choose a different one.
+
+Leave out the ID to pick a template interactively. If a template has several operations, the command asks which ones to include. Pass `-y` to take the recommended ones and install dependencies without prompting. See [`neon functions new`](https://neon.com/docs/cli/functions#new) for all options.
+
+The command ends with a `Next:` list of the exact commands for that template:
+
+```text filename="Output"
+Next:
+  npm install @neon/config @neon/env
+  npm install -E @aws-sdk/client-s3@3.1156.0 @aws-sdk/s3-request-presigner@3.1156.0 @neon/ai-sdk-provider@1.1.0 ai@7.0.150
+  neon dev
+  neon config apply
+```
+
+Run the `npm install` lines. Dependencies are pinned to the versions Neon reviewed.
+
+## Enable the services the template uses
+
+The `Next:` list doesn't enable other Neon services for you. If the template uses [AI Gateway](https://neon.com/docs/ai-gateway/overview), [Object Storage](https://neon.com/docs/storage/overview), or [Managed Better Auth](https://neon.com/docs/auth/overview), declare them in `neon.ts`. The template's README says which ones it needs. For `image-generation`, that's AI Gateway and a private bucket named `images`:
+
+```bash
+neon config add ai-gateway
+neon config add bucket images
+```
+
+See [`neon config add`](https://neon.com/docs/cli/config#add) for the other services you can add.
+
+If the template reads its own environment variables, such as an API key for a third-party service, `neon functions new` declares them in `neon.ts` and adds their names to `.env.example`. Set the values in `.env.local`.
+
+## Deploy to provision services
+
+If you added services in the previous step, deploy once so Neon provisions them on your branch:
+
+```bash
+neon deploy
+```
+
+After deploying, Neon writes the new services' credentials, such as the `NEON_AI_GATEWAY_*` and `AWS_*` variables, to your local env file. `neon dev` needs them to run the function. If the template has no extra services or variables, you can skip this step and run it locally first.
+
+If you set your own variables in `.env.local`, deploy with `neon deploy --env .env.local`. Without `--env`, the deploy fails because those variables are undefined.
+
+## Run it locally
+
+```bash
+neon dev
+```
+
+`neon dev` serves the function at `http://localhost:8787` by default and loads `.env` and `.env.local`. Call it with the request shown in the template's README. For `image-generation`:
+
+```bash
+curl -X POST http://localhost:8787/ \
+  -H "content-type: application/json" \
+  -d '{"prompt":"An astronaut drinking coffee in a neon-lit cafe"}'
+```
+
+## Deploy
+
+When it works locally, deploy it to your branch:
+
+```bash
+neon deploy
+```
+
+`neon config apply` does the same thing, which is why the `Next:` list may end with it. To find the function's URL and manage it after deploy, see [Deploy and manage functions](https://neon.com/docs/compute/functions/deploy).
+
+## Customize a template
+
+The template's files are now part of your project, so edit them like any other code. The CLI doesn't track changes or update installed templates.
+
+Many templates don't authenticate requests, so anyone with the function URL can call them. This matters for templates that call paid services like AI Gateway. Check the README, and add your own check before you share the URL. See [Authentication](https://neon.com/docs/compute/functions/authentication).
+
+## Function templates vs. starter apps
+
+Neon has two kinds of templates:
+
+|              | Function templates                                                   | Starter apps                                                                                                                 |
+| ------------ | -------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| What you get | One function, added to your existing project                         | A complete app in a new directory                                                                                            |
+| Command      | `neon functions new <id>`                                            | [`neon bootstrap --template <id>`](https://neon.com/docs/cli/bootstrap)                                                      |
+| Browse       | [neon.com/functions/templates](https://neon.com/functions/templates) | [Starter templates](https://neon.com/docs/compute/functions/overview#starter-templates) or `neon bootstrap --list-templates` |
+
+Use a function template to add a capability to a project you already have. Use a starter app when you're starting from an empty directory.
+
+## Contribute a template
+
+Anyone can propose a template by opening a pull request on `neondatabase/examples`. Neon reviews each one before it's published. See [Contribute a function template](https://neon.com/docs/compute/functions/registry).
 
 --- [Document source](https://neon.com/docs/compute/functions/triggers/object-storage.md) ---
 
@@ -79491,134 +79635,6 @@ Use this option if you need to inspect the restored data before you switch over 
 - Instant restore (PITR) is currently not supported on branches created from a snapshot restore. If you restore a snapshot to create a new branch, you cannot perform point-in-time restore on that branch at this time. Attempting to do so will return an error: `restore from snapshot on target branch is still ongoing`.
 - **Reset from parent is unavailable on child branches for up to 24 hours after restoring a parent from a snapshot.** When you restore a branch from a snapshot, any child branches of that restored branch cannot use the [Reset from parent](https://neon.com/docs/guides/reset-from-parent) feature for up to 24 hours.
 
---- [Document source](https://neon.com/docs/guides/bemi.md) ---
-
-> Summary: Bemi is an open-source audit trail tool that uses Postgres logical replication (CDC via WAL) to automatically record every create, update, and delete on your Lakebase Postgres database, capturing both before and after row states without schema changes. Use this guide when you need tamper-evident change history, time travel queries, or ORM-level context tracking with Prisma, TypeORM, SQLAlchemy, or Rails. Enabling logical replication permanently sets wal_level=logical on all databases in the project and keeps compute active while Bemi is connected, which prevents scale-to-zero.
-
-# Create an automatic audit trail with Bemi
-
-Learn how to create an automatic audit trail for your Postgres database with Bemi
-
-Last updated: 2026-10-09
-
-[Bemi](https://bemi.io/) is an open-source solution that plugs into Postgres and ORMs such as Prisma, TypeORM, SQLAlchemy, and Ruby on Rails to track database changes automatically. It unlocks robust context-aware audit trails and time travel querying inside your application.
-
-Designed with simplicity and non-invasiveness in mind, Bemi doesn't require alterations to your existing database structure. It operates in the background, empowering you with data change tracking features.
-
-In this guide, we'll show you how to connect your Lakebase Postgres database to Bemi to create an automatic audit trail.
-
-## Prerequisites
-
-- A [Bemi account](https://bemi.io/)
-- A [Neon account](https://console.neon.tech/)
-- Read the [important notices about logical replication in Neon](https://neon.com/docs/guides/logical-replication-neon#important-notices) before you begin
-
-**Important: Compute and billing**
-
-Replication keeps compute active (no [scale to zero](https://neon.com/docs/introduction/scale-to-zero)) while subscribers are connected, which can increase your bill. See [Important notices about logical replication in Neon](https://neon.com/docs/guides/logical-replication-neon#important-notices).
-
-## Enable logical replication in Neon
-
-Bemi tracks changes made in a Postgres database through Change Data Capture (CDC), which is a process of identifying and capturing changes made to your database tables in real-time. In Postgres, CDC is supported by the Postgres logical replication feature. In this step, we'll enable logical replication for your Lakebase Postgres project.
-
-**Important:** Enabling logical replication modifies the Postgres `wal_level` configuration parameter, changing it from replica to logical for all databases in your Neon project. Once the `wal_level` setting is changed to logical, it cannot be reverted. Enabling logical replication also restarts all computes in your Neon project, meaning active connections will be dropped and have to reconnect.
-
-To enable logical replication in Neon:
-
-1. Select your project in the Neon Console.
-2. Select **Settings** in the sidebar.
-3. Select **Postgres**, then **Logical replication**.
-4. Click **Enable** to enable logical replication.
-
-You can verify that logical replication is enabled by running the following query from the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor):
-
-```sql
-SHOW wal_level;
-wal_level
------------
-logical
-```
-
-## Connect your database to Bemi
-
-The following instructions assume you are connecting with a Postgres role created via the console, API, or CLI. These roles are automatically granted membership in a `neon_superuser` group, which has the Postgres `REPLICATION` privilege. The role you use to connect to Bemi requires this privilege. If you prefer to create a dedicated read-only role for use with Bemi, see [Use a read-only Postgres role for Bemi](https://neon.com/docs/guides/bemi#use-a-read-only-postgres-role-for-bemi).
-
-To connect your database to Bemi:
-
-1. Retrieve your database connection string by clicking the **Connect** button in the Console nav to open the **Connect to your branch** modal. It will look similar to this:
-
-   ```sql
-   postgresql://neondb_owner:AbC123dEf@ep-cool-darkness-123456.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require
-   ```
-
-2. In Bemi, select **Databases** > **Add Database** to open the **Connect PostgreSQL Database** dialog.
-
-3. Enter the Neon database connection details from your connection string. For example, given the connection string shown above, enter the details in the **Connect PostgreSQL Database** dialog as shown below. Your values will differ except for the port number. Neon uses the default Postgres port, `5432`.
-
-   - **Host**: ep-cool-darkness-123456.us-east-2.aws.neon.tech
-   - **Port**: 5432
-   - **Database Name**: neondb
-   - **Username**: neondb_owner
-   - **Password**: AbC123dEf
-
-   You can also use the **Environment** field to specify whether the configuration is for a **Production**, **Staging**, or **Test** environment.
-
-   ![Bemi Connect PostgreSQL Database](https://neon.com/docs/guides/bemi_connect_postgres.png)
-
-4. After entering your connection details, click **Add Database**.
-
-5. Configure the tables you want to track changes for and choose whether to track new tables automatically. You can change this selection later, if necessary.
-
-   ![Bemi Tracked Tables](https://neon.com/docs/guides/bemi_tracked_tables.png)
-
-   Click **Save** to continue.
-
-6. Wait a few minutes while Bemi provisions the infrastructure. When this operation completes, you've successfully configured a Bemi Postgres source for your Neon database. You'll be able to track data changes through the Bemi Browser UI page, where you can filter by **Operation** (`Create`, `Update`, `Delete`), **Table**, or **Primary Key**. You can also view data changes by environment if you have configured more than one.
-
-   ![Bemi browser UI](https://neon.com/docs/guides/bemi_browser_ui.png)
-
-## Use a read-only Postgres role for Bemi
-
-If preferred, you can create a dedicated read-only Postgres role for connecting your Neon database to Bemi. To do so, run the commands below. The commands assume your database resides in the `public` schema in Postgres. If your database resides in a different schema, adjust the commands as necessary to specify the correct schema name.
-
-- `CREATE ROLE`: Creates a new read-only user for Bemi to read database changes.
-- `CREATE PUBLICATION`: creates a "channel" that we'll subscribe to and track changes in real-time.
-- `REPLICA IDENTITY FULL`: enhances records stored in WAL to record the previous state ("before") in addition to the tracked by default new state ("after").
-
-```sql
--- Create read-only user with REPLICATION permission
-CREATE ROLE [username] WITH LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE REPLICATION PASSWORD '[password]';
--- Grant SELECT access to tables for selective tracking
-GRANT SELECT ON ALL TABLES IN SCHEMA public TO [username];
--- Grant SELECT access to new tables created in the future for selective tracking
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO [username];
-
--- Create "bemi" PUBLICATION to enable logical replication
-CREATE PUBLICATION bemi FOR TABLE <tbl1, tbl2, tbl3>;
-
--- Create a procedure to set REPLICA IDENTITY FULL for tables to track the "before" state on DB row changes
-CREATE OR REPLACE PROCEDURE _bemi_set_replica_identity() AS $$ DECLARE current_tablename TEXT;
-BEGIN
-  FOR current_tablename IN SELECT tablename FROM pg_tables LEFT JOIN pg_class ON relname = tablename WHERE schemaname = 'public' AND relreplident != 'f' LOOP
-    EXECUTE format('ALTER TABLE %I REPLICA IDENTITY FULL', current_tablename);
-  END LOOP;
-END $$ LANGUAGE plpgsql;
--- Call the created procedure
-CALL _bemi_set_replica_identity();
-```
-
-**Note:** After creating a read-only role, you can find the connection details for this role by clicking the **Connect** button in the Console nav to open the **Connect to your branch** modal. Use this role when connecting your database to Bemi, as described [above](https://neon.com/docs/guides/bemi#connect-your-database-to-bemi).
-
-## Allow inbound traffic
-
-If you're using Neon's IP Allow feature to limit IP addresses that can connect to Neon, you will need to allow inbound traffic from Bemi. [Contact Bemi](mailto:hi@bemi.io) to get the static IPs that need to be allowlisted. For information about configuring allowed IPs in Neon, see [Configure IP Allow](https://neon.com/docs/manage/projects#configure-ip-allow).
-
-## References
-
-- [The ultimate guide to PostgreSQL data change tracking](https://blog.bemi.io/the-ultimate-guide-to-postgresql-data-change-tracking/)
-- [Logical replication - PostgreSQL documentation](https://www.postgresql.org/docs/current/logical-replication.html)
-- [Publications - PostgreSQL documentation](https://www.postgresql.org/docs/current/logical-replication-publication.html)
-
 --- [Document source](https://neon.com/docs/guides/benchmarking-latency.md) ---
 
 > Summary: Benchmarking latency in Neon's serverless Postgres requires separating cold queries (compute wakes from suspension) from hot queries (active instance), because standard benchmarking tools conflate the two and produce misleading results. Free-tier databases auto-suspend after 5 minutes of inactivity; paid Scale plan users can disable auto-suspend to eliminate cold starts. HTTP and WebSocket connections have distinct latency profiles, and Neon provides an open-source regional latency dashboard for comparing connection methods across AWS regions.
@@ -82448,6 +82464,8 @@ This setup works in production. But for local development, libraries like Postgr
 Connect a Lakebase Postgres database to your Cloudflare Pages web application
 
 Last updated: 2026-10-09
+
+**Note:** Cloudflare recommends Workers for new projects. To build a new app, see [Use Neon with Cloudflare Workers](https://neon.com/docs/guides/cloudflare-workers). This guide still applies to existing Cloudflare Pages projects.
 
 `Cloudflare Pages` is a modern web application hosting platform that allows you to build, deploy, and scale your web applications. While it is typically used to host static websites, you can also use it to host interactive web applications by leveraging `functions` to run server-side code. Internally, Cloudflare functions are powered by `Cloudflare Workers`, a serverless platform that allows you to run JavaScript code on Cloudflare's edge network.
 
@@ -85584,6 +85602,10 @@ We're always looking to improve! If you have feature requests or feedback, pleas
 Connect a Lakebase Postgres database to your Deno Deploy application
 
 Last updated: 2026-10-01
+
+**Warning: Deprecated**
+
+This guide deploys with `deployctl` to Deno Deploy Classic, which shut down in July 2026. Deno has also announced that Deno Deploy will shut down in 2027. The deployment steps no longer work, and this guide is no longer maintained. The local steps, which use the Deno runtime and the Neon serverless driver, still apply. For other deployment options, see [Neon integration guides](https://neon.com/docs/guides/integrations).
 
 [Deno Deploy](https://deno.com/deploy) is a scalable serverless platform for running JavaScript, TypeScript, and WebAssembly at the edge, designed by the creators of Deno. It simplifies the deployment process and offers automatic scaling, zero-downtime deployments, and global distribution.
 
@@ -92571,19 +92593,17 @@ Last updated: 2026-10-21
 ## Replicate from Neon
 
 - [Airbyte](https://neon.com/docs/guides/logical-replication-airbyte): Replicate data from Neon with Airbyte
-- [Bemi](https://neon.com/docs/guides/bemi): Create an automatic audit trail with Bemi
 - [ClickHouse](https://neon.com/docs/guides/logical-replication-clickhouse): Replicate data from Neon to ClickHouse using ClickPipes
 - [Confluent (Kafka)](https://neon.com/docs/guides/logical-replication-kafka-confluent): Replicate data from Neon with Confluent (Kafka)
 - [Databricks](https://neon.com/docs/guides/logical-replication-databricks): Replicate data from Neon to Databricks with Lakeflow Connect
 - [Decodable](https://neon.com/docs/guides/logical-replication-decodable): Replicate data from Neon with Decodable
-- [Estuary Flow](https://neon.com/docs/guides/logical-replication-estuary-flow): Replicate data from Neon with Estuary Flow
+- [Estuary](https://neon.com/docs/guides/logical-replication-estuary-flow): Replicate data from Neon with Estuary
 - [Fivetran](https://neon.com/docs/guides/logical-replication-fivetran): Replicate data from Neon with Fivetran
 - [Inngest](https://neon.com/docs/guides/logical-replication-inngest): Replicate data from Neon to Inngest
 - [Materialize](https://neon.com/docs/guides/logical-replication-materialize): Replicate data from Neon to Materialize
 - [Neon to Lakebase](https://neon.com/docs/guides/logical-replication-neon-to-lakebase): Replicate data from Neon to Lakebase Postgres on Databricks
 - [Neon to Neon](https://neon.com/docs/guides/logical-replication-neon-to-neon): Replicate data from Neon to Neon
 - [Neon to PostgreSQL](https://neon.com/docs/guides/logical-replication-postgres): Replicate data from Neon to PostgreSQL
-- [Sequin](https://neon.com/docs/guides/sequin): Stream changes and rows from your database to anywhere with Sequin
 - [Snowflake](https://neon.com/docs/guides/logical-replication-airbyte-snowflake): Replicate data from Neon to Snowflake with Airbyte
 - [Stacksync](https://neon.com/docs/guides/logical-replication-stacksync): Replicate data from Neon with Stacksync
 
@@ -98355,23 +98375,23 @@ Of course, you also can take your processed data back to another Neon database, 
 
 --- [Document source](https://neon.com/docs/guides/logical-replication-estuary-flow.md) ---
 
-> Summary: Estuary Flow's Neon PostgreSQL source connector streams CDC events from a Lakebase Postgres database to any Estuary materialization destination at sub-100ms latency. Use this guide when you need continuous, low-latency replication of inserts, updates, and deletes from Neon to an external system. Setup requires enabling logical replication (permanently sets wal_level to logical project-wide), a direct non-pooled connection string, and IP allowlisting for Estuary's egress addresses.
+> Summary: Estuary's Neon PostgreSQL source connector streams CDC events from a Lakebase Postgres database to any Estuary materialization destination at sub-100ms latency. Use this guide when you need continuous, low-latency replication of inserts, updates, and deletes from Neon to an external system. Setup requires enabling logical replication (permanently sets wal_level to logical project-wide), a direct non-pooled connection string, and IP allowlisting for Estuary's egress addresses.
 
-# Replicate Data with Estuary Flow
+# Replicate data with Estuary
 
-Learn how to replicate data from Neon with Estuary Flow
+Learn how to replicate data from Neon with Estuary
 
 Last updated: 2026-10-09
 
 Neon's logical replication feature allows you to replicate data from your Lakebase Postgres database to external destinations.
 
-[Estuary Flow](https://estuary.dev/) is a real-time data streaming platform that allows you to connect, transform, and move data from various sources to destinations with sub-100ms latency.
+[Estuary](https://estuary.dev/) (formerly Estuary Flow) is a real-time data streaming platform that allows you to connect, transform, and move data from various sources to destinations with sub-100ms latency.
 
-In this guide, you will learn how to configure a Postgres source connector in Estuary Flow for ingesting changes from your Neon database, enabling you to replicate data from Lakebase Postgres to any of Estuary Flow's [supported destinations](https://docs.estuary.dev/reference/Connectors/materialization-connectors/#available-materialization-connectors), with optional transformations along the way.
+In this guide, you will learn how to configure a Postgres source connector in Estuary for ingesting changes from your Neon database, enabling you to replicate data from Lakebase Postgres to any of Estuary's [supported destinations](https://docs.estuary.dev/reference/Connectors/materialization-connectors/#available-materialization-connectors), with optional transformations along the way.
 
 ## Prerequisites
 
-- An [Estuary Flow account](https://dashboard.estuary.dev/register) (start free, no credit card required)
+- An [Estuary account](https://dashboard.estuary.dev/register) (start free, no credit card required)
 - A [Neon account](https://console.neon.tech/)
 - Read the [important notices about logical replication in Neon](https://neon.com/docs/guides/logical-replication-neon#important-notices) before you begin
 
@@ -98455,7 +98475,7 @@ Granting `SELECT ON ALL TABLES IN SCHEMA` instead of naming the specific tables 
 
 ## Create a Publication
 
-Create a [publication](https://www.postgresql.org/docs/current/sql-createpublication.html) with the name `estuary_publication`. Include all the tables you would like to ingest into Estuary Flow.
+Create a [publication](https://www.postgresql.org/docs/current/sql-createpublication.html) with the name `estuary_publication`. Include all the tables you would like to ingest into Estuary.
 
 ```sql
 CREATE PUBLICATION estuary_publication FOR TABLE <tbl1, tbl2, tbl3>;
@@ -98463,17 +98483,17 @@ CREATE PUBLICATION estuary_publication FOR TABLE <tbl1, tbl2, tbl3>;
 
 Refer to the [Postgres docs](https://www.postgresql.org/docs/current/sql-alterpublication.html) if you need to add or remove tables from your publication.
 
-Upon startup, the Estuary Flow connector for Postgres will automatically create the [replication slot](https://www.postgresql.org/docs/current/logicaldecoding-explanation.html#LOGICALDECODING-REPLICATION-SLOTS) required for ingesting data change events from Postgres. The slot's name will be prefixed with `estuary_`, followed by a unique identifier.
+Upon startup, the Estuary connector for Postgres will automatically create the [replication slot](https://www.postgresql.org/docs/current/logicaldecoding-explanation.html#LOGICALDECODING-REPLICATION-SLOTS) required for ingesting data change events from Postgres. The slot's name will be prefixed with `estuary_`, followed by a unique identifier.
 
 ## Allow Inbound Traffic
 
-If you are using Neon's **IP Allow** feature to limit the IP addresses that can connect to Neon, you will need to allow inbound traffic from Estuary Flow's IP addresses.
-Refer to the [Estuary Flow documentation](https://docs.estuary.dev/reference/allow-ip-addresses/#ip-addresses-to-allowlist) for the list of IPs that need to be allowlisted for the Estuary Flow region of your account.
+If you are using Neon's **IP Allow** feature to limit the IP addresses that can connect to Neon, you will need to allow inbound traffic from Estuary's IP addresses.
+Refer to the [Estuary documentation](https://docs.estuary.dev/reference/allow-ip-addresses/#ip-addresses-to-allowlist) for the list of IPs that need to be allowlisted for the Estuary region of your account.
 For information about configuring allowed IPs in Neon, see [Configure IP Allow](https://neon.com/docs/manage/projects#configure-ip-allow).
 
-## Create a Postgres Source Connector in Estuary Flow
+## Create a Postgres Source Connector in Estuary
 
-1. In the Estuary Flow web UI, select **Sources** from the left navigation bar and click **New Capture**.
+1. In the Estuary web UI, select **Sources** from the left navigation bar and click **New Capture**.
 
 2. In the connector catalog, choose **Neon PostgreSQL** and click **Connect**.
 
@@ -98487,7 +98507,7 @@ For information about configuring allowed IPs in Neon, see [Configure IP Allow](
    postgres://cdc_role:AbC123dEf@ep-cool-darkness-123456.us-east-2.aws.neon.tech/dbname?sslmode=require&channel_binding=require
    ```
 
-   ![Creating a Neon capture connector in Estuary Flow](https://neon.com/docs/guides/estuary_flow_create_neon_capture.png)
+   ![Creating a Neon capture connector in Estuary](https://neon.com/docs/guides/estuary_flow_create_neon_capture.png)
 
    Enter the details for **your connection string** into the source connector fields. Based on the sample connection string above, the values would be specified as shown below. Your values will differ.
 
@@ -98497,20 +98517,20 @@ For information about configuring allowed IPs in Neon, see [Configure IP Allow](
    - **Password**: Click **Add a new secret...**, then specify a name for that secret and `AbC123dEf` as its value
    - **Database**: dbname
 
-   ![Configuring Neon capture in Estuary Flow](https://neon.com/docs/guides/estuary_flow_configure_neon_capture.png)
+   ![Configuring Neon capture in Estuary](https://neon.com/docs/guides/estuary_flow_configure_neon_capture.png)
 
-4. Click **Next**. Estuary Flow will now scan the source database for all the tables that can be replicated. Select one or more tables by checking the checkbox next to their name.
+4. Click **Next**. Estuary will now scan the source database for all the tables that can be replicated. Select one or more tables by checking the checkbox next to their name.
    Optionally, you can change the name of the destination name for each table. You can also take a look at the schema of each stream by clicking on the **Collection** tab.
 
-   ![Selecting collections for replication in Estuary Flow](https://neon.com/docs/guides/estuary_flow_configure_collections.png)
+   ![Selecting collections for replication in Estuary](https://neon.com/docs/guides/estuary_flow_configure_collections.png)
 
 5. Click **Save and Publish** to provision the connector and kick off the automated backfill process.
 
 ## Previewing the Data
 
-Once the connector is up and running state, navigate to the Collections page in the Estuary Flow dashboard and click on the collection being filled by your capture.
+Once the connector is up and running state, navigate to the Collections page in the Estuary dashboard and click on the collection being filled by your capture.
 
-![Preview data in Estuary Flow](https://neon.com/docs/guides/estuary_flow_preview_collections.png)
+![Preview data in Estuary](https://neon.com/docs/guides/estuary_flow_preview_collections.png)
 
 --- [Document source](https://neon.com/docs/guides/logical-replication-fivetran.md) ---
 
@@ -98738,18 +98758,16 @@ To get started, jump into one of our step-by-step logical replication guides.
 **Note:** To replicate data from Neon, you must first enable logical replication on your project. This setting cannot be reverted once enabled. See [Enable logical replication](https://neon.com/docs/guides/logical-replication-neon#enable-logical-replication) for Console and API instructions.
 
 - [Airbyte](https://neon.com/docs/guides/logical-replication-airbyte): Replicate data from Neon with Airbyte
-- [Bemi](https://neon.com/docs/guides/bemi): Create an automatic audit trail with Bemi
 - [ClickHouse](https://neon.com/docs/guides/logical-replication-clickhouse): Replicate data from Neon to ClickHouse using ClickPipes
 - [Confluent (Kafka)](https://neon.com/docs/guides/logical-replication-kafka-confluent): Replicate data from Neon with Confluent (Kafka)
 - [Databricks](https://neon.com/docs/guides/logical-replication-databricks): Replicate data from Neon to Databricks
 - [Decodable](https://neon.com/docs/guides/logical-replication-decodable): Replicate data from Neon with Decodable
-- [Estuary Flow](https://neon.com/docs/guides/logical-replication-estuary-flow): Replicate data from Neon with Estuary Flow
+- [Estuary](https://neon.com/docs/guides/logical-replication-estuary-flow): Replicate data from Neon with Estuary
 - [Fivetran](https://neon.com/docs/guides/logical-replication-fivetran): Replicate data from Neon with Fivetran
 - [Materialize](https://neon.com/docs/guides/logical-replication-materialize): Replicate data from Neon to Materialize
 - [Neon to Lakebase](https://neon.com/docs/guides/logical-replication-neon-to-lakebase): Replicate data from Neon to Lakebase Postgres on Databricks
 - [Neon to Neon](https://neon.com/docs/guides/logical-replication-neon-to-neon): Replicate data from Neon to Neon
 - [Neon to PostgreSQL](https://neon.com/docs/guides/logical-replication-postgres): Replicate data from Neon to PostgreSQL
-- [Sequin](https://neon.com/docs/guides/sequin): Stream data from platforms like Stripe, Linear, and GitHub to Neon
 - [Snowflake](https://neon.com/docs/guides/logical-replication-airbyte-snowflake): Replicate data from Neon to Snowflake with Airbyte
 - [Inngest](https://neon.com/docs/guides/logical-replication-inngest): Replicate data from Neon to Inngest
 
@@ -106960,7 +106978,7 @@ Find the complete source code for this tutorial on GitHub:
 
 --- [Document source](https://neon.com/docs/guides/prisma.md) ---
 
-> Summary: Prisma ORM (Node.js/TypeScript) connects to Neon using the `@prisma/adapter-neon` serverless driver adapter, which routes queries over WebSockets for compatibility with serverless environments. The setup requires two connection strings: a pooled URL (`DATABASE_URL`) for application queries and a direct URL (`DATABASE_URL_UNPOOLED`) for Prisma CLI commands such as migrations and `db push`. Newer Prisma versions configure the direct connection in `prisma.config.ts`; older versions use the `directUrl` property in `schema.prisma`.
+> Summary: Prisma ORM (Node.js/TypeScript) connects to Neon using the `@prisma/adapter-neon` serverless driver adapter, which routes queries over WebSockets for compatibility with serverless environments. The setup requires two connection strings: a pooled URL (`DATABASE_URL`) for application queries and a direct URL (`DATABASE_URL_UNPOOLED`) for Prisma CLI commands such as migrations and `db push`. Newer Prisma versions configure the direct connection in a Prisma config file (`prisma.config.ts`, or `prisma7.config.ts` in 7.10+); older versions use the `directUrl` property in `schema.prisma`.
 
 # Connect from Prisma to Neon
 
@@ -106970,7 +106988,7 @@ Last updated: 2026-10-05
 
 Pre-built prompt for connecting Node/TypeScript applications to Neon using Prisma ORM. [View prompt](https://neon.com/prompts/prisma-prompt.md)
 
-Prisma is an open-source, next-generation ORM for Node.js and TypeScript. This guide shows you how to connect a Prisma application to Neon using the recommended setup with the Neon serverless driver adapter.
+Prisma is an open-source ORM for Node.js and TypeScript. This guide shows you how to connect a Prisma application to Neon using the recommended setup with the Neon serverless driver adapter.
 
 ## Prerequisites
 
@@ -106987,7 +107005,7 @@ npm install @prisma/client@7 @prisma/adapter-neon@7 dotenv
 npm install prisma@7 tsx --save-dev
 ```
 
-**Note:** This guide uses Prisma ORM 7. Install the `prisma` CLI, `@prisma/client`, and `@prisma/adapter-neon` at the same major version (`@7`). The `prisma` package's `latest` npm tag currently points to a Prisma 8 prerelease, so an unpinned `npm install prisma` installs a CLI that doesn't match the rest of this setup.
+**Note:** This guide uses Prisma ORM 7. Install the `prisma` CLI, `@prisma/client`, and `@prisma/adapter-neon` at the same major version (`@7`). The `prisma` package's `latest` npm tag currently points to a Prisma 8 prerelease, so an unpinned `npm install prisma` installs a CLI that doesn't match the rest of this setup. If the Prisma CLI later prints an "Update available" notice for Prisma 8, ignore it for this guide.
 
 ### Step 2: Get your connection strings
 
@@ -107002,13 +107020,13 @@ Add them to your `.env` file:
 
 ```ini
 # Pooled connection for your application
-DATABASE_URL="postgresql://[user]:[password]@[endpoint]-pooler.[region].aws.neon.tech/[dbname]?sslmode=require"
+DATABASE_URL="postgresql://[user]:[password]@[endpoint]-pooler.[region].aws.neon.tech/[dbname]?sslmode=require&channel_binding=require"
 
 # Direct (unpooled) connection for Prisma CLI
-DATABASE_URL_UNPOOLED="postgresql://[user]:[password]@[endpoint].[region].aws.neon.tech/[dbname]?sslmode=require"
+DATABASE_URL_UNPOOLED="postgresql://[user]:[password]@[endpoint].[region].aws.neon.tech/[dbname]?sslmode=require&channel_binding=require"
 ```
 
-**Tip:** The pooled connection has `-pooler` in the hostname. The direct (unpooled) connection does not. Both are available in your Neon Console.
+**Tip:** The pooled connection has `-pooler` in the hostname. The direct (unpooled) connection does not. Both are available in your Neon Console. If you only have the pooled string, remove `-pooler` from the hostname to get the direct one.
 
 ### Step 3: Configure your Prisma schema
 
@@ -107032,11 +107050,11 @@ model User {
 }
 ```
 
-**Note:** In Prisma 7+, do not include a `url` property in the datasource block. The connection is configured via `prisma.config.ts` and the adapter.
+**Note:** In Prisma 7+, do not include a `url` property in the datasource block. The connection is configured in the Prisma config file (Step 4) and the adapter.
 
-### Step 4: Create prisma.config.ts
+### Step 4: Configure the Prisma CLI connection
 
-Create a `prisma.config.ts` file in your project root. This tells Prisma CLI where to connect for migrations and other commands:
+The Prisma CLI reads its connection from a config file in your project root. If you ran `npx prisma init`, it already created one: `prisma7.config.ts` in Prisma 7.10 and later, or `prisma.config.ts` in earlier 7.x releases. Replace that file's contents with the following. If you don't have a config file yet, create `prisma.config.ts`:
 
 ```typescript
 import 'dotenv/config'
@@ -107049,6 +107067,8 @@ export default defineConfig({
   },
 })
 ```
+
+**Warning:** Keep only one Prisma config file. If both `prisma7.config.ts` and `prisma.config.ts` exist, the CLI loads `prisma7.config.ts` and ignores the other, so CLI commands can end up on the pooled connection. The first line of `npx prisma db push` output shows which file was loaded (`Loaded Prisma config from ...`).
 
 ### Step 5: Create your Prisma Client
 
@@ -107127,16 +107147,16 @@ npx tsx src/main.ts
 
 ## Why two connection strings?
 
-Neon uses connection pooling to efficiently manage database connections in serverless environments:
+Neon uses connection pooling to manage database connections in serverless environments:
 
-- **Pooled connection (`DATABASE_URL`)**: Your application connects through Neon's connection pooler, which is optimal for serverless functions that create many short-lived connections.
+- **Pooled connection (`DATABASE_URL`)**: Your application connects through Neon's connection pooler, which suits serverless functions that create many short-lived connections.
 - **Direct (unpooled) connection (`DATABASE_URL_UNPOOLED`)**: Prisma CLI commands like `prisma migrate` and `prisma db push` need a direct connection for schema operations.
 
 ## Advanced configuration
 
-### Using a non-public PostgreSQL schema
+### Using a non-public Postgres schema
 
-If you're using a PostgreSQL schema other than `public`, pass a `schema` option when creating the adapter:
+If you're using a Postgres schema other than `public`, pass a `schema` option when creating the adapter:
 
 ```typescript
 const adapter = new PrismaNeon(
@@ -107147,11 +107167,13 @@ const adapter = new PrismaNeon(
 
 ### Setting the search path for raw SQL queries
 
-For raw SQL queries that reference tables without schema qualification, use PostgreSQL's `options` parameter in your connection string:
+For raw SQL queries that reference tables without schema qualification, use the Postgres `options` parameter in your connection string:
 
 ```text
 postgresql://[user]:[password]@[neon_hostname]/[dbname]?options=-c%20search_path%3Dmyschemaname
 ```
+
+This works only on the direct (unpooled) connection. The pooler rejects `search_path` in startup options, so with the pooled `DATABASE_URL`, use the adapter's `schema` option or schema-qualified table names instead.
 
 ## Troubleshooting
 
@@ -107165,7 +107187,7 @@ If you see an error like:
 Error: P1001: Can't reach database server at `ep-example-123456.us-east-2.aws.neon.tech`:`5432`
 ```
 
-This usually means the Prisma query engine timed out before Neon activated the compute. Neon computes scale to zero after inactivity and take a few seconds to wake up.
+This usually means the connection timed out before Neon activated the compute. Neon computes scale to zero after inactivity and take a few seconds to wake up.
 
 Add a `connect_timeout` parameter to your connection string:
 
@@ -107181,16 +107203,17 @@ A value of `0` means no timeout.
 
 <summary>**Connection pool timeouts**</summary>
 
-Prisma maintains its own connection pool. If you're seeing pool-related timeouts, you can configure:
+With the Neon adapter, the connection pool belongs to the Neon serverless driver, not Prisma. In Prisma 7, the `connection_limit` and `pool_timeout` URL parameters have no effect. Pass pool options to the adapter instead:
 
-- `connection_limit`: Number of connections in the pool (default: `num_cpus * 2 + 1`)
-- `pool_timeout`: Seconds to wait for a connection from the pool (default: 10)
-
-```text
-DATABASE_URL="postgresql://...?sslmode=require&connection_limit=20&pool_timeout=15"
+```typescript
+const adapter = new PrismaNeon({
+  connectionString: process.env.DATABASE_URL!,
+  max: 20, // maximum connections in the pool
+  connectionTimeoutMillis: 15_000, // how long to wait for a connection
+})
 ```
 
-See Prisma's [connection management guide](https://www.prisma.io/docs/guides/performance-and-optimization/connection-management) for details.
+See Prisma's [connection pool guide](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections/connection-pool) for details.
 
 </details>
 
@@ -107198,7 +107221,7 @@ See Prisma's [connection management guide](https://www.prisma.io/docs/guides/per
 
 <summary>**Using Prisma 6 or earlier**</summary>
 
-In Prisma 6 and earlier, you configure the connection directly in `schema.prisma` instead of `prisma.config.ts`:
+In Prisma 6 and earlier, you configure the connection directly in `schema.prisma` instead of a Prisma config file:
 
 ```prisma
 datasource db {
@@ -107236,7 +107259,8 @@ The `directUrl` property is available in Prisma 4.10.0 and higher.
 
 - Import `PrismaClient` from `./generated/prisma` (or your configured `output` path), not from `@prisma/client`. The import path changed in Prisma 7.
 - Do not install `@neondatabase/serverless` or `ws` as separate packages. The `@prisma/adapter-neon` package bundles everything needed for the Neon connection.
-- In Prisma 7+, do not include a `url` property in the `prisma/schema.prisma` datasource block. The connection is configured via `prisma.config.ts` and the adapter.
+- In Prisma 7+, do not include a `url` property in the `prisma/schema.prisma` datasource block. The connection is configured in the Prisma config file and the adapter.
+- `npx prisma init` in Prisma 7.10+ creates `prisma7.config.ts`. Edit that file instead of adding a second `prisma.config.ts`; when both exist, the CLI loads `prisma7.config.ts`.
 - You need both a pooled connection (`DATABASE_URL`) for your application and a direct (unpooled) connection (`DATABASE_URL_UNPOOLED`) for Prisma CLI commands.
 - Call `prisma.$disconnect()` in a `.finally()` block when running standalone scripts. Omitting this can leave connections open.
 
@@ -114253,123 +114277,6 @@ For more information on the tools used in this guide, refer to the following res
 - [Add Object Storage](https://neon.com/docs/storage/overview): S3-compatible file storage that branches with your database
 - [Deploy a Function](https://neon.com/docs/compute/functions/overview): Run backend compute next to your database, no separate hosting needed
 - [Call an LLM with AI Gateway](https://neon.com/docs/ai-gateway/overview): Access foundation models from Anthropic, OpenAI, Google, and more with one credential
-
---- [Document source](https://neon.com/docs/guides/sequin.md) ---
-
-> Summary: Sequin is an open-source tool that reads the Write Ahead Log via logical replication and forwards every insert, update, and delete to external services with exactly-once delivery. Use this guide when you need to trigger webhooks, fan out work to cloud functions, or stream database changes to services like trigger.dev without building a custom CDC pipeline. Changes are delivered via HTTP push (webhooks) or HTTP pull (SQS-style). Enabling logical replication sets wal_level=logical, which is permanent and keeps compute active while consumers are connected.
-
-# Stream changes from your Neon database to anywhere
-
-Learn how to capture and stream changes and rows from your database to anywhere with Sequin
-
-Last updated: 2026-10-09
-
-Neon's Logical Replication features makes it possible to detect every change in your database. It can be used to power read-replicas and backups, but can also be used to add streaming characteristics to Neon.
-
-[Sequin](https://github.com/sequinstream/sequin) uses logical replication to send records and changes in your database to your applications and services in real-time. It's designed to never miss an `insert`, `update`, or `delete` and provide exactly-once processing of all changes.
-
-Changes are sent as messages via HTTP push (webhooks) or pull (SQS-like, with Sequin SDKs). Out of the box, you can start triggering side-effects when a new record is created, fan out work to cloud functions, or activate workflows in services like trigger.dev.
-
-In this guide, we'll show you how to connect your database to Sequin to start sending changes anywhere you need.
-
-## Prerequisites
-
-- A [Sequin account](https://console.sequinstream.com/register)
-- A [Neon account](https://console.neon.tech/)
-- Read the [important notices about logical replication in Neon](https://neon.com/docs/guides/logical-replication-neon#important-notices) before you begin
-
-**Important: Compute and billing**
-
-Replication keeps compute active (no [scale to zero](https://neon.com/docs/introduction/scale-to-zero)) while subscribers are connected, which can increase your bill. See [Important notices about logical replication in Neon](https://neon.com/docs/guides/logical-replication-neon#important-notices).
-
-## Enable logical replication
-
-Sequin uses the Write Ahead Log (WAL) to capture changes from your Postgres database. In this step, we'll enable logical replication for your Lakebase Postgres project.
-
-**Important:** Enabling logical replication modifies the Postgres `wal_level` configuration parameter, changing it from replica to logical for all databases in your Neon project. Once the `wal_level` setting is changed to logical, it cannot be reverted. Enabling logical replication also restarts all computes in your Neon project, meaning active connections will be dropped and have to reconnect.
-
-To enable logical replication:
-
-1. Select your project in the Neon Console.
-2. Select **Settings** in the sidebar.
-3. Select **Postgres**, then **Logical replication**.
-4. Click **Enable** to enable logical replication.
-
-You can verify that logical replication is enabled by running the following query from the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor):
-
-```sql
-SHOW wal_level;
-wal_level
------------
-logical
-```
-
-## Connect your Neon database to Sequin
-
-After enabling logical replication on Neon, you'll now connect your Neon database to Sequin. Follow these steps:
-
-1. In Neon, copy your database connection string. You can find the it by clicking the **Connect** button in the Console nav. It will look similar to this:
-
-   ```sql
-   postgresql://neondb_owner:AbC123dEf@ep-cool-darkness-123456.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require
-   ```
-
-2. In the Sequin Console, click on the **Connect Database** button, and then auto-complete your database credentials by clicking the **Autofill with URL** button and pasting in your database connection string.
-
-3. Use the SQL Editor in your Neon project to create a replication slot by executing the following SQL query:
-
-   ```sql
-   SELECT pg_create_logical_replication_slot('sequin_slot', 'pgoutput');
-   ```
-
-   This creates a replication slot named `sequin_slot`.
-
-4. Create a publication to indicate which tables will publish changes to the replication slot. Run the following SQL command:
-
-   ```sql
-   CREATE PUBLICATION sequin_pub FOR TABLE table1, table2, table3;
-   ```
-
-   **Note:** Defining specific tables lets you add or remove tables from the publication later, which you cannot do when creating publications with `FOR ALL TABLES`.
-
-5. Back in the Sequin Console, enter the name of the replication slot (`sequin_slot`) and publication (`sequin_pub`) you just created. Then, name your database (for example `neondb`) and click **Create Database**.
-
-With these steps completed, your Neon database is now connected to Sequin via a replication slot and publication. Sequin is now detecting changes to your tables.
-
-## Create a consumer
-
-Set up a consumer in Sequin to stream changes from your database.
-
-1. In the Sequin Console, navigate to the **Consumers** page and click **Create Consumer**.
-
-2. Select the Neon database you just created and then select the specific table you want to process changes for.
-
-3. Define any filters for the changes you want to capture. For example, you might want to only process orders with a value greater than a certain amount, or accounts with a certain status.
-
-4. Choose whether you want your consumer to process [rows or changes](https://sequinstream.com/docs/core-concepts#rows-and-changes):
-   - **Rows**: Captures the latest state of records when a row is inserted or updated.
-   - **Changes**: Captures every `insert`, `update`, and `delete`, including `OLD` values for updates and deletes.
-
-5. Select your preferred method for [receiving changes](https://sequinstream.com/docs/core-concepts#consumption):
-   - **HTTP Push** (Webhooks): Sequin sends changes to your specified endpoint.
-   - **HTTP Pull** (similar to SQS): Your application pulls changes from Sequin.
-
-6. Enter the final details for your consumer:
-   - Give your consumer a name (for example, `neon-changes-consumer`).
-   - If using HTTP Push, provide the endpoint URL where Sequin should send the changes. You can also provide encrypted headers.
-   - Optionally, set a timeout and add an endpoint path.
-
-7. Click **Create Consumer** to finalize the setup.
-
-Your consumer is now created and will start processing changes from your Neon database according to your specified configuration.
-
-## Where to next?
-
-You're now using Sequin with Neon to capture and stream changes from your database. From here, you can tailor your implementation for your use case:
-
-- Use Sequin to trigger workflows in tools like Inngest or trigger.dev, activate side-effects in your app, setup audit logs, or generate denormalized views.
-- Tailor your consumer's [filtering](https://sequinstream.com/docs/core-concepts#filtering) and settings to meet your requirements.
-- Try a [pull consumer](https://sequinstream.com/docs/core-concepts#pull-consumers) with [our SDKs](https://sequinstream.com/docs/sdks) to completely manage how you retrieve changes at scale.
 
 --- [Document source](https://neon.com/docs/guides/serverless-connection-pooling.md) ---
 
@@ -130934,6 +130841,10 @@ You can also [auto-provision members by email domain](https://neon.com/docs/mana
 
 You can create additional organizations at any time. [See how to create an organization.](https://neon.com/docs/manage/orgs-manage#create-an-organization)
 
+## Switching between organizations
+
+If you belong to more than one organization, use the org switcher in the profile menu (click your name in the top-right corner of the Console) to change the active organization. [See how to switch organizations.](https://neon.com/docs/manage/orgs-manage#switch-organizations)
+
 ## Limitations
 
 As we continue to refine our organization features, here are some temporary limitations you should be aware of:
@@ -130961,7 +130872,7 @@ Only organization admins can add, verify, or remove domains. The **Auto-join by 
 
 - You add a domain (for example, `example.com`) on the organization **People** page under **Auto-join by domain**. The domain is added in a "Pending verification" state and Neon generates a verification code.
 - You add a TXT record at your domain with that exact code. After DNS propagates, you click **Verify** in the Console to confirm you own the domain.
-- When a user signs up or logs in to Neon with an email whose domain matches one of your verified domains (for example, `alex@example.com`), they are automatically added to your organization as an Editor. They do not receive an invite email; they simply see the organization in their org switcher.
+- When a user signs up or logs in to Neon with an email whose domain matches one of your verified domains (for example, `alex@example.com`), they are automatically added to your organization as an Editor. They do not receive an invite email; they simply see the organization in their [org switcher](https://neon.com/docs/manage/orgs-manage#switch-organizations).
 
 An organization can have multiple verified domains. The same domain can also be added to multiple organizations. If a user's email domain matches verified domains in more than one org, they are added to all of those organizations.
 
@@ -131610,6 +131521,20 @@ Select a plan for your new organization. Organizations can be free or paid; if y
 
 After confirming, you'll be directed to your new organization's **Projects** page, where you can get started creating projects and inviting [members](https://neon.com/docs/manage/orgs-manage#invite-members).
 
+## Switch organizations
+
+If you belong to more than one organization, use the org switcher in the profile menu to change which one you're working in.
+
+1. Click your name in the top-right corner of the Console to open the profile menu.
+2. Under **Organization**, click the name of your current organization. A list of every organization you belong to opens, with a check mark next to the active one.
+3. Select the organization you want to work in. If you belong to many organizations, type in **Search organizations** to filter the list.
+
+The Console opens that organization's projects, and the rest of the Console now applies to the organization you selected.
+
+![org switcher in the Neon Console profile menu](https://neon.com/docs/manage/orgs_switch.png)
+
+If someone has shared a project with you through [project sharing](https://neon.com/docs/manage/orgs-manage#project-sharing), select **Projects shared with me** in the switcher to see those projects.
+
 ## Invite members
 
 Only Admins can invite new members to the organization. Invitations are issued via email. If a recipient does not have a Neon account, they will receive instructions to create one. Alternatively, you can [auto-provision members by domain](https://neon.com/docs/manage/orgs-add-members-by-domain) so that users with a matching email domain are added automatically when they sign up or log in.
@@ -132033,7 +131958,7 @@ In the Neon Console, open your organization's **People** page and select **Invit
 
 To change someone already in the organization, open the more options menu (⋮) next to their name and choose **Edit member**.
 
-Invited people get an email, and the organization appears in their organization switcher once they accept. For what each role allows, see [Organization roles](https://neon.com/docs/manage/user-permissions#organization-roles).
+Invited people get an email, and the organization appears in their [org switcher](https://neon.com/docs/manage/orgs-manage#switch-organizations) once they accept. For what each role allows, see [Organization roles](https://neon.com/docs/manage/user-permissions#organization-roles).
 
 ![Invite members dialog with a role dropdown for each invitee](https://neon.com/docs/manage/project-permissions-get-started/invite-members.png)
 
@@ -132134,7 +132059,7 @@ neon api /projects/$PROJECT_ID/members/$MEMBER_ID/role -X PUT -F role=editor
 
 --- [Document source](https://neon.com/docs/manage/projects.md) ---
 
-> Summary: Postgres storage is unlimited on paid plans: there's no hard per-branch size limit and project storage grows with your usage. A Neon project is the top-level workspace that groups branches, databases, roles, and computes. This page covers the full project lifecycle: create, configure, and delete, via the Console or API. Use it when you need to set project-level defaults such as compute autoscaling, history window for instant restore and Time Travel, IP Allow rules, logical replication, or project access. Deleted projects can be recovered within a 7-day window using the CLI or API.
+> Summary: Postgres storage is unlimited on paid plans: there's no hard per-branch size limit and project storage grows with your usage. A Neon project is the top-level workspace that groups branches, databases, roles, and computes. This page covers the full project lifecycle: create, configure, and delete, via the Console or API. Use it when you need to set project-level defaults such as compute autoscaling, history window for instant restore and Time Travel, IP Allow rules, logical replication, or project access. Deleted projects can be recovered within a 7-day window using the Console, CLI, or API.
 
 # Manage projects
 
@@ -132523,7 +132448,7 @@ To delete a project:
 
 **Important:** If you are any of Neon's paid plans, deleting all your Neon projects won't stop monthly billing. To avoid charges, you also need to downgrade to the Free plan. You can do so from the [Billing](https://console.neon.tech/app/billing#change_plan) page in the Neon Console.
 
-**Note:** Deleted projects can be recovered within the deletion recovery period (7 days) via the API or CLI. For details, see [Recover a deleted project](https://neon.com/docs/manage/projects#recover-a-deleted-project).
+**Note:** Deleted projects can be recovered within the deletion recovery period (7 days) from the Console, CLI, or API. For details, see [Recover a deleted project](https://neon.com/docs/manage/projects#recover-a-deleted-project).
 
 ## Manage projects with the Neon API
 
@@ -133042,11 +132967,13 @@ If you accidentally delete a project, you can recover it within 7 days. This **d
 
 When you recover a deleted project, the following are restored:
 
-- All branches, endpoints, snapshots, and compute configurations
+- All branches, endpoints, snapshots, and compute configurations that existed when you deleted the project
 - Project settings (IP Allow, logical replication, protected branches, scheduled updates)
 - Project collaborators
 - Connection strings
 - Vercel-Managed Neon integration projects are re-imported into Vercel for management and billing
+
+Branches with an [expiration time](https://neon.com/docs/guides/branch-expiration) that passes during the deletion recovery period are permanently deleted and aren't restored.
 
 ### What requires reconfiguration
 
@@ -133057,12 +132984,38 @@ The following features are **not** recovered and must be manually re-enabled aft
 - **Neon-Managed Vercel integration** (Vercel Connected Accounts)
 - **Vercel-Managed Neon integration** (project reconnection via Storage)
 - **Monitoring integrations** (Datadog, OpenTelemetry, etc.)
+- **Scoped credentials** for Object Storage and the AI Gateway. Deleting a project revokes them, and they stay revoked after recovery. [Create new credentials](https://neon.com/docs/cli/credentials) and update your apps. Neon Functions get a new credential automatically.
+
+### While a project is deleted
+
+You can't connect to a deleted project's databases. Access returns when you recover the project.
 
 ### Costs
 
 There are no storage costs or recovery fees during the 7-day deletion recovery period.
 
+### Requirements and limitations
+
+- **Permissions:** Recovering a project requires the same access as deleting one: organization Admin, or **Admin** on that project. See [Per-project permissions](https://neon.com/docs/manage/user-permissions#per-project-permissions).
+- **HIPAA projects:** Projects with [HIPAA compliance](https://neon.com/docs/security/hipaa) enabled can't be recovered. Deleting a HIPAA-compliant project is permanent.
+- **Vercel-Managed Neon projects:** Recovery re-imports the project into Vercel, so the Vercel integration for the organization must still exist. If the Neon organization was also deleted (for example, when you remove the database from Vercel Storage), [contact Support](https://neon.com/docs/introduction/support).
+
 ### Recover a project
+
+**Console**
+
+When an organization has projects that can be recovered, its **Projects** page shows a banner stating how many projects are set to be permanently deleted. The banner doesn't appear when there's nothing to recover.
+
+To recover a deleted project:
+
+1. Navigate to the [Neon Console](https://console.neon.tech) and open the **Projects** page for the organization the project belonged to.
+2. On the banner that says projects are set to be permanently deleted, select **Manage**.
+3. In the **Recently deleted projects** dialog, find the project. The **Delete forever in** column shows how much time is left to recover it.
+4. Select **Recover**.
+
+The Console opens the recovered project. A **Project recovered** notice on the project dashboard reminds you to review the project's integrations and reconnect any that stopped working. See [What requires reconfiguration](https://neon.com/docs/manage/projects#what-requires-reconfiguration).
+
+If recovery fails, the Console shows an error and you can try again.
 
 **CLI**
 

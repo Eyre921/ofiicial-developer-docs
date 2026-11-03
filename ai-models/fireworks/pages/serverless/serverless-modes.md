@@ -4,14 +4,14 @@ source: https://docs.fireworks.ai/serverless/serverless-modes
 path: serverless/serverless-modes
 ---
 
-Compare Standard, Priority, and Fast serverless modes on Fireworks Serverless to choose the right tradeoff between cost, latency, and throughput.
+Compare Standard, Priority, Fast, and Ultra-fast (Preview) serverless modes on Fireworks Serverless to choose the right tradeoff between cost, latency, and throughput.
 
-Fireworks Serverless offers three modes:
+Fireworks Serverless offers four modes:
 
 * **Standard** is the default mode. No `service_tier` parameter is needed.
 * **Priority tier** is for workloads that require higher reliability during peak traffic.
 * **Fast** is for workloads that require higher speeds.
-* **Ultrafast** (Private Preview) for workloads requiring extremely fast end-to-end generation speeds.
+* **Ultra-fast** (Preview) for workloads requiring extremely fast end-to-end generation speeds.
 
 ## Priority tier
 
@@ -55,43 +55,27 @@ curl https://api.fireworks.ai/inference/v1/chat/completions \
 
 Pricing is listed on the [Serverless pricing](/serverless/pricing) page.
 
-## Ultrafast (Private Preview)
+## Ultra-fast (Preview)
 
-Ultrafast is a high-speed mode, useful for extreme latency sensitive applications that require fast response speeds, at a higher price point. Ultrafast variants aim for **1500+ tokens per second** of generated throughput for agentic coding tasks. It is not a different model and the quality of the model remains the same.
+Ultra-fast is a high-speed mode, useful for extreme latency sensitive applications that require fast response speeds, at a higher price point. Ultra-fast variants aim for **6-8x generation speed (up to 10x for agentic coding tasks)**. Like fast, it is not a different model and the quality of the model remains the same.
 
-Ultrafast is in Private Preview and is available for the models listed below. To get access to Ultrafast please reach out to the team [here](https://share-na2.hsforms.com/19_8Sm5zPQ7aUh1W2FuLDygqbom7). Once access is granted, change the `model` ID as listed below.
+Ultra-fast is in Preview and is available for the models listed below. Our preview modes are under active development and are subject to change quickly. To use Ultra-fast, change the `model` ID as listed below.
 
-<table>
-  <colgroup>
-    <col />
-
-    <col />
-  </colgroup>
-
-  <thead>
-    <tr>
-      <th>Model</th>
-      <th>`model` ID</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <td>Deepseek V4.1 Flash 1017</td>
-      <td>`accounts/fireworks/models/deepseek-v4p1-flash-ultrafast`</td>
-    </tr>
-  </tbody>
-</table>
+| Model | `model` ID |
+| - | - |
+| Deepseek V4.1 Flash 1017 | `accounts/fireworks/routers/deepseek-v4p1-flash-1017-ultrafast` |
 
 ```bash theme={null}
 curl https://api.fireworks.ai/inference/v1/chat/completions \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $FIREWORKS_API_KEY" \
   -d '{
-    "model": "accounts/fireworks/routers/deepseek-v4p1-flash-ultrafast",
+    "model": "accounts/fireworks/routers/deepseek-v4p1-flash-1017-ultrafast",
     "messages": [{"role": "user", "content": "Hello"}]
   }'
 ```
+
+Pricing is listed on the [Serverless pricing](/serverless/pricing) page.
 
 ## Related
 

@@ -9,7 +9,9 @@ Create an index from a backup.
 
 The restored index inherits the schema of the index the backup was taken from, including its full-text search fields and its embedding configuration (`embed` / `sparse_embed` fields, or the `semantic_text` field of a legacy integrated index created via create-for-model), and the request cannot override it. A backup that carries no `schema` restores an index whose fields are derived from the source index's dimension, metric, and vector type, and reported under the reserved `_values` / `_sparse_values` names.
 
-For serverless backups, you can optionally set `read_capacity` so the restored index is created with dedicated read nodes (DRN) instead of defaulting to on-demand capacity.
+By default, the index is created where the backup was taken: the same cloud and region for a serverless backup, or the same environment for a BYOC backup. To restore a serverless backup into another region of the same cloud, set `deployment` to a `managed` deployment in that region. Cross-cloud restore is not supported, a serverless backup cannot be restored into a BYOC environment, and a BYOC backup can only be restored into the environment it was taken in.
+
+You can optionally set `read_capacity` so the restored index is created with dedicated read nodes (DRN) instead of defaulting to on-demand capacity.
 
 ```python Python theme={null}
 # pip install --upgrade pinecone

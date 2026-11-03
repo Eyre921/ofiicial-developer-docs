@@ -7,7 +7,7 @@ path: reference/api/2026-07/control-plane/configure_index
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/db_control_2026-07.oas.yaml patch /indexes/{index_name}
 Configure an existing index. For guidance and examples, see [Manage indexes](https://docs.pinecone.io/guides/manage-data/manage-indexes).
 
-Updates configuration on an existing index. You can update `deletion_protection`, `tags`, and `read_capacity` (for example, converting from `OnDemand` to `Dedicated`). The schema itself is immutable — to change field types or add new indexed fields, create a new index and re-upsert.
+Updates configuration on an existing index. You can update `deletion_protection`, `tags`, and `read_capacity` (for example, converting from `OnDemand` to `Dedicated`). You can't change the schema here. To change field types or add indexed fields, create a new index and re-upsert. To move a vector index or legacy integrated index onto a document schema, [convert it](/guides/index-data/convert-an-index) into a new document index.
 
 This is a partial update: only the fields you include in the request body are modified. Unspecified fields are left unchanged. To clear `tags`, send `"tags": {}`.
 

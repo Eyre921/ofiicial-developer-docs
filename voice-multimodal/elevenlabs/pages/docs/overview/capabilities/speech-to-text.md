@@ -526,7 +526,7 @@ For a full list of supported entities, see the [entity detection documentation](
 > **Info**
 >
 > Transcript editing is an experimental feature available with all batch models and Scribe v2
-> Realtime.
+> Realtime. It is not currently available in [data residency](/docs/overview/administration/data-residency) environments.
 
 Pass a natural-language instruction with the `transcript_edit` parameter and it will be applied to the finished transcript. The edited text is returned in `edited_transcript` alongside the original transcript, so timestamps and speaker labels stay intact. This is useful for normalizing how dates, times or units are written, applying a different style, or rewriting the transcript in a single request.
 

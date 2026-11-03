@@ -329,36 +329,36 @@ The inbox mode needs `@resend/chat-sdk-adapter` 0.5.0 or later and `resend` 6.34
 
 ## Features
 
-> **[Card Emails](/docs/chat-sdk-card-emails)**
+> [card] [Card Emails](/docs/chat-sdk-card-emails)
 >
 > Send rich HTML emails with structured card elements.
 
-> **[Attachments](/docs/chat-sdk-attachments)**
+> [card] [Attachments](/docs/chat-sdk-attachments)
 >
 > Handle inbound email attachments.
 
-> **[Proactive Outreach](/docs/chat-sdk-proactive-outreach)**
+> [card] [Proactive Outreach](/docs/chat-sdk-proactive-outreach)
 >
 > Start new email threads without waiting for inbound.
 
 ## Examples
 
-> **[Basic](https://github.com/resend/resend-chat-sdk/tree/main/examples/basic)**
+> [card] [Basic](https://github.com/resend/resend-chat-sdk/tree/main/examples/basic)
 >
 > Echo bot that replies to every email
 
-> **[Welcome Cards](https://github.com/resend/resend-chat-sdk/tree/main/examples/welcome-cards)**
+> [card] [Welcome Cards](https://github.com/resend/resend-chat-sdk/tree/main/examples/welcome-cards)
 >
 > Styled card email on first contact
 
-> **[Notifications](https://github.com/resend/resend-chat-sdk/tree/main/examples/notifications)**
+> [card] [Notifications](https://github.com/resend/resend-chat-sdk/tree/main/examples/notifications)
 >
 > Proactive outbound via openDM and HTTP POST
 
-> **[Support Bot](https://github.com/resend/resend-chat-sdk/tree/main/examples/support-bot)**
+> [card] [Support Bot](https://github.com/resend/resend-chat-sdk/tree/main/examples/support-bot)
 >
 > Multi-turn conversations with subscribe/unsubscribe
 
-> **[Attachments](https://github.com/resend/resend-chat-sdk/tree/main/examples/attachments)**
+> [card] [Attachments](https://github.com/resend/resend-chat-sdk/tree/main/examples/attachments)
 >
 > Detect attachments and reply with a summary

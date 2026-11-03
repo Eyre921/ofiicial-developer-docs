@@ -123,9 +123,9 @@ On a document index, declare `embed` or `sparse_embed` on a `string` field. Pine
 
 For the full schema reference (all field types, language and analyzer options, dedicated read capacity, and Python SDK examples), see [Full-text search](/guides/search/full-text-search).
 
-> [!WARNING]
+> [!NOTE]
 >
-> Schema migration isn't yet supported. Once an index with a document schema is created, you can't add, remove, or modify fields. Plan your schema carefully. If you need to change a schema, [delete the index](/guides/manage-data/manage-indexes#delete-an-index) and create a new one.
+> You can't add, remove, or modify a document index's fields after you create it. To change a schema, [delete the index](/guides/manage-data/manage-indexes#delete-an-index) and create a new one. To move an existing vector index or legacy integrated index onto a document schema, [convert it](/guides/index-data/convert-an-index) instead of reloading your data.
 
 ## Create a vector index
 

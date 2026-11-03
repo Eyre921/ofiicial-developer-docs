@@ -12,6 +12,8 @@ Find parameters and examples for creating, editing, moving, duplicating, and del
 
 Creates one or more Notion pages with specified properties and content. Supports applying [database templates](/guides/data-apis/creating-pages-from-templates) to pre-populate new pages with content and property values. Each page can optionally have an icon (an emoji character, a custom emoji by name, a Notion icon identifier as returned by fetch such as "icons/pizza\_blue", or an external image URL) and a cover image. Set `is_skill: true` to create a page as a [Notion Skill](/guides/mcp/notion-skills). If a parent is not specified, a private page will be created.
 
+To save a [personal memory](/guides/mcp/tools-skills-agents-reference#read-save-and-update-memories), pass `parent: "memory"` and omit `creation_mode`. Notion creates the managed memory destination on the first save.
+
 To create a top-level page in a teamspace, pass `parent: {"teamspace_id": "…"}` with an ID from `notion-get-teams`. All pages in the call share that parent. See [Teamspace root pages](/guides/mcp/tools-pages-reference#teamspace-root-pages) for permissions and an example.
 
 Use `creation_mode: "draft"` when the user wants a durable page but has not named a destination. Draft mode creates a workspace-level private page and cannot be combined with `parent`. If the user names a private or shared destination, omit `creation_mode` and create the page under that parent.

@@ -12,6 +12,8 @@ path: docs/help-center/product/mobile-apps/elevenreader/how-do-elevenreader-hour
 
 ElevenReader lets you listen by converting text into hours of audio. Hours are only used when you convert your imported text into audio for the first time.
 
+Importing or opening a document does not use your listening hours. Usage starts when you press **Play** and the audio begins generating or streaming.
+
 * Hours are estimated for easy reference and are based on the amount of text converted and the speed at which you listen. The faster you listen, the quicker hours will be used in generating audio.
 * Each plan's hours are based on listening at normal (1.0x) playback speed.
 * You are not charged for listening to text you've already converted into audio and played before.

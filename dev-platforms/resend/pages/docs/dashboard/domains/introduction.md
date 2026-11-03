@@ -54,18 +54,18 @@ Learn more about [managing your domains](/docs/dashboard/domains/manage-domains)
 
 See how to use Resend's verified domain features.
 
-> **[Manage domains](/docs/dashboard/domains/manage-domains)**
+> [card] [Manage domains](/docs/dashboard/domains/manage-domains)
 
-> **[Implement DMARC](/docs/dashboard/domains/dmarc)**
+> [card] [Implement DMARC](/docs/dashboard/domains/dmarc)
 
-> **[Enable Tracking](/docs/dashboard/domains/tracking)**
+> [card] [Enable Tracking](/docs/dashboard/domains/tracking)
 
-> **[Enforced TLS](/docs/dashboard/domains/tls)**
+> [card] [Enforced TLS](/docs/dashboard/domains/tls)
 
-> **[Custom return path](/docs/dashboard/domains/custom-return-path)**
+> [card] [Custom return path](/docs/dashboard/domains/custom-return-path)
 
-> **[Choose region](/docs/dashboard/domains/regions)**
+> [card] [Choose region](/docs/dashboard/domains/regions)
 
-> **[Claim a domain](/docs/dashboard/domains/claim)**
+> [card] [Claim a domain](/docs/dashboard/domains/claim)
 
-> **[DNS provider guides](/docs/knowledge-base/introduction#dns-guides)**
+> [card] [DNS provider guides](/docs/knowledge-base/introduction#dns-guides)

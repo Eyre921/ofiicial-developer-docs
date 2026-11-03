@@ -61,44 +61,44 @@ See how to use Resend's webhook features such as replaying webhooks and storing 
 
 ## Related Guides
 
-> **[Create webhook](/docs/webhooks/create-webhook)**
+> [card] [Create webhook](/docs/webhooks/create-webhook)
 
-> **[Respond to emails](/docs/dashboard/receiving/create-receiving-webhook)**
+> [card] [Respond to emails](/docs/dashboard/receiving/create-receiving-webhook)
 
-> **[Retry replay webhooks](/docs/webhooks/retries-and-replays)**
+> [card] [Retry replay webhooks](/docs/webhooks/retries-and-replays)
 
-> **[Email event types](/docs/webhooks/event-types)**
+> [card] [Email event types](/docs/webhooks/event-types)
 
-> **[Verify a webhook request](/docs/webhooks/verify-webhooks-requests)**
+> [card] [Verify a webhook request](/docs/webhooks/verify-webhooks-requests)
 
-> **[Store webhook data](/docs/webhooks/how-to-store-webhooks-data)**
+> [card] [Store webhook data](/docs/webhooks/how-to-store-webhooks-data)
 
-> **[Self-host the Resend Webhook Ingester](/docs/webhooks/ingester)**
+> [card] [Self-host the Resend Webhook Ingester](/docs/webhooks/ingester)
 
-> **[Webhook events reference](/docs/webhooks/emails/bounced)**
+> [card] [Webhook events reference](/docs/webhooks/emails/bounced)
 
 ## Examples
 
-> **[Next.js (TypeScript)](https://github.com/resend/resend-examples/tree/main/nextjs-resend-examples/typescript/src/app/inbound)**
+> [card] [Next.js (TypeScript)](https://github.com/resend/resend-examples/tree/main/nextjs-resend-examples/typescript/src/app/inbound)
 >
 > See the full source code.
 
-> **[Next.js (JavaScript)](https://github.com/resend/resend-examples/tree/main/nextjs-resend-examples/javascript/src/app/inbound)**
+> [card] [Next.js (JavaScript)](https://github.com/resend/resend-examples/tree/main/nextjs-resend-examples/javascript/src/app/inbound)
 >
 > See the full source code.
 
-> **[PHP](https://github.com/resend/resend-examples/tree/main/php-resend-examples/src/inbound)**
+> [card] [PHP](https://github.com/resend/resend-examples/tree/main/php-resend-examples/src/inbound)
 >
 > See the full source code.
 
-> **[Laravel](https://github.com/resend/resend-examples/tree/main/laravel-resend-examples)**
+> [card] [Laravel](https://github.com/resend/resend-examples/tree/main/laravel-resend-examples)
 >
 > See the full source code.
 
-> **[Python](https://github.com/resend/resend-examples/tree/main/python-resend-examples/examples)**
+> [card] [Python](https://github.com/resend/resend-examples/tree/main/python-resend-examples/examples)
 >
 > See the full source code.
 
-> **[Ruby](https://github.com/resend/resend-examples/tree/main/ruby-resend-examples/examples)**
+> [card] [Ruby](https://github.com/resend/resend-examples/tree/main/ruby-resend-examples/examples)
 >
 > See the full source code.

@@ -42,6 +42,20 @@ Notion MCP lets your AI assistant search your workspace, create and edit pages, 
 >
 > Organize our marketing content in Notion using the campaign details from our conversation. Connect campaign briefs and drafts, track owners and publish dates, and create a view of content ready for review.
 
+> [tab] Save memories
+>
+> Ask your assistant to save useful context in [personal memories](/guides/mcp/tools-skills-agents#personal-memories), then recall it in a later session or another client connected to the same Notion account and workspace. Connecting MCP doesn't automatically import another client's chat history.
+>
+> Remember that I prefer concise project updates with blockers first. Save this preference in my Notion memories.
+>
+> Remember that I prefer concise project updates with blockers first. Save this preference in my Notion memories.
+>
+> In a later session, ask:
+>
+> What do my Notion memories say about how I prefer project updates?
+>
+> What do my Notion memories say about how I prefer project updates?
+
 > [card] [Explore more skills](https://github.com/makenotion/notion-cookbook/tree/main/skills/mcp-clients)
 >
 > Find reusable skills and examples for preparing meetings, planning marketing campaigns, and writing project updates with your AI assistant.

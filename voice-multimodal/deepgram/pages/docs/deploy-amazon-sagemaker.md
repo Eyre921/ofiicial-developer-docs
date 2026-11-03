@@ -6,7 +6,6 @@ path: docs/deploy-amazon-sagemaker
 
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
-> For AI client integration (Claude Code, Cursor, etc.), connect to the MCP server at https://developers.deepgram.com/_mcp/server.
 
 # Deploy Deepgram on Amazon SageMaker
 
@@ -176,7 +175,7 @@ To pass `DEEPGRAM_API_*` or `DEEPGRAM_ENGINE_*` configuration overrides, add an 
 
 #### Create the Endpoint Configuration
 
-The Endpoint Configuration sets the instance pool, instance count, and — critically — the host inference AMI version the instances boot with.
+The Endpoint Configuration sets the instance pool, instance count, routing strategy, and — critically — the host inference AMI version the instances boot with.
 
 > **Warning**
 >
@@ -196,6 +195,7 @@ aws sagemaker create-endpoint-config \
     "InstancePools":[{"InstanceType":"ml.g6.2xlarge","Priority":1},{"InstanceType":"ml.g6e.2xlarge","Priority":2},{"InstanceType":"ml.g5.2xlarge","Priority":3}],
     "VariantInstanceProvisionTimeoutInSeconds":300,
     "InferenceAmiVersion":"al2023-ami-sagemaker-inference-gpu-4-1",
+    "RoutingConfig":{"RoutingStrategy":"LEAST_OUTSTANDING_REQUESTS"},
     "ModelDataDownloadTimeoutInSeconds":600,"ContainerStartupHealthCheckTimeoutInSeconds":300}]'
 ```
 
@@ -207,7 +207,7 @@ To deploy on a **single instance type** instead (see [when to prefer a single ty
 aws sagemaker create-endpoint-config \
   --region "$AWS_REGION" \
   --endpoint-config-name "$ENDPOINT_CONFIG_NAME" \
-  --production-variants "VariantName=AllTraffic,ModelName=$MODEL_NAME,InitialInstanceCount=1,InstanceType=ml.g6.2xlarge,InferenceAmiVersion=al2023-ami-sagemaker-inference-gpu-4-1,ModelDataDownloadTimeoutInSeconds=600,ContainerStartupHealthCheckTimeoutInSeconds=300"
+  --production-variants "VariantName=AllTraffic,ModelName=$MODEL_NAME,InitialInstanceCount=1,InstanceType=ml.g6.2xlarge,InferenceAmiVersion=al2023-ami-sagemaker-inference-gpu-4-1,RoutingConfig={RoutingStrategy=LEAST_OUTSTANDING_REQUESTS},ModelDataDownloadTimeoutInSeconds=600,ContainerStartupHealthCheckTimeoutInSeconds=300"
 ```
 
 #### Boto3
@@ -228,6 +228,7 @@ sagemaker.create_endpoint_config(
         ],
         "VariantInstanceProvisionTimeoutInSeconds": 300,
         "InferenceAmiVersion": "al2023-ami-sagemaker-inference-gpu-4-1",
+        "RoutingConfig": {"RoutingStrategy": "LEAST_OUTSTANDING_REQUESTS"},
         "ModelDataDownloadTimeoutInSeconds": 600,
         "ContainerStartupHealthCheckTimeoutInSeconds": 300,
     }],
@@ -247,6 +248,7 @@ sagemaker.create_endpoint_config(
         "InitialInstanceCount": 1,
         "InstanceType": "ml.g6.2xlarge",
         "InferenceAmiVersion": "al2023-ami-sagemaker-inference-gpu-4-1",
+        "RoutingConfig": {"RoutingStrategy": "LEAST_OUTSTANDING_REQUESTS"},
         "ModelDataDownloadTimeoutInSeconds": 600,
         "ContainerStartupHealthCheckTimeoutInSeconds": 300,
     }],
@@ -256,6 +258,8 @@ sagemaker.create_endpoint_config(
 Keep `VariantName=AllTraffic`: the [Update an Amazon SageMaker Endpoint](/docs/update-amazon-sagemaker-endpoint) procedure and the [Terraform](/docs/terraform-deploy-sagemaker) configuration use the same variant name.
 
 `ModelDataDownloadTimeoutInSeconds` and `ContainerStartupHealthCheckTimeoutInSeconds` are ceilings, not fixed waits: they set how long SageMaker allows the model package to download and the container to load models before it marks the endpoint failed. `600` and `300` suit most products. Large multilingual Nova-3 bundles may need `ModelDataDownloadTimeoutInSeconds` of `1800`.
+
+`RoutingConfig` sets the routing strategy to least outstanding requests (LOR), so SageMaker sends each new request to the instance with the fewest in-flight requests instead of a randomly chosen instance. We recommend LOR for Deepgram real-time endpoints because streaming connections and pre-recorded requests vary widely in how long they occupy an instance. See [Use least outstanding requests routing](/docs/auto-scaling-sagemaker#use-least-outstanding-requests-routing).
 
 #### Create the Endpoint
 

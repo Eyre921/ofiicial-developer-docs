@@ -1422,7 +1422,9 @@ const stripePromise = loadStripe("<<YOUR_PUBLISHABLE_KEY>>");
       </div>
       {(paymentIntentId || subscriptionId) && (
         <div className="sample-key-banner" role="note">
-          You're using a public sample test key.{" "}
+          {/* This banner appears because you downloaded this sample without signing in.
+              After you replace the sample API keys with your own, delete this banner. */}
+          This example was downloaded with the public sample test key.{" "}
           <a
             id="view-details"
             href="https://dashboard.stripe.com/login"
@@ -1437,6 +1439,15 @@ const stripePromise = loadStripe("<<YOUR_PUBLISHABLE_KEY>>");
       <a id="retry-button" href="/checkout">Test another payment</a>
   </div>
     )
+The server code is in `server.js`.
+The server code is in `server.rb`.
+The server code is in `server.py`.
+The server code is in `public/create.php` (creates the session) and `public/status.php` (returns its status).
+The server code is in `server.go`.
+The server code is in `src/main/java/com/stripe/sample/Server.java`.
+The server code is in `Server.cs`.
+The client code is in `public/checkout.html` and `public/checkout.js` (the payment form) plus `public/complete.html` and `public/complete.js` (the return page).
+The client is a React app in `src/`: `App.jsx` sets up Stripe and routing, `CheckoutForm.jsx` is the payment form, and `Complete.jsx` is the return page.
 \## Set Price ID
 
 In the server code, replace `{{PRICE_ID}}` with the Price ID (`price_xxx`) of the product you created in the quickstart guide. Find it in your [Stripe test Dashboard under Products](https://dashboard.stripe.com/test/products).

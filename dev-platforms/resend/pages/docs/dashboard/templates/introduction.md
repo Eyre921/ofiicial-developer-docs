@@ -241,14 +241,14 @@ curl -X POST 'https://api.resend.com/emails' \
 
 See how to use Resend's email Template features.
 
-> **[Create Templates](/docs/dashboard/templates/create-template)**
+> [card] [Create Templates](/docs/dashboard/templates/create-template)
 
-> **[Editor](/docs/dashboard/templates/template-editor)**
+> [card] [Editor](/docs/dashboard/templates/template-editor)
 
-> **[Template variables](/docs/dashboard/templates/template-variables)**
+> [card] [Template variables](/docs/dashboard/templates/template-variables)
 
-> **[Version history](/docs/dashboard/templates/version-history)**
+> [card] [Version history](/docs/dashboard/templates/version-history)
 
-> **[React Email Templates](/docs/knowledge-base/template-emails-with-react-email)**
+> [card] [React Email Templates](/docs/knowledge-base/template-emails-with-react-email)
 
-> **[Embed Email Editor](/docs/knowledge-base/embed-react-email-editor)**
+> [card] [Embed Email Editor](/docs/knowledge-base/embed-react-email-editor)

@@ -6,7 +6,6 @@ path: docs/migrating-from-google-speech-to-text-stt-to-deepgram
 
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
-> For AI client integration (Claude Code, Cursor, etc.), connect to the MCP server at https://developers.deepgram.com/_mcp/server.
 
 # Migrating From Google Speech-to-Text (STT) to Deepgram
 

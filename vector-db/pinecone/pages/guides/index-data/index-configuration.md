@@ -118,6 +118,57 @@ The `llama-text-embed-v2` model supports the following parameters:
 | `truncate` | string | Optional | How to handle inputs longer than those supported by the model. Accepted values: `END`, `NONE`, or `START`. `END` truncates the input sequence at the input token limit, keeping the start. `START` truncates from the start, keeping the end. `NONE` returns an error when the input exceeds the input token limit. | `END` |
 | `dimension` | integer | Optional | Dimension of the vector to return. | 1024 |
 
+### gemini-embedding-2
+
+[`gemini-embedding-2`](/models/gemini-embedding-2) is a dense embedding model from Google. It's available only for [integrated embedding](/guides/search/integrated-embedding#embed-with-gemini-embedding-2) on document indexes, and not on the Starter plan. It embeds text differently for each task you choose with `task_type`, such as search, question answering, or clustering.
+
+**Details**
+
+* Vector type: Dense
+* Modality: Text
+* Dimension: 3072 (default), or any integer from 128 to 3072
+* Similarity metric: Cosine only
+* Processing location: `global` only. Set `processing_location` on the `embed` field, not in its parameters. See [Processing locations](/guides/index-data/processing-locations).
+* Max sequence length: 8192 tokens
+* Max batch size: 96 sequences
+
+For rate limits, see [Embedding tokens per minute](/reference/api/database-limits/rate-limits#model-throughput-limits) and [Embedding tokens per month](/reference/api/database-limits/rate-limits#monthly-usage-limits).
+
+**Parameters**
+
+Set these in the field's `write_parameters` and `read_parameters`. For which task types each side accepts, and how to override the task for one search, see [Task types](/guides/search/integrated-embedding#task-types).
+
+| Parameter | Type | Required/Optional | Description | Default |
+| :- | :- | :- | :- | :- |
+| `task_type` | string | Optional | What the embedding is for. Accepted values: `retrieval_document`, `retrieval_query`, `question_answering`, `fact_verification`, `code_retrieval_query`, `classification`, `clustering`, or `sentence_similarity`. | `retrieval_document` on write. On read, `retrieval_query` for a `retrieval_document` field, or the same task for a symmetric field. |
+| `truncate` | string | Optional | How to handle inputs longer than those supported by the model. Accepted values: `END` or `NONE`. `END` truncates the input sequence at the input token limit. `NONE` returns an error when the input exceeds the input token limit. | `END` |
+
+### text-embedding-3-small and text-embedding-3-large
+
+[`text-embedding-3-small`](/models/text-embedding-3-small) and [`text-embedding-3-large`](/models/text-embedding-3-large) are dense embedding models from OpenAI. They're available only for [integrated embedding](/guides/search/integrated-embedding#embed-with-text-embedding-3) on document indexes.
+
+**Details**
+
+* Vector type: Dense
+* Modality: Text
+* Dimension:
+  * `text-embedding-3-small`: 1536 (default), or any integer from 1 to 1536
+  * `text-embedding-3-large`: 3072 (default), or any integer from 1 to 3072
+* Similarity metric: Cosine (default), Dotproduct, or Euclidean
+* Processing location: `global` (default) or `us`. The Starter and Builder plans accept only `global`. Set `processing_location` on the `embed` field, not in its parameters. See [Processing locations](/guides/index-data/processing-locations).
+* Max sequence length: 8192 tokens
+* Max batch size: 96 sequences
+
+For rate limits, see [Embedding tokens per minute](/reference/api/database-limits/rate-limits#model-throughput-limits) and [Embedding tokens per month](/reference/api/database-limits/rate-limits#monthly-usage-limits).
+
+**Parameters**
+
+Set these in the field's `write_parameters` and `read_parameters`.
+
+| Parameter | Type | Required/Optional | Description | Default |
+| :- | :- | :- | :- | :- |
+| `truncate` | string | Optional | How to handle inputs longer than those supported by the model. Accepted values: `END` or `NONE`. `END` truncates the input sequence at the input token limit. `NONE` returns an error when the input exceeds the input token limit. | `END` |
+
 ### pinecone-sparse-english-v0
 
 [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0) is a sparse embedding model for converting text to [sparse vectors](/guides/core-concepts/key-terms#sparse-vector) for [sparse-vector search](/guides/search/sparse-vector-search) or hybrid search. Built on the innovations of the [DeepImpact architecture](https://arxiv.org/pdf/2104.12016), the model directly estimates the lexical importance of tokens by using their context, unlike traditional retrieval models like BM25, which rely solely on term frequency.

@@ -6,7 +6,6 @@ path: docs/auto-scaling-sagemaker
 
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
-> For AI client integration (Claude Code, Cursor, etc.), connect to the MCP server at https://developers.deepgram.com/_mcp/server.
 
 # Auto-Scaling SageMaker Endpoints
 
@@ -65,6 +64,49 @@ The difference between the two is the **signal** they scale on:
 
 For the exact metrics, policies, and code, follow the guide for your endpoint type below.
 
+## Use least outstanding requests routing
+
+By default, a SageMaker real-time endpoint routes each request to a randomly chosen instance. Deepgram requests vary widely in how long they occupy an instance: a streaming connection can stay open for up to 30 minutes, and a pre-recorded request takes longer for a longer file. With random routing, one instance can accumulate many long-running requests while another sits nearly idle, which raises latency on the busy instance.
+
+We recommend setting the routing strategy for real-time endpoints to **least outstanding requests (LOR)**. With LOR, SageMaker monitors the load on each instance and routes each new request to the instance with the fewest in-flight requests. This spreads load more evenly across the fleet and complements autoscaling on `ConcurrentRequestsPerModel`, which also measures in-flight requests per instance. AWS reports lower P99 latency and higher per-instance throughput with LOR for workloads whose requests take hundreds of milliseconds to minutes. See [Minimize real-time inference latency by using Amazon SageMaker routing strategies](https://aws.amazon.com/blogs/machine-learning/minimize-real-time-inference-latency-by-using-amazon-sagemaker-routing-strategies/) for the AWS benchmark results.
+
+To enable LOR, set `RoutingConfig.RoutingStrategy` to `LEAST_OUTSTANDING_REQUESTS` on the production variant when you create the endpoint configuration:
+
+#### AWS CLI
+
+```bash
+aws sagemaker create-endpoint-config \
+  --endpoint-config-name my-deepgram-endpoint-config \
+  --production-variants '[{"VariantName":"AllTraffic","ModelName":"my-model","InitialInstanceCount":2,
+    "InstanceType":"ml.g6.2xlarge",
+    "RoutingConfig":{"RoutingStrategy":"LEAST_OUTSTANDING_REQUESTS"}}]'
+```
+
+#### Boto3
+
+```python
+import boto3
+
+sagemaker = boto3.client("sagemaker")
+
+sagemaker.create_endpoint_config(
+    EndpointConfigName="my-deepgram-endpoint-config",
+    ProductionVariants=[
+        {
+            "VariantName": "AllTraffic",
+            "ModelName": "my-model",
+            "InitialInstanceCount": 2,
+            "InstanceType": "ml.g6.2xlarge",
+            "RoutingConfig": {
+                "RoutingStrategy": "LEAST_OUTSTANDING_REQUESTS",
+            },
+        }
+    ],
+)
+```
+
+The endpoint configuration examples in [Deploy Deepgram on Amazon SageMaker](/docs/deploy-amazon-sagemaker#create-the-endpoint-configuration) and [Deploy with Terraform](/docs/terraform-deploy-sagemaker#main-configuration) set LOR by default. The routing strategy is part of the endpoint configuration, so to switch an existing endpoint to LOR, create a new endpoint configuration with `RoutingConfig` set and apply it with `UpdateEndpoint`, as described in [Update an Amazon SageMaker Endpoint](/docs/update-amazon-sagemaker-endpoint).
+
 ## Use multiple instance types for resilience
 
 A single instance type can become temporarily unavailable in a given region or Availability Zone, which may prevent your endpoint from scaling out when traffic increases. To reduce this risk, configure your endpoint variant with multiple instance types in priority order using SageMaker's [heterogeneous instance pools](https://docs.aws.amazon.com/sagemaker/latest/dg/realtime-endpoints-heterogeneous.html). SageMaker provisions instances from your highest-priority pool first and falls back to lower-priority pools when capacity in the preferred pool is constrained.
@@ -112,3 +154,5 @@ When you use multiple instance types, give additional consideration to your scal
 * [Deploy Deepgram on Amazon SageMaker](/docs/deploy-amazon-sagemaker)
 * [Amazon SageMaker Asynchronous Inference (AWS)](https://docs.aws.amazon.com/sagemaker/latest/dg/async-inference.html)
 * [Automatic scaling of Amazon SageMaker models (AWS)](https://docs.aws.amazon.com/sagemaker/latest/dg/endpoint-auto-scaling.html)
+* [Minimize real-time inference latency by using Amazon SageMaker routing strategies (AWS)](https://aws.amazon.com/blogs/machine-learning/minimize-real-time-inference-latency-by-using-amazon-sagemaker-routing-strategies/)
+* [ProductionVariantRoutingConfig (AWS)](https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_ProductionVariantRoutingConfig.html)

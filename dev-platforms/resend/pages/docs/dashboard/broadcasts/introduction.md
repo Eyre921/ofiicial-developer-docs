@@ -132,18 +132,18 @@ All admins on your team can securely access the export for 7 days. Unavailable e
 
 See how to use Resend's Broadcast features.
 
-> **[No-code editor](/docs/dashboard/broadcasts/editor)**
+> [card] [No-code editor](/docs/dashboard/broadcasts/editor)
 
-> **[Send with API](/docs/dashboard/broadcasts/send-broadcast-with-api)**
+> [card] [Send with API](/docs/dashboard/broadcasts/send-broadcast-with-api)
 
-> **[Manage Broadcasts](/docs/dashboard/broadcasts/manage-broadcasts)**
+> [card] [Manage Broadcasts](/docs/dashboard/broadcasts/manage-broadcasts)
 
-> **[Contacts](/docs/dashboard/contacts/introduction)**
+> [card] [Contacts](/docs/dashboard/contacts/introduction)
 
-> **[Segments](/docs/dashboard/segments/introduction)**
+> [card] [Segments](/docs/dashboard/segments/introduction)
 
-> **[Topics](/docs/dashboard/topics/introduction)**
+> [card] [Topics](/docs/dashboard/topics/introduction)
 
-> **[Track performance](/docs/dashboard/broadcasts/performance-tracking)**
+> [card] [Track performance](/docs/dashboard/broadcasts/performance-tracking)
 
-> **[Handle unsubscribes](/docs/dashboard/audiences/managing-unsubscribe-list)**
+> [card] [Handle unsubscribes](/docs/dashboard/audiences/managing-unsubscribe-list)

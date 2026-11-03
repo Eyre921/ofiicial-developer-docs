@@ -90,10 +90,10 @@ You can also retrieve and monitor runs with the [Automation API](/docs/api-refer
 
 See how to use Resend's automation features.
 
-> **[Create automations](/docs/dashboard/automations/create-automation)**
+> [card] [Create automations](/docs/dashboard/automations/create-automation)
 
-> **[Custom triggers](/docs/dashboard/automations/custom-events)**
+> [card] [Custom triggers](/docs/dashboard/automations/custom-events)
 
-> **[Steps reference](/docs/dashboard/automations/steps)**
+> [card] [Steps reference](/docs/dashboard/automations/steps)
 
-> **[Monitor execution runs](/docs/dashboard/automations/runs)**
+> [card] [Monitor execution runs](/docs/dashboard/automations/runs)

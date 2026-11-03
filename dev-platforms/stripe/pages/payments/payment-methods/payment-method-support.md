@@ -60,7 +60,7 @@ Refer to the following table to see where each [payment method](https://docs.str
 | [Multibanco](https://docs.stripe.com/payments/multibanco.md) | EUR | AT, BE, BG, HR, CY, CZ, DK, EE, FI, FR, DE, GI, GR, HU, IE, IT, LI, LT, LU, LV, MT, NL, NO, PL, PT, RO, SK, SI, ES, SE, CH, GB, US | PT |
 | [OXXO](https://docs.stripe.com/payments/oxxo.md) | MXN | MX | MX |
 | [P24](https://docs.stripe.com/payments/p24.md) | EUR, PLN | European Union, AU, CA, HK, JP, MX, NZ, SG, US | PL |
-| [Pay by Bank](https://docs.stripe.com/payments/pay-by-bank.md) | GBP | GB | GB |
+| [Pay by Bank](https://docs.stripe.com/payments/pay-by-bank.md) | EUR, GBP | FI, IE, GB | FI, IE, GB |
 | [PayNow](https://docs.stripe.com/payments/paynow.md) | SGD | SG | SG |
 | [PayPal](https://docs.stripe.com/payments/paypal.md) | AUD, CAD, CHF, CZK, DKK, EUR, GBP, HKD, NOK, NZD, PLN, SEK, SGD, USD | AT, BE, BG, HR, CY, CZ, DK, EE, FI, FR, DE, GR, IE, IT, LV, LI, LT, LU, MT, NL, NO, PL, PT, RO, SK, SI, ES, SE, CH, GB | Worldwide |
 | [PayPay](https://docs.stripe.com/payments/paypay.md) | JPY | JP | JP |
@@ -68,6 +68,7 @@ Refer to the following table to see where each [payment method](https://docs.str
 | [Pix](https://docs.stripe.com/payments/pix.md) | BRL | BR (Invite only), US | BR |
 | [Pre-authorized debit in Canada](https://docs.stripe.com/payments/acss-debit.md) | CAD, USD | CA, US | CA |
 | [PromptPay](https://docs.stripe.com/payments/promptpay.md) | THB | TH | TH |
+| [Revolut Pay](https://docs.stripe.com/payments/revolut-pay.md) | EUR, GBP, RON, HUF, PLN, DKK | AT, BE, BG, HR, CY, CZ, DK, EE, FI, FR, DE, GR, HU, IE, IT, LV, LI, LT, LU, MT, NL, NO, PL, PT, RO, SK, SI, ES, SE, GB | European Union, GB |
 | [SEPA debit](https://docs.stripe.com/payments/sepa-debit.md) | EUR | European Union, AU, CA, HK, JP, MX, NZ, SG, US | Europe |
 | [Stablecoin payments](https://docs.stripe.com/payments/stablecoin-payments.md) | USD | US | Worldwide |
 | [Swish](https://docs.stripe.com/payments/swish.md) | SEK | AT, BE, BG, HR, CY, CZ, DK, EE, FI, FR, DE, GR, IE, IS, IT, LV, LI, LT, LU, NL, NO, PL, RO, SK, SI, ES, SE | SE |

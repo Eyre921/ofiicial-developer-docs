@@ -46,7 +46,22 @@ Both tools are available only to connections a user authorized with OAuth.
 
 Searches the memories that the user's connected agents saved in earlier sessions, such as context, preferences, corrections, and decisions. Pass words or a short phrase as `query`, up to 500 characters. `limit` defaults to 10 and can be at most 50. Each result has an `id`, `title`, `url`, and `snippet`.
 
-The tool returns the best matches, not every memory. To list, count, or filter memories, fetch the id `memory` with `notion-fetch` and query its data source with `notion-query-data-sources`. Read the `notion://docs/memory` MCP resource once before you first search or save memories in a conversation.
+The tool returns the best matches, not every memory. See [Personal memories](/guides/mcp/tools-skills-agents#personal-memories) for an overview and user controls.
+
+Memory tools require a user-backed connection with memories enabled for both the user and workspace. When either setting is off, Notion MCP hides memory search and its guidance, and memory operations are blocked. A client may need to refresh its connection to update its tool list.
+
+### Read, save, and update memories
+
+Existing page tools handle saving and editing memories:
+
+| Operation | Tool and behavior |
+| - | - |
+| Read the memory destination | `notion-fetch` with `id: "memory"` returns the connected user's About page and Memories database in the current workspace, without creating them. |
+| Save a memory | `notion-create-pages` with `parent: "memory"` creates an entry in the managed Memories database. Omit `creation_mode` and set `Type` to `Profile`, `Preference`, `Work`, `People`, or `Notes`. |
+| Correct a memory | Fetch the memory page, then use `notion-update-page` to edit its content or properties. Update the About page too if its summary is affected. |
+| List, count, or filter memories | Fetch `id: "memory"` to get the data source and schema, then use `notion-query-data-sources`. Query access follows that tool's plan limits. |
+
+The `notion://docs/memory` MCP resource gives agents detailed guidance for saving, recalling, and forgetting memories. Read it once before the first memory search or save in a conversation. Clients that can't read resources can pass the resource URI to `notion-fetch`.
 
 ## Work with Custom Agent sessions
 

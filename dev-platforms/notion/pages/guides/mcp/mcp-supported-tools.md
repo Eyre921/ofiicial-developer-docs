@@ -32,7 +32,7 @@ Explore the categories below. Each detailed page includes the available tools an
 
 > [card] [Reuse instructions and delegate work](/guides/mcp/tools-skills-agents)
 >
-> Save reusable instructions as Skills in Notion, or hand tasks to Custom Agents. Share both with teammates across your workspace.
+> Save reusable instructions as Skills in Notion, or hand tasks to Custom Agents. Share both with teammates across your workspace. Save and recall your private memories.
 
 > [card] [Manage your time](/guides/mcp/tools-calendars)
 >

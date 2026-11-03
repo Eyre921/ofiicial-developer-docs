@@ -38,6 +38,24 @@ The `netlify.toml` is normally stored in the root of your site repository. You a
 
 If you store the Netlify configuration file in a directory other than the root, you will need to set either the [base directory](/build/configure-builds/overview#set-the-base-directory) or the [package directory](/build/configure-builds/overview#set-the-package-directory) to indicate where it is located. Learn more about [how Netlify searches for your configuration file](/build/configure-builds/monorepos#how-netlify-finds-your-configuration-files) in our monorepos doc.
 
+## Schema validation
+
+Netlify publishes a [JSON schema](https://json-schema.org/) for `netlify.toml` that describes the supported properties, the values they accept, and what they do. Editors and AI agents that support JSON schemas for TOML files can use it to suggest properties as you type, show their descriptions, and flag invalid values before you deploy.
+
+To use the schema, add a `$schema` key at the top of your `netlify.toml`:
+
+```toml
+"$schema" = "https://open-api.netlify.com/netlify.schema.json"
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+```
+
+In VS Code, install the [Even Better TOML](https://marketplace.visualstudio.com/items?itemName=tamasfe.even-better-toml) extension to turn on schema support for TOML files.
+
+Netlify ignores the `$schema` key when it builds and deploys your project. Some checks, such as whether a configured directory exists, can only happen during the build, so a file that passes the schema can still fail to build.
+
 ## Configuration details
 
 The following sections provide details for some commonly used configuration settings.
@@ -385,6 +403,10 @@ The [`[build]` command](/build/configure-builds/file-based-configuration/#build-
 This example `netlify.toml` demonstrates how you can combine multiple settings in a single file. It's not a comprehensive example of all available configuration options.
 
 ```toml
+# Lets editors and AI agents validate this file and suggest
+# properties. Learn more in "Schema validation".
+"$schema" = "https://open-api.netlify.com/netlify.schema.json"
+
 # Settings for the [build] key are global and are applied to
 # all deploy contexts unless overridden by a context-specific setting.
 [build]

@@ -286,6 +286,7 @@ Change `INVOICE_ENTITIES` and the same code pulls fields out of other documents:
 
 ## Next steps
 
+* [Extractions API](https://openrouter.ai/docs/guides/community/extractions.md) to call the same model on `POST /api/alpha/extractions`, where you describe each field once in a `fields` map and get each back as text or a list of text (`value: null` when the invoice has nothing for it), without a JSON schema or parsing step
 * [Detect Stuck and Looping Agents with ScaleDown Classify](https://openrouter.ai/docs/cookbook/building-agents/detect-agent-loops-with-scaledown.md) to ask a model typed questions about an agent's transcript
 * [Compact Long Agent Sessions with ScaleDown Summarize](https://openrouter.ai/docs/cookbook/building-agents/compact-agent-sessions-with-scaledown.md) to summarize long agent histories
 

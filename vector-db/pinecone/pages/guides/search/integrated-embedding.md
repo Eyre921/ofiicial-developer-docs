@@ -43,11 +43,11 @@ Add `embed`, `sparse_embed`, or both to a `string` field, inside `schema.fields`
 }
 ```
 
-* `embed` takes a hosted dense model (default `llama-text-embed-v2`) and optional `dimension`, `metric`, and `write_parameters`/`read_parameters` (model parameters applied when embedding on write and on query, such as `truncate`).
-* `sparse_embed` takes a hosted sparse model (default `pinecone-sparse-english-v0`) and optional `write_parameters`/`read_parameters`. Sparse embeddings have no dimension or metric.
+* `embed` takes a hosted dense model (default [`llama-text-embed-v2`](/models/llama-text-embed-v2)) and optional `dimension`, `metric`, [`processing_location`](/guides/index-data/processing-locations), and `write_parameters`/`read_parameters` (model parameters applied when embedding on write and on query, such as `truncate` or [`task_type`](#task-types) for `gemini-embedding-2`).
+* `sparse_embed` takes a hosted sparse model (default [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0)) and optional `write_parameters`/`read_parameters`. Sparse embeddings have no dimension or metric.
 * An `embed` field uses the index's single dense slot, and a `sparse_embed` field uses its single sparse slot. So an index has at most one of each, and an embedded field can't coexist with a `dense_vector` or `sparse_vector` field of the same type (dense or sparse).
 
-For available models and their supported dimensions, see the [model guide](/guides/index-data/index-configuration#embedding-models). The embedding configuration is fixed at creation: you can't add, remove, or change `embed` or `sparse_embed` on an existing index.
+To compare the hosted models, see the [model gallery](/models/overview). For the dimensions each one supports, see [Embedding models](/guides/index-data/index-configuration#embedding-models). `llama-text-embed-v2` takes one of a fixed set of dimensions, while `gemini-embedding-2` and the `text-embedding-3` models take any integer in a range. The embedding configuration is fixed at creation: you can't add, remove, or change `embed` or `sparse_embed` on an existing index.
 
 ## Text storage and full-text search
 
@@ -77,7 +77,7 @@ To search one chunk field by dense, learned-sparse, and BM25, declare all three 
 
 * A document and a single request are each limited to 2 MB. On an index that embeds text, that request limit also counts the vectors Pinecone derives from the text.
 * An embedded value can be up to 100 KB, whether or not the text is stored. A stored value is also limited to 10,000 tokens after tokenization.
-* Each model embeds only its first N tokens (507 for `multilingual-e5-large`, 2,048 for `llama-text-embed-v2`, 512 by default for `pinecone-sparse-english-v0`). Longer values are truncated by default. For a dense `embed` field, setting `truncate: NONE` rejects an over-length value with a `400` instead. The full value is still stored and returned when `store_text` is `true`.
+* Each model embeds only its first N tokens (507 for [`multilingual-e5-large`](/models/multilingual-e5-large), 2,048 for `llama-text-embed-v2`, 8,192 for `gemini-embedding-2` and the `text-embedding-3` models, 512 by default for `pinecone-sparse-english-v0`). Longer values are truncated by default. For a dense `embed` field, setting `truncate: NONE` rejects an over-length value with a `400` instead. The full value is still stored and returned when `store_text` is `true`.
 
 ## Upsert and search embedded fields
 
@@ -190,3 +190,134 @@ curl -X POST "https://$INDEX_HOST/namespaces/example-namespace/documents/search"
 Pinecone returns the stored text and any metadata you request with `include_fields`. The vectors it derives from your text are internal and aren't returned. The search response reports the query's embedding usage as `usage.embed_total_tokens`. A `sparse_embed` query is embedded in-process, so it reports `0`.
 
 An `embed` or `sparse_embed` clause must be the only clause in `score_by`. You can still combine signals, because a stored embedded field is also full-text-searchable. Rank with an `embed` `score_by`, then narrow the results with a `$match_phrase`, `$match_all`, or `$match_any` filter on the same field (see [Full-text search](/guides/search/full-text-search#search-examples)). To fuse two full rankings instead, run separate searches and merge them with [reciprocal rank fusion](/guides/search/reciprocal-rank-fusion).
+
+## Embed with text-embedding-3
+
+[`text-embedding-3-small`](/models/text-embedding-3-small) and [`text-embedding-3-large`](/models/text-embedding-3-large) are dense models from OpenAI that are available only on document indexes. Pinecone embeds text for them through Microsoft Azure.
+
+| Model | Default dimension | Dimension range |
+| :- | :- | :- |
+| `text-embedding-3-small` | 1,536 | 1 to 1,536 |
+| `text-embedding-3-large` | 3,072 | 1 to 3,072 |
+
+Both models embed up to 8,192 tokens per value and take any metric (`cosine` by default, `dotproduct`, or `euclidean`). They process text in the `global` [processing location](/guides/index-data/processing-locations) by default, and you can set `processing_location` to `us` on the Standard and Enterprise plans.
+
+The models are available on every plan, with the same monthly token limits as other hosted embedding models: 5 million tokens a month on Starter, 10 million on Builder, and no limit on Standard and Enterprise. For per-minute limits, see [Rate limits](/reference/api/database-limits/rate-limits#model-throughput-limits).
+
+This field embeds with `text-embedding-3-large` at 1,024 dimensions:
+
+```json Shortened large embeddings theme={null}
+{
+  "chunk_text": {
+    "type": "string",
+    "embed": { "model": "text-embedding-3-large", "dimension": 1024 }
+  }
+}
+```
+
+## Embed with gemini-embedding-2
+
+[`gemini-embedding-2`](/models/gemini-embedding-2) is a dense model from Google that's available only on document indexes. It embeds up to 8,192 tokens per value and uses the `cosine` metric only. Its default dimension is 3,072, and you can set `dimension` to any integer from 128 to 3,072. Pinecone embeds text for this model through Google Vertex AI, in the `global` [processing location](/guides/index-data/processing-locations) only.
+
+The model isn't available on the Starter plan. Creating an index with it on Starter returns a `403` that names the field and model. If your organization moves to the Starter plan, its existing `gemini-embedding-2` indexes stay, but upserts and searches on them return a `403` until you upgrade again. The Builder plan includes 10 million `gemini-embedding-2` tokens a month, and the Standard and Enterprise plans have no monthly limit. For per-minute limits, see [Rate limits](/reference/api/database-limits/rate-limits#model-throughput-limits).
+
+### Task types
+
+`gemini-embedding-2` embeds text differently depending on what the embedding is for. You choose this with the `task_type` parameter. Each task belongs to one of three kinds:
+
+* **Write task**: `retrieval_document` embeds the stored text of a field you search.
+* **Query tasks**: These embed search queries against a `retrieval_document` field.
+* **Symmetric tasks**: These embed stored text and queries the same way, for comparing texts with each other rather than searching.
+
+For every task type and what it's for, see [Task types](/models/gemini-embedding-2#task-types) on the model page.
+
+### Set task types on the field
+
+Set `task_type` in the field's `write_parameters` and `read_parameters`:
+
+* `write_parameters.task_type` sets how Pinecone embeds the stored text. It defaults to `retrieval_document` and accepts `retrieval_document` or a symmetric task. A query task is rejected with a `400`.
+* `read_parameters.task_type` sets the default task for queries. If you don't set it, it follows the write task: `retrieval_query` for a `retrieval_document` field, or the same task for a symmetric field.
+* A `retrieval_document` field accepts any query task on read. A symmetric field accepts only its own task, so a `clustering` field is always searched with `clustering`.
+* The write task is fixed at creation, like the rest of the embedding configuration. An index has one `embed` field, so to embed the same text for a different write task, such as `retrieval_document` and `clustering`, create a second index.
+
+This field stores articles for search and embeds queries as questions by default:
+
+```json Questions against articles theme={null}
+{
+  "body": {
+    "type": "string",
+    "embed": {
+      "model": "gemini-embedding-2",
+      "dimension": 768,
+      "read_parameters": { "task_type": "question_answering" }
+    }
+  }
+}
+```
+
+This field embeds support tickets for clustering, and its queries use `clustering` too:
+
+```json Clustered tickets theme={null}
+{
+  "ticket_text": {
+    "type": "string",
+    "embed": {
+      "model": "gemini-embedding-2",
+      "write_parameters": { "task_type": "clustering" }
+    }
+  }
+}
+```
+
+When you describe the index, the field's `write_parameters` and `read_parameters` show the resolved task types.
+
+### Override the task for one search
+
+To embed one search's query with a different task, set `parameters` on the `embed` clause. It overrides the field's `read_parameters` for that search only. The Python SDK supports `parameters` in `10.3.0` and later. The Node.js and Go SDKs don't support it yet, so use the REST API with them. For example, this search checks a statement against the `body` field from the preceding example, whose default query task is `question_answering`:
+
+```python Python theme={null}
+response = index.documents.search(
+    namespace="example-namespace",
+    top_k=5,
+    score_by=[
+        {
+            "type": "embed",
+            "fields": ["body"],
+            "query": "Is the Eiffel Tower taller than 300 m?",
+            "parameters": {"task_type": "fact_verification"},
+        }
+    ],
+    include_fields=["body"],
+)
+```
+
+```bash curl theme={null}
+curl -X POST "https://$INDEX_HOST/namespaces/example-namespace/documents/search" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+    "top_k": 5,
+    "score_by": [
+      {
+        "type": "embed",
+        "fields": ["body"],
+        "query": "Is the Eiffel Tower taller than 300 m?",
+        "parameters": { "task_type": "fact_verification" }
+      }
+    ],
+    "include_fields": ["body"]
+  }'
+```
+
+These rules apply to `parameters`:
+
+* Only `embed` clauses take `parameters`, and only `task_type` can be set per search. Any other key, such as `truncate`, is rejected with a `400`.
+* The task must be one the field accepts on read. A query task on a symmetric field, or `retrieval_document` on any field, is rejected with a `400` that names the tasks the field allows.
+* A model without task types, such as `llama-text-embed-v2`, rejects `parameters.task_type` with a `400`.
+* An empty `parameters` object has no effect.
+* Upserts and updates don't take a per-request task. Stored text always uses the field's write task.
+
+## Find a model's parameters
+
+The [List models](/reference/api/latest/inference/list-available-models) operation returns each model's `supported_parameters` with their accepted values. It doesn't say which parameters apply on write, on read, or per search, so use the rules on this page for `task_type` and [Processing locations](/guides/index-data/processing-locations) for `processing_location`.

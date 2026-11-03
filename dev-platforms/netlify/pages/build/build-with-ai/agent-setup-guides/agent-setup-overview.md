@@ -100,3 +100,13 @@ Here are some highlights of agent skills for building and deploying on Netlify. 
 | [netlify-caching](https://github.com/netlify/context-and-tools/tree/main/skills/netlify-caching) | [Caching](/build/caching/caching-overview/) | CDN cache control, cache tags, purge, and stale-while-revalidate |
 | [netlify-ai-gateway](https://github.com/netlify/context-and-tools/tree/main/skills/netlify-ai-gateway) | [AI Gateway](/build/ai-gateway/overview/) | Proxy for OpenAI, Anthropic, and Google AI SDKs |
 
+## Netlify configuration schema
+
+Netlify publishes a JSON schema for `netlify.toml` that lists the supported properties and the values they accept. Point your agent to it when it writes or edits your Netlify configuration, so it uses properties that exist instead of guessing:
+
+```
+check netlify.toml against the schema at https://open-api.netlify.com/netlify.schema.json, and add "$schema" = "https://open-api.netlify.com/netlify.schema.json" at the top of the file
+```
+
+With the `$schema` key in the file, editors that support the schema also flag invalid values as you or your agent make changes. Learn more about [schema validation](/build/configure-builds/file-based-configuration/#schema-validation).
+

@@ -287,9 +287,9 @@ Metadata field types are inferred from the values you upsert: strings, numbers (
 
 Because metadata isn't declared anywhere, track the field names and types you use in your application.
 
-> [!WARNING]
+> [!NOTE]
 >
-> Schema migration isn't yet supported. Once an index is created, you can't add, remove, or modify fields. Plan your schema carefully.
+> You can't add, remove, or modify a document index's fields after you create it. To give an existing vector index or legacy integrated index a schema, [convert it](/guides/index-data/convert-an-index).
 
 ## Schema validation
 
@@ -503,7 +503,7 @@ These requirements and limitations apply to document indexes. For dense and spar
 
 ### Not supported
 
-* Schema changes after index creation aren't yet supported, including backfilling a schema onto an index created before `2026-07`. Create a new index with the schema you want and reindex your documents.
+* You can't change a document index's schema after creating it. To give a vector index or legacy integrated index a schema, [convert it](/guides/index-data/convert-an-index) into a new document index.
 * Indexes can't be created in projects with [customer-managed encryption keys (CMEK)](/guides/production/configure-cmek) enabled.
 * An index can't be changed from dedicated read capacity back to on-demand. Create a new on-demand index and reingest your data.
 

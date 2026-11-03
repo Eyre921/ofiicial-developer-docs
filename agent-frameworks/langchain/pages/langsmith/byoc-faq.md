@@ -72,6 +72,21 @@ Answers to common questions about LangSmith BYOC, covering data residency, acces
 >
 > Data planes are provisioned with a private endpoint by default, so you need private connectivity such as Tailscale, AWS PrivateLink, or VPC peering.
 
+> [accordion] Why does LangSmith say I may not have network access to this workspace?
+>
+> Your machine cannot reach the data plane that holds the workspace. After the browser loads the LangSmith UI, it sends data requests directly to your data plane. With a private endpoint, those requests succeed only from a network that can reach your VPC.
+>
+> ![LangSmith error screen titled You may not have network access to this workspace. It states that LangSmith cannot reach the data plane for the selected workspace and lists other workspaces grouped by data plane. Reachable data planes show a green header with active Switch buttons. The unreachable data plane shows a red header with disabled Switch buttons.](https://mintcdn.com/langchain-5e9cc07a/a_vO91vE4oZRWYyY/langsmith/images/byoc-data-plane-unreachable.png?fit=max\&auto=format\&n=a_vO91vE4oZRWYyY\&q=85\&s=881f94a84e295064162e8673517245fd)
+>
+> The screen groups your workspaces by data plane. A green header marks a data plane your browser can reach, and a red header marks one it cannot.
+>
+> To fix it:
+>
+> 1. Connect to the network that has private connectivity to the data plane. If your organization uses a corporate VPN, ask your IT team to route the data plane's endpoint through it.
+> 2. Refresh the page.
+>
+> To keep working in the meantime, select **Switch** next to a workspace on a reachable data plane. For more information, see [BYOC onboarding](/langsmith/byoc-onboarding) and [BYOC architecture](/langsmith/byoc-architecture).
+
 > [accordion] Are my service endpoints exposed to the internet?
 >
 > No. Services sit behind a private load balancer by default, reachable only from inside your VPC or through the private connectivity you configure.

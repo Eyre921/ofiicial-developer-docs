@@ -4,9 +4,9 @@ source: https://docs.stripe.com/payouts.md
 path: payouts
 ---
 
-# Receive payouts
+# Receive payouts from Stripe
 
-Set up your bank account to receive payouts.
+Set up your bank account to receive payouts from your Stripe balance.
 
 Stripe sends funds from your available balance to your bank account as payouts:
 
@@ -1019,7 +1019,7 @@ You can use various types of bank accounts for your Stripe payouts, including tr
 
 ### Financial accounts
 
-For eligible businesses in the US, payment proceeds settle in your [financial account](https://docs.stripe.com/treasury.md). You only need to add your bank account information for external payouts.
+For eligible businesses in the US, payment proceeds settle in your Stripe [financial account](https://docs.stripe.com/treasury.md). You only need to add your bank account information if you need to enable payouts to external bank accounts.
 
 ### Supported accounts and settlement currencies 
 

@@ -12,11 +12,12 @@ Serverless Inference is multi-tenant inference for popular open models running o
 
 ## Serverless products at a glance
 
-Three modes run on the same Serverless framework. They share the same rate-limit policy, but route and price differently:
+Four modes run on the same Serverless framework. They route and price differently, and share the same rate-limit policy, except for Preview offerings such as Ultra-fast, which have their own limits (see [Serverless rate limits](/serverless/rate-limits#models-by-tier)):
 
 * **Standard** — the default mode. No `service_tier` parameter needed.
 * **Priority** — higher reliability during peak periods. Opt in by setting `service_tier: "priority"` on chat completions. Priced at a premium.
 * **Fast** — high-speed deployments for latency-sensitive workloads. Selected by switching the `model` ID to a Fast variant (for example, `accounts/fireworks/routers/kimi-k3-fast`).
+* **Ultra-fast (Preview)** — very high-speed mode for highly latency-sensitive workloads, aiming for 6-8x generation speed. Selected by switching the `model` ID to an Ultra-fast variant (for example, `accounts/fireworks/routers/deepseek-v4p1-flash-1017-ultrafast`). Priced at a premium.
 
 For usage examples and the full list of supported models, see [Serverless Modes](/serverless/serverless-modes). For pricing by mode, see [Serverless pricing](/serverless/pricing).
 

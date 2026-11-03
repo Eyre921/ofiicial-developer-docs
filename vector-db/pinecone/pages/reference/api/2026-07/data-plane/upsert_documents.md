@@ -5,15 +5,13 @@ path: reference/api/2026-07/data-plane/upsert_documents
 ---
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/db_data_2026-07.oas.yaml post /namespaces/{namespace}/documents/upsert
-Upsert documents into a namespace.
+Upsert documents into a namespace. Each document needs an `_id` and at least one field from the index schema. Fields not in the schema are stored as metadata and indexed for filtering.
 
-Each document must include an `_id` field and at least one field defined in the index schema; metadata fields may be provided alongside them. Any metadata field you provide that is not declared in the schema is stored on the document, returned via include_fields, and automatically indexed for filtering.
+For a `string` field that declares `embed` or `sparse_embed`, send the text and Pinecone generates the vectors. A field with `embed` is required on every document. An index that embeds a field accepts at most 96 documents per request.
 
-On a `string` field whose schema declares `embed` or `sparse_embed`, provide the text: Pinecone embeds it with the field's model and stores the resulting vectors, and the text itself unless the field sets `store_text: false`. A vector or any other non-string value on such a field is rejected. A field with `embed` must be present on every document; a field with only `sparse_embed` may be omitted. An index that embeds a field accepts at most 96 documents per request, the inference batch size.
+Every request that embeds text is metered, including retries, and the response reports the tokens used in `usage.embed_total_tokens`. If embedding fails, nothing in the request is written.
 
-Pinecone embeds the text on every request that carries it, so a retried upsert produces the same vectors and is embedded, and metered, again. If embedding fails, nothing in the request is written. When the request embeds text, the response's `usage.embed_total_tokens` reports the tokens it consumed.
-
-Documents aren't deduplicated by `_id` within a request. Each entry is written, counted in `upserted_count`, billed in write units and, for embedded fields, embedded and counted in `embed_total_tokens`. The last entry with a given `_id` wins.
+Documents with the same `_id` in one request are each written and billed, and the last one wins.
 
 Upsert fully replaces any document with the same `_id`, so fields you omit are removed. To change specific fields, use [Update documents](/reference/api/2026-07/data-plane/update_documents). If any document fails schema validation, the whole request fails and nothing is written. The namespace is created on first upsert (use `__default__` if you don't need partitioning), and documents become searchable within about a minute.
 

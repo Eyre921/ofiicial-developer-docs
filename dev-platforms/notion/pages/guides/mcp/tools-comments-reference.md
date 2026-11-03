@@ -75,3 +75,13 @@ Reads a page or database as it looked at a past time. Pass the page and an ISO 8
 `notion-get-version-changes`
 
 Lists what changed in a page or database between two times and who made each change, including edits from Notion AI, Custom Agents, and MCP clients. The range defaults to the last 24 hours. Requires edit access to the page, and can only read as far back as the workspace's plan keeps version history.
+
+## Restore a past version
+
+`notion-restore-version`
+
+Restores a page or database to how it looked at a past time. This undoes every edit made after that time, including other people's, and removes comments added after it. Subpages and database row pages keep their content, so restore each one on its own. Databases inside a page stay as they are unless you set `include_inline_databases: true`.
+
+Call it first without `user_confirmed`. Nothing changes, and the response says what the restore would undo. Show that to the user, and only after they agree, call again with `user_confirmed: true`. The restore then runs in the background.
+
+Requires edit access to the page and the update content [capability](/reference/capabilities). It can only go back as far as the workspace's plan keeps version history.

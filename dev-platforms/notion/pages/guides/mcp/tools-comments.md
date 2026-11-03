@@ -22,6 +22,7 @@ Review our launch proposal in Notion. Summarize what changed since Monday and wh
 | - | - | - |
 | Review changes | See what changed, who changed it, and whether the edits came from a person, AI, or an MCP client. | [`notion-get-version-changes`](/guides/mcp/tools-comments-reference#get-version-changes) |
 | Read an earlier version | See a page as it was at a previous point in time. | [`notion-view-version`](/guides/mcp/tools-comments-reference#view-a-past-version) |
+| Restore an earlier version | Put a page or database back to how it looked at a past time. | [`notion-restore-version`](/guides/mcp/tools-comments-reference#restore-a-past-version) |
 | Restore pages | Recover pages from Trash. | [`notion-restore-pages`](/guides/mcp/tools-comments-reference#restore-pages) |
 | Add feedback | Comment on a page or specific content, or reply to a discussion. | [`notion-create-comment`](/guides/mcp/tools-comments-reference#add-a-comment) |
 | Read feedback | Read comments, discussions, and pending suggestions on a page. | [`notion-get-comments`](/guides/mcp/tools-comments-reference#get-comments) |
@@ -36,7 +37,7 @@ Review our launch proposal in Notion. Summarize what changed since Monday and wh
 
 Suggested edits do not change a page until they are accepted. Your assistant acts with your permissions; accepting a suggestion requires edit access. Your assistant can edit or delete only comments you wrote. Editing comments and working with suggested edits require a Business or Enterprise plan.
 
-Viewing page history requires edit access and is limited to the history retained by your workspace plan. Restoring a page recovers it from Trash; it does not revert it to an earlier version.
+Viewing page history requires edit access and is limited to the history retained by your workspace plan. `notion-restore-pages` recovers pages from Trash. To put a page back to an earlier version, use `notion-restore-version`.
 
 ## Technical reference
 

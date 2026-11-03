@@ -4,6 +4,12 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+**November 3, 2026**
+
+### Restore past versions in Notion MCP
+
+`notion-restore-version` restores a page or database to how it looked at a past time. See [Restore a past version](/guides/mcp/tools-comments-reference#restore-a-past-version).
+
 **November 2, 2026**
 
 ### Notion Agent APIs are generally available
@@ -197,6 +203,10 @@ Send `Notion-Beta: status-group-filters-2026-10-06` to opt in. With the header, 
 `notion-update-page` now returns an optional `warnings` array, for direct and queued updates, when it changed or ignored part of the input, such as lines dropped for incorrect indentation or text auto-corrected to match the page. Each warning has a `code` and a `message`, and Markdown parser warnings also carry `category` and `autofix`. Each message is at most 500 characters; a longer one is cut and ends with a note giving its original length. A clean update has no `warnings` key; see [Supported tools](/guides/mcp/mcp-supported-tools).
 
 **October 6, 2026**
+
+### Personal memories in Notion MCP
+
+Connected AI clients can now save and retrieve personal memories in Notion across sessions. Use `notion-memory-search` to find relevant context and the existing page tools to read, create, or update memories; see [Memories in Notion MCP](/guides/mcp/tools-skills-agents#personal-memories).
 
 ### No more tool-specific Notion MCP rate limits
 

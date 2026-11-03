@@ -24,6 +24,14 @@ Use a shared Skill to prepare a project update in your team’s format, or hand 
 >
 > Find our reporting Custom Agent in Notion and ask it to prepare this week’s project update. Share the project context from our conversation, then bring back the agent’s draft for me to review.
 
+## Personal memories
+
+Memories let your AI assistant save preferences, corrections, and decisions in Notion and recall them in later sessions. You can use them across clients connected to the same Notion account and workspace. Ask your assistant to remember the context you want to save; connecting MCP doesn't automatically import another client's chat history.
+
+Notion stores this context in a personal **Memories** database and an **About page** that summarizes it. Both are created when you save your first memory. You can read, edit, or remove this information in Notion. Memories are private to you. They don't grant a client access to content you can't already access, and they don't replace current source information.
+
+Memory via MCP is available on all plans through user-backed connections, with memories enabled for both you and your workspace. It isn't available through workspace-owned connections. See [View your Notion Agent Memories](https://www.notion.com/help/view-your-notion-agent-memories) for user controls and privacy details, or the [memory tool reference](/guides/mcp/tools-skills-agents-reference#search-personal-memories) for reading, saving, and updating memories.
+
 ## Available tools
 
 | Action | What it does | Tool name |
@@ -32,7 +40,7 @@ Use a shared Skill to prepare a project update in your team’s format, or hand 
 | Download a Skill | Export a Skill and its supporting files. | [`notion-download-skill`](/guides/mcp/tools-skills-agents-reference#download-a-notion-skill) |
 | Upload a Skill | Import a Skill into a page in a Skills database. | [`notion-upload-skill`](/guides/mcp/tools-skills-agents-reference#upload-a-notion-skill) |
 | Choose your Skills | See enabled Skills and enable or disable them. | [`notion-get-enabled-skills`](/guides/mcp/tools-skills-agents-reference#manage-enabled-skills)  [`notion-update-enabled-skills`](/guides/mcp/tools-skills-agents-reference#manage-enabled-skills) |
-| Find saved context | Search preferences and decisions saved by your connected agents. | [`notion-memory-search`](/guides/mcp/tools-skills-agents-reference#search-personal-memories) |
+| Find saved context | Search your private memories for preferences and decisions saved by your connected agents. | [`notion-memory-search`](/guides/mcp/tools-skills-agents-reference#search-personal-memories) |
 | Find Custom Agents | Find an agent shared with you that can take on a task. | [`notion-search-agents`](/guides/mcp/tools-skills-agents-reference#work-with-custom-agent-sessions) |
 | Find agent conversations | Browse or search existing sessions. | [`notion-query-sessions`](/guides/mcp/tools-skills-agents-reference#work-with-custom-agent-sessions)  [`notion-search-sessions`](/guides/mcp/tools-skills-agents-reference#work-with-custom-agent-sessions) |
 | Delegate or follow up | Hand a task to a Custom Agent or send a follow-up message. | [`notion-spawn-session`](/guides/mcp/tools-skills-agents-reference#work-with-custom-agent-sessions)  [`notion-send-message-to-session`](/guides/mcp/tools-skills-agents-reference#work-with-custom-agent-sessions) |

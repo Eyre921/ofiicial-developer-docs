@@ -42,7 +42,9 @@ Voice settings dramatically affect how your agent is perceived:
 
 * **Similarity:** Higher values will boost the overall clarity and consistency of the voice. Very high values may lead to sound distortions. Adjusting this value to find the right balance is recommended.
 
-* **Speed:** Most natural conversations occur at 0.9-1.1x speed. Depending on the voice, adjust slower for complex topics or faster for routine information.
+* **Speed:** Most natural conversations occur at 0.9-1.1x speed. Depending on the voice, adjust slower for complex topics or faster for routine information. Speed is not available for Eleven v3 and Eleven v4 models.
+
+* **Clone Strength:** When you select Eleven v4 or Eleven v4 Turbo and a [Professional Voice Clone](/docs/eleven-creative/voices/voice-cloning/professional-voice-cloning) trained for Eleven v4, Voice settings include an additional **Clone Strength** slider. Clone Strength controls how closely the generated speech follows the clone's training recordings. At lower values, the voice is smoothed slightly and the delivery gains more performance flexibility, which often sounds better overall while still sounding like the original voice. At higher values, the output stays closer to the training recordings with less smoothing, mimicking the original voice's delivery and performance more closely. Higher values can be especially useful for voices with distinctive traits or unique accents. For most voices, start at 0%.
 
 > **Tip**
 >

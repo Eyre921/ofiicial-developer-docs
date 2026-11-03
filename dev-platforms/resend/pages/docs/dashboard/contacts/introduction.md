@@ -151,17 +151,17 @@ For example, you might send a product announcement to your "Enterprise Customers
 
 See how to use Resend's Contact management features.
 
-> **[Add Contacts](/docs/dashboard/contacts/add-contacts)**
+> [card] [Add Contacts](/docs/dashboard/contacts/add-contacts)
 
-> **[Manage Contacts](/docs/dashboard/contacts/manage-contacts)**
+> [card] [Manage Contacts](/docs/dashboard/contacts/manage-contacts)
 
-> **[Contact Properties](/docs/dashboard/contacts/properties)**
+> [card] [Contact Properties](/docs/dashboard/contacts/properties)
 
-> **[Unsubscribe List](/docs/dashboard/contacts/managing-unsubscribe-list)**
+> [card] [Unsubscribe List](/docs/dashboard/contacts/managing-unsubscribe-list)
 
-> **[Segments](/docs/dashboard/contacts/manage-segments)**
+> [card] [Segments](/docs/dashboard/contacts/manage-segments)
 
-> **[Topics](/docs/dashboard/contacts/manage-topics)**
+> [card] [Topics](/docs/dashboard/contacts/manage-topics)
 
 ## Export your data
 

@@ -247,7 +247,7 @@ def test_multiturn_message_with_openai():
         ],
     )
     trajectory_evaluator = create_llm_as_judge(
-        model="openai:o3-mini",
+        model="openai:gpt-5.4-mini",
         prompt="Based on the below conversation, was the user satisfied?\n{outputs}",
         feedback_key="satisfaction",
     )
@@ -321,7 +321,7 @@ ls.describe("Multiturn demo", () => {
       });
 
       const trajectoryEvaluator = createLLMAsJudge({
-        model: "openai:o3-mini",
+        model: "openai:gpt-5.4-mini",
         prompt:
           "Based on the below conversation, was the user satisfied?\n{outputs}",
         feedbackKey: "satisfaction",
@@ -380,7 +380,7 @@ ls_client.create_examples(
     examples=examples,
 )
 trajectory_evaluator = create_llm_as_judge(
-    model="openai:o3-mini",
+    model="openai:gpt-5.4-mini",
     prompt="Based on the below conversation, was the user satisfied?\n{outputs}",
     feedback_key="satisfaction",
 )
@@ -453,7 +453,7 @@ const dataset = await lsClient.createDataset(datasetName);
 await lsClient.createExamples([{ inputs, dataset_id: dataset.id }]);
 
 const trajectoryEvaluator = createLLMAsJudge({
-  model: "openai:o3-mini",
+  model: "openai:gpt-5.4-mini",
   prompt:
     "Based on the below conversation, was the user satisfied?\n{outputs}",
   feedbackKey: "satisfaction",
@@ -541,7 +541,7 @@ ls_client.create_examples(
     examples=examples,
 )
 trajectory_evaluator = create_llm_as_judge(
-    model="openai:o3-mini",
+    model="openai:gpt-5.4-mini",
     prompt="Based on the below conversation, was the user satisfied?\n{outputs}",
     feedback_key="satisfaction",
 )
@@ -629,7 +629,7 @@ const examples = [{
 await lsClient.createExamples(examples);
 
 const trajectoryEvaluator = createLLMAsJudge({
-  model: "openai:o3-mini",
+  model: "openai:gpt-5.4-mini",
   prompt:
     "Based on the below conversation, was the user satisfied?\n{outputs}",
   feedbackKey: "satisfaction",

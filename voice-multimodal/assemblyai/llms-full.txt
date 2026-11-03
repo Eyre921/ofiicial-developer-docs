@@ -1245,7 +1245,7 @@ claude mcp add --transport http assemblyai https://mcp.assemblyai.com/mcp \
 
 On Team and Enterprise plans, an owner adds the connector in **Organization settings** > **Connectors** first. Members then select **Connect**. See [custom connectors](https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp).
 
-Add the server to `.cursor/mcp.json` (one project) or `~/.cursor/mcp.json` (all projects):
+Click [Add to Cursor](cursor://anysphere.cursor-deeplink/mcp/install?name=assemblyai&config=eyJ1cmwiOiJodHRwczovL21jcC5hc3NlbWJseWFpLmNvbS9tY3AifQ==), or add the server to `.cursor/mcp.json` (one project) or `~/.cursor/mcp.json` (all projects):
 
 ```json
 {
@@ -1258,6 +1258,27 @@ Add the server to `.cursor/mcp.json` (one project) or `~/.cursor/mcp.json` (all 
 ```
 
 Cursor asks you to sign in to AssemblyAI the first time it connects. To use an API key, add `"headers": { "Authorization": "Bearer <your-api-key>" }`.
+
+Run this in a terminal:
+
+```bash
+code --add-mcp '{"name":"assemblyai","type":"http","url":"https://mcp.assemblyai.com/mcp"}'
+```
+
+Or add the server to `.vscode/mcp.json`:
+
+```json
+{
+  "servers": {
+    "assemblyai": {
+      "type": "http",
+      "url": "https://mcp.assemblyai.com/mcp"
+    }
+  }
+}
+```
+
+VS Code asks you to sign in to AssemblyAI the first time it connects.
 
 Any MCP client that supports [Streamable HTTP](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) can connect.
 
@@ -1352,6 +1373,16 @@ AssemblyAI seamlessly integrates with a variety of tools and platforms to enhanc
   
   
     Use AssemblyAI as the transcriber in Bolna voice agents.
+  
+
+## AI apps (MCP)
+
+  
+    Transcribe, summarize and analyze audio from Claude, Cursor, VS Code
+    and other MCP clients.
+  
+  
+    Give coding agents live AssemblyAI docs so they write correct code.
   
 
 ## Model gateways
@@ -22421,7 +22452,7 @@ ws.on("close", () => {
 
 - **Session length:** a streaming session auto-closes after 3 hours.
 - **Audio:** mono 16-bit PCM by default; set `sample_rate` to match your source. These examples use AAC (`encoding=aac`, ADTS framing). Opus is also accepted (`encoding=ogg_opus` for Ogg streams, `encoding=opus` for raw Opus packets). See [Sending audio](/streaming/message-sequence#sending-audio).
-- **Rate limit:** new-session rate limits scale automatically with usage (default 5 for free accounts). Check yours on the [rate limits page](https://www.assemblyai.com/dashboard/home).
+- **Rate limit:** new-session rate limits scale automatically with usage (default 5 for free accounts, 200 for paid accounts). Check yours on the [rate limits page](https://www.assemblyai.com/dashboard/home).
 
 ## Next steps
 
@@ -27379,7 +27410,7 @@ AssemblyAI's Real-time STT API features unlimited, automatic scaling rate limits
 | Account type | Starting rate limit (new sessions/min) |
 | ------------ | -------------------------------------- |
 | Free         | 5                                      |
-| Paid         | 100+                                   |
+| Paid         | 200                                    |
 
   **Need a higher rate limit?**
 
@@ -27393,13 +27424,13 @@ For example, assuming you max out your available new sessions rate limit each mi
 
 | Minute | New sessions/min              | Total open streams |
 | ------ | ----------------------------- | ------------------ |
-| 1      | 100 (default)                 | 100                |
-| 2      | 110 (100 x 1.10)             | 210                |
-| 3      | 121 (110 x 1.10)             | 331                |
-| 4      | 133 (121 x 1.10)             | 464                |
-| 5      | 146 (133 x 1.10)             | 610                |
+| 1      | 200 (default)                 | 200                |
+| 2      | 220 (200 x 1.10)              | 420                |
+| 3      | 242 (220 x 1.10)              | 662                |
+| 4      | 266 (242 x 1.10, rounded down) | 928               |
+| 5      | 292 (266 x 1.10, rounded down) | 1,220             |
 
-At the start of the 6th minute, there would be 610 total open streams. Over the next 60 seconds, a maximum of 160 (146 x 1.10, rounded down) new streams would be able to be opened.
+At the start of the 6th minute, there would be 1,220 total open streams. Over the next 60 seconds, a maximum of 321 (292 x 1.10, rounded down) new streams would be able to be opened.
 
 This usage pattern has no ceiling and can continue to scale up indefinitely to whatever your application requires.
 
@@ -35542,8 +35573,8 @@ Universal-3.5 Pro Realtime provides unlimited parallel streams:
 **Rate limits:**
 
 - Free users: 5 new streams per minute
-- Pay-as-you-go: 100 new streams per minute
-- When using 70%+ of your limit, capacity automatically increases 10% every 60 seconds
+- Pay-as-you-go: 200 new streams per minute
+- When using 80%+ of your limit, capacity automatically increases 10% every 60 seconds
 
 These limits are designed to never interfere with legitimate applications. Your baseline limit is guaranteed and never decreases, so you can scale smoothly without artificial barriers.
 
@@ -48879,7 +48910,7 @@ tts = aai.TextToSpeech(api_key=os.environ["ASSEMBLYAI_API_KEY"])
 
 response = tts.synthesize(
     "Hi, thanks for calling. How can I help you today?",
-    aai.TTSConfig(voice_id="49c443a4-8a1d-5f7e-b70b-98bdbd9823c3", container=aai.TTSContainer.wav),  # Audrey
+    aai.TTSConfig(voice_id="37e65973-9d96-5aab-adcd-01bf56ab5af9", container=aai.TTSContainer.wav),  # Kyla
 )
 
 with open("hello.wav", "wb") as f:
@@ -48899,7 +48930,7 @@ const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 
 const response = await client.tts.synthesize({
   text: "Hi, thanks for calling. How can I help you today?",
-  voice_id: "49c443a4-8a1d-5f7e-b70b-98bdbd9823c3", // Audrey
+  voice_id: "37e65973-9d96-5aab-adcd-01bf56ab5af9", // Kyla
   container: "wav",
 });
 
@@ -48913,7 +48944,7 @@ console.log(`wrote hello.wav: ${response.audioDurationMs} ms of audio, ${respons
 curl -sS --fail-with-body -D headers.txt https://tts.us.assemblyai.com/v1/speech \
   -H "Authorization: $ASSEMBLYAI_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"text": "Hi, thanks for calling. How can I help you today?", "voice_id": "49c443a4-8a1d-5f7e-b70b-98bdbd9823c3", "container": "wav", "stream": false}' \
+  -d '{"text": "Hi, thanks for calling. How can I help you today?", "voice_id": "37e65973-9d96-5aab-adcd-01bf56ab5af9", "container": "wav", "stream": false}' \
   -o hello.wav
 ```
 
@@ -48924,7 +48955,7 @@ HTTP/2 200
 content-type: audio/wav
 x-request-id: 83c9fae1-e0b0-433a-b97e-26f372778f2a
 x-tts-model: assemblyai-tts-1
-x-tts-voice-id: 49c443a4-8a1d-5f7e-b70b-98bdbd9823c3
+x-tts-voice-id: 37e65973-9d96-5aab-adcd-01bf56ab5af9
 x-tts-language: english
 x-tts-encoding: pcm_s16le
 x-tts-sample-rate: 24000
@@ -48938,13 +48969,13 @@ A refused request, a wrong key for example, exits with a non-zero code and write
 Run it with `python hello.py` or `node hello.mjs`, and `hello.wav` plays in any audio player. The SDKs print this:
 
 ```text
-voice 49c443a4-8a1d-5f7e-b70b-98bdbd9823c3, model assemblyai-tts-1, 24000 Hz pcm_s16le
+voice 37e65973-9d96-5aab-adcd-01bf56ab5af9, model assemblyai-tts-1, 24000 Hz pcm_s16le
 wrote hello.wav: 3200 ms of audio, 49 characters billed
 ```
 
 Four things about this run:
 
-- **Only the text is required.** `voice_id` names Audrey here by her ID. Leave it out and you get `aai-jane`, the default voice, in English at 24 kHz 16-bit PCM. A voice speaks the language it was recorded in unless you set `language` to another one, though results are usually [worse than in the voice's own language](/tts/voices#voice-and-language). [Voices](/tts/voices) explains how to name a voice, find its ID and set the language, and the same `voice_id` takes a voice you [cloned](/tts/cloned-voices) in the dashboard.
+- **Only the text is required.** `voice_id` names Kyla here by her ID. Leave it out and you get `aai-jane`, the default voice, in English at 24 kHz 16-bit PCM. A voice speaks the language it was recorded in unless you set `language` to another one, though results are usually [worse than in the voice's own language](/tts/voices#voice-and-language). [Voices](/tts/voices) explains how to name a voice, find its ID and set the language, and the same `voice_id` takes a voice you [cloned](/tts/cloned-voices) in the dashboard.
 - **The response says what it ran with.** The voice, model, language, encoding and sample rate come back as response headers, which the SDKs expose on the result. Read the sample rate from there rather than from your own request when you write a header or set up a player.
 - **The duration varies between runs.** Synthesis is not deterministic, so the same sentence can come back a few hundred milliseconds longer or shorter. Billing counts characters, not seconds.
 - **The JavaScript SDK uses two spellings.** `synthesize()` and `stream()` take the API's own field names, `voice_id` and `sample_rate`, while `session()` takes camelCase options, `voiceId` and `sampleRate`. Results are camelCase, and the `Begin` and `Termination` frames keep their wire names.
@@ -48962,7 +48993,7 @@ import os
 
 import assemblyai as aai
 
-config = aai.TTSConfig(voice_id="49c443a4-8a1d-5f7e-b70b-98bdbd9823c3", language="english")  # Audrey
+config = aai.TTSConfig(voice_id="37e65973-9d96-5aab-adcd-01bf56ab5af9", language="english")  # Kyla
 reply = [
     "Hi, thanks for calling.",
     "You have reached the accounts team.",
@@ -48998,7 +49029,7 @@ const reply = [
   "Would you like to pay it today?",
 ];
 
-const session = client.tts.session({ voiceId: "49c443a4-8a1d-5f7e-b70b-98bdbd9823c3", language: "english" }); // Audrey
+const session = client.tts.session({ voiceId: "37e65973-9d96-5aab-adcd-01bf56ab5af9", language: "english" }); // Kyla
 const begin = await session.connect();
 console.log(`session ${begin.id}`);
 
@@ -49069,7 +49100,7 @@ with aai.TTSSession(config, api_key=os.environ["ASSEMBLYAI_API_KEY"]) as session
 
 ```javascript
 // Fragment: continues reply.mjs. You supply llmTokens(), userStartedTalking() and play().
-const session = client.tts.session({ voiceId: "49c443a4-8a1d-5f7e-b70b-98bdbd9823c3" });
+const session = client.tts.session({ voiceId: "37e65973-9d96-5aab-adcd-01bf56ab5af9" });
 await session.connect();
 
 for await (const token of llmTokens()) session.generate(token); // joined as sent: include the spaces
@@ -49102,7 +49133,7 @@ import websockets
 
 URL = (
     "wss://tts.us.assemblyai.com/v1/ws"
-    "?voice_id=49c443a4-8a1d-5f7e-b70b-98bdbd9823c3&language=english"
+    "?voice_id=37e65973-9d96-5aab-adcd-01bf56ab5af9&language=english"
     "&sample_rate=24000&encoding=pcm_s16le"
 )
 
@@ -49212,7 +49243,7 @@ import time
 import httpx
 
 client = httpx.Client(headers={"Authorization": os.environ["ASSEMBLYAI_API_KEY"]})
-body = {"text": "Hi, thanks for calling. How can I help you today?", "voice_id": "aai-audrey"}
+body = {"text": "Hi, thanks for calling. How can I help you today?", "voice_id": "aai-kyla"}
 
 for _ in range(5):
     start = time.perf_counter()
@@ -49243,7 +49274,7 @@ import os
 
 import assemblyai as aai
 
-config = aai.TTSConfig(voice_id="49c443a4-8a1d-5f7e-b70b-98bdbd9823c3", language="english")  # Audrey
+config = aai.TTSConfig(voice_id="37e65973-9d96-5aab-adcd-01bf56ab5af9", language="english")  # Kyla
 
 # When the call starts, not when the first reply is ready.
 session = aai.TTSSession(config, api_key=os.environ["ASSEMBLYAI_API_KEY"])
@@ -49267,7 +49298,7 @@ import { AssemblyAI } from "assemblyai";
 const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 
 // When the call starts, not when the first reply is ready.
-const session = client.tts.session({ voiceId: "49c443a4-8a1d-5f7e-b70b-98bdbd9823c3", language: "english" }); // Audrey
+const session = client.tts.session({ voiceId: "37e65973-9d96-5aab-adcd-01bf56ab5af9", language: "english" }); // Kyla
 await session.connect(); // waits for Begin; the server then loads the voice before the first reply
 
 while (callIsOpen()) {
@@ -49473,7 +49504,7 @@ Description: Name a voice with voice_id in the SDKs and on the wire, where to fi
 Every voice is named by its voice ID: the `voice_id` parameter on a WebSocket session and on an HTTP request, `voice_id` in the Python SDK's `TTSConfig`, and `voiceId` on a JavaScript SDK session (`voice_id` in its HTTP requests, which take the API's field names). It takes one of these:
 
 - The library slug of an AssemblyAI voice, such as `aai-jane`.
-- A voice's ID, a UUID such as `49c443a4-8a1d-5f7e-b70b-98bdbd9823c3`.
+- A voice's ID, a UUID such as `37e65973-9d96-5aab-adcd-01bf56ab5af9`.
 - The slug of one of your account's voices, such as a voice you [cloned](/tts/cloned-voices) in the AssemblyAI dashboard.
 
 Leave `voice_id` out and you get `aai-jane`, the default voice.
@@ -49532,7 +49563,7 @@ The session or request echoes the voice it speaks with: `Begin.configuration.voi
 
 The [voice catalog](https://www.assemblyai.com/dashboard/text-to-speech/voices) in the AssemblyAI dashboard holds thousands of voices across the six languages the model speaks. Browse it there, listen to each voice, and copy its `voice_id` with **Copy voice ID**; the text-to-speech playground has the same action, which copies the `voice_id` its session sends. AssemblyAI's voices carry slugs that begin with `aai-`. Each voice was recorded in one language, which the catalog shows, and speaks that language when you leave `language` out; see [Voice and language](#voice-and-language).
 
-These are good voices to start with. The examples on these pages use Audrey:
+These are good voices to start with. The examples on these pages use Kyla:
 
 | Voice | `voice_id` | Language | Description |
 |-------|------------|-------------|-------------|
@@ -49663,7 +49694,7 @@ Fix the voice before you reconnect; retrying unchanged fails identically. Keep h
 - [WebSocket API basics](/tts/connect-parameters): the connect sequence and the rules for the rest of the query string.
 - [Error handling](/tts/error-handling): what to do with `3006`, `3012` and the other close codes.
 - [Optimizing accuracy and latency](/tts/getting-started/optimizing-accuracy-and-latency): open the session before the first reply.
-- [Quickstart](/tts/getting-started/quickstart): a full session using Audrey.
+- [Quickstart](/tts/getting-started/quickstart): a full session using Kyla.
 
 ---
 
@@ -49795,7 +49826,7 @@ voice expires at 1797154212
 
 `Begin.configuration.voice_id` is the value you sent, and `resolved_voice.voice_id` is the voice's UUID, also when you sent its slug. `voice_expires_at` is when the voice's [consent period](#consent-period) ends. The other keys a cloned voice adds to `Begin` are in [Message frames](/tts/message-frames#begin).
 
-The same programs speak with an AssemblyAI library voice: set `ASSEMBLYAI_VOICE_ID` to its slug, such as `aai-audrey`, or to its ID. A library voice does not expire, so `voice_expires_at` is `None` in Python and `null` in JavaScript, and the HTTP response carries no `x-tts-voice-expires-at` header. See [Voices](/tts/voices).
+The same programs speak with an AssemblyAI library voice: set `ASSEMBLYAI_VOICE_ID` to its slug, such as `aai-kyla`, or to its ID. A library voice does not expire, so `voice_expires_at` is `None` in Python and `null` in JavaScript, and the HTTP response carries no `x-tts-voice-expires-at` header. See [Voices](/tts/voices).
 
 ### Language and model
 
@@ -50188,7 +50219,7 @@ import os
 
 import websockets  # pip install -U websockets
 
-URL = "wss://tts.us.assemblyai.com/v1/ws?voice_id=49c443a4-8a1d-5f7e-b70b-98bdbd9823c3&language=english"
+URL = "wss://tts.us.assemblyai.com/v1/ws?voice_id=37e65973-9d96-5aab-adcd-01bf56ab5af9&language=english"
 API_KEY = os.environ["ASSEMBLYAI_API_KEY"]
 
 REQUESTS = ["Hello there, friend.", "Pack my box with five dozen liquor jugs."]
@@ -50291,7 +50322,7 @@ The SDKs open a session with word boundaries off. Turn them on with `word_bounda
 # Fragment. You supply play().
 import assemblyai as aai
 
-config = aai.TTSConfig(voice_id="49c443a4-8a1d-5f7e-b70b-98bdbd9823c3")  # Audrey
+config = aai.TTSConfig(voice_id="37e65973-9d96-5aab-adcd-01bf56ab5af9")  # Kyla
 
 def on_words(event):
     for w in event.words:
@@ -50309,7 +50340,7 @@ import { AssemblyAI } from "assemblyai";
 
 const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 
-const session = client.tts.session({ voiceId: "49c443a4-8a1d-5f7e-b70b-98bdbd9823c3", wordBoundaries: true }); // Audrey
+const session = client.tts.session({ voiceId: "37e65973-9d96-5aab-adcd-01bf56ab5af9", wordBoundaries: true }); // Kyla
 session.on("wordBoundaries", (event) => {
   for (const w of event.words) console.log(`request ${event.flush_id}: ${w.word} at ${w.start - event.audio_start_ms} ms`);
 });
@@ -50324,7 +50355,7 @@ On the HTTP API, [`POST /v1/speech/events`](/tts/api-reference/http-api/stream-s
 
 ```text
 event: Begin
-data: {"type":"Begin","id":"5e8970c3-26f7-4b8e-9c55-6c1c7f0b6d2e","expires_at":1791480600,"configuration":{"voice_id":"49c443a4-8a1d-5f7e-b70b-98bdbd9823c3","language":"english","sample_rate":24000,"encoding":"pcm_s16le","word_boundaries":true,"model":"assemblyai-tts-1","container":"raw","bit_rate":null,"transport":"http"}}
+data: {"type":"Begin","id":"5e8970c3-26f7-4b8e-9c55-6c1c7f0b6d2e","expires_at":1791480600,"configuration":{"voice_id":"37e65973-9d96-5aab-adcd-01bf56ab5af9","language":"english","sample_rate":24000,"encoding":"pcm_s16le","word_boundaries":true,"model":"assemblyai-tts-1","container":"raw","bit_rate":null,"transport":"http"}}
 
 event: Audio
 data: {"type":"Audio","audio":"AAAAAP7/AQD+/wIA","flush_id":0}
@@ -50493,7 +50524,7 @@ server.setup_fnc = prewarm
 async def entrypoint(ctx: JobContext) -> None:
     tts = assemblyai.TTS(
         model="assemblyai-tts-1",
-        voice="49c443a4-8a1d-5f7e-b70b-98bdbd9823c3",  # Audrey
+        voice="37e65973-9d96-5aab-adcd-01bf56ab5af9",  # Kyla
     )
     # Open the TTS session now, so the first reply doesn't wait on the handshake
     tts.prewarm()
@@ -50568,7 +50599,7 @@ For the speech-to-text settings in this example, such as `mode` and `vad_thresho
 
 Pass a voice to `voice` by its ID, a UUID. The default is Keegan, `987db62e-a2c2-569a-9c4d-82460cdea1bd`, which differs from the API's own default, `aai-jane`. `voice` takes any voice your account can use:
 
-- One of the [AssemblyAI voices](/tts/voices#assemblyai-voices) in the voice library, such as Audrey or Keegan.
+- One of the [AssemblyAI voices](/tts/voices#assemblyai-voices) in the voice library, such as Kyla or Keegan.
 - A [cloned voice](/tts/cloned-voices): a voice you make in the AssemblyAI dashboard from a short reference recording of a speaker who consented to it. It belongs to your account, and it can be used for 60 days after its consent was last given unless you [renew the consent](/tts/cloned-voices#renew-consent).
 
 The [voice catalog](https://www.assemblyai.com/dashboard/text-to-speech/voices) in the AssemblyAI dashboard has a **Copy voice ID** action for each voice, and [Voices](/tts/voices) lists good voices to start with. A slug such as `aai-anna`, or the slug of one of your cloned voices, works too, but a voice's ID never changes.
@@ -50752,7 +50783,7 @@ async def run_bot(transport: BaseTransport, runner_args: RunnerArguments):
         api_key=api_key,
         settings=AssemblyAITTSService.Settings(
             model="assemblyai-tts-1",
-            voice="49c443a4-8a1d-5f7e-b70b-98bdbd9823c3",  # Audrey
+            voice="37e65973-9d96-5aab-adcd-01bf56ab5af9",  # Kyla
         ),
     )
 
@@ -50782,7 +50813,7 @@ async def run_bot(transport: BaseTransport, runner_args: RunnerArguments):
     @transport.event_handler("on_client_connected")
     async def on_client_connected(transport, client):
         # A fixed greeting is spoken right away, without waiting on the LLM
-        await worker.queue_frames([TTSSpeakFrame("Hi, I'm Audrey. How can I help?")])
+        await worker.queue_frames([TTSSpeakFrame("Hi, I'm Kyla. How can I help?")])
 
     @transport.event_handler("on_client_disconnected")
     async def on_client_disconnected(transport, client):
@@ -50841,7 +50872,7 @@ For the speech-to-text settings in this example, such as `vad_force_turn_endpoin
 
 Pass a voice to `voice` by its ID, a UUID. The default is Audrey, `49c443a4-8a1d-5f7e-b70b-98bdbd9823c3`, which differs from the API's own default, `aai-jane`. `voice` takes any voice your account can use:
 
-- One of the [AssemblyAI voices](/tts/voices#assemblyai-voices) in the voice library, such as Audrey or Anna.
+- One of the [AssemblyAI voices](/tts/voices#assemblyai-voices) in the voice library, such as Kyla or Anna.
 - A [cloned voice](/tts/cloned-voices): a voice you make in the AssemblyAI dashboard from a short reference recording of a speaker who consented to it. It belongs to your account, and it can be used for 60 days after its consent was last given unless you [renew the consent](/tts/cloned-voices#renew-consent).
 
 The [voice catalog](https://www.assemblyai.com/dashboard/text-to-speech/voices) in the AssemblyAI dashboard has a **Copy voice ID** action for each voice, and [Voices](/tts/voices) lists good voices to start with. A slug such as `aai-anna`, or the slug of one of your cloned voices, works too, but a voice's ID never changes.
@@ -51387,7 +51418,7 @@ client = OpenAI(
 
 with client.audio.speech.with_streaming_response.create(
     model="assemblyai-tts-en",
-    voice="49c443a4-8a1d-5f7e-b70b-98bdbd9823c3",
+    voice="37e65973-9d96-5aab-adcd-01bf56ab5af9",
     input="Thanks for calling.",
     response_format="pcm",
     extra_body={"language": "en", "sample_rate": 16000},
@@ -51460,7 +51491,7 @@ Description: Hosts, authentication, the connect sequence, the parameter rules, t
 A Streaming TTS session is configured entirely at connect time, through the query string, and speaks text as it arrives over one long-lived connection. Nothing can be changed afterwards: to use a different voice or sample rate, open a new session.
 
 ```text
-wss://tts.us.assemblyai.com/v1/ws?voice_id=49c443a4-8a1d-5f7e-b70b-98bdbd9823c3&language=english&sample_rate=24000&encoding=pcm_s16le
+wss://tts.us.assemblyai.com/v1/ws?voice_id=37e65973-9d96-5aab-adcd-01bf56ab5af9&language=english&sample_rate=24000&encoding=pcm_s16le
 ```
 
 This page covers what every session has in common. The [WebSocket API reference](/tts/api-reference/websocket-api) documents each query parameter and each frame, [Message frames](/tts/message-frames) walks through the protocol, and the [Quickstart](/tts/getting-started/quickstart) opens a first session with an SDK.
@@ -51717,7 +51748,7 @@ You can also just close the socket. The server then discards any synthesis still
     "encoding": "pcm_s16le",
     "inactivity_timeout": 120,
     "word_boundaries": true,
-    "voice_id": "49c443a4-8a1d-5f7e-b70b-98bdbd9823c3",
+    "voice_id": "37e65973-9d96-5aab-adcd-01bf56ab5af9",
     "extend_biometric_consent": false,
     "word_boundaries_requested": true,
     "model": "assemblyai-tts-1",
@@ -51811,7 +51842,7 @@ One frame per request, sent after that request's `FlushDone` and never after `Te
 {
   "type": "Error",
   "error_code": 3009,
-  "error": "Too many sessions opened for this account in the last minute (allowance 100 per minute); retry in 17 s.",
+  "error": "Too many sessions opened for this account in the last minute (allowance 200 per minute); retry in 17 s.",
   "error_type": "rate_limited",
   "retryable": true,
   "param": null,
@@ -52344,7 +52375,7 @@ The client fetches the token from your server, then passes it in place of the AP
 ```python
 import assemblyai as aai
 
-config = aai.TTSConfig(voice_id="49c443a4-8a1d-5f7e-b70b-98bdbd9823c3")  # Audrey
+config = aai.TTSConfig(voice_id="37e65973-9d96-5aab-adcd-01bf56ab5af9")  # Kyla
 
 with aai.TTSSession(config, token=fetch_token()) as session:
     for chunk in session.speak("Hello from a device without an API key."):
@@ -52358,7 +52389,7 @@ import { TextToSpeechSession } from "assemblyai";
 
 const session = new TextToSpeechSession({
   token: await fetchToken(),
-  voiceId: "49c443a4-8a1d-5f7e-b70b-98bdbd9823c3", // Audrey
+  voiceId: "37e65973-9d96-5aab-adcd-01bf56ab5af9", // Kyla
 });
 await session.connect();
 
@@ -52375,7 +52406,7 @@ Building the session directly, with no client, keeps the API key out of the page
 
 ```javascript
 const params = new URLSearchParams({
-  voice_id: "49c443a4-8a1d-5f7e-b70b-98bdbd9823c3",
+  voice_id: "37e65973-9d96-5aab-adcd-01bf56ab5af9",
   language: "english",
   sample_rate: "24000",
   encoding: "pcm_s16le",
@@ -52390,7 +52421,7 @@ Mint a fresh token for every connection attempt, reconnects included.
 from urllib.parse import urlencode
 
 params = {
-    "voice_id": "49c443a4-8a1d-5f7e-b70b-98bdbd9823c3",
+    "voice_id": "37e65973-9d96-5aab-adcd-01bf56ab5af9",
     "language": "english",
     "sample_rate": 24000,
     "encoding": "pcm_s16le",
@@ -52584,7 +52615,7 @@ import random
 
 import websockets
 
-URL = "wss://tts.us.assemblyai.com/v1/ws?voice_id=49c443a4-8a1d-5f7e-b70b-98bdbd9823c3&language=english"
+URL = "wss://tts.us.assemblyai.com/v1/ws?voice_id=37e65973-9d96-5aab-adcd-01bf56ab5af9&language=english"
 HEADERS = {"Authorization": os.environ["ASSEMBLYAI_API_KEY"]}
 
 class AuthError(Exception):
@@ -52721,7 +52752,7 @@ An idle session also ends with `3006`, after two minutes without a frame in eith
 - **`3006`** for a bad parameter, a malformed frame or an oversized `Generate` means the request is wrong; `error_type` and `param` say what to fix. Fix it before reconnecting; retrying unchanged fails identically. A parameter given more than once reads `Bad connection parameters: <parameter>: must be given at most once (given 2 times)`: send it once. For an AssemblyAI voice this connection does not serve, the `error` text lists the voices that are available on it, by their `voice_id` slugs. A `3006` after `Begin` whose text begins `Text contains a` and ends `Send shorter sentences.` means a piece of your text, split as [How text is read](/tts/prompting-guide#how-text-is-read) describes, did not fit the model with this voice. The server splits every text into pieces that fit, so this is rare and points to a fault on our side: report it with the session's `id`. Sending the text again in shorter sentences avoids it.
 - **`3012` and `3014`** concern a [cloned voice](/tts/cloned-voices#errors), and retrying unchanged fails the same way, except for a pairing still in progress. `3012` is a voice that cannot be used: `voice_not_found` (check the ID, that an AssemblyAI voice is named by its library slug such as `aai-jane`, and that you connect to the host of the voice's data zone), `voice_expired` (create the voice again from a new consented recording; to keep a voice, [renew its consent](/tts/cloned-voices#renew-consent) before it expires) or `voice_blocked` (contact support). `3014` `voice_not_paired` means the voice has no ready pairing with the session's model: if the voice was just paired with the model, try again once the pairing is ready; otherwise name a model the voice is paired with in `model_id`, or check the voice in the AssemblyAI dashboard. The `error` text says what to do; [The texts of 3014](#the-texts-of-3014) lists them. A `3006` with `error_type` `not_owner` means `extend_biometric_consent` was set on a voice your account does not own: open the session without it. A `3006` with `error_type` `biometric_terms_not_accepted` means your account has not accepted AssemblyAI's biometric data terms, which its own cloned voices need: accept them on the data controls page of the AssemblyAI dashboard, as the text says, then open the session again.
 - **`3006` from the idle timeout** is not a request error. Every session closes after two minutes without a frame in either direction, or after the shorter `inactivity_timeout` you set. Its `error_type` is `inactivity_timeout`, and the `error` text begins `No message received for` and ends `Send KeepAlive frames to hold an idle session open.` Reconnect when you have something to say, or send `KeepAlive` at least every two minutes while idle if you want the socket to stay open.
-- **`1011`, `1012`, `3005` and `3009`** are transient. Back off exponentially with jitter, then reconnect, and wait at least `retry_after_seconds` when the `Error` frame sets it. `1011` is an internal error while authenticating, or while checking your account's biometric data terms for one of its own cloned voices. `1012` (`The server is restarting; reconnect to continue the session.`) means the server is being replaced; the next session lands on another one. `3005` is a failure on the server side, for example `The TTS service is temporarily unavailable; please reconnect and retry`, or `Voice service temporarily unavailable; please retry.` when the service that routes voices cannot answer at connect; re-send the request that was in flight. A `3005` with `error_type` `at_capacity` means the service had no room for the session: `This server is at capacity; please retry in 2 seconds.` before your credentials are read, or `The TTS service is at capacity; please retry in 3 seconds.` after `Begin`. Wait `retry_after_seconds` before reconnecting, and back off further if it repeats. `3009` (`Too many sessions opened for this account in the last minute (allowance 100 per minute); retry in 17 s.`) means your account started more sessions in the current one-minute window than its limit allows, and `retry_after_seconds`, between 1 and 60, is the time until the next window starts: a session opened after that wait is counted in the new window. As for Streaming Speech-to-Text, the limit counts new sessions per minute, not sessions currently open, so closing sessions early does not help; opening fewer does. A voice agent call opens one session, so the limit is the number of calls that can start in a minute. The number in the text is your starting limit; on a paid plan the limit in force can be higher. Keep one socket open and send many requests through it rather than opening a new socket for every utterance. Your limit is your Streaming Speech-to-Text limit, shown on the dashboard, counted separately from your speech-to-text sessions. See [Rate limits](/streaming/rate-limits) for how limits scale with usage.
+- **`1011`, `1012`, `3005` and `3009`** are transient. Back off exponentially with jitter, then reconnect, and wait at least `retry_after_seconds` when the `Error` frame sets it. `1011` is an internal error while authenticating, or while checking your account's biometric data terms for one of its own cloned voices. `1012` (`The server is restarting; reconnect to continue the session.`) means the server is being replaced; the next session lands on another one. `3005` is a failure on the server side, for example `The TTS service is temporarily unavailable; please reconnect and retry`, or `Voice service temporarily unavailable; please retry.` when the service that routes voices cannot answer at connect; re-send the request that was in flight. A `3005` with `error_type` `at_capacity` means the service had no room for the session: `This server is at capacity; please retry in 2 seconds.` before your credentials are read, or `The TTS service is at capacity; please retry in 3 seconds.` after `Begin`. Wait `retry_after_seconds` before reconnecting, and back off further if it repeats. `3009` (`Too many sessions opened for this account in the last minute (allowance 200 per minute); retry in 17 s.`) means your account started more sessions in the current one-minute window than its limit allows, and `retry_after_seconds`, between 1 and 60, is the time until the next window starts: a session opened after that wait is counted in the new window. As for Streaming Speech-to-Text, the limit counts new sessions per minute, not sessions currently open, so closing sessions early does not help; opening fewer does. A voice agent call opens one session, so the limit is the number of calls that can start in a minute. The number in the text is your starting limit; on a paid plan the limit in force can be higher. Keep one socket open and send many requests through it rather than opening a new socket for every utterance. Your limit is your Streaming Speech-to-Text limit, shown on the dashboard, counted separately from your speech-to-text sessions. See [Rate limits](/streaming/rate-limits) for how limits scale with usage.
 - **`3010` and `3011`** mean pacing, not a broken request. `3010` has three triggers: more than 8000 characters sent but not yet synthesized (`Input text rate exceeded: ...`), more than 20 `Flush`, `KeepAlive`, `Cancel` or empty `Generate` frames per second sustained (`Control frame rate exceeded: ...`), or more than 10,000 messages waiting to be handled. Send text at roughly the pace it is spoken and control frames only as the conversation needs them. `3011` means audio was waiting for a client that read too slowly or had stopped reading: 300 seconds of synthesized audio, or 16 MiB of it, whichever came first (16 MiB is about 190 seconds at 44.1 kHz and 175 seconds at 48 kHz `pcm_s16le`, and more than 300 seconds at every other format), or one write to the socket blocked for 30 seconds; after `Terminate`, audio still unread once its playing time plus 10 seconds has passed ends the session the same way. Read from the socket at least as fast as the audio plays, and until `Termination` arrives. Such a client usually cannot receive the `Error` frame either and sees `1006` when the socket is torn down. In both cases reconnect, but do not resend the same burst. See [Limits](/tts/limits).
 - **`3008`** (`Session reached its maximum duration; open a new connection to continue`) is routine on a long-lived socket, not a fault. Sessions last one hour by default; `Begin.expires_at` gives the exact time, and a temporary token with a shorter `max_session_duration_seconds` brings it forward. At `expires_at` the server stops taking new input, speaks what you have already sent, then closes. Read `expires_at` and open a replacement socket a little before it so the next request has somewhere to go.
 - **`1006`** is the connection being lost without a close handshake, on your side or because the server was replaced. Reconnect.
@@ -52818,7 +52849,7 @@ The limits of a WebSocket session come first; those of the [HTTP API](#http-api-
 | Control frames (`Flush`, `KeepAlive`, `Cancel`, empty `Generate`) | 20 per second sustained, with a burst allowance of about 60. `Generate` with text and `Terminate` are not counted | Close `3010` |
 | Undelivered audio | 300 seconds of synthesized audio, or 16 MiB of it (about 190 seconds at 44.1 kHz and 175 seconds at 48 kHz `pcm_s16le`), waiting for a client that is not reading; one write to the socket blocked for 30 seconds; or, after `Terminate`, audio still unread when its playing time plus 10 seconds has passed | Close `3011`. A client that stopped reading usually sees `1006` instead |
 | Queued messages | 10,000 messages sent but not yet handled | Close `3010` |
-| Sessions per account | New sessions per minute, as for Streaming Speech-to-Text; sessions open at once are not counted. Your starting limit is your Streaming Speech-to-Text limit, 5 on a free plan and 100 or more on a paid plan, counted separately; on a paid plan it grows with use | Close `3009` at connect, before `Begin` |
+| Sessions per account | New sessions per minute, as for Streaming Speech-to-Text; sessions open at once are not counted. Your starting limit is your Streaming Speech-to-Text limit, 5 on a free plan and 200 on a paid plan, counted separately; on a paid plan it grows with use | Close `3009` at connect, before `Begin` |
 | WebSocket message size | 1 MiB per message, counted after its fragments are joined | Close `1009` from the WebSocket layer, no `Error` frame |
 | Drain after `Terminate` | 30 seconds of server silence while a `FlushDone` is still owed. The window restarts on every server response, so a long final request is never cut | Close `3005` instead of `Termination` |
 
@@ -52846,7 +52877,7 @@ import struct
 
 import websockets
 
-URL = "wss://tts.us.assemblyai.com/v1/ws?voice_id=49c443a4-8a1d-5f7e-b70b-98bdbd9823c3&language=english"
+URL = "wss://tts.us.assemblyai.com/v1/ws?voice_id=37e65973-9d96-5aab-adcd-01bf56ab5af9&language=english"
 HEADERS = {"Authorization": os.environ["ASSEMBLYAI_API_KEY"]}
 
 # Flushes sent and not yet answered with FlushDone. Two or three keeps the
@@ -53008,9 +53039,9 @@ Session reached its maximum duration; open a new connection to continue
 
 If you hold a socket open for a long-lived UI, reconnect on `3008` rather than assuming the connection lasts as long as the page. It is routine, not a failure.
 
-Sessions are also counted per account, the way [Streaming Speech-to-Text](/streaming/rate-limits) counts them: by new sessions per minute, never by sessions open at once. A voice agent call opens one session and keeps it for the whole call, so your limit is the number of calls that can start in a minute, and calls in progress do not count against it. With a limit of 100, for example, 100 calls can start in one minute and 110 in the next, and all 210 stay connected. Calls in progress follow from your call starts and your call length: at a steady 100 call starts a minute with 4-minute calls, about 400 calls are in progress. They are still subject to the service's capacity (`3005` with `error_type` `at_capacity`) and to the one-hour session lifetime (`3008`), after which the reconnect is a new session.
+Sessions are also counted per account, the way [Streaming Speech-to-Text](/streaming/rate-limits) counts them: by new sessions per minute, never by sessions open at once. A voice agent call opens one session and keeps it for the whole call, so your limit is the number of calls that can start in a minute, and calls in progress do not count against it. With a limit of 200, for example, 200 calls can start in one minute and 220 in the next, and all 420 stay connected. Calls in progress follow from your call starts and your call length: at a steady 200 call starts a minute with 4-minute calls, about 800 calls are in progress. They are still subject to the service's capacity (`3005` with `error_type` `at_capacity`) and to the one-hour session lifetime (`3008`), after which the reconnect is a new session.
 
-Your starting limit is your Streaming Speech-to-Text limit (5 on a free plan, 100 or more on a paid plan), counted separately: you can start that many speech-to-text sessions and that many TTS sessions in the same minute. Your limit is shown on the dashboard, and on a paid plan it scales with use as [Rate limits](/streaming/rate-limits) describes; a raised starting limit can take a few minutes to apply. The limit counts new sessions in fixed one-minute windows, each running from second `:01` of a minute to second `:00` of the next. It is checked at connect, before `Begin`, and a session over it closes `3009` with a text such as `Too many sessions opened for this account in the last minute (allowance 100 per minute); retry in 17 s.` The number in that text is your starting limit; on a paid plan the limit in force can be higher. The `Error` frame's `retry_after_seconds`, between 1 and 60, is the time until the next window starts, when opening a session works again. Every reconnect is a new session, including those after `1012` and `3008`, and each region counts its own. Our deploys wait for sessions in progress to end; when a server has to stop sooner, it closes its own sessions (`1012`, or `1006` when its machine is replaced), a share of your sessions rather than all of them, so keep some room under your limit for those reconnects. Reuse one socket for many requests instead of opening a session per utterance, and back off before reconnecting.
+Your starting limit is your Streaming Speech-to-Text limit (5 on a free plan, 200 on a paid plan), counted separately: you can start that many speech-to-text sessions and that many TTS sessions in the same minute. Your limit is shown on the dashboard, and on a paid plan it scales with use as [Rate limits](/streaming/rate-limits) describes; a raised starting limit can take a few minutes to apply. The limit counts new sessions in fixed one-minute windows, each running from second `:01` of a minute to second `:00` of the next. It is checked at connect, before `Begin`, and a session over it closes `3009` with a text such as `Too many sessions opened for this account in the last minute (allowance 200 per minute); retry in 17 s.` The number in that text is your starting limit; on a paid plan the limit in force can be higher. The `Error` frame's `retry_after_seconds`, between 1 and 60, is the time until the next window starts, when opening a session works again. Every reconnect is a new session, including those after `1012` and `3008`, and each region counts its own. Our deploys wait for sessions in progress to end; when a server has to stop sooner, it closes its own sessions (`1012`, or `1006` when its machine is replaced), a share of your sessions rather than all of them, so keep some room under your limit for those reconnects. Reuse one socket for many requests instead of opening a session per utterance, and back off before reconnecting.
 
 A session also closes when two minutes pass with no frame in either direction, which releases capacity when a user goes quiet. Any frame starts the two minutes again, yours or the server's, and `KeepAlive` exists to do that while you have nothing to say: send one at least every two minutes to hold an idle socket open. Setting [`inactivity_timeout`](/tts/connect-parameters#inactivity-timeout) closes idle sessions sooner, after as little as 5 seconds, which is worth doing when you open a socket per user and want the capacity back quickly. When the timeout passes the session closes with `3006` and a text that begins `No message received for`. That is not an input error, so reconnect when you next have something to say. `Begin.configuration.inactivity_timeout` echoes the timeout in effect, 120 when you set none.
 
@@ -53136,7 +53167,7 @@ const client = new AssemblyAI({
 # Authorization header and the rest of main() stay exactly as they are there.
 URL = (
     "wss://tts.us.assemblyai.com/v1/ws"
-    "?voice_id=49c443a4-8a1d-5f7e-b70b-98bdbd9823c3&language=english"
+    "?voice_id=37e65973-9d96-5aab-adcd-01bf56ab5af9&language=english"
     "&sample_rate=24000&encoding=pcm_s16le"
 )
 ```
@@ -53146,7 +53177,7 @@ URL = (
 // yours; fetchToken() asks your own server for a temporary token.
 async function connect() {
   const params = new URLSearchParams({
-    voice_id: "49c443a4-8a1d-5f7e-b70b-98bdbd9823c3",
+    voice_id: "37e65973-9d96-5aab-adcd-01bf56ab5af9",
     language: "english",
     sample_rate: String(RATE),
     encoding: "pcm_s16le",
@@ -88313,8 +88344,8 @@ channels:
           Optional. The voice: the library slug of an [AssemblyAI voice](/tts/voices) such as `aai-jane`, a voice's ID (a UUID, in any letter case), or the slug of one of your account's voices, such as a [cloned voice](/tts/cloned-voices). Slugs are lowercase, at most 64 characters. When unset, the session speaks the default voice of its model in its language, `aai-jane`, an English voice; in another language, results are usually worse than in English, its own language (see [Voice and language](/tts/voices#voice-and-language)). An AssemblyAI voice the session's model does not speak in the session's language closes with `3006`; a `voice_id` that names no voice your account can use on this host closes with `3012`.
         location: $message.payload#/voice_id
         examples:
-          - aai-jane
-          - 49c443a4-8a1d-5f7e-b70b-98bdbd9823c3
+          - aai-kyla
+          - 37e65973-9d96-5aab-adcd-01bf56ab5af9
 
       model_id:
         description: >-
@@ -88671,7 +88702,7 @@ components:
         - payload:
             type: Error
             error_code: 3009
-            error: Too many sessions opened for this account in the last minute (allowance 100 per minute); retry in 17 s.
+            error: Too many sessions opened for this account in the last minute (allowance 200 per minute); retry in 17 s.
             error_type: rate_limited
             retryable: true
             param: null

@@ -1,9 +1,9 @@
 # Data residency
 Source: https://docs.fireworks.ai/accounts/data-residency
 
-Restrict inference for your Fireworks Enterprise account to a selected region such as US-only, with regional API endpoints, SDK configuration, and compliance.
+Restrict inference and dedicated training for your Fireworks Enterprise account to a selected region such as US-only, with regional API endpoints, SDK configuration, and compliance.
 
-Data residency restricts inference on your account to a single region. Once a region is set, every request must use that region's API endpoint and a model served in that region.
+Data residency restricts inference and dedicated training on your account to a single region. Once a region is set, every request must use that region's API endpoint and a model served in that region, and every dedicated training job must run in that region.
 
 It does not change how your requests are routed. Turning it on will not move existing traffic into the region. This setting *enforces* all requests to be in the set region, and rejects the ones that are not.
 
@@ -51,6 +51,14 @@ firectl deployment list
 * **New deployments outside the region are rejected** when you create them.
 * **Existing deployments are not checked, moved, or stopped** when you switch the setting on. One outside the region keeps running and keeps costing you money, but requests to it are rejected. Replace it first.
 * **You can move a deployment to another region inside your residency region, but not out of it.**
+
+### Dedicated training
+
+Supervised fine-tuning, DPO, reinforcement fine-tuning, and RLOR trainer jobs must set an explicit training region inside the selected region, for example with firectl's `--region US_IOWA_1` flag. See [Regions](/deployments/regions).
+
+* **Jobs without a region are rejected**, including jobs created from the console, which does not set one.
+* **Jobs with a region outside the selected region are rejected**, both when you create them and when you resume them.
+* **Only where the job runs is enforced.** Where its checkpoints and outputs are stored is not.
 
 ## Configure in the console
 
@@ -102,7 +110,7 @@ Regional models are priced at a premium over the base serverless price for the s
 
 The following are not supported while a region is set: calls are rejected, and stay rejected until you clear the setting.
 
-* **Training.** Fine-tuning and training jobs are blocked. Support is coming soon.
+* **Serverless training.** [Serverless Training](/fine-tuning/training-api/serverless) sessions, runs, and their samplers are blocked. Support is coming soon. [Dedicated training](#dedicated-training) is supported.
 * **Nexus Auto outside the US.** With US residency, `auto` works and serves open-model turns from US-only Serverless. Anthropic and OpenAI turns run on your own provider account, where that provider's data policies apply. With other regions, `auto` is rejected. See [Enterprise Controls](/nexus/enterprise-controls#control-models-and-regions).
 * **BYOC.** [BYOC](/ecosystem/integrations/byoc/overview) deployments run in your own cloud account, so Fireworks cannot enforce where they run.
 
@@ -12673,8 +12681,8 @@ Shared, Fireworks-managed inference. You send a request and pay per token. You d
 **On-demand deployment**\
 A deployment on GPUs reserved for your account. You pay for GPU time, including idle replicas, and you choose the model, hardware, and scaling. Docs also call this a dedicated deployment. LoRA adapters run on on-demand deployments.
 
-**Standard, Priority, and Fast**\
-Three Serverless modes. Standard is the default. Priority is more likely to stay available when Fireworks is busy, at a higher price. Fast is a separate high-speed model ID, such as `accounts/fireworks/routers/glm-5p3-fast`. See [Serverless Modes](/serverless/serverless-modes).
+**Standard, Priority, Fast, and Ultra-fast (Preview)**\
+Four Serverless modes. Standard is the default. Priority is more likely to stay available when Fireworks is busy, at a higher price. Fast is a separate high-speed model ID, such as `accounts/fireworks/routers/glm-5p3-fast`. Ultra-fast (Preview) is an even faster model ID for highly latency-sensitive workloads, such as `accounts/fireworks/routers/deepseek-v4p1-flash-1017-ultrafast`, with a higher price and lower rate limits. See [Serverless Modes](/serverless/serverless-modes).
 
 **Prompt caching**\
 Reuse of a repeated prompt prefix so the next request starts faster. It is on by default. Cached prompt tokens are billed at a model-specific discount. See [Prompt caching](/guides/prompt-caching).
@@ -13378,15 +13386,15 @@ Once you have your API key, export it as an environment variable in your termina
 > >
 > > The SDK is currently in alpha. Use the `--pre` flag when installing to get the latest version.
 >
-> ```bash pip theme={null}
+> ```bash pip theme={null} theme={null}
 > pip install --pre fireworks-ai
 > ```
 >
-> ```bash poetry theme={null}
+> ```bash poetry theme={null} theme={null}
 > poetry add --pre fireworks-ai
 > ```
 >
-> ```bash uv theme={null}
+> ```bash uv theme={null} theme={null}
 > uv add --pre fireworks-ai
 > ```
 >
@@ -13553,7 +13561,7 @@ You should see a response like: `"¡Hola!"`
 
 > [!TIP]
 >
-> For **Priority tier** (`service_tier: "priority"`) and **Fast**, see [Serverless Modes](/serverless/serverless-modes).
+> For **Priority tier** (`service_tier: "priority"`), **Fast**, and **Ultra-fast (Preview)**, see [Serverless Modes](/serverless/serverless-modes).
 
 ## Common use cases
 
@@ -16988,7 +16996,7 @@ Fireworks provides fast, cost-effective access to leading open-source text model
 >
 > Most models automatically format your messages with the correct template. To verify the exact prompt used, enable the [`echo`](/guides/querying-text-models) parameter.
 
-For **Priority tier** (`service_tier: "priority"`) and **Fast**, see [Serverless Modes](/serverless/serverless-modes).
+For **Priority tier** (`service_tier: "priority"`), **Fast**, and **Ultra-fast (Preview)**, see [Serverless Modes](/serverless/serverless-modes).
 
 ## Alternative query methods
 
@@ -26273,11 +26281,12 @@ Serverless Inference is multi-tenant inference for popular open models running o
 
 ## Serverless products at a glance
 
-Three modes run on the same Serverless framework. They share the same rate-limit policy, but route and price differently:
+Four modes run on the same Serverless framework. They route and price differently, and share the same rate-limit policy, except for Preview offerings such as Ultra-fast, which have their own limits (see [Serverless rate limits](/serverless/rate-limits#models-by-tier)):
 
 * **Standard** — the default mode. No `service_tier` parameter needed.
 * **Priority** — higher reliability during peak periods. Opt in by setting `service_tier: "priority"` on chat completions. Priced at a premium.
 * **Fast** — high-speed deployments for latency-sensitive workloads. Selected by switching the `model` ID to a Fast variant (for example, `accounts/fireworks/routers/kimi-k3-fast`).
+* **Ultra-fast (Preview)** — very high-speed mode for highly latency-sensitive workloads, aiming for 6-8x generation speed. Selected by switching the `model` ID to an Ultra-fast variant (for example, `accounts/fireworks/routers/deepseek-v4p1-flash-1017-ultrafast`). Priced at a premium.
 
 For usage examples and the full list of supported models, see [Serverless Modes](/serverless/serverless-modes). For pricing by mode, see [Serverless pricing](/serverless/pricing).
 
@@ -26387,11 +26396,11 @@ For dedicated infrastructure, see [On-demand deployments](/guides/ondemand-deplo
 # Serverless Pricing
 Source: https://docs.fireworks.ai/serverless/pricing
 
-Per-token serverless pricing for text, vision, and embedding models on Fireworks, including Standard, Priority, and Fast serverless mode rates.
+Per-token serverless pricing for text, vision, and embedding models on Fireworks, including Standard, Priority, Fast, and Ultra-fast (Preview) serverless mode rates.
 
 ## Overview
 
-Serverless inference is priced per token. For how Standard, Priority, and Fast modes work and how to select one, see [Serverless Modes](/serverless/serverless-modes).
+Serverless inference is priced per token. For how Standard, Priority, Fast, and Ultra-fast (Preview) modes work and how to select one, see [Serverless Modes](/serverless/serverless-modes).
 
 Every text or vision request is billed across three dimensions:
 
@@ -26408,7 +26417,7 @@ Embeddings are billed only on input tokens.
 
 ## Text and vision models
 
-Per-model pricing for headline models. Fast variants appear as adjacent rows. In each **Standard** or **Priority** cell, prices are **input / cached input / output** (USD per 1M tokens), in that order.
+Per-model pricing for headline models. Fast and Ultra-fast (Preview) variants appear as adjacent rows. In each **Standard** or **Priority** cell, prices are **input / cached input / output** (USD per 1M tokens), in that order.
 
 | Model | Standard | Priority |
 | - | - | - |
@@ -26420,10 +26429,11 @@ Per-model pricing for headline models. Fast variants appear as adjacent rows. In
 | [DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash) | \$0.30 / \$0.006 / \$1.20 | \$0.375 / \$0.0075 / \$1.50 |
 | [DeepSeek V4.1 Flash (US)](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash) | \$0.45 / \$0.009 / \$1.80 | \$0.5625 / \$0.01125 / \$2.25 |
 | [DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017) | \$0.30 / \$0.006 / \$1.20 | \$0.375 / \$0.0075 / \$1.50 |
+| [DeepSeek V4.1 Flash 1017 Ultra-fast (Preview)](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017) | \$2.40 / \$0.048 / \$9.60 | — |
 | [DeepSeek V4.1 Flash 1017 (US)](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017) | \$0.45 / \$0.009 / \$1.80 | \$0.5625 / \$0.01125 / \$2.25 |
 | [GLM 5.3 Flash](https://app.fireworks.ai/models/fireworks/glm-5p3-flash) | \$0.15 / \$0.03 / \$0.50 | \$0.1875 / \$0.0375 / \$0.625 |
 | [GLM 5.3 Flash (US)](https://app.fireworks.ai/models/fireworks/glm-5p3-flash) | \$0.225 / \$0.045 / \$0.75 | \$0.28125 / \$0.05625 / \$0.9375 |
-| [Ultramarine 1 Flash (US)](https://app.fireworks.ai/models/fireworks/ultramarine-1-flash-us) | \$0.225 / \$0.045 / \$0.75 | \$0.28125 / \$0.05625 / \$0.9375 |
+| [Ultramarine 1 Flash (US)](https://app.fireworks.ai/models/fireworks/ultramarine-1-flash-us) | \$0.15 / \$0.03 / \$0.50 | \$0.1875 / \$0.0375 / \$0.625 |
 | [GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3) | \$1.40 / \$0.26 / \$4.40 | \$1.75 / \$0.325 / \$5.50 |
 | [GLM 5.3 (US)](https://app.fireworks.ai/models/fireworks/glm-5p3) | \$2.10 / \$0.39 / \$6.60 | \$2.625 / \$0.4875 / \$8.25 |
 | [GLM 5.3 Fast](https://app.fireworks.ai/models/fireworks/glm-5p3) | \$2.10 / \$0.39 / \$6.60 | — |
@@ -26550,14 +26560,14 @@ Base adaptive rate limit ceilings depend on the model's total parameter count. S
   </tbody>
 </table>
 
-Fast, Priority, and US-only variants of a model share the same tier and ceilings as the base model. Models without a known parameter count use **Large** ceilings.
+Fast, Priority, and US-only variants of a model share the same tier and ceilings as the base model. Ultra-fast (Preview) has lower rate limits than the standard model (see below). Models without a known parameter count use **Large** ceilings.
 
 ### Models by tier
 
 | Tier | Models |
 | - | - |
 | **Small** | DeepSeek V4.1 Flash, GLM 5.3, GLM 5.3 Flash, MiniMax M3, NVIDIA Nemotron 3 Ultra (Preview), OpenAI GPT OSS 120B, NVIDIA Nemotron 3.5 Lightning 30B A3B, Rune 26B-A4B |
-| **Medium** | Muse Spark Open |
+| **Medium** | Muse Spark Open, DeepSeek V4.1 Flash 1017 Ultra-fast (Preview) |
 | **Large** | Ember-1, Kimi K3, Qwen 3.8 Max |
 
 Models not listed here are tiered by total parameter count using the thresholds above.
@@ -26798,14 +26808,14 @@ The diagram does not show Elastic Burst separately. When available, Elastic Burs
 # Serverless Modes
 Source: https://docs.fireworks.ai/serverless/serverless-modes
 
-Compare Standard, Priority, and Fast serverless modes on Fireworks Serverless to choose the right tradeoff between cost, latency, and throughput.
+Compare Standard, Priority, Fast, and Ultra-fast (Preview) serverless modes on Fireworks Serverless to choose the right tradeoff between cost, latency, and throughput.
 
-Fireworks Serverless offers three modes:
+Fireworks Serverless offers four modes:
 
 * **Standard** is the default mode. No `service_tier` parameter is needed.
 * **Priority tier** is for workloads that require higher reliability during peak traffic.
 * **Fast** is for workloads that require higher speeds.
-* **Ultrafast** (Private Preview) for workloads requiring extremely fast end-to-end generation speeds.
+* **Ultra-fast** (Preview) for workloads requiring extremely fast end-to-end generation speeds.
 
 ## Priority tier
 
@@ -26849,43 +26859,27 @@ curl https://api.fireworks.ai/inference/v1/chat/completions \
 
 Pricing is listed on the [Serverless pricing](/serverless/pricing) page.
 
-## Ultrafast (Private Preview)
+## Ultra-fast (Preview)
 
-Ultrafast is a high-speed mode, useful for extreme latency sensitive applications that require fast response speeds, at a higher price point. Ultrafast variants aim for **1500+ tokens per second** of generated throughput for agentic coding tasks. It is not a different model and the quality of the model remains the same.
+Ultra-fast is a high-speed mode, useful for extreme latency sensitive applications that require fast response speeds, at a higher price point. Ultra-fast variants aim for **6-8x generation speed (up to 10x for agentic coding tasks)**. Like fast, it is not a different model and the quality of the model remains the same.
 
-Ultrafast is in Private Preview and is available for the models listed below. To get access to Ultrafast please reach out to the team [here](https://share-na2.hsforms.com/19_8Sm5zPQ7aUh1W2FuLDygqbom7). Once access is granted, change the `model` ID as listed below.
+Ultra-fast is in Preview and is available for the models listed below. Our preview modes are under active development and are subject to change quickly. To use Ultra-fast, change the `model` ID as listed below.
 
-<table>
-  <colgroup>
-    <col />
-
-    <col />
-  </colgroup>
-
-  <thead>
-    <tr>
-      <th>Model</th>
-      <th>`model` ID</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <td>Deepseek V4.1 Flash 1017</td>
-      <td>`accounts/fireworks/models/deepseek-v4p1-flash-ultrafast`</td>
-    </tr>
-  </tbody>
-</table>
+| Model | `model` ID |
+| - | - |
+| Deepseek V4.1 Flash 1017 | `accounts/fireworks/routers/deepseek-v4p1-flash-1017-ultrafast` |
 
 ```bash theme={null}
 curl https://api.fireworks.ai/inference/v1/chat/completions \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $FIREWORKS_API_KEY" \
   -d '{
-    "model": "accounts/fireworks/routers/deepseek-v4p1-flash-ultrafast",
+    "model": "accounts/fireworks/routers/deepseek-v4p1-flash-1017-ultrafast",
     "messages": [{"role": "user", "content": "Hello"}]
   }'
 ```
+
+Pricing is listed on the [Serverless pricing](/serverless/pricing) page.
 
 ## Related
 
@@ -32770,6 +32764,18 @@ Source: https://docs.fireworks.ai/updates/changelog
 Fireworks documentation changelog: recent additions, updates, and clarifications across serverless, fine-tuning, deployments, integrations, and API reference.
 
 All
+
+**2026-11-03**
+
+Inference
+
+# New Serverless mode: Ultra-fast (Preview)
+
+**Ultra-fast** is a new high-speed Serverless mode, now in Preview, for highly latency-sensitive applications. Ultra-fast variants aim for 6-8x generation speed, and up to 10x for agentic coding tasks. Like Fast, it is not a different model, so output quality is the same.
+
+Ultra-fast is available for **DeepSeek V4.1 Flash 1017**. To use it, set `model` to `accounts/fireworks/routers/deepseek-v4p1-flash-1017-ultrafast`. Priority tier is not available for Ultra-fast.
+
+Ultra-fast is priced at a premium and has lower rate limits than the standard model. Preview modes are under active development and may change quickly. See [Serverless Modes](/serverless/serverless-modes), [Serverless pricing](/serverless/pricing), and [Serverless rate limits](/serverless/rate-limits#models-by-tier).
 
 **2026-10-27**
 

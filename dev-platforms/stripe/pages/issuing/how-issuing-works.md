@@ -12,7 +12,7 @@ Stripe [Issuing](https://stripe.com/issuing) allows you to create, manage, and s
 
 We partner with multiple trusted banks to provide an embedded finance infrastructure for you to build new financial service offerings. We also partner with the Mastercard and Visa card networks so you can issue cards [on either network or on both](https://docs.stripe.com/issuing/customize-your-program.md#network-preference).
 
-> Issuing is available in the US, UK, and many *European Economic Area* (The European Economic Area is a regional single market with free movement of labor, goods, and capital. It encompasses the European Union member states and three additional states that are part of the European Free Trade Association) (EEA) countries. Stablecoin-backed card programs are also available in more than 30 countries.
+> Issuing is available in the US, UK, and many *European Economic Area* (The European Economic Area is a regional single market with free movement of labor, goods, and capital. It encompasses the European Union member states and three additional states that are part of the European Free Trade Association) (EEA) countries. Stablecoin-backed card programs are also available in more than 60 countries across the US, Latin America, the Caribbean, Africa, and Asia.
 
 In the US, you can provide cards to individuals who live in the same country where the business is established. If your business is established in the EU or the UK, you can provide cards to individuals who live in EEA countries and the UK. See [Globally integrate Issuing](https://docs.stripe.com/issuing/global.md) for a full list of supported countries.
 
@@ -33,7 +33,8 @@ Complete the following steps to set up a commercial card program with Issuing:
 | **Use case** | **Description** |
 | --- | --- |
 | **Commercial card program** | Create, manage, and distribute payment cards for your business. |
-| **Consumer card program**(Private preview) | Create, launch, and run a bank-sponsored credit program for your customers with [Credit Consumer Issuing](https://docs.stripe.com/issuing/consumer-issuing.md). |
+| **Consumer card program**(Private preview) | Create, launch, and run a bank-sponsored credit or debit program for your customers with [consumer credit cards](https://docs.stripe.com/issuing/consumer-issuing.md) or [consumer prepaid debit cards](https://docs.stripe.com/issuing/consumer-prepaid-debit-cards.md). |
+| **Stablecoin card program**(Public preview) | Issue consumer or commercial cards that let cardholders spend stablecoin balances with [stablecoin-backed card issuing](https://docs.stripe.com/issuing/stablecoin-cards.md). |
 
 ## Integration options
 
@@ -45,9 +46,9 @@ You can integrate Issuing with [Treasury for platforms](https://docs.stripe.com/
 
 You can integrate Issuing with [Stripe Connect](https://docs.stripe.com/connect.md) to issue cards to users who aren’t directly employed by your business. See [Set up an Issuing and Connect integration](https://docs.stripe.com/issuing/connect.md) for more details.
 
-### Stablecoin-backed cards (Private preview)
+### Stablecoin-backed cards (Public preview)
 
-You can integrate Issuing with [Bridge](https://apidocs.bridge.xyz/platform/cards/overview/overview) to attach cards to Bridge Custodial Wallets, Privy wallets, or third-party non-custodial wallets. Bridge manages cardholder creation and KYC for consumer programs that use this integration. Learn more about [Stablecoin-backed Issuing cards](https://docs.stripe.com/issuing/stablecoin-cards-for-financial-accounts.md).
+You can integrate Issuing with [Bridge](https://docs.stripe.com/stablecoins/ecosystem/bridge.md) to attach cards to Bridge wallets, Privy wallets, or other non-custodial wallets. Cards spend just-in-time from the linked wallet, so you can offer consumer or commercial cards in more than 60 countries through a single integration. Learn more about [stablecoin-backed card issuing](https://docs.stripe.com/issuing/stablecoin-cards.md).
 
 ## Issuing architecture
 
@@ -84,9 +85,18 @@ Connected accounts can also use a [Treasury for platforms](https://docs.stripe.c
 
 #### Bridge, Privy, or non-custodial wallet funding source
 
-For stablecoin-backed card programs, cards draw funds from a Bridge custodial wallet, Privy non-custodial wallet, or third-party wallet.
+For stablecoin-backed card programs, cards draw funds from a Bridge wallet, a Privy wallet, or another non-custodial wallet. When a cardholder makes a purchase, Bridge pulls the funds onchain from the wallet linked to the card.
 
-Learn more about [stablecoin-backed Issuing cards](https://docs.stripe.com/issuing/stablecoin-cards-for-financial-accounts.md).
+Diagram of a platform whose cardholders' cards spend from stablecoin wallets, with Bridge pulling funds onchain at authorization (See full diagram at https://docs.stripe.com/issuing/how-issuing-works)
+
+```text
+[platform] --> [cardholder]
+[cardholder] --> [card]
+[card] -- Spends from --> [Stablecoin wallet]
+[Bridge] -- Pulls funds at authorization --> [Stablecoin wallet]
+```
+
+Learn more about [funding strategies for stablecoin-backed cards](https://docs.stripe.com/issuing/stablecoin-cards/funding-strategies.md).
 
 #### Financial accounts balance funding source
 

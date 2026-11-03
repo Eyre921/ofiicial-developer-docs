@@ -75,23 +75,23 @@ After your domain is verified, you may wish to [enable open and click tracking](
 
 ## Learn more
 
-> **[Manage domains](/docs/dashboard/domains/introduction)**
+> [card] [Manage domains](/docs/dashboard/domains/introduction)
 >
 > View, create, edit, delete, and manage your domains.
 
-> **[Multi-tenant domain setup](/docs/knowledge-base/setting-up-resend-for-multi-tenants)**
+> [card] [Multi-tenant domain setup](/docs/knowledge-base/setting-up-resend-for-multi-tenants)
 >
 > Learn how to configure Resend for SaaS platforms where tenants send emails
 > from their own domains.
 
 ## Next steps
 
-> **[Add a DMARC record](/docs/dashboard/domains/dmarc)**
+> [card] [Add a DMARC record](/docs/dashboard/domains/dmarc)
 >
 > Implement DMARC to build trust in your domain and protect against email
 > spoofing.
 
-> **[Quickstart tutorials](/docs/introduction)**
+> [card] [Quickstart tutorials](/docs/introduction)
 >
 > Send your first transactional email with a quick tutorial for your language
 > or framework.

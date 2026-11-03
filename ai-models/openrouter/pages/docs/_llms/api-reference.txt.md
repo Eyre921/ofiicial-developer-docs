@@ -42,7 +42,7 @@ path: docs/_llms/api-reference.txt
 
 #### alpha.decisions
 
-- [Submit a Decisions request](https://openrouter.ai/docs/api/api-reference/alphadecisions/submit-a-decisions-request.md): Submits a Decisions request to the Decisions router
+- [Submit a Decisions request](https://openrouter.ai/docs/api/api-reference/alphadecisions/submit-a-decisions-request.md): Asks a Decisions model typed questions (`noul`, `choice`, `score`, `box`) about the content in `state` and returns one typed answer per question with its probabilities. Images, audio and video go in `state` as `image_url`, `input_audio` and `video_url` parts; PNG and JPEG images can instead go once…
 
 #### alpha.extractions
 

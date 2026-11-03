@@ -6,7 +6,6 @@ path: docs/terraform-deploy-sagemaker
 
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
-> For AI client integration (Claude Code, Cursor, etc.), connect to the MCP server at https://developers.deepgram.com/_mcp/server.
 
 # Deploy with Terraform
 
@@ -111,6 +110,17 @@ variable "variant_name" {
   description = "Name of the production variant."
   type        = string
   default     = "AllTraffic"
+}
+
+variable "routing_strategy" {
+  description = "How the real-time endpoint routes requests to instances. LEAST_OUTSTANDING_REQUESTS is recommended for Deepgram. Not applied when enable_async_inference = true."
+  type        = string
+  default     = "LEAST_OUTSTANDING_REQUESTS"
+
+  validation {
+    condition     = contains(["LEAST_OUTSTANDING_REQUESTS", "RANDOM"], var.routing_strategy)
+    error_message = "routing_strategy must be LEAST_OUTSTANDING_REQUESTS or RANDOM."
+  }
 }
 
 variable "deepgram_engine_env" {
@@ -299,6 +309,13 @@ resource "aws_sagemaker_endpoint_configuration" "deepgram" {
     initial_instance_count = var.initial_instance_count
     instance_type          = var.instance_type
     inference_ami_version  = var.inference_ami_version != "" ? var.inference_ami_version : null
+
+    dynamic "routing_config" {
+      for_each = var.enable_async_inference ? [] : [1]
+      content {
+        routing_strategy = var.routing_strategy
+      }
+    }
   }
 
   dynamic "async_inference_config" {
@@ -474,6 +491,7 @@ model_name            = "deepgram-streaming-stt"
 endpoint_name         = "my-deepgram-stt"
 instance_type         = "ml.g6.2xlarge"
 inference_ami_version = "al2023-ami-sagemaker-inference-gpu-4-1"
+routing_strategy      = "LEAST_OUTSTANDING_REQUESTS"
 
 # Optional: Deepgram configuration overrides
 deepgram_engine_env = {
@@ -584,6 +602,16 @@ Set it through the `inference_ami_version` variable. Set it to an empty string t
 > **Note**
 >
 > Changing `inference_ami_version` on an existing deployment replaces the endpoint configuration and updates the endpoint. Expect a rolling instance replacement, not an in-place driver upgrade.
+
+### Routing strategy
+
+The configuration sets the real-time endpoint's routing strategy to least outstanding requests (LOR) through the `routing_strategy` variable. With LOR, SageMaker sends each new request to the instance with the fewest in-flight requests instead of a randomly chosen instance. We recommend LOR for Deepgram real-time endpoints because streaming connections and pre-recorded requests vary widely in how long they occupy an instance. See [Use least outstanding requests routing](/docs/auto-scaling-sagemaker#use-least-outstanding-requests-routing).
+
+Set `routing_strategy = "RANDOM"` to use the SageMaker default. The `routing_config` block is omitted when `enable_async_inference = true`.
+
+> **Note**
+>
+> Changing `routing_strategy` on an existing deployment replaces the endpoint configuration and updates the endpoint.
 
 ### Environment variable overrides
 

@@ -128,6 +128,8 @@ Dubbing is currently only available in the EU isolated environment.
 
 Image & Video (including lip-sync) and Flows are not currently available in isolated environments.
 
+Speech to Text [transcript editing](/docs/eleven-api/guides/how-to/speech-to-text/batch/transcript-editing) is not currently available in isolated environments. Requests that set the `transcript_edit` parameter return an error.
+
 Different regions have different LLMs available depending on model provider availability. Custom LLMs and self-hosted LLMs are always supported. If you intend to use Zero Retention Mode (ZRM), which comes with stricter requirements, reach out to your account team to confirm exactly which models are available in your region.
 
 ## Getting access

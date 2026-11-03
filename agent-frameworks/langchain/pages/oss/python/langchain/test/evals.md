@@ -191,7 +191,7 @@ You can use an LLM to evaluate the agent's execution path with the `create_traje
 > from agentevals.trajectory.llm import create_trajectory_llm_as_judge, TRAJECTORY_ACCURACY_PROMPT
 >
 > evaluator = create_trajectory_llm_as_judge(  # [!code highlight]
->     model="openai:o3-mini",  # [!code highlight]
+>     model="openai:gpt-5.4-mini",  # [!code highlight]
 >     prompt=TRAJECTORY_ACCURACY_PROMPT,  # [!code highlight]
 > )  # [!code highlight]
 >
@@ -214,7 +214,7 @@ You can use an LLM to evaluate the agent's execution path with the `create_traje
 > from agentevals.trajectory.llm import create_trajectory_llm_as_judge, TRAJECTORY_ACCURACY_PROMPT_WITH_REFERENCE
 >
 > evaluator = create_trajectory_llm_as_judge(
->     model="openai:o3-mini",
+>     model="openai:gpt-5.4-mini",
 >     prompt=TRAJECTORY_ACCURACY_PROMPT_WITH_REFERENCE,
 > )
 > evaluation = evaluator(
@@ -238,7 +238,7 @@ All `agentevals` evaluators support Python asyncio. Async versions are available
 > from agentevals.trajectory.match import create_async_trajectory_match_evaluator
 >
 > async_judge = create_async_trajectory_llm_as_judge(
->     model="openai:o3-mini",
+>     model="openai:gpt-5.4-mini",
 >     prompt=TRAJECTORY_ACCURACY_PROMPT,
 > )
 >
@@ -274,7 +274,7 @@ LangSmith offers two main approaches for running evaluations: [pytest](/langsmit
 > from agentevals.trajectory.llm import create_trajectory_llm_as_judge, TRAJECTORY_ACCURACY_PROMPT
 >
 > trajectory_evaluator = create_trajectory_llm_as_judge(
->     model="openai:o3-mini",
+>     model="openai:gpt-5.4-mini",
 >     prompt=TRAJECTORY_ACCURACY_PROMPT,
 > )
 >
@@ -323,7 +323,7 @@ LangSmith offers two main approaches for running evaluations: [pytest](/langsmit
 > client = Client()
 >
 > trajectory_evaluator = create_trajectory_llm_as_judge(
->     model="openai:o3-mini",
+>     model="openai:gpt-5.4-mini",
 >     prompt=TRAJECTORY_ACCURACY_PROMPT,
 > )
 >

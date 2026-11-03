@@ -15,7 +15,7 @@ Learn how to:
 - Use local issuing in 24 countries.
 - Apply for early access to expand your card program internationally using a cross-border issuing integration that allows you to:
   - Serve multinational companies with subsidiaries in multiple countries.
-  - Issue stablecoin-backed cards in more than 30 countries across Latin America, the Caribbean, and Africa.
+  - Issue stablecoin-backed cards in more than 60 countries across the US, Latin America, the Caribbean, Africa, and Asia.
 
 [Stripe Issuing](https://docs.stripe.com/issuing.md) provides the tools and infrastructure to do business across borders, whether you’re starting a new card program or expanding an existing one.
 
@@ -73,17 +73,17 @@ Stripe Issuing:
 
 For enterprise issuers serving large multinational companies, we support Visa’s Multinational Program and Mastercard’s Extension of Area of Use programs. Platforms can issue cards to subsidiaries of US multinational companies in over 40 countries where the US multinational is already an account holder.
 
-### Stablecoin cards (Private preview)
+### Stablecoin cards (Public preview)
 
-Stablecoin-backed card programs let platforms issue prepaid or debit cards backed by stablecoin balances in more than 30 countries across Latin America, the Caribbean, and Africa. Platforms can enter additional markets with a single integration, without launching separate local card programs in each country.
+Stablecoin-backed card programs let platforms issue prepaid or debit cards backed by stablecoin balances in more than 60 countries across the US, Latin America, the Caribbean, Africa, and Asia. See [supported assets and networks](https://docs.stripe.com/stablecoins/availability.md#issuing) for the stablecoins and networks each program can use. Platforms can enter additional markets with a single integration, without launching separate local card programs in each country.
 
-> Stablecoin-backed cards are in [private preview](https://docs.stripe.com/release-phases.md). To get access, [contact Stripe sales](https://stripe.com/contact/embedded-finance).
+> Stablecoin-backed cards are in [public preview](https://docs.stripe.com/release-phases.md). To get access, [contact Stripe sales](https://stripe.com/contact/embedded-finance).
 
-Learn how to [set up stablecoin-backed Issuing cards](https://docs.stripe.com/issuing/stablecoin-cards-for-financial-accounts.md).
+Learn how to [issue stablecoin-backed cards](https://docs.stripe.com/issuing/stablecoin-cards.md).
 
 ## See also
 
 - [Creating Cards](https://docs.stripe.com/issuing/cards/virtual/issue-cards.md)
-- [Stablecoin-backed Issuing cards](https://docs.stripe.com/issuing/stablecoin-cards-for-financial-accounts.md)
+- [Stablecoin-backed card issuing](https://docs.stripe.com/issuing/stablecoin-cards.md)
 - [Managed Support](https://docs.stripe.com/managed-support.md)
 

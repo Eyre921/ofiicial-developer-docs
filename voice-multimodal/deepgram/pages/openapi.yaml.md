@@ -29,6 +29,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      servers:
+        - url: https://agent.deepgram.com
+          description: Production
   /v1/projects/{project_id}/agents:
     post:
       operationId: configurations_create
@@ -2955,8 +2958,6 @@ tags:
   - name: distributionCredentials
   - name: tokens
 servers:
-  - url: https://agent.deepgram.com
-    description: Production
   - url: https://api.deepgram.com
     description: Base
 components:
