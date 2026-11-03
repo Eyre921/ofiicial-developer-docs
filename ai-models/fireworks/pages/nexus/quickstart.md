@@ -6,25 +6,52 @@ path: nexus/quickstart
 
 Connect Nexus to Claude Code, ChatGPT, or another AI tool you already use, in a few minutes.
 
-Nexus works inside the coding harness or AI workspace you already use. You install Nexus CLI, sign in, and connect your tool with one command.
+## Create a Nexus account
 
-Every connected harness starts on **Nexus Auto** (`auto`). It picks an open or closed model for each turn to balance performance and cost.
+Sign up at [nexus.fireworks.ai](https://nexus.fireworks.ai) and choose a [plan](/nexus/plans): Pro, Team, or Enterprise. Nexus accounts are separate from Fireworks platform accounts.
 
-## Install the Nexus CLI
+## Set up with Nexus Desktop or Nexus CLI
 
-```bash wrap theme={null}
-curl -fsSL https://nexus.fireworks.ai/install.sh | bash
-```
+> [tab] Nexus Desktop
+>
+> Nexus Desktop connects your tools without the command line.
+>
+> > [card] [Download Nexus Desktop for macOS](https://nexus.fireworks.ai/desktop/download/darwin-universal/latest)
+> >
+> > Universal build for Apple silicon and Intel Macs. Linux and Windows are coming soon.
+>
+> 1. Open the `.dmg` and drag Nexus to your Applications folder.
+> 2. Sign in with your Nexus account.
+> 3. Turn on each tool you use, then restart that tool.
+>
+> To restore your original setup, turn the tool off in [Nexus Desktop](/nexus/desktop) and restart it.
+>
+> ![Nexus Desktop Connect screen with an account picker in the sidebar and on and off switches for Claude Desktop, ChatGPT, Claude Code, Codex, Cursor, and other tools](https://mintcdn.com/fireworksai/zB7PRUO6m5X1UU4P/images/nexus/nexus-desktop-connect.png?fit=max\&auto=format\&n=zB7PRUO6m5X1UU4P\&q=85\&s=0439d0837530dae934cdbd68702cea47)
+>
+> Nexus Desktop: turn on Fireworks in each app
 
-You need Node.js 22 or later, `git`, and `bash`. On Windows, run the installer from Git Bash. PowerShell breaks the script's line endings.
+> [tab] Nexus CLI
+>
+> ```bash wrap theme={null}
+> curl -fsSL https://nexus.fireworks.ai/install.sh | bash
+> ```
+>
+> You need Node.js 22 or later, `git`, and `bash`. On Windows, run the installer from Git Bash. PowerShell breaks the script's line endings.
+>
+> ```bash wrap theme={null}
+> nexus login
+> ```
+>
+> Sign in with your browser, or paste a Fireworks API key (`fw_...`).
+>
+> Then choose your tool under [Connect your tool](#connect-your-tool) and follow its setup steps.
 
-```bash wrap theme={null}
-nexus login
-```
+### Supported systems
 
-Sign in with your browser, or paste a Fireworks API key (`fw_...`).
-
-Next, pick your tool and follow its setup.
+| | macOS | Linux | Windows |
+| - | - | - | - |
+| **Nexus Desktop** | Yes | Coming soon | Coming soon |
+| **Nexus CLI** | Yes | Yes. Claude Desktop is coming soon | Limited. Install and run it from Git Bash. Claude Desktop isn't supported |
 
 ## Featured connections
 
@@ -34,9 +61,11 @@ Next, pick your tool and follow its setup.
 
 > [card] [ChatGPT](/nexus/harnesses/chatgpt)
 >
-> Open models appear next to your OpenAI models. The same connection sets up the Codex CLI.
+> Nexus Auto appears next to your ChatGPT models. The same connection sets up the Codex CLI.
 
 ### Code
+
+> [card] [Claude Code CLI](/nexus/harnesses/claude-code)
 
 > [card] [Claude Agent SDK](/nexus/harnesses/claude-code#claude-agent-sdk)
 
@@ -58,4 +87,8 @@ Next, pick your tool and follow its setup.
 
 ### Cowork
 
-> [card] [Claude Desktop](/nexus/harnesses/claude-desktop)
+> [card] [ChatGPT](/nexus/harnesses/chatgpt)
+
+> [card] [Claude Desktop (Limited)](/nexus/harnesses/claude-desktop)
+>
+> Opens a separate workspace without your claude.ai chats, connectors, or skills.

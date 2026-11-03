@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 397 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 406 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -121,6 +121,11 @@
 - `api-reference/resume-reinforcement-fine-tuning-step` — [Resume Rlor Trainer Job](pages/api-reference/resume-reinforcement-fine-tuning-step.md) · [原文](https://docs.fireworks.ai/api-reference/resume-reinforcement-fine-tuning-step)
 - `api-reference/resume-supervised-fine-tuning-job` — [Resume Supervised Fine-tuning Job](pages/api-reference/resume-supervised-fine-tuning-job.md) · [原文](https://docs.fireworks.ai/api-reference/resume-supervised-fine-tuning-job)
 - `api-reference/scale-deployment` — [Scale Deployment to a specific number of replicas or to zero](pages/api-reference/scale-deployment.md) · [原文](https://docs.fireworks.ai/api-reference/scale-deployment)
+- `api-reference/specialized-model-inference/get` — [Get a loaded adapter](pages/api-reference/specialized-model-inference/get.md) · [原文](https://docs.fireworks.ai/api-reference/specialized-model-inference/get)
+- `api-reference/specialized-model-inference/list` — [List loaded adapters](pages/api-reference/specialized-model-inference/list.md) · [原文](https://docs.fireworks.ai/api-reference/specialized-model-inference/list)
+- `api-reference/specialized-model-inference/load` — [Load an adapter](pages/api-reference/specialized-model-inference/load.md) · [原文](https://docs.fireworks.ai/api-reference/specialized-model-inference/load)
+- `api-reference/specialized-model-inference/overview` — [API overview](pages/api-reference/specialized-model-inference/overview.md) · [原文](https://docs.fireworks.ai/api-reference/specialized-model-inference/overview)
+- `api-reference/specialized-model-inference/unload` — [Unload an adapter](pages/api-reference/specialized-model-inference/unload.md) · [原文](https://docs.fireworks.ai/api-reference/specialized-model-inference/unload)
 - `api-reference/undelete-deployment` — [Undelete Deployment](pages/api-reference/undelete-deployment.md) · [原文](https://docs.fireworks.ai/api-reference/undelete-deployment)
 - `api-reference/update-dataset` — [Update Dataset](pages/api-reference/update-dataset.md) · [原文](https://docs.fireworks.ai/api-reference/update-dataset)
 - `api-reference/update-deployed-model` — [Update LoRA](pages/api-reference/update-deployed-model.md) · [原文](https://docs.fireworks.ai/api-reference/update-deployed-model)
@@ -285,6 +290,9 @@
 - `nexus/auto` — [Nexus Auto](pages/nexus/auto.md) · [原文](https://docs.fireworks.ai/nexus/auto)
 - `nexus/cli` — [Nexus CLI](pages/nexus/cli.md) · [原文](https://docs.fireworks.ai/nexus/cli)
 - `nexus/cli-reference` — [CLI Reference](pages/nexus/cli-reference.md) · [原文](https://docs.fireworks.ai/nexus/cli-reference)
+- `nexus/data-security` — [Data Security & Privacy](pages/nexus/data-security.md) · [原文](https://docs.fireworks.ai/nexus/data-security)
+- `nexus/desktop` — [Nexus Desktop](pages/nexus/desktop.md) · [原文](https://docs.fireworks.ai/nexus/desktop)
+- `nexus/enterprise-controls` — [Enterprise Controls](pages/nexus/enterprise-controls.md) · [原文](https://docs.fireworks.ai/nexus/enterprise-controls)
 - `nexus/estimated-savings` — [Estimated Savings](pages/nexus/estimated-savings.md) · [原文](https://docs.fireworks.ai/nexus/estimated-savings)
 - `nexus/harnesses` — [Coding Harnesses](pages/nexus/harnesses.md) · [原文](https://docs.fireworks.ai/nexus/harnesses)
 - `nexus/harnesses/chatgpt` — [ChatGPT desktop app](pages/nexus/harnesses/chatgpt.md) · [原文](https://docs.fireworks.ai/nexus/harnesses/chatgpt)
@@ -301,9 +309,9 @@
 - `nexus/llm-gateways` — [LLM Gateways](pages/nexus/llm-gateways.md) · [原文](https://docs.fireworks.ai/nexus/llm-gateways)
 - `nexus/manual-setup` — [Manual setup (advanced)](pages/nexus/manual-setup.md) · [原文](https://docs.fireworks.ai/nexus/manual-setup)
 - `nexus/metrics` — [Usage and Cost](pages/nexus/metrics.md) · [原文](https://docs.fireworks.ai/nexus/metrics)
-- `nexus/microsoft-foundry` — [Nexus for Microsoft Foundry](pages/nexus/microsoft-foundry.md) · [原文](https://docs.fireworks.ai/nexus/microsoft-foundry)
 - `nexus/open-models` — [Open Models](pages/nexus/open-models.md) · [原文](https://docs.fireworks.ai/nexus/open-models)
 - `nexus/orchestration-preferences` — [Effort](pages/nexus/orchestration-preferences.md) · [原文](https://docs.fireworks.ai/nexus/orchestration-preferences)
+- `nexus/plans` — [Plans and Accounts](pages/nexus/plans.md) · [原文](https://docs.fireworks.ai/nexus/plans)
 - `nexus/provider-keys` — [Provider Keys](pages/nexus/provider-keys.md) · [原文](https://docs.fireworks.ai/nexus/provider-keys)
 - `nexus/provider-keys/bedrock` — [Amazon Bedrock Setup](pages/nexus/provider-keys/bedrock.md) · [原文](https://docs.fireworks.ai/nexus/provider-keys/bedrock)
 - `nexus/quickstart` — [Quickstart](pages/nexus/quickstart.md) · [原文](https://docs.fireworks.ai/nexus/quickstart)
@@ -317,6 +325,7 @@
 - `serverless/rate-limits` — [Serverless Rate Limits](pages/serverless/rate-limits.md) · [原文](https://docs.fireworks.ai/serverless/rate-limits)
 - `serverless/reserved-throughput` — [Reserved Throughput](pages/serverless/reserved-throughput.md) · [原文](https://docs.fireworks.ai/serverless/reserved-throughput)
 - `serverless/serverless-modes` — [Serverless Modes](pages/serverless/serverless-modes.md) · [原文](https://docs.fireworks.ai/serverless/serverless-modes)
+- `serverless/specialized-model-inference/overview` — [Specialized Model Inference on Serverless](pages/serverless/specialized-model-inference/overview.md) · [原文](https://docs.fireworks.ai/serverless/specialized-model-inference/overview)
 - `serverless/us-only-serverless` — [US-only Serverless](pages/serverless/us-only-serverless.md) · [原文](https://docs.fireworks.ai/serverless/us-only-serverless)
 
 ## structured-responses

@@ -42,6 +42,7 @@ This endpoint expects an UpdateSpeechEngineRequest.
 - `conversation` (ConversationConfig-Input, optional, nullable)
 - `privacy` (PrivacyConfig-Input, optional, nullable)
 - `call_limits` (AgentCallLimits, optional, nullable)
+- `auth` (SpeechEngineAuthConfig, optional, nullable) — Who may start a conversation with this speech engine
 - `language` (string, optional, nullable)
 - `cascade_timeout_seconds` (double, optional, nullable) — Time in seconds to wait for the upstream speech engine endpoint to respond before the attempt is abandoned and retried. Must be between 2 and 15 seconds.
 - `tags` (list of string, optional, nullable)
@@ -63,6 +64,7 @@ Successful Response
 - `conversation` (ConversationConfig-Output, required) — Conversation-level settings including client events and duration limits
 - `privacy` (PrivacyConfig-Output, required) — Privacy settings controlling recording, retention, and PII handling
 - `call_limits` (AgentCallLimits, required) — Concurrency and daily conversation limits for this speech engine
+- `auth` (SpeechEngineAuthConfig, required) — Who may start a conversation with this speech engine
 - `language` (string, required) — ISO language code used by the speech engine (e.g. 'en')
 - `cascade_timeout_seconds` (double, required) — Time in seconds to wait for the upstream speech engine endpoint to respond before the attempt is abandoned and retried. Must be between 2 and 15 seconds.
 - `tags` (list of string, required) — Arbitrary tags for categorization and filtering
@@ -165,6 +167,10 @@ Validation Error
 - `agent_concurrency_limit` (integer, optional, default: -1) — The maximum number of concurrent conversations. -1 indicates that there is no maximum
 - `daily_limit` (integer, optional, default: 100000) — The maximum number of conversations per day
 - `bursting_enabled` (boolean, optional, default: true) — Whether to enable bursting. If true, exceeding workspace concurrency limit will be allowed up to 3 times the limit. Calls will be charged at double rate when exceeding the limit.
+
+### SpeechEngineAuthConfig
+
+- `enable_auth` (boolean, optional, default: false) — If true, starting a conversation with the speech engine requires a signed URL or token from an authorized caller, rather than only its ID
 
 ### SpeechEngineConversationInitiationClientDataConfig
 
@@ -406,6 +412,9 @@ Used to reference a dynamic variable.
     "agent_concurrency_limit": -1,
     "daily_limit": 100000,
     "bursting_enabled": true
+  },
+  "auth": {
+    "enable_auth": false
   },
   "language": "en",
   "cascade_timeout_seconds": 4,

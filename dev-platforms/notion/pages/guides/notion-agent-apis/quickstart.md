@@ -6,10 +6,6 @@ path: guides/notion-agent-apis/quickstart
 
 Pick a Custom Agent, start a chat, and read its reply through the API.
 
-> [!NOTE]
->
-> This API is in public beta
-
 ## Prerequisites
 
 **A Custom Agent to chat with**
@@ -17,6 +13,8 @@ Pick a Custom Agent, start a chat, and read its reply through the API.
 You need an existing Custom Agent because it's the Agent you'll chat with in this quickstart. In step 1, you'll use the API to choose the Agent, then use its ID to start a chat in step 2. The API works with Custom Agents that already exist in the Notion app; it does not create them.
 
 To create a new Custom Agent, see [Build a Custom Agent](https://www.notion.com/help/custom-agents#build-a-custom-agent).
+
+With a personal access token, you can also chat with your personal agent (Notion AI) instead. It needs no setup: use `notion_ai` as the agent ID in step 2 and skip step 1.
 
 **A token to authenticate requests**
 
@@ -80,6 +78,7 @@ curl -X POST https://api.notion.com/v1/agents/query \
   -H "Notion-Version: 2026-03-11" \
   -H "Content-Type: application/json" \
   -d '{
+    "filter": { "property": "agent_type", "string": { "equals": "custom_agent" } },
     "sorts": [{ "property": "created_time", "direction": "descending" }],
     "page_size": 10
   }'
@@ -157,7 +156,7 @@ The response is the new session:
   "object": "session",
   "id": "2a1c7c06-781b-4987-9986-5c8dd3028014",
   "agent_id": "1f0c7c06-781b-4987-9986-5c8dd3028013",
-  "title": "Capabilities question",
+  "title": "Untitled",
   "status": "queued",
   "created_at": "2026-08-14T12:10:00.000Z",
   "updated_at": "2026-08-14T12:10:00.000Z"
@@ -248,7 +247,7 @@ That's a full round trip: you sent a message to a Custom Agent and read its resp
 
 > [accordion] How else can I find a Custom Agent?
 >
-> [Query agents](/reference/notion-agent-apis/query-agents) also takes a free-text `query` that matches names and descriptions, along with filters on fields like `id`, `agent_type`, `created_time`, and `connections`. Sorting is available on `created_time` and `last_run_at`.
+> [Query agents](/reference/notion-agent-apis/query-agents) also takes a free-text `query` that matches names and descriptions, along with filters on fields like `id`, `agent_type` (`custom_agent` or `notion_ai`), `created_time`, and `connections`. Sorting is available on `created_time` and `last_run_at`.
 
 ## Next steps
 
@@ -256,7 +255,7 @@ You've found a Custom Agent through the API and started a chat. From here you ca
 
 * **Keep the conversation going.** Send another message to the same `session_id` for a follow-up, or [submit an action](/reference/notion-agent-apis/update-session) the agent is waiting on.
 * **Track what your agents cost.** Read [agent insights](/reference/notion-agent-apis/retrieve-agent-insights) for credits used and runs completed per agent to build a usage dashboard.
-* **Set guardrails.** Give an agent a [credit limit](/reference/notion-agent-apis/update-agent-credit-limit), or [disable it](/reference/notion-agent-apis/update-agent-status) when something looks wrong.
+* **Set guardrails.** Give an agent a [credit limit](/reference/notion-agent-apis/update-agent-credit-limit), or [disable it](/reference/notion-agent-apis/update-agent) when something looks wrong.
 * **Batch manage agent.** Apply status, credit-limit, and delete operations in a single [asynchronous batch](/reference/notion-agent-apis/batch-manage-agent).
 
 See the [Overview](/guides/notion-agent-apis/overview) for the full set of endpoints.

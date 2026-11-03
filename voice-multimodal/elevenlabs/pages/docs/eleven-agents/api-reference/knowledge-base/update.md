@@ -11,7 +11,7 @@ path: docs/eleven-agents/api-reference/knowledge-base/update
 PATCH https://api.elevenlabs.io/v1/convai/knowledge-base/{documentation_id}
 Content-Type: application/json
 
-Update the name and/or content of a document.
+Update the name, content and/or auto-sync settings of a document.
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/update
 
@@ -35,6 +35,10 @@ This endpoint expects an object.
 
 - `name` (string, optional) — A custom, human-readable name for the document.
 - `content` (string, optional) — Updated content for the document. Only supported for text documents, URL documents with auto-sync disabled, and file documents that are not synced from an external source.
+- `enable_auto_sync` (boolean, optional) — Whether the document or folder is refreshed automatically. Only applicable to URL documents, folders, and externally-synced files. Leave unset to keep the current value.
+- `auto_remove` (boolean, optional) — Whether to automatically remove the document once its source is no longer available. Only applicable when auto-sync is enabled. Leave unset to keep the current value.
+- `minimum_frequency_days` (integer, optional) — Minimum frequency (in days) at which the document is refreshed. The actual interval may be shorter, never longer. Only applicable when auto-sync is enabled. Leave unset to keep the current value.
+- `tighten_only` (boolean, optional, default: false) — Folders only. When true, items already in the folder are only tightened to stay at least as strict as the folder, and keep any setting that is stricter than the folder's. When false, they are set to exactly the folder's auto-sync settings. Ignored for externally synced folders, whose contents always follow the folder's schedule.
 
 ## Response
 

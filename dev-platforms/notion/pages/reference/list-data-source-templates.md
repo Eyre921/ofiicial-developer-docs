@@ -5,41 +5,127 @@ path: reference/list-data-source-templates
 ---
 
 get /v1/data_sources/{data_source_id}/templates
-List the page templates your connection can read in a data source.
+List the page templates your conne# Authentication
+Source: https://developers.notion.com/cli/get-started/authentication
 
-The response contains a `templates` array with up to 100 results per page. To filter by name, pass all or part of a template name in the `name` query parameter. Matching ignores case.
+Log in to your Notion workspace and manage CLI credentials.
 
-| Field | Type | Description |
-| :- | :- | :- |
-| `id` | `string` (UUIDv4) | The template ID. |
-| `name` | `string` | The template's display name. |
-| `is_default` | `boolean` | Whether the template is the data source's default. |
+## Log in
 
-### Pagination
+Authenticate with your Notion workspace:
 
-If more templates are available, `has_more` is `true` and `next_cursor` contains the cursor for the next page. Pass that value as `start_cursor` in the next request.
-
-In the [JavaScript SDK](https://github.com/makenotion/notion-sdk-js) v5.3.0 or later, use `iterateDataSourceTemplates` to follow the cursors. The example reads your token from `NOTION_API_KEY` and the data source ID from `NOTION_DATA_SOURCE_ID`.
-
-```javascript theme={null}
-import { Client, iterateDataSourceTemplates } from "@notionhq/client";
-
-const notion = new Client({ auth: process.env.NOTION_API_KEY });
-for await (const template of iterateDataSourceTemplates(notion, {
-  data_source_id: process.env.NOTION_DATA_SOURCE_ID,
-})) {
-  console.log(template.name, template.id);
-}
+```bash theme={null}
+ntn login
 ```
 
-### Permissions
+This opens your browser to an authorization page. Confirm that the code in the browser matches the code printed in your terminal before approving. This prevents another page from completing the login in your name.
 
-This endpoint returns only templates under the specified data source that the connection can access. Sharing the parent database with the connection generally grants access to its child templates.
+Your workspace-scoped token will be stored securely in your system's keychain.
 
-Templates are also Notion pages. Use [Retrieve a page](/reference/retrieve-a-page) for its properties or [Retrieve a page as markdown](/reference/retrieve-page-markdown) for its content. You can also open a template in Notion and copy its URL to find its ID.
+If you've already logged in to one or more workspaces, you can pick existing workspace to switch the default, or pick **Authenticate with new workspace** to start a fresh browser flow and add another workspace.
 
-### Errors
+> [!NOTE]
+>
+> `ntn login` requires full workspace membership. [Guests](https://www.notion.com/help/whos-who-in-a-workspace) and [restricted members](https://www.notion.com/help/whos-who-in-a-workspace) cannot log in with the Notion CLI. If you need CLI access, ask a workspace admin to upgrade your role. See [Personal access tokens](/guides/connections-and-tokens/personal-access-tokens) for more on who can create tokens.
 
-Returns a 404 HTTP response if the data source doesn't exist or if the connection doesn't have access to it.
+## Log in without a browser
 
-Each Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) of the Status codes documentation for more information.
+On a remote machine, container, or CI runner that can't open a browser, use `--no-browser` to get a two-step login flow:
+
+1. Run `ntn login --no-browser`. It prints a URL, a verification code, and a `ntn login poll` command.
+2. Open the URL in any browser, sign in, and confirm the verification code.
+3. Run `ntn login poll` on the original machine to redeem the token.
+
+`ntn login` also falls back to this flow automatically when it detects there is no terminal (e.g. piped input).
+
+Login sessions expire after a short window. If polling fails because the session expired, run `ntn login` again to start over.
+
+For unattended use (CI, scripts, bots), prefer a [personal access token](#use-a-personal-access-token) instead.
+
+## Target a specific workspace
+
+To run a single command against a non-default workspace without switching defaults, set `NOTION_WORKSPACE_ID`:
+
+```bash theme={null}
+NOTION_WORKSPACE_ID=<workspace-id> ntn api v1/users/me
+```
+
+Workspace IDs are listed in the output of `ntn debug`.
+
+## Use a personal access token
+
+For unattended use, authenticate with a [personal access token](/guides/connections-and-tokens/personal-access-tokens) (PAT) by exporting it as `NOTION_API_TOKEN`:
+
+```bash theme={null}
+export NOTION_API_TOKEN=ntn_xxx...
+ntn api v1/users/me
+```
+
+`NOTION_API_TOKEN` takes precedence over anything stored in the keychain, so the same shell can mix `ntn login`-based commands and PAT-based commands depending on what's exported.
+
+## Inspect your session
+
+```bash theme={null}
+ntn doctor
+```
+
+## Log out
+
+```bash theme={null}
+ntn logout
+```
+
+This forgets every cached workspace, deletes each one's token from the keychain, and clears the default workspace. The `config.json` and `workspaces.json` files themselves stay in place — run `ntn login` to repopulate them.
+
+## Where credentials are stored
+
+Tokens live in your OS credential store (Keychain on macOS, Secret Service on Linux) under the service name `notion-cli`, with the workspace ID as the account.
+
+Two files sit alongside them in the CLI config directory:
+
+* `config.json` — CLI version, default workspace per, and the optional `keyring` toggle.
+* `workspaces.json` — cached workspace IDs and names for the interactive picker.
+
+The config directory is `NOTION_HOME` if set, otherwise `$XDG_CONFIG_HOME/notion`, `$HOME/.config/notion`, or `$HOME/.notion` as fallbacks.
+
+### Opt out of the OS keychain
+
+On systems without a usable keychain, `ntn login` fails with a keychain error. Common examples include Docker containers, CI runners, SSH sessions to a Linux server, etc.
+
+Set `NOTION_KEYRING=0` to store tokens in plain JSON at `auth.json` in the config directory instead. Treat that file like any other secret.
+
+```bash theme={null}
+NOTION_KEYRING=0 ntn login
+```
+
+To make it permanent, set `"keyring": false` in `config.json`. The env var always wins.
+
+## Environment variables
+
+| Variable | Purpose |
+| :- | :- |
+| `NOTION_API_TOKEN` | When this is set, it'll take precedence over `ntn login`'s keychain entry. Handy for scripts and CI. |
+| `NOTION_WORKSPACE_ID` | Override the default workspace for a single command. |
+| `NOTION_KEYRING` | Set to `0` to use file-based storage instead of the OS keychain. |
+| `NOTION_HOME` | Override the config directory. |
+| `NOTION_ENV` | Same as `--env`. Rarely needed. |
+
+Run `ntn login --help` for the full list.
+
+## Next steps
+
+> [card] [Workers quickstart](/workers/get-started/quickstart)
+>
+> Create and deploy your first Notion Worker.
+
+> [card] [API requests](/cli/guides/api-requests)
+>
+> Make Notion API requests from the terminal.
+
+> [card] [Command reference](/cli/reference/commands)
+>
+> Full reference for every ntn command.
+
+> [card] [Personal access tokens](/guides/connections-and-tokens/personal-access-tokens)
+>
+> Create tokens for scripts and CI.

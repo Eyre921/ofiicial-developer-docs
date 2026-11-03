@@ -6,9 +6,17 @@ path: nexus/harnesses/copilot-cli
 
 Connect the GitHub Copilot CLI to Fireworks models and Nexus Auto with the Nexus CLI or manual setup.
 
-The `copilot` command (`@github/copilot`) reads plain JSON under `~/.copilot`. It shares the folder with the desktop app but no settings, so you can connect either one, both, or neither. For the desktop app, see [Copilot App](/nexus/harnesses/copilot-app).
+The desktop app is set up separately in [Copilot App](/nexus/harnesses/copilot-app).
 
-PreviewOpenAI Chat CompletionsNexus Auto
+Support summary:
+
+* API the harness speaks to Fireworks: OpenAI Chat Completions
+* Nexus Auto: Supported
+* Native web search: Not added by Nexus. See [Web search](/nexus/auto#web-search).
+
+The `copilot` command (`@github/copilot`) reads plain JSON under `~/.copilot`. It shares the folder with the desktop app but no settings, so you can connect either one, both, or neither.
+
+Plan access: Pro and Team don't include general access to open models. They use Nexus Auto (`auto`) along with their own Claude or ChatGPT models, and Nexus Auto still sends turns to open models. Enterprise accounts also get general access to open models on Fireworks serverless. See [Plans and Accounts](/nexus/plans).
 
 ## Quick start
 
@@ -26,54 +34,51 @@ nexus login
 
 Sign in with your browser, or paste a Fireworks API key (`fw_...`).
 
-Already set up? Skip to step 2.
+If the Nexus CLI is already installed and signed in, skip to step 2.
 
 **2. Connect Copilot CLI**
 
 ```bash wrap theme={null}
 nexus copilot-cli
-nexus copilot-cli status
 ```
+
+Nexus Auto is the default model. To pick another one, run `nexus copilot-cli --model <id>`, such as `--model glm-latest`.
+
+`nexus copilot-cli status` shows the provider, where the key comes from, and the configured model.
 
 **3. Start a session and pick a model**
 
-Start a new `copilot` session. The default is `fireworks/auto`. Switch models with `copilot --model fireworks/<name>` or `/model`. To change the default, run `nexus copilot-cli --model glm-latest`.
+Start a new `copilot` session. Switch models with `/model` or `copilot --model fireworks/<name>`.
 
-![Copilot CLI model picker showing Auto selected and Fireworks DeepSeek, GLM, Kimi, and MiniMax models](https://mintcdn.com/fireworksai/DBOQdoU3Q63xUkRQ/images/nexus/copilot-cli-model-picker.png?fit=max\&auto=format\&n=DBOQdoU3Q63xUkRQ\&q=85\&s=b5fcee9192d79e7e0e2796f945673c87)
+The default is stored as `fireworks/auto`.
 
-Copilot CLI model picker after Nexus CLI, with Auto selected
-
-> [!TIP]
->
-> `nexus copilot-cli status` shows the provider, where the key comes from, and the configured model.
-
-Image input works on models that support it. Copilot CLI doesn't show context, reasoning, or pricing details for bring-your-own-key models.
+To restore your original settings, run `nexus copilot-cli off`.
 
 ## Use Nexus Auto
 
-Nexus Auto (`auto`) is supported on the Chat Completions API.
+* **Anthropic and OpenAI model turns** need a [Provider Key](/nexus/provider-keys) from your admin.
+* Image input works on models that support it.
+* Copilot CLI doesn't show context, reasoning, or pricing details for bring-your-own-key models.
 
-* **Anthropic and OpenAI model turns:** save a key with `nexus auto --anthropic-api-key` or `--openai-api-key` (each prompts for the key), then run `nexus copilot-cli` again. Nexus CLI adds the saved key to the `fireworks` provider headers in `providers.json`. Or connect a [Provider Key](/nexus/provider-keys), which needs nothing saved locally.
-* **Environment keys:** Nexus CLI never sends `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` from your environment.
-* **Manual setup:** send `x-anthropic-api-key` and `x-openai-api-key` headers yourself. See [Manual setup (advanced)](#manual-setup-advanced).
+- Instead of a Provider Key, a developer can save their own key with `nexus auto --anthropic-api-key` or `--openai-api-key` (each prompts for the key) and run `nexus copilot-cli` again. Nexus CLI adds the saved key to the `fireworks` provider headers in `providers.json`. A Provider Key needs nothing saved locally.
+- Nexus CLI never sends `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` from your environment.
+- Nexus Auto (`auto`) is supported on the Chat Completions API.
+- Manual setup sends `x-anthropic-api-key` and `x-openai-api-key` headers itself. See [Manual setup (advanced)](#manual-setup-advanced).
 
 ## MCP and tools
 
-Nexus CLI doesn't touch MCP. Set up servers in Copilot CLI as usual.
-
-Nexus CLI does not add web search to Copilot CLI. See [Web Search](/nexus/web-search).
-
-## Microsoft Foundry
-
-Nexus CLI doesn't connect Copilot CLI to Microsoft Foundry. For other options, see [Nexus for Microsoft Foundry](/nexus/microsoft-foundry).
+* Nexus CLI doesn't change your MCP servers.
+* Nexus CLI doesn't add [web search](/nexus/auto#web-search) to Copilot CLI.
 
 ## Troubleshooting
 
 * **A model switch doesn't take effect:** use provider-prefixed model IDs such as `fireworks/glm-latest`. Copilot CLI rejects a bare `glm-latest` and silently falls back to its configured model.
 
-See [Nexus Auto](/nexus/auto#troubleshooting) for issues that affect every harness.
+Fixes for issues that affect every harness are in [Nexus Auto troubleshooting](/nexus/auto#troubleshooting).
 
 ## Manual setup (advanced)
+
+Add a `fireworks` provider and a model to `~/.copilot/providers.json`:
 
 ```json ~/.copilot/providers.json theme={null}
 {
@@ -101,29 +106,27 @@ See [Nexus Auto](/nexus/auto#troubleshooting) for issues that affect every harne
 }
 ```
 
-A bring-your-own-key provider has no default model, and Copilot CLI won't start without one. Select it in `settings.json`:
+Copilot CLI won't start without a default model, so select it in `settings.json`:
 
 ```json ~/.copilot/settings.json theme={null}
 { "model": "fireworks/glm-latest" }
 ```
 
-To use Nexus Auto with Anthropic or OpenAI model turns, add a `headers` map to the provider, such as `"headers": { "x-anthropic-api-key": "sk-ant-..." }`, and use `auto` as the model `id` and `wireModel`. The [harness setup](/nexus/auto#nexus-cli) generates the full file.
+Without the Nexus CLI, you take over [the tasks it otherwise performs](/nexus/manual-setup#what-changes-without-the-nexus-cli), such as undo and updates.
 
-> [!WARNING]
->
-> Running `nexus copilot-cli` again rewrites the `fireworks` provider entry. It keeps `x-anthropic-api-key` and `x-openai-api-key` headers you added by hand, but removes any other headers you added. Add those again after you reconnect.
-
-See [what changes without the Nexus CLI](/nexus/manual-setup#what-changes-without-the-nexus-cli).
+* A bring-your-own-key provider has no default model, which is why `settings.json` must select one.
+* To use Nexus Auto with Anthropic or OpenAI model turns, add a `headers` map to the provider, such as `"headers": { "x-anthropic-api-key": "sk-ant-..." }`, and use `auto` as the model `id` and `wireModel`. The [harness setup](/nexus/auto#nexus-cli) generates the full file.
+* Running `nexus copilot-cli` again rewrites the `fireworks` provider entry. It keeps `x-anthropic-api-key` and `x-openai-api-key` headers you added by hand, but removes any other headers you added. Add those again after you reconnect.
 
 ## What the Nexus CLI writes
 
-> [accordion] See what Nexus CLI writes
->
-> | File | What Nexus CLI writes |
-> | - | - |
-> | `~/.copilot/providers.json` | A `fireworks` provider with your key, plus one row per model, in the format shown in [Manual setup (advanced)](#manual-setup-advanced). Models that accept images get `vision` capabilities. |
-> | `~/.copilot/settings.json` | `"model": "fireworks/auto"`, or the model you chose with `--model` |
->
-> Providers and models you added yourself stay in place. `providers.json` is saved with mode `0600`. The `x-anthropic-api-key` and `x-openai-api-key` headers appear only for keys you saved with `nexus auto`.
->
-> `off` restores both files byte-for-byte from the snapshots under `~/.nexus/copilot-cli/`, or deletes them if Nexus CLI created them. `COPILOT_HOME` moves both files. Use `--providers-path` for a non-default `providers.json`.
+| File | What Nexus CLI writes |
+| - | - |
+| `~/.copilot/providers.json` | A `fireworks` provider with your key, plus one row per model, in the format shown in [Manual setup (advanced)](#manual-setup-advanced). Models that accept images get `vision` capabilities. |
+| `~/.copilot/settings.json` | `"model": "fireworks/auto"`, or the model you chose with `--model` |
+
+* Providers and models you added yourself stay in place.
+* `providers.json` is saved with mode `0600`.
+* The `x-anthropic-api-key` and `x-openai-api-key` headers appear only for keys you saved with `nexus auto`.
+* `off` restores both files byte-for-byte from the snapshots under `~/.nexus/copilot-cli/`, or deletes them if Nexus CLI created them.
+* `COPILOT_HOME` moves both files. Use `--providers-path` for a non-default `providers.json`.

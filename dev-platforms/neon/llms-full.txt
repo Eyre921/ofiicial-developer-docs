@@ -18201,15 +18201,50 @@ To set up the MCP server together with agent skills and a linked Neon project, r
 npx neon@latest init
 ```
 
+For per-client setup instructions, see [Connect MCP clients](https://neon.com/docs/ai/connect-mcp-clients-to-neon).
+
 ## Config generator
 
 Use the generator to build an MCP config for your editor and auth method, including the `Authorization` header for API key or remote agent setups.
+
+If you'd rather write the config by hand, most clients accept this format. With OAuth, your client opens a browser to authorize on first use:
+
+**OAuth**
+
+```json
+{
+  "mcpServers": {
+    "Neon": {
+      "type": "http",
+      "url": "https://mcp.neon.tech/mcp"
+    }
+  }
+}
+```
+
+**API key**
+
+```json
+{
+  "mcpServers": {
+    "Neon": {
+      "type": "http",
+      "url": "https://mcp.neon.tech/mcp",
+      "headers": {
+        "Authorization": "Bearer <NEON_API_KEY>"
+      }
+    }
+  }
+}
+```
+
+Add [access control](https://neon.com/docs/ai/neon-mcp-server#access-control) parameters to the `url` as needed.
 
 ## Claude connector
 
 The Neon MCP server is an official Claude connector, so you don't need a custom connector URL. To add it in [Claude.ai](https://claude.ai) or Claude Desktop:
 
-1. Open **Settings** from the profile menu in the top-right of the console.
+1. Open **Settings** from your profile menu.
 2. Select **Connectors** (sometimes shown under **Customize > Connectors**).
 3. Click **Browse connectors** (top-right of that page), find **Neon**, and add it.
 4. Authorize access to your Neon account.
@@ -18228,7 +18263,7 @@ Append `?readonly=true` to restrict the server to read operations:
 https://mcp.neon.tech/mcp?readonly=true
 ```
 
-`SELECT` queries and schema inspection remain available. Write operations (creating branches, running migrations, modifying auth config) are disabled. `run_sql_transaction` isn't available in read-only mode; use `run_sql` for read queries.
+`SELECT` queries and schema inspection remain available. Write operations (creating branches, running migrations, modifying auth config) are disabled. `run_sql_transaction` and `get_connection_string` aren't available in read-only mode; use `run_sql` for read queries.
 
 With OAuth, you can also choose read-only scope during the authorization flow instead of using the URL parameter.
 
@@ -18240,7 +18275,7 @@ Scope all operations to a single project:
 https://mcp.neon.tech/mcp?projectId=<your-project-id>
 ```
 
-Cross-project search and navigation are disabled in this mode.
+Cross-project search and navigation are disabled in this mode, and project management tools such as `list_projects` and `create_project` are hidden.
 
 ### Category filtering
 
@@ -18288,6 +18323,8 @@ We recommend MCP for **development and testing only**, not production environmen
 - Always review and authorize LLM-requested actions before execution
 - Restrict MCP access to trusted users and regularly audit access
 
+To limit what an agent can do, combine [read-only mode](https://neon.com/docs/ai/neon-mcp-server#read-only-mode), a [Postgres role](https://neon.com/docs/ai/neon-mcp-server#postgres-role) with limited grants, and [category filtering](https://neon.com/docs/ai/neon-mcp-server#category-filtering).
+
 ### Allowlist IP addresses
 
 The hosted Neon MCP Server (`mcp.neon.tech`) connects to your Neon databases from the following static IP addresses:
@@ -18327,13 +18364,9 @@ Search and navigation tools (search across projects, fetch resource details by I
 
 Schema tools accept schema-qualified table names, such as `crm.contacts`. An unqualified name resolves against the database `search_path`, which defaults to the `public` schema.
 
-The `querying` category includes `inspect_database`, which runs the same 15 read-only checks as [`neon inspect db`](https://neon.com/docs/cli/inspect): relation and index sizes, unused indexes, sequential scans, active queries and locks, stalled queries running longer than 30 seconds, heavy and frequent statements, cache hit rate and working set, autovacuum and bloat, and replication state. Some checks need [`pg_stat_statements`](https://neon.com/docs/extensions/pg_stat_statements) or the [`neon`](https://neon.com/docs/extensions/neon) extension; the tool asks before suggesting `CREATE EXTENSION`.
-
 **Note:** The `observability` tools query [Neon Functions logs](https://neon.com/docs/compute/functions/logs) and [object storage logs](https://neon.com/docs/storage/logs), which are part of the Neon backend, currently available in AWS US East (Ohio) (`aws-us-east-2`), AWS US East (N. Virginia) (`aws-us-east-1`), AWS Europe (Frankfurt) (`aws-eu-central-1`), and AWS Asia Pacific (Singapore) (`aws-ap-southeast-1`). Support is expanding toward [all regions](https://neon.com/docs/introduction/regions). Log querying returns results only for projects in a supported region. Database diagnostics via `inspect_database` are under `querying`, not `observability`.
 
-## Troubleshooting
-
-For per-client setup instructions, see [Connect MCP clients](https://neon.com/docs/ai/connect-mcp-clients-to-neon).
+## Legacy transports
 
 ### Deprecated local stdio
 
@@ -18391,7 +18424,7 @@ If your client still points at `/sse`, change the URL to `https://mcp.neon.tech/
   "mcpServers": {
     "Neon": {
       "command": "npx",
-      "args": ["-y", "mcp-remote", "https://mcp.neon.tech/mcp"]
+      "args": ["-y", "mcp-remote@latest", "https://mcp.neon.tech/mcp"]
     }
   }
 }
@@ -18720,9 +18753,9 @@ Managed Better Auth does not currently support projects with [IP Allow](https://
 
 Managed Better Auth is included in all Neon plans based on Monthly Active Users (MAU):
 
-- **Free**: Up to 60,000 MAU
-- **Launch**: Up to 1M MAU
-- **Scale**: Up to 1M MAU
+- **Free**: Up to 60,000 MAU per project
+- **Launch**: Up to 1M MAU per project
+- **Scale**: Up to 1M MAU per project
 
 An MAU (Monthly Active User) is a unique user who authenticates at least once during a monthly billing period. If you need more than 1M MAU, request an increase in the [console feedback form](https://console.neon.tech/app/settings?modal=feedback\&modalparams=%22Neon%20auth%20limit%20increase%22).
 
@@ -36795,8 +36828,6 @@ Tools are grouped into categories. Use the `?category=` URL parameter to restric
 Search and navigation tools (search across projects, fetch resource details by ID) are available by default but disabled in [project-scoped mode](https://neon.com/docs/ai/neon-mcp-server#project-scoped-mode).
 
 Schema tools accept schema-qualified table names, such as `crm.contacts`. An unqualified name resolves against the database `search_path`, which defaults to the `public` schema.
-
-The `querying` category includes `inspect_database`, which runs the same 15 read-only checks as [`neon inspect db`](https://neon.com/docs/cli/inspect): relation and index sizes, unused indexes, sequential scans, active queries and locks, stalled queries running longer than 30 seconds, heavy and frequent statements, cache hit rate and working set, autovacuum and bloat, and replication state. Some checks need [`pg_stat_statements`](https://neon.com/docs/extensions/pg_stat_statements) or the [`neon`](https://neon.com/docs/extensions/neon) extension; the tool asks before suggesting `CREATE EXTENSION`.
 
 **Note:** The `observability` tools query [Neon Functions logs](https://neon.com/docs/compute/functions/logs) and [object storage logs](https://neon.com/docs/storage/logs), which are part of the Neon backend, currently available in AWS US East (Ohio) (`aws-us-east-2`), AWS US East (N. Virginia) (`aws-us-east-1`), AWS Europe (Frankfurt) (`aws-eu-central-1`), and AWS Asia Pacific (Singapore) (`aws-ap-southeast-1`). Support is expanding toward [all regions](https://neon.com/docs/introduction/regions). Log querying returns results only for projects in a supported region. Database diagnostics via `inspect_database` are under `querying`, not `observability`.
 
@@ -89639,7 +89670,7 @@ app.listen(PORT, () => {
 
 ## Run index.js
 
-Run `node index.js` to view the result on [localhost:4242](https://neon.com/docs/guides/localhost:4242) as follows:
+Run `node index.js` to view the result on [localhost:4242](http://localhost:4242) as follows:
 
 ```shell
 { version: 'PostgreSQL 16.0 on x86_64-pc-linux-gnu, compiled by gcc (Debian 10.2.1-6) 10.2.1 20210110, 64-bit' }
@@ -104425,7 +104456,7 @@ export class AppController {
 
 ## Run the app
 
-When you run `npm run start` you can expect to see output similar to the following at [localhost:3000](https://neon.com/docs/guides/localhost:3000):
+When you run `npm run start` you can expect to see output similar to the following at [localhost:3000](http://localhost:3000):
 
 ```shell
 [{"id":1,"name":"c4ca4238a0","value":0.39330545},{"id":2,"name":"c81e728d9d","value":0.14468245}]
@@ -110862,7 +110893,7 @@ export default function Page() {
 
 ## Run the app
 
-When you run `npm run dev` you can expect to see the following on [localhost:3000](https://neon.com/docs/guides/localhost:3000):
+When you run `npm run dev` you can expect to see the following on [localhost:3000](http://localhost:3000):
 
 ```shell
 PostgreSQL 16.0 on x86_64-pc-linux-gnu, compiled by gcc (Debian 10.2.1-6) 10.2.1 20210110, 64-bit
@@ -114916,7 +114947,7 @@ export async function GET() {
 
 ## Run the app
 
-When you run `npm run dev` you can expect to see the following on [localhost:3000](https://neon.com/docs/guides/localhost:3000):
+When you run `npm run dev` you can expect to see the following on [localhost:3000](http://localhost:3000):
 
 ```shell
 PostgreSQL 16.0 on x86_64-pc-linux-gnu, compiled by gcc (Debian 10.2.1-6) 10.2.1 20210110, 64-bit
@@ -115596,7 +115627,7 @@ Create a `+page.svelte` file to display the data:
 
 ## Run the app
 
-When you run `npm run dev` you can expect to see the following on [localhost:5173](https://neon.com/docs/guides/localhost:5173):
+When you run `npm run dev` you can expect to see the following on [localhost:5173](http://localhost:5173):
 
 ```shell
 Database Version
@@ -123690,7 +123721,7 @@ To upgrade or downgrade your plan:
 3. Select **Billing** from the menu.
 4. Select **Change plan**.
 
-Changing your plan to one with lower usage allowances may affect the performance of your applications. To compare plan allowances, see [Neon plans](https://neon.com/docs/introduction/plans#neon-plans).
+Changing your plan to one with lower usage allowances may affect the performance of your applications. To compare plan allowances, see [Neon plans](https://neon.com/docs/introduction/plans#plan-overview).
 
 If you are downgrading your plan, you will be required to remove any projects, branches, or data that exceed your new plan allowances.
 
@@ -124642,7 +124673,7 @@ Without the Neon CLI, run `npx skills add neondatabase/agent-skills -s neon-post
 
 --- [Document source](https://neon.com/docs/introduction/plans.md) ---
 
-> Summary: Storage on Neon is unlimited on paid plans (Launch and Scale): there is no hard per-branch size limit and your storage grows with your usage. The Free plan includes 1 GB of Postgres storage per project, up to 20 GB across all projects. Free, Launch, and Scale also differ in compute rates, branch counts, storage pricing, and autoscaling limits. Compare per-unit pricing, feature availability, and billing examples to choose a plan or estimate monthly costs. Scale adds compliance certifications, uptime SLAs, private networking, and configurable scale-to-zero. Launch and Free plans share pay-only-for-what-you-use pricing with no monthly minimum.
+> Summary: Compare Neon's Free, Launch, and Scale plans: compute rates ($0.106/CU-hour on Launch, $0.222/CU-hour on Scale), storage ($0.35/GB-month, unlimited on paid plans), branch and project limits, autoscaling, and Free plan allowances. Paid plans have no monthly minimum. Includes billing examples for estimating costs.
 
 # Neon plans
 
@@ -124650,8 +124681,6 @@ Last updated: 2026-10-23
 
 Neon offers plans to support you at every stage, from your first prototype to production at scale.
 Start for free, then **pay only for what you use** as your needs grow.
-
----
 
 ## Plan overview
 
@@ -124668,26 +124697,30 @@ For AI agent platforms that provision thousands of databases, Neon offers an **A
 | [Organization members](https://neon.com/docs/introduction/plans#organization-members)         | Unlimited                                                          | Unlimited                                  | Unlimited                                                                                                         |
 | [Projects](https://neon.com/docs/introduction/plans#projects)                                 | 100                                                                | 100                                        | 1,000 (can be increased on request)                                                                               |
 | [Branches](https://neon.com/docs/introduction/plans#branches)                                 | 10/project                                                         | 10/project                                 | 25/project                                                                                                        |
-| [Extra branches](https://neon.com/docs/introduction/plans#extra-branches)                     | —                                                                  | $1.50/branch-month (prorated hourly)       | $1.50/branch-month (prorated hourly)                                                                              |
+| [Extra branches](https://neon.com/docs/introduction/plans#extra-branches)                     | Not available                                                      | $1.50/branch-month (prorated hourly)       | $1.50/branch-month (prorated hourly)                                                                              |
 | [Compute](https://neon.com/docs/introduction/plans#compute)                                   | 100 CU-hours/project                                               | $0.106/CU-hour                             | $0.222/CU-hour                                                                                                    |
 | [Autoscaling](https://neon.com/docs/introduction/plans#autoscaling)                           | Up to 2 CU (8 GB RAM)                                              | Up to 16 CU (64 GB RAM)                    | Up to 16 CU autoscaling, or fixed sizes up to 56 CU (224 GB RAM)                                                  |
 | [Scale to zero](https://neon.com/docs/introduction/plans#scale-to-zero)                       | After 5 min                                                        | After 5 min, can be disabled               | Configurable (1 minute to always on)                                                                              |
 | [Storage](https://neon.com/docs/introduction/plans#storage)                                   | 1 GB/project, 20 GB account total                                  | $0.35/GB-month                             | $0.35/GB-month                                                                                                    |
 | [Public network transfer](https://neon.com/docs/introduction/plans#public-network-transfer)   | 5 GB per project included                                          | 500 GB per project included, then $0.10/GB | 500 GB per project included, then $0.10/GB                                                                        |
 | [Monitoring](https://neon.com/docs/introduction/plans#monitoring)                             | 1 day                                                              | 3 days                                     | 14 days                                                                                                           |
-| [Metrics/logs export](https://neon.com/docs/introduction/plans#metricslogs-export)            | —                                                                  | —                                          | ✅                                                                                                                 |
-| [Spending notifications](https://neon.com/docs/introduction/plans#spending-notifications)     | —                                                                  | ✅                                          | ✅                                                                                                                 |
-| [Instant restore](https://neon.com/docs/introduction/plans#instant-restore)                   | —                                                                  | $0.20/GB-month                             | $0.20/GB-month                                                                                                    |
-| [History window](https://neon.com/docs/introduction/plans#history-window)                     | 6 hours, up to 1 GB-month                                          | Up to 7 days                               | Up to 30 days                                                                                                     |
-| [Snapshots](https://neon.com/docs/introduction/plans#snapshots)                               | 1 manual snapshot                                                  | 100 manual snapshots                       | 100 manual snapshots                                                                                              |
-| [Auth](https://neon.com/docs/introduction/plans#auth)                                         | Up to 60k MAU                                                      | Up to 1M MAU                               | Up to 1M MAU                                                                                                      |
-| [Object Storage](https://neon.com/docs/introduction/plans#object-storage)                     | 5 GB included                                                      | $0.023/GB-month                            | $0.023/GB-month                                                                                                   |
+| [Metrics/logs export](https://neon.com/docs/introduction/plans#metricslogs-export)            | Not available                                                      | Not available                              | ✅                                                                                                                 |
+| [Spending notifications](https://neon.com/docs/introduction/plans#spending-notifications)     | Not available                                                      | ✅                                          | ✅                                                                                                                 |
+| [Instant restore](https://neon.com/docs/introduction/plans#instant-restore)                   | Not available                                                      | $0.20/GB-month                             | $0.20/GB-month                                                                                                    |
+| [History window](https://neon.com/docs/introduction/plans#history-window)                     | 6 hours, up to 1 GB of changes                                     | Up to 7 days                               | Up to 30 days                                                                                                     |
+| [Snapshots](https://neon.com/docs/introduction/plans#snapshots)                               | 1 manual snapshot                                                  | 100 manual snapshots, $0.09/GB-month       | 100 manual snapshots, $0.09/GB-month                                                                              |
+| [Auth](https://neon.com/docs/introduction/plans#auth)                                         | Up to 60k MAU/project                                              | Up to 1M MAU/project                       | Up to 1M MAU/project                                                                                              |
+| [Object Storage](https://neon.com/docs/introduction/plans#object-storage)                     | 5 GB/project                                                       | $0.023/GB-month                            | $0.023/GB-month                                                                                                   |
 | [Functions](https://neon.com/docs/introduction/plans#functions)                               | 10 active / 400 waiting Capacity-Hours, 1M invocations per project | $0.10/$0.025/Capacity-Hour, $0.60/M        | $0.12/$0.03/Capacity-Hour, $0.60/M                                                                                |
-| [AI Gateway](https://neon.com/docs/introduction/plans#ai-gateway)                             | —                                                                  | Prepaid credits                            | Prepaid credits                                                                                                   |
-| [Private network transfer](https://neon.com/docs/introduction/plans#private-network-transfer) | —                                                                  | —                                          | $0.01/GB                                                                                                          |
-| [Compliance and security](https://neon.com/docs/introduction/plans#compliance-and-security)   | —                                                                  | Protected branches                         | SOC 2, ISO, GDPR, [HIPAA](https://neon.com/docs/security/hipaa), Protected branches, IP Allow, Private Networking |
-| [Uptime SLA](https://neon.com/docs/introduction/plans#uptime-sla)                             | —                                                                  | —                                          | ✅                                                                                                                 |
+| [AI Gateway](https://neon.com/docs/introduction/plans#ai-gateway)                             | Not available                                                      | Prepaid credits                            | Prepaid credits                                                                                                   |
+| [Data API](https://neon.com/docs/introduction/plans#data-api)                                 | No separate charge                                                 | No separate charge                         | No separate charge                                                                                                |
+| [Realtime](https://neon.com/docs/introduction/plans#realtime)                                 | Free during beta                                                   | Free during beta                           | Free during beta                                                                                                  |
+| [Private network transfer](https://neon.com/docs/introduction/plans#private-network-transfer) | Not available                                                      | Not available                              | $0.01/GB                                                                                                          |
+| [Compliance and security](https://neon.com/docs/introduction/plans#compliance-and-security)   | Not available                                                      | Protected branches                         | SOC 2, ISO, GDPR, [HIPAA](https://neon.com/docs/security/hipaa), Protected branches, IP Allow, Private Networking |
+| [Uptime SLA](https://neon.com/docs/introduction/plans#uptime-sla)                             | Not available                                                      | Not available                              | ✅                                                                                                                 |
 | [Support](https://neon.com/docs/introduction/plans#support)                                   | Community                                                          | Billing support                            | Standard (additional options for higher-volume customers)                                                         |
+
+To upgrade or downgrade, go to **Billing** > **Change plan** in the [Neon Console](https://console.neon.tech/app/billing#change_plan). See [Change your plan](https://neon.com/docs/introduction/manage-billing#change-your-plan) for what happens to your resources when you switch.
 
 ## Plan features
 
@@ -124748,7 +124781,7 @@ See [Extra branches](https://neon.com/docs/introduction/plans#extra-branches) fo
 
 ### Extra branches
 
-On paid plans, you can create extra child branches. Extra branches beyond your plan's branch allowance (outlined [above](https://neon.com/docs/introduction/plans#-branches)) are billed in **branch-months**, metered hourly.
+On paid plans, you can create extra child branches. Extra branches beyond your plan's branch allowance (outlined [above](https://neon.com/docs/introduction/plans#branches)) are billed in **branch-months**, metered hourly.
 
 1 extra branch × 1 month = 1 branch-month
 
@@ -124898,7 +124931,7 @@ See [Spending notifications](https://neon.com/docs/introduction/spending-notific
 
 Neon stores a change history to support point-in-time restore (instant restore). You can only point-in-time restore from **root branches**, so PITR storage is charged only for root branches. Child branches do not add to this charge.
 
-- **Free**: No charge, 6-hour limit, capped at 1 GB of change history
+- **Free**: No charge, up to 6 hours, limited to 1 GB of change history per project
 - **Launch**: Up to 7 days, billed at $0.20/GB-month
 - **Scale**: Up to 30 days, billed at $0.20/GB-month
 
@@ -124912,7 +124945,7 @@ How far back **instant restore** can reach (and how much change history is retai
 
 The maximum history window per plan:
 
-- **Free**: No charge, 6-hour limit, capped at 1 GB-month of changes
+- **Free**: Up to 6 hours, limited to 1 GB of change history per project
 - **Launch**: Up to 7 days
 - **Scale**: Up to 30 days
 
@@ -124942,11 +124975,11 @@ Automated backup schedules are available on paid plans. On the Agent plan, they 
 
 Managed Better Auth is a managed authentication service built on [Better Auth](https://www.better-auth.com/), fully integrated into the Neon platform.
 
-Monthly Active User (MAU) limits per plan:
+Monthly Active User (MAU) limits per project:
 
-- **Free**: Up to 60,000 MAU
-- **Launch**: Up to 1M MAU ([request an increase in console](https://console.neon.tech/app/settings?modal=feedback\&modalparams=%22Neon%20auth%20limit%20increase%22) if you need more)
-- **Scale**: Up to 1M MAU ([request an increase in console](https://console.neon.tech/app/settings?modal=feedback\&modalparams=%22Neon%20auth%20limit%20increase%22) if you need more)
+- **Free**: Up to 60,000 MAU per project
+- **Launch**: Up to 1M MAU per project ([request an increase in console](https://console.neon.tech/app/settings?modal=feedback\&modalparams=%22Neon%20auth%20limit%20increase%22) if you need more)
+- **Scale**: Up to 1M MAU per project ([request an increase in console](https://console.neon.tech/app/settings?modal=feedback\&modalparams=%22Neon%20auth%20limit%20increase%22) if you need more)
 
 > An MAU (Monthly Active User) is a unique user who authenticates at least once during a monthly billing period.
 
@@ -124999,6 +125032,17 @@ Neon AI Gateway provides access to open-weight and foundation models from multip
 Prices match each provider's published list prices, with no additional markup, and draw down a prepaid credit balance you buy from the **Billing** page in the Neon Console.
 
 See [AI Gateway prepaid credits](https://neon.com/docs/ai-gateway/prepaid-credits) for pricing details, buying credits, and usage limits.
+
+### Data API
+
+The [Neon Data API](https://neon.com/docs/data-api/overview) lets you query your database over HTTP. It's available on all plans with no separate charge. The queries it runs use your database compute, so they count toward your [compute](https://neon.com/docs/introduction/plans#compute) usage like any other query. Responses count toward your [public network transfer](https://neon.com/docs/introduction/plans#public-network-transfer) allowance.
+
+### Realtime
+
+[Neon Realtime](https://neon.com/docs/realtime/overview) is free to use during the beta. Neon doesn't charge for the live query engine or the Live SQL API service. Your workload can still generate usage that's billed by your plan:
+
+- **Database compute**: starting a live query can wake your compute, which counts toward your [compute](https://neon.com/docs/introduction/plans#compute) usage.
+- **Network transfer**: data sent to clients counts toward your [public network transfer](https://neon.com/docs/introduction/plans#public-network-transfer) allowance.
 
 ### Private network transfer
 
@@ -125056,11 +125100,11 @@ Use the table below to understand how Console metrics map to invoice line items.
 | **Storage**          | Database storage (root branches), GB-month <br/> Database storage (child branches), GB-month                                                              |
 | **History**          | Database storage (instant restore), GB-month <br/> Database storage (snapshots), GB-month                                                                 |
 | **Network transfer** | Public network transfer, GB <br/> Private network transfer, GB (if [Private Networking](https://neon.com/docs/guides/neon-private-networking) is enabled) |
-| —                    | Database extra branches, branch-month                                                                                                                     |
-| —                    | Function compute (active), capacity-hour <br/> Function compute (waiting), capacity-hour <br/> Function invocations, million                              |
-| —                    | Object storage, GB-month                                                                                                                                  |
+| Not shown            | Database extra branches, branch-month                                                                                                                     |
+| Not shown            | Function compute (active), capacity-hour <br/> Function compute (waiting), capacity-hour <br/> Function invocations, million                              |
+| Not shown            | Object storage, GB-month                                                                                                                                  |
 
-**Note:** **Extra branches**, **Neon Functions**, and **Object Storage** do not appear in the Console usage summary but can appear on your invoice.
+**Note:** **Extra branches**, **Neon Functions**, and **Object Storage** don't appear in the Console usage summary but can appear on your invoice. AI Gateway usage draws down your [prepaid credit balance](https://neon.com/docs/ai-gateway/prepaid-credits) rather than appearing as a usage line item.
 
 ## Invoice metrics
 
@@ -125166,7 +125210,7 @@ CU-hours = compute size (in CU) × hours running
 Examples:  
 • 0.25 CU for 4 hours = 1 CU-hour  
 • 2 CU for 3 hours = 6 CU-hours  
-Your plan's compute price per CU-hour depends on whether you are on Launch or Scale. On the Free plan, you have 100 CU-hours/month included.
+Your plan's compute price per CU-hour depends on whether you are on Launch or Scale. On the Free plan, each project includes 100 CU-hours per month.
 
 ### How is storage usage billed in Neon?
 
@@ -125186,7 +125230,7 @@ Example: If your plan includes 10 branches and you run 2 extra branches for 5 ho
 ### How are instant restores billed?
 
 Neon charges for PITR (point-in-time restore) storage only for branches you can point-in-time restore from: root branches. The charge is based on the amount of change history retained on those branches, not the number of restores you perform. Child branches do not add to PITR storage charges.  
-• Free: Up to 6 hours of history, capped at 1 GB of changes, no charge.  
+• Free: Up to 6 hours of history, limited to 1 GB of changes per project, no charge.  
 • Launch: Up to 7 days of history, billed at $0.20/GB-month.  
 • Scale: Up to 30 days of history, billed at $0.20/GB-month.  
 Change history is stored as Postgres WAL records.
@@ -125211,7 +125255,7 @@ Each read replica is its own compute and contributes to CU-hours.
 
 ### Do public network transfer limits reset each month?
 
-Yes. Free includes 5 GB/month. Launch and Scale include 500 GB per project per month. Beyond that, it's $0.10/GB.
+Yes. Free includes 5 GB per project per month. Launch and Scale include 500 GB per project per month, then $0.10/GB.
 
 ### How is private network transfer billed?
 
@@ -125219,11 +125263,15 @@ Only available on Scale: $0.01/GB, bidirectional, between Neon and private netwo
 
 ### What are the limits and quotas for the Free plan?
 
-The Free plan costs $0/month and includes 100 projects, 10 branches per project, 100 CU-hours of compute per project per month, autoscaling up to 2 CU (≈8 GB RAM), 1 GB of Postgres storage per project (up to 20 GB total across all projects), and 5 GB of public network transfer per project per month. It also includes a 6-hour instant restore history (capped at 1 GB-month of changes), 1 manual snapshot, up to 60,000 Managed Better Auth MAU, 1 day of monitoring history, and community support. Scale to zero is always enabled (computes suspend after 5 minutes of inactivity) and can't be disabled. Compute (CU-hours) and network transfer reset each monthly billing period; projects, branches, and storage are continuous limits. For the full row-by-row breakdown, see the [Plan overview](https://neon.com/docs/introduction/plans#plan-overview) table.
+The Free plan costs $0/month and includes 100 projects, 10 branches per project, 100 CU-hours of compute per project per month, autoscaling up to 2 CU (≈8 GB RAM), 1 GB of Postgres storage per project (up to 20 GB total across all projects), and 5 GB of public network transfer per project per month. It also includes a 6-hour instant restore history (up to 1 GB of changes per project), 1 manual snapshot, up to 60,000 Managed Better Auth MAU per project, 1 day of monitoring history, and community support. Scale to zero is always enabled (computes suspend after 5 minutes of inactivity) and can't be disabled. Compute (CU-hours) and network transfer reset each monthly billing period; projects, branches, and storage are continuous limits. For the full row-by-row breakdown, see the [Plan overview](https://neon.com/docs/introduction/plans#plan-overview) table.
 
 ### What happens if I exceed my Free plan limits?
 
 On the Free plan, when you run out of CU-hours or public network transfer, your compute is suspended until the next billing period or until you upgrade. Exceeding the 1 GB per-project storage cap, or the 20 GB total cap across all your projects, causes operations that increase storage (inserts, updates, and deletes) to fail until you free space or upgrade. Branch creation fails once you reach 10 branches per project. None of these limits delete your data.
+
+### How do I upgrade or downgrade my plan?
+
+In the Neon Console, go to **Billing** and select **Change plan**. After an upgrade, a compute picks up the new plan limits (such as maximum compute size) the next time it restarts. Before you downgrade, remove any projects, branches, or data that exceed the new plan's allowances. See [Change your plan](https://neon.com/docs/introduction/manage-billing#change-your-plan).
 
 ### Do you charge for idle computes?
 
@@ -126025,7 +126073,19 @@ To receive status notifications, click **Subscribe** on the [Neon status page](h
 
 Last updated: 2026-10-28
 
-This page outlines Neon's support plans, available channels, and policies. To learn how to access support, please refer to the [Support channels](https://neon.com/docs/introduction/support#support-channels) section. Identify the channels available to you based on your plan and follow the links to navigate to the relevant information. To share ideas or report a docs gap without opening a support request, see [Send feedback](https://neon.com/docs/introduction/feedback).
+This page covers Neon's support plans, channels, and policies. To share ideas or report a docs gap without opening a support request, see [Send feedback](https://neon.com/docs/introduction/feedback).
+
+## Get help
+
+The help you can get depends on your plan:
+
+- **Free**: Ask questions on the [Neon Discord Server](https://neon.com/docs/introduction/support#neon-discord-server) or use [Neon AI chat assistance](https://neon.com/docs/introduction/support#neon-ai-chat-assistance).
+- **Launch**: Open [support tickets](https://neon.com/docs/introduction/support#support-tickets) for billing questions.
+- **Scale**: Open support tickets for any Neon issue.
+
+To open a support ticket, go to the [Neon Console](https://console.neon.tech) and select **Help** > **Get help** from the organization menu in the top right corner. See [Open the support center](https://neon.com/docs/introduction/support#open-the-support-center).
+
+Check the [Neon status page](https://neonstatus.com/) first if you think there's a service disruption.
 
 ## Support plans
 
@@ -126050,17 +126110,18 @@ The support channels you can access differ according to your [Support Plan](http
 | Support channels                                                                                                        | Community support | Billing support | Standard support |
 | :---------------------------------------------------------------------------------------------------------------------- | :---------------: | :-------------: | :--------------: |
 | [Neon Discord Server](https://neon.com/docs/introduction/support#neon-discord-server) (not an official channel)         |         ✓         |        ✓        |         ✓        |
-| [Neon AI Chat Assistance](https://neon.com/docs/introduction/support#neon-ai-chat-assistance) (not an official channel) |         ✓         |        ✓        |         ✓        |
+| [Neon AI chat assistance](https://neon.com/docs/introduction/support#neon-ai-chat-assistance) (not an official channel) |         ✓         |        ✓        |         ✓        |
 | [Support tickets](https://neon.com/docs/introduction/support#support-tickets)                                           |         -         |        \*       |         ✓        |
 | [Slack channel](https://neon.com/docs/introduction/support#slack-channel)                                               |         -         |        -        |       \*\*       |
 | [Dedicated Support Engineer](https://neon.com/docs/introduction/support#dedicated-support-engineer)                     |         -         |        -        |       \*\*       |
 
-* Under **Billing support** (Launch plan), you can only use [support tickets](https://neon.com/docs/introduction/support#support-tickets) for **billing-related** issues. **Scale** plan and higher can use support tickets for **any** Neon issue. On paid plans, **Request billing support** on the [Billing](https://neon.com/docs/introduction/manage-billing#view-the-billing-page) page is the dedicated path for invoice and billing questions.<br/>
+* Under **Billing support** (Launch plan), you can only use [support tickets](https://neon.com/docs/introduction/support#support-tickets) for **billing-related** issues. **Scale** plan and higher can use support tickets for **any** Neon issue. On paid plans, **Request billing support** on the [Billing](https://neon.com/docs/introduction/manage-billing#view-the-billing-page) page is the dedicated path for invoice and billing questions.
+
 ** [Slack channels](https://neon.com/docs/introduction/support#slack-channel) and [Dedicated Support Engineers](https://neon.com/docs/introduction/support#dedicated-support-engineer) are available for an additional fee, and with some Databricks support plans for [higher-volume customers](https://neon.com/docs/introduction/support#higher-volume-customers). [Contact sales](https://neon.com/contact-sales) to learn more.
 
 ### Neon Discord Server
 
-All Neon users have access to the [Neon Discord Server](https://neon.com/discord), where you can ask questions or see what others are doing with Neon. You will find Neon users and members of the Neon team actively engaged.
+All Neon users have access to the [Neon Discord Server](https://neon.com/discord), where you can ask questions in the **#support** channel or see what others are doing with Neon. You will find Neon users and members of the Neon team actively engaged.
 
 **Important:** The [Neon Discord Server](https://neon.com/discord) is not an official Neon Support channel.
 
@@ -126069,11 +126130,10 @@ All Neon users have access to the [Neon Discord Server](https://neon.com/discord
 Neon AI chat assistance is available to all Neon users. You can access it from these locations:
 
 - **Neon Console**: Open the [support center](https://neon.com/docs/introduction/support#open-the-support-center) and select **Ask the AI assistant**.
-- **Neon documentation**: Toggle **Ask Neon AI** on the [Neon documentation](https://neon.com/docs) site
-- **Discord**: Join the **#gpt-help** channel on the [Neon Discord server](https://neon.com/discord)
+- **Neon documentation**: Select **Ask AI** in the header of the [Neon documentation](https://neon.com/docs) site, or open search with **⌘K** (**Ctrl+K** on Windows and Linux) and ask Neon AI from there.
 - **Neon CLI**: Run [`neon ask`](https://neon.com/docs/cli/ask) to ask questions about Neon from your terminal
 
-Neon AI Chat assistants are updated regularly and built on various sources including the Neon documentation, the Neon website, the Neon API, and Neon GitHub repositories.
+Neon AI chat assistants are updated regularly and built on various sources including the Neon documentation, the Neon website, the Neon API, and Neon GitHub repositories.
 
 **Important:** Neon AI chat is not an official Neon Support channel.
 
@@ -126164,7 +126224,7 @@ We reserve the right to modify, amend, or update this Support Policy, including 
 
 ## Legacy enterprise support
 
-Customers on a legacy Enterprise plan can view support plan details in the following dropdown.
+Customers on a legacy Enterprise plan can view support plan details in the following dropdown. These terms, including the target response times, apply only to legacy Enterprise contracts. They don't apply to the Free, Launch, or Scale plans.
 
 <details>
 
@@ -129993,7 +130053,7 @@ Databases belong to a branch. If you create a child branch, databases from the p
 
 Neon supports creating and managing databases from the Neon Console, CLI, and API, and directly with [SQL](https://neon.com/docs/manage/databases#manage-databases-with-sql).
 
-The role that creates a database is automatically made the owner of that database. The `neon_superuser` role is also granted all privileges on databases created in the Neon Console. For information about this role, see [The neon_superuser role](https://neon.com/docs/manage/roles#the-neonsuperuser-role).
+The role that creates a database is automatically made the owner of that database. The `neon_superuser` role is also granted all privileges on databases created in the Neon Console, CLI, or API. Databases created with SQL don't receive this grant. For information about this role, see [The neon_superuser role](https://neon.com/docs/manage/roles#the-neonsuperuser-role).
 
 ## Create a database
 
@@ -130067,7 +130127,7 @@ For attribute definitions, find the [Create database](https://neon.com/docs/refe
 
 </details>
 
-**Note:** Some names are not permitted. See [Reserved database names](https://neon.com/docs/manage/databases#reserved-database-names).
+**Note:** Database names can't exceed 63 bytes, and some names aren't permitted. See [Reserved database names](https://neon.com/docs/manage/databases#reserved-database-names).
 
 ## View databases
 
@@ -130136,7 +130196,9 @@ For attribute definitions, find the [List databases](https://neon.com/docs/refer
 
 ## Update a database
 
-Rename a database with the [Update database](https://neon.com/docs/reference/api/branches/update-project-branch-database) endpoint, or with [SQL](https://neon.com/docs/manage/databases#rename-a-database-with-sql). This example renames `mydb` to `database1`:
+You can rename a database or change its owner with the [Update database](https://neon.com/docs/reference/api/branches/update-project-branch-database) endpoint. You can also rename a database with [SQL](https://neon.com/docs/manage/databases#rename-a-database-with-sql). The Neon CLI doesn't support updating a database.
+
+This example renames `mydb` to `database1`:
 
 ```bash
 curl -X PATCH 'https://console.neon.tech/api/v2/projects/dry-heart-13671059/branches/br-morning-meadow-afu2s1jl/databases/mydb' \
@@ -130185,9 +130247,23 @@ For attribute definitions, find the [Update database](https://neon.com/docs/refe
 
 </details>
 
+To change a database's owner, pass `owner_name`. This example makes `alex` the owner of `database1`:
+
+```bash
+curl -X PATCH 'https://console.neon.tech/api/v2/projects/dry-heart-13671059/branches/br-morning-meadow-afu2s1jl/databases/database1' \
+  -H 'Accept: application/json' \
+  -H "Authorization: Bearer $NEON_API_KEY" \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "database": {
+    "owner_name": "alex"
+  }
+}'
+```
+
 ## Delete a database
 
-Deleting a database is a permanent action. All database objects belonging to the database such as schemas, tables, and roles are also deleted.
+Deleting a database is a permanent action. All objects in the database, such as schemas, tables, and indexes, are also deleted. Roles aren't deleted, because roles belong to the branch, not the database.
 
 **Console**
 
@@ -130262,9 +130338,7 @@ CREATE DATABASE testdb;
 
 Most standard [Postgres CREATE DATABASE parameters](https://www.postgresql.org/docs/current/sql-createdatabase.html) are supported with the exception of `TABLESPACE`. This parameter requires access to the local file system, which is not permitted in Neon.
 
-The role that creates a database is the owner of the database.
-
-**Note:** As of Postgres 15, only a database owner has the `CREATE` privilege on a database's `public` schema. For other users, the `CREATE` privilege on the `public` schema must be granted explicitly via a `GRANT CREATE ON SCHEMA public TO <username>;` statement. For more information, see [Public schema privileges](https://neon.com/docs/manage/database-access#public-schema-privileges).
+The role that creates a database is the owner of the database. As noted at the top of this page, only the database owner can create objects in the `public` schema on Postgres 15 and later unless you grant `CREATE` to other roles.
 
 For more information about database object privileges in Postgres, see [Privileges](https://www.postgresql.org/docs/current/ddl-priv.html).
 
@@ -130305,7 +130379,7 @@ The workaround is to introduce a shared group role that both roles belong to. Yo
 
 **Note:** In the example below, `current_owner`, `new_owner`, and `table_owners` are placeholder role and group names. Replace them with names from your own environment.
 
-1. Connect as the database owner role and run:
+1. Connect as the owner of the database (or another role that can create roles) and run:
 
    ```sql
    -- Create a group role with no login
@@ -130321,7 +130395,7 @@ The workaround is to introduce a shared group role that both roles belong to. Yo
 
    Replace `current_owner` and `new_owner` with the actual role names.
 
-2. Still connected as `current_owner`, transfer the table to the group:
+2. Connect as `current_owner` and transfer the table to the group:
 
    ```sql
    ALTER TABLE your_table OWNER TO table_owners;
@@ -130341,13 +130415,14 @@ The workaround is to introduce a shared group role that both roles belong to. Yo
 
    The **Owner** column should now show `new_owner`.
 
-5. Leave the `table_owners` group role in place if you need to transfer other tables later, or drop it when you're done:
+5. Leave the `table_owners` group role in place if you need to transfer other tables later, or drop it when you're done. Revoke its schema privileges first, or `DROP ROLE` fails:
 
    ```sql
+   REVOKE ALL ON SCHEMA public FROM table_owners;
    DROP ROLE table_owners;
    ```
 
-   `DROP ROLE table_owners` works only after that role no longer owns any objects and has no blocking dependencies.
+   `DROP ROLE` also fails if the role still owns objects.
 
 ### Transfer ownership for multiple objects
 
@@ -130368,8 +130443,6 @@ Then connect as `new_owner` and move those objects from the group to the destina
 ```sql
 REASSIGN OWNED BY table_owners TO new_owner;
 ```
-
-`REASSIGN OWNED` applies within the current database context. Run it in each database where you need to transfer ownership.
 
 **Note:**
 
@@ -133066,7 +133139,11 @@ Your Postgres role and roles created in the Neon Console, API, and CLI are grant
 
 **Note:** Neon is a managed Postgres service, so you cannot access the host operating system, and you can't connect using the Postgres `superuser` account like you can in a standalone Postgres installation.
 
-You can create roles in a project's default branch or child branches. Neon enforces a limit of 500 roles per branch.
+**Which method should I use?:**
+
+Roles you create in the Neon Console, CLI, or API are administrator roles with [neon_superuser](https://neon.com/docs/manage/roles#the-neonsuperuser-role) privileges. To create a role with limited privileges, such as a read-only role for an app or analyst, [use SQL](https://neon.com/docs/manage/roles#manage-roles-with-sql) and grant only the privileges it needs.
+
+You can create roles in a project's default branch or child branches. Neon enforces a limit of 500 roles per branch. Internal roles that Neon manages, such as `neon_service`, don't count toward this limit.
 
 In Neon, roles belong to a branch, which could be your production branch or a child branch. When you create a child branch, roles in the parent branch are duplicated in the child branch. For example, if role `alex` exists in the parent branch, role `alex` is copied to the child branch when the child branch is created. The only time this does not occur is when you create a branch that only includes data up to a particular point in time. If the role was created in the parent branch after that point in time, it is not duplicated in the child branch.
 
@@ -133077,7 +133154,7 @@ Neon supports creating and managing roles from the following interfaces:
 
 ## The neon_superuser role
 
-Roles created in the Neon Console, CLI, or API, including the role created with a Neon project, are granted membership in the `neon_superuser` role. Users cannot login as `neon_superuser`, but they inherit the privileges assigned to this role. The privileges and predefined role memberships granted to `neon_superuser` include:
+Roles created in the Neon Console, CLI, or API, including the role created with a Neon project, are granted membership in the `neon_superuser` role. Users can't log in as `neon_superuser`, but they inherit the privileges assigned to this role. The privileges and predefined role memberships granted to `neon_superuser` include:
 
 - `CREATEDB`: Provides the ability to create databases.
 - `CREATEROLE`: Provides the ability to create new roles (which also means it can alter and drop roles).
@@ -133098,7 +133175,7 @@ Roles created in the Neon Console, CLI, or API, including the role created with 
 
 You can think of roles with `neon_superuser` privileges as administrator roles. If you require roles with limited privileges, such as a read-only role, you can create those roles from an SQL client. For more information, see [Manage database access](https://neon.com/docs/manage/database-access).
 
-**Note:** Creating a database with the `neon_superuser` role, altering a database to have owner `neon_superuser`, and altering the `neon_superuser role` itself are _not_ permitted. This `NOLOGIN` role is not intended to be used directly or modified.
+**Note:** Creating a database with the `neon_superuser` role, altering a database to have owner `neon_superuser`, and altering the `neon_superuser` role itself are _not_ permitted. This `NOLOGIN` role is not intended to be used directly or modified.
 
 You may also see internal roles Neon uses to operate your project, such as `neon_service`. They act on your behalf (which is why they can appear with `neon_superuser` membership); their credentials are managed by Neon, and they are not intended for you to use or modify.
 
@@ -133177,7 +133254,7 @@ For attribute definitions, find the [Create role](https://neon.com/docs/referenc
 
 </details>
 
-**Note:** Role names cannot exceed 63 characters, and some names are not permitted. See [Reserved role names](https://neon.com/docs/manage/roles#reserved-role-names).
+**Note:** Role names can't exceed 63 bytes, and some names aren't permitted. See [Reserved role names](https://neon.com/docs/manage/roles#reserved-role-names).
 
 ### List roles
 
@@ -133305,6 +133382,32 @@ For attribute definitions, find the [Delete role](https://neon.com/docs/referenc
 
 </details>
 
+### Get a role's password
+
+To see the password for an existing role, use the Console, CLI, or API.
+
+**Console**
+
+Click **Connect** on your project dashboard, select the branch, database, and role, and copy the connection string. The password is included in the connection string.
+
+**CLI**
+
+Get a connection string that includes the role's password with [`neon connection-string`](https://neon.com/docs/cli/connection-string):
+
+```bash
+neon connection-string --role-name alex
+```
+
+**API**
+
+Get a role's password with the [Reveal role password](https://neon.com/docs/reference/api/branches/get-project-branch-role-password) endpoint:
+
+```bash
+curl 'https://console.neon.tech/api/v2/projects/dry-heart-13671059/branches/br-morning-meadow-afu2s1jl/roles/alex/reveal_password' \
+  -H 'Accept: application/json' \
+  -H "Authorization: Bearer $NEON_API_KEY" | jq
+```
+
 ### Reset a password
 
 You can reset a role's password from the Neon Console or API. There's no CLI command for this operation. Resetting in the Console sets a generated password; to set your own value, use [SQL](https://neon.com/docs/manage/roles#manage-roles-with-sql).
@@ -133369,7 +133472,7 @@ For attribute definitions, find the [Reset role password](https://neon.com/docs/
 Resetting a password in the Neon Console resets the password to a generated value. To set your own password value, you can reset the password using the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor) or an SQL client like [psql](https://neon.com/docs/connect/query-with-psql-editor) with the following syntax:
 
 ```sql
-ALTER USER user_name WITH PASSWORD 'new_password';
+ALTER ROLE role_name WITH PASSWORD 'new_password';
 ```
 
 For password requirements, see [Manage roles with SQL](https://neon.com/docs/manage/roles#manage-roles-with-sql).
@@ -133405,7 +133508,7 @@ CREATE ROLE <name> WITH LOGIN PASSWORD 'password';
     - Sequential patterns (such as `1234`, `abcd`, `qwerty`)
     - Common words or phrases
     - Any words found in a dictionary
-    - **Avoid character repetition**: To maximize randomness, do not use the same character more than twice consecutively.
+  - **Avoid character repetition**: To maximize randomness, do not use the same character more than twice consecutively.
 
   Example password: `T3sting!23Ab` (DO NOT USE THIS EXAMPLE PASSWORD)
 
@@ -133413,9 +133516,17 @@ CREATE ROLE <name> WITH LOGIN PASSWORD 'password';
 
   The guidelines should help you create a password with approximately 60 bits of entropy. However, depending on the exact characters used, the actual entropy might vary slightly. Always aim for a longer and more complex password if you're uncertain. It's also recommended to use a trusted password manager to create and store your complex passwords safely.
 
-  Neon also supports the `NOLOGIN` option: `CREATE ROLE role_name NOLOGIN;` This allows you to define roles that cannot authenticate but can be granted privileges.
+For example, to create a read-only role for one schema:
 
-For role creation and access management examples, refer to the [Manage database access](https://neon.com/docs/manage/database-access) guide.
+```sql
+CREATE ROLE readonly_user WITH LOGIN PASSWORD '<password>';
+GRANT CONNECT ON DATABASE <database> TO readonly_user;
+GRANT USAGE ON SCHEMA <schema> TO readonly_user;
+GRANT SELECT ON ALL TABLES IN SCHEMA <schema> TO readonly_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA <schema> GRANT SELECT ON TABLES TO readonly_user;
+```
+
+`ALTER DEFAULT PRIVILEGES` applies to tables created later by the role that runs it. For read-write and developer roles, and for using group roles to manage many users, see [Manage database access](https://neon.com/docs/manage/database-access).
 
 ## Creating NOLOGIN roles
 
@@ -133442,6 +133553,8 @@ The following names are reserved and cannot be given to a role:
 - `zenith_admin`
 - `public`
 - `none`
+- `web_access`
+- `token_roles`
 
 --- [Document source](https://neon.com/docs/manage/updates.md) ---
 
@@ -141568,7 +141681,7 @@ Last updated: 2026-10-30
 
 **Realtime** is in beta. Share your feedback on [Discord](https://neon.com/discord) or via the [Neon Console](https://console.neon.tech/app/projects?modal=feedback).
 
-Build apps and agents whose UIs update the moment your data changes. Realtime makes [any SQL query](./guides/queries) live, so you can [subscribe](./guides/subscribing) to your [Lakebase Postgres](https://neon.com/docs/postgres/overview) database and get end-to-end, type-safe reactivity with [live queries](./guides/reactivity) and [optimistic mutations](./guides/mutations).
+Build apps and agents whose UIs update the moment your data changes. Realtime makes [any SQL query](https://neon.com/docs/realtime/guides/queries) live, so you can [subscribe](https://neon.com/docs/realtime/guides/subscribing) to your [Lakebase Postgres](https://neon.com/docs/postgres/overview) database and get end-to-end, type-safe reactivity with [live queries](https://neon.com/docs/realtime/guides/reactivity) and [optimistic mutations](https://neon.com/docs/realtime/guides/mutations).
 
 [View prompt](https://neon.com/prompts/realtime-landing.md)
 
@@ -141580,12 +141693,23 @@ Starting a new app? Scaffold one from the Realtime template:
 npx neon@latest bootstrap my-app --template realtime-react
 ```
 
-To add Realtime to an app by hand, follow the [Quickstart](./quickstart). To see how the pieces fit together, read [how it works](./how-it-works).
+Realtime is available on all Neon plans. To enable it on an existing project, select **Postgres database** > **Realtime** in the Neon Console and click **Enable Realtime**, or run [`neon realtime enable`](https://neon.com/docs/cli/realtime#enable) on a linked project:
+
+```bash filename="Terminal"
+neon realtime enable
+```
+
+**Important: Before you enable Realtime**
+
+- Your project must be in a [supported region](https://neon.com/docs/realtime/overview#which-regions-is-it-enabled-in).
+- Enabling Realtime turns on [logical replication](https://neon.com/docs/guides/logical-replication-neon) for the whole project. This permanently changes `wal_level` to `logical` and suspends every compute in the project, on all branches, which drops active connections. Each compute starts again on its next connection. Disabling Realtime later doesn't turn logical replication off.
+
+To add Realtime to an app by hand, follow the [Quickstart](https://neon.com/docs/realtime/quickstart). To see how the pieces fit together, read [how it works](https://neon.com/docs/realtime/how-it-works).
 
 - [Quickstart](https://neon.com/docs/realtime/quickstart): Fire up Realtime and run your first live queries.
 - [How it works](https://neon.com/docs/realtime/how-it-works): Learn how it works and how the layers compose.
 
-See examples of how to build full-stack, reactive apps with [Next.js](./examples/nextjs) and [TanStack](./examples/tanstack) and how to [keep users and agents in sync](./examples/mastra) with Mastra.
+See examples of how to build full-stack, reactive apps with [Next.js](https://neon.com/docs/realtime/examples/nextjs) and [TanStack](https://neon.com/docs/realtime/examples/tanstack) and how to [keep users and agents in sync](https://neon.com/docs/realtime/examples/mastra) with Mastra.
 
 - [Next.js](https://neon.com/docs/realtime/examples/nextjs): Build a realtime, reactive app using Next.js with SSR support.
 - [TanStack](https://neon.com/docs/realtime/examples/tanstack): Build a realtime, reactive app using TanStack Start and DB.
@@ -141593,7 +141717,7 @@ See examples of how to build full-stack, reactive apps with [Next.js](./examples
 
 ## Realtime live SQL
 
-Realtime offers [arbitrary live SQL](./guides/queries) with [full reactivity](./guides/reactivity) on Lakebase Postgres. It allows you to build realtime, reactive apps and agents:
+Realtime offers [arbitrary live SQL](https://neon.com/docs/realtime/guides/queries) with [full reactivity](https://neon.com/docs/realtime/guides/reactivity) on Lakebase Postgres. It allows you to build realtime, reactive apps and agents:
 
 - without using a second or bespoke realtime system
 - without changing your schema, queries, ORM or reactivity system
@@ -141603,9 +141727,9 @@ There is no need to use a different database for realtime sync. You can reuse yo
 
 ## Integrated reactive DX
 
-[Define](./guides/queries) and [subscribe to queries](./guides/subscribing) directly. Or use the batteries included: [end-to-end, type-safe reactivity](./guides/reactivity) and [mutation](./guides/mutations) primitives that integrate into your framework of choice.
+[Define](https://neon.com/docs/realtime/guides/queries) and [subscribe to queries](https://neon.com/docs/realtime/guides/subscribing) directly. Or use the batteries included: [end-to-end, type-safe reactivity](https://neon.com/docs/realtime/guides/reactivity) and [mutation](https://neon.com/docs/realtime/guides/mutations) primitives that integrate into your framework of choice.
 
-In your backend, [define live queries](./guides/queries) using raw SQL or your ORM of choice (in this case [Drizzle](./examples/drizzle)):
+In your backend, [define live queries](https://neon.com/docs/realtime/guides/queries) using raw SQL or your ORM of choice (in this case [Drizzle](https://neon.com/docs/realtime/examples/drizzle)):
 
 ```ts filename="your-api-server.ts"
 import { createRealtime } from "@neon/realtime/server"
@@ -141617,13 +141741,14 @@ const realtime = createRealtime({
   adapter: drizzleAdapter()
 })
 
+// `db` is your Drizzle instance and `messages` is a Drizzle table.
 // This can be any SQL query, including joins, aggregates, ordering, etc.
 const query = db.select().from(messages)
 ```
 
 ---
 
-[Seal the live queries](./guides/queries#sealing-queries) to safely [expose them to your frontend](./guides/queries#exposing-queries):
+[Seal the live queries](https://neon.com/docs/realtime/guides/queries#sealing-queries) to safely [expose them to your frontend](https://neon.com/docs/realtime/guides/queries#exposing-queries):
 
 ```ts filename="your-api-server.ts"
 const sealedQuery = await realtime.seal({ query })
@@ -141631,7 +141756,7 @@ const sealedQuery = await realtime.seal({ query })
 
 ---
 
-Subscribe directly [using a low‑level client](./guides/subscribing):
+Subscribe directly [using a low‑level client](https://neon.com/docs/realtime/guides/subscribing):
 
 ```ts filename="client-or-server.ts"
 import { createRealtimeClient } from "@neon/realtime/client"
@@ -141644,7 +141769,7 @@ subscription.onChange(console.log)
 
 ---
 
-Or, in your app, use the [higher-level reactivity primitives](./guides/reactivity) to bind live queries to your component state:
+Or, in your app, use the [higher-level reactivity primitives](https://neon.com/docs/realtime/guides/reactivity) to bind live queries to your component state:
 
 ```tsx filename="App.tsx"
 import { useLiveQuery } from "@neon/realtime-react"
@@ -141670,7 +141795,7 @@ export function Messages({ sealedQuery, initialData }: Props) {
 
 ---
 
-Optionally passing in the `initialData` from SSR (e.g.: with [TanStack Start](./examples/tanstack)):
+Optionally passing in the `initialData` from SSR (e.g.: with [TanStack Start](https://neon.com/docs/realtime/examples/tanstack)):
 
 ```tsx filename="routes/messages.tsx"
 import { createFileRoute } from "@tanstack/react-router"
@@ -141690,7 +141815,7 @@ export const Route = createFileRoute("/messages")({
 
 ---
 
-Or for more [advanced use](./guides/reactivity#tanstack-db), sync the live query into a [TanStack DB collection](https://tanstack.com/db/latest/docs/overview):
+Or for more [advanced use](https://neon.com/docs/realtime/guides/reactivity#tanstack-db), sync the live query into a [TanStack DB collection](https://tanstack.com/db/latest/docs/overview):
 
 ```ts filename="db/collections.ts"
 import { createCollection } from "@tanstack/db"
@@ -141714,7 +141839,7 @@ export const messagesCollection = createCollection(
 
 ---
 
-Bind that to your components and benefit from instant local writes using [optimistic mutations](./guides/mutations):
+Bind that to your components and benefit from instant local writes using [optimistic mutations](https://neon.com/docs/realtime/guides/mutations):
 
 ```tsx filename="App.tsx"
 import { useLiveQuery } from "@tanstack/react-db"
@@ -141742,7 +141867,7 @@ export function Messages() {
 
 ---
 
-That's it. You get [live SQL](./guides/queries#defining-live-queries) and [end-to-end reactivity](./guides/reactivity) on standard Postgres. With full type-safety and support for [SSR](./guides/ssr), [instant local writes](./guides/mutations), [multi-user, multi-device sync](./how-it-works) and [local offline persistence](https://tanstack.com/blog/tanstack-db-0.6-app-ready-with-persistence-and-includes).
+That's it. You get [live SQL](https://neon.com/docs/realtime/guides/queries#defining-live-queries) and [end-to-end reactivity](https://neon.com/docs/realtime/guides/reactivity) on standard Postgres. With full type-safety and support for [SSR](https://neon.com/docs/realtime/guides/ssr), [instant local writes](https://neon.com/docs/realtime/guides/mutations), [multi-user, multi-device sync](https://neon.com/docs/realtime/how-it-works) and [local offline persistence](https://tanstack.com/blog/tanstack-db-0.6-app-ready-with-persistence-and-includes).
 
 ## Agent skills and MCP
 
@@ -141760,16 +141885,16 @@ Answers to frequently asked questions about Realtime:
 
 Functionally, Realtime already supports:
 
-- arbitrary live SQL (any [read-only, deterministic `SELECT`](./guides/queries#defining-live-queries))
-- [end-to-end, type-safe reactivity](./guides/reactivity)
-- [SSR](./guides/ssr) and [Managed Better Auth](./guides/queries#authorization) support
-- initial [ORM, query builder](https://neon.com/docs/realtime/guides/queries#using-a-query-builder-or-orm) and [framework integrations](./guides/reactivity#react)
+- arbitrary live SQL (any [read-only, deterministic `SELECT`](https://neon.com/docs/realtime/guides/queries#defining-live-queries))
+- [end-to-end, type-safe reactivity](https://neon.com/docs/realtime/guides/reactivity)
+- [SSR](https://neon.com/docs/realtime/guides/ssr) and [Managed Better Auth](https://neon.com/docs/realtime/guides/queries#authorization) support
+- initial [ORM, query builder](https://neon.com/docs/realtime/guides/queries#using-a-query-builder-or-orm) and [framework integrations](https://neon.com/docs/realtime/guides/reactivity#react)
 - support for branching and scale-to-zero
 
 Realtime **does not** yet support:
 
 - billing (Realtime is free to use during the beta)
-- RLS (we [aim to support it by GA](./guides/queries#why-not-row-level-security), if priorities allow)
+- RLS (we [aim to support it by GA](https://neon.com/docs/realtime/guides/queries#why-not-row-level-security), if priorities allow)
 - Lakebase Postgres on Databricks (Realtime is available only on Neon for now)
 
 The transport protocol is not yet stable and we aim to add wider client and framework integrations for GA.
@@ -141778,7 +141903,7 @@ The beta also makes no performance guarantees. We have very ambitious performanc
 
 ### How much does it cost? Is billing enabled?
 
-Realtime is free to use during the beta. Neon does not charge for the live query engine compute or the Live SQL API service.
+Realtime is available on all Neon plans and is free to use during the beta. Neon does not charge for the live query engine compute or the Live SQL API service.
 
 Using Realtime can still cause usage on your database:
 
@@ -141791,13 +141916,13 @@ The beta waiver applies to the Realtime service itself. It does not waive databa
 
 Realtime switches the cost of queries from "query-execution on read" to "incremental cost on write". However that cost is incurred on a replica, which means Realtime has zero impact on the write-latency, write-throughput or write-compute of your primary database.
 
-Realtime does require logical replication to be enabled. Technically, this adds a small metadata overhead to the Postgres WAL. For more information, see [Table requirements](./guides/queries#table-requirements).
+Realtime does require logical replication to be enabled. Technically, this adds a small metadata overhead to the Postgres WAL. For more information, see [Table requirements](https://neon.com/docs/realtime/guides/queries#table-requirements).
 
 ### Can I use my ORM / query-builder?
 
-Yes. Realtime works with SQL, so any library that generates SQL can work with it. There are built-in adapters for [Drizzle](./examples/drizzle) and [Kysely](./examples/kysely), and you can write your own for other libraries.
+Yes. Realtime works with SQL, so any library that generates SQL can work with it. There are built-in adapters for [Drizzle](https://neon.com/docs/realtime/examples/drizzle) and [Kysely](https://neon.com/docs/realtime/examples/kysely), and you can write your own for other libraries.
 
-See [Using a query builder or ORM](./guides/queries#using-a-query-builder-or-orm) for how to set one up, and the [`RealtimeAdapter`](./sdks/typescript#backend-realtimeadapter) reference for the interface.
+See [Using a query builder or ORM](https://neon.com/docs/realtime/guides/queries#using-a-query-builder-or-orm) for how to set one up, and the [`RealtimeAdapter`](https://neon.com/docs/realtime/sdks/typescript#backend-realtimeadapter) reference for the interface.
 
 ### What SQL features are supported? Are there limitations?
 
@@ -141805,13 +141930,13 @@ Realtime supports any read-only, deterministic SQL query that [Postgres supports
 
 Queries can't have side effects, and any functions they use must be deterministic, so you can't use `now()` or `gen_random_uuid()`. Complex queries add write-processing latency, especially on larger datasets.
 
-See [Defining live queries](./guides/queries#defining-live-queries) for the details.
+See [Defining live queries](https://neon.com/docs/realtime/guides/queries#defining-live-queries) for the details.
 
 ### Is Realtime enabled by default?
 
 No. You enable it per project and branch. Child branches created from a Realtime-enabled branch have it enabled automatically.
 
-Enable it on a branch with [`neon realtime enable`](https://neon.com/docs/cli/realtime#enable). Or, if you manage your project with `neon.ts`, declare it with `neon config add realtime` and apply it with `neon deploy`. You can also enable it in the Neon Console. See the [Quickstart](./quickstart) for more details.
+Enable it on a branch with [`neon realtime enable`](https://neon.com/docs/cli/realtime#enable). Or, if you manage your project with `neon.ts`, declare it with `neon config add realtime` and apply it with `neon deploy`. You can also enable it in the Neon Console. See the [Quickstart](https://neon.com/docs/realtime/quickstart) for more details.
 
 Realtime isn't available on [Claimable projects](https://neon.com/docs/reference/claimable-neon) until they're claimed.
 
@@ -141830,9 +141955,9 @@ See [product availability](https://neon.com/docs/introduction/regions#product-av
 
 ### Does Realtime support RLS?
 
-Not yet. Realtime has been architected to support RLS and we aim to add it by GA if priorities allow. However, it's not yet been implemented and isn't the [recommended approach to auth](./guides/queries#authorization).
+Not yet. Realtime has been architected to support RLS and we aim to add it by GA if priorities allow. However, it's not yet been implemented and isn't the [recommended approach to auth](https://neon.com/docs/realtime/guides/queries#authorization).
 
-See [Why not row-level security](./guides/queries#why-not-row-level-security) for more details.
+See [Why not row-level security](https://neon.com/docs/realtime/guides/queries#why-not-row-level-security) for more details.
 
 ### Does Realtime support branching?
 
@@ -141864,13 +141989,13 @@ We don't speak for other systems. However, we have tried to articulate the key d
 
 [Supabase Realtime](https://supabase.com/docs/guides/realtime) is a pubsub system with replay. It pushes messages and database changes to connected clients. Subscriptions can filter on column values but can't join, aggregate, order, limit or run arbitrary queries.
 
-Neon Realtime is a sync engine that supports [arbitrary live SQL queries](./guides/queries#defining-live-queries), including joins, aggregates, ordering and limits. The system keeps live query results consistently in sync with the database and provides type-safe primitives for [end-to-end reactivity](./guides/reactivity) and [instant local writes](./guides/mutations).
+Neon Realtime is a sync engine that supports [arbitrary live SQL queries](https://neon.com/docs/realtime/guides/queries#defining-live-queries), including joins, aggregates, ordering and limits. The system keeps live query results consistently in sync with the database and provides type-safe primitives for [end-to-end reactivity](https://neon.com/docs/realtime/guides/reactivity) and [instant local writes](https://neon.com/docs/realtime/guides/mutations).
 
 ---
 
 #### Convex
 
-Compared with [Convex](https://www.convex.dev), Neon Realtime supports similar [end-to-end reactivity](./guides/reactivity) but on standard Postgres and with standard web frameworks and build tooling. Realtime also uses delta-sync rather than query-invalidation, which is more efficient over the wire.
+Compared with [Convex](https://www.convex.dev), Neon Realtime supports similar [end-to-end reactivity](https://neon.com/docs/realtime/guides/reactivity) but on standard Postgres and with standard web frameworks and build tooling. Realtime also uses delta-sync rather than query-invalidation, which is more efficient over the wire.
 
 ---
 
@@ -141888,14 +142013,11 @@ Compared with [Materialize](https://materialize.com), Neon Realtime is a similar
 
 Realtime isn't based on [Electric](https://neon.com/blog/electric-joins-neon), but it **is a drop-in replacement** for Electric's role in your stack. We recommend that teams using Electric migrate to Realtime.
 
-Live SQL queries replace shapes. For TanStack DB users, [`realtimeCollectionOptions()`](./sdks/typescript#tanstack-db-realtimecollectionoptions) replaces `electricCollectionOptions()`.
+Live SQL queries replace shapes. For TanStack DB users, [`realtimeCollectionOptions()`](https://neon.com/docs/realtime/sdks/typescript#tanstack-db-realtimecollectionoptions) replaces `electricCollectionOptions()`.
 
 ## Next steps
 
-[Get started](./quickstart) with Realtime and learn more about [how it works](./how-it-works).
-
-- [Quickstart](https://neon.com/docs/realtime/quickstart): Fire up Realtime and run your first live queries.
-- [How it works](https://neon.com/docs/realtime/how-it-works): Learn how it works and how the layers compose.
+[Get started](https://neon.com/docs/realtime/quickstart) with Realtime and learn more about [how it works](https://neon.com/docs/realtime/how-it-works).
 
 --- [Document source](https://neon.com/docs/realtime/quickstart.md) ---
 
@@ -144417,7 +144539,7 @@ neon claim create \
   --env-pull
 ```
 
-`neon claim create` uses `aws-us-east-2` unless you pass `--region-id`, for example `--region-id aws-eu-central-1`.
+`neon claim create` uses `aws-us-east-2` unless you pass `--region-id`, for example `--region-id aws-eu-central-1`. Pass `--project-name` to name the project; it keeps the name after the claim.
 
 The CLI saves the project's identity assertion in its secure credential store. Existing commands then use the claimable project automatically:
 
@@ -144488,7 +144610,7 @@ Content-Type: application/json
 
 `postgres` is always requested. Add `data_api` or `auth` only when the app needs them.
 
-`region_id` is optional. Without it, the project is created in `aws-us-east-2`. Pass any AWS [region](https://neon.com/docs/introduction/regions) that accepts new projects, for example `"region_id": "aws-eu-central-1"`.
+`region_id` is optional. Without it, the project is created in `aws-us-east-2`. Pass any AWS [region](https://neon.com/docs/introduction/regions) that accepts new projects, for example `"region_id": "aws-eu-central-1"`. `project_name` is optional too and stays the project's name after the claim.
 
 The response has this shape:
 

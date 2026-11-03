@@ -1258,6 +1258,9 @@ components:
           description: >-
             Configuration for soft timeout functionality. Provides immediate
             feedback during longer LLM responses.
+        noisy_environment_message:
+          type: string
+          description: What the agent says when it detects a noisy environment.
       description: Configuration for turn detection
       title: ConversationInitiationClientDataConversationConfigOverrideTurn
     ConversationInitiationClientDataConversationConfigOverrideTtsModelId:
@@ -1429,6 +1432,7 @@ components:
         - gpt-6-sol
         - gpt-6-luna
         - gpt-6.1-sol
+        - gpt-6.1-terra
         - gpt-5-mini
         - gpt-5-nano
         - gpt-3.5-turbo

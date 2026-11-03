@@ -6,8 +6,6 @@ path: api-reference/get-response
 
 get /v1/responses/{response_id}
 
-
-
 # CRUD APIs for routers.
 Get Router
 Source: https://docs.fireworks.ai/api-reference/get-router

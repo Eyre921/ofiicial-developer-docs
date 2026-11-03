@@ -112,17 +112,6 @@ All Fireworks on Foundry usage is billed through Azure. You do not need a separa
 | Custom Model deployment failing | Confirm weights are full-weight (not LoRA adapters) and the architecture is in the [supported list](https://learn.microsoft.com/en-us/azure/foundry/how-to/fireworks/enable-fireworks-models#supported-model-architectures) |
 | PTU provisioning questions | [Contact us](https://fireworks.ai/contact) |
 
-## Coding harnesses
-
-Use your Foundry deployments from Claude Code, OpenCode, Cursor IDE, VS Code, and other coding harnesses.
-
-> [card] [Nexus for Microsoft Foundry](/nexus/microsoft-foundry)
->
-> Connect with Nexus CLI, configure a harness manually, or route Claude Code
-> through an LLM gateway.
-
-This page covers enabling and operating Fireworks models in Foundry itself.
-
 ## Additional resources
 
 * [Enable Fireworks on Foundry (Microsoft Learn)](https://learn.microsoft.com/en-us/azure/foundry/how-to/fireworks/enable-fireworks-models)

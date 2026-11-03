@@ -4,51 +4,22 @@ source: https://docs.fireworks.ai/nexus
 path: nexus
 ---
 
-Use Fireworks open models and Nexus Auto in Claude Code, ChatGPT, and your other AI tools, with Provider Keys and Spend Limits for admins.
+Use Nexus Auto in Claude Code, ChatGPT, Codex, and the tools you already use. Every task gets the right model, open or closed, at the lowest cost.
 
-> [card] [Connect your tool in a few minutes](/nexus/quickstart)
+> [card] [Connect your tool](/nexus/quickstart)
 >
-> Pick Claude Code, ChatGPT, Cursor IDE, or another harness, then follow its setup.
+> Choose Claude Code, ChatGPT, Cursor IDE, or another harness, and follow its setup steps.
 
 ## Who Nexus is for
 
-> [card] Developers
->
-> Keep Claude Code, ChatGPT, Codex, Cursor IDE, or VS Code. Run one command, and Fireworks open models appear in your model picker next to the models you use today. Run one more command to get your original settings back.
+* **Developers:** a Nexus CLI command adds Nexus Auto to your tool's model picker next to the models you use today. A second command restores your original settings.
+* **Team admins:** connect an Anthropic, OpenAI, or Amazon Bedrock account once for the whole team, and view usage by model and by user. On Enterprise, admins can also cap each person's spend on Fireworks models.
 
-> [card] Team admins
->
-> Connect your Anthropic, OpenAI, or Amazon Bedrock account once for the whole team. Cap each person's spend on Fireworks models, and see usage by model and by user.
+Nexus has its own app at [nexus.fireworks.ai](https://nexus.fireworks.ai), with Pro, Team, and Enterprise [plans](/nexus/plans). A Nexus account is separate from a Fireworks platform account.
 
-## What you get
+## How Nexus works
 
-> [card] [Nexus CLI](/nexus/cli)
->
-> One command connects a coding harness to Fireworks. Another restores your settings when you're done.
-
-> [card] [Nexus Auto](/nexus/auto)
->
-> One model ID: `auto`. Easy turns run on open models. Harder turns go to an Anthropic or OpenAI model on your own account.
-
-> [card] [Open models](/nexus/open-models)
->
-> GLM, Kimi, DeepSeek, and other open models on Fireworks serverless, billed per token.
-
-> [card] [Harness support](/nexus/harnesses)
->
-> Setup steps and answers for Claude Code, ChatGPT, Codex, Claude Desktop, Cursor IDE, VS Code, OpenCode, Pi, Copilot, and DeepSeek Harness.
-
-> [card] [Model providers](/nexus/provider-keys)
->
-> Store Anthropic, OpenAI, or Amazon Bedrock credentials once, so developers only need a Fireworks key.
-
-> [card] [Spend limits](/nexus/usage-limits)
->
-> Set an account default, group limits, and per-user caps on Fireworks serverless spend.
-
-## How Nexus fits together
-
-Your tool connects through Nexus CLI, an SDK, or an LLM gateway. Each request then goes to the Fireworks model you chose, or to Nexus Auto, which picks a model for each turn.
+Your tool connects through [Nexus Desktop](/nexus/desktop), [Nexus CLI](/nexus/cli), an SDK, or an LLM gateway. By default, requests use [Nexus Auto](/nexus/auto) (`auto`), which picks a model for each turn: a Fireworks open model, or an Anthropic or OpenAI model on your own account if you've connected one. On Enterprise, you can also [choose a specific open model](/nexus/open-models).
 
 ```mermaid theme={null}
 flowchart LR
@@ -62,4 +33,13 @@ flowchart LR
   NA --> CM[Anthropic and OpenAI models<br/>on your provider account]
 ```
 
-Building your own agent or running a gateway? See [APIs and SDKs](/nexus/apis-and-sdks) or [LLM Gateways](/nexus/llm-gateways).
+To connect your own agent, use [APIs and SDKs](/nexus/apis-and-sdks). To connect a gateway, use [LLM Gateways](/nexus/llm-gateways).
+
+Nexus components:
+
+* [Nexus CLI](/nexus/cli): one command connects a coding harness to Fireworks. Another restores your settings when you're done.
+* [Nexus Auto](/nexus/auto): one model ID, `auto`.
+* [Open models](/nexus/open-models): Enterprise includes general access to GLM, Kimi, DeepSeek, and other open models on Fireworks serverless, billed per token.
+* [Harness support](/nexus/harnesses): setup steps and answers for Claude Code, ChatGPT, Codex, Claude Desktop, Cursor IDE, VS Code, OpenCode, Pi, Copilot, and DeepSeek Harness.
+* [Model providers](/nexus/provider-keys): store Anthropic, OpenAI, or Amazon Bedrock credentials once, so developers only need a Fireworks key.
+* [Spend limits](/nexus/usage-limits): set an account default, group limits, and per-user caps on Fireworks serverless spend.

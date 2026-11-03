@@ -6,51 +6,47 @@ path: nexus/usage-limits
 
 Set account, group, and user-specific spend limits to cap per-user spend on supported Fireworks serverless models.
 
-Set per-user spend caps for [supported serverless models](#supported-models). Fireworks counts a user's spend on those models toward that user's effective limit across the account.
+Set limits on the [User Limits](#manage-limits-and-monitor-spend) page under **Settings**.
 
-Manage limits on the [User Limits](#manage-limits-and-monitor-spend) page under **Settings**.
+* Spend limits are part of [Nexus Enterprise](/nexus/plans).
+* Only admins can change limits.
+* Group limits also require [SCIM group sync](/accounts/sso#group-provisioning).
 
-> [!NOTE]
->
-> Per-user spend limits are available on request. Contact Fireworks to enable them. Only admins can change limits. Group limits also require [SCIM group sync](/accounts/sso#group-provisioning).
+- Fireworks counts a user's spend on supported models toward that user's effective limit across the account.
 
 ## Set defaults, group limits, and exceptions
 
 | Control | Use it for |
 | - | - |
-| **Account default** | The per-user ceiling for anyone without a group limit or user override. Productivity-only accounts receive a \$100 default when limits are provisioned. Other accounts have no default until an admin sets one |
+| **Account default** | The per-user ceiling for anyone without a group limit or user override |
 | **Group limit** | A reusable per-user ceiling for SCIM-synced teams |
 | **User override** | An exception for one person |
 
-When a user has more than one of these, [limit precedence](#limit-precedence) decides which one applies.
-
 ![Setting a custom usage limit for one user](https://mintcdn.com/fireworksai/3Wytiu2ff7ypB2uB/images/usage-limits/override-user-limit.gif?s=2a632a07599097895d6746764c74f198)
+
+* Nexus accounts receive a \$100 account default when limits are provisioned. Other accounts have no default until an admin sets one.
 
 ### Limit precedence
 
-A user's effective limit is resolved in this order:
+When a user has more than one limit, the first match wins:
 
-1. Their **per-user override**, if they have one.
-2. Otherwise, the **highest** cap among the group limits assigned to their groups. A group limit *below* the account default still wins, because a group cap replaces the default.
-3. Otherwise, the **account default cap**.
+1. Their **user override**.
+2. The **highest** of their groups' limits. A group limit below the account default still wins.
+3. The **account default**.
 
-A user with no override, no group limit, and no account default has no cap. Use a per-user override when someone needs a cap that their groups don't give them.
+* A group cap replaces the account default, which is why a lower group limit still wins.
+* A user with no override, no group limit, and no account default has no cap.
+* Use a per-user override when someone needs a cap their groups don't give them. An override wins outright, so it is also how you lower one user below their group's limit.
+* Unsetting an override resolves the limit again: the highest assigned group cap, then the account default, or no cap if neither exists.
 
 ## Group limits
 
-A group limit is a reusable per-user cap. It does not create a shared group budget. The User Limits page calls these **limit options**.
+A group limit caps each member, not the group. On a $500 group limit, each member can spend up to $500.
 
-> [!NOTE]
->
-> On a $500 group limit, each member can spend up to $500. The members do not share \$500.
+Groups come from your identity provider through [group provisioning](/accounts/sso#group-provisioning). Manage groups and members in your directory. In Fireworks, you only assign each group a limit.
 
-`firectl` and the REST API call this resource a *group usage limit tier*.
-
-### Where groups come from
-
-Groups come from your identity provider through [group provisioning](/accounts/sso#group-provisioning) in Custom SSO. You cannot create a group any other way. Groups and their members are read-only in Fireworks, so add, rename, delete, and populate them in your directory. In Fireworks, you set only the group's limit assignment.
-
-### Group-limit constraints
+* A group limit does not create a shared group budget. The User Limits page calls these **limit options**. `firectl` and the REST API call the resource a *group usage limit tier*.
+* You cannot create a group any other way. Groups and their members are read-only in Fireworks, so add, rename, delete, and populate them in your directory.
 
 | Constraint | Behavior |
 | - | - |
@@ -63,27 +59,32 @@ Groups come from your identity provider through [group provisioning](/accounts/s
 
 ## Supported models
 
-Per-user metering applies to serverless models included in the account's metering configuration. Dedicated deployments are not included. All amounts are in USD. Usage resets at the start of each billing period.
+Limits apply to serverless models in the account's metering configuration. Dedicated deployments aren't included.
+
+* All amounts are in USD.
+* Usage resets at the start of each billing period.
 
 ## Manage limits and monitor spend
 
-The User Limits page shows current-period spend, effective limit, and limit source for each user. Admins can set the account default, manage group limits, and set user overrides.
+The User Limits page shows each user's current-period spend, effective limit, and where that limit comes from. Admins set the account default, group limits, and user overrides there.
+
+If an admin approves an increase request above a user's current limit, Fireworks creates a user override at that amount. Approval never lowers a limit.
 
 ## What happens when a user reaches the limit
 
-After a user reaches their effective limit, requests to supported serverless models return HTTP `402`. Raising the limit or starting a new billing period allows requests again after enforcement refreshes.
+Requests to supported serverless models return HTTP `402` until an admin raises the limit or the billing period resets. Changes take effect within 1–2 minutes.
+
+Enforcement refreshes about once per minute. Blocking, unblocking, cap changes, group assignments, and directory membership changes can take 1–2 minutes.
 
 | Condition | Result |
 | - | - |
-| **A user reaches their effective limit** | Further requests to supported serverless models return HTTP `402` until the limit is raised or the billing period resets |
+| **A user reaches their effective limit** | Further requests to supported serverless models return HTTP `402` |
 | **The billing period resets** | Current-period usage and blocks reset |
 | **A cap is set to `$0`** | The user can make no supported serverless spend after enforcement refreshes |
 | **A limit or group membership changes** | The change takes effect during the next enforcement refresh |
 | **A productivity-only account is still being created and has no default** | Serverless requests return HTTP `412` until provisioning creates the \$100 default |
 
-Enforcement refreshes about once per minute. Blocking, unblocking, cap changes, group assignments, and directory membership changes can take 1–2 minutes.
-
-## Permissions
+### Permissions
 
 | Action | Account admin | Member |
 | - | -: | -: |
@@ -96,6 +97,23 @@ Enforcement refreshes about once per minute. Blocking, unblocking, cap changes, 
 The commands below identify any narrower permissions for individual records.
 
 ## Using `firectl`
+
+`firectl` is the older interface for spend limits and remains supported for existing scripts. For new setups, use the User Limits page in Nexus settings.
+
+| Task | Command |
+| - | - |
+| Set the account default | `firectl usage-limits update --default-user-limit=200` |
+| Define a group limit | `firectl usage-limits group-tier create contractors --limit=100` |
+| Assign it to a group | `firectl usage-limits group set platform-team --group-usage-limit-tier=contractors` |
+| Override one user | `firectl usage-limits user set <USER_ID> --limit=500` |
+| List users and spend | `firectl usage-limits user list` |
+
+Every command accepts either a bare ID or a full resource name. For example, this is equivalent to the short form:
+
+```bash wrap theme={null}
+firectl usage-limits group set accounts/my-account/groups/platform-team \
+  --group-usage-limit-tier=accounts/my-account/groupUsageLimitTiers/contractors
+```
 
 ### Account-level
 
@@ -145,17 +163,6 @@ firectl usage-limits group set platform-team --group-usage-limit-tier=contractor
 firectl usage-limits group unset platform-team
 ```
 
-> [!NOTE]
->
-> Every command accepts either a bare ID or a full resource name. For example:
->
-> ```bash wrap theme={null}
-> firectl usage-limits group set accounts/my-account/groups/platform-team \
->   --group-usage-limit-tier=accounts/my-account/groupUsageLimitTiers/contractors
-> ```
->
-> This is equivalent to the short form above.
-
 ### Per-user
 
 ```bash wrap theme={null}
@@ -183,7 +190,7 @@ A user record contains:
 | `override` | The user's per-user override, if set |
 | `exceeded_until` | When the current block ends. Present only while the user is blocked |
 
-An override wins outright, so it is also how you lower a single user below their group's limit. Unsetting it resolves the limit again: the highest assigned group cap, then the account default, or no cap if neither exists. Account admins cannot clear the account default.
+Account admins cannot clear the account default.
 
 ## Using the REST API
 
@@ -271,7 +278,3 @@ curl -X PATCH \
 
 * `PATCH /v1/accounts/<ACCOUNT_ID>/usageLimits` to update `default_user_limit` (account admins cannot clear it)
 * `PATCH /v1/accounts/<ACCOUNT_ID>/users/<USER_ID>/usageLimits` to set `limit_override` (an unset value removes the override)
-
-## Approved increase requests
-
-If an admin approves an amount above the user's current effective limit, Fireworks creates a per-user override at that amount. Approval never lowers the user's effective limit.

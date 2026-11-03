@@ -6,9 +6,15 @@ path: nexus/harnesses/cursor
 
 Connect Cursor IDE to Fireworks models and Nexus Auto with the Nexus CLI or manual setup.
 
-`nexus cursor` configures Cursor IDE. Cursor CLI (`agent` or `cursor-agent`) is not supported.
+Cursor CLI (`agent` or `cursor-agent`) and Cursor cloud agents aren't supported.
 
-PreviewOpenAI Chat CompletionsNexus Auto with Provider Keys
+Support summary:
+
+* API the harness speaks to Fireworks: OpenAI Chat Completions
+* Nexus Auto: Supported. Anthropic and OpenAI model turns need Provider Keys
+* Native web search: Not added by Nexus. See [Web search](/nexus/auto#web-search).
+
+Plan access: Pro and Team don't include general access to open models. They use Nexus Auto (`auto`) along with their own Claude or ChatGPT models, and Nexus Auto still sends turns to open models. Enterprise accounts also get general access to open models on Fireworks serverless. See [Plans and Accounts](/nexus/plans).
 
 ## Quick start
 
@@ -26,93 +32,85 @@ nexus login
 
 Sign in with your browser, or paste a Fireworks API key (`fw_...`).
 
-Already set up? Skip to step 2.
+If the Nexus CLI is already installed and signed in, skip to step 2.
 
 **2. Quit Cursor IDE**
 
-**Fully quit Cursor IDE before you connect or run `off`.** A running Cursor IDE overwrites the change from memory. If it's open, Nexus CLI waits until you quit. `--force` writes anyway, which isn't recommended.
+> [!WARNING]
+>
+> **Fully quit Cursor IDE before you connect or run `off`.** A running Cursor IDE overwrites the change from memory.
+
+If Cursor IDE is open, Nexus CLI waits until you quit. `--force` writes anyway, which isn't recommended.
 
 **3. Connect Cursor IDE**
 
 ```bash wrap theme={null}
 nexus cursor
-nexus cursor status
 ```
 
-Nexus CLI registers the Fireworks catalog in the picker and points every mode you already have in `modelConfig` at the default model. It never adds modes.
+* Nexus CLI registers the Fireworks catalog in the picker and points every mode you already have in `modelConfig` at the default model. It never adds modes.
+* `nexus cursor status` shows the provider, where the key comes from, and the configured model.
 
 **4. Reopen and pick a model**
 
-Reopen Cursor IDE and choose a Fireworks model. The default is `nexus/auto`. To change the default for every mode, run `nexus cursor --model glm-latest`.
+Reopen Cursor IDE and pick **Auto** (`nexus/auto`), the default. To change the default for every mode, run `nexus cursor --model glm-latest`.
 
 ![Cursor IDE model picker showing Auto selected with Fireworks DeepSeek, GLM, Kimi, and MiniMax models](https://mintcdn.com/fireworksai/DBOQdoU3Q63xUkRQ/images/nexus/cursor-ide-model-picker.png?fit=max\&auto=format\&n=DBOQdoU3Q63xUkRQ\&q=85\&s=8800ed6ae6cf56db81205d2f342011a2)
 
-Cursor IDE after Nexus CLI, with Auto selected
+Cursor IDE after Nexus CLI, with Auto selected (Enterprise account)
 
-> [!TIP]
->
-> `nexus cursor status` shows the provider, where the key comes from, and the configured model.
+While connected, only Fireworks models work. To restore your original settings and Cursor IDE's built-in models, run `nexus cursor off`.
 
-> [!WARNING]
->
-> **While connected, only Fireworks models work.** Cursor IDE's built-in models are hidden until you run `off`. Cursor IDE also enforces a server-side allowlist, so not every Fireworks model is selectable. Some features may still use Cursor's own backend, depending on plan and version.
+* Cursor IDE's built-in models are hidden while connected.
+* Cursor IDE also enforces a server-side allowlist, so not every Fireworks model is selectable.
+* Some features may still use Cursor's own backend, depending on plan and version.
 
 ## Use Nexus Auto
 
-Nexus CLI registers Nexus Auto in Cursor IDE as `nexus/auto`, because Cursor reserves the bare `auto` name for its own router.
+* **Anthropic and OpenAI model turns** need a [Provider Key](/nexus/provider-keys) from your admin. Without one, Nexus Auto serves every turn with open models.
 
-* **Anthropic and OpenAI model turns:** connect a [Provider Key](/nexus/provider-keys). Cursor IDE can't send extra headers, so Nexus CLI doesn't send keys saved with `nexus auto`, and manual setup can't add them either. Without a Provider Key, Nexus Auto serves every turn with open models.
-* **Provider scope:** `nexus auto --providers` has no effect in Cursor IDE.
+- Nexus CLI registers Nexus Auto as `nexus/auto`, because Cursor reserves the bare `auto` name for its own router.
+- Cursor IDE can't send extra headers, so Nexus CLI doesn't send keys saved with `nexus auto`, and manual setup can't add them either.
+- `nexus auto --providers` has no effect in Cursor IDE.
 
 ## MCP and tools
 
-Nexus CLI doesn't touch MCP. Set up servers in Cursor IDE as usual.
-
-Nexus CLI does not add web search to Cursor IDE. See [Web Search](/nexus/web-search).
-
-## Microsoft Foundry
-
-Nexus CLI can connect Cursor IDE to Fireworks models deployed in your Azure subscription. See [Nexus for Microsoft Foundry](/nexus/microsoft-foundry). Nexus Auto is not available on Foundry.
+* Nexus CLI doesn't change your MCP servers.
+* Nexus CLI doesn't add [web search](/nexus/auto#web-search) to Cursor IDE.
 
 ## Troubleshooting
 
-* **`Model name is not valid: "auto"`, or the same error for another Fireworks ID:** Cursor IDE stopped sending your Fireworks key. Cursor can turn the key off after Fireworks rejects a request, such as when the key is revoked or a model ID is not found. Without a key, Cursor treats Fireworks IDs as unknown models. Open **Settings → Models**, turn **OpenAI API Key** back on, and retry.
-* **The key was revoked:** turning it back on is not enough. Run `nexus login --force` for a new key, fully quit Cursor IDE, and run `nexus cursor`. With manual setup, paste a new key from [Fireworks settings](https://app.fireworks.ai/settings/users/api-keys).
+* **`Model name is not valid: "auto"`, or the same error for another Fireworks ID:** Cursor IDE stopped sending your Fireworks key. Open **Settings → Models**, turn **OpenAI API Key** back on, and retry.
+* **The key was revoked:** run `nexus login --force` for a new key, fully quit Cursor IDE, and run `nexus cursor`.
 
-See [Nexus Auto](/nexus/auto#troubleshooting) for issues that affect every harness.
+- Cursor can turn the key off after Fireworks rejects a request, such as when the key is revoked or a model ID is not found. Without a key, Cursor treats Fireworks IDs as unknown models.
+- For a revoked key, turning it back on is not enough. With manual setup, paste a new key from [Nexus settings](https://nexus.fireworks.ai/settings/api-keys).
+- See [Nexus Auto](/nexus/auto#troubleshooting) for issues that affect every harness.
 
 ## Manual setup (advanced)
 
-**1. Open model settings**
+In Cursor IDE, open **Settings → Models**:
 
-In Cursor IDE, open **Settings**, then **Models**.
+1. Under **API Keys**, paste your Fireworks key into **OpenAI API Key**.
+2. Turn on **Override OpenAI Base URL** and enter `https://api.fireworks.ai/inference/v1`.
+3. Add a custom model with a Fireworks ID, such as `glm-latest`, then select it in chat.
 
-**2. Add your Fireworks key**
-
-Under **API Keys**, paste your Fireworks key into **OpenAI API Key**. Turn on **Override OpenAI Base URL** and enter `https://api.fireworks.ai/inference/v1`.
-
-**3. Add a model**
-
-Add a custom model with a Fireworks ID, such as `glm-latest`, then select it in chat.
-
-See [what changes without the Nexus CLI](/nexus/manual-setup#what-changes-without-the-nexus-cli).
+Without the Nexus CLI, you take over [the tasks it otherwise performs](/nexus/manual-setup#what-changes-without-the-nexus-cli), such as undo and updates.
 
 ## What the Nexus CLI writes
 
-> [accordion] See what Nexus CLI writes
->
-> Cursor IDE stores AI settings in SQLite, in `User/globalStorage/state.vscdb` under `~/.config/Cursor` (Linux), `~/Library/Application Support/Cursor` (macOS), or `%APPDATA%\Cursor` (Windows):
->
-> | Setting | Value |
-> | - | - |
-> | `secret://cursorAuth/openAIKey` | Your Fireworks key, encrypted with Electron `safeStorage` |
-> | `cursorAuth/openAIKey` | The same key in plain text, for older Cursor builds |
-> | `openAIBaseUrl` | `https://api.fireworks.ai/inference/v1` |
-> | `useOpenAIKey` | `true` |
-> | `aiSettings.userAddedModels` | The Fireworks catalog, tracked for a clean `off` |
-> | `aiSettings.modelOverrideDisabled` | Cursor's built-in models, hidden while connected |
-> | `aiSettings.modelConfig[<mode>]` | The Fireworks model for each mode |
->
-> On Linux, encryption needs `libsecret`. Without it, Cursor IDE only obfuscates the key and Nexus CLI warns you.
->
-> `off` restores your previous AI settings and key from the snapshot under `~/.nexus/cursor/`. Without a snapshot, it removes only what Nexus CLI added. Use `--db-path` for a non-default `state.vscdb`.
+Cursor IDE stores AI settings in SQLite, in `User/globalStorage/state.vscdb` under `~/.config/Cursor` (Linux), `~/Library/Application Support/Cursor` (macOS), or `%APPDATA%\Cursor` (Windows):
+
+| Setting | Value |
+| - | - |
+| `secret://cursorAuth/openAIKey` | Your Fireworks key, encrypted with Electron `safeStorage` |
+| `cursorAuth/openAIKey` | The same key in plain text, for older Cursor builds |
+| `openAIBaseUrl` | `https://api.fireworks.ai/inference/v1` |
+| `useOpenAIKey` | `true` |
+| `aiSettings.userAddedModels` | The Fireworks catalog, tracked for a clean `off` |
+| `aiSettings.modelOverrideDisabled` | Cursor's built-in models, hidden while connected |
+| `aiSettings.modelConfig[<mode>]` | The Fireworks model for each mode |
+
+* On Linux, encryption needs `libsecret`. Without it, Cursor IDE only obfuscates the key and Nexus CLI warns you.
+* `off` restores your previous AI settings and key from the snapshot under `~/.nexus/cursor/`. Without a snapshot, it removes only what Nexus CLI added.
+* Use `--db-path` for a non-default `state.vscdb`.

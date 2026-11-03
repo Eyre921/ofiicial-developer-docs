@@ -31,6 +31,22 @@ Surface form submissions in Slack with just a few clicks. Learn more in the [Net
 
 ## Email notifications
 
+When you create a notification, the recipient must be an active member of your Netlify team. If you enter an email address that isn't associated with a team member, you'll get a validation error and the notification won't be saved.
+
+### Update the notification recipient
+
+To change the email address that receives form notifications:
+
+1. Go to 
+### NavigationPath Component:
+
+Forms > Submission notifications
+.
+2. Find the notification you want to change and select **Options > Edit notifications**.
+3. Enter an email address that belongs to an active member of your team, then save your changes.
+
+If you need to send notifications to someone who isn't on your team yet, [invite them to the team](/manage/accounts-and-billing/team-management/manage-team-members#add-new-team-members) first, then add their email address as the notification recipient.
+
 By default, form notification emails are sent from formresponses@netlify.com, and any replies to a notification go to that address. To respond to a form submitter, you need to enter their address manually.
 
 We recommend that you add an `<input>` with `name="email"` to your form. This sets the `Reply-to` value on the form notification email, allowing you to reply directly to the form submitter without manually entering their email.

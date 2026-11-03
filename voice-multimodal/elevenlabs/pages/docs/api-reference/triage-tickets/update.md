@@ -34,6 +34,7 @@ Reference: https://elevenlabs.io/docs/api-reference/triage-tickets/update
 This endpoint expects a PatchAgentConversationTicketRequestModel.
 
 - `title` (string, optional, nullable) — If provided, updates the ticket title. Omit to leave unchanged.
+- `qa_comment` (string, optional, nullable) — If provided, updates the ticket description. Omit to leave unchanged.
 - `status` (enum, optional, nullable) — If provided, updates the ticket status. Omit to leave unchanged.
   - Allowed values: `open`, `in_progress`, `resolved`, `cancelled`, `merged`
 - `assignee_user_id` (string, optional, nullable) — If provided, updates who is responsible for resolving this ticket. Must be a workspace member with at least viewer access to the agent. Pass null to unassign. Omit to leave unchanged.

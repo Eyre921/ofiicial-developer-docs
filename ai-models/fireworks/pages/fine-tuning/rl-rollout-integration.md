@@ -372,7 +372,7 @@ This mode is similar in spirit to [PipelineRL](https://arxiv.org/pdf/2509.19128)
 * **New requests**: queued until the swap finishes. Clients observe this as elevated time-to-first-token (TTFT).
 * **No 4xx or 5xx** is returned for the swap itself. Specify the `x-fireworks-hot-load-drain-timeout` request header in seconds (default `90`) to receive HTTP `425 Too Early` once the timeout expires.
 
-![](https://mintcdn.com/fireworksai/YH2uwOIOrmQeCBpB/fine-tuning/assets/hotload-async-transition.drawio.svg?fit=max\&auto=format\&n=YH2uwOIOrmQeCBpB\&q=85\&s=ee18148e692aa756aa5959d2e2b33b4a)
+![](https://mintcdn.com/fireworksai/3xC09PnAxVb7KMiz/fine-tuning/assets/hotload-async-transition.drawio.svg?fit=max\&auto=format\&n=3xC09PnAxVb7KMiz\&q=85\&s=ef8a635e3a071aeeaf2dd85443d72f49)
 
 Use a synchronized transition only when the workflow requires every in-flight generation to finish on one policy version.
 
@@ -381,7 +381,7 @@ Use a synchronized transition only when the workflow requires every in-flight ge
 * **In-flight requests**: the server waits for them to complete on the *old* weights before swapping.
 * **New requests** arriving during the swap are rejected with HTTP `425 Too Early`. Your rollout client should back off and retry, ideally using the same session-affinity key so it lands on a replica that has already finished the swap.
 
-![](https://mintcdn.com/fireworksai/YH2uwOIOrmQeCBpB/fine-tuning/assets/hotload-sync-transition.drawio.svg?fit=max\&auto=format\&n=YH2uwOIOrmQeCBpB\&q=85\&s=6f9acddd07906ce12dc7db0a50274a61)
+![](https://mintcdn.com/fireworksai/3xC09PnAxVb7KMiz/fine-tuning/assets/hotload-sync-transition.drawio.svg?fit=max\&auto=format\&n=3xC09PnAxVb7KMiz\&q=85\&s=b9d9d7d85e7bc5646dd9c57ee5e3a160)
 
 ### When to start rollouts
 

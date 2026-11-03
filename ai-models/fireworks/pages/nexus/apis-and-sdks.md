@@ -6,7 +6,7 @@ path: nexus/apis-and-sdks
 
 Call Fireworks from custom agents, background runners, services, HTTP APIs, and SDKs
 
-Call Fireworks from custom agents, background jobs, or services with curl, the OpenAI SDK, the Anthropic SDK, or the Fireworks SDK. Send requests to `https://api.fireworks.ai/inference` and use the same model ID across each supported API.
+The same model ID works on every supported API.
 
 ## Compatible APIs
 
@@ -36,16 +36,11 @@ curl https://api.fireworks.ai/inference/v1/chat/completions \
   }'
 ```
 
-`auto` works the same way on all three APIs.
+`auto` works the same way on all three APIs. For Nexus Auto examples in cURL and the OpenAI, Anthropic, and Fireworks SDKs, see [Nexus Auto](/nexus/auto#api-and-sdk).
 
-> [card] [Nexus Auto examples for every API and SDK](/nexus/auto#api-and-sdk)
->
-> cURL, OpenAI, Anthropic, and Fireworks SDK examples for Chat Completions,
-> Responses, and Messages, with provider-key headers.
+For a Nexus Auto request, the response `model` field [names the model that served the turn](/nexus/auto#check-which-model-served-a-turn), such as `glm-5p3` or `claude-opus-5-5`, not `auto`.
 
-## Read the serving model
-
-For a Nexus Auto request, the response `model` field names the model that served the turn, such as `glm-5p3` or `claude-opus-5-5`, not the Nexus Auto ID you sent. See [Check which model served a turn](/nexus/auto#check-which-model-served-a-turn).
+The linked Nexus Auto examples cover Chat Completions, Responses, and Messages, with provider-key headers.
 
 ## Credentials
 
@@ -56,36 +51,31 @@ For a Nexus Auto request, the response `model` field names the model that served
 | OpenAI | Connect an OpenAI [Provider Key](/nexus/provider-keys) if enabled, or send `x-openai-api-key` | You want `auto` to be able to use OpenAI models |
 | Amazon Bedrock | [Amazon Bedrock](/nexus/provider-keys/bedrock) Provider Key | You want `auto` to use a model you mapped there. Usage bills to your AWS account. |
 
-An Anthropic or OpenAI key in a request header applies only to that request. A key connected through Provider Keys is available at the account level, so clients and gateways do not need to send it with every call.
-
-With both credentials, `auto` [can use Anthropic and OpenAI models](/nexus/auto#which-models-auto-can-use) and decides per turn. You can combine an account-level key for one provider with a request header for the other.
-
-Fireworks also accepts Anthropic credentials in `x-api-key` or `Authorization: Bearer`. One `Authorization` header cannot carry both the Fireworks and Anthropic keys. If it carries the Anthropic key, send the Fireworks key in `X-Fireworks-Api-Key`. Prefer `x-anthropic-api-key` for new integrations.
-
 In every SDK, `api_key` is the Fireworks key. Pass provider keys as extra headers, as shown in [Nexus Auto](/nexus/auto#api-and-sdk).
+
+* An Anthropic or OpenAI key in a request header applies only to that request. A key connected through Provider Keys is available at the account level, so clients and gateways do not need to send it with every call.
+* With both credentials, `auto` [can use Anthropic and OpenAI models](/nexus/auto#which-models-auto-can-use) and decides per turn. You can combine an account-level key for one provider with a request header for the other.
+* Fireworks also accepts Anthropic credentials in `x-api-key` or `Authorization: Bearer`. One `Authorization` header cannot carry both the Fireworks and Anthropic keys. If it carries the Anthropic key, send the Fireworks key in `X-Fireworks-Api-Key`. Prefer `x-anthropic-api-key` for new integrations.
 
 ## Limitations
 
-* Accounts with data residency enabled must use a residency-compatible pinned serverless model. Nexus Auto requests are rejected.
-* Nexus Auto is not available through Microsoft Foundry.
-* Without an Anthropic or OpenAI credential, `auto` uses Fireworks open models. See [Provide Anthropic and OpenAI credentials](/nexus/auto#provide-anthropic-and-openai-credentials).
+* With US [data residency](/accounts/data-residency), send Nexus Auto requests to `us.api.fireworks.ai`. Open-model turns run on [US-only Serverless](/serverless/us-only-serverless). Other regions must pin a model served in that region.
+* Without an [Anthropic or OpenAI credential](/nexus/auto#provide-anthropic-and-openai-credentials), `auto` uses Fireworks open models.
 
-## Errors
+## Troubleshooting
+
+* **`401`:** the Fireworks key is missing or invalid. Send a valid `fw_...` key with `Authorization: Bearer` or `X-Fireworks-Api-Key`.
+* **`404` `Model id not found`:** the model ID is unknown, or the account can't use this router. Check the model ID and your account's access.
+* **`400` `no_credential`:** the closed model you named has no provider key. Connect [Provider Keys](/nexus/provider-keys) where available. For Anthropic or OpenAI, you can instead send the provider header.
 
 | Response | Cause | Fix |
 | - | - | - |
-| `401` | Fireworks key is missing or invalid | Send a valid `fw_...` key with `Authorization: Bearer` or `X-Fireworks-Api-Key` |
-| Request rejected for data residency | The requested route is not residency-compatible | Pin a residency-compatible serverless model |
-| `404` `Model id not found` | Unknown model ID, or the account cannot use this router | Check the model ID and your account's access |
-| `400` `no_credential` | The closed model you named has no provider key | Connect [Provider Keys](/nexus/provider-keys) where available. For Anthropic or OpenAI, you can instead send the provider header. |
+| Request rejected for data residency | The account's region isn't US, or the request didn't use the region's endpoint | Use `us.api.fireworks.ai` for US. For other regions, pin a model served in that region |
 | Upstream provider authentication failure | The provider credential is wrong, revoked, or lacks permission | Check the Anthropic, OpenAI, or Amazon Bedrock credential and its permissions. The status and message come from that provider |
-
-## Nexus Auto and deployment routers
-
-`auto` is the Nexus Auto model ID. [Routers](/deployments/routers) load-balance traffic across your own Fireworks deployments.
 
 ## See also
 
 * [Nexus Auto](/nexus/auto)
 * [Provider Keys](/nexus/provider-keys)
 * [Effort](/nexus/orchestration-preferences)
+* [Routers](/deployments/routers) load-balance traffic across your own Fireworks deployments. They are separate from `auto`, the Nexus Auto model ID.

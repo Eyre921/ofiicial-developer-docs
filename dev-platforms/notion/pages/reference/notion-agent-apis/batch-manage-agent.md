@@ -7,7 +7,7 @@ path: reference/notion-agent-apis/batch-manage-agent
 post /v1/agents/batch
 Asynchronously apply multiple agent management operations.
 
-Each operation is authorized and applied independently. Poll the returned `status_url` to retrieve the completed batch result.
+Each operation is authorized and applied independently, with the same rules as its single endpoint. A connection token can run `update_status` operations, but `update_credit_limit` and `delete` operations need a personal access token. Poll the returned `status_url` to retrieve the completed batch result.
 
 ### Completed batch result
 

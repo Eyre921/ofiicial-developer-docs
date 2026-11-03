@@ -25,45 +25,34 @@ Architect charges for the model tokens used to answer you. That includes your me
 
 Some things affect what a conversation costs:
 
-* **Length.** Every message adds to the conversation's context, so long conversations cost more per message than short ones. Start a new conversation when you switch to an unrelated task.
+* **Length.** Every message adds to the conversation's context, so long conversations cost more per message than short ones.
 * **Investigation depth.** Requests that read many conversations, run tests, or edit several resources take more steps than a product question.
-* **Model tier.** Premium conversations cost more than Lite conversations. See [Premium and Lite](#premium-and-lite).
+* **Model tier.** Premium conversations cost more than Lite conversations. See [Architect Premium and Lite](/docs/eleven-agents/operate/architect/premium-and-lite).
+
+See [Reduce Architect costs](#reduce-architect-costs) for ways to keep each conversation's cost down.
 
 Your agents' own conversations, tests, and simulations are billed as usual, even when Architect starts them.
 
+## Reduce Architect costs
+
+Most of a conversation's cost comes from how much context Architect carries and how many steps it takes. These habits keep both down:
+
+* **Start a new conversation when the topic changes.** Every message is sent with the conversation so far, so a long conversation costs more per message. A fresh conversation for an unrelated task starts with no history to carry.
+* **Use Lite for simpler questions.** Product questions, single edits, and summaries of a conversation you already have rarely need Premium. Choose **Lite** in the composer before the first message. On self-serve plans, this also keeps your daily Premium conversation for a task that needs it.
+* **Move to Premium instead of retrying.** If Lite struggles with a task, start a new conversation on Premium rather than rephrasing the request several times on Lite.
+* **Scope the request.** Name the agent, the time range, and how many conversations to read, for example "the 20 most recent failed calls for the booking agent" instead of "all conversations". Architect reads less to reach the same answer.
+* **Give it what you already know.** Paste the conversation ID, the failing test, or the error message. Architect can go straight to the cause instead of searching for it.
+* **Save standing context once.** Put conventions Architect would otherwise rediscover, such as naming rules, testing standards, and which branch to work on, in your [agent context and preferences](/docs/eleven-agents/operate/architect/customization).
+* **Run only the tests you need.** Ask Architect to run the tests related to the change rather than the full suite. Tests and simulations are billed as your agent's usage, and reading their results adds to the Architect conversation.
+* **Check what you spend.** Review **Usage** > **Cost** regularly, and use the **Team** view to see who uses Architect most. Admins can [limit who can use Architect](#control-who-can-use-architect).
+
 ## Premium and Lite
 
-Architect runs in one of two tiers:
+Architect runs in one of two tiers. **Premium** runs on our most capable model and suits investigations across many conversations, multi-step changes, and test writing. **Lite** runs on a faster, lighter model, suits product questions and quick edits, and costs less.
 
-| Tier    | Model                   | Use it for                                                                      |
-| ------- | ----------------------- | ------------------------------------------------------------------------------- |
-| Premium | Our most capable model  | Investigations across many conversations, multi-step changes, and test writing. |
-| Lite    | A faster, lighter model | Product questions, quick edits, and lower-cost conversations.                   |
+On self-serve plans, each user gets one Premium conversation per day, and every other conversation runs on Lite. On Enterprise plans, conversations run on Premium by default with no daily limit, and you can choose Lite for any new conversation. The tier is chosen before the first message and is locked for the rest of the conversation.
 
-The tier is set when a conversation starts and stays the same for that conversation. The chat header shows the tier of the current conversation.
-
-### Self-serve plans
-
-On self-serve plans, each user gets one Premium conversation per day. Your first new conversation of the day runs on Premium. Every other conversation that day runs on Lite. The Premium conversation resets at midnight UTC.
-
-Resuming a Premium conversation, for example after an idle session ends, keeps it on Premium and does not use another day's conversation. A Slack thread counts as one conversation.
-
-### Enterprise plans
-
-On Enterprise plans, conversations run on Premium by default and have no daily limit. To start a conversation on Lite and lower its cost, choose the tier before you send the first message:
-
-#### Web
-
-Select **Premium** or **Lite** in the composer controls before you send the first message. The
-choice is locked once the conversation starts. Choosing a different tier starts a new
-conversation.
-
-#### Slack
-
-Architect in Slack is in private alpha.
-
-Start your message with `premium` or `lite` after mentioning Architect, for example `@Architect
-    lite summarize yesterday's failed calls`. Replies in the same thread keep the thread's tier.
+See [Architect Premium and Lite](/docs/eleven-agents/operate/architect/premium-and-lite) for how the tier is set, how to choose one in the web app and Slack, and which tasks suit each.
 
 ## Plans and credits
 
@@ -118,7 +107,9 @@ workspace.
 
 #### Does a Premium conversation that I resume tomorrow use tomorrow's Premium conversation?
 
-Resuming a Premium conversation keeps it on Premium without using another Premium conversation.
+Yes. Resuming it the same day keeps it on Premium. On a later day, a resumed conversation runs
+on Premium only if that day's Premium conversation is still available, and using it counts as
+that day's Premium conversation. Otherwise it runs on Lite.
 
 #### Can a self-serve workspace get more Premium conversations?
 

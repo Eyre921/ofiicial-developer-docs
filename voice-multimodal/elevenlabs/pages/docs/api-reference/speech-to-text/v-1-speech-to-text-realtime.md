@@ -116,6 +116,13 @@ channels:
             entity_detection:
               $ref: >-
                 #/components/schemas/_v1_speech-to-text_realtime_entity_detection
+            entity_redaction:
+              $ref: >-
+                #/components/schemas/_v1_speech-to-text_realtime_entity_redaction
+            entity_redaction_mode:
+              $ref: >-
+                #/components/schemas/_v1_speech-to-text_realtime_entity_redaction_mode
+              default: enumerated_entity_type
             transcript_edit:
               type: string
             filter_background_audio:
@@ -209,6 +216,33 @@ components:
         delivered in a separate 'committed_transcript_entities' event with their
         text, type, and character positions.
       title: /v1/speech-to-text/realtime_entity_detection
+    _v1_speech-to-text_realtime_entity_redaction:
+      oneOf:
+        - type: string
+        - type: array
+          items:
+            type: string
+      description: >-
+        Redact entities from committed transcripts. Accepts the same format as
+        entity_detection: 'all', a category ('pii', 'phi', 'pci', 'other',
+        'offensive_language'), or specific entity types. The redacted text is
+        delivered in a separate 'redacted_transcript' event after the committed
+        transcript. If entity detection fails, an 'error' event is sent and the
+        connection is closed. Cannot be combined with transcript_edit.
+      title: /v1/speech-to-text/realtime_entity_redaction
+    _v1_speech-to-text_realtime_entity_redaction_mode:
+      type: string
+      enum:
+        - entity_type
+        - enumerated_entity_type
+        - redacted
+      default: enumerated_entity_type
+      description: >-
+        How to format redacted entities. 'redacted' replaces with {REDACTED},
+        'entity_type' replaces with {ENTITY_TYPE}, 'enumerated_entity_type'
+        replaces with {ENTITY_TYPE_N} where N enumerates each occurrence. Only
+        used when entity_redaction is set.
+      title: /v1/speech-to-text/realtime_entity_redaction_mode
     AudioFormatEnum:
       type: string
       enum:
@@ -454,6 +488,21 @@ components:
         - entities
       description: Payload for detected entities on a committed transcript.
       title: CommittedTranscriptEntities
+    RedactedTranscript:
+      type: object
+      properties:
+        message_type:
+          type: string
+          enum:
+            - redacted_transcript
+        text:
+          type: string
+        redacted_text:
+          type: string
+      required:
+        - text
+        - redacted_text
+      title: RedactedTranscript
     EditedTranscript:
       type: object
       properties:
@@ -712,6 +761,7 @@ components:
         - $ref: '#/components/schemas/CommittedTranscript'
         - $ref: '#/components/schemas/CommittedTranscriptWithTimestamps'
         - $ref: '#/components/schemas/CommittedTranscriptEntities'
+        - $ref: '#/components/schemas/RedactedTranscript'
         - $ref: '#/components/schemas/EditedTranscript'
         - $ref: '#/components/schemas/ScribeWarning'
         - $ref: '#/components/schemas/ScribeError'

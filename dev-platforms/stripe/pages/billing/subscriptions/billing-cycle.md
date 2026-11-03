@@ -155,6 +155,7 @@ You can configure how to handle the period between subscription creation and the
 Use the [Subscriptions API](https://docs.stripe.com/api/subscriptions/update.md) or [Dashboard](https://dashboard.stripe.com/subscriptions) to change the billing date of an existing subscription through one of the following options:
 
 - Reset the billing cycle anchor to the current time.
+- Reset the billing cycle anchor to a specific timestamp.
 - Add a [free trial](https://docs.stripe.com/billing/subscriptions/trials/free-trials.md) to automatically set the anchor date to the end of the trial. Trials typically start when you create a subscription, but you can also apply them to existing subscriptions, allowing you to credit the customer for the days left in the previous cycle that they already paid.
 
 Your billing cycle date changes in these scenarios. However, if you create or update a subscription with `billing_mode[type]=flexible`, the billing cycle anchor remains unchanged. Learn more about [configuring flexible billing mode](https://docs.stripe.com/billing/subscriptions/billing-mode.md).
@@ -165,7 +166,7 @@ Your billing cycle date changes in these scenarios. However, if you create or up
 
 ### Reset the billing period to the current time 
 
-To reset the billing cycle anchor to the current time, make an update request with `billing_cycle_anchor` set to `now`. This sets the billing cycle anchor to the time of the update request. After you reset the billing cycle anchor, Stripe immediately sends an invoice. [Enable proration](https://docs.stripe.com/api/subscriptions/create.md#create_subscription-proration_behavior) to credit the customer for any days already paid in the previous period. Disabling proration might result in overcharging your customer.
+To reset the billing cycle anchor to the current time, make an update request with `billing_cycle_anchor.type` set to `now`. This sets the billing cycle anchor to the time of the update request. After you reset the billing cycle anchor, Stripe immediately sends an invoice. [Enable proration](https://docs.stripe.com/api/subscriptions/create.md#create_subscription-proration_behavior) to credit the customer for any days already paid in the previous period. Disabling proration might result in overcharging your customer.
 
 > **Flexible mode behavior:** If your subscription uses `billing_mode[type]=flexible`, resetting the billing cycle anchor to `now` doesn’t automatically generate a new invoice. To trigger an invoice on a BCA reset, you must also set `proration_behavior` to `always_invoice`.
 > 
@@ -173,13 +174,13 @@ To reset the billing cycle anchor to the current time, make an update request wi
 
 #### API
 
-Call [update the subscription](https://docs.stripe.com/api.md#update_subscription), setting `billing_cycle_anchor` to `now` and `proration_behavior` to `create_prorations` to prevent overcharging the customer for any days they already paid in the previous cycle.
+Call [update the subscription](https://docs.stripe.com/api.md#update_subscription), setting `billing_cycle_anchor.type` to `now` and `proration_behavior` to `create_prorations` to prevent overcharging the customer for any days they already paid in the previous cycle.
 
 ```curl
 curl https://api.stripe.com/v1/subscriptions/{{SUBSCRIPTION_ID}} \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -H "Stripe-Version: 2026-08-26.dahlia" \
-  -d billing_cycle_anchor=now \
+  -H "Stripe-Version: 2026-09-30.endive" \
+  -d "billing_cycle_anchor[type]=now" \
   -d proration_behavior=create_prorations
 ```
 
@@ -189,6 +190,53 @@ curl https://api.stripe.com/v1/subscriptions/{{SUBSCRIPTION_ID}} \
 2. Scroll to **Advanced options** and select **Reset the billing cycle**.
 3. Select the **Prorate changes** toggle to prevent overcharging for the days already paid from the previous cycle.
 4. Click **Update subscription**.
+
+### Reset the billing period to a specific time 
+
+> The ability to reset the billing period to a specific time is in [private preview](https://docs.stripe.com/release-phases.md).
+
+### Get early access to reset the billing period to a specific time
+
+Enter your email to request access.
+
+```bash
+curl https://docs.stripe.com/preview/register \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -H "Referer: https://docs.stripe.com/billing/subscriptions/billing-cycle" \
+  -d '{"email": "EMAIL", "preview": "subscription_update_billing_cycle_anchor_timestamp_private_preview"}'
+```
+
+Before you begin, note the following requirements:
+
+- Use [API version](https://docs.stripe.com/api/versioning.md) `2026-09-30.preview`.
+- You can only reset the billing cycle anchor to a specific time for subscriptions that use [flexible billing mode](https://docs.stripe.com/billing/subscriptions/billing-mode/compare.md).
+
+To reset the billing cycle anchor to a specific time, make an [update](https://docs.stripe.com/api/subscriptions/update.md) request with `billing_cycle_anchor.type` set to `timestamp` and `billing_cycle_anchor.timestamp` set to the Unix timestamp representing the new billing cycle anchor time. Depending on the new billing cycle anchor time, the update either advances the start and end time of the previous period or truncates the end time of the previous period.
+
+After you reset the billing period, Stripe automatically creates [prorations](https://docs.stripe.com/billing/subscriptions/prorations.md) to either credit the customer for any days already paid in the previous period or debit the customer for any days in the new period that haven’t yet been paid for. You can set [proration behavior](https://docs.stripe.com/api/subscriptions/update.md#update_subscription-proration_behavior) to invoice the customer immediately, or to disable creating prorations.
+
+```curl
+curl https://api.stripe.com/v1/subscriptions/{{SUBSCRIPTION_ID}} \
+  -u "<<YOUR_SECRET_KEY>>:" \
+  -H "Stripe-Version: 2026-09-30.preview" \
+  -d "billing_cycle_anchor[type]=timestamp" \
+  -d "billing_cycle_anchor[timestamp]=1788220800" \
+  -d proration_behavior=create_prorations
+```
+
+Stripe accepts any billing cycle anchor time that’s within one price interval of the current time with the following exceptions:
+
+- For [mixed interval subscriptions](https://docs.stripe.com/billing/subscriptions/mixed-interval.md), Stripe considers the smallest price interval associated with the subscription.
+- For subscriptions with a [free trial period](https://docs.stripe.com/billing/subscriptions/trials/free-trials.md), the new billing cycle anchor must be after the current [trial end](https://docs.stripe.com/api/subscriptions/object.md#subscription_object-trial_end).
+
+The following are examples of possible new billing cycle anchors for different subscriptions. In all examples, the update request happens on September 10:
+
+- A monthly subscription can accept a new billing cycle anchor time between August 10 and October 10.
+- A mixed interval subscription with both a monthly and annual price can accept a new billing cycle anchor between August 10 and October 10.
+- A monthly subscription with a free trial ending October 1 can accept a new billing cycle anchor time between October 1 and October 10.
+
+You can also set a specific billing cycle anchor timestamp when you [create a preview invoice](https://docs.stripe.com/api/invoices/create_preview.md#create_invoice-subscription_details-billing_cycle_anchor-timestamp) and when you [resume a paused subscription](https://docs.stripe.com/api/subscriptions/resume.md#resume_subscription-billing_cycle_anchor-timestamp).
 
 ### Change the billing period using a trial period
 

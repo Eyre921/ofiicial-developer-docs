@@ -6,29 +6,26 @@ path: nexus/auto
 
 Nexus Auto picks a Fireworks open model or an Anthropic or OpenAI model for each turn. Set it up in a coding harness, an LLM gateway, or an SDK.
 
-Nexus Auto gives you one model ID, `auto`, and picks a model for each new user turn. Easy turns can go to a Fireworks open model. Harder turns can go to an Anthropic or OpenAI model on your own account. You pay the selected model's rate for each turn, not a closed model's rate on every turn.
+Use the model ID `auto`.
 
-> [!NOTE]
->
-> Nexus Auto was formerly called FireRouter, and its model ID was `firerouter`. FireRouter and the `firerouter` model ID are no longer available. Use `auto` everywhere, including in model pickers, SDK calls, and gateway configs.
+* Easy turns go to a Fireworks open model.
+* Harder turns go to an Anthropic or OpenAI model on your own account.
+* You pay the chosen model's rate for each turn, not a closed model's rate on every turn.
 
-## How Nexus Auto works
+Nexus Auto was formerly FireRouter. The `firerouter` model ID no longer works; use `auto` instead.
 
-For each new user turn, Nexus Auto predicts which available model will handle it well at the lowest cost. That model serves the whole turn, including its tool calls, until the next user turn. Open models run on Fireworks serverless. Closed models run on your own Anthropic or OpenAI account. The response `model` field names the model that served the turn, such as `glm-5p3` or `claude-opus-5-5`.
+* FireRouter and the `firerouter` model ID are no longer available. Use `auto` in model pickers, SDK calls, and gateway configs.
+* For each new user turn, Nexus Auto predicts which available model will handle it well at the lowest cost. That model serves the whole turn, including its tool calls, until the next user turn.
+* Open models run on Fireworks serverless. Closed models run on your own Anthropic or OpenAI account.
+* Nexus Auto works with the Chat Completions, Messages, and Responses APIs.
+* Fireworks evaluates and updates the models behind `auto`, so the model ID stays the same.
+* `auto` is the only Nexus Auto model ID. It needs a Fireworks key, plus an Anthropic or OpenAI credential for closed models.
 
-Nexus Auto works with the Chat Completions, Messages, and Responses APIs. Fireworks updates the models behind `auto` after evaluating them, so your model ID stays the same.
+## Which models `auto` can use
 
-## Choose a model ID
+With only your Fireworks key, `auto` uses Fireworks open models. If you connect an Anthropic or OpenAI [Provider Key](/nexus/provider-keys), it can also use those models.
 
-| Model ID | What it uses | Credentials |
-| - | - | - |
-| `auto` | Fireworks open models, plus Anthropic or OpenAI models when you provide those credentials | Fireworks key. Add an Anthropic or OpenAI credential for closed models |
-
-Use `auto` for most work. To choose a model yourself, [pin one](#pin-a-specific-model).
-
-### Which models `auto` can use
-
-Nexus Auto picks the model for each turn as the turn arrives. What it can choose from depends on the credentials that reach the request:
+To keep `auto` on open models only, run `nexus auto --providers fireworks`.
 
 | Credentials available | Models `auto` can use |
 | - | - |
@@ -37,75 +34,94 @@ Nexus Auto picks the model for each turn as the turn arrives. What it can choose
 | Plus an OpenAI credential | Fireworks open models and OpenAI models |
 | Plus both | Fireworks open models, Anthropic models, and OpenAI models |
 
-Fireworks manages and updates the models behind `auto`. To see which one served a turn, read the response `model` field (see [Check which model served a turn](#check-which-model-served-a-turn)). Set [effort](/nexus/orchestration-preferences) in the harness to ask for a lighter or more thorough attempt.
+* With [Amazon Bedrock](/nexus/provider-keys/bedrock) connected, Nexus Auto can serve the model families routed there through the AWS account.
 
-If you connected [Amazon Bedrock](/nexus/provider-keys/bedrock), Nexus Auto can serve the model families you routed there through your AWS account.
-
-To keep Nexus Auto on open models even when you have Anthropic or OpenAI credentials, limit it to Fireworks. Then run your harness command again, replacing `claude` with your harness:
+Limit to open models even when Anthropic or OpenAI credentials exist, then rerun the harness command (replace `claude` with the harness):
 
 ```bash wrap theme={null}
 nexus auto --providers fireworks
 nexus claude
 ```
 
-* **Global setting:** Nexus CLI saves it in `~/.nexus/config.json`. Each harness picks it up the next time you run its command. Claude Desktop picks it up on its next request.
+* **Global setting:** saved in `~/.nexus/config.json`. Each harness picks it up the next time its command runs. Claude Desktop picks it up on its next request.
 * **One value today:** `--providers` accepts only `fireworks`.
-* **Saved keys:** Anthropic and OpenAI keys you saved with `nexus auto` stay saved, but Nexus CLI doesn't send them while the limit is set.
-* **Check or undo:** run `nexus auto` to see the current setting, and `nexus auto --reset` to go back to the default.
-* **Account first:** your account's model restrictions always apply first.
+* **Saved keys:** Anthropic and OpenAI keys saved with `nexus auto` stay saved, but Nexus CLI doesn't send them while the limit is set.
+* **Check or undo:** `nexus auto` shows the current setting. `nexus auto --reset` goes back to the default.
+* **Account first:** the account's model restrictions always apply first.
 * **Cursor IDE:** the setting has no effect there.
 
 ## Set up
 
-Every setup uses `auto` and your Fireworks API key. Only the way you provide the closed-model credential changes.
-
 ### Nexus CLI
 
-[Nexus CLI](/nexus/cli) writes your coding harness settings and restores them with `off`. To edit the files yourself with nothing to install, use [manual setup](/nexus/manual-setup).
-
-Pick your harness and a setup method. The commands and config files update as you choose, including any provider-key headers.
-
-A connected [Provider Key](/nexus/provider-keys) adds Anthropic and OpenAI models in every harness. Without one, save your own key with `nexus auto`. Then run your harness command again, replacing `opencode` with your harness:
+Connect your tool with [Nexus Desktop](/nexus/desktop) or the [Nexus CLI](/nexus/cli). Both set the model to `auto`:
 
 ```bash wrap theme={null}
-nexus auto --anthropic-api-key   # prompts for the key (or --openai-api-key)
-nexus opencode
+nexus claude   # or codex, chatgpt, cursor, vscode, and more
 ```
 
-Nexus CLI saves the key in `~/.nexus/config.json`. It sends the key only from harnesses that have no sign-in of their own for that provider:
+Setup steps for each tool are in [Coding Harnesses](/nexus/harnesses).
+
+* **Nexus CLI:** `nexus login`, optionally `nexus auto --anthropic-api-key`, then `nexus <harness>` and `nexus <harness> status`. Harness commands: `claude`, `codex`, `chatgpt`, `opencode`, `pi`, `vscode`, `copilot-cli`, `deepseek`, `cursor`, `copilot-app`. Each harness starts on `auto` after a restart (Claude Code: start a new session).
+* **Claude Desktop:** Nexus CLI only, macOS. Run `nexus login`, optionally `nexus auto --anthropic-api-key`, then `nexus claude-desktop on` and `nexus claude-desktop status`. Quit and reopen Claude Desktop. The picker shows `auto` along with the Claude models.
+* A connected [Provider Key](/nexus/provider-keys) adds Anthropic and OpenAI models in every harness. Without one, a developer can save their own key, then run the harness command again: `nexus auto --anthropic-api-key` (prompts for the key; or `--openai-api-key`), then for example `nexus opencode`. Cursor IDE and the Copilot App need a Provider Key.
+* **Manual setup:** each harness page has a manual setup section with the config file. Set the model to `auto` and add `x-anthropic-api-key` or `x-openai-api-key` headers where the harness supports them. Cursor IDE, the Copilot App, and Claude Desktop can't send provider-key headers. See [manual setup](/nexus/manual-setup).
+* Manual configs for Claude Code, Codex, OpenCode, Pi, Copilot CLI, and DeepSeek Harness were tested with a live request. The others mirror the settings Nexus CLI writes.
+* Claude Code manual setup with an Anthropic key: set `ANTHROPIC_API_KEY` to the Anthropic key and put the Fireworks key in `ANTHROPIC_CUSTOM_HEADERS` as `X-Fireworks-Api-Key: fw_...`. Claude Code sends the Anthropic key as its API key.
+* Codex manual setup: in `~/.codex/config.toml`, add `env_http_headers = { "x-anthropic-api-key" = "ANTHROPIC_API_KEY" }` to the `fireworks-ai` provider. The Codex CLI and the ChatGPT desktop app both read this file. Quit them before editing it.
+* Wire API per harness: Messages for Claude Code and Claude Desktop, Responses for Codex and the ChatGPT desktop app, Chat Completions for the rest.
+
+Nexus CLI saves a key from `nexus auto` in `~/.nexus/config.json`. It sends the key only from harnesses that have no sign-in of their own for that provider:
 
 | Harness | Anthropic model turns | OpenAI model turns |
 | - | - | - |
-| Claude Code, Claude Agent SDK | Your Claude login or an exported `ANTHROPIC_API_KEY` | A key saved with `nexus auto`, or a Provider Key |
-| Codex CLI, ChatGPT desktop app | A key saved with `nexus auto`, or a Provider Key | Your Codex sign-in (a ChatGPT plan or an OpenAI key) |
+| Claude Code, Claude Agent SDK | Claude login or an exported `ANTHROPIC_API_KEY` | A key saved with `nexus auto`, or a Provider Key |
+| Codex CLI, ChatGPT desktop app | A key saved with `nexus auto`, or a Provider Key | Codex sign-in (a ChatGPT plan or an OpenAI key) |
 | OpenCode, Pi, VS Code, Copilot CLI, DeepSeek Harness | A key saved with `nexus auto`, or a Provider Key | A key saved with `nexus auto`, or a Provider Key |
 | Claude Desktop | A key saved with `nexus auto`, or a Provider Key | A key saved with `nexus auto`, or a Provider Key |
 | Cursor IDE, Copilot App | Provider Key only | Provider Key only |
 
-The Claude Agent SDK matches Claude Code when it reads the user settings that Nexus CLI writes. Claude Desktop's picker lists `auto` and Fireworks models only.
-
+* The Claude Agent SDK matches Claude Code when it reads the user settings that Nexus CLI writes. Claude Desktop's picker lists `auto` and Fireworks models only.
 * **Where the key goes:** Nexus CLI writes it into the harness config as an `x-anthropic-api-key` or `x-openai-api-key` header. VS Code gets it on the `auto` model only. Claude Desktop's local proxy adds it to `auto` turns from the next request, so Claude Desktop doesn't need a restart.
-* **No environment keys:** Nexus CLI never reads `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` from your environment, and it writes nothing to your shell profile. A harness can still read its own variable, as Claude Code does with `ANTHROPIC_API_KEY`.
-* **Check a key:** `nexus auto` shows which keys are saved on this machine and which Provider Keys are connected to your account. A saved key takes precedence over the Provider Key for that provider.
-* **Remove a key:** `nexus auto --unset anthropic-api-key` or `nexus auto --unset openai-api-key` removes the key from Nexus CLI and from every harness that holds a copy. Restart those harnesses afterward. If a harness is open, Nexus CLI skips it and tells you to quit it and run the command again.
+* **No environment keys:** Nexus CLI never reads `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` from the environment, and it writes nothing to the shell profile. A harness can still read its own variable, as Claude Code does with `ANTHROPIC_API_KEY`.
+* **Check a key:** `nexus auto` shows which keys are saved on this machine and which Provider Keys are connected to the account. A saved key takes precedence over the Provider Key for that provider.
+* **Remove a key:** `nexus auto --unset anthropic-api-key` or `nexus auto --unset openai-api-key` removes the key from Nexus CLI and from every harness that holds a copy. Restart those harnesses afterward. If a harness is open, Nexus CLI skips it and says to quit it and run the command again.
 * **Only through `nexus auto`:** harness commands such as `nexus opencode` don't accept `--anthropic-api-key` or `--openai-api-key`. `nexus configure` still accepts them, but they are deprecated.
-* **Upgrading from an earlier release:** the upgrade removes the `ANTHROPIC_API_KEY` and `OPENAI_API_KEY` exports that earlier versions added to your shell profile. It also clears `{env:...}` key references from `~/.nexus/config.json`. A literal key saved with `nexus configure` is kept and sent as shown in the table.
-
-Nexus CLI doesn't send saved keys from Cursor IDE or the Copilot App, so they need Provider Keys. In the other harnesses, you can add the headers yourself with [manual setup](/nexus/manual-setup).
-
-For a full walkthrough, see [Claude Code](/nexus/harnesses/claude-code). For each harness's files and restore behavior, see [Coding Harnesses](/nexus/harnesses).
+* **Upgrading from an earlier release:** the upgrade removes the `ANTHROPIC_API_KEY` and `OPENAI_API_KEY` exports that earlier versions added to the shell profile. It also clears `{env:...}` key references from `~/.nexus/config.json`. A literal key saved with `nexus configure` is kept and sent as shown in the table.
 
 ### LLM gateway
 
-The gateway sends `auto` and your Fireworks API key to Fireworks, so you don't need Nexus CLI. Clients behind the gateway call `auto` with only their gateway key.
+Point your [LLM gateway](/nexus/llm-gateways), such as LiteLLM or Portkey, at Fireworks with your Fireworks API key and the model `auto`. Clients behind the gateway use only their gateway key.
 
-Choose LiteLLM or Portkey, a model ID, and where the provider keys live. The widget writes the gateway config and a test request.
-
-For other gateways and each credential option, see [LLM Gateways](/nexus/llm-gateways#provide-closed-model-credentials).
+* **LiteLLM:** in `config.yaml`, set `model_name: auto` and `litellm_params.model: fireworks_ai/accounts/fireworks/routers/auto`, with `api_key: os.environ/FIREWORKS_API_KEY` and `api_base: https://api.fireworks.ai/inference/v1`. Recent LiteLLM versions turn a short ID into a model path that returns 404.
+* LiteLLM keys in the gateway config: add `extra_headers` with `x-anthropic-api-key: os.environ/ANTHROPIC_API_KEY` (and `x-openai-api-key: os.environ/OPENAI_API_KEY`). Set every variable before starting the proxy (`litellm --config config.yaml --port 4000`). A missing one makes each request fail with a 500. Clients send only their LiteLLM key.
+* LiteLLM keys from each client: set `general_settings.forward_client_headers_to_llm_api: true`. Each client sends its own provider-key header.
+* LiteLLM returns `model_name` in the response `model` field, not the model that served the turn.
+* **Portkey:** create a Fireworks integration with the Fireworks API key, then call `https://api.portkey.ai/v1/chat/completions` with `x-portkey-api-key` and model `@YOUR_FIREWORKS_INTEGRATION/auto`. Portkey sends the rest of the ID to Fireworks unchanged.
+* Portkey has no per-model header injection, so it supports Provider Keys or keys from each client. Clients list the provider-key headers in `x-portkey-forward-headers`, and should add them to `x-portkey-sensitive-headers` so Portkey masks them in logs.
+* With Provider Keys, no provider credential passes through the gateway. Otherwise, check that the gateway redacts the provider-key headers, since gateways often log request headers.
+* Other gateways and each credential option: [LLM Gateways](/nexus/llm-gateways#provide-closed-model-credentials).
 
 ### API and SDK
 
-Point the SDK you already use at Fireworks. Its API key is your Fireworks API key. For an Anthropic or OpenAI model, connect a [Provider Key](/nexus/provider-keys) or send the provider's key as a header (see [Provide Anthropic and OpenAI credentials](#provide-anthropic-and-openai-credentials)).
+Point the OpenAI SDK at Fireworks and set the model to `auto`:
+
+```python theme={null}
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_FIREWORKS_API_KEY",
+    base_url="https://api.fireworks.ai/inference/v1",
+)
+
+response = client.chat.completions.create(
+    model="auto",
+    messages=[{"role": "user", "content": "Say pong in one word."}],
+)
+print(response.model, response.choices[0].message.content)
+```
+
+`auto` also works with the Anthropic SDK and the Responses API. Examples for both are in [APIs and SDKs](/nexus/apis-and-sdks).
 
 | API | Base URL to configure | Full endpoint | Typical clients |
 | - | - | - | - |
@@ -115,124 +131,129 @@ Point the SDK you already use at Fireworks. Its API key is your Fireworks API ke
 
 Anthropic-style clients add `/v1/messages` to the base URL themselves, so their base URL ends at `/inference`.
 
-```bash Python theme={null}
-pip install openai anthropic fireworks-ai
+Install: `pip install openai anthropic fireworks-ai` (Python) or `npm install openai @anthropic-ai/sdk` (TypeScript).
+
+Sending a closed-model key per request (omit the header when Provider Keys are connected):
+
+```python theme={null}
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["FIREWORKS_API_KEY"],
+    base_url="https://api.fireworks.ai/inference/v1",
+    default_headers={"x-anthropic-api-key": os.environ["ANTHROPIC_API_KEY"]},
+)
 ```
 
-```bash TypeScript theme={null}
-npm install openai @anthropic-ai/sdk
-```
-
-Pick an API and a language. The code adds the provider header that API needs, or leaves it out if you have Provider Keys connected.
-
-The Anthropic SDK's base URL is `https://api.fireworks.ai/inference`, without `/v1`. Some models return a `thinking` block before the text, so the snippet reads the first `text` block rather than `content[0]`. For errors and limits, see [APIs and SDKs](/nexus/apis-and-sdks).
+* Responses API: same client, `client.responses.create(model="auto", input=...)`, and send `x-openai-api-key` instead.
+* Anthropic Messages: `anthropic.Anthropic(api_key=FIREWORKS_API_KEY, base_url="https://api.fireworks.ai/inference", default_headers={"x-anthropic-api-key": ...})`, with `max_tokens` set. Raw HTTP also sends `anthropic-version: 2023-06-01`.
+* Some models return a `thinking` block before the text, so read the first `text` block rather than `content[0]`.
+* TypeScript uses the same settings with `baseURL` and `defaultHeaders`.
+* Errors and limits: [APIs and SDKs](/nexus/apis-and-sdks).
 
 ## Provide Anthropic and OpenAI credentials
 
-Nexus Auto calls closed models through your own Anthropic, OpenAI, or [Amazon Bedrock](/nexus/provider-keys/bedrock) account. For Anthropic and OpenAI, store the key once as a Provider Key or send it with each request. Bedrock uses Provider Keys only, with each model mapped to a Bedrock model ID and region.
+Nexus Auto calls closed models through your own Anthropic, OpenAI, or [Amazon Bedrock](/nexus/provider-keys/bedrock) account.
+
+* **[Provider Keys](/nexus/provider-keys) (recommended):** an admin connects the key once in Nexus settings, and it applies to everyone on the account.
+* **Request headers:** send `x-anthropic-api-key` or `x-openai-api-key` with each request.
+
+Without a credential for a provider, Nexus Auto uses the other models.
 
 | | Provider Keys | Request headers |
 | - | - | - |
-| **Where the key lives** | Stored once in your Fireworks account by an admin | Sent with every request as `x-anthropic-api-key` or `x-openai-api-key` |
+| **Where the key lives** | Stored once in the Fireworks account by an admin | Sent with every request as `x-anthropic-api-key` or `x-openai-api-key` |
 | **Who holds the key** | Only the account admin who connects it | Every client, or the gateway that adds the header |
-| **Exposure** | Never returned in full after you save it | Can appear in client configs and gateway request logs |
+| **Exposure** | Never returned in full after saving | Can appear in client configs and gateway request logs |
 | **Best for** | Production, shared gateways, and teams | Testing, or choosing a key per request |
-| **Availability** | Not enabled on every account | Every account |
+| **Availability** | Every Nexus plan | Every account |
 
-A request header takes precedence over the stored Provider Key for that provider.
+* Bedrock uses Provider Keys only, with each model mapped to a Bedrock model ID and region.
+* A request header takes precedence over the stored Provider Key for that provider.
+* A request returns `400 no_credential` when it calls a closed model ID such as `claude-opus-5-5` directly and that credential is missing.
 
-> [!NOTE]
->
-> Provider Keys isn't available on every account yet. If **Provider Keys**
-> doesn't appear in [Settings](https://app.fireworks.ai/settings/provider-keys),
-> [contact the Fireworks team](https://fireworks.ai/demo-request) to turn it on.
-
-Without a credential for a closed provider, Nexus Auto leaves that provider's models out and serves the turn with the others. A request returns `400 no_credential` when you call a closed model ID such as `claude-opus-5-5` directly and that credential is missing.
+Every Nexus plan includes Provider Keys. You can also use your own key: save it with `nexus auto`, or send it as a request header.
 
 ## Check which model served a turn
 
-1. Send a request with `auto`:
-   ```bash wrap theme={null}
-   curl https://api.fireworks.ai/inference/v1/chat/completions \
-     -H "Authorization: Bearer $FIREWORKS_API_KEY" \
-     -H "x-anthropic-api-key: $ANTHROPIC_API_KEY" \
-     -H "Content-Type: application/json" \
-     -d '{
-       "model": "auto",
-       "messages": [{"role": "user", "content": "Say pong in one word."}]
-     }'
-   ```
-2. Check the response `model` field. It names the model that served the turn, such as `glm-5p3` or `claude-opus-5-5`.
-3. An easy prompt usually gets an open model. A harder prompt, such as debugging a concurrency bug or writing a proof, is more likely to get the closed model. No single request is guaranteed to use either. In a coding harness, set [effort](/nexus/orchestration-preferences) to ask for a lighter or more thorough attempt.
-4. To confirm a closed-model credential, call that model ID directly, such as `claude-opus-5-5`. A `400 no_credential` error means the credential is missing.
+The response `model` field names the model that served the turn, such as `glm-5p3` or `claude-opus-5-5`. In Claude Code, the status line also shows it.
 
-## Watch orchestration live
-
-In Claude Code, you can watch each turn's model choice as you work. [Connect Claude Code](/nexus/harnesses/claude-code) with `auto`. The status line shows the model that served the latest turn and the estimated session cost. For a per-turn breakdown of model choices, tokens, and estimated cost, run:
+Test request:
 
 ```bash wrap theme={null}
-nexus claude usage
+curl https://api.fireworks.ai/inference/v1/chat/completions \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+  -H "x-anthropic-api-key: $ANTHROPIC_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "auto",
+    "messages": [{"role": "user", "content": "Say pong in one word."}]
+  }'
 ```
 
-Pick a session to open its live meter, or pass `--session <id>` to open one directly. See [Usage and Cost](/nexus/metrics) for the columns and pricing.
+* To confirm a closed-model credential, call that model ID directly, such as `claude-opus-5-5`. A `400 no_credential` error means the credential is missing.
+* An easy prompt usually gets an open model. A harder prompt, such as debugging a concurrency bug or writing a proof, is more likely to get the closed model. No single request is guaranteed to use either.
 
-## Balance quality and savings
+## Cost and effort
 
-Set [effort](/nexus/orchestration-preferences) in the harness. Higher effort asks for a more thorough attempt. Lower effort asks for a lighter one. Nexus Auto uses that when it picks a model.
+* Open models bill to your Fireworks account at [serverless rates](/serverless/pricing).
+* Closed models bill to the Anthropic or OpenAI account whose credential served the turn.
+* Set [effort](/nexus/orchestration-preferences) in your tool. Higher effort asks for a more thorough attempt.
 
-## Pay for the model that serves each turn
-
-Open models bill to your Fireworks account at their [serverless rates](/serverless/pricing). Closed models bill to the Anthropic or OpenAI account whose credential served the turn. In the Codex CLI, a ChatGPT sign-in covers most OpenAI model turns; see [Who pays for OpenAI model turns](/nexus/harnesses/codex#who-pays-for-openai-model-turns). Cached input bills at the serving model's cached-input rate.
-
-Use [Usage and Cost](/nexus/metrics) to review Fireworks usage and Claude Code session estimates.
+- Nexus Auto uses the effort setting when it picks a model.
+- In the Codex CLI, a ChatGPT sign-in covers most OpenAI model turns. See [Who pays for OpenAI model turns](/nexus/harnesses/codex#who-pays-for-openai-model-turns).
+- Cached input bills at the serving model's cached-input rate.
+- In [Claude Code](/nexus/harnesses/claude-code) on `auto`, the status line shows the model that served the latest turn and the estimated session cost. `nexus claude usage` shows model choices, tokens, and estimated cost per turn. Pick a session to open its live meter, or pass `--session <id>` to open one directly.
+- See [Usage and Cost](/nexus/metrics) for the columns, pricing, Fireworks usage, and Claude Code session estimates.
 
 ## Supported models
 
-`auto` decides which model serves each turn from the credentials you provide. To send every turn to one model below, [pin it](#pin-a-specific-model).
-
-| Family | Current model ID | Credential |
+| Family | Model IDs | Credential |
 | - | - | - |
-| Claude Opus | `claude-opus-5-5` | Anthropic |
-| Claude Fable | `claude-fable-5-1` | Anthropic, with data retention enabled |
-| Claude Sonnet | `claude-sonnet-5-5` | Anthropic |
-| GPT Sol | `gpt-6.1-sol` | OpenAI |
-| GPT Astra | `gpt-6-astra` | OpenAI |
-| GPT Luna | `gpt-6-luna` | OpenAI |
-| Kimi | `kimi-k3`, `kimi-k3-fast` | Fireworks |
-| GLM | `glm-5p3`, `glm-5p3-fast`, `glm-5p3-flash` | Fireworks |
-| DeepSeek | `deepseek-v4p1-flash` | Fireworks |
+| Claude Opus, Sonnet, Fable | `claude-opus-5-5`, `claude-sonnet-5-5`, `claude-fable-5-1` | Anthropic |
+| GPT Sol, Astra, Luna | `gpt-6.1-sol`, `gpt-6-astra`, `gpt-6-luna` | OpenAI |
+| Kimi, GLM, DeepSeek | `kimi-k3`, `kimi-k3-fast`, `glm-5p3`, `glm-5p3-fast`, `glm-5p3-flash`, `deepseek-v4p1-flash` | Fireworks |
 
-Anthropic serves Claude Fable only to organizations with data retention enabled. Otherwise, Fable requests return a `400` error from Anthropic.
+* `auto` decides which model serves each turn from the credentials provided. To send every turn to one model, [pin it](#pin-a-specific-model).
+* Anthropic serves Claude Fable only to organizations with data retention enabled. Otherwise, Fable requests return a `400` error from Anthropic.
 
 ## Pin a specific model
 
-To choose a model yourself, use its ID instead of `auto`. In a harness, pass it with `--model`. In a request, set it as the `model` value:
+On Enterprise, to use one model for every turn, use its ID instead of `auto`, such as `nexus claude --model glm-5p3` or `"model": "glm-5p3"` in a request.
 
-```bash wrap theme={null}
-nexus claude --model glm-5p3
-```
+* A full model ID such as `glm-5p3` stays on that version. Aliases such as `glm-latest` track the current version in a family and also skip Nexus Auto. See [Open Models](/nexus/open-models).
+* Custom routes such as `firerouter/opus` and the latency-first `auto-instant` mix are retired. Nexus Auto does not accept `auto/...` route IDs. Pin a model ID or use `auto`. See [Deprecated and removed](/nexus/cli-reference#deprecated-and-removed).
 
-A pinned model serves every turn. A full model ID such as `glm-5p3` stays on that version. Aliases such as `glm-latest` track the current version in a family and also skip Nexus Auto. See [Open Models](/nexus/open-models).
+## Web search
 
-> [!NOTE]
->
-> Custom routes such as `firerouter/opus` are no longer available, and Nexus Auto does not accept `auto/...` route IDs. The latency-first `auto-instant` mix is retired too. Pin a model ID as shown above, or use `auto`. See [Deprecated and removed](/nexus/cli-reference#deprecated-and-removed).
+Web search is built into Nexus. In Claude Code, Claude Desktop, Codex, and ChatGPT, the app's native web search remains available. Fireworks runs the search server-side, so no search MCP server is required.
 
-## Limitations
+* Fireworks runs the search server-side and returns the results.
+* It works with any Fireworks model and a standard `fw_...` key, with or without Nexus Auto.
 
-* Nexus Auto is not available through Microsoft Foundry. See [Nexus for Microsoft Foundry](/nexus/microsoft-foundry).
-* Accounts with data residency enabled cannot use Nexus Auto. Use a residency-compatible pinned serverless model instead.
+| Harness | Search behavior | Wire API |
+| - | - | - |
+| Claude Code | Native `WebSearch` and `WebFetch` remain available | Messages |
+| Claude Desktop | Native web search remains available | Messages |
+| Codex CLI and ChatGPT desktop app | Native web search remains available | Responses |
+| OpenCode, Pi, Cursor IDE, VS Code, Copilot, and DeepSeek Harness | Nexus CLI does not add web search | Not applicable |
+
+Upgrading from the retired MCP: versions before 0.9.7 installed the `fireworks-websearch` MCP for Claude Code. It is retired because Fireworks handles Claude Code's native search tools server-side. `nexus update` removes the retired MCP and the tool denials earlier versions added to Claude Code, keeps other MCP servers, and removes the `web_search = "disabled"` line that version 0.9.6 wrote into the Codex config. Restart Claude Code and Codex afterward.
+
+### Data residency
+
+* With US [data residency](/accounts/data-residency), Nexus Auto serves open-model turns from [US-only Serverless](/serverless/us-only-serverless). Send requests to `us.api.fireworks.ai`. Anthropic and OpenAI turns still run on your own provider account, where that provider's data policies apply. See [Enterprise Controls](/nexus/enterprise-controls#control-models-and-regions).
+* A request to Nexus Auto from an account set to a region other than US is rejected for data residency. Pin a model served in that region.
 
 ## Troubleshooting
 
-> [accordion] Nexus Auto never uses an Anthropic or OpenAI model
->
-> No closed-model credential is reaching Nexus Auto. Save a key with `nexus auto --anthropic-api-key` or `--openai-api-key`, then run your harness command again. Or connect the matching [Provider Key](/nexus/provider-keys).
->
-> Run `nexus auto` to see what's set:
->
-> * **"saved, not sent while auto is limited to fireworks":** run `nexus auto --reset`, then run your harness command again.
-> * **"Sign in to see status":** run `nexus login` so Nexus CLI can read your account's Provider Keys.
-> * **"Not enabled on this account":** your account can't use Provider Keys yet. Save your own key with `nexus auto` instead.
->
-> Nexus CLI doesn't send exported `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` values. In Codex, OpenAI model turns need a Codex sign-in or an OpenAI Provider Key.
+**Nexus Auto never uses an Anthropic or OpenAI model.** No closed-model credential is reaching it. Run `nexus auto` to see what's connected, and connect a [Provider Key](/nexus/provider-keys) if none is.
+
+What `nexus auto` may show:
+
+* **"saved, not sent while auto is limited to fireworks":** run `nexus auto --reset`, then run the harness command again.
+* **No key saved:** run `nexus auto --anthropic-api-key` or `--openai-api-key`, then the harness command again. Or connect a Provider Key.
+* **"Sign in to see status":** run `nexus login`, which lets Nexus CLI read the account's Provider Keys.
+* **"Not enabled on this account":** Provider Keys isn't turned on for this account. Nexus accounts include it; for a Fireworks platform account, contact Fireworks. Until then, save your own key with `nexus auto` instead.
+* Nexus CLI doesn't send exported `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` values. In Codex, OpenAI model turns need a Codex sign-in or an OpenAI Provider Key.

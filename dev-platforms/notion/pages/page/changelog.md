@@ -4,6 +4,22 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+**November 2, 2026**
+
+### Notion Agent APIs are generally available
+
+The [Notion Agent APIs](/guides/notion-agent-apis/overview) are out of beta. If you still use the private alpha routes, they're deprecated. See [Upgrading from the alpha routes](/guides/notion-agent-apis/upgrading-to-public-beta) for their replacements.
+
+### Personal agent in the Notion Agent APIs
+
+You can now chat with and manage the personal agent (Notion AI) through the Notion Agent APIs with a personal access token. Use `notion_ai` as the `agent_id` to start sessions, retrieve the agent, read its insights, and change its name and model. See [The personal agent](/guides/notion-agent-apis/overview#authentication-and-access) for what it supports.
+
+### Update an agent
+
+[Update an agent](/reference/notion-agent-apis/update-agent) (`PATCH /v1/agents/{agent_id}`) changes an agent's name, description, model, status, or favorite state in one request.
+
+[Update agent status](/reference/notion-agent-apis/update-agent-status) is now deprecated. Send `status` to Update an agent instead.
+
 **October 30, 2026**
 
 ### Stored sync metadata on data sources

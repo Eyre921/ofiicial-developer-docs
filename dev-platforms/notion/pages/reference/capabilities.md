@@ -42,6 +42,16 @@ Comment capabilities dictate how a connection can interact with the [comments](/
 
 A connection with only comment capabilities can still call [Retrieve token's bot user](/reference/get-self) to learn its own bot ID.
 
+## Agent capabilities
+
+Agent capabilities control how a connection can use the [Notion Agent APIs](/guides/notion-agent-apis/overview). A connection reaches only the Custom Agents selected in its **Agent access** tab.
+
+* **View sessions and interact with agents**: This capability lets a connection [query agents](/reference/notion-agent-apis/query-agents), [retrieve an agent](/reference/notion-agent-apis/retrieve-agent), and start, continue, and read sessions with [Create or update a session](/reference/notion-agent-apis/update-session).
+
+* **Edit selected agents**: This capability lets a connection [update](/reference/notion-agent-apis/update-agent) a selected Custom Agent, including its status. On its own, it doesn't let a connection read agents, read sessions, or chat. It also doesn't let a connection delete an agent, change a credit limit, or read sessions it didn't create. Only a personal access token or the Admin API can delete an agent or change its credit limit. A public connection can request it only if it's installed in a single workspace.
+
+Personal access tokens can have both agent capabilities.
+
 ## User capabilities
 
 A connection can request different levels of user capabilities, which affect how [user objects](/reference/user) are returned from the Notion API:

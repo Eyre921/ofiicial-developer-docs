@@ -118,7 +118,7 @@ It is also possible to define explicit input and output schemas for a graph. In 
 
 Let's look at an example:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { END, START, StateGraph, StateSchema } from "@langchain/langgraph";
 import * as z from "zod";
 
@@ -190,7 +190,7 @@ There are two subtle and important points to note here:
 >
 > When you stream with `streamMode: "values"`, the graph emits **all** of its state channels by default — including private ones — because values streaming defaults to the full set of state channels rather than the output schema. This is why a private channel like `bar` is hidden by `invoke` but visible while streaming:
 >
-> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import { END, START, StateGraph, StateSchema } from "@langchain/langgraph";
 > import * as z from "zod";
 >
@@ -284,7 +284,7 @@ const newValue = reducer(currentState[key], nodeUpdate[key]); // left, right
 
 The left argument always comes from accumulated state. The right argument always comes from the latest node update. The following example names both arguments explicitly:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ReducedValue, StateSchema } from "@langchain/langgraph";
 import * as z from "zod";
 
@@ -307,7 +307,7 @@ const State = new StateSchema({
 
 Suppose the state is `{ tags: ["draft"] }` and a node returns `{ tags: ["review"] }`. LangGraph calls:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const reducer = (left: string[], right: string[]) => left.concat(right);
 
 reducer(["draft"], ["review"]); // left, right → ["draft", "review"]
@@ -321,7 +321,7 @@ Custom reducers combine the left and right arguments. The [default reducer](#def
 
 The default reducer ignores the left argument and replaces the state value with the right argument. This example shows how to use the default reducer:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { StateSchema } from "@langchain/langgraph";
 import * as z from "zod";
 
@@ -343,7 +343,7 @@ In this example, no reducer functions are specified for any key. Let's assume th
 
 A custom reducer combines the left and right arguments instead of replacing the state value, which is useful for accumulating values, such as appending updates to a list. This example shows how to specify a custom reducer:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ReducedValue, StateSchema } from "@langchain/langgraph";
 import { z } from "zod/v4";
 
@@ -368,7 +368,7 @@ A common source of confusion with reducers: with a merging reducer, returning an
 
 This pattern matters for error buffers or retry counters that must be cleared between retry attempts:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ReducedValue, StateSchema } from "@langchain/langgraph";
 import { z } from "zod/v4";
 
@@ -390,7 +390,7 @@ const State = new StateSchema({
 
 To let a node reset (clear) the field, define a custom reducer that replaces the accumulated value instead of merging it:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ReducedValue, StateSchema } from "@langchain/langgraph";
 import { z } from "zod/v4";
 
@@ -410,7 +410,7 @@ const State = new StateSchema({
 
 Alternatively, wrap the update with `Overwrite` to bypass the reducer for a single update, while keeping the field's normal merging behavior for every other update:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { Overwrite, ReducedValue, StateSchema } from "@langchain/langgraph";
 import { z } from "zod/v4";
 
@@ -694,7 +694,7 @@ If a [node](#nodes) contains multiple operations, you may find it easier to impl
 
 > [tab] Original
 >
-> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import * as z from "zod";
 > import { uuid7 } from "langsmith";
 >
@@ -739,7 +739,7 @@ If a [node](#nodes) contains multiple operations, you may find it easier to impl
 
 > [tab] With task
 >
-> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > import * as z from "zod";
 > import { uuid7 } from "langsmith";
 >

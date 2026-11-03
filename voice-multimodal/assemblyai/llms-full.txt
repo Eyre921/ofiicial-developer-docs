@@ -9,6 +9,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [AssemblyAI Documentation](#assemblyai-documentation-docs-index-mdx)
 - [Build with SDKs](#build-with-sdks-docs-getting-started-sdks-mdx)
 - [Build with AI agents](#build-with-ai-agents-docs-coding-agent-prompts-mdx)
+- [Use AssemblyAI in AI apps with the MCP server](#use-assemblyai-in-ai-apps-with-the-mcp-server-docs-mcp-server-mdx)
 - [Build with integrations](#build-with-integrations-docs-integrations-mdx)
 - [Models](#models-docs-getting-started-models-mdx)
 - [Evaluations](#evaluations-docs-evaluations-mdx)
@@ -406,7 +407,10 @@ This breaks down into a few core APIs, suited to different parts of your voice p
     Use the Python or TypeScript SDK to integrate transcription, streaming, and voice agents directly into your own codebase.
   
   
-    Wire AssemblyAI into Claude Code, Cursor, or any MCP-compatible agent via the AssemblyAI MCP Server and skill.
+    Give Claude Code, Cursor, or any MCP-compatible coding agent our live docs (docs MCP server) and skill, so it writes correct code.
+  
+  
+    Connect Claude, Cursor, or any MCP client to your account, then ask it to transcribe, summarize, and analyze audio for you.
   
   
     Drop AssemblyAI into existing voice-agent frameworks and platforms — LiveKit, Pipecat, Twilio, Langflow, and others.
@@ -1150,6 +1154,8 @@ The same prompt is published at [agent-instructions.md](/agent-instructions.md) 
 
 ## Docs MCP server
 
+Want an AI app to transcribe audio for you, not write code? Use the [AssemblyAI MCP server](/mcp-server) instead. It signs in to your account and runs the API tasks itself.
+
 For on-demand lookups during a session — useful when the agent is iterating on a feature and needs to check several pages mid-task — connect the AssemblyAI docs MCP server:
 
 ```
@@ -1191,6 +1197,115 @@ The CLI asks which agents to install it for. Run `npx skills check` later to see
 - **Be specific about the SDK** — say "use the AssemblyAI Python SDK" or "use the JavaScript SDK" rather than "use AssemblyAI".
 - **Reference the model** — specify `universal-3-5-pro` for pre-recorded or `universal-3-6-pro` for streaming to avoid outdated model names.
 - **Set your API key as an environment variable** — `export ASSEMBLYAI_API_KEY=your_key` so the agent can reference it naturally.
+
+---
+
+<a id="use-assemblyai-in-ai-apps-with-the-mcp-server-docs-mcp-server-mdx"></a>
+
+# Use AssemblyAI in AI apps with the MCP server
+
+URL: https://www.assemblyai.com/docs/mcp-server
+Source: docs/mcp-server.mdx
+Navigation: Overview > Getting started
+Description: Connect Claude, Cursor or any MCP client to your AssemblyAI account so it can transcribe, summarize and analyze audio for you.
+
+The AssemblyAI MCP server lets Claude, Cursor and other AI apps call the AssemblyAI API on your account. Connect it once, then ask: "transcribe this call and list the action items."
+
+It is not the [docs MCP server](/coding-agent-prompts#docs-mcp-server). That one only searches our docs, so a coding agent writes correct code. This one does the work.
+
+| | AssemblyAI MCP server | Docs MCP server |
+|---|---|---|
+| Endpoint | `https://mcp.assemblyai.com/mcp` | `https://assemblyai.com/docs/mcp` |
+| What it does | Transcribes, summarizes and analyzes audio | Searches and reads the docs |
+| Sign-in | Your AssemblyAI account or API key | None |
+| Cost | Usage is billed to your account, at your normal API rates | Free |
+
+## Connect
+
+The endpoint is `https://mcp.assemblyai.com/mcp` (Streamable HTTP). You can sign in with your AssemblyAI account, or send an API key.
+
+Sign in with your AssemblyAI account:
+
+```bash
+claude mcp add --transport http assemblyai https://mcp.assemblyai.com/mcp
+```
+
+Then run `/mcp` in Claude Code, select `assemblyai` and select **Authenticate**. Your browser opens the AssemblyAI sign-in and consent page.
+
+Or use an API key:
+
+```bash
+claude mcp add --transport http assemblyai https://mcp.assemblyai.com/mcp \
+  --header "Authorization: Bearer $ASSEMBLYAI_API_KEY"
+```
+
+1. Go to **Customize** > **Connectors**, select **+ Add**, then **Add custom connector**.
+2. Enter the name `AssemblyAI` and the URL `https://mcp.assemblyai.com/mcp`, then select **Add**.
+3. Sign in to AssemblyAI and allow access.
+
+On Team and Enterprise plans, an owner adds the connector in **Organization settings** > **Connectors** first. Members then select **Connect**. See [custom connectors](https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp).
+
+Add the server to `.cursor/mcp.json` (one project) or `~/.cursor/mcp.json` (all projects):
+
+```json
+{
+  "mcpServers": {
+    "assemblyai": {
+      "url": "https://mcp.assemblyai.com/mcp"
+    }
+  }
+}
+```
+
+Cursor asks you to sign in to AssemblyAI the first time it connects. To use an API key, add `"headers": { "Authorization": "Bearer <your-api-key>" }`.
+
+Any MCP client that supports [Streamable HTTP](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) can connect.
+
+- **Clients that support MCP authorization:** add the URL with no headers. The client opens the AssemblyAI sign-in page.
+- **All other clients:** send your API key as a Bearer token:
+
+```json
+{
+  "mcpServers": {
+    "assemblyai": {
+      "url": "https://mcp.assemblyai.com/mcp",
+      "headers": { "Authorization": "Bearer <your-api-key>" }
+    }
+  }
+}
+```
+
+Include the `Bearer ` prefix. The REST API takes the raw key, but the MCP server returns `401` without the prefix.
+
+Get an API key from the [dashboard](https://www.assemblyai.com/dashboard/api-keys). To stop an app that signed in, revoke its connection in the dashboard. It stops working within a few minutes.
+
+## Try it
+
+After you connect, ask the app:
+
+```text
+Transcribe https://assembly.ai/wildfires.mp3 with speaker labels, then summarize it in five bullets.
+```
+
+The app submits the file, waits for the transcript, then returns the summary.
+
+## Tools
+
+| Tool | What it does |
+|---|---|
+| `submit_transcript` | Starts a transcription of a public audio or video URL and returns a `transcript_id`. Accepts the same options as [Submit a transcript](/pre-recorded-audio/api-reference/transcripts/submit), for example `speaker_labels`, `language_detection`, `redact_pii` and `speech_understanding`. |
+| `get_transcript` | Returns the status of a transcript, and the full results when the status is `completed`. |
+| `summarize_transcript` | Summarizes a completed transcript with [LLM Gateway](/llm-gateway/quickstart). Styles: `bullets` (default), `paragraph`, `headline`, `action_items`, or `custom` with your own prompt. |
+| `understand_transcript` | Runs [Speech Understanding](/speech-understanding/getting-started) on a completed transcript (translation, speaker identification, custom formatting, summarization, action items) without sending the audio again. |
+| `delete_transcript` | Permanently deletes a transcript and its data. Apps should only call it when you ask. |
+
+If you know what you need before you transcribe, ask for it in the same request ("transcribe and translate to Spanish"). The app then sends the Speech Understanding options with `submit_transcript`, and you get one result.
+
+## Limits
+
+- **Audio must be at a public URL.** The server can't read files on your computer. Upload the file somewhere the API can download it, or use the [upload endpoint](/pre-recorded-audio/api-reference/files/upload) and give the app the `upload_url`.
+- **Transcription is asynchronous.** The app polls `get_transcript` until the transcript is ready. Long files take longer.
+- **Your account limits apply.** The server uses your account, so your [rate limits](/pre-recorded-audio/rate-limits) apply to every call.
 
 ---
 
@@ -75886,6 +76001,7 @@ Use this to build the recommendation. Do not dump it on the user.
 | Word timestamps / confidence | Included by default on `words[]` |
 | Webhook delivery (skip polling) | `webhook_url: "..."` (Section 7) |
 | Custom voice agent (your LLM + AssemblyAI TTS) | Real-time STT + framework integration (Section 10) + [Streaming TTS](/tts/getting-started/quickstart) |
+| Speech output (TTS) | Streaming TTS (`assemblyai-tts-1`) over WebSocket or HTTP, with [OpenAI-compatible endpoints](/tts/openai-compatibility) — see the [Streaming TTS quickstart](/tts/getting-started/quickstart) |
 | Multilingual streaming | Universal-3.6 Pro Realtime (native code-switching; `language_codes` to steer toward known languages) |
 
 ---
@@ -75899,7 +76015,9 @@ Use this to build the recommendation. Do not dump it on the user.
 - **Streaming WebSocket (EU data residency):** `wss://streaming.eu.assemblyai.com/v3/ws` — data pinned to EU
 - **LLM Gateway (US):** `https://llm-gateway.assemblyai.com/v1/chat/completions`
 - **LLM Gateway (EU):** `https://llm-gateway.eu.assemblyai.com/v1/chat/completions` — Claude and Gemini only; OpenAI and Qwen are US-only
-- **Auth header:** `Authorization: YOUR_API_KEY` (no `Bearer`). Same header is used for REST, streaming WS upgrade, temp-token minting, and LLM Gateway
+- **Streaming TTS (US):** `wss://tts.us.assemblyai.com/v1/ws` (WebSocket) and `POST https://tts.us.assemblyai.com/v1/speech` (HTTP); EU: `tts.eu.assemblyai.com`. See the [Streaming TTS quickstart](/tts/getting-started/quickstart)
+- **Streaming TTS, OpenAI-compatible (US):** base URL `https://tts.us.assemblyai.com/v1/openai` (`POST /audio/speech`); EU: `https://tts.eu.assemblyai.com/v1/openai`. See [OpenAI compatibility](/tts/openai-compatibility)
+- **Auth header:** `Authorization: YOUR_API_KEY` (no `Bearer`). Same header is used for REST, streaming WS upgrade, temp-token minting, LLM Gateway, and Streaming TTS
 - **Content type:** `application/json` for submit/poll and LLM Gateway; `application/octet-stream` (raw binary) for `/v2/upload`
 
 Core REST endpoints:

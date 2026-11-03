@@ -1,32 +1,32 @@
 ---
-title: "Upgrading to public beta"
+title: "Upgrading from the alpha routes"
 source: https://developers.notion.com/guides/notion-agent-apis/upgrading-to-public-beta
 path: guides/notion-agent-apis/upgrading-to-public-beta
 ---
 
-Migrate your private alpha integration to the public beta.
+Migrate a private alpha integration to the current Notion Agent APIs.
 
 This guide is only for customers who had early access to the private alpha of the Notion Agent APIs. If you're new to the APIs, start with the [Quickstart](/guides/notion-agent-apis/quickstart).
 
-The public beta renames the alpha's threads-and-messages routes to sessions and events, and adds routes for agent insights and controls.
+The current Notion Agent APIs rename the alpha's threads-and-messages routes to sessions and events, and add routes for agent insights and controls.
 
 > [!WARNING]
 >
-> **Move off alpha routes by September 30, 2026**
+> **The alpha routes are deprecated**
 >
-> If you use the alpha routes for listing agents, threads, messages, or chat, migrate to their public-beta replacements by that date. The new routes use JSON request bodies instead of query parameters and return sessions and events instead of threads and messages.
+> If you use the alpha routes for listing agents, threads, messages, or chat, migrate to their replacements. The new routes use JSON request bodies instead of query parameters and return sessions and events instead of threads and messages.
 
 ## What's changing
 
-| Route description | Alpha route | Public beta route |
+| Route description | Alpha route | Current route |
 | :- | :- | :- |
 | Get agents | `GET /v1/agents` | [`POST /v1/agents/query`](/reference/notion-agent-apis/query-agents) |
-| Get sessions | `GET /v1/agents/:agent_id/threads` | [`POST /v1/sessions/query`](/reference/notion-agent-apis/query-sessions) |
-| Get session events | `GET /v1/threads/:thread_id/messages` | [`POST /v1/sessions/:session_id/events/query`](/reference/notion-agent-apis/query-session-events) |
+| Get sessions | `GET /v1/agents/:agent_id/threads` or `POST /v1/agents/:agent_id/threads/query` | [`POST /v1/sessions/query`](/reference/notion-agent-apis/query-sessions) |
+| Get session events | `GET /v1/threads/:thread_id/messages` or `POST /v1/threads/:thread_id/messages/query` | [`POST /v1/sessions/:session_id/events/query`](/reference/notion-agent-apis/query-session-events) |
 | Create or update a session | `POST /v1/agents/:agent_id/chat` | [`POST /v1/sessions`](/reference/notion-agent-apis/update-session) |
 | Stream a session turn | `POST /v1/agents/:agent_id/chatStream` | [`POST /v1/sessions`](/reference/notion-agent-apis/update-session) with `Accept: text/event-stream` |
 
-You only need to migrate the routes listed above. The public beta also adds optional endpoints to retrieve or cancel sessions, view Custom Agent metadata and insights, set credit limits, enable, disable, or delete Custom Agents, and make those changes in bulk. See the [Overview](/guides/notion-agent-apis/overview) for the full set.
+You only need to migrate the routes listed above. The current APIs also add optional endpoints to retrieve or cancel sessions, view agent metadata and insights, [update](/reference/notion-agent-apis/update-agent) a Custom Agent's settings and status, change its [credit limit](/reference/notion-agent-apis/update-agent-credit-limit), delete Custom Agents, and make those changes in bulk. See the [Overview](/guides/notion-agent-apis/overview) for the full set.
 
 ## Upgrade checklist
 
@@ -36,11 +36,11 @@ Replace `GET /v1/agents` with `POST /v1/agents/query`, moving your query paramet
 
 **Step 2**
 
-Replace `GET /v1/agents/:agent_id/threads` with `POST /v1/sessions/query`, filtering on `agent_id`.
+Replace `GET /v1/agents/:agent_id/threads` or `POST /v1/agents/:agent_id/threads/query` with `POST /v1/sessions/query`, filtering on `agent_id`.
 
 **Step 3**
 
-Replace `GET /v1/threads/:thread_id/messages` with `POST /v1/sessions/:session_id/events/query`, and read agent replies from `agent.message` events.
+Replace `GET /v1/threads/:thread_id/messages` or `POST /v1/threads/:thread_id/messages/query` with `POST /v1/sessions/:session_id/events/query`, and read agent replies from `agent.message` events.
 
 **Step 4**
 
@@ -60,7 +60,7 @@ Rename `thread_id` to `session_id` throughout your code. Handle `queued`, `in_pr
 
 [Query agents](/reference/notion-agent-apis/query-agents) is a `POST` that takes a JSON body. The alpha's query parameters become filters, each naming a `property` and pairing it with a condition object, and `name` becomes the free-text `query` field. Combine several filters with `and` or `or`.
 
-```bash Public beta theme={null}
+```bash Current theme={null}
 curl -X POST https://api.notion.com/v1/agents/query \
   -H "Authorization: Bearer $NOTION_API_KEY" \
   -H "Notion-Version: 2026-03-11" \
@@ -88,7 +88,7 @@ See [Query agents](/reference/notion-agent-apis/query-agents) for the full filte
 
 A thread is now a session. [Query sessions](/reference/notion-agent-apis/query-sessions) is workspace-wide rather than nested under an agent, so the agent moves from the path into a filter.
 
-```bash Public beta theme={null}
+```bash Current theme={null}
 curl -X POST https://api.notion.com/v1/sessions/query \
   -H "Authorization: Bearer $NOTION_API_KEY" \
   -H "Notion-Version: 2026-03-11" \
@@ -112,7 +112,7 @@ curl "https://api.notion.com/v1/agents/$AGENT_ID/threads?status=completed&sort_b
 
 The objects changed shape along with the name:
 
-| Thread (alpha) | Session (Public beta) |
+| Thread (alpha) | Session (current) |
 | :- | :- |
 | `object: "thread"` | `object: "session"` |
 | `created_time`, `last_edited_time` | `created_at`, `updated_at` |
@@ -126,7 +126,7 @@ Handle `queued` and `in_progress` as separate session statuses in place of the a
 
 Message history is now an event stream. [Query session events](/reference/notion-agent-apis/query-session-events) returns one entry per thing that happened in the session — user input, agent output, thinking, tool calls, tool results, and status transitions — each with a monotonically increasing `sequence`.
 
-```bash Public beta theme={null}
+```bash Current theme={null}
 curl -X POST https://api.notion.com/v1/sessions/$SESSION_ID/events/query \
   -H "Authorization: Bearer $NOTION_API_KEY" \
   -H "Notion-Version: 2026-03-11" \
@@ -143,7 +143,7 @@ curl "https://api.notion.com/v1/threads/$THREAD_ID/messages?role=agent" \
   -H "Notion-Version: 2026-03-11"
 ```
 
-| Thread message (alpha) | Session event (Public beta) |
+| Thread message (alpha) | Session event (current) |
 | :- | :- |
 | `object: "thread_message"` | `object: "session_event"` |
 | `role`: `user` or `agent` | `type`: `user.message`, `agent.message`, `agent.thinking`, `agent.tool_use`, `agent.tool_result`, or `session.status` |
@@ -162,7 +162,7 @@ Two consequences worth handling explicitly:
 
 [Create or update a session](/reference/notion-agent-apis/update-session) replaces the chat route. `agent_id` moves from the path into the body, and one route now covers all three things you do to a session: start it, add a message, and answer a required action.
 
-```bash Public beta theme={null}
+```bash Current theme={null}
 curl -X POST https://api.notion.com/v1/sessions \
   -H "Authorization: Bearer $NOTION_API_KEY" \
   -H "Notion-Version: 2026-03-11" \
@@ -185,7 +185,7 @@ Send `session_id` to continue an existing session, and send `session_id` with `a
 
 The response is a session object rather than a `chat.invocation`:
 
-| Chat invocation (alpha) | Session (Public beta) |
+| Chat invocation (alpha) | Session (current) |
 | :- | :- |
 | `object: "chat.invocation"` | `object: "session"` |
 | `thread_id` | `id` |
@@ -196,9 +196,9 @@ Poll [Retrieve a session](/reference/notion-agent-apis/retrieve-session) for the
 
 ### Step 5: Switch streaming from NDJSON to server-sent events
 
-`POST /v1/agents/:agent_id/chatStream` is replaced by the same `POST /v1/sessions` request with `Accept: text/event-stream`. The transport changes twice over: the alpha emitted newline-delimited JSON chunks that were session objects themselves, while the Public beta emits server-sent events whose `data` is an envelope naming what arrived.
+`POST /v1/agents/:agent_id/chatStream` is replaced by the same `POST /v1/sessions` request with `Accept: text/event-stream`. The transport changes twice over: the alpha emitted newline-delimited JSON chunks that were session objects themselves, while the current route emits server-sent events whose `data` is an envelope naming what arrived.
 
-```bash Public beta theme={null}
+```bash Current theme={null}
 curl -X POST https://api.notion.com/v1/sessions \
   -H "Authorization: Bearer $NOTION_API_KEY" \
   -H "Notion-Version: 2026-03-11" \
@@ -216,9 +216,9 @@ Switch on each envelope's `type` rather than decoding `data` as a session event 
 | :- | :- | :- |
 | `session.snapshot` | `session` | The session's state at the start of the stream. |
 | `event.provisional` | `event` | Output the agent is still producing. Expect it to be superseded; don't persist it. |
-| `event.committed` | `event` | A durable session event, the same shape [Query session events](/reference/notion-agent-apis/query-session-events) returns. Unwrap `event.committed.event`. |
+| `event.committed` | `event` | A durable session event, the same shape [Query session events](/reference/notion-agent-apis/query-session-events) returns. Read the session event from the line's `event` field. |
 | `stream.timeout` | `session_id`, `message` | The stream ended early while the turn is still running. Reconnect. |
 | `stream.end` | `session_id`, `status` | The current turn is over. A `status` of `requires_action` means the session is waiting on you — submit the action to the same `session_id` to continue. Any other `status` is terminal. |
 | `stream.error` | `error`, `session_id` | The turn failed. `error` carries `code`, `message`, and `retryable`. |
 
-A dropped connection no longer costs you the turn. Persist the `id` of the last `event.committed.event` you received, then reconnect with that exact ID as `continue_from` — along with the `session_id` — and the stream replays from there. `continue_from` takes a committed event's ID, not its `sequence` and not a provisional or stream-control record, so anything else fails to resolve. See [Create or update a session](/reference/notion-agent-apis/update-session).
+A dropped connection no longer costs you the turn. Persist the `event.id` of the last `event.committed` line you received, then reconnect with that exact ID as `continue_from` — along with the `session_id` — and the stream replays from there. `continue_from` takes a committed event's ID, not its `sequence` and not a provisional or stream-control record, so anything else fails to resolve. See [Create or update a session](/reference/notion-agent-apis/update-session).

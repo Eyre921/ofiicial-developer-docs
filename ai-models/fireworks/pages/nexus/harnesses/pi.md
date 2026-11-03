@@ -6,9 +6,13 @@ path: nexus/harnesses/pi
 
 Connect Pi to Fireworks models and Nexus Auto with the Nexus CLI or manual setup.
 
-Connect Pi to Fireworks models and Nexus Auto.
+Support summary:
 
-Generally availableOpenAI Chat CompletionsNexus Auto
+* API the harness speaks to Fireworks: OpenAI Chat Completions
+* Nexus Auto: Supported
+* Native web search: Not added by Nexus. See [Web search](/nexus/auto#web-search).
+
+Plan access: Pro and Team don't include general access to open models. They use Nexus Auto (`auto`) along with their own Claude or ChatGPT models, and Nexus Auto still sends turns to open models. Enterprise accounts also get general access to open models on Fireworks serverless. See [Plans and Accounts](/nexus/plans).
 
 ## Quick start
 
@@ -26,46 +30,43 @@ nexus login
 
 Sign in with your browser, or paste a Fireworks API key (`fw_...`).
 
-Already set up? Skip to step 2.
+If the Nexus CLI is already installed and signed in, skip to step 2.
 
 **2. Connect Pi**
 
 ```bash wrap theme={null}
 nexus pi
-nexus pi status
 ```
 
-**3. Restart and pick a model**
+Nexus Auto is the default model. To pick another one, run `nexus pi --model <id>`, such as `--model glm-latest`.
 
-Restart Pi if it was running. The default is `auto`. To change the default, run `nexus pi --model glm-latest`.
+`nexus pi status` shows the provider, where the key comes from, and the configured model.
 
-Pi stores other models under their full ID, such as `accounts/fireworks/routers/glm-latest`, so they line up with Pi's built-in `fireworks` rows.
+**3. Restart Pi**
 
-> [!TIP]
->
-> `nexus pi status` shows the provider, where the key comes from, and the configured model.
+Restart Pi if it was running.
+
+Pi stores models other than `auto` under their full ID, such as `accounts/fireworks/routers/glm-latest`, so they line up with Pi's built-in `fireworks` rows.
+
+To restore your original settings, run `nexus pi off`.
 
 ## Use Nexus Auto
 
-Nexus Auto (`auto`) is supported on the Chat Completions API.
+* **Anthropic and OpenAI model turns** need a [Provider Key](/nexus/provider-keys) from your admin.
 
-* **Anthropic and OpenAI model turns:** save a key with `nexus auto --anthropic-api-key` or `--openai-api-key` (each prompts for the key), then run `nexus pi` again. Nexus CLI adds the saved key to the provider headers in `models.json`. Or connect a [Provider Key](/nexus/provider-keys), which needs nothing saved locally.
-* **Environment keys:** Nexus CLI never sends `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` from your environment.
-* **Manual setup:** send `x-anthropic-api-key` and `x-openai-api-key` headers yourself. See [Manual setup (advanced)](#manual-setup-advanced).
+- Instead of a Provider Key, a developer can save their own key with `nexus auto --anthropic-api-key` or `--openai-api-key` (each prompts for the key) and run `nexus pi` again. Nexus CLI adds the saved key to the provider headers in `models.json`. A Provider Key needs nothing saved locally.
+- Nexus CLI never sends `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` from your environment.
+- Nexus Auto (`auto`) is supported on the Chat Completions API.
+- Manual setup sends `x-anthropic-api-key` and `x-openai-api-key` headers itself. See [Manual setup (advanced)](#manual-setup-advanced).
 
 ## MCP and tools
 
-Nexus CLI doesn't touch MCP. Set up servers in Pi as usual.
-
-Nexus CLI does not add web search to Pi. See [Web Search](/nexus/web-search).
-
-## Microsoft Foundry
-
-Nexus CLI can connect Pi to Fireworks models deployed in your Azure subscription. See [Nexus for Microsoft Foundry](/nexus/microsoft-foundry). Nexus Auto is not available on Foundry.
+* Nexus CLI doesn't change your MCP servers.
+* Nexus CLI doesn't add [web search](/nexus/auto#web-search) to Pi.
 
 ## Troubleshooting
 
-See [Nexus Auto](/nexus/auto#troubleshooting) for issues that affect every harness.
+Fixes for issues that affect every harness are in [Nexus Auto troubleshooting](/nexus/auto#troubleshooting).
 
 ## Manual setup (advanced)
 
@@ -78,37 +79,27 @@ Pi has a built-in `fireworks` provider that reads `FIREWORKS_API_KEY`. Set it as
 }
 ```
 
-> [!TIP]
->
-> `pi -p "hello"` answers from GLM.
+Without the Nexus CLI, you take over [the tasks it otherwise performs](/nexus/manual-setup#what-changes-without-the-nexus-cli), such as undo and updates.
 
-See [what changes without the Nexus CLI](/nexus/manual-setup#what-changes-without-the-nexus-cli).
+Check: `pi -p "hello"` answers from GLM.
 
 ## What the Nexus CLI writes
 
-**\~/.pi/agent**
+Files in `~/.pi/agent/`: `settings.json`, `auth.json`, and `models.json`.
 
-**settings.json**
+```json ~/.pi/agent/settings.json theme={null}
+{
+  "defaultProvider": "fireworks",
+  "defaultModel": "auto"
+}
+```
 
-**auth.json**
+```json ~/.pi/agent/auth.json theme={null}
+{ "fireworks": { "type": "api_key", "key": "fw_..." } }
+```
 
-**models.json**
-
-> [accordion] See what Nexus CLI writes
->
-> ```json ~/.pi/agent/settings.json theme={null}
-> {
->   "defaultProvider": "fireworks",
->   "defaultModel": "auto"
-> }
-> ```
->
-> ```json ~/.pi/agent/auth.json theme={null}
-> { "fireworks": { "type": "api_key", "key": "fw_..." } }
-> ```
->
-> If your `settings.json` already has an `enabledModels` list, Nexus CLI appends `fireworks/**` to it. Otherwise it leaves `enabledModels` out.
->
-> `models.json` gets a `providers.fireworks` entry with rows for models Pi's built-in `fireworks` catalog lacks, such as `auto`. Its `headers` carry any keys you saved with `nexus auto`.
->
-> `auth.json` and `models.json` are saved with mode `0600`. `off` restores all three files byte-for-byte from the snapshots under `~/.nexus/pi/`. If you or Pi changed a file while connected, `off` reverts only the entries Nexus CLI owns and keeps everything else. Use `--settings-path` for a settings file stored elsewhere.
+* If your `settings.json` already has an `enabledModels` list, Nexus CLI appends `fireworks/**` to it. Otherwise it leaves `enabledModels` out.
+* `models.json` gets a `providers.fireworks` entry with rows for models Pi's built-in `fireworks` catalog lacks, such as `auto`. Its `headers` carry any keys you saved with `nexus auto`.
+* `auth.json` and `models.json` are saved with mode `0600`.
+* `off` restores all three files byte-for-byte from the snapshots under `~/.nexus/pi/`. If you or Pi changed a file while connected, `off` reverts only the entries Nexus CLI owns and keeps everything else.
+* Use `--settings-path` for a settings file stored elsewhere.

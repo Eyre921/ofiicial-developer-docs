@@ -106,7 +106,7 @@ Regional models are priced at a premium over the base serverless price for the s
 The following are not supported while a region is set: calls are rejected, and stay rejected until you clear the setting.
 
 * **Training.** Fine-tuning and training jobs are blocked. Support is coming soon.
-* **Nexus Auto.** The `auto` model ID can pass a request through to a third-party provider, which Fireworks cannot constrain to a region. See [Nexus Auto](/nexus/auto#limitations).
+* **Nexus Auto outside the US.** With US residency, `auto` works and serves open-model turns from US-only Serverless. Anthropic and OpenAI turns run on your own provider account, where that provider's data policies apply. With other regions, `auto` is rejected. See [Enterprise Controls](/nexus/enterprise-controls#control-models-and-regions).
 * **BYOC.** [BYOC](/ecosystem/integrations/byoc/overview) deployments run in your own cloud account, so Fireworks cannot enforce where they run.
 
 ## Related

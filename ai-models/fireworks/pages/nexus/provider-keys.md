@@ -6,47 +6,52 @@ path: nexus/provider-keys
 
 Connect an Anthropic, OpenAI, or Amazon Bedrock Provider Key once so Nexus Auto can call closed models without developers sending the key.
 
-Connect an Anthropic, OpenAI, or [Amazon Bedrock](/nexus/provider-keys/bedrock) key once to let [Nexus Auto](/nexus/auto) call closed models. After that, developers and gateways authenticate with only their Fireworks API key. When Nexus Auto selects a closed model, Fireworks sends the request with the stored provider credential.
+* Only account admins can connect, replace, or remove a key.
+* A connected key works in every coding harness, including Cursor IDE, the Copilot App, and Claude Desktop.
+* Fireworks encrypts keys at rest and never shows them in full again.
+* Every [Nexus plan](/nexus/plans) includes Provider Keys: Pro, Team, and Enterprise. A developer can also use their own key, saved with [`nexus auto`](/nexus/auto#nexus-cli) or sent as a request header.
 
-> [!NOTE]
->
-> Provider Keys isn't available on every account yet. If **Provider Keys**
-> doesn't appear in [Settings](https://app.fireworks.ai/settings/provider-keys),
-> [contact the Fireworks team](https://fireworks.ai/demo-request) to turn it on.
+- On accounts without Provider Keys, send the Anthropic or OpenAI key with each request. See [APIs and SDKs](/nexus/apis-and-sdks#credentials) or [LLM Gateways](/nexus/llm-gateways#provide-closed-model-credentials). In coding harnesses, a developer can save their own key with `nexus auto --anthropic-api-key` or `--openai-api-key`. See [which harnesses send a saved key](/nexus/auto#nexus-cli).
+- A key a developer saves with `nexus auto` takes precedence over the Provider Key for that provider.
+- `nexus login` stores only the developer's Fireworks credential. The provider key stays with the account, so admins never hand it to developers.
+- IAM role ARNs are non-secret identifiers.
+- The admin-only rule applies to the dashboard, the API, and `firectl`.
 
-Until then, send the Anthropic or OpenAI key with each request. See [APIs and SDKs](/nexus/apis-and-sdks#credentials) or [LLM Gateways](/nexus/llm-gateways#provide-closed-model-credentials). In coding harnesses, save your own key with `nexus auto --anthropic-api-key` or `--openai-api-key`. See [which harnesses send a saved key](/nexus/auto#nexus-cli).
+## Supported providers
 
-Developers sign in to Nexus CLI with `nexus login`, which stores only their Fireworks credential. The provider key stays with the account, so you never hand it to developers or paste it into a chat. Fireworks encrypts API keys at rest and never shows them in full again. IAM role ARNs are non-secret identifiers.
+| Provider | What you connect |
+| - | - |
+| Anthropic | API key |
+| OpenAI | API key |
+| Amazon Bedrock | [API key or IAM role](/nexus/provider-keys/bedrock), plus a region and model ID for each model |
 
-> [!TIP]
->
-> **Admin:** connect the provider key once. **Developer:** run
-> `nexus login`. **Request:** send only the Fireworks API key.
+| Provider | Dashboard | API and `firectl` |
+| - | - | - |
+| Anthropic | Yes | Yes |
+| OpenAI | Yes | Yes |
+| Amazon Bedrock | Yes | Yes |
+| Grok | No | When enabled for the account |
 
-> [!NOTE]
->
-> A connected Provider Key works in every coding harness, including Cursor IDE, the Copilot App, and Claude Desktop. A key a developer saves with `nexus auto` takes precedence for that provider. See
-> [which harnesses send a saved key](/nexus/auto#nexus-cli).
+* **One active key per provider:** an account can upload several keys for one provider, but only one is active for routing at a time.
+* **Bedrock also needs routes:** a Bedrock key alone serves no traffic. Each model sent through AWS needs a Bedrock model ID and region.
 
-> [!NOTE]
->
-> Provider Keys is an account-admin-only feature. You must be an account admin
-> to connect, replace, or remove a key, whether from the dashboard or through
-> `firectl`.
+## Connect a key
 
-## Check provider support and connection states
+**1. Open Provider Keys**
 
-Provider Keys supports these providers:
+Open [Provider Keys](https://nexus.fireworks.ai/settings/provider-keys) in Nexus settings.
 
-| Provider | Dashboard | API and `firectl` | What you connect |
-| - | - | - | - |
-| Anthropic | Yes | Yes | API key |
-| OpenAI | Yes | Yes | API key |
-| Amazon Bedrock | Yes | Yes | API key or IAM role |
-| Grok | No | When enabled for your account | API key |
+**2. Connect a provider**
 
-* **One active key per provider:** You can upload several keys for one provider, but only one can be active for routing at a time.
-* **Bedrock also needs routes:** a Bedrock key is not enough. Each model you want to send through your AWS account needs a Bedrock model ID and region. See [Amazon Bedrock Setup](/nexus/provider-keys/bedrock).
+Click **Connect** next to Anthropic, OpenAI, or Amazon Bedrock, and paste your key. For Bedrock, follow [Amazon Bedrock Setup](/nexus/provider-keys/bedrock).
+
+The provider shows **Connected**, and requests start using the key within a minute.
+
+![Connecting a provider key from the Provider Keys page in Settings](https://mintcdn.com/fireworksai/nxZpB0vMV5GibTdM/images/fireworks-nexus/provider-keys/connect-a-key.gif?s=0203955982120c703d29dfde345f3006)
+
+* For Anthropic or OpenAI, paste the key and click **Connect**. A confirmation appears once it's saved.
+* For Amazon Bedrock, choose an IAM role or API key, then select models. After the card connects, fill in each model's Bedrock model ID and region, then click **Save**. Bedrock traffic starts only after the model routes are saved.
+* Requests typically begin using the key 30 to 60 seconds after connecting.
 
 Each provider is always in one of these states:
 
@@ -57,63 +62,44 @@ Each provider is always in one of these states:
 | **Disconnecting** | A binding removal is propagating |
 | **Not connected** | No key is set for this provider |
 
-Developers can check the Anthropic and OpenAI states from the terminal with `nexus auto`. It lists each Provider Key next to the keys saved on their machine:
+Developers can check the Anthropic and OpenAI states with `nexus auto`. It lists each Provider Key next to the keys saved on their machine:
 
 | `nexus auto` shows | What it means |
 | - | - |
 | **Connected, covers every harness** | The Provider Key is active. A masked preview may follow **Connected** |
 | **Connecting** or **Disconnecting** | A change is propagating |
 | **Not connected** | No Provider Key is set for this provider |
-| **Not enabled on this account** | Your account can't use Provider Keys yet |
+| **Not enabled on this account** | Provider Keys isn't turned on for this account. Nexus accounts include it. For a Fireworks platform account, [contact us](https://fireworks.ai/contact) |
 | **Sign in to see status** | Run `nexus login` first |
 | **Key rejected: sign in again** | The stored Fireworks key was rejected. Run `nexus login` |
 | **Couldn't check just now** | Nexus CLI couldn't read the status. Try again later |
 
-## Connect a key in the dashboard
-
-Connect a Provider Key from **Settings** without using a terminal. You can open [Provider Keys](https://app.fireworks.ai/settings/provider-keys) directly.
-
-**1. Open Provider Keys**
-
-Open **Settings** and go to **Provider Keys**, or open the [Provider Keys page](https://app.fireworks.ai/settings/provider-keys) directly.
-
-**2. Connect a provider**
-
-Find the provider you want (Anthropic, OpenAI, or Amazon Bedrock) and click **Connect**.
-
-**3. Paste your key**
-
-For Anthropic or OpenAI, paste your key and click **Connect**. A confirmation appears once it's saved.
-
-For Amazon Bedrock, choose an IAM role or API key, then select models. After the card connects, fill in each model's Bedrock model ID and region, then click **Save**. Full steps are in [Amazon Bedrock Setup](/nexus/provider-keys/bedrock).
-
-The provider then shows **Connected**. Requests typically begin using the key within 30–60 seconds of connecting it. Bedrock traffic starts only after the model routes are saved.
-
-![Connecting a provider key from the Provider Keys page in Settings](https://mintcdn.com/fireworksai/nxZpB0vMV5GibTdM/images/fireworks-nexus/provider-keys/connect-a-key.gif?s=0203955982120c703d29dfde345f3006)
-
 ## Replace or remove a key
 
-Open the menu on any connected provider to:
+Open the menu on a connected provider:
 
-* **Replace:** swap in a new API key or IAM role ARN for that provider. Bedrock routes stay in place when you update only that value.
+* **Replace** swaps in a new key. Bedrock routes stay in place.
+* **Remove** disconnects the provider. For Bedrock, this also deletes its routes.
 
 ![Replacing the key value for a connected provider](https://mintcdn.com/fireworksai/nxZpB0vMV5GibTdM/images/fireworks-nexus/provider-keys/update-a-key.gif?s=e920c9a4d139210db5da7d201b54d170)
 
-* **Remove:** remove the key. For Bedrock, this also deletes every Bedrock route.
-
-![Removing a connected provider key](https://mintcdn.com/fireworksai/nxZpB0vMV5GibTdM/images/fireworks-nexus/provider-keys/remove-a-key.gif?s=4e160de51c5d7645e5bf09ff9c4aedfb)
-
-Changes typically propagate within 30–60 seconds. The provider may briefly show **Connecting** or **Disconnecting**.
+* Replace accepts a new API key or IAM role ARN for that provider.
+* Changes typically propagate within 30 to 60 seconds. The provider may briefly show **Connecting** or **Disconnecting**.
 
 ## Manage keys with `firectl`
 
-You can also connect, replace, remove, and inspect Provider Keys with `firectl`. Use `firectl provider-key` to manage stored keys and `firectl provider-key-binding` to choose which key is active for routing. `firectl auto-provider-key` is an alias.
+`firectl` is the older way to manage Provider Keys and remains supported for existing scripts. For new setups, use [Provider Keys](https://nexus.fireworks.ai/settings/provider-keys) in Nexus settings.
 
-The CLI can also stop using a key for routing without deleting it (`provider-key-binding unbind`). The key remains stored, so you can bind it again without re-uploading it.
+| Task | Command |
+| - | - |
+| Upload a key | `firectl provider-key upload --provider-type PROVIDER --from-file PATH` |
+| Make it active | `firectl provider-key-binding bind PROVIDER KEY_ID` |
+| Check status | `firectl provider-key-binding list` |
+| Remove | `firectl provider-key-binding unbind PROVIDER`, then `firectl provider-key delete KEY_ID` |
 
-> [!TIP]
->
-> First time using `firectl`? Follow [Getting started](/tools-sdks/firectl/firectl) to install it.
+If you haven't used `firectl` before, start with [Getting started](/tools-sdks/firectl/firectl).
+
+`firectl provider-key` manages stored keys and `firectl provider-key-binding` chooses which key is active for routing. `firectl auto-provider-key` is an alias. `unbind` stops routing from using a key without deleting it, so it can be bound again without re-uploading.
 
 | Action | Step | Command |
 | - | - | - |
@@ -130,27 +116,22 @@ The CLI can also stop using a key for routing without deleting it (`provider-key
 
 `upload` stores a key but does not make it active for routing. Use `bind` to make it active. `--provider-type` is required and accepts `anthropic`, `openai`, `grok`, or `bedrock`.
 
-For the quickest Anthropic or OpenAI setup, pass an environment variable to `--api-key`. This keeps the value out of your shell history:
+For Anthropic or OpenAI, pass an environment variable to `--api-key`. This keeps the value out of shell history:
 
 ```bash wrap theme={null}
 firectl provider-key upload --provider-type anthropic --api-key $ANTHROPIC_KEY
 firectl provider-key-binding bind anthropic KEY_ID
 ```
 
-You can also point at a file with `--from-file`. The file should hold only the raw key, with no JSON or quotes. `firectl` trims surrounding whitespace:
+Or point at a file with `--from-file`. The file holds only the raw key, with no JSON or quotes. `firectl` trims surrounding whitespace:
 
 ```bash wrap theme={null}
 firectl provider-key upload --provider-type anthropic --from-file ./anthropic.key
 ```
 
-> [!NOTE]
->
-> On a shared or multi-user machine, prefer `--from-file`. The shell expands
-> `$ANTHROPIC_KEY` before `firectl` starts, so `--api-key` keeps the key out of
-> your shell history but still exposes it in the process list (`ps`) while the
-> command runs. `--from-file` passes only the path.
+On a shared or multi-user machine, prefer `--from-file`. The shell expands `$ANTHROPIC_KEY` before `firectl` starts, so `--api-key` keeps the key out of shell history but still exposes it in the process list (`ps`) while the command runs. `--from-file` passes only the path.
 
-To rotate a provider, upload the new key and bind that key's ID. The old key stays stored until you delete it.
+To rotate a provider, upload the new key and bind that key's ID. The old key stays stored until it is deleted.
 
 For Amazon Bedrock, upload an API key with `--from-file` or an IAM role with `--aws-iam-role-arn`, then bind with `--routes-file`. Omitting `--routes-file` binds an empty route set, which serves no Bedrock traffic and replaces any existing routes. See [Amazon Bedrock Setup](/nexus/provider-keys/bedrock#manage-with-firectl).
 
@@ -168,11 +149,11 @@ firectl provider-key-binding list --provider-type openai
 firectl provider-key-binding get openai
 ```
 
-`provider-key list` shows each stored key's ID, provider, credential type, preview, and display name. API key previews are masked; IAM role previews show the full non-secret role ARN. `provider-key-binding list` and `get` show each provider's connection state, credential type, and active `PROVIDER_KEY` resource name. For Bedrock, also confirm that `routes` lists every model you intend to send through AWS.
+`provider-key list` shows each stored key's ID, provider, credential type, preview, and display name. API key previews are masked; IAM role previews show the full non-secret role ARN. `provider-key-binding list` and `get` show each provider's connection state, credential type, and active `PROVIDER_KEY` resource name. For Bedrock, also confirm that `routes` lists every model to send through AWS.
 
 ### Delete a key
 
-Use the key ID or full resource name from `upload` or `provider-key list`. If that key is live for the provider, unbind it first. Unbinding stops routing from using the key, and the key stays stored until you delete it.
+Use the key ID or full resource name from `upload` or `provider-key list`. If that key is live for the provider, unbind it first. The key stays stored until it is deleted.
 
 ```bash wrap theme={null}
 # If this key is currently in use
@@ -182,6 +163,9 @@ firectl provider-key delete KEY_ID
 
 ## Key behavior and security
 
-* **Request-level credentials take precedence when supported.** If a request includes a provider key, that key is used and the stored one is skipped.
-* **Changes are not instant.** After you connect, replace, or remove a key, allow 30–60 seconds for the change to reach requests.
-* **Your API key stays private.** The full API key is stored securely and never returned. For API keys, the dashboard and API show only the provider, state, masked preview, and dates. An IAM role ARN is a non-secret identifier and is returned as the credential preview.
+* **A key sent with a request wins.** If a request includes its own provider key, Nexus uses that key instead of the stored one.
+* **Keys stay private.** The dashboard and API show only the provider, state, a masked preview, and dates for each key.
+
+- Request-level credentials take precedence when the client supports sending them.
+- After a key is connected, replaced, or removed, allow 30 to 60 seconds for the change to reach requests.
+- The full API key is stored securely and never returned. An IAM role ARN is a non-secret identifier and is returned as the credential preview.

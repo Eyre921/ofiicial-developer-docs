@@ -34,6 +34,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets
 This endpoint expects an object.
 
 - `title` (string, optional) — If provided, updates the ticket title. Omit to leave unchanged.
+- `qa_comment` (string, optional) — If provided, updates the ticket description. Omit to leave unchanged.
 - `status` (enum, optional) — If provided, updates the ticket status. Omit to leave unchanged.
   - Allowed values: `open`, `in_progress`, `resolved`, `cancelled`, `merged`
 - `assignee_user_id` (string, optional) — If provided, updates who is responsible for resolving this ticket. Must be a workspace member with at least viewer access to the agent. Pass null to unassign. Omit to leave unchanged.

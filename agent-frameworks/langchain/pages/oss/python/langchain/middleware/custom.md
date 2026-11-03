@@ -698,7 +698,7 @@ Use the `system_message` field on `ModelRequest` to read and modify the system p
 
 > [tab] Decorator
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from collections.abc import Callable
 >
 > from langchain.agents.middleware import ModelRequest, ModelResponse, wrap_model_call
@@ -719,7 +719,7 @@ Use the `system_message` field on `ModelRequest` to read and modify the system p
 
 > [tab] Class
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from collections.abc import Callable
 >
 > from langchain.agents.middleware import AgentMiddleware, ModelRequest, ModelResponse
@@ -749,7 +749,7 @@ Use the `system_message` field on `ModelRequest` to read and modify the system p
 
 > [tab] Decorator
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from collections.abc import Callable
 >
 > from langchain.agents.middleware import ModelRequest, ModelResponse, wrap_model_call
@@ -773,7 +773,7 @@ Use the `system_message` field on `ModelRequest` to read and modify the system p
 
 > [tab] Class
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from collections.abc import Callable
 >
 > from langchain.agents.middleware import AgentMiddleware, ModelRequest, ModelResponse
@@ -861,7 +861,7 @@ Select relevant tools at runtime to improve performance and accuracy. This secti
 
 > [tab] Decorator
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from collections.abc import Callable
 >
 > from langchain.agents.middleware import wrap_tool_call
@@ -888,7 +888,7 @@ Select relevant tools at runtime to improve performance and accuracy. This secti
 
 > [tab] Class
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from collections.abc import Callable
 >
 > from langchain.agents.middleware import AgentMiddleware

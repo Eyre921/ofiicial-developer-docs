@@ -700,10 +700,7 @@ Step 1 — Verify the Stripe CLI is installed:
 which stripe && stripe --version
 ```
 
-If missing or below 1.40.0:
-
-- macOS: brew install stripe/stripe-cli/stripe (or brew upgrade stripe/stripe-cli/stripe)
-- Other platforms: direct the user to https://docs.stripe.com/stripe-cli/install
+If missing or below 1.40.0, [install](https://docs.stripe.com/cli/install) or [upgrade](https://docs.stripe.com/cli/upgrade) the Stripe CLI.
 
 Install the Projects plugin:
 

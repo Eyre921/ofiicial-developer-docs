@@ -6518,8 +6518,6 @@ Remote MCP servers unlock powerful possibilities for extending Claude's capabili
 # What is the Model Context Protocol (MCP)?
 Source: https://modelcontextprotocol.io/docs/2026-07-28/getting-started/intro
 
-
-
 MCP (Model Context Protocol) is an open-source standard for connecting AI applications to external systems.
 
 Using MCP, AI applications like Claude or ChatGPT can connect to data sources (e.g. local files, databases), tools (e.g. search engines, calculators) and workflows (e.g. specialized prompts)—enabling them to access key information and perform tasks.
@@ -6580,8 +6578,6 @@ MCP is an open protocol supported across a wide range of clients and servers. AI
 
 # Architecture overview
 Source: https://modelcontextprotocol.io/docs/2026-07-28/learn/architecture
-
-
 
 This overview of the Model Context Protocol (MCP) discusses its [scope](#scope) and [core concepts](#concepts-of-mcp), and provides an [example](#example) demonstrating each core concept.
 
@@ -7140,8 +7136,6 @@ async def follow_tool_changes(client):
 # Understanding MCP clients
 Source: https://modelcontextprotocol.io/docs/2026-07-28/learn/client-concepts
 
-
-
 MCP clients are instantiated by host applications to communicate with particular MCP servers. The host application, like Claude.ai or an IDE, manages the overall user experience and coordinates multiple clients. Each client handles one direct communication with one server.
 
 Understanding the distinction is important: the *host* is the application users interact with, while *clients* are the protocol-level components that enable server connections.
@@ -7410,8 +7404,6 @@ While not a requirement, sampling is designed to allow human-in-the-loop control
 
 # Understanding MCP servers
 Source: https://modelcontextprotocol.io/docs/2026-07-28/learn/server-concepts
-
-
 
 MCP servers are programs that expose specific capabilities to AI applications through standardized protocol interfaces.
 
@@ -7698,8 +7690,6 @@ Consider a personalized AI travel planner application, with three connected serv
 
 # Versioning
 Source: https://modelcontextprotocol.io/docs/2026-07-28/learn/versioning
-
-
 
 The Model Context Protocol uses string-based version identifiers following the format
 `YYYY-MM-DD`, to indicate the last date backwards incompatible changes were made.
@@ -13035,8 +13025,6 @@ Visit our [GitHub Discussions](https://github.com/modelcontextprotocol/modelcont
 # Architecture
 Source: https://modelcontextprotocol.io/specification/2026-07-28/architecture/index
 
-
-
 The Model Context Protocol (MCP) follows a client-host-server architecture where each
 host can run multiple client instances. MCP is a stateless protocol: every request is
 self-contained and carries its own protocol version and capabilities.
@@ -13210,8 +13198,6 @@ supported functionality while maintaining protocol extensibility.
 # Authorization Server Discovery
 Source: https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization/authorization-server-discovery
 
-
-
 This document describes the mechanisms by which MCP servers advertise their associated
 authorization servers to MCP clients, as well as the discovery process through which MCP
 clients can determine authorization server endpoints and supported capabilities.
@@ -13354,8 +13340,6 @@ sequenceDiagram
 
 # Client Registration
 Source: https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization/client-registration
-
-
 
 MCP supports three client registration mechanisms. Choose based on your scenario:
 
@@ -13557,8 +13541,6 @@ is needed when the authorization server changes.
 
 # Authorization
 Source: https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization/index
-
-
 
 ## Introduction
 
@@ -13983,8 +13965,6 @@ A list of supported extensions can be found in the [MCP Authorization Extensions
 # Authorization Security Considerations
 Source: https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization/security-considerations
 
-
-
 This document outlines security requirements that implementers **MUST** consider when
 building MCP clients and servers.
 
@@ -14113,8 +14093,6 @@ cannot be misused across different services.
 
 # Overview
 Source: https://modelcontextprotocol.io/specification/2026-07-28/basic/index
-
-
 
 The Model Context Protocol consists of several key components that work together:
 
@@ -14614,8 +14592,6 @@ Multiple icons can be provided to support different display contexts and resolut
 # Cancellation
 Source: https://modelcontextprotocol.io/specification/2026-07-28/basic/patterns/cancellation
 
-
-
 The Model Context Protocol (MCP) supports optional cancellation of in-progress requests
 through notification messages. A client **SHOULD** send a cancellation notification
 to indicate that a request it previously issued should be terminated.
@@ -14737,8 +14713,6 @@ conditions in asynchronous communication.
 # Overview
 Source: https://modelcontextprotocol.io/specification/2026-07-28/basic/patterns/index
 
-
-
 This page defines the message patterns of the core protocol: the ways a
 client and server compose JSON-RPC
 [requests, responses, and notifications](/specification/2026-07-28/basic/index#messages)
@@ -14822,8 +14796,6 @@ of requests, responses, and notifications.
 
 # Multi Round-Trip Requests
 Source: https://modelcontextprotocol.io/specification/2026-07-28/basic/patterns/mrtr
-
-
 
 > [!NOTE]
 >
@@ -15101,8 +15073,6 @@ bypass authorization checks, or corrupt server logic. Servers **MUST** validate 
 # Progress
 Source: https://modelcontextprotocol.io/specification/2026-07-28/basic/patterns/progress
 
-
-
 The Model Context Protocol (MCP) supports optional progress tracking for long-running
 operations through notification messages. The server **MAY** send progress notifications
 to report the status of requests the client has issued.
@@ -15191,8 +15161,6 @@ sequenceDiagram
 
 # Subscriptions
 Source: https://modelcontextprotocol.io/specification/2026-07-28/basic/patterns/subscriptions
-
-
 
 `subscriptions/listen` opens a long-lived notification stream from the server to the
 client. Unlike one-off requests, the stream stays open and delivers notifications until
@@ -15359,8 +15327,6 @@ See [Cancellation][cancellation] for the full rules.
 # Overview
 Source: https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/index
 
-
-
 This page defines what a transport must provide to carry MCP messages, the
 standard transport bindings, and the requirements for defining new ones.
 
@@ -15448,8 +15414,6 @@ describes its transport-specific detection mechanics.
 
 # stdio
 Source: https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/stdio
-
-
 
 In the **stdio** transport, the client launches the MCP server as a subprocess.
 The two ends communicate over the subprocess's standard streams:
@@ -15610,8 +15574,6 @@ and a compatibility matrix for implementors.
 
 # Streamable HTTP
 Source: https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/streamable-http
-
-
 
 > [!NOTE]
 >
@@ -16344,8 +16306,6 @@ protocol version 2024-11-05) as follows:
 # Versioning and Compatibility
 Source: https://modelcontextprotocol.io/specification/2026-07-28/basic/versioning
 
-
-
 This page defines how a client and server agree on what they are speaking:
 the protocol version, declared on every request; optional extensions,
 negotiated through capabilities; and interoperability with earlier,
@@ -16528,8 +16488,6 @@ or process.
 # Key Changes
 Source: https://modelcontextprotocol.io/specification/2026-07-28/changelog
 
-
-
 This document lists changes made to the Model Context Protocol (MCP) specification since
 the previous revision, [2025-11-25](/specification/2025-11-25).
 
@@ -16649,8 +16607,6 @@ For a complete list of all changes that have been made since the last protocol r
 
 # Elicitation
 Source: https://modelcontextprotocol.io/specification/2026-07-28/client/elicitation
-
-
 
 The Model Context Protocol (MCP) provides a standardized way for servers to request additional
 information from users through the client during interactions. This flow allows clients to
@@ -17318,8 +17274,6 @@ In all implementations, the server **MUST** ensure that the mechanism to determi
 # Roots
 Source: https://modelcontextprotocol.io/specification/2026-07-28/client/roots
 
-
-
 > [!WARNING]
 >
 > **Deprecated**: The Roots feature is deprecated as of protocol version
@@ -17477,8 +17431,6 @@ as the server is not waiting for a response with the `InputRequiredResult` patte
 
 # Sampling
 Source: https://modelcontextprotocol.io/specification/2026-07-28/client/sampling
-
-
 
 > [!WARNING]
 >
@@ -18158,8 +18110,6 @@ When tools are used in sampling, additional security considerations apply:
 # Deprecated Features
 Source: https://modelcontextprotocol.io/specification/2026-07-28/deprecated
 
-
-
 This page is the registry of specification features that are currently in the
 **Deprecated** state under the
 [feature lifecycle and deprecation policy](/community/feature-lifecycle)
@@ -18199,8 +18149,6 @@ recording the removal.
 
 # Specification
 Source: https://modelcontextprotocol.io/specification/2026-07-28/index
-
-
 
 [Model Context Protocol](https://modelcontextprotocol.io) (MCP) is an open protocol that
 enables seamless integration between LLM applications and external data sources and
@@ -18338,8 +18286,6 @@ Explore the detailed specification for each protocol component:
 
 # Schema Reference
 Source: https://modelcontextprotocol.io/specification/2026-07-28/schema
-
-
 
 ## JSON-RPC
 
@@ -19912,8 +19858,6 @@ of a memory tool is not. Default: true&#x20;
 # Discovery
 Source: https://modelcontextprotocol.io/specification/2026-07-28/server/discover
 
-
-
 `server/discover` lets a client query a server's supported protocol versions,
 capabilities, and identity before sending any other requests. Servers **MUST**
 implement it.
@@ -20021,8 +19965,6 @@ A discovery result includes:
 # Overview
 Source: https://modelcontextprotocol.io/specification/2026-07-28/server/index
 
-
-
 Servers provide the fundamental building blocks for adding context to language models via
 MCP. These primitives enable rich interactions between clients, servers, and language
 models:
@@ -20052,8 +19994,6 @@ Explore these key primitives in more detail below:
 
 # Prompts
 Source: https://modelcontextprotocol.io/specification/2026-07-28/server/prompts
-
-
 
 The Model Context Protocol (MCP) provides a standardized way for servers to expose prompt
 templates to clients. Prompts allow servers to provide structured messages and
@@ -20389,8 +20329,6 @@ injection attacks or unauthorized access to resources.
 
 # Resources
 Source: https://modelcontextprotocol.io/specification/2026-07-28/server/resources
-
-
 
 The Model Context Protocol (MCP) provides a standardized way for servers to expose
 resources to clients. Resources allow servers to share data that provides context to
@@ -20826,8 +20764,6 @@ Example error:
 
 # Tools
 Source: https://modelcontextprotocol.io/specification/2026-07-28/server/tools
-
-
 
 The Model Context Protocol (MCP) allows servers to expose tools that can be invoked by
 language models. Tools enable models to interact with external systems, such as querying
@@ -21623,8 +21559,6 @@ Clients **SHOULD** provide tool execution errors to language models to enable se
 # Caching
 Source: https://modelcontextprotocol.io/specification/2026-07-28/server/utilities/caching
 
-
-
 The Model Context Protocol (MCP) supports caching for some results. This allows clients to cache responses and reduce unnecessary re-fetching.
 Caching is complementary to [change notifications](#interaction-with-notifications)—both
 mechanisms can coexist.
@@ -21802,8 +21736,6 @@ Server implementors:
 
 # Completion
 Source: https://modelcontextprotocol.io/specification/2026-07-28/server/utilities/completion
-
-
 
 The Model Context Protocol (MCP) provides a standardized way for servers to offer
 autocompletion suggestions for the arguments of prompts and resource templates. When
@@ -22018,8 +21950,6 @@ Implementations **MUST**:
 # Logging
 Source: https://modelcontextprotocol.io/specification/2026-07-28/server/utilities/logging
 
-
-
 > [!WARNING]
 >
 > **Deprecated**: The Logging feature is deprecated as of protocol version
@@ -22150,8 +22080,6 @@ request with a standard JSON-RPC error:
 
 # Pagination
 Source: https://modelcontextprotocol.io/specification/2026-07-28/server/utilities/pagination
-
-
 
 The Model Context Protocol (MCP) supports paginating list operations that may return
 large result sets. Pagination allows servers to yield results in smaller chunks rather
@@ -23700,6 +23628,7 @@ This matrix shows which MCP clients support each [official extension](/extension
 | [fast-agent](https://github.com/evalstate/fast-agent) | | | | [Partial](https://github.com/evalstate/fast-agent/blob/main/docs/docs/mcp/skills-over-mcp.md) | |
 | [MCP Inspector](https://github.com/modelcontextprotocol/inspector) | | | | [Partial](https://github.com/modelcontextprotocol/inspector/blob/main/clients/cli/README.md#skill-verification---verify) | |
 | [mcpc MCP CLI](https://github.com/apify/mcpc) | | | | | |
+| [Glean](https://www.glean.com/) | | | | | |
 
 > [!NOTE]
 >
@@ -24702,8 +24631,6 @@ The Tasks extension is specified in the [ext-tasks repository](https://github.co
 # The MCP Registry
 Source: https://modelcontextprotocol.io/registry/about
 
-
-
 > [!NOTE]
 >
 > The MCP Registry is currently in preview. Breaking changes or data resets may occur before general availability. If you encounter any issues, please report them on [GitHub](https://github.com/modelcontextprotocol/registry/issues).
@@ -24796,8 +24723,6 @@ Future spam prevention measures under consideration include stricter rate limiti
 
 # How to Authenticate When Publishing to the Official MCP Registry
 Source: https://modelcontextprotocol.io/registry/authentication
-
-
 
 > [!NOTE]
 >
@@ -25077,8 +25002,6 @@ mcp-publisher login http azure-key-vault --domain="${MY_DOMAIN}" --vault "${MY_K
 # Frequently Asked Questions
 Source: https://modelcontextprotocol.io/registry/faq
 
-
-
 > [!NOTE]
 >
 > The MCP Registry is currently in preview. Breaking changes or data resets may occur before general availability. If you encounter any issues, please report them on [GitHub](https://github.com/modelcontextprotocol/registry/issues).
@@ -25122,8 +25045,6 @@ Follow [the MCP community SECURITY.md](https://github.com/modelcontextprotocol/.
 
 # How to Automate Publishing with GitHub Actions
 Source: https://modelcontextprotocol.io/registry/github-actions
-
-
 
 > [!NOTE]
 >
@@ -25342,8 +25263,6 @@ The workflow will run tests, build the package, publish the package to npm, and 
 # The MCP Registry Moderation Policy
 Source: https://modelcontextprotocol.io/registry/moderation-policy
 
-
-
 > [!NOTE]
 >
 > The MCP Registry is currently in preview. Breaking changes or data resets may occur before general availability. If you encounter any issues, please report them on [GitHub](https://github.com/modelcontextprotocol/registry/issues).
@@ -25405,8 +25324,6 @@ We're still learning how best to run the MCP Registry! As such, we might end up 
 
 # MCP Registry Supported Package Types
 Source: https://modelcontextprotocol.io/registry/package-types
-
-
 
 > [!NOTE]
 >
@@ -25663,8 +25580,6 @@ The MCP Registry does not validate this hash; however, MCP clients **do** valida
 
 # Quickstart: Publish an MCP Server to the MCP Registry
 Source: https://modelcontextprotocol.io/registry/quickstart
-
-
 
 > [!NOTE]
 >
@@ -25951,8 +25866,6 @@ You should see your server's metadata in the search results JSON:
 # MCP Registry Aggregators
 Source: https://modelcontextprotocol.io/registry/registry-aggregators
 
-
-
 > [!NOTE]
 >
 > The MCP Registry is currently in preview. Breaking changes or data resets may occur before general availability. If you encounter any issues, please report them on [GitHub](https://github.com/modelcontextprotocol/registry/issues).
@@ -26060,8 +25973,6 @@ We recommend that custom metadata be put under a key that reflects the subregist
 
 # Publishing Remote Servers
 Source: https://modelcontextprotocol.io/registry/remote-servers
-
-
 
 > [!NOTE]
 >
@@ -26233,8 +26144,6 @@ The `remotes` property can coexist with the `packages` property in `server.json`
 # Official MCP Registry Terms of Service
 Source: https://modelcontextprotocol.io/registry/terms-of-service
 
-
-
 > [!NOTE]
 >
 > The MCP Registry is currently in preview. Breaking changes or data resets may occur before general availability. If you encounter any issues, please report them on [GitHub](https://github.com/modelcontextprotocol/registry/issues).
@@ -26286,8 +26195,6 @@ These terms are governed by the laws of the State of California.
 
 # Versioning Published MCP Servers
 Source: https://modelcontextprotocol.io/registry/versioning
-
-
 
 > [!NOTE]
 >

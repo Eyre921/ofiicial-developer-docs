@@ -101,7 +101,7 @@ Validation Error
 - `conversation_id` (string, required)
 - `start_time_unix_secs` (integer, required)
 - `call_duration_secs` (integer, required)
-- `message_count` (integer, required)
+- `message_count` (integer, required) — Number of transcript turns with text; tool-only turns are not counted.
 - `status` (enum, required)
   - Allowed values: `initiated`, `in-progress`, `processing`, `done`, `failed`
 - `call_successful` (enum, required)
@@ -109,6 +109,8 @@ Validation Error
 - `branch_id` (string, optional)
 - `version_id` (string, optional)
 - `agent_name` (string, optional)
+- `user_message_count` (integer, optional) — Number of user transcript turns with text; tool-only turns are not counted. `null` for older conversations before this field whose transcript was deleted.
+- `agent_message_count` (integer, optional) — Number of agent transcript turns with text; tool-only turns are not counted. `null` for older conversations before this field whose transcript was deleted.
 - `termination_reason` (string, optional, default: )
 - `call_success_score` (double, optional)
 - `transcript_summary` (string, optional)
@@ -171,6 +173,8 @@ Validation Error
       "branch_id": "branch_id",
       "version_id": "version_id",
       "agent_name": "agent_name",
+      "user_message_count": 1,
+      "agent_message_count": 1,
       "termination_reason": "termination_reason",
       "call_success_score": 1.1,
       "transcript_summary": "transcript_summary",

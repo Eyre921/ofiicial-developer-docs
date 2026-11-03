@@ -7,7 +7,7 @@ path: reference/notion-agent-apis/update-session
 post /v1/sessions
 Start a session, send a message, submit an action, or stream a session turn.
 
-Omit `session_id` to start a session, or provide one to add a message or submit a required action to an existing session.
+Omit `session_id` to start a session, or provide one to add a message or submit a required action to an existing session. A new session needs an `agent_id`: a Custom Agent ID, or `notion_ai` to talk to the personal agent with a personal access token.
 
 You can send to an existing session only if your connection created it, or, with a personal access token, if you created it. See [session access rules](/guides/notion-agent-apis/overview#authentication-and-access).
 
