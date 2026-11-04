@@ -249,7 +249,7 @@ In addition to models you train on the Fireworks platform, you can also upload y
 
 > [!NOTE]
 >
-> Uploaded LoRA adapters can only be deployed to on-demand (dedicated) deployments. Serverless deployment is not supported.
+> Uploaded LoRA adapters can be deployed to on-demand (dedicated) deployments. Adapters trained on [select base models](/serverless/specialized-model-inference/overview#supported-models-and-limits) can also be served on serverless. See [Specialized Model Inference on Serverless](/serverless/specialized-model-inference/overview).
 
 ### Requirements
 

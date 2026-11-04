@@ -81,10 +81,10 @@ The plugin includes the Pinecone MCP server, which provides the following tools:
 * `cascading-search`: Search across multiple indexes with deduplication and reranking.
 * `rerank-documents`: Rerank documents using a specified reranking model.
 
-For full MCP server documentation, see [Use the Pinecone MCP server](/guides/operations/mcp-server).
+For full MCP server documentation, see [Use the Pinecone MCP server](/guides/agents/mcp-server).
 
 ## Resources
 
 * [GitHub repository](https://github.com/pinecone-io/pinecone-claude-code-plugin)
-* [Pinecone MCP server guide](/guides/operations/mcp-server)
+* [Pinecone MCP server guide](/guides/agents/mcp-server)
 * [Claude Code documentation](https://docs.claude.com/en/docs/claude-code/quickstart)

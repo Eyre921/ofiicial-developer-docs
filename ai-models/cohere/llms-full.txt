@@ -134,6 +134,7 @@
 - [Deploy Finetuned Command Models from AWS Marketplace](https://docs.cohere.com/v1/docs/bring-your-finetuned-models-to-sagemaker.md): This document provides a guide for bringing your own finetuned models to Amazon SageMaker.
 - [Cohere on the Microsoft Azure Platform](https://docs.cohere.com/v1/docs/cohere-on-microsoft-azure.md): This page describes how to work with Cohere models on Microsoft Azure.
 - [Cohere on Oracle Cloud Infrastructure (OCI)](https://docs.cohere.com/v1/docs/oracle-cloud-infrastructure-oci)
+- [Using Cohere Models on OpenRouter](https://docs.cohere.com/v1/docs/cohere-on-openrouter.md): Use Cohere's Command, Embed, Rerank, and North models through OpenRouter, including the newly added Embed 5 and Rerank 5 models.
 - [Cohere Cookbooks: AI Agents, RAG, Search, and More](https://docs.cohere.com/v1/docs/cookbooks.md): Get started with Cohere's cookbooks to build agents, QA bots, perform searches, and more, all organized by category.
 - [Welcome to LLM University!](https://docs.cohere.com/v1/docs/llmu-2.md): LLM University (LLMU) offers in-depth, practical NLP and LLM training. Ideal for all skill levels. Learn, build, and deploy Language AI with Cohere.
 - [Build an Onboarding Assistant with Cohere!](https://docs.cohere.com/v1/docs/build-things-with-cohere.md): This page describes how to build an onboarding assistant with Cohere's large language models.

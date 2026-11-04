@@ -45,6 +45,8 @@ If more than one credential is set, the plugin uses the first one it finds:
 2. Your `langsmith auth login` sign-in.
 3. A generic `LANGSMITH_API_KEY` from your environment.
 
+A CLI sign-in acts as you so your workspace role needs permission to write traces. You may get a 403 if you switched from a tracing API key (`lsv2_tr_...`) to the CLI sign-in since tracing keys can always write traces whatever your role is. If that happens ask your admin to give you a role that can write traces such as Workspace User and check that no [ABAC deny policy](/langsmith/abac) on the project blocks it.
+
 Tracing stops when your sign-in expires or your key is rejected, and turns from that gap are never uploaded. Admins can also [require a working sign-in](#require-a-working-sign-in) for every prompt.
 
 ## Turn on tracing
@@ -81,9 +83,12 @@ An admin can lock tracing settings for every user with a managed file at `~/.lan
 {
   "api_url": "https://langsmith.example.com",
   "project": "engineering",
-  "strict_auth": true
+  "strict_auth": true,
+  "workspace_id": "<your-workspace-id>"
 }
 ```
+
+Set `workspace_id` as well when your users sign in with the LangSmith CLI. Each user's sign-in may default to a different workspace, so setting it here keeps everyone's traces in one place. API keys ignore this setting so use one scoped to a workspace.
 
 The managed file works on macOS and Linux. The plugin only trusts it when:
 

@@ -251,7 +251,7 @@ Each page item is a dataset example paired with the runs produced for it—not a
 >
 > > [tab] Before
 > >
-> > ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > from langsmith import Client
 > >
 > > client = Client()
@@ -266,7 +266,7 @@ Each page item is a dataset example paired with the runs produced for it—not a
 >
 > > [tab] After
 > >
-> > ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > from langsmith import Client
 > > import asyncio
 > >
@@ -292,14 +292,14 @@ Each page item is a dataset example paired with the runs produced for it—not a
 >
 > > [tab] Before
 > >
-> > ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > // The legacy dataset runs endpoint was not exposed on the public TypeScript Client.
 > > // Use the cURL example for the old request body shape.
 > > ```
 >
 > > [tab] After
 > >
-> > ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { uuid7 } from "langsmith";
 > > import { Client } from "langsmith";
 > >
@@ -319,7 +319,7 @@ Each page item is a dataset example paired with the runs produced for it—not a
 >
 > > [tab] Before
 > >
-> > ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.datasets.runs.RunQueryParams
@@ -337,7 +337,7 @@ Each page item is a dataset example paired with the runs produced for it—not a
 >
 > > [tab] After
 > >
-> > ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.datasets.experimentruns.ExperimentRunQueryParams
@@ -365,7 +365,7 @@ Each page item is a dataset example paired with the runs produced for it—not a
 >
 > > [tab] Before
 > >
-> > ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -385,7 +385,7 @@ Each page item is a dataset example paired with the runs produced for it—not a
 >
 > > [tab] After
 > >
-> > ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -415,7 +415,7 @@ Each page item is a dataset example paired with the runs produced for it—not a
 >
 > > [tab] Before
 > >
-> > ```bash Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```bash Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > curl -X POST "https://api.smith.langchain.com/api/v1/datasets/$DATASET_ID/runs" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" \
 > >   -H "Content-Type: application/json" \
@@ -428,7 +428,7 @@ Each page item is a dataset example paired with the runs produced for it—not a
 >
 > > [tab] After
 > >
-> > ```bash After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```bash After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > curl -X POST "https://api.smith.langchain.com/api/v2/datasets/$DATASET_ID/experiment-runs" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" \
 > >   -H "Content-Type: application/json" \
@@ -449,7 +449,7 @@ Both examples below fetch up to 100 results across as many pages as that takes, 
 >
 > > [tab] Before
 > >
-> > ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > from langsmith import Client
 > >
 > > client = Client()
@@ -465,7 +465,7 @@ Both examples below fetch up to 100 results across as many pages as that takes, 
 >
 > > [tab] After
 > >
-> > ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > from langsmith import Client
 > > import asyncio
 > >
@@ -495,14 +495,14 @@ Both examples below fetch up to 100 results across as many pages as that takes, 
 >
 > > [tab] Before
 > >
-> > ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > // The legacy dataset runs endpoint was not exposed on the public TypeScript Client.
 > > // Use the cURL example for the old request body shape.
 > > ```
 >
 > > [tab] After
 > >
-> > ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { uuid7 } from "langsmith";
 > > import { Client } from "langsmith";
 > >
@@ -524,7 +524,7 @@ Both examples below fetch up to 100 results across as many pages as that takes, 
 >
 > > [tab] Before
 > >
-> > ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.datasets.runs.RunQueryParams
@@ -551,7 +551,7 @@ Both examples below fetch up to 100 results across as many pages as that takes, 
 >
 > > [tab] After
 > >
-> > ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.datasets.experimentruns.ExperimentRunQueryParams
@@ -577,7 +577,7 @@ Both examples below fetch up to 100 results across as many pages as that takes, 
 >
 > > [tab] Before
 > >
-> > ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -607,7 +607,7 @@ Both examples below fetch up to 100 results across as many pages as that takes, 
 >
 > > [tab] After
 > >
-> > ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -639,7 +639,7 @@ Both examples below fetch up to 100 results across as many pages as that takes, 
 >
 > > [tab] Before
 > >
-> > ```bash Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```bash Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > curl -X POST "https://api.smith.langchain.com/api/v1/datasets/$DATASET_ID/runs" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" \
 > >   -H "Content-Type: application/json" \
@@ -652,7 +652,7 @@ Both examples below fetch up to 100 results across as many pages as that takes, 
 >
 > > [tab] After
 > >
-> > ```bash After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```bash After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > curl -X POST "https://api.smith.langchain.com/api/v2/datasets/$DATASET_ID/experiment-runs" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" \
 > >   -H "Content-Type: application/json" \
@@ -673,13 +673,13 @@ Sort dataset examples by a feedback score, supported only when you query a singl
 >
 > > [tab] Before
 > >
-> > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > # get_experiment_results did not support sorting results by feedback score.
 > > ```
 >
 > > [tab] After
 > >
-> > ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > from langsmith import Client
 > > import asyncio
 > >
@@ -704,14 +704,14 @@ Sort dataset examples by a feedback score, supported only when you query a singl
 >
 > > [tab] Before
 > >
-> > ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > // The legacy dataset runs endpoint was not exposed on the public TypeScript Client.
 > > // Use the cURL example for the old request body shape.
 > > ```
 >
 > > [tab] After
 > >
-> > ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { uuid7 } from "langsmith";
 > > import { Client } from "langsmith";
 > >
@@ -729,7 +729,7 @@ Sort dataset examples by a feedback score, supported only when you query a singl
 >
 > > [tab] Before
 > >
-> > ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.datasets.runs.RunQueryParams
@@ -752,7 +752,7 @@ Sort dataset examples by a feedback score, supported only when you query a singl
 >
 > > [tab] After
 > >
-> > ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.datasets.experimentruns.ExperimentRunQueryParams
@@ -778,7 +778,7 @@ Sort dataset examples by a feedback score, supported only when you query a singl
 >
 > > [tab] Before
 > >
-> > ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -800,7 +800,7 @@ Sort dataset examples by a feedback score, supported only when you query a singl
 >
 > > [tab] After
 > >
-> > ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -824,7 +824,7 @@ Sort dataset examples by a feedback score, supported only when you query a singl
 >
 > > [tab] Before
 > >
-> > ```bash Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```bash Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > curl -X POST "https://api.smith.langchain.com/api/v1/datasets/$DATASET_ID/runs" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" \
 > >   -H "Content-Type: application/json" \
@@ -839,7 +839,7 @@ Sort dataset examples by a feedback score, supported only when you query a singl
 >
 > > [tab] After
 > >
-> > ```bash After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```bash After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > curl -X POST "https://api.smith.langchain.com/api/v2/datasets/$DATASET_ID/experiment-runs" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" \
 > >   -H "Content-Type: application/json" \

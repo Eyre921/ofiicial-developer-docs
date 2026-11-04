@@ -12,20 +12,34 @@ Orders let your receptionist and booking page sell products, such as baked goods
 
 ## Turning orders on
 
-Go to **Settings** → **Features** and turn on **Products** and **Orders**. Orders are off by default. Once they are on, products move from **Business** to **Shop** → **Products**.
+Go to **Settings** → **Features** and turn on **Products** and **Orders**. **Orders** is marked **Alpha**. Orders are off by default. Once they are on, products move from **Business** to **Shop** → **Products**. Until then, products stay on your business page, and the page describes them as items your receptionist can sell or mention during calls.
+
+## Product details
+
+Open a product and use the **Details** tab:
+
+| Field                                  | What it sets                                                                                                                                                                   |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Product name**                       | Required.                                                                                                                                                                      |
+| **Price set later (requires a quote)** | Marked **Alpha**. Files a [quote request](/docs/reception-ai/features/quote-requests) instead of taking an order. Hidden when quotes are off.                                  |
+| **Price**                              | Optional, in your [currency](/docs/reception-ai/scheduling/overview#business-profile). Leave it empty when the price varies or does not apply. Hidden for quote-only products. |
+| **Groups**                             | Optional. Up to 20.                                                                                                                                                            |
+| **Description**                        | Optional.                                                                                                                                                                      |
+| **Active (visible to clients)**        | On by default. Turn it off to hide the product. Inactive products show **Inactive**.                                                                                           |
 
 ## Setting up products
 
-Open a product and go to its ordering settings:
+The **Ordering** tab controls whether a product can be ordered:
 
 | Setting                    | Description                                                                                       |
 | -------------------------- | ------------------------------------------------------------------------------------------------- |
 | **Available for ordering** | Whether customers can order this product                                                          |
-| **Price**                  | Optional. Leave empty for [quote-only](/docs/reception-ai/features/quote-requests) products.      |
 | **Track quantity**         | **No limit**, or **Limited** to track stock. Stock is tracked per location, and orders reduce it. |
 | **Fulfillment options**    | Pickup (default), Delivery, or Digital. At least one is required.                                 |
 | **Locations**              | Where the product is sold                                                                         |
 | **Intake questions**       | Details to collect when ordering, such as a cake message                                          |
+
+When orders are on, a product that can be ordered shows **Orderable**. One that cannot shows **Catalog only** and **Info & quotes only**. A product whose tracked stock is gone shows **Sold out**. Unlimited stock shows **No limit**.
 
 ## Delivery fees
 

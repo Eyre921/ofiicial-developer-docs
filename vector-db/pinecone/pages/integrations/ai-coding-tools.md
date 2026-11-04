@@ -6,7 +6,7 @@ path: integrations/ai-coding-tools
 
 Use Pinecone with AI coding tools like Claude Code, Codex, and Cursor through the Pinecone MCP server, plugins, and agent skills.
 
-Pinecone provides official plugins and agent skills for AI coding tools. Use the Pinecone [MCP server](/guides/operations/mcp-server) (Model Context Protocol) and built-in skills to manage indexes, run semantic search, and build RAG applications, all through natural language in your development environment. For direct, scriptable access from the same terminal, the [Pinecone CLI](/reference/cli/quickstart) (`pc`) lets you manage indexes, namespaces, and records without an agent in the loop.
+Pinecone provides official plugins and agent skills for AI coding tools. Use the Pinecone [MCP server](/guides/agents/mcp-server) (Model Context Protocol) and built-in skills to manage indexes, run semantic search, and build RAG applications, all through natural language in your development environment. For direct, scriptable access from the same terminal, the [Pinecone CLI](/reference/cli/quickstart) (`pc`) lets you manage indexes, namespaces, and records without an agent in the loop.
 
 ## Choose your tool
 
@@ -26,7 +26,7 @@ Pinecone provides official plugins and agent skills for AI coding tools. Use the
 >
 > Universal skills library for GitHub Copilot and other agentic IDEs.
 
-> [card] [MCP server](/guides/operations/mcp-server)
+> [card] [MCP server](/guides/agents/mcp-server)
 >
 > Connect any MCP-compatible client to Pinecone for index management and search.
 
@@ -42,7 +42,7 @@ Pinecone provides official plugins and agent skills for AI coding tools. Use the
 | [Codex](https://developers.openai.com/codex) | [Pinecone plugin for Codex](/integrations/codex) | See [install steps](/integrations/codex#installation) |
 | [Cursor](https://www.cursor.com/) | [Pinecone Cursor plugin](/integrations/cursor) | `/add-plugin pinecone` |
 | [GitHub Copilot](https://github.com/features/copilot) or another agentic IDE | [Pinecone Agent Skills](/integrations/agent-skills) | `npx skills add pinecone-io/skills` |
-| Claude Desktop, Antigravity, or another MCP client | [Pinecone MCP server](/guides/operations/mcp-server) | See [MCP server setup](/guides/operations/mcp-server) |
+| Claude Desktop, Antigravity, or another MCP client | [Pinecone MCP server](/guides/agents/mcp-server) | See [MCP server setup](/guides/agents/mcp-server) |
 | Your terminal directly (no agent) | [Pinecone CLI](/reference/cli/quickstart) | `brew install pinecone-io/tap/pinecone` |
 
 All tools require a [Pinecone API key](https://app.pinecone.io/organizations/-/keys). Sign up for a free account at [app.pinecone.io](https://app.pinecone.io).
@@ -63,4 +63,4 @@ Each tool provides access to the following Pinecone skills. Invocation names var
 | Docs | Curated links to official Pinecone documentation, organized by topic. |
 | Help | Overview of all skills and what you need to get started. |
 
-In addition, the [Pinecone MCP server](/guides/operations/mcp-server) provides tools for listing indexes, creating indexes, upserting records, searching, reranking, and more.
+In addition, the [Pinecone MCP server](/guides/agents/mcp-server) provides tools for listing indexes, creating indexes, upserting records, searching, reranking, and more.

@@ -4514,6 +4514,14 @@ If you use a [saved prompt](/llm-gateway/saved-prompts) for the rewrite, the pro
 
 The model training environment differs from the production environment. You can find more information on model training in our [Model Training section](#model-training). If you would like to opt out of model training, please see our [Opt-Out FAQ](/faq/how-to-opt-out-of-data-sharing-for-our-model-improvement-program).
 
+### TTS production environment
+
+For more information on retention of voice clones, please see the [Biometric Notice and Consent FAQs](https://www.assemblyai.com/legal/biometric-notice-and-consent-faqs).
+
+Excluding voice clones, if you are opted out of model training, we offer zero data retention of audio and transcripts for our TTS product. Certain metadata about the transcript is stored and maintained for logging and billing purposes.
+
+The model training environment differs from the production environment. You can find more information on model training in our [Model Training section](#model-training). If you would like to opt out of model training, please see our [Opt-Out FAQ](/faq/how-to-opt-out-of-data-sharing-for-our-model-improvement-program).
+
 ### Asynchronous production environment
 
 | Artifact Type\*                                                                                                       | Time-To-Live Configured                                                                                                                                                                   | BAA Executed                                                                                                                                                                                   | No TTL or BAA                                                         | Customer-Initiated Deletion Request               |
@@ -5023,17 +5031,24 @@ The `speech_models` parameter lets you specify which model(s) to use for transcr
 | Name                | Parameter                           | Description                                                                          | Best for                                                                                                          |
 | ------------------- | ----------------------------------- | ------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
 | **Universal-3.5 Pro** <span class="recommended-pill">Recommended</span> | `speech_models=['universal-3-5-pro']` | Our highest accuracy, fastest model with 18-language support, native code switching, and contextual prompting. | Highest-accuracy transcription, post-call analytics, meeting notetakers, medical transcription, domain-specific accuracy via prompting |
+| **Universal-3.6 Pro Preview** <span class="preview-pill">Preview</span> | `speech_models=['universal-3-6-pro-preview']` | Our next-generation pre-recorded model, currently in preview. Supports [32 languages](/pre-recorded-audio/supported-languages). | Early access to the next-generation pre-recorded model. |
 | **Universal-2**     | `speech_models=['universal-2']`     | Our accurate, cost-effective model with support across 99 languages.      | High-volume batch transcription, 99-language coverage, price-sensitive workloads, fallback for unsupported U3 Pro languages |
 
 | Name                | Parameter                            | Description                                                                          | Best for                                                                                                          |
 | ------------------- | ------------------------------------ | ------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
 | **Universal-3.5 Pro** <span class="recommended-pill">Recommended</span> | `speech_models: ['universal-3-5-pro']` | Our highest accuracy, fastest model with 18-language support, native code switching, and contextual prompting. | Highest-accuracy transcription, post-call analytics, meeting notetakers, medical transcription, domain-specific accuracy via prompting |
+| **Universal-3.6 Pro Preview** <span class="preview-pill">Preview</span> | `speech_models: ['universal-3-6-pro-preview']` | Our next-generation pre-recorded model, currently in preview. Supports [32 languages](/pre-recorded-audio/supported-languages). | Early access to the next-generation pre-recorded model. |
 | **Universal-2**     | `speech_models: ['universal-2']`     | Our accurate, cost-effective model with support across 99 languages.      | High-volume batch transcription, 99-language coverage, price-sensitive workloads, fallback for unsupported U3 Pro languages |
 
 | Name                | API Parameter                          | Description                                                                          | Best for                                                                                                          |
 | ------------------- | -------------------------------------- | ------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
 | **Universal-3.5 Pro** <span class="recommended-pill">Recommended</span> | `"speech_models": ["universal-3-5-pro"]` | Our highest accuracy, fastest model with 18-language support, native code switching, and contextual prompting. | Highest-accuracy transcription, post-call analytics, meeting notetakers, medical transcription, domain-specific accuracy via prompting |
+| **Universal-3.6 Pro Preview** <span class="preview-pill">Preview</span> | `"speech_models": ["universal-3-6-pro-preview"]` | Our next-generation pre-recorded model, currently in preview. Supports [32 languages](/pre-recorded-audio/supported-languages). | Early access to the next-generation pre-recorded model. |
 | **Universal-2**     | `"speech_models":["universal-2"]`      | Our accurate, cost-effective model with support across 99 languages.      | High-volume batch transcription, 99-language coverage, price-sensitive workloads, fallback for unsupported U3 Pro languages |
+
+**Preview models are subject to change.** Preview models are for early testing and evaluation. Before a model becomes stable and generally available, its behavior, output quality, supported features, and API parameters may change without notice.
+
+**Known limitations of `universal-3-6-pro-preview`:** Punctuation could be less frequent for some European languages (e.g., Danish), and accuracy may drop on complex code-switching audio where the language changes frequently at the word or sentence level. We're actively working on improvements to both.
 
 ## Set the model
 
@@ -5168,6 +5183,13 @@ const run = async () => {
 
 run();
 ```
+
+## Transcribe all 99 languages by combining speech models
+
+By default, `speech_models` is set to `["universal-3-5-pro", "universal-2"]`. AssemblyAI uses the first model in the list that supports the audio's language, whether detected or set with `language_code`.
+
+- If the language is one of the [18 languages supported by Universal-3.5 Pro](/pre-recorded-audio/supported-languages#universal-35-pro), the audio is transcribed with `universal-3-5-pro`.
+- Otherwise, AssemblyAI falls back to `universal-2`.
 
 ## Identify the model used
 
@@ -8801,6 +8823,8 @@ AssemblyAI supports a wide range of languages across our speech-to-text models f
 ## Universal-3.5 Pro
 
 Universal-3.5 Pro supports the following 18 languages. To automatically fall back to Universal-2 for anything outside this set, set `speech_models` to `["universal-3-5-pro", "universal-2"]` and set `language_detection` to `true`.
+
+[Universal-3.6 Pro Preview](/pre-recorded-audio/select-the-speech-model) supports 32 languages. In addition to the Universal-3.5 Pro languages above, it supports Urdu (`ur`), Russian (`ru`), Korean (`ko`), Catalan (`ca`), Galician (`gl`), Romanian (`ro`), Estonian (`et`), Persian (`fa`), Cantonese (`yue`), Afrikaans (`af`), Marathi (`mr`), Zulu (`zu`), Xhosa (`xh`), and Norwegian Nynorsk (`nn`).
 
 ### Regional dialects and variants
 
@@ -25875,6 +25899,8 @@ For AAC and both Opus encodings, `sample_rate` is ignored because each stream de
 
 For PCM, send audio in chunks of roughly 50 ms (800 samples at 16 kHz); for Opus, one 20 ms packet (or page) per frame is typical. You can send audio faster than real time (for example when streaming from a file), but throughput is throttled at ~1.25× real time. If more than five minutes of audio is buffered ahead of processing, the session closes with error `3007`.
 
+  Each audio chunk must contain between 20 ms and 1000 ms of audio. Chunks of 50 to 100 ms are recommended.
+
 ```python
 import websocket
 
@@ -26933,7 +26959,7 @@ The **Error text** column shows the `error` field of the `Error` message that co
 | Code   | Error text                                                                     | Description                                                                                                                                                                                                                                                     |
 | ------ | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `3008` | Session Expired: Maximum session duration exceeded                             | Session exceeded 3 hour limit (or max session duration set by [temporary token](/streaming/authenticate-with-a-temporary-token)). The session closes after the current turn ends, or up to 60 seconds after the limit. You are billed for the full session duration, including this extra time. Always [terminate sessions](/streaming/getting-started/transcribe-streaming-audio) explicitly to control costs. |
-| `3007` | Input duration violation: `<time>` ms. Expected between 50 and 1000 ms         | Audio chunk size less than 50ms or greater than 1000ms.                                                                                                                                                                                                         |
+| `3007` | Input duration violation: `<time>` ms. Expected between 20 and 1000 ms         | Audio chunk size less than 20ms or greater than 1000ms.                                                                                                                                                                                                         |
 | `3006` | Invalid Message Type: `<message>`                                              | Unsupported [message type](/streaming/common-session-errors-and-closures).                                                                                                                                                                                 |
 | `3006` | Invalid JSON: `<json>`                                                         | Message contains invalid JSON.                                                                                                                                                                                                                                  |
 | `3006` | Invalid Message: `<message>`                                                   | Message is not valid (i.e. `'[]'`).                                                                                                                                                                                                                             |
@@ -26948,6 +26974,8 @@ The **Error text** column shows the `error` field of the `Error` message that co
 | `1008` | Unauthorized Connection: API key is disabled                                   | The API key, its project or the account is disabled. Use an enabled key, or contact support@assemblyai.com.                                                                                                                                                     |
 | `1008` | Unauthorized Connection: No metronome account found                            | The account's billing is not set up. Contact support@assemblyai.com.                                                                                                                                                                                            |
 | `1011` | Error authenticating connection                                                | An unexpected server-side error occurred while establishing the connection (for example, during authentication). Retry the connection; if the problem persists, contact support@assemblyai.com. |
+
+  To avoid `3007` input duration errors, send audio chunks between 20 and 1000 ms. Chunks of 50 to 100 ms are recommended.
 
   **Deciding whether to retry a `1008`**
 
@@ -87471,7 +87499,7 @@ operations:
       $ref: "#/channels/streaming"
     messages:
       - $ref: "#/channels/streaming/messages/audioChunk"
-    description: Send audio data chunks for transcription. The payload must be of type bytes and contain audio data between 50ms and 1000ms in length. When streaming from a pre-recorded file, pace the chunks at approximately real-time (for example, sleep for the chunk's duration between sends) — sending chunks in a tight loop can produce inconsistent Turn messages. See the [Streaming quickstart](https://www.assemblyai.com/docs/streaming/getting-started/transcribe-streaming-audio) to get started.
+    description: Send audio data chunks for transcription. The payload must be of type bytes and contain audio data between 20ms and 1000ms in length. Chunks of 50ms to 100ms are recommended. When streaming from a pre-recorded file, pace the chunks at approximately real-time (for example, sleep for the chunk's duration between sends) — sending chunks in a tight loop can produce inconsistent Turn messages. See the [Streaming quickstart](https://www.assemblyai.com/docs/streaming/getting-started/transcribe-streaming-audio) to get started.
 
   updateConfiguration:
     action: receive

@@ -10,7 +10,7 @@ Requests that consume read units or embedding tokens return a `usage` field alon
 
 ## Read units
 
-[Query](/guides/search/search-overview), [fetch](/guides/manage-data/fetch-data), and [list by ID](/guides/manage-data/list-record-ids) requests return a `usage` field with the [read unit](/guides/manage-cost/understanding-cost#read-units) consumption of that request.
+[Query](/guides/search/search-overview), [fetch](/guides/data/fetch-data), and [list by ID](/guides/data/list-record-ids) requests return a `usage` field with the [read unit](/guides/manage-cost/understanding-cost#read-units) consumption of that request.
 
 > [!NOTE]
 >
@@ -72,7 +72,7 @@ public class QueryByVector {
     public static void main(String[] args) {
         PineconeConfig config = new PineconeConfig("YOUR_API_KEY");
         // To get the unique host for an index,
-        // see https://docs.pinecone.io/guides/manage-data/target-an-index
+        // see https://docs.pinecone.io/guides/indexes/target-an-index
         config.setHost("INDEX_HOST");
         PineconeConnection connection = new PineconeConnection(config);
         Index index = new Index(config, connection, "example-index");
@@ -113,7 +113,7 @@ func main() {
     }
 
 	// To get the unique host for an index,
-	// see https://docs.pinecone.io/guides/manage-data/target-an-index
+	// see https://docs.pinecone.io/guides/indexes/target-an-index
 	idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST", Namespace: "example-namespace"})
 	if err != nil {
 		log.Fatalf("Failed to create IndexConnection for Host: %v", err)
@@ -246,7 +246,7 @@ For a worked example of inspecting read costs, see the [read units notebook](htt
 
 ## Embedding tokens
 
-Requests to one of [Pinecone's hosted embedding models](/guides/index-data/index-configuration#embedding-models), either directly via the [Generate vectors](/reference/api/latest/inference/generate-vectors) operation or automatically when upserting or querying an [index with integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), return a `usage` field with the total tokens generated.
+Requests to one of [Pinecone's hosted embedding models](/guides/indexes/index-configuration#embedding-models), either directly via the [Generate vectors](/reference/api/latest/inference/generate-vectors) operation or automatically when upserting or querying an [index with integrated embedding](/guides/indexes/indexing-overview#integrated-embedding), return a `usage` field with the total tokens generated.
 
 For example, this request uses the `multilingual-e5-large` model to embed sentences related to the word “apple”:
 

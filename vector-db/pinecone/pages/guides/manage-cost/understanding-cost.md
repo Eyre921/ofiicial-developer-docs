@@ -8,7 +8,7 @@ Understand how Pinecone bills read units, write units, storage, egress, and embe
 
 Pinecone serverless is usage-based, so you pay for the data you store and the operations you run. Four metrics meter index usage: [read units](#read-units), [write units](#write-units), [storage](#storage), and [egress](#egress). [Imports](#imports), [backups](#backups-and-restores), [embedding](#embedding), and [reranking](#reranking) are billed on their own. Many small workloads fit within the free [Starter plan](https://www.pinecone.io/pricing/).
 
-[Full-text search](/guides/search/full-text-search) on a document index, semantic search on a vector index, and [hybrid search](/guides/search/hybrid-search) that combines the two are all metered by the same four metrics.
+[Full-text search](/guides/search/full-text-search) on a document index, semantic search on a legacy vector index, and [hybrid search](/guides/search/hybrid-search) that combines the two are all metered by the same four metrics.
 
 > [!TIP]
 >
@@ -76,7 +76,7 @@ A read unit (RU) measures the compute, I/O, and network resources a read request
 
 > [!NOTE]
 >
-> Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, list, and full-text search operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
+> Indexes built on [Dedicated Read Nodes](/guides/optimize/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, list, and full-text search operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/optimize/dedicated-read-nodes/overview) guide.
 
 ### Query
 
@@ -110,7 +110,7 @@ Specifying a non-existent ID or adding the same ID more than once doesn't increa
 
 > [!NOTE]
 >
-> [Fetching records by metadata](/guides/manage-data/fetch-data#fetch-records-by-metadata) uses the same cost model as fetching by ID: 1 RU for every 10 records fetched.
+> [Fetching records by metadata](/guides/legacy/vectors-api/fetch-vectors#fetch-records-by-metadata) uses the same cost model as fetching by ID: 1 RU for every 10 records fetched.
 
 ### List
 
@@ -132,7 +132,7 @@ A write unit (WU) measures the storage and compute resources a write request use
 
 > [!NOTE]
 >
-> Writes to a [document index](/guides/index-data/adopt-the-documents-api) use the same cost models as writes to a vector index. The formulas below apply to both.
+> Writes to a [document index](/guides/core-concepts/key-terms#document-index) use the same cost models as writes to a legacy vector index. The formulas below apply to both.
 
 ### Upsert
 
@@ -164,7 +164,7 @@ The following table shows the WUs used by an update at different record sizes:
 
 > [!NOTE]
 >
-> [Updating records by metadata](/guides/manage-data/update-data#update-by-metadata) uses the same cost model as updating by ID: 1 WU for each 1 KB of the new and existing record.
+> [Updating records by metadata](/guides/legacy/vectors-api/update-vectors#update-by-metadata) uses the same cost model as updating by ID: 1 WU for each 1 KB of the new and existing record.
 
 ### Delete
 
@@ -182,21 +182,21 @@ The following table shows the WUs used by delete requests at different batch siz
 
 Specifying a non-existent ID or adding the same ID more than once doesn't increase WU use.
 
-[Deleting a namespace](/guides/manage-data/manage-namespaces#delete-a-namespace) or [deleting all records in a namespace using `deleteAll`](/guides/manage-data/delete-data#delete-all-records-in-a-namespace) uses 5 WUs.
+[Deleting a namespace](/guides/data/manage-namespaces#delete-a-namespace) or [deleting all records in a namespace using `deleteAll`](/guides/legacy/vectors-api/delete-vectors#delete-all-records-in-a-namespace) uses 5 WUs.
 
 > [!NOTE]
 >
-> [Deleting records by metadata](/guides/manage-data/delete-data#delete-records-by-metadata) uses the same cost model as deleting by ID: 1 WU for each 1 KB of records deleted.
+> [Deleting records by metadata](/guides/legacy/vectors-api/delete-vectors#delete-records-by-metadata) uses the same cost model as deleting by ID: 1 WU for each 1 KB of records deleted.
 
 ## Storage
 
 Storage is billed monthly per gigabyte (GB) of index size. An index's size is the total size of its records or documents across all namespaces.
 
-A document in a document index can include any combination of `string` fields with `full_text_search` enabled, a dense vector, and a sparse vector. A record in a vector index can include a dense vector, a sparse vector, or both. Use the formula that matches your index to calculate total size:
+A document in a document index can include any combination of `string` fields with `full_text_search` enabled, a dense vector, and a sparse vector. A record in a legacy vector index can include a dense vector, a sparse vector, or both. Use the formula that matches your index to calculate total size:
 
 > [tab] Document index
 >
-> A [document index](/guides/index-data/indexing-overview#document-index) contains documents. Each document's size is its ID, its metadata, and the data in every schema field it holds.
+> A [document index](/guides/indexes/indexing-overview#document-index) contains documents. Each document's size is its ID, its metadata, and the data in every schema field it holds.
 >
 > ```text Calculate size theme={null}
 > Index size = Number of documents × (
@@ -211,7 +211,7 @@ A document in a document index can include any combination of `string` fields wi
 > Where:
 >
 > * `ID size` and `Metadata size` are measured in bytes, averaged across all documents. Metadata is every field that isn't declared in the schema.
-> * `Total full-text-search field size`: The combined UTF-8 byte length of the text in all `string` fields with `full_text_search` enabled, averaged across all documents. A `string` field with [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding) stores its text, which counts here, unless it sets `store_text: false`, in which case only its generated vector counts. If a field has both, count its text here and its generated vector below.
+> * `Total full-text-search field size`: The combined UTF-8 byte length of the text in all `string` fields with `full_text_search` enabled, averaged across all documents. A `string` field with [integrated embedding](/guides/indexes/indexing-overview#integrated-embedding) stores its text, which counts here, unless it sets `store_text: false`, in which case only its generated vector counts. If a field has both, count its text here and its generated vector below.
 > * Each `Dense vector dimension` uses 4 bytes. Sum the dimensions of every dense vector in the document, whether you upsert it or Pinecone generates it for an integrated-embedding field. Omit this term if the schema has no dense vector.
 > * `Number of non-zero sparse values`: Average number across all documents, including those without sparse vectors. Count every sparse vector in the document, whether you upsert it or Pinecone generates it. Each non-zero value uses 8 bytes. Omit this term if the schema has no sparse vector.
 >
@@ -229,11 +229,11 @@ A document in a document index can include any combination of `string` fields wi
 
 > [tab] Index of dense vectors
 >
-> An [index of dense vectors](/guides/index-data/indexing-overview#indexes-with-dense-vectors) contains records with one dense vector each.
+> An [index of dense vectors](/guides/indexes/indexing-overview#indexes-with-dense-vectors) contains records with one dense vector each.
 >
 > > [!NOTE]
 > >
-> > Records can also contain sparse vectors (when the index metric is set to `dotproduct`), which can be useful for [hybrid search](/guides/search/hybrid-search/single-index). To learn how to calculate size in that case, see [Index with both dense and sparse vectors](#index-with-both-dense-and-sparse-vectors).
+> > Records can also contain sparse vectors (when the index metric is set to `dotproduct`), which can be useful for [hybrid search](/guides/legacy/vectors-api/hybrid-search-single-index). To learn how to calculate size in that case, see [Index with both dense and sparse vectors](#index-with-both-dense-and-sparse-vectors).
 >
 > ```text Calculate size (assuming no sparse vectors) theme={null}
 > Index size = Number of records × (
@@ -263,7 +263,7 @@ A document in a document index can include any combination of `string` fields wi
 
 > [tab] Index of sparse vectors
 >
-> An [index of sparse vectors](/guides/index-data/indexing-overview#indexes-with-sparse-vectors) contains records with one sparse vector each.
+> An [index of sparse vectors](/guides/indexes/indexing-overview#indexes-with-sparse-vectors) contains records with one sparse vector each.
 >
 > ```text Calculate size theme={null}
 > Index size = Number of records × (
@@ -293,7 +293,7 @@ A document in a document index can include any combination of `string` fields wi
 
 > [tab] Index with both dense and sparse vectors
 >
-> An [index with both dense and sparse vectors](/guides/search/hybrid-search/single-index) contains records that each have one dense vector and an optional sparse vector.
+> An [index with both dense and sparse vectors](/guides/legacy/vectors-api/hybrid-search-single-index) contains records that each have one dense vector and an optional sparse vector.
 >
 > ```text Calculate size theme={null}
 > Index size = Number of records × (
@@ -330,14 +330,14 @@ Egress measures the data Pinecone returns to you on serverless reads. Egress is 
 Egress is metered on read requests that return per-record or per-document data:
 
 * [Query](/guides/search/search-overview)
-* [Fetch](/guides/manage-data/fetch-data) (records and documents, by ID and by metadata)
-* [List](/guides/manage-data/list-record-ids) (record and document IDs)
+* [Fetch](/guides/data/fetch-data) (records and documents, by ID and by metadata)
+* [List](/guides/data/list-record-ids) (record and document IDs)
 * [Text search](/reference/api/latest/data-plane/search_records) on integrated indexes
 * Search on a document index, whether it ranks by [full-text search](/guides/search/full-text-search) or by vector similarity
 
 Write requests (upsert, update, delete, import), index statistics (such as `describe_index_stats`), and index management requests aren't metered for egress.
 
-Egress applies to indexes that use [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) as well as on-demand indexes, because it depends on the data returned to you rather than on the hardware serving the read.
+Egress applies to indexes that use [dedicated read nodes](/guides/optimize/dedicated-read-nodes/overview) as well as on-demand indexes, because it depends on the data returned to you rather than on the hardware serving the read.
 
 > [!NOTE]
 >
@@ -361,19 +361,19 @@ What happens past the allowance depends on your plan:
 
 ## Imports
 
-[Importing from object storage](/guides/index-data/import-data) is the most cost-effective way to load large numbers of records into an index. An import is billed by the size of the records it reads, whether or not they import successfully.
+[Importing from object storage](/guides/data/import-data) is the most cost-effective way to load large numbers of records into an index. An import is billed by the size of the records it reads, whether or not they import successfully.
 
 If the import fails (e.g., after it reads a vector of the wrong dimension in an import with `on_error="abort"`), you're still charged for the records read. If the import fails because of an internal system error, you aren't charged, and the import returns the error message `"We were unable to process your request. If the problem persists, please contact us at https://support.pinecone.io"`.
 
 ## Backups and restores
 
-A [backup](/guides/manage-data/backups-overview) is a static copy of a serverless index. Storing a backup and [restoring an index](/guides/manage-data/restore-an-index) from a backup are both billed by the size of the index.
+A [backup](/guides/indexes/backups-overview) is a static copy of a serverless index. Storing a backup and [restoring an index](/guides/indexes/restore-an-index) from a backup are both billed by the size of the index.
 
-[Restoring a backup into a different region](/guides/manage-data/restore-an-index#restore-to-a-different-region) also incurs a cross-region transfer fee, charged per GB on top of the restore cost. The rate depends on the cloud provider and the backup's region. Restoring into the same region as the backup doesn't incur this fee. On your invoice, the fee appears as **Serverless Cross-Region Transfer**.
+[Restoring a backup into a different region](/guides/indexes/restore-an-index#restore-to-a-different-region) also incurs a cross-region transfer fee, charged per GB on top of the restore cost. The rate depends on the cloud provider and the backup's region. Restoring into the same region as the backup doesn't incur this fee. On your invoice, the fee appears as **Serverless Cross-Region Transfer**.
 
 ## Embedding
 
-Pinecone hosts several [embedding models](/guides/index-data/index-configuration#embedding-models). You can embed your data as an integrated part of upserting and querying, or as a standalone operation.
+Pinecone hosts several [embedding models](/guides/indexes/index-configuration#embedding-models). You can embed your data as an integrated part of upserting and querying, or as a standalone operation.
 
 Embedding is billed by the number of [tokens](https://www.pinecone.io/learn/tokenization/) in a request. The more words in your passage or query, the more tokens it generates.
 

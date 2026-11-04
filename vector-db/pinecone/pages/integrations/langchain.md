@@ -138,7 +138,7 @@ query = "Who is Ketanji Brown Jackson?"
 vectorstore.similarity_search(query)
 ```
 
-You can also apply a metadata filter to your similarity search. The filtering query language is the same as for Pinecone queries, as detailed in [Filtering with metadata](/guides/index-data/indexing-overview#metadata).
+You can also apply a metadata filter to your similarity search. The filtering query language is the same as for Pinecone queries, as detailed in [Filtering with metadata](/guides/indexes/indexing-overview#metadata).
 
 ```Python Python theme={null}
 query = "Tell me more about Ketanji Brown Jackson."
@@ -147,7 +147,7 @@ vectorstore.similarity_search(query, filter={'source': '../../modules/state_of_t
 
 ### Namespaces
 
-Several methods of the `PineconeVectorStore` class support using [namespaces](/guides/index-data/indexing-overview#namespaces). You can also initialize your `PineconeVectorStore` object with a namespace to restrict all further operations to that space.
+Several methods of the `PineconeVectorStore` class support using [namespaces](/guides/indexes/indexing-overview#namespaces). You can also initialize your `PineconeVectorStore` object with a namespace to restrict all further operations to that space.
 
 ```Python Python theme={null}
 index_name = "<YOUR_PINECONE_INDEX_NAME>"

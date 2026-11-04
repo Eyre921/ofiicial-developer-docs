@@ -1699,7 +1699,7 @@ For TypeScript apps and agents, use [`@neon/ai-sdk-provider`](https://www.npmjs.
 
 How to call models through AI Gateway, with the endpoints, limits, and rules that apply
 
-Last updated: 2026-10-30
+Last updated: 2026-11-04
 
 This page covers how to call models through Neon AI Gateway and the rules that apply. For the full list of models you can call, see the [model catalog](https://neon.com/ai-gateway#models).
 
@@ -1756,7 +1756,7 @@ AI Gateway usage draws down a prepaid credit balance. Here's how pricing works:
 
 See the [model catalog](https://neon.com/docs/ai-gateway/overview#available-models) for per-model rates, and [AI Gateway prepaid credits](https://neon.com/docs/ai-gateway/prepaid-credits) for how to buy credits and manage your balance.
 
-Independent of billing, Neon enforces an account-level daily spend cap on AI Gateway usage, separate from the per-minute rate limits above. If your account exceeds it, every AI Gateway endpoint returns `429 Too Many Requests` with error code `REQUEST_LIMIT_EXCEEDED` until the cap resets or the block is lifted. Neon hasn't published a fixed cap value; it isn't a flat number and can vary by account. See [Troubleshooting](https://neon.com/docs/ai-gateway/troubleshooting#429-account-quota-exceeded) if you hit this.
+Independent of billing, Neon enforces an account-level daily spend cap on AI Gateway usage, separate from the per-minute rate limits above. If your account exceeds it, every AI Gateway endpoint returns `429 Too Many Requests` with error code `REQUEST_LIMIT_EXCEEDED` until the cap resets or the block is lifted. The cap is $20 per day by default, but it may vary by account. To have it raised, [contact Support](https://neon.com/docs/introduction/support). See [Troubleshooting](https://neon.com/docs/ai-gateway/troubleshooting#429-account-quota-exceeded) if you hit this.
 
 ## Which endpoint to use
 
@@ -14390,7 +14390,7 @@ neon bootstrap --template mastra
 
 Buy credits, understand pricing and limits, and manage your balance for the Neon AI Gateway
 
-Last updated: 2026-10-29
+Last updated: 2026-11-04
 
 The Neon AI Gateway is billed with **prepaid credits**. You buy credits up front,
 and AI Gateway usage draws down your balance. This page explains who can buy
@@ -14405,10 +14405,12 @@ the Free plan. See [Neon plans](https://neon.com/docs/introduction/plans) and
 
 - **1 credit = $1 USD.** Credits are prepaid, purchased before use.
 - **Minimum purchase: $5.**
-- **Minimum balance: $2.**
+- **Minimum balance: $2.** Once your balance drops below $2, new requests return
+  HTTP 429 until you add credits.
 - **Credits expire 12 months after purchase.**
-- Your balance can go **negative**. Usage is metered after a request is served,
-  so a final request can push the balance below zero.
+- Your balance can go **below $2, or negative**. Usage is metered after a
+  request is served, so a long or large request, or several running at once,
+  can take the balance below $2 or below zero before new requests are blocked.
 
 Your balance **draws down as usage is metered**. Each request consumes credits
 based on its token usage, so your balance decreases as you send requests. For
@@ -14478,8 +14480,9 @@ and abuse:
 
 Short-window rate limits, the daily spend cap, and balance depletion are distinct:
 
-- **Short-window rate limits** are surfaced through `x-ratelimit-*` response
-  headers on each request.
+- **Short-window rate limits** return HTTP 429 with a `Retry-After` header that
+  points to the start of the next minute. `x-ratelimit-*` headers, when present,
+  come from the upstream provider, not from Neon's limits.
 - The **daily spend cap** limits how much you can spend in a single day.
 - **Balance depletion** happens when your prepaid credits run out.
 
@@ -14549,7 +14552,7 @@ auto-reload back on.
 
 The AI Gateway is available in AWS US East (Ohio), US East (N. Virginia), Europe (Frankfurt), and Asia Pacific (Singapore) (more [regions](https://neon.com/docs/introduction/regions) to follow).
 
-**Note:** **IP Allow** and **Private Link** do not cover AI Gateway traffic.
+**Note:** **IP Allow** and **Private Networking** do not cover AI Gateway traffic.
 
 ## If you downgrade to Free
 
@@ -14607,7 +14610,7 @@ Requests are blocked once you reach your per-minute token limit or daily spend c
 
 Common errors and how to fix them
 
-Last updated: 2026-10-29
+Last updated: 2026-11-04
 
 ## Authentication errors
 
@@ -14719,7 +14722,7 @@ The request hit the upstream Databricks/provider rate limit.
 
 ### `429`: account quota exceeded
 
-Your account's AI Gateway quota is blocked. This happens when you exceed a token-per-minute (TPM) rate limit or your account's daily spend limit. Both return `REQUEST_LIMIT_EXCEEDED`, and the message names the limit that was hit and how to recover.
+Your account's AI Gateway quota is blocked. This happens when you exceed a token-per-minute (TPM) rate limit or your account's daily spend limit, or when your prepaid credit balance drops below the $2 minimum. All three return `REQUEST_LIMIT_EXCEEDED`, and the message names the limit that was hit and how to recover.
 
 An account-wide TPM limit:
 
@@ -14747,7 +14750,20 @@ A daily spend limit:
 }
 ```
 
-**Fix:** Check the `Retry-After` header. If present, the block is temporary and lifts at that time; retry with exponential backoff. If absent, the block is permanent until resolved; requesting a higher limit requires a paid plan. See [Support](https://neon.com/docs/introduction/support) for your plan's support options and [Rate limits](https://neon.com/docs/ai-gateway/models#rate-limits) for current values.
+A credit balance below the minimum. The response includes a link to add credits:
+
+```json
+{
+  "error_code": "REQUEST_LIMIT_EXCEEDED",
+  "message": "AI Gateway credit balance is below the required minimum. Add credits to continue. <recovery URL>",
+  "unavailable_reason": "credits_required",
+  "recovery_url": "<recovery URL>"
+}
+```
+
+This block has no `Retry-After` header and doesn't clear on its own. [Buy credits](https://neon.com/docs/ai-gateway/prepaid-credits#buy-or-top-up-credits), or turn on [automatic top-up](https://neon.com/docs/ai-gateway/prepaid-credits#automatic-top-up) so it doesn't happen again.
+
+**Fix:** Check the `Retry-After` header. If present, the block is temporary and lifts at that time; retry with exponential backoff. If absent, the block lasts until it's resolved: for a low credit balance, add credits; for a limit, ask Support to raise it. See [Support](https://neon.com/docs/introduction/support) for your plan's support options and [Rate limits](https://neon.com/docs/ai-gateway/models#rate-limits) for current values.
 
 ---
 
@@ -31287,7 +31303,7 @@ Pass `--keyring` to store the credential in your operating system's keyring inst
 
 Query the logs a branch's services emit
 
-Last updated: 2026-10-31
+Last updated: 2026-11-04
 
 The `logs` command reads the logs a branch's services emit. Today that covers Neon Functions and Object Storage; Postgres compute logs are coming. Query records over a time window, filter by source, severity, or OpenTelemetry attribute, and list which fields and values a branch reports so you can build precise filters.
 
@@ -31330,7 +31346,7 @@ The structured content filters (`--source`, `--service-name`, `--scope-name`, `-
 
 `--source` accepts `function`, `storage`, and `pg_endpoint`. Only `function` and `storage` return records today; `pg_endpoint` (Postgres compute) is accepted but comes back empty until Postgres logs ship.
 
-Filter by severity with `--severity-text`, which matches the exact, case-sensitive value a record carries (for example `ERROR` or `INFO`, uppercase). Severities vary by source, so a filter can legitimately return nothing: storage logs are S3 access records and are all `INFO`, so `--source storage --severity-text ERROR` matches none. Run `neon logs field-values severity_text` to see the values a branch actually reports before filtering. `--minimum-severity` (match a level and everything above it) is not supported by the branch log backend; use `--severity-text` for an exact match instead.
+Filter by severity with `--severity-text`, which matches the exact, case-sensitive value a record carries (for example `ERROR` or `INFO`, uppercase). Severities vary by source, so a filter can legitimately return nothing. Storage logs take their level from the HTTP status (`WARN` for 4xx, `ERROR` for 5xx, `INFO` otherwise), so `--source storage --severity-text ERROR` returns only server errors. Run `neon logs field-values severity_text` to see the values a branch actually reports before filtering. `--minimum-severity` (match a level and everything above it) is not supported by the branch log backend; use `--severity-text` for an exact match instead.
 
 ```bash
 neon logs query --since 30m
@@ -39658,15 +39674,15 @@ The response is a JSON object with your branch's Postgres version:
 
 --- [Document source](https://neon.com/docs/compute/functions/logs.md) ---
 
-> Summary: View a deployed function's logs in the Neon Console: standard output and standard error from your handler, plus a platform-emitted invoke begin / invoke end line around each request. Covers the console-method-to-level mapping, common log entries that look like a problem but aren't, and wiring up application instrumentation like Sentry or OpenTelemetry.
+> Summary: View a deployed function's logs in the Neon Console: console.* output from your handler and its dependencies, plus a platform-emitted invoke begin / invoke end line around each request. Covers the console-method-to-level mapping, common log entries that look like a problem but aren't, and wiring up application instrumentation like Sentry or OpenTelemetry.
 
 # Neon Functions logs
 
 View, search, and download logs for a deployed function.
 
-Last updated: 2026-09-25
+Last updated: 2026-11-04
 
-Every deployed function streams its logs to the Neon Console: standard output and standard error from your handler, plus a platform-emitted `invoke begin` / `invoke end` line around each request:
+Every deployed function streams its logs to the Neon Console: everything your handler and its dependencies write with `console.log`, `console.info`, `console.warn`, `console.error`, or `console.debug`, plus a platform-emitted `invoke begin` / `invoke end` line around each request:
 
 ```text
 2026-07-09T19:31:43.902476000Z    INFO    invoke end
@@ -39682,7 +39698,7 @@ Expand a row to see its full context: `timestamp`, `severity`, `entity_type`, `s
 `scope_name` distinguishes platform-emitted lines from your own output:
 
 - `neon.function.request`: the `invoke begin` / `invoke end` line the platform emits around each request.
-- Your own `console.log`/`console.error` output is scoped to the function's app logs, alongside whatever your handler or dependencies print.
+- Your own `console.*` output is scoped to the function's app logs, alongside `console.*` output from your dependencies.
 
 ## Log levels
 
@@ -39697,6 +39713,8 @@ A function's log level comes from the `console` method used to emit it:
 
 `NOTICE` and `FATAL` also appear as filters in the log viewer but aren't currently emitted by Functions; they're part of the console's shared log-level set.
 
+Only those `console` methods reach your logs. Output written straight to `process.stdout` or `process.stderr`, including from a logger configured to write to a stream, is discarded. Point your logger at `console`, or use a [monitoring SDK](https://neon.com/docs/compute/functions/logs#application-instrumentation).
+
 ## Common log entries
 
 Most of what shows up in your logs is your own `console.log`/`console.error` output. A few entries look like something's wrong when it isn't, or point you somewhere other than the log itself. Here's what to do when you see them.
@@ -39707,7 +39725,7 @@ Most of what shows up in your logs is your own `console.log`/`console.error` out
 (node:95) Warning: SECURITY WARNING: The SSL modes 'prefer', 'require', and 'verify-ca' are treated as aliases for 'verify-full'.
 ```
 
-It's a `pg` (node-postgres) deprecation warning, not a connection problem: the injected `DATABASE_URL` uses `sslmode=require`, and `pg` warns on that mode regardless of whether anything is wrong. It logs at `ERROR` because Functions maps all `stderr` output to `ERROR`, not because the severity was assessed. If you'd rather not see it, connect with `sslmode=verify-full` explicitly instead of relying on the default.
+It's a `pg` (node-postgres) deprecation warning, not a connection problem: the injected `DATABASE_URL` uses `sslmode=require`, and `pg` warns on that mode regardless of whether anything is wrong. It logs at `ERROR` because Node prints process warnings through `console.error`, not because the severity was assessed. If you'd rather not see it, connect with `sslmode=verify-full` explicitly instead of relying on the default.
 
 **Seeing an `ERROR` `invoke end` with no other detail? It's not your code, don't debug your handler for it.** The platform never puts internal failure detail (no execution node reachable, a launch or scheduler failure) into customer-facing logs, so this line won't tell you more than "the platform failed to complete this request." Retry; if it keeps happening, contact support rather than searching your own code for the cause. (Your own handler returning an error response is a different case and logs as `INFO`, since the platform still successfully invoked your function.)
 
@@ -43937,7 +43955,7 @@ Failure to resolve the Neon hostname can happen for different reasons:
 
 Learn about strategies to manage connection latencies and timeouts
 
-Last updated: 2026-10-09
+Last updated: 2026-11-04
 
 Neon's _Scale to zero_ feature is designed to minimize costs by automatically scaling a compute resource down to zero after a period of inactivity. By default, Neon scales a compute to zero after 5 minutes of inactivity. A characteristic of this feature is the concept of a "cold start". During this process, a compute transitions from an idle state to an active state to process requests. Currently, activating a Neon compute from an idle state typically takes a few hundred milliseconds not counting other factors that can add to latencies such as the physical distance between your application and database or startup times of other services that participate in your connection process.
 
@@ -43953,7 +43971,7 @@ You can also see each branch's compute status and when it was last active on the
 
 User actions that activate an idle compute include connecting from a client or application, running a query on your database from the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor), or accessing the compute via the [Neon API](https://neon.com/docs/reference/api).
 
-**Info:** The Neon API includes [Start endpoint](https://neon.com/docs/reference/api/endpoints/start-project-endpoint) and [Suspend endpoint](https://neon.com/docs/reference/api/endpoints/start-project-endpoint) APIs for the specific purpose of activating and suspending a compute.
+**Info:** The Neon API includes [Start endpoint](https://neon.com/docs/reference/api/endpoints/start-project-endpoint) and [Suspend endpoint](https://neon.com/docs/reference/api/endpoints/suspend-project-endpoint) APIs for the specific purpose of activating and suspending a compute.
 
 You can try any of these methods and watch the status of your compute as it changes from an **Idle** to an **Active** state. By default, a compute is suspended after 300 seconds (5 minutes) of inactivity. Users on the Neon [Scale plan](https://neon.com/docs/introduction/plans) can configure this delay period, which is described later in this topic.
 
@@ -53757,11 +53775,11 @@ The following instructions demonstrate how you can use the `num_cpus()` function
 
 An extension for Neon-specific statistics including the compute cache hit ratio
 
-Last updated: 2026-09-10
+Last updated: 2026-11-04
 
 The `neon` extension provides functions and views designed to gather Neon-specific metrics.
 
-- [The `neon_stat_file_cache` view](https://neon.com/docs/extensions/neon#the-neon_stat_file_cache-view)
+- [The `neon_stat_file_cache` view](https://neon.com/docs/extensions/neon#the-neonstatfilecache-view)
 - [Views for Neon internal use](https://neon.com/docs/extensions/neon#views-for-neon-internal-use)
 
 ## The neon_stat_file_cache view
@@ -53778,7 +53796,7 @@ On large fixed-size computes (18 CU and above), Neon sets `shared_buffers` to 75
 
 ## Monitoring compute cache usage
 
-You can monitor compute cache usage by installing the `neon` extension on your database and querying the [neon_stat_file_cache](https://neon.com/docs/extensions/neon#the-neon_stat_file_cache-view) view or [using EXPLAIN ANALYZE](https://neon.com/docs/extensions/neon#view-lfc-metrics-with-explain-analyze). Additionally, you can monitor the [Compute cache hit rate](https://neon.com/docs/introduction/monitoring-page#compute-cache-hit-rate) graph on the **Monitoring** page in the Neon console, or check it from the terminal with [`neon inspect db lfc-hit-rate`](https://neon.com/docs/cli/inspect#db-lfc-hit-rate) and [`neon inspect db working-set`](https://neon.com/docs/cli/inspect#db-working-set).
+You can monitor compute cache usage by installing the `neon` extension on your database and querying the [neon_stat_file_cache](https://neon.com/docs/extensions/neon#the-neonstatfilecache-view) view or [using EXPLAIN ANALYZE](https://neon.com/docs/extensions/neon#view-lfc-metrics-with-explain-analyze). Additionally, you can monitor the [Compute cache hit rate](https://neon.com/docs/introduction/monitoring-page#compute-cache-hit-rate) graph on the **Monitoring** page in the Neon console, or check it from the terminal with [`neon inspect db lfc-hit-rate`](https://neon.com/docs/cli/inspect#db-lfc-hit-rate) and [`neon inspect db working-set`](https://neon.com/docs/cli/inspect#db-working-set).
 
 ## neon_stat_file_cache view
 
@@ -56203,7 +56221,7 @@ SELECT auth.user_id();  -- Returns 'user-123'
 
 Track planning and execution statistics for all SQL statements
 
-Last updated: 2026-07-22
+Last updated: 2026-11-04
 
 The `pg_stat_statements` extension provides a detailed statistical view of SQL statement execution within a Postgres database. It tracks information such as execution counts, total and average execution times, and more, helping database administrators and developers analyze and optimize SQL query performance.
 
@@ -56231,7 +56249,7 @@ In Neon, statistics collected by the `pg_stat_statements` extension are not reta
 
 ## Enable the `pg_stat_statements` extension
 
-The extension is installed by running the following `CREATE EXTENSION` statement in the Neon **SQL Editor** or from a client such as `psql` that is connected to Neon.
+The Console's [Query performance](https://neon.com/docs/introduction/monitor-query-performance) view works without this step. To query `pg_stat_statements` yourself, or to use commands such as `neon inspect db outliers`, install the extension in your database by running the following `CREATE EXTENSION` statement in the Neon **SQL Editor** or from a client such as `psql` that is connected to Neon.
 
 ```sql
 CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
@@ -57037,7 +57055,7 @@ The `pg_uuidv7` extension gives you a clean way to work with version 7 UUIDs in 
 
 # Postgres extensions
 
-Last updated: 2026-09-30
+Last updated: 2026-11-04
 
 Neon supports the Postgres extensions shown below. Extension versions may differ by Postgres version. A dash (`-`) indicates an extension is not yet supported for that version.
 
@@ -57069,7 +57087,7 @@ Neon supports the Postgres extensions shown below. Extension versions may differ
 | [ip4r](https://github.com/RhodiumToad/ip4r)                                                                    |    2.4 |    2.4 |    2.4 |    2.4 |    2.4 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | [isn](https://www.postgresql.org/docs/16/isn.html)                                                             |    1.2 |    1.2 |    1.2 |    1.2 |    1.3 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | [lakebase\_text](https://neon.com/docs/extensions/lakebase-text)                                               |      - |      - |  0.1.3 |  0.1.3 |  0.1.3 | See [Lakebase Search](https://neon.com/docs/ai/lakebase-search).                                                                                                                                                                                                                                                                                                                                                                                               |
-| [lakebase\_tokenizer](https://neon.com/docs/extensions/lakebase-tokenizer)                                     |      - |      - |  0.2.0 |  0.2.0 |  0.2.0 | See [Lakebase Search](https://neon.com/docs/ai/lakebase-search).                                                                                                                                                                                                                                                                                                                                                                                               |
+| [lakebase\_tokenizer](https://neon.com/docs/extensions/lakebase-tokenizer)                                     |      - |      - |  0.2.1 |  0.2.1 |  0.2.1 | See [Lakebase Search](https://neon.com/docs/ai/lakebase-search).                                                                                                                                                                                                                                                                                                                                                                                               |
 | [lakebase\_vector](https://neon.com/docs/extensions/lakebase-vector)                                           |      - |      - |  1.1.2 |  1.1.2 |  1.1.2 | See [Lakebase Search](https://neon.com/docs/ai/lakebase-search).                                                                                                                                                                                                                                                                                                                                                                                               |
 | [lo](https://www.postgresql.org/docs/16/lo.html)                                                               |    1.1 |    1.1 |    1.1 |    1.1 |    1.2 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | [ltree](https://neon.com/docs/extensions/ltree)                                                                |    1.2 |    1.2 |    1.2 |    1.3 |    1.3 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
@@ -73236,7 +73254,7 @@ Last updated: 2026-07-31
 
 Guidelines to optimize price, performance, and reliability
 
-Last updated: 2026-08-24
+Last updated: 2026-11-04
 
 ## Production checklist
 
@@ -73267,7 +73285,7 @@ Last updated: 2026-08-24
 - [ ] [13. Restrict access to production data](https://neon.com/docs/get-started/production-checklist#restrict-access-to-production-data)
     Limit database access to trusted sources using IP Allow to reduce the risk of unauthorized changes.
 - [ ] [14. Install pg_stat_statements](https://neon.com/docs/get-started/production-checklist#install-pgstatstatements)
-    Enable query performance monitoring to track execution times and frequency. This helps you troubleshoot performance issues independently.
+    Query execution times and frequency yourself with SQL or `neon inspect`. The Console's Query performance view works without it.
 - [ ] [15. Integrate with your existing observability stack](https://neon.com/docs/get-started/production-checklist#integrate-with-your-existing-observability-stack)
     Export Neon metrics to Datadog, Grafana, or any OTEL-compatible platform to monitor usage and capacity alongside your existing systems.
 
@@ -73359,7 +73377,7 @@ Keep reading:
 
 ## Size the history window for instant restore
 
-**[Instant restore](https://neon.com/docs/postgres/backup-restore/branch-restore)** lets you roll a branch's database timeline back in time. How far back you can go depends on the **history window** you configure (under **Settings → Postgres**). On paid plans, the default history window is 1 day, which you can increase up to 30 days.
+**[Instant restore](https://neon.com/docs/postgres/backup-restore/branch-restore)** lets you roll a branch's database timeline back in time. How far back you can go depends on the **history window** you configure (under **Settings → Postgres**). On paid plans, the default history window is 1 day, which you can increase up to 7 days on Launch or 30 days on Scale.
 
 A longer history window gives you more flexibility to recover from bugs discovered later or accidental data loss. However, longer windows retain more change history, which increases **History** usage on your bill. Choose a window that balances recovery needs with predictable storage costs.
 
@@ -73424,7 +73442,7 @@ Keep reading: [IP Allow](https://neon.com/docs/introduction/ip-allow)
 
 ## Install pg_stat_statements
 
-The [pg_stat_statements extension](https://neon.com/docs/extensions/pg_stat_statements) provides query performance monitoring to track execution times and frequency. Since Neon doesn't log queries and has limited visibility into query performance, this extension helps you troubleshoot issues independently.
+The [pg_stat_statements extension](https://neon.com/docs/extensions/pg_stat_statements) tracks how often each query runs and how long it takes. The Console's [Query performance](https://neon.com/docs/introduction/monitor-query-performance) view shows this data without any setup. Install the extension in your database to query the statistics yourself with SQL or to use [`neon inspect`](https://neon.com/docs/cli/inspect):
 
 ```sql
 CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
@@ -74474,7 +74492,7 @@ To prevent branch accumulation and manage resources effectively, you can set bra
 
 Implement database provisioning and versioning for your AI agent platform
 
-Last updated: 2026-10-01
+Last updated: 2026-11-04
 
 This guide covers the technical implementation of the Neon agent plan for your platform. You'll learn how to provision databases, implement versioning, manage user upgrades, and monitor usage at scale.
 
@@ -74642,7 +74660,7 @@ For detailed information about configuring quotas and what happens when limits a
 Project provisioning is near-instant (typically under 1 second), but consider these timing factors:
 
 1. **Project creation**: Returns immediately with project details
-2. **Compute activation**: First connection may take 1-2 seconds as compute starts
+2. **Compute activation**: First connection after the compute has been idle can take a few hundred milliseconds longer while it wakes
 3. **Subsequent connections**: Near-instant once compute is active
 
 For the best user experience:
@@ -74991,7 +75009,7 @@ All platform integrations use the Neon API. You can call it directly or use lang
 
 - **Users hit quota limits unexpectedly**: Autoscaling can consume compute time faster than anticipated. Set `autoscaling_limit_max_cu` appropriately for each tier, monitor consumption metrics and alert users at 80% threshold, and consider lowering `suspend_timeout_seconds` for free tier to reduce active time.
 
-- **First database connection is slow**: Compute needs to start from idle state (cold start). This is expected behavior for serverless compute (1-2 seconds on first connection). Set user expectations accordingly. For critical production endpoints, use `suspend_timeout_seconds: -1` to keep compute always on. Subsequent connections are near-instant.
+- **First database connection is slow**: Compute needs to start from idle state (cold start). This is expected behavior for serverless compute: the first connection after the compute has been idle can take a few hundred milliseconds longer while it wakes. Set user expectations accordingly. For critical production endpoints, use `suspend_timeout_seconds: -1` to keep compute always on. Subsequent connections are near-instant.
 
 - **Storage grows larger than expected**: Multiple branches or snapshots accumulate over time. Implement branch cleanup for old development branches, delete snapshots that are no longer needed, and monitor storage metrics to alert users approaching limits.
 
@@ -75294,7 +75312,7 @@ When you run `npm run dev` you can expect to see something like the following wh
 
 --- [Document source](https://neon.com/docs/guides/auth-auth0.md) ---
 
-> Summary: Auth0 integration guide for Next.js apps using Lakebase Postgres, walking through the full setup of the @auth0/nextjs-auth0 SDK, Drizzle ORM schema and migrations, and storing per-user rows in a Postgres table keyed by Auth0 user IDs. Choose this guide when you need social login, multi-factor authentication, or Auth0-managed users in a Lakebase database. The tutorial covers Auth0 application configuration, callback URLs, session handling with UserProvider, and Next.js server actions for inserting and deleting user data.
+> Summary: Auth0 integration guide for Next.js apps using Lakebase Postgres, walking through the full setup of the @auth0/nextjs-auth0 SDK, Drizzle ORM schema and migrations, and storing per-user rows in a Postgres table keyed by Auth0 user IDs. Choose this guide when you need social login, multi-factor authentication, or Auth0-managed users in a Lakebase database. The tutorial covers Auth0 application configuration, callback URLs, session handling with the Auth0 client and Next.js proxy, and Next.js server actions for inserting and deleting user data.
 
 # Authenticate Lakebase Postgres application users with Auth0
 
@@ -75349,18 +75367,7 @@ Also, add a `.env.local` file to the root of your project, which we'll use to st
 touch .env.local
 ```
 
-**Note:**
-
-At the time of this post, the `@auth0/nextjs-auth0` package caused import errors related to one of its dependencies (`oauth4webapi`). To stop Next.js from raising the error, add the following to your `nextjs.config.mjs` file:
-
-```js
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  experimental: { esmExternals: 'loose' },
-};
-
-export default nextConfig;
-```
+This guide uses version 4 of `@auth0/nextjs-auth0` and Next.js 16.
 
 Now, we can start building the application.
 
@@ -75398,7 +75405,7 @@ DATABASE_URL=NEON_DB_CONNECTION_STRING
 ### Configure Auth0 application settings
 
 1. In the `Settings` tab of your Auth0 application, scroll down to the `Application URIs` section.
-2. Set the `Allowed Callback URLs` to `http://localhost:3000/api/auth/callback` for local development.
+2. Set the `Allowed Callback URLs` to `http://localhost:3000/auth/callback` for local development.
 3. Set the `Allowed Logout URLs` to `http://localhost:3000`.
 4. Click `Save Changes` at the bottom of the page.
 
@@ -75409,14 +75416,14 @@ From the `Settings` tab of your Auth0 application, copy the `Domain` and `Client
 ```bash
 # .env.local
 
-AUTH0_SECRET='random-32-byte-value'
-AUTH0_BASE_URL='http://localhost:3000'
-AUTH0_ISSUER_BASE_URL='https://YOUR_AUTH0_DOMAIN'
+AUTH0_DOMAIN='YOUR_AUTH0_DOMAIN'
 AUTH0_CLIENT_ID='YOUR_AUTH0_CLIENT_ID'
 AUTH0_CLIENT_SECRET='YOUR_AUTH0_CLIENT_SECRET'
+AUTH0_SECRET='random-32-byte-value'
+APP_BASE_URL='http://localhost:3000'
 ```
 
-Replace `YOUR_AUTH0_DOMAIN`, `YOUR_AUTH0_CLIENT_ID` and `YOUR_AUTH0_CLIENT_SECRET` with the actual values from your Auth0 application settings.
+Replace `YOUR_AUTH0_DOMAIN`, `YOUR_AUTH0_CLIENT_ID` and `YOUR_AUTH0_CLIENT_SECRET` with the actual values from your Auth0 application settings. Set `AUTH0_DOMAIN` to the domain only, without `https://` (for example, `dev-abc123.us.auth0.com`).
 
 Run the following command in your terminal to generate a random 32-byte value for the `AUTH0_SECRET` variable:
 
@@ -75509,30 +75516,49 @@ The `user_messages` table will now be visible in the console.
 
 ### Configure Auth0 authentication
 
-We create a `dynamic route` to handle the Auth0 authentication flow. Create a new file `app/api/auth/[auth0]/route.ts` with the following content:
+First, create an Auth0 client that the rest of the application uses to read sessions. Add the file `lib/auth0.ts` at the project root:
 
 ```typescript
-/// app/api/auth/[auth0]/route.ts
+/// lib/auth0.ts
 
-import { handleAuth, handleLogin } from '@auth0/nextjs-auth0';
+import { Auth0Client } from '@auth0/nextjs-auth0/server';
 
-export default handleAuth({
-  login: handleLogin(),
-});
+export const auth0 = new Auth0Client();
 ```
 
-This sets up the necessary Auth0 authentication routes for the application at the `/api/auth/auth0/*` endpoints - `login`, `logout`, `callback` (to redirect to after a successful login), and `me` (to fetch the user profile).
+The client reads its configuration from the `AUTH0_*` and `APP_BASE_URL` environment variables you set earlier.
 
-Next, we will wrap the application with the `UserProvider` component from `@auth0/nextjs-auth0`, so all pages have access to the current user context. Replace the contents of the `app/layout.tsx` file with the following:
+Next, add a `proxy.ts` file at the project root. The Auth0 SDK uses it to mount the authentication routes at `/auth/login`, `/auth/logout`, `/auth/callback`, and `/auth/profile`, and to keep sessions up to date:
+
+```typescript
+/// proxy.ts
+
+import type { NextRequest } from 'next/server';
+import { auth0 } from './lib/auth0';
+
+export async function proxy(request: NextRequest) {
+  return await auth0.middleware(request);
+}
+
+export const config = {
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)'],
+};
+```
+
+**Note:** Next.js 16 renamed `middleware.ts` to `proxy.ts`. On Next.js 15 or earlier, name the file `middleware.ts` and export the function as `middleware` instead of `proxy`.
+
+You don't need a route file for the authentication endpoints. The proxy handles them.
+
+Now, show the logged-in user's name and a logout link on every page. Replace the contents of the `app/layout.tsx` file with the following:
 
 ```tsx
 /// app/layout.tsx
 
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { getSession } from '@auth0/nextjs-auth0';
-import { UserProvider } from '@auth0/nextjs-auth0/client';
+import { auth0 } from '@/lib/auth0';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -75542,7 +75568,7 @@ export const metadata: Metadata = {
 };
 
 async function UserInfoBar() {
-  const session = await getSession();
+  const session = await auth0.getSession();
   if (!session) {
     return null;
   }
@@ -75552,7 +75578,7 @@ async function UserInfoBar() {
     <div className="bg-gray-100 px-4 py-2">
       <span className="text-gray-800">
         Welcome, {user.name}!{' '}
-        <a href="/api/auth/logout" className="text-blue-600 hover:underline">
+        <a href="/auth/logout" className="text-blue-600 hover:underline">
           Logout
         </a>
       </span>
@@ -75566,17 +75592,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <UserProvider>
-      <html lang="en">
-        <body className={inter.className}>
+    <html lang="en">
+      <body className={inter.className}>
+        <Suspense fallback={null}>
           <UserInfoBar />
           {children}
-        </body>
-      </html>
-    </UserProvider>
+        </Suspense>
+      </body>
+    </html>
   );
 }
 ```
+
+New Next.js 16 projects enable `cacheComponents`, which requires anything that reads request data, such as the session cookie, to render inside `<Suspense>`. Without it, `npm run build` fails with a prerendering error.
 
 ### Add interactivity to the application
 
@@ -75589,14 +75617,14 @@ Create a new file at `app/actions.ts` with the following content:
 
 'use server';
 
-import { getSession } from '@auth0/nextjs-auth0/edge';
+import { auth0 } from '@/lib/auth0';
 import { UserMessages } from './db/schema';
 import { db } from './db';
 import { redirect } from 'next/navigation';
 import { eq } from 'drizzle-orm';
 
 export async function createUserMessage(formData: FormData) {
-  const session = await getSession();
+  const session = await auth0.getSession();
   if (!session) throw new Error('User not authenticated');
 
   const message = formData.get('message') as string;
@@ -75610,7 +75638,7 @@ export async function createUserMessage(formData: FormData) {
 }
 
 export async function deleteUserMessage() {
-  const session = await getSession();
+  const session = await auth0.getSession();
   if (!session) throw new Error('User not authenticated');
 
   await db.delete(UserMessages).where(eq(UserMessages.user_id, session.user.sub));
@@ -75627,10 +75655,10 @@ Next, we implement a minimal UI to interact with these functions. Replace the co
 
 import { createUserMessage, deleteUserMessage } from './actions';
 import { db } from './db';
-import { getSession } from '@auth0/nextjs-auth0/edge';
+import { auth0 } from '@/lib/auth0';
 
 async function getUserMessage() {
-  const session = await getSession();
+  const session = await auth0.getSession();
   if (!session) return null;
 
   return db.query.UserMessages.findFirst({
@@ -75642,7 +75670,7 @@ function LoginBox() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24">
       <a
-        href="/api/auth/login"
+        href="/auth/login"
         className="text-gray-800 rounded-md bg-[#00E699] px-3.5 py-2.5 text-sm font-semibold shadow-sm hover:bg-[#00e5BF] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00E699]"
       >
         Log in
@@ -75652,7 +75680,7 @@ function LoginBox() {
 }
 
 export default async function Home() {
-  const session = await getSession();
+  const session = await auth0.getSession();
   const existingMessage = await getUserMessage();
 
   if (!session) {
@@ -75705,7 +75733,7 @@ export default async function Home() {
 
 This implements a form with a single text field that lets the user input a quote, and submit it, whereby it gets stored in the database, associated with their `Auth0` user ID. If a quote is already stored, it displays the quote and provides a button to delete it.
 
-The `getSession` function from `@auth0/nextjs-auth0/edge` provides the current user's session information, which we use to interact with the database on their behalf. If the user is not authenticated, the page displays a login button instead.
+The `auth0.getSession()` method provides the current user's session information, which we use to interact with the database on their behalf. If the user is not authenticated, the page displays a login button instead.
 
 ## Running the application
 
@@ -75723,7 +75751,7 @@ Once authenticated, you'll be able to visit the home page, add a quote, and see 
 
 In this guide, we walked through setting up a simple Next.js application with user authentication using Auth0 and a Lakebase Postgres database. We defined a database schema using Drizzle ORM, generated migrations, and interacted with the database to store and retrieve user data.
 
-Next, we can add more routes and features to the application. The `UserProvider` component from `@auth0/nextjs-auth0` provides the user context to each page, allowing you to conditionally render content based on the user's authentication state.
+Next, you can add more routes and features to the application. Call `auth0.getSession()` in any server component, server action, or route handler to check whether the user is logged in and render content conditionally.
 
 To view and manage the users who authenticated with your application, you can navigate to the [Auth0 Dashboard](https://manage.auth0.com/) and click on **User Management > Users** in the sidebar. Here, you can see the list of users who have logged in and perform any necessary actions for those users.
 
@@ -76366,17 +76394,18 @@ npx drizzle-kit push:pg
 
 The `user_messages` table will now be visible in the console.
 
-### Add authentication middleware
+### Add the Clerk proxy
 
-The `Clerk` sdk handles user authentication and session management for us. Create a new file `middleware.ts` in the root directory so
-all the app routes are protected by Clerk's authentication:
+The Clerk SDK handles user authentication and session management for us. Create a new file `proxy.ts` in the root directory. Calling `auth.protect()` requires users to sign in before they can reach any app route, and redirects signed-out visitors to the Clerk sign-in page:
 
 ```typescript
-/// middleware.ts
+/// proxy.ts
 
 import { clerkMiddleware } from '@clerk/nextjs/server';
 
-export default clerkMiddleware();
+export default clerkMiddleware(async (auth) => {
+  await auth.protect();
+});
 
 export const config = {
   matcher: [
@@ -76388,10 +76417,13 @@ export const config = {
 };
 ```
 
+**Note:** Next.js 16 renamed `middleware.ts` to `proxy.ts`. On Next.js 15 or earlier, name the file `middleware.ts`. The code stays the same.
+
 Next, we wrap the full application with the `ClerkProvider` component, so all pages have access to the current session and user context. Replace the contents of the `app/layout.tsx` file with the following:
 
 ```tsx
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { ClerkProvider, UserButton } from '@clerk/nextjs';
@@ -76409,21 +76441,25 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body className={inter.className}>
-          <div className="bg-white p-4">
-            <UserButton showName={true}></UserButton>
-          </div>
-          {children}
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en">
+      <body className={inter.className}>
+        <Suspense fallback={null}>
+          <ClerkProvider>
+            <div className="bg-white p-4">
+              <UserButton showName={true}></UserButton>
+            </div>
+            {children}
+          </ClerkProvider>
+        </Suspense>
+      </body>
+    </html>
   );
 }
 ```
 
 This also adds a `UserButton` component to the layout, which displays the user's name and avatar when logged in.
+
+New Next.js 16 projects enable `cacheComponents`, which requires anything that reads request data, such as the session cookie, to render inside `<Suspense>`. Without it, `npm run build` fails with a prerendering error.
 
 ### Add interactivity to the application
 
@@ -76541,7 +76577,7 @@ This will start the Next.js development server. Open your browser and navigate t
 
 In this guide, we walked through setting up a simple Next.js application with user authentication using Clerk and a Lakebase Postgres database. We defined a database schema using Drizzle ORM, generated migrations, and interacted with the database to store and retrieve user data.
 
-Next, we can add more routes and features to the application. The Clerk middleware ensures that only authenticated users can access any app routes, and the `ClerkProvider` component provides the user context to each of them.
+Next, we can add more routes and features to the application. The Clerk proxy ensures that only authenticated users can access any app routes, and the `ClerkProvider` component provides the user context to each of them.
 
 To view and manage the users who authenticated with your application, you can navigate to the [Clerk Dashboard](https://dashboard.clerk.dev/).
 
@@ -79637,13 +79673,13 @@ Use this option if you need to inspect the restored data before you switch over 
 
 --- [Document source](https://neon.com/docs/guides/benchmarking-latency.md) ---
 
-> Summary: Benchmarking latency in Neon's serverless Postgres requires separating cold queries (compute wakes from suspension) from hot queries (active instance), because standard benchmarking tools conflate the two and produce misleading results. Free-tier databases auto-suspend after 5 minutes of inactivity; paid Scale plan users can disable auto-suspend to eliminate cold starts. HTTP and WebSocket connections have distinct latency profiles, and Neon provides an open-source regional latency dashboard for comparing connection methods across AWS regions.
+> Summary: Benchmarking latency in Neon's serverless Postgres requires separating cold queries (compute wakes from suspension) from hot queries (active instance), because standard benchmarking tools conflate the two and produce misleading results. Free-tier databases auto-suspend after 5 minutes of inactivity; paid plan users can disable auto-suspend to eliminate cold starts. HTTP and WebSocket connections have distinct latency profiles, and Neon provides an open-source regional latency dashboard for comparing connection methods across AWS regions.
 
 # Benchmarking latency in Neon's serverless Postgres
 
 Techniques for obtaining meaningful latency data in serverless database environments
 
-Last updated: 2026-06-05
+Last updated: 2026-11-04
 
 Benchmarking database query latency is inherently complex, requiring careful consideration of numerous variables and testing methodologies. Neon's serverless Postgres environment adds additional layers to this complexity due to compute auto-suspension, connection protocol differences, and geographic distribution. This guide provides detailed methodologies for separating cold-start costs from operational latency, selecting optimal connection types, and designing tests that accurately reflect production conditions.
 
@@ -87580,7 +87616,7 @@ For more information on the tools used in this guide, refer to the following res
 
 --- [Document source](https://neon.com/docs/guides/drizzle.md) ---
 
-> Summary: Drizzle ORM connection guide for Lakebase Postgres walks through initializing a TypeScript/Node.js project with supported drivers: Neon serverless HTTP, Neon WebSocket, node-postgres, and postgres.js. Use this page when you need type-safe queries plus Drizzle Kit migrations against a Lakebase database and want to pick the right driver for serverless or long-running environments. The guide also shows how to point Drizzle at different Neon branches per environment by selecting a connection string based on NODE_ENV.
+> Summary: Drizzle ORM connection guide for Lakebase Postgres on Neon walks through initializing a TypeScript/Node.js project with supported drivers: Neon serverless HTTP, Neon WebSocket, node-postgres, and postgres.js. Use this page when you need type-safe queries plus Drizzle Kit migrations against a Lakebase Postgres database on Neon and want to pick the right driver for serverless or long-running environments. The guide also shows how to point Drizzle at different Neon branches per environment by selecting a connection string based on NODE_ENV.
 
 # Connect from Drizzle to Neon
 
@@ -87605,7 +87641,7 @@ Pre-built prompt for connecting Node/TypeScript applications to Neon using Drizz
 - [Schema migration with Drizzle ORM](https://neon.com/docs/guides/drizzle-migrations)
 - [Getting started with Neon (Next.js and Drizzle video)](https://neon.com/docs/guides/nextjs#video-walkthrough)
 
-Drizzle is a modern ORM for TypeScript that provides a simple and type-safe way to interact with your database. This guide demonstrates how to connect your application to a Lakebase Postgres database using Drizzle ORM.
+Drizzle is a TypeScript ORM with type-safe queries. This guide shows you how to connect your application to a database on Neon using Drizzle ORM.
 
 To connect a TypeScript/Node.js project to Neon using Drizzle ORM, follow these steps:
 
@@ -87642,17 +87678,17 @@ Create a `.env` file in your project's root directory and add the connection str
 
 ```text
 # Pooled connection for your application
-DATABASE_URL="postgresql://[user]:[password]@[endpoint]-pooler.[region].aws.neon.tech/[dbname]?sslmode=require"
+DATABASE_URL="postgresql://[user]:[password]@[endpoint]-pooler.[region].aws.neon.tech/[dbname]?sslmode=require&channel_binding=require"
 
 # Unpooled connection for Drizzle Kit
-DATABASE_URL_UNPOOLED="postgresql://[user]:[password]@[endpoint].[region].aws.neon.tech/[dbname]?sslmode=require"
+DATABASE_URL_UNPOOLED="postgresql://[user]:[password]@[endpoint].[region].aws.neon.tech/[dbname]?sslmode=require&channel_binding=require"
 ```
 
-**Note:** Neon supports both direct and pooled connection strings, which you can find by clicking the **Connect** button in the Console nav. A pooled connection string (the hostname includes `-pooler`) routes through a PgBouncer connection pool, which is ideal for your application at runtime. However, using a pooled connection string for migrations can lead to errors. Use a direct (non-pooled) connection when running Drizzle Kit migrations. For more information, see [Connection pooling](https://neon.com/docs/connect/connection-pooling) and [Schema migration with Drizzle ORM](https://neon.com/docs/guides/drizzle-migrations).
+**Note:** Neon supports both direct and pooled connection strings, which you can find by clicking the **Connect** button in the Console nav. A pooled connection string (the hostname includes `-pooler`) routes through a PgBouncer connection pool, which suits your application at runtime. However, using a pooled connection string for migrations can lead to errors. Use a direct (non-pooled) connection when running Drizzle Kit migrations. If you only have the pooled string, remove `-pooler` from the hostname to get the direct one. For more information, see [Connection pooling](https://neon.com/docs/connect/connection-pooling) and [Schema migration with Drizzle ORM](https://neon.com/docs/guides/drizzle-migrations).
 
 ## Install Drizzle and a driver
 
-Install Drizzle ORM, Drizzle Kit for migrations, and your preferred database driver. Choose one of the following drivers based on your application's needs:
+Install Drizzle ORM, Drizzle Kit for migrations, `tsx` to run TypeScript, and a database driver. If you're not sure which driver to use, choose `node-postgres` for a Node.js server or script, and the Neon serverless HTTP driver for serverless and edge functions. For more detail, see [Choosing your connection method](https://neon.com/docs/connect/choose-connection).
 
 **Neon Serverless (HTTP)**
 
@@ -87660,34 +87696,36 @@ Use the Neon serverless HTTP driver for serverless environments (for example, Ve
 
 ```bash
 npm install drizzle-orm @neondatabase/serverless dotenv
-npm install -D drizzle-kit
+npm install -D drizzle-kit tsx
 ```
 
 **Neon WebSocket**
 
-Use the Neon WebSocket driver for long-running applications that require a persistent connection (for example, a standard Node.js server).
+Use the Neon WebSocket driver when you need sessions or interactive transactions in a serverless or edge environment.
 
 ```bash
 npm install drizzle-orm @neondatabase/serverless ws dotenv
-npm install -D drizzle-kit @types/ws
+npm install -D drizzle-kit tsx @types/ws
 ```
 
 **node-postgres**
 
-Use the classic `node-postgres` (`pg`) driver, a widely-used and stable choice for Node.js applications.
+Use the `node-postgres` (`pg`) driver for Node.js servers and scripts that keep a TCP connection pool.
 
 ```bash
 npm install drizzle-orm pg dotenv
-npm install -D drizzle-kit @types/pg
+npm install -D drizzle-kit tsx @types/pg
 ```
+
+`pg` 8.23 and later print a `SECURITY WARNING` when a connection string uses `sslmode=require`. To keep the current behavior and remove the warning, change `sslmode=require` to `sslmode=verify-full` in both connection strings.
 
 **postgres.js**
 
-Use the `postgres.js` driver, a modern and lightweight Postgres client for Node.js.
+Use the `postgres.js` driver, another TCP driver for Node.js servers and scripts.
 
 ```bash
 npm install drizzle-orm postgres dotenv
-npm install -D drizzle-kit
+npm install -D drizzle-kit tsx
 ```
 
 ## Configure Drizzle Kit
@@ -87841,6 +87879,8 @@ Reading config file '/home/user/drizzle/drizzle.config.ts'
 Using 'pg' driver for database querying
 ```
 
+The driver line depends on the driver you installed. With `@neondatabase/serverless`, Drizzle Kit also warns that it can only connect to Neon through a websocket. The migration still applies, so you can ignore that warning.
+
 You can verify that the `demo_users` table has been created in your Neon database by checking the **Tables** section in the Neon Console.
 
 ## Query the database
@@ -87934,7 +87974,7 @@ Each branch has its own connection string, available in the Neon Console or via 
 - [Add Object Storage](https://neon.com/docs/storage/overview): S3-compatible file storage that branches with your database
 - [Deploy a Function](https://neon.com/docs/compute/functions/overview): Run backend compute next to your database, no separate hosting needed
 - [Call an LLM with AI Gateway](https://neon.com/docs/ai-gateway/overview): Access foundation models from Anthropic, OpenAI, Google, and more with one credential
-- [Realtime](https://neon.com/docs/realtime/examples/drizzle): Build fully-reactive realtime Drizzle apps on Neon using your existing schema and queries »
+- [Realtime](https://neon.com/docs/realtime/examples/drizzle): Build realtime Drizzle apps on Neon using your existing schema and queries
 
 --- [Document source](https://neon.com/docs/guides/elixir-ecto.md) ---
 
@@ -89443,7 +89483,7 @@ To deploy Exograph in the cloud and connect it to Neon, follow the guide below (
 
 Export your Neon database with pg_dump as a standard Postgres archive
 
-Last updated: 2026-06-05
+Last updated: 2026-11-04
 
 This topic describes how to export your **Neon** database to a **Postgres-compatible** archive using the Postgres **`pg_dump`** utility. You get a normal custom-format dump (for example `-Fc`) that any Postgres toolchain can consume.
 
@@ -89514,7 +89554,7 @@ Install **`pg_dump`** and **`pg_restore`** builds that your **Neon** Postgres ve
    - **`-d`**: Target database [connection string](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING) (your provider's URL format and query parameters).
    - **`<dump_file_name>`**: The custom-format archive from **`pg_dump`** (for example **`mydatabase.bak`** from the **`pg_dump`** command in [Export steps on Neon](https://neon.com/docs/guides/export-neon-postgres-compatible#export-steps-on-neon)).
 
-If restore fails on ownership or role statements, try adding **`-O`** and consult [Database object ownership considerations](https://neon.com/docs/import/migrate-from-postgres#database-object-ownership-considerations). For more flags (parallel jobs, schema-only, exclusions), see [Advanced pg_dump and pg_restore options](https://neon.com/docs/import/migrate-from-postgres#advanced-pg_dump-and-pg_restore-options).
+If restore fails on ownership or role statements, try adding **`-O`** and consult [Database object ownership considerations](https://neon.com/docs/import/migrate-from-postgres#database-object-ownership-considerations). For more flags (parallel jobs, schema-only, exclusions), see [Advanced pg_dump and pg_restore options](https://neon.com/docs/import/migrate-from-postgres#advanced-pgdump-and-pgrestore-options).
 
 ## Related
 
@@ -89667,7 +89707,8 @@ app.listen(PORT, () => {
 require('dotenv').config();
 
 const express = require('express');
-const postgres = require('postgres');
+// postgres.js 4 and later is ESM-only; .default returns the postgres function
+const postgres = require('postgres').default;
 
 const app = express();
 const PORT = process.env.PORT || 4242;
@@ -105177,7 +105218,7 @@ Neon does not provide a built-in file storage service. For managing binary file 
 
 --- [Document source](https://neon.com/docs/guides/node.md) ---
 
-> Summary: Step-by-step connection guide for Node.js, Express, and Next.js apps targeting a Neon serverless Postgres database, with working code for three clients: the Neon serverless driver (@neondatabase/serverless), node-postgres (pg), and Postgres.js. Use this page when you need to wire up environment-variable-based SSL credentials and pick the right client for your project. Also covers the ENDPOINT_ID workaround required by older clients that lack SNI support, which newer node-postgres and Postgres.js releases do not need.
+> Summary: Step-by-step connection guide for Node.js, Express, and Next.js apps targeting a Lakebase Postgres database on Neon, with working code for three clients: the Neon serverless driver (@neondatabase/serverless), node-postgres (pg), and Postgres.js. Use this page when you need to wire up environment-variable-based SSL credentials and pick the right client for your project. Also covers the ENDPOINT_ID workaround required by older clients that lack SNI support, which newer node-postgres and Postgres.js releases do not need.
 
 # Connect a Node.js application to Neon
 
@@ -105187,7 +105228,7 @@ Last updated: 2026-09-16
 
 Pre-built prompt for connecting Node.js applications to Neon. [View prompt](https://neon.com/prompts/javascript-prompt.md)
 
-This guide describes how to create a Neon project and connect to it from a Node.js application. Examples are provided for using the [node-postgres](https://www.npmjs.com/package/pg) and [Postgres.js](https://www.npmjs.com/package/postgres) clients. Use the client you prefer.
+This guide describes how to create a Neon project and connect to it from a Node.js application. Examples are provided for the [Neon serverless driver](https://neon.com/docs/serverless/serverless-driver), [node-postgres](https://www.npmjs.com/package/pg), and [Postgres.js](https://www.npmjs.com/package/postgres). Use the client you prefer.
 
 **Note:** The same configuration steps can be used for Express and Next.js applications.
 
@@ -105201,9 +105242,9 @@ If you do not have one already, create a Neon project.
 2. Click **New Project**.
 3. Specify your project settings and click **Create Project**.
 
-## Create a NodeJS project and add dependencies
+## Create a Node.js project and add dependencies
 
-1. Create a NodeJS project and change to the newly created directory.
+1. Create a Node.js project and change to the newly created directory.
 
    ```shell
    mkdir neon-nodejs-example
@@ -105233,7 +105274,7 @@ If you do not have one already, create a Neon project.
 
 ## Store your Neon credentials
 
-Add a `.env` file to your project directory and add your Neon connection details to it. You can find your Neon database connection details by clicking the **Connect** button in the Console nav to open the **Connect to your branch** modal. Please select Node.js from the **Connection string** dropdown. For more information, see [Connect from any application](https://neon.com/docs/connect/connect-from-any-app).
+Add a `.env` file to your project directory and add your Neon connection details to it. You can find your Neon database connection details by clicking the **Connect** button in the Console nav to open the **Connect to your branch** modal. Select Node.js from the **Connection string** dropdown. If you have a connection string instead (`postgresql://[user]:[password]@[neon_hostname]/[dbname]`), copy its parts into the matching variables. For more information, see [Connect from any application](https://neon.com/docs/connect/connect-from-any-app).
 
 ```shell
 PGHOST='[neon_hostname]'
@@ -105243,7 +105284,7 @@ PGPASSWORD='[password]'
 ENDPOINT_ID='[endpoint_id]'
 ```
 
-**Note:** A special `ENDPOINT_ID` variable is included in the `.env` file above. This variable can be used with older Postgres clients that do not support Server Name Indication (SNI), which Neon relies on to route incoming connections. If you are using a newer [node-postgres](https://node-postgres.com/) or [postgres.js](https://github.com/porsager/postgres) client, you won't need it. For more information, see [Endpoint ID variable](https://neon.com/docs/guides/node#endpoint-id-variable).
+**Note:** A special `ENDPOINT_ID` variable is included in the `.env` file above. This variable can be used with older Postgres clients that do not support Server Name Indication (SNI), which Neon relies on to route incoming connections. Its value is the first part of your `PGHOST` hostname, including `-pooler` if you use a pooled connection (for example, `ep-cool-darkness-123456-pooler`). If you are using a newer [node-postgres](https://node-postgres.com/) or [postgres.js](https://github.com/porsager/postgres) client, you won't need it. For more information, see [Endpoint ID variable](https://neon.com/docs/guides/node#endpoint-id-variable).
 
 **Important:** To ensure the security of your data, never expose your Neon credentials to the browser.
 
@@ -105284,12 +105325,10 @@ const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD } = process.env;
 const pool = new Pool({
   host: PGHOST,
   database: PGDATABASE,
-  username: PGUSER,
+  user: PGUSER,
   password: PGPASSWORD,
   port: 5432,
-  ssl: {
-    require: true,
-  },
+  ssl: true,
 });
 
 async function getPgVersion() {
@@ -105299,6 +105338,7 @@ async function getPgVersion() {
     console.log(result.rows[0]);
   } finally {
     client.release();
+    await pool.end();
   }
 }
 
@@ -105310,7 +105350,8 @@ getPgVersion();
 ```javascript
 require('dotenv').config();
 
-const postgres = require('postgres');
+// postgres.js 4 and later is ESM-only; .default returns the postgres function
+const postgres = require('postgres').default;
 
 const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD } = process.env;
 
@@ -105326,65 +105367,7 @@ const sql = postgres({
 async function getPgVersion() {
   const result = await sql`select version()`;
   console.log(result[0]);
-}
-
-getPgVersion();
-```
-
-**Option 4**
-
-```javascript
-require('dotenv').config();
-
-const { Pool } = require('pg');
-
-let { PGHOST, PGDATABASE, PGUSER, PGPASSWORD } = process.env;
-
-const pool = new Pool({
-  host: PGHOST,
-  database: PGDATABASE,
-  username: PGUSER,
-  password: PGPASSWORD,
-  port: 5432,
-  ssl: {
-    require: true,
-  },
-});
-
-async function getPgVersion() {
-  const client = await pool.connect();
-  try {
-    const result = await client.query('SELECT version()');
-    console.log(result.rows[0]);
-  } finally {
-    client.release();
-  }
-}
-
-getPgVersion();
-```
-
-**Option 5**
-
-```javascript
-require('dotenv').config();
-
-const postgres = require('postgres');
-
-let { PGHOST, PGDATABASE, PGUSER, PGPASSWORD } = process.env;
-
-const sql = postgres({
-  host: PGHOST,
-  database: PGDATABASE,
-  username: PGUSER,
-  password: PGPASSWORD,
-  port: 5432,
-  ssl: 'require',
-});
-
-async function getPgVersion() {
-  const result = await sql`select version()`;
-  console.log(result[0]);
+  await sql.end();
 }
 
 getPgVersion();
@@ -105396,20 +105379,20 @@ Run `node app.js` to view the result.
 
 ```shell
 {
-  version: 'PostgreSQL 16.0 on x86_64-pc-linux-gnu, compiled by gcc (Debian 10.2.1-6) 10.2.1 20210110, 64-bit'
+  version: 'PostgreSQL 18.6 (ac70818) on aarch64-unknown-linux-gnu, compiled by gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, 64-bit'
 }
 ```
 
 ## Endpoint ID variable
 
-For older clients that do not support Server Name Indication (SNI), the `postgres.js` example below shows how to include the `ENDPOINT_ID` variable in your application's connection configuration. This is a workaround that is not required if you are using a newer [node-postgres](https://node-postgres.com/) or [postgres.js](https://github.com/porsager/postgres) client. For more information about this workaround and when it is required, see [The endpoint ID is not specified](https://neon.com/docs/connect/connection-errors#the-endpoint-id-is-not-specified) in our [connection errors](https://neon.com/docs/connect/connection-errors) documentation.
+For older clients that do not support Server Name Indication (SNI), the `postgres.js` example below shows how to include the `ENDPOINT_ID` variable in your application's connection configuration. This is a workaround that is not required if you are using a newer [node-postgres](https://node-postgres.com/) or [postgres.js](https://github.com/porsager/postgres) client. For more information about this workaround and when it is required, see [The endpoint ID is not specified](https://neon.com/docs/connect/connection-errors#the-endpoint-id-is-not-specified).
 
 ```javascript
 // app.js
 
 require('dotenv').config();
 
-const postgres = require('postgres');
+const postgres = require('postgres').default;
 
 const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, ENDPOINT_ID } = process.env;
 
@@ -105421,13 +105404,14 @@ const sql = postgres({
   port: 5432,
   ssl: 'require',
   connection: {
-    options: `project=${ENDPOINT_ID}`,
+    options: `endpoint=${ENDPOINT_ID}`,
   },
 });
 
 async function getPgVersion() {
   const result = await sql`select version()`;
-  console.log(result);
+  console.log(result[0]);
+  await sql.end();
 }
 
 getPgVersion();
@@ -120197,7 +120181,7 @@ This example casts MySQL's `DATETIME` type to Postgres `TIMESTAMP` while droppin
 
 # Migrate data from Postgres with pg_dump and pg_restore
 
-Last updated: 2026-09-16
+Last updated: 2026-11-04
 
 This topic describes migrating data from one Postgres database to another using the `pg_dump` and `pg_restore`.
 
@@ -120231,7 +120215,7 @@ If you are performing this procedure to migrate data from one Neon project to an
 
 - Consider running a test migration first to ensure your actual migration goes smoothly. See [Run a test migration](https://neon.com/docs/import/migrate-from-postgres#run-a-test-migration).
 
-- If your database is small, you can pipe `pg_dump` output directly to `pg_restore` to save time. See [Pipe pg_dump to pg_restore](https://neon.com/docs/import/migrate-from-postgres#pipe-pg_dump-to-pg_restore).
+- If your database is small, you can pipe `pg_dump` output directly to `pg_restore` to save time. See [Pipe pg_dump to pg_restore](https://neon.com/docs/import/migrate-from-postgres#pipe-pgdump-to-pgrestore).
 
 ## Export data with pg_dump
 
@@ -120248,7 +120232,7 @@ The `pg_dump` command above includes these arguments:
 - `-d`: Specifies the source database name or [connection string](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING).
 - `-f`: The dump file name. It can be any name you choose (`mydumpfile.bak`, for example).
 
-For more command options, see [Advanced pg_dump and pg_restore options](https://neon.com/docs/import/migrate-from-postgres#advanced-pg_dump-and-pg_restore-options).
+For more command options, see [Advanced pg_dump and pg_restore options](https://neon.com/docs/import/migrate-from-postgres#advanced-pgdump-and-pgrestore-options).
 
 ### Export a database as a plain SQL file
 
@@ -120278,7 +120262,7 @@ The example above includes these arguments:
 - `-d`: Specifies the Neon database to connect to. The value is a Neon database connection string. See [Before you begin](https://neon.com/docs/import/migrate-from-postgres#before-you-begin).
 - `<dump_file_name>` is the name of the dump file you created with `pg_dump`.
 
-For more command options, see [Advanced pg_dump and pg_restore options](https://neon.com/docs/import/migrate-from-postgres#advanced-pg_dump-and-pg_restore-options).
+For more command options, see [Advanced pg_dump and pg_restore options](https://neon.com/docs/import/migrate-from-postgres#advanced-pgdump-and-pgrestore-options).
 
 ## pg_dump and pg_restore example
 
@@ -123788,7 +123772,7 @@ Neon uses the default Postgres port: `5432`
 
 Monitor your Lakebase Postgres database with PgHero
 
-Last updated: 2026-09-16
+Last updated: 2026-11-04
 
 [PgHero](https://github.com/pghero/pghero) is an open-source performance tool for Postgres that can help you find and fix data issues, using a dashboard interface.
 
@@ -123830,7 +123814,7 @@ Find the connection string for your database by clicking the **Connect** button 
 Finally, run this command, replacing `$NEON_DB` with your Neon database connection string.
 
 ```
-docker run -ti -e DATABASE_URL='$NEON_DB' -p 8080:8080 ankane/pghero
+docker run -ti -e DATABASE_URL="$NEON_DB" -p 8080:8080 ankane/pghero
 ```
 
 Then visit [http://localhost:8080](http://localhost:8080) in your browser to open the PgHero Dashboard.
@@ -124584,7 +124568,7 @@ Without the Neon CLI, run `npx skills add neondatabase/agent-skills -s neon-post
 
 # Neon plans
 
-Last updated: 2026-10-23
+Last updated: 2026-11-04
 
 Neon offers plans to support you at every stage, from your first prototype to production at scale.
 Start for free, then **pay only for what you use** as your needs grow.
@@ -124613,7 +124597,7 @@ For AI agent platforms that provision thousands of databases, Neon offers an **A
 | [Monitoring](https://neon.com/docs/introduction/plans#monitoring)                             | 1 day                                                              | 3 days                                     | 14 days                                                                                                           |
 | [Metrics/logs export](https://neon.com/docs/introduction/plans#metricslogs-export)            | Not available                                                      | Not available                              | ✅                                                                                                                 |
 | [Spending notifications](https://neon.com/docs/introduction/plans#spending-notifications)     | Not available                                                      | ✅                                          | ✅                                                                                                                 |
-| [Instant restore](https://neon.com/docs/introduction/plans#instant-restore)                   | Not available                                                      | $0.20/GB-month                             | $0.20/GB-month                                                                                                    |
+| [Instant restore](https://neon.com/docs/introduction/plans#instant-restore)                   | No charge, up to 6 hours                                           | $0.20/GB-month                             | $0.20/GB-month                                                                                                    |
 | [History window](https://neon.com/docs/introduction/plans#history-window)                     | 6 hours, up to 1 GB of changes                                     | Up to 7 days                               | Up to 30 days                                                                                                     |
 | [Snapshots](https://neon.com/docs/introduction/plans#snapshots)                               | 1 manual snapshot                                                  | 100 manual snapshots, $0.09/GB-month       | 100 manual snapshots, $0.09/GB-month                                                                              |
 | [Auth](https://neon.com/docs/introduction/plans#auth)                                         | Up to 60k MAU/project                                              | Up to 1M MAU/project                       | Up to 1M MAU/project                                                                                              |
@@ -124676,7 +124660,7 @@ Postgres objects (databases, schemas, tables, records, indexes, roles) are creat
 
 You can create [child branches](https://neon.com/docs/reference/glossary#child-branch) for testing, previews, or development.
 
-Included per plan:
+Included per plan, counting the root branch:
 
 - **Free**: 10 branches/project
 - **Launch**: 10 branches/project
@@ -125739,13 +125723,13 @@ Share your ideas in Discord: [Leave feedback](https://discord.com/channels/11764
 
 --- [Document source](https://neon.com/docs/introduction/scale-to-zero.md) ---
 
-> Summary: Scale to Zero suspends inactive Lakebase Postgres computes after 5 minutes and reactivates them in milliseconds on the next query, so you pay only for active compute time. Use this feature for development, test, or intermittently active production databases where always-on compute is unnecessary. Free plan users cannot disable it, but paid plan users can. Very large computes remain always active and are not eligible for scale to zero.
+> Summary: Scale to Zero suspends inactive Lakebase Postgres computes after 5 minutes and reactivates them within a few hundred milliseconds on the next query, so you pay only for active compute time. Use this feature for development, test, or intermittently active production databases where always-on compute is unnecessary. Free plan users cannot disable it, but paid plan users can. Very large computes remain always active and are not eligible for scale to zero.
 
 # Scale to Zero
 
 Minimize costs by automatically scaling inactive databases to zero
 
-Last updated: 2026-07-31
+Last updated: 2026-11-04
 
 Neon's _Scale to Zero_ feature suspends the Neon compute that runs your Postgres database after a period of inactivity, which minimizes costs for databases that aren't always active, such as development or test environment databases, and even production databases that aren't used 24/7.
 
@@ -127635,9 +127619,9 @@ To view the API documentation for this method, refer to the [Neon API Reference]
 
 Automate backups of your Neon database to S3 with pg_dump and GitHub Actions
 
-Last updated: 2026-08-07
+Last updated: 2026-11-04
 
-Keeping regular backups of your database is critical for protecting against data loss. While Neon offers an [instant restore](https://neon.com/docs/introduction/branch-restore) feature (point-in-time restore) for backups of up to 30 days, there are scenarios (such as business continuity, disaster recovery, or regulatory compliance) where maintaining independent and longer-lived backup files may be necessary. In these cases, using the Postgres `pg_dump` tool to create backups and storing them on a reliable external service (like an AWS S3 bucket) gives you control over long-term retention and recovery of your data.
+Keeping regular backups of your database is critical for protecting against data loss. While Neon offers an [instant restore](https://neon.com/docs/introduction/branch-restore) feature (point-in-time restore) that keeps up to 30 days of history, depending on your plan, there are scenarios (such as business continuity, disaster recovery, or regulatory compliance) where maintaining independent and longer-lived backup files may be necessary. In these cases, using the Postgres `pg_dump` tool to create backups and storing them on a reliable external service (like an AWS S3 bucket) gives you control over long-term retention and recovery of your data.
 
 Manually performing backups can be tedious and time consuming, so automation is key to ensure you're taking backups consistently. An automated backup process also lets you enforce retention policies by automatically cleaning up old backups, saving storage, and keeping your backup repository tidy.
 
@@ -127650,13 +127634,13 @@ This two-part guide walks you through setting up an automated backup pipeline us
 
 --- [Document source](https://neon.com/docs/manage/backup-pg-dump.md) ---
 
-> Summary: Use pg_dump to back up a Lakebase Postgres database to a local custom-format archive, and pg_restore to restore it to any Neon project, including across regions. Always use a direct (unpooled) connection string for both operations; pooled connections are not supported and will cause errors.
+> Summary: Use pg_dump to back up a Lakebase Postgres database to a local custom-format archive, and pg_restore to restore it to any Neon project, including across regions. Always use a direct (unpooled) connection string for both operations; avoid pooled connections.
 
 # Backups with pg_dump
 
 Learn how to create a backup of your Neon database using pg_dump
 
-Last updated: 2026-09-16
+Last updated: 2026-11-04
 
 This topic describes how to create a backup of your Neon database using the Postgres `pg_dump` utility and how to restore a backup using `pg_restore`.
 
@@ -127727,7 +127711,7 @@ Following this procedure will create a database backup locally, where you're run
    - `-d`: Specifies the [connection string](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING) for your Neon database.
    - `-f <dump_file_name>`: The dump file name. It can be any name you choose (`mydumpfile.bak`, for example).
 
-   For more command options, see [Advanced pg_dump and pg_restore options](https://neon.com/docs/import/migrate-from-postgres#advanced-pg_dump-and-pg_restore-options).
+   For more command options, see [Advanced pg_dump and pg_restore options](https://neon.com/docs/import/migrate-from-postgres#advanced-pgdump-and-pgrestore-options).
 
 For most accidental-delete recoveries you don't need a local file. Neon keeps a change history that supports [instant restore](https://neon.com/docs/introduction/branch-restore) (point-in-time restore) within your project's [history window](https://neon.com/docs/introduction/history-window), which is usually faster. Reach for a local `pg_dump` backup when you need off-platform redundancy, archival beyond your history window, an external copy for compliance, or a copy to move into a different Postgres instance.
 
@@ -127769,7 +127753,7 @@ This procedure shows how to restore a database using the `pg_restore` utility fr
    - `-d`: Specifies the Neon database to connect to. The value is a Neon database connection string. See [Prerequisites](https://neon.com/docs/manage/backup-pg-dump#prerequisites).
    - `<dump_file_name>` is the name of the dump file you created with `pg_dump`.
 
-   For more command options, see [Advanced pg_dump and pg_restore options](https://neon.com/docs/import/migrate-from-postgres#advanced-pg_dump-and-pg_restore-options).
+   For more command options, see [Advanced pg_dump and pg_restore options](https://neon.com/docs/import/migrate-from-postgres#advanced-pgdump-and-pgrestore-options).
 
 ## `pg_dump` and `pg_restore` example
 
@@ -127943,7 +127927,7 @@ Make a note of these values before you proceed to [part two](https://neon.com/do
 
 # Set up a GitHub Action to perform nightly Postgres backups
 
-Last updated: 2026-08-07
+Last updated: 2026-11-04
 
 This guide shows you how to configure nightly Postgres backups using a scheduled GitHub Action and `pg_dump`.
 
@@ -128156,7 +128140,7 @@ This step involves setting three variables that are all output to `GITHUB_ENV`. 
 ```yml
 - name: Set file, folder and path variables
   run: |
-    GZIP_NAME="$(date +'%B-%d-%Y@%H:%M:%S').gz"
+    GZIP_NAME="$(date +'%B-%d-%Y@%H:%M:%S').sql.gz"
     FOLDER_NAME="${{ github.workflow }}"
     UPLOAD_PATH="s3://${{ env.S3_BUCKET_NAME }}/${FOLDER_NAME}/${GZIP_NAME}"
 
@@ -128167,7 +128151,7 @@ This step involves setting three variables that are all output to `GITHUB_ENV`. 
 
 The three variables are as follows:
 
-1. `GZIP_NAME`: The name of the `.gz` file derived from the date e.g, `February-20-2025@07:53:02.gz`
+1. `GZIP_NAME`: The name of the `.sql.gz` file derived from the date e.g, `February-20-2025@07:53:02.sql.gz`
 2. `FOLDER_NAME`: The folder where the `.gz` files are to be uploaded
 3. `UPLOAD_PATH`: This is the full path that includes the S3 bucket name, folder name and `.gz` file
 
@@ -128226,7 +128210,14 @@ After committing and pushing the workflow to your GitHub repository, the Action 
 
 ## Restoring from a backup
 
-Restoring a `pg_dump` backup requires downloading the file from S3 and restoring it using `pg_restore`. For instructions, see [Restoring a backup with pg_restore](https://neon.com/docs/manage/backup-pg-dump#restoring-a-backup-with-pgrestore).
+The workflow saves a gzip-compressed plain SQL dump, so restore it with `psql`, not `pg_restore`. Download the file from S3, then pipe it into the target database:
+
+```bash
+aws s3 cp "s3://<bucket>/<folder>/<file>.sql.gz" .
+gunzip -c <file>.sql.gz | psql "<target connection string>"
+```
+
+Restore into a new, empty database, such as one in a new Neon project. To restore with `pg_restore` instead, for example to restore a single table, change the `pg_dump` step to `pg_dump -Fc` and see [Restoring a backup with pg_restore](https://neon.com/docs/manage/backup-pg-dump#restoring-a-backup-with-pgrestore).
 
 --- [Document source](https://neon.com/docs/manage/branches.md) ---
 
@@ -133511,11 +133502,11 @@ The following names are reserved and cannot be given to a role:
 
 --- [Document source](https://neon.com/docs/manage/updates.md) ---
 
-> Summary: Neon compute updates deliver Postgres minor version upgrades, security patches, and OS changes by restarting the compute, typically in seconds, with automatic cache prewarming to avoid cold-cache performance loss after restart. Paid plan users can schedule a preferred update window via the console or API. Free plan updates are scheduled by Neon with advance notice. Computes above the 8 CU autoscale ceiling are excluded from automatic updates and must be restarted manually. Configure connection retry logic to handle the brief disruption.
+> Summary: Neon compute updates deliver Postgres minor version upgrades, security patches, and OS changes by restarting the compute, typically in seconds, with automatic cache prewarming to avoid cold-cache performance loss after restart. Paid plan users can schedule a preferred update window via the console or API. Free plan updates are scheduled by Neon with advance notice. Computes larger than 16 CU are excluded from automatic updates and must be restarted manually. Configure connection retry logic to handle the brief disruption.
 
 # Updates
 
-Last updated: 2026-10-09
+Last updated: 2026-11-04
 
 To keep your Neon [computes](https://neon.com/docs/reference/glossary#compute) and Postgres instances up to date with the latest patches and features, Neon applies updates to your project's computes. We notify you of updates in advance so that you can plan for them if necessary. On Neon's paid plans, you can select an update window (a specific day and hour for updates).
 
@@ -133550,7 +133541,7 @@ Neon applies updates to computes based on the following rules:
 - Computes that have been active for 30 days or more receive updates.
 - Computes that are restarted receive available updates immediately.
 - Computes in a transition state (for example, shutting down or restarting) at the time of an update are not updated.
-- Computes whose **maximum** autoscale size is **greater than 8 CU** are not updated automatically. If your maximum is **exactly 8 CU**, your compute is **not** treated as a large compute and receives scheduled updates like smaller sizes. See [Updating large computes](https://neon.com/docs/manage/updates#updating-large-computes).
+- Computes **larger than 16 CU** are not updated automatically. Autoscaling computes, which have a maximum of 16 CU, and fixed-size computes up to 16 CU receive scheduled updates. See [Updating large computes](https://neon.com/docs/manage/updates#updating-large-computes).
 
 If a compute is excluded from an update, Neon will apply the missed update with the next update, assuming the compute meets the update criteria mentioned above.
 
@@ -133663,7 +133654,11 @@ For compute restart instructions, see [Restart a compute](https://neon.com/docs/
 
 ## Updating large computes
 
-Computes whose **maximum** autoscale size is **greater than 8 CU** are not updated automatically (_scheduled updates do not apply_). Computes capped at **exactly 8 CU** follow the usual [automatic update rules](https://neon.com/docs/manage/updates#how-often-are-updates-applied) above. To apply updates on a large compute, you'll need to restart it manually. A restart may occur automatically due to [scale to zero](https://neon.com/docs/introduction/scale-to-zero), but if scale to zero is disabled or your compute runs continuously, please plan for manual restarts.
+**Note: Threshold raised to 16 CU**
+
+As of early November 2026, computes up to 16 CU receive scheduled updates. Previously, computes configured to scale beyond 8 CU were not updated automatically and needed a manual restart.
+
+Fixed-size computes **larger than 16 CU** are not updated automatically (_scheduled updates do not apply_). Computes up to 16 CU, including all autoscaling computes, follow the usual [automatic update rules](https://neon.com/docs/manage/updates#how-often-are-updates-applied) above. To apply updates on a large compute, you'll need to restart it manually. Computes larger than 16 CU don't [scale to zero](https://neon.com/docs/introduction/scale-to-zero), so they won't pick up updates through a stop/start cycle. Plan for manual restarts.
 
 Neon typically releases compute updates weekly, so we recommend scheduling weekly compute restarts.
 
@@ -133916,7 +133911,7 @@ Project sharing is being deprecated and will be removed in a future release. For
 
 An overview of backup strategies for Lakebase Postgres
 
-Last updated: 2026-08-24
+Last updated: 2026-11-04
 
 **What you will learn:**
 
@@ -133932,7 +133927,7 @@ Neon supports different backup strategies, which you can use separately or in co
 
 ## Instant restore
 
-With Neon's instant restore capability, also known as point-in-time restore or PITR, you can automatically retain a "history" of changes, ranging from 1 day up to 30 days, depending on your Neon plan. This feature lets you restore your Postgres database and Managed Better Auth data to any specific moment without the need for traditional database backups or separate backup automation. It's ideal if your primary concern is fast recovery after an unexpected event.
+With Neon's instant restore capability, also known as point-in-time restore or PITR, you can automatically retain a "history" of changes: up to 6 hours on the Free plan, 7 days on Launch, or 30 days on Scale ([history window limits](https://neon.com/docs/postgres/backup-restore/history-window#defaults-and-plan-limits)). This feature lets you restore your Postgres database and Managed Better Auth data to any specific moment without the need for traditional database backups or separate backup automation. It's ideal if your primary concern is fast recovery after an unexpected event.
 
 With this strategy, the only required action is setting your desired [history window](https://neon.com/docs/postgres/backup-restore/history-window). Please keep in mind that increasing your history window also increases storage, as changes to your data are retained for a longer period.
 
@@ -151830,7 +151825,7 @@ aws s3 cp s3://my-bucket/hello.txt ./downloaded.txt \
 
 View, search, and download logs for a bucket
 
-Last updated: 2026-10-21
+Last updated: 2026-11-04
 
 Every S3 request against a bucket streams a log line to the Neon Console. So does any bucket or object change made through the Console or Neon API (creating a bucket, deleting a bucket, deleting an object or prefix):
 
@@ -151849,11 +151844,13 @@ body: {
 }
 ```
 
+Two kinds of requests don't appear. S3 requests rejected before they reach your branch aren't logged: an invalid signature, or a credential without access to this branch or without the storage scope the operation needs. Reads through the Console or Neon API, such as downloading an object, aren't logged either; only changes are.
+
 ## View logs
 
 Bucket logs live on the branch's [Monitoring page, in the **Storage** tab](https://neon.com/docs/introduction/monitor-logs). To jump straight to one bucket's logs, open the bucket list, open that bucket's menu, and select **View logs**. Or go to **Monitoring** and open the **Storage** tab to see every bucket's logs together.
 
-Expand a row to see its full context: `timestamp`, `severity`, `entity_type` (`storage`), `scope_name`, and `service_name` (`neon-storage/<bucket>`). The message body carries per-request detail: `operation` (the HTTP method), `object_key`, `http_status`, `bytes`, `duration_ms`, `request_id`, and `remote_ip`. `access_key_id` is included for authenticated requests and omitted entirely for anonymous reads against a `public_read` bucket, which is expected, not a sign of broken auth.
+Expand a row to see its full context: `timestamp`, `severity`, `entity_type` (`storage`), `scope_name`, and `service_name` (`neon-storage/<bucket>`). The message body carries per-request detail: `operation` (the HTTP method), `object_key`, `http_status`, `bytes`, `duration_ms`, `request_id`, and `remote_ip`. The access key ID that made the request isn't shown in the Console or returned by `neon logs`.
 
 `scope_name` identifies what generated the line:
 

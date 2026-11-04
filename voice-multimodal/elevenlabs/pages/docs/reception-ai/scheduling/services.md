@@ -82,7 +82,17 @@ For group sessions, add-ons only affect price, since all participants share the 
 
 ## Promotions
 
-Time-limited discounts on a service, a specific variant, or a specific add-on. Each promotion has a date range and optional active days of the week. Up to 10 per service. Your receptionist mentions active promotions when booking.
+A promotion replaces the price of a service or an add-on for a date range. It is a promotional price in your [currency](/docs/reception-ai/scheduling/overview#business-profile), not a percentage off. Up to 10 per service. Your receptionist mentions active promotions when booking.
+
+| Field                               | What it sets                                                                                                           |
+| ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| **Name**                            | Required, up to 200 characters.                                                                                        |
+| **Applies to**                      | **Service** or **Add-on**. Shown when the service has add-ons.                                                         |
+| **Promotional price**               | The price charged while the promotion is active. It has to be 0 or greater, and it is shown with your currency symbol. |
+| **Start date** and **End date**     | The end date has to be on or after the start date.                                                                     |
+| **Active days (empty = every day)** | Limit the promotion to certain days of the week. Leave every day unselected to run it all week.                        |
+| **Applies to variant (none = all)** | Shown when the service has more than one variant. A variant you have not saved yet is marked **save first**.           |
+| **Applies to add-on (none = all)**  | Shown when the promotion applies to an add-on. An add-on you have not saved yet is marked **save first**.              |
 
 ## Groups and display order
 

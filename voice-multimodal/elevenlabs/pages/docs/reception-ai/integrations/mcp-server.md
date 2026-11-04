@@ -44,6 +44,8 @@ Select **Refresh tools** after adding tools to your server.
 
 If your server changes a tool after you enabled it, the tool shows a **Changed** badge and Reception.ai stops using it. Review the tool and select **Update** to save the tool assignments again.
 
+When you edit the server, **Rotate Secret Token (optional)** replaces the saved token. The saved token is stored securely and never shown again.
+
 ## Changing the server URL
 
 You can edit the **Server URL** after setup. Changing it removes the stored secret token, and any HTTP headers you don't re-enter in the same save, so they are never sent to the new address. To use a secret token with the new server, disconnect and reconnect the integration.

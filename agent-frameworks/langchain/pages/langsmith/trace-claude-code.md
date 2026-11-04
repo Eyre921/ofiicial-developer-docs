@@ -46,6 +46,8 @@ If more than one credential is set, the plugin uses the first one it finds:
 2. Your `langsmith auth login` sign-in.
 3. A generic `LANGSMITH_API_KEY` from your environment.
 
+A CLI sign-in acts as you so your workspace role needs permission to write traces. You may get a 403 if you switched from a tracing API key (`lsv2_tr_...`) to the CLI sign-in since tracing keys can always write traces whatever your role is. If that happens ask your admin to give you a role that can write traces such as Workspace User and check that no [ABAC deny policy](/langsmith/abac) on the project blocks it.
+
 Tracing stops when your sign-in expires or your key is rejected, and turns from that gap are never uploaded. Claude Code reminds you in the chat until you fix it. Admins can also [require a working sign-in](#require-a-working-sign-in) for every prompt.
 
 ## Turn on tracing
@@ -86,9 +88,12 @@ An admin can lock tracing settings for every user with a managed file at `~/.lan
 {
   "api_url": "https://langsmith.example.com",
   "project": "engineering",
-  "strict_auth": true
+  "strict_auth": true,
+  "workspace_id": "<your-workspace-id>"
 }
 ```
+
+Set `workspace_id` as well when your users sign in with the LangSmith CLI. Each user's sign-in may default to a different workspace, so setting it here keeps everyone's traces in one place. API keys ignore this setting so use one scoped to a workspace.
 
 The managed file works on macOS and Linux. The plugin only trusts it when:
 
@@ -148,6 +153,7 @@ Each setting has a config file key and an environment variable. The environment 
 | `project` | `CC_LANGSMITH_PROJECT` | `claude-code` | Project the traces go to. Use this or `agent_id`. |
 | `agent_id` | `LANGSMITH_AGENT_ID` | none | Agent the traces go to. Wins over `project` if both are set. |
 | `api_url` | `LANGSMITH_ENDPOINT` | `https://api.smith.langchain.com` | LangSmith server to send to. |
+| `workspace_id` | `LANGSMITH_WORKSPACE_ID` | none | Workspace the traces go to when you sign in with the CLI. API keys ignore it and your config file wins over the variable. |
 
 For every setting, see the [plugin settings](https://github.com/langchain-ai/langsmith-claude-code-plugins#settings).
 
@@ -167,6 +173,7 @@ The plugin's [Advanced configuration](https://github.com/langchain-ai/langsmith-
 
 * **No traces**: Check that the plugin is enabled in `/plugin` and that tracing is on.
 * **Tracing is paused**: Run `langsmith auth login` again or replace the rejected API key.
+* **Tracing is paused after a 403**: Your sign-in or API key might not have access to the project or workspace. Look through `~/.claude/state/langsmith_engine/worker.log` and `~/.claude/state/hook.log` for the details.
 * **Still stuck**: Set `CC_LANGSMITH_DEBUG=true` and check `~/.claude/state/hook.log`.
 
 For more fixes, see [When nothing shows up](https://github.com/langchain-ai/langsmith-claude-code-plugins#when-nothing-shows-up).

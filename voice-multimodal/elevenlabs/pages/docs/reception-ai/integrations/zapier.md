@@ -52,6 +52,8 @@ Example automations your receptionist can trigger during a call:
 
 Each workspace can connect one Zapier account. Zapier is available on every plan.
 
+When you edit the integration, **Rotate Secret Token (optional)** replaces the saved token. The saved token is stored securely and never shown again.
+
 > **Note**
 >
 > Changing the **MCP URL** after setup removes the stored secret token. To add a token for the new

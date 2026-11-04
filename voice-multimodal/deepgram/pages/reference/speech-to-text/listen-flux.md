@@ -63,6 +63,9 @@ channels:
               default: 'false'
             redact:
               $ref: '#/components/schemas/ListenV2Redact'
+            redact_usage:
+              $ref: '#/components/schemas/ListenV2RedactUsage'
+              default: 'false'
             mip_opt_out:
               $ref: '#/components/schemas/ListenV2MipOptOut'
             tag:
@@ -274,6 +277,19 @@ components:
         Redaction removes sensitive information from your transcripts. On Flux,
         only `numbers` and `aggressive_numbers` are supported.
       title: ListenV2Redact
+    ListenV2RedactUsage:
+      type: string
+      enum:
+        - 'true'
+        - 'false'
+      default: 'false'
+      description: >-
+        Replaces keyterms and other user-supplied text with `[REDACTED]` in this
+        connection's usage records, including keyterms sent in later Configure
+        messages. Does not affect transcription, the response, or `tag`.
+        Independent of `mip_opt_out`.
+        https://developers.deepgram.com/docs/redact-usage
+      title: ListenV2RedactUsage
     ListenV2MipOptOut:
       description: Any type
       title: ListenV2MipOptOut
@@ -532,6 +548,9 @@ components:
           description: >-
             Whether numeral formatting is enabled for transcripts Flux STT sends
             after it processes the update.
+        redact_usage:
+          type: boolean
+          description: Whether usage redaction is on for this connection.
         sequence_id:
           type: integer
           minimum: 0
@@ -687,6 +706,15 @@ components:
         is not supplied, the configuration continues using the currently
         configured value.
       title: ChannelsListenV2MessagesListenV2ConfigureThresholds
+    ListenV2ConfigureRedactUsage:
+      type: boolean
+      description: >-
+        Set to `true` to redact keyterms sent in this and later Configure
+        messages from this connection's usage records. Does not redact keyterms
+        in the connection URL; set the `redact_usage` query parameter for that.
+        Once on, it stays on for the rest of the connection; `false` has no
+        effect.
+      title: ListenV2ConfigureRedactUsage
     ListenV2_ListenV2Configure:
       type: object
       properties:
@@ -720,6 +748,8 @@ components:
         numerals:
           $ref: '#/components/schemas/ListenV2ConfigureNumerals'
           default: false
+        redact_usage:
+          $ref: '#/components/schemas/ListenV2ConfigureRedactUsage'
       required:
         - type
       title: ListenV2_ListenV2Configure

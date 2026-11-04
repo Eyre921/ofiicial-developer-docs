@@ -147,11 +147,11 @@ To add project tags, use the Pinecone console.
 
 > [!TIP]
 >
-> You can also [add tags to indexes](/guides/manage-data/manage-indexes#configure-index-tags).
+> You can also [add tags to indexes](/guides/indexes/manage-indexes#configure-index-tags).
 
 ## Delete a project
 
-To delete a project, you must first [delete all data](/guides/manage-data/delete-data), [indexes](/guides/manage-data/manage-indexes#delete-an-index), [collections](/guides/indexes/pods/back-up-a-pod-based-index#delete-a-collection), [backups](/guides/manage-data/back-up-an-index#delete-a-backup), and [assistants](/guides/assistant/manage-assistants#delete-an-assistant) associated with the project. Then you can delete the project itself.
+To delete a project, you must first [delete all data](/guides/data/delete-data), [indexes](/guides/indexes/manage-indexes#delete-an-index), [collections](/guides/legacy/pod-based-indexes/back-up-a-pod-based-index#delete-a-collection), [backups](/guides/indexes/back-up-an-index#delete-a-backup), and [assistants](/guides/assistant/manage-assistants#delete-an-assistant) associated with the project. Then you can delete the project itself.
 
 > [tab] Pinecone console
 >

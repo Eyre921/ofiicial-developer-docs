@@ -10,7 +10,7 @@ path: docs/reception-ai/features/quote-requests
 
 Quote requests let your receptionist and booking page handle jobs without a fixed price, such as repairs, custom work, or large orders. Instead of booking, the receptionist collects the details you need and files a request for you to price.
 
-Quotes are on by default. To turn them off, go to **Settings** → **Features** → **Quotes**. Before turning quotes off, set a price on every quote-only service and product.
+Quotes are on by default and marked **Alpha** in **Settings** → **Features**. To turn them off, open **Quotes** there. Before turning quotes off, set a price on every quote-only service and product.
 
 ## Setting up quote-only items
 

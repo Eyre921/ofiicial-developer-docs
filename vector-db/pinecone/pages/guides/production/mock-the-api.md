@@ -149,7 +149,7 @@ my-index
 doc-1
 ```
 
-The Vectors API methods, such as `upsert`, `query`, and `fetch`, work against the mock the same way.
+The legacy Vectors API methods, such as `upsert`, `query`, and `fetch`, work against the mock the same way.
 
 ## Mock inference calls
 

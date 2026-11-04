@@ -10,7 +10,7 @@ Full-text search ranks documents by keyword and phrase relevance using **BM25** 
 
 ## When to use it
 
-Reach for full-text search when exact words, phrases, names, codes, or identifiers matter, not just semantic similarity. For semantic-only or vector-only workloads, a [vector index](/guides/core-concepts/key-terms#vector-index) (the Vectors API) is simpler. See [Search overview](/guides/search/search-overview) to choose the right approach.
+Reach for full-text search when exact words, phrases, names, codes, or identifiers matter, not just semantic similarity. For meaning-based retrieval, use [semantic search](/guides/search/semantic-search) on the same document index. See [Search overview](/guides/search/search-overview) to choose the right approach.
 
 > [!NOTE]
 >
@@ -46,7 +46,7 @@ Creating and populating an index takes three steps:
 
 Filterable metadata isn't part of the schema. Any field you upsert that's not declared in the schema is stored on the document, returned via `include_fields`, and automatically indexed for filtering. See [Metadata fields](#metadata-fields).
 
-Newly upserted documents are indexed asynchronously, so they may not be searchable immediately. To confirm that an index holds the documents you expect, see [Check data freshness](/guides/index-data/check-data-freshness).
+Newly upserted documents are indexed asynchronously, so they may not be searchable immediately. To confirm that an index holds the documents you expect, see [Check data freshness](/guides/data/check-data-freshness).
 
 ### Scoring
 
@@ -169,7 +169,7 @@ for match in response.matches:
 What each piece does:
 
 * **`SchemaBuilder().add_string_field(..., full_text_search={"language": "en"})`** declares a BM25-indexed text field. A `string` field that declares none of `full_text_search`, `embed`, or `sparse_embed` is rejected at index creation, since schemas only declare ranking fields.
-* **`index.documents.upsert(...)`** writes plain JSON documents. Schema fields are validated; non-schema fields (`category`, `year` here) are stored and auto-indexed for filtering. For large datasets, use [Import](/guides/index-data/import-data) instead.
+* **`index.documents.upsert(...)`** writes plain JSON documents. Schema fields are validated; non-schema fields (`category`, `year` here) are stored and auto-indexed for filtering. For large datasets, use [Import](/guides/data/import-data) instead.
 * **`score_by=[{"type": "text", ...}]`** picks BM25 as the scoring type. One scoring type per request; combine scoring with text matching via `filter` rather than mixing scoring methods.
 * **`filter`** narrows candidates *before* ranking. Standard operators (`$eq`, `$gte`, etc.) apply to any metadata field; the text-match operators (`$match_phrase`, `$match_all`, `$match_any`) only apply to FTS-enabled `string` fields.
 * **`_score`** is the system-owned relevance score. A user metadata field named `score` would be returned alongside, untouched.
@@ -182,7 +182,7 @@ When you're combining text matching with vector ranking, start with the hard yes
 
 ## Schema definition
 
-The schema is required at [index creation](/guides/index-data/create-an-index) and declares the fields that drive ranking or vector search. Filterable metadata isn't declared in the schema: any field you upsert that isn't in the schema is automatically stored and indexed for filtering.
+The schema is required at [index creation](/guides/indexes/create-an-index) and declares the fields that drive ranking or vector search. Filterable metadata isn't declared in the schema: any field you upsert that isn't in the schema is automatically stored and indexed for filtering.
 
 A schema can declare up to 100 `string` fields with `full_text_search` enabled. An index has one dense slot and one sparse slot: at most one dense field (a `dense_vector` field, or a `string` field with `embed`) and at most one sparse field (a `sparse_vector` field, or a `string` field with `sparse_embed`).
 
@@ -289,11 +289,11 @@ Because metadata isn't declared anywhere, track the field names and types you us
 
 > [!NOTE]
 >
-> You can't add, remove, or modify a document index's fields after you create it. To give an existing vector index or legacy integrated index a schema, [convert it](/guides/index-data/convert-an-index).
+> You can't add, remove, or modify a document index's fields after you create it. To give an existing legacy vector index or legacy integrated index a schema, [convert it](/guides/indexes/convert-an-index).
 
 ## Schema validation
 
-Documents are validated against the index schema on upsert. If any document is invalid, the entire upsert fails and nothing is written. For the validation rules, see [Schema validation](/guides/index-data/data-modeling#schema-validation).
+Documents are validated against the index schema on upsert. If any document is invalid, the entire upsert fails and nothing is written. For the validation rules, see [Schema validation](/guides/indexes/data-modeling#schema-validation).
 
 ## Filter operators
 
@@ -496,19 +496,19 @@ These requirements and limitations apply to document indexes. For dense and spar
 
 ### Supported operations
 
-* **Partial updates**: Upsert replaces the whole document for a given `_id`. `POST /namespaces/{namespace}/documents/update` patches individual fields, by ID or by metadata filter. See [Update documents](/guides/manage-data/update-data#update-documents).
-* **Bulk import** from object storage, via JSONL files, except into an index with an `embed` or `sparse_embed` field. See [Prepare document-schema files (JSONL)](/guides/index-data/import-data#prepare-document-schema-files-jsonl).
-* **Namespace operations**: You can [create, list, describe, and delete namespaces](/guides/manage-data/manage-namespaces) on a document index, and [describing a namespace](/guides/manage-data/manage-namespaces#describe-a-namespace) returns its `record_count` and `size_bytes`.
+* **Partial updates**: Upsert replaces the whole document for a given `_id`. `POST /namespaces/{namespace}/documents/update` patches individual fields, by ID or by metadata filter. See [Update documents](/guides/data/update-data#update-documents).
+* **Bulk import** from object storage, via JSONL files, except into an index with an `embed` or `sparse_embed` field. See [Prepare document-schema files (JSONL)](/guides/data/import-data#prepare-document-schema-files-jsonl).
+* **Namespace operations**: You can [create, list, describe, and delete namespaces](/guides/data/manage-namespaces) on a document index, and [describing a namespace](/guides/data/manage-namespaces#describe-a-namespace) returns its `record_count` and `size_bytes`.
 * **`describe_index_stats`**: In the REST response, `totalVectorCount` and each namespace's `vectorCount` count documents, and both are accurate for every schema. `dimension` and `metric` describe the schema's dense field (a `dense_vector` field, or a `string` field with `embed`), and `vectorType` is `dense`. When a schema declares no dense field, `metric` falls back to `dotproduct`, and `dimension` is `0` on a text-only schema (`vectorType` is `text`) or is omitted when the schema declares a sparse field (a `sparse_vector` field, or a `string` field with `sparse_embed`) and `vectorType` is `sparse`. For the full response schema, see [Get index stats](/reference/api/latest/data-plane/describeindexstats).
 
 ### Not supported
 
-* You can't change a document index's schema after creating it. To give a vector index or legacy integrated index a schema, [convert it](/guides/index-data/convert-an-index) into a new document index.
+* You can't change a document index's schema after creating it. To give a legacy vector index or legacy integrated index a schema, [convert it](/guides/indexes/convert-an-index) into a new document index.
 * Indexes can't be created in projects with [customer-managed encryption keys (CMEK)](/guides/production/configure-cmek) enabled.
 * An index can't be changed from dedicated read capacity back to on-demand. Create a new on-demand index and reingest your data.
 
 ## Pricing
 
-Reads and writes on document indexes are metered using the same [read units (RUs)](/guides/manage-cost/understanding-cost#read-units) and [write units (WUs)](/guides/manage-cost/understanding-cost#write-units) model as vector indexes.
+Reads and writes on document indexes are metered using the same [read units (RUs)](/guides/manage-cost/understanding-cost#read-units) and [write units (WUs)](/guides/manage-cost/understanding-cost#write-units) model as legacy vector indexes.
 
 A schema that declares `embed` or `sparse_embed` also bills for [embedding](/guides/manage-cost/understanding-cost#embedding) by the token, on top of RUs and WUs. Writes re-embed on every request, so a retried or duplicate write is embedded and metered again.

@@ -82,11 +82,11 @@ The plugin includes the Pinecone MCP server, which provides the following tools:
 * `cascading-search`: Search across multiple indexes with deduplication and reranking.
 * `rerank-documents`: Rerank documents using a specified reranking model.
 
-For full MCP server documentation, see [Use the Pinecone MCP server](/guides/operations/mcp-server).
+For full MCP server documentation, see [Use the Pinecone MCP server](/guides/agents/mcp-server).
 
 ## Resources
 
 * [GitHub repository](https://github.com/pinecone-io/pinecone-cursor-plugin)
 * [Cursor Marketplace listing](https://cursor.com/marketplace/pinecone)
-* [Pinecone MCP server guide](/guides/operations/mcp-server)
+* [Pinecone MCP server guide](/guides/agents/mcp-server)
 * [Cursor documentation](https://cursor.com/docs)

@@ -85,7 +85,7 @@ index = pc.index(name="my-files")
 
 **5. Embed the chunks and upsert**
 
-Use [Pinecone Inference](/guides/core-concepts/key-terms#pinecone-inference) to embed the chunks (in batches of 96, this model's per-call limit), then `upsert` the vectors alongside the text. For a large dataset, use `batch_upsert` or [Import](/guides/index-data/import-data) instead.
+Use [Pinecone Inference](/guides/core-concepts/key-terms#pinecone-inference) to embed the chunks (in batches of 96, this model's per-call limit), then `upsert` the vectors alongside the text. For a large dataset, use `batch_upsert` or [Import](/guides/data/import-data) instead.
 
 ```python theme={null}
 # llama-text-embed-v2 accepts up to 96 inputs per call, so embed in batches.
@@ -137,6 +137,6 @@ for m in resp.matches:
 >
 > Add a `full_text_search` field to your schema for keyword search, or combine it with your vectors for hybrid search.
 
-> [card] [Bulk import](/guides/index-data/import-data)
+> [card] [Bulk import](/guides/data/import-data)
 >
 > Load large document sets efficiently

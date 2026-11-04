@@ -324,7 +324,7 @@ Break down Fireworks usage and rated costs by deployment, model, API key, or cus
 Fireworks reports billing along two dimensions:
 
 * **Usage** — metered quantities such as tokens, accelerator-seconds, and audio input seconds. You can break usage down by deployment, model, API key, or custom tags.
-* **Cost** — rated dollar amounts. Costs are reported at the account level: a range-wide total, or line items grouped by billing category (serverless, dedicated, training). They aren't broken down by the same dimensions as usage, so per-API-key or per-deployment dollar figures aren't returned today — to approximate them, multiply usage by the published [serverless prices](/serverless/pricing).
+* **Cost** — rated dollar amounts. Rated serverless text-generation costs can be grouped by model, model tier, user, API key, hour, or day with [`POST /usageCosts:query`](/api-reference/query-usage-costs), or exported as a CSV with [`firectl billing export-usage-costs`](/accounts/exporting-usage-costs). Other costs, such as dedicated deployments and training, are reported at the account level: a range-wide total, or line items grouped by billing category (serverless, dedicated, training). Per-deployment dollar figures aren't returned.
 
 For Enterprise accounts, these rated costs match monthly spend alerts: they include usage paid for with credits. Credit grants and purchases are reported separately.
 
@@ -339,7 +339,7 @@ The CLI and `billingUsage` share the same usage response shape and dimensions. M
 >
 > * **`GET /billingUsage`** — metered *quantities* (tokens, accelerator-seconds) grouped by deployment/model/API key/custom tags. No dollars. To **filter** (not just group) over HTTP, use **`POST /billingUsage:query`** with the same request shape in a JSON body (see the filter examples below).
 > * **`GET /billing/summary`** — rated *dollar line items* by billing category (serverless, dedicated, training), grouped by your billing config. Optional daily buckets. No per-model/per-key breakdown.
-> * **`POST /usageCosts:query`** — rated *dollar subtotals* grouped by caller-supplied dimensions (`HOUR`, `DAY`, `MODEL`, `USER`, `API_KEY`), with pagination and an account-wide `subtotal`. This is the endpoint to use when you need *costs* (not just quantities) broken down by model, user, or API key. Requires account administrator access for `ACCOUNT` scope; `SELF` scope returns only the authenticated user's costs. See [Query usage costs](/api-reference/query-usage-costs). For a ready-made CSV of the same data, use [`firectl billing export-usage-costs`](/accounts/exporting-usage-costs).
+> * **`POST /usageCosts:query`** — rated *dollar subtotals* grouped by caller-supplied dimensions (`HOUR`, `DAY`, `MODEL`, `MODEL_TIER`, `USER`, `API_KEY`), with pagination and an account-wide `subtotal`. This is the endpoint to use when you need *costs* (not just quantities) broken down by model, user, or API key. Requires account administrator access for `ACCOUNT` scope; `SELF` scope returns only the authenticated user's costs. See [Query usage costs](/api-reference/query-usage-costs). For a ready-made CSV of the same data, use [`firectl billing export-usage-costs`](/accounts/exporting-usage-costs).
 
 This page complements the two CSV exports: use [`export-metrics`](/accounts/exporting-billing-metrics) for a raw per-event dump, [`export-usage-costs`](/accounts/exporting-usage-costs) for rated serverless costs grouped by model, model tier, user, or API key, and the workflows here for ad-hoc grouped usage and rated views.
 
@@ -678,7 +678,7 @@ curl -sG "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/billingUsage" \
         | sort_by(.model)'
 ```
 
-Multiply the token totals by the published [serverless prices](/serverless/pricing) to convert to dollars for chargeback.
+For rated dollars per key, query [`POST /usageCosts:query`](/api-reference/query-usage-costs) grouped by `API_KEY` instead of multiplying the token totals by the published [serverless prices](/serverless/pricing).
 
 ### Backfill more than 31 days
 
@@ -716,7 +716,7 @@ done
 
 ## Coverage caveats
 
-* **Tokens, not dollars.** The endpoint returns metered quantities (`promptTokens`, `completionTokens`, `accelerator_seconds`, `audioInputSeconds`). Multiply by the [serverless prices](/serverless/pricing) for cost, or use `--account-costs-only` for account-level dollar totals.
+* **Tokens, not dollars.** The endpoint returns metered quantities (`promptTokens`, `completionTokens`, `accelerator_seconds`, `audioInputSeconds`). For rated serverless costs, use [`POST /usageCosts:query`](/api-reference/query-usage-costs), or use `--account-costs-only` for account-level dollar totals.
 * **Inference types covered today**: text completion / chat completion and audio inference. Embeddings and image generation aren't yet reflected in `billingUsage` responses; coverage will expand in subsequent releases.
 * **Dedicated deployments** are attributed at the deployment level, not by API key. Use `usageType=DEDICATED_DEPLOYMENT` with `groupBy=deployment_name` for that breakdown.
 
@@ -729,7 +729,7 @@ done
 * [`firectl billing get-usage`](/tools-sdks/firectl/commands/billing-get-usage) - CLI command reference
 * [`GET /v1/accounts/{account_id}/billingUsage`](/api-reference/get-billing-usage) - HTTP API reference
 * [`GET /v1/accounts/{account_id}/billing/summary`](/api-reference/get-billing-summary) - Rated dollar costs by billing category, with optional daily breakdown
-* [`POST /v1/accounts/{account_id}/usageCosts:query`](/api-reference/query-usage-costs) - Rated dollar subtotals grouped by hour/day/model/user/API key
+* [`POST /v1/accounts/{account_id}/usageCosts:query`](/api-reference/query-usage-costs) - Rated dollar subtotals grouped by hour/day/model/model tier/user/API key
 * [Exporting Usage Costs](/accounts/exporting-usage-costs) - Rated serverless cost CSV via `firectl billing export-usage-costs`
 * [Exporting Billing Metrics](/accounts/exporting-billing-metrics) - Raw per-event billing CSV export
 * [Account quotas](/guides/quotas_usage/account-quotas) - Spending tiers and monthly spend limits
@@ -1275,7 +1275,7 @@ Same cause as above: an IdP-initiated login without IdP-initiated SSO enabled.
 # Managing users
 Source: https://docs.fireworks.ai/accounts/users
 
-Add, delete, and manage roles for users in your Fireworks account, including admin, member, viewer, and service account roles for API keys and dashboard access.
+Add, delete, and manage users in your Fireworks account, and assign the Admin, User, Contributor, or Inference user role to control API and dashboard access.
 
 See the concepts [page](/getting-started/concepts#account) for definitions of accounts and users.
 
@@ -1288,7 +1288,7 @@ Each user in an account is assigned a role that determines their level of access
 | **Admin** | Full administrative control over resources, users, and access. Can manage all account settings and add or remove users. |
 | **User** (default) | Can manage all resources, including those owned by others, but cannot manage users or access settings. |
 | **Contributor** | Can run inference on any resource and create and manage their own resources. Cannot modify resources owned by others. |
-| **Inference User** | Can view all resources and run inference, but cannot create or modify resources. |
+| **Inference user** | Can view all resources and run inference, but cannot create or modify resources. |
 
 #### Resource management
 
@@ -5832,9 +5832,9 @@ After training your model on Fireworks, deploy it to make it available for infer
 
 To run training evals before production serving, see [Evaluating Trained Models](/fine-tuning/evaluating-fine-tuned-models). This page covers production serving.
 
-> [!WARNING]
+> [!NOTE]
 >
-> Trained LoRA models, whether created on the Fireworks platform or imported, can **only** be deployed to **on-demand (dedicated) deployments**. Serverless deployment is not supported for LoRA models.
+> This page covers deploying trained LoRA models, whether created on the Fireworks platform or imported, to **on-demand (dedicated) deployments**. LoRAs trained on [select base models](/serverless/specialized-model-inference/overview#supported-models-and-limits) can also be served on **serverless** and billed per token, with no deployment to manage. See [Specialized Model Inference on Serverless](/serverless/specialized-model-inference/overview).
 
 > [!NOTE]
 >
@@ -14833,7 +14833,7 @@ The equivalent HTTP field is `systemPrompt`:
 > | **RUNNING** | Actively processing requests |
 > | **COMPLETED** | All requests successfully processed |
 > | **FAILED** | Unrecoverable error occurred (check status message) |
-> | **EXPIRED** | Exceeded chosen time limit (12, 24, 48, 72 hrs). Completed requests are saved. |
+> | **EXPIRED** | Reached its job expiration time (24 hours by default). Completed requests are saved. |
 
 > [accordion] Supported models
 >
@@ -14847,11 +14847,11 @@ The equivalent HTTP field is `systemPrompt`:
 > * **Per-request limits:** Same as [Chat Completion API limits](/api-reference/post-chatcompletions)
 > * **Input dataset:** Up to 80 GiB
 > * **Output dataset:** Max 8GB (job may expire early if limit is reached)
-> * **Job expiration:** Select from 12, 24, 48, 72 hours maximum in Optional Settings
+> * **Job expiration:** 12 to 72 hours after creation, 24 hours by default. In the console, choose 12, 24, 36, 48, or 72 hours in *Optional Settings*. With firectl, pass `--max-job-duration` (for example, `--max-job-duration 48h`). In the API, set `maxJobDuration` as a duration in seconds (for example, `"172800s"` for 48 hours). Positive values outside 12 to 72 hours are clamped to the nearest limit.
 
 > [accordion] Handling expired jobs
 >
-> Jobs expire after 24 hours. Completed rows are billed and saved to the output dataset.
+> Jobs expire when they reach their job expiration time (24 hours by default). Completed rows are billed and saved to the output dataset.
 >
 > **Resume processing:**
 >
@@ -14862,7 +14862,7 @@ The equivalent HTTP field is `systemPrompt`:
 >   --output-dataset-id new-output-dataset
 > ```
 >
-> This processes only unfinished/failed requests from the original job.
+> This processes only unfinished/failed requests from the original job. The new job doesn't inherit the original job's expiration time: it gets the 24-hour default unless you pass `--max-job-duration` again.
 >
 > **Download complete lineage:**
 >
@@ -19069,40 +19069,40 @@ Looking for the right open source model? Whether you're exploring by use case or
     <tr>
       <td>**Code & Development**</td>
       <td>**Code generation, reasoning & agentic tasks**</td>
-      <td>[DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017), [Kimi K3](https://app.fireworks.ai/models/fireworks/kimi-k3), [GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3), [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3)</td>
+      <td>[DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017), [Kimi K3.1 Pro](https://app.fireworks.ai/models/fireworks/kimi-k3p1-pro), [GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3), [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3)</td>
     </tr>
 
     <tr>
       <td>**AI Applications**</td>
       <td>**AI agents with tool use**</td>
-      <td>[Kimi K3](https://app.fireworks.ai/models/fireworks/kimi-k3), [DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017), [GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3), [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3)</td>
+      <td>[Kimi K3.1 Pro](https://app.fireworks.ai/models/fireworks/kimi-k3p1-pro), [DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017), [GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3), [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3)</td>
     </tr>
 
     <tr>
       <td />
 
       <td>**General reasoning & planning**</td>
-      <td>[DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017), [Kimi K3](https://app.fireworks.ai/models/fireworks/kimi-k3), [GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3), [GPT-OSS 120B](https://app.fireworks.ai/models/fireworks/gpt-oss-120b) *(medium)*</td>
+      <td>[DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017), [Kimi K3.1 Pro](https://app.fireworks.ai/models/fireworks/kimi-k3p1-pro), [GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3), [GPT-OSS 120B](https://app.fireworks.ai/models/fireworks/gpt-oss-120b) *(medium)*</td>
     </tr>
 
     <tr>
       <td />
 
       <td>**Long context & summarization**</td>
-      <td>[DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017), [Kimi K3](https://app.fireworks.ai/models/fireworks/kimi-k3), [Qwen3.7 Plus](https://app.fireworks.ai/models/fireworks/qwen3p7-plus), [GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3)</td>
+      <td>[DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017), [Kimi K3.1 Pro](https://app.fireworks.ai/models/fireworks/kimi-k3p1-pro), [Qwen3.7 Plus](https://app.fireworks.ai/models/fireworks/qwen3p7-plus), [GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3)</td>
     </tr>
 
     <tr>
       <td />
 
       <td>**Fast extraction, classification & search**</td>
-      <td>[DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017), [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3), [Kimi K3](https://app.fireworks.ai/models/fireworks/kimi-k3), [Step 3.7 Flash](https://app.fireworks.ai/models/fireworks/step-3p7-flash-nvfp4), [Qwen3 8B](https://app.fireworks.ai/models/fireworks/qwen3-8b) *(small)*</td>
+      <td>[DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017), [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3), [Kimi K3.1 Pro](https://app.fireworks.ai/models/fireworks/kimi-k3p1-pro), [Step 3.7 Flash](https://app.fireworks.ai/models/fireworks/step-3p7-flash-nvfp4), [Qwen3 8B](https://app.fireworks.ai/models/fireworks/qwen3-8b) *(small)*</td>
     </tr>
 
     <tr>
       <td>**Vision & Multimodal**</td>
       <td>**Vision & document understanding**</td>
-      <td>[DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017), [Qwen3.7 Plus](https://app.fireworks.ai/models/fireworks/qwen3p7-plus), [Step 3.7 Flash](https://app.fireworks.ai/models/fireworks/step-3p7-flash-nvfp4), [Gemma 4 31B](https://app.fireworks.ai/models/fireworks/gemma-4-31b-it) *(small)*</td>
+      <td>[Kimi K3.1 Pro](https://app.fireworks.ai/models/fireworks/kimi-k3p1-pro), [DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017), [Qwen3.7 Plus](https://app.fireworks.ai/models/fireworks/qwen3p7-plus), [Step 3.7 Flash](https://app.fireworks.ai/models/fireworks/step-3p7-flash-nvfp4), [Gemma 4 31B](https://app.fireworks.ai/models/fireworks/gemma-4-31b-it) *(small)*</td>
     </tr>
 
     <tr>
@@ -19134,21 +19134,21 @@ If you're currently using Claude, OpenAI / GPT, or Gemini models, here's a guide
 
 | **Closed Source** | **Use Case** | **Latency Budget** | **Open Source Alternative** |
 | - | - | - | - |
-| **Claude Opus 4.8 / Sonnet 4.6** | • Agentic use cases • Coding • Research agents | High | • [DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017) • [Kimi K3](https://app.fireworks.ai/models/fireworks/kimi-k3) • [GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3) • [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3) • [Qwen3.7 Plus](https://app.fireworks.ai/models/fireworks/qwen3p7-plus) |
+| **Claude Opus 4.8 / Sonnet 4.6** | • Agentic use cases • Coding • Research agents | High | • [DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017) • [Kimi K3.1 Pro](https://app.fireworks.ai/models/fireworks/kimi-k3p1-pro) • [GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3) • [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3) • [Qwen3.7 Plus](https://app.fireworks.ai/models/fireworks/qwen3p7-plus) |
 | **Claude Haiku 4.5** | • Agentic use cases • Coding • Research agents | Low | • [Step 3.7 Flash](https://app.fireworks.ai/models/fireworks/step-3p7-flash-nvfp4) • [DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017) • [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3) • [Qwen3 8B](https://app.fireworks.ai/models/fireworks/qwen3-8b) *(small)* |
 
 ### OpenAI GPT Alternatives
 
 | **Closed Source** | **Use Case** | **Latency Budget** | **Open Source Alternative** |
 | - | - | - | - |
-| **GPT-5.5 / GPT-5.5 Pro** | • Agentic use cases • Research agents | High | • [DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017) • [Kimi K3](https://app.fireworks.ai/models/fireworks/kimi-k3) • [GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3) • [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3) |
+| **GPT-5.5 / GPT-5.5 Pro** | • Agentic use cases • Research agents | High | • [DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017) • [Kimi K3.1 Pro](https://app.fireworks.ai/models/fireworks/kimi-k3p1-pro) • [GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3) • [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3) |
 | **GPT-5.4 mini & nano** | • Chatbots • Intent classification • Search | Low | • [Step 3.7 Flash](https://app.fireworks.ai/models/fireworks/step-3p7-flash-nvfp4) • [DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017) • [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3) • [Qwen3 8B](https://app.fireworks.ai/models/fireworks/qwen3-8b) *(small)* |
 
 ### Google Gemini Alternatives
 
 | **Closed Source** | **Use Case** | **Latency Budget** | **Open Source Alternative** |
 | - | - | - | - |
-| **Gemini 3.1 Pro** | • Agentic use cases • Research agents • Multimodal | High | • [DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017) • [Kimi K3](https://app.fireworks.ai/models/fireworks/kimi-k3) • [GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3) • [Qwen3.7 Plus](https://app.fireworks.ai/models/fireworks/qwen3p7-plus) • [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3) |
+| **Gemini 3.1 Pro** | • Agentic use cases • Research agents • Multimodal | High | • [DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017) • [Kimi K3.1 Pro](https://app.fireworks.ai/models/fireworks/kimi-k3p1-pro) • [GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3) • [Qwen3.7 Plus](https://app.fireworks.ai/models/fireworks/qwen3p7-plus) • [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3) |
 | **Gemini 3.5 Flash & 3.1 Flash-Lite** | • Chatbots • Intent classification • Search | Low | • [Step 3.7 Flash](https://app.fireworks.ai/models/fireworks/step-3p7-flash-nvfp4) • [DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017) • [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3) • [Qwen3 8B](https://app.fireworks.ai/models/fireworks/qwen3-8b) *(small)* |
 
 **Understanding Latency Budget:**
@@ -19162,7 +19162,7 @@ If you're currently using Claude, OpenAI / GPT, or Gemini models, here's a guide
 >
 > You can explore and filter every available model in the [Fireworks Model Library](https://app.fireworks.ai/models).
 
-*Last updated: October 2026*
+*Last updated: November 2026*
 
 
 # Reliability and Error Handling
@@ -21861,7 +21861,7 @@ In addition to models you train on the Fireworks platform, you can also upload y
 
 > [!NOTE]
 >
-> Uploaded LoRA adapters can only be deployed to on-demand (dedicated) deployments. Serverless deployment is not supported.
+> Uploaded LoRA adapters can be deployed to on-demand (dedicated) deployments. Adapters trained on [select base models](/serverless/specialized-model-inference/overview#supported-models-and-limits) can also be served on serverless. See [Specialized Model Inference on Serverless](/serverless/specialized-model-inference/overview).
 
 ### Requirements
 
@@ -22916,7 +22916,7 @@ Security and admin controls for Nexus Enterprise: Zero Data Retention, custom SS
 | [Zero Data Retention](/nexus/data-security) | Nexus never stores prompts, responses, or traces | Every account |
 | [Custom SSO](/accounts/sso) | Sign in through your OIDC or SAML identity provider, in the web app and in Nexus CLI | Enterprise |
 | [SCIM provisioning](/accounts/sso#scim-provisioning) | Sync users and groups from Okta, Microsoft Entra ID, or Google Workspace | Enterprise |
-| [Roles](/accounts/users) | Keep Model Providers and Spend Limits with account admins | Every plan |
+| [Roles](#roles) | Keep members, Model Providers, and Spend Limits with account admins | Team and Enterprise |
 | [Model Providers](/nexus/provider-keys) | Store Anthropic, OpenAI, or Amazon Bedrock credentials once for the whole team | Every plan |
 | [Model access](#control-models-and-regions) | Choose which Fireworks open models people and Nexus Auto can use | Enterprise |
 | [Data residency](#control-models-and-regions) | Keep inference in one region, such as the US | Enterprise |
@@ -22932,6 +22932,15 @@ With [Custom SSO](/accounts/sso), people sign in to the Nexus app and to Nexus C
 > [!NOTE]
 >
 > SSO enforcement does not revoke API keys that already exist. When you remove someone's access, also review their API keys.
+
+## Roles
+
+Nexus has two roles:
+
+* **Admin:** invites and removes members, changes roles, and manages Model Providers. On Enterprise, admins also manage Spend Limits.
+* **User:** uses Nexus with their own Nexus key. Team calls this role **Member**.
+
+Admins manage members on **Members** (Team) or **Settings → Users & Access** (Enterprise). On Enterprise, users can view that page but can't change it.
 
 ## Keep provider credentials with admins
 
@@ -26423,6 +26432,7 @@ Per-model pricing for headline models. Fast and Ultra-fast (Preview) variants ap
 | - | - | - |
 | [Ember-1](https://app.fireworks.ai/models/fireworks/ember-1) | \$3.00 / \$0.30 / \$15.00 | \$3.75 / \$0.375 / \$18.75 |
 | [Muse Spark Open](https://app.fireworks.ai/models/fireworks/muse-spark-open) | \$1.25 / \$0.15 / \$4.25 | \$1.875 / \$0.225 / \$6.375 |
+| [Kimi K3.1 Pro](https://app.fireworks.ai/models/fireworks/kimi-k3p1-pro) | \$2.00 / \$0.20 / \$10.00 | \$3.00 / \$0.30 / \$15.00 |
 | [Kimi K3](https://app.fireworks.ai/models/fireworks/kimi-k3) | \$3.00 / \$0.30 / \$15.00 | \$3.75 / \$0.375 / \$18.75 |
 | [Kimi K3 Fast](https://app.fireworks.ai/models/fireworks/kimi-k3) | \$4.50 / \$0.45 / \$22.50 | — |
 | [Kimi K3 (US)](https://app.fireworks.ai/models/fireworks/kimi-k3) | \$4.50 / \$0.45 / \$22.50 | \$5.625 / \$0.5625 / \$28.125 |

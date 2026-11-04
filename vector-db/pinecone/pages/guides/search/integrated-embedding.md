@@ -43,11 +43,11 @@ Add `embed`, `sparse_embed`, or both to a `string` field, inside `schema.fields`
 }
 ```
 
-* `embed` takes a hosted dense model (default [`llama-text-embed-v2`](/models/llama-text-embed-v2)) and optional `dimension`, `metric`, [`processing_location`](/guides/index-data/processing-locations), and `write_parameters`/`read_parameters` (model parameters applied when embedding on write and on query, such as `truncate` or [`task_type`](#task-types) for `gemini-embedding-2`).
+* `embed` takes a hosted dense model (default [`llama-text-embed-v2`](/models/llama-text-embed-v2)) and optional `dimension`, `metric`, [`processing_location`](/guides/indexes/processing-locations), and `write_parameters`/`read_parameters` (model parameters applied when embedding on write and on query, such as `truncate` or [`task_type`](#task-types) for `gemini-embedding-2`).
 * `sparse_embed` takes a hosted sparse model (default [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0)) and optional `write_parameters`/`read_parameters`. Sparse embeddings have no dimension or metric.
 * An `embed` field uses the index's single dense slot, and a `sparse_embed` field uses its single sparse slot. So an index has at most one of each, and an embedded field can't coexist with a `dense_vector` or `sparse_vector` field of the same type (dense or sparse).
 
-To compare the hosted models, see the [model gallery](/models/overview). For the dimensions each one supports, see [Embedding models](/guides/index-data/index-configuration#embedding-models). `llama-text-embed-v2` takes one of a fixed set of dimensions, while `gemini-embedding-2` and the `text-embedding-3` models take any integer in a range. The embedding configuration is fixed at creation: you can't add, remove, or change `embed` or `sparse_embed` on an existing index.
+To compare the hosted models, see the [model gallery](/models/overview). For the dimensions each one supports, see [Embedding models](/guides/indexes/index-configuration#embedding-models). `llama-text-embed-v2` takes one of a fixed set of dimensions, while `gemini-embedding-2` and the `text-embedding-3` models take any integer in a range. The embedding configuration is fixed at creation: you can't add, remove, or change `embed` or `sparse_embed` on an existing index.
 
 ## Text storage and full-text search
 
@@ -126,7 +126,7 @@ if err != nil {
 
 > [!NOTE]
 >
-> You can't [bulk import](/guides/index-data/import-data) into an index with an `embed` or `sparse_embed` field. Add text through upsert or update instead.
+> You can't [bulk import](/guides/data/import-data) into an index with an `embed` or `sparse_embed` field. Add text through upsert or update instead.
 
 ### Search
 
@@ -200,7 +200,7 @@ An `embed` or `sparse_embed` clause must be the only clause in `score_by`. You c
 | `text-embedding-3-small` | 1,536 | 1 to 1,536 |
 | `text-embedding-3-large` | 3,072 | 1 to 3,072 |
 
-Both models embed up to 8,192 tokens per value and take any metric (`cosine` by default, `dotproduct`, or `euclidean`). They process text in the `global` [processing location](/guides/index-data/processing-locations) by default, and you can set `processing_location` to `us` on the Standard and Enterprise plans.
+Both models embed up to 8,192 tokens per value and take any metric (`cosine` by default, `dotproduct`, or `euclidean`). They process text in the `global` [processing location](/guides/indexes/processing-locations) by default, and you can set `processing_location` to `us` on the Standard and Enterprise plans.
 
 The models are available on every plan, with the same monthly token limits as other hosted embedding models: 5 million tokens a month on Starter, 10 million on Builder, and no limit on Standard and Enterprise. For per-minute limits, see [Rate limits](/reference/api/database-limits/rate-limits#model-throughput-limits).
 
@@ -217,7 +217,7 @@ This field embeds with `text-embedding-3-large` at 1,024 dimensions:
 
 ## Embed with gemini-embedding-2
 
-[`gemini-embedding-2`](/models/gemini-embedding-2) is a dense model from Google that's available only on document indexes. It embeds up to 8,192 tokens per value and uses the `cosine` metric only. Its default dimension is 3,072, and you can set `dimension` to any integer from 128 to 3,072. Pinecone embeds text for this model through Google Vertex AI, in the `global` [processing location](/guides/index-data/processing-locations) only.
+[`gemini-embedding-2`](/models/gemini-embedding-2) is a dense model from Google that's available only on document indexes. It embeds up to 8,192 tokens per value and uses the `cosine` metric only. Its default dimension is 3,072, and you can set `dimension` to any integer from 128 to 3,072. Pinecone embeds text for this model through Google Vertex AI, in the `global` [processing location](/guides/indexes/processing-locations) only.
 
 The model isn't available on the Starter plan. Creating an index with it on Starter returns a `403` that names the field and model. If your organization moves to the Starter plan, its existing `gemini-embedding-2` indexes stay, but upserts and searches on them return a `403` until you upgrade again. The Builder plan includes 10 million `gemini-embedding-2` tokens a month, and the Standard and Enterprise plans have no monthly limit. For per-minute limits, see [Rate limits](/reference/api/database-limits/rate-limits#model-throughput-limits).
 
@@ -320,4 +320,4 @@ These rules apply to `parameters`:
 
 ## Find a model's parameters
 
-The [List models](/reference/api/latest/inference/list-available-models) operation returns each model's `supported_parameters` with their accepted values. It doesn't say which parameters apply on write, on read, or per search, so use the rules on this page for `task_type` and [Processing locations](/guides/index-data/processing-locations) for `processing_location`.
+The [List models](/reference/api/latest/inference/list-available-models) operation returns each model's `supported_parameters` with their accepted values. It doesn't say which parameters apply on write, on read, or per search, so use the rules on this page for `task_type` and [Processing locations](/guides/indexes/processing-locations) for `processing_location`.

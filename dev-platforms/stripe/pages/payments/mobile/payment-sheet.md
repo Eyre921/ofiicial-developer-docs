@@ -64,7 +64,7 @@ Examples of different ways to style Payment Sheet
 
 The Payment Sheet provides access to over 100 payment methods across all Stripe-supported countries. You can enable payment methods from the Stripe Dashboard or by using [Custom Payment Methods](https://docs.stripe.com/payments/payment-methods/custom-payment-methods.md).
 
-Payment method providers often change their collection and display requirements. When you use Payment Sheet to display payment methods, Stripe handles all payment detail collection in prebuilt, localized forms that we keep up-to-date with each payment provider.
+Payment method providers often change their collection and display requirements. When you use Payment Sheet to display payment methods, Stripe handles all payment detail collection in prebuilt, localized forms that we keep up to date with each payment provider.
 ![Payment Sheet payment methods](https://b.stripecdn.com/docs-statics-srv/assets/ps-payment-methods.07deb18cc15beeee90c75360d32cd762.png)
 
 Examples of the card form and Klarna form in the Payment Sheet

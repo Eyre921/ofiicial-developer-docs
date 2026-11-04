@@ -638,6 +638,17 @@ paths:
           schema:
             $ref: '#/components/schemas/V1ListenPostParametersRedact'
             default: false
+        - name: redact_usage
+          in: query
+          description: >
+            Replaces the values of user-supplied text parameters (`keyterm`, `keywords`, `replace`, `search`, `extra`,
+            `custom_topic`, and `custom_intent`) with `[REDACTED]` in this request's usage records. Does not affect
+            transcription, the response, `tag`, or `callback`. Independent of `mip_opt_out`.
+            https://developers.deepgram.com/docs/redact-usage
+          required: false
+          schema:
+            type: boolean
+            default: false
         - name: replace
           in: query
           description: Search for terms or phrases in submitted audio and replaces them
@@ -2871,6 +2882,15 @@ paths:
           required: true
           schema:
             type: string
+        - name: normalize_volume
+          in: query
+          description: >-
+            Normalizes the loudness of the generated speech to a consistent level across voices and requests. On by
+            default; set to `false` to opt out. Peak limiting is applied either way.
+          required: false
+          schema:
+            type: boolean
+            default: true
         - name: sample_rate
           in: query
           description: >-

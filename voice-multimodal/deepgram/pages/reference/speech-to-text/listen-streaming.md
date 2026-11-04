@@ -89,6 +89,9 @@ channels:
             redact:
               $ref: '#/components/schemas/ListenV1Redact'
               default: 'false'
+            redact_usage:
+              $ref: '#/components/schemas/ListenV1RedactUsage'
+              default: 'false'
             replace:
               $ref: '#/components/schemas/ListenV1Replace'
             sample_rate:
@@ -429,6 +432,19 @@ components:
       default: 'false'
       description: Redaction removes sensitive information from your transcripts
       title: ListenV1Redact
+    ListenV1RedactUsage:
+      type: string
+      enum:
+        - 'true'
+        - 'false'
+      default: 'false'
+      description: >-
+        Replaces the values of user-supplied text parameters (`keyterm`,
+        `keywords`, `replace`, `search`, and `extra`) with `[REDACTED]` in this
+        request's usage records. Does not affect transcription, the response, or
+        `tag`. Independent of `mip_opt_out`.
+        https://developers.deepgram.com/docs/redact-usage
+      title: ListenV1RedactUsage
     ListenV1Replace:
       description: Any type
       title: ListenV1Replace

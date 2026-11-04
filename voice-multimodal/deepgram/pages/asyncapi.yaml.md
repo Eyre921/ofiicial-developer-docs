@@ -132,6 +132,9 @@ channels:
             redact:
               $ref: '#/components/schemas/ListenV1Redact'
               default: 'false'
+            redact_usage:
+              $ref: '#/components/schemas/ListenV1RedactUsage'
+              default: 'false'
             replace:
               $ref: '#/components/schemas/ListenV1Replace'
             sample_rate:
@@ -215,6 +218,9 @@ channels:
               default: 'false'
             redact:
               $ref: '#/components/schemas/ListenV2Redact'
+            redact_usage:
+              $ref: '#/components/schemas/ListenV2RedactUsage'
+              default: 'false'
             mip_opt_out:
               $ref: '#/components/schemas/ListenV2MipOptOut'
             tag:
@@ -317,6 +323,9 @@ channels:
             expressivity:
               $ref: '#/components/schemas/SpeakV2Expressivity'
               default: 0
+            normalize_volume:
+              $ref: '#/components/schemas/SpeakV2NormalizeVolume'
+              default: 'true'
             mip_opt_out:
               $ref: '#/components/schemas/SpeakV2MipOptOut'
               default: 'false'
@@ -3223,6 +3232,17 @@ components:
       default: 'false'
       description: Redaction removes sensitive information from your transcripts
       title: ListenV1Redact
+    ListenV1RedactUsage:
+      type: string
+      enum:
+        - 'true'
+        - 'false'
+      default: 'false'
+      description: >-
+        Replaces the values of user-supplied text parameters (`keyterm`, `keywords`, `replace`, `search`, and `extra`)
+        with `[REDACTED]` in this request's usage records. Does not affect transcription, the response, or `tag`.
+        Independent of `mip_opt_out`. https://developers.deepgram.com/docs/redact-usage
+      title: ListenV1RedactUsage
     ListenV1Replace:
       description: Any type
       title: ListenV1Replace
@@ -3857,6 +3877,17 @@ components:
         Redaction removes sensitive information from your transcripts. On Flux, only `numbers` and `aggressive_numbers`
         are supported.
       title: ListenV2Redact
+    ListenV2RedactUsage:
+      type: string
+      enum:
+        - 'true'
+        - 'false'
+      default: 'false'
+      description: >-
+        Replaces keyterms and other user-supplied text with `[REDACTED]` in this connection's usage records, including
+        keyterms sent in later Configure messages. Does not affect transcription, the response, or `tag`. Independent of
+        `mip_opt_out`. https://developers.deepgram.com/docs/redact-usage
+      title: ListenV2RedactUsage
     ListenV2MipOptOut:
       description: Any type
       title: ListenV2MipOptOut
@@ -4093,6 +4124,9 @@ components:
           $ref: '#/components/schemas/ListenV2ConfigureNumerals'
           default: false
           description: Whether numeral formatting is enabled for transcripts Flux STT sends after it processes the update.
+        redact_usage:
+          type: boolean
+          description: Whether usage redaction is on for this connection.
         sequence_id:
           type: integer
           minimum: 0
@@ -4245,6 +4279,13 @@ components:
         Updates each parameter, if it is supplied. If a particular threshold parameter
         is not supplied, the configuration continues using the currently configured value.
       title: ChannelsListenV2MessagesListenV2ConfigureThresholds
+    ListenV2ConfigureRedactUsage:
+      type: boolean
+      description: >-
+        Set to `true` to redact keyterms sent in this and later Configure messages from this connection's usage records.
+        Does not redact keyterms in the connection URL; set the `redact_usage` query parameter for that. Once on, it
+        stays on for the rest of the connection; `false` has no effect.
+      title: ListenV2ConfigureRedactUsage
     ListenV2_ListenV2Configure:
       type: object
       properties:
@@ -4271,6 +4312,8 @@ components:
         numerals:
           $ref: '#/components/schemas/ListenV2ConfigureNumerals'
           default: false
+        redact_usage:
+          $ref: '#/components/schemas/ListenV2ConfigureRedactUsage'
       required:
         - type
       title: ListenV2_ListenV2Configure
@@ -4659,6 +4702,16 @@ components:
         `400` — `EXPRESSIVITY_OUT_OF_RANGE` for a value outside the range, `EXPRESSIVITY_INCREMENT_INVALID` for a
         fractional value. See [Expressivity](/docs/tts-expressivity).
       title: SpeakV2Expressivity
+    SpeakV2NormalizeVolume:
+      type: string
+      enum:
+        - 'true'
+        - 'false'
+      default: 'true'
+      description: >-
+        Normalizes the loudness of the generated speech to a consistent level across voices and turns. On by default;
+        set to `false` to opt out. Peak  limiting is applied either way.
+      title: SpeakV2NormalizeVolume
     SpeakV2MipOptOut:
       description: Any type
       title: SpeakV2MipOptOut

@@ -790,7 +790,7 @@ This section describes all commands offered by the Pinecone CLI.
 >
 > > [!NOTE]
 > >
-> > For a list of valid regions for a serverless index, see [Create a serverless index](/guides/index-data/create-an-index).
+> > For a list of valid regions for a serverless index, see [Create a serverless index](/guides/indexes/create-an-index).
 
 > [accordion] pc index delete (Delete an index)
 >

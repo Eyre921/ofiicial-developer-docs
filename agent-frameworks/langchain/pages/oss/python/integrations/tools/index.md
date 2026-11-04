@@ -551,8 +551,10 @@ The following table shows tools that generate video, image, or audio assets:
 | [`AgentLair`](https://agentlair.dev/docs) | N/A |
 | [`Browserless`](https://browserless.io) | N/A |
 | [`CleaveToolkit`](https://cleave.fi/docs/agents/langchain) | N/A |
+| [`FaxForAgentsToolkit`](https://github.com/faxforagents/langchain-faxforagents/blob/main/README.md) | N/A |
 | [`FokalsToolkit`](https://github.com/fokals/langchain-fokals#readme) | N/A |
 | [`HuangtingFlux`](https://huangtingflux.com/integrations/langchain) | N/A |
+| [`SideQuest`](https://sidequestpays.com/docs#langchain) | N/A |
 | [`Stagehand`](/oss/python/integrations/tools/stagehand) | N/A |
 
 > [!NOTE]

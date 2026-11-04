@@ -10,7 +10,7 @@ Every Pinecone Assistant has a dedicated MCP server that gives AI agents direct 
 
 > [!NOTE]
 >
-> Pinecone also provides an MCP server for managing indexes, upserting data, and querying your Pinecone database directly from an AI agent. See [Use the Pinecone MCP server](/guides/operations/mcp-server).
+> Pinecone also provides an MCP server for managing indexes, upserting data, and querying your Pinecone database directly from an AI agent. See [Use the Pinecone MCP server](/guides/agents/mcp-server).
 
 There are two ways to connect to an assistant MCP server:
 

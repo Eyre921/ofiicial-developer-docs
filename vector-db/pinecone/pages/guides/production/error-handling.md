@@ -21,7 +21,7 @@ Client errors indicate problems with your request. These errors typically requir
 * **400 - Invalid Argument**: Your request contains invalid parameters. Check your request format and parameters.
 * **401 - Unauthenticated**: Your API key is missing or invalid. Verify your [API key](/admin/projects/manage-api-keys).
 * **402 - Payment Required**: Your account has a payment issue or may be deactivated for non-payment. Check your billing status in the [console](https://app.pinecone.io) and see [Account deactivation for non-payment](/admin/billing/non-payment-account-deactivation).
-* **403 - Forbidden**: You've exceeded a [quota](/reference/api/database-limits/object-limits) or hit [deletion protection](/guides/manage-data/manage-indexes#configure-deletion-protection).
+* **403 - Forbidden**: You've exceeded a [quota](/reference/api/database-limits/object-limits) or hit [deletion protection](/guides/indexes/manage-indexes#configure-deletion-protection).
 * **404 - Not Found**: The requested resource doesn't exist. Verify the resource name and that it hasn't been deleted.
 * **409 - Already Exists**: You're trying to create a resource that already exists.
 * **429 - Too Many Requests**: You're being [rate-limited](/reference/api/database-limits/rate-limits). Implement [backoff and retry logic](#implement-retry-logic).
@@ -228,13 +228,13 @@ Rate limits help protect your applications and maintain the health of the server
 
 > [!NOTE]
 >
-> Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, list, and full-text search operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
+> Indexes built on [Dedicated Read Nodes](/guides/optimize/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, list, and full-text search operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/optimize/dedicated-read-nodes/overview) guide.
 
 **Best practices**:
 
 * Implement exponential backoff as described above.
 * Proactively [monitor request metrics](/guides/production/monitoring) and reduce the request rate if you're approaching limits.
-* Use [batching](/guides/index-data/upsert-data#upsert-in-batches) to reduce the number of requests.
+* Use [batching](/guides/data/upsert-data#upsert-in-batches) to reduce the number of requests.
 * For high-throughput needs, see [Increase throughput](/guides/optimize/increase-throughput).
 
 ## Getting support

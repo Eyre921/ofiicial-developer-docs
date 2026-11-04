@@ -50,6 +50,12 @@ path: docs/flux/feature-overview
 | [Sample rate](/docs/sample-rate) | [All available](/docs/models-languages-overview) |
 | [Encoding](/docs/encoding)       | [All available](/docs/model#flux)                |
 
+## Results processing
+
+| Feature                            | Language(s)                                      |
+| ---------------------------------- | ------------------------------------------------ |
+| [Redact usage](/docs/redact-usage) | [All available](/docs/models-languages-overview) |
+
 ## End-of-Turn Configuration
 
 | Feature                                             | Description                                                                                  |
@@ -62,11 +68,11 @@ path: docs/flux/feature-overview
 
 ## Control Messages
 
-| Feature                                     | Description                                                          |
-| ------------------------------------------- | -------------------------------------------------------------------- |
-| [Configure](/docs/flux/configure)           | Update keyterms, language hints, thresholds, and numerals mid-stream |
-| [Close Stream](/docs/flux/close-stream)     | Close the WebSocket stream                                           |
-| [Force End Turn](/docs/flux/force-end-turn) | End the current turn immediately from an external signal             |
+| Feature                                     | Description                                                                           |
+| ------------------------------------------- | ------------------------------------------------------------------------------------- |
+| [Configure](/docs/flux/configure)           | Update keyterms, language hints, thresholds, numerals, and usage redaction mid-stream |
+| [Close Stream](/docs/flux/close-stream)     | Close the WebSocket stream                                                            |
+| [Force End Turn](/docs/flux/force-end-turn) | End the current turn immediately from an external signal                              |
 
 ## Rate Limits
 

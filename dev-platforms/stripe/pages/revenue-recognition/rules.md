@@ -65,7 +65,7 @@ As your business grows, it’s important to make sure you regularly maintain you
 
 - **Know when to create a rule:** When applied correctly, Stripe’s default rules and revenue treatment methodology for handling *subscription* (A Subscription represents the product details associated with the plan that your customer subscribes to. Allows you to charge the customer on a recurring basis) events accurately recognize and defer revenue for businesses that require more control over their unique use.
 
-- **Regularly monitor rules to make sure they’re updated:** Evolve your rules accordingly for billing models, customer types, and edge cases that can regularly change. To make sure that revenue treatments remain predictable, periodically check your rules so they’re up-to-date in terms of hierarchy and effective period.
+- **Regularly monitor rules to make sure they’re updated:** Evolve your rules accordingly for billing models, customer types, and edge cases that can regularly change. To make sure that revenue treatments remain predictable, periodically check your rules so they’re up to date in terms of hierarchy and effective period.
 
 - **Check if your accounting period is open or closed when applying new rules:** If the effective period for a new rule overlaps with a closed accounting period, it generates corrections if you retroactively apply the rules to transactions from past (closed) accounting periods. To prevent this, reopen your books by opening your accounting period prior to adding the rule.
 

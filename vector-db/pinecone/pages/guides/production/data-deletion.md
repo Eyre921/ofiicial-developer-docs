@@ -30,8 +30,8 @@ Before the end of the 90-day retention window, Pinecone permanently deletes the 
 
 ## See also
 
-* [Delete records](/guides/manage-data/delete-data)
-* [Delete an index](/guides/manage-data/manage-indexes#delete-an-index)
+* [Delete records](/guides/data/delete-data)
+* [Delete an index](/guides/indexes/manage-indexes#delete-an-index)
 * [Delete a project](/admin/projects/manage-projects#delete-a-project)
 * [Delete an API key](/admin/projects/manage-api-keys#delete-an-api-key)
 * [Delete a user](/admin/projects/manage-project-members#remove-a-member)

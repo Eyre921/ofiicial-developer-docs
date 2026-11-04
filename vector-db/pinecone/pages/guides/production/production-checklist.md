@@ -36,23 +36,23 @@ Use Pinecone's [security features](/admin/security/security-overview) to protect
 
 Follow these best practices when designing and populating your indexes:
 
-* **Data ingestion**: For large datasets (10M+ records), [import from object storage](/guides/index-data/import-data) for the most efficient and cost-effective ingestion. For ongoing ingestion, [upsert in batches](/guides/index-data/upsert-data#upsert-in-batches) to optimize speed and efficiency. See the [data ingestion overview](/guides/index-data/data-ingestion-overview) for details.
+* **Data ingestion**: For large datasets (10M+ records), [import from object storage](/guides/data/import-data) for the most efficient and cost-effective ingestion. For ongoing ingestion, [upsert in batches](/guides/data/upsert-data#upsert-in-batches) to optimize speed and efficiency. See the [data ingestion overview](/guides/data/data-ingestion-overview) for details.
 * **Dimensionality**: Consider the dimensionality of your vectors. Higher dimensions can offer more accuracy but require more resources.
-* **Data modeling**: Use [structured IDs](/guides/index-data/data-modeling#use-structured-ids) (e.g., `document_id#chunk_number`) for efficient operations. Design [metadata](/guides/index-data/data-modeling#include-metadata) to support filtering, linking related chunks, and traceability. See the [data modeling guide](/guides/index-data/data-modeling) for details.
-* **Namespaces**: When indexing, try to [use namespaces to keep your data among tenants separate](/guides/index-data/implement-multitenancy), and don't use multiple indexes for this purpose. Namespaces are more efficient and more affordable in the long run.
+* **Data modeling**: Use [structured IDs](/guides/indexes/data-modeling#use-structured-ids) (e.g., `document_id#chunk_number`) for efficient operations. Design [metadata](/guides/indexes/data-modeling#include-metadata) to support filtering, linking related chunks, and traceability. See the [data modeling guide](/guides/indexes/data-modeling) for details.
+* **Namespaces**: When indexing, try to [use namespaces to keep your data among tenants separate](/guides/data/implement-multitenancy), and don't use multiple indexes for this purpose. Namespaces are more efficient and more affordable in the long run.
 
 ## Understand database limits
 
 Architect your application to work within Pinecone's [database limits](/reference/api/database-limits):
 
 * **Rate limits**: Serverless indexes have per-second operation limits for queries, upserts, updates, and deletes. [Implement error handling with exponential backoff](/guides/production/error-handling) to handle rate limit errors gracefully.
-* **Size limits**: Be aware of constraints on vector dimensionality, metadata size per record, record ID length, maximum `top_k` values, and query result sizes. Design your [data model](/guides/index-data/data-modeling) accordingly.
-* **Index limits**: Plan for index capacity based on your [plan tier](https://www.pinecone.io/pricing/). Use [namespaces](/guides/index-data/implement-multitenancy) to partition data within indexes rather than creating multiple indexes.
+* **Size limits**: Be aware of constraints on vector dimensionality, metadata size per record, record ID length, maximum `top_k` values, and query result sizes. Design your [data model](/guides/indexes/data-modeling) accordingly.
+* **Index limits**: Plan for index capacity based on your [plan tier](https://www.pinecone.io/pricing/). Use [namespaces](/guides/data/implement-multitenancy) to partition data within indexes rather than creating multiple indexes.
 * **Plan limits**: The Starter and Builder plans have monthly read/write unit limits. Upgrade to Standard or Enterprise for unlimited read/write units and higher throughput needs.
 
 > [!NOTE]
 >
-> Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, list, and full-text search operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
+> Indexes built on [Dedicated Read Nodes](/guides/optimize/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, list, and full-text search operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/optimize/dedicated-read-nodes/overview) guide.
 
 ## Test your query results
 
@@ -69,7 +69,7 @@ Before serving production workloads, optimize your Pinecone implementation:
 
 ## Backup up your indexes
 
-To enable long-term retention, compliance archiving, and deployment of new indexes, consider backing up your production indexes by [creating a backup or collection](/guides/manage-data/back-up-an-index).
+To enable long-term retention, compliance archiving, and deployment of new indexes, consider backing up your production indexes by [creating a backup or collection](/guides/indexes/back-up-an-index).
 
 ## Implement error handling
 

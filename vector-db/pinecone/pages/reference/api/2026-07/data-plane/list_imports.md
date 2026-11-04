@@ -21,7 +21,7 @@ import os
 from pinecone import Pinecone
 
 pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
-# To get the host for an index, see https://docs.pinecone.io/guides/manage-data/target-an-index
+# To get the host for an index, see https://docs.pinecone.io/guides/indexes/target-an-index
 index = pc.index(host="INDEX_HOST")
 
 for import_op in index.list_imports(limit=10):
@@ -34,7 +34,7 @@ import { Pinecone } from '@pinecone-database/pinecone';
 
 // Reads PINECONE_API_KEY from the environment
 const pc = new Pinecone();
-// To get the host for an index, see https://docs.pinecone.io/guides/manage-data/target-an-index
+// To get the host for an index, see https://docs.pinecone.io/guides/indexes/target-an-index
 const index = pc.index({ host: 'INDEX_HOST' });
 
 let paginationToken;
@@ -69,7 +69,7 @@ func main() {
         log.Fatalf("Failed to create Client: %v", err)
     }
 
-    // To get the host for an index, see https://docs.pinecone.io/guides/manage-data/target-an-index
+    // To get the host for an index, see https://docs.pinecone.io/guides/indexes/target-an-index
     idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST"})
     if err != nil {
         log.Fatalf("Failed to create IndexConnection: %v", err)
@@ -98,7 +98,7 @@ func main() {
 
 ```bash curl theme={null}
 # To get the unique host for an index,
-# see https://docs.pinecone.io/guides/manage-data/target-an-index
+# see https://docs.pinecone.io/guides/indexes/target-an-index
 PINECONE_API_KEY="YOUR_API_KEY"
 INDEX_HOST="INDEX_HOST"
 

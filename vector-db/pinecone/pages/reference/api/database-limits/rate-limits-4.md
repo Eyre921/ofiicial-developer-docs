@@ -6,7 +6,7 @@ path: reference/api/database-limits/rate-limits
 
 Request-per-second, monthly usage, and model throughput limits for Pinecone Database serverless indexes, and the 429 errors returned when you exceed them.
 
-Rate limits help protect your applications from misuse and maintain the health of our shared serverless infrastructure. They vary by [pricing plan](https://www.pinecone.io/pricing/) and apply to [serverless indexes](/guides/index-data/indexing-overview) only.
+Rate limits help protect your applications from misuse and maintain the health of our shared serverless infrastructure. They vary by [pricing plan](https://www.pinecone.io/pricing/) and apply to [serverless indexes](/guides/indexes/indexing-overview) only.
 
 Request-per-second limits are enforced per namespace or per index, as noted in the [Data operation throughput limits](#data-operation-throughput-limits) table, in addition to your read and write unit limits, so a request fails if it exceeds any applicable limit. When you exceed a limit, the request returns a `429 - TOO_MANY_REQUESTS` and the error message names the limit, scope, and value.
 
@@ -14,7 +14,7 @@ Request-per-second limits are enforced per namespace or per index, as noted in t
 
 > [!NOTE]
 >
-> Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, list, and full-text search operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
+> Indexes built on [Dedicated Read Nodes](/guides/optimize/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, list, and full-text search operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/optimize/dedicated-read-nodes/overview) guide.
 
 ## Monthly usage limits
 
@@ -26,6 +26,10 @@ Request-per-second limits are enforced per namespace or per index, as noted in t
 | Write units per month per org | 2,000,000 | 5,000,000 | Unlimited | Unlimited |
 | Embedding tokens per month per model | 5,000,000 | 10,000,000 | Unlimited | Unlimited |
 | `gemini-embedding-2` embedding tokens per month | Not available | 10,000,000 | Unlimited | Unlimited |
+
+> [!NOTE]
+>
+> From November 4 through November 30, 2026, Starter orgs get 10,000,000 embedding tokens per month per model, and Builder orgs get 20,000,000. Allowances return to the values in the table on December 1.
 
 Monthly rerank request limits vary by model:
 
@@ -49,6 +53,7 @@ Reaching a monthly usage limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade you
 | Metric | Starter plan | Builder plan | Standard plan | Enterprise plan |
 | :- | :- | :- | :- | :- |
 | Upsert size per second per namespace | 50 MB | 50 MB | 50 MB | 50 MB |
+| Query read units per second per namespace | 2,000 | 2,000 | 2,000 | 2,000 |
 | Query read units per second per index | 2,000 | 2,000 | 2,000 | 2,000 |
 | Query requests per second per namespace | 100 | 100 | 100 | 100 |
 | Update records per second per namespace | 100 | 100 | 100 | 100 |
@@ -65,7 +70,9 @@ Reaching a monthly usage limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade you
 | Delete by metadata requests per second per namespace | 20 | 20 | 20 | 20 |
 | Delete by metadata requests per second per index | 500 | 500 | 500 | 500 |
 
-Exceeding a per-second throughput limit returns a `429 - TOO_MANY_REQUESTS`. [Implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic), pace your requests, consider [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) (which aren't subject to per-second read limits) for high-throughput reads, or [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to raise a limit.
+The per-namespace and per-index query read unit limits are enforced separately. At the defaults they're equal, so the namespace limit only matters once the index limit is raised. When you ask Support for a higher read limit, ask for both, or each namespace stays capped at its current limit.
+
+Exceeding a per-second throughput limit returns a `429 - TOO_MANY_REQUESTS`. [Implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic), pace your requests, consider [Dedicated Read Nodes](/guides/optimize/dedicated-read-nodes/overview) (which aren't subject to per-second read limits) for high-throughput reads, or [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to raise a limit.
 
 > [accordion] Example error
 >

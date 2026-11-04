@@ -8,7 +8,7 @@ Permanently delete a Pinecone organization after you delete its indexes, collect
 
 Before you can delete your Pinecone organization, you need to delete all of its projects and downgrade to the Starter plan. To delete a project, first delete its indexes and collections.
 
-* [Delete an index](/guides/manage-data/manage-indexes#delete-an-index)
+* [Delete an index](/guides/indexes/manage-indexes#delete-an-index)
 * [Delete a project](/admin/projects/manage-projects#delete-a-project)
 * [Downgrade to the Starter plan](/admin/billing/downgrade-billing-plan)
 

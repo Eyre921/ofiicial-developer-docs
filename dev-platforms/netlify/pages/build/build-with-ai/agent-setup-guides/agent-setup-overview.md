@@ -35,7 +35,7 @@ Netlify offers an [MCP server](https://github.com/netlify/netlify-mcp), which yo
 To start connecting to Netlify's remote MCP server by running this command and following the prompts to select the agents you want to configure:
 
 ```
-npx -y add-mcp https://netlify-mcp.netlify.app/mcp
+npx -y add-mcp https://mcp.netlify.com/mcp
 ```
 
 If you would like to use your agent's own official setup command, check out the agent-specific MCP instructions below:
@@ -51,13 +51,17 @@ If you would like to use your agent's own official setup command, check out the 
 
 The following editors allow one-click install of our MCP with the following links
 
-[![Install MCP Server on Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en-US/install-mcp?name=netlify&config=eyJ1cmwiOiJodHRwczovL25ldGxpZnktbWNwLm5ldGxpZnkuYXBwL21jcCJ9)
+[![Install MCP Server on Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en-US/install-mcp?name=netlify&config=eyAidXJsIjogImh0dHBzOi8vbWNwLm5ldGxpZnkuY29tL21jcCJ9)
 
-[![Add MCP Server netlify to LM Studio](https://files.lmstudio.ai/deeplink/mcp-install-light.svg)](https://lmstudio.ai/install-mcp?name=netlify&config=eyJ1cmwiOiJodHRwczovL25ldGxpZnktbWNwLm5ldGxpZnkuYXBwL21jcCJ9)
+[![Add MCP Server netlify to LM Studio](https://files.lmstudio.ai/deeplink/mcp-install-light.svg)](https://lmstudio.ai/install-mcp?name=netlify&config=eyAidXJsIjogImh0dHBzOi8vbWNwLm5ldGxpZnkuY29tL21jcCJ9)
 
-[![Install on VS Code](https://img.shields.io/badge/VS_Code-VS_Code?style=flat-square&label=Install%20Server&color=0098FF)](https://insiders.vscode.dev/redirect/mcp/install?name=netlify&config=%7B%22url%22%3A%20%22https%3A%2F%2Fnetlify-mcp.netlify.app%2Fmcp%22%7D)
+[![Install on VS Code](https://img.shields.io/badge/VS_Code-VS_Code?style=flat-square&label=Install%20Server&color=0098FF)](https://insiders.vscode.dev/redirect/mcp/install?name=netlify&config=%7B%22url%22%3A%20%22https%3A%2F%2Fmcp.netlify.com%2Fmcp%22%7D)
 
-[![Install on VS Code Insiders Edition](https://img.shields.io/badge/VS_Code_Insiders-VS_Code_Insiders?style=flat-square&label=Install%20Server&color=24bfa5)](https://insiders.vscode.dev/redirect/mcp/install?name=netlify&config=%7B%22url%22%3A%20%22https%3A%2F%2Fnetlify-mcp.netlify.app%2Fmcp%22%7D&quality=insiders)
+[![Install on VS Code Insiders Edition](https://img.shields.io/badge/VS_Code_Insiders-VS_Code_Insiders?style=flat-square&label=Install%20Server&color=24bfa5)](https://insiders.vscode.dev/redirect/mcp/install?name=netlify&config=%7B%22url%22%3A%20%22https%3A%2F%2Fmcp.netlify.com%2Fmcp%22%7D&quality=insiders)
+
+### Note - Connected with the previous MCP server URL?
+
+If you connected with the previous URL, `https://netlify-mcp.netlify.app/mcp`, your connection still works and you don't need to reconnect. Use `https://mcp.netlify.com/mcp` for new connections.
 
 ### Connect to Netlify's Local MCP server
 

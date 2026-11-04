@@ -1282,7 +1282,7 @@ To define a *catchall schema* that will be used to validate any unrecognized key
     const DogWithStrings = z.catchall(
       z.object({
         name: z.string(),
-        age: z.number().optional(),
+        age: z.optional(z.number()),
       }),
       z.string()
     );
@@ -1422,7 +1422,7 @@ Use `.safeExtend()` to extend schemas that contain refinements. (Regular `.exten
 
     // Extended inherits the refinements of Base
     const Extended = z.safeExtend(Base, {
-      a: z.string().min(10)
+      a: z.string().check(z.minLength(10))
     });
     ```
   </Tab>
@@ -2745,7 +2745,7 @@ An error on `anotherField` will prevent the password confirmation check from exe
     ```ts
     const schema = z
       .object({
-        password: z.string().min(8),
+        password: z.string().check(z.minLength(8)),
         confirmPassword: z.string(),
         anotherField: z.string(),
       })
@@ -6381,7 +6381,7 @@ parseData("sup", z.string());
 import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
 import { Callout } from "fumadocs-ui/components/callout"
 
-{/* > Zod 4+ provides native `.toJSONSChema()` functionality that leverages registries to generate idiomatic JSON Schema from Zod. Refer to the [JSON SChema docs](/json-schema) page for more information. */}
+{/* > Zod 4+ provides native `.toJSONSchema()` functionality that leverages registries to generate idiomatic JSON Schema from Zod. Refer to the [JSON Schema docs](/json-schema) page for more information. */}
 
 It's often useful to associate a schema with some additional *metadata* for documentation, code generation, AI structured outputs, form validation, and other purposes.
 
@@ -6642,7 +6642,7 @@ z.$ZodError;
 {} as z.$ZodIssue;
 
 // utils
-z.util.isValidJWT(...);
+z.isValidJWT(...);
 ```
 
 ## Schemas
@@ -6854,11 +6854,11 @@ await z.safeParseAsync(schema, "hello");
 Every Zod schema contains an array of *checks*. These perform post-parsing refinements (and occasionally mutations) that *do not affect* the inferred type.
 
 ```ts
-const schema = z.string().check(z.email()).check(z.min(5));
+const schema = z.string().check(z.email()).check(z.minLength(5));
 // => $ZodString
 
 schema._zod.def.checks;
-// => [$ZodCheckEmail, $ZodCheckMinLength]
+// => [$ZodEmail, $ZodCheckMinLength]
 ```
 
 The base class for all Zod checks is `$ZodCheck`. It accepts a single generic parameter `T`.
@@ -6984,10 +6984,10 @@ z.string().check(z.email()).parse("user@example.com")
 
 The base class for all errors in Zod is `$ZodError`.
 
-> For performance reasons, `$ZodError` *does not* extend the built-in `Error` class! So using `instanceof Error` will return `false`.
+> For performance reasons, `$ZodError` *does not* extend the built-in `Error` class. The errors thrown by `.parse()` and returned by `.safeParse()` are `$ZodRealError` instances, which do, so `instanceof Error` returns `true` for them.
 
 * The `zod` package implements a subclass of `$ZodError` called `ZodError` with some additional convenience methods.
-* The `zod/mini` sub-package directly uses `$ZodError`
+* The `zod/mini` sub-package directly uses `$ZodRealError`
 
 ```ts
 export class $ZodError<T = unknown> implements Error {

@@ -11,7 +11,7 @@ Security and admin controls for Nexus Enterprise: Zero Data Retention, custom SS
 | [Zero Data Retention](/nexus/data-security) | Nexus never stores prompts, responses, or traces | Every account |
 | [Custom SSO](/accounts/sso) | Sign in through your OIDC or SAML identity provider, in the web app and in Nexus CLI | Enterprise |
 | [SCIM provisioning](/accounts/sso#scim-provisioning) | Sync users and groups from Okta, Microsoft Entra ID, or Google Workspace | Enterprise |
-| [Roles](/accounts/users) | Keep Model Providers and Spend Limits with account admins | Every plan |
+| [Roles](#roles) | Keep members, Model Providers, and Spend Limits with account admins | Team and Enterprise |
 | [Model Providers](/nexus/provider-keys) | Store Anthropic, OpenAI, or Amazon Bedrock credentials once for the whole team | Every plan |
 | [Model access](#control-models-and-regions) | Choose which Fireworks open models people and Nexus Auto can use | Enterprise |
 | [Data residency](#control-models-and-regions) | Keep inference in one region, such as the US | Enterprise |
@@ -27,6 +27,15 @@ With [Custom SSO](/accounts/sso), people sign in to the Nexus app and to Nexus C
 > [!NOTE]
 >
 > SSO enforcement does not revoke API keys that already exist. When you remove someone's access, also review their API keys.
+
+## Roles
+
+Nexus has two roles:
+
+* **Admin:** invites and removes members, changes roles, and manages Model Providers. On Enterprise, admins also manage Spend Limits.
+* **User:** uses Nexus with their own Nexus key. Team calls this role **Member**.
+
+Admins manage members on **Members** (Team) or **Settings → Users & Access** (Enterprise). On Enterprise, users can view that page but can't change it.
 
 ## Keep provider credentials with admins
 

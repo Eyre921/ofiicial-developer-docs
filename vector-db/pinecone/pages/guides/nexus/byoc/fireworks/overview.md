@@ -10,7 +10,7 @@ Learn how Fireworks AI open models fit into a Nexus BYOC deployment and why you'
 >
 > Nexus BYOC is available only on [Enterprise plans](https://www.pinecone.io/pricing/).
 
-[Fireworks AI](https://fireworks.ai/) is an inference and training platform for open models, including Kimi, DeepSeek, GLM, Qwen, MiniMax, and gpt-oss. In a Pinecone Nexus Bring Your Own Cloud (BYOC) deployment, you can serve Nexus's chat models, and optionally its embedding model, from Fireworks instead of the Google Gemini models the shipped catalog uses.
+[Fireworks AI](https://fireworks.ai/) is an inference and training platform for open models, including Kimi, DeepSeek, GLM, Qwen, MiniMax, and gpt-oss. In a Pinecone Nexus Bring Your Own Cloud (BYOC) deployment, you can serve Nexus's chat and embedding models from Fireworks.
 
 ## Fireworks AI features
 

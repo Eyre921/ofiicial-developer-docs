@@ -173,7 +173,7 @@ The plugin includes the Pinecone MCP server, which provides the following tools:
 * `cascading-search`: Search across multiple indexes with deduplication and reranking.
 * `rerank-documents`: Rerank documents using a specified reranking model.
 
-For full MCP server documentation, see [Use the Pinecone MCP server](/guides/operations/mcp-server).
+For full MCP server documentation, see [Use the Pinecone MCP server](/guides/agents/mcp-server).
 
 ## Troubleshooting
 
@@ -203,4 +203,4 @@ For full MCP server documentation, see [Use the Pinecone MCP server](/guides/ope
 * [GitHub repository](https://github.com/pinecone-io/pinecone-codex-plugin)
 * [Codex documentation](https://developers.openai.com/codex)
 * [Plugins in ChatGPT (OpenAI Help Center)](https://help.openai.com/en/articles/20001256-plugins-in-chatgpt)
-* [Pinecone MCP server guide](/guides/operations/mcp-server)
+* [Pinecone MCP server guide](/guides/agents/mcp-server)

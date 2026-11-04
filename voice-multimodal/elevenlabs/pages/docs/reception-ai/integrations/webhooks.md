@@ -24,18 +24,19 @@ During a call, when the conversation matches the tool's purpose, your receptioni
 
 Go to **Integrations**, select **Add integration**, and choose **Webhook Tool**. Configure the fields below and select **Enable**. You can add multiple webhook tools.
 
-| Field                          | Description                                                  |
-| ------------------------------ | ------------------------------------------------------------ |
-| **Name**                       | Tool name the AI sees, for example `check_order_status`      |
-| **Description**                | When and why to use this tool                                |
-| **Method**                     | GET, POST, PUT, PATCH, or DELETE                             |
-| **URL**                        | Your HTTP endpoint                                           |
-| **Response timeout (seconds)** | How long to wait for your server: 5–120 seconds, default 20  |
-| **Assign to agents**           | **Receptionist**, **Assistant agent**, or both               |
-| **Disable interruptions**      | Prevent the caller from interrupting while the tool runs     |
-| **Request Headers**            | Optional headers sent with every request, such as an API key |
-| **Body Parameters**            | Parameters sent in the request body                          |
-| **Query Parameters**           | Parameters sent as URL query strings                         |
+| Field                          | Description                                                                                                                                                                                                                                                                        |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Name**                       | Tool name the AI sees, for example `check_order_status`                                                                                                                                                                                                                            |
+| **Description**                | When and why to use this tool                                                                                                                                                                                                                                                      |
+| **Method**                     | GET, POST, PUT, PATCH, or DELETE                                                                                                                                                                                                                                                   |
+| **URL**                        | Your HTTP endpoint                                                                                                                                                                                                                                                                 |
+| **Response timeout (seconds)** | How long to wait for your server: 5–120 seconds, default 20                                                                                                                                                                                                                        |
+| **Assign to agents**           | **Receptionist**, **Assistant agent**, or both                                                                                                                                                                                                                                     |
+| **Disable interruptions**      | Prevent the caller from interrupting while the tool runs                                                                                                                                                                                                                           |
+| **Request Headers**            | Optional headers sent with every request. **Type** is **Value** or **Secret**. A **Secret** is stored encrypted and is never shown again. A header brought from ElevenAgents can show **Environment variable** or **Variable**, with a note that it is set in the agents platform. |
+| **Path Parameters**            | Shown when the URL contains placeholders in curly braces, such as `/orders/{order_id}`. Edit the URL to add or remove one.                                                                                                                                                         |
+| **Body Parameters**            | Parameters sent in the request body. **Value** can be **From the conversation** or a **Fixed value**.                                                                                                                                                                              |
+| **Query Parameters**           | Parameters sent as URL query strings. **Value** can be **From the conversation** or a **Fixed value**.                                                                                                                                                                             |
 
 ### Parameters
 

@@ -1973,8 +1973,8 @@ N8N_RUNNERS_AUTH_TOKEN=change-me-runner-auth-token
 
 # Sandbox service secrets — pick your own values
 SANDBOX_API_KEYS=change-me-api-key
-SANDBOX_API_RUNNER_REGISTRATION_TOKEN=change-me-registration-token
-SANDBOX_API_RUNNER_API_KEY=change-me-runner-key
+SANDBOX_RUNNER_REGISTRATION_TOKEN=change-me-registration-token
+SANDBOX_RUNNER_API_KEYS=change-me-runner-key
 
 # Must match a value in SANDBOX_API_KEYS above — this is how n8n authenticates to the sandbox
 N8N_SANDBOX_SERVICE_API_KEY=change-me-api-key
@@ -2366,7 +2366,7 @@ Before proceeding, install Docker:
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.46.4 Current `beta`: 2.47.0
+Current `stable`: 2.46.6 Current `beta`: 2.47.2
 {% endhint %}
 
 ### Starting n8n <a href="#starting-n8n" id="starting-n8n"></a>
@@ -2624,7 +2624,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.46.4 Current `beta`: 2.47.0
+Current `stable`: 2.46.6 Current `beta`: 2.47.2
 {% endhint %}
 
 ## Create a Droplet <a href="#create-a-droplet" id="create-a-droplet"></a>
@@ -2996,7 +2996,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.46.4 Current `beta`: 2.47.0
+Current `stable`: 2.46.6 Current `beta`: 2.47.2
 {% endhint %}
 
 ## Use the deployment template to create a Heroku project <a href="#use-the-deployment-template-to-create-a-heroku-project" id="use-the-deployment-template-to-create-a-heroku-project"></a>
@@ -3098,7 +3098,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.46.4 Current `beta`: 2.47.0
+Current `stable`: 2.46.6 Current `beta`: 2.47.2
 {% endhint %}
 
 ## Create a server <a href="#create-a-server" id="create-a-server"></a>
@@ -3468,7 +3468,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.46.4 Current `beta`: 2.47.0
+Current `stable`: 2.46.6 Current `beta`: 2.47.2
 {% endhint %}
 
 ## Create a cluster <a href="#create-a-cluster" id="create-a-cluster"></a>
@@ -4416,7 +4416,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.46.4 Current `beta`: 2.47.0
+Current `stable`: 2.46.6 Current `beta`: 2.47.2
 {% endhint %}
 
 ## Hosting options <a href="#hosting-options" id="hosting-options"></a>
@@ -4632,7 +4632,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.46.4 Current `beta`: 2.47.0
+Current `stable`: 2.46.6 Current `beta`: 2.47.2
 {% endhint %}
 
 ## Before you begin: get a Google Cloud project <a href="#before-you-begin-get-a-google-cloud-project" id="before-you-begin-get-a-google-cloud-project"></a>
@@ -4915,7 +4915,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.46.4 Current `beta`: 2.47.0
+Current `stable`: 2.46.6 Current `beta`: 2.47.2
 {% endhint %}
 
 ## Create project <a href="#create-project" id="create-project"></a>
@@ -6209,7 +6209,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.46.4 Current `beta`: 2.47.0
+Current `stable`: 2.46.6 Current `beta`: 2.47.2
 {% endhint %}
 
 ## 1. Install Docker and Docker Compose <a href="#id-1-install-docker-and-docker-compose" id="id-1-install-docker-and-docker-compose"></a>
@@ -6702,10 +6702,10 @@ This page outlines environment variables to configure your chosen database for y
 
 ## SQLite <a href="#sqlite" id="sqlite"></a>
 
-| Variable                      | Type    | Default | Description                                                                                                                                                                                                                                                                                                                                                                                                               |
-| ----------------------------- | ------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `DB_SQLITE_POOL_SIZE`         | Number  | `0`     | Controls whether to open the SQLite file in [WAL mode](https://www.sqlite.org/wal.html) or [rollback journal mode](https://www.sqlite.org/lockingv3.html#rollback). Uses rollback journal mode when set to zero. When greater than zero, uses WAL mode with the value determining the number of parallel SQL read connections to configure. WAL mode is much more performant and reliable than the rollback journal mode. |
-| `DB_SQLITE_VACUUM_ON_STARTUP` | Boolean | `false` | Runs [VACUUM](https://www.sqlite.org/lang_vacuum.html) operation on startup to rebuild the database. Reduces file size and optimizes indexes. This is a long running blocking operation and increases start-up time.                                                                                                                                                                                                      |
+| Variable                      | Type    | Default | Description                                                                                                                                                                                                                                |
+| ----------------------------- | ------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `DB_SQLITE_POOL_SIZE`         | Number  | `3`     | The number of parallel SQL read connections in the SQLite connection pool. Must be at least `1`. Setting it to `0` logs a warning and falls back to the default. n8n opens the SQLite file in [WAL mode](https://www.sqlite.org/wal.html). |
+| `DB_SQLITE_VACUUM_ON_STARTUP` | Boolean | `false` | Runs [VACUUM](https://www.sqlite.org/lang_vacuum.html) operation on startup to rebuild the database. Reduces file size and optimizes indexes. This is a long running blocking operation and increases start-up time.                       |
 
 ## How database connection recovery works <a href="#how-database-connection-recovery-works" id="how-database-connection-recovery-works"></a>
 

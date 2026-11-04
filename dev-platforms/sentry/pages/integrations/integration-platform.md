@@ -14,12 +14,6 @@ url: https://docs.sentry.io/integrations/integration-platform/
 
 Sentry’s integration platform provides a way for external services to interact with Sentry using [webhooks](https://docs.sentry.io/integrations/integration-platform/webhooks.md), [UI components](https://docs.sentry.io/integrations/integration-platform/ui-components.md), and the [REST API](https://docs.sentry.io/api.md). Integrations using this platform are first-class actors within Sentry.
 
-## [Example App](https://docs.sentry.io/integrations/integration-platform.md#example-app)
-
-If you're new to the integration platform, it might help to get started with an example project. To help you out, we've built an [example application](https://github.com/getsentry/integration-platform-example), which you can use as a starting point. It demonstrates the different features and data available for your application:
-
-It's a kanban application that uses many of the features available to Sentry integrations and it provides starter code in both Python and TypeScript. It also includes a step-by-step guide to setting up your first integration, as well as documentation and testing advice. Typically, the app should be safely consuming live Sentry data within minutes.
-
 ## [Creating an Integration](https://docs.sentry.io/integrations/integration-platform.md#creating-an-integration)
 
 In sentry.io, navigate to [**Settings > Developer Settings**](https://sentry.io/orgredirect/organizations/:orgslug/settings/developer-settings/). From here, you can choose to create an [internal](https://docs.sentry.io/integrations/integration-platform/internal-integration.md) or [public](https://docs.sentry.io/integrations/integration-platform/public-integration.md) integration. Internal integrations can only be used by your organization, whereas public integrations can be published and are available for all Sentry users.

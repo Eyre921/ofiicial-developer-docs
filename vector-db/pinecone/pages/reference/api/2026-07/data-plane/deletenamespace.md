@@ -17,7 +17,7 @@ import os
 from pinecone import Pinecone
 
 pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
-# To get the host for an index, see https://docs.pinecone.io/guides/manage-data/target-an-index
+# To get the host for an index, see https://docs.pinecone.io/guides/indexes/target-an-index
 index = pc.index(host="INDEX_HOST")
 
 index.delete_namespace(name="example-namespace")
@@ -29,7 +29,7 @@ import { Pinecone } from '@pinecone-database/pinecone';
 
 // Reads PINECONE_API_KEY from the environment
 const pc = new Pinecone();
-// To get the host for an index, see https://docs.pinecone.io/guides/manage-data/target-an-index
+// To get the host for an index, see https://docs.pinecone.io/guides/indexes/target-an-index
 const index = pc.index({ host: 'INDEX_HOST' });
 
 await index.deleteNamespace('example-namespace');
@@ -56,7 +56,7 @@ func main() {
         log.Fatalf("Failed to create Client: %v", err)
     }
 
-    // To get the host for an index, see https://docs.pinecone.io/guides/manage-data/target-an-index
+    // To get the host for an index, see https://docs.pinecone.io/guides/indexes/target-an-index
     idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST"})
     if err != nil {
         log.Fatalf("Failed to create IndexConnection: %v", err)

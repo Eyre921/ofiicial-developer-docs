@@ -14,7 +14,7 @@ If one of these limits is blocking you, [contact Support](https://app.pinecone.i
 
 | Metric | Limit |
 | :- | :- |
-| Max [batch size](/guides/index-data/upsert-data#upsert-in-batches) for records with vectors | 1,000 records, up to 2 MB total |
+| Max [batch size](/guides/legacy/vectors-api/upsert-vectors#upsert-in-batches) for records with vectors | 1,000 records, up to 2 MB total |
 | Max batch size for records with text | 96 records |
 | Max documents per upsert request | 1,000, or 96 when the schema declares `embed` or `sparse_embed` |
 | Max document upsert request size | 2 MB |
@@ -29,7 +29,7 @@ If one of these limits is blocking you, [contact Support](https://app.pinecone.i
 | Max non-zero values for sparse vectors | 2048 |
 | Max dimensionality for sparse vectors | 4.2 billion |
 
-The limit for text is lower because Pinecone converts that text to vectors at upsert time with [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), and 96 is the max batch size of the [hosted embedding models](/guides/index-data/index-configuration#embedding-models) doing the conversion.
+The limit for text is lower because Pinecone converts that text to vectors at upsert time with [integrated embedding](/guides/indexes/indexing-overview#integrated-embedding), and 96 is the max batch size of the [hosted embedding models](/guides/indexes/index-configuration#embedding-models) doing the conversion.
 
 The 40 KB filterable metadata limit doesn't apply to `full_text_search` text fields.
 
@@ -44,7 +44,7 @@ The 40 KB filterable metadata limit doesn't apply to `full_text_search` text fie
 
 > [!NOTE]
 >
-> If your import exceeds these limits, you'll get an error specifying the limit exceeded. See [Troubleshooting](/guides/index-data/import-data#troubleshooting) for details.
+> If your import exceeds these limits, you'll get an error specifying the limit exceeded. See [Troubleshooting](/guides/data/import-data#troubleshooting) for details.
 
 | Metric | Limit |
 | :- | :- |
@@ -54,9 +54,9 @@ The 40 KB filterable metadata limit doesn't apply to `full_text_search` text fie
 | Max files per import | 100,000 |
 | Max size per file | 10 GB |
 
-The total input data size limit doesn't apply to indexes with [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview).
+The total input data size limit doesn't apply to indexes with [dedicated read nodes](/guides/optimize/dedicated-read-nodes/overview).
 
-Bulk import supports indexes without a schema definition (Parquet files) and indexes with document schemas ([JSONL files](/guides/index-data/import-data#prepare-document-schema-files-jsonl)). Semantic-text (auto-embedded) fields aren't yet supported in document schemas.
+Bulk import supports indexes without a schema definition (Parquet files) and indexes with document schemas ([JSONL files](/guides/data/import-data#prepare-document-schema-files-jsonl)). Semantic-text (auto-embedded) fields aren't yet supported in document schemas.
 
 ## Query limits
 
@@ -87,7 +87,7 @@ The query result size is affected by the dimension of the dense vectors and whet
 | Max response size | 4 MB |
 | Max request rate | 5 requests per second per namespace |
 
-To retrieve more than 10,000 matching records, paginate through results using the `paginationToken` parameter. See [Fetch records by metadata](/guides/manage-data/fetch-data#fetch-records-by-metadata).
+To retrieve more than 10,000 matching records, paginate through results using the `paginationToken` parameter. See [Fetch records by metadata](/guides/legacy/vectors-api/fetch-vectors#fetch-records-by-metadata).
 
 ## Delete limits
 
@@ -113,8 +113,8 @@ Large `$in` operators can impact query performance and cost. Filters with thousa
 
 If you need to filter by more than 10,000 values, consider these alternatives:
 
-* **Use namespaces for tenant isolation**: Instead of filtering by tenant IDs within a single namespace, create separate namespaces for each tenant or tenant group. This can also reduce query costs. See [Design for multitenancy](/guides/index-data/design-for-multitenancy).
-* **Use broader access control groups**: Instead of filtering by individual user IDs, filter by organization, project, or role. This reduces the number of values in your `$in` filter. See [Design for multitenancy](/guides/index-data/design-for-multitenancy#use-access-control-groups-instead-of-individual-ids).
+* **Use namespaces for tenant isolation**: Instead of filtering by tenant IDs within a single namespace, create separate namespaces for each tenant or tenant group. This can also reduce query costs. See [Design for multitenancy](/guides/data/design-for-multitenancy).
+* **Use broader access control groups**: Instead of filtering by individual user IDs, filter by organization, project, or role. This reduces the number of values in your `$in` filter. See [Design for multitenancy](/guides/data/design-for-multitenancy#use-access-control-groups-instead-of-individual-ids).
 * **Post-filter client-side**: Retrieve a larger top K without filtering (for example, top 1000), then filter results client-side.
 * **Run multiple queries**: Split your filter into multiple queries with smaller `$in` operators and combine the results client-side.
 

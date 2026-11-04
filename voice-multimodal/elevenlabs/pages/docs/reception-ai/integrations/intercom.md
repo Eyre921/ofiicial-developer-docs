@@ -63,9 +63,9 @@ Intercom's MCP server doesn't support workspaces hosted in Australia.
 
 ## Troubleshooting
 
-| Problem                              | What to check                                                                                                     |
-| ------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
-| No tools are listed                  | Use the **Streamable HTTP** server type and the URL for your workspace's region.                                  |
-| A tool returns a permission error    | Add the missing permission to the app in the **Developer Hub**.                                                   |
-| The receptionist can't find a caller | Intercom matches phone numbers as stored on the contact. Store numbers in one format.                             |
-| You changed the token                | The secret token can only be set when you create the integration. Disconnect and reconnect it with the new token. |
+| Problem                              | What to check                                                                                          |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| No tools are listed                  | Use the **Streamable HTTP** server type and the URL for your workspace's region.                       |
+| A tool returns a permission error    | Add the missing permission to the app in the **Developer Hub**.                                        |
+| The receptionist can't find a caller | Intercom matches phone numbers as stored on the contact. Store numbers in one format.                  |
+| You changed the token                | Edit the integration and use **Rotate Secret Token (optional)**. The saved token is never shown again. |

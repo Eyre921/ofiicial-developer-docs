@@ -58,6 +58,7 @@ path: docs/stt-pre-recorded-feature-overview
 | [Callback](/docs/callback)             | [All available](/docs/models-languages-overview) |
 | [Tagging](/docs/stt-tagging)           | [All available](/docs/models-languages-overview) |
 | [Extra Metadata](/docs/extra-metadata) | [All available](/docs/models-languages-overview) |
+| [Redact usage](/docs/redact-usage)     | [All available](/docs/models-languages-overview) |
 
 ## Intelligence
 

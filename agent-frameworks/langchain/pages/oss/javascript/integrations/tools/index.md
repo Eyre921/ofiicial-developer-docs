@@ -76,6 +76,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`Continuity tools`](https://github.com/zerohourzulu/continuity/blob/main/packages/remote-tools/README.md#langchain-tools) | [  ![Downloads per month](https://img.shields.io/npm/dm/@ramex-labs/continuity-remote?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@ramex-labs/continuity-remote) |
 | [`pipe0Tools`](https://www.pipe0.com/docs/sdks/integrations/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/@pipe0/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@pipe0/langchain) |
 | [`InstantExpertToolkit`](https://github.com/Instant-Expert/integrations/tree/main/js/langchain-instant-expert#readme) | [  ![Downloads per month](https://img.shields.io/npm/dm/langchain-instant-expert?style=flat-square\&label=%20&)](https://www.npmjs.com/package/langchain-instant-expert) |
+| [`AgentForge`](https://github.com/acarchidi/agentforge-tools#langchain-js) | [  ![Downloads per month](https://img.shields.io/npm/dm/agentforge-tools?style=flat-square\&label=%20&)](https://www.npmjs.com/package/agentforge-tools) |
 | [`Respan`](https://www.respan.ai/docs/documentation/overview) | [  ![Downloads per month](https://img.shields.io/npm/dm/@respan/instrumentation-langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@respan/instrumentation-langchain) |
 | [`WebExtract`](https://webextract.dev/docs/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/@webextract/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@webextract/langchain) |
 | [`Fidacy Action Firewall`](https://github.com/fidacy/fidacy-open) | [  ![Downloads per month](https://img.shields.io/npm/dm/@fidacy/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@fidacy/langchain) |
@@ -93,6 +94,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`Mercedes-Benz Service Reminder (SilberArrows)`](https://github.com/gentlegiant96202/mercedes-benz-service-reminder-mcp#readme) | [  ![Downloads per month](https://img.shields.io/npm/dm/mercedes-benz-service-reminder-mcp?style=flat-square\&label=%20&)](https://www.npmjs.com/package/mercedes-benz-service-reminder-mcp) |
 | [`You.com search tools`](https://you.com/docs/integrations/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/@youdotcom-oss/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@youdotcom-oss/langchain) |
 | [`Toolstem`](https://toolstem.com) | [  ![Downloads per month](https://img.shields.io/npm/dm/langchain-toolstem?style=flat-square\&label=%20&)](https://www.npmjs.com/package/langchain-toolstem) |
+| [`OceanAltPayeeCheckTool`](https://oceanalt.com/en/developers/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/@oceanalt/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@oceanalt/langchain) |
 | [`Corsair`](https://docs.corsair.dev/mcp-adapters/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/@corsair-dev/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@corsair-dev/langchain) |
 | [`ClickSend`](/oss/javascript/integrations/tools/clicksend) | [  ![Downloads per month](https://img.shields.io/npm/dm/@clicksend/langchain-clicksend-mcp?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@clicksend/langchain-clicksend-mcp) |
 | [`CekiToolkit`](https://ceki.me) | [  ![Downloads per month](https://img.shields.io/npm/dm/@ceki/langchain-ceki?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@ceki/langchain-ceki) |
@@ -109,6 +111,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`Browserless`](https://browserless.io) | N/A |
 | [`JSON agent toolkit`](/oss/javascript/integrations/tools/json) | N/A |
 | [`NotteBrowserToolkit`](https://docs.notte.cc/integrations/langchain) | N/A |
+| [`SideQuest`](https://sidequestpays.com/docs#langchain) | N/A |
 | [`SQLToolkit`](/oss/javascript/integrations/tools/sql) | N/A |
 | [`VectorStoreToolkit`](/oss/javascript/integrations/tools/vectorstore) | N/A |
 | [`Web browser`](/oss/javascript/integrations/tools/webbrowser) | N/A |

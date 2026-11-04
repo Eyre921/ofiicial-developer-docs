@@ -525,6 +525,12 @@ These settings can differ between versions and branches:
 | **Versioned platform settings** | `evaluation` - evaluation criteria, `widget` - widget appearance and behavior, `data_collection` - structured data extraction, `overrides` - conversation initiation overrides, `workspace_overrides` - webhooks configuration, `testing` - test configurations, `safety` - guardrails (IVC/non-IVC settings) |
 | **Workflow**                    | Complete workflow definition (nodes and edges)                                                                                                                                                                                                                                                                |
 
+> **Warning**
+>
+> Versions store which custom tools are attached, by ID, but not the tools' definitions. Editing a
+> webhook, client or code tool changes it for every branch and version that uses it, including
+> main.
+
 ### Per-agent settings
 
 These settings belong to the agent rather than to a version, so every branch shares them:

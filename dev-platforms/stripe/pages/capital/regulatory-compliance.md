@@ -179,7 +179,7 @@ When marketing to either corporate or individual subscribers:
 - Don’t disguise or conceal your identity.
 - Provide a valid contact address so they can opt out or unsubscribe easily, offer an opt-out of messaging in every message. For example, opt out by reply, an unsubscribe link in emails, an ability to update communication preferences in the dashboard, or an **X** dismissal option in the embedded component.
 - Act on opt-outs promptly.
-- Maintain and keep up-to-date a “don’t contact” list of any users who opt out of messaging.
+- Maintain and keep up to date a “don’t contact” list of any users who opt out of messaging.
 - Screen any communications against the current “don’t contact” list and don’t send any communications to anyone who has opted out.
 - Avoid unsolicited communications.
 - Consider data protection law implications if you email employees at a corporate body who have personal corporate email addresses (firstname.lastname@org.co.uk). If you process personal data for marketing purposes, even in a business context, UK GDPR applies.

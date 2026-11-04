@@ -22,13 +22,13 @@ Run an exact nearest-neighbor search for each query vector over the source vecto
 
 **4. Query your index**
 
-[Create an index](/guides/index-data/create-an-index) whose dimension and metric match your model and the brute-force search. [Upsert](/guides/index-data/upsert-data) the source vectors, run the same queries with the same `top_k`, and record the returned record IDs.
+[Create an index](/guides/indexes/create-an-index) whose dimension and metric match your model and the brute-force search. [Upsert](/guides/data/upsert-data) the source vectors, run the same queries with the same `top_k`, and record the returned record IDs.
 
 **5. Calculate recall**
 
 For each query, recall is the fraction of the brute-force record IDs that Pinecone also returned. Average across all queries to get overall recall.
 
-If your index uses dedicated read nodes, query-time parameters trade recall for latency. See [Tune queries](/guides/index-data/dedicated-read-nodes/tune-queries).
+If your index uses dedicated read nodes, query-time parameters trade recall for latency. See [Tune queries](/guides/optimize/dedicated-read-nodes/tune-queries).
 
 **6. Report low recall**
 

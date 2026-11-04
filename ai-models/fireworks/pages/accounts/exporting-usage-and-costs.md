@@ -11,7 +11,7 @@ Break down Fireworks usage and rated costs by deployment, model, API key, or cus
 Fireworks reports billing along two dimensions:
 
 * **Usage** — metered quantities such as tokens, accelerator-seconds, and audio input seconds. You can break usage down by deployment, model, API key, or custom tags.
-* **Cost** — rated dollar amounts. Costs are reported at the account level: a range-wide total, or line items grouped by billing category (serverless, dedicated, training). They aren't broken down by the same dimensions as usage, so per-API-key or per-deployment dollar figures aren't returned today — to approximate them, multiply usage by the published [serverless prices](/serverless/pricing).
+* **Cost** — rated dollar amounts. Rated serverless text-generation costs can be grouped by model, model tier, user, API key, hour, or day with [`POST /usageCosts:query`](/api-reference/query-usage-costs), or exported as a CSV with [`firectl billing export-usage-costs`](/accounts/exporting-usage-costs). Other costs, such as dedicated deployments and training, are reported at the account level: a range-wide total, or line items grouped by billing category (serverless, dedicated, training). Per-deployment dollar figures aren't returned.
 
 For Enterprise accounts, these rated costs match monthly spend alerts: they include usage paid for with credits. Credit grants and purchases are reported separately.
 
@@ -26,7 +26,7 @@ The CLI and `billingUsage` share the same usage response shape and dimensions. M
 >
 > * **`GET /billingUsage`** — metered *quantities* (tokens, accelerator-seconds) grouped by deployment/model/API key/custom tags. No dollars. To **filter** (not just group) over HTTP, use **`POST /billingUsage:query`** with the same request shape in a JSON body (see the filter examples below).
 > * **`GET /billing/summary`** — rated *dollar line items* by billing category (serverless, dedicated, training), grouped by your billing config. Optional daily buckets. No per-model/per-key breakdown.
-> * **`POST /usageCosts:query`** — rated *dollar subtotals* grouped by caller-supplied dimensions (`HOUR`, `DAY`, `MODEL`, `USER`, `API_KEY`), with pagination and an account-wide `subtotal`. This is the endpoint to use when you need *costs* (not just quantities) broken down by model, user, or API key. Requires account administrator access for `ACCOUNT` scope; `SELF` scope returns only the authenticated user's costs. See [Query usage costs](/api-reference/query-usage-costs). For a ready-made CSV of the same data, use [`firectl billing export-usage-costs`](/accounts/exporting-usage-costs).
+> * **`POST /usageCosts:query`** — rated *dollar subtotals* grouped by caller-supplied dimensions (`HOUR`, `DAY`, `MODEL`, `MODEL_TIER`, `USER`, `API_KEY`), with pagination and an account-wide `subtotal`. This is the endpoint to use when you need *costs* (not just quantities) broken down by model, user, or API key. Requires account administrator access for `ACCOUNT` scope; `SELF` scope returns only the authenticated user's costs. See [Query usage costs](/api-reference/query-usage-costs). For a ready-made CSV of the same data, use [`firectl billing export-usage-costs`](/accounts/exporting-usage-costs).
 
 This page complements the two CSV exports: use [`export-metrics`](/accounts/exporting-billing-metrics) for a raw per-event dump, [`export-usage-costs`](/accounts/exporting-usage-costs) for rated serverless costs grouped by model, model tier, user, or API key, and the workflows here for ad-hoc grouped usage and rated views.
 
@@ -365,7 +365,7 @@ curl -sG "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/billingUsage" \
         | sort_by(.model)'
 ```
 
-Multiply the token totals by the published [serverless prices](/serverless/pricing) to convert to dollars for chargeback.
+For rated dollars per key, query [`POST /usageCosts:query`](/api-reference/query-usage-costs) grouped by `API_KEY` instead of multiplying the token totals by the published [serverless prices](/serverless/pricing).
 
 ### Backfill more than 31 days
 
@@ -403,7 +403,7 @@ done
 
 ## Coverage caveats
 
-* **Tokens, not dollars.** The endpoint returns metered quantities (`promptTokens`, `completionTokens`, `accelerator_seconds`, `audioInputSeconds`). Multiply by the [serverless prices](/serverless/pricing) for cost, or use `--account-costs-only` for account-level dollar totals.
+* **Tokens, not dollars.** The endpoint returns metered quantities (`promptTokens`, `completionTokens`, `accelerator_seconds`, `audioInputSeconds`). For rated serverless costs, use [`POST /usageCosts:query`](/api-reference/query-usage-costs), or use `--account-costs-only` for account-level dollar totals.
 * **Inference types covered today**: text completion / chat completion and audio inference. Embeddings and image generation aren't yet reflected in `billingUsage` responses; coverage will expand in subsequent releases.
 * **Dedicated deployments** are attributed at the deployment level, not by API key. Use `usageType=DEDICATED_DEPLOYMENT` with `groupBy=deployment_name` for that breakdown.
 
@@ -416,7 +416,7 @@ done
 * [`firectl billing get-usage`](/tools-sdks/firectl/commands/billing-get-usage) - CLI command reference
 * [`GET /v1/accounts/{account_id}/billingUsage`](/api-reference/get-billing-usage) - HTTP API reference
 * [`GET /v1/accounts/{account_id}/billing/summary`](/api-reference/get-billing-summary) - Rated dollar costs by billing category, with optional daily breakdown
-* [`POST /v1/accounts/{account_id}/usageCosts:query`](/api-reference/query-usage-costs) - Rated dollar subtotals grouped by hour/day/model/user/API key
+* [`POST /v1/accounts/{account_id}/usageCosts:query`](/api-reference/query-usage-costs) - Rated dollar subtotals grouped by hour/day/model/model tier/user/API key
 * [Exporting Usage Costs](/accounts/exporting-usage-costs) - Rated serverless cost CSV via `firectl billing export-usage-costs`
 * [Exporting Billing Metrics](/accounts/exporting-billing-metrics) - Raw per-event billing CSV export
 * [Account quotas](/guides/quotas_usage/account-quotas) - Spending tiers and monthly spend limits

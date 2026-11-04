@@ -157,9 +157,9 @@ For [Bring Your Own Cloud (BYOC)](/guides/production/bring-your-own-cloud), you 
 >
 > This feature is available on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).
 
-A backup is a static copy of your index that only consumes storage. It's a non-queryable representation of a set of records. You can [create a backup](/guides/manage-data/back-up-an-index) of an index, and you can [create a new index from a backup](/guides/manage-data/restore-an-index). This allows you to restore the index with the same or different configurations.
+A backup is a static copy of your index that only consumes storage. It's a non-queryable representation of a set of records. You can [create a backup](/guides/indexes/back-up-an-index) of an index, and you can [create a new index from a backup](/guides/indexes/restore-an-index). This allows you to restore the index with the same or different configurations.
 
-For more information, see [Understanding backups](/guides/manage-data/backups-overview).
+For more information, see [Understanding backups](/guides/indexes/backups-overview).
 
 ### Encryption at rest
 

@@ -17,7 +17,7 @@ Inboxes are useful for:
 
 ## How Inboxes work
 
-Inboxes mirror the familiar email inbox structure, using [**threads**](/docs/dashboard/inboxes/threads), [**labels**](/docs/dashboard/inboxes/labels), and [**drafts**](/docs/dashboard/inboxes/drafts) to organize your conversations. `inbox`, `sent`, `archive`, `trash`, and `spam` folders are built in to your Resend Inbox.
+Inboxes mirror the familiar email inbox structure, using [**threads**](/docs/guides/inboxes/threads), [**labels**](/docs/guides/inboxes/labels), and [**drafts**](/docs/guides/inboxes/drafts) to organize your conversations. `inbox`, `sent`, `archive`, `trash`, and `spam` folders are built in to your Resend Inbox.
 
 > [!NOTE]
 >
@@ -44,7 +44,7 @@ With Resend Inboxes you can:
 
 ## Prerequisites
 
-* A [verified domain with receiving enabled](/docs/dashboard/receiving/custom-domains). If you are unable to configure your custom domain to receive email, then you must configure [Inbox forwarding](/docs/dashboard/inboxes/create-inboxes#forward-an-existing-address) when you create your Inbox.
+* A [verified domain with receiving enabled](/docs/dashboard/receiving/custom-domains). If you are unable to configure your custom domain to receive email, then you must configure [Inbox forwarding](/docs/guides/inboxes/create-inboxes#forward-an-existing-address) when you create your Inbox.
 
 ## Quickstart
 
@@ -72,26 +72,26 @@ The reply goes out from the inbox address and stays in the same thread.
 
 ## Related Guides
 
-> [card] [Create inboxes](/docs/dashboard/inboxes/create-inboxes)
+> [card] [Create inboxes](/docs/guides/inboxes/create-inboxes)
 >
 > Create an address on a verified domain, or forward an existing address.
 
-> [card] [Manage inboxes](/docs/dashboard/inboxes/manage-inboxes)
+> [card] [Manage inboxes](/docs/guides/inboxes/manage-inboxes)
 >
 > Rename, update, and delete inboxes.
 
-> [card] [Manage threads](/docs/dashboard/inboxes/threads)
+> [card] [Manage threads](/docs/guides/inboxes/threads)
 >
 > Read, search, and organize conversations, and reply to or forward emails.
 
-> [card] [Drafts](/docs/dashboard/inboxes/drafts)
+> [card] [Drafts](/docs/guides/inboxes/drafts)
 >
 > Write a message now and send it later.
 
-> [card] [Labels](/docs/dashboard/inboxes/labels)
+> [card] [Labels](/docs/guides/inboxes/labels)
 >
 > Tag threads with colored labels to keep them organized.
 
-> [card] [Inbox agent](/docs/dashboard/inboxes/agent)
+> [card] [Inbox agent](/docs/guides/inboxes/agent)
 >
 > Let the built-in agent triage incoming threads from your instructions.

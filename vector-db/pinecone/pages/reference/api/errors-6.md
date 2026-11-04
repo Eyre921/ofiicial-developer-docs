@@ -42,7 +42,7 @@ The request failed due to delinquent payment or account deactivation for non-pay
 
 ### 403 - FORBIDDEN
 
-The request failed due to an exceeded [quota](/reference/api/database-limits/object-limits) or [index deletion protection](/guides/manage-data/manage-indexes#configure-deletion-protection).
+The request failed due to an exceeded [quota](/reference/api/database-limits/object-limits) or [index deletion protection](/guides/indexes/manage-indexes#configure-deletion-protection).
 
 ### 404 - NOT FOUND
 
@@ -103,7 +103,7 @@ pc.create_index(
 )
 ```
 
-In Python SDK 10, `spec` is optional and new indexes default to AWS `us-east-1`. For current syntax, see [Create an index](/guides/index-data/create-an-index).
+In Python SDK 10, `spec` is optional and new indexes default to AWS `us-east-1`. For current syntax, see [Create an index](/guides/indexes/create-an-index).
 
 ### Serverless index limit reached
 
@@ -113,8 +113,8 @@ Request failed. You've reached the max serverless indexes allowed in project PRO
 
 The API returns this with status `403` when the project already has as many serverless indexes as your plan allows. For the limit on each plan, see [Object limits](/reference/api/database-limits/object-limits). To fix it, do one of the following:
 
-* [Delete indexes](/guides/manage-data/manage-indexes#delete-an-index) you no longer need.
-* Store data in [namespaces](/guides/index-data/implement-multitenancy) within one index instead of creating separate indexes.
+* [Delete indexes](/guides/indexes/manage-indexes#delete-an-index) you no longer need.
+* Store data in [namespaces](/guides/data/implement-multitenancy) within one index instead of creating separate indexes.
 * [Upgrade your plan](/admin/billing/upgrade-billing-plan).
 
 ## Outdated Python SDK errors

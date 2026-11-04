@@ -248,7 +248,7 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 - [Using URL parameters](https://docs.expo.dev/router/reference/url-parameters.md)
 - [Color](https://docs.expo.dev/router/reference/color.md)
 - [Sitemap](https://docs.expo.dev/router/reference/sitemap.md)
-- [Redirects](https://docs.expo.dev/router/reference/redirects.md)
+- [Redirects and rewrites](https://docs.expo.dev/router/reference/redirects.md)
 - [Link preview](https://docs.expo.dev/router/reference/link-preview.md)
 - [Typed routes](https://docs.expo.dev/router/reference/typed-routes.md)
 - [Screen tracking for analytics](https://docs.expo.dev/router/reference/screen-tracking.md)

@@ -8,7 +8,7 @@ Understand Pinecone's policy of not refunding unused indexes, and why migrating 
 
 As a rule, Pinecone doesn't offer refunds for unused indexes. If you use a pod-based index, Pinecone charges only for the pods you use to create it, not per API call or query. Whether or not you've used your index doesn't affect billing.
 
-Serverless indexes are a better fit if you don't plan to use your index on a regular basis. Serverless indexes are billed by the number of reads and writes you run and how much storage your index consumes. If your bill for your pod-based index is too high, we recommend [migrating to a serverless index](/guides/indexes/pods/migrate-a-pod-based-index-to-serverless) instead.
+Serverless indexes are a better fit if you don't plan to use your index on a regular basis. Serverless indexes are billed by the number of reads and writes you run and how much storage your index consumes. If your bill for your pod-based index is too high, we recommend [migrating to a serverless index](/guides/legacy/pod-based-indexes/migrate-a-pod-based-index-to-serverless) instead.
 
 Pinecone's billing policies are detailed in the [user agreement](https://www.pinecone.io/user-agreement/) and [pricing page](https://pinecone.io/pricing).
 

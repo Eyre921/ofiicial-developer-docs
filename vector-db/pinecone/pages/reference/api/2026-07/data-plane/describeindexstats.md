@@ -11,7 +11,7 @@ Serverless indexes scale automatically as needed, so index fullness is relevant 
 
 > [!NOTE]
 >
-> Index fullness is also relevant for [dedicated read nodes](/guides/index-data/dedicated-read-nodes/concepts#index-fullness). The response includes `memoryFullness` and `storageFullness` alongside `indexFullness`, which summarizes overall capacity usage. For serverless on-demand indexes, all three values are typically `0` because storage and compute scale automatically. For dedicated indexes, these values indicate when the index needs more capacity. See [Scale your index](/guides/index-data/dedicated-read-nodes/scale).
+> Index fullness is also relevant for [dedicated read nodes](/guides/optimize/dedicated-read-nodes/concepts#index-fullness). The response includes `memoryFullness` and `storageFullness` alongside `indexFullness`, which summarizes overall capacity usage. For serverless on-demand indexes, all three values are typically `0` because storage and compute scale automatically. For dedicated indexes, these values indicate when the index needs more capacity. See [Scale your index](/guides/optimize/dedicated-read-nodes/scale).
 
 ```python Python theme={null}
 # pip install --upgrade pinecone
@@ -19,7 +19,7 @@ import os
 from pinecone import Pinecone
 
 pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
-# To get the host for an index, see https://docs.pinecone.io/guides/manage-data/target-an-index
+# To get the host for an index, see https://docs.pinecone.io/guides/indexes/target-an-index
 index = pc.index(host="INDEX_HOST")
 
 stats = index.describe_index_stats()
@@ -35,7 +35,7 @@ import { Pinecone } from '@pinecone-database/pinecone';
 // Reads PINECONE_API_KEY from the environment
 const pc = new Pinecone();
 
-// To get the host for an index, see https://docs.pinecone.io/guides/manage-data/target-an-index
+// To get the host for an index, see https://docs.pinecone.io/guides/indexes/target-an-index
 const index = pc.index({ host: 'INDEX_HOST' });
 
 const stats = await index.describeIndexStats();
@@ -67,7 +67,7 @@ func main() {
         log.Fatalf("Failed to create Client: %v", err)
     }
 
-    // To get the host for an index, see https://docs.pinecone.io/guides/manage-data/target-an-index
+    // To get the host for an index, see https://docs.pinecone.io/guides/indexes/target-an-index
     idxConnection, err := pc.Index(pinecone.NewIndexConnParams{
         Host: "INDEX_HOST",
     })
@@ -88,7 +88,7 @@ func main() {
 
 ```shell curl theme={null}
 # To get the unique host for an index,
-# see https://docs.pinecone.io/guides/manage-data/target-an-index
+# see https://docs.pinecone.io/guides/indexes/target-an-index
 PINECONE_API_KEY="YOUR_API_KEY"
 INDEX_HOST="YOUR_INDEX_HOST"
 

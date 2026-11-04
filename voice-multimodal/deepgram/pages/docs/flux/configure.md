@@ -35,14 +35,15 @@ Configuration updates are processed in order with your audio stream and take eff
 
 You can update the following parameters mid-stream:
 
-| Parameter             | Type    | Range                    | Description                                                                                                                                                                                                                                                           |
-| --------------------- | ------- | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `keyterms`            | array   | Up to 100 terms          | Custom vocabulary terms to boost recognition accuracy. **Note:** Sending keyterms replaces the entire list, not merge.                                                                                                                                                |
-| `language_hints`      | array   | Supported language codes | Bias `flux-general-multi` toward specific languages. **Note:** Non-empty array replaces current hints. Empty array `[]` clears hints. Omit or `null` to keep current hints unchanged. See [Language Prompting](/docs/flux/language-prompting).                        |
-| `eot_threshold`       | number  | 0.5-1.0                  | Confidence threshold for standard turn detection. Higher values mean more confidence required before detecting turn end. Set to `1.0` to suppress natural end-of-turn.                                                                                                |
-| `eager_eot_threshold` | number  | 0.3-0.9                  | Confidence threshold for eager turn detection. Must be ≤ `eot_threshold`.                                                                                                                                                                                             |
-| `eot_timeout_ms`      | number  | 500-60000                | Maximum silence duration (in milliseconds) before forcing turn end.                                                                                                                                                                                                   |
-| `numerals`            | boolean | `true` / `false`         | Convert numbers from written format to numerical format (for example, "twenty twenty six" to "2026"). Applies to transcripts Flux STT sends after it processes the update. Set the initial value with the `numerals` query parameter. See [Numerals](/docs/numerals). |
+| Parameter             | Type    | Range                    | Description                                                                                                                                                                                                                                                                                                     |
+| --------------------- | ------- | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `keyterms`            | array   | Up to 100 terms          | Custom vocabulary terms to boost recognition accuracy. **Note:** Sending keyterms replaces the entire list, not merge.                                                                                                                                                                                          |
+| `language_hints`      | array   | Supported language codes | Bias `flux-general-multi` toward specific languages. **Note:** Non-empty array replaces current hints. Empty array `[]` clears hints. Omit or `null` to keep current hints unchanged. See [Language Prompting](/docs/flux/language-prompting).                                                                  |
+| `eot_threshold`       | number  | 0.5-1.0                  | Confidence threshold for standard turn detection. Higher values mean more confidence required before detecting turn end. Set to `1.0` to suppress natural end-of-turn.                                                                                                                                          |
+| `eager_eot_threshold` | number  | 0.3-0.9                  | Confidence threshold for eager turn detection. Must be ≤ `eot_threshold`.                                                                                                                                                                                                                                       |
+| `eot_timeout_ms`      | number  | 500-60000                | Maximum silence duration (in milliseconds) before forcing turn end.                                                                                                                                                                                                                                             |
+| `numerals`            | boolean | `true` / `false`         | Convert numbers from written format to numerical format (for example, "twenty twenty six" to "2026"). Applies to transcripts Flux STT sends after it processes the update. Set the initial value with the `numerals` query parameter. See [Numerals](/docs/numerals).                                           |
+| `redact_usage`        | boolean | `true`                   | Redact keyterms sent in this and later Configure messages from this connection's usage records. Doesn't redact keyterms in the connection URL; set `redact_usage=true` on the URL for that. Once on, it stays on for the rest of the connection; `false` has no effect. See [Redact usage](/docs/redact-usage). |
 
 All parameters are optional in a Configure message. Omitted parameters retain their current values.
 
@@ -141,6 +142,16 @@ Thresholds must be nested under a `"thresholds"` object. Individual threshold pr
 }
 ```
 
+**`Redact Usage and Update Keyterms`**
+
+```json Redact Usage and Update Keyterms
+{
+  "type": "Configure",
+  "redact_usage": true,
+  "keyterms": ["Jane Doe", "Acme"]
+}
+```
+
 ### Response Messages
 
 #### ConfigureSuccess
@@ -229,6 +240,7 @@ Configure messages are validated using the same rules as initial connection para
 * Threshold values must be within valid ranges
 * Keyterms array must contain ≤ 100 terms
 * `numerals` must be a JSON boolean (`true` or `false`)
+* `redact_usage` must be a JSON boolean (`true` or `false`)
 
 **Important:** A failed Configure message (returning `ConfigureFailure`) does NOT affect the stream. The connection continues with the previous configuration unchanged. Schema errors are the exception: a message that fails schema validation closes the connection (see the warning below).
 

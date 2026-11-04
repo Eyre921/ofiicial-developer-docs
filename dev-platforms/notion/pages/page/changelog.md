@@ -4,6 +4,14 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+**November 4, 2026**
+
+### Beta flags and typed view filters in the JavaScript SDK
+
+Pass `betas` to a typed SDK method to opt one request into an [API beta](/reference/versioning#beta-versions). TypeScript now accepts filters, sorts, and quick filters when you [create a view](/reference/create-view). It also checks filters and quick filters on `views.update`.
+
+**SDK support**: [`@notionhq/client` v5.31.0](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.31.0).
+
 **November 3, 2026**
 
 ### Restore past versions in Notion MCP

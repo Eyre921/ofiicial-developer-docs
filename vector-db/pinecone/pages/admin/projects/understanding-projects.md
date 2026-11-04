@@ -6,7 +6,7 @@ path: admin/projects/understanding-projects
 
 Learn how Pinecone projects organize indexes, cloud environments, API keys, and members, including project roles and per-role permission summaries.
 
-A Pinecone project belongs to an [organization](/admin/organizations/understanding-organizations) and contains [indexes](/guides/index-data/indexing-overview), [assistants](/guides/assistant/overview), and users. Only a user who belongs to the project can access the indexes and assistants in that project. Each project also has at least one project owner.
+A Pinecone project belongs to an [organization](/admin/organizations/understanding-organizations) and contains [indexes](/guides/indexes/indexing-overview), [assistants](/guides/assistant/overview), and users. Only a user who belongs to the project can access the indexes and assistants in that project. Each project also has at least one project owner.
 
 ## Project environments
 
@@ -51,7 +51,7 @@ For pod-based indexes, the roles have these additional permissions:
 
 > [!WARNING]
 >
-> Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/index-data/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
+> Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/indexes/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/optimize/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
 
 | Permission | Owner | Manager | Member |
 | :- | :-: | :-: | :-: |

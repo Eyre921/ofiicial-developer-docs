@@ -30,7 +30,7 @@ Agent Skills work with [GitHub Copilot](https://github.com/features/copilot) and
 
 * A [Pinecone API key](https://app.pinecone.io/organizations/-/keys)
 * [Node.js](https://nodejs.org/) installed (for `npx`)
-* [Pinecone MCP server](/guides/operations/mcp-server) configured in your IDE (optional, enables the `pinecone-query` skill)
+* [Pinecone MCP server](/guides/agents/mcp-server) configured in your IDE (optional, enables the `pinecone-query` skill)
 * [uv](https://docs.astral.sh/uv/getting-started/installation/) installed (required to run the bundled Python scripts, including the quickstart skill)
 * [Pinecone CLI](/reference/cli/quickstart) installed (optional, enables the `pinecone-cli` skill)
 
@@ -56,7 +56,7 @@ This downloads Pinecone's skills into your project, making them available to you
 
 **3. Configure the MCP server (optional)**
 
-For full functionality, configure the [Pinecone MCP server](/guides/operations/mcp-server) in your IDE. This enables the `pinecone-query` skill and direct index operations.
+For full functionality, configure the [Pinecone MCP server](/guides/agents/mcp-server) in your IDE. This enables the `pinecone-query` skill and direct index operations.
 
 ## Available skills
 
@@ -74,11 +74,11 @@ For full functionality, configure the [Pinecone MCP server](/guides/operations/m
 
 ## MCP tools
 
-Agent Skills work alongside the [Pinecone MCP server](/guides/operations/mcp-server), which provides tools for listing indexes, creating indexes, upserting records, searching, reranking, and more. Configure the MCP server in your IDE to enable the `pinecone-query` skill and direct index operations.
+Agent Skills work alongside the [Pinecone MCP server](/guides/agents/mcp-server), which provides tools for listing indexes, creating indexes, upserting records, searching, reranking, and more. Configure the MCP server in your IDE to enable the `pinecone-query` skill and direct index operations.
 
-For the full list of MCP tools, see [Use the Pinecone MCP server](/guides/operations/mcp-server).
+For the full list of MCP tools, see [Use the Pinecone MCP server](/guides/agents/mcp-server).
 
 ## Resources
 
 * [GitHub repository](https://github.com/pinecone-io/skills)
-* [Pinecone MCP server guide](/guides/operations/mcp-server)
+* [Pinecone MCP server guide](/guides/agents/mcp-server)

@@ -26,7 +26,7 @@ from pinecone import Pinecone
 pc = Pinecone(api_key="YOUR_API_KEY")
 
 # To get the unique host for an index, 
-# see https://docs.pinecone.io/guides/manage-data/target-an-index
+# see https://docs.pinecone.io/guides/indexes/target-an-index
 index = pc.index(host="INDEX_HOST")
 
 ranked_results = index.search(
@@ -52,7 +52,7 @@ import { Pinecone } from '@pinecone-database/pinecone'
 const pc = new Pinecone({ apiKey: "YOUR_API_KEY" })
 
 // To get the unique host for an index, 
-// see https://docs.pinecone.io/guides/manage-data/target-an-index
+// see https://docs.pinecone.io/guides/indexes/target-an-index
 const namespace = pc.index("INDEX_NAME", "INDEX_HOST").namespace("example-namespace");
 
 const response = await namespace.searchRecords({
@@ -85,7 +85,7 @@ public class SearchText {
     public static void main(String[] args) throws ApiException {
         PineconeConfig config = new PineconeConfig("YOUR_API_KEY");
         // To get the unique host for an index, 
-        // see https://docs.pinecone.io/guides/manage-data/target-an-index
+        // see https://docs.pinecone.io/guides/indexes/target-an-index
         config.setHost("INDEX_HOST");
         PineconeConnection connection = new PineconeConnection(config);
 
@@ -139,7 +139,7 @@ func main() {
     }
 
     // To get the unique host for an index, 
-    // see https://docs.pinecone.io/guides/manage-data/target-an-index
+    // see https://docs.pinecone.io/guides/indexes/target-an-index
     idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST", Namespace: "example-namespace"})
     if err != nil {
         log.Fatalf("Failed to create IndexConnection for Host: %v", err)

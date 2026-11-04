@@ -100,7 +100,7 @@ The Terraform Provider for Pinecone provides the following resources:
 
 ### Indexes
 
-The `pinecone_index` resource lets you create, update, and delete [indexes](/guides/index-data/indexing-overview). It describes an index in one of two styles:
+The `pinecone_index` resource lets you create, update, and delete [indexes](/guides/indexes/indexing-overview). It describes an index in one of two styles:
 
 * **The `schema` style**, with `schema` and `deployment`. This is how API version `2026-07` describes indexes, and it's the style to use for new indexes.
 * **The `spec` style**, with `dimension`, `metric`, `vector_type`, `spec`, and `embed`. This is how earlier versions of the provider described indexes, and it's planned for deprecation. Legacy integrated indexes and existing pod-based indexes still need it.
@@ -109,7 +109,7 @@ A configuration uses one style or the other. You can't combine `schema` or `depl
 
 #### Document indexes
 
-A `schema` of named fields creates a [document index](/guides/index-data/adopt-the-documents-api), which you read and write through the Documents API. Each field sets exactly one of `dense_vector`, `sparse_vector`, or `string`. A `string` field stores its text by default, and a field that stores its text is always indexed for [full-text search](/guides/search/full-text-search). A `string` field can also use [integrated embedding](#integrated-embedding).
+A `schema` of named fields creates a [document index](/guides/core-concepts/key-terms#document-index), which you read and write through the Documents API. Each field sets exactly one of `dense_vector`, `sparse_vector`, or `string`. A `string` field stores its text by default, and a field that stores its text is always indexed for [full-text search](/guides/search/full-text-search). A `string` field can also use [integrated embedding](#integrated-embedding).
 
 ```hcl Terraform theme={null}
 resource "pinecone_index" "example_index_documents" {
@@ -183,7 +183,7 @@ Note the following behaviors:
 
 #### Vector indexes
 
-A schema made only of the reserved fields `_values` (dense) and `_sparse_values` (sparse) creates a [vector index](/guides/index-data/indexing-overview), which you read and write through the Vectors API. `_values` always needs both `dimension` and `metric`.
+A schema made only of the reserved fields `_values` (dense) and `_sparse_values` (sparse) creates a [legacy vector index](/guides/legacy/vectors-api/create-a-vector-index), which you read and write through the legacy Vectors API. `_values` always needs both `dimension` and `metric`.
 
 ```hcl Terraform theme={null}
 # Index that stores dense vectors
@@ -247,7 +247,7 @@ resource "pinecone_index" "example_index_byoc" {
 
 #### Read capacity
 
-Serverless and BYOC indexes support configurable read capacity through `read_capacity`. There are two modes: `on_demand`, which is the default, and `dedicated`, which provisions [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview). In the `schema` style, set `read_capacity` at the top level of the resource.
+Serverless and BYOC indexes support configurable read capacity through `read_capacity`. There are two modes: `on_demand`, which is the default, and `dedicated`, which provisions [dedicated read nodes](/guides/optimize/dedicated-read-nodes/overview). In the `schema` style, set `read_capacity` at the top level of the resource.
 
 ```hcl Terraform theme={null}
 resource "pinecone_index" "example_index_dedicated" {
@@ -305,7 +305,7 @@ resource "pinecone_index" "example_index_cmek" {
 
 #### Update and recreate indexes
 
-You can [update](/guides/manage-data/manage-indexes) the following attributes of an existing index in place:
+You can [update](/guides/indexes/manage-indexes) the following attributes of an existing index in place:
 
 * `deletion_protection`
 * `tags`
@@ -326,7 +326,7 @@ terraform apply
 
 #### Move an index to the schema style
 
-You can move an existing vector index from the `spec` style to the `schema` style without replacing it. Rewrite the configuration to describe the same index, and the plan shows an in-place update that only changes Terraform state. The API isn't called.
+You can move an existing legacy vector index from the `spec` style to the `schema` style without replacing it. Rewrite the configuration to describe the same index, and the plan shows an in-place update that only changes Terraform state. The API isn't called.
 
 ```hcl Terraform theme={null}
 # Before: the spec style
@@ -405,9 +405,9 @@ resource "pinecone_index" "example_index_legacy_integrated" {
 
 > [!WARNING]
 >
-> Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/index-data/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
+> Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/indexes/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/optimize/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
 
-API version `2026-07` doesn't support creating [pod-based indexes](/guides/indexes/pods/understanding-pod-based-indexes), so the provider can't create them either, including from a collection with `spec.pod.source_collection`. You can still [import](#import-existing-resources), scale, and delete existing pod-based indexes.
+API version `2026-07` doesn't support creating [pod-based indexes](/guides/legacy/pod-based-indexes/understanding-pod-based-indexes), so the provider can't create them either, including from a collection with `spec.pod.source_collection`. You can still [import](#import-existing-resources), scale, and delete existing pod-based indexes.
 
 ```hcl Terraform theme={null}
 # An existing pod-based index, brought under management with terraform import
@@ -460,7 +460,7 @@ resource "pinecone_index" "example_index_timeouts" {
 
 ### Collections
 
-The `pinecone_collection` resource lets you create and delete [collections](/guides/indexes/pods/understanding-collections). Collections are created from pod-based indexes, which can no longer be created, so set `source` to the name of an existing pod-based index.
+The `pinecone_collection` resource lets you create and delete [collections](/guides/legacy/pod-based-indexes/understanding-collections). Collections are created from pod-based indexes, which can no longer be created, so set `source` to the name of an existing pod-based index.
 
 ```hcl Terraform theme={null}
 resource "pinecone_collection" "example_collection" {
@@ -477,7 +477,7 @@ The `pinecone_project` resource lets you create, update, and delete [projects](/
 
 > [!WARNING]
 >
-> Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/index-data/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
+> Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/indexes/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/optimize/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
 
 Customers on those plans also can't set `max_pods` for a project.
 
@@ -750,7 +750,7 @@ For example:
 terraform import pinecone_user.example_user YOUR_USER_ID
 ```
 
-Import stores document indexes in state in the `schema` style, and every other index in the `spec` style, however the index was created. You can still import a vector index into a `schema` style configuration. The next plan [moves it](#move-an-index-to-the-schema-style) with the same state-only update.
+Import stores document indexes in state in the `schema` style, and every other index in the `spec` style, however the index was created. You can still import a legacy vector index into a `schema` style configuration. The next plan [moves it](#move-an-index-to-the-schema-style) with the same state-only update.
 
 > [!NOTE]
 >
@@ -765,7 +765,7 @@ Some attributes can't be imported because Pinecone returns them only once:
 
 The provider manages infrastructure only. You reference BYOC environments that Pinecone provisions for you. The provider doesn't support the following:
 
-* [Backups for serverless indexes](/guides/manage-data/backups-overview), including restoring an index from a backup
+* [Backups for serverless indexes](/guides/indexes/backups-overview), including restoring an index from a backup
 * Creating pod-based indexes, or creating an index from a collection
 * [Private endpoints](/guides/production/configure-private-endpoints)
 * [Assistants](/guides/assistant/overview)

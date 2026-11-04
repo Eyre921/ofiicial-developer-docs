@@ -12,6 +12,8 @@ Reception.ai keeps a client record for everyone who calls, books, or orders. You
 
 ## How clients are created
 
+On an inbound phone call that has a caller ID, Reception.ai looks that number up as a client before the receptionist speaks. The lookup follows the same rules as a lookup during the call, including secure mode. Outbound calls, website chat, and text conversations are not looked up this way.
+
 Clients are created or updated automatically when:
 
 * A caller books, orders, or leaves a message and shares a usable phone number

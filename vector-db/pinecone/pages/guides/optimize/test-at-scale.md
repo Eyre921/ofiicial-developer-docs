@@ -10,7 +10,7 @@ This guide walks you through testing Pinecone at production scale. You'll import
 
 > [!NOTE]
 >
-> This test requires a Pinecone account on the Standard or Enterprise plan because it uses [import from object storage](/guides/index-data/import-data), which isn't available on the Starter or Builder plans. New users can sign up for the [Standard trial](/admin/billing/standard-trial) for 21 days and \$300 in credits, more than enough to cover the costs of this test. Existing users on the Starter or Builder plan can activate the trial or [upgrade](/admin/billing/upgrade-billing-plan).
+> This test requires a Pinecone account on the Standard or Enterprise plan because it uses [import from object storage](/guides/data/import-data), which isn't available on the Starter or Builder plans. New users can sign up for the [Standard trial](/admin/billing/standard-trial) for 21 days and \$300 in credits, more than enough to cover the costs of this test. Existing users on the Starter or Builder plan can activate the trial or [upgrade](/admin/billing/upgrade-billing-plan).
 
 ## About this test
 
@@ -97,7 +97,7 @@ Create an on-demand index that matches the dimensions and similarity metric of t
 
 ## 3. Import the dataset
 
-Pinecone's [import feature](/guides/index-data/import-data) enables you to load millions of vectors from object storage in parallel. In this step, you'll import 10 million records into a single namespace (`ns_2`) in your index.
+Pinecone's [import feature](/guides/data/import-data) enables you to load millions of vectors from object storage in parallel. In this step, you'll import 10 million records into a single namespace (`ns_2`) in your index.
 
 ### Choose an import source
 
@@ -384,4 +384,4 @@ The total cost for the test is the sum of the import cost, query cost, and stora
 
 ## 7. Clean up
 
-When you no longer need your test index, [delete it](/guides/manage-data/manage-indexes#delete-an-index) to avoid incurring unnecessary costs.
+When you no longer need your test index, [delete it](/guides/indexes/manage-indexes#delete-an-index) to avoid incurring unnecessary costs.

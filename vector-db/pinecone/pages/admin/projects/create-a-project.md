@@ -88,5 +88,5 @@ If you're an [organization owner or organization manager](/admin/organizations/u
 ## Next steps
 
 * [Add users to your project](/admin/projects/manage-project-members#add-members-to-a-project)
-* [Create an index](/guides/index-data/create-an-index)
+* [Create an index](/guides/indexes/create-an-index)
 * [Create an assistant](/guides/assistant/create-assistant)

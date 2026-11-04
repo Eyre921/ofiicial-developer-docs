@@ -24,7 +24,7 @@ In Reception.ai, go to **Integrations**, select **Add integration**, and choose 
 
 Paste the key into **API key** and select **Enable**.
 
-To replace the key later, edit the integration and use **Rotate API key**.
+To replace the key later, edit the integration and use **Rotate API key (optional)**.
 
 ## What changes when Cal.com is connected
 

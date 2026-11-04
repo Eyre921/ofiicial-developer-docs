@@ -293,7 +293,7 @@ The equivalent HTTP field is `systemPrompt`:
 > | **RUNNING** | Actively processing requests |
 > | **COMPLETED** | All requests successfully processed |
 > | **FAILED** | Unrecoverable error occurred (check status message) |
-> | **EXPIRED** | Exceeded chosen time limit (12, 24, 48, 72 hrs). Completed requests are saved. |
+> | **EXPIRED** | Reached its job expiration time (24 hours by default). Completed requests are saved. |
 
 > [accordion] Supported models
 >
@@ -307,11 +307,11 @@ The equivalent HTTP field is `systemPrompt`:
 > * **Per-request limits:** Same as [Chat Completion API limits](/api-reference/post-chatcompletions)
 > * **Input dataset:** Up to 80 GiB
 > * **Output dataset:** Max 8GB (job may expire early if limit is reached)
-> * **Job expiration:** Select from 12, 24, 48, 72 hours maximum in Optional Settings
+> * **Job expiration:** 12 to 72 hours after creation, 24 hours by default. In the console, choose 12, 24, 36, 48, or 72 hours in *Optional Settings*. With firectl, pass `--max-job-duration` (for example, `--max-job-duration 48h`). In the API, set `maxJobDuration` as a duration in seconds (for example, `"172800s"` for 48 hours). Positive values outside 12 to 72 hours are clamped to the nearest limit.
 
 > [accordion] Handling expired jobs
 >
-> Jobs expire after 24 hours. Completed rows are billed and saved to the output dataset.
+> Jobs expire when they reach their job expiration time (24 hours by default). Completed rows are billed and saved to the output dataset.
 >
 > **Resume processing:**
 >
@@ -322,7 +322,7 @@ The equivalent HTTP field is `systemPrompt`:
 >   --output-dataset-id new-output-dataset
 > ```
 >
-> This processes only unfinished/failed requests from the original job.
+> This processes only unfinished/failed requests from the original job. The new job doesn't inherit the original job's expiration time: it gets the 24-hour default unless you pass `--max-job-duration` again.
 >
 > **Download complete lineage:**
 >

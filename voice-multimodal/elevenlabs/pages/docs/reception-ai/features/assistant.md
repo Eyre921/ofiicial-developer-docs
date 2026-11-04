@@ -41,7 +41,7 @@ It cannot manage messages, orders, quote requests, SMS, or FAQ answers. To answe
 
 When you ask the assistant to create, update, or delete anything, it shows exactly what it plans to do and waits for you to select **Proceed** or **Cancel**. For batch changes, such as cancelling several appointments, you can accept or reject each change individually.
 
-The assistant never changes data without your approval.
+The assistant never changes data without your approval. After you select **Proceed** or **Cancel**, it is told whether the change was applied, rejected, or failed, including when you return to the chat later.
 
 ## Attachments and suggestions
 

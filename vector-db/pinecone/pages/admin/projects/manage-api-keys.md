@@ -12,7 +12,7 @@ This page shows you how to [create](#create-an-api-key), [view](#view-project-ap
 
 > [!WARNING]
 >
-> If you use custom API key permissions, make sure you [target your index by host](/guides/manage-data/target-an-index#target-by-index-host-recommended) when performing data operations such as `upsert` and `query`.
+> If you use custom API key permissions, make sure you [target your index by host](/guides/indexes/target-an-index#target-by-index-host-recommended) when performing data operations such as `upsert` and `query`.
 
 ## Create an API key
 

@@ -10,6 +10,21 @@ path: docs/reception-ai/scheduling/overview
 
 Reception.ai includes a full scheduling system. Your receptionist uses it to book appointments over the phone, and customers can book directly on your [booking page](/docs/reception-ai/features/booking-page).
 
+## Business profile
+
+Open your business page from the sidebar (labeled with your business name, or **Business** when the name is not set) and stay on **Overview**. The **Business profile** card is described as **The basics your receptionist and booking page use everywhere.**
+
+| Row           | What it opens                                                                                                                                                                                                                                                  |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Name**      | **Business name**. Shown to clients. Empty until you set it, and the row reads **Not set**.                                                                                                                                                                    |
+| **Phone**     | Your receptionist's phone numbers. The row reads **Not connected** until a number is added. See [Phone numbers](/docs/reception-ai/phone-numbers/overview).                                                                                                    |
+| **Locations** | The locations dialog. The row reads **No locations yet** until you add one. See [Locations](/docs/reception-ai/scheduling/locations).                                                                                                                          |
+| **Country**   | **Country**, the country where your business is based. The row reads **Not set** until you choose one. Changing it can be blocked by a phone number from another country. See [Bring your own number](/docs/reception-ai/phone-numbers/bring-your-own-number). |
+| **Timezone**  | **Timezone**. Appointment times are shown in this timezone. **Custom timezones per resource** is off by default. See [Time zones](/docs/reception-ai/scheduling/hours-and-booking-rules#time-zones).                                                           |
+| **Currency**  | **Currency**. Prices are displayed in this currency. The row shows the code and symbol, such as **USD (\$)**. When no currency is saved, prices use USD.                                                                                                       |
+
+The currency list includes USD, EUR, GBP, PLN, CAD, AUD, and other codes, each shown with its symbol. Service prices, product prices, and promotional prices use it.
+
 ## How scheduling works
 
 The scheduling system connects:
@@ -44,9 +59,20 @@ When you change or cancel a booking, Reception.ai asks whether to notify the cli
 
 ## Assets
 
-Assets represent physical resources required for appointments: rooms, chairs, courts, or equipment. Use them when a service needs a resource with limited availability.
+Assets represent physical resources required for appointments: rooms, chairs, courts, or equipment. Use them when a service needs a resource with limited availability. Open the **Assets** tab on your business page and select **Add asset**. A restaurant, which calls them tables, sees **Add table**.
 
-Assets follow their location's hours by default, and can have custom hours and maintenance time off. They are only bookable when not already reserved.
+The dialog has **Basic info**, **Hours**, **Maintenance**, and **Services**.
+
+| Field                               | What it sets                                                                                                                           |
+| ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| **Name**                            | Required. The label is the resource type plus **Name**, such as **Asset Name**.                                                        |
+| **Display name**                    | Optional, up to 200 characters. Customers see this on the booking page, and your receptionist uses it. Leave it empty to use the name. |
+| **Groups**                          | Optional. Up to 20 groups, for example Room or Equipment.                                                                              |
+| **Description**                     | Optional. Extra detail for your team and your receptionist.                                                                            |
+| **Location**                        | Shown when you have more than one location. Leave it empty for **All locations**, which can be booked at any location.                 |
+| **Active (available for bookings)** | On by default. Turn it off to hide the asset from availability. Existing bookings stay as they are, and the list shows **Inactive**.   |
+
+**Hours** sets when the resource can be booked. Assets follow their location's hours by default, and can have a custom schedule. **Maintenance** is time off, such as a repair. They are only bookable when not already reserved and not under maintenance.
 
 For rental businesses, the asset *is* the service. Create a rental-type service and link it to the asset.
 

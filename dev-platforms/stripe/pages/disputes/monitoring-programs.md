@@ -16,7 +16,7 @@ Stripe can work with you on a remediation plan to reduce the levels of disputes 
 
 While monitoring programs are comparatively rare, take them seriously. If you’re placed into one, you must take immediate action to address the situation. Failure to comply with the requirements of a program within the specified time period can result in the network refusing to process further payments to you. This can put your ability to accept any credit card payments [at risk](https://docs.stripe.com/disputes/match.md).
 
-> This page is a general guide for Stripe users, not a comprehensive reference for card network monitoring programs. For complete and up to date information about monitoring programs, see the documentation provided by the networks.
+> This page is a general guide for Stripe users, not a comprehensive reference for card network monitoring programs. For complete and up-to-date information about monitoring programs, see the documentation provided by the networks.
 
 ## Understanding disputes and chargebacks
 

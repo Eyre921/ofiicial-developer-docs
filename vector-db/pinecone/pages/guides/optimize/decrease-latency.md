@@ -8,7 +8,7 @@ Reduce query and upsert latency in Pinecone using namespaces, metadata filters, 
 
 ## Use namespaces
 
-When you divide records into [namespaces](/guides/index-data/indexing-overview#namespaces) in a logical way, you speed up queries by ensuring only relevant records are scanned. The same applies to [fetching records](/guides/manage-data/fetch-data), [listing record IDs](/guides/manage-data/list-record-ids), and other data operations.
+When you divide records into [namespaces](/guides/indexes/indexing-overview#namespaces) in a logical way, you speed up queries by ensuring only relevant records are scanned. The same applies to [fetching records](/guides/data/fetch-data), [listing record IDs](/guides/data/list-record-ids), and other data operations.
 
 ## Filter by metadata
 
@@ -18,7 +18,7 @@ In addition to increasing search accuracy and relevance, [searching with metadat
 
 When you target an index by name for data operations such as `upsert` and `query`, the SDK gets the unique DNS host for the index using the `describe_index` operation. This is convenient for testing but should be avoided in production because `describe_index` uses a different API than data operations and therefore adds an additional network call and point of failure. Instead, you should get an index host once and cache it for reuse or specify the host directly.
 
-You can get index hosts in the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/indexes) or using the [`describe_index`](/guides/manage-data/manage-indexes#describe-an-index) operation.
+You can get index hosts in the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/indexes) or using the [`describe_index`](/guides/indexes/manage-indexes#describe-an-index) operation.
 
 The following example shows how to target an index by host directly:
 
@@ -93,7 +93,7 @@ When you target an index for upserting or querying, the client establishes a TCP
 
 ## Use a cloud environment
 
-If you experience slow uploads or high query latencies, it might be because you are accessing Pinecone from your home network. To decrease latency, access Pinecone/deploy your application from a cloud environment instead, ideally from the same [cloud and region](/guides/index-data/index-configuration#cloud-regions) as your index.
+If you experience slow uploads or high query latencies, it might be because you are accessing Pinecone from your home network. To decrease latency, access Pinecone/deploy your application from a cloud environment instead, ideally from the same [cloud and region](/guides/indexes/index-configuration#cloud-regions) as your index.
 
 ## Avoid batching queries
 
@@ -113,7 +113,7 @@ Pinecone has [rate limits](/reference/api/database-limits/rate-limits) to protec
 
 > [!NOTE]
 >
-> Indexes built on [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, list, and full-text search operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) guide.
+> Indexes built on [Dedicated Read Nodes](/guides/optimize/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, list, and full-text search operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/optimize/dedicated-read-nodes/overview) guide.
 
 To handle rate limits effectively:
 

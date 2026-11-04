@@ -14,12 +14,12 @@ The **Advanced settings** card on the Receptionists page opens **Model & call be
 
 Select the language model that powers your receptionist's conversations. Faster models reduce response time; larger models handle complex instructions better.
 
-| Family | Models                                                                     |
-| ------ | -------------------------------------------------------------------------- |
-| Gemini | Gemini 3 Flash, 3.5 Flash, 3.6 Flash, 3.7 Flash, 3.8 Flash, 3.1 Flash Lite |
-| GPT    | GPT-5.4 Mini, GPT-5.4 Nano                                                 |
-| Claude | Claude Haiku 4.5, Claude Haiku 5.5, Claude Sonnet 5                        |
-| Qwen   | Qwen3.5-397B-A17B, Qwen3.6-35B-A3B                                         |
+| Family | Models                                                                                     |
+| ------ | ------------------------------------------------------------------------------------------ |
+| Gemini | Gemini 3 Flash, 3.5 Flash, 3.6 Flash, 3.7 Flash, 3.8 Flash, 3.1 Flash Lite, 3.5 Flash Lite |
+| GPT    | GPT-5.4 Mini, GPT-5.4 Nano                                                                 |
+| Claude | Claude Haiku 4.5, Claude Haiku 5.5, Claude Sonnet 5                                        |
+| Qwen   | Qwen3.5-397B-A17B, Qwen3.6-35B-A3B                                                         |
 
 New receptionists start on **Claude Haiku 5.5**. Existing receptionists keep the model they use.
 

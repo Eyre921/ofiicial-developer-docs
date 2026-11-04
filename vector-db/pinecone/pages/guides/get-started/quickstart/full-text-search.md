@@ -101,7 +101,7 @@ index.documents.upsert(
 )
 ```
 
-For large sets, use [Bulk import](/guides/index-data/import-data) instead of upserting one request at a time.
+For large sets, use [Bulk import](/guides/data/import-data) instead of upserting one request at a time.
 
 ## Next steps
 

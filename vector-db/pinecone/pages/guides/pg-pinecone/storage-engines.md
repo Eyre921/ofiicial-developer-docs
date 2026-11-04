@@ -70,7 +70,7 @@ The filter column must be a `smallint`, `integer`, `bigint`, `text`, or `varchar
 
 ### Partition column
 
-A partition column gives each value its own Pinecone [namespace](/guides/index-data/indexing-overview#namespaces), so each tenant's vectors are stored and searched separately. It applies to the `remote` engine:
+A partition column gives each value its own Pinecone [namespace](/guides/indexes/indexing-overview#namespaces), so each tenant's vectors are stored and searched separately. It applies to the `remote` engine:
 
 ```sql SQL theme={null}
 SELECT pinecone.create_index('docs', 'embedding', engine => 'remote', partition_column => 'tenant_id');

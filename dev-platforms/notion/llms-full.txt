@@ -3770,6 +3770,8 @@ Putting the above flow together, your webhook handler can implement logic as fol
 >
 > For connections covered by the [Free workspace block limit](/reference/workspace-block-limits), page creation and the background template job check the limit separately. If the background job is blocked, it stops and keeps the page, which may be blank or partially populated even after a successful request.
 >
+> If a template job hits the concurrent duplication cap, you may find the newly created page in trash if it is still unchanged.
+>
 > There is no template-failure webhook or public job-status endpoint. Set a timeout rather than waiting indefinitely, then use [Retrieve block children](/reference/get-block-children) to check the result. Avoid automatically reapplying the template: content already copied can be duplicated. Ask a workspace owner to check [block usage](https://www.notion.com/help/understanding-block-usage) before retrying.
 
 ## Frequently asked questions
@@ -18445,6 +18447,14 @@ Source: https://developers.notion.com/guides/resources/notion-s-api-workspace
 
 # Changelog
 Source: https://developers.notion.com/page/changelog
+
+**November 4, 2026**
+
+### Beta flags and typed view filters in the JavaScript SDK
+
+Pass `betas` to a typed SDK method to opt one request into an [API beta](/reference/versioning#beta-versions). TypeScript now accepts filters, sorts, and quick filters when you [create a view](/reference/create-view). It also checks filters and quick filters on `views.update`.
+
+**SDK support**: [`@notionhq/client` v5.31.0](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.31.0).
 
 **November 3, 2026**
 

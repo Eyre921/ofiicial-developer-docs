@@ -12,7 +12,7 @@ Control plane operations like [creating](/reference/api/latest/control-plane/cre
 
 > [!NOTE]
 >
-> BYOC supports both on-demand and [dedicated read nodes (DRN)](/guides/index-data/dedicated-read-nodes/overview) indexes.
+> BYOC supports both on-demand and [dedicated read nodes (DRN)](/guides/optimize/dedicated-read-nodes/overview) indexes.
 >
 > * On-demand indexes and their namespaces share one pool of nodes in your BYOC environment.
 > * DRN indexes each get their own nodes, which you size with shards and replicas when you create the index.

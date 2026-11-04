@@ -28,6 +28,8 @@ The AI Engineering Loop:
 - [Experiment](/academy/experiments): prompts, models, code variants
 - [Evaluate](/academy/evaluate): judges, custom evals, annotation
 
+In production, trace and monitor your application, and iterate directly on what monitoring surfaces. During development, build datasets, then experiment and evaluate, iterating until a change is good enough. Deploy it, and the loop starts again with new traces.
+
 [**Watch this walkthrough**](/watch-demo) of Langfuse Evaluation and how to use it to improve your LLM application.
 
 ## Getting Started

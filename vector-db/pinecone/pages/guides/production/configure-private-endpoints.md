@@ -17,7 +17,7 @@ Make sure you have the following:
 
 * A [Pinecone Enterprise plan](https://www.pinecone.io/pricing/)
 * The owner role in the Pinecone project you want to connect to
-* A [serverless index](/guides/index-data/create-an-index#create-a-serverless-index) in one of the regions listed in [step 1](#1-create-a-private-endpoint-in-your-cloud-provider)
+* A [serverless index](/guides/indexes/create-an-index#create-a-serverless-index) in one of the regions listed in [step 1](#1-create-a-private-endpoint-in-your-cloud-provider)
 
 > [tab] AWS
 >

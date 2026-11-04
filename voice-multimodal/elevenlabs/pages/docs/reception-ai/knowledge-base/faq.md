@@ -31,7 +31,3 @@ Your receptionist uses your 50 most recently updated answers. Your workspace can
 * **Review weekly**: don't let unanswered questions pile up.
 * **Be specific**: "Our return policy is 30 days with a receipt" is better than "We have a return policy."
 * **Spot patterns**: if the same question comes up often, add it to your website or upload a document so it's part of your knowledge base.
-
-> **Note**
->
-> To stop collecting questions, turn off **FAQ** in **Settings** → **Features**.

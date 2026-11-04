@@ -679,8 +679,8 @@ resend inboxes agent update --inbox-id <id> --tone concise_professional # Update
 | Flag | Required | Description |
 | - | - | - |
 | `--instructions <text>` | No | Instructions the agent follows (max 4000 characters) |
-| `--tone <tone>` | No | Tone the agent writes in: `concise_professional`, `concise_casual`, `expanded_professional`, or `expanded_casual`. See [tone](/docs/dashboard/inboxes/agent#using-the-api) |
-| `--actions <actions...>` | No | Replaces the full set of actions: `draft_reply`, `forward_thread`, `add_labels`, `assign_thread`, `mark_as_spam`, `archive`, `move_to_trash`. See [actions](/docs/dashboard/inboxes/agent#actions) |
+| `--tone <tone>` | No | Tone the agent writes in: `concise_professional`, `concise_casual`, `expanded_professional`, or `expanded_casual`. See [tone](/docs/guides/inboxes/agent#using-the-api) |
+| `--actions <actions...>` | No | Replaces the full set of actions: `draft_reply`, `forward_thread`, `add_labels`, `assign_thread`, `mark_as_spam`, `archive`, `move_to_trash`. See [actions](/docs/guides/inboxes/agent#actions) |
 
 `agent update` needs at least one flag. Omitted fields keep their current value. Pass `--instructions ""` or `--tone ""` to clear a value. List several actions separated by spaces or commas, for example `--actions draft_reply add_labels`. Pass `--actions ""` to disable all actions.
 

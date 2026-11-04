@@ -34,7 +34,6 @@ Existing list endpoints can optionally return paginated results:
 * [List Segments](/docs/api-reference/segments/list-segments)
 * [List Contacts](/docs/api-reference/contacts/list-contacts)
 * [List Receiving Emails](/docs/api-reference/emails/list-received-emails)
-* [List Receiving Email Attachments](/docs/api-reference/emails/list-received-email-attachments)
 
 > [!NOTE]
 >
@@ -44,6 +43,7 @@ Existing list endpoints can optionally return paginated results:
 Newer list endpoints always return paginated results:
 
 * [List Emails](/docs/api-reference/emails/list-emails)
+* [List Receiving Email Attachments](/docs/api-reference/emails/list-received-email-attachments)
 * [List Templates](/docs/api-reference/templates/list-templates)
 * [List Topics](/docs/api-reference/topics/list-topics)
 * [List Inboxes](/docs/api-reference/inboxes/list-inboxes)

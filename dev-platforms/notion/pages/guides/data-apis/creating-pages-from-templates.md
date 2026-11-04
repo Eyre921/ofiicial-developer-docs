@@ -152,6 +152,8 @@ Putting the above flow together, your webhook handler can implement logic as fol
 >
 > For connections covered by the [Free workspace block limit](/reference/workspace-block-limits), page creation and the background template job check the limit separately. If the background job is blocked, it stops and keeps the page, which may be blank or partially populated even after a successful request.
 >
+> If a template job hits the concurrent duplication cap, you may find the newly created page in trash if it is still unchanged.
+>
 > There is no template-failure webhook or public job-status endpoint. Set a timeout rather than waiting indefinitely, then use [Retrieve block children](/reference/get-block-children) to check the result. Avoid automatically reapplying the template: content already copied can be duplicated. Ask a workspace owner to check [block usage](https://www.notion.com/help/understanding-block-usage) before retrying.
 
 ## Frequently asked questions

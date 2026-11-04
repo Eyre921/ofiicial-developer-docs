@@ -19,6 +19,8 @@ Your plan includes a monthly pool of credits shared across all activity:
 | Staff first call                        | 1.0 per minute  |
 | Text message                            | 0.1 per message |
 
+A **Call** or **Chat** in the receptionist test dialog uses one fifth of these rates. A call to your phone number, and a conversation on your website widget, uses the full rate. See [Testing your receptionist](/docs/reception-ai/receptionist/testing).
+
 ### Checking usage
 
 Go to **Settings** → **Billing** to see your plan, renewal date, and a usage table with rows for **Inbound calls**, **Web widget**, **Human-first calls**, **Text messages**, and **Total usage**. Each row shows usage, the overage rate, and any overage cost.

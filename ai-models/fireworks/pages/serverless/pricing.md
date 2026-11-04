@@ -31,6 +31,7 @@ Per-model pricing for headline models. Fast and Ultra-fast (Preview) variants ap
 | - | - | - |
 | [Ember-1](https://app.fireworks.ai/models/fireworks/ember-1) | \$3.00 / \$0.30 / \$15.00 | \$3.75 / \$0.375 / \$18.75 |
 | [Muse Spark Open](https://app.fireworks.ai/models/fireworks/muse-spark-open) | \$1.25 / \$0.15 / \$4.25 | \$1.875 / \$0.225 / \$6.375 |
+| [Kimi K3.1 Pro](https://app.fireworks.ai/models/fireworks/kimi-k3p1-pro) | \$2.00 / \$0.20 / \$10.00 | \$3.00 / \$0.30 / \$15.00 |
 | [Kimi K3](https://app.fireworks.ai/models/fireworks/kimi-k3) | \$3.00 / \$0.30 / \$15.00 | \$3.75 / \$0.375 / \$18.75 |
 | [Kimi K3 Fast](https://app.fireworks.ai/models/fireworks/kimi-k3) | \$4.50 / \$0.45 / \$22.50 | — |
 | [Kimi K3 (US)](https://app.fireworks.ai/models/fireworks/kimi-k3) | \$4.50 / \$0.45 / \$22.50 | \$5.625 / \$0.5625 / \$28.125 |

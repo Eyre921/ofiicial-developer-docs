@@ -1,6 +1,6 @@
 # dev-platforms/langfuse 文档索引
 
-> 共 27 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 29 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -9,6 +9,8 @@
 - `pricing-self-host` — [Self-hosted pricing and license](pages/pricing-self-host.md) · [原文](https://langfuse.com/pricing-self-host.md)
 - `security` — [Security](pages/security.md) · [原文](https://langfuse.com/security.md)
 - `self-hosting` — [Self-hosting](pages/self-hosting.md) · [原文](https://langfuse.com/self-hosting.md)
+- `talk-to-us` — [Talk to the sales team](pages/talk-to-us.md) · [原文](https://langfuse.com/talk-to-us.md)
+- `watch-demo` — [Watch the walkthrough video](pages/watch-demo.md) · [原文](https://langfuse.com/watch-demo.md)
 
 ## compare
 

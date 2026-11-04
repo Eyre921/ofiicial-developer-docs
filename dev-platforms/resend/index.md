@@ -1,6 +1,6 @@
 # dev-platforms/resend 文档索引
 
-> 共 421 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 422 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -218,13 +218,7 @@
 - `docs/dashboard/emails/schedule-email` — [Schedule Email](pages/docs/dashboard/emails/schedule-email.md) · [原文](https://resend.com/docs/dashboard/emails/schedule-email)
 - `docs/dashboard/emails/send-test-emails` — [Send Test Emails](pages/docs/dashboard/emails/send-test-emails.md) · [原文](https://resend.com/docs/dashboard/emails/send-test-emails)
 - `docs/dashboard/emails/tags` — [Managing Tags](pages/docs/dashboard/emails/tags.md) · [原文](https://resend.com/docs/dashboard/emails/tags)
-- `docs/dashboard/inboxes/agent` — [Inbox Agent](pages/docs/dashboard/inboxes/agent.md) · [原文](https://resend.com/docs/dashboard/inboxes/agent)
-- `docs/dashboard/inboxes/create-inboxes` — [Creating Inboxes](pages/docs/dashboard/inboxes/create-inboxes.md) · [原文](https://resend.com/docs/dashboard/inboxes/create-inboxes)
-- `docs/dashboard/inboxes/drafts` — [Inbox Drafts](pages/docs/dashboard/inboxes/drafts.md) · [原文](https://resend.com/docs/dashboard/inboxes/drafts)
 - `docs/dashboard/inboxes/introduction` — [Inboxes](pages/docs/dashboard/inboxes/introduction.md) · [原文](https://resend.com/docs/dashboard/inboxes/introduction)
-- `docs/dashboard/inboxes/labels` — [Manage Labels](pages/docs/dashboard/inboxes/labels.md) · [原文](https://resend.com/docs/dashboard/inboxes/labels)
-- `docs/dashboard/inboxes/manage-inboxes` — [Managing Inboxes](pages/docs/dashboard/inboxes/manage-inboxes.md) · [原文](https://resend.com/docs/dashboard/inboxes/manage-inboxes)
-- `docs/dashboard/inboxes/threads` — [Managing Threads](pages/docs/dashboard/inboxes/threads.md) · [原文](https://resend.com/docs/dashboard/inboxes/threads)
 - `docs/dashboard/logs/introduction` — [Introduction](pages/docs/dashboard/logs/introduction.md) · [原文](https://resend.com/docs/dashboard/logs/introduction)
 - `docs/dashboard/receiving/attachments` — [Process Receiving Attachments](pages/docs/dashboard/receiving/attachments.md) · [原文](https://resend.com/docs/dashboard/receiving/attachments)
 - `docs/dashboard/receiving/create-receiving-webhook` — [Create a receiving Webhook](pages/docs/dashboard/receiving/create-receiving-webhook.md) · [原文](https://resend.com/docs/dashboard/receiving/create-receiving-webhook)
@@ -267,9 +261,16 @@
 - `docs/guides/dns/squarespace` — [Squarespace](pages/docs/guides/dns/squarespace.md) · [原文](https://resend.com/docs/guides/dns/squarespace)
 - `docs/guides/dns/strato` — [Strato](pages/docs/guides/dns/strato.md) · [原文](https://resend.com/docs/guides/dns/strato)
 - `docs/guides/dns/vercel` — [Vercel](pages/docs/guides/dns/vercel.md) · [原文](https://resend.com/docs/guides/dns/vercel)
+- `docs/guides/inboxes/agent` — [Inbox Agent](pages/docs/guides/inboxes/agent.md) · [原文](https://resend.com/docs/guides/inboxes/agent)
+- `docs/guides/inboxes/create-inboxes` — [Creating Inboxes](pages/docs/guides/inboxes/create-inboxes.md) · [原文](https://resend.com/docs/guides/inboxes/create-inboxes)
+- `docs/guides/inboxes/drafts` — [Inbox Drafts](pages/docs/guides/inboxes/drafts.md) · [原文](https://resend.com/docs/guides/inboxes/drafts)
+- `docs/guides/inboxes/labels` — [Manage Labels](pages/docs/guides/inboxes/labels.md) · [原文](https://resend.com/docs/guides/inboxes/labels)
+- `docs/guides/inboxes/manage-inboxes` — [Managing Inboxes](pages/docs/guides/inboxes/manage-inboxes.md) · [原文](https://resend.com/docs/guides/inboxes/manage-inboxes)
+- `docs/guides/inboxes/threads` — [Managing Threads](pages/docs/guides/inboxes/threads.md) · [原文](https://resend.com/docs/guides/inboxes/threads)
 - `docs/guides/laravel-cloud-integration` — [Laravel Cloud Integration](pages/docs/guides/laravel-cloud-integration.md) · [原文](https://resend.com/docs/guides/laravel-cloud-integration)
 - `docs/guides/paper` — [Turn Paper designs into Resend emails](pages/docs/guides/paper.md) · [原文](https://resend.com/docs/guides/paper)
 - `docs/guides/stripe-projects-integration` — [Stripe Projects Integration](pages/docs/guides/stripe-projects-integration.md) · [原文](https://resend.com/docs/guides/stripe-projects-integration)
+- `docs/guides/trmnl-integration` — [Show Resend metrics on TRMNL](pages/docs/guides/trmnl-integration.md) · [原文](https://resend.com/docs/guides/trmnl-integration)
 - `docs/guides/vercel-marketplace-integration` — [Vercel Marketplace Integration](pages/docs/guides/vercel-marketplace-integration.md) · [原文](https://resend.com/docs/guides/vercel-marketplace-integration)
 - `docs/integrations` — [Integrations](pages/docs/integrations.md) · [原文](https://resend.com/docs/integrations)
 - `docs/introduction` — [Introduction](pages/docs/introduction.md) · [原文](https://resend.com/docs/introduction)

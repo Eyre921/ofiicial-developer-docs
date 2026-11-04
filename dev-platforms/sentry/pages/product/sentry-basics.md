@@ -16,6 +16,8 @@ Sentry captures errors, logs, traces, replays, profiles, and metrics from your a
 
 **New to Sentry? → [Sign up here](https://sentry.io/signup/)** or [try the sandbox](https://sandbox.sentry.io/) to explore the product without installing anything.
 
+**Plans and Pricing** → Sentry offers a free Developer plan and three paid plans (Team, Business, and Enterprise). Each paid plan includes a base volume per data type, and you can add more with discounted reserved volume or a pay-as-you-go budget, all billed by the amount of data you send. Sentry has a 14-day free trial with unlimited event data and access to Business plan features. At the end of the trial, you can upgrade or return to the features and quotas included with your existing plan. If no plan is selected at the end of your trial, your organization will default to the free Developer plan. [Learn more about pricing and billing](https://docs.sentry.io/pricing.md).
+
 ## [Step 1: Connect Your Source Code](https://docs.sentry.io/get-started.md#step-1-connect-your-source-code)
 
 Connecting your source code repository is the single most impactful setup step. It unlocks:
@@ -37,13 +39,14 @@ Alerts make sure the right people know when things go wrong. Sentry supports:
 
 Route alerts to [Slack](https://docs.sentry.io/integrations/notification-incidents/slack.md), [Discord](https://docs.sentry.io/integrations/notification-incidents/discord.md), [PagerDuty](https://docs.sentry.io/integrations/notification-incidents/pagerduty.md), or your [issue tracker](https://docs.sentry.io/integrations/issue-tracking.md) (Jira, Linear, GitHub Issues). See [alert best practices](https://docs.sentry.io/product/monitors-and-alerts/alerts.md#alerts-best-practices) for tips on avoiding noise.
 
-## [Step 3: Turn On More Features](https://docs.sentry.io/get-started.md#step-3-turn-on-more-features)
+## [Step 3: Add context with connected telemetry](https://docs.sentry.io/get-started.md#step-3-add-context-with-connected-telemetry)
 
-After basic error monitoring, these features add the debugging context that will help you find and fix problems faster:
+After basic error monitoring, these features add the debugging context to help you find and fix problems faster. Data types that Sentry collects are connected via a common TraceID (when tracing is enabled), and can be used together for debugging issues. For example, when an error happens, spans, logs, replays, and profiling data can be used in combination to provide highly useful context for an agent or human to investigate that error.
 
 | Feature                                                                | What it adds                                                | Set up                                                                                                          |
 | ---------------------------------------------------------------------- | ----------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
 | **[Tracing](https://docs.sentry.io/product/trace-explorer.md)**        | Follow requests across services, find slow queries and N+1s | Enable `tracesSampleRate` in SDK config                                                                         |
+| **[Agent Tracing](https://docs.sentry.io/product/agents.md)**          | Trace and debug agent workflows and conversations           | [Read the instructions](https://docs.sentry.io/product/agents/getting-started.md) for your SDK                  |
 | **[Logs](https://docs.sentry.io/product/logs.md)**                     | Structured logs alongside errors and traces                 | Add log calls or a logging integration — [set up guide](https://docs.sentry.io/product/logs/getting-started.md) |
 | **[Session Replay](https://docs.sentry.io/product/session-replay.md)** | Video-like recordings of user sessions (web and mobile)     | Enable replay in SDK config                                                                                     |
 | **[Profiling](https://docs.sentry.io/product/profiling.md)**           | CPU profiles showing which functions are slow               | Enable profiling in SDK config                                                                                  |

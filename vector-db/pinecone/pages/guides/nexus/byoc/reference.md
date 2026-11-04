@@ -52,7 +52,7 @@ Nexus BYOC runs a Kubernetes cluster across several dedicated node pools spread 
 | Pinecone Database | The data plane, including query routing and index builds |
 | Metadata store | Stores Nexus metadata, backed by FoundationDB |
 | Nexus services | The curation and query runtimes and their workflow jobs |
-| [Dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) | Scale from zero as read demand grows |
+| [Dedicated read nodes](/guides/optimize/dedicated-read-nodes/overview) | Scale from zero as read demand grows |
 
 The cluster comes up small and autoscales with load and with the number of contexts and indexes. Node counts and instance types change across releases as the footprint is tuned. Size your cloud quotas from the installer's preflight quota checks in [Deploy Nexus BYOC](/guides/nexus/byoc/deploy) rather than from a fixed node count.
 

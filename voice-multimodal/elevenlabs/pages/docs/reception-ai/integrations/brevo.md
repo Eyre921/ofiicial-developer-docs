@@ -90,4 +90,4 @@ Open the **Tools** tab. Assign the tools that look up and create contacts to the
 | Brevo returns 400       | Check the number has its country code and no `+`, and that the sender name is at most 11 characters.                                     |
 | The text never arrives  | Check your SMS credits and whether Brevo can send SMS to that country with your sender.                                                  |
 | No MCP tools are listed | Use **Streamable HTTP**, and an MCP key, not the SMS key.                                                                                |
-| You changed the MCP key | The secret token can only be set when you create the integration. Disconnect and reconnect it with the new key.                          |
+| You changed the MCP key | Edit the integration and use **Rotate Secret Token (optional)**. The saved token is never shown again.                                   |

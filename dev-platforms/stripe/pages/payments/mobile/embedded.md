@@ -58,7 +58,7 @@ Examples of different ways to style Payment Element
 
 The Payment Element provides access to over 100 payment methods across all Stripe-supported countries. You can enable payment methods from your Stripe Dashboard or by using [Custom Payment Methods](https://docs.stripe.com/payments/payment-methods/custom-payment-methods.md).
 
-Payment method providers often change their collection and display requirements. When you use Payment Element to display payment methods, Stripe handles all payment detail collection in prebuilt, localized forms that we keep up-to-date with each payment provider.
+Payment method providers often change their collection and display requirements. When you use Payment Element to display payment methods, Stripe handles all payment detail collection in prebuilt, localized forms that we keep up to date with each payment provider.
 ![Payment Element payment methods](https://b.stripecdn.com/docs-statics-srv/assets/pe-payment-methods.91cb1be9cb8ef55b873074dd6f3a7c12.png)
 
 Examples of P24 and SEPA debit in the Payment Element

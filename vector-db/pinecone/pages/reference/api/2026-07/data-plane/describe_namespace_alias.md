@@ -11,7 +11,7 @@ For guidance and examples, see [Manage namespace aliases](https://docs.pinecone.
 
 ```bash curl theme={null}
 # To get the unique host for an index,
-# see https://docs.pinecone.io/guides/manage-data/target-an-index
+# see https://docs.pinecone.io/guides/indexes/target-an-index
 PINECONE_API_KEY="YOUR_API_KEY"
 INDEX_HOST="INDEX_HOST"
 ALIAS_NAME="dataset"

@@ -45,12 +45,13 @@ To keep your current business line, forward calls you don't answer to your recep
 
 Open **Forward an existing number**, choose the country of the phone you will forward from, and dial the codes shown. For most mobile carriers:
 
-| When                             | Code             |
-| -------------------------------- | ---------------- |
-| You don't answer                 | `**61*<number>#` |
-| Your line is busy                | `**67*<number>#` |
-| Your phone is off or unreachable | `**62*<number>#` |
-| Turn off all forwarding          | `##002#`         |
+| When                                      | Code             |
+| ----------------------------------------- | ---------------- |
+| **When you don't answer**                 | `**61*<number>#` |
+| **When your line is busy**                | `**67*<number>#` |
+| **When your phone is off or unreachable** | `**62*<number>#` |
+| **Forward every call**                    | `**21*<number>#` |
+| To turn forwarding off later              | `##002#`         |
 
 Some carriers, such as Verizon in the US, use star codes instead (`*71` for busy or unanswered calls, `*72` for all calls). The dialog shows the right codes for your country.
 

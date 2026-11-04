@@ -24,7 +24,7 @@ In Reception.ai, go to **Integrations**, select **Add integration**, and choose 
 
 Paste the token into **Personal Access Token** and select **Enable**.
 
-To replace the token later, edit the integration and use **Rotate Personal Access Token**.
+To replace the token later, edit the integration and use **Rotate Personal Access Token (optional)**.
 
 ## What changes when Calendly is connected
 

@@ -61,6 +61,7 @@ Reference: https://developers.deepgram.com/reference/speech-to-text/listen-pre-r
 - `profanity_filter` (boolean, optional, default: false) — Profanity Filter looks for recognized profanity and converts it to the nearest recognized non-profane word or removes it from the transcript completely
 - `punctuate` (boolean, optional, default: false) — Add punctuation and capitalization to the transcript
 - `redact` (V1ListenPostParametersRedact, optional, default: false) — Redaction removes sensitive information from your transcripts
+- `redact_usage` (boolean, optional, default: false) — Replaces the values of user-supplied text parameters (`keyterm`, `keywords`, `replace`, `search`, `extra`, `custom_topic`, and `custom_intent`) with `[REDACTED]` in this request's usage records. Does not affect transcription, the response, `tag`, or `callback`. Independent of `mip_opt_out`. https://developers.deepgram.com/docs/redact-usage
 - `replace` (V1ListenPostParametersReplace, optional) — Search for terms or phrases in submitted audio and replaces them
 - `search` (V1ListenPostParametersSearch, optional) — Search for terms or phrases in submitted audio
 - `smart_format` (boolean, optional, default: false) — Apply formatting to transcript output. When set to true, additional formatting will be applied to transcripts to improve readability

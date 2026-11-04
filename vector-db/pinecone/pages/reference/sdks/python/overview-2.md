@@ -102,7 +102,7 @@ from pinecone.grpc import PineconeGRPC as Pinecone
 pc = Pinecone(api_key="YOUR_API_KEY")
 ```
 
-When [creating an index](/guides/index-data/create-an-index), import the `ServerlessSpec` or `PodSpec` class as well:
+When [creating an index](/guides/indexes/create-an-index), import the `ServerlessSpec` or `PodSpec` class as well:
 
 ```Python Serverless index theme={null}
 from pinecone.grpc import PineconeGRPC as Pinecone
@@ -261,7 +261,7 @@ asyncio.run(main())
 
 ## Query across namespaces
 
-Each query is limited to a single [namespace](/guides/index-data/indexing-overview#namespaces). However, the Pinecone Python SDK provides a `query_namespaces` utility method to run a query in parallel across multiple namespaces in an index and then merge the result sets into a single ranked result set with the `top_k` most relevant results.
+Each query is limited to a single [namespace](/guides/indexes/indexing-overview#namespaces). However, the Pinecone Python SDK provides a `query_namespaces` utility method to run a query in parallel across multiple namespaces in an index and then merge the result sets into a single ranked result set with the `top_k` most relevant results.
 
 The `query_namespaces` method accepts most of the same arguments as `query` with the addition of a required `namespaces` parameter.
 
@@ -341,7 +341,7 @@ from pinecone import Pinecone
 pc = Pinecone(api_key="API_KEY")
 
 # To get the unique host for an index, 
-# see https://docs.pinecone.io/guides/manage-data/target-an-index
+# see https://docs.pinecone.io/guides/indexes/target-an-index
 index = pc.Index(host="INDEX_HOST")
 
 # To load a Parquet file instead, use pd.read_parquet("path/to/file.parquet")

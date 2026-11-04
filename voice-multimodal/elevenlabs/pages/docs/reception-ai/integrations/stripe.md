@@ -46,9 +46,9 @@ Tools that create or change objects, such as `create_refund` or `create_payment_
 
 ## Troubleshooting
 
-| Problem                                   | What to check                                                                                                   |
-| ----------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| No tools are listed                       | Check the server type is **Streamable HTTP** and the key is a restricted key, not a publishable key.            |
-| A tool returns a permission error         | The restricted key lacks access to that resource. Edit the key in Stripe.                                       |
-| The receptionist finds the wrong customer | Ask for the email on the account. Stripe looks customers up by email more reliably than by name.                |
-| You changed the key                       | The secret token can only be set when you create the integration. Disconnect and reconnect it with the new key. |
+| Problem                                   | What to check                                                                                          |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| No tools are listed                       | Check the server type is **Streamable HTTP** and the key is a restricted key, not a publishable key.   |
+| A tool returns a permission error         | The restricted key lacks access to that resource. Edit the key in Stripe.                              |
+| The receptionist finds the wrong customer | Ask for the email on the account. Stripe looks customers up by email more reliably than by name.       |
+| You changed the key                       | Edit the integration and use **Rotate Secret Token (optional)**. The saved token is never shown again. |

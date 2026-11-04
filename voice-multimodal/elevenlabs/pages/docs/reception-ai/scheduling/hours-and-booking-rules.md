@@ -20,7 +20,7 @@ If you change hours and existing bookings fall outside the new hours, Reception.
 
 ### Time zones
 
-Each workspace has a time zone, set in the business profile. To give individual locations, staff, or assets their own time zone, turn on per-resource time zones in the time zone settings.
+Each workspace has one time zone, set from **Timezone** on the [business profile](/docs/reception-ai/scheduling/overview#business-profile). To give individual locations, staff, or assets their own time zone, turn on **Custom timezones per resource** in that dialog. It is off by default. When it is on, location hours, staff hours, asset hours, and human-first hours each get their own timezone picker.
 
 ## Closures and time off
 

@@ -16,10 +16,10 @@ Together, Twelve Labs and Pinecone let developers process and understand video c
 
 1. Sign up for a [Twelve Labs account](https://twelvelabs.io) and get your API key.
 2. Install the [Twelve Labs Python client library](https://github.com/twelvelabs-io/twelvelabs-python).
-3. Sign up for a [Pinecone account](https://app.pinecone.io/) and [create an index](/guides/index-data/create-an-index).
+3. Sign up for a [Pinecone account](https://app.pinecone.io/) and [create an index](/guides/indexes/create-an-index).
 4. Install the [Pinecone client library](/reference/pinecone-sdks).
 5. Use the [Twelve Labs Embed API](https://docs.twelvelabs.io/docs/create-embeddings) to generate multimodal embeddings for your videos.
-6. Connect to your Pinecone index and [upsert the embeddings](/guides/index-data/upsert-data).
+6. Connect to your Pinecone index and [upsert the embeddings](/guides/data/upsert-data).
 7. [Query the Pinecone index](/guides/search/search-overview) to retrieve similar videos based on embeddings.
 
 For more information and code examples, see the [Twelve Labs documentation](https://docs.twelvelabs.io).

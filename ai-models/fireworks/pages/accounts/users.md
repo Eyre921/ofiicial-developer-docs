@@ -4,7 +4,7 @@ source: https://docs.fireworks.ai/accounts/users
 path: accounts/users
 ---
 
-Add, delete, and manage roles for users in your Fireworks account, including admin, member, viewer, and service account roles for API keys and dashboard access.
+Add, delete, and manage users in your Fireworks account, and assign the Admin, User, Contributor, or Inference user role to control API and dashboard access.
 
 See the concepts [page](/getting-started/concepts#account) for definitions of accounts and users.
 
@@ -17,7 +17,7 @@ Each user in an account is assigned a role that determines their level of access
 | **Admin** | Full administrative control over resources, users, and access. Can manage all account settings and add or remove users. |
 | **User** (default) | Can manage all resources, including those owned by others, but cannot manage users or access settings. |
 | **Contributor** | Can run inference on any resource and create and manage their own resources. Cannot modify resources owned by others. |
-| **Inference User** | Can view all resources and run inference, but cannot create or modify resources. |
+| **Inference user** | Can view all resources and run inference, but cannot create or modify resources. |
 
 #### Resource management
 

@@ -12,6 +12,10 @@ Connect your own telephony provider to use numbers you already own, get numbers 
 
 Numbers you bring don't count toward your plan's phone number limit. Both integrations are available on every plan.
 
+Below an active Premium plan, a number you bring has to match **Country** on the business page in the sidebar. When **Country** is not set, it is treated as the United States. Adding a number from another country is refused: "This number is from a different country than your business. Change your business country first, or upgrade to Premium to use numbers from other countries." An active Premium plan can bring numbers from any country. Numbers already saved are left as they are.
+
+Changing **Country** is refused while an ElevenLabs number from another country is still on the account: "Your business country has to match the country of your ElevenLabs phone numbers. Release ElevenLabs's phone numbers from other countries first." Below Premium, numbers you brought from another country block the change too: "Your business country has to match the country of the phone numbers you brought. Remove numbers from other countries first, or upgrade to Premium to use numbers from any country."
+
 ## Twilio
 
 ### Connect your Twilio account
@@ -24,7 +28,7 @@ Go to **Integrations**, select **Add integration**, and choose **Twilio**.
 
 Enter your **Twilio Account SID** (starting with `AC`) and **Twilio Auth Token**, both found in the Twilio Console. Select **Enable**.
 
-To rotate your Auth Token later, edit the integration and use **Rotate Auth Token**.
+To rotate your Auth Token later, edit the integration and use **Rotate Auth Token (optional)**.
 
 ### Add a Twilio number to a receptionist
 

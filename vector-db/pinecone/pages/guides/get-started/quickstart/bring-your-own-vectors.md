@@ -88,6 +88,6 @@ for m in resp.matches:
 >
 > Add a `full_text_search` field to your schema for keyword search, or combine it with your vectors for hybrid search.
 
-> [card] [Data modeling](/guides/index-data/data-modeling)
+> [card] [Data modeling](/guides/indexes/data-modeling)
 >
 > How to design a schema for your workload

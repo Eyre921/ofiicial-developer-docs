@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 403 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 404 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -201,6 +201,7 @@
 - `docs/prompting-voice-agents` — [Prompting Voice Agents](pages/docs/prompting-voice-agents.md) · [原文](https://developers.deepgram.com/docs/prompting-voice-agents.md)
 - `docs/punctuation` — [Punctuation](pages/docs/punctuation.md) · [原文](https://developers.deepgram.com/docs/punctuation.md)
 - `docs/recovering-from-connection-errors-and-timeouts-when-live-streaming-audio` — [Recovering From Connection Errors & Timeouts When Live Streaming](pages/docs/recovering-from-connection-errors-and-timeouts-when-live-streaming-audio.md) · [原文](https://developers.deepgram.com/docs/recovering-from-connection-errors-and-timeouts-when-live-streaming-audio.md)
+- `docs/redact-usage` — [Redact usage](pages/docs/redact-usage.md) · [原文](https://developers.deepgram.com/docs/redact-usage.md)
 - `docs/redaction` — [Redaction](pages/docs/redaction.md) · [原文](https://developers.deepgram.com/docs/redaction.md)
 - `docs/request-sagemaker-quota` — [Requesting SageMaker Quota](pages/docs/request-sagemaker-quota.md) · [原文](https://developers.deepgram.com/docs/request-sagemaker-quota.md)
 - `docs/reusable-agent-configurations` — [Reusable Agent Configurations](pages/docs/reusable-agent-configurations.md) · [原文](https://developers.deepgram.com/docs/reusable-agent-configurations.md)

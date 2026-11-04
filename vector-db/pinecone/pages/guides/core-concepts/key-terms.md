@@ -40,32 +40,32 @@ For how write units are calculated, see [Understand Pinecone cost](/guides/manag
 
 ## Index
 
-Pinecone [serverless indexes](/guides/index-data/indexing-overview) hold your data as [documents](#document) or [records](#record), depending on how the index was created. One index per use case is the typical pattern.
+Pinecone [serverless indexes](/guides/indexes/indexing-overview) hold your data as [documents](#document) or [records](#record), depending on how the index was created. One index per use case is the typical pattern.
 
 ### Document index
 
 A document index is an index created with a document schema. It holds [documents](#document) and is served by the Documents API. Because a document can combine vectors, text, and metadata, a single document index often covers what previously required two indexes. Pick the ranking signal per query with `score_by`.
 
-### Vector index
+### Legacy vector index
 
-A vector index is an index created with a dense or sparse vector type. It holds [records](#record) and is served by the Vectors API.
+A legacy vector index is an index created with a dense or sparse vector type. It holds [records](#record) and is served by the legacy Vectors API. New projects should use a [document index](#document-index).
 
-* In an index with dense vectors, each record has one [dense vector](#dense-vector). Records can also carry a [sparse vector](#sparse-vector) for single-index [hybrid search](/guides/search/hybrid-search/single-index).
+* In an index with dense vectors, each record has one [dense vector](#dense-vector). Records can also carry a [sparse vector](#sparse-vector) for single-index [hybrid search](/guides/legacy/vectors-api/hybrid-search-single-index).
 * In an index with sparse vectors, each record has one sparse vector.
 
 ### Namespace
 
 A namespace is a partition within an index. It divides [documents](#document) or [records](#record) into separate groups so that each query scans only one namespace (faster lookups) and each customer's data can be isolated from another customer's (multitenant isolation).
 
-All [upserts](/guides/index-data/upsert-data), [queries](/guides/search/search-overview), and other data read and write operations always target one namespace.
+All [upserts](/guides/data/upsert-data), [queries](/guides/search/search-overview), and other data read and write operations always target one namespace.
 
-For more information, see [Use namespaces](/guides/index-data/indexing-overview#namespaces).
+For more information, see [Use namespaces](/guides/indexes/indexing-overview#namespaces).
 
 ### Backup
 
 A backup is a static copy of an index, including its schema. Backups only consume storage and can't be queried. You can create a backup from an index, and you can create a new index from that backup. The new index inherits the source index's schema, so it has the same fields, dimensions, and similarity metric, but it can have a different name.
 
-For more information, see [Understanding backups](/guides/manage-data/backups-overview).
+For more information, see [Understanding backups](/guides/indexes/backups-overview).
 
 ## Data
 
@@ -79,7 +79,7 @@ A document is a JSON object with a required `_id` field, the ranking fields decl
 
 With `embed` and `sparse_embed`, Pinecone generates the vectors from your text using [integrated embedding](/guides/search/integrated-embedding). You choose the [scoring method](#scoring-methods) per query with `score_by`.
 
-Documents are the recommended shape for new multi-field and full-text workloads. Vector-only indexes continue to use [records](#record). The Documents API and the Vectors API are both fully supported.
+Legacy vector indexes and legacy integrated indexes hold [records](#record) instead.
 
 For more information, see [Full-text search](/guides/search/full-text-search).
 
@@ -98,13 +98,13 @@ A record is the unit of data in a [vector index](#vector-index). It contains:
 * One vector, or a dense and a sparse vector for single-index [hybrid search](/guides/search/hybrid-search).
 * Optional [metadata](#metadata).
 
-In a [legacy integrated index](/guides/index-data/indexing-overview#integrated-embedding) created with `create_index_for_model`, you can upsert raw text instead of a vector, and Pinecone embeds it at index time. When an item has more than one searchable field, such as a text field ranked by BM25 and a `dense_vector` field for similarity, model it as a [document](#document).
+In a [legacy integrated index](/guides/indexes/indexing-overview#integrated-embedding) created with `create_index_for_model`, you can upsert raw text instead of a vector, and Pinecone embeds it at index time. When an item has more than one searchable field, such as a text field ranked by BM25 and a `dense_vector` field for similarity, model it as a [document](#document).
 
-For more information, see [Upsert data](/guides/index-data/upsert-data).
+For more information, see [Upsert data](/guides/data/upsert-data).
 
 #### Record ID
 
-A record ID is a record's unique ID. [Use ID prefixes](/guides/index-data/data-modeling#use-structured-ids) that reflect the type of data you're storing.
+A record ID is a record's unique ID. [Use ID prefixes](/guides/indexes/data-modeling#use-structured-ids) that reflect the type of data you're storing.
 
 ### Dense vector
 
@@ -112,7 +112,7 @@ A dense vector, also referred to as a vector embedding or simply a vector, is a 
 
 Dense vectors power [semantic search](#semantic-search).
 
-You use a dense embedding model to convert data to dense vectors. The embedding model can be external to Pinecone or [hosted on Pinecone infrastructure](/guides/index-data/index-configuration#embedding-models) and integrated with an index.
+You use a dense embedding model to convert data to dense vectors. The embedding model can be external to Pinecone or [hosted on Pinecone infrastructure](/guides/indexes/index-configuration#embedding-models) and integrated with an index.
 
 For more information about dense vectors, see [What are vector embeddings?](https://www.pinecone.io/learn/vector-embeddings/).
 
@@ -122,13 +122,13 @@ Sparse vectors are often used to represent documents or queries in a way that ca
 
 Sparse vectors have a large number of dimensions, but a small number of those values are non-zero. Because most values are zero, Pinecone stores sparse vectors efficiently by keeping only the non-zero values along with their corresponding indices.
 
-Sparse vectors power [sparse-vector search](#sparse-vector-search), and they can coexist with dense vectors in a single vector index for [hybrid search](/guides/search/hybrid-search/single-index) on the Vectors API. To convert data to sparse vectors, use a sparse embedding model. The embedding model can be external to Pinecone or [hosted on Pinecone infrastructure](/guides/index-data/index-configuration#embedding-models) and integrated with an index.
+Sparse vectors power [sparse-vector search](#sparse-vector-search), and they can coexist with dense vectors in a single legacy vector index for [hybrid search](/guides/legacy/vectors-api/hybrid-search-single-index) on the legacy Vectors API. To convert data to sparse vectors, use a sparse embedding model. The embedding model can be external to Pinecone or [hosted on Pinecone infrastructure](/guides/indexes/index-configuration#embedding-models) and integrated with an index.
 
 For more information about sparse vectors, see [Sparse retrieval](https://www.pinecone.io/learn/sparse-retrieval/).
 
 ### Metadata
 
-Metadata is additional information included in a document or record to provide more context and enable additional [filtering capabilities](/guides/index-data/indexing-overview#metadata). For example, the original text that was embedded can be stored in the metadata.
+Metadata is additional information included in a document or record to provide more context and enable additional [filtering capabilities](/guides/indexes/indexing-overview#metadata). For example, the original text that was embedded can be stored in the metadata.
 
 ## Search
 
@@ -180,8 +180,8 @@ You can combine any scoring method with a metadata filter. Filters support:
 * **Existence checks**: `$exists`.
 * **Text-match operators**: `$match_phrase`, `$match_all`, and `$match_any` match phrases and tokens in text fields.
 
-For more information, see [Metadata filter expressions](/guides/index-data/indexing-overview#metadata-filter-expressions).
+For more information, see [Metadata filter expressions](/guides/indexes/indexing-overview#metadata-filter-expressions).
 
 ### Standalone embedding and reranking
 
-Standalone embedding and reranking let you call [embedding models](/guides/index-data/index-configuration#embedding-models) and [reranking models](/guides/search/rerank-results#reranking-models) hosted on Pinecone's infrastructure directly, separately from index operations.
+Standalone embedding and reranking let you call [embedding models](/guides/indexes/index-configuration#embedding-models) and [reranking models](/guides/search/rerank-results#reranking-models) hosted on Pinecone's infrastructure directly, separately from index operations.

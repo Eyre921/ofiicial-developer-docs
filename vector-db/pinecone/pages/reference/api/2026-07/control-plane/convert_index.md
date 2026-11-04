@@ -11,7 +11,7 @@ The request returns once the new index is created in the `Initializing` state. T
 
 For how source records map to the schema, see [Convert an index](https://docs.pinecone.io/guides/index-data/convert-an-index).
 
-```bash Vector index theme={null}
+```bash Legacy vector index theme={null}
 PINECONE_API_KEY="YOUR_API_KEY"
 
 curl https://api.pinecone.io/indexes/support-tickets/convert \

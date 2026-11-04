@@ -1,5 +1,5 @@
 ---
-title: "Built-in search powered by Parallel"
+title: "Web search"
 source: https://docs.langchain.com/langsmith/javascript/managed-deep-agents-search
 path: langsmith/javascript/managed-deep-agents-search
 ---

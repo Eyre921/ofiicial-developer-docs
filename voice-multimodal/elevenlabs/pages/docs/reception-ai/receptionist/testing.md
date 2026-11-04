@@ -19,6 +19,8 @@ The test dialog lets you:
 * **Call**: talk to your receptionist through your microphone.
 * **Chat**: type messages to test responses quickly.
 
+A **Call** or **Chat** here uses one fifth of the [credit rate](/docs/reception-ai/billing/usage-and-limits#credit-system). A call to the number under **Or call**, and a conversation on your website widget, uses the full rate.
+
 If your browser blocks the microphone, allow microphone access for the site and try again.
 
 ## Phone call testing

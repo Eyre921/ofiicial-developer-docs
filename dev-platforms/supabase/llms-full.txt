@@ -62230,6 +62230,8 @@ OrioleDB addresses Postgres's scalability limitations by removing bottlenecks in
 
 ![Line chart of TPC-C throughput at 5120 warehouses, in transactions per minute (tpmC), from 32 to 256 connections. OrioleDB rises to about 112,800 tpmC by 128 connections and holds between about 110,000 and 112,000 from 128 connections onward. Heap stays between about 37,000 and 65,000 across the whole range.](https://supabase.com/docs/img/database/orioledb-tpc-c-5120-warehouse.png)
 
+[DBArena](https://dbarena.com) publishes open, reproducible benchmarks that compare Supabase Postgres, with and without OrioleDB, against other managed Postgres providers.
+
 Note: OrioleDB is in public beta, and projects that use it have access to the same paid features as other Supabase projects. OrioleDB has [some limitations](https://www.orioledb.com/docs/usage/getting-started#current-limitations) compared to the default heap storage engine, so review them before you choose it for a project. Native B-tree indexes give the best performance, and an Index Access Method bridge provides experimental support for other index types built for heap storage, including pg\_vector's HNSW indexes. In the Supabase OrioleDB image the default storage method has been updated to use OrioleDB, granting better performance out of the box.
 
 ## Concepts
@@ -133197,7 +133199,9 @@ The gateway applies a permissive CORS policy at the virtual-host level:
 
 This matches both the current Supabase platform behavior and the previous Kong-based gateway. The auth boundary for Supabase APIs is the `apikey` header rather than the request origin.
 
-The `/pg/` route (direct Postgres introspection via `meta`, gated by the service role key) is the exception: it carries its own stricter per-route CORS override, restricted to `SUPABASE_PUBLIC_URL` and `localhost`/`127.0.0.1` origins, since there's no legitimate reason for this route to be called from an arbitrary third-party origin.
+The `/functions/v1/` route is an exception: the CORS filter is disabled there, as on the platform. Preflight requests reach your function, and its CORS headers pass through unchanged. See [CORS errors in the browser](https://supabase.com/docs/guides/self-hosting/self-hosted-functions#cors-errors-in-the-browser).
+
+The `/pg/` route (direct Postgres introspection via `meta`, gated by the service role key) is another exception: it carries its own stricter per-route CORS override, restricted to `SUPABASE_PUBLIC_URL` and `localhost`/`127.0.0.1` origins, since there's no legitimate reason for this route to be called from an arbitrary third-party origin.
 
 Note: If you customize the `cors:` block in `lds.template.yaml` to enable `allow_credentials: true`, you must restrict `allow_origin_string_match` to specific origins - browsers (and Envoy) reject the combination of credentials with a wildcard origin.
 
@@ -133561,6 +133565,14 @@ For more on 401 responses from functions, see [Edge Function 401 errors](https:/
 - Check that `FUNCTIONS_VERIFY_JWT` matches your intent (`true` or `false`) in `.env`
 - If verification is enabled, pass either a valid JWT in `Authorization: Bearer <token>` (a user session token or a legacy API key), or an `sb_publishable_*` or `sb_secret_*` key in the `apikey` header. The API gateway translates `sb_` keys to an internal JWT, which the functions service then verifies.
 - Verifying asymmetric JWTs, including translated `sb_` keys, requires `SUPABASE_JWKS` to be set for the `functions` service in `docker-compose.yml`. See [New API Keys and Asymmetric Authentication](https://supabase.com/docs/guides/self-hosting/self-hosted-auth-keys).
+
+### CORS errors in the browser
+
+The API gateway leaves CORS on `/functions/v1/` to your function, as on the platform. It doesn't answer preflight (`OPTIONS`) requests there or add CORS headers to function responses.
+
+When you call a function from a browser, the function must handle preflight requests and return its own CORS headers. `withSupabase` does both. See [CORS support for Edge Functions](https://supabase.com/docs/guides/functions/cors).
+
+A missing function, one that fails to start, or an unhandled error in your function also shows up in the browser as a CORS or network error: the preflight fails, or the error response has no CORS headers. Check the function name in the URL and run `docker compose logs functions`.
 
 ### Changes to function code not reflected after editing
 
@@ -144239,7 +144251,7 @@ const { data, error } = await supabase.auth.signInWithIdToken({
 Log in an existing user via a third-party provider.
 This method supports the PKCE flow.
 
-- This method is used for signing in using [Social Login (OAuth) providers](https://supabase.com/docs/guides/auth#configure-third-party-providers).
+- This method is used for signing in using [social sign-in (OAuth) providers](https://supabase.com/docs/guides/auth/social-sign-in).
 - It works by redirecting your application to the provider's authorization screen, before bringing back the user to your app.
 
 ### Examples
@@ -144304,7 +144316,7 @@ If you're using phone sign-ins, only an OTP will be sent. You won't be able to s
 
 Be aware that you may get back an error message that will not distinguish
 between the cases where the account does not exist or, that the account
-can only be accessed via social login.
+can only be accessed via social sign-in.
 
 Do note that you will need to configure a Whatsapp sender on Twilio
 if you are using phone sign in with the 'whatsapp' channel. The whatsapp
@@ -144397,7 +144409,7 @@ Log in an existing user with an email and password or phone and password.
 Be aware that you may get back an error message that will not distinguish
 between the cases where the account does not exist or that the
 email/phone and password combination is wrong or that the account can only
-be accessed via social login.
+be accessed via social sign-in.
 
 - Requires either an email and password or a phone number and password.
 
@@ -144582,12 +144594,31 @@ function App() {
 
 ## signOut
 
-Inside a browser context, `signOut()` will remove the logged in user from the browser session and log them out - removing all items from localstorage and then trigger a `"SIGNED_OUT"` event.
+Inside a browser context, `signOut()` will remove the logged in user from the browser session
+and log them out - removing all items from localstorage and then trigger a `"SIGNED_OUT"`
+event.
 
-For server-side management, you can revoke all refresh tokens for a user by passing a user's JWT through to `auth.api.signOut(JWT: string)`.
-There is no way to revoke a user's access token jwt until it expires. It is recommended to set a shorter expiry on the jwt for this reason.
+For server-side management, you can revoke all refresh tokens for a user by passing a user's
+JWT through to `auth.api.signOut(JWT: string)`.
 
-If using `others` scope, no `SIGNED_OUT` event is fired!
+There is no way to revoke a user's access token jwt until it expires. It is recommended to set
+a shorter expiry on the jwt for this reason.
+
+`signOut` behavior depends on the selected scope:
+
+- `local`: The local session is removed first and a `SIGNED_OUT` event is fired, then the client
+  makes a best-effort request to revoke the refresh token on the server. If the request fails,
+  the client is still signed out locally and the error is returned, but the server may retain
+  the refresh token until it expires.
+
+- `global`: All of the user's sessions are first invalidated on the server. Once the server
+  acknowledges the request, the local session is cleared. If server logout fails, the local
+  session is retained, no `SIGNED_OUT` event is triggered, and the server or network error is
+  returned. A 401, 403, or 404 response counts as a successful sign-out.
+
+- `others`: All other sessions are invalidated when the server accepts the request; the
+  current local session remains unchanged. In case of server or network failures, the error is
+  returned. A `SIGNED_OUT` event is never triggered, regardless of the outcome.
 
 **Warning:** the default `scope` is `'global'`. This signs the user out of
 **every device they are currently signed in on**, not just the current
@@ -144602,7 +144633,13 @@ tab/session. If you only want to sign the user out of the current session
   usually what apps want on a "Sign out" button, especially when users
   sign in from multiple devices and do not expect signing out of one to
   terminate the others.
-- Since Supabase Auth uses JWTs for authentication, the access token JWT will be valid until it's expired. When the user signs out, Supabase revokes the refresh token and deletes the JWT from the client-side. This does not revoke the JWT and it will still be valid until it expires.
+- With the default `global` scope, `signOut()` while offline returns an error and keeps the user
+  signed in. To sign out regardless, fall back to `signOut({ scope: 'local' })` when the call
+  returns an error.
+- Since Supabase Auth uses JWTs for authentication, the access token JWT will be valid until
+  it's expired. When the user signs out, Supabase revokes the refresh token and deletes the
+  JWT from the client-side. This does not revoke the JWT and it will still be valid until it
+  expires.
 
 ### Examples
 
@@ -145019,6 +145056,8 @@ This function should only be called on a server. Never expose your `service_role
 ## deleteUser
 
 Delete a user. Requires a `service_role` key.
+Returns the user that was deleted. In cases of concurrent updates, the user object returned
+might not accurately reflect the user information at the time of deletion.
 
 - The `deleteUser()` method requires the user's ID, which maps to the `auth.users.id` column.
 
@@ -145418,7 +145457,7 @@ const challenge = await supabase.auth.mfa.challenge({ factorId: id });
 Returns the Authenticator Assurance Level (AAL) for the active session.
 
 - `aal1` (or `null`) means that the user's identity has been verified only
-  with a conventional login (email+password, OTP, magic link, social login,
+  with a conventional login (email+password, OTP, magic link, social sign-in,
   etc.).
 - `aal2` means that the user's identity has been verified both with a conventional login and at least one MFA factor.
 
@@ -146796,6 +146835,14 @@ const { data, error } = await supabase
 ## exists
 
 Checks the existence of a file.
+
+This reads the object's metadata, so the result is `false` only when Storage reports that the
+key does not exist: an error with code `NoSuchKey`, or an HTTP 404 with no error code. In that
+case `data` is `false` and `error` holds the original error.
+
+Every other failure throws instead of returning `false`, including an invalid or expired JWT
+(`InvalidJWT`), a missing bucket (`NoSuchBucket`) and network errors. With `throwOnError()`,
+a missing key throws as well.
 
 ### Examples
 

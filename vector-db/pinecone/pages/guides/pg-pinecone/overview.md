@@ -58,4 +58,4 @@ The diagram names these index types:
 * **New to vector search**: The [quickstart](/guides/pg-pinecone/quickstart) creates a table with embeddings and searches it with a `native` index.
 * **Already using pgvector**: [Switch from pgvector to native](/guides/pg-pinecone/switch-from-pgvector).
 * **Outgrowing one server**: [Switch from native to remote](/guides/pg-pinecone/switch-to-remote), so Pinecone serves the table's vector search.
-* **Leaving Postgres**: [Migrate from pgvector](/guides/index-data/migrate-from-pgvector) moves your data into Pinecone Database.
+* **Leaving Postgres**: [Migrate from pgvector](/guides/data/migrate-from-pgvector) moves your data into Pinecone Database.
