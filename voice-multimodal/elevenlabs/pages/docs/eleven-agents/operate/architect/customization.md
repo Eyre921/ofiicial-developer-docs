@@ -55,7 +55,7 @@ Your preferences document (`user.md`) is personal to you and applies across ever
 
 ## Prompt library
 
-Save prompts you use often and reuse them instead of retyping them. Prompts are private by default. Select **Share** to share a prompt with workspace members, so your team starts common tasks such as reviewing triage tickets or auditing guardrails from the same playbook. The library shows **Your prompts** and **Shared with you** separately.
+Save prompts you use often and reuse them instead of retyping them. Prompts are private by default. Select **Share** to share a prompt with workspace members, so your team starts common tasks such as reviewing issues or auditing guardrails from the same playbook. The library shows **Your prompts** and **Shared with you** separately.
 
 To use a saved prompt:
 

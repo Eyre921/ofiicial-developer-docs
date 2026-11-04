@@ -91,7 +91,7 @@ Stripe files your sales tax returns based on the amount of tax you actually coll
 
 **Rounding rules specific to each jurisdiction**: Different tax authorities enforce their own standards for how they round figures on official returns. These rounding differences tend to be more apparent for businesses that process high volumes of lower-priced items, but they’re both expected and necessary to stay compliant.
 
-**Refunds**: Stripe deducts refunds and returns from gross sales in the filing period when the refund occurred, regardless of the original transaction date. If refunds exceed sales in a given filing period, creating a negative balance, Stripe automatically carries those refunds forward to the next filing period. These refunds will be utilized once sufficient sales are available to offset these amounts.
+**Refunds**: Stripe deducts refunds and returns from gross sales in the filing period when the refund occurred, regardless of the original transaction date. If refunds exceed sales in a given filing period, creating a negative balance, Stripe automatically carries those refunds forward to the next filing period. These refunds will be utilized after sufficient sales are available to offset these amounts.
 
 ### Common scenarios
 
@@ -116,13 +116,13 @@ The details for each location will show the transactions Stripe will include in 
 
 ### Understand differences in exported data
 
-In certain cases, not all transactions for a given location will be included in your filing. For example, local amusement taxes may be filed separately from state-level sales and use taxes included on the current return. As a result, the itemized export can differ from the transaction details shown for the relevant location and period.
+In certain cases, not all transactions for a given location will be included in your filing. For example, local amusement taxes might be filed separately from state-level sales and use taxes included on the current return. As a result, the itemized export can differ from the transaction details shown for the relevant location and period.
 
 ### Next steps
 
 If all reviewed details are accurate, you don’t need to take further action. Stripe automatically begins processing filings as early as the 7th of the month. You receive an email when your filing is complete.
 
-If you need to make changes to an upcoming automatic filing, submit your request before the 6th of the month at 6 PM ET. In the details for the relevant location and period, click **Request changes** and provide details about the changes you need. After you submit your request, you’ll receive an update at the email address associated with your TaxJar account within three business days.
+If you need to make changes to an upcoming automatic filing, submit your request before the 6th of the month at 6 pm ET. In the details for the relevant location and period, click **Request changes** and provide details about the changes you need. After you submit your request, you’ll receive an update at the email address associated with your TaxJar account within three business days.
 
 You can view completed filings at any time in your [TaxJar Filing History](https://stripe-tax-filing.helpscoutdocs.com/article/1217-how-to-view-your-completed-filings).
 

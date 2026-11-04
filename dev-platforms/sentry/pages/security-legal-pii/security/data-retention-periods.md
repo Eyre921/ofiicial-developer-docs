@@ -14,9 +14,9 @@ url: https://docs.sentry.io/security-legal-pii/security/data-retention-periods/
 
 ## [Overview](https://docs.sentry.io/security-legal-pii/security/data-retention-periods.md#overview)
 
-Sentry retains different types of data for varying periods based on your plan tier and the specific data type. The below table outlines the retention periods for data types across our Developer, Team, Business, and Enterprise plans.
+Sentry retains different types of data for varying periods based on your plan tier and the specific data type. The table below outlines the retention periods for data types across our Developer, Team, Business, and Enterprise plans.
 
-By default, new account trials have Team plan retention. If you are trialing from a paid plan type, you will have the same retention as that plan for any data ingested during the trial.
+By default, new account trials have Team plan retention. If you are trialling from a paid plan type, you will have the same retention as that plan for any data ingested during the trial.
 
 ## [Default Data Retention by Plan](https://docs.sentry.io/security-legal-pii/security/data-retention-periods.md#default-data-retention-by-plan)
 
@@ -27,6 +27,7 @@ By default, new account trials have Team plan retention. If you are trialing fro
 | Spans/Transactions  | 30 days   | 30 days\* | 30 days + 13 months sampled\* |
 | Session Replays     | 30 days   | 90 days   | 90 days                       |
 | Profiles            | 30 days   | 30 days   | 30 days                       |
+| User Feedback       | 30 days   | 90 days   | 90 days                       |
 | Crons               | 30 days   | 30 days   | 30 days                       |
 | Uptime              | 30 days   | 90 days   | 90 days                       |
 | Attachments         | 30 days   | 90 days   | 90 days                       |

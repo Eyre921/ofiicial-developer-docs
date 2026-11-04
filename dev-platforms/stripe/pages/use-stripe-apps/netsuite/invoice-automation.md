@@ -40,7 +40,7 @@ A diagram providing a high level overview of the customer flow for billing and i
 A diagram providing a high level overview of the invoice flow for billing and invoice automation outlined in this doc (See full diagram at https://docs.stripe.com/use-stripe-apps/netsuite/invoice-automation)
 
 ```text
-[Business] -- You initiate the Stripe invoice flow through the backend or Dashboard --> [Stripe]
+[Business] -- You initiate the Stripe invoice flow through the back end or Dashboard --> [Stripe]
 [Stripe] -- Stripe finalizes the invoice --> [Connector]
 [Connector] -- The connector creates a NetSuite invoice --> [NetSuite]
 ```

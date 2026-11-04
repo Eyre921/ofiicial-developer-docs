@@ -48,9 +48,9 @@ All times in this table are in Eastern Time.
 
 | Submission cutoff (ET) | Processing time (ET) | Time tracking details are received (ET) |
 | --- | --- | --- |
-| By 7:45 AM | 8:50 AM | 12:45 PM |
-| By 12:15 PM | 1:20 PM | 4:15 PM |
-| By 1:45 PM | 2:50 PM | 2:00 AM (T+1 the next day) |
+| By 7:45 am | 8:50 am | 12:45 pm |
+| By 12:15 pm | 1:20 pm | 4:15 pm |
+| By 1:45 pm | 2:50 pm | 2:00 am (T+1 the next day) |
 
 ### Standard ACH timing
 
@@ -60,7 +60,7 @@ All times in this table are in Eastern Time.
 
 | Submission cutoff (ET) | Processing time (ET) | Time tracking details are received (ET) |
 | --- | --- | --- |
-| 8:30 PM | Every 1-2 hours between 9:30 AM and 12:00 AM (T+1) | 5:00 AM (T+2) |
+| 8:30 pm | Every 1-2 hours between 9:30 am and 12:00 am (T+1) | 5:00 am (T+2) |
 
 #### Direct FedACH timing [Private preview]
 
@@ -94,7 +94,7 @@ All times in this table are in Eastern Time.
 
 | Submission cutoff (ET) | Processing time (ET) | Time tracking details are received (ET) |
 | --- | --- | --- |
-| 08:00 AM-5:00 PM | Same day | Individually throughout the day (usually within an hour of processing) |
+| 08:00 am-5:00 pm | Same day | Individually throughout the day (usually within an hour of processing) |
 
 ## InboundTransfer transactions
 
@@ -108,8 +108,8 @@ If using same-day speed, `InboundTransfer` requests are submitted to banking par
 
 |  | Evolve | Fifth Third Bank |
 | --- | --- | --- |
-| ACH | 7:00 PM ET | 8:30 PM ET |
-| Same-day ACH | 12:00 PM ET | 1:00 PM ET |
+| ACH | 7:00 pm ET | 8:30 pm ET |
+| Same-day ACH | 12:00 pm ET | 1:00 pm ET |
 
 | Submission date (prior to cutoff) | Expected arrival date |
 | --- | --- |

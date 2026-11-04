@@ -150,7 +150,7 @@ For European users:
 
 Including this disclosure is an essential element of managing your Stripe Issuing program. It gives your users the information they need to validate the legitimacy of the program and escalate complaints to our regulators, if needed.
 
-The disclosure may be placed on your marketing in an area of your choosing, as long as the location follows the location principles described in the [“Messaging Guidelines”](https://docs.stripe.com/issuing/marketing-guidance-europe-uk.md#messaging-guidelines) above. Typically our customers opt to place the disclosures towards the end of their webpage, social media, or email marketing.
+You can place the disclosure on your marketing in an area of your choosing, as long as the location follows the location principles described in the [“Messaging Guidelines”](https://docs.stripe.com/issuing/marketing-guidance-europe-uk.md#messaging-guidelines) above. Typically our customers opt to place the disclosures towards the end of their webpage, social media, or email marketing.
 
 ### Space constrained advertisements
 

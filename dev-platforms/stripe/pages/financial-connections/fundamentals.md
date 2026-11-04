@@ -156,7 +156,7 @@ curl https://api.stripe.com/v1/financial_connections/sessions \
   -d "permissions[]=payment_method"
 ```
 
-Consider the data required to fulfill your use case and request permission to access only the data you need. Requesting permissions that go well beyond your application’s scope may erode your users’ trust in how you use their data. For example, if you’re building a personal financial management application or a lending product, you might request `transactions` data. If you’re mitigating fraud such as account takeovers, you might want to request `ownership` details.
+Consider the data required to fulfill your use case and request permission to access only the data you need. Requesting permissions that go beyond your application’s scope might erode your users’ trust in how you use their data. For example, if you’re building a personal financial management application or a lending product, you might request `transactions` data. If you’re mitigating fraud such as account takeovers, you might want to request `ownership` details.
 
 During the authentication flow, your users can see the data types that you’ve requested access to. They must provide their consent to share this data. To expand the data types you have access to, your user needs to complete the authentication flow again with the new data permissions.
 

@@ -39,7 +39,7 @@ curl https://api.stripe.com/v1/account_sessions \
   -d "components[tax_settings][enabled]=true"
 ```
 
-After creating the account session and [initializing ConnectJS](https://docs.stripe.com/connect/get-started-connect-embedded-components.md#account-sessions), you can render the tax settings component in the frontend:
+After creating the account session and [initializing ConnectJS](https://docs.stripe.com/connect/get-started-connect-embedded-components.md#account-sessions), you can render the tax settings component in the front end:
 
 #### React
 

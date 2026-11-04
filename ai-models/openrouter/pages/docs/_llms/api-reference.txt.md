@@ -1,5 +1,5 @@
 ---
-title: "API Reference (161 pages)"
+title: "API Reference (159 pages)"
 source: https://openrouter.ai/docs/_llms/api-reference.txt
 path: docs/_llms/api-reference.txt
 ---
@@ -216,8 +216,6 @@ path: docs/_llms/api-reference.txt
 - [Activate a validated private endpoint](https://openrouter.ai/docs/api/api-reference/private-endpoints/activate-a-validated-private-endpoint.md): Make a validated draft routable. Returns 409 when the endpoint was never validated, the validation is stale, or it is already active. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 - [Disable a private endpoint](https://openrouter.ai/docs/api/api-reference/private-endpoints/disable-a-private-endpoint.md): Stop routing to an active endpoint without deleting it. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 - [Enable a private endpoint](https://openrouter.ai/docs/api/api-reference/private-endpoints/enable-a-private-endpoint.md): Resume routing to a disabled endpoint. [Management key](/docs/guides/overview/auth/management-api-keys) required.
-- [Set private endpoint supported parameters (deprecated)](https://openrouter.ai/docs/api/api-reference/private-endpoints/set-private-endpoint-supported-parameters-deprecated.md): Deprecated: send `declared_parameters` to `PATCH /private-endpoints/{id}` instead; this route behaves exactly like that call and will be removed. The body replaces the earlier declaration and is read as a set; `tested_parameters` stay. Returns 400 `parameters_invalid` when `tool_choice` is declared…
-- [Set private endpoint pricing (deprecated)](https://openrouter.ai/docs/api/api-reference/private-endpoints/set-private-endpoint-pricing-deprecated.md): Deprecated: send `pricing` to `PATCH /private-endpoints/{id}` instead; this route behaves exactly like that call and will be removed. The body replaces the whole pricing object: omitting `cache_read` or `cache_write` reverts that rate to the provider pricing strategy default. [Management key](/docs/…
 - [Validate a draft private endpoint](https://openrouter.ai/docs/api/api-reference/private-endpoints/validate-a-draft-private-endpoint.md): Send a live test request to the draft endpoint using the given workspace's BYOK credential for its provider. A passing validation is required before activation. Failed checks return 200 with `passed: false`. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 #### Private Providers

@@ -140,7 +140,7 @@ You must provide customers with money transmission receipts as part of your ongo
 
 ## Onboarding 
 
-Stripe offers several Issuing integrations in partnership with the partner banks referenced in these guidelines. Spend Card and Charge Card are credit products through which eligible connected accounts may access bank-issued credit. Prepaid and debit programs, including Stablecoin-backed issuing, allow connected accounts to make debit transactions from a card account at a partner bank. Stripe also offers Treasury for platforms integrations in partnership with partner banks.
+Stripe offers several Issuing integrations in partnership with the partner banks referenced in these guidelines. Spend Card and Charge Card are credit products through which eligible connected accounts can access bank-issued credit. Prepaid and debit programs, including Stablecoin-backed issuing, allow connected accounts to make debit transactions from a card account at a partner bank. Stripe also offers Treasury for platforms integrations in partnership with partner banks.
 
 The required agreements and acceptance process for your Issuing or Treasury for platforms integration depend on the unique features of your program. However, in all cases, your platform must provide for three main workflows as part of your Issuing or Treasury application and onboarding process:
 

@@ -61,7 +61,7 @@ curl https://api.stripe.com/v1/account_sessions \
 
 1. [Add the tax-settings or tax-registrations component to the DOM](https://docs.stripe.com/connect/connect-embedded-components/quickstart.md#embedded-component).
 
-After creating the account session and [initializing ConnectJS](https://docs.stripe.com/connect/get-started-connect-embedded-components.md#account-sessions), you can render each tax component in the frontend:
+After creating the account session and [initializing ConnectJS](https://docs.stripe.com/connect/get-started-connect-embedded-components.md#account-sessions), you can render each tax component in the front end:
 
 #### React
 

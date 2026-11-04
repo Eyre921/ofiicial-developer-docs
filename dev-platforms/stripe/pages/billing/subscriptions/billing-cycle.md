@@ -65,7 +65,7 @@ curl https://api.stripe.com/v1/subscriptions \
 
 You can specify the exact month, day, hour, minute, and second for the billing cycle anchor by using `billing_cycle_anchor_config`. If you don’t specify the hour, minute, and second, they default to the values of the subscription creation time.
 
-The billing cycle anchor uses Coordinated Universal Time (UTC). For example, if you create a subscription using `billing_cycle_anchor_config` at 5 PM EST without specifying the hour, the time  is recorded in the system as 10 PM UTC.
+The billing cycle anchor uses Coordinated Universal Time (UTC). For example, if you create a subscription using `billing_cycle_anchor_config` at 5 pm EST without specifying the hour, the time  is recorded in the system as 10 pm UTC.
 
 `billing_cycle_anchor_config` doesn’t support anchoring on a backdated start date.
 

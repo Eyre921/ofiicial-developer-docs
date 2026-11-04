@@ -502,7 +502,7 @@ card.mount('#card-element');
 
 The `card` Element simplifies the form and minimizes the number of fields required by inserting a single, flexible input field that securely collects all necessary card details. For a full list of supported Element types, refer to our [Stripe.js reference](https://docs.stripe.com/js.md#elements_create) documentation.
 
-Use the test card number **4242 4242 4242 4242**, any three-digit CVC number, any expiration date in the future, and any five-digit ZIP code.
+Use the test card number **4242 4242 4242 4242**, any three-digit CVC number, any expiration date in the future, and any five-digit postal code.
 
 Elements validates user input as it’s typed. To help your customers catch mistakes, listen to `change` events on the `card` Element and display any errors.
 
@@ -525,7 +525,7 @@ function displayError(event) {
 
 ### Complete payment
 
-When your customer submits the Elements form, call `stripe.confirmCardPayment` with the *client secret* (The client secret is a unique key returned from Stripe as part of a PaymentIntent. This key lets the client access important fields from the PaymentIntent (status, amount, currency) while hiding sensitive ones (metadata, customer)) that you passed to your frontend. This creates a payment method and *confirms* (Confirming an intent indicates that the customer intends to use the current or provided payment method. Upon confirmation, the intent attempts to initiate the portions of the flow that have real-world side effects) the  invoice’s PaymentIntent causing a charge to be made. If *Strong Customer Authentication* (Strong Customer Authentication (SCA) is a regulatory requirement in effect as of September 14, 2019, that impacts many European online payments. It requires customers to use two-factor authentication like 3D Secure to verify their purchase) (SCA) is required for the payment, Elements handles the authentication process before confirming the PaymentIntent.
+When your customer submits the Elements form, call `stripe.confirmCardPayment` with the *client secret* (The client secret is a unique key returned from Stripe as part of a PaymentIntent. This key lets the client access important fields from the PaymentIntent (status, amount, currency) while hiding sensitive ones (metadata, customer)) that you passed to your front end. This creates a payment method and *confirms* (Confirming an intent indicates that the customer intends to use the current or provided payment method. Upon confirmation, the intent attempts to initiate the portions of the flow that have real-world side effects) the  invoice’s PaymentIntent causing a charge to be made. If *Strong Customer Authentication* (Strong Customer Authentication (SCA) is a regulatory requirement in effect as of September 14, 2019, that impacts many European online payments. It requires customers to use two-factor authentication like 3D Secure to verify their purchase) (SCA) is required for the payment, Elements handles the authentication process before confirming the PaymentIntent.
 
 ```javascript
 const btn = document.querySelector('#submit-payment-btn');

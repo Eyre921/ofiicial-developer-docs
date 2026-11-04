@@ -30,8 +30,7 @@
     "status": "ok"
   },
   "agent-frameworks/vercel-ai-sdk": {
-    "pages": 0,
-    "status": "ok"
+    "status": "error: curl failed (16) for https://ai-sdk.dev/llms-full.txt: curl: (28) Operation timed out after 90137 milliseconds with 3017707 bytes received\ncurl: (16) Error in the HTTP2 framing layer\n"
   },
   "agent-frameworks/mcp": {
     "pages": 159,
@@ -58,8 +57,7 @@
     "status": "ok"
   },
   "vector-db/pinecone": {
-    "pages": 575,
-    "status": "ok"
+    "status": "error: curl failed (28) for https://docs.pinecone.io/llms-full.txt: curl: (28) Operation timed out after 90000 milliseconds with 1769472 bytes received\ncurl: (28) Operation timed out after 90000 milliseconds with 0 bytes received\ncurl: (28) Recv failure: Connection re"
   },
   "vector-db/qdrant": {
     "pages": 0,
@@ -102,7 +100,7 @@
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
@@ -187,7 +185,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 100,
+    "pages": 83,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -203,8 +201,8 @@
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 1502,
+    "pages": 1494,
     "status": "ok"
   },
-  "_last_crawl": "2026-11-03T23:30:50Z"
+  "_last_crawl": "2026-11-04T11:30:59Z"
 }

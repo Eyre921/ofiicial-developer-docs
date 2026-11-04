@@ -20,7 +20,7 @@ Three API surfaces are available:
 
 > [!TIP]
 >
-> All three endpoints use [enhanced markdown](/guides/data-apis/enhanced-markdown) (`v1`) by default on current Notion-Versions. Set `markdown_version` to `v2` to use [Notion-flavored Markdown](/guides/data-apis/notion-flavored-markdown) (`v2`), the recommended syntax. See [Markdown versions](#markdown-versions).
+> All three endpoints use [enhanced markdown](/guides/data-apis/enhanced-markdown) (`v1`) by default on current Notion-Versions. The REST examples in this guide select [Notion-flavored Markdown](/guides/data-apis/notion-flavored-markdown) (`v2`). For the JavaScript examples, use `@notionhq/client` v5.29.0 or later.
 
 ## Markdown versions
 
@@ -83,7 +83,7 @@ If no `update_content` edit matches, the request fails with `validation_error` a
 
 ## Block type support
 
-The markdown API supports most Notion block types. The table below shows how each block type maps to its markdown representation.
+Use these `v2` forms when creating or updating blocks. See the [format reference](/guides/data-apis/notion-flavored-markdown) for attributes and nested blocks.
 
 ### Supported block types
 
@@ -94,24 +94,26 @@ The markdown API supports most Notion block types. The table below shows how eac
 | [Bulleted list item](/reference/block#bulleted-list-item) | `- item` |
 | [Numbered list item](/reference/block#numbered-list-item) | `1. item` |
 | [To do](/reference/block#to-do) | `- [ ]` / `- [x]` |
-| [Toggle](/reference/block#toggle-blocks) | `<details>` / `<summary>` |
+| [Toggle](/reference/block#toggle-blocks) | `<toggle>` with the title on the next line |
 | [Quote](/reference/block#quote) | `> quote` |
 | [Callout](/reference/block#callout) | `<callout>` |
 | [Divider](/reference/block#divider) | `---` |
 | [Code](/reference/block#code) | Fenced code block with language |
-| [Equation](/reference/block#equation) | `$$ equation $$` |
-| [Table](/reference/block#table) | `<table>` with `<tr>` and `<td>` |
+| [Equation](/reference/block#equation) | Equation between two lines that each contain only `$$` |
+| [Table](/reference/block#table) | Pipe table, or `<table>` for styled tables |
+| [Bookmark](/reference/block#bookmark) | `<bookmark source="URL" />` |
+| [Embed](/reference/block#embed) | `<embed source="URL" />` |
 | [Image](/reference/block#image) | `![caption](url)` |
-| [File](/reference/block#file) | `<file src="url">caption</file>` |
-| [Video](/reference/block#video) | `<video src="url">caption</video>` |
-| [Audio](/reference/block#audio) | `<audio src="url">caption</audio>` |
-| [PDF](/reference/block#pdf) | `<pdf src="url">caption</pdf>` |
+| [File](/reference/block#file) | `<file source="url">caption</file>` |
+| [Video](/reference/block#video) | `<video source="url">caption</video>` |
+| [Audio](/reference/block#audio) | `<audio source="url">caption</audio>` |
+| [PDF](/reference/block#pdf) | `<pdf source="url">caption</pdf>` |
 | [Child page](/reference/block#child-page) | `<page url="...">title</page>` |
 | [Child database](/reference/block#child-database) | `<database url="...">title</database>` |
 | Custom block with inherited bindings | `<custom-block definition-id="UUID" />` |
-| [Synced block](/reference/block#synced-block) | `<synced_block>` with content |
+| [Synced block](/reference/block#synced-block) | `<synced-block>` with content |
 | [Column list / Column](/reference/block#column-list-and-column) | `<columns>` / `<column>` |
-| [Table of contents](/reference/block#table-of-contents) | `<table_of_contents/>` |
+| [Table of contents](/reference/block#table-of-contents) | `<table-of-contents />` |
 | [Transcription](/reference/block#transcription) | `<meeting-notes>` (transcript included when `include_transcript=true`) |
 
 For file-based blocks (image, file, video, audio, PDF), the URLs in the markdown output are pre-signed and ready to download. They expire after a short period, consistent with the [block-based API](/reference/block#file).
@@ -126,12 +128,10 @@ An unchanged instance can survive `update_content` or `replace_content` even whe
 
 ### Unsupported block types
 
-The following block types are not yet rendered in the markdown output. When encountered, they appear as `<unknown url="..." alt="block_type"/>` tags. The `url` links to the block in Notion, and `alt` indicates the original block type.
+The following block types are not yet rendered in the markdown output. When encountered, they appear as `<unknown url="..." alt="block_type" />` tags. The `url` links to the block in Notion, and `alt` indicates the original block type.
 
 | Block type | Notes |
 | - | - |
-| [Bookmark](/reference/block#bookmark) | Web bookmarks with URL previews |
-| [Embed](/reference/block#embed) | Embedded third-party content |
 | [Link preview](/reference/block#link-preview) | Unfurled URL previews |
 | [Breadcrumb](/reference/block#breadcrumb) | Navigation breadcrumbs |
 | [Template](/reference/block#template) | Template buttons (deprecated) |
@@ -148,7 +148,7 @@ Use `POST /v1/pages` with the `markdown` parameter instead of `children` to crea
 
 > [!TIP]
 >
-> The `markdown` field expects actual newline characters. In JSON, use `\n` to encode them — for example, `"# Heading\nParagraph"`. To create a line break inside a single paragraph block, use `<br>`. When using cURL, wrap the `--data` body in **single quotes** so that `\n` is preserved for the JSON parser.
+> Separate blocks with a blank line, as in `"# Heading\n\nParagraph"` in JSON. Use `<br />` for a line break inside a paragraph. With cURL, put the JSON body in single quotes to preserve the newline escapes.
 
 ```bash cURL theme={null}
 curl -X POST https://api.notion.com/v1/pages \
@@ -156,8 +156,9 @@ curl -X POST https://api.notion.com/v1/pages \
   -H "Content-Type: application/json" \
   -H "Notion-Version: 2026-03-11" \
   --data '{
-    "parent": { "page_id": "YOUR_PAGE_ID" },
-    "markdown": "# Meeting Notes\nDiscussed roadmap priorities.\n## Action items\n- [ ] Draft proposal\n- [ ] Schedule follow-up"
+    "markdown_version": "v2",
+    "parent": { "page_id": "YOUR_PARENT_PAGE_ID" },
+    "markdown": "# Meeting Notes\n\nDiscussed roadmap priorities.\n\n## Action items\n\n- [ ] Draft proposal\n- [ ] Schedule follow-up"
   }'
 ```
 
@@ -166,8 +167,9 @@ const { Client } = require("@notionhq/client");
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
 const response = await notion.pages.create({
-  parent: { page_id: "YOUR_PAGE_ID" },
-  markdown: "# Meeting Notes\nDiscussed roadmap priorities.\n## Action items\n- [ ] Draft proposal\n- [ ] Schedule follow-up",
+  parent: { page_id: "YOUR_PARENT_PAGE_ID" },
+  markdown_version: "v2",
+  markdown: "# Meeting Notes\n\nDiscussed roadmap priorities.\n\n## Action items\n\n- [ ] Draft proposal\n- [ ] Schedule follow-up",
 });
 ```
 
@@ -179,14 +181,14 @@ const response = await notion.pages.create({
 * Requires `insert_content` and `insert_property` capabilities.
 * Markdown that is too large or too heavily formatted to parse in one request returns a `validation_error`. So does markdown that would create more than 5,000 blocks, counting nested blocks. With `allow_async: true`, the request still returns an `async_task`, and the task ends as `failed` with that `validation_error` when you poll it. Retrying the same body fails the same way. Create the page with part of the content and add the rest with further requests, or split the content into child pages.
 
-The response is a standard [page object](/reference/page).
+The response is a [page object](/reference/page). Use its `id` for `YOUR_PAGE_ID` in the read and update examples.
 
 ## Retrieving a page as markdown
 
 Use `GET /v1/pages/:page_id/markdown` to retrieve a page's content as markdown. It uses the syntax set by `markdown_version`. See [Markdown versions](#markdown-versions) for the default.
 
 ```bash cURL theme={null}
-curl 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown' \
+curl 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown?markdown_version=v2' \
   -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
   -H "Notion-Version: 2026-03-11"
 ```
@@ -194,6 +196,7 @@ curl 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown' \
 ```javascript JavaScript theme={null}
 const response = await notion.pages.retrieveMarkdown({
   page_id: "YOUR_PAGE_ID",
+  markdown_version: "v2",
 });
 
 console.log(response.markdown);
@@ -205,22 +208,23 @@ console.log(response.markdown);
 {
   "object": "page_markdown",
   "id": "page-uuid",
-  "markdown": "# Meeting Notes\nDiscussed roadmap priorities.\n## Action items\n- [ ] Draft proposal\n- [ ] Schedule follow-up",
+  "markdown": "Discussed roadmap priorities.\n\n## Action items\n\n- [ ] Draft proposal\n- [ ] Schedule follow-up",
   "truncated": false,
   "unknown_block_ids": []
 }
 ```
 
-Retrieved markdown uses a single newline (`\n`) between adjacent top-level blocks. Line breaks inside a single block are represented as `<br>`.
+The create request uses the first heading as the page title. The body starts with the paragraph below it. In `v2`, separate paragraphs with a blank line (`\n\n` in JSON).
 
 ### Query parameters
 
 | Parameter | Type | Description |
 | - | - | - |
+| `markdown_version` | string | Set to `v2` for Notion-flavored Markdown. |
 | `include_transcript` | boolean | Include meeting note transcripts (default: `false`). |
 
 ```bash cURL (with transcript) theme={null}
-curl 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown?include_transcript=true' \
+curl 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown?markdown_version=v2&include_transcript=true' \
   -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
   -H "Notion-Version: 2026-03-11"
 ```
@@ -228,6 +232,7 @@ curl 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown?include_transcript=t
 ```javascript JavaScript theme={null}
 const response = await notion.pages.retrieveMarkdown({
   page_id: "YOUR_PAGE_ID",
+  markdown_version: "v2",
   include_transcript: true,
 });
 ```
@@ -248,14 +253,14 @@ Some blocks in a page may appear as `<unknown>` tags in the markdown output. Thi
 In both cases:
 
 * The `truncated` field is set to `true`.
-* The affected blocks appear as `<unknown url="..." alt="..."/>` tags in the markdown.
+* The affected blocks appear as `<unknown url="..." alt="..." />` tags in the markdown.
 * The `unknown_block_ids` array contains the IDs of these blocks.
 
 ```json theme={null}
 {
   "object": "page_markdown",
   "id": "page-uuid",
-  "markdown": "# Large Document\nFirst section content...\n<unknown url=\"https://notion.com/abc123#def456\"/>",
+  "markdown": "# Large Document\n\nFirst section content...\n\n<unknown url=\"https://notion.com/abc123#def456\" />",
   "truncated": true,
   "unknown_block_ids": ["def456-with-dashes-uuid"]
 }
@@ -264,7 +269,7 @@ In both cases:
 You can attempt to fetch the content of unknown blocks by passing their IDs back to the same endpoint:
 
 ```bash cURL (fetching an unknown block) theme={null}
-curl 'https://api.notion.com/v1/pages/UNKNOWN_BLOCK_ID/markdown' \
+curl 'https://api.notion.com/v1/pages/UNKNOWN_BLOCK_ID/markdown?markdown_version=v2' \
   -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
   -H "Notion-Version: 2026-03-11"
 ```
@@ -272,6 +277,7 @@ curl 'https://api.notion.com/v1/pages/UNKNOWN_BLOCK_ID/markdown' \
 ```javascript JavaScript theme={null}
 const blockResp = await notion.pages.retrieveMarkdown({
   page_id: "UNKNOWN_BLOCK_ID",
+  markdown_version: "v2",
 });
 ```
 
@@ -297,6 +303,7 @@ headers = {
 
 resp = requests.get(
     f"https://api.notion.com/v1/pages/{page_id}/markdown",
+    params={"markdown_version": "v2"},
     headers=headers,
 ).json()
 
@@ -305,14 +312,16 @@ all_markdown = resp["markdown"]
 for block_id in resp.get("unknown_block_ids", []):
     block_resp = requests.get(
         f"https://api.notion.com/v1/pages/{block_id}/markdown",
+        params={"markdown_version": "v2"},
         headers=headers,
     ).json()
-    all_markdown += "\n" + block_resp["markdown"]
+    all_markdown += "\n\n" + block_resp["markdown"]
 ```
 
 ```javascript JavaScript theme={null}
 const response = await notion.pages.retrieveMarkdown({
   page_id: "YOUR_PAGE_ID",
+  markdown_version: "v2",
 });
 
 let allMarkdown = response.markdown;
@@ -320,8 +329,9 @@ let allMarkdown = response.markdown;
 for (const blockId of response.unknown_block_ids) {
   const blockResp = await notion.pages.retrieveMarkdown({
     page_id: blockId,
+    markdown_version: "v2",
   });
-  allMarkdown += "\n" + blockResp.markdown;
+  allMarkdown += "\n\n" + blockResp.markdown;
 }
 ```
 
@@ -333,7 +343,7 @@ The request body uses a **discriminated union** with four command variants. We r
 
 > [!TIP]
 >
-> The `content` field expects markdown in the request's `markdown_version` syntax with actual newline characters. In your JSON request body, use `\n` to encode newlines — for example, `"## Heading\nParagraph text"` creates a heading followed by a paragraph block. To create a line break inside a single paragraph block, use `<br>`. Literal backslash-n sequences (like typing `\n` into a form field) will not be interpreted as newlines.
+> In a JSON body, `"## Heading\n\nParagraph text"` creates a heading followed by a paragraph. Use `<br />` for a line break inside a paragraph.
 >
 > When using cURL, wrap the `--data` body in **single quotes** so that `\n` is preserved for the JSON parser. Avoid `$'...'` quoting, which converts `\n` into a literal newline and produces invalid JSON.
 
@@ -347,6 +357,7 @@ curl -X PATCH 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown' \
   -H "Content-Type: application/json" \
   -H "Notion-Version: 2026-03-11" \
   --data '{
+    "markdown_version": "v2",
     "type": "update_content",
     "update_content": {
       "content_updates": [
@@ -366,6 +377,7 @@ curl -X PATCH 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown' \
 ```javascript JavaScript theme={null}
 const response = await notion.pages.updateMarkdown({
   page_id: "YOUR_PAGE_ID",
+  markdown_version: "v2",
   type: "update_content",
   update_content: {
     content_updates: [
@@ -388,9 +400,10 @@ curl -X PATCH 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown' \
   -H "Content-Type: application/json" \
   -H "Notion-Version: 2026-03-11" \
   --data '{
+    "markdown_version": "v2",
     "type": "replace_content",
     "replace_content": {
-      "new_str": "# Fresh Start\nThis replaces all previous content."
+      "new_str": "# Fresh Start\n\nThis replaces all previous content."
     }
   }'
 ```
@@ -398,9 +411,10 @@ curl -X PATCH 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown' \
 ```javascript JavaScript theme={null}
 const response = await notion.pages.updateMarkdown({
   page_id: "YOUR_PAGE_ID",
+  markdown_version: "v2",
   type: "replace_content",
   replace_content: {
-    new_str: "# Fresh Start\nThis replaces all previous content.",
+    new_str: "# Fresh Start\n\nThis replaces all previous content.",
   },
 });
 ```
@@ -421,9 +435,10 @@ const response = await notion.pages.updateMarkdown({
 >   -H "Content-Type: application/json" \
 >   -H "Notion-Version: 2026-03-11" \
 >   --data '{
+>     "markdown_version": "v2",
 >     "type": "insert_content",
 >     "insert_content": {
->       "content": "## Latest update\nAdded at the top of the page.",
+>       "content": "## Latest update\n\nAdded at the top of the page.",
 >       "position": { "type": "start" }
 >     }
 >   }'
@@ -432,9 +447,10 @@ const response = await notion.pages.updateMarkdown({
 > ```javascript JavaScript theme={null}
 > const response = await notion.pages.updateMarkdown({
 >   page_id: "YOUR_PAGE_ID",
+>   markdown_version: "v2",
 >   type: "insert_content",
 >   insert_content: {
->     content: "## Latest update\nAdded at the top of the page.",
+>     content: "## Latest update\n\nAdded at the top of the page.",
 >     position: { type: "start" },
 >   },
 > });
@@ -446,10 +462,11 @@ const response = await notion.pages.updateMarkdown({
 >   -H "Content-Type: application/json" \
 >   -H "Notion-Version: 2026-03-11" \
 >   --data '{
+>     "markdown_version": "v2",
 >     "type": "insert_content",
 >     "insert_content": {
->       "content": "## New Section\nInserted content here.",
->       "after": "# Meeting Notes...Action items"
+>       "content": "## New Section\n\nInserted content here.",
+>       "after": "## Action items"
 >     }
 >   }'
 > ```
@@ -457,10 +474,11 @@ const response = await notion.pages.updateMarkdown({
 > ```javascript JavaScript theme={null}
 > const response = await notion.pages.updateMarkdown({
 >   page_id: "YOUR_PAGE_ID",
+>   markdown_version: "v2",
 >   type: "insert_content",
 >   insert_content: {
->     content: "## New Section\nInserted content here.",
->     after: "# Meeting Notes...Action items",
+>     content: "## New Section\n\nInserted content here.",
+>     after: "## Action items",
 >   },
 > });
 > ```
@@ -471,9 +489,10 @@ const response = await notion.pages.updateMarkdown({
 >   -H "Content-Type: application/json" \
 >   -H "Notion-Version: 2026-03-11" \
 >   --data '{
+>     "markdown_version": "v2",
 >     "type": "insert_content",
 >     "insert_content": {
->       "content": "## Appendix\nAdded at the end of the page.",
+>       "content": "## Appendix\n\nAdded at the end of the page.",
 >       "position": { "type": "end" }
 >     }
 >   }'
@@ -482,9 +501,10 @@ const response = await notion.pages.updateMarkdown({
 > ```javascript JavaScript theme={null}
 > const response = await notion.pages.updateMarkdown({
 >   page_id: "YOUR_PAGE_ID",
+>   markdown_version: "v2",
 >   type: "insert_content",
 >   insert_content: {
->     content: "## Appendix\nAdded at the end of the page.",
+>     content: "## Appendix\n\nAdded at the end of the page.",
 >     position: { type: "end" },
 >   },
 > });
@@ -504,9 +524,10 @@ const response = await notion.pages.updateMarkdown({
 >   -H "Content-Type: application/json" \
 >   -H "Notion-Version: 2026-03-11" \
 >   --data '{
+>     "markdown_version": "v2",
 >     "type": "replace_content_range",
 >     "replace_content_range": {
->       "content": "## Updated Section\nNew content replaces the old.",
+>       "content": "## Updated Section\n\nNew content replaces the old.",
 >       "content_range": "## Old Section...end of old content"
 >     }
 >   }'
@@ -515,9 +536,10 @@ const response = await notion.pages.updateMarkdown({
 > ```javascript JavaScript theme={null}
 > const response = await notion.pages.updateMarkdown({
 >   page_id: "YOUR_PAGE_ID",
+>   markdown_version: "v2",
 >   type: "replace_content_range",
 >   replace_content_range: {
->     content: "## Updated Section\nNew content replaces the old.",
+>     content: "## Updated Section\n\nNew content replaces the old.",
 >     content_range: "## Old Section...end of old content",
 >   },
 > });
@@ -533,6 +555,7 @@ To allow deletion, set `allow_deleting_content: true` in the command body. This 
 
 ```json theme={null}
 {
+  "markdown_version": "v2",
   "type": "replace_content",
   "replace_content": {
     "new_str": "Replacement content.",
@@ -610,7 +633,8 @@ curl -X POST https://api.notion.com/v1/pages \
   -H "Content-Type: application/json" \
   -H "Notion-Version: 2026-03-11" \
   --data '{
-    "parent": { "page_id": "YOUR_PAGE_ID" },
+    "markdown_version": "v2",
+    "parent": { "page_id": "YOUR_PARENT_PAGE_ID" },
     "markdown": "# Migration plan\n\nLarge markdown content...",
     "allow_async": true
   }'
@@ -644,6 +668,7 @@ curl -X PATCH 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown' \
   -H "Notion-Version: 2026-03-11" \
   --data '{
     "allow_async": true,
+    "markdown_version": "v2",
     "type": "replace_content",
     "replace_content": {
       "new_str": "# Updated plan\n\nLarge replacement markdown..."

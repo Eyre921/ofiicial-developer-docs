@@ -10,14 +10,14 @@ Try Stripe Terminal by using the example applications and simulated reader.
 
 > For a more immersive guide including details on [server driven integration](https://support.stripe.com/questions/terminal-server-driven-integration) using only the Stripe API, check out the [sample integration](https://docs.stripe.com/terminal/quickstart.md).
 
-A Stripe Terminal integration starts with your point-of-sale application running at a physical location. Your point-of-sale application communicates with a reader through the Terminal SDK to collect in-person payments from your customers. Your backend works with your point-of-sale application to authenticate the Terminal SDK and finalize payments.
+A Stripe Terminal integration starts with your point-of-sale application running at a physical location. Your point-of-sale application communicates with a reader through the Terminal SDK to collect in-person payments from your customers. Your back end works with your point-of-sale application to authenticate the Terminal SDK and finalize payments.
 ![](https://b.stripecdn.com/docs-statics-srv/assets/example-app-simulator-integration-architecture.c687f5119cda8972233e61f684ae56a5.png)
 
 Before starting your own integration, we recommend setting up one of the Terminal example applications. This will give you a better feel for how the components of a Terminal integration fit together and show you the interactions between the SDK, the reader, your point-of-sale application, and your backend code.
 
 ## Deploy the example backend
 
-To get started with the example applications, set up the Sinatra-based [example backend](https://github.com/stripe/example-terminal-backend) by following the instructions in the [README](https://github.com/stripe/example-terminal-backend). You can either run the backend locally or deploy it to Render with a free account. The example backend works with the example application to authenticate the Terminal SDK and finalize payments.
+To get started with the example applications, set up the Sinatra-based [example backend](https://github.com/stripe/example-terminal-backend) by following the instructions in the [README](https://github.com/stripe/example-terminal-backend). You can either run the back end locally or deploy it to Render with a free account. The example backend works with the example application to authenticate the Terminal SDK and finalize payments.
 
 ## Run the example application
 
@@ -39,7 +39,7 @@ npm install
 npm run start
 ```
 
-1. In the running example, enter the URL of the example backend that you deployed in [step 1](https://docs.stripe.com/terminal/example-applications.md#set-up-backend).
+1. In the running example, enter the URL of the example back end that you deployed in [step 1](https://docs.stripe.com/terminal/example-applications.md#set-up-backend).
 
 #### iOS
 

@@ -21,7 +21,7 @@ At the start of every conversation, Architect receives:
 * **An agent summary**: built by ElevenLabs when you're inside an agent. It covers the agent's name and owner, its branches and their traffic split, call volume over the last 7 days, draft state, connected agents, procedures, whether tests are configured, and which branches you can edit.
 * **Agent context**: the agent's `agents.md` document, shared with everyone who builds the agent. See [Customizing Architect](/docs/eleven-agents/operate/architect/customization).
 * **Your preferences**: your personal `user.md` document, which applies across every agent you build.
-* **What the entry point passed in**: for example, the failing tests, the Spotlight finding, or the triage ticket. See [Starting a conversation](/docs/eleven-agents/operate/architect/entry-points).
+* **What the entry point passed in**: for example, the failing tests, the Spotlight finding, or the issue. See [Starting a conversation](/docs/eleven-agents/operate/architect/entry-points).
 * **Earlier messages in this chat.**
 
 Architect does **not** start with the agent's full configuration, its transcripts, test results, Spotlight data, or your other Architect chats. It reads these with tools when the task needs them. This keeps each conversation focused, and means Architect always works from current data rather than a stale copy.

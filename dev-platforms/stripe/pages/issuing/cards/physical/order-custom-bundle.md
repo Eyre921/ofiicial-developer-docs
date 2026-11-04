@@ -20,7 +20,7 @@ On average, this process can take 12 to 14 weeks before you can start issuing ca
 - Fill out the design form we emailed you with your selections.
 - Add your proposed artwork to the Adobe Illustrator template following the guidelines in the email.2
 - Schedule a design session with Stripe to finalize your design form and artwork.
-- Approve design proof and pricing. | - Stripe conducts live sessions with your team and an expert card design artist to finalize your design and bundle selections. We also ensure you meet network and bank requirements.
+- Approve design proof and pricing. | - Stripe conducts live sessions with your team and an expert card design artist to finalize your design and bundle selections. We also make sure you meet network and bank requirements.
 - Stripe submits your designs to our partner printers and provides a final proof and pricing for your review and approval to proceed to the manufacturing phase. |
 | **Phase 3: Manufacturing** | 8-10 weeks | - Stripe handles everything at this stage. We notify you when we have an estimated shipment date for the order. | - Stripe works with our printing partner to manufacture your design and ship it through secure transport to the personalization site.
 - Stripe conducts quality checks and performs transaction testing when the bundle arrives at the site.

@@ -28,7 +28,7 @@ You can apply up to 20 discounts to a subscription, subscription item, or invoic
 |  | **Coupon** | **Promotion code** |
 | --- | --- | --- |
 | Definition | API object that defines the discount logic. Apply these directly to a customer’s subscription using the Dashboard or API. | Customer-facing code that maps to your coupons. This is the string the customer enters at checkout. For example, `FALLPROMO` and `SPRINGPROMO` can both map to a single 25% off coupon. |
-| Use case | Your sales team closes a deal with a customer for a negotiated 20% off their annual subscription. Your backend applies the discount directly, and the customer never types anything in. | Your marketing team launches a social media campaign and wants creators to share a code `EXAMPLE2026` that gives new subscribers 25% off for 3 months. It only works for first-time customers with a minimum spend of 50 USD, and you want to cap it at 500 redemptions. |
+| Use case | Your sales team closes a deal with a customer for a negotiated 20% off their annual subscription. Your back end applies the discount directly, and the customer never types anything in. | Your marketing team launches a social media campaign and wants creators to share a code `EXAMPLE2026` that gives new subscribers 25% off for 3 months. It only works for first-time customers with a minimum spend of 50 USD, and you want to cap it at 500 redemptions. |
 | Restrict to a specific customer | ❌ Unsupported | ✓ Supported |
 | Apply to first-time purchase only | ❌ Unsupported | ✓ Supported |
 | Minimum spend to redeem | ❌ Unsupported | ✓ Supported |
@@ -204,7 +204,7 @@ When a subscription uses a coupon with `duration=once`, the coupon is considered
 - After the invoice finalizes, the subscription’s `discounts` no longer includes that discount.
 - The invoice that consumed the coupon still shows the applied discount on the invoice resource and line items.
 
-This means a subscription may appear to have no discount even though a coupon was applied.
+This means a subscription might appear to have no discount even though a coupon was applied.
 
 > If you apply a coupon to a [backdated subscription](https://docs.stripe.com/billing/subscriptions/backdating.md), the coupon’s duration starts counting from the backdated start date, not from when you make the API call. For `repeating` coupons, this means the backdated period consumes part of the coupon’s duration. The coupon’s `duration_in_months` must be longer than the backdated period if you want the discount to apply to invoices after the backdated period. See [Backdating and discounts](https://docs.stripe.com/billing/subscriptions/backdating.md#backdating-discounts) for more details.
 

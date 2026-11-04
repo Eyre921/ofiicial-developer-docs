@@ -73,15 +73,15 @@ Charts and metric tiles on Spotlight don't have their own Architect button. To a
 ![Alert card with Investigate with
 Architect](/docs/_fern-files/_img/e71b18a2ac615b122870d69257575462ab416b154bc9d6d4bfd3d0864e1b81e9.webp)
 
-### Triage tickets
+### Issues
 
-In a [triage ticket](/docs/eleven-agents/operate/triage), select **Discuss with Architect**. Architect receives the conversation ID, the flagged issue or review comment, any comments on specific turns, and the ticket's discussion thread. It reads the transcript, explains what went wrong, suggests fixes, and offers to comment on the ticket and mark it resolved when you're done.
+In an [issue](/docs/eleven-agents/operate/triage), select **Discuss with Architect**. Architect receives the conversation ID, the flagged issue or review comment, any comments on specific turns, and the issue's discussion thread. It reads the transcript, explains what went wrong, suggests fixes, and offers to comment on the issue and mark it resolved when you're done.
 
-A ticket records every Architect chat started from it. Once you have started one, the button changes to **Continue in Architect** and **New Architect chat**. Chats stay private to the person who started them. In the triage list, a ticket with an Architect chat shows who dispatched Architect.
+An issue records every Architect chat started from it. Once you have started one, the button changes to **Continue in Architect** and **New Architect chat**. Chats stay private to the person who started them. In the **Issues** list, an issue with an Architect chat shows who dispatched Architect.
 
-![Triage ticket with Architect](/docs/_fern-files/_img/7327710426954b013a17073554ce183de64a322eeab78e458e30d9da6c0b470f.webp)
+![Issue with Architect](/docs/_fern-files/_img/7327710426954b013a17073554ce183de64a322eeab78e458e30d9da6c0b470f.webp)
 
-![Triage list with Architect](/docs/_fern-files/_img/b4dccefa125d457ab5f5deedabd8be75255ce1ec2206607c172673a46492205a.webp)
+![Issues list with Architect](/docs/_fern-files/_img/b4dccefa125d457ab5f5deedabd8be75255ce1ec2206607c172673a46492205a.webp)
 
 ### Conversation transcripts
 

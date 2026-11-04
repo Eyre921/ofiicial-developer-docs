@@ -14,7 +14,7 @@ path: docs/eleven-agents/operate/architect/faq
 * **It can't review merge proposals.** Architect can open a proposal and suggest reviewers, but approving, commenting, merging, and closing are done by people.
 * **Some resources are read-only to Architect.** It can't manage MCP servers, secrets, integrations, channels, alerts, or phone number assignments. See [What Architect can't do](/docs/eleven-agents/operate/architect/capabilities#what-architect-cannot-do).
 * **Dashboards aren't saved.** A dashboard built in the chat keeps its data only in the browser tab where it was built.
-* **Chats are private.** You can't share an Architect chat with a teammate. Share the result instead, such as a merge proposal or a triage ticket comment.
+* **Chats are private.** You can't share an Architect chat with a teammate. Share the result instead, such as a merge proposal or a comment on an issue.
 
 ## FAQ
 

@@ -42,7 +42,9 @@ UI, API, and SDK clients send requests to [Langfuse Web](/self-hosting/deploymen
 | [ClickHouse](/self-hosting/deployment/infrastructure/clickhouse) | Observability data | Web → ClickHouse; Worker → ClickHouse |
 | [S3 / Blob storage](/self-hosting/deployment/infrastructure/blobstorage) | Raw events and multi-modal attachments | Web → S3 / Blob storage; Worker → S3 / Blob storage |
 
-Both containers can optionally connect to an [LLM API / Gateway](/self-hosting/deployment/infrastructure/llm-api): Web for the playground, Worker for evaluations. Bring your own LLM API; it can also run in the same VPC or a peered VPC.
+Both containers can optionally connect to [LLM providers](/self-hosting/deployment/infrastructure/llm-api): Web for the playground, Worker for evaluations. Bring your own LLM API; it can also run in the same VPC or a peered VPC.
+
+The optional [Langfuse AI Gateway](/self-hosting/configuration/ai-gateway) (`langfuse/ai-gateway`, beta) receives model requests from apps and coding agents. Gateway → Web resolves gateway API keys and uploads traces; Gateway → LLM providers relays the requests.
 
 <details>
 <summary>View architecture components</summary>
@@ -52,6 +54,7 @@ Langfuse consists of two application containers, storage components, and an opti
 - [**Application Containers**](/self-hosting/deployment/infrastructure/containers)
   - Langfuse Web: The main web application serving the Langfuse UI and APIs.
   - Langfuse Worker: A worker that asynchronously processes events.
+  - [Langfuse AI Gateway](/self-hosting/configuration/ai-gateway) (optional, beta): Relays model requests from applications and coding agents to LLM providers and records them in Langfuse.
 - **Storage Components**:
   - [Postgres](/self-hosting/deployment/infrastructure/postgres): The main database for transactional workloads.
   - [Clickhouse](/self-hosting/deployment/infrastructure/clickhouse): High-performance OLAP database which stores traces, observations, and scores.
@@ -89,6 +92,7 @@ Some of the optimizations include:
 Langfuse supports many configuration options and self-hosted features.
 For more details, please refer to the [configuration guide](/self-hosting/configuration).
 
+- [AI Gateway (beta)](/self-hosting/configuration/ai-gateway)
 - [Authentication & SSO](/self-hosting/security/authentication-and-sso)
 - [Automated Access Provisioning](/self-hosting/administration/automated-access-provisioning)
 - [Caching](/self-hosting/configuration/caching)

@@ -36,7 +36,7 @@ A merge proposal covers exactly one source branch and one target branch, so one 
 
 ## How a proposal is created
 
-Architect creates a proposal when you ask it to fix or improve something, or when you hand it a failing test, a Spotlight finding, or a triage ticket. The full sequence, with the tools Architect calls at each step, is in the [worked example](/docs/eleven-agents/operate/architect/how-it-works#worked-example-improving-refund-resolutions). In short:
+Architect creates a proposal when you ask it to fix or improve something, or when you hand it a failing test, a Spotlight finding, or an issue. The full sequence, with the tools Architect calls at each step, is in the [worked example](/docs/eleven-agents/operate/architect/how-it-works#worked-example-improving-refund-resolutions). In short:
 
 1. Architect investigates, creates a branch, and stages the change in your draft on that branch.
 2. Architect writes tests and simulations for the change and runs them in the conversation, before showing you the result.
@@ -70,7 +70,7 @@ A proposal's page shows the source and target branches, its status, whether it c
 
 #### Overview
 
-The description, an activity timeline of commits on the source branch, reviews, and comments, and a comment box. The sidebar shows reviewers, recommended reviewers, and any linked triage ticket.
+The description, an activity timeline of commits on the source branch, reviews, and comments, and a comment box. The sidebar shows reviewers, recommended reviewers, and any linked issue.
 
 A description Architect writes always has three sections: **Summary** (each meaningful change and why), **Testing** (which tests were run and their results, or a statement that none were run), and **How to review** (what to focus on, and a test to run or conversation to try).
 
@@ -139,7 +139,7 @@ Merging also:
 * Moves any live traffic share the source branch had to the target.
 * Archives the source branch by default.
 * Closes any other open proposal from the same branch.
-* Resolves the linked triage ticket, if there is one.
+* Resolves the linked issue, if there is one.
 
 ## Gradual rollout
 
@@ -169,8 +169,8 @@ Traffic shares must always total 100%, and routing is deterministic per conversa
 > **Note**
 >
 > Architect produces proposals when you ask it to, or when you hand it a failing test, a Spotlight
-> finding, an alert, or a triage ticket. It doesn't yet scan your agents on a schedule or open
-> proposals on its own.
+> finding, an alert, or an issue. It doesn't yet scan your agents on a schedule or open proposals on
+> its own.
 
 The proactive path today is [Spotlight](/docs/eleven-agents/dashboard/spotlight) followed by a hand-off. Spotlight watches your agent's conversations continuously. It produces a weekly summary with suggested investigations, raises real-time alerts, and recommends configuration changes. To turn a Spotlight finding into a proposal:
 
@@ -194,6 +194,6 @@ suggesting a change.
 Review Architect's findings. If you agree with the root cause, ask it to fix the problem on a
 branch, test the fix, and open a proposal.
 
-Triage tickets work the same way. Your live agent can [flag issues for review](/docs/eleven-agents/customization/tools/system-tools/flag-issue-for-review) during conversations, and **Discuss with Architect** on a ticket starts an investigation of it.
+Issues work the same way. Your live agent can [flag issues for review](/docs/eleven-agents/customization/tools/system-tools/flag-issue-for-review) during conversations, and **Discuss with Architect** on an issue starts an investigation of it.
 
 Scheduled automations, with reports delivered to an Architect inbox, are in development. The **Inbox** tab on the Architect page is a placeholder for them.

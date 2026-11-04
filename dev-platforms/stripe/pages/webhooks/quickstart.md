@@ -368,7 +368,7 @@ stripe trigger payment_intent.succeeded
 
 ### Secure your webhook
 
-Verify every request to prevent fake payloads from triggering work in your backend, and use Stripe’s [public IP addresses](https://docs.stripe.com/ips.md) to configure network access.
+Verify every request to prevent fake payloads from triggering work in your back end, and use Stripe’s [public IP addresses](https://docs.stripe.com/ips.md) to configure network access.
 
 ### Add the endpoint signing secret
 

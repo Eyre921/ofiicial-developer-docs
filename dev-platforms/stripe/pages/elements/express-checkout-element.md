@@ -17,7 +17,7 @@ The Express Checkout Element is an integration for accepting payments through on
 With this integration, you can:
 
 - Dynamically sort payment buttons based on a customer’s location.
-- Add payment buttons without any frontend changes.
+- Add payment buttons without any front-end changes.
 - Integrate Elements seamlessly by reusing an existing Elements instance to save time.
 
 ## Try the demo 

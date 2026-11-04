@@ -69,7 +69,7 @@ After you submit your application, Atlas applies your signature electronically t
 
 ## Company formation 
 
-Once we have all the information we need about your company, we’ll file your incorporation paperwork with Delaware.
+After we have all the information we need about your company, we’ll file your incorporation paperwork with Delaware.
 
 #### C corporation
 

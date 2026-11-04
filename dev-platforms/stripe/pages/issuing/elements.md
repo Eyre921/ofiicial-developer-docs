@@ -438,7 +438,7 @@ googleButton.mount("#google-wallet-button");
 
 ## Security requirements
 
-If you choose to use `issuingCardPinDisplay`, you must implement measures to ensure that only authorized users can access it. Specifically, you need to apply two-factor authentication (2FA) before granting access to any page that uses `issuingCardPinDisplay`. If Stripe determines that your security measures are inadequate, we might suspend your access to this Element.
+If you choose to use `issuingCardPinDisplay`, you must implement measures to make sure that only authorized users can access it. Specifically, you need to apply two-factor authentication (2FA) before granting access to any page that uses `issuingCardPinDisplay`. If Stripe determines that your security measures are inadequate, we might suspend your access to this Element.
 
 > Unlike our mobile SDKs, Issuing Elements *doesn’t* provide an integration with [verifications](https://docs.stripe.com/api/issuing/verifications.md). You must implement two-factor authentication in order to display card PINs through Issuing Elements.
 

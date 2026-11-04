@@ -17,15 +17,15 @@ The Payment Methods API allows you to accept a variety of payment methods throug
 
 To determine which payment methods to use for specific locales, see the [guide to payment methods](https://stripe.com/payments/payment-methods-guide).
 
-The guide includes available payment methods for different regions, a detailed description of each payment method’s characteristics, and the [geographic regions](https://stripe.com/payments/payment-methods-guide#payment-methods-fact-sheets) where they’re most relevant. You can enable any payment methods available to you in the [Dashboard](https://dashboard.stripe.com). Activation is generally instantaneous and doesn’t require additional contracts.
+The guide includes available payment methods for different regions, a detailed description of each payment method’s characteristics, and the geographic regions where they’re most relevant. You can enable any payment methods available to you in the [Dashboard](https://dashboard.stripe.com). Activation is generally instantaneous and doesn’t require additional contracts.
 
 ## Customer actions 
 
-​​Some payment methods require your customer to take additional steps to complete the payment. The PaymentIntent object’s `next_action` parameter specifies the type of customer action.
+Some payment methods require your customer to take additional steps to complete the payment. The `PaymentIntent` object’s `next_action` property specifies the customer action.
 
 Some common actions that customers need to perform are:
 
-- ​​Redirect to their bank’s online service to authenticate and approve the payment.
+- Redirect to their bank’s online service to authenticate and approve the payment.
 - Verify ownership of their account by providing a one-time code that you post to the Stripe API (for example, microdeposits).
 - Push funds (for example, in the case for bank transfers) through their bank’s online service.
 
@@ -35,11 +35,11 @@ Not all payment methods require additional customer actions. For example, card p
 
 ## Immediate or delayed notification of payment success 
 
-Some payment methods immediately return payment status when a transaction is attempted (for example, card payments) but other methods have a delay such as ACH debits. For those that immediately return payment status, the PaymentIntent status either changes to `succeeded` or `requires_payment_method`. A status of `succeeded` guarantees that you’ll receive the funds from your customers.
+Some payment methods, such as cards, immediately report whether a payment succeeded or failed. Others, such as ACH debits, report the result after a delay. For payment methods with immediate notification, the `PaymentIntent` status changes to `succeeded` or `requires_payment_method`. A `succeeded` status indicates that the payment completed successfully according to the payment method’s processing flow, but funds can still be refunded, disputed, returned, or reversed.
 
-Payment methods with delayed notification can’t guarantee payment during the delay. The status of the PaymentIntent object will be `processing` until the payment status is either successful or failed. It’s common for businesses to hold an order in a *pending* state during this time, not fulfilling the order until the payment is successful.
+Payment methods with delayed notification can’t guarantee the outcome while the payment is processing. The `PaymentIntent` remains in the `processing` status until the payment succeeds or fails. During this time, we recommend keeping the order pending and not fulfilling it until the payment succeeds.
 
-> ​​For payment methods with delayed notification, configure [webhook endpoints](https://docs.stripe.com/payments/payment-methods.md#webhooks) for notifications on whether a payment has succeeded or not.
+> For payment methods with delayed notification, configure [webhook endpoints](https://docs.stripe.com/payments/payment-methods.md#webhooks) for notifications on whether a payment has succeeded or not.
 
 ## Single-use or reusable 
 
@@ -51,7 +51,9 @@ Single-use payment methods (for example, some kinds of bank transfers) can’t b
 
 ## Use webhooks to track payment status 
 
-Configure webhooks by creating an [event destination](https://docs.stripe.com/events/set-up-events.md) for payment methods that either require customer action or when payment notification is delayed. Stripe sends the following events when the `PaymentIntent` status is updated:
+Configure webhooks by creating an [event destination](https://docs.stripe.com/events/set-up-events.md) for payment methods that require customer action or have delayed payment notification. Verify [webhook signatures](https://docs.stripe.com/webhooks.md#verify-events) to confirm that events came from Stripe.
+
+Stripe sends the following events when the `PaymentIntent` status is updated:
 
 | Event | Description | Next steps |
 | --- | --- | --- |
@@ -59,15 +61,21 @@ Configure webhooks by creating an [event destination](https://docs.stripe.com/ev
 | `payment_intent.succeeded` | The payment succeeded. | Fulfill the purchased goods or services. |
 | `payment_intent.payment_failed` | The payment failed. | Send an email or push notification to request another payment method. |
 
-​​You can also use the following options instead of setting up an event destination to listen to events:
+### Other tracking options
 
-- Manually track the status of payments in the Stripe Dashboard, if your business accepts a low volume of orders from payment methods with delayed notification. The Dashboard allows you to [view all your Stripe payments](https://dashboard.stripe.com/test/payments), send email receipts, handle payouts, or retry failed payments.
-- Use polling (for example, repeatedly retrieving a PaymentIntent so that you can check its status). Polling isn’t very reliable and might not work at high volumes. Stripe enforces rate limiting on API requests, so exercise caution if you use polling.
-- Use a partner application to handle common business events, like [automation](https://stripe.partners/?f_category=automation) or [marketing and sales](https://stripe.partners/?f_category=marketing-and-sales), by integrating a partner application.
+You can also use one of the following options to track payment status:
+
+- Manually track payment status in the Stripe Dashboard if you accept a low volume of orders using payment methods with delayed notification. In the Dashboard, you can [view all payments](https://dashboard.stripe.com/test/payments), send email receipts, handle payouts, and retry failed payments.
+- Poll the API by repeatedly retrieving a `PaymentIntent` and checking its status. Polling is less reliable than webhooks and might not work at high volumes. Stripe also rate-limits API requests, so use polling with caution.
+- Integrate a partner application to handle common business workflows, such as [automation](https://stripe.partners/?f_category=automation) or [marketing and sales](https://stripe.partners/?f_category=marketing-and-sales).
 
 ## The PaymentMethod object 
 
-A PaymentMethod contains reusable payment method details for creating payments (for example, card expiration date or billing address), it doesn’t include transaction-specific information (for example, amount, currency). A PaymentMethod is attached to a PaymentIntent to represent the [states of a payment lifecycle](https://docs.stripe.com/payments/paymentintents/lifecycle.md). Each PaymentMethod has a [type attribute](https://docs.stripe.com/api/payment_methods/object.md#payment_method_object-type) (for example, `"type": "sepa_debit"` ) and an additional hash whose name matches the type and contains information specific to the PaymentMethod type (for example, `"sepa_debit":{}`). Example of a `sepa_debit` PaymentMethod object:
+A `PaymentMethod` contains reusable payment details, such as a card’s expiration date or a billing address. It doesn’t include transaction-specific information, such as the amount or currency. Attach a `PaymentMethod` to a `PaymentIntent` to use it throughout the [payment lifecycle](https://docs.stripe.com/payments/paymentintents/lifecycle.md).
+
+Each `PaymentMethod` has a [type](https://docs.stripe.com/api/payment_methods/object.md#payment_method_object-type) attribute, such as `"type": "sepa_debit"`, and a corresponding hash that contains information specific to the payment method.
+
+The following example shows a `sepa_debit` `PaymentMethod` object:
 
 ```json
 {
@@ -95,6 +103,6 @@ A PaymentMethod contains reusable payment method details for creating payments (
 
 ## See also
 
-- [Guide to Payment Methods](https://stripe.com/payments/payment-methods-guide)
+- [Guide to payment methods](https://stripe.com/payments/payment-methods-guide)
 - [Payment Methods API reference](https://docs.stripe.com/api/payment_methods.md)
 

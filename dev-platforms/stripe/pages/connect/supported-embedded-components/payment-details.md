@@ -33,7 +33,7 @@ curl https://api.stripe.com/v1/account_sessions \
   -d "components[payment_details][features][destination_on_behalf_of_charge_management]=false"
 ```
 
-After creating the account session and [initializing ConnectJS](https://docs.stripe.com/connect/get-started-connect-embedded-components.md#account-sessions), you can render the payment details component in the frontend:
+After creating the account session and [initializing ConnectJS](https://docs.stripe.com/connect/get-started-connect-embedded-components.md#account-sessions), you can render the payment details component in the front end:
 
 #### JavaScript
 

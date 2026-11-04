@@ -90,7 +90,7 @@ In the buy now, pay later checkout process, the customer:
 - Zip Money: Pay in a minimum of 3 monthly interest-free installments
 - Pay in 4 installments | 0.01 AUD minimum. 50,000 AUD maximum for Australia or 35 USD minimum and 1,500 USD maximum for United States** |
 
-1 The maximum credit limit for Affirm is 20,000 USD or 20,000 CAD. However, Affirm supports transactions up to 30,000 USD or 30,000 CAD. These transactions require a down payment from the customer at time of purchase. Term lengths and cart ranges are determined by Affirm and may change at their discretion.2 Zip Australia offers two products, Zip Pay with a credit limit of 1,000 AUD and Zip Money with a maximum credit limit of 50,000 AUD depending on the users’ eligibility. Zip US offers Pay in 4 with transactions up to 1,500 USD.
+1 The maximum credit limit for Affirm is 20,000 USD or 20,000 CAD. However, Affirm supports transactions up to 30,000 USD or 30,000 CAD. These transactions require a down payment from the customer at time of purchase. Term lengths and cart ranges are determined by Affirm and might change at their discretion.2 Zip Australia offers two products, Zip Pay with a credit limit of 1,000 AUD and Zip Money with a maximum credit limit of 50,000 AUD depending on the users’ eligibility. Zip US offers Pay in 4 with transactions up to 1,500 USD.
 
 ## Adding on site messaging to your website
 

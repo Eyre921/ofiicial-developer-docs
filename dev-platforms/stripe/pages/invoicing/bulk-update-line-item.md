@@ -30,7 +30,7 @@ curl https://api.stripe.com/v1/invoices/{{INVOICE_ID}}/add_lines \
   -d "lines[2][invoice_item]"={{INVOICE_ITEM_1}}
 ```
 
-> Ensure that you’re using the invoice item ID, using a line item ID here will result in an error.
+> Make sure that you’re using the invoice item ID, using a line item ID here will result in an error.
 
 ## Update line items 
 

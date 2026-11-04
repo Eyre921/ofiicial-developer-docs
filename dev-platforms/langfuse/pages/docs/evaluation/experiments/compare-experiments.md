@@ -41,7 +41,7 @@ Both runs above have 50% accuracy. The average alone does not tell you whether t
 
 Use score thresholds in the comparison view to narrow the results, then inspect the baseline and candidate outputs side by side. Check the score explanation against the output. If an evaluator failed or returned no result, resolve that error before treating the comparison as complete.
 
-  ![Experiment comparison showing inputs, outputs, evaluation scores, cost, and latency differences across three runs](/images/docs/experiment-comparison.png)
+_[Video: Compare two experiments](https://static.langfuse.com/docs-videos/compare-experiments.mp4): Experiment comparison of a baseline and a newer run. The summary shows exact_match and similarity dropped. Search “directly-ask”.scores.similarity:<0.2 to keep only items whose similarity fell below 0.2, then click “Annotate” on one and add an Accuracy score without leaving the comparison._
 
 ## Investigate and review failures [#review-failures]
 

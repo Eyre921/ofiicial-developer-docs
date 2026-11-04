@@ -53,7 +53,7 @@ These aren’t informational notes from the *card networks* (A network that proc
 
 ## See also
 
-Now that you have learned about measuring disputes, you may want to learn more about how to prevent disputes, or move on to related subjects:
+Now that you have learned about measuring disputes, you might want to learn more about how to prevent disputes, or move on to related subjects:
 
 - [Preventing disputes and fraud](https://docs.stripe.com/disputes/prevention.md)
 - [How to continuously improve your fraud management with Radar](https://stripe.com/guides/improve-fraud-management-with-radar-for-fraud-teams-and-stripe-data)

@@ -509,7 +509,7 @@ Similar to other integrations, you need to implement a server endpoint to [creat
 
 ### Host the onramp UI 
 
-Create a frontend route (*for example, www.my-web3-wallet.com/onramp/<client\_secret>*) to host the onramp UI. Your */onramp/<client\_secret>* points to an onramp.html.
+Create a front-end route (*for example, www.my-web3-wallet.com/onramp/<client\_secret>*) to host the onramp UI. Your */onramp/<client\_secret>* points to an onramp.html.
 
 ```html
 <!DOCTYPE html>

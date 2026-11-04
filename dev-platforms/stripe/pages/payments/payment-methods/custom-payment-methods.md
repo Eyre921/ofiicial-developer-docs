@@ -14,17 +14,15 @@ While you process custom payment method transactions outside of Stripe, you can 
 
 ## Configure custom payment method types
 
-In the Dashboard, create the custom payment method type your customers will pay with. Custom payment method types allow you to specify branding for the custom payment methods you define for each customer. For example, if you’re using `SamplePay` as another processor, you might want to create a `SamplePayCard` to represent cards that you process with `SamplePay`.
+Create custom payment method types in the Dashboard to represent payment methods that you process outside Stripe. For example, if you use `SamplePay` as another processor, you can create a `SamplePayCard` type for cards processed by `SamplePay`.
 
-Go to [Custom payment method types](https://dashboard.stripe.com/settings/custom_payment_methods) in the Dashboard. At the end of these steps, you’ll have one or more custom payment method types defined that you can offer your customers when they checkout.
+Go to [Custom payment method types](https://dashboard.stripe.com/settings/custom_payment_methods), then complete these actions:
 
-1. Create a custom payment method type.
-2. Set the display name and logo for the custom payment method type. Alternatively, use one of over 50 preset methods for common payment methods processed outside of Stripe. Set your own display name and logo if you use a custom front end or want the logo to display when interacting with the custom payment method through the [Payment Methods API](https://docs.stripe.com/api/payment_methods.md); a preset is suitable if you rely on Payment Element to render the custom payment method. Make sure your custom payment method display name and logo align with our [marks policy](https://docs.stripe.com/payments/payment-methods/custom-payment-methods.md#marks-requirements).
-3. Click **Create** to make a new payment method type, `SamplePayCard`, which you can then use to set up a custom payment method.
-4. You can see the created custom payment method type details in the Dashboard.
-5. Custom payment method types aren’t retrievable through the API. We recommend storing the ID in your database and retrieving it during payment method creation.
+1. **Create the type**: Create a custom payment method type for each payment method that you want to offer your customers at checkout.
+2. **Choose a preset or provide branding**: Choose from the presets for common payment methods processed outside Stripe, or provide your own display name and logo. Use a preset if you use the Payment Element. Provide custom branding if you use a custom front end or interact with the custom payment method through the [Payment Methods API](https://docs.stripe.com/api/payment_methods.md). Make sure the display name and logo comply with the [marks policy](https://docs.stripe.com/payments/payment-methods/custom-payment-methods.md#marks-requirements).
+3. **Save the type**: Click **Create** to save the type. You can then view its details in the Dashboard and use it to create custom payment methods. You can’t retrieve custom payment method types through the API, so store the type ID in your database for use when creating payment methods.
 
-### Payment Methods 
+### Payment methods 
 
 Create and retrieve custom payment methods with the [Payment Methods API](https://docs.stripe.com/api/payment_methods.md). When creating them, pass the ID of the custom payment method type you configured in the Stripe Dashboard as `custom[type]`.
 
@@ -74,7 +72,7 @@ The Payment Element can display custom payment methods so you can provide your c
 
 The Express Checkout Element can display custom payment method buttons alongside wallets, such as Apple Pay and Google Pay. To learn more, see [Custom payment methods in Express Checkout Element](https://docs.stripe.com/payments/payment-element/custom-payment-methods.md#cpm-express-checkout-element).
 
-### Subscription Billing 
+### Subscription billing 
 
 Integrate Stripe Billing with your third-party payment service processors to create subscriptions that automatically charge payment methods not stored on Stripe, manage subscription states, and track payment success for external payments. See [Integrate with third-party payment processors](https://docs.stripe.com/billing/subscriptions/third-party-payment-processing.md) to learn more.
 

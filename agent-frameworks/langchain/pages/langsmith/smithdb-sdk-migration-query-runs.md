@@ -6,7 +6,7 @@ path: langsmith/smithdb-sdk-migration-query-runs
 
 Migrate the LangSmith SDK run query methods to their SmithDB-backed equivalents.
 
-Run queries are the largest surface area in the migration, so they have their own page. For deprecation dates, minimum SDK versions, and the agent prompt that applies to every method, see [Migrate to SmithDB-backed SDK methods](/langsmith/smithdb-sdk-migration).
+Run queries are the largest surface area in the migration, so they have their own page. For deprecation dates, minimum SDK versions, and the agent prompt that applies to every method, see [Migrate to SmithDB-backed APIs](/langsmith/smithdb-sdk-migration).
 
 ## Runs: query
 
@@ -591,7 +591,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > from langsmith import Client
 > >
 > > client = Client()
@@ -600,7 +600,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import asyncio
 > >
 > > from langsmith import Client
@@ -621,7 +621,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -630,7 +630,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -644,7 +644,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryParams
@@ -662,7 +662,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryV2Params
@@ -684,7 +684,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -709,7 +709,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -738,7 +738,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -750,7 +750,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -768,7 +768,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > from langsmith import Client
 > >
 > > client = Client()
@@ -780,7 +780,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import asyncio
 > >
 > > from langsmith import Client
@@ -806,7 +806,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -819,7 +819,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -839,7 +839,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryParams
@@ -861,7 +861,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryV2Params
@@ -897,7 +897,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -927,7 +927,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -970,7 +970,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -982,7 +982,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -1000,7 +1000,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > from datetime import datetime, timedelta
 > >
 > > from langsmith import Client
@@ -1015,7 +1015,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import asyncio
 > > from datetime import datetime, timedelta
 > >
@@ -1041,7 +1041,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -1054,7 +1054,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -1073,7 +1073,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import java.time.OffsetDateTime
 > >
 > > import com.langchain.smith.client.LangsmithClient
@@ -1098,7 +1098,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import java.time.OffsetDateTime
 > >
 > > import com.langchain.smith.client.LangsmithClient
@@ -1127,7 +1127,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -1155,7 +1155,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -1187,7 +1187,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -1199,7 +1199,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -1217,7 +1217,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > from langsmith import Client
 > >
 > > client = Client()
@@ -1226,7 +1226,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import asyncio
 > >
 > > from langsmith import Client
@@ -1247,7 +1247,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -1256,7 +1256,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -1273,7 +1273,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryParams
@@ -1291,7 +1291,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryV2Params
@@ -1313,7 +1313,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -1339,7 +1339,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -1369,7 +1369,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -1381,7 +1381,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -1403,7 +1403,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > from langsmith import Client
 > >
 > > client = Client()
@@ -1412,7 +1412,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import asyncio
 > >
 > > from langsmith import Client
@@ -1436,7 +1436,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -1445,7 +1445,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -1462,7 +1462,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryParams
@@ -1486,7 +1486,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryV2Params
@@ -1512,7 +1512,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -1540,7 +1540,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -1572,7 +1572,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > RUN_ID_1="<run-id-1>"
 > > RUN_ID_2="<run-id-2>"
 > >
@@ -1584,7 +1584,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -1605,7 +1605,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > from langsmith import Client
 > >
 > > client = Client()
@@ -1614,7 +1614,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import asyncio
 > >
 > > from langsmith import Client
@@ -1641,7 +1641,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -1654,7 +1654,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -1674,7 +1674,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryParams
@@ -1696,7 +1696,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryV2Params
@@ -1722,7 +1722,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -1754,7 +1754,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -1790,7 +1790,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -1802,7 +1802,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -1831,7 +1831,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > from langsmith import Client
 > >
 > > client = Client()
@@ -1840,7 +1840,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import asyncio
 > >
 > > from langsmith import Client
@@ -1861,7 +1861,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -1870,7 +1870,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -1887,7 +1887,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryParams
@@ -1905,7 +1905,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryV2Params
@@ -1927,7 +1927,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -1953,7 +1953,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -1983,7 +1983,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -1995,7 +1995,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -2013,7 +2013,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > from langsmith import Client
 > >
 > > client = Client()
@@ -2023,7 +2023,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import asyncio
 > >
 > > from langsmith import Client
@@ -2045,7 +2045,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -2055,7 +2055,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -2073,7 +2073,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryParams
@@ -2092,7 +2092,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryV2Params
@@ -2115,7 +2115,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -2142,7 +2142,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -2173,7 +2173,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] Before
 > >
-> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -2187,7 +2187,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 >
 > > [tab] After
 > >
-> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -2207,7 +2207,7 @@ Nested `and()` / `or()` filter expressions still work. Keep `or()` operands on t
 >
 > > [tab] Before
 > >
-> > ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > from langsmith import Client
 > >
 > > client = Client()
@@ -2220,7 +2220,7 @@ Nested `and()` / `or()` filter expressions still work. Keep `or()` operands on t
 >
 > > [tab] After
 > >
-> > ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import asyncio
 > >
 > > from langsmith import Client
@@ -2243,7 +2243,7 @@ Nested `and()` / `or()` filter expressions still work. Keep `or()` operands on t
 >
 > > [tab] Before
 > >
-> > ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -2255,7 +2255,7 @@ Nested `and()` / `or()` filter expressions still work. Keep `or()` operands on t
 >
 > > [tab] After
 > >
-> > ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -2273,7 +2273,7 @@ Nested `and()` / `or()` filter expressions still work. Keep `or()` operands on t
 >
 > > [tab] Before
 > >
-> > ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryParams
@@ -2293,7 +2293,7 @@ Nested `and()` / `or()` filter expressions still work. Keep `or()` operands on t
 >
 > > [tab] After
 > >
-> > ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryV2Params
@@ -2315,7 +2315,7 @@ Nested `and()` / `or()` filter expressions still work. Keep `or()` operands on t
 >
 > > [tab] Before
 > >
-> > ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -2342,7 +2342,7 @@ Nested `and()` / `or()` filter expressions still work. Keep `or()` operands on t
 >
 > > [tab] After
 > >
-> > ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -2371,7 +2371,7 @@ Nested `and()` / `or()` filter expressions still work. Keep `or()` operands on t
 >
 > > [tab] Before
 > >
-> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -2385,7 +2385,7 @@ Nested `and()` / `or()` filter expressions still work. Keep `or()` operands on t
 >
 > > [tab] After
 > >
-> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -2405,7 +2405,7 @@ Nested `and()` / `or()` filter expressions still work. Keep `or()` operands on t
 >
 > > [tab] Before
 > >
-> > ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > from langsmith import Client
 > >
 > > client = Client()
@@ -2419,7 +2419,7 @@ Nested `and()` / `or()` filter expressions still work. Keep `or()` operands on t
 >
 > > [tab] After
 > >
-> > ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import asyncio
 > >
 > > from langsmith import Client
@@ -2445,7 +2445,7 @@ Nested `and()` / `or()` filter expressions still work. Keep `or()` operands on t
 >
 > > [tab] Before
 > >
-> > ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -2459,7 +2459,7 @@ Nested `and()` / `or()` filter expressions still work. Keep `or()` operands on t
 >
 > > [tab] After
 > >
-> > ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import { Client } from "langsmith";
 > >
 > > const client = new Client();
@@ -2478,7 +2478,7 @@ Nested `and()` / `or()` filter expressions still work. Keep `or()` operands on t
 >
 > > [tab] Before
 > >
-> > ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryParams
@@ -2501,7 +2501,7 @@ Nested `and()` / `or()` filter expressions still work. Keep `or()` operands on t
 >
 > > [tab] After
 > >
-> > ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > import com.langchain.smith.client.LangsmithClient
 > > import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
 > > import com.langchain.smith.models.runs.RunQueryV2Params
@@ -2528,7 +2528,7 @@ Nested `and()` / `or()` filter expressions still work. Keep `or()` operands on t
 >
 > > [tab] Before
 > >
-> > ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -2556,7 +2556,7 @@ Nested `and()` / `or()` filter expressions still work. Keep `or()` operands on t
 >
 > > [tab] After
 > >
-> > ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > package main
 > >
 > > import (
@@ -2588,7 +2588,7 @@ Nested `and()` / `or()` filter expressions still work. Keep `or()` operands on t
 >
 > > [tab] Before
 > >
-> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >
@@ -2609,7 +2609,7 @@ Nested `and()` / `or()` filter expressions still work. Keep `or()` operands on t
 >
 > > [tab] After
 > >
-> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > > PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
 > >   -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 > >

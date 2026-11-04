@@ -238,7 +238,7 @@ If events aren’t being correctly handled by your new code, try the following:
 
 #### Disable the old webhook endpoint
 
-After the upgrade is successful, disable the old webhook endpoint to stop your server from returning `400` status. If you don’t disable it, this may cause issues with integrations that rely on a `200` response.
+After the upgrade is successful, disable the old webhook endpoint to stop your server from returning `400` status. If you don’t disable it, this might cause issues with integrations that rely on a `200` response.
 
 After you disable the old webhook endpoint, Stripe won’t re-deliver events that returned a `400`.
 ![Two endpoints, but only the new one is sending events](https://b.stripecdn.com/docs-statics-srv/assets/diagram-4.907bbd1016f9fbe79283e8c35be7f3cd.png)

@@ -804,7 +804,7 @@ Only cards in this section effectively test your 3D Secure integration by simula
 
 > #### Dashboard not supported
 > 
-> 3D Secure redirects won’t occur for payments created directly in the Stripe Dashboard. Instead, use your integration’s own frontend or an API call.
+> 3D Secure redirects won’t occur for payments created directly in the Stripe Dashboard. Instead, use your integration’s own front end or an API call.
 
 ### Authentication and setup
 
@@ -1436,7 +1436,7 @@ If you use the mobile PaymentSheet, enable `allowsDelayedPaymentMethods` to show
 
 ### Review asynchronous payment methods
 
-The following table summarizes the PaymentIntent state each method enters immediately after confirmation, and the webhook events your server should expect once the delayed outcome arrives.
+The following table summarizes the PaymentIntent state each method enters immediately after confirmation, and the webhook events your server should expect after the delayed outcome arrives.
 
 | Method | Category | State after confirm | Delayed success event | Delayed failure event |
 | --- | --- | --- | --- | --- |

@@ -276,7 +276,7 @@ Whether you’re building a stand alone email or adding copy to an existing news
 - Where customers will learn about their offer (make sure to touch on eligibility since not all visitors to your page will be eligible)
 - Link to a blog post, landing page, or place where they can check their eligibility
 - Compliance disclosures
-- Opt out/unsubscribe ability so that the customer may exercise their right to not receive Capital marketing or be eligible to receive an offer
+- Instructions for how to opt out or unsubscribe, so that the customer can exercise their right to not receive Capital marketing
 
 Refer to our messaging guide for help crafting your email copy. Refer to our [regulatory compliance guide](https://docs.stripe.com/capital/regulatory-compliance.md) to check that your marketing adheres to the relevant guidelines.
 

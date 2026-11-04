@@ -2317,7 +2317,7 @@ A `CLAUDE.md` that passes that test stays short:
 - Integration tests need DATABASE_URL set, see .env.example
 ```
 
-In a session, run `/context` to confirm that Claude loaded the file.
+In a session, run [`/context all`](/docs/en/commands#all-commands) to confirm that Claude loaded the file.
 
 Notice that the typecheck line is only the command. Claude needs to know the command so it can check its own work as it goes. If you also want Claude Code to *enforce* a passing typecheck before Claude finishes, that's a job for a [`Stop` hook](#enforce-the-check-with-a-stop-hook). A line like `Always typecheck before you finish` in this file works most of the time, not every time.
 
@@ -2804,6 +2804,106 @@ Release notes for Claude Code, including new features, improvements, and bug fix
 This page is generated from the [CHANGELOG.md on GitHub](https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md). Longer releases are grouped by type of change, with long lists of improvements and bug fixes collapsed.
 
 Run `claude --version` to check your installed version.
+
+**2.1.318**
+
+November 4, 2026
+
+**Added**
+
+* Added a record of your answer when Claude Code asks to turn on the mods it writes in a session
+* Added `assume_role` on `mantle` upstreams of the Claude apps gateway, for a role in another AWS account and for per-developer AWS cost attribution
+* Added an `effort` option to a mod's `$.model.fork`, so a quick side job can run at `low` whatever effort the session uses; the result reports the effort sent
+* Added the date a stored claude.ai sign-in ends to `claude auth status` (`loginExpiresAt`) and to `claude -p` JSON results (`credential_expires_at`)
+* Added a one-line stderr warning to `claude -p` text output, starting 10 days before a stored claude.ai sign-in ends
+* Gateway: Added a log warning when the Google access token from a federation (`external_account`) credentials file is about to expire
+* Self-hosted runner: Added `CLAUDE_RUNNER_SPAWN_REASON` to the orchestrator's spawn-runner hook environment: why Anthropic sent the request (e.g. `runner_lost`, `resumed`); unset when none was sent
+* Self-hosted runner: Added a startup warning when `--release-idle-session-min` is the last argument with no value (still ignored) or has a value of only spaces (still read as `0`)
+* \[Cloud sessions] Added a No repository option: a cloud session on an Anthropic-hosted environment can now start without picking a repository
+* \[Cloud sessions] Added the usual Chrome names to cloud sessions, so tools other than Playwright can find the built-in Chromium through google-chrome and CHROME\_PATH
+* \[Cloud sessions] Added a New session button to the card shown when a cloud session's environment was deleted, where the message box is hidden
+
+**Changed**
+
+* Changed Claude Code to no longer install or update the IDE extension when started in an IDE terminal; use `/ide` from an outside terminal or your editor's extensions view
+* Changed subagents to stop instead of switching models when "Switch models when a message is flagged" is set to "Ask each time"
+* Changed background subagents to move a shell command to the background after 3 minutes on all providers, so the prompt cache doesn't expire while it runs
+* Changed subagent progress summaries on Bedrock, Vertex, Foundry, or with telemetry off: on a cold prompt cache, one can now wait up to 5 minutes for the subagent's pending response
+* Changed what a mod attaches at `prompt.submit` to stay in the user's turn rather than go out as a system message
+* Changed `deniedMcpServers` URL entries to also block Anthropic-provided servers whose upstream URL matches, and connectors in cloud sessions and on self-hosted runners, where the session is given the connector's own URL; otherwise deny a connector by name
+* Changed the `/permissions` rule details, built-in rules and delete confirmation views to use the standard dialog; pressing Ctrl+C twice there now goes back or cancels instead of quitting
+* Changed `/claude-api managed-agents-onboard` to give a new agent's built-in tools, and a quickstart template's MCP tools, the `auto` permission policy ("Judge risky actions") by default, matching the Claude Console; say "run without asking" to opt out
+* Removed the 2.1.288 fix that kept the model's earlier thinking when resuming a conversation started on 2.1.286 or earlier; that thinking can now be dropped
+* Self-hosted runner: Changed the orchestrator's log lines: `ok session=…` now prints at every log level on stdout (was debug only, stderr) with `reason=…` after `jti=…`, and `nack session=…` ends its fields with `reason=…` after `retryable=…`; update scripts that match `retryable=true:` or `retryable=false:`
+* \[Cloud sessions] Changed connector search results to tell Claude that the search covers only part of the connector directory
+
+**15 improvements**
+
+* Improved how `~/.claude.json`, settings files and the stored login survive saves on shared network home directories: they are less often deleted, briefly emptied or replaced by a near-empty or older copy
+* Improved sessions on network file systems to look again when the configuration file is wrongly reported as missing, so fewer start without your MCP servers and trusted folders
+* Improved MCP tool errors: a call made before the tool is loaded now returns its input schema
+* Improved the reliability of git commits and pull request creation when the Bash tool runs macOS's built-in `/bin/bash`
+* Improved "Ask your admin for more usage" in the usage limit menu to send the request in one step
+* Improved how fast remote sessions reconnect after a pause or sleep
+* Improved You should know toasts to say "try again" instead of "press 2", which only works in the terminal
+* Improved auto-update reliability: a brief network failure while verifying a release is now retried right away instead of waiting for the next check
+* Improved unattended runs (`claude -p`, SDK apps) to stop rewriting `~/.claude.json` on every run when nothing in it changed
+* Gateway: Improved the log hints about `listen.trusted_proxies`: they now say to list only a proxy that adds the connecting address to `X-Forwarded-For` itself
+* Gateway: Improved the warning when AWS CountTokens fails on Amazon Bedrock: it says Claude Code, not the gateway, counts after the 501, and points at IAM only when AWS denies access
+* Remote Control: Improved the title a fork of a terminal fork is created with when the app doesn't set one: "Name (fork 2)"
+* \[VSCode] Improved the sign-in screen to show what Claude Code printed when its sign-in status check fails
+* \[Cloud sessions] Improved most Create PR failure messages in cloud and Remote Control sessions: they now give the reason or a link to GitHub instead of saying Try again
+* \[Code Review] Improved the Code Review analytics page to retry once after a server or network failure, then show a Try again banner instead of empty cards
+
+**47 bug fixes**
+
+* Fixed `--continue` sometimes losing the earlier conversation after a malformed tool call's retries ran out (regression in 2.1.314)
+* Fixed macOS sessions with many running Bash commands stalling while memory grew
+* Fixed permission prompts being answered by keys typed just after sending a message, or before a slow prompt appeared
+* Fixed `/logout`, `claude auth logout` and `claude mcp remove` reporting success, and changes to trust, consent or MCP settings being dropped with no word, when the config file could not be updated on a shared network home directory
+* Fixed jobs exiting with `Not logged in` when another terminal or host signs in again to the same account and organization on the same home
+* Fixed `claude mcp add` and `remove` writing the config without its lock: they now wait for it or exit 1, though another job's save can still replace a saved server
+* Fixed `claude plugin` commands exiting before a slow token refresh was saved, which could sign you out on the next run
+* Fixed `claude plugin validate` passing a custom-named marketplace file that `claude plugin marketplace add` rejects
+* Fixed stdio MCP servers that exit on the version probe being re-probed on every start; a server that dies in under 3s for its own reason is also pinned to the legacy handshake for 7 days
+* Fixed sessions being refused at startup by an `allowedProviders` list that another login on the same machine had stored
+* Fixed idle compaction replacing a conversation with a reply that was not a summary
+* Fixed the "Now using usage credits" notice reappearing about every 30 seconds while a background subagent is running
+* Fixed custom slash commands that fail, or that only Claude can invoke, printing nothing in `claude -p` and SDK sessions
+* Fixed `claude -p` and Agent SDK sessions reporting success when an API error cut off a reply while a mod hooked `turn.step`
+* Fixed a message sent right after a model change still running after Stop in headless sessions: Stop now cancels or stops it as it would a queued message
+* Fixed a deleted session transcript being re-created with its last prompt when an idle non-interactive session exited
+* Fixed `claude remote-control` hosts, the background daemon and self-hosted runners failing to start new sessions (`spawn ENOENT`) after an update or version cleanup removed the binary of a still-running process
+* Fixed a running Claude Code process owned by another user (for example one left by `sudo claude`) being treated as dead by version cleanup, which could delete its binary
+* Fixed `/remote-control` showing a session as available after a failed connection
+* Fixed `/design revoke` reporting success when the request failed with a 404
+* Fixed a shell command approved after a self-hosted runner or cloud session restart running in the session's start folder, not the folder it was asked in; if that folder can't be entered, it is not run
+* Fixed Claude not being told when an approved connector tool was unavailable after a cloud session restart
+* Fixed cloud sessions being stopped in the middle of a turn when the service refuses uploads for several minutes
+* Fixed variables a `Setup` hook writes to `CLAUDE_ENV_FILE` not reaching the Bash tool in some cloud sessions
+* Fixed the iPhone app showing a cloud session's turn as finished while it kept running, after a response was cut off at a tool call or a refused image or document was removed
+* Fixed a restarted session re-sending a message that failed with an API error, ahead of the newer message waiting behind it
+* Fixed a restarted session dropping its interrupted turn when the restart came right after Claude read a large image or retried a tool call
+* Fixed every connection failing when the `NODE_EXTRA_CA_CERTS` file is empty, not PEM, or starts with a damaged certificate: readable certificates are now used, with a warning on stderr
+* Fixed workflows re-running finished agents when resumed after a usage limit
+* Fixed `/mcp` in cloud sessions counting tools the model can't use; a server's row now shows how many of its tools are available
+* Fixed a duplicate notification when Claude left the status field out of a PushNotification call
+* Fixed the error for a too-large image in a request with more than 20 images always saying the limit was 2000px; it now shows the API's limit
+* Fixed the runtime in background shell details not updating while the dialog is open
+* Fixed a mod's `turn.step` hook making a stopped reply finish as a success in headless runs
+* Fixed retention cleanup leaving a home that only runs `claude -p` with no `~/.claude.json` backup: it now takes a fresh backup before deleting the last good one
+* Fixed the stored login being replaced by an empty file when a network home directory has no room left for data but still takes new files
+* Fixed tokens from `setup-token` being refused at start on machines with `forceLoginOrgUUID`, when the token belongs to a permitted organization
+* Fixed non-interactive launches replacing a `~/.claude.json` that isn't valid JSON with defaults; the start now fails, says how to restore the file, and leaves it as is (anthropics/claude-code#87551)
+* Fixed an empty `~/.claude.json` with no backup being reported as corrupted; Claude Code now starts as it does when the file is missing
+* Fixed the restore command printed for a damaged or missing `~/.claude.json` naming an empty or cut-off backup, or failing on a read-only file
+* Fixed the sign-in failure when a stored claude.ai login reaches its time limit: it now says so, and in `claude -p` names `claude auth login` and `claude setup-token`
+* Remote Control: Fixed a misleading "spawn error: ENOENT" when a session's working folder is missing; the error now names the folder
+* \[VSCode] Fixed a window whose sign-in the organization's settings refuse starting a new Claude Code process in the background every minute
+* \[VSCode] Fixed a long word in the chat panel's error banner pushing its close button out of view
+* \[Cloud sessions] Fixed reading GitHub Actions logs in cloud sessions: `gh run view --log` and `gh api` log requests now get the log in most environments, not an unreachable redirect
+* \[Remote Control] Fixed side-by-side checkouts of one repository looking identical in the environment menu's Remote Control rows; each now shows its own folder name
+* \[Claude Tag] Fixed keyboard focus and screen reader announcements in Claude Tag admin setup; pressing Escape in the connect form no longer also closes the Add dialog
 
 **2.1.317**
 
@@ -19849,7 +19949,9 @@ For installation, authentication, and connectivity problems, see [Troubleshoot i
 
 ## See what loaded into context
 
-The `/context` command shows everything occupying the context window for the current session, broken down by category: system prompt, system tools, MCP tools, custom subagents with the source each loaded from, memory files, skills, and conversation messages. Run it first to confirm whether your `CLAUDE.md`, rules, or skill descriptions are present at all. The skills section in `/context` also includes [bundled skills](/docs/en/skills#bundled-skills), which `/skills` doesn't list.
+The `/context` command shows everything occupying the context window for the current session. It breaks this down by category: system prompt, system tools, MCP tools, custom subagents with the source each loaded from, memory files, skills, and conversation messages. Run it first to confirm whether your `CLAUDE.md`, rules, or skill descriptions are present at all. The skills section in `/context` also includes [bundled skills](/docs/en/skills#bundled-skills), which `/skills` doesn't list.
+
+In [fullscreen mode](/docs/en/fullscreen), `/context` collapses the per-item breakdown, so run `/context all` to expand it.
 
 For detail on a specific category, follow up with the dedicated command:
 
@@ -21814,7 +21916,7 @@ If a command-line tool makes your remote machines on demand, add its command to 
 
 > [!NOTE]
 >
-> Connections from a command require Claude Desktop v3.6556.0 or later on macOS or Linux, signed in with a Claude account. Administrators can [distribute commands to a team](#distribute-commands-to-your-team).
+> Connections from a command require Claude Desktop v3.6556.0 or later on macOS or Linux, or v4.16336.0 or later on Windows, signed in with a Claude account. On Windows, Desktop also has to [connect through the OpenSSH client](#use-your-ssh-configuration). Administrators can [distribute commands to a team](#distribute-commands-to-your-team).
 
 Desktop runs the command only when you create the connection or [create another machine](#create-another-machine), not each time you connect. Each entry is one connection, which points at the host that Desktop last saved from the entry's command.
 
@@ -21844,6 +21946,8 @@ The following example adds a connection named Dev box. If the file doesn't exist
 }
 ```
 
+On Windows, a bare name such as `acme-dev` doesn't work, so [start the command with the program's full path](#write-the-command-on-windows).
+
 Each entry takes these fields, and `id`, `name`, and `command` are required:
 
 | Field | Value |
@@ -21858,11 +21962,14 @@ To change or remove the connection, edit its entry in the file, because the app'
 
 ##### Write the command
 
-Desktop starts the program directly, with no shell and no terminal:
+On Windows, start with [Write the command on Windows](#write-the-command-on-windows), which says which of these rules apply there.
 
-* **Program**: write its name, or its full path from `/`, without spaces. Desktop looks for a bare name on the `PATH` that your login shell exports. Relative paths such as `./acme-dev`, paths that start with `~`, and shell aliases and functions don't work.
-* **Arguments**: separate plain arguments with spaces. The command can hold only spaces, ASCII letters, digits, and the characters `+,-./:=@_~`, and no word can start with `~`.
-* **Scripts**: if the command needs anything else, such as quotes, pipes, variables, or a URL with `?` or `&`, put it in a script. Make the script executable, start it with a `#!` line, and set `command` to its full path, such as `/Users/you/bin/make-devbox`. On macOS, keep the script out of the Documents, Desktop, and Downloads folders, where macOS can block it.
+On macOS and Linux, Desktop starts the program directly, with no shell and no terminal:
+
+* **Program**: write its name, or its full path from `/`. Desktop looks for a bare name on the `PATH` that your login shell exports. Relative paths such as `./acme-dev`, paths that start with `~`, and shell aliases and functions don't work.
+* **Spaces in the path**: put the program's full path in single quotes, such as `'/Users/you/My Tools/make-devbox' create`. Quotes, single or double, require Claude Desktop v4.16336.0 or later, and work only around the program's path.
+* **Arguments**: separate arguments with spaces. Outside quotes, the command can hold only spaces, ASCII letters, digits, and the characters `+,-./:=@_~`, and no word can start with `~`. A quoted path can also hold some other characters, such as `(`, `)`, and `&`.
+* **Scripts**: if the command needs anything else, such as quoted arguments, pipes, variables, or a URL with `?` or `&`, put it in a script. Make the script executable, start it with a `#!` line, and set `command` to its full path, such as `/Users/you/bin/make-devbox`. On macOS, keep the script out of the Documents, Desktop, and Downloads folders, where macOS can block it.
 * **Input**: the program gets no input and no terminal, so it can't prompt you there. If your tool signs you in through a browser or a prompt, sign in from a terminal first, and again whenever that sign-in lapses.
 * **Environment**: the program runs in your home directory with the variables that your login shell exports. Desktop reads them when it starts, as it does for [a `ProxyCommand`](#use-variables-from-your-shell-in-a-proxycommand), so quit and reopen Desktop after you change them.
 * **Time limit**: Desktop stops a program that is still running after 10 minutes. Desktop's progress message doesn't show the program's output. To stop the program sooner, select **Cancel** next to that message.
@@ -21892,11 +21999,60 @@ tail -n 1 "$out"
 
 If the command fails, **View details** in Desktop's message shows the last line that the command wrote to standard error, if any.
 
+##### Write the command on Windows
+
+On Windows, start `command` with the full path of an `.exe`, `.cmd`, or `.bat` file, from the drive letter. Desktop doesn't look for a bare name on your `PATH`, so an entry whose `command` is `acme-dev create` is [gray](#if-a-command-is-missing-or-gray).
+
+The following entry in `%USERPROFILE%\.claude\settings.json` runs `C:\Program Files\Acme\acme-dev.exe` with the argument `create`. In JSON, write each backslash twice, or write `/` instead. The single quotes are there because the path has a space:
+
+```json settings.json theme={null}
+{
+  "sshHostCommands": [
+    {
+      "id": "devbox",
+      "name": "Dev box",
+      "command": "'C:\\Program Files\\Acme\\acme-dev.exe' create"
+    }
+  ]
+}
+```
+
+Follow the rules in [Write the command](#write-the-command) on spaces in the path, input, the time limit, and what the program prints. In place of its other rules, follow these:
+
+* **Program**: don't use a network path such as `\\server\share`, a variable such as `%USERPROFILE%`, or a letter outside ASCII. With any of these in the path, the entry is gray. If your user folder's name has such a letter, keep the program outside that folder.
+* **Arguments**: follow the Arguments rule in Write the command. The command can also hold `\`, but no word can end with it.
+* **Scripts**: use a `.cmd` or `.bat` file, which Desktop runs through `cmd.exe`. Even in quotes, the file's path can't hold `&`, `^`, or `;`. In a file that you write, read the arguments with `%*`, because `%1` to `%9` split an argument at `,` and `=`.
+* **Environment**: the program gets the Desktop app's environment variables, not a shell profile's. After you change a variable, quit and reopen Desktop.
+* **Test**: to see the output that Desktop reads, run the command in Command Prompt. Put a path that has a space in double quotes and use `NUL` for no input, as in `"C:\Program Files\Acme\acme-dev.exe" create < NUL > host.txt`. The file has to hold only the host. The test makes a machine too, so delete it with your tool afterward.
+
+##### Wrap a Windows tool that prints other lines
+
+If your tool prints other lines before the host, such as progress messages, wrap it in a batch file that prints only the host. The following file prints the last line of your tool's output, and exits with your tool's code if it fails:
+
+```batch make-devbox.cmd theme={null}
+@echo off
+setlocal
+set "host="
+set "out=%TEMP%\acme-dev-%RANDOM%.txt"
+call "C:\Program Files\Acme\acme-dev.exe" create > "%out%"
+set "code=%ERRORLEVEL%"
+for /f "usebackq delims=" %%L in ("%out%") do set "host=%%L"
+del "%out%"
+if not "%code%"=="0" exit /b %code%
+setlocal EnableDelayedExpansion
+echo(!host!
+```
+
+Set `command` to the file's full path, such as `C:\\tools\\make-devbox.cmd` in JSON. Keep its last two lines as they are, because they print the host without running it as a command.
+
 ##### Connect to a new host
 
 Answer two questions the first time you connect to each new host:
 
-* **Host key**: with OpenSSH's default host key checking, check the key's fingerprint, then choose whether to connect. To skip the question, have your command add the key to `~/.ssh/known_hosts` before it prints the host, using a key that your tool learned when it made the machine. For a port other than 22, that line starts with `[host]:port`. If your tool reuses host names, remove the old key's line too.
+* **Host key**: with OpenSSH's default host key checking, check the key's fingerprint, then choose whether to connect. To skip the question, have your command add the key to `~/.ssh/known_hosts`, or `%USERPROFILE%\.ssh\known_hosts` on Windows, before it prints the host:
+  * Use a key that your tool learned when it made the machine
+  * For a port other than 22, start the line with `[host]:port`
+  * If your tool reuses host names, remove the old key's line too
 * **Folder**: choose whether you trust the folder that you open there
 
 Keep host key checking on for these hosts, and keep a `known_hosts` file for them. If `StrictHostKeyChecking` is `no` or `accept-new` and `UserKnownHostsFile` is also `/dev/null` or `none`, nothing records the key. When your tool then reuses a name, you can connect to a different machine without a warning.
@@ -21958,7 +22114,8 @@ Before you deploy the key, settle each of these:
 
 * **Where to put the key**: if your MDM policy for Claude Code already sets a [policy key](/docs/en/managed-settings#how-claude-code-combines-managed-sources), put it there. Otherwise, put it in the managed settings file. By default, such a policy outranks the file, and Desktop then ignores entries in the file. Set it on the computer even where [server-managed settings](/docs/en/server-managed-settings) apply: Desktop ignores the key there, and in project and local settings.
 * **The `id`**: if a user's `sshHostCommands` entry has your `id`, only yours works. If any other SSH connection has it, such as one in a user's `sshConfigs`, your entry is gray. Pick an `id` that users are unlikely to choose.
-* **The program**: give its full path, because Desktop looks up a bare name on each user's own `PATH`. The program runs as the user, with the variables that their login shell exports.
+* **The program**: give its full path, because on macOS and Linux Desktop looks up a bare name on each user's `PATH`, and on Windows an entry with a bare name is gray. The program runs as the user, with [that user's variables](#write-the-command).
+* **Each platform**: deploy one entry to Windows computers and another to macOS and Linux computers. An entry with a [Windows path](#write-the-command-on-windows) is gray on macOS and Linux, and one with a macOS or Linux path is gray on Windows.
 * **Users' own entries**: Desktop treats a user's entry like a [hook](/docs/en/hooks), because both run a program on the computer. To allow only your entries, set [`strictPluginOnlyCustomization`](/docs/en/settings-reference#strictpluginonlycustomization) to `["hooks"]`, or add `"hooks"` to its list. You also stop Claude Code hooks from user, project, and local settings, with no way to keep them. If you set that key or [`allowManagedHooksOnly`](/docs/en/settings-reference#allowmanagedhooksonly) to `true` instead, you block more, as each key's entry lists.
 * **Every entry**: to turn off your entries too, set [`disableAllHooks`](/docs/en/settings-reference#disableallhooks) in managed settings. If you set [`disableDesktopLocalSessions`](/docs/en/settings-reference#disabledesktoplocalsessions), or an `sshHostAllowlist` that allows no host, the selector lists no **Create** or **Create another** items.
 * **Where the locks count**: for these entries, Desktop reads `allowManagedHooksOnly`, `strictPluginOnlyCustomization`, and `disableAllHooks` from server-managed settings and from the computer's own file or policy, and applies the stricter result. Every entry stays gray until Desktop has checked claude.ai for server-managed settings, even if your organization has none.
@@ -21971,13 +22128,14 @@ After you deploy the key, restart Desktop on a test computer. In the Code tab's 
 The environment selector lists no **Create** or **Create another** item in these cases:
 
 * **The file**: `~/.claude/settings.json` has [invalid JSON or a value that the schema rejects](/docs/en/settings#fix-a-broken-settings-file), you misspelled the key, or you put it in a project's settings. Fix the file.
-* **Platform and account**: you use Windows, or a [third-party provider](/docs/en/third-party-integrations) instead of a Claude account. Add each host as an [SSH connection](#ssh-sessions) yourself.
+* **Account**: you use a [third-party provider](/docs/en/third-party-integrations) instead of a Claude account. Add each host as an [SSH connection](#ssh-sessions) yourself.
+* **Windows**: Desktop is older than v4.16336.0, or it doesn't connect through the OpenSSH client. Update Desktop and meet [the requirements for the OpenSSH client](#use-your-ssh-configuration), then quit and reopen Desktop.
 * **Your organization's settings**: your administrator turned off local sessions, or turned off SSH sessions. Ask them whether you can use commands.
 * **No `ssh` program**: Desktop couldn't start the OpenSSH client on your computer. Install it, or ask your administrator to allow it, then restart Desktop.
 
 An entry that you can't select is gray. Hover over it to see the reason:
 
-* **A mistake in the entry**: fix the field or the command that the message names. If the `id` is in use, give the entry another one.
+* **A mistake in the entry**: fix the field or the command that the message names. If the `id` is in use, give the entry another one. On Windows, the command has to [start with the program's full path](#write-the-command-on-windows).
 * **A broken settings file**: while your own settings file is broken, your administrator's entries may be gray, with a message that names the file. [Fix the file](/docs/en/settings#fix-a-broken-settings-file).
 * **A new host**: [**Create another**](#create-another-machine) is gray for one minute after Desktop saves a host. Select it after that minute. Before Claude Desktop v4.4212.0, **Replace Dev box's host** is gray for 10 minutes.
 * **Hooks are off or restricted**: your own entries work only where your own hooks can run. Remove `disableAllHooks` from your settings, or ask your administrator.
@@ -22152,7 +22310,7 @@ Managed settings override project and user settings and apply to Claude Code ses
 | `disableMobileSimulatorTools` | set to `true` to block Claude's tools for controlling and capturing devices in the [iOS Simulator pane](/docs/en/desktop-ios-simulator#turn-off-simulator-access). The pane stays usable for the user's own taps; only Claude's access is removed. The value must be the JSON boolean `true`; the string `"true"` is ignored. |
 | `disableBrowserExternalNavigation` | set to `true` to turn off external browsing in the [Browser pane](#browse-external-sites) entirely. Neither users nor Claude can navigate to external sites, and localhost dev server previews are unaffected. The value must be the JSON boolean `true`; the string `"true"` is ignored. |
 | `sshConfigs` | pre-configure [SSH connections](#pre-configure-ssh-connections-for-your-team) that appear in the environment selector. Users can't delete managed connections or edit anything but their own **Worktree folder**. |
-| `sshHostCommands` | give users [SSH connections whose host comes from a command](#distribute-commands-to-your-team), alongside their own. Desktop reads it from the managed settings file or MDM policy on the computer, and ignores it in [server-managed settings](/docs/en/server-managed-settings). Requires Claude Desktop v3.6556.0 or later on macOS or Linux, signed in with a Claude account. |
+| `sshHostCommands` | give users [SSH connections whose host comes from a command](#distribute-commands-to-your-team), alongside their own. Desktop reads it from the managed settings file or MDM policy on the computer, and ignores it in [server-managed settings](/docs/en/server-managed-settings). Requires Claude Desktop v3.6556.0 or later on macOS or Linux, or v4.16336.0 or later on Windows, signed in with a Claude account. On Windows, Desktop also has to [connect through the OpenSSH client](#use-your-ssh-configuration). |
 | `sshHostAllowlist` | restrict [SSH sessions](#restrict-which-ssh-hosts-users-can-connect-to) to hosts whose resolved hostname matches one of these patterns. Read from managed settings only. |
 | `disableDesktopLocalSessions` | set to `true` to turn off [Code sessions that run on the device](#local-sessions-on-managed-devices), leaving SSH sessions to other hosts and cloud sessions available. The value must be the JSON boolean `true`. Read from managed settings only. Requires Claude Desktop v1.37937.0 or later. |
 | `disableSshSavedPasswords` | set to `true` to stop Desktop from offering to remember SSH passwords and from using or showing the ones it saved earlier. Turning it on doesn't delete them. Read from managed settings only. Requires Claude Desktop v1.49585.0 or later. |
@@ -23678,6 +23836,9 @@ Match the message you see to a section below.
 | `Ignoring N permissions.allow entries from ... this workspace has not been trusted` | [Configuration warnings](#workspace-has-not-been-trusted) |
 | `is a network path, which cannot be added as a working directory` | [Configuration warnings](#working-directory-is-a-network-path) |
 | `Remote managed settings failed to load (<cause>)` | [Configuration warnings](#remote-managed-settings-failed-to-load) |
+| `Your organization requires remote managed settings to load, but they could not be loaded` | [Enforce fail-closed startup](/docs/en/server-managed-settings#enforce-fail-closed-startup) |
+| `Remote managed settings are still loading` | [Configuration warnings](#remote-managed-settings-failed-to-load) |
+| `Remote managed settings did not load` | [Configuration warnings](#remote-managed-settings-failed-to-load) |
 | `Managed settings were not approved; exiting without applying them.` | [Configuration warnings](#managed-settings-were-not-approved) |
 | `Your organization's managed settings need your approval, which couldn't be asked for here.` | [Configuration warnings](#managed-settings-need-your-approval) |
 | `Claude Code can't start: your organization's managed settings block the default model` / `Claude Code can't start: your organization allows only the models listed in "availableModels"` | [Configuration warnings](#managed-settings-block-the-default-model) |
@@ -23710,6 +23871,8 @@ Match the message you see to a section below.
 | `is ignored — managed settings set allowManagedReadPathsOnly` / `is ignored — managed settings set allowManagedDomainsOnly` | [Configuration warnings](#sandbox-allow-entries-are-ignored-under-a-managed-lock) |
 | `Sandbox mask files left behind at write-deny paths` | [Configuration warnings](#stale-sandbox-mask-files-left-by-a-killed-session) |
 | `Stale sandbox mask files left by a killed session` | [Configuration warnings](#stale-sandbox-mask-files-left-by-a-killed-session) |
+| `Ubuntu's AppArmor restriction on user namespaces stops bubblewrap here` | [Sandboxing troubleshooting](/docs/en/sandboxing#apparmor-restriction-stops-bubblewrap) |
+| `bwrap: setting up uid map: Permission denied` / `bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted` | [Sandboxing troubleshooting](/docs/en/sandboxing#bwrap-uid-map-permission-denied) |
 | Responses seem lower quality than usual | [Response quality](#responses-seem-lower-quality-than-usual) |
 
 ## Automatic retries
@@ -29074,7 +29237,7 @@ Before v2.1.257, Claude Code accepted a reachable network path as a working dire
 
 ### Remote managed settings failed to load
 
-Your session is eligible for [server-managed settings](/docs/en/server-managed-settings), but Claude Code couldn't fetch them or couldn't apply what the server returned, so it shows this warning in interactive sessions.
+Your session is eligible for [server-managed settings](/docs/en/server-managed-settings), but Claude Code couldn't fetch them or couldn't apply what the server returned, so it shows this warning in interactive sessions and in Claude Desktop's Code tab.
 
 The parenthesized cause names what failed, such as `network error`, `request timed out`, or `authentication rejected (401)`. The cause `no setting in the server response could be applied as written` means the server answered but none of the settings it returned passed [validation](/docs/en/server-managed-settings#invalid-entries-in-delivered-settings). Before v2.1.282, this cause read `server returned invalid settings`.
 
@@ -29082,6 +29245,12 @@ The rest of the line says which policy the session runs on:
 
 * **Settings cached from an earlier successful fetch**: Claude Code runs the session on that cached policy, except the [withheld environment variables](/docs/en/server-managed-settings#fetch-and-caching-behavior), and the line reads `using cached policy`.
 * **No cache**: Claude Code runs the session without server-managed settings, and the line reads `no remote policy applied`.
+
+In the Code tab, the warning appears as a line in the conversation when you send a message, and a new line appears when the state of the fetch changes. Three related messages appear the same way:
+
+* `Remote managed settings are still loading`: the fetch was still running when the session went ahead
+* `Remote managed settings did not load`: the fetch ended without an answer
+* `Remote managed settings have now loaded`: the settings loaded after one of these warnings, and the rest of the line says whether a remote policy applies
 
 **What to do:**
 
@@ -33576,7 +33745,7 @@ Write database queries with the Knex query builder. Never put raw SQL strings in
 Never edit a migration after it has merged. Add a new migration instead.
 ```
 
-When you start Claude from `packages/api/`, it loads both `packages/api/CLAUDE.md` and the root `CLAUDE.md`. Claude sees the local instructions alongside the repository-wide rules, with no instructions from `packages/web/` in context. The same holds for any subdirectory in a non-monorepo tree. To confirm which files loaded, run `/context` and check the list under **Memory files**.
+When you start Claude from `packages/api/`, it loads both `packages/api/CLAUDE.md` and the root `CLAUDE.md`. Claude sees the local instructions alongside the repository-wide rules, with no instructions from `packages/web/` in context. The same holds for any subdirectory in a non-monorepo tree. To confirm which files loaded, run [`/context all`](/docs/en/commands#all-commands) and check the list under **Memory files**.
 
 A few ways to keep the files current as the codebase and models change:
 
@@ -36327,7 +36496,9 @@ For large projects, you can break instructions into topic-specific files using [
 
 ### Set up a project CLAUDE.md
 
-A project CLAUDE.md can be stored in either `./CLAUDE.md` or `./.claude/CLAUDE.md`. Create this file and add instructions that apply to anyone working on the project: build and test commands, coding standards, architectural decisions, naming conventions, and common workflows. These instructions are shared with your team through version control, so focus on project-level standards rather than personal preferences. To confirm the file loaded, run `/context` in a session and check the list under **Memory files**.
+A project CLAUDE.md can be stored in either `./CLAUDE.md` or `./.claude/CLAUDE.md`. Create this file and add instructions that apply to anyone working on the project: build and test commands, coding standards, architectural decisions, naming conventions, and common workflows. These instructions are shared with your team through version control, so focus on project-level standards rather than personal preferences.
+
+To confirm the file loaded, run [`/context all`](/docs/en/commands#all-commands) in a session and check the list under **Memory files**. In [fullscreen mode](/docs/en/fullscreen), `/context` alone collapses that list.
 
 > [!TIP]
 >
@@ -36721,7 +36892,7 @@ The command prints no output on success. Before you choose the symlink over the 
 * **Editing**: Claude reads `CLAUDE.md` through the link, but the Edit and Write tools [refuse to write through a symlink](/docs/en/errors#refusing-after-a-symlink-changed), and the refusal directs Claude to edit the link's target, `AGENTS.md`, instead
 * **Windows**: if you or anyone who clones the repository works on Windows, use the `@AGENTS.md` import instead. Creating a symlink there needs Administrator privileges or Developer Mode, and Git checks a committed symlink out as a plain text file unless `core.symlinks` is enabled, which leaves that clone with a one-line `CLAUDE.md` in place of your instructions
 
-With either approach, run `/context` in your next session and confirm `CLAUDE.md` appears under **Memory files**.
+With either approach, run `/context all` in your next session and confirm `CLAUDE.md` appears under **Memory files**.
 
 ### Migrate instructions from other tools
 
@@ -36827,7 +36998,7 @@ Auto memory files are plain markdown you can edit or delete at any time. Run [`/
 
 ## View and edit with `/memory`
 
-The `/memory` command lists your CLAUDE.md, CLAUDE.local.md, and other memory file locations across user and project scopes, including user and project CLAUDE.md entries for files that don't exist yet. It also lets you toggle auto memory on or off and provides an option to open the auto memory folder. Select any file to open it in your editor; selecting one that doesn't exist yet creates it first. To check which `CLAUDE.md` and rules files loaded at launch, run `/context`.
+The `/memory` command lists your CLAUDE.md, CLAUDE.local.md, and other memory file locations across user and project scopes. The list includes user and project CLAUDE.md entries for files that don't exist yet. The command also lets you toggle auto memory on or off and provides an option to open the auto memory folder. Select any file to open it in your editor; selecting one that doesn't exist yet creates it first.
 
 GUI editors such as VS Code open the file in a separate window, and you can keep using the session while it's open. Terminal editors such as Vim take over the terminal until you exit.
 
@@ -36843,7 +37014,7 @@ CLAUDE.md content is delivered as a user message after the system prompt, not as
 
 To debug:
 
-* Run `/context` and check the list under **Memory files** to verify the CLAUDE.md and CLAUDE.local.md files that should load at launch. If one is missing there, Claude can't see it. Use `/memory` to open and edit the files.
+* Run `/context all` and check the list under **Memory files** to verify the CLAUDE.md and CLAUDE.local.md files that should load at launch. If one is missing there, Claude can't see it. Use `/memory` to open and edit the files.
 * If an `Instruction file not loaded` notice appears, see [what it means and what to do about it](/docs/en/errors#instruction-file-not-loaded).
 * A `CLAUDE.md` in a subdirectory of your working directory doesn't appear under **Memory files**, because it loads on demand rather than at launch. When it loads, a `Loaded` line with its path appears in the terminal. To test a new one, create it from your shell rather than asking Claude to write it, then ask Claude to read a file in that subdirectory.
 * Check that the relevant CLAUDE.md is in a location that gets loaded for your session (see [Choose where to put CLAUDE.md files](#choose-where-to-put-claude-md-files)).
@@ -43284,9 +43455,15 @@ Subagent events fire when a subagent type is offered to Claude and when a subage
 | Event | Fires when | A hook can return |
 | :- | :- | :- |
 | `agent.offer` | A subagent type is offered to Claude | `{ isOffered: false }` to withhold it |
-| `agent.spawn` | A subagent or an [agent team](/docs/en/agent-teams) teammate is about to start. For a teammate, `e.isTeammate` is `true`. | `next({ ...e, model })` to choose its model, or `{ deny: reason }` |
+| `agent.spawn` | A subagent or an [agent team](/docs/en/agent-teams) teammate is about to start, or a subagent that finished or stopped is about to run again. For a teammate, `e.isTeammate` is `true`. For a resumed run, `e.resume` is set. | `next({ ...e, model })` to choose the model of one that is starting, or `{ deny: reason }` |
 
-When Claude resumes a subagent with the [`SendMessage`](/docs/en/sub-agents#resume-subagents) tool, your `agent.spawn` hook doesn't run again. To refuse the `SendMessage` calls that resume a subagent, match that tool in a [`tool.call`](/docs/en/plugins/mods/events#guard-or-change-a-tool-call) hook.
+Your `agent.spawn` hook also runs when a subagent that finished or stopped is about to run again, such as when Claude sends it a message with the [`SendMessage`](/docs/en/sub-agents#resume-subagents) tool. On that event, `e.resume` is `{ agentId }`. If your hook counts subagents, skip the events where `e.resume` is set, so a resumed subagent isn't counted again.
+
+Return `{ deny: reason }` to refuse a resumed run. The run doesn't start, and the subagent stays as it was. When a `SendMessage` call asked for the run, Claude reads `a plugin declined the resume:` followed by your reason as that call's result. If you pass a changed event to `next` for a resumed run, such as a different `model`, Claude Code ignores the change.
+
+> [!NOTE]
+>
+> The event for a resumed run requires Claude Code v2.1.299 or later. Before v2.1.299, your `agent.spawn` hook didn't run when a subagent resumed. On those versions, to refuse the `SendMessage` calls that resume a subagent, match that tool in a [`tool.call`](/docs/en/plugins/mods/events#guard-or-change-a-tool-call) hook.
 
 ### Interface
 
@@ -53032,7 +53209,12 @@ Claude Code is available as both a VS Code extension (graphical panel) and a CLI
 
 ### Run CLI in VS Code
 
-To use the CLI while staying in VS Code, press `` Ctrl+` `` on Windows/Linux or `` Cmd+` `` on Mac to open the integrated terminal, then run `claude`. The CLI automatically integrates with your IDE for features like diff viewing and diagnostic sharing. If you use an external terminal, run `/ide` inside Claude Code to connect it to VS Code.
+To use the CLI while staying in VS Code, press `` Ctrl+` `` on Windows/Linux or `` Cmd+` `` on Mac to open the integrated terminal, then run `claude`. Starting `claude` doesn't install the extension. Without it, `/ide` in the integrated terminal reports "No available IDEs detected" and `/status` shows the IDE as "Not connected".
+
+To get features like diff viewing and diagnostic sharing, connect the CLI to the extension from the integrated terminal or an external terminal:
+
+* **Integrated terminal**: [install the extension](#install-the-extension), then start `claude`. The CLI connects automatically.
+* **External terminal**: run `/ide` inside Claude Code to connect to VS Code. If VS Code is running without the extension, `/ide` installs it, unless you turned off [`autoInstallIdeExtension`](/docs/en/settings-reference#autoinstallideextension).
 
 Installing the extension does not put `claude` on your shell PATH. The extension bundles a private copy of the CLI for its chat panel, but typing `claude` in a terminal requires the [standalone CLI install](/docs/en/setup). Run the install once and the commands on this page, including `claude mcp add` and `claude --resume`, work in any terminal. If `claude` is still not found after installing, [verify your PATH](/docs/en/troubleshoot-install#verify-your-path).
 
@@ -53300,7 +53482,7 @@ To uninstall the Claude Code extension:
 2. Search for "Claude Code"
 3. Click **Uninstall**
 
-If you run `claude` in a VS Code integrated terminal, Claude Code reinstalls the extension automatically. To keep it uninstalled, turn off **Auto-install IDE extension** in `/config`, or set [`autoInstallIdeExtension`](/docs/en/settings-reference#autoinstallideextension) to `false`. You can also set the [`CLAUDE_CODE_IDE_SKIP_AUTO_INSTALL`](/docs/en/env-vars) environment variable to `1`.
+The extension stays uninstalled when you start `claude`. If you run `/ide` from an external terminal while VS Code is running, Claude Code reinstalls it. To stop that, set [`autoInstallIdeExtension`](/docs/en/settings-reference#autoinstallideextension) to `false` in `~/.claude.json`, or turn off **Auto-install IDE extension** in `/config` from the integrated terminal. You can also set the [`CLAUDE_CODE_IDE_SKIP_AUTO_INSTALL`](/docs/en/env-vars) environment variable to `1`.
 
 To also remove extension data and reset all settings, delete the extension's storage directory for your platform.
 
@@ -59314,7 +59496,7 @@ The role's trust policy names the gateway's own principal, such as its IRSA or E
 
 * If STS refuses or is unreachable, the gateway doesn't send the request with the upstream's own credentials. It logs the STS error with what to check, then tries the next upstream you listed. [Upstream error messages](#upstream-error-messages) covers what the client receives when no upstream succeeds. A later upstream without `assume_role` would serve the request with its own credentials, so list one only if that is what you want.
 * The gateway calls the regional STS endpoint `sts.<region>.amazonaws.com`, which its network must reach. For the FIPS endpoint, set `AWS_USE_FIPS_ENDPOINT=true` in the gateway's environment rather than `use_fips_endpoint` in an AWS config file.
-* `assume_role` applies to `provider: bedrock` only and needs SigV4 source credentials: the gateway refuses to start when it's set beside `aws_bearer_token`.
+* `assume_role` needs SigV4 source credentials: the gateway refuses to start when it's set beside `aws_bearer_token`.
 * Without a [`groups` list](#send-each-team-to-its-own-upstream), every developer the gateway admits can use this upstream. To limit which models a developer can use, set `availableModels` in a [`managed`](#managed) policy.
 * To keep a model served through the role from also being served from another account, give it a custom id whose `upstream_model` map has only this upstream's name. For such an id the gateway skips every other upstream, so neither the request nor the token count for an aborted request can fail over to another account.
 * A request for a built-in model name can still [reach this upstream](#multiple-upstreams), and the gateway signs it with the same role. List this upstream last unless its account should also serve those models.
@@ -59376,6 +59558,7 @@ The table below lists the fields specific to a `mantle` upstream.
 | `region` | Yes | AWS region. The gateway derives the endpoint from it as `https://bedrock-mantle.<region>.api.aws/anthropic`. |
 | `models` | Yes | The models your AWS account has been granted on Mantle, named as clients send them, such as `claude-haiku-4-5`. Only these go to this upstream, and every other model skips to the next one. |
 | `auth` | No | Takes the same keys as the [Amazon Bedrock](#amazon-bedrock) upstream's `auth` block, under the same rules. |
+| `assume_role` | No | The role that this upstream's requests go through, with the same keys as [on a `bedrock` upstream](#bedrock-in-another-aws-account), including `session_name` for [per-developer attribution](#per-developer-aws-cost-attribution). Give the role Mantle's IAM actions. Requires a gateway running Claude Code v2.1.318 or later. An earlier gateway exits at startup with `Unrecognized key(s) in object: 'assume_role'`. |
 | `base_url` | No | Override the derived endpoint. Keep the `/anthropic` path at the end. |
 
 Grant the upstream's AWS identity Mantle's own IAM actions for inference and token counting, which [Use the Mantle endpoint](/docs/en/amazon-bedrock#use-the-mantle-endpoint) lists.
@@ -59385,7 +59568,7 @@ For a Mantle model ID that the gateway doesn't know, add an entry to the top-lev
 A `bedrock` upstream's `guardrail` and `assume_role` settings don't extend to the requests Mantle serves:
 
 * **`guardrail`**: the gateway applies no [Bedrock guardrail](#apply-an-amazon-bedrock-guardrail) to requests it sends to Mantle, so it refuses to start when a `mantle` upstream is listed while any `bedrock` upstream sets `guardrail`.
-* **`assume_role`**: a `mantle` upstream takes no [`assume_role`](#bedrock-in-another-aws-account). Requests that Mantle serves are sent with the `mantle` upstream's own `auth` credentials, and aren't [attributed per developer](#per-developer-aws-cost-attribution).
+* **`assume_role`**: set it on the `mantle` upstream itself. Without it, requests that Mantle serves are sent with the `mantle` upstream's own `auth` credentials.
 
 For what Mantle's own error responses mean, see [Mantle endpoint errors](/docs/en/amazon-bedrock#mantle-endpoint-errors).
 
@@ -65445,7 +65628,7 @@ Numeric variables such as timeouts, token budgets, and retry counts accept scien
 | `CLAUDE_CODE_GZIP_REQUEST_BODIES` | Set to `0` to turn off gzip compression of Claude API, telemetry, and [artifact](/docs/en/artifacts) publish request bodies sent to `api.anthropic.com`. By default, Claude Code compresses large request bodies on direct connections and skips compression when you send requests through a proxy, configure a client certificate, or set `NODE_EXTRA_CA_CERTS`. Use `0` if a [TLS-inspecting proxy](/docs/en/network-config#ca-certificate-store) that Claude Code can't detect mishandles compressed requests |
 | `CLAUDE_CODE_HIDE_CWD` | Set to `1` to hide the working directory in the startup logo. Useful for screenshares or recordings where the path exposes your OS username |
 | `CLAUDE_CODE_IDE_HOST_OVERRIDE` | Override the host address used to connect to the IDE extension. By default Claude Code auto-detects the correct address, including WSL-to-Windows routing |
-| `CLAUDE_CODE_IDE_SKIP_AUTO_INSTALL` | Set to `1` to skip auto-installation of IDE extensions. Equivalent to setting [`autoInstallIdeExtension`](/docs/en/settings-reference#autoinstallideextension) to `false` |
+| `CLAUDE_CODE_IDE_SKIP_AUTO_INSTALL` | Set to `1` to stop `/ide` from installing the IDE extension. Equivalent to setting [`autoInstallIdeExtension`](/docs/en/settings-reference#autoinstallideextension) to `false` |
 | `CLAUDE_CODE_IDE_SKIP_VALID_CHECK` | Set to `1` to skip validation of IDE lockfile entries during connection. Use when auto-connect fails to find your IDE despite it running |
 | `CLAUDE_CODE_IDLE_COMPACT_MIN_TOKENS` | Context size, in tokens, at which [idle compaction](/docs/en/settings-reference#idlecompaction) applies to a conversation (default: `200000`). Accepts a positive whole number, and anything else is ignored. Values below `100000` are raised to `100000`, the lowest threshold. Idle compaction is on by default for conversations that meet its conditions. To turn it off, set `idleCompaction` to `false`. Requires Claude Code v2.1.290 or later |
 | `CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS` | How many [subagents](/docs/en/sub-agents#concurrent-subagent-limit) can be running in one session before the Agent tool refuses to spawn another (default: 20). Accepts a positive whole number in plain digits; anything else is ignored, so the variable can adjust the cap but can't disable it. Requires Claude Code v2.1.217 or later |
@@ -84635,7 +84818,7 @@ In each plugin component, `${...}` references resolve inline in specific fields,
 | :- | :- | :- |
 | Hook commands | Anywhere in `command` and `args` | `CLAUDE_PLUGIN_ROOT`, `CLAUDE_PLUGIN_DATA`, `CLAUDE_PROJECT_DIR`, and `CLAUDE_PLUGIN_OPTION_<KEY>` |
 | Monitor commands | Anywhere in `command` | Not exported |
-| MCP `stdio` servers | `command`, `args`, `env` | `CLAUDE_PLUGIN_ROOT`, `CLAUDE_PLUGIN_DATA` |
+| MCP `stdio` servers | `command`, `args`, `env` | `CLAUDE_PLUGIN_ROOT`, `CLAUDE_PLUGIN_DATA`, `CLAUDE_PROJECT_DIR` |
 | MCP `http`, `sse`, `ws` servers | `url`, `headers`, `headersHelper` | Not applicable |
 | LSP servers | `command`, `args`, `env`, `workspaceFolder` | `CLAUDE_PLUGIN_ROOT`, `CLAUDE_PLUGIN_DATA`, `CLAUDE_PROJECT_DIR` |
 | Skill, command, and agent content | Anywhere in the Markdown body | Not applicable |
@@ -88061,7 +88244,7 @@ This opens the sandbox panel with three tabs, plus a Dependencies tab on Linux w
 * **Overrides**: choose whether commands that fail under the sandbox can fall back to running unsandboxed. This is the [`allowUnsandboxedCommands`](/docs/en/settings-reference#sandbox-allowunsandboxedcommands) setting
 * **Config**: view the resolved sandbox settings
 
-If the panel shows only a Dependencies tab, a required package is missing. Install it as described in [Set up Linux and WSL2](#set-up-linux-and-wsl2), restart Claude Code, and run `/sandbox` again.
+If the panel shows only a Dependencies tab, the sandbox can't start yet. Fix what the tab reports as described in [Set up Linux and WSL2](#set-up-linux-and-wsl2), restart Claude Code, and run `/sandbox` again.
 
 **2. Choose a mode**
 
@@ -88087,7 +88270,7 @@ claude --settings '{"sandbox": {"enabled": true, "allowUnsandboxedCommands": fal
 
 > [!WARNING]
 >
-> By default, if the sandbox can't start because a dependency is missing or the platform is unsupported, Claude Code runs commands without sandboxing. To make Claude Code exit at startup instead, set [`sandbox.failIfUnavailable`](/docs/en/settings-reference#sandbox-failifunavailable) to `true`. Managed deployments that require sandboxing as a security gate can use this setting.
+> By default, when the platform doesn't support the sandbox or the dependency check at startup fails, Claude Code runs commands without sandboxing. To make Claude Code exit at startup instead, set [`sandbox.failIfUnavailable`](/docs/en/settings-reference#sandbox-failifunavailable) to `true`. Managed deployments that require sandboxing as a security gate can use this setting.
 
 ### Confirm commands run inside the sandbox
 
@@ -88125,37 +88308,47 @@ When a dependency is missing, the Dependencies tab in `/sandbox` lists which of 
 
 Ripgrep is bundled with the native Claude Code binary. The seccomp filter is optional and adds Unix domain socket blocking. Install it with `npm install -g @anthropic-ai/sandbox-runtime` if it is missing.
 
-When a required dependency is missing, the Dependencies tab is the only tab shown until you install it. When only the optional seccomp filter is missing, the Dependencies tab appears alongside the other tabs. The dependency check runs at startup, so restart Claude Code after installing packages for `/sandbox` to detect them.
+* **Dependencies is the only tab**: the sandbox can't start. Install what the tab lists as missing, or if it reports Ubuntu's AppArmor restriction, [add an AppArmor profile for bubblewrap](#add-an-apparmor-profile-for-bubblewrap)
+* **Dependencies appears beside the other tabs**: the tab lists a missing optional item, such as the seccomp filter. The sandbox can start without it, so install it only if you want what it adds
 
-> [accordion] Ubuntu 24.04 and later: allow bubblewrap to create user namespaces
->
-> On Ubuntu 24.04 and later, the default AppArmor policy prevents bubblewrap from creating the user namespaces it needs for isolation.
->
-> To check whether your environment enforces this restriction, including inside WSL2, run `sysctl kernel.apparmor_restrict_unprivileged_userns`. If the command returns `0`, skip this step. If it prints a `No such file or directory` error, the key doesn't exist and you can skip this step. If it returns `1`, add an AppArmor profile that grants `bwrap` this capability:
->
-> ```bash theme={null}
-> sudo tee /etc/apparmor.d/bwrap > /dev/null <<'EOF'
-> abi <abi/4.0>,
-> include <tunables/global>
->
-> profile bwrap /usr/bin/bwrap flags=(unconfined) {
->   userns,
->   include if exists <local/bwrap>
-> }
-> EOF
-> ```
->
-> The profile applies only to `bwrap` itself, not to the commands it runs inside the sandbox. Reload AppArmor to apply it:
->
-> ```bash theme={null}
-> sudo systemctl reload apparmor
-> ```
+The dependency check runs at startup, so restart Claude Code after installing packages for `/sandbox` to detect them.
 
 > [accordion] WSL2 notes
 >
 > Check your WSL version with `wsl -l -v` from PowerShell. If you see `Sandboxing requires WSL2`, your distribution is running WSL1. Upgrade it to WSL2 or run Claude Code without sandboxing.
 >
 > On WSL2, WSL hands a launch of a Windows binary such as `cmd.exe`, `powershell.exe`, or anything under `/mnt/c/` to the Windows host over a Unix socket, so whether a sandboxed command can launch one follows the sandbox's [Unix-socket settings](/docs/en/settings-reference#sandbox-network-allowunixsockets): the optional seccomp filter has to be installed to block the socket in the first place. To allow these launches, set `allowAllUnixSockets`, which opens every Unix socket to sandboxed commands.
+
+#### Add an AppArmor profile for bubblewrap
+
+Add the profile if Claude Code runs `/usr/bin/bwrap` and either of these happens:
+
+* Claude Code [reports Ubuntu's AppArmor restriction on user namespaces](#apparmor-restriction-stops-bubblewrap)
+* Sandboxed commands fail with `bwrap: setting up uid map: Permission denied` or `bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted` while [that restriction is on](#bwrap-uid-map-permission-denied)
+
+Claude Code runs the first `bwrap` on `PATH`, unless managed settings name one in [`sandbox.bwrapPath`](/docs/en/settings-reference#sandbox-bwrappath). To see which `bwrap` is first, run `which bwrap` in the shell you start Claude Code from. If Claude Code runs any path other than `/usr/bin/bwrap`, [lift the restriction with `sysctl`](#apparmor-restriction-stops-bubblewrap) instead.
+
+To add the profile for `/usr/bin/bwrap`, run this command:
+
+```bash theme={null}
+sudo tee /etc/apparmor.d/bwrap > /dev/null <<'EOF'
+abi <abi/4.0>,
+include <tunables/global>
+
+profile bwrap /usr/bin/bwrap flags=(unconfined) {
+  userns,
+  include if exists <local/bwrap>
+}
+EOF
+```
+
+Reload AppArmor to apply it:
+
+```bash theme={null}
+sudo systemctl reload apparmor
+```
+
+Then restart Claude Code and [confirm the sandbox works](#confirm-commands-run-inside-the-sandbox).
 
 ### Sandbox modes
 
@@ -88706,7 +88899,7 @@ The following managed settings configuration enables the sandbox, refuses to sta
 
 The two keys beyond `enabled` control what happens when the sandbox cannot run a command:
 
-* **`failIfUnavailable`**: a missing dependency such as bubblewrap on Linux blocks Claude Code from starting rather than falling back to unsandboxed execution
+* **`failIfUnavailable`**: when the platform doesn't support the sandbox or the dependency check at startup fails, Claude Code refuses to start rather than falling back to unsandboxed execution
 * **`allowUnsandboxedCommands: false`**: Claude Code ignores the `dangerouslyDisableSandbox` escape hatch, so when a command fails under the sandbox, Claude can't retry it unsandboxed
 
 Consider these additions alongside them:
@@ -88891,6 +89084,28 @@ Before v2.1.307, the folder was deleted even with something in it and no `HEAD`.
 ### Bubblewrap fails to start inside a container
 
 In an unprivileged container, [bubblewrap](#os-level-enforcement) can't mount a fresh `/proc` filesystem, so sandboxed commands fail with a `bwrap` error such as `Can't mount proc on /newroot/proc: Operation not permitted`. Set [`enableWeakerNestedSandbox`](/docs/en/settings-reference#sandbox-enableweakernestedsandbox) to `true` so the sandbox bind-mounts the container's existing `/proc` instead. Only use this setting when the outer container already provides the isolation boundary you need, since the setting exposes process information to sandboxed commands that a fresh `/proc` mount would hide.
+
+### Ubuntu's AppArmor restriction stops bubblewrap
+
+On Linux and WSL2, the message `Ubuntu's AppArmor restriction on user namespaces stops bubblewrap here` means that Ubuntu's AppArmor restriction keeps the sandbox from starting.
+
+To get the sandbox to start, lift the restriction in one of these two ways:
+
+* [Add an AppArmor profile for bubblewrap](#add-an-apparmor-profile-for-bubblewrap) if Claude Code runs `/usr/bin/bwrap`
+* In your shell, run `sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0`, which lifts the restriction for every program on the machine and lasts until you reboot
+
+Then restart Claude Code and [confirm the sandbox works](#confirm-commands-run-inside-the-sandbox).
+
+Until you lift the restriction, commands run without the sandbox under the regular permission flow, or Claude Code refuses to start if [`sandbox.failIfUnavailable`](/docs/en/settings-reference#sandbox-failifunavailable) is `true`.
+
+### Sandboxed commands fail with `bwrap: setting up uid map: Permission denied`
+
+On Linux and WSL2, this error or `bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted` can mean that Ubuntu's AppArmor restriction on user namespaces is stopping bubblewrap. To check, run `sysctl kernel.apparmor_restrict_unprivileged_userns` in your shell:
+
+* `kernel.apparmor_restrict_unprivileged_userns = 1`: the restriction is on. [Add an AppArmor profile](#add-an-apparmor-profile-for-bubblewrap) if Claude Code runs `/usr/bin/bwrap`, or run `sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0`, which lifts it for every program until you reboot. Then restart Claude Code and [confirm the sandbox works](#confirm-commands-run-inside-the-sandbox)
+* Any other output: the restriction isn't the cause. To report the failure, run [`/feedback`](/docs/en/commands#all-commands) at the Claude Code prompt
+
+Before v2.1.310, Claude Code didn't check for this restriction at startup, so `/sandbox` didn't report it.
 
 ### 0-byte read-only files appear at `.claude` settings paths, and "Yes, and don't ask again" doesn't save
 
@@ -92621,7 +92836,7 @@ A client signed in through a [Claude apps gateway](#platform-availability) fetch
 
 * When a developer signs in at startup, such as on a first run or after `/logout`, Claude Code waits up to five seconds for the fetch before it opens the session. When the policy arrives in time, Claude Code enforces it from the first screen and shows your [`companyAnnouncements`](/docs/en/settings-reference#companyannouncements) on it. When the payload needs [security approval](#security-approval-dialogs), Claude Code ends the wait and applies the payload once the developer approves
 * In any other startup, and when that five-second wait runs out, Claude Code opens the session while the fetch continues, so a brief window passes before the settings load and the restrictions take effect
-* If the fetch fails, Claude Code continues without server-managed settings and warns in interactive sessions that no remote policy applies; endpoint-managed settings still apply. If a managed source sets [`forceRemoteSettingsRefresh`](#enforce-fail-closed-startup), Claude Code exits instead
+* If the fetch fails, Claude Code continues without server-managed settings and warns in interactive sessions and in [Claude Desktop's Code tab](/docs/en/desktop) that no remote policy applies; endpoint-managed settings still apply. If a managed source sets [`forceRemoteSettingsRefresh`](#enforce-fail-closed-startup), Claude Code exits instead
 
 **Subsequent launches with cached settings:**
 
@@ -92631,7 +92846,7 @@ A client signed in through a [Claude apps gateway](#platform-availability) fetch
 * A cached [`prependPlugins`](/docs/en/settings-reference#prependplugins), [`appendPlugins`](/docs/en/settings-reference#appendplugins), or [`enabledPlugins`](/docs/en/settings-reference#enabledplugins) value can't remove the built-in guard, change its position, or turn it off until the session's fetch confirms the payload
 * On a machine where an [endpoint-managed source](/docs/en/managed-settings#choose-a-delivery-mechanism) lists or enables plugins of its own, a plugin that only a cached list enables counts as [the user's](/docs/en/plugins/mods/admin#install-your-organizations-mods), not your organization's, until the fetch confirms the payload
 * Claude Code fetches fresh settings in the background
-* Cached settings persist through network failures. If the startup fetch fails, Claude Code warns in interactive sessions that the cached policy is in effect
+* Cached settings persist through network failures. If the startup fetch fails, Claude Code warns in interactive sessions and in the Code tab that the cached policy is in effect
 * Until a fetch succeeds, the values withheld at startup stay withheld
 
 Claude Code withholds several categories of variables in the cached `env` block until the server confirms the payload for the session. This keeps a cached proxy, certificate authority, endpoint, or credential value from redirecting, intercepting, or re-authenticating the settings fetch that confirms the payload. The hardening applies only to the server-fetched settings cache: [endpoint-managed settings](/docs/en/managed-settings#delivery-mechanisms) deployed through MDM or `managed-settings.json` are unaffected. The withheld categories include:
@@ -93590,7 +93805,7 @@ Every key below links to its entry. Scope lists the [files](/docs/en/settings#se
 | [`autoCompactWindow`](#autocompactwindow) | Set how full the context gets before Claude Code [compacts](/docs/en/context-window) | Memory and context | Any file |
 | [`autoConnectIde`](#autoconnectide) | Connect to a running [VS Code](/docs/en/vs-code) or [JetBrains](/docs/en/jetbrains#from-external-terminals) IDE automatically from an external terminal | Global config settings | Global config |
 | [`autoContinueAtUsageLimit`](#autocontinueatusagelimit) | Wait in the open session and [continue the task automatically](/docs/en/interactive-mode#wait-for-a-usage-limit-to-reset) after a claude.ai usage limit resets | Interface and terminal | User or managed |
-| [`autoInstallIdeExtension`](#autoinstallideextension) | Turn off automatic install of the [IDE extension](/docs/en/vs-code#install-the-extension) from a VS Code terminal | Global config settings | Global config |
+| [`autoInstallIdeExtension`](#autoinstallideextension) | Let `/ide` install the [IDE extension](/docs/en/vs-code#install-the-extension) from an external terminal | Global config settings | Global config |
 | [`autoMemoryDirectory`](#automemorydirectory) | Store [auto memory](/docs/en/memory#auto-memory) in a directory you choose | Memory and context | Any file |
 | [`autoMemoryEnabled`](#automemoryenabled) | Turn [auto memory](/docs/en/memory#auto-memory) off or on | Memory and context | Any file |
 | [`autoMode`](#automode) | Add your own allow and deny rules to the [auto mode](/docs/en/permission-modes#eliminate-prompts-with-auto-mode) classifier | Permission settings | User or managed |
@@ -94817,7 +95032,7 @@ On Linux and WSL2 the sandbox needs `bubblewrap` and `socat`; see [Set up Linux 
 
 ### `sandbox.failIfUnavailable`
 
-Make Claude Code exit with an error at startup when `sandbox.enabled` is `true` but the sandbox can't start, because a dependency is missing or the platform is unsupported. Without this key, Claude Code runs commands unsandboxed. Managed deployments that require sandboxing as a security gate can use this setting.
+Make Claude Code exit with an error at startup when `sandbox.enabled` is `true` but the sandbox can't start because the platform doesn't support it or the dependency check fails. Without this key, Claude Code runs commands unsandboxed. Managed deployments that require sandboxing as a security gate can use this setting.
 
 On a platform the sandbox doesn't support, Claude Code doesn't start with this key on. See [Enforce sandboxing with managed settings](/docs/en/sandboxing#enforce-sandboxing-with-managed-settings).
 
@@ -98637,10 +98852,12 @@ If you set [`managedSourcesBehavior`](#managedsourcesbehavior) to `"merge"` in y
 
 ### `sshHostCommands`
 
-Add SSH connections whose host comes from a command to the [Desktop](/docs/en/desktop#create-an-ssh-connection-from-a-command) environment selector. When you create a connection or replace its host, Desktop runs the entry's command on your computer and connects to the host that the command prints. Requires Claude Desktop v3.6556.0 or later on macOS or Linux, signed in with a Claude account.
+Add SSH connections whose host comes from a command to the [Desktop](/docs/en/desktop#create-an-ssh-connection-from-a-command) environment selector. When you create a connection or create another machine for it, Desktop runs the entry's command on your computer and connects to the host that the command prints.
+
+Requires Claude Desktop v3.6556.0 or later on macOS or Linux, or v4.16336.0 or later on Windows, signed in with a Claude account. On Windows, Desktop also has to [connect through the OpenSSH client](/docs/en/desktop#use-your-ssh-configuration).
 
 * **Scope**: [`User or managed`](#scopes). Only the desktop app reads this key. It reads managed entries from [one managed settings file or MDM policy](/docs/en/desktop#distribute-commands-to-your-team) on the computer, and ignores the key in [server-managed settings](/docs/en/server-managed-settings).
-* **Type**: array of objects, each with required `id`, `name`, and `command` and optional `sshIdentityFile` and `startDirectory`. Desktop starts `command` without a shell, so [write it as a program and plain arguments](/docs/en/desktop#write-the-command).
+* **Type**: array of objects, each with required `id`, `name`, and `command` and optional `sshIdentityFile` and `startDirectory`. Desktop doesn't read `command` as shell syntax, so pipes and variables don't work: [write it as a program and its arguments](/docs/en/desktop#write-the-command).
 * **Default**: unset
 
 This example adds one connection named `Dev box`, where `acme-dev create` stands for your own tool:
@@ -98656,6 +98873,8 @@ This example adds one connection named `Dev box`, where `acme-dev create` stands
   ]
 }
 ```
+
+On Windows, a bare name such as `acme-dev` doesn't work, so [start the command with the program's full path](/docs/en/desktop#write-the-command-on-windows).
 
 Before Claude Code v2.1.307, the Edit tool refused a change that added this key to a valid settings file, with the error `Unrecognized field: sshHostCommands`. On those versions, add the key in a text editor instead; Claude Code loads a file that holds the key. In Desktop, the version that counts is the [Code tab's Claude Code version](/docs/en/desktop#claude-code-version-in-the-code-tab), not your terminal's.
 
@@ -99373,12 +99592,12 @@ Claude Code ignores this key in `settings.json`.
 
 ### `autoInstallIdeExtension`
 
-Install the Claude Code IDE extension automatically when you run Claude Code from a VS Code terminal. Appears in `/config` as **Auto-install IDE extension** when you run Claude Code inside a VS Code or JetBrains terminal.
+Let [`/ide`](/docs/en/commands) install the Claude Code IDE extension in a running VS Code, Cursor, or Devin Desktop when you run the command from an external terminal. Claude Code doesn't install the extension when you start it. Appears in `/config` as **Auto-install IDE extension** when you run Claude Code inside a VS Code or JetBrains terminal.
 
 * **Scope**: [`Global config`](#scopes)
 * **Type**: Boolean
-  * `true`: Claude Code installs the IDE extension automatically when you run it from a VS Code terminal
-  * `false`: Claude Code doesn't install the extension automatically
+  * `true`: `/ide` installs the extension
+  * `false`: `/ide` doesn't install the extension
 * **Default**: `true`
 * **Per-session overrides**: [`CLAUDE_CODE_IDE_SKIP_AUTO_INSTALL`](/docs/en/env-vars) set to `1` skips the install for one session even when this key is `true`
 

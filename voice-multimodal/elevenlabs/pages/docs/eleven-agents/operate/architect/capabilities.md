@@ -58,15 +58,16 @@ Every action also runs as you: Architect can only do what your own role allows. 
 
 A test Architect creates exists in the workspace straight away, but it only joins the agent's test suite when you publish the draft that attaches it. Architect can still run it before you publish.
 
-## Conversations, insights, and triage
+## Conversations, insights, and issues
 
-| Area                                                 | Reads                                                                                                                       | Changes                                | Asks first |
-| ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- | ---------- |
-| Conversations and transcripts                        | List, count, filter, literal and semantic search, summaries, full detail, and in-depth analysis of individual conversations | Cannot change                          | —          |
-| Spotlight, topics, and insight reports               | Yes, including the values shown on dashboard charts                                                                         | Can set dashboard filters on screen    | No         |
-| Real-time alerts                                     | Yes                                                                                                                         | Cannot change                          | —          |
-| [Triage tickets](/docs/eleven-agents/operate/triage) | Yes                                                                                                                         | Comment                                | No         |
-|                                                      |                                                                                                                             | Change status, for example to resolved | Yes        |
+| Area                                         | Reads                                                                                                                       | Changes                                | Asks first |
+| -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- | ---------- |
+| Conversations and transcripts                | List, count, filter, literal and semantic search, summaries, full detail, and in-depth analysis of individual conversations | Cannot change                          | —          |
+| Spotlight, topics, and insight reports       | Yes, including the values shown on dashboard charts                                                                         | Can set dashboard filters on screen    | No         |
+| Real-time alerts                             | Yes                                                                                                                         | Cannot change                          | —          |
+| [Issues](/docs/eleven-agents/operate/triage) | Yes                                                                                                                         | Comment                                | No         |
+|                                              |                                                                                                                             | Create                                 | Yes        |
+|                                              |                                                                                                                             | Change status, for example to resolved | Yes        |
 
 ## Branches, proposals, and deployment
 

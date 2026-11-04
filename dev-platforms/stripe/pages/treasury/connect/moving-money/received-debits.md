@@ -66,7 +66,7 @@ The response includes information about the initiating party. If the third party
 }
 ```
 
-Any subsequent debits from the third party authorized by the mandate automatically generate a `ReceivedDebit` with `scheduled` status. The `settles_at` field indicates when Stripe expects the debit to arrive. Once the debit arrives, it will transition to either `succeeded` or `failed`.
+Any subsequent debits from the third party authorized by the mandate automatically generate a `ReceivedDebit` with `scheduled` status. The `settles_at` field indicates when Stripe expects the debit to arrive. After the debit arrives, it transitions to either `succeeded` or `failed`.
 
 ### Cancel a mandate
 

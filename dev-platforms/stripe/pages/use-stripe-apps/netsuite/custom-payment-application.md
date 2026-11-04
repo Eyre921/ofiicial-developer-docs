@@ -36,7 +36,7 @@ You can choose to override the default sync timing by programmatically controlli
 
 #### Add records to a denylist
 
-You can add metadata to temporarily stop the connector from syncing a record to NetSuite. This is helpful if your backend integration with Stripe requires adding data to a record before syncing to NetSuite.
+You can add metadata to temporarily stop the connector from syncing a record to NetSuite. This is helpful if your back-end integration with Stripe requires adding data to a record before syncing to NetSuite.
 
 Use a denylist to control the timing of a customer sync to NetSuite:
 

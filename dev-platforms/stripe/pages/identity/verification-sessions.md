@@ -33,11 +33,11 @@ The benefit of reusing the VerificationSession is that the object helps track an
 
 We recommend that you provide an [idempotency key](https://docs.stripe.com/api/idempotent_requests.md) when creating the VerificationSession to avoid erroneously creating duplicate VerificationSessions for the same person. This key is typically based on the ID that you associate with the verification in your application, like a user reference.
 
-## Passing the client secret to the frontend 
+## Passing the client secret to the front end 
 
 The VerificationSession contains a [client secret](https://docs.stripe.com/api/identity/verification_sessions/object.md#identity_verification_session_object-client_secret), a key that’s unique to the individual VerificationSession. The front end uses the client secret to complete the verification.
 
-To use the client secret, you must obtain it from the VerificationSession on your server and pass it to the frontend. You can retrieve the client secret from an endpoint on your server using the browser’s `fetch` function on the client. This approach is generally most suitable when the client is a single-page application, especially one built with a modern frontend framework such as React.
+To use the client secret, you must obtain it from the VerificationSession on your server and pass it to the front end. You can retrieve the client secret from an endpoint on your server using the browser’s `fetch` function on the client. This approach is generally most suitable when the client is a single-page application, especially one built with a modern front-end framework such as React.
 
 This example shows how to create the server endpoint that serves the client secret:
 
@@ -83,7 +83,7 @@ This example demonstrates how to fetch the client secret with JavaScript on the 
 
 Submitting and processing a VerificationSession updates the session `status` and creates a [VerificationReport](https://docs.stripe.com/api/identity/verification_reports/object.md) object. This normally happens within a few minutes.
 
-Once all of the verification checks have passed, the status changes to `verified`. You can [expand](https://docs.stripe.com/api/expanding_objects.md) the [verified_outputs](https://docs.stripe.com/api/identity/verification_sessions/object.md#identity_verification_session_object-verified_outputs) field to see the verified data.
+After all of the verification checks have passed, the status changes to `verified`. You can [expand](https://docs.stripe.com/api/expanding_objects.md) the [verified_outputs](https://docs.stripe.com/api/identity/verification_sessions/object.md#identity_verification_session_object-verified_outputs) field to see the verified data.
 
 ```json
 {

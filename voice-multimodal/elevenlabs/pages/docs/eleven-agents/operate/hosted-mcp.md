@@ -105,7 +105,7 @@ Once connected, your assistant can:
 * Manage procedures, tools, MCP servers, and knowledge base documents
 * Create, run, and review tests
 * Work with branches, drafts, traffic deployments, and merge proposals
-* Read and update triage tickets
+* Read and update issues
 * Duplicate and delete agents
 * Estimate an agent's expected LLM usage and cost before making changes
 * Retrieve an agent's widget configuration and shareable link

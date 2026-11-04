@@ -97,7 +97,7 @@ If you use a router, refer to your router’s manual and reconfigure the network
 
 Stripe maintains the software that controls the Stripe Reader S700/S710. The reader receives updates automatically from Stripe when not in use. These can include improvements and required security updates from Stripe and our hardware partners. As reader software updates are made available, update your readers to the latest available version to continue using Stripe Terminal. Failing to install a required update can prevent a reader from accepting payments.
 
-The reader restarts every day at midnight for PCI compliance, and disconnects from the POS app every morning. Leave your reader on and connected to power to receive automatic software updates. This ensures that updates happen at midnight (in the timezone of the [assigned location](https://docs.stripe.com/terminal/fleet/locations-and-zones.md)) to avoid interruption to sales. If you unplug the reader at night, an update could start when you turn it back on. To manually check for an update, reboot the reader.
+The reader restarts every day at midnight for PCI compliance, and disconnects from the POS app every morning. Leave your reader on and connected to power to receive automatic software updates. This ensures that updates happen at midnight (in the time zone of the [assigned location](https://docs.stripe.com/terminal/fleet/locations-and-zones.md)) to avoid interruption to sales. If you unplug the reader at night, an update could start when you turn it back on. To manually check for an update, reboot the reader.
 
 ### Reader software version 
 
@@ -208,7 +208,7 @@ The Stripe Reader S700/S710 software consists of four components: the reader app
 #### 2025-03-12 (version 2.29.6.0)
 
 - Updated the reader to return a success (instead of an error) when an on-reader form operation is initiated while the reader displays “Remove card.”
-- Fixed a bug to ensure offline mode correctly handles SDI requests.
+- Fixed a bug to make sure offline mode correctly handles SDI requests.
 - Added a “Try again” button on the reader UI when the “Failed to launch reader” error displays.
 - Added sounds to indicate correct and incorrect PIN entry.
 - Fixed a bug that might cause some offline mode transactions to fail.

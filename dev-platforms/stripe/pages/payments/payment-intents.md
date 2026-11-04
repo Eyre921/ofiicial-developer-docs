@@ -58,7 +58,7 @@ The PaymentIntent includes a *client secret* (The client secret is a unique key 
 
 #### Single-page application
 
-Retrieve the client secret from an endpoint on your server, using the browser’s `fetch` function. This approach is best if your client side is a single-page application, particularly one built with a modern frontend framework like React. Create the server endpoint that serves the client secret:
+Retrieve the client secret from an endpoint on your server, using the browser’s `fetch` function. This approach is best if your client side is a single-page application, particularly one built with a modern front-end framework like React. Create the server endpoint that serves the client secret:
 
 #### Ruby
 

@@ -42,7 +42,7 @@ Migrating your customer and payments data to Stripe is a multi-step process. Aft
 
 ## Migrate and update 
 
-- Follow communication between Stripe and your previous processor to ensure your team is prepared.
+- Follow communication between Stripe and your previous processor to make sure your team is prepared.
 - Respond to any issues identified during migration.
 - Look for an email from the Stripe Migration team with the JSON mapping file.
 - Parse JSON mapping file and update your database accordingly.

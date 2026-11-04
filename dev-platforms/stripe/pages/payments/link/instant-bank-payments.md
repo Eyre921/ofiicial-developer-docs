@@ -140,7 +140,7 @@ Some businesses and transactions aren’t eligible for Instant Bank Payments. In
 
 ### Stripe-funded incentives
 
-Stripe may choose to offer consumer incentives, including cash back offers and promotional credits to drive adoption of Instant Bank Payments. These promotions are available to qualifying customers at checkout. You can configure whether to show cash back offers in your [Link settings](https://dashboard.stripe.com/settings/link).
+Stripe might choose to offer consumer incentives, including cash back offers and promotional credits to drive adoption of Instant Bank Payments. These promotions are available to qualifying customers at checkout. You can configure whether to show cash back offers in your [Link settings](https://dashboard.stripe.com/settings/link).
 
 When a promotion is available, the customer sees a badge on the eligible payment method during checkout. Stripe charges the full purchase amount, then deposits the promotional amount back to the customer’s bank account as a separate transaction within seven business days.
 

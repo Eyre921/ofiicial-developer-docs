@@ -383,7 +383,7 @@ When you [create an event destination](https://docs.stripe.com/webhooks.md#creat
 
 Register an event destination for **Connected accounts** to receive events for resources that belong to your connected accounts. Examples include [direct charges](https://docs.stripe.com/connect/direct-charges.md), Customers and payment methods of connected accounts, payout failures, and legacy snapshot connected-account lifecycle updates, such as onboarding, verification, external-account changes, and account disconnections. For Accounts v2, this scope only receives snapshot events for Account objects representing your connected accounts.
 
-Depending on your Connect integration, you may also need to register an event destination for **Your account**. Reasons include:
+Depending on your Connect integration, you might also need to register an event destination for **Your account**. Reasons include:
 
 - Processing events for resources in your platform account, including platform Customers, platform-owned charges, [destination charges](https://docs.stripe.com/connect/destination-charges.md), and [separate charges and transfers](https://docs.stripe.com/connect/separate-charges-and-transfers.md).
 - Processing thin events related to Accounts v2 objects representing connected accounts.

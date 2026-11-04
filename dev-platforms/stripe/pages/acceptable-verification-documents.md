@@ -18,7 +18,7 @@ See the following list of documents that Stripe accepts as proof of identity, ad
   - Screenshots aren’t acceptable
 - When the back side of a document contains required information, and you submit it using the API, include an image of the back side using the `document_back` parameter
 - Photos and scans of the Photo IDs must be in color
-- Photos of paper documents must be in color, but scans of paper documents (not Photo IDs) may be black and white
+- Photos of paper documents must be in color, but scans of paper documents (not Photo IDs) can be black and white
 - Images must not be low-quality
 - Identity and legal entity documents must not be expired
 - Documents must be readable and in a valid upload file format

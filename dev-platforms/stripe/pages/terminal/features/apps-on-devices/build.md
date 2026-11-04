@@ -92,7 +92,7 @@ class MyApplication : Application() {
 
 In your [app manifest](https://developer.android.com/guide/topics/manifest/manifest-intro), specify the name of your `Application` subclass with the `android:name` attribute.
 
-> To ensure your `Application` supports devices running Android 15, set the `targetSdkVersion` to `24` or later.
+> To make sure your `Application` supports devices running Android 15, set the `targetSdkVersion` to `24` or later.
 
 ```xml
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">

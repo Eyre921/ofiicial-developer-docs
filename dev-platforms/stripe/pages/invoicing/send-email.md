@@ -121,7 +121,7 @@ You can provide additional recipients to your customer’s Billing emails (inclu
 > The Stripe API doesn’t currently support adding recipients to Billing emails.
 
 1. Go to the [Customers page](https://dashboard.stripe.com/test/customers) in your Dashboard.
-2. Click the customer you want to add email recipients for to open the customer’s detail page.
+2. Click the customer you want to add email recipients for to open the customer’s details page.
 3. Click the **Edit** link in the **Details** section of the left pane to open the **Update customer** dialog. ![Details section with Edit link highlighted.](https://b.stripecdn.com/docs-statics-srv/assets/edit-emails.18a5f678dc05901c6d1e5ade713afdc1.png)
 4. In the **Billing information** section of the **Update customer** dialog, unselect the **Same as account email** checkbox. ![Billing section with same as account checkbox unselected.](https://b.stripecdn.com/docs-statics-srv/assets/additional-emails.df018f8ddec164bb58653a0ede84d1a8.png)
 5. (Optional) Set the value of the displayed field to a comma-separated list of emails that should be in the “To” line of Billing emails. If you leave this field blank, Stripe continues to use the account email.

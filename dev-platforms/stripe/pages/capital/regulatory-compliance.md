@@ -14,7 +14,7 @@ Marketing Capital to your users is subject to regulatory compliance that can res
 
 ## Compliance checklist 
 
-Ensure you’ve completed the following checklist prior to launching your program:
+Make sure you’ve completed the following checklist prior to launching your program:
 
 - [ ] Read the requirements for managing complaints
 - [ ] Create a mandatory recordkeeping process

@@ -34,7 +34,7 @@ You must follow these rules:
 - Ask for a field *only* after all of its prerequisite fields are satisfied.
 - Collect setup fields progressively as the flow advances.
 - Ask for one field at a time, or one group of fields only when they’re dependency-free at that point in the flow.
-  - For example, ask for `platformCountry` and `accountCountry` separately: the platform country determines which account countries are valid, so asking both together can produce invalid combinations. But you may ask for `dashboardType`, `tosType`, and `legalEntityType` together in one group because their valid options are already known from the same response.
+  - For example, ask for `platformCountry` and `accountCountry` separately: the platform country determines which account countries are valid, so asking both together can produce invalid combinations. But you can ask for `dashboardType`, `tosType`, and `legalEntityType` together in one group because their valid options are already known from the same response.
 - If there is ever a conflict between the user’s request and the validated setup, inform the user of the conflict and ask them to revise their setup choices using the [Interaction contract](https://docs.stripe.com/connect/required-verification-information.md#interaction-contract). Keep the validated setup aligned with what the user requested without silently dropping the conflict.
 - Follow the [Interaction contract](https://docs.stripe.com/connect/required-verification-information.md#interaction-contract) for every user question.
 - When the number of available options exceeds four, *always* print the full validated reference list before asking the multiple-choice question so the user can see the full option space.
@@ -122,7 +122,7 @@ Use this algorithm whenever you build or validate the capability list:
 
 1. Start from `country_map[accountCountry].capabilities`.
 2. Apply `tosType` rules:
-   - if `tosType=recipient`, force `transfers` and remove all other capabilities except `crypto_transfers`, which may be available in rare cases
+   - if `tosType=recipient`, force `transfers` and remove all other capabilities except `crypto_transfers`, which might be available in rare cases
    - if `apiVersion=v1` and `crypto_transfers` is selected, also include `transfers`
 3. If `apiVersion=v2`, drop any capability not present in `get-v2-supported-v1-capabilities`.
 4. Show the user the filtered capability list. When the user explicitly asks about a filtered-out capability, clearly explain that the asked-for capability is unavailable for the current setup.
@@ -259,7 +259,7 @@ Use `get-requirement-selections-for-platform-country` to validate the setup befo
 - `country_map[ACCOUNT_COUNTRY].tos_types` constrains `tosType`
 - `country_map[ACCOUNT_COUNTRY].entity_type_structures` constrains `legalEntityType` and optional `businessStructure`
 - `country_map[ACCOUNT_COUNTRY].capabilities` constrains capability choices
-- `country_map[ACCOUNT_COUNTRY].programs` lists the only public ORR programs you may pass as `orrProgram`
+- `country_map[ACCOUNT_COUNTRY].programs` lists the only public ORR programs you can pass as `orrProgram`
 - `external_country_map` should be ignored
 
 Apply these dependency rules before making the final request:

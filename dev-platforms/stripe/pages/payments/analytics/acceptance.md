@@ -22,7 +22,7 @@ The **Acceptance** page includes data for attempted and authorized payments, inc
 
 ## Configure your data set
 
-You can apply the filters to all metrics, reports, and tables on the **Acceptance** page. Stripe processes your data daily starting at 12:00 PM UTC and ending at 11:59 PM UTC. All data shown is in the UTC time zone.
+You can apply the filters to all metrics, reports, and tables on the **Acceptance** page. Stripe processes your data daily starting at 12:00 pm UTC and ending at 11:59 pm UTC. All data shown is in the UTC time zone.
 ![Filters for acceptance analytics](https://b.stripecdn.com/docs-statics-srv/assets/acceptance-filters.8222209d773b075bd4473e39155d0aca.png)
 
 Filters on the Acceptance page
@@ -146,7 +146,7 @@ To specify the currency, click **More filters** > **Currency**, and select your 
 
 ## Transaction detail page 
 
-You can view the underlying transaction data that populates the charts in each report. To access this detailed view, click the expander ↗ at the top of any report. This opens the transaction detail page.
+You can view the underlying transaction data that populates the charts in each report. To access this detailed view, click the expander ↗ at the top of any report. This opens the transaction details page.
 
 You can **Download** :download: the acceptance data that’s generated for your report. This data includes all payments that match the filters you selected.
 

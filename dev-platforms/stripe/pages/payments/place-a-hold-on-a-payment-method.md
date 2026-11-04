@@ -54,7 +54,7 @@ Before implementing, understand the following limitations for authorizing and ca
 
 - Beyond what’s outlined in the tables above, other payment methods have different rules and authorization windows:
 
-  - Card payments: The amount is typically on hold for 7 days for online payments and 2 days for in-person Terminal payments (depending on the type of transaction and the card network). You can request an extended authorization for certain [online](https://docs.stripe.com/payments/extended-authorization.md) and [Terminal payment authorizations](https://docs.stripe.com/terminal/features/extended-authorizations.md) that are eligible for extended validity periods. Card networks may also restrict 1 USD authorizations you don’t intend to capture.
+  - Card payments: The amount is typically on hold for 7 days for online payments and 2 days for in-person Terminal payments (depending on the type of transaction and the card network). You can request an extended authorization for certain [online](https://docs.stripe.com/payments/extended-authorization.md) and [Terminal payment authorizations](https://docs.stripe.com/terminal/features/extended-authorizations.md) that are eligible for extended validity periods. Card networks might also restrict 1 USD authorizations you don’t intend to capture.
   - [Affirm](https://docs.stripe.com/payments/affirm/accept-a-payment.md?payment-ui=direct-api#manual-capture): If Affirm requires a down payment for very large order amounts, they charge the amount during authorization and refund if the payment isn’t captured. You then have 30 days to capture the payment balance.
   - [Afterpay / Clearpay](https://docs.stripe.com/payments/afterpay-clearpay/accept-a-payment.md?web-or-mobile=web&payment-ui=direct-api#manual-capture): During authorization, the customer pays the first repayment installment. Afterpay refunds the payment if it’s never captured. You then have 13 days to capture the payment balance.
   - [Cash App Pay](https://docs.stripe.com/payments/cash-app-pay/accept-a-payment.md?web-or-mobile=web&payment-ui=direct-api#manual-capture): Valid authorizations must be captured within 7 days to complete a payment.
@@ -162,7 +162,7 @@ If you need to cancel an authorization, you can [cancel the PaymentIntent](https
 
 ## Capture payment before authorization expires (Private preview)
 
-You can instruct Stripe to automatically capture before authorization expires instead of manually triggering capture for card payment methods. Use automatic delayed capture to ensure you don’t miss capturing authorized payments. You can also control when the capture occurs using the `capture_by` parameter.
+You can instruct Stripe to automatically capture before authorization expires instead of manually triggering capture for card payment methods. Use automatic delayed capture to make sure you don’t miss capturing authorized payments. You can also control when the capture occurs using the `capture_by` parameter.
 
 To enable automatic delayed capture, set [capture_method](https://docs.stripe.com/api/payment_intents/create.md#create_payment_intent-payment_method_options-card) as `automatic_delayed` on the PaymentIntent:
 

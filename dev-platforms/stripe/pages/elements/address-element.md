@@ -45,7 +45,7 @@ const stripe = Stripe('<<YOUR_PUBLISHABLE_KEY>>');
 
 const appearance = { /* appearance */ };
 const options = { mode: 'shipping' };
-const elements = stripe.elements({ clientSecret, appearance }); // In a working integration, this is a value your backend passes with details such as the amount of a payment. See full sample for details.
+const elements = stripe.elements({ clientSecret, appearance }); // In a working integration, this is a value your back end passes with details such as the amount of a payment. See full sample for details.
 const addressElement = elements.create('address', options);
 addressElement.mount('#address-element');
 ```
@@ -59,7 +59,7 @@ const stripe = Stripe('<<YOUR_PUBLISHABLE_KEY>>');
 
 const appearance = { /* appearance */ };
 const options = { mode: 'billing' };
-const elements = stripe.elements({ clientSecret, appearance }); // In a working integration, this is a value your backend passes with details such as the amount of a payment. See full sample for details.
+const elements = stripe.elements({ clientSecret, appearance }); // In a working integration, this is a value your back end passes with details such as the amount of a payment. See full sample for details.
 const addressElement = elements.create('address', options);
 addressElement.mount('#address-element');
 ```
@@ -95,7 +95,7 @@ const stripe = Stripe('<<YOUR_PUBLISHABLE_KEY>>');
 const appearance = { /* appearance */ };
 const options = { mode: 'shipping' };
 const paymentElementOptions = { layout: 'accordion'};
-const elements = stripe.elements({ clientSecret }); // In a working integration, this is a value your backend passes with details such as the amount of a payment. See full sample for details.
+const elements = stripe.elements({ clientSecret }); // In a working integration, this is a value your back end passes with details such as the amount of a payment. See full sample for details.
 const addressElement = elements.create('address', options);
 const paymentElement = elements.create('payment', paymentElementOptions);
 addressElement.mount('#address-element');
@@ -114,7 +114,7 @@ const stripe = Stripe('<<YOUR_PUBLISHABLE_KEY>>');
 const appearance = { /* appearance */ };
 const options = { mode: 'billing' };
 const paymentElementOptions = { layout: 'accordion'};
-const elements = stripe.elements({ clientSecret }); // In a working integration, this is a value your backend passes with details such as the amount of a payment. See full sample for details.
+const elements = stripe.elements({ clientSecret }); // In a working integration, this is a value your back end passes with details such as the amount of a payment. See full sample for details.
 const addressElement = elements.create('address', options);
 const paymentElement = elements.create('payment', paymentElementOptions);
 addressElement.mount('#address-element');
@@ -177,7 +177,7 @@ const stripe = Stripe('<<YOUR_PUBLISHABLE_KEY>>');
 const appearance = { /* appearance */ };
 const options = { mode: 'shipping' };
 const paymentElementOptions = { layout: 'accordion'};
-const elements = stripe.elements({ clientSecret }); // In a working integration, this is a value your backend passes with details such as the amount of a payment. See full sample for details.
+const elements = stripe.elements({ clientSecret }); // In a working integration, this is a value your back end passes with details such as the amount of a payment. See full sample for details.
 const linkAuthElement = elements.create('linkAuthentication');
 const addressElement = elements.create('address', options);
 const paymentElement = elements.create('payment', paymentElementOptions);
@@ -201,7 +201,7 @@ const appearance = {
   variables: { colorPrimaryText: '#262626' }
 };
 const options = { /* options */ };
-const elements = stripe.elements({ clientSecret, appearance }); // In a working integration, this is a value your backend passes with details such as the amount of a payment. See full sample for details.
+const elements = stripe.elements({ clientSecret, appearance }); // In a working integration, this is a value your back end passes with details such as the amount of a payment. See full sample for details.
 const addressElement = elements.create('address', options);
 addressElement.mount('#address-element');
 ```

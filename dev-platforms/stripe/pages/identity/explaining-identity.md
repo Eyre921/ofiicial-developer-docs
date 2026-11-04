@@ -65,7 +65,7 @@ We recommend adding these best practices before a user starts the verification p
 
 ### Who has access to my verification data?
 
-Both PLATFORM and Stripe have access to the information that you submit through the verification flow. Stripe may also share your information with trusted third-party verification providers to confirm your identity, in accordance with Stripe’s [Privacy Policy](https://stripe.com/privacy). We rely on Stripe to help store your verification data. Stripe uses access controls and security standards that are at least as stringent as those used to handle their own KYC and payments compliance data.
+Both PLATFORM and Stripe have access to the information that you submit through the verification flow. Stripe might also share your information with trusted third-party verification providers to confirm your identity, in accordance with the Stripe [Privacy Policy](https://stripe.com/privacy). We rely on Stripe to help store your verification data. Stripe uses access controls and security standards that are at least as stringent as those used to handle their own KYC and payments compliance data.
 
 Learn more about how Stripe [handles and stores your data](https://support.stripe.com/questions/common-questions-about-stripe-identity).
 

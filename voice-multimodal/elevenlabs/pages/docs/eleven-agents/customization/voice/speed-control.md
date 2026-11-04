@@ -16,6 +16,11 @@ The speed control feature allows you to adjust how quickly or slowly your agent 
 * Matching specific use cases (e.g., slower for educational content)
 * Optimizing for different types of conversations
 
+> **Warning**
+>
+> Speed control is not available for Eleven v3, Eleven v4, or Eleven v4 Turbo models. Use Eleven
+> Flash v2 or Eleven Flash v2.5 if you need speed control.
+
 ## Configuration
 
 Speed is controlled through the [`speed` parameter](/docs/api-reference/agents/create#request.body.conversation_config.tts.speed) with the following specifications:

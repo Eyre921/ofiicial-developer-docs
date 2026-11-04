@@ -110,7 +110,7 @@ Below is a demonstration of the Klarna payment flow from your checkout page:
 
 To get started with Klarna:
 
-1. Read the [Klarna rules](https://docs.stripe.com/payments/klarna/compliance.md) to ensure your business is eligible to accept Klarna payments. For example, Klarna doesn’t support B2B payments.
+1. Read the [Klarna rules](https://docs.stripe.com/payments/klarna/compliance.md) to make sure your business is eligible to accept Klarna payments. For example, Klarna doesn’t support B2B payments.
 
 2. Refer to [payment options](https://docs.stripe.com/payments/klarna.md#payment-options) to understand what payment options are available to your customers.
 

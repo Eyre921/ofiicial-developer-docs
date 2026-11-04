@@ -48,7 +48,7 @@ flowchart LR
     Propose ~~~ Observe
 ```
 
-1. **Investigate.** Read real conversations, Spotlight insights, alerts, triage tickets, and failing tests to find what is going wrong and why.
+1. **Investigate.** Read real conversations, Spotlight insights, alerts, issues, and failing tests to find what is going wrong and why.
 2. **Change.** Edit the prompt, a procedure, a tool, the knowledge base, or guardrails. Agent configuration changes are staged as an unpublished draft, never applied to live callers directly.
 3. **Validate.** Write tests and simulations for the change and run them inside the same conversation, before you are asked to ship anything.
 4. **Propose.** Hand the change to you for review: you publish the draft, and Architect can open a [merge proposal](/docs/eleven-agents/operate/architect/proposals) for a teammate to approve and suggest a small traffic split to try it on live calls.
@@ -89,7 +89,7 @@ See [Limitations and FAQ](/docs/eleven-agents/operate/architect/faq) for what Ar
 > Architect conversations are not covered by Zero Retention Mode (ZRM). Avoid sharing personal or
 > sensitive information in messages to Architect.
 
-Your Architect chats are private to you. Teammates cannot open them, even when a chat was started from a shared triage ticket. For details on what ZRM does cover, see [Zero Retention Mode](/docs/eleven-agents/customization/privacy/zrm).
+Your Architect chats are private to you. Teammates cannot open them, even when a chat was started from a shared issue. For details on what ZRM does cover, see [Zero Retention Mode](/docs/eleven-agents/customization/privacy/zrm).
 
 ## Learn more
 

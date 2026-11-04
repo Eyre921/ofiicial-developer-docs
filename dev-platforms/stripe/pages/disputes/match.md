@@ -29,12 +29,12 @@ Acquirers categorize MATCH listings using 11 standard reason codes based on rule
 | 1 | Account Data Compromise | An occurrence that results in the unauthorized access to or disclosure of account data. |
 | 2 | Common Point of Purchase | Account data is stolen at the merchant and then used for fraudulent purchases at other merchant locations. |
 | 3 | Laundering | The merchant was engaged in laundering activity. Laundering means that a merchant presented  transaction records to its acquirer that weren’t valid transactions for sales of goods or services between that merchant and an actual cardholder. |
-| 7 | Fraud Conviction | There was a criminal fraud conviction of a principal owner or partner of the merchant. |
+| 7 | Fraud Conviction | There was a criminal fraud conviction of a principal owner or partner of the business. |
 | 8 | Mastercard Questionable Merchant Audit Program | The merchant was determined to be a questionable merchant as per the criteria set forth in the Mastercard questionable merchant audit program. |
 | 9 | Bankruptcy/Liquidation/Insolvency | The merchant was unable or is likely to become unable to discharge its financial obligations. |
 | 10 | Violation of Standards | The merchant was in violation of one or more standards that describe procedures to be employed by the merchant in transactions that cards are used in, including, by way of example and not limitation, the standards for honoring all cards, displaying the marks, charges to cardholders, minimum and maximum transaction amount restrictions, and prohibited transactions set forth in chapter 5 of the Mastercard Rules manual. |
 | 11 | Merchant Collusion | The merchant participated in fraudulent collusive activity. |
-| 12 | PCIDSS Non-Compliance | The merchant failed to comply with Payment Card Industry (PCI) Data Security Standard (DSS) requirements. |
+| 12 | PCIDSS Non-Compliance | The business failed to comply with Payment Card Industry (PCI) Data Security Standard (DSS) requirements. |
 | 13 | Illegal Transactions | The merchant was engaged in illegal Transactions. |
 | 14 | Identity Theft | The acquirer has reason to believe that the identity of the listed merchant or its principal owners was unlawfully assumed for the purpose of unlawfully entering into a merchant Agreement. |
 
@@ -57,7 +57,7 @@ Furthermore, closing a processing account doesn’t prevent a listing. Acquirers
 
 #### Sample qualification scenario
 
-Consider a merchant that records 125 Mastercard transactions and 6 Mastercard chargebacks totaling 6,250 USD in a single calendar month. This activity represents a 4.8% dispute ratio. Because both thresholds are crossed, the ratio exceeds 1% and the total volume exceeds 5,000 USD, the business qualifies for a MATCH listing upon termination. Winning or reversing the chargebacks later doesn’t alter this status. Mastercard doesn’t require a minimum count of individual chargebacks to trigger an excessive chargeback listing.
+Consider a business that records 125 Mastercard transactions and 6 Mastercard chargebacks totaling 6,250 USD in a single calendar month. This activity represents a 4.8% dispute ratio. Because both thresholds are crossed, the ratio exceeds 1% and the total volume exceeds 5,000 USD, the business qualifies for a MATCH listing upon termination. Winning or reversing the chargebacks later doesn’t alter this status. Mastercard doesn’t require a minimum count of individual chargebacks to trigger an excessive chargeback listing.
 
 ### Information added to MATCH
 
@@ -142,5 +142,5 @@ Merchants who don’t know which acquiring bank placed them on the database migh
 
 ### Stripe VMSS processing limitations
 
-A VMSS listing generally disqualifies a merchant from processing with Stripe. Stripe can’t remove a merchant that met Visa’s excessive chargeback criteria, regardless of any subsequent dispute remediation.
+A VMSS listing generally disqualifies a business from processing with Stripe. Stripe can’t remove a merchant that met Visa’s excessive chargeback criteria, regardless of any subsequent dispute remediation.
 

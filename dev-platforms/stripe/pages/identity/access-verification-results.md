@@ -179,7 +179,7 @@ If you believe an attacker has accessed sensitive data collected by Identity, pl
 
 Using restricted API keys that only have Identity permissions allows you to roll the keys in case of emergency without affecting other Stripe product integrations.
 
-We recommend that you regularly monitor your restricted key usage to ensure that no one has gained access to them. In the [Dashboard](https://dashboard.stripe.com/apikeys), you can use the overflow menu (**…**) to view request logs for a specific API key to view all the requests made from that key.
+We recommend that you regularly monitor your restricted key usage to make sure that no one has gained access to them. In the [Dashboard](https://dashboard.stripe.com/apikeys), you can use the overflow menu (**…**) to view request logs for a specific API key to view all the requests made from that key.
 
 If an API key is compromised, roll the key in the [Dashboard](https://dashboard.stripe.com/apikeys) to block it and generate a new one. Make sure to expire it immediately to prevent bad actors from retrieving sensitive information.
 
@@ -189,7 +189,7 @@ If you believe an attacker has accessed sensitive data collected by Identity, pl
 
 ## Communicate your sensitive data use and security measures
 
-Make sure your privacy policy includes information on your use of sensitive verification results. It may also help if you provide information about your security practices.
+Make sure your privacy policy includes information on your use of sensitive verification results. It might also help if you provide information about your security practices.
 
 **See also**
 

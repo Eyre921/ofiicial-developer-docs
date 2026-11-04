@@ -38,7 +38,7 @@ Refer to the following table to see where each [payment method](https://docs.str
 | [Alipay](https://docs.stripe.com/payments/alipay.md) | AUD, CAD, CNY, EUR, GBP, HKD, JPY, MYR, NZD, SGD, USD | European Union, AU, CA, HK, JP, NZ, SG, US | Chinese consumers, overseas Chinese, and Chinese travelers |
 | [Alma](https://docs.stripe.com/payments/alma.md) | EUR | FR | FR |
 | [Amazon Pay](https://docs.stripe.com/payments/amazon-pay.md) | USD | AT, BE, CY, DK, FR, DE, HU, IE, IT, LU, NL, PT, ES, SE, CH, GB, US | Worldwide |
-| [Apple Pay](https://docs.stripe.com/apple-pay.md) | Most currencies | [Apple-supported locations](https://support.apple.com/en-us/HT204916) | [Apple-supported locations](https://support.apple.com/en-us/HT204916) |
+| [Apple Pay](https://docs.stripe.com/apple-pay.md) | Most currencies | [Apple-supported locations](https://support.apple.com/en-us/102775) | [Apple-supported locations](https://support.apple.com/en-us/102775) |
 | [Bacs Direct Debit](https://docs.stripe.com/payments/bacs-debit/accept-a-payment.md) | GBP | GB | GB |
 | [Bancontact](https://docs.stripe.com/payments/bancontact.md) | EUR | European Union, AU, HK, JP, MX, NZ, SG, US | BE |
 | [Bank transfers](https://docs.stripe.com/payments/bank-transfers.md) | EUR, GBP, JPY, MXN, USD | European Union, JP, MX, GB, US | European Union, JP, MX, GB, US |
@@ -214,7 +214,7 @@ To determine which payment methods each Stripe product supports, refer to the fo
 
 To learn about payment method API support, refer to the following tables.
 
-[Bank transfers](https://docs.stripe.com/payments/bank-transfers.md#connect) implemented through the `customer_balance` payment method type have limited support for the [on_behalf_of](https://docs.stripe.com/connect/charges.md#on_behalf_of) parameter on [Connect](https://docs.stripe.com/connect.md) charges, and that [PayPal](https://docs.stripe.com/payments/paypal.md#connect) doesn’t support `on_behalf_of`.
+[Bank transfers](https://docs.stripe.com/payments/bank-transfers.md#connect) implemented through the `customer_balance` payment method type have limited support for the [on_behalf_of](https://docs.stripe.com/connect/charges.md#on_behalf_of) parameter on [Connect](https://docs.stripe.com/connect.md) charges. [PayPal](https://docs.stripe.com/payments/paypal.md#connect) doesn’t support `on_behalf_of`.
 
 The following payment methods support `on_behalf_of` in private preview:
 

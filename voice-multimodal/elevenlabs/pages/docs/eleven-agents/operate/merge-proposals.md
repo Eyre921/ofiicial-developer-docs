@@ -134,7 +134,7 @@ Branches, versions, and direct merging.
 
 The assistant built into ElevenAgents for iterating on an agent.
 
-#### [Triage](/docs/eleven-agents/operate/triage)
+#### [Issues](/docs/eleven-agents/operate/triage)
 
 Review conversation issues flagged for follow-up.
 

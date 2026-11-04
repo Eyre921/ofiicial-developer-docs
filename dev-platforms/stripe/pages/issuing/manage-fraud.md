@@ -109,7 +109,7 @@ For every authorization that takes place, we compare the values provided during 
 - CVV2 (or security code)
 - Card expiration date
 - Billing address
-- Billing zip code
+- Billing postal code
 - PIN number (when entered)
 
 Identifying a mismatch between the card details on file and those entered at checkout might help you identify fraudulent activity. For example, a mismatch between the cardholder’s billing postal code and the one provided at checkout might indicate a stolen card that a fraudulent actor who doesn’t know the cardholder’s postal code tries make a purchase with. A mismatch between the CVV2 on file and the one entered at checkout might indicate a fraudulent actor who cycles through card numbers to find one that works, without knowing the associated CVV.

@@ -175,7 +175,7 @@ Some refunds—those issued shortly after the original charge—appear in the fo
 
 #### Dashboard
 
-To verify if a refund goes through as a reversal on the Dashboard:
+To verify if a refund goes through as a reversal in the Dashboard:
 
 1. Open the payment details page of the payment associated with the refund.
 2. In the Timeline, click **View Details** on the refund entry.

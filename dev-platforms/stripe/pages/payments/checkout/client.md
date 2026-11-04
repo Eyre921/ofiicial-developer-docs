@@ -193,7 +193,7 @@ Successful payments appear in the Dashboard’s [list of payments](https://dashb
 
 #### Webhooks
 
-[Set up webhooks](https://docs.stripe.com/webhooks.md) to programmatically handle post-payment events. The quickest way to develop and test webhooks locally is with the [Stripe CLI](https://docs.stripe.com/cli.md). Once you have it installed, you can forward events to your server:
+[Set up webhooks](https://docs.stripe.com/webhooks.md) to programmatically handle post-payment events. The quickest way to develop and test webhooks locally is with the [Stripe CLI](https://docs.stripe.com/cli.md). After you have it installed, you can forward events to your server:
 
 ```bash
 stripe listen --forward-to localhost:4242/webhook
@@ -367,7 +367,7 @@ In this example (for a 5 USD donation), your customized Checkout submit button w
 
 ## Optional: Prefill customer email [Client-side]
 
-You may already have collected information about your customer that you want to prefill in the Checkout page to avoid your customers needing to enter information twice. Currently, you can prefill the customer email on the Checkout page by providing `customerEmail` in the [redirectToCheckout](https://docs.stripe.com/js.md#stripe-redirect-to-checkout) call.
+You might already have collected information about your customer that you want to prefill in the Checkout page to avoid your customers needing to enter information twice. Currently, you can prefill the customer email on the Checkout page by providing `customerEmail` in the [redirectToCheckout](https://docs.stripe.com/js.md#stripe-redirect-to-checkout) call.
 
 ```javascript
 const {error} = await stripe.redirectToCheckout({

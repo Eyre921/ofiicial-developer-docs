@@ -1225,7 +1225,7 @@
 - `langsmith/smith-api/workspaces/update-tag-key` — [Update tag key](pages/langsmith/smith-api/workspaces/update-tag-key.md) · [原文](https://docs.langchain.com/langsmith/smith-api/workspaces/update-tag-key)
 - `langsmith/smith-api/workspaces/update-tag-value` — [Update tag value](pages/langsmith/smith-api/workspaces/update-tag-value.md) · [原文](https://docs.langchain.com/langsmith/smith-api/workspaces/update-tag-value)
 - `langsmith/smith-api/workspaces/upsert-current-workspace-secrets` — [Upsert current workspace secrets](pages/langsmith/smith-api/workspaces/upsert-current-workspace-secrets.md) · [原文](https://docs.langchain.com/langsmith/smith-api/workspaces/upsert-current-workspace-secrets)
-- `langsmith/smithdb-sdk-migration` — [Migrate to SmithDB-backed SDK methods](pages/langsmith/smithdb-sdk-migration.md) · [原文](https://docs.langchain.com/langsmith/smithdb-sdk-migration)
+- `langsmith/smithdb-sdk-migration` — [Migrate to SmithDB-backed APIs](pages/langsmith/smithdb-sdk-migration.md) · [原文](https://docs.langchain.com/langsmith/smithdb-sdk-migration)
 - `langsmith/smithdb-sdk-migration-experiments` — [Migrate dataset experiment runs to SmithDB](pages/langsmith/smithdb-sdk-migration-experiments.md) · [原文](https://docs.langchain.com/langsmith/smithdb-sdk-migration-experiments)
 - `langsmith/smithdb-sdk-migration-feedback` — [Migrate feedback and sharing methods to SmithDB](pages/langsmith/smithdb-sdk-migration-feedback.md) · [原文](https://docs.langchain.com/langsmith/smithdb-sdk-migration-feedback)
 - `langsmith/smithdb-sdk-migration-query-runs` — [Migrate run queries to SmithDB](pages/langsmith/smithdb-sdk-migration-query-runs.md) · [原文](https://docs.langchain.com/langsmith/smithdb-sdk-migration-query-runs)

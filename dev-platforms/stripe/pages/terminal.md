@@ -20,7 +20,7 @@ Use Stripe Terminal to unify online and in-person payments.
 
 [How Terminal works](https://docs.stripe.com/terminal/overview.md): Learn about Terminal concepts and the ways you can accept in-person payments.
 
-[Try the example app](https://docs.stripe.com/terminal/example-applications.md): Understand interactions between Terminal SDKs and readers, and your backend and point-of-sale application.
+[Try the example app](https://docs.stripe.com/terminal/example-applications.md): Understand interactions between Terminal SDKs and readers, and your back end and point-of-sale application.
 
 [Build a starter integration](https://docs.stripe.com/terminal/quickstart.md): Build a starter integration with our code-based tour that includes downloadable files so you can follow along.
 

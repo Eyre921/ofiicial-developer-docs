@@ -8,7 +8,7 @@ path: crypto/onramp/stripe-hosted
 
 Generate a redirect URL and mint a session for the standalone onramp.
 
-The Stripe-hosted, standalone onramp is a prebuilt frontend integration of the crypto onramp hosted at <https://crypto.link.com>. Platforms can integrate the crypto onramp by redirecting their users to the standalone onramp, rather than hosting an embedded version of the onramp within their application.
+The Stripe-hosted, standalone onramp is a prebuilt front-end integration of the crypto onramp hosted at <https://crypto.link.com>. Platforms can integrate the crypto onramp by redirecting their users to the standalone onramp, rather than hosting an embedded version of the onramp within their application.
 
 ## Before you begin
 
@@ -53,7 +53,7 @@ You can also generate a redirect URL with code using the `Standalone` function a
 | Customization option | Overview | Best for |
 | --- | --- | --- |
 | Generate a redirect URL | Generate a redirect URL in the frontend without a Stripe account. Customize the suggested source or destination amount, destination currency, and network. | If you want a lightweight front-end integration with light customization and no branding. |
-| Mint a session with a redirect URL | Mint a session with a redirect URL in the backend with a Stripe account. Allows full customization, including the destination wallet address. For a full list of parameters, see [Pre-populate transaction parameters](https://docs.stripe.com/crypto/onramp/stripe-hosted.md#customize-onramp). | If you want a fully customized onramp with branding. |
+| Mint a session with a redirect URL | Mint a session with a redirect URL in the back end with a Stripe account. Allows full customization, including the destination wallet address. For a full list of parameters, see [Pre-populate transaction parameters](https://docs.stripe.com/crypto/onramp/stripe-hosted.md#customize-onramp). | If you want a fully customized onramp with branding. |
 
 ### Generate a redirect URL 
 

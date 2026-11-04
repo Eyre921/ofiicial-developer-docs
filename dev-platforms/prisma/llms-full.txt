@@ -3587,6 +3587,272 @@ One habit pays for all of this. Ship each service's fake from its own package as
 - [`Databases`](https://www.prisma.io/docs/composer/databases): Give a service a Postgres database, either as a plain connection or typed by a Prisma ORM contract with managed migrations.
 - [`Deploying`](https://www.prisma.io/docs/composer/deploying): Deploy a Prisma App to production or an isolated stage, run it in CI, and tear environments down safely.
 
+# Concepts (/docs/console/concepts)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Understand the core concepts of the Prisma Console: user accounts, workspaces, projects, and resources
+
+Location: Console > Concepts
+
+The Console workflows are based on five main concepts:
+
+* [**User account**](#user-account): In order to use Prisma products, you need to have a Console user account. A *user* will typically create one user account to manage all their workspaces, projects and resources. The *user* can also be invited to join other workspaces to collaborate on the projects in that workspace.
+* [**Workspaces**](#workspace): A user account can belong to multiple workspaces. A workspace typically represents a *team* of individuals working together on one or more projects. **Billing is on a workspace level**, i.e. the invoice for a workspace at the end of the month captures all costs associated with the projects in that workspace.
+* [**Projects**](#project): A project belongs to a workspace. It typically represents the *application* or *service* a team is working on.
+* [**Branches**](#branch): For projects that use [Prisma Compute](https://www.prisma.io/docs/compute), resources are grouped into branches. A branch is an isolated infrastructure boundary for one line of work, usually mapping to a Git branch.
+* [**Resources**](#resources): Resources represent the actual services or databases within a project. For example, in Prisma Postgres, each project can contain multiple databases. For Prisma Compute, each branch contains apps and their deployments. For Accelerate, resources might correspond to different environments (like `Development`, `Staging`, or `Production`). **Connection strings are provisioned at the resource level**, and products are configured per resource as well (e.g., the database connection string used for Accelerate).
+
+Here is a visual illustration of how these concepts relate to each other:
+
+![How the concepts of the Console (user account, workspaces, projects, and resources) relate to each other](https://www.prisma.io/img/platform/pdp-concepts.png)
+
+## User account [#user-account]
+
+A user account is the prerequisite for any interactions with Prisma products. You can use it to manage your workspaces (and their projects). A user account can be invited to collaborate on workspaces created by other users as well.
+
+If you need to delete your user account, go to [Deleting your PDP account](https://www.prisma.io/docs/console/more/support#deleting-your-pdp-account).
+
+## Workspace [#workspace]
+
+You can create several workspaces. A workspace is an isolated space to host projects. A workspace can have multiple user accounts associated with it so that multiple users can collaborate on the projects in the workspace.
+
+In each workspace, you can:
+
+* view and manage all projects (and their resources) in that workspace.
+* manage billing, i.e. select a [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs), configure payment methods, or view the invoice history.
+* view the usage of your enabled Prisma products across all projects in that workspace.
+* invite other users to collaborate in the workspace. See [Members and deletion](https://www.prisma.io/docs/console/more/workspaces).
+* access [Query Insights](https://www.prisma.io/docs/query-insights) to measure query performance and receive AI-powered recommendations (available with Prisma Postgres).
+
+## Project [#project]
+
+In each workspace, you can create several projects. A project typically represents an application (a product or service). You typically have one [Prisma schema](https://www.prisma.io/docs/orm/v7/prisma-schema/overview) per project.
+
+In each project, you can:
+
+* view and manage all resources (like databases) in that project.
+
+The number of projects you can create in a workspace depends on the [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs) configured in that workspace.
+
+## Branch [#branch]
+
+For projects that use [Prisma Compute](https://www.prisma.io/docs/compute), a branch groups the resources for one line of work:
+
+```text
+workspace → project → branch → { apps, databases }
+```
+
+A branch usually maps to a Git branch, but it's a real resource that owns the apps and databases for that work:
+
+* The **first branch** in a project is the production branch, usually `main`. It's protected and durable.
+* **Every other branch** is a preview branch by default: disposable infrastructure for testing changes before they merge.
+* [Environment variables](https://www.prisma.io/docs/compute/environment-variables) are scoped to production, to preview, or to a single preview branch.
+
+Learn more in [Environments](https://www.prisma.io/docs/compute/branching).
+
+## Resources [#resources]
+
+Resources represent the actual services or databases within a project. The type of resources available depends on the Prisma products you're using:
+
+* **For Prisma Postgres**: Each project can contain multiple databases. These databases are the primary resources you'll manage.
+* **For Prisma Compute**: Each branch contains apps. An app is an HTTP service, and each built version of an app is a deployment. See [Prisma Compute](https://www.prisma.io/docs/compute).
+* **For Accelerate**: Resources typically correspond to different deployment stages (like `Development`, `Staging`, or `Production`).
+
+In each project, you can:
+
+* Create and manage multiple resources (databases or environments)
+* Generate connection strings specific to each resource
+* Configure product-specific settings:
+  * **For Prisma Postgres databases**:
+    * View database metrics and performance
+    * Configure connection settings
+    * Manage database users and permissions
+  * **For Accelerate resources**:
+    * Set your database connection string
+    * Configure the region for connection pooling
+    * Adjust connection pool size and performance settings
+    * Set query duration and response size limits
+    * Enable static IP for secure connections
+
+The number of resources you can create in a project depends on your [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs).
+
+## Related pages
+
+- [`Getting Started`](https://www.prisma.io/docs/console/getting-started): Quick start guide for setting up and using the Prisma Console
+
+# Getting Started (/docs/console/getting-started)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Quick start guide for setting up and using the Prisma Console
+
+Location: Console > Getting Started
+
+This guide walks you through setting up your Console account and creating your first project.
+
+## Prerequisites [#prerequisites]
+
+* A GitHub account (for authentication)
+* A Prisma project (optional, but recommended)
+
+## Step 1: Create your account [#step-1-create-your-account]
+
+1. Go to [console.prisma.io/login](https://console.prisma.io/login?utm_source=docs\&utm_medium=content\&utm_content=console)
+2. Click **Sign in with GitHub**
+3. Authorize Prisma Console to access your GitHub account
+
+You now have a Console account with a default workspace.
+
+## Step 2: Set up a workspace [#step-2-set-up-a-workspace]
+
+When you create an account, a default workspace is automatically created for you. You can create additional workspaces for different teams or organizations.
+
+### Create a workspace (optional) [#create-a-workspace-optional]
+
+To create an additional workspace:
+
+1. Click the workspace dropdown in the top navigation
+2. Click **Create Workspace**
+3. Enter a name for your workspace
+4. Click **Create**
+
+## Step 3: Create a project [#step-3-create-a-project]
+
+Projects organize your databases and environments within a workspace.
+
+### Using the Console web interface [#using-the-console-web-interface]
+
+1. Navigate to your workspace
+2. Click **Create Project**
+3. Enter a project name
+4. Click **Create**
+
+## Step 4: Create a resource [#step-4-create-a-resource]
+
+Resources are the actual databases or environments within your project.
+
+### For Prisma Postgres [#for-prisma-postgres]
+
+1. Navigate to your project
+2. Click **Create Database**
+3. Enter a database name
+4. Select a region
+5. Click **Create**
+
+### For Accelerate [#for-accelerate]
+
+> [!WARNING]
+> Accelerate retirement
+> 
+> Prisma Accelerate will be retired on December 1, 2026, so new Accelerate environments are not recommended. Create a Prisma Postgres database instead, as described above. If you already run Accelerate, choose the path that matches your setup:
+> 
+> * [Migrate a PostgreSQL database to Prisma Postgres](https://www.prisma.io/docs/prisma-postgres/import-from-existing-database-postgresql)
+> * [Keep your existing database and remove Accelerate](https://www.prisma.io/docs/accelerate/keep-your-database)
+> * [Connect to Prisma Postgres without Accelerate](https://www.prisma.io/docs/postgres/database/switch-from-accelerate)
+
+1. Navigate to your project
+2. Click **Create Environment**
+3. Enter an environment name (e.g., "production")
+4. Click **Create**
+
+## Step 5: Generate a connection string [#step-5-generate-a-connection-string]
+
+Connection strings authenticate your application's requests to Prisma products.
+
+### Using the Console web interface [#using-the-console-web-interface-1]
+
+1. Navigate to your resource (database or environment)
+2. Click **Connection Strings** tab
+3. Click **Create Connection String**
+4. Enter a name for the connection string
+5. Copy the connection string and store it securely
+6. Click **Done**
+
+## Step 6: Use the connection string in your application [#step-6-use-the-connection-string-in-your-application]
+
+Add the connection string to your `.env` file. For Prisma Postgres, use the pooled connection string for application queries and the direct connection string for migrations, introspection and Prisma Studio:
+
+```bash
+# Application traffic over pooled TCP
+DATABASE_URL="postgres://USER:PASSWORD@pooled.db.prisma.io:5432/postgres?sslmode=require"
+
+# Prisma CLI commands and administrative tooling
+DIRECT_URL="postgres://USER:PASSWORD@db.prisma.io:5432/postgres?sslmode=require"
+```
+
+In a Node.js runtime, pass the pooled connection string to Prisma Client through the [`@prisma/adapter-pg`](https://www.prisma.io/docs/postgres/database/connecting-to-your-database) driver adapter. In an edge or TCP-constrained runtime, use the [Prisma Postgres serverless driver](https://www.prisma.io/docs/postgres/database/serverless-driver) with the direct connection string instead.
+
+> [!WARNING]
+> Accelerate retirement
+> 
+> Prisma Accelerate will be retired on December 1, 2026. This covers both the Accelerate environments from Step 4, which use `prisma://accelerate.prisma-data.net/?api_key=YOUR_API_KEY` connection strings, and hosted Accelerate connections for Prisma Postgres, which use `prisma+postgres://accelerate.prisma-data.net/?api_key=YOUR_API_KEY`. Choose the path that matches your setup:
+> 
+> * [Connect to Prisma Postgres without Accelerate](https://www.prisma.io/docs/postgres/database/switch-from-accelerate)
+> * [Keep your existing database and remove Accelerate](https://www.prisma.io/docs/accelerate/keep-your-database)
+
+## Next steps [#next-steps]
+
+* Learn more about [Console concepts](https://www.prisma.io/docs/console/concepts)
+* Explore [database metrics](https://www.prisma.io/docs/console/features/metrics)
+* Check out the [CLI reference](https://www.prisma.io/docs/cli/v7/console)
+
+## Related pages
+
+- [`Concepts`](https://www.prisma.io/docs/console/concepts): Understand the core concepts of the Prisma Console: user accounts, workspaces, projects, and resources
+
+# Console (/docs/console)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Learn how to use the Console to manage and integrate Prisma products into your application.
+
+Location: Console
+
+## Overview [#overview]
+
+The [Console](https://console.prisma.io/login?utm_source=docs\&utm_medium=content\&utm_content=console) enables you to manage and configure your projects that use Prisma products, and helps you integrate them into your application:
+
+* [Query Insights](https://www.prisma.io/docs/query-insights): Inspect slow queries, connect Prisma calls to SQL, and apply focused fixes.
+* [Prisma Postgres](https://www.prisma.io/docs/postgres): A managed PostgreSQL database that is optimized for Prisma ORM.
+* [Prisma Compute](https://www.prisma.io/docs/compute): Runs your app next to your Prisma Postgres database. Inspect projects, branches, apps, and deployments in the Console; deploy with the [Prisma CLI](https://www.prisma.io/docs/compute/getting-started).
+
+## Getting started [#getting-started]
+
+To start using Prisma products, you'll need to:
+
+1. Create a Console account
+2. Set up a workspace for your team
+3. Create a project for your application
+4. Generate connection strings for your resources
+
+Learn more in the [Getting Started](https://www.prisma.io/docs/console/getting-started) guide.
+
+## Core concepts [#core-concepts]
+
+The Console is organized around four main concepts:
+
+* **[User account](https://www.prisma.io/docs/console/concepts#user-account)**: Your personal account to manage workspaces and projects
+* **[Workspaces](https://www.prisma.io/docs/console/concepts#workspace)**: Team-level container where billing is managed
+* **[Projects](https://www.prisma.io/docs/console/concepts#project)**: Application-level container within a workspace
+* **[Resources](https://www.prisma.io/docs/console/concepts#resources)**: Actual services or databases within a project (databases for Prisma Postgres)
+
+Read more about [Console concepts](https://www.prisma.io/docs/console/concepts).
+
+## Console CLI [#console-cli]
+
+In addition to the web interface, the Prisma CLI provides another way to interact with your Console account and manage Prisma products. This can be useful for programmatic access, such as integrating into CI workflows.
+
+Learn more about the [Console CLI commands](https://www.prisma.io/docs/cli/v7/console).
+
+## Related pages
+
+- [`Choose a Prisma ORM setup path`](https://www.prisma.io/docs/getting-started): Choose the fastest path to try Prisma ORM in a new or existing project.
+- [`Introduction to Prisma ORM`](https://www.prisma.io/docs/prisma-orm): Prisma ORM 8 is a release candidate.
+- [`Local development`](https://www.prisma.io/docs/local-development): Run the whole Prisma stack on your machine, with your app on Bun, a local Prisma Postgres database, and local object storage.
+- [`Overview`](https://www.prisma.io/docs/cli): Prisma CLI reference
+- [`Overview`](https://www.prisma.io/docs/guides): Practical, step-by-step guides for building with Prisma ORM and deploying to Prisma Compute, each one run end to end before it ships.
+
 # auth (/docs/cli/auth)
 
 > For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
@@ -9257,272 +9523,6 @@ npx prisma telemetry status
 - [`bucket`](https://www.prisma.io/docs/cli/bucket): Create and manage object-store buckets.
 - [`Configuration`](https://www.prisma.io/docs/cli/configuration): Configure Prisma ORM CLI commands with prisma.config.ts and global flags.
 - [`contract emit`](https://www.prisma.io/docs/cli/contract-emit): Emit Prisma ORM contract artifacts.
-
-# Concepts (/docs/console/concepts)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Understand the core concepts of the Prisma Console: user accounts, workspaces, projects, and resources
-
-Location: Console > Concepts
-
-The Console workflows are based on five main concepts:
-
-* [**User account**](#user-account): In order to use Prisma products, you need to have a Console user account. A *user* will typically create one user account to manage all their workspaces, projects and resources. The *user* can also be invited to join other workspaces to collaborate on the projects in that workspace.
-* [**Workspaces**](#workspace): A user account can belong to multiple workspaces. A workspace typically represents a *team* of individuals working together on one or more projects. **Billing is on a workspace level**, i.e. the invoice for a workspace at the end of the month captures all costs associated with the projects in that workspace.
-* [**Projects**](#project): A project belongs to a workspace. It typically represents the *application* or *service* a team is working on.
-* [**Branches**](#branch): For projects that use [Prisma Compute](https://www.prisma.io/docs/compute), resources are grouped into branches. A branch is an isolated infrastructure boundary for one line of work, usually mapping to a Git branch.
-* [**Resources**](#resources): Resources represent the actual services or databases within a project. For example, in Prisma Postgres, each project can contain multiple databases. For Prisma Compute, each branch contains apps and their deployments. For Accelerate, resources might correspond to different environments (like `Development`, `Staging`, or `Production`). **Connection strings are provisioned at the resource level**, and products are configured per resource as well (e.g., the database connection string used for Accelerate).
-
-Here is a visual illustration of how these concepts relate to each other:
-
-![How the concepts of the Console (user account, workspaces, projects, and resources) relate to each other](https://www.prisma.io/img/platform/pdp-concepts.png)
-
-## User account [#user-account]
-
-A user account is the prerequisite for any interactions with Prisma products. You can use it to manage your workspaces (and their projects). A user account can be invited to collaborate on workspaces created by other users as well.
-
-If you need to delete your user account, go to [Deleting your PDP account](https://www.prisma.io/docs/console/more/support#deleting-your-pdp-account).
-
-## Workspace [#workspace]
-
-You can create several workspaces. A workspace is an isolated space to host projects. A workspace can have multiple user accounts associated with it so that multiple users can collaborate on the projects in the workspace.
-
-In each workspace, you can:
-
-* view and manage all projects (and their resources) in that workspace.
-* manage billing, i.e. select a [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs), configure payment methods, or view the invoice history.
-* view the usage of your enabled Prisma products across all projects in that workspace.
-* invite other users to collaborate in the workspace. See [Members and deletion](https://www.prisma.io/docs/console/more/workspaces).
-* access [Query Insights](https://www.prisma.io/docs/query-insights) to measure query performance and receive AI-powered recommendations (available with Prisma Postgres).
-
-## Project [#project]
-
-In each workspace, you can create several projects. A project typically represents an application (a product or service). You typically have one [Prisma schema](https://www.prisma.io/docs/orm/v7/prisma-schema/overview) per project.
-
-In each project, you can:
-
-* view and manage all resources (like databases) in that project.
-
-The number of projects you can create in a workspace depends on the [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs) configured in that workspace.
-
-## Branch [#branch]
-
-For projects that use [Prisma Compute](https://www.prisma.io/docs/compute), a branch groups the resources for one line of work:
-
-```text
-workspace → project → branch → { apps, databases }
-```
-
-A branch usually maps to a Git branch, but it's a real resource that owns the apps and databases for that work:
-
-* The **first branch** in a project is the production branch, usually `main`. It's protected and durable.
-* **Every other branch** is a preview branch by default: disposable infrastructure for testing changes before they merge.
-* [Environment variables](https://www.prisma.io/docs/compute/environment-variables) are scoped to production, to preview, or to a single preview branch.
-
-Learn more in [Environments](https://www.prisma.io/docs/compute/branching).
-
-## Resources [#resources]
-
-Resources represent the actual services or databases within a project. The type of resources available depends on the Prisma products you're using:
-
-* **For Prisma Postgres**: Each project can contain multiple databases. These databases are the primary resources you'll manage.
-* **For Prisma Compute**: Each branch contains apps. An app is an HTTP service, and each built version of an app is a deployment. See [Prisma Compute](https://www.prisma.io/docs/compute).
-* **For Accelerate**: Resources typically correspond to different deployment stages (like `Development`, `Staging`, or `Production`).
-
-In each project, you can:
-
-* Create and manage multiple resources (databases or environments)
-* Generate connection strings specific to each resource
-* Configure product-specific settings:
-  * **For Prisma Postgres databases**:
-    * View database metrics and performance
-    * Configure connection settings
-    * Manage database users and permissions
-  * **For Accelerate resources**:
-    * Set your database connection string
-    * Configure the region for connection pooling
-    * Adjust connection pool size and performance settings
-    * Set query duration and response size limits
-    * Enable static IP for secure connections
-
-The number of resources you can create in a project depends on your [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs).
-
-## Related pages
-
-- [`Getting Started`](https://www.prisma.io/docs/console/getting-started): Quick start guide for setting up and using the Prisma Console
-
-# Getting Started (/docs/console/getting-started)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Quick start guide for setting up and using the Prisma Console
-
-Location: Console > Getting Started
-
-This guide walks you through setting up your Console account and creating your first project.
-
-## Prerequisites [#prerequisites]
-
-* A GitHub account (for authentication)
-* A Prisma project (optional, but recommended)
-
-## Step 1: Create your account [#step-1-create-your-account]
-
-1. Go to [console.prisma.io/login](https://console.prisma.io/login?utm_source=docs\&utm_medium=content\&utm_content=console)
-2. Click **Sign in with GitHub**
-3. Authorize Prisma Console to access your GitHub account
-
-You now have a Console account with a default workspace.
-
-## Step 2: Set up a workspace [#step-2-set-up-a-workspace]
-
-When you create an account, a default workspace is automatically created for you. You can create additional workspaces for different teams or organizations.
-
-### Create a workspace (optional) [#create-a-workspace-optional]
-
-To create an additional workspace:
-
-1. Click the workspace dropdown in the top navigation
-2. Click **Create Workspace**
-3. Enter a name for your workspace
-4. Click **Create**
-
-## Step 3: Create a project [#step-3-create-a-project]
-
-Projects organize your databases and environments within a workspace.
-
-### Using the Console web interface [#using-the-console-web-interface]
-
-1. Navigate to your workspace
-2. Click **Create Project**
-3. Enter a project name
-4. Click **Create**
-
-## Step 4: Create a resource [#step-4-create-a-resource]
-
-Resources are the actual databases or environments within your project.
-
-### For Prisma Postgres [#for-prisma-postgres]
-
-1. Navigate to your project
-2. Click **Create Database**
-3. Enter a database name
-4. Select a region
-5. Click **Create**
-
-### For Accelerate [#for-accelerate]
-
-> [!WARNING]
-> Accelerate retirement
-> 
-> Prisma Accelerate will be retired on December 1, 2026, so new Accelerate environments are not recommended. Create a Prisma Postgres database instead, as described above. If you already run Accelerate, choose the path that matches your setup:
-> 
-> * [Migrate a PostgreSQL database to Prisma Postgres](https://www.prisma.io/docs/prisma-postgres/import-from-existing-database-postgresql)
-> * [Keep your existing database and remove Accelerate](https://www.prisma.io/docs/accelerate/keep-your-database)
-> * [Connect to Prisma Postgres without Accelerate](https://www.prisma.io/docs/postgres/database/switch-from-accelerate)
-
-1. Navigate to your project
-2. Click **Create Environment**
-3. Enter an environment name (e.g., "production")
-4. Click **Create**
-
-## Step 5: Generate a connection string [#step-5-generate-a-connection-string]
-
-Connection strings authenticate your application's requests to Prisma products.
-
-### Using the Console web interface [#using-the-console-web-interface-1]
-
-1. Navigate to your resource (database or environment)
-2. Click **Connection Strings** tab
-3. Click **Create Connection String**
-4. Enter a name for the connection string
-5. Copy the connection string and store it securely
-6. Click **Done**
-
-## Step 6: Use the connection string in your application [#step-6-use-the-connection-string-in-your-application]
-
-Add the connection string to your `.env` file. For Prisma Postgres, use the pooled connection string for application queries and the direct connection string for migrations, introspection and Prisma Studio:
-
-```bash
-# Application traffic over pooled TCP
-DATABASE_URL="postgres://USER:PASSWORD@pooled.db.prisma.io:5432/postgres?sslmode=require"
-
-# Prisma CLI commands and administrative tooling
-DIRECT_URL="postgres://USER:PASSWORD@db.prisma.io:5432/postgres?sslmode=require"
-```
-
-In a Node.js runtime, pass the pooled connection string to Prisma Client through the [`@prisma/adapter-pg`](https://www.prisma.io/docs/postgres/database/connecting-to-your-database) driver adapter. In an edge or TCP-constrained runtime, use the [Prisma Postgres serverless driver](https://www.prisma.io/docs/postgres/database/serverless-driver) with the direct connection string instead.
-
-> [!WARNING]
-> Accelerate retirement
-> 
-> Prisma Accelerate will be retired on December 1, 2026. This covers both the Accelerate environments from Step 4, which use `prisma://accelerate.prisma-data.net/?api_key=YOUR_API_KEY` connection strings, and hosted Accelerate connections for Prisma Postgres, which use `prisma+postgres://accelerate.prisma-data.net/?api_key=YOUR_API_KEY`. Choose the path that matches your setup:
-> 
-> * [Connect to Prisma Postgres without Accelerate](https://www.prisma.io/docs/postgres/database/switch-from-accelerate)
-> * [Keep your existing database and remove Accelerate](https://www.prisma.io/docs/accelerate/keep-your-database)
-
-## Next steps [#next-steps]
-
-* Learn more about [Console concepts](https://www.prisma.io/docs/console/concepts)
-* Explore [database metrics](https://www.prisma.io/docs/console/features/metrics)
-* Check out the [CLI reference](https://www.prisma.io/docs/cli/v7/console)
-
-## Related pages
-
-- [`Concepts`](https://www.prisma.io/docs/console/concepts): Understand the core concepts of the Prisma Console: user accounts, workspaces, projects, and resources
-
-# Console (/docs/console)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Learn how to use the Console to manage and integrate Prisma products into your application.
-
-Location: Console
-
-## Overview [#overview]
-
-The [Console](https://console.prisma.io/login?utm_source=docs\&utm_medium=content\&utm_content=console) enables you to manage and configure your projects that use Prisma products, and helps you integrate them into your application:
-
-* [Query Insights](https://www.prisma.io/docs/query-insights): Inspect slow queries, connect Prisma calls to SQL, and apply focused fixes.
-* [Prisma Postgres](https://www.prisma.io/docs/postgres): A managed PostgreSQL database that is optimized for Prisma ORM.
-* [Prisma Compute](https://www.prisma.io/docs/compute): Runs your app next to your Prisma Postgres database. Inspect projects, branches, apps, and deployments in the Console; deploy with the [Prisma CLI](https://www.prisma.io/docs/compute/getting-started).
-
-## Getting started [#getting-started]
-
-To start using Prisma products, you'll need to:
-
-1. Create a Console account
-2. Set up a workspace for your team
-3. Create a project for your application
-4. Generate connection strings for your resources
-
-Learn more in the [Getting Started](https://www.prisma.io/docs/console/getting-started) guide.
-
-## Core concepts [#core-concepts]
-
-The Console is organized around four main concepts:
-
-* **[User account](https://www.prisma.io/docs/console/concepts#user-account)**: Your personal account to manage workspaces and projects
-* **[Workspaces](https://www.prisma.io/docs/console/concepts#workspace)**: Team-level container where billing is managed
-* **[Projects](https://www.prisma.io/docs/console/concepts#project)**: Application-level container within a workspace
-* **[Resources](https://www.prisma.io/docs/console/concepts#resources)**: Actual services or databases within a project (databases for Prisma Postgres)
-
-Read more about [Console concepts](https://www.prisma.io/docs/console/concepts).
-
-## Console CLI [#console-cli]
-
-In addition to the web interface, the Prisma CLI provides another way to interact with your Console account and manage Prisma products. This can be useful for programmatic access, such as integrating into CI workflows.
-
-Learn more about the [Console CLI commands](https://www.prisma.io/docs/cli/v7/console).
-
-## Related pages
-
-- [`Choose a Prisma ORM setup path`](https://www.prisma.io/docs/getting-started): Choose the fastest path to try Prisma ORM in a new or existing project.
-- [`Introduction to Prisma ORM`](https://www.prisma.io/docs/prisma-orm): Prisma ORM 8 is a release candidate.
-- [`Local development`](https://www.prisma.io/docs/local-development): Run the whole Prisma stack on your machine, with your app on Bun, a local Prisma Postgres database, and local object storage.
-- [`Overview`](https://www.prisma.io/docs/cli): Prisma CLI reference
-- [`Overview`](https://www.prisma.io/docs/guides): Practical, step-by-step guides for building with Prisma ORM and deploying to Prisma Compute, each one run end to end before it ships.
 
 # Alchemy (/docs/compute/alchemy)
 
@@ -15930,6 +15930,198 @@ psql "$DATABASE_URL" -c "SELECT version();"
 - [`Overview`](https://www.prisma.io/docs/orm/data-modeling): Describe the data your application needs with models, primary keys, scalar fields, and relations.
 - [`Prisma 7`](https://www.prisma.io/docs/orm/v7): Prisma ORM is a next-generation Node.js and TypeScript ORM that provides type-safe database access, migrations, and a visual data editor.
 
+# Query Insights (/docs/query-insights)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Inspect slow queries, connect Prisma calls to SQL, and apply focused fixes with Prisma Postgres.
+
+Location: Query Insights
+
+Query Insights is built into Prisma Postgres and helps you understand which queries are slow, why they are expensive, and what to change next. It does not automatically rewrite your queries or schema.
+
+> [!NOTE]
+> Query Insights replaces Prisma Optimize and is now included with Prisma Postgres at no extra cost. You can try it today in the [Prisma Console](https://console.prisma.io/?utm_source=docs\&utm_medium=content\&utm_content=query-insights).
+
+## Dashboard [#dashboard]
+
+The main Query Insights view gives you a live summary of query activity for your database.
+
+At the top of the page, you can inspect:
+
+* Average latency over the selected period
+* Queries per second
+* A time-based chart for each metric
+* Hover values for exact timestamps and measurements
+* Playback controls for stepping through captured activity
+
+This makes it easier to see whether a problem is steady, bursty, or tied to a short window of activity.
+
+## Query list [#query-list]
+
+Below the charts, Query Insights shows a list of grouped queries.
+
+Each row includes:
+
+* Latency
+* Executions
+* Reads
+* Last seen
+* The SQL statement shape
+
+You can use the controls above the table to:
+
+* Filter results by table
+* Sort the list to surface the most important queries first
+* Focus on repeated, high-read, or recently executed statements
+
+Use this view to decide which query patterns to investigate first.
+
+## Query detail [#query-detail]
+
+Selecting a query opens a detail view for that statement.
+
+The detail view shows:
+
+* A stat summary describing the query's table, execution count, average latency, and reads per call
+* The full SQL statement
+* An AI-generated analysis explaining whether the query needs optimization and why
+* A copyable prompt you can paste directly into your editor or an AI coding assistant to apply the suggested fix
+
+The AI analysis describes the likely cause of the performance issue, the specific change it recommends, and the expected impact. The copyable prompt includes your actual query along with context, so you can paste it into your editor or a tool like Cursor, Copilot, or Claude and get a concrete code change without switching context.
+
+> [!NOTE]
+> Treat the AI analysis as a starting point, not a final answer. Review any suggested change before shipping it.
+
+## Prisma ORM attribution [#prisma-orm-attribution]
+
+When using Prisma ORM, Query Insights can trace the full chain from your application code to the SQL it generates. This means you can see which `prisma.*` call produced a slow query, even when a single Prisma call expands into multiple SQL statements.
+
+For raw SQL or queries issued outside Prisma ORM, Query Insights still shows full SQL behavior, but ORM-level attribution requires the steps below.
+
+### Setup [#setup]
+
+To enable ORM attribution, install the `@prisma/sqlcommenter-query-insights` package:
+
+```bash
+npm install @prisma/sqlcommenter-query-insights
+```
+
+Then pass it to the `comments` option in your `PrismaClient` constructor:
+
+```ts
+import "dotenv/config";
+import { PrismaClient } from "../generated/prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { prismaQueryInsights } from "@prisma/sqlcommenter-query-insights";
+
+const adapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL,
+});
+
+export const prisma = new PrismaClient({
+  adapter: adapter,
+  comments: [prismaQueryInsights()],
+})
+
+```
+
+This adds SQL comment annotations to queries so Query Insights can map SQL statements back to the Prisma calls that generated them. It is built on top of the [SQL comments](https://www.prisma.io/docs/orm/v7/prisma-client/observability-and-logging/sql-comments) feature in Prisma Client.
+
+## Availability [#availability]
+
+Query Insights is included with Prisma Postgres at no extra cost. You can try it today in the [Prisma Console](https://console.prisma.io/?utm_source=docs\&utm_medium=content\&utm_content=query-insights).
+
+## Typical issues [#typical-issues]
+
+Query Insights is most useful when it connects a database symptom to a concrete code change.
+
+| Issue              | What you might see                   | Typical fix                                 |
+| ------------------ | ------------------------------------ | ------------------------------------------- |
+| N+1 queries        | High query count for one request     | Use nested reads, batching, or joins        |
+| Missing indexes    | High reads relative to rows returned | Add the right index for the filter pattern  |
+| Over-fetching      | Wide rows or large payloads          | Use `select` to fetch fewer fields          |
+| Offset pagination  | Reads grow on deeper pages           | Switch to cursor pagination                 |
+| Large nested reads | High reads and large payloads        | Limit fields, limit depth, or split queries |
+| Repeated queries   | The same statement shape runs often  | Cache or reuse results when appropriate     |
+
+## How to use it [#how-to-use-it]
+
+When an endpoint gets slow, Query Insights gives you a practical workflow:
+
+1. Open Query Insights and scan the latency and queries-per-second charts.
+2. Sort or filter the query list to isolate the expensive statement.
+3. Open the query detail view.
+4. Read the AI analysis and inspect the SQL.
+5. Copy the suggested prompt and paste it into your editor.
+6. Review the suggested change, then apply it in code or schema.
+7. Re-run the workload and compare the same signals again.
+
+In most cases, the next change falls into one of these buckets:
+
+* Change the Prisma query shape
+* Add or adjust an index
+* Return fewer fields or fewer rows
+* Cache repeated work
+
+## Example [#example]
+
+A common example is an N+1 pattern:
+
+```ts
+const users = await prisma.user.findMany({
+  select: { id: true, name: true, email: true },
+});
+
+for (const user of users) {
+  await prisma.post.findMany({
+    where: { authorId: user.id },
+    select: { id: true, title: true },
+  });
+}
+```
+
+Query Insights would typically show:
+
+* One query to load users
+* Many repeated queries to load posts
+* A high execution count for the same statement shape
+* More reads and latency than the route should need
+
+In this case, the likely fix is to load the related posts in one nested read:
+
+```ts
+const usersWithPosts = await prisma.user.findMany({
+  select: {
+    id: true,
+    name: true,
+    email: true,
+    posts: {
+      select: {
+        id: true,
+        title: true,
+      },
+    },
+  },
+});
+```
+
+The same pattern applies to other issues. Query Insights helps you identify the expensive query shape, understand why it is expensive, and choose the next change to verify.
+
+## Next steps [#next-steps]
+
+* Review [Connection pooling](https://www.prisma.io/docs/postgres/database/connection-pooling) for high-concurrency workloads
+* Use [Connecting to your database](https://www.prisma.io/docs/postgres/database/connecting-to-your-database) when choosing connection strings for other tools
+* See [Prisma Client query optimization](https://www.prisma.io/docs/orm/v7/prisma-client/queries/advanced/query-optimization-performance) for related Prisma ORM patterns
+
+## Related pages
+
+- [`Choose a Prisma ORM setup path`](https://www.prisma.io/docs/getting-started): Choose the fastest path to try Prisma ORM in a new or existing project.
+- [`Console`](https://www.prisma.io/docs/console): Learn how to use the Console to manage and integrate Prisma products into your application.
+- [`Introduction to Prisma ORM`](https://www.prisma.io/docs/prisma-orm): Prisma ORM 8 is a release candidate.
+- [`Local development`](https://www.prisma.io/docs/local-development): Run the whole Prisma stack on your machine, with your app on Bun, a local Prisma Postgres database, and local object storage.
+- [`Overview`](https://www.prisma.io/docs/cli): Prisma CLI reference
+
 # Best Postgres for AI apps (/docs/postgres/best-postgres-for-ai-apps)
 
 > For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
@@ -17658,198 +17850,6 @@ To resolve this issue, consider the following options:
 - [`Database`](https://www.prisma.io/docs/postgres/database): Overview of Prisma Postgres database operations, connections, pooling, backups, and query analysis.
 - [`Error reference`](https://www.prisma.io/docs/postgres/error-reference): Error reference documentation for Prisma Postgres
 - [`Migrate a local Postgres database to the cloud (Prisma Postgres)`](https://www.prisma.io/docs/postgres/import-from-existing-database): Import a local PostgreSQL database into Prisma Postgres, a managed PostgreSQL service with a free plan, in three steps: create the database, pg_dump, pg_restore.
-
-# Query Insights (/docs/query-insights)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Inspect slow queries, connect Prisma calls to SQL, and apply focused fixes with Prisma Postgres.
-
-Location: Query Insights
-
-Query Insights is built into Prisma Postgres and helps you understand which queries are slow, why they are expensive, and what to change next. It does not automatically rewrite your queries or schema.
-
-> [!NOTE]
-> Query Insights replaces Prisma Optimize and is now included with Prisma Postgres at no extra cost. You can try it today in the [Prisma Console](https://console.prisma.io/?utm_source=docs\&utm_medium=content\&utm_content=query-insights).
-
-## Dashboard [#dashboard]
-
-The main Query Insights view gives you a live summary of query activity for your database.
-
-At the top of the page, you can inspect:
-
-* Average latency over the selected period
-* Queries per second
-* A time-based chart for each metric
-* Hover values for exact timestamps and measurements
-* Playback controls for stepping through captured activity
-
-This makes it easier to see whether a problem is steady, bursty, or tied to a short window of activity.
-
-## Query list [#query-list]
-
-Below the charts, Query Insights shows a list of grouped queries.
-
-Each row includes:
-
-* Latency
-* Executions
-* Reads
-* Last seen
-* The SQL statement shape
-
-You can use the controls above the table to:
-
-* Filter results by table
-* Sort the list to surface the most important queries first
-* Focus on repeated, high-read, or recently executed statements
-
-Use this view to decide which query patterns to investigate first.
-
-## Query detail [#query-detail]
-
-Selecting a query opens a detail view for that statement.
-
-The detail view shows:
-
-* A stat summary describing the query's table, execution count, average latency, and reads per call
-* The full SQL statement
-* An AI-generated analysis explaining whether the query needs optimization and why
-* A copyable prompt you can paste directly into your editor or an AI coding assistant to apply the suggested fix
-
-The AI analysis describes the likely cause of the performance issue, the specific change it recommends, and the expected impact. The copyable prompt includes your actual query along with context, so you can paste it into your editor or a tool like Cursor, Copilot, or Claude and get a concrete code change without switching context.
-
-> [!NOTE]
-> Treat the AI analysis as a starting point, not a final answer. Review any suggested change before shipping it.
-
-## Prisma ORM attribution [#prisma-orm-attribution]
-
-When using Prisma ORM, Query Insights can trace the full chain from your application code to the SQL it generates. This means you can see which `prisma.*` call produced a slow query, even when a single Prisma call expands into multiple SQL statements.
-
-For raw SQL or queries issued outside Prisma ORM, Query Insights still shows full SQL behavior, but ORM-level attribution requires the steps below.
-
-### Setup [#setup]
-
-To enable ORM attribution, install the `@prisma/sqlcommenter-query-insights` package:
-
-```bash
-npm install @prisma/sqlcommenter-query-insights
-```
-
-Then pass it to the `comments` option in your `PrismaClient` constructor:
-
-```ts
-import "dotenv/config";
-import { PrismaClient } from "../generated/prisma/client";
-import { PrismaPg } from "@prisma/adapter-pg";
-import { prismaQueryInsights } from "@prisma/sqlcommenter-query-insights";
-
-const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL,
-});
-
-export const prisma = new PrismaClient({
-  adapter: adapter,
-  comments: [prismaQueryInsights()],
-})
-
-```
-
-This adds SQL comment annotations to queries so Query Insights can map SQL statements back to the Prisma calls that generated them. It is built on top of the [SQL comments](https://www.prisma.io/docs/orm/v7/prisma-client/observability-and-logging/sql-comments) feature in Prisma Client.
-
-## Availability [#availability]
-
-Query Insights is included with Prisma Postgres at no extra cost. You can try it today in the [Prisma Console](https://console.prisma.io/?utm_source=docs\&utm_medium=content\&utm_content=query-insights).
-
-## Typical issues [#typical-issues]
-
-Query Insights is most useful when it connects a database symptom to a concrete code change.
-
-| Issue              | What you might see                   | Typical fix                                 |
-| ------------------ | ------------------------------------ | ------------------------------------------- |
-| N+1 queries        | High query count for one request     | Use nested reads, batching, or joins        |
-| Missing indexes    | High reads relative to rows returned | Add the right index for the filter pattern  |
-| Over-fetching      | Wide rows or large payloads          | Use `select` to fetch fewer fields          |
-| Offset pagination  | Reads grow on deeper pages           | Switch to cursor pagination                 |
-| Large nested reads | High reads and large payloads        | Limit fields, limit depth, or split queries |
-| Repeated queries   | The same statement shape runs often  | Cache or reuse results when appropriate     |
-
-## How to use it [#how-to-use-it]
-
-When an endpoint gets slow, Query Insights gives you a practical workflow:
-
-1. Open Query Insights and scan the latency and queries-per-second charts.
-2. Sort or filter the query list to isolate the expensive statement.
-3. Open the query detail view.
-4. Read the AI analysis and inspect the SQL.
-5. Copy the suggested prompt and paste it into your editor.
-6. Review the suggested change, then apply it in code or schema.
-7. Re-run the workload and compare the same signals again.
-
-In most cases, the next change falls into one of these buckets:
-
-* Change the Prisma query shape
-* Add or adjust an index
-* Return fewer fields or fewer rows
-* Cache repeated work
-
-## Example [#example]
-
-A common example is an N+1 pattern:
-
-```ts
-const users = await prisma.user.findMany({
-  select: { id: true, name: true, email: true },
-});
-
-for (const user of users) {
-  await prisma.post.findMany({
-    where: { authorId: user.id },
-    select: { id: true, title: true },
-  });
-}
-```
-
-Query Insights would typically show:
-
-* One query to load users
-* Many repeated queries to load posts
-* A high execution count for the same statement shape
-* More reads and latency than the route should need
-
-In this case, the likely fix is to load the related posts in one nested read:
-
-```ts
-const usersWithPosts = await prisma.user.findMany({
-  select: {
-    id: true,
-    name: true,
-    email: true,
-    posts: {
-      select: {
-        id: true,
-        title: true,
-      },
-    },
-  },
-});
-```
-
-The same pattern applies to other issues. Query Insights helps you identify the expensive query shape, understand why it is expensive, and choose the next change to verify.
-
-## Next steps [#next-steps]
-
-* Review [Connection pooling](https://www.prisma.io/docs/postgres/database/connection-pooling) for high-concurrency workloads
-* Use [Connecting to your database](https://www.prisma.io/docs/postgres/database/connecting-to-your-database) when choosing connection strings for other tools
-* See [Prisma Client query optimization](https://www.prisma.io/docs/orm/v7/prisma-client/queries/advanced/query-optimization-performance) for related Prisma ORM patterns
-
-## Related pages
-
-- [`Choose a Prisma ORM setup path`](https://www.prisma.io/docs/getting-started): Choose the fastest path to try Prisma ORM in a new or existing project.
-- [`Console`](https://www.prisma.io/docs/console): Learn how to use the Console to manage and integrate Prisma products into your application.
-- [`Introduction to Prisma ORM`](https://www.prisma.io/docs/prisma-orm): Prisma ORM 8 is a release candidate.
-- [`Local development`](https://www.prisma.io/docs/local-development): Run the whole Prisma stack on your machine, with your app on Bun, a local Prisma Postgres database, and local object storage.
-- [`Overview`](https://www.prisma.io/docs/cli): Prisma CLI reference
 
 # Using API Clients (/docs/rest-api/api-clients)
 
@@ -29643,6 +29643,329 @@ Here are some ideas to extend your app:
 
 - [`Linktree Clone SaaS`](https://www.prisma.io/docs/ai/tutorials/linktree-clone): A vibe coding tutorial: build a Linktree clone SaaS application from scratch using Next.js, Prisma ORM, Prisma Postgres, and Clerk authentication with AI assistance
 
+# Database Metrics (/docs/console/features/metrics)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Monitor your database performance with Console metrics
+
+Location: Console > Features > Database Metrics
+
+You can have a single workspace that hosts several databases. Within each database, you can view detailed reports on how your database is performing, with various metrics like:
+
+* Average response size
+* Average query duration
+* Total egress
+* Total operations
+* Cache utilization
+
+## Databases [#databases]
+
+For Prisma Postgres projects, the **Database** tab in the project view lets you configure and manage your databases. This interface provides tools to monitor and maintain your database resources. The **Connections** section displays a table with the following columns:
+
+| Column Name   | Description                                                                      |
+| ------------- | -------------------------------------------------------------------------------- |
+| **Hint**      | Provides the URL structure for the database in use.                              |
+| **Static IP** | Indicates whether static IP is enabled for the database and associated products. |
+| **Products**  | Lists the products that are enabled using the database URL.                      |
+| **Action**    | Allows you to disable all active products and remove the connection.             |
+
+# Billing and cancellation (/docs/console/more/billing)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+When Prisma charges a paid plan, how to cancel it, and how to cap usage charges
+
+Location: Console > More > Billing and cancellation
+
+This page covers when Prisma charges a workspace on a paid plan, how to cancel the plan, how to cap usage charges with a spending limit, and what happens when a payment fails.
+
+## When you're charged [#when-youre-charged]
+
+A paid plan has two parts: a plan fee and usage charges. Prisma charges the plan fee in advance, at the start of each billing period, and charges usage after the period ends, for what you used in it. So one invoice usually holds the plan fee for the coming period and the usage from the period that just ended.
+
+Each billing period lasts one month and renews on the same day every month, at 00:00 UTC. To see that day for your workspace, open **Workspace Settings** > **Billing** and look at the **Subscription** card, which shows when the current billing period renews. **View Invoices** on the same page opens your invoice list, and each invoice shows the period it covers.
+
+Each workspace has its own plan and its own bill. To find which workspace is on a paid plan, switch to each one with the workspace switcher at the top left of the Console, and check the plan name on the **Subscription** card at **Workspace Settings** > **Billing**.
+
+## Cancel a paid plan [#cancel-a-paid-plan]
+
+Cancelling moves the workspace to the Free plan at the end of the current billing period. Open the workspace that's on the paid plan, then:
+
+1. Go to **Workspace Settings** > **Billing**.
+2. Click **Manage subscription**.
+3. Choose the **Free** plan, then click **Schedule cancellation**.
+
+The Console confirms with "Subscription cancellation scheduled. Your current plan stays active until the end of the current billing period."
+
+The cancellation takes effect at the end of the current billing period, and cancelling does not end that period early. Until then, the paid plan stays active with its features and included usage, and the **Subscription** card shows the date it ends.
+
+Usage from the last period is billed after the plan ends, on a final invoice. This is why a charge can arrive after you cancel.
+
+If you change your mind before the period ends, go to **Workspace Settings** > **Billing** and click **Continue subscription** to undo the cancellation.
+
+## Workspaces billed through Vercel [#workspaces-billed-through-vercel]
+
+Vercel bills workspaces created through the Vercel Marketplace. Their charges appear on your Vercel invoice, and the invoices listed in the Console show a zero balance for these workspaces. To change or cancel the plan, go to Vercel: in your Vercel dashboard, open **Integrations**, click **Manage** on the Prisma integration, open **Settings**, and click **Change Plan**. See [Billing and pricing](https://www.prisma.io/docs/guides/postgres/vercel#billing-and-pricing) in the Vercel guide and [How do I upgrade my plan if I am using Prisma Postgres via Vercel?](https://www.prisma.io/docs/postgres/faq#how-do-i-upgrade-my-plan-if-i-am-using-prisma-postgres-via-vercel) in the FAQ.
+
+## Cap usage charges with a spending limit [#cap-usage-charges-with-a-spending-limit]
+
+A spending limit is an optional cap on usage charges. It is available on paid plans, including Vercel Marketplace workspaces.
+
+To set one, open **Workspace Settings** > **Billing** and find the **Spending Limit** card. Enter the amount in dollars, click **Set Limit**, and type the workspace name in the dialog to confirm. The Console confirms with "Your spending limit has been set and is now being enforced." To remove the limit, click **Clear Limit** in the same card and confirm the same way.
+
+The limit covers usage charges only, so the plan fee does not count toward it. To see the usage charges built up so far this period, open **Workspace Settings** > **Usage** and look at the **Current invoice** card.
+
+When usage reaches 75% of the limit, every member of the workspace gets an email with the subject "Action Required: Update Limits Now to Maintain Uninterrupted Service". At 100%, Prisma blocks further usage: queries to the workspace's databases stop, and the Console shows "Usage blocked: your workspace has reached its spending limit." at the top of the workspace.
+
+To restore service, raise or remove the limit. A new limit higher than this period's usage charges so far, shown on the **Current invoice** card, restores queries straight away. If the new limit isn't higher, the workspace is blocked again within minutes.
+
+A spending limit stops further usage. It does not reduce charges you have already incurred, and it doesn't delete any data.
+
+## If a payment fails [#if-a-payment-fails]
+
+When a payment fails, a banner at the top of the Console says "Your last invoice was not paid. Pay your outstanding balance to avoid this Workspace being blocked." Click **Pay your outstanding balance** to open the unpaid invoice and pay it. To update your card first, go to **Workspace Settings** > **Billing** and click **Manage payment methods**. For a workspace billed through Vercel, the banner link reads **Resolve billing in Vercel** and opens your Vercel dashboard instead.
+
+If the invoice stays unpaid, the workspace is blocked 15 days after the failed payment, and the banner changes to "Your Workspace is blocked due to an unpaid invoice." While it's blocked, queries to the workspace's databases stop, but no data is deleted. Paying the invoice lifts the block. While the workspace is blocked, you can't change its plan or delete it.
+
+## Next steps [#next-steps]
+
+* To delete your account, first cancel the paid plan on any workspace where you are the only member (see [Cancel a paid plan](#cancel-a-paid-plan)) and wait for the cancellation to take effect at the end of the billing period. Then see [Delete your account](https://www.prisma.io/docs/console/more/support#deleting-your-pdp-account).
+* For help with a charge, see [Support](https://www.prisma.io/docs/console/more/support).
+
+## Related pages
+
+- [`Feature Maturity`](https://www.prisma.io/docs/console/more/feature-maturity): Understand Early Access, Preview, and Public Beta feature stages in the Console
+- [`Members and deletion`](https://www.prisma.io/docs/console/more/workspaces): Invite and remove workspace members, hand a workspace to someone else, and delete databases, projects, and workspaces
+- [`Support`](https://www.prisma.io/docs/console/more/support): Find the right support for any Console question
+
+# Feature Maturity (/docs/console/more/feature-maturity)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Understand Early Access, Preview, and Public Beta feature stages in the Console
+
+Location: Console > More > Feature Maturity
+
+Prisma releases updates to Console multiple times per week, as opposed to the Prisma ORM that we release on a set schedule every few weeks. This is why we consider the lifecycle and process for maturing features in Console differently.
+
+You can [check out the releases and maturity process for the Prisma ORM](https://www.prisma.io/docs/orm/v7/more/releases) for further details.
+
+You can find information about releases across *all* Prisma tools and products in the [changelog](https://www.prisma.io/changelog).
+
+## Early Access [#early-access]
+
+If a feature on the Console is labeled as **Early Access**:
+
+* It is ready to try out and represents the cutting edge of what we are building.
+* It can still evolve based on feedback from our users, and its API surface won't change drastically as it matures.
+* We reserve ourselves the right to throttle or remove access to a feature in Early Access to preserve the stability of the platform, or enforce its use to stay within the scope defined in our [Terms of Service](https://pris.ly/terms).
+
+Your feedback in our [Discord](https://pris.ly/discord?utm_source=docs\&utm_medium=inline_text) shapes the design of the features. This will help us ensure that they can solve your problems in the best way possible.
+
+## Preview [#preview]
+
+If a feature on the Console is labeled as **Preview**:
+
+* We have refined the software based on the valuable feedback we obtained during the Early Access phase.
+* We developed the feature further, bringing it closer to the final version, and it is close to being ready for production usage.
+* We have lifted the invite gate, so users no longer need an invitation to access the feature. Users just need to sign up to gain access.
+* We have increased the stability of the software compared to the Early Access phase. While there might still be some issues, they should be less frequent and less critical.
+* We use the Preview phase as a final stress test to ensure the product is ready for heavy production workloads.
+
+We recommend testing the product in a staging environment and welcome any feedback in our [Discord](https://pris.ly/discord?utm_source=docs\&utm_medium=inline_text). This will assist us in improving the product for its final release.
+
+## Public Beta [#public-beta]
+
+If a product or feature is labeled as **Public Beta**:
+
+* It is open for anyone to try. No invite or waitlist is required.
+* The core model is stable, and the documented happy paths work end to end. It is a good fit for evaluation, dogfooding, staging environments, internal tools, and low-risk apps.
+* Behavior should stay stable unless the documentation or release notes call out an exception.
+* Details can still change before general availability: exact limits, pricing, retention policies, runtime guardrails, supported frameworks and build behavior, some CLI and API details, Console UX, naming, and advanced workflows.
+* We don't recommend it yet for mission-critical or heavy production workloads.
+
+Public Beta is the final stress-test phase before general availability. Expect some rough edges, and tell us about them in [Discord](https://pris.ly/discord?utm_source=docs\&utm_medium=inline_text); your feedback directly shapes the release.
+
+## Related pages
+
+- [`Billing and cancellation`](https://www.prisma.io/docs/console/more/billing): When Prisma charges a paid plan, how to cancel it, and how to cap usage charges
+- [`Members and deletion`](https://www.prisma.io/docs/console/more/workspaces): Invite and remove workspace members, hand a workspace to someone else, and delete databases, projects, and workspaces
+- [`Support`](https://www.prisma.io/docs/console/more/support): Find the right support for any Console question
+
+# Support (/docs/console/more/support)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Find the right support for any Console question
+
+Location: Console > More > Support
+
+Share your experiences with us on [Discord](https://pris.ly/discord?utm_source=docs\&utm_medium=intro_text).
+
+## Support [#support]
+
+Your support options are based on your workspace's active plan. For more details, take a look at our [pricing page](https://www.prisma.io/pricing).
+
+### Community support [#community-support]
+
+Reach out to us in our [Discord](https://pris.ly/discord?utm_source=docs\&utm_medium=inline_text).
+
+### Standard support [#standard-support]
+
+* Email support, [support@prisma.io](mailto\:support@prisma.io), or reach out via the Console
+* 2 business days, Mon-Fri, 9am-5pm CET
+
+### Premium support [#premium-support]
+
+* Email support, [support@prisma.io](mailto\:support@prisma.io), or reach out via the Console
+* 1 business hour, Mon-Fri, 9am-5pm CET
+
+### Dedicated support [#dedicated-support]
+
+Dedicated contact person.
+
+## Deleting your Prisma account [#deleting-your-pdp-account]
+
+You can delete your Prisma account, the one you sign in to the [Prisma Console](https://console.prisma.io/?utm_source=docs\&utm_medium=content\&utm_content=console) with, from the Console yourself. Deletion is permanent and can't be undone.
+
+Deleting your account also deletes every workspace where you are the only member, along with that workspace's projects and databases. A shared workspace, meaning one with other members, is kept, and you are removed from it. Export any data you want to keep before you start. See [Manually creating a backup file via `pg_dump`](https://www.prisma.io/docs/postgres/database/backups#manually-creating-a-backup-file-via-pg_dump) for how to export a database.
+
+To delete your account:
+
+1. Open the [Prisma Console](https://console.prisma.io/?utm_source=docs\&utm_medium=content\&utm_content=console), click your name at the bottom of the sidebar, and choose **Account settings**.
+2. In the **Delete Account** section, click **Delete Account**.
+3. In the **Delete your account** dialog, type `DELETE` in capitals and click **Delete Account**.
+
+Console deletes your account and signs you out.
+
+### If deletion is blocked [#if-deletion-is-blocked]
+
+Deletion stops if any of the causes below apply, and each message starts with the name of the workspace that causes it. Some workspaces are *managed through an integration*, meaning they were created from the Prisma integration in Vercel or from Stripe Projects. If one of those blocks you, the **Delete Account** button is disabled and shows why. Anything else blocks you after you click **Delete Account**: a dialog lists every reason. Fix each one, then try again.
+
+To open a workspace's settings, switch to that workspace with the workspace switcher at the top left of the Console, then go to **Workspace Settings**.
+
+| Cause                                                                                                      | Message in Console                                                                      |
+| ---------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| A workspace where you are the only member is managed through an integration.                               | "Transfer or remove the integration-managed workspace before deleting your account."    |
+| A shared workspace managed through an integration uses your email as its billing email.                    | "Update the workspace billing email before deleting your account."                      |
+| A workspace where you are the only member is on a paid plan.                                               | "Downgrade to the Free plan before deleting your account."                              |
+| A workspace where you are the only member has unpaid invoices.                                             | "Please resolve your outstanding balance before deleting your account."                 |
+| Accelerate is enabled on a database in a workspace where you are the only member.                          | "Disable Accelerate on all databases before deleting your account."                     |
+| A workspace where you are the only member has Prisma Compute deployments, including stopped ones.          | "Stop and delete all compute instances before deleting your account."                   |
+| A workspace's GitHub connection was set up under your account, even if you have since left that workspace. | "Ask another admin of that workspace to reconnect GitHub before deleting your account." |
+
+How to clear each cause:
+
+* **Integration-managed workspace.** Console can't delete a workspace that is managed through an integration. For a workspace created from the Prisma integration in Vercel, uninstall the integration in Vercel. This deletes the Prisma workspace the integration created and all its databases, so export any data you want to keep first. [How do I delete a Prisma Postgres database I created through Vercel?](https://www.prisma.io/docs/postgres/faq#how-do-i-delete-a-prisma-postgres-database-i-created-through-vercel) has the uninstall steps and covers deleting a single database. If you can't transfer or remove it from the integration side, email [support@prisma.io](mailto\:support@prisma.io) with the workspace name.
+* **Billing email.** You can't change the billing email of an integration-managed workspace in Console. Email [support@prisma.io](mailto\:support@prisma.io) with the workspace name.
+* **Paid plan.** Go to **Workspace Settings > Billing > Manage subscription**, choose **Free**, and click **Schedule cancellation**. The downgrade takes effect at the end of the current billing period, so you can't delete your account until then. When the **Subscription** card on the Billing page says "Your workspace is on the Free plan", the downgrade is done. See [Cancel a paid plan](https://www.prisma.io/docs/console/more/billing#cancel-a-paid-plan).
+* **Unpaid invoices.** Click **Pay your outstanding balance** in the banner at the top of the Console to open the unpaid invoice and pay it, or go to **Workspace Settings > Billing** and click **View Invoices**. See [If a payment fails](https://www.prisma.io/docs/console/more/billing#if-a-payment-fails).
+* **Accelerate.** In each affected workspace, open the database, click **Accelerate** in its sidebar, open the **Settings** tab, and click **Disable Accelerate**.
+* **Prisma Compute.** The Console message calls Prisma Compute deployments compute instances. In each project of the affected workspace, under **Apps** in the project sidebar, open the app's **Deployments** page, and from each deployment's actions menu choose **Stop deployment** and then **Destroy deployment**. If a deployment is already stopped, destroy it, because stopped deployments still count. To remove the app and all its deployments at once, choose **Delete app** from the app's menu.
+* **GitHub.** Ask another admin of that workspace to disconnect and reconnect GitHub, so the connection is no longer recorded under your account. They open **Workspace Settings > Integrations**, choose **Disconnect this installation** from the installation's menu, and connect GitHub again with **Connect your GitHub account** or **Install Prisma on GitHub**.
+
+If Accelerate or Prisma Compute is the only thing blocking deletion in a workspace where you are the only member, you can delete that workspace instead. Open **Workspace Settings > Overview**, click **Delete workspace**, and type the workspace name to confirm.
+
+You can't delete a workspace this way if it's the only workspace you belong to. You also can't if it's on a paid plan, has unpaid invoices, or is managed through an integration. In those cases, clear the cause as described above.
+
+If you can't resolve a blocker from Console, email [support@prisma.io](mailto\:support@prisma.io).
+
+## Related pages
+
+- [`Billing and cancellation`](https://www.prisma.io/docs/console/more/billing): When Prisma charges a paid plan, how to cancel it, and how to cap usage charges
+- [`Feature Maturity`](https://www.prisma.io/docs/console/more/feature-maturity): Understand Early Access, Preview, and Public Beta feature stages in the Console
+- [`Members and deletion`](https://www.prisma.io/docs/console/more/workspaces): Invite and remove workspace members, hand a workspace to someone else, and delete databases, projects, and workspaces
+
+# Members and deletion (/docs/console/more/workspaces)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Invite and remove workspace members, hand a workspace to someone else, and delete databases, projects, and workspaces
+
+Location: Console > More > Members and deletion
+
+This page covers who can access a workspace, how to hand a workspace over to someone else, and how to delete a database, a project, or a whole workspace. You can do all of these yourself in the [Prisma Console](https://console.prisma.io/?utm_source=docs\&utm_medium=content\&utm_content=console).
+
+To open a workspace's settings, switch to that workspace with the workspace switcher at the top left of the Console, then go to **Workspace Settings**.
+
+## Invite a member [#invite-a-member]
+
+1. Go to **Workspace Settings** > **Members**.
+2. Click **Invite member**.
+3. Add one or more email addresses, then click **Send Invites**.
+
+Each person gets an email invitation. The invitation is valid for 7 days, and it can only be accepted by a Prisma account that signs in with the invited email address. While an invitation is pending, you can resend or revoke it from the same page.
+
+## Remove a member or leave a workspace [#remove-a-member-or-leave-a-workspace]
+
+On **Workspace Settings** > **Members**, open the menu at the end of a member's row:
+
+* On someone else's row, choose **Remove member**. They lose access to the workspace and its projects straight away.
+* On your own row, choose **Leave workspace**. You lose access until someone invites you again.
+
+Any member can remove any other member, including the person who created the workspace.
+
+If you are the last member, leaving deletes the workspace, along with all of its projects, databases, and services. The Console asks you to type the workspace name to confirm, and the same conditions apply as in [Delete a workspace](#delete-a-workspace).
+
+## Hand a workspace to someone else [#hand-a-workspace-to-someone-else]
+
+A workspace doesn't have a single owner to transfer. Access comes from membership, so handing a workspace over means adding the new person and then removing yourself:
+
+1. [Invite](#invite-a-member) the new person, and wait for them to accept.
+2. Update the billing email under **Workspace Settings** > **Billing** > **Manage billing information**, so invoices and payment emails go to the new person. Removing a member does not change it.
+3. [Leave the workspace](#remove-a-member-or-leave-a-workspace), or have the new person remove you.
+
+The same steps move a workspace to a different email address of your own: sign up for a new Prisma account with the new email, invite it, and then leave with the old account.
+
+To get access to a workspace you are not a member of, such as your company's, ask any current member to invite you. If no member can be reached, for example because they have all left the company, email [support@prisma.io](mailto\:support@prisma.io).
+
+For a workspace created through the Vercel Marketplace, the billing email follows your Vercel team's contact, and is changed in Vercel.
+
+## Delete a database [#delete-a-database]
+
+1. Open the database and go to its **Settings** tab.
+2. Click **Delete Database** and confirm.
+
+Deletion is permanent. To keep a copy of the data, see [Manually creating a backup file via `pg_dump`](https://www.prisma.io/docs/postgres/database/backups#manually-creating-a-backup-file-via-pg_dump) first.
+
+You can't delete a project's default database. To delete it, open another database in the same project, turn on **Default database** in its **Settings** tab and save, and then delete the old one. To remove the last database, [delete the project](#delete-a-project) instead.
+
+A database created through the Vercel Marketplace is deleted from your Vercel project dashboard, not from the Console.
+
+## Delete a project [#delete-a-project]
+
+1. Open the project and go to its **Settings** tab.
+2. Click **Delete Project**, type the project name to confirm, and click **Delete project**.
+
+This permanently deletes the project and everything in it, including its databases, branches, deployments, and Compute resources. A project in a workspace managed through the Vercel Marketplace can't be deleted from the Console.
+
+## Delete a workspace [#delete-a-workspace]
+
+Go to **Workspace Settings** > **Overview** and click **Delete workspace**. This permanently deletes the workspace with all of its projects and databases.
+
+The button is disabled, and shows why, when any of these apply:
+
+| Cause                                                                            | What to do                                                                                                                                      |
+| -------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| The workspace is on a paid plan.                                                 | [Cancel the paid plan](https://www.prisma.io/docs/console/more/billing#cancel-a-paid-plan) and wait for the cancellation to take effect at the end of the billing period. |
+| The workspace has an unpaid invoice.                                             | Pay it. See [If a payment fails](https://www.prisma.io/docs/console/more/billing#if-a-payment-fails).                                                                     |
+| It is the only workspace on your account.                                        | Every account keeps at least one workspace. To remove your last one, [delete your account](https://www.prisma.io/docs/console/more/support#deleting-your-pdp-account).    |
+| The workspace is managed through an integration, such as the Vercel Marketplace. | Remove it from the integration's side.                                                                                                          |
+
+Deletion also stops if the workspace has active Prisma Compute deployments. Stop and delete them, then try again.
+
+## Next steps [#next-steps]
+
+* To cancel or downgrade a paid plan, see [Billing and cancellation](https://www.prisma.io/docs/console/more/billing).
+* To delete your Prisma account, see [Deleting your Prisma account](https://www.prisma.io/docs/console/more/support#deleting-your-pdp-account).
+
+## Related pages
+
+- [`Billing and cancellation`](https://www.prisma.io/docs/console/more/billing): When Prisma charges a paid plan, how to cancel it, and how to cap usage charges
+- [`Feature Maturity`](https://www.prisma.io/docs/console/more/feature-maturity): Understand Early Access, Preview, and Public Beta feature stages in the Console
+- [`Support`](https://www.prisma.io/docs/console/more/support): Find the right support for any Console question
+
 # debug (Prisma CLI v7) (/docs/cli/v7/debug)
 
 > For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
@@ -31145,329 +31468,6 @@ Output:
 - [`dev`](https://www.prisma.io/docs/cli/v7/dev): Start a local Prisma Postgres server for development
 - [`format`](https://www.prisma.io/docs/cli/v7/format): Format and validate your Prisma schema file with consistent structure
 - [`generate`](https://www.prisma.io/docs/cli/v7/generate): Generate artifacts like Prisma Client based on your Prisma schema
-
-# Database Metrics (/docs/console/features/metrics)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Monitor your database performance with Console metrics
-
-Location: Console > Features > Database Metrics
-
-You can have a single workspace that hosts several databases. Within each database, you can view detailed reports on how your database is performing, with various metrics like:
-
-* Average response size
-* Average query duration
-* Total egress
-* Total operations
-* Cache utilization
-
-## Databases [#databases]
-
-For Prisma Postgres projects, the **Database** tab in the project view lets you configure and manage your databases. This interface provides tools to monitor and maintain your database resources. The **Connections** section displays a table with the following columns:
-
-| Column Name   | Description                                                                      |
-| ------------- | -------------------------------------------------------------------------------- |
-| **Hint**      | Provides the URL structure for the database in use.                              |
-| **Static IP** | Indicates whether static IP is enabled for the database and associated products. |
-| **Products**  | Lists the products that are enabled using the database URL.                      |
-| **Action**    | Allows you to disable all active products and remove the connection.             |
-
-# Billing and cancellation (/docs/console/more/billing)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-When Prisma charges a paid plan, how to cancel it, and how to cap usage charges
-
-Location: Console > More > Billing and cancellation
-
-This page covers when Prisma charges a workspace on a paid plan, how to cancel the plan, how to cap usage charges with a spending limit, and what happens when a payment fails.
-
-## When you're charged [#when-youre-charged]
-
-A paid plan has two parts: a plan fee and usage charges. Prisma charges the plan fee in advance, at the start of each billing period, and charges usage after the period ends, for what you used in it. So one invoice usually holds the plan fee for the coming period and the usage from the period that just ended.
-
-Each billing period lasts one month and renews on the same day every month, at 00:00 UTC. To see that day for your workspace, open **Workspace Settings** > **Billing** and look at the **Subscription** card, which shows when the current billing period renews. **View Invoices** on the same page opens your invoice list, and each invoice shows the period it covers.
-
-Each workspace has its own plan and its own bill. To find which workspace is on a paid plan, switch to each one with the workspace switcher at the top left of the Console, and check the plan name on the **Subscription** card at **Workspace Settings** > **Billing**.
-
-## Cancel a paid plan [#cancel-a-paid-plan]
-
-Cancelling moves the workspace to the Free plan at the end of the current billing period. Open the workspace that's on the paid plan, then:
-
-1. Go to **Workspace Settings** > **Billing**.
-2. Click **Manage subscription**.
-3. Choose the **Free** plan, then click **Schedule cancellation**.
-
-The Console confirms with "Subscription cancellation scheduled. Your current plan stays active until the end of the current billing period."
-
-The cancellation takes effect at the end of the current billing period, and cancelling does not end that period early. Until then, the paid plan stays active with its features and included usage, and the **Subscription** card shows the date it ends.
-
-Usage from the last period is billed after the plan ends, on a final invoice. This is why a charge can arrive after you cancel.
-
-If you change your mind before the period ends, go to **Workspace Settings** > **Billing** and click **Continue subscription** to undo the cancellation.
-
-## Workspaces billed through Vercel [#workspaces-billed-through-vercel]
-
-Vercel bills workspaces created through the Vercel Marketplace. Their charges appear on your Vercel invoice, and the invoices listed in the Console show a zero balance for these workspaces. To change or cancel the plan, go to Vercel: in your Vercel dashboard, open **Integrations**, click **Manage** on the Prisma integration, open **Settings**, and click **Change Plan**. See [Billing and pricing](https://www.prisma.io/docs/guides/postgres/vercel#billing-and-pricing) in the Vercel guide and [How do I upgrade my plan if I am using Prisma Postgres via Vercel?](https://www.prisma.io/docs/postgres/faq#how-do-i-upgrade-my-plan-if-i-am-using-prisma-postgres-via-vercel) in the FAQ.
-
-## Cap usage charges with a spending limit [#cap-usage-charges-with-a-spending-limit]
-
-A spending limit is an optional cap on usage charges. It is available on paid plans, including Vercel Marketplace workspaces.
-
-To set one, open **Workspace Settings** > **Billing** and find the **Spending Limit** card. Enter the amount in dollars, click **Set Limit**, and type the workspace name in the dialog to confirm. The Console confirms with "Your spending limit has been set and is now being enforced." To remove the limit, click **Clear Limit** in the same card and confirm the same way.
-
-The limit covers usage charges only, so the plan fee does not count toward it. To see the usage charges built up so far this period, open **Workspace Settings** > **Usage** and look at the **Current invoice** card.
-
-When usage reaches 75% of the limit, every member of the workspace gets an email with the subject "Action Required: Update Limits Now to Maintain Uninterrupted Service". At 100%, Prisma blocks further usage: queries to the workspace's databases stop, and the Console shows "Usage blocked: your workspace has reached its spending limit." at the top of the workspace.
-
-To restore service, raise or remove the limit. A new limit higher than this period's usage charges so far, shown on the **Current invoice** card, restores queries straight away. If the new limit isn't higher, the workspace is blocked again within minutes.
-
-A spending limit stops further usage. It does not reduce charges you have already incurred, and it doesn't delete any data.
-
-## If a payment fails [#if-a-payment-fails]
-
-When a payment fails, a banner at the top of the Console says "Your last invoice was not paid. Pay your outstanding balance to avoid this Workspace being blocked." Click **Pay your outstanding balance** to open the unpaid invoice and pay it. To update your card first, go to **Workspace Settings** > **Billing** and click **Manage payment methods**. For a workspace billed through Vercel, the banner link reads **Resolve billing in Vercel** and opens your Vercel dashboard instead.
-
-If the invoice stays unpaid, the workspace is blocked 15 days after the failed payment, and the banner changes to "Your Workspace is blocked due to an unpaid invoice." While it's blocked, queries to the workspace's databases stop, but no data is deleted. Paying the invoice lifts the block. While the workspace is blocked, you can't change its plan or delete it.
-
-## Next steps [#next-steps]
-
-* To delete your account, first cancel the paid plan on any workspace where you are the only member (see [Cancel a paid plan](#cancel-a-paid-plan)) and wait for the cancellation to take effect at the end of the billing period. Then see [Delete your account](https://www.prisma.io/docs/console/more/support#deleting-your-pdp-account).
-* For help with a charge, see [Support](https://www.prisma.io/docs/console/more/support).
-
-## Related pages
-
-- [`Feature Maturity`](https://www.prisma.io/docs/console/more/feature-maturity): Understand Early Access, Preview, and Public Beta feature stages in the Console
-- [`Members and deletion`](https://www.prisma.io/docs/console/more/workspaces): Invite and remove workspace members, hand a workspace to someone else, and delete databases, projects, and workspaces
-- [`Support`](https://www.prisma.io/docs/console/more/support): Find the right support for any Console question
-
-# Feature Maturity (/docs/console/more/feature-maturity)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Understand Early Access, Preview, and Public Beta feature stages in the Console
-
-Location: Console > More > Feature Maturity
-
-Prisma releases updates to Console multiple times per week, as opposed to the Prisma ORM that we release on a set schedule every few weeks. This is why we consider the lifecycle and process for maturing features in Console differently.
-
-You can [check out the releases and maturity process for the Prisma ORM](https://www.prisma.io/docs/orm/v7/more/releases) for further details.
-
-You can find information about releases across *all* Prisma tools and products in the [changelog](https://www.prisma.io/changelog).
-
-## Early Access [#early-access]
-
-If a feature on the Console is labeled as **Early Access**:
-
-* It is ready to try out and represents the cutting edge of what we are building.
-* It can still evolve based on feedback from our users, and its API surface won't change drastically as it matures.
-* We reserve ourselves the right to throttle or remove access to a feature in Early Access to preserve the stability of the platform, or enforce its use to stay within the scope defined in our [Terms of Service](https://pris.ly/terms).
-
-Your feedback in our [Discord](https://pris.ly/discord?utm_source=docs\&utm_medium=inline_text) shapes the design of the features. This will help us ensure that they can solve your problems in the best way possible.
-
-## Preview [#preview]
-
-If a feature on the Console is labeled as **Preview**:
-
-* We have refined the software based on the valuable feedback we obtained during the Early Access phase.
-* We developed the feature further, bringing it closer to the final version, and it is close to being ready for production usage.
-* We have lifted the invite gate, so users no longer need an invitation to access the feature. Users just need to sign up to gain access.
-* We have increased the stability of the software compared to the Early Access phase. While there might still be some issues, they should be less frequent and less critical.
-* We use the Preview phase as a final stress test to ensure the product is ready for heavy production workloads.
-
-We recommend testing the product in a staging environment and welcome any feedback in our [Discord](https://pris.ly/discord?utm_source=docs\&utm_medium=inline_text). This will assist us in improving the product for its final release.
-
-## Public Beta [#public-beta]
-
-If a product or feature is labeled as **Public Beta**:
-
-* It is open for anyone to try. No invite or waitlist is required.
-* The core model is stable, and the documented happy paths work end to end. It is a good fit for evaluation, dogfooding, staging environments, internal tools, and low-risk apps.
-* Behavior should stay stable unless the documentation or release notes call out an exception.
-* Details can still change before general availability: exact limits, pricing, retention policies, runtime guardrails, supported frameworks and build behavior, some CLI and API details, Console UX, naming, and advanced workflows.
-* We don't recommend it yet for mission-critical or heavy production workloads.
-
-Public Beta is the final stress-test phase before general availability. Expect some rough edges, and tell us about them in [Discord](https://pris.ly/discord?utm_source=docs\&utm_medium=inline_text); your feedback directly shapes the release.
-
-## Related pages
-
-- [`Billing and cancellation`](https://www.prisma.io/docs/console/more/billing): When Prisma charges a paid plan, how to cancel it, and how to cap usage charges
-- [`Members and deletion`](https://www.prisma.io/docs/console/more/workspaces): Invite and remove workspace members, hand a workspace to someone else, and delete databases, projects, and workspaces
-- [`Support`](https://www.prisma.io/docs/console/more/support): Find the right support for any Console question
-
-# Support (/docs/console/more/support)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Find the right support for any Console question
-
-Location: Console > More > Support
-
-Share your experiences with us on [Discord](https://pris.ly/discord?utm_source=docs\&utm_medium=intro_text).
-
-## Support [#support]
-
-Your support options are based on your workspace's active plan. For more details, take a look at our [pricing page](https://www.prisma.io/pricing).
-
-### Community support [#community-support]
-
-Reach out to us in our [Discord](https://pris.ly/discord?utm_source=docs\&utm_medium=inline_text).
-
-### Standard support [#standard-support]
-
-* Email support, [support@prisma.io](mailto\:support@prisma.io), or reach out via the Console
-* 2 business days, Mon-Fri, 9am-5pm CET
-
-### Premium support [#premium-support]
-
-* Email support, [support@prisma.io](mailto\:support@prisma.io), or reach out via the Console
-* 1 business hour, Mon-Fri, 9am-5pm CET
-
-### Dedicated support [#dedicated-support]
-
-Dedicated contact person.
-
-## Deleting your Prisma account [#deleting-your-pdp-account]
-
-You can delete your Prisma account, the one you sign in to the [Prisma Console](https://console.prisma.io/?utm_source=docs\&utm_medium=content\&utm_content=console) with, from the Console yourself. Deletion is permanent and can't be undone.
-
-Deleting your account also deletes every workspace where you are the only member, along with that workspace's projects and databases. A shared workspace, meaning one with other members, is kept, and you are removed from it. Export any data you want to keep before you start. See [Manually creating a backup file via `pg_dump`](https://www.prisma.io/docs/postgres/database/backups#manually-creating-a-backup-file-via-pg_dump) for how to export a database.
-
-To delete your account:
-
-1. Open the [Prisma Console](https://console.prisma.io/?utm_source=docs\&utm_medium=content\&utm_content=console), click your name at the bottom of the sidebar, and choose **Account settings**.
-2. In the **Delete Account** section, click **Delete Account**.
-3. In the **Delete your account** dialog, type `DELETE` in capitals and click **Delete Account**.
-
-Console deletes your account and signs you out.
-
-### If deletion is blocked [#if-deletion-is-blocked]
-
-Deletion stops if any of the causes below apply, and each message starts with the name of the workspace that causes it. Some workspaces are *managed through an integration*, meaning they were created from the Prisma integration in Vercel or from Stripe Projects. If one of those blocks you, the **Delete Account** button is disabled and shows why. Anything else blocks you after you click **Delete Account**: a dialog lists every reason. Fix each one, then try again.
-
-To open a workspace's settings, switch to that workspace with the workspace switcher at the top left of the Console, then go to **Workspace Settings**.
-
-| Cause                                                                                                      | Message in Console                                                                      |
-| ---------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| A workspace where you are the only member is managed through an integration.                               | "Transfer or remove the integration-managed workspace before deleting your account."    |
-| A shared workspace managed through an integration uses your email as its billing email.                    | "Update the workspace billing email before deleting your account."                      |
-| A workspace where you are the only member is on a paid plan.                                               | "Downgrade to the Free plan before deleting your account."                              |
-| A workspace where you are the only member has unpaid invoices.                                             | "Please resolve your outstanding balance before deleting your account."                 |
-| Accelerate is enabled on a database in a workspace where you are the only member.                          | "Disable Accelerate on all databases before deleting your account."                     |
-| A workspace where you are the only member has Prisma Compute deployments, including stopped ones.          | "Stop and delete all compute instances before deleting your account."                   |
-| A workspace's GitHub connection was set up under your account, even if you have since left that workspace. | "Ask another admin of that workspace to reconnect GitHub before deleting your account." |
-
-How to clear each cause:
-
-* **Integration-managed workspace.** Console can't delete a workspace that is managed through an integration. For a workspace created from the Prisma integration in Vercel, uninstall the integration in Vercel. This deletes the Prisma workspace the integration created and all its databases, so export any data you want to keep first. [How do I delete a Prisma Postgres database I created through Vercel?](https://www.prisma.io/docs/postgres/faq#how-do-i-delete-a-prisma-postgres-database-i-created-through-vercel) has the uninstall steps and covers deleting a single database. If you can't transfer or remove it from the integration side, email [support@prisma.io](mailto\:support@prisma.io) with the workspace name.
-* **Billing email.** You can't change the billing email of an integration-managed workspace in Console. Email [support@prisma.io](mailto\:support@prisma.io) with the workspace name.
-* **Paid plan.** Go to **Workspace Settings > Billing > Manage subscription**, choose **Free**, and click **Schedule cancellation**. The downgrade takes effect at the end of the current billing period, so you can't delete your account until then. When the **Subscription** card on the Billing page says "Your workspace is on the Free plan", the downgrade is done. See [Cancel a paid plan](https://www.prisma.io/docs/console/more/billing#cancel-a-paid-plan).
-* **Unpaid invoices.** Click **Pay your outstanding balance** in the banner at the top of the Console to open the unpaid invoice and pay it, or go to **Workspace Settings > Billing** and click **View Invoices**. See [If a payment fails](https://www.prisma.io/docs/console/more/billing#if-a-payment-fails).
-* **Accelerate.** In each affected workspace, open the database, click **Accelerate** in its sidebar, open the **Settings** tab, and click **Disable Accelerate**.
-* **Prisma Compute.** The Console message calls Prisma Compute deployments compute instances. In each project of the affected workspace, under **Apps** in the project sidebar, open the app's **Deployments** page, and from each deployment's actions menu choose **Stop deployment** and then **Destroy deployment**. If a deployment is already stopped, destroy it, because stopped deployments still count. To remove the app and all its deployments at once, choose **Delete app** from the app's menu.
-* **GitHub.** Ask another admin of that workspace to disconnect and reconnect GitHub, so the connection is no longer recorded under your account. They open **Workspace Settings > Integrations**, choose **Disconnect this installation** from the installation's menu, and connect GitHub again with **Connect your GitHub account** or **Install Prisma on GitHub**.
-
-If Accelerate or Prisma Compute is the only thing blocking deletion in a workspace where you are the only member, you can delete that workspace instead. Open **Workspace Settings > Overview**, click **Delete workspace**, and type the workspace name to confirm.
-
-You can't delete a workspace this way if it's the only workspace you belong to. You also can't if it's on a paid plan, has unpaid invoices, or is managed through an integration. In those cases, clear the cause as described above.
-
-If you can't resolve a blocker from Console, email [support@prisma.io](mailto\:support@prisma.io).
-
-## Related pages
-
-- [`Billing and cancellation`](https://www.prisma.io/docs/console/more/billing): When Prisma charges a paid plan, how to cancel it, and how to cap usage charges
-- [`Feature Maturity`](https://www.prisma.io/docs/console/more/feature-maturity): Understand Early Access, Preview, and Public Beta feature stages in the Console
-- [`Members and deletion`](https://www.prisma.io/docs/console/more/workspaces): Invite and remove workspace members, hand a workspace to someone else, and delete databases, projects, and workspaces
-
-# Members and deletion (/docs/console/more/workspaces)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Invite and remove workspace members, hand a workspace to someone else, and delete databases, projects, and workspaces
-
-Location: Console > More > Members and deletion
-
-This page covers who can access a workspace, how to hand a workspace over to someone else, and how to delete a database, a project, or a whole workspace. You can do all of these yourself in the [Prisma Console](https://console.prisma.io/?utm_source=docs\&utm_medium=content\&utm_content=console).
-
-To open a workspace's settings, switch to that workspace with the workspace switcher at the top left of the Console, then go to **Workspace Settings**.
-
-## Invite a member [#invite-a-member]
-
-1. Go to **Workspace Settings** > **Members**.
-2. Click **Invite member**.
-3. Add one or more email addresses, then click **Send Invites**.
-
-Each person gets an email invitation. The invitation is valid for 7 days, and it can only be accepted by a Prisma account that signs in with the invited email address. While an invitation is pending, you can resend or revoke it from the same page.
-
-## Remove a member or leave a workspace [#remove-a-member-or-leave-a-workspace]
-
-On **Workspace Settings** > **Members**, open the menu at the end of a member's row:
-
-* On someone else's row, choose **Remove member**. They lose access to the workspace and its projects straight away.
-* On your own row, choose **Leave workspace**. You lose access until someone invites you again.
-
-Any member can remove any other member, including the person who created the workspace.
-
-If you are the last member, leaving deletes the workspace, along with all of its projects, databases, and services. The Console asks you to type the workspace name to confirm, and the same conditions apply as in [Delete a workspace](#delete-a-workspace).
-
-## Hand a workspace to someone else [#hand-a-workspace-to-someone-else]
-
-A workspace doesn't have a single owner to transfer. Access comes from membership, so handing a workspace over means adding the new person and then removing yourself:
-
-1. [Invite](#invite-a-member) the new person, and wait for them to accept.
-2. Update the billing email under **Workspace Settings** > **Billing** > **Manage billing information**, so invoices and payment emails go to the new person. Removing a member does not change it.
-3. [Leave the workspace](#remove-a-member-or-leave-a-workspace), or have the new person remove you.
-
-The same steps move a workspace to a different email address of your own: sign up for a new Prisma account with the new email, invite it, and then leave with the old account.
-
-To get access to a workspace you are not a member of, such as your company's, ask any current member to invite you. If no member can be reached, for example because they have all left the company, email [support@prisma.io](mailto\:support@prisma.io).
-
-For a workspace created through the Vercel Marketplace, the billing email follows your Vercel team's contact, and is changed in Vercel.
-
-## Delete a database [#delete-a-database]
-
-1. Open the database and go to its **Settings** tab.
-2. Click **Delete Database** and confirm.
-
-Deletion is permanent. To keep a copy of the data, see [Manually creating a backup file via `pg_dump`](https://www.prisma.io/docs/postgres/database/backups#manually-creating-a-backup-file-via-pg_dump) first.
-
-You can't delete a project's default database. To delete it, open another database in the same project, turn on **Default database** in its **Settings** tab and save, and then delete the old one. To remove the last database, [delete the project](#delete-a-project) instead.
-
-A database created through the Vercel Marketplace is deleted from your Vercel project dashboard, not from the Console.
-
-## Delete a project [#delete-a-project]
-
-1. Open the project and go to its **Settings** tab.
-2. Click **Delete Project**, type the project name to confirm, and click **Delete project**.
-
-This permanently deletes the project and everything in it, including its databases, branches, deployments, and Compute resources. A project in a workspace managed through the Vercel Marketplace can't be deleted from the Console.
-
-## Delete a workspace [#delete-a-workspace]
-
-Go to **Workspace Settings** > **Overview** and click **Delete workspace**. This permanently deletes the workspace with all of its projects and databases.
-
-The button is disabled, and shows why, when any of these apply:
-
-| Cause                                                                            | What to do                                                                                                                                      |
-| -------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| The workspace is on a paid plan.                                                 | [Cancel the paid plan](https://www.prisma.io/docs/console/more/billing#cancel-a-paid-plan) and wait for the cancellation to take effect at the end of the billing period. |
-| The workspace has an unpaid invoice.                                             | Pay it. See [If a payment fails](https://www.prisma.io/docs/console/more/billing#if-a-payment-fails).                                                                     |
-| It is the only workspace on your account.                                        | Every account keeps at least one workspace. To remove your last one, [delete your account](https://www.prisma.io/docs/console/more/support#deleting-your-pdp-account).    |
-| The workspace is managed through an integration, such as the Vercel Marketplace. | Remove it from the integration's side.                                                                                                          |
-
-Deletion also stops if the workspace has active Prisma Compute deployments. Stop and delete them, then try again.
-
-## Next steps [#next-steps]
-
-* To cancel or downgrade a paid plan, see [Billing and cancellation](https://www.prisma.io/docs/console/more/billing).
-* To delete your Prisma account, see [Deleting your Prisma account](https://www.prisma.io/docs/console/more/support#deleting-your-pdp-account).
-
-## Related pages
-
-- [`Billing and cancellation`](https://www.prisma.io/docs/console/more/billing): When Prisma charges a paid plan, how to cancel it, and how to cap usage charges
-- [`Feature Maturity`](https://www.prisma.io/docs/console/more/feature-maturity): Understand Early Access, Preview, and Public Beta feature stages in the Console
-- [`Support`](https://www.prisma.io/docs/console/more/support): Find the right support for any Console question
 
 # Build a marketing site with Astro (/docs/guides/compute/astro-marketing-site)
 
@@ -82716,6 +82716,566 @@ yarn prisma platform status --json
 npx prisma platform status --json
 ```
 
+# dev (Prisma CLI v7) (/docs/cli/v7/dev)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Start a local Prisma Postgres server for development
+
+Location: CLI > v7 > dev
+
+The `prisma dev` command starts a [local Prisma Postgres](https://www.prisma.io/docs/local-development/postgres) database that you can run Prisma ORM commands against. Use it for development and testing, then point the same project at [Prisma Postgres](https://www.prisma.io/docs/postgres) for production.
+
+## Usage [#usage]
+
+```bash
+prisma dev [options]
+```
+
+## Options [#options]
+
+| Option             | Description                                               | Default   |
+| ------------------ | --------------------------------------------------------- | --------- |
+| `-n`, `--name`     | Name of the server (helps isolate state between projects) | `default` |
+| `-p`, `--port`     | Main port number the Prisma Dev server will listen on     | `51213`   |
+| `-P`, `--db-port`  | Port number the database server will listen on            | `51214`   |
+| `--shadow-db-port` | Port number the shadow database server will listen on     | `51215`   |
+| `-d`, `--detach`   | Run the server in the background                          | `false`   |
+| `--debug`          | Enable debug logging                                      | `false`   |
+
+## Subcommands [#subcommands]
+
+| Command                                 | Description                       |
+| --------------------------------------- | --------------------------------- |
+| [`prisma dev ls`](https://www.prisma.io/docs/cli/v7/dev/ls)       | List available servers            |
+| [`prisma dev rm`](https://www.prisma.io/docs/cli/v7/dev/rm)       | Remove servers                    |
+| [`prisma dev start`](https://www.prisma.io/docs/cli/v7/dev/start) | Start one or more stopped servers |
+| [`prisma dev stop`](https://www.prisma.io/docs/cli/v7/dev/stop)   | Stop servers                      |
+
+## Examples [#examples]
+
+### Start a local Prisma Postgres server [#start-a-local-prisma-postgres-server]
+
+  
+
+#### bun
+
+```bash
+bunx prisma dev
+```
+
+#### pnpm
+
+```bash
+pnpm prisma dev
+```
+
+#### yarn
+
+```bash
+yarn prisma dev
+```
+
+#### npm
+
+```bash
+npx prisma dev
+```
+
+Output:
+
+```text
+✔  Great Success!
+
+   Your  prisma dev  server default is ready and listening on ports 63567-63569.
+
+╭──────────────────────────────────╮
+│[q]uit  [h]ttp url  [t]cp urls    │
+╰──────────────────────────────────╯
+```
+
+### Start with a specific name [#start-with-a-specific-name]
+
+Create a named instance for project isolation:
+
+  
+
+#### bun
+
+```bash
+bunx prisma dev --name="mydbname"
+```
+
+#### pnpm
+
+```bash
+pnpm prisma dev --name="mydbname"
+```
+
+#### yarn
+
+```bash
+yarn prisma dev --name="mydbname"
+```
+
+#### npm
+
+```bash
+npx prisma dev --name="mydbname"
+```
+
+### Run in detached mode [#run-in-detached-mode]
+
+Run the server in the background:
+
+  
+
+#### bun
+
+```bash
+bunx prisma dev --detach
+```
+
+#### pnpm
+
+```bash
+pnpm prisma dev --detach
+```
+
+#### yarn
+
+```bash
+yarn prisma dev --detach
+```
+
+#### npm
+
+```bash
+npx prisma dev --detach
+```
+
+This frees up your terminal. Use `prisma dev ls` to see running servers and `prisma dev stop` to stop them.
+
+### Specify custom ports [#specify-custom-ports]
+
+  
+
+#### bun
+
+```bash
+bunx prisma dev --port 5000 --db-port 5001 --shadow-db-port 5002
+```
+
+#### pnpm
+
+```bash
+pnpm prisma dev --port 5000 --db-port 5001 --shadow-db-port 5002
+```
+
+#### yarn
+
+```bash
+yarn prisma dev --port 5000 --db-port 5001 --shadow-db-port 5002
+```
+
+#### npm
+
+```bash
+npx prisma dev --port 5000 --db-port 5001 --shadow-db-port 5002
+```
+
+## Related pages
+
+- [`db`](https://www.prisma.io/docs/cli/v7/db): Manage your database schema and lifecycle during development
+- [`debug`](https://www.prisma.io/docs/cli/v7/debug): Display Prisma debug information including schema paths, engine binaries, environment variables, and cache directories for troubleshooting
+- [`format`](https://www.prisma.io/docs/cli/v7/format): Format and validate your Prisma schema file with consistent structure
+- [`generate`](https://www.prisma.io/docs/cli/v7/generate): Generate artifacts like Prisma Client based on your Prisma schema
+- [`init`](https://www.prisma.io/docs/cli/v7/init): Set up a new Prisma project in the current directory
+
+# ls (Prisma CLI v7) (/docs/cli/v7/dev/ls)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+List available local Prisma Postgres servers
+
+Location: CLI > v7 > dev > ls
+
+The `prisma dev ls` command lists all available [local Prisma Postgres](https://www.prisma.io/docs/local-development/postgres) instances on your system.
+
+## Usage [#usage]
+
+```bash
+prisma dev ls [options]
+```
+
+## Options [#options]
+
+| Option    | Description          | Default |
+| --------- | -------------------- | ------- |
+| `--debug` | Enable debug logging | `false` |
+
+## Examples [#examples]
+
+### List all servers [#list-all-servers]
+
+  
+
+#### bun
+
+```bash
+bunx prisma dev ls
+```
+
+#### pnpm
+
+```bash
+pnpm prisma dev ls
+```
+
+#### yarn
+
+```bash
+yarn prisma dev ls
+```
+
+#### npm
+
+```bash
+npx prisma dev ls
+```
+
+This shows all instances on your system with their current status and configuration.
+
+## Related pages
+
+- [`rm`](https://www.prisma.io/docs/cli/v7/dev/rm): Remove local Prisma Postgres servers
+- [`start`](https://www.prisma.io/docs/cli/v7/dev/start): Start one or more stopped local Prisma Postgres servers
+- [`stop`](https://www.prisma.io/docs/cli/v7/dev/stop): Stop local Prisma Postgres servers
+
+# rm (Prisma CLI v7) (/docs/cli/v7/dev/rm)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Remove local Prisma Postgres servers
+
+Location: CLI > v7 > dev > rm
+
+The `prisma dev rm` command removes the data of one or more [local Prisma Postgres](https://www.prisma.io/docs/local-development/postgres) databases from your file system.
+
+## Usage [#usage]
+
+```bash
+prisma dev rm [options] <name>
+```
+
+## Arguments [#arguments]
+
+| Argument | Description                                           |
+| -------- | ----------------------------------------------------- |
+| `<name>` | Name(s) or glob pattern(s) of the server(s) to remove |
+
+## Options [#options]
+
+| Option    | Description                                   | Default |
+| --------- | --------------------------------------------- | ------- |
+| `--debug` | Enable debug logging                          | `false` |
+| `--force` | Stop any running servers before removing them | `false` |
+
+Without `--force`, the command fails if any server is running.
+
+## Examples [#examples]
+
+### Remove a specific database [#remove-a-specific-database]
+
+  
+
+#### bun
+
+```bash
+bunx prisma dev rm mydb
+```
+
+#### pnpm
+
+```bash
+pnpm prisma dev rm mydb
+```
+
+#### yarn
+
+```bash
+yarn prisma dev rm mydb
+```
+
+#### npm
+
+```bash
+npx prisma dev rm mydb
+```
+
+### Remove multiple databases with a pattern [#remove-multiple-databases-with-a-pattern]
+
+Remove all databases starting with `mydb`:
+
+  
+
+#### bun
+
+```bash
+bunx prisma dev rm mydb*
+```
+
+#### pnpm
+
+```bash
+pnpm prisma dev rm mydb*
+```
+
+#### yarn
+
+```bash
+yarn prisma dev rm mydb*
+```
+
+#### npm
+
+```bash
+npx prisma dev rm mydb*
+```
+
+### Force remove a running database [#force-remove-a-running-database]
+
+Stop and remove a database in one command:
+
+  
+
+#### bun
+
+```bash
+bunx prisma dev rm --force mydb
+```
+
+#### pnpm
+
+```bash
+pnpm prisma dev rm --force mydb
+```
+
+#### yarn
+
+```bash
+yarn prisma dev rm --force mydb
+```
+
+#### npm
+
+```bash
+npx prisma dev rm --force mydb
+```
+
+> [!NOTE]
+> The `rm` command is interactive and includes safety prompts to prevent accidental data loss.
+
+## Related pages
+
+- [`ls`](https://www.prisma.io/docs/cli/v7/dev/ls): List available local Prisma Postgres servers
+- [`start`](https://www.prisma.io/docs/cli/v7/dev/start): Start one or more stopped local Prisma Postgres servers
+- [`stop`](https://www.prisma.io/docs/cli/v7/dev/stop): Stop local Prisma Postgres servers
+
+# start (Prisma CLI v7) (/docs/cli/v7/dev/start)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Start one or more stopped local Prisma Postgres servers
+
+Location: CLI > v7 > dev > start
+
+The `prisma dev start` command starts existing [local Prisma Postgres](https://www.prisma.io/docs/local-development/postgres) instances in the background.
+
+## Usage [#usage]
+
+```bash
+prisma dev start [options] <name>
+```
+
+## Arguments [#arguments]
+
+| Argument | Description                                          |
+| -------- | ---------------------------------------------------- |
+| `<name>` | Name(s) or glob pattern(s) of the server(s) to start |
+
+## Options [#options]
+
+| Option    | Description          | Default |
+| --------- | -------------------- | ------- |
+| `--debug` | Enable debug logging | `false` |
+
+> [!NOTE]
+> This command only works with instances that already exist. Use `prisma dev` to create a new instance.
+
+## Examples [#examples]
+
+### Start a specific database [#start-a-specific-database]
+
+  
+
+#### bun
+
+```bash
+bunx prisma dev start mydb
+```
+
+#### pnpm
+
+```bash
+pnpm prisma dev start mydb
+```
+
+#### yarn
+
+```bash
+yarn prisma dev start mydb
+```
+
+#### npm
+
+```bash
+npx prisma dev start mydb
+```
+
+### Start multiple databases with a pattern [#start-multiple-databases-with-a-pattern]
+
+Start all databases starting with `mydb`:
+
+  
+
+#### bun
+
+```bash
+bunx prisma dev start mydb*
+```
+
+#### pnpm
+
+```bash
+pnpm prisma dev start mydb*
+```
+
+#### yarn
+
+```bash
+yarn prisma dev start mydb*
+```
+
+#### npm
+
+```bash
+npx prisma dev start mydb*
+```
+
+## Related pages
+
+- [`ls`](https://www.prisma.io/docs/cli/v7/dev/ls): List available local Prisma Postgres servers
+- [`rm`](https://www.prisma.io/docs/cli/v7/dev/rm): Remove local Prisma Postgres servers
+- [`stop`](https://www.prisma.io/docs/cli/v7/dev/stop): Stop local Prisma Postgres servers
+
+# stop (Prisma CLI v7) (/docs/cli/v7/dev/stop)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Stop local Prisma Postgres servers
+
+Location: CLI > v7 > dev > stop
+
+The `prisma dev stop` command stops one or more [local Prisma Postgres](https://www.prisma.io/docs/local-development/postgres) databases.
+
+## Usage [#usage]
+
+```bash
+prisma dev stop [options] <name>
+```
+
+## Arguments [#arguments]
+
+| Argument | Description                                         |
+| -------- | --------------------------------------------------- |
+| `<name>` | Name(s) or glob pattern(s) of the server(s) to stop |
+
+## Options [#options]
+
+| Option    | Description          | Default |
+| --------- | -------------------- | ------- |
+| `--debug` | Enable debug logging | `false` |
+
+## Examples [#examples]
+
+### Stop a specific database [#stop-a-specific-database]
+
+  
+
+#### bun
+
+```bash
+bunx prisma dev stop mydb
+```
+
+#### pnpm
+
+```bash
+pnpm prisma dev stop mydb
+```
+
+#### yarn
+
+```bash
+yarn prisma dev stop mydb
+```
+
+#### npm
+
+```bash
+npx prisma dev stop mydb
+```
+
+### Stop multiple databases with a pattern [#stop-multiple-databases-with-a-pattern]
+
+Stop all databases starting with `mydb`:
+
+  
+
+#### bun
+
+```bash
+bunx prisma dev stop mydb*
+```
+
+#### pnpm
+
+```bash
+pnpm prisma dev stop mydb*
+```
+
+#### yarn
+
+```bash
+yarn prisma dev stop mydb*
+```
+
+#### npm
+
+```bash
+npx prisma dev stop mydb*
+```
+
+> [!NOTE]
+> The `stop` command is interactive and includes safety prompts to prevent accidental operations.
+
+## Related pages
+
+- [`ls`](https://www.prisma.io/docs/cli/v7/dev/ls): List available local Prisma Postgres servers
+- [`rm`](https://www.prisma.io/docs/cli/v7/dev/rm): Remove local Prisma Postgres servers
+- [`start`](https://www.prisma.io/docs/cli/v7/dev/start): Start one or more stopped local Prisma Postgres servers
+
 # execute (Prisma CLI v7) (/docs/cli/v7/db/execute)
 
 > For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
@@ -83409,566 +83969,6 @@ npx prisma db seed -- --arg1 value1 --arg2 value2
 - [`execute`](https://www.prisma.io/docs/cli/v7/db/execute): Execute native commands to your database
 - [`pull`](https://www.prisma.io/docs/cli/v7/db/pull): Pull the state from the database to the Prisma schema using introspection
 - [`push`](https://www.prisma.io/docs/cli/v7/db/push): Push the state from your Prisma schema to your database
-
-# dev (Prisma CLI v7) (/docs/cli/v7/dev)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Start a local Prisma Postgres server for development
-
-Location: CLI > v7 > dev
-
-The `prisma dev` command starts a [local Prisma Postgres](https://www.prisma.io/docs/local-development/postgres) database that you can run Prisma ORM commands against. Use it for development and testing, then point the same project at [Prisma Postgres](https://www.prisma.io/docs/postgres) for production.
-
-## Usage [#usage]
-
-```bash
-prisma dev [options]
-```
-
-## Options [#options]
-
-| Option             | Description                                               | Default   |
-| ------------------ | --------------------------------------------------------- | --------- |
-| `-n`, `--name`     | Name of the server (helps isolate state between projects) | `default` |
-| `-p`, `--port`     | Main port number the Prisma Dev server will listen on     | `51213`   |
-| `-P`, `--db-port`  | Port number the database server will listen on            | `51214`   |
-| `--shadow-db-port` | Port number the shadow database server will listen on     | `51215`   |
-| `-d`, `--detach`   | Run the server in the background                          | `false`   |
-| `--debug`          | Enable debug logging                                      | `false`   |
-
-## Subcommands [#subcommands]
-
-| Command                                 | Description                       |
-| --------------------------------------- | --------------------------------- |
-| [`prisma dev ls`](https://www.prisma.io/docs/cli/v7/dev/ls)       | List available servers            |
-| [`prisma dev rm`](https://www.prisma.io/docs/cli/v7/dev/rm)       | Remove servers                    |
-| [`prisma dev start`](https://www.prisma.io/docs/cli/v7/dev/start) | Start one or more stopped servers |
-| [`prisma dev stop`](https://www.prisma.io/docs/cli/v7/dev/stop)   | Stop servers                      |
-
-## Examples [#examples]
-
-### Start a local Prisma Postgres server [#start-a-local-prisma-postgres-server]
-
-  
-
-#### bun
-
-```bash
-bunx prisma dev
-```
-
-#### pnpm
-
-```bash
-pnpm prisma dev
-```
-
-#### yarn
-
-```bash
-yarn prisma dev
-```
-
-#### npm
-
-```bash
-npx prisma dev
-```
-
-Output:
-
-```text
-✔  Great Success!
-
-   Your  prisma dev  server default is ready and listening on ports 63567-63569.
-
-╭──────────────────────────────────╮
-│[q]uit  [h]ttp url  [t]cp urls    │
-╰──────────────────────────────────╯
-```
-
-### Start with a specific name [#start-with-a-specific-name]
-
-Create a named instance for project isolation:
-
-  
-
-#### bun
-
-```bash
-bunx prisma dev --name="mydbname"
-```
-
-#### pnpm
-
-```bash
-pnpm prisma dev --name="mydbname"
-```
-
-#### yarn
-
-```bash
-yarn prisma dev --name="mydbname"
-```
-
-#### npm
-
-```bash
-npx prisma dev --name="mydbname"
-```
-
-### Run in detached mode [#run-in-detached-mode]
-
-Run the server in the background:
-
-  
-
-#### bun
-
-```bash
-bunx prisma dev --detach
-```
-
-#### pnpm
-
-```bash
-pnpm prisma dev --detach
-```
-
-#### yarn
-
-```bash
-yarn prisma dev --detach
-```
-
-#### npm
-
-```bash
-npx prisma dev --detach
-```
-
-This frees up your terminal. Use `prisma dev ls` to see running servers and `prisma dev stop` to stop them.
-
-### Specify custom ports [#specify-custom-ports]
-
-  
-
-#### bun
-
-```bash
-bunx prisma dev --port 5000 --db-port 5001 --shadow-db-port 5002
-```
-
-#### pnpm
-
-```bash
-pnpm prisma dev --port 5000 --db-port 5001 --shadow-db-port 5002
-```
-
-#### yarn
-
-```bash
-yarn prisma dev --port 5000 --db-port 5001 --shadow-db-port 5002
-```
-
-#### npm
-
-```bash
-npx prisma dev --port 5000 --db-port 5001 --shadow-db-port 5002
-```
-
-## Related pages
-
-- [`db`](https://www.prisma.io/docs/cli/v7/db): Manage your database schema and lifecycle during development
-- [`debug`](https://www.prisma.io/docs/cli/v7/debug): Display Prisma debug information including schema paths, engine binaries, environment variables, and cache directories for troubleshooting
-- [`format`](https://www.prisma.io/docs/cli/v7/format): Format and validate your Prisma schema file with consistent structure
-- [`generate`](https://www.prisma.io/docs/cli/v7/generate): Generate artifacts like Prisma Client based on your Prisma schema
-- [`init`](https://www.prisma.io/docs/cli/v7/init): Set up a new Prisma project in the current directory
-
-# ls (Prisma CLI v7) (/docs/cli/v7/dev/ls)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-List available local Prisma Postgres servers
-
-Location: CLI > v7 > dev > ls
-
-The `prisma dev ls` command lists all available [local Prisma Postgres](https://www.prisma.io/docs/local-development/postgres) instances on your system.
-
-## Usage [#usage]
-
-```bash
-prisma dev ls [options]
-```
-
-## Options [#options]
-
-| Option    | Description          | Default |
-| --------- | -------------------- | ------- |
-| `--debug` | Enable debug logging | `false` |
-
-## Examples [#examples]
-
-### List all servers [#list-all-servers]
-
-  
-
-#### bun
-
-```bash
-bunx prisma dev ls
-```
-
-#### pnpm
-
-```bash
-pnpm prisma dev ls
-```
-
-#### yarn
-
-```bash
-yarn prisma dev ls
-```
-
-#### npm
-
-```bash
-npx prisma dev ls
-```
-
-This shows all instances on your system with their current status and configuration.
-
-## Related pages
-
-- [`rm`](https://www.prisma.io/docs/cli/v7/dev/rm): Remove local Prisma Postgres servers
-- [`start`](https://www.prisma.io/docs/cli/v7/dev/start): Start one or more stopped local Prisma Postgres servers
-- [`stop`](https://www.prisma.io/docs/cli/v7/dev/stop): Stop local Prisma Postgres servers
-
-# rm (Prisma CLI v7) (/docs/cli/v7/dev/rm)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Remove local Prisma Postgres servers
-
-Location: CLI > v7 > dev > rm
-
-The `prisma dev rm` command removes the data of one or more [local Prisma Postgres](https://www.prisma.io/docs/local-development/postgres) databases from your file system.
-
-## Usage [#usage]
-
-```bash
-prisma dev rm [options] <name>
-```
-
-## Arguments [#arguments]
-
-| Argument | Description                                           |
-| -------- | ----------------------------------------------------- |
-| `<name>` | Name(s) or glob pattern(s) of the server(s) to remove |
-
-## Options [#options]
-
-| Option    | Description                                   | Default |
-| --------- | --------------------------------------------- | ------- |
-| `--debug` | Enable debug logging                          | `false` |
-| `--force` | Stop any running servers before removing them | `false` |
-
-Without `--force`, the command fails if any server is running.
-
-## Examples [#examples]
-
-### Remove a specific database [#remove-a-specific-database]
-
-  
-
-#### bun
-
-```bash
-bunx prisma dev rm mydb
-```
-
-#### pnpm
-
-```bash
-pnpm prisma dev rm mydb
-```
-
-#### yarn
-
-```bash
-yarn prisma dev rm mydb
-```
-
-#### npm
-
-```bash
-npx prisma dev rm mydb
-```
-
-### Remove multiple databases with a pattern [#remove-multiple-databases-with-a-pattern]
-
-Remove all databases starting with `mydb`:
-
-  
-
-#### bun
-
-```bash
-bunx prisma dev rm mydb*
-```
-
-#### pnpm
-
-```bash
-pnpm prisma dev rm mydb*
-```
-
-#### yarn
-
-```bash
-yarn prisma dev rm mydb*
-```
-
-#### npm
-
-```bash
-npx prisma dev rm mydb*
-```
-
-### Force remove a running database [#force-remove-a-running-database]
-
-Stop and remove a database in one command:
-
-  
-
-#### bun
-
-```bash
-bunx prisma dev rm --force mydb
-```
-
-#### pnpm
-
-```bash
-pnpm prisma dev rm --force mydb
-```
-
-#### yarn
-
-```bash
-yarn prisma dev rm --force mydb
-```
-
-#### npm
-
-```bash
-npx prisma dev rm --force mydb
-```
-
-> [!NOTE]
-> The `rm` command is interactive and includes safety prompts to prevent accidental data loss.
-
-## Related pages
-
-- [`ls`](https://www.prisma.io/docs/cli/v7/dev/ls): List available local Prisma Postgres servers
-- [`start`](https://www.prisma.io/docs/cli/v7/dev/start): Start one or more stopped local Prisma Postgres servers
-- [`stop`](https://www.prisma.io/docs/cli/v7/dev/stop): Stop local Prisma Postgres servers
-
-# start (Prisma CLI v7) (/docs/cli/v7/dev/start)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Start one or more stopped local Prisma Postgres servers
-
-Location: CLI > v7 > dev > start
-
-The `prisma dev start` command starts existing [local Prisma Postgres](https://www.prisma.io/docs/local-development/postgres) instances in the background.
-
-## Usage [#usage]
-
-```bash
-prisma dev start [options] <name>
-```
-
-## Arguments [#arguments]
-
-| Argument | Description                                          |
-| -------- | ---------------------------------------------------- |
-| `<name>` | Name(s) or glob pattern(s) of the server(s) to start |
-
-## Options [#options]
-
-| Option    | Description          | Default |
-| --------- | -------------------- | ------- |
-| `--debug` | Enable debug logging | `false` |
-
-> [!NOTE]
-> This command only works with instances that already exist. Use `prisma dev` to create a new instance.
-
-## Examples [#examples]
-
-### Start a specific database [#start-a-specific-database]
-
-  
-
-#### bun
-
-```bash
-bunx prisma dev start mydb
-```
-
-#### pnpm
-
-```bash
-pnpm prisma dev start mydb
-```
-
-#### yarn
-
-```bash
-yarn prisma dev start mydb
-```
-
-#### npm
-
-```bash
-npx prisma dev start mydb
-```
-
-### Start multiple databases with a pattern [#start-multiple-databases-with-a-pattern]
-
-Start all databases starting with `mydb`:
-
-  
-
-#### bun
-
-```bash
-bunx prisma dev start mydb*
-```
-
-#### pnpm
-
-```bash
-pnpm prisma dev start mydb*
-```
-
-#### yarn
-
-```bash
-yarn prisma dev start mydb*
-```
-
-#### npm
-
-```bash
-npx prisma dev start mydb*
-```
-
-## Related pages
-
-- [`ls`](https://www.prisma.io/docs/cli/v7/dev/ls): List available local Prisma Postgres servers
-- [`rm`](https://www.prisma.io/docs/cli/v7/dev/rm): Remove local Prisma Postgres servers
-- [`stop`](https://www.prisma.io/docs/cli/v7/dev/stop): Stop local Prisma Postgres servers
-
-# stop (Prisma CLI v7) (/docs/cli/v7/dev/stop)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Stop local Prisma Postgres servers
-
-Location: CLI > v7 > dev > stop
-
-The `prisma dev stop` command stops one or more [local Prisma Postgres](https://www.prisma.io/docs/local-development/postgres) databases.
-
-## Usage [#usage]
-
-```bash
-prisma dev stop [options] <name>
-```
-
-## Arguments [#arguments]
-
-| Argument | Description                                         |
-| -------- | --------------------------------------------------- |
-| `<name>` | Name(s) or glob pattern(s) of the server(s) to stop |
-
-## Options [#options]
-
-| Option    | Description          | Default |
-| --------- | -------------------- | ------- |
-| `--debug` | Enable debug logging | `false` |
-
-## Examples [#examples]
-
-### Stop a specific database [#stop-a-specific-database]
-
-  
-
-#### bun
-
-```bash
-bunx prisma dev stop mydb
-```
-
-#### pnpm
-
-```bash
-pnpm prisma dev stop mydb
-```
-
-#### yarn
-
-```bash
-yarn prisma dev stop mydb
-```
-
-#### npm
-
-```bash
-npx prisma dev stop mydb
-```
-
-### Stop multiple databases with a pattern [#stop-multiple-databases-with-a-pattern]
-
-Stop all databases starting with `mydb`:
-
-  
-
-#### bun
-
-```bash
-bunx prisma dev stop mydb*
-```
-
-#### pnpm
-
-```bash
-pnpm prisma dev stop mydb*
-```
-
-#### yarn
-
-```bash
-yarn prisma dev stop mydb*
-```
-
-#### npm
-
-```bash
-npx prisma dev stop mydb*
-```
-
-> [!NOTE]
-> The `stop` command is interactive and includes safety prompts to prevent accidental operations.
-
-## Related pages
-
-- [`ls`](https://www.prisma.io/docs/cli/v7/dev/ls): List available local Prisma Postgres servers
-- [`rm`](https://www.prisma.io/docs/cli/v7/dev/rm): Remove local Prisma Postgres servers
-- [`start`](https://www.prisma.io/docs/cli/v7/dev/start): Start one or more stopped local Prisma Postgres servers
 
 # deploy (Prisma CLI v7) (/docs/cli/v7/migrate/deploy)
 

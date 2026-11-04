@@ -1,11 +1,10 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1502 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1494 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
 
-- `docs/api-reference/agents/branches/create` — [Create agent branch](pages/docs/api-reference/agents/branches/create.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/branches/create.md)
 - `docs/api-reference/agents/branches/get` — [Get agent branch](pages/docs/api-reference/agents/branches/get.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/branches/get.md)
 - `docs/api-reference/agents/branches/list` — [List agent branches](pages/docs/api-reference/agents/branches/list.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/branches/list.md)
 - `docs/api-reference/agents/branches/merge` — [Merge agent branch](pages/docs/api-reference/agents/branches/merge.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/branches/merge.md)
@@ -27,8 +26,6 @@
 - `docs/api-reference/agents/hold-audio/create` — [Post agent hold audio](pages/docs/api-reference/agents/hold-audio/create.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/hold-audio/create.md)
 - `docs/api-reference/agents/hold-audio/delete` — [Delete agent hold audio](pages/docs/api-reference/agents/hold-audio/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/hold-audio/delete.md)
 - `docs/api-reference/agents/list` — [List agents](pages/docs/api-reference/agents/list.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/list.md)
-- `docs/api-reference/agents/merge-proposals/add-comment` — [Comment On A Merge Proposal](pages/docs/api-reference/agents/merge-proposals/add-comment.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/merge-proposals/add-comment.md)
-- `docs/api-reference/agents/merge-proposals/create` — [Create A Merge Proposal](pages/docs/api-reference/agents/merge-proposals/create.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/merge-proposals/create.md)
 - `docs/api-reference/agents/merge-proposals/get` — [Get A Merge Proposal](pages/docs/api-reference/agents/merge-proposals/get.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/merge-proposals/get.md)
 - `docs/api-reference/agents/merge-proposals/list` — [List Proposals](pages/docs/api-reference/agents/merge-proposals/list.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/merge-proposals/list.md)
 - `docs/api-reference/agents/merge-proposals/merge` — [Merge A Merge Proposal](pages/docs/api-reference/agents/merge-proposals/merge.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/merge-proposals/merge.md)
@@ -73,9 +70,7 @@
 - `docs/api-reference/batch-calling/list` — [List workspace batch calling jobs](pages/docs/api-reference/batch-calling/list.md) · [原文](https://elevenlabs.io/docs/api-reference/batch-calling/list.md)
 - `docs/api-reference/batch-calling/retry` — [Retry batch calling job](pages/docs/api-reference/batch-calling/retry.md) · [原文](https://elevenlabs.io/docs/api-reference/batch-calling/retry.md)
 - `docs/api-reference/conversations/analysis-items/copy` — [Copy analysis item](pages/docs/api-reference/conversations/analysis-items/copy.md) · [原文](https://elevenlabs.io/docs/api-reference/conversations/analysis-items/copy.md)
-- `docs/api-reference/conversations/analysis-items/create` — [Create analysis item](pages/docs/api-reference/conversations/analysis-items/create.md) · [原文](https://elevenlabs.io/docs/api-reference/conversations/analysis-items/create.md)
 - `docs/api-reference/conversations/analysis-items/delete` — [Delete analysis item](pages/docs/api-reference/conversations/analysis-items/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/conversations/analysis-items/delete.md)
-- `docs/api-reference/conversations/analysis-items/get` — [Get analysis item](pages/docs/api-reference/conversations/analysis-items/get.md) · [原文](https://elevenlabs.io/docs/api-reference/conversations/analysis-items/get.md)
 - `docs/api-reference/conversations/analysis-items/list` — [List analysis items](pages/docs/api-reference/conversations/analysis-items/list.md) · [原文](https://elevenlabs.io/docs/api-reference/conversations/analysis-items/list.md)
 - `docs/api-reference/conversations/analysis-items/list-versions` — [List analysis item versions](pages/docs/api-reference/conversations/analysis-items/list-versions.md) · [原文](https://elevenlabs.io/docs/api-reference/conversations/analysis-items/list-versions.md)
 - `docs/api-reference/conversations/analysis-items/update` — [Update analysis item](pages/docs/api-reference/conversations/analysis-items/update.md) · [原文](https://elevenlabs.io/docs/api-reference/conversations/analysis-items/update.md)
@@ -140,7 +135,6 @@
 - `docs/api-reference/flows/image/create` — [Create Image Generation](pages/docs/api-reference/flows/image/create.md) · [原文](https://elevenlabs.io/docs/api-reference/flows/image/create.md)
 - `docs/api-reference/flows/image/get` — [Get Image Generation](pages/docs/api-reference/flows/image/get.md) · [原文](https://elevenlabs.io/docs/api-reference/flows/image/get.md)
 - `docs/api-reference/flows/image/list` — [List Image Generations](pages/docs/api-reference/flows/image/list.md) · [原文](https://elevenlabs.io/docs/api-reference/flows/image/list.md)
-- `docs/api-reference/flows/templates/get` — [Get Template](pages/docs/api-reference/flows/templates/get.md) · [原文](https://elevenlabs.io/docs/api-reference/flows/templates/get.md)
 - `docs/api-reference/flows/templates/list` — [List Templates](pages/docs/api-reference/flows/templates/list.md) · [原文](https://elevenlabs.io/docs/api-reference/flows/templates/list.md)
 - `docs/api-reference/flows/templates/runs/create` — [Create Template Run](pages/docs/api-reference/flows/templates/runs/create.md) · [原文](https://elevenlabs.io/docs/api-reference/flows/templates/runs/create.md)
 - `docs/api-reference/flows/templates/runs/get` — [Get Template Run](pages/docs/api-reference/flows/templates/runs/get.md) · [原文](https://elevenlabs.io/docs/api-reference/flows/templates/runs/get.md)
@@ -782,7 +776,7 @@
 - `docs/eleven-agents/operate/hosted-mcp` — [Hosted MCP server](pages/docs/eleven-agents/operate/hosted-mcp.md) · [原文](https://elevenlabs.io/docs/eleven-agents/operate/hosted-mcp.md)
 - `docs/eleven-agents/operate/merge-proposals` — [Merge proposals](pages/docs/eleven-agents/operate/merge-proposals.md) · [原文](https://elevenlabs.io/docs/eleven-agents/operate/merge-proposals.md)
 - `docs/eleven-agents/operate/overview` — [Operate](pages/docs/eleven-agents/operate/overview.md) · [原文](https://elevenlabs.io/docs/eleven-agents/operate/overview.md)
-- `docs/eleven-agents/operate/triage` — [Triage](pages/docs/eleven-agents/operate/triage.md) · [原文](https://elevenlabs.io/docs/eleven-agents/operate/triage.md)
+- `docs/eleven-agents/operate/triage` — [Issues](pages/docs/eleven-agents/operate/triage.md) · [原文](https://elevenlabs.io/docs/eleven-agents/operate/triage.md)
 - `docs/eleven-agents/operate/users` — [Users](pages/docs/eleven-agents/operate/users.md) · [原文](https://elevenlabs.io/docs/eleven-agents/operate/users.md)
 - `docs/eleven-agents/operate/versioning` — [Agent versioning](pages/docs/eleven-agents/operate/versioning.md) · [原文](https://elevenlabs.io/docs/eleven-agents/operate/versioning.md)
 - `docs/eleven-agents/overview` — [ElevenAgents](pages/docs/eleven-agents/overview.md) · [原文](https://elevenlabs.io/docs/eleven-agents/overview.md)
@@ -830,7 +824,6 @@
 - `docs/eleven-api/guides/cookbooks/speech-engine` — [Speech Engine quickstart](pages/docs/eleven-api/guides/cookbooks/speech-engine.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/cookbooks/speech-engine.md)
 - `docs/eleven-api/guides/cookbooks/speech-to-text` — [Speech to Text quickstart](pages/docs/eleven-api/guides/cookbooks/speech-to-text.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/cookbooks/speech-to-text.md)
 - `docs/eleven-api/guides/cookbooks/templates` — [Templates quickstart](pages/docs/eleven-api/guides/cookbooks/templates.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/cookbooks/templates.md)
-- `docs/eleven-api/guides/cookbooks/text-to-dialogue` — [Text to Dialogue quickstart](pages/docs/eleven-api/guides/cookbooks/text-to-dialogue.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/cookbooks/text-to-dialogue.md)
 - `docs/eleven-api/guides/cookbooks/voice-changer` — [Voice Changer quickstart](pages/docs/eleven-api/guides/cookbooks/voice-changer.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/cookbooks/voice-changer.md)
 - `docs/eleven-api/guides/cookbooks/voice-isolator` — [Voice Isolator quickstart](pages/docs/eleven-api/guides/cookbooks/voice-isolator.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/cookbooks/voice-isolator.md)
 - `docs/eleven-api/guides/how-to/best-practices/latency-optimization` — [Latency optimization](pages/docs/eleven-api/guides/how-to/best-practices/latency-optimization.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/best-practices/latency-optimization.md)
@@ -1387,7 +1380,6 @@
 - `docs/overview/capabilities/music/marketplace` — [Music Marketplace](pages/docs/overview/capabilities/music/marketplace.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/music/marketplace.md)
 - `docs/overview/capabilities/private-deployment` — [Private deployments](pages/docs/overview/capabilities/private-deployment.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/private-deployment.md)
 - `docs/overview/capabilities/sound-effects` — [Sound effects](pages/docs/overview/capabilities/sound-effects.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/sound-effects.md)
-- `docs/overview/capabilities/speech-engine` — [Speech Engine](pages/docs/overview/capabilities/speech-engine.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/speech-engine.md)
 - `docs/overview/capabilities/speech-to-text` — [Transcription](pages/docs/overview/capabilities/speech-to-text.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/speech-to-text.md)
 - `docs/overview/capabilities/text-to-dialogue` — [Text to Dialogue](pages/docs/overview/capabilities/text-to-dialogue.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/text-to-dialogue.md)
 - `docs/overview/capabilities/text-to-speech` — [Text to Speech](pages/docs/overview/capabilities/text-to-speech.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/text-to-speech.md)

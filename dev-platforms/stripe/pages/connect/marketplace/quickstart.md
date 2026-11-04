@@ -2332,7 +2332,7 @@ Create a `/webhook` endpoint and obtain your webhook secret key in the [Webhooks
 
 ### Try it out
 
-You know the integration is working successfully if you complete a payment and see the `/done` page. Once you have the Stripe dashboard setup, the test payment will show there as well. Use any of these test cards to simulate a payment:
+You know the integration is working successfully if you complete a payment and see the `/done` page. After you have the Stripe Dashboard setup, the test payment shows there as well. Use any of these test cards to simulate a payment:
 
 | Scenario | Card Number |
 | --- | --- |
