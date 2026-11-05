@@ -73,7 +73,7 @@ Error Monitoring\[ ]Tracing\[ ]Profiling\[x]Logs\[x]OpenTelemetry
   <dependency>
       <groupId>io.sentry</groupId>
       <artifactId>sentry-async-profiler</artifactId>
-      <version>8.62.0</version>
+      <version>8.63.0</version>
   </dependency>
 </dependencies>
 // ___PRODUCT_OPTION_END___ profiling
@@ -85,13 +85,13 @@ Error Monitoring\[ ]Tracing\[ ]Profiling\[x]Logs\[x]OpenTelemetry
 <dependency>
     <groupId>io.sentry</groupId>
     <artifactId>sentry-logback</artifactId>
-    <version>8.62.0</version>
+    <version>8.63.0</version>
 </dependency>
 // ___PRODUCT_OPTION_START___ profiling
 <dependency>
     <groupId>io.sentry</groupId>
     <artifactId>sentry-async-profiler</artifactId>
-    <version>8.62.0</version>
+    <version>8.63.0</version>
 </dependency>
 // ___PRODUCT_OPTION_END___ profiling
 ```
@@ -100,11 +100,11 @@ Error Monitoring\[ ]Tracing\[ ]Profiling\[x]Logs\[x]OpenTelemetry
 
 ```groovy
 plugins {
-  id "io.sentry.jvm.gradle" version "6.25.0"
+  id "io.sentry.jvm.gradle" version "6.26.0"
 }
 // ___PRODUCT_OPTION_START___ profiling
 dependencies {
-  implementation 'io.sentry:sentry-async-profiler:8.62.0'
+  implementation 'io.sentry:sentry-async-profiler:8.63.0'
 }
 // ___PRODUCT_OPTION_END___ profiling
 ```
@@ -112,18 +112,18 @@ dependencies {
 **Gradle**
 
 ```groovy
-implementation 'io.sentry:sentry-logback:8.62.0'
+implementation 'io.sentry:sentry-logback:8.63.0'
 // ___PRODUCT_OPTION_START___ profiling
-implementation 'io.sentry:sentry-async-profiler:8.62.0'
+implementation 'io.sentry:sentry-async-profiler:8.63.0'
 // ___PRODUCT_OPTION_END___ profiling
 ```
 
 **SBT**
 
 ```scala
-libraryDependencies += "io.sentry" % "sentry-logback" % "8.62.0"
+libraryDependencies += "io.sentry" % "sentry-logback" % "8.63.0"
 // ___PRODUCT_OPTION_START___ profiling
-libraryDependencies += "io.sentry" % "sentry-async-profiler" % "8.62.0"
+libraryDependencies += "io.sentry" % "sentry-async-profiler" % "8.63.0"
 // ___PRODUCT_OPTION_END___ profiling
 ```
 
@@ -135,16 +135,16 @@ If you are manually adding multiple Sentry dependencies, you can add a [bill of 
 
 When running your application, please add our `sentry-opentelemetry-agent` to the `java` command.
 
-Download the latest version of the `sentry-opentelemetry-agent-8.62.0.jar` from [MavenCentral](https://search.maven.org/artifact/io.sentry/sentry-opentelemetry-agent):
+Download the latest version of the `sentry-opentelemetry-agent-8.63.0.jar` from [MavenCentral](https://search.maven.org/artifact/io.sentry/sentry-opentelemetry-agent):
 
 ```bash
-curl https://repo1.maven.org/maven2/io/sentry/sentry-opentelemetry-agent/8.62.0/sentry-opentelemetry-agent-8.62.0.jar -o sentry-opentelemetry-agent-8.62.0.jar
+curl https://repo1.maven.org/maven2/io/sentry/sentry-opentelemetry-agent/8.63.0/sentry-opentelemetry-agent-8.63.0.jar -o sentry-opentelemetry-agent-8.63.0.jar
 ```
 
 Then run your application with:
 
 ```bash
-SENTRY_PROPERTIES_FILE=sentry.properties JAVA_TOOL_OPTIONS="-javaagent:sentry-opentelemetry-agent-8.62.0.jar" java -jar your-application.jar
+SENTRY_PROPERTIES_FILE=sentry.properties JAVA_TOOL_OPTIONS="-javaagent:sentry-opentelemetry-agent-8.63.0.jar" java -jar your-application.jar
 ```
 
 *Other available variations of the above snippet: Java CLI argument*

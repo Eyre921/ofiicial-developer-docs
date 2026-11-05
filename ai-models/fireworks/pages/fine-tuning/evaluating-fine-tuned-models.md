@@ -4,37 +4,38 @@ source: https://docs.fireworks.ai/fine-tuning/evaluating-fine-tuned-models
 path: fine-tuning/evaluating-fine-tuned-models
 ---
 
-Evaluate a trained Fireworks model by sampling its serverless checkpoints with the Training SDK, or with a preemptible deployment for a promoted model.
+Evaluate a trained Fireworks model by sampling its serverless checkpoints with the Training SDK, by loading a promoted LoRA onto serverless, or with a preemptible deployment.
 
-After training, evaluate your model before you hold dedicated capacity for production serving. Choose an evaluation path based on the artifact you have.
+After training, evaluate your model before you serve it in production. Choose an evaluation path based on the artifact you have.
 
 > [!WARNING]
 >
-> These workflows are for **training evals and other non-production workloads only**. Do not send production or latency-sensitive traffic through them. For production serving after eval, create an on-demand deployment. See [Deploying Trained Models](/fine-tuning/deploying-loras).
+> Serverless checkpoint sampling and preemptible deployments are for **training evals and other non-production workloads only**. Do not send production or latency-sensitive traffic through them. For production serving after eval, create an on-demand deployment. See [Deploying Trained Models](/fine-tuning/deploying-loras). LoRAs trained on [select base models](/serverless/specialized-model-inference/overview#supported-models-and-limits) can also be served on serverless with [Specialized Model Inference](/serverless/specialized-model-inference/overview).
 
 ## Which approach to use
 
 Use the path that matches your current training stage:
 
 * **You have a serverless sampler checkpoint:** sample it with the Training SDK, during or after the run.
-* **You have a promoted model ID:** use a preemptible deployment. This works regardless of whether the LoRA was trained with serverless, dedicated, or managed training, or imported.
+* **You have a promoted LoRA on a [supported base model](/serverless/specialized-model-inference/overview#supported-models-and-limits):** load it onto serverless with [Specialized Model Inference](#serverless-lora-inference) and pay per token.
+* **You have a promoted model ID on any other base model:** use a preemptible deployment. This works regardless of whether the LoRA was trained with serverless, dedicated, or managed training, or imported.
 * **Your dedicated training run is still active:** use its inference deployment and refresh it from sampler snapshots. See [Dedicated training and sampling](/fine-tuning/training-api/dedicated#training-and-sampling).
 
-| | **Serverless checkpoint sampling** | **Preemptible deployment** |
-| - | - | - |
-| **Best for** | Quick checks of serverless checkpoints, during or after the run | Evaluating a promoted model without reserving dedicated GPUs |
-| **Training path** | Serverless Training API only | Any training path |
-| **Artifact** | Sampler checkpoint from `save_weights_for_sampler` | Promoted model (`accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>`) |
-| **API** | Training SDK `sampler.sample()` | Chat Completions or Fireworks SDK |
-| **Needs an active training session?** | No | No |
+| | **Serverless checkpoint sampling** | **Serverless LoRA inference** | **Preemptible deployment** |
+| - | - | - | - |
+| **Best for** | Quick checks of serverless checkpoints, during or after the run | Evaluating a promoted LoRA on a supported base model, billed per token | Evaluating a promoted model without reserving dedicated GPUs |
+| **Training path** | Serverless Training API only | Any, including imported adapters | Any training path |
+| **Artifact** | Sampler checkpoint from `save_weights_for_sampler` | Promoted LoRA (`accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>`) | Promoted model (`accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>`) |
+| **API** | Training SDK `sampler.sample()` | Chat Completions | Chat Completions or Fireworks SDK |
+| **Needs an active training session?** | No | No | No |
 
 ## Serverless checkpoint sampling
 
 Sample a sampler checkpoint from [serverless training](/fine-tuning/training-api/serverless) while its base model is available in the [serverless pool](/fine-tuning/models). The training session does not need to be active: any process can open a sampler for a checkpoint your account saved. This does not apply to an adapter produced by dedicated training.
 
-There is no serverless chat endpoint for your adapter. Open a **sampling client** bound to a sampler checkpoint. `sampler.sample()` generates completions from that checkpoint, which you score with your own metric.
+A sampler checkpoint has no chat endpoint. Open a **sampling client** bound to a sampler checkpoint. `sampler.sample()` generates completions from that checkpoint, which you score with your own metric.
 
-Use the **sampler checkpoint** returned by `save_weights_for_sampler`, not a promoted model resource (`accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>`). Promoted models are for on-demand deployment and cannot be passed to `create_sampling_client`.
+Use the **sampler checkpoint** returned by `save_weights_for_sampler`, not a promoted model resource (`accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>`). Promoted models are served through deployments or Specialized Model Inference and cannot be passed to `create_sampling_client`.
 
 The following save-and-sample sequence follows [Train, checkpoint, and sample](/fine-tuning/training-api/serverless#train-checkpoint-and-sample) on the serverless training page. Set up `prompt`, `tokenizer`, and `params` as you do for training rollouts.
 
@@ -65,7 +66,13 @@ You do not need a training client to sample a checkpoint: open a sampler from a 
 
 > [!NOTE]
 >
-> Promote checkpoints you want to keep long term or serve through the chat completions API, then evaluate the promoted model with a [preemptible deployment](#preemptible-deployment) below.
+> Promote checkpoints you want to keep long term or serve through the chat completions API, then evaluate the promoted model on [serverless](#serverless-lora-inference) if its base model is supported, or with a [preemptible deployment](#preemptible-deployment).
+
+## Serverless LoRA inference
+
+If your promoted LoRA was trained on a [supported base model](/serverless/specialized-model-inference/overview#supported-models-and-limits), you can load it onto Fireworks' shared serverless pool and call it through the Chat Completions API like any serverless model. You don't create a deployment, and you pay per token at the base model's price.
+
+This works for adapters from any training path, as well as imported adapters, as long as the base model is supported and the LoRA rank is within its limit. See [Specialized Model Inference on Serverless](/serverless/specialized-model-inference/overview) for supported models, limits, and how to load, call, and unload an adapter.
 
 ## Preemptible deployment
 
@@ -162,3 +169,7 @@ For more on preemptible capacity and guarantees, see [Preemptible deployments](/
 > [card] [Deploying Trained Models](/fine-tuning/deploying-loras)
 >
 > Live merge or multi-LoRA for production serving
+
+> [card] [Specialized Model Inference](/serverless/specialized-model-inference/overview)
+>
+> Serve LoRAs on supported base models on serverless

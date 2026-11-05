@@ -318,10 +318,6 @@ def preprocess_video(video_path: str) -> tuple[str, str]:
 
 ## Related resources
 
-> [card] [Chat with Video using Qwen3 Omni](https://colab.research.google.com/github/fw-ai-external/cookbook/blob/main/archived/multimedia/video/Qwen3-Omni-Chat-With-Video-Cookbook.ipynb)
->
-> Interactive notebook for video and audio analysis
-
 > [card] [Vision models](/guides/querying-vision-language-models)
 >
 > Query models with image inputs

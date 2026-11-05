@@ -74,7 +74,7 @@ Radar’s adaptive [3D Secure (3DS)](https://docs.stripe.com/payments/3d-secure.
 
 In most cases, *3DS* (3D Secure (3DS) provides an additional layer of authentication for credit card transactions that protects businesses from liability for fraudulent card payments) authentication happens with no action required by your customer. If the customer’s bank detects anything unusual, they might ask the customer to confirm their identity through a security challenge. If 3DS authenticates a payment, the [liability](https://docs.stripe.com/payments/3d-secure/authentication-flow.md#disputed-payments) for any fraud-related disputes for that payment typically shifts from your business to the issuer. This means that in most cases, the seller isn’t responsible for fraud costs on 3DS-authenticated payments.
 
-Stripe activates 3DS automatically, if required by a regulatory mandate such as [Strong Customer Authentication (SCA)](https://stripe.com/guides/strong-customer-authentication). Disabling adaptive 3DS doesn’t prevent 3DS from activating when required for compliance. Authentication fraud prevention control isn’t available in testing environments.
+Stripe activates 3DS automatically, if required by a regulatory mandate such as [Strong Customer Authentication (SCA)](https://stripe.com/guides/strong-customer-authentication). Disabling adaptive 3DS doesn’t prevent 3DS from activating when required for compliance. Authentication fraud prevention control isn’t available in [sandboxes](https://docs.stripe.com/sandboxes.md).
 
 ### Dynamic risk thresholds 
 

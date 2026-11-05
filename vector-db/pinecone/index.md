@@ -203,7 +203,7 @@
 - `guides/nexus/design-your-own-manifest` — [Design your own manifest](pages/guides/nexus/design-your-own-manifest.md) · [原文](https://docs.pinecone.io/guides/nexus/design-your-own-manifest)
 - `guides/nexus/how-curation-works` — [Nexus curation](pages/guides/nexus/how-curation-works.md) · [原文](https://docs.pinecone.io/guides/nexus/how-curation-works)
 - `guides/nexus/how-it-works` — [How Nexus works](pages/guides/nexus/how-it-works.md) · [原文](https://docs.pinecone.io/guides/nexus/how-it-works)
-- `guides/nexus/mcp-server` — [Pinecone Nexus MCP server](pages/guides/nexus/mcp-server.md) · [原文](https://docs.pinecone.io/guides/nexus/mcp-server)
+- `guides/nexus/mcp-server` — [Connect an MCP client to Pinecone Nexus](pages/guides/nexus/mcp-server.md) · [原文](https://docs.pinecone.io/guides/nexus/mcp-server)
 - `guides/nexus/models` — [Nexus model guidance](pages/guides/nexus/models.md) · [原文](https://docs.pinecone.io/guides/nexus/models)
 - `guides/nexus/overview` — [Pinecone Nexus](pages/guides/nexus/overview.md) · [原文](https://docs.pinecone.io/guides/nexus/overview)
 - `guides/nexus/queries` — [Nexus queries](pages/guides/nexus/queries.md) · [原文](https://docs.pinecone.io/guides/nexus/queries)

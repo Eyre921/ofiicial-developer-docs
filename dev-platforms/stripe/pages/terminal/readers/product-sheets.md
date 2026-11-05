@@ -26,7 +26,7 @@ These product sheets contain important device specifications, operating informat
 
 ## Stripe Reader M2
 
-- [Stripe Reader M2](https://stripe.com/m2/manual)
+- [Stripe Reader M2](https://docs.stripecdn.com/m2-product-sheet.pdf)
 
 ## BBPOS
 

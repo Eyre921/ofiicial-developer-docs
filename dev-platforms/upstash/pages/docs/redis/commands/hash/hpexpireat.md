@@ -66,7 +66,7 @@ import { Redis } from "@upstash/redis";
 
 const redis = Redis.fromEnv();
 
-await redis.hset("my-key", "my-field", "my-value");
+await redis.hset("my-key", { "my-field": "my-value" });
 const expirationSet = await redis.hpexpireat("my-key", "my-field", Date.now() + 1000);
 
 console.log(expirationSet); // [1]

@@ -48,7 +48,7 @@ To test manual payments on invoices through bank transfers:
 
 ## Test customer tax ID verification 
 
-Use these magic tax IDs to trigger certain verification conditions in testing environments. The tax ID type must be the Australian Business Number (ABN), EU VAT Number, or UK Value-Added-Tax (GB VAT) number.
+Use these magic tax IDs to trigger certain verification conditions in [sandboxes](https://docs.stripe.com/sandboxes.md). The tax ID type must be the Australian Business Number (ABN), EU VAT Number, or UK Value-Added-Tax (GB VAT) number.
 
 | Number | Type |
 | --- | --- |

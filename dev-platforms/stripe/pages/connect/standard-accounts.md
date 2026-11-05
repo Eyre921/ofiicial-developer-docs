@@ -97,7 +97,7 @@ The response to your [Account Links](https://docs.stripe.com/api/account_links.m
 
 Connect Onboarding requires you to pass both a `return_url` and `refresh_url` to handle all cases where you redirect the user to your platform. It’s important that you implement these correctly to provide the best experience for your user.
 
-> You can use HTTP for your `return_url` and `refresh_url` while in you’re in a testing environment (for example, to test with localhost), but you can only use HTTPS in live mode. You must update testing URLs to HTTPS URLs before you go live.
+> You can use HTTP for your `return_url` and `refresh_url` while you’re in a [sandbox](https://docs.stripe.com/sandboxes.md) (for example, to test with localhost), but you can only use HTTPS in live mode. You must update testing URLs to HTTPS URLs before you go live.
 
 #### return_url
 

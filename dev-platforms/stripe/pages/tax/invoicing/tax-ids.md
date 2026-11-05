@@ -345,11 +345,22 @@ Stripe supports displaying the tax ID types below on invoices. You can’t use S
 
 ## Validation 
 
+Stripe only checks the format of tax ID types other than AU ABN, EU VAT, and GB VAT, and doesn’t validate them against government databases.
+
 It’s your responsibility to make sure customer information is accurate (including their tax ID). Stripe displays a customer tax ID on an invoice, whether or not it’s valid.
 
 Stripe checks the format of the tax ID against the expected format, and asynchronously validates the tax ID against the external tax authority system for the tax ID types below.
 
 After a tax ID is confirmed as valid or invalid, it won’t be validated again automatically.
+
+Compare the validation for customer tax ID types:
+
+| Country or region | Validates format | Validates against government databases | Documentation |
+| --- | --- | --- | --- |
+| Australia (AU ABN) | Yes | Yes | [ABN validation](https://docs.stripe.com/tax/invoicing/tax-ids.md#australian-business-numbers-abn) |
+| European Union (EU VAT) | Yes | Yes | [EU VAT validation](https://docs.stripe.com/tax/invoicing/tax-ids.md#european-value-added-tax-eu-vat-numbers) |
+| United Kingdom (GB VAT) | Yes | Yes | [GB VAT validation](https://docs.stripe.com/tax/invoicing/tax-ids.md#united-kingdom-value-added-tax-gb-vat-numbers) |
+| Other tax ID types | Yes | No | [Format checks](https://docs.stripe.com/tax/invoicing/tax-ids.md#other-tax-id-types) |
 
 ### Australian Business Numbers (ABN)
 
@@ -366,6 +377,10 @@ VIES validation usually takes only a few seconds, but might take longer, dependi
 Stripe automatically validates all GB VAT numbers with the [United Kingdom’s Revenue & Customs (HMRC)](https://www.gov.uk/). This process only verifies the validity of the tax ID, not whether the customer’s name and address match what’s on the customers page in the Dashboard.
 
 HMRC validation usually takes only a few seconds, but might take longer, depending on availability. Stripe automatically handles HMRC downtime and attempts retries for you.
+
+### Other tax ID types 
+
+For all other tax ID types, Stripe only checks the format. A format check doesn’t confirm that the tax ID exists in a government database.
 
 ### Validation webhooks and Dashboard display
 

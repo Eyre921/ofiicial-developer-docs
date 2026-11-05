@@ -13,7 +13,3 @@ Standalone end-to-end courses showing how to use Fireworks for real-world use ca
 > [card] [Reward Hacking](/examples/reward-hacking)
 >
 > Learn how to build reinforcement learning systems that avoid reward hacking.
-
-> [card] [Knowledge Distillation](/examples/knowledge-distillation)
->
-> Learn to distill the knowledge of large AI models into efficient, deployable alternatives.

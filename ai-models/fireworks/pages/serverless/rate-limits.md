@@ -127,13 +127,14 @@ To opt out, contact your Fireworks account representative. The opt-out is accoun
 | **Increase** | Your recent usage is above 50% of your current limit. Increases happen at most once every 15 minutes. | Up 25%, capped at your base ceiling |
 | **Decrease** | Your highest sampled 15-minute usage over the past 3 days stayed below 33% of your current limit, and at least 24 hours have passed since the limit last changed. | Down 20%, never below the lower bound |
 | **Reset** | You send no traffic to the model for more than 72 hours. | Back to the starting default |
-| **Elastic Burst** | Not part of the schedule above. For an eligible account, the limit can move above the base ceiling and back toward it. The base ceiling and Reserved Throughput stay the same. | Changes with spare capacity |
+| **Elastic Burst** | Your usage is above 50% of your current limit and spare capacity is available. It moves back toward your base ceiling when burst headroom goes unused or capacity is needed elsewhere | Increases and decreases vary with available capacity, burst won't affect your base ceiling |
 
 A few details:
 
 * A decrease is skipped if your recent usage would be at least 50% of the lower limit. This keeps the limit from dropping and then immediately climbing back up.
 * With [Reserved Throughput](/serverless/reserved-throughput), the increase, decrease, and reset thresholds apply to usage above your reservation and to the adaptive portion of your limit. Usage within the reservation does not count toward the thresholds.
 * Resets do not apply to accounts with a custom limit or a reservation for that model.
+* Elastic Burst example: if your current limit is 100M TPM, Elastic Burst can raise it once your usage is above 50M TPM and spare capacity is available.
 
 ### How slowly limits shrink
 

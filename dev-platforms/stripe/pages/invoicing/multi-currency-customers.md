@@ -10,7 +10,9 @@ Change the billable currency for any customer to accept multiple currencies.
 
 If you need to sell in multiple currencies but have each individual customer use a single currency, see [multi-currency Prices](https://docs.stripe.com/products-prices/how-products-and-prices-work.md#multiple-currencies).
 
-Use the Invoicing API to issue an invoice to a customer in a different currency. With the multi-currency customers feature, you can bill the same *Customer* (Customer objects represent customers of your business. They let you reuse payment methods and give you the ability to track multiple payments) using a different currency than what’s set as their default currency, and change the currency for a customer’s subscriptions. You can’t have two active subscriptions with different currencies.
+Use the Invoicing API to issue an invoice to a customer in a different currency. With the multi-currency customers feature, you can bill the same *Customer* (Customer objects represent customers of your business. They let you reuse payment methods and give you the ability to track multiple payments) using a different currency than what’s set as their default currency.
+
+This feature lets you create new subscriptions with a different currency for an existing customer. You can’t update the currencies of existing subscriptions by changing prices. Instead, you must cancel existing subscriptions before creating a new subscription with a new currency. This is because you can’t have two active subscriptions with different currencies.
 
 This guide also explains how to create a credit note and inspect a customer’s credit balance in all assigned currencies. For illustrative purposes, we use the Canadian Dollar (CAD).
 

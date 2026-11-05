@@ -408,6 +408,10 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 
   Use the REST API to manage Copilot content exclusion rules.
 
+* [REST API endpoints for Copilot team customizations](/en/rest/copilot/copilot-team-customizations)
+
+  Use the REST API to manage Copilot customizations for a team.
+
 * [REST API endpoints for Copilot usage metrics](/en/rest/copilot/copilot-usage-metrics)
 
   Use the REST API to view Copilot usage metrics.

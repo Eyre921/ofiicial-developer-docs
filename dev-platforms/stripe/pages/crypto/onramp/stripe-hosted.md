@@ -12,7 +12,7 @@ The Stripe-hosted, standalone onramp is a prebuilt front-end integration of the 
 
 ## Before you begin
 
-To access the Stripe onramp, including testing environments, you must follow these steps to submit your application:
+To access the Stripe onramp, including in [sandboxes](https://docs.stripe.com/sandboxes.md), you must follow these steps to submit your application:
 
 1. [Create or sign in to your Stripe account](https://dashboard.stripe.com/register).
 2. If you haven’t already, [set up your Stripe account](https://dashboard.stripe.com/account/onboarding).

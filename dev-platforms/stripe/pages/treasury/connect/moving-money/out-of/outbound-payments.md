@@ -6,17 +6,231 @@ path: treasury/connect/moving-money/out-of/outbound-payments
 
 # Send money to recipients and financial accounts you don't own
 
-Create outbound payments to move money in platform or connected account financial accounts to third parties.
+Move money from platform or connected account financial accounts to third parties.
 
-[OutboundPayment](https://docs.stripe.com/api/v2/money-management/outbound-payments/object.md?api-version=preview) objects represent push-based transfers from:
+To move funds between financial accounts and other accounts owned by the same entity, use [OutboundTransfers](https://docs.stripe.com/treasury/connect/moving-money/out-of/outbound-transfers.md) instead.
 
-- A platform’s financial account to a financial account owned by its connected accounts.
-- A platform’s financial account to any thrird-party recipient’s bank account.
-- A connected account’s financial account to a financial account owned by another connected account under the same platform.
-- A connected account’s financial account to its platform’s financial account.
-- A connected account’s financial account to any third-party recipient’s bank account.
+Treasury for platform users can send money from their financial account to other recipients using the following types of transactions:
 
-> To move funds between financial accounts and other accounts owned by the same entity, use [OutboundTransfers](https://docs.stripe.com/treasury/connect/moving-money/out-of/outbound-transfers.md) instead.
+- Payouts from a platform’s or connected account’s financial account to a third-party recipient.
+- Payments from a platform’s financial account to a connected account’s financial account.
+- Payments between financial accounts owned by different connected accounts under the same platform.
+- Payments from a connected account’s financial account to its platform’s financial account.
+
+## Compare integrations 
+
+You can send money from a financial account to a third-party recipient using the Payout Intents API or Outbound Payments API.
+
+| Feature | Payout Intents API (Private preview) | Outbound Payments API |
+| --- | --- | --- |
+| Process | Provides a staged process, from preparation and review to delivery and handling failures. Supports:
+- Fee and exchange rate preview
+- Payout scheduling
+- Failed and returned payout handling | Creates a single payout attempt that Stripe sends immediately. Use it:
+- If your integration already handles payout decisions and failures
+- For payments to financial accounts owned by a different connected account or platform |
+| Delivery | You can configure manual or automatic confirmation. | Stripe automatically sends the payment upon creation. |
+| Fees and currency conversion | Includes estimated fees and the exchange rate quote. | Requires an [OutboundPaymentQuote](https://docs.stripe.com/treasury/connect/moving-money/out-of/outbound-payments.md#cross-border-outbound-payment) to preview fees, exchange rates, and amounts. |
+| Scheduling | You can schedule the payout on a future date. | Not supported. |
+| Failed and returned payouts | The PayoutIntent status changes to `requires_action`. You can retry, make changes and then retry, or cancel. If a scheduled payout fails, create a new PayoutIntent instead of retrying it. | The OutboundPayment status changes to `failed` or `returned`. Create a new OutboundPayment to retry. |
+
+## Before you begin
+
+- [Create a recipient](https://docs.stripe.com/treasury/connect/build-an-integration.md#create-a-recipient) with `active` capabilities for relevant networks like `bank_accounts.local` and `bank_accounts.ach`.
+
+- [Look up the recipient’s payout method](https://docs.stripe.com/treasury/connect/account-management/connected-accounts.md#list-payout-methods).
+
+  > #### Check confirmation of payee
+  > 
+  > For payouts or payments to a UK bank account in GBP, make sure the payout method includes the [Confirmation of Payee](https://docs.stripe.com/treasury/connect/account-management/connected-accounts.md?t4p-geo=uk#recipient-payout-methods).
+
+- [Look up the sending financial account ID](https://docs.stripe.com/api/v2/money-management/financial-accounts.md?api-version=preview).
+
+#### Payout Intents
+
+> #### Request access
+> 
+> PayoutIntents require separate access in addition to Treasury for platforms. If you already use Treasury for platforms, [request access](https://docs.stripe.com/treasury/connect/moving-money/out-of/outbound-payments.md#payout_intents_preview) to confirm eligibility for your platform and sending connected accounts.
+> 
+> ### Get access to PayoutIntents.
+> 
+> Enter your email to request access.
+> 
+> ```bash
+> curl https://docs.stripe.com/preview/register \
+>   -X POST \
+>   -H "Content-Type: application/json" \
+>   -H "Referer: https://docs.stripe.com/treasury/connect/moving-money/out-of/outbound-payments" \
+>   -d '{"email": "EMAIL", "preview": "payout_intents_preview"}'
+> ```
+
+## Create a PayoutIntent 
+
+When you create a PayoutIntent, you can specify a set of `preferred_networks` to process the payout. Stripe chooses the most appropriate network from your list based on factors like region, currency, and recipient payout method.
+
+Set `confirmation_method` to `manual` to review the payout before Stripe sends it. Set it to `automatic` to send immediately.
+
+Use the `Stripe-Context` header to submit requests on behalf of your connected account. Omit the header to send payouts from your platform’s financial account.
+
+```curl
+curl -X POST https://api.stripe.com/v2/money_management/payout_intents \
+  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  --json '{
+    "from": {
+        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+        "currency": "usd"
+    },
+    "to": {
+        "recipient": "{{RECIPIENTACCOUNTID_ID}}",
+        "payout_method": "{{RECIPIENTPAYOUTMETHODID_ID}}",
+        "payout_method_options": {
+            "bank_account": {
+                "preferred_networks": [
+                    "ach"
+                ]
+            }
+        }
+    },
+    "amount": {
+        "value": 1999,
+        "currency": "usd"
+    },
+    "confirmation_method": "manual",
+    "description": "Streamer earnings"
+  }'
+```
+
+### Set additional ACH options 
+
+If you set ACH as a preferred network, you can also set the following ACH options to control how Stripe sends the payout:
+
+- `transaction_purpose`: Set to `payroll` for payroll payouts. NACHA rules require originators to identify payroll payouts to recipients in the US.
+
+```curl
+curl -X POST https://api.stripe.com/v2/money_management/payout_intents \
+  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  --json '{
+    "from": {
+        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+        "currency": "usd"
+    },
+    "to": {
+        "recipient": "{{RECIPIENTACCOUNTID_ID}}",
+        "payout_method": "{{RECIPIENTPAYOUTMETHODID_ID}}",
+        "payout_method_options": {
+            "bank_account": {
+                "preferred_networks": [
+                    "ach"
+                ],
+                "preferred_network_options": {
+                    "ach": {
+                        "transaction_purpose": "payroll"
+                    }
+                }
+            }
+        }
+    },
+    "amount": {
+        "value": 1999,
+        "currency": "usd"
+    },
+    "description": "Payroll"
+  }'
+```
+
+### Schedule a payout 
+
+To schedule a payout, omit `confirmation_method` and set `schedule_options.execute_on` to a date in `YYYY-MM-DD` format between tomorrow and 180 days from today. You can’t schedule a PayoutIntent that requires confirmation, whether automatic or manual.
+
+The PayoutIntent stays in a `pending` state until Stripe sends the payout on your specified date at 09:00 in the local time zone of the sending account. Funds arrival time depends on the payment network.
+
+You can [update the PayoutIntent](https://docs.stripe.com/api/v2/money-management/payout-intents/update.md?api-version=preview) any time before the scheduled send date.
+
+Stripe doesn’t hold funds for a scheduled payout. If your financial account doesn’t have enough funds on the scheduled date, the PayoutIntent updates to `requires_action` with `next_action.handle_failure.failure_reason` set to `insufficient_funds`. Add funds and create a new PayoutIntent.
+
+## Review and confirm the PayoutIntent 
+
+A PayoutIntent can require confirmation because you requested it or because a regulatory requirement mandates it. In either case, the PayoutIntent `status` becomes `requires_action` with `next_action.type` set to `confirm`. The confirmation reason is `manually_requested` or `automatically_required`.
+
+Review the following fields on the PayoutIntent:
+
+- `estimated_fees`: The estimated fees for the payout, by fee type.
+- `fx_quote`: For payouts that convert currencies, the exchange rate.
+- `fx_quote.lock_expires_at`: For locked rates, the lock expiration.
+- `fx_quote.lock_status`: For locked rates, whether the rate is `active` or `expired`.
+- `from.debited` and `to.credited`: The estimated amounts debited from your financial account and credited to the recipient, with the exchange rate applied.
+
+When you’re ready to send the funds, [confirm the PayoutIntent](https://docs.stripe.com/api/v2/money-management/payout-intents/confirm.md?api-version=preview).
+
+```curl
+curl -X POST https://api.stripe.com/v2/money_management/payout_intents/poi_1234/confirm \
+  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Context: {{CONTEXT_ID}}"
+```
+
+### Handle expired exchange rates 
+
+If the exchange rate lock expires before you confirm, the request fails with `payout_intent_fx_quote_expired`. Get a new rate with [refresh FX quote](https://docs.stripe.com/api/v2/money-management/payout-intents/fx-quote.md?api-version=preview), review the updated `fx_quote`, amounts, and `estimated_fees`, then confirm again.
+
+```curl
+curl -X POST https://api.stripe.com/v2/money_management/payout_intents/poi_1234/refresh_fx_quote \
+  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Context: {{CONTEXT_ID}}"
+```
+
+## Handle payouts that require action 
+
+Listen for the `v2.money_management.payout_intent.requires_action` event so you can respond based on the `next_action.type`:
+
+- `confirm`: You must [review and confirm the payout](https://docs.stripe.com/treasury/connect/moving-money/out-of/outbound-payments.md#review-confirm-payout-intent).
+- `handle_failure`: The payout failed or was returned because of the `next_action.handle_failure.failure_reason`, such as `insufficient_funds` or `payout_method_closed`.
+
+### Update the PayoutIntent 
+
+Stripe doesn’t retry or reroute payouts automatically. You can [update a PayoutIntent](https://docs.stripe.com/api/v2/money-management/payout-intents/update.md?api-version=preview) to handle some failures, for example, by changing to a valid `to.payout_method`.
+
+After you update the PayoutIntent, check its `status` in the response:
+
+- `pending`: Stripe started a new payout attempt. You don’t need to take any further action.
+- `requires_action` with `next_action.type` set to `confirm`: You must [review and confirm the payout](https://docs.stripe.com/treasury/connect/moving-money/out-of/outbound-payments.md#review-confirm-payout-intent).
+
+### Reconfirm the PayoutIntent 
+
+You can also [confirm the PayoutIntent](https://docs.stripe.com/api/v2/money-management/payout-intents/confirm.md?api-version=preview) to retry it without making changes, for example, after you add funds to your financial account or refresh the FX quote.
+
+Each retry creates a new payout attempt. If the attempt fails or is returned, the PayoutIntent moves back to `requires_action`.
+
+If a scheduled payout fails, create a new PayoutIntent instead of retrying it.
+
+### Cancel the PayoutIntent 
+
+```curl
+curl -X POST https://api.stripe.com/v2/money_management/payout_intents/poi_1234/cancel \
+  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Context: {{CONTEXT_ID}}"
+```
+
+## Inspect payout status 
+
+[Retrieve a payout](https://docs.stripe.com/api/v2/money-management/payout-intents/retrieve.md?api-version=preview) to inspect its details and status. Specify the PayoutIntent ID in the request.
+
+```curl
+curl https://api.stripe.com/v2/money_management/payout_intents/poi_1234 \
+  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Context: {{CONTEXT_ID}}"
+```
+
+Learn more about [managing payouts](https://docs.stripe.com/global-payouts/manage-payouts.md).
+
+#### Outbound Payments
 
 #### Source currency - GBP
 
@@ -51,7 +265,7 @@ You can create the following types of `OutboundPayment`:
 | Push-to-card (Private preview) | `card` | Immediate |
 | Real-time payment (RTP) (Private preview) | `bank_accounts.instant` | Within a few seconds to a few minutes |
 
-## Move money from a platform to connected account
+## Move money from a platform to connected account 
 
 To move funds from your platform’s financial account to a connected account’s financial account, create an OutboundPayment without the `Stripe-Context` header:
 
@@ -79,7 +293,7 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
 
 > When moving funds from your platform’s financial account, don’t include the `Stripe-Context` header. The platform financial account is automatically used as the source of funds.
 
-## Move money between separately owned financial accounts
+## Move money between separately owned financial accounts 
 
 Use [Outbound Payments](https://docs.stripe.com/api/v2/money-management/outbound-payments/create.md?api-version=preview) to create an outbound payment:
 
@@ -113,7 +327,7 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
 
 Use a similar request to move funds from your connected account’s financial account to your platform’s financial account.
 
-## Create an OutboundPayment to a third-party recipient
+## Create an OutboundPayment to a third-party recipient 
 
 To pay a third-party recipient, first create and onboard a [recipient-configured connected account](https://docs.stripe.com/treasury/connect/build-an-integration.md#create-a-recipient) to generate an account ID and a payout method ID that you need for the transaction.
 
@@ -273,7 +487,7 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
 
 RTP payments aren’t reversible.
 
-## Send an OutboundPayment cross-border or to a recipient in a different country or currency
+## Send an OutboundPayment cross-border or to a recipient in a different country or currency 
 
 Stripe supports sending money in local currency to recipients in many different countries. Before making a cross-border outbound payment, review:
 

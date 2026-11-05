@@ -58,7 +58,7 @@ import { Redis } from "@upstash/redis";
 
 const redis = Redis.fromEnv();
 
-const seconds = await redis.ttl(key);
+const seconds = await redis.ttl("key");
 ```
 
 </Accordion>

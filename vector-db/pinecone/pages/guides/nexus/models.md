@@ -38,7 +38,7 @@ A call that doesn't name a model runs on its work area's default, so generation 
 
 A query can run on any model enabled for Query instead of the default. In a context's **Query** tab, the model selector lists those models. In the API, name a model by its catalog ID in the query's `model` field. `GET /models` lists the catalog IDs and the current defaults.
 
-Match the model to the question rather than the size of the context. A cheaper, faster model suits simple or high-volume queries, and the most capable model suits complex, multi-step reasoning. The query [trace](/guides/nexus/query-tracing) reports the tokens, latency, and cost behind each answer, so you can compare models on your own questions and settle on the one that fits.
+Match the model to the question rather than the size of the context. A cheaper, faster model suits simple or high-volume queries, and the most capable model suits complex, multi-step reasoning. The query [trace](/guides/nexus/query-tracing) reports the tokens and latency behind each answer, so you can compare models on your own questions and settle on the one that fits.
 
 ## Curation models
 

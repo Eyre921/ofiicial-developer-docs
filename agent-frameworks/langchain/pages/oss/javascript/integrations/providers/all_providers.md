@@ -546,6 +546,10 @@ Connect LangGraph agents to front ends and observability platforms.
 >
 > Keyless tools over Sato Hub's index of onchain-agent building blocks: search listings, Preflight lookups, swap venues, and build plans.
 
+> [card] [SproutsDataTools](https://github.com/sproutsdata-ai/sproutsdata-js/tree/main/packages/langchain#readme)
+>
+> LangChain tools and a search retriever for Sprouts Data to search B2B companies and people and look up records.
+
 > [card] [Steward](https://github.com/brianbooms/plugin-steward)
 >
 > Tools for x402 payments that verify merchant, price, and terms before payment via LangChain MCP adapters.

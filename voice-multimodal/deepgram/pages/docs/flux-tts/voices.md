@@ -9,7 +9,7 @@ path: docs/flux-tts/voices
 
 # Flux TTS Voices & Languages
 
-Flux TTS voices use the model string format `flux-{voice}-{language}` (e.g. `flux-haley-en`). The same voice catalog is served on both `/v2/speak` transports — the [streaming WebSocket](/docs/flux-tts/quickstart) and [batch REST](/docs/flux-tts/batch).
+Flux TTS voices use the model string format `flux-{voice}-{language}` (e.g. `flux-haley-en`). The same voice catalog is served on both `/v2/speak` transports — the [streaming WebSocket](/docs/flux-tts/quickstart) and [batch REST](/docs/flux-tts/batch). Every voice in every language is also available in the [Voice Agent API](/docs/voice-agent-tts-models#flux-tts).
 
 ## Selecting a voice
 

@@ -46,7 +46,7 @@ These tools propose changes to a page that a person accepts or rejects in Notion
 * `notion-get-suggested-edit` reads one pending suggestion. Pass its `suggested_edit_url`. The response has a Markdown before-and-after `diff` and the `allowed_actions` the user can take, `accept`, `reject`, or both.
 * `notion-resolve-suggested-edit` accepts or rejects one pending suggestion. Pass `suggested_edit_url` and `action`. Accepting applies the change to the page. Rejecting discards it. The tool is marked destructive (`destructiveHint: true`), so MCP clients that honor tool annotations ask before running it.
 
-In Notion, each suggestion appears on the page as a suggested edit with its own discussion thread. You can pass a single-line inline Markdown `comment` to start that thread. Every suggestion made through Notion MCP gets a note at the end of its first comment that names the MCP client, such as `[Prepared via Notion MCP]`.
+In Notion, each suggestion appears on the page as a suggested edit with its own discussion thread. You can pass a single-line inline Markdown `comment` to start that thread.
 
 > [!NOTE]
 >

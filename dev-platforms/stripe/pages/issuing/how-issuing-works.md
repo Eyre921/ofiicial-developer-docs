@@ -48,7 +48,7 @@ You can integrate Issuing with [Stripe Connect](https://docs.stripe.com/connect.
 
 ### Stablecoin-backed cards (Public preview)
 
-You can integrate Issuing with [Bridge](https://docs.stripe.com/stablecoins/ecosystem/bridge.md) to attach cards to Bridge wallets, Privy wallets, or other non-custodial wallets. Cards spend just-in-time from the linked wallet, so you can offer consumer or commercial cards in more than 60 countries through a single integration. Learn more about [stablecoin-backed card issuing](https://docs.stripe.com/issuing/stablecoin-cards.md).
+You can integrate Issuing with [Bridge](https://docs.stripe.com/stablecoins/ecosystem/bridge.md) to attach cards to Bridge wallets, Privy wallets, or other non-custodial wallets. Cards draw funds just-in-time from the linked wallet, so you can offer consumer or commercial cards in more than 60 countries through a single integration. Learn more about [stablecoin-backed card issuing](https://docs.stripe.com/issuing/stablecoin-cards.md).
 
 ## Issuing architecture
 
@@ -87,12 +87,12 @@ Connected accounts can also use a [Treasury for platforms](https://docs.stripe.c
 
 For stablecoin-backed card programs, cards draw funds from a Bridge wallet, a Privy wallet, or another non-custodial wallet. When a cardholder makes a purchase, Bridge pulls the funds onchain from the wallet linked to the card.
 
-Diagram of a platform whose cardholders' cards spend from stablecoin wallets, with Bridge pulling funds onchain at authorization (See full diagram at https://docs.stripe.com/issuing/how-issuing-works)
+Diagram of a platform whose cardholders' cards draw funds from stablecoin wallets, with Bridge pulling funds onchain at authorization (See full diagram at https://docs.stripe.com/issuing/how-issuing-works)
 
 ```text
 [platform] --> [cardholder]
 [cardholder] --> [card]
-[card] -- Spends from --> [Stablecoin wallet]
+[card] -- Draws funds from --> [Stablecoin wallet]
 [Bridge] -- Pulls funds at authorization --> [Stablecoin wallet]
 ```
 

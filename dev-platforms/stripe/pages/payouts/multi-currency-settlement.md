@@ -29,7 +29,9 @@ Multi-currency settlement is available in the following locations:
 
 ## Enable multi-currency settlement
 
-Add other settlement currencies from your [Balances](https://dashboard.stripe.com/balance/overview) page. You can also configure bank accounts and currencies in your [Payout Settings](https://dashboard.stripe.com/settings/money-management). To accrue a balance in a given currency, you must first accept payments in that currency, known as presentment. 
+Add other settlement currencies from your [Balances](https://dashboard.stripe.com/balance/overview) page or using the [settlement_currencies](https://docs.stripe.com/api/balance-settings/update.md?api-version=2026-10-28.preview#update_balance_settings-payments-settlement_currencies) parameter on the Balance Settings API.
+
+You can also configure bank accounts and currencies in your [Payout Settings](https://dashboard.stripe.com/settings/money-management). To accrue a balance in a given currency, you must first accept payments in that currency, known as presentment.
 
 ### Attach bank accounts to receive payouts in local currencies
 

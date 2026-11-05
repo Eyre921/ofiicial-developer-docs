@@ -871,9 +871,10 @@ Retrieve a list of API keys for the authenticated user.
 
 ## Query Parameters
 
-Note that the `limit` parameter is *optional*. If
-you do not provide a `limit`, all API keys will be returned
-in a single response.
+If `limit` is not provided, all API keys will be returned
+in a single response. Pass `limit` to paginate.
+`after` and `before` only take effect together
+with `limit`.
 
 **limit** `number`
 
@@ -1992,14 +1993,11 @@ The automation ID.
 
 ## Query Parameters
 
-Note that the `limit` parameter is *optional*. If
-you do not provide a `limit`, all automation-runs will be returned
-in a single response.
-
 **limit** `number`
 
 Number of automation-runs to retrieve.
-<ul><li>Maximum value: `100`</li>
+<ul><li>Default value: `20`</li>
+<li>Maximum value: `100`</li>
 <li>Minimum value: `1`</li></ul>
 
 **after** `string`
@@ -3890,9 +3888,10 @@ Retrieve a list of broadcast.
 
 ## Query Parameters
 
-Note that the `limit` parameter is *optional*. If
-you do not provide a `limit`, all broadcasts will be returned
-in a single response.
+If `limit` is not provided, all broadcasts will be returned
+in a single response. Pass `limit` to paginate.
+`after` and `before` only take effect together
+with `limit`.
 
 **limit** `number`
 
@@ -6617,14 +6616,11 @@ The Contact Email.
 
 ## Query Parameters
 
-Note that the `limit` parameter is *optional*. If
-you do not provide a `limit`, all topics will be returned
-in a single response.
-
 **limit** `number`
 
 Number of topics to retrieve.
-<ul><li>Maximum value: `100`</li>
+<ul><li>Default value: `20`</li>
+<li>Maximum value: `100`</li>
 <li>Minimum value: `1`</li></ul>
 
 **after** `string`
@@ -6661,10 +6657,10 @@ const { data, error } = await resend.contacts.topics.list({
 $resend = Resend::client('re_xxxxxxxxx');
 
 // Get by contact id
-$resend->contacts->topics->get('e169aa45-1ecf-4183-9955-b1499d5701d3');
+$resend->contacts->topics->list('e169aa45-1ecf-4183-9955-b1499d5701d3');
 
 // Get by contact email
-$resend->contacts->topics->get('steve.wozniak@gmail.com');
+$resend->contacts->topics->list('steve.wozniak@gmail.com');
 ```
 
 ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -6997,14 +6993,11 @@ The Contact Email.
 
 ## Query Parameters
 
-Note that the `limit` parameter is *optional*. If
-you do not provide a `limit`, all segments will be returned
-in a single response.
-
 **limit** `number`
 
 Number of segments to retrieve.
-<ul><li>Maximum value: `100`</li>
+<ul><li>Default value: `20`</li>
+<li>Maximum value: `100`</li>
 <li>Minimum value: `1`</li></ul>
 
 **after** `string`
@@ -8713,9 +8706,10 @@ Retrieve a list of domains for the authenticated user.
 
 ## Query Parameters
 
-Note that the `limit` parameter is *optional*. If
-you do not provide a `limit`, all domains will be returned
-in a single response.
+If `limit` is not provided, all domains will be returned
+in a single response. Pass `limit` to paginate.
+`after` and `before` only take effect together
+with `limit`.
 
 **limit** `number`
 
@@ -9777,14 +9771,11 @@ Retrieve a list of attachments from a sent email.
 
 ## Query Parameters
 
-Note that the `limit` parameter is *optional*. If
-you do not provide a `limit`, all attachments will be returned
-in a single response.
-
 **limit** `number`
 
 Number of attachments to retrieve.
-<ul><li>Maximum value: `100`</li>
+<ul><li>Default value: `20`</li>
+<li>Maximum value: `100`</li>
 <li>Minimum value: `1`</li></ul>
 
 **after** `string`
@@ -10308,14 +10299,11 @@ You can list all emails received by your team. The list returns references to in
 
 ## Query Parameters
 
-Note that the `limit` parameter is *optional*. If
-you do not provide a `limit`, all emails will be returned
-in a single response.
-
 **limit** `number`
 
 Number of emails to retrieve.
-<ul><li>Maximum value: `100`</li>
+<ul><li>Default value: `20`</li>
+<li>Maximum value: `100`</li>
 <li>Minimum value: `1`</li></ul>
 
 **after** `string`
@@ -20407,14 +20395,11 @@ once the grant is revoked.
 
 ## Query Parameters
 
-Note that the `limit` parameter is *optional*. If
-you do not provide a `limit`, all OAuth grants will be returned
-in a single response.
-
 **limit** `number`
 
 Number of OAuth grants to retrieve.
-<ul><li>Maximum value: `100`</li>
+<ul><li>Default value: `20`</li>
+<li>Maximum value: `100`</li>
 <li>Minimum value: `1`</li></ul>
 
 **after** `string`
@@ -20663,7 +20648,7 @@ RFC 7009 token revocation. Revoking a refresh token revokes the entire grant: ev
 
 Access tokens can't be revoked individually. Revoke the grant's refresh token instead. Per RFC 7009, this endpoint always returns `200` with an empty body.
 
-Confidential clients must authenticate the same way they do at the [token endpoint](/docs/api-reference/oauth/token#client-authentication), using `client_secret_basic` or `client_secret_post`. Public clients (`none`) send only `client_id`.
+Confidential clients must authenticate the same way they do at the [token endpoint](/docs/api-reference/oauth/token#client-authentication), using `client_secret_basic`, `client_secret_post`, or `private_key_jwt`. Public clients (`none`) send only `client_id`.
 
 ## Body Parameters
 
@@ -20674,13 +20659,23 @@ The refresh token to revoke.
 **client\_id** `string`
 
 Required, except with `client_secret_basic`, where the `Authorization` header
-already carries it.
+already carries it, and with `private_key_jwt`, where the assertion does.
 
 **client\_secret** `string`
 
 Required for a confidential client using `client_secret_post`. Omit for public
 clients and for `client_secret_basic` (send the secret in the `Authorization`
 header instead).
+
+**client\_assertion\_type** `string`
+
+Required with `private_key_jwt`. Must be
+`urn:ietf:params:oauth:client-assertion-type:jwt-bearer`.
+
+**client\_assertion** `string`
+
+Required with `private_key_jwt`: a newly signed JWT, as at the [token
+endpoint](/docs/api-reference/oauth/token#client-authentication).
 
 **token\_type\_hint** `string`
 
@@ -20708,6 +20703,12 @@ curl -X POST 'https://api.resend.com/oauth/revoke' \
      -d 'client_id=550e8400-e29b-41d4-a716-446655440000&client_secret=CLIENT_SECRET&token=JcL7aYfE7S9h3L4qv0o2e1w8m6n5b3x9RkP2tD4uV6Q&token_type_hint=refresh_token'
 ```
 
+```bash Private Key JWT theme={"theme":{"light":"github-light","dark":"vesper"}}
+curl -X POST 'https://api.resend.com/oauth/revoke' \
+     -H 'Content-Type: application/x-www-form-urlencoded' \
+     -d 'client_assertion_type=urn%3Aietf%3Aparams%3Aoauth%3Aclient-assertion-type%3Ajwt-bearer&client_assertion=SIGNED_JWT&token=JcL7aYfE7S9h3L4qv0o2e1w8m6n5b3x9RkP2tD4uV6Q&token_type_hint=refresh_token'
+```
+
 ```http Response theme={"theme":{"light":"github-light","dark":"vesper"}}
 HTTP/1.1 200 OK
 ```
@@ -20716,8 +20717,9 @@ HTTP/1.1 200 OK
 
 | Status | `error` | When |
 | - | - | - |
-| `400` | `invalid_request` | `token` or `client_id` is missing, `token_type_hint` is `"access_token"`, or the client sent credentials via more than one mechanism. |
-| `401` | `invalid_client` | Unknown or disabled `client_id`, or a confidential client failed authentication (missing or wrong `client_secret`). |
+| `400` | `invalid_request` | `token` is missing, `client_id` is missing and neither a Basic header nor a `client_assertion` carries it, `token_type_hint` is `"access_token"`, or the client sent credentials via more than one mechanism. |
+| `401` | `invalid_client` | Unknown or disabled `client_id`, or a confidential client failed authentication (missing or wrong `client_secret`, a missing, invalid, expired, or replayed `client_assertion`, or a key set that can't be used). |
+| `503` | `temporarily_unavailable` | A `private_key_jwt` client's key set host timed out or answered with `429` or `5xx`, or the assertion couldn't be checked for replay. Retry the request. |
 
 
 # Revoke Grant
@@ -20794,11 +20796,12 @@ Access tokens are JWTs signed with `ES256`, valid for 900 seconds. Refresh token
 How the client proves its identity depends on the `token_endpoint_auth_method` it [registered](/docs/api-reference/oauth/register#param-token-endpoint-auth-method) with:
 
 * **Public clients (`none`)** don't send a secret. PKCE (`code_verifier`) is the only proof. This is the default and covers native, CLI, and other clients that can't keep a secret.
-* **Confidential clients** additionally present their `client_secret`, on top of PKCE:
+* **Confidential clients** additionally authenticate, on top of PKCE:
   * `client_secret_basic`: send `client_id` and `client_secret` in the HTTP `Authorization: Basic` header (each URL-encoded, joined with `:`, base64-encoded). With this method `client_id` can be omitted from the body.
   * `client_secret_post`: send `client_secret` as a body parameter alongside `client_id`.
+  * `private_key_jwt`: send a JWT signed with the client's private key as `client_assertion`, with `client_assertion_type` set to `urn:ietf:params:oauth:client-assertion-type:jwt-bearer`. With this method `client_id` can be omitted from the body. See [`private_key_jwt`](/docs/guides/building-a-resend-oauth-client#private-key-jwt) for the claims the JWT must carry.
 
-A client must use exactly one mechanism. Sending both a Basic header and a body `client_secret` fails with `invalid_request`.
+A client must use exactly one mechanism. Sending more than one, such as a Basic header and a body `client_secret`, fails with `invalid_request`.
 
 ## PKCE
 
@@ -20834,13 +20837,23 @@ Must be `"authorization_code"`.
 **client\_id** `string`
 
 Required, except with `client_secret_basic`, where the `Authorization` header
-already carries it.
+already carries it, and with `private_key_jwt`, where the assertion does.
 
 **client\_secret** `string`
 
 Required for a confidential client using `client_secret_post`. Omit for public
 clients and for `client_secret_basic` (send the secret in the `Authorization`
 header instead). See [Client authentication](#client-authentication).
+
+**client\_assertion\_type** `string`
+
+Required with `private_key_jwt`. Must be
+`urn:ietf:params:oauth:client-assertion-type:jwt-bearer`.
+
+**client\_assertion** `string`
+
+Required with `private_key_jwt`: a JWT signed with the client's private key.
+See [Client authentication](#client-authentication).
 
 **code** `string` *required*
 
@@ -20876,6 +20889,12 @@ curl -X POST 'https://api.resend.com/oauth/token' \
      -d 'grant_type=authorization_code&client_id=550e8400-e29b-41d4-a716-446655440000&client_secret=CLIENT_SECRET&code=AUTHORIZATION_CODE&redirect_uri=http%3A%2F%2F127.0.0.1%3A49152%2Foauth%2Fcallback&code_verifier=CODE_VERIFIER_VALUE'
 ```
 
+```bash Private Key JWT theme={"theme":{"light":"github-light","dark":"vesper"}}
+curl -X POST 'https://api.resend.com/oauth/token' \
+     -H 'Content-Type: application/x-www-form-urlencoded' \
+     -d 'grant_type=authorization_code&client_assertion_type=urn%3Aietf%3Aparams%3Aoauth%3Aclient-assertion-type%3Ajwt-bearer&client_assertion=SIGNED_JWT&code=AUTHORIZATION_CODE&redirect_uri=https%3A%2F%2Fexample.com%2Foauth%2Fcallback&code_verifier=CODE_VERIFIER_VALUE'
+```
+
 ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
 {
   "access_token": "eyJhbGciOiJFUzI1NiIsImtpZCI6Im9hdXRoX2tleSIsInR5cCI6ImF0K2p3dCJ9...",
@@ -20895,13 +20914,23 @@ Must be `"refresh_token"`.
 **client\_id** `string`
 
 Required, except with `client_secret_basic`, where the `Authorization` header
-already carries it.
+already carries it, and with `private_key_jwt`, where the assertion does.
 
 **client\_secret** `string`
 
 Required for a confidential client using `client_secret_post`. Omit for public
 clients and for `client_secret_basic`. See [Client
 authentication](#client-authentication).
+
+**client\_assertion\_type** `string`
+
+Required with `private_key_jwt`. Must be
+`urn:ietf:params:oauth:client-assertion-type:jwt-bearer`.
+
+**client\_assertion** `string`
+
+Required with `private_key_jwt`: a JWT signed with the client's private key.
+See [Client authentication](#client-authentication).
 
 **refresh\_token** `string` *required*
 
@@ -20930,11 +20959,12 @@ curl -X POST 'https://api.resend.com/oauth/token' \
 
 | Status | `error` | When |
 | - | - | - |
-| `400` | `invalid_request` | A required field is missing or malformed, or the client sent credentials via more than one mechanism (both a Basic header and a body `client_secret`). |
+| `400` | `invalid_request` | A required field is missing or malformed, or the client sent credentials via more than one mechanism (for example, both a Basic header and a body `client_secret`). |
 | `400` | `invalid_scope` | Refresh requests a scope outside what the grant already has. |
 | `400` | `invalid_grant` | The code/refresh token is invalid, expired, already used, or reused after rotation (which also revokes the grant). Also returned when PKCE verification fails or `redirect_uri` doesn't match. |
-| `401` | `invalid_client` | Unknown or disabled `client_id`, or a confidential client failed authentication (missing or wrong `client_secret`, or `client_id` in the Basic header doesn't match the request). |
+| `401` | `invalid_client` | Unknown or disabled `client_id`, or a confidential client failed authentication (missing or wrong `client_secret`, `client_id` in the Basic header doesn't match the request, a missing, invalid, expired, or replayed `client_assertion`, or a key set that can't be used). |
 | `400` | `unauthorized_client` | The client isn't registered for the grant type it's using. |
+| `503` | `temporarily_unavailable` | A `private_key_jwt` client's key set host timed out or answered with `429` or `5xx`, or the assertion couldn't be checked for replay. Retry the request. |
 
 
 # Pagination
@@ -20962,40 +20992,63 @@ Use the `id` of objects as the cursor for pagination. The cursor itself is *excl
 
 ## Supported endpoints
 
-Existing list endpoints can optionally return paginated results:
+The following list endpoints support cursor-based pagination.
 
-* [List Domains](/docs/api-reference/domains/list-domains)
-* [List API Keys](/docs/api-reference/api-keys/list-api-keys)
-* [List Broadcasts](/docs/api-reference/broadcasts/list-broadcasts)
-* [List Segments](/docs/api-reference/segments/list-segments)
+### Endpoints that default to 20 items
+
+Most paginated endpoints return 20 items by default when `limit` is not provided:
+
+* [List Automations](/docs/api-reference/automations/list-automations)
+* [List Automation Runs](/docs/api-reference/automations/list-automation-runs)
+* [List Broadcast Clicked Links](/docs/api-reference/broadcasts/list-broadcast-clicked-links)
+* [List Broadcast Recipients](/docs/api-reference/broadcasts/list-broadcast-recipients)
+* [List Contact Properties](/docs/api-reference/contact-properties/list-contact-properties)
 * [List Contacts](/docs/api-reference/contacts/list-contacts)
-* [List Receiving Emails](/docs/api-reference/emails/list-received-emails)
-
-> [!NOTE]
->
-> Note that for these endpoints, the `limit` parameter is optional. If you do
-> not provide a `limit`, all items will be returned in a single response.
-
-Newer list endpoints always return paginated results:
-
+* [List Contact Segments](/docs/api-reference/contacts/list-contact-segments)
+* [Get Contact Topics](/docs/api-reference/contacts/get-contact-topics)
 * [List Emails](/docs/api-reference/emails/list-emails)
+* [List Email Attachments](/docs/api-reference/emails/list-email-attachments)
+* [List Receiving Emails](/docs/api-reference/emails/list-received-emails)
 * [List Receiving Email Attachments](/docs/api-reference/emails/list-received-email-attachments)
-* [List Templates](/docs/api-reference/templates/list-templates)
-* [List Topics](/docs/api-reference/topics/list-topics)
+* [List Events](/docs/api-reference/events/list-events)
 * [List Inboxes](/docs/api-reference/inboxes/list-inboxes)
 * [List Threads](/docs/api-reference/inboxes/list-threads)
 * [Search Threads](/docs/api-reference/inboxes/search-threads)
 * [List Thread Emails](/docs/api-reference/inboxes/list-thread-emails)
 * [List Drafts](/docs/api-reference/inboxes/list-drafts)
+* [List Logs](/docs/api-reference/logs/list-logs)
+* [List OAuth Grants](/docs/api-reference/oauth/list-grants)
+* [List Suppressions](/docs/api-reference/suppressions/list-suppressions)
+* [List Templates](/docs/api-reference/templates/list-templates)
+* [List Topics](/docs/api-reference/topics/list-topics)
+* [List Webhooks](/docs/api-reference/webhooks/list-webhooks)
+* [List Webhook Events](/docs/api-reference/webhooks/list-events)
+* [List Event Attempts](/docs/api-reference/webhooks/list-event-attempts)
+
+### Endpoints that return all items by default
+
+The following endpoints return all items in a single response when `limit` is not provided. Pass `limit` to paginate and set the page size. The `after` and `before` parameters only take effect together with `limit`.
+
+* [List API Keys](/docs/api-reference/api-keys/list-api-keys)
+* [List Audiences](/docs/api-reference/audiences/list-audiences) (deprecated, alias for Segments)
+* [List Broadcasts](/docs/api-reference/broadcasts/list-broadcasts)
+* [List Domains](/docs/api-reference/domains/list-domains)
+* [List Segments](/docs/api-reference/segments/list-segments)
+* [List Segment Contacts](/docs/api-reference/segments/list-segment-contacts)
+
+### Other endpoints
+
+* [List Contact Imports](/docs/api-reference/contacts/list-contact-imports) defaults to **10 items** when `limit` is not provided
 
 ## Parameters
 
-All paginated endpoints support the following query parameters:
+Paginated endpoints accept the following query parameters:
 
 **limit** `number`
 
-The number of items to return per page. Default is `20`, maximum is `100`, and
-minimum is `1`.
+The number of items to return per page. The maximum is `100` and the minimum
+is `1`. The default depends on the endpoint. See [Supported
+endpoints](#supported-endpoints).
 
 **after** `string`
 
@@ -21008,6 +21061,9 @@ the ID of the last item from the current page. This will return the page that
 The cursor before which to start retrieving items. To get the previous page,
 use the ID of the first item from the current page. This will return the page
 that **ends before** the object with this ID (excluding the passed ID itself).
+[List Webhook Events](/docs/api-reference/webhooks/list-events) and [List Event
+Attempts](/docs/api-reference/webhooks/list-event-attempts) do not support
+`before`.
 
 > [!WARNING]
 >
@@ -21961,9 +22017,10 @@ The Segment ID.
 
 ## Query Parameters
 
-Note that the `limit` parameter is *optional*. If
-you do not provide a `limit`, all contacts will be returned
-in a single response.
+If `limit` is not provided, all contacts will be returned
+in a single response. Pass `limit` to paginate.
+`after` and `before` only take effect together
+with `limit`.
 
 **limit** `number`
 
@@ -22125,9 +22182,10 @@ Retrieve a list of segments.
 
 ## Query Parameters
 
-Note that the `limit` parameter is *optional*. If
-you do not provide a `limit`, all segments will be returned
-in a single response.
+If `limit` is not provided, all segments will be returned
+in a single response. Pass `limit` to paginate.
+`after` and `before` only take effect together
+with `limit`.
 
 **limit** `number`
 
@@ -26271,14 +26329,11 @@ Retrieve a list of webhooks for the authenticated user.
 
 ## Query Parameters
 
-Note that the `limit` parameter is *optional*. If
-you do not provide a `limit`, all webhooks will be returned
-in a single response.
-
 **limit** `number`
 
 Number of webhooks to retrieve.
-<ul><li>Maximum value: `100`</li>
+<ul><li>Default value: `20`</li>
+<li>Maximum value: `100`</li>
 <li>Minimum value: `1`</li></ul>
 
 **after** `string`
@@ -27753,13 +27808,25 @@ If no key is found from any source, the CLI errors with code `auth_error`.
 
 **`resend login`**
 
-Authenticate by storing your API key locally. The key is validated against the Resend API before being saved.
+Log in and save your credentials locally.
 
 ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
 resend login
 ```
 
-In a terminal, the command prompts for your key via masked input. In non-interactive environments (CI, pipes), use the `--key` flag:
+In a terminal, the command asks how to log in. You can approve the login in the browser, or enter an API key through a masked input. The CLI validates an API key against the Resend API before it saves the key.
+
+In non-interactive environments (CI, pipes, AI agents), pass `--web` or `--key`.
+
+`--web` logs in through the browser with no prompts:
+
+```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+resend login --web
+```
+
+The command tries to open the browser and prints the login URL to stderr. It then waits up to 5 minutes for you to approve the login. The browser must run on the same machine as the CLI. Without `--profile`, the login is saved to the `default` profile.
+
+`--key` saves an API key:
 
 ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
 resend login --key re_xxxxxxxxxxxxx
@@ -27769,7 +27836,8 @@ Credentials are saved to your system's secure credential storage (macOS Keychain
 
 | Flag | Description |
 | - | - |
-| `--key <key>` | API key to store (required in non-interactive mode) |
+| `--web` | Log in through the browser with no prompts. Can't be combined with `--key`. |
+| `--key <key>` | API key to store. Required in non-interactive mode, unless you pass `--web`. |
 
 **`resend logout`**
 
@@ -28583,6 +28651,18 @@ When the CLI detects a non-TTY environment (piped output, CI runner, or the `--j
 ```
 
 All required flags must be provided. Interactive prompts are disabled. Missing flags cause an error listing what's needed.
+
+## Authentication
+
+Set `RESEND_API_KEY` in the agent's environment. If no key is available, the agent can log in through the browser with `--web`:
+
+```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+resend login --web
+```
+
+The command prints the login URL to stderr, and the agent shows that URL to the user. The command waits up to 5 minutes for the user to approve the login, so agents run it in the background. The browser must run on the same machine as the CLI. To save the login to a profile other than `default`, pass `--profile <name>`.
+
+Never pass a literal API key to `--key`. It stays in the shell history and in the agent's logs.
 
 ## Piping from stdin
 
@@ -38503,6 +38583,12 @@ After your domain is verified, you can:
 
 We recommend sending your emails from one or more subdomains (e.g., `updates.example.com`) instead of your root domain to isolate your sending reputation and to clearly communicate your intent to your recipients.
 
+> [!NOTE]
+>
+> If you're [moving email from another provider](#moving-from-another-provider)
+> that already sends from an address with an established reputation, keep that
+> address instead.
+
 You must [add each subdomain](/docs/add-a-domain) individually, and they will be displayed in the [**Domains** Dashboard page](https://resend.com/domains) as separate entries where you can manage and configure them independently.
 
 There are several benefits to sending from a subdomain:
@@ -38514,6 +38600,14 @@ There are several benefits to sending from a subdomain:
 Subdomains of your main domain also help reinforce your brand identity and build trust with inbox providers.
 
 Domains that look like your main brand but aren’t actually your main brand (e.g., `example-alerts.com` instead of `alerts.example.com`) can appear suspicious to spam filters and confusing to your recipients. Inbox providers may flag them as phishing or spoofing attempts, and your users are more likely to ignore, delete, or even report the emails as spam.
+
+### Moving from another provider
+
+If you already send emails from an address with an established reputation, keep sending from that address when you switch to Resend to preserve your reputation history. Follow the [existing domain warm up plan](/docs/knowledge-base/warming-up#existing-domain) to avoid any spikes in email volume that might be concerning to inbox service providers.
+
+If you have only sent a few emails, or you send irregularly, your domain has little history to lose if you start sending from a new subdomain in Resend, such as `news.example.com`. Follow the [new domain warm up plan](/docs/knowledge-base/warming-up#new-domain) to maximize your deliverability right from the start.
+
+If you keep using an established email address for your marketing emails, add and warm up a new subdomain for your transactional emails, such as `auth.example.com`. This keeps your existing sender reputation for marketing emails, which are more likely to benefit from your history than transactional emails.
 
 ## Domain management
 
@@ -39551,7 +39645,7 @@ curl -X POST 'https://api.resend.com/emails' \
 
 ## Send attachments from a local file
 
-Include the `content` parameter to send attachments from a local file. This parameter accepts the Base64 encoded content of the file you want to attach.
+Include the `content` parameter to send attachments from a local file. This parameter accepts the Base64 encoded content of the file you want to attach. In the Node.js SDK, you can also pass a buffer directly, and the SDK converts it to Base64 for you.
 
 Define the file name that will be attached using the `filename` parameter.
 
@@ -39562,7 +39656,7 @@ import fs from 'fs';
 const resend = new Resend('re_xxxxxxxxx');
 
 const filepath = `${__dirname}/static/invoice.pdf`;
-const attachment = fs.readFileSync(filepath).toString('base64');
+const attachment = fs.readFileSync(filepath);
 
 await resend.emails.send({
   from: 'Acme <onboarding@resend.dev>',
@@ -41119,7 +41213,7 @@ import fs from 'fs';
 const resend = new Resend('re_xxxxxxxxx');
 
 const filepath = `${__dirname}/static/logo.png`;
-const attachment = fs.readFileSync(filepath).toString('base64');
+const attachment = fs.readFileSync(filepath);
 
 await resend.emails.send({
   from: 'Acme <onboarding@resend.dev>',
@@ -49293,8 +49387,8 @@ Resend implements OAuth 2.0 and 2.1, including Proof Key for Code Exchange (PKCE
 
 Resend supports both **public** and **confidential** clients. PKCE is required on every authorization code exchange regardless of type:
 
-* **Public clients** authenticate with PKCE alone. Register them with `token_endpoint_auth_method: "none"` (the default), or declare that value in the metadata document. Use a public client when it can't keep a secret, such as native apps, CLIs, and single-page apps. A CIMD client is always public, since its document is world-readable and can't carry a secret.
-* **Confidential clients** additionally present a `client_secret` at the token and revocation endpoints. Register them with `token_endpoint_auth_method: "client_secret_basic"` (or `client_secret_post`) to have Resend issue the secret. Use a confidential client when it has a backend that can store the secret privately, such as a server-side web app.
+* **Public clients** authenticate with PKCE alone. Register them with `token_endpoint_auth_method: "none"` (the default), or declare that value in the metadata document. Use a public client when it can't keep a secret, such as native apps, CLIs, and single-page apps.
+* **Confidential clients** additionally authenticate at the token and revocation endpoints. A registered client presents a `client_secret`: register it with `token_endpoint_auth_method: "client_secret_basic"` (or `client_secret_post`) to have Resend issue the secret. A CIMD client can't carry a secret, since its document is world-readable, so it signs a JWT with its own private key instead ([`private_key_jwt`](#private-key-jwt)). Use a confidential client when it has a backend that can keep a credential private, such as a server-side web app.
 
 Because Resend does not offer self-service verification or domain-ownership checks yet, pre-register remote third-party clients rather than registering them dynamically, but you can register them with the same register endpoint.
 
@@ -49304,7 +49398,7 @@ The Resend dashboard hosts the login and consent screen. Your client only needs 
 
 The standard case is registering beforehand, and the worked examples below use it. A metadata document is the next best thing for clients that can't predict their own deployment details ahead of time, like an MCP server: it works for hosted apps and local tools alike, and one document serves every install. Register dynamically only when the client can't host a document.
 
-Also decide whether the client is public or confidential. A client running entirely on the user's machine, such as a native app, CLI, or single-page app, can't hide a secret, so register it as public (`none`). A client with a server-side backend should register as confidential (`client_secret_basic`) and keep the issued `client_secret` out of any user-facing code. That choice only applies to a registered client, since a CIMD client is always public. The [pre-registered remote client](#pre-registered-remote-client) section below covers the confidential path, and the [local client](#local-client) section covers the public one.
+Also decide whether the client is public or confidential. A client running entirely on the user's machine, such as a native app, CLI, or single-page app, can't hide a secret, so register it as public (`none`). A client with a server-side backend should register as confidential (`client_secret_basic`) and keep the issued `client_secret` out of any user-facing code. A CIMD client makes the same choice in its document: `none` for a public client, or [`private_key_jwt`](#private-key-jwt) for a confidential one. The [pre-registered remote client](#pre-registered-remote-client) section below covers the confidential path, and the [local client](#local-client) section covers the public one.
 
 ## Scopes
 
@@ -49386,16 +49480,18 @@ The fields are the [registration](/docs/api-reference/oauth/register) fields, wi
 | `client_id` | Required. Must equal the document's own URL, character for character. |
 | `client_name` | Required, 1–200 characters. |
 | `redirect_uris` | Required, 1 to 10 entries. An `https` URI must be on the same host as the document. See [Redirect URIs](#redirect-uris-in-a-document). |
-| `token_endpoint_auth_method` | Must be `none`, or omitted. A document is public, so it can't authenticate with a secret. |
+| `token_endpoint_auth_method` | `none` (or omitted) for a public client, or `private_key_jwt`. A document is public, so it can't authenticate with a secret. |
 | `client_secret` | Must be absent. |
-| `jwks`, `jwks_uri` | Must be absent. Resend doesn't support `private_key_jwt`. |
+| `jwks_uri` | Required with `private_key_jwt`, and must be absent otherwise. Same URL rules as the document URL, on the same host as the document. |
+| `jwks` | Must be absent. Publish the key set at `jwks_uri` instead. |
+| `token_endpoint_auth_signing_alg` | Optional, with `private_key_jwt` only. One of `RS256`, `PS256`, or `ES256`. When set, assertions signed with any other algorithm are rejected. |
 | `grant_types` | Must include `authorization_code`. Values Resend doesn't support are ignored rather than rejected. |
 | `response_types` | If present, `["code"]` only. |
 | `scope` | Space-delimited, and every value must be [supported](#scopes). Pass it explicitly: an omitted `scope` gives the client both scopes. |
 | `logo_uri` | Optional, `http` or `https`. Shown on the consent screen only when it's served from the same host as the document. |
 | `client_uri` | Optional. Read but not otherwise used. |
 
-Apart from `grant_types`, a declaration Resend can't honor fails the whole document rather than being dropped from it. A client that declares `private_key_jwt`, for instance, gets an error rather than being downgraded to an unauthenticated one.
+Apart from `grant_types`, a declaration Resend can't honor fails the whole document rather than being dropped from it. A client that declares `client_secret_basic`, for instance, gets an error rather than being downgraded to an unauthenticated one.
 
 ### The document URL
 
@@ -49410,6 +49506,49 @@ A document proves that you control its host, and nothing else:
 * An `https` redirect URI must be on the same host as the document URL. A document at `https://example.com/oauth/client.json` can't name a callback on `app.example.net`.
 * Loopback `http` URIs (`127.0.0.1`, `localhost`, `[::1]`) are exempt. A loopback address names the user's own machine rather than a publisher, so there's nothing to compare. Port variance works the same way it does for a registered client.
 * Private-use URI schemes (e.g. `cursor://`) are exempt too, since they carry no web host at all.
+
+### Private key JWT
+
+A CIMD client with a backend can authenticate with a key pair instead of a secret, following [RFC 7523](https://datatracker.ietf.org/doc/html/rfc7523). The private key never leaves the client, so it can live in a hardware security module, and Resend only ever sees the public key.
+
+Declare it in the document, and publish the public key set at `jwks_uri`, on the same host:
+
+```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+{
+  "client_id": "https://example.com/oauth/client.json",
+  "client_name": "Example App",
+  "redirect_uris": ["https://example.com/oauth/callback"],
+  "grant_types": ["authorization_code", "refresh_token"],
+  "token_endpoint_auth_method": "private_key_jwt",
+  "token_endpoint_auth_signing_alg": "ES256",
+  "jwks_uri": "https://example.com/oauth/jwks.json",
+  "scope": "emails:send"
+}
+```
+
+The key set is a standard JWK Set (`{"keys": [...]}`). Give each key a `kid` and put it in the JWT header, so Resend can pick the right key. Resend fetches the key set without following redirects, with a 16 KB limit and a 5 second timeout.
+
+On every call to `/oauth/token` and `/oauth/revoke`, send a newly signed JWT in place of a secret:
+
+```
+client_assertion_type=urn:ietf:params:oauth:client-assertion-type:jwt-bearer
+client_assertion=<signed JWT>
+```
+
+| Part | Value |
+| - | - |
+| `alg` (header) | `RS256`, `PS256`, or `ES256`, matching `token_endpoint_auth_signing_alg` when it's declared. |
+| `kid` (header) | The `kid` of a key in the key set. |
+| `iss` and `sub` | Both the document URL, the same value as `client_id`. |
+| `aud` | `https://api.resend.com`. |
+| `jti` | A unique random value. Each one is accepted once, so a replayed assertion fails. |
+| `exp` | Required, at most 10 minutes ahead. A minute is plenty. |
+
+`client_id` can be omitted from the request body, since the assertion carries it.
+
+To rotate a key, publish the new key next to the old one, then start signing with the new `kid`. Resend refetches the key set when it sees a `kid` it doesn't know, at most once every 30 seconds, so wait 30 seconds after publishing before switching. Then remove the old key.
+
+An ES256 signature from an HSM or a cloud KMS usually comes back DER-encoded. Convert it to the raw 64-byte `R || S` form a JWT expects before base64url-encoding it.
 
 ### Hosting and caching
 
@@ -55823,8 +55962,12 @@ Design your email as an artboard in Paper. A few tips for designs that translate
 > [!TIP]
 >
 > Where you want personalization, write the variable directly into the design
-> copy, like `Hi {{{NAME|there}}}`. Your agent will preserve it when
-> creating the template or broadcast.
+> copy. For a template, use `{{{NAME}}}` and have your agent declare `NAME` as
+> a variable with a
+> [fallback value](/docs/dashboard/templates/template-variables#fallback-values).
+> For a Broadcast, use a contact property with an inline fallback, like
+> `{{{contact.first_name|there}}}` (see
+> [Personalize your content](/docs/dashboard/broadcasts/editor#personalize-your-content)).
 
 **4. Ask your agent to create an email**
 
@@ -55835,7 +55978,8 @@ To create a template, select an artboard in Paper and with both servers connecte
 ```text theme={"theme":{"light":"github-light","dark":"vesper"}}
 Look at the selected artboard in Paper and recreate it as an email template
 in Resend. Convert the design to email-safe HTML (inline styles, table-based
-layout) using the Resend agent skills. Provide a name, subject, and preview text for the template that fits the content. Publish the template.
+layout) using the Resend agent skills. Provide a name, subject, and preview text for the template that fits the content. Declare each {{{VARIABLE}}} in
+the copy as a template variable with a fallback value. Publish the template.
 ```
 
 Behind the scenes, the agent will:
@@ -56990,13 +57134,13 @@ Free accounts have the following:
 
 ## Overage Limits
 
-Paid plans include pay-as-you-go overages, which allow you to continue sending emails after you've reached your monthly quota. To prevent extreme overages and unexpected costs, a hard limit of 5x your monthly quota applies.
+Paid plans can turn on pay-as-you-go overages, which let you keep sending emails after you reach your monthly quota. Overages are off until a team admin turns on **Transactional pay-as-you-go** on the [Usage page](https://resend.com/settings/usage). While they are off, sending stops at your monthly quota until the next billing cycle.
 
 > [!NOTE]
 >
-> By default, overage usage is capped at **5x your plan's monthly quota**. Once you reach this limit, sending will be paused until the next billing cycle.
+> Overage sending is capped by an overage limit, set as a percentage of your monthly quota. The default is 400%, so you can send up to 5x your monthly quota in a billing cycle. Once you reach the limit, sending is paused until the next billing cycle.
 >
-> If you need to adjust this limit, please [contact support](https://resend.com/help).
+> A team admin can change the overage limit on the [Usage page](https://resend.com/settings/usage), from 100% to 1,000% in steps of 100%.
 
 > [!TIP]
 >

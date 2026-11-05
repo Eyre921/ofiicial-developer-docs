@@ -38,6 +38,18 @@ Ultra-fast is available for **DeepSeek V4.1 Flash 1017**. To use it, set `model`
 
 Ultra-fast is priced at a premium and has lower rate limits than the standard model. Preview modes are under active development and may change quickly. See [Serverless Modes](/serverless/serverless-modes), [Serverless pricing](/serverless/pricing), and [Serverless rate limits](/serverless/rate-limits#models-by-tier).
 
+**2026-11-02**
+
+Training
+
+# Serverless Training deprecation: DeepSeek V4 Flash (0731)
+
+**[DeepSeek V4 Flash (0731)](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)** is removed from the shared Serverless Training pool effective November 2, 2026.
+
+Migrate Serverless Training workloads to **[DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017)**.
+
+This change applies only to Serverless Training. DeepSeek V4 Flash (0731) remains available on dedicated LoRA shapes through Managed Training and the Training API. Check the [training model catalog](/fine-tuning/models) for current availability.
+
 **2026-10-27**
 
 Inference

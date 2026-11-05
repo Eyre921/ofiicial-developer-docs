@@ -11861,7 +11861,8 @@ These rules apply:
 
 * The processing location is currently fixed at creation, like the rest of the embedding configuration. When you describe the index, the field's `embed.processing_location` shows the location the model uses now.
 * On the Starter and Builder plans, `text-embedding-3-small` and `text-embedding-3-large` are limited to `global`. On the Standard and Enterprise plans, you can set `processing_location` to `us`.
-* If your organization moves to the Starter or Builder plan, an index created with `us` keeps working but processes text in `global`, and describing or listing the index shows `global`. If you upgrade again, the index goes back to `us`.
+* If your organization moves to the Builder plan, an index created with `us` keeps working but processes text in `global`, and describing or listing the index shows `global`. If you upgrade again, the index goes back to `us`.
+* An index created with `us` can't be kept when you [downgrade to the Starter plan](/admin/billing/downgrade-billing-plan#before-you-downgrade). Recreate it with `global` and re-upsert your data before you downgrade.
 * A location the model doesn't currently offer, such as `eu`, is rejected with a `400`.
 * The [List models](/reference/api/latest/inference/list-available-models) operation lists `processing_location`, with its accepted values, in a model's `supported_parameters` on API version `2026-07` and later.
 
@@ -72869,13 +72870,14 @@ When you downgrade to the Starter plan in the Pinecone console, you choose which
 
 The downgrade doesn't reduce your data or change your configuration, so do this first:
 
-* **Move any serverless indexes outside the `us-east-1` region of AWS that you want to keep.** [Create a new index](/guides/indexes/create-an-index) in `us-east-1`, [re-upsert your data](/guides/data/upsert-data), and delete the old index before you start the downgrade. Indexes in other [regions](/guides/indexes/index-configuration#cloud-regions) can't be kept on Starter.
-* **Migrate any dedicated read node indexes** whose data you want to keep. They can't run on Starter and there's no self-serve conversion. If the index is in `us-east-1`, [back it up](/guides/indexes/back-up-an-index) and [restore it](/guides/indexes/restore-an-index) (this creates a new on-demand serverless index in the same region), then delete the original and keep the restored index during the downgrade. If it's in another region, create a new `us-east-1` index and re-upsert your data as described above. You can also [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to migrate back.
-* **Migrate any pod-based indexes** whose data you want to keep. [Migrate each one to serverless](/guides/legacy/pod-based-indexes/migrate-a-pod-based-index-to-serverless) and finish creating the new serverless index before you start the downgrade, because the migration saves your index as a collection and the downgrade deletes all collections.
-* **Move any `eu`-region assistants you want to keep to `us`.** [Recreate them in `us`](/guides/assistant/create-assistant) and re-upload their files. `eu` assistants you don't move are deleted.
-* **Disconnect your organization's [SSO connection](/admin/organizations/organizations-overview#organization-single-sign-on-sso).**
-* **Reassign or remove members** whose [organization role](/admin/organizations/organizations-overview#organization-roles) isn't available on the Starter plan.
-* **Get under the Starter storage limits.** Starter allows no more than 2 GB of data across your serverless indexes and 1 GB of assistant storage. Do this last, after the migrations above, because they can briefly leave a second copy of an index. [Delete records](/guides/data/delete-data) and [assistant files](/guides/assistant/manage-files#delete-a-file) to fit.
+* **Indexes outside `us-east-1`**: Indexes in other [regions](/guides/indexes/index-configuration#cloud-regions) can't be kept on Starter. To keep one, [create a new index](/guides/indexes/create-an-index) in `us-east-1`, [re-upsert your data](/guides/data/upsert-data), and delete the old index.
+* **Gemini and `us` processing indexes**: Indexes with embedded fields that use `gemini-embedding-2` or the `us` [processing location](/guides/indexes/processing-locations) can't be kept on Starter. To keep one, create a new index that uses a model available on Starter in place of `gemini-embedding-2`, or that sets `processing_location` to `global`. Then re-upsert your data and delete the old index.
+* **Dedicated read node indexes**: These can't run on Starter, and there's no self-serve conversion. To keep one in `us-east-1`, [back it up](/guides/indexes/back-up-an-index) and [restore it](/guides/indexes/restore-an-index), which creates a new on-demand serverless index in the same region. Delete the original and keep the restored index during the downgrade. For one in another region, create a new `us-east-1` index and re-upsert your data. You can also [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to migrate back.
+* **Pod-based indexes**: To keep one, [migrate it to serverless](/guides/legacy/pod-based-indexes/migrate-a-pod-based-index-to-serverless) and finish creating the new serverless index first. The migration saves your index as a collection, and the downgrade deletes all collections.
+* **`eu` assistants**: These are deleted unless you move them. To keep one, [recreate it in `us`](/guides/assistant/create-assistant) and re-upload its files.
+* **SSO**: Disconnect your organization's [SSO connection](/admin/organizations/organizations-overview#organization-single-sign-on-sso).
+* **Member roles**: Reassign or remove members whose [organization role](/admin/organizations/organizations-overview#organization-roles) isn't available on Starter.
+* **Storage**: Starter allows no more than 2 GB of data across your serverless indexes and 1 GB of assistant storage. [Delete records](/guides/data/delete-data) and [assistant files](/guides/assistant/manage-files#delete-a-file) to fit. Do this last, because the migrations above can briefly leave a second copy of an index.
 
 > [!NOTE]
 >
@@ -73251,13 +73253,14 @@ When you downgrade to the Starter plan in the Pinecone console, you choose which
 
 The downgrade doesn't reduce your data or change your configuration, so do this first:
 
-* **Move any serverless indexes outside the `us-east-1` region of AWS that you want to keep.** [Create a new index](/guides/indexes/create-an-index) in `us-east-1`, [re-upsert your data](/guides/data/upsert-data), and delete the old index before you start the downgrade. Indexes in other [regions](/guides/indexes/index-configuration#cloud-regions) can't be kept on Starter.
-* **Migrate any dedicated read node indexes** whose data you want to keep. They can't run on Starter and there's no self-serve conversion. If the index is in `us-east-1`, [back it up](/guides/indexes/back-up-an-index) and [restore it](/guides/indexes/restore-an-index) (this creates a new on-demand serverless index in the same region), then delete the original and keep the restored index during the downgrade. If it's in another region, create a new `us-east-1` index and re-upsert your data as described above. You can also [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to migrate back.
-* **Migrate any pod-based indexes** whose data you want to keep. [Migrate each one to serverless](/guides/legacy/pod-based-indexes/migrate-a-pod-based-index-to-serverless) and finish creating the new serverless index before you start the downgrade, because the migration saves your index as a collection and the downgrade deletes all collections.
-* **Move any `eu`-region assistants you want to keep to `us`.** [Recreate them in `us`](/guides/assistant/create-assistant) and re-upload their files. `eu` assistants you don't move are deleted.
-* **Disconnect your organization's [SSO connection](/admin/organizations/organizations-overview#organization-single-sign-on-sso).**
-* **Reassign or remove members** whose [organization role](/admin/organizations/organizations-overview#organization-roles) isn't available on the Starter plan.
-* **Get under the Starter storage limits.** Starter allows no more than 2 GB of data across your serverless indexes and 1 GB of assistant storage. Do this last, after the migrations above, because they can briefly leave a second copy of an index. [Delete records](/guides/data/delete-data) and [assistant files](/guides/assistant/manage-files#delete-a-file) to fit.
+* **Indexes outside `us-east-1`**: Indexes in other [regions](/guides/indexes/index-configuration#cloud-regions) can't be kept on Starter. To keep one, [create a new index](/guides/indexes/create-an-index) in `us-east-1`, [re-upsert your data](/guides/data/upsert-data), and delete the old index.
+* **Gemini and `us` processing indexes**: Indexes with embedded fields that use `gemini-embedding-2` or the `us` [processing location](/guides/indexes/processing-locations) can't be kept on Starter. To keep one, create a new index that uses a model available on Starter in place of `gemini-embedding-2`, or that sets `processing_location` to `global`. Then re-upsert your data and delete the old index.
+* **Dedicated read node indexes**: These can't run on Starter, and there's no self-serve conversion. To keep one in `us-east-1`, [back it up](/guides/indexes/back-up-an-index) and [restore it](/guides/indexes/restore-an-index), which creates a new on-demand serverless index in the same region. Delete the original and keep the restored index during the downgrade. For one in another region, create a new `us-east-1` index and re-upsert your data. You can also [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to migrate back.
+* **Pod-based indexes**: To keep one, [migrate it to serverless](/guides/legacy/pod-based-indexes/migrate-a-pod-based-index-to-serverless) and finish creating the new serverless index first. The migration saves your index as a collection, and the downgrade deletes all collections.
+* **`eu` assistants**: These are deleted unless you move them. To keep one, [recreate it in `us`](/guides/assistant/create-assistant) and re-upload its files.
+* **SSO**: Disconnect your organization's [SSO connection](/admin/organizations/organizations-overview#organization-single-sign-on-sso).
+* **Member roles**: Reassign or remove members whose [organization role](/admin/organizations/organizations-overview#organization-roles) isn't available on Starter.
+* **Storage**: Starter allows no more than 2 GB of data across your serverless indexes and 1 GB of assistant storage. [Delete records](/guides/data/delete-data) and [assistant files](/guides/assistant/manage-files#delete-a-file) to fit. Do this last, because the migrations above can briefly leave a second copy of an index.
 
 > [!NOTE]
 >
@@ -85979,22 +85982,22 @@ Curated artifacts are only half the story. At query time the model doesn't just 
 Distilling artifacts up front plus writing retrieval code at query time means higher-quality answers on large, messy corpora: exact counts, real relationships, and citations you can trust, without dumping everything into the model's context.
 
 
-# Pinecone Nexus MCP server
+# Connect an MCP client to Pinecone Nexus
 Source: https://docs.pinecone.io/guides/nexus/mcp-server
 
-Query your Pinecone Nexus contexts from any Model Context Protocol client, such as Claude Desktop, over Streamable HTTP.
+Query your Pinecone Nexus contexts from any MCP client, such as Claude Desktop, over Streamable HTTP.
 
-The Nexus MCP server exposes three read-only tools, `list_contexts`, `query_context`, and `get_query`, over Streamable HTTP at your deployment's workspace host with the `/mcp` path.
+The Nexus Model Context Protocol (MCP) server lets any MCP client query your Nexus contexts over Streamable HTTP. It serves three read-only tools: `list_contexts`, `query_context`, and `get_query`.
 
 ## Prerequisites
 
-* **A Pinecone API key** with access to your Nexus project. Create one in the [Pinecone console](https://app.pinecone.io/organizations/-/keys).
-* **The MCP endpoint.** Your deployment's workspace host with the `/mcp` path (the base of `nexus_default_workspace_data_console_url` from the [install output](/guides/nexus/byoc/deploy)).
-* **Node.js**, so the `mcp-remote` bridge can run through `npx`.
+* A Pinecone API key with access to your Nexus project. Create one in the [Pinecone console](https://app.pinecone.io/organizations/-/keys).
+* The MCP endpoint, your deployment's workspace host with the `/mcp` path (the base of `nexus_default_workspace_data_console_url` from the [install output](/guides/nexus/byoc/deploy)).
+* Node.js, so the `mcp-remote` bridge can run through `npx`.
 
-## Connect
+## Add the server config
 
-Add this server config to your MCP client. Swap `YOUR_PINECONE_API_KEY` for your Pinecone API key. The server logs in with it per request, so every caller queries their own project. For clients that launch local stdio servers, the `mcp-remote` bridge connects them to the remote Streamable HTTP endpoint.
+Add the config below to your MCP client, replacing `YOUR_WORKSPACE_HOST` and `YOUR_PINECONE_API_KEY` with your own values. The server authenticates each request with the key you pass, so every caller queries their own project. The `mcp-remote` bridge lets clients that only launch local stdio servers reach the remote HTTP endpoint.
 
 ```json theme={null}
 {
@@ -86014,9 +86017,9 @@ Add this server config to your MCP client. Swap `YOUR_PINECONE_API_KEY` for your
 
 ## Tools
 
-* `list_contexts`: list the contexts available to your project (each has a `slug`, and only curated contexts are queryable). Takes no arguments and returns an array of context objects, each shaped `{ slug, name, id, description, queryable, is_curating, is_optimizing, last_curated_at, last_optimized_at }`. `queryable` turns true once the context has been curated, `is_curating` and `is_optimizing` flag whether work is running now, and the two timestamps are ISO strings or `null`.
-* `query_context`: submit a question scoped to one context. Args: `context` (slug), `question`. Runs in background mode and returns a `query_id` immediately without waiting for the answer. The return object is `{ query_id, status, model }`. Pass the `query_id` to `get_query` to fetch the result.
-* `get_query`: poll the result of a submitted query. Args: `query_id`. Returns `{ query_id, answer, output_json, citations, model, status, error }`. `answer` is the grounded answer text, or `null` until it's ready. `output_json` holds structured output when the query requested a shape, otherwise `null`. `citations` is an array of source references and `error` is set only when the query failed. Keep polling until `status` is `completed`, `failed`, or `cancelled`.
+* `list_contexts`: List the contexts available to your project (each has a `slug`). Takes no arguments and returns an array of context objects, each shaped `{ slug, name, id, description, queryable, is_curating, is_optimizing, last_curated_at, last_optimized_at }`. `queryable` turns true once the context has been optimized, `is_curating` and `is_optimizing` flag whether work is running now, and the two timestamps are ISO strings or `null`.
+* `query_context`: Submit a question scoped to one context. Args: `context` (slug), `question`. Runs in background mode and returns a `query_id` immediately without waiting for the answer. The return object is `{ query_id, status, model }`. Pass the `query_id` to `get_query` to fetch the result.
+* `get_query`: Poll the result of a submitted query. Args: `query_id`. Returns `{ query_id, answer, output_json, citations, model, status, error }`. `answer` is the grounded answer text, or `null` until it's ready. `output_json` holds structured output when the query requested a shape, otherwise `null`. `citations` is an array of source references and `error` is set only when the query failed. Keep polling until `status` is `completed`, `failed`, or `cancelled`.
 
 
 # Nexus model guidance
@@ -86056,7 +86059,7 @@ A call that doesn't name a model runs on its work area's default, so generation 
 
 A query can run on any model enabled for Query instead of the default. In a context's **Query** tab, the model selector lists those models. In the API, name a model by its catalog ID in the query's `model` field. `GET /models` lists the catalog IDs and the current defaults.
 
-Match the model to the question rather than the size of the context. A cheaper, faster model suits simple or high-volume queries, and the most capable model suits complex, multi-step reasoning. The query [trace](/guides/nexus/query-tracing) reports the tokens, latency, and cost behind each answer, so you can compare models on your own questions and settle on the one that fits.
+Match the model to the question rather than the size of the context. A cheaper, faster model suits simple or high-volume queries, and the most capable model suits complex, multi-step reasoning. The query [trace](/guides/nexus/query-tracing) reports the tokens and latency behind each answer, so you can compare models on your own questions and settle on the one that fits.
 
 ## Curation models
 
@@ -86248,9 +86251,9 @@ A session can carry its own answer instructions on top of a context's default, a
 # Query tracing
 Source: https://docs.pinecone.io/guides/nexus/query-tracing
 
-Inspect a Pinecone Nexus query trace to see reasoning steps, retrieval tool calls, token usage, latency, cost breakdown, and cache savings.
+Inspect a Pinecone Nexus query trace to see reasoning steps, retrieval tool calls, token usage, latency, and cache savings.
 
-Every query is recorded as a trace that shows how Pinecone Nexus reached an answer, from the steps the model ran down to the retrieval code it generated, along with the tokens, time, and cost each step took. Use it to understand a result or debug an unexpected one.
+Every query is recorded as a trace that shows how Pinecone Nexus reached an answer, from the steps the model ran down to the retrieval code it generated, along with the tokens and time each step took. Use it to understand a result or debug an unexpected one.
 
 To open a trace, click **Show trace** after a query returns, or reopen a past query from its session in the **Sessions** list. A trace opens to the query text, the model that answered, and the views below.
 
@@ -86262,22 +86265,21 @@ The summary bar reports the shape of the run at a glance.
 * **Tool calls.** How many times it called the retrieval SDK.
 * **Tokens.** Input and output tokens for the whole query.
 * **Latency.** Wall-clock time to produce the answer.
-* **Cost.** Total cost, with a breakdown in **Cost detail**.
 
-## Cost detail
+For a token breakdown, open the **Token detail** panel.
 
-**Cost detail** breaks the run down by tokens and cost.
+## Token detail
 
-* **Where the tokens went.** How the spend divides between the reasoning steps and the final synthesis, plus the total billed.
+* **Where the tokens went.** How the tokens divide between the reasoning steps and the final synthesis, plus the total tokens billed.
 * **New input by step.** The fresh input tokens each step adds. Every step re-sends the whole conversation, so only the new tokens are fresh work. The carried remainder is re-read context that can be served from the prompt cache.
 * **Output tokens by step.** The output tokens produced by each step and the answer.
-* **Caching savings.** How much input was served from cache versus billed as fresh, with an effective cost estimate. Cached input bills far below fresh input, so a run that reuses more context costs less.
+* **Caching savings.** How much input was served from the prompt cache versus billed as fresh. Cached input is re-read context the model doesn't reprocess, so the more context a run reuses, the more of its input the cache serves.
 
 ## Spans and inspector
 
 The trace lists each span with its duration, from the model's own reasoning steps to the individual tool calls it made. Select any span to update the **inspector** with the detail for that span.
 
-* **A reasoning step** shows its input and output tokens, its timing (split into decide time while the model reasons and execute time while the code runs), its cost, and the generated code the model wrote and ran.
+* **A reasoning step** shows its input and output tokens, its timing (split into decide time while the model reasons and execute time while the code runs), and the generated code the model wrote and ran.
 * **A tool call** (for example, `query_db()`) shows its arguments (the query it ran), its result (such as the number of rows returned), and its timing.
 
 This is the same agent loop described in [Queries](/guides/nexus/queries), made visible one span at a time.

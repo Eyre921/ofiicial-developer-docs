@@ -20,7 +20,7 @@ Imagine you’re a developer at Kavholm, a furniture company ready to introduce 
 
 As you prepare to launch Kavholm’s new payment method, [set up a sandbox](https://docs.stripe.com/sandboxes/dashboard/manage.md#create-a-sandbox) for thorough testing and monitoring. This isolated environment lets you test features with Stripe functionality without affecting your live system. You can create multiple sandboxes without affecting other users on your account, allowing you to manage isolated environments for development and continuous integration tests. Additionally, you can:
 
-- **Simulate payment scenarios**: Experiment with payment processes related to the new payment method without making actual transactions. Any settings you configure in your sandbox remain isolated to the testing environment and don’t impact your live account.
+- **Simulate payment scenarios**: Test the new payment method without moving real money. Sandbox settings don’t affect your live account.
 - **Choose a sandbox configuration**: Set up a pre-configured sandbox that mirrors some settings of your live account for realistic testing, or select a blank configuration to explore new settings. Learn more about [sandbox settings](https://docs.stripe.com/sandboxes/dashboard/sandbox-settings.md).
 
 ### Develop in a sandbox
@@ -45,7 +45,7 @@ To debug and validate your integration, use the following features:
 
 By organizing dedicated sandboxes for each testing scenario, you can simulate real-world conditions, monitor functionality, and debug integration issues without risking live operations.
 
-For example, you can test all of the payment method functionality before it goes live, monitor integration performance continuously, and implement changes that you’ve vetted in an equivalent testing environment.
+For example, you can test payment method functionality before it goes live and monitor integration performance continuously. Use a sandbox that mirrors your live account settings to test changes before implementing them.
 
 To get started, create a sandbox by navigating to the account picker menu in the Stripe Dashboard and selecting the **Create** button. Each sandbox must have a name and can copy settings from the live account to mirror actual conditions.
 

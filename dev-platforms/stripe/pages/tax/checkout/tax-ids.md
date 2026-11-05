@@ -131,7 +131,7 @@ Checkout saves collected tax IDs and business names to the [Customer](https://do
 
 ## Test your integration
 
-In testing environments, you can enter any alphanumeric string that is in the correct format of a supported tax ID type (for example, `DE123456789` for `eu_vat`). For a full list of example tax IDs you can reference our [Customer Tax ID guide](https://docs.stripe.com/billing/customer/tax-ids.md#supported-tax-id). You can also use our [test tax IDs](https://docs.stripe.com/connect/testing.md#test-business-tax-ids) to test various verification state flows.
+In [sandboxes](https://docs.stripe.com/sandboxes.md), you can enter any alphanumeric string that is in the correct format of a supported tax ID type (for example, `DE123456789` for `eu_vat`). For a full list of example tax IDs you can reference our [Customer Tax ID guide](https://docs.stripe.com/billing/customer/tax-ids.md#supported-tax-id). You can also use our [test tax IDs](https://docs.stripe.com/connect/testing.md#test-business-tax-ids) to test various verification state flows.
 
 ## Validation 
 

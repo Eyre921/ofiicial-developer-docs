@@ -24,7 +24,7 @@ You can use [Issuing Elements](https://docs.stripe.com/issuing/elements.md) to d
 
 For PCI-DSS compliance, we recommend limiting retrieval of virtual card information to the Dashboard or Issuing Elements. If you use the API to retrieve card information, or if you export virtual card information from the Dashboard, store it in a password manager or otherwise encrypt it.
 
-You can retrieve both the full unredacted card number and CVC from the API. For security reasons, you can only use these fields with virtual cards in live mode, and we omit them unless you explicitly request them with the [expand](https://docs.stripe.com/api/expanding_objects.md) property. You can only retrieve these fields for physical cards in [test environments](https://docs.stripe.com/keys.md#test-live-modes). Additionally, you can only access them through the [Retrieve a card](https://docs.stripe.com/api/issuing/cards/retrieve.md) endpoint.
+You can retrieve both the full unredacted card number and CVC from the API. For security reasons, you can only use these fields with virtual cards in live mode, and we omit them unless you explicitly request them with the [expand](https://docs.stripe.com/api/expanding_objects.md) property. You can only retrieve these fields for physical cards in [sandboxes](https://docs.stripe.com/sandboxes.md). Additionally, you can only access them through the [Retrieve a card](https://docs.stripe.com/api/issuing/cards/retrieve.md) endpoint.
 
 ```curl
 curl -G https://api.stripe.com/v1/issuing/cards/{{ISSUINGCARD_ID}} \

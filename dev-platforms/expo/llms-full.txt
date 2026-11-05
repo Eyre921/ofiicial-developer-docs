@@ -343,7 +343,7 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 - [Using push notifications](https://docs.expo.dev/guides/using-push-notifications-services.md)
 
 ### Testing
-- [Using e2e by TesterArmy](https://docs.expo.dev/guides/using-e2e.md)
+- [Using e2e](https://docs.expo.dev/guides/using-e2e.md)
 - [Using TesterArmy](https://docs.expo.dev/guides/using-testerarmy.md)
 
 ### Tools
@@ -470,6 +470,7 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 - [Manage workflow runs in Expo Workflows](https://docs.expo.dev/eas/workflows/manage-workflow-runs.md)
 - [Pre-packaged jobs in Expo Workflows](https://docs.expo.dev/eas/workflows/pre-packaged-jobs.md)
 - [Syntax for Expo Workflows](https://docs.expo.dev/eas/workflows/syntax.md)
+- [Reusable workflows in Expo Workflows](https://docs.expo.dev/eas/workflows/reusable-workflows.md)
 - [Custom functions in Expo Workflows](https://docs.expo.dev/eas/workflows/custom-functions.md)
 - [Environment variables in Expo Workflows](https://docs.expo.dev/eas/workflows/environment.md)
 - [Automating EAS CLI commands](https://docs.expo.dev/eas/workflows/automating-eas-cli.md)
@@ -599,6 +600,7 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 - [How to trace an update ID back to the Expo dashboard](https://docs.expo.dev/eas-update/trace-update-id-expo-dashboard.md)
 - [Estimate bandwidth usage](https://docs.expo.dev/eas-update/estimate-bandwidth.md)
 - [Using Expo Update in an existing native app](https://docs.expo.dev/eas-update/integration-in-existing-native-apps.md)
+- [App store privacy declarations for Expo Update](https://docs.expo.dev/eas-update/store-privacy-declarations.md)
 
 ## Expo Observe
 
@@ -622,6 +624,7 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 ### Reference
 - [Metrics reference](https://docs.expo.dev/eas/observe/reference/metrics.md)
 - [Client ID](https://docs.expo.dev/eas/observe/reference/client-id.md)
+- [App store privacy declarations for Expo Observe](https://docs.expo.dev/eas/observe/reference/store-privacy-declarations.md)
 - [Troubleshooting Expo Observe](https://docs.expo.dev/eas/observe/reference/troubleshooting.md)
 
 ## Expo Metadata

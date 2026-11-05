@@ -1,6 +1,6 @@
 {
   "ai-models/xai-grok": {
-    "status": "error: curl failed (28) for https://docs.x.ai/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.x.ai/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/mistral": {
     "status": "error: curl failed (28) for https://docs.mistral.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
@@ -102,7 +102,7 @@
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15003 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
@@ -129,7 +129,7 @@
     "status": "ok"
   },
   "dev-platforms/langfuse": {
-    "pages": 29,
+    "pages": 44,
     "status": "ok"
   },
   "ai-models/replicate": {
@@ -152,7 +152,7 @@
     "status": "ok"
   },
   "dev-platforms/notion": {
-    "pages": 485,
+    "pages": 284,
     "status": "ok"
   },
   "dev-platforms/twilio": {
@@ -187,7 +187,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 81,
+    "pages": 100,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -203,8 +203,8 @@
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 1511,
+    "pages": 1519,
     "status": "ok"
   },
-  "_last_crawl": "2026-11-05T11:30:51Z"
+  "_last_crawl": "2026-11-05T23:30:37Z"
 }

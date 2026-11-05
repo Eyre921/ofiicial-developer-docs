@@ -146,13 +146,13 @@ Stripe Tax automatically calculates the correct fee and assists with the reporti
 
 **API value**: `admissions_tax`
 
-Register for Admissions tax if you sell entry fees to entertainment, amusement, athletic or recreational events, attractions or activities. The registration and tax collection applies to the location of the event venue rather than the delivery or billing address of the customer.
+Register for Admissions tax if you sell entry fees to entertainment, amusement, athletic or recreational events, attractions, or activities. The registration and tax collection applies to the location of the event venue rather than the delivery or billing address of the customer.
 
 ### Entertainment tax registration type
 
 **API value**: `entertainment_tax`
 
-Register for Entertainment tax if you must collect tax on entry fees to entertainment, amusement, athletic or recreational events, attractions or activities.
+Register for Entertainment tax if you must collect tax on entry fees to entertainment, amusement, athletic or recreational events, attractions, or activities.
 
 ### Gross receipts tax registration type
 

@@ -200,6 +200,7 @@ At this point, you should have integrated Sentry into your Unreal Engine project
 - [Tracing](https://docs.sentry.io/platforms/unreal/tracing.md)
 - [App Hangs and ANRs](https://docs.sentry.io/platforms/unreal/app-hangs.md)
 - [Session Replay](https://docs.sentry.io/platforms/unreal/session-replay.md)
+- [Game State Capture](https://docs.sentry.io/platforms/unreal/game-state-capture.md)
 - [Logs](https://docs.sentry.io/platforms/unreal/logs.md)
 - [Application Metrics](https://docs.sentry.io/platforms/unreal/metrics.md)
 - [User Feedback](https://docs.sentry.io/platforms/unreal/user-feedback.md)

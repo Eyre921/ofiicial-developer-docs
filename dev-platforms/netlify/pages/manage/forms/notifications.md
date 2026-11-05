@@ -31,7 +31,13 @@ Surface form submissions in Slack with just a few clicks. Learn more in the [Net
 
 ## Email notifications
 
-When you create a notification, the recipient must be an active member of your Netlify team. If you enter an email address that isn't associated with a team member, you'll get a validation error and the notification won't be saved.
+### Note - Email verification for form notifications
+
+We're building email verification for email addresses that receive form notifications. Once it ships, we'll share the details in a [changelog post](https://www.netlify.com/changelog/tag/forms/).
+
+Unless your team is on an Enterprise plan or a Legacy Business plan, the email address you use for a form notification must belong to an active member of your Netlify team. This requirement applies when you create a notification and when you edit an existing notification. If you enter an email address that isn't associated with a team member, you get a validation error and the notification isn't saved.
+
+Existing email notifications that use an address that isn't connected to a team member, such as `orders@company.com`, keep working. You only need to meet this requirement the next time you create or edit an email notification, and you can't save an edit that uses an email address that isn't connected to a team member. Before you next edit a notification, either invite the owner of the address to your team so you can keep using it, or change the recipient to an existing team member's address. 
 
 ### Update the notification recipient
 

@@ -337,7 +337,7 @@ Use the **rule performance chart** to understand the behavior of your Radar rule
 
 **Color-coded lines** track the number of payments that match [3DS](https://docs.stripe.com/issuing/3d-secure.md) rules, allow rules, block rules, and review rules. Updated rules are displayed as **triangular symbols** on the graph lines, and can help you compare the impact of a change before and after you make it.
 
-Click the overflow menu (⋯) to view additional commands for any rule, including **Disable**, **Enable**, **Edit** or **Delete**.
+Click the overflow menu (⋯) to view additional commands for any rule, including **Disable**, **Enable**, **Edit**, or **Delete**.
 
 You can also use our reporting products, Sigma and Data Pipelines, to [query disputes and fraud data](https://docs.stripe.com/data/query-disputes-and-fraud-data.md), including rule decisions and attributes for each individual payment.
 

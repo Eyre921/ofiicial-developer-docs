@@ -47,7 +47,7 @@ Certain steps in this guide are enabled by this tool, although many of the same 
 >
 > Make sure to install the latest version of `eksctl`. Do not use the version available through your package manager (e.g. `apt`, `dnf`), which may be an older release that is missing features used in this guide.
 >
-> Version `>=0.192.0` is required to create EKS clusters with nodes using EKS accelerated AMIs.
+> Version `>=0.226.0` is required to create EKS clusters from Deepgram's sample `ClusterConfig` templates, which run the `control-plane-node-group` on Ubuntu 26.04 (`amiFamily: Ubuntu2604`). Older versions reject the template with `AMI Family Ubuntu2604 is not supported` before creating any resources.
 
 ## Kubernetes Packages with `helm`
 

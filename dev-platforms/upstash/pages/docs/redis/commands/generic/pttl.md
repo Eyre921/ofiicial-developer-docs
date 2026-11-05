@@ -58,7 +58,7 @@ import { Redis } from "@upstash/redis";
 
 const redis = Redis.fromEnv();
 
-const millis = await redis.pttl(key);
+const millis = await redis.pttl("key");
 ```
 
 </Accordion>

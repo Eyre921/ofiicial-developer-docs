@@ -1,0 +1,205 @@
+---
+title: "Claude Code"
+source: https://langfuse.com/integrations/developer-tools/claude-code-gateway.md
+path: integrations/developer-tools/claude-code-gateway
+---
+
+---
+title: "Claude Desktop and Claude Code with the Langfuse AI Gateway"
+sidebarTitle: Claude Code (gateway)
+seoTitle: "Trace Claude Desktop and Claude Code with the Langfuse AI Gateway (beta)"
+description: Route Claude Desktop or Claude Code through the Langfuse AI Gateway to trace model calls, tokens, costs, and Claude Code sessions.
+logo: /images/integrations/anthropic_icon.png
+logoAppearance: dark
+category: Integrations
+---
+
+# Claude Desktop and Claude Code with the Langfuse AI Gateway
+
+  **Beta.** The Langfuse AI Gateway is in public beta and can still change.
+
+Use the Langfuse AI Gateway with the Claude Desktop app or the Claude Code CLI. Both require an `ANTHROPIC` provider credential.
+
+  This page routes Claude's model calls through the AI Gateway. For tracing
+  Claude Code with hooks instead, see the [Claude Code
+  integration](/integrations/developer-tools/claude-code).
+
+## Claude Desktop [#claude-desktop]
+
+<Steps>
+
+### Create a gateway API key [#desktop-create-a-key]
+
+Create a gateway API key under **Organization settings → AI Gateway → Gateway keys**. See [API keys](/docs/gateway/features/api-keys#create-a-key).
+
+### Connect to the gateway [#desktop-configure]
+
+Open **Developer → Configure Third-Party Inference**. If the **Developer** menu is unavailable, open **Help → Troubleshooting** and enable Developer Mode. Then, under **Connection**:
+
+- Set **Inference provider** to **Gateway**.
+- Set **Gateway base URL** to `https://gateway.cloud.langfuse.com/anthropic`. Do not add `/v1`; Claude Desktop appends it.
+- Set **Credential kind** to **Static API key**, enter your Langfuse gateway key under **Gateway API key**, and select **Bearer** as the **Gateway auth scheme**.
+
+### Set capabilities [#desktop-capabilities]
+
+Under **Capabilities**:
+
+- Under **General restrictions**, we recommend adding `*` to **Allowed egress hosts**. Otherwise, Claude can't reach websites or services outside the gateway, such as GitHub, and it won't ask you for permission.
+- Optional: gateway mode uses a separate profile. To keep your existing claude.ai chats and sessions, turn on **Claude.ai data import**. After restarting, use **Settings → Import & export**. See [Import and export](https://claude.com/docs/third-party/claude-desktop/import).
+
+### Save and restart [#desktop-save]
+
+Select **Apply Changes**, then select **Save & Restart**. Start a new session so that the egress settings apply. For more information about these settings, see the [Claude Desktop third-party inference guide](https://claude.com/docs/third-party/claude-desktop/in-app-configuration).
+
+  Use HTTPS git remotes or `gh` to push. SSH push fails in the macOS sandbox,
+  see [anthropics/claude-code#98752](https://github.com/anthropics/claude-code/issues/98752).
+
+  MCP servers connected through Claude Desktop are associated with your
+  claude.ai subscription. They are unavailable while Claude Desktop uses
+  third-party gateway credentials. Switch back to your Claude account to use
+  those subscription-backed connectors.
+
+### Verify [#desktop-verify]
+
+Test the connection in **Developer → Configure Third-Party Inference**, or send a message in a new session. If Claude replies, it runs through the gateway.
+
+</Steps>
+
+## Claude Code CLI [#claude-code-cli]
+
+**Requires** Claude Code 2.1 or later. Verified with Claude Code 2.1.282.
+
+<Steps>
+
+### Create a gateway API key [#create-a-key]
+
+Create a gateway API key under **Organization settings → AI Gateway → Gateway keys**. See [API keys](/docs/gateway/features/api-keys#create-a-key).
+
+### Log out of Claude [#log-out]
+
+Remove existing subscription credentials:
+
+```sh
+claude /logout
+```
+
+An existing Claude login can send both `Authorization` and `x-api-key` credentials and cause `401 Conflicting gateway credentials in the Authorization and x-api-key headers`.
+
+### Point Claude Code at the gateway [#setup]
+
+Set the gateway variables in your shell:
+
+```sh
+export ANTHROPIC_BASE_URL="https://gateway.cloud.langfuse.com/anthropic"   # no /v1: Claude Code appends /v1/messages
+export ANTHROPIC_AUTH_TOKEN="<your-gateway-key>"                          # sent as Authorization: Bearer
+unset ANTHROPIC_API_KEY                                                    # a different value here causes a 401
+export CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY=1                        # optional: /model lists gateway models
+export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1                          # optional
+export ANTHROPIC_CUSTOM_HEADERS=$'langfuse-tags: claude-code,<team>\nlangfuse-environment: local\nlangfuse-metadata: repo:<repo>'   # optional
+claude
+```
+
+To keep the setup across sessions, add the `export` lines to `~/.zshrc`. If `~/.zshrc` also sets `ANTHROPIC_API_KEY`, remove that line.
+
+Alternatively, use `~/.claude/settings.json`:
+
+```json
+{
+  "env": {
+    "ANTHROPIC_BASE_URL": "https://gateway.cloud.langfuse.com/anthropic",
+    "ANTHROPIC_AUTH_TOKEN": "<your-gateway-key>",
+    "CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY": "1",
+    "ANTHROPIC_CUSTOM_HEADERS": "langfuse-tags: claude-code\nlangfuse-environment: local"
+  }
+}
+```
+
+- `ANTHROPIC_CUSTOM_HEADERS` takes newline-separated `Name: value` pairs. See [request headers](/docs/gateway/features/tracing#request-headers).
+- Pick models with `--model` or `/model`, using IDs from [`/models`](/docs/gateway/get-started/first-request#list-models). Bare `claude-…` IDs and `<credential>:<model>` IDs both work, see [model IDs](/docs/gateway/features/models#model-ids).
+- MCP servers configured locally through the CLI remain available because Claude Code stores them in `.claude.json`.
+
+### Verify [#verify]
+
+Run a prompt:
+
+```sh
+claude -p "Reply with: hello gateway"
+```
+
+If Claude Code replies, it runs through the gateway.
+
+</Steps>
+
+## Turn grouping (beta) [#turn-grouping]
+
+By default, every model call is its own trace. Claude Code can send a W3C `traceparent` header whose trace ID is its `claude_code.interaction` span, one per user prompt. The gateway adopts that trace ID, so every model call of a prompt lands in **one trace**, including subagent calls and retries.
+
+This uses Claude Code's beta [OpenTelemetry tracing](https://code.claude.com/docs/en/monitoring-usage). All four settings are required:
+
+```sh
+export CLAUDE_CODE_ENABLE_TELEMETRY=1
+export CLAUDE_CODE_ENHANCED_TELEMETRY_BETA=1
+export CLAUDE_CODE_PROPAGATE_TRACEPARENT=1
+export OTEL_TRACES_EXPORTER=otlp
+export OTEL_EXPORTER_OTLP_ENDPOINT="<your-otel-collector>"
+```
+
+- Claude Code only sends `traceparent` when tracing is actually active. With `OTEL_TRACES_EXPORTER` unset or set to `none`, nothing is sent and each call stays its own trace.
+- `OTEL_TRACES_EXPORTER=console` also works, but it prints span dumps to stdout, which makes the interactive UI unusable.
+- **Do not point this OTLP export at Langfuse.** Claude Code's `claude_code.llm_request` spans would be recorded as a second generation next to the gateway's generation for every call. Use your own collector.
+- Because Claude Code's own spans are not in Langfuse, the gateway generations of a prompt appear as top-level observations of the shared trace.
+- A resumed session starts a new trace per prompt, in the same session.
+
+## Troubleshooting and FAQ [#troubleshooting-and-faq]
+
+### Why does a failed prompt show two ERROR generations? [#two-error-generations]
+
+When a model call fails, Claude Code retries once without streaming, so a failed prompt shows **two** `ERROR` generations.
+
+### Why aren't subagent calls linked to their parent? [#subagent-parent]
+
+Subagent calls carry `agent.id` but no link to their parent, unless you enable [turn grouping](#turn-grouping).
+
+### Why is the thinking text empty? [#empty-thinking]
+
+Claude Code often omits thinking text (`thinking.display: "omitted"`), so time to first token is close to latency. Thinking tokens are counted inside output tokens.
+
+### What is the HEAD /anthropic/api/hello 404 at startup? [#hello-404]
+
+It's Claude Code's connectivity probe. It is harmless and not recorded.
+
+### Why is the input missing on long sessions? [#missing-input]
+
+Long sessions can exceed the 5 MiB input capture limit. See [known limitations](/faq/all/ai-gateway-known-limitations).
+
+[Ask another question](/docs/ask-ai)
+
+<!-- agent-instructions -->
+
+---
+
+## Agent Instructions
+
+This page is part of the [Langfuse](https://langfuse.com) documentation, published as plain Markdown for AI agents. Every page is available as Markdown by appending `.md` to its URL, or by sending an `Accept: text/markdown` header. This page: `https://langfuse.com/integrations/developer-tools/claude-code-gateway.md`.
+
+### Querying these docs
+
+If the answer is not on this page, query the documentation instead of guessing:
+
+- **Semantic search** across all Langfuse docs, returning an answer with the relevant pages and excerpts. Ask a specific, self-contained question:
+
+  ```bash
+  curl -sG "https://langfuse.com/api/search-docs" --data-urlencode "query=How do I trace a LangGraph agent?"
+  ```
+
+- **Index of every page**: <https://langfuse.com/llms.txt>, with per-section indexes [llms-docs.txt](https://langfuse.com/llms-docs.txt), [llms-integrations.txt](https://langfuse.com/llms-integrations.txt), and [llms-self-hosting.txt](https://langfuse.com/llms-self-hosting.txt).
+
+### Before writing Langfuse code
+
+- **Install the [Langfuse Agent Skill](https://langfuse.com/docs/api-and-data-platform/features/agent-skill).** It encodes Langfuse's own best practices for instrumentation, prompt management, and evaluation, and materially improves results.
+- **Read [What does a good trace look like?](https://langfuse.com/docs/observability/best-practices.md)** before instrumenting an application.
+- **Verify endpoints, parameters, and response fields** against the [API reference](https://api.reference.langfuse.com) instead of inferring them from code examples.
+- **Use the [Langfuse CLI](https://langfuse.com/docs/api-and-data-platform/features/cli)** (`npx @langfuse/cli api <resource> <action>`) to read or write traces, prompts, datasets, and scores from the terminal.
+
+Found an error in these docs? Please open an issue at <https://github.com/langfuse/langfuse-docs/issues>.
+

@@ -172,7 +172,7 @@ From the [Dashboard](https://dashboard.stripe.com/test/connect/capital), find th
 2. Click the **Expire offer** option, which lets you simulate expiring the offer.
 3. Verify you receive the `capital.financing_offer.expired` webhook.
 
-With the exception of `capital.financing_offer.canceled`, you can simulate all webhooks while in a testing environment.
+With the exception of `capital.financing_offer.canceled`, you can simulate all webhooks in a sandbox.
 
 ## Apply for an offer [Dashboard] [Server-side]
 

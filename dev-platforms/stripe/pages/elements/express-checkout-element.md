@@ -50,7 +50,7 @@ The Express Checkout Element presents one-click payment methods that are active,
 - Some payment methods [require activation in the Dashboard](https://dashboard.stripe.com/settings/payment_methods).
 - Payment methods are only available when the customer uses a supported browser and pays in a supported currency.
 - Some payment methods require setup actions from the customer. For example, a customer won’t see a Google Pay button if they don’t have Google Pay set up.
-- [Register your domain](https://docs.stripe.com/payments/payment-methods/pmd-registration.md) in both your testing environment and live mode.
+- [Register your domain](https://docs.stripe.com/payments/payment-methods/pmd-registration.md) in both your [sandbox](https://docs.stripe.com/sandboxes.md) and live mode.
 
 The element sorts payment methods by relevance to your customer.
 

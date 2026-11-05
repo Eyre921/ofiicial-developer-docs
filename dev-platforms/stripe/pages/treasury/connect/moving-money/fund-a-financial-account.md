@@ -433,10 +433,10 @@ curl -X POST https://api.stripe.com/v2/core/accounts/{{CONNECTEDACCOUNT_ID}} \
 
 ## Send funds from an existing financial account 
 
-You can transfer funds between financial accounts using the [OutboundTransfer](https://docs.stripe.com/treasury/connect/moving-money/out-of/outbound-transfers.md#move-money-from-one-financial-account-to-another-financial-account) or [OutboundPayment](https://docs.stripe.com/treasury/connect/moving-money/out-of/outbound-payments.md#move-money-from-a-platform-to-connected-account) APIs.
+You can transfer funds between financial accounts using the [OutboundTransfer](https://docs.stripe.com/treasury/connect/moving-money/out-of/outbound-transfers.md#move-money-from-one-financial-account-to-another-financial-account) or [OutboundPayment](https://docs.stripe.com/treasury/connect/moving-money/out-of/outbound-payments.md?payout-api=outbound-payment) APIs.
 
 - Use [OutboundTransfer](https://docs.stripe.com/treasury/connect/moving-money/out-of/outbound-transfers.md#move-money-from-one-financial-account-to-another-financial-account) to transfer money between financial accounts owned by the same entity (for example, between two financial accounts owned by the same platform, or two financial accounts owned by the same connected account).
-- Use [OutboundPayment](https://docs.stripe.com/treasury/connect/moving-money/out-of/outbound-payments.md#move-money-from-a-platform-to-connected-account) for payments between different connected accounts, and payments to and from the platform and connected account.
+- Use [OutboundPayment](https://docs.stripe.com/treasury/connect/moving-money/out-of/outbound-payments.md?payout-api=outbound-payment#platform-to-connected-account) for payments between different connected accounts, and payments to and from the platform and connected account.
 
 ## Monitor received credits
 

@@ -38,7 +38,9 @@ If you use *Connect* (Connect is Stripe's solution for multi-party businesses, s
 
 Currencies are two-decimal currencies unless otherwise specified. Currencies shown as links are [zero-decimal](https://docs.stripe.com/currencies.md#zero-decimal) currencies. Make sure to use all lowercase letters when entering the three-letter ISO code in any payment request.
 
-\* American Express doesn’t support any currencies marked with an asterisk (*).
+> #### American Express currency availability
+> 
+> American Express doesn’t support currencies marked with an asterisk (*) in any Stripe account country. Currencies without an asterisk might still be unavailable for American Express payments in your Stripe account’s country.
 
 ## Specify amounts in API requests 
 

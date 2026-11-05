@@ -330,21 +330,3 @@ Set `wire_api = "responses"` so Codex targets this endpoint rather than chat com
 | MCP tools never get called | The namespace wrapper was rejected or its nested entries are not `function` tools. Check the error body for the offending namespace. |
 | Ambiguous flattened tool name | Two namespaces expand to the same `<namespace>__<tool>` name. Rename one of the MCP servers. |
 | `400` combining background and streaming | Codex requested both. Disable one. |
-
-## Cookbook examples
-
-> [card] [MCP examples](https://github.com/fw-ai-external/cookbook/blob/main/archived/learn/response-api/fireworks_mcp_examples.ipynb)
->
-> Calling MCP servers from the Responses API
-
-> [card] [Continuing conversations](https://github.com/fw-ai-external/cookbook/blob/main/archived/learn/response-api/fireworks_previous_response_cookbook.ipynb)
->
-> Using `previous_response_id`
-
-> [card] [Streaming](https://github.com/fw-ai-external/cookbook/blob/main/archived/learn/response-api/fireworks_streaming_example.ipynb)
->
-> Streaming responses end to end
-
-> [card] [Stateless requests](https://github.com/fw-ai-external/cookbook/blob/main/archived/learn/response-api/mcp_server_with_store_false_argument.ipynb)
->
-> Using `store=false`

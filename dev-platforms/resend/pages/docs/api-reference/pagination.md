@@ -26,40 +26,63 @@ Use the `id` of objects as the cursor for pagination. The cursor itself is *excl
 
 ## Supported endpoints
 
-Existing list endpoints can optionally return paginated results:
+The following list endpoints support cursor-based pagination.
 
-* [List Domains](/docs/api-reference/domains/list-domains)
-* [List API Keys](/docs/api-reference/api-keys/list-api-keys)
-* [List Broadcasts](/docs/api-reference/broadcasts/list-broadcasts)
-* [List Segments](/docs/api-reference/segments/list-segments)
+### Endpoints that default to 20 items
+
+Most paginated endpoints return 20 items by default when `limit` is not provided:
+
+* [List Automations](/docs/api-reference/automations/list-automations)
+* [List Automation Runs](/docs/api-reference/automations/list-automation-runs)
+* [List Broadcast Clicked Links](/docs/api-reference/broadcasts/list-broadcast-clicked-links)
+* [List Broadcast Recipients](/docs/api-reference/broadcasts/list-broadcast-recipients)
+* [List Contact Properties](/docs/api-reference/contact-properties/list-contact-properties)
 * [List Contacts](/docs/api-reference/contacts/list-contacts)
-* [List Receiving Emails](/docs/api-reference/emails/list-received-emails)
-
-> [!NOTE]
->
-> Note that for these endpoints, the `limit` parameter is optional. If you do
-> not provide a `limit`, all items will be returned in a single response.
-
-Newer list endpoints always return paginated results:
-
+* [List Contact Segments](/docs/api-reference/contacts/list-contact-segments)
+* [Get Contact Topics](/docs/api-reference/contacts/get-contact-topics)
 * [List Emails](/docs/api-reference/emails/list-emails)
+* [List Email Attachments](/docs/api-reference/emails/list-email-attachments)
+* [List Receiving Emails](/docs/api-reference/emails/list-received-emails)
 * [List Receiving Email Attachments](/docs/api-reference/emails/list-received-email-attachments)
-* [List Templates](/docs/api-reference/templates/list-templates)
-* [List Topics](/docs/api-reference/topics/list-topics)
+* [List Events](/docs/api-reference/events/list-events)
 * [List Inboxes](/docs/api-reference/inboxes/list-inboxes)
 * [List Threads](/docs/api-reference/inboxes/list-threads)
 * [Search Threads](/docs/api-reference/inboxes/search-threads)
 * [List Thread Emails](/docs/api-reference/inboxes/list-thread-emails)
 * [List Drafts](/docs/api-reference/inboxes/list-drafts)
+* [List Logs](/docs/api-reference/logs/list-logs)
+* [List OAuth Grants](/docs/api-reference/oauth/list-grants)
+* [List Suppressions](/docs/api-reference/suppressions/list-suppressions)
+* [List Templates](/docs/api-reference/templates/list-templates)
+* [List Topics](/docs/api-reference/topics/list-topics)
+* [List Webhooks](/docs/api-reference/webhooks/list-webhooks)
+* [List Webhook Events](/docs/api-reference/webhooks/list-events)
+* [List Event Attempts](/docs/api-reference/webhooks/list-event-attempts)
+
+### Endpoints that return all items by default
+
+The following endpoints return all items in a single response when `limit` is not provided. Pass `limit` to paginate and set the page size. The `after` and `before` parameters only take effect together with `limit`.
+
+* [List API Keys](/docs/api-reference/api-keys/list-api-keys)
+* [List Audiences](/docs/api-reference/audiences/list-audiences) (deprecated, alias for Segments)
+* [List Broadcasts](/docs/api-reference/broadcasts/list-broadcasts)
+* [List Domains](/docs/api-reference/domains/list-domains)
+* [List Segments](/docs/api-reference/segments/list-segments)
+* [List Segment Contacts](/docs/api-reference/segments/list-segment-contacts)
+
+### Other endpoints
+
+* [List Contact Imports](/docs/api-reference/contacts/list-contact-imports) defaults to **10 items** when `limit` is not provided
 
 ## Parameters
 
-All paginated endpoints support the following query parameters:
+Paginated endpoints accept the following query parameters:
 
 **limit** `number`
 
-The number of items to return per page. Default is `20`, maximum is `100`, and
-minimum is `1`.
+The number of items to return per page. The maximum is `100` and the minimum
+is `1`. The default depends on the endpoint. See [Supported
+endpoints](#supported-endpoints).
 
 **after** `string`
 
@@ -72,6 +95,9 @@ the ID of the last item from the current page. This will return the page that
 The cursor before which to start retrieving items. To get the previous page,
 use the ID of the first item from the current page. This will return the page
 that **ends before** the object with this ID (excluding the passed ID itself).
+[List Webhook Events](/docs/api-reference/webhooks/list-events) and [List Event
+Attempts](/docs/api-reference/webhooks/list-event-attempts) do not support
+`before`.
 
 > [!WARNING]
 >

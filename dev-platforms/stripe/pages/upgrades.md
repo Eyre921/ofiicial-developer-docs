@@ -14,7 +14,7 @@ To upgrade your integration, complete the following steps. Search the [Changelog
 
 ## Define the target version for your upgrade
 
-Make sure that you specify the API version that you’re integrating against in your code instead of relying on your account’s default API version. To test a newer version for API calls, set the `Stripe-Version` header (in live or testing environments). Learn how to [set an API version in our server-side SDKs](https://docs.stripe.com/upgrades.md#specify-sdk-api-version).
+Make sure that you specify the API version that you’re integrating against in your code instead of relying on your account’s default API version. To test a newer version for API calls, set the `Stripe-Version` header (in live mode or a [sandbox](https://docs.stripe.com/sandboxes.md)). Learn how to [set an API version in our server-side SDKs](https://docs.stripe.com/upgrades.md#specify-sdk-api-version).
 
 View which API versions your integration uses in the [Overview tab](https://dashboard.stripe.com/workbench/overview) of [Workbench](https://docs.stripe.com/workbench/overview.md).
 

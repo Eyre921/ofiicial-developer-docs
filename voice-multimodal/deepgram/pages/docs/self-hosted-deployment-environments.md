@@ -170,7 +170,7 @@ Bare-metal servers are physical servers committed to a single user, providing di
 
 Deepgram's self-hosted products run on the Linux operating system. The following distributions are officially supported:
 
-* Ubuntu Server 22.04/24.04
+* Ubuntu Server 22.04/24.04/26.04
 * Red Hat Enterprise Linux (RHEL) 8/9
 * Oracle Linux 8/9
 

@@ -749,14 +749,14 @@ In live mode, refunds are asynchronous: a refund can appear to succeed and later
 | Description | Number | Details |
 | --- | --- | --- |
 | Asynchronous success | 4000000000007726 | The charge succeeds. If you initiate a refund, its status begins as `pending`. Some time later, its status transitions to `succeeded` and sends a `refund.updated` [event](https://docs.stripe.com/api/events/types.md#event_types-refund.updated). |
-| Asynchronous failure | 4000000000005126 | The charge succeeds. If you initiate a refund, its status begins as `succeeded`. Some time later, its status transitions to `failed` and sends a `refund.failed` [event](https://docs.stripe.com/api/events/types.md#event_types-refund.failed). |
+| Asynchronous failure | 4000000000005126 | The charge succeeds. If you initiate a refund, its status begins as `succeeded`. After a few minutes, its status transitions to `failed` and sends a `refund.failed` [event](https://docs.stripe.com/api/events/types.md#event_types-refund.failed). |
 
 #### PaymentMethods
 
 | Description | PaymentMethod | Details |
 | --- | --- | --- |
 | Asynchronous success | `pm_card_pendingRefund` | The charge succeeds. If you initiate a refund, its status begins as `pending`. Some time later, its status transitions to `succeeded` and sends a `refund.updated` [event](https://docs.stripe.com/api/events/types.md#event_types-refund.updated). |
-| Asynchronous failure | `pm_card_refundFail` | The charge succeeds. If you initiate a refund, its status begins as `succeeded`. Some time later, its status transitions to `failed` and sends a `refund.failed` [event](https://docs.stripe.com/api/events/types.md#event_types-refund.failed). |
+| Asynchronous failure | `pm_card_refundFail` | The charge succeeds. If you initiate a refund, its status begins as `succeeded`. After a few minutes, its status transitions to `failed` and sends a `refund.failed` [event](https://docs.stripe.com/api/events/types.md#event_types-refund.failed). |
 
 #### Tokens
 
@@ -765,7 +765,7 @@ Most integrations don’t use tokens anymore, but we make test tokens such as [t
 | Description | Token | Details |
 | --- | --- | --- |
 | Asynchronous success | `tok_pendingRefund` | The charge succeeds. If you initiate a refund, its status begins as `pending`. Some time later, its status transitions to `succeeded` and sends a `refund.updated` [event](https://docs.stripe.com/api/events/types.md#event_types-refund.updated). |
-| Asynchronous failure | `tok_refundFail` | The charge succeeds. If you initiate a refund, its status begins as `succeeded`. Some time later, its status transitions to `failed` and sends a `refund.failed` [event](https://docs.stripe.com/api/events/types.md#event_types-refund.failed). |
+| Asynchronous failure | `tok_refundFail` | The charge succeeds. If you initiate a refund, its status begins as `succeeded`. After a few minutes, its status transitions to `failed` and sends a `refund.failed` [event](https://docs.stripe.com/api/events/types.md#event_types-refund.failed). |
 
 You can cancel a card refund only by using the Dashboard. In live mode, you can cancel a card refund within a short but nonspecific period of time. Testing environments simulate that period by allowing you to cancel a card refund within 30 minutes.
 

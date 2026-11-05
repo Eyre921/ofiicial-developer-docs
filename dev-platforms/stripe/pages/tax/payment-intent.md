@@ -202,7 +202,7 @@ Choose how to handle tax transactions and reversals:
 
 Use *sandboxes* (A sandbox is an isolated test environment that allows you to test Stripe functionality in your account without affecting your live integration. Use sandboxes to safely experiment with new features and changes) to confirm your integration works correctly before going live. Sandbox responses are identical in structure to responses in live mode.
 
-> In testing environments, calculations aren’t guaranteed to return up-to-date taxation results. You’re limited to 1,000 tax calculations per day. If you need a higher limit, contact [Stripe support](https://support.stripe.com/contact). For guidance on automated testing and strategies to avoid rate limits in testing environments, see [Automated testing](https://docs.stripe.com/automated-testing.md).
+> In sandboxes, calculations aren’t guaranteed to return up-to-date taxation results. You’re limited to 1,000 tax calculations per day. If you need a higher limit, contact [Stripe support](https://support.stripe.com/contact). For guidance on automated testing and strategies to avoid rate limits in sandboxes, see [Automated testing](https://docs.stripe.com/automated-testing.md).
 
 ## View tax transactions
 

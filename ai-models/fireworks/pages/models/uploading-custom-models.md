@@ -345,6 +345,8 @@ To upload a LoRA addon, run the following command. The MODEL\_ID is an arbitrary
 firectl model create <MODEL_ID> /path/to/files/ --base-model "accounts/fireworks/models/<BASE_MODEL_ID>"
 ```
 
+Once the adapter is uploaded, deploy it with [live merge or multi-LoRA](/fine-tuning/deploying-loras) on an on-demand deployment. If its base model is [supported on serverless](/serverless/specialized-model-inference/overview#supported-models-and-limits), you can instead load it with [Specialized Model Inference](/serverless/specialized-model-inference/overview) and pay per token.
+
 ## Next steps
 
 > [card] [Deploy your model](/guides/ondemand-deployments)

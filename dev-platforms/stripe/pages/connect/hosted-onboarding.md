@@ -287,7 +287,7 @@ Let your accounts remediate their verification requirements by directing them to
 
 The Account Link requires a `refresh_url` and `return_url` to handle all cases in which the connected account is redirected back to your platform. It’s important to implement these correctly to provide the best onboarding flow for your connected accounts.
 
-> You can use HTTP for your `refresh_url` and `return_url` while you’re in a testing environment (for example, to test locally), but live mode only accepts HTTPS. You must update any testing URLs to HTTPS URLs before you go live.
+> You can use HTTP for your `refresh_url` and `return_url` while you’re in a [sandbox](https://docs.stripe.com/sandboxes.md) (for example, to test locally), but live mode only accepts HTTPS. You must update any testing URLs to HTTPS URLs before you go live.
 
 ### Refresh URL 
 

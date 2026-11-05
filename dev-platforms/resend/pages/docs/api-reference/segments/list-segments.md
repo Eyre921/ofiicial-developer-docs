@@ -9,9 +9,10 @@ Retrieve a list of segments.
 
 ## Query Parameters
 
-Note that the `limit` parameter is *optional*. If
-you do not provide a `limit`, all segments will be returned
-in a single response.
+If `limit` is not provided, all segments will be returned
+in a single response. Pass `limit` to paginate.
+`after` and `before` only take effect together
+with `limit`.
 
 **limit** `number`
 

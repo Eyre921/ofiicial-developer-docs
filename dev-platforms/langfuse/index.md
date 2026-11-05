@@ -1,6 +1,6 @@
 # dev-platforms/langfuse 文档索引
 
-> 共 29 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 44 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -32,6 +32,12 @@
 - `docs/evaluation/experiments/experiments-ci-cd` — [Block regressions in CI](pages/docs/evaluation/experiments/experiments-ci-cd.md) · [原文](https://langfuse.com/docs/evaluation/experiments/experiments-ci-cd.md)
 - `docs/evaluation/overview` — [Choose where evaluations run](pages/docs/evaluation/overview.md) · [原文](https://langfuse.com/docs/evaluation/overview.md)
 - `docs/evaluation/scores/score-analytics` — [agreement metrics](pages/docs/evaluation/scores/score-analytics.md) · [原文](https://langfuse.com/docs/evaluation/scores/score-analytics.md)
+- `docs/gateway/concepts` — [Concepts](pages/docs/gateway/concepts.md) · [原文](https://langfuse.com/docs/gateway/concepts.md)
+- `docs/gateway/features/rest-api` — [REST API](pages/docs/gateway/features/rest-api.md) · [原文](https://langfuse.com/docs/gateway/features/rest-api.md)
+- `docs/gateway/get-started/admin-setup` — [Set up the gateway as an admin](pages/docs/gateway/get-started/admin-setup.md) · [原文](https://langfuse.com/docs/gateway/get-started/admin-setup.md)
+- `docs/gateway/get-started/first-request` — [Send your first request](pages/docs/gateway/get-started/first-request.md) · [原文](https://langfuse.com/docs/gateway/get-started/first-request.md)
+- `docs/gateway/overview` — [Overview](pages/docs/gateway/overview.md) · [原文](https://langfuse.com/docs/gateway/overview.md)
+- `docs/gateway/troubleshooting-and-faq` — [Troubleshooting and FAQ](pages/docs/gateway/troubleshooting-and-faq.md) · [原文](https://langfuse.com/docs/gateway/troubleshooting-and-faq.md)
 - `docs/observability/best-practices` — [What does a good trace look like?](pages/docs/observability/best-practices.md) · [原文](https://langfuse.com/docs/observability/best-practices.md)
 
 ## faq
@@ -41,6 +47,17 @@
 ## guides
 
 - `guides/llm-as-a-judge-calibration-skill` — [Check an LLM judge against human labels](pages/guides/llm-as-a-judge-calibration-skill.md) · [原文](https://langfuse.com/guides/llm-as-a-judge-calibration-skill.md)
+
+## integrations
+
+- `integrations/developer-tools/claude-code-gateway` — [Claude Code](pages/integrations/developer-tools/claude-code-gateway.md) · [原文](https://langfuse.com/integrations/developer-tools/claude-code-gateway.md)
+- `integrations/developer-tools/codex-gateway` — [Codex](pages/integrations/developer-tools/codex-gateway.md) · [原文](https://langfuse.com/integrations/developer-tools/codex-gateway.md)
+- `integrations/developer-tools/github-copilot-gateway` — [GitHub Copilot](pages/integrations/developer-tools/github-copilot-gateway.md) · [原文](https://langfuse.com/integrations/developer-tools/github-copilot-gateway.md)
+- `integrations/developer-tools/opencode-gateway` — [OpenCode](pages/integrations/developer-tools/opencode-gateway.md) · [原文](https://langfuse.com/integrations/developer-tools/opencode-gateway.md)
+- `integrations/developer-tools/pi-agent-gateway` — [Pi](pages/integrations/developer-tools/pi-agent-gateway.md) · [原文](https://langfuse.com/integrations/developer-tools/pi-agent-gateway.md)
+- `integrations/frameworks/vercel-ai-sdk-gateway` — [Vercel AI SDK](pages/integrations/frameworks/vercel-ai-sdk-gateway.md) · [原文](https://langfuse.com/integrations/frameworks/vercel-ai-sdk-gateway.md)
+- `integrations/model-providers/anthropic-gateway` — [Anthropic SDK](pages/integrations/model-providers/anthropic-gateway.md) · [原文](https://langfuse.com/integrations/model-providers/anthropic-gateway.md)
+- `integrations/model-providers/openai-gateway` — [OpenAI SDK](pages/integrations/model-providers/openai-gateway.md) · [原文](https://langfuse.com/integrations/model-providers/openai-gateway.md)
 
 ## resources
 
@@ -54,4 +71,5 @@
 
 ## self-hosting
 
+- `self-hosting/configuration/ai-gateway` — [Self-host the gateway](pages/self-hosting/configuration/ai-gateway.md) · [原文](https://langfuse.com/self-hosting/configuration/ai-gateway.md)
 - `self-hosting/license-key` — [Enterprise license keys](pages/self-hosting/license-key.md) · [原文](https://langfuse.com/self-hosting/license-key.md)

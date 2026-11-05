@@ -44,7 +44,7 @@ At the end of this process, your browser should download a `private-key.pem` fil
 3. For the **Application and OS Images (Amazon Machine Image)** wizard step, choose a basic configuration to serve as a template for your instance:
 
    1. Pick an Amazon Machine Image (AMI) from our list of [recommended Linux distributions](/docs/self-hosted-deployment-environments#operating-system).
-   2. Search for your desired configuration, such as **Ubuntu Server 22.04 LTS (HVM), SSD Volume Type**
+   2. Search for your desired configuration, such as **Ubuntu Server 26.04 LTS (HVM), SSD Volume Type**
    3. Ensure the **64-bit (x86)** option is selected.
    4. Choose **Select**.
 

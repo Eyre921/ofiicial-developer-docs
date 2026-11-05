@@ -327,7 +327,7 @@ The sample app features test helpers that enable you to perform certain actions,
 
 ### Received Credit test helper
 
-In testing environments, you can add funds to a financial account using the [ReceivedCredit Test Helpers](https://docs.stripe.com/api/treasury/received_credits/test_mode_create.md). This test helper simulates receiving a transfer from an external bank account into your financial account.
+In [sandboxes](https://docs.stripe.com/sandboxes.md), you can add funds to a financial account using the [ReceivedCredit Test Helpers](https://docs.stripe.com/api/treasury/received_credits/test_mode_create.md). This test helper simulates receiving a transfer from an external bank account into your financial account.
 
 ```javascript
 const receivedCredit = await stripe.testHelpers.treasury.receivedCredits.create(

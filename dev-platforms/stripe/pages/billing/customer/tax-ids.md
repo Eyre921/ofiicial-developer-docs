@@ -185,9 +185,20 @@ Currently, Stripe supports the following Tax ID types in the following regions:
 
 ## Validation 
 
+Stripe only checks the format of tax ID types other than AU ABN, EU VAT, and GB VAT, and doesn’t validate them against government databases.
+
 You’re responsible for the accuracy of customer information including their tax ID number. The invoice includes the customer tax ID whether or not it’s valid.
 
 Stripe provides automatic validation to help determine ​​if the formatting is correct when you add the ID to our system. You can see the results of the validation in the Dashboard along with other customer information, including details returned from the government databases, and the registered name and address. However, we don’t continue to validate them over time.
+
+Compare the validation for customer tax ID types:
+
+| Country or region | Validates format | Validates against government databases | Documentation |
+| --- | --- | --- | --- |
+| Australia (AU ABN) | Yes | Yes | [ABN validation](https://docs.stripe.com/billing/customer/tax-ids.md#abn) |
+| European Union (EU VAT) | Yes | Yes | [EU VAT validation](https://docs.stripe.com/billing/customer/tax-ids.md#eu-vat) |
+| United Kingdom (GB VAT) | Yes | Yes | [GB VAT validation](https://docs.stripe.com/billing/customer/tax-ids.md#gb-vat) |
+| Other tax ID types | Yes | No | [Format checks](https://docs.stripe.com/billing/customer/tax-ids.md#other-tax-id-types) |
 
 ### Australian Business Numbers (ABN) 
 
@@ -205,9 +216,13 @@ Stripe automatically validates all UK Value-Added-Tax (GB VAT) numbers with the 
 
 HMRC validation usually takes only a few seconds, but depending on the availability, might take longer. Stripe automatically handles HMRC downtime and attempts retries.
 
+### Other tax ID types 
+
+For all other tax ID types, Stripe only checks the format. A format check doesn’t confirm that the tax ID exists in a government database.
+
 ### Testing customer tax ID verification 
 
-Use these magic tax IDs to trigger certain verification conditions in testing environments. The tax ID type must be the Australian Business Number (ABN), EU VAT Number, or UK Value-Added-Tax (GB VAT) number.
+Use these magic tax IDs to trigger certain verification conditions in [sandboxes](https://docs.stripe.com/sandboxes.md). The tax ID type must be the Australian Business Number (ABN), EU VAT Number, or UK Value-Added-Tax (GB VAT) number.
 
 | Number | Type |
 | --- | --- |

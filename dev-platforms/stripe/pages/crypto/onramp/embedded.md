@@ -19,7 +19,7 @@ This guide is an extended version of the [Embedded onramp quickstart](https://do
 ## Before you begin
 
 1. The embedded onramp is only available in the EU and the US (excluding Hawaii).
-2. The Onramp API is in public preview. You must [submit the onramp application](https://docs.stripe.com/crypto/onramp.md#submit-your-application) before you start development in a testing environment.
+2. The Onramp API is in public preview. You must [submit the onramp application](https://docs.stripe.com/crypto/onramp.md#submit-your-application) before you start development in a [sandbox](https://docs.stripe.com/sandboxes.md).
 3. [After you get access to the Onramp API](https://dashboard.stripe.com/crypto-onramp/onboarding), use the [Dashboard](https://dashboard.stripe.com/apikeys) to grab your secret and publishable [API keys](https://docs.stripe.com/keys.md#obtain-api-keys).
 
 ## Install the SDK and client library [client-side] [server-side]

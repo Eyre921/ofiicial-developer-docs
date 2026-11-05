@@ -39,6 +39,7 @@ These rules apply:
 
 * The processing location is currently fixed at creation, like the rest of the embedding configuration. When you describe the index, the field's `embed.processing_location` shows the location the model uses now.
 * On the Starter and Builder plans, `text-embedding-3-small` and `text-embedding-3-large` are limited to `global`. On the Standard and Enterprise plans, you can set `processing_location` to `us`.
-* If your organization moves to the Starter or Builder plan, an index created with `us` keeps working but processes text in `global`, and describing or listing the index shows `global`. If you upgrade again, the index goes back to `us`.
+* If your organization moves to the Builder plan, an index created with `us` keeps working but processes text in `global`, and describing or listing the index shows `global`. If you upgrade again, the index goes back to `us`.
+* An index created with `us` can't be kept when you [downgrade to the Starter plan](/admin/billing/downgrade-billing-plan#before-you-downgrade). Recreate it with `global` and re-upsert your data before you downgrade.
 * A location the model doesn't currently offer, such as `eu`, is rejected with a `400`.
 * The [List models](/reference/api/latest/inference/list-available-models) operation lists `processing_location`, with its accepted values, in a model's `supported_parameters` on API version `2026-07` and later.

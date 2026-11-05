@@ -53,55 +53,6 @@ Validation Error
 
 ## Types
 
-### Agen> This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.
-
-# Create deployment
-
-POST https://api.elevenlabs.io/v1/convai/agents/{agent_id}/deployments
-Content-Type: application/json
-
-Create a new deployment for an agent
-
-Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/deployments/create
-
-## Servers
-
-- `https://api.elevenlabs.io` (Production, default)
-- `https://api.us.elevenlabs.io` (Production US)
-- `https://api.eu.residency.elevenlabs.io` (Production EU)
-- `https://api.in.residency.elevenlabs.io` (Production India)
-- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
-
-## Request
-
-### Path parameters
-
-- `agent_id` (string, required) — The id of an agent. This is returned on agent creation.
-
-### Body (application/json)
-
-This endpoint expects an object.
-
-- `deployment_request` (AgentDeploymentRequest, required) — Request to create a new deployment
-
-## Response
-
-### 200
-
-Successful Response
-
-- `traffic_percentage_branch_id_map` (map from string to double, optional) — Map of branch IDs to traffic percentages
-
-## Errors
-
-### 422 Deployments Create Request Unprocessable Entity Error
-
-Validation Error
-
-- `detail` (list of ValidationError, optional)
-
-## Types
-
 ### AgentDeploymentRequest
 
 - `requests` (list of AgentDeploymentRequestItem, required) — List of deployment requests

@@ -137,9 +137,9 @@ To test your Visa CE 3.0 integration, use the following test card, which creates
 | PaymentMethod | `pm_card_createCe3EligibleDispute` |
 | Token | `tok_createCe3EligibleDispute` |
 
-When providing evidence for this dispute, you can submit any two test environment transactions in the [prior_undisputed_transactions.charge](https://docs.stripe.com/api/disputes/object.md#dispute_object-evidence-enhanced_evidence-visa_compelling_evidence_3-prior_undisputed_transactions-charge) field.
+When providing evidence for this dispute, you can submit any two transactions from your [sandbox](https://docs.stripe.com/sandboxes.md) in the [prior_undisputed_transactions.charge](https://docs.stripe.com/api/disputes/object.md#dispute_object-evidence-enhanced_evidence-visa_compelling_evidence_3-prior_undisputed_transactions-charge) field.
 
-> In test environments, you can use any two test transactions as `prior_undisputed_transactions`. Stripe doesn’t validate the prior transactions’ payment method or transaction date while testing.
+> In sandboxes, you can use any two test transactions as `prior_undisputed_transactions`. Stripe doesn’t validate the prior transactions’ payment method or transaction date while testing.
 
 We’ll validate primary and secondary evidence elements according to Visa CE 3.0 rules.
 

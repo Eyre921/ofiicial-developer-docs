@@ -55,10 +55,21 @@ When you use `flux-general-multi`, user `ConversationText` events include `langu
 
 ## Pick your TTS model
 
-| Your situation                  | Use this                                                  |
-| ------------------------------- | --------------------------------------------------------- |
-| Bilingual English/Spanish agent | Deepgram Aura codeswitching voice                         |
-| Any other multilingual mix      | Cartesia, OpenAI, or Eleven Labs with `language: "multi"` |
+| Your situation                                                                      | Use this                                                  |
+| ----------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| Agent that speaks one language per session, in English or any of 41 other languages | Deepgram Flux TTS voice for that language                 |
+| Bilingual English/Spanish agent                                                     | Deepgram Aura codeswitching voice                         |
+| Any other multilingual mix                                                          | Cartesia, OpenAI, or Eleven Labs with `language: "multi"` |
+
+### Deepgram Flux TTS
+
+Every voice in the [Flux TTS voice catalog](/docs/flux-tts/voices) works in the Voice Agent API, in English and 41 other languages. The language code at the end of the model string selects the language.
+
+* `agent.speak.provider.type`: `deepgram`
+* `agent.speak.provider.version`: `v2`
+* `agent.speak.provider.model`: `flux-{voice}-{language}` (for example `flux-desislava-bg` for Bulgarian)
+
+Pick a voice whose language matches your prompt and greeting. See [TTS Models](/docs/voice-agent-tts-models#flux-tts) for the full parameter reference.
 
 ### Deepgram Aura codeswitching (English/Spanish)
 
