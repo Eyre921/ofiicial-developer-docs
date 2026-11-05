@@ -32,15 +32,15 @@ agentfs run bash
 
 ## Next Steps
 
-> **[Installation](/agentfs/installation)**
+> [card] [Installation](/agentfs/installation)
 >
 > Install the AgentFS CLI
 
-> **[Agentic Coding](/agentfs/guides/sandbox)**
+> [card] [Agentic Coding](/agentfs/guides/sandbox)
 >
 > Run AI coding agents safely
 
-> **[AgentFS SDKs](/agentfs/sdk)**
+> [card] [AgentFS SDKs](/agentfs/sdk)
 >
 > Build custom agents with the AgentFS SDKs
 

@@ -117,6 +117,8 @@ UI customization: Customize the button layout, text, and appearance. | ![](https
 
 Benefits:
 
+- Doesn’t require any code. Create and share links from the [Dashboard](https://docs.stripe.com/no-code/payment-links.md).
+
 - Allows you to accept payments using a payment link that you can share as many times as you want.
 
 - Uses your customer’s preferred browser language.

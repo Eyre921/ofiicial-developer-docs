@@ -47,7 +47,7 @@ class Foo(Base):
 
 **4. Create engine**
 
-> **Embedded Replicas**
+> [accordion] Embedded Replicas
 >
 > ```python theme={null}
 > from dotenv import load_dotenv
@@ -65,7 +65,7 @@ class Foo(Base):
 > )
 > ```
 
-> **Remote only**
+> [accordion] Remote only
 >
 > ```python theme={null}
 > from dotenv import load_dotenv
@@ -82,7 +82,7 @@ class Foo(Base):
 > )
 > ```
 
-> **Memory Only**
+> [accordion] Memory Only
 >
 > ```python theme={null}
 > from sqlalchemy import create_engine
@@ -90,7 +90,7 @@ class Foo(Base):
 > engine = create_engine("sqlite+libsql://")
 > ```
 
-> **Local only**
+> [accordion] Local only
 >
 > ```python theme={null}
 > from sqlalchemy import create_engine

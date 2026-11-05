@@ -10,20 +10,24 @@ Creates an API key for the signed in user or a specified service account user.
 firectl api-key create [flags]
 ```
 
+> [!NOTE]
+>
+> API keys have a maximum expiration of 1 year (365 days). If you omit `--expire-time`, the key expires 1 year after creation. An `--expire-time` more than 365 days in the future is rejected.
+
 ### Examples
 
 ```
 firectl api-key create
 firectl api-key create --service-account=my-service-account
 firectl api-key create --key-name="Production Key" --service-account=ci-bot
-firectl api-key create --key-name="Temporary Key" --expire-time="2025-12-31 23:59:59"
+firectl api-key create --key-name="Temporary Key" --expire-time="2027-06-30 23:59:59"
 ```
 
 ### Flags
 
 ```
       --dry-run                  Print the request proto without running it.
-      --expire-time string       If specified, the time at which the API key will automatically expire. Specified in YYYY-MM-DD[ HH:MM:SS] format.
+      --expire-time string       The time at which the API key will automatically expire, in YYYY-MM-DD[ HH:MM:SS] format. Must be within 1 year (365 days); later values are rejected. Defaults to 1 year from creation.
   -h, --help                     help for create
       --key-name string          The name of the key to be created. Defaults to "default"
   -o, --output Output            Set the output format to "text", "json", or "flag". (default text)

@@ -6,11 +6,11 @@ path: guides/data/update-data
 
 Patch fields on Pinecone documents by ID, or update metadata fields across every document in a document index that matches a filter.
 
-This page shows you how to update documents in a [namespace](/guides/indexes/indexing-overview#namespaces) of a document index. You can patch fields on a document by ID, or patch metadata fields across every document matching a filter. To replace whole documents, use the [upsert](/guides/data/upsert-data) operation instead. For a legacy vector index, see [Update vectors](/guides/legacy/vectors-api/update-vectors).
+This page shows you how to update documents in a [namespace](/guides/indexes/index-data-overview#namespaces) of a document index. You can patch fields on a document by ID, or patch metadata fields across every document matching a filter. To replace whole documents, use the [upsert](/guides/data/upsert-data) operation instead. For a legacy vector index, see [Update vectors](/guides/legacy/vectors-api/update-vectors).
 
 > [!TIP]
 >
-> Updates consume [write units (WUs)](/guides/manage-cost/understanding-cost#write-units). See [Understand Pinecone cost](/guides/manage-cost/understanding-cost#update) for how update cost is calculated.
+> Updates consume [write units (WUs)](/guides/cost/understand-cost#write-units). See [Understand Pinecone cost](/guides/cost/understand-cost#update) for how update cost is calculated.
 
 ## Update documents
 
@@ -52,7 +52,7 @@ curl "https://$INDEX_HOST/namespaces/articles/documents/update" \
         }'
 ```
 
-To apply the same patch to every document matching a [metadata filter expression](/guides/indexes/indexing-overview#metadata-filter-expressions), send `filter` with `set_fields`, `remove_fields`, or both:
+To apply the same patch to every document matching a [metadata filter expression](/guides/indexes/index-data-overview#metadata-filter-expressions), send `filter` with `set_fields`, `remove_fields`, or both:
 
 ```Python Python theme={null}
 # Connect to an index as shown above.

@@ -261,7 +261,7 @@ asyncio.run(main())
 
 ## Query across namespaces
 
-Each query is limited to a single [namespace](/guides/indexes/indexing-overview#namespaces). However, the Pinecone Python SDK provides a `query_namespaces` utility method to run a query in parallel across multiple namespaces in an index and then merge the result sets into a single ranked result set with the `top_k` most relevant results.
+Each query is limited to a single [namespace](/guides/indexes/index-data-overview#namespaces). However, the Pinecone Python SDK provides a `query_namespaces` utility method to run a query in parallel across multiple namespaces in an index and then merge the result sets into a single ranked result set with the `top_k` most relevant results.
 
 The `query_namespaces` method accepts most of the same arguments as `query` with the addition of a required `namespaces` parameter.
 

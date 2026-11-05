@@ -6,7 +6,7 @@ path: admin/projects/manage-api-keys
 
 Create, view, update, and delete Pinecone API keys with custom permissions per project, including scoped roles and data plane access controls.
 
-Each Pinecone [project](/admin/projects/understanding-projects) has one or more API keys. To [make calls to the Pinecone API](/guides/get-started/quickstart), you must provide a valid API key for the relevant Pinecone project.
+Each Pinecone [project](/admin/projects/projects-overview) has one or more API keys. To [make calls to the Pinecone API](/guides/get-started/quickstart), you must provide a valid API key for the relevant Pinecone project.
 
 This page shows you how to [create](#create-an-api-key), [view](#view-project-api-keys), [update](#update-an-api-key), and [delete](#delete-an-api-key) API keys.
 
@@ -28,7 +28,7 @@ This page shows you how to [create](#create-an-api-key), [view](#view-project-ap
 >
 > 5. Enter an **API key name**.
 >
-> 6. Select the **Permissions** to grant to the API key. For a description of the permission roles, see [Project roles](/admin/projects/understanding-projects#project-roles).
+> 6. Select the **Permissions** to grant to the API key. For a description of the permission roles, see [Project roles](/admin/projects/projects-overview#project-roles).
 >
 >    > [!NOTE]
 >    >
@@ -230,7 +230,7 @@ You can [view the details of an API key](/reference/api/latest/admin/api-keys/ge
 >
 > Users on the Starter and Builder plans can't change API key permissions once they're set. Instead, [create a new API key](#create-an-api-key) or [upgrade to the Standard or Enterprise plan](/admin/billing/upgrade-billing-plan).
 
-If you're a [project owner](/admin/projects/understanding-projects#project-roles), you can update an API key's permissions. To rename a key, use the API.
+If you're a [project owner](/admin/projects/projects-overview#project-roles), you can update an API key's permissions. To rename a key, use the API.
 
 > [tab] Pinecone console
 >
@@ -244,7 +244,7 @@ If you're a [project owner](/admin/projects/understanding-projects#project-roles
 >
 > 5. Change the permissions for the API key as needed.
 >
->    For information about the different API key permissions, see [Project roles](/admin/projects/understanding-projects#project-roles).
+>    For information about the different API key permissions, see [Project roles](/admin/projects/projects-overview#project-roles).
 >
 > 6. Click **Update**.
 
@@ -300,7 +300,7 @@ If you're a [project owner](/admin/projects/understanding-projects#project-roles
 
 ## Delete an API key
 
-If you're a [project owner](/admin/projects/understanding-projects#project-roles), you can delete an API key.
+If you're a [project owner](/admin/projects/projects-overview#project-roles), you can delete an API key.
 
 > [tab] Pinecone console
 >

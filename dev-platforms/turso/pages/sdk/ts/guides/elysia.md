@@ -42,6 +42,6 @@ const app = new Elysia().get("/items", async () => {
 
 ## Examples
 
-> **[Expenses tracker app with Elysia & Turso](https://github.com/tursodatabase/examples/tree/master/app-expenses-tracker-elysia)**
+> [card] [Expenses tracker app with Elysia & Turso](https://github.com/tursodatabase/examples/tree/master/app-expenses-tracker-elysia)
 >
 > See the full source code

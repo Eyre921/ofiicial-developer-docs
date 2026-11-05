@@ -18,8 +18,8 @@ Serverless training runs on shared Fireworks GPUs, so there is no trainer job or
 >
 > Train a student model from a teacher model's scores.> [card] [Custom loss](/fine-tuning/training-api/dedicated#loss-functions)
 >
-> Write your own loss function using the same Training API calls as dedicated training.Prefer a managed job to writing your own loop? Use [Managed Training](/fine-tuning/managed-finetuning-intro).## Quickstart**Requires Python 3.11 or later.**### Step 1: Create a key, install, and authenticateCreate an API key in the [Fireworks dashboard](https://app.fireworks.ai/settings/users/api-keys), or run `firectl api-key create` in your terminal. Then install the SDK and export the key:```bash theme={null}
-git clone https://github.com/fw-ai/cookbook
+> Write your own loss function using the same Training API calls as dedicated training.Prefer a managed job to writing your own loop? Use [Managed Training](/fine-tuning/managed-finetuning-intro).## Quickstart**Requires Python 3.11 or later.**### Step 1: Create a key, install, and authenticateCreate an API key in the [Fireworks dashboard](https://app.fireworks.ai/settings/users/api-keys), or run `firectl api-key create` in your terminal. Then install the SDK and export the key:The example below runs from a source checkout. To import released recipes in your own project, use [the PyPI installation](/fine-tuning/training-api/cookbook/overview#installation).```bash theme={null}
+git clone https://github.com/fw-ai-external/cookbook
 pip install -e ./cookbook/training
 pip install math-verify   # used by the DeepMath example to grade answers
 export FIREWORKS_API_KEY="fw_..."   # the key you just created
@@ -70,7 +70,7 @@ max_seq_len = 131072  # enforce this when rendering prompts and training datums
 training_client = service.create_lora_training_client(base_model=base_model, rank=8)
 
 print(f"session={service.training_session_id} run={training_client.run_id}")
-```If it prints a session ID that starts with `ts-`, your setup works. The session holds a training slot until you delete it.### Train, checkpoint, and sampleEach training step follows the order below. This excerpt doesn't run on its own: it continues from the code above and uses `datums`, `tokenizer`, `prompt`, and `params`, which a complete loop such as the [DeepMath example](https://github.com/fw-ai/cookbook/blob/main/training/examples/rl/deepmath/train_deepmath_serverless.py) defines.```python theme={null}
+```If it prints a session ID that starts with `ts-`, your setup works. The session holds a training slot until you delete it.### Train, checkpoint, and sampleEach training step follows the order below. This excerpt doesn't run on its own: it continues from the code above and uses `datums`, `tokenizer`, `prompt`, and `params`, which a complete loop such as the [DeepMath example](https://github.com/fw-ai-external/cookbook/blob/main/training/examples/rl/deepmath/train_deepmath_serverless.py) defines.```python theme={null}
 from fireworks.training.sdk import AdamParams
 
 # One optimizer step
@@ -92,7 +92,7 @@ sampler.close()
 >
 > * Training and sampling calls return futures. Call `.result()` on each, or errors can go unnoticed.
 > * The tokenizer must match `base_model`. It formats prompts and decodes samples on your machine, so a mismatch silently corrupts your rewards.
-> * Give each checkpoint a different name. Saving twice with the same name points to the same snapshot.When you finish, close your clients and delete the session.For a complete RL loop, see the [DeepMath example](https://github.com/fw-ai/cookbook/blob/main/training/examples/rl/deepmath/train_deepmath_serverless.py) from the quickstart. For async scheduling and custom rollout functions, use the experimental [`async_rl_loop_serverless`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/experiment/async_rl_loop_serverless.py) recipe. For other RL losses, see the [cookbook RL recipes](/fine-tuning/training-api/cookbook/rl).## Saving and loading checkpointsServerless training writes **two different kinds of checkpoint**, and they are not interchangeable:| | **Training checkpoint** | **Sampler checkpoint** |
+> * Give each checkpoint a different name. Saving twice with the same name points to the same snapshot.When you finish, close your clients and delete the session.For a complete RL loop, see the [DeepMath example](https://github.com/fw-ai-external/cookbook/blob/main/training/examples/rl/deepmath/train_deepmath_serverless.py) from the quickstart. For async scheduling and custom rollout functions, use the experimental [`async_rl_loop_serverless`](https://github.com/fw-ai-external/cookbook/blob/main/training/recipes/experiment/async_rl_loop_serverless.py) recipe. For other RL losses, see the [cookbook RL recipes](/fine-tuning/training-api/cookbook/rl).## Saving and loading checkpointsServerless training writes **two different kinds of checkpoint**, and they are not interchangeable:| | **Training checkpoint** | **Sampler checkpoint** |
 | - | - | - |
 | Saved by | `save_state(name)` | `save_weights_for_sampler(name)` |
 | Contains | Adapter weights **and** optimizer state | Current adapter weights only |
@@ -245,8 +245,8 @@ sampler = service.create_sampling_client(model_path=path, tokenizer=tokenizer)
 | Rewards or decoded samples look wrong | The tokenizer does not match `base_model`. | Load the tokenizer for the exact base model you train. |
 | Promotion fails on name length after training finishes | The checkpoint name is longer than 17 characters. | Load the training checkpoint into a fresh session with `load_state` and save it again under a shorter name. Keep names to 17 characters or fewer. |
 | Listing or promoting checkpoints returns `NOT_FOUND` | The training session was deleted or its trainer was drained. Promotion only works while the session exists. | Promote checkpoints before you delete the session. Use the session-scoped checkpoint name from `list_training_session_checkpoints`. |
-| Two saves return the same snapshot path | Both saves used the same checkpoint name. | Give every checkpoint a distinct name. |## Next steps* [DeepMath serverless example](https://github.com/fw-ai/cookbook/blob/main/training/examples/rl/deepmath/train_deepmath_serverless.py): runnable serverless RL loop
-* [Prompt-router serverless notebook](https://github.com/fw-ai/cookbook/blob/main/training/case-studies/sft_prompt_router/prompt_router_serverless.ipynb): dataset preparation, LoRA SFT, checkpoint sampling, and evaluation on Qwen 3.8 27B
+| Two saves return the same snapshot path | Both saves used the same checkpoint name. | Give every checkpoint a distinct name. |## Next steps* [DeepMath serverless example](https://github.com/fw-ai-external/cookbook/blob/main/training/examples/rl/deepmath/train_deepmath_serverless.py): runnable serverless RL loop
+* [Prompt-router serverless notebook](https://github.com/fw-ai-external/cookbook/blob/main/training/case-studies/sft_prompt_router/prompt_router_serverless.ipynb): dataset preparation, LoRA SFT, checkpoint sampling, and evaluation on Qwen 3.8 27B
 * [Choose infrastructure](/fine-tuning/training-api/introduction#infrastructure): compare serverless and dedicated
 * [Dedicated Training](/fine-tuning/training-api/dedicated): the provisioned path from setup through teardown
 * [The Cookbook](/fine-tuning/training-api/cookbook/overview): ready-to-run recipes> [accordion] Video walkthrough: Train a prompt router

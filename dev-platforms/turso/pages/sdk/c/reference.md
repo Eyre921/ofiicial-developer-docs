@@ -12,7 +12,7 @@ libSQL C Reference
 
 To use the libSQL C bindings, you need to include the `libsql.h` header file in your project and link against the `liblibsql.so` shared library.
 
-> **[libSQL C](https://github.com/tursodatabase/libsql)**
+> [card] [libSQL C](https://github.com/tursodatabase/libsql)
 >
 > Build from source code
 

@@ -100,7 +100,7 @@ The Terraform Provider for Pinecone provides the following resources:
 
 ### Indexes
 
-The `pinecone_index` resource lets you create, update, and delete [indexes](/guides/indexes/indexing-overview). It describes an index in one of two styles:
+The `pinecone_index` resource lets you create, update, and delete [indexes](/guides/indexes/index-data-overview). It describes an index in one of two styles:
 
 * **The `schema` style**, with `schema` and `deployment`. This is how API version `2026-07` describes indexes, and it's the style to use for new indexes.
 * **The `spec` style**, with `dimension`, `metric`, `vector_type`, `spec`, and `embed`. This is how earlier versions of the provider described indexes, and it's planned for deprecation. Legacy integrated indexes and existing pod-based indexes still need it.
@@ -109,7 +109,7 @@ A configuration uses one style or the other. You can't combine `schema` or `depl
 
 #### Document indexes
 
-A `schema` of named fields creates a [document index](/guides/core-concepts/key-terms#document-index), which you read and write through the Documents API. Each field sets exactly one of `dense_vector`, `sparse_vector`, or `string`. A `string` field stores its text by default, and a field that stores its text is always indexed for [full-text search](/guides/search/full-text-search). A `string` field can also use [integrated embedding](#integrated-embedding).
+A `schema` of named fields creates a [document index](/guides/get-started/key-terms#document-index), which you read and write through the Documents API. Each field sets exactly one of `dense_vector`, `sparse_vector`, or `string`. A `string` field stores its text by default, and a field that stores its text is always indexed for [full-text search](/guides/search/full-text-search). A `string` field can also use [integrated embedding](#integrated-embedding).
 
 ```hcl Terraform theme={null}
 resource "pinecone_index" "example_index_documents" {
@@ -473,7 +473,7 @@ resource "pinecone_collection" "example_collection" {
 
 ### Projects
 
-The `pinecone_project` resource lets you create, update, and delete [projects](/admin/projects/understanding-projects). Once `force_encryption_with_cmek` is enabled, it can't be disabled. `max_pods` defaults to `0`, which allows serverless indexes only.
+The `pinecone_project` resource lets you create, update, and delete [projects](/admin/projects/projects-overview). Once `force_encryption_with_cmek` is enabled, it can't be disabled. `max_pods` defaults to `0`, which allows serverless indexes only.
 
 > [!WARNING]
 >

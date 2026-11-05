@@ -84,6 +84,6 @@ async fn get_items() -> Result<HttpResponse, Error> {
 
 ## Examples
 
-> **[Turso + Actix Web Traffic Tracker](https://github.com/tursodatabase/examples/tree/master/app-web-traffic-tracker-actix)**
+> [card] [Turso + Actix Web Traffic Tracker](https://github.com/tursodatabase/examples/tree/master/app-web-traffic-tracker-actix)
 >
 > See the full source code

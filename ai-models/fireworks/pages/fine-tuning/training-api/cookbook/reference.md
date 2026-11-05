@@ -199,7 +199,7 @@ For checkpointing, resume, and promote — see the dedicated [Checkpoints and Re
 
 ## Skills reference
 
-Agent-facing operational guidance for gradient accumulation normalization lives in the [cookbook skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-gradient-accumulation.md).
+Agent-facing operational guidance for gradient accumulation normalization lives in the [cookbook skill reference](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-gradient-accumulation.md).
 
 ## Deprecated managed infra (InfraConfig)
 
@@ -220,7 +220,7 @@ Earlier cookbook releases provisioned trainers and deployments from the recipe l
 | Nested weight-sync cadence | RL publishes weights after every optimizer batch; no interval field is exposed. |
 | `weight_sync.dcp_save_interval=N` | `Config(dcp_save_interval=N)` (top-level, all recipes) |
 | top-level `policy_job_id=...` | `TrainerConfig(job_id=...)` |
-| `setup_infra(rlor_mgr, deploy_mgr, ...)` | `build_service_client(...)` (see the [SDK migration skill](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk-migrate.md)) |
+| `setup_infra(rlor_mgr, deploy_mgr, ...)` | `build_service_client(...)` (see the [SDK migration skill](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/sdk-migrate.md)) |
 | `create_base_reference()` / `make_reference_client()` | `service.create_reference_client(...)` |
 | `with ResourceCleanup(...)` | `cleanup_trainer_on_close=True` + `service.close()` (see [Cleanup](/fine-tuning/training-api/reference/cleanup#automatic-cleanup-via-the-sdk-managed-service)) |
 
@@ -228,19 +228,19 @@ The `InfraConfig` dataclass is still importable for backward compatibility and n
 
 ### Get help migrating
 
-The cookbook ships one [Fireworks training skill](https://github.com/fw-ai/cookbook/tree/main/skills/fireworks-training) that routes managed and Training API work. Its progressive SDK migration reference walks an agent through porting old `InfraConfig` / `setup_infra` scripts to the new `TrainerConfig` + `build_service_client` surface, alongside weight-sync and checkpoint guidance.
+The cookbook ships one [Fireworks training skill](https://github.com/fw-ai-external/cookbook/tree/main/skills/fireworks-training) that routes managed and Training API work. Its progressive SDK migration reference walks an agent through porting old `InfraConfig` / `setup_infra` scripts to the new `TrainerConfig` + `build_service_client` surface, alongside weight-sync and checkpoint guidance.
 
 ## Weight sync
 
 During RL training the inference deployment needs updated weights after each optimizer step. Cookbook recipes wire this through a shared bucket (trainer writes, deployment hot-loads).
 
-For `WeightSyncScope`, error strings, and recovery: [rl-hotload skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md).
+For `WeightSyncScope`, error strings, and recovery: [rl-hotload skill reference](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md).
 
 See also: [RL cookbook](/fine-tuning/training-api/cookbook/rl).
 
 ## Checkpoints and resume
 
-Recipe users: set `dcp_save_interval` and `output_model_id` on the recipe `Config`. For continuation, attach to the same trainer with `TrainerConfig(job_id=...)` and keep the same `log_path`. Follow the [checkpoint skill](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk-checkpoints.md) for serverless identity and explicit initialization.
+Recipe users: set `dcp_save_interval` and `output_model_id` on the recipe `Config`. For continuation, attach to the same trainer with `TrainerConfig(job_id=...)` and keep the same `log_path`. Follow the [checkpoint skill](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/sdk-checkpoints.md) for serverless identity and explicit initialization.
 
 ```python theme={null}
 cfg = Config(
@@ -251,4 +251,4 @@ cfg = Config(
 )
 ```
 
-For DCP vs sampler checkpoints, promote/resume edge cases, and cross-job warm start: [sdk-checkpoints](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk-checkpoints.md) and [training-api-losses](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/training-api-losses.md).
+For DCP vs sampler checkpoints, promote/resume edge cases, and cross-job warm start: [sdk-checkpoints](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/sdk-checkpoints.md) and [training-api-losses](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/training-api-losses.md).

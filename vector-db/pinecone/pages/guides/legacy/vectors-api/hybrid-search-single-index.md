@@ -190,7 +190,7 @@ Use the [Upsert records](/reference/api/latest/data-plane/upsert) operation, spe
 
 > [!NOTE]
 >
-> Only indexes that store dense vectors with the [dotproduct distance metric](/guides/indexes/indexing-overview#dotproduct) accept records that also have sparse vectors. Upserting such records into an index with a different distance metric will succeed, but querying will return an error.
+> Only indexes that store dense vectors with the [dotproduct distance metric](/guides/indexes/index-data-overview#dotproduct) accept records that also have sparse vectors. Upserting such records into an index with a different distance metric will succeed, but querying will return an error.
 
 ```Python Python theme={null}
 # Target the index

@@ -36,13 +36,13 @@ In BYOC, that console CMEK flow doesn't apply. Your vectors and index data are s
 Some features available in the standard Pinecone service aren't supported or have constraints in BYOC:
 
 * Each organization can have up to 2 BYOC environments. To request an increase, contact [Pinecone support](https://app.pinecone.io/organizations/-/settings/support/ticket).
-* [Integrated embedding and inference](/guides/indexes/indexing-overview#integrated-embedding) isn't supported, because it relies on models Pinecone hosts outside your cloud account.
+* [Integrated embedding and inference](/guides/indexes/index-data-overview#integrated-embedding) isn't supported, because it relies on models Pinecone hosts outside your cloud account.
 * You can't read or write data from the index browser in the Pinecone console.
 * The Pinecone CLI can't run data plane operations (queries, upserts, fetches), though its control plane operations (create, list, delete indexes) work as expected.
 * You can't import from private cloud storage buckets unless the bucket is in the same cloud account as your BYOC deployment.
 * On-demand indexes in an environment share the pool, so per-index rate limits prevent a busy index from slowing down the others. If one index needs more capacity than the pool can share, create it as a dedicated read nodes index.
 
-To [monitor with Prometheus](/guides/production/monitoring#monitor-with-prometheus), you must configure Prometheus within your VPC.
+To [monitor with Prometheus](/guides/production/monitor-performance#monitor-with-prometheus), you must configure Prometheus within your VPC.
 
 ## Pricing
 

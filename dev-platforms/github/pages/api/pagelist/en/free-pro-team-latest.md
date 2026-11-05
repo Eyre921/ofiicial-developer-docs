@@ -2717,6 +2717,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/rest/copilot/copilot-cloud-agent-management
 /en/rest/copilot/copilot-coding-agent-management
 /en/rest/copilot/copilot-content-exclusion-management
+/en/rest/copilot/copilot-team-customizations
 /en/rest/copilot/copilot-usage-metrics
 /en/rest/copilot/copilot-user-management
 /en/rest/copilot-spaces

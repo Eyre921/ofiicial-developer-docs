@@ -37,7 +37,7 @@ composer require turso/libsql
 
 Now connect to your local or remote database using the libSQL connector:
 
-> **Embedded Replica**
+> [accordion] Embedded Replica
 >
 > ```php theme={null}
 > use Libsql\Database;
@@ -51,7 +51,7 @@ Now connect to your local or remote database using the libSQL connector:
 > $conn = $db->connect();
 > ```
 
-> **Local only**
+> [accordion] Local only
 >
 > ```php theme={null}
 > use Libsql\Database;
@@ -67,7 +67,7 @@ Now connect to your local or remote database using the libSQL connector:
 > $db = new Database("database.db");
 > ```
 
-> **Local only**
+> [accordion] Local only
 >
 > ```php theme={null}
 > use Libsql\Database;
@@ -83,7 +83,7 @@ Now connect to your local or remote database using the libSQL connector:
 > $db = new Database("database.db");
 > ```
 
-> **Remote only**
+> [accordion] Remote only
 >
 > ```php theme={null}
 > use Libsql\Database;

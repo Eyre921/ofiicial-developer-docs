@@ -92,6 +92,6 @@ export default defineEventHandler(async (event) => {
 
 ## Examples
 
-> **[Website + App](https://github.com/tursodatabase/examples/tree/master/app-top-web-frameworks)**
+> [card] [Website + App](https://github.com/tursodatabase/examples/tree/master/app-top-web-frameworks)
 >
 > See the full source code

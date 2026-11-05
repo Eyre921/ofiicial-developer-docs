@@ -34,7 +34,7 @@ The Pinecone MCP server provides the following tools:
 
 > [!NOTE]
 >
-> The Pinecone MCP supports only [indexes with integrated embedding](/guides/indexes/indexing-overview#vector-embedding). Indexes for vectors you create with external embedding models aren't supported.
+> The Pinecone MCP supports only [indexes with integrated embedding](/guides/indexes/index-data-overview#vector-embedding). Indexes for vectors you create with external embedding models aren't supported.
 
 ## Before you begin
 

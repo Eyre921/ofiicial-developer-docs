@@ -66,7 +66,7 @@ struct Todo {
 
 Pass a `turso:` URL to `Db::builder` — either an in-memory database or a file path:
 
-> **In-memory**
+> [accordion] In-memory
 >
 > ```rust theme={null}
 > let db = toasty::Db::builder()
@@ -75,7 +75,7 @@ Pass a `turso:` URL to `Db::builder` — either an in-memory database or a file 
 >     .await?;
 > ```
 
-> **File-backed**
+> [accordion] File-backed
 >
 > ```rust theme={null}
 > let db = toasty::Db::builder()
@@ -84,7 +84,7 @@ Pass a `turso:` URL to `Db::builder` — either an in-memory database or a file 
 >     .await?;
 > ```
 
-> **With concurrent writes (MVCC)**
+> [accordion] With concurrent writes (MVCC)
 >
 > To enable Turso's MVCC journal so multiple writers can run concurrently, build the driver explicitly and pass it to `build()`:
 >

@@ -422,7 +422,7 @@ If the model learns the wrong text or ignores assistant turns, the training rend
 
 1. In the dashboard, open your SFT job → **Render Samples** to inspect token boundaries and loss masks.
 2. Compare rendered tokens against inference for the same prompt.
-3. For custom renderers or agent-driven debugging, use the [training skill — renderer verification](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/renderer-verification.md).
+3. For custom renderers or agent-driven debugging, use the [training skill — renderer verification](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/renderer-verification.md).
 
 > [!NOTE]
 >

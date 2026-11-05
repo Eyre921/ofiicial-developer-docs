@@ -18,47 +18,47 @@ This installs the `agentfs` binary to `~/.cargo/bin`.
 
 ## Platform-Specific Instructions
 
-**macOS**
+> [tab] macOS
+>
+> ```bash theme={null}
+> curl -fsSL https://github.com/tursodatabase/agentfs/releases/latest/download/agentfs-installer.sh | sh
+> ```
+>
+> After installation, restart your terminal or run:
+>
+> ```bash theme={null}
+> source ~/.zshrc  # or ~/.bashrc
+> ```
 
-```bash theme={null}
-curl -fsSL https://github.com/tursodatabase/agentfs/releases/latest/download/agentfs-installer.sh | sh
-```
+> [tab] Linux
+>
+> **Using the installer:**
+>
+> ```bash theme={null}
+> curl -fsSL https://github.com/tursodatabase/agentfs/releases/latest/download/agentfs-installer.sh | sh
+> ```
+>
+> After installation, restart your terminal or run:
+>
+> ```bash theme={null}
+> source ~/.bashrc  # or ~/.zshrc
+> ```
+>
+> **Requirements:**
+>
+> * FUSE must be available for filesystem mounting
+> * On Ubuntu/Debian: `sudo apt install fuse3`
+> * On Fedora: `sudo dnf install fuse3`
 
-After installation, restart your terminal or run:
-
-```bash theme={null}
-source ~/.zshrc  # or ~/.bashrc
-```
-
-**Linux**
-
-**Using the installer:**
-
-```bash theme={null}
-curl -fsSL https://github.com/tursodatabase/agentfs/releases/latest/download/agentfs-installer.sh | sh
-```
-
-After installation, restart your terminal or run:
-
-```bash theme={null}
-source ~/.bashrc  # or ~/.zshrc
-```
-
-**Requirements:**
-
-* FUSE must be available for filesystem mounting
-* On Ubuntu/Debian: `sudo apt install fuse3`
-* On Fedora: `sudo dnf install fuse3`
-
-**Windows**
-
-**Using PowerShell:**
-
-```powershell theme={null}
-irm https://github.com/tursodatabase/agentfs/releases/latest/download/agentfs-installer.ps1 | iex
-```
-
-Or download the binary directly from the [releases page](https://github.com/tursodatabase/agentfs/releases).
+> [tab] Windows
+>
+> **Using PowerShell:**
+>
+> ```powershell theme={null}
+> irm https://github.com/tursodatabase/agentfs/releases/latest/download/agentfs-installer.ps1 | iex
+> ```
+>
+> Or download the binary directly from the [releases page](https://github.com/tursodatabase/agentfs/releases).
 
 ## Verify Installation
 
@@ -94,10 +94,10 @@ cargo install --path .
 
 ## Next Steps
 
-> **[Agentic Coding](/agentfs/guides/sandbox)**
+> [card] [Agentic Coding](/agentfs/guides/sandbox)
 >
 > Run AI coding agents safely
 
-> **[CLI Reference](/agentfs/reference/cli)**
+> [card] [CLI Reference](/agentfs/reference/cli)
 >
 > Full command reference

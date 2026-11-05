@@ -8,7 +8,7 @@ Restore a Pinecone serverless index from a backup, change the index name, tags, 
 
 ## Create a serverless index from a backup
 
-When restoring a serverless index from backup, you can change the index name, tags, and deletion protection setting. All other properties of the restored index will remain identical to the source index, including cloud and region by default, dimension and similarity metric, and associated embedding model when restoring an index with [integrated embedding](/guides/indexes/indexing-overview#integrated-embedding). To restore a backup into a different region than the source index, see [Restore to a different region](#restore-to-a-different-region).
+When restoring a serverless index from backup, you can change the index name, tags, and deletion protection setting. All other properties of the restored index will remain identical to the source index, including cloud and region by default, dimension and similarity metric, and associated embedding model when restoring an index with [integrated embedding](/guides/indexes/index-data-overview#integrated-embedding). To restore a backup into a different region than the source index, see [Restore to a different region](#restore-to-a-different-region).
 
 To [create a serverless index from a backup](/reference/api/latest/control-plane/create_index_from_backup), provide the ID of the backup, the name of the new index, and, optionally, changes to the index tags and deletion protection settings:
 
@@ -187,7 +187,7 @@ The following rules apply:
 * The `dimension`, `metric`, and `vector_type` must match the source index.
 * Restoring to a different region isn't supported for BYOC indexes.
 * In the Pinecone console, you can choose a different region only while the source index still exists.
-* Restoring to a different region incurs a cross-region transfer fee, charged per GB on top of the standard restore cost. The fee depends on the cloud provider and the backup's region. For details, see [Backups and restores](/guides/manage-cost/understanding-cost#backups-and-restores).
+* Restoring to a different region incurs a cross-region transfer fee, charged per GB on top of the standard restore cost. The fee depends on the cloud provider and the backup's region. For details, see [Backups and restores](/guides/cost/understand-cost#backups-and-restores).
 
 > [!WARNING]
 >

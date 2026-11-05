@@ -189,7 +189,7 @@ If you use an external embedding model to convert your data to sparse vectors, [
 
 * Provide a `name` for the index.
 * Set the `vector_type` to `sparse`.
-* Set the distance `metric` to `dotproduct`. Indexes that store sparse vectors don't support other [distance metrics](/guides/indexes/indexing-overview#distance-metrics).
+* Set the distance `metric` to `dotproduct`. Indexes that store sparse vectors don't support other [distance metrics](/guides/indexes/index-data-overview#distance-metrics).
 * Set `spec.cloud` and `spec.region` to the cloud and region where the index should be deployed.
 
 Other parameters are optional. See [Create an index](/reference/api/2026-04/control-plane/create_index) for details.

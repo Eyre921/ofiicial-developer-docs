@@ -13,7 +13,7 @@ This page provides recommendations and best practices for preparing your Pinecon
 One of the first steps towards building a production-ready Pinecone index is configuring your project correctly.
 
 * Consider [creating a separate project](/admin/projects/create-a-project) for your development and production indexes, to allow for testing changes to your index before deploying them to production.
-* Ensure that you have properly [configured user access](/admin/projects/understanding-projects#project-roles) to the Pinecone console, so that only those users who need to access the production index can do so.
+* Ensure that you have properly [configured user access](/admin/projects/projects-overview#project-roles) to the Pinecone console, so that only those users who need to access the production index can do so.
 * Ensure that you have properly configured access through the API by [managing API keys](/admin/projects/manage-api-keys) and using API key permissions.
 
 Consider how best to [manage the API keys](/admin/projects/manage-api-keys) associated with your production project. To [make calls to the Pinecone API](/guides/get-started/quickstart), you must provide a valid API key for the relevant Pinecone project.
@@ -65,7 +65,7 @@ Before serving production workloads, optimize your Pinecone implementation:
 * **Increase search relevance**: Use techniques like reranking, metadata filtering, hybrid search, and chunking strategies to improve result quality. See [increase search relevance](/guides/optimize/increase-relevance) for details.
 * **Increase throughput**: Import from object storage, upsert in batches, use parallel operations, and use Python SDK optimizations like gRPC. See [increase throughput](/guides/optimize/increase-throughput) for details.
 * **Decrease latency**: Use namespaces, filter by metadata, target indexes by host, reuse connections, and deploy in the same cloud region as your index. See [decrease latency](/guides/optimize/decrease-latency) for details.
-* **Save on costs**: Prefer bulk import for large initial loads, use namespaces for multitenancy, and avoid unnecessary data in query responses. See [save on costs](/guides/manage-cost/save-on-costs) for details.
+* **Save on costs**: Prefer bulk import for large initial loads, use namespaces for multitenancy, and avoid unnecessary data in query responses. See [save on costs](/guides/cost/save-on-costs) for details.
 
 ## Backup up your indexes
 
@@ -82,7 +82,7 @@ Prepare your application to handle errors gracefully:
 
 ## Configure monitoring
 
-Prepare to [monitor the production performance and availability of your indexes](/guides/production/monitoring).
+Prepare to [monitor the production performance and availability of your indexes](/guides/production/monitor-performance).
 
 ## Know how to get support
 

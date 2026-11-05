@@ -140,7 +140,7 @@ You can monitor your BYOC deployment through multiple channels:
 
 > [accordion] Prometheus
 >
-> To use [Prometheus](/guides/production/monitoring#monitor-with-prometheus), configure your monitoring tool within your VPC to scrape metrics from the cluster. Your Prometheus instance must have network access to the BYOC VPC. The deployment output includes the metrics endpoint URL and port for configuration.
+> To use [Prometheus](/guides/production/monitor-performance#monitor-with-prometheus), configure your monitoring tool within your VPC to scrape metrics from the cluster. Your Prometheus instance must have network access to the BYOC VPC. The deployment output includes the metrics endpoint URL and port for configuration.
 
 > [accordion] Audit logs
 >

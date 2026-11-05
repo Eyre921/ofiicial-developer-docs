@@ -45,6 +45,6 @@ app.get("/items", async (c) => {
 
 ## Examples
 
-> **[Expenses tracker app with Hono & Turso](https://github.com/tursodatabase/examples/tree/master/app-expenses-tracker-hono)**
+> [card] [Expenses tracker app with Hono & Turso](https://github.com/tursodatabase/examples/tree/master/app-expenses-tracker-hono)
 >
 > See the full source code

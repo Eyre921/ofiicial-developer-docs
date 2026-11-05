@@ -17,7 +17,7 @@ You can set up email alerts that track your organization's monthly spending. An 
 1. Go to [Settings > Spend alerts](https://app.pinecone.io/organizations/-/settings/spend-alerts) in the Pinecone console.
 2. Click **+ Add Alert**.
 3. Enter the dollar amount for the spend alert.
-4. Enter the email addresses to send the alert to. [Organization owners](/admin/organizations/understanding-organizations#organization-roles) are listed by default.
+4. Enter the email addresses to send the alert to. [Organization owners](/admin/organizations/organizations-overview#organization-roles) are listed by default.
 5. Click **Create**.
 
 ## Edit a spend alert
@@ -34,7 +34,7 @@ To protect against unexpected cost increases, Pinecone sends an alert when spend
 
 > [!NOTE]
 >
-> You must be an [organization owner or billing admin](/admin/organizations/understanding-organizations#organization-roles) to view usage across your Pinecone organization. Also, this feature is available only to organizations on the Standard or Enterprise plans.
+> You must be an [organization owner or billing admin](/admin/organizations/organizations-overview#organization-roles) to view usage across your Pinecone organization. Also, this feature is available only to organizations on the Standard or Enterprise plans.
 
 Usage and costs across your organization are reported in the **Usage** dashboard in the Pinecone console. You can read the report there, download it as a CSV file, or export it with the Admin API (Enterprise plans only). For the steps, see [Download a usage report](/admin/billing/download-usage-report).
 

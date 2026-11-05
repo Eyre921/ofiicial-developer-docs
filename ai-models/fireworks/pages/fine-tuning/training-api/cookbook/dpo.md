@@ -85,8 +85,8 @@ model, tokenizer, and rendering consistent with that cache.
 LoRA DPO normally shares a frozen reference within the policy trainer.
 Full-parameter DPO uses a separate reference trainer. DPO and ORPO retain
 controlled dataset batches and need no rollout streaming. Loss and cache
-implementation details live in the [recipe](https://github.com/fw-ai/cookbook/blob/main/training/recipes/dpo_loop.py)
-and [training skill](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk-recipes.md).
+implementation details live in the [recipe](https://github.com/fw-ai-external/cookbook/blob/main/training/recipes/dpo_loop.py)
+and [training skill](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/sdk-recipes.md).
 
 ## Operational guidance
 
@@ -104,7 +104,7 @@ and [training skill](https://github.com/fw-ai/cookbook/blob/main/skills/firework
 
 ## Related preference methods
 
-* **ORPO** (`training.recipes.orpo_loop`) — Odds Ratio Preference Optimization. Combines an SFT-style negative-log-likelihood term on the chosen response with a margin term on the odds ratio between chosen and rejected. Unlike DPO, ORPO does **not** require a reference trainer (no cached reference logprobs), so the recipe runs with a single trainer + dataset of preference pairs. See `training.recipes.orpo_loop` in the public [cookbook repo](https://github.com/fw-ai/cookbook/blob/main/training/recipes/orpo_loop.py) for the full configuration.
+* **ORPO** (`training.recipes.orpo_loop`) — Odds Ratio Preference Optimization. Combines an SFT-style negative-log-likelihood term on the chosen response with a margin term on the odds ratio between chosen and rejected. Unlike DPO, ORPO does **not** require a reference trainer (no cached reference logprobs), so the recipe runs with a single trainer + dataset of preference pairs. See `training.recipes.orpo_loop` in the public [cookbook repo](https://github.com/fw-ai-external/cookbook/blob/main/training/recipes/orpo_loop.py) for the full configuration.
 
 ## Related guides
 

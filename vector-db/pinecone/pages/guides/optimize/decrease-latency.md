@@ -8,7 +8,7 @@ Reduce query and upsert latency in Pinecone using namespaces, metadata filters, 
 
 ## Use namespaces
 
-When you divide records into [namespaces](/guides/indexes/indexing-overview#namespaces) in a logical way, you speed up queries by ensuring only relevant records are scanned. The same applies to [fetching records](/guides/data/fetch-data), [listing record IDs](/guides/data/list-record-ids), and other data operations.
+When you divide records into [namespaces](/guides/indexes/index-data-overview#namespaces) in a logical way, you speed up queries by ensuring only relevant records are scanned. The same applies to [fetching records](/guides/data/fetch-data), [listing record IDs](/guides/data/list-record-ids), and other data operations.
 
 ## Filter by metadata
 

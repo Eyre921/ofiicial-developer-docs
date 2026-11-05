@@ -7,7 +7,7 @@ path: fine-tuning/training-api/cookbook/muse-glimmer
 Run a free first LoRA fine-tune of Muse Glimmer 30B on Managed SFT or Serverless Training, then measure base versus tuned.
 
 This guide runs a first fine-tune of Muse Glimmer 30B end to end with the
-cookbook's [Muse Glimmer starter](https://github.com/fw-ai/cookbook/tree/main/training/examples/muse_glimmer).
+cookbook's [Muse Glimmer starter](https://github.com/fw-ai-external/cookbook/tree/main/training/examples/muse_glimmer).
 The same script runs the job on two surfaces:
 
 * **Managed SFT**: Fireworks runs the training loop on a dataset in your
@@ -44,7 +44,7 @@ You need Git, Python 3.11 or newer, and a Fireworks API key from the
 [dashboard](https://app.fireworks.ai/settings/users/api-keys).
 
 ```bash theme={null}
-git clone --depth 1 https://github.com/fw-ai/cookbook.git
+git clone --depth 1 https://github.com/fw-ai-external/cookbook.git
 cd cookbook/training
 python3 -m venv .venv && source .venv/bin/activate   # check python3 --version is 3.11+
 pip install -e .
@@ -217,7 +217,7 @@ while replicas run; trained LoRAs cannot be served on serverless inference.
 
 ## With a coding agent
 
-The [Fireworks training skills](https://github.com/fw-ai/cookbook/tree/main/skills)
+The [Fireworks training skills](https://github.com/fw-ai-external/cookbook/tree/main/skills)
 drive this starter for you. Install them, then ask *"Is there something free I can
 run right now to see how training works?"*. The agent checks your account, shows
 one plan with its cost, launches after you approve, monitors the run, and

@@ -6,21 +6,21 @@ path: tursodb/quickstart
 
 **1. Install**
 
-**macOS / Linux**
+> [tab] macOS / Linux
+>
+> ```bash theme={null}
+> curl --proto '=https' --tlsv1.2 -LsSf https://github.com/tursodatabase/turso/releases/latest/download/turso_cli-installer.sh | sh
+> ```
 
-```bash theme={null}
-curl --proto '=https' --tlsv1.2 -LsSf https://github.com/tursodatabase/turso/releases/latest/download/turso_cli-installer.sh | sh
-```
-
-**Windows**
-
-Run the following command in PowerShell:
-
-```powershell theme={null}
-irm https://github.com/tursodatabase/turso/releases/latest/download/turso_cli-installer.ps1 | iex
-```
-
-Alternatively, you can [download the Windows executable](https://github.com/tursodatabase/turso/releases/latest) and add it to your PATH.
+> [tab] Windows
+>
+> Run the following command in PowerShell:
+>
+> ```powershell theme={null}
+> irm https://github.com/tursodatabase/turso/releases/latest/download/turso_cli-installer.ps1 | iex
+> ```
+>
+> Alternatively, you can [download the Windows executable](https://github.com/tursodatabase/turso/releases/latest) and add it to your PATH.
 
 **2. Launch**
 
@@ -44,7 +44,7 @@ turso>
 
 Now you can execute SQL statements in the interactive shell:
 
-> **Create a table**
+> [accordion] Create a table
 >
 > Create a table for users:
 >
@@ -52,7 +52,7 @@ Now you can execute SQL statements in the interactive shell:
 > CREATE TABLE users (id INT, username TEXT);
 > ```
 
-> **Insert data**
+> [accordion] Insert data
 >
 > Insert some data into the users table:
 >
@@ -61,7 +61,7 @@ Now you can execute SQL statements in the interactive shell:
 > INSERT INTO users VALUES (2, 'bob');
 > ```
 
-> **Query data**
+> [accordion] Query data
 >
 > Query all users from the table:
 >

@@ -55,7 +55,7 @@ finally:
     sampler.close()
 ```
 
-`sampler.sample(...)` is the evaluation call. Repeat it over held-out prompts, score each completion with your evaluation metric, then close the sampler. The cookbook's [DeepMath serverless example](https://github.com/fw-ai/cookbook/blob/main/training/examples/rl/deepmath/train_deepmath_serverless.py) shows held-out accuracy evaluation with a math reward.
+`sampler.sample(...)` is the evaluation call. Repeat it over held-out prompts, score each completion with your evaluation metric, then close the sampler. The cookbook's [DeepMath serverless example](https://github.com/fw-ai-external/cookbook/blob/main/training/examples/rl/deepmath/train_deepmath_serverless.py) shows held-out accuracy evaluation with a math reward.
 
 For checkpoint and promotion details, see [Saving and loading checkpoints](/fine-tuning/training-api/serverless#saving-and-loading-checkpoints) on the serverless training page.
 

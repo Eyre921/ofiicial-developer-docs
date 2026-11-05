@@ -12,11 +12,11 @@ libSQL is a fork of SQLite, created because SQLite is [open-source but not open-
 >
 > libSQL represents where we started. Today, our focus is [Turso Database](/tursodb/quickstart), a full rewrite of SQLite built from scratch, designed for the highest density of databases with no need for servers or connectivity. If you're starting a new project, we recommend [Turso Database](/tursodb/quickstart). For mission-critical workloads that need a battle-tested foundation today, libSQL is the right choice.
 
-> **[tursodatabase/libsql](https://github.com/tursodatabase/libsql/)**
+> [card] [tursodatabase/libsql](https://github.com/tursodatabase/libsql/)
 >
 > Browse the libSQL source code on GitHub, report issues, feature requests and contribute using pull requests.
 
-> **[Discord](https://tur.so/discord)**
+> [card] [Discord](https://tur.so/discord)
 >
 > Join the community on Discord to talk about the development of libSQL.
 

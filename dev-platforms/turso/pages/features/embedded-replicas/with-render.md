@@ -30,7 +30,7 @@ You will need an existing database to continue. If you don't have one, [create o
 
 Fork the following embedded replica project from GitHub locally:
 
-> **[My Expenses Tracker - (Elysia + Bun)](https://github.com/tursodatabase/embedded-replicas-with-js)**
+> [card] [My Expenses Tracker - (Elysia + Bun)](https://github.com/tursodatabase/embedded-replicas-with-js)
 >
 > See the full source code
 
@@ -38,7 +38,7 @@ Fork the following embedded replica project from GitHub locally:
 >
 > Or, you can:
 >
-> > **[Deploy to Render with a single-click](https://render.com/deploy?repo=https://github.com/tursodatabase/embedded-replicas-with-js)**
+> > [card] [Deploy to Render with a single-click](https://render.com/deploy?repo=https://github.com/tursodatabase/embedded-replicas-with-js)
 
 **3. Create a web service**
 

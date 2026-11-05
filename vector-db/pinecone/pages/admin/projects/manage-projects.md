@@ -10,7 +10,7 @@ This page shows you how to view project details, rename a project, and delete a 
 
 > [!NOTE]
 >
-> You must be an [organization owner](/admin/organizations/understanding-organizations#organization-roles) or [project owner](/admin/projects/understanding-projects#project-roles) to edit project details or delete a project.
+> You must be an [organization owner](/admin/organizations/organizations-overview#organization-roles) or [project owner](/admin/projects/projects-overview#project-roles) to edit project details or delete a project.
 
 ## View project details
 

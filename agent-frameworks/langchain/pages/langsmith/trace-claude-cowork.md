@@ -51,19 +51,17 @@ Tracing stops when your sign-in expires or your key is rejected, and turns from 
 
 ## Turn on tracing
 
-Tracing is off until you turn it on in `~/.claude/langsmith.json`, unless your admin already turned it on with a [managed file](#lock-settings). Send traces to an [agent](/langsmith/log-traces-to-agent#send-traces-to-an-agent) with `agent_id`:
+Tracing is off until you turn it on in `~/.claude/langsmith.json`, unless your admin already turned it on with a [managed file](#lock-settings). In an [agent-based workspace](/langsmith/migrate-to-agent-based-workspaces), send traces to an [agent](/langsmith/log-traces-to-agent#send-traces-to-an-agent) with `agent_id`:
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 { "enabled": true, "agent_id": "shared-claude" }
 ```
 
-Or send them to a project with `project`:
+In a project-based workspace, use the legacy `project` setting instead:
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 { "enabled": true, "project": "shared-claude" }
 ```
-
-Use either one. If you set both, `agent_id` wins.
 
 Start a Cowork task and open your agent or project in [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-claude-cowork). Skill calls record which skill ran, so you can filter traces by skill.
 
@@ -81,8 +79,8 @@ An admin can lock tracing settings for every user with a managed file at `~/.lan
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
-  "api_url": "https://langsmith.example.com",
-  "project": "engineering",
+  "api_url": "https://api.smith.langchain.com",
+  "agent_id": "coding-agent",
   "strict_auth": true,
   "workspace_id": "<your-workspace-id>"
 }
@@ -96,7 +94,7 @@ The managed file works on macOS and Linux. The plugin only trusts it when:
 * No other user can write to either.
 * Neither is a symlink.
 
-If the file exists but fails these checks, tracing stops and the user sees a message to contact their admin. Locking a setting also locks the settings tied to it, so users cannot route traces around the lock. For example, locking `project` also stops users from adding their own [replicas](/langsmith/trace-replicas) or sending traces to an agent with `agent_id`.
+If the file exists but fails these checks, tracing stops and the user sees a message to contact their admin. Locking a setting also locks the settings tied to it, so users cannot route traces around the lock. For example, locking `agent_id` also stops users from sending traces to a project with `project`.
 
 Admins usually install the file on each machine with a mobile device management (MDM) tool such as Jamf or Microsoft Intune. For every setting you can lock, see the [plugin settings guide](https://github.com/langchain-ai/langsmith-plugin-binary/blob/main/docs/settings.md).
 

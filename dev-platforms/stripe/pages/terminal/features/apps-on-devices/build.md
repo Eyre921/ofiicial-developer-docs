@@ -169,7 +169,7 @@ Follow the guidance below for Apps on Devices integrations.
 
 You must register a new Stripe device to your account as a new [Reader object](https://docs.stripe.com/api/terminal/readers/object.md). Use the pairing code provided in the device’s admin settings to [create the Reader object](https://docs.stripe.com/api/terminal/readers/create.md). Your app uses the Stripe Terminal Android SDK to discover and connect to your device:
 
-See more examples of how to [discover](https://github.com/stripe-samples/terminal-apps-on-devices/blob/718c2de38c7b8003fcf58c536c266bb990ad43a7/app/src/main/java/com/stripe/aod/sampleapp/model/MainViewModel.kt#L90) and [connect](https://github.com/stripe-samples/terminal-apps-on-devices/blob/718c2de38c7b8003fcf58c536c266bb990ad43a7/app/src/main/java/com/stripe/aod/sampleapp/model/MainViewModel.kt#L106) using handoff mode in the Apps on Devices sample integration repository on [GitHub](https://github.com/stripe-samples/terminal-apps-on-devices).
+See an example of how to [discover and connect to a reader using easyConnect](https://github.com/stripe-samples/terminal-apps-on-devices/blob/05de97f52683130339a5973cf875cb834398f381/app/src/main/java/com/stripe/aod/sampleapp/model/MainViewModel.kt#L42-L88) in the Apps on Devices sample integration repository on [GitHub](https://github.com/stripe-samples/terminal-apps-on-devices).
 
 1. Your app runs on your registered device.
 2. Your app discovers the reader by calling [discoverReaders](https://stripe.dev/stripe-terminal-android/core/com.stripe.stripeterminal/-terminal/discover-readers.html) with [AppsOnDevicesDiscoveryConfiguration](https://stripe.dev/stripe-terminal-android/external/com.stripe.stripeterminal.external.models/-discovery-configuration/-apps-on-devices-discovery-configuration/index.html).
@@ -610,17 +610,26 @@ class MainActivity : Activity() {
 
 ## Test your app 
 
-Use your S700 DevKit device to test your app in the Stripe Dashboard or using the Android Debug Bridge (`adb`).
+Use your SmartPOS DevKit device to test your app in the Stripe Dashboard or using the Android Debug Bridge (`adb`).
 
 #### Android Debug Bridge (adb)
 
 You can connect your DevKit device to your computer using a USB-A to USB-C cable. Then, use `adb` to directly install your app’s assembled APK onto the DevKit device.
 
+For a UX700 DevKit, connect the device and your development computer to the same Wi-Fi network. Find the DevKit’s local IP address in its network settings. On your computer, run the following commands, replacing `<IP_ADDRESS>` with the DevKit’s local IP address:
+
+```
+$ adb connect <IP_ADDRESS>
+$ adb devices
+```
+
+Confirm that the DevKit appears in the `adb devices` output.
+
+The following examples assume your application’s [package name](https://developer.android.com/studio/build/configure-app-module) is `com.example.myapp` and the [main activity](https://developer.android.com/reference/android/content/Intent.html#ACTION_MAIN) is `MainActivity`.
+
 > #### Post-transaction behavior
 > 
 > When you install your custom app directly, you can’t set the DevKit’s preferred kiosk app. When a transaction completes, the DevKit always returns to the default Stripe reader app. If you want to make your app the preferred kiosk app on a DevKit, you must use a deploy group as described in the Dashboard instructions.
-
-The following examples assume your application’s [package name](https://developer.android.com/studio/build/configure-app-module) is `com.example.myapp` and the [main activity](https://developer.android.com/reference/android/content/Intent.html#ACTION_MAIN) is `MainActivity`.
 
 ```
 $ adb install myapp.apk

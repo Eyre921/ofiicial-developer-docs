@@ -74,7 +74,7 @@ const databases = await turso.databases.list();
 const db = await turso.databases.get("customer-db");
 ```
 
-> **[API Quickstart](/api-reference/quickstart)**
+> [card] [API Quickstart](/api-reference/quickstart)
 >
 > Step-by-step guide to create your first database with the API.
 

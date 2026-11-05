@@ -175,7 +175,7 @@ Similarly, let’s take a look at an example for an invoice with an inclusive ta
 
 ## Customer credit balance
 
-The customer credit balance is a balance on a customer that gets applied to future invoices automatically. Because the customer credit balance is treated as an additional payment (rather than a discount, for example), applying it to an invoice doesn’t reduce the tax liability for that invoice.
+The customer credit balance applies to future invoices automatically. You can also [manually apply existing credit to an open invoice](https://docs.stripe.com/billing/customer/balance.md#apply-to-open-invoice) using the Customer Balance Transaction preview API. Because the customer credit balance is treated as an additional payment (rather than a discount, for example), applying it to an invoice doesn’t reduce the tax liability for that invoice.
 
 Handling the customer credit balance involves what we call the customer balance account, which tracks the interactions between customer credit balance and invoices.
 

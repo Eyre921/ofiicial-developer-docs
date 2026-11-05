@@ -52,6 +52,6 @@ const { rows } = await turso.execute('SELECT * FROM table_name')
 
 ## Examples
 
-> **[Blog](https://github.com/tursodatabase/examples/tree/master/app-tustro-blog)**
+> [card] [Blog](https://github.com/tursodatabase/examples/tree/master/app-tustro-blog)
 >
 > See the full source code

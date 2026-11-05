@@ -16,7 +16,7 @@ Pinecone provides [hosted reranking models](/guides/search/rerank-results#rerank
 
 ## Filter by metadata
 
-Every [record](/guides/core-concepts/key-terms#record) in an index must contain an ID and a dense or sparse vector, depending on the [type of index](/guides/indexes/indexing-overview#indexes). In addition, you can include metadata key-value pairs to store related information or context. When you search the index, you can then include a metadata filter to limit the search to records matching a filter expression.
+Every [record](/guides/get-started/key-terms#record) in an index must contain an ID and a dense or sparse vector, depending on the [type of index](/guides/indexes/index-data-overview#indexes). In addition, you can include metadata key-value pairs to store related information or context. When you search the index, you can then include a metadata filter to limit the search to records matching a filter expression.
 
 For example, if an index contains records about books, you could use a metadata field to associate each record with a genre, like `"genre": "fiction"` or `"genre": "poetry"`. When you query the index, you could then use a metadata filter to limit your search to records related to a specific genre.
 
@@ -32,7 +32,7 @@ For more details, see [Full-text search](/guides/search/full-text-search).
 
 ## Match the query and passage embedding paths
 
-When you use [integrated embedding](/guides/indexes/indexing-overview#integrated-embedding) with a model like [`llama-text-embed-v2`](/models/llama-text-embed-v2) or [`multilingual-e5-large`](/models/multilingual-e5-large), Pinecone embeds upserted data with the `passage` input type and embeds query text with the `query` input type. The encoder is the same, but the input type changes the resulting vector, so the *same* string embedded as a query and as a passage produces two different vectors. This is intentional in E5- and Llama-style models: the asymmetry is what makes a short query match a longer, semantically related passage.
+When you use [integrated embedding](/guides/indexes/index-data-overview#integrated-embedding) with a model like [`llama-text-embed-v2`](/models/llama-text-embed-v2) or [`multilingual-e5-large`](/models/multilingual-e5-large), Pinecone embeds upserted data with the `passage` input type and embeds query text with the `query` input type. The encoder is the same, but the input type changes the resulting vector, so the *same* string embedded as a query and as a passage produces two different vectors. This is intentional in E5- and Llama-style models: the asymmetry is what makes a short query match a longer, semantically related passage.
 
 A common consequence is that searching by text for the exact string you upserted doesn't return a similarity score near `1.0`. For example, querying for the exact text `"JetBlue Flights and Extras"` against a record containing that same text can score around `0.58`, while searching by the raw passage vector for the same record scores near `1.0`. The text query takes the `query` path and the stored record was embedded via the `passage` path, so the two vectors aren't identical.
 
@@ -60,7 +60,7 @@ Note the trade-offs:
 * This setting degrades true semantic search, since queries no longer use the input type the model was trained to expect.
 * It applies to the whole index. With integrated embedding you can't choose `query` or `passage` per request. If you need that control, embed text yourself with [standalone embedding](/reference/api/latest/inference/generate-vectors) and search with the [Search with a vector](/reference/api/latest/data-plane/query) operation using your own vectors.
 
-For pure exact-match retrieval, a [sparse index](/guides/indexes/indexing-overview#indexes-with-sparse-vectors) or [full-text search](/guides/search/full-text-search) is usually a better fit than forcing dense embeddings through the passage path. See [Use full-text search for keyword matching](#use-full-text-search-for-keyword-matching) above for when keyword and phrase matching is the right tool.
+For pure exact-match retrieval, a [sparse index](/guides/indexes/index-data-overview#indexes-with-sparse-vectors) or [full-text search](/guides/search/full-text-search) is usually a better fit than forcing dense embeddings through the passage path. See [Use full-text search for keyword matching](#use-full-text-search-for-keyword-matching) above for when keyword and phrase matching is the right tool.
 
 ## Use hybrid search
 
@@ -71,7 +71,7 @@ There are two ways to do this:
 * [Use a single index for dense and sparse vectors](/guides/legacy/vectors-api/hybrid-search-single-index). This is the **recommended** approach for most use cases because you make requests to a single index, the linkage between dense and sparse vectors is implicit, and you can perform hybrid queries with a single request. Note that you'll need to [normalize sparse and dense values](/guides/legacy/vectors-api/hybrid-search-single-index#normalize-sparse-and-dense-values) at query time so the unbounded sparse component doesn't dominate the combined score.
 * [Use separate indexes for dense and sparse vectors](/guides/legacy/vectors-api/hybrid-search-separate-indexes). This approach provides more flexibility but requires managing two indexes, maintaining linkages between vectors, and querying each index separately before merging results.
 
-If you'd rather not tune sparse and dense weights at all, an [index with a document schema](/guides/core-concepts/key-terms#document) with a multi-field schema is a simpler single-index alternative: declare FTS-enabled `string` fields alongside a `dense_vector` or `sparse_vector` field on the same index, then either restrict the dense (or sparse) search with a text-match filter on the full-text field, or run separate searches and merge the results client-side.
+If you'd rather not tune sparse and dense weights at all, an [index with a document schema](/guides/get-started/key-terms#document) with a multi-field schema is a simpler single-index alternative: declare FTS-enabled `string` fields alongside a `dense_vector` or `sparse_vector` field on the same index, then either restrict the dense (or sparse) search with a text-match filter on the full-text field, or run separate searches and merge the results client-side.
 
 For more details, including guidance on choosing the right approach, see [Hybrid search](/guides/search/hybrid-search).
 

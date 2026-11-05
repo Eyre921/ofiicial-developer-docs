@@ -139851,7 +139851,7 @@ Fetch a single run by ID. Returns only the run ID by default—specify a field s
 > | `run_id` | `run_id` | Unchanged |
 > | `load_child_runs` | *(removed)* | Fetch the trace's runs with `traces.list_runs` and filter by `parent_run_ids`. See [Load a run's child runs](#load-a-runs-child-runs) |
 > | *(not available)* | `project_id` | **Required**—UUID of the project that owns the run |
-> | *(not available)* | `start_time` | Optional—run's start time (RFC3339); providing it speeds up retrieval |
+> | *(not available)* | `start_time` | Optional—run's start time (RFC3339); providing it speeds up retrieval. Required for SmithDB-only self-hosted below v0.18 |
 > | *(all fields returned by default)* | `selects` | Field projection; defaults to `["ID"]` only; field names are uppercase |
 
 > [tab] TypeScript
@@ -139865,7 +139865,7 @@ Fetch a single run by ID. Returns only the run ID by default—specify a field s
 > | `runId` | `runId` | Unchanged (positional parameter) |
 > | `options.loadChildRuns` | *(removed)* | Fetch the trace's runs with `client.traces.listRuns` and filter by `parent_run_ids`. See [Load a run's child runs](#load-a-runs-child-runs) |
 > | *(not available)* | `project_id` | **Required**—`snake_case`; UUID of the project that owns the run |
-> | *(not available)* | `start_time` | Optional—`snake_case`; run's start time (RFC3339); providing it speeds up retrieval |
+> | *(not available)* | `start_time` | Optional—`snake_case`; run's start time (RFC3339); providing it speeds up retrieval. Required for SmithDB-only self-hosted below v0.18 |
 > | *(all fields returned by default)* | `selects` | Field projection; defaults to `["ID"]` only; field names are uppercase |
 
 > [tab] Java
@@ -139878,7 +139878,7 @@ Fetch a single run by ID. Returns only the run ID by default—specify a field s
 > | - | - | - |
 > | `runId()` | `runId()` | Unchanged |
 > | `sessionId()` | *(removed)* | Replaced by `projectId()` |
-> | `startTime()` | `startTime()` | Still optional; providing it speeds up retrieval |
+> | `startTime()` | `startTime()` | Still optional; providing it speeds up retrieval. Required for SmithDB-only self-hosted below v0.18 |
 > | `excludeS3StoredAttributes()` | *(removed)* | No equivalent |
 > | `excludeSerialized()` | *(removed)* | No equivalent |
 > | `includeMessages()` | *(removed)* | No equivalent |
@@ -139898,7 +139898,7 @@ Fetch a single run by ID. Returns only the run ID by default—specify a field s
 > | `ExcludeSerialized` | *(removed)* | No equivalent |
 > | `IncludeMessages` | *(removed)* | No equivalent |
 > | `SessionID` | *(removed)* | Replaced by `ProjectID` |
-> | `StartTime` | `StartTime` | Still optional; providing it speeds up retrieval |
+> | `StartTime` | `StartTime` | Still optional; providing it speeds up retrieval. Required for SmithDB-only self-hosted below v0.18 |
 > | *(not available)* | `ProjectID` | **Required**—UUID of the project that owns the run |
 > | *(all fields returned by default)* | `Selects` | Field projection; defaults to `["ID"]` only; field name constants are uppercase (e.g., `RunGetV2ParamsSelectName`) |
 
@@ -139914,7 +139914,7 @@ Fetch a single run by ID. Returns only the run ID by default—specify a field s
 > | - | - | - |
 > | `run_id` (path) | `run_id` (path) | Unchanged |
 > | *(not available)* | `project_id` (query) | **Required**—UUID of the project that owns the run |
-> | `start_time` (query) | `start_time` (query) | Still optional; providing it speeds up retrieval |
+> | `start_time` (query) | `start_time` (query) | Still optional; providing it speeds up retrieval. Required for SmithDB-only self-hosted below v0.18 |
 > | *(all fields returned by default)* | `selects` (query, repeatable) | Field projection; defaults to `["ID"]` only; field names are uppercase |
 
 #### Response fields
@@ -148956,19 +148956,17 @@ Tracing stops when your sign-in expires or your key is rejected, and turns from 
 
 ## Turn on tracing
 
-Tracing is off until you turn it on in `~/.claude/langsmith.json`, unless your admin already turned it on with a [managed file](#lock-settings). Send traces to an [agent](/langsmith/log-traces-to-agent#send-traces-to-an-agent) with `agent_id`:
+Tracing is off until you turn it on in `~/.claude/langsmith.json`, unless your admin already turned it on with a [managed file](#lock-settings). In an [agent-based workspace](/langsmith/migrate-to-agent-based-workspaces), send traces to an [agent](/langsmith/log-traces-to-agent#send-traces-to-an-agent) with `agent_id`:
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 { "enabled": true, "agent_id": "shared-claude" }
 ```
 
-Or send them to a project with `project`:
+In a project-based workspace, use the legacy `project` setting instead:
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 { "enabled": true, "project": "shared-claude" }
 ```
-
-Use either one. If you set both, `agent_id` wins.
 
 > [!WARNING]
 >
@@ -148990,8 +148988,8 @@ An admin can lock tracing settings for every user with a managed file at `~/.lan
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
-  "api_url": "https://langsmith.example.com",
-  "project": "engineering",
+  "api_url": "https://api.smith.langchain.com",
+  "agent_id": "coding-agent",
   "strict_auth": true,
   "workspace_id": "<your-workspace-id>"
 }
@@ -149005,7 +149003,7 @@ The managed file works on macOS and Linux. The plugin only trusts it when:
 * No other user can write to either.
 * Neither is a symlink.
 
-If the file exists but fails these checks, tracing stops and the user sees a message to contact their admin. Locking a setting also locks the settings tied to it, so users cannot route traces around the lock. For example, locking `project` also stops users from adding their own [replicas](/langsmith/trace-replicas) or sending traces to an agent with `agent_id`.
+If the file exists but fails these checks, tracing stops and the user sees a message to contact their admin. Locking a setting also locks the settings tied to it, so users cannot route traces around the lock. For example, locking `agent_id` also stops users from sending traces to a project with `project`.
 
 Admins usually install the file on each machine with a mobile device management (MDM) tool such as Jamf or Microsoft Intune. For every setting you can lock, see the [plugin settings guide](https://github.com/langchain-ai/langsmith-plugin-binary/blob/main/docs/settings.md).
 
@@ -149054,8 +149052,8 @@ Each setting has a config file key and an environment variable. The environment 
 | - | - | - | - |
 | `enabled` | `TRACE_TO_LANGSMITH` | `false` | Turns tracing on. |
 | `api_key` | `CC_LANGSMITH_API_KEY` | none | LangSmith API key. Not needed if you sign in with the CLI. |
-| `project` | `CC_LANGSMITH_PROJECT` | `claude-code` | Project the traces go to. Use this or `agent_id`. |
 | `agent_id` | `LANGSMITH_AGENT_ID` | none | Agent the traces go to. Wins over `project` if both are set. |
+| `project` (deprecated) | `CC_LANGSMITH_PROJECT` | `claude-code` | Project the traces go to. Use `agent_id` unless your workspace is [project-based](/langsmith/migrate-to-agent-based-workspaces#check-which-one-you-have). |
 | `api_url` | `LANGSMITH_ENDPOINT` | `https://api.smith.langchain.com` | LangSmith server to send to. |
 | `workspace_id` | `LANGSMITH_WORKSPACE_ID` | none | Workspace the traces go to when you sign in with the CLI. API keys ignore it and your config file wins over the variable. |
 
@@ -149077,7 +149075,7 @@ The plugin's [Advanced configuration](https://github.com/langchain-ai/langsmith-
 
 * **No traces**: Check that the plugin is enabled in `/plugin` and that tracing is on.
 * **Tracing is paused**: Run `langsmith auth login` again or replace the rejected API key.
-* **Tracing is paused after a 403**: Your sign-in or API key might not have access to the project or workspace. Look through `~/.claude/state/langsmith_engine/worker.log` and `~/.claude/state/hook.log` for the details.
+* **Tracing is paused after a 403**: Your sign-in or API key might not have access to the agent, project or workspace. Look through `~/.claude/state/langsmith_engine/worker.log` and `~/.claude/state/hook.log` for the details.
 * **Still stuck**: Set `CC_LANGSMITH_DEBUG=true` and check `~/.claude/state/hook.log`.
 
 For more fixes, see [When nothing shows up](https://github.com/langchain-ai/langsmith-claude-code-plugins#when-nothing-shows-up).
@@ -149139,19 +149137,17 @@ Tracing stops when your sign-in expires or your key is rejected, and turns from 
 
 ## Turn on tracing
 
-Tracing is off until you turn it on in `~/.claude/langsmith.json`, unless your admin already turned it on with a [managed file](#lock-settings). Send traces to an [agent](/langsmith/log-traces-to-agent#send-traces-to-an-agent) with `agent_id`:
+Tracing is off until you turn it on in `~/.claude/langsmith.json`, unless your admin already turned it on with a [managed file](#lock-settings). In an [agent-based workspace](/langsmith/migrate-to-agent-based-workspaces), send traces to an [agent](/langsmith/log-traces-to-agent#send-traces-to-an-agent) with `agent_id`:
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 { "enabled": true, "agent_id": "shared-claude" }
 ```
 
-Or send them to a project with `project`:
+In a project-based workspace, use the legacy `project` setting instead:
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 { "enabled": true, "project": "shared-claude" }
 ```
-
-Use either one. If you set both, `agent_id` wins.
 
 Start a Cowork task and open your agent or project in [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-claude-cowork). Skill calls record which skill ran, so you can filter traces by skill.
 
@@ -149169,8 +149165,8 @@ An admin can lock tracing settings for every user with a managed file at `~/.lan
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
-  "api_url": "https://langsmith.example.com",
-  "project": "engineering",
+  "api_url": "https://api.smith.langchain.com",
+  "agent_id": "coding-agent",
   "strict_auth": true,
   "workspace_id": "<your-workspace-id>"
 }
@@ -149184,7 +149180,7 @@ The managed file works on macOS and Linux. The plugin only trusts it when:
 * No other user can write to either.
 * Neither is a symlink.
 
-If the file exists but fails these checks, tracing stops and the user sees a message to contact their admin. Locking a setting also locks the settings tied to it, so users cannot route traces around the lock. For example, locking `project` also stops users from adding their own [replicas](/langsmith/trace-replicas) or sending traces to an agent with `agent_id`.
+If the file exists but fails these checks, tracing stops and the user sees a message to contact their admin. Locking a setting also locks the settings tied to it, so users cannot route traces around the lock. For example, locking `agent_id` also stops users from sending traces to a project with `project`.
 
 Admins usually install the file on each machine with a mobile device management (MDM) tool such as Jamf or Microsoft Intune. For every setting you can lock, see the [plugin settings guide](https://github.com/langchain-ai/langsmith-plugin-binary/blob/main/docs/settings.md).
 
@@ -152136,19 +152132,17 @@ Tracing stops when your sign-in expires or your key is rejected, and turns from 
 
 ## Turn on tracing
 
-Tracing is off until you turn it on in `~/.codex/langsmith.json`, unless your admin already turned it on with a [managed file](#lock-settings). Send traces to an [agent](/langsmith/log-traces-to-agent#send-traces-to-an-agent) with `agent_id`:
+Tracing is off until you turn it on in `~/.codex/langsmith.json`, unless your admin already turned it on with a [managed file](#lock-settings). In an [agent-based workspace](/langsmith/migrate-to-agent-based-workspaces), send traces to an [agent](/langsmith/log-traces-to-agent#send-traces-to-an-agent) with `agent_id`:
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 { "enabled": true, "agent_id": "shared-codex" }
 ```
 
-Or send them to a project with `project`:
+In a project-based workspace, use the legacy `project` setting instead:
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 { "enabled": true, "project": "shared-codex" }
 ```
-
-Use either one. If you set both, `agent_id` wins.
 
 > [!WARNING]
 >
@@ -152170,8 +152164,8 @@ An admin can lock tracing settings for every user with a managed file at `~/.lan
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
-  "api_url": "https://langsmith.example.com",
-  "project": "engineering",
+  "api_url": "https://api.smith.langchain.com",
+  "agent_id": "coding-agent",
   "strict_auth": true,
   "workspace_id": "<your-workspace-id>"
 }
@@ -152185,7 +152179,7 @@ The managed file works on macOS and Linux. The plugin only trusts it when:
 * No other user can write to either.
 * Neither is a symlink.
 
-If the file exists but fails these checks, tracing stops and the user sees a message to contact their admin. Locking a setting also locks the settings tied to it, so users cannot route traces around the lock. For example, locking `project` also stops users from adding their own [replicas](/langsmith/trace-replicas) or sending traces to an agent with `agent_id`.
+If the file exists but fails these checks, tracing stops and the user sees a message to contact their admin. Locking a setting also locks the settings tied to it, so users cannot route traces around the lock. For example, locking `agent_id` also stops users from sending traces to a project with `project`.
 
 Admins usually install the file on each machine with a mobile device management (MDM) tool such as Jamf or Microsoft Intune. For every setting you can lock, see the [plugin settings guide](https://github.com/langchain-ai/langsmith-plugin-binary/blob/main/docs/settings.md).
 
@@ -152234,8 +152228,8 @@ Each setting has a config file key and an environment variable. The environment 
 | - | - | - | - |
 | `enabled` | `TRACE_TO_LANGSMITH` | `false` | Turns tracing on. |
 | `api_key` | `LANGSMITH_CODEX_API_KEY` | none | LangSmith API key. Not needed if you sign in with the CLI. |
-| `project` | `LANGSMITH_CODEX_PROJECT` | `codex` | Project the traces go to. Use this or `agent_id`. |
 | `agent_id` | `LANGSMITH_AGENT_ID` | none | Agent the traces go to. Wins over `project` if both are set. |
+| `project` (deprecated) | `LANGSMITH_CODEX_PROJECT` | `codex` | Project the traces go to. Use `agent_id` unless your workspace is [project-based](/langsmith/migrate-to-agent-based-workspaces#check-which-one-you-have). |
 | `api_url` | `LANGSMITH_CODEX_ENDPOINT` | `https://api.smith.langchain.com` | LangSmith server to send to. |
 | `workspace_id` | `LANGSMITH_WORKSPACE_ID` | none | Workspace the traces go to when you sign in with the CLI. API keys ignore it and your config file wins over the variable. |
 
@@ -152246,7 +152240,7 @@ For every setting, see the [plugin settings](https://github.com/langchain-ai/lan
 * **No traces**: Check that the plugin is installed, its hooks are trusted with `/hooks`, and tracing is on.
 * **Stopped after an update**: Codex asks you to trust a hook again whenever a release changes it. Run `/hooks` and approve it.
 * **Tracing is paused**: Run `langsmith auth login` again or replace the rejected API key.
-* **Tracing is paused after a 403**: Your sign-in or API key might not have access to the project or workspace. Look through `~/.codex/langsmith_engine/worker.log` for the details.
+* **Tracing is paused after a 403**: Your sign-in or API key might not have access to the agent, project or workspace. Look through `~/.codex/langsmith_engine/worker.log` for the details.
 
 For more fixes, see [When nothing shows up](https://github.com/langchain-ai/langsmith-codex-plugins#when-nothing-shows-up).
 
@@ -152479,19 +152473,17 @@ Tracing stops when your sign-in expires or your key is rejected, and turns from 
 
 ## Turn on tracing
 
-Tracing is off until you turn it on in `~/.cursor/langsmith.json`, unless your admin already turned it on with a [managed file](#lock-settings). Send traces to an [agent](/langsmith/log-traces-to-agent#send-traces-to-an-agent) with `agent_id`:
+Tracing is off until you turn it on in `~/.cursor/langsmith.json`, unless your admin already turned it on with a [managed file](#lock-settings). In an [agent-based workspace](/langsmith/migrate-to-agent-based-workspaces), send traces to an [agent](/langsmith/log-traces-to-agent#send-traces-to-an-agent) with `agent_id`:
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 { "enabled": true, "agent_id": "shared-cursor" }
 ```
 
-Or send them to a project with `project`:
+In a project-based workspace, use the legacy `project` setting instead:
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 { "enabled": true, "project": "shared-cursor" }
 ```
-
-Use either one. If you set both, `agent_id` wins.
 
 > [!WARNING]
 >
@@ -152513,8 +152505,8 @@ An admin can lock tracing settings for every user with a managed file at `~/.lan
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
-  "api_url": "https://langsmith.example.com",
-  "project": "engineering",
+  "api_url": "https://api.smith.langchain.com",
+  "agent_id": "coding-agent",
   "strict_auth": true,
   "workspace_id": "<your-workspace-id>"
 }
@@ -152528,7 +152520,7 @@ The managed file works on macOS and Linux. The plugin only trusts it when:
 * No other user can write to either.
 * Neither is a symlink.
 
-If the file exists but fails these checks, tracing stops and the user sees a message to contact their admin. Locking a setting also locks the settings tied to it, so users cannot route traces around the lock. For example, locking `project` also stops users from adding their own [replicas](/langsmith/trace-replicas) or sending traces to an agent with `agent_id`.
+If the file exists but fails these checks, tracing stops and the user sees a message to contact their admin. Locking a setting also locks the settings tied to it, so users cannot route traces around the lock. For example, locking `agent_id` also stops users from sending traces to a project with `project`.
 
 Admins usually install the file on each machine with a mobile device management (MDM) tool such as Jamf or Microsoft Intune. For every setting you can lock, see the [plugin settings guide](https://github.com/langchain-ai/langsmith-plugin-binary/blob/main/docs/settings.md).
 
@@ -152577,8 +152569,8 @@ Each setting has a config file key and an environment variable. The environment 
 | - | - | - | - |
 | `enabled` | `TRACE_TO_LANGSMITH` | `false` | Turns tracing on. |
 | `api_key` | `LANGSMITH_CURSOR_API_KEY` | none | LangSmith API key. Not needed if you sign in with the CLI. |
-| `project` | `LANGSMITH_CURSOR_PROJECT` | `cursor` | Project the traces go to. Use this or `agent_id`. |
 | `agent_id` | `LANGSMITH_AGENT_ID` | none | Agent the traces go to. Wins over `project` if both are set. |
+| `project` (deprecated) | `LANGSMITH_CURSOR_PROJECT` | `cursor` | Project the traces go to. Use `agent_id` unless your workspace is [project-based](/langsmith/migrate-to-agent-based-workspaces#check-which-one-you-have). |
 | `api_url` | `LANGSMITH_CURSOR_ENDPOINT` | `https://api.smith.langchain.com` | LangSmith server to send to. |
 | `workspace_id` | `LANGSMITH_WORKSPACE_ID` | none | Workspace the traces go to when you sign in with the CLI. API keys ignore it and your config file wins over the variable. |
 
@@ -152588,7 +152580,7 @@ For every setting, see the [plugin settings](https://github.com/langchain-ai/lan
 
 * **No traces**: Check that the plugin is in Cursor's plugin list and that you fully restarted Cursor after installing it. Then check that tracing is on.
 * **Tracing is paused**: Run `langsmith auth login` again or replace the rejected API key.
-* **Tracing is paused after a 403**: Your sign-in or API key might not have access to the project or workspace. Look through `~/.cursor/langsmith_engine/worker.log` and `~/.cursor/langsmith_hook.log` for the details.
+* **Tracing is paused after a 403**: Your sign-in or API key might not have access to the agent, project or workspace. Look through `~/.cursor/langsmith_engine/worker.log` and `~/.cursor/langsmith_hook.log` for the details.
 * **Still stuck**: Run `tail -f ~/.cursor/langsmith_hook.log` while you send a prompt. Set `LANGSMITH_CURSOR_DEBUG=1` for more detail.
 
 For more fixes, see [When nothing shows up](https://github.com/langchain-ai/langsmith-cursor-plugins#when-nothing-shows-up).
@@ -307450,6 +307442,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Marketplace of real residential Chrome sessions for AI agents.
 
+> [card] [ChainAnalyzerToolkit](https://github.com/rascal-3/chainanalyzer-mcp/tree/main/packages/langchain-chainanalyzer)
+>
+> Blockchain AML screening tools: sanctions, known-hack exposure, stablecoin freezes, and risk scores across 12 chains (x402 or API key).
+
 > [card] [Cheaper Inference](https://cheaperinference.com/docs)
 >
 > OpenAI-compatible LLM gateway that serves models from many labs below list price.
@@ -308161,6 +308157,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [LambdaDB](https://docs.lambdadb.ai/guides/get-started/quickstart)
 >
 > Serverless database for RAG and Agents
+
+> [card] [LaneRouterToolkit](https://lanerouter.com/docs#langchain)
+>
+> Live, agent-reported conditions for websites and APIs: check a road before acting, report what happened after, and get legitimate detours.
 
 > [card] [LangChain Decorators](/oss/python/integrations/providers/langchain_decorators)
 >
@@ -313014,6 +313014,8 @@ The following table shows tools that generate video, image, or audio assets:
 | [`TempGuru`](https://tempguru.co/ai-agents) | [  ![Downloads per month](https://static.pepy.tech/badge/tempguru/month)](https://pypi.org/project/tempguru/) |
 | [`viaSocket`](https://github.com/Walkover-Web-Solution/viasocket-apps/tree/main/python#langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/viasocket/month)](https://pypi.org/project/viasocket/) |
 | [`HyperresearchAnswerTool`](https://hyperresearch.ai/docs/answers/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-hyperresearch/month)](https://pypi.org/project/langchain-hyperresearch/) |
+| [`LaneRouterToolkit`](https://lanerouter.com/docs#langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-lanerouter/month)](https://pypi.org/project/langchain-lanerouter/) |
+| [`ChainAnalyzerToolkit`](https://github.com/rascal-3/chainanalyzer-mcp/tree/main/packages/langchain-chainanalyzer) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-chainanalyzer/month)](https://pypi.org/project/langchain-chainanalyzer/) |
 | [`Solvecha`](https://github.com/Solvecha/solvecha-skills/tree/main/python) | [  ![Downloads per month](https://static.pepy.tech/badge/solvecha/month)](https://pypi.org/project/solvecha/) |
 | [`StophyToolkit`](https://github.com/stophydotdev/stophy/tree/main/sdk/packages/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-stophy/month)](https://pypi.org/project/langchain-stophy/) |
 | [`VideoGenToolkit`](https://github.com/video-gen/langchain-videogen#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-videogen/month)](https://pypi.org/project/langchain-videogen/) |

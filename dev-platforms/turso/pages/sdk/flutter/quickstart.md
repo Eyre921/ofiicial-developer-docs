@@ -38,7 +38,7 @@ flutter pub add libsql_dart
 
 Now connect to your local or remote database using the `LibsqlClient` constructor:
 
-> **Embedded Replicas**
+> [accordion] Embedded Replicas
 >
 > ```dart theme={null}
 > final dir = await getApplicationCacheDirectory();
@@ -51,7 +51,7 @@ Now connect to your local or remote database using the `LibsqlClient` constructo
 >   ..readYourWrites = true;
 > ```
 
-> **Local only**
+> [accordion] Local only
 >
 > ```dart File theme={null}
 > final dir = await getApplicationCacheDirectory();
@@ -64,7 +64,7 @@ Now connect to your local or remote database using the `LibsqlClient` constructo
 > final client = LibsqlClient(":memory:");
 > ```
 
-> **Remote only**
+> [accordion] Remote only
 >
 > ```dart theme={null}
 > final client = LibsqlClient('<TURSO_OR_LIBSQL_URL>')

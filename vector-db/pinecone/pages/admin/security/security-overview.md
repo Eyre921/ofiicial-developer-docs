@@ -10,9 +10,9 @@ Review Pinecone's security features for production, including API keys, SSO, ser
 
 ### API keys
 
-Each Pinecone [project](/admin/projects/understanding-projects) has one or more [API keys](/admin/projects/manage-api-keys). To make calls to the Pinecone API, a user must provide a valid API key for the relevant Pinecone project.
+Each Pinecone [project](/admin/projects/projects-overview) has one or more [API keys](/admin/projects/manage-api-keys). To make calls to the Pinecone API, a user must provide a valid API key for the relevant Pinecone project.
 
-You can [manage API key permissions](/admin/projects/manage-api-keys) in the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/keys). For the roles you can assign to an API key and the operations each role covers, see [Project roles](/admin/projects/understanding-projects#project-roles).
+You can [manage API key permissions](/admin/projects/manage-api-keys) in the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/keys). For the roles you can assign to an API key and the operations each role covers, see [Project roles](/admin/projects/projects-overview#project-roles).
 
 ### Organization single sign-on (SSO)
 
@@ -30,15 +30,15 @@ You can manage roles in the [Pinecone console](https://app.pinecone.io) or progr
 
 #### Service account roles
 
-A service account can be assigned roles for the organization it belongs to, and any projects within that organization. For more information, see [Organization roles](/admin/organizations/understanding-organizations#organization-roles) and [Project roles](/admin/projects/understanding-projects#project-roles).
+A service account can be assigned roles for the organization it belongs to, and any projects within that organization. For more information, see [Organization roles](/admin/organizations/organizations-overview#organization-roles) and [Project roles](/admin/projects/projects-overview#project-roles).
 
 #### API key roles
 
-An API key can be assigned any [project role](/admin/projects/understanding-projects#project-roles) except `ProjectOwner`, `ProjectManager`, and `ProjectMember`, and only for the project it belongs to. For more information, see [API keys](#api-keys).
+An API key can be assigned any [project role](/admin/projects/projects-overview#project-roles) except `ProjectOwner`, `ProjectManager`, and `ProjectMember`, and only for the project it belongs to. For more information, see [API keys](#api-keys).
 
 #### User roles
 
-A user can be assigned roles for each organization they belong to, and any projects within that organization. For more information, see [Organization roles](/admin/organizations/understanding-organizations#organization-roles) and [Project roles](/admin/projects/understanding-projects#project-roles).
+A user can be assigned roles for each organization they belong to, and any projects within that organization. For more information, see [Organization roles](/admin/organizations/organizations-overview#organization-roles) and [Project roles](/admin/projects/projects-overview#project-roles).
 
 ## Compliance
 
@@ -50,7 +50,7 @@ A user can be assigned roles for each organization they belong to, and any proje
 
 > [!NOTE]
 >
-> To enable and manage audit logs, you must be an [organization owner](/admin/organizations/understanding-organizations#organization-roles). This feature is available only on [Enterprise plans](https://www.pinecone.io/pricing/) or with the [HIPAA compliance add-on](/guides/manage-cost/understanding-cost#hipaa-compliance-add-on).
+> To enable and manage audit logs, you must be an [organization owner](/admin/organizations/organizations-overview#organization-roles). This feature is available only on [Enterprise plans](https://www.pinecone.io/pricing/) or with the [HIPAA compliance add-on](/guides/cost/understand-cost#hipaa-compliance-add-on).
 
 [Audit logs](/admin/security/configure-audit-logs) provide a detailed record of user and API actions that occur within Pinecone.
 

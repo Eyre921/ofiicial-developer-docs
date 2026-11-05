@@ -2405,11 +2405,11 @@ Creates a model response, optionally interacting with custom tools via the Model
 
 Explore our cookbooks for detailed examples:
 
-- [Basic MCP Usage](https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/fireworks_mcp_examples.ipynb)
-- [Streaming with MCP](https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/fireworks_mcp_with_streaming.ipynb)
-- [Conversational History with `previous_response_id`](https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/fireworks_previous_response_cookbook.ipynb)
-- [Basic Streaming](https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/fireworks_streaming_example.ipynb)
-- [Controlling Response Storage](https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/mcp_server_with_store_false_argument.ipynb)
+- [Basic MCP Usage](https://github.com/fw-ai-external/cookbook/blob/main/archived/learn/response-api/fireworks_mcp_examples.ipynb)
+- [Streaming with MCP](https://github.com/fw-ai-external/cookbook/blob/main/archived/learn/response-api/fireworks_mcp_with_streaming.ipynb)
+- [Conversational History with `previous_response_id`](https://github.com/fw-ai-external/cookbook/blob/main/archived/learn/response-api/fireworks_previous_response_cookbook.ipynb)
+- [Basic Streaming](https://github.com/fw-ai-external/cookbook/blob/main/archived/learn/response-api/fireworks_streaming_example.ipynb)
+- [Controlling Response Storage](https://github.com/fw-ai-external/cookbook/blob/main/archived/learn/response-api/mcp_server_with_store_false_argument.ipynb)
 
 # System One decisions API
 Source: https://docs.fireworks.ai/api-reference/post-systemone
@@ -3319,7 +3319,7 @@ Understanding your deployment's performance under various load conditions is ess
 
 Use our open-source benchmarking tool to measure and optimize your deployment's performance:
 
-**[Fireworks Benchmark Tool](https://github.com/fw-ai/benchmark)**
+**[Fireworks Benchmark Tool](https://github.com/fw-ai-external/benchmark)**
 
 This tool allows you to:
 
@@ -3331,7 +3331,7 @@ This tool allows you to:
 ### Installation
 
 ```bash theme={null}
-git clone https://github.com/fw-ai/benchmark.git
+git clone https://github.com/fw-ai-external/benchmark.git
 cd benchmark
 pip install -r requirements.txt
 ```
@@ -3404,20 +3404,16 @@ Based on our benchmarks, we recommend the following:
 
 Install the [Fireworks Python SDK](/tools-sdks/python-sdk):
 
-> [!NOTE]
->
-> The SDK is currently in alpha. Use the `--pre` flag when installing to get the latest version.
-
 ```bash pip theme={null}
-pip install --pre fireworks-ai
+python -m pip install --upgrade fireworks-ai
 ```
 
 ```bash poetry theme={null}
-poetry add --pre fireworks-ai
+poetry add fireworks-ai
 ```
 
 ```bash uv theme={null}
-uv add --pre fireworks-ai
+uv add fireworks-ai
 ```
 
 Here's how to implement optimal concurrent requests using `asyncio` and the `AsyncFireworks` client:
@@ -4779,7 +4775,7 @@ Explore our collection of notebooks that showcase real-world applications, best 
 
 ## Training
 
-> [card] [Knowledge Distillation](https://colab.research.google.com/github/fw-ai/cookbook/blob/main/archived/learn/finetuning/knowledge_distillation.ipynb)
+> [card] [Knowledge Distillation](https://colab.research.google.com/github/fw-ai-external/cookbook/blob/main/archived/learn/finetuning/knowledge_distillation.ipynb)
 >
 > Transfer large model capabilities to efficient models using a two-stage SFT + RFT approach.
 >
@@ -4797,7 +4793,7 @@ Explore our collection of notebooks that showcase real-world applications, best 
 
 ## Multimodal AI
 
-> [card] [NVIDIA Nemotron VL for Document Intelligence](https://colab.research.google.com/github/fw-ai/cookbook/blob/main/archived/multimedia/vlm/nvidia-nemotron-vl/NVIDIA-Nemotron-v2-VL-cookbook.ipynb)
+> [card] [NVIDIA Nemotron VL for Document Intelligence](https://colab.research.google.com/github/fw-ai-external/cookbook/blob/main/archived/multimedia/vlm/nvidia-nemotron-vl/NVIDIA-Nemotron-v2-VL-cookbook.ipynb)
 >
 > Extract structured data from invoices, forms, and financial documents using state-of-the-art OCR and document understanding.
 >
@@ -4805,7 +4801,7 @@ Explore our collection of notebooks that showcase real-world applications, best 
 >
 > **Results:** 90.8% accuracy on invoice extraction (100% on invoice numbers and dates)
 
-> [card] [Chat with Video using Qwen3 Omni](https://colab.research.google.com/github/fw-ai/cookbook/blob/main/archived/multimedia/video/Qwen3-Omni-Chat-With-Video-Cookbook.ipynb)
+> [card] [Chat with Video using Qwen3 Omni](https://colab.research.google.com/github/fw-ai-external/cookbook/blob/main/archived/multimedia/video/Qwen3-Omni-Chat-With-Video-Cookbook.ipynb)
 >
 > Analyze video and audio content with Qwen3 Omni, a multimodal model supporting video, audio, and text inputs.
 >
@@ -4813,7 +4809,7 @@ Explore our collection of notebooks that showcase real-world applications, best 
 
 ## Embeddings & RAG
 
-> [card] [Two-Stage Retrieval with Voyage Embeddings and Reranking](https://colab.research.google.com/github/fw-ai/cookbook/blob/main/partners/voyage-ai/voyage_two_stage_retrieval.ipynb)
+> [card] [Two-Stage Retrieval with Voyage Embeddings and Reranking](https://colab.research.google.com/github/fw-ai-external/cookbook/blob/main/partners/voyage-ai/voyage_two_stage_retrieval.ipynb)
 >
 > Build a retrieval pipeline that recalls candidates with vector search, then reorders them with a reranker for precision.
 >
@@ -4823,7 +4819,7 @@ Explore our collection of notebooks that showcase real-world applications, best 
 
 ## API Features
 
-> [card] [Fireworks MCP Examples](https://colab.research.google.com/github/fw-ai/cookbook/blob/main/archived/learn/response-api/fireworks_mcp_examples.ipynb)
+> [card] [Fireworks MCP Examples](https://colab.research.google.com/github/fw-ai-external/cookbook/blob/main/archived/learn/response-api/fireworks_mcp_examples.ipynb)
 >
 > Leverage Model Context Protocol (MCP) for GitHub repository analysis, code search, and documentation Q\&A.
 >
@@ -5650,35 +5646,37 @@ To install them yourself, use the commands below.
 The `fireworks-training` plugin includes all four skills and updates with the plugin:
 
 ```bash theme={null}
-claude plugin marketplace add fw-ai/cookbook
+claude plugin marketplace add fw-ai-external/cookbook
 claude plugin install fireworks-training@fw-ai-cookbook
 ```
+
+The repository is `fw-ai-external/cookbook`; the marketplace identifier remains `fw-ai-cookbook`.
 
 ### Cursor
 
 ```bash theme={null}
-npx --yes skills add fw-ai/cookbook -g \
+npx --yes skills add fw-ai-external/cookbook -g \
   -s fireworks-training research configure debug -a cursor -y
 ```
 
 ### Codex
 
 ```bash theme={null}
-npx --yes skills add fw-ai/cookbook -g \
+npx --yes skills add fw-ai-external/cookbook -g \
   -s fireworks-training research configure debug -a codex -y
 ```
 
 ### OpenCode
 
 ```bash theme={null}
-npx --yes skills add fw-ai/cookbook -g \
+npx --yes skills add fw-ai-external/cookbook -g \
   -s fireworks-training research configure debug -a opencode -y
 ```
 
 ### Other agents
 
 ```bash theme={null}
-npx --yes skills add fw-ai/cookbook -g \
+npx --yes skills add fw-ai-external/cookbook -g \
   -s fireworks-training research configure debug -a <agent-id> -y
 ```
 
@@ -5734,7 +5732,7 @@ Before the first structured question, the skills show a one-line privacy notice.
 
 ## See also
 
-> [card] [Case studies](https://github.com/fw-ai/cookbook/tree/main/training/case-studies)
+> [card] [Case studies](https://github.com/fw-ai-external/cookbook/tree/main/training/case-studies)
 >
 > Runnable notebooks research routes to.
 
@@ -6538,7 +6536,7 @@ finally:
     sampler.close()
 ```
 
-`sampler.sample(...)` is the evaluation call. Repeat it over held-out prompts, score each completion with your evaluation metric, then close the sampler. The cookbook's [DeepMath serverless example](https://github.com/fw-ai/cookbook/blob/main/training/examples/rl/deepmath/train_deepmath_serverless.py) shows held-out accuracy evaluation with a math reward.
+`sampler.sample(...)` is the evaluation call. Repeat it over held-out prompts, score each completion with your evaluation metric, then close the sampler. The cookbook's [DeepMath serverless example](https://github.com/fw-ai-external/cookbook/blob/main/training/examples/rl/deepmath/train_deepmath_serverless.py) shows held-out accuracy evaluation with a math reward.
 
 For checkpoint and promotion details, see [Saving and loading checkpoints](/fine-tuning/training-api/serverless#saving-and-loading-checkpoints) on the serverless training page.
 
@@ -7068,7 +7066,7 @@ If the model learns the wrong text or ignores assistant turns, the training rend
 
 1. In the dashboard, open your SFT job → **Render Samples** to inspect token boundaries and loss masks.
 2. Compare rendered tokens against inference for the same prompt.
-3. For custom renderers or agent-driven debugging, use the [training skill — renderer verification](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/renderer-verification.md).
+3. For custom renderers or agent-driven debugging, use the [training skill — renderer verification](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/renderer-verification.md).
 
 > [!NOTE]
 >
@@ -7232,7 +7230,7 @@ Managed training runs **[Low-Rank Adaptation (LoRA)](https://arxiv.org/abs/2106.
 
 LoRA gives you efficient adapter training and flexible deployment, including [multiple LoRAs](/fine-tuning/deploying-loras#multi-lora-deployment) on a single base model deployment.
 
-Select models also support full-parameter SFT and DPO in managed training. To use it, [set the LoRA rank to `0`](/fine-tuning/fine-tuning-models#lora-rank). If the model doesn't support it, the job is rejected with "model is not tunable for supervised full-parameter fine-tuning". Full-parameter training produces a full model rather than an adapter, so it can't be served as a multi-LoRA addon. For most full-parameter work, we recommend the [Training API](/fine-tuning/training-api/introduction), which has ready-made recipes and works with the [training skill](/fine-tuning/agent/use-with-coding-agents).
+Select models also support full-parameter SFT and DPO in managed training. To use it, [set the LoRA rank to `0`](/fine-tuning/fine-tuning-models#additional-managed-training-job-settings). If the model doesn't support it, the job is rejected with "model is not tunable for supervised full-parameter fine-tuning". Full-parameter training produces a full model rather than an adapter, so it can't be served as a multi-LoRA addon. For most full-parameter work, we recommend the [Training API](/fine-tuning/training-api/introduction), which has ready-made recipes and works with the [training skill](/fine-tuning/agent/use-with-coding-agents).
 
 > [!WARNING]
 >
@@ -7610,7 +7608,7 @@ policy-ratio diagnostic on an on-policy batch is expected; it does not measure
 divergence from a frozen base model. Client request timings include transport
 and queueing and can overlap, so compare the full optimizer window separately
 from trainer execution time. Metric definitions and reductions live in the
-[step-metrics skill](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/step-metrics.md).
+[step-metrics skill](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/step-metrics.md).
 
 
 # RL Rollouts with Your Own Trainer
@@ -7630,10 +7628,10 @@ Integrate an external RL trainer with Fireworks inference: hot-load new checkpoi
 > **Using a code agent?** Follow sections in order: [Prerequisites](#prerequisites)
 > → [Quickstart checklist](#quickstart-checklist) → [Hot-load API](#hot-load-api).
 > Required env: `FIREWORKS_API_KEY`. After your first full snapshot is serving,
-> read [Incremental snapshots (skill)](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md#incremental-snapshots-arc2) before
+> read [Incremental snapshots (skill)](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md#incremental-snapshots-arc2) before
 > production training loops. For active stream, session ID, and `reset_prompt_cache`
 > semantics, see [KV cache behavior for RL rollouts](/guides/rollout-inference#kv-cache-behavior-for-rl-rollouts).
-> For ledger and hot-load status debugging, see [Ledger & debugging (skill)](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md).
+> For ledger and hot-load status debugging, see [Ledger & debugging (skill)](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md).
 
 This guide is for teams already running their own RL trainer (Megatron, TorchTitan, Slime, Verl, etc) who want Fireworks purely for inference during rollouts. It also covers the raw hot-load API, which Training API users can call directly when they need rollout behaviors beyond what `WeightSyncer` and `DeploymentManager` expose.
 
@@ -7725,7 +7723,7 @@ flowchart LR
 1. Create a hot-load deployment.
 2. Upload and hot-load an initial **full** snapshot.
 3. Run rollouts against that snapshot.
-4. For each training step: upload and hot-load the next **incremental** snapshot (see [Incremental snapshots](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md)).
+4. For each training step: upload and hot-load the next **incremental** snapshot (see [Incremental snapshots](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md)).
 5. Run rollouts again.
 6. Every 20th or 30th step, publish a **full** snapshot instead of an incremental one. If the incremental chain fails, fall back to a full snapshot.
 
@@ -7840,7 +7838,7 @@ A full (non-LoRA) snapshot is validated at POST time; it must contain all of:
 
 #### Incremental snapshots and ARC2
 
-An [incremental snapshot](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md) is an ARC2-compressed **delta** of the safetensors against a `previous_snapshot_identity` already on the deployment. It keeps the **same `model.safetensors.index.json`** as its parent — the `weight_map`, the file count, and the per-file weight set must be **identical** (only the tensor contents change). Tensor `dtype`s must also match across the transition. Upload only the diff `.safetensors` (plus the unchanged manifests/config) under the new `identity`; signal it with `incremental_snapshot_metadata`. See [Incremental snapshots](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md) for the full body and the delta-build utilities.
+An [incremental snapshot](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md) is an ARC2-compressed **delta** of the safetensors against a `previous_snapshot_identity` already on the deployment. It keeps the **same `model.safetensors.index.json`** as its parent — the `weight_map`, the file count, and the per-file weight set must be **identical** (only the tensor contents change). Tensor `dtype`s must also match across the transition. Upload only the diff `.safetensors` (plus the unchanged manifests/config) under the new `identity`; signal it with `incremental_snapshot_metadata`. See [Incremental snapshots](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md) for the full body and the delta-build utilities.
 
 Optional: call the [per-file hint API](/fine-tuning/rl-rollout-integration#per-file-hints-optional) as each file lands to speed up loading on large models.
 
@@ -7852,7 +7850,7 @@ For large MoE models such as **GLM** and **Kimi**, the routed MoE expert weights
 
 * Add the matching `quantization_config` block to `config.json`.
 * Make sure `model.weight.spec.json` (`tensor_map`) describes the quantized tensors (`shape` + `dtype`); the snapshot is rejected if a `quantization_config` is present but the spec has no dequantizable tensors or is missing the metadata needed to dequantize them.
-* Keep the quantization recipe consistent across every snapshot in a run so the [incremental chain](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md) stays valid (dtypes must not change between a snapshot and its parent).
+* Keep the quantization recipe consistent across every snapshot in a run so the [incremental chain](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md) stays valid (dtypes must not change between a snapshot and its parent).
 
 ### Signal and poll
 
@@ -7887,7 +7885,7 @@ For large full-parameter snapshots, notify the hint endpoint as each shard finis
 { "identity": "version_001" }
 ```
 
-**Incremental snapshot** bodies, compression, hints, and `checksum_format` are documented in [Incremental snapshots](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md).
+**Incremental snapshot** bodies, compression, hints, and `checksum_format` are documented in [Incremental snapshots](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md).
 
 **identity** `string` *required*
 
@@ -8026,7 +8024,7 @@ See [Inference for RL rollouts](/guides/rollout-inference) for session affinity,
 
 After the first full snapshot:
 
-1. **Intermediate steps** — Build and upload an [incremental snapshot](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md) (`arc_v2`), signal with `incremental_snapshot_metadata`, poll until ready, then run rollouts.
+1. **Intermediate steps** — Build and upload an [incremental snapshot](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md) (`arc_v2`), signal with `incremental_snapshot_metadata`, poll until ready, then run rollouts.
 2. **Every 20th or 30th step** — Publish a new **full** snapshot for faster recovery and chain reset.
 3. **On failure** — Fall back to a full snapshot; see [Ledger and debugging](#ledger-debugging).
 
@@ -8092,7 +8090,7 @@ When [polling load status](#poll-load-status), LoRA deployments report progress 
 
 ### No incremental chain
 
-LoRA adapters are small, so there is **no ARC2 incremental/delta chain** for LoRA. Upload the full adapter every step—each LoRA snapshot is complete and self-contained. The [incremental snapshot](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md) workflow (and the "every 20th–30th step, publish a full snapshot" cadence) applies only to full-parameter checkpoints.
+LoRA adapters are small, so there is **no ARC2 incremental/delta chain** for LoRA. Upload the full adapter every step—each LoRA snapshot is complete and self-contained. The [incremental snapshot](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md) workflow (and the "every 20th–30th step, publish a full snapshot" cadence) applies only to full-parameter checkpoints.
 
 ## Numerics alignment
 
@@ -8111,15 +8109,15 @@ The control-plane checkpoint list is the source of truth for snapshot identity, 
 3. For full-parameter chains, retry with a full base snapshot if a delta parent is missing.
 4. For LoRA, fix a stale deployment attachment; LoRA snapshots are complete adapters and do not use a delta chain.
 
-Detailed scope mismatch, checkpoint retention, promotion, and recovery procedures live in the [hot-load skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md).
+Detailed scope mismatch, checkpoint retention, promotion, and recovery procedures live in the [hot-load skill reference](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md).
 
 ## Next steps
 
-> [card] [Incremental snapshots & ARC2](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md)
+> [card] [Incremental snapshots & ARC2](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md)
 >
 > Delta builds, per-file hints, and incremental signal bodies
 
-> [card] [Ledger & debugging](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md)
+> [card] [Ledger & debugging](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md)
 >
 > Snapshot history, stuck swaps, and recovery playbooks
 
@@ -8133,7 +8131,7 @@ Detailed scope mismatch, checkpoint retention, promotion, and recovery procedure
 
 > [!NOTE]
 >
-> **Operational depth** (ledger, ARC2 chains, hot-load errors) lives in the [Fireworks training skill — rl-hotload](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md). This page is the BYOT happy path.
+> **Operational depth** (ledger, ARC2 chains, hot-load errors) lives in the [Fireworks training skill — rl-hotload](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md). This page is the BYOT happy path.
 
 
 # Thinking history in training
@@ -8344,7 +8342,7 @@ subagent handoff—continuous without changing its meaning.
 
 ## Fireworks support
 
-The public [Fireworks Cookbook](https://github.com/fw-ai/cookbook/tree/main/training/examples/harbor_rl)
+The public [Fireworks Cookbook](https://github.com/fw-ai-external/cookbook/tree/main/training/examples/harbor_rl)
 separates the environment, harness, and task recipe. They are independent
 parts of one rollout rather than one Harbor integration.
 
@@ -8365,9 +8363,9 @@ task dataset -> Harbor trial -> Docker or E2B sandbox
 ### Supported harness adapters
 
 The reference adapters support
-[OpenCode](https://github.com/fw-ai/cookbook/tree/main/training/examples/harbor_rl/harnesses/opencode),
-[Pi](https://github.com/fw-ai/cookbook/tree/main/training/examples/harbor_rl/harnesses/pi),
-and [Mini-SWE-Agent](https://github.com/fw-ai/cookbook/tree/main/training/examples/harbor_rl/harnesses/mini_swe)
+[OpenCode](https://github.com/fw-ai-external/cookbook/tree/main/training/examples/harbor_rl/harnesses/opencode),
+[Pi](https://github.com/fw-ai-external/cookbook/tree/main/training/examples/harbor_rl/harnesses/pi),
+and [Mini-SWE-Agent](https://github.com/fw-ai-external/cookbook/tree/main/training/examples/harbor_rl/harnesses/mini_swe)
 over the same Harbor/TITO contract.
 
 ### Supported task datasets
@@ -8376,10 +8374,10 @@ The Cookbook includes support for DABstep, Terminal-Bench 2.0, and DeepSWE.
 
 ### Example: Pi with DABstep
 
-Use the [Pi+DABstep training script](https://github.com/fw-ai/cookbook/blob/main/training/examples/harbor_rl/train_pi.py)
+Use the [Pi+DABstep training script](https://github.com/fw-ai-external/cookbook/blob/main/training/examples/harbor_rl/train_pi.py)
 as the complete reference entrypoint. The Cookbook also provides task
-preparation scripts for [Terminal-Bench](https://github.com/fw-ai/cookbook/blob/main/training/examples/harbor_rl/harnesses/opencode/prepare_tasks.py)
-and [DeepSWE](https://github.com/fw-ai/cookbook/blob/main/training/examples/harbor_rl/tasks/deep_swe/prepare_tasks.py).
+preparation scripts for [Terminal-Bench](https://github.com/fw-ai-external/cookbook/blob/main/training/examples/harbor_rl/harnesses/opencode/prepare_tasks.py)
+and [DeepSWE](https://github.com/fw-ai-external/cookbook/blob/main/training/examples/harbor_rl/tasks/deep_swe/prepare_tasks.py).
 
 These task entrypoints plug into the async RL lifecycles described in
 [Cookbook: Reinforcement Learning](/fine-tuning/training-api/cookbook/rl); this
@@ -8441,9 +8439,9 @@ Use it when you want recipe-managed trainer provisioning, student sampling, teac
 
 SDFT is not part of this cookbook. It is maintained in the
 [Fireworks Tinker-Cookbook repository](https://github.com/fw-ai-external/tinker-cookbook);
-follow the [SDFT guide](https://github.com/fw-ai/cookbook/blob/main/training/docs/sdft.md) and use a
+follow the [SDFT guide](https://github.com/fw-ai-external/cookbook/blob/main/training/docs/sdft.md) and use a
 separate Python environment. It is a different objective from `distillation_loop`, not a flag on it.
-See the [distillation skill](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk-distillation.md)
+See the [distillation skill](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/sdk-distillation.md)
 for teacher setup and algorithm details.
 
 ## Minimal example
@@ -8596,8 +8594,8 @@ model, tokenizer, and rendering consistent with that cache.
 LoRA DPO normally shares a frozen reference within the policy trainer.
 Full-parameter DPO uses a separate reference trainer. DPO and ORPO retain
 controlled dataset batches and need no rollout streaming. Loss and cache
-implementation details live in the [recipe](https://github.com/fw-ai/cookbook/blob/main/training/recipes/dpo_loop.py)
-and [training skill](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk-recipes.md).
+implementation details live in the [recipe](https://github.com/fw-ai-external/cookbook/blob/main/training/recipes/dpo_loop.py)
+and [training skill](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/sdk-recipes.md).
 
 ## Operational guidance
 
@@ -8615,7 +8613,7 @@ and [training skill](https://github.com/fw-ai/cookbook/blob/main/skills/firework
 
 ## Related preference methods
 
-* **ORPO** (`training.recipes.orpo_loop`) — Odds Ratio Preference Optimization. Combines an SFT-style negative-log-likelihood term on the chosen response with a margin term on the odds ratio between chosen and rejected. Unlike DPO, ORPO does **not** require a reference trainer (no cached reference logprobs), so the recipe runs with a single trainer + dataset of preference pairs. See `training.recipes.orpo_loop` in the public [cookbook repo](https://github.com/fw-ai/cookbook/blob/main/training/recipes/orpo_loop.py) for the full configuration.
+* **ORPO** (`training.recipes.orpo_loop`) — Odds Ratio Preference Optimization. Combines an SFT-style negative-log-likelihood term on the chosen response with a margin term on the odds ratio between chosen and rejected. Unlike DPO, ORPO does **not** require a reference trainer (no cached reference logprobs), so the recipe runs with a single trainer + dataset of preference pairs. See `training.recipes.orpo_loop` in the public [cookbook repo](https://github.com/fw-ai-external/cookbook/blob/main/training/recipes/orpo_loop.py) for the full configuration.
 
 ## Related guides
 
@@ -8964,7 +8962,7 @@ Source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/muse-glimmer
 Run a free first LoRA fine-tune of Muse Glimmer 30B on Managed SFT or Serverless Training, then measure base versus tuned.
 
 This guide runs a first fine-tune of Muse Glimmer 30B end to end with the
-cookbook's [Muse Glimmer starter](https://github.com/fw-ai/cookbook/tree/main/training/examples/muse_glimmer).
+cookbook's [Muse Glimmer starter](https://github.com/fw-ai-external/cookbook/tree/main/training/examples/muse_glimmer).
 The same script runs the job on two surfaces:
 
 * **Managed SFT**: Fireworks runs the training loop on a dataset in your
@@ -9001,7 +8999,7 @@ You need Git, Python 3.11 or newer, and a Fireworks API key from the
 [dashboard](https://app.fireworks.ai/settings/users/api-keys).
 
 ```bash theme={null}
-git clone --depth 1 https://github.com/fw-ai/cookbook.git
+git clone --depth 1 https://github.com/fw-ai-external/cookbook.git
 cd cookbook/training
 python3 -m venv .venv && source .venv/bin/activate   # check python3 --version is 3.11+
 pip install -e .
@@ -9174,7 +9172,7 @@ while replicas run; trained LoRAs cannot be served on serverless inference.
 
 ## With a coding agent
 
-The [Fireworks training skills](https://github.com/fw-ai/cookbook/tree/main/skills)
+The [Fireworks training skills](https://github.com/fw-ai-external/cookbook/tree/main/skills)
 drive this starter for you. Install them, then ask *"Is there something free I can
 run right now to see how training works?"*. The agent checks your account, shows
 one plan with its cost, launches after you approve, monitors the run, and
@@ -9195,7 +9193,7 @@ Overview of the Training API cookbook: ready-to-run recipes for supervised fine-
 
 ## What is the Cookbook?
 
-The [Fireworks Cookbook](https://github.com/fw-ai/cookbook/tree/main/training) is a collection of training recipes and utilities built on top of the [Training API](/fine-tuning/training-api/introduction). It provides config-driven training loops that handle trainer provisioning, data loading, tokenization, gradient accumulation, checkpointing, and cleanup automatically.
+The [Fireworks Cookbook](https://github.com/fw-ai-external/cookbook/tree/main/training) is a collection of training recipes and utilities built on top of the [Training API](/fine-tuning/training-api/introduction). It provides config-driven training loops that handle trainer provisioning, data loading, tokenization, gradient accumulation, checkpointing, and cleanup automatically.
 
 The cookbook is **optional** — everything it does can be done with the API directly. Use the cookbook when you want a working training loop quickly; use the API when you need full control.
 
@@ -9205,16 +9203,58 @@ The cookbook is **optional** — everything it does can be done with the API dir
 
 ## Installation
 
+Use Python 3.11 or newer. Install the published cookbook to import its recipes and utilities:
+
 ```bash theme={null}
-git clone https://github.com/fw-ai/cookbook.git
-cd cookbook/training && pip install -e .
+python -m pip install --upgrade fireworks-training-cookbook
 ```
 
-Set your credentials:
+The distribution is [`fireworks-training-cookbook`](https://pypi.org/project/fireworks-training-cookbook/); Python imports remain `training.*`, such as `from training.recipes.sft_loop import Config, main`. It installs the Fireworks SDK and the cookbook's runtime dependencies.
+
+The cookbook and SDK have separate release versions. Cookbook `2026.11.5.1` uses calendar versioning; SDK `1.2.31` is published as `fireworks-ai`. To reproduce those releases:
+
+```bash theme={null}
+python -m pip install "fireworks-ai[training]==1.2.31" "fireworks-training-cookbook==2026.11.5.1"
+```
+
+### Edit recipes or run source examples
+
+Clone the [public repository](https://github.com/fw-ai-external/cookbook) when you want to modify a recipe or follow an example that runs from the checkout:
+
+```bash theme={null}
+git clone https://github.com/fw-ai-external/cookbook.git
+cd cookbook
+python -m pip install -e ./training
+```
+
+An editable install uses your checkout, which can include changes newer than the published PyPI release. For a reproducible source checkout, check out the matching [release tag](https://github.com/fw-ai-external/cookbook/releases/tag/cookbook-v2026.11.5.1) before installing.
+
+### Verify the installation
+
+```bash theme={null}
+python -c "from importlib.metadata import version; import training; print(version('fireworks-training-cookbook'))"
+```
+
+This prints the installed cookbook version. With the pinned release above, it prints `2026.11.5.1`.
+
+### Authentication
+
+Before running a training job, set your credentials:
 
 ```bash theme={null}
 export FIREWORKS_API_KEY="your-api-key"
 ```
+
+### Update an existing checkout
+
+The cookbook's canonical repository is now [`fw-ai-external/cookbook`](https://github.com/fw-ai-external/cookbook). In an existing cookbook clone, update the remote:
+
+```bash theme={null}
+cd cookbook
+git remote set-url origin https://github.com/fw-ai-external/cookbook.git
+```
+
+To use PyPI releases instead of a local checkout, install the package in a fresh Python environment. To update coding-agent skills, use the [current installation commands](/fine-tuning/agent/use-with-coding-agents). Skills are installed from GitHub separately from the Python package.
 
 ## Available recipes
 
@@ -9225,11 +9265,11 @@ export FIREWORKS_API_KEY="your-api-key"
 | **Agentic RL integration** | Either async loop plus your rollout adapter | Multi-turn rollouts. The structured Cookbook path uses Pi, OpenCode, or Mini-SWE-Agent with Harbor and an environment-local TITO sidecar in Docker or E2B. See [Cookbook Agentic RL](/fine-tuning/training-api/cookbook/agentic-rl). |
 | **HUD RL training** | `hud-python/cookbooks/fireworks-rl-training` | Train a Serverless Training LoRA from one-turn HUD environment rewards. See [Fireworks x HUD RL Training](/fine-tuning/training-api/cookbook/hud-rl-training). |
 | **RL** *(simpler, synchronous)* | `training.recipes.rl_loop` | Synchronous on-policy GRPO scaffold — reach for it when you don't need rollout/train overlap |
-| **IGPO** | `rl_loop` with `igpo.prepare_batch` | Turn-level information-gain advantages for multi-turn trajectories; see the [multi-hop example](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/multihop_qa). |
+| **IGPO** | `rl_loop` with `igpo.prepare_batch` | Turn-level information-gain advantages for multi-turn trajectories; see the [multi-hop example](https://github.com/fw-ai-external/cookbook/tree/main/training/examples/rl/multihop_qa). |
 | **DPO** | `training.recipes.dpo_loop` | Direct preference optimization from chosen/rejected pairs. `serverless=True` uses the shared pool. |
 | **SFT** | `training.recipes.sft_loop` | Supervised fine-tuning with cross-entropy loss. `serverless=True` uses the shared pool. |
 | **Distillation** | `training.recipes.distillation_loop` | On-policy distillation from a frozen teacher’s sampled-token scores |
-| **SDFT** | [External SDFT cookbook](https://github.com/fw-ai-external/tinker-cookbook) | Top-K self-distillation on serverless. Maintained outside this cookbook; see the [SDFT guide](https://github.com/fw-ai/cookbook/blob/main/training/docs/sdft.md). |
+| **SDFT** | [External SDFT cookbook](https://github.com/fw-ai-external/tinker-cookbook) | Top-K self-distillation on serverless. Maintained outside this cookbook; see the [SDFT guide](https://github.com/fw-ai-external/cookbook/blob/main/training/docs/sdft.md). |
 | **ORPO** | `training.recipes.orpo_loop` | Odds ratio preference optimization. The recipe runs on dedicated trainers only. |
 
 Each recipe follows the same pattern: import `Config` and `main`, set your config, and call `main(cfg)`. Dedicated recipes attach or create trainer and deployment resources from `TrainerConfig` / `DeployConfig`. Serverless recipes attach to the shared pool and publish session-scoped sampler snapshots instead of provisioning a deployment.
@@ -9312,7 +9352,7 @@ For vision-language training, choose a supported VLM recipe, training shape, and
 
 ## Embedding loop
 
-The [`embedding_loop`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/embedding_loop.py) recipe trains embedding models with contrastive or supervised embedding objectives. Use it when your base model is an embedding endpoint rather than a chat completion model.
+The [`embedding_loop`](https://github.com/fw-ai-external/cookbook/blob/main/training/recipes/embedding_loop.py) recipe trains embedding models with contrastive or supervised embedding objectives. Use it when your base model is an embedding endpoint rather than a chat completion model.
 
 ## Next steps
 
@@ -9524,7 +9564,7 @@ For checkpointing, resume, and promote — see the dedicated [Checkpoints and Re
 
 ## Skills reference
 
-Agent-facing operational guidance for gradient accumulation normalization lives in the [cookbook skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-gradient-accumulation.md).
+Agent-facing operational guidance for gradient accumulation normalization lives in the [cookbook skill reference](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-gradient-accumulation.md).
 
 ## Deprecated managed infra (InfraConfig)
 
@@ -9545,7 +9585,7 @@ Earlier cookbook releases provisioned trainers and deployments from the recipe l
 | Nested weight-sync cadence | RL publishes weights after every optimizer batch; no interval field is exposed. |
 | `weight_sync.dcp_save_interval=N` | `Config(dcp_save_interval=N)` (top-level, all recipes) |
 | top-level `policy_job_id=...` | `TrainerConfig(job_id=...)` |
-| `setup_infra(rlor_mgr, deploy_mgr, ...)` | `build_service_client(...)` (see the [SDK migration skill](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk-migrate.md)) |
+| `setup_infra(rlor_mgr, deploy_mgr, ...)` | `build_service_client(...)` (see the [SDK migration skill](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/sdk-migrate.md)) |
 | `create_base_reference()` / `make_reference_client()` | `service.create_reference_client(...)` |
 | `with ResourceCleanup(...)` | `cleanup_trainer_on_close=True` + `service.close()` (see [Cleanup](/fine-tuning/training-api/reference/cleanup#automatic-cleanup-via-the-sdk-managed-service)) |
 
@@ -9553,19 +9593,19 @@ The `InfraConfig` dataclass is still importable for backward compatibility and n
 
 ### Get help migrating
 
-The cookbook ships one [Fireworks training skill](https://github.com/fw-ai/cookbook/tree/main/skills/fireworks-training) that routes managed and Training API work. Its progressive SDK migration reference walks an agent through porting old `InfraConfig` / `setup_infra` scripts to the new `TrainerConfig` + `build_service_client` surface, alongside weight-sync and checkpoint guidance.
+The cookbook ships one [Fireworks training skill](https://github.com/fw-ai-external/cookbook/tree/main/skills/fireworks-training) that routes managed and Training API work. Its progressive SDK migration reference walks an agent through porting old `InfraConfig` / `setup_infra` scripts to the new `TrainerConfig` + `build_service_client` surface, alongside weight-sync and checkpoint guidance.
 
 ## Weight sync
 
 During RL training the inference deployment needs updated weights after each optimizer step. Cookbook recipes wire this through a shared bucket (trainer writes, deployment hot-loads).
 
-For `WeightSyncScope`, error strings, and recovery: [rl-hotload skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md).
+For `WeightSyncScope`, error strings, and recovery: [rl-hotload skill reference](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md).
 
 See also: [RL cookbook](/fine-tuning/training-api/cookbook/rl).
 
 ## Checkpoints and resume
 
-Recipe users: set `dcp_save_interval` and `output_model_id` on the recipe `Config`. For continuation, attach to the same trainer with `TrainerConfig(job_id=...)` and keep the same `log_path`. Follow the [checkpoint skill](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk-checkpoints.md) for serverless identity and explicit initialization.
+Recipe users: set `dcp_save_interval` and `output_model_id` on the recipe `Config`. For continuation, attach to the same trainer with `TrainerConfig(job_id=...)` and keep the same `log_path`. Follow the [checkpoint skill](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/sdk-checkpoints.md) for serverless identity and explicit initialization.
 
 ```python theme={null}
 cfg = Config(
@@ -9576,7 +9616,7 @@ cfg = Config(
 )
 ```
 
-For DCP vs sampler checkpoints, promote/resume edge cases, and cross-job warm start: [sdk-checkpoints](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk-checkpoints.md) and [training-api-losses](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/training-api-losses.md).
+For DCP vs sampler checkpoints, promote/resume edge cases, and cross-job warm start: [sdk-checkpoints](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/sdk-checkpoints.md) and [training-api-losses](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/training-api-losses.md).
 
 
 # Cookbook: Reinforcement Learning
@@ -9584,7 +9624,7 @@ Source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/rl
 
 Run the experimental async GRPO cookbook recipe with a custom rollout function while Fireworks handles scheduling, training, checkpoints, and weight sync.
 
-The cookbook's primary RL recipe is [`async_rl_loop`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/async_rl_loop.py). You provide dataset rows and a rollout function; the recipe overlaps rollout production with training submission. When a rollout finishes, the producer immediately tries to refill available capacity—even while forward/backward or optimizer work is running.
+The cookbook's primary RL recipe is [`async_rl_loop`](https://github.com/fw-ai-external/cookbook/blob/main/training/recipes/async_rl_loop.py). You provide dataset rows and a rollout function; the recipe overlaps rollout production with training submission. When a rollout finishes, the producer immediately tries to refill available capacity—even while forward/backward or optimizer work is running.
 
 > [!WARNING]
 >
@@ -9594,7 +9634,7 @@ The cookbook's primary RL recipe is [`async_rl_loop`](https://github.com/fw-ai/c
 > version for reproducible workloads.
 
 For the shared serverless pool, use the experimental
-[`async_rl_loop_serverless` adapter](https://github.com/fw-ai/cookbook/blob/main/training/recipes/experiment/async_rl_loop_serverless.py).
+[`async_rl_loop_serverless` adapter](https://github.com/fw-ai-external/cookbook/blob/main/training/recipes/experiment/async_rl_loop_serverless.py).
 It keeps this recipe's rollout and scheduling contract but replaces dedicated
 resource lifecycle and hotloading with session-scoped snapshots. The two paths
 remain separate until they share one weight-publication contract. See
@@ -9635,7 +9675,7 @@ rows = [...]  # Each row is passed to rollout_fn as sample_prompt.
 main(cfg, rollout_fn_factory=make_rollout_fn, rows=rows)
 ```
 
-The [DeepMath example](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/deepmath)
+The [DeepMath example](https://github.com/fw-ai-external/cookbook/tree/main/training/examples/rl/deepmath)
 expects rows with chat `messages` and `ground_truth` answers. Fork its adapter
 to supply another task and reward. For multi-turn harnesses, tools, sandboxes, and exact
 token ancestry, read
@@ -9687,7 +9727,7 @@ individual inference requests that a multi-turn agent makes. The shared
 `max_head_offpolicy_versions=0` is fully on-policy: every optimizer batch
 trains groups from its current published policy version. Training submission can
 still overlap remaining rollouts from the same optimizer batch. The synchronous
-[`rl_loop`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/rl_loop.py)
+[`rl_loop`](https://github.com/fw-ai-external/cookbook/blob/main/training/recipes/rl_loop.py)
 collects the full batch before training it.
 
 ## Runtime behavior
@@ -9714,7 +9754,7 @@ one optimizer update; gradients are normalized by the batch's trainable-token
 count once. SFT, DPO, and ORPO retain controlled dataset batches.
 
 Fork the recipe to change the objective, anchor, or correction. See the
-[custom-loss skill](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-custom-loss.md).
+[custom-loss skill](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-custom-loss.md).
 
 ## Evaluation
 
@@ -9745,19 +9785,19 @@ Interrupting a run does not guarantee a new final checkpoint. Set a positive
 
 Keep implementation and tuning detail out of the recipe page:
 
-* [Async RL skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-async.md) — admission math, metrics, tuning, failure policy, and resume semantics
-* [Agentic RL skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-agentic.md) — multi-turn token ancestry, session/cache architectures, mismatch policies, and trace failures
-* [Custom RL loss reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-custom-loss.md) — fork the recipe deliberately when you need a trainer built-in or another research objective
+* [Async RL skill reference](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-async.md) — admission math, metrics, tuning, failure policy, and resume semantics
+* [Agentic RL skill reference](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-agentic.md) — multi-turn token ancestry, session/cache architectures, mismatch policies, and trace failures
+* [Custom RL loss reference](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-custom-loss.md) — fork the recipe deliberately when you need a trainer built-in or another research objective
 * [Checkpointing](/fine-tuning/training-api/cookbook/reference#checkpoints) — resumable checkpoints and final model promotion
 * [Weight sync](/fine-tuning/training-api/cookbook/reference#weight-sync) — how updated policy weights reach the sampler
-* [`rl_loop`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/rl_loop.py) — simpler synchronous GRPO when rollout/training overlap is unnecessary
+* [`rl_loop`](https://github.com/fw-ai-external/cookbook/blob/main/training/recipes/rl_loop.py) — simpler synchronous GRPO when rollout/training overlap is unnecessary
 
 ## IGPO (Information Gain Policy Optimization)
 
 IGPO prepares turn-level advantages through
 `rl_loop.main(..., prepare_batch_fn=igpo.prepare_batch(gamma=...))`. Answer
 scoring runs across the complete batch while advantage normalization remains
-group-local. Start with the [multi-hop QA example](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/multihop_qa).
+group-local. Start with the [multi-hop QA example](https://github.com/fw-ai-external/cookbook/tree/main/training/examples/rl/multihop_qa).
 
 
 # Cookbook: Supervised Fine-Tuning
@@ -9883,7 +9923,7 @@ If LoRA SFT, DPO, ORPO, RL, distillation, or a custom loop on a supported shared
 
 > [!TIP]
 >
-> **Start from the cookbook.** Clone [`fw-ai/cookbook`](https://github.com/fw-ai/cookbook), fork the closest recipe under [`training/recipes/`](https://github.com/fw-ai/cookbook/tree/main/training/recipes), and use the [Fireworks training skill](https://github.com/fw-ai/cookbook/tree/main/skills/fireworks-training) for losses, checkpoints, and debugging depth.
+> **Start from the cookbook.** Clone [`fw-ai-external/cookbook`](https://github.com/fw-ai-external/cookbook), fork the closest recipe under [`training/recipes/`](https://github.com/fw-ai-external/cookbook/tree/main/training/recipes), and use the [Fireworks training skill](https://github.com/fw-ai-external/cookbook/tree/main/skills/fireworks-training) for losses, checkpoints, and debugging depth.
 
 ## How dedicated training runs
 
@@ -9931,8 +9971,10 @@ The trainer and inference deployment are separate resources with separate billin
 
 ### Step 1: Install the SDK and cookbook
 
+For this source-recipe workflow, clone and install the cookbook in editable mode. To import published recipes without a checkout, use [the PyPI installation](/fine-tuning/training-api/cookbook/overview#installation).
+
 ```bash theme={null}
-git clone https://github.com/fw-ai/cookbook
+git clone https://github.com/fw-ai-external/cookbook
 cd cookbook
 pip install -e ./training
 export FIREWORKS_API_KEY="fw_..."
@@ -9942,11 +9984,11 @@ export FIREWORKS_API_KEY="fw_..."
 
 | Task | Start here |
 | - | - |
-| SFT | [`sft_loop.py`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/sft_loop.py) |
-| DPO | [`dpo_loop.py`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/dpo_loop.py) |
-| RL | [`rl_loop.py`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/rl_loop.py) |
-| Async RL | [`async_rl_loop.py`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/async_rl_loop.py) |
-| Distillation | [`distillation_loop.py`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/distillation_loop.py) |
+| SFT | [`sft_loop.py`](https://github.com/fw-ai-external/cookbook/blob/main/training/recipes/sft_loop.py) |
+| DPO | [`dpo_loop.py`](https://github.com/fw-ai-external/cookbook/blob/main/training/recipes/dpo_loop.py) |
+| RL | [`rl_loop.py`](https://github.com/fw-ai-external/cookbook/blob/main/training/recipes/rl_loop.py) |
+| Async RL | [`async_rl_loop.py`](https://github.com/fw-ai-external/cookbook/blob/main/training/recipes/async_rl_loop.py) |
+| Distillation | [`distillation_loop.py`](https://github.com/fw-ai-external/cookbook/blob/main/training/recipes/distillation_loop.py) |
 
 Smoke test (bounded SFT):
 
@@ -9988,7 +10030,7 @@ Serverless and dedicated sampling use the same `DeploymentSampler` request contr
 | Standard RL | `rl_loop.py` or `async_rl_loop.py` |
 | New research objective | Fork the closest recipe and use `forward_backward_custom` deliberately |
 
-Call forward/backward multiple times before one `optim_step()` for gradient accumulation. Validate datum fields, token masks, and normalization locally. Detailed loss and datum routing lives in the [Training API losses skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/training-api-losses.md).
+Call forward/backward multiple times before one `optim_step()` for gradient accumulation. Validate datum fields, token masks, and normalization locally. Detailed loss and datum routing lives in the [Training API losses skill reference](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/training-api-losses.md).
 
 ## Saving and loading
 
@@ -10000,17 +10042,17 @@ Dedicated training has three distinct checkpoint purposes:
 | Resumable state | Weights and optimizer state | Continue an interrupted training run |
 | Promotable checkpoint | Deployable model artifact | Register the selected result as a Fireworks model |
 
-Do not pass a sampler snapshot to a resumable-state API. Keep the same trainer ID and log path for exact continuation; use the recipe's explicit initialization option for a new job. See the [checkpoint skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk-checkpoints.md).
+Do not pass a sampler snapshot to a resumable-state API. Keep the same trainer ID and log path for exact continuation; use the recipe's explicit initialization option for a new job. See the [checkpoint skill reference](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/sdk-checkpoints.md).
 
 ## Deep dives (cookbook skill)
 
 | Topic | Skill reference |
 | - | - |
-| Losses, datums, gradient accumulation | [training-api-losses](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/training-api-losses.md) |
-| Checkpoints, resume, promote | [sdk-checkpoints](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk-checkpoints.md) |
-| Custom RL objectives | [rl-custom-loss](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-custom-loss.md) |
-| Async RL and concurrency | [rl-async](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-async.md) |
-| Recipe catalog | [sdk-recipes](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk-recipes.md) |
+| Losses, datums, gradient accumulation | [training-api-losses](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/training-api-losses.md) |
+| Checkpoints, resume, promote | [sdk-checkpoints](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/sdk-checkpoints.md) |
+| Custom RL objectives | [rl-custom-loss](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-custom-loss.md) |
+| Async RL and concurrency | [rl-async](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-async.md) |
+| Recipe catalog | [sdk-recipes](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/sdk-recipes.md) |
 
 Config class reference (short): [Cookbook Reference](/fine-tuning/training-api/cookbook/reference).
 
@@ -10229,7 +10271,7 @@ When a dedicated RL recipe provisions a hot-load rollout deployment, you can set
 
 ## Renderers
 
-Chat-template formatting, stop-token handling, and loss-weight masking for SFT/DPO datasets are handled by **renderers** — pluggable per-model classes that turn raw conversations into the trainer's `Datum` shape. Most users never touch a renderer directly; cookbook recipes pick the right one for the `base_model` you set. If you need to author a new one or debug parity against HuggingFace, use the canonical training skill's [renderer implementation reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/renderer.md) and [verification reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/renderer-verification.md).
+Chat-template formatting, stop-token handling, and loss-weight masking for SFT/DPO datasets are handled by **renderers** — pluggable per-model classes that turn raw conversations into the trainer's `Datum` shape. Most users never touch a renderer directly; cookbook recipes pick the right one for the `base_model` you set. If you need to author a new one or debug parity against HuggingFace, use the canonical training skill's [renderer implementation reference](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/renderer.md) and [verification reference](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/renderer-verification.md).
 
 ## Comparing Training API pricing vs DIY bare metal
 
@@ -11318,7 +11360,7 @@ logprobs = result.loss_fn_outputs[0]["logprobs"].data
 
 > [!NOTE]
 >
-> Built-in loss types like `"cross_entropy"` require datums with `target_tokens` in `loss_fn_inputs`. Datums built with `datum_from_model_input_weights` will fail with built-in losses; use them with `forward_backward_custom` instead. For datum examples for built-in and custom losses, see the cookbook skill's [`training-api-losses` reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/training-api-losses.md).
+> Built-in loss types like `"cross_entropy"` require datums with `target_tokens` in `loss_fn_inputs`. Datums built with `datum_from_model_input_weights` will fail with built-in losses; use them with `forward_backward_custom` instead. For datum examples for built-in and custom losses, see the cookbook skill's [`training-api-losses` reference](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/training-api-losses.md).
 
 ### `forward_backward(datums, loss_type, loss_fn_config=None)`
 
@@ -11373,7 +11415,7 @@ training_client.optim_step(
 ).result()
 ```
 
-Advanced callers may pass `grad_accumulation_normalization` to control how accumulated gradients are normalized. The default `None` leaves gradients unchanged. Pass `GradAccNormalization.NUM_LOSS_TOKENS`, `GradAccNormalization.NUM_SEQUENCES`, or `GradAccNormalization.NONE` rather than raw strings. See the [cookbook skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-gradient-accumulation.md) for operational guidance.
+Advanced callers may pass `grad_accumulation_normalization` to control how accumulated gradients are normalized. The default `None` leaves gradients unchanged. Pass `GradAccNormalization.NUM_LOSS_TOKENS`, `GradAccNormalization.NUM_SEQUENCES`, or `GradAccNormalization.NONE` rather than raw strings. See the [cookbook skill reference](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-gradient-accumulation.md) for operational guidance.
 
 ### `save_weights_for_sampler(name, checkpoint_type=None)`
 
@@ -11914,8 +11956,8 @@ Serverless training runs on shared Fireworks GPUs, so there is no trainer job or
 >
 > Train a student model from a teacher model's scores.> [card] [Custom loss](/fine-tuning/training-api/dedicated#loss-functions)
 >
-> Write your own loss function using the same Training API calls as dedicated training.Prefer a managed job to writing your own loop? Use [Managed Training](/fine-tuning/managed-finetuning-intro).## Quickstart**Requires Python 3.11 or later.**### Step 1: Create a key, install, and authenticateCreate an API key in the [Fireworks dashboard](https://app.fireworks.ai/settings/users/api-keys), or run `firectl api-key create` in your terminal. Then install the SDK and export the key:```bash theme={null}
-git clone https://github.com/fw-ai/cookbook
+> Write your own loss function using the same Training API calls as dedicated training.Prefer a managed job to writing your own loop? Use [Managed Training](/fine-tuning/managed-finetuning-intro).## Quickstart**Requires Python 3.11 or later.**### Step 1: Create a key, install, and authenticateCreate an API key in the [Fireworks dashboard](https://app.fireworks.ai/settings/users/api-keys), or run `firectl api-key create` in your terminal. Then install the SDK and export the key:The example below runs from a source checkout. To import released recipes in your own project, use [the PyPI installation](/fine-tuning/training-api/cookbook/overview#installation).```bash theme={null}
+git clone https://github.com/fw-ai-external/cookbook
 pip install -e ./cookbook/training
 pip install math-verify   # used by the DeepMath example to grade answers
 export FIREWORKS_API_KEY="fw_..."   # the key you just created
@@ -11966,7 +12008,7 @@ max_seq_len = 131072  # enforce this when rendering prompts and training datums
 training_client = service.create_lora_training_client(base_model=base_model, rank=8)
 
 print(f"session={service.training_session_id} run={training_client.run_id}")
-```If it prints a session ID that starts with `ts-`, your setup works. The session holds a training slot until you delete it.### Train, checkpoint, and sampleEach training step follows the order below. This excerpt doesn't run on its own: it continues from the code above and uses `datums`, `tokenizer`, `prompt`, and `params`, which a complete loop such as the [DeepMath example](https://github.com/fw-ai/cookbook/blob/main/training/examples/rl/deepmath/train_deepmath_serverless.py) defines.```python theme={null}
+```If it prints a session ID that starts with `ts-`, your setup works. The session holds a training slot until you delete it.### Train, checkpoint, and sampleEach training step follows the order below. This excerpt doesn't run on its own: it continues from the code above and uses `datums`, `tokenizer`, `prompt`, and `params`, which a complete loop such as the [DeepMath example](https://github.com/fw-ai-external/cookbook/blob/main/training/examples/rl/deepmath/train_deepmath_serverless.py) defines.```python theme={null}
 from fireworks.training.sdk import AdamParams
 
 # One optimizer step
@@ -11988,7 +12030,7 @@ sampler.close()
 >
 > * Training and sampling calls return futures. Call `.result()` on each, or errors can go unnoticed.
 > * The tokenizer must match `base_model`. It formats prompts and decodes samples on your machine, so a mismatch silently corrupts your rewards.
-> * Give each checkpoint a different name. Saving twice with the same name points to the same snapshot.When you finish, close your clients and delete the session.For a complete RL loop, see the [DeepMath example](https://github.com/fw-ai/cookbook/blob/main/training/examples/rl/deepmath/train_deepmath_serverless.py) from the quickstart. For async scheduling and custom rollout functions, use the experimental [`async_rl_loop_serverless`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/experiment/async_rl_loop_serverless.py) recipe. For other RL losses, see the [cookbook RL recipes](/fine-tuning/training-api/cookbook/rl).## Saving and loading checkpointsServerless training writes **two different kinds of checkpoint**, and they are not interchangeable:| | **Training checkpoint** | **Sampler checkpoint** |
+> * Give each checkpoint a different name. Saving twice with the same name points to the same snapshot.When you finish, close your clients and delete the session.For a complete RL loop, see the [DeepMath example](https://github.com/fw-ai-external/cookbook/blob/main/training/examples/rl/deepmath/train_deepmath_serverless.py) from the quickstart. For async scheduling and custom rollout functions, use the experimental [`async_rl_loop_serverless`](https://github.com/fw-ai-external/cookbook/blob/main/training/recipes/experiment/async_rl_loop_serverless.py) recipe. For other RL losses, see the [cookbook RL recipes](/fine-tuning/training-api/cookbook/rl).## Saving and loading checkpointsServerless training writes **two different kinds of checkpoint**, and they are not interchangeable:| | **Training checkpoint** | **Sampler checkpoint** |
 | - | - | - |
 | Saved by | `save_state(name)` | `save_weights_for_sampler(name)` |
 | Contains | Adapter weights **and** optimizer state | Current adapter weights only |
@@ -12141,8 +12183,8 @@ sampler = service.create_sampling_client(model_path=path, tokenizer=tokenizer)
 | Rewards or decoded samples look wrong | The tokenizer does not match `base_model`. | Load the tokenizer for the exact base model you train. |
 | Promotion fails on name length after training finishes | The checkpoint name is longer than 17 characters. | Load the training checkpoint into a fresh session with `load_state` and save it again under a shorter name. Keep names to 17 characters or fewer. |
 | Listing or promoting checkpoints returns `NOT_FOUND` | The training session was deleted or its trainer was drained. Promotion only works while the session exists. | Promote checkpoints before you delete the session. Use the session-scoped checkpoint name from `list_training_session_checkpoints`. |
-| Two saves return the same snapshot path | Both saves used the same checkpoint name. | Give every checkpoint a distinct name. |## Next steps* [DeepMath serverless example](https://github.com/fw-ai/cookbook/blob/main/training/examples/rl/deepmath/train_deepmath_serverless.py): runnable serverless RL loop
-* [Prompt-router serverless notebook](https://github.com/fw-ai/cookbook/blob/main/training/case-studies/sft_prompt_router/prompt_router_serverless.ipynb): dataset preparation, LoRA SFT, checkpoint sampling, and evaluation on Qwen 3.8 27B
+| Two saves return the same snapshot path | Both saves used the same checkpoint name. | Give every checkpoint a distinct name. |## Next steps* [DeepMath serverless example](https://github.com/fw-ai-external/cookbook/blob/main/training/examples/rl/deepmath/train_deepmath_serverless.py): runnable serverless RL loop
+* [Prompt-router serverless notebook](https://github.com/fw-ai-external/cookbook/blob/main/training/case-studies/sft_prompt_router/prompt_router_serverless.ipynb): dataset preparation, LoRA SFT, checkpoint sampling, and evaluation on Qwen 3.8 27B
 * [Choose infrastructure](/fine-tuning/training-api/introduction#infrastructure): compare serverless and dedicated
 * [Dedicated Training](/fine-tuning/training-api/dedicated): the provisioned path from setup through teardown
 * [The Cookbook](/fine-tuning/training-api/cookbook/overview): ready-to-run recipes> [accordion] Video walkthrough: Train a prompt router
@@ -13032,7 +13074,7 @@ Fireworks AI is the fastest platform for building with open source AI models. Ge
 >
 > Find the best model for your use case
 
-> [card] [Cookbook](https://github.com/fw-ai/cookbook)
+> [card] [Cookbook](https://github.com/fw-ai-external/cookbook)
 >
 > Code examples and tutorials
 
@@ -13095,7 +13137,7 @@ Once you have your API key, export it as an environment variable in your termina
 To create and manage on-demand deployments, you'll need the `firectl` CLI tool. Install it using one of the following methods, based on your platform:
 
 ```bash homebrew theme={null}
-brew tap fw-ai/firectl
+brew tap fw-ai-external/firectl
 brew install firectl
 
 # If you encounter a failed SHA256 check, try first running
@@ -13192,20 +13234,16 @@ Now you can query your on-demand deployment using the same API as serverless mod
 >
 > Install the [Fireworks Python SDK](/tools-sdks/python-sdk):
 >
-> > [!NOTE]
-> >
-> > The SDK is currently in alpha. Use the `--pre` flag when installing to get the latest version.
->
 > ```bash pip theme={null}
-> pip install --pre fireworks-ai
+> python -m pip install --upgrade fireworks-ai
 > ```
 >
 > ```bash poetry theme={null}
-> poetry add --pre fireworks-ai
+> poetry add fireworks-ai
 > ```
 >
 > ```bash uv theme={null}
-> uv add --pre fireworks-ai
+> uv add fireworks-ai
 > ```
 >
 > Then make your first on-demand API call:
@@ -13382,20 +13420,16 @@ Once you have your API key, export it as an environment variable in your termina
 >
 > Install the [Fireworks Python SDK](/tools-sdks/python-sdk):
 >
-> > [!NOTE]
-> >
-> > The SDK is currently in alpha. Use the `--pre` flag when installing to get the latest version.
->
-> ```bash pip theme={null} theme={null}
-> pip install --pre fireworks-ai
+> ```bash pip theme={null}
+> python -m pip install --upgrade fireworks-ai
 > ```
 >
-> ```bash poetry theme={null} theme={null}
-> poetry add --pre fireworks-ai
+> ```bash poetry theme={null}
+> poetry add fireworks-ai
 > ```
 >
-> ```bash uv theme={null} theme={null}
-> uv add --pre fireworks-ai
+> ```bash uv theme={null}
+> uv add fireworks-ai
 > ```
 >
 > Then make your first Serverless API call:
@@ -16877,7 +16911,7 @@ With `normalize=True`, the endpoint applies softmax to the selected logits, retu
 
 Embeddings and reranking are usually combined: vector search recalls a broad candidate set quickly, then a reranker reorders those candidates for precision. This cookbook builds that pipeline end to end with Voyage models on Fireworks and MongoDB vector search.
 
-> [card] [Two-stage retrieval with Voyage embeddings and reranking](https://colab.research.google.com/github/fw-ai/cookbook/blob/main/partners/voyage-ai/voyage_two_stage_retrieval.ipynb)
+> [card] [Two-stage retrieval with Voyage embeddings and reranking](https://colab.research.google.com/github/fw-ai-external/cookbook/blob/main/partners/voyage-ai/voyage_two_stage_retrieval.ipynb)
 >
 > Embed a corpus with a Voyage embedding model, retrieve with MongoDB `$vectorSearch`, and rerank the candidates with Voyage ReRank 2.5.
 
@@ -18120,20 +18154,16 @@ instead be included directly in the content field itself.
 We recommend using the [Fireworks Python SDK](/tools-sdks/python-sdk) to work with
 reasoning, as it supports Fireworks-specific parameters and response fields.
 
-> [!NOTE]
->
-> The SDK is currently in alpha. Use the `--pre` flag when installing to get the latest version.
-
 ```bash pip theme={null}
-pip install --pre fireworks-ai
+python -m pip install --upgrade fireworks-ai
 ```
 
 ```bash poetry theme={null}
-poetry add --pre fireworks-ai
+poetry add fireworks-ai
 ```
 
 ```bash uv theme={null}
-uv add --pre fireworks-ai
+uv add fireworks-ai
 ```
 
 ### Basic usage
@@ -19618,19 +19648,19 @@ Set `wire_api = "responses"` so Codex targets this endpoint rather than chat com
 
 ## Cookbook examples
 
-> [card] [MCP examples](https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/fireworks_mcp_examples.ipynb)
+> [card] [MCP examples](https://github.com/fw-ai-external/cookbook/blob/main/archived/learn/response-api/fireworks_mcp_examples.ipynb)
 >
 > Calling MCP servers from the Responses API
 
-> [card] [Continuing conversations](https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/fireworks_previous_response_cookbook.ipynb)
+> [card] [Continuing conversations](https://github.com/fw-ai-external/cookbook/blob/main/archived/learn/response-api/fireworks_previous_response_cookbook.ipynb)
 >
 > Using `previous_response_id`
 
-> [card] [Streaming](https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/fireworks_streaming_example.ipynb)
+> [card] [Streaming](https://github.com/fw-ai-external/cookbook/blob/main/archived/learn/response-api/fireworks_streaming_example.ipynb)
 >
 > Streaming responses end to end
 
-> [card] [Stateless requests](https://github.com/fw-ai/cookbook/blob/main/archived/learn/response-api/mcp_server_with_store_false_argument.ipynb)
+> [card] [Stateless requests](https://github.com/fw-ai-external/cookbook/blob/main/archived/learn/response-api/mcp_server_with_store_false_argument.ipynb)
 >
 > Using `store=false`
 
@@ -21340,7 +21370,7 @@ def preprocess_video(video_path: str) -> tuple[str, str]:
 
 ## Related resources
 
-> [card] [Chat with Video using Qwen3 Omni](https://colab.research.google.com/github/fw-ai/cookbook/blob/main/archived/multimedia/video/Qwen3-Omni-Chat-With-Video-Cookbook.ipynb)
+> [card] [Chat with Video using Qwen3 Omni](https://colab.research.google.com/github/fw-ai-external/cookbook/blob/main/archived/multimedia/video/Qwen3-Omni-Chat-With-Video-Cookbook.ipynb)
 >
 > Interactive notebook for video and audio analysis
 
@@ -22491,7 +22521,7 @@ Source: https://docs.fireworks.ai/nexus/cli
 
 Connect Claude Code, ChatGPT, Codex, Cursor IDE, VS Code, Copilot, and more to Fireworks with one Nexus CLI command, and undo it with one more.
 
-[Nexus CLI](https://github.com/fw-ai/nexus-cli) is an open-source command-line tool that connects your coding harness to Fireworks models.
+[Nexus CLI](https://github.com/fw-ai-external/nexus-cli) is an open-source command-line tool that connects your coding harness to Fireworks models.
 
 * It rewrites your harness settings to call Fireworks.
 * It adds Nexus Auto to the harness's model picker.
@@ -22523,7 +22553,7 @@ Alternative installer:
 
 ```bash wrap theme={null}
 curl -fsSL \
-  https://raw.githubusercontent.com/fw-ai/nexus-cli/main/install.sh \
+  https://raw.githubusercontent.com/fw-ai-external/nexus-cli/main/install.sh \
   | bash
 ```
 
@@ -26578,7 +26608,7 @@ Fast, Priority, and US-only variants of a model share the same tier and ceilings
 | - | - |
 | **Small** | DeepSeek V4.1 Flash, GLM 5.3, GLM 5.3 Flash, MiniMax M3, NVIDIA Nemotron 3 Ultra (Preview), OpenAI GPT OSS 120B, NVIDIA Nemotron 3.5 Lightning 30B A3B, Rune 26B-A4B |
 | **Medium** | Muse Spark Open, DeepSeek V4.1 Flash 1017 Ultra-fast (Preview) |
-| **Large** | Ember-1, Kimi K3, Qwen 3.8 Max |
+| **Large** | Ember-1, Kimi K3, Kimi K3.1 Pro, Qwen 3.8 Max |
 
 Models not listed here are tiered by total parameter count using the thresholds above.
 
@@ -26981,7 +27011,7 @@ Skip this step if you already have an adapter in the `READY` state on a [support
 > **1. Install the cookbook**
 >
 > ```bash theme={null}
-> git clone https://github.com/fw-ai/cookbook
+> git clone https://github.com/fw-ai-external/cookbook
 > pip install -e ./cookbook/training
 > cd cookbook
 > ```
@@ -28106,20 +28136,24 @@ Creates an API key for the signed in user or a specified service account user.
 firectl api-key create [flags]
 ```
 
+> [!NOTE]
+>
+> API keys have a maximum expiration of 1 year (365 days). If you omit `--expire-time`, the key expires 1 year after creation. An `--expire-time` more than 365 days in the future is rejected.
+
 ### Examples
 
 ```
 firectl api-key create
 firectl api-key create --service-account=my-service-account
 firectl api-key create --key-name="Production Key" --service-account=ci-bot
-firectl api-key create --key-name="Temporary Key" --expire-time="2025-12-31 23:59:59"
+firectl api-key create --key-name="Temporary Key" --expire-time="2027-06-30 23:59:59"
 ```
 
 ### Flags
 
 ```
       --dry-run                  Print the request proto without running it.
-      --expire-time string       If specified, the time at which the API key will automatically expire. Specified in YYYY-MM-DD[ HH:MM:SS] format.
+      --expire-time string       The time at which the API key will automatically expire, in YYYY-MM-DD[ HH:MM:SS] format. Must be within 1 year (365 days); later values are rejected. Defaults to 1 year from creation.
   -h, --help                     help for create
       --key-name string          The name of the key to be created. Defaults to "default"
   -o, --output Output            Set the output format to "text", "json", or "flag". (default text)
@@ -32319,7 +32353,7 @@ Learn to create, deploy, and manage resources using Firectl
 Firectl can be installed several ways based on your choice and platform.
 
 ```bash homebrew theme={null}
-brew tap fw-ai/firectl
+brew tap fw-ai-external/firectl
 brew install firectl
 
 # If you encounter a failed SHA256 check, try first running
@@ -32746,21 +32780,19 @@ Fireworks is [OpenAI-compatible](/tools-sdks/openai-compatibility), so you can u
 
 Requires Python 3.9+ and an API key. See [Getting your API key](/api-reference/introduction#getting-your-api-key) for instructions.
 
-> [!NOTE]
->
-> The SDK is currently in alpha. Use the `--pre` flag when installing to get the latest version.
-
 ```bash pip theme={null}
-pip install --pre fireworks-ai
+python -m pip install --upgrade fireworks-ai
 ```
 
 ```bash poetry theme={null}
-poetry add --pre fireworks-ai
+poetry add fireworks-ai
 ```
 
 ```bash uv theme={null}
-uv add --pre fireworks-ai
+uv add fireworks-ai
 ```
+
+For Training API recipes and utilities, install `fireworks-training-cookbook` on Python 3.11 or newer. See [Cookbook installation](/fine-tuning/training-api/cookbook/overview#installation) for PyPI releases and editable source checkouts. To use the Training API SDK directly, install `fireworks-ai[training]`.
 
 For detailed usage instructions, see the
 [README.md](https://github.com/fw-ai-external/python-sdk#readme). To quickly get
@@ -32774,6 +32806,24 @@ Source: https://docs.fireworks.ai/updates/changelog
 Fireworks documentation changelog: recent additions, updates, and clarifications across serverless, fine-tuning, deployments, integrations, and API reference.
 
 All
+
+**2026-11-04**
+
+Training
+
+# Cookbook migration and first PyPI release
+
+The public cookbook now lives at [`fw-ai-external/cookbook`](https://github.com/fw-ai-external/cookbook). Use this repository for recipes, case studies, notebooks, and coding-agent skills.
+
+[`fireworks-training-cookbook` 2026.11.5.1](https://pypi.org/project/fireworks-training-cookbook/2026.11.5.1/) is available on PyPI for Python 3.11 or newer. Install its released recipes and utilities with:
+
+```bash theme={null}
+python -m pip install --upgrade fireworks-training-cookbook
+```
+
+Python imports remain `training.*`. The [Fireworks Python SDK](https://github.com/fw-ai-external/python-sdk) is released separately as [`fireworks-ai` 1.2.31](https://pypi.org/project/fireworks-ai/1.2.31/).
+
+See [Cookbook installation and migration](/fine-tuning/training-api/cookbook/overview#installation) for pinned releases, editable installs, and updating an existing checkout. [Agent skill install commands](/fine-tuning/agent/use-with-coding-agents) now point to the new repository.
 
 **2026-11-03**
 
@@ -32803,7 +32853,7 @@ Training
 
 # Training SDK 1.2.30: clearer TITO errors and trajectory discard
 
-**`fireworks-ai` 1.2.30** and the updated [Fireworks Cookbook](https://github.com/fw-ai/cookbook) complete the changes to how [TITO sidecars](/fine-tuning/training-api/cookbook/agentic-rl) handle failed agent turns, which began in 1.2.27. If you run agentic RL with TITO, upgrade both; the latest cookbook requires 1.2.30.
+**`fireworks-ai` 1.2.30** and the updated [Fireworks Cookbook](https://github.com/fw-ai-external/cookbook) complete the changes to how [TITO sidecars](/fine-tuning/training-api/cookbook/agentic-rl) handle failed agent turns, which began in 1.2.27. If you run agentic RL with TITO, upgrade both; the latest cookbook requires 1.2.30.
 
 ```bash theme={null}
 pip install --upgrade "fireworks-ai[training]>=1.2.30"
@@ -32832,7 +32882,7 @@ Each failed trajectory leaves a private JSONL trace (request, prepared token IDs
 
 Since 1.2.27, `sample` and `sample_async` take a keyword-only `images=` list of base64 data URLs for token prompts with one placeholder per image. Prompts with unprojected image chunks are rejected so sampler-owned delimiters aren't duplicated.
 
-See the cookbook's [TITO failure debugging reference](https://github.com/fw-ai/cookbook/blob/main/skills/debug/references/tito-failures.md) for every error code and how to read a trace.
+See the cookbook's [TITO failure debugging reference](https://github.com/fw-ai-external/cookbook/blob/main/skills/debug/references/tito-failures.md) for every error code and how to read a trace.
 
 **2026-10-19**
 

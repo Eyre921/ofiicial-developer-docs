@@ -112,17 +112,17 @@ This shows:
 
 Since AgentFS uses SQLite, you can run arbitrary queries:
 
-**Turso**
+> [tab] Turso
+>
+> ```bash theme={null}
+> tursodb .agentfs/my-session.db
+> ```
 
-```bash theme={null}
-tursodb .agentfs/my-session.db
-```
-
-**SQLite**
-
-```bash theme={null}
-sqlite3 .agentfs/my-session.db
-```
+> [tab] SQLite
+>
+> ```bash theme={null}
+> sqlite3 .agentfs/my-session.db
+> ```
 
 Example queries:
 
@@ -187,11 +187,11 @@ agentfs timeline my-session --format json > audit-log.json
 
 ## Next Steps
 
-> **[Overlay Filesystem](/agentfs/guides/overlay)**
+> [card] [Overlay Filesystem](/agentfs/guides/overlay)
 >
 > Understanding copy-on-write
 
-> **[Syncing](/agentfs/guides/sync)**
+> [card] [Syncing](/agentfs/guides/sync)
 >
 > Sync sessions to Turso Cloud
 
@@ -274,11 +274,11 @@ ls -la .agentfs/my-agent.db
 
 ## Next Steps
 
-> **[NFS Server](/agentfs/guides/nfs)**
+> [card] [NFS Server](/agentfs/guides/nfs)
 >
 > Remote access via NFS
 
-> **[Copy-on-Write Overlays](/agentfs/guides/overlay)**
+> [card] [Copy-on-Write Overlays](/agentfs/guides/overlay)
 >
 > How isolation works
 
@@ -351,11 +351,11 @@ umount -l /mnt/agentfs  # Lazy unmount
 
 ## Next Steps
 
-> **[MCP Server](/agentfs/guides/mcp)**
+> [card] [MCP Server](/agentfs/guides/mcp)
 >
 > Expose AgentFS via MCP
 
-> **[Sync with Turso Cloud](/agentfs/guides/sync)**
+> [card] [Sync with Turso Cloud](/agentfs/guides/sync)
 >
 > Back up and share agent state
 
@@ -546,11 +546,11 @@ See the [AgentFS Specification](https://github.com/tursodatabase/agentfs/blob/ma
 
 ## Next Steps
 
-> **[Sessions](/agentfs/guides/sessions)**
+> [card] [Sessions](/agentfs/guides/sessions)
 >
 > Share state between agents
 
-> **[Syncing](/agentfs/guides/sync)**
+> [card] [Syncing](/agentfs/guides/sync)
 >
 > Sync overlays to Turso Cloud
 
@@ -588,23 +588,23 @@ cd agentfs
 
 Use `agentfs run` with the `--session` flag to start a session. Pick a name that can eventually become your git branch name.
 
-**Claude Code**
+> [tab] Claude Code
+>
+> ```bash theme={null}
+> agentfs run --session fix-bug-123 claude
+> ```
 
-```bash theme={null}
-agentfs run --session fix-bug-123 claude
-```
+> [tab] Codex
+>
+> ```bash theme={null}
+> agentfs run --session fix-bug-123 codex
+> ```
 
-**Codex**
-
-```bash theme={null}
-agentfs run --session fix-bug-123 codex
-```
-
-**OpenCode**
-
-```bash theme={null}
-agentfs run --session fix-bug-123 opencode
-```
+> [tab] OpenCode
+>
+> ```bash theme={null}
+> agentfs run --session fix-bug-123 opencode
+> ```
 
 The agent now runs in a copy-on-write environment. Your original source tree remains untouched while the agent works.
 
@@ -635,11 +635,11 @@ You can then create a PR manually from the pushed branch.
 
 ## Next Steps
 
-> **[Multi-Agent Sessions](/agentfs/guides/sessions)**
+> [card] [Multi-Agent Sessions](/agentfs/guides/sessions)
 >
 > Share state between agents and terminals
 
-> **[Auditing](/agentfs/guides/auditing)**
+> [card] [Auditing](/agentfs/guides/auditing)
 >
 > Inspect what an agent did with diff and timeline
 
@@ -779,11 +779,11 @@ Each database contains:
 
 ## Next Steps
 
-> **[Auditing](/agentfs/guides/auditing)**
+> [card] [Auditing](/agentfs/guides/auditing)
 >
 > Inspect what happened in a session
 
-> **[Overlay Filesystem](/agentfs/guides/overlay)**
+> [card] [Overlay Filesystem](/agentfs/guides/overlay)
 >
 > How copy-on-write works
 
@@ -936,11 +936,11 @@ AgentFS uses last-write-wins for conflicts. If the same file is modified on mult
 
 ## Next Steps
 
-> **[Turso Cloud](https://turso.tech)**
+> [card] [Turso Cloud](https://turso.tech)
 >
 > Learn more about Turso Cloud
 
-> **[NFS Server](/agentfs/guides/nfs)**
+> [card] [NFS Server](/agentfs/guides/nfs)
 >
 > Remote access via NFS
 
@@ -962,47 +962,47 @@ This installs the `agentfs` binary to `~/.cargo/bin`.
 
 ## Platform-Specific Instructions
 
-**macOS**
+> [tab] macOS
+>
+> ```bash theme={null}
+> curl -fsSL https://github.com/tursodatabase/agentfs/releases/latest/download/agentfs-installer.sh | sh
+> ```
+>
+> After installation, restart your terminal or run:
+>
+> ```bash theme={null}
+> source ~/.zshrc  # or ~/.bashrc
+> ```
 
-```bash theme={null}
-curl -fsSL https://github.com/tursodatabase/agentfs/releases/latest/download/agentfs-installer.sh | sh
-```
+> [tab] Linux
+>
+> **Using the installer:**
+>
+> ```bash theme={null}
+> curl -fsSL https://github.com/tursodatabase/agentfs/releases/latest/download/agentfs-installer.sh | sh
+> ```
+>
+> After installation, restart your terminal or run:
+>
+> ```bash theme={null}
+> source ~/.bashrc  # or ~/.zshrc
+> ```
+>
+> **Requirements:**
+>
+> * FUSE must be available for filesystem mounting
+> * On Ubuntu/Debian: `sudo apt install fuse3`
+> * On Fedora: `sudo dnf install fuse3`
 
-After installation, restart your terminal or run:
-
-```bash theme={null}
-source ~/.zshrc  # or ~/.bashrc
-```
-
-**Linux**
-
-**Using the installer:**
-
-```bash theme={null}
-curl -fsSL https://github.com/tursodatabase/agentfs/releases/latest/download/agentfs-installer.sh | sh
-```
-
-After installation, restart your terminal or run:
-
-```bash theme={null}
-source ~/.bashrc  # or ~/.zshrc
-```
-
-**Requirements:**
-
-* FUSE must be available for filesystem mounting
-* On Ubuntu/Debian: `sudo apt install fuse3`
-* On Fedora: `sudo dnf install fuse3`
-
-**Windows**
-
-**Using PowerShell:**
-
-```powershell theme={null}
-irm https://github.com/tursodatabase/agentfs/releases/latest/download/agentfs-installer.ps1 | iex
-```
-
-Or download the binary directly from the [releases page](https://github.com/tursodatabase/agentfs/releases).
+> [tab] Windows
+>
+> **Using PowerShell:**
+>
+> ```powershell theme={null}
+> irm https://github.com/tursodatabase/agentfs/releases/latest/download/agentfs-installer.ps1 | iex
+> ```
+>
+> Or download the binary directly from the [releases page](https://github.com/tursodatabase/agentfs/releases).
 
 ## Verify Installation
 
@@ -1038,11 +1038,11 @@ cargo install --path .
 
 ## Next Steps
 
-> **[Agentic Coding](/agentfs/guides/sandbox)**
+> [card] [Agentic Coding](/agentfs/guides/sandbox)
 >
 > Run AI coding agents safely
 
-> **[CLI Reference](/agentfs/reference/cli)**
+> [card] [CLI Reference](/agentfs/reference/cli)
 >
 > Full command reference
 
@@ -1078,15 +1078,15 @@ agentfs run bash
 
 ## Next Steps
 
-> **[Installation](/agentfs/installation)**
+> [card] [Installation](/agentfs/installation)
 >
 > Install the AgentFS CLI
 
-> **[Agentic Coding](/agentfs/guides/sandbox)**
+> [card] [Agentic Coding](/agentfs/guides/sandbox)
 >
 > Run AI coding agents safely
 
-> **[AgentFS SDKs](/agentfs/sdk)**
+> [card] [AgentFS SDKs](/agentfs/sdk)
 >
 > Build custom agents with the AgentFS SDKs
 
@@ -1397,11 +1397,11 @@ Variables set inside the sandbox:
 
 ## See Also
 
-> **[Installation](/agentfs/installation)**
+> [card] [Installation](/agentfs/installation)
 >
 > Installation instructions
 
-> **[Sandbox Guide](/agentfs/guides/sandbox)**
+> [card] [Sandbox Guide](/agentfs/guides/sandbox)
 >
 > Running agents in sandboxes
 
@@ -1724,11 +1724,11 @@ asyncio.run(main())
 
 ## Next Steps
 
-> **[OpenAI Agents](/agentfs/integrations/openai-agents)**
+> [card] [OpenAI Agents](/agentfs/integrations/openai-agents)
 >
 > Using AgentFS with OpenAI Agents SDK
 
-> **[LlamaIndex](/agentfs/integrations/llamaindex)**
+> [card] [LlamaIndex](/agentfs/integrations/llamaindex)
 >
 > Using AgentFS with LlamaIndex
 
@@ -2154,23 +2154,23 @@ Build stateful AI agents with the AgentFS TypeScript SDK, supporting both Node.j
 
 ## Installation
 
-**npm**
+> [tab] npm
+>
+> ```bash theme={null}
+> npm install agentfs-sdk
+> ```
 
-```bash theme={null}
-npm install agentfs-sdk
-```
+> [tab] bun
+>
+> ```bash theme={null}
+> bun add agentfs-sdk
+> ```
 
-**bun**
-
-```bash theme={null}
-bun add agentfs-sdk
-```
-
-**deno**
-
-```typescript theme={null}
-import { AgentFS } from "npm:agentfs-sdk";
-```
+> [tab] deno
+>
+> ```typescript theme={null}
+> import { AgentFS } from "npm:agentfs-sdk";
+> ```
 
 ## Quick Start
 
@@ -2463,8 +2463,6 @@ curl -L https://api.turso.tech/v1/organizations/{organizationSlug}/audit-logs \
 
 # Authentication
 Source: https://docs.turso.tech/api-reference/authentication
-
-
 
 The Turso API uses API tokens to authenticate requests. You can create and revoke API tokens using the [Turso CLI](/cli) and [Authentication API](/api-reference/tokens/create).
 
@@ -3416,7 +3414,7 @@ const databases = await turso.databases.list();
 const db = await turso.databases.get("customer-db");
 ```
 
-> **[API Quickstart](/api-reference/quickstart)**
+> [card] [API Quickstart](/api-reference/quickstart)
 >
 > Step-by-step guide to create your first database with the API.
 
@@ -3934,8 +3932,6 @@ You now have a database, distributed across multiple regions that you can connec
 # Errors
 Source: https://docs.turso.tech/api-reference/response-codes
 
-
-
 The Turso API will respond with an HTTP status code, and in the event of an error, return an error message in the response body.
 
 | Code | Description |
@@ -4168,13 +4164,16 @@ const user = await turso.users.getCurrent();
 # auth api-tokens list
 Source: https://docs.turso.tech/cli/auth/api-tokens/list
 
-
-
 To list every API token you have minted across every organization you belong to, run the following command:
 
 ```bash theme={null}
 turso auth api-tokens list
 ```
+
+> [!NOTE]
+>
+> Login tokens from `turso auth login --headless` or [`turso auth token`](/cli/auth/token) do not appear in this list.
+> The [`api-tokens revoke`](/cli/auth/api-tokens/revoke) command does not revoke login tokens.
 
 The output is a table:
 
@@ -4202,8 +4201,6 @@ The list always reflects what the platform stores. Presets passed at creation ti
 
 # auth api-tokens mint
 Source: https://docs.turso.tech/cli/auth/api-tokens/mint
-
-
 
 To create a new API token, scoped to a single organization, run the following command:
 
@@ -4311,19 +4308,20 @@ Group-scoped tokens are pinned by the group's UUID, not its name. Deleting a gro
 # auth api-tokens revoke
 Source: https://docs.turso.tech/cli/auth/api-tokens/revoke
 
-
-
-To revoke an API token for the current organization, run the following command:
+To revoke a named API token for the current organization, run the following command:
 
 ```bash theme={null}
 turso auth api-tokens revoke <api-token-name>
 ```
 
+> [!NOTE]
+>
+> This command does not revoke login tokens from `turso auth login --headless` or [`turso auth token`](/cli/auth/token).
+> Login tokens do not appear in [`api-tokens list`](/cli/auth/api-tokens/list).
+
 
 # auth login
 Source: https://docs.turso.tech/cli/auth/login
-
-
 
 To authenticate the Turso CLI with your account, run the following command:
 
@@ -4345,8 +4343,6 @@ turso auth login
 # auth logout
 Source: https://docs.turso.tech/cli/auth/logout
 
-
-
 To logout of the Turso CLI, run the following command:
 
 ```bash theme={null}
@@ -4362,8 +4358,6 @@ turso auth logout
 
 # auth signup
 Source: https://docs.turso.tech/cli/auth/signup
-
-
 
 To sign up for a new Turso account using the CLI, run the following command:
 
@@ -4385,19 +4379,21 @@ turso auth signup
 # auth token
 Source: https://docs.turso.tech/cli/auth/token
 
-
-
 You can obtain your current API token that is used to authenticate with the Turso Platform API by running the following command:
 
 ```bash theme={null}
 turso auth token
 ```
 
+> [!NOTE]
+>
+> This login token also comes from `turso auth login --headless`.
+> It is not a named API token, so [`api-tokens list`](/cli/auth/api-tokens/list) does not list it.
+> The [`api-tokens revoke`](/cli/auth/api-tokens/revoke) command does not revoke it.
+
 
 # auth whoami
 Source: https://docs.turso.tech/cli/auth/whoami
-
-
 
 You can obtain the username for the currently logged in user by running the following command:
 
@@ -4408,8 +4404,6 @@ turso auth whoami
 
 # Authentication
 Source: https://docs.turso.tech/cli/authentication
-
-
 
 ## `login`
 
@@ -4455,8 +4449,6 @@ turso auth logout
 # contact bookmeeting
 Source: https://docs.turso.tech/cli/contact/bookmeeting
 
-
-
 You can book a meeting with the Turso team to discuss your project and requirements using the following command:
 
 ```bash theme={null}
@@ -4471,8 +4463,6 @@ turso contact bookmeeting
 # contact feedback
 Source: https://docs.turso.tech/cli/contact/feedback
 
-
-
 You can send feedback to the Turso team by using the following command:
 
 ```bash theme={null}
@@ -4482,8 +4472,6 @@ turso contact feedback
 
 # db config allow-rules clear
 Source: https://docs.turso.tech/cli/db/config/allow-rules/clear
-
-
 
 Clear the access allow rules for a database, allowing connections from any source.
 
@@ -4523,8 +4511,6 @@ turso db config allow-rules clear my-db --aws-vpcs
 
 # db config allow-rules set
 Source: https://docs.turso.tech/cli/db/config/allow-rules/set
-
-
 
 Set the access allow rules for a database. Each flag replaces the corresponding list; a list whose flag is not provided is left unchanged.
 
@@ -4581,8 +4567,6 @@ turso db config allow-rules set my-db \
 # db config allow-rules show
 Source: https://docs.turso.tech/cli/db/config/allow-rules/show
 
-
-
 Print the access allow rules for a database.
 
 ```bash theme={null}
@@ -4608,8 +4592,6 @@ Allowed AWS VPC endpoint IDs:
 
 # db create
 Source: https://docs.turso.tech/cli/db/create
-
-
 
 You can create a new database in a specific group using the following command:
 
@@ -4715,8 +4697,6 @@ turso db create [database-name] --enable-extensions
 # db destroy
 Source: https://docs.turso.tech/cli/db/destroy
 
-
-
 You can destroy a database by using the following command:
 
 ```bash theme={null}
@@ -4736,8 +4716,6 @@ turso db destroy <database-name> [flags]
 
 # db export
 Source: https://docs.turso.tech/cli/db/export
-
-
 
 Export a database snapshot from Turso to a SQLite file.
 
@@ -4759,8 +4737,6 @@ turso db export <database> [flags]
 
 # db import
 Source: https://docs.turso.tech/cli/db/import
-
-
 
 You can import an existing SQLite file to Turso Cloud using the following command:
 
@@ -4786,8 +4762,6 @@ turso db import ~/path/to/database.db
 
 # db inspect
 Source: https://docs.turso.tech/cli/db/inspect
-
-
 
 You can inspect the usage of a database, including the total space used, rows read and written with the following command:
 
@@ -4823,8 +4797,6 @@ UPDATE Products SET Price = Price * 1.10 WHERE Category = 'Electronics';
 # db list
 Source: https://docs.turso.tech/cli/db/list
 
-
-
 You can obtain a list of all databases for the current user or organization by running the following command:
 
 ```bash theme={null}
@@ -4841,8 +4813,6 @@ turso db list
 # db locations
 Source: https://docs.turso.tech/cli/db/locations
 
-
-
 You can fetch a list of supported locations where databases can be located by running the following command:
 
 ```bash theme={null}
@@ -4858,8 +4828,6 @@ turso db locations
 
 # db shell
 Source: https://docs.turso.tech/cli/db/shell
-
-
 
 You can connect directly to a Turso database by using the following command:
 
@@ -4917,8 +4885,6 @@ turso db shell http://127.0.0.1:8080
 # db show
 Source: https://docs.turso.tech/cli/db/show
 
-
-
 You can obtain details about the database, including the name, ID, libSQL server version, group, size and location.
 
 ```bash theme={null}
@@ -4938,13 +4904,14 @@ You can also obtain the different URLs for the database using the following:
 # db tokens create
 Source: https://docs.turso.tech/cli/db/tokens/create
 
-
-
 You can create a new token that can be used to connect to one database using the command:
 
 ```bash theme={null}
 turso db tokens create <database-name> [flags]
 ```
+
+By default, the token grants full access to the database and never expires.
+Use `--read-only` to restrict access or `--expiration` to set an expiration time.
 
 ## Flags
 
@@ -4977,8 +4944,6 @@ turso db tokens create <database-name> --expiration 7d3h2m1s
 # db tokens invalidate
 Source: https://docs.turso.tech/cli/db/tokens/invalidate
 
-
-
 You can invalidate all tokens for a database by running the following command:
 
 ```bash theme={null}
@@ -5001,12 +4966,8 @@ Source: https://docs.turso.tech/cli/dev
 
 
 
-
-
 # group aws-migration abort
 Source: https://docs.turso.tech/cli/group/aws-migration/abort
-
-
 
 You can abort the AWS migration process by using the following command:
 
@@ -5018,8 +4979,6 @@ turso group aws-migration abort <group-name>
 # group aws-migration info
 Source: https://docs.turso.tech/cli/group/aws-migration/info
 
-
-
 You can check the AWS migration details by using the following command:
 
 ```bash theme={null}
@@ -5030,8 +4989,6 @@ turso group aws-migration info <group-name>
 # group aws-migration start
 Source: https://docs.turso.tech/cli/group/aws-migration/start
 
-
-
 You can start the AWS migration process by using the following command:
 
 ```bash theme={null}
@@ -5041,8 +4998,6 @@ turso group aws-migration start <group-name>
 
 # group create
 Source: https://docs.turso.tech/cli/group/create
-
-
 
 You can create a new group of databases. Groups belong to a primary region.
 
@@ -5070,8 +5025,6 @@ turso group create <group-name> [flags]
 # group destroy
 Source: https://docs.turso.tech/cli/group/destroy
 
-
-
 You can destroy a group and all of its databases using the following command:
 
 ```bash theme={null}
@@ -5094,8 +5047,6 @@ turso group destroy <group-name> [flags]
 # group list
 Source: https://docs.turso.tech/cli/group/list
 
-
-
 You can obtain a list of all groups by using the following command:
 
 ```bash theme={null}
@@ -5105,8 +5056,6 @@ turso group list
 
 # group tokens create
 Source: https://docs.turso.tech/cli/group/tokens/create
-
-
 
 You can create a new token that can be used to connect to any database in the group using the command:
 
@@ -5145,8 +5094,6 @@ turso group tokens create <group-name> --expiration 7d
 # group tokens invalidate
 Source: https://docs.turso.tech/cli/group/tokens/invalidate
 
-
-
 You can invalidate all tokens for a group by running the command:
 
 ```bash theme={null}
@@ -5162,8 +5109,6 @@ turso group tokens invalidate <group-name> [flags]
 
 # group transfer
 Source: https://docs.turso.tech/cli/group/transfer
-
-
 
 You can transfer a group (including its databases) to an organization you're an admin or owner of using the following command:
 
@@ -5185,8 +5130,6 @@ turso group transfer <group-name> <organization-name> [flags]
 # group unarchive
 Source: https://docs.turso.tech/cli/group/unarchive
 
-
-
 You can unarchive inactive databases by running the following command:
 
 ```bash theme={null}
@@ -5200,8 +5143,6 @@ turso group unarchive <group-name>
 
 # group update
 Source: https://docs.turso.tech/cli/group/update
-
-
 
 You can update the group, including all databases the following command:
 
@@ -5231,8 +5172,6 @@ turso group update <group-name> --extensions all
 # Headless Mode
 Source: https://docs.turso.tech/cli/headless-mode
 
-
-
 The Turso CLI will automatically attempt to open a browser, or wait for further instructions when interacting with various commands.
 
 You can opt out of this behaviour by passing the `--headless` flag with operations:
@@ -5248,8 +5187,6 @@ turso auth login --headless
 
 # Help
 Source: https://docs.turso.tech/cli/help
-
-
 
 You can always find a summary of all commands by running the following command:
 
@@ -5322,8 +5259,6 @@ turso
 # Introduction
 Source: https://docs.turso.tech/cli/introduction
 
-
-
 The Turso CLI gives you everything you need from the command line to manage your database, API tokens, inviting users, and launching the database shell. If you're waiting for a migration to run, there's also a relax command.
 
 You can also programmatically manage your Turso account, including groups, databases, organizations and invites using the [Platform API](/api-reference).
@@ -5385,8 +5320,6 @@ The Turso CLI provides the following commands:
 # org billing
 Source: https://docs.turso.tech/cli/org/billing
 
-
-
 To open the billing portal for your organization:
 
 ```bash theme={null}
@@ -5396,8 +5329,6 @@ turso org billing
 
 # org create
 Source: https://docs.turso.tech/cli/org/create
-
-
 
 To create a new organization that you own, run the following command:
 
@@ -5413,8 +5344,6 @@ turso org create <name>
 # destroy
 Source: https://docs.turso.tech/cli/org/destroy
 
-
-
 To delete an existing organization that you own, run the following command:
 
 ```bash theme={null}
@@ -5429,8 +5358,6 @@ turso org destroy <organization-slug>
 # org list
 Source: https://docs.turso.tech/cli/org/list
 
-
-
 To list organizations of which you are the owner or a member, run the following command:
 
 ```bash theme={null}
@@ -5440,8 +5367,6 @@ turso org list
 
 # org members add
 Source: https://docs.turso.tech/cli/org/members/add
-
-
 
 To add an existing Turso user as a member to the current active organization, run the following command:
 
@@ -5459,8 +5384,6 @@ turso org members add <username> [flags]
 # org members invite
 Source: https://docs.turso.tech/cli/org/members/invite
 
-
-
 To invite someone who isn't already a Turso user to the current active organization, run the following command:
 
 ```bash theme={null}
@@ -5477,8 +5400,6 @@ turso org members invite <email> [flags]
 # org members list
 Source: https://docs.turso.tech/cli/org/members/list
 
-
-
 To list all members of the current active organization, run the following command:
 
 ```bash theme={null}
@@ -5493,8 +5414,6 @@ turso org members list
 # org members rm
 Source: https://docs.turso.tech/cli/org/members/rm
 
-
-
 To remove a member from the current organization, use the following command:
 
 ```bash theme={null}
@@ -5505,8 +5424,6 @@ turso org members rm <username>
 # org switch
 Source: https://docs.turso.tech/cli/org/switch
 
-
-
 To switch the current active organization for the CLI, use the following command:
 
 ```bash theme={null}
@@ -5516,8 +5433,6 @@ turso org switch <organization-slug>
 
 # plan overages disable
 Source: https://docs.turso.tech/cli/plan/overages/disable
-
-
 
 You can disable overages for the current repository by running the following command:
 
@@ -5533,8 +5448,6 @@ turso plan overages disable
 # plan overages enable
 Source: https://docs.turso.tech/cli/plan/overages/enable
 
-
-
 You can enable overages for the current repository by running the following command:
 
 ```bash theme={null}
@@ -5544,8 +5457,6 @@ turso plan overages enable
 
 # plan select
 Source: https://docs.turso.tech/cli/plan/select
-
-
 
 You can switch your current plan at any time using the command:
 
@@ -5561,8 +5472,6 @@ turso plan select
 # plan show
 Source: https://docs.turso.tech/cli/plan/show
 
-
-
 You can show the current plan usage and limits with the command:
 
 ```bash theme={null}
@@ -5572,8 +5481,6 @@ turso plan show
 
 # plan upgrade
 Source: https://docs.turso.tech/cli/plan/upgrade
-
-
 
 You can upgrade your account to a paid plan at any time using the command:
 
@@ -5736,8 +5643,6 @@ Omitting a field from the request body leaves that list unchanged.
 # Durability Guarantees
 Source: https://docs.turso.tech/cloud/durability
 
-
-
 The following are the durability guarantees provided by the Turso Cloud platform for users who registered or upgraded **after March 17, 2025**:
 
 | | Durability | Added commit latency |
@@ -5817,8 +5722,6 @@ The combination of our ground-up DST server and Antithesis allows us to test yea
 # BYOK Encryption
 Source: https://docs.turso.tech/cloud/encryption
 
-
-
 All databases are encrypted-at-rest at the volume level in the Turso Cloud, as part of our SOC2 standards. See [our trust center](https://trust.turso.tech) for details.
 
 For Pro, and Enterprise customers, there is the option to encrypt the databases with a key that you provide (Bring-Your-Own-Key Encryption, or BYOK), as described below.
@@ -5838,29 +5741,29 @@ Turso Cloud BYOK encryption for data at rest uses industry-standard AEAD algorit
 
 Turso Cloud with BYOK encryption is perfect for:
 
-> **AI Agents**
+> [card] AI Agents
 >
 > Manage a fleet of trusted agents that deal with personal private data
 
-> **Fintech Applications**
+> [card] Fintech Applications
 >
 > Meet regulatory requirements for sensitive financial data
 
-> **Privacy-Focused Products**
+> [card] Privacy-Focused Products
 >
 > Build user trust with strong data protection
 
-> **Healthcare Apps**
+> [card] Healthcare Apps
 >
 > Protect patient data and meet HIPAA compliance
 
-> **AI/ML Applications**
+> [card] AI/ML Applications
 >
 > Secure training data and model outputs
 
 ## What's Encrypted
 
-> **Encrypted**
+> [card] Encrypted
 >
 > * The database file and Write-Ahead Log (WAL) file on disk and on S3.
 
@@ -5868,33 +5771,33 @@ Turso Cloud with BYOK encryption is perfect for:
 
 Generate a secure encryption key in base64 format. The key size depends on the cipher you choose:
 
-**256-bit (32 bytes)**
+> [tab] 256-bit (32 bytes)
+>
+> For AEGIS-256 variants and AES-256-GCM:
+>
+> ```bash theme={null}
+> openssl rand -base64 32
+> ```
+>
+> Output example:
+>
+> ```
+> YUfkdsD2SJe4KzTB8n6CjwCgs1YIW6k1xxMEguRuI5s=
+> ```
 
-For AEGIS-256 variants and AES-256-GCM:
-
-```bash theme={null}
-openssl rand -base64 32
-```
-
-Output example:
-
-```
-YUfkdsD2SJe4KzTB8n6CjwCgs1YIW6k1xxMEguRuI5s=
-```
-
-**128-bit (16 bytes)**
-
-For AEGIS-128 variants and AES-128-GCM:
-
-```bash theme={null}
-openssl rand -base64 16
-```
-
-Output example:
-
-```
-XG1iWMFBFYEYrmYxjWDf5w==
-```
+> [tab] 128-bit (16 bytes)
+>
+> For AEGIS-128 variants and AES-128-GCM:
+>
+> ```bash theme={null}
+> openssl rand -base64 16
+> ```
+>
+> Output example:
+>
+> ```
+> XG1iWMFBFYEYrmYxjWDf5w==
+> ```
 
 > [!WARNING]
 >
@@ -6232,323 +6135,323 @@ Set up an AWS VPC endpoint to securely access Turso databases through AWS Privat
 
 ## Quickstart
 
-**us-east-1**
-
-**1. Create VPC Endpoint**
-
-Navigate to **VPC Dashboard** → **Endpoints** → **Create endpoint** and configure:
-
-> **Basic Settings**
+> [tab] us-east-1
 >
-> * **Name**: Enter a descriptive name (e.g., `turso-database-endpoint`)
-> * **Service category**: Select "Other endpoint services"
-> * **Service name**: Enter `com.amazonaws.vpce.us-east-1.vpce-svc-0d9cc6f6a688ce8a5`
-> * Click **Verify service**
-
-> **Network Configuration**
+> **1. Create VPC Endpoint**
 >
-> * Select your **VPC**
-> * Enable **DNS name**
-> * Choose **IPv4** for DNS record type
-> * Select subnets in supported AZs (`use1-az4` and/or `use1-az6`)
-> * Configure security groups and click **Create endpoint**
-
-**2. Configure Security Groups**
-
-Update security groups to allow proper communication:
-
-**VPC Endpoint Security Group:**
-
-* Inbound: Allow HTTPS (port 443) from your application security groups
-
-**Application Security Groups:**
-
-* Outbound: Allow HTTPS (port 443) to the VPC endpoint security group
-
-**3. Update Application Connections**
-
-Make sure you are using the regional Turso URL format:
-
-```bash theme={null}
-curl https://<database_name>-<organization_slug>.aws-us-east-1.turso.io
-```
-
-**4. Verify Setup**
-
-Test your VPC endpoint configuration from within your VPC:
-
-```bash theme={null}
-# Test connectivity
-curl -v https://<database_name>-<organization_slug>.aws-us-east-1.turso.io
-
-# Verify private routing (should show traffic staying within AWS network)
-traceroute -T <database_name>-<organization_slug>.aws-us-east-1.turso.io
-```
-
-**us-east-2**
-
-**1. Create VPC Endpoint**
-
-Navigate to **VPC Dashboard** → **Endpoints** → **Create endpoint** and configure:
-
-> **Basic Settings**
+> Navigate to **VPC Dashboard** → **Endpoints** → **Create endpoint** and configure:
 >
-> * **Name**: Enter a descriptive name (e.g., `turso-database-endpoint`)
-> * **Service category**: Select "Other endpoint services"
-> * **Service name**: Enter `com.amazonaws.vpce.us-east-2.vpce-svc-08cc04ea0962d5036`
-> * Click **Verify service**
-
-> **Network Configuration**
+> > [accordion] Basic Settings
+> >
+> > * **Name**: Enter a descriptive name (e.g., `turso-database-endpoint`)
+> > * **Service category**: Select "Other endpoint services"
+> > * **Service name**: Enter `com.amazonaws.vpce.us-east-1.vpce-svc-0d9cc6f6a688ce8a5`
+> > * Click **Verify service**
 >
-> * Select your **VPC**
-> * Enable **DNS name**
-> * Choose **IPv4** for DNS record type
-> * Select subnets in supported AZs (`use2-az1` and/or `use2-az2`)
-> * Configure security groups and click **Create endpoint**
-
-**2. Configure Security Groups**
-
-Update security groups to allow proper communication:
-
-**VPC Endpoint Security Group:**
-
-* Inbound: Allow HTTPS (port 443) from your application security groups
-
-**Application Security Groups:**
-
-* Outbound: Allow HTTPS (port 443) to the VPC endpoint security group
-
-**3. Update Application Connections**
-
-Make sure you are using the regional Turso URL format:
-
-```bash theme={null}
-curl https://<database_name>-<organization_slug>.aws-us-east-2.turso.io
-```
-
-**4. Verify Setup**
-
-Test your VPC endpoint configuration from within your VPC:
-
-```bash theme={null}
-# Test connectivity
-curl -v https://<database_name>-<organization_slug>.aws-us-east-2.turso.io
-
-# Verify private routing (should show traffic staying within AWS network)
-traceroute -T <database_name>-<organization_slug>.aws-us-east-2.turso.io
-```
-
-**us-west-2**
-
-**1. Create VPC Endpoint**
-
-Navigate to **VPC Dashboard** → **Endpoints** → **Create endpoint** and configure:
-
-> **Basic Settings**
+> > [accordion] Network Configuration
+> >
+> > * Select your **VPC**
+> > * Enable **DNS name**
+> > * Choose **IPv4** for DNS record type
+> > * Select subnets in supported AZs (`use1-az4` and/or `use1-az6`)
+> > * Configure security groups and click **Create endpoint**
 >
-> * **Name**: Enter a descriptive name (e.g., `turso-database-endpoint`)
-> * **Service category**: Select "Other endpoint services"
-> * **Service name**: Enter `com.amazonaws.vpce.us-west-2.vpce-svc-0372e98cdacb325b7`
-> * Click **Verify service**
-
-> **Network Configuration**
+> **2. Configure Security Groups**
 >
-> * Select your **VPC**
-> * Enable **DNS name**
-> * Choose **IPv4** for DNS record type
-> * Select subnets in supported AZs (`usw2-az1` and/or `usw2-az3`)
-> * Configure security groups and click **Create endpoint**
-
-**2. Configure Security Groups**
-
-Update security groups to allow proper communication:
-
-**VPC Endpoint Security Group:**
-
-* Inbound: Allow HTTPS (port 443) from your application security groups
-
-**Application Security Groups:**
-
-* Outbound: Allow HTTPS (port 443) to the VPC endpoint security group
-
-**3. Update Application Connections**
-
-Make sure you are using the regional Turso URL format:
-
-```bash theme={null}
-curl https://<database_name>-<organization_slug>.aws-us-west-2.turso.io
-```
-
-**4. Verify Setup**
-
-Test your VPC endpoint configuration from within your VPC:
-
-```bash theme={null}
-# Test connectivity
-curl -v https://<database_name>-<organization_slug>.aws-us-west-2.turso.io
-
-# Verify private routing (should show traffic staying within AWS network)
-traceroute -T <database_name>-<organization_slug>.aws-us-west-2.turso.io
-```
-
-**eu-west-1**
-
-**1. Create VPC Endpoint**
-
-Navigate to **VPC Dashboard** → **Endpoints** → **Create endpoint** and configure:
-
-> **Basic Settings**
+> Update security groups to allow proper communication:
 >
-> * **Name**: Enter a descriptive name (e.g., `turso-database-endpoint`)
-> * **Service category**: Select "Other endpoint services"
-> * **Service name**: Enter `com.amazonaws.vpce.eu-west-1.vpce-svc-09559a4fb467b07fd`
-> * Click **Verify service**
-
-> **Network Configuration**
+> **VPC Endpoint Security Group:**
 >
-> * Select your **VPC**
-> * Enable **DNS name**
-> * Choose **IPv4** for DNS record type
-> * Select subnets in supported AZs (`euw1-az1` and/or `euw1-az3`)
-> * Configure security groups and click **Create endpoint**
-
-**2. Configure Security Groups**
-
-Update security groups to allow proper communication:
-
-**VPC Endpoint Security Group:**
-
-* Inbound: Allow HTTPS (port 443) from your application security groups
-
-**Application Security Groups:**
-
-* Outbound: Allow HTTPS (port 443) to the VPC endpoint security group
-
-**3. Update Application Connections**
-
-Make sure you are using the regional Turso URL format:
-
-```bash theme={null}
-curl https://<database_name>-<organization_slug>.aws-eu-west-1.turso.io
-```
-
-**4. Verify Setup**
-
-Test your VPC endpoint configuration from within your VPC:
-
-```bash theme={null}
-# Test connectivity
-curl -v https://<database_name>-<organization_slug>.aws-eu-west-1.turso.io
-
-# Verify private routing (should show traffic staying within AWS network)
-traceroute -T <database_name>-<organization_slug>.aws-eu-west-1.turso.io
-```
-
-**ap-south-1**
-
-**1. Create VPC Endpoint**
-
-Navigate to **VPC Dashboard** → **Endpoints** → **Create endpoint** and configure:
-
-> **Basic Settings**
+> * Inbound: Allow HTTPS (port 443) from your application security groups
 >
-> * **Name**: Enter a descriptive name (e.g., `turso-database-endpoint`)
-> * **Service category**: Select "Other endpoint services"
-> * **Service name**: Enter `com.amazonaws.vpce.ap-south-1.vpce-svc-0c1607d1026a49817`
-> * Click **Verify service**
-
-> **Network Configuration**
+> **Application Security Groups:**
 >
-> * Select your **VPC**
-> * Enable **DNS name**
-> * Choose **IPv4** for DNS record type
-> * Select subnets in supported AZs (`aps1-az1` and/or `aps1-az3`)
-> * Configure security groups and click **Create endpoint**
-
-**2. Configure Security Groups**
-
-Update security groups to allow proper communication:
-
-**VPC Endpoint Security Group:**
-
-* Inbound: Allow HTTPS (port 443) from your application security groups
-
-**Application Security Groups:**
-
-* Outbound: Allow HTTPS (port 443) to the VPC endpoint security group
-
-**3. Update Application Connections**
-
-Make sure you are using the regional Turso URL format:
-
-```bash theme={null}
-curl https://<database_name>-<organization_slug>.aws-ap-south-1.turso.io
-```
-
-**4. Verify Setup**
-
-Test your VPC endpoint configuration from within your VPC:
-
-```bash theme={null}
-# Test connectivity
-curl -v https://<database_name>-<organization_slug>.aws-ap-south-1.turso.io
-
-# Verify private routing (should show traffic staying within AWS network)
-traceroute -T <database_name>-<organization_slug>.aws-ap-south-1.turso.io
-```
-
-**ap-northeast-1**
-
-**1. Create VPC Endpoint**
-
-Navigate to **VPC Dashboard** → **Endpoints** → **Create endpoint** and configure:
-
-> **Basic Settings**
+> * Outbound: Allow HTTPS (port 443) to the VPC endpoint security group
 >
-> * **Name**: Enter a descriptive name (e.g., `turso-database-endpoint`)
-> * **Service category**: Select "Other endpoint services"
-> * **Service name**: Enter `com.amazonaws.vpce.ap-northeast-1.vpce-svc-070f604683ada07db`
-> * Click **Verify service**
-
-> **Network Configuration**
+> **3. Update Application Connections**
 >
-> * Select your **VPC**
-> * Enable **DNS name**
-> * Choose **IPv4** for DNS record type
-> * Select subnets in supported AZs (`apne1-az4` and/or `apne1-az1`)
-> * Configure security groups and click **Create endpoint**
+> Make sure you are using the regional Turso URL format:
+>
+> ```bash theme={null}
+> curl https://<database_name>-<organization_slug>.aws-us-east-1.turso.io
+> ```
+>
+> **4. Verify Setup**
+>
+> Test your VPC endpoint configuration from within your VPC:
+>
+> ```bash theme={null}
+> # Test connectivity
+> curl -v https://<database_name>-<organization_slug>.aws-us-east-1.turso.io
+>
+> # Verify private routing (should show traffic staying within AWS network)
+> traceroute -T <database_name>-<organization_slug>.aws-us-east-1.turso.io
+> ```
 
-**2. Configure Security Groups**
+> [tab] us-east-2
+>
+> **1. Create VPC Endpoint**
+>
+> Navigate to **VPC Dashboard** → **Endpoints** → **Create endpoint** and configure:
+>
+> > [accordion] Basic Settings
+> >
+> > * **Name**: Enter a descriptive name (e.g., `turso-database-endpoint`)
+> > * **Service category**: Select "Other endpoint services"
+> > * **Service name**: Enter `com.amazonaws.vpce.us-east-2.vpce-svc-08cc04ea0962d5036`
+> > * Click **Verify service**
+>
+> > [accordion] Network Configuration
+> >
+> > * Select your **VPC**
+> > * Enable **DNS name**
+> > * Choose **IPv4** for DNS record type
+> > * Select subnets in supported AZs (`use2-az1` and/or `use2-az2`)
+> > * Configure security groups and click **Create endpoint**
+>
+> **2. Configure Security Groups**
+>
+> Update security groups to allow proper communication:
+>
+> **VPC Endpoint Security Group:**
+>
+> * Inbound: Allow HTTPS (port 443) from your application security groups
+>
+> **Application Security Groups:**
+>
+> * Outbound: Allow HTTPS (port 443) to the VPC endpoint security group
+>
+> **3. Update Application Connections**
+>
+> Make sure you are using the regional Turso URL format:
+>
+> ```bash theme={null}
+> curl https://<database_name>-<organization_slug>.aws-us-east-2.turso.io
+> ```
+>
+> **4. Verify Setup**
+>
+> Test your VPC endpoint configuration from within your VPC:
+>
+> ```bash theme={null}
+> # Test connectivity
+> curl -v https://<database_name>-<organization_slug>.aws-us-east-2.turso.io
+>
+> # Verify private routing (should show traffic staying within AWS network)
+> traceroute -T <database_name>-<organization_slug>.aws-us-east-2.turso.io
+> ```
 
-Update security groups to allow proper communication:
+> [tab] us-west-2
+>
+> **1. Create VPC Endpoint**
+>
+> Navigate to **VPC Dashboard** → **Endpoints** → **Create endpoint** and configure:
+>
+> > [accordion] Basic Settings
+> >
+> > * **Name**: Enter a descriptive name (e.g., `turso-database-endpoint`)
+> > * **Service category**: Select "Other endpoint services"
+> > * **Service name**: Enter `com.amazonaws.vpce.us-west-2.vpce-svc-0372e98cdacb325b7`
+> > * Click **Verify service**
+>
+> > [accordion] Network Configuration
+> >
+> > * Select your **VPC**
+> > * Enable **DNS name**
+> > * Choose **IPv4** for DNS record type
+> > * Select subnets in supported AZs (`usw2-az1` and/or `usw2-az3`)
+> > * Configure security groups and click **Create endpoint**
+>
+> **2. Configure Security Groups**
+>
+> Update security groups to allow proper communication:
+>
+> **VPC Endpoint Security Group:**
+>
+> * Inbound: Allow HTTPS (port 443) from your application security groups
+>
+> **Application Security Groups:**
+>
+> * Outbound: Allow HTTPS (port 443) to the VPC endpoint security group
+>
+> **3. Update Application Connections**
+>
+> Make sure you are using the regional Turso URL format:
+>
+> ```bash theme={null}
+> curl https://<database_name>-<organization_slug>.aws-us-west-2.turso.io
+> ```
+>
+> **4. Verify Setup**
+>
+> Test your VPC endpoint configuration from within your VPC:
+>
+> ```bash theme={null}
+> # Test connectivity
+> curl -v https://<database_name>-<organization_slug>.aws-us-west-2.turso.io
+>
+> # Verify private routing (should show traffic staying within AWS network)
+> traceroute -T <database_name>-<organization_slug>.aws-us-west-2.turso.io
+> ```
 
-**VPC Endpoint Security Group:**
+> [tab] eu-west-1
+>
+> **1. Create VPC Endpoint**
+>
+> Navigate to **VPC Dashboard** → **Endpoints** → **Create endpoint** and configure:
+>
+> > [accordion] Basic Settings
+> >
+> > * **Name**: Enter a descriptive name (e.g., `turso-database-endpoint`)
+> > * **Service category**: Select "Other endpoint services"
+> > * **Service name**: Enter `com.amazonaws.vpce.eu-west-1.vpce-svc-09559a4fb467b07fd`
+> > * Click **Verify service**
+>
+> > [accordion] Network Configuration
+> >
+> > * Select your **VPC**
+> > * Enable **DNS name**
+> > * Choose **IPv4** for DNS record type
+> > * Select subnets in supported AZs (`euw1-az1` and/or `euw1-az3`)
+> > * Configure security groups and click **Create endpoint**
+>
+> **2. Configure Security Groups**
+>
+> Update security groups to allow proper communication:
+>
+> **VPC Endpoint Security Group:**
+>
+> * Inbound: Allow HTTPS (port 443) from your application security groups
+>
+> **Application Security Groups:**
+>
+> * Outbound: Allow HTTPS (port 443) to the VPC endpoint security group
+>
+> **3. Update Application Connections**
+>
+> Make sure you are using the regional Turso URL format:
+>
+> ```bash theme={null}
+> curl https://<database_name>-<organization_slug>.aws-eu-west-1.turso.io
+> ```
+>
+> **4. Verify Setup**
+>
+> Test your VPC endpoint configuration from within your VPC:
+>
+> ```bash theme={null}
+> # Test connectivity
+> curl -v https://<database_name>-<organization_slug>.aws-eu-west-1.turso.io
+>
+> # Verify private routing (should show traffic staying within AWS network)
+> traceroute -T <database_name>-<organization_slug>.aws-eu-west-1.turso.io
+> ```
 
-* Inbound: Allow HTTPS (port 443) from your application security groups
+> [tab] ap-south-1
+>
+> **1. Create VPC Endpoint**
+>
+> Navigate to **VPC Dashboard** → **Endpoints** → **Create endpoint** and configure:
+>
+> > [accordion] Basic Settings
+> >
+> > * **Name**: Enter a descriptive name (e.g., `turso-database-endpoint`)
+> > * **Service category**: Select "Other endpoint services"
+> > * **Service name**: Enter `com.amazonaws.vpce.ap-south-1.vpce-svc-0c1607d1026a49817`
+> > * Click **Verify service**
+>
+> > [accordion] Network Configuration
+> >
+> > * Select your **VPC**
+> > * Enable **DNS name**
+> > * Choose **IPv4** for DNS record type
+> > * Select subnets in supported AZs (`aps1-az1` and/or `aps1-az3`)
+> > * Configure security groups and click **Create endpoint**
+>
+> **2. Configure Security Groups**
+>
+> Update security groups to allow proper communication:
+>
+> **VPC Endpoint Security Group:**
+>
+> * Inbound: Allow HTTPS (port 443) from your application security groups
+>
+> **Application Security Groups:**
+>
+> * Outbound: Allow HTTPS (port 443) to the VPC endpoint security group
+>
+> **3. Update Application Connections**
+>
+> Make sure you are using the regional Turso URL format:
+>
+> ```bash theme={null}
+> curl https://<database_name>-<organization_slug>.aws-ap-south-1.turso.io
+> ```
+>
+> **4. Verify Setup**
+>
+> Test your VPC endpoint configuration from within your VPC:
+>
+> ```bash theme={null}
+> # Test connectivity
+> curl -v https://<database_name>-<organization_slug>.aws-ap-south-1.turso.io
+>
+> # Verify private routing (should show traffic staying within AWS network)
+> traceroute -T <database_name>-<organization_slug>.aws-ap-south-1.turso.io
+> ```
 
-**Application Security Groups:**
-
-* Outbound: Allow HTTPS (port 443) to the VPC endpoint security group
-
-**3. Update Application Connections**
-
-Make sure you are using the regional Turso URL format:
-
-```bash theme={null}
-curl https://<database_name>-<organization_slug>.aws-ap-northeast-1.turso.io
-```
-
-**4. Verify Setup**
-
-Test your VPC endpoint configuration from within your VPC:
-
-```bash theme={null}
-# Test connectivity
-curl -v https://<database_name>-<organization_slug>.aws-ap-northeast-1.turso.io
-
-# Verify private routing (should show traffic staying within AWS network)
-traceroute -T <database_name>-<organization_slug>.aws-ap-northeast-1.turso.io
-```
+> [tab] ap-northeast-1
+>
+> **1. Create VPC Endpoint**
+>
+> Navigate to **VPC Dashboard** → **Endpoints** → **Create endpoint** and configure:
+>
+> > [accordion] Basic Settings
+> >
+> > * **Name**: Enter a descriptive name (e.g., `turso-database-endpoint`)
+> > * **Service category**: Select "Other endpoint services"
+> > * **Service name**: Enter `com.amazonaws.vpce.ap-northeast-1.vpce-svc-070f604683ada07db`
+> > * Click **Verify service**
+>
+> > [accordion] Network Configuration
+> >
+> > * Select your **VPC**
+> > * Enable **DNS name**
+> > * Choose **IPv4** for DNS record type
+> > * Select subnets in supported AZs (`apne1-az4` and/or `apne1-az1`)
+> > * Configure security groups and click **Create endpoint**
+>
+> **2. Configure Security Groups**
+>
+> Update security groups to allow proper communication:
+>
+> **VPC Endpoint Security Group:**
+>
+> * Inbound: Allow HTTPS (port 443) from your application security groups
+>
+> **Application Security Groups:**
+>
+> * Outbound: Allow HTTPS (port 443) to the VPC endpoint security group
+>
+> **3. Update Application Connections**
+>
+> Make sure you are using the regional Turso URL format:
+>
+> ```bash theme={null}
+> curl https://<database_name>-<organization_slug>.aws-ap-northeast-1.turso.io
+> ```
+>
+> **4. Verify Setup**
+>
+> Test your VPC endpoint configuration from within your VPC:
+>
+> ```bash theme={null}
+> # Test connectivity
+> curl -v https://<database_name>-<organization_slug>.aws-ap-northeast-1.turso.io
+>
+> # Verify private routing (should show traffic staying within AWS network)
+> traceroute -T <database_name>-<organization_slug>.aws-ap-northeast-1.turso.io
+> ```
 
 ## Important Notes
 
@@ -6560,8 +6463,6 @@ traceroute -T <database_name>-<organization_slug>.aws-ap-northeast-1.turso.io
 
 # Connect to Turso using Dart
 Source: https://docs.turso.tech/connect/dart
-
-
 
 **1. Install**
 
@@ -6635,8 +6536,6 @@ print(result);
 
 # Connect to Turso using Go
 Source: https://docs.turso.tech/connect/go
-
-
 
 **1. Install**
 
@@ -6725,8 +6624,6 @@ for rows.Next() {
 # Connect to Turso using Java
 Source: https://docs.turso.tech/connect/java
 
-
-
 **1. Install**
 
 Currently, we have not published to the maven central. Instead, you can locally build the jar and deploy it to maven local to use it.
@@ -6754,8 +6651,6 @@ dependencies {
 
 # Connect to Turso using JavaScript
 Source: https://docs.turso.tech/connect/javascript
-
-
 
 ## Quickstart
 
@@ -6822,8 +6717,6 @@ Explore these JavaScript examples to learn more about using Turso Database:
 # Connect to Turso using Python
 Source: https://docs.turso.tech/connect/python
 
-
-
 **1. Install**
 
 Add the Turso package to your Python project:
@@ -6880,8 +6773,6 @@ print(users)
 
 # Connect to Turso using Rust
 Source: https://docs.turso.tech/connect/rust
-
-
 
 **1. Install**
 
@@ -7349,8 +7240,6 @@ const rs = await txn.execute("SELECT * FROM my_db.my_table");
 # Branching
 Source: https://docs.turso.tech/features/branching
 
-
-
 A branch is a separate database instance that is created from an existing database. You can also create a branch from a [point-in-time](/features/point-in-time-recovery) snapshot of a database. Branches are useful for development and testing, because they allow you to make changes to the database without affecting the original database.
 
 ## How it works
@@ -7385,9 +7274,9 @@ curl -L -X POST 'https://api.turso.tech/v1/organizations/{organizationSlug}/data
 
 Refer to the following references for more details about all arguments:
 
-> **[CLI Reference](/cli/db/create)**
+> [card] [CLI Reference](/cli/db/create)
 
-> **[API Reference](/api-reference/databases/create)**
+> [card] [API Reference](/api-reference/databases/create)
 
 ## Things to know
 
@@ -7475,8 +7364,6 @@ curl -L -X DELETE 'https://api.turso.tech/v1/organizations/{organizationSlug}/gr
 
 # Embedded Replicas
 Source: https://docs.turso.tech/features/embedded-replicas/introduction
-
-
 
 > [!NOTE]
 >
@@ -7692,23 +7579,23 @@ $db->sync();
 
 ## Deployment Guides
 
-> **[Turso + Fly](/features/embedded-replicas/with-fly)**
+> [card] [Turso + Fly](/features/embedded-replicas/with-fly)
 >
 > Deploy a JavaScript project with Embedded Replicas to Fly.io
 
-> **[Turso + Koyeb](/features/embedded-replicas/with-koyeb)**
+> [card] [Turso + Koyeb](/features/embedded-replicas/with-koyeb)
 >
 > Deploy a JavaScript/Rust project with Embedded Replicas to Koyeb
 
-> **[Turso + Railway](/features/embedded-replicas/with-railway)**
+> [card] [Turso + Railway](/features/embedded-replicas/with-railway)
 >
 > Deploy a JavaScript/Rust project with Embedded Replicas to Railway
 
-> **[Turso + Render](/features/embedded-replicas/with-render)**
+> [card] [Turso + Render](/features/embedded-replicas/with-render)
 >
 > Deploy a JavaScript project with Embedded Replicas to Render
 
-> **[Turso + Linode by Akamai](/features/embedded-replicas/with-akamai)**
+> [card] [Turso + Linode by Akamai](/features/embedded-replicas/with-akamai)
 >
 > Deploy a JavaScript/Rust project with Embedded Replicas to Akamai
 
@@ -7742,11 +7629,11 @@ You will need an existing database to continue. If you don't have one, [create o
 
 Fork one of the following embedded replica projects from GitHub
 
-> **[My Expenses Tracker - (Elysia + Bun)](https://github.com/tursodatabase/embedded-replicas-with-js)**
+> [card] [My Expenses Tracker - (Elysia + Bun)](https://github.com/tursodatabase/embedded-replicas-with-js)
 >
 > See the full source code
 
-> **[Web Traffic API - (Rust)](https://github.com/tursodatabase/embedded-replicas-with-rust)**
+> [card] [Web Traffic API - (Rust)](https://github.com/tursodatabase/embedded-replicas-with-rust)
 >
 > See the full source code
 
@@ -7884,11 +7771,11 @@ You will need an existing database to continue. If you don't have one, [create o
 
 Fork one of the following embedded replica project from GitHub
 
-> **[My Expenses Tracker - (Elysia + Bun)](https://github.com/tursodatabase/embedded-replicas-with-js)**
+> [card] [My Expenses Tracker - (Elysia + Bun)](https://github.com/tursodatabase/embedded-replicas-with-js)
 >
 > See the full source code
 
-> **[Web Traffic API - (Rust)](https://github.com/tursodatabase/embedded-replicas-with-rust)**
+> [card] [Web Traffic API - (Rust)](https://github.com/tursodatabase/embedded-replicas-with-rust)
 >
 > See the full source code
 
@@ -7896,7 +7783,7 @@ Fork one of the following embedded replica project from GitHub
 >
 > Or, you can:
 >
-> > **[Deploy to Koyeb with a single-click](https://app.koyeb.com/deploy?name=er-with-js\&type=git\&repository=tursodatabase/embedded-replicas-with-js\&branch=main\&env\[PORT]=8000\&env\[TURSO_DATABASE_URL]=REPLACE_ME\&env\[TURSO_AUTH_TOKEN]=REPLACE_ME\&env\[LOCAL_DB]=file:expenses.db)**
+> > [card] [Deploy to Koyeb with a single-click](https://app.koyeb.com/deploy?name=er-with-js\&type=git\&repository=tursodatabase/embedded-replicas-with-js\&branch=main\&env\[PORT]=8000\&env\[TURSO_DATABASE_URL]=REPLACE_ME\&env\[TURSO_AUTH_TOKEN]=REPLACE_ME\&env\[LOCAL_DB]=file:expenses.db)
 
 **3. Add a new Koyeb app**
 
@@ -7944,11 +7831,11 @@ You will need an existing database to continue. If you don't have one, [create o
 
 Fork and clone the following embedded replica project from GitHub locally:
 
-> **[My Expenses Tracker - (Elysia + Bun)](https://github.com/tursodatabase/embedded-replicas-with-js)**
+> [card] [My Expenses Tracker - (Elysia + Bun)](https://github.com/tursodatabase/embedded-replicas-with-js)
 >
 > See the full source code
 
-> **[Web Traffic API - (Rust)](https://github.com/tursodatabase/embedded-replicas-with-rust)**
+> [card] [Web Traffic API - (Rust)](https://github.com/tursodatabase/embedded-replicas-with-rust)
 >
 > See the full source code
 
@@ -8028,7 +7915,7 @@ You will need an existing database to continue. If you don't have one, [create o
 
 Fork the following embedded replica project from GitHub locally:
 
-> **[My Expenses Tracker - (Elysia + Bun)](https://github.com/tursodatabase/embedded-replicas-with-js)**
+> [card] [My Expenses Tracker - (Elysia + Bun)](https://github.com/tursodatabase/embedded-replicas-with-js)
 >
 > See the full source code
 
@@ -8036,7 +7923,7 @@ Fork the following embedded replica project from GitHub locally:
 >
 > Or, you can:
 >
-> > **[Deploy to Render with a single-click](https://render.com/deploy?repo=https://github.com/tursodatabase/embedded-replicas-with-js)**
+> > [card] [Deploy to Render with a single-click](https://render.com/deploy?repo=https://github.com/tursodatabase/embedded-replicas-with-js)
 
 **3. Create a web service**
 
@@ -8200,8 +8087,6 @@ turso db shell parent-db "CREATE TABLE users (id INT PRIMARY KEY, name TEXT);"
 # Point-in-Time Recovery
 Source: https://docs.turso.tech/features/point-in-time-recovery
 
-
-
 Turso supports point-in-time recovery (PITR) for databases. PITR allows you to restore a database to a specific point in time. This is useful for recovering from user errors, such as dropping a table by mistake.
 
 > [!NOTE]
@@ -8243,9 +8128,9 @@ curl -L -X POST 'https://api.turso.tech/v1/organizations/{organizationSlug}/data
 
 Refer to the following references for more details about all arguments:
 
-> **[CLI Reference](/cli/db/create)**
+> [card] [CLI Reference](/cli/db/create)
 
-> **[API Reference](/api-reference/databases/create)**
+> [card] [API Reference](/api-reference/databases/create)
 
 ## Things to know
 
@@ -8327,13 +8212,13 @@ pass a JSON body: `{ "name": "my-restored-database" }`.
 
 Refer to the API reference for all parameters and response fields:
 
-> **[List Deleted Databases](/api-reference/databases/list-deleted)**
+> [card] [List Deleted Databases](/api-reference/databases/list-deleted)
 
-> **[Restore Database](/api-reference/databases/restore)**
+> [card] [Restore Database](/api-reference/databases/restore)
 
-> **[List Deleted Groups](/api-reference/groups/list-deleted)**
+> [card] [List Deleted Groups](/api-reference/groups/list-deleted)
 
-> **[Restore Group](/api-reference/groups/restore)**
+> [card] [Restore Group](/api-reference/groups/restore)
 
 ## Restore with an AI agent
 
@@ -8392,9 +8277,9 @@ recovery.
   [group](/api-reference/groups/update-configuration) — a protected database
   cannot be deleted until protection is turned off.
 
-> **[Point-in-Time Recovery](/features/point-in-time-recovery)**
+> [card] [Point-in-Time Recovery](/features/point-in-time-recovery)
 
-> **[MCP (AI agents)](/integrations/mcp)**
+> [card] [MCP (AI agents)](/integrations/mcp)
 
 
 # SQLite Extensions
@@ -8437,8 +8322,6 @@ The following extensions are also enabled in addition to the preloaded extension
 
 # Agent Databases
 Source: https://docs.turso.tech/guides/agent-databases
-
-
 
 > [!NOTE]
 >
@@ -8636,8 +8519,6 @@ Explore these examples to see agent database patterns in action:
 # AI Memory
 Source: https://docs.turso.tech/guides/ai-memory
 
-
-
 AI agents start every session from scratch. A persistent memory system lets agents store lessons and retrieve relevant context via vector search. Turso's embedded database with built-in vector functions makes this possible in a single local file.
 
 This guide covers the schema and queries for building a memory system with vector similarity search.
@@ -8781,8 +8662,6 @@ The schema above is deliberately minimal. In practice you will want to experimen
 
 # Code Indexing
 Source: https://docs.turso.tech/guides/code-indexing
-
-
 
 AI coding agents work better when they can search a codebase semantically ("find the authentication logic") rather than just by filename or grep. A code index backed by Turso can combine full-text search over identifiers with vector similarity search over embeddings, all in a single embedded database.
 
@@ -9038,8 +8917,6 @@ DROP TABLE IF EXISTS fts_1;
 # Content Caching
 Source: https://docs.turso.tech/guides/content-caching
 
-
-
 Tools and agents frequently re-read files they have already seen, wasting tokens and time. A content-addressed cache backed by an embedded Turso database can detect unchanged files and return diffs instead of full content, dramatically reducing redundant I/O.
 
 This guide walks through the schema and queries needed to build a file content cache with per-session tracking.
@@ -9193,8 +9070,6 @@ UPDATE stats SET value = 0;
 
 # Secrets Vault
 Source: https://docs.turso.tech/guides/secrets-vault
-
-
 
 AI coding agents regularly need real credentials — an API token to call GitHub as you, a key to hit your billing provider, a token to deploy. The path of least resistance is to paste the secret into the chat, but then the value lives in the model's context, the transcript, and your provider's logs forever. A secrets vault backed by an encrypted Turso database lets an agent *use* a secret without ever seeing its value: the secret is injected into a child process, the command runs, and the output is scrubbed before the agent sees it.
 
@@ -9556,8 +9431,6 @@ LIMIT 3;
 # Usage & Billing
 Source: https://docs.turso.tech/help/usage-and-billing
 
-
-
 For the Starter and Scaler plans, Turso usage is limited monthly based on the following usage observations during each calendar month:
 
 * Number of table [rows read](#rows-read)
@@ -9690,77 +9563,77 @@ apart and confirm before doing anything that changes data.
 
 ## Connect
 
-**Claude Code**
+> [tab] Claude Code
+>
+> Install the plugin, then authenticate:
+>
+> ```bash theme={null}
+> /plugin marketplace add tursodatabase/turso-mcp
+> /plugin install turso@turso
+> ```
+>
+> Run `/mcp`, select **turso**, and choose **Authenticate**. Your browser opens
+> to approve access (see [Authorize](#authorize-access) below).
 
-Install the plugin, then authenticate:
+> [tab] Codex
+>
+> Install the plugin (it bundles the Turso skill too), then authenticate:
+>
+> ```bash theme={null}
+> codex plugin marketplace add tursodatabase/turso-mcp
+> codex plugin add turso@turso
+> codex mcp login turso
+> ```
+>
+> A browser opens to approve access (see [Authorize](#authorize-access) below).
+> MCP-only alternative: add `[mcp_servers.turso]` with
+> `url = "https://mcp.turso.ai/mcp"` to `~/.codex/config.toml`, then
+> `codex mcp login turso`.
 
-```bash theme={null}
-/plugin marketplace add tursodatabase/turso-mcp
-/plugin install turso@turso
-```
+> [tab] Cursor
+>
+> Install the plugin (it bundles the Turso skill too): open **Customize →
+> Plugins → Add marketplace**, enter `https://github.com/tursodatabase/turso-mcp`,
+> and install **Turso** from it. Then open **Settings → MCP**, select **turso**, and follow
+> the login prompt to approve access (see [Authorize](#authorize-access) below).
+>
+> One-click alternative (MCP server only, no skill):
+> [**Add to Cursor**](cursor://anysphere.cursor-deeplink/mcp/install?name=turso\&config=eyJ1cmwiOiJodHRwczovL21jcC50dXJzby5haS9tY3AifQ==),
+> or add the server manually to `~/.cursor/mcp.json`:
+>
+> ```json theme={null}
+> {
+>   "mcpServers": {
+>     "turso": { "url": "https://mcp.turso.ai/mcp" }
+>   }
+> }
+> ```
+>
+> **Cursor web & cloud agents** don't read plugin or `mcp.json` config — add
+> the server once for your account instead: at
+> [cursor.com/agents](https://cursor.com/agents), open the **“+” menu** next to
+> the model picker → hover **MCP Servers** → **Add MCP**, and enter
+> `https://mcp.turso.ai/mcp`.
 
-Run `/mcp`, select **turso**, and choose **Authenticate**. Your browser opens
-to approve access (see [Authorize](#authorize-access) below).
+> [tab] Claude (web & desktop)
+>
+> Add a custom connector pointing at the Turso MCP server:
+>
+> 1. Open **Settings → Connectors → Add custom connector**.
+> 2. Set the URL to `https://mcp.turso.ai/mcp` and connect.
+> 3. Approve access in the browser (see [Authorize](#authorize-access) below).
 
-**Codex**
-
-Install the plugin (it bundles the Turso skill too), then authenticate:
-
-```bash theme={null}
-codex plugin marketplace add tursodatabase/turso-mcp
-codex plugin add turso@turso
-codex mcp login turso
-```
-
-A browser opens to approve access (see [Authorize](#authorize-access) below).
-MCP-only alternative: add `[mcp_servers.turso]` with
-`url = "https://mcp.turso.ai/mcp"` to `~/.codex/config.toml`, then
-`codex mcp login turso`.
-
-**Cursor**
-
-Install the plugin (it bundles the Turso skill too): open **Customize →
-Plugins → Add marketplace**, enter `https://github.com/tursodatabase/turso-mcp`,
-and install **Turso** from it. Then open **Settings → MCP**, select **turso**, and follow
-the login prompt to approve access (see [Authorize](#authorize-access) below).
-
-One-click alternative (MCP server only, no skill):
-[**Add to Cursor**](cursor://anysphere.cursor-deeplink/mcp/install?name=turso\&config=eyJ1cmwiOiJodHRwczovL21jcC50dXJzby5haS9tY3AifQ==),
-or add the server manually to `~/.cursor/mcp.json`:
-
-```json theme={null}
-{
-  "mcpServers": {
-    "turso": { "url": "https://mcp.turso.ai/mcp" }
-  }
-}
-```
-
-**Cursor web & cloud agents** don't read plugin or `mcp.json` config — add
-the server once for your account instead: at
-[cursor.com/agents](https://cursor.com/agents), open the **“+” menu** next to
-the model picker → hover **MCP Servers** → **Add MCP**, and enter
-`https://mcp.turso.ai/mcp`.
-
-**Claude (web & desktop)**
-
-Add a custom connector pointing at the Turso MCP server:
-
-1. Open **Settings → Connectors → Add custom connector**.
-2. Set the URL to `https://mcp.turso.ai/mcp` and connect.
-3. Approve access in the browser (see [Authorize](#authorize-access) below).
-
-**Other MCP clients**
-
-Point any MCP client that supports remote (Streamable HTTP) servers with OAuth
-at:
-
-```
-https://mcp.turso.ai/mcp
-```
-
-The client discovers the authorization server automatically (RFC 9728 / RFC
-8414\) and walks you through the same browser approval.
+> [tab] Other MCP clients
+>
+> Point any MCP client that supports remote (Streamable HTTP) servers with OAuth
+> at:
+>
+> ```
+> https://mcp.turso.ai/mcp
+> ```
+>
+> The client discovers the authorization server automatically (RFC 9728 / RFC
+> 8414\) and walks you through the same browser approval.
 
 ## Authorize access
 
@@ -9836,64 +9709,64 @@ Match the driver to your database engine: **`@tursodatabase/serverless`** for [T
 
 ### Quickstart
 
-**@tursodatabase/serverless**
-
-The `@tursodatabase/serverless` package connects to Turso using only the `fetch` API — no native dependencies, making it the smallest option for edge and serverless runtimes.
-
-```bash theme={null}
-npm install @tursodatabase/serverless
-```
-
-```typescript theme={null}
-import { connect } from "@tursodatabase/serverless";
-
-const conn = connect({
-  url: process.env.TURSO_DATABASE_URL,
-  authToken: process.env.TURSO_AUTH_TOKEN,
-});
-
-const stmt = await conn.prepare("SELECT * FROM users WHERE id = ?");
-const row = await stmt.get([123]);
-```
-
-For compatibility with the libSQL client API, use the compat module:
-
-```typescript theme={null}
-import { createClient } from "@tursodatabase/serverless/compat";
-
-const client = createClient({
-  url: process.env.TURSO_DATABASE_URL,
-  authToken: process.env.TURSO_AUTH_TOKEN,
-});
-
-const result = await client.execute("SELECT * FROM users WHERE id = ?", [123]);
-```
-
-**@libsql/client**
-
-The `@libsql/client` package is the production-ready libSQL driver used across the Turso ecosystem. Use the `/web` import for Vercel serverless and edge runtimes:
-
-```bash theme={null}
-npm install @libsql/client
-```
-
-```typescript theme={null}
-import { createClient } from "@libsql/client/web";
-
-const client = createClient({
-  url: process.env.TURSO_DATABASE_URL!,
-  authToken: process.env.TURSO_AUTH_TOKEN!,
-});
-
-const result = await client.execute({
-  sql: "SELECT * FROM users WHERE id = ?",
-  args: [123],
-});
-```
-
-> [!NOTE]
+> [tab] @tursodatabase/serverless
 >
-> Use `@libsql/client/web` instead of `@libsql/client` for Vercel deployments. The `/web` import uses the HTTP protocol, which is compatible with edge and serverless runtimes.
+> The `@tursodatabase/serverless` package connects to Turso using only the `fetch` API — no native dependencies, making it the smallest option for edge and serverless runtimes.
+>
+> ```bash theme={null}
+> npm install @tursodatabase/serverless
+> ```
+>
+> ```typescript theme={null}
+> import { connect } from "@tursodatabase/serverless";
+>
+> const conn = connect({
+>   url: process.env.TURSO_DATABASE_URL,
+>   authToken: process.env.TURSO_AUTH_TOKEN,
+> });
+>
+> const stmt = await conn.prepare("SELECT * FROM users WHERE id = ?");
+> const row = await stmt.get([123]);
+> ```
+>
+> For compatibility with the libSQL client API, use the compat module:
+>
+> ```typescript theme={null}
+> import { createClient } from "@tursodatabase/serverless/compat";
+>
+> const client = createClient({
+>   url: process.env.TURSO_DATABASE_URL,
+>   authToken: process.env.TURSO_AUTH_TOKEN,
+> });
+>
+> const result = await client.execute("SELECT * FROM users WHERE id = ?", [123]);
+> ```
+
+> [tab] @libsql/client
+>
+> The `@libsql/client` package is the production-ready libSQL driver used across the Turso ecosystem. Use the `/web` import for Vercel serverless and edge runtimes:
+>
+> ```bash theme={null}
+> npm install @libsql/client
+> ```
+>
+> ```typescript theme={null}
+> import { createClient } from "@libsql/client/web";
+>
+> const client = createClient({
+>   url: process.env.TURSO_DATABASE_URL!,
+>   authToken: process.env.TURSO_AUTH_TOKEN!,
+> });
+>
+> const result = await client.execute({
+>   sql: "SELECT * FROM users WHERE id = ?",
+>   args: [123],
+> });
+> ```
+>
+> > [!NOTE]
+> >
+> > Use `@libsql/client/web` instead of `@libsql/client` for Vercel deployments. The `/web` import uses the HTTP protocol, which is compatible with edge and serverless runtimes.
 
 ## In-Function SQLite
 
@@ -10058,21 +9931,21 @@ Turso is the small database to power your big dreams in the age of AI. The most 
 
 Choose your path to get started with Turso:
 
-> **[Turso Database (Embedded)](/tursodb/quickstart)**
+> [card] [Turso Database (Embedded)](/tursodb/quickstart)
 >
 > An embedded database engine that goes anywhere. Offline, in the browser, or
 > on-device.
 
-> **[AgentFS](/agentfs/introduction)**
+> [card] [AgentFS](/agentfs/introduction)
 >
 > Filesystem and state SDK for AI agents with built-in auditability.
 
-> **[Turso Cloud](/turso-cloud)**
+> [card] [Turso Cloud](/turso-cloud)
 >
 > Fully managed platform for Turso and libSQL databases, with branching,
 > analytics, backups, and more.
 
-> **[How Well You Know Turso?](https://www.howwellyouknow.com/play/turso)**
+> [card] [How Well You Know Turso?](https://www.howwellyouknow.com/play/turso)
 >
 > Test your knowledge of Turso and share your results.
 
@@ -10084,28 +9957,28 @@ Choose your path to get started with Turso:
 
 The next evolution of SQLite, built for modern applications:
 
-> **Vector Search**
+> [card] Vector Search
 >
 > Native similarity search for AI apps and RAG workflows, no extensions
 > required
 
-> **Async Design**
+> [card] Async Design
 >
 > Modern async primitives such as Linux io\_uring to keep your apps responsive
 
-> **SQLite Compatible**
+> [card] SQLite Compatible
 >
 > Fully backwards compatible with SQLite, but built for the next generation
 
-> **Concurrent Writes**
+> [card] Concurrent Writes
 >
 > Multiple writers, zero conflicts, without locking
 
-> **Richer Type System**
+> [card] Richer Type System
 >
 > Richer and stricter type system, including User-Defined Types (experimental)
 
-> **Open Contribution**
+> [card] Open Contribution
 >
 > Take your seat at the table and contribute to the next evolution of SQLite
 
@@ -10113,21 +9986,21 @@ The next evolution of SQLite, built for modern applications:
 
 Connect with developers and the Turso team:
 
-> **[Turso Database Core Developers](https://discord.gg/jgjmyYgHwB)**
+> [card] [Turso Database Core Developers](https://discord.gg/jgjmyYgHwB)
 >
 > Join the core development community for Turso Database discussions
 
-> **[Turso Community](https://tur.so/discord)**
+> [card] [Turso Community](https://tur.so/discord)
 >
 > Connect with users and get support for Turso Cloud
 
 ### Follow Us
 
-> **[GitHub](https://github.com/tursodatabase)**
+> [card] [GitHub](https://github.com/tursodatabase)
 
-> **[X (Twitter)](https://twitter.com/tursodatabase)**
+> [card] [X (Twitter)](https://twitter.com/tursodatabase)
 
-> **[LinkedIn](https://www.linkedin.com/company/turso)**
+> [card] [LinkedIn](https://www.linkedin.com/company/turso)
 
 
 # libSQL
@@ -10141,11 +10014,11 @@ libSQL is a fork of SQLite, created because SQLite is [open-source but not open-
 >
 > libSQL represents where we started. Today, our focus is [Turso Database](/tursodb/quickstart), a full rewrite of SQLite built from scratch, designed for the highest density of databases with no need for servers or connectivity. If you're starting a new project, we recommend [Turso Database](/tursodb/quickstart). For mission-critical workloads that need a battle-tested foundation today, libSQL is the right choice.
 
-> **[tursodatabase/libsql](https://github.com/tursodatabase/libsql/)**
+> [card] [tursodatabase/libsql](https://github.com/tursodatabase/libsql/)
 >
 > Browse the libSQL source code on GitHub, report issues, feature requests and contribute using pull requests.
 
-> **[Discord](https://tur.so/discord)**
+> [card] [Discord](https://tur.so/discord)
 >
 > Join the community on Discord to talk about the development of libSQL.
 
@@ -10372,7 +10245,7 @@ turso db shell my-db
 >
 > Replace `my-db` with the name of your database if you named it differently.
 
-> **Create table**
+> [accordion] Create table
 >
 > Now create a table for `users` using SQL:
 >
@@ -10383,7 +10256,7 @@ turso db shell my-db
 > );
 > ```
 
-> **Insert into new table**
+> [accordion] Insert into new table
 >
 > Then insert a row into the `users` table:
 >
@@ -10391,7 +10264,7 @@ turso db shell my-db
 > INSERT INTO users (name) VALUES ('Iku');
 > ```
 
-> **Select all rows from table**
+> [accordion] Select all rows from table
 >
 > Finally, query for all `users`:
 >
@@ -10522,7 +10395,7 @@ results = ActiveRecord::Base.connection.execute("SELECT * FROM products")
 
 ## Examples
 
-> **[Ruby on Rails App](https://github.com/tursodatabase/libsql-activerecord/tree/main/examples/railsapp)**
+> [card] [Ruby on Rails App](https://github.com/tursodatabase/libsql-activerecord/tree/main/examples/railsapp)
 >
 > See the full source code
 
@@ -10569,7 +10442,7 @@ bundle install
 
 Create a Ruby file (e.g., `database.rb`) to set up the database connection:
 
-> **Embedded Replicas**
+> [accordion] Embedded Replicas
 >
 > ```rb theme={null}
 > require 'libsql_activerecord'
@@ -10583,7 +10456,7 @@ Create a Ruby file (e.g., `database.rb`) to set up the database connection:
 > )
 > ```
 
-> **Local only**
+> [accordion] Local only
 >
 > ```rb theme={null}
 > require 'libsql_activerecord'
@@ -10595,7 +10468,7 @@ Create a Ruby file (e.g., `database.rb`) to set up the database connection:
 > )
 > ```
 
-> **Remote only**
+> [accordion] Remote only
 >
 > ```rb theme={null}
 > require 'libsql_activerecord'
@@ -10608,7 +10481,7 @@ Create a Ruby file (e.g., `database.rb`) to set up the database connection:
 > )
 > ```
 
-> **In-memory**
+> [accordion] In-memory
 >
 > ```rb theme={null}
 > require 'libsql_activerecord'
@@ -10710,8 +10583,6 @@ puts book.author.name # => "Jane Doe"
 # Authentication
 Source: https://docs.turso.tech/sdk/authentication
 
-
-
 SDKs connect using the `turso://` protocol for [Turso](/tursodb/quickstart) databases and the `libsql://` protocol for [libSQL](/libsql) databases, unless using the [HTTP API](/sdk/http).
 
 ## Database URL
@@ -10743,8 +10614,6 @@ See [Authorization](/sdk/authorization) for full details on token creation, fine
 
 # Authorization
 Source: https://docs.turso.tech/sdk/authorization
-
-
 
 Turso uses scoped, JWT-based tokens to control access to your databases. Every token can be restricted by database, permission level, and expiration — giving you full control over what each client can and cannot do.
 
@@ -10803,8 +10672,6 @@ const db = connect({
 
 # Fine-Grained Permissions
 Source: https://docs.turso.tech/sdk/authorization/fine-grained-permissions
-
-
 
 Fine-grained permissions let you control access at the table and action level. They work with both [CLI-generated tokens](/sdk/authorization/tokens) and [JWKS-issued tokens](/sdk/authorization/jwks).
 
@@ -10887,8 +10754,6 @@ With JWKS, these permissions are embedded in the JWT token based on user metadat
 # External Auth Providers
 Source: https://docs.turso.tech/sdk/authorization/jwks
 
-
-
 Instead of managing tokens manually, you can let your authentication provider issue JWT tokens using JWKS. This allows you to leverage your existing auth infrastructure (e.g., Clerk, Auth0).
 
 > [!NOTE]
@@ -10965,8 +10830,6 @@ turso org jwks remove <name>
 # Platform Tokens
 Source: https://docs.turso.tech/sdk/authorization/tokens
 
-
-
 Create tokens for a single database or all databases in a group using the CLI:
 
 ```bash theme={null}
@@ -11023,8 +10886,6 @@ turso group tokens invalidate <group-name>
 # Turso Examples (C)
 Source: https://docs.turso.tech/sdk/c/examples
 
-
-
 | Example | Description |
 | - | - |
 | [local](https://github.com/tursodatabase/libsql-c/tree/master/examples/local) | Uses libsql with a local SQLite file. Creates database, inserts data, and queries. |
@@ -11064,7 +10925,7 @@ You will need an existing database to continue. If you don't have one, [create o
 
 To use libSQL with C, you need to build the library from source:
 
-> **[libSQL C](https://github.com/tursodatabase/libsql)**
+> [card] [libSQL C](https://github.com/tursodatabase/libsql)
 >
 > Build from source code
 
@@ -11078,7 +10939,7 @@ gcc -o your_program your_program.c -L/path/to/libsql/lib -llibsql
 
 You must first initialize libSQL, create a `libsql_database_t` object, and then open a `libsql_connection_t` to it:
 
-> **Embedded Replicas**
+> [accordion] Embedded Replicas
 >
 > ```c theme={null}
 > #include "libsql.h"
@@ -11095,7 +10956,7 @@ You must first initialize libSQL, create a `libsql_database_t` object, and then 
 > libsql_connection_t conn = libsql_database_connect(db);
 > ```
 
-> **Local only**
+> [accordion] Local only
 >
 > ```c theme={null}
 > #include "libsql.h"
@@ -11109,7 +10970,7 @@ You must first initialize libSQL, create a `libsql_database_t` object, and then 
 > libsql_connection_t conn = libsql_database_connect(db);
 > ```
 
-> **Remote only**
+> [accordion] Remote only
 >
 > ```c theme={null}
 > #include "libsql.h"
@@ -11174,7 +11035,7 @@ libSQL C Reference
 
 To use the libSQL C bindings, you need to include the `libsql.h` header file in your project and link against the `liblibsql.so` shared library.
 
-> **[libSQL C](https://github.com/tursodatabase/libsql)**
+> [card] [libSQL C](https://github.com/tursodatabase/libsql)
 >
 > Build from source code
 
@@ -11327,8 +11188,6 @@ Source: https://docs.turso.tech/sdk/flutter/examples
 
 
 
-
-
 # Drift + Turso / LibSQL
 Source: https://docs.turso.tech/sdk/flutter/integrations/drift
 
@@ -11439,7 +11298,7 @@ flutter pub add libsql_dart
 
 Now connect to your local or remote database using the `LibsqlClient` constructor:
 
-> **Embedded Replicas**
+> [accordion] Embedded Replicas
 >
 > ```dart theme={null}
 > final dir = await getApplicationCacheDirectory();
@@ -11452,7 +11311,7 @@ Now connect to your local or remote database using the `LibsqlClient` constructo
 >   ..readYourWrites = true;
 > ```
 
-> **Local only**
+> [accordion] Local only
 >
 > ```dart File theme={null}
 > final dir = await getApplicationCacheDirectory();
@@ -11465,7 +11324,7 @@ Now connect to your local or remote database using the `LibsqlClient` constructo
 > final client = LibsqlClient(":memory:");
 > ```
 
-> **Remote only**
+> [accordion] Remote only
 >
 > ```dart theme={null}
 > final client = LibsqlClient('<TURSO_OR_LIBSQL_URL>')
@@ -11759,8 +11618,6 @@ await tx.commit();
 
 # Examples
 Source: https://docs.turso.tech/sdk/go/examples
-
-
 
 
 
@@ -12293,269 +12150,267 @@ In this quickstart we will learn how to:
 
 Match the driver to your database engine: **`@tursodatabase/serverless`** for [Turso](/tursodb/quickstart) databases, **`@libsql/client`** for [libSQL](/libsql) databases.
 
-**@tursodatabase/serverless**
-
-The `@tursodatabase/serverless` package connects to Turso using only the `fetch` API — no native dependencies, making it the smallest option for edge and serverless runtimes.
-
-**1. Install**
-
-```bash theme={null}
-npm install @tursodatabase/serverless
-```
-
-**2. Connect and query**
-
-```typescript theme={null}
-import { connect } from "@tursodatabase/serverless";
-
-const conn = connect({
-  url: process.env.TURSO_DATABASE_URL,
-  authToken: process.env.TURSO_AUTH_TOKEN,
-});
-
-const stmt = await conn.prepare("SELECT * FROM users WHERE id = ?");
-const row = await stmt.get([123]);
-```
-
-For compatibility with the libSQL client API, use the compat module:
-
-```typescript theme={null}
-import { createClient } from "@tursodatabase/serverless/compat";
-
-const client = createClient({
-  url: process.env.TURSO_DATABASE_URL,
-  authToken: process.env.TURSO_AUTH_TOKEN,
-});
-
-const result = await client.execute("SELECT * FROM users WHERE id = ?", [123]);
-```
-
-**@libsql/client**
-
-The `@libsql/client` package is the production-ready libSQL driver used across the Turso ecosystem. Use the `/web` import for serverless and edge runtimes.
-
-**1. Install**
-
-```bash theme={null}
-npm install @libsql/client
-```
-
-**2. Connect and query**
-
-```typescript theme={null}
-import { createClient } from "@libsql/client/web";
-
-const client = createClient({
-  url: process.env.TURSO_DATABASE_URL!,
-  authToken: process.env.TURSO_AUTH_TOKEN!,
-});
-
-const result = await client.execute({
-  sql: "SELECT * FROM users WHERE id = ?",
-  args: [123],
-});
-```
-
-> [!NOTE]
+> [tab] @tursodatabase/serverless
 >
-> Use `@libsql/client/web` instead of `@libsql/client` for edge and serverless runtimes. The `/web` import uses the HTTP protocol.
-
-**Raw HTTP**
-
-You can also send queries directly over HTTP using any HTTP client.
-
-**1. Create HTTP Database URL**
-
-Using the [Turso CLI](/cli) or [Platform API](/api-reference), fetch your database URL:
-
-```bash theme={null}
-turso db show <database-name> --http-url
-```
-
-> [!NOTE]
+> The `@tursodatabase/serverless` package connects to Turso using only the `fetch` API — no native dependencies, making it the smallest option for edge and serverless runtimes.
 >
-> Append `/v2/pipeline` to the URL and continue.
-
-**2. Create Database Auth Token**
-
-Using the Turso CLI or Platform API, create a new auth token for your database:
-
-```bash theme={null}
-turso db tokens create <database-name>
-```
-
-**3. Create JSON Request Payload**
-
-We'll be sending the query using JSON, so let's create a JSON payload that executes a SQL statement and closes the connection immediately:
-
-```json theme={null}
-{
-  "requests": [
-    { "type": "execute", "stmt": { "sql": "SELECT * FROM users" } },
-    { "type": "close" }
-  ]
-}
-```
-
-> [!NOTE]
+> **1. Install**
 >
-> Make sure to update the `stmt.sql` to select from a table you already have.
+> ```bash theme={null}
+> npm install @tursodatabase/serverless
+> ```
 >
-> Bound parameter examples included on the [Reference Page](/sdk/http/reference#parameter-binding),
-
-**4. Execute HTTP Request**
-
-Depending on your language, you can use a HTTP client library to send the request to the URL you created as well as the `Authorization` header set to the token you created, and the request body as JSON with your SQL statement.
-
-You must append to the Base URL the actual pipeline URL that accepts requests — `/v2/pipeline`.
-
-```ts JavaScript (Fetch) theme={null}
-const url = "https://[databaseName]-[organizationSlug].turso.io/v2/pipeline";
-const authToken = "...";
-
-fetch(url, {
-  method: "POST",
-  headers: {
-    Authorization: `Bearer ${authToken}`,
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    requests: [
-      { type: "execute", stmt: { sql: "SELECT * FROM users" } },
-      { type: "close" },
-    ],
-  }),
-})
-  .then((res) => res.json())
-  .then((data) => console.log(data))
-  .catch((err) => console.log(err));
-```
-
-```ruby Ruby theme={null}
-require 'net/http'
-require 'json'
-require 'uri'
-
-url = "https://[databaseName]-[organizationSlug].turso.io/v2/pipeline"
-auth_token = "..."
-
-uri = URI(url)
-request = Net::HTTP::Post.new(uri)
-request["Authorization"] = "Bearer #{auth_token}"
-request["Content-Type"] = "application/json"
-request.body = JSON.generate({
-  "requests": [
-    { "type": "execute", "stmt": { "sql": "SELECT * FROM users" } },
-    { "type": "close" }
-  ]
-})
-
-begin
-  response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == 'https') do |http|
-    http.request(request)
-  end
-
-  puts JSON.parse(response.body)
-rescue => e
-  puts e.message
-end
-```
-
-> **Response**
+> **2. Connect and query**
 >
-> The response will be a JSON object with a `results` array containing the results of your query that looks something like this:
+> ```typescript theme={null}
+> import { connect } from "@tursodatabase/serverless";
+>
+> const conn = connect({
+>   url: process.env.TURSO_DATABASE_URL,
+>   authToken: process.env.TURSO_AUTH_TOKEN,
+> });
+>
+> const stmt = await conn.prepare("SELECT * FROM users WHERE id = ?");
+> const row = await stmt.get([123]);
+> ```
+>
+> For compatibility with the libSQL client API, use the compat module:
+>
+> ```typescript theme={null}
+> import { createClient } from "@tursodatabase/serverless/compat";
+>
+> const client = createClient({
+>   url: process.env.TURSO_DATABASE_URL,
+>   authToken: process.env.TURSO_AUTH_TOKEN,
+> });
+>
+> const result = await client.execute("SELECT * FROM users WHERE id = ?", [123]);
+> ```
+
+> [tab] @libsql/client
+>
+> The `@libsql/client` package is the production-ready libSQL driver used across the Turso ecosystem. Use the `/web` import for serverless and edge runtimes.
+>
+> **1. Install**
+>
+> ```bash theme={null}
+> npm install @libsql/client
+> ```
+>
+> **2. Connect and query**
+>
+> ```typescript theme={null}
+> import { createClient } from "@libsql/client/web";
+>
+> const client = createClient({
+>   url: process.env.TURSO_DATABASE_URL!,
+>   authToken: process.env.TURSO_AUTH_TOKEN!,
+> });
+>
+> const result = await client.execute({
+>   sql: "SELECT * FROM users WHERE id = ?",
+>   args: [123],
+> });
+> ```
+>
+> > [!NOTE]
+> >
+> > Use `@libsql/client/web` instead of `@libsql/client` for edge and serverless runtimes. The `/web` import uses the HTTP protocol.
+
+> [tab] Raw HTTP
+>
+> You can also send queries directly over HTTP using any HTTP client.
+>
+> **1. Create HTTP Database URL**
+>
+> Using the [Turso CLI](/cli) or [Platform API](/api-reference), fetch your database URL:
+>
+> ```bash theme={null}
+> turso db show <database-name> --http-url
+> ```
+>
+> > [!NOTE]
+> >
+> > Append `/v2/pipeline` to the URL and continue.
+>
+> **2. Create Database Auth Token**
+>
+> Using the Turso CLI or Platform API, create a new auth token for your database:
+>
+> ```bash theme={null}
+> turso db tokens create <database-name>
+> ```
+>
+> **3. Create JSON Request Payload**
+>
+> We'll be sending the query using JSON, so let's create a JSON payload that executes a SQL statement and closes the connection immediately:
 >
 > ```json theme={null}
 > {
->   "baton": null,
->   "base_url": null,
->   "results": [
->     {
->       "type": "ok",
->       "response": {
->         "type": "execute",
->         "result": {
->           "cols": [],
->           "rows": [],
->           "affected_row_count": 0,
->           "last_insert_rowid": null,
->           "replication_index": "1"
->         }
->       }
->     },
->     {
->       "type": "ok",
->       "response": {
->         "type": "close"
->       }
->     }
+>   "requests": [
+>     { "type": "execute", "stmt": { "sql": "SELECT * FROM users" } },
+>     { "type": "close" }
 >   ]
 > }
 > ```
-
-If you need to use placeholders for values, you can do that:
-
-```json Positional theme={null}
-{
-  "type": "execute",
-  "stmt": {
-    "sql": "SELECT * FROM users WHERE id = ?",
-    "args": [
-      {
-        "type": "integer",
-        "value": "1"
-      }
-    ]
-  }
-}
-```
-
-```json Named theme={null}
-{
-  "type": "execute",
-  "stmt": {
-    "sql": "SELECT * FROM users WHERE name = :name OR name = $second_name OR name = @third_name",
-    "named_args": [
-      {
-        "name": "name",
-        "value": {
-          "type": "text",
-          "value": "Turso"
-        }
-      },
-      {
-        "name": "second_name",
-        "value": {
-          "type": "text",
-          "value": "Not Turso"
-        }
-      },
-      {
-        "name": "third_name",
-        "value": {
-          "type": "text",
-          "value": "Maybe Turso"
-        }
-      }
-    ]
-  }
-}
-```
-
-> [!NOTE]
 >
-> The `type` field within each arg corresponds to the column datatype and can be one of the following: `null`, `integer`, `float`, `text`, or `blob`.
-
-> [!NOTE]
+> > [!NOTE]
+> >
+> > Make sure to update the `stmt.sql` to select from a table you already have.
+> >
+> > Bound parameter examples included on the [Reference Page](/sdk/http/reference#parameter-binding),
 >
-> In JSON, the `value` is a `String` to avoid losing precision, because some
-> JSON implementations treat all numbers as 64-bit floats.
+> **4. Execute HTTP Request**
+>
+> Depending on your language, you can use a HTTP client library to send the request to the URL you created as well as the `Authorization` header set to the token you created, and the request body as JSON with your SQL statement.
+>
+> You must append to the Base URL the actual pipeline URL that accepts requests — `/v2/pipeline`.
+>
+> ```ts JavaScript (Fetch) theme={null}
+> const url = "https://[databaseName]-[organizationSlug].turso.io/v2/pipeline";
+> const authToken = "...";
+>
+> fetch(url, {
+>   method: "POST",
+>   headers: {
+>     Authorization: `Bearer ${authToken}`,
+>     "Content-Type": "application/json",
+>   },
+>   body: JSON.stringify({
+>     requests: [
+>       { type: "execute", stmt: { sql: "SELECT * FROM users" } },
+>       { type: "close" },
+>     ],
+>   }),
+> })
+>   .then((res) => res.json())
+>   .then((data) => console.log(data))
+>   .catch((err) => console.log(err));
+> ```
+>
+> ```ruby Ruby theme={null}
+> require 'net/http'
+> require 'json'
+> require 'uri'
+>
+> url = "https://[databaseName]-[organizationSlug].turso.io/v2/pipeline"
+> auth_token = "..."
+>
+> uri = URI(url)
+> request = Net::HTTP::Post.new(uri)
+> request["Authorization"] = "Bearer #{auth_token}"
+> request["Content-Type"] = "application/json"
+> request.body = JSON.generate({
+>   "requests": [
+>     { "type": "execute", "stmt": { "sql": "SELECT * FROM users" } },
+>     { "type": "close" }
+>   ]
+> })
+>
+> begin
+>   response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == 'https') do |http|
+>     http.request(request)
+>   end
+>
+>   puts JSON.parse(response.body)
+> rescue => e
+>   puts e.message
+> end
+> ```
+>
+> > [accordion] Response
+> >
+> > The response will be a JSON object with a `results` array containing the results of your query that looks something like this:
+> >
+> > ```json theme={null}
+> > {
+> >   "baton": null,
+> >   "base_url": null,
+> >   "results": [
+> >     {
+> >       "type": "ok",
+> >       "response": {
+> >         "type": "execute",
+> >         "result": {
+> >           "cols": [],
+> >           "rows": [],
+> >           "affected_row_count": 0,
+> >           "last_insert_rowid": null,
+> >           "replication_index": "1"
+> >         }
+> >       }
+> >     },
+> >     {
+> >       "type": "ok",
+> >       "response": {
+> >         "type": "close"
+> >       }
+> >     }
+> >   ]
+> > }
+> > ```
+>
+> If you need to use placeholders for values, you can do that:
+>
+> ```json Positional theme={null}
+> {
+>   "type": "execute",
+>   "stmt": {
+>     "sql": "SELECT * FROM users WHERE id = ?",
+>     "args": [
+>       {
+>         "type": "integer",
+>         "value": "1"
+>       }
+>     ]
+>   }
+> }
+> ```
+>
+> ```json Named theme={null}
+> {
+>   "type": "execute",
+>   "stmt": {
+>     "sql": "SELECT * FROM users WHERE name = :name OR name = $second_name OR name = @third_name",
+>     "named_args": [
+>       {
+>         "name": "name",
+>         "value": {
+>           "type": "text",
+>           "value": "Turso"
+>         }
+>       },
+>       {
+>         "name": "second_name",
+>         "value": {
+>           "type": "text",
+>           "value": "Not Turso"
+>         }
+>       },
+>       {
+>         "name": "third_name",
+>         "value": {
+>           "type": "text",
+>           "value": "Maybe Turso"
+>         }
+>       }
+>     ]
+>   }
+> }
+> ```
+>
+> > [!NOTE]
+> >
+> > The `type` field within each arg corresponds to the column datatype and can be one of the following: `null`, `integer`, `float`, `text`, or `blob`.
+>
+> > [!NOTE]
+> >
+> > In JSON, the `value` is a `String` to avoid losing precision, because some
+> > JSON implementations treat all numbers as 64-bit floats.
 
 
 # SQL over HTTP Reference
 Source: https://docs.turso.tech/sdk/http/reference
-
-
 
 Turso Databases can be accessed via HTTP. The API enables developers to perform SQL operations using [SQL over HTTP](https://github.com/tursodatabase/libsql/blob/main/docs/HTTP_V2_SPEC.md), retrieve server version information, and monitor the health status.
 
@@ -12573,7 +12428,7 @@ https://[databaseName]-[organizationSlug].turso.io
 
 You can obtain your database base URL from the Turso CLI:
 
-> **Obtain HTTP URL using Turso CLI**
+> [accordion] Obtain HTTP URL using Turso CLI
 >
 > ```bash theme={null}
 > turso db show <database-name> --http-url
@@ -12587,7 +12442,7 @@ Turso uses Bearer authentication, and requires your API token to be passed with 
 Authorization: Bearer TOKEN
 ```
 
-> **Create token using Turso CLI**
+> [accordion] Create token using Turso CLI
 >
 > ```bash theme={null}
 > turso db tokens create <database-name>
@@ -13099,8 +12954,6 @@ The name of the action to listen to — `insert`, `update`, or `delete`.
 # Turso SDKs
 Source: https://docs.turso.tech/sdk/introduction
 
-
-
 ## Which package should I use?
 
 Two rules cover almost every case:
@@ -13145,19 +12998,19 @@ The serverless drivers speak SQL over HTTP — no persistent connections, no nat
 
 These SDKs are community-driven and don't come with official Turso support.
 
-> **[Flutter / Dart](/sdk/flutter/quickstart)**
+> [card] [Flutter / Dart](/sdk/flutter/quickstart)
 
-> **[Capacitor](https://capawesome.io/plugins/libsql)**
+> [card] [Capacitor](https://capawesome.io/plugins/libsql)
 
-> **[React Native / OP-SQLite](https://op-engineering.github.io/op-sqlite/)**
+> [card] [React Native / OP-SQLite](https://op-engineering.github.io/op-sqlite/)
 
-> **[Laravel](https://github.com/richan-fongdasen/turso-laravel)**
+> [card] [Laravel](https://github.com/richan-fongdasen/turso-laravel)
 
-> **[.NET](https://github.com/tvandinther/libsql-client-dotnet)**
+> [card] [.NET](https://github.com/tvandinther/libsql-client-dotnet)
 
-> **[Java](https://github.com/dbeaver/dbeaver-jdbc-libsql)**
+> [card] [Java](https://github.com/dbeaver/dbeaver-jdbc-libsql)
 
-> **[Stateless libSQL](https://github.com/DaBigBlob/libsql-stateless-easy)**
+> [card] [Stateless libSQL](https://github.com/DaBigBlob/libsql-stateless-easy)
 
 ## SQL over HTTP
 
@@ -13210,7 +13063,7 @@ dependencies {
 
 You must first create a `Database` object and then open a `Connection` to it:
 
-> **Embedded Replicas**
+> [accordion] Embedded Replicas
 >
 > ```kotlin theme={null}
 > import tech.turso.libsql.Libsql
@@ -13224,7 +13077,7 @@ You must first create a `Database` object and then open a `Connection` to it:
 > val conn = db.connect()
 > ```
 
-> **Local only**
+> [accordion] Local only
 >
 > ```kotlin theme={null}
 > import tech.turso.libsql.Libsql
@@ -13233,7 +13086,7 @@ You must first create a `Database` object and then open a `Connection` to it:
 > val conn = db.connect()
 > ```
 
-> **Remote only**
+> [accordion] Remote only
 >
 > ```kotlin theme={null}
 > import tech.turso.libsql.Libsql
@@ -13435,15 +13288,11 @@ db.connect().use {
 # Examples
 Source: https://docs.turso.tech/sdk/php/examples
 
-
-
 [View examples on GitHub](https://github.com/tursodatabase/libsql-client-ts/tree/main/packages/libsql-client/examples)
 
 
 # Turso Quickstart (Laravel)
 Source: https://docs.turso.tech/sdk/php/guides/laravel
-
-
 
 In this Laravel quickstart we will learn how to:
 
@@ -13478,7 +13327,7 @@ composer require turso/libsql-laravel
 
 Choose your preferred setup and configure accordingly:
 
-> **Local only**
+> [accordion] Local only
 >
 > Update your `config/database.php`:
 >
@@ -13498,7 +13347,7 @@ Choose your preferred setup and configure accordingly:
 >
 > This will use a local SQLite file with the libSQL adapter.
 
-> **Remote only**
+> [accordion] Remote only
 >
 > Update your `config/database.php`:
 >
@@ -13525,7 +13374,7 @@ Choose your preferred setup and configure accordingly:
 > TURSO_AUTH_TOKEN=...
 > ```
 
-> **Embedded Replicas**
+> [accordion] Embedded Replicas
 >
 > Update your `config/database.php`:
 >
@@ -13949,11 +13798,11 @@ class Todo
 
 ## Examples
 
-> **[PHP Todo CLI + Doctrine DBAL](https://github.com/tursodatabase/example/php-todo-cli-doctrine-dbal/tree/master)**
+> [card] [PHP Todo CLI + Doctrine DBAL](https://github.com/tursodatabase/example/php-todo-cli-doctrine-dbal/tree/master)
 >
 > See the full source code
 
-> **[Symfony Rest API CRUD](https://github.com/tursodatabase/example/symfony7-rest-api-crud/tree/master)**
+> [card] [Symfony Rest API CRUD](https://github.com/tursodatabase/example/symfony7-rest-api-crud/tree/master)
 >
 > See the full source code
 
@@ -13994,7 +13843,7 @@ composer require turso/libsql
 
 Now connect to your local or remote database using the libSQL connector:
 
-> **Embedded Replica**
+> [accordion] Embedded Replica
 >
 > ```php theme={null}
 > use Libsql\Database;
@@ -14008,7 +13857,7 @@ Now connect to your local or remote database using the libSQL connector:
 > $conn = $db->connect();
 > ```
 
-> **Local only**
+> [accordion] Local only
 >
 > ```php theme={null}
 > use Libsql\Database;
@@ -14024,7 +13873,7 @@ Now connect to your local or remote database using the libSQL connector:
 > $db = new Database("database.db");
 > ```
 
-> **Local only**
+> [accordion] Local only
 >
 > ```php theme={null}
 > use Libsql\Database;
@@ -14040,7 +13889,7 @@ Now connect to your local or remote database using the libSQL connector:
 > $db = new Database("database.db");
 > ```
 
-> **Remote only**
+> [accordion] Remote only
 >
 > ```php theme={null}
 > use Libsql\Database;
@@ -14289,8 +14138,6 @@ Source: https://docs.turso.tech/sdk/python/examples
 
 
 
-
-
 # Flask + Turso
 Source: https://docs.turso.tech/sdk/python/guides/flask
 
@@ -14369,7 +14216,7 @@ def home():
 
 ## Examples
 
-> **[Social App](https://github.com/tursodatabase/examples/tree/master/app-find-me-on-python-htmx)**
+> [card] [Social App](https://github.com/tursodatabase/examples/tree/master/app-find-me-on-python-htmx)
 >
 > See the full source code
 
@@ -14420,7 +14267,7 @@ class Foo(Base):
 
 **4. Create engine**
 
-> **Embedded Replicas**
+> [accordion] Embedded Replicas
 >
 > ```python theme={null}
 > from dotenv import load_dotenv
@@ -14438,7 +14285,7 @@ class Foo(Base):
 > )
 > ```
 
-> **Remote only**
+> [accordion] Remote only
 >
 > ```python theme={null}
 > from dotenv import load_dotenv
@@ -14455,7 +14302,7 @@ class Foo(Base):
 > )
 > ```
 
-> **Memory Only**
+> [accordion] Memory Only
 >
 > ```python theme={null}
 > from sqlalchemy import create_engine
@@ -14463,7 +14310,7 @@ class Foo(Base):
 > engine = create_engine("sqlite+libsql://")
 > ```
 
-> **Local only**
+> [accordion] Local only
 >
 > ```python theme={null}
 > from sqlalchemy import create_engine
@@ -14823,8 +14670,6 @@ conn = libsql.connect("encrypted.db", sync_url=os.getenv("LIBSQL_URL"),
 # Turso Examples (Ruby)
 Source: https://docs.turso.tech/sdk/ruby/examples
 
-
-
 | Example | Description |
 | - | - |
 | [local](https://github.com/tursodatabase/libsql-ruby/tree/master/examples/local) | Uses libsql with a local SQLite file. Creates database, inserts data, and queries. |
@@ -14869,7 +14714,7 @@ bundle add turso_libsql
 
 **3. Connect**
 
-> **Embedded Replicas**
+> [accordion] Embedded Replicas
 >
 > ```rb theme={null}
 > require 'turso_libsql'
@@ -14882,7 +14727,7 @@ bundle add turso_libsql
 > )
 > ```
 
-> **Local only**
+> [accordion] Local only
 >
 > ```rb theme={null}
 > require 'turso_libsql'
@@ -14890,7 +14735,7 @@ bundle add turso_libsql
 > db = Libsql::Database.new(path: 'local.db')
 > ```
 
-> **Remote only**
+> [accordion] Remote only
 >
 > ```rb theme={null}
 > require 'turso_libsql'
@@ -14930,8 +14775,6 @@ db.sync
 
 # Examples
 Source: https://docs.turso.tech/sdk/rust/examples
-
-
 
 
 
@@ -15018,7 +14861,7 @@ async fn get_items() -> Result<HttpResponse, Error> {
 
 ## Examples
 
-> **[Turso + Actix Web Traffic Tracker](https://github.com/tursodatabase/examples/tree/master/app-web-traffic-tracker-actix)**
+> [card] [Turso + Actix Web Traffic Tracker](https://github.com/tursodatabase/examples/tree/master/app-web-traffic-tracker-actix)
 >
 > See the full source code
 
@@ -15230,7 +15073,7 @@ fn rocket() -> _ {
 
 ## Examples
 
-> **[Turso + Rocket Todo List](https://github.com/tursodatabase/examples/tree/master/app-todo-rocket)**
+> [card] [Turso + Rocket Todo List](https://github.com/tursodatabase/examples/tree/master/app-todo-rocket)
 >
 > See the full source code
 
@@ -15373,7 +15216,7 @@ fn main() {
 
 ## Examples
 
-> **[Personal Notes App](https://github.com/tursodatabase/examples/tree/master/app-turso-notes)**
+> [card] [Personal Notes App](https://github.com/tursodatabase/examples/tree/master/app-turso-notes)
 >
 > See the full source code
 
@@ -15443,7 +15286,7 @@ struct Todo {
 
 Pass a `turso:` URL to `Db::builder` — either an in-memory database or a file path:
 
-> **In-memory**
+> [accordion] In-memory
 >
 > ```rust theme={null}
 > let db = toasty::Db::builder()
@@ -15452,7 +15295,7 @@ Pass a `turso:` URL to `Db::builder` — either an in-memory database or a file 
 >     .await?;
 > ```
 
-> **File-backed**
+> [accordion] File-backed
 >
 > ```rust theme={null}
 > let db = toasty::Db::builder()
@@ -15461,7 +15304,7 @@ Pass a `turso:` URL to `Db::builder` — either an in-memory database or a file 
 >     .await?;
 > ```
 
-> **With concurrent writes (MVCC)**
+> [accordion] With concurrent writes (MVCC)
 >
 > To enable Turso's MVCC journal so multiple writers can run concurrently, build the driver explicitly and pass it to `build()`:
 >
@@ -16091,7 +15934,7 @@ You will need an existing database to continue. If you don't have one, [create o
 
 First begin by adding `libsql` as a package dependency in XCode using this repo:
 
-> **[libSQL Swift](https://github.com/tursodatabase/libsql-swift)**
+> [card] [libSQL Swift](https://github.com/tursodatabase/libsql-swift)
 >
 > Build from source code
 
@@ -16113,7 +15956,7 @@ let package = Package(
 
 You must first create a `Database` object and then open a `Connection` to it:
 
-> **Embedded Replicas**
+> [accordion] Embedded Replicas
 >
 > ```swift theme={null}
 > import Libsql
@@ -16128,7 +15971,7 @@ You must first create a `Database` object and then open a `Connection` to it:
 > let conn = try db.connect()
 > ```
 
-> **Local only**
+> [accordion] Local only
 >
 > ```swift theme={null}
 > import Libsql
@@ -16140,7 +15983,7 @@ You must first create a `Database` object and then open a `Connection` to it:
 > let conn = try db.connect()
 > ```
 
-> **Remote only**
+> [accordion] Remote only
 >
 > ```swift theme={null}
 > import Libsql
@@ -16199,7 +16042,7 @@ libSQL Swift Reference
 
 First begin by adding `libsql` as a package dependency in XCode using this repo:
 
-> **[libSQL Swift](https://github.com/tursodatabase/libsql-swift)**
+> [card] [libSQL Swift](https://github.com/tursodatabase/libsql-swift)
 >
 > Build from source code
 
@@ -16353,8 +16196,6 @@ Source: https://docs.turso.tech/sdk/ts/examples
 
 
 
-
-
 # Astro + Turso
 Source: https://docs.turso.tech/sdk/ts/guides/astro
 
@@ -16406,7 +16247,7 @@ const { rows } = await turso.execute('SELECT * FROM table_name')
 
 ## Examples
 
-> **[Blog](https://github.com/tursodatabase/examples/tree/master/app-tustro-blog)**
+> [card] [Blog](https://github.com/tursodatabase/examples/tree/master/app-tustro-blog)
 >
 > See the full source code
 
@@ -16452,7 +16293,7 @@ const app = new Elysia().get("/items", async () => {
 
 ## Examples
 
-> **[Expenses tracker app with Elysia & Turso](https://github.com/tursodatabase/examples/tree/master/app-expenses-tracker-elysia)**
+> [card] [Expenses tracker app with Elysia & Turso](https://github.com/tursodatabase/examples/tree/master/app-expenses-tracker-elysia)
 >
 > See the full source code
 
@@ -16501,7 +16342,7 @@ app.get("/items", async (c) => {
 
 ## Examples
 
-> **[Expenses tracker app with Hono & Turso](https://github.com/tursodatabase/examples/tree/master/app-expenses-tracker-hono)**
+> [card] [Expenses tracker app with Hono & Turso](https://github.com/tursodatabase/examples/tree/master/app-expenses-tracker-hono)
 >
 > See the full source code
 
@@ -16581,7 +16422,7 @@ export default function Page({
 
 ## Examples
 
-> **[Full Stack App](https://github.com/tursodatabase/nextjs-turso-starter)**
+> [card] [Full Stack App](https://github.com/tursodatabase/nextjs-turso-starter)
 >
 > Build with Next.js, Turso, and Drizzle ORM.
 
@@ -16677,7 +16518,7 @@ export default defineEventHandler(async (event) => {
 
 ## Examples
 
-> **[Website + App](https://github.com/tursodatabase/examples/tree/master/app-top-web-frameworks)**
+> [card] [Website + App](https://github.com/tursodatabase/examples/tree/master/app-top-web-frameworks)
 >
 > See the full source code
 
@@ -16773,7 +16614,7 @@ items.value = rows;
 
 ## Examples
 
-> **[Todo App](https://github.com/tursodatabase/examples/tree/master/quasar-todo-list)**
+> [card] [Todo App](https://github.com/tursodatabase/examples/tree/master/quasar-todo-list)
 >
 > See the full source code
 
@@ -16847,11 +16688,11 @@ export const useFrameworks = routeLoader$(
 
 ## Examples
 
-> **[Social Website](https://github.com/tursodatabase/examples/tree/master/app-find-me-on)**
+> [card] [Social Website](https://github.com/tursodatabase/examples/tree/master/app-find-me-on)
 >
 > See the full source code
 
-> **[Shopping Cart](https://github.com/tursodatabase/examples/tree/master/app-turqw-store)**
+> [card] [Shopping Cart](https://github.com/tursodatabase/examples/tree/master/app-turqw-store)
 >
 > See the full source code
 
@@ -16901,11 +16742,11 @@ export const loader: LoaderFunction = async () => {
 
 ## Examples
 
-> **[E-commerce Store](https://github.com/tursodatabase/examples/tree/master/app-the-mug-store)**
+> [card] [E-commerce Store](https://github.com/tursodatabase/examples/tree/master/app-the-mug-store)
 >
 > See the full source code
 
-> **[CRM App](https://github.com/tursodatabase/examples/tree/master/app-turso-crm)**
+> [card] [CRM App](https://github.com/tursodatabase/examples/tree/master/app-turso-crm)
 >
 > See the full source code
 
@@ -16981,7 +16822,7 @@ export async function load() {
 
 ## Examples
 
-> **[Blog](https://github.com/tursodatabase/examples/tree/master/app-at-the-polls)**
+> [card] [Blog](https://github.com/tursodatabase/examples/tree/master/app-at-the-polls)
 >
 > See the full source code
 
@@ -31983,40 +31824,40 @@ Turso Cloud is a fully managed database platform, designed to scale from prototy
 > recently the offering landed on the platform, not of the engine itself.
 > Create one with `turso db create --tursodb`.
 
-> **[Vector Search](/features/ai-and-embeddings)**
+> [card] [Vector Search](/features/ai-and-embeddings)
 >
 > Native similarity search for AI apps and RAG workflows, no extensions
 > required.
 
-> **[Replication & Sync](/features/embedded-replicas/introduction)**
+> [card] [Replication & Sync](/features/embedded-replicas/introduction)
 >
 > Keep devices in sync with each other on demand with Turso Cloud.
 
-> **[Branching](/features/branching)**
+> [card] [Branching](/features/branching)
 >
 > Create isolated Copy-on-Write branches super fast.
 
-> **Analytics**
+> [card] Analytics
 >
 > Monitor performance and usage across databases.
 
-> **[Bring-Your-Own-Key Encryption](/cloud/encryption)**
+> [card] [Bring-Your-Own-Key Encryption](/cloud/encryption)
 >
 > Keep sensitive data private with keys only you control. Keys are per-database for full isolation.
 
-> **[Scoped Access Tokens](/sdk/authorization)**
+> [card] [Scoped Access Tokens](/sdk/authorization)
 >
 > Fine-grained tokens scoped by database, table, action, and expiration. Read-only, write, or custom permissions.
 
-> **Team Access**
+> [card] Team Access
 >
 > Collaborate on databases with members, and manage access permissions.
 
-> **Fully Managed**
+> [card] Fully Managed
 >
 > We handle infrastructure, scaling, and security.
 
-> **[Backups and Recovery](/features/point-in-time-recovery)**
+> [card] [Backups and Recovery](/features/point-in-time-recovery)
 >
 > Restore your database to any point in time, and recover deleted databases
 > for up to five days.
@@ -32025,20 +31866,20 @@ Turso Cloud is a fully managed database platform, designed to scale from prototy
 
 Learn how to manage, distribute and integrate your databases with the CLI, API and SDKs.
 
-> **[Turso CLI](/cli)**
+> [card] [Turso CLI](/cli)
 >
 > Manage groups, databases, and API tokens with the Turso CLI.
 
-> **[Turso Platform API](/api-reference)**
+> [card] [Turso Platform API](/api-reference)
 >
 > Programmatically manage groups and databases using the Platform API.
 
-> **[Client SDKs](/sdk)**
+> [card] [Client SDKs](/sdk)
 >
 > Connect and integrate your application with one of our client SDKs, for
 > Turso and libSQL databases alike.
 
-> **[Tutorials](https://turso.tech/blog)**
+> [card] [Tutorials](https://turso.tech/blog)
 >
 > Learn how to work with Turso and your favorite language or framework.
 
@@ -32046,17 +31887,15 @@ Learn how to manage, distribute and integrate your databases with the CLI, API a
 
 Join the Turso community to ask questions, share what you're working on, discuss best practices, and share tips on [Discord](https://tur.so/discord), [Twitter](https://twitter.com/tursodatabase), and [LinkedIn](https://www.linkedin.com/company/turso).
 
-> **[Discord](https://tur.so/discord)**
+> [card] [Discord](https://tur.so/discord)
 
-> **[GitHub](https://github.com/tursodatabase)**
+> [card] [GitHub](https://github.com/tursodatabase)
 
-> **[X (Twitter)](https://twitter.com/tursodatabase)**
+> [card] [X (Twitter)](https://twitter.com/tursodatabase)
 
 
 # Change Data Capture
 Source: https://docs.turso.tech/tursodb/cdc
-
-
 
 Change Data Capture (CDC) tracks all data changes (inserts, updates, deletes) made to your database tables. Changes are recorded in a local table that you can query like any other table. This is useful for building reactive applications, syncing data between systems, auditing, and more.
 
@@ -32227,12 +32066,8 @@ Source: https://docs.turso.tech/tursodb/changelog
 
 
 
-
-
 # Concurrent Writes
 Source: https://docs.turso.tech/tursodb/concurrent-writes
-
-
 
 Turso with default configuration only allows one connection to write at a time. With MVCC (Multi-Version Concurrency Control), multiple connections can write simultaneously. If two transactions modify the same data, one will receive a conflict error and must roll back and retry.
 
@@ -32262,143 +32097,143 @@ Your application must detect conflict errors and retry the transaction.
 
 ## Example
 
-**Rust**
+> [tab] Rust
+>
+> ```rust theme={null}
+> fn is_retryable(e: &Error) -> bool {
+>     matches!(e, Error::Busy(_) | Error::BusySnapshot(_))
+>         || matches!(e, Error::Error(msg) if msg.contains("conflict"))
+> }
+>
+> #[tokio::main]
+> async fn main() -> Result<(), Error> {
+>     let tmp = NamedTempFile::new().expect("failed to create temp file");
+>     let db = Builder::new_local(tmp.path().to_str().unwrap())
+>         .build()
+>         .await?;
+>
+>     let conn = db.connect()?;
+>     conn.pragma_update("journal_mode", "'mvcc'").await?;
+>     conn.execute("CREATE TABLE hits (val INTEGER)", ()).await?;
+>
+>     let mut handles = Vec::new();
+>     for _ in 0..16 {
+>         let db = db.clone();
+>         handles.push(tokio::spawn(async move {
+>             let val = rand::rng().random_range(1..=100);
+>             let conn = db.connect()?;
+>             loop {
+>                 conn.execute("BEGIN CONCURRENT", ()).await?;
+>                 let result = conn
+>                     .execute(&format!("INSERT INTO hits VALUES ({val})"), ())
+>                     .await
+>                     .and(conn.execute("COMMIT", ()).await);
+>                 match result {
+>                     Ok(_) => return Ok::<_, Error>(val),
+>                     Err(ref e) if is_retryable(e) => {
+>                         let _ = conn.execute("ROLLBACK", ()).await;
+>                         tokio::task::yield_now().await;
+>                     }
+>                     Err(e) => {
+>                         let _ = conn.execute("ROLLBACK", ()).await;
+>                         return Err(e);
+>                     }
+>                 }
+>             }
+>         }));
+>     }
+>
+>     for handle in handles {
+>         handle.await.expect("task panicked")?;
+>     }
+>
+>     Ok(())
+> }
+> ```
 
-```rust theme={null}
-fn is_retryable(e: &Error) -> bool {
-    matches!(e, Error::Busy(_) | Error::BusySnapshot(_))
-        || matches!(e, Error::Error(msg) if msg.contains("conflict"))
-}
+> [tab] JavaScript
+>
+> ```js theme={null}
+> const DB_PATH = join(mkdtempSync(join(tmpdir(), "turso-mvcc-")), "hits.db");
+>
+> function isRetryable(err) {
+>   const msg = (err?.message ?? "").toLowerCase();
+>   return msg.includes("conflict") || msg.includes("busy");
+> }
+>
+> async function writeWorker() {
+>   const val = Math.floor(Math.random() * 100) + 1;
+>   const db = await connect(DB_PATH);
+>   try {
+>     await db.exec("PRAGMA journal_mode = 'mvcc'");
+>     while (true) {
+>       await db.exec("BEGIN CONCURRENT");
+>       try {
+>         await db.exec(`INSERT INTO hits VALUES (${val})`);
+>         await db.exec("COMMIT");
+>         return val;
+>       } catch (err) {
+>         try { await db.exec("ROLLBACK"); } catch (_) {}
+>         if (!isRetryable(err)) throw err;
+>         await new Promise((r) => setImmediate(r));
+>       }
+>     }
+>   } finally {
+>     await db.close();
+>   }
+> }
+>
+> const setup = await connect(DB_PATH);
+> await setup.exec("PRAGMA journal_mode = 'mvcc'");
+> await setup.exec("CREATE TABLE hits (val INTEGER)");
+> await setup.close();
+>
+> await Promise.all(Array.from({ length: 16 }, () => writeWorker()));
+> ```
 
-#[tokio::main]
-async fn main() -> Result<(), Error> {
-    let tmp = NamedTempFile::new().expect("failed to create temp file");
-    let db = Builder::new_local(tmp.path().to_str().unwrap())
-        .build()
-        .await?;
-
-    let conn = db.connect()?;
-    conn.pragma_update("journal_mode", "'mvcc'").await?;
-    conn.execute("CREATE TABLE hits (val INTEGER)", ()).await?;
-
-    let mut handles = Vec::new();
-    for _ in 0..16 {
-        let db = db.clone();
-        handles.push(tokio::spawn(async move {
-            let val = rand::rng().random_range(1..=100);
-            let conn = db.connect()?;
-            loop {
-                conn.execute("BEGIN CONCURRENT", ()).await?;
-                let result = conn
-                    .execute(&format!("INSERT INTO hits VALUES ({val})"), ())
-                    .await
-                    .and(conn.execute("COMMIT", ()).await);
-                match result {
-                    Ok(_) => return Ok::<_, Error>(val),
-                    Err(ref e) if is_retryable(e) => {
-                        let _ = conn.execute("ROLLBACK", ()).await;
-                        tokio::task::yield_now().await;
-                    }
-                    Err(e) => {
-                        let _ = conn.execute("ROLLBACK", ()).await;
-                        return Err(e);
-                    }
-                }
-            }
-        }));
-    }
-
-    for handle in handles {
-        handle.await.expect("task panicked")?;
-    }
-
-    Ok(())
-}
-```
-
-**JavaScript**
-
-```js theme={null}
-const DB_PATH = join(mkdtempSync(join(tmpdir(), "turso-mvcc-")), "hits.db");
-
-function isRetryable(err) {
-  const msg = (err?.message ?? "").toLowerCase();
-  return msg.includes("conflict") || msg.includes("busy");
-}
-
-async function writeWorker() {
-  const val = Math.floor(Math.random() * 100) + 1;
-  const db = await connect(DB_PATH);
-  try {
-    await db.exec("PRAGMA journal_mode = 'mvcc'");
-    while (true) {
-      await db.exec("BEGIN CONCURRENT");
-      try {
-        await db.exec(`INSERT INTO hits VALUES (${val})`);
-        await db.exec("COMMIT");
-        return val;
-      } catch (err) {
-        try { await db.exec("ROLLBACK"); } catch (_) {}
-        if (!isRetryable(err)) throw err;
-        await new Promise((r) => setImmediate(r));
-      }
-    }
-  } finally {
-    await db.close();
-  }
-}
-
-const setup = await connect(DB_PATH);
-await setup.exec("PRAGMA journal_mode = 'mvcc'");
-await setup.exec("CREATE TABLE hits (val INTEGER)");
-await setup.close();
-
-await Promise.all(Array.from({ length: 16 }, () => writeWorker()));
-```
-
-**Python**
-
-```python theme={null}
-def is_retryable(e: Exception) -> bool:
-    msg = str(e).lower()
-    return "conflict" in msg or "busy" in msg
-
-def write_worker(db_path: str) -> int:
-    val = random.randint(1, 100)
-    conn = turso.connect(db_path)
-    try:
-        conn.execute("PRAGMA journal_mode = 'mvcc'").fetchone()
-        while True:
-            conn.execute("BEGIN CONCURRENT")
-            try:
-                conn.execute("INSERT INTO hits VALUES (?)", (val,))
-                conn.execute("COMMIT")
-                return val
-            except Exception as e:
-                try:
-                    conn.execute("ROLLBACK")
-                except Exception:
-                    pass
-                if not is_retryable(e):
-                    raise
-    finally:
-        conn.close()
-
-async def main() -> None:
-    with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as tmp:
-        db_path = tmp.name
-
-    setup = turso.connect(db_path)
-    setup.execute("PRAGMA journal_mode = 'mvcc'").fetchone()
-    setup.execute("CREATE TABLE hits (val INTEGER)")
-    setup.commit()
-    setup.close()
-
-    tasks = [asyncio.to_thread(write_worker, db_path) for _ in range(16)]
-    await asyncio.gather(*tasks)
-
-asyncio.run(main())
-```
+> [tab] Python
+>
+> ```python theme={null}
+> def is_retryable(e: Exception) -> bool:
+>     msg = str(e).lower()
+>     return "conflict" in msg or "busy" in msg
+>
+> def write_worker(db_path: str) -> int:
+>     val = random.randint(1, 100)
+>     conn = turso.connect(db_path)
+>     try:
+>         conn.execute("PRAGMA journal_mode = 'mvcc'").fetchone()
+>         while True:
+>             conn.execute("BEGIN CONCURRENT")
+>             try:
+>                 conn.execute("INSERT INTO hits VALUES (?)", (val,))
+>                 conn.execute("COMMIT")
+>                 return val
+>             except Exception as e:
+>                 try:
+>                     conn.execute("ROLLBACK")
+>                 except Exception:
+>                     pass
+>                 if not is_retryable(e):
+>                     raise
+>     finally:
+>         conn.close()
+>
+> async def main() -> None:
+>     with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as tmp:
+>         db_path = tmp.name
+>
+>     setup = turso.connect(db_path)
+>     setup.execute("PRAGMA journal_mode = 'mvcc'").fetchone()
+>     setup.execute("CREATE TABLE hits (val INTEGER)")
+>     setup.commit()
+>     setup.close()
+>
+>     tasks = [asyncio.to_thread(write_worker, db_path) for _ in range(16)]
+>     await asyncio.gather(*tasks)
+>
+> asyncio.run(main())
+> ```
 
 Try the full example:
 [Rust](https://github.com/tursodatabase/turso/blob/main/bindings/rust/examples/concurrent_writes.rs) · [JavaScript](https://github.com/tursodatabase/turso/blob/main/examples/javascript/concurrent-writes/index.mjs) · [Python](https://github.com/tursodatabase/turso/blob/main/examples/python/concurrent_writes.py)
@@ -32406,8 +32241,6 @@ Try the full example:
 
 # Encryption
 Source: https://docs.turso.tech/tursodb/encryption
-
-
 
 Turso Database provides native encryption for data at rest using industry-standard AEAD algorithms. Each database page is encrypted individually, ensuring data integrity and security across all environments.
 
@@ -32419,30 +32252,30 @@ Turso Database provides native encryption for data at rest using industry-standa
 
 Turso Database with encryption is perfect for:
 
-> **Fintech Applications**
+> [card] Fintech Applications
 >
 > Meet regulatory requirements for sensitive financial data
 
-> **Privacy-Focused Products**
+> [card] Privacy-Focused Products
 >
 > Build user trust with strong data protection
 
-> **Healthcare Apps**
+> [card] Healthcare Apps
 >
 > Protect patient data and meet HIPAA compliance
 
-> **AI/ML Applications**
+> [card] AI/ML Applications
 >
 > Secure training data and model outputs
 
 ## What's Encrypted
 
-> **Encrypted**
+> [card] Encrypted
 >
 > * All database pages with your data - The database file - Write-Ahead Log
 >   (WAL) file
 
-> **Not Encrypted**
+> [card] Not Encrypted
 >
 > * The database header (first 100 bytes)
 
@@ -32450,33 +32283,33 @@ Turso Database with encryption is perfect for:
 
 Generate a secure encryption key in hexadecimal format. The key size depends on the cipher you choose:
 
-**256-bit (32 bytes)**
+> [tab] 256-bit (32 bytes)
+>
+> For AEGIS-256 variants and AES-256-GCM:
+>
+> ```bash theme={null}
+> openssl rand -hex 32
+> ```
+>
+> Output example:
+>
+> ```
+> 2d7a30108d3eb3e45c90a732041fe54778bdcf707c76749fab7da335d1b39c1d
+> ```
 
-For AEGIS-256 variants and AES-256-GCM:
-
-```bash theme={null}
-openssl rand -hex 32
-```
-
-Output example:
-
-```
-2d7a30108d3eb3e45c90a732041fe54778bdcf707c76749fab7da335d1b39c1d
-```
-
-**128-bit (16 bytes)**
-
-For AEGIS-128 variants and AES-128-GCM:
-
-```bash theme={null}
-openssl rand -hex 16
-```
-
-Output example:
-
-```
-5f3e2a8c9b1d4f6e7a2c8d4b9e1f3a6c
-```
+> [tab] 128-bit (16 bytes)
+>
+> For AEGIS-128 variants and AES-128-GCM:
+>
+> ```bash theme={null}
+> openssl rand -hex 16
+> ```
+>
+> Output example:
+>
+> ```
+> 5f3e2a8c9b1d4f6e7a2c8d4b9e1f3a6c
+> ```
 
 > [!WARNING]
 >
@@ -32611,25 +32444,23 @@ Future encryption features in development:
 # Quickstart
 Source: https://docs.turso.tech/tursodb/quickstart
 
-
-
 **1. Install**
 
-**macOS / Linux**
+> [tab] macOS / Linux
+>
+> ```bash theme={null}
+> curl --proto '=https' --tlsv1.2 -LsSf https://github.com/tursodatabase/turso/releases/latest/download/turso_cli-installer.sh | sh
+> ```
 
-```bash theme={null}
-curl --proto '=https' --tlsv1.2 -LsSf https://github.com/tursodatabase/turso/releases/latest/download/turso_cli-installer.sh | sh
-```
-
-**Windows**
-
-Run the following command in PowerShell:
-
-```powershell theme={null}
-irm https://github.com/tursodatabase/turso/releases/latest/download/turso_cli-installer.ps1 | iex
-```
-
-Alternatively, you can [download the Windows executable](https://github.com/tursodatabase/turso/releases/latest) and add it to your PATH.
+> [tab] Windows
+>
+> Run the following command in PowerShell:
+>
+> ```powershell theme={null}
+> irm https://github.com/tursodatabase/turso/releases/latest/download/turso_cli-installer.ps1 | iex
+> ```
+>
+> Alternatively, you can [download the Windows executable](https://github.com/tursodatabase/turso/releases/latest) and add it to your PATH.
 
 **2. Launch**
 
@@ -32653,7 +32484,7 @@ turso>
 
 Now you can execute SQL statements in the interactive shell:
 
-> **Create a table**
+> [accordion] Create a table
 >
 > Create a table for users:
 >
@@ -32661,7 +32492,7 @@ Now you can execute SQL statements in the interactive shell:
 > CREATE TABLE users (id INT, username TEXT);
 > ```
 
-> **Insert data**
+> [accordion] Insert data
 >
 > Insert some data into the users table:
 >
@@ -32670,7 +32501,7 @@ Now you can execute SQL statements in the interactive shell:
 > INSERT INTO users VALUES (2, 'bob');
 > ```
 
-> **Query data**
+> [accordion] Query data
 >
 > Query all users from the table:
 >

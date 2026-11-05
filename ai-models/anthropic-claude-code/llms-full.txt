@@ -20542,6 +20542,17 @@ The session details panel is a set of cards beside the chat that show where the 
 
 To hide or show the panel, click **Hide session rail** or **Show session rail** in the session's title bar, or in the bar's **⋮** menu. If you still don't see the panel, [check which Code tab layout you have](#check-which-layout-you-have).
 
+### Minimize a pane
+
+To keep the Terminal, Browser, or [iOS Simulator](/docs/en/desktop-ios-simulator) in view at a small size, click **Minimize** in the pane's header. The button requires Claude Desktop v4.0.0 or later and a Claude account rather than a [third-party provider](/docs/en/third-party-integrations). The Browser pane has it only in local sessions.
+
+The minimized pane sits in the [session details panel](#see-session-details) while that panel is on screen, and floats in a corner of the chat otherwise:
+
+* **In the panel**: the minimized pane sits below the panel's cards, where you can't move or resize it. To float it over the chat instead, [hide the panel](#hide-or-show-the-session-details-panel).
+* **In a corner of the chat**: hover over the minimized pane to show its header. Drag the header to move it to another corner. To resize it, drag the corner of the minimized pane nearest the center of the chat.
+
+To get the full pane back, click **Expand** in the minimized pane's header. To close the minimized pane instead, click the close button beside **Expand**.
+
 ### Run commands in the terminal
 
 The integrated terminal lets you run commands alongside your session without switching to another app. Click **Terminal** in the session's title bar or press **Ctrl+\`** on macOS or Windows. The terminal opens in your session's working directory and shares the same environment as Claude, so commands like `npm test` or `git status` see the same files Claude is editing. To open a second terminal tab, click **+** in the terminal pane header or right-click a folder in the chat to choose **Open in terminal**.
@@ -22815,22 +22826,23 @@ Claude Code Desktop shuts down the simulators it booted once they're no longer i
 
 ## Grant Claude access to a device
 
-Claude asks for your consent before it controls a device, while building the app or opening a URL on it follows your session's permission mode. You or your organization can also turn Claude's access off entirely.
+Claude asks for your consent before it controls a device, while building or launching the app or opening a URL on it follows your session's permission mode. You or your organization can also turn Claude's access off entirely.
 
 ### Allow a device the first time
 
 The first time Claude uses a simulator, the desktop app asks you to allow it. The consent covers controlling that device and taking screenshots of it, and you give it once per device rather than once per session. Claude's screenshots of the device are sent to Anthropic and kept under your normal conversation retention settings, so don't sign in to real accounts on a device Claude uses.
 
-After you allow a device, Claude's actions on it, such as tapping, typing, launching the app, and taking screenshots, run without further prompts. They carry the same trust as you clicking in the pane, and they only touch the simulated device, so the pane doesn't need the macOS Accessibility and Screen Recording permissions that computer use requires.
+After you allow a device, Claude's actions on it, such as tapping, typing, and taking screenshots, run without prompts, but you approve launching the app as your [permission mode](#actions-that-follow-your-permission-mode) requires. They carry the same trust as you clicking in the pane, and they only touch the simulated device, so the pane doesn't need the macOS Accessibility and Screen Recording permissions that computer use requires.
 
 If you decline, the device still boots and the pane still works for your own taps; only Claude's access stays off. To change your mind later, click **Let Claude use it** in the pane.
 
 ### Actions that follow your permission mode
 
-Two actions follow your session's [permission mode](/docs/en/permissions#permission-modes) instead of the one-time consent:
+Three actions follow your session's [permission mode](/docs/en/permissions#permission-modes) even after you allow a device:
 
 * Opening a URL on the device, for example to test a deep link or load a page in the device's Safari, because a URL can carry data off the device.
 * Building the app, because `xcodebuild` runs your project's build scripts on your Mac. Checking on a build already in progress doesn't prompt.
+* Installing and launching the app, because Claude can run any app it names, not only the one you're building.
 
 ### Turn off simulator access
 

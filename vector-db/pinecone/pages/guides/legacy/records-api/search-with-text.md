@@ -302,7 +302,7 @@ class SearchRecordsResponse {
 
 To search a legacy integrated index with query text, use the [Search with text](/reference/api/latest/data-plane/search_records) operation with the following parameters:
 
-* `namespace`: The [namespace](/guides/indexes/indexing-overview#namespaces) to query. To use the default namespace, set to `"__default__"`.
+* `namespace`: The [namespace](/guides/indexes/index-data-overview#namespaces) to query. To use the default namespace, set to `"__default__"`.
 * `query.inputs.text`:  The query text. Pinecone uses the [embedding model](/guides/indexes/index-configuration#embedding-models) integrated with the index to convert the text to a sparse vector automatically.
 * `query.top_k`:  The number of records to return.
 * `query.match_terms`: (Optional) A list of terms that must be present in each search result. For more details, see [Filter by required terms](#filter-by-required-terms).

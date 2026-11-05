@@ -6,7 +6,7 @@ path: guides/data/list-record-ids
 
 List the IDs of Pinecone documents in a namespace of a document index, filter them by ID prefix, and paginate through the results.
 
-This page shows you how to list the IDs in an index [namespace](/guides/indexes/indexing-overview#namespaces), either all of them or just those with a common ID prefix. Listing IDs without the data behind them is a cheap and fast way to check [upserts](/guides/data/upsert-data).
+This page shows you how to list the IDs in an index [namespace](/guides/indexes/index-data-overview#namespaces), either all of them or just those with a common ID prefix. Listing IDs without the data behind them is a cheap and fast way to check [upserts](/guides/data/upsert-data).
 
 For a legacy vector index, see [List vector IDs](/guides/legacy/vectors-api/list-vector-ids).
 

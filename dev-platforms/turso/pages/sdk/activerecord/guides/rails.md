@@ -111,6 +111,6 @@ results = ActiveRecord::Base.connection.execute("SELECT * FROM products")
 
 ## Examples
 
-> **[Ruby on Rails App](https://github.com/tursodatabase/libsql-activerecord/tree/main/examples/railsapp)**
+> [card] [Ruby on Rails App](https://github.com/tursodatabase/libsql-activerecord/tree/main/examples/railsapp)
 >
 > See the full source code

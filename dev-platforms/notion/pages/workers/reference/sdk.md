@@ -298,11 +298,33 @@ const deleteChange = {
 | `upstreamUpdatedAt` | Optional ISO 8601 timestamp used for conflict resolution when multiple syncs write to the same database. |
 | `icon` | Optional page icon. Use `Builder.emojiIcon()`, `Builder.notionIcon()`, or `Builder.imageIcon()`. |
 | `cover` | Optional page cover. Use `Builder.imageCover()` with an external image URL and optional vertical position. |
-| `pageContentMarkdown` | Optional markdown page body content. |
+| `pageContentMarkdown` | Optional markdown for the page body. When set, the runtime changes the page body to match it. See [Page content](#page-content). |
 
 Delete changes are only applicable in `mode: "incremental"`. In
 `mode: "replace"`, the runtime deletes records that were not seen by the end of
 the completed sync cycle.
+
+### Page content
+
+`pageContentMarkdown` sets the whole page body. It doesn't add to the body that's
+already there.
+
+When an upsert creates a page, the markdown becomes the page body. When an
+upsert updates a page and includes `pageContentMarkdown`, the runtime compares
+the existing body with the markdown and changes the body to match it. Blocks
+that still match the markdown are kept, blocks whose content changed are updated
+in place, and blocks that aren't in the markdown are removed. This includes
+blocks that people add or edit in Notion, so their edits are overwritten by the
+next upsert that includes `pageContentMarkdown`.
+
+To leave a page body as it is, omit `pageContentMarkdown` from the upsert.
+Changes to properties, the icon, and the cover still apply. To clear a page
+body, set `pageContentMarkdown` to an empty string.
+
+> [!WARNING]
+>
+> We recommend against editing the body of a synced page in Notion. The next
+> upsert that includes `pageContentMarkdown` overwrites those edits.
 
 ### Multiple syncs for one database
 

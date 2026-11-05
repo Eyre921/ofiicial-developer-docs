@@ -73,7 +73,7 @@ turso db shell my-db
 >
 > Replace `my-db` with the name of your database if you named it differently.
 
-> **Create table**
+> [accordion] Create table
 >
 > Now create a table for `users` using SQL:
 >
@@ -84,7 +84,7 @@ turso db shell my-db
 > );
 > ```
 
-> **Insert into new table**
+> [accordion] Insert into new table
 >
 > Then insert a row into the `users` table:
 >
@@ -92,7 +92,7 @@ turso db shell my-db
 > INSERT INTO users (name) VALUES ('Iku');
 > ```
 
-> **Select all rows from table**
+> [accordion] Select all rows from table
 >
 > Finally, query for all `users`:
 >

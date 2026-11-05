@@ -524,7 +524,7 @@ In a legacy vector index, the query is either a sparse vector or the ID of a rec
 
 To search an index of sparse vectors with a sparse vector representation of a query, use the [Search with a vector](/reference/api/latest/data-plane/query) operation with the following parameters:
 
-* `namespace`: The [namespace](/guides/indexes/indexing-overview#namespaces) to query. To use the default namespace, set to `"__default__"`.
+* `namespace`: The [namespace](/guides/indexes/index-data-overview#namespaces) to query. To use the default namespace, set to `"__default__"`.
 * `sparse_vector`: The sparse vector values and indices.
 * `top_k`: The number of results to return.
 * `include_values`: Whether to include the vector values of the matching records in the response. Defaults to `false`.
@@ -939,7 +939,7 @@ class QueryResponseWithUnsignedIndices {
 
 When you search with a record ID, Pinecone uses the sparse vector associated with the record as the query. To search an index of sparse vectors with a record ID, use the [Search with a vector](/reference/api/latest/data-plane/query) operation with the following parameters:
 
-* `namespace`: The [namespace](/guides/indexes/indexing-overview#namespaces) to query. To use the default namespace, set to `"__default__"`.
+* `namespace`: The [namespace](/guides/indexes/index-data-overview#namespaces) to query. To use the default namespace, set to `"__default__"`.
 * `id`: The unique record ID containing the sparse vector to use as the query.
 * `top_k`: The number of results to return.
 * `include_values`: Whether to include the vector values of the matching records in the response. Defaults to `false`.

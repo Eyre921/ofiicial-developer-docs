@@ -6,7 +6,7 @@ path: guides/search/sparse-vector-search
 
 Run sparse-vector search in Pinecone over a document index, querying with text or with a sparse vector you generate.
 
-This page shows you how to search an [index with sparse vectors](/guides/indexes/indexing-overview#sparse-vector-search) for documents that most exactly match the words or phrases in a query.
+This page shows you how to search an [index with sparse vectors](/guides/indexes/index-data-overview#sparse-vector-search) for documents that most exactly match the words or phrases in a query.
 
 > [!NOTE]
 >

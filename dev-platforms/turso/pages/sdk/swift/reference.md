@@ -12,7 +12,7 @@ libSQL Swift Reference
 
 First begin by adding `libsql` as a package dependency in XCode using this repo:
 
-> **[libSQL Swift](https://github.com/tursodatabase/libsql-swift)**
+> [card] [libSQL Swift](https://github.com/tursodatabase/libsql-swift)
 >
 > Build from source code
 

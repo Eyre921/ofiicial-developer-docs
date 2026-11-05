@@ -70,7 +70,7 @@ Fireworks AI is the fastest platform for building with open source AI models. Ge
 >
 > Find the best model for your use case
 
-> [card] [Cookbook](https://github.com/fw-ai/cookbook)
+> [card] [Cookbook](https://github.com/fw-ai-external/cookbook)
 >
 > Code examples and tutorials
 

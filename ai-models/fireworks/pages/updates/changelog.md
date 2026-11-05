@@ -8,6 +8,24 @@ Fireworks documentation changelog: recent additions, updates, and clarifications
 
 All
 
+**2026-11-04**
+
+Training
+
+# Cookbook migration and first PyPI release
+
+The public cookbook now lives at [`fw-ai-external/cookbook`](https://github.com/fw-ai-external/cookbook). Use this repository for recipes, case studies, notebooks, and coding-agent skills.
+
+[`fireworks-training-cookbook` 2026.11.5.1](https://pypi.org/project/fireworks-training-cookbook/2026.11.5.1/) is available on PyPI for Python 3.11 or newer. Install its released recipes and utilities with:
+
+```bash theme={null}
+python -m pip install --upgrade fireworks-training-cookbook
+```
+
+Python imports remain `training.*`. The [Fireworks Python SDK](https://github.com/fw-ai-external/python-sdk) is released separately as [`fireworks-ai` 1.2.31](https://pypi.org/project/fireworks-ai/1.2.31/).
+
+See [Cookbook installation and migration](/fine-tuning/training-api/cookbook/overview#installation) for pinned releases, editable installs, and updating an existing checkout. [Agent skill install commands](/fine-tuning/agent/use-with-coding-agents) now point to the new repository.
+
 **2026-11-03**
 
 Inference
@@ -36,7 +54,7 @@ Training
 
 # Training SDK 1.2.30: clearer TITO errors and trajectory discard
 
-**`fireworks-ai` 1.2.30** and the updated [Fireworks Cookbook](https://github.com/fw-ai/cookbook) complete the changes to how [TITO sidecars](/fine-tuning/training-api/cookbook/agentic-rl) handle failed agent turns, which began in 1.2.27. If you run agentic RL with TITO, upgrade both; the latest cookbook requires 1.2.30.
+**`fireworks-ai` 1.2.30** and the updated [Fireworks Cookbook](https://github.com/fw-ai-external/cookbook) complete the changes to how [TITO sidecars](/fine-tuning/training-api/cookbook/agentic-rl) handle failed agent turns, which began in 1.2.27. If you run agentic RL with TITO, upgrade both; the latest cookbook requires 1.2.30.
 
 ```bash theme={null}
 pip install --upgrade "fireworks-ai[training]>=1.2.30"
@@ -65,7 +83,7 @@ Each failed trajectory leaves a private JSONL trace (request, prepared token IDs
 
 Since 1.2.27, `sample` and `sample_async` take a keyword-only `images=` list of base64 data URLs for token prompts with one placeholder per image. Prompts with unprojected image chunks are rejected so sampler-owned delimiters aren't duplicated.
 
-See the cookbook's [TITO failure debugging reference](https://github.com/fw-ai/cookbook/blob/main/skills/debug/references/tito-failures.md) for every error code and how to read a trace.
+See the cookbook's [TITO failure debugging reference](https://github.com/fw-ai-external/cookbook/blob/main/skills/debug/references/tito-failures.md) for every error code and how to read a trace.
 
 **2026-10-19**
 

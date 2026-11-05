@@ -6,11 +6,11 @@ path: admin/security/configure-audit-logs
 
 Enable Pinecone audit logging to an Amazon S3 or Google Cloud Storage bucket to track user, service account, and API actions for compliance and security review.
 
-Audit logs provide a detailed record of user, service account, and API actions that occur on the management and [control plane](/guides/core-concepts/architecture#control-plane) within Pinecone. Pinecone supports Amazon S3 and Google Cloud Storage (GCS) as destinations for audit logs.
+Audit logs provide a detailed record of user, service account, and API actions that occur on the management and [control plane](/guides/get-started/architecture#control-plane) within Pinecone. Pinecone supports Amazon S3 and Google Cloud Storage (GCS) as destinations for audit logs.
 
 > [!NOTE]
 >
-> To enable and manage audit logs, you must be an [organization owner](/admin/organizations/understanding-organizations#organization-roles). This feature is available only on [Enterprise plans](https://www.pinecone.io/pricing/) or with the [HIPAA compliance add-on](/guides/manage-cost/understanding-cost#hipaa-compliance-add-on).
+> To enable and manage audit logs, you must be an [organization owner](/admin/organizations/organizations-overview#organization-roles). This feature is available only on [Enterprise plans](https://www.pinecone.io/pricing/) or with the [HIPAA compliance add-on](/guides/cost/understand-cost#hipaa-compliance-add-on).
 
 ## Enable audit logs
 

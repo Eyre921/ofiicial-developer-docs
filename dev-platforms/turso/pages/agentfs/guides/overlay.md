@@ -187,10 +187,10 @@ See the [AgentFS Specification](https://github.com/tursodatabase/agentfs/blob/ma
 
 ## Next Steps
 
-> **[Sessions](/agentfs/guides/sessions)**
+> [card] [Sessions](/agentfs/guides/sessions)
 >
 > Share state between agents
 
-> **[Syncing](/agentfs/guides/sync)**
+> [card] [Syncing](/agentfs/guides/sync)
 >
 > Sync overlays to Turso Cloud

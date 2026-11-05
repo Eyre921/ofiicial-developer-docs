@@ -18,7 +18,7 @@ Pinecone Assistant simplifies complex tasks like data chunking, vector search, e
 
 ## Data ingestion
 
-When a [document is uploaded](/guides/assistant/manage-files), the assistant processes the content by chunking it into smaller parts and generating [vector embeddings](https://www.pinecone.io/learn/vector-embeddings-for-developers/) for each chunk. These embeddings are stored in an [index](/guides/indexes/indexing-overview), making them ready for retrieval.
+When a [document is uploaded](/guides/assistant/manage-files), the assistant processes the content by chunking it into smaller parts and generating [vector embeddings](https://www.pinecone.io/learn/vector-embeddings-for-developers/) for each chunk. These embeddings are stored in an [index](/guides/indexes/index-data-overview), making them ready for retrieval.
 
 ## Data retrieval
 

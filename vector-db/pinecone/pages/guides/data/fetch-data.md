@@ -6,13 +6,13 @@ path: guides/data/fetch-data
 
 Retrieve Pinecone documents from a namespace in a document index by ID or metadata filter to inspect their fields and metadata.
 
-This page shows you how to fetch documents by ID or by metadata filter from a [namespace](/guides/indexes/indexing-overview#namespaces) in a document index. For a legacy vector index, see [Fetch vectors](/guides/legacy/vectors-api/fetch-vectors).
+This page shows you how to fetch documents by ID or by metadata filter from a [namespace](/guides/indexes/index-data-overview#namespaces) in a document index. For a legacy vector index, see [Fetch vectors](/guides/legacy/vectors-api/fetch-vectors).
 
 You can also fetch data in the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/indexes/-/browser).
 
 > [!TIP]
 >
-> Fetches consume [read units (RUs)](/guides/manage-cost/understanding-cost#read-units). See [Understand Pinecone cost](/guides/manage-cost/understanding-cost#fetch) for how fetch cost is calculated.
+> Fetches consume [read units (RUs)](/guides/cost/understand-cost#read-units). See [Understand Pinecone cost](/guides/cost/understand-cost#fetch) for how fetch cost is calculated.
 
 ## Fetch documents
 
@@ -68,7 +68,7 @@ The response keys each document by its ID:
 
 ### Fetch documents by metadata
 
-To fetch every document matching a [metadata filter expression](/guides/indexes/indexing-overview#metadata-filter-expressions), pass a `filter` instead of `ids`:
+To fetch every document matching a [metadata filter expression](/guides/indexes/index-data-overview#metadata-filter-expressions), pass a `filter` instead of `ids`:
 
 ```Python Python theme={null}
 # Connect to an index as shown above.

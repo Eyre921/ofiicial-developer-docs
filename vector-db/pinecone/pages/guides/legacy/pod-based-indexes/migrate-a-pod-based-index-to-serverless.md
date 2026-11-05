@@ -6,7 +6,7 @@ path: guides/legacy/pod-based-indexes/migrate-a-pod-based-index-to-serverless
 
 Migrate a Pinecone pod-based index to serverless for automatic scaling, better performance, and usage-based pricing with no minimum spend commitment.
 
-This page shows you how to migrate a pod-based index to [serverless](/guides/core-concepts/architecture). The migration process is free; the standard costs of upserting records to a new serverless index aren't applied.
+This page shows you how to migrate a pod-based index to [serverless](/guides/get-started/architecture). The migration process is free; the standard costs of upserting records to a new serverless index aren't applied.
 
 > [!WARNING]
 >
@@ -838,5 +838,5 @@ When you're ready to cutover to your new serverless index:
 ## See also
 
 * [Limits](/reference/api/database-limits)
-* [Serverless architecture](/guides/core-concepts/architecture)
-* [Understanding serverless cost](/guides/manage-cost/understanding-cost)
+* [Serverless architecture](/guides/get-started/architecture)
+* [Understanding serverless cost](/guides/cost/understand-cost)

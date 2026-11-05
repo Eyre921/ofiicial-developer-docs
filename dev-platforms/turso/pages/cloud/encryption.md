@@ -23,29 +23,29 @@ Turso Cloud BYOK encryption for data at rest uses industry-standard AEAD algorit
 
 Turso Cloud with BYOK encryption is perfect for:
 
-> **AI Agents**
+> [card] AI Agents
 >
 > Manage a fleet of trusted agents that deal with personal private data
 
-> **Fintech Applications**
+> [card] Fintech Applications
 >
 > Meet regulatory requirements for sensitive financial data
 
-> **Privacy-Focused Products**
+> [card] Privacy-Focused Products
 >
 > Build user trust with strong data protection
 
-> **Healthcare Apps**
+> [card] Healthcare Apps
 >
 > Protect patient data and meet HIPAA compliance
 
-> **AI/ML Applications**
+> [card] AI/ML Applications
 >
 > Secure training data and model outputs
 
 ## What's Encrypted
 
-> **Encrypted**
+> [card] Encrypted
 >
 > * The database file and Write-Ahead Log (WAL) file on disk and on S3.
 
@@ -53,33 +53,33 @@ Turso Cloud with BYOK encryption is perfect for:
 
 Generate a secure encryption key in base64 format. The key size depends on the cipher you choose:
 
-**256-bit (32 bytes)**
+> [tab] 256-bit (32 bytes)
+>
+> For AEGIS-256 variants and AES-256-GCM:
+>
+> ```bash theme={null}
+> openssl rand -base64 32
+> ```
+>
+> Output example:
+>
+> ```
+> YUfkdsD2SJe4KzTB8n6CjwCgs1YIW6k1xxMEguRuI5s=
+> ```
 
-For AEGIS-256 variants and AES-256-GCM:
-
-```bash theme={null}
-openssl rand -base64 32
-```
-
-Output example:
-
-```
-YUfkdsD2SJe4KzTB8n6CjwCgs1YIW6k1xxMEguRuI5s=
-```
-
-**128-bit (16 bytes)**
-
-For AEGIS-128 variants and AES-128-GCM:
-
-```bash theme={null}
-openssl rand -base64 16
-```
-
-Output example:
-
-```
-XG1iWMFBFYEYrmYxjWDf5w==
-```
+> [tab] 128-bit (16 bytes)
+>
+> For AEGIS-128 variants and AES-128-GCM:
+>
+> ```bash theme={null}
+> openssl rand -base64 16
+> ```
+>
+> Output example:
+>
+> ```
+> XG1iWMFBFYEYrmYxjWDf5w==
+> ```
 
 > [!WARNING]
 >

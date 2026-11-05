@@ -20,21 +20,19 @@ Fireworks is [OpenAI-compatible](/tools-sdks/openai-compatibility), so you can u
 
 Requires Python 3.9+ and an API key. See [Getting your API key](/api-reference/introduction#getting-your-api-key) for instructions.
 
-> [!NOTE]
->
-> The SDK is currently in alpha. Use the `--pre` flag when installing to get the latest version.
-
 ```bash pip theme={null}
-pip install --pre fireworks-ai
+python -m pip install --upgrade fireworks-ai
 ```
 
 ```bash poetry theme={null}
-poetry add --pre fireworks-ai
+poetry add fireworks-ai
 ```
 
 ```bash uv theme={null}
-uv add --pre fireworks-ai
+uv add fireworks-ai
 ```
+
+For Training API recipes and utilities, install `fireworks-training-cookbook` on Python 3.11 or newer. See [Cookbook installation](/fine-tuning/training-api/cookbook/overview#installation) for PyPI releases and editable source checkouts. To use the Training API SDK directly, install `fireworks-ai[training]`.
 
 For detailed usage instructions, see the
 [README.md](https://github.com/fw-ai-external/python-sdk#readme). To quickly get

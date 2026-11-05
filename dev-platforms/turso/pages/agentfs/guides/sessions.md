@@ -136,10 +136,10 @@ Each database contains:
 
 ## Next Steps
 
-> **[Auditing](/agentfs/guides/auditing)**
+> [card] [Auditing](/agentfs/guides/auditing)
 >
 > Inspect what happened in a session
 
-> **[Overlay Filesystem](/agentfs/guides/overlay)**
+> [card] [Overlay Filesystem](/agentfs/guides/overlay)
 >
 > How copy-on-write works

@@ -6,7 +6,7 @@ path: guides/search/integrated-embedding
 
 Declare embed or sparse_embed on a string field so Pinecone embeds your text on a document index, and upsert and search with plain text instead of vectors.
 
-Embedding converts text into a vector that captures its meaning. Instead of generating those vectors yourself, you can have Pinecone embed a `string` field's text for you. Add an `embed` (dense) or `sparse_embed` (learned-sparse) object to the field, and Pinecone embeds the text when you upsert or update a [document](/guides/core-concepts/key-terms#document), and embeds the query text when you search that field. You send and search with plain text and never handle vectors.
+Embedding converts text into a vector that captures its meaning. Instead of generating those vectors yourself, you can have Pinecone embed a `string` field's text for you. Add an `embed` (dense) or `sparse_embed` (learned-sparse) object to the field, and Pinecone embeds the text when you upsert or update a [document](/guides/get-started/key-terms#document), and embeds the query text when you search that field. You send and search with plain text and never handle vectors.
 
 This is the same integrated embedding that the [Create an index with integrated embedding](/reference/api/2026-07/control-plane/create_for_model) operation provides for the legacy Records API, brought to document indexes, where it composes with full-text search on the same field.
 
@@ -47,7 +47,7 @@ Add `embed`, `sparse_embed`, or both to a `string` field, inside `schema.fields`
 * `sparse_embed` takes a hosted sparse model (default [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0)) and optional `write_parameters`/`read_parameters`. Sparse embeddings have no dimension or metric.
 * An `embed` field uses the index's single dense slot, and a `sparse_embed` field uses its single sparse slot. So an index has at most one of each, and an embedded field can't coexist with a `dense_vector` or `sparse_vector` field of the same type (dense or sparse).
 
-To compare the hosted models, see the [model gallery](/models/overview). For the dimensions each one supports, see [Embedding models](/guides/indexes/index-configuration#embedding-models). `llama-text-embed-v2` takes one of a fixed set of dimensions, while `gemini-embedding-2` and the `text-embedding-3` models take any integer in a range. The embedding configuration is fixed at creation: you can't add, remove, or change `embed` or `sparse_embed` on an existing index.
+To compare the hosted models and the dimensions each one supports, see the [model gallery](/models/overview). `llama-text-embed-v2` takes one of a fixed set of dimensions, while `gemini-embedding-2` and the `text-embedding-3` models take any integer in a range. The embedding configuration is fixed at creation: you can't add, remove, or change `embed` or `sparse_embed` on an existing index.
 
 ## Text storage and full-text search
 
@@ -77,7 +77,9 @@ To search one chunk field by dense, learned-sparse, and BM25, declare all three 
 
 * A document and a single request are each limited to 2 MB. On an index that embeds text, that request limit also counts the vectors Pinecone derives from the text.
 * An embedded value can be up to 100 KB, whether or not the text is stored. A stored value is also limited to 10,000 tokens after tokenization.
-* Each model embeds only its first N tokens (507 for [`multilingual-e5-large`](/models/multilingual-e5-large), 2,048 for `llama-text-embed-v2`, 8,192 for `gemini-embedding-2` and the `text-embedding-3` models, 512 by default for `pinecone-sparse-english-v0`). Longer values are truncated by default. For a dense `embed` field, setting `truncate: NONE` rejects an over-length value with a `400` instead. The full value is still stored and returned when `store_text` is `true`.
+* Each model embeds only up to its max tokens, listed in the [model gallery](/models/overview). For `pinecone-sparse-english-v0`, that's its [`max_tokens_per_sequence`](/models/pinecone-sparse-english-v0#parameters) parameter. Longer values are truncated by default. For a dense `embed` field, setting `truncate: NONE` rejects an over-length value with a `400` instead. The full value is still stored and returned when `store_text` is `true`.
+* Truncation applies only to embedding, so a stored value over 10,000 tokens is rejected with a `400` even with `truncate: END`. To embed longer text, split it into smaller documents, or set `store_text: false` to embed it without storing it.
+* The query text in an `embed` or `sparse_embed` clause is limited to 10,000 bytes. A longer query is rejected with a `400`, not truncated.
 
 ## Upsert and search embedded fields
 
@@ -89,7 +91,8 @@ Upsert documents with plain text on the embedded field. You don't supply vectors
 * A dense `embed` field must appear in every document. Omitting it, or removing it in an update, is rejected with a `400`. A `sparse_embed`-only field is optional, so you can omit or remove it.
 * A vector or an empty string on an embedded field is rejected with a `400`.
 * Update is a partial patch, so a field you don't set is left unchanged. A by-filter update can't set an embedded field; patch it by document ID.
-* An upsert or update that embeds text reports the tokens it consumed as `usage.embed_total_tokens`.
+* An update to an `_id` that doesn't exist has no effect, but any text it sets is still embedded and metered. To add a new document, upsert it.
+* An upsert or update that embeds text reports the tokens it consumed as `usage.embed_total_tokens`. It's one total across all fields and models, so a field with both `embed` and `sparse_embed` reports the dense and sparse tokens added together. Billing and [monthly limits](/reference/api/database-limits/rate-limits#monthly-usage-limits) count tokens per model, so sparse tokens count toward the field's sparse model, not its dense model.
 
 ```python Python theme={null}
 index.documents.upsert(
@@ -193,16 +196,9 @@ An `embed` or `sparse_embed` clause must be the only clause in `score_by`. You c
 
 ## Embed with text-embedding-3
 
-[`text-embedding-3-small`](/models/text-embedding-3-small) and [`text-embedding-3-large`](/models/text-embedding-3-large) are dense models from OpenAI that are available only on document indexes. Pinecone embeds text for them through Microsoft Azure.
+[`text-embedding-3-small`](/models/text-embedding-3-small) and [`text-embedding-3-large`](/models/text-embedding-3-large) are dense models from OpenAI that are available only on document indexes. Pinecone embeds text for them through Microsoft Azure. Each model's page lists its dimensions, token limit, metrics, and parameters.
 
-| Model | Default dimension | Dimension range |
-| :- | :- | :- |
-| `text-embedding-3-small` | 1,536 | 1 to 1,536 |
-| `text-embedding-3-large` | 3,072 | 1 to 3,072 |
-
-Both models embed up to 8,192 tokens per value and take any metric (`cosine` by default, `dotproduct`, or `euclidean`). They process text in the `global` [processing location](/guides/indexes/processing-locations) by default, and you can set `processing_location` to `us` on the Standard and Enterprise plans.
-
-The models are available on every plan, with the same monthly token limits as other hosted embedding models: 5 million tokens a month on Starter, 10 million on Builder, and no limit on Standard and Enterprise. For per-minute limits, see [Rate limits](/reference/api/database-limits/rate-limits#model-throughput-limits).
+The models are available on every plan. They process text in the `global` [processing location](/guides/indexes/processing-locations) by default, and you can set `processing_location` to `us` on the Standard and Enterprise plans. For monthly and per-minute token limits, see [Rate limits](/reference/api/database-limits/rate-limits).
 
 This field embeds with `text-embedding-3-large` at 1,024 dimensions:
 
@@ -217,9 +213,9 @@ This field embeds with `text-embedding-3-large` at 1,024 dimensions:
 
 ## Embed with gemini-embedding-2
 
-[`gemini-embedding-2`](/models/gemini-embedding-2) is a dense model from Google that's available only on document indexes. It embeds up to 8,192 tokens per value and uses the `cosine` metric only. Its default dimension is 3,072, and you can set `dimension` to any integer from 128 to 3,072. Pinecone embeds text for this model through Google Vertex AI, in the `global` [processing location](/guides/indexes/processing-locations) only.
+[`gemini-embedding-2`](/models/gemini-embedding-2) is a dense model from Google that's available only on document indexes. Pinecone embeds text for it through Google Vertex AI. The model page lists its dimensions, token limit, metric, and parameters.
 
-The model isn't available on the Starter plan. Creating an index with it on Starter returns a `403` that names the field and model. If your organization moves to the Starter plan, its existing `gemini-embedding-2` indexes stay, but upserts and searches on them return a `403` until you upgrade again. The Builder plan includes 10 million `gemini-embedding-2` tokens a month, and the Standard and Enterprise plans have no monthly limit. For per-minute limits, see [Rate limits](/reference/api/database-limits/rate-limits#model-throughput-limits).
+The model isn't available on the Starter plan. Creating an index with it on Starter returns a `403` that names the field and model. If your organization moves to the Starter plan, its existing `gemini-embedding-2` indexes stay, but upserts and searches on them return a `403` until you upgrade again. For monthly and per-minute token limits, see [Rate limits](/reference/api/database-limits/rate-limits).
 
 ### Task types
 
@@ -229,7 +225,7 @@ The model isn't available on the Starter plan. Creating an index with it on Star
 * **Query tasks**: These embed search queries against a `retrieval_document` field.
 * **Symmetric tasks**: These embed stored text and queries the same way, for comparing texts with each other rather than searching.
 
-For every task type and what it's for, see [Task types](/models/gemini-embedding-2#task-types) on the model page.
+Pinecone adds the task to each value and query as the short prompt Gemini expects, so you send plain text. For every task type, what it's for, and its prompt, see [Task types](/models/gemini-embedding-2#task-types) on the model page.
 
 ### Set task types on the field
 
@@ -320,4 +316,4 @@ These rules apply to `parameters`:
 
 ## Find a model's parameters
 
-The [List models](/reference/api/latest/inference/list-available-models) operation returns each model's `supported_parameters` with their accepted values. It doesn't say which parameters apply on write, on read, or per search, so use the rules on this page for `task_type` and [Processing locations](/guides/indexes/processing-locations) for `processing_location`.
+Each model's page in the [model gallery](/models/overview) lists the parameters it accepts. The [List models](/reference/api/latest/inference/list-available-models) operation also returns each model's `supported_parameters` with their accepted values. It doesn't say which parameters apply on write, on read, or per search, so use the rules on this page for `task_type` and [Processing locations](/guides/indexes/processing-locations) for `processing_location`. List models doesn't require an API key.

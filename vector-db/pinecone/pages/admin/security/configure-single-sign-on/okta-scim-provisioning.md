@@ -33,7 +33,7 @@ When SCIM provisioning is enabled, your IdP manages organization membership and 
 
 > [!WARNING]
 >
-> Before you enable SCIM, provision at least one current [organization owner](/admin/organizations/understanding-organizations#organization-roles) with the `pinecone:OrgOwner` role. Pinecone blocks enabling SCIM until a current owner has been provisioned as an owner, so that handing role management to your IdP cannot lock you out.
+> Before you enable SCIM, provision at least one current [organization owner](/admin/organizations/organizations-overview#organization-roles) with the `pinecone:OrgOwner` role. Pinecone blocks enabling SCIM until a current owner has been provisioned as an owner, so that handing role management to your IdP cannot lock you out.
 
 ## Supported attributes
 
@@ -59,13 +59,13 @@ Pinecone reads roles from the `roles` attribute. Each value uses one of the foll
 * Organization role: `pinecone:<OrgRole>`
 * Project role: `pinecone:project:<projectID>:<ProjectRole>`
 
-`<projectID>` is the project's unique ID. To find it, go to the project list in the [Pinecone console](https://app.pinecone.io/organizations/-/projects). For more information, see [Project IDs](/admin/projects/understanding-projects#project-ids).
+`<projectID>` is the project's unique ID. To find it, go to the project list in the [Pinecone console](https://app.pinecone.io/organizations/-/projects). For more information, see [Project IDs](/admin/projects/projects-overview#project-ids).
 
 A user can hold multiple roles by sending multiple values in the `roles` attribute.
 
 ### Organization roles
 
-For details on what each [organization role](/admin/organizations/understanding-organizations#organization-roles) grants, see [Organizations overview](/admin/organizations/understanding-organizations#organization-roles).
+For details on what each [organization role](/admin/organizations/organizations-overview#organization-roles) grants, see [Organizations overview](/admin/organizations/organizations-overview#organization-roles).
 
 | Organization role | Attribute value |
 | :- | :- |
@@ -76,7 +76,7 @@ For details on what each [organization role](/admin/organizations/understanding-
 
 ### Project roles
 
-For details on what each [project role](/admin/projects/understanding-projects#project-roles) grants, see [Projects overview](/admin/projects/understanding-projects#project-roles).
+For details on what each [project role](/admin/projects/projects-overview#project-roles) grants, see [Projects overview](/admin/projects/projects-overview#project-roles).
 
 | Project role | Attribute value |
 | :- | :- |
@@ -99,7 +99,7 @@ pinecone:project:a2f7dddb-1597-4eff-9f71-535fde243f58:ProjectOwner
 
 > [!NOTE]
 >
-> You must be an [organization owner](/admin/organizations/understanding-organizations#organization-roles) on the Enterprise plan, and SSO must be enforced for your organization.
+> You must be an [organization owner](/admin/organizations/organizations-overview#organization-roles) on the Enterprise plan, and SSO must be enforced for your organization.
 
 1. In the Pinecone console, go to [**Settings > Access > Identity provider**](https://app.pinecone.io/organizations/-/settings/access/identity-provider).
 2. Confirm that single sign-on shows the **Enforced** status. If it doesn't, edit your SSO configuration to enforce SSO before continuing.
@@ -166,7 +166,7 @@ Okta doesn't send a member's Pinecone roles by default. You define one app attri
 
 4. Click **Preview** for a representative user and confirm the `roles` attribute resolves to the expected `pinecone:*` values (including `pinecone:OrgOwner` for a current owner).
 
-For example, an organization manager who is also a project owner on one project needs two attributes: one mapped to `pinecone:OrgManager` and one mapped to `pinecone:project:<projectID>:ProjectOwner`. Project values include the project's [unique ID](/admin/projects/understanding-projects#project-ids), not its name.
+For example, an organization manager who is also a project owner on one project needs two attributes: one mapped to `pinecone:OrgManager` and one mapped to `pinecone:project:<projectID>:ProjectOwner`. Project values include the project's [unique ID](/admin/projects/projects-overview#project-ids), not its name.
 
 > [!NOTE]
 >
@@ -178,7 +178,7 @@ For example, an organization manager who is also a project owner on one project 
 
 1. Assign your members to the Pinecone app in Okta so it pushes them over SCIM. For members who were already assigned, use **Provisioning > To App > Force Sync** or **Apply updates now** so their attributes resync.
 2. Confirm the members and roles arrived. In Okta, check **Reports > System Log** (or the app's provisioning activity) for SCIM errors if members don't appear.
-3. Verify that at least one current Pinecone [organization owner](/admin/organizations/understanding-organizations#organization-roles) was provisioned with `pinecone:OrgOwner`.
+3. Verify that at least one current Pinecone [organization owner](/admin/organizations/organizations-overview#organization-roles) was provisioned with `pinecone:OrgOwner`.
 
 ## 6. Enable SCIM in Pinecone
 

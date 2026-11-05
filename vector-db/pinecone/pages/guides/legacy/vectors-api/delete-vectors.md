@@ -130,7 +130,7 @@ curl "https://$INDEX_HOST/vectors/delete" \
 
 ## Delete records by metadata
 
-To delete records from a namespace based on their metadata values, pass a [metadata filter expression](/guides/indexes/indexing-overview#metadata-filter-expressions) to the `delete` operation. This deletes all records in the namespace that match the filter expression.
+To delete records from a namespace based on their metadata values, pass a [metadata filter expression](/guides/indexes/index-data-overview#metadata-filter-expressions) to the `delete` operation. This deletes all records in the namespace that match the filter expression.
 
 For example, the following code deletes all records with a `genre` field set to `documentary` from namespace `example-namespace`:
 

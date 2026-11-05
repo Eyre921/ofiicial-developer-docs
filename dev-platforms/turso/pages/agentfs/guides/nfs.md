@@ -69,10 +69,10 @@ umount -l /mnt/agentfs  # Lazy unmount
 
 ## Next Steps
 
-> **[MCP Server](/agentfs/guides/mcp)**
+> [card] [MCP Server](/agentfs/guides/mcp)
 >
 > Expose AgentFS via MCP
 
-> **[Sync with Turso Cloud](/agentfs/guides/sync)**
+> [card] [Sync with Turso Cloud](/agentfs/guides/sync)
 >
 > Back up and share agent state

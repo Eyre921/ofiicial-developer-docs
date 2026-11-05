@@ -10,6 +10,11 @@ To list every API token you have minted across every organization you belong to,
 turso auth api-tokens list
 ```
 
+> [!NOTE]
+>
+> Login tokens from `turso auth login --headless` or [`turso auth token`](/cli/auth/token) do not appear in this list.
+> The [`api-tokens revoke`](/cli/auth/api-tokens/revoke) command does not revoke login tokens.
+
 The output is a table:
 
 ```

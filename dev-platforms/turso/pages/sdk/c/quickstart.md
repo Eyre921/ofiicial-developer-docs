@@ -28,7 +28,7 @@ You will need an existing database to continue. If you don't have one, [create o
 
 To use libSQL with C, you need to build the library from source:
 
-> **[libSQL C](https://github.com/tursodatabase/libsql)**
+> [card] [libSQL C](https://github.com/tursodatabase/libsql)
 >
 > Build from source code
 
@@ -42,7 +42,7 @@ gcc -o your_program your_program.c -L/path/to/libsql/lib -llibsql
 
 You must first initialize libSQL, create a `libsql_database_t` object, and then open a `libsql_connection_t` to it:
 
-> **Embedded Replicas**
+> [accordion] Embedded Replicas
 >
 > ```c theme={null}
 > #include "libsql.h"
@@ -59,7 +59,7 @@ You must first initialize libSQL, create a `libsql_database_t` object, and then 
 > libsql_connection_t conn = libsql_database_connect(db);
 > ```
 
-> **Local only**
+> [accordion] Local only
 >
 > ```c theme={null}
 > #include "libsql.h"
@@ -73,7 +73,7 @@ You must first initialize libSQL, create a `libsql_database_t` object, and then 
 > libsql_connection_t conn = libsql_database_connect(db);
 > ```
 
-> **Remote only**
+> [accordion] Remote only
 >
 > ```c theme={null}
 > #include "libsql.h"

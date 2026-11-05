@@ -28,7 +28,7 @@ You will need an existing database to continue. If you don't have one, [create o
 
 First begin by adding `libsql` as a package dependency in XCode using this repo:
 
-> **[libSQL Swift](https://github.com/tursodatabase/libsql-swift)**
+> [card] [libSQL Swift](https://github.com/tursodatabase/libsql-swift)
 >
 > Build from source code
 
@@ -50,7 +50,7 @@ let package = Package(
 
 You must first create a `Database` object and then open a `Connection` to it:
 
-> **Embedded Replicas**
+> [accordion] Embedded Replicas
 >
 > ```swift theme={null}
 > import Libsql
@@ -65,7 +65,7 @@ You must first create a `Database` object and then open a `Connection` to it:
 > let conn = try db.connect()
 > ```
 
-> **Local only**
+> [accordion] Local only
 >
 > ```swift theme={null}
 > import Libsql
@@ -77,7 +77,7 @@ You must first create a `Database` object and then open a `Connection` to it:
 > let conn = try db.connect()
 > ```
 
-> **Remote only**
+> [accordion] Remote only
 >
 > ```swift theme={null}
 > import Libsql

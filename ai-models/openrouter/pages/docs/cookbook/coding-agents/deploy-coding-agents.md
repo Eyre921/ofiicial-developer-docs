@@ -239,10 +239,6 @@ Yes. Deploy Ori with your MDM and push a policy that turns off API-key sign-in. 
 
 Any MDM that can write macOS managed preferences for the `com.openrouter.ori` domain, or push a file to `/etc/ori/config.json` on Linux and `C:\ProgramData\ori\config.json` on Windows. That includes Jamf, Kandji and Intune.
 
-### Can engineers turn the policy off?
-
-No. Settings from your MDM outrank anything an engineer sets in their shell, a project or a command-line flag. If the policy file is malformed or can't be read, Ori refuses to use any key until it's fixed.
-
 ### Does OIDC sign-in remove every credential from the laptop?
 
 No. Ori still keeps an OIDC session on the machine. It limits what a stolen credential is worth, because access tokens expire after about 24 hours, unlike an API key that works until someone revokes it. Until Ori releases are signed, a malicious package that can read the home directory can still use that session until it expires.

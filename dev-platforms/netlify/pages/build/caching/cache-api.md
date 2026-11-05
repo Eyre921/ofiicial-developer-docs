@@ -442,6 +442,50 @@ export const config: Config = {
 fetchWithCache</code>">
 If you use [`fetchWithCache`](#fetchwithcache) with the `swr` option, background revalidation is handled automatically. You only need `needsRevalidation` when directly calling `cache.match` and `cache.put`.
 
+### `purgeCache`
+
+Invalidates cached content for a site, either all of it or only the objects with specific cache tags. This applies to everything Netlify has cached for the site, including responses stored with the Cache API. For when to purge by site or by tag, refer to [on-demand invalidation](/build/caching/caching-overview#on-demand-invalidation).
+
+```ts
+purgeCache(options);
+```
+
+When you call it from a function or an edge function, Netlify configures the site and the purge API token for you, so you don't need to set them.
+
+#### Parameters
+
+- **`options`:** an optional object with the following properties:
+  - **`tags`:** an array of [cache tags](/build/caching/caching-overview#purge-by-cache-tag) to invalidate. Omit it to purge everything cached for the site.
+  - **`deployAlias`:** limits the purge to a specific deploy alias, for example `deploy-preview-11`.
+  - **`siteID`**, **`siteSlug`**, or **`domain`:** the site to purge. Use only one of them. Defaults to the site of the request being handled.
+  - **`token`:** a purge API token. Defaults to the token Netlify provides to the function or edge function.
+  - **`userAgent`:** a custom user agent for the API call.
+
+#### Return value
+
+A `Promise` that resolves once the purge has been accepted. It rejects if the API call fails.
+
+#### Example
+
+This example purges the objects tagged with `products` when a product is updated.
+
+```ts {8}
+
+export default async (req: Request) => {
+  // This is where your app would save the updated product,
+  // for example to a database.
+
+  await purgeCache({ tags: ["products"] });
+
+  return new Response("Purged!", { status: 202 });
+};
+
+export const config: Config = {
+  path: "/api/products/update",
+  method: "POST",
+};
+```
+
 ## Usage with frameworks
 
 The Cache API has been designed to work seamlessly with any web framework that deploys to Netlify. For the best development experience possible, that are a few important things to note.
@@ -452,9 +496,9 @@ On Netlify, we expose it automatically in the Netlify Functions and Netlify Edge
 
 However, some frameworks have a setup where functions are not used in local development; or you might choose to run your framework's own development command and not use the Netlify CLI altogether. In those cases, the `caches` global will not be set and trying to access it will cause an error.
 
-To get around that, you can 
+To get around that, you can import it from [the `@netlify/caches` package](#utility-methods).
+
 ```ts
-import { caches } from "@netlify/cache";
 
 const cache = await caches.open("my-cache");
 
@@ -503,7 +547,6 @@ This fictional API is slow and expensive, so it's in our best interest to call i
 
 <TabItem label="Original">
 ```ts
-import type { Config, Context } from "@netlify/functions";
 
 export default async (req: Request, context: Context) => {
   const request = new Request("https://example.com/expensive-api");
@@ -523,7 +566,6 @@ export const config: Config = {
 
 <TabItem label="Cache API">
 ```ts
-import type { Config, Context } from "@netlify/functions";
 
 const cache = await caches.open("my-cache");
 
@@ -560,8 +602,6 @@ export const config: Config = {
 
 <TabItem label="Cache API + fetchWithCache">
 ```ts
-import { fetchWithCache } from "@netlify/cache";
-import type { Config, Context } from "@netlify/functions";
 
 export default async (req: Request, context: Context) => {
   const request = new Request("https://example.com/expensive-api");
@@ -591,7 +631,6 @@ While you can [open a cache instance](#cachesopen) anywhere in your function cod
 Attempting to perform any of those operations in another scope (such as the global scope) will throw an error.
 
 ```ts
-import type { Config, Context } from "@netlify/functions";
 
 // ✅ This works.
 const cache = await caches.open("my-cache");

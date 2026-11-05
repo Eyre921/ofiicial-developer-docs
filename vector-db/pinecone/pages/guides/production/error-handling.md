@@ -6,6 +6,8 @@ path: guides/production/error-handling
 
 Handle Pinecone API errors with retry logic, exponential backoff, and best practices for 4xx client errors, 5xx server errors, and rate limit responses.
 
+This page covers how to read Pinecone API errors, catch them in your code, retry the ones that are transient, and stay within rate limits.
+
 ## Understand error types
 
 Pinecone uses [conventional HTTP response codes](/reference/api/errors) to indicate the success or failure of API requests:
@@ -35,28 +37,30 @@ Server errors indicate temporary issues with Pinecone's infrastructure:
 * **503 - Unavailable**: The service is currently unavailable.
 * **504 - Gateway Timeout**: The API gateway didn't receive a timely response from the backend server. This can occur due to slow requests or backend processing delays.
 
-**Best practice for 5xx errors**: [Implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic). These errors are typically transient.
+These errors are usually transient, so [retry them with exponential backoff](#exponential-backoff).
 
 ## Capture errors
-
-Each SDK provides error handling mechanisms specific to the language:
 
 ### Python SDK
 
 The Python SDK raises exceptions that you can catch and handle:
 
-```python theme={null}
+```python Python theme={null}
 from pinecone import Pinecone
 from pinecone.exceptions import PineconeException
 
 pc = Pinecone(api_key="YOUR_API_KEY")
-index = pc.index(name="your-index")
+
+# To get the unique host for an index,
+# see https://docs.pinecone.io/guides/indexes/target-an-index
+index = pc.index(host="INDEX_HOST")
 
 try:
-    index.upsert(
-        vectors=[
-            {"id": "vec1", "values": [0.1, 0.2, 0.3]}
-        ]
+    index.documents.upsert(
+        namespace="articles",
+        documents=[
+            {"_id": "doc1", "body": "Pinecone serverless indexes scale automatically with your workload."}
+        ],
     )
 except PineconeException as e:
     # Handle Pinecone-specific errors
@@ -72,16 +76,20 @@ See the [Python SDK documentation](https://sdk.pinecone.io/python/) for more det
 
 The Node.js SDK uses standard JavaScript error handling:
 
-```javascript theme={null}
-const { Pinecone } = require('@pinecone-database/pinecone');
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
 
 const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
 
 try {
-  const index = pc.index('your-index');
-  await index.upsert({ records: [
-    { id: 'vec1', values: [0.1, 0.2, 0.3] }
-  ] });
+  // To get the unique host for an index,
+  // see https://docs.pinecone.io/guides/indexes/target-an-index
+  const index = pc.index({ host: 'INDEX_HOST', namespace: 'articles' });
+  await index.documents.upsert({
+    documents: [
+      { _id: 'doc1', body: 'Pinecone serverless indexes scale automatically with your workload.' },
+    ],
+  });
 } catch (error) {
   console.error('Error upserting data:', error);
   // Handle the error appropriately
@@ -92,7 +100,7 @@ See the [Node.js SDK documentation](https://sdk.pinecone.io/typescript/) for mor
 
 ### Other SDKs
 
-For SDK-specific error handling patterns, see the documentation for your language:
+For error handling in other languages, see the documentation for your SDK:
 
 * [Go SDK](/reference/sdks/go/overview)
 * [Java SDK](/reference/sdks/java/overview)
@@ -105,7 +113,7 @@ For transient errors (5xx codes and 429 rate limiting), implement retry logic. S
 
 For simple use cases, start with a basic retry loop with fixed delays:
 
-```python theme={null}
+```python Python theme={null}
 import time
 from pinecone.exceptions import PineconeException
 
@@ -122,6 +130,7 @@ def simple_retry(func, max_retries=3, delay=2):
         try:
             return func()
         except PineconeException as e:
+            # Retries every Pinecone error. For status-aware retries, see Exponential backoff.
             if attempt == max_retries - 1:
                 raise  # Last attempt, re-raise the exception
 
@@ -129,10 +138,15 @@ def simple_retry(func, max_retries=3, delay=2):
             time.sleep(delay)
 
 # Usage
+# `index` is an index connection. See https://docs.pinecone.io/guides/indexes/target-an-index
+documents = [
+    {"_id": "doc1", "body": "Pinecone serverless indexes scale automatically with your workload."}
+]
+
 try:
-    simple_retry(lambda: index.upsert(vectors))
+    simple_retry(lambda: index.documents.upsert(namespace="articles", documents=documents))
 except Exception as e:
-    print(f"Failed after {max_retries} attempts: {e}")
+    print(f"Failed after retries: {e}")
 ```
 
 This basic approach works well for occasional transient errors, but for production systems with higher traffic, use exponential backoff instead.
@@ -141,9 +155,10 @@ This basic approach works well for occasional transient errors, but for producti
 
 Exponential backoff progressively increases the wait time between retries to avoid overwhelming the service:
 
-```python theme={null}
+```python Python theme={null}
 import time
 import random
+from pinecone.exceptions import PineconeException
 
 def exponential_backoff_retry(func, max_retries=5, base_delay=1, max_delay=60):
     """
@@ -163,7 +178,7 @@ def exponential_backoff_retry(func, max_retries=5, base_delay=1, max_delay=60):
                 raise  # Last attempt, re-raise the exception
 
             # Get status code if available
-            status_code = getattr(e, 'status', None)
+            status_code = getattr(e, 'status_code', None)
 
             # Only retry on 5xx errors or 429 (rate limiting)
             if status_code and (status_code >= 500 or status_code == 429):
@@ -179,17 +194,22 @@ def exponential_backoff_retry(func, max_retries=5, base_delay=1, max_delay=60):
                 raise
 
 # Usage
+# `index` is an index connection. See https://docs.pinecone.io/guides/indexes/target-an-index
+documents = [
+    {"_id": "doc1", "body": "Pinecone serverless indexes scale automatically with your workload."}
+]
+
 try:
-    exponential_backoff_retry(lambda: index.upsert(vectors))
+    exponential_backoff_retry(lambda: index.documents.upsert(namespace="articles", documents=documents))
 except Exception as e:
     print(f"Failed after retries: {e}")
 ```
 
-### Go SDK
+### Built-in retries in the Go SDK
 
-The Go SDK has built-in retries with exponential backoff. Set a `RetryPolicy` on the client and it applies to both the REST (control/data/inference) and gRPC (data plane) clients. Retries cover 429 and transient 5xx / gRPC `UNAVAILABLE` errors; other 4xx errors are never retried.
+The Go SDK has built-in retries with exponential backoff. Set a `RetryPolicy` on the client and it applies to both the REST (control/data/inference) and gRPC (data plane) clients. Over REST, the SDK retries 429 on every request, but it retries 5xx and transport errors only for idempotent methods such as GET, PUT, and DELETE, so it doesn't replay a request that might have already changed data. Documents API calls use POST, so they aren't retried on 5xx. To retry them, wrap them in your own retry loop, like the Python examples above. Searches are safe to retry, and so are upserts, because an upsert by `_id` replaces the whole document. The gRPC client also retries `UNAVAILABLE` and `RESOURCE_EXHAUSTED`. Other 4xx errors are never retried.
 
-```go theme={null}
+```go Go theme={null}
 package main
 
 import (
@@ -212,50 +232,42 @@ func main() {
 
 To customize the behavior, construct a `RetryPolicy` with your own `MaxRetries`, `BaseDelay`, `MaxDelay`, and `BackoffMultiplier`. See the [Go SDK documentation](/reference/sdks/go/overview) for details.
 
-### Key retry principles
+### Retry best practices
 
-1. **Add jitter**: Random variation in retry timing helps avoid thundering herd problems.
-2. **Set max retries**: Prevent infinite retry loops.
-3. **Cap delay time**: Don't wait indefinitely between retries.
-4. **Don't retry client errors**: 4xx errors (except 429) won't resolve with retries.
-5. **Log retry attempts**: Track retry behavior for monitoring and debugging.
+* **Add jitter**: Random variation in retry timing keeps many clients from retrying at the same moment.
+* **Set max retries**: Prevent infinite retry loops.
+* **Cap delay time**: Don't wait indefinitely between retries.
+* **Don't retry client errors**: 4xx errors (except 429) won't resolve with retries.
+* **Log retry attempts**: Track retry behavior for monitoring and debugging.
 
 ## Handle rate limits (429)
 
 When you receive a 429 error, you're being rate-limited. See [Rate limits](/reference/api/database-limits/rate-limits) for current limits.
 
-Rate limits help protect your applications and maintain the health of the serverless infrastructure. **Most limits can be adjusted upon request**—if you need higher limits to scale, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) with details about your use case.
+Rate limits protect your applications and the health of the serverless infrastructure. Most limits can be raised on request. If you need higher limits to scale, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) with details about your use case.
 
 > [!NOTE]
 >
 > Indexes built on [Dedicated Read Nodes](/guides/optimize/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, list, and full-text search operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/optimize/dedicated-read-nodes/overview) guide.
 
-**Best practices**:
+### Best practices
 
-* Implement exponential backoff as described above.
-* Proactively [monitor request metrics](/guides/production/monitoring) and reduce the request rate if you're approaching limits.
+* Retry with [exponential backoff](#exponential-backoff).
+* Proactively [monitor request metrics](/guides/production/monitor-performance) and reduce the request rate if you're approaching limits.
 * Use [batching](/guides/data/upsert-data#upsert-in-batches) to reduce the number of requests.
 * For high-throughput needs, see [Increase throughput](/guides/optimize/increase-throughput).
 
-## Getting support
+## Get support
 
-If you've implemented error handling and retry logic but continue to experience issues:
+If you've implemented error handling and retry logic but still see errors:
 
 1. Review [Get help](/admin/support/contact-support) for how to file a ticket that gets a fast resolution.
 2. Gather the following information:
    * Index name and project name
    * Error messages and stack traces
    * Timestamp of errors
-   * Request/response examples (without sensitive data)
+   * Request and response examples (without sensitive data)
    * Whether the issue is reproducible
 3. [Contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
 
 Ensure your [plan tier](https://www.pinecone.io/pricing/) provides the support SLA you need for production workloads.
-
-## See also
-
-* [API error codes](/reference/api/errors)
-* [Database limits](/reference/api/database-limits)
-* [Assistant limits](/reference/api/assistant/assistant-limits)
-* [Monitoring](/guides/production/monitoring)
-* [Production checklist](/guides/production/production-checklist)

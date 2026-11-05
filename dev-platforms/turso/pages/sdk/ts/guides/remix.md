@@ -46,10 +46,10 @@ export const loader: LoaderFunction = async () => {
 
 ## Examples
 
-> **[E-commerce Store](https://github.com/tursodatabase/examples/tree/master/app-the-mug-store)**
+> [card] [E-commerce Store](https://github.com/tursodatabase/examples/tree/master/app-the-mug-store)
 >
 > See the full source code
 
-> **[CRM App](https://github.com/tursodatabase/examples/tree/master/app-turso-crm)**
+> [card] [CRM App](https://github.com/tursodatabase/examples/tree/master/app-turso-crm)
 >
 > See the full source code

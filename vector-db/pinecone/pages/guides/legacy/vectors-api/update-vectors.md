@@ -16,7 +16,7 @@ This page shows you how to update records in a namespace of a legacy vector inde
 
 To update the vector and/or metadata of a single record, use the [Update a record](/reference/api/latest/data-plane/update) operation with the following parameters:
 
-* `namespace`: The [namespace](/guides/indexes/indexing-overview#namespaces) containing the record to update. To use the default namespace, set the namespace to `"__default__"`.
+* `namespace`: The [namespace](/guides/indexes/index-data-overview#namespaces) containing the record to update. To use the default namespace, set the namespace to `"__default__"`.
 * `id`: The ID of the record to update.
 * One or both of the following:
   * Updated values for the vector. Specify one of the following:
@@ -187,8 +187,8 @@ After the update, the dense vector values and the `genre` metadata value are cha
 
 To add or change metadata across multiple records in a namespace, use the `update` operation with the following parameters:
 
-* `namespace`: The [namespace](/guides/indexes/indexing-overview#namespaces) containing the records to update. To use the default namespace, set this to `"__default__"`.
-* `filter`: A [metadata filter expression](/guides/indexes/indexing-overview#metadata-filter-expressions) to match the records to update.
+* `namespace`: The [namespace](/guides/indexes/index-data-overview#namespaces) containing the records to update. To use the default namespace, set this to `"__default__"`.
+* `filter`: A [metadata filter expression](/guides/indexes/index-data-overview#metadata-filter-expressions) to match the records to update.
 * `setMetadata`: The metadata to add or change. When updating metadata, only the specified metadata fields are modified. If a specified metadata field doesn't exist, it is added.
 * `dry_run`: Optional. If `true`, the number of records that match the filter expression is returned, but the records aren't updated.
 

@@ -10,7 +10,7 @@ You can pay for the [Standard and Enterprise plans](https://www.pinecone.io/pric
 
 > [!NOTE]
 >
-> To change your payment method, you must be an [organization owner or billing admin](/admin/organizations/understanding-organizations#organization-roles).
+> To change your payment method, you must be an [organization owner or billing admin](/admin/organizations/organizations-overview#organization-roles).
 
 > [!NOTE]
 >

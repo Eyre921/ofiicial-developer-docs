@@ -17,5 +17,5 @@ These pages can help you manage your bill:
 * [Account deactivation for non-payment](/admin/billing/non-payment-account-deactivation)
 * [Change your billing plan](/admin/billing/upgrade-billing-plan)
 * [Download a usage report](/admin/billing/download-usage-report)
-* [Understand cost](/guides/manage-cost/understanding-cost)
-* [Save on Pinecone costs](/guides/manage-cost/save-on-costs)
+* [Understand cost](/guides/cost/understand-cost)
+* [Save on Pinecone costs](/guides/cost/save-on-costs)

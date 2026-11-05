@@ -43,7 +43,7 @@ bundle install
 
 Create a Ruby file (e.g., `database.rb`) to set up the database connection:
 
-> **Embedded Replicas**
+> [accordion] Embedded Replicas
 >
 > ```rb theme={null}
 > require 'libsql_activerecord'
@@ -57,7 +57,7 @@ Create a Ruby file (e.g., `database.rb`) to set up the database connection:
 > )
 > ```
 
-> **Local only**
+> [accordion] Local only
 >
 > ```rb theme={null}
 > require 'libsql_activerecord'
@@ -69,7 +69,7 @@ Create a Ruby file (e.g., `database.rb`) to set up the database connection:
 > )
 > ```
 
-> **Remote only**
+> [accordion] Remote only
 >
 > ```rb theme={null}
 > require 'libsql_activerecord'
@@ -82,7 +82,7 @@ Create a Ruby file (e.g., `database.rb`) to set up the database connection:
 > )
 > ```
 
-> **In-memory**
+> [accordion] In-memory
 >
 > ```rb theme={null}
 > require 'libsql_activerecord'

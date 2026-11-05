@@ -6,11 +6,11 @@ path: guides/data/delete-data
 
 Delete Pinecone documents from a namespace in a document index by ID or metadata filter, or delete every document the namespace holds.
 
-This page shows you how to delete documents by ID, by metadata filter, or all at once from a [namespace](/guides/indexes/indexing-overview#namespaces) in a document index. For a legacy vector index, see [Delete vectors](/guides/legacy/vectors-api/delete-vectors).
+This page shows you how to delete documents by ID, by metadata filter, or all at once from a [namespace](/guides/indexes/index-data-overview#namespaces) in a document index. For a legacy vector index, see [Delete vectors](/guides/legacy/vectors-api/delete-vectors).
 
 > [!TIP]
 >
-> Deletes consume [write units (WUs)](/guides/manage-cost/understanding-cost#write-units). See [Understand Pinecone cost](/guides/manage-cost/understanding-cost#delete) for how delete cost is calculated.
+> Deletes consume [write units (WUs)](/guides/cost/understand-cost#write-units). See [Understand Pinecone cost](/guides/cost/understand-cost#delete) for how delete cost is calculated.
 
 ## Delete documents
 
@@ -48,7 +48,7 @@ curl "https://$INDEX_HOST/namespaces/articles/documents/delete" \
 
 ### Delete documents by metadata
 
-To delete every document matching a [metadata filter expression](/guides/indexes/indexing-overview#metadata-filter-expressions), pass a `filter`. The response reports how many documents matched:
+To delete every document matching a [metadata filter expression](/guides/indexes/index-data-overview#metadata-filter-expressions), pass a `filter`. The response reports how many documents matched:
 
 ```Python Python theme={null}
 # Connect to an index as shown above.

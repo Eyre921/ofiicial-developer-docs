@@ -16,7 +16,7 @@ A document in a document index can include any combination of `string` fields wi
 
 > [tab] Document index
 >
-> A [document index](/guides/indexes/indexing-overview#document-index) contains documents. Each document's size is its ID, its metadata, and the data in every schema field it holds.
+> A [document index](/guides/indexes/index-data-overview#document-index) contains documents. Each document's size is its ID, its metadata, and the data in every schema field it holds.
 >
 > ```text Calculate size theme={null}
 > Index size = Number of documents × (
@@ -31,7 +31,7 @@ A document in a document index can include any combination of `string` fields wi
 > Where:
 >
 > * `ID size` and `Metadata size` are measured in bytes, averaged across all documents. Metadata is every field that isn't declared in the schema.
-> * `Total full-text-search field size`: The combined UTF-8 byte length of the text in all `string` fields with `full_text_search` enabled, averaged across all documents. A `string` field with [integrated embedding](/guides/indexes/indexing-overview#integrated-embedding) stores its text, which counts here, unless it sets `store_text: false`, in which case only its generated vector counts. If a field has both, count its text here and its generated vector below.
+> * `Total full-text-search field size`: The combined UTF-8 byte length of the text in all `string` fields with `full_text_search` enabled, averaged across all documents. A `string` field with [integrated embedding](/guides/indexes/index-data-overview#integrated-embedding) stores its text, which counts here, unless it sets `store_text: false`, in which case only its generated vector counts. If a field has both, count its text here and its generated vector below.
 > * Each `Dense vector dimension` uses 4 bytes. Sum the dimensions of every dense vector in the document, whether you upsert it or Pinecone generates it for an integrated-embedding field. Omit this term if the schema has no dense vector.
 > * `Number of non-zero sparse values`: Average number across all documents, including those without sparse vectors. Count every sparse vector in the document, whether you upsert it or Pinecone generates it. Each non-zero value uses 8 bytes. Omit this term if the schema has no sparse vector.
 >
@@ -49,7 +49,7 @@ A document in a document index can include any combination of `string` fields wi
 
 > [tab] Index of dense vectors
 >
-> An [index of dense vectors](/guides/indexes/indexing-overview#indexes-with-dense-vectors) contains records with one dense vector each.
+> An [index of dense vectors](/guides/indexes/index-data-overview#indexes-with-dense-vectors) contains records with one dense vector each.
 >
 > > [!NOTE]
 > >
@@ -83,7 +83,7 @@ A document in a document index can include any combination of `string` fields wi
 
 > [tab] Index of sparse vectors
 >
-> An [index of sparse vectors](/guides/indexes/indexing-overview#indexes-with-sparse-vectors) contains records with one sparse vector each.
+> An [index of sparse vectors](/guides/indexes/index-data-overview#indexes-with-sparse-vectors) contains records with one sparse vector each.
 >
 > ```text Calculate size theme={null}
 > Index size = Number of records × (

@@ -70,10 +70,10 @@ export const useFrameworks = routeLoader$(
 
 ## Examples
 
-> **[Social Website](https://github.com/tursodatabase/examples/tree/master/app-find-me-on)**
+> [card] [Social Website](https://github.com/tursodatabase/examples/tree/master/app-find-me-on)
 >
 > See the full source code
 
-> **[Shopping Cart](https://github.com/tursodatabase/examples/tree/master/app-turqw-store)**
+> [card] [Shopping Cart](https://github.com/tursodatabase/examples/tree/master/app-turqw-store)
 >
 > See the full source code

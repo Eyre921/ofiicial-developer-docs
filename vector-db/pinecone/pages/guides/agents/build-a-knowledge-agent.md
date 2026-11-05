@@ -12,45 +12,44 @@ Build an AI agent that uses Pinecone to retrieve knowledge and answer questions 
 >
 > This guide requires an [Anthropic](https://console.anthropic.com/) or [OpenAI](https://platform.openai.com/api-keys) API key alongside your Pinecone API key.
 
-**1. Install dependencies**
+### 1. Install dependencies
 
 ```bash Anthropic (Claude) theme={null}
-pip install pinecone anthropic
+pip install --upgrade pinecone anthropic
 ```
 
 ```bash OpenAI theme={null}
-pip install pinecone openai
+pip install --upgrade pinecone openai
 ```
 
-**2. Create an index and load knowledge**
+### 2. Create an index and load knowledge
 
-Create a Pinecone index with [integrated embedding](/guides/indexes/indexing-overview#integrated-embedding) and load a small knowledge base. These are facts your LLM doesn't know on its own, so retrieval is the only way to answer accurately.
+Create a document index whose `content` field uses [integrated embedding](/guides/search/integrated-embedding), so Pinecone embeds the text for you, and load a small knowledge base. These are facts your LLM doesn't know on its own, so retrieval is the only way to answer accurately.
 
 ```python Anthropic (Claude) theme={null}
 import anthropic
-from pinecone import Pinecone
+from pinecone import Pinecone, SchemaBuilder
 
 pc = Pinecone(api_key="{{YOUR_API_KEY}}")
 llm = anthropic.Anthropic(api_key="YOUR_ANTHROPIC_API_KEY")
 
-# Create an index with integrated embedding
-if not pc.has_index("knowledge"):
-    pc.create_index_for_model(
+# Create a document index that embeds the content field
+if not pc.indexes.exists(name="knowledge"):
+    pc.indexes.create(
         name="knowledge",
-        cloud="aws",
-        region="us-east-1",
-        embed={
-            "model": "llama-text-embed-v2",
-            "field_map": {"text": "content"}
-        }
+        schema=(
+            SchemaBuilder()
+              .add_string_field(name="content", embed={"model": "llama-text-embed-v2"})
+              .build()
+        ),
     )
 
 index = pc.index(name="knowledge")
 
 # Load your knowledge base
-index.upsert_records(
+index.documents.upsert(
     namespace="docs",
-    records=[
+    documents=[
         {"_id": "policy-1", "content": "Refund requests must be submitted within 30 days of purchase. After 30 days, only store credit is available.", "category": "policies"},
         {"_id": "policy-2", "content": "Enterprise customers get dedicated support with a 4-hour response time SLA. Standard support responds within 24 hours.", "category": "policies"},
         {"_id": "spec-1", "content": "The WonderVector 5000 supports up to 100,000 vectors per namespace with a maximum dimensionality of 4096.", "category": "specs"},
@@ -61,35 +60,34 @@ index.upsert_records(
         {"_id": "proc-1", "content": "To request a new software license, submit a ticket in the IT portal. Approvals take 2-3 business days for standard software.", "category": "procedures"},
         {"_id": "proc-2", "content": "Production deployments require approval from the team lead and a passing CI/CD pipeline. Hotfixes can bypass the lead approval.", "category": "procedures"},
         {"_id": "proc-3", "content": "Vendor invoices over $10,000 require VP approval. Under $10,000 requires manager approval only.", "category": "procedures"},
-    ]
+    ],
 )
 ```
 
 ```python OpenAI theme={null}
 from openai import OpenAI
-from pinecone import Pinecone
+from pinecone import Pinecone, SchemaBuilder
 
 pc = Pinecone(api_key="{{YOUR_API_KEY}}")
 llm = OpenAI(api_key="YOUR_OPENAI_API_KEY")
 
-# Create an index with integrated embedding
-if not pc.has_index("knowledge"):
-    pc.create_index_for_model(
+# Create a document index that embeds the content field
+if not pc.indexes.exists(name="knowledge"):
+    pc.indexes.create(
         name="knowledge",
-        cloud="aws",
-        region="us-east-1",
-        embed={
-            "model": "llama-text-embed-v2",
-            "field_map": {"text": "content"}
-        }
+        schema=(
+            SchemaBuilder()
+              .add_string_field(name="content", embed={"model": "llama-text-embed-v2"})
+              .build()
+        ),
     )
 
 index = pc.index(name="knowledge")
 
 # Load your knowledge base
-index.upsert_records(
+index.documents.upsert(
     namespace="docs",
-    records=[
+    documents=[
         {"_id": "policy-1", "content": "Refund requests must be submitted within 30 days of purchase. After 30 days, only store credit is available.", "category": "policies"},
         {"_id": "policy-2", "content": "Enterprise customers get dedicated support with a 4-hour response time SLA. Standard support responds within 24 hours.", "category": "policies"},
         {"_id": "spec-1", "content": "The WonderVector 5000 supports up to 100,000 vectors per namespace with a maximum dimensionality of 4096.", "category": "specs"},
@@ -100,15 +98,15 @@ index.upsert_records(
         {"_id": "proc-1", "content": "To request a new software license, submit a ticket in the IT portal. Approvals take 2-3 business days for standard software.", "category": "procedures"},
         {"_id": "proc-2", "content": "Production deployments require approval from the team lead and a passing CI/CD pipeline. Hotfixes can bypass the lead approval.", "category": "procedures"},
         {"_id": "proc-3", "content": "Vendor invoices over $10,000 require VP approval. Under $10,000 requires manager approval only.", "category": "procedures"},
-    ]
+    ],
 )
 ```
 
 > [!NOTE]
 >
-> Pinecone is eventually consistent. New records may take a few seconds to become searchable.
+> Pinecone is eventually consistent. New documents may take a few seconds to become searchable.
 
-**3. Define Pinecone as a tool**
+### 3. Define Pinecone as a tool
 
 Wrap Pinecone search in a function your agent can call. Drop this into any agent codebase to add knowledge retrieval. Run all snippets in the same Python session so `index` and `llm` stay in scope.
 
@@ -117,23 +115,17 @@ Wrap Pinecone search in a function your agent can call. Drop this into any agent
 ```python Python theme={null}
 def search_knowledge_base(query: str) -> str:
     """Search the knowledge base for relevant information."""
-    results = index.search(
+    results = index.documents.search(
         namespace="docs",
-        # To scope by metadata, add "filter": {"category": {"$eq": "policies"}} to the query dict
-        query={"top_k": 3, "inputs": {"text": query}},
-        rerank={
-            "model": "bge-reranker-v2-m3",
-            "top_n": 3,
-            "rank_fields": ["content"]
-        }
+        top_k=3,
+        score_by=[{"type": "embed", "fields": ["content"], "query": query}],
+        # To scope by metadata, add filter={"category": {"$eq": "policies"}}
+        include_fields=["content"],
     )
-    return "\n\n".join(
-        hit.fields["content"]
-        for hit in results["result"]["hits"]
-    )
+    return "\n\n".join(match.content for match in results.matches)
 ```
 
-**4. Wire the tool into your agent**
+### 4. Wire the tool into your agent
 
 Give your LLM the ability to call the search function when it needs information.
 
@@ -239,13 +231,13 @@ def ask(question: str) -> str:
     return response.choices[0].message.content
 ```
 
-**5. Ask your agent a question**
+### 5. Ask your agent a question
 
 ```python theme={null}
 print(ask("What's the refund policy?"))
 ```
 
-If the agent says it can't find the information, wait a few seconds and retry. Pinecone is eventually consistent, so freshly upserted records take a moment to become searchable.
+If the agent says it can't find the information, wait a few seconds and retry. Pinecone is eventually consistent, so freshly upserted documents take a moment to become searchable.
 
 Your agent searches Pinecone, retrieves the relevant policy, and answers:
 
@@ -263,7 +255,7 @@ print(ask("What approval do I need for a $15,000 vendor invoice?"))
 
 > [!NOTE]
 >
-> **What just happened:** Your LLM received a question, decided it needed more information, and called the `search_knowledge_base` tool. Pinecone returned the most relevant records with reranking, and the LLM synthesized an accurate answer from the retrieved context. Production RAG agents use this same pattern, and the `search_knowledge_base` function works in any agent framework.
+> **What just happened:** Your LLM received a question, decided it needed more information, and called the `search_knowledge_base` tool. Pinecone embedded the query and returned the most relevant documents, and the LLM synthesized an accurate answer from the retrieved context. Production RAG agents use this same pattern, and the `search_knowledge_base` function works in any agent framework.
 
 ### Next steps
 

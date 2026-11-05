@@ -14,30 +14,30 @@ Turso Database provides native encryption for data at rest using industry-standa
 
 Turso Database with encryption is perfect for:
 
-> **Fintech Applications**
+> [card] Fintech Applications
 >
 > Meet regulatory requirements for sensitive financial data
 
-> **Privacy-Focused Products**
+> [card] Privacy-Focused Products
 >
 > Build user trust with strong data protection
 
-> **Healthcare Apps**
+> [card] Healthcare Apps
 >
 > Protect patient data and meet HIPAA compliance
 
-> **AI/ML Applications**
+> [card] AI/ML Applications
 >
 > Secure training data and model outputs
 
 ## What's Encrypted
 
-> **Encrypted**
+> [card] Encrypted
 >
 > * All database pages with your data - The database file - Write-Ahead Log
 >   (WAL) file
 
-> **Not Encrypted**
+> [card] Not Encrypted
 >
 > * The database header (first 100 bytes)
 
@@ -45,33 +45,33 @@ Turso Database with encryption is perfect for:
 
 Generate a secure encryption key in hexadecimal format. The key size depends on the cipher you choose:
 
-**256-bit (32 bytes)**
+> [tab] 256-bit (32 bytes)
+>
+> For AEGIS-256 variants and AES-256-GCM:
+>
+> ```bash theme={null}
+> openssl rand -hex 32
+> ```
+>
+> Output example:
+>
+> ```
+> 2d7a30108d3eb3e45c90a732041fe54778bdcf707c76749fab7da335d1b39c1d
+> ```
 
-For AEGIS-256 variants and AES-256-GCM:
-
-```bash theme={null}
-openssl rand -hex 32
-```
-
-Output example:
-
-```
-2d7a30108d3eb3e45c90a732041fe54778bdcf707c76749fab7da335d1b39c1d
-```
-
-**128-bit (16 bytes)**
-
-For AEGIS-128 variants and AES-128-GCM:
-
-```bash theme={null}
-openssl rand -hex 16
-```
-
-Output example:
-
-```
-5f3e2a8c9b1d4f6e7a2c8d4b9e1f3a6c
-```
+> [tab] 128-bit (16 bytes)
+>
+> For AEGIS-128 variants and AES-128-GCM:
+>
+> ```bash theme={null}
+> openssl rand -hex 16
+> ```
+>
+> Output example:
+>
+> ```
+> 5f3e2a8c9b1d4f6e7a2c8d4b9e1f3a6c
+> ```
 
 > [!WARNING]
 >

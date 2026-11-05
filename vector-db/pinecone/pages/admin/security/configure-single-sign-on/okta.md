@@ -16,7 +16,7 @@ This page describes how to set up Pinecone with Okta as the single sign-on (SSO)
 
 This page assumes you have the following:
 
-* Access to your organization's [Pinecone console](https://login.pinecone.io) as an [organization owner](/admin/organizations/understanding-organizations#organization-roles).
+* Access to your organization's [Pinecone console](https://login.pinecone.io) as an [organization owner](/admin/organizations/organizations-overview#organization-roles).
 * Access to your organization's [Okta Admin console](https://login.okta.com/).
 
 ## 1. Start SSO setup in Pinecone

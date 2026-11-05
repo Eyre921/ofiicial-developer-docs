@@ -17,6 +17,8 @@ Some models offer both, so you choose one with `processing_location` when you [d
 
 The Processing location column of the [model gallery](/models/overview) lists each model's location. Currently only `text-embedding-3-small` and `text-embedding-3-large` let you choose, between `global` (the default) and `us`. `gemini-embedding-2` processes in `global` and accepts `processing_location` only when it's set to `global`. Every other model rejects it.
 
+The processing location doesn't follow your index's [cloud region](/guides/indexes/index-configuration#cloud-regions). An index in a region outside the US, such as `eu-west-1`, still defaults to `global`. On the Standard and Enterprise plans, it also accepts `us`.
+
 ## Set the processing location
 
 `processing_location` is a property of an embedded field on a document index, set on `embed` next to `dimension`, so it requires API version `2026-07`. One value covers both stored text and queries. To keep both in the US, set it to `us`:

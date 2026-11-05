@@ -31,35 +31,37 @@ To install them yourself, use the commands below.
 The `fireworks-training` plugin includes all four skills and updates with the plugin:
 
 ```bash theme={null}
-claude plugin marketplace add fw-ai/cookbook
+claude plugin marketplace add fw-ai-external/cookbook
 claude plugin install fireworks-training@fw-ai-cookbook
 ```
+
+The repository is `fw-ai-external/cookbook`; the marketplace identifier remains `fw-ai-cookbook`.
 
 ### Cursor
 
 ```bash theme={null}
-npx --yes skills add fw-ai/cookbook -g \
+npx --yes skills add fw-ai-external/cookbook -g \
   -s fireworks-training research configure debug -a cursor -y
 ```
 
 ### Codex
 
 ```bash theme={null}
-npx --yes skills add fw-ai/cookbook -g \
+npx --yes skills add fw-ai-external/cookbook -g \
   -s fireworks-training research configure debug -a codex -y
 ```
 
 ### OpenCode
 
 ```bash theme={null}
-npx --yes skills add fw-ai/cookbook -g \
+npx --yes skills add fw-ai-external/cookbook -g \
   -s fireworks-training research configure debug -a opencode -y
 ```
 
 ### Other agents
 
 ```bash theme={null}
-npx --yes skills add fw-ai/cookbook -g \
+npx --yes skills add fw-ai-external/cookbook -g \
   -s fireworks-training research configure debug -a <agent-id> -y
 ```
 
@@ -115,7 +117,7 @@ Before the first structured question, the skills show a one-line privacy notice.
 
 ## See also
 
-> [card] [Case studies](https://github.com/fw-ai/cookbook/tree/main/training/case-studies)
+> [card] [Case studies](https://github.com/fw-ai-external/cookbook/tree/main/training/case-studies)
 >
 > Runnable notebooks research routes to.
 

@@ -293,7 +293,7 @@ Before you can delete such an index, you must first [disable deletion protection
 
 For pod-based indexes, Pinecone indexes all metadata fields by default. When metadata fields contains many unique values, pod-based indexes will consume significantly more memory, which can lead to performance issues, pod fullness, and a reduction in the number of possible vectors that fit per pod.
 
-To avoid indexing high-cardinality metadata that's not needed for [filtering your queries](/guides/indexes/indexing-overview#metadata) and keep memory utilization low, specify which metadata fields to index using the `metadata_config` parameter.
+To avoid indexing high-cardinality metadata that's not needed for [filtering your queries](/guides/indexes/index-data-overview#metadata) and keep memory utilization low, specify which metadata fields to index using the `metadata_config` parameter.
 
 > [!NOTE]
 >
@@ -807,7 +807,7 @@ while len(results['matches']) > 0:
 >
 > In pod-based indexes, if you are targeting a large number of records for deletion and the index has active read traffic, consider [deleting records in batches](#delete-records-in-batches).
 
-To delete records from a namespace based on their metadata values, pass a [metadata filter expression](/guides/indexes/indexing-overview#metadata-filter-expressions) to the `delete` operation. This deletes all records in the namespace that match the filter expression.
+To delete records from a namespace based on their metadata values, pass a [metadata filter expression](/guides/indexes/index-data-overview#metadata-filter-expressions) to the `delete` operation. This deletes all records in the namespace that match the filter expression.
 
 For example, the following code deletes all records with a `genre` field set to `documentary` from namespace `example-namespace`:
 
@@ -946,7 +946,7 @@ When configuring an index, you can tag the index to help with index organization
 
 ### Set a project pod limit
 
-To control costs, [project owners](/admin/projects/understanding-projects#project-roles) can set the maximum total number of pods allowed across all pod-based indexes in a project. The default pod limit is 5.
+To control costs, [project owners](/admin/projects/projects-overview#project-roles) can set the maximum total number of pods allowed across all pod-based indexes in a project. The default pod limit is 5.
 
 > [tab] Pinecone console
 >

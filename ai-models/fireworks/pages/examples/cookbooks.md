@@ -10,7 +10,7 @@ Explore our collection of notebooks that showcase real-world applications, best 
 
 ## Training
 
-> [card] [Knowledge Distillation](https://colab.research.google.com/github/fw-ai/cookbook/blob/main/archived/learn/finetuning/knowledge_distillation.ipynb)
+> [card] [Knowledge Distillation](https://colab.research.google.com/github/fw-ai-external/cookbook/blob/main/archived/learn/finetuning/knowledge_distillation.ipynb)
 >
 > Transfer large model capabilities to efficient models using a two-stage SFT + RFT approach.
 >
@@ -28,7 +28,7 @@ Explore our collection of notebooks that showcase real-world applications, best 
 
 ## Multimodal AI
 
-> [card] [NVIDIA Nemotron VL for Document Intelligence](https://colab.research.google.com/github/fw-ai/cookbook/blob/main/archived/multimedia/vlm/nvidia-nemotron-vl/NVIDIA-Nemotron-v2-VL-cookbook.ipynb)
+> [card] [NVIDIA Nemotron VL for Document Intelligence](https://colab.research.google.com/github/fw-ai-external/cookbook/blob/main/archived/multimedia/vlm/nvidia-nemotron-vl/NVIDIA-Nemotron-v2-VL-cookbook.ipynb)
 >
 > Extract structured data from invoices, forms, and financial documents using state-of-the-art OCR and document understanding.
 >
@@ -36,7 +36,7 @@ Explore our collection of notebooks that showcase real-world applications, best 
 >
 > **Results:** 90.8% accuracy on invoice extraction (100% on invoice numbers and dates)
 
-> [card] [Chat with Video using Qwen3 Omni](https://colab.research.google.com/github/fw-ai/cookbook/blob/main/archived/multimedia/video/Qwen3-Omni-Chat-With-Video-Cookbook.ipynb)
+> [card] [Chat with Video using Qwen3 Omni](https://colab.research.google.com/github/fw-ai-external/cookbook/blob/main/archived/multimedia/video/Qwen3-Omni-Chat-With-Video-Cookbook.ipynb)
 >
 > Analyze video and audio content with Qwen3 Omni, a multimodal model supporting video, audio, and text inputs.
 >
@@ -44,7 +44,7 @@ Explore our collection of notebooks that showcase real-world applications, best 
 
 ## Embeddings & RAG
 
-> [card] [Two-Stage Retrieval with Voyage Embeddings and Reranking](https://colab.research.google.com/github/fw-ai/cookbook/blob/main/partners/voyage-ai/voyage_two_stage_retrieval.ipynb)
+> [card] [Two-Stage Retrieval with Voyage Embeddings and Reranking](https://colab.research.google.com/github/fw-ai-external/cookbook/blob/main/partners/voyage-ai/voyage_two_stage_retrieval.ipynb)
 >
 > Build a retrieval pipeline that recalls candidates with vector search, then reorders them with a reranker for precision.
 >
@@ -54,7 +54,7 @@ Explore our collection of notebooks that showcase real-world applications, best 
 
 ## API Features
 
-> [card] [Fireworks MCP Examples](https://colab.research.google.com/github/fw-ai/cookbook/blob/main/archived/learn/response-api/fireworks_mcp_examples.ipynb)
+> [card] [Fireworks MCP Examples](https://colab.research.google.com/github/fw-ai-external/cookbook/blob/main/archived/learn/response-api/fireworks_mcp_examples.ipynb)
 >
 > Leverage Model Context Protocol (MCP) for GitHub repository analysis, code search, and documentation Q\&A.
 >

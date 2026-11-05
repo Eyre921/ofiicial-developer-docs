@@ -53,19 +53,17 @@ Tracing stops when your sign-in expires or your key is rejected, and turns from 
 
 ## Turn on tracing
 
-Tracing is off until you turn it on in `~/.codex/langsmith.json`, unless your admin already turned it on with a [managed file](#lock-settings). Send traces to an [agent](/langsmith/log-traces-to-agent#send-traces-to-an-agent) with `agent_id`:
+Tracing is off until you turn it on in `~/.codex/langsmith.json`, unless your admin already turned it on with a [managed file](#lock-settings). In an [agent-based workspace](/langsmith/migrate-to-agent-based-workspaces), send traces to an [agent](/langsmith/log-traces-to-agent#send-traces-to-an-agent) with `agent_id`:
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 { "enabled": true, "agent_id": "shared-codex" }
 ```
 
-Or send them to a project with `project`:
+In a project-based workspace, use the legacy `project` setting instead:
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 { "enabled": true, "project": "shared-codex" }
 ```
-
-Use either one. If you set both, `agent_id` wins.
 
 > [!WARNING]
 >
@@ -87,8 +85,8 @@ An admin can lock tracing settings for every user with a managed file at `~/.lan
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
-  "api_url": "https://langsmith.example.com",
-  "project": "engineering",
+  "api_url": "https://api.smith.langchain.com",
+  "agent_id": "coding-agent",
   "strict_auth": true,
   "workspace_id": "<your-workspace-id>"
 }
@@ -102,7 +100,7 @@ The managed file works on macOS and Linux. The plugin only trusts it when:
 * No other user can write to either.
 * Neither is a symlink.
 
-If the file exists but fails these checks, tracing stops and the user sees a message to contact their admin. Locking a setting also locks the settings tied to it, so users cannot route traces around the lock. For example, locking `project` also stops users from adding their own [replicas](/langsmith/trace-replicas) or sending traces to an agent with `agent_id`.
+If the file exists but fails these checks, tracing stops and the user sees a message to contact their admin. Locking a setting also locks the settings tied to it, so users cannot route traces around the lock. For example, locking `agent_id` also stops users from sending traces to a project with `project`.
 
 Admins usually install the file on each machine with a mobile device management (MDM) tool such as Jamf or Microsoft Intune. For every setting you can lock, see the [plugin settings guide](https://github.com/langchain-ai/langsmith-plugin-binary/blob/main/docs/settings.md).
 
@@ -151,8 +149,8 @@ Each setting has a config file key and an environment variable. The environment 
 | - | - | - | - |
 | `enabled` | `TRACE_TO_LANGSMITH` | `false` | Turns tracing on. |
 | `api_key` | `LANGSMITH_CODEX_API_KEY` | none | LangSmith API key. Not needed if you sign in with the CLI. |
-| `project` | `LANGSMITH_CODEX_PROJECT` | `codex` | Project the traces go to. Use this or `agent_id`. |
 | `agent_id` | `LANGSMITH_AGENT_ID` | none | Agent the traces go to. Wins over `project` if both are set. |
+| `project` (deprecated) | `LANGSMITH_CODEX_PROJECT` | `codex` | Project the traces go to. Use `agent_id` unless your workspace is [project-based](/langsmith/migrate-to-agent-based-workspaces#check-which-one-you-have). |
 | `api_url` | `LANGSMITH_CODEX_ENDPOINT` | `https://api.smith.langchain.com` | LangSmith server to send to. |
 | `workspace_id` | `LANGSMITH_WORKSPACE_ID` | none | Workspace the traces go to when you sign in with the CLI. API keys ignore it and your config file wins over the variable. |
 
@@ -163,7 +161,7 @@ For every setting, see the [plugin settings](https://github.com/langchain-ai/lan
 * **No traces**: Check that the plugin is installed, its hooks are trusted with `/hooks`, and tracing is on.
 * **Stopped after an update**: Codex asks you to trust a hook again whenever a release changes it. Run `/hooks` and approve it.
 * **Tracing is paused**: Run `langsmith auth login` again or replace the rejected API key.
-* **Tracing is paused after a 403**: Your sign-in or API key might not have access to the project or workspace. Look through `~/.codex/langsmith_engine/worker.log` for the details.
+* **Tracing is paused after a 403**: Your sign-in or API key might not have access to the agent, project or workspace. Look through `~/.codex/langsmith_engine/worker.log` for the details.
 
 For more fixes, see [When nothing shows up](https://github.com/langchain-ai/langsmith-codex-plugins#when-nothing-shows-up).
 

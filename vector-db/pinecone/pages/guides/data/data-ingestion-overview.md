@@ -26,12 +26,12 @@ For ongoing ingestion into an index, one record or document at a time, or in bat
 
 Import and upsert move vectors into Pinecone. For workflows where you only need vectors from hosted models (for example, to embed offline and upsert later), use the Inference API as follows:
 
-You can call the [Generate vectors](/reference/api/latest/inference/generate-vectors) operation for standalone embedding to turn text into vectors without writing to an index. That differs from [integrated embedding](/guides/search/integrated-embedding) on a document index, where Pinecone embeds a field's text when you upsert or search. To see how many embedding tokens a request consumes, see [Embedding tokens](/guides/manage-cost/check-usage-per-request#embedding-tokens).
+You can call the [Generate vectors](/reference/api/latest/inference/generate-vectors) operation for standalone embedding to turn text into vectors without writing to an index. That differs from [integrated embedding](/guides/search/integrated-embedding) on a document index, where Pinecone embeds a field's text when you upsert or search. To see how many embedding tokens a request consumes, see [Embedding tokens](/guides/cost/check-usage-per-request#embedding-tokens).
 
 ## Ingestion cost
 
-* To understand how cost is calculated for imports, see [Import cost](/guides/manage-cost/understanding-cost#imports).
-* To understand how cost is calculated for upserts, see [Write unit pricing](/guides/manage-cost/understanding-cost#write-units).
+* To understand how cost is calculated for imports, see [Import cost](/guides/cost/understand-cost#imports).
+* To understand how cost is calculated for upserts, see [Write unit pricing](/guides/cost/understand-cost#write-units).
 * For up-to-date pricing information, see [Pricing](https://www.pinecone.io/pricing/).
 
 ## Data freshness

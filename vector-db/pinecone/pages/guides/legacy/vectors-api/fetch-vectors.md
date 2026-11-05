@@ -18,7 +18,7 @@ Pinecone stores vector values as 32-bit floats, so fetched values can differ sli
 
 To fetch records from a namespace based on their IDs, use the `fetch` operation with the following parameters:
 
-* `namespace`: The [namespace](/guides/indexes/indexing-overview#namespaces) containing the records to fetch. To use the default namespace, set this to `"__default__"`.
+* `namespace`: The [namespace](/guides/indexes/index-data-overview#namespaces) containing the records to fetch. To use the default namespace, set this to `"__default__"`.
 * `ids`: The IDs of the records to fetch. Maximum of 1000.
 
 > [!NOTE]
@@ -226,9 +226,9 @@ To fetch records from a namespace based on their metadata values, use the `fetch
 
 | Parameter | Required | Description |
 | :- | :- | :- |
-| `filter` | Yes | A [metadata filter expression](/guides/indexes/indexing-overview#metadata-filter-expressions) describing the records to fetch. Must be present and non-empty. |
+| `filter` | Yes | A [metadata filter expression](/guides/indexes/index-data-overview#metadata-filter-expressions) describing the records to fetch. Must be present and non-empty. |
 | `limit` | No | The maximum number of matching records to return in a single response. Defaults to 100; maximum 10,000. To retrieve more than 10,000 matching records, paginate using `paginationToken`. |
-| `namespace` | No | The [namespace](/guides/indexes/indexing-overview#namespaces) containing the records to fetch. If omitted or set to an empty string, defaults to the default namespace. To explicitly use the default namespace, set this to `"__default__"`. |
+| `namespace` | No | The [namespace](/guides/indexes/index-data-overview#namespaces) containing the records to fetch. If omitted or set to an empty string, defaults to the default namespace. To explicitly use the default namespace, set this to `"__default__"`. |
 | `paginationToken` | No | The `next` token value from the `pagination` object found in a previous response. Include this value to fetch the next page of results, or omit it to start from the beginning. Must be used with the same `namespace` and `filter` parameters that generated it — using an existing token with different parameters will return incorrect results. |
 
 For example, the following code fetches 2 records with a `genre` field set to `Action/Adventure` from the default namespace:

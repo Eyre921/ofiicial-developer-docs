@@ -79,10 +79,10 @@ ls -la .agentfs/my-agent.db
 
 ## Next Steps
 
-> **[NFS Server](/agentfs/guides/nfs)**
+> [card] [NFS Server](/agentfs/guides/nfs)
 >
 > Remote access via NFS
 
-> **[Copy-on-Write Overlays](/agentfs/guides/overlay)**
+> [card] [Copy-on-Write Overlays](/agentfs/guides/overlay)
 >
 > How isolation works

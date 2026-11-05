@@ -76,6 +76,6 @@ export default function Page({
 
 ## Examples
 
-> **[Full Stack App](https://github.com/tursodatabase/nextjs-turso-starter)**
+> [card] [Full Stack App](https://github.com/tursodatabase/nextjs-turso-starter)
 >
 > Build with Next.js, Turso, and Drizzle ORM.

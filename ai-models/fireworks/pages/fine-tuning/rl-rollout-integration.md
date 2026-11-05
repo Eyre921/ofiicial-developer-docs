@@ -18,10 +18,10 @@ Integrate an external RL trainer with Fireworks inference: hot-load new checkpoi
 > **Using a code agent?** Follow sections in order: [Prerequisites](#prerequisites)
 > → [Quickstart checklist](#quickstart-checklist) → [Hot-load API](#hot-load-api).
 > Required env: `FIREWORKS_API_KEY`. After your first full snapshot is serving,
-> read [Incremental snapshots (skill)](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md#incremental-snapshots-arc2) before
+> read [Incremental snapshots (skill)](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md#incremental-snapshots-arc2) before
 > production training loops. For active stream, session ID, and `reset_prompt_cache`
 > semantics, see [KV cache behavior for RL rollouts](/guides/rollout-inference#kv-cache-behavior-for-rl-rollouts).
-> For ledger and hot-load status debugging, see [Ledger & debugging (skill)](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md).
+> For ledger and hot-load status debugging, see [Ledger & debugging (skill)](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md).
 
 This guide is for teams already running their own RL trainer (Megatron, TorchTitan, Slime, Verl, etc) who want Fireworks purely for inference during rollouts. It also covers the raw hot-load API, which Training API users can call directly when they need rollout behaviors beyond what `WeightSyncer` and `DeploymentManager` expose.
 
@@ -113,7 +113,7 @@ flowchart LR
 1. Create a hot-load deployment.
 2. Upload and hot-load an initial **full** snapshot.
 3. Run rollouts against that snapshot.
-4. For each training step: upload and hot-load the next **incremental** snapshot (see [Incremental snapshots](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md)).
+4. For each training step: upload and hot-load the next **incremental** snapshot (see [Incremental snapshots](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md)).
 5. Run rollouts again.
 6. Every 20th or 30th step, publish a **full** snapshot instead of an incremental one. If the incremental chain fails, fall back to a full snapshot.
 
@@ -228,7 +228,7 @@ A full (non-LoRA) snapshot is validated at POST time; it must contain all of:
 
 #### Incremental snapshots and ARC2
 
-An [incremental snapshot](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md) is an ARC2-compressed **delta** of the safetensors against a `previous_snapshot_identity` already on the deployment. It keeps the **same `model.safetensors.index.json`** as its parent — the `weight_map`, the file count, and the per-file weight set must be **identical** (only the tensor contents change). Tensor `dtype`s must also match across the transition. Upload only the diff `.safetensors` (plus the unchanged manifests/config) under the new `identity`; signal it with `incremental_snapshot_metadata`. See [Incremental snapshots](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md) for the full body and the delta-build utilities.
+An [incremental snapshot](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md) is an ARC2-compressed **delta** of the safetensors against a `previous_snapshot_identity` already on the deployment. It keeps the **same `model.safetensors.index.json`** as its parent — the `weight_map`, the file count, and the per-file weight set must be **identical** (only the tensor contents change). Tensor `dtype`s must also match across the transition. Upload only the diff `.safetensors` (plus the unchanged manifests/config) under the new `identity`; signal it with `incremental_snapshot_metadata`. See [Incremental snapshots](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md) for the full body and the delta-build utilities.
 
 Optional: call the [per-file hint API](/fine-tuning/rl-rollout-integration#per-file-hints-optional) as each file lands to speed up loading on large models.
 
@@ -240,7 +240,7 @@ For large MoE models such as **GLM** and **Kimi**, the routed MoE expert weights
 
 * Add the matching `quantization_config` block to `config.json`.
 * Make sure `model.weight.spec.json` (`tensor_map`) describes the quantized tensors (`shape` + `dtype`); the snapshot is rejected if a `quantization_config` is present but the spec has no dequantizable tensors or is missing the metadata needed to dequantize them.
-* Keep the quantization recipe consistent across every snapshot in a run so the [incremental chain](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md) stays valid (dtypes must not change between a snapshot and its parent).
+* Keep the quantization recipe consistent across every snapshot in a run so the [incremental chain](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md) stays valid (dtypes must not change between a snapshot and its parent).
 
 ### Signal and poll
 
@@ -275,7 +275,7 @@ For large full-parameter snapshots, notify the hint endpoint as each shard finis
 { "identity": "version_001" }
 ```
 
-**Incremental snapshot** bodies, compression, hints, and `checksum_format` are documented in [Incremental snapshots](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md).
+**Incremental snapshot** bodies, compression, hints, and `checksum_format` are documented in [Incremental snapshots](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md).
 
 **identity** `string` *required*
 
@@ -414,7 +414,7 @@ See [Inference for RL rollouts](/guides/rollout-inference) for session affinity,
 
 After the first full snapshot:
 
-1. **Intermediate steps** — Build and upload an [incremental snapshot](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md) (`arc_v2`), signal with `incremental_snapshot_metadata`, poll until ready, then run rollouts.
+1. **Intermediate steps** — Build and upload an [incremental snapshot](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md) (`arc_v2`), signal with `incremental_snapshot_metadata`, poll until ready, then run rollouts.
 2. **Every 20th or 30th step** — Publish a new **full** snapshot for faster recovery and chain reset.
 3. **On failure** — Fall back to a full snapshot; see [Ledger and debugging](#ledger-debugging).
 
@@ -480,7 +480,7 @@ When [polling load status](#poll-load-status), LoRA deployments report progress 
 
 ### No incremental chain
 
-LoRA adapters are small, so there is **no ARC2 incremental/delta chain** for LoRA. Upload the full adapter every step—each LoRA snapshot is complete and self-contained. The [incremental snapshot](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md) workflow (and the "every 20th–30th step, publish a full snapshot" cadence) applies only to full-parameter checkpoints.
+LoRA adapters are small, so there is **no ARC2 incremental/delta chain** for LoRA. Upload the full adapter every step—each LoRA snapshot is complete and self-contained. The [incremental snapshot](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md) workflow (and the "every 20th–30th step, publish a full snapshot" cadence) applies only to full-parameter checkpoints.
 
 ## Numerics alignment
 
@@ -499,15 +499,15 @@ The control-plane checkpoint list is the source of truth for snapshot identity, 
 3. For full-parameter chains, retry with a full base snapshot if a delta parent is missing.
 4. For LoRA, fix a stale deployment attachment; LoRA snapshots are complete adapters and do not use a delta chain.
 
-Detailed scope mismatch, checkpoint retention, promotion, and recovery procedures live in the [hot-load skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md).
+Detailed scope mismatch, checkpoint retention, promotion, and recovery procedures live in the [hot-load skill reference](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md).
 
 ## Next steps
 
-> [card] [Incremental snapshots & ARC2](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md)
+> [card] [Incremental snapshots & ARC2](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md)
 >
 > Delta builds, per-file hints, and incremental signal bodies
 
-> [card] [Ledger & debugging](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md)
+> [card] [Ledger & debugging](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md)
 >
 > Snapshot history, stuck swaps, and recovery playbooks
 
@@ -521,4 +521,4 @@ Detailed scope mismatch, checkpoint retention, promotion, and recovery procedure
 
 > [!NOTE]
 >
-> **Operational depth** (ledger, ARC2 chains, hot-load errors) lives in the [Fireworks training skill — rl-hotload](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md). This page is the BYOT happy path.
+> **Operational depth** (ledger, ARC2 chains, hot-load errors) lives in the [Fireworks training skill — rl-hotload](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md). This page is the BYOT happy path.

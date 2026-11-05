@@ -152,7 +152,7 @@ ORDER BY s.rank;
 
 ## Search one tenant
 
-To keep each tenant's documents in their own Pinecone [namespace](/guides/indexes/indexing-overview#namespaces), pass a tenant column as `partition_column` when you call `pinecone.track_docs()`. Then name the tenant with `partition` on every search. This example uses a `tickets` table with a `tenant_id` column:
+To keep each tenant's documents in their own Pinecone [namespace](/guides/indexes/index-data-overview#namespaces), pass a tenant column as `partition_column` when you call `pinecone.track_docs()`. Then name the tenant with `partition` on every search. This example uses a `tickets` table with a `tenant_id` column:
 
 ```sql SQL theme={null}
 SELECT pinecone.track_docs('tickets',

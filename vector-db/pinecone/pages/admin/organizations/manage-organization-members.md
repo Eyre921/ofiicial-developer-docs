@@ -6,7 +6,7 @@ path: admin/organizations/manage-organization-members
 
 Add, invite, and manage members in your Pinecone organization, including assigning organization roles, changing permissions, and removing users.
 
-This page shows how [organization owners](/admin/organizations/understanding-organizations#organization-roles) can add and manage organization members.
+This page shows how [organization owners](/admin/organizations/organizations-overview#organization-roles) can add and manage organization members.
 
 To assign and manage roles programmatically with the Admin API, or to manage roles for service accounts and API keys, see [Manage roles and access](/admin/security/manage-rbac).
 
@@ -18,7 +18,7 @@ To assign and manage roles programmatically with the Admin API, or to manage rol
 
 1. Go to [**Settings > Access > Members**](https://app.pinecone.io/organizations/-/settings/access/members).
 2. In the **Invite by email** field, enter the member's email address.
-3. Choose an [**Organization role**](/admin/organizations/understanding-organizations#organization-roles) for the member. The role determines the member's permissions within Pinecone.
+3. Choose an [**Organization role**](/admin/organizations/organizations-overview#organization-roles) for the member. The role determines the member's permissions within Pinecone.
 4. Click **Invite**.
 
 When you invite a member, Pinecone emails them an invite link, whether or not they already have a Pinecone account. They join the organization when they accept the invite. Until then, the invite appears in the **Invites** list on the **Members** page.
@@ -27,7 +27,7 @@ When you invite a member, Pinecone emails them an invite link, whether or not th
 
 1. Go to [**Settings > Access > Members**](https://app.pinecone.io/organizations/-/settings/access/members).
 2. In the row of the member whose role you want to change, click **ellipsis (...) menu > Edit role**.
-3. Select an [**Organization role**](/admin/organizations/understanding-organizations#organization-roles) for the member.
+3. Select an [**Organization role**](/admin/organizations/organizations-overview#organization-roles) for the member.
 4. Click **Save**.
 
 ## Remove a member

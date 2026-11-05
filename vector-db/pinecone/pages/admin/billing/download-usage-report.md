@@ -8,7 +8,7 @@ Download a usage and cost report for your Pinecone organization from the console
 
 > [!NOTE]
 >
-> To view usage and costs across your Pinecone organization, you must be an [organization owner or billing admin](/admin/organizations/understanding-organizations#organization-roles). Also, this feature is available only to organizations on the Standard or Enterprise plans.
+> To view usage and costs across your Pinecone organization, you must be an [organization owner or billing admin](/admin/organizations/organizations-overview#organization-roles). Also, this feature is available only to organizations on the Standard or Enterprise plans.
 
 The **Usage** dashboard in the Pinecone console reports usage and costs across your organization. On the page you can group the charts by SKU or project and switch the cost distribution between services. The CSV download covers whichever time range you select, regardless of how you group the charts.
 

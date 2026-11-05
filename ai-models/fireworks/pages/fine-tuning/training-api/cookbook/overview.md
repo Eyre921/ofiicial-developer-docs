@@ -8,7 +8,7 @@ Overview of the Training API cookbook: ready-to-run recipes for supervised fine-
 
 ## What is the Cookbook?
 
-The [Fireworks Cookbook](https://github.com/fw-ai/cookbook/tree/main/training) is a collection of training recipes and utilities built on top of the [Training API](/fine-tuning/training-api/introduction). It provides config-driven training loops that handle trainer provisioning, data loading, tokenization, gradient accumulation, checkpointing, and cleanup automatically.
+The [Fireworks Cookbook](https://github.com/fw-ai-external/cookbook/tree/main/training) is a collection of training recipes and utilities built on top of the [Training API](/fine-tuning/training-api/introduction). It provides config-driven training loops that handle trainer provisioning, data loading, tokenization, gradient accumulation, checkpointing, and cleanup automatically.
 
 The cookbook is **optional** — everything it does can be done with the API directly. Use the cookbook when you want a working training loop quickly; use the API when you need full control.
 
@@ -18,16 +18,58 @@ The cookbook is **optional** — everything it does can be done with the API dir
 
 ## Installation
 
+Use Python 3.11 or newer. Install the published cookbook to import its recipes and utilities:
+
 ```bash theme={null}
-git clone https://github.com/fw-ai/cookbook.git
-cd cookbook/training && pip install -e .
+python -m pip install --upgrade fireworks-training-cookbook
 ```
 
-Set your credentials:
+The distribution is [`fireworks-training-cookbook`](https://pypi.org/project/fireworks-training-cookbook/); Python imports remain `training.*`, such as `from training.recipes.sft_loop import Config, main`. It installs the Fireworks SDK and the cookbook's runtime dependencies.
+
+The cookbook and SDK have separate release versions. Cookbook `2026.11.5.1` uses calendar versioning; SDK `1.2.31` is published as `fireworks-ai`. To reproduce those releases:
+
+```bash theme={null}
+python -m pip install "fireworks-ai[training]==1.2.31" "fireworks-training-cookbook==2026.11.5.1"
+```
+
+### Edit recipes or run source examples
+
+Clone the [public repository](https://github.com/fw-ai-external/cookbook) when you want to modify a recipe or follow an example that runs from the checkout:
+
+```bash theme={null}
+git clone https://github.com/fw-ai-external/cookbook.git
+cd cookbook
+python -m pip install -e ./training
+```
+
+An editable install uses your checkout, which can include changes newer than the published PyPI release. For a reproducible source checkout, check out the matching [release tag](https://github.com/fw-ai-external/cookbook/releases/tag/cookbook-v2026.11.5.1) before installing.
+
+### Verify the installation
+
+```bash theme={null}
+python -c "from importlib.metadata import version; import training; print(version('fireworks-training-cookbook'))"
+```
+
+This prints the installed cookbook version. With the pinned release above, it prints `2026.11.5.1`.
+
+### Authentication
+
+Before running a training job, set your credentials:
 
 ```bash theme={null}
 export FIREWORKS_API_KEY="your-api-key"
 ```
+
+### Update an existing checkout
+
+The cookbook's canonical repository is now [`fw-ai-external/cookbook`](https://github.com/fw-ai-external/cookbook). In an existing cookbook clone, update the remote:
+
+```bash theme={null}
+cd cookbook
+git remote set-url origin https://github.com/fw-ai-external/cookbook.git
+```
+
+To use PyPI releases instead of a local checkout, install the package in a fresh Python environment. To update coding-agent skills, use the [current installation commands](/fine-tuning/agent/use-with-coding-agents). Skills are installed from GitHub separately from the Python package.
 
 ## Available recipes
 
@@ -38,11 +80,11 @@ export FIREWORKS_API_KEY="your-api-key"
 | **Agentic RL integration** | Either async loop plus your rollout adapter | Multi-turn rollouts. The structured Cookbook path uses Pi, OpenCode, or Mini-SWE-Agent with Harbor and an environment-local TITO sidecar in Docker or E2B. See [Cookbook Agentic RL](/fine-tuning/training-api/cookbook/agentic-rl). |
 | **HUD RL training** | `hud-python/cookbooks/fireworks-rl-training` | Train a Serverless Training LoRA from one-turn HUD environment rewards. See [Fireworks x HUD RL Training](/fine-tuning/training-api/cookbook/hud-rl-training). |
 | **RL** *(simpler, synchronous)* | `training.recipes.rl_loop` | Synchronous on-policy GRPO scaffold — reach for it when you don't need rollout/train overlap |
-| **IGPO** | `rl_loop` with `igpo.prepare_batch` | Turn-level information-gain advantages for multi-turn trajectories; see the [multi-hop example](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/multihop_qa). |
+| **IGPO** | `rl_loop` with `igpo.prepare_batch` | Turn-level information-gain advantages for multi-turn trajectories; see the [multi-hop example](https://github.com/fw-ai-external/cookbook/tree/main/training/examples/rl/multihop_qa). |
 | **DPO** | `training.recipes.dpo_loop` | Direct preference optimization from chosen/rejected pairs. `serverless=True` uses the shared pool. |
 | **SFT** | `training.recipes.sft_loop` | Supervised fine-tuning with cross-entropy loss. `serverless=True` uses the shared pool. |
 | **Distillation** | `training.recipes.distillation_loop` | On-policy distillation from a frozen teacher’s sampled-token scores |
-| **SDFT** | [External SDFT cookbook](https://github.com/fw-ai-external/tinker-cookbook) | Top-K self-distillation on serverless. Maintained outside this cookbook; see the [SDFT guide](https://github.com/fw-ai/cookbook/blob/main/training/docs/sdft.md). |
+| **SDFT** | [External SDFT cookbook](https://github.com/fw-ai-external/tinker-cookbook) | Top-K self-distillation on serverless. Maintained outside this cookbook; see the [SDFT guide](https://github.com/fw-ai-external/cookbook/blob/main/training/docs/sdft.md). |
 | **ORPO** | `training.recipes.orpo_loop` | Odds ratio preference optimization. The recipe runs on dedicated trainers only. |
 
 Each recipe follows the same pattern: import `Config` and `main`, set your config, and call `main(cfg)`. Dedicated recipes attach or create trainer and deployment resources from `TrainerConfig` / `DeployConfig`. Serverless recipes attach to the shared pool and publish session-scoped sampler snapshots instead of provisioning a deployment.
@@ -125,7 +167,7 @@ For vision-language training, choose a supported VLM recipe, training shape, and
 
 ## Embedding loop
 
-The [`embedding_loop`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/embedding_loop.py) recipe trains embedding models with contrastive or supervised embedding objectives. Use it when your base model is an embedding endpoint rather than a chat completion model.
+The [`embedding_loop`](https://github.com/fw-ai-external/cookbook/blob/main/training/recipes/embedding_loop.py) recipe trains embedding models with contrastive or supervised embedding objectives. Use it when your base model is an embedding endpoint rather than a chat completion model.
 
 ## Next steps
 

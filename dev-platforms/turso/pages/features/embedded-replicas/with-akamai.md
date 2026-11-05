@@ -30,11 +30,11 @@ You will need an existing database to continue. If you don't have one, [create o
 
 Fork one of the following embedded replica projects from GitHub
 
-> **[My Expenses Tracker - (Elysia + Bun)](https://github.com/tursodatabase/embedded-replicas-with-js)**
+> [card] [My Expenses Tracker - (Elysia + Bun)](https://github.com/tursodatabase/embedded-replicas-with-js)
 >
 > See the full source code
 
-> **[Web Traffic API - (Rust)](https://github.com/tursodatabase/embedded-replicas-with-rust)**
+> [card] [Web Traffic API - (Rust)](https://github.com/tursodatabase/embedded-replicas-with-rust)
 >
 > See the full source code
 

@@ -19,7 +19,7 @@ Converting builds a new document index from the records in a serverless legacy v
 * **IDs and fields**: Each record becomes a document with the same ID, and its fields are filled by name, as described in [Plan the schema](#plan-the-schema).
 * **Namespaces**: Each source namespace becomes a namespace of the same name in the new index. Namespaces that have never held records are skipped.
 * **Location**: The new index is created in the source's cloud and region, and is encrypted with the source's customer-managed encryption keys (CMEK) when it has them.
-* **Billing**: A conversion is charged at the [import](/guides/manage-cost/understanding-cost#imports) rate, by the size of the source's data. A job that fails because of your data is charged for the data it read. A canceled job, or one that fails because of an internal error, isn't charged. Both indexes are billed for storage until you delete the source.
+* **Billing**: A conversion is charged at the [import](/guides/cost/understand-cost#imports) rate, by the size of the source's data. A job that fails because of your data is charged for the data it read. A canceled job, or one that fails because of an internal error, isn't charged. Both indexes are billed for storage until you delete the source.
 
 ## Limitations
 

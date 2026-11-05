@@ -27,7 +27,7 @@ Pinecone Database powers retrieval for AI agents and applications, including sea
 With Pinecone Database, you can:
 
 * Serve [full-text search](/guides/search/full-text-search), [semantic search](/guides/search/semantic-search), [sparse-vector search](/guides/search/sparse-vector-search), and [hybrid search](/guides/search/hybrid-search) from one index. To choose an approach, see [Search overview](/guides/search/search-overview).
-* Upsert and query with text instead of vectors. With [integrated embedding](/guides/indexes/indexing-overview#integrated-embedding), Pinecone generates the vectors from your text server-side.
+* Upsert and query with text instead of vectors. With [integrated embedding](/guides/indexes/index-data-overview#integrated-embedding), Pinecone generates the vectors from your text server-side.
 * Narrow results with [metadata filters](/guides/search/filter-by-metadata), then [rerank](/guides/search/rerank-results) them for relevance.
 * Keep each tenant's data separate within one index by using [namespaces](/guides/data/implement-multitenancy).
 * Scale reads for sustained, high query volumes with [dedicated read nodes](/guides/optimize/dedicated-read-nodes/overview).
@@ -35,7 +35,7 @@ With Pinecone Database, you can:
 
 ## Learn
 
-> [card] [Key terms](/guides/core-concepts/key-terms)
+> [card] [Key terms](/guides/get-started/key-terms)
 >
 > Organizations, projects, indexes, namespaces, documents, and records
 

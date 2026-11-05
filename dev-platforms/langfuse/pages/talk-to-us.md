@@ -18,7 +18,7 @@ Get all of Langfuse's core features plus enterprise capabilities to suit your bu
 - Pay by Invoice
 - Ask questions about our Security & Compliance Policies
 
-Langfuse is the most widely adopted AI Engineering platform with **37,004 GitHub stars**, **65M+ SDK installs per month**, and **38M+ Docker pulls**.
+Langfuse is the most widely adopted AI Engineering platform with **37,032 GitHub stars**, **65M+ SDK installs per month**, and **38M+ Docker pulls**.
 
 [Contact us via the form on this page](/talk-to-us) to get a demo, volume pricing, or answers on security and compliance.
 

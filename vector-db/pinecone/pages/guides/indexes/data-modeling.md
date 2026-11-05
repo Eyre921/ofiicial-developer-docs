@@ -138,7 +138,7 @@ Use a delimiter that doesn't appear elsewhere in your IDs, such as `#`, `_`, or 
 
 ## Include metadata
 
-Include [metadata](/guides/indexes/indexing-overview#metadata) fields that support your application's key operations, for example:
+Include [metadata](/guides/indexes/index-data-overview#metadata) fields that support your application's key operations, for example:
 
 * **Filter searches**: Add fields for time ranges, categories, or other criteria to [filter searches](/guides/search/filter-by-metadata).
 * **Link related chunks**: Use fields like `document_id` and `chunk_number` to group a document's chunks, so you can [delete](/guides/data/manage-document-chunks#delete-chunks) or [replace](/guides/data/manage-document-chunks#replace-a-chunked-document) them together.

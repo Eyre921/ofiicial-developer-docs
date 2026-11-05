@@ -8,7 +8,7 @@ Downgrade your Pinecone organization from a paid plan to the free Starter plan, 
 
 > [!NOTE]
 >
-> To change your billing plan, you must be an [organization owner or billing admin](/admin/organizations/understanding-organizations#organization-roles).
+> To change your billing plan, you must be an [organization owner or billing admin](/admin/organizations/organizations-overview#organization-roles).
 
 > [!TIP]
 >
@@ -24,8 +24,8 @@ The downgrade doesn't reduce your data or change your configuration, so do this 
 * **Migrate any dedicated read node indexes** whose data you want to keep. They can't run on Starter and there's no self-serve conversion. If the index is in `us-east-1`, [back it up](/guides/indexes/back-up-an-index) and [restore it](/guides/indexes/restore-an-index) (this creates a new on-demand serverless index in the same region), then delete the original and keep the restored index during the downgrade. If it's in another region, create a new `us-east-1` index and re-upsert your data as described above. You can also [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to migrate back.
 * **Migrate any pod-based indexes** whose data you want to keep. [Migrate each one to serverless](/guides/legacy/pod-based-indexes/migrate-a-pod-based-index-to-serverless) and finish creating the new serverless index before you start the downgrade, because the migration saves your index as a collection and the downgrade deletes all collections.
 * **Move any `eu`-region assistants you want to keep to `us`.** [Recreate them in `us`](/guides/assistant/create-assistant) and re-upload their files. `eu` assistants you don't move are deleted.
-* **Disconnect your organization's [SSO connection](/admin/organizations/understanding-organizations#organization-single-sign-on-sso).**
-* **Reassign or remove members** whose [organization role](/admin/organizations/understanding-organizations#organization-roles) isn't available on the Starter plan.
+* **Disconnect your organization's [SSO connection](/admin/organizations/organizations-overview#organization-single-sign-on-sso).**
+* **Reassign or remove members** whose [organization role](/admin/organizations/organizations-overview#organization-roles) isn't available on the Starter plan.
 * **Get under the Starter storage limits.** Starter allows no more than 2 GB of data across your serverless indexes and 1 GB of assistant storage. Do this last, after the migrations above, because they can briefly leave a second copy of an index. [Delete records](/guides/data/delete-data) and [assistant files](/guides/assistant/manage-files#delete-a-file) to fit.
 
 > [!NOTE]

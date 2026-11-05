@@ -63,13 +63,13 @@ For example, to import data into the namespaces `example_namespace1` and `exampl
 
 For each namespace, create one or more files defining the data to import.
 
-To import into a namespace in an [index with a document schema](/guides/indexes/data-modeling#documents), use JSONL (`.jsonl`, or gzip-compressed `.jsonl.gz`) files. Each line is one [document](/guides/core-concepts/key-terms#document), identical in shape to a document you would pass to the [Upsert documents](/reference/api/latest/data-plane/upsert_documents) operation:
+To import into a namespace in an [index with a document schema](/guides/indexes/data-modeling#documents), use JSONL (`.jsonl`, or gzip-compressed `.jsonl.gz`) files. Each line is one [document](/guides/get-started/key-terms#document), identical in shape to a document you would pass to the [Upsert documents](/reference/api/latest/data-plane/upsert_documents) operation:
 
 | Field | JSON type | Description |
 | - | - | - |
 | `_id` | `string` | Required. Unique identifier for each document within the namespace. |
 | Each schema field | Depends on the field's type | Encode each schema-declared field by its type: a full-text `string` field as a JSON string; a `dense_vector` field as an array of floats matching the schema's `dimension`; a `sparse_vector` field as `{"indices": [...], "values": [...]}`. A document doesn't need to populate every declared field, but it must include `_id` and at least one schema field. |
-| Any other field | `string`, number, boolean, or array of strings | Optional. Stored and auto-indexed as filterable [metadata](/guides/core-concepts/key-terms#metadata). Field names can't start with `_` or `$`. |
+| Any other field | `string`, number, boolean, or array of strings | Optional. Stored and auto-indexed as filterable [metadata](/guides/get-started/key-terms#metadata). Field names can't start with `_` or `$`. |
 
 For example, for a schema with a full-text `body` field and a `dense_vector` `embedding` field:
 
@@ -257,7 +257,7 @@ The response contains an `id` that you can use to [check the status of the impor
 }
 ```
 
-Once all the data is loaded, the [index builder](/guides/core-concepts/architecture#index-builder) indexes the data, which usually takes at least 10 minutes. During this indexing process, the expected job status is `InProgress`, but `100.0` percent complete. Once all the imported records are indexed and fully available for querying, the import operation is set to `Completed`. If you cancel the import before it finishes, the status changes to `Cancelled`.
+Once all the data is loaded, the [index builder](/guides/get-started/architecture#index-builder) indexes the data, which usually takes at least 10 minutes. During this indexing process, the expected job status is `InProgress`, but `100.0` percent complete. Once all the imported records are indexed and fully available for querying, the import operation is set to `Completed`. If you cancel the import before it finishes, the status changes to `Cancelled`.
 
 > [!TIP]
 >

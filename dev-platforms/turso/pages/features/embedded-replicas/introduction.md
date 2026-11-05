@@ -218,22 +218,22 @@ $db->sync();
 
 ## Deployment Guides
 
-> **[Turso + Fly](/features/embedded-replicas/with-fly)**
+> [card] [Turso + Fly](/features/embedded-replicas/with-fly)
 >
 > Deploy a JavaScript project with Embedded Replicas to Fly.io
 
-> **[Turso + Koyeb](/features/embedded-replicas/with-koyeb)**
+> [card] [Turso + Koyeb](/features/embedded-replicas/with-koyeb)
 >
 > Deploy a JavaScript/Rust project with Embedded Replicas to Koyeb
 
-> **[Turso + Railway](/features/embedded-replicas/with-railway)**
+> [card] [Turso + Railway](/features/embedded-replicas/with-railway)
 >
 > Deploy a JavaScript/Rust project with Embedded Replicas to Railway
 
-> **[Turso + Render](/features/embedded-replicas/with-render)**
+> [card] [Turso + Render](/features/embedded-replicas/with-render)
 >
 > Deploy a JavaScript project with Embedded Replicas to Render
 
-> **[Turso + Linode by Akamai](/features/embedded-replicas/with-akamai)**
+> [card] [Turso + Linode by Akamai](/features/embedded-replicas/with-akamai)
 >
 > Deploy a JavaScript/Rust project with Embedded Replicas to Akamai

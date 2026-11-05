@@ -34,7 +34,7 @@ The request failed due to an invalid argument.
 
 ### 401 - UNAUTHENTICATED
 
-The request failed due to a missing or invalid [API key](/admin/projects/understanding-projects#api-keys).
+The request failed due to a missing or invalid [API key](/admin/projects/projects-overview#api-keys).
 
 ### 402 - PAYMENT REQUIRED
 

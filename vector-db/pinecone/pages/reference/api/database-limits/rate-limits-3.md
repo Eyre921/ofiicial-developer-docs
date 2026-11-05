@@ -6,7 +6,7 @@ path: reference/api/database-limits/rate-limits
 
 Request-per-second, monthly usage, and model throughput limits for Pinecone Database serverless indexes, and the 429 errors returned when you exceed them.
 
-Rate limits help protect your applications from misuse and maintain the health of our shared serverless infrastructure. They vary by [pricing plan](https://www.pinecone.io/pricing/) and apply to [serverless indexes](/guides/indexes/indexing-overview) only.
+Rate limits help protect your applications from misuse and maintain the health of our shared serverless infrastructure. They vary by [pricing plan](https://www.pinecone.io/pricing/) and apply to [serverless indexes](/guides/indexes/index-data-overview) only.
 
 Request-per-second limits are enforced per namespace or per index, as noted in the [Data operation throughput limits](#data-operation-throughput-limits) table, in addition to your read and write unit limits, so a request fails if it exceeds any applicable limit. When you exceed a limit, the request returns a `429 - TOO_MANY_REQUESTS` and the error message names the limit, scope, and value.
 
@@ -18,7 +18,7 @@ Request-per-second limits are enforced per namespace or per index, as noted in t
 
 ## Monthly usage limits
 
-[Read units](/guides/manage-cost/understanding-cost#read-units) and [write units](/guides/manage-cost/understanding-cost#write-units) measure resource consumption. To check your current usage, see [Download a usage report](/admin/billing/download-usage-report).
+[Read units](/guides/cost/understand-cost#read-units) and [write units](/guides/cost/understand-cost#write-units) measure resource consumption. To check your current usage, see [Download a usage report](/admin/billing/download-usage-report).
 
 | Metric | Starter plan | Builder plan | Standard plan | Enterprise plan |
 | :- | :- | :- | :- | :- |
@@ -29,7 +29,7 @@ Request-per-second limits are enforced per namespace or per index, as noted in t
 
 > [!NOTE]
 >
-> From November 4 through November 30, 2026, Starter orgs get 10,000,000 embedding tokens per month per model, and Builder orgs get 20,000,000. Allowances return to the values in the table on December 1.
+> From November 4 through December 31, 2026, Starter orgs get 10,000,000 embedding tokens per month per model, and Builder orgs get 20,000,000. Allowances return to the values in the table on January 1, 2027.
 
 Monthly rerank request limits vary by model:
 
@@ -122,6 +122,8 @@ Reaching a per-minute model limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade 
 | :- | :- | :- | :- | :- |
 | Inference requests per second per project | 100 | 100 | 100 | 100 |
 | Inference requests per minute per project | 2,000 | 2,000 | 2,000 | 2,000 |
+
+These limits apply per project across all models. Every inference request counts toward them, including requests that a [per-minute token limit](#model-throughput-limits) then rejects.
 
 Exceeding the per-second or per-minute limit returns a `429 - TOO_MANY_REQUESTS`. [Implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic) to handle it.
 

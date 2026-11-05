@@ -83,7 +83,7 @@ Fast, Priority, and US-only variants of a model share the same tier and ceilings
 | - | - |
 | **Small** | DeepSeek V4.1 Flash, GLM 5.3, GLM 5.3 Flash, MiniMax M3, NVIDIA Nemotron 3 Ultra (Preview), OpenAI GPT OSS 120B, NVIDIA Nemotron 3.5 Lightning 30B A3B, Rune 26B-A4B |
 | **Medium** | Muse Spark Open, DeepSeek V4.1 Flash 1017 Ultra-fast (Preview) |
-| **Large** | Ember-1, Kimi K3, Qwen 3.8 Max |
+| **Large** | Ember-1, Kimi K3, Kimi K3.1 Pro, Qwen 3.8 Max |
 
 Models not listed here are tiered by total parameter count using the thresholds above.
 

@@ -10,7 +10,7 @@ Make a folder of raw documents searchable. The flow is: extract text, chunk it, 
 
 > [!NOTE]
 >
-> This path uses [Pinecone Inference](/guides/core-concepts/key-terms#pinecone-inference), Pinecone's hosted embedding service, to turn your text into vectors. If you already generate your own embeddings, skip this and go to [Bring your own vectors](/guides/get-started/quickstart/bring-your-own-vectors) instead.
+> This path uses [Pinecone Inference](/guides/get-started/key-terms#pinecone-inference), Pinecone's hosted embedding service, to turn your text into vectors. If you already generate your own embeddings, skip this and go to [Bring your own vectors](/guides/get-started/quickstart/bring-your-own-vectors) instead.
 
 ## Prerequisites
 
@@ -85,7 +85,7 @@ index = pc.index(name="my-files")
 
 **5. Embed the chunks and upsert**
 
-Use [Pinecone Inference](/guides/core-concepts/key-terms#pinecone-inference) to embed the chunks (in batches of 96, this model's per-call limit), then `upsert` the vectors alongside the text. For a large dataset, use `batch_upsert` or [Import](/guides/data/import-data) instead.
+Use [Pinecone Inference](/guides/get-started/key-terms#pinecone-inference) to embed the chunks (in batches of 96, this model's per-call limit), then `upsert` the vectors alongside the text. For a large dataset, use `batch_upsert` or [Import](/guides/data/import-data) instead.
 
 ```python theme={null}
 # llama-text-embed-v2 accepts up to 96 inputs per call, so embed in batches.

@@ -8,7 +8,7 @@ Compare Pinecone search types and choose the right retrieval approach: full-text
 
 > [!TIP]
 >
-> Searches consume [read units (RUs)](/guides/manage-cost/understanding-cost#read-units). See [Understand Pinecone cost](/guides/manage-cost/understanding-cost#query) for how query cost is calculated, [Pricing](https://www.pinecone.io/pricing/) for rates, and [Query limits](/reference/api/database-limits/operation-limits) for `top_k` and result-size limits.
+> Searches consume [read units (RUs)](/guides/cost/understand-cost#read-units). See [Understand Pinecone cost](/guides/cost/understand-cost#query) for how query cost is calculated, [Pricing](https://www.pinecone.io/pricing/) for rates, and [Query limits](/reference/api/database-limits/operation-limits) for `top_k` and result-size limits.
 
 ## Choosing a search approach
 

@@ -18,40 +18,40 @@ Turso Cloud is a fully managed database platform, designed to scale from prototy
 > recently the offering landed on the platform, not of the engine itself.
 > Create one with `turso db create --tursodb`.
 
-> **[Vector Search](/features/ai-and-embeddings)**
+> [card] [Vector Search](/features/ai-and-embeddings)
 >
 > Native similarity search for AI apps and RAG workflows, no extensions
 > required.
 
-> **[Replication & Sync](/features/embedded-replicas/introduction)**
+> [card] [Replication & Sync](/features/embedded-replicas/introduction)
 >
 > Keep devices in sync with each other on demand with Turso Cloud.
 
-> **[Branching](/features/branching)**
+> [card] [Branching](/features/branching)
 >
 > Create isolated Copy-on-Write branches super fast.
 
-> **Analytics**
+> [card] Analytics
 >
 > Monitor performance and usage across databases.
 
-> **[Bring-Your-Own-Key Encryption](/cloud/encryption)**
+> [card] [Bring-Your-Own-Key Encryption](/cloud/encryption)
 >
 > Keep sensitive data private with keys only you control. Keys are per-database for full isolation.
 
-> **[Scoped Access Tokens](/sdk/authorization)**
+> [card] [Scoped Access Tokens](/sdk/authorization)
 >
 > Fine-grained tokens scoped by database, table, action, and expiration. Read-only, write, or custom permissions.
 
-> **Team Access**
+> [card] Team Access
 >
 > Collaborate on databases with members, and manage access permissions.
 
-> **Fully Managed**
+> [card] Fully Managed
 >
 > We handle infrastructure, scaling, and security.
 
-> **[Backups and Recovery](/features/point-in-time-recovery)**
+> [card] [Backups and Recovery](/features/point-in-time-recovery)
 >
 > Restore your database to any point in time, and recover deleted databases
 > for up to five days.
@@ -60,20 +60,20 @@ Turso Cloud is a fully managed database platform, designed to scale from prototy
 
 Learn how to manage, distribute and integrate your databases with the CLI, API and SDKs.
 
-> **[Turso CLI](/cli)**
+> [card] [Turso CLI](/cli)
 >
 > Manage groups, databases, and API tokens with the Turso CLI.
 
-> **[Turso Platform API](/api-reference)**
+> [card] [Turso Platform API](/api-reference)
 >
 > Programmatically manage groups and databases using the Platform API.
 
-> **[Client SDKs](/sdk)**
+> [card] [Client SDKs](/sdk)
 >
 > Connect and integrate your application with one of our client SDKs, for
 > Turso and libSQL databases alike.
 
-> **[Tutorials](https://turso.tech/blog)**
+> [card] [Tutorials](https://turso.tech/blog)
 >
 > Learn how to work with Turso and your favorite language or framework.
 
@@ -81,8 +81,8 @@ Learn how to manage, distribute and integrate your databases with the CLI, API a
 
 Join the Turso community to ask questions, share what you're working on, discuss best practices, and share tips on [Discord](https://tur.so/discord), [Twitter](https://twitter.com/tursodatabase), and [LinkedIn](https://www.linkedin.com/company/turso).
 
-> **[Discord](https://tur.so/discord)**
+> [card] [Discord](https://tur.so/discord)
 
-> **[GitHub](https://github.com/tursodatabase)**
+> [card] [GitHub](https://github.com/tursodatabase)
 
-> **[X (Twitter)](https://twitter.com/tursodatabase)**
+> [card] [X (Twitter)](https://twitter.com/tursodatabase)

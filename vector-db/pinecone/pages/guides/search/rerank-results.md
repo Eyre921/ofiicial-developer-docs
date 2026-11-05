@@ -983,7 +983,7 @@ To [rerank results](/reference/api/latest/inference/rerank-results) on a field o
 
 > [!NOTE]
 >
-> [`bge-reranker-v2-m3`](#bge-reranker-v2-m3) and [`pinecone-rerank-v0`](#pinecone-rerank-v0) support only a single rerank field. [`cohere-rerank-4-fast`](#cohere-rerank-4-fast) supports multiple rerank fields, ranked based on the order of the fields specified.
+> [`bge-reranker-v2-m3`](/models/bge-reranker-v2-m3) and [`pinecone-rerank-v0`](/models/pinecone-rerank-v0) support only a single rerank field. [`cohere-rerank-4-fast`](/models/cohere-rerank-4-fast) supports multiple rerank fields, ranked based on the order of the fields specified.
 
 For example, the following request reranks documents based on the values of the `documents.my_field` field:
 
@@ -1182,79 +1182,14 @@ curl "https://api.pinecone.io/rerank" \
 
 ## Reranking models
 
-Pinecone hosts several reranking models so it's easy to manage two-stage vector retrieval on a single platform. You can use a hosted model to rerank results as an integrated part of a query, or you can use a hosted model to rerank results as a standalone operation.
+Pinecone hosts these reranking models:
 
-The following reranking models are hosted by Pinecone.
+* [`cohere-rerank-4-fast`](/models/cohere-rerank-4-fast)
+* [`bge-reranker-v2-m3`](/models/bge-reranker-v2-m3)
+* [`pinecone-rerank-v0`](/models/pinecone-rerank-v0) (deprecated)
+
+Each model's page lists the parameters it accepts and its specs, such as max tokens, max documents per request, and plan. To compare the models, see the [model gallery](/models/overview).
 
 > [!NOTE]
 >
-> To understand how cost is calculated for reranking, see [Reranking cost](/guides/manage-cost/understanding-cost#reranking). To get model details via the API, see [List models](/reference/api/latest/inference/list-available-models) and [Describe a model](/reference/api/latest/inference/describe-a-model).
-
-> [accordion] cohere-rerank-4-fast
->
-> [`cohere-rerank-4-fast`](/models/cohere-rerank-4-fast) is Cohere's latest reranking model (Cohere Rerank 4.0 Fast), improving relevance quality for a wide range of enterprise search applications. Cohere Rerank 4.0 is hosted on Azure AI under the Global Standard deployment type, and requests may be processed in regions outside the United States.
->
-> **Details**
->
-> * Modality: Text
-> * Max tokens per document: 4,096
-> * Max documents: 250
->
-> The relevance scores produced by `cohere-rerank-4-fast` aren't directly comparable to those from `cohere-rerank-3.5`. This doesn't affect sorting, but any application logic that uses a fixed score threshold to make decisions must be re-calibrated for the new model.
->
-> For rate limits, see [Rerank requests per minute](/reference/api/database-limits/rate-limits#model-throughput-limits) and [Rerank requests per month](/reference/api/database-limits/rate-limits#monthly-usage-limits).
->
-> **Parameters**
->
-> The `cohere-rerank-4-fast` model supports the following parameters:
->
-> | Parameter | Type | Required/Optional | Description | Default |
-> | :- | :- | :- | :- | :- |
-> | `max_tokens_per_doc` | integer | Optional | Documents longer than this are truncated. Max `4096`. | `1024` |
-> | `rank_fields` | array of strings | Optional | The fields to use for reranking, in priority order (e.g., `["field1", "field2"]`). | `["text"]` |
-
-> [accordion] bge-reranker-v2-m3
->
-> [`bge-reranker-v2-m3`](/models/bge-reranker-v2-m3) is a high-performance, multilingual reranking model that works well on messy data and short queries expected to return medium-length passages of text (1-2 paragraphs).
->
-> **Details**
->
-> * Modality: Text
-> * Max tokens per query and document pair: 1024
-> * Max documents: 100
->
-> For rate limits, see [Rerank requests per minute](/reference/api/database-limits/rate-limits#model-throughput-limits) and [Rerank request per month](/reference/api/database-limits/rate-limits#monthly-usage-limits).
->
-> **Parameters**
->
-> The `bge-reranker-v2-m3` model supports the following parameters:
->
-> | Parameter | Type | Required/Optional | Description | Default |
-> | :- | :- | :- | :- | :- |
-> | `truncate` | string | Optional | How to handle inputs longer than those supported by the model. Accepted values: `END` or `NONE`. `END` truncates the input sequence at the input token limit. `NONE` returns an error when the input exceeds the input token limit. | `NONE` |
-> | `rank_fields` | array of strings | Optional | The field to use for reranking. The model supports only a single rerank field. | `["text"]` |
-
-> [accordion] pinecone-rerank-v0
->
-> > [!WARNING]
-> >
-> > `pinecone-rerank-v0` is deprecated. It still serves rerank requests, but don't use it for new projects. Use another reranking model instead.
->
-> [`pinecone-rerank-v0`](/models/pinecone-rerank-v0) is a reranking model that can handle chunks up to 512 tokens (1-2 paragraphs).
->
-> **Details**
->
-> * Modality: Text
-> * Max tokens per query and document pair: 512
-> * Max documents: 100
->
-> For rate limits, see [Rerank requests per minute](/reference/api/database-limits/rate-limits#model-throughput-limits) and [Rerank request per month](/reference/api/database-limits/rate-limits#monthly-usage-limits).
->
-> **Parameters**
->
-> The `pinecone-rerank-v0` model supports the following parameters:
->
-> | Parameter | Type | Required/Optional | Description | Default |
-> | :- | :- | :- | :- | :- |
-> | `truncate` | string | Optional | How to handle inputs longer than those supported by the model. Accepted values: `END` or `NONE`. `END` truncates the input sequence at the input token limit. `NONE` returns an error when the input exceeds the input token limit. | `END` |
-> | `rank_fields` | array of strings | Optional | The field to use for reranking. The model supports only a single rerank field. | `["text"]` |
+> To understand how cost is calculated for reranking, see [Reranking cost](/guides/cost/understand-cost#reranking). To get model details via the API, see [List models](/reference/api/latest/inference/list-available-models) and [Describe a model](/reference/api/latest/inference/describe-a-model).

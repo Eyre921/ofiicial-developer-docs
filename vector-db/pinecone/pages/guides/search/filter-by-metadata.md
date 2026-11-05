@@ -6,7 +6,7 @@ path: guides/search/filter-by-metadata
 
 Narrow Pinecone search results with metadata filter expressions such as $eq, $in, $gt, and $and, and with text-match filters on document indexes.
 
-[Documents](/guides/core-concepts/key-terms#document) can carry [metadata](/guides/indexes/indexing-overview#metadata), key-value pairs that store related information. When you search, add a metadata filter to limit results to the documents that match it. Document indexes also support [text-match filters](#text-match-filters) on full-text fields.
+[Documents](/guides/get-started/key-terms#document) can carry [metadata](/guides/indexes/index-data-overview#metadata), key-value pairs that store related information. When you search, add a metadata filter to limit results to the documents that match it. Document indexes also support [text-match filters](#text-match-filters) on full-text fields.
 
 For a legacy vector index, see [Query with a metadata filter](/guides/legacy/vectors-api/query-vectors#query-with-a-metadata-filter). For a legacy integrated index, see [Search with a metadata filter](/guides/legacy/records-api/search-with-text#search-with-a-metadata-filter).
 

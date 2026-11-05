@@ -12,7 +12,7 @@ This page shows how to assign and manage roles in the [Pinecone console](https:/
 
 > [!NOTE]
 >
-> For the roles available at each scope and the permissions they grant, see [Organization roles](/admin/organizations/understanding-organizations#organization-roles) and [Project roles](/admin/projects/understanding-projects#project-roles).
+> For the roles available at each scope and the permissions they grant, see [Organization roles](/admin/organizations/organizations-overview#organization-roles) and [Project roles](/admin/projects/projects-overview#project-roles).
 
 ## Common role assignments
 
@@ -199,7 +199,7 @@ curl "https://api.pinecone.io/admin/service-accounts" \
   }'
 ```
 
-For API keys, assign [project roles](/admin/projects/understanding-projects#project-roles) with the `roles` field instead. For more information, see [Manage API keys](/admin/projects/manage-api-keys).
+For API keys, assign [project roles](/admin/projects/projects-overview#project-roles) with the `roles` field instead. For more information, see [Manage API keys](/admin/projects/manage-api-keys).
 
 ### Create a role binding
 

@@ -15,7 +15,7 @@ Each code works for one email address and one plan, and only until its redemptio
 * Sign in with the email address the code was sent to. The code doesn't work for anyone else, even a teammate in the same organization.
 * Select the organization you want to discount. The code applies to whichever organization is selected when you upgrade. To switch, click the organization name at the top left of the console.
 * Make sure that organization is on the Starter plan and isn't in an active [Standard trial](/admin/billing/standard-trial).
-* Make sure you're an organization owner or billing admin. Other [organization roles](/admin/organizations/understanding-organizations#organization-roles) can't change the plan.
+* Make sure you're an organization owner or billing admin. Other [organization roles](/admin/organizations/organizations-overview#organization-roles) can't change the plan.
 * Make sure the code hasn't expired. Codes look like `BUILDER-20261231-0A1B2C3D4E5F`, where the 8-digit date is the last day you can redeem it, in UTC.
 
 ## Redeem a code

@@ -408,11 +408,14 @@ The `data` object contains only:
 | ----------------- | ------ | ------------------------------------------------------------------------------ |
 | `agent_id`        | string | The ID of the agent that handled the call                                      |
 | `conversation_id` | string | Unique identifier for the conversation                                         |
+| `branch_id`       | string | The agent branch used for the conversation, if applicable                      |
+| `version_id`      | string | The ID of the agent version (snapshot) that was active during the call         |
+| `environment`     | string | The environment used for resolving environment variables                       |
 | `full_audio`      | string | Base64-encoded string containing the complete conversation audio in MP3 format |
 
 > **Warning**
 >
-> Audio webhooks contain only the three fields listed above. They do NOT include transcript data,
+> Audio webhooks contain only the fields listed above. They do NOT include transcript data,
 > metadata, analysis results, or any other conversation details.
 
 ### Call initiation failure webhooks (`call_initiation_failure`)
@@ -586,6 +589,9 @@ The `body` object for SIP metadata contains:
   "data": {
     "agent_id": "xyz",
     "conversation_id": "abc",
+    "branch_id": "agtbrch_xyz",
+    "version_id": "agtvrsn_xyz",
+    "environment": "production",
     "full_audio": "SUQzBAAAAAAA...base64_encoded_mp3_data...AAAAAAAAAA=="
   }
 }

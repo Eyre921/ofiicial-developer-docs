@@ -40,64 +40,64 @@ Match the driver to your database engine: **`@tursodatabase/serverless`** for [T
 
 ### Quickstart
 
-**@tursodatabase/serverless**
-
-The `@tursodatabase/serverless` package connects to Turso using only the `fetch` API — no native dependencies, making it the smallest option for edge and serverless runtimes.
-
-```bash theme={null}
-npm install @tursodatabase/serverless
-```
-
-```typescript theme={null}
-import { connect } from "@tursodatabase/serverless";
-
-const conn = connect({
-  url: process.env.TURSO_DATABASE_URL,
-  authToken: process.env.TURSO_AUTH_TOKEN,
-});
-
-const stmt = await conn.prepare("SELECT * FROM users WHERE id = ?");
-const row = await stmt.get([123]);
-```
-
-For compatibility with the libSQL client API, use the compat module:
-
-```typescript theme={null}
-import { createClient } from "@tursodatabase/serverless/compat";
-
-const client = createClient({
-  url: process.env.TURSO_DATABASE_URL,
-  authToken: process.env.TURSO_AUTH_TOKEN,
-});
-
-const result = await client.execute("SELECT * FROM users WHERE id = ?", [123]);
-```
-
-**@libsql/client**
-
-The `@libsql/client` package is the production-ready libSQL driver used across the Turso ecosystem. Use the `/web` import for Vercel serverless and edge runtimes:
-
-```bash theme={null}
-npm install @libsql/client
-```
-
-```typescript theme={null}
-import { createClient } from "@libsql/client/web";
-
-const client = createClient({
-  url: process.env.TURSO_DATABASE_URL!,
-  authToken: process.env.TURSO_AUTH_TOKEN!,
-});
-
-const result = await client.execute({
-  sql: "SELECT * FROM users WHERE id = ?",
-  args: [123],
-});
-```
-
-> [!NOTE]
+> [tab] @tursodatabase/serverless
 >
-> Use `@libsql/client/web` instead of `@libsql/client` for Vercel deployments. The `/web` import uses the HTTP protocol, which is compatible with edge and serverless runtimes.
+> The `@tursodatabase/serverless` package connects to Turso using only the `fetch` API — no native dependencies, making it the smallest option for edge and serverless runtimes.
+>
+> ```bash theme={null}
+> npm install @tursodatabase/serverless
+> ```
+>
+> ```typescript theme={null}
+> import { connect } from "@tursodatabase/serverless";
+>
+> const conn = connect({
+>   url: process.env.TURSO_DATABASE_URL,
+>   authToken: process.env.TURSO_AUTH_TOKEN,
+> });
+>
+> const stmt = await conn.prepare("SELECT * FROM users WHERE id = ?");
+> const row = await stmt.get([123]);
+> ```
+>
+> For compatibility with the libSQL client API, use the compat module:
+>
+> ```typescript theme={null}
+> import { createClient } from "@tursodatabase/serverless/compat";
+>
+> const client = createClient({
+>   url: process.env.TURSO_DATABASE_URL,
+>   authToken: process.env.TURSO_AUTH_TOKEN,
+> });
+>
+> const result = await client.execute("SELECT * FROM users WHERE id = ?", [123]);
+> ```
+
+> [tab] @libsql/client
+>
+> The `@libsql/client` package is the production-ready libSQL driver used across the Turso ecosystem. Use the `/web` import for Vercel serverless and edge runtimes:
+>
+> ```bash theme={null}
+> npm install @libsql/client
+> ```
+>
+> ```typescript theme={null}
+> import { createClient } from "@libsql/client/web";
+>
+> const client = createClient({
+>   url: process.env.TURSO_DATABASE_URL!,
+>   authToken: process.env.TURSO_AUTH_TOKEN!,
+> });
+>
+> const result = await client.execute({
+>   sql: "SELECT * FROM users WHERE id = ?",
+>   args: [123],
+> });
+> ```
+>
+> > [!NOTE]
+> >
+> > Use `@libsql/client/web` instead of `@libsql/client` for Vercel deployments. The `/web` import uses the HTTP protocol, which is compatible with edge and serverless runtimes.
 
 ## In-Function SQLite
 

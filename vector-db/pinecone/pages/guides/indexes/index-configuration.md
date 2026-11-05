@@ -39,7 +39,7 @@ When creating an index that stores dense vectors, you can choose from the follow
 
 > [!NOTE]
 >
-> Indexes that store [sparse vectors](/guides/core-concepts/key-terms#sparse-vector) must use the `dotproduct` metric.
+> Indexes that store [sparse vectors](/guides/get-started/key-terms#sparse-vector) must use the `dotproduct` metric.
 
 > [accordion] Euclidean
 >
@@ -59,137 +59,19 @@ When creating an index that stores dense vectors, you can choose from the follow
 
 ## Embedding models
 
-[Dense vectors](/guides/core-concepts/key-terms#dense-vector) and [sparse vectors](/guides/core-concepts/key-terms#sparse-vector) are the basic units of data in Pinecone and what Pinecone was specially designed to store and work with. Dense vectors represent the semantics of data such as text, images, and audio recordings, while sparse vectors represent documents or queries in a way that captures keyword information.
+Pinecone hosts these embedding models. You can use them for [integrated embedding](/guides/search/integrated-embedding), where Pinecone embeds text as you upsert and search, and some of them for [standalone embedding](/reference/api/latest/inference/generate-vectors).
 
-To transform data into vector format, you use an embedding model. Pinecone hosts several embedding models so it's easy to manage your vector storage and search process on a single platform. You can use a hosted model to embed your data as an integrated part of upserting and querying, or you can use a hosted model to embed your data as a standalone operation.
+* Dense:
+  * [`gemini-embedding-2`](/models/gemini-embedding-2)
+  * [`llama-text-embed-v2`](/models/llama-text-embed-v2)
+  * [`multilingual-e5-large`](/models/multilingual-e5-large)
+  * [`text-embedding-3-large`](/models/text-embedding-3-large)
+  * [`text-embedding-3-small`](/models/text-embedding-3-small)
+* Sparse:
+  * [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0)
 
-The following embedding models are hosted by Pinecone.
+Each model's page lists the parameters it accepts and its specs, such as dimension, max tokens, metric, supported API, and plan. To compare the models, see the [model gallery](/models/overview).
 
 > [!NOTE]
 >
-> To understand how cost is calculated for embedding, see [Embedding cost](/guides/manage-cost/understanding-cost#embedding). To get model details via the API, see [List models](/reference/api/latest/inference/list-available-models) and [Describe a model](/reference/api/latest/inference/describe-a-model).
-
-### multilingual-e5-large
-
-[`multilingual-e5-large`](/models/multilingual-e5-large) is an efficient dense embedding model trained on a mixture of multilingual datasets. It works well on messy data and short queries expected to return medium-length passages of text (1-2 paragraphs).
-
-**Details**
-
-* Vector type: Dense
-* Modality: Text
-* Dimension: 1024
-* Recommended similarity metric: Cosine
-* Max sequence length: 507 tokens
-* Max batch size: 96 sequences
-
-For rate limits, see [Embedding tokens per minute](/reference/api/database-limits/rate-limits#model-throughput-limits) and [Embedding tokens per month](/reference/api/database-limits/rate-limits#monthly-usage-limits).
-
-**Parameters**
-
-The `multilingual-e5-large` model supports the following parameters:
-
-| Parameter | Type | Required/Optional | Description | Default |
-| :- | :- | :- | :- | :- |
-| `input_type` | string | Required | The type of input data. Accepted values: `query` or `passage`. | |
-| `truncate` | string | Optional | How to handle inputs longer than those supported by the model. Accepted values: `END` or `NONE`. `END` truncates the input sequence at the input token limit. `NONE` returns an error when the input exceeds the input token limit. | `END` |
-
-### llama-text-embed-v2
-
-[`llama-text-embed-v2`](/models/llama-text-embed-v2) is a high-performance dense embedding model optimized for text retrieval and ranking tasks. It's trained on a diverse range of text corpora and provides strong performance on longer passages and structured documents.
-
-**Details**
-
-* Vector type: Dense
-* Modality: Text
-* Dimension: 1024 (default), 2048, 768, 512, 384
-* Recommended similarity metric: Cosine
-* Max sequence length: 2048 tokens
-* Max batch size: 96 sequences
-
-For rate limits, see [Embedding tokens per minute](/reference/api/database-limits/rate-limits#model-throughput-limits) and [Embedding tokens per month](/reference/api/database-limits/rate-limits#monthly-usage-limits).
-
-**Parameters**
-
-The `llama-text-embed-v2` model supports the following parameters:
-
-| Parameter | Type | Required/Optional | Description | Default |
-| :- | :- | :- | :- | :- |
-| `input_type` | string | Required | The type of input data. Accepted values: `query` or `passage`. | |
-| `truncate` | string | Optional | How to handle inputs longer than those supported by the model. Accepted values: `END`, `NONE`, or `START`. `END` truncates the input sequence at the input token limit, keeping the start. `START` truncates from the start, keeping the end. `NONE` returns an error when the input exceeds the input token limit. | `END` |
-| `dimension` | integer | Optional | Dimension of the vector to return. | 1024 |
-
-### gemini-embedding-2
-
-[`gemini-embedding-2`](/models/gemini-embedding-2) is a dense embedding model from Google. It's available only for [integrated embedding](/guides/search/integrated-embedding#embed-with-gemini-embedding-2) on document indexes, and not on the Starter plan. It embeds text differently for each task you choose with `task_type`, such as search, question answering, or clustering.
-
-**Details**
-
-* Vector type: Dense
-* Modality: Text
-* Dimension: 3072 (default), or any integer from 128 to 3072
-* Similarity metric: Cosine only
-* Processing location: `global` only. Set `processing_location` on the `embed` field, not in its parameters. See [Processing locations](/guides/indexes/processing-locations).
-* Max sequence length: 8192 tokens
-* Max batch size: 96 sequences
-
-For rate limits, see [Embedding tokens per minute](/reference/api/database-limits/rate-limits#model-throughput-limits) and [Embedding tokens per month](/reference/api/database-limits/rate-limits#monthly-usage-limits).
-
-**Parameters**
-
-Set these in the field's `write_parameters` and `read_parameters`. For which task types each side accepts, and how to override the task for one search, see [Task types](/guides/search/integrated-embedding#task-types).
-
-| Parameter | Type | Required/Optional | Description | Default |
-| :- | :- | :- | :- | :- |
-| `task_type` | string | Optional | What the embedding is for. Accepted values: `retrieval_document`, `retrieval_query`, `question_answering`, `fact_verification`, `code_retrieval_query`, `classification`, `clustering`, or `sentence_similarity`. | `retrieval_document` on write. On read, `retrieval_query` for a `retrieval_document` field, or the same task for a symmetric field. |
-| `truncate` | string | Optional | How to handle inputs longer than those supported by the model. Accepted values: `END` or `NONE`. `END` truncates the input sequence at the input token limit. `NONE` returns an error when the input exceeds the input token limit. | `END` |
-
-### text-embedding-3-small and text-embedding-3-large
-
-[`text-embedding-3-small`](/models/text-embedding-3-small) and [`text-embedding-3-large`](/models/text-embedding-3-large) are dense embedding models from OpenAI. They're available only for [integrated embedding](/guides/search/integrated-embedding#embed-with-text-embedding-3) on document indexes.
-
-**Details**
-
-* Vector type: Dense
-* Modality: Text
-* Dimension:
-  * `text-embedding-3-small`: 1536 (default), or any integer from 1 to 1536
-  * `text-embedding-3-large`: 3072 (default), or any integer from 1 to 3072
-* Similarity metric: Cosine (default), Dotproduct, or Euclidean
-* Processing location: `global` (default) or `us`. The Starter and Builder plans accept only `global`. Set `processing_location` on the `embed` field, not in its parameters. See [Processing locations](/guides/indexes/processing-locations).
-* Max sequence length: 8192 tokens
-* Max batch size: 96 sequences
-
-For rate limits, see [Embedding tokens per minute](/reference/api/database-limits/rate-limits#model-throughput-limits) and [Embedding tokens per month](/reference/api/database-limits/rate-limits#monthly-usage-limits).
-
-**Parameters**
-
-Set these in the field's `write_parameters` and `read_parameters`.
-
-| Parameter | Type | Required/Optional | Description | Default |
-| :- | :- | :- | :- | :- |
-| `truncate` | string | Optional | How to handle inputs longer than those supported by the model. Accepted values: `END` or `NONE`. `END` truncates the input sequence at the input token limit. `NONE` returns an error when the input exceeds the input token limit. | `END` |
-
-### pinecone-sparse-english-v0
-
-[`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0) is a sparse embedding model for converting text to [sparse vectors](/guides/core-concepts/key-terms#sparse-vector) for [sparse-vector search](/guides/search/sparse-vector-search) or hybrid search. Built on the innovations of the [DeepImpact architecture](https://arxiv.org/pdf/2104.12016), the model directly estimates the lexical importance of tokens by using their context, unlike traditional retrieval models like BM25, which rely solely on term frequency.
-
-**Details**
-
-* Vector type: Sparse
-* Modality: Text
-* Recommended similarity metric: Dotproduct
-* Max sequence length: 512 or 2048
-* Max batch size: 96 sequences
-
-For rate limits, see [Embedding tokens per minute](/reference/api/database-limits/rate-limits#model-throughput-limits) and [Embedding tokens per month](/reference/api/database-limits/rate-limits#monthly-usage-limits).
-
-**Parameters**
-
-The `pinecone-sparse-english-v0` model supports the following parameters:
-
-| Parameter | Type | Required/Optional | Description | Default |
-| :- | :- | :- | :- | :- |
-| `input_type` | string | Required | The type of input data. Accepted values: `query` or `passage`. | |
-| `max_tokens_per_sequence` | integer | Optional | Maximum number of tokens to embed. Accepted values: `512` or `2048`. | `512` |
-| `truncate` | string | Optional | How to handle inputs longer than those supported by the model. Accepted values: `END` or `NONE`. `END` truncates the input sequence at the `max_tokens_per_sequence` limit. `NONE` returns an error when the input exceeds the `max_tokens_per_sequence` limit. | `END` |
-| `return_tokens` | boolean | Optional | Whether to return the string tokens. | `false` |
+> To understand how cost is calculated for embedding, see [Embedding cost](/guides/cost/understand-cost#embedding). To get model details via the API, see [List models](/reference/api/latest/inference/list-available-models) and [Describe a model](/reference/api/latest/inference/describe-a-model).

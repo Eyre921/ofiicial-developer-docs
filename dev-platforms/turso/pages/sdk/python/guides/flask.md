@@ -79,6 +79,6 @@ def home():
 
 ## Examples
 
-> **[Social App](https://github.com/tursodatabase/examples/tree/master/app-find-me-on-python-htmx)**
+> [card] [Social App](https://github.com/tursodatabase/examples/tree/master/app-find-me-on-python-htmx)
 >
 > See the full source code

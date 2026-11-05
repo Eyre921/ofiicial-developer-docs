@@ -383,7 +383,7 @@ If you have sensitive content, we recommend that you don't opt out of automatic 
 If you want to invalidate cached objects while their cache control headers indicate they're still fresh, you can purge the cache by [site](/build/caching/caching-overview#purge-by-site) or [cache tag](/build/caching/caching-overview#purge-by-cache-tag). These granular options for refreshing your cache without redeploying your entire site optimize developer productivity for your team and site performance for your customers. On-demand invalidation across the entire network takes just a few seconds, even if you're purging a tag associated with thousands of cached objects.
 
 You can use the following to invalidate cached objects:
-- a [serverless function](/build/functions/get-started) with the `purgeCache` helper
+- a [serverless function](/build/functions/get-started) or an [edge function](/build/edge-functions/get-started) with the [`purgeCache` helper](/build/caching/cache-api#purgecache) from `@netlify/cache`
 - a direct call to the [`purge` API endpoint](https://open-api.netlify.com/#tag/purge) with a [personal access token](/api-and-cli-guides/api-guides/get-started-with-api#authentication)
 
 You can use either to purge by site or by tag as demonstrated in the examples in the next sections. 
@@ -398,7 +398,7 @@ To purge the cache from a [Lambda-compatible serverless function](/build/functio
 // purge a cache tag passed by query parameter across all deploys of a site
 // no need to specify site ID as it is passed automatically by the purgeCache helper 
 
-import { purgeCache } from "@netlify/functions"
+import { purgeCache } from "@netlify/cache"
 
 module.exports.handler = async (event, context) => {
   const token = context.clientContext.custom.purge_api_token;
@@ -425,7 +425,7 @@ As an example use case, imagine a site that uses branch deploys for A/B testing,
 
 ##### Use a function with the `purgeCache` helper to purge by site
 
-When you use a function with the `purgeCache` helper, the site ID is passed automatically so you don't need to specify the site.
+When you use a function or an edge function with the `purgeCache` helper, the site ID is passed automatically so you don't need to specify the site.
 
 ``` ts 
 // purge all objects across all deploys for this site
@@ -535,7 +535,7 @@ As mentioned above, you can use either a function or a direct API call to invali
 
 ##### Use a function with the `purgeCache` helper to purge by cache tag
 
-When you use a function with the `purgeCache` helper, the site ID is passed automatically so you don't need to specify the site.
+When you use a function or an edge function with the `purgeCache` helper, the site ID is passed automatically so you don't need to specify the site.
 
 By default, tag-based purges apply to all of the site's deploys. To target a specific deploy, specify one or more of the following
 - **`deployAlias`** (optional)**:** for example, `deploy-preview-11`. On its own, targets the specified alias on the primary domain.

@@ -36,7 +36,7 @@ You can open a ticket at any time. SLA times marked 24/7 run around the clock. B
 
 ## Change your support plan
 
-Before you can add a paid support plan, [upgrade your billing plan](/admin/billing/upgrade-billing-plan) to Builder, Standard, or Enterprise. You must be an [organization owner or billing admin](/admin/organizations/understanding-organizations#organization-roles) to change the support plan.
+Before you can add a paid support plan, [upgrade your billing plan](/admin/billing/upgrade-billing-plan) to Builder, Standard, or Enterprise. You must be an [organization owner or billing admin](/admin/organizations/organizations-overview#organization-roles) to change the support plan.
 
 1. Go to [**Settings > Support > Plan options**](https://app.pinecone.io/organizations/-/settings/support/plans).
 2. Select the plan you want.

@@ -36,6 +36,8 @@ For new integrations, use separate general sandboxes for local development and c
 
 [Sample integration (Quickstart)](https://docs.stripe.com/billing/quickstart.md): Build a full, working subscription integration using Stripe Billing and Stripe Checkout and your test data.
 
+[Create subscriptions without code (No code)](https://docs.stripe.com/no-code/subscriptions.md): Use the Dashboard and payment links to start selling subscriptions without building an integration.
+
 [How subscriptions work](https://docs.stripe.com/billing/subscriptions/overview.md): Learn how subscriptions work within Stripe at a high level.
 
 [Design an integration](https://docs.stripe.com/billing/subscriptions/design-an-integration.md): Learn what choices you need to make to integrate subscriptions into your business.

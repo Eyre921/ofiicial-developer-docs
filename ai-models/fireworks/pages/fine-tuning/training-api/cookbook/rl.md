@@ -6,7 +6,7 @@ path: fine-tuning/training-api/cookbook/rl
 
 Run the experimental async GRPO cookbook recipe with a custom rollout function while Fireworks handles scheduling, training, checkpoints, and weight sync.
 
-The cookbook's primary RL recipe is [`async_rl_loop`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/async_rl_loop.py). You provide dataset rows and a rollout function; the recipe overlaps rollout production with training submission. When a rollout finishes, the producer immediately tries to refill available capacity—even while forward/backward or optimizer work is running.
+The cookbook's primary RL recipe is [`async_rl_loop`](https://github.com/fw-ai-external/cookbook/blob/main/training/recipes/async_rl_loop.py). You provide dataset rows and a rollout function; the recipe overlaps rollout production with training submission. When a rollout finishes, the producer immediately tries to refill available capacity—even while forward/backward or optimizer work is running.
 
 > [!WARNING]
 >
@@ -16,7 +16,7 @@ The cookbook's primary RL recipe is [`async_rl_loop`](https://github.com/fw-ai/c
 > version for reproducible workloads.
 
 For the shared serverless pool, use the experimental
-[`async_rl_loop_serverless` adapter](https://github.com/fw-ai/cookbook/blob/main/training/recipes/experiment/async_rl_loop_serverless.py).
+[`async_rl_loop_serverless` adapter](https://github.com/fw-ai-external/cookbook/blob/main/training/recipes/experiment/async_rl_loop_serverless.py).
 It keeps this recipe's rollout and scheduling contract but replaces dedicated
 resource lifecycle and hotloading with session-scoped snapshots. The two paths
 remain separate until they share one weight-publication contract. See
@@ -57,7 +57,7 @@ rows = [...]  # Each row is passed to rollout_fn as sample_prompt.
 main(cfg, rollout_fn_factory=make_rollout_fn, rows=rows)
 ```
 
-The [DeepMath example](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/deepmath)
+The [DeepMath example](https://github.com/fw-ai-external/cookbook/tree/main/training/examples/rl/deepmath)
 expects rows with chat `messages` and `ground_truth` answers. Fork its adapter
 to supply another task and reward. For multi-turn harnesses, tools, sandboxes, and exact
 token ancestry, read
@@ -109,7 +109,7 @@ individual inference requests that a multi-turn agent makes. The shared
 `max_head_offpolicy_versions=0` is fully on-policy: every optimizer batch
 trains groups from its current published policy version. Training submission can
 still overlap remaining rollouts from the same optimizer batch. The synchronous
-[`rl_loop`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/rl_loop.py)
+[`rl_loop`](https://github.com/fw-ai-external/cookbook/blob/main/training/recipes/rl_loop.py)
 collects the full batch before training it.
 
 ## Runtime behavior
@@ -136,7 +136,7 @@ one optimizer update; gradients are normalized by the batch's trainable-token
 count once. SFT, DPO, and ORPO retain controlled dataset batches.
 
 Fork the recipe to change the objective, anchor, or correction. See the
-[custom-loss skill](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-custom-loss.md).
+[custom-loss skill](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-custom-loss.md).
 
 ## Evaluation
 
@@ -167,16 +167,16 @@ Interrupting a run does not guarantee a new final checkpoint. Set a positive
 
 Keep implementation and tuning detail out of the recipe page:
 
-* [Async RL skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-async.md) — admission math, metrics, tuning, failure policy, and resume semantics
-* [Agentic RL skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-agentic.md) — multi-turn token ancestry, session/cache architectures, mismatch policies, and trace failures
-* [Custom RL loss reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-custom-loss.md) — fork the recipe deliberately when you need a trainer built-in or another research objective
+* [Async RL skill reference](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-async.md) — admission math, metrics, tuning, failure policy, and resume semantics
+* [Agentic RL skill reference](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-agentic.md) — multi-turn token ancestry, session/cache architectures, mismatch policies, and trace failures
+* [Custom RL loss reference](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-custom-loss.md) — fork the recipe deliberately when you need a trainer built-in or another research objective
 * [Checkpointing](/fine-tuning/training-api/cookbook/reference#checkpoints) — resumable checkpoints and final model promotion
 * [Weight sync](/fine-tuning/training-api/cookbook/reference#weight-sync) — how updated policy weights reach the sampler
-* [`rl_loop`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/rl_loop.py) — simpler synchronous GRPO when rollout/training overlap is unnecessary
+* [`rl_loop`](https://github.com/fw-ai-external/cookbook/blob/main/training/recipes/rl_loop.py) — simpler synchronous GRPO when rollout/training overlap is unnecessary
 
 ## IGPO (Information Gain Policy Optimization)
 
 IGPO prepares turn-level advantages through
 `rl_loop.main(..., prepare_batch_fn=igpo.prepare_batch(gamma=...))`. Answer
 scoring runs across the complete batch while advantage normalization remains
-group-local. Start with the [multi-hop QA example](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/multihop_qa).
+group-local. Start with the [multi-hop QA example](https://github.com/fw-ai-external/cookbook/tree/main/training/examples/rl/multihop_qa).

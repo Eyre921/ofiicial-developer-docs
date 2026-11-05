@@ -26160,6 +26160,8 @@ Key rotation and revocation are one of the most important processes for maintain
 
 - You may wish to switch signing algorithms due to compatibility problems or to simplify development on your end.
 
+Note: Storage signed URLs use a separate key for signing, so rotating Auth signing keys doesn't invalidate them. For more information, see [Storage URL Signing Keys](https://supabase.com/docs/guides/storage/security/signing-keys).
+
 ### Lifetime of a signing key
 
 A newly created key starts off as standby, before being rotated into in use (becoming the current key) while the existing current key becomes previously used.
@@ -109737,7 +109739,7 @@ Point-in-Time Recovery (PITR) allows you to back up a project at shorter interva
 
 Note: Pro, Team and Enterprise Plan projects can enable PITR as an add-on.
 
-Projects that want to use PITR must also use at least a Small compute add-on to ensure smooth functioning.
+PITR is available on all compute sizes.
 
 **How PITR works**
 
@@ -109758,6 +109760,10 @@ You can access PITR in the [Point in Time](https://supabase.com/dashboard/projec
 The latest restore point of the project could be significantly behind the current time. This occurs when the database has had no recent activity, and therefore we have not made any recent WAL file backups. However, the state of the database at the latest recovery point still reflects the current state of the database, given that no transactions have occurred in between.
 
 ### Restoration process
+
+Caution: Restoring to an earlier point in time replaces the current database state. Any changes made after the selected restore point aren't included.
+
+To preserve your current data, [restore to a new project](#restore-to-a-new-project) first.
 
 ![PITR: Calendar view](/docs/img/backups-pitr-calendar-view.png)
 
@@ -136804,6 +136810,8 @@ This affects how you should think about serving private assets:
 
 Token expiry (`expiresIn`) and the object's response cache TTL (`cacheControl`) are independent. Once a response is cached at the edge, that cached response can continue to be served for the same signed URL until the CDN cache duration expires, even if the token in that URL has already expired. If you need to cut off access to an asset, delete the object from the bucket rather than relying on token expiry alone.
 
+For more information about revoking signed URLs, see [URL Signing Keys](https://supabase.com/docs/guides/storage/security/signing-keys).
+
 
 ---
 
@@ -138158,6 +138166,52 @@ The use of RLS policies is one way to enforce access control. You can also imple
 
 ---
 
+# URL signing keys
+
+Learn how Supabase Storage signs URLs and how to rotate your signing keys.
+
+Rotate and revoke the keys that sign Storage URLs. Signed URLs give people time-limited access to private objects, as created with `createSignedUrl` for [downloads](https://supabase.com/docs/guides/storage/serving/downloads#signing-urls) and `createSignedUploadUrl` for [uploads](https://supabase.com/docs/guides/storage/uploads/standard-uploads#presigned-uploads).
+
+Storage signs URLs with a dedicated internal key, separate from your project's Auth JWT signing key. Each project has its own key.
+
+Because of this, signed URLs are not affected by:
+
+- Rotating or revoking the Auth [JWT signing keys](https://supabase.com/docs/guides/auth/signing-keys) or legacy secret
+- Disabling legacy keys in the Supabase Dashboard
+- Switching from a shared secret (HS256) to an asymmetric (ES256) signing key
+
+Signed URLs remain valid until their expiry time regardless of any Auth key changes.
+
+## Revoking signed URLs
+
+To revoke all signed URLs, go to the [URL Signing Keys](https://supabase.com/dashboard/project/_/storage/signing-keys) page in the Supabase Dashboard. Rotate the signing key, and then revoke the previous key.
+
+After you revoke the active signing key, existing signed URLs return an `InvalidJWT` error, and new signed URLs use the updated key.
+
+Note: After revoking a key, previously accessed signed URLs can still be served from the CDN cache. If you need to ensure that all previously cached signed URLs are invalidated, you must [purge the CDN cache](https://supabase.com/docs/guides/storage/cdn/purge-cdn-cache) for those objects or buckets.
+
+## Lifetime of a URL signing key
+
+All newly created keys start off as standby keys. A standby key can be rotated to active state, which will make the existing active key become a standby key. There can only ever be exactly one active key and one standby key.
+
+All signed URLs are created using the active key, but URLs signed by either the active or the standby key are considered valid.
+
+When a standby key is revoked, URLs previously signed with that key will no longer be accepted.
+
+At any point, you can move a key from the revoked state back to being a standby key, and then rotate it to active state. This gives you the confidence to revert to an older key if you identify problems with the rotation, such as forgetting to update a component of your application that is relying on a specific key.
+
+The following table lists each key action, the signatures accepted during that action, and its effect.
+
+| Action                       | Accepted signatures                                    | Description                                                                                                                                                                                                                        |
+| ---------------------------- | ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Create standby key           | Active key only, new key has not created any JWTs yet. | When you initially create a key, after choosing the signing algorithm, it starts out in the standby state.                                                                                                                         |
+| Rotate key                   | Both keys in the rotation.                             | Rotation only changes the key used by Supabase Storage to create new signed URLs, but the trust relationship with both keys remains.                                                                                               |
+| Revoke key                   | Only from the current key.                             | Once all regularly valid signed URLs have expired (or sooner), revoke the previously used key to revoke trust in it.                                                                                                               |
+| Move to standby from revoked | Current and previously revoked key.                    | If you've made a mistake or need more time to adjust your application, you can move a revoked key to standby. Follow up with a rotation to ensure Storage starts using the originally revoked key again to create new signed URLs. |
+
+
+---
+
 # Bandwidth & Storage Egress
 
 Bandwidth & Storage Egress
@@ -138353,40 +138407,7 @@ if (data) {
 
 Note: You can't revoke individual signed URLs. To invalidate a specific one, delete, move, or rename the underlying object.
 
-Storage signs URLs with a dedicated internal key, separate from your project's Auth JWT signing key. Each project has its own key.
-
-Because of this, signed URLs are not affected by:
-
-- Rotating or revoking the Auth JWT legacy secret or signing key
-- Disabling legacy keys in the Supabase Dashboard
-- Switching from a shared secret (HS256) to an asymmetric (ES256) signing key
-
-Signed URLs remain valid until their expiry time regardless of any Auth key changes.
-
-To revoke all signed URLs, rotate the signing key by going to the [URL Signing Keys](https://supabase.com/dashboard/project/_/storage/signing-keys) page in the Supabase dashboard.
-
-After revoking the active signing key, all existing signed URLs will return an InvalidJWT error, and new signed URLs created after the rotation will be signed using the updated key.
-
-Note: After revoking a key, previously accessed signed URLs can still be served from the CDN cache. If you need to ensure that all previously cached signed URLs are invalidated, you must [purge the CDN cache](https://supabase.com/docs/guides/storage/cdn/purge-cdn-cache) for those objects or buckets.
-
-### Lifetime of a URL signing key
-
-All newly created keys start off as standby keys. A standby key can be rotated to active state, which will make the existing active key become a standby key. There can only ever be exactly one active key and one standby key.
-
-All signed URLs are created using the active key, but URLs signed by either the active or the standby key are considered valid.
-
-When a standby key is revoked, URLs previously signed with that key will no longer be accepted.
-
-At any point, you can move a key from the revoked state back to being a standby key, and then rotate it to active state. This gives you the confidence to revert to an older key if you identify problems with the rotation, such as forgetting to update a component of your application that is relying on a specific key.
-
-The following table lists each key action, the signatures accepted during that action, and its effect.
-
-| Action                       | Accepted signatures                                    | Description                                                                                                                                                                                                                        |
-| ---------------------------- | ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Create standby key           | Active key only, new key has not created any JWTs yet. | When you initially create a key, after choosing the signing algorithm, it starts out in the standby state.                                                                                                                         |
-| Rotate key                   | Both keys in the rotation.                             | Rotation only changes the key used by Supabase Storage to create new signed URLs, but the trust relationship with both keys remains.                                                                                               |
-| Revoke key                   | Only from the current key.                             | Once all regularly valid signed URLs have expired (or sooner), revoke the previously used key to revoke trust in it.                                                                                                               |
-| Move to standby from revoked | Current and previously revoked key.                    | If you've made a mistake or need more time to adjust your application, you can move a revoked key to standby. Follow up with a rotation to ensure Storage starts using the originally revoked key again to create new signed URLs. |
+To revoke all signed URLs, rotate your project's URL signing key, and then revoke the previous key. For more information, see [URL Signing Keys](https://supabase.com/docs/guides/storage/security/signing-keys).
 
 
 ---
@@ -139399,6 +139420,10 @@ var signedUrl = await supabase.Storage.From("bucket_name").CreateUploadSignedUrl
 
 See this [full example using Uppy with signed URLs](https://github.com/supabase/supabase/tree/master/examples/storage/resumable-upload-signed-uppy) for more context.
 
+### Revoke signed URLs
+
+You can't revoke individual signed URLs. To revoke all signed URLs, rotate your project's URL signing key, and then revoke the previous key. For more information, see [URL Signing Keys](https://supabase.com/docs/guides/storage/security/signing-keys).
+
 ## Overwriting files
 
 When uploading a file to a path that already exists, the default behavior is to return a `400 Asset Already Exists` error.
@@ -139743,6 +139768,95 @@ curl -X POST "https://{your_project_ref}.supabase.co/storage/v1/object/{bucket_n
 
 When two or more clients upload a file to the same path, the first client to complete the upload will succeed and the other clients will receive a `400 Asset Already Exists` error.
 If you provide the `x-upsert` header the last client to complete the upload will succeed instead.
+
+## Presigned uploads
+
+Standard uploads also support using signed upload tokens to create time-limited URLs that you can share with your users. Create the signed URL by invoking the `createSignedUploadUrl` method on the SDK, then pass the returned token to `uploadToSignedUrl` to complete the upload.
+
+**JavaScript**
+
+```typescript
+// Create a signed upload URL
+const { data } = await supabase.storage.from('bucket_name').createSignedUploadUrl('file_path')
+
+// Upload to the signed URL
+const { error } = await supabase.storage
+  .from('bucket_name')
+  .uploadToSignedUrl('file_path', data.token, file)
+```
+
+**Dart**
+
+```dart
+// Create a signed upload URL
+final response = await supabase.storage.from('bucket_name').createSignedUploadUrl('file_path');
+
+// Upload to the signed URL
+await supabase.storage.from('bucket_name').uploadToSignedUrl('file_path', response.token, file);
+```
+
+**Swift**
+
+```swift
+// Create a signed upload URL
+let signedUrl = try await supabase.storage.from("bucket_name").createSignedUploadURL(path: "file_path")
+
+// Upload to the signed URL
+try await supabase.storage.from("bucket_name")
+  .uploadToSignedURL(path: "file_path", token: signedUrl.token, data: file)
+```
+
+**Kotlin**
+
+```kotlin
+// Create a signed upload URL
+val signedUrl = supabase.storage.from("bucket_name").createSignedUploadUrl("file_path")
+
+// Upload to the signed URL
+supabase.storage.from("bucket_name").uploadToSignedUrl("file_path", signedUrl.token, bytes)
+```
+
+**Python**
+
+```python
+# Create a signed upload URL
+response = supabase.storage.from_('bucket_name').create_signed_upload_url('file_path')
+
+# Upload to the signed URL
+with open('local_file_path', 'rb') as f:
+    supabase.storage.from_('bucket_name').upload_to_signed_url(
+        path='file_path',
+        token=response.token,
+        file=f,
+    )
+```
+
+**C#**
+
+```c#
+// Create a signed upload URL
+var signedUrl = await supabase.Storage.From("bucket_name").CreateUploadSignedUrl("file_path");
+
+// Upload to the signed URL
+await supabase.Storage.From("bucket_name").UploadToSignedUrl("local_file_path", signedUrl);
+```
+
+**cURL**
+
+```bash
+# Create a signed upload URL
+curl -X POST "https://{your_project_ref}.supabase.co/storage/v1/object/upload/sign/{bucket_name}/{file_path}" \
+  -H "apikey: {your_anon_key}" \
+  -H "Authorization: Bearer {your_jwt_token}"
+
+# Upload to the signed URL, using the token returned above
+curl -X PUT "https://{your_project_ref}.supabase.co/storage/v1/object/upload/sign/{bucket_name}/{file_path}?token={token}" \
+  --data-binary "@/local/path/to/your/file.ext"
+```
+
+### Revoke signed URLs
+
+You can't revoke individual signed URLs. To revoke all signed URLs, rotate your project's URL signing key, and then revoke the previous key. For more information, see [URL Signing Keys](https://supabase.com/docs/guides/storage/security/signing-keys).
 
 
 ---

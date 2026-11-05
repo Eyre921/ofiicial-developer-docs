@@ -6,7 +6,7 @@ path: admin/projects/manage-project-members
 
 Add, remove, and update Pinecone project members using role-based access control (RBAC) to manage permissions and project owner roles.
 
-[Organization owners](/admin/organizations/understanding-organizations#organization-roles) or [project owners](/admin/projects/understanding-projects#project-roles) can manage members in a project. Each member is assigned one or more [project roles](/admin/projects/understanding-projects#project-roles) that determine their permissions within the project.
+[Organization owners](/admin/organizations/organizations-overview#organization-roles) or [project owners](/admin/projects/projects-overview#project-roles) can manage members in a project. Each member is assigned one or more [project roles](/admin/projects/projects-overview#project-roles) that determine their permissions within the project.
 
 To assign and manage roles programmatically with the Admin API, or to manage roles for service accounts and API keys, see [Manage roles and access](/admin/security/manage-rbac).
 
@@ -18,14 +18,14 @@ To assign and manage roles programmatically with the Admin API, or to manage rol
 
 > [!NOTE]
 >
-> Project owners can add existing organization members to a project and manage their project roles. Only [organization owners](/admin/organizations/understanding-organizations#organization-roles) can invite people who aren't yet members of the organization.
+> Project owners can add existing organization members to a project and manage their project roles. Only [organization owners](/admin/organizations/organizations-overview#organization-roles) can invite people who aren't yet members of the organization.
 
 You can add members to a project in the [Pinecone console](https://app.pinecone.io/organizations/-/projects):
 
 1. Select your project.
 2. Go to [**Settings > Access**](https://app.pinecone.io/organizations/-/projects/-/access/members) and select the **Members** tab.
 3. Enter the member's email address or name.
-4. Select a [**Project role**](/admin/projects/understanding-projects#project-roles) for the member. The role determines the member's permissions within Pinecone.
+4. Select a [**Project role**](/admin/projects/projects-overview#project-roles) for the member. The role determines the member's permissions within Pinecone.
 5. Click **Invite**.
 
 If the person is already a member of your organization, they get access to the project right away. Otherwise, Pinecone emails them an invite, and they join your organization as an organization member, with access to the project, when they accept it.
@@ -37,7 +37,7 @@ You can change a member's role in the [Pinecone console](https://app.pinecone.io
 1. Select your project.
 2. Go to [**Settings > Access**](https://app.pinecone.io/organizations/-/projects/-/access/members) and select the **Members** tab.
 3. In the row of the member you want to edit, click **ellipsis (...) menu > Edit role**.
-4. Select a [**Project role**](/admin/projects/understanding-projects#project-roles) for the member.
+4. Select a [**Project role**](/admin/projects/projects-overview#project-roles) for the member.
 5. Click **Save**.
 
 ## Remove a member

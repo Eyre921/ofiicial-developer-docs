@@ -509,6 +509,6 @@ These requirements and limitations apply to document indexes. For dense and spar
 
 ## Pricing
 
-Reads and writes on document indexes are metered using the same [read units (RUs)](/guides/manage-cost/understanding-cost#read-units) and [write units (WUs)](/guides/manage-cost/understanding-cost#write-units) model as legacy vector indexes.
+Reads and writes on document indexes are metered using the same [read units (RUs)](/guides/cost/understand-cost#read-units) and [write units (WUs)](/guides/cost/understand-cost#write-units) model as legacy vector indexes.
 
-A schema that declares `embed` or `sparse_embed` also bills for [embedding](/guides/manage-cost/understanding-cost#embedding) by the token, on top of RUs and WUs. Writes re-embed on every request, so a retried or duplicate write is embedded and metered again.
+A schema that declares `embed` or `sparse_embed` also bills for [embedding](/guides/cost/understand-cost#embedding) by the token, on top of RUs and WUs. Writes re-embed on every request, so a retried or duplicate write is embedded and metered again.

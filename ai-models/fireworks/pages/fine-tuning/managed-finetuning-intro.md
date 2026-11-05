@@ -54,7 +54,7 @@ Managed training runs **[Low-Rank Adaptation (LoRA)](https://arxiv.org/abs/2106.
 
 LoRA gives you efficient adapter training and flexible deployment, including [multiple LoRAs](/fine-tuning/deploying-loras#multi-lora-deployment) on a single base model deployment.
 
-Select models also support full-parameter SFT and DPO in managed training. To use it, [set the LoRA rank to `0`](/fine-tuning/fine-tuning-models#lora-rank). If the model doesn't support it, the job is rejected with "model is not tunable for supervised full-parameter fine-tuning". Full-parameter training produces a full model rather than an adapter, so it can't be served as a multi-LoRA addon. For most full-parameter work, we recommend the [Training API](/fine-tuning/training-api/introduction), which has ready-made recipes and works with the [training skill](/fine-tuning/agent/use-with-coding-agents).
+Select models also support full-parameter SFT and DPO in managed training. To use it, [set the LoRA rank to `0`](/fine-tuning/fine-tuning-models#additional-managed-training-job-settings). If the model doesn't support it, the job is rejected with "model is not tunable for supervised full-parameter fine-tuning". Full-parameter training produces a full model rather than an adapter, so it can't be served as a multi-LoRA addon. For most full-parameter work, we recommend the [Training API](/fine-tuning/training-api/introduction), which has ready-made recipes and works with the [training skill](/fine-tuning/agent/use-with-coding-agents).
 
 > [!WARNING]
 >

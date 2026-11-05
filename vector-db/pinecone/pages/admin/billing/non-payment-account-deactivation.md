@@ -35,7 +35,7 @@ To reactivate your account and preserve your data before the 30-day retention pe
 2. Go to [**Settings > Billing > Overview**](https://app.pinecone.io/organizations/-/settings/billing).
 3. Update your payment information or resolve the outstanding balance.
 
-Organization [owners and billing admins](/admin/organizations/understanding-organizations#organization-roles) can update billing details. For help changing how you pay, see [Change your payment method](/admin/billing/change-payment-method).
+Organization [owners and billing admins](/admin/organizations/organizations-overview#organization-roles) can update billing details. For help changing how you pay, see [Change your payment method](/admin/billing/change-payment-method).
 
 ## API access while deactivated
 

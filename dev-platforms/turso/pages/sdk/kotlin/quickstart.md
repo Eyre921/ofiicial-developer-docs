@@ -47,7 +47,7 @@ dependencies {
 
 You must first create a `Database` object and then open a `Connection` to it:
 
-> **Embedded Replicas**
+> [accordion] Embedded Replicas
 >
 > ```kotlin theme={null}
 > import tech.turso.libsql.Libsql
@@ -61,7 +61,7 @@ You must first create a `Database` object and then open a `Connection` to it:
 > val conn = db.connect()
 > ```
 
-> **Local only**
+> [accordion] Local only
 >
 > ```kotlin theme={null}
 > import tech.turso.libsql.Libsql
@@ -70,7 +70,7 @@ You must first create a `Database` object and then open a `Connection` to it:
 > val conn = db.connect()
 > ```
 
-> **Remote only**
+> [accordion] Remote only
 >
 > ```kotlin theme={null}
 > import tech.turso.libsql.Libsql

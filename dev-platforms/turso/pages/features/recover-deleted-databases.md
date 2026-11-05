@@ -72,13 +72,13 @@ pass a JSON body: `{ "name": "my-restored-database" }`.
 
 Refer to the API reference for all parameters and response fields:
 
-> **[List Deleted Databases](/api-reference/databases/list-deleted)**
+> [card] [List Deleted Databases](/api-reference/databases/list-deleted)
 
-> **[Restore Database](/api-reference/databases/restore)**
+> [card] [Restore Database](/api-reference/databases/restore)
 
-> **[List Deleted Groups](/api-reference/groups/list-deleted)**
+> [card] [List Deleted Groups](/api-reference/groups/list-deleted)
 
-> **[Restore Group](/api-reference/groups/restore)**
+> [card] [Restore Group](/api-reference/groups/restore)
 
 ## Restore with an AI agent
 
@@ -137,6 +137,6 @@ recovery.
   [group](/api-reference/groups/update-configuration) — a protected database
   cannot be deleted until protection is turned off.
 
-> **[Point-in-Time Recovery](/features/point-in-time-recovery)**
+> [card] [Point-in-Time Recovery](/features/point-in-time-recovery)
 
-> **[MCP (AI agents)](/integrations/mcp)**
+> [card] [MCP (AI agents)](/integrations/mcp)

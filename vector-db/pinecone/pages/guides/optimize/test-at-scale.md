@@ -370,7 +370,7 @@ The current price for import is \$0.25/GB. The dataset size for this test is 48.
 
 **2. Query costs**
 
-A query uses 1 [read unit (RU)](/guides/manage-cost/understanding-cost#read-units) for every 1 GB of namespace size. The current price for queries in the `us-east-1` region of AWS is \$16 per 1 million read units (pricing varies by region).
+A query uses 1 [read unit (RU)](/guides/cost/understand-cost#read-units) for every 1 GB of namespace size. The current price for queries in the `us-east-1` region of AWS is \$16 per 1 million read units (pricing varies by region).
 
 This test ran 100,000 queries against a namespace size of 48.8 GB. Each query uses 48.8 RUs (1 RU per GB), so the total is 4,880,000 RUs. At \$16 per 1 million RUs, the cost is (4,880,000 / 1,000,000) × \$16 = \$78.08.
 

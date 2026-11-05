@@ -67,4 +67,4 @@ policy-ratio diagnostic on an on-policy batch is expected; it does not measure
 divergence from a frozen base model. Client request timings include transport
 and queueing and can overlap, so compare the full optimizer window separately
 from trainer execution time. Metric definitions and reductions live in the
-[step-metrics skill](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/step-metrics.md).
+[step-metrics skill](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/step-metrics.md).

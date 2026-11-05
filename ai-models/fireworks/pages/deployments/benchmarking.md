@@ -12,7 +12,7 @@ Understanding your deployment's performance under various load conditions is ess
 
 Use our open-source benchmarking tool to measure and optimize your deployment's performance:
 
-**[Fireworks Benchmark Tool](https://github.com/fw-ai/benchmark)**
+**[Fireworks Benchmark Tool](https://github.com/fw-ai-external/benchmark)**
 
 This tool allows you to:
 
@@ -24,7 +24,7 @@ This tool allows you to:
 ### Installation
 
 ```bash theme={null}
-git clone https://github.com/fw-ai/benchmark.git
+git clone https://github.com/fw-ai-external/benchmark.git
 cd benchmark
 pip install -r requirements.txt
 ```

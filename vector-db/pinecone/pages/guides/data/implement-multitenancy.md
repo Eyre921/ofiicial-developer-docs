@@ -8,94 +8,86 @@ Implement multitenancy in Pinecone with one namespace per tenant on a serverless
 
 [Multitenancy](https://en.wikipedia.org/wiki/Multitenancy) is a software architecture where a single instance of a system serves multiple customers, or tenants, while ensuring data isolation between them for privacy and security.
 
-This page shows you how to implement multitenancy in Pinecone using a **serverless index with one namespace per tenant**.
+This page shows you how to implement multitenancy in Pinecone using a document index with one namespace per tenant. For when to use namespaces, metadata filtering, or other approaches, see [Design for multitenancy](/guides/data/design-for-multitenancy).
 
-> [!NOTE]
->
-> For design guidance on choosing between namespaces, metadata filtering, and other approaches, see [Design for multitenancy](/guides/data/design-for-multitenancy).
+## How it works
+
+In Pinecone, an [index](/guides/indexes/index-data-overview) is the highest-level organizational unit of data, where you define a schema for the documents stored in the index, such as the dimension and similarity metric of a `dense_vector` field.
+
+Within an index, documents are stored in [namespaces](/guides/indexes/index-data-overview#namespaces), and all [upserts](/guides/data/upsert-data), [searches](/guides/search/search-overview), and other data read and write operations always target one namespace.
+
+This structure makes it easy to implement multitenancy. For example, for an AI-powered SaaS application where you need to isolate the data of each customer, you would assign each customer to a namespace and target their writes and searches to that namespace:
+
+![Diagram of a multitenant SaaS index with three namespaces, one per customer, each holding documents 1 through n. A query on customer 1's data targets namespace 1, and a new document for customer 3 goes to namespace 3.](https://mintcdn.com/pinecone/qjxrsVApPT3I4Dwt/images/multitenant-saas-namespaces-light.svg?fit=max\&auto=format\&n=qjxrsVApPT3I4Dwt\&q=85\&s=290ae697e92b15148b8fa36709755b8c)
+
+In cases where you have different workload patterns (e.g., RAG and semantic search), you would use a different index for each workload, with one namespace per customer in each index:
+
+![Diagram of a RAG index and a semantic search index, each with one namespace per customer. Queries on customer 1's data target namespace 1 in each index.](https://mintcdn.com/pinecone/qjxrsVApPT3I4Dwt/images/multitenant-saas-indexes-light.svg?fit=max\&auto=format\&n=qjxrsVApPT3I4Dwt\&q=85\&s=6ee475750713c79c223cd260d29bf113)
+
+### Benefits
+
+* **Tenant isolation:** In the [serverless architecture](/guides/get-started/architecture), each namespace is stored separately, so using namespaces provides physical isolation of data between tenants. This reduces the risk of application bugs that could search the wrong tenant's data.
+
+* **No noisy neighbors:** Reads and writes always target a single namespace, so the behavior of one tenant doesn't affect other tenants.
+
+* **No maintenance effort:** Serverless indexes scale automatically based on usage; you don't configure or manage any compute or storage resources.
+
+* **Cost efficiency:** Search cost is based on namespace size (1 RU per 1 GB). With 100 tenants of 1 GB each, searching one tenant's namespace costs 1 RU. Using metadata filtering in a single 100 GB namespace would cost 100 RUs for the same search, because it scans all data regardless of filters.
+
+* **Simple tenant offboarding:** To offboard a tenant, you just [delete the relevant namespace](/guides/data/manage-namespaces#delete-a-namespace). This is a lightweight and almost instant operation.
 
 > [!NOTE]
 >
 > [Namespaces per serverless index](/reference/api/database-limits/object-limits) vary by plan (100 on Starter to 1,000,000 on Enterprise). Pinecone can accommodate more for specific use cases. If your application needs a higher limit, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
 
-## How it works
+## Set up one namespace per tenant
 
-![](https://mintcdn.com/pinecone/r0TaYXrfSrAYZYUj/images/multitenant-saas-namepsaces.png?fit=max\&auto=format\&n=r0TaYXrfSrAYZYUj\&q=85\&s=8a85b3a90f4c64964ac2d19b72c9e537)
+### 1. Create a document index
 
-In Pinecone, an [index](/guides/indexes/indexing-overview) is the highest-level organizational unit of data, where you define the dimension of vectors to be stored in the index and the measure of similarity to be used when querying the index.
+Serverless indexes [separate storage from compute](/guides/get-started/architecture), scale automatically based on usage, and you pay only for the amount of data stored and operations performed. Combined with the isolation of tenant data using namespaces (next step), serverless indexes are ideal for multitenant use cases.
 
-Within an index, records are stored in [namespaces](/guides/indexes/indexing-overview#namespaces), and all [upserts](/guides/data/upsert-data), [queries](/guides/search/search-overview), and other data read and write operations always target one namespace.
+To [create a document index](/guides/indexes/create-an-index#create-a-document-index), set the cloud and region where the index should be deployed in `deployment`, and declare the fields to index in `schema`. This example declares one `dense_vector` field, `embedding`, with 8 dimensions and the cosine metric:
 
-This structure makes it easy to implement multitenancy. For example, for an AI-powered SaaS application where you need to isolate the data of each customer, you would assign each customer to a namespace and target their writes and queries to that namespace (diagram above).
-
-In cases where you have different workload patterns (e.g., RAG and semantic search), you would use a different index for each workload, with one namespace per customer in each index:
-
-![](https://mintcdn.com/pinecone/r0TaYXrfSrAYZYUj/images/multitenant-saas-indexes.png?fit=max\&auto=format\&n=r0TaYXrfSrAYZYUj\&q=85\&s=d30f68fcbf1b6e259850350461f10e3c)
-
-> [accordion] Understand the benefits
->
-> * **Tenant isolation:** In the [serverless architecture](/guides/core-concepts/architecture), each namespace is stored separately, so using namespaces provides physical isolation of data between tenants/customers. This reduces the risk of application bugs that could query the wrong tenant's data.
->
-> * **No noisy neighbors:** Reads and writes always target a single namespace, so the behavior of one tenant/customer doesn't affect other tenants/customers.
->
-> * **No maintenance effort:** Serverless indexes scale automatically based on usage; you don't configure or manage any compute or storage resources.
->
-> * **Cost efficiency:** Query cost is based on namespace size (1 RU per 1 GB). With 100 tenants of 1 GB each, querying one tenant's namespace costs 1 RU. Using metadata filtering in a single 100 GB namespace would cost 100 RUs for the same query, because it scans all data regardless of filters.
->
-> * **Simple tenant offboarding:** To offboard a tenant/customer, you just [delete the relevant namespace](/guides/data/manage-namespaces#delete-a-namespace). This is a lightweight and almost instant operation.
-
-## 1. Create a serverless index
-
-Based on a [breakthrough architecture](/guides/core-concepts/architecture), serverless indexes scale automatically based on usage, and you pay only for the amount of data stored and operations performed. Combined with the isolation of tenant data using namespaces (next step), serverless indexes are ideal for multitenant use cases.
-
-To [create a serverless index](/guides/indexes/create-an-index#create-a-serverless-index), define the cloud and region where the index should be deployed. The SDKs set this with the `spec` parameter (in Python, import the `ServerlessSpec` class). The REST API uses a `deployment` object instead, and defines the vector dimension and metric on the reserved `_values` field in `schema`.
-
-```Python Python theme={null}
-from pinecone.grpc import PineconeGRPC as Pinecone
-from pinecone import ServerlessSpec
+```python Python theme={null}
+from pinecone import Pinecone, SchemaBuilder
 
 pc = Pinecone(api_key="YOUR_API_KEY")
 
-pc.create_index(
-  name="multitenant-app",
-  dimension=8,
-  metric="cosine",
-  spec=ServerlessSpec(
-    cloud="aws",
-    region="us-east-1"
-  )
+schema = (
+    SchemaBuilder()
+      .add_dense_vector_field(name="embedding", dimension=8, metric="cosine")
+      .build()
+)
+
+pc.indexes.create(
+    name="multitenant-app",
+    deployment={"deployment_type": "managed", "cloud": "aws", "region": "us-east-1"},
+    schema=schema,
 )
 ```
 
-```JavaScript JavaScript theme={null}
-import { Pinecone } from '@pinecone-database/pinecone'
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
 
-const pc = new Pinecone({
-  apiKey: 'YOUR_API_KEY'
-});
+const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
 
-await pc.createIndex({
+await pc.indexes.create({
   name: 'multitenant-app',
-  dimension: 8,
-  metric: 'cosine',
-  spec: {
-    serverless: {
-      cloud: 'aws',
-      region: 'us-east-1'
-    }
-  }
+  deployment: {
+    deploymentType: 'managed',
+    cloud: 'aws',
+    region: 'us-east-1',
+  },
+  schema: {
+    fields: {
+      embedding: {
+        type: 'dense_vector',
+        dimension: 8,
+        metric: 'cosine',
+      },
+    },
+  },
 });
-```
-
-```java Java theme={null}
-import io.pinecone.clients.Pinecone;
-
-public class CreateServerlessIndexExample {
-    public static void main(String[] args) {
-        Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
-        pc.createServerlessIndex("multitenant-app", "cosine", 8, "aws", "us-east-1");
-    }
-}
 ```
 
 ```go Go theme={null}
@@ -103,17 +95,11 @@ package main
 
 import (
     "context"
-    "encoding/json"
     "fmt"
     "log"
 
     "github.com/pinecone-io/go-pinecone/v7/pinecone"
 )
-
-func prettifyStruct(obj interface{}) string {
-  	bytes, _ := json.MarshalIndent(obj, "", "  ")
-    return string(bytes)
-}
 
 func main() {
     ctx := context.Background()
@@ -125,27 +111,29 @@ func main() {
         log.Fatalf("Failed to create Client: %v", err)
     }
 
-    // Serverless index
-    indexName := "multi-tenant-app"
-    vectorType := "dense"
-    dimension := int32(8)
-    metric := pinecone.IndexMetricCosine
-    deletionProtection := pinecone.DeletionProtectionDisabled
-
-    idx, err := pc.CreateServerlessIndex(ctx, &pinecone.CreateServerlessIndexRequest{
-        Name:               indexName,
-        VectorType:         &vectorType,
-        Dimension:          &dimension,
-        Metric:             &metric,
-        Cloud:              pinecone.CloudAWS,
-        Region:             "us-east-1",
-        DeletionProtection: &deletionProtection,
+    idx, err := pc.CreateIndex(ctx, &pinecone.CreateIndexRequest{
+        Name: "multitenant-app",
+        Deployment: &pinecone.IndexDeployment{
+            Managed: &pinecone.ManagedDeployment{
+                Cloud:  pinecone.CloudAWS,
+                Region: "us-east-1",
+            },
+        },
+        Schema: pinecone.IndexSchema{
+            Fields: map[string]pinecone.IndexSchemaField{
+                "embedding": {
+                    DenseVector: &pinecone.DenseVectorField{
+                        Dimension: 8,
+                        Metric:    pinecone.IndexMetricCosine,
+                    },
+                },
+            },
+        },
     })
     if err != nil {
-        log.Fatalf("Failed to create serverless index: %v", err)
-    } else {
-        fmt.Printf("Successfully created serverless index: %v", idx.Name)
+        log.Fatalf("Failed to create index: %v", err)
     }
+    fmt.Printf("Successfully created index: %v", idx.Name)
 }
 ```
 
@@ -166,639 +154,469 @@ curl -s "https://api.pinecone.io/indexes" \
          },
          "schema": {
             "fields": {
-               "_values": { "type": "dense_vector", "dimension": 8, "metric": "cosine" }
+               "embedding": {
+                  "type": "dense_vector",
+                  "dimension": 8,
+                  "metric": "cosine"
+               }
             }
          }
       }'
 ```
 
-## 2. Isolate tenant data
+Before you upsert, [wait for the index to be ready](/guides/indexes/create-an-index#wait-for-the-index-to-be-ready). The Python SDK waits by default.
 
-In a multitenant solution, you need to isolate data between tenants. To achieve this in Pinecone, use one namespace per tenant. In the [serverless architecture](/guides/core-concepts/architecture), each namespace is stored separately, so this approach ensures physical isolation of each tenant's data.
+### 2. Isolate tenant data
 
-To [create a namespace for a tenant](/guides/indexes/indexing-overview#namespaces), specify the `namespace` parameter when first [upserting](/guides/data/upsert-data) the tenant's records. For example, the following code upserts records for `tenant1` and `tenant2` into the `multitenant-app` index:
+In a multitenant solution, you need to isolate data between tenants. To achieve this in Pinecone, use one namespace per tenant. In the [serverless architecture](/guides/get-started/architecture), each namespace is stored separately, so this approach ensures physical isolation of each tenant's data.
 
-```Python Python theme={null}
-from pinecone.grpc import PineconeGRPC as Pinecone
-
-pc = Pinecone(api_key="YOUR_API_KEY")
-index = pc.index(name="multitenant-app", grpc=True)
-
-index.upsert(
-  vectors=[
-    {"id": "A", "values": [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]},
-    {"id": "B", "values": [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2]},
-    {"id": "C", "values": [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3]},
-    {"id": "D", "values": [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4]}
-  ],
-  namespace="tenant1"
-)
-
-index.upsert(
-  vectors=[
-    {"id": "E", "values": [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]},
-    {"id": "F", "values": [0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6]},
-    {"id": "G", "values": [0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7]},
-    {"id": "H", "values": [0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8]}
-  ],
-  namespace="tenant2"
-)
-```
-
-```JavaScript JavaScript theme={null}
-import { Pinecone } from '@pinecone-database/pinecone'
-
-const pc = new Pinecone({ apiKey: "YOUR_API_KEY" });
-const index = pc.index("multitenant-app");
-
-await index.namespace("tenant1").upsert({ records: [
-  {
-    "id": "A", 
-    "values": [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
-  },
-  {
-    "id": "B", 
-    "values": [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2]
-  },
-  {
-    "id": "C", 
-    "values": [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3]
-  },
-  {
-    "id": "D", 
-    "values": [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4]
-  }
-] });
-
-await index.namespace("tenant2").upsert({ records: [
-  {
-    "id": "E", 
-    "values": [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]
-  },
-  {
-    "id": "F", 
-    "values": [0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6]
-  },
-  {
-    "id": "G", 
-    "values": [0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7]
-  },
-  {
-    "id": "H", 
-    "values": [0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8]
-  }
-] });
-```
-
-```java Java theme={null}
-import io.pinecone.clients.Index;
-import io.pinecone.clients.Pinecone;
-
-import java.util.Arrays;
-import java.util.List;
-
-public class UpsertExample {
-    public static void main(String[] args) {
-        Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
-        String indexName = "multitenant-app";
-        Index index = pc.getIndexConnection(indexName);
-        List<Float> values1 = Arrays.asList(0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f);
-        List<Float> values2 = Arrays.asList(0.2f, 0.2f, 0.2f, 0.2f, 0.2f, 0.2f, 0.2f, 0.2f);
-        List<Float> values3 = Arrays.asList(0.3f, 0.3f, 0.3f, 0.3f, 0.3f, 0.3f, 0.3f, 0.3f);
-        List<Float> values4 = Arrays.asList(0.4f, 0.4f, 0.4f, 0.4f, 0.4f, 0.4f, 0.4f, 0.4f);
-        List<Float> values5 = Arrays.asList(0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f);
-        List<Float> values6 = Arrays.asList(0.6f, 0.6f, 0.6f, 0.6f, 0.6f, 0.6f, 0.6f, 0.6f);
-        List<Float> values7 = Arrays.asList(0.7f, 0.7f, 0.7f, 0.7f, 0.7f, 0.7f, 0.7f, 0.7f);
-        List<Float> values8 = Arrays.asList(0.8f, 0.8f, 0.8f, 0.8f, 0.8f, 0.8f, 0.8f, 0.8f);
-
-        index.upsert("A", values1, "tenant1");
-        index.upsert("B", values2, "tenant1");
-        index.upsert("C", values3, "tenant1");
-        index.upsert("D", values4, "tenant1");
-        index.upsert("E", values5, "tenant2");
-        index.upsert("F", values6, "tenant2");
-        index.upsert("G", values7, "tenant2");
-        index.upsert("H", values8, "tenant2");
-    }
-}
-```
-
-```go Go theme={null}
-// Add to the main function:
-idx, err := pc.DescribeIndex(ctx, indexName)
-if err != nil {
-    log.Fatalf("Failed to describe index \"%v\": %v", idx.Name, err)
-}
-
-idxConnection1, err := pc.Index(pinecone.NewIndexConnParams{Host: idx.Host, Namespace: "tenant1"})
-if err != nil {
-    log.Fatalf("Failed to create IndexConnection1 for Host %v: %v", idx.Host, err)
-}
-
-// This reuses the gRPC connection of idxConnection1 while targeting a different namespace
-idxConnection2 := idxConnection1.WithNamespace("tenant2")
-
-vectors1 := []*pinecone.Vector{
-    {
-        Id:     "A",
-        Values: []float32{0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1},
-    },
-    {
-        Id:     "B",
-        Values: []float32{0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2},
-    },
-    {
-        Id:     "C",
-        Values: []float32{0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3},
-    },   
-    {
-        Id:     "D",
-        Values: []float32{0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4},
-    },   
-}
-
-vectors2 := []*pinecone.Vector{
-    {
-        Id:     "E",
-        Values: []float32{0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5},
-    },
-    {
-        Id:     "F",
-        Values: []float32{0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6},
-    },
-    {
-        Id:     "G",
-        Values: []float32{0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7},
-    },   
-    {
-        Id:     "H",
-        Values: []float32{0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8},
-    },   
-}
-
-count1, err := idxConnection1.UpsertVectors(ctx, vectors1)
-if err != nil {
-    log.Fatalf("Failed to upsert vectors: %v", err)
-} else {
-    fmt.Printf("Successfully upserted %d vector(s)!\n", count1)
-}
-
-count2, err := idxConnection2.UpsertVectors(ctx, vectors2)
-if err != nil {
-    log.Fatalf("Failed to upsert vectors: %v", err)
-} else {
-    fmt.Printf("Successfully upserted %d vector(s)!\n", count2)
-}
-```
-
-```bash curl theme={null}
-# The `POST` requests below uses the unique endpoint for an index.
-# See https://docs.pinecone.io/guides/indexes/target-an-index for details.
-PINECONE_API_KEY="YOUR_API_KEY"
-INDEX_HOST="INDEX_HOST"
-
-curl "https://$INDEX_HOST/vectors/upsert" \
-  -H "Api-Key: $PINECONE_API_KEY" \
-  -H 'Content-Type: application/json' \
-  -H "X-Pinecone-Api-Version: 2026-07" \
-  -d '{
-    "vectors": [
-      {
-        "id": "A", 
-        "values": [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
-      },
-      {
-        "id": "B", 
-        "values": [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2]
-      },
-      {
-        "id": "C", 
-        "values": [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3]
-      },
-      {
-        "id": "D", 
-        "values": [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4]
-      }
-    ],
-    "namespace": "tenant1"
-  }'
-
-curl "https://$INDEX_HOST/vectors/upsert" \
-  -H "Api-Key: $PINECONE_API_KEY" \
-  -H 'Content-Type: application/json' \
-  -H "X-Pinecone-Api-Version: 2026-07" \
-  -d '{
-    "vectors": [
-      {
-        "id": "E", 
-        "values": [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]
-      },
-      {
-        "id": "F", 
-        "values": [0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6]
-      },
-      {
-        "id": "G", 
-        "values": [0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7]
-      },
-      {
-        "id": "H", 
-        "values": [0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8]
-      }
-    ],
-    "namespace": "tenant2"
-  }'
-```
-
-When upserting additional records for a tenant, or when [updating](/guides/data/update-data) or [deleting](/guides/data/delete-data) records for a tenant, specify the tenant's `namespace`. For example, the following code updates the dense vector value of record `A` in `tenant1`:
-
-```Python Python theme={null}
-from pinecone.grpc import PineconeGRPC as Pinecone
-
-pc = Pinecone(api_key="YOUR_API_KEY")
-index = pc.index(name="multitenant-app", grpc=True)
-
-index.update(id="A", values=[0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8], namespace="tenant1")
-```
-
-```JavaScript JavaScript theme={null}
-import { Pinecone } from '@pinecone-database/pinecone'
-
-const pc = new Pinecone({ apiKey: "YOUR_API_KEY" });
-const index = pc.index("multitenant-app");
-
-await index.namespace('tenant1').update({
- 	id: 'A',
- 	values: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]
-});
-```
-
-```java Java theme={null}
-import io.pinecone.clients.Index;
-import io.pinecone.clients.Pinecone;
-import io.pinecone.proto.UpdateResponse;
-
-import java.util.Arrays;
-import java.util.List;
-
-public class UpdateExample {
-    public static void main(String[] args) {
-        Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
-        Index index = pc.getIndexConnection("multitenant-app");
-        List<Float> values = Arrays.asList(0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f);
-        UpdateResponse updateResponse = index.update("A", values, null, "tenant1", null, null);
-        System.out.println(updateResponse);
-    }
-}
-```
-
-```go Go theme={null}
-// Add to the main function:
-idxConn1.UpdateVector(ctx, &pinecone.UpdateVectorRequest{
-    Id:     "A",
-    Values: []float32{0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8},
-})
-if err != nil {
-    log.Fatalf("Failed to update vector with ID %v: %v", id, err)
-}
-```
-
-```bash curl theme={null}
-# The `POST` request below uses the unique endpoint for an index.
-# See https://docs.pinecone.io/guides/indexes/target-an-index for details.
-PINECONE_API_KEY="YOUR_API_KEY"
-INDEX_HOST="INDEX_HOST"
-
-curl "https://$INDEX_HOST/vectors/update" \
-  -H "Api-Key: $PINECONE_API_KEY" \
-  -H 'Content-Type: application/json' \
-  -H "X-Pinecone-Api-Version: 2026-07" \
-  -d '{
-    "id": "A",
-    "values": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8],
-    "namespace": "tenant1"
-  }'
-```
-
-## 3. Query tenant data
-
-In a multitenant solution, you need to ensure that the queries of one tenant don't affect the experience of other tenants/customers. To achieve this in Pinecone, target each tenant's [queries](/guides/search/search-overview) at the namespace for the tenant.
-
-For example, the following code queries only `tenant2` for the 3 vectors that are most similar to an example query vector:
+To [create a namespace for a tenant](/guides/indexes/index-data-overview#namespaces), specify the namespace when you first [upsert](/guides/data/upsert-data) the tenant's documents. For example, the following code upserts documents for `tenant1` and `tenant2` into the `multitenant-app` index:
 
 ```python Python theme={null}
-from pinecone.grpc import PineconeGRPC as Pinecone
+from pinecone import Pinecone
 
 pc = Pinecone(api_key="YOUR_API_KEY")
-index = pc.index(name="multitenant-app", grpc=True)
 
-query_results = index.query(
-    namespace="tenant2",
-    vector=[0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7],
-    top_k=3,
-    include_values=True
+# To get the unique host for an index,
+# see https://docs.pinecone.io/guides/indexes/target-an-index
+index = pc.index(host="INDEX_HOST")
+
+index.documents.upsert(
+    namespace="tenant1",
+    documents=[
+        {"_id": "A", "embedding": [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]},
+        {"_id": "B", "embedding": [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2]},
+        {"_id": "C", "embedding": [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3]},
+        {"_id": "D", "embedding": [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4]},
+    ],
 )
 
-print(query_results)
-
-# Returns:
-# {'matches': [{'id': 'F',
-#               'score': 1.00000012,
-#               'values': [0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6]},
-#              {'id': 'G',
-#               'score': 1.0,
-#               'values': [0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7]},
-#              {'id': 'E',
-#               'score': 1.0,
-#               'values': [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]}],
-#  'namespace': 'tenant2',
-#  'usage': {'read_units': 6}}
+index.documents.upsert(
+    namespace="tenant2",
+    documents=[
+        {"_id": "E", "embedding": [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]},
+        {"_id": "F", "embedding": [0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6]},
+        {"_id": "G", "embedding": [0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7]},
+        {"_id": "H", "embedding": [0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8]},
+    ],
+)
 ```
 
 ```javascript JavaScript theme={null}
-import { Pinecone } from '@pinecone-database/pinecone'
+import { Pinecone } from '@pinecone-database/pinecone';
 
-const pc = new Pinecone({ apiKey: "YOUR_API_KEY" });
-const index = pc.index("multitenant-app");
+const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
 
-const queryResponse = await index.namespace("tenant2").query({
-  topK: 3,
-  vector: [0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7],
-  includeValues: true
+// To get the unique host for an index,
+// see https://docs.pinecone.io/guides/indexes/target-an-index
+const tenant1 = pc.index({ host: 'INDEX_HOST', namespace: 'tenant1' });
+const tenant2 = pc.index({ host: 'INDEX_HOST', namespace: 'tenant2' });
+
+await tenant1.documents.upsert({
+  documents: [
+    { _id: 'A', embedding: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1] },
+    { _id: 'B', embedding: [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2] },
+    { _id: 'C', embedding: [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3] },
+    { _id: 'D', embedding: [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4] },
+  ],
 });
 
-console.log(queryResponse);
-
-// Returns:
-{
-  "matches": [
-    {
-      "id": "F",
-      "score": 1.00000012,
-      "values": [
-        0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6
-      ]
-    },
-    {
-      "id": "E",
-      "score": 1,
-      "values": [ 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5
-      ]
-    },
-    {
-      "id": "G",
-      "score": 1,
-      "values": [
-        0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7
-      ]
-    }
+await tenant2.documents.upsert({
+  documents: [
+    { _id: 'E', embedding: [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5] },
+    { _id: 'F', embedding: [0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6] },
+    { _id: 'G', embedding: [0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7] },
+    { _id: 'H', embedding: [0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8] },
   ],
-  "namespace": "tenant2",
-  "usage": {
-    "readUnits": 6
-  }
-}
-```
-
-```java Java theme={null}
-import io.pinecone.clients.Index;
-import io.pinecone.clients.Pinecone;
-import io.pinecone.unsigned_indices_model.QueryResponseWithUnsignedIndices;
-
-import java.util.Arrays;
-import java.util.List;
-
-public class QueryExample {
-    public static void main(String[] args) {
-        Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
-        String indexName = "multitenant-app";
-        Index index = pc.getIndexConnection(indexName);
-        List<Float> queryVector = Arrays.asList(0.7f, 0.7f, 0.7f, 0.7f, 0.7f, 0.7f, 0.7f, 0.7f);
-        QueryResponseWithUnsignedIndices queryResponse = index.query(3, queryVector2, null, null, null, "tenant2", null, true, false);
-        System.out.println(queryResponse);
-    }
-}
-
-// Results:
-// class QueryResponseWithUnsignedIndices {
-//     matches: [ScoredVectorWithUnsignedIndices {
-//         score: 1.00000012
-//         id: F
-//         values: [0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6]
-//         metadata: 
-//         sparseValuesWithUnsignedIndices: SparseValuesWithUnsignedIndices {
-//             indicesWithUnsigned32Int: []
-//             values: []
-//         }
-//     }, ScoredVectorWithUnsignedIndices {
-//         score: 1
-//         id: E
-//         values: [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]
-//         metadata: 
-//         sparseValuesWithUnsignedIndices: SparseValuesWithUnsignedIndices {
-//             indicesWithUnsigned32Int: []
-//             values: []
-//         }
-//     }, ScoredVectorWithUnsignedIndices {
-//         score: 0.07999992
-//         id: G
-//         values: [0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7]
-//         metadata: 
-//         sparseValuesWithUnsignedIndices: SparseValuesWithUnsignedIndices {
-//             indicesWithUnsigned32Int: []
-//             values: []
-//         }
-//     }]
-//     namespace: tenant2
-//     usage: read_units: 6
-// }
+});
 ```
 
 ```go Go theme={null}
-// Add to the main function:
-queryVector := []float32{0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7}
+package main
 
-res, err := idxConnection2.QueryByVectorValues(ctx, &pinecone.QueryByVectorValuesRequest{
-    Vector:        queryVector,
-    TopK:          3,
-    IncludeValues: true,
-})
-if err != nil {
-    log.Fatalf("Error encountered when querying by vector: %v", err)
-} else {
-    fmt.Printf(prettifyStruct(res))
-}
+import (
+    "context"
+    "log"
 
-// Returns:
-// {
-//   "matches": [
-//     {
-//       "vector": {
-//         "id": "F",
-//         "values": [
-//           0.6,
-//           0.6,
-//           0.6,
-//           0.6,
-//           0.6,
-//           0.6,
-//           0.6,
-//           0.6
-//         ]
-//       },
-//       "score": 1.0000001
-//     },
-//     {
-//       "vector": {
-//         "id": "G",
-//         "values": [
-//           0.7,
-//           0.7,
-//           0.7,
-//           0.7,
-//           0.7,
-//           0.7,
-//           0.7,
-//           0.7
-//         ]
-//       },
-//       "score": 1
-//     },
-//     {
-//       "vector": {
-//         "id": "H",
-//         "values": [
-//           0.8,
-//           0.8,
-//           0.8,
-//           0.8,
-//           0.8,
-//           0.8,
-//           0.8,
-//           0.8
-//         ]
-//       },
-//       "score": 1
-//     }
-//   ],
-//   "usage": {
-//     "read_units": 6
-//   }
-// }
-```
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
 
-```shell curl theme={null}
-# The `POST` requests below uses the unique endpoint for an index.
-# See https://docs.pinecone.io/guides/indexes/target-an-index for details.
-PINECONE_API_KEY="YOUR_API_KEY"
-INDEX_HOST="INDEX_HOST"
+func main() {
+    ctx := context.Background()
 
-curl "https://$INDEX_HOST/query" \
-  -H "Api-Key: $PINECONE_API_KEY" \
-  -H 'Content-Type: application/json' \
-  -H "X-Pinecone-Api-Version: 2026-07" \
-  -d '{
-    "namespace": "tenant2",
-    "vector": [0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7],
-    "topK": 3,
-    "includeValues": true
-  }'
-#
-# Output:
-# {
-#   "matches": [
-#     {
-#       "id": "F",
-#       "score": 1.00000012,
-#       "values": [0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6]
-#     },
-#     {
-#       "id": "E",
-#       "score": 1,
-#       "values": [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]
-#     },
-#     {
-#       "id": "G",
-#       "score": 1,
-#       "values": [0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7]
-#     }
-#   ],
-#   "namespace": "tenant2",
-#   "usage": {"readUnits": 6}
-# }
-```
-
-## 4. Offboard a tenant
-
-In a multitenant solution, you also need it to be quick and easy to offboard a tenant and delete all of its records. To achieve this in Pinecone, you just [delete the namespace](/guides/data/delete-data#delete-an-entire-namespace) for the specific tenant.
-
-For example, the following code deletes the namespace and all records for `tenant1`:
-
-```Python Python theme={null}
-from pinecone.grpc import PineconeGRPC as Pinecone
-
-pc = Pinecone(api_key="YOUR_API_KEY")
-index = pc.index(name="multitenant-app", grpc=True)
-
-index.delete(delete_all=True, namespace='tenant1')
-```
-
-```JavaScript JavaScript theme={null}
-import { Pinecone } from '@pinecone-database/pinecone'
-
-const pc = new Pinecone({ apiKey: "YOUR_API_KEY" });
-const index = pc.index("multitenant-app");
-
-await index.namespace('tenant1').deleteAll();
-```
-
-```java Java theme={null}
-import io.pinecone.clients.Index;
-import io.pinecone.clients.Pinecone;
-
-public class DeleteVectorsExample {
-    public static void main(String[] args) {
-        Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
-        Index index = pc.getIndexConnection("multitenant-app");
-        index.deleteAll("tenant1");
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
     }
-}
-```
 
-```go Go theme={null}
-// Add to the main function:
-idxConnection1.DeleteAllVectorsInNamespace(ctx)
-if err != nil {
-    log.Fatalf("Failed to delete vectors in namespace \"%v\": %v", idxConnection2.Namespace, err)
+    // To get the unique host for an index,
+    // see https://docs.pinecone.io/guides/indexes/target-an-index
+    tenant1, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST", Namespace: "tenant1"})
+    if err != nil {
+        log.Fatalf("Failed to create IndexConnection for Host: %v", err)
+    }
+
+    // This reuses the connection of tenant1 while targeting a different namespace
+    tenant2 := tenant1.WithNamespace("tenant2")
+
+    _, err = tenant1.UpsertDocuments(ctx, &pinecone.UpsertDocumentsRequest{
+        Documents: []pinecone.Document{
+            {"_id": "A", "embedding": []float32{0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1}},
+            {"_id": "B", "embedding": []float32{0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2}},
+            {"_id": "C", "embedding": []float32{0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3}},
+            {"_id": "D", "embedding": []float32{0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4}},
+        },
+    })
+    if err != nil {
+        log.Fatalf("Failed to upsert documents: %v", err)
+    }
+
+    _, err = tenant2.UpsertDocuments(ctx, &pinecone.UpsertDocumentsRequest{
+        Documents: []pinecone.Document{
+            {"_id": "E", "embedding": []float32{0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5}},
+            {"_id": "F", "embedding": []float32{0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6}},
+            {"_id": "G", "embedding": []float32{0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7}},
+            {"_id": "H", "embedding": []float32{0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8}},
+        },
+    })
+    if err != nil {
+        log.Fatalf("Failed to upsert documents: %v", err)
+    }
 }
 ```
 
 ```bash curl theme={null}
-# The `POST` request below uses the unique endpoint for an index.
-# See https://docs.pinecone.io/guides/indexes/target-an-index for details.
+# To get the unique host for an index,
+# see https://docs.pinecone.io/guides/indexes/target-an-index
 PINECONE_API_KEY="YOUR_API_KEY"
 INDEX_HOST="INDEX_HOST"
-curl "https://$INDEX_HOST/vectors/delete" \
+
+curl "https://$INDEX_HOST/namespaces/tenant1/documents/upsert" \
   -H "Api-Key: $PINECONE_API_KEY" \
-  -H 'Content-Type: application/json' \
+  -H "Content-Type: application/json" \
   -H "X-Pinecone-Api-Version: 2026-07" \
   -d '{
-    "deleteAll": true,
-    "namespace": "tenant1"
-  }
-'
+    "documents": [
+      { "_id": "A", "embedding": [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1] },
+      { "_id": "B", "embedding": [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2] },
+      { "_id": "C", "embedding": [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3] },
+      { "_id": "D", "embedding": [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4] }
+    ]
+  }'
+
+curl "https://$INDEX_HOST/namespaces/tenant2/documents/upsert" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+    "documents": [
+      { "_id": "E", "embedding": [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5] },
+      { "_id": "F", "embedding": [0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6] },
+      { "_id": "G", "embedding": [0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7] },
+      { "_id": "H", "embedding": [0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8] }
+    ]
+  }'
+```
+
+When upserting additional documents for a tenant, or when [updating](/guides/data/update-data) or [deleting](/guides/data/delete-data) documents for a tenant, specify the tenant's namespace. For example, the following code updates the `embedding` field of document `A` in `tenant1`:
+
+```python Python theme={null}
+from pinecone import Pinecone
+
+pc = Pinecone(api_key="YOUR_API_KEY")
+
+# To get the unique host for an index,
+# see https://docs.pinecone.io/guides/indexes/target-an-index
+index = pc.index(host="INDEX_HOST")
+
+index.documents.update(
+    namespace="tenant1",
+    documents=[
+        {"_id": "A", "embedding": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]},
+    ],
+)
+```
+
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
+
+const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+
+// To get the unique host for an index,
+// see https://docs.pinecone.io/guides/indexes/target-an-index
+const index = pc.index({ host: 'INDEX_HOST', namespace: 'tenant1' });
+
+await index.documents.update({
+  documents: [
+    { _id: 'A', embedding: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8] },
+  ],
+});
+```
+
+```go Go theme={null}
+package main
+
+import (
+    "context"
+    "log"
+
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
+
+func main() {
+    ctx := context.Background()
+
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
+
+    // To get the unique host for an index,
+    // see https://docs.pinecone.io/guides/indexes/target-an-index
+    idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST", Namespace: "tenant1"})
+    if err != nil {
+        log.Fatalf("Failed to create IndexConnection for Host: %v", err)
+    }
+
+    _, err = idxConnection.UpdateDocuments(ctx, &pinecone.UpdateDocumentsRequest{
+        Documents: []pinecone.Document{
+            {"_id": "A", "embedding": []float32{0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8}},
+        },
+    })
+    if err != nil {
+        log.Fatalf("Failed to update document: %v", err)
+    }
+}
+```
+
+```bash curl theme={null}
+# To get the unique host for an index,
+# see https://docs.pinecone.io/guides/indexes/target-an-index
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_HOST="INDEX_HOST"
+
+curl "https://$INDEX_HOST/namespaces/tenant1/documents/update" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+    "documents": [
+      { "_id": "A", "embedding": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8] }
+    ]
+  }'
+```
+
+### 3. Search tenant data
+
+In a multitenant solution, you need to ensure that the searches of one tenant don't affect the experience of other tenants. To achieve this in Pinecone, target each tenant's [searches](/guides/search/search-overview) at the namespace for the tenant.
+
+For example, the following code searches only `tenant2` for the 3 documents that are most similar to an example query vector:
+
+```python Python theme={null}
+from pinecone import Pinecone
+
+pc = Pinecone(api_key="YOUR_API_KEY")
+
+# To get the unique host for an index,
+# see https://docs.pinecone.io/guides/indexes/target-an-index
+index = pc.index(host="INDEX_HOST")
+
+results = index.documents.search(
+    namespace="tenant2",
+    top_k=3,
+    score_by=[
+        {
+            "type": "dense_vector",
+            "fields": ["embedding"],
+            "values": [0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7],
+        }
+    ],
+)
+
+for match in results.matches:
+    print(match._id, match._score)
+```
+
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
+
+const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+
+// To get the unique host for an index,
+// see https://docs.pinecone.io/guides/indexes/target-an-index
+const index = pc.index({ host: 'INDEX_HOST', namespace: 'tenant2' });
+
+const results = await index.documents.search({
+  topK: 3,
+  scoreBy: [
+    { type: 'dense_vector', fields: ['embedding'], values: [0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7] },
+  ],
+});
+
+for (const match of results.matches) {
+  console.log(match._id, match._score);
+}
+```
+
+```go Go theme={null}
+package main
+
+import (
+    "context"
+    "encoding/json"
+    "fmt"
+    "log"
+
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
+
+func prettifyStruct(obj interface{}) string {
+    bytes, _ := json.MarshalIndent(obj, "", "  ")
+    return string(bytes)
+}
+
+func main() {
+    ctx := context.Background()
+
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
+
+    // To get the unique host for an index,
+    // see https://docs.pinecone.io/guides/indexes/target-an-index
+    idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST", Namespace: "tenant2"})
+    if err != nil {
+        log.Fatalf("Failed to create IndexConnection for Host: %v", err)
+    }
+
+    queryVector := []float32{0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7}
+    res, err := idxConnection.SearchDocuments(ctx, &pinecone.SearchDocumentsRequest{
+        TopK: 3,
+        ScoreBy: []pinecone.DocumentScoringMethod{
+            {Type: pinecone.DocumentScoringTypeDenseVector, Fields: []string{"embedding"}, Values: &queryVector},
+        },
+    })
+    if err != nil {
+        log.Fatalf("Failed to search documents: %v", err)
+    }
+    fmt.Println(prettifyStruct(res))
+}
+```
+
+```bash curl theme={null}
+# To get the unique host for an index,
+# see https://docs.pinecone.io/guides/indexes/target-an-index
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_HOST="INDEX_HOST"
+
+curl "https://$INDEX_HOST/namespaces/tenant2/documents/search" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+    "top_k": 3,
+    "score_by": [
+      {
+        "type": "dense_vector",
+        "fields": ["embedding"],
+        "values": [0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7]
+      }
+    ]
+  }'
+```
+
+## Offboard a tenant
+
+In a multitenant solution, you also need it to be quick and easy to offboard a tenant and delete all of its documents. To achieve this in Pinecone, you just [delete the namespace](/guides/data/manage-namespaces#delete-a-namespace) for the specific tenant.
+
+For example, the following code deletes the namespace and all documents for `tenant1`:
+
+```python Python theme={null}
+from pinecone import Pinecone
+
+pc = Pinecone(api_key="YOUR_API_KEY")
+
+# To get the unique host for an index,
+# see https://docs.pinecone.io/guides/indexes/target-an-index
+index = pc.index(host="INDEX_HOST")
+
+index.delete_namespace(name="tenant1")
+```
+
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
+
+const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+
+// To get the unique host for an index,
+// see https://docs.pinecone.io/guides/indexes/target-an-index
+const index = pc.index({ host: 'INDEX_HOST' });
+
+await index.deleteNamespace('tenant1');
+```
+
+```go Go theme={null}
+package main
+
+import (
+    "context"
+    "log"
+
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
+
+func main() {
+    ctx := context.Background()
+
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
+
+    // To get the unique host for an index,
+    // see https://docs.pinecone.io/guides/indexes/target-an-index
+    idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST"})
+    if err != nil {
+        log.Fatalf("Failed to create IndexConnection for Host: %v", err)
+    }
+
+    err = idxConnection.DeleteNamespace(ctx, "tenant1")
+    if err != nil {
+        log.Fatalf("Failed to delete namespace: %v", err)
+    }
+}
+```
+
+```bash curl theme={null}
+# To get the unique host for an index,
+# see https://docs.pinecone.io/guides/indexes/target-an-index
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_HOST="INDEX_HOST"
+
+curl -X DELETE "https://$INDEX_HOST/namespaces/tenant1" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "X-Pinecone-Api-Version: 2026-07"
 ```
 
 ## Alternative: Metadata filtering
 
-When tenant isolation isn't a strict requirement, or when you need to query across multiple tenants simultaneously, you can store all records in a single namespace and use metadata fields to assign records to tenants/customers. At query time, you can then [filter by metadata](/guides/indexes/indexing-overview#metadata).
+When tenant isolation isn't a strict requirement, or when you need to search across multiple tenants simultaneously, you can store all documents in a single namespace and use metadata fields to assign documents to tenants. At search time, you can then [filter by metadata](/guides/indexes/index-data-overview#metadata).
 
 > [!WARNING]
 >
 > This approach has significant performance and cost tradeoffs compared to using namespaces:
 >
-> * Higher query costs: Queries scan the entire namespace regardless of filters, so you pay for scanning all tenants' data even though results are filtered to one tenant.
-> * Slower performance: Large namespaces increase query latency, and large filters add network overhead on the request side.
+> * Higher search costs: Searches scan the entire namespace regardless of filters, so you pay for scanning all tenants' data even though results are filtered to one tenant.
+> * Slower performance: Large namespaces increase search latency, and large filters add network overhead on the request side.
 > * Filter size limits: Each `$in` or `$nin` operator is limited to 10,000 values. Exceeding this limit will cause requests to fail. See [Metadata filter limits](/reference/api/database-limits/operation-limits#metadata-filter-limits).
 >
 > Anti-pattern: Avoid filtering by large lists of individual user IDs. Instead, use access control groups (organization, project, role), namespaces, or post-filter client-side (for semantic search).

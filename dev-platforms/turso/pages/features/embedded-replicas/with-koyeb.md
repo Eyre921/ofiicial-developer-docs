@@ -30,11 +30,11 @@ You will need an existing database to continue. If you don't have one, [create o
 
 Fork one of the following embedded replica project from GitHub
 
-> **[My Expenses Tracker - (Elysia + Bun)](https://github.com/tursodatabase/embedded-replicas-with-js)**
+> [card] [My Expenses Tracker - (Elysia + Bun)](https://github.com/tursodatabase/embedded-replicas-with-js)
 >
 > See the full source code
 
-> **[Web Traffic API - (Rust)](https://github.com/tursodatabase/embedded-replicas-with-rust)**
+> [card] [Web Traffic API - (Rust)](https://github.com/tursodatabase/embedded-replicas-with-rust)
 >
 > See the full source code
 
@@ -42,7 +42,7 @@ Fork one of the following embedded replica project from GitHub
 >
 > Or, you can:
 >
-> > **[Deploy to Koyeb with a single-click](https://app.koyeb.com/deploy?name=er-with-js\&type=git\&repository=tursodatabase/embedded-replicas-with-js\&branch=main\&env\[PORT]=8000\&env\[TURSO_DATABASE_URL]=REPLACE_ME\&env\[TURSO_AUTH_TOKEN]=REPLACE_ME\&env\[LOCAL_DB]=file:expenses.db)**
+> > [card] [Deploy to Koyeb with a single-click](https://app.koyeb.com/deploy?name=er-with-js\&type=git\&repository=tursodatabase/embedded-replicas-with-js\&branch=main\&env\[PORT]=8000\&env\[TURSO_DATABASE_URL]=REPLACE_ME\&env\[TURSO_AUTH_TOKEN]=REPLACE_ME\&env\[LOCAL_DB]=file:expenses.db)
 
 **3. Add a new Koyeb app**
 

@@ -34,7 +34,7 @@ bundle add turso_libsql
 
 **3. Connect**
 
-> **Embedded Replicas**
+> [accordion] Embedded Replicas
 >
 > ```rb theme={null}
 > require 'turso_libsql'
@@ -47,7 +47,7 @@ bundle add turso_libsql
 > )
 > ```
 
-> **Local only**
+> [accordion] Local only
 >
 > ```rb theme={null}
 > require 'turso_libsql'
@@ -55,7 +55,7 @@ bundle add turso_libsql
 > db = Libsql::Database.new(path: 'local.db')
 > ```
 
-> **Remote only**
+> [accordion] Remote only
 >
 > ```rb theme={null}
 > require 'turso_libsql'

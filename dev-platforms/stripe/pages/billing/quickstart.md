@@ -10,6 +10,10 @@ path: billing/quickstart
 
 Get started with our sample app to run a full, working subscription integration using [Stripe Billing](https://docs.stripe.com/billing.md) and [Stripe Checkout](https://docs.stripe.com/payments/checkout.md).
 
+> #### Sell subscriptions without code
+> 
+> You can create and share a [payment link](https://docs.stripe.com/no-code/payment-links.md) to start selling subscriptions without building a full integration. Learn more about [creating subscriptions without code](https://docs.stripe.com/no-code/subscriptions.md).
+
 The sample app demonstrates redirecting your customers from your site to a prebuilt payment page hosted on Stripe. The Stripe Billing APIs create and manage subscriptions, invoices, and recurring payments, while Checkout provides the prebuilt, secure, Stripe-hosted UI for collecting payment details.
 
 You can represent customers in your integration either as [customer-configured Account](https://docs.stripe.com/api/v2/core/accounts/create.md#v2_create_accounts-configuration-customer) objects or as [Customer](https://docs.stripe.com/api/customers/object.md) objects. For details about the differences between these options, see [Use Accounts as customers](https://docs.stripe.com/accounts-v2/use-accounts-as-customers.md).

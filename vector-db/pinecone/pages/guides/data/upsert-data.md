@@ -6,7 +6,7 @@ path: guides/data/upsert-data
 
 Upsert documents into a Pinecone document index, batch upserts for higher throughput, and partition data with namespaces.
 
-This page shows you how to upsert documents into a namespace in a document index. [Namespaces](/guides/indexes/indexing-overview#namespaces) let you partition data within an index and are essential for [implementing multitenancy](/guides/data/implement-multitenancy) when you need to isolate the data of each customer or user.
+This page shows you how to upsert documents into a namespace in a document index. [Namespaces](/guides/indexes/index-data-overview#namespaces) let you partition data within an index and are essential for [implementing multitenancy](/guides/data/implement-multitenancy) when you need to isolate the data of each customer or user.
 
 If an ID already exists, upserting overwrites the entire document. To change only part of a document, [update](/guides/data/update-data) it.
 
@@ -14,11 +14,11 @@ For a legacy vector index, see [Upsert vectors](/guides/legacy/vectors-api/upser
 
 > [!TIP]
 >
-> Upserts consume [write units (WUs)](/guides/manage-cost/understanding-cost#write-units). See [Understand Pinecone cost](/guides/manage-cost/understanding-cost#upsert) for how upsert cost is calculated. To control costs when ingesting large datasets (10,000,000+ documents), use [import](/guides/data/import-data) instead of upsert.
+> Upserts consume [write units (WUs)](/guides/cost/understand-cost#write-units). See [Understand Pinecone cost](/guides/cost/understand-cost#upsert) for how upsert cost is calculated. To control costs when ingesting large datasets (10,000,000+ documents), use [import](/guides/data/import-data) instead of upsert.
 
 ## Upsert documents
 
-[Documents](/guides/core-concepts/key-terms#document) are the unit of data in a document index. Each field in a document is indexed according to the configuration you declared for it in the schema, not just its type. For example, a `string` field can be indexed for BM25 with the `full_text_search` config, and a separate `dense_vector` field can store vector values you provide at upsert time. A `string` field can also declare `embed` or `sparse_embed` so Pinecone embeds its text with [integrated embedding](/guides/search/integrated-embedding).
+[Documents](/guides/get-started/key-terms#document) are the unit of data in a document index. Each field in a document is indexed according to the configuration you declared for it in the schema, not just its type. For example, a `string` field can be indexed for BM25 with the `full_text_search` config, and a separate `dense_vector` field can store vector values you provide at upsert time. A `string` field can also declare `embed` or `sparse_embed` so Pinecone embeds its text with [integrated embedding](/guides/search/integrated-embedding).
 
 The following example upserts two documents into the `articles` namespace with the Documents API. Each document is indexed for BM25 ranking on `body`. The `category` field isn't declared in the schema, so it's stored as metadata and automatically indexed for filtering:
 
@@ -160,11 +160,11 @@ Upsert replaces the whole document for a given `_id`. To change individual field
 
 To upsert dense vectors into a [document index](/guides/indexes/create-an-index#create-a-document-index), use the [Upsert documents](/reference/api/latest/data-plane/upsert_documents) operation:
 
-* Specify the [`namespace`](/guides/indexes/indexing-overview#namespaces) to upsert into. If the namespace doesn't exist, it's created. To use the default namespace, set the namespace to `"__default__"`.
+* Specify the [`namespace`](/guides/indexes/index-data-overview#namespaces) to upsert into. If the namespace doesn't exist, it's created. To use the default namespace, set the namespace to `"__default__"`.
 * Format your input data as documents, each with the following:
   * An `_id` field with a unique document identifier for the index namespace.
   * The `dense_vector` field declared in the index schema, with the vector values. This example uses a field named `embedding`.
-  * Optionally, other fields, which are stored as [metadata](/guides/indexes/indexing-overview#metadata). When you search the index, you can use metadata to [filter search results](/guides/search/filter-by-metadata).
+  * Optionally, other fields, which are stored as [metadata](/guides/indexes/index-data-overview#metadata). When you search the index, you can use metadata to [filter search results](/guides/search/filter-by-metadata).
 
 ```python Python theme={null}
 from pinecone import Pinecone
@@ -310,11 +310,11 @@ Upsert sparse vectors when your data is encoded by a learned sparse model, such 
 
 To upsert sparse vectors into a [document index](/guides/indexes/create-an-index#create-a-document-index), use the [Upsert documents](/reference/api/latest/data-plane/upsert_documents) operation:
 
-* Specify the [`namespace`](/guides/indexes/indexing-overview#namespaces) to upsert into. If the namespace doesn't exist, it's created. To use the default namespace, set the namespace to `"__default__"`.
+* Specify the [`namespace`](/guides/indexes/index-data-overview#namespaces) to upsert into. If the namespace doesn't exist, it's created. To use the default namespace, set the namespace to `"__default__"`.
 * Format your input data as documents, each with the following:
   * An `_id` field with a unique document identifier for the index namespace.
   * The `sparse_vector` field declared in the index schema, with `indices` and `values` arrays. This example uses a field named `sparse_embedding`.
-  * Optionally, other fields, which are stored as [metadata](/guides/indexes/indexing-overview#metadata). When you search the index, you can use metadata to [filter search results](/guides/search/filter-by-metadata).
+  * Optionally, other fields, which are stored as [metadata](/guides/indexes/index-data-overview#metadata). When you search the index, you can use metadata to [filter search results](/guides/search/filter-by-metadata).
 
 For example, the following code upserts sparse vector representations of sentences related to the term "apple", with the source text and additional fields stored as metadata:
 
@@ -780,6 +780,6 @@ func main() {
 | Max non-zero values for sparse vectors | 2048 |
 | Max dimensionality for sparse vectors | 4.2 billion |
 
-The limit for text is lower because Pinecone converts that text to vectors at upsert time with [integrated embedding](/guides/indexes/indexing-overview#integrated-embedding), and 96 is the max batch size of the [hosted embedding models](/guides/indexes/index-configuration#embedding-models) doing the conversion.
+The limit for text is lower because Pinecone converts that text to vectors at upsert time with [integrated embedding](/guides/indexes/index-data-overview#integrated-embedding), and 96 is the max batch size of the [hosted embedding models](/guides/indexes/index-configuration#embedding-models) doing the conversion.
 
 The 40 KB filterable metadata limit doesn't apply to `full_text_search` text fields.

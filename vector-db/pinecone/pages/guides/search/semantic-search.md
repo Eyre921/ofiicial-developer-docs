@@ -6,7 +6,7 @@ path: guides/search/semantic-search
 
 Run semantic search in Pinecone over dense vectors in a document index, querying with text or with a dense vector you generate.
 
-Semantic search finds the documents in an [index with dense vectors](/guides/indexes/indexing-overview#indexes-with-dense-vectors) that are most similar in meaning and context to a query. It's also called nearest neighbor search, similarity search, or vector search.
+Semantic search finds the documents in an [index with dense vectors](/guides/indexes/index-data-overview#indexes-with-dense-vectors) that are most similar in meaning and context to a query. It's also called nearest neighbor search, similarity search, or vector search.
 
 Semantic search uses [dense vectors](https://www.pinecone.io/learn/vector-embeddings/). Each number in a dense vector corresponds to a point in a multidimensional space. Vectors that are closer together in that space are semantically similar.
 

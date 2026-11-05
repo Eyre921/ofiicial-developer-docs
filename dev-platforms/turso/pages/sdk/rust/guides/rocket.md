@@ -75,6 +75,6 @@ fn rocket() -> _ {
 
 ## Examples
 
-> **[Turso + Rocket Todo List](https://github.com/tursodatabase/examples/tree/master/app-todo-rocket)**
+> [card] [Turso + Rocket Todo List](https://github.com/tursodatabase/examples/tree/master/app-todo-rocket)
 >
 > See the full source code

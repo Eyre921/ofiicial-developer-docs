@@ -10,13 +10,13 @@ Limit metadata indexing in Pinecone to the fields you filter on, to keep index b
 >
 > Setting metadata indexing requires the `2026-07` version of the API or later.
 
-Pinecone indexes all metadata fields by default. However, large amounts of metadata can cause slower [index building](/guides/core-concepts/architecture#index-builder) as well as slower [query execution](/guides/core-concepts/architecture#query-executors), particularly when data isn't cached in a query executor's memory and local SSD and must be fetched from object storage.
+Pinecone indexes all metadata fields by default. However, large amounts of metadata can cause slower [index building](/guides/get-started/architecture#index-builder) as well as slower [query execution](/guides/get-started/architecture#query-executors), particularly when data isn't cached in a query executor's memory and local SSD and must be fetched from object storage.
 
 To prevent performance issues due to excessive metadata, you can limit metadata indexing to the fields that you plan to use for [query filtering](/guides/search/filter-by-metadata).
 
 ## Set metadata indexing
 
-You can limit metadata indexing when you create an index with [integrated embedding](/guides/indexes/indexing-overview#integrated-embedding), or at [namespace creation](/reference/api/latest/data-plane/createnamespace) for any index:
+You can limit metadata indexing when you create an index with [integrated embedding](/guides/indexes/index-data-overview#integrated-embedding), or at [namespace creation](/reference/api/latest/data-plane/createnamespace) for any index:
 
 * Index-level metadata indexing rules apply to all namespaces that don't have their own rules.
 * Namespace-level metadata indexing rules override index-level rules.

@@ -10,7 +10,7 @@ Create and manage service accounts at the organization level in Pinecone for pro
 >
 > This feature is available on the [Enterprise plan](https://www.pinecone.io/pricing/).
 
-This page shows how [organization owners](/admin/organizations/understanding-organizations#organization-roles) can add and manage service accounts at the organization level. Service accounts enable programmatic access to Pinecone's Admin API, which you can use to create and manage projects and API keys.
+This page shows how [organization owners](/admin/organizations/organizations-overview#organization-roles) can add and manage service accounts at the organization level. Service accounts enable programmatic access to Pinecone's Admin API, which you can use to create and manage projects and API keys.
 
 > [!TIP]
 >
@@ -22,7 +22,7 @@ This page shows how [organization owners](/admin/organizations/understanding-org
 
 2. Enter a **Name** for the service account.
 
-3. Choose an [**Organization role**](/admin/organizations/understanding-organizations#organization-roles) for the service account. The role determines the service account's permissions within Pinecone.
+3. Choose an [**Organization role**](/admin/organizations/organizations-overview#organization-roles) for the service account. The role determines the service account's permissions within Pinecone.
 
 4. Click **Create**.
 
@@ -68,7 +68,7 @@ The response includes an `access_token` field, which you can use to authenticate
 
 1. Go to [**Settings > Access > Service accounts**](https://app.pinecone.io/organizations/-/settings/access/service-accounts).
 2. In the row of the service account you want to update, click **ellipsis (...) menu > Edit role**.
-3. Select an [**Organization role**](/admin/organizations/understanding-organizations#organization-roles) for the service account.
+3. Select an [**Organization role**](/admin/organizations/organizations-overview#organization-roles) for the service account.
 4. Click **Save**.
 
 ## Update service account name

@@ -18,11 +18,11 @@ If a record ID already exists, upserting overwrites the entire record. To change
 
 To upsert dense vectors into an [index of dense vectors](/guides/legacy/vectors-api/create-a-vector-index#dense-vectors), use the [Upsert records](/reference/api/latest/data-plane/upsert) operation:
 
-* Specify the [`namespace`](/guides/indexes/indexing-overview#namespaces) to upsert into. If the namespace doesn't exist, it's created. To use the default namespace, set the namespace to `"__default__"`.
+* Specify the [`namespace`](/guides/indexes/index-data-overview#namespaces) to upsert into. If the namespace doesn't exist, it's created. To use the default namespace, set the namespace to `"__default__"`.
 * Format your input data as records, each with the following:
   * An `id` field with a unique record identifier for the index namespace.
   * A `values` field with the dense vector values.
-  * Optionally, a `metadata` field with [key-value pairs](/guides/indexes/indexing-overview#metadata) to store additional information or context. When you query the index, you can use metadata to [filter search results](/guides/search/filter-by-metadata).
+  * Optionally, a `metadata` field with [key-value pairs](/guides/indexes/index-data-overview#metadata) to store additional information or context. When you query the index, you can use metadata to [filter search results](/guides/search/filter-by-metadata).
 
 ```Python Python theme={null}
 from pinecone.grpc import PineconeGRPC as Pinecone
@@ -282,11 +282,11 @@ curl "https://$INDEX_HOST/vectors/upsert" \
 
 To upsert sparse vectors into an [index of sparse vectors](/guides/legacy/vectors-api/create-a-vector-index#sparse-vectors), use the [Upsert records](/reference/api/latest/data-plane/upsert) operation:
 
-* Specify the [`namespace`](/guides/indexes/indexing-overview#namespaces) to upsert into. If the namespace doesn't exist, it's created. To use the default namespace, set the namespace to `"__default__"`.
+* Specify the [`namespace`](/guides/indexes/index-data-overview#namespaces) to upsert into. If the namespace doesn't exist, it's created. To use the default namespace, set the namespace to `"__default__"`.
 * Format your input data as records, each with the following:
   * An `id` field with a unique record identifier for the index namespace.
   * A `sparse_values` field with the sparse vector values and indices.
-  * Optionally, a `metadata` field with [key-value pairs](/guides/indexes/indexing-overview#metadata) to store additional information or context. When you query the index, you can use metadata to [filter search results](/guides/search/filter-by-metadata).
+  * Optionally, a `metadata` field with [key-value pairs](/guides/indexes/index-data-overview#metadata) to store additional information or context. When you query the index, you can use metadata to [filter search results](/guides/search/filter-by-metadata).
 
 For example, the following code upserts sparse vector representations of sentences related to the term "apple", with the source text and additional fields stored as metadata:
 
@@ -1163,6 +1163,6 @@ futures = [
 | Max non-zero values for sparse vectors | 2048 |
 | Max dimensionality for sparse vectors | 4.2 billion |
 
-The limit for text is lower because Pinecone converts that text to vectors at upsert time with [integrated embedding](/guides/indexes/indexing-overview#integrated-embedding), and 96 is the max batch size of the [hosted embedding models](/guides/indexes/index-configuration#embedding-models) doing the conversion.
+The limit for text is lower because Pinecone converts that text to vectors at upsert time with [integrated embedding](/guides/indexes/index-data-overview#integrated-embedding), and 96 is the max batch size of the [hosted embedding models](/guides/indexes/index-configuration#embedding-models) doing the conversion.
 
 The 40 KB filterable metadata limit doesn't apply to `full_text_search` text fields.

@@ -193,7 +193,7 @@ When a dedicated RL recipe provisions a hot-load rollout deployment, you can set
 
 ## Renderers
 
-Chat-template formatting, stop-token handling, and loss-weight masking for SFT/DPO datasets are handled by **renderers** — pluggable per-model classes that turn raw conversations into the trainer's `Datum` shape. Most users never touch a renderer directly; cookbook recipes pick the right one for the `base_model` you set. If you need to author a new one or debug parity against HuggingFace, use the canonical training skill's [renderer implementation reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/renderer.md) and [verification reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/renderer-verification.md).
+Chat-template formatting, stop-token handling, and loss-weight masking for SFT/DPO datasets are handled by **renderers** — pluggable per-model classes that turn raw conversations into the trainer's `Datum` shape. Most users never touch a renderer directly; cookbook recipes pick the right one for the `base_model` you set. If you need to author a new one or debug parity against HuggingFace, use the canonical training skill's [renderer implementation reference](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/renderer.md) and [verification reference](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/renderer-verification.md).
 
 ## Comparing Training API pricing vs DIY bare metal
 

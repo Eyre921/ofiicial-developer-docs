@@ -6,7 +6,7 @@ path: admin/projects/create-a-project
 
 Create a new Pinecone project in your organization using the console or Admin API, including project name, tags, and customer-managed encryption keys (CMEK).
 
-If you're an [organization owner or organization manager](/admin/organizations/understanding-organizations#organization-roles), you can create a project in your organization.
+If you're an [organization owner or organization manager](/admin/organizations/organizations-overview#organization-roles), you can create a project in your organization.
 
 > [tab] Pinecone console
 >

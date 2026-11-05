@@ -45,9 +45,9 @@ curl -L -X POST 'https://api.turso.tech/v1/organizations/{organizationSlug}/data
 
 Refer to the following references for more details about all arguments:
 
-> **[CLI Reference](/cli/db/create)**
+> [card] [CLI Reference](/cli/db/create)
 
-> **[API Reference](/api-reference/databases/create)**
+> [card] [API Reference](/api-reference/databases/create)
 
 ## Things to know
 

@@ -311,10 +311,10 @@ class Todo
 
 ## Examples
 
-> **[PHP Todo CLI + Doctrine DBAL](https://github.com/tursodatabase/example/php-todo-cli-doctrine-dbal/tree/master)**
+> [card] [PHP Todo CLI + Doctrine DBAL](https://github.com/tursodatabase/example/php-todo-cli-doctrine-dbal/tree/master)
 >
 > See the full source code
 
-> **[Symfony Rest API CRUD](https://github.com/tursodatabase/example/symfony7-rest-api-crud/tree/master)**
+> [card] [Symfony Rest API CRUD](https://github.com/tursodatabase/example/symfony7-rest-api-crud/tree/master)
 >
 > See the full source code

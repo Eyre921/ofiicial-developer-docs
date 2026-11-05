@@ -38,13 +38,13 @@ Pinecone reads roles from the `roles` attribute. Each value uses one of the foll
 * Organization role: `pinecone:<OrgRole>`
 * Project role: `pinecone:project:<projectID>:<ProjectRole>`
 
-`<projectID>` is the project's unique ID. To find it, go to the project list in the [Pinecone console](https://app.pinecone.io/organizations/-/projects). For more information, see [Project IDs](/admin/projects/understanding-projects#project-ids).
+`<projectID>` is the project's unique ID. To find it, go to the project list in the [Pinecone console](https://app.pinecone.io/organizations/-/projects). For more information, see [Project IDs](/admin/projects/projects-overview#project-ids).
 
 A user can hold multiple roles by sending multiple values in the `roles` attribute.
 
 ### Organization roles
 
-For details on what each [organization role](/admin/organizations/understanding-organizations#organization-roles) grants, see [Organizations overview](/admin/organizations/understanding-organizations#organization-roles).
+For details on what each [organization role](/admin/organizations/organizations-overview#organization-roles) grants, see [Organizations overview](/admin/organizations/organizations-overview#organization-roles).
 
 | Organization role | Attribute value |
 | :- | :- |
@@ -55,7 +55,7 @@ For details on what each [organization role](/admin/organizations/understanding-
 
 ### Project roles
 
-For details on what each [project role](/admin/projects/understanding-projects#project-roles) grants, see [Projects overview](/admin/projects/understanding-projects#project-roles).
+For details on what each [project role](/admin/projects/projects-overview#project-roles) grants, see [Projects overview](/admin/projects/projects-overview#project-roles).
 
 | Project role | Attribute value |
 | :- | :- |
@@ -127,7 +127,7 @@ Before you hand role management to Okta, confirm the `roles` attribute contains 
 
 > [!NOTE]
 >
-> You must be an [organization owner](/admin/organizations/understanding-organizations#organization-roles) on the Enterprise plan, and SSO must be enforced for your organization.
+> You must be an [organization owner](/admin/organizations/organizations-overview#organization-roles) on the Enterprise plan, and SSO must be enforced for your organization.
 
 1. In the Pinecone console, go to [**Settings > Access > Identity provider**](https://app.pinecone.io/organizations/-/settings/access/identity-provider).
 2. Confirm that single sign-on shows the **Enforced** status. If it doesn't, edit your SSO configuration to enforce SSO before continuing.

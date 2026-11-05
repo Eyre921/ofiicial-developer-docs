@@ -72,6 +72,6 @@ export async function load() {
 
 ## Examples
 
-> **[Blog](https://github.com/tursodatabase/examples/tree/master/app-at-the-polls)**
+> [card] [Blog](https://github.com/tursodatabase/examples/tree/master/app-at-the-polls)
 >
 > See the full source code

@@ -459,7 +459,7 @@ With `normalize=True`, the endpoint applies softmax to the selected logits, retu
 
 Embeddings and reranking are usually combined: vector search recalls a broad candidate set quickly, then a reranker reorders those candidates for precision. This cookbook builds that pipeline end to end with Voyage models on Fireworks and MongoDB vector search.
 
-> [card] [Two-stage retrieval with Voyage embeddings and reranking](https://colab.research.google.com/github/fw-ai/cookbook/blob/main/partners/voyage-ai/voyage_two_stage_retrieval.ipynb)
+> [card] [Two-stage retrieval with Voyage embeddings and reranking](https://colab.research.google.com/github/fw-ai-external/cookbook/blob/main/partners/voyage-ai/voyage_two_stage_retrieval.ipynb)
 >
 > Embed a corpus with a Voyage embedding model, retrieve with MongoDB `$vectorSearch`, and rerank the candidates with Voyage ReRank 2.5.
 

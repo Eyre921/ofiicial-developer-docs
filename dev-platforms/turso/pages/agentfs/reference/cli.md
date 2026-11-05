@@ -303,10 +303,10 @@ Variables set inside the sandbox:
 
 ## See Also
 
-> **[Installation](/agentfs/installation)**
+> [card] [Installation](/agentfs/installation)
 >
 > Installation instructions
 
-> **[Sandbox Guide](/agentfs/guides/sandbox)**
+> [card] [Sandbox Guide](/agentfs/guides/sandbox)
 >
 > Running agents in sandboxes

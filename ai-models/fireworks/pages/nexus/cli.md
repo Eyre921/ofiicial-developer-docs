@@ -6,7 +6,7 @@ path: nexus/cli
 
 Connect Claude Code, ChatGPT, Codex, Cursor IDE, VS Code, Copilot, and more to Fireworks with one Nexus CLI command, and undo it with one more.
 
-[Nexus CLI](https://github.com/fw-ai/nexus-cli) is an open-source command-line tool that connects your coding harness to Fireworks models.
+[Nexus CLI](https://github.com/fw-ai-external/nexus-cli) is an open-source command-line tool that connects your coding harness to Fireworks models.
 
 * It rewrites your harness settings to call Fireworks.
 * It adds Nexus Auto to the harness's model picker.
@@ -38,7 +38,7 @@ Alternative installer:
 
 ```bash wrap theme={null}
 curl -fsSL \
-  https://raw.githubusercontent.com/fw-ai/nexus-cli/main/install.sh \
+  https://raw.githubusercontent.com/fw-ai-external/nexus-cli/main/install.sh \
   | bash
 ```
 

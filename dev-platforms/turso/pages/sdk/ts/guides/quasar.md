@@ -92,6 +92,6 @@ items.value = rows;
 
 ## Examples
 
-> **[Todo App](https://github.com/tursodatabase/examples/tree/master/quasar-todo-list)**
+> [card] [Todo App](https://github.com/tursodatabase/examples/tree/master/quasar-todo-list)
 >
 > See the full source code

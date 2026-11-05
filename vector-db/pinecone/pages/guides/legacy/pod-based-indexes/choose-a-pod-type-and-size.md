@@ -65,9 +65,9 @@ Pinecone doesn't support fractional pod deployments, so always round up to the n
 
 QPS speeds are governed by a combination of the [pod type](/guides/legacy/pod-based-indexes/understanding-pod-based-indexes#pod-types) of the index, the number of [replicas](/guides/legacy/pod-based-indexes/scale-pod-based-indexes#add-replicas), and the `top_k` value of queries. The pod type is the primary factor driving QPS, as the different pod types are optimized for different approaches.
 
-The [p1 pods](/guides/indexes/indexing-overview#p1-pods) are performance-optimized pods which provide very low query latencies, but hold fewer vectors per pod than [s1 pods](/guides/indexes/indexing-overview#s1-pods). They're ideal for applications with low latency requirements (\<100ms). The s1 pods are optimized for storage and provide large storage capacity and lower overall costs with slightly higher query latencies than p1 pods. They're ideal for very large indexes with moderate or relaxed latency requirements.
+The [p1 pods](/guides/indexes/index-data-overview#p1-pods) are performance-optimized pods which provide very low query latencies, but hold fewer vectors per pod than [s1 pods](/guides/indexes/index-data-overview#s1-pods). They're ideal for applications with low latency requirements (\<100ms). The s1 pods are optimized for storage and provide large storage capacity and lower overall costs with slightly higher query latencies than p1 pods. They're ideal for very large indexes with moderate or relaxed latency requirements.
 
-The [p2 pod type](/guides/indexes/indexing-overview#p2-pods) provides greater query throughput with lower latency. They support 200 QPS per replica and return queries in less than 10ms. This means that query throughput and latency are better than s1 and p1, especially for low dimension vectors (\<512D).
+The [p2 pod type](/guides/indexes/index-data-overview#p2-pods) provides greater query throughput with lower latency. They support 200 QPS per replica and return queries in less than 10ms. This means that query throughput and latency are better than s1 and p1, especially for low dimension vectors (\<512D).
 
 As a rule, a single p1 pod with 1M vectors of 768 dimensions each and no replicas can handle about 20 QPS. It’s possible to get greater or lesser speeds, depending on the size of your metadata, number of vectors, the dimensionality of your vectors, and the `top_K` value for your search. See Table 2 below for more examples.
 
@@ -91,7 +91,7 @@ Indexes with very high cardinality, like those storing a unique user ID on each 
 
 ### Pod sizes
 
-You can also start with one of the larger [pod sizes](/guides/indexes/indexing-overview#pod-size-and-performance), like p1.x2. Each step up in pod size doubles the space available for your vectors. We recommend starting with x1 pods and scaling as you grow. This way, you don’t start with too large a pod size and have nowhere else to go up, meaning you have to migrate to a new index before you’re ready.
+You can also start with one of the larger [pod sizes](/guides/indexes/index-data-overview#pod-size-and-performance), like p1.x2. Each step up in pod size doubles the space available for your vectors. We recommend starting with x1 pods and scaling as you grow. This way, you don’t start with too large a pod size and have nowhere else to go up, meaning you have to migrate to a new index before you’re ready.
 
 ### Example applications
 

@@ -9,7 +9,7 @@ Learn to create, deploy, and manage resources using Firectl
 Firectl can be installed several ways based on your choice and platform.
 
 ```bash homebrew theme={null}
-brew tap fw-ai/firectl
+brew tap fw-ai-external/firectl
 brew install firectl
 
 # If you encounter a failed SHA256 check, try first running

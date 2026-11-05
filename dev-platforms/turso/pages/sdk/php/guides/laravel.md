@@ -37,7 +37,7 @@ composer require turso/libsql-laravel
 
 Choose your preferred setup and configure accordingly:
 
-> **Local only**
+> [accordion] Local only
 >
 > Update your `config/database.php`:
 >
@@ -57,7 +57,7 @@ Choose your preferred setup and configure accordingly:
 >
 > This will use a local SQLite file with the libSQL adapter.
 
-> **Remote only**
+> [accordion] Remote only
 >
 > Update your `config/database.php`:
 >
@@ -84,7 +84,7 @@ Choose your preferred setup and configure accordingly:
 > TURSO_AUTH_TOKEN=...
 > ```
 
-> **Embedded Replicas**
+> [accordion] Embedded Replicas
 >
 > Update your `config/database.php`:
 >

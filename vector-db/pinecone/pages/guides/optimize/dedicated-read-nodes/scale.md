@@ -21,7 +21,7 @@ Diagnose which one you're facing before you scale. Adding shards won't relieve q
 
 CPU usage reflects query pressure. As query load outgrows what your replicas can serve, query latency climbs and throughput drops.
 
-Pinecone exposes CPU usage as the `pinecone_db_drn_cpu_usage_percent` metric, reported per shard. To collect it, [monitor your index with Prometheus](/guides/production/monitoring#monitor-with-prometheus).
+Pinecone exposes CPU usage as the `pinecone_db_drn_cpu_usage_percent` metric, reported per shard. To collect it, [monitor your index with Prometheus](/guides/production/monitor-performance#monitor-with-prometheus).
 
 Alert on the highest value across your shards rather than the index-wide average, which can look healthy while a single shard is already saturated:
 

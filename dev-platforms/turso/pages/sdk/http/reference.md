@@ -20,7 +20,7 @@ https://[databaseName]-[organizationSlug].turso.io
 
 You can obtain your database base URL from the Turso CLI:
 
-> **Obtain HTTP URL using Turso CLI**
+> [accordion] Obtain HTTP URL using Turso CLI
 >
 > ```bash theme={null}
 > turso db show <database-name> --http-url
@@ -34,7 +34,7 @@ Turso uses Bearer authentication, and requires your API token to be passed with 
 Authorization: Bearer TOKEN
 ```
 
-> **Create token using Turso CLI**
+> [accordion] Create token using Turso CLI
 >
 > ```bash theme={null}
 > turso db tokens create <database-name>

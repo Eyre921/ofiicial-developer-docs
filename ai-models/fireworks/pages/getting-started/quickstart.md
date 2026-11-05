@@ -32,20 +32,16 @@ Once you have your API key, export it as an environment variable in your termina
 >
 > Install the [Fireworks Python SDK](/tools-sdks/python-sdk):
 >
-> > [!NOTE]
-> >
-> > The SDK is currently in alpha. Use the `--pre` flag when installing to get the latest version.
->
-> ```bash pip theme={null} theme={null}
-> pip install --pre fireworks-ai
+> ```bash pip theme={null}
+> python -m pip install --upgrade fireworks-ai
 > ```
 >
-> ```bash poetry theme={null} theme={null}
-> poetry add --pre fireworks-ai
+> ```bash poetry theme={null}
+> poetry add fireworks-ai
 > ```
 >
-> ```bash uv theme={null} theme={null}
-> uv add --pre fireworks-ai
+> ```bash uv theme={null}
+> uv add fireworks-ai
 > ```
 >
 > Then make your first Serverless API call:

@@ -139,6 +139,6 @@ fn main() {
 
 ## Examples
 
-> **[Personal Notes App](https://github.com/tursodatabase/examples/tree/master/app-turso-notes)**
+> [card] [Personal Notes App](https://github.com/tursodatabase/examples/tree/master/app-turso-notes)
 >
 > See the full source code

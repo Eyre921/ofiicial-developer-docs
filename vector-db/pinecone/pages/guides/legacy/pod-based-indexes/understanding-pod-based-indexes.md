@@ -14,7 +14,7 @@ With pod-based indexes, you choose one or more pre-configured units of hardware 
 
 ## Pod types
 
-Different pod types are priced differently. See [Understand Pinecone cost](/guides/manage-cost/understanding-cost) for more details.
+Different pod types are priced differently. See [Understand Pinecone cost](/guides/cost/understand-cost) for more details.
 
 > [!NOTE]
 >
@@ -141,7 +141,7 @@ To see a calculation of your current usage and costs, go to [**Settings > Usage*
 * [Pod storage capacity](#pod-types)
   * Each **p1** pod has enough capacity for 1M vectors with 768 dimensions.
   * Each **s1** pod has enough capacity for 5M vectors with 768 dimensions.
-* [Metadata](/guides/indexes/indexing-overview#metadata)
+* [Metadata](/guides/indexes/index-data-overview#metadata)
   * Metadata with high cardinality, such as a unique value for every vector in a large index, uses more memory than expected and can cause the pods to become full.
 * [Collections](/guides/indexes/back-up-an-index#pod-based-index-backups-using-collections)
   * You can't query or write to a collection after its creation. For this reason, a collection only incurs storage costs.

@@ -18,11 +18,11 @@ When you describe a legacy integrated index, its text field has the `semantic_te
 
 To upsert source text into a legacy integrated index, use the [Upsert text](/reference/api/latest/data-plane/upsert_records) operation. Pinecone converts the text to dense vectors automatically using the hosted dense embedding model associated with the index.
 
-* Specify the [`namespace`](/guides/indexes/indexing-overview#namespaces) to upsert into. If the namespace doesn't exist, it's created. To use the default namespace, set the namespace to `"__default__"`.
+* Specify the [`namespace`](/guides/indexes/index-data-overview#namespaces) to upsert into. If the namespace doesn't exist, it's created. To use the default namespace, set the namespace to `"__default__"`.
 * Format your input data as records, each with the following:
   * An `_id` field with a unique record identifier for the index namespace. `id` can be used as an alias for `_id`.
   * A field with the source text to convert to a vector. This field must match the `field_map` specified in the index.
-  * Additional fields are stored as record [metadata](/guides/indexes/indexing-overview#metadata) and can be returned in search results or used to [filter search results](/guides/search/filter-by-metadata).
+  * Additional fields are stored as record [metadata](/guides/indexes/index-data-overview#metadata) and can be returned in search results or used to [filter search results](/guides/search/filter-by-metadata).
 
 For example, the following code converts the sentences in the `chunk_text` fields to dense vectors and then upserts them into `example-namespace` in an example index. The additional `category` field is stored as metadata.
 
@@ -232,11 +232,11 @@ curl "https://$INDEX_HOST/records/namespaces/$NAMESPACE/upsert" \
 
 To upsert source text into a legacy integrated index, use the [Upsert text](/reference/api/latest/data-plane/upsert_records) operation. Pinecone converts the text to sparse vectors automatically using the hosted sparse embedding model associated with the index.
 
-* Specify the [`namespace`](/guides/indexes/indexing-overview#namespaces) to upsert into. If the namespace doesn't exist, it's created. To use the default namespace, set the namespace to `"__default__"`.
+* Specify the [`namespace`](/guides/indexes/index-data-overview#namespaces) to upsert into. If the namespace doesn't exist, it's created. To use the default namespace, set the namespace to `"__default__"`.
 * Format your input data as records, each with the following:
   * An `_id` field with a unique record identifier for the index namespace. `id` can be used as an alias for `_id`.
   * A field with the source text to convert to a vector. This field must match the `field_map` specified in the index.
-  * Additional fields are stored as record [metadata](/guides/indexes/indexing-overview#metadata) and can be returned in search results or used to [filter search results](/guides/search/filter-by-metadata).
+  * Additional fields are stored as record [metadata](/guides/indexes/index-data-overview#metadata) and can be returned in search results or used to [filter search results](/guides/search/filter-by-metadata).
 
 For example, the following code converts the sentences in the `chunk_text` fields to sparse vectors and then upserts them into `example-namespace` in an example index. The additional `category` and `quarter` fields are stored as metadata.
 

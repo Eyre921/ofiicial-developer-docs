@@ -48,19 +48,19 @@ The serverless drivers speak SQL over HTTP — no persistent connections, no nat
 
 These SDKs are community-driven and don't come with official Turso support.
 
-> **[Flutter / Dart](/sdk/flutter/quickstart)**
+> [card] [Flutter / Dart](/sdk/flutter/quickstart)
 
-> **[Capacitor](https://capawesome.io/plugins/libsql)**
+> [card] [Capacitor](https://capawesome.io/plugins/libsql)
 
-> **[React Native / OP-SQLite](https://op-engineering.github.io/op-sqlite/)**
+> [card] [React Native / OP-SQLite](https://op-engineering.github.io/op-sqlite/)
 
-> **[Laravel](https://github.com/richan-fongdasen/turso-laravel)**
+> [card] [Laravel](https://github.com/richan-fongdasen/turso-laravel)
 
-> **[.NET](https://github.com/tvandinther/libsql-client-dotnet)**
+> [card] [.NET](https://github.com/tvandinther/libsql-client-dotnet)
 
-> **[Java](https://github.com/dbeaver/dbeaver-jdbc-libsql)**
+> [card] [Java](https://github.com/dbeaver/dbeaver-jdbc-libsql)
 
-> **[Stateless libSQL](https://github.com/DaBigBlob/libsql-stateless-easy)**
+> [card] [Stateless libSQL](https://github.com/DaBigBlob/libsql-stateless-easy)
 
 ## SQL over HTTP
 

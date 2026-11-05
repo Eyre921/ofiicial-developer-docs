@@ -17,20 +17,16 @@ instead be included directly in the content field itself.
 We recommend using the [Fireworks Python SDK](/tools-sdks/python-sdk) to work with
 reasoning, as it supports Fireworks-specific parameters and response fields.
 
-> [!NOTE]
->
-> The SDK is currently in alpha. Use the `--pre` flag when installing to get the latest version.
-
 ```bash pip theme={null}
-pip install --pre fireworks-ai
+python -m pip install --upgrade fireworks-ai
 ```
 
 ```bash poetry theme={null}
-poetry add --pre fireworks-ai
+poetry add fireworks-ai
 ```
 
 ```bash uv theme={null}
-uv add --pre fireworks-ai
+uv add fireworks-ai
 ```
 
 ### Basic usage

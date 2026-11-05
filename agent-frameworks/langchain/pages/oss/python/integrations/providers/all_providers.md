@@ -424,6 +424,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Marketplace of real residential Chrome sessions for AI agents.
 
+> [card] [ChainAnalyzerToolkit](https://github.com/rascal-3/chainanalyzer-mcp/tree/main/packages/langchain-chainanalyzer)
+>
+> Blockchain AML screening tools: sanctions, known-hack exposure, stablecoin freezes, and risk scores across 12 chains (x402 or API key).
+
 > [card] [Cheaper Inference](https://cheaperinference.com/docs)
 >
 > OpenAI-compatible LLM gateway that serves models from many labs below list price.
@@ -1135,6 +1139,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [LambdaDB](https://docs.lambdadb.ai/guides/get-started/quickstart)
 >
 > Serverless database for RAG and Agents
+
+> [card] [LaneRouterToolkit](https://lanerouter.com/docs#langchain)
+>
+> Live, agent-reported conditions for websites and APIs: check a road before acting, report what happened after, and get legitimate detours.
 
 > [card] [LangChain Decorators](/oss/python/integrations/providers/langchain_decorators)
 >

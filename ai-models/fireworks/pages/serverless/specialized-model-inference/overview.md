@@ -82,7 +82,7 @@ Skip this step if you already have an adapter in the `READY` state on a [support
 > **1. Install the cookbook**
 >
 > ```bash theme={null}
-> git clone https://github.com/fw-ai/cookbook
+> git clone https://github.com/fw-ai-external/cookbook
 > pip install -e ./cookbook/training
 > cd cookbook
 > ```

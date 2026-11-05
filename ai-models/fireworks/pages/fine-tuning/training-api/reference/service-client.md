@@ -210,7 +210,7 @@ logprobs = result.loss_fn_outputs[0]["logprobs"].data
 
 > [!NOTE]
 >
-> Built-in loss types like `"cross_entropy"` require datums with `target_tokens` in `loss_fn_inputs`. Datums built with `datum_from_model_input_weights` will fail with built-in losses; use them with `forward_backward_custom` instead. For datum examples for built-in and custom losses, see the cookbook skill's [`training-api-losses` reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/training-api-losses.md).
+> Built-in loss types like `"cross_entropy"` require datums with `target_tokens` in `loss_fn_inputs`. Datums built with `datum_from_model_input_weights` will fail with built-in losses; use them with `forward_backward_custom` instead. For datum examples for built-in and custom losses, see the cookbook skill's [`training-api-losses` reference](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/training-api-losses.md).
 
 ### `forward_backward(datums, loss_type, loss_fn_config=None)`
 
@@ -265,7 +265,7 @@ training_client.optim_step(
 ).result()
 ```
 
-Advanced callers may pass `grad_accumulation_normalization` to control how accumulated gradients are normalized. The default `None` leaves gradients unchanged. Pass `GradAccNormalization.NUM_LOSS_TOKENS`, `GradAccNormalization.NUM_SEQUENCES`, or `GradAccNormalization.NONE` rather than raw strings. See the [cookbook skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-gradient-accumulation.md) for operational guidance.
+Advanced callers may pass `grad_accumulation_normalization` to control how accumulated gradients are normalized. The default `None` leaves gradients unchanged. Pass `GradAccNormalization.NUM_LOSS_TOKENS`, `GradAccNormalization.NUM_SEQUENCES`, or `GradAccNormalization.NONE` rather than raw strings. See the [cookbook skill reference](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-gradient-accumulation.md) for operational guidance.
 
 ### `save_weights_for_sampler(name, checkpoint_type=None)`
 

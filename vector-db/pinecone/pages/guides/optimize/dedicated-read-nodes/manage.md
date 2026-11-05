@@ -48,7 +48,7 @@ curl -X GET "https://$INDEX_HOST/describe_index_stats" \
 
 In the response, `indexFullness` describes how full the index is, on a scale of 0 to 1. It's set to the greater of `memoryFullness` and `storageFullness`.
 
-Pinecone also [emits these values](/guides/production/monitoring#available-metrics). Use them to track fullness over time in Prometheus or Datadog, and to alert before your index reaches capacity.
+Pinecone also [emits these values](/guides/production/monitor-performance#available-metrics). Use them to track fullness over time in Prometheus or Datadog, and to alert before your index reaches capacity.
 
 ## Change node types
 

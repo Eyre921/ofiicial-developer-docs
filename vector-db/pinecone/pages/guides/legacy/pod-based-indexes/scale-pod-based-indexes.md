@@ -12,7 +12,7 @@ Scale Pinecone pod-based indexes by adding pods or replicas. Pod indexes are leg
 
 While your index can still serve queries, new upserts may fail as the capacity becomes exhausted. If you need to scale your environment to accommodate more vectors, you can scale vertically by increasing the size of your existing pods, or horizontally by adding pods or replicas.
 
-This page explains how you can scale your [pod-based indexes](/guides/indexes/indexing-overview#pod-based-indexes) horizontally and vertically.
+This page explains how you can scale your [pod-based indexes](/guides/indexes/index-data-overview#pod-based-indexes) horizontally and vertically.
 
 ## Vertical vs. horizontal scaling
 
@@ -24,7 +24,7 @@ Vertical scaling increases the size of your existing pods, while horizontal scal
 
 ### Increase pod size
 
-The default [pod size](/guides/indexes/indexing-overview#pod-size-and-performance) is `x1`. You can increase the size to `x2`, `x4`, or `x8`. Moving up to the next size effectively doubles the capacity of the index. If you need to scale by smaller increments, then consider horizontal scaling.
+The default [pod size](/guides/indexes/index-data-overview#pod-size-and-performance) is `x1`. You can increase the size to `x2`, `x4`, or `x8`. Moving up to the next size effectively doubles the capacity of the index. If you need to scale by smaller increments, then consider horizontal scaling.
 
 Increasing the pod size of your index doesn't result in downtime. Reads and writes continue uninterrupted during the scaling process, which completes in about 10 minutes. You can't reduce the pod size of your indexes.
 

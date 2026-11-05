@@ -31,7 +31,7 @@ Once you have your API key, export it as an environment variable in your termina
 To create and manage on-demand deployments, you'll need the `firectl` CLI tool. Install it using one of the following methods, based on your platform:
 
 ```bash homebrew theme={null}
-brew tap fw-ai/firectl
+brew tap fw-ai-external/firectl
 brew install firectl
 
 # If you encounter a failed SHA256 check, try first running
@@ -128,20 +128,16 @@ Now you can query your on-demand deployment using the same API as serverless mod
 >
 > Install the [Fireworks Python SDK](/tools-sdks/python-sdk):
 >
-> > [!NOTE]
-> >
-> > The SDK is currently in alpha. Use the `--pre` flag when installing to get the latest version.
->
 > ```bash pip theme={null}
-> pip install --pre fireworks-ai
+> python -m pip install --upgrade fireworks-ai
 > ```
 >
 > ```bash poetry theme={null}
-> poetry add --pre fireworks-ai
+> poetry add fireworks-ai
 > ```
 >
 > ```bash uv theme={null}
-> uv add --pre fireworks-ai
+> uv add fireworks-ai
 > ```
 >
 > Then make your first on-demand API call:
