@@ -1,6 +1,6 @@
 # dev-platforms/resend 文档索引
 
-> 共 422 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 423 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -262,6 +262,7 @@
 - `docs/guides/dns/strato` — [Strato](pages/docs/guides/dns/strato.md) · [原文](https://resend.com/docs/guides/dns/strato)
 - `docs/guides/dns/vercel` — [Vercel](pages/docs/guides/dns/vercel.md) · [原文](https://resend.com/docs/guides/dns/vercel)
 - `docs/guides/inboxes/agent` — [Inbox Agent](pages/docs/guides/inboxes/agent.md) · [原文](https://resend.com/docs/guides/inboxes/agent)
+- `docs/guides/inboxes/build-a-support-inbox` — [Build a support inbox from a contact form](pages/docs/guides/inboxes/build-a-support-inbox.md) · [原文](https://resend.com/docs/guides/inboxes/build-a-support-inbox)
 - `docs/guides/inboxes/create-inboxes` — [Creating Inboxes](pages/docs/guides/inboxes/create-inboxes.md) · [原文](https://resend.com/docs/guides/inboxes/create-inboxes)
 - `docs/guides/inboxes/drafts` — [Inbox Drafts](pages/docs/guides/inboxes/drafts.md) · [原文](https://resend.com/docs/guides/inboxes/drafts)
 - `docs/guides/inboxes/labels` — [Manage Labels](pages/docs/guides/inboxes/labels.md) · [原文](https://resend.com/docs/guides/inboxes/labels)

@@ -84550,11 +84550,13 @@ Install and operate Pinecone Nexus in your own cloud account.
 >
 > Nexus BYOC is available only on [Enterprise plans](https://www.pinecone.io/pricing/).
 
-For architecture, see the [Nexus BYOC overview](/guides/nexus/byoc/overview). For data residency and limits, see [Data residency and limits](/guides/nexus/byoc/reference).
+This guide installs Pinecone Nexus Bring Your Own Cloud (BYOC) in your AWS, GCP, or Azure account, then covers how to manage the deployment. For the architecture and what data leaves your account, see the [Nexus BYOC overview](/guides/nexus/byoc/overview) and [Data residency and limits](/guides/nexus/byoc/reference).
 
 ## Prerequisites
 
-Before deploying Nexus BYOC, ensure you have the following tools installed on the machine that runs the install:
+### Tools
+
+Install these on the machine that runs the install:
 
 | Tool | Purpose | Install |
 | - | - | - |
@@ -84564,44 +84566,48 @@ Before deploying Nexus BYOC, ensure you have the following tools installed on th
 | Pulumi | Infrastructure-as-code | [pulumi.com/docs/install](https://www.pulumi.com/docs/install/) |
 | kubectl | Cluster access | [kubernetes.io](https://kubernetes.io/docs/tasks/tools/) |
 
-You also need:
-
-* The CLI for your cloud provider:
-  * **AWS**: [AWS CLI v2](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
-  * **GCP**: [gcloud CLI](https://cloud.google.com/sdk/docs/install), plus the `gke-gcloud-auth-plugin` component (`gcloud components install gke-gcloud-auth-plugin`)
-  * **Azure**: [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
-* A **dedicated cloud account** with admin-level permissions, used only for this deployment:
-  * **AWS**: a dedicated account with `AdministratorAccess`. The installer creates IAM roles and policies, so `PowerUserAccess` isn't sufficient.
-  * **GCP**: a dedicated project with `roles/owner` and billing enabled. The installer creates IAM service accounts and bindings, so `roles/editor` isn't sufficient.
-  * **Azure**: a dedicated subscription with `Owner`. The installer creates managed identities and role assignments, so `Contributor` isn't sufficient.
-* A **Pinecone API key** from the Pinecone console.
-* A Pinecone **Enterprise plan** (required for BYOC access).
-* A **generation-LLM key** (BYOM). The shipped default is Google Gemini, so get a key from [Google AI Studio](https://aistudio.google.com/apikey). Embedding and rerank run on Pinecone-hosted models by default (no extra key). See [Model guidance](/guides/nexus/models) for the model catalog and how to repoint generation, embedding, or rerank, and [Data flows and residency](/guides/nexus/byoc/reference#data-flows-and-residency) for where each call's content goes.
-* A **Pulumi state backend** (either Pulumi Cloud or local state via `pulumi login --local`).
-* Sufficient cloud quota for the resources (the setup wizard validates this).
-
-Confirm these environment inputs before you start:
-
-* **Region and three availability zones (AZs).** Deploy across three AZs, the supported high-availability shape. The generation-model provider you choose must be available in the region.
-* **A spare private IP range** (RFC 1918, `/16` to `/20`) that doesn't overlap your existing networks. This becomes the Nexus virtual network.
-* **Where your source data lives.** Know where your corpus resides so you can stage it into a context after install.
-* **Egress paths.** Nexus makes outbound connections for the control-plane callback, metrics and traces, container image pulls, and calls to the inference models you configure. What content those model calls carry depends on how you configure your models. See [Data flows and residency](/guides/nexus/byoc/reference#data-flows-and-residency).
-
 > [!NOTE]
 >
 > If you install any new tools, open a new terminal session before proceeding so that your shell picks up the updated PATH and environment.
+
+### Cloud account
+
+Use a cloud account, project, or subscription dedicated to this deployment, with admin-level access, and install your cloud's CLI:
+
+| Cloud | CLI | Account | Required role |
+| - | - | - | - |
+| AWS | [AWS CLI v2](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) | Dedicated account | `AdministratorAccess` |
+| GCP | [gcloud CLI](https://cloud.google.com/sdk/docs/install) | Dedicated project with billing enabled | `roles/owner` |
+| Azure | [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) | Dedicated subscription | `Owner` |
+
+The installer creates IAM roles, service accounts, and role assignments, so `PowerUserAccess` (AWS), `roles/editor` (GCP), and `Contributor` (Azure) aren't sufficient. On GCP, also install the GKE auth plugin with `gcloud components install gke-gcloud-auth-plugin`.
+
+### Keys and services
+
+* A Pinecone API key from the [Pinecone console](https://app.pinecone.io/organizations/-/keys).
+* A key for the generation model. The shipped default is Google Gemini, so get a key from [Google AI Studio](https://aistudio.google.com/apikey). Embedding and rerank run on Pinecone-hosted models by default and need no key. To use other models, see [Nexus models](/guides/nexus/models).
+* A Pulumi state backend, either Pulumi Cloud or local state through `pulumi login --local`.
+
+### Network and region
+
+Confirm these before you start:
+
+* **Region and three availability zones (AZs):** Deploy across three AZs, the supported high-availability shape. The generation-model provider you choose must be available in the region.
+* **A spare private IP range:** A range that doesn't overlap your existing networks, which becomes the Nexus virtual network. On AWS, it must be an RFC 1918 range from `/16` to `/20`. On Azure, it must be `/20` or larger. The setup wizard validates it.
+* **Where your source data lives:** Know where your corpus resides so you can stage it into a context after install.
+* **Egress paths:** Nexus makes outbound connections for the control-plane callback, metrics and traces, container image pulls, and calls to the inference models you configure. What content those model calls carry depends on your model configuration. See [Data flows and residency](/guides/nexus/byoc/reference#data-flows-and-residency).
 
 ## 1. Deploy
 
 To deploy Nexus BYOC, follow these steps.
 
-**1. Authenticate**
+### 1. Authenticate
 
 The setup script checks your credentials but doesn't log you in, so authenticate to your cloud and to Pulumi first.
 
 > [tab] AWS
 >
-> ```bash theme={null}
+> ```bash Terminal theme={null}
 > aws configure                  # or: aws sso login / exported AWS_* env vars
 > aws sts get-caller-identity    # verify
 > pulumi login                   # or: pulumi login --local
@@ -84609,7 +84615,7 @@ The setup script checks your credentials but doesn't log you in, so authenticate
 
 > [tab] GCP
 >
-> ```bash theme={null}
+> ```bash Terminal theme={null}
 > gcloud auth login
 > gcloud auth application-default login
 > pulumi login                   # or: pulumi login --local
@@ -84617,7 +84623,7 @@ The setup script checks your credentials but doesn't log you in, so authenticate
 
 > [tab] Azure
 >
-> ```bash theme={null}
+> ```bash Terminal theme={null}
 > az login
 > az account show                # verify
 > pulumi login                   # or: pulumi login --local
@@ -84625,11 +84631,11 @@ The setup script checks your credentials but doesn't log you in, so authenticate
 
 If you use the local Pulumi backend, choose a passphrase for encrypting stack secrets and export it as `PULUMI_CONFIG_PASSPHRASE`. Every `pulumi` command needs it.
 
-**2. Run the setup wizard**
+### 2. Run the setup wizard
 
 Clone the deployment repository and run the bootstrap script from the clone. The generated project is created next to the clone and depends on it.
 
-```bash theme={null}
+```bash Terminal theme={null}
 git clone https://github.com/pinecone-io/pulumi-pinecone-nexus-byoc.git
 bash pulumi-pinecone-nexus-byoc/bootstrap.sh --cloud gcp
 ```
@@ -84650,7 +84656,7 @@ The script selects your cloud provider, checks that required tools are installed
 > | **Cloud credentials** | Validates credentials and displays your account/project/subscription ID. |
 > | **Region** | Region for deployment. |
 > | **Availability zones** | Three zones for high availability. |
-> | **VPC/VNet CIDR block** | Private IP range for the deployment. Choose a `/16` to `/20` that doesn't overlap existing networks. |
+> | **VPC/VNet CIDR block** | Private IP range for the deployment that doesn't overlap existing networks. See [Network and region](#network-and-region) for the size rules. |
 > | **Generation-LLM key** | The default catalog's Gemini API key (BYOM). |
 > | **Network access** | Public access. Private-only access is not supported for Nexus. See [Limitations](/guides/nexus/byoc/reference#limitations). |
 > | **Deletion protection** | Whether to protect storage and database resources from accidental deletion. Enable to guard against teardown mistakes. Disable before `pulumi destroy`. |
@@ -84659,11 +84665,11 @@ The script selects your cloud provider, checks that required tools are installed
 
 After completing the wizard, a Pulumi project is generated in your project directory. To change configuration later, edit `Pulumi.<stack>.yaml` and run `pulumi up`.
 
-**3. Deploy the infrastructure**
+### 3. Deploy the infrastructure
 
 Deploy the generated Pulumi project to create your cloud resources:
 
-```bash theme={null}
+```bash Terminal theme={null}
 cd pinecone-nexus-byoc
 pulumi up
 ```
@@ -84705,25 +84711,25 @@ When complete, the output displays:
 >
 > The cluster comes up small and then autoscales across several node pools spread over the three AZs. See [Cluster footprint](/guides/nexus/byoc/reference#cluster-footprint) for the node pools.
 
-**4. Verify the deployment**
+### 4. Verify the deployment
 
 Configure `kubectl` using the `update_kubeconfig_command` from the deployment output:
 
 > [tab] AWS
 >
-> ```bash theme={null}
+> ```bash Terminal theme={null}
 > aws eks update-kubeconfig --region <region> --name <cluster-name>
 > ```
 
 > [tab] GCP
 >
-> ```bash theme={null}
+> ```bash Terminal theme={null}
 > gcloud container clusters get-credentials <cluster-name> --region <region> --project <project-id>
 > ```
 
 > [tab] Azure
 >
-> ```bash theme={null}
+> ```bash Terminal theme={null}
 > az aks get-credentials --resource-group <resource-group> --name <cluster-name>
 > ```
 
@@ -84731,7 +84737,7 @@ Cluster access is for administrative tasks like viewing operations and troublesh
 
 Verify all components are running:
 
-```bash theme={null}
+```bash Terminal theme={null}
 kubectl get pods -A | grep -E "(pinecone|pc-|nexus)"
 ```
 
@@ -84743,15 +84749,15 @@ Once your deployment is up and the `default` workspace is ready, you work with N
 
 Two things are specific to BYOC:
 
-* **Point your client at your own workspace host.** Instead of the Pinecone-hosted endpoint, use your deployment's workspace host, the base of `nexus_default_workspace_data_console_url` from the deployment output. For the CLI, pass it as `--api-url`:
+* **Workspace host:** Instead of the Pinecone-hosted endpoint, use your deployment's workspace host, the base of `nexus_default_workspace_data_console_url` from the deployment output. For the CLI, pass it as `--api-url`:
 
-  ```bash theme={null}
+  ```bash Terminal theme={null}
   nexus login --api-url https://default-<vault>.wksp.<environment>.pinecone.io --api-key "$PINECONE_API_KEY"
   ```
 
   Authentication uses your Pinecone API key, and the tenancy boundary is the workspace's Pinecone project.
 
-* **A `default` workspace is created on the first `pulumi up`.** The install creates it automatically and prints its data console URL (served from your deployment) and its Pinecone Console URL. Later `pulumi up` runs never recreate or modify it.
+* **Default workspace:** The first `pulumi up` creates a default workspace and prints its data console URL (served from your deployment) and its Pinecone Console URL. The workspace is named `default-<suffix>`, where the suffix is unique to your deployment, unless you set `nexus-default-workspace-name`. Later `pulumi up` runs never recreate or modify it.
 
 ## 3. Manage
 
@@ -84759,20 +84765,18 @@ Two things are specific to BYOC:
 >
 > Deploying a BYOC environment creates an internal project named `__SLI__` in your organization. Pinecone uses it to enforce SLAs for your BYOC environment. Don't modify or delete it.
 
-### Operations and upgrades
+### Upgrade
 
-Pinecone uses a pull-based model for cluster operations:
+Pinecone uses a pull-based model for cluster operations, so all communication is outbound from your cluster:
 
 1. When upgrades, scaling, or maintenance are needed, Pinecone queues operations in the control plane.
 2. An agent running in your cluster (deployed automatically during setup) continuously pulls pending operations.
 3. Operations execute locally within your cluster.
 4. Status is reported back to Pinecone for monitoring.
 
-This model ensures Pinecone never needs direct access to your infrastructure. All communication is outbound from your cluster.
-
 A deployment is pinned to two independent image tags that roll separately: `pinecone-version` (the Pinecone Database images) and `nexus-version` (the Nexus images). The two pins are unrelated. Bumping one doesn't touch the other. Pinecone manages upgrades in the background. To trigger one manually, set either pin (or both) to your target version (for example, `main-abc1234`) and re-run `pulumi up`:
 
-```bash theme={null}
+```bash Terminal theme={null}
 # Bump the Pinecone Database version
 pulumi config set pinecone-version <new-db-tag>
 pulumi up
@@ -84782,7 +84786,7 @@ pulumi config set nexus-version <new-nexus-tag>
 pulumi up
 ```
 
-### Monitoring
+### Monitor
 
 You can monitor your deployment through multiple channels:
 
@@ -84798,11 +84802,11 @@ You can monitor your deployment through multiple channels:
 >
 > Cluster operations are persisted as Kubernetes CRDs for compliance and auditing:
 >
-> ```bash theme={null}
+> ```bash Terminal theme={null}
 > kubectl get cluster-operations
 > ```
 
-### Cleanup
+### Clean up
 
 > [!WARNING]
 >
@@ -84810,7 +84814,7 @@ You can monitor your deployment through multiple channels:
 
 To destroy your deployment:
 
-```bash theme={null}
+```bash Terminal theme={null}
 # 1. Delete all workspaces via the Pinecone console
 # 2. Then destroy the infrastructure
 pulumi destroy
@@ -84837,7 +84841,7 @@ If `deletion-protection` is enabled (the default), you must either disable it in
 >
 > If `pulumi up` fails partway through:
 >
-> ```bash theme={null}
+> ```bash Terminal theme={null}
 > pulumi refresh  # Sync state with actual resources
 > pulumi up       # Retry deployment
 > ```
@@ -84850,20 +84854,20 @@ If `deletion-protection` is enabled (the default), you must either disable it in
 >
 > > [tab] AWS
 > >
-> > ```bash theme={null}
+> > ```bash Terminal theme={null}
 > > aws sts get-caller-identity
 > > ```
 >
 > > [tab] GCP
 > >
-> > ```bash theme={null}
+> > ```bash Terminal theme={null}
 > > gcloud auth list
 > > gcloud config get-value project
 > > ```
 >
 > > [tab] Azure
 > >
-> > ```bash theme={null}
+> > ```bash Terminal theme={null}
 > > az account show
 > > ```
 
@@ -84893,12 +84897,12 @@ Learn how Fireworks AI open models fit into a Nexus BYOC deployment and why you'
 
 ## Nexus integration
 
-Nexus uses models at several points, which [Nexus model guidance](/guides/nexus/models) describes. In BYOC, the inference proxy routes every model call according to your model catalog, `inference-proxy-models.toml`. Each catalog entry names an upstream model, the endpoint that serves it, and the secret that holds its API key. Fireworks exposes an OpenAI-compatible endpoint, so a Fireworks model is a catalog entry with `api_style = "openai"` pointed at that endpoint.
+Nexus uses models at several points, which [Nexus models](/guides/nexus/models) describes. In BYOC, the inference proxy routes every model call according to your model catalog, `inference-proxy-models.toml`. Each catalog entry names an upstream model, the endpoint that serves it, and the secret that holds its API key. Fireworks exposes an OpenAI-compatible endpoint, so a Fireworks model is a catalog entry with `api_style = "openai"` pointed at that endpoint.
 
 Once Fireworks models are in the catalog, they behave like any other model:
 
 * **Work-area defaults:** The catalog's `phase_defaults` assigns a default model to each work area (Query, Curation, and System). A call that names no model runs on its work area's default.
-* **Per-query selection:** A query can name any enabled model by its catalog ID, and the model selector on a context's **Query** tab lists every model enabled for Query.
+* **Per-query selection:** A query can name any model enabled for Query by its catalog ID.
 * **Embeddings:** You can optionally route the default embedding model to Fireworks. The setup guide keeps reranking on a Pinecone-hosted model.
 
 ## Benefits
@@ -84961,8 +84965,8 @@ A Fireworks chat model is an `[llm_models.<id>]` entry with `api_style = "openai
 | `model` | Yes | The Fireworks model path, such as `accounts/fireworks/models/glm-5p3`. |
 | `base_url` | Yes | The Fireworks endpoint. |
 | `api_key_ref` | Yes | The name of the secret that holds your Fireworks API key. |
-| `label` | Yes | The model name shown in the console and in `GET /models`. |
-| `provider` | Yes | The provider tag shown in the console and in `GET /models`, such as `fireworks`. |
+| `label` | Yes | The model name shown in `GET /models`. |
+| `provider` | Yes | The provider tag shown in `GET /models`, such as `fireworks`. |
 | `context_window` | Yes | The input token budget. |
 | `max_output_tokens` | Yes | The output token cap. The proxy enforces it on every request. |
 | `input_price_per_mtok` | No | The price per million input tokens. Set the price fields to have usage and the query trace report cost for the model. |
@@ -85005,7 +85009,7 @@ The `[default]` profile controls which catalog models your deployment serves.
 ## Constraints
 
 * **Chat model parameters:** Every chat model must support the OpenAI `tools` and `response_format` parameters, because Nexus relies on both.
-* **Default models:** Each work area's default comes from `llm.phase_defaults`, falling back to the tiers: Query from `search` or the `standard` tier, Curation from `curate` or the `lite` tier, and System from `agent` or the `standard` tier. The catalog reapplies these defaults on every settings pull, so the console's **Default models** card is read-only. To change a default, edit the catalog and run `pulumi up`.
+* **Default models:** Each work area's default comes from `llm.phase_defaults`, falling back to the tiers: Query from `search` or the `standard` tier, Curation from `curate` or the `lite` tier, and System from `agent` or the `standard` tier. The catalog reapplies these defaults on every settings pull, so to change a default, edit the catalog and run `pulumi up`.
 * **Tier names in queries:** A query treats a tier name, such as `pro`, as the Query default. Name models by catalog ID instead.
 * **Embedding changes:** A Pinecone index's dimension is fixed when the index is created. If you change the default embedding model, keep every embedding model a context has used in the catalog, because existing contexts look up their embedding model by ID at query time.
 
@@ -85145,7 +85149,7 @@ agent  = "glm-5p3-flash"
 * **Curation (`curate`):** Builds artifacts from your sources. Curation reads every source, so choose a fast, low-cost model such as `glm-5p3-flash` or `deepseek-v4p1-flash`. This default is the model curation runs on, so it's your main control over curation cost.
 * **System (`agent`):** Runs background workflows, such as Explore. This catalog uses `glm-5p3-flash`.
 
-To run a query on another model, such as `glm-5p3`, select it in the model selector on a context's **Query** tab or name it in the query's `model` field, as shown in [Query Nexus with a Fireworks model](#query-nexus-with-a-fireworks-model).
+To run a query on another model, such as `glm-5p3`, name it in the query's `model` field, as shown in [Query Nexus with a Fireworks model](#query-nexus-with-a-fireworks-model).
 
 ### Vision and pricing
 
@@ -85204,7 +85208,7 @@ pulumi up
 
 ## Check your defaults
 
-In the Nexus console, open **Settings** and select the **Deployment** tab. The **Default models** card shows the default for each work area, read-only, because the catalog reapplies `phase_defaults` on every settings pull. To change a default, edit `phase_defaults` and run `pulumi up` again.
+`GET /models` returns the current default for each work area in its `phase_defaults` field, and the query code in the next section prints them. The catalog reapplies `phase_defaults` on every settings pull, so to change a default, edit `phase_defaults` and run `pulumi up` again.
 
 ## Query Nexus with a Fireworks model
 
@@ -85330,34 +85334,39 @@ pulumi up
 # Nexus BYOC overview
 Source: https://docs.pinecone.io/guides/nexus/byoc/overview
 
-Learn what Nexus BYOC is, how it relates to Database BYOC, and its architecture.
+Learn what Nexus BYOC deploys in your cloud account, what data leaves it, and how it compares to Database BYOC.
 
 > [!NOTE]
 >
 > Nexus BYOC is available only on [Enterprise plans](https://www.pinecone.io/pricing/).
 
-Pinecone Nexus compiles your enterprise data into queryable knowledge that AI agents retrieve with a single [KnowQL](/guides/nexus/concepts#knowql) query. Nexus BYOC (Bring Your Own Cloud) is a single installer that deploys both Nexus and the Pinecone Database data plane it runs on, entirely inside your own cloud account (AWS, GCP, or Azure). You don't install Database BYOC separately. Nexus BYOC includes it (see [how the two relate](#how-nexus-byoc-relates-to-database-byoc)).
+Pinecone Nexus compiles your enterprise data into queryable knowledge that AI agents retrieve with a single [KnowQL](/guides/nexus/concepts#knowql) query. Nexus BYOC (Bring Your Own Cloud) deploys Nexus, and the Pinecone Database data plane it runs on, inside your own AWS, GCP, or Azure account. It's built for organizations with strict data sovereignty, network isolation, and data residency requirements, and Pinecone still handles upgrades, scaling, and maintenance. To install it, see [Deploy Nexus BYOC](/guides/nexus/byoc/deploy).
 
-Nexus BYOC is designed for organizations with strict requirements around data sovereignty, network isolation, and data residency. You get the benefits of a managed service (upgrades, scaling, and maintenance) without giving up control of your data or infrastructure.
+## Architecture
 
-Pinecone never has direct access to your cloud account, and no inbound network access is required. Components in your cluster pull operations from Pinecone and execute them locally. Your sources and compiled knowledge are stored within your account. Data leaves your account through the inference calls Nexus makes to curate and answer, plus operational telemetry (no customer content). Those inference calls carry the content being processed to the model endpoints used for each step. Models are configurable (BYOM). Generation always uses the provider you configure, and by default embedding and rerank run on Pinecone-hosted models, so with the defaults some document and query text is sent to Pinecone for those steps. See [Data flows and residency](/guides/nexus/byoc/reference#data-flows-and-residency) for the exact breakdown, and read it before making residency commitments.
+Nexus BYOC splits into two planes:
 
-Nexus BYOC uses a split architecture:
+* **Data plane:** Runs in your cloud account within a dedicated virtual network (a VPC on AWS and GCP, a VNet on Azure). It holds the Nexus services, the Pinecone Database data plane they depend on, a metadata store, and object storage for your corpus and derived knowledge artifacts. Your sources are curated, indexed, and queried here.
+* **Control plane:** Managed by Pinecone globally. It handles workspace lifecycle, authentication, billing, and user management, and never stores or processes your data.
 
-* The **data plane** runs entirely in your cloud account within a dedicated virtual network (a VPC on AWS and GCP, a VNet on Azure): the Nexus services, the Pinecone Database data plane they depend on, a metadata store, and object storage for your corpus and derived knowledge artifacts. This is where your sources are curated, indexed, and queried.
-* The **control plane** is managed by Pinecone globally and handles workspace lifecycle, authentication, billing, and user management, but never stores or processes your data.
+Pinecone never has direct access to your cloud account, and the deployment needs no inbound network access. For maintenance, an agent in your cluster authenticates with Pinecone's control plane, pulls pending operations such as upgrades and scaling, and runs them locally.
 
-For maintenance, an agent in your cluster authenticates with Pinecone's control plane, pulls pending operations (upgrades, scaling, and so on), and executes them locally. Only operational metrics (CPU, memory, latency) and traces are transmitted to Pinecone for monitoring. Customer data is filtered out before transmission.
+## Data residency
 
-## How Nexus BYOC relates to Database BYOC
+Your sources and compiled knowledge stay in your cloud account. Data leaves it in two ways:
 
-Nexus BYOC is installed from a single repository, [`pulumi-pinecone-nexus-byoc`](https://github.com/pinecone-io/pulumi-pinecone-nexus-byoc). One `pulumi up` deploys both the Nexus services and the Pinecone Database data plane they run on. There is no separate Database install to run first or alongside it.
+* **Inference calls:** To curate and answer, Nexus sends the content it's processing to the model endpoint for each step. Generation always uses the provider you configure. By default, embedding and rerank run on Pinecone-hosted models, so some document and query text goes to Pinecone for those steps. You can change any of these [models](/guides/nexus/models).
+* **Operational telemetry:** Metrics such as CPU, memory, and latency, plus traces. Customer data is filtered out before it's sent.
 
-The Pinecone Database data plane is deployed automatically because Nexus runs on it: it's the storage and retrieval engine beneath your contexts, not a separate product you operate. You work with a Nexus BYOC deployment through contexts and [KnowQL](/guides/nexus/concepts#knowql). Nexus BYOC brings one additional dependency: a generation-LLM key you supply (default: Google Gemini).
+Before you make residency commitments, read [Data flows and residency](/guides/nexus/byoc/reference#data-flows-and-residency) for the exact breakdown.
 
-If you want to run Pinecone Database on its own in your cloud instead, see [Database BYOC](/guides/production/bring-your-own-cloud), which has its own installer. The Database BYOC installer isn't part of the Nexus install.
+## Nexus BYOC vs. Database BYOC
 
-Nexus BYOC uses the core Nexus product terms (context, manifest, KnowQL, and workspace). See [Nexus concepts](/guides/nexus/concepts) for definitions, [Data residency and limits](/guides/nexus/byoc/reference) for the security and operational details, and [Deploy Nexus BYOC](/guides/nexus/byoc/deploy) to install.
+Nexus BYOC installs from one repository, [`pulumi-pinecone-nexus-byoc`](https://github.com/pinecone-io/pulumi-pinecone-nexus-byoc). One `pulumi up` deploys both the Nexus services and the Pinecone Database data plane they run on, so there's no separate Database install. The Database data plane is the storage and retrieval engine beneath your contexts, not a product you operate on its own, and you work with the deployment through contexts and KnowQL.
+
+Nexus BYOC needs one thing Database BYOC doesn't: a key for a generation model, Google Gemini by default.
+
+To run Pinecone Database on its own in your cloud, use [Database BYOC](/guides/production/bring-your-own-cloud), which has its own installer.
 
 
 # Nexus BYOC data residency and limits
@@ -85369,26 +85378,28 @@ See where your data lives and travels in Nexus BYOC, plus its authentication, en
 >
 > Nexus BYOC is available only on [Enterprise plans](https://www.pinecone.io/pricing/).
 
-The security and operational details of a Nexus BYOC deployment: where your data stays and where it travels, how you authenticate and encrypt it, the cluster footprint, and the current limitations. For what BYOC is and how it's architected, see the [Nexus BYOC overview](/guides/nexus/byoc/overview).
+This page covers where your Nexus BYOC data stays and where it travels, how you authenticate and encrypt it, the cluster's footprint, and current limitations.
 
 ## Data flows and residency
 
-Nexus BYOC keeps your data at rest in your account, but, like any system that calls a language model, it must send the content being processed to whatever model serves each request. Understand this before making residency or compliance commitments.
+Nexus BYOC keeps your data at rest in your cloud account. Like any system that calls a language model, though, it sends the content it's processing to the model that serves each request, so understand these flows before you make residency or compliance commitments.
 
-**Stays in your cloud account (at rest):**
+### Data at rest
 
-* Your uploaded sources.
-* The compiled knowledge built from them: chunks and derived artifacts.
-* The indexes that back your contexts and the Nexus metadata store.
+These stay in object storage and databases inside your virtual network:
 
-These live in your object storage, database, and metadata store, inside your virtual network.
+* Your uploaded sources
+* The chunks and artifacts compiled from them
+* The indexes behind your contexts, and the Nexus metadata store
 
-**Leaves your account, and where it goes:**
+### Data that leaves your account
 
-* **To Pinecone (control plane and observability):** operational metrics, traces, and cluster and operation status (for example, CPU, memory, and latency). *No customer content.* Customer data is filtered out before transmission.
-* **To the inference models you configure:** the content being processed. Nexus calls models during curation (embedding your source text, and for artifact generation sending source text to the generation model) and during a query (sending the query text and the retrieved passages to the generation model, the query text to the embedding model, and candidate passages to the rerank model). Each such call carries that content to whichever provider serves the model:
-  * With the shipped defaults, the generation model is an external provider you bring (Google Gemini by default, using your key), so source text (during artifact generation) and query text plus retrieved passages go to that provider. Embedding and rerank run on Pinecone-hosted models, so the text being embedded or reranked is sent to Pinecone.
-  * **Every model is BYOM and configurable.** You choose the provider (and therefore the destination) for generation, embedding, and rerank independently. To keep all customer content inside your trust boundary, repoint each of these at a model you host or otherwise control. A residency-strict deployment doesn't have to use any Pinecone-hosted or third-party model.
+* **Pinecone control plane and observability:** Operational metrics (such as CPU, memory, and latency), traces, and cluster and operation status. Customer data is filtered out before it's sent.
+* **Inference models you configure:** The content being processed. During curation, Nexus sends source text to the embedding model, and to the generation model for artifact generation. During a query, it sends the query text to the embedding model, the query text and retrieved passages to the generation model, and candidate passages to the rerank model. Each call carries that content to whichever provider serves the model.
+
+With the shipped defaults, generation runs on a provider you bring (Google Gemini, with your key), so source text, query text, and retrieved passages go to that provider. Embedding and rerank run on Pinecone-hosted models, so the text being embedded or reranked goes to Pinecone.
+
+You choose the provider for generation, embedding, and rerank independently. To keep all customer content inside your trust boundary, point each one at a model you host or control. A residency-strict deployment doesn't need any Pinecone-hosted or third-party model.
 
 > [!WARNING]
 >
@@ -85400,11 +85411,13 @@ You authenticate to a BYOC deployment with Pinecone API keys. Nexus has no separ
 
 ## Encryption and customer-managed keys
 
-In BYOC, your data (sources, compiled knowledge, index contents, and the metadata store) is stored in your cloud account, on object storage, databases, and block volumes you own. You apply your cloud provider's KMS to those resources using the same native controls you use for other workloads: key policies, rotation, and compliance programs such as PCI or ISO 27001. Where the installer supports supplying your own KMS key, you can provide it. See the [deployment repository's README](https://github.com/pinecone-io/pulumi-pinecone-nexus-byoc) for current options. This isn't the console [CMEK](/guides/production/configure-cmek) flow used for hosted Pinecone projects. For how the two relate, see the Database BYOC page's [Encryption and customer-managed keys](/guides/production/bring-your-own-cloud#encryption-and-customer-managed-keys).
+Your data (sources, compiled knowledge, index contents, and the metadata store) lives on object storage, databases, and block volumes in your cloud account. You encrypt it with your cloud provider's KMS, using the same key policies, rotation, and compliance programs (such as PCI or ISO 27001) you use for other workloads. On AWS, the setup wizard also accepts your own KMS key (`kms-key-arn`) to encrypt S3 and RDS. GCP and Azure deployments don't support supplying your own key.
+
+This isn't the console's [customer-managed encryption keys (CMEK)](/guides/production/configure-cmek) flow for hosted Pinecone projects. For how the two relate, see [Encryption and customer-managed keys](/guides/production/bring-your-own-cloud#encryption-and-customer-managed-keys) on the Database BYOC page.
 
 ## Cluster footprint
 
-Nexus BYOC runs a Kubernetes cluster across several dedicated node pools spread over three availability zones (AZs):
+Nexus BYOC runs a Kubernetes cluster with several dedicated node pools spread over three availability zones (AZs):
 
 | Node pool | Purpose |
 | - | - |
@@ -85413,29 +85426,29 @@ Nexus BYOC runs a Kubernetes cluster across several dedicated node pools spread 
 | Nexus services | The curation and query runtimes and their workflow jobs |
 | [Dedicated read nodes](/guides/optimize/dedicated-read-nodes/overview) | Scale from zero as read demand grows |
 
-The cluster comes up small and autoscales with load and with the number of contexts and indexes. Node counts and instance types change across releases as the footprint is tuned. Size your cloud quotas from the installer's preflight quota checks in [Deploy Nexus BYOC](/guides/nexus/byoc/deploy) rather than from a fixed node count.
+The cluster starts small and autoscales with load and with the number of contexts and indexes. Node counts and instance types change between releases, so size your cloud quotas from the installer's preflight quota checks in [Deploy Nexus BYOC](/guides/nexus/byoc/deploy), not from a fixed node count.
 
 ## Limitations
 
-* **The endpoint is public and authenticated.** The Nexus API and console are reached over a public, access-controlled endpoint. Private-only access (PrivateLink, Private Service Connect, or Private Endpoint) for Nexus isn't supported. (The Pinecone Database data plane in the same deployment can run privately, but Nexus can't.)
-* **Domain and TLS are Pinecone-managed.** The endpoint is served on a Pinecone-managed domain (`.byoc.pinecone.io`) with certificates issued and renewed automatically. Custom or customer-owned domains aren't supported, so no DNS delegation or certificate handoff is required from you.
-* **Bring your own models.** Generation, embedding, and rerank are all BYOM and configurable. A generation-LLM key is required (default: Google Gemini). Provider quota is your responsibility, so size it to your ingest volume. Model configuration determines where content is sent. See [Data flows and residency](#data-flows-and-residency).
-* **Workspace names are unique per Pinecone project.** When several deployments share one project, give each additional deployment a distinct workspace name via `nexus-default-workspace-name`.
-* **Environment cap.** Each organization can create a limited number of BYOC environments. To request an increase, contact [Pinecone support](https://app.pinecone.io/organizations/-/settings/support/ticket).
+* **Endpoint:** The Nexus API and console use a public endpoint that requires authentication. Private-only access (PrivateLink, Private Service Connect, or Private Endpoint) isn't supported for Nexus, although the Pinecone Database data plane in the same deployment can run privately.
+* **Domain and TLS:** The endpoint uses a Pinecone-managed domain (`.byoc.pinecone.io`), and its certificates are issued and renewed automatically. Custom domains aren't supported, so you don't need to delegate DNS or hand off certificates.
+* **Models:** You choose the generation, embedding, and rerank models, and a generation-model key is required (Google Gemini by default). Provider quota is your responsibility, so size it to your ingest volume. Your model choices determine where content is sent, as [Data flows and residency](#data-flows-and-residency) describes.
+* **Workspace names:** Workspace names are unique per Pinecone project. When several deployments share one project, give each additional deployment its own workspace name with `nexus-default-workspace-name`.
+* **Environments:** Each organization can create a limited number of BYOC environments. To request more, contact [Pinecone support](https://app.pinecone.io/organizations/-/settings/support/ticket).
 
 To install, see [Deploy Nexus BYOC](/guides/nexus/byoc/deploy).
 
 
-# Nexus key concepts
+# Nexus key terms
 Source: https://docs.pinecone.io/guides/nexus/concepts
 
-Learn the core Pinecone Nexus concepts: sources, workspaces, contexts, manifests, artifacts, tasks, sessions, and queries, and how they connect.
+Learn the key Pinecone Nexus terms, from sources and contexts to artifacts, sessions, and queries, and how they connect.
 
-Pinecone Nexus compiles your data into queryable knowledge that AI agents reach through a single interface. This page defines the core concepts and how they fit together, from the sources you bring in to the answers agents get back. For a high-level diagram of how they connect, see [How Nexus works](/guides/nexus/how-it-works).
+Pinecone Nexus compiles your data into queryable knowledge that AI agents reach through a single interface. This page defines the key terms and how they fit together, from the sources you bring in to the answers agents get back. For a high-level diagram of how they connect, see [Nexus architecture](/guides/nexus/how-it-works).
 
 ## Sources
 
-Sources are your data, wherever it lives: docs and wikis, databases, APIs and SaaS, object storage, event streams, and code repos. Upload files directly, pull from a public Hugging Face or GitHub repository URL, or connect a Box or Google Drive account through a *connector*. Import and manage sources from a context's **Sources** tab, using **+ Add source**.
+Sources are your data, wherever it lives: docs and wikis, databases, APIs and SaaS, object storage, event streams, and code repos. Upload files directly, pull from a public Hugging Face or GitHub repository URL, or connect a Box or Google Drive account through a *connector*.
 
 ## Workspace
 
@@ -85447,19 +85460,19 @@ A context is the unit of knowledge: *Sources → Manifest → Knowledge*. The ma
 
 ## Manifest
 
-A manifest is the JSON plan that turns a context's sources into knowledge, so you configure a context instead of writing code. It defines what to chunk, embed, and distill into artifacts, and curation runs it. Shape it when you set up a context, or edit it later from the context's **Manifest** tab. [More on context design](/guides/nexus/context-design).
+A manifest is the JSON plan that turns a context's sources into knowledge, so you configure a context instead of writing code. It defines what to chunk, embed, and distill into artifacts, and curation runs it. Set it when you create a context, or replace it later with `PUT /contexts/{slug}`. [More on context design](/guides/nexus/context-design).
 
 ## Tasks and workflows
 
-A *task* runs a *workflow* in a sandbox. **Import** ingests and cleans sources, **Curate** builds artifacts per the manifest, **Explore** suggests a manifest from your sources, and **Optimize** self-tunes the manifest from real query traffic. **Search** answers a query via KnowQL. Each workflow may ensemble multiple models as needed. Watch curation and query spend under **Activity**.
+A *task* runs a *workflow* in a sandbox. **Import** ingests and cleans sources, **Curate** builds artifacts per the manifest, **Explore** recommends starter manifest templates that fit your sources, and **Optimize** self-tunes the manifest from real query traffic. **Search** answers a query via KnowQL. Each workflow may ensemble multiple models as needed.
 
 ## Artifacts (the knowledge)
 
-Artifacts are the condensed knowledge that curation produces. Each artifact has a *type* (its classification, shown in the console) and a *kind* (a config within the type), plus a scope and provenance, and can be linked to others by typed edges into a knowledge graph. Browse them by type on a context's **Knowledge** tab. [See the artifact reference](/guides/nexus/context-design#artifact-kinds).
+Artifacts are the condensed knowledge that curation produces. Each artifact has a *type* (its classification) and a *kind* (a config within the type), plus a scope and provenance, and can be linked to others by typed edges into a knowledge graph. [See the artifact reference](/guides/nexus/context-design#artifact-kinds).
 
 ## Query
 
-A query is a question asked against one or more curated contexts, and it's the single interface into Pinecone Nexus. Nexus plans its own retrieval and answers with citations. Query a single context from its **Query this context** box, or drive it from your own code via the [Nexus API](/reference/api/nexus/introduction). See the [quickstart](/guides/nexus/quickstart#3-query-your-context). To steer how a context answers every query, set [context-default instructions](/guides/nexus/context-design#context-default-instructions) in its manifest.
+A query is a question asked against one or more curated contexts, and it's the single interface into Pinecone Nexus. Nexus plans its own retrieval and answers with citations. Send queries from your own code through the [Nexus API](/reference/api/nexus/introduction). See the [quickstart](/guides/nexus/quickstart#3-query-your-context). To steer how a context answers every query, set [context-default instructions](/guides/nexus/context-design#context-default-instructions) in its manifest.
 
 ## KnowQL
 
@@ -85467,7 +85480,7 @@ KnowQL is the declarative query language agents use to query Nexus. A KnowQL que
 
 ## Sessions
 
-A session is a multi-turn conversation. A single query is one turn: a question in, an answer out. A session keeps state across turns, so follow-up questions resolve against what came before, and it can draw on more than one context at once. Start a session from **Sessions** in the sidebar, or from a context's **Query** tab.
+A session is a multi-turn conversation. A single query is one turn: a question in, an answer out. A session keeps state across turns, so follow-up questions resolve against what came before, and it can draw on more than one context at once. A query without `previous_query_id` starts a new session, and a query that passes one continues that session.
 
 
 # Configure artifact formats
@@ -85543,7 +85556,7 @@ Put your artifact types in a context's manifest under `curate.artifacts.artifact
 >
 > Add at least one source to the context before you curate. See the [quickstart](/guides/nexus/quickstart) for creating a context and adding sources.
 
-**1. Write the manifest to the context**
+### 1. Write the manifest to the context
 
 Send the manifest when you create the context, or update an existing one with `PUT /contexts/{slug}`. This example seeds both a markdown type and a SQLite table at creation:
 
@@ -85577,7 +85590,7 @@ curl -fsS -X POST "$NEXUS_BASE_URL/contexts" \
   }'
 ```
 
-**2. Curate the context**
+### 2. Curate the context
 
 Curation reads the sources and builds the artifacts your manifest defines. An empty body runs the first curate:
 
@@ -85589,9 +85602,9 @@ curl -fsS -X POST "$NEXUS_BASE_URL/contexts/board-minutes/curate" \
   -d '{}'
 ```
 
-After a later manifest change, pass `{"force": true}` to rebuild everything under the new manifest. Curation runs as a background task, so query the context once it finishes. See [How curation works](/guides/nexus/how-curation-works).
+After a later manifest change, pass `{"force": true}` to rebuild everything under the new manifest. Curation runs as a background task, so query the context once it finishes. See [Nexus curation](/guides/nexus/how-curation-works).
 
-**3. Query across both formats**
+### 3. Query across both formats
 
 A query reads both formats: the prose `Concept` artifacts semantically, and the `Meeting Log` table with SQL for exact answers.
 
@@ -85611,7 +85624,7 @@ Jordan Lee chaired 8 meetings, Priya Shah chaired 5, and Marcus Cole chaired 3.
 The counts come from the `Meeting Log` table, so they're exact rather than estimated from prose.
 
 
-# Context design overview
+# Nexus context design
 Source: https://docs.pinecone.io/guides/nexus/context-design
 
 Learn how a Pinecone Nexus context's manifest turns your sources into queryable knowledge.
@@ -85628,7 +85641,7 @@ You author a manifest through the [Nexus API](/reference/api/nexus/authenticatio
 * [Design your own manifest](/guides/nexus/design-your-own-manifest) by defining artifact and edge types directly.
 * Configure [artifact formats](/guides/nexus/configure-artifact-formats) to write a type as prose or as a queryable SQLite table.
 
-Curation executes the manifest against the sources. To change a context later, send a new manifest with `PUT /contexts/{slug}` and re-curate, or edit it on the context's **Manifest** tab in the console, including SQLite table formats. These guides use the API.
+Curation executes the manifest against the sources. To change a context later, send a new manifest with `PUT /contexts/{slug}` and re-curate.
 
 ## Knowledge layers
 
@@ -85640,7 +85653,7 @@ Sources are split into spans and embedded for hybrid (semantic + keyword) search
 
 ### Artifacts
 
-Artifacts sit above the chunks. Each artifact has a *type* and a *kind*, a *scope*, a *format*, *provenance* linking back to its source chunks, and optional *edges*, which are typed, directed, source-cited relationships to other artifacts. The *type* is the artifact's classification, defined by your manifest and shown in the console (a template might define types such as Note, Concept, Entity, and Workstream). The *kind* is a built-in config within a type.
+Artifacts sit above the chunks. Each artifact has a *type* and a *kind*, a *scope*, a *format*, *provenance* linking back to its source chunks, and optional *edges*, which are typed, directed, source-cited relationships to other artifacts. The *type* is the artifact's classification, defined by your manifest (a template might define types such as Note, Concept, Entity, and Workstream). The *kind* is a built-in config within a type.
 
 Corpus-scoped artifacts plus typed edges form a cross-document knowledge graph. Factual queries dive straight to chunks. Synthesizing or "connect-the-dots" queries enter at artifacts, walk the edges, then drill down to chunks for evidence.
 
@@ -85712,7 +85725,7 @@ The `kind` sets what an artifact represents and how it's extracted. The `name` i
 
 These steps use the data-plane base URL and session token from [Authentication](/reference/api/nexus/authentication). The manifest here is a general concept-and-entity design: a per-document note, corpus-wide concepts and entities, and an edge linking them.
 
-**1. Create the context with your manifest**
+### 1. Create the context with your manifest
 
 Supply the manifest in the `manifest` field when you create the context. To apply it to an existing context instead, use `PUT /contexts/{slug}` with the same body.
 
@@ -85746,11 +85759,11 @@ curl -fsS -X POST "$NEXUS_BASE_URL/contexts" \
   }'
 ```
 
-**2. Add sources**
+### 2. Add sources
 
 Curation needs sources. Upload files or import from a connector, then confirm at least one source is staged. See the [quickstart](/guides/nexus/quickstart) for adding sources.
 
-**3. Curate**
+### 3. Curate
 
 Curation executes the manifest against the sources, building your artifact and edge types:
 
@@ -85762,9 +85775,9 @@ curl -fsS -X POST "$NEXUS_BASE_URL/contexts/company-knowledge/curate" \
   -d '{}'
 ```
 
-An empty body runs an incremental curate. After a later manifest change, pass `{"force": true}` to rebuild everything under the new manifest. Curation runs as a background task, so query the context once it finishes. See [How curation works](/guides/nexus/how-curation-works).
+An empty body runs an incremental curate. After a later manifest change, pass `{"force": true}` to rebuild everything under the new manifest. Curation runs as a background task, so query the context once it finishes. See [Nexus curation](/guides/nexus/how-curation-works).
 
-**4. Query the context**
+### 4. Query the context
 
 Query the context to see the artifacts and edges curation built:
 
@@ -85776,7 +85789,7 @@ curl -fsS -X POST "$NEXUS_BASE_URL/query" \
   -d '{"scope": ["company-knowledge"], "ask": "How do the entities relate to each concept?"}'
 ```
 
-## More example manifests
+## Example manifests
 
 Each of these is a `curate.artifacts` manifest for a different corpus. Supply one in the `manifest` field the same way, and adjust the types to your own documents.
 
@@ -85889,7 +85902,7 @@ To change a context's manifest after it's curated:
 1. Send the full updated manifest with `PUT /contexts/{slug}`.
 2. Run a forced curate, `POST /contexts/{slug}/curate` with `{"force": true}`, so the change reaches the index.
 
-This is the API equivalent of updating a context's design in the console. To read the manifest currently pinned on a context, use `GET /contexts/{slug}/manifest`.
+To read the manifest currently pinned on a context, use `GET /contexts/{slug}/manifest`.
 
 
 # Nexus curation
@@ -85901,7 +85914,7 @@ Curation is how Pinecone Nexus turns a context's source documents into the chunk
 
 ## Curate up front
 
-Curation does the hard work *up front* so retrieval gets a head start at query time. Sources aren't just chopped into chunks. They're reorganized into typed artifacts (summaries, entities, events) connected by edges, with structure captured for exact answers.
+Curation does the hard work *up front* so retrieval gets a head start at query time. Besides chunking your sources, it reorganizes them into typed artifacts (summaries, entities, events) connected by edges, with structure captured for exact answers.
 
 ![Sources curated by the runtime under a manifest into a knowledge tree of chunks, artifacts, edges, and structured tables](https://mintcdn.com/pinecone/EWF4J3kPxqsT4ELV/images/nexus/curation-light.svg?fit=max\&auto=format\&n=EWF4J3kPxqsT4ELV\&q=85\&s=e2c821f6de36cc8323d1b4630e5fa8cd)
 
@@ -85918,7 +85931,7 @@ A curate run is a single generic entrypoint the orchestrator launches for the co
 
 ## Per-source steps
 
-For each source the delta says to process, the runtime runs the same three steps:
+For each source the delta says to process, the runtime chunks and embeds the source and, at the same time, extracts its artifacts:
 
 * **Chunk:** The source is split into spans, format-aware, with size enforcement.
 * **Embed:** Each span is embedded into the semantic (and optional keyword) index, ready for hybrid search.
@@ -85932,7 +85945,7 @@ Curation never rebuilds the world unless you ask it to. It keeps a ledger of eve
 * **Only what changed:** Editing a document re-embeds just the changed spans and re-extracts just that source, not the whole corpus.
 * **Artifact-aware replay:** When a source feeding a shared artifact changes, the sources it connects to are replayed so edges stay consistent.
 
-Need a clean slate? Curate with *force re-curate* to wipe the index and ledger and rebuild everything from scratch.
+To wipe the index and ledger and rebuild everything from scratch, send `"force": true` in the body of `POST /contexts/{slug}/curate`.
 
 ## Outputs
 
@@ -85944,18 +85957,18 @@ When a run finishes, the context has everything a query needs, on disk, in the i
 * **The curation ledger:** Every processed source is recorded, so the next run computes its delta against it instead of starting over.
 
 
-# How Nexus works
+# Nexus architecture
 Source: https://docs.pinecone.io/guides/nexus/how-it-works
 
 Pinecone Nexus distills curated artifacts for retrieval, then answers with code over a retrieval SDK.
 
 Most RAG systems chop documents into chunks and hope the right ones surface at query time. Pinecone Nexus does the hard work *up front*: it distills your sources into curated artifacts so the information an answer needs is already organized and easy to find, then answers questions by writing code over a retrieval SDK.
 
+## Data flow
+
 At a high level, your data flows through connectors into contexts, tasks curate each context into knowledge, and agents query it through a single KnowQL interface:
 
 ![The Pinecone Nexus architecture from top to bottom. Your data (docs and wikis, databases, APIs and SaaS, object storage, event streams, code repos) flows through connectors such as Google Drive, Box, Slack, GitHub, Notion, Confluence, and S3 into the Nexus knowledge engine. Inside a workspace, each dataset becomes a context of sources, a manifest, and knowledge, maintained by sandboxed tasks (import, curate, explore, optimize, search). A single KnowQL interface queries it to serve your AI application, from chatbots and Q\&A to search, agents, recommendations, and reporting.](https://mintcdn.com/pinecone/EWF4J3kPxqsT4ELV/images/nexus/nexus-architecture-light.svg?fit=max\&auto=format\&n=EWF4J3kPxqsT4ELV\&q=85\&s=968e4074b4b6b479bab6ebae47fecf73)
-
-The rest of this page zooms into the two ideas that make that work: curated artifacts for retrieval, and answering with code.
 
 ## Curated artifacts
 
@@ -85987,7 +86000,7 @@ Source: https://docs.pinecone.io/guides/nexus/mcp-server
 
 Query your Pinecone Nexus contexts from any MCP client, such as Claude Desktop, over Streamable HTTP.
 
-The Nexus Model Context Protocol (MCP) server lets any MCP client query your Nexus contexts over Streamable HTTP. It serves three read-only tools: `list_contexts`, `query_context`, and `get_query`.
+The Nexus [MCP](https://modelcontextprotocol.io) server lets any MCP client query your Nexus contexts over Streamable HTTP. It serves three read-only tools: `list_contexts`, `query_context`, and `get_query`.
 
 ## Prerequisites
 
@@ -86022,7 +86035,7 @@ Add the config below to your MCP client, replacing `YOUR_WORKSPACE_HOST` and `YO
 * `get_query`: Poll the result of a submitted query. Args: `query_id`. Returns `{ query_id, answer, output_json, citations, model, status, error }`. `answer` is the grounded answer text, or `null` until it's ready. `output_json` holds structured output when the query requested a shape, otherwise `null`. `citations` is an array of source references and `error` is set only when the query failed. Keep polling until `status` is `completed`, `failed`, or `cancelled`.
 
 
-# Nexus model guidance
+# Nexus models
 Source: https://docs.pinecone.io/guides/nexus/models
 
 Learn how Pinecone Nexus uses models for generation, curation, and retrieval, and how to choose the right one.
@@ -86031,9 +86044,9 @@ Pinecone Nexus uses models at several points, and you choose them based on your 
 
 ## Model roles
 
-* **Generation** composes the answer to a query, using a generation model from the catalog.
-* **Curation** builds artifacts from your sources, using your configured models (covered below).
-* **Embedding and rerank** power retrieval, using Pinecone-hosted models by default.
+* **Generation:** Composes the answer to a [query](/guides/nexus/queries), using a generation model from the catalog.
+* **Curation:** [Builds artifacts](/guides/nexus/how-curation-works) from your sources, using the Curation default and your embedding model.
+* **Embedding and rerank:** Power retrieval, using [Pinecone-hosted models](/models/overview) by default.
 
 All are configurable through the model catalog, which is backed by [LiteLLM](https://docs.litellm.ai/docs/providers) and references each model by its `provider/model` identifier. In BYOC, you supply the keys, so see [Deploy Nexus BYOC](/guides/nexus/byoc/deploy).
 
@@ -86041,9 +86054,9 @@ All are configurable through the model catalog, which is backed by [LiteLLM](htt
 
 Each chat model call belongs to a work area, and each work area has a default model:
 
-* **Query** answers queries, and also runs Optimize.
-* **Curation** builds artifacts from your sources.
-* **System** runs background workflows, such as Explore.
+* **Query:** Answers queries, and also runs the [Optimize](/guides/nexus/concepts#tasks-and-workflows) workflow, which tunes the manifest from query traffic.
+* **Curation:** Builds artifacts from your sources.
+* **System:** Runs the background workflows that maintain a context, such as [Explore](/guides/nexus/concepts#tasks-and-workflows), which recommends starter manifest templates that fit your sources.
 
 A call that doesn't name a model runs on its work area's default, so generation runs on the Query default unless a query names a model.
 
@@ -86057,7 +86070,7 @@ A call that doesn't name a model runs on its work area's default, so generation 
 
 ## Choose a model per query
 
-A query can run on any model enabled for Query instead of the default. In a context's **Query** tab, the model selector lists those models. In the API, name a model by its catalog ID in the query's `model` field. `GET /models` lists the catalog IDs and the current defaults.
+A query can run on any model enabled for Query instead of the default. Name a model by its catalog ID in the query's `model` field. `GET /models` lists the catalog IDs and the current defaults.
 
 Match the model to the question rather than the size of the context. A cheaper, faster model suits simple or high-volume queries, and the most capable model suits complex, multi-step reasoning. The query [trace](/guides/nexus/query-tracing) reports the tokens and latency behind each answer, so you can compare models on your own questions and settle on the one that fits.
 
@@ -86069,8 +86082,8 @@ Curation runs your embedding model and the Curation default across your sources 
 
 In your own deployment, you configure the models yourself. You choose the default model for each work area, and the shipped catalog uses Google Gemini. You can bring any model a LiteLLM-supported provider offers, and point generation, embedding, or rerank at a different provider or an endpoint inside your own boundary, each with its own key. A chat model must support the OpenAI `tools` and `response_format` parameters, because Nexus relies on both. Align to your cloud provider where it helps:
 
-* **Azure** deployments typically use Azure OpenAI or AI Foundry models.
-* **AWS** deployments typically use Amazon Bedrock models.
+* Azure deployments typically use Azure OpenAI or AI Foundry models.
+* AWS deployments typically use Amazon Bedrock models.
 
 You don't have to stay within one provider. Because the available models depend on your deployment and the keys you provide, model selection for BYOC happens with Pinecone during setup rather than from a fixed published list.
 
@@ -86082,7 +86095,7 @@ Name a Bedrock rerank model by its full foundation-model ARN, for example `bedro
 
 ### Set default models
 
-Your model catalog sets the default model for each work area in `phase_defaults`. On the **Deployment** tab of the console's **Settings** page, the **Default models** card shows these defaults read-only, because the catalog reapplies them on every settings pull. To change a default, edit the catalog and redeploy. A default must be a model that's enabled for its work area, which the **Models** list shows for each model. Usage reports spend by stage, and calls on the System model appear under the `system` stage.
+Your model catalog sets the default model for each work area in `phase_defaults`, and the catalog reapplies these defaults on every settings pull. To change a default, edit the catalog and redeploy. A default must be a model that's enabled for its work area. `GET /models` lists the current defaults. Usage reports spend by stage, and calls on the System model appear under the `system` stage.
 
 
 # Pinecone Nexus
@@ -86098,11 +86111,11 @@ Traditional RAG hands an agent ranked chunks and leaves it to search, stitch, an
 >
 > Prepare your first context, then query it
 
-> [card] [Key concepts](/guides/nexus/concepts)
+> [card] [Key terms](/guides/nexus/concepts)
 >
 > Contexts, manifests, artifacts, sessions, and the Query API
 
-> [card] [How Nexus works](/guides/nexus/how-it-works)
+> [card] [Architecture](/guides/nexus/how-it-works)
 >
 > Curated artifacts for retrieval, then answers composed over a retrieval SDK
 
@@ -86114,7 +86127,7 @@ Traditional RAG hands an agent ranked chunks and leaves it to search, stitch, an
 >
 > Deploy Nexus in your own cloud account
 
-> [card] [MCP server](/guides/nexus/mcp-server)
+> [card] [Connect an MCP client](/guides/nexus/mcp-server)
 >
 > Query your contexts from any MCP client
 
@@ -86169,31 +86182,31 @@ Source: https://docs.pinecone.io/guides/nexus/queries
 
 Pinecone Nexus queries gather evidence and compose a grounded, cited answer.
 
-A query is a single turn: a question in, a grounded answer out. A multi-turn conversation is a session. Rather than stuffing raw chunks into a prompt, Pinecone Nexus runs an agent loop in which the model writes Python against a retrieval SDK to gather just the evidence it needs, then composes a grounded answer with citations.
+A query is a single turn that takes a question and returns a grounded answer, and a multi-turn conversation is a session. To answer, Pinecone Nexus runs an agent loop in which the model writes Python against a retrieval SDK to gather the evidence it needs, then composes an answer with citations.
 
-![A query turn: the agent loops, writing code against a retrieval SDK to gather evidence, then composes a cited answer](https://mintcdn.com/pinecone/EWF4J3kPxqsT4ELV/images/nexus/queries-light.svg?fit=max\&auto=format\&n=EWF4J3kPxqsT4ELV\&q=85\&s=fbb7818dc5c26a7ede110869e776d556)
+![In a query turn, the agent loops, writing code against a retrieval SDK to gather evidence, then composes a cited answer](https://mintcdn.com/pinecone/EWF4J3kPxqsT4ELV/images/nexus/queries-light.svg?fit=max\&auto=format\&n=EWF4J3kPxqsT4ELV\&q=85\&s=fbb7818dc5c26a7ede110869e776d556)
 
 ## Retrieval as code
 
-The usual ways to answer over a corpus both struggle. Agentic RAG issues many retrieval calls and burns tokens stitching them together, and a coding agent greps and parses raw files, which is powerful but slow, expensive, and unreliable.
+Two common ways to answer over a corpus have drawbacks. Agentic retrieval-augmented generation (RAG) issues many retrieval calls and spends tokens stitching the results together. A coding agent that greps and parses raw files is flexible, but it's slow and expensive, and its results are unreliable.
 
 A query turn does the hard retrieval work in one place. The model writes Python that reads artifacts, runs search, walks the graph, and queries structured tables, then answers from only the evidence it surfaced. Raw tool output never enters the model's context.
 
-## The query runtime
+## Query runtime
 
-A query is run by the Nexus runtime, a single generic Python image the orchestrator launches fresh for each turn. There is no per-context code. Every context runs the same entrypoint, parameterized by its [manifest](/guides/nexus/context-design).
+The Nexus runtime runs each query. It's a single generic Python image that the orchestrator launches fresh for each turn, with no per-context code. Every context runs the same entrypoint, parameterized by its [manifest](/guides/nexus/context-design).
 
-1. **A fresh container per turn:** Each query spawns one isolated container that runs exactly that turn, then exits. It pulls the scoped contexts' curated knowledge: artifacts on disk plus their vector index.
+1. **Container:** Each query starts one isolated container that runs that turn, then exits. It pulls the scoped contexts' curated knowledge: artifacts on disk plus their vector index.
 2. **Orientation:** The runtime reads the manifests and an artifact outline up front, so the model starts knowing what knowledge exists and where.
-3. **The agent loop:** The model writes Python into a persistent REPL to call the retrieval SDK, reading artifacts, running search, walking the graph, querying structured tables.
-4. **Step events:** Each step is posted back as it happens, powering the live answer stream you see in the console. You can replay the full sequence for any query with [query tracing](/guides/nexus/query-tracing).
+3. **Agent loop:** The model writes Python into a persistent REPL that calls the retrieval SDK to read artifacts, run searches, walk the graph, and query structured tables.
+4. **Step events:** The runtime posts each step as it happens, which powers the live answer stream. You can replay the full sequence for any query in its [query trace](/guides/nexus/query-tracing).
 5. **Synthesis:** Once enough evidence is gathered, the runtime composes a grounded answer with inline citations, then finalizes the turn.
 
-## The agent loop
+## Agent loop
 
 The model's primary tool is `run_python`, a persistent REPL. Variables survive across calls, so the model chains operations together: find an artifact, read it, filter its sources, drill for a verbatim quote, all in one block. It processes results in code and prints only what it needs.
 
-If the first pass misses, the model refines its code and searches again, so hard questions get more work, not a worse answer. The loop stops as soon as the model can answer.
+If the first pass misses, the model refines its code and searches again, so a hard question gets more steps. The loop stops as soon as the model can answer.
 
 ```python theme={null}
 # One turn: find an artifact, read it, drill its sources.
@@ -86203,11 +86216,31 @@ for h in await search_in_sources(srcs, "purchase price"):
     print(h.fields["source_path"], "::", h.fields["chunk_text"][:160])
 ```
 
-Independent searches run concurrently, and lookups already held in a variable are never repeated. The loop is capped, so the model is pushed to extract everything it needs and answer in a few steps.
+Independent searches run concurrently, and the model reuses lookups it already holds in a variable. The loop has a step cap, so the model aims to gather what it needs and answer in a few steps.
 
-## The retrieval SDK
+### Tool output limit
 
-The Composable Retriever pre-binds these primitives into the REPL. Read artifacts cheaply off disk, fall back to search over the index, and reach for SQL when the question is a count or enumeration.
+By default, the model sees at most 10,000 characters of each `run_python` result. A longer result is cut off and ends with a notice, such as `[truncated: showing 10,000 of 46,212 chars]`, so the model knows the result is partial.
+
+You can raise the limit to as much as 100,000 characters for a single query. This helps with questions whose answers are long lists, such as "List every company with a change-of-control clause." A higher limit makes the query slower and more expensive. Every extra 10,000 characters adds about 2,500 input tokens, which are sent again on every later step.
+
+To raise it, set `max_tool_output_chars` to a value from 1 to 100,000 in the `POST /query` request body. A value outside that range returns a `400` error. This field requires `X-Pinecone-Api-Version: unstable`, and the unstable API can change without notice.
+
+```bash curl theme={null}
+curl -fsS -X POST "$NEXUS_BASE_URL/query" \
+  -H "Authorization: Bearer $NEXUS_TOKEN" \
+  -H 'Content-Type: application/json' \
+  -H 'X-Pinecone-Api-Version: unstable' \
+  -d '{
+    "scope": ["company-filings"],
+    "ask": "List every company with a change-of-control clause.",
+    "max_tool_output_chars": 100000
+  }'
+```
+
+## Retrieval SDK
+
+The Composable Retriever loads these primitives into the REPL. The model reads artifacts off disk first because it's cheapest, falls back to search over the index, and uses SQL for counts and enumerations.
 
 ### Read artifacts
 
@@ -86224,7 +86257,7 @@ The Composable Retriever pre-binds these primitives into the REPL. Read artifact
 | - | - |
 | `search_knowledge(query)` | semantic search over artifacts (optionally by kind) |
 | `search_source(query)` | semantic search over raw source chunks |
-| `search_source_by_keyword(query)` | lexical/BM25 for exact IDs, codes, and phrases |
+| `search_source_by_keyword(query)` | keyword (BM25) search for exact IDs, codes, and phrases |
 | `search_in_sources(sources, query)` | semantic search within a specific artifact's source chunks |
 | `cite_from_artifact(name)` | drill an artifact's sources for a verbatim span |
 
@@ -86232,61 +86265,57 @@ The Composable Retriever pre-binds these primitives into the REPL. Read artifact
 
 | Primitive | What it does |
 | - | - |
-| `query_db(sql)` | read-only SQL over typed artifact tables, the first resort for how-many / counts / per-X |
+| `query_db(sql)` | read-only SQL over typed artifact tables, the first choice for counts and per-item questions |
 | `walk_graph(name)` | an N-hop subgraph around an artifact, following typed edges |
 
 ## Synthesis
 
-**Synthesis from surfaced evidence.** The answer is composed from just the evidence the code surfaced, never the raw corpus, so the model reasons over a small, relevant context instead of the whole document set.
-
-**Citations that trace to a source.** Inline citation markers map back to real source spans: the file, page, and verbatim text behind every claim.
-
-**Optional structured output.** When a `shape` is supplied, the answer is routed through structured synthesis to produce a schema-conforming document instead of prose.
+* **Evidence:** The model composes the answer from the evidence its code surfaced, so it reasons over a small, relevant context.
+* **Citations:** Each inline citation marker maps to a source span, with the file, page, and verbatim text behind the claim.
+* **Structured output:** When a query includes a `shape`, synthesis returns a document that conforms to that schema.
 
 ## Session instructions
 
-A session can carry its own answer instructions on top of a context's default, a system prompt that shapes how it answers every turn. See [Set session instructions](/guides/nexus/set-session-instructions).
+A session can carry its own instructions, a system prompt layered over the context's default that shapes every answer in the session. See [Set session instructions](/guides/nexus/set-session-instructions).
 
 
-# Query tracing
+# Nexus query traces
 Source: https://docs.pinecone.io/guides/nexus/query-tracing
 
-Inspect a Pinecone Nexus query trace to see reasoning steps, retrieval tool calls, token usage, latency, and cache savings.
+Learn what each part of a Pinecone Nexus query trace shows, from the summary bar and token detail to the reasoning steps and tool calls behind an answer.
 
-Every query is recorded as a trace that shows how Pinecone Nexus reached an answer, from the steps the model ran down to the retrieval code it generated, along with the tokens and time each step took. Use it to understand a result or debug an unexpected one.
+Pinecone Nexus records a trace for every query. The trace shows each step the model ran, the retrieval code it generated, and the tokens and time each step took, so you can understand a result or debug an unexpected one.
 
-To open a trace, click **Show trace** after a query returns, or reopen a past query from its session in the **Sessions** list. A trace opens to the query text, the model that answered, and the views below.
+## Open a trace
+
+After a query returns, click **Show trace**. To trace an earlier query, open its session from the **Sessions** list and click **Show trace** on that query.
+
+A trace opens with the query text and the model that answered, and it ends with the final answer the caller received.
 
 ## Summary bar
 
-The summary bar reports the shape of the run at a glance.
+The summary bar at the top of the trace totals the run:
 
-* **Steps.** How many reasoning steps the model took, plus the final answer.
-* **Tool calls.** How many times it called the retrieval SDK.
-* **Tokens.** Input and output tokens for the whole query.
-* **Latency.** Wall-clock time to produce the answer.
+* **Steps:** The number of reasoning steps the model took, plus the final answer.
+* **Tool calls:** The number of calls to the retrieval SDK.
+* **Tokens:** Input and output tokens for the whole query.
+* **Latency:** The time it took to produce the answer.
 
-For a token breakdown, open the **Token detail** panel.
+To see where the tokens went, click **Token detail**.
 
 ## Token detail
 
-* **Where the tokens went.** How the tokens divide between the reasoning steps and the final synthesis, plus the total tokens billed.
-* **New input by step.** The fresh input tokens each step adds. Every step re-sends the whole conversation, so only the new tokens are fresh work. The carried remainder is re-read context that can be served from the prompt cache.
-* **Output tokens by step.** The output tokens produced by each step and the answer.
-* **Caching savings.** How much input was served from the prompt cache versus billed as fresh. Cached input is re-read context the model doesn't reprocess, so the more context a run reuses, the more of its input the cache serves.
+* **Where the tokens went:** How the tokens divide between the reasoning steps and the final synthesis, plus the total tokens billed.
+* **New input by step:** The new input tokens each step adds. Each step resends the whole conversation, so only the new tokens are new work, and the prompt cache can serve the rest.
+* **Output tokens by step:** The output tokens each step and the final answer produced.
+* **Caching savings:** How much input the prompt cache served versus how much was billed as new input. The more context a run reuses, the more of its input the cache serves.
 
 ## Spans and inspector
 
-The trace lists each span with its duration, from the model's own reasoning steps to the individual tool calls it made. Select any span to update the **inspector** with the detail for that span.
+The trace lists each span with its duration, from the model's reasoning steps to the tool calls they made. The spans follow the agent loop described in [Queries](/guides/nexus/queries). Select a span to show its details in the inspector:
 
-* **A reasoning step** shows its input and output tokens, its timing (split into decide time while the model reasons and execute time while the code runs), and the generated code the model wrote and ran.
-* **A tool call** (for example, `query_db()`) shows its arguments (the query it ran), its result (such as the number of rows returned), and its timing.
-
-This is the same agent loop described in [Queries](/guides/nexus/queries), made visible one span at a time.
-
-## Final answer
-
-The trace ends with the final answer produced for the query, the same grounded response the caller receives.
+* **Reasoning step:** Input and output tokens, timing split into decide time (the model reasoning) and execute time (the code running), and the code the model generated and ran.
+* **Tool call:** Its arguments (such as the SQL a `query_db()` call ran), its result (such as the number of rows returned), and its timing.
 
 
 # Nexus quickstart
@@ -86294,7 +86323,7 @@ Source: https://docs.pinecone.io/guides/nexus/quickstart
 
 Deploy Pinecone Nexus with BYOC, curate a context from your own documents, and run KnowQL queries that return grounded, cited multi-document answers.
 
-Pinecone Nexus runs in your own cloud account. This quickstart deploys Nexus with Bring Your Own Cloud (BYOC), turns a set of your documents into a context, and queries it for grounded, cited answers. See the [overview](/guides/nexus/overview) for what you can do with Nexus.
+Pinecone Nexus runs in your own cloud account. This quickstart deploys Nexus with Bring Your Own Cloud (BYOC), turns a set of your documents into a context, and queries it for grounded, cited answers. It covers both the API and the console, but the rest of the Nexus guides use only the API. See the [overview](/guides/nexus/overview) for what you can do with Nexus.
 
 Nexus organizes knowledge in a hierarchy:
 
@@ -86302,7 +86331,7 @@ Nexus organizes knowledge in a hierarchy:
 * A **context** is built from the documents you ingest into it.
 * A **query** can read one or more contexts, so several contexts together can give an agent its knowledge.
 
-See [key concepts](/guides/nexus/concepts) for the full model.
+See [key terms](/guides/nexus/concepts) for the full model.
 
 > [!NOTE]
 >
@@ -86392,7 +86421,7 @@ The queries later in this quickstart draw on these files. You can build the cont
 >   -d '{}'
 > ```
 >
-> Curation chunks your sources, distills them into typed artifacts, and indexes everything. It runs as a background task, so query the context once it finishes. See [How curation works](/guides/nexus/how-curation-works).
+> Curation chunks your sources, distills them into typed artifacts, and indexes everything. It runs as a background task, so query the context once it finishes. See [Nexus curation](/guides/nexus/how-curation-works).
 
 > [tab] Console
 >
@@ -86456,7 +86485,7 @@ Once curation finishes, ask your context a question and get back a grounded answ
 > window, customers can still get store credit, but not a direct refund.
 > ```
 >
-> The full response also carries `citations` and `usage`. See the [Nexus API](/reference/api/nexus/introduction) for the full surface, or connect an [MCP server](/guides/nexus/mcp-server) for Claude Desktop and other MCP clients.
+> The full response also carries `citations` and `usage`. See the [Nexus API](/reference/api/nexus/introduction) for the full surface, or connect an [MCP](https://modelcontextprotocol.io) client such as Claude Desktop with the [Nexus MCP server](/guides/nexus/mcp-server).
 
 > [tab] Console
 >
@@ -86500,13 +86529,15 @@ Source: https://docs.pinecone.io/guides/nexus/set-session-instructions
 
 Set a per-session system prompt on a Pinecone Nexus query to shape how a session answers, layered over the context's default instructions.
 
-A session can carry its own answer instructions, a system prompt that shapes how it answers every turn: the role to take, the tone to use, or how to format the result. These layer on top of a context's [default instructions](/guides/nexus/context-design#context-default-instructions) rather than replacing them. The context default always applies, and the session prompt adds to it, except where it only repeats the default, which Nexus skips.
+A session can carry its own instructions, a system prompt that shapes every answer in the session. It can set the role to take, the tone to use, or the format of the result. Session instructions add to the context's [default instructions](/guides/nexus/context-design#context-default-instructions) instead of replacing them. The context default always applies, and if the session prompt only repeats it, Nexus skips the session prompt.
 
-You pass `system_prompt` on the query that starts the session, and it stays pinned for the rest of the session.
+## Start and continue a session
 
-**1. Start a session with a system prompt**
+Pass `system_prompt` on the query that starts the session, and it applies to every turn after that.
 
-Pass `system_prompt` alongside `scope` and `ask` on the opening query. These fields are set only when a session starts.
+### 1. Start a session with a system prompt
+
+Pass `system_prompt` with `scope` and `ask` on the opening query. You can set `scope` and `system_prompt` only when a session starts.
 
 ```bash curl theme={null}
 curl -fsS -X POST "$NEXUS_BASE_URL/query" \
@@ -86522,9 +86553,9 @@ curl -fsS -X POST "$NEXUS_BASE_URL/query" \
 
 The response carries a `session_id` and the query's `id`.
 
-**2. Continue the session**
+### 2. Continue the session
 
-Reference the previous turn with `previous_query_id`. Follow-up turns keep the system prompt, so you don't resend it, and the context default still applies.
+Reference the previous turn with `previous_query_id`. Follow-up turns keep the system prompt and the context default, so you don't resend either.
 
 ```bash curl theme={null}
 curl -fsS -X POST "$NEXUS_BASE_URL/query" \
@@ -86536,8 +86567,6 @@ curl -fsS -X POST "$NEXUS_BASE_URL/query" \
     "ask": "Who owns the renewal?"
   }'
 ```
-
-In the console, open **Advanced options** in the new session composer and set the **System prompt**.
 
 
 # Search a table with full-text search

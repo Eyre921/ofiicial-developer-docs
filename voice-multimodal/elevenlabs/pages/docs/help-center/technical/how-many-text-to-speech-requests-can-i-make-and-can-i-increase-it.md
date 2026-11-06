@@ -12,14 +12,14 @@ The concurrency limit (concurrent requests running in parallel) depends on the t
 
 Below are the current concurrency rates for Text to Speech.
 
-| Plan     | Flash and Turbo models | All other models |
-| -------- | ---------------------- | ---------------- |
-| Free     | 4                      | 2                |
-| Starter  | 6                      | 3                |
-| Creator  | 10                     | 5                |
-| Pro      | 20                     | 10               |
-| Scale    | 30                     | 15               |
-| Business | 30                     | 15               |
+| Plan     | Flash v2 and v2.5 | All other models |
+| -------- | ----------------- | ---------------- |
+| Free     | 4                 | 2                |
+| Starter  | 6                 | 3                |
+| Creator  | 10                | 5                |
+| Pro      | 20                | 10               |
+| Scale    | 30                | 15               |
+| Business | 30                | 15               |
 
 
 

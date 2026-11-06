@@ -1470,7 +1470,7 @@ Without the Neon CLI, run `npx skills add neondatabase/agent-skills -s neon -s n
 
 ## Get access
 
-You need a project in AWS US East (Ohio) (`aws-us-east-2`), AWS US East (N. Virginia) (`aws-us-east-1`), AWS Europe (Frankfurt) (`aws-eu-central-1`), or AWS Asia Pacific (Singapore) (`aws-ap-southeast-1`). Support is expanding toward [all regions](https://neon.com/docs/introduction/regions). Using the AI Gateway requires a paid Neon plan with prepaid credits, which gives you every model in the catalog. See [Model access](https://neon.com/docs/ai-gateway/models#model-access) for details.
+You need a project in AWS US East (Ohio) (`aws-us-east-2`), AWS US East (N. Virginia) (`aws-us-east-1`), AWS Europe (Frankfurt) (`aws-eu-central-1`), or AWS Asia Pacific (Singapore) (`aws-ap-southeast-1`). Support is expanding toward [all regions](https://neon.com/docs/introduction/regions). Using the AI Gateway requires prepaid credits, which you can buy on any Neon plan, including Free. Credits give you every model in the catalog. See [Model access](https://neon.com/docs/ai-gateway/models#model-access) for details.
 
 ## Create a credential
 
@@ -1715,7 +1715,7 @@ Neon AI Gateway serves models from many providers behind one credential. Use sho
 
 Model availability may vary by region, and the catalog expands over time, so check back for new additions.
 
-> AI Gateway is currently available in AWS US East (Ohio) (`aws-us-east-2`), AWS US East (N. Virginia) (`aws-us-east-1`), AWS Europe (Frankfurt) (`aws-eu-central-1`), and AWS Asia Pacific (Singapore) (`aws-ap-southeast-1`). Create your project in one of these regions to use it. Support is expanding toward [all regions](https://neon.com/docs/introduction/regions). It requires a paid Neon plan. See [Pricing](https://neon.com/docs/ai-gateway/models#pricing) for details.
+> AI Gateway is currently available in AWS US East (Ohio) (`aws-us-east-2`), AWS US East (N. Virginia) (`aws-us-east-1`), AWS Europe (Frankfurt) (`aws-eu-central-1`), and AWS Asia Pacific (Singapore) (`aws-ap-southeast-1`). Create your project in one of these regions to use it. Support is expanding toward [all regions](https://neon.com/docs/introduction/regions). It's available on any Neon plan with prepaid credits. See [Pricing](https://neon.com/docs/ai-gateway/models#pricing) for details.
 
 The full catalog is served as JSON at [`neon.com/models.json`](https://neon.com/models.json), the machine-readable source of truth, and mirrored as the [`neon` provider on models.dev](https://models.dev/providers/neon). Each model lists its `lab`, the organization that made it, and its `provider`, the organization that provides it: Databricks for every model except Jev, which TypeSafe AI hosts. Both field names follow models.dev.
 
@@ -1727,7 +1727,7 @@ const models = Object.values(catalog.neon.models).filter((model) => model.releas
 
 ## Model access
 
-Neon AI Gateway gives you one credential for both open-weight and foundation models. Any paid project with prepaid credits can use every model in the catalog. The [model catalog](https://neon.com/docs/ai-gateway/overview#available-models) is always the source of truth for what you can call today.
+Neon AI Gateway gives you one credential for both open-weight and foundation models. Any account with prepaid credits can use every model in the catalog, on any plan. The [model catalog](https://neon.com/docs/ai-gateway/overview#available-models) is always the source of truth for what you can call today.
 
 ## Rate limits
 
@@ -1750,7 +1750,7 @@ A separate account-level daily spend cap also applies and can block AI Gateway r
 
 AI Gateway usage draws down a prepaid credit balance. Here's how pricing works:
 
-- **Paid plans only.** AI Gateway is available on Neon's Launch and Scale plans, with no difference in pricing or model access between the two. Any paid customer with prepaid credits can use every model in the catalog. See [Model access](https://neon.com/docs/ai-gateway/models#model-access) for details.
+- **Any plan.** AI Gateway is available on every Neon plan, including Free, with no difference in pricing or model access between plans. On the Free plan, you add a payment card to buy credits and your organization stays on Free. Any account with prepaid credits can use every model in the catalog. See [Model access](https://neon.com/docs/ai-gateway/models#model-access) for details.
 - **No markup.** Neon charges the same per-token rate as the model provider. Published provider prices are passed on to users with no additional markup.
 - **Prepaid credits.** Inference draws down a prepaid credit balance. 1 credit equals $1 USD, with a $5 minimum purchase, and credits are valid for 12 months from purchase. You buy credits from the **Billing** page in the [Neon Console](https://console.neon.tech/app/billing).
 
@@ -1851,7 +1851,7 @@ curl "$NEON_AI_GATEWAY_BASE_URL/v1/models" \
 
 The response returns one object per model. Key fields:
 
-- `enabled` is whether the model is currently callable. Any paid account with prepaid credits can call every model in the catalog. See [Model access](https://neon.com/docs/ai-gateway/models#model-access) for details.
+- `enabled` is whether the model is currently callable. Any account with prepaid credits can call every model in the catalog. See [Model access](https://neon.com/docs/ai-gateway/models#model-access) for details.
 - `id`, `name`, and `owned_by` identify the model. Use `id` (or its `databricks-` prefixed form) in the `model` field of a request.
 - `canonical_slug`, `architecture`, and `top_provider` are OpenRouter-compatible descriptive fields.
 - `created` is always `0`, and `pricing`, `per_request_limits`, and `context_length` are currently always `null`. Use the [model catalog](https://neon.com/docs/ai-gateway/overview#available-models) for context windows and model details.
@@ -14183,7 +14183,7 @@ One API for open-weight and foundation models from OpenAI, Google, and more. Bui
 Last updated: 2026-10-30
 
 Add chat, agents, and embeddings to your app through one endpoint and one Neon credential, with models from many providers, scoped to your branch the same way your data is.
-Before you start: AI Gateway needs a paid Neon plan ([Launch or Scale](https://neon.com/docs/ai-gateway/models#pricing)) with [prepaid credits](https://neon.com/docs/ai-gateway/prepaid-credits) ($5 minimum), and a project in AWS US East (Ohio) (aws-us-east-2), AWS US East (N. Virginia) (aws-us-east-1), AWS Europe (Frankfurt) (aws-eu-central-1), or AWS Asia Pacific (Singapore) (aws-ap-southeast-1). Support is expanding toward [all regions](https://neon.com/docs/introduction/regions).
+Before you start: AI Gateway needs [prepaid credits](https://neon.com/docs/ai-gateway/prepaid-credits) ($5 minimum), which you can buy on any Neon plan, including Free, and a project in AWS US East (Ohio) (aws-us-east-2), AWS US East (N. Virginia) (aws-us-east-1), AWS Europe (Frankfurt) (aws-eu-central-1), or AWS Asia Pacific (Singapore) (aws-ap-southeast-1). Support is expanding toward [all regions](https://neon.com/docs/introduction/regions).
 
 [View prompt](https://neon.com/prompts/ai-gateway-landing.md)
 
@@ -14397,8 +14397,9 @@ and AI Gateway usage draws down your balance. This page explains who can buy
 credits, how pricing and usage limits work, how to purchase or top up, and how to
 check your balance.
 
-**Note:** The AI Gateway is available on **paid Neon plans only**. It is not included in
-the Free plan. See [Neon plans](https://neon.com/docs/introduction/plans) and
+**Note:** The AI Gateway is available on **every Neon plan**, including Free. On the Free
+plan, you add a payment card and buy credits without upgrading. Your
+organization stays on the Free plan. See [Neon plans](https://neon.com/docs/introduction/plans) and
 [About billing](https://neon.com/docs/introduction/about-billing).
 
 ## How credits and pricing work
@@ -14419,7 +14420,8 @@ example, a small request might reduce a $25.00 balance to $24.99.
 ## Who can buy credits
 
 - Only **organization admins** can purchase credits.
-- The organization must be billed directly by payment card.
+- The organization must be billed directly by payment card. On the Free plan,
+  add a payment card first. Adding a card doesn't change your plan.
 - Members, editors, and viewers cannot purchase credits.
 - Sales-invoiced, marketplace, trial, sponsored, and shared-token accounts cannot
   purchase credits through this self-service flow. Contact your account team for
@@ -14430,7 +14432,9 @@ example, a small request might reduce a $25.00 balance to $24.99.
 Buying credits is a Neon Console flow:
 
 1. In the Neon Console, select **Billing**.
-2. Find the **AI gateway credits** card and select **Add credits**.
+2. Find the **AI gateway credits** card and select **Add credits**. On the Free
+   plan with no payment card on file, the card shows **Add a card** instead.
+   Select it, add your card, and then select **Add credits**.
 3. Select a preset amount: **$5**, **$10**, **$25**, **$50**, or **$100**. You can
    also select **Other** to enter a custom amount. The default selection is $25,
    and the minimum purchase is $5.
@@ -14500,7 +14504,7 @@ When you exceed a limit, the API returns **HTTP 429**:
 
 ## Model access
 
-A paid account with prepaid credits can use every AI Gateway model.
+Any account with prepaid credits can use every AI Gateway model.
 See [Model access](https://neon.com/docs/ai-gateway/models#model-access) for details.
 
 After you buy credits, locked models unlock once Neon confirms access. If a
@@ -14516,8 +14520,8 @@ Turn on **auto-reload** to keep your balance from running out. When your balance
 drops below a threshold you set, Neon buys a fixed amount of credits with the
 payment card on file, with no action needed from you.
 
-Only organization admins can set up auto-reload, and the organization must meet
-the same requirements as for [buying credits](https://neon.com/docs/ai-gateway/prepaid-credits#who-can-buy-credits): a paid plan,
+Auto-reload is available on paid plans only. It isn't available on the Free
+plan yet. Only organization admins can set it up, and the organization must be
 billed directly by payment card.
 
 To set up auto-reload:
@@ -14556,9 +14560,9 @@ The AI Gateway is available in AWS US East (Ohio), US East (N. Virginia), Europe
 
 ## If you downgrade to Free
 
-If your organization moves to the Free plan, any AI Gateway credits **remain on
-your account**, but the AI Gateway is **not usable on Free**. Your credits become
-usable again when you upgrade to a paid plan.
+If your organization moves to the Free plan, your AI Gateway credits **remain on
+your account** and you can keep using them. Auto-reload turns off when you
+downgrade.
 
 ## Related
 
@@ -14572,7 +14576,7 @@ usable again when you upgrade to a paid plan.
 
 ### Who can use AI Gateway?
 
-AI Gateway is available on Neon's paid plans (Launch and Scale). Any paid Neon customer with prepaid credits can use every model in the catalog.
+Any Neon organization with prepaid credits, on any plan, including Free. On the Free plan, add a payment card to buy credits. You don't need to upgrade. Credits give you every model in the catalog.
 
 ### How much do AI Gateway credits cost?
 
@@ -14584,7 +14588,7 @@ Yes, by a small amount. Usage can exceed your remaining balance before it's dete
 
 ### Can I top up credits automatically?
 
-Yes. Organization admins can turn on auto-reload from the **AI gateway credits** card on the **Billing** page. When your balance drops below the threshold you set, Neon buys the amount you chose with the payment card on file. See [Automatic top-up](https://neon.com/docs/ai-gateway/prepaid-credits#automatic-top-up).
+Yes, on paid plans. Auto-reload isn't available on the Free plan yet. Organization admins can turn it on from the **AI gateway credits** card on the **Billing** page. When your balance drops below the threshold you set, Neon buys the amount you chose with the payment card on file. See [Automatic top-up](https://neon.com/docs/ai-gateway/prepaid-credits#automatic-top-up).
 
 ### Do credits expire?
 
@@ -14592,7 +14596,7 @@ Credits are valid for 12 months from the date of purchase.
 
 ### What happens to my credits if I downgrade to Free?
 
-Your credits stay on your account, but you can't use AI Gateway while on the Free plan. They become available again if you upgrade to a paid plan.
+Your credits stay on your account, and you can keep using AI Gateway on the Free plan. Auto-reload turns off when you downgrade.
 
 ### What are the default usage limits?
 
@@ -14669,14 +14673,14 @@ The request body does not contain a valid `model` field.
 
 On your project's **AI Gateway** page, locked models show a padlock, and the **Some models are restricted** section lists them grouped by reason. Each reason links to the fix:
 
-| Message                                                 | What to do                                                                                                  |
-| ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| **A paid plan is required to use these models**         | Select **Upgrade plan**. The AI Gateway is available on paid plans only.                                    |
-| **AI Gateway credits are required to use these models** | Select **Add credits**. See [AI Gateway prepaid credits](https://neon.com/docs/ai-gateway/prepaid-credits). |
-| **Your account is restricted from using these models**  | [Contact Support](https://neon.com/docs/introduction/support).                                              |
-| **Some models are not available to your account**       | [Contact Support](https://neon.com/docs/introduction/support).                                              |
+| Message                                                 | What to do                                                                                                                                |
+| ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| **A paid plan is required to use these models**         | On the **Billing** page, select **Add a card** on the **AI gateway credits** card, then buy credits. You don't need to upgrade your plan. |
+| **AI Gateway credits are required to use these models** | Select **Add credits**. See [AI Gateway prepaid credits](https://neon.com/docs/ai-gateway/prepaid-credits).                               |
+| **Your account is restricted from using these models**  | [Contact Support](https://neon.com/docs/introduction/support).                                                                            |
+| **Some models are not available to your account**       | [Contact Support](https://neon.com/docs/introduction/support).                                                                            |
 
-After you upgrade or buy credits, models unlock once Neon confirms access. Reload the page if a model still shows as locked.
+After you buy credits, models unlock once Neon confirms access. Reload the page if a model still shows as locked.
 
 ---
 
@@ -17069,7 +17073,7 @@ This guide sets up Lakebase Search on a Neon project: enabling both extensions, 
 - Postgres 16 or later (Lakebase Search requires PG16+)
 - Node.js 22 or later
 - Choose an embedding provider to turn text into vectors:
-  - **Neon AI Gateway** (this guide's default): set `NEON_AI_GATEWAY_TOKEN` and `NEON_AI_GATEWAY_BASE_URL` (see [Get started](https://neon.com/docs/ai-gateway/get-started)) and use the [`qwen3-embedding-0-6b`](https://neon.com/docs/ai-gateway/embeddings) model (1024 dimensions). Requires a paid plan (Launch or Scale) with [prepaid AI Gateway credits](https://neon.com/docs/ai-gateway/prepaid-credits), in a [Neon AI Gateway region](https://neon.com/docs/ai-gateway/overview).
+  - **Neon AI Gateway** (this guide's default): set `NEON_AI_GATEWAY_TOKEN` and `NEON_AI_GATEWAY_BASE_URL` (see [Get started](https://neon.com/docs/ai-gateway/get-started)) and use the [`qwen3-embedding-0-6b`](https://neon.com/docs/ai-gateway/embeddings) model (1024 dimensions). Requires [prepaid AI Gateway credits](https://neon.com/docs/ai-gateway/prepaid-credits), available on any plan, and a project in a [Neon AI Gateway region](https://neon.com/docs/ai-gateway/overview).
   - **OpenAI directly**: install `@ai-sdk/openai`, set `OPENAI_API_KEY`, and use `openai.embeddingModel('text-embedding-3-small')` from that provider (1536 dimensions).
   - **Any other provider**: generate the vector with its SDK and match the `VECTOR` column to its dimensions.
 
@@ -17240,7 +17244,7 @@ Vector search finds matches by meaning, while keyword search finds matches by wo
 
 Jev reads each result alongside your query and estimates how likely it is to answer your question. The example below combines both searches, removes duplicates, and puts the most likely answers first. It follows the [TypeSafe reranking cookbook](https://docs.typesafe.ai/cookbooks/rerank_typesafe).
 
-Jev runs through AI Gateway, so it has the same paid plan and credits requirement as AI Gateway embeddings. If you don't have AI Gateway, use [RRF](https://neon.com/docs/ai/lakebase-search-get-started#fuse-ranks-with-rrf) instead.
+Jev runs through AI Gateway, so it has the same credits requirement as AI Gateway embeddings. If you don't have AI Gateway, use [RRF](https://neon.com/docs/ai/lakebase-search-get-started#fuse-ranks-with-rrf) instead.
 
 Add the following code to `search.ts`. It reuses the provider and credentials from the embedding example. See [Decision models](https://neon.com/docs/ai-gateway/decisions#use-with-the-vercel-ai-sdk) for more about the SDK.
 
@@ -71902,7 +71906,7 @@ The sixth capability is the [Data API](https://neon.com/docs/data-api/overview),
 
 **Info: Region and access requirements**
 
-Object Storage, Functions, and the AI Gateway are currently available in AWS US East (Ohio) (`aws-us-east-2`), AWS US East (N. Virginia) (`aws-us-east-1`), AWS Europe (Frankfurt) (`aws-eu-central-1`), and AWS Asia Pacific (Singapore) (`aws-ap-southeast-1`), on new or existing projects in those regions, so use a project in one of them to try them. Support is expanding toward [all regions](https://neon.com/docs/introduction/regions). Postgres and Managed Better Auth work in any region. Object Storage and Functions are available on any plan, subject to usage limits; the AI Gateway requires a paid plan.
+Object Storage, Functions, and the AI Gateway are currently available in AWS US East (Ohio) (`aws-us-east-2`), AWS US East (N. Virginia) (`aws-us-east-1`), AWS Europe (Frankfurt) (`aws-eu-central-1`), and AWS Asia Pacific (Singapore) (`aws-ap-southeast-1`), on new or existing projects in those regions, so use a project in one of them to try them. Support is expanding toward [all regions](https://neon.com/docs/introduction/regions). Postgres and Managed Better Auth work in any region. Object Storage and Functions are available on any plan, subject to usage limits; the AI Gateway works on any plan with prepaid credits.
 
 ## The shape of a Neon backend
 
@@ -72801,7 +72805,7 @@ npm i -g neon
 
 **Important: Create your project in a supported region**
 
-Object Storage, Functions, and the AI Gateway are currently available in AWS US East (Ohio) (`aws-us-east-2`), AWS US East (N. Virginia) (`aws-us-east-1`), AWS Europe (Frankfurt) (`aws-eu-central-1`), and AWS Asia Pacific (Singapore) (`aws-ap-southeast-1`), on new or existing projects in those regions, so use a project in one of them to follow this guide. Support is expanding toward [all regions](https://neon.com/docs/introduction/regions). Postgres works in any region. Object Storage and Functions work on any plan, subject to usage limits; the AI Gateway requires a paid plan.
+Object Storage, Functions, and the AI Gateway are currently available in AWS US East (Ohio) (`aws-us-east-2`), AWS US East (N. Virginia) (`aws-us-east-1`), AWS Europe (Frankfurt) (`aws-eu-central-1`), and AWS Asia Pacific (Singapore) (`aws-ap-southeast-1`), on new or existing projects in those regions, so use a project in one of them to follow this guide. Support is expanding toward [all regions](https://neon.com/docs/introduction/regions). Postgres works in any region. Object Storage and Functions work on any plan, subject to usage limits; the AI Gateway works on any plan with prepaid credits.
 
 ## Create a Neon project
 
@@ -85063,7 +85067,7 @@ For full API details, see [Retrieve branch consumption metrics](https://neon.com
 
 --- [Document source](https://neon.com/docs/guides/datadog.md) ---
 
-> Summary: The Neon Datadog integration exports Postgres metrics and logs from all project computes to Datadog, available on Scale plan projects. Use this page to set up monitoring of CPU, memory, connection counts, replication lag, database size, deadlocks, and PgBouncer stats, or to forward Postgres logs for error and activity visibility. Postgres log export is in beta. Log transmission counts toward network egress billed after 500 GB per project on paid plans.
+> Summary: The Neon Datadog integration exports Postgres metrics and logs from all project computes to Datadog, available on Scale plan projects. Use this page to set up monitoring of CPU, memory, connection counts, replication lag, database size, deadlocks, and PgBouncer stats, or to forward Postgres logs for error and activity visibility. Postgres log export is in beta. Log transmission counts toward your plan's public network transfer allowance.
 
 # Datadog integration
 
@@ -85140,6 +85144,16 @@ Additionally, if you are setting up Neon's Datadog integration for a project wit
 ## Example usage in Datadog
 
 Once integrated, you can create custom dashboards in Datadog by querying the metrics sent from Neon. Use Datadog's **Metrics Explorer** to search for metrics like `neon_connection_counts`, `neon_db_total_size`, and `host_cpu_seconds_total`. You can also set alerts based on threshold values for critical metrics.
+
+### Filter by tag
+
+Neon doesn't set the Datadog [unified service tags](https://docs.datadoghq.com/getting_started/tagging/unified_service_tagging/) (`env`, `service`, and `version`) on exported metrics or logs. To filter and group Neon data, use these tags instead:
+
+- `project_id`: the Neon project
+- `endpoint_id`: the compute. Each compute belongs to one branch, so you can use this tag to separate environments that run on different branches, such as production and staging.
+- `compute_role`: `read_write` for a primary compute, or `read_only` for a read replica
+- `region_id`: the region the project runs in
+- `job`: the metric source (`compute-host-metrics`, `sql-metrics`, or `compute-pgbouncer-metrics`). Metrics only.
 
 ## Import the Neon dashboard
 
@@ -85784,14 +85798,14 @@ Neon exports metrics including connection counts, database size, replication del
 
 ## Export Postgres logs to Datadog
 
-You can export your Postgres logs from your Neon compute to your Datadog account. These logs provide visibility into database activity, errors, and performance. For detailed information about log fields and technical considerations, see the [Metrics and logs reference](https://neon.com/docs/reference/metrics-logs).
+You can export your Postgres logs from your Neon compute to your Datadog account. These logs provide visibility into database activity, errors, and performance. By default, logs include warnings and errors, connections and disconnections, checkpoints, and slow autovacuum runs. Query text isn't logged, and slow-query logging is off unless you turn it on. For the full list of logging settings and log fields, see [Postgres logs](https://neon.com/docs/reference/metrics-logs#postgres-logs) in the Metrics and logs reference.
 
 ### Performance impact
 
 Enabling this feature may result in:
 
 - An increase in compute resource usage for log processing
-- Additional network egress for log transmission, which is billed after 500 GB per project on paid plans
+- Additional public network transfer for log transmission, which counts toward your plan's [network transfer allowance](https://neon.com/docs/introduction/network-transfer)
 - Associated costs based on log volume in Datadog
 
 ## Feedback
@@ -91597,14 +91611,14 @@ Neon exports a comprehensive set of metrics including connection counts, databas
 
 ## Export Postgres logs
 
-You can export your Postgres logs from your Neon compute to your Grafana Cloud stack. These logs provide visibility into database activity, errors, and performance. The logs are automatically sent to Grafana Cloud Loki and can be queried using LogQL.
+You can export your Postgres logs from your Neon compute to your Grafana Cloud stack. These logs provide visibility into database activity, errors, and performance. The logs are automatically sent to Grafana Cloud Loki and can be queried using LogQL. By default, logs include warnings and errors, connections and disconnections, checkpoints, and slow autovacuum runs. Query text isn't logged, and slow-query logging is off unless you turn it on. For the full list of logging settings and log fields, see [Postgres logs](https://neon.com/docs/reference/metrics-logs#postgres-logs) in the Metrics and logs reference.
 
 ### Performance impact
 
 Enabling this feature may result in:
 
 - An increase in compute resource usage for log processing
-- Additional network egress for log transmission, which is billed after 500 GB per project on paid plans
+- Additional public network transfer for log transmission, which counts toward your plan's [network transfer allowance](https://neon.com/docs/introduction/network-transfer)
 - Associated costs based on log volume in Grafana Cloud
 
 ### Querying logs in Grafana Cloud
@@ -104918,7 +104932,7 @@ To remove your Neon project, follow the deletion steps in Neon's documentation u
 
 --- [Document source](https://neon.com/docs/guides/nextjs.md) ---
 
-> Summary: Connection guide for wiring a Next.js application to Neon serverless Postgres using node-postgres, postgres.js, or the Neon serverless driver (@neondatabase/serverless). Choose this page when you need working DATABASE_URL setup and driver code for App Router (Server Components, Server Actions), Pages Router (getServerSideProps, getStaticProps), Serverless Functions, or Edge Functions. The guide also explains Next.js static render caching and the force-dynamic workaround for fetching fresh data on each request.
+> Summary: Connection guide for wiring a Next.js application to Lakebase Postgres on Neon using node-postgres, postgres.js, or the Neon serverless driver (@neondatabase/serverless). Choose this page when you need working DATABASE_URL setup and driver code for App Router (Server Components, Server Actions), Pages Router (getServerSideProps, getStaticProps), Serverless Functions, or Edge Functions. The guide also explains how to query on every request with Next.js Cache Components (connection() and Suspense).
 
 # Connect a Next.js application to Neon
 
@@ -104944,7 +104958,7 @@ To create a Neon project and access it from a Next.js application:
 
 ## Create a Neon project
 
-If you do not have one already, create a Neon project. Save your connection details including your password. They are required when defining connection settings.
+If you do not have one already, create a Neon project.
 
 1. Navigate to the [Projects](https://console.neon.tech/app/projects) page in the Neon Console.
 2. Click **New Project**.
@@ -104952,7 +104966,7 @@ If you do not have one already, create a Neon project. Save your connection deta
 
 ## Create a Next.js project and add dependencies
 
-1. Create a Next.js project if you do not have one. For instructions, see [Create a Next.js App](https://nextjs.org/docs/app/getting-started/installation), in the Vercel documentation.
+1. Create a Next.js project if you do not have one. For instructions, see [Create a Next.js App](https://nextjs.org/docs/app/getting-started/installation), in the Vercel documentation. The examples in this guide are TypeScript, which `create-next-app` uses by default.
 
 2. Add project dependencies using one of the following commands. If you're not sure which to use, use `@neondatabase/serverless`: it connects over HTTP instead of TCP, which works in Next.js Edge Functions and other environments without TCP support, and needs no extra SSL configuration.
 
@@ -104960,6 +104974,7 @@ If you do not have one already, create a Neon project. Save your connection deta
 
    ```shell
    npm install pg
+   npm install -D @types/pg
    ```
 
    **postgres.js**
@@ -104979,95 +104994,106 @@ If you do not have one already, create a Neon project. Save your connection deta
 Add a `.env.local` file to your project directory and add your Neon connection string to it. You can find your Neon database connection string by clicking the **Connect** button in the Console nav to open the **Connect to your branch** modal. For more information, see [Connect from any application](https://neon.com/docs/connect/connect-from-any-app).
 
 ```shell
-DATABASE_URL="postgresql://<user>:<password>@<endpoint_hostname>.neon.tech:<port>/<dbname>?sslmode=require&channel_binding=require"
+DATABASE_URL="postgresql://[user]:[password]@[neon_hostname]/[dbname]?sslmode=require&channel_binding=require"
 ```
+
+**Note:** `pg` 8.23 and later print a `SECURITY WARNING` when a connection string uses `sslmode=require`. If you use node-postgres, change `sslmode=require` to `sslmode=verify-full` to keep the current behavior and remove the warning.
 
 ## Configure the Postgres client
 
-There are multiple ways to make server side requests with Next.js. See below for the different implementations.
+There are multiple ways to make server-side requests with Next.js. See below for the different implementations.
 
 ### App Router
 
-There are two methods for fetching and mutating data using server-side requests in Next.js App Router, they are:
+There are two methods for fetching and mutating data using server-side requests in Next.js App Router:
 
-1. `Server Components` fetches data at runtime on the server.
-2. `Server Actions` functions executed on the server to perform data mutations.
+1. `Server Components` fetch data on the server.
+2. `Server Actions` run on the server to perform data mutations.
 
 #### Server Components
+
+New Next.js projects enable [Cache Components](https://nextjs.org/docs/app/getting-started/caching) (`cacheComponents: true` in `next.config.ts`). With Cache Components, Next.js prerenders pages at build time unless a component opts into request-time rendering. To query the database on every request, call [`connection()`](https://nextjs.org/docs/app/api-reference/functions/connection) before the query and wrap the component in `<Suspense>`, as in the examples below. Without these, `npm run build` fails with `Next.js encountered uncached data during prerendering`.
 
 In your server components using the App Router, add the following code snippet to connect to your Neon database:
 
 **node-postgres**
 
-```javascript
+```tsx
+import { Suspense } from 'react';
+import { connection } from 'next/server';
 import { Pool } from 'pg';
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: true,
-});
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
-async function getData() {
+async function Version() {
+  await connection();
   const client = await pool.connect();
   try {
     const { rows } = await client.query('SELECT version()');
-    return rows[0].version;
+    return <>{rows[0].version}</>;
   } finally {
     client.release();
   }
 }
 
-export default async function Page() {
-  const data = await getData();
-  return <>{data}</>;
+export default function Page() {
+  return (
+    <Suspense fallback={<p>Loading...</p>}>
+      <Version />
+    </Suspense>
+  );
 }
 ```
 
 **postgres.js**
 
-```javascript
+```tsx
+import { Suspense } from 'react';
+import { connection } from 'next/server';
 import postgres from 'postgres';
 
-async function getData() {
-  const sql = postgres(process.env.DATABASE_URL, { ssl: 'require' });
+const sql = postgres(process.env.DATABASE_URL!, { ssl: 'require' });
+
+async function Version() {
+  await connection();
   const response = await sql`SELECT version()`;
-  return response[0].version;
+  return <>{response[0].version}</>;
 }
 
-export default async function Page() {
-  const data = await getData();
-  return <>{data}</>;
+export default function Page() {
+  return (
+    <Suspense fallback={<p>Loading...</p>}>
+      <Version />
+    </Suspense>
+  );
 }
 ```
 
 **Neon serverless driver (Recommended)**
 
-```javascript
+```tsx
+import { Suspense } from 'react';
+import { connection } from 'next/server';
 import { neon } from '@neondatabase/serverless';
 
-async function getData() {
-  const sql = neon(process.env.DATABASE_URL);
+const sql = neon(process.env.DATABASE_URL!);
+
+async function Version() {
+  await connection();
   const response = await sql`SELECT version()`;
-  return response[0].version;
+  return <>{response[0].version}</>;
 }
 
-export default async function Page() {
-  const data = await getData();
-  return <>{data}</>;
+export default function Page() {
+  return (
+    <Suspense fallback={<p>Loading...</p>}>
+      <Version />
+    </Suspense>
+  );
 }
 ```
 
-#### Understanding Caching in Server Components
-
-The examples above will work in development, but in production builds, Next.js will statically render these pages at build time. This means the database query runs once during build, not on every request.
-
-If you need fresh data on each request, add this to your page:
-
-```typescript
-export const dynamic = 'force-dynamic';
-```
-
-For other scenarios like periodic updates, see [Time-based Revalidation](https://nextjs.org/docs/app/building-your-application/caching#time-based-revalidation) in the Next.js docs.
+If your project doesn't enable Cache Components, you can drop `connection()` and `<Suspense>` and add `export const dynamic = 'force-dynamic';` to the page instead. Don't use `dynamic` with Cache Components: the build fails with `Route segment config "dynamic" is not compatible with nextConfig.cacheComponents`. To cache query results instead of running them on every request, see [Caching](https://nextjs.org/docs/app/getting-started/caching) in the Next.js docs.
 
 #### Server Actions
 
@@ -105075,20 +105101,22 @@ In your server actions using the App Router, add the following code snippet to c
 
 **node-postgres**
 
-```javascript
+```tsx
 import { Pool } from 'pg';
 
-export default async function Page() {
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+
+export default function Page() {
   async function create(formData: FormData) {
-    "use server";
-    const pool = new Pool({
-      connectionString: process.env.DATABASE_URL,
-      ssl: true
-    });
+    'use server';
     const client = await pool.connect();
-    await client.query("CREATE TABLE IF NOT EXISTS comments (comment TEXT)");
-    const comment = formData.get("comment");
-    await client.query("INSERT INTO comments (comment) VALUES ($1)", [comment]);
+    try {
+      await client.query('CREATE TABLE IF NOT EXISTS comments (comment TEXT)');
+      const comment = String(formData.get('comment'));
+      await client.query('INSERT INTO comments (comment) VALUES ($1)', [comment]);
+    } finally {
+      client.release();
+    }
   }
   return (
     <form action={create}>
@@ -105101,15 +105129,16 @@ export default async function Page() {
 
 **postgres.js**
 
-```javascript
+```tsx
 import postgres from 'postgres';
 
-export default async function Page() {
+const sql = postgres(process.env.DATABASE_URL!, { ssl: 'require' });
+
+export default function Page() {
   async function create(formData: FormData) {
-    "use server";
-    const sql = postgres(process.env.DATABASE_URL, { ssl: 'require' });
+    'use server';
     await sql`CREATE TABLE IF NOT EXISTS comments (comment TEXT)`;
-    const comment = formData.get("comment");
+    const comment = String(formData.get('comment'));
     await sql`INSERT INTO comments (comment) VALUES (${comment})`;
   }
   return (
@@ -105123,15 +105152,16 @@ export default async function Page() {
 
 **Neon serverless driver (Recommended)**
 
-```javascript
+```tsx
 import { neon } from '@neondatabase/serverless';
 
-export default async function Page() {
+const sql = neon(process.env.DATABASE_URL!);
+
+export default function Page() {
   async function create(formData: FormData) {
-    "use server";
-    const sql = neon(process.env.DATABASE_URL);
+    'use server';
     await sql`CREATE TABLE IF NOT EXISTS comments (comment TEXT)`;
-    const comment = formData.get("comment");
+    const comment = String(formData.get('comment'));
     await sql`INSERT INTO comments (comment) VALUES (${comment})`;
   }
   return (
@@ -105141,15 +105171,14 @@ export default async function Page() {
     </form>
   );
 }
-
 ```
 
 ### Pages Router
 
-There are two methods for fetching data using server-side requests in Next.js Pages Router, they are:
+There are two methods for fetching data using server-side requests in Next.js Pages Router:
 
 1. `getServerSideProps` fetches data at runtime so that content is always fresh.
-2. `getStaticProps` pre-renders pages at build time for data that is static or changes infrequently.
+2. `getStaticProps` pre-renders pages at build time for data that is static or changes infrequently. The database must be reachable when you run `npm run build`.
 
 #### getServerSideProps
 
@@ -105157,13 +105186,10 @@ From `getServerSideProps` using the Pages Router, add the following code snippet
 
 **node-postgres**
 
-```javascript
+```tsx
 import { Pool } from 'pg';
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: true,
-});
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
 export async function getServerSideProps() {
   const client = await pool.connect();
@@ -105175,39 +105201,41 @@ export async function getServerSideProps() {
   }
 }
 
-export default function Page({ data }) {
+export default function Page({ data }: { data: string }) {
   return <>{data}</>;
 }
 ```
 
 **postgres.js**
 
-```javascript
+```tsx
 import postgres from 'postgres';
 
+const sql = postgres(process.env.DATABASE_URL!, { ssl: 'require' });
+
 export async function getServerSideProps() {
-  const sql = postgres(process.env.DATABASE_URL, { ssl: 'require' });
   const response = await sql`SELECT version()`;
   return { props: { data: response[0].version } };
 }
 
-export default function Page({ data }) {
+export default function Page({ data }: { data: string }) {
   return <>{data}</>;
 }
 ```
 
 **Neon serverless driver (Recommended)**
 
-```javascript
+```tsx
 import { neon } from '@neondatabase/serverless';
 
+const sql = neon(process.env.DATABASE_URL!);
+
 export async function getServerSideProps() {
-  const sql = neon(process.env.DATABASE_URL);
   const response = await sql`SELECT version()`;
   return { props: { data: response[0].version } };
 }
 
-export default function Page({ data }) {
+export default function Page({ data }: { data: string }) {
   return <>{data}</>;
 }
 ```
@@ -105218,13 +105246,10 @@ From `getStaticProps` using the Pages Router, add the following code snippet to 
 
 **node-postgres**
 
-```javascript
+```tsx
 import { Pool } from 'pg';
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: true,
-});
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
 export async function getStaticProps() {
   const client = await pool.connect();
@@ -105236,39 +105261,41 @@ export async function getStaticProps() {
   }
 }
 
-export default function Page({ data }) {
+export default function Page({ data }: { data: string }) {
   return <>{data}</>;
 }
 ```
 
 **postgres.js**
 
-```javascript
+```tsx
 import postgres from 'postgres';
 
+const sql = postgres(process.env.DATABASE_URL!, { ssl: 'require' });
+
 export async function getStaticProps() {
-  const sql = postgres(process.env.DATABASE_URL, { ssl: 'require' });
   const response = await sql`SELECT version()`;
   return { props: { data: response[0].version } };
 }
 
-export default function Page({ data }) {
+export default function Page({ data }: { data: string }) {
   return <>{data}</>;
 }
 ```
 
 **Neon serverless driver (Recommended)**
 
-```javascript
+```tsx
 import { neon } from '@neondatabase/serverless';
 
+const sql = neon(process.env.DATABASE_URL!);
+
 export async function getStaticProps() {
-  const sql = neon(process.env.DATABASE_URL);
   const response = await sql`SELECT version()`;
   return { props: { data: response[0].version } };
 }
 
-export default function Page({ data }) {
+export default function Page({ data }: { data: string }) {
   return <>{data}</>;
 }
 ```
@@ -105279,15 +105306,13 @@ From your Serverless Functions, add the following code snippet to connect to you
 
 **node-postgres**
 
-```javascript
+```typescript
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { Pool } from 'pg';
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: true,
-});
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const client = await pool.connect();
   try {
     const { rows } = await client.query('SELECT version()');
@@ -105301,12 +105326,13 @@ export default async function handler(req, res) {
 
 **postgres.js**
 
-```javascript
+```typescript
+import type { NextApiRequest, NextApiResponse } from 'next';
 import postgres from 'postgres';
 
-const sql = postgres(process.env.DATABASE_URL, { ssl: 'require' });
+const sql = postgres(process.env.DATABASE_URL!, { ssl: 'require' });
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const response = await sql`SELECT version()`;
   const { version } = response[0];
   res.status(200).json({ version });
@@ -105315,12 +105341,13 @@ export default async function handler(req, res) {
 
 **Neon serverless driver (Recommended)**
 
-```javascript
+```typescript
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { neon } from '@neondatabase/serverless';
 
-const sql = neon(process.env.DATABASE_URL);
+const sql = neon(process.env.DATABASE_URL!);
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const response = await sql`SELECT version()`;
   const { version } = response[0];
   res.status(200).json({ version });
@@ -105331,14 +105358,14 @@ export default async function handler(req, res) {
 
 From your Edge Functions, add the following code snippet and connect to your Neon database using the [Neon serverless driver](https://neon.com/docs/serverless/serverless-driver):
 
-```javascript
+```typescript
+import { neon } from '@neondatabase/serverless';
+
 export const config = {
   runtime: 'edge',
 };
 
-import { neon } from '@neondatabase/serverless';
-
-const sql = neon(process.env.DATABASE_URL);
+const sql = neon(process.env.DATABASE_URL!);
 
 export default async function handler(req: Request) {
   const response = await sql`SELECT version()`;
@@ -105352,7 +105379,7 @@ export default async function handler(req: Request) {
 When you run `npm run dev` you can expect to see the following on `localhost:3000`:
 
 ```shell
-PostgreSQL 17.7 on aarch64-unknown-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit
+PostgreSQL 18.6 (ac70818) on aarch64-unknown-linux-gnu, compiled by gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, 64-bit
 ```
 
 ## Connection issues
@@ -105362,7 +105389,7 @@ PostgreSQL 17.7 on aarch64-unknown-linux-gnu, compiled by gcc (Debian 12.2.0-14+
 
 ### Where to upload and serve files?
 
-Neon does not provide a built-in file storage service. For managing binary file data (blobs), we recommend using dedicated, specialized storage services. Follow our guide on [File Storage](https://neon.com/docs/guides/file-storage) to learn more about how to store files in external object storage and file management services and track metadata in Neon.
+Use [Object Storage](https://neon.com/docs/storage/overview), Neon's S3-compatible storage that branches with your database. To use an external provider instead, see [File storage](https://neon.com/docs/guides/file-storage).
 
 ## Next steps
 
@@ -105370,7 +105397,7 @@ Neon does not provide a built-in file storage service. For managing binary file 
 - [Add Object Storage](https://neon.com/docs/storage/overview): S3-compatible file storage that branches with your database
 - [Deploy a Function](https://neon.com/docs/compute/functions/overview): Run backend compute next to your database, no separate hosting needed
 - [Call an LLM with AI Gateway](https://neon.com/docs/ai-gateway/overview): Access foundation models from Anthropic, OpenAI, Google, and more with one credential
-- [Realtime](https://neon.com/docs/realtime/examples/nextjs): Build fully-reactive realtime Next.js apps on Neon with SSR and end-to-end type-safety »
+- [Realtime](https://neon.com/docs/realtime/examples/nextjs): Build realtime Next.js apps on Neon with SSR and end-to-end type safety
 
 --- [Document source](https://neon.com/docs/guides/node.md) ---
 
@@ -124759,7 +124786,7 @@ For AI agent platforms that provision thousands of databases, Neon offers an **A
 | [Auth](https://neon.com/docs/introduction/plans#auth)                                         | Up to 60k MAU/project                                              | Up to 1M MAU/project                       | Up to 1M MAU/project                                                                                              |
 | [Object Storage](https://neon.com/docs/introduction/plans#object-storage)                     | 5 GB/project                                                       | $0.023/GB-month                            | $0.023/GB-month                                                                                                   |
 | [Functions](https://neon.com/docs/introduction/plans#functions)                               | 10 active / 400 waiting Capacity-Hours, 1M invocations per project | $0.10/$0.025/Capacity-Hour, $0.60/M        | $0.12/$0.03/Capacity-Hour, $0.60/M                                                                                |
-| [AI Gateway](https://neon.com/docs/introduction/plans#ai-gateway)                             | Not available                                                      | Prepaid credits                            | Prepaid credits                                                                                                   |
+| [AI Gateway](https://neon.com/docs/introduction/plans#ai-gateway)                             | Prepaid credits                                                    | Prepaid credits                            | Prepaid credits                                                                                                   |
 | [Data API](https://neon.com/docs/introduction/plans#data-api)                                 | No separate charge                                                 | No separate charge                         | No separate charge                                                                                                |
 | [Realtime](https://neon.com/docs/introduction/plans#realtime)                                 | Free during beta                                                   | Free during beta                           | Free during beta                                                                                                  |
 | [Private network transfer](https://neon.com/docs/introduction/plans#private-network-transfer) | Not available                                                      | Not available                              | $0.01/GB                                                                                                          |
@@ -125074,7 +125101,7 @@ See [Neon Functions](https://neon.com/docs/compute/functions/overview) for what'
 
 ### AI Gateway
 
-Neon AI Gateway provides access to open-weight and foundation models from multiple providers through a single Neon credential. It's available on paid plans (Launch and Scale). Any paid customer with prepaid credits can use every model in the catalog; see [Model access](https://neon.com/docs/ai-gateway/models#model-access) for details.
+Neon AI Gateway provides access to open-weight and foundation models from multiple providers through a single Neon credential. It's available on all plans, including Free. On the Free plan, you add a payment card and buy prepaid credits without upgrading. Any account with prepaid credits can use every model in the catalog; see [Model access](https://neon.com/docs/ai-gateway/models#model-access) for details.
 
 Prices match each provider's published list prices, with no additional markup, and draw down a prepaid credit balance you buy from the **Billing** page in the Neon Console.
 
@@ -125553,7 +125580,7 @@ You can create a project in any region listed above, but not every backend produ
 | `aws-ap-southeast-2` (Sydney)    |     ✅    |          ✅          |        —       |     —     |      —     |     —    |
 | `aws-sa-east-1` (São Paulo)      |     ✅    |          ✅          |        —       |     —     |      —     |     —    |
 
-The AI Gateway requires a paid plan.
+The AI Gateway is available on any plan with [prepaid credits](https://neon.com/docs/ai-gateway/prepaid-credits).
 
 For the latest details and usage limits, see each product's overview: [Lakebase Postgres](https://neon.com/docs/postgres/overview), [Managed Better Auth](https://neon.com/docs/auth/overview), [Object Storage](https://neon.com/docs/storage/overview), [Functions](https://neon.com/docs/compute/functions/overview), [AI Gateway](https://neon.com/docs/ai-gateway/overview).
 
@@ -142391,6 +142418,7 @@ Most `rawSql` parameter values pass as they are. Wrap dates, JSON, `bytea` and a
 | [`SealedLiveQuery`](https://neon.com/docs/realtime/sdks/typescript#backend-sealedlivequery)                         | Interface  | JSON-compatible sealed representation of one exact live query. The query is a short-lived bearer credential. Transport it over HTTPS and do not put it in URLs, logs, or persistent browser storage.                                                                                                                                                        |
 | [`TypedRawSqlParameter`](https://neon.com/docs/realtime/sdks/typescript#backend-typedrawsqlparameter)               | Interface  | A raw SQL parameter with an explicit PostgreSQL text encoder and type hint.                                                                                                                                                                                                                                                                                 |
 | [`RawSqlParameter`](https://neon.com/docs/realtime/sdks/typescript#backend-rawsqlparameter)                         | Type alias | A JavaScript value accepted as a PostgreSQL text-format parameter.                                                                                                                                                                                                                                                                                          |
+| [`RealtimeAdapterSource`](https://neon.com/docs/realtime/sdks/typescript#backend-realtimeadaptersource)             | Type alias | Bounded query-builder family recorded in encrypted capabilities.                                                                                                                                                                                                                                                                                            |
 | [`pgParam`](https://neon.com/docs/realtime/sdks/typescript#backend-pgparam)                                         | Variable   | Helpers for values whose PostgreSQL text encoding or type is ambiguous.                                                                                                                                                                                                                                                                                     |
 
 ### createRealtime
@@ -142610,9 +142638,10 @@ Converts an ORM-native query into the prepared live-query representation.
 
 #### Members
 
-| Name      | Type                                  | Description                                                                                                                                                                                      |
-| --------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `prepare` | `(query: Query) => PreparedLiveQuery` | Convert an adapter-native query into parameterized SQL and text-format parameter values. Adapters may supply PostgreSQL type OID hints; `0` requests inference. The proxy supplies result types. |
+| Name           | Type                                  | Description                                                                                                                                                                                      |
+| -------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `querySource?` | `readonly RealtimeAdapterSource`      | Query-builder family used for aggregate Realtime usage metrics. Official adapters set this automatically; custom adapters may omit it.                                                           |
+| `prepare`      | `(query: Query) => PreparedLiveQuery` | Convert an adapter-native query into parameterized SQL and text-format parameter values. Adapters may supply PostgreSQL type OID hints; `0` requests inference. The proxy supplies result types. |
 
 ### RealtimeDirectServer
 
@@ -142847,6 +142876,14 @@ type RawSqlParameter = string | number | boolean | bigint | null | TypedRawSqlPa
 
 A JavaScript value accepted as a PostgreSQL text-format parameter.
 
+### RealtimeAdapterSource
+
+```ts
+type RealtimeAdapterSource = "drizzle" | "kysely" | "custom"
+```
+
+Bounded query-builder family recorded in encrypted capabilities.
+
 ### pgParam
 
 ```ts
@@ -142911,11 +142948,12 @@ Most apps pass a `refreshQuery` function to the [React or TanStack DB bindings](
 | [`RawLiveQuerySubscription`](https://neon.com/docs/realtime/sdks/typescript#client-rawlivequerysubscription)                   | Interface  | A live-query subscription that exposes ordered raw result updates.                                                                                                                                                                                                                                                                                                                                                         |
 | [`RealtimeClient`](https://neon.com/docs/realtime/sdks/typescript#client-realtimeclient)                                       | Interface  | A client that multiplexes independently disposable subscriptions.                                                                                                                                                                                                                                                                                                                                                          |
 | [`RealtimeClientOptions`](https://neon.com/docs/realtime/sdks/typescript#client-realtimeclientoptions)                         | Interface  | Configuration for a reusable Realtime browser client.                                                                                                                                                                                                                                                                                                                                                                      |
-| [`LiveQueryChange`](https://neon.com/docs/realtime/sdks/typescript#client-livequerychange)                                     | Type alias | A row upsert or removal in an atomic publication batch.                                                                                                                                                                                                                                                                                                                                                                    |
+| [`WebSocketLike`](https://neon.com/docs/realtime/sdks/typescript#client-websocketlike)                                         | Interface  | Minimal WebSocket contract used by the Realtime client.                                                                                                                                                                                                                                                                                                                                                                    |
+| [`LiveQueryChange`](https://neon.com/docs/realtime/sdks/typescript#client-livequerychange)                                     | Type alias | A row upsert, removal, or sequential move in an atomic publication batch.                                                                                                                                                                                                                                                                                                                                                  |
 | [`LiveQuerySnapshot`](https://neon.com/docs/realtime/sdks/typescript#client-livequerysnapshot)                                 | Type alias | Materialized query rows paired with their atomic lifecycle state.                                                                                                                                                                                                                                                                                                                                                          |
 | [`LiveQueryState`](https://neon.com/docs/realtime/sdks/typescript#client-livequerystate)                                       | Type alias | Atomic lifecycle state for a live-query subscription.                                                                                                                                                                                                                                                                                                                                                                      |
 | [`PostgreSQLBytesParser`](https://neon.com/docs/realtime/sdks/typescript#client-postgresqlbytesparser)                         | Type alias | A parser for PostgreSQL `bytea`, transported as decoded bytes.                                                                                                                                                                                                                                                                                                                                                             |
-| [`PostgreSQLParserForOid`](https://neon.com/docs/realtime/sdks/typescript#client-postgresqlparserforoid)                       | Type alias | Parser input selected by the fixed Realtime protocol v1 OID/codec mapping.                                                                                                                                                                                                                                                                                                                                                 |
+| [`PostgreSQLParserForOid`](https://neon.com/docs/realtime/sdks/typescript#client-postgresqlparserforoid)                       | Type alias | Parser input selected by the fixed Realtime OID/codec mapping.                                                                                                                                                                                                                                                                                                                                                             |
 | [`PostgreSQLParsers`](https://neon.com/docs/realtime/sdks/typescript#client-postgresqlparsers)                                 | Type alias | A sparse collection of result parsers keyed by PostgreSQL type OID.                                                                                                                                                                                                                                                                                                                                                        |
 | [`PostgreSQLTextParser`](https://neon.com/docs/realtime/sdks/typescript#client-postgresqltextparser)                           | Type alias | A parser for a PostgreSQL value transported with the `pg_text` codec.                                                                                                                                                                                                                                                                                                                                                      |
 | [`RawLiveQueryUpdate`](https://neon.com/docs/realtime/sdks/typescript#client-rawlivequeryupdate)                               | Type alias | One authoritative raw query-result update. `rows` replaces the complete preceding result and invalidates its row-ID namespace. `changes` applies incrementally to the current result.                                                                                                                                                                                                                                      |
@@ -142923,6 +142961,7 @@ Most apps pass a `refreshQuery` function to the [React or TanStack DB bindings](
 | [`RealtimeLogEvent`](https://neon.com/docs/realtime/sdks/typescript#client-realtimelogevent)                                   | Type alias | Stable name for one client diagnostic event.                                                                                                                                                                                                                                                                                                                                                                               |
 | [`RealtimeLogger`](https://neon.com/docs/realtime/sdks/typescript#client-realtimelogger)                                       | Type alias | Receives structured Realtime client diagnostics.                                                                                                                                                                                                                                                                                                                                                                           |
 | [`RealtimeLogLevel`](https://neon.com/docs/realtime/sdks/typescript#client-realtimeloglevel)                                   | Type alias | Client-side diagnostic verbosity.                                                                                                                                                                                                                                                                                                                                                                                          |
+| [`WebSocketFactory`](https://neon.com/docs/realtime/sdks/typescript#client-websocketfactory)                                   | Type alias | Create a WebSocket-compatible transport for the Realtime client.                                                                                                                                                                                                                                                                                                                                                           |
 | [`nodePostgresParsers`](https://neon.com/docs/realtime/sdks/typescript#client-nodepostgresparsers)                             | Variable   | Core result parsers matching familiar node-postgres/Neon Serverless values. Less-common and unknown OIDs are intentionally absent and fall back to their exact PostgreSQL text. Known built-in array OIDs are decoded recursively by the client using the active parser for their element OID.                                                                                                                             |
 | [`pgTypeOids`](https://neon.com/docs/realtime/sdks/typescript#client-pgtypeoids)                                               | Variable   | Stable PostgreSQL type OIDs used by the built-in Realtime parsers.                                                                                                                                                                                                                                                                                                                                                         |
 | [`postgresJsParsers`](https://neon.com/docs/realtime/sdks/typescript#client-postgresjsparsers)                                 | Variable   | Parsers that differ from the core defaults when matching Postgres.js. Spread this partial preset into the client's `parsers` option.                                                                                                                                                                                                                                                                                       |
@@ -143080,10 +143119,10 @@ Options for the default materialized subscription.
 
 #### Members
 
-| Name           | Type             | Description                                                          |
-| -------------- | ---------------- | -------------------------------------------------------------------- |
-| `initialData?` | `readonly Row[]` | Preloaded rows exposed while connecting to the authoritative result. |
-| `materialize?` | `readonly true`  | Select materialization; omitted and `true` are equivalent.           |
+| Name           | Type             | Description                                                                                                                                                                                                             |
+| -------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `initialData?` | `readonly Row[]` | Preloaded rows exposed while connecting to the authoritative result. Supply decoded rows matching the live result, restoring any values changed by transport serialization (for example, JSON date strings) beforehand. |
+| `materialize?` | `readonly true`  | Select materialization; omitted and `true` are equivalent.                                                                                                                                                              |
 
 ### MaterializedLiveQuerySubscription
 
@@ -143366,15 +143405,15 @@ A client that multiplexes independently disposable subscriptions.
 
 #### Members
 
-| Name                                                                                         | Type                                                                                                                                                                                                                            | Description                                                        |
-| -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
-| `close`                                                                                      | `() => void`                                                                                                                                                                                                                    | Permanently close all subscriptions and the underlying WebSocket.  |
-| [`subscribe`](https://neon.com/docs/realtime/sdks/typescript#client-realtimeclientsubscribe) | `<Row>(query: SealedLiveQuery<Row>, options?: MaterializedLiveQueryOptions<Row>) => MaterializedLiveQuerySubscription<Row> & <Row>(query: SealedLiveQuery<Row>, options: RawLiveQueryOptions) => RawLiveQuerySubscription<Row>` | Start a materialized subscription, optionally with preloaded rows. |
+| Name                                                                                         | Type                                                                                                                                                                                                                                           | Description                                                        |
+| -------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| `close`                                                                                      | `() => void`                                                                                                                                                                                                                                   | Permanently close all subscriptions and the underlying WebSocket.  |
+| [`subscribe`](https://neon.com/docs/realtime/sdks/typescript#client-realtimeclientsubscribe) | `<Row>(query: SealedLiveQuery<Row>, options?: MaterializedLiveQueryOptions<NoInferCompat<Row>>) => MaterializedLiveQuerySubscription<Row> & <Row>(query: SealedLiveQuery<Row>, options: RawLiveQueryOptions) => RawLiveQuerySubscription<Row>` | Start a materialized subscription, optionally with preloaded rows. |
 
 #### RealtimeClient.subscribe
 
 ```ts
-subscribe<Row>(query: SealedLiveQuery<Row>, options?: MaterializedLiveQueryOptions<Row>): MaterializedLiveQuerySubscription<Row>
+subscribe<Row>(query: SealedLiveQuery<Row>, options?: MaterializedLiveQueryOptions<NoInferCompat<Row>>): MaterializedLiveQuerySubscription<Row>
 ```
 
 Start a materialized subscription, optionally with preloaded rows.
@@ -143385,10 +143424,10 @@ Start a materialized subscription, optionally with preloaded rows.
 
 **Parameters**
 
-| Name       | Type                                | Description                                                 |
-| ---------- | ----------------------------------- | ----------------------------------------------------------- |
-| `query`    | `SealedLiveQuery<Row>`              | Short-lived capability returned by the application backend. |
-| `options?` | `MaterializedLiveQueryOptions<Row>` | Materialization and optional preloaded-row settings.        |
+| Name       | Type                                               | Description                                                 |
+| ---------- | -------------------------------------------------- | ----------------------------------------------------------- |
+| `query`    | `SealedLiveQuery<Row>`                             | Short-lived capability returned by the application backend. |
+| `options?` | `MaterializedLiveQueryOptions<NoInferCompat<Row>>` | Materialization and optional preloaded-row settings.        |
 
 ```ts
 subscribe<Row>(query: SealedLiveQuery<Row>, options: RawLiveQueryOptions): RawLiveQuerySubscription<Row>
@@ -143417,20 +143456,39 @@ Configuration for a reusable Realtime browser client.
 
 #### Members
 
-| Name        | Type                                                                                                                  | Description                                                                                                                                                                                                                                                    |
-| ----------- | --------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `logger?`   | `readonly RealtimeLogger`                                                                                             | Structured diagnostic sink. It is called only for events enabled by `logLevel`; exceptions from the sink are ignored.                                                                                                                                          |
-| `logLevel?` | `readonly RealtimeLogLevel`                                                                                           | Minimum client diagnostic level. The default, `silent`, emits nothing. When enabled without `logger`, entries are written to `console`.                                                                                                                        |
-| `parsers?`  | `readonly Readonly<Record<number, PostgreSQLBytesParser<unknown> \| PostgreSQLTextParser<unknown>> & BuiltInParsers>` | PostgreSQL result parsers keyed by type OID. These entries override [`nodePostgresParsers`](https://neon.com/docs/realtime/sdks/typescript#client-nodepostgresparsers). The client snapshots the object when it is created, so later mutations have no effect. |
-| `url`       | `readonly string`                                                                                                     | Realtime proxy WebSocket URL, using `wss:` outside local development.                                                                                                                                                                                          |
+| Name                | Type                                                                                                                  | Description                                                                                                                                                                                                                                                    |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `logger?`           | `readonly RealtimeLogger`                                                                                             | Structured diagnostic sink. It is called only for events enabled by `logLevel`; exceptions from the sink are ignored. Server-issued client warnings do not use this sink.                                                                                      |
+| `logLevel?`         | `readonly RealtimeLogLevel`                                                                                           | Minimum client diagnostic level. The default, `silent`, emits no structured diagnostics. Server-issued client warnings are always written to `console.error` independently of this setting. When enabled without `logger`, entries are written to `console`.   |
+| `parsers?`          | `readonly Readonly<Record<number, PostgreSQLBytesParser<unknown> \| PostgreSQLTextParser<unknown>> & BuiltInParsers>` | PostgreSQL result parsers keyed by type OID. These entries override [`nodePostgresParsers`](https://neon.com/docs/realtime/sdks/typescript#client-nodepostgresparsers). The client snapshots the object when it is created, so later mutations have no effect. |
+| `url`               | `readonly string`                                                                                                     | Realtime proxy WebSocket URL, using `wss:` outside local development.                                                                                                                                                                                          |
+| `webSocketFactory?` | `readonly WebSocketFactory`                                                                                           | Override how the client creates its WebSocket. This is primarily useful in runtimes such as React Native, whose WebSocket constructor accepts platform-specific connection options. In browsers, omit this option to use the built-in WebSocket constructor.   |
+
+### WebSocketLike
+
+```ts
+interface WebSocketLike
+```
+
+Minimal WebSocket contract used by the Realtime client.
+
+#### Members
+
+| Name               | Type                                                                                                                                                                                                                              | Description                                                            |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `readyState`       | `readonly number`                                                                                                                                                                                                                 |                                                                        |
+| `addEventListener` | `(type: "open", listener: () => void) => void & (type: "message", listener: (event: { readonly data: unknown }) => void) => void & (type: "close", listener: () => void) => void & (type: "error", listener: () => void) => void` |                                                                        |
+| `close`            | `(code?: number, reason?: string) => void`                                                                                                                                                                                        |                                                                        |
+| `send`             | `(data: string) => void`                                                                                                                                                                                                          |                                                                        |
+| `terminate?`       | `() => void`                                                                                                                                                                                                                      | Immediately destroy the transport when the implementation supports it. |
 
 ### LiveQueryChange
 
 ```ts
-type LiveQueryChange<Row> = { readonly row: Row; readonly rowId: string; readonly type: "upsert" } | { readonly rowId: string; readonly type: "remove" }
+type LiveQueryChange<Row> = { readonly row: Row; readonly rowId: string; readonly type: "upsert" } | { readonly rowId: string; readonly type: "remove" } | { readonly afterRowId: string | null; readonly rowId: string; readonly type: "move" }
 ```
 
-A row upsert or removal in an atomic publication batch.
+A row upsert, removal, or sequential move in an atomic publication batch.
 
 ### LiveQuerySnapshot
 
@@ -143462,7 +143520,7 @@ A parser for PostgreSQL `bytea`, transported as decoded bytes.
 type PostgreSQLParserForOid<Oid extends number> = Oid extends typeof pgTypeOids.bytea ? PostgreSQLBytesParser : PostgreSQLTextParser
 ```
 
-Parser input selected by the fixed Realtime protocol v1 OID/codec mapping.
+Parser input selected by the fixed Realtime OID/codec mapping.
 
 ### PostgreSQLParsers
 
@@ -143524,6 +143582,14 @@ type RealtimeLogLevel = "silent" | "error" | "warn" | "info" | "debug"
 ```
 
 Client-side diagnostic verbosity.
+
+### WebSocketFactory
+
+```ts
+type WebSocketFactory = (url: string, protocols: string | string[]) => WebSocketLike
+```
+
+Create a WebSocket-compatible transport for the Realtime client.
 
 ### nodePostgresParsers
 
@@ -143603,7 +143669,7 @@ fetch sealed queries or close the client when it unmounts.
 ### useLiveQuery
 
 ```ts
-function useLiveQuery<Row>(query: SealedLiveQuery<Row>, options: UseLiveQueryOptions<Row> = {}): UseLiveQueryResult<Row>
+function useLiveQuery<Row>(query: SealedLiveQuery<Row>, options: UseLiveQueryOptions<NoInferCompat<Row>> = {}): UseLiveQueryResult<Row>
 ```
 
 Subscribe to a sealed query and expose its materialized snapshot to
@@ -143622,10 +143688,10 @@ utilities.
 
 #### Parameters
 
-| Name      | Type                       | Description                                              |
-| --------- | -------------------------- | -------------------------------------------------------- |
-| `query`   | `SealedLiveQuery<Row>`     | Capability obtained from the application backend.        |
-| `options` | `UseLiveQueryOptions<Row>` | Optional preloaded rows and capability-refresh callback. |
+| Name      | Type                                      | Description                                              |
+| --------- | ----------------------------------------- | -------------------------------------------------------- |
+| `query`   | `SealedLiveQuery<Row>`                    | Capability obtained from the application backend.        |
+| `options` | `UseLiveQueryOptions<NoInferCompat<Row>>` | Optional preloaded rows and capability-refresh callback. |
 
 #### Returns
 
@@ -143708,7 +143774,7 @@ Options for [`useLiveQuery`](https://neon.com/docs/realtime/sdks/typescript#reac
 
 | Name            | Type                                           | Description                                                                                                                                        |
 | --------------- | ---------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `initialData?`  | `readonly Row[]`                               | Server-rendered or otherwise preloaded rows exposed while connecting.                                                                              |
+| `initialData?`  | `readonly Row[]`                               | Decoded rows exposed immediately, including during server rendering. Restore values changed by transport serialization before passing them here.   |
 | `refreshQuery?` | `readonly () => Promise<SealedLiveQuery<Row>>` | Obtain a replacement capability for the same exact query before expiry. Transient failures are retried while the current capability remains valid. |
 
 ### UseLiveQueryResult
@@ -143737,21 +143803,23 @@ Import the TanStack DB adapter from `@neon/realtime-tanstack`. It runs in the br
 
 ### Symbols
 
-| Symbol                                                                                                                | Kind       | Summary                                                                                                                                                         |
-| --------------------------------------------------------------------------------------------------------------------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`realtimeCollectionOptions`](https://neon.com/docs/realtime/sdks/typescript#tanstack-db-realtimecollectionoptions)   | Function   | Create TanStack DB collection options backed by a raw live-query subscription. Complete-row replacements and committed change batches are applied atomically.   |
-| [`RealtimeCollectionConfig`](https://neon.com/docs/realtime/sdks/typescript#tanstack-db-realtimecollectionconfig)     | Interface  | Configuration for a Realtime-backed TanStack DB collection. The adapter owns `sync`, uses eager synchronization, and supplies its own collection utilities.     |
-| [`RealtimeCollectionUtils`](https://neon.com/docs/realtime/sdks/typescript#tanstack-db-realtimecollectionutils)       | Interface  | Utilities attached to a Realtime-backed TanStack DB collection.                                                                                                 |
-| [`RealtimeCollectionOptions`](https://neon.com/docs/realtime/sdks/typescript#tanstack-db-realtimecollectionoptions-2) | Type alias | TanStack DB collection options produced by [`realtimeCollectionOptions`](https://neon.com/docs/realtime/sdks/typescript#tanstack-db-realtimecollectionoptions). |
+| Symbol                                                                                                                | Kind       | Summary                                                                                                                                                                                                                                                                                                                        |
+| --------------------------------------------------------------------------------------------------------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [`realtimeCollectionOptions`](https://neon.com/docs/realtime/sdks/typescript#tanstack-db-realtimecollectionoptions)   | Function   | Create TanStack DB collection options backed by a raw live-query subscription. Complete-row replacements and committed change batches are applied atomically. This is an unordered keyed collection: move operations do not change membership or values and are ignored. Use core materialized subscriptions for server order. |
+| [`RealtimeCollectionConfig`](https://neon.com/docs/realtime/sdks/typescript#tanstack-db-realtimecollectionconfig)     | Interface  | Configuration for a Realtime-backed TanStack DB collection. The adapter owns `sync`, uses eager synchronization, and supplies its own collection utilities.                                                                                                                                                                    |
+| [`RealtimeCollectionUtils`](https://neon.com/docs/realtime/sdks/typescript#tanstack-db-realtimecollectionutils)       | Interface  | Utilities attached to a Realtime-backed TanStack DB collection.                                                                                                                                                                                                                                                                |
+| [`RealtimeCollectionOptions`](https://neon.com/docs/realtime/sdks/typescript#tanstack-db-realtimecollectionoptions-2) | Type alias | TanStack DB collection options produced by [`realtimeCollectionOptions`](https://neon.com/docs/realtime/sdks/typescript#tanstack-db-realtimecollectionoptions).                                                                                                                                                                |
 
 ### realtimeCollectionOptions
 
 ```ts
-function realtimeCollectionOptions<Row extends object, Key extends string | number = string | number, Schema extends StandardSchemaV1<unknown, unknown> = never>(config: RealtimeCollectionConfig<Row, Key, Schema>): RealtimeCollectionOptions<Row, Key, Schema>
+function realtimeCollectionOptions<Row extends object, Key extends string | number = string | number, Schema extends StandardSchemaV1<unknown, unknown> = never>(config: RealtimeCollectionConfig<NoInferCompat<Row>, Key, Schema> & { readonly query: SealedLiveQuery<Row> }): RealtimeCollectionOptions<Row, Key, Schema>
 ```
 
 Create TanStack DB collection options backed by a raw live-query subscription.
 Complete-row replacements and committed change batches are applied atomically.
+This is an unordered keyed collection: move operations do not change membership
+or values and are ignored. Use core materialized subscriptions for server order.
 
 **Returns:** Collection options to pass to TanStack DB's `createCollection()`.
 
@@ -143765,9 +143833,9 @@ Complete-row replacements and committed change batches are applied atomically.
 
 #### Parameters
 
-| Name     | Type                                         | Description                                                                   |
-| -------- | -------------------------------------------- | ----------------------------------------------------------------------------- |
-| `config` | `RealtimeCollectionConfig<Row, Key, Schema>` | Live-query subscription settings and ordinary TanStack DB collection options. |
+| Name     | Type                                                                                                   | Description                                                                   |
+| -------- | ------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------- |
+| `config` | `RealtimeCollectionConfig<NoInferCompat<Row>, Key, Schema> & { readonly query: SealedLiveQuery<Row> }` | Live-query subscription settings and ordinary TanStack DB collection options. |
 
 #### Returns
 
@@ -144253,6 +144321,7 @@ Interface-specific indexes:
 - [Update email provider configuration](https://neon.com/docs/reference/api/auth/update-neon-auth-email-provider.md) `PATCH /projects/{project_id}/branches/{branch_id}/auth/email_provider`
 - [Update localhost allow setting](https://neon.com/docs/reference/api/auth/update-neon-auth-allow-localhost.md) `PATCH /projects/{project_id}/branches/{branch_id}/auth/allow_localhost`
 - [Update magic link plugin configuration](https://neon.com/docs/reference/api/auth/update-neon-auth-magic-link-plugin.md) `PATCH /projects/{project_id}/branches/{branch_id}/auth/plugins/magic-link`
+- [Update Neon Auth logs export setting](https://neon.com/docs/reference/api/auth/update-neon-auth-logs-export.md) `PATCH /projects/{project_id}/branches/{branch_id}/auth/logs_export`
 - [Update Neon Auth webhook configuration](https://neon.com/docs/reference/api/auth/update-neon-auth-webhook-config.md) `PUT /projects/{project_id}/branches/{branch_id}/auth/webhooks`
 - [Update OAuth provider](https://neon.com/docs/reference/api/auth/update-branch-neon-auth-oauth-provider.md) `PATCH /projects/{project_id}/branches/{branch_id}/auth/oauth_providers/{oauth_provider_id}`
 - [Update OAuth provider plugin configuration](https://neon.com/docs/reference/api/auth/update-neon-auth-o-auth-provider-plugin.md) `PATCH /projects/{project_id}/branches/{branch_id}/auth/plugins/oauth-provider`
@@ -147388,7 +147457,7 @@ For common authentication troubleshooting (missing environment variables, CSS co
 
 --- [Document source](https://neon.com/docs/reference/metrics-logs.md) ---
 
-> Summary: Complete field-level reference for all metrics and Postgres log fields that Neon exports to Datadog, Grafana Cloud, and OpenTelemetry, including metric names, label keys (project_id, endpoint_id, compute_id, job), and log metadata. Use this page to identify exact metric identifiers such as neon_connection_counts, neon_lfc_hits, and host_cpu_seconds_total when building dashboards or alerts. Metrics are not sent while a compute is suspended by Scale to Zero, which can cause gaps; log export may also incur network egress charges when a project on a paid plan exceeds 500 GB.
+> Summary: Complete field-level reference for all metrics and Postgres log fields that Neon exports to Datadog, Grafana Cloud, and OpenTelemetry, including metric names, label keys (project_id, endpoint_id, compute_id, job), and log metadata. Use this page to identify exact metric identifiers such as neon_connection_counts, neon_lfc_hits, and host_cpu_seconds_total when building dashboards or alerts. Metrics are not sent while a compute is suspended by Scale to Zero, which can cause gaps; log export also counts toward your plan's public network transfer allowance.
 
 # Metrics and logs reference
 
@@ -147459,30 +147528,109 @@ neon_db_total_size{project_id="square-daffodil-12345678", endpoint_id="ep-aged-a
 
 ## Postgres logs
 
-Neon can export Postgres logs to observability platforms, providing visibility into database activity, errors, and performance. These logs include:
+Neon can export Postgres logs to observability platforms, providing visibility into database activity, errors, and performance. When log export is enabled, Postgres sends its standard server log output to the integration, so what you receive is controlled by the Postgres [logging parameters](https://www.postgresql.org/docs/current/runtime-config-logging.html).
 
-- Error messages and warnings
-- Connection events
-- System notifications
+### What's logged by default
+
+Neon computes use these logging settings:
+
+| Parameter                     | Value     | What you'll see in exported logs                                                                                                                             |
+| ----------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `log_min_messages`            | `warning` | Warnings, errors, and more severe messages. `NOTICE`, `INFO`, and `DEBUG` aren't sent.                                                                       |
+| `log_connections`             | `on`      | `connection received`, `connection authenticated`, and `connection authorized` lines for each new connection. This is often the largest share of log volume. |
+| `log_disconnections`          | `on`      | A line for each closed connection, including session duration.                                                                                               |
+| `log_checkpoints`             | `on`      | A line for each checkpoint, with timing and the number of buffers written.                                                                                   |
+| `log_autovacuum_min_duration` | `1000`    | Autovacuum and autoanalyze runs that take longer than 1 second.                                                                                              |
+| `log_temp_files`              | `1048576` | Temporary files of 1 GB or more, such as large sorts or hashes that spill to disk.                                                                           |
+| `log_error_verbosity`         | `terse`   | Errors and warnings without `DETAIL`, `HINT`, or `CONTEXT` lines.                                                                                            |
+| `log_min_error_statement`     | `panic`   | The SQL statement that caused an error isn't included, to keep query data out of logs.                                                                       |
+
+Statement logging is off by default. Query text isn't logged (`log_statement` is `none`), slow queries aren't logged (`log_min_duration_statement` is `-1`), and lock waits aren't logged (`log_lock_waits` is `off`). To find slow or frequent queries without changing log settings, use [Monitor query performance](https://neon.com/docs/introduction/monitor-query-performance).
+
+For the full list of Neon's Postgres settings, see [Postgres parameter settings](https://neon.com/docs/reference/compatibility#postgres-parameter-settings).
+
+### Log slow queries
+
+You can turn on slow-query logging for a compute by setting `log_min_duration_statement` in the compute's `pg_settings` with the [Update compute endpoint](https://neon.com/docs/reference/api/endpoints/update-project-endpoint) API. Postgres then logs every statement that runs longer than the value you set, in milliseconds. The minimum value is `500`. The setting applies without a compute restart.
+
+```bash
+curl --request PATCH \
+     --url https://console.neon.tech/api/v2/projects/<project_id>/endpoints/<endpoint_id> \
+     --header 'accept: application/json' \
+     --header "authorization: Bearer $NEON_API_KEY" \
+     --header 'content-type: application/json' \
+     --data '
+{
+  "endpoint": {
+    "settings": {
+      "pg_settings": {
+        "log_min_duration_statement": "1000"
+      }
+    }
+  }
+}
+'
+```
+
+**Warning:** Slow-query log lines include the full statement text, including any literal values in the query. If your queries contain sensitive data, consider what you send to your observability platform before you turn this on.
+
+The other statement logging parameters, such as `log_statement` and `log_lock_waits`, can't be changed. You can't set any of them with `SET` or `ALTER DATABASE`, because they require superuser privileges.
 
 ### Log fields and metadata
 
-Logs include the following labels and metadata for filtering and organization:
+Each log message starts with a prefix that Neon sets through `log_line_prefix`. It includes:
 
+- Timestamp, in GMT
+- `sqlstate`: the [SQLSTATE error code](https://www.postgresql.org/docs/current/errcodes-appendix.html), or `00000` for messages that aren't errors
+- `user`: the Postgres role
+- `dboid`: the database OID. To map it to a name, run `SELECT oid, datname FROM pg_database;`.
+- `backend`: the process type, such as `client backend`, `autovacuum worker`, or `checkpointer`
+- `app`: the client's `application_name`
+- Process ID
+
+Each exported log record also includes these attributes:
+
+- Log level (severity). See [Log levels](https://neon.com/docs/reference/metrics-logs#log-levels).
 - `project_id`
 - `endpoint_id`
-- Timestamp
-- Log level
-- And other standard PostgreSQL log fields
+- `compute_binding_id`: identifies the individual compute instance behind the endpoint
+- `compute_role`: `read_write` or `read_only`
+- `endpoint_type`: `read_write` or `read_only`
+- `region_id`
+- `host`, set to `neon-collector-<project_id>`
+- `service.name`: OpenTelemetry integration only, if you set it in the integration's resource attributes
 
-**Note:** During the beta phase, you may see some Neon-specific system logs included. These will be filtered out before general availability (GA).
+If you connect through a [pooled connection string](https://neon.com/docs/connect/connection-pooling), connection lines show `application_name=pgbouncer`, because PgBouncer opens the connection to Postgres for you. Your client's `application_name` still appears in the `app` field on statement and error lines.
+
+### Log levels
+
+Postgres maps its message levels to syslog severities that don't line up with the level names, so the severity on an exported record often differs from the level in the message text:
+
+| Postgres level (in the message) | Exported severity |
+| ------------------------------- | ----------------- |
+| `LOG`, `INFO`                   | `info`            |
+| `WARNING`                       | `notice`          |
+| `ERROR`                         | `warning`         |
+| `FATAL`                         | `err`             |
+| `PANIC`                         | `crit`            |
+
+To find errors, filter on the message text (for example, `ERROR:`) or on the `sqlstate` field instead of the record severity. `NOTICE` messages aren't exported, because `log_min_messages` is `warning`.
+
+### Internal log lines
+
+Neon filters out some internal storage-layer log lines before export, but you'll still see activity from Neon's own processes:
+
+- **Connection lines.** Neon checks each compute's health by connecting to Postgres about once a minute, and its metrics collectors and other management tasks connect too. On an idle compute, these can make up close to half of all exported lines. The `connection authenticated`, `connection authorized`, and `disconnection` lines have `user=[cloud_admin]`. The `connection received` lines are logged before authentication, so they show `user=[[unknown]]` and `host=127.0.0.1`. To hide this activity, exclude lines with `user=[cloud_admin]` and lines containing `connection received: host=127.0.0.1`.
+- **Storage and replication messages.** Lines tagged `[COMMUNICATOR]` or `[WP]` come from Neon's storage layer and are informational.
+- **Restart messages.** When a compute restarts or reconfigures, you'll see `FATAL: terminating connection due to administrator command` for Neon's background processes, and `LOG` lines about reloading configuration. These are expected.
+- **Internal standby.** A compute can have an internal standby instance that also sends logs. Its records have a `compute_binding_id` ending in `-internal` and a `compute_role` of `read_only`, under the same `endpoint_id`.
 
 ### Performance considerations
 
 Enabling log export may result in:
 
 - An increase in compute resource usage for log processing
-- Additional network egress for log transmission, billed when a project on a paid plan exceeds 500 GB
+- Additional public network transfer for log transmission, which counts toward your plan's [network transfer allowance](https://neon.com/docs/introduction/network-transfer)
 - Associated costs based on log volume in your observability platform
 
 **Note:** Neon computes only send logs and metrics when they are active. If the [Scale to Zero](https://neon.com/docs/introduction/scale-to-zero) feature is enabled and a compute is suspended due to inactivity, no logs or metrics will be sent during the suspension. This may result in gaps in your data.
@@ -147492,6 +147640,8 @@ Additionally, if you are setting up an integration for a project with an inactiv
 ### Technical details
 
 Neon processes logs directly on each compute instance using [rsyslogd](https://www.rsyslog.com/doc/index.html), an industry-standard open source logging utility. This compute-level processing means that log collection contributes to your compute's resource usage.
+
+To keep log export from slowing down your database, the compute buffers log lines while forwarding them. If your observability platform is unreachable for long enough that the buffer fills, some log lines are dropped rather than delaying Postgres.
 
 ## Integration guides
 

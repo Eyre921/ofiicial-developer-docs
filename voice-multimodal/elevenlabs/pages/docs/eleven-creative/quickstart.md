@@ -38,7 +38,7 @@ For more information on voice cloning best practices, see our [voice cloning gui
 
 Choose the model that fits your use case:
 
-* **Multilingual v2** - Most stable model with support for 32 languages
+* **Multilingual v2** - Most stable model with support for 29 languages
 * **[Eleven v4](/docs/overview/capabilities/text-to-speech/eleven-v4)** - Our latest model, with the highest quality and the broadest language support
 * **Eleven v3** - Previous expressive model
 * **Flash v2.5** - Ultra-low latency for real-time applications

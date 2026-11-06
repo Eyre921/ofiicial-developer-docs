@@ -6,31 +6,31 @@ path: guides/nexus/queries
 
 Pinecone Nexus queries gather evidence and compose a grounded, cited answer.
 
-A query is a single turn: a question in, a grounded answer out. A multi-turn conversation is a session. Rather than stuffing raw chunks into a prompt, Pinecone Nexus runs an agent loop in which the model writes Python against a retrieval SDK to gather just the evidence it needs, then composes a grounded answer with citations.
+A query is a single turn that takes a question and returns a grounded answer, and a multi-turn conversation is a session. To answer, Pinecone Nexus runs an agent loop in which the model writes Python against a retrieval SDK to gather the evidence it needs, then composes an answer with citations.
 
-![A query turn: the agent loops, writing code against a retrieval SDK to gather evidence, then composes a cited answer](https://mintcdn.com/pinecone/EWF4J3kPxqsT4ELV/images/nexus/queries-light.svg?fit=max\&auto=format\&n=EWF4J3kPxqsT4ELV\&q=85\&s=fbb7818dc5c26a7ede110869e776d556)
+![In a query turn, the agent loops, writing code against a retrieval SDK to gather evidence, then composes a cited answer](https://mintcdn.com/pinecone/EWF4J3kPxqsT4ELV/images/nexus/queries-light.svg?fit=max\&auto=format\&n=EWF4J3kPxqsT4ELV\&q=85\&s=fbb7818dc5c26a7ede110869e776d556)
 
 ## Retrieval as code
 
-The usual ways to answer over a corpus both struggle. Agentic RAG issues many retrieval calls and burns tokens stitching them together, and a coding agent greps and parses raw files, which is powerful but slow, expensive, and unreliable.
+Two common ways to answer over a corpus have drawbacks. Agentic retrieval-augmented generation (RAG) issues many retrieval calls and spends tokens stitching the results together. A coding agent that greps and parses raw files is flexible, but it's slow and expensive, and its results are unreliable.
 
 A query turn does the hard retrieval work in one place. The model writes Python that reads artifacts, runs search, walks the graph, and queries structured tables, then answers from only the evidence it surfaced. Raw tool output never enters the model's context.
 
-## The query runtime
+## Query runtime
 
-A query is run by the Nexus runtime, a single generic Python image the orchestrator launches fresh for each turn. There is no per-context code. Every context runs the same entrypoint, parameterized by its [manifest](/guides/nexus/context-design).
+The Nexus runtime runs each query. It's a single generic Python image that the orchestrator launches fresh for each turn, with no per-context code. Every context runs the same entrypoint, parameterized by its [manifest](/guides/nexus/context-design).
 
-1. **A fresh container per turn:** Each query spawns one isolated container that runs exactly that turn, then exits. It pulls the scoped contexts' curated knowledge: artifacts on disk plus their vector index.
+1. **Container:** Each query starts one isolated container that runs that turn, then exits. It pulls the scoped contexts' curated knowledge: artifacts on disk plus their vector index.
 2. **Orientation:** The runtime reads the manifests and an artifact outline up front, so the model starts knowing what knowledge exists and where.
-3. **The agent loop:** The model writes Python into a persistent REPL to call the retrieval SDK, reading artifacts, running search, walking the graph, querying structured tables.
-4. **Step events:** Each step is posted back as it happens, powering the live answer stream you see in the console. You can replay the full sequence for any query with [query tracing](/guides/nexus/query-tracing).
+3. **Agent loop:** The model writes Python into a persistent REPL that calls the retrieval SDK to read artifacts, run searches, walk the graph, and query structured tables.
+4. **Step events:** The runtime posts each step as it happens, which powers the live answer stream. You can replay the full sequence for any query in its [query trace](/guides/nexus/query-tracing).
 5. **Synthesis:** Once enough evidence is gathered, the runtime composes a grounded answer with inline citations, then finalizes the turn.
 
-## The agent loop
+## Agent loop
 
 The model's primary tool is `run_python`, a persistent REPL. Variables survive across calls, so the model chains operations together: find an artifact, read it, filter its sources, drill for a verbatim quote, all in one block. It processes results in code and prints only what it needs.
 
-If the first pass misses, the model refines its code and searches again, so hard questions get more work, not a worse answer. The loop stops as soon as the model can answer.
+If the first pass misses, the model refines its code and searches again, so a hard question gets more steps. The loop stops as soon as the model can answer.
 
 ```python theme={null}
 # One turn: find an artifact, read it, drill its sources.
@@ -40,11 +40,31 @@ for h in await search_in_sources(srcs, "purchase price"):
     print(h.fields["source_path"], "::", h.fields["chunk_text"][:160])
 ```
 
-Independent searches run concurrently, and lookups already held in a variable are never repeated. The loop is capped, so the model is pushed to extract everything it needs and answer in a few steps.
+Independent searches run concurrently, and the model reuses lookups it already holds in a variable. The loop has a step cap, so the model aims to gather what it needs and answer in a few steps.
 
-## The retrieval SDK
+### Tool output limit
 
-The Composable Retriever pre-binds these primitives into the REPL. Read artifacts cheaply off disk, fall back to search over the index, and reach for SQL when the question is a count or enumeration.
+By default, the model sees at most 10,000 characters of each `run_python` result. A longer result is cut off and ends with a notice, such as `[truncated: showing 10,000 of 46,212 chars]`, so the model knows the result is partial.
+
+You can raise the limit to as much as 100,000 characters for a single query. This helps with questions whose answers are long lists, such as "List every company with a change-of-control clause." A higher limit makes the query slower and more expensive. Every extra 10,000 characters adds about 2,500 input tokens, which are sent again on every later step.
+
+To raise it, set `max_tool_output_chars` to a value from 1 to 100,000 in the `POST /query` request body. A value outside that range returns a `400` error. This field requires `X-Pinecone-Api-Version: unstable`, and the unstable API can change without notice.
+
+```bash curl theme={null}
+curl -fsS -X POST "$NEXUS_BASE_URL/query" \
+  -H "Authorization: Bearer $NEXUS_TOKEN" \
+  -H 'Content-Type: application/json' \
+  -H 'X-Pinecone-Api-Version: unstable' \
+  -d '{
+    "scope": ["company-filings"],
+    "ask": "List every company with a change-of-control clause.",
+    "max_tool_output_chars": 100000
+  }'
+```
+
+## Retrieval SDK
+
+The Composable Retriever loads these primitives into the REPL. The model reads artifacts off disk first because it's cheapest, falls back to search over the index, and uses SQL for counts and enumerations.
 
 ### Read artifacts
 
@@ -61,7 +81,7 @@ The Composable Retriever pre-binds these primitives into the REPL. Read artifact
 | - | - |
 | `search_knowledge(query)` | semantic search over artifacts (optionally by kind) |
 | `search_source(query)` | semantic search over raw source chunks |
-| `search_source_by_keyword(query)` | lexical/BM25 for exact IDs, codes, and phrases |
+| `search_source_by_keyword(query)` | keyword (BM25) search for exact IDs, codes, and phrases |
 | `search_in_sources(sources, query)` | semantic search within a specific artifact's source chunks |
 | `cite_from_artifact(name)` | drill an artifact's sources for a verbatim span |
 
@@ -69,17 +89,15 @@ The Composable Retriever pre-binds these primitives into the REPL. Read artifact
 
 | Primitive | What it does |
 | - | - |
-| `query_db(sql)` | read-only SQL over typed artifact tables, the first resort for how-many / counts / per-X |
+| `query_db(sql)` | read-only SQL over typed artifact tables, the first choice for counts and per-item questions |
 | `walk_graph(name)` | an N-hop subgraph around an artifact, following typed edges |
 
 ## Synthesis
 
-**Synthesis from surfaced evidence.** The answer is composed from just the evidence the code surfaced, never the raw corpus, so the model reasons over a small, relevant context instead of the whole document set.
-
-**Citations that trace to a source.** Inline citation markers map back to real source spans: the file, page, and verbatim text behind every claim.
-
-**Optional structured output.** When a `shape` is supplied, the answer is routed through structured synthesis to produce a schema-conforming document instead of prose.
+* **Evidence:** The model composes the answer from the evidence its code surfaced, so it reasons over a small, relevant context.
+* **Citations:** Each inline citation marker maps to a source span, with the file, page, and verbatim text behind the claim.
+* **Structured output:** When a query includes a `shape`, synthesis returns a document that conforms to that schema.
 
 ## Session instructions
 
-A session can carry its own answer instructions on top of a context's default, a system prompt that shapes how it answers every turn. See [Set session instructions](/guides/nexus/set-session-instructions).
+A session can carry its own instructions, a system prompt layered over the context's default that shapes every answer in the session. See [Set session instructions](/guides/nexus/set-session-instructions).

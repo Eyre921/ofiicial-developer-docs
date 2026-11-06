@@ -136,7 +136,7 @@ agent  = "glm-5p3-flash"
 * **Curation (`curate`):** Builds artifacts from your sources. Curation reads every source, so choose a fast, low-cost model such as `glm-5p3-flash` or `deepseek-v4p1-flash`. This default is the model curation runs on, so it's your main control over curation cost.
 * **System (`agent`):** Runs background workflows, such as Explore. This catalog uses `glm-5p3-flash`.
 
-To run a query on another model, such as `glm-5p3`, select it in the model selector on a context's **Query** tab or name it in the query's `model` field, as shown in [Query Nexus with a Fireworks model](#query-nexus-with-a-fireworks-model).
+To run a query on another model, such as `glm-5p3`, name it in the query's `model` field, as shown in [Query Nexus with a Fireworks model](#query-nexus-with-a-fireworks-model).
 
 ### Vision and pricing
 
@@ -195,7 +195,7 @@ pulumi up
 
 ## Check your defaults
 
-In the Nexus console, open **Settings** and select the **Deployment** tab. The **Default models** card shows the default for each work area, read-only, because the catalog reapplies `phase_defaults` on every settings pull. To change a default, edit `phase_defaults` and run `pulumi up` again.
+`GET /models` returns the current default for each work area in its `phase_defaults` field, and the query code in the next section prints them. The catalog reapplies `phase_defaults` on every settings pull, so to change a default, edit `phase_defaults` and run `pulumi up` again.
 
 ## Query Nexus with a Fireworks model
 

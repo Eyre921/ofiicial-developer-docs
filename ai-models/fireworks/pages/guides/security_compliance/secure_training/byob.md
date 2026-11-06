@@ -136,10 +136,6 @@ firectl sftj create \
   --aws-iam-role "arn:aws:iam::{AWS_ACCOUNT_ID}:role/{ROLE_NAME}"
 ```
 
-> [!TIP]
->
-> For RFT jobs, use `firectl rftj create` with the same `--aws-iam-role` flag.
-
 ### Alternative: Credentials Secret
 
 Instead of IAM role federation, you can use static AWS access keys stored in a Fireworks secret:
@@ -199,10 +195,6 @@ firectl sftj create \
   --azure-managed-identity-client-id "{MANAGED_IDENTITY_CLIENT_ID}" \
   --azure-tenant-id "{AZURE_TENANT_ID}"
 ```
-
-> [!TIP]
->
-> For RFT jobs, use `firectl rftj create` with the same `--azure-managed-identity-client-id` and `--azure-tenant-id` flags.
 
 ### Alternative: Credentials Secret
 

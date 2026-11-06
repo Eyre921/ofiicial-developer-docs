@@ -1,5 +1,5 @@
 ---
-title: "Nexus model guidance"
+title: "Nexus models"
 source: https://docs.pinecone.io/guides/nexus/models
 path: guides/nexus/models
 ---
@@ -10,9 +10,9 @@ Pinecone Nexus uses models at several points, and you choose them based on your 
 
 ## Model roles
 
-* **Generation** composes the answer to a query, using a generation model from the catalog.
-* **Curation** builds artifacts from your sources, using your configured models (covered below).
-* **Embedding and rerank** power retrieval, using Pinecone-hosted models by default.
+* **Generation:** Composes the answer to a [query](/guides/nexus/queries), using a generation model from the catalog.
+* **Curation:** [Builds artifacts](/guides/nexus/how-curation-works) from your sources, using the Curation default and your embedding model.
+* **Embedding and rerank:** Power retrieval, using [Pinecone-hosted models](/models/overview) by default.
 
 All are configurable through the model catalog, which is backed by [LiteLLM](https://docs.litellm.ai/docs/providers) and references each model by its `provider/model` identifier. In BYOC, you supply the keys, so see [Deploy Nexus BYOC](/guides/nexus/byoc/deploy).
 
@@ -20,9 +20,9 @@ All are configurable through the model catalog, which is backed by [LiteLLM](htt
 
 Each chat model call belongs to a work area, and each work area has a default model:
 
-* **Query** answers queries, and also runs Optimize.
-* **Curation** builds artifacts from your sources.
-* **System** runs background workflows, such as Explore.
+* **Query:** Answers queries, and also runs the [Optimize](/guides/nexus/concepts#tasks-and-workflows) workflow, which tunes the manifest from query traffic.
+* **Curation:** Builds artifacts from your sources.
+* **System:** Runs the background workflows that maintain a context, such as [Explore](/guides/nexus/concepts#tasks-and-workflows), which recommends starter manifest templates that fit your sources.
 
 A call that doesn't name a model runs on its work area's default, so generation runs on the Query default unless a query names a model.
 
@@ -36,7 +36,7 @@ A call that doesn't name a model runs on its work area's default, so generation 
 
 ## Choose a model per query
 
-A query can run on any model enabled for Query instead of the default. In a context's **Query** tab, the model selector lists those models. In the API, name a model by its catalog ID in the query's `model` field. `GET /models` lists the catalog IDs and the current defaults.
+A query can run on any model enabled for Query instead of the default. Name a model by its catalog ID in the query's `model` field. `GET /models` lists the catalog IDs and the current defaults.
 
 Match the model to the question rather than the size of the context. A cheaper, faster model suits simple or high-volume queries, and the most capable model suits complex, multi-step reasoning. The query [trace](/guides/nexus/query-tracing) reports the tokens and latency behind each answer, so you can compare models on your own questions and settle on the one that fits.
 
@@ -48,8 +48,8 @@ Curation runs your embedding model and the Curation default across your sources 
 
 In your own deployment, you configure the models yourself. You choose the default model for each work area, and the shipped catalog uses Google Gemini. You can bring any model a LiteLLM-supported provider offers, and point generation, embedding, or rerank at a different provider or an endpoint inside your own boundary, each with its own key. A chat model must support the OpenAI `tools` and `response_format` parameters, because Nexus relies on both. Align to your cloud provider where it helps:
 
-* **Azure** deployments typically use Azure OpenAI or AI Foundry models.
-* **AWS** deployments typically use Amazon Bedrock models.
+* Azure deployments typically use Azure OpenAI or AI Foundry models.
+* AWS deployments typically use Amazon Bedrock models.
 
 You don't have to stay within one provider. Because the available models depend on your deployment and the keys you provide, model selection for BYOC happens with Pinecone during setup rather than from a fixed published list.
 
@@ -61,4 +61,4 @@ Name a Bedrock rerank model by its full foundation-model ARN, for example `bedro
 
 ### Set default models
 
-Your model catalog sets the default model for each work area in `phase_defaults`. On the **Deployment** tab of the console's **Settings** page, the **Default models** card shows these defaults read-only, because the catalog reapplies them on every settings pull. To change a default, edit the catalog and redeploy. A default must be a model that's enabled for its work area, which the **Models** list shows for each model. Usage reports spend by stage, and calls on the System model appear under the `system` stage.
+Your model catalog sets the default model for each work area in `phase_defaults`, and the catalog reapplies these defaults on every settings pull. To change a default, edit the catalog and redeploy. A default must be a model that's enabled for its work area. `GET /models` lists the current defaults. Usage reports spend by stage, and calls on the System model appear under the `system` stage.

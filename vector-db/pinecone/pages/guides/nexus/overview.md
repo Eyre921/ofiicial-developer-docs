@@ -14,11 +14,11 @@ Traditional RAG hands an agent ranked chunks and leaves it to search, stitch, an
 >
 > Prepare your first context, then query it
 
-> [card] [Key concepts](/guides/nexus/concepts)
+> [card] [Key terms](/guides/nexus/concepts)
 >
 > Contexts, manifests, artifacts, sessions, and the Query API
 
-> [card] [How Nexus works](/guides/nexus/how-it-works)
+> [card] [Architecture](/guides/nexus/how-it-works)
 >
 > Curated artifacts for retrieval, then answers composed over a retrieval SDK
 
@@ -30,7 +30,7 @@ Traditional RAG hands an agent ranked chunks and leaves it to search, stitch, an
 >
 > Deploy Nexus in your own cloud account
 
-> [card] [MCP server](/guides/nexus/mcp-server)
+> [card] [Connect an MCP client](/guides/nexus/mcp-server)
 >
 > Query your contexts from any MCP client
 

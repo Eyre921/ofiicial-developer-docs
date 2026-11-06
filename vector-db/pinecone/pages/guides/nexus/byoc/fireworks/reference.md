@@ -41,8 +41,8 @@ A Fireworks chat model is an `[llm_models.<id>]` entry with `api_style = "openai
 | `model` | Yes | The Fireworks model path, such as `accounts/fireworks/models/glm-5p3`. |
 | `base_url` | Yes | The Fireworks endpoint. |
 | `api_key_ref` | Yes | The name of the secret that holds your Fireworks API key. |
-| `label` | Yes | The model name shown in the console and in `GET /models`. |
-| `provider` | Yes | The provider tag shown in the console and in `GET /models`, such as `fireworks`. |
+| `label` | Yes | The model name shown in `GET /models`. |
+| `provider` | Yes | The provider tag shown in `GET /models`, such as `fireworks`. |
 | `context_window` | Yes | The input token budget. |
 | `max_output_tokens` | Yes | The output token cap. The proxy enforces it on every request. |
 | `input_price_per_mtok` | No | The price per million input tokens. Set the price fields to have usage and the query trace report cost for the model. |
@@ -85,6 +85,6 @@ The `[default]` profile controls which catalog models your deployment serves.
 ## Constraints
 
 * **Chat model parameters:** Every chat model must support the OpenAI `tools` and `response_format` parameters, because Nexus relies on both.
-* **Default models:** Each work area's default comes from `llm.phase_defaults`, falling back to the tiers: Query from `search` or the `standard` tier, Curation from `curate` or the `lite` tier, and System from `agent` or the `standard` tier. The catalog reapplies these defaults on every settings pull, so the console's **Default models** card is read-only. To change a default, edit the catalog and run `pulumi up`.
+* **Default models:** Each work area's default comes from `llm.phase_defaults`, falling back to the tiers: Query from `search` or the `standard` tier, Curation from `curate` or the `lite` tier, and System from `agent` or the `standard` tier. The catalog reapplies these defaults on every settings pull, so to change a default, edit the catalog and run `pulumi up`.
 * **Tier names in queries:** A query treats a tier name, such as `pro`, as the Query default. Name models by catalog ID instead.
 * **Embedding changes:** A Pinecone index's dimension is fixed when the index is created. If you change the default embedding model, keep every embedding model a context has used in the catalog, because existing contexts look up their embedding model by ID at query time.

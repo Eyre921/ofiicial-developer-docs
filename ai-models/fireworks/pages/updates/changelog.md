@@ -628,7 +628,7 @@ TrainingPlatform
 
 You can now warm-start Reinforcement Fine-Tuning jobs from previously supervised fine-tuned checkpoints using the `--warm-start-from` flag. This enables a streamlined SFT-to-RFT workflow where you first train a model with supervised fine-tuning, then continue training with reinforcement learning.
 
-See the [Warm-Start Training guide](/fine-tuning/reinforcement-fine-tuning-models#warm-start) for details.
+See the [Warm-Start Training guide](/fine-tuning/reinforcement-fine-tuning-models) for details.
 
 ## **Azure Federated Identity for Model Uploads**
 
@@ -638,7 +638,7 @@ See the [Uploading Custom Models documentation](/models/uploading-custom-models)
 
 ## 📚 Documentation Updates
 
-* **Warm-Start Training:** New guide for SFT-to-RFT workflows ([Warm-Start Training](/fine-tuning/reinforcement-fine-tuning-models#warm-start))
+* **Warm-Start Training:** New guide for SFT-to-RFT workflows ([Warm-Start Training](/fine-tuning/reinforcement-fine-tuning-models))
 * **Azure Federated Identity:** Setup instructions for Azure AD authentication ([Uploading Custom Models](/models/uploading-custom-models))
 * **Preserved Thinking:** Multi-turn reasoning with preserved thinking context ([Reasoning](/guides/reasoning))
 * **GLM 4.7:** Added to models supporting `reasoning_effort` parameter
@@ -694,8 +694,8 @@ Fine-tuning workflows have been enhanced with several new capabilities:
 ## 📚 Documentation Updates
 
 * **Deployment Shapes API:** Added [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions) and [Get Deployment Shape](/api-reference/get-deployment-shape) endpoints for querying available deployment shapes
-* **Evaluator APIs:** Added [Create Evaluator](/api-reference/create-evaluator), [Update Evaluator](/api-reference/update-evaluator), and helper endpoints for evaluator source code, build logs, and upload validation
-* **Fine-Tuning APIs:** Added [Resume DPO Job](/api-reference/resume-dpo-job), [Resume Reinforcement Fine-Tuning Step](/api-reference/resume-reinforcement-fine-tuning-step), Execute Reinforcement Fine-Tuning Step, and [Get Evaluation Job Log Endpoint](/api-reference/get-evaluation-job-log-endpoint)
+* **Evaluator APIs:** Added Create Evaluator, Update Evaluator, and helper endpoints for evaluator source code, build logs, and upload validation
+* **Fine-Tuning APIs:** Added [Resume DPO Job](/api-reference/resume-dpo-job), [Resume Reinforcement Fine-Tuning Step](/api-reference/resume-reinforcement-fine-tuning-step), Execute Reinforcement Fine-Tuning Step, and Get Evaluation Job Log Endpoint
 * **SDK Examples:** Added Python SDK example links for direct routing and [supervised fine-tuning](/fine-tuning/fine-tuning-models) workflows
 
 > [accordion] Bug Fixes & Minor Improvements
@@ -754,7 +754,7 @@ See the [Prompt Caching guide](/guides/prompt-caching) for details.
 * **Reasoning Guide:** New documentation for working with reasoning models, including `reasoning_content`, `reasoning_effort`, streaming, and interleaved thinking ([Reasoning](/guides/reasoning))
 * **Recommended Models:** Updated recommendations to include DeepSeek V3.2 for code generation and Kimi K2 Thinking as a GPT-5 alternative ([Recommended Models](/guides/recommended-models))
 * **OpenAI Compatibility:** Removed `stop` sequence documentation as Fireworks is now 1:1 compatible with OpenAI's behavior ([OpenAI Compatibility](/tools-sdks/openai-compatibility))
-* **Evaluator APIs:** Added REST API documentation for Evaluator and Evaluation Job CRUD operations ([Evals API Reference](/api-reference/list-evaluators))
+* **Evaluator APIs:** Added REST API documentation for Evaluator and Evaluation Job CRUD operations
 * **firectl CLI Reference:** Updated with new commands including `cancel dpo-job`, `cancel supervised-fine-tuning-job`, `set-api-key`, `redeem-credit-code`, and evaluator revision management
 
 > [accordion] Bug Fixes & Minor Improvements
@@ -868,7 +868,7 @@ You can now download datasets directly from the Fireworks web app. The new downl
 
 Reinforcement Fine-Tuning now supports per-example weighting, giving you more control over which samples have greater influence during training. This feature mirrors the weighted training functionality already available in Supervised Fine-Tuning.
 
-See the [Weighted Training documentation](/fine-tuning/reinforcement-fine-tuning-models#weighted-training) for details on the weight field format.
+See the [Weighted Training documentation](/fine-tuning/reinforcement-fine-tuning-models) for details on the weight field format.
 
 ## ✨ New Models
 
@@ -1185,7 +1185,7 @@ The Build SDK now natively integrates with [reward-kit](https://github.com/fw-ai
 * Direct integration with Fireworks datasets and evaluation jobs
 * Support for third-party libraries and complex evaluation logic
 
-See our [Developing Evaluators](/tools-sdks/python-client/developing-evaluators) guide to get started with your first evaluator in minutes.
+See our Developing Evaluators guide to get started with your first evaluator in minutes.
 
 ## Added new Responses API for advanced conversational workflows and integrations
 

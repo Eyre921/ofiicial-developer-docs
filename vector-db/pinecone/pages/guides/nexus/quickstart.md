@@ -6,7 +6,7 @@ path: guides/nexus/quickstart
 
 Deploy Pinecone Nexus with BYOC, curate a context from your own documents, and run KnowQL queries that return grounded, cited multi-document answers.
 
-Pinecone Nexus runs in your own cloud account. This quickstart deploys Nexus with Bring Your Own Cloud (BYOC), turns a set of your documents into a context, and queries it for grounded, cited answers. See the [overview](/guides/nexus/overview) for what you can do with Nexus.
+Pinecone Nexus runs in your own cloud account. This quickstart deploys Nexus with Bring Your Own Cloud (BYOC), turns a set of your documents into a context, and queries it for grounded, cited answers. It covers both the API and the console, but the rest of the Nexus guides use only the API. See the [overview](/guides/nexus/overview) for what you can do with Nexus.
 
 Nexus organizes knowledge in a hierarchy:
 
@@ -14,7 +14,7 @@ Nexus organizes knowledge in a hierarchy:
 * A **context** is built from the documents you ingest into it.
 * A **query** can read one or more contexts, so several contexts together can give an agent its knowledge.
 
-See [key concepts](/guides/nexus/concepts) for the full model.
+See [key terms](/guides/nexus/concepts) for the full model.
 
 > [!NOTE]
 >
@@ -104,7 +104,7 @@ The queries later in this quickstart draw on these files. You can build the cont
 >   -d '{}'
 > ```
 >
-> Curation chunks your sources, distills them into typed artifacts, and indexes everything. It runs as a background task, so query the context once it finishes. See [How curation works](/guides/nexus/how-curation-works).
+> Curation chunks your sources, distills them into typed artifacts, and indexes everything. It runs as a background task, so query the context once it finishes. See [Nexus curation](/guides/nexus/how-curation-works).
 
 > [tab] Console
 >
@@ -168,7 +168,7 @@ Once curation finishes, ask your context a question and get back a grounded answ
 > window, customers can still get store credit, but not a direct refund.
 > ```
 >
-> The full response also carries `citations` and `usage`. See the [Nexus API](/reference/api/nexus/introduction) for the full surface, or connect an [MCP server](/guides/nexus/mcp-server) for Claude Desktop and other MCP clients.
+> The full response also carries `citations` and `usage`. See the [Nexus API](/reference/api/nexus/introduction) for the full surface, or connect an [MCP](https://modelcontextprotocol.io) client such as Claude Desktop with the [Nexus MCP server](/guides/nexus/mcp-server).
 
 > [tab] Console
 >

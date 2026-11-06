@@ -1,5 +1,5 @@
 ---
-title: "How Nexus works"
+title: "Nexus architecture"
 source: https://docs.pinecone.io/guides/nexus/how-it-works
 path: guides/nexus/how-it-works
 ---
@@ -8,11 +8,11 @@ Pinecone Nexus distills curated artifacts for retrieval, then answers with code 
 
 Most RAG systems chop documents into chunks and hope the right ones surface at query time. Pinecone Nexus does the hard work *up front*: it distills your sources into curated artifacts so the information an answer needs is already organized and easy to find, then answers questions by writing code over a retrieval SDK.
 
+## Data flow
+
 At a high level, your data flows through connectors into contexts, tasks curate each context into knowledge, and agents query it through a single KnowQL interface:
 
 ![The Pinecone Nexus architecture from top to bottom. Your data (docs and wikis, databases, APIs and SaaS, object storage, event streams, code repos) flows through connectors such as Google Drive, Box, Slack, GitHub, Notion, Confluence, and S3 into the Nexus knowledge engine. Inside a workspace, each dataset becomes a context of sources, a manifest, and knowledge, maintained by sandboxed tasks (import, curate, explore, optimize, search). A single KnowQL interface queries it to serve your AI application, from chatbots and Q\&A to search, agents, recommendations, and reporting.](https://mintcdn.com/pinecone/EWF4J3kPxqsT4ELV/images/nexus/nexus-architecture-light.svg?fit=max\&auto=format\&n=EWF4J3kPxqsT4ELV\&q=85\&s=968e4074b4b6b479bab6ebae47fecf73)
-
-The rest of this page zooms into the two ideas that make that work: curated artifacts for retrieval, and answering with code.
 
 ## Curated artifacts
 

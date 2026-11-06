@@ -1,5 +1,5 @@
 ---
-title: "Context design overview"
+title: "Nexus context design"
 source: https://docs.pinecone.io/guides/nexus/context-design
 path: guides/nexus/context-design
 ---
@@ -18,7 +18,7 @@ You author a manifest through the [Nexus API](/reference/api/nexus/authenticatio
 * [Design your own manifest](/guides/nexus/design-your-own-manifest) by defining artifact and edge types directly.
 * Configure [artifact formats](/guides/nexus/configure-artifact-formats) to write a type as prose or as a queryable SQLite table.
 
-Curation executes the manifest against the sources. To change a context later, send a new manifest with `PUT /contexts/{slug}` and re-curate, or edit it on the context's **Manifest** tab in the console, including SQLite table formats. These guides use the API.
+Curation executes the manifest against the sources. To change a context later, send a new manifest with `PUT /contexts/{slug}` and re-curate.
 
 ## Knowledge layers
 
@@ -30,7 +30,7 @@ Sources are split into spans and embedded for hybrid (semantic + keyword) search
 
 ### Artifacts
 
-Artifacts sit above the chunks. Each artifact has a *type* and a *kind*, a *scope*, a *format*, *provenance* linking back to its source chunks, and optional *edges*, which are typed, directed, source-cited relationships to other artifacts. The *type* is the artifact's classification, defined by your manifest and shown in the console (a template might define types such as Note, Concept, Entity, and Workstream). The *kind* is a built-in config within a type.
+Artifacts sit above the chunks. Each artifact has a *type* and a *kind*, a *scope*, a *format*, *provenance* linking back to its source chunks, and optional *edges*, which are typed, directed, source-cited relationships to other artifacts. The *type* is the artifact's classification, defined by your manifest (a template might define types such as Note, Concept, Entity, and Workstream). The *kind* is a built-in config within a type.
 
 Corpus-scoped artifacts plus typed edges form a cross-document knowledge graph. Factual queries dive straight to chunks. Synthesizing or "connect-the-dots" queries enter at artifacts, walk the edges, then drill down to chunks for evidence.
 

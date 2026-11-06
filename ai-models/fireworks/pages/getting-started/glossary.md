@@ -221,7 +221,7 @@ A hyperparameter that controls the size of the LoRA adapter. Higher rank = more 
 A reinforcement learning variant used in RFT. Optimizes model outputs using group-relative reward scoring rather than a separate value model.
 
 **RFT (Reinforcement Fine-Tuning)**\
-Fine-tuning that uses a reward signal instead of labeled examples. Managed RFT is paused and does not accept new jobs. New reinforcement learning runs on the [Training API](/fine-tuning/training-api/cookbook/rl), where you write the rollout and training loop.
+Fine-tuning that uses a reward signal instead of labeled examples. Managed RFT has been removed. New reinforcement learning runs on the [Training API](/fine-tuning/training-api/cookbook/rl), where you write the rollout and training loop.
 
 **Training shape**\
 A validated trainer configuration for one base model and one training method. It fixes the GPU type and count per trainer replica, plus the maximum training context length. On the [Training API](/fine-tuning/training-api/training-shapes) you pass a shape ID such as `accounts/fireworks/trainingShapes/qwen3-8b-128k`; managed training jobs select a compatible shape for you.

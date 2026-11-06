@@ -1,5 +1,5 @@
 ---
-title: "API Reference (159 pages)"
+title: "API Reference (182 pages)"
 source: https://openrouter.ai/docs/_llms/api-reference.txt
 path: docs/_llms/api-reference.txt
 ---
@@ -155,6 +155,32 @@ path: docs/_llms/api-reference.txt
 - [Bulk unassign members from a guardrail](https://openrouter.ai/docs/api/api-reference/guardrails/bulk-unassign-members-from-a-guardrail.md): Unassign multiple organization members from a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 - [List all key assignments](https://openrouter.ai/docs/api/api-reference/guardrails/list-all-key-assignments.md): List all API key guardrail assignments for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 - [List all member assignments](https://openrouter.ai/docs/api/api-reference/guardrails/list-all-member-assignments.md): List all organization member guardrail assignments for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+
+#### Guardrail Policies
+
+- [List workspace-wide policies](https://openrouter.ai/docs/api/api-reference/guardrail-policies/list-workspace-wide-policies.md): List the workspace-wide policies that apply across workspaces in the account. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+- [Create a workspace-wide policy](https://openrouter.ai/docs/api/api-reference/guardrail-policies/create-a-workspace-wide-policy.md): Create a workspace-wide budget, moderation, or model availability policy. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+- [Update a workspace-wide policy](https://openrouter.ai/docs/api/api-reference/guardrail-policies/update-a-workspace-wide-policy.md): Replace a workspace-wide policy and its workspace coverage. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+- [Delete a workspace-wide policy](https://openrouter.ai/docs/api/api-reference/guardrail-policies/delete-a-workspace-wide-policy.md): Delete a workspace-wide policy. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+- [Get an API key policy assignment](https://openrouter.ai/docs/api/api-reference/guardrail-policies/get-an-api-key-policy-assignment.md): Get the policies of one type that apply to an API key in a workspace. Requires a management key with write access. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+- [Change an API key policy assignment](https://openrouter.ai/docs/api/api-reference/guardrail-policies/change-an-api-key-policy-assignment.md): Assign or unassign one policy for an API key. Fails with 409 when `expected_assignment` no longer matches the stored state. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+- [Get a member policy assignment](https://openrouter.ai/docs/api/api-reference/guardrail-policies/get-a-member-policy-assignment.md): Get the policies of one type that apply to a member in a workspace. Requires a management key with write access. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+- [Change a member policy assignment](https://openrouter.ai/docs/api/api-reference/guardrail-policies/change-a-member-policy-assignment.md): Assign or unassign one policy for a member. Fails with 409 when `expected_assignment` no longer matches the stored state. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+- [List budget policies](https://openrouter.ai/docs/api/api-reference/guardrail-policies/list-budget-policies.md): List the budget policies in a workspace. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+- [Create a budget policy](https://openrouter.ai/docs/api/api-reference/guardrail-policies/create-a-budget-policy.md): Create a budget policy in a workspace. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+- [Get a budget policy](https://openrouter.ai/docs/api/api-reference/guardrail-policies/get-a-budget-policy.md): Get a budget policy with its member and API key assignments. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+- [Update a budget policy](https://openrouter.ai/docs/api/api-reference/guardrail-policies/update-a-budget-policy.md): Replace a budget policy's name and config, and optionally its assignments. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+- [Delete a budget policy](https://openrouter.ai/docs/api/api-reference/guardrail-policies/delete-a-budget-policy.md): Delete a budget policy. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+- [List model availability policies](https://openrouter.ai/docs/api/api-reference/guardrail-policies/list-model-availability-policies.md): List the model availability policies in a workspace. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+- [Create a model availability policy](https://openrouter.ai/docs/api/api-reference/guardrail-policies/create-a-model-availability-policy.md): Create a model availability policy in a workspace. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+- [Get a model availability policy](https://openrouter.ai/docs/api/api-reference/guardrail-policies/get-a-model-availability-policy.md): Get a model availability policy with its member and API key assignments. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+- [Update a model availability policy](https://openrouter.ai/docs/api/api-reference/guardrail-policies/update-a-model-availability-policy.md): Replace a model availability policy's name and config, and optionally its assignments. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+- [Delete a model availability policy](https://openrouter.ai/docs/api/api-reference/guardrail-policies/delete-a-model-availability-policy.md): Delete a model availability policy. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+- [List moderation policies](https://openrouter.ai/docs/api/api-reference/guardrail-policies/list-moderation-policies.md): List the moderation policies in a workspace. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+- [Create a moderation policy](https://openrouter.ai/docs/api/api-reference/guardrail-policies/create-a-moderation-policy.md): Create a moderation policy in a workspace. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+- [Get a moderation policy](https://openrouter.ai/docs/api/api-reference/guardrail-policies/get-a-moderation-policy.md): Get a moderation policy with its member and API key assignments. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+- [Update a moderation policy](https://openrouter.ai/docs/api/api-reference/guardrail-policies/update-a-moderation-policy.md): Replace a moderation policy's name and config, and optionally its assignments. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+- [Delete a moderation policy](https://openrouter.ai/docs/api/api-reference/guardrail-policies/delete-a-moderation-policy.md): Delete a moderation policy. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 #### Images
 

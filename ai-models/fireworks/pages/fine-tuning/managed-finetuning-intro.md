@@ -36,7 +36,7 @@ Per-step loss and learning-rate artifacts are retained for 7 days after they are
 
 > [card] [Reinforcement Learning](/fine-tuning/training-api/cookbook/rl)
 >
-> Train against a reward function on the Training API. Managed RFT is paused.
+> Train against a reward function on the Training API. Managed RFT has been removed.
 
 ## Supported base models
 

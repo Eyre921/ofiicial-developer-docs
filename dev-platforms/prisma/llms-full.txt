@@ -90046,1568 +90046,6 @@ Run [`npx prisma@latest init`](https://www.prisma.io/docs/cli/init) once to inst
 
 - [`Clerk (with Astro)`](https://www.prisma.io/docs/guides/authentication/clerk/astro): Learn how to use Prisma ORM in an Astro app with Clerk Auth
 
-# Expand-and-contract migrations (Prisma ORM v7) (/docs/guides/v7/database/data-migration)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Learn how to perform data migrations using the expand and contract pattern with Prisma ORM
-
-Location: Guides > v7 > Database > Expand-and-contract migrations
-
-## Introduction [#introduction]
-
-When you change your database schema in production, you need to keep the data consistent and avoid downtime. This guide shows you how to use the expand and contract pattern to safely migrate data between columns. The example replaces a boolean field with an enum field while preserving existing data.
-
-## Prerequisites [#prerequisites]
-
-Before starting this guide, make sure you have:
-
-* Node.js installed (version 20 or higher)
-* A Prisma ORM project with an existing schema
-* A supported database (PostgreSQL, MySQL, SQLite, SQL Server, etc.)
-* Access to both development and production databases
-* Basic understanding of Git branching
-* Basic familiarity with TypeScript
-
-## 1. Set up your environment [#1-set-up-your-environment]
-
-### 1.1. Review initial schema [#11-review-initial-schema]
-
-Start with a basic schema containing a Post model:
-
-```prisma
-generator client {
-  provider = "prisma-client"
-  output   = "./generated/prisma"
-}
-
-datasource db {
-  provider = "postgresql"
-}
-
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-}
-```
-
-### 1.2. Configure Prisma [#12-configure-prisma]
-
-Create a `prisma.config.ts` file in the root of your project with the following content:
-
-```typescript title="prisma.config.ts"
-import "dotenv/config";
-import { defineConfig, env } from "prisma/config";
-
-export default defineConfig({
-  schema: "prisma/schema.prisma",
-  migrations: {
-    path: "prisma/migrations",
-  },
-  datasource: {
-    url: env("DATABASE_URL"),
-  },
-});
-```
-
-> [!NOTE]
-> You'll need to install the required packages. If you haven't already, install them using your package manager:
-> 
-> 
->   
-> 
->   #### bun
-
->     ```bash
->     bun add prisma@prev tsx @types/pg --dev
->     ```
->
-> 
->   #### pnpm
-
->     ```bash
->     pnpm add prisma@prev tsx @types/pg --save-dev
->     ```
->
-> 
->   #### yarn
-
->     ```bash
->     yarn add prisma@prev tsx @types/pg --dev
->     ```
->
-> 
->   #### npm
-
->     ```bash
->     npm install prisma@prev tsx @types/pg --save-dev
->     ```
->
-> 
-> 
-> 
->   
-> 
->   #### bun
-
->     ```bash
->     bun add @prisma/client@7 @prisma/adapter-pg pg dotenv
->     ```
->
-> 
->   #### pnpm
-
->     ```bash
->     pnpm add @prisma/client@7 @prisma/adapter-pg pg dotenv
->     ```
->
-> 
->   #### yarn
-
->     ```bash
->     yarn add @prisma/client@7 @prisma/adapter-pg pg dotenv
->     ```
->
-> 
->   #### npm
-
->     ```bash
->     npm install @prisma/client@7 @prisma/adapter-pg pg dotenv
->     ```
->
-> 
-> 
-> If you are using a different database provider (MySQL, SQL Server, SQLite), install the corresponding driver adapter package instead of `@prisma/adapter-pg`. For more information, see [Database drivers](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases/database-drivers).
-
-### 1.3. Create a development branch [#13-create-a-development-branch]
-
-Create a new branch for your changes:
-
-```bash
-git checkout -b create-status-field
-```
-
-## 2. Expand the schema [#2-expand-the-schema]
-
-### 2.1. Add new column [#21-add-new-column]
-
-Update your schema to add the new Status enum and field:
-
-```prisma
-model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean? @default(false)
-  status    Status   @default(Unknown)
-}
-
-enum Status {
-  Unknown
-  Draft
-  InProgress
-  InReview
-  Published
-}
-```
-
-### 2.2. Create migration [#22-create-migration]
-
-Generate the migration:
-
-  
-
-#### bun
-
-```bash
-bunx prisma migrate dev --name add-status-column
-```
-
-#### pnpm
-
-```bash
-pnpm prisma migrate dev --name add-status-column
-```
-
-#### yarn
-
-```bash
-yarn prisma migrate dev --name add-status-column
-```
-
-#### npm
-
-```bash
-npx prisma migrate dev --name add-status-column
-```
-
-Then generate Prisma Client:
-
-  
-
-#### bun
-
-```bash
-bunx prisma generate
-```
-
-#### pnpm
-
-```bash
-pnpm prisma generate
-```
-
-#### yarn
-
-```bash
-yarn prisma generate
-```
-
-#### npm
-
-```bash
-npx prisma generate
-```
-
-## 3. Migrate the data [#3-migrate-the-data]
-
-### 3.1. Create migration script [#31-create-migration-script]
-
-Create a new TypeScript file for the data migration:
-
-```typescript
-import { PrismaClient } from "../generated/prisma/client";
-import { PrismaPg } from "@prisma/adapter-pg";
-import "dotenv/config";
-
-const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL,
-});
-
-const prisma = new PrismaClient({
-  adapter,
-});
-
-async function main() {
-  await prisma.$transaction(async (tx) => {
-    const posts = await tx.post.findMany();
-    for (const post of posts) {
-      await tx.post.update({
-        where: { id: post.id },
-        data: {
-          status: post.published ? "Published" : "Unknown",
-        },
-      });
-    }
-  });
-}
-
-main()
-  .catch(async (e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => await prisma.$disconnect());
-```
-
-### 3.2. Set up migration script [#32-set-up-migration-script]
-
-Add the migration script to your package.json:
-
-```json
-{
-  "scripts": {
-    "data-migration:add-status-column": "tsx ./prisma/migrations/<migration-timestamp>/data-migration.ts"
-  }
-}
-```
-
-### 3.3. Execute migration [#33-execute-migration]
-
-1. Update your DATABASE_URL to point to the production database
-2. Run the migration script:
-
-  
-
-#### bun
-
-```bash
-bun run data-migration:add-status-column
-```
-
-#### pnpm
-
-```bash
-pnpm run data-migration:add-status-column
-```
-
-#### yarn
-
-```bash
-yarn data-migration:add-status-column
-```
-
-#### npm
-
-```bash
-npm run data-migration:add-status-column
-```
-
-## 4. Contract the schema [#4-contract-the-schema]
-
-### 4.1. Create cleanup branch [#41-create-cleanup-branch]
-
-Create a new branch for removing the old column:
-
-```bash
-git checkout -b drop-published-column
-```
-
-### 4.2. Remove old column [#42-remove-old-column]
-
-Update your schema to remove the published field:
-
-```prisma
-model Post {
-  id      Int      @id @default(autoincrement())
-  title   String
-  content String?
-  status  Status   @default(Draft)
-}
-
-enum Status {
-  Draft
-  InProgress
-  InReview
-  Published
-}
-```
-
-### 4.3. Generate cleanup migration [#43-generate-cleanup-migration]
-
-Create and run the final migration:
-
-  
-
-#### bun
-
-```bash
-bunx prisma migrate dev --name drop-published-column
-```
-
-#### pnpm
-
-```bash
-pnpm prisma migrate dev --name drop-published-column
-```
-
-#### yarn
-
-```bash
-yarn prisma migrate dev --name drop-published-column
-```
-
-#### npm
-
-```bash
-npx prisma migrate dev --name drop-published-column
-```
-
-Then generate Prisma Client:
-
-  
-
-#### bun
-
-```bash
-bunx prisma generate
-```
-
-#### pnpm
-
-```bash
-pnpm prisma generate
-```
-
-#### yarn
-
-```bash
-yarn prisma generate
-```
-
-#### npm
-
-```bash
-npx prisma generate
-```
-
-## 5. Deploy to production [#5-deploy-to-production]
-
-### 5.1. Set up deployment [#51-set-up-deployment]
-
-Add the following command to your CI/CD pipeline:
-
-  
-
-#### bun
-
-```bash
-bunx prisma migrate deploy
-```
-
-#### pnpm
-
-```bash
-pnpm prisma migrate deploy
-```
-
-#### yarn
-
-```bash
-yarn prisma migrate deploy
-```
-
-#### npm
-
-```bash
-npx prisma migrate deploy
-```
-
-### 5.2. Monitor deployment [#52-monitor-deployment]
-
-Watch for any errors in your logs and monitor your application's behavior after deployment.
-
-## Troubleshooting [#troubleshooting]
-
-### Common issues and solutions [#common-issues-and-solutions]
-
-1. **Migration fails due to missing default**
-   * Ensure you've added a proper default value
-   * Check that all existing records can be migrated
-
-2. **Data loss prevention**
-   * Always backup your database before running migrations
-   * Test migrations on a copy of production data first
-
-3. **Transaction rollback**
-   * If the data migration fails, the transaction will automatically rollback
-   * Fix any errors and retry the migration
-
-## Next steps [#next-steps]
-
-Now that you've completed your first expand and contract migration, you can:
-
-* Learn more about [Prisma Migrate](https://www.prisma.io/docs/orm/v7/prisma-migrate)
-* Explore [schema prototyping](https://www.prisma.io/docs/orm/v7/prisma-migrate/workflows/prototyping-your-schema)
-* Understand [customizing migrations](https://www.prisma.io/docs/orm/v7/prisma-migrate/workflows/customizing-migrations)
-
-For more information:
-
-* [Expand and Contract Pattern Documentation](https://www.prisma.io/dataguide/types/relational/expand-and-contract-pattern)
-* [Prisma Migrate Workflows](https://www.prisma.io/docs/orm/v7/prisma-migrate/workflows/development-and-production)
-
-## Related pages
-
-- [`Multiple databases`](https://www.prisma.io/docs/guides/v7/database/multiple-databases): Learn how to use multiple Prisma Clients in a single app to connect to multiple databases, handle migrations, and deploy your application to Vercel
-- [`Schema management in teams`](https://www.prisma.io/docs/guides/v7/database/schema-changes): Learn how to use Prisma Migrate effectively when collaborating on a project as a team
-
-# Multiple databases (Prisma ORM v7) (/docs/guides/v7/database/multiple-databases)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Learn how to use multiple Prisma Clients in a single app to connect to multiple databases, handle migrations, and deploy your application to Vercel
-
-Location: Guides > v7 > Database > Multiple databases
-
-## Introduction [#introduction]
-
-This guide shows you how to use multiple databases using Prisma ORM in a single [Next.js app](https://nextjs.org/). You will learn how to connect to two different Prisma Postgres databases, manage migrations, and deploy your application to Vercel. This approach is useful for multi-tenant applications or when you need to separate concerns when managing connections to multiple databases.
-
-## Prerequisites [#prerequisites]
-
-Before you begin, make sure that you have the following:
-
-* Node.js 20.19+ on 20.x, 22.12+ on 22.x, or 24+ installed.
-* A [Prisma Data Platform account](https://pris.ly/pdp?utm_campaign=multi-client\&utm_source=docs).
-* A Vercel account (if you plan to deploy your application).
-
-## 1. Set up a Next.js project [#1-set-up-a-nextjs-project]
-
-Create a new Next.js app using `create-next-app` from your desired directory:
-
-  
-
-#### bun
-
-```bash
-bunx create-next-app@latest my-multi-client-app
-```
-
-#### pnpm
-
-```bash
-pnpm dlx create-next-app@latest my-multi-client-app
-```
-
-#### yarn
-
-```bash
-yarn dlx create-next-app@latest my-multi-client-app
-```
-
-#### npm
-
-```bash
-npx create-next-app@latest my-multi-client-app
-```
-
-You will be prompted to answer a few questions about your project. Select all of the defaults.
-
-> [!NOTE]
-> For completeness, those are:
-> 
-> * TypeScript
-> * ESLint
-> * Tailwind CSS
-> * No `src` directory
-> * App Router
-> * Turbopack
-> * Default custom import alias: `@/*`
-
-Then, navigate to the project directory:
-
-```bash
-cd my-multi-client-app
-```
-
-## 2. Set up your databases and Prisma Clients [#2-set-up-your-databases-and-prisma-clients]
-
-In this section, you will create two separate Prisma Postgres instances, one for user data and one for post data. You will also configure the Prisma schema and environment variables for each.
-
-First, install Prisma and the required dependencies:
-
-  
-
-#### bun
-
-```bash
-bun add prisma@prev tsx @types/pg --dev
-```
-
-#### pnpm
-
-```bash
-pnpm add prisma@prev tsx @types/pg --save-dev
-```
-
-#### yarn
-
-```bash
-yarn add prisma@prev tsx @types/pg --dev
-```
-
-#### npm
-
-```bash
-npm install prisma@prev tsx @types/pg --save-dev
-```
-
-  
-
-#### bun
-
-```bash
-bun add @prisma/client@7 @prisma/adapter-pg dotenv pg
-```
-
-#### pnpm
-
-```bash
-pnpm add @prisma/client@7 @prisma/adapter-pg dotenv pg
-```
-
-#### yarn
-
-```bash
-yarn add @prisma/client@7 @prisma/adapter-pg dotenv pg
-```
-
-#### npm
-
-```bash
-npm install @prisma/client@7 @prisma/adapter-pg dotenv pg
-```
-
-> [!NOTE]
-> If you are using a different database provider (MySQL, SQL Server, SQLite), install the corresponding driver adapter package instead of `@prisma/adapter-pg`. For more information, see [Database drivers](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases/database-drivers).
-
-You have installed the required dependencies for the project.
-
-### 2.1. Create a Prisma Postgres instance to contain user data [#21-create-a-prisma-postgres-instance-to-contain-user-data]
-
-Initialize Prisma with a [Prisma Postgres](https://www.prisma.io/docs/postgres) instance by running:
-
-  
-
-#### bun
-
-```bash
-bunx --bun prisma@prev init --db
-```
-
-#### pnpm
-
-```bash
-pnpm dlx prisma@prev init --db
-```
-
-#### yarn
-
-```bash
-yarn dlx prisma@prev init --db
-```
-
-#### npm
-
-```bash
-npx prisma@prev init --db
-```
-
-> [!NOTE]
-> If you are not using a Prisma Postgres database, do not use the `--db` flag. Instead, create two PostgreSQL database instances and add their connection URLs to the `.env` file as `PPG_USER_DATABASE_URL` and `PPG_POST_DATABASE_URL`.
-
-Follow the prompts to name your project and choose a database region.
-
-The `prisma@prev init --db` command:
-
-* Connects your CLI to your [Prisma Data Platform](https://console.prisma.io/?utm_source=docs\&utm_medium=content\&utm_content=guides) account. If you are not logged in or do not have an account, your browser will open to guide you through creating a new account or signing into your existing one.
-* Creates a `prisma` directory containing a `schema.prisma` file for your database models.
-* Creates a `.env` file with your `DATABASE_URL` (e.g., `DATABASE_URL="postgresql://user:password@host:5432/database?sslmode=require"`).
-
-Rename the `prisma` folder to `prisma-user-database`:
-
-```bash
-mv prisma prisma-user-database
-```
-
-Edit your `.env` file to rename `DATABASE_URL` to `PPG_USER_DATABASE_URL`:
-
-```bash title=".env"
-DATABASE_URL="postgresql://user:password@host:5432/database?sslmode=require" # [!code --]
-PPG_USER_DATABASE_URL="postgresql://user:password@host:5432/database?sslmode=require" # [!code ++]
-```
-
-Open `prisma-user-database/schema.prisma` file and update it to define a `User` model. Also, set the environment variable and specify a [custom `output` directory](https://www.prisma.io/docs/orm/v7/reference/prisma-schema-reference#fields-for-prisma-client-provider) for the generated Prisma Client:
-
-```prisma title="prisma-user-database/schema.prisma"
-generator client {
-  provider = "prisma-client"
-  output = "../prisma-user-database/user-database-client-types" // [!code ++]
-}
-
-datasource db {
-  provider = "postgresql"
-}
-
-model User { // [!code ++]
-  id    Int     @id @default(autoincrement()) // [!code ++]
-  email String  @unique // [!code ++]
-  name  String? // [!code ++]
-} // [!code ++]
-```
-
-Create a `prisma.config.ts` file for the user database:
-
-```typescript title="prisma-user-database/prisma.config.ts"
-import "dotenv/config"; // [!code ++]
-import { defineConfig, env } from "prisma/config"; // [!code ++]
-// [!code ++]
-export default defineConfig({
-  // [!code ++]
-  schema: "prisma-user-database/schema.prisma", // [!code ++]
-  migrations: {
-    // [!code ++]
-    path: "prisma-user-database/migrations", // [!code ++]
-  }, // [!code ++]
-  datasource: {
-    // [!code ++]
-    url: env("PPG_USER_DATABASE_URL"), // [!code ++]
-  }, // [!code ++]
-}); // [!code ++]
-```
-
-> [!NOTE]
-> You'll need to install the `dotenv` package if you haven't already:
-> 
-> 
->   
-> 
->   #### bun
-
->     ```bash
->     bun add dotenv
->     ```
->
-> 
->   #### pnpm
-
->     ```bash
->     pnpm add dotenv
->     ```
->
-> 
->   #### yarn
-
->     ```bash
->     yarn add dotenv
->     ```
->
-> 
->   #### npm
-
->     ```bash
->     npm install dotenv
->     ```
->
-> 
-
-Your user database schema is now ready.
-
-### 2.2. Create a Prisma Postgres instance for post data [#22-create-a-prisma-postgres-instance-for-post-data]
-
-Repeat the initialization for the post database:
-
-  
-
-#### bun
-
-```bash
-bunx --bun prisma init
-bunx create-db
-```
-
-#### pnpm
-
-```bash
-pnpm prisma init
-pnpm dlx create-db
-```
-
-#### yarn
-
-```bash
-yarn prisma init
-yarn dlx create-db
-```
-
-#### npm
-
-```bash
-npx prisma init
-npx create-db
-```
-
-Replace the generated `DATABASE_URL` in your `.env` file with the value from `npx create-db`, then rename the new `prisma` folder to `prisma-post-database`:
-
-```bash
-mv prisma prisma-post-database
-```
-
-Rename the `DATABASE_URL` variable in `.env` to `PPG_POST_DATABASE_URL`:
-
-```bash title=".env"
-DATABASE_URL="postgresql://user:password@host:5432/database?sslmode=require" # [!code --]
-PPG_POST_DATABASE_URL="postgresql://user:password@host:5432/database?sslmode=require" # [!code ++]
-```
-
-Edit the `prisma-post-database/schema.prisma` file to define a `Post` model. Also, update the datasource URL and set a [custom `output` directory](https://www.prisma.io/docs/orm/v7/reference/prisma-schema-reference#fields-for-prisma-client-provider):
-
-```prisma title="prisma-post-database/schema.prisma"
-generator client {
-  provider = "prisma-client"
-  output = "../prisma-post-database/post-database-client-types" // [!code ++]
-}
-
-datasource db {
-  provider = "postgresql"
-}
-
-model Post { // [!code ++]
-  id    Int     @id @default(autoincrement()) // [!code ++]
-  title String // [!code ++]
-  content  String? // [!code ++]
-} // [!code ++]
-```
-
-Create a `prisma.config.ts` file for the post database:
-
-```typescript title="prisma-post-database/prisma.config.ts"
-import "dotenv/config"; // [!code ++]
-import { defineConfig, env } from "prisma/config"; // [!code ++]
-// [!code ++]
-export default defineConfig({
-  // [!code ++]
-  schema: "prisma-post-database/schema.prisma", // [!code ++]
-  migrations: {
-    // [!code ++]
-    path: "prisma-post-database/migrations", // [!code ++]
-  }, // [!code ++]
-  datasource: {
-    // [!code ++]
-    url: env("PPG_POST_DATABASE_URL"), // [!code ++]
-  }, // [!code ++]
-}); // [!code ++]
-```
-
-Your post database schema is now set.
-
-### 2.3. Add helper scripts and migrate the schemas [#23-add-helper-scripts-and-migrate-the-schemas]
-
-So you don't have to pass `--schema` for each database on every command, add helper scripts to your `package.json` file that run Prisma commands for both databases:
-
-```json title="package.json"
-"scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "postinstall": "npx prisma generate --config ./prisma-user-database/prisma.config.ts && npx prisma generate --config ./prisma-post-database/prisma.config.ts", // [!code ++]
-    "generate": "npx prisma generate --config ./prisma-user-database/prisma.config.ts && npx prisma generate --config ./prisma-post-database/prisma.config.ts", // [!code ++]
-    "migrate": "npx prisma migrate dev --config ./prisma-user-database/prisma.config.ts && npx prisma migrate dev --config ./prisma-post-database/prisma.config.ts", // [!code ++]
-    "deploy": "npx prisma migrate deploy --config ./prisma-user-database/prisma.config.ts && npx prisma migrate deploy --config ./prisma-post-database/prisma.config.ts", // [!code ++]
-    "studio": "npx prisma studio --config ./prisma-user-database/prisma.config.ts --port 5555 & npx prisma studio --config ./prisma-post-database/prisma.config.ts --port 5556" // [!code ++]
-}
-```
-
-Here is an explanation of the custom scripts:
-
-* `postinstall`: Runs immediately after installing dependencies to generate Prisma Clients for both the user and post databases using their respective schema files.
-* `generate`: Manually triggers the generation of Prisma Clients for both schemas, ensuring your client code reflects the latest models.
-* `migrate`: Applies pending migrations in development mode for both databases using [Prisma Migrate](https://www.prisma.io/docs/orm/v7/prisma-migrate), updating their schemas based on changes in your Prisma files.
-* `deploy`: Executes migrations in a production environment, synchronizing your live databases with your Prisma schemas.
-* `studio`: Opens Prisma Studio for both databases simultaneously on different ports (`5555` for the user database and `5556` for the post database) for visual data management.
-
-Run the migrations:
-
-  
-
-#### bun
-
-```bash
-bun run migrate
-```
-
-#### pnpm
-
-```bash
-pnpm run migrate
-```
-
-#### yarn
-
-```bash
-yarn migrate
-```
-
-#### npm
-
-```bash
-npm run migrate
-```
-
-When prompted, name the migration for each database accordingly.
-
-## 3. Prepare the application to use multiple Prisma Clients [#3-prepare-the-application-to-use-multiple-prisma-clients]
-
-Next, create a `lib` folder to store helper files for instantiating and exporting your Prisma Clients:
-
-```bash
-mkdir -p lib && touch lib/user-prisma-client.ts lib/post-prisma-client.ts
-```
-
-### 3.1. Instantiate and export the Prisma Client for the user database [#31-instantiate-and-export-the-prisma-client-for-the-user-database]
-
-In `lib/user-prisma-client.ts`, add the following code:
-
-```ts title="lib/user-prisma-client.ts"
-import { PrismaClient } from "../prisma-user-database/user-database-client-types/client"; // [!code ++]
-import { PrismaPg } from "@prisma/adapter-pg"; // [!code ++]
-// [!code ++]
-const adapter = new PrismaPg({
-  // [!code ++]
-  connectionString: process.env.PPG_USER_DATABASE_URL, // [!code ++]
-}); // [!code ++]
-// [!code ++]
-const getPrisma = () =>
-  new PrismaClient({
-    // [!code ++]
-    adapter, // [!code ++]
-  }); // [!code ++]
-// [!code ++]
-const globalForUserDBPrismaClient = global as unknown as {
-  // [!code ++]
-  userDBPrismaClient: ReturnType<typeof getPrisma>; // [!code ++]
-}; // [!code ++]
-// [!code ++]
-export const userDBPrismaClient = globalForUserDBPrismaClient.userDBPrismaClient || getPrisma(); // [!code ++] // [!code ++]
-// [!code ++]
-if (process.env.NODE_ENV !== "production")
-  // [!code ++]
-  globalForUserDBPrismaClient.userDBPrismaClient = userDBPrismaClient; // [!code ++]
-```
-
-### 3.2. Instantiate and export the Prisma Client for the post database [#32-instantiate-and-export-the-prisma-client-for-the-post-database]
-
-In `lib/post-prisma-client.ts`, add this code:
-
-```ts title="lib/post-prisma-client.ts"
-import { PrismaClient } from "../prisma-post-database/post-database-client-types/client"; // [!code ++]
-import { PrismaPg } from "@prisma/adapter-pg"; // [!code ++]
-// [!code ++]
-const adapter = new PrismaPg({
-  // [!code ++]
-  connectionString: process.env.PPG_POST_DATABASE_URL, // [!code ++]
-}); // [!code ++]
-// [!code ++]
-const getPrisma = () =>
-  new PrismaClient({
-    // [!code ++]
-    adapter, // [!code ++]
-  }); // [!code ++]
-// [!code ++]
-const globalForPostDBPrismaClient = global as unknown as {
-  // [!code ++]
-  postDBPrismaClient: ReturnType<typeof getPrisma>; // [!code ++]
-}; // [!code ++]
-// [!code ++]
-export const postDBPrismaClient = globalForPostDBPrismaClient.postDBPrismaClient || getPrisma(); // [!code ++] // [!code ++]
-// [!code ++]
-if (process.env.NODE_ENV !== "production")
-  // [!code ++]
-  globalForPostDBPrismaClient.postDBPrismaClient = postDBPrismaClient; // [!code ++]
-```
-
-## 4. Integrate multiple Prisma Clients in your Next.js app [#4-integrate-multiple-prisma-clients-in-your-nextjs-app]
-
-Modify your application code to fetch data from both databases. Update the `app/page.tsx` file as follows:
-
-```ts title="app/page.tsx"
-import { postDBPrismaClient } from "@/lib/post-prisma-client"; // [!code ++]
-import { userDBPrismaClient } from "@/lib/user-prisma-client"; // [!code ++]
- // [!code ++]
-export default async function Home() { // [!code ++]
-  const user = await userDBPrismaClient.user.findFirst(); // [!code ++]
-  const post = await postDBPrismaClient.post.findFirst(); // [!code ++]
- // [!code ++]
-  return ( // [!code ++]
-    <main className="min-h-screen bg-gray-50 py-12"> // [!code ++]
-      <div className="max-w-4xl mx-auto px-4"> // [!code ++]
-        <header className="mb-12 text-center"> // [!code ++]
-          <h1 className="text-5xl font-extrabold text-gray-900">Multi-DB Showcase</h1> // [!code ++]
-          <p className="mt-4 text-xl text-gray-600"> // [!code ++]
-            Data fetched from two distinct databases. // [!code ++]
-          </p> // [!code ++]
-        </header> // [!code ++]
- // [!code ++]
-        <section className="mb-8 bg-white shadow-md rounded-lg p-6"> // [!code ++]
-          <h2 className="text-2xl font-semibold text-gray-800 border-b pb-2 mb-4"> // [!code ++]
-            User Data // [!code ++]
-          </h2> // [!code ++]
-          <pre className="whitespace-pre-wrap text-sm text-gray-700"> // [!code ++]
-            {user ? JSON.stringify(user, null, 2) : "No user data available."} // [!code ++]
-          </pre> // [!code ++]
-        </section> // [!code ++]
- // [!code ++]
-        <section className="bg-white shadow-md rounded-lg p-6"> // [!code ++]
-          <h2 className="text-2xl font-semibold text-gray-800 border-b pb-2 mb-4"> // [!code ++]
-            Post Data // [!code ++]
-          </h2> // [!code ++]
-          <pre className="whitespace-pre-wrap text-sm text-gray-700"> // [!code ++]
-            {post ? JSON.stringify(post, null, 2) : "No post data available."} // [!code ++]
-          </pre> // [!code ++]
-        </section> // [!code ++]
-      </div> // [!code ++]
-    </main> // [!code ++]
-  ); // [!code ++]
-} // [!code ++]
-```
-
-### 4.1. Populate your databases with data [#41-populate-your-databases-with-data]
-
-In a separate terminal window, open two instances of [Prisma Studio](https://www.prisma.io/docs/studio) to add data to your databases by running the script:
-
-  
-
-#### bun
-
-```bash
-bun run studio
-```
-
-#### pnpm
-
-```bash
-pnpm run studio
-```
-
-#### yarn
-
-```bash
-yarn studio
-```
-
-#### npm
-
-```bash
-npm run studio
-```
-
-This will open up two browser windows, one in `http://localhost:5555` and one in `http://localhost:5556`. Navigate to those windows and add sample data to both databases.
-
-### 4.2. Run the development server [#42-run-the-development-server]
-
-Before starting the development server, note that if you are using Next.js `v15.2.0`, do not use Turbopack as there is a known [issue](https://github.com/vercel/next.js/issues/76497). Remove Turbopack from your dev script by updating your `package.json`:
-
-```json title="package.json"
-"scripts": {
-    "dev": "next dev --turbopack", // [!code --]
-    "dev": "next dev", // [!code ++]
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "postinstall": "npx prisma generate --config ./prisma-user-database/prisma.config.ts && npx prisma generate --config ./prisma-post-database/prisma.config.ts",
-    "generate": "npx prisma generate --config ./prisma-user-database/prisma.config.ts && npx prisma generate --config ./prisma-post-database/prisma.config.ts",
-    "migrate": "npx prisma migrate dev --config ./prisma-user-database/prisma.config.ts && npx prisma migrate dev --config ./prisma-post-database/prisma.config.ts",
-    "deploy": "npx prisma migrate deploy --config ./prisma-user-database/prisma.config.ts && npx prisma migrate deploy --config ./prisma-post-database/prisma.config.ts",
-    "studio": "npx prisma studio --config ./prisma-user-database/prisma.config.ts --port 5555 & npx prisma studio --config ./prisma-post-database/prisma.config.ts --port 5556"
-}
-```
-
-In a separate terminal window, start the development server by running:
-
-  
-
-#### bun
-
-```bash
-bun run dev
-```
-
-#### pnpm
-
-```bash
-pnpm run dev
-```
-
-#### yarn
-
-```bash
-yarn dev
-```
-
-#### npm
-
-```bash
-npm run dev
-```
-
-Navigate to `http://localhost:3000` to see your Next.js app display data from both databases:
-
-![App displaying data by querying two separate database instances](https://www.prisma.io/img/guides/multi-client-app-demo.png)
-
-Congratulations, you have a Next.js app running with two Prisma Client instances querying different databases.
-
-## 5. Deploy your Next.js app using multiple databases to Vercel [#5-deploy-your-nextjs-app-using-multiple-databases-to-vercel]
-
-Deploy your app by following these steps:
-
-1. Ensure your project is version-controlled and pushed to a GitHub repository. If you do not have a repository yet, [create one on GitHub](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository). Once the repository is ready, run the following commands:
-   ```bash
-   git add .
-   git commit -m "Initial commit with Prisma Postgres integration"
-   git branch -M main
-   git remote add origin https://github.com/<your-username>/<repository-name>.git
-   git push -u origin main
-   ```
-   > [!NOTE]
-> Replace `<your-username>` and `<repository-name>` with your GitHub username and the name of your repository.
-2. Log in to [Vercel](https://vercel.com/) and navigate to your [Dashboard](https://vercel.com/docs/deployments).
-3. Create a new project. Follow Vercel's [Import an existing project](https://vercel.com/docs/getting-started-with-vercel/import) guide, but stop at [step 3](https://vercel.com/docs/getting-started-with-vercel/import#optionally-configure-any-settings) where you will configure environment variables *before* clicking **Deploy**.
-4. Configure the `DATABASE_URL` environment variable:
-   1. Expand the **Environment variables** section.
-   2. Add the `PPG_USER_DATABASE_URL` environment variable:
-      * **Key**: `PPG_USER_DATABASE_URL`
-      * **Value**: Paste your user database connection URL, e.g. by copying it from the `.env` file in your project.
-   3. Add the `PPG_POST_DATABASE_URL` environment variable:
-      * **Key**: `PPG_POST_DATABASE_URL`
-      * **Value**: Paste your post database connection URL, e.g. by copying it from the `.env` file in your project.
-        > [!WARNING]
-> Do not deploy without setting the environment variables. Your deployment will fail if the application cannot connect to the databases.
-5. Click the **Deploy** button. Vercel will build your project and deploy it to a live URL.
-
-Open the live URL provided by Vercel and verify that your application is working.
-
-Your application now runs on Vercel and uses two Prisma Clients to query two different databases.
-
-## Next steps [#next-steps]
-
-In this guide, you learned how to use multiple databases using Prisma ORM in a single Next.js app by:
-
-* Setting up separate Prisma schemas for user and post databases.
-* Configuring custom output directories and environment variables.
-* Creating helper scripts to generate and migrate each schema.
-* Instantiating and integrating multiple Prisma Clients into your application.
-* Deploying your multi-database application to Vercel.
-
-This approach allows you to maintain a clear separation of data models and simplifies multi-tenant or multi-database scenarios.
-
-For further improvements in managing your project, consider using a monorepo setup. Check out our related guides:
-
-* [How to use Prisma ORM in a pnpm workspaces monorepo](https://www.prisma.io/docs/guides/v7/deployment/pnpm-workspaces)
-* [How to use Prisma ORM with Turborepo](https://www.prisma.io/docs/guides/v7/deployment/turborepo)
-
-## Related pages
-
-- [`Expand-and-contract migrations`](https://www.prisma.io/docs/guides/v7/database/data-migration): Learn how to perform data migrations using the expand and contract pattern with Prisma ORM
-- [`Schema management in teams`](https://www.prisma.io/docs/guides/v7/database/schema-changes): Learn how to use Prisma Migrate effectively when collaborating on a project as a team
-
-# Schema management in teams (Prisma ORM v7) (/docs/guides/v7/database/schema-changes)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Learn how to use Prisma Migrate effectively when collaborating on a project as a team
-
-Location: Guides > v7 > Database > Schema management in teams
-
-## Introduction [#introduction]
-
-When working in a team, managing database schema changes can be challenging. This guide shows you how to effectively collaborate on schema changes using Prisma Migrate, ensuring that all team members can safely contribute to and incorporate schema changes.
-
-## Prerequisites [#prerequisites]
-
-Before starting this guide, make sure you have:
-
-* Node.js installed (version 20 or higher)
-* A Prisma project set up with migrations
-* A relational database (PostgreSQL, MySQL, SQLite, SQL Server, etc.)
-* Basic understanding of Git
-* Basic familiarity with Prisma Migrate
-
-> [!WARNING]
-> This guide **does not apply for MongoDB**.<br />
-> Instead of `migrate dev`, [`db push`](https://www.prisma.io/docs/orm/v7/prisma-migrate/workflows/prototyping-your-schema) is used for [MongoDB](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases/mongodb).
-
-## 1. Understand migration basics [#1-understand-migration-basics]
-
-### 1.1. Migration order [#11-migration-order]
-
-Migrations are **applied in the same order as they were created**. The creation date is part of the migration subfolder name - for example, `20210316081837-updated-fields` was created on `2021-03-16-08:18:37`.
-
-### 1.2. Source control requirements [#12-source-control-requirements]
-
-You should commit the following files to source control:
-
-* The contents of the `prisma/migrations` folder, including the `migration_lock.toml` file
-* The Prisma Schema (`schema.prisma`)
-
-Source-controlling the `schema.prisma` file is not enough - you must include your migration history because:
-
-* Customized migrations contain information that cannot be represented in the Prisma schema
-* The `prisma migrate deploy` command only runs migration files
-
-### 1.3. Configure Prisma [#13-configure-prisma]
-
-Create a `prisma.config.ts` file in the root of your project with the following content:
-
-```typescript title="prisma.config.ts"
-import "dotenv/config";
-import { defineConfig, env } from "prisma/config";
-
-export default defineConfig({
-  schema: "prisma/schema.prisma",
-  migrations: {
-    path: "prisma/migrations",
-  },
-  datasource: {
-    url: env("DATABASE_URL"),
-  },
-});
-```
-
-> [!NOTE]
-> You'll need to install the `dotenv` package to load environment variables. If you haven't already, install it using your package manager:
-> 
-> 
->   
-> 
->   #### bun
-
->     ```bash
->     bun add dotenv
->     ```
->
-> 
->   #### pnpm
-
->     ```bash
->     pnpm add dotenv
->     ```
->
-> 
->   #### yarn
-
->     ```bash
->     yarn add dotenv
->     ```
->
-> 
->   #### npm
-
->     ```bash
->     npm install dotenv
->     ```
->
-> 
-
-## 2. Incorporate team changes [#2-incorporate-team-changes]
-
-### 2.1. Pull latest changes [#21-pull-latest-changes]
-
-To incorporate changes from collaborators:
-
-1. Pull the changed Prisma schema and `./prisma/migrations` folder
-2. Run the migrate command:
-
-  
-
-#### bun
-
-```bash
-bunx prisma migrate dev
-```
-
-#### pnpm
-
-```bash
-pnpm prisma migrate dev
-```
-
-#### yarn
-
-```bash
-yarn prisma migrate dev
-```
-
-#### npm
-
-```bash
-npx prisma migrate dev
-```
-
-### 2.2. Example scenario [#22-example-scenario]
-
-Consider a sample scenario with three developers sharing schema changes:
-
-  
-
-#### Before
-
-```prisma title="schema.prisma" 
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User?   @relation(fields: [authorId], references: [id])
-  authorId  Int?
-}
-
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
-}
-```
-
-#### After
-
-```prisma title="schema.prisma" 
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User?   @relation(fields: [authorId], references: [id])
-  authorId  Int?
-}
-
-model User {
-  id              Int     @id @default(autoincrement())
-  email           String  @unique
-  name            String?
-  favoriteColor   String? // Added by Ania // [!code ++]
-  bestPacmanScore Int? // Added by you // [!code ++]
-  posts           Post[]
-}
-
-// Added by Javier // [!code ++]
-model Tag { // [!code ++]
-  tagName     String   @id // [!code ++]
-  tagCategory Category // [!code ++]
-} // [!code ++]
-```
-
-## 3. Handle concurrent changes [#3-handle-concurrent-changes]
-
-### 3.1. Developer A's changes [#31-developer-as-changes]
-
-Ania adds a new field:
-
-```prisma
-model User {
-  /* ... */
-  favoriteColor String?
-}
-```
-
-And generates a migration:
-
-  
-
-#### bun
-
-```bash
-bunx prisma migrate dev --name new-field
-```
-
-#### pnpm
-
-```bash
-pnpm prisma migrate dev --name new-field
-```
-
-#### yarn
-
-```bash
-yarn prisma migrate dev --name new-field
-```
-
-#### npm
-
-```bash
-npx prisma migrate dev --name new-field
-```
-
-  
-
-#### bun
-
-```bash
-bunx prisma generate
-```
-
-#### pnpm
-
-```bash
-pnpm prisma generate
-```
-
-#### yarn
-
-```bash
-yarn prisma generate
-```
-
-#### npm
-
-```bash
-npx prisma generate
-```
-
-### 3.2. Developer B's changes [#32-developer-bs-changes]
-
-Javier adds a new model:
-
-```prisma
-model Tag {
-  tagName     String   @id
-  tagCategory Category
-}
-```
-
-And generates a migration:
-
-  
-
-#### bun
-
-```bash
-bunx prisma migrate dev --name new-model
-```
-
-#### pnpm
-
-```bash
-pnpm prisma migrate dev --name new-model
-```
-
-#### yarn
-
-```bash
-yarn prisma migrate dev --name new-model
-```
-
-#### npm
-
-```bash
-npx prisma migrate dev --name new-model
-```
-
-  
-
-#### bun
-
-```bash
-bunx prisma generate
-```
-
-#### pnpm
-
-```bash
-pnpm prisma generate
-```
-
-#### yarn
-
-```bash
-yarn prisma generate
-```
-
-#### npm
-
-```bash
-npx prisma generate
-```
-
-### 3.3. Merge changes [#33-merge-changes]
-
-The migration history now has two new migrations:
-
-![A diagram showing changes by two separate developers converging in a single migration history.](https://www.prisma.io/img/guides/migrate-team-dev.png)
-
-## 4. Integrate your changes [#4-integrate-your-changes]
-
-### 4.1. Pull team changes [#41-pull-team-changes]
-
-1. Pull the most recent changes:
-   * Two new migrations
-   * Updated schema file
-
-2. Review the merged schema:
-
-```prisma
-model User {
-  /* ... */
-  favoriteColor   String?
-  bestPacmanScore Int?
-}
-
-model Tag {
-  tagName     String   @id
-  tagCategory Category
-  posts       Post[]
-}
-```
-
-### 4.2. Generate your migration [#42-generate-your-migration]
-
-Run the migrate command:
-
-  
-
-#### bun
-
-```bash
-bunx prisma migrate dev
-```
-
-#### pnpm
-
-```bash
-pnpm prisma migrate dev
-```
-
-#### yarn
-
-```bash
-yarn prisma migrate dev
-```
-
-#### npm
-
-```bash
-npx prisma migrate dev
-```
-
-  
-
-#### bun
-
-```bash
-bunx prisma generate
-```
-
-#### pnpm
-
-```bash
-pnpm prisma generate
-```
-
-#### yarn
-
-```bash
-yarn prisma generate
-```
-
-#### npm
-
-```bash
-npx prisma generate
-```
-
-This will:
-
-1. Apply your team's migrations
-2. Create a new migration for your changes
-3. Apply your new migration
-
-### 4.3. Commit changes [#43-commit-changes]
-
-Commit:
-
-* The merged `schema.prisma`
-* Your new migration file
-
-## Next steps [#next-steps]
-
-Now that you understand team schema management, you can:
-
-* Learn about [customizing migrations](https://www.prisma.io/docs/orm/v7/prisma-migrate/workflows/customizing-migrations)
-* Explore [deployment workflows](https://www.prisma.io/docs/orm/v7/prisma-migrate/workflows/development-and-production)
-
-For more information:
-
-* [Prisma Migrate documentation](https://www.prisma.io/docs/orm/v7/prisma-migrate)
-* [Team development workflows](https://www.prisma.io/docs/orm/v7/prisma-migrate/workflows/development-and-production)
-
-## Related pages
-
-- [`Expand-and-contract migrations`](https://www.prisma.io/docs/guides/v7/database/data-migration): Learn how to perform data migrations using the expand and contract pattern with Prisma ORM
-- [`Multiple databases`](https://www.prisma.io/docs/guides/v7/database/multiple-databases): Learn how to use multiple Prisma Clients in a single app to connect to multiple databases, handle migrations, and deploy your application to Vercel
-
 # Bun workspaces (Prisma ORM v7) (/docs/guides/v7/deployment/bun-workspaces)
 
 > For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
@@ -95211,6 +93649,1568 @@ Prisma ORM is now set up as a shared package in your Turborepo.
 - [`Cloudflare Workers`](https://www.prisma.io/docs/guides/v7/deployment/cloudflare-workers): Learn how to use Prisma ORM and Prisma Postgres in a Cloudflare Workers project
 - [`Docker`](https://www.prisma.io/docs/guides/v7/deployment/docker): Learn step-by-step configure a Prisma ORM app in Docker
 - [`pnpm workspaces`](https://www.prisma.io/docs/guides/v7/deployment/pnpm-workspaces): Learn step-by-step how to integrate Prisma ORM in a pnpm workspaces monorepo through a shared database package
+
+# Expand-and-contract migrations (Prisma ORM v7) (/docs/guides/v7/database/data-migration)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Learn how to perform data migrations using the expand and contract pattern with Prisma ORM
+
+Location: Guides > v7 > Database > Expand-and-contract migrations
+
+## Introduction [#introduction]
+
+When you change your database schema in production, you need to keep the data consistent and avoid downtime. This guide shows you how to use the expand and contract pattern to safely migrate data between columns. The example replaces a boolean field with an enum field while preserving existing data.
+
+## Prerequisites [#prerequisites]
+
+Before starting this guide, make sure you have:
+
+* Node.js installed (version 20 or higher)
+* A Prisma ORM project with an existing schema
+* A supported database (PostgreSQL, MySQL, SQLite, SQL Server, etc.)
+* Access to both development and production databases
+* Basic understanding of Git branching
+* Basic familiarity with TypeScript
+
+## 1. Set up your environment [#1-set-up-your-environment]
+
+### 1.1. Review initial schema [#11-review-initial-schema]
+
+Start with a basic schema containing a Post model:
+
+```prisma
+generator client {
+  provider = "prisma-client"
+  output   = "./generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Post {
+  id        Int     @id @default(autoincrement())
+  title     String
+  content   String?
+  published Boolean @default(false)
+}
+```
+
+### 1.2. Configure Prisma [#12-configure-prisma]
+
+Create a `prisma.config.ts` file in the root of your project with the following content:
+
+```typescript title="prisma.config.ts"
+import "dotenv/config";
+import { defineConfig, env } from "prisma/config";
+
+export default defineConfig({
+  schema: "prisma/schema.prisma",
+  migrations: {
+    path: "prisma/migrations",
+  },
+  datasource: {
+    url: env("DATABASE_URL"),
+  },
+});
+```
+
+> [!NOTE]
+> You'll need to install the required packages. If you haven't already, install them using your package manager:
+> 
+> 
+>   
+> 
+>   #### bun
+
+>     ```bash
+>     bun add prisma@prev tsx @types/pg --dev
+>     ```
+>
+> 
+>   #### pnpm
+
+>     ```bash
+>     pnpm add prisma@prev tsx @types/pg --save-dev
+>     ```
+>
+> 
+>   #### yarn
+
+>     ```bash
+>     yarn add prisma@prev tsx @types/pg --dev
+>     ```
+>
+> 
+>   #### npm
+
+>     ```bash
+>     npm install prisma@prev tsx @types/pg --save-dev
+>     ```
+>
+> 
+> 
+> 
+>   
+> 
+>   #### bun
+
+>     ```bash
+>     bun add @prisma/client@7 @prisma/adapter-pg pg dotenv
+>     ```
+>
+> 
+>   #### pnpm
+
+>     ```bash
+>     pnpm add @prisma/client@7 @prisma/adapter-pg pg dotenv
+>     ```
+>
+> 
+>   #### yarn
+
+>     ```bash
+>     yarn add @prisma/client@7 @prisma/adapter-pg pg dotenv
+>     ```
+>
+> 
+>   #### npm
+
+>     ```bash
+>     npm install @prisma/client@7 @prisma/adapter-pg pg dotenv
+>     ```
+>
+> 
+> 
+> If you are using a different database provider (MySQL, SQL Server, SQLite), install the corresponding driver adapter package instead of `@prisma/adapter-pg`. For more information, see [Database drivers](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases/database-drivers).
+
+### 1.3. Create a development branch [#13-create-a-development-branch]
+
+Create a new branch for your changes:
+
+```bash
+git checkout -b create-status-field
+```
+
+## 2. Expand the schema [#2-expand-the-schema]
+
+### 2.1. Add new column [#21-add-new-column]
+
+Update your schema to add the new Status enum and field:
+
+```prisma
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String?
+  published Boolean? @default(false)
+  status    Status   @default(Unknown)
+}
+
+enum Status {
+  Unknown
+  Draft
+  InProgress
+  InReview
+  Published
+}
+```
+
+### 2.2. Create migration [#22-create-migration]
+
+Generate the migration:
+
+  
+
+#### bun
+
+```bash
+bunx prisma migrate dev --name add-status-column
+```
+
+#### pnpm
+
+```bash
+pnpm prisma migrate dev --name add-status-column
+```
+
+#### yarn
+
+```bash
+yarn prisma migrate dev --name add-status-column
+```
+
+#### npm
+
+```bash
+npx prisma migrate dev --name add-status-column
+```
+
+Then generate Prisma Client:
+
+  
+
+#### bun
+
+```bash
+bunx prisma generate
+```
+
+#### pnpm
+
+```bash
+pnpm prisma generate
+```
+
+#### yarn
+
+```bash
+yarn prisma generate
+```
+
+#### npm
+
+```bash
+npx prisma generate
+```
+
+## 3. Migrate the data [#3-migrate-the-data]
+
+### 3.1. Create migration script [#31-create-migration-script]
+
+Create a new TypeScript file for the data migration:
+
+```typescript
+import { PrismaClient } from "../generated/prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+import "dotenv/config";
+
+const adapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL,
+});
+
+const prisma = new PrismaClient({
+  adapter,
+});
+
+async function main() {
+  await prisma.$transaction(async (tx) => {
+    const posts = await tx.post.findMany();
+    for (const post of posts) {
+      await tx.post.update({
+        where: { id: post.id },
+        data: {
+          status: post.published ? "Published" : "Unknown",
+        },
+      });
+    }
+  });
+}
+
+main()
+  .catch(async (e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => await prisma.$disconnect());
+```
+
+### 3.2. Set up migration script [#32-set-up-migration-script]
+
+Add the migration script to your package.json:
+
+```json
+{
+  "scripts": {
+    "data-migration:add-status-column": "tsx ./prisma/migrations/<migration-timestamp>/data-migration.ts"
+  }
+}
+```
+
+### 3.3. Execute migration [#33-execute-migration]
+
+1. Update your DATABASE_URL to point to the production database
+2. Run the migration script:
+
+  
+
+#### bun
+
+```bash
+bun run data-migration:add-status-column
+```
+
+#### pnpm
+
+```bash
+pnpm run data-migration:add-status-column
+```
+
+#### yarn
+
+```bash
+yarn data-migration:add-status-column
+```
+
+#### npm
+
+```bash
+npm run data-migration:add-status-column
+```
+
+## 4. Contract the schema [#4-contract-the-schema]
+
+### 4.1. Create cleanup branch [#41-create-cleanup-branch]
+
+Create a new branch for removing the old column:
+
+```bash
+git checkout -b drop-published-column
+```
+
+### 4.2. Remove old column [#42-remove-old-column]
+
+Update your schema to remove the published field:
+
+```prisma
+model Post {
+  id      Int      @id @default(autoincrement())
+  title   String
+  content String?
+  status  Status   @default(Draft)
+}
+
+enum Status {
+  Draft
+  InProgress
+  InReview
+  Published
+}
+```
+
+### 4.3. Generate cleanup migration [#43-generate-cleanup-migration]
+
+Create and run the final migration:
+
+  
+
+#### bun
+
+```bash
+bunx prisma migrate dev --name drop-published-column
+```
+
+#### pnpm
+
+```bash
+pnpm prisma migrate dev --name drop-published-column
+```
+
+#### yarn
+
+```bash
+yarn prisma migrate dev --name drop-published-column
+```
+
+#### npm
+
+```bash
+npx prisma migrate dev --name drop-published-column
+```
+
+Then generate Prisma Client:
+
+  
+
+#### bun
+
+```bash
+bunx prisma generate
+```
+
+#### pnpm
+
+```bash
+pnpm prisma generate
+```
+
+#### yarn
+
+```bash
+yarn prisma generate
+```
+
+#### npm
+
+```bash
+npx prisma generate
+```
+
+## 5. Deploy to production [#5-deploy-to-production]
+
+### 5.1. Set up deployment [#51-set-up-deployment]
+
+Add the following command to your CI/CD pipeline:
+
+  
+
+#### bun
+
+```bash
+bunx prisma migrate deploy
+```
+
+#### pnpm
+
+```bash
+pnpm prisma migrate deploy
+```
+
+#### yarn
+
+```bash
+yarn prisma migrate deploy
+```
+
+#### npm
+
+```bash
+npx prisma migrate deploy
+```
+
+### 5.2. Monitor deployment [#52-monitor-deployment]
+
+Watch for any errors in your logs and monitor your application's behavior after deployment.
+
+## Troubleshooting [#troubleshooting]
+
+### Common issues and solutions [#common-issues-and-solutions]
+
+1. **Migration fails due to missing default**
+   * Ensure you've added a proper default value
+   * Check that all existing records can be migrated
+
+2. **Data loss prevention**
+   * Always backup your database before running migrations
+   * Test migrations on a copy of production data first
+
+3. **Transaction rollback**
+   * If the data migration fails, the transaction will automatically rollback
+   * Fix any errors and retry the migration
+
+## Next steps [#next-steps]
+
+Now that you've completed your first expand and contract migration, you can:
+
+* Learn more about [Prisma Migrate](https://www.prisma.io/docs/orm/v7/prisma-migrate)
+* Explore [schema prototyping](https://www.prisma.io/docs/orm/v7/prisma-migrate/workflows/prototyping-your-schema)
+* Understand [customizing migrations](https://www.prisma.io/docs/orm/v7/prisma-migrate/workflows/customizing-migrations)
+
+For more information:
+
+* [Expand and Contract Pattern Documentation](https://www.prisma.io/dataguide/types/relational/expand-and-contract-pattern)
+* [Prisma Migrate Workflows](https://www.prisma.io/docs/orm/v7/prisma-migrate/workflows/development-and-production)
+
+## Related pages
+
+- [`Multiple databases`](https://www.prisma.io/docs/guides/v7/database/multiple-databases): Learn how to use multiple Prisma Clients in a single app to connect to multiple databases, handle migrations, and deploy your application to Vercel
+- [`Schema management in teams`](https://www.prisma.io/docs/guides/v7/database/schema-changes): Learn how to use Prisma Migrate effectively when collaborating on a project as a team
+
+# Multiple databases (Prisma ORM v7) (/docs/guides/v7/database/multiple-databases)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Learn how to use multiple Prisma Clients in a single app to connect to multiple databases, handle migrations, and deploy your application to Vercel
+
+Location: Guides > v7 > Database > Multiple databases
+
+## Introduction [#introduction]
+
+This guide shows you how to use multiple databases using Prisma ORM in a single [Next.js app](https://nextjs.org/). You will learn how to connect to two different Prisma Postgres databases, manage migrations, and deploy your application to Vercel. This approach is useful for multi-tenant applications or when you need to separate concerns when managing connections to multiple databases.
+
+## Prerequisites [#prerequisites]
+
+Before you begin, make sure that you have the following:
+
+* Node.js 20.19+ on 20.x, 22.12+ on 22.x, or 24+ installed.
+* A [Prisma Data Platform account](https://pris.ly/pdp?utm_campaign=multi-client\&utm_source=docs).
+* A Vercel account (if you plan to deploy your application).
+
+## 1. Set up a Next.js project [#1-set-up-a-nextjs-project]
+
+Create a new Next.js app using `create-next-app` from your desired directory:
+
+  
+
+#### bun
+
+```bash
+bunx create-next-app@latest my-multi-client-app
+```
+
+#### pnpm
+
+```bash
+pnpm dlx create-next-app@latest my-multi-client-app
+```
+
+#### yarn
+
+```bash
+yarn dlx create-next-app@latest my-multi-client-app
+```
+
+#### npm
+
+```bash
+npx create-next-app@latest my-multi-client-app
+```
+
+You will be prompted to answer a few questions about your project. Select all of the defaults.
+
+> [!NOTE]
+> For completeness, those are:
+> 
+> * TypeScript
+> * ESLint
+> * Tailwind CSS
+> * No `src` directory
+> * App Router
+> * Turbopack
+> * Default custom import alias: `@/*`
+
+Then, navigate to the project directory:
+
+```bash
+cd my-multi-client-app
+```
+
+## 2. Set up your databases and Prisma Clients [#2-set-up-your-databases-and-prisma-clients]
+
+In this section, you will create two separate Prisma Postgres instances, one for user data and one for post data. You will also configure the Prisma schema and environment variables for each.
+
+First, install Prisma and the required dependencies:
+
+  
+
+#### bun
+
+```bash
+bun add prisma@prev tsx @types/pg --dev
+```
+
+#### pnpm
+
+```bash
+pnpm add prisma@prev tsx @types/pg --save-dev
+```
+
+#### yarn
+
+```bash
+yarn add prisma@prev tsx @types/pg --dev
+```
+
+#### npm
+
+```bash
+npm install prisma@prev tsx @types/pg --save-dev
+```
+
+  
+
+#### bun
+
+```bash
+bun add @prisma/client@7 @prisma/adapter-pg dotenv pg
+```
+
+#### pnpm
+
+```bash
+pnpm add @prisma/client@7 @prisma/adapter-pg dotenv pg
+```
+
+#### yarn
+
+```bash
+yarn add @prisma/client@7 @prisma/adapter-pg dotenv pg
+```
+
+#### npm
+
+```bash
+npm install @prisma/client@7 @prisma/adapter-pg dotenv pg
+```
+
+> [!NOTE]
+> If you are using a different database provider (MySQL, SQL Server, SQLite), install the corresponding driver adapter package instead of `@prisma/adapter-pg`. For more information, see [Database drivers](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases/database-drivers).
+
+You have installed the required dependencies for the project.
+
+### 2.1. Create a Prisma Postgres instance to contain user data [#21-create-a-prisma-postgres-instance-to-contain-user-data]
+
+Initialize Prisma with a [Prisma Postgres](https://www.prisma.io/docs/postgres) instance by running:
+
+  
+
+#### bun
+
+```bash
+bunx --bun prisma@prev init --db
+```
+
+#### pnpm
+
+```bash
+pnpm dlx prisma@prev init --db
+```
+
+#### yarn
+
+```bash
+yarn dlx prisma@prev init --db
+```
+
+#### npm
+
+```bash
+npx prisma@prev init --db
+```
+
+> [!NOTE]
+> If you are not using a Prisma Postgres database, do not use the `--db` flag. Instead, create two PostgreSQL database instances and add their connection URLs to the `.env` file as `PPG_USER_DATABASE_URL` and `PPG_POST_DATABASE_URL`.
+
+Follow the prompts to name your project and choose a database region.
+
+The `prisma@prev init --db` command:
+
+* Connects your CLI to your [Prisma Data Platform](https://console.prisma.io/?utm_source=docs\&utm_medium=content\&utm_content=guides) account. If you are not logged in or do not have an account, your browser will open to guide you through creating a new account or signing into your existing one.
+* Creates a `prisma` directory containing a `schema.prisma` file for your database models.
+* Creates a `.env` file with your `DATABASE_URL` (e.g., `DATABASE_URL="postgresql://user:password@host:5432/database?sslmode=require"`).
+
+Rename the `prisma` folder to `prisma-user-database`:
+
+```bash
+mv prisma prisma-user-database
+```
+
+Edit your `.env` file to rename `DATABASE_URL` to `PPG_USER_DATABASE_URL`:
+
+```bash title=".env"
+DATABASE_URL="postgresql://user:password@host:5432/database?sslmode=require" # [!code --]
+PPG_USER_DATABASE_URL="postgresql://user:password@host:5432/database?sslmode=require" # [!code ++]
+```
+
+Open `prisma-user-database/schema.prisma` file and update it to define a `User` model. Also, set the environment variable and specify a [custom `output` directory](https://www.prisma.io/docs/orm/v7/reference/prisma-schema-reference#fields-for-prisma-client-provider) for the generated Prisma Client:
+
+```prisma title="prisma-user-database/schema.prisma"
+generator client {
+  provider = "prisma-client"
+  output = "../prisma-user-database/user-database-client-types" // [!code ++]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User { // [!code ++]
+  id    Int     @id @default(autoincrement()) // [!code ++]
+  email String  @unique // [!code ++]
+  name  String? // [!code ++]
+} // [!code ++]
+```
+
+Create a `prisma.config.ts` file for the user database:
+
+```typescript title="prisma-user-database/prisma.config.ts"
+import "dotenv/config"; // [!code ++]
+import { defineConfig, env } from "prisma/config"; // [!code ++]
+// [!code ++]
+export default defineConfig({
+  // [!code ++]
+  schema: "prisma-user-database/schema.prisma", // [!code ++]
+  migrations: {
+    // [!code ++]
+    path: "prisma-user-database/migrations", // [!code ++]
+  }, // [!code ++]
+  datasource: {
+    // [!code ++]
+    url: env("PPG_USER_DATABASE_URL"), // [!code ++]
+  }, // [!code ++]
+}); // [!code ++]
+```
+
+> [!NOTE]
+> You'll need to install the `dotenv` package if you haven't already:
+> 
+> 
+>   
+> 
+>   #### bun
+
+>     ```bash
+>     bun add dotenv
+>     ```
+>
+> 
+>   #### pnpm
+
+>     ```bash
+>     pnpm add dotenv
+>     ```
+>
+> 
+>   #### yarn
+
+>     ```bash
+>     yarn add dotenv
+>     ```
+>
+> 
+>   #### npm
+
+>     ```bash
+>     npm install dotenv
+>     ```
+>
+> 
+
+Your user database schema is now ready.
+
+### 2.2. Create a Prisma Postgres instance for post data [#22-create-a-prisma-postgres-instance-for-post-data]
+
+Repeat the initialization for the post database:
+
+  
+
+#### bun
+
+```bash
+bunx --bun prisma init
+bunx create-db
+```
+
+#### pnpm
+
+```bash
+pnpm prisma init
+pnpm dlx create-db
+```
+
+#### yarn
+
+```bash
+yarn prisma init
+yarn dlx create-db
+```
+
+#### npm
+
+```bash
+npx prisma init
+npx create-db
+```
+
+Replace the generated `DATABASE_URL` in your `.env` file with the value from `npx create-db`, then rename the new `prisma` folder to `prisma-post-database`:
+
+```bash
+mv prisma prisma-post-database
+```
+
+Rename the `DATABASE_URL` variable in `.env` to `PPG_POST_DATABASE_URL`:
+
+```bash title=".env"
+DATABASE_URL="postgresql://user:password@host:5432/database?sslmode=require" # [!code --]
+PPG_POST_DATABASE_URL="postgresql://user:password@host:5432/database?sslmode=require" # [!code ++]
+```
+
+Edit the `prisma-post-database/schema.prisma` file to define a `Post` model. Also, update the datasource URL and set a [custom `output` directory](https://www.prisma.io/docs/orm/v7/reference/prisma-schema-reference#fields-for-prisma-client-provider):
+
+```prisma title="prisma-post-database/schema.prisma"
+generator client {
+  provider = "prisma-client"
+  output = "../prisma-post-database/post-database-client-types" // [!code ++]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Post { // [!code ++]
+  id    Int     @id @default(autoincrement()) // [!code ++]
+  title String // [!code ++]
+  content  String? // [!code ++]
+} // [!code ++]
+```
+
+Create a `prisma.config.ts` file for the post database:
+
+```typescript title="prisma-post-database/prisma.config.ts"
+import "dotenv/config"; // [!code ++]
+import { defineConfig, env } from "prisma/config"; // [!code ++]
+// [!code ++]
+export default defineConfig({
+  // [!code ++]
+  schema: "prisma-post-database/schema.prisma", // [!code ++]
+  migrations: {
+    // [!code ++]
+    path: "prisma-post-database/migrations", // [!code ++]
+  }, // [!code ++]
+  datasource: {
+    // [!code ++]
+    url: env("PPG_POST_DATABASE_URL"), // [!code ++]
+  }, // [!code ++]
+}); // [!code ++]
+```
+
+Your post database schema is now set.
+
+### 2.3. Add helper scripts and migrate the schemas [#23-add-helper-scripts-and-migrate-the-schemas]
+
+So you don't have to pass `--schema` for each database on every command, add helper scripts to your `package.json` file that run Prisma commands for both databases:
+
+```json title="package.json"
+"scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "postinstall": "npx prisma generate --config ./prisma-user-database/prisma.config.ts && npx prisma generate --config ./prisma-post-database/prisma.config.ts", // [!code ++]
+    "generate": "npx prisma generate --config ./prisma-user-database/prisma.config.ts && npx prisma generate --config ./prisma-post-database/prisma.config.ts", // [!code ++]
+    "migrate": "npx prisma migrate dev --config ./prisma-user-database/prisma.config.ts && npx prisma migrate dev --config ./prisma-post-database/prisma.config.ts", // [!code ++]
+    "deploy": "npx prisma migrate deploy --config ./prisma-user-database/prisma.config.ts && npx prisma migrate deploy --config ./prisma-post-database/prisma.config.ts", // [!code ++]
+    "studio": "npx prisma studio --config ./prisma-user-database/prisma.config.ts --port 5555 & npx prisma studio --config ./prisma-post-database/prisma.config.ts --port 5556" // [!code ++]
+}
+```
+
+Here is an explanation of the custom scripts:
+
+* `postinstall`: Runs immediately after installing dependencies to generate Prisma Clients for both the user and post databases using their respective schema files.
+* `generate`: Manually triggers the generation of Prisma Clients for both schemas, ensuring your client code reflects the latest models.
+* `migrate`: Applies pending migrations in development mode for both databases using [Prisma Migrate](https://www.prisma.io/docs/orm/v7/prisma-migrate), updating their schemas based on changes in your Prisma files.
+* `deploy`: Executes migrations in a production environment, synchronizing your live databases with your Prisma schemas.
+* `studio`: Opens Prisma Studio for both databases simultaneously on different ports (`5555` for the user database and `5556` for the post database) for visual data management.
+
+Run the migrations:
+
+  
+
+#### bun
+
+```bash
+bun run migrate
+```
+
+#### pnpm
+
+```bash
+pnpm run migrate
+```
+
+#### yarn
+
+```bash
+yarn migrate
+```
+
+#### npm
+
+```bash
+npm run migrate
+```
+
+When prompted, name the migration for each database accordingly.
+
+## 3. Prepare the application to use multiple Prisma Clients [#3-prepare-the-application-to-use-multiple-prisma-clients]
+
+Next, create a `lib` folder to store helper files for instantiating and exporting your Prisma Clients:
+
+```bash
+mkdir -p lib && touch lib/user-prisma-client.ts lib/post-prisma-client.ts
+```
+
+### 3.1. Instantiate and export the Prisma Client for the user database [#31-instantiate-and-export-the-prisma-client-for-the-user-database]
+
+In `lib/user-prisma-client.ts`, add the following code:
+
+```ts title="lib/user-prisma-client.ts"
+import { PrismaClient } from "../prisma-user-database/user-database-client-types/client"; // [!code ++]
+import { PrismaPg } from "@prisma/adapter-pg"; // [!code ++]
+// [!code ++]
+const adapter = new PrismaPg({
+  // [!code ++]
+  connectionString: process.env.PPG_USER_DATABASE_URL, // [!code ++]
+}); // [!code ++]
+// [!code ++]
+const getPrisma = () =>
+  new PrismaClient({
+    // [!code ++]
+    adapter, // [!code ++]
+  }); // [!code ++]
+// [!code ++]
+const globalForUserDBPrismaClient = global as unknown as {
+  // [!code ++]
+  userDBPrismaClient: ReturnType<typeof getPrisma>; // [!code ++]
+}; // [!code ++]
+// [!code ++]
+export const userDBPrismaClient = globalForUserDBPrismaClient.userDBPrismaClient || getPrisma(); // [!code ++] // [!code ++]
+// [!code ++]
+if (process.env.NODE_ENV !== "production")
+  // [!code ++]
+  globalForUserDBPrismaClient.userDBPrismaClient = userDBPrismaClient; // [!code ++]
+```
+
+### 3.2. Instantiate and export the Prisma Client for the post database [#32-instantiate-and-export-the-prisma-client-for-the-post-database]
+
+In `lib/post-prisma-client.ts`, add this code:
+
+```ts title="lib/post-prisma-client.ts"
+import { PrismaClient } from "../prisma-post-database/post-database-client-types/client"; // [!code ++]
+import { PrismaPg } from "@prisma/adapter-pg"; // [!code ++]
+// [!code ++]
+const adapter = new PrismaPg({
+  // [!code ++]
+  connectionString: process.env.PPG_POST_DATABASE_URL, // [!code ++]
+}); // [!code ++]
+// [!code ++]
+const getPrisma = () =>
+  new PrismaClient({
+    // [!code ++]
+    adapter, // [!code ++]
+  }); // [!code ++]
+// [!code ++]
+const globalForPostDBPrismaClient = global as unknown as {
+  // [!code ++]
+  postDBPrismaClient: ReturnType<typeof getPrisma>; // [!code ++]
+}; // [!code ++]
+// [!code ++]
+export const postDBPrismaClient = globalForPostDBPrismaClient.postDBPrismaClient || getPrisma(); // [!code ++] // [!code ++]
+// [!code ++]
+if (process.env.NODE_ENV !== "production")
+  // [!code ++]
+  globalForPostDBPrismaClient.postDBPrismaClient = postDBPrismaClient; // [!code ++]
+```
+
+## 4. Integrate multiple Prisma Clients in your Next.js app [#4-integrate-multiple-prisma-clients-in-your-nextjs-app]
+
+Modify your application code to fetch data from both databases. Update the `app/page.tsx` file as follows:
+
+```ts title="app/page.tsx"
+import { postDBPrismaClient } from "@/lib/post-prisma-client"; // [!code ++]
+import { userDBPrismaClient } from "@/lib/user-prisma-client"; // [!code ++]
+ // [!code ++]
+export default async function Home() { // [!code ++]
+  const user = await userDBPrismaClient.user.findFirst(); // [!code ++]
+  const post = await postDBPrismaClient.post.findFirst(); // [!code ++]
+ // [!code ++]
+  return ( // [!code ++]
+    <main className="min-h-screen bg-gray-50 py-12"> // [!code ++]
+      <div className="max-w-4xl mx-auto px-4"> // [!code ++]
+        <header className="mb-12 text-center"> // [!code ++]
+          <h1 className="text-5xl font-extrabold text-gray-900">Multi-DB Showcase</h1> // [!code ++]
+          <p className="mt-4 text-xl text-gray-600"> // [!code ++]
+            Data fetched from two distinct databases. // [!code ++]
+          </p> // [!code ++]
+        </header> // [!code ++]
+ // [!code ++]
+        <section className="mb-8 bg-white shadow-md rounded-lg p-6"> // [!code ++]
+          <h2 className="text-2xl font-semibold text-gray-800 border-b pb-2 mb-4"> // [!code ++]
+            User Data // [!code ++]
+          </h2> // [!code ++]
+          <pre className="whitespace-pre-wrap text-sm text-gray-700"> // [!code ++]
+            {user ? JSON.stringify(user, null, 2) : "No user data available."} // [!code ++]
+          </pre> // [!code ++]
+        </section> // [!code ++]
+ // [!code ++]
+        <section className="bg-white shadow-md rounded-lg p-6"> // [!code ++]
+          <h2 className="text-2xl font-semibold text-gray-800 border-b pb-2 mb-4"> // [!code ++]
+            Post Data // [!code ++]
+          </h2> // [!code ++]
+          <pre className="whitespace-pre-wrap text-sm text-gray-700"> // [!code ++]
+            {post ? JSON.stringify(post, null, 2) : "No post data available."} // [!code ++]
+          </pre> // [!code ++]
+        </section> // [!code ++]
+      </div> // [!code ++]
+    </main> // [!code ++]
+  ); // [!code ++]
+} // [!code ++]
+```
+
+### 4.1. Populate your databases with data [#41-populate-your-databases-with-data]
+
+In a separate terminal window, open two instances of [Prisma Studio](https://www.prisma.io/docs/studio) to add data to your databases by running the script:
+
+  
+
+#### bun
+
+```bash
+bun run studio
+```
+
+#### pnpm
+
+```bash
+pnpm run studio
+```
+
+#### yarn
+
+```bash
+yarn studio
+```
+
+#### npm
+
+```bash
+npm run studio
+```
+
+This will open up two browser windows, one in `http://localhost:5555` and one in `http://localhost:5556`. Navigate to those windows and add sample data to both databases.
+
+### 4.2. Run the development server [#42-run-the-development-server]
+
+Before starting the development server, note that if you are using Next.js `v15.2.0`, do not use Turbopack as there is a known [issue](https://github.com/vercel/next.js/issues/76497). Remove Turbopack from your dev script by updating your `package.json`:
+
+```json title="package.json"
+"scripts": {
+    "dev": "next dev --turbopack", // [!code --]
+    "dev": "next dev", // [!code ++]
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "postinstall": "npx prisma generate --config ./prisma-user-database/prisma.config.ts && npx prisma generate --config ./prisma-post-database/prisma.config.ts",
+    "generate": "npx prisma generate --config ./prisma-user-database/prisma.config.ts && npx prisma generate --config ./prisma-post-database/prisma.config.ts",
+    "migrate": "npx prisma migrate dev --config ./prisma-user-database/prisma.config.ts && npx prisma migrate dev --config ./prisma-post-database/prisma.config.ts",
+    "deploy": "npx prisma migrate deploy --config ./prisma-user-database/prisma.config.ts && npx prisma migrate deploy --config ./prisma-post-database/prisma.config.ts",
+    "studio": "npx prisma studio --config ./prisma-user-database/prisma.config.ts --port 5555 & npx prisma studio --config ./prisma-post-database/prisma.config.ts --port 5556"
+}
+```
+
+In a separate terminal window, start the development server by running:
+
+  
+
+#### bun
+
+```bash
+bun run dev
+```
+
+#### pnpm
+
+```bash
+pnpm run dev
+```
+
+#### yarn
+
+```bash
+yarn dev
+```
+
+#### npm
+
+```bash
+npm run dev
+```
+
+Navigate to `http://localhost:3000` to see your Next.js app display data from both databases:
+
+![App displaying data by querying two separate database instances](https://www.prisma.io/img/guides/multi-client-app-demo.png)
+
+Congratulations, you have a Next.js app running with two Prisma Client instances querying different databases.
+
+## 5. Deploy your Next.js app using multiple databases to Vercel [#5-deploy-your-nextjs-app-using-multiple-databases-to-vercel]
+
+Deploy your app by following these steps:
+
+1. Ensure your project is version-controlled and pushed to a GitHub repository. If you do not have a repository yet, [create one on GitHub](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository). Once the repository is ready, run the following commands:
+   ```bash
+   git add .
+   git commit -m "Initial commit with Prisma Postgres integration"
+   git branch -M main
+   git remote add origin https://github.com/<your-username>/<repository-name>.git
+   git push -u origin main
+   ```
+   > [!NOTE]
+> Replace `<your-username>` and `<repository-name>` with your GitHub username and the name of your repository.
+2. Log in to [Vercel](https://vercel.com/) and navigate to your [Dashboard](https://vercel.com/docs/deployments).
+3. Create a new project. Follow Vercel's [Import an existing project](https://vercel.com/docs/getting-started-with-vercel/import) guide, but stop at [step 3](https://vercel.com/docs/getting-started-with-vercel/import#optionally-configure-any-settings) where you will configure environment variables *before* clicking **Deploy**.
+4. Configure the `DATABASE_URL` environment variable:
+   1. Expand the **Environment variables** section.
+   2. Add the `PPG_USER_DATABASE_URL` environment variable:
+      * **Key**: `PPG_USER_DATABASE_URL`
+      * **Value**: Paste your user database connection URL, e.g. by copying it from the `.env` file in your project.
+   3. Add the `PPG_POST_DATABASE_URL` environment variable:
+      * **Key**: `PPG_POST_DATABASE_URL`
+      * **Value**: Paste your post database connection URL, e.g. by copying it from the `.env` file in your project.
+        > [!WARNING]
+> Do not deploy without setting the environment variables. Your deployment will fail if the application cannot connect to the databases.
+5. Click the **Deploy** button. Vercel will build your project and deploy it to a live URL.
+
+Open the live URL provided by Vercel and verify that your application is working.
+
+Your application now runs on Vercel and uses two Prisma Clients to query two different databases.
+
+## Next steps [#next-steps]
+
+In this guide, you learned how to use multiple databases using Prisma ORM in a single Next.js app by:
+
+* Setting up separate Prisma schemas for user and post databases.
+* Configuring custom output directories and environment variables.
+* Creating helper scripts to generate and migrate each schema.
+* Instantiating and integrating multiple Prisma Clients into your application.
+* Deploying your multi-database application to Vercel.
+
+This approach allows you to maintain a clear separation of data models and simplifies multi-tenant or multi-database scenarios.
+
+For further improvements in managing your project, consider using a monorepo setup. Check out our related guides:
+
+* [How to use Prisma ORM in a pnpm workspaces monorepo](https://www.prisma.io/docs/guides/v7/deployment/pnpm-workspaces)
+* [How to use Prisma ORM with Turborepo](https://www.prisma.io/docs/guides/v7/deployment/turborepo)
+
+## Related pages
+
+- [`Expand-and-contract migrations`](https://www.prisma.io/docs/guides/v7/database/data-migration): Learn how to perform data migrations using the expand and contract pattern with Prisma ORM
+- [`Schema management in teams`](https://www.prisma.io/docs/guides/v7/database/schema-changes): Learn how to use Prisma Migrate effectively when collaborating on a project as a team
+
+# Schema management in teams (Prisma ORM v7) (/docs/guides/v7/database/schema-changes)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Learn how to use Prisma Migrate effectively when collaborating on a project as a team
+
+Location: Guides > v7 > Database > Schema management in teams
+
+## Introduction [#introduction]
+
+When working in a team, managing database schema changes can be challenging. This guide shows you how to effectively collaborate on schema changes using Prisma Migrate, ensuring that all team members can safely contribute to and incorporate schema changes.
+
+## Prerequisites [#prerequisites]
+
+Before starting this guide, make sure you have:
+
+* Node.js installed (version 20 or higher)
+* A Prisma project set up with migrations
+* A relational database (PostgreSQL, MySQL, SQLite, SQL Server, etc.)
+* Basic understanding of Git
+* Basic familiarity with Prisma Migrate
+
+> [!WARNING]
+> This guide **does not apply for MongoDB**.<br />
+> Instead of `migrate dev`, [`db push`](https://www.prisma.io/docs/orm/v7/prisma-migrate/workflows/prototyping-your-schema) is used for [MongoDB](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases/mongodb).
+
+## 1. Understand migration basics [#1-understand-migration-basics]
+
+### 1.1. Migration order [#11-migration-order]
+
+Migrations are **applied in the same order as they were created**. The creation date is part of the migration subfolder name - for example, `20210316081837-updated-fields` was created on `2021-03-16-08:18:37`.
+
+### 1.2. Source control requirements [#12-source-control-requirements]
+
+You should commit the following files to source control:
+
+* The contents of the `prisma/migrations` folder, including the `migration_lock.toml` file
+* The Prisma Schema (`schema.prisma`)
+
+Source-controlling the `schema.prisma` file is not enough - you must include your migration history because:
+
+* Customized migrations contain information that cannot be represented in the Prisma schema
+* The `prisma migrate deploy` command only runs migration files
+
+### 1.3. Configure Prisma [#13-configure-prisma]
+
+Create a `prisma.config.ts` file in the root of your project with the following content:
+
+```typescript title="prisma.config.ts"
+import "dotenv/config";
+import { defineConfig, env } from "prisma/config";
+
+export default defineConfig({
+  schema: "prisma/schema.prisma",
+  migrations: {
+    path: "prisma/migrations",
+  },
+  datasource: {
+    url: env("DATABASE_URL"),
+  },
+});
+```
+
+> [!NOTE]
+> You'll need to install the `dotenv` package to load environment variables. If you haven't already, install it using your package manager:
+> 
+> 
+>   
+> 
+>   #### bun
+
+>     ```bash
+>     bun add dotenv
+>     ```
+>
+> 
+>   #### pnpm
+
+>     ```bash
+>     pnpm add dotenv
+>     ```
+>
+> 
+>   #### yarn
+
+>     ```bash
+>     yarn add dotenv
+>     ```
+>
+> 
+>   #### npm
+
+>     ```bash
+>     npm install dotenv
+>     ```
+>
+> 
+
+## 2. Incorporate team changes [#2-incorporate-team-changes]
+
+### 2.1. Pull latest changes [#21-pull-latest-changes]
+
+To incorporate changes from collaborators:
+
+1. Pull the changed Prisma schema and `./prisma/migrations` folder
+2. Run the migrate command:
+
+  
+
+#### bun
+
+```bash
+bunx prisma migrate dev
+```
+
+#### pnpm
+
+```bash
+pnpm prisma migrate dev
+```
+
+#### yarn
+
+```bash
+yarn prisma migrate dev
+```
+
+#### npm
+
+```bash
+npx prisma migrate dev
+```
+
+### 2.2. Example scenario [#22-example-scenario]
+
+Consider a sample scenario with three developers sharing schema changes:
+
+  
+
+#### Before
+
+```prisma title="schema.prisma" 
+model Post {
+  id        Int     @id @default(autoincrement())
+  title     String
+  content   String?
+  published Boolean @default(false)
+  author    User?   @relation(fields: [authorId], references: [id])
+  authorId  Int?
+}
+
+model User {
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  name  String?
+  posts Post[]
+}
+```
+
+#### After
+
+```prisma title="schema.prisma" 
+model Post {
+  id        Int     @id @default(autoincrement())
+  title     String
+  content   String?
+  published Boolean @default(false)
+  author    User?   @relation(fields: [authorId], references: [id])
+  authorId  Int?
+}
+
+model User {
+  id              Int     @id @default(autoincrement())
+  email           String  @unique
+  name            String?
+  favoriteColor   String? // Added by Ania // [!code ++]
+  bestPacmanScore Int? // Added by you // [!code ++]
+  posts           Post[]
+}
+
+// Added by Javier // [!code ++]
+model Tag { // [!code ++]
+  tagName     String   @id // [!code ++]
+  tagCategory Category // [!code ++]
+} // [!code ++]
+```
+
+## 3. Handle concurrent changes [#3-handle-concurrent-changes]
+
+### 3.1. Developer A's changes [#31-developer-as-changes]
+
+Ania adds a new field:
+
+```prisma
+model User {
+  /* ... */
+  favoriteColor String?
+}
+```
+
+And generates a migration:
+
+  
+
+#### bun
+
+```bash
+bunx prisma migrate dev --name new-field
+```
+
+#### pnpm
+
+```bash
+pnpm prisma migrate dev --name new-field
+```
+
+#### yarn
+
+```bash
+yarn prisma migrate dev --name new-field
+```
+
+#### npm
+
+```bash
+npx prisma migrate dev --name new-field
+```
+
+  
+
+#### bun
+
+```bash
+bunx prisma generate
+```
+
+#### pnpm
+
+```bash
+pnpm prisma generate
+```
+
+#### yarn
+
+```bash
+yarn prisma generate
+```
+
+#### npm
+
+```bash
+npx prisma generate
+```
+
+### 3.2. Developer B's changes [#32-developer-bs-changes]
+
+Javier adds a new model:
+
+```prisma
+model Tag {
+  tagName     String   @id
+  tagCategory Category
+}
+```
+
+And generates a migration:
+
+  
+
+#### bun
+
+```bash
+bunx prisma migrate dev --name new-model
+```
+
+#### pnpm
+
+```bash
+pnpm prisma migrate dev --name new-model
+```
+
+#### yarn
+
+```bash
+yarn prisma migrate dev --name new-model
+```
+
+#### npm
+
+```bash
+npx prisma migrate dev --name new-model
+```
+
+  
+
+#### bun
+
+```bash
+bunx prisma generate
+```
+
+#### pnpm
+
+```bash
+pnpm prisma generate
+```
+
+#### yarn
+
+```bash
+yarn prisma generate
+```
+
+#### npm
+
+```bash
+npx prisma generate
+```
+
+### 3.3. Merge changes [#33-merge-changes]
+
+The migration history now has two new migrations:
+
+![A diagram showing changes by two separate developers converging in a single migration history.](https://www.prisma.io/img/guides/migrate-team-dev.png)
+
+## 4. Integrate your changes [#4-integrate-your-changes]
+
+### 4.1. Pull team changes [#41-pull-team-changes]
+
+1. Pull the most recent changes:
+   * Two new migrations
+   * Updated schema file
+
+2. Review the merged schema:
+
+```prisma
+model User {
+  /* ... */
+  favoriteColor   String?
+  bestPacmanScore Int?
+}
+
+model Tag {
+  tagName     String   @id
+  tagCategory Category
+  posts       Post[]
+}
+```
+
+### 4.2. Generate your migration [#42-generate-your-migration]
+
+Run the migrate command:
+
+  
+
+#### bun
+
+```bash
+bunx prisma migrate dev
+```
+
+#### pnpm
+
+```bash
+pnpm prisma migrate dev
+```
+
+#### yarn
+
+```bash
+yarn prisma migrate dev
+```
+
+#### npm
+
+```bash
+npx prisma migrate dev
+```
+
+  
+
+#### bun
+
+```bash
+bunx prisma generate
+```
+
+#### pnpm
+
+```bash
+pnpm prisma generate
+```
+
+#### yarn
+
+```bash
+yarn prisma generate
+```
+
+#### npm
+
+```bash
+npx prisma generate
+```
+
+This will:
+
+1. Apply your team's migrations
+2. Create a new migration for your changes
+3. Apply your new migration
+
+### 4.3. Commit changes [#43-commit-changes]
+
+Commit:
+
+* The merged `schema.prisma`
+* Your new migration file
+
+## Next steps [#next-steps]
+
+Now that you understand team schema management, you can:
+
+* Learn about [customizing migrations](https://www.prisma.io/docs/orm/v7/prisma-migrate/workflows/customizing-migrations)
+* Explore [deployment workflows](https://www.prisma.io/docs/orm/v7/prisma-migrate/workflows/development-and-production)
+
+For more information:
+
+* [Prisma Migrate documentation](https://www.prisma.io/docs/orm/v7/prisma-migrate)
+* [Team development workflows](https://www.prisma.io/docs/orm/v7/prisma-migrate/workflows/development-and-production)
+
+## Related pages
+
+- [`Expand-and-contract migrations`](https://www.prisma.io/docs/guides/v7/database/data-migration): Learn how to perform data migrations using the expand and contract pattern with Prisma ORM
+- [`Multiple databases`](https://www.prisma.io/docs/guides/v7/database/multiple-databases): Learn how to use multiple Prisma Clients in a single app to connect to multiple databases, handle migrations, and deploy your application to Vercel
 
 # Astro (Prisma ORM v7) (/docs/guides/v7/frameworks/astro)
 
@@ -160978,395 +160978,6 @@ If you want to deploy an app using Turso, you can follow the instructions in [Us
 - [`Deploy to Deno Deploy`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/edge/deploy-to-deno-deploy)
 - [`Deploy to Vercel Edge Functions & Middleware`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/edge/deploy-to-vercel): Learn the things you need to know in order to deploy an Edge function that uses Prisma Client for talking to a database
 
-# Deploy to AWS Lambda (Prisma ORM v7) (/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-aws-lambda)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Learn how to deploy your Prisma ORM-backed applications to AWS Lambda with AWS SAM, Serverless Framework, or SST
-
-Location: ORM > v7 > Prisma Client > Deployment > Serverless > Deploy to AWS Lambda
-
-> [!NOTE]
-> Quick summary
-> 
-> This guide explains how to avoid common issues when deploying a project using Prisma ORM to [AWS Lambda](https://aws.amazon.com/lambda/).
-
-**Questions answered in this page**
-
-* How to deploy Prisma to AWS Lambda?
-* Which binaryTargets should I configure?
-* How to handle connection pooling on Lambda?
-
-While a deployment framework is not required to deploy to AWS Lambda, this guide covers deploying with:
-
-* [AWS Serverless Application Model (SAM)](https://aws.amazon.com/serverless/sam/) is an open-source framework from AWS that can be used in the creation of serverless applications. AWS SAM includes the [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-reference.html#serverless-sam-cli), which you can use to build, test, and deploy your application.
-
-* [Serverless Framework](https://www.serverless.com/framework) provides a CLI that helps with workflow automation and AWS resource provisioning. Prisma ORM works with the Serverless Framework without extra configuration, but a few changes to your project improve deployment and performance. There is also additional configuration that is needed if you are using the [`serverless-webpack`](https://www.npmjs.com/package/serverless-webpack) or [`serverless-bundle`](https://www.npmjs.com/package/serverless-bundle) libraries.
-
-* [SST](https://sst.dev/) provides tools to define, test, debug, and deploy applications. Prisma ORM works well with SST but must be configured so that your schema is correctly packaged by SST.
-
-## General considerations when deploying to AWS Lambda [#general-considerations-when-deploying-to-aws-lambda]
-
-This section covers changes you will need to make to your application, regardless of framework. After following these steps, follow the steps for your framework.
-
-* [Deploying with AWS SAM](#deploying-with-aws-sam)
-* [Deploying with the Serverless Framework](#deploying-with-the-serverless-framework)
-* [Deploying with SST](#deploying-with-sst)
-
-### Connection pooling [#connection-pooling]
-
-In a Function as a Service (FaaS) environment, each function invocation typically creates a new database connection. Unlike a continuously running Node.js server, these connections aren't maintained between executions. For better performance in serverless environments, implement connection pooling to reuse existing database connections rather than creating new ones for each function call.
-
-You can use [Prisma Postgres](https://www.prisma.io/docs/postgres), which has built-in connection pooling, to solve this issue. For other solutions, see the [connection management guide for serverless environments](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections#serverless-environments-faas).
-
-## Deploying with AWS SAM [#deploying-with-aws-sam]
-
-### Loading environment variables [#loading-environment-variables]
-
-AWS SAM does not directly support loading values from a `.env` file. You will have to use one of AWS's services to store and retrieve these parameters. [The practical guide to surviving AWS SAM](https://medium.com/bip-xtech/a-practical-guide-to-surviving-aws-sam-d8ab141b3d25) describes your options and how to store and retrieve values in Parameters, SSM, Secrets Manager, and more.
-
-## Deploying with the Serverless Framework [#deploying-with-the-serverless-framework]
-
-### Loading environment variables via a `.env` file [#loading-environment-variables-via-a-env-file]
-
-Your functions will need the `DATABASE_URL` environment variable to access the database. The `serverless-dotenv-plugin` will allow you to use your `.env` file in your deployments.
-
-First, make sure that the plugin is installed:
-
-  
-
-#### bun
-
-```bash
-bun add --dev serverless-dotenv-plugin
-```
-
-#### pnpm
-
-```bash
-pnpm add -D serverless-dotenv-plugin
-```
-
-#### yarn
-
-```bash
-yarn add --dev serverless-dotenv-plugin
-```
-
-#### npm
-
-```bash
-npm install -D serverless-dotenv-plugin
-```
-
-Then, add `serverless-dotenv-plugin` to your list of plugins in `serverless.yml`:
-
-```yaml title="serverless.yml"
-plugins:
-  - serverless-dotenv-plugin
-```
-
-The environment variables in your `.env` file will now be automatically loaded on package or deployment.
-
-```bash
-serverless package
-```
-
-```bash
-Running "serverless" from node_modules
-DOTENV: Loading environment variables from .env:
-         - DATABASE_URL
-
-Packaging deployment-example-sls for stage dev (us-east-1)
-.
-```
-
-## Deploying with SST [#deploying-with-sst]
-
-### Working with environment variables [#working-with-environment-variables]
-
-While SST supports `.env` files, [it is not recommended](https://v2.sst.dev/config#should-i-use-configsecret-or-env-for-secrets). SST recommends using `Config` to access these environment variables in a secure way.
-
-The SST guide [available here](https://v2.sst.dev/config#overview) is a step-by-step guide to get started with `Config`. Assuming you have created a new secret called `DATABASE_URL` and have [bound that secret to your app](https://v2.sst.dev/config#bind-the-config), you can set up `PrismaClient` with the following:
-
-```ts title="prisma.ts" showLineNumbers
-import { PrismaClient } from "./generated/client";
-import { Config } from "sst/node/config";
-import { PrismaPg } from "@prisma/adapter-pg";
-const globalForPrisma = global as unknown as { prisma: PrismaClient };
-
-const adapter = new PrismaPg({ connectionString });
-
-export const prisma =
-  globalForPrisma.prisma ||
-  new PrismaClient({ adapter });
-
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
-
-export default prisma;
-```
-
-## Related pages
-
-- [`Deploy to Azure Functions`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-azure-functions): Learn how to deploy a Prisma Client based REST API to Azure Functions and connect to an Azure SQL database
-- [`Deploy to Netlify`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-netlify): Learn how to deploy Node.js and TypeScript applications that are using Prisma Client to Netlify
-- [`Deploy to Vercel`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-vercel): Learn how to deploy a Next.js application based on Prisma Client to Vercel
-
-# Deploy to Azure Functions (Prisma ORM v7) (/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-azure-functions)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Learn how to deploy a Prisma Client based REST API to Azure Functions and connect to an Azure SQL database
-
-Location: ORM > v7 > Prisma Client > Deployment > Serverless > Deploy to Azure Functions
-
-This guide explains how to avoid common issues when deploying a Node.js-based function app to Azure using [Azure Functions](https://azure.microsoft.com/en-us/products/functions/).
-
-Azure Functions is a serverless deployment platform. You do not need to maintain infrastructure to deploy your code. With Azure Functions, the fundamental building block is the [function app](https://learn.microsoft.com/en-us/azure/azure-functions/functions-reference?tabs=blob\&pivots=programming-language-typescript). A function app provides an execution context in Azure in which your functions run. It is comprised of one or more individual functions that Azure manages, deploys, and scales together. You can organize and collectively manage multiple functions as a single logical unit.
-
-## Prerequisites [#prerequisites]
-
-* An existing function app project with Prisma ORM
-
-## Things to know [#things-to-know]
-
-While Prisma ORM works well with Azure functions, there are a few things to take note of before deploying your application.
-
-### Connection pooling [#connection-pooling]
-
-Generally, when you use a FaaS (Function as a Service) environment to interact with a database, every function invocation can result in a new connection to the database. This is not a problem with a constantly running Node.js server. Therefore, it is beneficial to pool DB connections to get better performance. To solve this issue, you can use [Prisma Postgres](https://www.prisma.io/docs/postgres). For other solutions, see the [connection management guide for serverless environments](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections#serverless-environments-faas).
-
-## Summary [#summary]
-
-For more insight into Prisma Client's API, explore the function handlers and check out the [Prisma Client API Reference](https://www.prisma.io/docs/orm/v7/reference/prisma-client-reference)
-
-## Related pages
-
-- [`Deploy to AWS Lambda`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-aws-lambda): Learn how to deploy your Prisma ORM-backed applications to AWS Lambda with AWS SAM, Serverless Framework, or SST
-- [`Deploy to Netlify`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-netlify): Learn how to deploy Node.js and TypeScript applications that are using Prisma Client to Netlify
-- [`Deploy to Vercel`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-vercel): Learn how to deploy a Next.js application based on Prisma Client to Vercel
-
-# Deploy to Netlify (Prisma ORM v7) (/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-netlify)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Learn how to deploy Node.js and TypeScript applications that are using Prisma Client to Netlify
-
-Location: ORM > v7 > Prisma Client > Deployment > Serverless > Deploy to Netlify
-
-This guide covers the steps you will need to take in order to deploy your application that uses Prisma ORM to [Netlify](https://www.netlify.com/).
-
-Netlify is a cloud platform for continuous deployment, static sites, and serverless functions. Netlify integrates with GitHub for automatic deployments upon commits. When you follow the steps below, you will use that approach to create a CI/CD pipeline that deploys your application from a GitHub repository.
-
-## Prerequisites [#prerequisites]
-
-Before you can follow this guide, you will need to set up your application to begin deploying to Netlify. We recommend the ["Get started with Netlify"](https://docs.netlify.com/get-started/) guide for a quick overview and ["Deploy functions"](https://docs.netlify.com/functions/deploy/?fn-language=ts) for an in-depth look at your deployment options.
-
-## Store environment variables in Netlify [#store-environment-variables-in-netlify]
-
-We recommend keeping `.env` files in your `.gitignore` in order to prevent leakage of sensitive connection strings. Instead, you can use the Netlify CLI to [import values into netlify directly](https://docs.netlify.com/environment-variables/get-started/#import-variables-with-the-netlify-cli).
-
-Assuming you have a file like the following:
-
-```text title=".env"
-# Connect to DB
-DATABASE_URL="postgresql://postgres:__PASSWORD__@__HOST__:__PORT__/__DB_NAME__"
-```
-
-You can upload the file as environment variables using the `env:import` command:
-
-```bash no-break-terminal
-netlify env:import .env
-```
-
-```bash
-site: my-very-very-cool-site
----------------------------------------------------------------------------------.
-                         Imported environment variables                          |
----------------------------------------------------------------------------------|
-     Key      |                              Value                               |
---------------|------------------------------------------------------------------|
- DATABASE_URL | postgresql://postgres:__PASSWORD__@__HOST__:__PORT__/__DB_NAME__ |
----------------------------------------------------------------------------------'
-```
-
-**If you are not using an `.env` file**
-
-If you are storing your database connection string and other environment variables in a different method, you will need to manually upload your environment variables to Netlify. These options are [discussed in Netlify's documentation](https://docs.netlify.com/environment-variables/get-started/) and one method, uploading via the UI, is described below.
-
-1. Open the Netlify admin UI for the site. You can use Netlify CLI as follows:
-   ```bash
-   netlify open --admin
-   ```
-2. Click **Site settings**:
-   ![Netlify admin UI](https://www.prisma.io/img/orm/prisma-client/deployment/serverless/images/500-06-deploy-to-netlify-site-settings.png)
-3. Navigate to **Build & deploy** in the sidebar on the left and select **Environment**.
-4. Click **Edit variables** and create a variable with the key `DATABASE_URL` and set its value to your database connection string.
-   ![Netlify environment variables](https://www.prisma.io/img/orm/prisma-client/deployment/serverless/images/500-07-deploy-to-netlify-environment-variables-settings.png)
-5. Click **Save**.
-
-Now start a new Netlify build and deployment so that the new build can use the newly uploaded environment variables.
-
-```bash
-netlify deploy
-```
-
-You can now test the deployed application.
-
-## Connection pooling [#connection-pooling]
-
-When you use a Function-as-a-Service provider, like Netlify, it is beneficial to pool database connections for performance reasons. This is because every function invocation may result in a new connection to your database which can quickly run out of open connections.
-
-You can use [Prisma Postgres](https://www.prisma.io/docs/postgres), which has built-in connection pooling, to reduce your Prisma Client bundle size, and to avoid cold starts.
-
-For more information on connection management for serverless environments, refer to our [connection management guide](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections#serverless-environments-faas).
-
-## Related pages
-
-- [`Deploy to AWS Lambda`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-aws-lambda): Learn how to deploy your Prisma ORM-backed applications to AWS Lambda with AWS SAM, Serverless Framework, or SST
-- [`Deploy to Azure Functions`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-azure-functions): Learn how to deploy a Prisma Client based REST API to Azure Functions and connect to an Azure SQL database
-- [`Deploy to Vercel`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-vercel): Learn how to deploy a Next.js application based on Prisma Client to Vercel
-
-# Deploy to Vercel (Prisma ORM v7) (/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-vercel)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Learn how to deploy a Next.js application based on Prisma Client to Vercel
-
-Location: ORM > v7 > Prisma Client > Deployment > Serverless > Deploy to Vercel
-
-This guide takes you through the steps to set up and deploy a serverless application that uses Prisma to [Vercel](https://vercel.com/).
-
-Vercel is a cloud platform that hosts static sites, serverless, and edge functions. You can integrate a Vercel project with a GitHub repository to allow you to deploy automatically when you make new commits.
-
-We created an [example application](https://github.com/prisma/deployment-example-vercel) using Next.js you can use as a reference when deploying an application using Prisma to Vercel.
-
-While our examples use Next.js, you can deploy other applications to Vercel. See [Using Express with Vercel](https://vercel.com/guides/using-express-with-vercel) and [Nuxt on Vercel](https://vercel.com/docs/frameworks/nuxt) as examples of other options.
-
-## Build configuration [#build-configuration]
-
-### Updating Prisma Client during Vercel builds [#updating-prisma-client-during-vercel-builds]
-
-Vercel will automatically cache dependencies on deployment. For most applications, this will not cause any issues. However, for Prisma ORM, it may result in an outdated version of Prisma Client on a change in your Prisma schema. To avoid this issue, add `prisma generate` to the `postinstall` script of your application:
-
-```json title="package.json" showLineNumbers
-{
-  ...
-  "scripts": {
-    "postinstall": "prisma generate" // [!code ++]
-  }
-  ...
-}
-```
-
-This will re-generate Prisma Client at build time so that your deployment always has an up-to-date client. Another option to avoid an outdated Prisma Client is to check your client into version control. This way each deployment is guaranteed to include the correct Prisma Client.
-
-> [!NOTE]
-> If you see `prisma: command not found` errors during your deployment to Vercel, you are missing `prisma` in your dependencies. By default, `prisma` is a dev dependency and may need to be moved to be a standard dependency.
-
-### CI/CD workflows [#cicd-workflows]
-
-In a more sophisticated CI/CD environment, you may additionally want to update the database schema with any migrations you have performed during local development. You can do this using the [`prisma migrate deploy`](https://www.prisma.io/docs/orm/v7/reference/prisma-cli-reference#migrate-deploy) command.
-
-In that case, you could create a custom build command in your `package.json` (e.g. called `vercel-build`) that looks as follows:
-
-```json title="package.json"
-{
-  ...
-  "scripts" {
-    "vercel-build": "prisma generate && prisma migrate deploy && next build", // [!code ++]
-  }
-  ...
-}
-```
-
-You can invoke this script inside your CI/CD pipeline using the following command:
-
-  
-
-#### bun
-
-```bash
-bun run vercel-build
-```
-
-#### pnpm
-
-```bash
-pnpm run vercel-build
-```
-
-#### yarn
-
-```bash
-yarn vercel-build
-```
-
-#### npm
-
-```bash
-npm run vercel-build
-```
-
-## Add a separate database for preview deployments [#add-a-separate-database-for-preview-deployments]
-
-By default, your application will have a single *production* environment associated with the `main` git branch of your repository. If you open a pull request to change your application, Vercel creates a new *preview* environment.
-
-Vercel uses the `DATABASE_URL` environment variable you define when you import the project for both the production and preview environments. This causes problems if you create a pull request with a database schema migration because the pull request will change the schema of the production database.
-
-To prevent this, use a *second* hosted database to handle preview deployments. Once you have that connection string, you can add a `DATABASE_URL` for your preview environment using the Vercel dashboard:
-
-1. Click the **Settings** tab of your Vercel project.
-
-2. Click **Environment variables**.
-
-3. Add an environment variable with a key of `DATABASE_URL` and select only the **Preview** environment option:
-
-   ![Add an environment variable for the preview environment](https://www.prisma.io/img/orm/prisma-client/deployment/serverless/images/300-60-deploy-to-vercel-preview-environment-variable.png)
-
-4. Set the value to the connection string of your second database:
-
-   ```bash
-   postgresql://dbUsername:dbPassword@myhost:5432/mydb
-   ```
-
-5. Click **Save**.
-
-## Connection pooling [#connection-pooling]
-
-When you use a Function-as-a-Service provider, like Vercel Serverless functions, every invocation may result in a new connection to your database. This can cause your database to quickly run out of open connections and cause your application to stall. For this reason, pooling connections to your database is essential.
-
-You can use [Prisma Postgres](https://www.prisma.io/docs/postgres), which has built-in connection pooling, to reduce your Prisma Client bundle size, and to avoid cold starts.
-
-For more information on connection management for serverless environments, refer to our [connection management guide](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections#serverless-environments-faas).
-
-## Using Prisma ORM with Vercel Fluid [#using-prisma-orm-with-vercel-fluid]
-
-[Fluid compute](https://vercel.com/fluid) is Vercel's compute model for dynamic workloads such as streaming data and AI APIs. Vercel's Fluid compute [supports both edge and Node.js runtimes](https://vercel.com/docs/fluid-compute#available-runtime-support). A common challenge in traditional serverless platforms is leaked database connections when functions are suspended and pools can't close idle connections. Fluid provides [`attachDatabasePool`](https://vercel.com/blog/the-real-serverless-compute-to-database-connection-problem-solved) to ensure idle connections are released before a function is suspended.
-
-Use `attachDatabasePool` together with [Prisma's driver adapters](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases/database-drivers) to safely manage connections in Fluid:
-
-```ts
-import { Pool } from "pg";
-import { attachDatabasePool } from "@vercel/functions";
-import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "./generated/client";
-
-const pool = new Pool({ connectionString: process.env.POSTGRES_URL });
-
-attachDatabasePool(pool);
-
-export const prisma = new PrismaClient({
-  adapter: new PrismaPg(pool),
-});
-```
-
-## Related pages
-
-- [`Deploy to AWS Lambda`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-aws-lambda): Learn how to deploy your Prisma ORM-backed applications to AWS Lambda with AWS SAM, Serverless Framework, or SST
-- [`Deploy to Azure Functions`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-azure-functions): Learn how to deploy a Prisma Client based REST API to Azure Functions and connect to an Azure SQL database
-- [`Deploy to Netlify`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-netlify): Learn how to deploy Node.js and TypeScript applications that are using Prisma Client to Netlify
-
 # Deploy to Fly.io (Prisma ORM v7) (/docs/orm/v7/prisma-client/deployment/traditional/deploy-to-flyio)
 
 > For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
@@ -162348,6 +161959,395 @@ You have deployed a Node.js application using Prisma ORM to Sevalla, with the ap
 - [`Deploy to Koyeb`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/traditional/deploy-to-koyeb): Learn how to deploy a Node.js server that uses Prisma ORM to Koyeb Serverless Platform
 - [`Deploy to Railway`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/traditional/deploy-to-railway): Learn how to deploy an app that uses Prisma ORM and Prisma Postgres to Railway
 - [`Deploy to Render`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/traditional/deploy-to-render): Learn how to deploy a Node.js server that uses Prisma ORM to Render
+
+# Deploy to AWS Lambda (Prisma ORM v7) (/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-aws-lambda)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Learn how to deploy your Prisma ORM-backed applications to AWS Lambda with AWS SAM, Serverless Framework, or SST
+
+Location: ORM > v7 > Prisma Client > Deployment > Serverless > Deploy to AWS Lambda
+
+> [!NOTE]
+> Quick summary
+> 
+> This guide explains how to avoid common issues when deploying a project using Prisma ORM to [AWS Lambda](https://aws.amazon.com/lambda/).
+
+**Questions answered in this page**
+
+* How to deploy Prisma to AWS Lambda?
+* Which binaryTargets should I configure?
+* How to handle connection pooling on Lambda?
+
+While a deployment framework is not required to deploy to AWS Lambda, this guide covers deploying with:
+
+* [AWS Serverless Application Model (SAM)](https://aws.amazon.com/serverless/sam/) is an open-source framework from AWS that can be used in the creation of serverless applications. AWS SAM includes the [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-reference.html#serverless-sam-cli), which you can use to build, test, and deploy your application.
+
+* [Serverless Framework](https://www.serverless.com/framework) provides a CLI that helps with workflow automation and AWS resource provisioning. Prisma ORM works with the Serverless Framework without extra configuration, but a few changes to your project improve deployment and performance. There is also additional configuration that is needed if you are using the [`serverless-webpack`](https://www.npmjs.com/package/serverless-webpack) or [`serverless-bundle`](https://www.npmjs.com/package/serverless-bundle) libraries.
+
+* [SST](https://sst.dev/) provides tools to define, test, debug, and deploy applications. Prisma ORM works well with SST but must be configured so that your schema is correctly packaged by SST.
+
+## General considerations when deploying to AWS Lambda [#general-considerations-when-deploying-to-aws-lambda]
+
+This section covers changes you will need to make to your application, regardless of framework. After following these steps, follow the steps for your framework.
+
+* [Deploying with AWS SAM](#deploying-with-aws-sam)
+* [Deploying with the Serverless Framework](#deploying-with-the-serverless-framework)
+* [Deploying with SST](#deploying-with-sst)
+
+### Connection pooling [#connection-pooling]
+
+In a Function as a Service (FaaS) environment, each function invocation typically creates a new database connection. Unlike a continuously running Node.js server, these connections aren't maintained between executions. For better performance in serverless environments, implement connection pooling to reuse existing database connections rather than creating new ones for each function call.
+
+You can use [Prisma Postgres](https://www.prisma.io/docs/postgres), which has built-in connection pooling, to solve this issue. For other solutions, see the [connection management guide for serverless environments](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections#serverless-environments-faas).
+
+## Deploying with AWS SAM [#deploying-with-aws-sam]
+
+### Loading environment variables [#loading-environment-variables]
+
+AWS SAM does not directly support loading values from a `.env` file. You will have to use one of AWS's services to store and retrieve these parameters. [The practical guide to surviving AWS SAM](https://medium.com/bip-xtech/a-practical-guide-to-surviving-aws-sam-d8ab141b3d25) describes your options and how to store and retrieve values in Parameters, SSM, Secrets Manager, and more.
+
+## Deploying with the Serverless Framework [#deploying-with-the-serverless-framework]
+
+### Loading environment variables via a `.env` file [#loading-environment-variables-via-a-env-file]
+
+Your functions will need the `DATABASE_URL` environment variable to access the database. The `serverless-dotenv-plugin` will allow you to use your `.env` file in your deployments.
+
+First, make sure that the plugin is installed:
+
+  
+
+#### bun
+
+```bash
+bun add --dev serverless-dotenv-plugin
+```
+
+#### pnpm
+
+```bash
+pnpm add -D serverless-dotenv-plugin
+```
+
+#### yarn
+
+```bash
+yarn add --dev serverless-dotenv-plugin
+```
+
+#### npm
+
+```bash
+npm install -D serverless-dotenv-plugin
+```
+
+Then, add `serverless-dotenv-plugin` to your list of plugins in `serverless.yml`:
+
+```yaml title="serverless.yml"
+plugins:
+  - serverless-dotenv-plugin
+```
+
+The environment variables in your `.env` file will now be automatically loaded on package or deployment.
+
+```bash
+serverless package
+```
+
+```bash
+Running "serverless" from node_modules
+DOTENV: Loading environment variables from .env:
+         - DATABASE_URL
+
+Packaging deployment-example-sls for stage dev (us-east-1)
+.
+```
+
+## Deploying with SST [#deploying-with-sst]
+
+### Working with environment variables [#working-with-environment-variables]
+
+While SST supports `.env` files, [it is not recommended](https://v2.sst.dev/config#should-i-use-configsecret-or-env-for-secrets). SST recommends using `Config` to access these environment variables in a secure way.
+
+The SST guide [available here](https://v2.sst.dev/config#overview) is a step-by-step guide to get started with `Config`. Assuming you have created a new secret called `DATABASE_URL` and have [bound that secret to your app](https://v2.sst.dev/config#bind-the-config), you can set up `PrismaClient` with the following:
+
+```ts title="prisma.ts" showLineNumbers
+import { PrismaClient } from "./generated/client";
+import { Config } from "sst/node/config";
+import { PrismaPg } from "@prisma/adapter-pg";
+const globalForPrisma = global as unknown as { prisma: PrismaClient };
+
+const adapter = new PrismaPg({ connectionString });
+
+export const prisma =
+  globalForPrisma.prisma ||
+  new PrismaClient({ adapter });
+
+if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+
+export default prisma;
+```
+
+## Related pages
+
+- [`Deploy to Azure Functions`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-azure-functions): Learn how to deploy a Prisma Client based REST API to Azure Functions and connect to an Azure SQL database
+- [`Deploy to Netlify`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-netlify): Learn how to deploy Node.js and TypeScript applications that are using Prisma Client to Netlify
+- [`Deploy to Vercel`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-vercel): Learn how to deploy a Next.js application based on Prisma Client to Vercel
+
+# Deploy to Azure Functions (Prisma ORM v7) (/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-azure-functions)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Learn how to deploy a Prisma Client based REST API to Azure Functions and connect to an Azure SQL database
+
+Location: ORM > v7 > Prisma Client > Deployment > Serverless > Deploy to Azure Functions
+
+This guide explains how to avoid common issues when deploying a Node.js-based function app to Azure using [Azure Functions](https://azure.microsoft.com/en-us/products/functions/).
+
+Azure Functions is a serverless deployment platform. You do not need to maintain infrastructure to deploy your code. With Azure Functions, the fundamental building block is the [function app](https://learn.microsoft.com/en-us/azure/azure-functions/functions-reference?tabs=blob\&pivots=programming-language-typescript). A function app provides an execution context in Azure in which your functions run. It is comprised of one or more individual functions that Azure manages, deploys, and scales together. You can organize and collectively manage multiple functions as a single logical unit.
+
+## Prerequisites [#prerequisites]
+
+* An existing function app project with Prisma ORM
+
+## Things to know [#things-to-know]
+
+While Prisma ORM works well with Azure functions, there are a few things to take note of before deploying your application.
+
+### Connection pooling [#connection-pooling]
+
+Generally, when you use a FaaS (Function as a Service) environment to interact with a database, every function invocation can result in a new connection to the database. This is not a problem with a constantly running Node.js server. Therefore, it is beneficial to pool DB connections to get better performance. To solve this issue, you can use [Prisma Postgres](https://www.prisma.io/docs/postgres). For other solutions, see the [connection management guide for serverless environments](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections#serverless-environments-faas).
+
+## Summary [#summary]
+
+For more insight into Prisma Client's API, explore the function handlers and check out the [Prisma Client API Reference](https://www.prisma.io/docs/orm/v7/reference/prisma-client-reference)
+
+## Related pages
+
+- [`Deploy to AWS Lambda`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-aws-lambda): Learn how to deploy your Prisma ORM-backed applications to AWS Lambda with AWS SAM, Serverless Framework, or SST
+- [`Deploy to Netlify`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-netlify): Learn how to deploy Node.js and TypeScript applications that are using Prisma Client to Netlify
+- [`Deploy to Vercel`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-vercel): Learn how to deploy a Next.js application based on Prisma Client to Vercel
+
+# Deploy to Netlify (Prisma ORM v7) (/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-netlify)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Learn how to deploy Node.js and TypeScript applications that are using Prisma Client to Netlify
+
+Location: ORM > v7 > Prisma Client > Deployment > Serverless > Deploy to Netlify
+
+This guide covers the steps you will need to take in order to deploy your application that uses Prisma ORM to [Netlify](https://www.netlify.com/).
+
+Netlify is a cloud platform for continuous deployment, static sites, and serverless functions. Netlify integrates with GitHub for automatic deployments upon commits. When you follow the steps below, you will use that approach to create a CI/CD pipeline that deploys your application from a GitHub repository.
+
+## Prerequisites [#prerequisites]
+
+Before you can follow this guide, you will need to set up your application to begin deploying to Netlify. We recommend the ["Get started with Netlify"](https://docs.netlify.com/get-started/) guide for a quick overview and ["Deploy functions"](https://docs.netlify.com/functions/deploy/?fn-language=ts) for an in-depth look at your deployment options.
+
+## Store environment variables in Netlify [#store-environment-variables-in-netlify]
+
+We recommend keeping `.env` files in your `.gitignore` in order to prevent leakage of sensitive connection strings. Instead, you can use the Netlify CLI to [import values into netlify directly](https://docs.netlify.com/environment-variables/get-started/#import-variables-with-the-netlify-cli).
+
+Assuming you have a file like the following:
+
+```text title=".env"
+# Connect to DB
+DATABASE_URL="postgresql://postgres:__PASSWORD__@__HOST__:__PORT__/__DB_NAME__"
+```
+
+You can upload the file as environment variables using the `env:import` command:
+
+```bash no-break-terminal
+netlify env:import .env
+```
+
+```bash
+site: my-very-very-cool-site
+---------------------------------------------------------------------------------.
+                         Imported environment variables                          |
+---------------------------------------------------------------------------------|
+     Key      |                              Value                               |
+--------------|------------------------------------------------------------------|
+ DATABASE_URL | postgresql://postgres:__PASSWORD__@__HOST__:__PORT__/__DB_NAME__ |
+---------------------------------------------------------------------------------'
+```
+
+**If you are not using an `.env` file**
+
+If you are storing your database connection string and other environment variables in a different method, you will need to manually upload your environment variables to Netlify. These options are [discussed in Netlify's documentation](https://docs.netlify.com/environment-variables/get-started/) and one method, uploading via the UI, is described below.
+
+1. Open the Netlify admin UI for the site. You can use Netlify CLI as follows:
+   ```bash
+   netlify open --admin
+   ```
+2. Click **Site settings**:
+   ![Netlify admin UI](https://www.prisma.io/img/orm/prisma-client/deployment/serverless/images/500-06-deploy-to-netlify-site-settings.png)
+3. Navigate to **Build & deploy** in the sidebar on the left and select **Environment**.
+4. Click **Edit variables** and create a variable with the key `DATABASE_URL` and set its value to your database connection string.
+   ![Netlify environment variables](https://www.prisma.io/img/orm/prisma-client/deployment/serverless/images/500-07-deploy-to-netlify-environment-variables-settings.png)
+5. Click **Save**.
+
+Now start a new Netlify build and deployment so that the new build can use the newly uploaded environment variables.
+
+```bash
+netlify deploy
+```
+
+You can now test the deployed application.
+
+## Connection pooling [#connection-pooling]
+
+When you use a Function-as-a-Service provider, like Netlify, it is beneficial to pool database connections for performance reasons. This is because every function invocation may result in a new connection to your database which can quickly run out of open connections.
+
+You can use [Prisma Postgres](https://www.prisma.io/docs/postgres), which has built-in connection pooling, to reduce your Prisma Client bundle size, and to avoid cold starts.
+
+For more information on connection management for serverless environments, refer to our [connection management guide](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections#serverless-environments-faas).
+
+## Related pages
+
+- [`Deploy to AWS Lambda`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-aws-lambda): Learn how to deploy your Prisma ORM-backed applications to AWS Lambda with AWS SAM, Serverless Framework, or SST
+- [`Deploy to Azure Functions`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-azure-functions): Learn how to deploy a Prisma Client based REST API to Azure Functions and connect to an Azure SQL database
+- [`Deploy to Vercel`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-vercel): Learn how to deploy a Next.js application based on Prisma Client to Vercel
+
+# Deploy to Vercel (Prisma ORM v7) (/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-vercel)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Learn how to deploy a Next.js application based on Prisma Client to Vercel
+
+Location: ORM > v7 > Prisma Client > Deployment > Serverless > Deploy to Vercel
+
+This guide takes you through the steps to set up and deploy a serverless application that uses Prisma to [Vercel](https://vercel.com/).
+
+Vercel is a cloud platform that hosts static sites, serverless, and edge functions. You can integrate a Vercel project with a GitHub repository to allow you to deploy automatically when you make new commits.
+
+We created an [example application](https://github.com/prisma/deployment-example-vercel) using Next.js you can use as a reference when deploying an application using Prisma to Vercel.
+
+While our examples use Next.js, you can deploy other applications to Vercel. See [Using Express with Vercel](https://vercel.com/guides/using-express-with-vercel) and [Nuxt on Vercel](https://vercel.com/docs/frameworks/nuxt) as examples of other options.
+
+## Build configuration [#build-configuration]
+
+### Updating Prisma Client during Vercel builds [#updating-prisma-client-during-vercel-builds]
+
+Vercel will automatically cache dependencies on deployment. For most applications, this will not cause any issues. However, for Prisma ORM, it may result in an outdated version of Prisma Client on a change in your Prisma schema. To avoid this issue, add `prisma generate` to the `postinstall` script of your application:
+
+```json title="package.json" showLineNumbers
+{
+  ...
+  "scripts": {
+    "postinstall": "prisma generate" // [!code ++]
+  }
+  ...
+}
+```
+
+This will re-generate Prisma Client at build time so that your deployment always has an up-to-date client. Another option to avoid an outdated Prisma Client is to check your client into version control. This way each deployment is guaranteed to include the correct Prisma Client.
+
+> [!NOTE]
+> If you see `prisma: command not found` errors during your deployment to Vercel, you are missing `prisma` in your dependencies. By default, `prisma` is a dev dependency and may need to be moved to be a standard dependency.
+
+### CI/CD workflows [#cicd-workflows]
+
+In a more sophisticated CI/CD environment, you may additionally want to update the database schema with any migrations you have performed during local development. You can do this using the [`prisma migrate deploy`](https://www.prisma.io/docs/orm/v7/reference/prisma-cli-reference#migrate-deploy) command.
+
+In that case, you could create a custom build command in your `package.json` (e.g. called `vercel-build`) that looks as follows:
+
+```json title="package.json"
+{
+  ...
+  "scripts" {
+    "vercel-build": "prisma generate && prisma migrate deploy && next build", // [!code ++]
+  }
+  ...
+}
+```
+
+You can invoke this script inside your CI/CD pipeline using the following command:
+
+  
+
+#### bun
+
+```bash
+bun run vercel-build
+```
+
+#### pnpm
+
+```bash
+pnpm run vercel-build
+```
+
+#### yarn
+
+```bash
+yarn vercel-build
+```
+
+#### npm
+
+```bash
+npm run vercel-build
+```
+
+## Add a separate database for preview deployments [#add-a-separate-database-for-preview-deployments]
+
+By default, your application will have a single *production* environment associated with the `main` git branch of your repository. If you open a pull request to change your application, Vercel creates a new *preview* environment.
+
+Vercel uses the `DATABASE_URL` environment variable you define when you import the project for both the production and preview environments. This causes problems if you create a pull request with a database schema migration because the pull request will change the schema of the production database.
+
+To prevent this, use a *second* hosted database to handle preview deployments. Once you have that connection string, you can add a `DATABASE_URL` for your preview environment using the Vercel dashboard:
+
+1. Click the **Settings** tab of your Vercel project.
+
+2. Click **Environment variables**.
+
+3. Add an environment variable with a key of `DATABASE_URL` and select only the **Preview** environment option:
+
+   ![Add an environment variable for the preview environment](https://www.prisma.io/img/orm/prisma-client/deployment/serverless/images/300-60-deploy-to-vercel-preview-environment-variable.png)
+
+4. Set the value to the connection string of your second database:
+
+   ```bash
+   postgresql://dbUsername:dbPassword@myhost:5432/mydb
+   ```
+
+5. Click **Save**.
+
+## Connection pooling [#connection-pooling]
+
+When you use a Function-as-a-Service provider, like Vercel Serverless functions, every invocation may result in a new connection to your database. This can cause your database to quickly run out of open connections and cause your application to stall. For this reason, pooling connections to your database is essential.
+
+You can use [Prisma Postgres](https://www.prisma.io/docs/postgres), which has built-in connection pooling, to reduce your Prisma Client bundle size, and to avoid cold starts.
+
+For more information on connection management for serverless environments, refer to our [connection management guide](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections#serverless-environments-faas).
+
+## Using Prisma ORM with Vercel Fluid [#using-prisma-orm-with-vercel-fluid]
+
+[Fluid compute](https://vercel.com/fluid) is Vercel's compute model for dynamic workloads such as streaming data and AI APIs. Vercel's Fluid compute [supports both edge and Node.js runtimes](https://vercel.com/docs/fluid-compute#available-runtime-support). A common challenge in traditional serverless platforms is leaked database connections when functions are suspended and pools can't close idle connections. Fluid provides [`attachDatabasePool`](https://vercel.com/blog/the-real-serverless-compute-to-database-connection-problem-solved) to ensure idle connections are released before a function is suspended.
+
+Use `attachDatabasePool` together with [Prisma's driver adapters](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases/database-drivers) to safely manage connections in Fluid:
+
+```ts
+import { Pool } from "pg";
+import { attachDatabasePool } from "@vercel/functions";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from "./generated/client";
+
+const pool = new Pool({ connectionString: process.env.POSTGRES_URL });
+
+attachDatabasePool(pool);
+
+export const prisma = new PrismaClient({
+  adapter: new PrismaPg(pool),
+});
+```
+
+## Related pages
+
+- [`Deploy to AWS Lambda`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-aws-lambda): Learn how to deploy your Prisma ORM-backed applications to AWS Lambda with AWS SAM, Serverless Framework, or SST
+- [`Deploy to Azure Functions`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-azure-functions): Learn how to deploy a Prisma Client based REST API to Azure Functions and connect to an Azure SQL database
+- [`Deploy to Netlify`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-netlify): Learn how to deploy Node.js and TypeScript applications that are using Prisma Client to Netlify
 
 # Query optimization (Prisma ORM v7) (/docs/orm/v7/prisma-client/queries/advanced/query-optimization-performance)
 

@@ -25,11 +25,10 @@ Integrate an external RL trainer with Fireworks inference: hot-load new checkpoi
 
 This guide is for teams already running their own RL trainer (Megatron, TorchTitan, Slime, Verl, etc) who want Fireworks purely for inference during rollouts. It also covers the raw hot-load API, which Training API users can call directly when they need rollout behaviors beyond what `WeightSyncer` and `DeploymentManager` expose.
 
-Fireworks offers three paths for reinforcement learning, along a spectrum that trades convenience for control:
+Fireworks offers two paths for reinforcement learning, which trade convenience for control:
 
 * **BYOT rollouts** — the most hands-on, for teams already running their own trainer who want Fireworks purely for high-scale rollout inference.
 * **Training API** — the middle ground, for teams who want to own their training logic without managing infrastructure.
-* **Managed RFT** — the turnkey path, for teams who just want a tuned model without running the loop themselves.
 
 ## Where this guide fits
 

@@ -1503,12 +1503,6 @@ The Messages API can be used for either single queries or stateless multi-turn c
 > For setup, supported features, and known differences, see [Anthropic compatibility](/tools-sdks/anthropic-compatibility).
 
 
-# Cancel Reinforcement Fine-tuning Job
-Source: https://docs.fireworks.ai/api-reference/cancel-reinforcement-fine-tuning-job
-
-post /v1/accounts/{account_id}/reinforcementFineTuningJobs/{reinforcement_fine_tuning_job_id}:cancel
-Cancel a running reinforcement fine-tuning job in your Fireworks account by POSTing to the :cancel endpoint with the account ID and job ID path parameters.
-
 # Create API Key
 Source: https://docs.fireworks.ai/api-reference/create-api-key
 
@@ -1596,57 +1590,11 @@ Source: https://docs.fireworks.ai/api-reference/create-dpo-job
 post /v1/accounts/{account_id}/dpoJobs
 Create a DPO fine-tuning job from a dataset, with training config, a loss config for DPO or ORPO, Weights & Biases logging, and S3 or Azure dataset access.
 
-# Create Evaluation Job
-Source: https://docs.fireworks.ai/api-reference/create-evaluation-job
-
-post /v1/accounts/{account_id}/evaluationJobs
-Create an evaluation job in your Fireworks account by POSTing an evaluationJob object and an optional evaluationJobId to the evaluationJobs endpoint.
-
-# Create Evaluator
-Source: https://docs.fireworks.ai/api-reference/create-evaluator
-
-post /v1/accounts/{account_id}/evaluatorsV2
-Creates a custom evaluator for scoring model outputs. Evaluators use the
-[Eval Protocol](https://evalprotocol.io) to define test cases, run model
-inference, and score responses. They are used with evaluation jobs and
-Reinforcement Fine-Tuning (RFT).
-
-## Source Code Requirements
-
-Your project should contain:
-- `requirements.txt` - Python dependencies for your evaluator
-- `test_*.py` - Pytest test file(s) with
-  [`@evaluation_test`](https://evalprotocol.io/reference/evaluation-test)
-  decorated functions
-- Any additional code/modules your evaluator needs
-
-## Workflow
-
-**Recommended:** Use the [`ep upload`](https://evalprotocol.io/reference/cli#ep-upload)
-CLI command to handle all these steps automatically.
-
-If using the API directly:
-
-1. Call this endpoint to create the evaluator resource
-2. Package your source directory as a `.tar.gz` (respecting `.gitignore`)
-3. Call [Get Evaluator Upload Endpoint](/api-reference/get-evaluator-upload-endpoint) to get a signed upload URL
-4. `PUT` the tar.gz file to the signed URL
-5. Call [Validate Evaluator Upload](/api-reference/validate-evaluator-upload) to trigger server-side validation
-6. Poll [Get Evaluator](/api-reference/get-evaluator) until ready
-
-Once active, reference the evaluator in [Create Evaluation Job](/api-reference/create-evaluation-job) or [Create Reinforcement Fine-tuning Job](/api-reference/create-reinforcement-fine-tuning-job).
-
 # Create Model
 Source: https://docs.fireworks.ai/api-reference/create-model
 
 post /v1/accounts/{account_id}/models
 Create a model resource in your Fireworks account by POSTing a model object, a modelId, and an optional cluster to the account's models endpoint.
-
-# Create Reinforcement Fine-tuning Job
-Source: https://docs.fireworks.ai/api-reference/create-reinforcement-fine-tuning-job
-
-post /v1/accounts/{account_id}/reinforcementFineTuningJobs
-Create a reinforcement fine-tuning job with a training dataset, an evaluator, training and inference parameters, and an optional evaluation dataset.
 
 # Create Reinforcement Fine-tuning Step
 Source: https://docs.fireworks.ai/api-reference/create-reinforcement-fine-tuning-step
@@ -1762,29 +1710,11 @@ Source: https://docs.fireworks.ai/api-reference/delete-dpo-job
 delete /v1/accounts/{account_id}/dpoJobs/{dpo_job_id}
 Delete a DPO fine-tuning job from your Fireworks account by sending a DELETE request with the account ID and DPO job ID path parameters.
 
-# Delete Evaluation Job
-Source: https://docs.fireworks.ai/api-reference/delete-evaluation-job
-
-delete /v1/accounts/{account_id}/evaluationJobs/{evaluation_job_id}
-Delete an evaluation job from your Fireworks account by sending a DELETE request with the account ID and evaluation job ID path parameters.
-
-# Delete Evaluator
-Source: https://docs.fireworks.ai/api-reference/delete-evaluator
-
-delete /v1/accounts/{account_id}/evaluators/{evaluator_id}
-Deletes an evaluator and its associated versions and build artifacts.
-
 # Delete Model
 Source: https://docs.fireworks.ai/api-reference/delete-model
 
 delete /v1/accounts/{account_id}/models/{model_id}
 Delete a model resource from your Fireworks account by sending a DELETE request with the account ID and model ID path parameters to the models endpoint.
-
-# Delete Reinforcement Fine-tuning Job
-Source: https://docs.fireworks.ai/api-reference/delete-reinforcement-fine-tuning-job
-
-delete /v1/accounts/{account_id}/reinforcementFineTuningJobs/{reinforcement_fine_tuning_job_id}
-Delete a reinforcement fine-tuning job from your Fireworks account by sending a DELETE request with the account ID and job ID path parameters.
 
 # Delete Reinforcement Fine-tuning Step
 Source: https://docs.fireworks.ai/api-reference/delete-reinforcement-fine-tuning-step
@@ -1881,52 +1811,6 @@ Source: https://docs.fireworks.ai/api-reference/get-dpo-job-metrics-file-endpoin
 
 get /v1/accounts/{account_id}/dpoJobs/{dpo_job_id}:getMetricsFileEndpoint
 
-# Get Evaluation Job
-Source: https://docs.fireworks.ai/api-reference/get-evaluation-job
-
-get /v1/accounts/{account_id}/evaluationJobs/{evaluation_job_id}
-
-# Get Evaluation Job execution logs (stream log endpoint + tracing IDs).
-Source: https://docs.fireworks.ai/api-reference/get-evaluation-job-log-endpoint
-
-get /v1/accounts/{account_id}/evaluationJobs/{evaluation_job_id}:getExecutionLogEndpoint
-
-# Get Evaluator
-Source: https://docs.fireworks.ai/api-reference/get-evaluator
-
-get /v1/accounts/{account_id}/evaluators/{evaluator_id}
-Retrieves an evaluator by name. Use this to monitor build progress after
-creation (**step 6** in the [Create Evaluator](/api-reference/create-evaluator) workflow).
-
-Possible states:
-
-- `BUILDING` - Environment is being prepared
-- `ACTIVE` - Evaluator is ready to use
-- `BUILD_FAILED` - Check build logs via [Get Evaluator Build Log Endpoint](/api-reference/get-evaluator-build-log-endpoint)
-
-# Get Evaluator Build Log Endpoint
-Source: https://docs.fireworks.ai/api-reference/get-evaluator-build-log-endpoint
-
-get /v1/accounts/{account_id}/evaluators/{evaluator_id}:getBuildLogEndpoint
-Returns a signed URL to download the evaluator's build logs. Useful for
-debugging `BUILD_FAILED` state.
-
-# Get Evaluator Source Code Endpoint
-Source: https://docs.fireworks.ai/api-reference/get-evaluator-source-code-endpoint
-
-get /v1/accounts/{account_id}/evaluators/{evaluator_id}:getSourceCodeSignedUrl
-Returns a signed URL to download the evaluator's source code archive.
-Useful for debugging or reviewing the uploaded code.
-
-# Get Evaluator Upload Endpoint
-Source: https://docs.fireworks.ai/api-reference/get-evaluator-upload-endpoint
-
-post /v1/accounts/{account_id}/evaluators/{evaluator_id}:getUploadEndpoint
-Returns signed URLs for uploading evaluator source code (**step 3** in the
-[Create Evaluator](/api-reference/create-evaluator) workflow). After receiving
-the signed URL, upload your `.tar.gz` archive using HTTP `PUT` with
-`Content-Type: application/octet-stream` header.
-
 # Get Model
 Source: https://docs.fireworks.ai/api-reference/get-model
 
@@ -1972,11 +1856,6 @@ Source: https://docs.fireworks.ai/api-reference/get-quota
 
 get /v1/accounts/{account_id}/quotas/{quota_id}
 Gets a single quota by resource name.
-
-# Get Reinforcement Fine-tuning Job
-Source: https://docs.fireworks.ai/api-reference/get-reinforcement-fine-tuning-job
-
-get /v1/accounts/{account_id}/reinforcementFineTuningJobs/{reinforcement_fine_tuning_job_id}
 
 # Get Reinforcement Fine-tuning Step
 Source: https://docs.fireworks.ai/api-reference/get-reinforcement-fine-tuning-step
@@ -2133,17 +2012,6 @@ Source: https://docs.fireworks.ai/api-reference/list-dpo-jobs
 
 get /v1/accounts/{account_id}/dpoJobs
 
-# List Evaluation Jobs
-Source: https://docs.fireworks.ai/api-reference/list-evaluation-jobs
-
-get /v1/accounts/{account_id}/evaluationJobs
-
-# List Evaluators
-Source: https://docs.fireworks.ai/api-reference/list-evaluators
-
-get /v1/accounts/{account_id}/evaluators
-Lists all evaluators for an account with pagination support.
-
 # List Models
 Source: https://docs.fireworks.ai/api-reference/list-models
 
@@ -2154,11 +2022,6 @@ Source: https://docs.fireworks.ai/api-reference/list-quotas
 
 get /v1/accounts/{account_id}/quotas
 Lists all quotas for an account.
-
-# List Reinforcement Fine-tuning Jobs
-Source: https://docs.fireworks.ai/api-reference/list-reinforcement-fine-tuning-jobs
-
-get /v1/accounts/{account_id}/reinforcementFineTuningJobs
 
 # List Reinforcement Fine-tuning Steps
 Source: https://docs.fireworks.ai/api-reference/list-reinforcement-fine-tuning-steps
@@ -2614,11 +2477,6 @@ Source: https://docs.fireworks.ai/api-reference/resume-dpo-job
 
 post /v1/accounts/{account_id}/dpoJobs/{dpo_job_id}:resume
 
-# Resume Reinforcement Fine-tuning Job
-Source: https://docs.fireworks.ai/api-reference/resume-reinforcement-fine-tuning-job
-
-post /v1/accounts/{account_id}/reinforcementFineTuningJobs/{reinforcement_fine_tuning_job_id}:resume
-
 # Resume Rlor Trainer Job
 Source: https://docs.fireworks.ai/api-reference/resume-reinforcement-fine-tuning-step
 
@@ -3004,14 +2862,6 @@ Source: https://docs.fireworks.ai/api-reference/update-deployment
 
 patch /v1/accounts/{account_id}/deployments/{deployment_id}
 
-# Update Evaluator
-Source: https://docs.fireworks.ai/api-reference/update-evaluator
-
-patch /v1/accounts/{account_id}/evaluators/{evaluator_id}
-Updates evaluator metadata (display_name, description, default_dataset).
-Changing `requirements` or `entry_point` triggers a rebuild. To upload new
-source code, set `prepare_code_upload: true` then follow the upload flow.
-
 # Update Model
 Source: https://docs.fireworks.ai/api-reference/update-model
 
@@ -3075,15 +2925,6 @@ Provides a streamlined way to upload a dataset file in a single API request. Thi
 Source: https://docs.fireworks.ai/api-reference/validate-dataset-upload
 
 post /v1/accounts/{account_id}/datasets/{dataset_id}:validateUpload
-
-# Validate Evaluator Upload
-Source: https://docs.fireworks.ai/api-reference/validate-evaluator-upload
-
-post /v1/accounts/{account_id}/evaluators/{evaluator_id}:validateUpload
-Triggers server-side validation of the uploaded source code (**step 5** in
-the [Create Evaluator](/api-reference/create-evaluator) workflow). The server
-extracts and processes the archive, then builds the evaluator environment.
-Poll [Get Evaluator](/api-reference/get-evaluator) to monitor progress.
 
 # Validate Model Upload
 Source: https://docs.fireworks.ai/api-reference/validate-model-upload
@@ -7183,7 +7024,7 @@ Per-step loss and learning-rate artifacts are retained for 7 days after they are
 
 > [card] [Reinforcement Learning](/fine-tuning/training-api/cookbook/rl)
 >
-> Train against a reward function on the Training API. Managed RFT is paused.
+> Train against a reward function on the Training API. Managed RFT has been removed.
 
 ## Supported base models
 
@@ -7606,11 +7447,10 @@ Integrate an external RL trainer with Fireworks inference: hot-load new checkpoi
 
 This guide is for teams already running their own RL trainer (Megatron, TorchTitan, Slime, Verl, etc) who want Fireworks purely for inference during rollouts. It also covers the raw hot-load API, which Training API users can call directly when they need rollout behaviors beyond what `WeightSyncer` and `DeploymentManager` expose.
 
-Fireworks offers three paths for reinforcement learning, along a spectrum that trades convenience for control:
+Fireworks offers two paths for reinforcement learning, which trade convenience for control:
 
 * **BYOT rollouts** — the most hands-on, for teams already running their own trainer who want Fireworks purely for high-scale rollout inference.
 * **Training API** — the middle ground, for teams who want to own their training logic without managing infrastructure.
-* **Managed RFT** — the turnkey path, for teams who just want a tuned model without running the loop themselves.
 
 ## Where this guide fits
 
@@ -12872,7 +12712,7 @@ A hyperparameter that controls the size of the LoRA adapter. Higher rank = more 
 A reinforcement learning variant used in RFT. Optimizes model outputs using group-relative reward scoring rather than a separate value model.
 
 **RFT (Reinforcement Fine-Tuning)**\
-Fine-tuning that uses a reward signal instead of labeled examples. Managed RFT is paused and does not accept new jobs. New reinforcement learning runs on the [Training API](/fine-tuning/training-api/cookbook/rl), where you write the rollout and training loop.
+Fine-tuning that uses a reward signal instead of labeled examples. Managed RFT has been removed. New reinforcement learning runs on the [Training API](/fine-tuning/training-api/cookbook/rl), where you write the rollout and training loop.
 
 **Training shape**\
 A validated trainer configuration for one base model and one training method. It fixes the GPU type and count per trainer replica, plus the maximum training context length. On the [Training API](/fine-tuning/training-api/training-shapes) you pass a shape ID such as `accounts/fireworks/trainingShapes/qwen3-8b-128k`; managed training jobs select a compatible shape for you.
@@ -20197,7 +20037,7 @@ Retention behavior depends on the job type:
 | - | - | - |
 | SFT — Managed Training | Uploaded dataset only | Customer-controlled; deletable immediately after the job completes |
 | DPO — Managed Training | Uploaded dataset only | Customer-controlled; deletable immediately after the job completes |
-| RFT — Managed Training | Input prompts + rollout datasets (generated outputs) | Input prompts: customer-controlled, deletable after the job completes (same policy as SFT and DPO). Rollout datasets (generated outputs): deletable upon request |
+| RFT — Managed Training (removed) | Input prompts + rollout datasets (generated outputs) | Input prompts: customer-controlled, deletable after the job completes (same policy as SFT and DPO). Rollout datasets (generated outputs): deletable upon request |
 | Job chunks / artifacts | Intermediate checkpoints | Retained for 30 days, then deleted; deletable earlier on request. Kept so jobs can be retrieved or restarted |
 | Traces / logs | Request/response metadata | Retained for 30 days, then deleted; deletable earlier on request |
 
@@ -20279,9 +20119,9 @@ For inference-side controls — disabling Response API storage (`store=False`) o
 >
 > Learn about our comprehensive security measures
 
-> [card] [Reinforcement Fine Tuning](/fine-tuning/reinforcement-fine-tuning-models)
+> [card] [Reinforcement Learning](/fine-tuning/training-api/cookbook/rl)
 >
-> Full guide to reinforcement fine-tuning
+> Reinforcement learning on the Training API
 
 > [card] [Training API](/fine-tuning/training-api/introduction)
 >
@@ -20423,10 +20263,6 @@ firectl sftj create \
   --aws-iam-role "arn:aws:iam::{AWS_ACCOUNT_ID}:role/{ROLE_NAME}"
 ```
 
-> [!TIP]
->
-> For RFT jobs, use `firectl rftj create` with the same `--aws-iam-role` flag.
-
 ### Alternative: Credentials Secret
 
 Instead of IAM role federation, you can use static AWS access keys stored in a Fireworks secret:
@@ -20486,10 +20322,6 @@ firectl sftj create \
   --azure-managed-identity-client-id "{MANAGED_IDENTITY_CLIENT_ID}" \
   --azure-tenant-id "{AZURE_TENANT_ID}"
 ```
-
-> [!TIP]
->
-> For RFT jobs, use `firectl rftj create` with the same `--azure-managed-identity-client-id` and `--azure-tenant-id` flags.
 
 ### Alternative: Credentials Secret
 
@@ -29754,136 +29586,6 @@ firectl dpo-job resume accounts/my-account/dpoJobs/my-dpo-job
 ```
 
 
-# firectl evaluator-revision alias
-Source: https://docs.fireworks.ai/tools-sdks/firectl/commands/evaluator-revision-alias
-
-Alias an evaluator revision
-
-```
-firectl evaluator-revision alias [flags]
-```
-
-### Examples
-
-```
-firectl evaluator-revision alias accounts/my-account/evaluators/my-evaluator/versions/abc123 --alias-id current
-```
-
-### Flags
-
-```
-  -h, --help   help for alias
-```
-
-### Global flags
-
-```
-  -a, --account-id string   The Fireworks account ID. If not specified, reads account_id from ~/.fireworks/auth.ini.
-      --api-key string      An API key used to authenticate with Fireworks.
-  -p, --profile string      fireworks auth and settings profile to use.
-```
-
-
-# firectl evaluator-revision delete
-Source: https://docs.fireworks.ai/tools-sdks/firectl/commands/evaluator-revision-delete
-
-Delete an evaluator revision
-
-```
-firectl evaluator-revision delete [flags]
-```
-
-### Examples
-
-```
-firectl evaluator-revision delete accounts/my-account/evaluators/my-evaluator/versions/abc123
-```
-
-### Flags
-
-```
-      --dry-run         Print the request proto without running it.
-  -h, --help            help for delete
-  -o, --output Output   Set the output format to "text", "json", or "flag". (default text)
-```
-
-### Global flags
-
-```
-  -a, --account-id string   The Fireworks account ID. If not specified, reads account_id from ~/.fireworks/auth.ini.
-      --api-key string      An API key used to authenticate with Fireworks.
-  -p, --profile string      fireworks auth and settings profile to use.
-```
-
-
-# firectl evaluator-revision get
-Source: https://docs.fireworks.ai/tools-sdks/firectl/commands/evaluator-revision-get
-
-Get an evaluator revision
-
-```
-firectl evaluator-revision get [flags]
-```
-
-### Examples
-
-```
-firectl evaluator-revision get accounts/my-account/evaluators/my-evaluator/versions/latest
-```
-
-### Flags
-
-```
-      --dry-run         Print the request proto without running it.
-  -h, --help            help for get
-  -o, --output Output   Set the output format to "text", "json", or "flag". (default text)
-```
-
-### Global flags
-
-```
-  -a, --account-id string   The Fireworks account ID. If not specified, reads account_id from ~/.fireworks/auth.ini.
-      --api-key string      An API key used to authenticate with Fireworks.
-  -p, --profile string      fireworks auth and settings profile to use.
-```
-
-
-# firectl evaluator-revision list
-Source: https://docs.fireworks.ai/tools-sdks/firectl/commands/evaluator-revision-list
-
-List evaluator revisions
-
-```
-firectl evaluator-revision list [flags]
-```
-
-### Examples
-
-```
-firectl evaluator-revision list accounts/my-account/evaluators/my-evaluator
-```
-
-### Flags
-
-```
-      --filter string       Only resources satisfying the provided filter will be listed. See https://google.aip.dev/160 for the filter grammar.
-  -h, --help                help for list
-      --no-paginate         List all resources without pagination.
-      --order-by string     A list of fields to order by. To specify a descending order for a field, append a " desc" suffix
-  -o, --output string       Set the output format to "text" or "json". (default "text")
-      --page-size int32     The maximum number of resources to list.
-      --page-token string   The page to list. A number from 0 to the total number of pages (number of entities / page size).
-```
-
-### Global flags
-
-```
-  -a, --account-id string   The Fireworks account ID. If not specified, reads account_id from ~/.fireworks/auth.ini.
-      --api-key string      An API key used to authenticate with Fireworks.
-  -p, --profile string      fireworks auth and settings profile to use.
-```
-
-
 # firectl identity-provider create
 Source: https://docs.fireworks.ai/tools-sdks/firectl/commands/identity-provider-create
 
@@ -30508,124 +30210,6 @@ firectl quota update serverless-inference-rpm --value 300
 ```
 
 
-# firectl reinforcement-fine-tuning-job cancel
-Source: https://docs.fireworks.ai/tools-sdks/firectl/commands/reinforcement-fine-tuning-job-cancel
-
-Cancels a running reinforcement fine-tuning job.
-
-```
-firectl reinforcement-fine-tuning-job cancel [flags]
-```
-
-### Examples
-
-```
-firectl reinforcement-fine-tuning-job cancel my-rftj
-firectl reinforcement-fine-tuning-job cancel accounts/my-account/reinforcementFineTuningJobs/my-rftj
-```
-
-### Flags
-
-```
-  -h, --help   help for cancel
-```
-
-### Global flags
-
-```
-  -a, --account-id string   The Fireworks account ID. If not specified, reads account_id from ~/.fireworks/auth.ini.
-      --api-key string      An API key used to authenticate with Fireworks.
-  -p, --profile string      fireworks auth and settings profile to use.
-```
-
-
-# firectl reinforcement-fine-tuning-job create
-Source: https://docs.fireworks.ai/tools-sdks/firectl/commands/reinforcement-fine-tuning-job-create
-
-Reference for the firectl reinforcement-fine-tuning-job create command: launch a Fireworks managed RFT job from the CLI, with dataset and reward configuration.
-
-```
-firectl reinforcement-fine-tuning-job create [flags]
-```
-
-### Examples
-
-```
-firectl reinforcement-fine-tuning-job create \
-	--base-model llama-v3-8b-instruct \
-	--dataset sample-dataset \
-	--epochs 5 \
-	--output-model name-of-the-trained-model \
-	--evaluator accounts/my-account/evaluators/abc123
-
-# Create from source job:
-firectl reinforcement-fine-tuning-job create \
-	--source-job my-previous-job \
-	--output-model new-model
-
-```
-
-### Flags
-
-```
-      --base-model string                         The base model for the reinforcement fine-tuning job. Only one of base-model or warm-start-from should be specified.
-      --dataset string                            The dataset for the reinforcement fine-tuning job. (Required)
-      --output-model string                       The output model for the reinforcement fine-tuning job.
-      --job-id string                             The ID of the reinforcement fine-tuning job. If not set, it will be autogenerated.
-      --warm-start-from string                    The model to warm start from. If set, base-model must not be set.
-      --source-job string                         The source reinforcement fine-tuning job to copy configuration from. If other flags are set, they will override the source job's configuration.
-      --evaluator string                          The evaluator resource name to use for the reinforcement fine-tuning job. (Required)
-      --epochs int32                              The number of epochs for the reinforcement fine-tuning job. (default 1)
-      --learning-rate float32                     The learning rate for the reinforcement fine-tuning job. (default 0.0001)
-      --max-context-length int32                  Maximum token length per sequence. When unset, defaults to the validated training shape's max supported context length. Capped (not pinned) by the shape: smaller user values are honored.
-      --batch-size int32                          Legacy V1 token budget used by managed RFT. Limits packed tokens per microbatch and remains active when --batch-size-samples is set.
-      --batch-size-samples int32                  Optional number of rollout samples per gradient batch. Works alongside --batch-size; with --gradient-accumulation-steps=N, the target samples per optimizer step is this value multiplied by N.
-      --gradient-accumulation-steps int32         The number of batches to accumulate gradients before updating the model parameters. The effective batch size will be batch-size multiplied by this value. (default 1)
-      --learning-rate-warmup-steps int32          The number of learning rate warmup steps for the reinforcement fine-tuning job.
-      --lora-rank int32                           The rank of the LoRA layers for the reinforcement fine-tuning job. (default 8)
-      --optimizer-weight-decay float32            Weight decay (L2 regularization) for the optimizer. Default in trainer is 0.01.
-                                                  
-      --wandb-api-key string                      [WANDB_API_KEY] WandB API Key. (Required if any WandB flag is set)
-      --wandb-project string                      [WANDB_PROJECT] WandB Project. (Required if any WandB flag is set)
-      --wandb-entity string                       [WANDB_ENTITY] WandB Entity. (Required if any WandB flag is set)
-      --wandb                                     Enable WandB
-                                                  
-                                                  
-      --aws-credentials-secret string             [AWS_CREDENTIALS_SECRET] AWS credentials secret (mutually exclusive with --aws-iam-role)
-      --aws-iam-role string                       [AWS_IAM_ROLE_ARN] AWS IAM role ARN (mutually exclusive with --aws-credentials-secret)
-                                                  
-                                                  
-      --azure-credentials-secret string           [AZURE_CREDENTIALS_SECRET] Azure credentials secret
-      --azure-managed-identity-client-id string   [AZURE_MANAGED_IDENTITY_CLIENT_ID] Azure managed identity client ID for Workload Identity Federation
-      --azure-tenant-id string                    [AZURE_TENANT_ID] Azure tenant ID (required with --azure-managed-identity-client-id)
-                                                  
-      --temperature float32                       The randomness of the model's word or token selection during text generation.
-      --top-p float32                             Top-p sampling, selecting the smallest set of candidate words whose cumulative probability exceeds the top-p.
-      --response-candidates-count int32           The number of response candidates to generate per input.
-      --max-output-tokens int32                   The maximum number of tokens to generate in the response.
-      --top-k int32                               Top-k sampling parameter, limits the token selection to the top k tokens.
-      --extra-body string                         Additional parameters for the inference request as a JSON string. For example: '{"stop": ["\n"]}'
-      --quiet                                     If set, only errors will be printed.
-      --max-concurrent-rollouts int32             Maximum number of concurrent rollouts during the RFT job. If not set, defaults to the value set in @evaluation_test header.
-      --max-concurrent-evaluations int32          Maximum number of concurrent evaluations during the RFT job. If not set, defaults to the value set in @evaluation_test header.
-      --rl-loss-method string                     RL loss method for underlying trainers. One of {grpo,dapo,gspo-token}.
-      --rl-kl-beta float32                        Override KL beta for GRPO-like methods. Must be >= 0.
-      --chunk-size int32                          The minimum chunk size to split the dataset before the RL flow. Set to -1 to disable chunking. (default 200)
-      --max-inference-replica-count int32         Maximum number of replicas used for batch inference. If not specified, defaults to 1.
-      --dry-run                                   Print the request proto without running it.
-  -o, --output Output                             Set the output format to "text", "json", or "flag". (default text)
-  -h, --help                                      help for create
-```
-
-### Global flags
-
-```
-  -a, --account-id string   The Fireworks account ID. If not specified, reads account_id from ~/.fireworks/auth.ini.
-      --api-key string      An API key used to authenticate with Fireworks.
-  -p, --profile string      fireworks auth and settings profile to use.
-```
-
-
 # firectl reinforcement-fine-tuning-job delete
 Source: https://docs.fireworks.ai/tools-sdks/firectl/commands/reinforcement-fine-tuning-job-delete
 
@@ -30719,70 +30303,6 @@ firectl reinforcement-fine-tuning-job list
   -o, --output string       Set the output format to "text" or "json". (default "text")
       --page-size int32     The maximum number of resources to list.
       --page-token string   The page to list. A number from 0 to the total number of pages (number of entities / page size).
-```
-
-### Global flags
-
-```
-  -a, --account-id string   The Fireworks account ID. If not specified, reads account_id from ~/.fireworks/auth.ini.
-      --api-key string      An API key used to authenticate with Fireworks.
-  -p, --profile string      fireworks auth and settings profile to use.
-```
-
-
-# firectl reinforcement-fine-tuning-job resume
-Source: https://docs.fireworks.ai/tools-sdks/firectl/commands/reinforcement-fine-tuning-job-resume
-
-Resumes a failed reinforcement fine-tuning job.
-
-```
-firectl reinforcement-fine-tuning-job resume [flags]
-```
-
-### Examples
-
-```
-firectl reinforcement-fine-tuning-job resume my-rftj
-firectl reinforcement-fine-tuning-job resume accounts/my-account/reinforcementFineTuningJobs/my-rftj
-```
-
-### Flags
-
-```
-  -h, --help   help for resume
-```
-
-### Global flags
-
-```
-  -a, --account-id string   The Fireworks account ID. If not specified, reads account_id from ~/.fireworks/auth.ini.
-      --api-key string      An API key used to authenticate with Fireworks.
-  -p, --profile string      fireworks auth and settings profile to use.
-```
-
-
-# firectl reinforcement-fine-tuning-job update
-Source: https://docs.fireworks.ai/tools-sdks/firectl/commands/reinforcement-fine-tuning-job-update
-
-Update fields on a reinforcement fine-tuning job.
-
-```
-firectl reinforcement-fine-tuning-job update [flags]
-```
-
-### Examples
-
-```
-firectl-admin rftj update my-job --training-accelerator-type=NVIDIA_B200_180GB
-firectl-admin rftj update accounts/my-account/reinforcementFineTuningJobs/my-job --training-accelerator-type=NVIDIA_B200_180GB --toleration=fireworks.ai/rftj
-```
-
-### Flags
-
-```
-      --dry-run         Print the request proto without running it.
-  -h, --help            help for update
-  -o, --output Output   Set the output format to "text", "json", or "flag". (default text)
 ```
 
 ### Global flags
@@ -33378,7 +32898,7 @@ TrainingPlatform
 
 You can now warm-start Reinforcement Fine-Tuning jobs from previously supervised fine-tuned checkpoints using the `--warm-start-from` flag. This enables a streamlined SFT-to-RFT workflow where you first train a model with supervised fine-tuning, then continue training with reinforcement learning.
 
-See the [Warm-Start Training guide](/fine-tuning/reinforcement-fine-tuning-models#warm-start) for details.
+See the [Warm-Start Training guide](/fine-tuning/reinforcement-fine-tuning-models) for details.
 
 ## **Azure Federated Identity for Model Uploads**
 
@@ -33388,7 +32908,7 @@ See the [Uploading Custom Models documentation](/models/uploading-custom-models)
 
 ## 📚 Documentation Updates
 
-* **Warm-Start Training:** New guide for SFT-to-RFT workflows ([Warm-Start Training](/fine-tuning/reinforcement-fine-tuning-models#warm-start))
+* **Warm-Start Training:** New guide for SFT-to-RFT workflows ([Warm-Start Training](/fine-tuning/reinforcement-fine-tuning-models))
 * **Azure Federated Identity:** Setup instructions for Azure AD authentication ([Uploading Custom Models](/models/uploading-custom-models))
 * **Preserved Thinking:** Multi-turn reasoning with preserved thinking context ([Reasoning](/guides/reasoning))
 * **GLM 4.7:** Added to models supporting `reasoning_effort` parameter
@@ -33444,8 +32964,8 @@ Fine-tuning workflows have been enhanced with several new capabilities:
 ## 📚 Documentation Updates
 
 * **Deployment Shapes API:** Added [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions) and [Get Deployment Shape](/api-reference/get-deployment-shape) endpoints for querying available deployment shapes
-* **Evaluator APIs:** Added [Create Evaluator](/api-reference/create-evaluator), [Update Evaluator](/api-reference/update-evaluator), and helper endpoints for evaluator source code, build logs, and upload validation
-* **Fine-Tuning APIs:** Added [Resume DPO Job](/api-reference/resume-dpo-job), [Resume Reinforcement Fine-Tuning Step](/api-reference/resume-reinforcement-fine-tuning-step), Execute Reinforcement Fine-Tuning Step, and [Get Evaluation Job Log Endpoint](/api-reference/get-evaluation-job-log-endpoint)
+* **Evaluator APIs:** Added Create Evaluator, Update Evaluator, and helper endpoints for evaluator source code, build logs, and upload validation
+* **Fine-Tuning APIs:** Added [Resume DPO Job](/api-reference/resume-dpo-job), [Resume Reinforcement Fine-Tuning Step](/api-reference/resume-reinforcement-fine-tuning-step), Execute Reinforcement Fine-Tuning Step, and Get Evaluation Job Log Endpoint
 * **SDK Examples:** Added Python SDK example links for direct routing and [supervised fine-tuning](/fine-tuning/fine-tuning-models) workflows
 
 > [accordion] Bug Fixes & Minor Improvements
@@ -33504,7 +33024,7 @@ See the [Prompt Caching guide](/guides/prompt-caching) for details.
 * **Reasoning Guide:** New documentation for working with reasoning models, including `reasoning_content`, `reasoning_effort`, streaming, and interleaved thinking ([Reasoning](/guides/reasoning))
 * **Recommended Models:** Updated recommendations to include DeepSeek V3.2 for code generation and Kimi K2 Thinking as a GPT-5 alternative ([Recommended Models](/guides/recommended-models))
 * **OpenAI Compatibility:** Removed `stop` sequence documentation as Fireworks is now 1:1 compatible with OpenAI's behavior ([OpenAI Compatibility](/tools-sdks/openai-compatibility))
-* **Evaluator APIs:** Added REST API documentation for Evaluator and Evaluation Job CRUD operations ([Evals API Reference](/api-reference/list-evaluators))
+* **Evaluator APIs:** Added REST API documentation for Evaluator and Evaluation Job CRUD operations
 * **firectl CLI Reference:** Updated with new commands including `cancel dpo-job`, `cancel supervised-fine-tuning-job`, `set-api-key`, `redeem-credit-code`, and evaluator revision management
 
 > [accordion] Bug Fixes & Minor Improvements
@@ -33618,7 +33138,7 @@ You can now download datasets directly from the Fireworks web app. The new downl
 
 Reinforcement Fine-Tuning now supports per-example weighting, giving you more control over which samples have greater influence during training. This feature mirrors the weighted training functionality already available in Supervised Fine-Tuning.
 
-See the [Weighted Training documentation](/fine-tuning/reinforcement-fine-tuning-models#weighted-training) for details on the weight field format.
+See the [Weighted Training documentation](/fine-tuning/reinforcement-fine-tuning-models) for details on the weight field format.
 
 ## ✨ New Models
 
@@ -33935,7 +33455,7 @@ The Build SDK now natively integrates with [reward-kit](https://github.com/fw-ai
 * Direct integration with Fireworks datasets and evaluation jobs
 * Support for third-party libraries and complex evaluation logic
 
-See our [Developing Evaluators](/tools-sdks/python-client/developing-evaluators) guide to get started with your first evaluator in minutes.
+See our Developing Evaluators guide to get started with your first evaluator in minutes.
 
 ## Added new Responses API for advanced conversational workflows and integrations
 

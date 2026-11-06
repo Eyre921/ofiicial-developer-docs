@@ -8,15 +8,21 @@ path: docs/help-center/product/core-capabilities/text-to-speech/do-you-offer-an-
 
 # Do you offer an AI model for conversational purposes or for chatbots?
 
-Our Flash and Turbo models have been specially developed for low-latency applications.
+Yes. For conversational applications, chatbots, and real-time voice agents, we offer several models optimized for low latency and interactive dialogue.
 
-Flash v2 and Flash v2.5 are our ultra-low-latency models. Flash v2 is English only, while Flash v2.5 supports 32 languages. You can see a full list of all supported languages
-[here](/docs/help-center/other/what-languages-do-you-support).
+### Real-time and low-latency models
 
-Our Turbo models are also low-latency, but as the Flash models give very similar results, we recommend using the Flash models over Turbo. Turbo v2 is English only, while Turbo v2.5 supports 32 languages, and is 25% faster than Turbo v2, generating audio in around 300ms.
+* **Eleven v4 Turbo** (`eleven_v4_turbo`): Our state-of-the-art model for real-time speech synthesis, purpose-built for conversational applications, customer support agents, and interactive assistants. It delivers high-quality, expressive speech with a median latency of \~100ms and supports 90+ languages.
+* **Eleven v3 Conversational** (`eleven_v3_conversational`): Our previous-generation real-time model, offering expressive delivery and dramatic performance across 70+ languages with \~165ms latency.
+* **Eleven Flash v2.5** (`eleven_flash_v2_5`): An ultra-low-latency model (\~100ms median latency) across 32 languages, offering a cost-effective option with a 50% discount per character for API generations.
+* **Eleven Flash v2** (`eleven_flash_v2`): An ultra-low-latency model (\~135ms median latency) for English-only applications.
 
-Both Flash and Turbo are highly optimized models, specifically tailored for low-latency applications without sacrificing vocal performance and keeping inline with the quality standard that people have come to expect from our models.
+For a full list of languages supported across models, see [What languages do you support?](/docs/help-center/other/what-languages-do-you-support).
 
-Both models are discounted when you generate via API. For details, see our API Pricing.
+### Deprecated models
 
-We also offer ElevenAgents, our platform for deploying customized, interactive voice agents. Visit our ElevenAgents documentation to learn more.
+Our Turbo v2 (`eleven_turbo_v2`) and Turbo v2.5 (`eleven_turbo_v2_5`) models are low-latency models from an earlier generation. They are deprecated and functionally outclassed by the Flash and v4 Turbo models, which achieve lower latency and better vocal performance. We recommend using Eleven v4 Turbo or Eleven Flash v2.5 for all new projects.
+
+### ElevenAgents
+
+If you are looking to build full conversational voice agents rather than integrating raw speech synthesis models yourself, we offer [ElevenAgents](/docs/eleven-agents/overview). ElevenAgents combines speech recognition, an LLM, speech synthesis, and turn-taking into a complete orchestration platform for interactive voice applications. By default, new agents use Eleven v4 Turbo. For more information, visit our [ElevenAgents documentation](/docs/eleven-agents/overview).

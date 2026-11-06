@@ -10,4 +10,4 @@ path: docs/help-center/product/mobile-apps/elevenreader/if-i-uninstall-the-eleve
 
 Yes. Uninstalling the app does not cancel your subscription. To avoid future charges, make sure to cancel your subscription through your app store or account settings before uninstalling.
 
-For details on how to cancel your subscription, please see [How do I cancel my ElevenReader subscription?](/docs/help-center/product/mobile-apps/elevenreader/how-do-i-cancel-my-elevenreader-subscription)
+For details on how to cancel your subscription, please see [How do I cancel my ElevenReader subscription?](/docs/help-center/product/mobile-apps/elevenreader/how-to-guides-for-elevenreader/how-do-i-cancel-my-elevenreader-subscription)

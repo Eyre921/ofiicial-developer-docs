@@ -21,7 +21,7 @@ The `kind` sets what an artifact represents and how it's extracted. The `name` i
 
 These steps use the data-plane base URL and session token from [Authentication](/reference/api/nexus/authentication). The manifest here is a general concept-and-entity design: a per-document note, corpus-wide concepts and entities, and an edge linking them.
 
-**1. Create the context with your manifest**
+### 1. Create the context with your manifest
 
 Supply the manifest in the `manifest` field when you create the context. To apply it to an existing context instead, use `PUT /contexts/{slug}` with the same body.
 
@@ -55,11 +55,11 @@ curl -fsS -X POST "$NEXUS_BASE_URL/contexts" \
   }'
 ```
 
-**2. Add sources**
+### 2. Add sources
 
 Curation needs sources. Upload files or import from a connector, then confirm at least one source is staged. See the [quickstart](/guides/nexus/quickstart) for adding sources.
 
-**3. Curate**
+### 3. Curate
 
 Curation executes the manifest against the sources, building your artifact and edge types:
 
@@ -71,9 +71,9 @@ curl -fsS -X POST "$NEXUS_BASE_URL/contexts/company-knowledge/curate" \
   -d '{}'
 ```
 
-An empty body runs an incremental curate. After a later manifest change, pass `{"force": true}` to rebuild everything under the new manifest. Curation runs as a background task, so query the context once it finishes. See [How curation works](/guides/nexus/how-curation-works).
+An empty body runs an incremental curate. After a later manifest change, pass `{"force": true}` to rebuild everything under the new manifest. Curation runs as a background task, so query the context once it finishes. See [Nexus curation](/guides/nexus/how-curation-works).
 
-**4. Query the context**
+### 4. Query the context
 
 Query the context to see the artifacts and edges curation built:
 
@@ -85,7 +85,7 @@ curl -fsS -X POST "$NEXUS_BASE_URL/query" \
   -d '{"scope": ["company-knowledge"], "ask": "How do the entities relate to each concept?"}'
 ```
 
-## More example manifests
+## Example manifests
 
 Each of these is a `curate.artifacts` manifest for a different corpus. Supply one in the `manifest` field the same way, and adjust the types to your own documents.
 
@@ -198,4 +198,4 @@ To change a context's manifest after it's curated:
 1. Send the full updated manifest with `PUT /contexts/{slug}`.
 2. Run a forced curate, `POST /contexts/{slug}/curate` with `{"force": true}`, so the change reaches the index.
 
-This is the API equivalent of updating a context's design in the console. To read the manifest currently pinned on a context, use `GET /contexts/{slug}/manifest`.
+To read the manifest currently pinned on a context, use `GET /contexts/{slug}/manifest`.

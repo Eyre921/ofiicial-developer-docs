@@ -179,19 +179,15 @@ Eleven v4 is under active, continuous development. As we keep training and impro
 
 #### Which languages does Eleven v4 support?
 
-Eleven v4 supports Afrikaans, Amharic, Arabic, Armenian, Assamese, Asturian, Azerbaijani,
-Belarusian, Bengali, Bosnian, Bulgarian, Burmese, Cantonese, Catalan, Cebuano, Croatian, Czech,
-Danish, Dutch, English, Estonian, Filipino, Finnish, French, Fula (Pulaar), Galician, Georgian,
-German, Greek, Gujarati, Hausa, Hebrew, Hindi, Hungarian, Icelandic, Indonesian, Italian,
-Japanese, Kannada, Kazakh, Korean, Kyrgyz, Lao, Lingala, Lithuanian, Luganda, Luxembourgish,
-Macedonian, Malay, Malayalam, Maltese, Mandarin Chinese, Māori, Marathi, Mongolian, Nepali,
-Norwegian Bokmål, Occitan, Odia, Pashto, Persian, Polish, Portuguese (Brazil), Punjabi, Romanian,
-Russian, Serbian, Shona, Sindhi, Slovak, Slovenian, Somali, Sorani Kurdish, Spanish (LatAm),
-Swahili, Swedish, Tajik, Tamil, Telugu, Thai, Turkish, Ukrainian, Urdu, Uzbek, Vietnamese, Welsh,
-and Wolof.
+The Eleven v4 model family supports 90+ languages, including:
 
-Some languages are handled more fluently than others, but in general Eleven v4 handles the large
-majority of these very well.
+*Afrikaans (af), Amharic (am), Arabic (ar), Armenian (hy), Assamese (as), Asturian (ast), Azerbaijani (az), Belarusian (be), Bengali (bn), Bosnian (bs), Bulgarian (bg), Burmese (my), Cantonese (yue), Catalan (ca), Cebuano (ceb), Croatian (hr), Czech (cs), Danish (da), Dutch (nl), English (en), Estonian (et), Filipino (fil), Finnish (fi), French (fr), Fula (Pulaar) (ff), Galician (gl), Georgian (ka), German (de), Greek (el), Gujarati (gu), Hausa (ha), Hebrew (he), Hindi (hi), Hungarian (hu), Icelandic (is), Indonesian (id), Italian (it), Japanese (ja), Javanese (jv), Kamba (kam), Kannada (kn), Kazakh (kk), Korean (ko), Kyrgyz (ky), Lao (lo), Latvian (lv), Lingala (ln), Lithuanian (lt), Luganda (lg), Luxembourgish (lb), Macedonian (mk), Malay (ms), Malayalam (ml), Maltese (mt), Mandarin Chinese (zh), Māori (mi), Marathi (mr), Mongolian (mn), Nepali (ne), Norwegian (no), Occitan (oc), Odia (or), Pashto (ps), Persian (fa), Polish (pl), Portuguese (pt), Punjabi (pa), Romanian (ro), Russian (ru), Serbian (sr), Shona (sn), Sindhi (sd), Slovak (sk), Slovenian (sl), Somali (so), Sorani Kurdish (ckb), Spanish (es), Swahili (sw), Swedish (sv), Tajik (tg), Tamil (ta), Telugu (te), Thai (th), Turkish (tr), Ukrainian (uk), Urdu (ur), Uzbek (uz), Vietnamese (vi), Welsh (cy), Wolof (wo), Zulu (zu).*
+
+> **Note**
+>
+> The `language_code` parameter accepts [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1)
+> two-letter codes for most languages. Languages without an ISO 639-1 code use [ISO 639-3](https://en.wikipedia.org/wiki/ISO_639-3) three-letter codes: Asturian (`ast`), Cantonese
+> (`yue`), Cebuano (`ceb`), Filipino (`fil`), Kamba (`kam`), and Sorani Kurdish (`ckb`).
 
 #### Will a cloned voice retain its accent?
 

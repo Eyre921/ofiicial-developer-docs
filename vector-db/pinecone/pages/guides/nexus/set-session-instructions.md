@@ -6,13 +6,15 @@ path: guides/nexus/set-session-instructions
 
 Set a per-session system prompt on a Pinecone Nexus query to shape how a session answers, layered over the context's default instructions.
 
-A session can carry its own answer instructions, a system prompt that shapes how it answers every turn: the role to take, the tone to use, or how to format the result. These layer on top of a context's [default instructions](/guides/nexus/context-design#context-default-instructions) rather than replacing them. The context default always applies, and the session prompt adds to it, except where it only repeats the default, which Nexus skips.
+A session can carry its own instructions, a system prompt that shapes every answer in the session. It can set the role to take, the tone to use, or the format of the result. Session instructions add to the context's [default instructions](/guides/nexus/context-design#context-default-instructions) instead of replacing them. The context default always applies, and if the session prompt only repeats it, Nexus skips the session prompt.
 
-You pass `system_prompt` on the query that starts the session, and it stays pinned for the rest of the session.
+## Start and continue a session
 
-**1. Start a session with a system prompt**
+Pass `system_prompt` on the query that starts the session, and it applies to every turn after that.
 
-Pass `system_prompt` alongside `scope` and `ask` on the opening query. These fields are set only when a session starts.
+### 1. Start a session with a system prompt
+
+Pass `system_prompt` with `scope` and `ask` on the opening query. You can set `scope` and `system_prompt` only when a session starts.
 
 ```bash curl theme={null}
 curl -fsS -X POST "$NEXUS_BASE_URL/query" \
@@ -28,9 +30,9 @@ curl -fsS -X POST "$NEXUS_BASE_URL/query" \
 
 The response carries a `session_id` and the query's `id`.
 
-**2. Continue the session**
+### 2. Continue the session
 
-Reference the previous turn with `previous_query_id`. Follow-up turns keep the system prompt, so you don't resend it, and the context default still applies.
+Reference the previous turn with `previous_query_id`. Follow-up turns keep the system prompt and the context default, so you don't resend either.
 
 ```bash curl theme={null}
 curl -fsS -X POST "$NEXUS_BASE_URL/query" \
@@ -42,5 +44,3 @@ curl -fsS -X POST "$NEXUS_BASE_URL/query" \
     "ask": "Who owns the renewal?"
   }'
 ```
-
-In the console, open **Advanced options** in the new session composer and set the **System prompt**.

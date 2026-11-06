@@ -1,11 +1,11 @@
 # ai-models/openrouter 文档索引
 
-> 共 209 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 211 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
 
-- `docs/_llms/api-reference.txt` — [API Reference (159 pages)](pages/docs/_llms/api-reference.txt.md) · [原文](https://openrouter.ai/docs/_llms/api-reference.txt)
+- `docs/_llms/api-reference.txt` — [API Reference (182 pages)](pages/docs/_llms/api-reference.txt.md) · [原文](https://openrouter.ai/docs/_llms/api-reference.txt)
 - `docs/_llms/docs.txt` — [Docs (157 pages)](pages/docs/_llms/docs.txt.md) · [原文](https://openrouter.ai/docs/_llms/docs.txt)
 - `docs/agent-sdk/agent-migration` — [Migrating to @openrouter/agent](pages/docs/agent-sdk/agent-migration.md) · [原文](https://openrouter.ai/docs/agent-sdk/agent-migration.md)
 - `docs/agent-sdk/call-model/api-reference` — [Agent SDK API Reference](pages/docs/agent-sdk/call-model/api-reference.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/api-reference.md)
@@ -89,6 +89,7 @@
 - `docs/client-sdks/python/sdks/extractions/readme` — [Alpha.Extractions](pages/docs/client-sdks/python/sdks/extractions/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/extractions/README.md)
 - `docs/client-sdks/python/sdks/files/readme` — [Files](pages/docs/client-sdks/python/sdks/files/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/files/README.md)
 - `docs/client-sdks/python/sdks/generations/readme` — [Generations](pages/docs/client-sdks/python/sdks/generations/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/generations/README.md)
+- `docs/client-sdks/python/sdks/guardrailpolicies/readme` — [Guardrail Policies](pages/docs/client-sdks/python/sdks/guardrailpolicies/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/guardrailpolicies/README.md)
 - `docs/client-sdks/python/sdks/guardrails/readme` — [Guardrails](pages/docs/client-sdks/python/sdks/guardrails/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/guardrails/README.md)
 - `docs/client-sdks/python/sdks/images/readme` — [Images](pages/docs/client-sdks/python/sdks/images/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/images/README.md)
 - `docs/client-sdks/python/sdks/models/readme` — [Models](pages/docs/client-sdks/python/sdks/models/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/models/README.md)
@@ -129,6 +130,7 @@
 - `docs/client-sdks/typescript/sdks/extractions/readme` — [Alpha.Extractions](pages/docs/client-sdks/typescript/sdks/extractions/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/extractions/README.md)
 - `docs/client-sdks/typescript/sdks/files/readme` — [Files](pages/docs/client-sdks/typescript/sdks/files/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/files/README.md)
 - `docs/client-sdks/typescript/sdks/generations/readme` — [Generations](pages/docs/client-sdks/typescript/sdks/generations/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/generations/README.md)
+- `docs/client-sdks/typescript/sdks/guardrailpolicies/readme` — [Guardrail Policies](pages/docs/client-sdks/typescript/sdks/guardrailpolicies/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/guardrailpolicies/README.md)
 - `docs/client-sdks/typescript/sdks/guardrails/readme` — [Guardrails](pages/docs/client-sdks/typescript/sdks/guardrails/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/guardrails/README.md)
 - `docs/client-sdks/typescript/sdks/images/readme` — [Images](pages/docs/client-sdks/typescript/sdks/images/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/images/README.md)
 - `docs/client-sdks/typescript/sdks/models/readme` — [Models](pages/docs/client-sdks/typescript/sdks/models/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/models/README.md)

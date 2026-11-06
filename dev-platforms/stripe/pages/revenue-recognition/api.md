@@ -84,7 +84,7 @@ curl https://files.stripe.com/v1/files/{{REPORT_RUN_RESULT_ID}}/contents \
 
 ## Report Run Columns
 
-By default, reports are run with the default set of columns. You can customize the selection and ordering of columns in the output by including the optional columns parameter with a [list of column names](https://docs.stripe.com/reports/api.md#report-runs). You can find the supported columns for each report type below.
+By default, reports are run with the default set of columns. You can customize the selection and ordering of columns in the output by including the optional columns parameter with a [list of column names](https://docs.stripe.com/reports/v1-api.md#report-runs). You can find the supported columns for each report type below.
 
 ### Summary
 

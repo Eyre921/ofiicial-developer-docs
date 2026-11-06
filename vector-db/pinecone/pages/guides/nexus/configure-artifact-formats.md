@@ -74,7 +74,7 @@ Put your artifact types in a context's manifest under `curate.artifacts.artifact
 >
 > Add at least one source to the context before you curate. See the [quickstart](/guides/nexus/quickstart) for creating a context and adding sources.
 
-**1. Write the manifest to the context**
+### 1. Write the manifest to the context
 
 Send the manifest when you create the context, or update an existing one with `PUT /contexts/{slug}`. This example seeds both a markdown type and a SQLite table at creation:
 
@@ -108,7 +108,7 @@ curl -fsS -X POST "$NEXUS_BASE_URL/contexts" \
   }'
 ```
 
-**2. Curate the context**
+### 2. Curate the context
 
 Curation reads the sources and builds the artifacts your manifest defines. An empty body runs the first curate:
 
@@ -120,9 +120,9 @@ curl -fsS -X POST "$NEXUS_BASE_URL/contexts/board-minutes/curate" \
   -d '{}'
 ```
 
-After a later manifest change, pass `{"force": true}` to rebuild everything under the new manifest. Curation runs as a background task, so query the context once it finishes. See [How curation works](/guides/nexus/how-curation-works).
+After a later manifest change, pass `{"force": true}` to rebuild everything under the new manifest. Curation runs as a background task, so query the context once it finishes. See [Nexus curation](/guides/nexus/how-curation-works).
 
-**3. Query across both formats**
+### 3. Query across both formats
 
 A query reads both formats: the prose `Concept` artifacts semantically, and the `Meeting Log` table with SQL for exact answers.
 

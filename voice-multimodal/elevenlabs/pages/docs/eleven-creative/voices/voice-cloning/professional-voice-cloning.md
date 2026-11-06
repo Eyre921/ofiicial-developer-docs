@@ -22,9 +22,7 @@ When cloning a voice, it's important to consider what the AI has been trained on
 
 ### Navigate to the Professional Voice Cloning page
 
-In the ElevenLabs dashboard, select the **Voices** section on the left, then click **Create Voice**.
-
-From the pop-up, select **Professional Voice Clone**.
+In the ElevenLabs sidebar, click the plus button next to **Voices** to open the [Voice Creation page](https://elevenlabs.io/app/create-voice), then click **Create new** underneath **Professional Voice Clone**.
 
 ### Upload your audio
 
@@ -69,6 +67,8 @@ There are a few things to be mindful of before you start uploading your samples,
 
 Professional Voice Cloning is highly accurate in cloning the samples used for its training. It will create a near-perfect clone of what it hears, including all the intricacies and characteristics of that voice, but also including any artifacts and unwanted audio present in the samples. This means that if you upload low-quality samples with background noise, room reverb/echo, or any other type of unwanted sounds like music or multiple people speaking, the AI will try to replicate all of these elements in the clone as well.
 
+Eleven v4 captures the source recording more faithfully than earlier models, including background noise, distortion, and other flaws. Clear training audio matters more with this model.
+
 ### Ensure there's only a single speaking voice
 
 Make sure there's only a single speaking voice throughout the audio, as more than one speaker or excessive noise or anything of the above can confuse the AI. This confusion can result in the AI being unable to discern which voice to clone or misinterpreting what the voice actually sounds like because it is being masked by other sounds, leading to a less-than-optimal clone.
@@ -79,11 +79,15 @@ Make sure you have enough material to clone the voice properly. The bare minimum
 
 ### Keep the style consistent
 
-The speaking style in the samples you provide will be replicated in the output, so depending on what delivery you are looking for, the training data should correspond to that style (e.g. if you are looking to voice an audiobook with a clone of your voice, the audio you submit for training should be a recording of you reading a book in the tone of voice you want to use). It is better to just include one style in the uploaded samples for consistencies sake.
+The speaking style in the samples you provide will be replicated in the output, so depending on what delivery you are looking for, the training data should correspond to that style (e.g. if you are looking to voice an audiobook with a clone of your voice, the audio you submit for training should be a recording of you reading a book in the tone of voice you want to use). It is better to just include one style in the uploaded samples for consistencies sake. Eleven v4 captures that single speaking style more closely than earlier models.
 
 ### Use samples speaking the language you want the PVC to be used for
 
-It is best to use samples speaking where you are speaking the language that the PVC will mainly be used for. Of course, the AI can speak any language that we currently support. However, it is worth noting that if the voice itself is not native to the language you want the AI to speak - meaning you cloned a voice speaking a different language - it might have an accent from the original language and might mispronounce words and inflections. For instance, if you clone a voice speaking English and then want it to speak Spanish, it will very likely have an English accent when speaking Spanish. We only support cloning samples recorded in one of our supported languages, and the application will reject your sample if it is recorded in an unsupported language.
+It is best to use samples speaking where you are speaking the language that the PVC will mainly be used for. Of course, the AI can speak any language that we currently support. However, it is worth noting that if the voice itself is not native to the language you want the AI to speak - meaning you cloned a voice speaking a different language - it might have an accent from the original language and might mispronounce words and inflections. For instance, if you clone a voice speaking English and then want it to speak Spanish on a model before Eleven v4, it will very likely have an English accent when speaking Spanish.
+
+With [Eleven v4](#eleven-v4), speech generated in the same language as the samples keeps the original accent. Speech generated in a different language is fluent in the target language. If you need the training accent in other languages, test that behavior with Eleven v4 before you rely on it.
+
+We only support cloning samples recorded in one of our supported languages, and the application will reject your sample if it is recorded in an unsupported language.
 
 See the examples below for what to expect from a good and bad recording.
 
@@ -138,6 +142,27 @@ Maintain a consistent volume that's loud enough to be clear but not so loud that
 #### Sufficient Audio Length
 
 Provide at least 30 minutes of high-quality audio that follows the above guidelines for best results - preferably closer to 2+ hours of audio. The more quality data you can feed into the AI, the better the voice clone will be. The number of samples is irrelevant; the total runtime is what matters. However, if you plan to upload multiple hours of audio, it is better to split it into multiple \~30-minute samples. This makes it easier to upload.
+
+## Eleven v4
+
+Professional Voice Clones are fully supported in [Eleven v4](/docs/overview/capabilities/text-to-speech/eleven-v4). They build on the same advances in voice accuracy and reproduce the source voice more faithfully than earlier models, including timbre, cadence, accent, delivery, and loudness. A clone on Eleven v4 may sound substantially different from the same clone on Eleven v3. Compare both with your own content and keep the version that fits the use case.
+
+Eleven v4 has two variants. Both work with a Professional Voice Clone:
+
+* **Eleven v4** (`eleven_v4`) is the highest-quality model, for content creation, audiobooks, and character voiceovers.
+* **Eleven v4 Turbo** (`eleven_v4_turbo`) keeps that quality at low latency, for real-time use such as conversational agents.
+
+Both variants support the voice settings Stability and Similarity, but Style and Speed are not available in Eleven v4, and SSML is not supported.
+
+Most Professional Voice Clones will fine tune on Eleven v4 automatically, but if this model is not already available, you can manually trigger the fine tuning process. To train an existing Professional Voice Clone on Eleven v4, open [My Voices](https://elevenlabs.io/app/voice-lab), find the voice, and hover over it. Models the voice is already fine-tuned on show a tick, and models available for fine-tuning show a plus. Click the plus button next to Eleven v4 to start fine-tuning. You are notified in the app and by email when it finishes.
+
+### Clone Strength
+
+When you select a Professional Voice Clone and Eleven v4, **Voice settings** include a **Clone Strength** slider. Clone Strength controls how closely the generated speech follows the clone's training recordings.
+
+At lower values, the voice is smoothed slightly and the delivery gains more performance flexibility, which often sounds better overall while still sounding like the original voice. At higher values, the output stays closer to the training recordings with less smoothing, mimicking the original voice's delivery and performance more closely. Higher values can be especially useful for voices with distinctive traits or unique accents.
+
+We recommend 0% for most use cases, but a higher value can be useful for unique accents or traits. In these cases, we suggest increasing Clone Strength to 50%.
 
 ## FAQ
 
@@ -356,13 +381,13 @@ Provide at least 30 minutes of high-quality audio that follows the above guideli
 
       The Eleven v4 model family supports 90+ languages, including:
 
-      *Afrikaans (af), Arabic (ar), Armenian (hy), Assamese (as), Asturian (ast), Azerbaijani (az), Belarusian (be), Bengali (bn), Bosnian (bs), Bulgarian (bg), Burmese (my), Cantonese (yue), Catalan (ca), Cebuano (ceb), Croatian (hr), Czech (cs), Danish (da), Dutch (nl), English (en), Estonian (et), Filipino (fil), Finnish (fi), French (fr), Galician (gl), Georgian (ka), German (de), Greek (el), Gujarati (gu), Hausa (ha), Hebrew (he), Hindi (hi), Hungarian (hu), Icelandic (is), Indonesian (id), Irish (ga), Italian (it), Japanese (ja), Javanese (jv), Kannada (kn), Kazakh (kk), Korean (ko), Kyrgyz (ky), Latvian (lv), Lingala (ln), Lithuanian (lt), Luxembourgish (lb), Macedonian (mk), Malay (ms), Malayalam (ml), Maltese (mt), Mandarin Chinese (zh), Māori (mi), Marathi (mr), Mongolian (mn), Nepali (ne), Norwegian (no), Occitan (oc), Odia (or), Pashto (ps), Persian (fa), Polish (pl), Portuguese (pt), Punjabi (pa), Romanian (ro), Russian (ru), Serbian (sr), Sindhi (sd), Slovak (sk), Slovenian (sl), Somali (so), Spanish (es), Swahili (sw), Swedish (sv), Tajik (tg), Tamil (ta), Telugu (te), Thai (th), Turkish (tr), Ukrainian (uk), Urdu (ur), Uzbek (uz), Vietnamese (vi), Welsh (cy), Yoruba (yo).*
+      *Afrikaans (af), Amharic (am), Arabic (ar), Armenian (hy), Assamese (as), Asturian (ast), Azerbaijani (az), Belarusian (be), Bengali (bn), Bosnian (bs), Bulgarian (bg), Burmese (my), Cantonese (yue), Catalan (ca), Cebuano (ceb), Croatian (hr), Czech (cs), Danish (da), Dutch (nl), English (en), Estonian (et), Filipino (fil), Finnish (fi), French (fr), Fula (Pulaar) (ff), Galician (gl), Georgian (ka), German (de), Greek (el), Gujarati (gu), Hausa (ha), Hebrew (he), Hindi (hi), Hungarian (hu), Icelandic (is), Indonesian (id), Italian (it), Japanese (ja), Javanese (jv), Kamba (kam), Kannada (kn), Kazakh (kk), Korean (ko), Kyrgyz (ky), Lao (lo), Latvian (lv), Lingala (ln), Lithuanian (lt), Luganda (lg), Luxembourgish (lb), Macedonian (mk), Malay (ms), Malayalam (ml), Maltese (mt), Mandarin Chinese (zh), Māori (mi), Marathi (mr), Mongolian (mn), Nepali (ne), Norwegian (no), Occitan (oc), Odia (or), Pashto (ps), Persian (fa), Polish (pl), Portuguese (pt), Punjabi (pa), Romanian (ro), Russian (ru), Serbian (sr), Shona (sn), Sindhi (sd), Slovak (sk), Slovenian (sl), Somali (so), Sorani Kurdish (ckb), Spanish (es), Swahili (sw), Swedish (sv), Tajik (tg), Tamil (ta), Telugu (te), Thai (th), Turkish (tr), Ukrainian (uk), Urdu (ur), Uzbek (uz), Vietnamese (vi), Welsh (cy), Wolof (wo), Zulu (zu).*
 
       > **Note**
       >
       > The `language_code` parameter accepts [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1)
       > two-letter codes for most languages. Languages without an ISO 639-1 code use [ISO 639-3](https://en.wikipedia.org/wiki/ISO_639-3) three-letter codes: Asturian (`ast`), Cantonese
-      > (`yue`), Cebuano (`ceb`), and Filipino (`fil`).
+      > (`yue`), Cebuano (`ceb`), Filipino (`fil`), Kamba (`kam`), and Sorani Kurdish (`ckb`).
     </td>
   </tr>
 

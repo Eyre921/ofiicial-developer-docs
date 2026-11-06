@@ -6,7 +6,7 @@ path: guides/nexus/mcp-server
 
 Query your Pinecone Nexus contexts from any MCP client, such as Claude Desktop, over Streamable HTTP.
 
-The Nexus Model Context Protocol (MCP) server lets any MCP client query your Nexus contexts over Streamable HTTP. It serves three read-only tools: `list_contexts`, `query_context`, and `get_query`.
+The Nexus [MCP](https://modelcontextprotocol.io) server lets any MCP client query your Nexus contexts over Streamable HTTP. It serves three read-only tools: `list_contexts`, `query_context`, and `get_query`.
 
 ## Prerequisites
 

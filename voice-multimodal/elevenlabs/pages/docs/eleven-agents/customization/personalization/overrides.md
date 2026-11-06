@@ -28,6 +28,7 @@ Overrides can be enabled for the following fields in the agent's security settin
 * Language
 * Voice ID
 * LLM (Large Language Model)
+* LLM reasoning effort
 * Tools
 * Knowledge base
 * Text-only mode
@@ -47,6 +48,13 @@ When overrides are enabled for a field, providing an override is still optional.
 > `asr.keywords`, the conversation continues and the keywords are ignored (no error). Enable the
 > **ASR keywords** override in Security settings when you want per-conversation keyword boosting to
 > apply. Up to 50 keywords are supported per conversation.
+
+> **Warning**
+>
+> **Reasoning effort** must be a level supported by the agent's LLM. Otherwise the conversation does
+> not start and the connection closes with an error naming the unsupported level. If the Security
+> toggle is off, `prompt.reasoning_effort` is ignored and the agent's saved reasoning effort is
+> used. The value is fixed for the whole conversation and cannot be changed after it starts.
 
 Here are a few examples where overrides can be useful:
 
@@ -68,15 +76,15 @@ Here are a few examples where overrides can be useful:
 * An [ElevenLabs account](https://elevenlabs.io)
 * A configured ElevenLabs Conversational Agent ([create one here](/docs/eleven-agents/quickstart))
 
-This guide shows you how to override the default agent **System prompt**, **First message**, **LLM**, **Tools**, **Knowledge base**, **TTS settings**, and **ASR keywords**.
+This guide shows you how to override the default agent **System prompt**, **First message**, **LLM**, **Reasoning effort**, **Tools**, **Knowledge base**, **TTS settings**, and **ASR keywords**.
 
 #### Enable overrides
 
-For security reasons, overrides are disabled by default. Enable the fields you want to allow overriding, such as `first_message`, `prompt.prompt`, `prompt.tool_ids`, `prompt.knowledge_base`, `language`, or `asr.keywords`.
+For security reasons, overrides are disabled by default. Enable the fields you want to allow overriding, such as `first_message`, `prompt.prompt`, `prompt.reasoning_effort`, `prompt.tool_ids`, `prompt.knowledge_base`, `language`, or `asr.keywords`.
 
 #### Update via the dashboard
 
-Navigate to your agent's settings and select the **Security** tab. Enable the `First message`, `System prompt`, `Tools`, `Knowledge base`, `ASR keywords`, and any other overrides you need, such as `LLM`.
+Navigate to your agent's settings and select the **Security** tab. Enable the `First message`, `System prompt`, `Tools`, `Knowledge base`, `ASR keywords`, and any other overrides you need, such as `LLM` or `Reasoning effort`.
 
 ![Enable overrides](/docs/_fern-files/_img/496f20380ffe29fc46275bbfe5c6eaabdb5e211c780188243a018b38715ea779.webp)
 
@@ -102,6 +110,7 @@ Set fields under `platform_settings.overrides.conversation_config_override` to `
           "language": true,
           "prompt": {
             "prompt": true,
+            "reasoning_effort": true,
             "tool_ids": true,
             "knowledge_base": true
           }
@@ -137,6 +146,7 @@ elevenlabs.conversational_ai.agents.update(
                     "language": True,
                     "prompt": {
                         "prompt": True,
+                        "reasoning_effort": True,
                         "tool_ids": True,
                         "knowledge_base": True,
                     },
@@ -163,6 +173,7 @@ await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd9
           language: true,
           prompt: {
             prompt: true,
+            reasoningEffort: true,
             toolIds: true,
             knowledgeBase: true,
           },
@@ -181,11 +192,12 @@ In your code, where the conversation is started, pass the overrides as a paramet
 
 **`Conversation initiation payload`**
 
-```json title="Conversation initiation payload" focus={4-15}
+```json title="Conversation initiation payload" focus={4-16}
 {
   "conversation_config_override": {
     "agent": {
       "prompt": {
+        "reasoning_effort": "high",
         "tool_ids": ["tool_7101k5zvyjhmfg983brhmhkd98n6"],
         "knowledge_base": [
           {
@@ -210,7 +222,7 @@ In your code, where the conversation is started, pass the overrides as a paramet
 
 **`Python`**
 
-```python title="Python" focus={3-28} maxLines=28
+```python title="Python" focus={3-29} maxLines=29
 from elevenlabs.conversational_ai.conversation import Conversation, ConversationInitiationData
 ...
 conversation_override = {
@@ -218,6 +230,7 @@ conversation_override = {
         "prompt": {
             "prompt": f"The customer's bank account balance is {customer_balance}. They are based in {customer_location}.", # Optional: override the system prompt.
             "llm": "gpt-4o", # Optional: override the LLM model.
+            "reasoning_effort": "high", # Optional: override the reasoning effort. Requires Security → Reasoning effort.
             "tool_ids": [
                 "tool_7101k5zvyjhmfg983brhmhkd98n6"
             ], # Optional: replace the tools available to the agent.
@@ -260,7 +273,7 @@ conversation.start_session()
 
 **`JavaScript`**
 
-```javascript title="JavaScript" focus={4-29} maxLines=29
+```javascript title="JavaScript" focus={4-30} maxLines=30
 ...
 const conversation = await Conversation.startSession({
   ...
@@ -269,6 +282,7 @@ const conversation = await Conversation.startSession({
           prompt: {
               prompt: `The customer's bank account balance is ${customer_balance}. They are based in ${customer_location}.`, // Optional: override the system prompt.
               llm: "gpt-4o", // Optional: override the LLM model.
+              reasoning_effort: "high", // Optional: override the reasoning effort. Requires Security → Reasoning effort.
               toolIds: [
                   "tool_7101k5zvyjhmfg983brhmhkd98n6"
               ], // Optional: replace the tools available to the agent.

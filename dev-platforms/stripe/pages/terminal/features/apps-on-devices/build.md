@@ -234,13 +234,13 @@ private fun connectReader(reader: Reader) {
 
 #### React Native
 
-> In version `0.0.1-beta.29` of the React Native SDK, you can use the [easyConnect](https://stripe.dev/stripe-terminal-react-native/api-reference/interfaces/StripeTerminalSdkType.html#easyconnect) method to combine reader discovery and connection into a single API call to simplify integration.
+> In version `0.0.1-beta.29` of the React Native SDK, you can use the [easyConnect](https://stripe.dev/stripe-terminal-react-native/api-reference/interfaces/WithStripeTerminalProps.html#easyconnect) method to combine reader discovery and connection into a single API call to simplify integration.
 
 You must register a new Stripe device to your account as a new [Reader object](https://docs.stripe.com/api/terminal/readers/object.md). Use the pairing code provided in the device’s admin settings to [create the Reader object](https://docs.stripe.com/api/terminal/readers/create.md). Your app uses the Stripe Terminal React Native SDK to discover and connect to your device:
 
 1. Your app runs on your registered device.
-2. Your app discovers the reader by calling [discoverReaders](https://stripe.dev/stripe-terminal-react-native/api-reference/interfaces/StripeTerminalSdkType.html#discoverreaders) with `appsOnDevices` [discovery method](https://stripe.dev/stripe-terminal-react-native/api-reference/modules/Reader.Android.html#DiscoveryMethod).
-3. Your app connects to the reader by using [connectReader](https://stripe.dev/stripe-terminal-react-native/api-reference/interfaces/StripeTerminalSdkType.html#connectreader).
+2. Your app discovers the reader by calling [discoverReaders](https://stripe.dev/stripe-terminal-react-native/api-reference/interfaces/WithStripeTerminalProps.html#discoverreaders) with `appsOnDevices` [discovery method](https://stripe.dev/stripe-terminal-react-native/api-reference/modules/Reader.Android.html#DiscoveryMethod).
+3. Your app connects to the reader by using [connectReader](https://stripe.dev/stripe-terminal-react-native/api-reference/interfaces/WithStripeTerminalProps.html#connectreader).
 
 The following example shows how to discover and connect to a Stripe reader using Apps on Devices mode in a React Native app:
 

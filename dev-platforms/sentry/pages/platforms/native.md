@@ -209,4 +209,5 @@ To view and resolve the recorded error, log into [sentry.io](https://sentry.io) 
 - [Logs](https://docs.sentry.io/platforms/native/logs.md)
 - [Application Metrics](https://docs.sentry.io/platforms/native/metrics.md)
 - [User Feedback](https://docs.sentry.io/platforms/native/user-feedback.md)
+- [Migration Guide](https://docs.sentry.io/platforms/native/migration.md)
 

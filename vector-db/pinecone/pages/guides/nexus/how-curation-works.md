@@ -10,7 +10,7 @@ Curation is how Pinecone Nexus turns a context's source documents into the chunk
 
 ## Curate up front
 
-Curation does the hard work *up front* so retrieval gets a head start at query time. Sources aren't just chopped into chunks. They're reorganized into typed artifacts (summaries, entities, events) connected by edges, with structure captured for exact answers.
+Curation does the hard work *up front* so retrieval gets a head start at query time. Besides chunking your sources, it reorganizes them into typed artifacts (summaries, entities, events) connected by edges, with structure captured for exact answers.
 
 ![Sources curated by the runtime under a manifest into a knowledge tree of chunks, artifacts, edges, and structured tables](https://mintcdn.com/pinecone/EWF4J3kPxqsT4ELV/images/nexus/curation-light.svg?fit=max\&auto=format\&n=EWF4J3kPxqsT4ELV\&q=85\&s=e2c821f6de36cc8323d1b4630e5fa8cd)
 
@@ -27,7 +27,7 @@ A curate run is a single generic entrypoint the orchestrator launches for the co
 
 ## Per-source steps
 
-For each source the delta says to process, the runtime runs the same three steps:
+For each source the delta says to process, the runtime chunks and embeds the source and, at the same time, extracts its artifacts:
 
 * **Chunk:** The source is split into spans, format-aware, with size enforcement.
 * **Embed:** Each span is embedded into the semantic (and optional keyword) index, ready for hybrid search.
@@ -41,7 +41,7 @@ Curation never rebuilds the world unless you ask it to. It keeps a ledger of eve
 * **Only what changed:** Editing a document re-embeds just the changed spans and re-extracts just that source, not the whole corpus.
 * **Artifact-aware replay:** When a source feeding a shared artifact changes, the sources it connects to are replayed so edges stay consistent.
 
-Need a clean slate? Curate with *force re-curate* to wipe the index and ledger and rebuild everything from scratch.
+To wipe the index and ledger and rebuild everything from scratch, send `"force": true` in the body of `POST /contexts/{slug}/curate`.
 
 ## Outputs
 

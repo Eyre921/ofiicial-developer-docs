@@ -42,7 +42,7 @@ Retention behavior depends on the job type:
 | - | - | - |
 | SFT — Managed Training | Uploaded dataset only | Customer-controlled; deletable immediately after the job completes |
 | DPO — Managed Training | Uploaded dataset only | Customer-controlled; deletable immediately after the job completes |
-| RFT — Managed Training | Input prompts + rollout datasets (generated outputs) | Input prompts: customer-controlled, deletable after the job completes (same policy as SFT and DPO). Rollout datasets (generated outputs): deletable upon request |
+| RFT — Managed Training (removed) | Input prompts + rollout datasets (generated outputs) | Input prompts: customer-controlled, deletable after the job completes (same policy as SFT and DPO). Rollout datasets (generated outputs): deletable upon request |
 | Job chunks / artifacts | Intermediate checkpoints | Retained for 30 days, then deleted; deletable earlier on request. Kept so jobs can be retrieved or restarted |
 | Traces / logs | Request/response metadata | Retained for 30 days, then deleted; deletable earlier on request |
 
@@ -124,9 +124,9 @@ For inference-side controls — disabling Response API storage (`store=False`) o
 >
 > Learn about our comprehensive security measures
 
-> [card] [Reinforcement Fine Tuning](/fine-tuning/reinforcement-fine-tuning-models)
+> [card] [Reinforcement Learning](/fine-tuning/training-api/cookbook/rl)
 >
-> Full guide to reinforcement fine-tuning
+> Reinforcement learning on the Training API
 
 > [card] [Training API](/fine-tuning/training-api/introduction)
 >

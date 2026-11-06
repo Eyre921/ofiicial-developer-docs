@@ -20,12 +20,12 @@ Learn how Fireworks AI open models fit into a Nexus BYOC deployment and why you'
 
 ## Nexus integration
 
-Nexus uses models at several points, which [Nexus model guidance](/guides/nexus/models) describes. In BYOC, the inference proxy routes every model call according to your model catalog, `inference-proxy-models.toml`. Each catalog entry names an upstream model, the endpoint that serves it, and the secret that holds its API key. Fireworks exposes an OpenAI-compatible endpoint, so a Fireworks model is a catalog entry with `api_style = "openai"` pointed at that endpoint.
+Nexus uses models at several points, which [Nexus models](/guides/nexus/models) describes. In BYOC, the inference proxy routes every model call according to your model catalog, `inference-proxy-models.toml`. Each catalog entry names an upstream model, the endpoint that serves it, and the secret that holds its API key. Fireworks exposes an OpenAI-compatible endpoint, so a Fireworks model is a catalog entry with `api_style = "openai"` pointed at that endpoint.
 
 Once Fireworks models are in the catalog, they behave like any other model:
 
 * **Work-area defaults:** The catalog's `phase_defaults` assigns a default model to each work area (Query, Curation, and System). A call that names no model runs on its work area's default.
-* **Per-query selection:** A query can name any enabled model by its catalog ID, and the model selector on a context's **Query** tab lists every model enabled for Query.
+* **Per-query selection:** A query can name any model enabled for Query by its catalog ID.
 * **Embeddings:** You can optionally route the default embedding model to Fireworks. The setup guide keeps reranking on a Pinecone-hosted model.
 
 ## Benefits

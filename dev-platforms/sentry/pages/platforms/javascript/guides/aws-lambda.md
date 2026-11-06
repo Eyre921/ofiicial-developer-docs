@@ -14,6 +14,13 @@ url: https://docs.sentry.io/platforms/javascript/guides/aws-lambda/
 
 Looking for instructions on how to add Sentry without modifying your code? [Check out these docs instead](https://docs.sentry.io/integrations/cloud-monitoring/aws-lambda.md).
 
+##### Event Functions or Web Functions?
+
+AWS Lambda offers two function types for Node.js, and each needs a different Sentry setup:
+
+* **[Lambda Event Functions](https://docs.aws.amazon.com/lambda/latest/dg/lambda-functions-chapter.html)** run a handler that Lambda invokes in response to events, such as API Gateway requests or SQS messages. Use the `@sentry/aws-serverless` SDK described on this page.
+* **[Lambda Web Functions](https://docs.aws.amazon.com/lambda/latest/dg/web-functions.html)** run a standard HTTP server, like Express or Hono, that listens on a port and has no Lambda handler. Use the [Node.js SDK](https://docs.sentry.io/platforms/javascript/guides/node.md) instead. Its default [`awsLambdaWebIntegration`](https://docs.sentry.io/platforms/javascript/guides/node/configuration/integrations/awslambdaweb.md) adds Lambda metadata, like request IDs and cold starts, to your errors and spans.
+
 On this page you'll get an overview how to install, configure and use Sentry in your AWS Lambda functions. Once set up, our SDK will automatically report error and performance data from your Lambda Functions. Issues in Sentry will automatically include cloudwatch data, function details and execution time measurements.
 
 ## [Installation](https://docs.sentry.io/platforms/javascript/guides/aws-lambda.md#installation)

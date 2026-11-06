@@ -224,7 +224,7 @@ worker.sync("hourlySync", {
 ```
 
 Use `"continuous"`, `"manual"`, or an interval string ending in `m`, `h`, or
-`d`. Interval schedules must be at least `1m` and at most `7d`.
+`d`. Interval schedules must be at least `5m` and at most `7d`.
 
 | Schedule | Description |
 | - | - |
