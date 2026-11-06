@@ -1650,7 +1650,7 @@ You can view and delete the information stored by the checkpointer.
 
 #### View thread state
 
-> [tab] Graph/Functional API
+> [tab] Graph API
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > config = {
@@ -1722,7 +1722,7 @@ You can view and delete the information stored by the checkpointer.
 
 #### View the history of the thread
 
-> [tab] Graph/Functional API
+> [tab] Graph API
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > config = {

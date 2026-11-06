@@ -203,6 +203,10 @@ Without the advisor installed, start from https://skills.qdrant.tech/llms.txt.
 - [Agentic Tools](https://qdrant.tech/documentation/agentic-tools.md): Tools that help AI coding assistants work with Qdrant: a prompt to get started, agent skills that carry solutions architect knowledge, and prompts embedded across the documentation.
   - [Agent Skills](https://qdrant.tech/documentation/agentic-tools/skills.md): Qdrant agent skills encode solutions architect knowledge for AI coding assistants, helping them diagnose vector search problems, recommend the right configuration, and navigate to the exact documentation without installation.
   - [Prompts in the Docs](https://qdrant.tech/documentation/agentic-tools/prompts.md): Every prompt in the Qdrant documentation, with the page it appears on and the agent skill it uses.
+- [Qdrant MCP](https://qdrant.tech/documentation/qdrant-mcp.md): Three Model Context Protocol servers from Qdrant: manage Qdrant Cloud, give your assistant a semantic memory, and search the Qdrant documentation.
+  - [Qdrant Cloud MCP](https://qdrant.tech/documentation/qdrant-mcp/cloud.md): Manage Qdrant Cloud clusters, backups, and billing from your AI assistant with the remote Qdrant Cloud MCP server.
+  - [Qdrant Docs MCP](https://qdrant.tech/documentation/qdrant-mcp/docs.md): Search the Qdrant documentation, articles, blog, and courses from your AI assistant, with no account and no setup beyond a URL.
+  - [Qdrant MCP (Open Source)](https://qdrant.tech/documentation/qdrant-mcp/oss.md): Run the open source mcp-server-qdrant to give your AI assistant a semantic memory or code search backed by any Qdrant deployment.
 - [FastEmbed](https://qdrant.tech/documentation/fastembed.md): FastEmbed is a lightweight, ONNX-based embedding library from Qdrant for fast, accurate dense, sparse, and multivector inference in Python.
   - [Quickstart](https://qdrant.tech/documentation/fastembed/fastembed-quickstart.md): Get started with FastEmbed: install the library, load a default text embedding model, and generate vectors from sample documents in minutes.
   - [FastEmbed & Qdrant](https://qdrant.tech/documentation/fastembed/fastembed-semantic-search.md): Build semantic search end-to-end using Qdrant Client and FastEmbed — generate embeddings, create a collection, and run vector queries in a few lines.
@@ -212,7 +216,6 @@ Without the advisor installed, start from https://skills.qdrant.tech/llms.txt.
   - [Working with ColBERT](https://qdrant.tech/documentation/fastembed/fastembed-colbert.md): Generate ColBERT multivector embeddings with FastEmbed and store them in Qdrant to use late-interaction retrieval and reranking out of the box.
   - [Reranking with FastEmbed](https://qdrant.tech/documentation/fastembed/fastembed-rerankers.md): Refine vector search results with cross-encoder rerankers in FastEmbed, combining fast first-stage retrieval with precise relevance scoring.
   - [Multi-Vector Postprocessing](https://qdrant.tech/documentation/fastembed/fastembed-postprocessing.md): Compress multivector embeddings into single fixed-size vectors with MUVERA in FastEmbed for fast first-stage search and accurate multivector reranking.
-- [Qdrant MCP Server](https://github.com/qdrant/mcp-server-qdrant): Connect AI assistants to Qdrant with the official MCP server for tool-driven vector search and memory retrieval.
 
 ### Tutorials
 
@@ -489,7 +492,7 @@ Without the advisor installed, start from https://skills.qdrant.tech/llms.txt.
 ### Ecosystem Guides
 
 - [Essential Examples](https://qdrant.tech/documentation/tutorials-build-essentials.md): Hands-on Qdrant integration tutorials: connect AI agents, RAG pipelines, ingestion stacks, and automation tools to a vector database.
-  - [Agentic RAG with CrewAI](https://qdrant.tech/documentation/tutorials-build-essentials/agentic-rag-crewai-zoom.md): Combine Qdrant vector search with CrewAI agents and Streamlit to extract insights from meeting transcripts and recordings.
+  - [Agentic RAG with CrewAI](https://qdrant.tech/documentation/tutorials-build-essentials/agentic-rag-crewai-zoom.md): Build a two-agent CrewAI flow that answers questions about meeting notes from Qdrant with FastEmbed and Claude.
   - [S3 Ingestion](https://qdrant.tech/documentation/tutorials-build-essentials/data-ingestion-beginners.md): Read documents from AWS S3 or any S3-compatible storage with boto3, embed them with FastEmbed, and load them into Qdrant with plain Python.
   - [Agentic RAG with LangGraph](https://qdrant.tech/documentation/tutorials-build-essentials/agentic-rag-langgraph.md): Build an agentic RAG system with LangGraph and Qdrant that orchestrates multi-step retrieval, web search, and tool selection.
   - [Question Answering with LangChain and Qdrant](https://qdrant.tech/documentation/tutorials-build-essentials/question-answering-langchain.md): Build a retrieval-augmented question answering pipeline with LangChain, FastEmbed, Qdrant, and a chat model.
@@ -518,17 +521,17 @@ Without the advisor installed, start from https://skills.qdrant.tech/llms.txt.
 - [Qdrant Learn Portal](https://qdrant.tech/learn.md): Grow your search engineering skills with practical Qdrant guides, working examples, structured courses, and research on retrieval and engine internals
   - [Tutorials & Examples](https://qdrant.tech/learn/examples.md): Find tutorials and examples by goal and stack, open the available notebooks, and adapt the implementation to your search application.
 
+### Search Design
+
+- [Search Design](https://qdrant.tech/documentation/search-design.md): Choose embedding models and apply payload filters to build search around your data and application needs.
+  - [How to Choose an Embedding Model: Evaluation & Tradeoffs](https://qdrant.tech/documentation/search-design/choose-embedding-model.md): There is no one-size-fits-all solution when it comes to embedding models. Learn how to choose the right one for your use case.
+  - [Filtering in Vector Search: When to Use What](https://qdrant.tech/documentation/search-design/vector-search-filtering.md): Decide which fields to index, how Qdrant runs a filtered search, and when to turn on ACORN.
+
 ### Search Evaluation
 
 - [Search Evaluation](https://qdrant.tech/documentation/search-evaluation.md): Measure retrieval relevance and pipeline output quality to establish a baseline and decide whether a search change helps.
   - [Measuring Retrieval Relevance](https://qdrant.tech/documentation/search-evaluation/retrieval-relevance.md): Build a labeled query set and measure whether retrieved documents answer users' questions, with query-level relevance metrics.
   - [Evaluating Pipeline Output Quality](https://qdrant.tech/documentation/search-evaluation/pipeline-output-quality.md): Separate retrieval failures from generation failures and evaluate whether your full pipeline produces supported, useful answers.
-
-### Search Patterns
-
-- [Search Patterns](https://qdrant.tech/documentation/search-patterns.md): Choose embedding models and apply payload filters to build search around your data and application needs.
-  - [How to Choose an Embedding Model: Evaluation & Tradeoffs](https://qdrant.tech/documentation/search-patterns/choose-embedding-model.md): There is no one-size-fits-all solution when it comes to embedding models. Learn how to choose the right one for your use case.
-  - [Filtering in Vector Search: When to Use What](https://qdrant.tech/documentation/search-patterns/vector-search-filtering.md): Decide which fields to index, how Qdrant runs a filtered search, and when to turn on ACORN.
 
 ### Search Tuning
 
@@ -540,15 +543,19 @@ Without the advisor installed, start from https://skills.qdrant.tech/llms.txt.
   - [When Is a Reranker Worth It?](https://qdrant.tech/documentation/search-tuning/when-a-reranker-is-worth-it.md): Rerank 10 candidates, compare with your tuned first stage on held-out queries, and raise the count only after the win holds.
   - [When Your Collection Outgrows RAM](https://qdrant.tech/documentation/search-tuning/when-your-collection-outgrows-ram.md): Keep the quantized copy in RAM and the original vectors on disk, then measure what rescoring reads back on your own deployment.
 
-### Production & Operations
+### Deploy and Scale
 
-- [Production & Operations](https://qdrant.tech/documentation/production-operations.md): Plan multitenancy, bulk uploads, and memory placement as your Qdrant application and vector collection grow.
-  - [Memory Tiers in Qdrant: What to Use and When](https://qdrant.tech/documentation/production-operations/memory-tiers.md): A guide to choosing a Qdrant memory tier layout as your collection grows.
-  - [Vector Search in Production: Scaling, HA & Tuning Guide](https://qdrant.tech/documentation/production-operations/vector-search-in-production.md): A comprehensive guide to running vector search in production environments
-  - [Bulk Uploading Data to Qdrant](https://qdrant.tech/documentation/production-operations/bulk-data-import.md): Plan bulk uploads in Qdrant at scale: batching, parallelization, sharding, payload indexes, quantization, and on-disk storage.
-  - [Configure Qdrant's Optimizer for Predictable Search Latency](https://qdrant.tech/documentation/production-operations/predictable-search-latency.md): Best practices for configuring Qdrant's optimizers, backed by search latency benchmarks.
-  - [Data Privacy with Qdrant's Role-Based Access Control (RBAC)](https://qdrant.tech/documentation/production-operations/access-control.md): Secure Your Data with Qdrant: Implementing RBAC
-  - [How to Implement Multitenancy and Custom Sharding in Qdrant](https://qdrant.tech/documentation/production-operations/multitenant-search.md): Explore how Qdrant's multitenancy and custom sharding streamline machine-learning operations, enhancing scalability and data security.
+- [Deploy and Scale](https://qdrant.tech/documentation/deploy-and-scale.md): Plan Qdrant deployments, tenant isolation, and access control around your application requirements and expected growth.
+  - [Vector Search in Production: Scaling, HA & Tuning Guide](https://qdrant.tech/documentation/deploy-and-scale/vector-search-in-production.md): A comprehensive guide to running vector search in production environments
+  - [Data Privacy with Qdrant's Role-Based Access Control (RBAC)](https://qdrant.tech/documentation/deploy-and-scale/access-control.md): Secure Your Data with Qdrant: Implementing RBAC
+  - [Choose a Multitenancy Design](https://qdrant.tech/documentation/deploy-and-scale/multitenant-search.md): Choose payload partitioning, dedicated shards, tiered multitenancy, or separate collections for your tenants.
+
+### Operate and Maintain
+
+- [Operate and Maintain](https://qdrant.tech/documentation/operate-and-maintain.md): Manage bulk uploads, memory placement, and indexing to keep your Qdrant application running as collections grow.
+  - [Memory Tiers in Qdrant: What to Use and When](https://qdrant.tech/documentation/operate-and-maintain/memory-tiers.md): A guide to choosing a Qdrant memory tier layout as your collection grows.
+  - [Bulk Uploading Data to Qdrant](https://qdrant.tech/documentation/operate-and-maintain/bulk-data-import.md): Plan bulk uploads in Qdrant at scale: batching, parallelization, sharding, payload indexes, quantization, and on-disk storage.
+  - [Configure Qdrant's Optimizer for Predictable Search Latency](https://qdrant.tech/documentation/operate-and-maintain/predictable-search-latency.md): Best practices for configuring Qdrant's optimizers, backed by search latency benchmarks.
 
 ### Qdrant Academy
 
@@ -695,57 +702,18 @@ Without the advisor installed, start from https://skills.qdrant.tech/llms.txt.
 
 ### Vector Search Fundamentals
 
-- [Vector Search Fundamentals](https://qdrant.tech/articles/vector-search-fundamentals.md): Foundations of vector search: embeddings, similarity, and vector databases.
+- [Vector Search Fundamentals](https://qdrant.tech/articles/vector-search-fundamentals.md): Understand vector search concepts, embeddings, and the trade-offs behind retrieval systems.
+- [Why Vector Search Needs a Dedicated Database](https://qdrant.tech/articles/dedicated-vector-search.md): Why add-on vector search looks good — until you actually use it.
+- [What is a Vector Database?](https://qdrant.tech/articles/what-is-a-vector-database.md): What Is a Vector Database? Concepts, Architecture & Use Cases | Qdrant
 - [Vector Embeddings Explained: How They Work in ML & Search](https://qdrant.tech/articles/what-are-embeddings.md): Explore the power of vector embeddings. Learn to use numerical machine learning representations to build a neural search service.
 - [Vector Similarity: Going Beyond Full-Text Search](https://qdrant.tech/articles/vector-similarity-beyond-search.md): How vector similarity goes past search: dissimilarity, diversity, recommendation, and discovery.
 
-### Core Concepts
+### Embeddings & Machine Learning
 
-- [Core Concepts](https://qdrant.tech/articles/core-concepts.md): Foundational concepts for vector search: embeddings, vector databases, quantization, sparse vectors, and RAG.
-- [Why Vector Search Needs a Dedicated Database](https://qdrant.tech/articles/dedicated-vector-search.md): Why add-on vector search looks good — until you actually use it.
-- [What is a Vector Database?](https://qdrant.tech/articles/what-is-a-vector-database.md): What Is a Vector Database? Concepts, Architecture & Use Cases | Qdrant
-- [What is Vector Quantization?](https://qdrant.tech/articles/what-is-vector-quantization.md): What is Vector Quantization? Methods & Examples
-
-### Mastering Search
-
-- [Mastering Search](https://qdrant.tech/articles/mastering-search.md): Hands-on guides to building better search with Qdrant: filtering, hybrid search, multivectors, and the Query API.
-- [MUVERA: Making Multivectors More Performant](https://qdrant.tech/articles/muvera-embeddings.md): Making multi-vector retrieval more efficient by approximating it with single-vector search
-
-### Relevance & Evaluation
-
-- [Relevance & Evaluation](https://qdrant.tech/articles/relevance-and-evaluation.md): Measuring and improving result relevance and data quality: evaluation, relevance feedback, and error detection.
-- [Detecting Dataset Errors with Similarity Search](https://qdrant.tech/articles/dataset-quality.md): Find mislabeled items in a dataset by comparing category names with text and image embeddings.
-
-### Search Quality
-
-- [Search Quality](https://qdrant.tech/articles/search-quality.md): Measuring and improving search relevance with Qdrant: evaluation, relevance feedback, and benchmarking.
-- [Predicting Weak Retrieval Without an LLM](https://qdrant.tech/articles/predicting-weak-retrieval.md): Cheap signals flag weak retrieval before you pay for a rerank or LLM judge. The one that works depends on how your search fails.
-- [Relevance Feedback in Qdrant](https://qdrant.tech/articles/relevance-feedback.md): The story behind the vector search-native relevance feedback feature, available since 1.17.0, which increases the relevance of search results universally, cheaply, and at scale.
-- [Relevance Feedback in Information Retrieval](https://qdrant.tech/articles/search-feedback-loop.md): A survey of relevance feedback methods from lexical and neural retrieval research, and why vector search engines lack them.
-
-### Production Ops
-
-- [Production Ops](https://qdrant.tech/articles/production-ops.md): Running Qdrant in production: scaling, memory optimization, quantization, multitenancy, and access control.
-- [TurboQuant in Qdrant](https://qdrant.tech/articles/turboquant-quantization.md): TurboQuant ships in Qdrant 1.18
-- [Product Quantization for Vector Search](https://qdrant.tech/articles/product-quantization.md): Vector search with low memory? Try out our brand-new Product Quantization!
-- [Scalar Quantization for Vector Search](https://qdrant.tech/articles/scalar-quantization.md): Discover scalar quantization for optimized data storage and improved performance, including data compression benefits and efficiency enhancements.
-- [Minimal RAM to Serve 1M Vectors](https://qdrant.tech/articles/memory-consumption.md): How to properly measure RAM usage and optimize Qdrant for memory consumption.
-
-### Qdrant Internals
-
-- [Qdrant Internals](https://qdrant.tech/articles/qdrant-internals.md): Deep dives into Qdrant internals: HNSW indexing, quantization, storage layout, sharding, and query execution.
-- [Universal I/O in Qdrant](https://qdrant.tech/articles/universal-io.md): How Qdrant talks to different storage backends through a unified I/O interface
-- [Filtered Vector Search: What ACORN Fixes, and What Fixes ACORN](https://qdrant.tech/articles/filtered-vector-search-acorn.md): ACORN repairs filtered HNSW search at query time, extra edges at index time. We benchmarked both in Qdrant on one million points.
-- [Introducing Gridstore: Qdrant's Custom Key-Value Store](https://qdrant.tech/articles/gridstore-key-value-storage.md): Why and how we built our own key-value store.
-- [Immutable Data Structures in Qdrant](https://qdrant.tech/articles/immutable-data-structures.md): Learn how immutable data structures improve vector search performance in Qdrant.
-- [Faster Disk I/O for Vector Search Using io_uring](https://qdrant.tech/articles/io_uring.md): The Linux io_uring API offers great performance in certain cases. Here's how Qdrant uses it!
-- [Filterable HNSW Without Recall Loss](https://qdrant.tech/articles/filterable-hnsw.md): How to make ANN search with custom filtering?
-
-### Embedding Research
-
-- [Embedding Research](https://qdrant.tech/articles/embedding-research.md): Research on embeddings and neural retrieval: sparse models, late interaction, metric learning, and new baselines.
+- [Embeddings & Machine Learning](https://qdrant.tech/articles/embedding-research.md): Explore embedding models, sparse retrieval, late interaction, and metric learning.
 - [miniCOIL EN-ES: Sparse Neural Retrieval Across the Language Barrier](https://qdrant.tech/articles/minicoil-en-es.md): miniCOIL goes bilingual: concept-based exact matching for English and Spanish, research preview.
 - [Why Hyperbolic Embeddings Matter for Hierarchical Data](https://qdrant.tech/articles/hyperbolic-embeddings-qdrant.md): An early look at hierarchical data in curved space, and how to search it in Qdrant.
+- [MUVERA: Making Multivectors More Performant](https://qdrant.tech/articles/muvera-embeddings.md): Making multi-vector retrieval more efficient by approximating it with single-vector search
 - [miniCOIL: on the Road to Usable Sparse Neural Retrieval](https://qdrant.tech/articles/minicoil.md): Our attempt to learn from drawbacks of modern sparse neural retrievers
 - [Data Exploration with Qdrant's Distance Matrix API](https://qdrant.tech/articles/distance-based-exploration.md): Efficient visualization and clusterization of high-dimensional data with Qdrant
 - [Modern Sparse Neural Retrieval: From DeepCT to SPLADE++](https://qdrant.tech/articles/modern-sparse-neural-retrieval.md): How sparse neural retrievers evolved from DeepCT to SPLADE++, and when to choose them over BM25.
@@ -755,22 +723,36 @@ Without the advisor installed, start from https://skills.qdrant.tech/llms.txt.
 - [Advanced Introduction to Triplet Loss](https://qdrant.tech/articles/triplet-loss.md): What are the advantages of Triplet Loss and how to efficiently implement it?
 - [Metric Learning Tips & Tricks](https://qdrant.tech/articles/metric-learning-tips.md): How to train an object matching model and serve it in production.
 
+### Relevance & Evaluation
+
+- [Relevance & Evaluation](https://qdrant.tech/articles/relevance-and-evaluation.md): Understand relevance feedback, discovery, evaluation, and dataset quality.
+- [Predicting Weak Retrieval Without an LLM](https://qdrant.tech/articles/predicting-weak-retrieval.md): Cheap signals flag weak retrieval before you pay for a rerank or LLM judge. The one that works depends on how your search fails.
+- [Relevance Feedback in Qdrant](https://qdrant.tech/articles/relevance-feedback.md): The story behind the vector search-native relevance feedback feature, available since 1.17.0, which increases the relevance of search results universally, cheaply, and at scale.
+- [Relevance Feedback in Information Retrieval](https://qdrant.tech/articles/search-feedback-loop.md): A survey of relevance feedback methods from lexical and neural retrieval research, and why vector search engines lack them.
+- [Discovery Search in Qdrant](https://qdrant.tech/articles/discovery-search.md): Discover points by constraining the vector space.
+- [Detecting Dataset Errors with Similarity Search](https://qdrant.tech/articles/dataset-quality.md): Find mislabeled items in a dataset by comparing category names with text and image embeddings.
+
+### Indexing & Storage
+
+- [Indexing & Storage](https://qdrant.tech/articles/qdrant-internals.md): Explore filterable HNSW, quantization, memory use, and Qdrant storage mechanisms.
+- [Universal I/O in Qdrant](https://qdrant.tech/articles/universal-io.md): How Qdrant talks to different storage backends through a unified I/O interface
+- [Filtered Vector Search: What ACORN Fixes, and What Fixes ACORN](https://qdrant.tech/articles/filtered-vector-search-acorn.md): ACORN repairs filtered HNSW search at query time, extra edges at index time. We benchmarked both in Qdrant on one million points.
+- [TurboQuant in Qdrant](https://qdrant.tech/articles/turboquant-quantization.md): TurboQuant ships in Qdrant 1.18
+- [Introducing Gridstore: Qdrant's Custom Key-Value Store](https://qdrant.tech/articles/gridstore-key-value-storage.md): Why and how we built our own key-value store.
+- [What is Vector Quantization?](https://qdrant.tech/articles/what-is-vector-quantization.md): What is Vector Quantization? Methods & Examples
+- [Immutable Data Structures in Qdrant](https://qdrant.tech/articles/immutable-data-structures.md): Learn how immutable data structures improve vector search performance in Qdrant.
+- [Faster Disk I/O for Vector Search Using io_uring](https://qdrant.tech/articles/io_uring.md): The Linux io_uring API offers great performance in certain cases. Here's how Qdrant uses it!
+- [Product Quantization for Vector Search](https://qdrant.tech/articles/product-quantization.md): Vector search with low memory? Try out our brand-new Product Quantization!
+- [Scalar Quantization for Vector Search](https://qdrant.tech/articles/scalar-quantization.md): Discover scalar quantization for optimized data storage and improved performance, including data compression benefits and efficiency enhancements.
+- [Minimal RAM to Serve 1M Vectors](https://qdrant.tech/articles/memory-consumption.md): How to properly measure RAM usage and optimize Qdrant for memory consumption.
+- [Filterable HNSW Without Recall Loss](https://qdrant.tech/articles/filterable-hnsw.md): How to make ANN search with custom filtering?
+
 ### RAG & Agents
 
-- [RAG & Agents](https://qdrant.tech/articles/rag-and-agents.md): Building RAG and agentic systems on Qdrant: agentic RAG, agent memory, and API access.
+- [RAG & Agents](https://qdrant.tech/articles/rag-and-agents.md): Understand retrieval in language-model applications and agent systems.
 - [Is RAG Dead? Why Long Context Windows Don't Replace RAG](https://qdrant.tech/articles/rag-is-dead.md): What published measurements show about long context windows versus retrieval: quality, cost, latency, and when each approach fits.
 - [What is Agentic RAG? Building Agents with Qdrant](https://qdrant.tech/articles/agentic-rag.md): Will agentic RAG replace linear RAG? Learn how to build agents with Qdrant and which framework is best for your use case.
 - [Understanding Retrieval-Augmented Generation (RAG)](https://qdrant.tech/articles/what-is-rag-in-ai.md): What is RAG?
-
-### Data Exploration
-
-- [Data Exploration](https://qdrant.tech/articles/data-exploration.md): Articles on exploring high-dimensional data with Qdrant: similarity search, anomaly detection, clustering, and dataset curation.
-- [Discovery Search in Qdrant](https://qdrant.tech/articles/discovery-search.md): Discover points by constraining the vector space.
-
-### Demos & Tutorials
-
-- [Demos & Tutorials](https://qdrant.tech/articles/demos-and-tutorials.md): Step-by-step tutorials and demos with Qdrant: neural search, serverless deployments, and framework integrations.
-- [Neural Search 101: A Complete Guide and Step-by-Step Tutorial](https://qdrant.tech/articles/neural-search-tutorial.md): Step-by-step guide on how to build a neural search service.
 
 ## Pricing
 

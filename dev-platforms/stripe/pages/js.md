@@ -1218,7 +1218,7 @@ This method creates an instance of the Payment Element.
 - `options`
   Options for creating the Payment Element.
     - `layout`
-      Specify the layout for the Payment Element. If you only pass a layout type (`'accordion'` or `‘tabs’`) without any additional parameters, the Payment Element renders using that layout and the default values associated with it.
+      Specify the layout for the Payment Element: `'auto'`, `'accordion'`, or `'tabs'`. With `'auto'`, Stripe selects the layout automatically. If you only pass a layout type without any additional parameters, the Payment Element renders using that layout and the default values associated with it.
 
 An object can also be passed to specify the layout with additional configuration.
       - `type`
@@ -1589,7 +1589,7 @@ Use [elements.fetchUpdates()](https://docs.stripe.com/js/elements_object/fetch_u
 - `options`
   Options for updating the Payment Element.
     - `layout`
-      Specify the layout for the Payment Element. If you only pass a layout type (`'accordion'` or `‘tabs’`) without any additional parameters, the Payment Element renders using that layout and the default values associated with it.
+      Specify the layout for the Payment Element: `'auto'`, `'accordion'`, or `'tabs'`. With `'auto'`, Stripe selects the layout automatically. If you only pass a layout type without any additional parameters, the Payment Element renders using that layout and the default values associated with it.
 
 An object can also be passed to specify the layout with additional configuration.
       - `type`
@@ -3459,7 +3459,7 @@ The default value is `'billing'`.
         Whether Adaptive Pricing can be used with this integration. Default is `false`.
 [Additional setup](https://docs.stripe.com/payments/currencies/localize-prices/adaptive-pricing.md?payment-ui=embedded-components) is required before you can use Adaptive Pricing with Checkout elements.
     - `defaultValues`
-      If customer details are already known, this option may be passed to prefill the Checkout Session and related elements.
+      If customer details are already known, this option may be passed to prefill the Checkout Session and related elements. For example, use `billingAddress: {name: 'Jenny Rosen'}` to prefill only the billing name.
       - `billingAddress`
         The Customer's billing address.
         - `name`
@@ -4002,6 +4002,8 @@ lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md)
         If `duration` is `repeating`, the number of months the coupon applies. Null otherwise.
     - `percentOff`
       An integer representing the discount amount as a percentage.
+    - `amountOff`
+      The configured fixed discount in the [smallest currency unit](https://docs.stripe.com/currencies.md#zero-decimal), in the active currency when a corresponding configured amount is available. This differs from `amount` and `minorUnitsAmount`, which describe the discount actually applied to the current total. For example, a fixed coupon can retain `amountOff` while the applied discount is zero during a free trial. This field is omitted when no configured fixed amount is available.
 
 - `email`
   The Customer's email address.
@@ -4015,6 +4017,8 @@ lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md)
   A list of items the customer is purchasing.
     - `id`
       Unique identifier for the object.
+    - `priceId`
+      The ID of the Price or Plan backing the line item.
     - `subtotal`
       Total before any discounts or exclusive taxes are applied.
       - `amount`
@@ -4070,6 +4074,8 @@ when creating the Checkout Session or when creating the Product's
       An array of image URLs for the line item. Specify [images](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-line_items-price_data-product_data-images) on the Product when creating the Checkout Session.
     - `quantity`
       The quantity of products being purchased.
+    - `isRemovable`
+      Whether the customer can remove the line item.
     - `discountAmounts`
       The amount of discount calculated per discount for this line item.
       - `amount`
@@ -4090,6 +4096,8 @@ when creating the Checkout Session or when creating the Product's
           If `duration` is `repeating`, the number of months the coupon applies. Null otherwise.
       - `percentOff`
         An integer representing the discount amount as a percentage.
+      - `amountOff`
+        The configured fixed discount in the [smallest currency unit](https://docs.stripe.com/currencies.md#zero-decimal), in the active currency when a corresponding configured amount is available. This differs from `amount` and `minorUnitsAmount`, which describe the discount actually applied to the current total. For example, a fixed coupon can retain `amountOff` while the applied discount is zero during a free trial. This field is omitted when no configured fixed amount is available.
     - `taxAmounts`
       The amount of tax calculated per tax rate for this line item.
       - `amount`
@@ -4236,6 +4244,58 @@ or other and may contain more values in the future.
         Four-digit number representing the card's expiration year.
       - `last4`
         The last four digits of the card.
+    - `usBankAccount`
+      US bank account details. Present only when `type` is `us_bank_account`; otherwise, this field is omitted.
+      - `accountHolderType`
+        The type of account holder. One of `individual` or `company`.
+      - `accountType`
+        The type of bank account. One of `checking` or `savings`.
+      - `bankName`
+        The name of the bank.
+      - `last4`
+        The last four digits of the bank account number.
+    - `sepaDebit`
+      SEPA Direct Debit details. Present only when `type` is `sepa_debit`; otherwise, this field is omitted.
+      - `bankCode`
+        The bank code of the bank account.
+      - `branchCode`
+        The branch code of the bank account.
+      - `country`
+        The two-letter country code of the bank account ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+      - `last4`
+        The last four digits of the bank account number.
+    - `bacsDebit`
+      Bacs Direct Debit details. Present only when `type` is `bacs_debit`; otherwise, this field is omitted.
+      - `last4`
+        The last four digits of the bank account number.
+      - `sortCode`
+        The sort code of the bank account.
+    - `auBecsDebit`
+      BECS Direct Debit details. Present only when `type` is `au_becs_debit`; otherwise, this field is omitted.
+      - `bsbNumber`
+        The Bank State Branch (BSB) number of the bank account.
+      - `last4`
+        The last four digits of the bank account number.
+    - `nzBankAccount`
+      New Zealand bank account details. Present only when `type` is `nz_bank_account`; otherwise, this field is omitted.
+      - `accountHolderName`
+        The name of the account holder.
+      - `bankCode`
+        The bank code of the bank account.
+      - `bankName`
+        The name of the bank.
+      - `branchCode`
+        The branch code of the bank account.
+      - `last4`
+        The last four digits of the bank account number.
+      - `suffix`
+        The suffix of the bank account number.
+    - `cardArt`
+      Card art details. Present only when `type` is `card` and card art is available; otherwise, this field is omitted.
+      - `cardArtUrl`
+        The URL of the card art image.
+      - `programName`
+        The name of the card program associated with the card art.
 
 - `shipping`
   The selected shipping option, if any.
@@ -4561,7 +4621,7 @@ Depending on the country, this might correspond to a state, a province, an oblas
             - `postalCode`
               The postal code or ZIP code, also known as PIN code in India.
     - `layout`
-      Specify the layout for the Payment Element. If you only pass a layout type (`'accordion'` or `‘tabs’`) without any additional parameters, the Payment Element renders using that layout and the default values associated with it.
+      Specify the layout for the Payment Element: `'auto'`, `'accordion'`, or `'tabs'`. With `'auto'`, Stripe selects the layout automatically. If you only pass a layout type without any additional parameters, the Payment Element renders using that layout and the default values associated with it.
 
 An object can also be passed to specify the layout with additional configuration.
       - `type`
@@ -4835,6 +4895,7 @@ is using a supported platform and when we determine it's advantageous for your c
 This is the `auto` behavior.
 If you want to always show Google Pay when the customer is using a supported platform,
 you can set its property in `paymentMethods` to `always`.
+      - `klarna`
       - `link`
       - `paypal`
 
@@ -5040,6 +5101,18 @@ This method gets the previously created Currency Selector Element instance, if i
 Get the Currency Selector Address Element
 ```
 
+## Get the Tax ID Element
+
+`checkout.getTaxIdElement()`
+
+This method gets the previously created Tax ID Element instance, if it exists.
+
+### Example
+
+```title
+Get the Tax ID Element
+```
+
 ## Change the visual customization of Elements using the Appearance API
 
 `checkout.changeAppearance(appearance: object)`
@@ -5159,6 +5232,7 @@ is using a supported platform and when we determine it's advantageous for your c
 This is the `auto` behavior.
 If you want to always show Google Pay when the customer is using a supported platform,
 you can set its property in `paymentMethods` to `always`.
+        - `klarna`
         - `link`
         - `paypal`
 
@@ -5573,6 +5647,8 @@ lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md)
         If `duration` is `repeating`, the number of months the coupon applies. Null otherwise.
     - `percentOff`
       An integer representing the discount amount as a percentage.
+    - `amountOff`
+      The configured fixed discount in the [smallest currency unit](https://docs.stripe.com/currencies.md#zero-decimal), in the active currency when a corresponding configured amount is available. This differs from `amount` and `minorUnitsAmount`, which describe the discount actually applied to the current total. For example, a fixed coupon can retain `amountOff` while the applied discount is zero during a free trial. This field is omitted when no configured fixed amount is available.
 
 - `email`
   The Customer's email address.
@@ -5586,6 +5662,8 @@ lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md)
   A list of items the customer is purchasing.
     - `id`
       Unique identifier for the object.
+    - `priceId`
+      The ID of the Price or Plan backing the line item.
     - `subtotal`
       Total before any discounts or exclusive taxes are applied.
       - `amount`
@@ -5641,6 +5719,8 @@ when creating the Checkout Session or when creating the Product's
       An array of image URLs for the line item. Specify [images](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-line_items-price_data-product_data-images) on the Product when creating the Checkout Session.
     - `quantity`
       The quantity of products being purchased.
+    - `isRemovable`
+      Whether the customer can remove the line item.
     - `discountAmounts`
       The amount of discount calculated per discount for this line item.
       - `amount`
@@ -5661,6 +5741,8 @@ when creating the Checkout Session or when creating the Product's
           If `duration` is `repeating`, the number of months the coupon applies. Null otherwise.
       - `percentOff`
         An integer representing the discount amount as a percentage.
+      - `amountOff`
+        The configured fixed discount in the [smallest currency unit](https://docs.stripe.com/currencies.md#zero-decimal), in the active currency when a corresponding configured amount is available. This differs from `amount` and `minorUnitsAmount`, which describe the discount actually applied to the current total. For example, a fixed coupon can retain `amountOff` while the applied discount is zero during a free trial. This field is omitted when no configured fixed amount is available.
     - `taxAmounts`
       The amount of tax calculated per tax rate for this line item.
       - `amount`
@@ -5807,6 +5889,58 @@ or other and may contain more values in the future.
         Four-digit number representing the card's expiration year.
       - `last4`
         The last four digits of the card.
+    - `usBankAccount`
+      US bank account details. Present only when `type` is `us_bank_account`; otherwise, this field is omitted.
+      - `accountHolderType`
+        The type of account holder. One of `individual` or `company`.
+      - `accountType`
+        The type of bank account. One of `checking` or `savings`.
+      - `bankName`
+        The name of the bank.
+      - `last4`
+        The last four digits of the bank account number.
+    - `sepaDebit`
+      SEPA Direct Debit details. Present only when `type` is `sepa_debit`; otherwise, this field is omitted.
+      - `bankCode`
+        The bank code of the bank account.
+      - `branchCode`
+        The branch code of the bank account.
+      - `country`
+        The two-letter country code of the bank account ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+      - `last4`
+        The last four digits of the bank account number.
+    - `bacsDebit`
+      Bacs Direct Debit details. Present only when `type` is `bacs_debit`; otherwise, this field is omitted.
+      - `last4`
+        The last four digits of the bank account number.
+      - `sortCode`
+        The sort code of the bank account.
+    - `auBecsDebit`
+      BECS Direct Debit details. Present only when `type` is `au_becs_debit`; otherwise, this field is omitted.
+      - `bsbNumber`
+        The Bank State Branch (BSB) number of the bank account.
+      - `last4`
+        The last four digits of the bank account number.
+    - `nzBankAccount`
+      New Zealand bank account details. Present only when `type` is `nz_bank_account`; otherwise, this field is omitted.
+      - `accountHolderName`
+        The name of the account holder.
+      - `bankCode`
+        The bank code of the bank account.
+      - `bankName`
+        The name of the bank.
+      - `branchCode`
+        The branch code of the bank account.
+      - `last4`
+        The last four digits of the bank account number.
+      - `suffix`
+        The suffix of the bank account number.
+    - `cardArt`
+      Card art details. Present only when `type` is `card` and card art is available; otherwise, this field is omitted.
+      - `cardArtUrl`
+        The URL of the card art image.
+      - `programName`
+        The name of the card program associated with the card art.
 
 - `shipping`
   The selected shipping option, if any.
@@ -6098,6 +6232,8 @@ lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md)
         If `duration` is `repeating`, the number of months the coupon applies. Null otherwise.
     - `percentOff`
       An integer representing the discount amount as a percentage.
+    - `amountOff`
+      The configured fixed discount in the [smallest currency unit](https://docs.stripe.com/currencies.md#zero-decimal), in the active currency when a corresponding configured amount is available. This differs from `amount` and `minorUnitsAmount`, which describe the discount actually applied to the current total. For example, a fixed coupon can retain `amountOff` while the applied discount is zero during a free trial. This field is omitted when no configured fixed amount is available.
 
 - `email`
   The Customer's email address.
@@ -6111,6 +6247,8 @@ lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md)
   A list of items the customer is purchasing.
     - `id`
       Unique identifier for the object.
+    - `priceId`
+      The ID of the Price or Plan backing the line item.
     - `subtotal`
       Total before any discounts or exclusive taxes are applied.
       - `amount`
@@ -6166,6 +6304,8 @@ when creating the Checkout Session or when creating the Product's
       An array of image URLs for the line item. Specify [images](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-line_items-price_data-product_data-images) on the Product when creating the Checkout Session.
     - `quantity`
       The quantity of products being purchased.
+    - `isRemovable`
+      Whether the customer can remove the line item.
     - `discountAmounts`
       The amount of discount calculated per discount for this line item.
       - `amount`
@@ -6186,6 +6326,8 @@ when creating the Checkout Session or when creating the Product's
           If `duration` is `repeating`, the number of months the coupon applies. Null otherwise.
       - `percentOff`
         An integer representing the discount amount as a percentage.
+      - `amountOff`
+        The configured fixed discount in the [smallest currency unit](https://docs.stripe.com/currencies.md#zero-decimal), in the active currency when a corresponding configured amount is available. This differs from `amount` and `minorUnitsAmount`, which describe the discount actually applied to the current total. For example, a fixed coupon can retain `amountOff` while the applied discount is zero during a free trial. This field is omitted when no configured fixed amount is available.
     - `taxAmounts`
       The amount of tax calculated per tax rate for this line item.
       - `amount`
@@ -6332,6 +6474,58 @@ or other and may contain more values in the future.
         Four-digit number representing the card's expiration year.
       - `last4`
         The last four digits of the card.
+    - `usBankAccount`
+      US bank account details. Present only when `type` is `us_bank_account`; otherwise, this field is omitted.
+      - `accountHolderType`
+        The type of account holder. One of `individual` or `company`.
+      - `accountType`
+        The type of bank account. One of `checking` or `savings`.
+      - `bankName`
+        The name of the bank.
+      - `last4`
+        The last four digits of the bank account number.
+    - `sepaDebit`
+      SEPA Direct Debit details. Present only when `type` is `sepa_debit`; otherwise, this field is omitted.
+      - `bankCode`
+        The bank code of the bank account.
+      - `branchCode`
+        The branch code of the bank account.
+      - `country`
+        The two-letter country code of the bank account ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+      - `last4`
+        The last four digits of the bank account number.
+    - `bacsDebit`
+      Bacs Direct Debit details. Present only when `type` is `bacs_debit`; otherwise, this field is omitted.
+      - `last4`
+        The last four digits of the bank account number.
+      - `sortCode`
+        The sort code of the bank account.
+    - `auBecsDebit`
+      BECS Direct Debit details. Present only when `type` is `au_becs_debit`; otherwise, this field is omitted.
+      - `bsbNumber`
+        The Bank State Branch (BSB) number of the bank account.
+      - `last4`
+        The last four digits of the bank account number.
+    - `nzBankAccount`
+      New Zealand bank account details. Present only when `type` is `nz_bank_account`; otherwise, this field is omitted.
+      - `accountHolderName`
+        The name of the account holder.
+      - `bankCode`
+        The bank code of the bank account.
+      - `bankName`
+        The name of the bank.
+      - `branchCode`
+        The branch code of the bank account.
+      - `last4`
+        The last four digits of the bank account number.
+      - `suffix`
+        The suffix of the bank account number.
+    - `cardArt`
+      Card art details. Present only when `type` is `card` and card art is available; otherwise, this field is omitted.
+      - `cardArtUrl`
+        The URL of the card art image.
+      - `programName`
+        The name of the card program associated with the card art.
 
 - `shipping`
   The selected shipping option, if any.
@@ -6958,7 +7152,7 @@ Depending on the country, this might correspond to a state, a province, an oblas
             - `postalCode`
               The postal code or ZIP code, also known as PIN code in India.
     - `layout`
-      Specify the layout for the Payment Element. If you only pass a layout type (`'accordion'` or `‘tabs’`) without any additional parameters, the Payment Element renders using that layout and the default values associated with it.
+      Specify the layout for the Payment Element: `'auto'`, `'accordion'`, or `'tabs'`. With `'auto'`, Stripe selects the layout automatically. If you only pass a layout type without any additional parameters, the Payment Element renders using that layout and the default values associated with it.
 
 An object can also be passed to specify the layout with additional configuration.
       - `type`
@@ -7146,6 +7340,7 @@ is using a supported platform and when we determine it's advantageous for your c
 This is the `auto` behavior.
 If you want to always show Google Pay when the customer is using a supported platform,
 you can set its property in `paymentMethods` to `always`.
+      - `klarna`
       - `link`
       - `paypal`
 
@@ -7669,6 +7864,8 @@ lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md)
         If `duration` is `repeating`, the number of months the coupon applies. Null otherwise.
     - `percentOff`
       An integer representing the discount amount as a percentage.
+    - `amountOff`
+      The configured fixed discount in the [smallest currency unit](https://docs.stripe.com/currencies.md#zero-decimal), in the active currency when a corresponding configured amount is available. This differs from `amount` and `minorUnitsAmount`, which describe the discount actually applied to the current total. For example, a fixed coupon can retain `amountOff` while the applied discount is zero during a free trial. This field is omitted when no configured fixed amount is available.
 
 - `email`
   The Customer's email address.
@@ -7682,6 +7879,8 @@ lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md)
   A list of items the customer is purchasing.
     - `id`
       Unique identifier for the object.
+    - `priceId`
+      The ID of the Price or Plan backing the line item.
     - `subtotal`
       Total before any discounts or exclusive taxes are applied.
       - `amount`
@@ -7737,6 +7936,8 @@ when creating the Checkout Session or when creating the Product's
       An array of image URLs for the line item. Specify [images](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-line_items-price_data-product_data-images) on the Product when creating the Checkout Session.
     - `quantity`
       The quantity of products being purchased.
+    - `isRemovable`
+      Whether the customer can remove the line item.
     - `discountAmounts`
       The amount of discount calculated per discount for this line item.
       - `amount`
@@ -7757,6 +7958,8 @@ when creating the Checkout Session or when creating the Product's
           If `duration` is `repeating`, the number of months the coupon applies. Null otherwise.
       - `percentOff`
         An integer representing the discount amount as a percentage.
+      - `amountOff`
+        The configured fixed discount in the [smallest currency unit](https://docs.stripe.com/currencies.md#zero-decimal), in the active currency when a corresponding configured amount is available. This differs from `amount` and `minorUnitsAmount`, which describe the discount actually applied to the current total. For example, a fixed coupon can retain `amountOff` while the applied discount is zero during a free trial. This field is omitted when no configured fixed amount is available.
     - `taxAmounts`
       The amount of tax calculated per tax rate for this line item.
       - `amount`
@@ -7903,6 +8106,58 @@ or other and may contain more values in the future.
         Four-digit number representing the card's expiration year.
       - `last4`
         The last four digits of the card.
+    - `usBankAccount`
+      US bank account details. Present only when `type` is `us_bank_account`; otherwise, this field is omitted.
+      - `accountHolderType`
+        The type of account holder. One of `individual` or `company`.
+      - `accountType`
+        The type of bank account. One of `checking` or `savings`.
+      - `bankName`
+        The name of the bank.
+      - `last4`
+        The last four digits of the bank account number.
+    - `sepaDebit`
+      SEPA Direct Debit details. Present only when `type` is `sepa_debit`; otherwise, this field is omitted.
+      - `bankCode`
+        The bank code of the bank account.
+      - `branchCode`
+        The branch code of the bank account.
+      - `country`
+        The two-letter country code of the bank account ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+      - `last4`
+        The last four digits of the bank account number.
+    - `bacsDebit`
+      Bacs Direct Debit details. Present only when `type` is `bacs_debit`; otherwise, this field is omitted.
+      - `last4`
+        The last four digits of the bank account number.
+      - `sortCode`
+        The sort code of the bank account.
+    - `auBecsDebit`
+      BECS Direct Debit details. Present only when `type` is `au_becs_debit`; otherwise, this field is omitted.
+      - `bsbNumber`
+        The Bank State Branch (BSB) number of the bank account.
+      - `last4`
+        The last four digits of the bank account number.
+    - `nzBankAccount`
+      New Zealand bank account details. Present only when `type` is `nz_bank_account`; otherwise, this field is omitted.
+      - `accountHolderName`
+        The name of the account holder.
+      - `bankCode`
+        The bank code of the bank account.
+      - `bankName`
+        The name of the bank.
+      - `branchCode`
+        The branch code of the bank account.
+      - `last4`
+        The last four digits of the bank account number.
+      - `suffix`
+        The suffix of the bank account number.
+    - `cardArt`
+      Card art details. Present only when `type` is `card` and card art is available; otherwise, this field is omitted.
+      - `cardArtUrl`
+        The URL of the card art image.
+      - `programName`
+        The name of the card program associated with the card art.
 
 - `shipping`
   The selected shipping option, if any.
@@ -8194,6 +8449,8 @@ lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md)
         If `duration` is `repeating`, the number of months the coupon applies. Null otherwise.
     - `percentOff`
       An integer representing the discount amount as a percentage.
+    - `amountOff`
+      The configured fixed discount in the [smallest currency unit](https://docs.stripe.com/currencies.md#zero-decimal), in the active currency when a corresponding configured amount is available. This differs from `amount` and `minorUnitsAmount`, which describe the discount actually applied to the current total. For example, a fixed coupon can retain `amountOff` while the applied discount is zero during a free trial. This field is omitted when no configured fixed amount is available.
 
 - `email`
   The Customer's email address.
@@ -8207,6 +8464,8 @@ lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md)
   A list of items the customer is purchasing.
     - `id`
       Unique identifier for the object.
+    - `priceId`
+      The ID of the Price or Plan backing the line item.
     - `subtotal`
       Total before any discounts or exclusive taxes are applied.
       - `amount`
@@ -8262,6 +8521,8 @@ when creating the Checkout Session or when creating the Product's
       An array of image URLs for the line item. Specify [images](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-line_items-price_data-product_data-images) on the Product when creating the Checkout Session.
     - `quantity`
       The quantity of products being purchased.
+    - `isRemovable`
+      Whether the customer can remove the line item.
     - `discountAmounts`
       The amount of discount calculated per discount for this line item.
       - `amount`
@@ -8282,6 +8543,8 @@ when creating the Checkout Session or when creating the Product's
           If `duration` is `repeating`, the number of months the coupon applies. Null otherwise.
       - `percentOff`
         An integer representing the discount amount as a percentage.
+      - `amountOff`
+        The configured fixed discount in the [smallest currency unit](https://docs.stripe.com/currencies.md#zero-decimal), in the active currency when a corresponding configured amount is available. This differs from `amount` and `minorUnitsAmount`, which describe the discount actually applied to the current total. For example, a fixed coupon can retain `amountOff` while the applied discount is zero during a free trial. This field is omitted when no configured fixed amount is available.
     - `taxAmounts`
       The amount of tax calculated per tax rate for this line item.
       - `amount`
@@ -8428,6 +8691,58 @@ or other and may contain more values in the future.
         Four-digit number representing the card's expiration year.
       - `last4`
         The last four digits of the card.
+    - `usBankAccount`
+      US bank account details. Present only when `type` is `us_bank_account`; otherwise, this field is omitted.
+      - `accountHolderType`
+        The type of account holder. One of `individual` or `company`.
+      - `accountType`
+        The type of bank account. One of `checking` or `savings`.
+      - `bankName`
+        The name of the bank.
+      - `last4`
+        The last four digits of the bank account number.
+    - `sepaDebit`
+      SEPA Direct Debit details. Present only when `type` is `sepa_debit`; otherwise, this field is omitted.
+      - `bankCode`
+        The bank code of the bank account.
+      - `branchCode`
+        The branch code of the bank account.
+      - `country`
+        The two-letter country code of the bank account ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+      - `last4`
+        The last four digits of the bank account number.
+    - `bacsDebit`
+      Bacs Direct Debit details. Present only when `type` is `bacs_debit`; otherwise, this field is omitted.
+      - `last4`
+        The last four digits of the bank account number.
+      - `sortCode`
+        The sort code of the bank account.
+    - `auBecsDebit`
+      BECS Direct Debit details. Present only when `type` is `au_becs_debit`; otherwise, this field is omitted.
+      - `bsbNumber`
+        The Bank State Branch (BSB) number of the bank account.
+      - `last4`
+        The last four digits of the bank account number.
+    - `nzBankAccount`
+      New Zealand bank account details. Present only when `type` is `nz_bank_account`; otherwise, this field is omitted.
+      - `accountHolderName`
+        The name of the account holder.
+      - `bankCode`
+        The bank code of the bank account.
+      - `bankName`
+        The name of the bank.
+      - `branchCode`
+        The branch code of the bank account.
+      - `last4`
+        The last four digits of the bank account number.
+      - `suffix`
+        The suffix of the bank account number.
+    - `cardArt`
+      Card art details. Present only when `type` is `card` and card art is available; otherwise, this field is omitted.
+      - `cardArtUrl`
+        The URL of the card art image.
+      - `programName`
+        The name of the card program associated with the card art.
 
 - `shipping`
   The selected shipping option, if any.
@@ -8726,6 +9041,7 @@ is using a supported platform and when we determine it's advantageous for your c
 This is the `auto` behavior.
 If you want to always show Google Pay when the customer is using a supported platform,
 you can set its property in `paymentMethods` to `always`.
+        - `klarna`
         - `link`
         - `paypal`
 
@@ -9479,7 +9795,7 @@ target the Element for styling or testing.
 - `options`
   Options for creating the Payment Element.
     - `layout`
-      Specify the layout for the Payment Element. If you only pass a layout type (`'accordion'` or `‘tabs’`) without any additional parameters, the Payment Element renders using that layout and the default values associated with it.
+      Specify the layout for the Payment Element: `'auto'`, `'accordion'`, or `'tabs'`. With `'auto'`, Stripe selects the layout automatically. If you only pass a layout type without any additional parameters, the Payment Element renders using that layout and the default values associated with it.
 
 An object can also be passed to specify the layout with additional configuration.
       - `type`

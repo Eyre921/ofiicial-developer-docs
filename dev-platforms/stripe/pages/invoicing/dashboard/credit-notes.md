@@ -18,9 +18,13 @@ A credit note reduces the amount due without recording any payment. However, if 
 
 > For information about working with credit notes using the API, see [Generate credit notes programmatically](https://docs.stripe.com/invoicing/integration/programmatic-credit-notes.md).
 
+## Invoices with billing credit grants 
+
+A credit note doesn’t restore applied [billing credit grants](https://docs.stripe.com/billing/subscriptions/usage-based/billing-credits.md). Create a separate grant to restore the grant-funded share. For line-based credits, that share reduces the credit-note total, so [preview the credit note](https://docs.stripe.com/api/credit_notes/preview.md) before choosing a refund or invoice balance credit. See [credit-note and invoice-void examples](https://docs.stripe.com/billing/customer/balance.md#lifecycle-examples).
+
 ## Get started 
 
-When you issue a credit note for an `open` invoice, it decreases the amount due on the invoice. When you issue a credit note for a `paid` invoice, you credit the customer’s account balance or give them a refund outside of Stripe.
+When you issue a credit note for an `open` invoice, it decreases the amount due on the invoice. When you issue a credit note for a `paid` invoice, you can credit the customer’s invoice balance, refund their payment through Stripe, or record a refund outside of Stripe.
 
 The sum of all credit notes issued for an invoice can’t exceed the ​​total amount of the invoice. For a `paid` invoice, the sum of the refund, credit, and out-of-band payment amounts must equal the credit note total.
 
@@ -65,7 +69,11 @@ Issue a credit note in the Dashboard
 
 ## Credit balances and discounts 
 
-When you issue a credit note on an invoice with an applied [customer credit balance](https://docs.stripe.com/invoicing/customer/balance.md), funds are sometimes credited to the credit balance instead of the initial payment method. For example, if a credit balance of 150 USD is applied to an invoice for 200 USD, then the finalized invoice is for 50 USD. If you issue a credit note for 50 USD or less, the funds are refunded to the customer’s payment method. Anything above 50 USD is added to the customer’s credit balance and is applied to the next invoice.
+Customer credit balance refers to the customer invoice balance—the invoice adjustment ledger, not billing credit grants. For grant-funded amounts, see [Invoices with billing credit grants](https://docs.stripe.com/invoicing/dashboard/credit-notes.md#billing-credit-grants).
+
+When you issue a credit note for a paid invoice, choose whether to refund the payment, credit the customer’s invoice balance, or record a refund outside Stripe. For example, a 150 USD [customer credit balance](https://docs.stripe.com/invoicing/customer/balance.md) reduces a 200 USD invoice to 50 USD. After the customer pays 50 USD, you can refund up to that amount through Stripe, less any previous refunds. If you issue a credit note for the full 200 USD, credit the remaining 150 USD to the customer’s invoice balance or record it as a refund outside Stripe.
+
+Issuing a credit note doesn’t automatically refund the customer’s payment method.
 
 [Discounts](https://docs.stripe.com/tax/tax-rates.md#discounts) apply proportionally to all of the line items on an invoice. For example, applying a 50% discount to an invoice with 10 line items at 10 USD each changes the amount of each line item to 5 USD. If you then apply a credit note for one line item, it reduces the invoice amount by 5 USD.
 

@@ -126,6 +126,15 @@ Common terms that can enhance your prompts:
 * **Glitch**: Sounds of malfunction, jittering, or erratic movement, useful for transitions and sci-fi
 * **Drone**: Continuous, textured sound that creates atmosphere and suspense
 
+## Concurrency and priority
+
+Concurrency is the number of sound effect generations that can be processed at the same time. Each requested generation counts as one concurrent request for as long as it is being generated. The limit depends on your plan. See the [concurrency limit chart](/docs/overview/models#concurrency-and-priority) for the limit for each plan.
+
+> **Info**
+>
+> Enterprise customers can request a higher Sound Effects concurrency limit from their account
+> manager.
+
 ## Key facts
 
 * **Maximum duration**: 30 seconds per generation

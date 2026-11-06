@@ -144,7 +144,7 @@ Now that you understand the basics of the WebVTT and SRT captioning formats, you
 
 > **Info**
 >
-> This article covers creating subtitle files from files submitted to the Deepgram pre-recorded audio API. For an example of creating subtitle files with the Deepgram live streaming API, check out the [streaming test suite](https://github.com/deepgram/streaming-test-suite).
+> This article covers creating subtitle files from files submitted to the Deepgram pre-recorded audio API. For an example of creating subtitle files with the Deepgram live streaming API, check out the [Live Streaming Starter Kit](https://github.com/deepgram/live-streaming-starter-kit).
 
 ### Choose an Audio File
 

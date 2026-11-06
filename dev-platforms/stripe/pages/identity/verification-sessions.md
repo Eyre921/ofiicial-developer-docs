@@ -160,7 +160,7 @@ curl -X POST https://api.stripe.com/v1/identity/verification_sessions/{{IDENTITY
   -u "<<YOUR_SECRET_KEY>>:"
 ```
 
-Redacted sessions have placeholder values in all fields that previously contained personally identifiable information (PII). The session includes a [redaction.status](https://docs.stripe.com/api/identity/verification_sessions/object.md#identity_verification_session_object-redaction-status) field indicating the status of the redaction process. We send an [identity.verification_session.redacted](https://docs.stripe.com/api/events/types.md#event_types-identity.verification_session.redacted) webhook when the session is redacted. Redaction can take up to 4 days.
+Redacted sessions have placeholder values in all fields that previously contained personally identifiable information (PII). The session includes a [redaction.status](https://docs.stripe.com/api/identity/verification_sessions/object.md#identity_verification_session_object-redaction-status) field indicating the status of the redaction process. We send an [identity.verification_session.redacted](https://docs.stripe.com/api/events/types.md#event_types-identity.verification_session.redacted) webhook when the session is redacted. Redaction can take up to 7 days.
 
 If a VerificationSession that has been redacted is retrieved with PII fields expanded, then these fields will still appear in the response but their values won’t contain any PII. For example, here is a response that has expanded the `verified_outputs` and `verified_outputs.dob` fields on a redacted VerificationSession.
 

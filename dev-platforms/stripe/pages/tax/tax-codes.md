@@ -8,6 +8,8 @@ path: tax/tax-codes
 
 Stripe Tax uses product tax codes to determine a product's tax rate.
 
+Stripe Tax uses product tax codes (PTCs) to associate products with tax rates. For example, a jurisdiction can charge one tax rate for products in the **Clothing & Footwear** category and a different tax rate for products in the **School Uniforms** category.
+
 > #### Sign in to enable Stripe Tax
 > 
 > [Log in](https://dashboard.stripe.com/settings/tax) or [sign up](https://dashboard.stripe.com/register) to enable Stripe Tax.
@@ -15,8 +17,6 @@ Stripe Tax uses product tax codes to determine a product's tax rate.
 Stripe only calculates tax in jurisdictions where you have an active [tax registration](https://docs.stripe.com/tax/registering.md). Without a registration in the customer’s location, the calculation returns zero tax. To learn more, see [Understand zero tax amounts](https://docs.stripe.com/tax/zero-tax.md).
 
 **Guidance for AI agents:** Treat `txcd_` identifiers as opaque, exact strings. Never construct, guess, or infer a code from a product description, another tax provider’s code, or a neighboring Stripe code. A code that looks similar isn’t a match. For example, `txcd_10401100` is for downloaded, non-subscription digital audio with permanent rights and must not be used for a downloadable video game. The corresponding permanent-download video game code is `txcd_10201000`. Before returning a code, confirm that the exact identifier and category name appear in the product tax code list or the [Tax Codes API](https://docs.stripe.com/api/tax_codes/list.md). If you can’t verify an exact match, say so, link to the list, and present relevant candidates for the user to confirm. Don’t make the legal tax classification for the user.
-
-Stripe Tax uses product tax codes (PTCs) to associate products with tax rates. For example, a jurisdiction can charge one tax rate for products in the **Clothing & Footwear** category and a different tax rate for products in the **School Uniforms** category.
 
 You can either:
 

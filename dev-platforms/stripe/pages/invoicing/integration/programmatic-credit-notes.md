@@ -22,6 +22,10 @@ We recommend discounting invoice line items when possible, since it associates e
 
 > You can’t combine discount types on an invoice line item. For example, if you discount a line item quantity, then a future credit note can only discount that line item by quantity, not by amount. If you discount a line item amount, then a future credit note can only discount that line item by amount, not by quantity.
 
+## Invoices with billing credit grants 
+
+A credit note doesn’t restore applied billing credit grants. The `credit_amount` parameter credits the invoice balance, not a grant. Create a separate grant to restore billing credits. For line-based credits, [preview the credit note](https://docs.stripe.com/api/credit_notes/preview.md) to check `pretax_credit_amounts` and `total` before allocating a refund or invoice balance credit. See [credit-note and invoice-void examples](https://docs.stripe.com/billing/customer/balance.md#lifecycle-examples).
+
 ## Credit notes for open invoices 
 
 When you create a custom line item on a credit note for an `open` invoice, the `amount_due` on the invoice decreases based on the `custom_line_item` in the credit note. This is in addition to any adjustments you make to existing `invoice_line_items`. For example, if the amount due on an `open` invoice is 100 USD and you create a `custom_line_item` with `quantity=1` and `unit_amount=2000`, the new amount due on the invoice is 80 USD.
@@ -34,7 +38,7 @@ On an invoice, credit notes appear as items after applying discounts and taxes, 
 2. Discounts
 3. Pre-tax invoice total
 4. Taxes
-5. Customer credit balance
+5. Customer invoice balance (also called customer credit balance, not billing credit grants)
 6. Credit notes applied (to gross amount due)
 7. New amount due
 

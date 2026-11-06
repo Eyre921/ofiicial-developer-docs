@@ -22,6 +22,8 @@ category: Integrations
 
   For tracing Codex without the gateway, see the [Codex integration](/integrations/developer-tools/codex).
 
+**Start with Langfuse** [Sign up](/cloud)
+
 ## Setup [#setup]
 
 <Steps>
@@ -93,7 +95,7 @@ Codex retries failed requests (`request_max_retries`, `stream_max_retries`). Eac
 
 ### Why do cancelled or failed calls show high cost? [#inflated-cost]
 
-Cancelled or failed Codex calls currently show inflated, estimated usage and cost. Ignore cost on `ERROR` and `WARNING` generations until the fix ships.
+As of November 6, 2026, Langfuse no longer tokenizes request or response text to fill missing usage. Older generations may still show inflated costs estimated from that text. For new writes, calls without provider usage or submitted cost have empty usage and cost breakdowns; historical estimates are not bulk-rewritten. See [token and cost tracking](/docs/observability/features/token-and-cost-tracking#troubleshooting).
 
 ### Can I use websocket features? [#websockets]
 

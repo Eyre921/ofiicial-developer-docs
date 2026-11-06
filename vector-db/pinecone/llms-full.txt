@@ -16923,7 +16923,7 @@ To retrieve more than 10,000 matching records, paginate through results using th
 Pinecone is eventually consistent, so there can be a slight delay before new or changed records are visible to queries. You can view index stats to [check data freshness](/guides/data/check-data-freshness).
 
 
-# Run hybrid search on separate legacy vector indexes
+# Run hybrid search on two legacy vector indexes
 Source: https://docs.pinecone.io/guides/legacy/vectors-api/hybrid-search-separate-indexes
 
 Store dense and sparse vectors in two Pinecone indexes linked by ID, query each, and merge the results client-side with reciprocal rank fusion.
@@ -17727,7 +17727,7 @@ vec46 - 0.06 - Economic recovery in Q2 2024 relied heavily on government spendin
 ```
 
 
-# Run hybrid search on a single legacy vector index
+# Run hybrid search on a legacy vector index
 Source: https://docs.pinecone.io/guides/legacy/vectors-api/hybrid-search-single-index
 
 Run hybrid search on one Pinecone index storing a dense and a sparse vector per record, weighting the two signals client-side with an alpha value.
@@ -19055,7 +19055,7 @@ curl -X GET "https://$INDEX_HOST/vectors/list?namespace=example-namespace&pagina
 ```
 
 
-# Manage chunked records in a legacy vector index
+# Manage chunked records in a legacy index
 Source: https://docs.pinecone.io/guides/legacy/vectors-api/manage-chunked-records
 
 Fetch, search, delete, and replace all chunks of a source document in a legacy vector index using ID prefixes and a document_id metadata field.
@@ -28117,7 +28117,7 @@ When you describe the index, the field's `write_parameters` and `read_parameters
 
 ### Override the task for one search
 
-To embed one search's query with a different task, set `parameters` on the `embed` clause. It overrides the field's `read_parameters` for that search only. The Python SDK supports `parameters` in `10.3.0` and later. The Node.js and Go SDKs don't support it yet, so use the REST API with them. For example, this search checks a statement against the `body` field from the preceding example, whose default query task is `question_answering`:
+To embed one search's query with a different task, set `parameters` on the `embed` clause. It overrides the field's `read_parameters` for that search only. The Python SDK `10.3.0`, Node.js SDK `9.2.0`, and Go SDK `7.2.0` and later support `parameters`. For example, this search checks a statement against the `body` field from the preceding example, whose default query task is `question_answering`:
 
 ```python Python theme={null}
 response = index.documents.search(
@@ -28133,6 +28133,41 @@ response = index.documents.search(
     ],
     include_fields=["body"],
 )
+```
+
+```javascript JavaScript theme={null}
+const response = await index.documents.search({
+  topK: 5,
+  scoreBy: [
+    {
+      type: 'embed',
+      fields: ['body'],
+      query: 'Is the Eiffel Tower taller than 300 m?',
+      parameters: { task_type: 'fact_verification' },
+    },
+  ],
+  includeFields: ['body'],
+});
+```
+
+```go Go theme={null}
+query := "Is the Eiffel Tower taller than 300 m?"
+response, err := conn.SearchDocuments(ctx, &pinecone.SearchDocumentsRequest{
+	TopK: 5,
+	ScoreBy: []pinecone.DocumentScoringMethod{
+		{
+			Type:       pinecone.DocumentScoringTypeEmbed,
+			Fields:     []string{"body"},
+			Query:      &query,
+			Parameters: map[string]interface{}{"task_type": "fact_verification"},
+		},
+	},
+	IncludeFields: []string{"body"},
+})
+if err != nil {
+	log.Fatal(err)
+}
+fmt.Println(response)
 ```
 
 ```bash curl theme={null}
@@ -76009,7 +76044,6 @@ Pinecone Assistant supports the following models:
 
 * `gpt-4o` (default)
 * `gpt-4.1`
-* `gpt-5`
 * `claude-sonnet-4-5`
 * `gemini-3.5-flash`
 
@@ -76811,8 +76845,8 @@ curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME" \
 
 To limit the number of [input tokens](/guides/assistant/pricing-and-limits#token-usage) used, you can control the context size by tuning `top_k * snippet_size`. These parameters can be adjusted by setting [`context_options`](/reference/api/latest/assistant/chat_assistant#body-context-options) in the request:
 
-* `snippet_size`: Controls the max size of a snippet (default is 2048 tokens). Note that snippet size can vary and, in rare cases, may be bigger than the set `snippet_size`. Snippet size controls the amount of context the model is given for each chunk of text.
-* `top_k`: Controls the max number of context snippets sent to the LLM (default is 16). `top_k` controls the diversity of information sent to the model.
+* `snippet_size`: Controls the max size of a snippet, from 512 to 8192 tokens (default 2048). Note that snippet size can vary and, in rare cases, may be bigger than the set `snippet_size`. Snippet size controls the amount of context the model is given for each chunk of text.
+* `top_k`: Controls the max number of context snippets sent to the LLM, up to 64 (default 16). `top_k` controls the diversity of information sent to the model.
 
 While additional tokens will be used for other parameters (e.g., the system prompt, chat input), adjusting the `top_k` and `snippet_size` can help manage token consumption.
 
@@ -77560,6 +77594,7 @@ This operation returns a response like the following:
 The `status` field has the following possible values:
 
 * Initializing
+* InitializationFailed
 * Failed
 * Ready
 * Terminating
@@ -78017,7 +78052,7 @@ https://<YOUR_PINECONE_ASSISTANT_HOST>/mcp/assistants/<YOUR_ASSISTANT_NAME>
 
 > [!WARNING]
 >
-> The previous SSE-based endpoint (with `/sse` suffix) is deprecated and will stop working on August 31, 2025 at 11:59:59 PM UTC. Before then, update to the [streamable HTTP transport](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) MCP endpoint shown above, which implements the current MCP specification and provides improved flexibility and compatibility.
+> The previous SSE-based endpoint (with the `/sse` suffix) is no longer supported and returns HTTP 410. Use the [streamable HTTP transport](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) MCP endpoint shown above, which implements the current MCP specification.
 
 ### Prerequisites
 
@@ -79298,8 +79333,8 @@ The example above returns a JSON object like the following:
 
 You can limit [token usage](/guides/assistant/pricing-and-limits#token-usage) by tuning `top_k * snippet_size`:
 
-* `snippet_size`: Controls the max size of a snippet (default is 2048 tokens). Note that snippet size can vary and, in rare cases, may be bigger than the set `snippet_size`. Snippet size controls the amount of context given for each chunk of text.
-* `top_k`: Controls the max number of context snippets retrieved (default is 16). `top_k` controls the diversity of information received in the returned snippets.
+* `snippet_size`: Controls the max size of a snippet, from 512 to 8192 tokens (default 2048). Note that snippet size can vary and, in rare cases, may be bigger than the set `snippet_size`. Snippet size controls the amount of context given for each chunk of text.
+* `top_k`: Controls the max number of context snippets retrieved, up to 64 (default 16). `top_k` controls the diversity of information received in the returned snippets.
 
 While additional tokens will be used for other parameters, adjusting the `top_k` and `snippet_size` can help manage token consumption.
 

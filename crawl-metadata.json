@@ -30,7 +30,8 @@
     "status": "ok"
   },
   "agent-frameworks/vercel-ai-sdk": {
-    "status": "error: curl failed (28) for https://ai-sdk.dev/llms-full.txt: curl: (28) Operation timed out after 90096 milliseconds with 1219759 bytes received\ncurl: (28) Operation timed out after 90000 milliseconds with 0 bytes received\ncurl: (28) Operation timed out after 9"
+    "pages": 0,
+    "status": "ok"
   },
   "agent-frameworks/mcp": {
     "pages": 159,
@@ -45,7 +46,7 @@
     "status": "ok"
   },
   "agent-frameworks/langchain": {
-    "pages": 1738,
+    "pages": 1726,
     "status": "ok"
   },
   "voice-multimodal/assemblyai": {
@@ -101,7 +102,7 @@
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15000 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
@@ -186,11 +187,11 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 80,
+    "pages": 100,
     "status": "ok"
   },
   "dev-platforms/stripe": {
-    "pages": 472,
+    "pages": 480,
     "status": "ok"
   },
   "ai-models/openrouter": {
@@ -202,8 +203,8 @@
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 1511,
+    "pages": 1523,
     "status": "ok"
   },
-  "_last_crawl": "2026-11-06T11:30:42Z"
+  "_last_crawl": "2026-11-06T23:30:57Z"
 }

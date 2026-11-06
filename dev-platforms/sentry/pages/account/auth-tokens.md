@@ -74,6 +74,8 @@ To get started, see our docs on [Internal Integrations](https://docs.sentry.io/i
 
 Personal tokens can be created by any user, and are bound to that user. The tokens can be given permissions to all organizations and projects that user has access to. This means a personal token's *maximum* scope is all the scopes that the user has access to for a given organization. A personal token cannot exceed the permissions of the user who created it. See [Organization and User Management](https://docs.sentry.io/organization/membership.md) for more details on how permissions work in Sentry.
 
+One exception is releases: a personal token with the `project:releases` scope can create releases and upload artifact bundles for any project in the organization, even for projects whose teams the user isn't a member of. See [Releases permissions](https://docs.sentry.io/api/permissions.md#releases) for details.
+
 When you create a new personal token, you can select which [scopes](https://docs.sentry.io/api/permissions.md) the token should have in the UI:
 
 Currently, you can view personal tokens in the UI after creating them. This is a legacy behavior that may change in the future. We recommend only using each personal token once, and creating a new token for each use case. Any user can always revoke any of their personal tokens.

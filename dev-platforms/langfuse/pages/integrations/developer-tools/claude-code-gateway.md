@@ -24,6 +24,8 @@ Use the Langfuse AI Gateway with the Claude Desktop app or the Claude Code CLI. 
   Claude Code with hooks instead, see the [Claude Code
   integration](/integrations/developer-tools/claude-code).
 
+**Start with Langfuse** [Sign up](/cloud)
+
 ## Claude Desktop [#claude-desktop]
 
 <Steps>

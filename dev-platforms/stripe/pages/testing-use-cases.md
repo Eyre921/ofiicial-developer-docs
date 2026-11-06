@@ -18,25 +18,27 @@ After you create a Stripe account, Stripe places you in a sandbox. You can find 
 
 To start accepting real payments, you need to [set up your Stripe account](https://docs.stripe.com/get-started/account/set-up.md), exit your sandbox with the account picker, and use the live API keys in your integration. Store live API keys in a secrets vault or environment variables. Don’t store keys in source code or configuration files checked into version control. For more information, see [Best practices for managing secret API keys](https://docs.stripe.com/keys-best-practices.md).
 
-> #### Impact on live mode when using the test mode sandbox
+> #### Impact on live mode when using the legacy test mode sandbox
 > 
-> If you change settings in the Dashboard while in the *test mode sandboxes* (Every Stripe account includes the test mode sandbox. It shares some settings with live mode, has characteristics that differ from other sandboxes you create, but you can't delete it), you might also change them in live mode. Many Dashboard pages have a notification box and disable live mode settings while in the test mode sandbox. In this case, any settings still enabled are safe to use. If you don’t see the notification, assume any changes made in the test mode sandbox affect live mode settings (unless you see a test data banner).
+> When you change Dashboard settings in the *legacy test mode sandbox* (Every Stripe account includes the test mode sandbox. It shares some settings with live mode, has characteristics that differ from other sandboxes you create, but you can't delete it), those changes might also affect live mode. Many Dashboard pages display a notification and disable live mode settings when you use the legacy test mode sandbox. On those pages, you can safely change any settings that remain enabled.
+> 
+> If a page doesn’t display the notification, assume that your changes also affect live mode unless you see a test data banner.
 
 ### Compare sandboxes 
 
-Your Stripe account includes a test mode sandbox and the ability to create additional sandboxes. Although test mode is a sandbox, it differs from the general sandboxes that you create. Understanding these differences can help you build your testing strategy.
+General sandboxes isolate settings and data from live mode and let you create separate environments for local development, CI, and staging.
 
-For new integrations, use a general sandbox instead of the test mode sandbox. General sandboxes isolate settings and data from live mode and let you create separate environments for local development, CI, and staging. Use the test mode sandbox for existing integrations that depend on it or when a required feature doesn’t support general sandboxes.
+If your account still has the legacy test mode sandbox, you can use it for existing integrations that depend on it or for features that don’t support general sandboxes. For new integrations, use a general sandbox.
 
-|  | Test mode sandbox | General sandboxes |
+|  | Legacy test mode sandbox | General sandboxes |
 | --- | --- | --- |
-| Number of sandboxes | Use one sandbox. | Use up to five sandboxes. The test mode sandbox doesn’t count toward the limit of five. |
+| Number of sandboxes | Use one sandbox. | Use up to five sandboxes. The legacy test mode sandbox doesn’t count toward the limit of five. |
 | Access control | Grant all users the same roles and access as live mode. | Control access more strictly. When the sandbox access level is **Private**, only administrators automatically have access. You can invite users to sandboxes only, without granting them access to live mode. When the sandbox access level is **Developer**, administrators, developers, and sandbox administrators automatically inherit the **Administrator** role in the sandbox. When the sandbox access level is **All team members**, all users with roles receive the same roles and access. |
-| Settings | Share settings between live mode and the test mode sandbox. You can’t test many settings independently. | Isolate settings completely for each sandbox. Copy settings from live mode at creation time, and test independently from your live integration. |
+| Settings | Share settings between live mode and the legacy test mode sandbox. You can’t test many settings independently. | Isolate settings completely for each sandbox. Copy settings from live mode at creation time, and test independently from your live integration. |
 | API support | Supports V1 and [partially supports V2](https://docs.stripe.com/api-v2-overview.md#limitations). | Supports V1 and V2. |
 | Deletion | Can’t be deleted. | Can be deleted. |
-| Apps | Installs require the app to support a test mode sandbox. | Installs require the app to support sandboxes. |
-| Product limitations | You can’t test *IC+* (A pricing plan where businesses pay the variable network cost for each transaction plus the Stripe fee rather than a flat rate for all transactions. This pricing model provides more visibility into payments costs) pricing in test mode sandbox. | You can’t test *IC+* (A pricing plan where businesses pay the variable network cost for each transaction plus the Stripe fee rather than a flat rate for all transactions. This pricing model provides more visibility into payments costs) pricing in a sandbox. |
+| Apps | Installs require the app to support the legacy test mode sandbox. | Installs require the app to support sandboxes. |
+| Product limitations | You can’t test *IC+* (A pricing plan where businesses pay the variable network cost for each transaction plus the Stripe fee rather than a flat rate for all transactions. This pricing model provides more visibility into payments costs) pricing in the legacy test mode sandbox. | You can’t test *IC+* (A pricing plan where businesses pay the variable network cost for each transaction plus the Stripe fee rather than a flat rate for all transactions. This pricing model provides more visibility into payments costs) pricing in a sandbox. |
 | Rate limits | Maintain consistent [rate limits](https://docs.stripe.com/rate-limits.md). | Maintain consistent [rate limits](https://docs.stripe.com/rate-limits.md). |
 | Test card numbers | Use the same [test card numbers](https://docs.stripe.com/testing-use-cases.md#test-card-numbers). | Use the same [test card numbers](https://docs.stripe.com/testing-use-cases.md#test-card-numbers). |
 

@@ -68,9 +68,11 @@ Use a VPC endpoint when you want to:
 * Apply VPC security groups and route tables to control which clients reach the endpoint.
 * Meet compliance requirements that prohibit public internet exposure of inference traffic.
 
+For latency-sensitive workloads, place the interface endpoint in each Availability Zone your clients run in. For setup, client configuration, and verification, see [Invoke through a SageMaker Runtime interface endpoint](/docs/invoke-sagemaker-endpoint#invoke-through-a-sagemaker-runtime-interface-endpoint).
+
 > **Note**
 >
-> VPC endpoints and FIPS endpoints address different layers: a VPC endpoint controls the network path your traffic takes, and a FIPS endpoint controls the cryptography that protects it. Use both when your compliance program requires both.
+> VPC endpoints and FIPS endpoints address different layers: a VPC endpoint controls the network path your traffic takes, and a FIPS endpoint controls the cryptography that protects it. Use both when your compliance program requires both. FIPS SageMaker Runtime is a separate PrivateLink service, `com.amazonaws.<region>.sagemaker.runtime-fips`, and VPC endpoint policies aren't supported for `InvokeEndpoint` on it. See [Combine with FIPS endpoints](/docs/invoke-sagemaker-endpoint#combine-with-fips-endpoints).
 
 ## Compliance
 

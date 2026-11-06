@@ -615,15 +615,15 @@ Speech to Text has an elevated concurrency limit.
 Once the concurrency limit is met, subsequent requests are processed in a queue alongside lower-priority requests.
 In practice this typically only adds \~50ms of latency.
 
-| Plan       | Concurrency Limit  (Multilingual v2) | Concurrency Limit  (Flash) | STT Concurrency Limit | Realtime STT Concurrency limit | Music Concurrency limit | Priority level |
-| ---------- | ------------------------------------ | -------------------------- | --------------------- | ------------------------------ | ----------------------- | -------------- |
-| Free       | 2                                    | 4                          | 8                     | 6                              | 0                       | 3              |
-| Starter    | 3                                    | 6                          | 12                    | 9                              | 2                       | 4              |
-| Creator    | 5                                    | 10                         | 20                    | 15                             | 2                       | 5              |
-| Pro        | 10                                   | 20                         | 40                    | 30                             | 2                       | 5              |
-| Scale      | 15                                   | 30                         | 60                    | 45                             | 5                       | 5              |
-| Business   | 15                                   | 30                         | 60                    | 45                             | 5                       | 5              |
-| Enterprise | Elevated                             | Elevated                   | Elevated              | Elevated                       | Highest                 | 6              |
+| Plan       | Concurrency Limit  (Multilingual v2) | Concurrency Limit  (Flash) | STT Concurrency Limit | Realtime STT Concurrency limit | Music Concurrency limit | SFX Concurrency limit | Priority level |
+| ---------- | ------------------------------------ | -------------------------- | --------------------- | ------------------------------ | ----------------------- | --------------------- | -------------- |
+| Free       | 2                                    | 4                          | 8                     | 6                              | 0                       | 4                     | 3              |
+| Starter    | 3                                    | 6                          | 12                    | 9                              | 2                       | 4                     | 4              |
+| Creator    | 5                                    | 10                         | 20                    | 15                             | 2                       | 6                     | 5              |
+| Pro        | 10                                   | 20                         | 40                    | 30                             | 2                       | 6                     | 5              |
+| Scale      | 15                                   | 30                         | 60                    | 45                             | 5                       | 8                     | 5              |
+| Business   | 15                                   | 30                         | 60                    | 45                             | 5                       | 8                     | 5              |
+| Enterprise | Elevated                             | Elevated                   | Elevated              | Elevated                       | Highest                 | Elevated              | 6              |
 
 > **Note**
 >

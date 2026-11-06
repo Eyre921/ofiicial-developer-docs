@@ -57,11 +57,11 @@ The text model handles the creative interpretation. The image model handles the 
 
 ## Step 1: Create the preset via API
 
-The fastest way to create the preset is to POST a [Responses API](https://openrouter.ai/docs/api_reference/responses/overview.md) request body to the preset creation endpoint. This captures the model, system prompt (`instructions`), tools, and parameters in one call:
+The fastest way to create the preset is to POST a [Responses API](https://openrouter.ai/docs/api_reference/responses/overview.md) request body to the preset creation endpoint, authenticated with a read-write [management key](https://openrouter.ai/docs/docs/guides/overview/auth/management-api-keys). This captures the model, system prompt (`instructions`), tools, and parameters in one call:
 
 ```bash expandable lines theme={null}
 curl https://openrouter.ai/api/v1/presets/image-enhancer/responses \
-  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  -H "Authorization: Bearer $OPENROUTER_MANAGEMENT_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "model": "anthropic/claude-opus-4.8",

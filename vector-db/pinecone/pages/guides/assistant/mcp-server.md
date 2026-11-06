@@ -31,7 +31,7 @@ https://<YOUR_PINECONE_ASSISTANT_HOST>/mcp/assistants/<YOUR_ASSISTANT_NAME>
 
 > [!WARNING]
 >
-> The previous SSE-based endpoint (with `/sse` suffix) is deprecated and will stop working on August 31, 2025 at 11:59:59 PM UTC. Before then, update to the [streamable HTTP transport](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) MCP endpoint shown above, which implements the current MCP specification and provides improved flexibility and compatibility.
+> The previous SSE-based endpoint (with the `/sse` suffix) is no longer supported and returns HTTP 410. Use the [streamable HTTP transport](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) MCP endpoint shown above, which implements the current MCP specification.
 
 ### Prerequisites
 

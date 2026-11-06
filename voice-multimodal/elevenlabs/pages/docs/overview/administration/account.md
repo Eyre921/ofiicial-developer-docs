@@ -124,7 +124,7 @@ Deleting your account is permanent and you will not be able to use the same emai
 
 If you would like to delete your account, please see our help article for [account deletion.](/docs/help-center/account/general/how-can-i-delete-my-account)
 
-If you would like to request a Data Subject Request, please use the official form: [Submit a Data Subject Request](https://help.elevenlabs.io/hc/en-us/requests/new?ticket_form_id=25300656511761). This is the only official way to submit such a request.
+If you would like to request a Data Subject Request, please use the official form: [Submit a Data Subject Request](https://help.elevenlabs.io/hc/en-us/requests/new?ticket_form_id=25300656511761).
 
 Please also see our [Terms of Service ](https://elevenlabs.io/terms-of-use)and [Privacy Policy](https://elevenlabs.io/privacy) for more information about how we treat your personal data.
 

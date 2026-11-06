@@ -624,8 +624,8 @@ curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME" \
 
 To limit the number of [input tokens](/guides/assistant/pricing-and-limits#token-usage) used, you can control the context size by tuning `top_k * snippet_size`. These parameters can be adjusted by setting [`context_options`](/reference/api/latest/assistant/chat_assistant#body-context-options) in the request:
 
-* `snippet_size`: Controls the max size of a snippet (default is 2048 tokens). Note that snippet size can vary and, in rare cases, may be bigger than the set `snippet_size`. Snippet size controls the amount of context the model is given for each chunk of text.
-* `top_k`: Controls the max number of context snippets sent to the LLM (default is 16). `top_k` controls the diversity of information sent to the model.
+* `snippet_size`: Controls the max size of a snippet, from 512 to 8192 tokens (default 2048). Note that snippet size can vary and, in rare cases, may be bigger than the set `snippet_size`. Snippet size controls the amount of context the model is given for each chunk of text.
+* `top_k`: Controls the max number of context snippets sent to the LLM, up to 64 (default 16). `top_k` controls the diversity of information sent to the model.
 
 While additional tokens will be used for other parameters (e.g., the system prompt, chat input), adjusting the `top_k` and `snippet_size` can help manage token consumption.
 

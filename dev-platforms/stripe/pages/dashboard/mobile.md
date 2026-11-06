@@ -123,6 +123,8 @@ You can accept and manage in-person or online payments from the Stripe Dashboard
 | [Payment links](https://docs.stripe.com/no-code/payment-links.md) (including QR codes) | Reusable links that take your customers to a prebuilt checkout page | ✓ | :cancelCircle: |
 | [Subscriptions](https://docs.stripe.com/no-code/subscriptions.md) | Recurring payments for your products or services | ✓ | :cancelCircle: |
 
+For a mobile app dedicated to in-person payments that supports more payment methods and doesn’t expose your broader business data, use the [Stripe Terminal app](https://docs.stripe.com/terminal/payments/ready-made-apps.md).
+
 To accept payments on mobile:
 
 1. Verify you meet the following requirements:

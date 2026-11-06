@@ -1,5 +1,5 @@
 ---
-title: "Run hybrid search on a single legacy vector index"
+title: "Run hybrid search on a legacy vector index"
 source: https://docs.pinecone.io/guides/legacy/vectors-api/hybrid-search-single-index
 path: guides/legacy/vectors-api/hybrid-search-single-index
 ---

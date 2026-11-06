@@ -4,6 +4,14 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+**November 5, 2026**
+
+### Sync health on data source reads
+
+Data source list and retrieval responses now include live `sync_metadata.health` for data sources synced by Notion's sync platform. [Retrieve a database](/reference/retrieve-database) also includes health for each readable data source. When available, metadata includes `owner_user_id`, `resource`, and UTC ISO 8601 timestamps in `health.checks`.
+
+If the health lookup fails or times out, the read still succeeds with `health: null`. Null means health is unavailable, not that the sync is unhealthy. Legacy and worker sync metadata stays unchanged. See [sync metadata](/reference/data-source#sync-metadata) for the response fields and health states.
+
 **November 4, 2026**
 
 ### Beta flags and typed view filters in the JavaScript SDK

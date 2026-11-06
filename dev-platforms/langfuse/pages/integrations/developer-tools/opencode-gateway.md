@@ -22,6 +22,8 @@ category: Integrations
 
   For tracing OpenCode without the gateway, see the [OpenCode integration](/integrations/developer-tools/opencode).
 
+**Start with Langfuse** [Sign up](/cloud)
+
 ## Setup [#setup]
 
 <Steps>

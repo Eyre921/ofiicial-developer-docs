@@ -12,6 +12,8 @@ You can [cancel a payment](https://docs.stripe.com/refunds.md#cancel-payment) be
 
 Refunds use your available Stripe balance (not including pending amounts). If your available balance doesn’t cover the amount of the refund, Stripe holds the refund as pending for card transactions (refunds for other payment method types fail) until your Stripe balance becomes sufficient. You can resolve a negative Stripe balance by collecting payments or *topping up* (The act of adding funds to a Stripe account, typically through a transfer from a bank external to Stripe) your account balance. In regions where applicable, Stripe might debit your bank accounts automatically to recover a negative Stripe balance.
 
+Refunding a payment doesn’t restore [billing credit grants](https://docs.stripe.com/billing/subscriptions/usage-based/billing-credits.md) applied to its invoice.
+
 ## Refund requests 
 
 Stripe submits refund requests to your customer’s bank or *card issuer* (The entity that issued a payment card to a cardholder. This could be a bank, such as with the Visa or Mastercard network, or it could be the card network itself, such as with American Express). Successful refunds appear on the bank statement of your customers in real time, depending on the card network and issuing bank.

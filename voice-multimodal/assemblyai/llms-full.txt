@@ -168,17 +168,18 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Sync STT on Pipecat](#sync-stt-on-pipecat-docs-sync-stt-pipecat-mdx)
 - [Sync STT on OpenRouter](#sync-stt-on-openrouter-docs-sync-stt-openrouter-mdx)
 - [Quickstart](#quickstart-docs-dictation-mdx)
-- [Uploading while recording](#uploading-while-recording-docs-dictation-uploading-while-recording-mdx)
+- [Achieve lowest latency](#achieve-lowest-latency-docs-dictation-uploading-while-recording-mdx)
+- [Recordings over two minutes](#recordings-over-two-minutes-docs-dictation-recordings-over-two-minutes-mdx)
 - [Examples](#examples-docs-dictation-examples-mdx)
 - [Transcript rewriting](#transcript-rewriting-docs-dictation-transcript-rewriting-mdx)
 - [Prompting and keyterms](#prompting-and-keyterms-docs-dictation-prompting-and-keyterms-mdx)
 - [Language selection](#language-selection-docs-dictation-language-selection-mdx)
-- [Transcribe dictated audio](#transcribe-dictated-audio-docs-api-reference-dictation-api-transcribe-live-mdx)
-- [Transcribe recorded audio](#transcribe-recorded-audio-docs-api-reference-dictation-api-transcribe-mdx)
+- [Transcribe while recording](#transcribe-while-recording-docs-api-reference-dictation-api-transcribe-live-mdx)
+- [Transcribe a finished recording](#transcribe-a-finished-recording-docs-api-reference-dictation-api-transcribe-mdx)
 - [Audio requirements](#audio-requirements-docs-dictation-audio-requirements-mdx)
 - [Error handling](#error-handling-docs-dictation-error-handling-mdx)
 - [Cloud endpoints & data residency](#cloud-endpoints-data-residency-docs-dictation-endpoints-and-data-zones-mdx)
-- [Connection pre-warming](#connection-pre-warming-docs-dictation-connection-pre-warming-mdx)
+- [Reduce connection overhead](#reduce-connection-overhead-docs-dictation-connection-pre-warming-mdx)
 - [Quickstart](#quickstart-docs-tts-getting-started-quickstart-mdx)
 - [Optimizing Accuracy and Latency](#optimizing-accuracy-and-latency-docs-tts-getting-started-optimizing-accuracy-and-latency-mdx)
 - [Choose an interface](#choose-an-interface-docs-tts-getting-started-choose-an-interface-mdx)
@@ -237,7 +238,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Tool Calling](#tool-calling-docs-llm-gateway-tool-calling-mdx)
 - [Structured Outputs](#structured-outputs-docs-llm-gateway-structured-outputs-mdx)
 - [Agentic Workflows](#agentic-workflows-docs-llm-gateway-agentic-workflows-mdx)
-- [Saved prompts](#saved-prompts-docs-llm-gateway-saved-prompts-mdx)
+- [Saved prompts and prompt templates](#saved-prompts-and-prompt-templates-docs-llm-gateway-saved-prompts-mdx)
 - [Prompt Engineering for LLM Gateway](#prompt-engineering-for-llm-gateway-docs-llm-gateway-prompt-engineering-mdx)
 - [Ask Questions About Your Audio Transcripts](#ask-questions-about-your-audio-transcripts-docs-llm-gateway-ask-questions-mdx)
 - [Decisions](#decisions-docs-llm-gateway-decisions-mdx)
@@ -276,7 +277,6 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Do you offer self-hosted solutions?](#do-you-offer-self-hosted-solutions-docs-faq-do-you-offer-self-hosted-solutions-mdx)
 - [Do you offer servers in the EU?](#do-you-offer-servers-in-the-eu-docs-faq-do-you-offer-servers-in-the-eu-mdx)
 - [Do you support SAML in your product?](#do-you-support-saml-in-your-product-docs-faq-do-you-support-saml-in-your-product-mdx)
-- [How long are outputs maintained?](#how-long-are-outputs-maintained-docs-faq-how-long-are-outputs-retained-mdx)
 - [Does AssemblyAI utilize an anti-virus/anti-malware solution across all relevant infrastructure (workstations and servers), and are appropriate response capabilities deployed to respond to alerts?](#does-assemblyai-utilize-an-anti-virus-anti-malware-solution-across-all-relevant-infrastructure-workstations-and-servers-and-are-appropriate-response-capabilities-deployed-to-respond-to-alerts-docs-faq-does-assemblyai-utilize-an-anti-virus-anti-malware-solution-across-all-relevant-infrastructure-workstations-and-servers-and-are-appropriate-response-capabilities-deployed-to-respond-to-ale-mdx)
 - [How are incidents escalated within your organization?](#how-are-incidents-escalated-within-your-organization-docs-faq-how-are-incidents-escalated-within-your-organization-mdx)
 - [How do we securely use your service?](#how-do-we-securely-use-your-service-docs-faq-how-do-we-securely-use-your-service-mdx)
@@ -362,6 +362,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Where can I find AssemblyAI's product roadmap?](#where-can-i-find-assemblyai-s-product-roadmap-docs-faq-where-can-i-find-assemblyais-product-roadmap-mdx)
 - [AssemblyAI integration prompt for AI coding agents](#assemblyai-integration-prompt-for-ai-coding-agents-docs-agent-instructions-mdx)
 - [Deployment](#deployment-docs-deployment-mdx)
+- [Errors and limits](#errors-and-limits-docs-errors-mdx)
 - [\U0001F99C️\U0001F517 LangChain Integration with AssemblyAI](#u0001f99c-u0001f517-langchain-integration-with-assemblyai-docs-integrations-langchain-mdx)
 - [Select The EU Region for EU Data Residency](#select-the-eu-region-for-eu-data-residency-docs-pre-recorded-audio-guides-how-to-use-the-eu-endpoint-mdx)
 - [Identifying speakers in audio recordings](#identifying-speakers-in-audio-recordings-docs-pre-recorded-audio-guides-identifying-speakers-in-audio-recordings-mdx)
@@ -850,7 +851,7 @@ Do not submit with `auto_chapters` and `summarization` both enabled — the API 
 
 For data residency, swap the host: `streaming.us.assemblyai.com` (US-pinned) or `streaming.eu.assemblyai.com` (EU-pinned). The default host auto-routes to the nearest region.
 
-**Audio format:** PCM16 signed little-endian, mono, 16 kHz. Binary WebSocket frames, **50–1000 ms per chunk**, no faster than real-time. Phone audio (`encoding=pcm_mulaw`, `sample_rate=8000`) is sent as-is — don't upsample.
+**Audio format:** PCM16 signed little-endian, mono, 16 kHz. Binary WebSocket frames, **20–1000 ms per chunk** (50–100 ms recommended), no faster than real-time. Phone audio (`encoding=pcm_mulaw`, `sample_rate=8000`) is sent as-is — don't upsample.
 
 **Auth:**
 - Server-side: `Authorization` header on the WS upgrade.
@@ -1100,6 +1101,8 @@ If a developer asks for any of these, say so directly and propose the closest su
 
 ## 13. Error handling
 
+For the most common errors across all APIs, with fixes, and links to each product's full error and limit reference, see [Errors and limits](/errors).
+
 ### REST (pre-recorded)
 
 - **401** — Missing/invalid Authorization, disabled account, or insufficient balance. Double-check there's no `Bearer` prefix.
@@ -1120,7 +1123,7 @@ If a developer asks for any of these, say so directly and propose the closest su
 | `1008` | Too many new sessions this minute (`error` text `Unauthorized Connection: Too many concurrent sessions`); back off and retry next minute |
 | `3005` | Session cancelled (server-side error) |
 | `3006` | Invalid message type / invalid JSON |
-| `3007` | Audio chunk outside 50–1000 ms, or sent faster than real-time |
+| `3007` | Audio chunk outside 20–1000 ms, or sent faster than real-time |
 | `3008` | Session expired (3-hour cap) |
 
 ### Streaming gotchas
@@ -1128,7 +1131,7 @@ If a developer asks for any of these, say so directly and propose the closest su
 - `speech_model` (streaming, singular) vs `speech_models` (pre-recorded, plural). Don't mix up.
 - On Universal-3.6 Pro Realtime, `end_of_turn_confidence_threshold` is silently ignored; `language_codes` steers the model toward the languages you list.
 - Always send `{ "type": "Terminate" }` when finished. An abandoned session stays billable until the 3-hour cap (`3008`).
-- Chunk size matters: frames outside 50–1000 ms will close the socket with `3007`.
+- Chunk size matters: frames outside 20–1000 ms will close the socket with `3007`.
 
 ---
 
@@ -20422,7 +20425,7 @@ This error only applies when using `language_code`. If you use [Automatic Langua
 ```json
 # Status code: 401
 {
-"error": "Authentication error, API token missing/invalid."
+"error": "Authentication error, API token missing/invalid"
 }
 ```
 
@@ -20515,7 +20518,7 @@ The redacted audio file is only generated when [PII Audio Redaction](/guardrails
 
 When you request an unsupported subtitle format (anything other than `srt` or `vtt`), the API returns an HTML 404 page. The response body is the literal string `404: Not Found` — **not** JSON.
 
-This is the only documented endpoint where a 404 does not come back as a JSON object with an `error` field. A "handled" 404 — for example, looking up an unknown transcript ID — still returns JSON in the usual shape.
+This is the only documented endpoint where a 404 does not come back as a JSON object with an `error` field. A "handled" 404 — for example, looking up a transcript from another project — still returns JSON in the usual shape.
 
 - **Solution**: Use `srt` or `vtt`. See [Export SRT/VTT subtitles](/pre-recorded-audio/export-transcripts-as-srt-vtt-or-text).
 
@@ -46996,9 +46999,9 @@ Description: Turn a spoken utterance into a clean dictation in under a second, w
 ## Overview
 
 Send a spoken utterance in a single HTTP call and get back text your user can
-send as-is: filler gone, self-corrections resolved to what the speaker landed
-on, punctuation and capitalization applied, and the names and terms they care
-about spelled the way they spell them. The verbatim transcript always comes
+send as-is: filler gone, punctuation and capitalization applied, and the names
+and terms they care about spelled the way they spell them. The cleanup can also
+resolve self-corrections to what the speaker landed on. The verbatim transcript always comes
 back alongside it, so you have both.
 
 Cleanup runs by default. With no configuration at all, the cleaned-up text
@@ -47006,10 +47009,10 @@ arrives in `llm_response` and the words exactly as spoken arrive in `text`. Set
 `llm_instruction` when your app needs a particular shape instead, such as a
 bulleted task list or a clinical note.
 
-Dictation runs on Universal-3.5 Pro across 32 languages. The SDK accepts up to
+Dictation runs on Universal-3.6 Pro across 32 languages. The SDKs accept up to
 120 seconds of audio per call, and you can start the request before the user
 stops talking, so most of the utterance is uploaded by the time they finish;
-see [Uploading while recording](/dictation/uploading-while-recording). For a
+see [Achieve lowest latency](/dictation/uploading-while-recording). For a
 finished recording of up to 20 minutes, or a compressed format such as MP3,
 post it to `POST /v1/transcribe` over HTTP; see
 [Transcribing a finished recording](#transcribing-a-finished-recording).
@@ -47025,22 +47028,34 @@ print(result.text)  # verbatim transcript
 print(result.llm_response)  # cleaned-up text, ready to send
 ```
 
+```javascript
+import { AssemblyAI } from "assemblyai";
+
+const client = new AssemblyAI({ apiKey: "<YOUR_API_KEY>" });
+
+const result = await client.dictation.transcribeLive("clip.wav");
+
+console.log(result.text); // verbatim transcript
+console.log(result.llm_response); // cleaned-up text, ready to send
+```
+
 Not using the SDK? The same flow works over plain HTTP — see [Using the HTTP
 API directly](#using-the-http-api-directly).
 
   Dictation is a separate service from Sync, Pre-recorded, and Streaming STT.
   It has its own hostname (`dictation.assemblyai.com`) and its own request
   shape. The [Python SDK](https://github.com/AssemblyAI/assemblyai-python-sdk)
-  wraps it as `DictationTranscriber`; in every other language, call it over
-  HTTP.
+  wraps it as `DictationTranscriber` and the
+  [JavaScript SDK](https://github.com/AssemblyAI/assemblyai-node-sdk) as
+  `client.dictation`; in every other language, call it over HTTP.
 
 ## Before you begin
 
 To complete this guide, you need:
 
 - **An API key** — browse to [API Keys](https://www.assemblyai.com/dashboard/home) in your dashboard and copy your key.
-- **An audio clip** in WAV format, or raw 16-bit PCM. Maximum 120 seconds through the SDK, or 20 minutes [over HTTP](#transcribing-a-finished-recording).
-- **Python 3.8+** for the SDK. The HTTP examples lower down need Python 3.8+ with `requests` or `httpx`, Node.js 18+ with `fetch`, or cURL.
+- **An audio clip** in WAV format, or raw 16-bit PCM. Maximum 120 seconds through the SDKs, or 20 minutes [over HTTP](#transcribing-a-finished-recording).
+- **Python 3.8+** for the Python SDK, or **Node.js 18+** for the JavaScript SDK. The HTTP examples lower down need Python 3.8+ with `requests` or `httpx`, Node.js 18+ with `fetch`, or cURL.
 
 ## Send your first dictation
 
@@ -47048,6 +47063,10 @@ To complete this guide, you need:
 
 ```bash
 pip install -U assemblyai
+```
+
+```bash
+npm install assemblyai
 ```
 
 ### Step 2: Run your first dictation
@@ -47065,27 +47084,44 @@ print("verbatim:", result.text)
 print("cleaned: ", result.llm_response)
 ```
 
-Then run it with `python dictate.py`. You get both versions back from the one
-call:
+Then run it with `python dictate.py`.
+
+Save this as `dictate.mjs`, next to a `clip.wav` file of someone speaking:
+
+```javascript
+import { AssemblyAI } from "assemblyai";
+
+const client = new AssemblyAI({ apiKey: "<YOUR_API_KEY>" });
+
+const result = await client.dictation.transcribeLive("clip.wav");
+
+console.log("verbatim:", result.text);
+console.log("cleaned: ", result.llm_response);
+```
+
+Then run it with `node dictate.mjs`.
+
+You get both versions back from the one call:
 
 ```text
-verbatim: Um, so, can you send me the Q3 numbers before the meeting tomorrow? Thanks.
-cleaned:  So, can you send me the Q3 numbers before the meeting tomorrow? Thanks.
+verbatim: Um, so can you, uh, send me the Q3 numbers before the meeting tomorrow? Thanks.
+cleaned:  So can you send me the Q3 numbers before the meeting tomorrow? Thanks.
 ```
 
 `text` is always what was said, word for word. `llm_response` is the cleaned-up
 version your user can send. Nothing had to be configured to get it: cleanup runs
 by default.
 
-`transcribe_live()` takes a file path, raw audio bytes, or an iterator of audio
-chunks. That last form is what lets you upload while the user is still speaking,
-covered in [Uploading while recording](/dictation/uploading-while-recording).
+`transcribe_live()` in Python and `transcribeLive()` in JavaScript take a file
+path, raw audio bytes, or a stream of audio chunks. That last form is what lets you upload while the user is still speaking,
+covered in [Achieve lowest latency](/dictation/uploading-while-recording).
 
 ## Customize the request
 
 Pass a config to change how the audio is transcribed, or to ask for a different
-shape of output. Every field is optional, and the SDK takes them as
-`DictationConfig`:
+shape of output. Every field is optional. The Python SDK takes them as
+`DictationConfig`, and the JavaScript SDK as a plain object with the same field
+names:
 
 ```python
 import assemblyai as aai
@@ -47101,6 +47137,20 @@ config = aai.DictationConfig(
 
 result = aai.DictationTranscriber().transcribe_live("clip.wav", config)
 print(result.final_text)  # the rewrite, falling back to the transcript
+```
+
+```javascript
+import { AssemblyAI } from "assemblyai";
+
+const client = new AssemblyAI({ apiKey: "<YOUR_API_KEY>" });
+
+const result = await client.dictation.transcribeLive("clip.wav", {
+  stt_prompt: "A doctor dictating a patient visit note.",
+  keyterms_prompt: ["amoxicillin", "lisinopril"],
+  llm_instruction: "Rewrite as a concise clinical chart note.",
+  rewrite_mode: "fast",
+});
+console.log(result.final_text); // the rewrite, falling back to the transcript
 ```
 
 Over HTTP the same fields go in the `config` part of the request body, described
@@ -47124,7 +47174,7 @@ Unknown fields are rejected with a `400` rather than ignored, so a typo surfaces
 
 ### Rewriting the transcript
 
-Cleanup is applied by default. Omitting `llm_instruction`, or the whole `config` part, runs the default cleanup task: filler comes out, self-corrections resolve to what the speaker landed on, and punctuation and capitalization are applied. The speaker's own phrasing and tone survive it.
+Cleanup is applied by default. Omitting `llm_instruction`, or the whole `config` part, runs the default cleanup task: filler comes out, punctuation and capitalization are applied, and self-corrections can be resolved to what the speaker landed on. The speaker's own phrasing and tone survive it.
 
 To ask for a different shape instead, set `llm_instruction` to a plain-English description of the task you want. It replaces the default cleanup task:
 
@@ -47136,12 +47186,12 @@ The rewrite never replaces the transcription. `text` is always the verbatim tran
 
 See [Transcript rewriting](/dictation/transcript-rewriting) for how to write a good instruction, what the service enforces for you, and why dictated commands are never carried out.
 
-## Uploading while recording
+## Achieve lowest latency
 
 You don't have to wait for the recording to finish. The endpoint reads the body
 as it arrives, so you can open the request while the user is still speaking and
 send audio as it is captured. See
-[Uploading while recording](/dictation/uploading-while-recording).
+[Achieve lowest latency](/dictation/uploading-while-recording).
 
 ## What you get back
 
@@ -47183,7 +47233,7 @@ and retry guidance.
 
 ## Using the HTTP API directly
 
-The SDK wraps a single HTTP request. Call it directly from any language.
+The SDKs wrap a single HTTP request. Call it directly from any language.
 
 ### Endpoints
 
@@ -47197,7 +47247,7 @@ being recorded when you send it:
 | Maximum size | 256 MB | 256 MB |
 | Formats | WAV or raw 16-bit PCM | WAV, raw 16-bit PCM, AAC, MP3, M4A, Ogg/Opus, FLAC, or WebM |
 | `config` part | Required, sent before `audio` | Optional, in any order |
-| SDK | `DictationTranscriber` | HTTP only |
+| SDK | `DictationTranscriber` (Python), `client.dictation` (JavaScript) | HTTP only |
 
 Both return the same response. The rest of this section covers
 `/v1/transcribe/live`; see
@@ -47210,8 +47260,8 @@ POST https://dictation.assemblyai.com/v1/transcribe/live
 
 Send the parts in order — `config` first, then `audio`. The endpoint reads the
 body as it arrives, so you can start the request while the user is still
-speaking and upload the audio as it is captured; see [Uploading while
-recording](/dictation/uploading-while-recording).
+speaking and upload the audio as it is captured; see [Achieve lowest
+latency](/dictation/uploading-while-recording).
 
 `/v1/transcribe/stream` is the path this endpoint shipped under and still
 reaches the same handler. There is no unversioned alias.
@@ -47326,7 +47376,7 @@ is simpler:
 - **Nothing is transcribed until the upload finishes**, so for audio that is
   still being recorded, `/v1/transcribe/live` returns sooner.
 
-The SDK uses `/v1/transcribe/live`, so call this endpoint over HTTP. It is also
+Both SDKs use `/v1/transcribe/live`, so call this endpoint over HTTP. It is also
 served at `/transcribe`, without the version prefix.
 
 ```python
@@ -47356,7 +47406,8 @@ curl -X POST https://dictation.assemblyai.com/v1/transcribe \
 
 ## Next steps
 
-- [Uploading while recording](/dictation/uploading-while-recording) — start the request before the speaker stops
+- [Achieve lowest latency](/dictation/uploading-while-recording) — start the request before the speaker stops
+- [Recordings over two minutes](/dictation/recordings-over-two-minutes): fall back to `/v1/transcribe` when a dictation runs long
 - [Examples](/dictation/examples) — end-to-end requests for a clinical note and a travel booking
 - [Transcript rewriting](/dictation/transcript-rewriting) — reshape the transcript with `llm_instruction`
 - [Prompting and keyterms](/dictation/prompting-and-keyterms) — steer the transcript with context and exact terms
@@ -47364,14 +47415,14 @@ curl -X POST https://dictation.assemblyai.com/v1/transcribe \
 - [Audio requirements](/dictation/audio-requirements) — duration, sample width, and format constraints
 - [Error handling](/dictation/error-handling) — status codes and retry guidance
 - [Cloud endpoints & data residency](/dictation/endpoints-and-data-zones) — global routing and the US/EU data zones
-- [Connection pre-warming](/dictation/connection-pre-warming) — take the TLS handshake off the critical path
+- [Reduce connection overhead](/dictation/connection-pre-warming) — open the connection early when you send audio only after recording ends
 - [API reference](/api-reference/dictation-api/transcribe-live) — the full request and response schema
 
 ---
 
-<a id="uploading-while-recording-docs-dictation-uploading-while-recording-mdx"></a>
+<a id="achieve-lowest-latency-docs-dictation-uploading-while-recording-mdx"></a>
 
-# Uploading while recording
+# Achieve lowest latency
 
 URL: https://www.assemblyai.com/docs/dictation/uploading-while-recording
 Source: docs/dictation/uploading-while-recording.mdx
@@ -47392,7 +47443,9 @@ Three rules apply to a chunked upload:
 
 - The `config` part must arrive **before** the first audio byte.
 - Don't let the connection go silent for long stretches mid-body — an
-  abandoned upload is timed out rather than held open.
+  abandoned upload is timed out rather than held open. For mute or
+  push-to-talk, end the request when the user stops and start a new one when
+  they resume, rather than pausing the stream.
 - A chunked body can't be replayed. Keep the audio in memory if you want to
   retry a failed request.
 
@@ -47455,6 +47508,78 @@ methods. Call `transcriber.warm()` when you know audio is coming — as the user
 reaches for the record button — to pay the DNS, TCP and TLS setup before the
 first byte rather than in front of it.
 
+## With the JavaScript SDK
+
+The JavaScript SDK does the framing for you too. `transcribeLive()` takes a
+stream or an async iterable of audio chunks, and `openLive()` takes audio pushed
+in from a callback. Both examples record from the default microphone with
+[SoX](https://sourceforge.net/projects/sox/), so install it first
+(`brew install sox` or `sudo apt-get install sox`):
+
+```javascript
+import { spawn } from "node:child_process";
+import { AssemblyAI } from "assemblyai";
+
+const client = new AssemblyAI({ apiKey: "<YOUR_API_KEY>" });
+
+// SoX writes 16 kHz, 16-bit mono PCM from the default microphone to stdout.
+const microphone = spawn("sox", [
+  "--default-device", "--no-show-progress",
+  "--rate", "16000", "--channels", "1",
+  "--encoding", "signed-integer", "--bits", "16", "--type", "raw", "-",
+]);
+microphone.on("error", () => console.error("Install SoX to record audio."));
+
+console.log("Dictating, press Enter to stop...");
+process.stdin.once("data", () => {
+  microphone.kill(); // ends the stream, which ends the upload
+  process.stdin.pause();
+});
+
+const result = await client.dictation.transcribeLive(microphone.stdout, {
+  sample_rate: 16000,
+  channels: 1,
+  llm_instruction: "Remove filler words and tidy the punctuation.",
+});
+
+console.log(result.text);
+console.log(result.llm_response);
+```
+
+```javascript
+import { spawn } from "node:child_process";
+import { AssemblyAI } from "assemblyai";
+
+const client = new AssemblyAI({ apiKey: "<YOUR_API_KEY>" });
+
+const session = client.dictation.openLive({ sample_rate: 16000, channels: 1 });
+
+// Any callback source works the same way: a microphone library, a WebRTC
+// track, a telephony media stream.
+const microphone = spawn("sox", [
+  "--default-device", "--no-show-progress",
+  "--rate", "16000", "--channels", "1",
+  "--encoding", "signed-integer", "--bits", "16", "--type", "raw", "-",
+]);
+microphone.on("error", () => console.error("Install SoX to record audio."));
+microphone.stdout.on("data", (chunk) => session.write(chunk));
+
+console.log("Dictating, press Enter to stop...");
+process.stdin.once("data", () => {
+  microphone.kill();
+  process.stdin.pause();
+});
+
+// Wait until recording stops: result() ends the audio, so a chunk written
+// after it is called is dropped.
+await new Promise((resolve) => microphone.on("close", resolve));
+const result = await session.result();
+console.log(result.final_text);
+```
+
+Call `client.dictation.warm()` when you know audio is coming to open the
+connection before the first byte rather than in front of it.
+
 ## Without the SDK
 
 Without the SDK, frame the multipart body yourself:
@@ -47511,7 +47636,265 @@ the server does not wait for the full body before it begins.
 
 - [Quickstart](/dictation) — the single-call flow this builds on
 - [Audio requirements](/dictation/audio-requirements) — why raw PCM is the easiest format to stream
-- [Connection pre-warming](/dictation/connection-pre-warming) — take the handshake off the critical path too
+- [Reduce connection overhead](/dictation/connection-pre-warming) — take the handshake off the critical path too
+
+---
+
+<a id="recordings-over-two-minutes-docs-dictation-recordings-over-two-minutes-mdx"></a>
+
+# Recordings over two minutes
+
+URL: https://www.assemblyai.com/docs/dictation/recordings-over-two-minutes
+Source: docs/dictation/recordings-over-two-minutes.mdx
+Navigation: Dictation API > Getting started
+Description: Start every dictation on the live endpoint, and fall back to the finished-recording endpoint when the user talks for longer than 120 seconds.
+
+Most dictations are short, and [uploading while recording](/dictation/uploading-while-recording)
+to `/v1/transcribe/live` gets them back fastest. That endpoint accepts up to 120
+seconds of audio. `/v1/transcribe` accepts a finished recording of up to 20
+minutes, with the same `config` and the same response. You don't know how long
+the user will talk when they start, so start every dictation on the live
+endpoint, and send it to `/v1/transcribe` only when it runs past 120 seconds.
+
+## How the fallback works
+
+When a live upload passes 120 seconds, the endpoint answers `413` with
+`error_code: "audio_too_large"` as soon as the limit is crossed. That can
+arrive while the user is still talking. The fallback is built around that one
+response:
+
+1. **Keep a copy of every audio frame** you send to the live endpoint, from
+   the first one.
+2. **Fall back only on `413` with `error_code: "audio_too_large"`.** Surface
+   every other error as usual. A `413` with any other body is a different
+   problem.
+3. **Keep recording after the `413`.** The user hasn't stopped talking, so keep
+   reading the microphone into the copy until they do.
+4. **Send the whole copy to `/v1/transcribe` once**, with the same `config`,
+   when the recording ends. Treat its response exactly like a live one. If it
+   fails, surface its error, not the `413`.
+5. **Stop at 20 minutes**, the limit on `/v1/transcribe`.
+6. **On cancel, drop everything.** Don't send a fallback request for a
+   recording the user discarded.
+
+The fallback adds the upload time of the whole recording after the user stops,
+since `/v1/transcribe` reads the full body before it starts. That only applies
+to recordings over two minutes. Shorter ones get the live endpoint's latency,
+as before.
+
+  Don't stream a still-growing recording into `/v1/transcribe` with a chunked
+  body to save upload time. The endpoint is for finished recordings, and a
+  request held open for the rest of the dictation is not a supported use.
+
+## Example
+
+Both examples upload 16 kHz mono 16-bit PCM while recording, and take your
+microphone loop as an iterator of audio frames that ends when the user stops.
+
+```python expandable
+import json
+import os
+import queue
+import threading
+
+import requests
+
+API_KEY = os.environ["ASSEMBLYAI_API_KEY"]
+BASE_URL = "https://dictation.assemblyai.com"
+CONFIG = {"sample_rate": 16000, "channels": 1, "rewrite_mode": "smart"}
+BOUNDARY = "----dictation-boundary"
+MAX_RECORDING_BYTES = 20 * 60 * 16000 * 2  # 20 minutes of 16 kHz mono 16-bit PCM
+
+HEAD = (
+    f"--{BOUNDARY}\r\n"
+    'Content-Disposition: form-data; name="config"\r\n'
+    "Content-Type: application/json\r\n\r\n"
+    f"{json.dumps(CONFIG)}\r\n"
+    f"--{BOUNDARY}\r\n"
+    'Content-Disposition: form-data; name="audio"; filename="audio"\r\n'
+    "Content-Type: audio/pcm\r\n\r\n"
+).encode()
+TAIL = f"\r\n--{BOUNDARY}--\r\n".encode()
+HEADERS = {
+    "Authorization": API_KEY,
+    "Content-Type": f"multipart/form-data; boundary={BOUNDARY}",
+}
+
+def is_live_cap_refusal(response):
+    """True for the one response that triggers the fallback: 413 audio_too_large."""
+    if response is None or response.status_code != 413:
+        return False
+    try:
+        return response.json().get("error_code") == "audio_too_large"
+    except ValueError:
+        return False
+
+def dictate(record):
+    """Transcribe one dictation. `record` yields 16-bit PCM frames until key up."""
+    frames = queue.Queue()
+    live = {}
+
+    def live_body():
+        yield HEAD
+        while (frame := frames.get()) is not None:
+            yield frame
+        yield TAIL
+
+    def upload_live():
+        try:
+            live["response"] = requests.post(
+                f"{BASE_URL}/v1/transcribe/live",
+                headers=HEADERS, data=live_body(), timeout=90,
+            )
+        except requests.ConnectionError as error:
+            # The route can answer 413 and close while frames are still being
+            # written, so the client may see a dropped connection, not the 413.
+            live["error"] = error
+
+    uploader = threading.Thread(target=upload_live)
+    uploader.start()
+
+    # Keep reading the microphone until key up, whatever happens to the live
+    # request, and keep a copy of every frame for the fallback.
+    recording = bytearray()
+    for frame in record:
+        frames.put(frame)
+        if len(recording) + len(frame) > MAX_RECORDING_BYTES:
+            break  # stop recording at the 20-minute limit
+        recording += frame
+    frames.put(None)
+    uploader.join()
+
+    response = live.get("response")
+    if response is not None and response.ok:
+        return response.json()
+
+    over_cap = is_live_cap_refusal(response) or (
+        "error" in live and len(recording) > 120 * 16000 * 2
+    )
+    if not over_cap:
+        if response is not None:
+            response.raise_for_status()
+        raise live["error"]
+
+    # Past 120 seconds: send the whole recording, with the same config, to the
+    # route for finished recordings. Its response has the same shape.
+    buffered = requests.post(
+        f"{BASE_URL}/v1/transcribe",
+        headers=HEADERS, data=HEAD + bytes(recording) + TAIL, timeout=120,
+    )
+    buffered.raise_for_status()
+    return buffered.json()
+```
+
+```javascript expandable
+const API_KEY = process.env.ASSEMBLYAI_API_KEY;
+const BASE_URL = "https://dictation.assemblyai.com";
+const CONFIG = { sample_rate: 16000, channels: 1, rewrite_mode: "smart" };
+const BOUNDARY = "----dictation-boundary";
+const LIVE_CAP_BYTES = 120 * 16000 * 2; // 120 s of 16 kHz mono 16-bit PCM
+const MAX_RECORDING_BYTES = 20 * 60 * 16000 * 2; // 20 minutes
+
+const encoder = new TextEncoder();
+const HEAD = encoder.encode(
+  `--${BOUNDARY}\r\n` +
+    'Content-Disposition: form-data; name="config"\r\n' +
+    "Content-Type: application/json\r\n\r\n" +
+    `${JSON.stringify(CONFIG)}\r\n` +
+    `--${BOUNDARY}\r\n` +
+    'Content-Disposition: form-data; name="audio"; filename="audio"\r\n' +
+    "Content-Type: audio/pcm\r\n\r\n"
+);
+const TAIL = encoder.encode(`\r\n--${BOUNDARY}--\r\n`);
+const HEADERS = {
+  Authorization: API_KEY,
+  "Content-Type": `multipart/form-data; boundary=${BOUNDARY}`,
+};
+
+async function isLiveCapRefusal(response) {
+  if (response?.status !== 413) return false;
+  const body = await response.json().catch(() => ({}));
+  return body.error_code === "audio_too_large";
+}
+
+// `record` is an async iterable of 16-bit PCM chunks (Uint8Array) that ends at key up.
+export async function dictate(record) {
+  let push;
+  const live = new ReadableStream({
+    start(controller) {
+      controller.enqueue(HEAD);
+      push = (chunk) => {
+        try {
+          if (chunk) controller.enqueue(chunk);
+          else (controller.enqueue(TAIL), controller.close());
+        } catch {
+          // The live request already ended (for example with the 413).
+        }
+      };
+    },
+  });
+
+  const liveRequest = fetch(`${BASE_URL}/v1/transcribe/live`, {
+    method: "POST",
+    headers: HEADERS,
+    body: live,
+    duplex: "half",
+  }).then(
+    (response) => ({ response }),
+    (error) => ({ error })
+  );
+
+  // Keep reading the microphone until key up, whatever happens to the live
+  // request, and keep a copy of every chunk for the fallback.
+  const chunks = [];
+  let recorded = 0;
+  for await (const chunk of record) {
+    push(chunk);
+    if (recorded + chunk.length > MAX_RECORDING_BYTES) break; // 20-minute limit
+    chunks.push(chunk);
+    recorded += chunk.length;
+  }
+  push(null);
+
+  const { response, error } = await liveRequest;
+  if (response?.ok) return response.json();
+
+  const overCap =
+    (await isLiveCapRefusal(response)) || (error && recorded > LIVE_CAP_BYTES);
+  if (!overCap) throw error ?? new Error(`Dictation failed: ${response.status}`);
+
+  // Past 120 seconds: send the whole recording, with the same config, to the
+  // route for finished recordings. Its response has the same shape.
+  const buffered = await fetch(`${BASE_URL}/v1/transcribe`, {
+    method: "POST",
+    headers: HEADERS,
+    body: new Blob([HEAD, ...chunks, TAIL]),
+  });
+  if (!buffered.ok) throw new Error(`Dictation failed: ${buffered.status}`);
+  return buffered.json();
+}
+```
+
+  The Python SDK's `transcribe_live()` and `open_live()` stop at 120 seconds
+  and don't fall back, so use HTTP for recordings that can run longer. Blurt,
+  AssemblyAI's open-source dictation app, ships the same fallback in Swift:
+  see [`AssemblyAITranscriber+LiveCapFallback.swift`](https://github.com/AssemblyAI/blurt/blob/main/Sources/BlurtEngine/STT/AssemblyAITranscriber%2BLiveCapFallback.swift).
+
+## Making the fallback faster
+
+The fallback's wait is mostly upload time, so a smaller file comes back
+sooner. `/v1/transcribe` accepts compressed audio, such as Ogg/Opus
+(`audio/ogg`) and FLAC (`audio/flac`). Encoding the copy before you send it
+cuts the upload for long recordings. FLAC is lossless; Opus is much smaller
+but lossy, so check transcription quality on your own audio before switching.
+See [Audio requirements](/dictation/audio-requirements) for the accepted
+formats.
+
+## Related pages
+
+- [Achieve lowest latency](/dictation/uploading-while-recording): the live upload this builds on
+- [Audio requirements](/dictation/audio-requirements): the limits on each endpoint
+- [Error handling](/dictation/error-handling): every status code and what to do about it
 
 ---
 
@@ -47547,6 +47930,24 @@ result = aai.DictationTranscriber().transcribe_live("clip.wav", config)
 
 transcript = result.text
 rewrite = result.final_text  # the cleaned-up text, falling back to the transcript
+```
+
+```javascript expandable
+import { AssemblyAI } from "assemblyai";
+
+const client = new AssemblyAI({ apiKey: "<YOUR_API_KEY>" });
+
+const config = {
+  stt_prompt: "A doctor dictating a patient visit note.",
+  keyterms_prompt: ["amoxicillin", "lisinopril", "metoprolol"],
+  llm_instruction:
+    "Remove filler words and rewrite as a concise clinical chart note.",
+};
+
+const result = await client.dictation.transcribeLive("clip.wav", config);
+
+const transcript = result.text;
+const rewrite = result.final_text; // the cleaned-up text, falling back to the transcript
 ```
 
 ```python expandable
@@ -47644,6 +48045,23 @@ transcript = result.text
 rewrite = result.final_text  # the cleaned-up text, falling back to the transcript
 ```
 
+```javascript expandable
+import { AssemblyAI } from "assemblyai";
+
+const client = new AssemblyAI({ apiKey: "<YOUR_API_KEY>" });
+
+const config = {
+  keyterms_prompt: ["Reykjavik", "Cancun", "Lufthansa"],
+  llm_instruction:
+    "Remove filler words and rewrite as a short, friendly booking confirmation addressed to the client.",
+};
+
+const result = await client.dictation.transcribeLive("clip.wav", config);
+
+const transcript = result.text;
+const rewrite = result.final_text; // the cleaned-up text, falling back to the transcript
+```
+
 ```python expandable
 import json
 import requests
@@ -47738,9 +48156,9 @@ has that the other speech-to-text APIs do not: you get the words as spoken and
 text your user can send, from the same call.
 
 Cleanup is applied by default. Omitting `llm_instruction`, or the whole
-`config` part, runs the default cleanup task: filler comes out,
-self-corrections resolve to what the speaker landed on, and punctuation and
-capitalization are applied. The speaker's own phrasing and tone survive it, so
+`config` part, runs the default cleanup task: filler comes out, punctuation
+and capitalization are applied, and self-corrections can be resolved to what
+the speaker landed on. The speaker's own phrasing and tone survive it, so
 the result still reads like them.
 
 ```python
@@ -47789,6 +48207,21 @@ result = aai.DictationTranscriber().transcribe_live("clip.wav", config)
 
 print(result.text)        # the verbatim transcript
 print(result.final_text)  # the rewrite, falling back to the transcript
+```
+
+```javascript
+import { AssemblyAI } from "assemblyai";
+
+const client = new AssemblyAI({ apiKey: "<YOUR_API_KEY>" });
+
+const config = {
+  llm_instruction: "Rewrite as a concise clinical chart note.",
+};
+
+const result = await client.dictation.transcribeLive("clip.wav", config);
+
+console.log(result.text); // the verbatim transcript
+console.log(result.final_text); // the rewrite, falling back to the transcript
 ```
 
 ```python
@@ -48002,8 +48435,8 @@ transcript goes. You can add replacements of your own in `prompt_replacements`:
 
 The rewrite never replaces the transcription. `text` is always the verbatim
 transcript, and the rewritten version arrives separately in `llm_response`. If
-you need to show one value, `final_text` in the Python SDK returns the rewrite
-when there is one and the transcript otherwise.
+you need to show one value, `final_text` in the Python and JavaScript SDKs
+returns the rewrite when there is one and the transcript otherwise.
 
 The rewrite is also best-effort. If it fails, the response is still `200`,
 `llm_response` is `null`, and `llm_error` says why. See
@@ -48106,6 +48539,20 @@ result = aai.DictationTranscriber().transcribe_live("clip.wav", config)
 print(result.text)
 ```
 
+```javascript
+import { AssemblyAI } from "assemblyai";
+
+const client = new AssemblyAI({ apiKey: "<YOUR_API_KEY>" });
+
+const config = {
+  stt_prompt: "A doctor dictating a patient visit note.",
+  keyterms_prompt: ["amoxicillin", "lisinopril", "metoprolol"],
+};
+
+const result = await client.dictation.transcribeLive("clip.wav", config);
+console.log(result.text);
+```
+
 ```python
 import json
 import requests
@@ -48175,9 +48622,10 @@ Exceeding a limit is rejected with `400`:
 | `stt_prompt` | 6000 characters |
 | `keyterms_prompt` | 100 terms, 8000 characters across all terms |
 
-`DictationConfig` in the Python SDK validates both client-side at the same
-values, so an over-long prompt raises before the request goes out. It also
-strips whitespace from each keyterm and drops empty ones.
+Both SDKs check both limits client-side at the same values: Python's
+`DictationConfig` raises when it is built, and the JavaScript SDK rejects the
+`transcribeLive()` or `openLive()` call before the request goes out. Both also
+strip whitespace from each keyterm and drop empty ones.
 
 ## Related features
 
@@ -48217,6 +48665,19 @@ config = aai.DictationConfig(language_codes=["es"])
 
 result = aai.DictationTranscriber().transcribe_live("clip.wav", config)
 print(result.text)
+```
+
+```javascript
+import { AssemblyAI } from "assemblyai";
+
+const client = new AssemblyAI({ apiKey: "<YOUR_API_KEY>" });
+
+const config = {
+  language_codes: ["es"],
+};
+
+const result = await client.dictation.transcribeLive("clip.wav", config);
+console.log(result.text);
 ```
 
 ```python
@@ -48313,9 +48774,9 @@ The endpoint accepts 32 codes. Anything outside this set is rejected with a
 
 ---
 
-<a id="transcribe-dictated-audio-docs-api-reference-dictation-api-transcribe-live-mdx"></a>
+<a id="transcribe-while-recording-docs-api-reference-dictation-api-transcribe-live-mdx"></a>
 
-# Transcribe dictated audio
+# Transcribe while recording
 
 URL: https://www.assemblyai.com/docs/api-reference/dictation-api/transcribe-live
 Source: docs/api-reference/dictation-api/transcribe-live.mdx
@@ -48327,9 +48788,9 @@ Metadata:
 
 ---
 
-<a id="transcribe-recorded-audio-docs-api-reference-dictation-api-transcribe-mdx"></a>
+<a id="transcribe-a-finished-recording-docs-api-reference-dictation-api-transcribe-mdx"></a>
 
-# Transcribe recorded audio
+# Transcribe a finished recording
 
 URL: https://www.assemblyai.com/docs/api-reference/dictation-api/transcribe
 Source: docs/api-reference/dictation-api/transcribe.mdx
@@ -48352,10 +48813,10 @@ Description: Duration, format, and sample-rate constraints for Dictation audio.
 
 Dictation has two transcription endpoints with different limits.
 `/v1/transcribe/live` takes audio while it is still being recorded and is what
-the SDK uses. `/v1/transcribe` takes a finished recording over HTTP; see
+the SDKs use. `/v1/transcribe` takes a finished recording over HTTP; see
 [Transcribing a finished recording](/dictation#transcribing-a-finished-recording).
 
-| Constraint | `/v1/transcribe/live` (SDK and HTTP) | `/v1/transcribe` (HTTP) |
+| Constraint | `/v1/transcribe/live` (SDKs and HTTP) | `/v1/transcribe` (HTTP) |
 |------------|--------------------------------------|-------------------------|
 | Minimum duration | None | 80 ms |
 | Maximum duration | 120 s | 20 minutes |
@@ -48382,7 +48843,7 @@ For raw PCM there is no header to read, so both fields are required in the
 
 Raw PCM is the easier format to upload while the user is still speaking, since
 frames can go on the wire as they come off the microphone with no container to
-finalize. See [Uploading while recording](/dictation/uploading-while-recording).
+finalize. See [Achieve lowest latency](/dictation/uploading-while-recording).
 
 ## When audio is rejected
 
@@ -48392,7 +48853,9 @@ at the end, because the server is measuring the audio as it arrives. See
 [Error handling](/dictation/error-handling) for the full table.
 
 For a recording longer than 120 seconds, wait until it finishes and post it to
-`/v1/transcribe`. For audio longer than 20 minutes, use
+`/v1/transcribe`. If you can't tell in advance how long the user will talk,
+start on `/v1/transcribe/live` and fall back when it answers `413`; see
+[Recordings over two minutes](/dictation/recordings-over-two-minutes). For audio longer than 20 minutes, use
 [Pre-recorded STT](/pre-recorded-audio/getting-started/transcribe-an-audio-file).
 For a live transcript while the speaker is still talking, use
 [Real-time STT](/streaming/getting-started/transcribe-streaming-audio).
@@ -48464,20 +48927,20 @@ transcript, `llm_response` is `null`, and `llm_error` says what went wrong:
 | `upstream_error` | LLM Gateway returned a `5xx` or another non-`2xx` error |
 
 Fall back to `text` when `llm_response` is `null`. Never treat a non-`null`
-`llm_error` as a failed request. In the Python SDK, `result.final_text` already
+`llm_error` as a failed request. In both SDKs, `result.final_text` already
 does this: it returns the rewrite when there is one and the transcript
 otherwise.
 
-## Errors in the Python SDK
+## Errors in the SDKs
 
-A failed request raises `DictationError`, which carries the pieces you need to
-decide what to do next:
+A failed request raises `DictationError` in Python and throws `DictationError`
+in JavaScript. It carries the pieces you need to decide what to do next:
 
-| Attribute | Meaning |
-|-----------|---------|
-| `status_code` | The HTTP status from the table above |
-| `error_code` | The machine-readable code, when the response carried one |
-| `retry_after` | Seconds to wait, from the `Retry-After` header on a `429` |
+| Python | JavaScript | Meaning |
+|--------|------------|---------|
+| `status_code` | `status` | The HTTP status from the table above |
+| `error_code` | `errorCode` | The machine-readable code, when the response carried one |
+| `retry_after` | `retryAfter` | Seconds to wait, from the `Retry-After` header on a `429` |
 
 ```python
 import time
@@ -48496,7 +48959,25 @@ except aai.DictationError as error:
     )
 ```
 
-`retry_after` is `None` when the response carried no `Retry-After` header, so
+```javascript
+import { setTimeout as sleep } from "node:timers/promises";
+import { AssemblyAI, DictationError } from "assemblyai";
+
+const client = new AssemblyAI({ apiKey: "<YOUR_API_KEY>" });
+
+try {
+  const result = await client.dictation.transcribeLive("clip.wav");
+} catch (error) {
+  if (!(error instanceof DictationError)) throw error;
+  if (error.retryAfter) await sleep(error.retryAfter * 1000);
+  throw new Error(
+    `Dictation failed (${error.status}/${error.errorCode}): ${error.message}`,
+  );
+}
+```
+
+`retry_after` is `None` in Python, and `retryAfter` is `undefined` in
+JavaScript, when the response carried no `Retry-After` header, so
 fall back to your own backoff rather than assuming a value is present.
 
 ## Retry guidance
@@ -48504,7 +48985,9 @@ fall back to your own backoff rather than assuming a value is present.
 - **429, 502, 503, and 504** are transient. Back off and retry.
 - **400, 413, and 415** mean the request itself is wrong. Fix the audio or the
   config before retrying. See [Audio requirements](/dictation/audio-requirements)
-  for the constraints.
+  for the constraints. The exception is `413 audio_too_large` from
+  `/v1/transcribe/live`: send the same recording to `/v1/transcribe` instead.
+  See [Recordings over two minutes](/dictation/recordings-over-two-minutes).
 - **401** is a credential problem. Retrying will not help.
 
 A chunked upload cannot be replayed, so keep the audio in memory if you want to
@@ -48596,8 +49079,8 @@ the host changes. Each host serves both `/v1/transcribe/live` and
 ## How to use it
 
 Replace the base URL with the endpoint you want. In the Python SDK the base URL
-comes from the `dictation_base_url` setting, which defaults to the global
-endpoint. The examples below use the US data zone; for the EU data zone,
+comes from the `dictation_base_url` setting, and in the JavaScript SDK from the
+`dictationBaseUrl` client option; both default to the global endpoint. The examples below use the US data zone; for the EU data zone,
 replace `us` with `eu`.
 
 ```python title="Global (default)"
@@ -48627,6 +49110,41 @@ aai.settings.dictation_base_url = "https://dictation.eu.assemblyai.com"
 
 result = aai.DictationTranscriber().transcribe_live("clip.wav")
 print(result.text)
+```
+
+```javascript title="Global (default)"
+import { AssemblyAI } from "assemblyai";
+
+const client = new AssemblyAI({
+  apiKey: "<YOUR_API_KEY>",
+});
+
+const result = await client.dictation.transcribeLive("clip.wav");
+console.log(result.text);
+```
+
+```javascript title="US data residency"
+import { AssemblyAI } from "assemblyai";
+
+const client = new AssemblyAI({
+  apiKey: "<YOUR_API_KEY>",
+  dictationBaseUrl: "https://dictation.us.assemblyai.com",
+});
+
+const result = await client.dictation.transcribeLive("clip.wav");
+console.log(result.text);
+```
+
+```javascript title="EU data residency"
+import { AssemblyAI } from "assemblyai";
+
+const client = new AssemblyAI({
+  apiKey: "<YOUR_API_KEY>",
+  dictationBaseUrl: "https://dictation.eu.assemblyai.com",
+});
+
+const result = await client.dictation.transcribeLive("clip.wav");
+console.log(result.text);
 ```
 
 ```python title="Global (default)"
@@ -48755,13 +49273,13 @@ curl -X POST https://dictation.eu.assemblyai.com/v1/transcribe/live \
   Pre-warming is per host. A connection warmed against the global endpoint is
   no use to a request aimed at a data zone endpoint, so warm the same host you
   are about to transcribe against. See
-  [Connection pre-warming](/dictation/connection-pre-warming).
+  [Reduce connection overhead](/dictation/connection-pre-warming).
 
 ---
 
-<a id="connection-pre-warming-docs-dictation-connection-pre-warming-mdx"></a>
+<a id="reduce-connection-overhead-docs-dictation-connection-pre-warming-mdx"></a>
 
-# Connection pre-warming
+# Reduce connection overhead
 
 URL: https://www.assemblyai.com/docs/dictation/connection-pre-warming
 Source: docs/dictation/connection-pre-warming.mdx
@@ -48814,6 +49332,22 @@ coroutine equivalent, which pairs well with
 `asyncio.create_task(transcriber.warm())` so the handshake overlaps whatever
 your app is doing next.
 
+```javascript
+import { AssemblyAI } from "assemblyai";
+
+const client = new AssemblyAI({ apiKey: "<YOUR_API_KEY>" });
+
+// Call as soon as you know audio is coming (e.g. the user taps record).
+await client.dictation.warm();
+
+// Same process, so this reuses the warmed connection.
+const result = await client.dictation.transcribeLive("clip.wav");
+console.log(result.text);
+```
+
+`warm()` resolves to `true` once the connection is open and `false` if it could
+not be opened, and never throws.
+
 ```python
 import requests
 
@@ -48863,17 +49397,19 @@ request goes out, and if that request travels through the same HTTP client and
 the same host.
 
 - **Same client.** The warm call and the transcription must share a connection
-  pool. A fresh `requests.Session`, `httpx.Client`, or `AssemblyAI` instance for
-  the transcription gets a fresh connection and pays the handshake anyway.
+  pool. A fresh `requests.Session`, `httpx.Client`, or Python
+  `DictationTranscriber` gets a fresh connection and pays the handshake anyway.
+  In Node.js, `fetch` and the JavaScript SDK share one pool per process.
 - **Same host.** Pre-warming is per host, so a connection warmed against
   `dictation.assemblyai.com` is no use to a request aimed at
   `dictation.eu.assemblyai.com`. Warm the host you are about to call. See
   [Cloud endpoints & data residency](/dictation/endpoints-and-data-zones).
 - **Not too early.** Idle connections are evicted after a short window. In the
   Python SDK that window is `settings.keepalive_expiry`, which inherits httpx's
-  5-second default unless you raise it. Warm shortly before the request rather
-  than at application startup, or raise `keepalive_expiry` so one call covers a
-  longer pause.
+  5-second default unless you raise it. In the JavaScript SDK the pooled
+  connection idles out after a few seconds. Warm shortly before the request
+  rather than at application startup, or, in Python, raise `keepalive_expiry` so
+  one call covers a longer pause.
 
 If the connection has been evicted or closed by the time you transcribe, the
 request silently opens a fresh one and pays the full handshake. The warm-up
@@ -48938,7 +49474,7 @@ tts = aai.TextToSpeech(api_key=os.environ["ASSEMBLYAI_API_KEY"])
 
 response = tts.synthesize(
     "Hi, thanks for calling. How can I help you today?",
-    aai.TTSConfig(voice_id="37e65973-9d96-5aab-adcd-01bf56ab5af9", container=aai.TTSContainer.wav),  # Kyla
+    aai.TTSConfig(voice_id="aai-kyla", container=aai.TTSContainer.wav),
 )
 
 with open("hello.wav", "wb") as f:
@@ -48958,7 +49494,7 @@ const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 
 const response = await client.tts.synthesize({
   text: "Hi, thanks for calling. How can I help you today?",
-  voice_id: "37e65973-9d96-5aab-adcd-01bf56ab5af9", // Kyla
+  voice_id: "aai-kyla",
   container: "wav",
 });
 
@@ -48972,7 +49508,7 @@ console.log(`wrote hello.wav: ${response.audioDurationMs} ms of audio, ${respons
 curl -sS --fail-with-body -D headers.txt https://tts.us.assemblyai.com/v1/speech \
   -H "Authorization: $ASSEMBLYAI_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"text": "Hi, thanks for calling. How can I help you today?", "voice_id": "37e65973-9d96-5aab-adcd-01bf56ab5af9", "container": "wav", "stream": false}' \
+  -d '{"text": "Hi, thanks for calling. How can I help you today?", "voice_id": "aai-kyla", "container": "wav", "stream": false}' \
   -o hello.wav
 ```
 
@@ -48983,7 +49519,7 @@ HTTP/2 200
 content-type: audio/wav
 x-request-id: 83c9fae1-e0b0-433a-b97e-26f372778f2a
 x-tts-model: assemblyai-tts-1
-x-tts-voice-id: 37e65973-9d96-5aab-adcd-01bf56ab5af9
+x-tts-voice-id: aai-kyla
 x-tts-language: english
 x-tts-encoding: pcm_s16le
 x-tts-sample-rate: 24000
@@ -48997,13 +49533,13 @@ A refused request, a wrong key for example, exits with a non-zero code and write
 Run it with `python hello.py` or `node hello.mjs`, and `hello.wav` plays in any audio player. The SDKs print this:
 
 ```text
-voice 37e65973-9d96-5aab-adcd-01bf56ab5af9, model assemblyai-tts-1, 24000 Hz pcm_s16le
+voice aai-kyla, model assemblyai-tts-1, 24000 Hz pcm_s16le
 wrote hello.wav: 3200 ms of audio, 49 characters billed
 ```
 
 Four things about this run:
 
-- **Only the text is required.** `voice_id` names Kyla here by her ID. Leave it out and you get `aai-jane`, the default voice, in English at 24 kHz 16-bit PCM. A voice speaks the language it was recorded in unless you set `language` to another one, though results are usually [worse than in the voice's own language](/tts/voices#voice-and-language). [Voices](/tts/voices) explains how to name a voice, find its ID and set the language, and the same `voice_id` takes a voice you [cloned](/tts/cloned-voices) in the dashboard.
+- **Only the text is required.** `voice_id` names Kyla here by her library slug. Leave it out and you get the [default voice](/tts/voices#the-default-voice), Kyla in English, at 24 kHz 16-bit PCM. A voice speaks the language it was recorded in unless you set `language` to another one, though results are usually [worse than in the voice's own language](/tts/voices#voice-and-language). [Voices](/tts/voices) explains how to name a voice and set the language, and the same `voice_id` takes a voice you [cloned](/tts/cloned-voices) in the dashboard.
 - **The response says what it ran with.** The voice, model, language, encoding and sample rate come back as response headers, which the SDKs expose on the result. Read the sample rate from there rather than from your own request when you write a header or set up a player.
 - **The duration varies between runs.** Synthesis is not deterministic, so the same sentence can come back a few hundred milliseconds longer or shorter. Billing counts characters, not seconds.
 - **The JavaScript SDK uses two spellings.** `synthesize()` and `stream()` take the API's own field names, `voice_id` and `sample_rate`, while `session()` takes camelCase options, `voiceId` and `sampleRate`. Results are camelCase, and the `Begin` and `Termination` frames keep their wire names.
@@ -49021,7 +49557,7 @@ import os
 
 import assemblyai as aai
 
-config = aai.TTSConfig(voice_id="37e65973-9d96-5aab-adcd-01bf56ab5af9", language="english")  # Kyla
+config = aai.TTSConfig(voice_id="aai-kyla", language="english")
 reply = [
     "Hi, thanks for calling.",
     "You have reached the accounts team.",
@@ -49057,7 +49593,7 @@ const reply = [
   "Would you like to pay it today?",
 ];
 
-const session = client.tts.session({ voiceId: "37e65973-9d96-5aab-adcd-01bf56ab5af9", language: "english" }); // Kyla
+const session = client.tts.session({ voiceId: "aai-kyla", language: "english" });
 const begin = await session.connect();
 console.log(`session ${begin.id}`);
 
@@ -49128,7 +49664,7 @@ with aai.TTSSession(config, api_key=os.environ["ASSEMBLYAI_API_KEY"]) as session
 
 ```javascript
 // Fragment: continues reply.mjs. You supply llmTokens(), userStartedTalking() and play().
-const session = client.tts.session({ voiceId: "37e65973-9d96-5aab-adcd-01bf56ab5af9" });
+const session = client.tts.session({ voiceId: "aai-kyla" });
 await session.connect();
 
 for await (const token of llmTokens()) session.generate(token); // joined as sent: include the spaces
@@ -49161,7 +49697,7 @@ import websockets
 
 URL = (
     "wss://tts.us.assemblyai.com/v1/ws"
-    "?voice_id=37e65973-9d96-5aab-adcd-01bf56ab5af9&language=english"
+    "?voice_id=aai-kyla&language=english"
     "&sample_rate=24000&encoding=pcm_s16le"
 )
 
@@ -49302,7 +49838,7 @@ import os
 
 import assemblyai as aai
 
-config = aai.TTSConfig(voice_id="37e65973-9d96-5aab-adcd-01bf56ab5af9", language="english")  # Kyla
+config = aai.TTSConfig(voice_id="aai-kyla", language="english")
 
 # When the call starts, not when the first reply is ready.
 session = aai.TTSSession(config, api_key=os.environ["ASSEMBLYAI_API_KEY"])
@@ -49326,7 +49862,7 @@ import { AssemblyAI } from "assemblyai";
 const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 
 // When the call starts, not when the first reply is ready.
-const session = client.tts.session({ voiceId: "37e65973-9d96-5aab-adcd-01bf56ab5af9", language: "english" }); // Kyla
+const session = client.tts.session({ voiceId: "aai-kyla", language: "english" });
 await session.connect(); // waits for Begin; the server then loads the voice before the first reply
 
 while (callIsOpen()) {
@@ -49455,7 +49991,7 @@ See the [Prompting guide](/tts/prompting-guide) for the full normalization table
 
 ## Set the language of the text
 
-`language` decides the language the session speaks and the model it runs on. Set it to the language of the text you send: the API does not detect it. When you leave it out, the session speaks the language its voice was recorded in, which is English for the built-in voices such as `aai-jane` and for a session that names no voice. `assemblyai-tts-1` speaks every voice in all six languages, so any voice can read your text once `language` matches it, though results are usually worse than in the voice's own language: for the best results, choose a voice whose own language is the language of your text. Text in another language than the session's comes out mispronounced. Read `configuration.voice_id` and `configuration.language` back from `Begin` to confirm what the session resolved, defaults included. See [Voices](/tts/voices#voice-and-language).
+`language` decides the language the session speaks and the model it runs on. Set it to the language of the text you send: the API does not detect it. When you leave it out, the session speaks the language its voice was recorded in, which is English for a session that names no voice. `assemblyai-tts-1` speaks every voice in all six languages, so any voice can read your text once `language` matches it, though results are usually worse than in the voice's own language: for the best results, choose a voice whose own language is the language of your text. Text in another language than the session's comes out mispronounced. Read `configuration.voice_id` and `configuration.language` back from `Begin` to confirm what the session resolved, defaults included. See [Voices](/tts/voices#voice-and-language).
 
 ## Related
 
@@ -49531,17 +50067,17 @@ Description: Name a voice with voice_id in the SDKs and on the wire, where to fi
 
 Every voice is named by its voice ID: the `voice_id` parameter on a WebSocket session and on an HTTP request, `voice_id` in the Python SDK's `TTSConfig`, and `voiceId` on a JavaScript SDK session (`voice_id` in its HTTP requests, which take the API's field names). It takes one of these:
 
-- The library slug of an AssemblyAI voice, such as `aai-jane`.
-- A voice's ID, a UUID such as `37e65973-9d96-5aab-adcd-01bf56ab5af9`.
+- The library slug of an AssemblyAI voice, such as `aai-kyla`.
+- A voice's ID, a UUID.
 - The slug of one of your account's voices, such as a voice you [cloned](/tts/cloned-voices) in the AssemblyAI dashboard.
 
-Leave `voice_id` out and you get `aai-jane`, the default voice.
+Leave `voice_id` out and you get the [default voice](#the-default-voice) of the session's language: `aai-kyla` in English.
 
 ```python
 # You supply play().
 import assemblyai as aai
 
-config = aai.TTSConfig(voice_id="aai-sara")
+config = aai.TTSConfig(voice_id="aai-kyla")
 
 with aai.TTSSession(config) as session:  # the WebSocket API
     for chunk in session.speak("Hi, thanks for calling."):
@@ -49560,32 +50096,32 @@ import { AssemblyAI } from "assemblyai";
 
 const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 
-const session = client.tts.session({ voiceId: "aai-sara" }); // the WebSocket API
+const session = client.tts.session({ voiceId: "aai-kyla" }); // the WebSocket API
 const begin = await session.connect();
 for await (const chunk of session.speak("Hi, thanks for calling.")) play(chunk);
 await session.close();
 console.log(begin.configuration.voice_id);
 
-const response = await client.tts.synthesize({ text: "Hi, thanks for calling.", voice_id: "aai-sara" }); // the HTTP API
+const response = await client.tts.synthesize({ text: "Hi, thanks for calling.", voice_id: "aai-kyla" }); // the HTTP API
 console.log(response.voiceId);
 ```
 
 On the WebSocket API, `voice_id` is a query parameter of the URL you open; on the HTTP API, a field of the request body:
 
 ```text
-wss://tts.us.assemblyai.com/v1/ws?voice_id=aai-sara&sample_rate=24000&encoding=pcm_s16le
+wss://tts.us.assemblyai.com/v1/ws?voice_id=aai-kyla&sample_rate=24000&encoding=pcm_s16le
 ```
 
 ```bash
 curl -sS --fail-with-body https://tts.us.assemblyai.com/v1/speech \
   -H "Authorization: $ASSEMBLYAI_API_KEY" \
-  -d '{"text": "Hi, thanks for calling.", "voice_id": "aai-sara", "container": "wav"}' \
-  -o sara.wav
+  -d '{"text": "Hi, thanks for calling.", "voice_id": "aai-kyla", "container": "wav"}' \
+  -o kyla.wav
 ```
 
-The session or request echoes the voice it speaks with: `Begin.configuration.voice_id` on a session, which the SDKs expose on the `Begin` event, and the `X-TTS-Voice-Id` header on an HTTP response, which the SDKs expose on the result. It is the value you sent, with a UUID in lowercase, or `aai-jane` when you sent none. On a session, `Begin.configuration.resolved_voice.voice_id` gives the voice's UUID, also when you named it by slug.
+The session or request echoes the voice it speaks with: `Begin.configuration.voice_id` on a session, which the SDKs expose on the `Begin` event, and the `X-TTS-Voice-Id` header on an HTTP response, which the SDKs expose on the result. It is the value you sent, with a UUID in lowercase, or the default voice's slug, such as `aai-kyla`, when you sent none. On a session, `Begin.configuration.resolved_voice.voice_id` gives the voice's UUID, also when you named it by slug.
 
-`voice`, which named a voice by a bare name such as `voice=jane`, is retired. A session or request that still sends it, with any value, is refused before any audio: `3006` on the WebSocket API and `422` on the HTTP API, with `error_type` `invalid_parameter` and `param` `voice`. When the value names one of the [built-in voices](#built-in-voices), the message names the `voice_id` to send instead, such as `voice_id=aai-jane`.
+`voice`, which named a voice by a bare name such as `voice=kyla`, is retired. A session or request that still sends it, with any value, is refused before any audio: `3006` on the WebSocket API and `422` on the HTTP API, with `error_type` `invalid_parameter` and `param` `voice`. Send the voice's library slug or ID in `voice_id` instead.
 
 ## AssemblyAI voices
 
@@ -49625,22 +50161,35 @@ These are good voices to start with. The examples on these pages use Kyla:
 | Günther | `aai-gunther` | German | A middle-aged man speaking German with expressive intonation and a soft-spoken delivery |
 | Jörg | `aai-jorg` | German | A middle-aged man speaking German with a fairly even tone |
 | Magdalena | `aai-magdalena` | German | A young woman with a deep, low-pitched voice speaking German |
+| Giada | `aai-giada` | Italian | A young woman speaking Italian with a clear, bright tone and an energetic delivery |
 | Donatien | `aai-donatien` | French | A middle-aged man with a high-pitched, soft-spoken voice and expressive intonation |
 | Benício | `aai-benicio` | Portuguese | A young man speaking Portuguese with a balanced, natural, easy-to-listen-to voice |
+| Nelson | `aai-nelson` | Portuguese, Brazilian | An older man speaking Brazilian Portuguese with a deep, low-pitched, raspy voice |
 
-### Built-in voices
+### The default voice
 
-Eleven AssemblyAI voices are built into the model: `aai-jane`, the default, `aai-alba`, `aai-anna`, `aai-charles`, `aai-eve`, `aai-george`, `aai-jean`, `aai-mary`, `aai-michael`, `aai-paul` and `aai-vera`. They speak English when you leave `language` out, and any of the six languages when you set it, though results are usually worse than in English, their own language; see [Voice and language](#voice-and-language).
+A session or request that leaves `voice_id` out speaks with the default voice of its language, a catalog voice recorded in that language:
+
+| Language | Default voice | `voice_id` |
+|----------|---------------|------------|
+| English | Kyla | `aai-kyla` |
+| Spanish | Antonio Luis | `aai-antonioluis` |
+| German | Magdalena | `aai-magdalena` |
+| Italian | Giada | `aai-giada` |
+| Portuguese | Nelson | `aai-nelson` |
+| French | Donatien | `aai-donatien` |
+
+With `language` left out as well, the session speaks English with Kyla. `Begin.configuration.voice_id` and the `X-TTS-Voice-Id` header name the default voice that spoke. The defaults may change, so name a voice with `voice_id` to keep the same one.
 
 ### The first session with a voice
 
-The built-in voices are always loaded. Any other voice, from the catalog or [cloned](/tts/cloned-voices), is loaded when a session with it opens, and `Begin` does not wait for it. The first session with a voice that has not been used recently therefore waits a little longer for its first audio when its text arrives right after `Begin`, and not at all when the voice has finished loading by the time the text arrives. Open the session when the call starts, before your first reply is ready, and keep it open for the conversation; see [Optimizing accuracy and latency](/tts/getting-started/optimizing-accuracy-and-latency).
+The first session with a voice that has not been used recently can wait a little longer for its first audio when its text arrives right after `Begin`, and not at all when the voice is ready by the time the text arrives. Open the session when the call starts, before your first reply is ready, and keep it open for the conversation; see [Optimizing accuracy and latency](/tts/getting-started/optimizing-accuracy-and-latency).
 
 ## Voice and language
 
-`language` is the language the session speaks. Set it to the language of the text you send. When you leave it out, a catalog voice or a [cloned voice](/tts/cloned-voices#language-and-model) speaks its own language, the one it was recorded in, and a built-in voice, or a session that names no voice, speaks English. `language` also decides which model the session runs on: the default model of that language in the region, `assemblyai-tts-1` for all six languages.
+`language` is the language the session speaks. Set it to the language of the text you send. When you leave it out, a catalog voice or a [cloned voice](/tts/cloned-voices#language-and-model) speaks its own language, the one it was recorded in, and a session that names no voice speaks English. `language` also decides which model the session runs on: the default model of that language in the region, `assemblyai-tts-1` for all six languages.
 
-`assemblyai-tts-1` speaks every voice in all six languages: set `language` and the voice speaks it, whatever language the voice was recorded in. To pick a voice recorded in the language of your text, such as Constanza for Mexican Spanish, look at the language the catalog shows for it.
+`assemblyai-tts-1` speaks every voice in all six languages: set `language` and the voice speaks it, whatever language the voice was recorded in. To pick a voice recorded in the language of your text, such as Antonio Luis for Mexican Spanish, look at the language the catalog shows for it.
 
   A voice usually sounds best in its own language. Speech in another language
   is usually of lower quality, so for the best results choose a voice whose
@@ -49676,7 +50225,7 @@ const params = new URLSearchParams({
 
   The API does not detect language. Set `language` to the language of your
   text: without it the session speaks the voice's own language, or English
-  with a built-in voice, whatever language the text is in.
+  when you name no voice, whatever language the text is in.
 
 ## Languages
 
@@ -49697,8 +50246,8 @@ A session speaks a language only where a model of the region speaks it. Both dat
 
 The server checks the voice when the session opens. A voice it cannot use never gets `Begin`: an `Error` frame arrives in its place, and the socket closes with the frame's `error_code`. The Python SDK raises it as `TTSError` from the `with` block, the JavaScript SDK rejects `connect()` with a `TextToSpeechError`; both carry the frame's `error_type` as `error_code` (`errorCode`) and its `param`. On the HTTP API the same refusals are `422` answers with the same codes, which the SDKs raise from `synthesize()` and `stream()`.
 
-- **No voice with this `voice_id`.** A `voice_id` that names no voice your account can use on this host, such as a cloned voice that was [deleted](/tts/cloned-voices#delete-a-voice), closes the session with `3012`, `error_type` `voice_not_found` and `param` `voice_id`. A bare name such as `voice_id=jane` is not a library slug: it is looked up among the slugs of your own voices, and unless one of your voices has that slug, it is not found either, with a message that ends `Did you mean voice_id=aai-jane?`. Send `aai-jane`.
-- **A built-in voice the session's model does not speak.** A built-in voice that the session's model does not speak in the session's language closes the session with `3006`, `error_type` `invalid_request` and `param` `voice_id`, and the message lists the voices available on that connection by their slugs.
+- **No voice with this `voice_id`.** A `voice_id` that names no voice your account can use on this host, such as a cloned voice that was [deleted](/tts/cloned-voices#delete-a-voice), closes the session with `3012`, `error_type` `voice_not_found` and `param` `voice_id`. A bare name such as `voice_id=kyla` is not a library slug: it is looked up among the slugs of your own voices, and unless one of your voices has that slug, it is not found either. Send the library slug, `aai-kyla`.
+- **An AssemblyAI voice the session's model does not speak.** An AssemblyAI voice that the session's model does not speak in the session's language closes the session with `3006`, `error_type` `invalid_request` and `param` `voice_id`, and the message lists the voices available on that connection by their slugs.
 
 With a `voice_id` that names no voice (`voice_id=aai-nonexistent`):
 
@@ -49714,7 +50263,7 @@ With a `voice_id` that names no voice (`voice_id=aai-nonexistent`):
 }
 ```
 
-Fix the voice before you reconnect; retrying unchanged fails identically. Keep handling a `3006` whose `param` is `voice_id` after `Begin` as well: in rare cases the refusal of a built-in voice the model does not speak arrives right after `Begin`, with the same text, before any audio. Read `configuration.voice_id` and `configuration.language` from `Begin` to confirm what the session resolved, defaults included. See [Error handling](/tts/error-handling).
+Fix the voice before you reconnect; retrying unchanged fails identically. Keep handling a `3006` whose `param` is `voice_id` after `Begin` as well: in rare cases the refusal of an AssemblyAI voice the model does not speak arrives right after `Begin`, with the same text, before any audio. Read `configuration.voice_id` and `configuration.language` from `Begin` to confirm what the session resolved, defaults included. See [Error handling](/tts/error-handling).
 
 ## Related
 
@@ -49737,7 +50286,7 @@ Description: What a cloned voice is, how to create one in the AssemblyAI dashboa
 
 Voice cloning makes a voice from a short recording of one person speaking. A cloned voice belongs to the account that created it: a new voice is private to that account, and only that account can renew its consent or delete it. Cloning needs the speaker's consent, and a cloned voice can be used for 60 days after its consent was last given, unless you renew the consent before then; see [Consent period](#consent-period).
 
-You create and manage clones in the [voice catalog](https://www.assemblyai.com/dashboard/text-to-speech/voices) of the AssemblyAI dashboard, and the API speaks with them like with any other voice: pass the voice's ID in `voice_id`. The frames, audio formats and limits are those of an [AssemblyAI voice](/tts/voices).
+You create and manage clones in the [voice catalog](https://www.assemblyai.com/dashboard/text-to-speech/voices) of the AssemblyAI dashboard, and the API speaks with them like with any other voice: pass the voice's slug in `voice_id`. The frames, audio formats and limits are those of an [AssemblyAI voice](/tts/voices).
 
 ## Create a voice
 
@@ -49747,7 +50296,7 @@ In the voice catalog, choose **Create voice clone**, then record or upload a sam
 - **Ten to thirty seconds of speech.** The dashboard uses up to thirty seconds of a recording under two minutes long, and shows when a recording is long enough. Read the script it offers, calm or excited, or your own text at a natural pace.
 - **Consent.** You attest that the speaker consented to the clone, and your account must have accepted the biometric data terms on the dashboard's [data controls](https://www.assemblyai.com/dashboard/settings/data-controls) page.
 
-The new voice gets an ID, a UUID, and a slug you can choose when you create it and not after. Either names the voice in `voice_id`; send a slug in lowercase. **Copy voice ID** on the voice copies the ID.
+The new voice gets a slug, which you can choose when you create it and not after, and an ID, a UUID. Name the voice by its slug in `voice_id`, in lowercase; its ID works too.
 
 ### Get the best clone
 
@@ -49763,11 +50312,11 @@ Hear the difference in two clones of the same speaker, one recorded on a webcam 
 
 ## Speak with it
 
-Name the voice in `voice_id` and leave out `language`. The programs below read your API key and the voice's ID from the environment, open a session with the voice, print what `Begin` resolved and speak one sentence; the cURL tab does the same as one HTTP request, and the OpenAI SDK tab through the [OpenAI-compatible route](/tts/openai-compatibility). Set the two variables first:
+Name the voice in `voice_id` and leave out `language`. The programs below read your API key and the voice's slug from the environment, open a session with the voice, print what `Begin` resolved and speak one sentence; the cURL tab does the same as one HTTP request, and the OpenAI SDK tab through the [OpenAI-compatible route](/tts/openai-compatibility). Set the two variables first:
 
 ```bash
 export ASSEMBLYAI_API_KEY=<your-key>
-export ASSEMBLYAI_VOICE_ID=<your-voice-id>
+export ASSEMBLYAI_VOICE_ID=<your-voice-slug>
 ```
 
 ```python
@@ -49821,9 +50370,9 @@ curl -sS --fail-with-body -D headers.txt https://tts.us.assemblyai.com/v1/speech
   -o cloned.wav
 ```
 
-Among the headers saved in `headers.txt`, `x-tts-voice-id` is the `voice_id` you sent, `x-tts-language` the language spoken and `x-tts-voice-expires-at` the voice's expiry; the SDKs' `synthesize()` and `stream()` expose them on the result. On the WebSocket URL, the voice is the query parameter `voice_id=<your-voice-id>`.
+Among the headers saved in `headers.txt`, `x-tts-voice-id` is the `voice_id` you sent, `x-tts-language` the language spoken and `x-tts-voice-expires-at` the voice's expiry; the SDKs' `synthesize()` and `stream()` expose them on the result. On the WebSocket URL, the voice is the query parameter `voice_id=<your-voice-slug>`.
 
-The OpenAI-compatible route takes the voice in OpenAI's field `voice`, as an object that holds its ID or slug:
+The OpenAI-compatible route takes the voice in OpenAI's field `voice`, as an object that holds its slug:
 
 ```python
 import os
@@ -49842,19 +50391,19 @@ with client.audio.speech.with_streaming_response.create(
     response.stream_to_file("cloned.pcm")  # raw 24 kHz 16-bit mono PCM
 ```
 
-`voice` also takes the voice's ID as a plain string, but not its slug: send a slug as `{"id": "<slug>"}`. `model="assemblyai-tts-1"` speaks the voice's own language unless the `language` extension names another, and a model named for a language, such as `assemblyai-tts-es`, speaks that language. Either way the voice can speak a language other than its own, though results are usually worse than in the voice's own language; see [Language and model](#language-and-model) and [OpenAI compatibility](/tts/openai-compatibility#cloned-voices).
+Send the slug inside the object, as above: the slug of one of your voices in a plain string is refused. `model="assemblyai-tts-1"` speaks the voice's own language unless the `language` extension names another, and a model named for a language, such as `assemblyai-tts-es`, speaks that language. Either way the voice can speak a language other than its own, though results are usually worse than in the voice's own language; see [Language and model](#language-and-model) and [OpenAI compatibility](/tts/openai-compatibility#cloned-voices).
 
 For an English voice, the output of the SDK programs looks like this:
 
 ```text
-voice_id 01a139bf-78a0-7d18-9a4e-6c0f2b8d1e37, resolved 01a139bf-78a0-7d18-9a4e-6c0f2b8d1e37
+voice_id support-voice, resolved 01a139bf-78a0-7d18-9a4e-6c0f2b8d1e37
 language english, model assemblyai-tts-1
 voice expires at 1797154212
 ```
 
 `Begin.configuration.voice_id` is the value you sent, and `resolved_voice.voice_id` is the voice's UUID, also when you sent its slug. `voice_expires_at` is when the voice's [consent period](#consent-period) ends. The other keys a cloned voice adds to `Begin` are in [Message frames](/tts/message-frames#begin).
 
-The same programs speak with an AssemblyAI library voice: set `ASSEMBLYAI_VOICE_ID` to its slug, such as `aai-kyla`, or to its ID. A library voice does not expire, so `voice_expires_at` is `None` in Python and `null` in JavaScript, and the HTTP response carries no `x-tts-voice-expires-at` header. See [Voices](/tts/voices).
+The same programs speak with an AssemblyAI library voice: set `ASSEMBLYAI_VOICE_ID` to its slug, such as `aai-kyla`. A library voice does not expire, so `voice_expires_at` is `None` in Python and `null` in JavaScript, and the HTTP response carries no `x-tts-voice-expires-at` header. See [Voices](/tts/voices).
 
 ### Language and model
 
@@ -49925,7 +50474,7 @@ The renewal runs once the session or request has been accepted, and the new expi
 
 ## Delete a voice
 
-Delete a cloned voice in the [voice catalog](https://www.assemblyai.com/dashboard/text-to-speech/voices) of the AssemblyAI dashboard, where every voice clone of your account is managed. Alternatively, call the voices API directly to delete a voice you own: `DELETE /v1/voices/{voice}` on the host of the voice's [data zone](#data-zones), with your API key in `Authorization`, where `{voice}` is the voice's ID or slug.
+Delete a cloned voice in the [voice catalog](https://www.assemblyai.com/dashboard/text-to-speech/voices) of the AssemblyAI dashboard, where every voice clone of your account is managed. Alternatively, call the voices API directly to delete a voice you own: `DELETE /v1/voices/{voice}` on the host of the voice's [data zone](#data-zones), with your API key in `Authorization`, where `{voice}` is the voice's slug.
 
 ```bash
 curl -sS --fail-with-body -X DELETE "https://tts.us.assemblyai.com/v1/voices/$ASSEMBLYAI_VOICE_ID" \
@@ -49955,13 +50504,13 @@ if (response.status !== 204) throw new Error(`${response.status}: ${await respon
 console.log("deleted");
 ```
 
-Success is `204` with no body. A voice you can use but do not own, such as an AssemblyAI voice or another account's public voice, answers `403` (`voice_readonly`), a voice your account cannot see `404` (`voice_not_found`), and a [temporary token](/tts/authenticate-with-a-temporary-token) `403` (`temp_token_not_allowed`). Delete by ID rather than slug: repeating a delete by ID answers `204` again, while a freed slug may already name a new voice.
+Success is `204` with no body. A voice you can use but do not own, such as an AssemblyAI voice or another account's public voice, answers `403` (`voice_readonly`), a voice your account cannot see `404` (`voice_not_found`), and a [temporary token](/tts/authenticate-with-a-temporary-token) `403` (`temp_token_not_allowed`). A repeated delete by the same slug answers `404`, as the deleted voice no longer holds the slug; once you give the slug to a new voice, it names that voice.
 
 Deletion cannot be undone. What it does:
 
 - **New sessions and requests with the voice are refused** within 6 minutes, in most cases at once, with `voice_not_found`, the same answer as for a voice that never existed. See [Errors](#errors).
 - **Sessions already open keep speaking.** The voice is checked when a session opens, so a session that has the voice finishes its conversation with it. `Terminate` the sessions yourself if they should stop.
-- **The slug is free again** for a new voice of yours. The ID is never reused.
+- **The slug is free again** for a new voice of yours.
 - **Its data is removed.** The sample recording and the voice model are deleted from storage afterwards, normally within two days.
 
 A voice belongs to one data zone, so delete it on that zone's host: `tts.us.assemblyai.com` for a voice created in the US, `tts.eu.assemblyai.com` for one created in the EU. On the other host it is not found.
@@ -50247,7 +50796,7 @@ import os
 
 import websockets  # pip install -U websockets
 
-URL = "wss://tts.us.assemblyai.com/v1/ws?voice_id=37e65973-9d96-5aab-adcd-01bf56ab5af9&language=english"
+URL = "wss://tts.us.assemblyai.com/v1/ws?voice_id=aai-kyla&language=english"
 API_KEY = os.environ["ASSEMBLYAI_API_KEY"]
 
 REQUESTS = ["Hello there, friend.", "Pack my box with five dozen liquor jugs."]
@@ -50350,7 +50899,7 @@ The SDKs open a session with word boundaries off. Turn them on with `word_bounda
 # Fragment. You supply play().
 import assemblyai as aai
 
-config = aai.TTSConfig(voice_id="37e65973-9d96-5aab-adcd-01bf56ab5af9")  # Kyla
+config = aai.TTSConfig(voice_id="aai-kyla")
 
 def on_words(event):
     for w in event.words:
@@ -50368,7 +50917,7 @@ import { AssemblyAI } from "assemblyai";
 
 const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 
-const session = client.tts.session({ voiceId: "37e65973-9d96-5aab-adcd-01bf56ab5af9", wordBoundaries: true }); // Kyla
+const session = client.tts.session({ voiceId: "aai-kyla", wordBoundaries: true });
 session.on("wordBoundaries", (event) => {
   for (const w of event.words) console.log(`request ${event.flush_id}: ${w.word} at ${w.start - event.audio_start_ms} ms`);
 });
@@ -50383,7 +50932,7 @@ On the HTTP API, [`POST /v1/speech/events`](/tts/api-reference/http-api/stream-s
 
 ```text
 event: Begin
-data: {"type":"Begin","id":"5e8970c3-26f7-4b8e-9c55-6c1c7f0b6d2e","expires_at":1791480600,"configuration":{"voice_id":"37e65973-9d96-5aab-adcd-01bf56ab5af9","language":"english","sample_rate":24000,"encoding":"pcm_s16le","word_boundaries":true,"model":"assemblyai-tts-1","container":"raw","bit_rate":null,"transport":"http"}}
+data: {"type":"Begin","id":"5e8970c3-26f7-4b8e-9c55-6c1c7f0b6d2e","expires_at":1791480600,"configuration":{"voice_id":"aai-kyla","language":"english","sample_rate":24000,"encoding":"pcm_s16le","word_boundaries":true,"model":"assemblyai-tts-1","container":"raw","bit_rate":null,"transport":"http"}}
 
 event: Audio
 data: {"type":"Audio","audio":"AAAAAP7/AQD+/wIA","flush_id":0}
@@ -50552,7 +51101,7 @@ server.setup_fnc = prewarm
 async def entrypoint(ctx: JobContext) -> None:
     tts = assemblyai.TTS(
         model="assemblyai-tts-1",
-        voice="37e65973-9d96-5aab-adcd-01bf56ab5af9",  # Kyla
+        voice="aai-kyla",
     )
     # Open the TTS session now, so the first reply doesn't wait on the handshake
     tts.prewarm()
@@ -50612,7 +51161,7 @@ For the speech-to-text settings in this example, such as `mode` and `vad_thresho
 
 | Parameter | Default | Description |
 |-----------|---------|-------------|
-| `voice` | `987db62e-a2c2-569a-9c4d-82460cdea1bd` (Keegan) | The voice's ID or slug. See [Choose a voice](#choose-a-voice). |
+| `voice` | A voice the plugin picks | The voice's slug, such as `aai-kyla`. See [Choose a voice](#choose-a-voice). |
 | `language` | Unset: the voice's own language | A language code such as `"es"` or an English name such as `"spanish"`. See [Set the language](#set-the-language). |
 | `model` | `assemblyai-tts-1` | The TTS model. |
 | `sample_rate` | `24000` | Output sample rate in Hz: `8000`, `16000`, `22050`, `24000`, `44100`, or `48000`. `24000` is the model's native rate. |
@@ -50625,12 +51174,12 @@ For the speech-to-text settings in this example, such as `mode` and `vad_thresho
 
 ## Choose a voice
 
-Pass a voice to `voice` by its ID, a UUID. The default is Keegan, `987db62e-a2c2-569a-9c4d-82460cdea1bd`, which differs from the API's own default, `aai-jane`. `voice` takes any voice your account can use:
+Pass a voice to `voice` by its slug, such as `aai-kyla`. Name the voice you want: the plugin has a default voice of its own, which differs from the API's [default voice](/tts/voices#the-default-voice). `voice` takes any voice your account can use:
 
-- One of the [AssemblyAI voices](/tts/voices#assemblyai-voices) in the voice library, such as Kyla or Keegan.
+- One of the [AssemblyAI voices](/tts/voices#assemblyai-voices) in the voice library, such as Kyla.
 - A [cloned voice](/tts/cloned-voices): a voice you make in the AssemblyAI dashboard from a short reference recording of a speaker who consented to it. It belongs to your account, and it can be used for 60 days after its consent was last given unless you [renew the consent](/tts/cloned-voices#renew-consent).
 
-The [voice catalog](https://www.assemblyai.com/dashboard/text-to-speech/voices) in the AssemblyAI dashboard has a **Copy voice ID** action for each voice, and [Voices](/tts/voices) lists good voices to start with. A slug such as `aai-anna`, or the slug of one of your cloned voices, works too, but a voice's ID never changes.
+[Voices](/tts/voices) lists good voices to start with, by slug, and the [voice catalog](https://www.assemblyai.com/dashboard/text-to-speech/voices) in the AssemblyAI dashboard holds the rest.
 
 A cloned voice works only on the host of the [data zone](#keep-data-in-the-eu) it was created in.
 
@@ -50639,12 +51188,12 @@ A cloned voice works only on the host of the [data zone](#keep-data-in-the-eu) i
 Set `language` to the language of the text your LLM writes:
 
 ```python
-tts = assemblyai.TTS(voice="aai-constanza", language="es")
+tts = assemblyai.TTS(voice="aai-antonioluis", language="es")
 ```
 
 `language` takes a language code (`"es"`, `"es-MX"`) or the language's English name (`"spanish"`). The plugin sends the server the English name the API expects, so you can use the same codes you pass to `assemblyai.STT`. See [Languages](/tts/voices#languages) for the six supported languages.
 
-`assemblyai-tts-1` speaks every voice, an [AssemblyAI voice](/tts/voices#assemblyai-voices) or a cloned one, in all six languages, though results are usually worse than in the voice's own language: for the best results, choose a voice whose own language is the language of your text, such as Constanza for Spanish. Leave `language` unset and the session speaks the voice's own language, the language of its recording. The API doesn't detect language, so set `language` whenever the text is in another language than the voice's: with `language` unset, an English voice opens an English session whatever the language of the text. See [Voice and language](/tts/voices#voice-and-language).
+`assemblyai-tts-1` speaks every voice, an [AssemblyAI voice](/tts/voices#assemblyai-voices) or a cloned one, in all six languages, though results are usually worse than in the voice's own language: for the best results, choose a voice whose own language is the language of your text, such as Antonio Luis for Spanish. Leave `language` unset and the session speaks the voice's own language, the language of its recording. The API doesn't detect language, so set `language` whenever the text is in another language than the voice's: with `language` unset, an English voice opens an English session whatever the language of the text. See [Voice and language](/tts/voices#voice-and-language).
 
 ## Keep data in the EU
 
@@ -50695,7 +51244,7 @@ The API fixes a session's voice, language, and model when it opens, so the next 
 ## Related
 
 - [Universal-3.6 Pro on LiveKit](/voice-agents/livekit-universal-3-6-pro): speech-to-text, turn detection, and interruption settings for LiveKit agents.
-- [Voices](/tts/voices): the AssemblyAI voices, languages, and how to find a voice's ID.
+- [Voices](/tts/voices): the AssemblyAI voices, languages, and how to name a voice.
 - [Voice cloning](/tts/cloned-voices): clone a voice from a short recording.
 - [Word boundaries](/tts/word-boundaries): the per-word timings behind aligned transcripts.
 - [LiveKit Agents documentation](https://docs.livekit.io/agents/): sessions, tools, workflows, and telephony.
@@ -50811,7 +51360,7 @@ async def run_bot(transport: BaseTransport, runner_args: RunnerArguments):
         api_key=api_key,
         settings=AssemblyAITTSService.Settings(
             model="assemblyai-tts-1",
-            voice="37e65973-9d96-5aab-adcd-01bf56ab5af9",  # Kyla
+            voice="aai-kyla",
         ),
     )
 
@@ -50892,18 +51441,18 @@ For the speech-to-text settings in this example, such as `vad_force_turn_endpoin
 
 | Setting | Default | Description |
 |---------|---------|-------------|
-| `voice` | `49c443a4-8a1d-5f7e-b70b-98bdbd9823c3` (Audrey) | The voice's ID or slug, sent as `voice_id`. `None` leaves the voice to the server, whose default is Jane. See [Choose a voice](#choose-a-voice). |
+| `voice` | A voice the plugin picks | The voice's slug, such as `aai-kyla`, sent as `voice_id`. `None` leaves the voice to the server, whose default is Kyla in English. See [Choose a voice](#choose-a-voice). |
 | `language` | Unset: the voice's own language | A Pipecat `Language`, a language code such as `"es"`, or an English name such as `"spanish"`. See [Set the language](#set-the-language). |
 | `model` | Unset: the default model of the language, `assemblyai-tts-1` | The TTS model. |
 
 ## Choose a voice
 
-Pass a voice to `voice` by its ID, a UUID. The default is Audrey, `49c443a4-8a1d-5f7e-b70b-98bdbd9823c3`, which differs from the API's own default, `aai-jane`. `voice` takes any voice your account can use:
+Pass a voice to `voice` by its slug, such as `aai-kyla`. Name the voice you want: the plugin has a default voice of its own, which differs from the API's [default voice](/tts/voices#the-default-voice). `voice` takes any voice your account can use:
 
-- One of the [AssemblyAI voices](/tts/voices#assemblyai-voices) in the voice library, such as Kyla or Anna.
+- One of the [AssemblyAI voices](/tts/voices#assemblyai-voices) in the voice library, such as Kyla.
 - A [cloned voice](/tts/cloned-voices): a voice you make in the AssemblyAI dashboard from a short reference recording of a speaker who consented to it. It belongs to your account, and it can be used for 60 days after its consent was last given unless you [renew the consent](/tts/cloned-voices#renew-consent).
 
-The [voice catalog](https://www.assemblyai.com/dashboard/text-to-speech/voices) in the AssemblyAI dashboard has a **Copy voice ID** action for each voice, and [Voices](/tts/voices) lists good voices to start with. A slug such as `aai-anna`, or the slug of one of your cloned voices, works too, but a voice's ID never changes.
+[Voices](/tts/voices) lists good voices to start with, by slug, and the [voice catalog](https://www.assemblyai.com/dashboard/text-to-speech/voices) in the AssemblyAI dashboard holds the rest.
 
 A cloned voice works only on the host of the [data zone](#keep-data-in-the-eu) it was created in.
 
@@ -50917,7 +51466,7 @@ from pipecat.transcriptions.language import Language
 tts = AssemblyAITTSService(
     api_key=api_key,
     settings=AssemblyAITTSService.Settings(
-        voice="2aadec9a-80cc-5181-a9fc-f2a9fda0cf50",  # Constanza
+        voice="aai-antonioluis",
         language=Language.ES,
     ),
 )
@@ -50925,7 +51474,7 @@ tts = AssemblyAITTSService(
 
 `language` takes a Pipecat `Language` (`Language.ES`), a language code (`"es"`, `"es-MX"`), or the language's English name (`"spanish"`). The service sends the server the English name the API expects, so you can use the same `Language` values you pass to `AssemblyAISTTService`. See [Languages](/tts/voices#languages) for the six supported languages.
 
-`assemblyai-tts-1` speaks every voice, an [AssemblyAI voice](/tts/voices#assemblyai-voices) or a cloned one, in all six languages, though results are usually worse than in the voice's own language: for the best results, choose a voice whose own language is the language of your text, such as Constanza for Spanish. Leave `language` unset and the session speaks the voice's own language, the language of its recording. The API doesn't detect language, so set `language` whenever the text is in another language than the voice's: with `language` unset, an English voice opens an English session whatever the language of the text. See [Voice and language](/tts/voices#voice-and-language).
+`assemblyai-tts-1` speaks every voice, an [AssemblyAI voice](/tts/voices#assemblyai-voices) or a cloned one, in all six languages, though results are usually worse than in the voice's own language: for the best results, choose a voice whose own language is the language of your text, such as Antonio Luis for Spanish. Leave `language` unset and the session speaks the voice's own language, the language of its recording. The API doesn't detect language, so set `language` whenever the text is in another language than the voice's: with `language` unset, an English voice opens an English session whatever the language of the text. See [Voice and language](/tts/voices#voice-and-language).
 
 ## Keep data in the EU
 
@@ -50974,7 +51523,7 @@ from pipecat.frames.frames import TTSUpdateSettingsFrame
 await worker.queue_frame(
     TTSUpdateSettingsFrame(
         delta=AssemblyAITTSService.Settings(
-            voice="9fe741e9-befc-5843-93d6-3e1eaa8a0740",  # Donatien
+            voice="aai-donatien",
             language="fr",
         )
     )
@@ -50986,7 +51535,7 @@ The API fixes a session's voice, language, and model when it opens, so the servi
 ## Related
 
 - [Universal-3.6 Pro on Pipecat](/voice-agents/pipecat-universal-3-5-pro): speech-to-text, turn detection, and interruption settings for Pipecat agents.
-- [Voices](/tts/voices): the AssemblyAI voices, languages, and how to find a voice's ID.
+- [Voices](/tts/voices): the AssemblyAI voices, languages, and how to name a voice.
 - [Voice cloning](/tts/cloned-voices): clone a voice from a short recording.
 - [Word boundaries](/tts/word-boundaries): the per-word timings behind word-timed context.
 - [Pipecat documentation](https://docs.pipecat.ai/): pipelines, transports, and deployment.
@@ -51114,13 +51663,13 @@ OpenRouter accepts other fields of the OpenAI speech request, such as `instructi
 
 `voice` takes the same strings as on the [direct route](/tts/openai-compatibility#voices):
 
-- **The library slug of a voice in the [catalog](/tts/voices)**, such as `aai-kyla`, or `aai-constanza` for Mexican Spanish.
-- **A voice's ID**, a UUID, as the [voice catalog](https://www.assemblyai.com/dashboard/text-to-speech/voices) copies it.
-- **An OpenAI voice name** such as `alloy`, mapped to an AssemblyAI voice as the [direct route's table](/tts/openai-compatibility#voices) shows.
+- **The library slug of a voice in the [catalog](/tts/voices)**, such as `aai-kyla`, or `aai-antonioluis` for Mexican Spanish.
+- **A voice's ID**, a UUID.
+- **An OpenAI voice name** such as `alloy`, which speaks with the [default voice](/tts/voices#the-default-voice) of the request's language, as on the [direct route](/tts/openai-compatibility#voices).
 
 A bare name without the `aai-` prefix, such as `kyla`, is refused. OpenRouter accepts `voice` only as a string, so the `{"id": ...}` form for cloned voices is refused before it reaches AssemblyAI.
 
-When `voice` is left out, the request still succeeds, with a default voice. Name the voice to get the same one every time.
+When `voice` is left out, the request still succeeds, with the [default voice](/tts/voices#the-default-voice) of its language. Name the voice to get the same one every time.
 
 ### AssemblyAI options
 
@@ -51140,7 +51689,7 @@ curl https://openrouter.ai/api/v1/audio/speech \
   -d '{
     "model": "assemblyai/assemblyai-tts-1",
     "input": "Su cita está confirmada para el martes a las tres y media.",
-    "voice": "aai-constanza",
+    "voice": "aai-antonioluis",
     "response_format": "mp3",
     "provider": { "options": { "assemblyai": { "language": "spanish" } } }
   }'
@@ -51158,7 +51707,7 @@ client = OpenAI(
 
 with client.audio.speech.with_streaming_response.create(
     model="assemblyai/assemblyai-tts-1",
-    voice="aai-constanza",
+    voice="aai-antonioluis",
     input="Su cita está confirmada para el martes a las tres y media.",
     response_format="mp3",
     extra_body={"provider": {"options": {"assemblyai": {"language": "spanish"}}}},
@@ -51219,7 +51768,7 @@ OpenRouter doesn't bill failed generations, and documents its other statuses, su
 ## Related
 
 - [OpenAI compatibility](/tts/openai-compatibility): the direct route, with every voice, format and extension.
-- [Voices](/tts/voices): the AssemblyAI voices, languages, and how to find a voice's ID.
+- [Voices](/tts/voices): the AssemblyAI voices, languages, and how to name a voice.
 - [List models (OpenRouter)](/tts/api-reference/http-api/list-openrouter-models): the models document OpenRouter reads.
 - [Sync STT on OpenRouter](/sync-stt/openrouter): speech-to-text with Universal-3.5 Pro through the same gateway.
 
@@ -51369,35 +51918,19 @@ Names are case-insensitive. OpenAI's model names, such as `tts-1`, are refused w
 
 `voice` keeps its OpenAI name and takes one of these:
 
-- An OpenAI voice name, in any letter case. Each one speaks with an AssemblyAI voice in its place, as the table below shows.
-- The library slug of an [AssemblyAI voice](/tts/voices), such as `aai-jane`, in lowercase: the `voice_id` that names the voice on every other route.
+- An OpenAI voice name, such as `alloy`, in any letter case. Every OpenAI voice name speaks with the [default voice](/tts/voices#the-default-voice) of the request's language: `aai-kyla` in English, `aai-antonioluis` in Spanish, and so on.
+- The library slug of an [AssemblyAI voice](/tts/voices), such as `aai-kyla`, in lowercase: the `voice_id` that names the voice on every other route.
 - A voice's ID, a UUID. A [cloned voice](#cloned-voices) can also go in as an object.
 
-A bare AssemblyAI voice name such as `jane` is not one of them. It is refused with `422` (`invalid_request_error`, code `invalid_parameter`, `param` `voice`), and the message names the slug to send, `aai-jane`.
+A bare AssemblyAI voice name such as `kyla` is not one of them. It is refused with `422` (`invalid_request_error`, code `invalid_parameter`, `param` `voice`): send the slug, `aai-kyla`.
 
-| OpenAI voice | AssemblyAI voice |
-|--------------|------------------|
-| `alloy` | `aai-jane` |
-| `ash` | `aai-michael` |
-| `ballad` | `aai-charles` |
-| `cedar` | `aai-george` |
-| `coral` | `aai-anna` |
-| `echo` | `aai-paul` |
-| `fable` | `aai-charles` |
-| `marin` | `aai-mary` |
-| `nova` | `aai-eve` |
-| `onyx` | `aai-george` |
-| `sage` | `aai-vera` |
-| `shimmer` | `aai-alba` |
-| `verse` | `aai-michael` |
-
-In English, an OpenAI voice name speaks with the AssemblyAI voice in this table. In any other language, every OpenAI voice name speaks with `aai-jane`, the default voice, though results are usually worse than in the voice's own language, English; to choose the voice of a Spanish or German request, send the slug or ID of a voice of that language instead. See [Voice and language](/tts/voices#voice-and-language). The response header `X-TTS-Voice-Id` gives the `voice_id` the request spoke with, and when you sent an OpenAI voice name, `X-TTS-Voice-Alias` holds it. Other values are not supported: a misspelt name is refused with `422` like a bare name, and a slug or UUID that names no voice with `400`, code `invalid_request`, both on `voice`.
+OpenAI voice names let clients that accept only OpenAI's names reach AssemblyAI, but in each language they all give the same voice. To choose the voice, send the slug or ID of a voice from the [voice catalog](/tts/voices#assemblyai-voices), ideally one recorded in the language of the request; see [Voice and language](/tts/voices#voice-and-language). The response header `X-TTS-Voice-Id` gives the `voice_id` the request spoke with, and when you sent an OpenAI voice name, `X-TTS-Voice-Alias` holds it. Other values are not supported: a misspelt name is refused with `422` like a bare name, and a slug or UUID that names no voice with `400`, code `invalid_request`, both on `voice`.
 
 ### Cloned voices
 
 A [cloned voice](/tts/cloned-voices) is a voice you make in the AssemblyAI dashboard from a short reference recording of a speaker who consented to it. It belongs to your account, and it can be used for 60 days after its consent was last given unless you [renew the consent](/tts/cloned-voices#renew-consent).
 
-A cloned voice goes in `voice` as an object holding its ID or slug, `{"id": "<voice ID>"}`, which the OpenAI Python SDK passes through as it is, or as a string holding its UUID. The slug of one of your voices in a plain string is refused: send it as `{"id": "<slug>"}`. With a model's name, such as `assemblyai-tts-1`, the request speaks the voice's own language unless the [`language` extension](#extensions) names another; with a language's model, such as `assemblyai-tts-es`, it speaks that language. `assemblyai-tts-1` speaks a cloned voice in all six languages, though results are usually worse than in the voice's own language; see [Voice and language](/tts/voices#voice-and-language).
+A cloned voice goes in `voice` as an object holding its slug, `{"id": "<slug>"}`, which the OpenAI Python SDK passes through as it is. The slug of one of your voices in a plain string is refused: send it in the object. With a model's name, such as `assemblyai-tts-1`, the request speaks the voice's own language unless the [`language` extension](#extensions) names another; with a language's model, such as `assemblyai-tts-es`, it speaks that language. `assemblyai-tts-1` speaks a cloned voice in all six languages, though results are usually worse than in the voice's own language; see [Voice and language](/tts/voices#voice-and-language).
 
 ```python
 import os
@@ -51429,7 +51962,7 @@ These fields are not part of the OpenAI request; most OpenAI clients pass them t
 |-------|--------|
 | `language` | A language name (`english`) or an ISO 639-1 code (`en`), in any letter case. Refused when it differs from the language `model` implies |
 | `sample_rate` | `8000`, `16000`, `22050`, `24000`, `44100`, `48000`; default `24000` |
-| `voice_id` | A voice's ID or slug, such as the slug of a [cloned voice](#cloned-voices), for clients that cannot send `voice` as an object. Leave `voice` out: next to any other `voice`, such as `alloy` or `aai-jane`, it is refused (`voice_id: conflicts with voice; give one of them`) |
+| `voice_id` | A voice's ID or slug, such as the slug of a [cloned voice](#cloned-voices), for clients that cannot send `voice` as an object. Leave `voice` out: next to any other `voice`, such as `alloy` or `aai-kyla`, it is refused (`voice_id: conflicts with voice; give one of them`) |
 | `extend_biometric_consent` | `true` renews the biometric consent of a cloned voice named in `voice` as `{"id": ...}` or by its UUID, or in `voice_id`, and attests renewed consent on behalf of the account that owns it. Only the voice's owner may set it; see [Renew consent](/tts/cloned-voices#renew-consent) |
 
 The language is the one `language` sets, else the one the model name implies, else the language of the voice named by its slug or ID, else English. `assemblyai-tts-1` speaks every voice in all six languages, so an English voice can read Spanish text when the request asks for Spanish, though results are usually worse than in the voice's own language; see [Voice and language](/tts/voices#voice-and-language). Clients that cannot add fields pick a language with the model name.
@@ -51446,7 +51979,7 @@ client = OpenAI(
 
 with client.audio.speech.with_streaming_response.create(
     model="assemblyai-tts-en",
-    voice="37e65973-9d96-5aab-adcd-01bf56ab5af9",
+    voice="aai-kyla",
     input="Thanks for calling.",
     response_format="pcm",
     extra_body={"language": "en", "sample_rate": 16000},
@@ -51519,7 +52052,7 @@ Description: Hosts, authentication, the connect sequence, the parameter rules, t
 A Streaming TTS session is configured entirely at connect time, through the query string, and speaks text as it arrives over one long-lived connection. Nothing can be changed afterwards: to use a different voice or sample rate, open a new session.
 
 ```text
-wss://tts.us.assemblyai.com/v1/ws?voice_id=37e65973-9d96-5aab-adcd-01bf56ab5af9&language=english&sample_rate=24000&encoding=pcm_s16le
+wss://tts.us.assemblyai.com/v1/ws?voice_id=aai-kyla&language=english&sample_rate=24000&encoding=pcm_s16le
 ```
 
 This page covers what every session has in common. The [WebSocket API reference](/tts/api-reference/websocket-api) documents each query parameter and each frame, [Message frames](/tts/message-frames) walks through the protocol, and the [Quickstart](/tts/getting-started/quickstart) opens a first session with an SDK.
@@ -51614,7 +52147,7 @@ The HTTP API adds WAV and MP3 containers; see [Audio formats](/tts/api-reference
 
 `Begin` echoes the configuration the session was actually created with, which is not always the one you asked for. It holds the effective value of every connect parameter except `token` and `model_id`, whether you sent it or not, plus what the server decided for the session: `model`, `session_ttl_sec`, the `limits` in force, `unknown_params`, and `word_boundaries_requested` next to `word_boundaries`, so a `false` in the latter tells apart the service's downgrade from your own choice. The [`Begin` message](/tts/api-reference/websocket-api) in the reference lists every key.
 
-Values are normalized in the echo: `language` comes back lowercase, an encoding alias such as `mulaw` comes back as `pcm_mulaw`, a voice UUID in `voice_id` comes back lowercase, and `inactivity_timeout` shows the timeout in effect, 120 when you did not set one. `voice_id` is the voice the session speaks: the value you sent, or the default voice's library slug, `aai-jane`, when you sent none. `model_id` is not echoed: `model` names the model the session runs on, whether `model_id` named it or the default applied. `extend_biometric_consent` is `true` when you sent it and renewals of a cloned voice's consent are available to your account, and `false` otherwise; see [Renew consent](/tts/cloned-voices#renew-consent). `word_boundaries` comes back `false` after you requested `true` when the service cannot supply word timings for the session; `word_boundaries_requested` then still says `true`.
+Values are normalized in the echo: `language` comes back lowercase, an encoding alias such as `mulaw` comes back as `pcm_mulaw`, a voice UUID in `voice_id` comes back lowercase, and `inactivity_timeout` shows the timeout in effect, 120 when you did not set one. `voice_id` is the voice the session speaks: the value you sent, or the [default voice](/tts/voices#the-default-voice)'s library slug, such as `aai-kyla`, when you sent none. `model_id` is not echoed: `model` names the model the session runs on, whether `model_id` named it or the default applied. `extend_biometric_consent` is `true` when you sent it and renewals of a cloned voice's consent are available to your account, and `false` otherwise; see [Renew consent](/tts/cloned-voices#renew-consent). `word_boundaries` comes back `false` after you requested `true` when the service cannot supply word timings for the session; `word_boundaries_requested` then still says `true`.
 
 `resolved_voice` gives the UUID and language of the voice the session resolved, also when you named it by slug, and `voice_expires_at` is when a [cloned voice's](/tts/cloned-voices) consent period ends, `null` for an AssemblyAI voice; see [the `Begin` frame](/tts/message-frames#begin). `configuration` also carries keys for options these pages do not cover, and it may gain keys over time. Read the keys you need, ignore the others, and do not validate the object against a closed set.
 
@@ -51776,7 +52309,7 @@ You can also just close the socket. The server then discards any synthesis still
     "encoding": "pcm_s16le",
     "inactivity_timeout": 120,
     "word_boundaries": true,
-    "voice_id": "37e65973-9d96-5aab-adcd-01bf56ab5af9",
+    "voice_id": "aai-kyla",
     "extend_biometric_consent": false,
     "word_boundaries_requested": true,
     "model": "assemblyai-tts-1",
@@ -52004,7 +52537,7 @@ Every route answers cross-origin requests from any origin (CORS), so a page can 
 
 - **Body.** One UTF-8 JSON object of at most 131,072 bytes, with or without a `Content-Length` header: a body streamed without one, chunked over HTTP/1.1 or over HTTP/2, is read until it ends. A larger one is refused with `413 request_too_large`, a body that does not arrive within 10 seconds with `408 request_timeout`, and one that is not a JSON object, or that nests about 10,000 levels deep or more, with `400 invalid_message`. The `Authorization` header is checked before the body is read, so a request without a credential is refused without waiting for its body. `Content-Type` is not checked, so `curl -d` works as is.
 - **Fields.** `null` counts as leaving a field out. Types are strict: `"sample_rate": 24000.0` and `"sample_rate": "24000"` are refused. Strings other than the text are trimmed. A field given twice is refused with `422 invalid_parameter`: `<field>: must be given at most once (given 2 times)`. Fields are read from the body only: one sent in the query string is refused with `422` (`400` on the OpenAI-compatible route), naming it, and other query parameters are ignored.
-- **Voices** are named with `voice_id` on `/v1/speech` and `/v1/speech/events`: an [AssemblyAI voice](/tts/voices) by its library slug, such as `aai-jane`, any voice by its ID, or one of your [cloned voices](/tts/cloned-voices) by its ID or slug. `voice` is retired on these two routes: a body or a query string that carries it, in any letter case, is refused with `422 invalid_parameter` on `voice`; for a [built-in voice](/tts/voices#built-in-voices), the message names the `voice_id` to send instead, such as `voice_id=aai-jane` for `jane`. The OpenAI-compatible route keeps OpenAI's `voice` field; see [Create speech (OpenAI compatible)](/tts/api-reference/http-api/create-speech-openai).
+- **Voices** are named with `voice_id` on `/v1/speech` and `/v1/speech/events`: an [AssemblyAI voice](/tts/voices) by its library slug, such as `aai-kyla`, any voice by its ID, or one of your [cloned voices](/tts/cloned-voices) by its ID or slug. `voice` is retired on these two routes: a body or a query string that carries it, in any letter case, is refused with `422 invalid_parameter` on `voice`: send the voice's library slug or ID in `voice_id` instead. The OpenAI-compatible route keeps OpenAI's `voice` field; see [Create speech (OpenAI compatible)](/tts/api-reference/http-api/create-speech-openai).
 - **Unknown fields** are ignored and listed in the `X-TTS-Unknown-Params` header (sorted, comma-separated, at most 16), so a misspelt field shows up instead of being dropped silently.
 - **Paths** are exact: a trailing slash, such as `/v1/speech/`, answers `404 not_found`, with no redirect. A method a path does not serve answers `405 method_not_allowed`, with an `Allow` header listing the methods it serves: `OPTIONS, POST` on the speech routes, `GET, HEAD, OPTIONS` on the others. `Accept` is not read.
 - **Request ids.** Every response carries `X-Request-Id`, errors and the answer to a browser's CORS preflight included; quote it in support requests. Send your own id in `X-Client-Request-Id` (1 to 512 printable ASCII characters) to have it echoed back and kept with the request's records. An invalid one is dropped on `/v1/speech` and `/v1/speech/events`, and refused with `400 invalid_parameter` on the OpenAI-compatible route.
@@ -52037,7 +52570,7 @@ In this table, every response means every answer of the API, the answer to a bro
 | `X-Client-Request-Id` | When the request sent a valid one | Your id, echoed |
 | `X-TTS-Region` | Every response | The region that served the request, such as `us-east-1` |
 | `X-TTS-Model` | `200` | The name of the model that spoke, such as `assemblyai-tts-1`: the model the request named, else the default model of its language. The same value as `model` in the `Begin` event of `/v1/speech/events` |
-| `X-TTS-Voice-Id` | `200` | The voice the request spoke, as `voice_id` names it: the `voice_id` you sent, trimmed, with a UUID in lowercase, or the default voice's library slug, such as `aai-jane`, when you named no voice. The same value as `Begin.configuration.voice_id` |
+| `X-TTS-Voice-Id` | `200` | The voice the request spoke, as `voice_id` names it: the `voice_id` you sent, trimmed, with a UUID in lowercase, or the default voice's library slug, such as `aai-kyla`, when you named no voice. The same value as `Begin.configuration.voice_id` |
 | `X-TTS-Voice-Expires-At` | `200` that spoke a cloned voice of your account whose consent period has an end | When the voice's consent period ends, as a Unix timestamp in seconds: `voice_expires_at` of the [`Begin` frame](/tts/message-frames#begin). With `extend_biometric_consent`, the expiry after the [renewal](/tts/cloned-voices#renew-consent) on a buffered response and on a response without audio; on a streamed response, which is every response of the OpenAI-compatible route, the expiry when the request started |
 | `X-TTS-Language`, `X-TTS-Encoding`, `X-TTS-Sample-Rate` | `200` | The values the request ran with: lowercase, encoding aliases in canonical form |
 | `X-TTS-Container` | `200`, not on MP3 | `raw` or `wav` |
@@ -52403,7 +52936,7 @@ The client fetches the token from your server, then passes it in place of the AP
 ```python
 import assemblyai as aai
 
-config = aai.TTSConfig(voice_id="37e65973-9d96-5aab-adcd-01bf56ab5af9")  # Kyla
+config = aai.TTSConfig(voice_id="aai-kyla")
 
 with aai.TTSSession(config, token=fetch_token()) as session:
     for chunk in session.speak("Hello from a device without an API key."):
@@ -52417,7 +52950,7 @@ import { TextToSpeechSession } from "assemblyai";
 
 const session = new TextToSpeechSession({
   token: await fetchToken(),
-  voiceId: "37e65973-9d96-5aab-adcd-01bf56ab5af9", // Kyla
+  voiceId: "aai-kyla",
 });
 await session.connect();
 
@@ -52434,7 +52967,7 @@ Building the session directly, with no client, keeps the API key out of the page
 
 ```javascript
 const params = new URLSearchParams({
-  voice_id: "37e65973-9d96-5aab-adcd-01bf56ab5af9",
+  voice_id: "aai-kyla",
   language: "english",
   sample_rate: "24000",
   encoding: "pcm_s16le",
@@ -52449,7 +52982,7 @@ Mint a fresh token for every connection attempt, reconnects included.
 from urllib.parse import urlencode
 
 params = {
-    "voice_id": "37e65973-9d96-5aab-adcd-01bf56ab5af9",
+    "voice_id": "aai-kyla",
     "language": "english",
     "sample_rate": 24000,
     "encoding": "pcm_s16le",
@@ -52606,7 +53139,7 @@ Sessions open on the path `/v1/ws` (or `/v1/ws/`). A request on a wrong path, su
 | `rate_limited` | `3009` | `true` | The account's new sessions for this minute are used up; `retry_after_seconds`, 1 to 60, is the time until the next one-minute window starts |
 | `input_rate_exceeded` | `3010` | `false` | Input far faster than speech |
 | `audio_backlog` | `3011` | `false` | Audio read too slowly |
-| `voice_not_found` | `3012` | `false` | No voice with this `voice_id` that your account can use on this host. One text covers a voice that does not exist, was [deleted](/tts/cloned-voices#delete-a-voice), is another account's private voice or belongs to the other data zone. A bare name such as `jane` is read as the slug of one of your own voices: name an AssemblyAI voice by its library slug, `aai-jane`. When the bare name is an AssemblyAI voice's, the text ends `Did you mean voice_id=aai-jane?` |
+| `voice_not_found` | `3012` | `false` | No voice with this `voice_id` that your account can use on this host. One text covers a voice that does not exist, was [deleted](/tts/cloned-voices#delete-a-voice), is another account's private voice or belongs to the other data zone. A bare name such as `kyla` is read as the slug of one of your own voices: name an AssemblyAI voice by its library slug, `aai-kyla`. |
 | `voice_expired` | `3012` | `false` | The cloned voice's consent period ended, and the voice can no longer be renewed |
 | `voice_blocked` | `3012` | `false` | The cloned voice is blocked; contact support |
 | `voice_not_paired` | `3014` | `false` | The cloned voice is not paired with the session's model, or that pairing is still in progress: the model named by `model_id`, or the default model of the voice's language. `param` is `model_id` either way. A pairing still in progress clears once it is ready |
@@ -52643,7 +53176,7 @@ import random
 
 import websockets
 
-URL = "wss://tts.us.assemblyai.com/v1/ws?voice_id=37e65973-9d96-5aab-adcd-01bf56ab5af9&language=english"
+URL = "wss://tts.us.assemblyai.com/v1/ws?voice_id=aai-kyla&language=english"
 HEADERS = {"Authorization": os.environ["ASSEMBLYAI_API_KEY"]}
 
 class AuthError(Exception):
@@ -52778,7 +53311,7 @@ An idle session also ends with `3006`, after two minutes without a frame in eith
 
 - **`1008`** is a credential or account problem, and retrying unchanged will not help. `Unauthorized: missing Authorization header or token query param` means no credential reached the server. `Unauthorized: Invalid API key` means the key or token was rejected; the raw key and `Bearer <key>` both work, so check the key itself. `Unauthorized: Signature has expired` means the temporary token expired: mint a new token and reconnect. A message that names your account or balance, such as `Unauthorized: Insufficient funds`, has to be fixed on the account first.
 - **`3006`** for a bad parameter, a malformed frame or an oversized `Generate` means the request is wrong; `error_type` and `param` say what to fix. Fix it before reconnecting; retrying unchanged fails identically. A parameter given more than once reads `Bad connection parameters: <parameter>: must be given at most once (given 2 times)`: send it once. For an AssemblyAI voice this connection does not serve, the `error` text lists the voices that are available on it, by their `voice_id` slugs. A `3006` after `Begin` whose text begins `Text contains a` and ends `Send shorter sentences.` means a piece of your text, split as [How text is read](/tts/prompting-guide#how-text-is-read) describes, did not fit the model with this voice. The server splits every text into pieces that fit, so this is rare and points to a fault on our side: report it with the session's `id`. Sending the text again in shorter sentences avoids it.
-- **`3012` and `3014`** concern a [cloned voice](/tts/cloned-voices#errors), and retrying unchanged fails the same way, except for a pairing still in progress. `3012` is a voice that cannot be used: `voice_not_found` (check the ID, that an AssemblyAI voice is named by its library slug such as `aai-jane`, and that you connect to the host of the voice's data zone), `voice_expired` (create the voice again from a new consented recording; to keep a voice, [renew its consent](/tts/cloned-voices#renew-consent) before it expires) or `voice_blocked` (contact support). `3014` `voice_not_paired` means the voice has no ready pairing with the session's model: if the voice was just paired with the model, try again once the pairing is ready; otherwise name a model the voice is paired with in `model_id`, or check the voice in the AssemblyAI dashboard. The `error` text says what to do; [The texts of 3014](#the-texts-of-3014) lists them. A `3006` with `error_type` `not_owner` means `extend_biometric_consent` was set on a voice your account does not own: open the session without it. A `3006` with `error_type` `biometric_terms_not_accepted` means your account has not accepted AssemblyAI's biometric data terms, which its own cloned voices need: accept them on the data controls page of the AssemblyAI dashboard, as the text says, then open the session again.
+- **`3012` and `3014`** concern a [cloned voice](/tts/cloned-voices#errors), and retrying unchanged fails the same way, except for a pairing still in progress. `3012` is a voice that cannot be used: `voice_not_found` (check the ID, that an AssemblyAI voice is named by its library slug such as `aai-kyla`, and that you connect to the host of the voice's data zone), `voice_expired` (create the voice again from a new consented recording; to keep a voice, [renew its consent](/tts/cloned-voices#renew-consent) before it expires) or `voice_blocked` (contact support). `3014` `voice_not_paired` means the voice has no ready pairing with the session's model: if the voice was just paired with the model, try again once the pairing is ready; otherwise name a model the voice is paired with in `model_id`, or check the voice in the AssemblyAI dashboard. The `error` text says what to do; [The texts of 3014](#the-texts-of-3014) lists them. A `3006` with `error_type` `not_owner` means `extend_biometric_consent` was set on a voice your account does not own: open the session without it. A `3006` with `error_type` `biometric_terms_not_accepted` means your account has not accepted AssemblyAI's biometric data terms, which its own cloned voices need: accept them on the data controls page of the AssemblyAI dashboard, as the text says, then open the session again.
 - **`3006` from the idle timeout** is not a request error. Every session closes after two minutes without a frame in either direction, or after the shorter `inactivity_timeout` you set. Its `error_type` is `inactivity_timeout`, and the `error` text begins `No message received for` and ends `Send KeepAlive frames to hold an idle session open.` Reconnect when you have something to say, or send `KeepAlive` at least every two minutes while idle if you want the socket to stay open.
 - **`1011`, `1012`, `3005` and `3009`** are transient. Back off exponentially with jitter, then reconnect, and wait at least `retry_after_seconds` when the `Error` frame sets it. `1011` is an internal error while authenticating, or while checking your account's biometric data terms for one of its own cloned voices. `1012` (`The server is restarting; reconnect to continue the session.`) means the server is being replaced; the next session lands on another one. `3005` is a failure on the server side, for example `The TTS service is temporarily unavailable; please reconnect and retry`, or `Voice service temporarily unavailable; please retry.` when the service that routes voices cannot answer at connect; re-send the request that was in flight. A `3005` with `error_type` `at_capacity` means the service had no room for the session: `This server is at capacity; please retry in 2 seconds.` before your credentials are read, or `The TTS service is at capacity; please retry in 3 seconds.` after `Begin`. Wait `retry_after_seconds` before reconnecting, and back off further if it repeats. `3009` (`Too many sessions opened for this account in the last minute (allowance 200 per minute); retry in 17 s.`) means your account started more sessions in the current one-minute window than its limit allows, and `retry_after_seconds`, between 1 and 60, is the time until the next window starts: a session opened after that wait is counted in the new window. As for Streaming Speech-to-Text, the limit counts new sessions per minute, not sessions currently open, so closing sessions early does not help; opening fewer does. A voice agent call opens one session, so the limit is the number of calls that can start in a minute. The number in the text is your starting limit; on a paid plan the limit in force can be higher. Keep one socket open and send many requests through it rather than opening a new socket for every utterance. Your limit is your Streaming Speech-to-Text limit, shown on the dashboard, counted separately from your speech-to-text sessions. See [Rate limits](/streaming/rate-limits) for how limits scale with usage.
 - **`3010` and `3011`** mean pacing, not a broken request. `3010` has three triggers: more than 8000 characters sent but not yet synthesized (`Input text rate exceeded: ...`), more than 20 `Flush`, `KeepAlive`, `Cancel` or empty `Generate` frames per second sustained (`Control frame rate exceeded: ...`), or more than 10,000 messages waiting to be handled. Send text at roughly the pace it is spoken and control frames only as the conversation needs them. `3011` means audio was waiting for a client that read too slowly or had stopped reading: 300 seconds of synthesized audio, or 16 MiB of it, whichever came first (16 MiB is about 190 seconds at 44.1 kHz and 175 seconds at 48 kHz `pcm_s16le`, and more than 300 seconds at every other format), or one write to the socket blocked for 30 seconds; after `Terminate`, audio still unread once its playing time plus 10 seconds has passed ends the session the same way. Read from the socket at least as fast as the audio plays, and until `Termination` arrives. Such a client usually cannot receive the `Error` frame either and sees `1006` when the socket is torn down. In both cases reconnect, but do not resend the same burst. See [Limits](/tts/limits).
@@ -52905,7 +53438,7 @@ import struct
 
 import websockets
 
-URL = "wss://tts.us.assemblyai.com/v1/ws?voice_id=37e65973-9d96-5aab-adcd-01bf56ab5af9&language=english"
+URL = "wss://tts.us.assemblyai.com/v1/ws?voice_id=aai-kyla&language=english"
 HEADERS = {"Authorization": os.environ["ASSEMBLYAI_API_KEY"]}
 
 # Flushes sent and not yet answered with FlushDone. Two or three keeps the
@@ -53195,7 +53728,7 @@ const client = new AssemblyAI({
 # Authorization header and the rest of main() stay exactly as they are there.
 URL = (
     "wss://tts.us.assemblyai.com/v1/ws"
-    "?voice_id=37e65973-9d96-5aab-adcd-01bf56ab5af9&language=english"
+    "?voice_id=aai-kyla&language=english"
     "&sample_rate=24000&encoding=pcm_s16le"
 )
 ```
@@ -53205,7 +53738,7 @@ URL = (
 // yours; fetchToken() asks your own server for a temporary token.
 async function connect() {
   const params = new URLSearchParams({
-    voice_id: "37e65973-9d96-5aab-adcd-01bf56ab5af9",
+    voice_id: "aai-kyla",
     language: "english",
     sample_rate: String(RATE),
     encoding: "pcm_s16le",
@@ -60260,17 +60793,16 @@ For a full list of models and IDs, see [Models](/llm-gateway/available-models). 
 
 ## Provider summary
 
-| Provider          | Retention                                                                                       | Availability  | Terms                                                                  |
-| ----------------- | ----------------------------------------------------------------------------------------------- | ------------- | ---------------------------------------------------------------------- |
-| AssemblyAI        | [ZDR](/data-retention-and-model-training)                                                       | On by default | [Terms](https://www.assemblyai.com/legal/terms-of-service)             |
-| AWS Bedrock       | [ZDR](https://docs.aws.amazon.com/bedrock/latest/userguide/data-protection.html)                | On by default | [Terms](https://aws.amazon.com/service-terms/)                         |
-| Google            | [ZDR](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/vertex-ai-zero-data-retention) | On by default | [Terms](https://cloud.google.com/terms)                                |
-| OpenAI            | [ZDR](https://developers.openai.com/api/docs/guides/your-data#zero-data-retention)              | On by default | [Terms](https://openai.com/policies/business-terms/)                   |
-| Together AI       | [ZDR](https://www.together.ai/privacy)                                                          | Opt-in        | [Terms](https://www.together.ai/terms-of-service)                      |
-| Fireworks AI      | [ZDR](https://docs.fireworks.ai/guides/security_compliance/data_handling#zero-data-retention)   | Opt-in        | [Terms](https://fireworks.ai/terms-of-service)                         |
-| DigitalOcean      | [See provider](https://docs.digitalocean.com/products/inference/details/data-privacy/)          | Opt-in        | [Terms](https://www.digitalocean.com/legal/terms-of-service-agreement) |
-| Typesafe AI (Jev) | [See provider](https://typesafe.ai/legal/privacy-policy)                                        | Opt-in        | [Terms](https://typesafe.ai/legal/terms)                               |
-| Inception Labs    | [See provider](https://www.inceptionlabs.ai/privacy-policy)                                     | Opt-in        | [Terms](https://www.inceptionlabs.ai/terms-of-use)                     |
+| Provider          | Retention                                                                                       | Availability  | BAA Signed | Terms                                                                  |
+| ----------------- | ----------------------------------------------------------------------------------------------- | ------------- | ---------- | ---------------------------------------------------------------------- |
+| AssemblyAI        | [ZDR](/data-retention-and-model-training)                                                       | On by default | Yes        | [Terms](https://www.assemblyai.com/legal/terms-of-service)             |
+| AWS Bedrock       | [ZDR](https://docs.aws.amazon.com/bedrock/latest/userguide/data-protection.html)                | On by default | Yes        | [Terms](https://aws.amazon.com/service-terms/)                         |
+| Google            | [ZDR](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/vertex-ai-zero-data-retention) | On by default | Yes        | [Terms](https://cloud.google.com/terms)                                |
+| OpenAI            | [ZDR](https://developers.openai.com/api/docs/guides/your-data#zero-data-retention)              | On by default | Yes        | [Terms](https://openai.com/policies/business-terms/)                   |
+| Fireworks AI      | [ZDR](https://docs.fireworks.ai/guides/security_compliance/data_handling#zero-data-retention)   | Opt-in        | Yes        | [Terms](https://fireworks.ai/terms-of-service)                         |
+| DigitalOcean      | [See provider](https://docs.digitalocean.com/products/inference/details/data-privacy/)          | Opt-in        | No         | [Terms](https://www.digitalocean.com/legal/terms-of-service-agreement) |
+| Typesafe AI (Jev) | [See provider](https://typesafe.ai/legal/privacy-policy)                                        | Opt-in        | No         | [Terms](https://typesafe.ai/legal/terms)                               |
+| Inception Labs    | [See provider](https://www.inceptionlabs.ai/privacy-policy)                                     | Opt-in        | No         | [Terms](https://www.inceptionlabs.ai/terms-of-use)                     |
 
 Providers marked **Opt-in** are disabled by default. To use them, you need to manually turn on their toggles on the [Data Controls](https://www.assemblyai.com/dashboard/settings/data-controls) page in your dashboard.
 
@@ -63565,9 +64097,9 @@ If an error occurs, the API returns an error response:
 
 ---
 
-<a id="saved-prompts-docs-llm-gateway-saved-prompts-mdx"></a>
+<a id="saved-prompts-and-prompt-templates-docs-llm-gateway-saved-prompts-mdx"></a>
 
-# Saved prompts
+# Saved prompts and prompt templates
 
 URL: https://www.assemblyai.com/docs/llm-gateway/saved-prompts
 Source: docs/llm-gateway/saved-prompts.mdx
@@ -63586,7 +64118,7 @@ Use saved prompts to:
 
 Saved prompts belong to your account. Names are unique within your account, and other accounts can't read, change or use your prompts.
 
-AssemblyAI stores a saved prompt in your account until you delete it. Saved prompts have no expiry. Deleting a prompt removes it permanently, and updating it overwrites it in place. Only the prompt itself is stored. Values you fill in when you run it, such as `prompt_replacements` or a transcript injected with `transcript_id`, are used for that one request and aren't kept. See [Data retention](/data-retention-and-model-training#llm-gateway-production-environment).
+Saved prompts and prompt templates are stored in your account until you delete them. They have no expiry or TTL. Deleting a saved prompt removes it permanently, and updating one overwrites it in place. Values filled into a saved prompt at request time, such as `prompt_replacements` or a transcript injected with `transcript_id`, are used for that one request and aren't kept. See [Data retention](/data-retention-and-model-training#llm-gateway-production-environment).
 
 ## Create a saved prompt
 
@@ -74178,25 +74710,6 @@ We do not currently support SAML-based SSO, but it is on our roadmap and expecte
 
 ---
 
-<a id="how-long-are-outputs-maintained-docs-faq-how-long-are-outputs-retained-mdx"></a>
-
-# How long are outputs maintained?
-
-URL: https://www.assemblyai.com/docs/faq/how-long-are-outputs-retained
-Source: docs/faq/how-long-are-outputs-retained.mdx
-Navigation: FAQ > Overview > Privacy & Security
-Description: How long are outputs maintained? documentation.
-
-For a full breakdown of how AssemblyAI maintains audio and transcript data, see [Data retention and model training](/data-retention-and-model-training).
-
-For Pre-recorded STT, Final Transcription Artifacts (transcripts) are stored for **30 days by default and are automatically deleted after that**. You can shorten this window by setting a time-to-live (TTL) on the [Data Controls page](https://www.assemblyai.com/dashboard/settings/data-controls) in the dashboard — presets of 1 day, 3 days, 7 days, and 30 days are available, or you can set a **Custom** value. See [Set a time-to-live for audio and transcripts](/data-controls#set-a-time-to-live-for-audio-and-transcripts).
-
-For customers with a BAA, all transcripts generated via the async transcription endpoint are deleted after the TTL period (currently set to 3 days by default).
-
-You can also delete individual transcripts on demand via the [DELETE endpoint](/pre-recorded-audio/delete-transcripts).
-
----
-
 <a id="does-assemblyai-utilize-an-anti-virus-anti-malware-solution-across-all-relevant-infrastructure-workstations-and-servers-and-are-appropriate-response-capabilities-deployed-to-respond-to-alerts-docs-faq-does-assemblyai-utilize-an-anti-virus-anti-malware-solution-across-all-relevant-infrastructure-workstations-and-servers-and-are-appropriate-response-capabilities-deployed-to-respond-to-ale-mdx"></a>
 
 # Does AssemblyAI utilize an anti-virus/anti-malware solution across all relevant infrastructure (workstations and servers), and are appropriate response capabilities deployed to respond to alerts?
@@ -76243,7 +76756,7 @@ Do not submit with `auto_chapters` and `summarization` both enabled — the API 
 
 For data residency, swap the host: `streaming.us.assemblyai.com` (US-pinned) or `streaming.eu.assemblyai.com` (EU-pinned). The default host auto-routes to the nearest region.
 
-**Audio format:** PCM16 signed little-endian, mono, 16 kHz. Binary WebSocket frames, **50–1000 ms per chunk**, no faster than real-time. Phone audio (`encoding=pcm_mulaw`, `sample_rate=8000`) is sent as-is — don't upsample.
+**Audio format:** PCM16 signed little-endian, mono, 16 kHz. Binary WebSocket frames, **20–1000 ms per chunk** (50–100 ms recommended), no faster than real-time. Phone audio (`encoding=pcm_mulaw`, `sample_rate=8000`) is sent as-is — don't upsample.
 
 **Auth:**
 - Server-side: `Authorization` header on the WS upgrade.
@@ -76493,6 +77006,8 @@ If a developer asks for any of these, say so directly and propose the closest su
 
 ## 13. Error handling
 
+For the most common errors across all APIs, with fixes, and links to each product's full error and limit reference, see [Errors and limits](/errors).
+
 ### REST (pre-recorded)
 
 - **401** — Missing/invalid Authorization, disabled account, or insufficient balance. Double-check there's no `Bearer` prefix.
@@ -76513,7 +77028,7 @@ If a developer asks for any of these, say so directly and propose the closest su
 | `1008` | Too many new sessions this minute (`error` text `Unauthorized Connection: Too many concurrent sessions`); back off and retry next minute |
 | `3005` | Session cancelled (server-side error) |
 | `3006` | Invalid message type / invalid JSON |
-| `3007` | Audio chunk outside 50–1000 ms, or sent faster than real-time |
+| `3007` | Audio chunk outside 20–1000 ms, or sent faster than real-time |
 | `3008` | Session expired (3-hour cap) |
 
 ### Streaming gotchas
@@ -76521,7 +77036,7 @@ If a developer asks for any of these, say so directly and propose the closest su
 - `speech_model` (streaming, singular) vs `speech_models` (pre-recorded, plural). Don't mix up.
 - On Universal-3.6 Pro Realtime, `end_of_turn_confidence_threshold` is silently ignored; `language_codes` steers the model toward the languages you list.
 - Always send `{ "type": "Terminate" }` when finished. An abandoned session stays billable until the 3-hour cap (`3008`).
-- Chunk size matters: frames outside 50–1000 ms will close the socket with `3007`.
+- Chunk size matters: frames outside 20–1000 ms will close the socket with `3007`.
 
 ---
 
@@ -76569,6 +77084,240 @@ Receive transcription results in real-time instead of polling.
   
   
     Stuck with your implementation? Get in touch with our team.
+
+---
+
+<a id="errors-and-limits-docs-errors-mdx"></a>
+
+# Errors and limits
+
+URL: https://www.assemblyai.com/docs/errors
+Source: docs/errors.mdx
+Navigation: Additional pages
+Description: Every documented AssemblyAI error with its cause and fix, rate limits by plan, and links to the full error and limit reference for each product.
+
+This page lists the errors developers hit most often, then rate limits by plan, then every other documented error by product. Each product also has a full error reference and a limits page, linked in the table at the end.
+
+## Common errors
+
+| API | Error | Cause | Fix |
+| --- | ----- | ----- | --- |
+| Pre-recorded | `401` `Authentication error, API token missing/invalid` | The API key is missing or wrong. A common cause is a `Bearer` prefix. | Send the raw API key in the `authorization` header, with no `Bearer` prefix. |
+| Pre-recorded | `429` on `GET /v2/transcript/{transcript_id}` | More than 60 polling requests per minute for the same transcript. | Wait for the number of seconds in the `Retry-After` header. Use [webhooks](/pre-recorded-audio/webhooks) instead of polling. |
+| Pre-recorded | `403` on any request | More than 20,000 requests in five minutes, across all endpoints. | Use [webhooks](/pre-recorded-audio/webhooks), or widen and jitter your polling interval. See [Rate limits](/pre-recorded-audio/rate-limits). |
+| Pre-recorded | Transcript `status: "error"` with `Download error, unable to download <url>` | The audio URL is private, or a presigned URL expired before the download. | Use a public URL, create the presigned URL just before you submit, or [upload the file](/pre-recorded-audio/api-reference/files/upload). |
+| Pre-recorded | `500`, `503`, `504` | An error on AssemblyAI's side. | Retry with exponential backoff. |
+| All APIs | `Your current account balance is negative. Please top up to continue using the API.` | The account balance is \$0 or below and auto-pay is off. | Add funds or turn on auto-pay. See [Billing and pricing](/billing-and-pricing). |
+| Streaming STT | Close `1008` `Unauthorized Connection: Too many concurrent sessions` | Too many **new** sessions this minute. The limit counts session starts per minute, not open sessions. | Back off and open the session again in the next minute. See [Streaming rate limits](/streaming/rate-limits). |
+| Streaming STT | Close `1008` with any other `Unauthorized Connection:` text | A problem with the key, temporary token or account. | Fix the key, token or account first. Reconnecting unchanged fails again. |
+| Streaming STT | Close `3007` `Input duration violation` | An audio chunk is shorter than 20 ms or longer than 1000 ms. | Send chunks between 20 and 1000 ms. 50 to 100 ms is recommended. |
+| Streaming STT | Close `3007` `Audio Transmission Rate Exceeded` | Audio is sent faster than real time. | Send audio at real-time speed. |
+| Streaming STT | Close `3008` `Session Expired: Maximum session duration exceeded` | The session passed the 3-hour limit, or the limit set by a temporary token. | Send `Terminate` when you finish. You are billed until the session closes. |
+| Streaming STT | Close `3005` `Session Cancelled: An error occurred` | A server-side error not covered by a more specific code. | Open a new session. If it repeats, contact support@assemblyai.com. |
+| Streaming STT | HTTP `410` on connect | The retired v2 streaming endpoint. | Connect to `wss://streaming.assemblyai.com/v3/ws`. |
+| Sync STT | `503` `Capacity Exceeded` | The server is at its concurrency limit. | Retry after the `Retry-After` header. |
+| Streaming TTS | Close `3009` `rate_limited` | Too many new sessions for the account in the last minute. | Wait for `retry_after_seconds`, then reconnect. |
+| LLM Gateway | `429` | Too many requests or tokens per minute. Unset `max_tokens` reserves 8,000 tokens against the limit. | Wait for the `Retry-After` header and set a lower `max_tokens`. See [LLM Gateway rate limits](/llm-gateway/rate-limits). |
+
+## Rate limits by plan
+
+Rate limits apply per account. Every API key on the account shares them. To raise a limit, contact [support@assemblyai.com](mailto:support@assemblyai.com).
+
+| API | Limit | Free | Paid | Over the limit |
+| --- | ----- | ---- | ---- | -------------- |
+| Pre-recorded | Parallel transcriptions | 5 | 200+ | New jobs wait in a queue and run in order. If the balance goes below zero, the limit drops to 1. |
+| Pre-recorded | Requests to all endpoints | 20,000 per 5 minutes | 20,000 per 5 minutes | `403` |
+| Pre-recorded | Polls of one transcript | 60 per minute | 60 per minute | `429` with `Retry-After` |
+| Streaming STT | New sessions per minute | 5 | 200, grows by 10% when you use 80% or more in a minute | Close `1008` `Unauthorized Connection: Too many concurrent sessions` |
+| Streaming TTS | New WebSocket sessions per minute, counted apart from STT | 5 | 200, grows with use | Close `3009` `rate_limited` |
+| Streaming TTS | HTTP requests per minute | 50 | 1,000 or more | `429` `rate_limited` |
+| Speech Understanding | Requests per minute | 2 | 30 | |
+| LLM Gateway | Requests per minute | Tier 0: 30 | Tier 1 (any spend) to Tier 5: 100, 300, 600, 1,500, 3,000 | `429` with `Retry-After` |
+
+Streaming STT and TTS do not limit how many sessions are open at once, only how many start each minute. LLM Gateway tokens per minute depend on the model and tier. Your dashboard shows them. Sync STT and Dictation have rate limits, but no numbers are published.
+
+### Account limits
+
+| Limit | Free | PAYG | Contracted | Enterprise |
+| ----- | ---- | ---- | ---------- | ---------- |
+| API keys | 2 | 4 | 25 | Custom |
+| Projects | 2 | 2 | 5 | Custom |
+| Members (active and pending) | 2 | 20 | 20 | 20 |
+
+### Size and duration limits
+
+These apply on all plans.
+
+| API | Limit |
+| --- | ----- |
+| Pre-recorded | Audio from 160 ms to 10 hours. Local files sent to `/v2/upload` up to 2.2 GB. |
+| Streaming STT | Sessions up to 3 hours. Audio chunks from 20 to 1000 ms. |
+| Sync STT and Dictation | `/v1/transcribe`: 80 ms to 20 minutes, 256 MB. `/v1/transcribe/live`: up to 120 s, 256 MB. |
+| Streaming TTS | WebSocket sessions up to 3600 s. 2000 characters per `Generate`. HTTP requests up to 5,000 characters. See [Limits](/tts/limits). |
+
+## All errors by product
+
+Errors in [Common errors](#common-errors) are not repeated here. A dash in the Fix column means the source page states no fix.
+
+### Pre-recorded STT
+
+| Error | Cause | Fix |
+| ----- | ----- | --- |
+| `400` `Transcript creation error, audio_url not found` | The request has no `audio_url`. | Send `audio_url` with a public URL or an upload URL. |
+| `400` `Language code <code> is not supported.` | The `language_code` is not supported. | Use a supported code, or turn on language detection. |
+| `400` `"speech_models" must be a non-empty list ...` | `speech_models` is empty or has an unknown name. | Send a non-empty list of supported model names. |
+| `400` when a current model name is sent in `speech_model` | The singular `speech_model` is deprecated. | Use `speech_models`. |
+| `400` `` `language_detection` is not available when `language_code` is specified. `` | Both are set in one request. | Remove one of them. |
+| `400` `` `punctuate` must be a Boolean `` (the field name changes) | A parameter has the wrong JSON type. | Send the correct JSON type. |
+| `400` ``Invalid `webhook_url`, `webhook_url` should start with http.`` | `webhook_url` is not an http or https URL. | Send a full URL. |
+| `400` `You must explicitly define 'redact_pii_policies'` | PII redaction is on, but no policies are set. | Send a list of policies. |
+| `400` `Unsupported policy name in 'redact_pii_policies', ...` | A policy name is unknown. | Use a policy from the list in the error. |
+| `400` ``Invalid `redact_pii_audio_quality` value, choose 'mp3' or 'wav'`` | The value is not `mp3` or `wav`. | Set `mp3` or `wav`. |
+| `400` `Error processing request, json data invalid` | The body is not valid JSON. | Send valid JSON with `Content-Type: application/json`. |
+| `400` `The following models are not available in this language: speaker_labels` | The feature does not support the language in `language_code`. | Check [Supported languages](/pre-recorded-audio/supported-languages). |
+| `400` `Transcript lookup error, transcript id not found` | The transcript ID, endpoint or API key is wrong. | Use the same API key that created the transcript. Check the endpoint and method. |
+| `400` `This transcript has a status of '<status>'. ...` on `/srt`, `/vtt`, `/sentences`, `/paragraphs` | The transcript is not complete. | Request exports only when `status` is `completed`. |
+| `400` `` `words` is a required query parameter `` on `/word-search` | `words` is missing. | Send `?words=foo,bar`. |
+| `400` `A redacted audio file for this transcript ID doesn't exist. ...` on `/redacted-audio` | Audio redaction was off when the transcript was created. | Submit again with `redact_pii` and `redact_pii_audio` set to `true`. |
+| `400` `'limit' must be greater than or equal to 1` on `GET /v2/transcript` | `limit` is below 1. | Send a positive integer. |
+| `403` `Cannot access uploaded file` on `POST /v2/upload` | | — |
+| `404` `404: Not Found` (plain text, not JSON) on `/<format>` | The subtitle format is not `srt` or `vtt`. | Use `srt` or `vtt`. |
+| `422` `Upload failed, please try again. ...` (plain text) on `POST /v2/upload` | The upload body is empty. | Send the file bytes as the body. |
+| Transcript `status: "error"`: `Transcoding failed. File type <mime> ...` | The URL is a web page, or the file type is not supported. | Use a [supported format](/faq/what-audio-and-video-file-types-are-supported-by-your-api). If it repeats, contact support. |
+| Transcript `status: "error"`: `No audio stream found in the file. ...` | The file has no audio stream. | Check the file with `ffprobe`, then encode it again. |
+| Transcript `status: "error"`: `<audio_url> length=<bytes> exceeds max_content_length=<max>` | The file is over the size limit. | Split or downsample the file. |
+| Transcript `status: "error"`: `No content found at <url>. ...` | The URL returned an empty body. | Make sure the file exists and is not empty. |
+| Transcript `status: "error"`: `File not found at <url>. ...` | The upload expired, or you used a different region. | Upload again, and use the same regional base URL. |
+| Transcript `status: "error"`: `Audio duration is too short.` | The audio is shorter than 160 ms. | Check the duration before you submit. |
+| Transcript `status: "error"`: `language_detection cannot be performed on files with no spoken audio.` | The file has no speech. | Turn off language detection, set `language_code`, or skip the file. |
+| Transcript `status: "error"`: `detected language '<code>', confidence <c>, is below the requested confidence threshold value of '<threshold>'` | Detection confidence is below `language_confidence_threshold`. | Set `on_low_language_confidence` to `fallback`, or lower the threshold. |
+
+### Streaming STT
+
+The server sends an `Error` message, then closes the WebSocket.
+
+| Error | Cause | Fix |
+| ----- | ----- | --- |
+| Close `3006` `Invalid Message Type: <message>` | The message type is not supported. | — |
+| Close `3006` `Invalid JSON: <json>` | The message is not valid JSON. | — |
+| Close `3006` `Invalid Message: <message>` | The message is not valid. | — |
+| Close `3006` `Session terminated due to inactivity: No messages received for <n> seconds` | No message arrived within `inactivity_timeout`. | Send `KeepAlive`. |
+| Close `1008` `Unauthorized Connection: Missing Authorization header` | No API key or token was sent. | Send your API key or a temporary token. |
+| Close `1008` `Unauthorized Connection: Invalid API key` | The key or token is not valid. | Check the key. |
+| Close `1008` `Unauthorized Connection: Signature has expired` | The temporary token expired before the session opened. | Create a new token. |
+| Close `1008` `Unauthorized Connection: Insufficient funds` | The balance is too low. | Add funds. |
+| Close `1008` `Unauthorized Connection: API key is disabled` | The key, project or account is disabled. | Use an enabled key, or contact support. |
+| Close `1008` `Unauthorized Connection: No metronome account found` | Billing is not set up. | Contact support. |
+| Close `1011` `Error authenticating connection` | A server error during authentication. | Retry. If it repeats, contact support. |
+
+### Sync STT
+
+The error body uses RFC 9457. The `title` field identifies the error.
+
+| Error | Cause | Fix |
+| ----- | ----- | --- |
+| `400` `Bad Audio` | Malformed WAV, misaligned PCM, or no `sample_rate` or `channels` for PCM. | Fix the audio or config, then retry. |
+| `400` `Audio Too Short` | Audio is shorter than 80 ms on `/v1/transcribe`. | Fix the audio, then retry. |
+| `400` `Bad Request` | No `audio` part, invalid config JSON, or a field over its limit. | Fix the request, then retry. |
+| `401` `Unauthorized` | The API key is missing or not valid. | Check the key. |
+| `413` `Audio Too Large` | Over 20 minutes on `/v1/transcribe`, over 120 s on `/v1/transcribe/live`, or over 256 MB. | Use `/v1/transcribe` for audio over 120 s, and Pre-recorded for audio over 20 minutes. |
+| `415` `Unsupported Media Type` | The format, bit depth or sample rate is not supported. | See [Audio requirements](/sync-stt/audio-requirements). |
+| `429` `Too Many Requests` | Rate limit exceeded. | Retry after the `Retry-After` header. |
+| `503` `Service Unavailable` | The model is still loading. | Retry after the `Retry-After` header. |
+| `504` `Inference Timeout` | Over 30 s on `/v1/transcribe`, over 300 s on `/v1/transcribe/live`, or a live upload idle for 120 s. | Retry once. If it repeats, contact support. |
+| `500` `Inference Error` | An internal model error. | Retry once. If it repeats, contact support. |
+
+### Dictation
+
+| Error | Cause | Fix |
+| ----- | ----- | --- |
+| `400` with `error_code` `bad_request` | A missing or empty `audio` part, a missing `config` or one sent after `audio`, invalid JSON, or a Dictation field such as `stt_prompt` that is not valid. | Fix the request, then retry. |
+| `400` with `title` and `detail` | A transcription `config` field is unknown, out of range or too long. | Fix the config, then retry. |
+| `401` `Missing Authorization header` or `Invalid API key` | A credential problem. | Fix the key. A retry does not help. |
+| `413` `audio_too_large` on `/v1/transcribe/live` | Audio passed 120 s or the size limit. | Use `/v1/transcribe`. |
+| `413` `Audio Too Large` on `/v1/transcribe` | Audio is longer than 20 minutes. | Use Pre-recorded. |
+| `415` | The audio format is not accepted. `/v1/transcribe/live` takes only `audio/wav` and `audio/pcm`. | Send compressed audio to `/v1/transcribe`. |
+| `429` | Rate limit exceeded. | Back off and retry. |
+| `502` `upstream_error` | The transcription service is unavailable. | Back off and retry. |
+| `503` `capacity_exceeded` | The server is at capacity. | Back off and retry. |
+| `504` `upstream_timeout` | Transcription timed out, the upload was silent too long, or the request passed its time limit. | Back off and retry. |
+| `200` with `llm_error`: `timeout`, `error`, `truncated`, `prompt_not_found`, `context_exceeded`, `unsupported_param`, `rate_limited`, `invalid_request`, `upstream_error` | The rewrite step failed. The request did not fail. | Use the `text` field. |
+
+### Streaming TTS
+
+WebSocket errors come in an `Error` frame with `error_code`, `error_type`, `retryable` and `retry_after_seconds`.
+
+| Error | Cause | Fix |
+| ----- | ----- | --- |
+| HTTP `404`, `405` or `400` on connect | Wrong path, not a GET request, or two `Authorization` headers. | Connect to `/v1/ws` with GET. |
+| Close `1006` | The connection was lost. | Reconnect. |
+| Close `1008` `unauthorized` | No credential, a rejected key, or an expired temporary token. | Fix the credential. Do not retry unchanged. |
+| Close `1008` `insufficient_funds` | The balance is too low. | Add funds. |
+| Close `1009` | A message was larger than 1 MiB. | Send smaller messages. |
+| Close `1011` `auth_unavailable` | The credential could not be checked, or a ping was not answered. | Back off and reconnect. |
+| Close `1012` `service_restart` | The server is restarting. | Reconnect. |
+| Close `3005` `at_capacity` | No capacity is free. | Wait for `retry_after_seconds`, then reconnect. |
+| Close `3005` `voice_service_unavailable`, `upstream_unavailable` or `internal_error` | A server-side failure. | Back off, reconnect, and send the in-flight request again. |
+| Close `3006` `invalid_parameter` | A connect parameter is not valid or is sent twice. | Fix the parameter named in `param`. |
+| Close `3006` `invalid_message` | A malformed frame, a binary frame, or a `Generate` over 2000 characters. | Fix the frame. Split long text. |
+| Close `3006` `invalid_request` | The voice or language is not served. | Fix the voice or language. |
+| Close `3006` `model_not_found` | The `model_id` is unknown, or no model serves the language. | — |
+| Close `3006` `not_owner` | `extend_biometric_consent` was sent for a voice you do not own. | Open the session without it. |
+| Close `3006` `biometric_terms_not_accepted` | The account has not accepted the biometric data terms. | Accept them on the data controls page of the dashboard. |
+| Close `3006` `inactivity_timeout` | No frame for 120 s, or for `inactivity_timeout`. | Send `KeepAlive`, or reconnect when you need to. |
+| Close `3008` `session_expired` | The session reached `expires_at`. | Open a new socket before `expires_at`. |
+| Close `3010` `input_rate_exceeded` | Over 8000 characters waiting for synthesis, over 20 control frames per second, or over 10,000 queued messages. | Send text at speaking pace. Send control frames only when needed. |
+| Close `3011` `audio_backlog` | The client reads audio too slowly. | Read audio as fast as it plays. |
+| Close `3012` `voice_not_found`, `voice_expired` or `voice_blocked` | The voice ID is not usable, its consent ended, or it is blocked. | Check the voice ID. Create the voice again, or contact support. |
+| Close `3014` `voice_not_paired` or `model_retired` | A cloned voice is not paired with the model, or the model is retired. | Follow the text of the error. |
+
+The HTTP API returns these `code` values:
+
+| Error | Cause | Fix |
+| ----- | ----- | --- |
+| `400` `invalid_message` | The body is empty, not UTF-8, or not a JSON object. | Fix the body. |
+| `401` `missing_authorization` or `unauthorized` | No credential, an unknown key, a disabled account, or an expired token. | Fix the credential. |
+| `402` `insufficient_funds` | The balance is too low. | Add funds. |
+| `403` `biometric_terms_not_accepted` | The account has not accepted the biometric data terms. | Accept them, then send again. |
+| `404` `not_found` | Unknown path, including a trailing slash. | Fix the path. |
+| `405` `method_not_allowed` | Wrong HTTP method. | Use the method in the `Allow` header. |
+| `408` `request_timeout` | The body did not arrive within 10 s. | Retry. |
+| `413` `request_too_large` | The body is over 131,072 bytes. | Send a smaller body. |
+| `422` `invalid_parameter` | A field is missing, has the wrong type, is out of range, or the text is over 5,000 characters. | Fix the field named in `param`. |
+| `422` `invalid_request`, `model_not_found`, `voice_not_found`, `voice_expired`, `voice_blocked`, `voice_not_paired`, `model_retired`, `not_owner` | Same as the WebSocket errors with the same name. | Same as the WebSocket errors. |
+| `503` `at_capacity`, `auth_unavailable`, `voice_service_unavailable`, `upstream_unavailable`, `service_restart`, `service_unavailable` | A temporary server problem. | Retry after the `Retry-After` header. |
+| `500` `internal_error` | An unexpected server error. | Retry. If it repeats, contact support with the `request_id`. |
+| `504` `session_expired` | The request passed 600 s. | — |
+
+### LLM Gateway
+
+| Error | Cause | Fix |
+| ----- | ----- | --- |
+| `401` or `403` `Authentication error, API token missing/invalid` | The key is missing, wrong, from another region, or the header name is wrong. | Send the key in the `Authorization` header with no `Bearer` prefix. Use an EU key on the EU endpoint. |
+| `400` `invalid request body` with `metadata.errors`: `one of messages or prompt required` | The request has no `messages` and no `prompt`. | Send one of them. |
+| `400` `metadata.errors`: `model {model} is not supported` | The model ID is not recognized. | Use a model from the list of available models. |
+| `400` `metadata.errors`: `model context limit exceeded` | The input is larger than the model's context window. | — |
+| `400` `metadata.errors`: `model_region can only be set to global` | `model_region` is not `global`. | — |
+| `400` `metadata.errors`: `fallback_config depth cannot be greater than 2` | `fallback_config.depth` is over 2. | — |
+| `400` `metadata.errors`: `response_format is invalid: {detail}` | `response_format` failed schema validation. | — |
+| `404` `transcript not found` or `transcript deleted` | The transcript belongs to another account or region, or it was deleted. | Use the correct ID and region, or transcribe again. |
+| `500`, `502`, `503`, `504` | A temporary problem at AssemblyAI or the model provider. | Retry with backoff and jitter. If it repeats, contact support with the `request_id`. |
+| `200` with no stream | The model does not support `stream`, or the client does not read server-sent events. | Check the model's supported parameters. |
+
+## Full error and limit references
+
+| Product | Errors | Limits |
+| ------- | ------ | ------ |
+| Pre-recorded STT | [Troubleshoot common errors](/pre-recorded-audio/guides/common_errors_and_solutions) | [Rate limits](/pre-recorded-audio/rate-limits) |
+| Streaming STT | [Common session errors and closures](/streaming/common-session-errors-and-closures) | [Rate limits](/streaming/rate-limits) |
+| Sync STT | [Error handling](/sync-stt/error-handling) | [Audio requirements](/sync-stt/audio-requirements) |
+| Dictation | [Error handling](/dictation/error-handling) | [Audio requirements](/dictation/audio-requirements) |
+| Streaming TTS | [Error handling](/tts/error-handling) | [Limits](/tts/limits) |
+| LLM Gateway | [Troubleshooting](/llm-gateway/troubleshooting) | [Rate limits](/llm-gateway/rate-limits) |
+| Speech Understanding | | [Rate limits](/speech-understanding/rate-limits) |
+| Account | | [Account management](/account-management) |
+
+Failed requests are not charged.
 
 ---
 
@@ -78786,8 +79535,6 @@ paths:
           $ref: "#/components/responses/BadRequest"
         "401":
           $ref: "#/components/responses/Unauthorized"
-        "403":
-          $ref: "#/components/responses/CannotAccessUploadedFile"
         "404":
           $ref: "#/components/responses/NotFound"
         "422":
@@ -78996,6 +79743,8 @@ paths:
           $ref: "#/components/responses/BadRequest"
         "401":
           $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/CannotAccessUploadedFile"
         "404":
           $ref: "#/components/responses/NotFound"
         "429":
@@ -88371,11 +89120,11 @@ channels:
 
       voice_id:
         description: >-
-          Optional. The voice: the library slug of an [AssemblyAI voice](/tts/voices) such as `aai-jane`, a voice's ID (a UUID, in any letter case), or the slug of one of your account's voices, such as a [cloned voice](/tts/cloned-voices). Slugs are lowercase, at most 64 characters. When unset, the session speaks the default voice of its model in its language, `aai-jane`, an English voice; in another language, results are usually worse than in English, its own language (see [Voice and language](/tts/voices#voice-and-language)). An AssemblyAI voice the session's model does not speak in the session's language closes with `3006`; a `voice_id` that names no voice your account can use on this host closes with `3012`.
+          Optional. The voice: the library slug of an [AssemblyAI voice](/tts/voices) such as `aai-kyla`, a voice's ID (a UUID, in any letter case), or the slug of one of your account's voices, such as a [cloned voice](/tts/cloned-voices). Slugs are lowercase, at most 64 characters. When unset, the session speaks the [default voice](/tts/voices#the-default-voice) of its language, such as `aai-kyla` in English. An AssemblyAI voice the session's model does not speak in the session's language closes with `3006`; a `voice_id` that names no voice your account can use on this host closes with `3012`.
         location: $message.payload#/voice_id
         examples:
           - aai-kyla
-          - 37e65973-9d96-5aab-adcd-01bf56ab5af9
+          - aai-donatien
 
       model_id:
         description: >-
@@ -88623,7 +89372,7 @@ components:
               encoding: pcm_s16le
               inactivity_timeout: 120
               word_boundaries: true
-              voice_id: aai-jane
+              voice_id: aai-kyla
               extend_biometric_consent: false
               word_boundaries_requested: true
               model: assemblyai-tts-1

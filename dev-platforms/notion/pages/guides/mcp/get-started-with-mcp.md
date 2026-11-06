@@ -153,7 +153,7 @@ Open **Customize** in Cursor's sidebar, then enable Notion and complete the OAut
 
 ### fx
 
-fx is an MCP client that makes configured servers available in its interactive shell and agent sessions. See the [fx MCP documentation](https://fx.sh/docs/capabilities/mcp) for more details.
+fx is a CLI coding agent from Vercel Labs. See the [fx MCP documentation](https://fx.sh/docs/capabilities/mcp) for more details.
 
 **Step 1**
 
@@ -168,20 +168,18 @@ fx
 Add the Notion server:
 
 ```bash theme={null}
-/mcp add --transport http notion https://mcp.notion.com/mcp
+/mcp add notion https://mcp.notion.com/mcp
 ```
 
-**Step 3**
-
-In the same session, run `/mcp auth notion --open` and complete the OAuth flow.
+fx opens your browser to complete the OAuth flow. To sign in again later, run `/mcp login notion`.
 
 > [accordion] JSON configuration
 >
-> To configure Notion MCP without the CLI, add it to `~/.fx/mcp.json`:
+> Add Notion MCP to `~/.fx/mcp.json`:
 >
 > ```json theme={null}
 > {
->   "mcp": {
+>   "mcpServers": {
 >     "notion": {
 >       "type": "http",
 >       "url": "https://mcp.notion.com/mcp"
@@ -190,7 +188,7 @@ In the same session, run `/mcp auth notion --open` and complete the OAuth flow.
 > }
 > ```
 >
-> If a session is already open, run `/mcp reload` to pick up the change.
+> A running fx session picks up the change on your next prompt or `/mcp` command. Then run `/mcp login notion`.
 
 ### Hermes
 

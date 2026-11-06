@@ -99,6 +99,12 @@ print(s3.meta.endpoint_url)
 # https://s3-fips.us-west-2.amazonaws.com
 ```
 
+## FIPS endpoints over an interface VPC endpoint
+
+FIPS endpoints are public AWS hostnames. To reach them without traffic crossing the public internet, create an interface VPC endpoint for `com.amazonaws.<region>.sagemaker.runtime-fips`, not `sagemaker.runtime`, and enable private DNS. `runtime-fips.sagemaker.<region>.amazonaws.com` then resolves to private IP addresses in your VPC, and the client configuration on this page stays the same, including port `8443` for streaming. Add `com.amazonaws.<region>.sagemaker.api-fips` if you call the control plane from the VPC.
+
+VPC endpoint policies aren't supported for `InvokeEndpoint` on FIPS runtime endpoints, so restrict invocation with IAM identity-based policies. For setup, latency configuration, and verification, see [Invoke through a SageMaker Runtime interface endpoint](/docs/invoke-sagemaker-endpoint#combine-with-fips-endpoints).
+
 ## AWS CLI
 
 The AWS CLI honors `AWS_USE_FIPS_ENDPOINT` and `use_fips_endpoint`, and also accepts `--endpoint-url`:
@@ -126,3 +132,4 @@ This check matters most in the IAM Identity Center case above, where a misconfig
 
 * [Security and Compliance](/docs/security-and-compliance-sagemaker) — what FIPS endpoints cover, FedRAMP coverage, network isolation, and VPC options
 * [Invoke a Deepgram SageMaker Endpoint](/docs/invoke-sagemaker-endpoint) — full request examples for each transport
+* [Invoke through a SageMaker Runtime interface endpoint](/docs/invoke-sagemaker-endpoint#invoke-through-a-sagemaker-runtime-interface-endpoint) — private, low-latency connectivity, including FIPS

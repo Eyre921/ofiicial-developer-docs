@@ -195,7 +195,7 @@ run();
 
 ## createPresetsChatCompletions
 
-Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored.
+Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored. Requires a read-write [management key](https://openrouter.ai/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys); inference API keys are rejected.
 
 ### Example Usage
 
@@ -307,7 +307,7 @@ run();
 
 ## createPresetsMessages
 
-Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored.
+Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored. Requires a read-write [management key](https://openrouter.ai/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys); inference API keys are rejected.
 
 ### Example Usage
 
@@ -413,7 +413,7 @@ run();
 
 ## createPresetsResponses
 
-Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored.
+Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored. Requires a read-write [management key](https://openrouter.ai/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys); inference API keys are rejected.
 
 ### Example Usage
 

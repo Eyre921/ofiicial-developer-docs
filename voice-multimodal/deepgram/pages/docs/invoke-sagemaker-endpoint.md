@@ -21,6 +21,10 @@ Once your endpoint is deployed and in service, you invoke it to transcribe audio
 >
 > **Passing Deepgram parameters.** For synchronous invocations, the Deepgram model and feature parameters are passed in the `CustomAttributes` field (the `X-Amzn-SageMaker-Custom-Attributes` header) as `v1/listen?model=...&language=...`. For streaming, the same values are split across `ModelInvocationPath` (`v1/listen`) and `ModelQueryString`. In all cases an API path such as `v1/listen` is required — without it the container returns a 404. The examples on this page use `v1/listen` (speech-to-text), but other routes are available (for example, `v1/speak` for text-to-speech).
 
+> **Tip**
+>
+> When you need low latency and/or no traffic over the public internet, run your client in the same AWS Region as the endpoint and connect through a [SageMaker Runtime interface VPC endpoint](#invoke-through-a-sagemaker-runtime-interface-endpoint) in your client's Availability Zone. Your invocation code stays the same, including over [FIPS endpoints](#combine-with-fips-endpoints).
+
 Complete, runnable examples for both modes — in Python, TypeScript, and Java — are maintained in the [deepgram-devs/dg-sagemaker](https://github.com/deepgram-devs/dg-sagemaker) repository. The sections below explain each mode and link to the corresponding example. See the repository's `README` for setup and prerequisites.
 
 ## Use the Deepgram SDKs with the SageMaker transport
@@ -213,6 +217,87 @@ For the complete example, see [`python-stt/stt_wav_stress.py`](https://github.co
 ## Asynchronous
 
 Asynchronous invocation (`InvokeEndpointAsync`, files up to 1 GB) is temporarily not supported for Marketplace-hosted Deepgram. If your use case needs it, contact a [Deepgram representative](https://deepgram.com/contact-us).
+
+## Invoke through a SageMaker Runtime interface endpoint
+
+Use an interface VPC endpoint for SageMaker Runtime, powered by [AWS PrivateLink](https://docs.aws.amazon.com/sagemaker/latest/dg/interface-vpc-endpoint.html), when you need low latency and/or no traffic over the public internet. The interface endpoint places elastic network interfaces with private IP addresses in your VPC subnets. Clients in your VPC then reach SageMaker Runtime over the AWS network, without an internet gateway, a NAT gateway, or a public IP address.
+
+Interface endpoints apply to every invocation mode on this page: streaming (`InvokeEndpointWithBidirectionalStream`), synchronous (`InvokeEndpoint`), and the Deepgram SDKs' SageMaker transport. Your invocation code stays the same.
+
+### Create the interface endpoint
+
+Create an interface endpoint for SageMaker Runtime in the same Region as your Deepgram SageMaker endpoint:
+
+```bash
+aws ec2 create-vpc-endpoint \
+  --region us-east-2 \
+  --vpc-id <your-vpc-id> \
+  --vpc-endpoint-type Interface \
+  --service-name com.amazonaws.us-east-2.sagemaker.runtime \
+  --subnet-ids <subnet-id-az-a> <subnet-id-az-b> \
+  --security-group-ids <security-group-id> \
+  --private-dns-enabled
+```
+
+If you invoke over [FIPS endpoints](/docs/fips-endpoints-sagemaker), create the endpoint for `com.amazonaws.<region>.sagemaker.runtime-fips` instead. See [Combine with FIPS endpoints](#combine-with-fips-endpoints).
+
+Configure it for latency:
+
+* **Place it in every Availability Zone your clients run in.** Choose a subnet in each client Availability Zone so each client reaches an endpoint network interface in its own zone. AWS requires the interface endpoint in the client's Availability Zone for private DNS resolution of the SageMaker Runtime hostname; without it, DNS resolution can fail.
+* **Enable private DNS.** The standard hostname `runtime.sagemaker.<region>.amazonaws.com` then resolves to the interface endpoint's private IP addresses inside your VPC, so existing clients use it without code changes. Your VPC must have DNS hostnames and DNS resolution enabled.
+* **Allow both invocation ports in the security group.** Attach a security group that allows inbound TCP from your clients on port `443` (synchronous invocation) and port `8443` (bidirectional streaming).
+* **Run clients in the endpoint's Region.** Cross-Region calls add round-trip time to every request and every streamed audio chunk.
+
+### Point your client at the interface endpoint
+
+With private DNS enabled, keep the URLs shown elsewhere on this page. Streaming clients still connect to `https://runtime.sagemaker.<region>.amazonaws.com:8443`, and boto3 resolves the synchronous hostname itself.
+
+If you don't enable private DNS, use the endpoint-specific DNS name that AWS assigns to your interface endpoint, in the form `<vpce-id>.runtime.sagemaker.<region>.vpce.amazonaws.com`:
+
+```python
+import boto3
+
+REGION = "us-east-2"
+VPCE_HOST = f"<vpce-id>.runtime.sagemaker.{REGION}.vpce.amazonaws.com"
+
+# Synchronous invocation
+runtime = boto3.client(
+    "sagemaker-runtime",
+    region_name=REGION,
+    endpoint_url=f"https://{VPCE_HOST}",
+)
+
+# Streaming: pass this to the HTTP/2 client's endpoint_uri, keeping port 8443
+bidi_endpoint_uri = f"https://{VPCE_HOST}:8443"
+```
+
+To list the DNS names AWS assigned to your interface endpoint, run `aws ec2 describe-vpc-endpoints --vpc-endpoint-ids <vpce-id> --query 'VpcEndpoints[].DnsEntries'`.
+
+### Combine with FIPS endpoints
+
+SageMaker Runtime publishes its FIPS endpoint as a separate PrivateLink service, `com.amazonaws.<region>.sagemaker.runtime-fips`. An interface endpoint for `sagemaker.runtime` serves only the standard hostname, so a client configured for FIPS still resolves `runtime-fips.sagemaker.<region>.amazonaws.com` to a public address. To keep FIPS traffic private:
+
+* Create the interface endpoint with `--service-name com.amazonaws.<region>.sagemaker.runtime-fips` and private DNS enabled, in a [Region that offers FIPS endpoints](https://docs.aws.amazon.com/general/latest/gr/rande.html#FIPS-endpoints).
+* Keep the per-client FIPS configuration from [Use FIPS Endpoints](/docs/fips-endpoints-sagemaker). With private DNS, `runtime-fips.sagemaker.<region>.amazonaws.com` resolves to the interface endpoint's private IP addresses, and streaming clients keep port `8443` on that hostname.
+* If you also call the control plane (`api-fips.sagemaker.<region>.amazonaws.com`) from the VPC, create a separate interface endpoint for `com.amazonaws.<region>.sagemaker.api-fips`.
+
+> **Warning**
+>
+> VPC endpoint policies aren't supported for `InvokeEndpoint` on FIPS SageMaker Runtime endpoints. To restrict which SageMaker endpoints a caller can invoke over FIPS, use IAM identity-based policies rather than an endpoint policy on the `runtime-fips` interface endpoint.
+
+### Confirm traffic uses the interface endpoint
+
+From a client inside the VPC, resolve the hostname your client calls. With private DNS enabled, the answer is a private IP address from your subnets' CIDR ranges rather than a public AWS address:
+
+```bash
+nslookup runtime.sagemaker.us-east-2.amazonaws.com
+# For FIPS clients:
+nslookup runtime-fips.sagemaker.us-east-2.amazonaws.com
+```
+
+> **Note**
+>
+> Interface endpoints control the network path your traffic takes; [FIPS endpoints](/docs/fips-endpoints-sagemaker) control the cryptography that protects it. For the security and compliance benefits of VPC endpoints, including endpoint policies that restrict which SageMaker endpoints callers can invoke, see [Security and compliance](/docs/security-and-compliance-sagemaker#endpoint-access-public-internet-or-vpc). Interface endpoints incur [AWS PrivateLink charges](https://aws.amazon.com/privatelink/pricing/).
 
 ## Related resources
 

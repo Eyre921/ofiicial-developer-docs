@@ -25,6 +25,8 @@ Both Copilot surfaces support bring-your-own-key (BYOK) model providers. Only th
 - [Copilot CLI](#cli): `ANTHROPIC` or `OPENAI` provider credential.
 - [GitHub Copilot app](#app): `OPENAI` provider credential. BYOK in the app is in public preview.
 
+**Start with Langfuse** [Sign up](/cloud)
+
 ## Copilot CLI [#cli]
 
 <Steps>

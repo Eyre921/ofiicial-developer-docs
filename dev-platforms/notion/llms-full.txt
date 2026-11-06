@@ -4420,7 +4420,7 @@ Other blocks:
 - <folder url="...">Title</folder>; represents an existing folder. Use the retrieve page markdown endpoint to read its immediate children, then follow nested folder URLs to continue traversing. Preserve the tag unless intentionally moving or deleting the folder; folders cannot be created from Markdown.
 - <database url="..." data-source-url="..." inline="true|false" icon="emoji" wiki="true|false" color="...">Title</database>; same url/title rules. Wiki databases set wiki="true"; their pages use parent type "page" with the wiki page URL, not "dataSource".
 - <synced-block url="...">...</synced-block> is an original synced block; omit url for new. <synced-block-reference url="..." notice="...">...</synced-block-reference> shows an original from elsewhere. Copy its url from an existing <synced-block> or <synced-block-reference>; a page url is never valid, so a whole page cannot be synced. If no such url is available, don't add a reference (even an empty one) or a note; tell the user why in your reply. To add a reference, leave it empty. Content inside a new reference replaces the original's content everywhere it appears. Only edit the children of a reference that's already on the page, and only to change the original.
-- <meeting-notes attendees="user://id,..." view-url="...">Title<meeting-notes-section-notes>Notes</meeting-notes-section-notes><meeting-notes-section-summary>Summary</meeting-notes-section-summary></meeting-notes>; content outside <meeting-notes-section-notes> is ignored; omit view-url and the summary section for new. An existing <meeting-notes> may also have an optional read-only <meeting-notes-section-transcript> child: a "Transcript omitted" body means the transcript was not loaded, so follow its instructions to load it; never edit its contents, and never add it to new meeting notes.
+- <meeting-notes attendees="user://id,..." view-url="..." legacy="true">Title<meeting-notes-section-notes>Notes</meeting-notes-section-notes><meeting-notes-section-summary>Summary</meeting-notes-section-summary></meeting-notes>; content outside <meeting-notes-section-notes> is ignored; omit view-url, legacy, and the summary section for new. legacy="true" marks an older meeting notes block that isn't a page; keep it as is. An existing <meeting-notes> may also have an optional read-only <meeting-notes-section-transcript> child: a "Transcript omitted" body means the transcript was not loaded, so follow its instructions to load it; never edit its contents, and never add it to new meeting notes.
 - <custom-block definition-id="UUID" url="..." />; places an instance of a custom block definition deployed in this workspace. Use a self-closing tag on its own line; the instance inherits the definition's bindings. Omit url for a new instance; readback adds its instance URL. Preserve that URL when editing, reordering, or moving an existing instance.
 - Columns: <columns><column ratio="50">...</column><column ratio="50">...</column></columns>. ratio is an optional percentage of the column-list width.
 
@@ -11925,7 +11925,7 @@ Open **Customize** in Cursor's sidebar, then enable Notion and complete the OAut
 
 ### fx
 
-fx is an MCP client that makes configured servers available in its interactive shell and agent sessions. See the [fx MCP documentation](https://fx.sh/docs/capabilities/mcp) for more details.
+fx is a CLI coding agent from Vercel Labs. See the [fx MCP documentation](https://fx.sh/docs/capabilities/mcp) for more details.
 
 **Step 1**
 
@@ -11940,20 +11940,18 @@ fx
 Add the Notion server:
 
 ```bash theme={null}
-/mcp add --transport http notion https://mcp.notion.com/mcp
+/mcp add notion https://mcp.notion.com/mcp
 ```
 
-**Step 3**
-
-In the same session, run `/mcp auth notion --open` and complete the OAuth flow.
+fx opens your browser to complete the OAuth flow. To sign in again later, run `/mcp login notion`.
 
 > [accordion] JSON configuration
 >
-> To configure Notion MCP without the CLI, add it to `~/.fx/mcp.json`:
+> Add Notion MCP to `~/.fx/mcp.json`:
 >
 > ```json theme={null}
 > {
->   "mcp": {
+>   "mcpServers": {
 >     "notion": {
 >       "type": "http",
 >       "url": "https://mcp.notion.com/mcp"
@@ -11962,7 +11960,7 @@ In the same session, run `/mcp auth notion --open` and complete the OAuth flow.
 > }
 > ```
 >
-> If a session is already open, run `/mcp reload` to pick up the change.
+> A running fx session picks up the change on your next prompt or `/mcp` command. Then run `/mcp login notion`.
 
 ### Hermes
 
@@ -18450,6 +18448,14 @@ Source: https://developers.notion.com/guides/resources/notion-s-api-workspace
 # Changelog
 Source: https://developers.notion.com/page/changelog
 
+**November 5, 2026**
+
+### Sync health on data source reads
+
+Data source list and retrieval responses now include live `sync_metadata.health` for data sources synced by Notion's sync platform. [Retrieve a database](/reference/retrieve-database) also includes health for each readable data source. When available, metadata includes `owner_user_id`, `resource`, and UTC ISO 8601 timestamps in `health.checks`.
+
+If the health lookup fails or times out, the read still succeeds with `health: null`. Null means health is unavailable, not that the sync is unhealthy. Legacy and worker sync metadata stays unchanged. See [sync metadata](/reference/data-source#sync-metadata) for the response fields and health states.
+
 **November 4, 2026**
 
 ### Beta flags and typed view filters in the JavaScript SDK
@@ -23058,13 +23064,13 @@ As of API version `2025-09-03`, there's a suite of APIs for managing data source
 | `icon` | [Emoji](/reference/emoji-and-icon#emoji), [Icon](/reference/emoji-and-icon#icon), [Custom emoji](/reference/emoji-and-icon#custom-emoji), or [File](/reference/file-object) | Data source icon. See [Icon](/reference/emoji-and-icon) for all supported types. | |
 | `archived` | `boolean` | **Deprecated.** Use `in_trash` instead. This is an alias for `in_trash` and always returns the same value. | `false` |
 | `in_trash` | `boolean` | Whether the data source has been trashed. | `false` |
-| `sync_metadata` | `object` | Optional, read-only stored sync information included when listing or retrieving a data source. See [Sync metadata](#sync-metadata). | `{"sync_id": "2f26ee68-df30-4251-aad4-8ddc420cba3d"}` |
+| `sync_metadata` | `object` | Optional, read-only sync identity and available health included when listing or retrieving a data source. See [Sync metadata](#sync-metadata). | `{"sync_id": "2f26ee68-df30-4251-aad4-8ddc420cba3d"}` |
 
 ## Sync metadata
 
-The optional, read-only `sync_metadata` field describes stored sync information. It is returned when retrieving or listing a readable synced data source. [Retrieve a database](/reference/retrieve-database) also includes it on each readable entry in `data_sources`. Search, create, and update responses do not include it.
+The optional, read-only `sync_metadata` field describes sync identity and available health. It is returned when retrieving or listing a readable synced data source. [Retrieve a database](/reference/retrieve-database) also includes it on each readable entry in `data_sources`. Search, create, and update responses do not include it.
 
-The field requires read access to the data source and a read capability on the connection. It is omitted from partial responses and when stored metadata is unavailable or invalid. Its absence does not prove that the data source is not synced. These reads do not refresh the sync or query its provider, so the metadata is not a live health check.
+The field requires read access to the data source and a read capability on the connection. It is omitted from partial responses and when stored metadata is unavailable or invalid. Its absence does not prove that the data source is not synced. For supported External Database Sync providers, these reads also query the sync service for current collection health. They do not start a sync or query the provider. If health is unavailable, `health` is `null` and the data source still returns successfully.
 
 The object has one of these stored representations:
 
@@ -23075,7 +23081,7 @@ The object has one of these stored representations:
 | `sync_id` | string (UUID) | A stored sync ID when provider details are unavailable, including older synced data sources. |
 | `synced_collection_key` | string | An opaque, developer-defined collection key for a worker sync, such as `issues`. It is not a fixed enum or a globally unique identifier. Worker status is not included. |
 
-Sync IDs and collection keys are identifiers, not credentials, and do not grant access to manage a sync. This field does not include credentials, errors from the provider, or sync configuration.
+Sync IDs and collection keys are identifiers, not credentials, and do not grant access to manage a sync. This field does not include credentials, raw provider error messages, or sync configuration. Health errors contain a code and severity.
 
 For example, an external database sync returns:
 
@@ -23085,10 +23091,26 @@ For example, an external database sync returns:
     "external_database_sync": {
       "sync_id": "2f26ee68-df30-4251-aad4-8ddc420cba3d",
       "provider": "github"
+    },
+    "owner_user_id": "48d4cadc-82c9-48a7-b3ea-8a54b7787d31",
+    "resource": "issues",
+    "health": {
+      "paused": false,
+      "stage": "steady",
+      "ok": true,
+      "checks": {
+        "sync_version_updated_at": "2026-11-01T10:00:00.000Z",
+        "last_execution_succeeded_at": "2026-11-01T10:01:00.000Z",
+        "delta_synced_through_at": "2026-11-01T10:02:00.000Z"
+      }
     }
   }
 }
 ```
+
+`owner_user_id` identifies the Notion user who owns the sync credential. `resource` identifies the provider resource for this data source. Both are returned only when available from the health lookup. A paused sync without resource health returns `health: { "paused": true }` and omits `resource`.
+
+`health.stage` is `initializing`, `backfilling`, or `steady`. When `ok` is `false`, `error` contains a `code` and a `severity` of `action_required`, `degraded`, or `failing`. The `checks` timestamps are UTC ISO 8601 strings. Missing execution and checkpoint timestamps mean unknown; `sync_version_updated_at` records configuration changes, not successful ingestion. A `null` health value does not establish whether the sync is healthy or current.
 
 ### Legacy sync state
 
@@ -23151,7 +23173,7 @@ Individual data sources don't have permissions settings, so the set of Notion us
 | :- | :- | :- | :- |
 | `object` | `string` | Always `"database"`. | `"database"` |
 | `id` | `string` (UUID) | Unique identifier for the database. | `"2f26ee68-df30-4251-aad4-8ddc420cba3d"` |
-| `data_sources` | array of data source objects | List of child data sources, each of which is a JSON object with an `id` and `name`. [Retrieve a database](/reference/retrieve-database) may also include optional [stored sync metadata](/reference/data-source#sync-metadata) for each readable source.   Use [Retrieve a data source](/reference/retrieve-a-data-source) to get more details on the data source, including its `properties`. | `[{"id": "c174b72c-d782-432f-8dc0-b647e1c96df6", "name": "Tasks data source"}]` |
+| `data_sources` | array of data source objects | List of child data sources, each of which is a JSON object with an `id` and `name`. [Retrieve a database](/reference/retrieve-database) may also include optional [sync metadata and health](/reference/data-source#sync-metadata) for each readable source.   Use [Retrieve a data source](/reference/retrieve-a-data-source) to get more details on the data source, including its `properties`. | `[{"id": "c174b72c-d782-432f-8dc0-b647e1c96df6", "name": "Tasks data source"}]` |
 | `created_time` | `string` ([ISO 8601 date and time](https://en.wikipedia.org/wiki/ISO_8601)) | Date and time when this database was created. Formatted as an [ISO 8601 date time](https://en.wikipedia.org/wiki/ISO_8601) string. | `"2020-03-17T19:10:04.968Z"` |
 | `created_by` | [Partial User](/reference/user) | User who created the database. | `{"object": "user","id": "45ee8d13-687b-47ce-a5ca-6e2e45548c4b"}` |
 | `last_edited_time` | `string` ([ISO 8601 date and time](https://en.wikipedia.org/wiki/ISO_8601)) | Date and time when this database was updated. Formatted as an [ISO 8601 date time](https://en.wikipedia.org/wiki/ISO_8601) string. | `"2020-03-17T21:49:37.913Z"` |

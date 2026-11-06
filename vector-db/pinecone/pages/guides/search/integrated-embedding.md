@@ -269,7 +269,7 @@ When you describe the index, the field's `write_parameters` and `read_parameters
 
 ### Override the task for one search
 
-To embed one search's query with a different task, set `parameters` on the `embed` clause. It overrides the field's `read_parameters` for that search only. The Python SDK supports `parameters` in `10.3.0` and later. The Node.js and Go SDKs don't support it yet, so use the REST API with them. For example, this search checks a statement against the `body` field from the preceding example, whose default query task is `question_answering`:
+To embed one search's query with a different task, set `parameters` on the `embed` clause. It overrides the field's `read_parameters` for that search only. The Python SDK `10.3.0`, Node.js SDK `9.2.0`, and Go SDK `7.2.0` and later support `parameters`. For example, this search checks a statement against the `body` field from the preceding example, whose default query task is `question_answering`:
 
 ```python Python theme={null}
 response = index.documents.search(
@@ -285,6 +285,41 @@ response = index.documents.search(
     ],
     include_fields=["body"],
 )
+```
+
+```javascript JavaScript theme={null}
+const response = await index.documents.search({
+  topK: 5,
+  scoreBy: [
+    {
+      type: 'embed',
+      fields: ['body'],
+      query: 'Is the Eiffel Tower taller than 300 m?',
+      parameters: { task_type: 'fact_verification' },
+    },
+  ],
+  includeFields: ['body'],
+});
+```
+
+```go Go theme={null}
+query := "Is the Eiffel Tower taller than 300 m?"
+response, err := conn.SearchDocuments(ctx, &pinecone.SearchDocumentsRequest{
+	TopK: 5,
+	ScoreBy: []pinecone.DocumentScoringMethod{
+		{
+			Type:       pinecone.DocumentScoringTypeEmbed,
+			Fields:     []string{"body"},
+			Query:      &query,
+			Parameters: map[string]interface{}{"task_type": "fact_verification"},
+		},
+	},
+	IncludeFields: []string{"body"},
+})
+if err != nil {
+	log.Fatal(err)
+}
+fmt.Println(response)
 ```
 
 ```bash curl theme={null}

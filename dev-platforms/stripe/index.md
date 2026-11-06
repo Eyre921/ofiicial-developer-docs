@@ -1,6 +1,6 @@
 # dev-platforms/stripe 文档索引
 
-> 共 472 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 480 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -533,8 +533,15 @@
 - `terminal/mobile-readers` — [Stripe Terminal mobile readers](pages/terminal/mobile-readers.md) · [原文](https://docs.stripe.com/terminal/mobile-readers.md)
 - `terminal/network-requirements` — [Terminal network requirements](pages/terminal/network-requirements.md) · [原文](https://docs.stripe.com/terminal/network-requirements.md)
 - `terminal/overview` — [availability by country](pages/terminal/overview.md) · [原文](https://docs.stripe.com/terminal/overview.md)
+- `terminal/payments/collect-card-payment` — [Collect card payments with Terminal](pages/terminal/payments/collect-card-payment.md) · [原文](https://docs.stripe.com/terminal/payments/collect-card-payment.md)
+- `terminal/payments/connect-reader` — [Connect to a reader](pages/terminal/payments/connect-reader.md) · [原文](https://docs.stripe.com/terminal/payments/connect-reader.md)
+- `terminal/payments/ready-made-apps` — [Accept in-person payments without code](pages/terminal/payments/ready-made-apps.md) · [原文](https://docs.stripe.com/terminal/payments/ready-made-apps.md)
+- `terminal/payments/regional` — [Terminal regional considerations](pages/terminal/payments/regional.md) · [原文](https://docs.stripe.com/terminal/payments/regional.md)
+- `terminal/payments/setup-integration` — [Set up your Terminal integration](pages/terminal/payments/setup-integration.md) · [原文](https://docs.stripe.com/terminal/payments/setup-integration.md)
+- `terminal/payments/setup-reader` — [Select a reader](pages/terminal/payments/setup-reader.md) · [原文](https://docs.stripe.com/terminal/payments/setup-reader.md)
 - `terminal/payments/setup-reader/bbpos-wisepad3` — [Set up BBPOS WisePad 3](pages/terminal/payments/setup-reader/bbpos-wisepad3.md) · [原文](https://docs.stripe.com/terminal/payments/setup-reader/bbpos-wisepad3.md)
 - `terminal/payments/setup-reader/stripe-m2` — [Set up Stripe Reader M2](pages/terminal/payments/setup-reader/stripe-m2.md) · [原文](https://docs.stripe.com/terminal/payments/setup-reader/stripe-m2.md)
+- `terminal/payments/setup-reader/tap-to-pay` — [Tap to Pay](pages/terminal/payments/setup-reader/tap-to-pay.md) · [原文](https://docs.stripe.com/terminal/payments/setup-reader/tap-to-pay.md)
 - `terminal/quickstart` — [Accept in-person payments](pages/terminal/quickstart.md) · [原文](https://docs.stripe.com/terminal/quickstart.md)
 - `terminal/readers/bbpos-wisepad3` — [BBPOS WisePad 3](pages/terminal/readers/bbpos-wisepad3.md) · [原文](https://docs.stripe.com/terminal/readers/bbpos-wisepad3.md)
 - `terminal/readers/bbpos-wisepos-e` — [BBPOS WisePOS E](pages/terminal/readers/bbpos-wisepos-e.md) · [原文](https://docs.stripe.com/terminal/readers/bbpos-wisepos-e.md)
@@ -542,6 +549,7 @@
 - `terminal/readers/stripe-m2` — [Stripe Reader M2](pages/terminal/readers/stripe-m2.md) · [原文](https://docs.stripe.com/terminal/readers/stripe-m2.md)
 - `terminal/readers/stripe-reader-s700-s710` — [Stripe Reader S700/S710](pages/terminal/readers/stripe-reader-s700-s710.md) · [原文](https://docs.stripe.com/terminal/readers/stripe-reader-s700-s710.md)
 - `terminal/references/sdk-migration-guide` — [Terminal SDK migration guide](pages/terminal/references/sdk-migration-guide.md) · [原文](https://docs.stripe.com/terminal/references/sdk-migration-guide.md)
+- `terminal/references/testing` — [Test Stripe Terminal](pages/terminal/references/testing.md) · [原文](https://docs.stripe.com/terminal/references/testing.md)
 - `terminal/smart-readers` — [Stripe Terminal smart readers](pages/terminal/smart-readers.md) · [原文](https://docs.stripe.com/terminal/smart-readers.md)
 
 ## testing

@@ -101,8 +101,8 @@ The example above returns a JSON object like the following:
 
 You can limit [token usage](/guides/assistant/pricing-and-limits#token-usage) by tuning `top_k * snippet_size`:
 
-* `snippet_size`: Controls the max size of a snippet (default is 2048 tokens). Note that snippet size can vary and, in rare cases, may be bigger than the set `snippet_size`. Snippet size controls the amount of context given for each chunk of text.
-* `top_k`: Controls the max number of context snippets retrieved (default is 16). `top_k` controls the diversity of information received in the returned snippets.
+* `snippet_size`: Controls the max size of a snippet, from 512 to 8192 tokens (default 2048). Note that snippet size can vary and, in rare cases, may be bigger than the set `snippet_size`. Snippet size controls the amount of context given for each chunk of text.
+* `top_k`: Controls the max number of context snippets retrieved, up to 64 (default 16). `top_k` controls the diversity of information received in the returned snippets.
 
 While additional tokens will be used for other parameters, adjusting the `top_k` and `snippet_size` can help manage token consumption.
 

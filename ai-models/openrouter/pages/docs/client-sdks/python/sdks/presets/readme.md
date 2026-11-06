@@ -132,7 +132,7 @@ with OpenRouter(
 
 ## create\_presets\_chat\_completions
 
-Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored.
+Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored. Requires a read-write [management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys); inference API keys are rejected.
 
 ### Example Usage
 
@@ -173,6 +173,7 @@ with OpenRouter(
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace to create the preset in. Defaults to the key's workspace for a key limited to one workspace, otherwise to the account's default workspace. | 750e8400-e29b-41d4-a716-446655440002 |
 | `cache_control` | [Optional\[components.AnthropicCacheControlDirective\]](../../components/anthropiccachecontroldirective.mdx) | ➖ | Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format. | \{ "type": "ephemeral" } |
 | `debug` | [Optional\[components.ChatDebugOptions\]](../../components/chatdebugoptions.mdx) | ➖ | Debug options for inspecting request transformations (streaming only) | \{ "echo\_upstream\_body": true } |
 | `deferred_tools` | [Optional\[components.DeferredToolsControl\]](../../components/deferredtoolscontrol.mdx) | ➖ | Opt-in versioned router-level deferred-tool protocol. Replay assistant reasoning unchanged on continuation; keep the catalog unchanged. | \{ "profile": "portable", "protocol": "v1", "search": \{ "max\_results": 5, "type": "bm25" }, "validation": "runtime" } |
@@ -234,7 +235,7 @@ with OpenRouter(
 
 ## create\_presets\_messages
 
-Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored.
+Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored. Requires a read-write [management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys); inference API keys are rejected.
 
 ### Example Usage
 
@@ -272,6 +273,7 @@ with OpenRouter(
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace to create the preset in. Defaults to the key's workspace for a key limited to one workspace, otherwise to the account's default workspace. | 750e8400-e29b-41d4-a716-446655440002 |
 | `cache_control` | [Optional\[components.AnthropicCacheControlDirective\]](../../components/anthropiccachecontroldirective.mdx) | ➖ | Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format. | \{ "type": "ephemeral" } |
 | `context_management` | [OptionalNullable\[components.ContextManagement\]](../../components/contextmanagement.mdx) | ➖ | N/A | |
 | `deferred_tools` | [Optional\[components.DeferredToolsControl\]](../../components/deferredtoolscontrol.mdx) | ➖ | Opt-in versioned router-level deferred-tool protocol. Replay assistant reasoning unchanged on continuation; keep the catalog unchanged. | \{ "profile": "portable", "protocol": "v1", "search": \{ "max\_results": 5, "type": "bm25" }, "validation": "runtime" } |
@@ -318,7 +320,7 @@ with OpenRouter(
 
 ## create\_presets\_responses
 
-Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored.
+Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored. Requires a read-write [management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys); inference API keys are rejected.
 
 ### Example Usage
 
@@ -349,6 +351,7 @@ with OpenRouter(
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace to create the preset in. Defaults to the key's workspace for a key limited to one workspace, otherwise to the account's default workspace. | 750e8400-e29b-41d4-a716-446655440002 |
 | `access_programs` | [Optional\[components.ResponsesRequestAccessPrograms\]](../../components/responsesrequestaccessprograms.mdx) | ➖ | OpenAI access programs for this request. `cyber` selects the Cyber access program: `standard`, `daybreak_blue`, or `daybreak_red`. A program other than `standard` is supported only on BYOK requests that run on your own OpenAI key enrolled in that program; any other endpoint, including OpenRouter's own OpenAI credentials, rejects it with a 400 error. Requests on OpenRouter's OpenAI credentials always run `standard`. Omit the field unless your key is enrolled in a Daybreak program. | \{ "cyber": "standard" } |
 | `background` | *OptionalNullable\[bool]* | ➖ | N/A | |
 | `cache_control` | [Optional\[components.AnthropicCacheControlDirective\]](../../components/anthropiccachecontroldirective.mdx) | ➖ | Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format. | \{ "type": "ephemeral" } |

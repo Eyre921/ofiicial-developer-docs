@@ -24,6 +24,8 @@ Use the [AI SDK](https://ai-sdk.dev/docs/introduction) by Vercel with the gatewa
 
 Before you start, create a gateway key and export `LANGFUSE_GATEWAY_HOST` and `LANGFUSE_GATEWAY_KEY` as in [Send your first request](/docs/gateway/get-started/first-request). Replace `<model-id>` with an ID from the [models endpoint](/docs/gateway/features/rest-api#routes).
 
+**Start with Langfuse** [Sign up](/cloud)
+
 ## Configure the provider [#configure-the-provider]
 
 Create the provider with the gateway's route as base URL and the gateway key as API key.

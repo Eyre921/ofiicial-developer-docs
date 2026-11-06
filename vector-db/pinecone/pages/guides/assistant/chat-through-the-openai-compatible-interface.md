@@ -283,7 +283,6 @@ Pinecone Assistant supports the following models:
 
 * `gpt-4o` (default)
 * `gpt-4.1`
-* `gpt-5`
 * `claude-sonnet-4-5`
 * `gemini-3.5-flash`
 

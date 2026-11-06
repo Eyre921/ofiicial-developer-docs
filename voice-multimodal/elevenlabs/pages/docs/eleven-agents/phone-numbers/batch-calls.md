@@ -8,6 +8,12 @@ path: docs/eleven-agents/phone-numbers/batch-calls
 
 # Batch calling
 
+> **Warning**
+>
+> Batch calling will be deprecated in favor of
+> [Campaigns](/docs/eleven-agents/phone-numbers/campaigns), which adds retries, callbacks,
+> redirects, and calling windows. Use Campaign Manager for new outbound workloads.
+
 > **Note**
 >
 > When conducting outbound call campaigns, ensure compliance with all relevant regulations,

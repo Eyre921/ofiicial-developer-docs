@@ -2729,6 +2729,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/rest/dependabot
 /en/rest/dependabot/alerts
 /en/rest/dependabot/repository-access
+/en/rest/dependabot/runner-settings
 /en/rest/dependabot/secrets
 /en/rest/dependency-graph
 /en/rest/dependency-graph/dependency-review

@@ -104,6 +104,7 @@ This operation returns a response like the following:
 The `status` field has the following possible values:
 
 * Initializing
+* InitializationFailed
 * Failed
 * Ready
 * Terminating

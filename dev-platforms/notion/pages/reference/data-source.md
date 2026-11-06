@@ -42,13 +42,13 @@ As of API version `2025-09-03`, there's a suite of APIs for managing data source
 | `icon` | [Emoji](/reference/emoji-and-icon#emoji), [Icon](/reference/emoji-and-icon#icon), [Custom emoji](/reference/emoji-and-icon#custom-emoji), or [File](/reference/file-object) | Data source icon. See [Icon](/reference/emoji-and-icon) for all supported types. | |
 | `archived` | `boolean` | **Deprecated.** Use `in_trash` instead. This is an alias for `in_trash` and always returns the same value. | `false` |
 | `in_trash` | `boolean` | Whether the data source has been trashed. | `false` |
-| `sync_metadata` | `object` | Optional, read-only stored sync information included when listing or retrieving a data source. See [Sync metadata](#sync-metadata). | `{"sync_id": "2f26ee68-df30-4251-aad4-8ddc420cba3d"}` |
+| `sync_metadata` | `object` | Optional, read-only sync identity and available health included when listing or retrieving a data source. See [Sync metadata](#sync-metadata). | `{"sync_id": "2f26ee68-df30-4251-aad4-8ddc420cba3d"}` |
 
 ## Sync metadata
 
-The optional, read-only `sync_metadata` field describes stored sync information. It is returned when retrieving or listing a readable synced data source. [Retrieve a database](/reference/retrieve-database) also includes it on each readable entry in `data_sources`. Search, create, and update responses do not include it.
+The optional, read-only `sync_metadata` field describes sync identity and available health. It is returned when retrieving or listing a readable synced data source. [Retrieve a database](/reference/retrieve-database) also includes it on each readable entry in `data_sources`. Search, create, and update responses do not include it.
 
-The field requires read access to the data source and a read capability on the connection. It is omitted from partial responses and when stored metadata is unavailable or invalid. Its absence does not prove that the data source is not synced. These reads do not refresh the sync or query its provider, so the metadata is not a live health check.
+The field requires read access to the data source and a read capability on the connection. It is omitted from partial responses and when stored metadata is unavailable or invalid. Its absence does not prove that the data source is not synced. For supported External Database Sync providers, these reads also query the sync service for current collection health. They do not start a sync or query the provider. If health is unavailable, `health` is `null` and the data source still returns successfully.
 
 The object has one of these stored representations:
 
@@ -59,7 +59,7 @@ The object has one of these stored representations:
 | `sync_id` | string (UUID) | A stored sync ID when provider details are unavailable, including older synced data sources. |
 | `synced_collection_key` | string | An opaque, developer-defined collection key for a worker sync, such as `issues`. It is not a fixed enum or a globally unique identifier. Worker status is not included. |
 
-Sync IDs and collection keys are identifiers, not credentials, and do not grant access to manage a sync. This field does not include credentials, errors from the provider, or sync configuration.
+Sync IDs and collection keys are identifiers, not credentials, and do not grant access to manage a sync. This field does not include credentials, raw provider error messages, or sync configuration. Health errors contain a code and severity.
 
 For example, an external database sync returns:
 
@@ -69,10 +69,26 @@ For example, an external database sync returns:
     "external_database_sync": {
       "sync_id": "2f26ee68-df30-4251-aad4-8ddc420cba3d",
       "provider": "github"
+    },
+    "owner_user_id": "48d4cadc-82c9-48a7-b3ea-8a54b7787d31",
+    "resource": "issues",
+    "health": {
+      "paused": false,
+      "stage": "steady",
+      "ok": true,
+      "checks": {
+        "sync_version_updated_at": "2026-11-01T10:00:00.000Z",
+        "last_execution_succeeded_at": "2026-11-01T10:01:00.000Z",
+        "delta_synced_through_at": "2026-11-01T10:02:00.000Z"
+      }
     }
   }
 }
 ```
+
+`owner_user_id` identifies the Notion user who owns the sync credential. `resource` identifies the provider resource for this data source. Both are returned only when available from the health lookup. A paused sync without resource health returns `health: { "paused": true }` and omits `resource`.
+
+`health.stage` is `initializing`, `backfilling`, or `steady`. When `ok` is `false`, `error` contains a `code` and a `severity` of `action_required`, `degraded`, or `failing`. The `checks` timestamps are UTC ISO 8601 strings. Missing execution and checkpoint timestamps mean unknown; `sync_version_updated_at` records configuration changes, not successful ingestion. A `null` health value does not establish whether the sync is healthy or current.
 
 ### Legacy sync state
 

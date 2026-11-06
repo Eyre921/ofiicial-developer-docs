@@ -6,7 +6,7 @@ path: oss/python/langgraph/use-graph-api
 
 Decide state, control flow, Send, Command, and node options as you build with the Graph API.
 
-This guide walks through the decisions you make when building a graph. For install and an end-to-end agent example, see the [LangGraph quickstart](/oss/python/langgraph/quickstart). For a design walkthrough, see [Thinking in the Graph API](/oss/python/langgraph/thinking-in-graph-api). For concepts, see the [Graph API overview](/oss/python/langgraph/graph-api). To choose between the Graph API and the Functional API, see [Choosing between Graph and Functional APIs](/oss/python/langgraph/choosing-apis).
+This guide walks through the decisions you make when building a graph. For install and an end-to-end agent example, see the [LangGraph quickstart](/oss/python/langgraph/quickstart). For a design walkthrough, see [Thinking in the Graph API](/oss/python/langgraph/thinking-in-graph-api). For concepts, see the [Graph API overview](/oss/python/langgraph/graph-api).
 
 ## Build your graph
 
@@ -153,7 +153,6 @@ See [Visualize your graph](/oss/python/langgraph/graph-api-visualize).
 * [Configure nodes](/oss/python/langgraph/graph-api-nodes)
 * [Visualize your graph](/oss/python/langgraph/graph-api-visualize)
 * [LangGraph quickstart](/oss/python/langgraph/quickstart): End-to-end calculator agent
-* [Choosing between Graph and Functional APIs](/oss/python/langgraph/choosing-apis)
 
 ***
 

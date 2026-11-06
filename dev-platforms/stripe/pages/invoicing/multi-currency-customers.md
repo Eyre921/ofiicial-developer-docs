@@ -22,7 +22,7 @@ Before you invoice a customer, create an invoice item by passing in the customer
 
 The maximum number of invoice items is 250. Creating an invoice adds up to 250 pending invoice items with the remainder to be added on the next invoice. To see your customer’s pending invoice items, see the **Customer details** page or set the [pending](https://docs.stripe.com/api/invoiceitems/list.md#list_invoiceitems-pending) attribute to `true` when you use the API to list all of the invoice items.
 
-> A CAD invoice doesn’t apply any customer credit balance denominated in any currency other than CAD. Additionally, it ignores any amount-off coupons you applied to the customer that are denominated in non-CAD currency.
+> A CAD invoice only applies customer invoice balance adjustments (also called customer credit balance) denominated in CAD. These adjustments are separate from billing credit grants. Additionally, it ignores any amount-off coupons you applied to the customer that are denominated in non-CAD currency.
 
 #### Accounts v2
 

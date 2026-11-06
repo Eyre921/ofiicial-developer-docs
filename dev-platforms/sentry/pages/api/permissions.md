@@ -87,5 +87,7 @@ Be aware that if you're using `sentry-cli` to [manage your releases](https://doc
 
 ##### Project Access
 
-In addition to the `project:releases` scope, mutations on releases (create, update, delete, file uploads, deploys) require that the user has access to **all** projects associated with the release. If your organization has [Open Membership](https://docs.sentry.io/organization/membership.md#open-membership) disabled, members can only modify releases for projects belonging to teams they are a member of.
+A [personal token](https://docs.sentry.io/account/auth-tokens.md#personal-tokens) (user auth token) with the `project:releases` scope can create releases and upload artifact bundles for **any** project in the organization, even if [Open Membership](https://docs.sentry.io/organization/membership.md#open-membership) is disabled and the user isn't a member of the project's team. This lets tools like `sentry-cli` upload to multiple projects with a single token.
+
+Changes to existing releases (updates, deletes, legacy release file uploads, and deploys) still require that the user has access to **all** projects associated with the release. If your organization has Open Membership disabled, members can only modify existing releases for projects belonging to teams they're a member of.
 

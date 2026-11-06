@@ -164,6 +164,10 @@ npm install --save stripe @stripe/stripe-js next
 
 Add an endpoint on your server that creates a *Checkout Session* (A Checkout Session represents your customer's session as they pay for one-time purchases or subscriptions through Checkout. After a successful payment, the Checkout Session contains a reference to the Customer, and either the successful PaymentIntent or an active Subscription), setting the [ui_mode](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-ui_mode) to `elements`. You must create the Checkout Session server-side because it requires your [secret or restricted API key](https://docs.stripe.com/keys.md#obtain-api-keys), which you can’t safely expose in client-side code.
 
+> #### Protect your Session-creation endpoint
+> 
+> Server-side Session creation alone doesn’t prevent endpoint abuse. In production, validate requests and payment-method configuration, enforce access controls, and limit repeated Session creation on your server before returning a client secret. Follow the [Session-creation checklist](https://docs.stripe.com/payments/accept-a-payment.md?payment-ui=elements&api-integration=checkout#protect-session-creation).
+
 The Checkout Session response includes a [client_secret](https://docs.stripe.com/api/checkout/sessions/object.md#checkout_session_object-client_secret), which the client uses to complete the payment. Return the client secret in your response.
 
 ### Supply a return URL
@@ -306,8 +310,10 @@ As soon as your return page loads, immediately make a request to the endpoint on
 
 Handle the result of the session by using its status:
 
-- `complete`: The payment succeeded. Use the information from the Checkout Session to render a success page.
+- `complete`: The Checkout Session is complete, but the payment might still be processing. Use the Session information to render a return page that reflects the payment status.
 - `open`: The payment failed or was canceled. Remount Checkout so that your customer can try again.
+
+> For delayed payment methods, don’t grant paid access based only on Checkout completion. Follow [Fulfill orders](https://docs.stripe.com/checkout/fulfillment.md) to check payment status and handle webhooks. [Verify webhook signatures](https://docs.stripe.com/webhooks.md#verify-events) before acting on incoming events.
 
 ### Run the application
 

@@ -108,10 +108,7 @@ For further details on customizing invoice contents on a per-customer basis, see
 
 ### Payment 
 
-All payments are collected from [payment](https://docs.stripe.com/payments.md) details associated with a customer, and a customer can have multiple ways to make a payment, including:
-
-- [Payment Methods](https://docs.stripe.com/payments/payment-methods.md)
-- [Customer Credit Balance](https://docs.stripe.com/billing/customer.md#customer-balance)
+Stripe collects payments using [payment methods](https://docs.stripe.com/payments/payment-methods.md) associated with a customer. Separately, [customer invoice balance credits](https://docs.stripe.com/billing/customer.md#customer-balance) reduce the amount to collect. Invoice balance credits are also called customer credit balances. They aren’t billing credit grants or cash balances.
 
 Customers are [single-currency](https://docs.stripe.com/billing/customer.md#currency), meaning after you’ve assigned a currency, invoiced the customer, or [set a customer credit balance](https://docs.stripe.com/billing/customer.md#customer-balance), you can’t change the currency. This locked status is visible in the Dashboard in a disabled **Currency** dropdown.
 
@@ -131,7 +128,21 @@ All invoicing-related resources are associated with the customer being billed. T
 
 To meet tax jurisdiction requirements, you might need to include customer tax ID numbers and other information on invoices. It’s ultimately your responsibility to make sure your customer’s invoices contain the correct information. This includes [tax IDs](https://docs.stripe.com/billing/customer/tax-ids.md), [tax exemption status](https://docs.stripe.com/api/customers/create.md#create_customer-tax_exempt), and [addresses](https://docs.stripe.com/billing/customer.md#addresses).
 
-Tax IDs provide a way to store and render one or more tax ID numbers on invoices. Tax exemption status indicates whether the entity is taxable. By default, a customer’s `tax_exempt` status is set to `none`, meaning it’s a taxable billing entity. However, you can flag a customer as being responsible for paying the tax on an invoice by setting the `tax_exempt` property to `reverse`, or flag them as being tax exempt by setting the status to `exempt`. You can read more about using `tax_exempt` and `reverse` on the [Tax Rates](https://docs.stripe.com/tax/tax-rates.md#tax-exempt-and-reverse-charge) page.
+Tax IDs provide a way to store and render one or more tax ID numbers on invoices.
+
+#### Choose a customer’s tax status 
+
+Use **Tax status** to choose whether to apply normal tax rules, treat a customer as exempt, or apply reverse charge.
+
+| Dashboard selection | Customer API value (`tax_exempt`) | Meaning and when to select it |
+| --- | --- | --- |
+| **Taxable** | `none` | Apply normal tax rules. Use this default unless an exemption or explicit reverse-charge treatment applies. |
+| **Exempt** | `exempt` | Don’t collect tax because the customer qualifies for an exemption under the applicable rules. |
+| **Reverse charge** | `reverse` | Don’t collect tax because the customer is responsible for accounting for it. Select this when reverse-charge treatment applies. Invoice and receipt PDFs include the text **“Reverse charge”**. |
+
+When you use Stripe Tax, a customer can remain **Taxable** and still receive [reverse-charge treatment](https://docs.stripe.com/tax/zero-tax.md#reverse-charges) automatically. Stripe Tax determines this treatment based on their tax ID and the jurisdictions involved.
+
+To set the customer’s tax status through the API, use the `tax_exempt` parameter when you [update a customer](https://docs.stripe.com/api/customers/update.md#update_customer-tax_exempt).
 
 ## Common tasks 
 
@@ -158,9 +169,9 @@ Unlike subscription invoices, you manually issue one-off invoices and they don�
 
 See the [one-off invoices documentation](https://docs.stripe.com/invoicing/dashboard.md#create-invoice) for full details on how to create and collect payment for one-off invoices.
 
-### Store a customer credit balance 
+### Store invoice balance adjustments 
 
-The [customer credit balance](https://docs.stripe.com/billing/customer/balance.md) feature allows you to assign credit and debit adjustments to a specific customer. The resulting balance is applied to future invoices for that customer.
+The [customer invoice balance](https://docs.stripe.com/billing/customer/balance.md), also called the customer credit balance, records credit and debit adjustments that apply to future invoices.
 
 ### Add and validate tax ID numbers
 

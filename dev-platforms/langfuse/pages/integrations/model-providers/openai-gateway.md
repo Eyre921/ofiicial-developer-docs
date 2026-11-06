@@ -24,6 +24,8 @@ Use the official [OpenAI SDKs](https://developers.openai.com/api/docs/libraries)
 
 Before you start, create a gateway key and export `LANGFUSE_GATEWAY_HOST` and `LANGFUSE_GATEWAY_KEY` as in [Send your first request](/docs/gateway/get-started/first-request). Replace `<model-id>` with an ID from the [models endpoint](/docs/gateway/features/rest-api#routes).
 
+**Start with Langfuse** [Sign up](/cloud)
+
 ## Configure the client [#configure-the-client]
 
 Set the base URL to the gateway's OpenAI route, `/openai/v1`, and pass the gateway key as the API key. The SDK sends it as `Authorization: Bearer`.

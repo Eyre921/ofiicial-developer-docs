@@ -30,6 +30,8 @@ There are different rules for when and how you need to register to collect tax d
 
 See [Needs attention](https://dashboard.stripe.com/tax/locations?primary_tab=needs_attention) tab to get insights about your potential tax registration obligations in each location. Stripe only monitors if you’ve reached a tax threshold for sales outside of the country your business is based in. Stripe also notifies you with email and Dashboard alerts when you might need to register to collect tax. Learn more about how the [monitoring tool works](https://docs.stripe.com/tax/monitoring.md).
 
+You can check your tax obligations with Stripe MCP and Stripe CLI searching for `threshold monitoring`.
+
 After you’ve registered with a country, go to [Locations](https://dashboard.stripe.com/tax/locations) to add your registrations to Stripe in the Dashboard to start collecting tax on your transactions in that location.
 
 ## How we calculate taxes 
@@ -65,7 +67,14 @@ When physical goods are shipped to a customer in a different country to your bus
 
 Stripe Tax has filing partners—Taxually, Marosa, and Hands-off Sales Tax (HOST)—to help automate your tax filing. These partners automatically sync your tax transaction data in real time, eliminating the need for manual data entry or file transfers. Learn more about [tax filing](https://docs.stripe.com/tax/filing.md).
 
-Stripe also provides reports of your completed tax transactions. Go to [Locations](https://dashboard.stripe.com/tax/locations) to access these reports. Learn more about [the different types of reports](https://docs.stripe.com/tax/reports.md).
+Stripe provides itemized and summarized exports of your completed tax transactions. To download the exports:
+
+1. Go to the [Tax](https://dashboard.stripe.com/tax) page in the Dashboard.
+2. Select **Quick actions** > **Export transactions**.
+
+For the remaining steps, see [Itemized and summarized exports](https://docs.stripe.com/tax/reports.md#accessing-exports).
+
+To decide which export to use, see [Choose a report](https://docs.stripe.com/tax/reports/choosing-a-report.md).
 
 You’re responsible for filing and remitting your taxes. Stripe doesn’t file taxes on your behalf.
 

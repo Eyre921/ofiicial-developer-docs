@@ -21,6 +21,8 @@ category: Integrations
 
   For tracing Pi without the gateway, see the [Pi Agent integration](/integrations/developer-tools/pi-agent).
 
+**Start with Langfuse** [Sign up](/cloud)
+
 ## Setup [#setup]
 
 <Steps>

@@ -25,13 +25,13 @@ The starter kit includes many ways to help diagnose problems including more deta
 
 You must have:
 
-* Python >= 3.6+
+* Python >= 3.7
 * [portaudio](http://portaudio.com/), if you plan to stream audio from your microphone
 * A valid Deepgram API key (you can create one in our [Console](https://console.deepgram.com/signup?jump=keys))
 
 ## Installation
 
-1. Clone the [Live Streaming Starter Kit](https://github.com/deepgram/streaming-test-suite/) repository
+1. Clone the [Live Streaming Starter Kit](https://github.com/deepgram/live-streaming-starter-kit) repository
 2. Install [portaudio](http://portaudio.com/)
 3. `pip install -r requirements.txt`
 
@@ -172,7 +172,7 @@ When you run the mock client, you should see output confirming that the mock ser
 
 ![](/_fern-files/_img/b319f770dcd51de6137edf5b0d4ff0752c1bd75240833a836d130bb4d06d4d40.webp)
 
-For a list of valid encodings, see [our endcoding documentation](/docs/encoding/).
+For a list of valid encodings, see [our encoding documentation](/docs/encoding/).
 
 ## Validate Your Audio
 

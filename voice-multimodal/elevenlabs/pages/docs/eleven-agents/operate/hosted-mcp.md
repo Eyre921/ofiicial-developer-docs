@@ -20,30 +20,24 @@ https://api.elevenlabs.io/v1/mcp
 
 Authentication uses OAuth. When you connect, you sign in with your ElevenLabs account and grant the assistant scoped access to your workspace. No API keys are copied into the client.
 
+The same server also has creative tools for generating speech, images and video. This page covers the agent tools. See [ElevenLabs MCP server](/docs/eleven-api/resources/mcp-server) for an overview of everything the server can do.
+
 > **Note**
 >
 > Looking to give your ElevenLabs agent access to external MCP servers instead? See the [MCP integration guide](/docs/eleven-agents/customization/tools/mcp).
 
-## Connect from Claude Desktop
+## Connect from Claude
 
-The hosted MCP server is published in the Claude Desktop directory.
+Add the hosted MCP server to Claude as a custom connector, following the [steps below](#add-a-custom-connector-in-claude) with the URL `https://api.elevenlabs.io/v1/mcp`.
 
-#### Open the directory
-
-In Claude Desktop, go to **Settings** > **Connectors** and browse the directory.
-
-#### Add the ElevenLabs connector
-
-Search for **ElevenLabs** and select **Connect**.
-
-#### Sign in
-
-Complete the OAuth flow with your ElevenLabs account. Claude can then list, create, and update
-agents in your workspace on your behalf.
+> **Note**
+>
+> The ElevenLabs connector in the Claude connector directory is a restricted version without image,
+> video and music generation. It includes the same agent tools.
 
 ## Data residency regions
 
-The connector in the Claude directory and the default server URL connect to the global environment. If your workspace is in an isolated [data residency](/docs/overview/administration/data-residency) environment, add a custom connector that points at your region's URL instead:
+The default server URL connects to the global environment. If your workspace is in an isolated [data residency](/docs/overview/administration/data-residency) environment, add a custom connector that points at your region's URL instead:
 
 | Region    | MCP server URL                                  |
 | --------- | ----------------------------------------------- |

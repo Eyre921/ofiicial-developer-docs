@@ -18,6 +18,11 @@ Agent Workflows provide a powerful visual interface for designing complex conver
 
 The dashboard is the recommended way to design workflows because of the visual graph editor. Workflows are stored in the agent's top-level `workflow` field, so you can also pull, edit, and push the JSON via the CLI or update it via the SDK — useful for version control and CI/CD.
 
+> **Tip**
+>
+> To build or edit workflows in Python or JavaScript without writing the node and edge JSON by hand,
+> use the [`Workflow` builder](/docs/eleven-agents/customization/agent-workflows-as-code).
+
 #### Build via the dashboard
 
 Open your agent in the dashboard, navigate to the **Workflow** tab, and use the visual editor to add nodes, configure subagent behavior, and connect edges. Save your changes.

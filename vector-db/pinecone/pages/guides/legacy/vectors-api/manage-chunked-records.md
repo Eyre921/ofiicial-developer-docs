@@ -1,5 +1,5 @@
 ---
-title: "Manage chunked records in a legacy vector index"
+title: "Manage chunked records in a legacy index"
 source: https://docs.pinecone.io/guides/legacy/vectors-api/manage-chunked-records
 path: guides/legacy/vectors-api/manage-chunked-records
 ---

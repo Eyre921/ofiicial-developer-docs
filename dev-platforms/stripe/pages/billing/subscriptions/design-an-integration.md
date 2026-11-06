@@ -60,7 +60,7 @@ Compare the following pricing models and determine how you want to charge your c
 
   A customer that uses 105 tokens in a month pays 210 USD.
 
-- **Credit burndown pricing**: You collect prepayment for your product or service, and allow customers to apply billing credits as they use your product or service. If you collect 100 USD from each customer at the beginning of the month, and charge 2 USD per token used:
+- **Credit burndown pricing**: You collect prepayment for your product or service, and allow customers to consume prepaid usage credits as they use it. If you collect 100 USD from each customer at the beginning of the month, and charge 2 USD per token used:
 
   A customer that uses 35 tokens in the month has 100 USD - (35 x 2 USD) = 30 USD credit remaining at the end of the month.
 
