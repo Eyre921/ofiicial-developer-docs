@@ -8,13 +8,13 @@ path: reference/python/schema
 
 Collection schema for indexing and encryption configuration.
 
-<span>Properties</span>
+Properties
 
-<ParamField type="ValueTypes" />
+**defaults** `ValueTypes`
 
-<ParamField type="Dict[str, ValueTypes]" />
+**keys** `Dict[str, ValueTypes]`
 
-<ParamField type="Optional[Cmek]" />
+**cmek** `Optional[Cmek]`
 
 ***
 
@@ -28,71 +28,71 @@ Configuration for Full-Text Search index. No parameters required.
 
 Configuration for HNSW vector index.
 
-<span>Properties</span>
+Properties
 
-<ParamField type="Optional[int]" />
+**ef\_construction** `Optional[int]`
 
-<ParamField type="Optional[int]" />
+**max\_neighbors** `Optional[int]`
 
-<ParamField type="Optional[int]" />
+**ef\_search** `Optional[int]`
 
-<ParamField type="Optional[int]" />
+**num\_threads** `Optional[int]`
 
-<ParamField type="Optional[int]" />
+**batch\_size** `Optional[int]`
 
-<ParamField type="Optional[int]" />
+**sync\_threshold** `Optional[int]`
 
-<ParamField type="Optional[float]" />
+**resize\_factor** `Optional[float]`
 
 ### SpannIndexConfig
 
 Configuration for SPANN vector index.
 
-<span>Properties</span>
+Properties
 
-<ParamField type="Optional[int]" />
+**search\_nprobe** `Optional[int]`
 
-<ParamField type="Optional[int]" />
+**write\_nprobe** `Optional[int]`
 
-<ParamField type="Optional[int]" />
+**ef\_construction** `Optional[int]`
 
-<ParamField type="Optional[int]" />
+**ef\_search** `Optional[int]`
 
-<ParamField type="Optional[int]" />
+**max\_neighbors** `Optional[int]`
 
-<ParamField type="Optional[int]" />
+**reassign\_neighbor\_count** `Optional[int]`
 
-<ParamField type="Optional[int]" />
+**split\_threshold** `Optional[int]`
 
-<ParamField type="Optional[int]" />
+**merge\_threshold** `Optional[int]`
 
 ### VectorIndexConfig
 
 Configuration for vector index with space, embedding function, and algorithm config.
 
-<span>Properties</span>
+Properties
 
-<ParamField type="Optional[Literal[cosine, l2, ip]]" />
+**space** `Optional[Literal[cosine, l2, ip]]`
 
-<ParamField type="Optional[Any]" />
+**embedding\_function** `Optional[Any]`
 
-<ParamField type="Optional[str]" />
+**source\_key** `Optional[str]`
 
-<ParamField type="Optional[HnswIndexConfig]" />
+**hnsw** `Optional[HnswIndexConfig]`
 
-<ParamField type="Optional[SpannIndexConfig]" />
+**spann** `Optional[SpannIndexConfig]`
 
 ### SparseVectorIndexConfig
 
 Configuration for sparse vector index.
 
-<span>Properties</span>
+Properties
 
-<ParamField type="Optional[Any]" />
+**embedding\_function** `Optional[Any]`
 
-<ParamField type="Optional[str]" />
+**source\_key** `Optional[str]`
 
-<ParamField type="Optional[bool]" />
+**bm25** `Optional[bool]`
 
 ### StringInvertedIndexConfig
 

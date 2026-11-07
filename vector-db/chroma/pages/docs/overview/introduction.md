@@ -10,55 +10,49 @@ Chroma gives you everything you need for retrieval: store embeddings with metada
 
 ## What Chroma Offers
 
-<Columns>
-  <Card title="Document Storage" icon="database" href="/docs/collections/add-data">
-    Store documents and metadata.
-  </Card>
+> [card] [Document Storage](/docs/collections/add-data)
+>
+> Store documents and metadata.
 
-  <Card title="Embeddings" icon="microchip" href="/docs/embeddings/embedding-functions">
-    Use any embedding model. OpenAI, Cohere, Hugging Face, sentence-transformers, and more.
-  </Card>
+> [card] [Embeddings](/docs/embeddings/embedding-functions)
+>
+> Use any embedding model. OpenAI, Cohere, Hugging Face, sentence-transformers, and more.
 
-  <Card title="Vector Search" icon="magnifying-glass" href="/docs/querying-collections/query-and-get">
-    Dense, sparse, and hybrid search. Query by similarity and combine multiple search strategies.
-  </Card>
+> [card] [Vector Search](/docs/querying-collections/query-and-get)
+>
+> Dense, sparse, and hybrid search. Query by similarity and combine multiple search strategies.
 
-  <Card title="Full-Text & Regex Search" icon="font" href="/docs/querying-collections/full-text-search">
-    Keyword and regex search over your data without embeddings.
-  </Card>
+> [card] [Full-Text & Regex Search](/docs/querying-collections/full-text-search)
+>
+> Keyword and regex search over your data without embeddings.
 
-  <Card title="Metadata Filtering" icon="filter" href="/docs/querying-collections/metadata-filtering">
-    Filter results at query time by metadata conditions.
-  </Card>
+> [card] [Metadata Filtering](/docs/querying-collections/metadata-filtering)
+>
+> Filter results at query time by metadata conditions.
 
-  <Card title="Multi-Modal Retrieval" icon="image" href="/docs/embeddings/multimodal">
-    Index and search images, audio, and other modalities alongside text.
-  </Card>
-</Columns>
+> [card] [Multi-Modal Retrieval](/docs/embeddings/multimodal)
+>
+> Index and search images, audio, and other modalities alongside text.
 
 ## Quickstart
 
-<Columns>
-  <Card title="Getting Started with the Chroma SDK" icon="python" href="/docs/overview/getting-started">
-    Create a self-hosted or cloud database and add data to it using the Chroma SDK.
-  </Card>
+> [card] [Getting Started with the Chroma SDK](/docs/overview/getting-started)
+>
+> Create a self-hosted or cloud database and add data to it using the Chroma SDK.
 
-  <Card title="Create a Chroma Cloud Database" icon="cloud" href="https://www.trychroma.com/signup">
-    Create a scalable, zero-ops Chroma Cloud database to store your AI data.
-  </Card>
-</Columns>
+> [card] [Create a Chroma Cloud Database](https://www.trychroma.com/signup)
+>
+> Create a scalable, zero-ops Chroma Cloud database to store your AI data.
 
 ## Example Projects
 
-<Columns>
-  <Card title="Agentic Search" icon="robot" href="/guides/build/agentic-search">
-    Build agents that iteratively search and refine results for complex queries.
-  </Card>
+> [card] [Agentic Search](/guides/build/agentic-search)
+>
+> Build agents that iteratively search and refine results for complex queries.
 
-  <Card title="Code Search" icon="code" href="https://www.youtube.com/watch?v=Jw-4oC5HtK4">
-    Index codebases to power coding agents using AST-aware chunking.
-  </Card>
-</Columns>
+> [card] [Code Search](https://www.youtube.com/watch?v=Jw-4oC5HtK4)
+>
+> Index codebases to power coding agents using AST-aware chunking.
 
 ## Open Source
 

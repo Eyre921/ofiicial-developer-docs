@@ -6,9 +6,7 @@ path: docs/embeddings/multimodal
 
 Learn how to work with multimodal data in Chroma collections.
 
-<Warning>
-  Multimodal support is currently available only in Python. Javascript/Typescript support coming soon!
-</Warning>
+Multimodal support is currently available only in Python. Javascript/Typescript support coming soon!
 
 You can create multimodal Chroma collections; these are collections which can store, and can be queried by, multiple modalities of data.
 

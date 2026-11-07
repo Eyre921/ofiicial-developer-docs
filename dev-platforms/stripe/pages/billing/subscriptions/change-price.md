@@ -109,7 +109,7 @@ If both prices have the same billing periods (combination of `interval` and `int
 
 ### Subscription schedules
 
-If you’re changing a subscription at the end of its billing period, consider using a [subscription schedule](https://docs.stripe.com/billing/subscriptions/subscription-schedules.md#changing-subscriptions) to manage the transition. When using subscription schedules, follow [best practices](https://docs.stripe.com/billing/subscriptions/subscription-schedules.md#subscription-schedule-sub-updates) to prevent unexpected subscription overwrites.
+If you’re changing a subscription at the end of its billing period, consider using a [subscription schedule](https://docs.stripe.com/billing/subscriptions/subscription-schedules/use-cases.md#changing-subscriptions) to manage the transition. When using subscription schedules, follow [best practices](https://docs.stripe.com/billing/subscriptions/subscription-schedules.md#subscription-schedule-sub-updates) to prevent unexpected subscription overwrites.
 
 ## Usage-based billing with Billing Meters
 

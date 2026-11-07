@@ -31,70 +31,66 @@ value, you can disable these indexes using the
 
 Chroma lets you delete an unbounded number of documents satisfying a `Where` filter.
 
-<CodeGroup>
-  ```python Python theme={null}
-  collection.delete(
-  	where={"chapter": "20"}
-  )
-  ```
+```python Python theme={null}
+collection.delete(
+	where={"chapter": "20"}
+)
+```
 
-  ```typescript TypeScript theme={null}
-  await collection.delete({
-      where: {"chapter": "20"} //where
-  })
-  ```
+```typescript TypeScript theme={null}
+await collection.delete({
+    where: {"chapter": "20"} //where
+})
+```
 
-  ```rust Rust theme={null}
-  use chroma::types::{MetadataComparison, MetadataExpression, MetadataValue, PrimitiveOperator, Where};
+```rust Rust theme={null}
+use chroma::types::{MetadataComparison, MetadataExpression, MetadataValue, PrimitiveOperator, Where};
 
-  let where_clause = Where::Metadata(MetadataExpression {
-      key: "chapter".to_string(),
-      comparison: MetadataComparison::Primitive(
-          PrimitiveOperator::Equal,
-          MetadataValue::Str("20".to_string()),
-      ),
-  });
+let where_clause = Where::Metadata(MetadataExpression {
+    key: "chapter".to_string(),
+    comparison: MetadataComparison::Primitive(
+        PrimitiveOperator::Equal,
+        MetadataValue::Str("20".to_string()),
+    ),
+});
 
-  collection.delete(
-      None,               // ids: Option<Vec<String>>
-      Some(where_clause), // r#where: Option<Where>
-  ).await?;
-  ```
-</CodeGroup>
+collection.delete(
+    None,               // ids: Option<Vec<String>>
+    Some(where_clause), // r#where: Option<Where>
+).await?;
+```
 
 This can be a costly operation if the collection size is large. Add a limit clause to delete the documents
 in batches in order to not affect the latency of other operations.
 
-<CodeGroup>
-  ```python Python theme={null}
-  collection.delete(
-  	where={"chapter": "20"},
-    limit=10000,
-  )
-  ```
+```python Python theme={null}
+collection.delete(
+	where={"chapter": "20"},
+  limit=10000,
+)
+```
 
-  ```typescript TypeScript theme={null}
-  await collection.delete({
-      where: {"chapter": "20"},
-      limit: 10000,
-  })
-  ```
+```typescript TypeScript theme={null}
+await collection.delete({
+    where: {"chapter": "20"},
+    limit: 10000,
+})
+```
 
-  ```rust Rust theme={null}
-  use chroma::types::{MetadataComparison, MetadataExpression, MetadataValue, PrimitiveOperator, Where};
+```rust Rust theme={null}
+use chroma::types::{MetadataComparison, MetadataExpression, MetadataValue, PrimitiveOperator, Where};
 
-  let where_clause = Where::Metadata(MetadataExpression {
-      key: "chapter".to_string(),
-      comparison: MetadataComparison::Primitive(
-          PrimitiveOperator::Equal,
-          MetadataValue::Str("20".to_string()),
-      ),
-  });
+let where_clause = Where::Metadata(MetadataExpression {
+    key: "chapter".to_string(),
+    comparison: MetadataComparison::Primitive(
+        PrimitiveOperator::Equal,
+        MetadataValue::Str("20".to_string()),
+    ),
+});
 
-  collection.delete(
-      None,               // ids: Option<Vec<String>>
-      Some(where_clause), // r#where: Option<Where>
-      Some(10000),        // limit: Option<u32>
-  ).await?;
-  ```
-</CodeGroup>
+collection.delete(
+    None,               // ids: Option<Vec<String>>
+    Some(where_clause), // r#where: Option<Where>
+    Some(10000),        // limit: Option<u32>
+).await?;
+```

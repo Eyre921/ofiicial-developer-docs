@@ -30,29 +30,29 @@ Return the number of records in the collection.
 
 Add records to the collection.
 
-<ParamField type="Union[str, IDs]">
-  Record IDs to add.
-</ParamField>
+**ids** `Union[str, IDs]` *required*
 
-<ParamField type="Optional[Embeddings]">
-  Embeddings to add. If None, embeddings are computed.
-</ParamField>
+Record IDs to add.
 
-<ParamField type="Union[Optional[Metadatas], List[Optional[Metadatas]], None]">
-  Optional metadata for each record.
-</ParamField>
+**embeddings** `Optional[Embeddings]`
 
-<ParamField type="Union[str, IDs, None]">
-  Optional documents for each record.
-</ParamField>
+Embeddings to add. If None, embeddings are computed.
 
-<ParamField type="Optional[Embeddings]">
-  Optional images for each record.
-</ParamField>
+**metadatas** `Union[Optional[Metadatas], List[Optional[Metadatas]], None]`
 
-<ParamField type="Union[str, IDs, None]">
-  Optional URIs for loading images.
-</ParamField>
+Optional metadata for each record.
+
+**documents** `Union[str, IDs, None]`
+
+Optional documents for each record.
+
+**images** `Optional[Embeddings]`
+
+Optional images for each record.
+
+**uris** `Union[str, IDs, None]`
+
+Optional URIs for loading images.
 
 **Raises:**
 
@@ -68,29 +68,29 @@ Retrieve records from the collection.
 If no filters are provided, returns records up to `limit` starting at
 `offset`.
 
-<ParamField type="Union[str, IDs, None]">
-  If provided, only return records with these IDs.
-</ParamField>
+**ids** `Union[str, IDs, None]`
 
-<ParamField type="Optional[Dict[Union[str, Literal[$and], Literal[$or]], Where]]">
-  A Where filter used to filter based on metadata values.
-</ParamField>
+If provided, only return records with these IDs.
 
-<ParamField type="Optional[int]">
-  Maximum number of results to return.
-</ParamField>
+**where** `Optional[Dict[Union[str, Literal[$and], Literal[$or]], Where]]`
 
-<ParamField type="Optional[int]">
-  Number of results to skip before returning.
-</ParamField>
+A Where filter used to filter based on metadata values.
 
-<ParamField type="Optional[Dict[Where, Union[str, List[Dict[Where, Union[str, List[WhereDocument]]]]]]]">
-  A WhereDocument filter used to filter based on K.DOCUMENT.
-</ParamField>
+**limit** `Optional[int]`
 
-<ParamField type="List[Literal[documents, embeddings, metadatas, distances, uris, data]]">
-  Fields to include in results. Can contain "embeddings", "metadatas", "documents", "uris". Defaults to "metadatas" and "documents".
-</ParamField>
+Maximum number of results to return.
+
+**offset** `Optional[int]`
+
+Number of results to skip before returning.
+
+**where\_document** `Optional[Dict[Where, Union[str, List[Dict[Where, Union[str, List[WhereDocument]]]]]]]`
+
+A WhereDocument filter used to filter based on K.DOCUMENT.
+
+**include** `List[Literal[documents, embeddings, metadatas, distances, uris, data]]`
+
+Fields to include in results. Can contain "embeddings", "metadatas", "documents", "uris". Defaults to "metadatas" and "documents".
 
 **Returns:** Retrieved records and requested fields as a GetResult object.
 
@@ -98,9 +98,9 @@ If no filters are provided, returns records up to `limit` starting at
 
 Return the first `limit` records from the collection.
 
-<ParamField type="int">
-  Maximum number of records to return.
-</ParamField>
+**limit** `int`
+
+Maximum number of records to return.
 
 **Returns:** Retrieved records and requested fields.
 
@@ -127,41 +127,41 @@ the API.
 The `ids`, `where`, `where_document`, and `include` parameters are applied
 to all queries.
 
-<ParamField type="Optional[Embeddings]">
-  Raw embeddings to query for.
-</ParamField>
+**query\_embeddings** `Optional[Embeddings]`
 
-<ParamField type="Union[str, IDs, None]">
-  Documents to embed and query against.
-</ParamField>
+Raw embeddings to query for.
 
-<ParamField type="Optional[Embeddings]">
-  Images to embed and query against.
-</ParamField>
+**query\_texts** `Union[str, IDs, None]`
 
-<ParamField type="Union[str, IDs, None]">
-  URIs to be loaded and embedded.
-</ParamField>
+Documents to embed and query against.
 
-<ParamField type="Union[str, IDs, None]">
-  Optional subset of IDs to search within.
-</ParamField>
+**query\_images** `Optional[Embeddings]`
 
-<ParamField type="int">
-  Number of neighbors to return per query.
-</ParamField>
+Images to embed and query against.
 
-<ParamField type="Optional[Dict[Union[str, Literal[$and], Literal[$or]], Where]]">
-  Metadata filter.
-</ParamField>
+**query\_uris** `Union[str, IDs, None]`
 
-<ParamField type="Optional[Dict[Where, Union[str, List[Dict[Where, Union[str, List[WhereDocument]]]]]]]">
-  Document content filter.
-</ParamField>
+URIs to be loaded and embedded.
 
-<ParamField type="List[Literal[documents, embeddings, metadatas, distances, uris, data]]">
-  Fields to include in results. Can contain "embeddings", "metadatas", "documents", "uris", "distances". Defaults to "metadatas", "documents", "distances".
-</ParamField>
+**ids** `Union[str, IDs, None]`
+
+Optional subset of IDs to search within.
+
+**n\_results** `int`
+
+Number of neighbors to return per query.
+
+**where** `Optional[Dict[Union[str, Literal[$and], Literal[$or]], Where]]`
+
+Metadata filter.
+
+**where\_document** `Optional[Dict[Where, Union[str, List[Dict[Where, Union[str, List[WhereDocument]]]]]]]`
+
+Document content filter.
+
+**include** `List[Literal[documents, embeddings, metadatas, distances, uris, data]]`
+
+Fields to include in results. Can contain "embeddings", "metadatas", "documents", "uris", "distances". Defaults to "metadatas", "documents", "distances".
 
 **Returns:** Nearest neighbor results.
 
@@ -174,17 +174,17 @@ to all queries.
 
 Update collection name, metadata, or configuration.
 
-<ParamField type="Optional[str]">
-  New collection name.
-</ParamField>
+**name** `Optional[str]`
 
-<ParamField type="Optional[Dict[str, Any]]">
-  New metadata for the collection.
-</ParamField>
+New collection name.
 
-<ParamField type="Optional[UpdateCollectionConfiguration]">
-  New configuration for the collection.
-</ParamField>
+**metadata** `Optional[Dict[str, Any]]`
+
+New metadata for the collection.
+
+**configuration** `Optional[UpdateCollectionConfiguration]`
+
+New configuration for the collection.
 
 ### update
 
@@ -204,57 +204,57 @@ collection.update(ids, embeddings, metadatas, documents, uris)
 
 If `embeddings` are not provided, the embeddings will be computed based on `documents` using the collection's embedding function.
 
-<ParamField type="Union[str, IDs]">
-  Record IDs to update.
-</ParamField>
+**ids** `Union[str, IDs]` *required*
 
-<ParamField type="Optional[Embeddings]">
-  Updated embeddings. If None, embeddings are computed.
-</ParamField>
+Record IDs to update.
 
-<ParamField type="Union[Optional[Metadatas], List[Optional[Metadatas]], None]">
-  Updated metadata.
-</ParamField>
+**embeddings** `Optional[Embeddings]`
 
-<ParamField type="Union[str, IDs, None]">
-  Updated documents.
-</ParamField>
+Updated embeddings. If None, embeddings are computed.
 
-<ParamField type="Optional[Embeddings]">
-  Updated images.
-</ParamField>
+**metadatas** `Union[Optional[Metadatas], List[Optional[Metadatas]], None]`
 
-<ParamField type="Union[str, IDs, None]">
-  Updated URIs for loading images.
-</ParamField>
+Updated metadata.
+
+**documents** `Union[str, IDs, None]`
+
+Updated documents.
+
+**images** `Optional[Embeddings]`
+
+Updated images.
+
+**uris** `Union[str, IDs, None]`
+
+Updated URIs for loading images.
 
 ### upsert
 
 Create or update records by ID.
 
-<ParamField type="Union[str, IDs]">
-  Record IDs to upsert.
-</ParamField>
+**ids** `Union[str, IDs]` *required*
 
-<ParamField type="Optional[Embeddings]">
-  Embeddings to add or update. If None, embeddings are computed.
-</ParamField>
+Record IDs to upsert.
 
-<ParamField type="Union[Optional[Metadatas], List[Optional[Metadatas]], None]">
-  Metadata to add or update.
-</ParamField>
+**embeddings** `Optional[Embeddings]`
 
-<ParamField type="Union[str, IDs, None]">
-  Documents to add or update.
-</ParamField>
+Embeddings to add or update. If None, embeddings are computed.
 
-<ParamField type="Optional[Embeddings]">
-  Images to add or update.
-</ParamField>
+**metadatas** `Union[Optional[Metadatas], List[Optional[Metadatas]], None]`
 
-<ParamField type="Union[str, IDs, None]">
-  URIs for loading images.
-</ParamField>
+Metadata to add or update.
+
+**documents** `Union[str, IDs, None]`
+
+Documents to add or update.
+
+**images** `Optional[Embeddings]`
+
+Images to add or update.
+
+**uris** `Union[str, IDs, None]`
+
+URIs for loading images.
 
 ### delete
 
@@ -262,17 +262,17 @@ Delete records by ID or filters.
 
 All documents that match the `ids` or `where` and `where_document` filters will be deleted.
 
-<ParamField type="Optional[IDs]">
-  Record IDs to delete.
-</ParamField>
+**ids** `Optional[IDs]`
 
-<ParamField type="Optional[Dict[Union[str, Literal[$and], Literal[$or]], Where]]">
-  Metadata filter.
-</ParamField>
+Record IDs to delete.
 
-<ParamField type="Optional[Dict[Where, Union[str, List[Dict[Where, Union[str, List[WhereDocument]]]]]]]">
-  Document content filter.
-</ParamField>
+**where** `Optional[Dict[Union[str, Literal[$and], Literal[$or]], Where]]`
+
+Metadata filter.
+
+**where\_document** `Optional[Dict[Where, Union[str, List[Dict[Where, Union[str, List[WhereDocument]]]]]]]`
+
+Document content filter.
 
 **Raises:**
 
@@ -298,21 +298,21 @@ for id, document, metadata in records:
 GetResult will only include ids and the fields specified in the `include` param
 when making the get() operation.
 
-<span>Properties</span>
+Properties
 
-<ParamField type="IDs" />
+**ids** `IDs`
 
-<ParamField type="Optional[Embeddings]" />
+**embeddings** `Optional[Embeddings]`
 
-<ParamField type="Optional[IDs]" />
+**documents** `Optional[IDs]`
 
-<ParamField type="Optional[IDs]" />
+**uris** `Optional[IDs]`
 
-<ParamField type="Optional[Optional[Embeddings]]" />
+**data** `Optional[Optional[Embeddings]]`
 
-<ParamField type="Optional[List[Optional[Metadatas]]]" />
+**metadatas** `Optional[List[Optional[Metadatas]]]`
 
-<ParamField type="List[Literal[documents, embeddings, metadatas, distances, uris, data]]" />
+**included** `List[Literal[documents, embeddings, metadatas, distances, uris, data]]`
 
 ### QueryResult
 
@@ -337,20 +337,20 @@ for batch in batches:
 QueryResult will only include ids and the fields specified in the `include` param
 when making the query() operation.
 
-<span>Properties</span>
+Properties
 
-<ParamField type="List[IDs]" />
+**ids** `List[IDs]`
 
-<ParamField type="Optional[Embeddings]" />
+**embeddings** `Optional[Embeddings]`
 
-<ParamField type="Optional[List[IDs]]" />
+**documents** `Optional[List[IDs]]`
 
-<ParamField type="Optional[List[IDs]]" />
+**uris** `Optional[List[IDs]]`
 
-<ParamField type="Optional[List[Optional[Embeddings]]]" />
+**data** `Optional[List[Optional[Embeddings]]]`
 
-<ParamField type="Optional[List[List[Optional[Metadatas]]]]" />
+**metadatas** `Optional[List[List[Optional[Metadatas]]]]`
 
-<ParamField type="Optional[List[List[float]]]" />
+**distances** `Optional[List[List[float]]]`
 
-<ParamField type="List[Literal[documents, embeddings, metadatas, distances, uris, data]]" />
+**included** `List[Literal[documents, embeddings, metadatas, distances, uris, data]]`

@@ -28,32 +28,28 @@ pipx install chromadb
 
 ## JavaScript
 
-<CodeGroup>
-  ```bash npm theme={null}
-  npm install -g chromadb
-  ```
+```bash npm theme={null}
+npm install -g chromadb
+```
 
-  ```bash pnpm theme={null}
-  pnpm add -g chromadb
-  ```
+```bash pnpm theme={null}
+pnpm add -g chromadb
+```
 
-  ```bash bun theme={null}
-  bun add -g chromadb
-  ```
+```bash bun theme={null}
+bun add -g chromadb
+```
 
-  ```bash yarn theme={null}
-  yarn global add chromadb
-  ```
-</CodeGroup>
+```bash yarn theme={null}
+yarn global add chromadb
+```
 
 ## Install Globally
 
-<CodeGroup>
-  ```bash cURL theme={null}
-  curl -sSL https://raw.githubusercontent.com/chroma-core/chroma/main/rust/cli/install/install.sh | bash
-  ```
+```bash cURL theme={null}
+curl -sSL https://raw.githubusercontent.com/chroma-core/chroma/main/rust/cli/install/install.sh | bash
+```
 
-  ```bash Windows theme={null}
-  iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/chroma-core/chroma/main/rust/cli/install/install.ps1'))
-  ```
-</CodeGroup>
+```bash Windows theme={null}
+iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/chroma-core/chroma/main/rust/cli/install/install.ps1'))
+```

@@ -20,7 +20,7 @@ chroma login
 
 The CLI will open a browser window verifying that the authentication was successful. If so, you should see the following:
 
-<img alt="CLI login success" />
+![CLI login success](https://mintcdn.com/chroma-8943dec5/N-xA4EbmHOvIcCcs/images/cli/cli-login-success.png?fit=max\&auto=format\&n=N-xA4EbmHOvIcCcs\&q=85\&s=71d6a0db04743b124eb5953ed7faaa54)
 
 Back in the CLI, you will be prompted to select the team you want to authenticate with. Each team login gets its own [profile](./profile) in the CLI. Profiles persist the API key and tenant ID for the team you log-in with. You can find all your profiles in `.chroma/credentials` under your home directory. By default, the name of the profile is the same name of the team you logged-in with. However, the CLI will let you edit that name during the login, or later using the `chroma profile rename` command.
 

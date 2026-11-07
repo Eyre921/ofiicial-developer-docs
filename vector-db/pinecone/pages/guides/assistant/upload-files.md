@@ -12,7 +12,7 @@ Upload local files to a Pinecone assistant with Python, JavaScript, or curl, tra
 
 ## Upload a local file
 
-You can [upload a file to your assistant](/reference/api/latest/assistant/upload_file) from your local device, as in the following example.
+To upload a file from your local device, call [`upload_file`](/reference/api/latest/assistant/upload_file):
 
 ```python Python theme={null}
 from pinecone import Pinecone
@@ -56,7 +56,7 @@ curl -X POST "https://prod-1-data.ke.pinecone.io/assistant/files/$ASSISTANT_NAME
   -F "file=@$LOCAL_FILE_PATH"
 ```
 
-File uploads are billed in [ingestion units](/guides/assistant/pricing-and-limits#ingestion). With [API version](/reference/api/versioning) `2026-04` or later, upload, upsert, and delete responses return an operation object. Poll [Describe an operation](/reference/api/latest/assistant/describe_operation) or [List operations](/reference/api/latest/assistant/list_operations) to track progress; when a file-ingestion operation completes, `ingestion_units` may be present on the operation. See [Track file operations](/guides/assistant/manage-files#track-file-operations).
+File uploads are billed in [ingestion units](/guides/assistant/pricing-and-limits#ingestion). With [API version](/reference/api/versioning) `2026-04` or later, upload, upsert, and delete responses return an operation object. Poll [Describe an operation](/reference/api/latest/assistant/describe_operation) or [List operations](/reference/api/latest/assistant/list_operations) to track progress. When a file-ingestion operation completes, `ingestion_units` may be present on the operation. See [Track file operations](/guides/assistant/manage-files#track-file-operations).
 
 Upload is asynchronous, and it may take several minutes for your assistant to process your file. The Python SDK waits until processing finishes before it returns. The Node.js SDK and the API return an operation, which you can [track](/guides/assistant/manage-files#track-file-operations) until it's no longer `Processing`, as the Node.js example does. You can also [check the status of your file](/guides/assistant/manage-files#get-the-status-of-a-file).
 
@@ -106,7 +106,7 @@ curl -X POST "https://prod-1-data.ke.pinecone.io/assistant/files/$ASSISTANT_NAME
     -F 'metadata={"published": "2024-01-01", "document_type": "manuscript"}'
 ```
 
-When a file is uploaded with metadata, you can use the metadata to [filter a list of files](/guides/assistant/manage-files#view-a-filtered-list-of-files) and [filter chat responses](/guides/assistant/chat-with-assistant#filter-chat-with-metadata).
+When a file is uploaded with metadata, you can use the metadata to [filter a list of files](/guides/assistant/manage-files#view-a-filtered-list-of-files) and [filter chat responses](/guides/assistant/chat-standard-interface#filter-chat-with-metadata).
 
 ## Upsert a file
 
@@ -151,7 +151,7 @@ curl -X PUT "https://prod-1-data.ke.pinecone.io/assistant/files/$ASSISTANT_NAME/
 
 ## Upload a PDF with multimodal context
 
-Assistants can gather context from images contained in PDF files. To learn more about this feature, see [Multimodal context for assistants](/guides/assistant/multimodal).
+Assistants can gather context from images contained in PDF files. To learn more about this feature, see [Multimodal context](/guides/assistant/multimodal-context).
 
 ## Upload from a binary stream
 

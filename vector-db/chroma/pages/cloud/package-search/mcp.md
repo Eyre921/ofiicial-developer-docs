@@ -14,443 +14,557 @@ The Package Search MCP Server is an [MCP](https://modelcontextprotocol.io/docs/g
 
 ## Getting Started
 
-<Warning>
-  To guarantee that your model uses package search when desired, add `use package search` to either the system prompt (to use the MCP server whenever applicable) or to each task prompt (to use it only when you instruct the model to do so).
-</Warning>
+To guarantee that your model uses package search when desired, add `use package search` to either the system prompt (to use the MCP server whenever applicable) or to each task prompt (to use it only when you instruct the model to do so).
 
-<Tabs>
-  <Tab title="Anthropic SDK">
-    <Steps>
-      <Step>Visit Chroma's [Package Search](http://trychroma.com/package-search) page.</Step>
-      <Step>Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.</Step>
-      <Step>After issuing your API key, click the "Other" tab and copy your API key.</Step>
-      <Step>Connect to the Chroma MCP server to search code packages. In this example, we search for how the Fast Fourier Transform algorithm is implemented in the `numpy` package from PyPI.</Step>
-    </Steps>
+> [tab] Anthropic SDK
+>
+> **Step 1**
+>
+> Visit Chroma's [Package Search](http://trychroma.com/package-search) page.
+>
+> **Step 2**
+>
+> Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.
+>
+> **Step 3**
+>
+> After issuing your API key, click the "Other" tab and copy your API key.
+>
+> **Step 4**
+>
+> Connect to the Chroma MCP server to search code packages. In this example, we search for how the Fast Fourier Transform algorithm is implemented in the `numpy` package from PyPI.
+>
+> ```python Python theme={null}
+> import anthropic
+>
+> client = anthropic.Anthropic(
+>     api_key="<YOUR_ANTHROPIC_API_KEY>"
+> )
+>
+> response = client.beta.messages.create(
+>     model="claude-sonnet-5",
+>     max_tokens=4096,
+>     messages=[
+>         {
+>             "role": "user",
+>             "content": "Explain how numpy implements its FFT. Use package search.",
+>         }
+>     ],
+>     mcp_servers=[
+>         {
+>             "type": "url",
+>             "url": "https://mcp.trychroma.com/package-search/v1",
+>             "name": "package-search",
+>             "authorization_token": "<YOUR_CHROMA_API_KEY>",
+>         }
+>     ],
+>     tools=[{"type": "mcp_toolset", "mcp_server_name": "package-search"}],
+>     betas=["mcp-client-2025-11-20"],
+> )
+>
+> print(response)
+> ```
+>
+> ```go Go theme={null}
+> package main
+>
+> import (
+> 	"context"
+> 	"fmt"
+> 	"log"
+>
+> 	"github.com/anthropics/anthropic-sdk-go"
+> 	"github.com/anthropics/anthropic-sdk-go/option"
+> 	"github.com/anthropics/anthropic-sdk-go/packages/param"
+> )
+>
+> func main() {
+> 	client := anthropic.NewClient(
+> 		option.WithAPIKey("<YOUR_ANTHROPIC_API_KEY>"),
+> 	)
+>
+> 	content := "Explain how numpy implements its FFT. Use package search."
+> 	fmt.Println("[user]:", content)
+>
+> 	messages := []anthropic.BetaMessageParam{
+> 		anthropic.NewBetaUserMessage(
+> 			anthropic.NewBetaTextBlock(content),
+> 		),
+> 	}
+>
+> 	mcpServers := []anthropic.BetaRequestMCPServerURLDefinitionParam{
+> 		{
+> 			URL:                "https://mcp.trychroma.com/package-search/v1",
+> 			Name:               "package-search",
+> 			AuthorizationToken: param.NewOpt("<YOUR_CHROMA_API_KEY>"),
+> 		},
+> 	}
+>
+> 	tools := []anthropic.BetaToolUnionParam{
+> 		{OfMCPToolset: &anthropic.BetaMCPToolsetParam{MCPServerName: "package-search"}},
+> 	}
+>
+> 	message, err := client.Beta.Messages.New(
+> 		context.TODO(),
+> 		anthropic.BetaMessageNewParams{
+> 			MaxTokens:  4096,
+> 			Messages:   messages,
+> 			Model:      anthropic.ModelClaudeSonnet5,
+> 			MCPServers: mcpServers,
+> 			Tools:      tools,
+> 			Betas:      []anthropic.AnthropicBeta{anthropic.AnthropicBetaMCPClient2025_11_20},
+> 		},
+> 	)
+> 	if err != nil {
+> 		log.Fatalf("request failed: %v", err)
+> 	}
+>
+> 	for _, block := range message.Content {
+> 		if block.Type == "text" {
+> 			fmt.Println("[assistant]:", block.AsText().Text)
+> 		}
+> 	}
+> }
+> ```
 
-    <CodeGroup>
-      ```python Python theme={null}
-      import anthropic
+> [tab] OpenAI SDK
+>
+> **Step 1**
+>
+> Visit Chroma's [Package Search](http://trychroma.com/package-search) page.
+>
+> **Step 2**
+>
+> Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.
+>
+> **Step 3**
+>
+> After issuing your API key, click the "Other" tab and copy your API key.
+>
+> **Step 4**
+>
+> Connect to the Chroma MCP server to search code packages. In this example, we search for class definitions in the `numpy` package from PyPI.
+>
+> ```python theme={null}
+> from openai import OpenAI
+>
+> client = OpenAI(
+>     api_key="<YOUR_OPENAI_API_KEY>"
+> )
+>
+> resp = client.responses.create(
+>     model="gpt-5-chat-latest",
+>     input="Explain how numpy implements its FFT. Use package search.",
+>     tools=[
+>         {
+>             "type": "mcp",
+>             "server_label": "package-search",
+>             "server_url": "https://mcp.trychroma.com/package-search/v1",
+>             "headers": {
+>                 "x-chroma-token": "<YOUR_CHROMA_API_KEY>"
+>             },
+>             "require_approval": "never",
+>         }
+>     ],
+> )
+>
+> print(resp)
+> ```
 
-      client = anthropic.Anthropic(
-          api_key="<YOUR_ANTHROPIC_API_KEY>"
-      )
+> [tab] Google Gemini SDK
+>
+> **Step 1**
+>
+> Visit Chroma's [Package Search](http://trychroma.com/package-search) page.
+>
+> **Step 2**
+>
+> Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.
+>
+> **Step 3**
+>
+> After issuing your API key, click the "Other" tab and copy your API key.
+>
+> **Step 4**
+>
+> Get a Gemini API key in [Google's AI Studio](https://aistudio.google.com/app/apikey)
+>
+> **Step 5**
+>
+> Connect the Chroma MCP server with Gemini to enable AI-powered code searches. In this example, we ask Gemini to explain how the Fast Fourier Transform algorithm is implemented in `numpy`, using the Chroma MCP tools to search and analyze the code.
+>
+> ```python theme={null}
+> import asyncio
+> from mcp import ClientSession
+> from mcp.client.streamable_http import streamablehttp_client
+> from google import genai
+>
+> client = genai.Client(api_key="<YOUR_GEMINI_API_KEY>")
+>
+> async def run():
+>     async with streamablehttp_client(
+>         "https://mcp.trychroma.com/package-search/v1",
+>         headers={"x-chroma-token": "<YOUR_CHROMA_API_KEY>"},
+>     ) as (read, write, _):
+>         async with ClientSession(read, write) as session:
+>             await session.initialize()
+>             try:
+>                 prompt = f"Explain how numpy implements its FFT. Use package search."
+>                 response = await client.aio.models.generate_content(
+>                     model="gemini-2.5-flash",
+>                     contents=prompt,
+>                     config=genai.types.GenerateContentConfig(
+>                         temperature=0,
+>                         tools=[session],
+>                     ),
+>                 )
+>                 try:
+>                     if response.text:
+>                         print("--- Generated Text ---")
+>                         print(response.text)
+>                     else:
+>                         print("Model did not return text.")
+>                         print(f"Finish Reason: {response.candidates[0].finish_reason.name}")
+>                 except ValueError:
+>                     print("Could not access response.text.")
+>             except Exception as e:
+>                 print(f"An error occurred: {e}")
+>
+> asyncio.run(run())
+> ```
 
-      response = client.beta.messages.create(
-          model="claude-sonnet-5",
-          max_tokens=4096,
-          messages=[
-              {
-                  "role": "user",
-                  "content": "Explain how numpy implements its FFT. Use package search.",
-              }
-          ],
-          mcp_servers=[
-              {
-                  "type": "url",
-                  "url": "https://mcp.trychroma.com/package-search/v1",
-                  "name": "package-search",
-                  "authorization_token": "<YOUR_CHROMA_API_KEY>",
-              }
-          ],
-          tools=[{"type": "mcp_toolset", "mcp_server_name": "package-search"}],
-          betas=["mcp-client-2025-11-20"],
-      )
+> [tab] Claude Code
+>
+> **Step 1**
+>
+> Visit Chroma's [Package Search](http://trychroma.com/package-search) page.
+>
+> **Step 2**
+>
+> Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.
+>
+> **Step 3**
+>
+> After issuing your API key, click the "Other" tab and copy your API key.
+>
+> **Step 4**
+>
+> Add the Chroma MCP server to Claude Code with your Chroma API key:
+>
+> ```terminal theme={null}
+> claude mcp add --transport http package-search https://mcp.trychroma.com/package-search/v1 --header "x-chroma-token: <YOUR_CHROMA_API_KEY>"
+> ```
 
-      print(response)
-      ```
+> [tab] Codex
+>
+> **Step 1**
+>
+> Visit Chroma's [Package Search](http://trychroma.com/package-search) page.
+>
+> **Step 2**
+>
+> Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.
+>
+> **Step 3**
+>
+> After issuing your API key, click the "Other" tab and copy your API key.
+>
+> **Step 4**
+>
+> Add the following to your `~/.codex/config.toml` file with your Chroma Cloud API key:
+>
+> ```TOML theme={null}
+> [mcp_servers.package-search]
+> command = "npx"
+> args = ["mcp-remote", "https://mcp.trychroma.com/package-search/v1", "--header", "x-chroma-token: ${X_CHROMA_TOKEN}"]
+> env = { "X_CHROMA_TOKEN" = "<YOUR_CHROMA_API_KEY>" }
+> ```
 
-      ```go Go theme={null}
-      package main
+> [tab] Cursor
+>
+> **Step 1**
+>
+> Visit Chroma's [Package Search](http://trychroma.com/package-search) page.
+>
+> **Step 2**
+>
+> Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.
+>
+> **Step 3**
+>
+> After issuing your API key, click the "Other" tab and copy your API key.
+>
+> **Step 4**
+>
+> In Cursor's settings, search for "MCP" and add the following configuration with your Chroma Cloud API key:
+>
+> ```JSON theme={null}
+> {
+>   "mcpServers": {
+>     "package-search": {
+>       "transport": "streamable_http",
+>       "url": "https://mcp.trychroma.com/package-search/v1",
+>       "headers": {
+>         "x-chroma-token": "<YOUR_CHROMA_API_KEY>"
+>       }
+>     }
+>   }
+> }
+> ```
 
-      import (
-      	"context"
-      	"fmt"
-      	"log"
+> [tab] Windsurf
+>
+> **Step 1**
+>
+> Visit Chroma's [Package Search](http://trychroma.com/package-search) page.
+>
+> **Step 2**
+>
+> Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.
+>
+> **Step 3**
+>
+> After issuing your API key, click the "Other" tab and copy your API key.
+>
+> **Step 4**
+>
+> In Windsurf's settings, search for "MCP" and add the following configuration with your Chroma Cloud API key:
+>
+> ```JSON theme={null}
+> {
+>   "mcpServers": {
+>     "package-search": {
+>       "serverUrl": "https://mcp.trychroma.com/package-search/v1",
+>       "headers": {
+>         "x-chroma-token": "<YOUR_CHROMA_API_KEY>"
+>       }
+>     }
+>   }
+> }
+> ```
 
-      	"github.com/anthropics/anthropic-sdk-go"
-      	"github.com/anthropics/anthropic-sdk-go/option"
-      	"github.com/anthropics/anthropic-sdk-go/packages/param"
-      )
+> [tab] Claude Desktop
+>
+> **Step 1**
+>
+> Visit Chroma's [Package Search](http://trychroma.com/package-search) page.
+>
+> **Step 2**
+>
+> Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.
+>
+> **Step 3**
+>
+> After issuing your API key, click the "Other" tab and copy your API key.
+>
+> **Step 4**
+>
+> Add the following to your `~/Library/Application Support/Claude/claude_desktop_config.json`:
+>
+> ```JSON theme={null}
+> {
+>     "mcpServers": {
+>       "package-search": {
+>         "command": "npx",
+>         "args": ["mcp-remote", "https://mcp.trychroma.com/package-search/v1", "--header", "x-chroma-token: ${X_CHROMA_TOKEN}"],
+>         "env": {
+>           "X_CHROMA_TOKEN": "<YOUR_CHROMA_API_KEY>"
+>         }
+>       }
+>     }
+> }
+> ```
 
-      func main() {
-      	client := anthropic.NewClient(
-      		option.WithAPIKey("<YOUR_ANTHROPIC_API_KEY>"),
-      	)
+> [tab] Warp
+>
+> **Step 1**
+>
+> Visit Chroma's [Package Search](http://trychroma.com/package-search) page.
+>
+> **Step 2**
+>
+> Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.
+>
+> **Step 3**
+>
+> After issuing your API key, click the "Other" tab and copy your API key.
+>
+> **Step 4**
+>
+> Add the following to your Warp MCP config. Make sure to click "Start" on the server after adding.
+>
+> ```JSON theme={null}
+> {
+>     "package-search": {
+>       "command": "npx",
+>       "args": ["mcp-remote", "https://mcp.trychroma.com/package-search/v1", "--header", "x-chroma-token: ${X_CHROMA_TOKEN}"],
+>       "env": {
+>         "X_CHROMA_TOKEN": "<YOUR_CHROMA_API_KEY>"
+>       }
+>     }
+> }
+> ```
 
-      	content := "Explain how numpy implements its FFT. Use package search."
-      	fmt.Println("[user]:", content)
+> [tab] Open Code
+>
+> **Step 1**
+>
+> Visit Chroma's [Package Search](http://trychroma.com/package-search) page.
+>
+> **Step 2**
+>
+> Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.
+>
+> **Step 3**
+>
+> After issuing your API key, click the "Other" tab and copy your API key.
+>
+> **Step 4**
+>
+> Add the following to your `~/.config/opencode/opencode.json` file with your Chroma Cloud API key:
+>
+> ```JSON theme={null}
+> {
+>   "$schema": "https://opencode.ai/config.json",
+>   "mcp": {
+>     "code-packages": {
+>       "type": "remote",
+>       "url": "https://mcp.trychroma.com/package-search/v1",
+>       "enabled": true,
+>       "headers": {
+>         "x-chroma-token": "<YOUR_CHROMA_API_KEY>"
+>       }
+>     }
+>   }
+> }
+> ```
 
-      	messages := []anthropic.BetaMessageParam{
-      		anthropic.NewBetaUserMessage(
-      			anthropic.NewBetaTextBlock(content),
-      		),
-      	}
+> [tab] Ollama
+>
+> **Step 1**
+>
+> Visit Chroma's [Package Search](http://trychroma.com/package-search) page.
+>
+> **Step 2**
+>
+> Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.
+>
+> **Step 3**
+>
+> After issuing your API key, click the "Other" tab and copy your API key.
+>
+> **Step 4**
+>
+> Install the `ollmcp` package:
+>
+> ```bash theme={null}
+> pip install ollmcp
+> ```
+>
+> **Step 1**
+>
+> Create an `mcp_config.json` file with the following content and your Chroma Cloud API key:
+>
+> ```JSON theme={null}
+> {
+> 	"mcpServers": {
+> 		"code-packages": {
+> 			"type": "streamable_http",
+> 			"url": "https://mcp.trychroma.com/package-search/v1",
+> 			"headers": {
+> 				"x-chroma-token": "<YOUR_CHROMA_API_KEY>"
+> 			},
+> 			"disabled": false
+> 		}
+> 	}
+> }
+> ```
+>
+> **Step 1**
+>
+> Start an Ollama MCP session with the path to your `mcp_config.json` file and model of choice:
+>
+> ```terminal theme={null}
+> ollmcp --servers-json <path/to/mcp_config.json> --model <model>
+> ```
 
-      	mcpServers := []anthropic.BetaRequestMCPServerURLDefinitionParam{
-      		{
-      			URL:                "https://mcp.trychroma.com/package-search/v1",
-      			Name:               "package-search",
-      			AuthorizationToken: param.NewOpt("<YOUR_CHROMA_API_KEY>"),
-      		},
-      	}
+> [tab] MCP SDK
+>
+> **Step 1**
+>
+> Visit Chroma's [Package Search](http://trychroma.com/package-search) page.
+>
+> **Step 2**
+>
+> Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.
+>
+> **Step 3**
+>
+> After issuing your API key, click the "Other" tab and copy your API key.
+>
+> **Step 4**
+>
+> Connect to the Chroma MCP server to search code packages. In this example, we search for the Fast Fourier Transform function in the `numpy` package from PyPI using the `package_search_grep` tool.
+>
+> ```python theme={null}
+> import asyncio
+> from mcp import ClientSession
+> from mcp.client.streamable_http import streamablehttp_client
+>
+> async def main():
+>     async with streamablehttp_client(
+>         "https://mcp.trychroma.com/package-search/v1",
+>         headers={"x-chroma-token": "<YOUR_CHROMA_API_KEY>"},
+>     ) as (
+>         read_stream,
+>         write_stream,
+>         _,
+>     ):
+>         async with ClientSession(read_stream, write_stream) as session:
+>             await session.initialize()
+>             tools = await session.list_tools()
+>             result = await session.call_tool(
+>                 name="package_search_grep",
+>                 arguments={
+>                     "package_name": "numpy",
+>                     "registry_name": "py_pi",
+>                     "pattern": "\bdef fft\b",
+>                 },
+>             )
+>             print(f"Got result: {result}")
+>             print(f"Available tools: {[tool.name for tool in tools.tools]}")
+>
+> asyncio.run(main())
+> ```
 
-      	tools := []anthropic.BetaToolUnionParam{
-      		{OfMCPToolset: &anthropic.BetaMCPToolsetParam{MCPServerName: "package-search"}},
-      	}
-
-      	message, err := client.Beta.Messages.New(
-      		context.TODO(),
-      		anthropic.BetaMessageNewParams{
-      			MaxTokens:  4096,
-      			Messages:   messages,
-      			Model:      anthropic.ModelClaudeSonnet5,
-      			MCPServers: mcpServers,
-      			Tools:      tools,
-      			Betas:      []anthropic.AnthropicBeta{anthropic.AnthropicBetaMCPClient2025_11_20},
-      		},
-      	)
-      	if err != nil {
-      		log.Fatalf("request failed: %v", err)
-      	}
-
-      	for _, block := range message.Content {
-      		if block.Type == "text" {
-      			fmt.Println("[assistant]:", block.AsText().Text)
-      		}
-      	}
-      }
-      ```
-    </CodeGroup>
-  </Tab>
-
-  <Tab title="OpenAI SDK">
-    <Steps>
-      <Step>Visit Chroma's [Package Search](http://trychroma.com/package-search) page.</Step>
-      <Step>Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.</Step>
-      <Step>After issuing your API key, click the "Other" tab and copy your API key.</Step>
-      <Step>Connect to the Chroma MCP server to search code packages. In this example, we search for class definitions in the `numpy` package from PyPI.</Step>
-    </Steps>
-
-    ```python theme={null}
-    from openai import OpenAI
-
-    client = OpenAI(
-        api_key="<YOUR_OPENAI_API_KEY>"
-    )
-
-    resp = client.responses.create(
-        model="gpt-5-chat-latest",
-        input="Explain how numpy implements its FFT. Use package search.",
-        tools=[
-            {
-                "type": "mcp",
-                "server_label": "package-search",
-                "server_url": "https://mcp.trychroma.com/package-search/v1",
-                "headers": {
-                    "x-chroma-token": "<YOUR_CHROMA_API_KEY>"
-                },
-                "require_approval": "never",
-            }
-        ],
-    )
-
-    print(resp)
-    ```
-  </Tab>
-
-  <Tab title="Google Gemini SDK">
-    <Steps>
-      <Step>Visit Chroma's [Package Search](http://trychroma.com/package-search) page.</Step>
-      <Step>Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.</Step>
-      <Step>After issuing your API key, click the "Other" tab and copy your API key.</Step>
-      <Step>Get a Gemini API key in [Google's AI Studio](https://aistudio.google.com/app/apikey)</Step>
-      <Step>Connect the Chroma MCP server with Gemini to enable AI-powered code searches. In this example, we ask Gemini to explain how the Fast Fourier Transform algorithm is implemented in `numpy`, using the Chroma MCP tools to search and analyze the code.</Step>
-    </Steps>
-
-    ```python theme={null}
-    import asyncio
-    from mcp import ClientSession
-    from mcp.client.streamable_http import streamablehttp_client
-    from google import genai
-
-    client = genai.Client(api_key="<YOUR_GEMINI_API_KEY>")
-
-    async def run():
-        async with streamablehttp_client(
-            "https://mcp.trychroma.com/package-search/v1",
-            headers={"x-chroma-token": "<YOUR_CHROMA_API_KEY>"},
-        ) as (read, write, _):
-            async with ClientSession(read, write) as session:
-                await session.initialize()
-                try:
-                    prompt = f"Explain how numpy implements its FFT. Use package search."
-                    response = await client.aio.models.generate_content(
-                        model="gemini-2.5-flash",
-                        contents=prompt,
-                        config=genai.types.GenerateContentConfig(
-                            temperature=0,
-                            tools=[session],
-                        ),
-                    )
-                    try:
-                        if response.text:
-                            print("--- Generated Text ---")
-                            print(response.text)
-                        else:
-                            print("Model did not return text.")
-                            print(f"Finish Reason: {response.candidates[0].finish_reason.name}")
-                    except ValueError:
-                        print("Could not access response.text.")
-                except Exception as e:
-                    print(f"An error occurred: {e}")
-
-    asyncio.run(run())
-    ```
-  </Tab>
-
-  <Tab title="Claude Code">
-    <Steps>
-      <Step>Visit Chroma's [Package Search](http://trychroma.com/package-search) page.</Step>
-      <Step>Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.</Step>
-      <Step>After issuing your API key, click the "Other" tab and copy your API key.</Step>
-      <Step>Add the Chroma MCP server to Claude Code with your Chroma API key:</Step>
-    </Steps>
-
-    ```terminal theme={null}
-    claude mcp add --transport http package-search https://mcp.trychroma.com/package-search/v1 --header "x-chroma-token: <YOUR_CHROMA_API_KEY>"
-    ```
-  </Tab>
-
-  <Tab title="Codex">
-    <Steps>
-      <Step>Visit Chroma's [Package Search](http://trychroma.com/package-search) page.</Step>
-      <Step>Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.</Step>
-      <Step>After issuing your API key, click the "Other" tab and copy your API key.</Step>
-      <Step>Add the following to your `~/.codex/config.toml` file with your Chroma Cloud API key:</Step>
-    </Steps>
-
-    ```TOML theme={null}
-    [mcp_servers.package-search]
-    command = "npx"
-    args = ["mcp-remote", "https://mcp.trychroma.com/package-search/v1", "--header", "x-chroma-token: ${X_CHROMA_TOKEN}"]
-    env = { "X_CHROMA_TOKEN" = "<YOUR_CHROMA_API_KEY>" }
-    ```
-  </Tab>
-
-  <Tab title="Cursor">
-    <Steps>
-      <Step>Visit Chroma's [Package Search](http://trychroma.com/package-search) page.</Step>
-      <Step>Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.</Step>
-      <Step>After issuing your API key, click the "Other" tab and copy your API key.</Step>
-      <Step>In Cursor's settings, search for "MCP" and add the following configuration with your Chroma Cloud API key:</Step>
-    </Steps>
-
-    ```JSON theme={null}
-    {
-      "mcpServers": {
-        "package-search": {
-          "transport": "streamable_http",
-          "url": "https://mcp.trychroma.com/package-search/v1",
-          "headers": {
-            "x-chroma-token": "<YOUR_CHROMA_API_KEY>"
-          }
-        }
-      }
-    }
-    ```
-  </Tab>
-
-  <Tab title="Windsurf">
-    <Steps>
-      <Step>Visit Chroma's [Package Search](http://trychroma.com/package-search) page.</Step>
-      <Step>Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.</Step>
-      <Step>After issuing your API key, click the "Other" tab and copy your API key.</Step>
-      <Step>In Windsurf's settings, search for "MCP" and add the following configuration with your Chroma Cloud API key:</Step>
-    </Steps>
-
-    ```JSON theme={null}
-    {
-      "mcpServers": {
-        "package-search": {
-          "serverUrl": "https://mcp.trychroma.com/package-search/v1",
-          "headers": {
-            "x-chroma-token": "<YOUR_CHROMA_API_KEY>"
-          }
-        }
-      }
-    }
-    ```
-  </Tab>
-
-  <Tab title="Claude Desktop">
-    <Steps>
-      <Step>Visit Chroma's [Package Search](http://trychroma.com/package-search) page.</Step>
-      <Step>Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.</Step>
-      <Step>After issuing your API key, click the "Other" tab and copy your API key.</Step>
-      <Step>Add the following to your `~/Library/Application Support/Claude/claude_desktop_config.json`:</Step>
-    </Steps>
-
-    ```JSON theme={null}
-    {
-        "mcpServers": {
-          "package-search": {
-            "command": "npx",
-            "args": ["mcp-remote", "https://mcp.trychroma.com/package-search/v1", "--header", "x-chroma-token: ${X_CHROMA_TOKEN}"],
-            "env": {
-              "X_CHROMA_TOKEN": "<YOUR_CHROMA_API_KEY>"
-            }
-          }
-        }
-    }
-    ```
-  </Tab>
-
-  <Tab title="Warp">
-    <Steps>
-      <Step>Visit Chroma's [Package Search](http://trychroma.com/package-search) page.</Step>
-      <Step>Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.</Step>
-      <Step>After issuing your API key, click the "Other" tab and copy your API key.</Step>
-      <Step>Add the following to your Warp MCP config. Make sure to click "Start" on the server after adding.</Step>
-    </Steps>
-
-    ```JSON theme={null}
-    {
-        "package-search": {
-          "command": "npx",
-          "args": ["mcp-remote", "https://mcp.trychroma.com/package-search/v1", "--header", "x-chroma-token: ${X_CHROMA_TOKEN}"],
-          "env": {
-            "X_CHROMA_TOKEN": "<YOUR_CHROMA_API_KEY>"
-          }
-        }
-    }
-    ```
-  </Tab>
-
-  <Tab title="Open Code">
-    <Steps>
-      <Step>Visit Chroma's [Package Search](http://trychroma.com/package-search) page.</Step>
-      <Step>Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.</Step>
-      <Step>After issuing your API key, click the "Other" tab and copy your API key.</Step>
-      <Step>Add the following to your `~/.config/opencode/opencode.json` file with your Chroma Cloud API key:</Step>
-    </Steps>
-
-    ```JSON theme={null}
-    {
-      "$schema": "https://opencode.ai/config.json",
-      "mcp": {
-        "code-packages": {
-          "type": "remote",
-          "url": "https://mcp.trychroma.com/package-search/v1",
-          "enabled": true,
-          "headers": {
-            "x-chroma-token": "<YOUR_CHROMA_API_KEY>"
-          }
-        }
-      }
-    }
-    ```
-  </Tab>
-
-  <Tab title="Ollama">
-    <Steps>
-      <Step>Visit Chroma's [Package Search](http://trychroma.com/package-search) page.</Step>
-      <Step>Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.</Step>
-      <Step>After issuing your API key, click the "Other" tab and copy your API key.</Step>
-      <Step>Install the `ollmcp` package:</Step>
-    </Steps>
-
-    ```bash theme={null}
-    pip install ollmcp
-    ```
-
-    <Steps>
-      <Step>Create an `mcp_config.json` file with the following content and your Chroma Cloud API key:</Step>
-    </Steps>
-
-    ```JSON theme={null}
-    {
-    	"mcpServers": {
-    		"code-packages": {
-    			"type": "streamable_http",
-    			"url": "https://mcp.trychroma.com/package-search/v1",
-    			"headers": {
-    				"x-chroma-token": "<YOUR_CHROMA_API_KEY>"
-    			},
-    			"disabled": false
-    		}
-    	}
-    }
-    ```
-
-    <Steps>
-      <Step>Start an Ollama MCP session with the path to your `mcp_config.json` file and model of choice:</Step>
-    </Steps>
-
-    ```terminal theme={null}
-    ollmcp --servers-json <path/to/mcp_config.json> --model <model>
-    ```
-  </Tab>
-
-  <Tab title="MCP SDK">
-    <Steps>
-      <Step>Visit Chroma's [Package Search](http://trychroma.com/package-search) page.</Step>
-      <Step>Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.</Step>
-      <Step>After issuing your API key, click the "Other" tab and copy your API key.</Step>
-      <Step>Connect to the Chroma MCP server to search code packages. In this example, we search for the Fast Fourier Transform function in the `numpy` package from PyPI using the `package_search_grep` tool.</Step>
-    </Steps>
-
-    ```python theme={null}
-    import asyncio
-    from mcp import ClientSession
-    from mcp.client.streamable_http import streamablehttp_client
-
-    async def main():
-        async with streamablehttp_client(
-            "https://mcp.trychroma.com/package-search/v1",
-            headers={"x-chroma-token": "<YOUR_CHROMA_API_KEY>"},
-        ) as (
-            read_stream,
-            write_stream,
-            _,
-        ):
-            async with ClientSession(read_stream, write_stream) as session:
-                await session.initialize()
-                tools = await session.list_tools()
-                result = await session.call_tool(
-                    name="package_search_grep",
-                    arguments={
-                        "package_name": "numpy",
-                        "registry_name": "py_pi",
-                        "pattern": "\bdef fft\b",
-                    },
-                )
-                print(f"Got result: {result}")
-                print(f"Available tools: {[tool.name for tool in tools.tools]}")
-
-    asyncio.run(main())
-    ```
-  </Tab>
-
-  <Tab title="Roo Code">
-    <Steps>
-      <Step>Visit Chroma's [Package Search](http://trychroma.com/package-search) page.</Step>
-      <Step>Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.</Step>
-      <Step>After issuing your API key, click the "Other" tab and copy your API key.</Step>
-      <Step>Add this to your Roo Code MCP server configuration:</Step>
-    </Steps>
-
-    ```JSON theme={null}
-    {
-      "mcpServers": {
-        "code-collections": {
-          "type": "streamable-http",
-          "url": "https://mcp.trychroma.com/package-search/v1",
-          "headers": {
-            "x-chroma-token": "<YOUR_CHROMA_API_KEY>"
-          }
-        }
-      }
-    }
-    ```
-  </Tab>
-</Tabs>
+> [tab] Roo Code
+>
+> **Step 1**
+>
+> Visit Chroma's [Package Search](http://trychroma.com/package-search) page.
+>
+> **Step 2**
+>
+> Click "Get API Key" to create or log into your Chroma account and issue an API key for Package Search.
+>
+> **Step 3**
+>
+> After issuing your API key, click the "Other" tab and copy your API key.
+>
+> **Step 4**
+>
+> Add this to your Roo Code MCP server configuration:
+>
+> ```JSON theme={null}
+> {
+>   "mcpServers": {
+>     "code-collections": {
+>       "type": "streamable-http",
+>       "url": "https://mcp.trychroma.com/package-search/v1",
+>       "headers": {
+>         "x-chroma-token": "<YOUR_CHROMA_API_KEY>"
+>       }
+>     }
+>   }
+> }
+> ```

@@ -12,54 +12,52 @@ same JSON format that you can construct directly.
 
 For example, SDK code like this:
 
-<CodeGroup>
-  ```python Python theme={null}
-  from chromadb import Search, K, Knn, GroupBy, MinK
+```python Python theme={null}
+from chromadb import Search, K, Knn, GroupBy, MinK
 
-  search = Search(
-      where=K("status") == "active",
-      rank=Knn(query="machine learning research", limit=100),
-      group_by=GroupBy(keys=K("category"), aggregate=MinK(keys=K.SCORE, k=2)),
-      limit=10,
-      select=[K.DOCUMENT, K.SCORE, "category"]
-  )
-  ```
+search = Search(
+    where=K("status") == "active",
+    rank=Knn(query="machine learning research", limit=100),
+    group_by=GroupBy(keys=K("category"), aggregate=MinK(keys=K.SCORE, k=2)),
+    limit=10,
+    select=[K.DOCUMENT, K.SCORE, "category"]
+)
+```
 
-  ```typescript TypeScript theme={null}
-  import { Search, K, Knn, GroupBy, MinK } from 'chromadb';
+```typescript TypeScript theme={null}
+import { Search, K, Knn, GroupBy, MinK } from 'chromadb';
 
-  const search = new Search({
-    where: K("status").eq("active"),
-    rank: Knn({ query: "machine learning research", limit: 100 }),
-    groupBy: new GroupBy([K("category")], new MinK([K.SCORE], 2)),
-    limit: 10,
-    select: [K.DOCUMENT, K.SCORE, "category"]
-  });
-  ```
+const search = new Search({
+  where: K("status").eq("active"),
+  rank: Knn({ query: "machine learning research", limit: 100 }),
+  groupBy: new GroupBy([K("category")], new MinK([K.SCORE], 2)),
+  limit: 10,
+  select: [K.DOCUMENT, K.SCORE, "category"]
+});
+```
 
-  ```rust Rust theme={null}
-  use chroma::types::{Aggregate, GroupBy, Key, QueryVector, RankExpr, SearchPayload};
+```rust Rust theme={null}
+use chroma::types::{Aggregate, GroupBy, Key, QueryVector, RankExpr, SearchPayload};
 
-  let search = SearchPayload::default()
-      .r#where(Key::field("status").eq("active"))
-      .rank(RankExpr::Knn {
-          query: QueryVector::Dense(vec![0.1, 0.2, 0.3]),
-          key: Key::Embedding,
-          limit: 100,
-          default: None,
-          return_rank: false,
-      })
-      .group_by(GroupBy {
-          keys: vec![Key::field("category")],
-          aggregate: Some(Aggregate::MinK {
-              keys: vec![Key::Score],
-              k: 2,
-          }),
-      })
-      .limit(Some(10), 0)
-      .select([Key::Document, Key::Score, Key::field("category")]);
-  ```
-</CodeGroup>
+let search = SearchPayload::default()
+    .r#where(Key::field("status").eq("active"))
+    .rank(RankExpr::Knn {
+        query: QueryVector::Dense(vec![0.1, 0.2, 0.3]),
+        key: Key::Embedding,
+        limit: 100,
+        default: None,
+        return_rank: false,
+    })
+    .group_by(GroupBy {
+        keys: vec![Key::field("category")],
+        aggregate: Some(Aggregate::MinK {
+            keys: vec![Key::Score],
+            k: 2,
+        }),
+    })
+    .limit(Some(10), 0)
+    .select([Key::Document, Key::Score, Key::field("category")]);
+```
 
 Gets compiled to this JSON:
 

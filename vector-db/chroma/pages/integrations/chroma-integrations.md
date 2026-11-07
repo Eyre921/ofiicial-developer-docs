@@ -12,20 +12,20 @@ Chroma provides lightweight wrappers around popular embedding providers, making 
 
 | | Python | Typescript |
 | :- | :- | :- |
-| [OpenAI](/integrations/embedding-models/openai) | <Icon icon="check" /> | <Icon icon="check" /> |
-| [Google Gemini](/integrations/embedding-models/google-gemini) | <Icon icon="check" /> | <Icon icon="check" /> |
-| [Cohere](/integrations/embedding-models/cohere) | <Icon icon="check" /> | <Icon icon="check" /> |
-| [Baseten](/integrations/embedding-models/baseten) | <Icon icon="check" /> | <Icon icon="hyphen" /> |
-| [Hugging Face](/integrations/embedding-models/hugging-face) | <Icon icon="check" /> | <Icon icon="hyphen" /> |
-| [Instructor](/integrations/embedding-models/instructor) | <Icon icon="check" /> | <Icon icon="hyphen" /> |
-| [Hugging Face Embedding Server](/integrations/embedding-models/hugging-face-server) | <Icon icon="check" /> | <Icon icon="check" /> |
-| [Jina AI](/integrations/embedding-models/jina-ai) | <Icon icon="check" /> | <Icon icon="check" /> |
-| [Roboflow](/integrations/embedding-models/roboflow) | <Icon icon="check" /> | <Icon icon="hyphen" /> |
-| [Ollama Embeddings](/integrations/embedding-models/ollama) | <Icon icon="check" /> | <Icon icon="check" /> |
-| [Cloudflare Workers AI](/integrations/embedding-models/cloudflare-workers-ai) | <Icon icon="check" /> | <Icon icon="check" /> |
-| [Together AI](/integrations/embedding-models/together-ai) | <Icon icon="check" /> | <Icon icon="check" /> |
-| [Mistral](/integrations/embedding-models/mistral) | <Icon icon="check" /> | <Icon icon="check" /> |
-| [Morph](/integrations/embedding-models/morph) | <Icon icon="check" /> | <Icon icon="check" /> |
+| [OpenAI](/integrations/embedding-models/openai) | | |
+| [Google Gemini](/integrations/embedding-models/google-gemini) | | |
+| [Cohere](/integrations/embedding-models/cohere) | | |
+| [Baseten](/integrations/embedding-models/baseten) | | |
+| [Hugging Face](/integrations/embedding-models/hugging-face) | | |
+| [Instructor](/integrations/embedding-models/instructor) | | |
+| [Hugging Face Embedding Server](/integrations/embedding-models/hugging-face-server) | | |
+| [Jina AI](/integrations/embedding-models/jina-ai) | | |
+| [Roboflow](/integrations/embedding-models/roboflow) | | |
+| [Ollama Embeddings](/integrations/embedding-models/ollama) | | |
+| [Cloudflare Workers AI](/integrations/embedding-models/cloudflare-workers-ai) | | |
+| [Together AI](/integrations/embedding-models/together-ai) | | |
+| [Mistral](/integrations/embedding-models/mistral) | | |
+| [Morph](/integrations/embedding-models/morph) | | |
 
 ### Framework Integrations
 
@@ -35,16 +35,16 @@ We welcome pull requests to add new Integrations to the community.
 
 | | Python | JS |
 | :- | :- | :- |
-| [DeepEval](/integrations/frameworks/deepeval) | <Icon icon="check" /> | <Icon icon="hyphen" /> |
-| [Langchain](/integrations/frameworks/langchain) | <Icon icon="check" /> | <Icon icon="check" /> |
-| [LlamaIndex](/integrations/frameworks/llamaindex) | <Icon icon="check" /> | <Icon icon="check" /> |
-| [Braintrust](/integrations/frameworks/braintrust) | <Icon icon="check" /> | <Icon icon="check" /> |
-| [Contextual AI](/integrations/frameworks/contextual-ai) | <Icon icon="check" /> | <Icon icon="hyphen" /> |
-| [OpenLLMetry](/integrations/frameworks/openllmetry) | <Icon icon="check" /> | Coming Soon! |
-| [Streamlit](/integrations/frameworks/streamlit) | <Icon icon="check" /> | <Icon icon="hyphen" /> |
-| [Haystack](/integrations/frameworks/haystack) | <Icon icon="check" /> | <Icon icon="hyphen" /> |
-| [OpenLIT](/integrations/frameworks/openlit) | <Icon icon="check" /> | Coming Soon! |
-| [Anthropic MCP](/integrations/frameworks/anthropic-mcp) | <Icon icon="check" /> | Coming Soon! |
-| [Google ADK](/integrations/frameworks/google-adk) | <Icon icon="check" /> | <Icon icon="check" /> |
-| [VoltAgent](/integrations/frameworks/voltagent) | <Icon icon="hyphen" /> | <Icon icon="check" /> |
-| [Mem0](/integrations/frameworks/mem0) | <Icon icon="check" /> | <Icon icon="hyphen" /> |
+| [DeepEval](/integrations/frameworks/deepeval) | | |
+| [Langchain](/integrations/frameworks/langchain) | | |
+| [LlamaIndex](/integrations/frameworks/llamaindex) | | |
+| [Braintrust](/integrations/frameworks/braintrust) | | |
+| [Contextual AI](/integrations/frameworks/contextual-ai) | | |
+| [OpenLLMetry](/integrations/frameworks/openllmetry) | | Coming Soon! |
+| [Streamlit](/integrations/frameworks/streamlit) | | |
+| [Haystack](/integrations/frameworks/haystack) | | |
+| [OpenLIT](/integrations/frameworks/openlit) | | Coming Soon! |
+| [Anthropic MCP](/integrations/frameworks/anthropic-mcp) | | Coming Soon! |
+| [Google ADK](/integrations/frameworks/google-adk) | | |
+| [VoltAgent](/integrations/frameworks/voltagent) | | |
+| [Mem0](/integrations/frameworks/mem0) | | |

@@ -11,13 +11,13 @@ Collection schema for configuring indexes and encryption.
 The schema controls how data is indexed and can optionally specify
 customer-managed encryption keys (CMEK) for data at rest.
 
-<span>Properties</span>
+Properties
 
-<ParamField type="ValueTypes" />
+**defaults** `ValueTypes`
 
-<ParamField type="Record<string, ValueTypes>" />
+**keys** `Record\<string, ValueTypes\>`
 
-<ParamField type="Cmek | null" />
+**cmek** `Cmek | null`
 
 ***
 
@@ -25,58 +25,58 @@ customer-managed encryption keys (CMEK) for data at rest.
 
 ### FtsIndexConfig
 
-<span>Properties</span>
+Properties
 
-<ParamField type="FtsIndexConfig" />
+**type** `FtsIndexConfig`
 
 ### StringInvertedIndexConfig
 
-<span>Properties</span>
+Properties
 
-<ParamField type="StringInvertedIndexConfig" />
+**type** `StringInvertedIndexConfig`
 
 ### IntInvertedIndexConfig
 
-<span>Properties</span>
+Properties
 
-<ParamField type="IntInvertedIndexConfig" />
+**type** `IntInvertedIndexConfig`
 
 ### FloatInvertedIndexConfig
 
-<span>Properties</span>
+Properties
 
-<ParamField type="FloatInvertedIndexConfig" />
+**type** `FloatInvertedIndexConfig`
 
 ### BoolInvertedIndexConfig
 
-<span>Properties</span>
+Properties
 
-<ParamField type="BoolInvertedIndexConfig" />
+**type** `BoolInvertedIndexConfig`
 
 ### VectorIndexConfig
 
-<span>Properties</span>
+Properties
 
-<ParamField type="VectorIndexConfig" />
+**type** `VectorIndexConfig`
 
-<ParamField type="Space | null" />
+**space** `Space | null`
 
-<ParamField type="EmbeddingFunction | null | undefined" />
+**embeddingFunction** `EmbeddingFunction | null | undefined`
 
-<ParamField type="string | null" />
+**sourceKey** `string | null`
 
-<ParamField type="HnswIndexConfig | null" />
+**hnsw** `HnswIndexConfig | null`
 
-<ParamField type="SpannIndexConfig | null" />
+**spann** `SpannIndexConfig | null`
 
 ### SparseVectorIndexConfig
 
-<span>Properties</span>
+Properties
 
-<ParamField type="SparseVectorIndexConfig" />
+**type** `SparseVectorIndexConfig`
 
-<ParamField type="SparseEmbeddingFunction | null | undefined" />
+**embeddingFunction** `SparseEmbeddingFunction | null | undefined`
 
-<ParamField type="string | null" />
+**sourceKey** `string | null`
 
-<ParamField type="boolean | null" />
+**bm25** `boolean | null`

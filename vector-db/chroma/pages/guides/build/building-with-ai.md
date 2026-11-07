@@ -31,109 +31,103 @@ Integrating LLMs into software applications is as simple as calling an API. Whil
 
 For example, we can use AI to write a general purpose function that extracts names from input text.
 
-<Tabs>
-  <Tab title="OpenAI">
-    <CodeGroup>
-      ```python Python theme={null}
-      import json
-      import os
-      import openai
+> [tab] OpenAI
+>
+> ```python Python theme={null}
+> import json
+> import os
+> import openai
+>
+> openai.api_key = os.getenv("OPENAI_API_KEY")
+>
+> def extract_names(text: str) -> list[str]:
+>     system_prompt = "You are a name extractor. The user will give you text, and you must return a JSON array of names mentioned in the text. Do not include any explanation or formatting."
+>
+>     response = openai.ChatCompletion.create(
+>         model="gpt-4o",
+>         messages=[
+>             {"role": "system", "content": system_prompt},
+>             {"role": "user", "content": text}
+>         ]
+>     )
+>
+>     response = response.choices[0].message["content"]
+>     return json.loads(response)
+> ```
+>
+> ```typescript TypeScript theme={null}
+> import { OpenAI } from "openai";
+>
+> const openai = new OpenAI({
+>   apiKey: process.env.OPENAI_API_KEY,
+> });
+>
+> export async function extractNames(text: string): Promise<string[]> {
+>   const systemPrompt =
+>     "You are a name extractor. The user will give you text, and you must return a JSON array of names mentioned in the text. Do not include any explanation or formatting.";
+>
+>   const chatCompletion = await openai.chat.completions.create({
+>     model: "gpt-4o",
+>     messages: [
+>       { role: "system", content: systemPrompt },
+>       { role: "user", content: text },
+>     ],
+>   });
+>
+>   const responseText = chatCompletion.choices[0].message?.content ?? "[]";
+>   return JSON.parse(responseText);
+> }
+> ```
 
-      openai.api_key = os.getenv("OPENAI_API_KEY")
-
-      def extract_names(text: str) -> list[str]:
-          system_prompt = "You are a name extractor. The user will give you text, and you must return a JSON array of names mentioned in the text. Do not include any explanation or formatting."
-
-          response = openai.ChatCompletion.create(
-              model="gpt-4o",
-              messages=[
-                  {"role": "system", "content": system_prompt},
-                  {"role": "user", "content": text}
-              ]
-          )
-
-          response = response.choices[0].message["content"]
-          return json.loads(response)
-      ```
-
-      ```typescript TypeScript theme={null}
-      import { OpenAI } from "openai";
-
-      const openai = new OpenAI({
-        apiKey: process.env.OPENAI_API_KEY,
-      });
-
-      export async function extractNames(text: string): Promise<string[]> {
-        const systemPrompt =
-          "You are a name extractor. The user will give you text, and you must return a JSON array of names mentioned in the text. Do not include any explanation or formatting.";
-
-        const chatCompletion = await openai.chat.completions.create({
-          model: "gpt-4o",
-          messages: [
-            { role: "system", content: systemPrompt },
-            { role: "user", content: text },
-          ],
-        });
-
-        const responseText = chatCompletion.choices[0].message?.content ?? "[]";
-        return JSON.parse(responseText);
-      }
-      ```
-    </CodeGroup>
-  </Tab>
-
-  <Tab title="Anthropic">
-    <CodeGroup>
-      ```python Python theme={null}
-      import json
-      import os
-      import anthropic
-
-      client = anthropic.Anthropic(
-          api_key=os.getenv("ANTHROPIC_API_KEY")
-      )
-
-      def extract_names(text: str) -> list[str]:
-          system_prompt = "You are a name extractor. The user will give you text, and you must return a JSON array of names mentioned in the text. Do not include any explanation or formatting."
-
-          response = client.messages.create(
-              model="claude-sonnet-5",
-              max_tokens=4096,
-              system=system_prompt,
-              messages=[
-                  {"role": "user", "content": text}
-              ]
-          )
-
-          response_text = next((b.text for b in response.content if b.type == "text"), "[]")
-          return json.loads(response_text)
-      ```
-
-      ```typescript TypeScript theme={null}
-      import Anthropic from "@anthropic-ai/sdk";
-
-      const anthropic = new Anthropic({
-        apiKey: process.env.ANTHROPIC_API_KEY,
-      });
-
-      export async function extractNames(text: string): Promise<string[]> {
-        const systemPrompt =
-          "You are a name extractor. The user will give you text, and you must return a JSON array of names mentioned in the text. Do not include any explanation or formatting.";
-
-        const message = await anthropic.messages.create({
-          model: "claude-sonnet-5",
-          max_tokens: 4096,
-          system: systemPrompt,
-          messages: [{ role: "user", content: text }],
-        });
-
-        const textBlock = message.content.find((block) => block.type === "text");
-        const responseText = textBlock?.type === "text" ? textBlock.text : "[]";
-        return JSON.parse(responseText);
-      }
-      ```
-    </CodeGroup>
-  </Tab>
-</Tabs>
+> [tab] Anthropic
+>
+> ```python Python theme={null}
+> import json
+> import os
+> import anthropic
+>
+> client = anthropic.Anthropic(
+>     api_key=os.getenv("ANTHROPIC_API_KEY")
+> )
+>
+> def extract_names(text: str) -> list[str]:
+>     system_prompt = "You are a name extractor. The user will give you text, and you must return a JSON array of names mentioned in the text. Do not include any explanation or formatting."
+>
+>     response = client.messages.create(
+>         model="claude-sonnet-5",
+>         max_tokens=4096,
+>         system=system_prompt,
+>         messages=[
+>             {"role": "user", "content": text}
+>         ]
+>     )
+>
+>     response_text = next((b.text for b in response.content if b.type == "text"), "[]")
+>     return json.loads(response_text)
+> ```
+>
+> ```typescript TypeScript theme={null}
+> import Anthropic from "@anthropic-ai/sdk";
+>
+> const anthropic = new Anthropic({
+>   apiKey: process.env.ANTHROPIC_API_KEY,
+> });
+>
+> export async function extractNames(text: string): Promise<string[]> {
+>   const systemPrompt =
+>     "You are a name extractor. The user will give you text, and you must return a JSON array of names mentioned in the text. Do not include any explanation or formatting.";
+>
+>   const message = await anthropic.messages.create({
+>     model: "claude-sonnet-5",
+>     max_tokens: 4096,
+>     system: systemPrompt,
+>     messages: [{ role: "user", content: text }],
+>   });
+>
+>   const textBlock = message.content.find((block) => block.type === "text");
+>   const responseText = textBlock?.type === "text" ? textBlock.text : "[]";
+>   return JSON.parse(responseText);
+> }
+> ```
 
 Building with AI allows new type of work to be done by software. LLMs are capable of understanding abstract ideas and take action. Given access to retrieval systems and tools, LLMs can operate on tasks autonomously in ways that wasn't possible with classical software.

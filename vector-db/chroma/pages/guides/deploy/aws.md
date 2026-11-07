@@ -6,9 +6,7 @@ path: guides/deploy/aws
 
 Deploy Chroma on AWS using CloudFormation.
 
-<Callout>
-  Chroma Cloud, our fully managed hosted service is here. [Sign up for free](https://trychroma.com/signup?utm_source=docs-aws).
-</Callout>
+Chroma Cloud, our fully managed hosted service is here. [Sign up for free](https://trychroma.com/signup?utm_source=docs-aws).
 
 ## A Simple AWS Deployment
 
@@ -19,21 +17,17 @@ There are many possible configurations, but for convenience we have
 provided a very simple AWS CloudFormation template to experiment with
 deploying Chroma to EC2 on AWS.
 
-<Danger>
-  Chroma and its underlying database [need at least 2GB of RAM](/guides/performance/single-node#results-summary),
-  which means it won't fit on the 1gb instances provided as part of the
-  AWS Free Tier. This template uses a [`t3.small`](https://aws.amazon.com/ec2/instance-types/t3/#Product%20Details) EC2 instance, which
-  costs about two cents an hour, or \$15 for a full month, and gives you 2GiB of memory. If you follow these
-  instructions, AWS will bill you accordingly.
-</Danger>
+Chroma and its underlying database [need at least 2GB of RAM](/guides/performance/single-node#results-summary),
+which means it won't fit on the 1gb instances provided as part of the
+AWS Free Tier. This template uses a [`t3.small`](https://aws.amazon.com/ec2/instance-types/t3/#Product%20Details) EC2 instance, which
+costs about two cents an hour, or \$15 for a full month, and gives you 2GiB of memory. If you follow these
+instructions, AWS will bill you accordingly.
 
-<Danger>
-  By default, this template saves all data on a single
-  volume. When you delete or replace it, the data will disappear. For
-  serious production use (with high availability, backups, etc.) please
-  read and understand the CloudFormation template and use it as a basis
-  for what you need, or reach out to the Chroma team for assistance.
-</Danger>
+By default, this template saves all data on a single
+volume. When you delete or replace it, the data will disappear. For
+serious production use (with high availability, backups, etc.) please
+read and understand the CloudFormation template and use it as a basis
+for what you need, or reach out to the Chroma team for assistance.
 
 ### Step 1: Get an AWS Account
 
@@ -110,62 +104,58 @@ aws cloudformation create-stack --stack-name my-chroma-stack --template-url http
 
 ### Step 4: Chroma Client Set-Up
 
-<Tabs>
-  <Tab title="Python" icon="python">
-    Once your EC2 instance is up and running with Chroma, all
-    you need to do is configure your `HttpClient` to use the server's IP address and port
-    `8000`. Since you are running a Chroma server on AWS, our [thin-client package](./python-thin-client) may be enough for your application.
+> [tab] Python
+>
+> Once your EC2 instance is up and running with Chroma, all
+> you need to do is configure your `HttpClient` to use the server's IP address and port
+> `8000`. Since you are running a Chroma server on AWS, our [thin-client package](./python-thin-client) may be enough for your application.
+>
+> ```python theme={null}
+> import chromadb
+>
+> chroma_client = chromadb.HttpClient(
+>     host="<Your Chroma instance IP>",
+>     port=8000
+> )
+> chroma_client.heartbeat()
+> ```
 
-    ```python theme={null}
-    import chromadb
+> [tab] TypeScript
+>
+> Once your EC2 instance is up and running with Chroma, all
+> you need to do is configure your `ChromaClient` to use the server's IP address and port
+> `8000`.
+>
+> ```typescript theme={null}
+> import { ChromaClient } from "chromadb";
+>
+> const chromaClient = new ChromaClient({
+>   host: "<Your Chroma instance IP>",
+>   port: 8000,
+> });
+> chromaClient.heartbeat();
+> ```
 
-    chroma_client = chromadb.HttpClient(
-        host="<Your Chroma instance IP>",
-        port=8000
-    )
-    chroma_client.heartbeat()
-    ```
-  </Tab>
-
-  <Tab title="TypeScript" icon="js">
-    Once your EC2 instance is up and running with Chroma, all
-    you need to do is configure your `ChromaClient` to use the server's IP address and port
-    `8000`.
-
-    ```typescript theme={null}
-    import { ChromaClient } from "chromadb";
-
-    const chromaClient = new ChromaClient({
-      host: "<Your Chroma instance IP>",
-      port: 8000,
-    });
-    chromaClient.heartbeat();
-    ```
-  </Tab>
-
-  <Tab title="Rust" icon="rust">
-    Once your EC2 instance is up and running with Chroma, you can point the Rust client at the server's address and port `8000`.
-
-    ```rust theme={null}
-    use chroma::{ChromaHttpClient, ChromaHttpClientOptions};
-
-    let mut options = ChromaHttpClientOptions::default();
-    options.endpoint = "http://<Your Chroma instance IP>:8000".parse()?;
-
-    let chroma_client = ChromaHttpClient::new(options);
-    chroma_client.heartbeat().await?;
-    ```
-  </Tab>
-</Tabs>
+> [tab] Rust
+>
+> Once your EC2 instance is up and running with Chroma, you can point the Rust client at the server's address and port `8000`.
+>
+> ```rust theme={null}
+> use chroma::{ChromaHttpClient, ChromaHttpClientOptions};
+>
+> let mut options = ChromaHttpClientOptions::default();
+> options.endpoint = "http://<Your Chroma instance IP>:8000".parse()?;
+>
+> let chroma_client = ChromaHttpClient::new(options);
+> chroma_client.heartbeat().await?;
+> ```
 
 ### Step 5: Clean Up (optional).
 
 To destroy the stack and remove all AWS resources, use the AWS CLI `delete-stack` command.
 
-<Danger>
-  This will destroy all the data in your Chroma database,
-  unless you've taken a snapshot or otherwise backed it up.
-</Danger>
+This will destroy all the data in your Chroma database,
+unless you've taken a snapshot or otherwise backed it up.
 
 ```terminal theme={null}
 aws cloudformation delete-stack --stack-name my-chroma-stack

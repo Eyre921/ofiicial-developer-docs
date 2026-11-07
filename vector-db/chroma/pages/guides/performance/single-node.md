@@ -29,8 +29,6 @@ Roughly speaking, here is the sort of performance you can expect from Chroma on 
 | **t3.medium** | 4 | 700,000 | 5ms | 18ms | 191ms | 722ms | \$31.072 |
 | **t3.small** | 2 | 250,000 | 8ms | 29ms | 231ms | 1280ms | \$15.936 |
 
-<br />
-
 Deploying Chroma on a system with less than 2GB of RAM is **not** recommended.
 
 Note that the latency figures in this table are for small collections. Latency increases as collections grow: see [Latency and collection size](#latency-and-collection-size) below for a full analysis.
@@ -67,39 +65,27 @@ As collections get larger and the size of the index grows, inserts and queries b
 
 ### Query Latency
 
-<img alt="Query latency performance" />
-
-<img alt="Query latency performance" />
+![Query latency performance](https://mintcdn.com/chroma-8943dec5/OHTRZei6ss2glLVb/images/query_latency_1_0_10-light.png?fit=max\&auto=format\&n=OHTRZei6ss2glLVb\&q=85\&s=f8830f12952d34e0c12ee1a0e4c0efbe)
 
 ### Insert Latency
 
-<img alt="Insert latency performance" />
+![Insert latency performance](https://mintcdn.com/chroma-8943dec5/OHTRZei6ss2glLVb/images/insert_latency_1_0_10-light.png?fit=max\&auto=format\&n=OHTRZei6ss2glLVb\&q=85\&s=4d0410e6e58be8008270fc37fe1d7cce)
 
-<img alt="Insert latency performance" />
-
-<Callout>
-  If you're using multiple collections, performance looks quite similar, based on the total number of embeddings across collections. Splitting collections into multiple smaller collections doesn't help, but it doesn't hurt, either, as long as they all fit in memory at once.
-</Callout>
+If you're using multiple collections, performance looks quite similar, based on the total number of embeddings across collections. Splitting collections into multiple smaller collections doesn't help, but it doesn't hurt, either, as long as they all fit in memory at once.
 
 ## Concurrency
 
 The system can handle concurrent operations in parallel. For inserts, since writes are written to a log and flushed every N operations, the mean latency does not fluctuate as the number of writers increases, but does increase as batch size increases since larger batches are more likely to hit the flush threshold. The queries parallelize up to the number of vCPUs available in the instance, after which point they begin queueing, causing a linear increase in latency.
 
-<img alt="Concurrent writes" />
+![Concurrent writes](https://mintcdn.com/chroma-8943dec5/OHTRZei6ss2glLVb/images/concurrent_writes_1_0_10-light.png?fit=max\&auto=format\&n=OHTRZei6ss2glLVb\&q=85\&s=7dfaa68e5b1f2a8a118e615dd8707cca)
 
-<img alt="Concurrent writes" />
-
-<img alt="Concurrent queries" />
-
-<img alt="Concurrent queries" />
+![Concurrent queries](https://mintcdn.com/chroma-8943dec5/OHTRZei6ss2glLVb/images/concurrent_queries_1_0_10-light.png?fit=max\&auto=format\&n=OHTRZei6ss2glLVb\&q=85\&s=7b725fb7b62f5de00cdf8ea534702124)
 
 See the [Insert Throughput](#insert-throughput) section below for a discussion of optimizing user count for maximum throughput when concurrency is under your control, such as when inserting bulk data.
 
 ## CPU speed, core count, and type
 
-<img alt="CPU mean query latency" />
-
-<img alt="CPU mean query latency" />
+![CPU mean query latency](https://mintcdn.com/chroma-8943dec5/OHTRZei6ss2glLVb/images/cpu_mean_query_latency_1_0_10-light.png?fit=max\&auto=format\&n=OHTRZei6ss2glLVb\&q=85\&s=dc29c062f376ce80efefc3e42a75f216)
 
 ## Insert Throughput
 
@@ -111,9 +97,7 @@ As mentioned in the [Concurrency](#concurrency) section above, insert throughput
 
 Experimentation confirms this: overall throughput, measured as the total number of embeddings inserted across batch size and request count, remains fairly flat between batch sizes of 100 and 500:
 
-<img alt="Concurrent inserts" />
-
-<img alt="Concurrent inserts" />
+![Concurrent inserts](https://mintcdn.com/chroma-8943dec5/OHTRZei6ss2glLVb/images/concurrent_inserts_1_0_10-light.png?fit=max\&auto=format\&n=OHTRZei6ss2glLVb\&q=85\&s=dc1ca2b1a1af7d7771ac1a732924d28d)
 
 Given that smaller batches have lower, more consistent latency and are less likely to lead to timeout errors, we recommend batches on the smaller side of this curve. Anything between 50 and 250 is a reasonable choice.
 

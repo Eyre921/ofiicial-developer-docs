@@ -28,7 +28,7 @@ class MyEmbeddingFunction(EmbeddingFunction[Documents]):
     ...
 ```
 
-<span>Methods</span>
+Methods
 
 `__init__()`, `build_from_config()`, `default_space()`, `embed_query()`, `embed_with_retries()`, `get_config()`, `is_legacy()`, `name()`, `supported_spaces()`, `validate_config()`, `validate_config_update()`
 
@@ -44,7 +44,7 @@ To implement a new sparse embedding function, you need to implement the followin
 * build\_from\_config
 * get\_config
 
-<span>Methods</span>
+Methods
 
 `__init__()`, `build_from_config()`, `embed_query()`, `embed_with_retries()`, `get_config()`, `name()`, `validate_config()`, `validate_config_update()`
 
@@ -71,9 +71,9 @@ Or directly:
 register_embedding_function(MyEmbedding)
 ```
 
-<ParamField type="Any">
-  The embedding function class to register.
-</ParamField>
+**ef\_class** `Any`
+
+The embedding function class to register.
 
 ### register\_sparse\_embedding\_function
 
@@ -88,7 +88,7 @@ class MySparseEmbeddingFunction(SparseEmbeddingFunction):
     def name(cls): return "my_sparse_embedding"
 ```
 
-<ParamField type="Any" />
+**ef\_class** `Any`
 
 ***
 
@@ -102,14 +102,14 @@ class MySparseEmbeddingFunction(SparseEmbeddingFunction):
 
 Sparse vector using parallel indices and values arrays.
 
-<span>Properties</span>
+Properties
 
-<ParamField type="List[int]" />
+**indices** `List[int]`
 
-<ParamField type="List[float]" />
+**values** `List[float]`
 
-<ParamField type="Optional[IDs]" />
+**labels** `Optional[IDs]`
 
-<span>Methods</span>
+Methods
 
 `__init__()`, `from_dict()`, `to_dict()`

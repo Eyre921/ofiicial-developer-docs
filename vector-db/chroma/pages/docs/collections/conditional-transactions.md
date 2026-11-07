@@ -10,79 +10,75 @@ Conditional transactions let you read records, buffer writes locally, and commit
 
 Use manual transactions when you want to decide exactly when to commit:
 
-<CodeGroup>
-  ```python Python theme={null}
-  txn = collection.conditional()
+```python Python theme={null}
+txn = collection.conditional()
 
-  existing = txn.get(ids=["doc-1"])
-  if existing["ids"]:
-      txn.update(
-          ids=["doc-1"],
-          documents=["updated document"],
-      )
+existing = txn.get(ids=["doc-1"])
+if existing["ids"]:
+    txn.update(
+        ids=["doc-1"],
+        documents=["updated document"],
+    )
 
-  result = txn.commit()
-  ```
+result = txn.commit()
+```
 
-  ```rust Rust theme={null}
-  let mut txn = collection.conditional();
+```rust Rust theme={null}
+let mut txn = collection.conditional();
 
-  let existing = txn
-      .get(Some(vec!["doc-1".to_string()]), None, None, None, None)
-      .await?;
+let existing = txn
+    .get(Some(vec!["doc-1".to_string()]), None, None, None, None)
+    .await?;
 
-  if !existing.ids.is_empty() {
-      txn.update(
-          vec!["doc-1".to_string()],
-          None,
-          Some(vec![Some("updated document".to_string())]),
-          None,
-          None,
-      )
-      .await?;
-  }
+if !existing.ids.is_empty() {
+    txn.update(
+        vec!["doc-1".to_string()],
+        None,
+        Some(vec![Some("updated document".to_string())]),
+        None,
+        None,
+    )
+    .await?;
+}
 
-  let result = txn.commit().await?;
-  ```
-</CodeGroup>
+let result = txn.commit().await?;
+```
 
 Use `run` when the whole transaction can be retried after a safe optimistic-concurrency conflict:
 
-<CodeGroup>
-  ```python Python theme={null}
-  def update_doc(txn):
-      existing = txn.get(ids=["doc-1"])
-      if existing["ids"]:
-          txn.update(ids=["doc-1"], documents=["updated document"])
+```python Python theme={null}
+def update_doc(txn):
+    existing = txn.get(ids=["doc-1"])
+    if existing["ids"]:
+        txn.update(ids=["doc-1"], documents=["updated document"])
 
-  collection.conditional().run(update_doc, max_retries=3)
-  ```
+collection.conditional().run(update_doc, max_retries=3)
+```
 
-  ```rust Rust theme={null}
-  collection
-      .conditional()
-      .run(
-          async |txn| {
-              let existing = txn
-                  .get(Some(vec!["doc-1".to_string()]), None, None, None, None)
-                  .await?;
-              if !existing.ids.is_empty() {
-                  txn.update(
-                      vec!["doc-1".to_string()],
-                      None,
-                      Some(vec![Some("updated document".to_string())]),
-                      None,
-                      None,
-                  )
-                  .await?;
-              }
-              Ok(())
-          },
-          3,
-      )
-      .await?;
-  ```
-</CodeGroup>
+```rust Rust theme={null}
+collection
+    .conditional()
+    .run(
+        async |txn| {
+            let existing = txn
+                .get(Some(vec!["doc-1".to_string()]), None, None, None, None)
+                .await?;
+            if !existing.ids.is_empty() {
+                txn.update(
+                    vec!["doc-1".to_string()],
+                    None,
+                    Some(vec![Some("updated document".to_string())]),
+                    None,
+                    None,
+                )
+                .await?;
+            }
+            Ok(())
+        },
+        3,
+    )
+    .await?;
+```
 
 ## Limitations
 

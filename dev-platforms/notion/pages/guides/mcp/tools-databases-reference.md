@@ -66,7 +66,7 @@ A query can resolve up to 1,000 distinct mention targets. A query over this limi
 
 `notion-query-multiple-data-sources`
 
-Runs one read-only SQLite query across 2 to 100 data sources, for joins, unions, comparisons, and totals. Fetch each data source first with `notion-fetch` to get its schema and `collection://` URL. Pass the URLs in `data_source_urls` and use each one as a quoted table name in `query`. Bind untrusted values with `?` placeholders and `params` instead of putting them in the SQL. Saved view filters and sorts aren't applied, so put every filter in `WHERE`.
+Runs one read-only SQLite query across 2 to 10 data sources, for joins, unions, comparisons, and totals. Fetch each data source first with `notion-fetch` to get its schema and `collection://` URL. Pass the URLs in `data_source_urls` and use each one as a quoted table name in `query`. Bind untrusted values with `?` placeholders and `params` instead of putting them in the SQL. Saved view filters and sorts aren't applied, so put every filter in `WHERE`.
 
 The response contains the matching rows, the IDs of the queried data sources, and whether the results were truncated. SQL output can omit mention text, link targets, and formatting, the same as SQL in `notion-query-data-sources`. To read one data source or run a saved view, use `notion-query-data-sources`.
 

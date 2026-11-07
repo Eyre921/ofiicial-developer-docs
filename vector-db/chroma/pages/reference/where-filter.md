@@ -10,40 +10,38 @@ Where filters allow you to filter records by metadata values and document conten
 
 For example, SDK code like this:
 
-<CodeGroup>
-  ```python Python theme={null}
-  from chromadb import K
+```python Python theme={null}
+from chromadb import K
 
-  where_filter = K("category").eq("science") & K("year").gte(2020)
-  ```
+where_filter = K("category").eq("science") & K("year").gte(2020)
+```
 
-  ```typescript TypeScript theme={null}
-  import { K } from 'chromadb';
+```typescript TypeScript theme={null}
+import { K } from 'chromadb';
 
-  const whereFilter = K("category").eq("science")
-    .and(K("year").gte(2020));
-  ```
+const whereFilter = K("category").eq("science")
+  .and(K("year").gte(2020));
+```
 
-  ```rust Rust theme={null}
-  use chroma_types::{Where, MetadataExpression, MetadataComparison,
-                     PrimitiveOperator, MetadataValue};
+```rust Rust theme={null}
+use chroma_types::{Where, MetadataExpression, MetadataComparison,
+                   PrimitiveOperator, MetadataValue};
 
-  let where_filter =
-      Where::Metadata(MetadataExpression {
-          key: "category".to_string(),
-          comparison: MetadataComparison::Primitive(
-              PrimitiveOperator::Equal,
-              MetadataValue::Str("science".to_string()),
-          ),
-      }) & Where::Metadata(MetadataExpression {
-          key: "year".to_string(),
-          comparison: MetadataComparison::Primitive(
-              PrimitiveOperator::GreaterThanOrEqual,
-              MetadataValue::Int(2020),
-          ),
-      });
-  ```
-</CodeGroup>
+let where_filter =
+    Where::Metadata(MetadataExpression {
+        key: "category".to_string(),
+        comparison: MetadataComparison::Primitive(
+            PrimitiveOperator::Equal,
+            MetadataValue::Str("science".to_string()),
+        ),
+    }) & Where::Metadata(MetadataExpression {
+        key: "year".to_string(),
+        comparison: MetadataComparison::Primitive(
+            PrimitiveOperator::GreaterThanOrEqual,
+            MetadataValue::Int(2020),
+        ),
+    });
+```
 
 Gets compiled to this JSON:
 
@@ -133,12 +131,10 @@ These operators check if an array metadata field contains (or does not contain) 
 | `$contains` | Array contains element | string\[], int\[], float\[], boolean\[] | `{"tags": {"$contains": "tech"}}` |
 | `$not_contains` | Array does not contain element | string\[], int\[], float\[], boolean\[] | `{"tags": {"$not_contains": "deleted"}}` |
 
-<Callout>
-  **Important:** `$contains` and `$not_contains` have different meanings depending on context:
+**Important:** `$contains` and `$not_contains` have different meanings depending on context:
 
-  * On metadata fields (e.g., `{"tags": {"$contains": "tech"}}`): Checks if the array metadata field contains the value
-  * On `#document` (e.g., `{"#document": {"$contains": "text"}}`): Checks if the document text contains the substring
-</Callout>
+* On metadata fields (e.g., `{"tags": {"$contains": "tech"}}`): Checks if the array metadata field contains the value
+* On `#document` (e.g., `{"#document": {"$contains": "text"}}`): Checks if the document text contains the substring
 
 ### Document Operators
 

@@ -13,17 +13,17 @@ Create an in-memory client for local use.
 This client stores all data in memory and does not persist to disk.
 It is intended for testing and development.
 
-<ParamField type="Optional[Settings]">
-  Optional settings to override defaults.
-</ParamField>
+**settings** `Optional[Settings]`
 
-<ParamField type="str">
-  Tenant name to use for requests. Defaults to the default tenant.
-</ParamField>
+Optional settings to override defaults.
 
-<ParamField type="str">
-  Database name to use for requests. Defaults to the default database.
-</ParamField>
+**tenant** `str`
+
+Tenant name to use for requests. Defaults to the default tenant.
+
+**database** `str`
+
+Database name to use for requests. Defaults to the default database.
 
 ### PersistentClient
 
@@ -32,53 +32,53 @@ Create a persistent client that stores data on disk.
 This client is intended for local development and testing. For production,
 prefer a server-backed Chroma instance.
 
-<ParamField type="Union[str, Path]">
-  Directory to store persisted data.
-</ParamField>
+**path** `Union[str, Path]`
 
-<ParamField type="Optional[Settings]">
-  Optional settings to override defaults.
-</ParamField>
+Directory to store persisted data.
 
-<ParamField type="str">
-  Tenant name to use for requests.
-</ParamField>
+**settings** `Optional[Settings]`
 
-<ParamField type="str">
-  Database name to use for requests.
-</ParamField>
+Optional settings to override defaults.
+
+**tenant** `str`
+
+Tenant name to use for requests.
+
+**database** `str`
+
+Database name to use for requests.
 
 ### HttpClient
 
 Create a client that connects to a Chroma server.
 
-<ParamField type="str">
-  Hostname of the Chroma server.
-</ParamField>
+**host** `str`
 
-<ParamField type="int">
-  HTTP port of the Chroma server.
-</ParamField>
+Hostname of the Chroma server.
 
-<ParamField type="bool">
-  Whether to enable SSL for the connection.
-</ParamField>
+**port** `int`
 
-<ParamField type="Optional[Dict[str, str]]">
-  Optional headers to send with each request.
-</ParamField>
+HTTP port of the Chroma server.
 
-<ParamField type="Optional[Settings]">
-  Optional settings to override defaults.
-</ParamField>
+**ssl** `bool`
 
-<ParamField type="str">
-  Tenant name to use for requests.
-</ParamField>
+Whether to enable SSL for the connection.
 
-<ParamField type="str">
-  Database name to use for requests.
-</ParamField>
+**headers** `Optional[Dict[str, str]]`
+
+Optional headers to send with each request.
+
+**settings** `Optional[Settings]`
+
+Optional settings to override defaults.
+
+**tenant** `str`
+
+Tenant name to use for requests.
+
+**database** `str`
+
+Database name to use for requests.
 
 ### AsyncHttpClient
 
@@ -87,33 +87,33 @@ Create an async client that connects to a Chroma HTTP server.
 This supports multiple clients connecting to the same server and is the
 recommended production configuration.
 
-<ParamField type="str">
-  Hostname of the Chroma server.
-</ParamField>
+**host** `str`
 
-<ParamField type="int">
-  HTTP port of the Chroma server.
-</ParamField>
+Hostname of the Chroma server.
 
-<ParamField type="bool">
-  Whether to enable SSL for the connection.
-</ParamField>
+**port** `int`
 
-<ParamField type="Optional[Dict[str, str]]">
-  Optional headers to send with each request.
-</ParamField>
+HTTP port of the Chroma server.
 
-<ParamField type="Optional[Settings]">
-  Optional settings to override defaults.
-</ParamField>
+**ssl** `bool`
 
-<ParamField type="str">
-  Tenant name to use for requests.
-</ParamField>
+Whether to enable SSL for the connection.
 
-<ParamField type="str">
-  Database name to use for requests.
-</ParamField>
+**headers** `Optional[Dict[str, str]]`
+
+Optional headers to send with each request.
+
+**settings** `Optional[Settings]`
+
+Optional settings to override defaults.
+
+**tenant** `str`
+
+Tenant name to use for requests.
+
+**database** `str`
+
+Database name to use for requests.
 
 ### CloudClient
 
@@ -121,33 +121,33 @@ Create a client for Chroma Cloud.
 
 If not provided, `tenant`, `database`, and `api_key` will be inferred from the environment variables `CHROMA_TENANT`, `CHROMA_DATABASE`, and `CHROMA_API_KEY`.
 
-<ParamField type="Optional[str]">
-  Tenant name to use, or None to infer from credentials.
-</ParamField>
+**tenant** `Optional[str]`
 
-<ParamField type="Optional[str]">
-  Database name to use, or None to infer from credentials.
-</ParamField>
+Tenant name to use, or None to infer from credentials.
 
-<ParamField type="Optional[str]">
-  API key for Chroma Cloud.
-</ParamField>
+**database** `Optional[str]`
 
-<ParamField type="Optional[Settings]">
-  Optional settings to override defaults.
-</ParamField>
+Database name to use, or None to infer from credentials.
 
-<ParamField type="str" />
+**api\_key** `Optional[str]`
 
-<ParamField type="int" />
+API key for Chroma Cloud.
 
-<ParamField type="bool" />
+**settings** `Optional[Settings]`
+
+Optional settings to override defaults.
+
+**cloud\_host** `str`
+
+**cloud\_port** `int`
+
+**enable\_ssl** `bool`
 
 ### AdminClient
 
 Create an admin client for tenant and database management.
 
-<ParamField type="Settings" />
+**settings** `Settings`
 
 ***
 
@@ -165,13 +165,13 @@ Used to check if the server is alive.
 
 List all collections.
 
-<ParamField type="Optional[int]">
-  The maximum number of entries to return. Defaults to None.
-</ParamField>
+**limit** `Optional[int]`
 
-<ParamField type="Optional[int]">
-  The number of entries to skip before returning. Defaults to None.
-</ParamField>
+The maximum number of entries to return. Defaults to None.
+
+**offset** `Optional[int]`
+
+The number of entries to skip before returning. Defaults to None.
 
 **Returns:** A list of collections
 
@@ -185,30 +185,30 @@ Count the number of collections.
 
 Create a new collection with the given name and metadata.
 
-<ParamField type="str">
-  The name of the collection to create.
-</ParamField>
+**name** `str` *required*
 
-<ParamField type="Optional[Schema]" />
+The name of the collection to create.
 
-<ParamField type="Optional[CreateCollectionConfiguration]" />
+**schema** `Optional[Schema]`
 
-<ParamField type="Optional[Dict[str, Any]]">
-  Optional metadata to associate with the collection.
-</ParamField>
+**configuration** `Optional[CreateCollectionConfiguration]`
 
-<ParamField type="Optional[EmbeddingFunction[Optional[Embeddings]]]">
-  Optional function to use to embed documents.
-  Uses the default embedding function if not provided.
-</ParamField>
+**metadata** `Optional[Dict[str, Any]]`
 
-<ParamField type="Optional[DataLoader[Optional[Embeddings]]]">
-  Optional function to use to load records (documents, images, etc.)
-</ParamField>
+Optional metadata to associate with the collection.
 
-<ParamField type="bool">
-  If True, return the existing collection if it exists.
-</ParamField>
+**embedding\_function** `Optional[EmbeddingFunction[Optional[Embeddings]]]`
+
+Optional function to use to embed documents.
+Uses the default embedding function if not provided.
+
+**data\_loader** `Optional[DataLoader[Optional[Embeddings]]]`
+
+Optional function to use to load records (documents, images, etc.)
+
+**get\_or\_create** `bool`
+
+If True, return the existing collection if it exists.
 
 **Returns:** The newly created collection.
 
@@ -221,18 +221,18 @@ Create a new collection with the given name and metadata.
 
 Get a collection with the given name.
 
-<ParamField type="str">
-  The name of the collection to get
-</ParamField>
+**name** `str` *required*
 
-<ParamField type="Optional[EmbeddingFunction[Optional[Embeddings]]]">
-  Optional function to use to embed documents.
-  Uses the default embedding function if not provided.
-</ParamField>
+The name of the collection to get
 
-<ParamField type="Optional[DataLoader[Optional[Embeddings]]]">
-  Optional function to use to load records (documents, images, etc.)
-</ParamField>
+**embedding\_function** `Optional[EmbeddingFunction[Optional[Embeddings]]]`
+
+Optional function to use to embed documents.
+Uses the default embedding function if not provided.
+
+**data\_loader** `Optional[DataLoader[Optional[Embeddings]]]`
+
+Optional function to use to load records (documents, images, etc.)
 
 **Returns:** The collection
 
@@ -263,25 +263,25 @@ client.get_or_create_collection("my_collection")
 # collection(name="my_collection", metadata={})
 ```
 
-<ParamField type="str" />
+**name** `str` *required*
 
-<ParamField type="Optional[Schema]" />
+**schema** `Optional[Schema]`
 
-<ParamField type="Optional[CreateCollectionConfiguration]" />
+**configuration** `Optional[CreateCollectionConfiguration]`
 
-<ParamField type="Optional[Dict[str, Any]]" />
+**metadata** `Optional[Dict[str, Any]]`
 
-<ParamField type="Optional[EmbeddingFunction[Optional[Embeddings]]]" />
+**embedding\_function** `Optional[EmbeddingFunction[Optional[Embeddings]]]`
 
-<ParamField type="Optional[DataLoader[Optional[Embeddings]]]" />
+**data\_loader** `Optional[DataLoader[Optional[Embeddings]]]`
 
 ### delete\_collection
 
 Delete a collection with the given name.
 
-<ParamField type="str">
-  The name of the collection to delete.
-</ParamField>
+**name** `str` *required*
+
+The name of the collection to delete.
 
 **Raises:**
 
@@ -317,50 +317,50 @@ Return the maximum number of records that can be created or mutated in a single 
 
 Create a new tenant. Raises an error if the tenant already exists.
 
-<ParamField type="str" />
+**name** `str` *required*
 
 ### get\_tenant
 
 Get a tenant. Raises an error if the tenant does not exist.
 
-<ParamField type="str" />
+**name** `str` *required*
 
 ### create\_database
 
 Create a new database. Raises an error if the database already exists.
 
-<ParamField type="str" />
+**name** `str` *required*
 
-<ParamField type="str" />
+**tenant** `str`
 
 ### get\_database
 
 Get a database. Raises an error if the database does not exist.
 
-<ParamField type="str" />
+**name** `str` *required*
 
-<ParamField type="str">
-  The tenant of the database to get.
-</ParamField>
+**tenant** `str`
+
+The tenant of the database to get.
 
 ### delete\_database
 
 Delete a database. Raises an error if the database does not exist.
 
-<ParamField type="str" />
+**name** `str` *required*
 
-<ParamField type="str">
-  The tenant of the database to delete.
-</ParamField>
+**tenant** `str`
+
+The tenant of the database to delete.
 
 ### list\_databases
 
 List all databases for a tenant. Raises an error if the tenant does not exist.
 
-<ParamField type="Optional[int]" />
+**limit** `Optional[int]`
 
-<ParamField type="Optional[int]" />
+**offset** `Optional[int]`
 
-<ParamField type="str">
-  The tenant to list databases for.
-</ParamField>
+**tenant** `str`
+
+The tenant to list databases for.

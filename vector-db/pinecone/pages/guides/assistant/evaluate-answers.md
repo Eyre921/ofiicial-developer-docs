@@ -6,9 +6,11 @@ path: guides/assistant/evaluate-answers
 
 Evaluate RAG system answers with Pinecone Assistant using correctness, completeness, and alignment metrics against a ground truth answer.
 
-This page shows you how to [evaluate responses](/guides/assistant/evaluation-overview) from an assistant or other RAG systems using the `metrics_alignment` operation.
+Evaluate responses from an assistant or other RAG system to measure their [correctness and completeness](/guides/assistant/evaluation-overview) against a ground truth answer.
 
-You can [evaluate a response](/reference/api/latest/assistant/metrics_alignment) from an assistant, as in the following example. The `question` is what you asked, the `answer` is the response to evaluate, and `ground_truth_answer` (`groundTruth` in Node.js) is the response you expect.
+## Evaluate answers with the API or an SDK
+
+To evaluate a response from an assistant, call [`evaluate_alignment`](/reference/api/latest/assistant/metrics_alignment) (`evaluate` in Node.js). The `question` is what you asked, the `answer` is the response to evaluate, and `ground_truth_answer` (`groundTruth` in Node.js) is the response you expect.
 
 ```python Python theme={null}
 from pinecone import Pinecone

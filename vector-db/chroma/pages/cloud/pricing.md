@@ -36,38 +36,36 @@ Read costs are based on both the amount of data queried and the volume of data r
 
 **Example:**
 
-<CodeGroup>
-  ```python Python theme={null}
-  collection.query(
-     query_embeddings=[[1.0, 2.3, 1.1, ...]],
-     where_document={"$contains": "hello world"}
-  )
-  ```
+```python Python theme={null}
+collection.query(
+   query_embeddings=[[1.0, 2.3, 1.1, ...]],
+   where_document={"$contains": "hello world"}
+)
+```
 
-  ```typescript TypeScript theme={null}
-  await collection.query({
-      queryEmbeddings: [[1.0, 2.3, 1.1, ...]],
-      whereDocument: { "$contains": "hello world" }
-  });
-  ```
+```typescript TypeScript theme={null}
+await collection.query({
+    queryEmbeddings: [[1.0, 2.3, 1.1, ...]],
+    whereDocument: { "$contains": "hello world" }
+});
+```
 
-  ```rust Rust theme={null}
-  use chroma::types::{Key, QueryVector, RankExpr, SearchPayload};
+```rust Rust theme={null}
+use chroma::types::{Key, QueryVector, RankExpr, SearchPayload};
 
-  let search = SearchPayload::default()
-      .r#where(Key::Document.contains("hello world"))
-      .rank(RankExpr::Knn {
-          query: QueryVector::Dense(vec![1.0, 2.3, 1.1]),
-          key: Key::Embedding,
-          limit: 10,
-          default: None,
-          return_rank: false,
-      })
-      .limit(Some(10), 0);
+let search = SearchPayload::default()
+    .r#where(Key::Document.contains("hello world"))
+    .rank(RankExpr::Knn {
+        query: QueryVector::Dense(vec![1.0, 2.3, 1.1]),
+        key: Key::Embedding,
+        limit: 10,
+        default: None,
+        return_rank: false,
+    })
+    .limit(Some(10), 0);
 
-  let results = collection.search(vec![search]).await?;
-  ```
-</CodeGroup>
+let results = collection.search(vec![search]).await?;
+```
 
 For the query above (a single vector search and a 10-character full-text search), querying against 10 GiB of data incurs:
 
@@ -92,20 +90,14 @@ Sync pricing is usage-based:
 
 ## Frequently Asked Questions
 
-<AccordionGroup>
-  <Accordion title="Is there a free tier?">
-    We offer \$5 in credits to new users.
-  </Accordion>
+> [accordion] Is there a free tier?
+>
+> We offer \$5 in credits to new users.
 
-  <Accordion title="How is multi-tenancy handled for billing?">
-    Billing is account-based. All data across your collections and tenants within a Chroma Cloud account is aggregated for pricing.
-  </Accordion>
+> [accordion] How is multi-tenancy handled for billing?
+>
+> Billing is account-based. All data across your collections and tenants within a Chroma Cloud account is aggregated for pricing.
 
-  <Accordion title="Can I deploy Chroma in my own VPC?">
-    Yes. We offer a BYOC (bring your own cloud) option for single-tenant deployments. [Contact us](/cloud) for more details.
-  </Accordion>
-
-  <Accordion title="Do I get charged for background indexing?">
-    No. You're only billed for the logical data you write and the storage you consume. Background jobs like compaction or reindexing do not generate additional write or read charges.
-  </Accordion>
-</AccordionGroup>
+> [accordion] Do I get charged for background indexing?
+>
+> No. You're only billed for the logical data you write and the storage you consume. Background jobs like compaction or reindexing do not generate additional write or read charges.

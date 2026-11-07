@@ -6,8 +6,6 @@ path: guides/build/agentic-memory
 
 Persist agent context across runs for better performance and personalization.
 
-<YouTube title="YouTube video player" />
-
 We've seen how tool calling and iterative searches over a Chroma collection can build context for an agent. While this works well for individual runs, agents start fresh each time-repeating expensive computations, re-learning user preferences, and rediscovering effective strategies they've already found.
 
 Agentic memory solves this by persisting data from agent runs that can be leveraged in the future. This reduces cost on LLM interactions, personalizes user experience, and improves agent performance over time.
@@ -69,140 +67,134 @@ The best way to implement a memory store for an agent is simply to dedicate a Ch
 
 We can establish a simple interface for interacting with this Chroma collection:
 
-<CodeGroup>
-  ```python Python theme={null}
-  from abc import ABC, abstractmethod
+```python Python theme={null}
+from abc import ABC, abstractmethod
 
-  class Memory(ABC):
-      # Retrieve memories for each phase of the agent harness
+class Memory(ABC):
+    # Retrieve memories for each phase of the agent harness
 
-      @abstractmethod
-      async def for_planning(self, query: str) -> list[MemoryRecord]:
-          pass
+    @abstractmethod
+    async def for_planning(self, query: str) -> list[MemoryRecord]:
+        pass
 
-      @abstractmethod
-      async def for_execution(self, context: Context) -> list[MemoryRecord]:
-          pass
+    @abstractmethod
+    async def for_execution(self, context: Context) -> list[MemoryRecord]:
+        pass
 
-      @abstractmethod
-      async def for_evaluation(self, context: Context) -> list[MemoryRecord]:
-          pass
+    @abstractmethod
+    async def for_evaluation(self, context: Context) -> list[MemoryRecord]:
+        pass
 
-      # Extract and store new memories
+    # Extract and store new memories
 
-      @abstractmethod
-      async def extract_from_run(self, context: Context) -> None:
-          pass
+    @abstractmethod
+    async def extract_from_run(self, context: Context) -> None:
+        pass
 
-      # Expose memory as agent tools
+    # Expose memory as agent tools
 
-      def get_tools(self) -> list[Tool]:
-          pass
-  ```
+    def get_tools(self) -> list[Tool]:
+        pass
+```
 
-  ```typescript TypeScript theme={null}
-  interface Memory {
-      // Retrieve memories for each phase
-      forPlanning(query: string): Promise<MemoryRecord[]>
-      forExecution(context: Context): Promise<MemoryRecord[]>
-      forEvaluation(context: Context): Promise<MemoryRecord[]>
+```typescript TypeScript theme={null}
+interface Memory {
+    // Retrieve memories for each phase
+    forPlanning(query: string): Promise<MemoryRecord[]>
+    forExecution(context: Context): Promise<MemoryRecord[]>
+    forEvaluation(context: Context): Promise<MemoryRecord[]>
 
-      // Extract and store new memories
-      extractFromRun(context: Context): Promise<void>
+    // Extract and store new memories
+    extractFromRun(context: Context): Promise<void>
 
-      // Expose memory as agent tools
-      getTools(): Tool[]
-  }
-  ```
-</CodeGroup>
+    // Expose memory as agent tools
+    getTools(): Tool[]
+}
+```
 
 With `MemoryRecord`s:
 
-<CodeGroup>
-  ```python Python theme={null}
-  from dataclasses import dataclass
-  from datetime import datetime
-  from typing import Literal
+```python Python theme={null}
+from dataclasses import dataclass
+from datetime import datetime
+from typing import Literal
 
-  @dataclass
-  class MemoryRecord:
-      id: str
-      content: str
-      type: Literal["semantic", "procedural", "episodic"]
-      phase: Literal["planning", "execution", "evaluation"]
-      created: datetime
-      last_accessed: datetime
-      access_count: int
-  ```
+@dataclass
+class MemoryRecord:
+    id: str
+    content: str
+    type: Literal["semantic", "procedural", "episodic"]
+    phase: Literal["planning", "execution", "evaluation"]
+    created: datetime
+    last_accessed: datetime
+    access_count: int
+```
 
-  ```typescript TypeScript theme={null}
-  interface MemoryRecord {
-      id: string
-      content: string
-      type: 'semantic' | 'procedural' | 'episodic'
-      phase: 'planning' | 'execution' | 'evaluation'
-      created: Date
-      lastAccessed: Date
-      accessCount: number
-  }
-  ```
-</CodeGroup>
+```typescript TypeScript theme={null}
+interface MemoryRecord {
+    id: string
+    content: string
+    type: 'semantic' | 'procedural' | 'episodic'
+    phase: 'planning' | 'execution' | 'evaluation'
+    created: Date
+    lastAccessed: Date
+    accessCount: number
+}
+```
 
 Then we can write the methods for retrieving memories for different phases of our agent harness. For example, in the planning phase, we get a user query. We can search our memory collection against it, and add the results to the planner's prompts. We limit the search to semantic memory records (facts), or episodic records (artifacts) that pertain to the planning phase, like successful previous plans for similar queries.
 
-<CodeGroup>
-  ```python Python theme={null}
-  async def for_planning(self, query: str) -> list[MemoryRecord]:
-      records = self.collection.query(
-          query_texts=[query],
-          where={
-              "$or": [
-                  {"type": "semantic"},
-                  {"type": "episodic", "phase": "planning"}
-              ]
-          },
-          n_results=5
-      )
+```python Python theme={null}
+async def for_planning(self, query: str) -> list[MemoryRecord]:
+    records = self.collection.query(
+        query_texts=[query],
+        where={
+            "$or": [
+                {"type": "semantic"},
+                {"type": "episodic", "phase": "planning"}
+            ]
+        },
+        n_results=5
+    )
 
-      return [
-          MemoryRecord(
-              id=id,
-              content=records["documents"][0][i],
-              type=records["metadatas"][0][i]["type"],
-              phase=records["metadatas"][0][i]["phase"],
-              created=datetime.fromisoformat(records["metadatas"][0][i]["created"]),
-              last_accessed=datetime.fromisoformat(records["metadatas"][0][i]["last_accessed"]),
-              access_count=int(records["metadatas"][0][i]["access_count"]),
-          )
-          for i, id in records["ids"][0]
-      ]
-  ```
+    return [
+        MemoryRecord(
+            id=id,
+            content=records["documents"][0][i],
+            type=records["metadatas"][0][i]["type"],
+            phase=records["metadatas"][0][i]["phase"],
+            created=datetime.fromisoformat(records["metadatas"][0][i]["created"]),
+            last_accessed=datetime.fromisoformat(records["metadatas"][0][i]["last_accessed"]),
+            access_count=int(records["metadatas"][0][i]["access_count"]),
+        )
+        for i, id in records["ids"][0]
+    ]
+```
 
-  ```typescript TypeScript theme={null}
-  async forPlanning(query: string): Promise<MemoryRecord[]> {
-      const records = await this.collection.query({
-          queryTexts: [query],
-          where: {
-              $or: [
-                  { type: 'semantic' },
-                  { type: 'episodic', phase: 'planning' }
-              ]
-          },
-          nResults: 5
-      });
+```typescript TypeScript theme={null}
+async forPlanning(query: string): Promise<MemoryRecord[]> {
+    const records = await this.collection.query({
+        queryTexts: [query],
+        where: {
+            $or: [
+                { type: 'semantic' },
+                { type: 'episodic', phase: 'planning' }
+            ]
+        },
+        nResults: 5
+    });
 
-      return records.rows()[0].map((record) => ({
-          id: record.id,
-          content: record.document,
-          type: record.metadata.type,
-          phase: record.metadata.phase,
-          created: new Date(record.metadata.created),
-          lastAccessed: new Date(record.metadata.lastAccessed),
-          accessCount: record.metadata.accessCount
-      }));
-  }
-  ```
-</CodeGroup>
+    return records.rows()[0].map((record) => ({
+        id: record.id,
+        content: record.document,
+        type: record.metadata.type,
+        phase: record.metadata.phase,
+        created: new Date(record.metadata.created),
+        lastAccessed: new Date(record.metadata.lastAccessed),
+        accessCount: record.metadata.accessCount
+    }));
+}
+```
 
 ## Memory Writing Strategies
 
@@ -277,59 +269,57 @@ The project uses the same generic agentic harness we introduced for the [agentic
 * An input-handler to get email-processing instructions from the user.
 * A memory implementation that exposes search tools over the memory collection, and memory extraction logic for persisting user-defined rules.
 
-<Steps>
-  <Step>
-    [Log in](https://trychroma.com/login) to your Chroma Cloud account. If you don't have one yet, you can [sign up](https://trychroma.com/signup). You will get free credits that should be more than enough for running this project.
-  </Step>
+**Step 1**
 
-  <Step>
-    Use the "Create Database" button on the top right of the Chroma Cloud dashboard, and name your DB `agentic-memory` (or any name of your choice). If you're a first-time user, you will be greeted with the "Create Database" modal after creating your account.
-  </Step>
+[Log in](https://trychroma.com/login) to your Chroma Cloud account. If you don't have one yet, you can [sign up](https://trychroma.com/signup). You will get free credits that should be more than enough for running this project.
 
-  <Step>
-    Choose the "Load sample dataset" option, and then choose the "Personal Inbox" dataset. This will copy the data into a collection in your own Chroma DB.
-  </Step>
+**Step 2**
 
-  <Step>
-    Once your collection loads, choose the "Settings" tab. At the bottom of the page, choose the `.env` tab. Create an API key, and copy the environment variables you will need for running the project: `CHROMA_API_KEY`, `CHROMA_TENANT`, and `CHROMA_DATABASE`.
-  </Step>
+Use the "Create Database" button on the top right of the Chroma Cloud dashboard, and name your DB `agentic-memory` (or any name of your choice). If you're a first-time user, you will be greeted with the "Create Database" modal after creating your account.
 
-  <Step>
-    Clone the [Chroma Cookbooks](https://github.com/chroma-core/chroma-cookbooks) repo:
+**Step 3**
 
-    ```terminal theme={null}
-    git clone https://github.com/chroma-core/chroma-cookbooks.git
-    ```
-  </Step>
+Choose the "Load sample dataset" option, and then choose the "Personal Inbox" dataset. This will copy the data into a collection in your own Chroma DB.
 
-  <Step>
-    Navigate to the `agentic-memory` directory, and create a `.env` file at its root with the values you obtained in the previous step:
+**Step 4**
 
-    ```terminal theme={null}
-    cd chroma-cookbooks/agentic-memory
-    touch .env
-    ```
-  </Step>
+Once your collection loads, choose the "Settings" tab. At the bottom of the page, choose the `.env` tab. Create an API key, and copy the environment variables you will need for running the project: `CHROMA_API_KEY`, `CHROMA_TENANT`, and `CHROMA_DATABASE`.
 
-  <Step>
-    To run this project, you will also need an [OpenAI API key](https://platform.openai.com/api-keys). Set it in your `.env` file:
+**Step 5**
 
-    ```text theme={null}
-    CHROMA_API_KEY=<YOUR CHROMA API KEY>
-    CHROMA_TENANT=<YOUR CHROMA TENANT>
-    CHROMA_DATABASE=agentic-memory
-    OPENAI_API_KEY=<YOUR OPENAI API KEY>
-    ```
-  </Step>
+Clone the [Chroma Cookbooks](https://github.com/chroma-core/chroma-cookbooks) repo:
 
-  <Step>
-    This project uses [pnpm](https://pnpm.io/installation) workspaces. In the root directory, install the dependencies:
+```terminal theme={null}
+git clone https://github.com/chroma-core/chroma-cookbooks.git
+```
 
-    ```terminal theme={null}
-    pnpm install
-    ```
-  </Step>
-</Steps>
+**Step 6**
+
+Navigate to the `agentic-memory` directory, and create a `.env` file at its root with the values you obtained in the previous step:
+
+```terminal theme={null}
+cd chroma-cookbooks/agentic-memory
+touch .env
+```
+
+**Step 7**
+
+To run this project, you will also need an [OpenAI API key](https://platform.openai.com/api-keys). Set it in your `.env` file:
+
+```text theme={null}
+CHROMA_API_KEY=<YOUR CHROMA API KEY>
+CHROMA_TENANT=<YOUR CHROMA TENANT>
+CHROMA_DATABASE=agentic-memory
+OPENAI_API_KEY=<YOUR OPENAI API KEY>
+```
+
+**Step 8**
+
+This project uses [pnpm](https://pnpm.io/installation) workspaces. In the root directory, install the dependencies:
+
+```terminal theme={null}
+pnpm install
+```
 
 The project includes a CLI interface that lets you interact with the inbox-processing agent. You can run it in development mode to get started. From the root directory you can run
 

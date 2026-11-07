@@ -20,9 +20,9 @@ Chroma supports three deployment modes:
 
 You can use [Chroma Cloud](https://www.trychroma.com/signup?utm_source=docs-architecture), which is the managed offering of distributed Chroma.
 
-<Card title="Distributed Architecture" href="/reference/architecture/distributed">
-  Learn how Chroma scales out with independent services, object storage, SSD caches, and a shared system database.
-</Card>
+> [card] [Distributed Architecture](/reference/architecture/distributed)
+>
+> Learn how Chroma scales out with independent services, object storage, SSD caches, and a shared system database.
 
 ## Chroma Data Model
 

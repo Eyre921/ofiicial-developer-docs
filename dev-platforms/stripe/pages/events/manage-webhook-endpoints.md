@@ -494,6 +494,14 @@ The event notification handler does no additional error handling or suppressing.
 
 Review these best practices to make sure your webhook endpoints remain secure and function well with your integration.
 
+### Webhook and event-destination permissions 
+
+The `webhook_read` [permission](https://docs.stripe.com/keys.md#assign-permissions), which appears in the Dashboard as **Webhook Endpoints, Event Destinations: Read**, provides access only to list or retrieve destination configurations. The `webhook_write` permission, which appears as **Webhook Endpoints, Event Destinations: Write**, can create or change destinations that subscribe to any event available on your account.
+
+The `webhook_write` permission also allows read access to any event notification payload and the `Event` object, regardless of access to the object that triggered it. That includes the object snapshot in a snapshot `Event`. For example, a key that has `webhook_write`, but not `event_read` or `customer_read`, can create a destination that receives `Customer` event notifications. When that destination receives a notification, the key can access the notification payload and the associated `Event` object, even though it can’t access the `Customer` object that triggered the event.
+
+If possible, configure destinations in the Dashboard and don’t use the `webhook_write` permission. Only use it for an integration that must manage webhook endpoints or event destinations programmatically. When an integration requires `webhook_write`, isolate it using a dedicated [restricted key](https://docs.stripe.com/keys/restricted-api-keys.md), and protect that key as an administrative credential.
+
 ### Handle duplicate events 
 
 Webhook endpoints might occasionally receive the same event more than once. Guard against duplicated event receipts by logging the [event IDs](https://docs.stripe.com/api/events/object.md#event_object-id) you’ve processed, and then not processing already-logged events.

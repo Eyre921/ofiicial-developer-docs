@@ -6,48 +6,46 @@ path: integrations/embedding-models/perplexity
 
 Chroma provides a convenient wrapper around Perplexity's embedding API. This embedding function runs remotely on Perplexity's servers, and requires an API key. You can get an API key by signing up for an account at [Perplexity](https://www.perplexity.ai/).
 
-<Tabs>
-  <Tab title="Python" icon="python">
-    This embedding function relies on the `perplexityai` python package, which you can install with `pip install perplexityai`.
+> [tab] Python
+>
+> This embedding function relies on the `perplexityai` python package, which you can install with `pip install perplexityai`.
+>
+> ```python theme={null}
+> import chromadb.utils.embedding_functions as embedding_functions
+>
+> perplexity_ef = embedding_functions.PerplexityEmbeddingFunction(
+>     api_key="YOUR_API_KEY",
+>     model_name="pplx-embed-v1-4b"
+> )
+>
+> perplexity_ef(input=["document1", "document2"])
+> ```
 
-    ```python theme={null}
-    import chromadb.utils.embedding_functions as embedding_functions
-
-    perplexity_ef = embedding_functions.PerplexityEmbeddingFunction(
-        api_key="YOUR_API_KEY",
-        model_name="pplx-embed-v1-4b"
-    )
-
-    perplexity_ef(input=["document1", "document2"])
-    ```
-  </Tab>
-
-  <Tab title="TypeScript" icon="js">
-    ```typescript theme={null}
-    // npm install @chroma-core/perplexity
-
-    import { PerplexityEmbeddingFunction } from "@chroma-core/perplexity";
-
-    const embedder = new PerplexityEmbeddingFunction({
-        apiKey: "YOUR_API_KEY",
-        modelName: "pplx-embed-v1-4b",
-    });
-
-    // use directly
-    const embeddings = await embedder.generate(["document1", "document2"]);
-
-    // pass documents to query for .add and .query
-    const collection = await client.createCollection({
-        name: "name",
-        embeddingFunction: embedder,
-    });
-    const collectionGet = await client.getCollection({
-        name: "name",
-        embeddingFunction: embedder,
-    });
-    ```
-  </Tab>
-</Tabs>
+> [tab] TypeScript
+>
+> ```typescript theme={null}
+> // npm install @chroma-core/perplexity
+>
+> import { PerplexityEmbeddingFunction } from "@chroma-core/perplexity";
+>
+> const embedder = new PerplexityEmbeddingFunction({
+>     apiKey: "YOUR_API_KEY",
+>     modelName: "pplx-embed-v1-4b",
+> });
+>
+> // use directly
+> const embeddings = await embedder.generate(["document1", "document2"]);
+>
+> // pass documents to query for .add and .query
+> const collection = await client.createCollection({
+>     name: "name",
+>     embeddingFunction: embedder,
+> });
+> const collectionGet = await client.getCollection({
+>     name: "name",
+>     embeddingFunction: embedder,
+> });
+> ```
 
 ## Available Models
 
@@ -62,35 +60,33 @@ Perplexity offers two embedding models:
 
 Both models support [Matryoshka Representation Learning](https://arxiv.org/abs/2205.13147), allowing you to reduce embedding dimensions while maintaining quality. This is useful for reducing storage costs and improving search speed.
 
-<Tabs>
-  <Tab title="Python" icon="python">
-    ```python theme={null}
-    # Reduce dimensions from 2560 to 512 for the 4b model
-    perplexity_ef = embedding_functions.PerplexityEmbeddingFunction(
-        api_key="YOUR_API_KEY",
-        model_name="pplx-embed-v1-4b",
-        dimensions=512
-    )
+> [tab] Python
+>
+> ```python theme={null}
+> # Reduce dimensions from 2560 to 512 for the 4b model
+> perplexity_ef = embedding_functions.PerplexityEmbeddingFunction(
+>     api_key="YOUR_API_KEY",
+>     model_name="pplx-embed-v1-4b",
+>     dimensions=512
+> )
+>
+> embeddings = perplexity_ef(input=["document1", "document2"])
+> print(len(embeddings[0]))  # 512
+> ```
 
-    embeddings = perplexity_ef(input=["document1", "document2"])
-    print(len(embeddings[0]))  # 512
-    ```
-  </Tab>
-
-  <Tab title="TypeScript" icon="js">
-    ```typescript theme={null}
-    // Reduce dimensions from 2560 to 512 for the 4b model
-    const embedder = new PerplexityEmbeddingFunction({
-        apiKey: "YOUR_API_KEY",
-        modelName: "pplx-embed-v1-4b",
-        dimensions: 512,
-    });
-
-    const embeddings = await embedder.generate(["document1", "document2"]);
-    console.log(embeddings[0].length);  // 512
-    ```
-  </Tab>
-</Tabs>
+> [tab] TypeScript
+>
+> ```typescript theme={null}
+> // Reduce dimensions from 2560 to 512 for the 4b model
+> const embedder = new PerplexityEmbeddingFunction({
+>     apiKey: "YOUR_API_KEY",
+>     modelName: "pplx-embed-v1-4b",
+>     dimensions: 512,
+> });
+>
+> const embeddings = await embedder.generate(["document1", "document2"]);
+> console.log(embeddings[0].length);  // 512
+> ```
 
 Supported dimension ranges:
 

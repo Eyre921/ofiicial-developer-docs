@@ -65,9 +65,7 @@ These index types have no configuration parameters.
 * Cannot be deleted
 * Applies to `K.EMBEDDING` only
 
-<Callout>
-  **Advanced tuning:** HNSW and SPANN parameters control index build and search behavior. They are pre-optimized for most use cases. Only adjust if you have specific performance requirements and understand the tradeoffs between recall, speed, and resource usage. Incorrect tuning can degrade performance.
-</Callout>
+**Advanced tuning:** HNSW and SPANN parameters control index build and search behavior. They are pre-optimized for most use cases. Only adjust if you have specific performance requirements and understand the tradeoffs between recall, speed, and resource usage. Incorrect tuning can degrade performance.
 
 ## SparseVectorIndexConfig
 
@@ -87,9 +85,7 @@ These index types have no configuration parameters.
 * Sparse vector indices must be declared at collection creation and cannot be added later
 * Cannot be deleted once created
 
-<Callout>
-  For complete sparse vector search setup and querying examples, see [Sparse Vector Search Setup](./sparse-vector-search).
-</Callout>
+For complete sparse vector search setup and querying examples, see [Sparse Vector Search Setup](./sparse-vector-search).
 
 ## Next Steps
 

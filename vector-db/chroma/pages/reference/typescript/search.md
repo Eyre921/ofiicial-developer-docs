@@ -6,51 +6,51 @@ path: reference/typescript/search
 
 ## Search
 
-<ParamField type="WhereInput" />
+**where** `WhereInput`
 
-<ParamField type="RankInput" />
+**rank** `RankInput`
 
-<ParamField type="GroupByInput | undefined" />
+**groupBy** `GroupByInput | undefined`
 
-<ParamField type="LimitInput" />
+**limit** `LimitInput`
 
-<ParamField type="SelectInput" />
+**select** `SelectInput`
 
 ***
 
 ## Select
 
-<ParamField type="Iterable<SelectKeyInput>" />
+**keys** `Iterable\<SelectKeyInput\>`
 
 ***
 
 ## Knn
 
-<span>Properties</span>
+Properties
 
-<ParamField type="string | SparseVector | IterableInput<number>" />
+**query** `string | SparseVector | IterableInput\<number\>`
 
-<ParamField type="string | Key | undefined" />
+**key** `string | Key | undefined`
 
-<ParamField type="number | undefined" />
+**limit** `number | undefined`
 
-<ParamField type="number | null | undefined" />
+**default** `number | null | undefined`
 
-<ParamField type="boolean | undefined" />
+**returnRank** `boolean | undefined`
 
 ***
 
 ## Rrf
 
-<span>Properties</span>
+Properties
 
-<ParamField type="RankInput[]" />
+**ranks** `RankInput[]`
 
-<ParamField type="number | undefined" />
+**k** `number | undefined`
 
-<ParamField type="Embedding | undefined" />
+**weights** `Embedding | undefined`
 
-<ParamField type="boolean | undefined" />
+**normalize** `boolean | undefined`
 
 ***
 
@@ -58,21 +58,21 @@ path: reference/typescript/search
 
 ### GroupBy
 
-<ParamField type="Key[]" />
+**keys** `Key[]` *required*
 
-<ParamField type="Aggregate" />
+**aggregate** `Aggregate` *required*
 
 ### MinK
 
-<ParamField type="Key[]" />
+**keys** `Key[]` *required*
 
-<ParamField type="number" />
+**k** `number` *required*
 
 ### MaxK
 
-<ParamField type="Key[]" />
+**keys** `Key[]` *required*
 
-<ParamField type="number" />
+**k** `number` *required*
 
 ***
 
@@ -80,13 +80,13 @@ path: reference/typescript/search
 
 ### Limit
 
-<span>Properties</span>
+Properties
 
-<ParamField type="number" />
+**offset** `number`
 
-<ParamField type="number | undefined" />
+**limit** `number | undefined`
 
-<span>Methods</span>
+Methods
 
 `from()`, `toJSON()`
 
@@ -94,16 +94,16 @@ path: reference/typescript/search
 
 ## SearchResult
 
-<span>Properties</span>
+Properties
 
-<ParamField type="string[][]" />
+**ids** `string[][]`
 
-<ParamField type="((string | null)[] | null)[]" />
+**documents** `((string | null)[] | null)[]`
 
-<ParamField type="((Embedding | null)[] | null)[]" />
+**embeddings** `((Embedding | null)[] | null)[]`
 
-<ParamField type="((Metadata | null)[] | null)[]" />
+**metadatas** `((Metadata | null)[] | null)[]`
 
-<ParamField type="((number | null)[] | null)[]" />
+**scores** `((number | null)[] | null)[]`
 
-<ParamField type="Key[][]" />
+**select** `Key[][]`

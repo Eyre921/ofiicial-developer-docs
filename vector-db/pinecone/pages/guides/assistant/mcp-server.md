@@ -1,12 +1,12 @@
 ---
-title: "Use an Assistant MCP server"
+title: "Use the Pinecone Assistant MCP server"
 source: https://docs.pinecone.io/guides/assistant/mcp-server
 path: guides/assistant/mcp-server
 ---
 
 Connect AI agents to a Pinecone Assistant MCP server via remote or local Model Context Protocol endpoints, including Cursor and Claude Desktop.
 
-Every Pinecone Assistant has a dedicated MCP server that gives AI agents direct access to context from the assistant's uploaded files through the standardized [Model Context Protocol (MCP)](https://modelcontextprotocol.io/). This page shows you how to connect an assistant's MCP server with Cursor, Claude Desktop, and LangChain.
+Every Pinecone Assistant has a dedicated MCP server that gives AI agents direct access to context from the assistant's uploaded files through the standardized [Model Context Protocol (MCP)](https://modelcontextprotocol.io/). You can connect it to Claude Code, Claude Desktop, Cursor, or LangChain.
 
 > [!NOTE]
 >
@@ -15,7 +15,7 @@ Every Pinecone Assistant has a dedicated MCP server that gives AI agents direct 
 There are two ways to connect to an assistant MCP server:
 
 * [Remote MCP server](#remote-mcp-server) - Use a dedicated MCP endpoint to connect directly to an assistant.
-* [Local MCP server](#local-mcp-server) - Run a Docker container locally that connects to an assistant
+* [Local MCP server](#local-mcp-server) - Run a Docker container locally that connects to an assistant.
 
 Both options support a context tool that allows agents to retrieve relevant context snippets from your assistant's uploaded files. This is similar to the [context API](/guides/assistant/retrieve-context-snippets) but fine-tuned for MCP clients. Additional capabilities, such as file access, will be added in future releases.
 
@@ -31,11 +31,11 @@ https://<YOUR_PINECONE_ASSISTANT_HOST>/mcp/assistants/<YOUR_ASSISTANT_NAME>
 
 > [!WARNING]
 >
-> The previous SSE-based endpoint (with the `/sse` suffix) is no longer supported and returns HTTP 410. Use the [streamable HTTP transport](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) MCP endpoint shown above, which implements the current MCP specification.
+> The previous SSE-based endpoint (with the `/sse` suffix) is no longer supported and returns HTTP 410. Use the [streamable HTTP transport](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) MCP endpoint, which implements the current MCP specification.
 
 ### Prerequisites
 
-Before you begin, make sure you have the following values, which you'll use in the commands below:
+Before you begin, make sure you have the following values:
 
 * `<YOUR_PINECONE_API_KEY>`: [A Pinecone API key](/admin/projects/manage-api-keys).
 * `<YOUR_PINECONE_ASSISTANT_HOST>`: In the Pinecone console, this is your assistant's **Host** value.
@@ -45,97 +45,106 @@ Before you begin, make sure you have the following values, which you'll use in t
 
 You can use the Claude CLI to configure Claude Code to use your assistant's remote MCP server. For more information, see [Claude Code's MCP documentation](https://docs.anthropic.com/en/docs/claude-code/mcp).
 
-1. Add the MCP server using the Claude CLI:
+**1. Add the MCP server using the Claude CLI**
 
-   ```bash theme={null}
-   claude mcp add --transport http my-assistant https://<YOUR_PINECONE_ASSISTANT_HOST>/mcp/assistants/<YOUR_ASSISTANT_NAME> --header "Authorization: Bearer <YOUR_PINECONE_API_KEY>"
-   ```
+```bash theme={null}
+claude mcp add --transport http my-assistant https://<YOUR_PINECONE_ASSISTANT_HOST>/mcp/assistants/<YOUR_ASSISTANT_NAME> --header "Authorization: Bearer <YOUR_PINECONE_API_KEY>"
+```
 
-   Replace `<YOUR_PINECONE_API_KEY>` with your Pinecone API key, `<YOUR_PINECONE_ASSISTANT_HOST>` with your Pinecone Assistant host, and `<YOUR_ASSISTANT_NAME>` with your assistant's name.
+Replace `<YOUR_PINECONE_API_KEY>` with your Pinecone API key, `<YOUR_PINECONE_ASSISTANT_HOST>` with your Pinecone Assistant host, and `<YOUR_ASSISTANT_NAME>` with your assistant's name.
 
-2. Verify the server was added successfully:
+**2. Verify the server was added successfully**
 
-   ```bash theme={null}
-   claude mcp get my-assistant
-   ```
+```bash theme={null}
+claude mcp get my-assistant
+```
 
-3. The MCP server tools should now be available in Claude Code's chat interface.
+The MCP server tools are now available in Claude Code's chat interface.
 
 ### Use with Claude Desktop
 
-You can configure Claude Desktop to use your assistant's remote MCP server. However, at this early stage of **remote** MCP server adoption, the Claude Desktop application doesn't support remote server URLs. In the example below, we work around this by using a local proxy server, [supergateway](https://github.com/supercorp-ai/supergateway), to forward requests to the remote MCP server with your API key.
+You can configure Claude Desktop to use your assistant's remote MCP server. However, at this early stage of remote MCP server adoption, the Claude Desktop application doesn't support remote server URLs. The following example works around this with a local proxy server, [supergateway](https://github.com/supercorp-ai/supergateway), that forwards requests to the remote MCP server with your API key.
 
 > [!WARNING]
 >
 > [supergateway](https://github.com/supercorp-ai/supergateway) is an open-source third-party tool. Use at your own risk.
 
-1. Open [Claude Desktop](https://claude.ai/download) and go to **Settings**.
+**1. Open Claude Desktop settings**
 
-2. On the **Developer** tab, click **Edit Config** to open the configuration file.
+Open [Claude Desktop](https://claude.ai/download) and go to **Settings**.
 
-3. Add the following configuration:
+**2. Edit the config file**
 
-   ```json theme={null}
-   {
-     "mcpServers": {
-       "Assistant over supergateway": {
-         "command": "npx",
-         "args": [
-           "-y",
-           "supergateway",
-           "--streamableHttp",
-           "https://<YOUR_PINECONE_ASSISTANT_HOST>/mcp/assistants/<YOUR_ASSISTANT_NAME>",
-           "--header",
-           "Authorization: Bearer <YOUR_PINECONE_API_KEY>"
-         ]
-       }
-     }
-   }
-   ```
+On the **Developer** tab, click **Edit Config** to open the configuration file.
 
-   Replace `<YOUR_PINECONE_API_KEY>` with your Pinecone API key and `<YOUR_PINECONE_ASSISTANT_HOST>` with your Pinecone Assistant host.
+**3. Add the configuration**
 
-4. Save the configuration file and restart Claude Desktop.
+```json theme={null}
+{
+  "mcpServers": {
+    "Assistant over supergateway": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "supergateway",
+        "--streamableHttp",
+        "https://<YOUR_PINECONE_ASSISTANT_HOST>/mcp/assistants/<YOUR_ASSISTANT_NAME>",
+        "--header",
+        "Authorization: Bearer <YOUR_PINECONE_API_KEY>"
+      ]
+    }
+  }
+}
+```
 
-5. From the new chat screen, you should see a hammer (MCP) icon appear with the new MCP server available.
+Replace `<YOUR_PINECONE_API_KEY>` with your Pinecone API key, `<YOUR_PINECONE_ASSISTANT_HOST>` with your Pinecone Assistant host, and `<YOUR_ASSISTANT_NAME>` with your assistant's name.
+
+**4. Restart Claude Desktop**
+
+Save the configuration file and restart Claude Desktop.
+
+From the new chat screen, a hammer (MCP) icon appears with the new MCP server available.
 
 ### Use with Cursor
 
 You can configure Cursor to use your assistant's remote MCP server directly through the `.cursor/mcp.json` configuration file.
 
-1. Open [Cursor](https://www.cursor.com/) and create a `.cursor` directory in your project root if it doesn't exist.
+**1. Create the .cursor directory**
 
-2. Open `.cursor/mcp.json` (create it if necessary). To learn more, refer to [Cursor's MCP documentation](https://docs.cursor.com/context/mcp).
+Open [Cursor](https://www.cursor.com/) and create a `.cursor` directory in your project root if it doesn't exist.
 
-3. Add the following configuration:
+**2. Open the config file**
 
-   ```json theme={null}
-   {
-     "mcpServers": {
-       "pinecone-assistant": {
-         "url": "https://<YOUR_PINECONE_ASSISTANT_HOST>/mcp/assistants/<YOUR_ASSISTANT_NAME>",
-         "headers": {
-           "Authorization": "Bearer <YOUR_PINECONE_API_KEY>"
-         }
-       }
-     }
-   }
-   ```
+Open `.cursor/mcp.json` (create it if necessary). To learn more, refer to [Cursor's MCP documentation](https://docs.cursor.com/context/mcp).
 
-   Replace `<YOUR_PINECONE_API_KEY>` with your Pinecone API key, `<YOUR_PINECONE_ASSISTANT_HOST>` with your Pinecone Assistant host, and `<YOUR_ASSISTANT_NAME>` with your assistant's name.
+**3. Add the configuration**
 
-4. Save the configuration file.
+```json theme={null}
+{
+  "mcpServers": {
+    "pinecone-assistant": {
+      "url": "https://<YOUR_PINECONE_ASSISTANT_HOST>/mcp/assistants/<YOUR_ASSISTANT_NAME>",
+      "headers": {
+        "Authorization": "Bearer <YOUR_PINECONE_API_KEY>"
+      }
+    }
+  }
+}
+```
 
-5. The MCP server tools should now be available in Cursor's chat interface.
+Replace `<YOUR_PINECONE_API_KEY>` with your Pinecone API key, `<YOUR_PINECONE_ASSISTANT_HOST>` with your Pinecone Assistant host, and `<YOUR_ASSISTANT_NAME>` with your assistant's name.
+
+Save the configuration file.
+
+The MCP server tools are now available in Cursor's chat interface.
 
 ### Use with LangChain
 
-You can use the [LangChain MCP client](https://github.com/langchain-ai/langchain-mcp-adapters) to integrate with LangChain to create a powerful multi-agent workflow.
+You can use the [LangChain MCP client](https://github.com/langchain-ai/langchain-mcp-adapters) to connect your assistants to a LangChain multi-agent workflow.
 
-For example, the following code integrates Langchain with two assistants, one called `ai-news` and the other called `industry-reports`:
+For example, the following code integrates LangChain with two assistants, one called `ai-news` and the other called `industry-reports`:
 
 ```python Python theme={null}
-# Example code for integrating with LangChain
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from langgraph.prebuilt import create_react_agent
 
@@ -182,99 +191,105 @@ For the most up-to-date information on the local MCP server, see the [Pinecone A
 
 ### Start the MCP server
 
+**1. Pull the Docker image**
+
 Download the `assistant-mcp` Docker image:
 
 ```bash theme={null}
 docker pull ghcr.io/pinecone-io/assistant-mcp
 ```
 
+**2. Start the server**
+
 Start the MCP server, providing your Pinecone API key and Pinecone Assistant host:
 
 ```bash theme={null}
 docker run -i --rm \
-  -e PINECONE_API_KEY=<PINECONE_API_KEY> \
-  -e PINECONE_ASSISTANT_HOST=<PINECONE_ASSISTANT_HOST> \
+  -e PINECONE_API_KEY=<YOUR_PINECONE_API_KEY> \
+  -e PINECONE_ASSISTANT_HOST=<YOUR_PINECONE_ASSISTANT_HOST> \
   pinecone/assistant-mcp
 ```
 
 ### Use with Claude Desktop
 
-1. Open [Claude Desktop](https://claude.ai/download) and go to **Settings**.
+**1. Open Claude Desktop settings**
 
-2. On the **Developer** tab, click **Edit Config** to open the configuration file.
+Open [Claude Desktop](https://claude.ai/download) and go to **Settings**.
 
-3. Add the following configuration:
+**2. Edit the config file**
 
-   ```json theme={null}
-   {
-     "mcpServers": {
-       "pinecone-assistant": {
-         "command": "docker",
-         "args": [
-           "run", 
-           "-i", 
-           "--rm", 
-           "-e", 
-           "PINECONE_API_KEY", 
-           "-e", 
-           "PINECONE_ASSISTANT_HOST", 
-           "pinecone/assistant-mcp"
-         ],
-         "env": {
-           "PINECONE_API_KEY": "<YOUR_PINECONE_API_KEY>",
-           "PINECONE_ASSISTANT_HOST": "<YOUR_PINECONE_ASSISTANT_HOST>"
-         }
-       }
-     }
-   }
-   ```
+On the **Developer** tab, click **Edit Config** to open the configuration file.
 
-   Replace `<YOUR_PINECONE_API_KEY>` with your Pinecone API key and `<YOUR_PINECONE_ASSISTANT_HOST>` with your Pinecone Assistant host.
+**3. Add the configuration**
 
-4. Save the configuration file and restart Claude Desktop.
+```json theme={null}
+{
+  "mcpServers": {
+    "pinecone-assistant": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "PINECONE_API_KEY",
+        "-e",
+        "PINECONE_ASSISTANT_HOST",
+        "pinecone/assistant-mcp"
+      ],
+      "env": {
+        "PINECONE_API_KEY": "<YOUR_PINECONE_API_KEY>",
+        "PINECONE_ASSISTANT_HOST": "<YOUR_PINECONE_ASSISTANT_HOST>"
+      }
+    }
+  }
+}
+```
 
-5. From the new chat screen, you should see a hammer (MCP) icon appear with the new MCP server available.
+Replace `<YOUR_PINECONE_API_KEY>` with your Pinecone API key and `<YOUR_PINECONE_ASSISTANT_HOST>` with your Pinecone Assistant host.
+
+**4. Restart Claude Desktop**
+
+Save the configuration file and restart Claude Desktop.
+
+From the new chat screen, a hammer (MCP) icon appears with the new MCP server available.
 
 ### Use with Cursor
 
-1. Open [Cursor](https://www.cursor.com/) and create a `.cursor` directory in your project root if it doesn't exist.
+**1. Create the .cursor directory**
 
-2. Open `.cursor/mcp.json` (create it if necessary). To learn more, refer to [Cursor's MCP documentation](https://docs.cursor.com/context/mcp).
+Open [Cursor](https://www.cursor.com/) and create a `.cursor` directory in your project root if it doesn't exist.
 
-3. Add the following configuration:
+**2. Open the config file**
 
-   ```json theme={null}
-   {
-     "mcpServers": {
-       "pinecone-assistant": {
-         "command": "docker",
-         "args": [
-           "run", 
-           "-i", 
-           "--rm", 
-           "-e", 
-           "PINECONE_API_KEY", 
-           "-e", 
-           "PINECONE_ASSISTANT_HOST", 
-           "pinecone/assistant-mcp"
-         ],
-         "env": {
-           "PINECONE_API_KEY": "<YOUR_PINECONE_API_KEY>",
-           "PINECONE_ASSISTANT_HOST": "<YOUR_PINECONE_ASSISTANT_HOST>"
-         }
-       }
-     }
-   }
-   ```
+Open `.cursor/mcp.json` (create it if necessary). To learn more, refer to [Cursor's MCP documentation](https://docs.cursor.com/context/mcp).
 
-   Replace `<YOUR_PINECONE_API_KEY>` with your Pinecone API key and `<YOUR_PINECONE_ASSISTANT_HOST>` with your Pinecone Assistant host.
+**3. Add the configuration**
 
-4. Save the configuration file.
+```json theme={null}
+{
+  "mcpServers": {
+    "pinecone-assistant": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "PINECONE_API_KEY",
+        "-e",
+        "PINECONE_ASSISTANT_HOST",
+        "pinecone/assistant-mcp"
+      ],
+      "env": {
+        "PINECONE_API_KEY": "<YOUR_PINECONE_API_KEY>",
+        "PINECONE_ASSISTANT_HOST": "<YOUR_PINECONE_ASSISTANT_HOST>"
+      }
+    }
+  }
+}
+```
 
-## Next Steps
+Replace `<YOUR_PINECONE_API_KEY>` with your Pinecone API key and `<YOUR_PINECONE_ASSISTANT_HOST>` with your Pinecone Assistant host.
 
-* Visit the [Pinecone Assistant MCP Server repository](https://github.com/pinecone-io/assistant-mcp) for detailed installation and usage instructions
-
-* Learn about [Model Context Protocol](https://modelcontextprotocol.io/) and how it enables AI agents to interact with tools and data
-
-* Explore [retrieve context snippets](/guides/assistant/retrieve-context-snippets) to understand the underlying API functionality
+Save the configuration file.

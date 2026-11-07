@@ -26,43 +26,39 @@ chroma copy --from-local collections [collection names]
 
 ### Copy from Local to Chroma Cloud
 
-<CodeGroup>
-  ```bash simple theme={null}
-  chroma copy --from-local collections col-1 col-2
-  ```
+```bash simple theme={null}
+chroma copy --from-local collections col-1 col-2
+```
 
-  ```bash with DB theme={null}
-  chroma copy --from-local --all --db my-db
-  ```
+```bash with DB theme={null}
+chroma copy --from-local --all --db my-db
+```
 
-  ```bash host theme={null}
-  chroma copy --from-local --all --host http://localhost:8050
-  ```
+```bash host theme={null}
+chroma copy --from-local --all --host http://localhost:8050
+```
 
-  ```bash path theme={null}
-  chroma copy --from-local --all --path ~/Developer/my-app/chroma
-  ```
-</CodeGroup>
+```bash path theme={null}
+chroma copy --from-local --all --path ~/Developer/my-app/chroma
+```
 
 ### Copy from Chroma Cloud to Local
 
-<CodeGroup>
-  ```bash simple theme={null}
-  chroma copy --from-cloud collections col-1 col-2
-  ```
+```bash simple theme={null}
+chroma copy --from-cloud collections col-1 col-2
+```
 
-  ```bash with DB theme={null}
-  chroma copy --from-cloud --all --db my-db
-  ```
+```bash with DB theme={null}
+chroma copy --from-cloud --all --db my-db
+```
 
-  ```bash host theme={null}
-  chroma copy --from-cloud --all --host http://localhost:8050
-  ```
+```bash host theme={null}
+chroma copy --from-cloud --all --host http://localhost:8050
+```
 
-  ```bash path theme={null}
-  chroma copy --from-cloud --all --path ~/Developer/my-app/chroma
-  ```
-</CodeGroup>
+```bash path theme={null}
+chroma copy --from-cloud --all --path ~/Developer/my-app/chroma
+```
 
 ### Quotas
 

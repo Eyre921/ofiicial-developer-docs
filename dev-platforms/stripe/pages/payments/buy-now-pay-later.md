@@ -8,7 +8,7 @@ path: payments/buy-now-pay-later
 
 Learn about buy now, pay later methods with Stripe.
 
-You can also use subscription schedules to set up [installment plans](https://docs.stripe.com/billing/subscriptions/subscription-schedules.md#installment-plans). Learn more about other options for [accepting payments in installments](https://docs.stripe.com/recurring-payments.md#installment-plans).
+You can also use subscription schedules to set up [installment plans](https://docs.stripe.com/billing/subscriptions/subscription-schedules/use-cases.md#installment-plans). Learn more about other options for [accepting payments in installments](https://docs.stripe.com/recurring-payments.md#installment-plans).
 
 Buy now, pay later methods let customers pay in installments over time. You’re paid immediately and in full and your customers pay nothing or a portion of the total at purchase time. Buy now, pay later methods are often used by:
 

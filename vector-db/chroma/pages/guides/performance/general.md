@@ -14,19 +14,17 @@ In this case, you can install the `chromadb-client` package **instead** of our `
 
 The `chromadb-client` package is a lightweight HTTP client for the server with a minimal dependency footprint.
 
-<CodeGroup>
-  ```terminal pip theme={null}
-  pip install chromadb-client
-  ```
+```terminal pip theme={null}
+pip install chromadb-client
+```
 
-  ```terminal poetry theme={null}
-  poetry add chromadb-client
-  ```
+```terminal poetry theme={null}
+poetry add chromadb-client
+```
 
-  ```terminal uv theme={null}
-  uv pip install chromadb-client
-  ```
-</CodeGroup>
+```terminal uv theme={null}
+uv pip install chromadb-client
+```
 
 ```python theme={null}
 # Python

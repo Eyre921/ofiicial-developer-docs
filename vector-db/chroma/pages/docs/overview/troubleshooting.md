@@ -45,9 +45,7 @@ results = collection.query(
 )
 ```
 
-<Callout>
-  We may change `None` to something else to more clearly communicate why they were not returned.
-</Callout>
+We may change `None` to something else to more clearly communicate why they were not returned.
 
 ## Build error when running `pip install chromadb`
 

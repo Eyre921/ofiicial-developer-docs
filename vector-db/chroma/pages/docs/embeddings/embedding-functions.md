@@ -12,239 +12,233 @@ audio and video. Chroma stores and indexes embeddings so you can efficiently
 search for similar content. You can generate them locally with an installed
 library or remotely through an API.
 
-<Tabs>
-  <Tab title="Python" icon="python">
-    ## Using Embedding Functions
+> [tab] Python
+>
+> ## Using Embedding Functions
+>
+> Embedding functions can be linked to a collection and used whenever you call `add`, `update`, `upsert` or `query`.
+>
+> For example, this is how you use the OpenAI embedding function:
+>
+> ```python theme={null}
+> # Set your OPENAI_API_KEY environment variable
+> from chromadb.utils.embedding_functions import OpenAIEmbeddingFunction
+>
+> collection = client.create_collection(
+>     name="my_collection",
+>     embedding_function=OpenAIEmbeddingFunction(
+>         model_name="text-embedding-3-small"
+>     )
+> )
+>
+> # Chroma will use OpenAIEmbeddingFunction to embed your documents
+> collection.add(
+>     ids=["id1", "id2"],
+>     documents=["doc1", "doc2"]
+> )
+> ```
+>
+> You can also use embedding functions directly which can be handy for debugging.
+>
+> ```python theme={null}
+> from chromadb.utils.embedding_functions import DefaultEmbeddingFunction
+>
+> default_ef = DefaultEmbeddingFunction()
+> embeddings = default_ef(["foo"])
+> print(embeddings) # [[0.05035809800028801, 0.0626462921500206, -0.061827320605516434...]]
+>
+> collection.query(query_embeddings=embeddings)
+> ```
+>
+> ## Custom Embedding Functions
+>
+> You can create your own embedding function to use with Chroma; it just needs to implement `EmbeddingFunction`.
+>
+> ```python theme={null}
+> from typing import Dict, Any
+> from chromadb import Documents, EmbeddingFunction, Embeddings
+> from chromadb.utils.embedding_functions import register_embedding_function
+>
+> @register_embedding_function
+> class MyEmbeddingFunction(EmbeddingFunction):
+>
+>     def __init__(self, model):
+>         self.model = model
+>
+>     def __call__(self, input: Documents) -> Embeddings:
+>         # embed the documents somehow
+>         return embeddings
+>
+>     @staticmethod
+>     def name() -> str:
+>         return "my-ef"
+>
+>     def get_config(self) -> Dict[str, Any]:
+>         return dict(model=self.model)
+>
+>     @staticmethod
+>     def build_from_config(config: Dict[str, Any]) -> "EmbeddingFunction":
+>         return MyEmbeddingFunction(config['model'])
+> ```
+>
+> ## Default: all-MiniLM-L6-v2
+>
+> Chroma's default embedding function uses the [Sentence Transformers](https://www.sbert.net/) [`all-MiniLM-L6-v2`](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2) model to create embeddings. This embedding model can create sentence and document embeddings that can be used for a wide variety of tasks. This embedding function runs locally on your machine, and may require you to download the model files (this will happen automatically).
+>
+> If you don't specify an embedding function when creating a collection, Chroma will set it to be the `DefaultEmbeddingFunction`:
+>
+> ```python theme={null}
+> collection = client.create_collection(name="my_collection")
+> ```
 
-    Embedding functions can be linked to a collection and used whenever you call `add`, `update`, `upsert` or `query`.
+> [tab] TypeScript
+>
+> ## Using Embedding Functions
+>
+> Embedding functions can be linked to a collection and used whenever you call `add`, `update`, `upsert` or `query`.
+>
+> For example, this is how you use the OpenAI embedding function:
+>
+> Install the `@chroma-core/openai` package:
+>
+> ```bash npm theme={null}
+> npm install @chroma-core/openai
+> ```
+>
+> ```bash pnpm theme={null}
+> pnpm add @chroma-core/openai
+> ```
+>
+> ```bash bun theme={null}
+> bun add @chroma-core/openai
+> ```
+>
+> ```bash yarn theme={null}
+> yarn add @chroma-core/openai
+> ```
+>
+> Create a collection with the `OpenAIEmbeddingFunction`:
+>
+> ```typescript theme={null}
+> // Set your OPENAI_API_KEY environment variable
+> import { OpenAIEmbeddingFunction } from "@chroma-core/openai";
+>
+> collection = await client.createCollection({
+>   name: "my_collection",
+>   embedding_function: new OpenAIEmbeddingFunction({
+>     modelName: "text-embedding-3-small",
+>   }),
+> });
+>
+> // Chroma will use OpenAIEmbeddingFunction to embed your documents
+> await collection.add({
+>   ids: ["id1", "id2"],
+>   documents: ["doc1", "doc2"],
+> });
+> ```
+>
+> You can also use embedding functions directly which can be handy for debugging.
+>
+> ```typescript theme={null}
+> import { DefaultEmbeddingFunction } from "@chroma-core/default-embed";
+>
+> const defaultEF = new DefaultEmbeddingFunction();
+> const embeddings = await defaultEF.generate(["foo"]);
+> console.log(embeddings); // [[0.05035809800028801, 0.0626462921500206, -0.061827320605516434...]]
+>
+> await collection.query({ queryEmbeddings: embeddings });
+> ```
+>
+> ## Custom Embedding Functions
+>
+> You can create your own embedding function to use with Chroma; it just needs to implement `EmbeddingFunction`.
+>
+> ```typescript theme={null}
+> export interface MyEmbeddingConfig {
+>   model: string;
+> }
+>
+> export class MyEmbeddingFunction implements EmbeddingFunction {
+>   public readonly name = "my-embedding-function";
+>   private readonly model: string;
+>
+>   constructor(args: { model: string }) {
+>     this.model = args.model;
+>   }
+>
+>   async generate(texts: string[]): Promise<number[][]> {
+>     // embed the documents somehow
+>     return [];
+>   }
+>
+>   getConfig(): MyEmbeddingConfig {
+>     return {
+>       model: this.model,
+>     };
+>   }
+>
+>   validateConfigUpdate(config: Record<string, any>) {
+>     if ("model" in config) {
+>       throw new ChromaValueError("Model cannot be updated");
+>     }
+>   }
+>
+>   static buildFromConfig(
+>     config: MyEmbeddingConfig,
+>     _client?: ChromaClient,
+>   ): MyEmbeddingFunction {
+>     return new MyEmbeddingFunction(config);
+>   }
+> }
+> ```
+>
+> We welcome contributions! If you create an embedding function that you think would be useful to others, please consider [submitting a pull request](https://github.com/chroma-core/chroma).
+>
+> ## Default: all-MiniLM-L6-v2
+>
+> Chroma's default embedding function uses the [Sentence Transformers](https://www.sbert.net/) `all-MiniLM-L6-v2` model to create embeddings. This embedding model can create sentence and document embeddings that can be used for a wide variety of tasks. This embedding function runs locally on your machine, and may require you to download the model files (this will happen automatically).
+>
+> If you don't specify an embedding function when creating a collection, install the `@chroma-core/default-embed` package:
+>
+> ```bash npm theme={null}
+> npm install @chroma-core/default-embed
+> ```
+>
+> ```bash pnpm theme={null}
+> pnpm add @chroma-core/default-embed
+> ```
+>
+> ```bash bun theme={null}
+> bun add @chroma-core/default-embed
+> ```
+>
+> ```bash yarn theme={null}
+> yarn add @chroma-core/default-embed
+> ```
+>
+> Create a collection without providing an embedding function. It will automatically be set with the `DefaultEmbeddingFunction`:
+>
+> ```typescript theme={null}
+> const collection = await client.createCollection({ name: "my-collection" });
+> ```
 
-    For example, this is how you use the OpenAI embedding function:
-
-    ```python theme={null}
-    # Set your OPENAI_API_KEY environment variable
-    from chromadb.utils.embedding_functions import OpenAIEmbeddingFunction
-
-    collection = client.create_collection(
-        name="my_collection",
-        embedding_function=OpenAIEmbeddingFunction(
-            model_name="text-embedding-3-small"
-        )
-    )
-
-    # Chroma will use OpenAIEmbeddingFunction to embed your documents
-    collection.add(
-        ids=["id1", "id2"],
-        documents=["doc1", "doc2"]
-    )
-    ```
-
-    You can also use embedding functions directly which can be handy for debugging.
-
-    ```python theme={null}
-    from chromadb.utils.embedding_functions import DefaultEmbeddingFunction
-
-    default_ef = DefaultEmbeddingFunction()
-    embeddings = default_ef(["foo"])
-    print(embeddings) # [[0.05035809800028801, 0.0626462921500206, -0.061827320605516434...]]
-
-    collection.query(query_embeddings=embeddings)
-    ```
-
-    ## Custom Embedding Functions
-
-    You can create your own embedding function to use with Chroma; it just needs to implement `EmbeddingFunction`.
-
-    ```python theme={null}
-    from typing import Dict, Any
-    from chromadb import Documents, EmbeddingFunction, Embeddings
-    from chromadb.utils.embedding_functions import register_embedding_function
-
-    @register_embedding_function
-    class MyEmbeddingFunction(EmbeddingFunction):
-
-        def __init__(self, model):
-            self.model = model
-
-        def __call__(self, input: Documents) -> Embeddings:
-            # embed the documents somehow
-            return embeddings
-
-        @staticmethod
-        def name() -> str:
-            return "my-ef"
-
-        def get_config(self) -> Dict[str, Any]:
-            return dict(model=self.model)
-
-        @staticmethod
-        def build_from_config(config: Dict[str, Any]) -> "EmbeddingFunction":
-            return MyEmbeddingFunction(config['model'])
-    ```
-
-    ## Default: all-MiniLM-L6-v2
-
-    Chroma's default embedding function uses the [Sentence Transformers](https://www.sbert.net/) [`all-MiniLM-L6-v2`](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2) model to create embeddings. This embedding model can create sentence and document embeddings that can be used for a wide variety of tasks. This embedding function runs locally on your machine, and may require you to download the model files (this will happen automatically).
-
-    If you don't specify an embedding function when creating a collection, Chroma will set it to be the `DefaultEmbeddingFunction`:
-
-    ```python theme={null}
-    collection = client.create_collection(name="my_collection")
-    ```
-  </Tab>
-
-  <Tab title="TypeScript" icon="js">
-    ## Using Embedding Functions
-
-    Embedding functions can be linked to a collection and used whenever you call `add`, `update`, `upsert` or `query`.
-
-    For example, this is how you use the OpenAI embedding function:
-
-    Install the `@chroma-core/openai` package:
-
-    <CodeGroup>
-      ```bash npm theme={null}
-      npm install @chroma-core/openai
-      ```
-
-      ```bash pnpm theme={null}
-      pnpm add @chroma-core/openai
-      ```
-
-      ```bash bun theme={null}
-      bun add @chroma-core/openai
-      ```
-
-      ```bash yarn theme={null}
-      yarn add @chroma-core/openai
-      ```
-    </CodeGroup>
-
-    Create a collection with the `OpenAIEmbeddingFunction`:
-
-    ```typescript theme={null}
-    // Set your OPENAI_API_KEY environment variable
-    import { OpenAIEmbeddingFunction } from "@chroma-core/openai";
-
-    collection = await client.createCollection({
-      name: "my_collection",
-      embedding_function: new OpenAIEmbeddingFunction({
-        modelName: "text-embedding-3-small",
-      }),
-    });
-
-    // Chroma will use OpenAIEmbeddingFunction to embed your documents
-    await collection.add({
-      ids: ["id1", "id2"],
-      documents: ["doc1", "doc2"],
-    });
-    ```
-
-    You can also use embedding functions directly which can be handy for debugging.
-
-    ```typescript theme={null}
-    import { DefaultEmbeddingFunction } from "@chroma-core/default-embed";
-
-    const defaultEF = new DefaultEmbeddingFunction();
-    const embeddings = await defaultEF.generate(["foo"]);
-    console.log(embeddings); // [[0.05035809800028801, 0.0626462921500206, -0.061827320605516434...]]
-
-    await collection.query({ queryEmbeddings: embeddings });
-    ```
-
-    ## Custom Embedding Functions
-
-    You can create your own embedding function to use with Chroma; it just needs to implement `EmbeddingFunction`.
-
-    ```typescript theme={null}
-    export interface MyEmbeddingConfig {
-      model: string;
-    }
-
-    export class MyEmbeddingFunction implements EmbeddingFunction {
-      public readonly name = "my-embedding-function";
-      private readonly model: string;
-
-      constructor(args: { model: string }) {
-        this.model = args.model;
-      }
-
-      async generate(texts: string[]): Promise<number[][]> {
-        // embed the documents somehow
-        return [];
-      }
-
-      getConfig(): MyEmbeddingConfig {
-        return {
-          model: this.model,
-        };
-      }
-
-      validateConfigUpdate(config: Record<string, any>) {
-        if ("model" in config) {
-          throw new ChromaValueError("Model cannot be updated");
-        }
-      }
-
-      static buildFromConfig(
-        config: MyEmbeddingConfig,
-        _client?: ChromaClient,
-      ): MyEmbeddingFunction {
-        return new MyEmbeddingFunction(config);
-      }
-    }
-    ```
-
-    We welcome contributions! If you create an embedding function that you think would be useful to others, please consider [submitting a pull request](https://github.com/chroma-core/chroma).
-
-    ## Default: all-MiniLM-L6-v2
-
-    Chroma's default embedding function uses the [Sentence Transformers](https://www.sbert.net/) `all-MiniLM-L6-v2` model to create embeddings. This embedding model can create sentence and document embeddings that can be used for a wide variety of tasks. This embedding function runs locally on your machine, and may require you to download the model files (this will happen automatically).
-
-    If you don't specify an embedding function when creating a collection, install the `@chroma-core/default-embed` package:
-
-    <CodeGroup>
-      ```bash npm theme={null}
-      npm install @chroma-core/default-embed
-      ```
-
-      ```bash pnpm theme={null}
-      pnpm add @chroma-core/default-embed
-      ```
-
-      ```bash bun theme={null}
-      bun add @chroma-core/default-embed
-      ```
-
-      ```bash yarn theme={null}
-      yarn add @chroma-core/default-embed
-      ```
-    </CodeGroup>
-
-    Create a collection without providing an embedding function. It will automatically be set with the `DefaultEmbeddingFunction`:
-
-    ```typescript theme={null}
-    const collection = await client.createCollection({ name: "my-collection" });
-    ```
-  </Tab>
-
-  <Tab title="Rust" icon="rust">
-    The Rust client expects embeddings to be provided directly. Use your provider SDK to generate embeddings, then pass them to `add`, `query`, and other methods.
-
-    ```rust theme={null}
-    let embeddings = vec![vec![0.05, 0.06, -0.06]];
-
-    collection
-        .add(
-            vec!["id1".to_string()],
-            embeddings,
-            Some(vec![Some("doc1".to_string())]),
-            None,
-            None,
-        )
-        .await?;
-    ```
-  </Tab>
-</Tabs>
+> [tab] Rust
+>
+> The Rust client expects embeddings to be provided directly. Use your provider SDK to generate embeddings, then pass them to `add`, `query`, and other methods.
+>
+> ```rust theme={null}
+> let embeddings = vec![vec![0.05, 0.06, -0.06]];
+>
+> collection
+>     .add(
+>         vec!["id1".to_string()],
+>         embeddings,
+>         Some(vec![Some("doc1".to_string())]),
+>         None,
+>         None,
+>     )
+>     .await?;
+> ```
 
 ## All Embedding Functions
 

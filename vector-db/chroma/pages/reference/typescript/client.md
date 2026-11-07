@@ -11,79 +11,79 @@ path: reference/typescript/client
 Main client class for interacting with ChromaDB.
 Provides methods for managing collections and performing operations on them.
 
-<ParamField type="string | undefined">
-  The host address of the Chroma server. Defaults to 'localhost'
-</ParamField>
+**host** `string | undefined`
 
-<ParamField type="number | undefined">
-  The port number of the Chroma server. Defaults to 8000
-</ParamField>
+The host address of the Chroma server. Defaults to 'localhost'
 
-<ParamField type="boolean | undefined">
-  Whether to use SSL/HTTPS for connections. Defaults to false
-</ParamField>
+**port** `number | undefined`
 
-<ParamField type="string | undefined">
-  The tenant name in the Chroma server to connect to
-</ParamField>
+The port number of the Chroma server. Defaults to 8000
 
-<ParamField type="string | undefined">
-  The database name to connect to
-</ParamField>
+**ssl** `boolean | undefined`
 
-<ParamField type="Record<string, string> | undefined">
-  Additional HTTP headers to send with requests
-</ParamField>
+Whether to use SSL/HTTPS for connections. Defaults to false
 
-<ParamField type="RequestInit | undefined">
-  Additional fetch options for HTTP requests
-</ParamField>
+**tenant** `string | undefined`
 
-<ParamField type="string | undefined" />
+The tenant name in the Chroma server to connect to
 
-<ParamField type="Record<string, string> | undefined" />
+**database** `string | undefined`
+
+The database name to connect to
+
+**headers** `Record\<string, string\> | undefined`
+
+Additional HTTP headers to send with requests
+
+**fetchOptions** `RequestInit | undefined`
+
+Additional fetch options for HTTP requests
+
+**path** `string | undefined`
+
+**auth** `Record\<string, string\> | undefined`
 
 ### CloudClient
 
 ChromaDB cloud client for connecting to hosted Chroma instances.
 Extends ChromaClient with cloud-specific authentication and configuration.
 
-<ParamField type="string" />
+**apiKey** `string`
 
-<ParamField type="string" />
+**host** `string`
 
-<ParamField type="number" />
+**port** `number`
 
-<ParamField type="string" />
+**tenant** `string`
 
-<ParamField type="string" />
+**database** `string`
 
-<ParamField type="RequestInit" />
+**fetchOptions** `RequestInit`
 
 ### AdminClient
 
 Administrative client for managing ChromaDB tenants and databases.
 Provides methods for creating, deleting, and listing tenants and databases.
 
-<ParamField type="string">
-  The host address of the Chroma server
-</ParamField>
+**host** `string` *required*
 
-<ParamField type="number">
-  The port number of the Chroma server
-</ParamField>
+The host address of the Chroma server
 
-<ParamField type="boolean">
-  Whether to use SSL/HTTPS for connections
-</ParamField>
+**port** `number` *required*
 
-<ParamField type="Record<string, string> | undefined">
-  Additional HTTP headers to send with requests
-</ParamField>
+The port number of the Chroma server
 
-<ParamField type="RequestInit | undefined">
-  Additional fetch options for HTTP requests
-</ParamField>
+**ssl** `boolean` *required*
+
+Whether to use SSL/HTTPS for connections
+
+**headers** `Record\<string, string\> | undefined`
+
+Additional HTTP headers to send with requests
+
+**fetchOptions** `RequestInit | undefined`
+
+Additional fetch options for HTTP requests
 
 ***
 
@@ -99,9 +99,9 @@ Sends a heartbeat request to check server connectivity.
 
 Lists all collections in the current database.
 
-<ParamField type="number" />
+**limit** `number` *required*
 
-<ParamField type="number" />
+**offset** `number` *required*
 
 **Returns:** Promise resolving to an array of Collection instances
 
@@ -115,15 +115,15 @@ Gets the total number of collections in the current database.
 
 Creates a new collection with the specified configuration.
 
-<ParamField type="string" />
+**name** `string` *required*
 
-<ParamField type="CreateCollectionConfiguration" />
+**configuration** `CreateCollectionConfiguration`
 
-<ParamField type="CollectionMetadata" />
+**metadata** `CollectionMetadata`
 
-<ParamField type="EmbeddingFunction | null" />
+**embeddingFunction** `EmbeddingFunction | null`
 
-<ParamField type="Schema" />
+**schema** `Schema`
 
 **Returns:** Promise resolving to the created Collection instance
 
@@ -131,9 +131,9 @@ Creates a new collection with the specified configuration.
 
 Retrieves an existing collection by name.
 
-<ParamField type="string" />
+**name** `string` *required*
 
-<ParamField type="EmbeddingFunction" />
+**embeddingFunction** `EmbeddingFunction`
 
 **Returns:** Promise resolving to the Collection instance
 
@@ -141,15 +141,15 @@ Retrieves an existing collection by name.
 
 Gets an existing collection or creates it if it doesn't exist.
 
-<ParamField type="string" />
+**name** `string` *required*
 
-<ParamField type="CreateCollectionConfiguration" />
+**configuration** `CreateCollectionConfiguration`
 
-<ParamField type="CollectionMetadata" />
+**metadata** `CollectionMetadata`
 
-<ParamField type="EmbeddingFunction | null" />
+**embeddingFunction** `EmbeddingFunction | null`
 
-<ParamField type="Schema" />
+**schema** `Schema`
 
 **Returns:** Promise resolving to the Collection instance
 
@@ -157,7 +157,7 @@ Gets an existing collection or creates it if it doesn't exist.
 
 Deletes a collection and all its data.
 
-<ParamField type="string" />
+**name** `string` *required*
 
 ### reset
 
@@ -179,13 +179,13 @@ Gets the version of the Chroma server.
 
 Creates a new tenant.
 
-<ParamField type="string" />
+**name** `string` *required*
 
 ### getTenant
 
 Retrieves information about a specific tenant.
 
-<ParamField type="string" />
+**name** `string` *required*
 
 **Returns:** Promise resolving to the tenant name
 
@@ -193,17 +193,17 @@ Retrieves information about a specific tenant.
 
 Creates a new database within a tenant.
 
-<ParamField type="string" />
+**name** `string` *required*
 
-<ParamField type="string" />
+**tenant** `string` *required*
 
 ### getDatabase
 
 Retrieves information about a specific database.
 
-<ParamField type="string" />
+**name** `string` *required*
 
-<ParamField type="string" />
+**tenant** `string` *required*
 
 **Returns:** Promise resolving to database information
 
@@ -211,16 +211,16 @@ Retrieves information about a specific database.
 
 Deletes a database and all its data.
 
-<ParamField type="string" />
+**name** `string` *required*
 
-<ParamField type="string" />
+**tenant** `string` *required*
 
 ### listDatabases
 
 Lists all databases within a tenant.
 
-<ParamField type="ListDatabasesArgs">
-  Listing parameters including tenant and pagination
-</ParamField>
+**args** `ListDatabasesArgs` *required*
+
+Listing parameters including tenant and pagination
 
 **Returns:** Promise resolving to an array of database information

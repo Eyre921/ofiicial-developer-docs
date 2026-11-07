@@ -20,93 +20,89 @@ Schema allows you to configure which indexes are created for different data type
 
 Here's a simple example creating a collection with a custom schema:
 
-<CodeGroup>
-  ```python Python theme={null}
-  import chromadb
-  from chromadb import Schema, StringInvertedIndexConfig
+```python Python theme={null}
+import chromadb
+from chromadb import Schema, StringInvertedIndexConfig
 
-  # Connect to Chroma Cloud
-  client = chromadb.CloudClient(
-      tenant="your-tenant",
-      database="your-database",
-      api_key="your-api-key"
-  )
+# Connect to Chroma Cloud
+client = chromadb.CloudClient(
+    tenant="your-tenant",
+    database="your-database",
+    api_key="your-api-key"
+)
 
-  # Create a schema and disable string indexing globally
-  schema = Schema()
-  schema.delete_index(config=StringInvertedIndexConfig())
+# Create a schema and disable string indexing globally
+schema = Schema()
+schema.delete_index(config=StringInvertedIndexConfig())
 
-  # Create collection with the schema
-  collection = client.create_collection(
-      name="my_collection",
-      schema=schema
-  )
+# Create collection with the schema
+collection = client.create_collection(
+    name="my_collection",
+    schema=schema
+)
 
-  # Add data - string metadata won't be indexed
-  collection.add(
-      ids=["id1", "id2"],
-      documents=["Document 1", "Document 2"],
-      metadatas=[
-          {"category": "science", "year": 2024},
-          {"category": "tech", "year": 2023}
-      ]
-  )
-
-  # Querying on disabled index will raise an error
-  try:
-      collection.query(
-          query_texts=["query"],
-          where={"category": "science"}  # Error: string index is disabled
-      )
-  except Exception as e:
-      print(f"Error: {e}")
-  ```
-
-  ```typescript TypeScript theme={null}
-  import { CloudClient, Schema, StringInvertedIndexConfig } from 'chromadb';
-
-  // Connect to Chroma Cloud
-  const client = new CloudClient({
-    tenant: "your-tenant",
-    database: "your-database",
-    apiKey: "your-api-key"
-  });
-
-  // Create a schema and disable string indexing globally
-  const schema = new Schema();
-  schema.deleteIndex(new StringInvertedIndexConfig());
-
-  // Create collection with the schema
-  const collection = await client.createCollection({
-    name: "my_collection",
-    schema: schema
-  });
-
-  // Add data - string metadata won't be indexed
-  await collection.add({
-    ids: ["id1", "id2"],
-    documents: ["Document 1", "Document 2"],
-    metadatas: [
-      { category: "science", year: 2024 },
-      { category: "tech", year: 2023 }
+# Add data - string metadata won't be indexed
+collection.add(
+    ids=["id1", "id2"],
+    documents=["Document 1", "Document 2"],
+    metadatas=[
+        {"category": "science", "year": 2024},
+        {"category": "tech", "year": 2023}
     ]
+)
+
+# Querying on disabled index will raise an error
+try:
+    collection.query(
+        query_texts=["query"],
+        where={"category": "science"}  # Error: string index is disabled
+    )
+except Exception as e:
+    print(f"Error: {e}")
+```
+
+```typescript TypeScript theme={null}
+import { CloudClient, Schema, StringInvertedIndexConfig } from 'chromadb';
+
+// Connect to Chroma Cloud
+const client = new CloudClient({
+  tenant: "your-tenant",
+  database: "your-database",
+  apiKey: "your-api-key"
+});
+
+// Create a schema and disable string indexing globally
+const schema = new Schema();
+schema.deleteIndex(new StringInvertedIndexConfig());
+
+// Create collection with the schema
+const collection = await client.createCollection({
+  name: "my_collection",
+  schema: schema
+});
+
+// Add data - string metadata won't be indexed
+await collection.add({
+  ids: ["id1", "id2"],
+  documents: ["Document 1", "Document 2"],
+  metadatas: [
+    { category: "science", year: 2024 },
+    { category: "tech", year: 2023 }
+  ]
+});
+
+// Querying on disabled index will raise an error
+try {
+  await collection.query({
+    queryTexts: ["query"],
+    where: { category: "science" }  // Error: string index is disabled
   });
+} catch (e) {
+  console.log(`Error: ${e}`);
+}
+```
 
-  // Querying on disabled index will raise an error
-  try {
-    await collection.query({
-      queryTexts: ["query"],
-      where: { category: "science" }  // Error: string index is disabled
-    });
-  } catch (e) {
-    console.log(`Error: ${e}`);
-  }
-  ```
-</CodeGroup>
-
-<Callout>
-  **Important:** Schema is only configurable in `create_collection`. We are working on supporting schema update via collection `modify`
-</Callout>
+**Important:** Schema is only configurable in `create_collection`. We are working on supporting schema update via collection `modify`
 
 ## Feature Highlights
 

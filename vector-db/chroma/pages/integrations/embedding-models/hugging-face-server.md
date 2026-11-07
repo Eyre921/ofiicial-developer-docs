@@ -20,41 +20,37 @@ or
 docker run -p 8001:80 -d -rm --name huggingface-embedding-server ghcr.io/huggingface/text-embeddings-inference:cpu-0.3.0 --model-id BAAI/bge-small-en-v1.5 --revision -main
 ```
 
-<Warning>
-  The above docker command will run the server with the `BAAI/bge-small-en-v1.5` model. You can find more information about running the server in docker [**here**](https://github.com/huggingface/text-embeddings-inference#docker).
-</Warning>
+The above docker command will run the server with the `BAAI/bge-small-en-v1.5` model. You can find more information about running the server in docker [**here**](https://github.com/huggingface/text-embeddings-inference#docker).
 
 ## Usage
 
-<CodeGroup>
-  ```python Python theme={null}
-  from chromadb.utils.embedding_functions import HuggingFaceEmbeddingServer
-  huggingface_ef = HuggingFaceEmbeddingServer(url="http://localhost:8001/embed")
-  ```
+```python Python theme={null}
+from chromadb.utils.embedding_functions import HuggingFaceEmbeddingServer
+huggingface_ef = HuggingFaceEmbeddingServer(url="http://localhost:8001/embed")
+```
 
-  ```typescript TypeScript theme={null}
-  // npm install @chroma-core/huggingface-server
+```typescript TypeScript theme={null}
+// npm install @chroma-core/huggingface-server
 
-  import { HuggingFaceEmbeddingServerFunction } from "@chroma-core/huggingface-server";
+import { HuggingFaceEmbeddingServerFunction } from "@chroma-core/huggingface-server";
 
-  const embedder = new HuggingFaceEmbeddingServerFunction({
-      url: "http://localhost:8001/embed",
-  });
+const embedder = new HuggingFaceEmbeddingServerFunction({
+    url: "http://localhost:8001/embed",
+});
 
-  // use directly
-  const embeddings = embedder.generate(["document1", "document2"]);
+// use directly
+const embeddings = embedder.generate(["document1", "document2"]);
 
-  // pass documents to query for .add and .query
-  let collection = await client.createCollection({
-      name: "name",
-      embeddingFunction: embedder,
-  });
-  collection = await client.getCollection({
-      name: "name",
-      embeddingFunction: embedder,
-  });
-  ```
-</CodeGroup>
+// pass documents to query for .add and .query
+let collection = await client.createCollection({
+    name: "name",
+    embeddingFunction: embedder,
+});
+collection = await client.getCollection({
+    name: "name",
+    embeddingFunction: embedder,
+});
+```
 
 The embedding model is configured on the server side. Check the docker-compose file in `examples/server_side_embeddings/huggingface/docker-compose.yml` for an example of how to configure the server.
 
@@ -63,17 +59,15 @@ The embedding model is configured on the server side. Check the docker-compose f
 The embedding server can be configured to only allow usage with API keys.
 You can use authentication in the chroma clients:
 
-<CodeGroup>
-  ```python Python theme={null}
-  from chromadb.utils.embedding_functions import HuggingFaceEmbeddingServer
-  huggingface_ef = HuggingFaceEmbeddingServer(url="http://localhost:8001/embed", api_key="your secret key")
-  ```
+```python Python theme={null}
+from chromadb.utils.embedding_functions import HuggingFaceEmbeddingServer
+huggingface_ef = HuggingFaceEmbeddingServer(url="http://localhost:8001/embed", api_key="your secret key")
+```
 
-  ```typescript TypeScript theme={null}
-  import { HuggingFaceEmbeddingServerFunction } from "chromadb";
-  const embedder = new HuggingFaceEmbeddingServerFunction({
-      url: "http://localhost:8001/embed",
-      apiKey: "your secret key",
-  });
-  ```
-</CodeGroup>
+```typescript TypeScript theme={null}
+import { HuggingFaceEmbeddingServerFunction } from "chromadb";
+const embedder = new HuggingFaceEmbeddingServerFunction({
+    url: "http://localhost:8001/embed",
+    apiKey: "your secret key",
+});
+```

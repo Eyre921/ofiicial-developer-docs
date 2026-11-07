@@ -8,9 +8,7 @@ path: integrations/frameworks/deepeval
 
 When building a RAG system, you can use DeepEval to pick the best parameters for your **Choma retriever** for optimal retrieval performance and accuracy: `n_results`, `distance_function`, `embedding_model`, `chunk_size`, etc.
 
-<Callout>
-  For more information on how to use DeepEval, see the [DeepEval docs](https://www.deepeval.com/docs/getting-started).
-</Callout>
+For more information on how to use DeepEval, see the [DeepEval docs](https://www.deepeval.com/docs/getting-started).
 
 ## Getting Started
 
@@ -50,9 +48,7 @@ test_case = LLMTestCase(
 
 Define retriever metrics like `Contextual Precision`, `Contextual Recall`, and `Contextual Relevancy` to evaluate test cases. Recall ensures enough vectors are retrieved, while relevancy reduces noise by filtering out irrelevant ones.
 
-<Callout>
-  Balancing recall and relevancy is key. `distance_function` and `embedding_model` affects recall, while `n_results` and `chunk_size` impact relevancy.
-</Callout>
+Balancing recall and relevancy is key. `distance_function` and `embedding_model` affects recall, while `n_results` and `chunk_size` impact relevancy.
 
 ```python theme={null}
 from deepeval.metrics import (
@@ -85,9 +81,7 @@ When logged in, running `evaluate` will automatically send evaluation results to
 
 ![](https://github.com/confident-ai/deepeval/raw/main/assets/demo.gif)
 
-<Callout>
-  To learn more about how to use the platform, please see [this Quickstart Guide](https://documentation.confident-ai.com/).
-</Callout>
+To learn more about how to use the platform, please see [this Quickstart Guide](https://documentation.confident-ai.com/).
 
 ## Support
 

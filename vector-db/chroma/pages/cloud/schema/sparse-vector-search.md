@@ -20,129 +20,121 @@ Sparse vectors use models like SPLADE that assign importance weights to specific
 
 To use sparse vectors, add a sparse vector index to your schema. The `key` parameter is the metadata field name where sparse embeddings will be stored - you can name it whatever you want:
 
-<CodeGroup>
-  ```python Python theme={null}
-  from chromadb import Schema, SparseVectorIndexConfig, K
-  from chromadb.utils.embedding_functions import ChromaCloudSpladeEmbeddingFunction
+```python Python theme={null}
+from chromadb import Schema, SparseVectorIndexConfig, K
+from chromadb.utils.embedding_functions import ChromaCloudSpladeEmbeddingFunction
 
-  schema = Schema()
+schema = Schema()
 
-  # Add sparse vector index for keyword-based search
-  # "sparse_embedding" is just a metadata key name - use any name you prefer
-  sparse_ef = ChromaCloudSpladeEmbeddingFunction()
-  schema.create_index(
-      config=SparseVectorIndexConfig(
-          source_key=K.DOCUMENT,
-          embedding_function=sparse_ef
-      ),
-      key="sparse_embedding"
-  )
-  ```
+# Add sparse vector index for keyword-based search
+# "sparse_embedding" is just a metadata key name - use any name you prefer
+sparse_ef = ChromaCloudSpladeEmbeddingFunction()
+schema.create_index(
+    config=SparseVectorIndexConfig(
+        source_key=K.DOCUMENT,
+        embedding_function=sparse_ef
+    ),
+    key="sparse_embedding"
+)
+```
 
-  ```typescript TypeScript theme={null}
-  import { Schema, SparseVectorIndexConfig, K } from 'chromadb';
-  import { ChromaCloudSpladeEmbeddingFunction } from '@chroma-core/chroma-cloud-splade';
+```typescript TypeScript theme={null}
+import { Schema, SparseVectorIndexConfig, K } from 'chromadb';
+import { ChromaCloudSpladeEmbeddingFunction } from '@chroma-core/chroma-cloud-splade';
 
-  const schema = new Schema();
+const schema = new Schema();
 
-  // Add sparse vector index for keyword-based search
-  // "sparse_embedding" is just a metadata key name - use any name you prefer
-  const sparseEf = new ChromaCloudSpladeEmbeddingFunction({
-    apiKeyEnvVar: "CHROMA_API_KEY"
-  });
-  schema.createIndex(
-    new SparseVectorIndexConfig({
-      sourceKey: K.DOCUMENT,
-      embeddingFunction: sparseEf
-    }),
-    "sparse_embedding"
-  );
-  ```
-</CodeGroup>
+// Add sparse vector index for keyword-based search
+// "sparse_embedding" is just a metadata key name - use any name you prefer
+const sparseEf = new ChromaCloudSpladeEmbeddingFunction({
+  apiKeyEnvVar: "CHROMA_API_KEY"
+});
+schema.createIndex(
+  new SparseVectorIndexConfig({
+    sourceKey: K.DOCUMENT,
+    embeddingFunction: sparseEf
+  }),
+  "sparse_embedding"
+);
+```
 
-<Callout>
-  The `source_key` specifies which field to generate sparse embeddings from (typically `K.DOCUMENT` for document text), and `embedding_function` specifies the function to generate the sparse embeddings. This example uses `ChromaCloudSpladeEmbeddingFunction`, but you can also use other sparse embedding functions like `HuggingFaceSparseEmbeddingFunction` or `FastembedSparseEmbeddingFunction`. The sparse embeddings are automatically generated and stored in the metadata field you specify as the `key`.
-</Callout>
+The `source_key` specifies which field to generate sparse embeddings from (typically `K.DOCUMENT` for document text), and `embedding_function` specifies the function to generate the sparse embeddings. This example uses `ChromaCloudSpladeEmbeddingFunction`, but you can also use other sparse embedding functions like `HuggingFaceSparseEmbeddingFunction` or `FastembedSparseEmbeddingFunction`. The sparse embeddings are automatically generated and stored in the metadata field you specify as the `key`.
 
 ## Create Collection and Add Data
 
 ### Create Collection with Schema
 
-<CodeGroup>
-  ```python Python theme={null}
-  import chromadb
+```python Python theme={null}
+import chromadb
 
-  client = chromadb.CloudClient(
-      tenant="your-tenant",
-      database="your-database",
-      api_key="your-api-key"
-  )
+client = chromadb.CloudClient(
+    tenant="your-tenant",
+    database="your-database",
+    api_key="your-api-key"
+)
 
-  collection = client.create_collection(
-      name="hybrid_search_collection",
-      schema=schema
-  )
-  ```
+collection = client.create_collection(
+    name="hybrid_search_collection",
+    schema=schema
+)
+```
 
-  ```typescript TypeScript theme={null}
-  import { CloudClient } from 'chromadb';
+```typescript TypeScript theme={null}
+import { CloudClient } from 'chromadb';
 
-  const client = new CloudClient({
-    tenant: "your-tenant",
-    database: "your-database",
-    apiKey: "your-api-key"
-  });
+const client = new CloudClient({
+  tenant: "your-tenant",
+  database: "your-database",
+  apiKey: "your-api-key"
+});
 
-  const collection = await client.createCollection({
-    name: "hybrid_search_collection",
-    schema: schema
-  });
-  ```
-</CodeGroup>
+const collection = await client.createCollection({
+  name: "hybrid_search_collection",
+  schema: schema
+});
+```
 
 ### Add Data
 
 When you add documents, sparse embeddings are automatically generated from the source key:
 
-<CodeGroup>
-  ```python Python theme={null}
-  collection.add(
-      ids=["doc1", "doc2", "doc3"],
-      documents=[
-          "The quick brown fox jumps over the lazy dog",
-          "A fast auburn fox leaps over a sleepy canine",
-          "Machine learning is a subset of artificial intelligence"
-      ],
-      metadatas=[
-          {"category": "animals"},
-          {"category": "animals"},
-          {"category": "technology"}
-      ]
-  )
-
-  # Sparse embeddings for "sparse_embedding" are generated automatically
-  # from the documents (source_key=K.DOCUMENT)
-  ```
-
-  ```typescript TypeScript theme={null}
-  await collection.add({
-    ids: ["doc1", "doc2", "doc3"],
-    documents: [
-      "The quick brown fox jumps over the lazy dog",
-      "A fast auburn fox leaps over a sleepy canine",
-      "Machine learning is a subset of artificial intelligence"
+```python Python theme={null}
+collection.add(
+    ids=["doc1", "doc2", "doc3"],
+    documents=[
+        "The quick brown fox jumps over the lazy dog",
+        "A fast auburn fox leaps over a sleepy canine",
+        "Machine learning is a subset of artificial intelligence"
     ],
-    metadatas: [
-      { category: "animals" },
-      { category: "animals" },
-      { category: "technology" }
+    metadatas=[
+        {"category": "animals"},
+        {"category": "animals"},
+        {"category": "technology"}
     ]
-  });
+)
 
-  // Sparse embeddings for "sparse_embedding" are generated automatically
-  // from the documents (source_key=K.DOCUMENT)
-  ```
-</CodeGroup>
+# Sparse embeddings for "sparse_embedding" are generated automatically
+# from the documents (source_key=K.DOCUMENT)
+```
+
+```typescript TypeScript theme={null}
+await collection.add({
+  ids: ["doc1", "doc2", "doc3"],
+  documents: [
+    "The quick brown fox jumps over the lazy dog",
+    "A fast auburn fox leaps over a sleepy canine",
+    "Machine learning is a subset of artificial intelligence"
+  ],
+  metadatas: [
+    { category: "animals" },
+    { category: "animals" },
+    { category: "technology" }
+  ]
+});
+
+// Sparse embeddings for "sparse_embedding" are generated automatically
+// from the documents (source_key=K.DOCUMENT)
+```
 
 ## Using Sparse Vectors for Search
 
@@ -152,46 +144,44 @@ Once configured, you can search using sparse vectors alone or combine them with 
 
 Use sparse vectors for keyword-based retrieval:
 
-<CodeGroup>
-  ```python Python theme={null}
-  from chromadb import Search, K, Knn
+```python Python theme={null}
+from chromadb import Search, K, Knn
 
-  # Search using sparse embeddings only
-  sparse_rank = Knn(query="fox animal", key="sparse_embedding")
+# Search using sparse embeddings only
+sparse_rank = Knn(query="fox animal", key="sparse_embedding")
 
-  # Build and execute search
-  search = (Search()
-      .rank(sparse_rank)
-      .limit(10)
-      .select(K.DOCUMENT, K.SCORE))
-
-  results = collection.search(search)
-
-  # Process results
-  for row in results.rows()[0]:
-      print(f"Score: {row['score']:.3f} - {row['document']}")
-  ```
-
-  ```typescript TypeScript theme={null}
-  import { Search, K, Knn } from 'chromadb';
-
-  // Search using sparse embeddings only
-  const sparseRank = Knn({ query: "fox animal", key: "sparse_embedding" });
-
-  // Build and execute search
-  const search = new Search()
-    .rank(sparseRank)
+# Build and execute search
+search = (Search()
+    .rank(sparse_rank)
     .limit(10)
-    .select(K.DOCUMENT, K.SCORE);
+    .select(K.DOCUMENT, K.SCORE))
 
-  const results = await collection.search(search);
+results = collection.search(search)
 
-  // Process results
-  for (const row of results.rows()[0]) {
-    console.log(`Score: ${row.score.toFixed(3)} - ${row.document}`);
-  }
-  ```
-</CodeGroup>
+# Process results
+for row in results.rows()[0]:
+    print(f"Score: {row['score']:.3f} - {row['document']}")
+```
+
+```typescript TypeScript theme={null}
+import { Search, K, Knn } from 'chromadb';
+
+// Search using sparse embeddings only
+const sparseRank = Knn({ query: "fox animal", key: "sparse_embedding" });
+
+// Build and execute search
+const search = new Search()
+  .rank(sparseRank)
+  .limit(10)
+  .select(K.DOCUMENT, K.SCORE);
+
+const results = await collection.search(search);
+
+// Process results
+for (const row of results.rows()[0]) {
+  console.log(`Score: ${row.score.toFixed(3)} - ${row.document}`);
+}
+```
 
 ## Hybrid Search
 
@@ -207,64 +197,60 @@ Hybrid search combines dense semantic embeddings with sparse keyword embeddings 
 
 Use RRF (Reciprocal Rank Fusion) to merge dense and sparse search results:
 
-<CodeGroup>
-  ```python Python theme={null}
-  from chromadb import Search, K, Knn, Rrf
+```python Python theme={null}
+from chromadb import Search, K, Knn, Rrf
 
-  # Create RRF ranking combining dense and sparse embeddings
-  hybrid_rank = Rrf(
-      ranks=[
-          Knn(query="fox animal", return_rank=True),           # Dense semantic search
-          Knn(query="fox animal", key="sparse_embedding", return_rank=True)  # Sparse keyword search
-      ],
-      weights=[0.7, 0.3],  # 70% semantic, 30% keyword
-      k=60
-  )
-
-  # Build and execute search
-  search = (Search()
-      .rank(hybrid_rank)
-      .limit(10)
-      .select(K.DOCUMENT, K.SCORE))
-
-  results = collection.search(search)
-
-  # Process results
-  for row in results.rows()[0]:
-      print(f"Score: {row['score']:.3f} - {row['document']}")
-  ```
-
-  ```typescript TypeScript theme={null}
-  import { Search, K, Knn, Rrf } from 'chromadb';
-
-  // Create RRF ranking combining dense and sparse embeddings
-  const hybridRank = Rrf({
-    ranks: [
-      Knn({ query: "fox animal", returnRank: true }),           // Dense semantic search
-      Knn({ query: "fox animal", key: "sparse_embedding", returnRank: true })  // Sparse keyword search
+# Create RRF ranking combining dense and sparse embeddings
+hybrid_rank = Rrf(
+    ranks=[
+        Knn(query="fox animal", return_rank=True),           # Dense semantic search
+        Knn(query="fox animal", key="sparse_embedding", return_rank=True)  # Sparse keyword search
     ],
-    weights: [0.7, 0.3],  // 70% semantic, 30% keyword
-    k: 60
-  });
+    weights=[0.7, 0.3],  # 70% semantic, 30% keyword
+    k=60
+)
 
-  // Build and execute search
-  const search = new Search()
-    .rank(hybridRank)
+# Build and execute search
+search = (Search()
+    .rank(hybrid_rank)
     .limit(10)
-    .select(K.DOCUMENT, K.SCORE);
+    .select(K.DOCUMENT, K.SCORE))
 
-  const results = await collection.search(search);
+results = collection.search(search)
 
-  // Process results
-  for (const row of results.rows()[0]) {
-    console.log(`Score: ${row.score.toFixed(3)} - ${row.document}`);
-  }
-  ```
-</CodeGroup>
+# Process results
+for row in results.rows()[0]:
+    print(f"Score: {row['score']:.3f} - {row['document']}")
+```
 
-<Callout>
-  For comprehensive details on RRF parameters, weight tuning, and advanced hybrid search strategies, see the [Search API Hybrid Search documentation](../search-api/hybrid-search).
-</Callout>
+```typescript TypeScript theme={null}
+import { Search, K, Knn, Rrf } from 'chromadb';
+
+// Create RRF ranking combining dense and sparse embeddings
+const hybridRank = Rrf({
+  ranks: [
+    Knn({ query: "fox animal", returnRank: true }),           // Dense semantic search
+    Knn({ query: "fox animal", key: "sparse_embedding", returnRank: true })  // Sparse keyword search
+  ],
+  weights: [0.7, 0.3],  // 70% semantic, 30% keyword
+  k: 60
+});
+
+// Build and execute search
+const search = new Search()
+  .rank(hybridRank)
+  .limit(10)
+  .select(K.DOCUMENT, K.SCORE);
+
+const results = await collection.search(search);
+
+// Process results
+for (const row of results.rows()[0]) {
+  console.log(`Score: ${row.score.toFixed(3)} - ${row.document}`);
+}
+```
+
+For comprehensive details on RRF parameters, weight tuning, and advanced hybrid search strategies, see the [Search API Hybrid Search documentation](../search-api/hybrid-search).
 
 ## Next Steps
 

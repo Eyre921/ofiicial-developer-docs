@@ -12,65 +12,61 @@ The following OpenAI Embedding Models are supported:
 * `text-embedding-3-small`
 * `text-embedding-3-large`
 
-<Callout>
-  Visit OpenAI Embeddings [documentation](https://platform.openai.com/docs/guides/embeddings) for more information.
-</Callout>
+Visit OpenAI Embeddings [documentation](https://platform.openai.com/docs/guides/embeddings) for more information.
 
-<Tabs>
-  <Tab title="Python" icon="python">
-    This embedding function relies on the `openai` python package, which you can install with `pip install openai`.
+> [tab] Python
+>
+> This embedding function relies on the `openai` python package, which you can install with `pip install openai`.
+>
+> You can pass in an optional `model_name` argument, which lets you choose which OpenAI embeddings model to use. By default, Chroma uses `text-embedding-ada-002`.
+>
+> ```python theme={null}
+> import chromadb.utils.embedding_functions as embedding_functions
+> openai_ef = embedding_functions.OpenAIEmbeddingFunction(
+>     api_key_env_var="OPENAI_API_KEY",
+>     model_name="text-embedding-3-small"
+> )
+> ```
+>
+> To use the OpenAI embedding models on other platforms such as Azure, you can use the `api_base` and `api_type` parameters:
+>
+> ```python theme={null}
+> import chromadb.utils.embedding_functions as embedding_functions
+> openai_ef = embedding_functions.OpenAIEmbeddingFunction(
+>     api_key_env_var="OPENAI_API_KEY",
+>     api_base="YOUR_API_BASE_PATH",
+>     api_type="azure",
+>     api_version="YOUR_API_VERSION",
+>     model_name="text-embedding-3-small"
+> )
+> ```
 
-    You can pass in an optional `model_name` argument, which lets you choose which OpenAI embeddings model to use. By default, Chroma uses `text-embedding-ada-002`.
-
-    ```python theme={null}
-    import chromadb.utils.embedding_functions as embedding_functions
-    openai_ef = embedding_functions.OpenAIEmbeddingFunction(
-        api_key_env_var="OPENAI_API_KEY",
-        model_name="text-embedding-3-small"
-    )
-    ```
-
-    To use the OpenAI embedding models on other platforms such as Azure, you can use the `api_base` and `api_type` parameters:
-
-    ```python theme={null}
-    import chromadb.utils.embedding_functions as embedding_functions
-    openai_ef = embedding_functions.OpenAIEmbeddingFunction(
-        api_key_env_var="OPENAI_API_KEY",
-        api_base="YOUR_API_BASE_PATH",
-        api_type="azure",
-        api_version="YOUR_API_VERSION",
-        model_name="text-embedding-3-small"
-    )
-    ```
-  </Tab>
-
-  <Tab title="TypeScript" icon="js">
-    You can pass in an optional `model` argument, which lets you choose which OpenAI embeddings model to use. By default, Chroma uses `text-embedding-3-small`.
-
-    ```typescript theme={null}
-    // npm install @chroma-core/openai
-
-    import { OpenAIEmbeddingFunction } from "@chroma-core/openai";
-
-    const embeddingFunction = new OpenAIEmbeddingFunction({
-        apiKeyEnvVar: "OPENAI_API_KEY",
-        modelName: "text-embedding-3-small",
-        // Optional: specify API base (e.g. for Azure OpenAI)
-        apiBase: "your-api-base"
-    });
-
-    // use directly
-    const embeddings = embeddingFunction.generate(["document1", "document2"]);
-
-    // pass documents to query for .add and .query
-    let collection = await client.createCollection({
-        name: "name",
-        embeddingFunction: embeddingFunction,
-    });
-    collection = await client.getCollection({
-        name: "name",
-        embeddingFunction: embeddingFunction,
-    });
-    ```
-  </Tab>
-</Tabs>
+> [tab] TypeScript
+>
+> You can pass in an optional `model` argument, which lets you choose which OpenAI embeddings model to use. By default, Chroma uses `text-embedding-3-small`.
+>
+> ```typescript theme={null}
+> // npm install @chroma-core/openai
+>
+> import { OpenAIEmbeddingFunction } from "@chroma-core/openai";
+>
+> const embeddingFunction = new OpenAIEmbeddingFunction({
+>     apiKeyEnvVar: "OPENAI_API_KEY",
+>     modelName: "text-embedding-3-small",
+>     // Optional: specify API base (e.g. for Azure OpenAI)
+>     apiBase: "your-api-base"
+> });
+>
+> // use directly
+> const embeddings = embeddingFunction.generate(["document1", "document2"]);
+>
+> // pass documents to query for .add and .query
+> let collection = await client.createCollection({
+>     name: "name",
+>     embeddingFunction: embeddingFunction,
+> });
+> collection = await client.getCollection({
+>     name: "name",
+>     embeddingFunction: embeddingFunction,
+> });
+> ```

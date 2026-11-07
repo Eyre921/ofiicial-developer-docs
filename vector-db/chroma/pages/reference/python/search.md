@@ -10,7 +10,7 @@ Payload for hybrid search operations.
 
 Can be constructed by directly providing the parameters, or by using the builder pattern.
 
-<span>Methods</span>
+Methods
 
 `__init__()`, `group_by()`, `limit()`, `rank()`, `select()`, `select_all()`, `to_dict()`, `where()`
 
@@ -29,11 +29,11 @@ Fields can be:
 
 Note: You can use K as an alias for Key for more concise code.
 
-<span>Properties</span>
+Properties
 
-<ParamField type="Set[Union[Key, str]]" />
+**keys** `Set[Union[Key, str]]`
 
-<span>Methods</span>
+Methods
 
 `__init__()`, `from_dict()`, `to_dict()`
 
@@ -43,19 +43,19 @@ Note: You can use K as an alias for Key for more concise code.
 
 KNN-based ranking expression.
 
-<span>Properties</span>
+Properties
 
-<ParamField type="Optional[Embeddings]" />
+**query** `Optional[Embeddings]`
 
-<ParamField type="Union[Key, str]" />
+**key** `Union[Key, str]`
 
-<ParamField type="int" />
+**limit** `int`
 
-<ParamField type="Optional[float]" />
+**default** `Optional[float]`
 
-<ParamField type="bool" />
+**return\_rank** `bool`
 
-<span>Methods</span>
+Methods
 
 `__init__()`, `abs()`, `exp()`, `from_dict()`, `log()`, `max()`, `min()`, `to_dict()`
 
@@ -69,17 +69,17 @@ RRF formula: score = -sum(weight\_i / (k + rank\_i)) for each ranking strategy
 The negative is used because RRF produces higher scores for better results,
 but Chroma uses ascending order (lower scores = better results).
 
-<span>Properties</span>
+Properties
 
-<ParamField type="List[Rank]" />
+**ranks** `List[Rank]`
 
-<ParamField type="int" />
+**k** `int`
 
-<ParamField type="Optional[List[float]]" />
+**weights** `Optional[List[float]]`
 
-<ParamField type="bool" />
+**normalize** `bool`
 
-<span>Methods</span>
+Methods
 
 `__init__()`, `abs()`, `exp()`, `from_dict()`, `log()`, `max()`, `min()`, `to_dict()`
 
@@ -95,13 +95,13 @@ Groups search results by one or more metadata fields, then applies an
 aggregation (MinK or MaxK) to select records within each group.
 The final output is flattened and sorted by score.
 
-<span>Properties</span>
+Properties
 
-<ParamField type="Union[Key, str, List[Union[Key, str]]]" />
+**keys** `Union[Key, str, List[Union[Key, str]]]`
 
-<ParamField type="Optional[Aggregate]" />
+**aggregate** `Optional[Aggregate]`
 
-<span>Methods</span>
+Methods
 
 `__init__()`, `from_dict()`, `to_dict()`
 
@@ -109,13 +109,13 @@ The final output is flattened and sorted by score.
 
 Limit(offset: int = 0, limit: Optional\[int] = None)
 
-<span>Properties</span>
+Properties
 
-<ParamField type="int" />
+**offset** `int`
 
-<ParamField type="Optional[int]" />
+**limit** `Optional[int]`
 
-<span>Methods</span>
+Methods
 
 `__init__()`, `from_dict()`, `to_dict()`
 
@@ -123,13 +123,13 @@ Limit(offset: int = 0, limit: Optional\[int] = None)
 
 Keep k records with minimum aggregate key values per group
 
-<span>Properties</span>
+Properties
 
-<ParamField type="Union[Key, str, List[Union[Key, str]]]" />
+**keys** `Union[Key, str, List[Union[Key, str]]]`
 
-<ParamField type="int" />
+**k** `int`
 
-<span>Methods</span>
+Methods
 
 `__init__()`, `from_dict()`, `to_dict()`
 
@@ -137,13 +137,13 @@ Keep k records with minimum aggregate key values per group
 
 Keep k records with maximum aggregate key values per group
 
-<span>Properties</span>
+Properties
 
-<ParamField type="Union[Key, str, List[Union[Key, str]]]" />
+**keys** `Union[Key, str, List[Union[Key, str]]]`
 
-<ParamField type="int" />
+**k** `int`
 
-<span>Methods</span>
+Methods
 
 `__init__()`, `from_dict()`, `to_dict()`
 
@@ -169,20 +169,20 @@ for payload in payloads:
         print(id, doc, meta)
 ```
 
-<span>Properties</span>
+Properties
 
-<ParamField type="List[IDs]" />
+**ids** `List[IDs]`
 
-<ParamField type="List[Optional[List[Optional[str]]]]" />
+**documents** `List[Optional[List[Optional[str]]]]`
 
-<ParamField type="List[Optional[List[Optional[List[float]]]]]" />
+**embeddings** `List[Optional[List[Optional[List[float]]]]]`
 
-<ParamField type="List[Optional[List[Optional[Dict[str, Any]]]]]" />
+**metadatas** `List[Optional[List[Optional[Dict[str, Any]]]]]`
 
-<ParamField type="List[Optional[List[Optional[float]]]]" />
+**scores** `List[Optional[List[Optional[float]]]]`
 
-<ParamField type="List[IDs]" />
+**select** `List[IDs]`
 
-<span>Methods</span>
+Methods
 
 `rows()`

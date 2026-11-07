@@ -12,9 +12,7 @@ Distributed Chroma is designed for large-scale production workloads. Its compone
 
 Regardless of deployment mode, Chroma is composed of five core components. Each plays a distinct role in the system and operates over the shared [Chroma data model](#chroma-data-model).
 
-<img alt="Chroma system architecture" />
-
-<img alt="Chroma system architecture" />
+![Chroma system architecture](https://mintcdn.com/chroma-8943dec5/2QFLJScSYa9JT1WU/images/system-diagram-light.png?fit=max\&auto=format\&n=2QFLJScSYa9JT1WU\&q=85\&s=8230cb5c91cdfb4f17336accd059d2e7)
 
 ### The Gateway
 
@@ -68,55 +66,47 @@ This design separates compute from storage and lets Chroma scale collections and
 
 ## Read Path
 
-<img alt="Chroma read path" />
+![Chroma read path](https://mintcdn.com/chroma-8943dec5/OHTRZei6ss2glLVb/images/read-path-light.png?fit=max\&auto=format\&n=OHTRZei6ss2glLVb\&q=85\&s=cac0a618b57dc23bc15ec2387d4bcac2)
 
-<img alt="Chroma read path" />
+**Step 1**
 
-<Steps>
-  <Step>
-    A request arrives at the gateway, where it is authenticated, checked against quota limits, rate limited, and transformed into a logical plan.
-  </Step>
+A request arrives at the gateway, where it is authenticated, checked against quota limits, rate limited, and transformed into a logical plan.
 
-  <Step>
-    The gateway routes the plan to the relevant query executor. In distributed Chroma, rendezvous hashing on the collection ID is used to route the query to the correct nodes and preserve cache coherence.
-  </Step>
+**Step 2**
 
-  <Step>
-    The query executor transforms the logical plan into a physical plan, reads from its storage layer, and consults the log to serve a consistent result.
-  </Step>
+The gateway routes the plan to the relevant query executor. In distributed Chroma, rendezvous hashing on the collection ID is used to route the query to the correct nodes and preserve cache coherence.
 
-  <Step>
-    The result is returned to the gateway and then to the client.
-  </Step>
-</Steps>
+**Step 3**
+
+The query executor transforms the logical plan into a physical plan, reads from its storage layer, and consults the log to serve a consistent result.
+
+**Step 4**
+
+The result is returned to the gateway and then to the client.
 
 ## Write Path
 
-<img alt="Chroma write path" />
+![Chroma write path](https://mintcdn.com/chroma-8943dec5/2QFLJScSYa9JT1WU/images/write-path-light.png?fit=max\&auto=format\&n=2QFLJScSYa9JT1WU\&q=85\&s=a791ab900059c0d1592050a45ea98578)
 
-<img alt="Chroma write path" />
+**Step 1**
 
-<Steps>
-  <Step>
-    A request arrives at the gateway and is transformed into a log of operations.
-  </Step>
+A request arrives at the gateway and is transformed into a log of operations.
 
-  <Step>
-    The operations are forwarded to the write-ahead log for persistence.
-  </Step>
+**Step 2**
 
-  <Step>
-    After the log persists the write, the gateway acknowledges the request.
-  </Step>
+The operations are forwarded to the write-ahead log for persistence.
 
-  <Step>
-    The compactor periodically reads from the log and builds new vector, full-text, and metadata index versions.
-  </Step>
+**Step 3**
 
-  <Step>
-    New index versions are written to storage and registered in the system database.
-  </Step>
-</Steps>
+After the log persists the write, the gateway acknowledges the request.
+
+**Step 4**
+
+The compactor periodically reads from the log and builds new vector, full-text, and metadata index versions.
+
+**Step 5**
+
+New index versions are written to storage and registered in the system database.
 
 ## Tradeoffs
 

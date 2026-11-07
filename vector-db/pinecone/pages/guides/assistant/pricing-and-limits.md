@@ -10,7 +10,7 @@ Pricing and limits vary based on [subscription plan](https://www.pinecone.io/pri
 
 ## Pricing
 
-Pinecone Assistant usage is billed monthly. Costs can include:
+Pinecone bills Assistant usage monthly. Costs can include:
 
 * [Minimum usage](#minimum-usage) (Builder, Standard, and Enterprise plans)
 * [Ingestion](#ingestion) (file uploads)
@@ -52,13 +52,13 @@ The minimum is a commitment you grow into rather than an extra charge. Once your
 
 ### Ingestion
 
-When you upload or replace files for an assistant, usage is measured in **ingestion units**. One ingestion unit is approximately **400 tokens** (\~300 words); exact counts can vary by document.
+When you upload or replace files for an assistant, usage is measured in ingestion units. One ingestion unit is approximately 400 tokens (\~300 words); exact counts can vary by document.
 
 | Processing path | Rate (per ingestion unit) |
 | - | - |
 | Standard file ingestion | \$0.0005 |
 
-*Multimodal PDF processing uses the same ingestion unit; it's billed at about **twice** the standard per-unit rate. For current rates, see [Pricing](https://www.pinecone.io/pricing/).*
+*Multimodal PDF processing uses the same ingestion unit; it's billed at about twice the standard per-unit rate. For current rates, see [Pricing](https://www.pinecone.io/pricing/).*
 
 | Plan | File uploads (ingestion units) |
 | - | - |
@@ -67,21 +67,21 @@ When you upload or replace files for an assistant, usage is measured in **ingest
 | Standard | Pay per unit at the rate above |
 | Enterprise | Pay per unit at the rate above |
 
-Multimodal ingestion applies to content processed through the [multimodal PDF](/guides/assistant/multimodal) path. Standard ingestion applies to other supported file types.
+Multimodal ingestion applies to content processed through the [multimodal PDF](/guides/assistant/multimodal-context) path. Standard ingestion applies to other supported file types.
 
-Usage and invoices reflect a single ingestion usage line item. With [API version](/reference/api/versioning) `2026-04` or later, a completed file-ingestion operation may include **`ingestion_units`**. Use [Describe an operation](/reference/api/latest/assistant/describe_operation) or [Track file operations](/guides/assistant/manage-files#track-file-operations) for details.
+Usage and invoices reflect a single ingestion usage line item. With [API version](/reference/api/versioning) `2026-04` or later, a completed file-ingestion operation may include `ingestion_units`. Use [Describe an operation](/reference/api/latest/assistant/describe_operation) or [Track file operations](/guides/assistant/manage-files#track-file-operations) for details.
 
 ### Tokens
 
-For paid plans, you are charged for the number of tokens used by each assistant. [Ingestion](#ingestion) is billed separately from chat and context retrieval tokens.
+For paid plans, you're charged for the number of tokens used by each assistant. [Ingestion](#ingestion) is billed separately from chat and context retrieval tokens.
 
 #### Chat tokens
 
-[Chatting with an assistant](/guides/assistant/chat-with-assistant) involves both input and output tokens:
+[Chatting with an assistant](/guides/assistant/chat-standard-interface) involves both input and output tokens:
 
-* **Input tokens** are based on the messages sent to the assistant and the context snippets retrieved from the assistant and sent to a model. Messages sent to the assistant can include messages from the [chat history](/guides/assistant/chat-with-assistant#provide-conversation-history) in addition to the newest message.
+* Input tokens are based on the messages sent to the assistant and the context snippets retrieved from the assistant and sent to a model. Messages sent to the assistant can include messages from the [chat history](/guides/assistant/chat-standard-interface#provide-conversation-history) in addition to the newest message.
 
-* **Output tokens** are based on the answer from the model.
+* Output tokens are based on the answer from the model.
 
 | Plan | Input token rate | Output token rate |
 | - | - | - |
@@ -92,11 +92,11 @@ For paid plans, you are charged for the number of tokens used by each assistant.
 
 > [!NOTE]
 >
-> Chat input tokens appear as "Assistants Input Tokens" on invoices and `prompt_tokens` in API responses. Chat output tokens appear as "Assistants Output Tokens" on invoices and `completion_tokens` in API responses.
+> Chat input tokens appear as **Assistants Input Tokens** on invoices and `prompt_tokens` in API responses. Chat output tokens appear as **Assistants Output Tokens** on invoices and `completion_tokens` in API responses.
 
 #### Context tokens
 
-When you [retrieve context snippets](/guides/assistant/context-snippets-overview), tokens are based on the messages sent to the assistant and the context snippets retrieved from the assistant. Messages sent to the assistant can include messages from the [chat history](/guides/assistant/chat-with-assistant#provide-conversation-history) in addition to the newest message.
+When you [retrieve context snippets](/guides/assistant/context-snippets-overview), tokens are based on the messages sent to the assistant and the context snippets retrieved from the assistant. Messages sent to the assistant can include messages from the [chat history](/guides/assistant/chat-standard-interface#provide-conversation-history) in addition to the newest message.
 
 | Plan | Token rate |
 | - | - |
@@ -113,8 +113,8 @@ When you [retrieve context snippets](/guides/assistant/context-snippets-overview
 
 [Evaluating responses](/guides/assistant/evaluation-overview) involves both input and output tokens:
 
-* **Input tokens** are based on two requests to a model: The first request contains a question, answer, and ground truth answer, and the second request contains the same details plus generated facts returned by the model for the first request.
-* **Output tokens** are based on two responses from a model: The first response contains generated facts, and the second response contains evaluation metrics.
+* Input tokens are based on two requests to a model: The first request contains a question, answer, and ground truth answer, and the second request contains the same details plus generated facts returned by the model for the first request.
+* Output tokens are based on two responses from a model: The first response contains generated facts, and the second response contains evaluation metrics.
 
 | Plan | Input token rate | Output token rate |
 | - | - | - |
@@ -129,7 +129,7 @@ When you [retrieve context snippets](/guides/assistant/context-snippets-overview
 
 ### Storage
 
-For paid plans, you are charged for the size of each assistant.
+For paid plans, you're charged for the size of each assistant.
 
 | Plan | Storage rate |
 | - | - |
@@ -158,7 +158,7 @@ Object limits are restrictions on the number or size of assistant-related object
 | File size (.pdf) | 10 MB | 50 MB | 100 MB | 100 MB |
 | Metadata size per file | 16 KB | 16 KB | 16 KB | 16 KB |
 
-Additionally, the following limits apply to [multimodal PDFs](/guides/assistant/multimodal) (currently in [public preview](/release-notes/feature-availability)):
+Additionally, the following limits apply to [multimodal PDFs](/guides/assistant/multimodal-context) (currently in [public preview](/release-notes/feature-availability)):
 
 Multimodal PDF processing uses the same [ingestion unit](/guides/assistant/pricing-and-limits#ingestion) as standard uploads; it's billed at about **twice** the standard per-unit rate (see [Pricing and limits](/guides/assistant/pricing-and-limits)). Object and rate limits for assistants also apply—see [#limits](/guides/assistant/pricing-and-limits#limits) and [#rate-limits](/guides/assistant/pricing-and-limits#rate-limits).
 

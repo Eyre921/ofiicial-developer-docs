@@ -14,7 +14,7 @@ List files in your Pinecone assistant, check individual file ingestion status by
 
 ### View all files
 
-You can [get the status, ID, and metadata for each file in your assistant](/reference/api/latest/assistant/list_files), as in the following example:
+To list the files in an assistant, call [`list_files`](/reference/api/latest/assistant/list_files):
 
 ```python Python theme={null}
 from pinecone import Pinecone
@@ -68,13 +68,13 @@ You can use the `id` value to [check the status of an individual file](#get-the-
 
 > [!TIP]
 >
-> You can list file in an assistant using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant). Select the assistant and view the files in the Assistant playground.
+> You can list files in an assistant using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant). Select the assistant and view the files in the Assistant playground.
 
 ### View a filtered list of files
 
-Metadata filter expressions can be included when listing files. This will limit the list of files to only those matching the filter expression. Use the `filter` parameter to specify the metadata filter expression.
+Metadata filter expressions can be included when listing files. This limits the list to files that match the filter expression. Use the `filter` parameter to specify the metadata filter expression.
 
-For more information about filtering with metadata, see [Understanding files](/guides/assistant/files-overview#metadata-query-language).
+For more information about filtering with metadata, see [Metadata query language](/guides/assistant/file-metadata#metadata-query-language).
 
 The following example lists files that are a manuscript:
 
@@ -119,7 +119,7 @@ curl -X GET "https://prod-1-data.ke.pinecone.io/assistant/files/$ASSISTANT_NAME?
 
 ## Get the status of a file
 
-You can [get the status and metadata for your assistant](/reference/api/latest/assistant/describe_file), as in the following example:
+To get a file's status and metadata, call [`describe_file`](/reference/api/latest/assistant/describe_file):
 
 ```python Python theme={null}
 from pinecone import Pinecone
@@ -182,7 +182,7 @@ This operation returns a response like the following:
 
 > [!TIP]
 >
-> You can check the status a file using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant). In the Assistant playground, click the file for more details.
+> You can check the status of a file using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant). In the Assistant playground, click the file for more details.
 
 ## Delete a file
 
@@ -301,9 +301,9 @@ curl -X GET "https://prod-1-data.ke.pinecone.io/assistant/operations/$ASSISTANT_
 
 Operations can have the following status values:
 
-* **Processing**: The operation is in progress. Use `percent_complete` to track progress.
-* **Completed**: The operation finished successfully.
-* **Failed**: The operation failed. In this case, the operation response includes `error_message`.
+* Processing: The operation is in progress. Use `percent_complete` to track progress.
+* Completed: The operation finished successfully.
+* Failed: The operation failed. In this case, the operation response includes `error_message`.
 
 When a file-ingestion operation completes, the operation may include `ingestion_units`, the [ingestion usage](/guides/assistant/pricing-and-limits#ingestion) for that file.
 

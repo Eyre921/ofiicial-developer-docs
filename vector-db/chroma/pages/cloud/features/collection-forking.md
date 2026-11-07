@@ -8,9 +8,7 @@ Instant copy-on-write collection forking in Chroma Cloud.
 
 Forking lets you create a new collection from an existing one instantly, using copy-on-write under the hood. The forked collection initially shares its data with the source and only incurs additional storage for incremental changes you make afterward.
 
-<Callout>
-  **Forking is available in Chroma Cloud only.** The storage engine on single-node Chroma does not support forking.
-</Callout>
+**Forking is available in Chroma Cloud only.** The storage engine on single-node Chroma does not support forking.
 
 ## How it works
 
@@ -25,53 +23,51 @@ Forking lets you create a new collection from an existing one instantly, using c
 
 ### Examples
 
-<CodeGroup>
-  ```python Python theme={null}
-  source_collection = client.get_collection(name="main-repo-index")
+```python Python theme={null}
+source_collection = client.get_collection(name="main-repo-index")
 
-  # Create a forked collection. Name must be unique within the database.
-  forked_collection = source_collection.fork(new_name="main-repo-index-pr-1234")
+# Create a forked collection. Name must be unique within the database.
+forked_collection = source_collection.fork(new_name="main-repo-index-pr-1234")
 
-  # Forked collection is immediately queryable; changes are isolated
-  forked_collection.add(documents=["new content"], ids=["doc-pr-1"])  # billed as incremental storage
-  ```
+# Forked collection is immediately queryable; changes are isolated
+forked_collection.add(documents=["new content"], ids=["doc-pr-1"])  # billed as incremental storage
+```
 
-  ```typescript TypeScript theme={null}
-  const sourceCollection = await client.getCollection({
-    name: "main-repo-index",
-  });
+```typescript TypeScript theme={null}
+const sourceCollection = await client.getCollection({
+  name: "main-repo-index",
+});
 
-  // Create a forked collection. Name must be unique within the database.
-  const forkedCollection = await sourceCollection.fork({
-    name: "main-repo-index-pr-1234",
-  });
+// Create a forked collection. Name must be unique within the database.
+const forkedCollection = await sourceCollection.fork({
+  name: "main-repo-index-pr-1234",
+});
 
-  await forkedCollection.add({
-    ids: ["doc-pr-1"],
-    documents: ["new content"], // billed as incremental storage
-  });
-  ```
+await forkedCollection.add({
+  ids: ["doc-pr-1"],
+  documents: ["new content"], // billed as incremental storage
+});
+```
 
-  ```rust Rust theme={null}
-  let source_collection = client.get_collection("main-repo-index").await?;
+```rust Rust theme={null}
+let source_collection = client.get_collection("main-repo-index").await?;
 
-  // Create a forked collection. Name must be unique within the database.
-  let forked_collection = source_collection
-      .fork("main-repo-index-pr-1234")
-      .await?;
+// Create a forked collection. Name must be unique within the database.
+let forked_collection = source_collection
+    .fork("main-repo-index-pr-1234")
+    .await?;
 
-  // Changes are billed as incremental storage
-  forked_collection
-      .add(
-          vec!["doc-pr-1".to_string()],
-          vec![vec![0.1, 0.2, 0.3]],
-          Some(vec![Some("new content".to_string())]),
-          None,
-          None,
-      )
-      .await?;
-  ```
-</CodeGroup>
+// Changes are billed as incremental storage
+forked_collection
+    .add(
+        vec!["doc-pr-1".to_string()],
+        vec![vec![0.1, 0.2, 0.3]],
+        Some(vec![Some("new content".to_string())]),
+        None,
+        None,
+    )
+    .await?;
+```
 
 [In this notebook](https://github.com/chroma-core/chroma/blob/main/examples/advanced/forking.ipynb) you can find a comprehensive demo, where we index a codebase in a Chroma collection, and use forking to efficiently create collections for new branches.
 
@@ -86,9 +82,7 @@ Chroma limits the number of fork edges in your fork tree. Every time you call "f
 
 If you exceed the limit, the request returns a quota error for the NUM\_FORKS rule. In that case, create a new collection with a full copy to start a fresh root.
 
-<img alt="Fork edges diagram" />
-
-<img alt="Fork edges diagram" />
+![Fork edges diagram](https://mintcdn.com/chroma-8943dec5/OHTRZei6ss2glLVb/images/fork-edges-light.png?fit=max\&auto=format\&n=OHTRZei6ss2glLVb\&q=85\&s=1f1ddbdc07bd875ed3719cc40b5132db)
 
 ## When to use forking
 

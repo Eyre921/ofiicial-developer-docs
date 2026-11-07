@@ -21,27 +21,25 @@ chroma browse [collection_name] [--local]
 * `path` - The path of your local Chroma data. If provided, the CLI will use the data path to start a local Chroma server at an available port for browsing. This argument conflicts with `host`.
 * `theme` - The theme of your terminal (`light` or `dark`). Optimizes the UI colors for your terminal's theme. You only need to provide this argument once, and the CLI will persist it in `~/.chroma/config.json`.
 
-<CodeGroup>
-  ```bash cloud theme={null}
-  chroma browse my-collection
-  ```
+```bash cloud theme={null}
+chroma browse my-collection
+```
 
-  ```bash cloud with DB theme={null}
-  chroma browse my-collection --db my-db
-  ```
+```bash cloud with DB theme={null}
+chroma browse my-collection --db my-db
+```
 
-  ```bash local default theme={null}
-  chroma browse my-local-collection --local
-  ```
+```bash local default theme={null}
+chroma browse my-local-collection --local
+```
 
-  ```bash local with host theme={null}
-  chroma browse my-local-collection --host http://localhost:8050
-  ```
+```bash local with host theme={null}
+chroma browse my-local-collection --host http://localhost:8050
+```
 
-  ```bash local with path theme={null}
-  chroma browse my-local-collection --path ~/Developer/my-app/chroma
-  ```
-</CodeGroup>
+```bash local with path theme={null}
+chroma browse my-local-collection --path ~/Developer/my-app/chroma
+```
 
 ### The Collection Browser UI
 
@@ -49,7 +47,7 @@ chroma browse [collection_name] [--local]
 
 The main view of the Collection Browser shows you a tabular view of your data with record IDs, documents, and metadata. You can navigate the table using arrows, and expand each cell with `Return`. Only 100 records are loaded initially, and the next batch will load as you scroll down the table.
 
-<img alt="CLI browse" />
+![CLI browse](https://mintcdn.com/chroma-8943dec5/N-xA4EbmHOvIcCcs/images/cli/cli-browse.png?fit=max\&auto=format\&n=N-xA4EbmHOvIcCcs\&q=85\&s=69d82373482ee9f5ee3a51f6f0a02104)
 
 #### Search
 
@@ -57,4 +55,4 @@ You can enter the query editor by hitting `s` on the main view. This form allows
 
 The query editor persists your edits after you submit. You can clear it by hitting `c`. When viewing the results you can hit `s` to get back to the query editor, or `Esc` to get back to the main view.
 
-<img alt="CLI browse query" />
+![CLI browse query](https://mintcdn.com/chroma-8943dec5/N-xA4EbmHOvIcCcs/images/cli/cli-browse-query.png?fit=max\&auto=format\&n=N-xA4EbmHOvIcCcs\&q=85\&s=81449441f0c28ace4659ef8833f89cb9)

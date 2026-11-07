@@ -25,16 +25,14 @@ You can further customize how your Chroma server runs with these arguments:
 
 With your Chroma server running, you can connect to it with the `HttpClient`:
 
-<CodeGroup>
-  ```python Python theme={null}
-  import chromadb
+```python Python theme={null}
+import chromadb
 
-  chroma_client = chromadb.HttpClient(host='localhost', port=8000)
-  ```
+chroma_client = chromadb.HttpClient(host='localhost', port=8000)
+```
 
-  ```typescript TypeScript theme={null}
-  import { ChromaClient } from "chromadb";
+```typescript TypeScript theme={null}
+import { ChromaClient } from "chromadb";
 
-  const client = new ChromaClient();
-  ```
-</CodeGroup>
+const client = new ChromaClient();
+```

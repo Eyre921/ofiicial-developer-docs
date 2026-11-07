@@ -1,0 +1,461 @@
+---
+title: "Chat through the OpenAI-compatible interface"
+source: https://docs.pinecone.io/guides/assistant/chat-openai-compatible-interface
+path: guides/assistant/chat-openai-compatible-interface
+---
+
+Chat with Pinecone Assistant using the OpenAI-compatible Chat Completion API for inline citations, streaming responses, and easy integration.
+
+After [uploading files](/guides/assistant/manage-files) to an assistant, you can chat with the assistant.
+
+This page shows you how to chat with an assistant using the [OpenAI-compatible chat interface](/reference/api/latest/assistant/chat_completion_assistant). This interface is based on the OpenAI Chat Completion API, a commonly used API. It's useful if you need inline citations or OpenAI-compatible responses, but has limited functionality compared to the [standard chat interface](/guides/assistant/chat-standard-interface).
+
+> [!TIP]
+>
+> The [standard chat interface](/guides/assistant/chat-standard-interface) is the recommended way to chat with an assistant, as it offers more functionality and control over the assistant's responses and references.
+
+## Chat with an assistant
+
+The [OpenAI-compatible chat interface](/reference/api/latest/assistant/chat_completion_assistant) can return responses in two formats:
+
+* [Default response](#default-response): The assistant returns a response in a single string field, which includes citation information.
+* [Streaming response](#streaming-response): The assistant returns the response as a text stream.
+
+### Default response
+
+The following example sends a message and requests a response in the default format:
+
+> [!NOTE]
+>
+> The `content` parameter in the request can't be empty.
+
+```python Python theme={null}
+from pinecone import Pinecone
+
+pc = Pinecone(api_key="YOUR_API_KEY")
+
+response = pc.assistants.chat_completions(
+    assistant_name="example-assistant",
+    messages=[{"role": "user", "content": "What is the maximum height of a red pine?"}],
+)
+
+print(response)
+```
+
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
+
+const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+
+const assistant = pc.assistant({ name: 'example-assistant' });
+const response = await assistant.chatCompletion({
+  messages: [{ role: 'user', content: 'What is the maximum height of a red pine?' }],
+});
+console.log(response);
+```
+
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+ASSISTANT_NAME="example-assistant"
+
+curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME/chat/completions" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+  "messages": [
+    {
+      "role": "user",
+      "content": "What is the maximum height of a red pine?"
+    }
+  ]
+}'
+```
+
+The example above returns a result like the following:
+
+```JSON theme={null}
+{"chat_completion":
+  {
+    "id":"chatcmpl-9OtJCcR0SJQdgbCDc9JfRZy8g7VJR",
+    "choices":[
+      {
+        "finish_reason":"stop",
+        "index":0,
+        "message":{
+          "role":"assistant",
+          "content":"The maximum height of a red pine (Pinus resinosa) is up to 25 meters."
+        }
+      }
+    ],
+    "model":"my_assistant"
+  }
+}
+```
+
+### Streaming response
+
+Streaming responses can improve perceived latency by allowing users to see content as it's generated, rather than waiting for the complete response. This creates a more responsive chat experience, especially for longer responses.
+
+The following example sends a message and requests a streaming response:
+
+> [!NOTE]
+>
+> The `content` parameter in the request can't be empty.
+
+```python Python theme={null}
+from pinecone import Pinecone
+
+pc = Pinecone(api_key="YOUR_API_KEY")
+
+response = pc.assistants.chat_completions(
+    assistant_name="example-assistant",
+    messages=[{"role": "user", "content": "What is the maximum height of a red pine?"}],
+    stream=True,
+)
+
+for chunk in response:
+    print(chunk)
+```
+
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
+
+const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+
+const assistant = pc.assistant({ name: 'example-assistant' });
+const response = await assistant.chatCompletionStream({
+  messages: [{ role: 'user', content: 'What is the maximum height of a red pine?' }],
+});
+
+for await (const chunk of response) {
+  console.log(chunk);
+}
+```
+
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+ASSISTANT_NAME="example-assistant"
+
+curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME/chat/completions" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+  "messages": [
+    {
+      "role": "user",
+      "content": "What is the maximum height of a red pine?"
+    }
+  ],
+  "stream": true
+}'
+```
+
+The example above returns a result like the following:
+
+```json theme={null}
+{
+  'id': '000000000000000009de65aa87adbcf0', 
+  'choices': [
+      {
+      'index': 0, 
+      'delta': 
+        {
+        'role': 'assistant', 
+        'content': 'The'
+        }, 
+      'finish_reason': None
+      }
+    ], 
+  'model': 'gpt-4o-2024-05-13'
+}
+
+...
+
+{
+  'id': '00000000000000007a927260910f5839',
+  'choices': [
+      {
+      'index': 0,
+      'delta':
+        {
+          'role': '', 
+          'content': 'The'
+        }, 
+      'finish_reason': None
+      }
+    ], 
+  'model': 'gpt-4o-2024-05-13'
+}
+
+...
+
+{
+  'id': '00000000000000007a927260910f5839', 
+  'choices': [
+    {
+      'index': 0, 
+      'delta': 
+        {
+        'role': None, 
+        'content': None
+        }, 
+      'finish_reason': 'stop'
+      }
+    ], 
+  'model': 'gpt-4o-2024-05-13'
+}
+```
+
+There are three types of messages in a chat completion response:
+
+* Message start: Includes `"role":"assistant"`, which indicates that the assistant is responding to the user's message.
+* Content: Includes a value in the `content` field (e.g., `"content":"The"`), which is part of the assistant's streamed response to the user's message.
+* Message end: Includes `"finish_reason":"stop"`, which indicates that the assistant has finished responding to the user's message.
+
+## Extract the response content
+
+In the assistant's response, the message string is contained in the following JSON object:
+
+* `choices.[0].message.content` for the default chat response
+* `choices[0].delta.content` for the streaming chat response (the Python SDK's `response.text()` yields this for you)
+
+You can extract the message content and print it to the console:
+
+> [tab] Default response
+>
+> ```python Python theme={null}
+> print(response.choices[0].message.content)
+> ```
+>
+> ```bash curl theme={null}
+> | jq '.choices.[0].message.content'
+> ```
+>
+> This creates output like the following:
+>
+> ```bash theme={null}
+> A red pine, scientifically known as *Pinus resinosa*, is a medium-sized tree that can grow up to 25 meters high and 75 centimeters in diameter. [1, pp. 1]
+> ```
+
+> [tab] Streaming response
+>
+> ```python Python theme={null}
+> for text in response.text():
+>     print(text)
+> ```
+>
+> ```bash curl theme={null}
+> |  sed -u 's/.*"content":"\([^"]*\)".*/\1/'
+> ```
+>
+> This creates output like the following:
+>
+> ```bash Streaming response theme={null}
+> The
+>  maximum
+>  height
+>  of
+>  a
+>  red
+>  pine
+>  (
+> Pin
+> us
+>  resin
+> osa
+> )
+>  is
+>  up
+>  to
+>  twenty
+> -five
+>  meters
+>
+>  [1, pp. 1]
+> .
+> ```
+
+## Choose a model
+
+Pinecone Assistant supports the following models:
+
+* `gpt-4o` (default)
+* `gpt-4.1`
+* `claude-sonnet-4-5`
+* `gemini-3.5-flash`
+
+> [!NOTE]
+>
+> Assistant automatically routes chat requests that specify a model deprecated by [Anthropic](https://platform.claude.com/docs/en/about-claude/model-deprecations), [Google](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/model-versions#retired-models), or [OpenAI](https://platform.openai.com/docs/deprecations) to its replacement at the same price. No code changes are required.
+>
+> | Deprecated model | Replacement |
+> | :- | :- |
+> | `claude-3-5-sonnet` | `claude-sonnet-4-5` |
+> | `claude-3-7-sonnet` | `claude-sonnet-4-5` |
+> | `gemini-2.5-pro` | `gemini-3.5-flash` |
+> | `o4-mini` | `gpt-5` |
+
+> [!TIP]
+>
+> For chat applications, we recommend using GPT models (`gpt-4o`, `gpt-4.1`, or `gpt-5`) as they typically provide faster response times compared to other models.
+
+To choose a non-default model for your assistant, set the `model` parameter in the request:
+
+```python Python theme={null}
+from pinecone import Pinecone
+
+pc = Pinecone(api_key="YOUR_API_KEY")
+
+response = pc.assistants.chat_completions(
+    assistant_name="example-assistant",
+    messages=[{"role": "user", "content": "What is the maximum height of a red pine?"}],
+    model="gpt-4.1",
+)
+
+print(response)
+```
+
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
+
+const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+
+const assistant = pc.assistant({ name: 'example-assistant' });
+const response = await assistant.chatCompletion({
+  messages: [{ role: 'user', content: 'What is the maximum height of a red pine?' }],
+  model: 'gpt-4.1',
+});
+
+console.log(response);
+```
+
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+ASSISTANT_NAME="example-assistant"
+
+curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME/chat/completions" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+  "messages": [
+    {
+      "role": "user",
+      "content": "What is the maximum height of a red pine?"
+    }
+  ],
+  "model": "gpt-4.1"
+}'
+```
+
+## Filter chat with metadata
+
+You can [filter which documents to use for chat completions](/guides/assistant/file-metadata). The following example filters the responses to use only documents that include the metadata `"resource": "encyclopedia"`.
+
+```python Python theme={null}
+from pinecone import Pinecone
+
+pc = Pinecone(api_key="YOUR_API_KEY")
+
+response = pc.assistants.chat_completions(
+    assistant_name="example-assistant",
+    messages=[{"role": "user", "content": "What is the maximum height of a red pine?"}],
+    filter={"resource": "encyclopedia"},
+)
+
+print(response)
+```
+
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
+
+const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+
+const assistant = pc.assistant({ name: 'example-assistant' });
+const response = await assistant.chatCompletion({
+  messages: [{ role: 'user', content: 'What is the maximum height of a red pine?' }],
+  filter: { resource: 'encyclopedia' },
+});
+console.log(response);
+```
+
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+ASSISTANT_NAME="example-assistant"
+
+curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME/chat/completions" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+  "messages": [
+    {
+      "role": "user",
+      "content": "What is the maximum height of a red pine?"
+    }
+  ],
+  "stream": true,
+  "filter": 
+    {
+    "resource": "encyclopedia"
+    }
+  }'
+```
+
+## Set the sampling temperature
+
+> [!NOTE]
+>
+> This is available in API versions `2025-04` and later.
+
+Temperature is a parameter that controls the randomness of a model's predictions during text generation. Lower temperatures (\~0.0) yield more consistent, predictable answers, while higher temperatures increase the model's explanatory power and are generally better for creative tasks.
+
+To control the sampling temperature for a model, set the `temperature` parameter in the request. If a model doesn't support a temperature parameter, the parameter is ignored.
+
+```python Python theme={null}
+from pinecone import Pinecone
+
+pc = Pinecone(api_key="YOUR_API_KEY")
+
+response = pc.assistants.chat_completions(
+    assistant_name="example-assistant",
+    messages=[{"role": "user", "content": "Who is the CFO of Netflix?"}],
+    temperature=0.8,
+)
+
+print(response)
+```
+
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
+
+const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+
+const assistant = pc.assistant({ name: 'example-assistant' });
+const response = await assistant.chatCompletion({
+  messages: [{ role: 'user', content: 'Who is the CFO of Netflix?' }],
+  temperature: 0.8,
+});
+console.log(response);
+```
+
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+ASSISTANT_NAME="example-assistant"
+
+curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME/chat/completions" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+  "messages": [
+    {
+      "role": "user",
+      "content": "Who is the CFO of Netflix?"
+    }
+  ],
+  "temperature": 0.8
+}'
+```

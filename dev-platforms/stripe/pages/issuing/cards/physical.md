@@ -28,7 +28,7 @@ A black standard card
 
 ### Cost per standard card
 
-Standard cards are 3.50 USD each in the US, 3.50 GBP in the UK, and 3,50 EUR in the EU. [Shipping costs](https://docs.stripe.com/issuing/cards/physical/ship-cards.md) apply for each region.
+See [Issuing pricing](https://stripe.com/pricing) for standard card costs in your country. [Shipping costs](https://docs.stripe.com/issuing/cards/physical/ship-cards.md) apply for each region.
 
 ## Custom card 
 

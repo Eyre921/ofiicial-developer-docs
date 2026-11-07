@@ -6,40 +6,36 @@ path: integrations/embedding-models/jina-ai
 
 Chroma provides a convenient wrapper around JinaAI's embedding API. This embedding function runs remotely on JinaAI's servers, and requires an API key. You can get an API key by signing up for an account at [JinaAI](https://jina.ai/embeddings/).
 
-<CodeGroup>
-  ```python Python theme={null}
-  from chromadb.utils.embedding_functions import JinaEmbeddingFunction
-  jinaai_ef = JinaEmbeddingFunction(
-      api_key="YOUR_API_KEY",
-      model_name="jina-embeddings-v2-base-en",
-  )
-  jinaai_ef(input=["This is my first text to embed", "This is my second document"])
-  ```
+```python Python theme={null}
+from chromadb.utils.embedding_functions import JinaEmbeddingFunction
+jinaai_ef = JinaEmbeddingFunction(
+    api_key="YOUR_API_KEY",
+    model_name="jina-embeddings-v2-base-en",
+)
+jinaai_ef(input=["This is my first text to embed", "This is my second document"])
+```
 
-  ```typescript TypeScript theme={null}
-  // npm install @chroma-core/jina
+```typescript TypeScript theme={null}
+// npm install @chroma-core/jina
 
-  import { JinaEmbeddingFunction } from '@chroma-core/jina';
+import { JinaEmbeddingFunction } from '@chroma-core/jina';
 
-  const embedder = new JinaEmbeddingFunction({
-      jinaai_api_key: 'jina_****',
-      model_name: 'jina-embeddings-v2-base-en',
-  });
+const embedder = new JinaEmbeddingFunction({
+    jinaai_api_key: 'jina_****',
+    model_name: 'jina-embeddings-v2-base-en',
+});
 
-  // use directly
-  const embeddings = embedder.generate(['document1', 'document2']);
+// use directly
+const embeddings = embedder.generate(['document1', 'document2']);
 
-  // pass documents to query for .add and .query
-  const collection = await client.createCollection({name: "name", embeddingFunction: embedder})
-  const collectionGet = await client.getCollection({name:"name", embeddingFunction: embedder})
-  ```
-</CodeGroup>
+// pass documents to query for .add and .query
+const collection = await client.createCollection({name: "name", embeddingFunction: embedder})
+const collectionGet = await client.getCollection({name:"name", embeddingFunction: embedder})
+```
 
 You can pass in an optional `model_name` argument, which lets you choose which Jina model to use. By default, Chroma uses `jina-embedding-v2-base-en`.
 
-<Callout>
-  Jina has added new attributes on embedding functions, including `task`, `late_chunking`, `truncate`, `dimensions`, `embedding_type`, and `normalized`. See [JinaAI](https://jina.ai/embeddings/) for references on which models support these attributes.
-</Callout>
+Jina has added new attributes on embedding functions, including `task`, `late_chunking`, `truncate`, `dimensions`, `embedding_type`, and `normalized`. See [JinaAI](https://jina.ai/embeddings/) for references on which models support these attributes.
 
 ### Late Chunking Example
 

@@ -6,617 +6,593 @@ path: integrations/frameworks/google-adk
 
 The [Agent Development Kit (ADK)](https://google.github.io/adk-docs/) is Google's open-source framework for building AI agents. Chroma integrates with ADK via the [Chroma MCP server](https://github.com/chroma-core/chroma-mcp), giving your agents access to semantic memory, knowledge base retrieval, and persistent context across sessions.
 
-<Tabs>
-  <Tab title="Python" icon="python">
-    ## Prerequisites
-
-    * Python 3.10+
-    * `uvx` installed (`curl -LsSf https://astral.sh/uv/install.sh | sh`)
-
-    ## Setup
-
-    <Tabs>
-      <Tab title="Chroma Cloud">
-        <Callout>
-          [Chroma Cloud](https://trychroma.com/signup?utm_source=docs-adk) is a fully managed, serverless database-as-a-service. Get started in 30 seconds - \$5 in free credits included.
-        </Callout>
-
-        <Steps>
-          <Step title="Install and log in">
-            <CodeGroup>
-              ```bash pip theme={null}
-              pip install chromadb google-adk
-              ```
-
-              ```bash uv theme={null}
-              uv pip install chromadb google-adk
-              ```
-            </CodeGroup>
-
-            Then authenticate with Chroma Cloud:
-
-            ```bash theme={null}
-            chroma login
-            ```
-          </Step>
-
-          <Step title="Create a database">
-            ```bash theme={null}
-            chroma db create my-adk-db
-            ```
-          </Step>
-
-          <Step title="Get your connection variables">
-            ```bash theme={null}
-            chroma db connect my-adk-db --env-vars
-            ```
-
-            This will output your `CHROMA_TENANT`, `CHROMA_DATABASE`, and `CHROMA_API_KEY`. Use them in the code below.
-          </Step>
-
-          <Step title="Create your agent">
-            ```python Python theme={null}
-            from google.adk.agents import Agent
-            from google.adk.tools.mcp_tool import McpToolset
-            from google.adk.tools.mcp_tool.mcp_session_manager import StdioConnectionParams
-            from mcp import StdioServerParameters
-
-            CHROMA_TENANT = "your-tenant-id"
-            CHROMA_DATABASE = "my-adk-db"
-            CHROMA_API_KEY = "your-api-key"
-
-            root_agent = Agent(
-                model="gemini-2.5-pro",
-                name="chroma_agent",
-                instruction="Help users store and retrieve information using semantic search.",
-                tools=[
-                    McpToolset(
-                        connection_params=StdioConnectionParams(
-                            server_params=StdioServerParameters(
-                                command="uvx",
-                                args=[
-                                    "chroma-mcp",
-                                    "--client-type", "cloud",
-                                    "--tenant", CHROMA_TENANT,
-                                    "--database", CHROMA_DATABASE,
-                                    "--api-key", CHROMA_API_KEY,
-                                ],
-                            ),
-                            timeout=30,
-                        ),
-                    )
-                ],
-            )
-            ```
-          </Step>
-        </Steps>
-
-        ## Example: Semantic Memory Agent
-
-        This example builds a personal assistant that uses Chroma as a persistent semantic memory store. The agent remembers facts from past conversations — user preferences, project context, decisions — and recalls them when relevant.
-
-        The agent's instruction tells it to create a Chroma collection for storing memories, and to use it for storage and retrieval:
-
-        ```python Python theme={null}
-        from google.adk.agents import Agent
-        from google.adk.tools.mcp_tool import McpToolset
-        from google.adk.tools.mcp_tool.mcp_session_manager import StdioConnectionParams
-        from mcp import StdioServerParameters
-
-        CHROMA_TENANT = "your-tenant-id"
-        CHROMA_DATABASE = "my-adk-db"
-        CHROMA_API_KEY = "your-api-key"
-
-        MEMORY_INSTRUCTION = """You are a personal assistant with persistent memory.
-
-        You have access to Chroma tools for managing collections and documents.
-
-        ## First run
-        On your first interaction, use chroma_create_collection to create a collection
-        called "memory". If it already exists, that's fine — just use the existing one.
-
-        ## Storing memories
-        When the user shares important information — preferences, project details,
-        decisions, or personal context — store it in the "memory" collection using
-        chroma_add_documents. Each memory should be a concise, self-contained fact.
-        Tag memories with metadata like {"type": "preference"}, {"type": "fact"},
-        or {"type": "decision"} so they can be filtered later.
-
-        ## Recalling memories
-        At the start of a conversation, or when the user asks about something that
-        might relate to past context, use chroma_query_documents to search the
-        "memory" collection. Use the results to inform your responses without
-        the user having to repeat themselves.
-
-        ## Memory hygiene
-        If the user corrects a previous fact, use chroma_update_documents to update
-        the old memory rather than creating a duplicate.
-        """
-
-        root_agent = Agent(
-            model="gemini-2.5-pro",
-            name="memory_agent",
-            instruction=MEMORY_INSTRUCTION,
-            tools=[
-                McpToolset(
-                    connection_params=StdioConnectionParams(
-                        server_params=StdioServerParameters(
-                            command="uvx",
-                            args=[
-                                "chroma-mcp",
-                                "--client-type", "cloud",
-                                "--tenant", CHROMA_TENANT,
-                                "--database", CHROMA_DATABASE,
-                                "--api-key", CHROMA_API_KEY,
-                            ],
-                        ),
-                        timeout=30,
-                    ),
-                )
-            ],
-        )
-        ```
-
-        With this setup, a conversation might look like:
-
-        ```text theme={null}
-        User: I'm working on Project Atlas — it's a migration from PostgreSQL to
-              DynamoDB. Our deadline is end of Q3 and the team lead is Sarah.
-
-        Agent: Got it, I've stored those project details. I'll remember them for
-               future conversations.
-               (creates "memory" collection, stores 3 memories: project description,
-               deadline, team lead)
-
-        --- later session ---
-
-        User: What do you remember about my current project?
-
-        Agent: You're working on Project Atlas — a PostgreSQL to DynamoDB migration.
-               Sarah is the team lead and your deadline is end of Q3.
-               (retrieved via semantic search on "current project")
-        ```
-
-        For a more in-depth look at building agentic memory with Chroma, see the [Agentic Memory guide](/guides/build/agentic-memory).
-      </Tab>
-
-      <Tab title="Local">
-        Install the dependencies:
-
-        <CodeGroup>
-          ```bash pip theme={null}
-          pip install chromadb google-adk
-          ```
-
-          ```bash uv theme={null}
-          uv pip install chromadb google-adk
-          ```
-        </CodeGroup>
-
-        Replace `/path/to/your/data/directory` with where you want Chroma to store its data.
-
-        ```python Python theme={null}
-        from google.adk.agents import Agent
-        from google.adk.tools.mcp_tool import McpToolset
-        from google.adk.tools.mcp_tool.mcp_session_manager import StdioConnectionParams
-        from mcp import StdioServerParameters
-
-        DATA_DIR = "/path/to/your/data/directory"
-
-        root_agent = Agent(
-            model="gemini-2.5-pro",
-            name="chroma_agent",
-            instruction="Help users store and retrieve information using semantic search.",
-            tools=[
-                McpToolset(
-                    connection_params=StdioConnectionParams(
-                        server_params=StdioServerParameters(
-                            command="uvx",
-                            args=[
-                                "chroma-mcp",
-                                "--client-type", "persistent",
-                                "--data-dir", DATA_DIR,
-                            ],
-                        ),
-                        timeout=30,
-                    ),
-                )
-            ],
-        )
-        ```
-
-        ## Example: Semantic Memory Agent
-
-        This example builds a personal assistant that uses Chroma as a persistent semantic memory store. The agent remembers facts from past conversations — user preferences, project context, decisions — and recalls them when relevant.
-
-        The agent's instruction tells it to create a Chroma collection for storing memories, and to use it for storage and retrieval:
-
-        ```python Python theme={null}
-        from google.adk.agents import Agent
-        from google.adk.tools.mcp_tool import McpToolset
-        from google.adk.tools.mcp_tool.mcp_session_manager import StdioConnectionParams
-        from mcp import StdioServerParameters
-
-        DATA_DIR = "/path/to/your/data/directory"
-
-        MEMORY_INSTRUCTION = """You are a personal assistant with persistent memory.
-
-        You have access to Chroma tools for managing collections and documents.
-
-        ## First run
-        On your first interaction, use chroma_create_collection to create a collection
-        called "memory". If it already exists, that's fine — just use the existing one.
-
-        ## Storing memories
-        When the user shares important information — preferences, project details,
-        decisions, or personal context — store it in the "memory" collection using
-        chroma_add_documents. Each memory should be a concise, self-contained fact.
-        Tag memories with metadata like {"type": "preference"}, {"type": "fact"},
-        or {"type": "decision"} so they can be filtered later.
-
-        ## Recalling memories
-        At the start of a conversation, or when the user asks about something that
-        might relate to past context, use chroma_query_documents to search the
-        "memory" collection. Use the results to inform your responses without
-        the user having to repeat themselves.
-
-        ## Memory hygiene
-        If the user corrects a previous fact, use chroma_update_documents to update
-        the old memory rather than creating a duplicate.
-        """
-
-        root_agent = Agent(
-            model="gemini-2.5-pro",
-            name="memory_agent",
-            instruction=MEMORY_INSTRUCTION,
-            tools=[
-                McpToolset(
-                    connection_params=StdioConnectionParams(
-                        server_params=StdioServerParameters(
-                            command="uvx",
-                            args=[
-                                "chroma-mcp",
-                                "--client-type", "persistent",
-                                "--data-dir", DATA_DIR,
-                            ],
-                        ),
-                        timeout=30,
-                    ),
-                )
-            ],
-        )
-        ```
-
-        With this setup, a conversation might look like:
-
-        ```text theme={null}
-        User: I'm working on Project Atlas — it's a migration from PostgreSQL to
-              DynamoDB. Our deadline is end of Q3 and the team lead is Sarah.
-
-        Agent: Got it, I've stored those project details. I'll remember them for
-               future conversations.
-               (creates "memory" collection, stores 3 memories: project description,
-               deadline, team lead)
-
-        --- later session ---
-
-        User: What do you remember about my current project?
-
-        Agent: You're working on Project Atlas — a PostgreSQL to DynamoDB migration.
-               Sarah is the team lead and your deadline is end of Q3.
-               (retrieved via semantic search on "current project")
-        ```
-
-        For a more in-depth look at building agentic memory with Chroma, see the [Agentic Memory guide](/guides/build/agentic-memory).
-      </Tab>
-    </Tabs>
-  </Tab>
-
-  <Tab title="TypeScript" icon="js">
-    ## Prerequisites
-
-    * Node.js 18+
-    * `uvx` installed (`curl -LsSf https://astral.sh/uv/install.sh | sh`)
-
-    ## Setup
-
-    <Tabs>
-      <Tab title="Chroma Cloud">
-        <Callout>
-          [Chroma Cloud](https://trychroma.com/signup?utm_source=docs-adk) is a fully managed, serverless database-as-a-service. Get started in 30 seconds - \$5 in free credits included.
-        </Callout>
-
-        <Steps>
-          <Step title="Install and log in">
-            Install the ADK package:
-
-            <CodeGroup>
-              ```bash npm theme={null}
-              npm install @google/adk
-              ```
-
-              ```bash pnpm theme={null}
-              pnpm add @google/adk
-              ```
-
-              ```bash yarn theme={null}
-              yarn add @google/adk
-              ```
-            </CodeGroup>
-
-            Install the Chroma CLI and authenticate:
-
-            <CodeGroup>
-              ```bash pip theme={null}
-              pip install chromadb
-              ```
-
-              ```bash uv theme={null}
-              uv pip install chromadb
-              ```
-            </CodeGroup>
-
-            ```bash theme={null}
-            chroma login
-            ```
-          </Step>
-
-          <Step title="Create a database">
-            ```bash theme={null}
-            chroma db create my-adk-db
-            ```
-          </Step>
-
-          <Step title="Get your connection variables">
-            ```bash theme={null}
-            chroma db connect my-adk-db --env-vars
-            ```
-
-            This will output your `CHROMA_TENANT`, `CHROMA_DATABASE`, and `CHROMA_API_KEY`. Use them in the code below.
-          </Step>
-
-          <Step title="Create your agent">
-            ```typescript TypeScript theme={null}
-            import { LlmAgent, MCPToolset } from "@google/adk";
-
-            const CHROMA_TENANT = "your-tenant-id";
-            const CHROMA_DATABASE = "my-adk-db";
-            const CHROMA_API_KEY = "your-api-key";
-
-            const rootAgent = new LlmAgent({
-                model: "gemini-2.5-pro",
-                name: "chroma_agent",
-                instruction: "Help users store and retrieve information using semantic search.",
-                tools: [
-                    new MCPToolset({
-                        type: "StdioConnectionParams",
-                        serverParams: {
-                            command: "uvx",
-                            args: [
-                                "chroma-mcp",
-                                "--client-type", "cloud",
-                                "--tenant", CHROMA_TENANT,
-                                "--database", CHROMA_DATABASE,
-                                "--api-key", CHROMA_API_KEY,
-                            ],
-                        },
-                    }),
-                ],
-            });
-            ```
-          </Step>
-        </Steps>
-
-        ## Example: Semantic Memory Agent
-
-        This example builds a personal assistant that uses Chroma as a persistent semantic memory store. The agent remembers facts from past conversations — user preferences, project context, decisions — and recalls them when relevant.
-
-        The agent's instruction tells it to create a Chroma collection for storing memories, and to use it for storage and retrieval:
-
-        ```typescript TypeScript theme={null}
-        import { LlmAgent, MCPToolset } from "@google/adk";
-
-        const CHROMA_TENANT = "your-tenant-id";
-        const CHROMA_DATABASE = "my-adk-db";
-        const CHROMA_API_KEY = "your-api-key";
-
-        const MEMORY_INSTRUCTION = `You are a personal assistant with persistent memory.
-
-        You have access to Chroma tools for managing collections and documents.
-
-        ## First run
-        On your first interaction, use chroma_create_collection to create a collection
-        called "memory". If it already exists, that's fine — just use the existing one.
-
-        ## Storing memories
-        When the user shares important information — preferences, project details,
-        decisions, or personal context — store it in the "memory" collection using
-        chroma_add_documents. Each memory should be a concise, self-contained fact.
-        Tag memories with metadata like {"type": "preference"}, {"type": "fact"},
-        or {"type": "decision"} so they can be filtered later.
-
-        ## Recalling memories
-        At the start of a conversation, or when the user asks about something that
-        might relate to past context, use chroma_query_documents to search the
-        "memory" collection. Use the results to inform your responses without
-        the user having to repeat themselves.
-
-        ## Memory hygiene
-        If the user corrects a previous fact, use chroma_update_documents to update
-        the old memory rather than creating a duplicate.
-        `;
-
-        const rootAgent = new LlmAgent({
-            model: "gemini-2.5-pro",
-            name: "memory_agent",
-            instruction: MEMORY_INSTRUCTION,
-            tools: [
-                new MCPToolset({
-                    type: "StdioConnectionParams",
-                    serverParams: {
-                        command: "uvx",
-                        args: [
-                            "chroma-mcp",
-                            "--client-type", "cloud",
-                            "--tenant", CHROMA_TENANT,
-                            "--database", CHROMA_DATABASE,
-                            "--api-key", CHROMA_API_KEY,
-                        ],
-                    },
-                }),
-            ],
-        });
-        ```
-
-        With this setup, a conversation might look like:
-
-        ```text theme={null}
-        User: I'm working on Project Atlas — it's a migration from PostgreSQL to
-              DynamoDB. Our deadline is end of Q3 and the team lead is Sarah.
-
-        Agent: Got it, I've stored those project details. I'll remember them for
-               future conversations.
-               (creates "memory" collection, stores 3 memories: project description,
-               deadline, team lead)
-
-        --- later session ---
-
-        User: What do you remember about my current project?
-
-        Agent: You're working on Project Atlas — a PostgreSQL to DynamoDB migration.
-               Sarah is the team lead and your deadline is end of Q3.
-               (retrieved via semantic search on "current project")
-        ```
-
-        For a more in-depth look at building agentic memory with Chroma, see the [Agentic Memory guide](/guides/build/agentic-memory).
-      </Tab>
-
-      <Tab title="Local">
-        Install the ADK package:
-
-        <CodeGroup>
-          ```bash npm theme={null}
-          npm install @google/adk
-          ```
-
-          ```bash pnpm theme={null}
-          pnpm add @google/adk
-          ```
-
-          ```bash yarn theme={null}
-          yarn add @google/adk
-          ```
-        </CodeGroup>
-
-        Replace `/path/to/your/data/directory` with where you want Chroma to store its data.
-
-        ```typescript TypeScript theme={null}
-        import { LlmAgent, MCPToolset } from "@google/adk";
-
-        const DATA_DIR = "/path/to/your/data/directory";
-
-        const rootAgent = new LlmAgent({
-            model: "gemini-2.5-pro",
-            name: "chroma_agent",
-            instruction: "Help users store and retrieve information using semantic search.",
-            tools: [
-                new MCPToolset({
-                    type: "StdioConnectionParams",
-                    serverParams: {
-                        command: "uvx",
-                        args: [
-                            "chroma-mcp",
-                            "--client-type", "persistent",
-                            "--data-dir", DATA_DIR,
-                        ],
-                    },
-                }),
-            ],
-        });
-        ```
-
-        ## Example: Semantic Memory Agent
-
-        This example builds a personal assistant that uses Chroma as a persistent semantic memory store. The agent remembers facts from past conversations — user preferences, project context, decisions — and recalls them when relevant.
-
-        The agent's instruction tells it to create a Chroma collection for storing memories, and to use it for storage and retrieval:
-
-        ```typescript TypeScript theme={null}
-        import { LlmAgent, MCPToolset } from "@google/adk";
-
-        const DATA_DIR = "/path/to/your/data/directory";
-
-        const MEMORY_INSTRUCTION = `You are a personal assistant with persistent memory.
-
-        You have access to Chroma tools for managing collections and documents.
-
-        ## First run
-        On your first interaction, use chroma_create_collection to create a collection
-        called "memory". If it already exists, that's fine — just use the existing one.
-
-        ## Storing memories
-        When the user shares important information — preferences, project details,
-        decisions, or personal context — store it in the "memory" collection using
-        chroma_add_documents. Each memory should be a concise, self-contained fact.
-        Tag memories with metadata like {"type": "preference"}, {"type": "fact"},
-        or {"type": "decision"} so they can be filtered later.
-
-        ## Recalling memories
-        At the start of a conversation, or when the user asks about something that
-        might relate to past context, use chroma_query_documents to search the
-        "memory" collection. Use the results to inform your responses without
-        the user having to repeat themselves.
-
-        ## Memory hygiene
-        If the user corrects a previous fact, use chroma_update_documents to update
-        the old memory rather than creating a duplicate.
-        `;
-
-        const rootAgent = new LlmAgent({
-            model: "gemini-2.5-pro",
-            name: "memory_agent",
-            instruction: MEMORY_INSTRUCTION,
-            tools: [
-                new MCPToolset({
-                    type: "StdioConnectionParams",
-                    serverParams: {
-                        command: "uvx",
-                        args: [
-                            "chroma-mcp",
-                            "--client-type", "persistent",
-                            "--data-dir", DATA_DIR,
-                        ],
-                    },
-                }),
-            ],
-        });
-        ```
-
-        With this setup, a conversation might look like:
-
-        ```text theme={null}
-        User: I'm working on Project Atlas — it's a migration from PostgreSQL to
-              DynamoDB. Our deadline is end of Q3 and the team lead is Sarah.
-
-        Agent: Got it, I've stored those project details. I'll remember them for
-               future conversations.
-               (creates "memory" collection, stores 3 memories: project description,
-               deadline, team lead)
-
-        --- later session ---
-
-        User: What do you remember about my current project?
-
-        Agent: You're working on Project Atlas — a PostgreSQL to DynamoDB migration.
-               Sarah is the team lead and your deadline is end of Q3.
-               (retrieved via semantic search on "current project")
-        ```
-
-        For a more in-depth look at building agentic memory with Chroma, see the [Agentic Memory guide](/guides/build/agentic-memory).
-      </Tab>
-    </Tabs>
-  </Tab>
-</Tabs>
+> [tab] Python
+>
+> ## Prerequisites
+>
+> * Python 3.10+
+> * `uvx` installed (`curl -LsSf https://astral.sh/uv/install.sh | sh`)
+>
+> ## Setup
+>
+> > [tab] Chroma Cloud
+> >
+> > [Chroma Cloud](https://trychroma.com/signup?utm_source=docs-adk) is a fully managed, serverless database-as-a-service. Get started in 30 seconds - \$5 in free credits included.
+> >
+> > ### 1. Install and log in
+> >
+> > ```bash pip theme={null}
+> > pip install chromadb google-adk
+> > ```
+> >
+> > ```bash uv theme={null}
+> > uv pip install chromadb google-adk
+> > ```
+> >
+> > Then authenticate with Chroma Cloud:
+> >
+> > ```bash theme={null}
+> > chroma login
+> > ```
+> >
+> > ### 2. Create a database
+> >
+> > ```bash theme={null}
+> > chroma db create my-adk-db
+> > ```
+> >
+> > ### 3. Get your connection variables
+> >
+> > ```bash theme={null}
+> > chroma db connect my-adk-db --env-vars
+> > ```
+> >
+> > This will output your `CHROMA_TENANT`, `CHROMA_DATABASE`, and `CHROMA_API_KEY`. Use them in the code below.
+> >
+> > ### 4. Create your agent
+> >
+> > ```python Python theme={null}
+> > from google.adk.agents import Agent
+> > from google.adk.tools.mcp_tool import McpToolset
+> > from google.adk.tools.mcp_tool.mcp_session_manager import StdioConnectionParams
+> > from mcp import StdioServerParameters
+> >
+> > CHROMA_TENANT = "your-tenant-id"
+> > CHROMA_DATABASE = "my-adk-db"
+> > CHROMA_API_KEY = "your-api-key"
+> >
+> > root_agent = Agent(
+> >     model="gemini-2.5-pro",
+> >     name="chroma_agent",
+> >     instruction="Help users store and retrieve information using semantic search.",
+> >     tools=[
+> >         McpToolset(
+> >             connection_params=StdioConnectionParams(
+> >                 server_params=StdioServerParameters(
+> >                     command="uvx",
+> >                     args=[
+> >                         "chroma-mcp",
+> >                         "--client-type", "cloud",
+> >                         "--tenant", CHROMA_TENANT,
+> >                         "--database", CHROMA_DATABASE,
+> >                         "--api-key", CHROMA_API_KEY,
+> >                     ],
+> >                 ),
+> >                 timeout=30,
+> >             ),
+> >         )
+> >     ],
+> > )
+> > ```
+> >
+> > ## Example: Semantic Memory Agent
+> >
+> > This example builds a personal assistant that uses Chroma as a persistent semantic memory store. The agent remembers facts from past conversations — user preferences, project context, decisions — and recalls them when relevant.
+> >
+> > The agent's instruction tells it to create a Chroma collection for storing memories, and to use it for storage and retrieval:
+> >
+> > ```python Python theme={null}
+> > from google.adk.agents import Agent
+> > from google.adk.tools.mcp_tool import McpToolset
+> > from google.adk.tools.mcp_tool.mcp_session_manager import StdioConnectionParams
+> > from mcp import StdioServerParameters
+> >
+> > CHROMA_TENANT = "your-tenant-id"
+> > CHROMA_DATABASE = "my-adk-db"
+> > CHROMA_API_KEY = "your-api-key"
+> >
+> > MEMORY_INSTRUCTION = """You are a personal assistant with persistent memory.
+> >
+> > You have access to Chroma tools for managing collections and documents.
+> >
+> > ## First run
+> > On your first interaction, use chroma_create_collection to create a collection
+> > called "memory". If it already exists, that's fine — just use the existing one.
+> >
+> > ## Storing memories
+> > When the user shares important information — preferences, project details,
+> > decisions, or personal context — store it in the "memory" collection using
+> > chroma_add_documents. Each memory should be a concise, self-contained fact.
+> > Tag memories with metadata like {"type": "preference"}, {"type": "fact"},
+> > or {"type": "decision"} so they can be filtered later.
+> >
+> > ## Recalling memories
+> > At the start of a conversation, or when the user asks about something that
+> > might relate to past context, use chroma_query_documents to search the
+> > "memory" collection. Use the results to inform your responses without
+> > the user having to repeat themselves.
+> >
+> > ## Memory hygiene
+> > If the user corrects a previous fact, use chroma_update_documents to update
+> > the old memory rather than creating a duplicate.
+> > """
+> >
+> > root_agent = Agent(
+> >     model="gemini-2.5-pro",
+> >     name="memory_agent",
+> >     instruction=MEMORY_INSTRUCTION,
+> >     tools=[
+> >         McpToolset(
+> >             connection_params=StdioConnectionParams(
+> >                 server_params=StdioServerParameters(
+> >                     command="uvx",
+> >                     args=[
+> >                         "chroma-mcp",
+> >                         "--client-type", "cloud",
+> >                         "--tenant", CHROMA_TENANT,
+> >                         "--database", CHROMA_DATABASE,
+> >                         "--api-key", CHROMA_API_KEY,
+> >                     ],
+> >                 ),
+> >                 timeout=30,
+> >             ),
+> >         )
+> >     ],
+> > )
+> > ```
+> >
+> > With this setup, a conversation might look like:
+> >
+> > ```text theme={null}
+> > User: I'm working on Project Atlas — it's a migration from PostgreSQL to
+> >       DynamoDB. Our deadline is end of Q3 and the team lead is Sarah.
+> >
+> > Agent: Got it, I've stored those project details. I'll remember them for
+> >        future conversations.
+> >        (creates "memory" collection, stores 3 memories: project description,
+> >        deadline, team lead)
+> >
+> > --- later session ---
+> >
+> > User: What do you remember about my current project?
+> >
+> > Agent: You're working on Project Atlas — a PostgreSQL to DynamoDB migration.
+> >        Sarah is the team lead and your deadline is end of Q3.
+> >        (retrieved via semantic search on "current project")
+> > ```
+> >
+> > For a more in-depth look at building agentic memory with Chroma, see the [Agentic Memory guide](/guides/build/agentic-memory).
+>
+> > [tab] Local
+> >
+> > Install the dependencies:
+> >
+> > ```bash pip theme={null}
+> > pip install chromadb google-adk
+> > ```
+> >
+> > ```bash uv theme={null}
+> > uv pip install chromadb google-adk
+> > ```
+> >
+> > Replace `/path/to/your/data/directory` with where you want Chroma to store its data.
+> >
+> > ```python Python theme={null}
+> > from google.adk.agents import Agent
+> > from google.adk.tools.mcp_tool import McpToolset
+> > from google.adk.tools.mcp_tool.mcp_session_manager import StdioConnectionParams
+> > from mcp import StdioServerParameters
+> >
+> > DATA_DIR = "/path/to/your/data/directory"
+> >
+> > root_agent = Agent(
+> >     model="gemini-2.5-pro",
+> >     name="chroma_agent",
+> >     instruction="Help users store and retrieve information using semantic search.",
+> >     tools=[
+> >         McpToolset(
+> >             connection_params=StdioConnectionParams(
+> >                 server_params=StdioServerParameters(
+> >                     command="uvx",
+> >                     args=[
+> >                         "chroma-mcp",
+> >                         "--client-type", "persistent",
+> >                         "--data-dir", DATA_DIR,
+> >                     ],
+> >                 ),
+> >                 timeout=30,
+> >             ),
+> >         )
+> >     ],
+> > )
+> > ```
+> >
+> > ## Example: Semantic Memory Agent
+> >
+> > This example builds a personal assistant that uses Chroma as a persistent semantic memory store. The agent remembers facts from past conversations — user preferences, project context, decisions — and recalls them when relevant.
+> >
+> > The agent's instruction tells it to create a Chroma collection for storing memories, and to use it for storage and retrieval:
+> >
+> > ```python Python theme={null}
+> > from google.adk.agents import Agent
+> > from google.adk.tools.mcp_tool import McpToolset
+> > from google.adk.tools.mcp_tool.mcp_session_manager import StdioConnectionParams
+> > from mcp import StdioServerParameters
+> >
+> > DATA_DIR = "/path/to/your/data/directory"
+> >
+> > MEMORY_INSTRUCTION = """You are a personal assistant with persistent memory.
+> >
+> > You have access to Chroma tools for managing collections and documents.
+> >
+> > ## First run
+> > On your first interaction, use chroma_create_collection to create a collection
+> > called "memory". If it already exists, that's fine — just use the existing one.
+> >
+> > ## Storing memories
+> > When the user shares important information — preferences, project details,
+> > decisions, or personal context — store it in the "memory" collection using
+> > chroma_add_documents. Each memory should be a concise, self-contained fact.
+> > Tag memories with metadata like {"type": "preference"}, {"type": "fact"},
+> > or {"type": "decision"} so they can be filtered later.
+> >
+> > ## Recalling memories
+> > At the start of a conversation, or when the user asks about something that
+> > might relate to past context, use chroma_query_documents to search the
+> > "memory" collection. Use the results to inform your responses without
+> > the user having to repeat themselves.
+> >
+> > ## Memory hygiene
+> > If the user corrects a previous fact, use chroma_update_documents to update
+> > the old memory rather than creating a duplicate.
+> > """
+> >
+> > root_agent = Agent(
+> >     model="gemini-2.5-pro",
+> >     name="memory_agent",
+> >     instruction=MEMORY_INSTRUCTION,
+> >     tools=[
+> >         McpToolset(
+> >             connection_params=StdioConnectionParams(
+> >                 server_params=StdioServerParameters(
+> >                     command="uvx",
+> >                     args=[
+> >                         "chroma-mcp",
+> >                         "--client-type", "persistent",
+> >                         "--data-dir", DATA_DIR,
+> >                     ],
+> >                 ),
+> >                 timeout=30,
+> >             ),
+> >         )
+> >     ],
+> > )
+> > ```
+> >
+> > With this setup, a conversation might look like:
+> >
+> > ```text theme={null}
+> > User: I'm working on Project Atlas — it's a migration from PostgreSQL to
+> >       DynamoDB. Our deadline is end of Q3 and the team lead is Sarah.
+> >
+> > Agent: Got it, I've stored those project details. I'll remember them for
+> >        future conversations.
+> >        (creates "memory" collection, stores 3 memories: project description,
+> >        deadline, team lead)
+> >
+> > --- later session ---
+> >
+> > User: What do you remember about my current project?
+> >
+> > Agent: You're working on Project Atlas — a PostgreSQL to DynamoDB migration.
+> >        Sarah is the team lead and your deadline is end of Q3.
+> >        (retrieved via semantic search on "current project")
+> > ```
+> >
+> > For a more in-depth look at building agentic memory with Chroma, see the [Agentic Memory guide](/guides/build/agentic-memory).
+
+> [tab] TypeScript
+>
+> ## Prerequisites
+>
+> * Node.js 18+
+> * `uvx` installed (`curl -LsSf https://astral.sh/uv/install.sh | sh`)
+>
+> ## Setup
+>
+> > [tab] Chroma Cloud
+> >
+> > [Chroma Cloud](https://trychroma.com/signup?utm_source=docs-adk) is a fully managed, serverless database-as-a-service. Get started in 30 seconds - \$5 in free credits included.
+> >
+> > ### 1. Install and log in
+> >
+> > Install the ADK package:
+> >
+> > ```bash npm theme={null}
+> > npm install @google/adk
+> > ```
+> >
+> > ```bash pnpm theme={null}
+> > pnpm add @google/adk
+> > ```
+> >
+> > ```bash yarn theme={null}
+> > yarn add @google/adk
+> > ```
+> >
+> > Install the Chroma CLI and authenticate:
+> >
+> > ```bash pip theme={null}
+> > pip install chromadb
+> > ```
+> >
+> > ```bash uv theme={null}
+> > uv pip install chromadb
+> > ```
+> >
+> > ```bash theme={null}
+> > chroma login
+> > ```
+> >
+> > ### 2. Create a database
+> >
+> > ```bash theme={null}
+> > chroma db create my-adk-db
+> > ```
+> >
+> > ### 3. Get your connection variables
+> >
+> > ```bash theme={null}
+> > chroma db connect my-adk-db --env-vars
+> > ```
+> >
+> > This will output your `CHROMA_TENANT`, `CHROMA_DATABASE`, and `CHROMA_API_KEY`. Use them in the code below.
+> >
+> > ### 4. Create your agent
+> >
+> > ```typescript TypeScript theme={null}
+> > import { LlmAgent, MCPToolset } from "@google/adk";
+> >
+> > const CHROMA_TENANT = "your-tenant-id";
+> > const CHROMA_DATABASE = "my-adk-db";
+> > const CHROMA_API_KEY = "your-api-key";
+> >
+> > const rootAgent = new LlmAgent({
+> >     model: "gemini-2.5-pro",
+> >     name: "chroma_agent",
+> >     instruction: "Help users store and retrieve information using semantic search.",
+> >     tools: [
+> >         new MCPToolset({
+> >             type: "StdioConnectionParams",
+> >             serverParams: {
+> >                 command: "uvx",
+> >                 args: [
+> >                     "chroma-mcp",
+> >                     "--client-type", "cloud",
+> >                     "--tenant", CHROMA_TENANT,
+> >                     "--database", CHROMA_DATABASE,
+> >                     "--api-key", CHROMA_API_KEY,
+> >                 ],
+> >             },
+> >         }),
+> >     ],
+> > });
+> > ```
+> >
+> > ## Example: Semantic Memory Agent
+> >
+> > This example builds a personal assistant that uses Chroma as a persistent semantic memory store. The agent remembers facts from past conversations — user preferences, project context, decisions — and recalls them when relevant.
+> >
+> > The agent's instruction tells it to create a Chroma collection for storing memories, and to use it for storage and retrieval:
+> >
+> > ```typescript TypeScript theme={null}
+> > import { LlmAgent, MCPToolset } from "@google/adk";
+> >
+> > const CHROMA_TENANT = "your-tenant-id";
+> > const CHROMA_DATABASE = "my-adk-db";
+> > const CHROMA_API_KEY = "your-api-key";
+> >
+> > const MEMORY_INSTRUCTION = `You are a personal assistant with persistent memory.
+> >
+> > You have access to Chroma tools for managing collections and documents.
+> >
+> > ## First run
+> > On your first interaction, use chroma_create_collection to create a collection
+> > called "memory". If it already exists, that's fine — just use the existing one.
+> >
+> > ## Storing memories
+> > When the user shares important information — preferences, project details,
+> > decisions, or personal context — store it in the "memory" collection using
+> > chroma_add_documents. Each memory should be a concise, self-contained fact.
+> > Tag memories with metadata like {"type": "preference"}, {"type": "fact"},
+> > or {"type": "decision"} so they can be filtered later.
+> >
+> > ## Recalling memories
+> > At the start of a conversation, or when the user asks about something that
+> > might relate to past context, use chroma_query_documents to search the
+> > "memory" collection. Use the results to inform your responses without
+> > the user having to repeat themselves.
+> >
+> > ## Memory hygiene
+> > If the user corrects a previous fact, use chroma_update_documents to update
+> > the old memory rather than creating a duplicate.
+> > `;
+> >
+> > const rootAgent = new LlmAgent({
+> >     model: "gemini-2.5-pro",
+> >     name: "memory_agent",
+> >     instruction: MEMORY_INSTRUCTION,
+> >     tools: [
+> >         new MCPToolset({
+> >             type: "StdioConnectionParams",
+> >             serverParams: {
+> >                 command: "uvx",
+> >                 args: [
+> >                     "chroma-mcp",
+> >                     "--client-type", "cloud",
+> >                     "--tenant", CHROMA_TENANT,
+> >                     "--database", CHROMA_DATABASE,
+> >                     "--api-key", CHROMA_API_KEY,
+> >                 ],
+> >             },
+> >         }),
+> >     ],
+> > });
+> > ```
+> >
+> > With this setup, a conversation might look like:
+> >
+> > ```text theme={null}
+> > User: I'm working on Project Atlas — it's a migration from PostgreSQL to
+> >       DynamoDB. Our deadline is end of Q3 and the team lead is Sarah.
+> >
+> > Agent: Got it, I've stored those project details. I'll remember them for
+> >        future conversations.
+> >        (creates "memory" collection, stores 3 memories: project description,
+> >        deadline, team lead)
+> >
+> > --- later session ---
+> >
+> > User: What do you remember about my current project?
+> >
+> > Agent: You're working on Project Atlas — a PostgreSQL to DynamoDB migration.
+> >        Sarah is the team lead and your deadline is end of Q3.
+> >        (retrieved via semantic search on "current project")
+> > ```
+> >
+> > For a more in-depth look at building agentic memory with Chroma, see the [Agentic Memory guide](/guides/build/agentic-memory).
+>
+> > [tab] Local
+> >
+> > Install the ADK package:
+> >
+> > ```bash npm theme={null}
+> > npm install @google/adk
+> > ```
+> >
+> > ```bash pnpm theme={null}
+> > pnpm add @google/adk
+> > ```
+> >
+> > ```bash yarn theme={null}
+> > yarn add @google/adk
+> > ```
+> >
+> > Replace `/path/to/your/data/directory` with where you want Chroma to store its data.
+> >
+> > ```typescript TypeScript theme={null}
+> > import { LlmAgent, MCPToolset } from "@google/adk";
+> >
+> > const DATA_DIR = "/path/to/your/data/directory";
+> >
+> > const rootAgent = new LlmAgent({
+> >     model: "gemini-2.5-pro",
+> >     name: "chroma_agent",
+> >     instruction: "Help users store and retrieve information using semantic search.",
+> >     tools: [
+> >         new MCPToolset({
+> >             type: "StdioConnectionParams",
+> >             serverParams: {
+> >                 command: "uvx",
+> >                 args: [
+> >                     "chroma-mcp",
+> >                     "--client-type", "persistent",
+> >                     "--data-dir", DATA_DIR,
+> >                 ],
+> >             },
+> >         }),
+> >     ],
+> > });
+> > ```
+> >
+> > ## Example: Semantic Memory Agent
+> >
+> > This example builds a personal assistant that uses Chroma as a persistent semantic memory store. The agent remembers facts from past conversations — user preferences, project context, decisions — and recalls them when relevant.
+> >
+> > The agent's instruction tells it to create a Chroma collection for storing memories, and to use it for storage and retrieval:
+> >
+> > ```typescript TypeScript theme={null}
+> > import { LlmAgent, MCPToolset } from "@google/adk";
+> >
+> > const DATA_DIR = "/path/to/your/data/directory";
+> >
+> > const MEMORY_INSTRUCTION = `You are a personal assistant with persistent memory.
+> >
+> > You have access to Chroma tools for managing collections and documents.
+> >
+> > ## First run
+> > On your first interaction, use chroma_create_collection to create a collection
+> > called "memory". If it already exists, that's fine — just use the existing one.
+> >
+> > ## Storing memories
+> > When the user shares important information — preferences, project details,
+> > decisions, or personal context — store it in the "memory" collection using
+> > chroma_add_documents. Each memory should be a concise, self-contained fact.
+> > Tag memories with metadata like {"type": "preference"}, {"type": "fact"},
+> > or {"type": "decision"} so they can be filtered later.
+> >
+> > ## Recalling memories
+> > At the start of a conversation, or when the user asks about something that
+> > might relate to past context, use chroma_query_documents to search the
+> > "memory" collection. Use the results to inform your responses without
+> > the user having to repeat themselves.
+> >
+> > ## Memory hygiene
+> > If the user corrects a previous fact, use chroma_update_documents to update
+> > the old memory rather than creating a duplicate.
+> > `;
+> >
+> > const rootAgent = new LlmAgent({
+> >     model: "gemini-2.5-pro",
+> >     name: "memory_agent",
+> >     instruction: MEMORY_INSTRUCTION,
+> >     tools: [
+> >         new MCPToolset({
+> >             type: "StdioConnectionParams",
+> >             serverParams: {
+> >                 command: "uvx",
+> >                 args: [
+> >                     "chroma-mcp",
+> >                     "--client-type", "persistent",
+> >                     "--data-dir", DATA_DIR,
+> >                 ],
+> >             },
+> >         }),
+> >     ],
+> > });
+> > ```
+> >
+> > With this setup, a conversation might look like:
+> >
+> > ```text theme={null}
+> > User: I'm working on Project Atlas — it's a migration from PostgreSQL to
+> >       DynamoDB. Our deadline is end of Q3 and the team lead is Sarah.
+> >
+> > Agent: Got it, I've stored those project details. I'll remember them for
+> >        future conversations.
+> >        (creates "memory" collection, stores 3 memories: project description,
+> >        deadline, team lead)
+> >
+> > --- later session ---
+> >
+> > User: What do you remember about my current project?
+> >
+> > Agent: You're working on Project Atlas — a PostgreSQL to DynamoDB migration.
+> >        Sarah is the team lead and your deadline is end of Q3.
+> >        (retrieved via semantic search on "current project")
+> > ```
+> >
+> > For a more in-depth look at building agentic memory with Chroma, see the [Agentic Memory guide](/guides/build/agentic-memory).
 
 ## Available Tools
 

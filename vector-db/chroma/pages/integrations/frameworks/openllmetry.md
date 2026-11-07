@@ -8,7 +8,7 @@ path: integrations/frameworks/openllmetry
 It gives visibility to query and index calls as well as LLM prompts and completions.
 For more information on how to use OpenLLMetry, see the [OpenLLMetry docs](https://www.traceloop.com/docs/openllmetry).
 
-<img alt="" />
+![](https://mintcdn.com/chroma-8943dec5/N-xA4EbmHOvIcCcs/images/openllmetry.png?fit=max\&auto=format\&n=N-xA4EbmHOvIcCcs\&q=85\&s=b5fe7744ed8fda703db34aa15c234fe7)
 
 ### Example
 

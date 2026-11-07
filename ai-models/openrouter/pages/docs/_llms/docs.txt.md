@@ -1,5 +1,5 @@
 ---
-title: "Docs (157 pages)"
+title: "Docs (159 pages)"
 source: https://openrouter.ai/docs/_llms/docs.txt
 path: docs/_llms/docs.txt
 ---
@@ -47,16 +47,17 @@ path: docs/_llms/docs.txt
 - [Nitro Variant](https://openrouter.ai/docs/guides/routing/model-variants/nitro.md): High-speed model inference with :nitro
 - [Floor Variant](https://openrouter.ai/docs/guides/routing/model-variants/floor.md): Lowest-cost model inference with :floor
 
-#### Routers
+#### Model Routing
 
-- [Auto Router](https://openrouter.ai/docs/guides/routing/routers/auto-router.md): Automatically select the best model for your prompt
-- [Body Builder](https://openrouter.ai/docs/guides/routing/routers/body-builder.md): Generate multiple parallel API requests from natural language
+- [Model Routing](https://openrouter.ai/docs/guides/routing/routers/overview.md): Let a router pick the model for each request, and compare routers on the Model Routing Benchmarks
+- [Auto Router](https://openrouter.ai/docs/guides/routing/routers/auto-router.md): A general purpose router that picks a model and reasoning effort for every request
+- [Auto Code](https://openrouter.ai/docs/guides/routing/routers/auto-code.md): A router tuned for coding agents and harnesses that picks a model and reasoning effort for every turn
 - [Free Models Router](https://openrouter.ai/docs/guides/routing/routers/free-router.md): Get free AI inference by routing to available free models
-- [Latest Model Resolution](https://openrouter.ai/docs/guides/routing/routers/latest-resolution.md): Always target the newest version of a model family with a single slug
 - [Pareto Router](https://openrouter.ai/docs/guides/routing/routers/pareto-router.md): Pick a coding model by minimum coding score without choosing a specific model
 - [Fusion Router](https://openrouter.ai/docs/guides/routing/routers/fusion-router.md): Multi-model deliberation as a model slug
 - [Jev Router](https://openrouter.ai/docs/guides/routing/routers/jev-router.md): Route requests with Jev, choose a cost tier, and control model selection and reasoning effort
 - [Switchyard](https://openrouter.ai/docs/guides/routing/routers/switchyard-router.md): Automate model switching across a model pool of your choice to balance accuracy, cost, and speed
+- [Router Metadata](https://openrouter.ai/docs/guides/routing/routers/router-metadata.md): Surface routing decisions on every response with a single opt-in header
 
 ### Tool Calling
 
@@ -99,7 +100,8 @@ path: docs/_llms/docs.txt
 - [Zero Completion Insurance](https://openrouter.ai/docs/guides/features/zero-completion-insurance.md): OpenRouter will not charge you for zero token responses
 - [App Attribution](https://openrouter.ai/docs/app-attribution.md): Get your app featured in OpenRouter rankings and analytics
 - [Service Tiers](https://openrouter.ai/docs/guides/features/service-tiers.md): Control cost and latency tradeoffs with service tier selection
-- [Router Metadata](https://openrouter.ai/docs/guides/features/router-metadata.md): Surface routing decisions on every response with a single opt-in header
+- [Body Builder](https://openrouter.ai/docs/guides/features/body-builder.md): Generate multiple parallel API requests from natural language
+- [Latest Model Resolution](https://openrouter.ai/docs/guides/features/latest-resolution.md): Always target the newest version of a model family with a single slug
 
 #### Workspaces
 

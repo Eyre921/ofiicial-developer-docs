@@ -6,15 +6,11 @@ path: cloud/search-api/migration
 
 Migrate from legacy `query()` and `get()` to the Search API.
 
-<Callout>
-  The `query()` and `get()` methods will continue to be supported, so migration to the Search API is optional.
-</Callout>
+The `query()` and `get()` methods will continue to be supported, so migration to the Search API is optional.
 
 ## Parameter Mapping
 
-<Callout>
-  The Search API is available in Chroma Cloud. This guide uses dictionary syntax for minimal migration effort.
-</Callout>
+The Search API is available in Chroma Cloud. This guide uses dictionary syntax for minimal migration effort.
 
 ### query() Parameters
 
@@ -56,223 +52,213 @@ Migrate from legacy `query()` and `get()` to the Search API.
 
 ### Basic Similarity Search
 
-<CodeGroup>
-  ```python Python theme={null}
-  # Legacy API
-  results = collection.query(
-      query_embeddings=[[0.1, 0.2, 0.3]],
-      n_results=10
-  )
+```python Python theme={null}
+# Legacy API
+results = collection.query(
+    query_embeddings=[[0.1, 0.2, 0.3]],
+    n_results=10
+)
 
-  # Search API - with text query
-  from chromadb import Search
+# Search API - with text query
+from chromadb import Search
 
-  results = collection.search(
-      Search(
-          rank={"$knn": {"query": "machine learning"}},
-          limit=10
-      )
-  )
-  ```
+results = collection.search(
+    Search(
+        rank={"$knn": {"query": "machine learning"}},
+        limit=10
+    )
+)
+```
 
-  ```typescript TypeScript theme={null}
-  // Legacy API
-  const results = await collection.query({
-    queryEmbeddings: [[0.1, 0.2, 0.3]],
-    nResults: 10
-  });
+```typescript TypeScript theme={null}
+// Legacy API
+const results = await collection.query({
+  queryEmbeddings: [[0.1, 0.2, 0.3]],
+  nResults: 10
+});
 
-  // Search API - with text query
-  import { Search } from 'chromadb';
+// Search API - with text query
+import { Search } from 'chromadb';
 
-  const results2 = await collection.search(
-    new Search({
-      rank: { $knn: { query: "machine learning" } },
-      limit: 10
-    })
-  );
-  ```
+const results2 = await collection.search(
+  new Search({
+    rank: { $knn: { query: "machine learning" } },
+    limit: 10
+  })
+);
+```
 
-  ```rust Rust theme={null}
-  use chroma::types::{QueryVector, RankExpr, SearchPayload};
+```rust Rust theme={null}
+use chroma::types::{QueryVector, RankExpr, SearchPayload};
 
-  let results = collection
-      .query(vec![vec![0.1, 0.2, 0.3]], Some(10), None, None, None)
-      .await?;
+let results = collection
+    .query(vec![vec![0.1, 0.2, 0.3]], Some(10), None, None, None)
+    .await?;
 
-  let results2 = collection
-      .search(vec![SearchPayload::default()
-          .rank(RankExpr::Knn {
-              query: QueryVector::Dense(vec![0.1, 0.2, 0.3]),
-              key: chroma::types::Key::Embedding,
-              limit: 10,
-              default: None,
-              return_rank: false,
-          })
-          .limit(Some(10), 0)])
-      .await?;
-  ```
-</CodeGroup>
+let results2 = collection
+    .search(vec![SearchPayload::default()
+        .rank(RankExpr::Knn {
+            query: QueryVector::Dense(vec![0.1, 0.2, 0.3]),
+            key: chroma::types::Key::Embedding,
+            limit: 10,
+            default: None,
+            return_rank: false,
+        })
+        .limit(Some(10), 0)])
+    .await?;
+```
 
 ### Document Filtering
 
-<CodeGroup>
-  ```python Python theme={null}
-  # Legacy API
-  results = collection.query(
-      query_embeddings=[[0.1, 0.2, 0.3]],
-      n_results=5,
-      where_document={"$contains": "quantum"}
-  )
+```python Python theme={null}
+# Legacy API
+results = collection.query(
+    query_embeddings=[[0.1, 0.2, 0.3]],
+    n_results=5,
+    where_document={"$contains": "quantum"}
+)
 
-  # Search API
-  results = collection.search(
-      Search(
-          rank={"$knn": {"query": "quantum computing"}},
-          where={"#document": {"$contains": "quantum"}},
-          limit=5
-      )
-  )
-  ```
+# Search API
+results = collection.search(
+    Search(
+        rank={"$knn": {"query": "quantum computing"}},
+        where={"#document": {"$contains": "quantum"}},
+        limit=5
+    )
+)
+```
 
-  ```typescript TypeScript theme={null}
-  // Legacy API
-  const results = await collection.query({
-    queryEmbeddings: [[0.1, 0.2, 0.3]],
-    nResults: 5,
-    whereDocument: { $contains: "quantum" }
-  });
+```typescript TypeScript theme={null}
+// Legacy API
+const results = await collection.query({
+  queryEmbeddings: [[0.1, 0.2, 0.3]],
+  nResults: 5,
+  whereDocument: { $contains: "quantum" }
+});
 
-  // Search API
-  const results2 = await collection.search(
-    new Search({
-      rank: { $knn: { query: "quantum computing" } },
-      where: { "#document": { $contains: "quantum" } },
-      limit: 5
-    })
-  );
-  ```
-</CodeGroup>
+// Search API
+const results2 = await collection.search(
+  new Search({
+    rank: { $knn: { query: "quantum computing" } },
+    where: { "#document": { $contains: "quantum" } },
+    limit: 5
+  })
+);
+```
 
 ### Combined Filters
 
-<CodeGroup>
-  ```python Python theme={null}
-  # Legacy API
-  results = collection.query(
-      query_embeddings=[[0.1, 0.2, 0.3]],
-      n_results=10,
-      where={"category": "science"},
-      where_document={"$contains": "quantum"}
-  )
+```python Python theme={null}
+# Legacy API
+results = collection.query(
+    query_embeddings=[[0.1, 0.2, 0.3]],
+    n_results=10,
+    where={"category": "science"},
+    where_document={"$contains": "quantum"}
+)
 
-  # Search API - combine filters with $and
-  results = collection.search(
-      Search(
-          where={"$and": [
-              {"category": "science"},
-              {"#document": {"$contains": "quantum"}}
-          ]},
-          rank={"$knn": {"query": "quantum physics"}},
-          limit=10
-      )
-  )
-  ```
+# Search API - combine filters with $and
+results = collection.search(
+    Search(
+        where={"$and": [
+            {"category": "science"},
+            {"#document": {"$contains": "quantum"}}
+        ]},
+        rank={"$knn": {"query": "quantum physics"}},
+        limit=10
+    )
+)
+```
 
-  ```typescript TypeScript theme={null}
-  // Legacy API
-  const results = await collection.query({
-    queryEmbeddings: [[0.1, 0.2, 0.3]],
-    nResults: 10,
-    where: { category: "science" },
-    whereDocument: { $contains: "quantum" }
-  });
+```typescript TypeScript theme={null}
+// Legacy API
+const results = await collection.query({
+  queryEmbeddings: [[0.1, 0.2, 0.3]],
+  nResults: 10,
+  where: { category: "science" },
+  whereDocument: { $contains: "quantum" }
+});
 
-  // Search API - combine filters with $and
-  const results2 = await collection.search(
-    new Search({
-      where: {
-        $and: [
-          { category: "science" },
-          { "#document": { $contains: "quantum" } }
-        ]
-      },
-      rank: { $knn: { query: "quantum physics" } },
-      limit: 10
-    })
-  );
-  ```
-</CodeGroup>
+// Search API - combine filters with $and
+const results2 = await collection.search(
+  new Search({
+    where: {
+      $and: [
+        { category: "science" },
+        { "#document": { $contains: "quantum" } }
+      ]
+    },
+    rank: { $knn: { query: "quantum physics" } },
+    limit: 10
+  })
+);
+```
 
 ### Get by IDs
 
-<CodeGroup>
-  ```python Python theme={null}
-  # Legacy API
-  results = collection.get(
-      ids=["id1", "id2", "id3"]
-  )
+```python Python theme={null}
+# Legacy API
+results = collection.get(
+    ids=["id1", "id2", "id3"]
+)
 
-  # Search API
-  results = collection.search(
-      Search(
-          where={"#id": {"$in": ["id1", "id2", "id3"]}}
-      )
-  )
-  ```
+# Search API
+results = collection.search(
+    Search(
+        where={"#id": {"$in": ["id1", "id2", "id3"]}}
+    )
+)
+```
 
-  ```typescript TypeScript theme={null}
-  // Legacy API
-  const results = await collection.get({
-    ids: ["id1", "id2", "id3"]
-  });
+```typescript TypeScript theme={null}
+// Legacy API
+const results = await collection.get({
+  ids: ["id1", "id2", "id3"]
+});
 
-  // Search API
-  const results2 = await collection.search(
-    new Search({
-      where: { "#id": { $in: ["id1", "id2", "id3"] } }
-    })
-  );
-  ```
-</CodeGroup>
+// Search API
+const results2 = await collection.search(
+  new Search({
+    where: { "#id": { $in: ["id1", "id2", "id3"] } }
+  })
+);
+```
 
 ### Pagination
 
-<CodeGroup>
-  ```python Python theme={null}
-  # Legacy API
-  results = collection.get(
-      where={"status": "active"},
-      limit=100,
-      offset=50
-  )
+```python Python theme={null}
+# Legacy API
+results = collection.get(
+    where={"status": "active"},
+    limit=100,
+    offset=50
+)
 
-  # Search API
-  results = collection.search(
-      Search(
-          where={"status": "active"},
-          limit={"limit": 100, "offset": 50}
-      )
-  )
-  ```
+# Search API
+results = collection.search(
+    Search(
+        where={"status": "active"},
+        limit={"limit": 100, "offset": 50}
+    )
+)
+```
 
-  ```typescript TypeScript theme={null}
-  // Legacy API
-  const results = await collection.get({
+```typescript TypeScript theme={null}
+// Legacy API
+const results = await collection.get({
+  where: { status: "active" },
+  limit: 100,
+  offset: 50
+});
+
+// Search API
+const results2 = await collection.search(
+  new Search({
     where: { status: "active" },
-    limit: 100,
-    offset: 50
-  });
-
-  // Search API
-  const results2 = await collection.search(
-    new Search({
-      where: { status: "active" },
-      limit: { limit: 100, offset: 50 }
-    })
-  );
-  ```
-</CodeGroup>
+    limit: { limit: 100, offset: 50 }
+  })
+);
+```
 
 ## Key Differences
 
@@ -280,25 +266,23 @@ Migrate from legacy `query()` and `get()` to the Search API.
 
 The Search API supports text queries directly - they are automatically converted to embeddings using the collection's configured embedding function.
 
-<CodeGroup>
-  ```python Python theme={null}
-  # Legacy API
-  collection.query(query_texts=["search text"])
+```python Python theme={null}
+# Legacy API
+collection.query(query_texts=["search text"])
 
-  # Search API - direct text query
-  collection.search(Search(rank={"$knn": {"query": "search text"}}))
-  ```
+# Search API - direct text query
+collection.search(Search(rank={"$knn": {"query": "search text"}}))
+```
 
-  ```typescript TypeScript theme={null}
-  // Legacy API
-  await collection.query({ queryTexts: ["search text"] });
+```typescript TypeScript theme={null}
+// Legacy API
+await collection.query({ queryTexts: ["search text"] });
 
-  // Search API - direct text query
-  await collection.search(
-    new Search({ rank: { $knn: { query: "search text" } } })
-  );
-  ```
-</CodeGroup>
+// Search API - direct text query
+await collection.search(
+  new Search({ rank: { $knn: { query: "search text" } } })
+);
+```
 
 ### New Capabilities
 
@@ -312,41 +296,39 @@ The Search API supports text queries directly - they are automatically converted
 
 The Search API allows different parameters for each search in a batch:
 
-<CodeGroup>
-  ```python Python theme={null}
-  # Legacy - same parameters for all queries
-  results = collection.query(
-      query_embeddings=[emb1, emb2, emb3],
-      n_results=10,
-      where={"category": "science"}  # Same filter for all
-  )
+```python Python theme={null}
+# Legacy - same parameters for all queries
+results = collection.query(
+    query_embeddings=[emb1, emb2, emb3],
+    n_results=10,
+    where={"category": "science"}  # Same filter for all
+)
 
-  # Search API - different parameters per search
-  searches = [
-      Search(rank={"$knn": {"query": "machine learning"}}, limit=10, where={"category": "science"}),
-      Search(rank={"$knn": {"query": "neural networks"}}, limit=5, where={"category": "tech"}),
-      Search(rank={"$knn": {"query": "artificial intelligence"}}, limit=20)  # No filter
-  ]
-  results = collection.search(searches)
-  ```
+# Search API - different parameters per search
+searches = [
+    Search(rank={"$knn": {"query": "machine learning"}}, limit=10, where={"category": "science"}),
+    Search(rank={"$knn": {"query": "neural networks"}}, limit=5, where={"category": "tech"}),
+    Search(rank={"$knn": {"query": "artificial intelligence"}}, limit=20)  # No filter
+]
+results = collection.search(searches)
+```
 
-  ```typescript TypeScript theme={null}
-  // Legacy - same parameters for all queries
-  const results = await collection.query({
-    queryEmbeddings: [emb1, emb2, emb3],
-    nResults: 10,
-    where: { category: "science" }  // Same filter for all
-  });
+```typescript TypeScript theme={null}
+// Legacy - same parameters for all queries
+const results = await collection.query({
+  queryEmbeddings: [emb1, emb2, emb3],
+  nResults: 10,
+  where: { category: "science" }  // Same filter for all
+});
 
-  // Search API - different parameters per search
-  const searches = [
-    new Search({ rank: { $knn: { query: "machine learning" } }, limit: 10, where: { category: "science" } }),
-    new Search({ rank: { $knn: { query: "neural networks" } }, limit: 5, where: { category: "tech" } }),
-    new Search({ rank: { $knn: { query: "artificial intelligence" } }, limit: 20 })  // No filter
-  ];
-  const results2 = await collection.search(searches);
-  ```
-</CodeGroup>
+// Search API - different parameters per search
+const searches = [
+  new Search({ rank: { $knn: { query: "machine learning" } }, limit: 10, where: { category: "science" } }),
+  new Search({ rank: { $knn: { query: "neural networks" } }, limit: 5, where: { category: "tech" } }),
+  new Search({ rank: { $knn: { query: "artificial intelligence" } }, limit: 20 })  // No filter
+];
+const results2 = await collection.search(searches);
+```
 
 ## Migration Tips
 

@@ -150,7 +150,10 @@ import {
 
 function Root() {
   return (
-    <StripeTerminalProvider tokenProvider={AppsOnDevicesConnectionTokenProvider}>
+    <StripeTerminalProvider
+      tokenProvider={AppsOnDevicesConnectionTokenProvider}
+      localeConfig={{ type: 'cardLanguagePreferenceIfAvailable' }}
+    >
       <App />
     </StripeTerminalProvider>
   );

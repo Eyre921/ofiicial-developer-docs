@@ -24,167 +24,161 @@ Chroma supports various search techniques that are useful for different use case
 
 All Chroma collections enable semantic search by default. You can specify the embedding function your collection will use to embed your data when creating a collection:
 
-<CodeGroup>
-  ```python Python theme={null}
-  import chromadb
-  from chromadb.utils.embedding_functions import OpenAIEmbeddingFunction
+```python Python theme={null}
+import chromadb
+from chromadb.utils.embedding_functions import OpenAIEmbeddingFunction
 
-  client = chromadb.CloudClient()
+client = chromadb.CloudClient()
 
-  collection = client.create_collection(
-      name="my-collection",
-      embedding_function=OpenAIEmbeddingFunction(
-          api_key="YOUR_OPENAI_API_KEY",
-          model="text-embedding-3-small"
-      )
-  )
-  ```
+collection = client.create_collection(
+    name="my-collection",
+    embedding_function=OpenAIEmbeddingFunction(
+        api_key="YOUR_OPENAI_API_KEY",
+        model="text-embedding-3-small"
+    )
+)
+```
 
-  ```typescript TypeScript theme={null}
-  import { CloudClient } from "chromadb";
-  import { OpenAIEmbeddingFunction } from "@chroma-core/openai";
+```typescript TypeScript theme={null}
+import { CloudClient } from "chromadb";
+import { OpenAIEmbeddingFunction } from "@chroma-core/openai";
 
-  const client = new CloudClient();
+const client = new CloudClient();
 
-  const collection = await client.createCollection({
-      name: "my-collection",
-      embeddingFunction: new OpenAIEmbeddingFunction({
-          apiKey: "YOUR_OPENAI_API_KEY",
-          model: "text-embedding-3-small"
-      })
-  });
-  ```
-</CodeGroup>
+const collection = await client.createCollection({
+    name: "my-collection",
+    embeddingFunction: new OpenAIEmbeddingFunction({
+        apiKey: "YOUR_OPENAI_API_KEY",
+        model: "text-embedding-3-small"
+    })
+});
+```
 
 **Lexical search** (keyword) matches on exact tokens. It shines when you need precision: finding a specific product ID like `SKU-4892-X`, a drug name like `omeprazole`, a legal citation like `Smith v. Jones (2019)`, or a model number in a technical manual. Dense search might miss these entirely or return semantically related but wrong results. The tradeoff is that lexical search can't bridge synonyms or paraphrases - searching "cancel" won't find chunks that only mention "terminate."
 
 To enable lexical search on your collection, you can enable a sparse vector index on your collection's schema with a sparse embedding function:
 
-<CodeGroup>
-  ```python Python theme={null}
-  import chromadb
-  from chromadb import Schema, SparseVectorIndexConfig, K
-  from chromadb.utils.embedding_functions import ChromaCloudSpladeEmbeddingFunction
+```python Python theme={null}
+import chromadb
+from chromadb import Schema, SparseVectorIndexConfig, K
+from chromadb.utils.embedding_functions import ChromaCloudSpladeEmbeddingFunction
 
-  client = chromadb.CloudClient()
+client = chromadb.CloudClient()
 
-  schema = Schema()
+schema = Schema()
 
-  schema.create_index(
-      config=SparseVectorIndexConfig(
-          source_key=K.DOCUMENT,
-          embedding_function=ChromaCloudSpladeEmbeddingFunction()
-      ),
-      key="sparse_embedding"
-  )
+schema.create_index(
+    config=SparseVectorIndexConfig(
+        source_key=K.DOCUMENT,
+        embedding_function=ChromaCloudSpladeEmbeddingFunction()
+    ),
+    key="sparse_embedding"
+)
 
-  collection = client.create_collection(
-      name="my-collection",
-      schema=schema
-  )
-  ```
+collection = client.create_collection(
+    name="my-collection",
+    schema=schema
+)
+```
 
-  ```typescript TypeScript theme={null}
-  import { CloudClient, Schema, SparseVectorIndexConfig, K } from 'chromadb';
-  import { ChromaCloudSpladeEmbeddingFunction } from '@chroma-core/chroma-cloud-splade';
+```typescript TypeScript theme={null}
+import { CloudClient, Schema, SparseVectorIndexConfig, K } from 'chromadb';
+import { ChromaCloudSpladeEmbeddingFunction } from '@chroma-core/chroma-cloud-splade';
 
-  const client = new CloudClient();
+const client = new CloudClient();
 
-  const schema = new Schema();
+const schema = new Schema();
 
-  schema.createIndex(
-      new SparseVectorIndexConfig({
-          sourceKey: K.DOCUMENT,
-          embeddingFunction: new ChromaCloudSpladeEmbeddingFunction()
-      }),
-      "sparse_embedding"
-  );
+schema.createIndex(
+    new SparseVectorIndexConfig({
+        sourceKey: K.DOCUMENT,
+        embeddingFunction: new ChromaCloudSpladeEmbeddingFunction()
+    }),
+    "sparse_embedding"
+);
 
-  const collection = await client.createCollection({
-      name: "my-collection",
-      schema
-  });
-  ```
-</CodeGroup>
+const collection = await client.createCollection({
+    name: "my-collection",
+    schema
+});
+```
 
 **Hybrid search** combines both: run dense and lexical searches in parallel, then merge the results. This gives you semantic understanding and precise term matching. For many retrieval tasks - especially over technical or specialized content - hybrid outperforms either approach alone.
 
 Chroma's [Search API](../../cloud/search-api/overview) allows you to define how you want to combine dense and sparse (lexical) results. For example, using [RRF](../../cloud/search-api/hybrid-search#understanding-rrf):
 
-<CodeGroup>
-  ```python Python theme={null}
-  from chromadb import Search, K, Knn, Rrf
+```python Python theme={null}
+from chromadb import Search, K, Knn, Rrf
 
-  # Dense semantic embeddings
-  dense_rank = Knn(
-      query="machine learning research",  # Text query for dense embeddings
-      key="#embedding",          # Default embedding field
-      return_rank=True,
-      limit=200                  # Consider top 200 candidates
-  )
+# Dense semantic embeddings
+dense_rank = Knn(
+    query="machine learning research",  # Text query for dense embeddings
+    key="#embedding",          # Default embedding field
+    return_rank=True,
+    limit=200                  # Consider top 200 candidates
+)
 
-  # Sparse keyword embeddings
-  sparse_rank = Knn(
-      query="machine learning research",  # Text query for sparse embeddings
-      key="sparse_embedding",    # Metadata field for sparse vectors
-      return_rank=True,
-      limit=200
-  )
+# Sparse keyword embeddings
+sparse_rank = Knn(
+    query="machine learning research",  # Text query for sparse embeddings
+    key="sparse_embedding",    # Metadata field for sparse vectors
+    return_rank=True,
+    limit=200
+)
 
-  # Combine with RRF
-  hybrid_rank = Rrf(
-      ranks=[dense_rank, sparse_rank],
-      weights=[0.7, 0.3],       # 70% semantic, 30% keyword
-      k=60
-  )
+# Combine with RRF
+hybrid_rank = Rrf(
+    ranks=[dense_rank, sparse_rank],
+    weights=[0.7, 0.3],       # 70% semantic, 30% keyword
+    k=60
+)
 
-  # Use in search
-  search = (Search()
-      .where(K("status") == "published")  # Optional filtering
-      .rank(hybrid_rank)
-      .limit(20)
-      .select(K.DOCUMENT, K.SCORE, "title")
-  )
-
-  results = collection.search(search)
-  ```
-
-  ```typescript TypeScript theme={null}
-  import { Search, K, Knn, Rrf } from 'chromadb';
-
-  // Dense semantic embeddings
-  const denseRank = Knn({
-    query: "machine learning research",  // Text query for dense embeddings
-    key: "#embedding",         // Default embedding field
-    returnRank: true,
-    limit: 200                 // Consider top 200 candidates
-  });
-
-  // Sparse keyword embeddings
-  const sparseRank = Knn({
-    query: "machine learning research",  // Text query for sparse embeddings
-    key: "sparse_embedding",   // Metadata field for sparse vectors
-    returnRank: true,
-    limit: 200
-  });
-
-  // Combine with RRF
-  const hybridRank = Rrf({
-    ranks: [denseRank, sparseRank],
-    weights: [0.7, 0.3],       // 70% semantic, 30% keyword
-    k: 60
-  });
-
-  // Use in search
-  const search = new Search()
-    .where(K("status").eq("published"))  // Optional filtering
-    .rank(hybridRank)
+# Use in search
+search = (Search()
+    .where(K("status") == "published")  # Optional filtering
+    .rank(hybrid_rank)
     .limit(20)
-    .select(K.DOCUMENT, K.SCORE, "title");
+    .select(K.DOCUMENT, K.SCORE, "title")
+)
 
-  const results = await collection.search(search);
-  ```
-</CodeGroup>
+results = collection.search(search)
+```
+
+```typescript TypeScript theme={null}
+import { Search, K, Knn, Rrf } from 'chromadb';
+
+// Dense semantic embeddings
+const denseRank = Knn({
+  query: "machine learning research",  // Text query for dense embeddings
+  key: "#embedding",         // Default embedding field
+  returnRank: true,
+  limit: 200                 // Consider top 200 candidates
+});
+
+// Sparse keyword embeddings
+const sparseRank = Knn({
+  query: "machine learning research",  // Text query for sparse embeddings
+  key: "sparse_embedding",   // Metadata field for sparse vectors
+  returnRank: true,
+  limit: 200
+});
+
+// Combine with RRF
+const hybridRank = Rrf({
+  ranks: [denseRank, sparseRank],
+  weights: [0.7, 0.3],       // 70% semantic, 30% keyword
+  k: 60
+});
+
+// Use in search
+const search = new Search()
+  .where(K("status").eq("published"))  // Optional filtering
+  .rank(hybridRank)
+  .limit(20)
+  .select(K.DOCUMENT, K.SCORE, "title");
+
+const results = await collection.search(search);
+```
 
 Chroma also supports **text filtering** on top of your searches via the `where_document` parameter. You can filter results to only include chunks that contain an exact string or match a regex pattern. This is useful for enforcing structural constraints-like ensuring results contain a specific identifier-or for pattern matching on things like email addresses, dates, or phone numbers.
 
@@ -224,9 +218,7 @@ A Chroma collection indexes records using a specific embedding model and configu
 
 Chunking is the process of breaking source data into smaller, meaningful units ("chunks") that are embedded and stored as individual records in a Chroma collection. Because embedding models operate on limited context windows and produce a single vector per input, storing entire documents as one record often blurs multiple ideas together and reduces retrieval quality. Chunking allows Chroma to index information at the level users actually search for-paragraphs, sections, functions, or messages-improving both recall and precision. Well-chosen chunks ensure that retrieved results are specific, semantically coherent, and useful on their own, while still allowing larger context to be reconstructed through metadata when needed.
 
-<Callout>
-  To learn more about chunking best practices, see our [Chunking Guide](./chunking)
-</Callout>
+To learn more about chunking best practices, see our [Chunking Guide](./chunking)
 
 Chroma is flexible enough to support nearly any chunking strategy so long as each chunk fits in 16kB.  This is also the best way to work with large documents, regardless of performance concerns.
 
@@ -234,49 +226,47 @@ When adding chunks to your collection, we recommend using batch operations. Batc
 from one vector to two will generally double the number of vectors per second with diminishing
 returns as the batch size increases.  Chroma Cloud allows ingesting up to 300 vectors per batch.
 
-<CodeGroup>
-  ```python Python theme={null}
-  # Instead of
-  for chunk in chunks:
-      collection.add(
-          ids=[chunk.id],
-          documents=[chunk.document],
-          metadatas=[chunk.metadata]
-      )
+```python Python theme={null}
+# Instead of
+for chunk in chunks:
+    collection.add(
+        ids=[chunk.id],
+        documents=[chunk.document],
+        metadatas=[chunk.metadata]
+    )
 
-  # Use batching
-  BATCH_SIZE = 300
-  for i in range(0, len(chunks), BATCH_SIZE):
-      batch = chunks[i:i + BATCH_SIZE]
-      collection.add(
-          ids=[chunk.id for chunk in batch],
-          documents=[chunk.document for chunk in batch],
-          metadatas=[chunk.metadata for chunk in batch]
-      )
-  ```
+# Use batching
+BATCH_SIZE = 300
+for i in range(0, len(chunks), BATCH_SIZE):
+    batch = chunks[i:i + BATCH_SIZE]
+    collection.add(
+        ids=[chunk.id for chunk in batch],
+        documents=[chunk.document for chunk in batch],
+        metadatas=[chunk.metadata for chunk in batch]
+    )
+```
 
-  ```typescript TypeScript theme={null}
-  // Instead of
-  for (const chunk of chunks) {
-      await collection.add({
-          ids: [chunk.id],
-          documents: [chunk.document],
-          metadatas: [chunk.metadata]
-      })
-  }
+```typescript TypeScript theme={null}
+// Instead of
+for (const chunk of chunks) {
+    await collection.add({
+        ids: [chunk.id],
+        documents: [chunk.document],
+        metadatas: [chunk.metadata]
+    })
+}
 
-  // Use batching
-  const BATCH_SIZE = 300;
-  for (let i = 0; i < chunks.length; i += BATCH_SIZE) {
-      const batch = chunks.slice(i, i + BATCH_SIZE);
-      await collection.add({
-          ids: batch.map((chunk) => chunk.id),
-          documents: batch.map((chunk) => chunk.document),
-          metadatas: batch.map((chunk) => chunk.metadata)
-      });
-  }
-  ```
-</CodeGroup>
+// Use batching
+const BATCH_SIZE = 300;
+for (let i = 0; i < chunks.length; i += BATCH_SIZE) {
+    const batch = chunks.slice(i, i + BATCH_SIZE);
+    await collection.add({
+        ids: batch.map((chunk) => chunk.id),
+        documents: batch.map((chunk) => chunk.document),
+        metadatas: batch.map((chunk) => chunk.metadata)
+    });
+}
+```
 
 Finally, issuing concurrent requests to the same collection will allow for even more throughput.
 Internally, requests are batched to give better performance than would be seen issuing requests individually.

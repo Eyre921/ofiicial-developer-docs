@@ -75564,7 +75564,7 @@ Before you can add a paid support plan, [upgrade your billing plan](/admin/billi
 
 
 # Monitor usage and cost
-Source: https://docs.pinecone.io/guides/assistant/admin/monitor-spend-and-usage
+Source: https://docs.pinecone.io/guides/assistant/admin/monitor-usage-and-cost
 
 Monitor Pinecone Assistant usage and cost, set monthly spend alerts, and track token usage across chat, context retrieval, and evaluation.
 
@@ -75598,7 +75598,7 @@ To protect against unexpected cost increases, Pinecone sends an alert when spend
 >
 > You must be an [organization owner or billing admin](/admin/organizations/organizations-overview#organization-roles) to view usage across your Pinecone organization. Also, this feature is available only to organizations on the Standard or Enterprise plans.
 
-Usage and costs across your organization are reported in the **Usage** dashboard in the Pinecone console. You can read the report there, download it as a CSV file, or export it with the Admin API (Enterprise plans only). For the steps, see [Download a usage report](/admin/billing/download-usage-report).
+The **Usage** dashboard in the Pinecone console reports usage and costs across your organization. You can read the report there, download it as a CSV file, or export it with the Admin API (Enterprise plans only). For the steps, see [Download a usage report](/admin/billing/download-usage-report).
 
 ## Monitor token usage
 
@@ -75606,9 +75606,9 @@ Requests to the [chat](/reference/api/latest/assistant/chat_assistant), [context
 
 > [tab] Chat
 >
-> For [chat](/guides/assistant/chat-with-assistant), tokens are defined as follows:
+> For [chat](/guides/assistant/chat-standard-interface), tokens are defined as follows:
 >
-> * `prompt_tokens` are based on the messages sent to the assistant and the context snippets retrieved from the assistant and sent to a model. Messages sent to the assistant can include messages from the [chat history](/guides/assistant/chat-with-assistant#provide-conversation-history) in addition to the newest message.
+> * `prompt_tokens` are based on the messages sent to the assistant and the context snippets retrieved from the assistant and sent to a model. Messages sent to the assistant can include messages from the [chat history](/guides/assistant/chat-standard-interface#provide-conversation-history) in addition to the newest message.
 >
 >   `prompt_tokens` appear as **Assistants Input Tokens** on invoices.
 > * `completion_tokens` are based on the answer from the model.
@@ -75687,7 +75687,7 @@ Requests to the [chat](/reference/api/latest/assistant/chat_assistant), [context
 >
 > * `total_tokens` is the sum of `prompt_tokens` and `completion_tokens`.
 >
-> ```json Example context response {30-34} theme={null}
+> ```json Example context response {28-32} theme={null}
 > {
 >     "snippets": [
 >         {
@@ -75763,21 +75763,21 @@ Requests to the [chat](/reference/api/latest/assistant/chat_assistant), [context
 
 
 # Chat through the OpenAI-compatible interface
-Source: https://docs.pinecone.io/guides/assistant/chat-through-the-openai-compatible-interface
+Source: https://docs.pinecone.io/guides/assistant/chat-openai-compatible-interface
 
 Chat with Pinecone Assistant using the OpenAI-compatible Chat Completion API for inline citations, streaming responses, and easy integration.
 
 After [uploading files](/guides/assistant/manage-files) to an assistant, you can chat with the assistant.
 
-This page shows you how to chat with an assistant using the [OpenAI-compatible chat interface](/reference/api/latest/assistant/chat_completion_assistant). This interface is based on the OpenAI Chat Completion API, a commonly used and adopted API. It's useful if you need inline citations or OpenAI-compatible responses, but has limited functionality compared to the [standard chat interface](/guides/assistant/chat-with-assistant).
+This page shows you how to chat with an assistant using the [OpenAI-compatible chat interface](/reference/api/latest/assistant/chat_completion_assistant). This interface is based on the OpenAI Chat Completion API, a commonly used API. It's useful if you need inline citations or OpenAI-compatible responses, but has limited functionality compared to the [standard chat interface](/guides/assistant/chat-standard-interface).
 
 > [!TIP]
 >
-> The [standard chat interface](/guides/assistant/chat-with-assistant) is the recommended way to chat with an assistant, as it offers more functionality and control over the assistant's responses and references.
+> The [standard chat interface](/guides/assistant/chat-standard-interface) is the recommended way to chat with an assistant, as it offers more functionality and control over the assistant's responses and references.
 
 ## Chat with an assistant
 
-The [OpenAI-compatible chat interface](/reference/api/latest/assistant/chat_completion_assistant) can return responses in two different formats:
+The [OpenAI-compatible chat interface](/reference/api/latest/assistant/chat_completion_assistant) can return responses in two formats:
 
 * [Default response](#default-response): The assistant returns a response in a single string field, which includes citation information.
 * [Streaming response](#streaming-response): The assistant returns the response as a text stream.
@@ -75971,9 +75971,9 @@ The example above returns a result like the following:
 
 There are three types of messages in a chat completion response:
 
-* **Message start**: Includes `"role":"assistant"`, which indicates that the assistant is responding to the user's message.
-* **Content**: Includes a value in the `content` field (e.g., `"content":"The"`), which is part of the assistant's streamed response to the user's message.
-* **Message end**: Includes `"finish_reason":"stop"`, which indicates that the assistant has finished responding to the user's message.
+* Message start: Includes `"role":"assistant"`, which indicates that the assistant is responding to the user's message.
+* Content: Includes a value in the `content` field (e.g., `"content":"The"`), which is part of the assistant's streamed response to the user's message.
+* Message end: Includes `"finish_reason":"stop"`, which indicates that the assistant has finished responding to the user's message.
 
 ## Extract the response content
 
@@ -76113,7 +76113,7 @@ curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME/chat/com
 
 ## Filter chat with metadata
 
-You can [filter which documents to use for chat completions](/guides/assistant/files-overview#file-metadata). The following example filters the responses to use only documents that include the metadata `"resource": "encyclopedia"`.
+You can [filter which documents to use for chat completions](/guides/assistant/file-metadata). The following example filters the responses to use only documents that include the metadata `"resource": "encyclopedia"`.
 
 ```python Python theme={null}
 from pinecone import Pinecone
@@ -76171,7 +76171,7 @@ curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME/chat/com
 >
 > This is available in API versions `2025-04` and later.
 
-Temperature is a parameter that controls the randomness of a model's predictions during text generation. Lower temperatures (\~0.0) yield more consistent, predictable answers, while higher temperatures increase the model's explanatory power and is generally better for creative tasks.
+Temperature is a parameter that controls the randomness of a model's predictions during text generation. Lower temperatures (\~0.0) yield more consistent, predictable answers, while higher temperatures increase the model's explanatory power and are generally better for creative tasks.
 
 To control the sampling temperature for a model, set the `temperature` parameter in the request. If a model doesn't support a temperature parameter, the parameter is ignored.
 
@@ -76223,7 +76223,7 @@ curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME/chat/com
 
 
 # Chat through the standard interface
-Source: https://docs.pinecone.io/guides/assistant/chat-with-assistant
+Source: https://docs.pinecone.io/guides/assistant/chat-standard-interface
 
 Chat with Pinecone Assistant through the standard interface with default, streaming, or JSON responses, plus citations and chat history support.
 
@@ -76233,9 +76233,9 @@ After [uploading files](/guides/assistant/manage-files) to an assistant, you can
 >
 > You can chat with an assistant using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant). Select the assistant to chat with, and use the Assistant playground.
 
-## Chat through the standard interface
+## Response formats
 
-The [standard chat interface](/reference/api/latest/assistant/chat_assistant) can return responses in three different formats:
+The [standard chat interface](/reference/api/latest/assistant/chat_assistant) can return responses in three formats:
 
 * [Default response](#default-response): The assistant returns a structured response and separate citation information.
 * [Streaming response](#streaming-response): The assistant returns the response as a text stream.
@@ -76243,7 +76243,7 @@ The [standard chat interface](/reference/api/latest/assistant/chat_assistant) ca
 
 > [!TIP]
 >
-> This is the recommended way to chat with an assistant, as it offers more functionality and control over the assistant's responses and references. However, if you need your assistant to be OpenAI-compatible or need inline citations, use the [OpenAI-compatible chat interface](#chat-through-the-openai-compatible-interface).
+> This is the recommended way to chat with an assistant, as it offers more functionality and control over the assistant's responses and references. However, if you need your assistant to be OpenAI-compatible or need inline citations, use the [OpenAI-compatible chat interface](/guides/assistant/chat-openai-compatible-interface).
 
 ### Default response
 
@@ -76300,7 +76300,7 @@ curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME" \
 
 The example above returns a result like the following:
 
-```json JSON theme={null}
+```json Response expandable theme={null}
 {
     "finish_reason": "stop",
     "message": {
@@ -76427,10 +76427,10 @@ data:{"type":"message_end","id":"0000000000000000111b35de85e8a8f9","model":"gpt-
 
 There are four types of messages in a streaming chat response:
 
-* **Message start**: Includes `"role":"assistant"`, which indicates that the assistant is responding to the user's message.
-* **Content**: Includes a value in the `content` field (e.g., `"content":"The"`), which is part of the assistant's streamed response to the user's message.
-* **Citation**: Includes a citation to the document that the assistant used to generate the response.
-* **Message end**: Includes `"finish_reason":"stop"`, which indicates that the assistant has finished responding to the user's message.
+* Message start: Includes `"role":"assistant"`, which indicates that the assistant is responding to the user's message.
+* Content: Includes a value in the `content` field (e.g., `"content":"The"`), which is part of the assistant's streamed response to the user's message.
+* Citation: Includes a citation to the document that the assistant used to generate the response.
+* Message end: Includes `"finish_reason":"stop"`, which indicates that the assistant has finished responding to the user's message.
 
 ### JSON response
 
@@ -76639,7 +76639,11 @@ You can extract the message content and print it to the console:
 > {'red pine': 'A red pine, scientifically known as *Pinus resinosa*, is a medium-sized tree that can grow up to 25 meters high and 75 centimeters in diameter.'}
 > ```
 
-## Choose a model
+## Customize the chat request
+
+Each chat request accepts optional parameters to control which model answers, what context it uses, and how it responds.
+
+### Choose a model
 
 Pinecone Assistant supports the following models:
 
@@ -76713,7 +76717,7 @@ curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME" \
 }'
 ```
 
-## Provide conversation history
+### Provide conversation history
 
 Models lack memory of previous requests, so any relevant messages from earlier in the conversation must be present in the `messages` object.
 
@@ -76783,9 +76787,9 @@ The example returns a response like the following:
 }
 ```
 
-## Filter chat with metadata
+### Filter chat with metadata
 
-You can [filter which documents to use for chat completions](/guides/assistant/files-overview#file-metadata). The following example filters the responses to use only documents that include the metadata `"resource": "encyclopedia"`.
+You can [filter which documents to use for chat completions](/guides/assistant/file-metadata). The following example filters the responses to use only documents that include the metadata `"resource": "encyclopedia"`.
 
 ```python Python theme={null}
 from pinecone import Pinecone
@@ -76837,7 +76841,7 @@ curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME" \
   }'
 ```
 
-## Control the context size
+### Control the context size
 
 > [!NOTE]
 >
@@ -76906,13 +76910,13 @@ The example will return up to 10 snippets and each snippet will be up to 2500 to
 >
 > To better understand the context retrieved using these parameters, you can [retrieve context from an assistant](/reference/api/latest/assistant/context_assistant).
 
-## Set the sampling temperature
+### Set the sampling temperature
 
 > [!NOTE]
 >
 > This is available in API versions `2025-04` and later.
 
-Temperature is a parameter that controls the randomness of a model's predictions during text generation. Lower temperatures (\~0.0) yield more consistent, predictable answers, while higher temperatures increase the model's explanatory power and is generally better for creative tasks.
+Temperature is a parameter that controls the randomness of a model's predictions during text generation. Lower temperatures (\~0.0) yield more consistent, predictable answers, while higher temperatures increase the model's explanatory power and are generally better for creative tasks.
 
 To control the sampling temperature for a model, set the `temperature` parameter in the request. If a model doesn't support a temperature parameter, the parameter is ignored.
 
@@ -76962,7 +76966,7 @@ curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME" \
 }'
 ```
 
-## Include citation highlights in the response
+### Include citation highlights in the response
 
 > [!NOTE]
 >
@@ -76991,9 +76995,9 @@ curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME" \
 }'
 ```
 
-The example returns response like the following:
+The example returns a response like the following:
 
-```json theme={null}
+```json Response expandable theme={null}
 {
   "finish_reason":"stop",
   "message":{
@@ -77066,15 +77070,15 @@ You can [retrieve the context snippets](/guides/assistant/retrieve-context-snipp
 
 ## Use cases
 
-Retrieving context snippets is useful for performing tasks like the following:
+Retrieve context snippets to:
 
-* Understanding what relevant data snippets Pinecone Assistant is providing to the LLM for chat generation.
-* Using the retrieved snippets with your own LLM.
-* Using the retrieved snippets with your own RAG application or agentic workflow.
+* Understand what relevant data snippets Pinecone Assistant provides to the LLM for chat generation.
+* Use the retrieved snippets with your own LLM.
+* Use the retrieved snippets with your own RAG application or agentic workflow.
 
 ## SDK support
 
-The Pinecone [Python SDK](/reference/sdks/python/overview) and [Node.js SDK](/reference/sdks/node/overview) provide convenient programmatic access to [retrieve context snippets](/reference/api/latest/assistant/context_assistant).
+The Pinecone [Python SDK](/reference/sdks/python/overview) and [Node.js SDK](/reference/sdks/node/overview) can [retrieve context snippets](/reference/api/latest/assistant/context_assistant).
 
 ## Pricing
 
@@ -77090,16 +77094,16 @@ Source: https://docs.pinecone.io/guides/assistant/create-assistant
 
 Create a Pinecone Assistant with custom instructions, metadata, and region settings using the API, Python SDK, Node.js SDK, or console.
 
-This page shows you how to create an [assistant](/guides/assistant/overview).
+An assistant answers questions grounded in the files you give it. Create one with a name and, optionally, instructions, metadata, and a region, then [upload files](/guides/assistant/upload-files) and [chat with it](/guides/assistant/chat-standard-interface).
 
-You can [create an assistant](/reference/api/latest/assistant/create_assistant) with the following parameters:
+## Create an assistant with the API or an SDK
+
+To create an assistant, call [`create`](/reference/api/latest/assistant/create_assistant) with a `name` and, optionally, `instructions`, `metadata`, and a `region`:
 
 * `name`: A name for the assistant, unique within the project.
 * `instructions`: A directive the assistant applies to every response it gives.
 * `metadata`: Optional key-value pairs, up to 16 KB, that help you organize assistants.
 * `region`: Where the assistant is deployed, `us` (default) or `eu`. You can't change it later.
-
-The Python SDK waits until the assistant is ready before it returns. The Node.js SDK and the API return right away, while the assistant's status is still `Initializing`. To find out when it's ready, [get the status of the assistant](/guides/assistant/manage-assistants#get-the-status-of-an-assistant).
 
 ```python Python theme={null}
 from pinecone import Pinecone
@@ -77147,7 +77151,11 @@ curl "https://api.pinecone.io/assistant/assistants" \
 
 > [!TIP]
 >
-> You can create an assistant using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant/-/files).
+> You can also create an assistant in the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant/-/files).
+
+## Check when the assistant is ready
+
+The Python SDK waits until the assistant is ready before it returns. The Node.js SDK and the API return right away, while the assistant's status is still `Initializing`. To find out when it's ready, [get the status of the assistant](/guides/assistant/manage-assistants#get-the-status-of-an-assistant).
 
 
 # Evaluate answers
@@ -77155,9 +77163,11 @@ Source: https://docs.pinecone.io/guides/assistant/evaluate-answers
 
 Evaluate RAG system answers with Pinecone Assistant using correctness, completeness, and alignment metrics against a ground truth answer.
 
-This page shows you how to [evaluate responses](/guides/assistant/evaluation-overview) from an assistant or other RAG systems using the `metrics_alignment` operation.
+Evaluate responses from an assistant or other RAG system to measure their [correctness and completeness](/guides/assistant/evaluation-overview) against a ground truth answer.
 
-You can [evaluate a response](/reference/api/latest/assistant/metrics_alignment) from an assistant, as in the following example. The `question` is what you asked, the `answer` is the response to evaluate, and `ground_truth_answer` (`groundTruth` in Node.js) is the response you expect.
+## Evaluate answers with the API or an SDK
+
+To evaluate a response from an assistant, call [`evaluate_alignment`](/reference/api/latest/assistant/metrics_alignment) (`evaluate` in Node.js). The `question` is what you asked, the `answer` is the response to evaluate, and `ground_truth_answer` (`groundTruth` in Node.js) is the response you expect.
 
 ```python Python theme={null}
 from pinecone import Pinecone
@@ -77247,11 +77257,11 @@ You can [evaluate the correctness and completeness of a response](/guides/assist
 
 ## Use cases
 
-Response evaluation is useful when performing tasks like the following:
+Evaluate responses to:
 
-* Understanding how well the Pinecone Assistant captures the facts of the ground truth answer.
-* Comparing the Pinecone Assistant's answers to those of another RAG system.
-* Comparing the answers of your own RAG system to those of the Pinecone Assistant or another RAG system.
+* Measure how well the Pinecone Assistant captures the facts of the ground truth answer.
+* Compare the Pinecone Assistant's answers to those of another RAG system.
+* Compare the answers of your own RAG system to those of the Pinecone Assistant or another RAG system.
 
 ## SDK support
 
@@ -77267,21 +77277,13 @@ The request body requires the following fields:
 | `answer` | The answer provided by the assistant being evaluated. |
 | `ground_truth_answer` | The expected answer. |
 
-For example:
-
-```json theme={null}
-{
-  "question": "What are the capital cities of France, England and Spain?",
-  "answer": "Paris is the capital city of France and Barcelona of Spain",
-  "ground_truth_answer": "Paris is the capital city of France, London of England and Madrid of Spain."
-}
-```
+For a runnable example, see [Evaluate answers](/guides/assistant/evaluate-answers).
 
 ## Response
 
 ### Metrics
 
-Calculated scores between `0` to `1` are returned for the following metrics:
+The response returns a score from `0` to `1` for each of the following metrics:
 
 | Metric | Description |
 | - | - |
@@ -77289,21 +77291,9 @@ Calculated scores between `0` to `1` are returned for the following metrics:
 | `completeness` | Completeness of the RAG system's answer compared to the ground truth answer. |
 | `alignment` | A combined score of the correctness and completeness scores. |
 
-```json theme={null}
-{
-  "metrics": {
-    "correctness": 0.5,
-    "completeness": 0.333,
-    "alignment": 0.398,
-  }
-},
-
-...
-```
-
 ### Reasoning
 
-The response includes explanations for the reasoning behind each metric's score. This includes a list of evaluated facts with their entailment status:
+The response explains the reasoning behind each metric's score. This includes a list of evaluated facts with their entailment status:
 
 | Status | Description |
 | - | - |
@@ -77311,43 +77301,9 @@ The response includes explanations for the reasoning behind each metric's score.
 | `contradicted` | The fact contradicts the ground truth answer. |
 | `neutral` | The fact is neither supported nor contradicted by the ground truth answer. |
 
-```json theme={null}
-...
-
-  "reasoning":{
-    "evaluated_facts": [
-      {
-        "fact": {"content": "Paris is the capital of France"},
-        "entailment": "entailed",
-      },
-      {
-        "fact": {"content": "London is the capital of England"},
-        "entailment": "neutral"
-      },
-      {
-        "fact": {"content": "Madrid is the capital of Spain"},
-        "entailment": "contradicted",
-      }
-    ]
-  },
-
-...
-```
-
 ### Usage
 
-The response includes the number of tokens used to calculate the metrics. This includes the number of tokens used for the prompt and completion.
-
-```json theme={null}
-...
-
-  "usage": {
-    "prompt_tokens": 22,
-    "completion_tokens": 33,
-    "total_tokens": 55
-  }
-}
-```
+The response includes the number of tokens used to calculate the metrics. This includes tokens for the prompt and completion.
 
 ## Pricing
 
@@ -77356,56 +77312,23 @@ Cost is calculated by [token usage](#usage). See [Pricing](https://www.pinecone.
 Response evaluation is only available for [Standard and Enterprise plans](https://www.pinecone.io/pricing/).
 
 
-# Files in Pinecone Assistant
-Source: https://docs.pinecone.io/guides/assistant/files-overview
+# File metadata
+Source: https://docs.pinecone.io/guides/assistant/file-metadata
 
-Overview of Pinecone Assistant files: supported file types (PDF, DOCX, JSON, MD, TXT), metadata filters, storage, and signed URL access.
+Attach metadata to Pinecone Assistant files to filter and organize them, with the supported format, size limit, and metadata query language.
 
-Before you can chat with the assistant, you need to [upload files](/guides/assistant/manage-files#upload-a-local-file). The files provide your assistant with context and information to reference when generating responses. Files aren't shared across assistants.
-
-### Supported file types
-
-Pinecone Assistant supports the following file types:
-
-* DOCX (.docx)
-* JSON (.json)
-* Markdown (.md)
-* PDF (.pdf)
-* Text (.txt)
-
-> [!NOTE]
->
-> For PDF files, assistants support [multimodal context](/guides/assistant/multimodal), allowing them to analyze and gather context from images. This feature is in [public preview](/release-notes/feature-availability).
-
-For information about file size and storage limits, see [Pricing and limits](/guides/assistant/pricing-and-limits).
-
-### File storage
-
-Files are uploaded to Google Cloud Storage in the assistant's region (`us` or `eu`). The assistant processes the files and stores the resulting embeddings in a Pinecone-managed index, separate from the indexes in your projects.
-
-Some API responses include a `signed_url` field, which provides temporary, read-only access to one of the assistant's files. The URL is [signed](https://cloud.google.com/storage/docs/access-control/signed-urls) and hard to guess, but publicly accessible, so treat it as sensitive. `signed_url` links expire in one hour.
-
-### File identifiers
-
-Each file in an assistant has a unique identifier. File IDs can be:
-
-* **System-generated**: When you [upload a file](/guides/assistant/upload-files#upload-a-local-file) using `POST`, the system assigns a UUID as the file ID.
-* **User-provided**: When you [upsert a file](/guides/assistant/upload-files#upsert-a-file) using `PUT`, you provide a custom file ID. User-provided IDs must be 1-128 characters long and can contain alphanumeric characters, hyphens, and underscores. Requires [API version](/reference/api/versioning) `2026-04` or later.
-
-### File metadata
-
-You can [upload a file with metadata](/guides/assistant/upload-files#upload-a-file-with-metadata), which allows you to store additional information about the file as key-value pairs.
+You can [upload a file with metadata](/guides/assistant/upload-files#upload-a-file-with-metadata) to store additional information about the file as key-value pairs.
 
 > [!WARNING]
 >
 > File metadata can be set only when the file is uploaded. You cannot update metadata after the file is uploaded.
 
-File metadata can be used for the following purposes:
+Use file metadata to:
 
-* [Filtering chat responses](/guides/assistant/chat-with-assistant#filter-chat-with-metadata): Specify filters on assistant responses so only files that match the metadata filter are referenced in the response. Chat requests without metadata filters don't consider metadata.
-* [Viewing a filtered list of files](/guides/assistant/manage-files#view-a-filtered-list-of-files): Use metadata filters to list files in an assistant that match specific criteria.
+* [Filter chat responses](/guides/assistant/chat-standard-interface#filter-chat-with-metadata) so only files that match the metadata filter are referenced in the response. Chat requests without metadata filters don't consider metadata.
+* [View a filtered list of files](/guides/assistant/manage-files#view-a-filtered-list-of-files) that match specific criteria.
 
-#### Supported metadata size and format
+## Supported metadata size and format
 
 Pinecone Assistant supports 16 KB of metadata per file.
 
@@ -77447,7 +77370,7 @@ Pinecone Assistant supports 16 KB of metadata per file.
 }
 ```
 
-#### Metadata query language
+## Metadata query language
 
 Pinecone's filtering language supports the following operators:
 
@@ -77491,14 +77414,53 @@ A filter value can't be an array. To match several values, use `$in`. These filt
 ```
 
 
+# Files overview
+Source: https://docs.pinecone.io/guides/assistant/files-overview
+
+Learn which file types Pinecone Assistant supports (PDF, DOCX, JSON, Markdown, text) and how file metadata, storage, and signed-URL access work.
+
+Before you can chat with the assistant, you need to [upload files](/guides/assistant/upload-files). The files give the assistant context to reference when generating responses. Files aren't shared across assistants. You can also [add metadata to files](/guides/assistant/file-metadata) to filter and organize them.
+
+## Supported file types
+
+Pinecone Assistant supports the following file types:
+
+* DOCX (`.docx`)
+* JSON (`.json`)
+* Markdown (`.md`)
+* PDF (`.pdf`)
+* Text (`.txt`)
+
+> [!NOTE]
+>
+> For PDF files, assistants support [multimodal context](/guides/assistant/multimodal-context), allowing them to analyze and gather context from images. This feature is in [public preview](/release-notes/feature-availability).
+
+For information about file size and storage limits, see [Pricing and limits](/guides/assistant/pricing-and-limits).
+
+## File storage
+
+Files are uploaded to Google Cloud Storage in the assistant's region (`us` or `eu`). The assistant processes the files and stores the resulting embeddings in a Pinecone-managed index, separate from the indexes in your projects.
+
+Some API responses include a `signed_url` field, which provides temporary, read-only access to one of the assistant's files. The URL is [signed](https://cloud.google.com/storage/docs/access-control/signed-urls) and hard to guess, but publicly accessible, so treat it as sensitive. `signed_url` links expire in one hour.
+
+## File identifiers
+
+Each file in an assistant has a unique identifier. File IDs can be:
+
+* System-generated: When you [upload a file](/guides/assistant/upload-files#upload-a-local-file) using `POST`, the system assigns a UUID as the file ID.
+* User-provided: When you [upsert a file](/guides/assistant/upload-files#upsert-a-file) using `PUT`, you provide a custom file ID. User-provided IDs must be 1-128 characters long and can contain alphanumeric characters, hyphens, and underscores. Requires [API version](/reference/api/versioning) `2026-04` or later.
+
+
 # Manage assistants
 Source: https://docs.pinecone.io/guides/assistant/manage-assistants
 
 List, describe, update, and delete Pinecone assistants and check assistant status using the API, Python SDK, Node.js SDK, or Pinecone console.
 
+After you [create an assistant](/guides/assistant/create-assistant), you can list your assistants, check an assistant's status, change its chat model, update its instructions, and delete assistants you no longer need.
+
 ## List assistants for a project
 
-You can [get the name, status, and metadata for each assistant](/reference/api/latest/assistant/list_assistants) in your project as in the following example:
+To list the assistants in your project, call [`list`](/reference/api/latest/assistant/list_assistants):
 
 ```python Python theme={null}
 from pinecone import Pinecone
@@ -77527,7 +77489,7 @@ curl -X GET "https://api.pinecone.io/assistant/assistants" \
 
 This operation returns a response like the following:
 
-```JSON theme={null}
+```json Response theme={null}
 {
   "assistants": [
     {
@@ -77550,7 +77512,7 @@ You can use the `name` value to [check the status of an assistant](/guides/assis
 
 ## Get the status of an assistant
 
-You can [get the status and metadata for your assistant](/reference/api/latest/assistant/describe_assistant) as in the following example:
+To get an assistant's status and metadata, call [`describe`](/reference/api/latest/assistant/describe_assistant):
 
 ```python Python theme={null}
 from pinecone import Pinecone
@@ -77580,7 +77542,7 @@ curl -X GET "https://api.pinecone.io/assistant/assistants/$ASSISTANT_NAME" \
 
 This operation returns a response like the following:
 
-```JSON theme={null}
+```json Response theme={null}
 {
   "name": "example-assistant",
   "instructions": "Use American English for spelling and grammar.",
@@ -77613,13 +77575,13 @@ The chat model is the underlying large language model (LLM) that powers the assi
 
 ## Add instructions to an assistant
 
-You can [add or update the instructions](/reference/api/latest/assistant/update_assistant) for an existing assistant. Instructions are a short description or directive for the assistant to apply to all of its responses. For example, you can update the instructions to reflect the assistant's role or purpose.
+Instructions are a short directive the assistant applies to all of its responses, for example to reflect its role or purpose.
 
 > [!NOTE]
 >
 > Instructions (maximum size 16 KB) are included in every chat API call. Longer instructions increase input token costs for each request and consume more of the LLM's context window, reducing available space for retrieved context and conversation history.
 
-For example:
+To add or update an assistant's instructions, call [`update`](/reference/api/latest/assistant/update_assistant):
 
 ```python Python theme={null}
 from pinecone import Pinecone
@@ -77659,7 +77621,7 @@ curl -X PATCH "https://api.pinecone.io/assistant/assistants/example-assistant" \
 
 The example above returns a result like the following:
 
-```JSON theme={null}
+```json Response theme={null}
 {
     "name":"example-assistant",
     "instructions":"Use American English for spelling and grammar.",
@@ -77676,7 +77638,7 @@ The example above returns a result like the following:
 
 ## Delete an assistant
 
-You can [delete an assistant](/reference/api/latest/assistant/delete_assistant) as in the following example:
+To delete an assistant, call [`delete`](/reference/api/latest/assistant/delete_assistant):
 
 > [!WARNING]
 >
@@ -77724,7 +77686,7 @@ List files in your Pinecone assistant, check individual file ingestion status by
 
 ### View all files
 
-You can [get the status, ID, and metadata for each file in your assistant](/reference/api/latest/assistant/list_files), as in the following example:
+To list the files in an assistant, call [`list_files`](/reference/api/latest/assistant/list_files):
 
 ```python Python theme={null}
 from pinecone import Pinecone
@@ -77778,13 +77740,13 @@ You can use the `id` value to [check the status of an individual file](#get-the-
 
 > [!TIP]
 >
-> You can list file in an assistant using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant). Select the assistant and view the files in the Assistant playground.
+> You can list files in an assistant using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant). Select the assistant and view the files in the Assistant playground.
 
 ### View a filtered list of files
 
-Metadata filter expressions can be included when listing files. This will limit the list of files to only those matching the filter expression. Use the `filter` parameter to specify the metadata filter expression.
+Metadata filter expressions can be included when listing files. This limits the list to files that match the filter expression. Use the `filter` parameter to specify the metadata filter expression.
 
-For more information about filtering with metadata, see [Understanding files](/guides/assistant/files-overview#metadata-query-language).
+For more information about filtering with metadata, see [Metadata query language](/guides/assistant/file-metadata#metadata-query-language).
 
 The following example lists files that are a manuscript:
 
@@ -77829,7 +77791,7 @@ curl -X GET "https://prod-1-data.ke.pinecone.io/assistant/files/$ASSISTANT_NAME?
 
 ## Get the status of a file
 
-You can [get the status and metadata for your assistant](/reference/api/latest/assistant/describe_file), as in the following example:
+To get a file's status and metadata, call [`describe_file`](/reference/api/latest/assistant/describe_file):
 
 ```python Python theme={null}
 from pinecone import Pinecone
@@ -77892,7 +77854,7 @@ This operation returns a response like the following:
 
 > [!TIP]
 >
-> You can check the status a file using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant). In the Assistant playground, click the file for more details.
+> You can check the status of a file using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant). In the Assistant playground, click the file for more details.
 
 ## Delete a file
 
@@ -78011,9 +77973,9 @@ curl -X GET "https://prod-1-data.ke.pinecone.io/assistant/operations/$ASSISTANT_
 
 Operations can have the following status values:
 
-* **Processing**: The operation is in progress. Use `percent_complete` to track progress.
-* **Completed**: The operation finished successfully.
-* **Failed**: The operation failed. In this case, the operation response includes `error_message`.
+* Processing: The operation is in progress. Use `percent_complete` to track progress.
+* Completed: The operation finished successfully.
+* Failed: The operation failed. In this case, the operation response includes `error_message`.
 
 When a file-ingestion operation completes, the operation may include `ingestion_units`, the [ingestion usage](/guides/assistant/pricing-and-limits#ingestion) for that file.
 
@@ -78022,12 +77984,12 @@ When a file-ingestion operation completes, the operation may include `ingestion_
 > The `percent_complete` field on operations replaces the `percent_done` field that was previously on the file model. Similarly, `error_message` appears on failed operations, not on the file model.
 
 
-# Use an Assistant MCP server
+# Use the Pinecone Assistant MCP server
 Source: https://docs.pinecone.io/guides/assistant/mcp-server
 
 Connect AI agents to a Pinecone Assistant MCP server via remote or local Model Context Protocol endpoints, including Cursor and Claude Desktop.
 
-Every Pinecone Assistant has a dedicated MCP server that gives AI agents direct access to context from the assistant's uploaded files through the standardized [Model Context Protocol (MCP)](https://modelcontextprotocol.io/). This page shows you how to connect an assistant's MCP server with Cursor, Claude Desktop, and LangChain.
+Every Pinecone Assistant has a dedicated MCP server that gives AI agents direct access to context from the assistant's uploaded files through the standardized [Model Context Protocol (MCP)](https://modelcontextprotocol.io/). You can connect it to Claude Code, Claude Desktop, Cursor, or LangChain.
 
 > [!NOTE]
 >
@@ -78036,7 +77998,7 @@ Every Pinecone Assistant has a dedicated MCP server that gives AI agents direct 
 There are two ways to connect to an assistant MCP server:
 
 * [Remote MCP server](#remote-mcp-server) - Use a dedicated MCP endpoint to connect directly to an assistant.
-* [Local MCP server](#local-mcp-server) - Run a Docker container locally that connects to an assistant
+* [Local MCP server](#local-mcp-server) - Run a Docker container locally that connects to an assistant.
 
 Both options support a context tool that allows agents to retrieve relevant context snippets from your assistant's uploaded files. This is similar to the [context API](/guides/assistant/retrieve-context-snippets) but fine-tuned for MCP clients. Additional capabilities, such as file access, will be added in future releases.
 
@@ -78052,11 +78014,11 @@ https://<YOUR_PINECONE_ASSISTANT_HOST>/mcp/assistants/<YOUR_ASSISTANT_NAME>
 
 > [!WARNING]
 >
-> The previous SSE-based endpoint (with the `/sse` suffix) is no longer supported and returns HTTP 410. Use the [streamable HTTP transport](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) MCP endpoint shown above, which implements the current MCP specification.
+> The previous SSE-based endpoint (with the `/sse` suffix) is no longer supported and returns HTTP 410. Use the [streamable HTTP transport](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) MCP endpoint, which implements the current MCP specification.
 
 ### Prerequisites
 
-Before you begin, make sure you have the following values, which you'll use in the commands below:
+Before you begin, make sure you have the following values:
 
 * `<YOUR_PINECONE_API_KEY>`: [A Pinecone API key](/admin/projects/manage-api-keys).
 * `<YOUR_PINECONE_ASSISTANT_HOST>`: In the Pinecone console, this is your assistant's **Host** value.
@@ -78066,97 +78028,106 @@ Before you begin, make sure you have the following values, which you'll use in t
 
 You can use the Claude CLI to configure Claude Code to use your assistant's remote MCP server. For more information, see [Claude Code's MCP documentation](https://docs.anthropic.com/en/docs/claude-code/mcp).
 
-1. Add the MCP server using the Claude CLI:
+**1. Add the MCP server using the Claude CLI**
 
-   ```bash theme={null}
-   claude mcp add --transport http my-assistant https://<YOUR_PINECONE_ASSISTANT_HOST>/mcp/assistants/<YOUR_ASSISTANT_NAME> --header "Authorization: Bearer <YOUR_PINECONE_API_KEY>"
-   ```
+```bash theme={null}
+claude mcp add --transport http my-assistant https://<YOUR_PINECONE_ASSISTANT_HOST>/mcp/assistants/<YOUR_ASSISTANT_NAME> --header "Authorization: Bearer <YOUR_PINECONE_API_KEY>"
+```
 
-   Replace `<YOUR_PINECONE_API_KEY>` with your Pinecone API key, `<YOUR_PINECONE_ASSISTANT_HOST>` with your Pinecone Assistant host, and `<YOUR_ASSISTANT_NAME>` with your assistant's name.
+Replace `<YOUR_PINECONE_API_KEY>` with your Pinecone API key, `<YOUR_PINECONE_ASSISTANT_HOST>` with your Pinecone Assistant host, and `<YOUR_ASSISTANT_NAME>` with your assistant's name.
 
-2. Verify the server was added successfully:
+**2. Verify the server was added successfully**
 
-   ```bash theme={null}
-   claude mcp get my-assistant
-   ```
+```bash theme={null}
+claude mcp get my-assistant
+```
 
-3. The MCP server tools should now be available in Claude Code's chat interface.
+The MCP server tools are now available in Claude Code's chat interface.
 
 ### Use with Claude Desktop
 
-You can configure Claude Desktop to use your assistant's remote MCP server. However, at this early stage of **remote** MCP server adoption, the Claude Desktop application doesn't support remote server URLs. In the example below, we work around this by using a local proxy server, [supergateway](https://github.com/supercorp-ai/supergateway), to forward requests to the remote MCP server with your API key.
+You can configure Claude Desktop to use your assistant's remote MCP server. However, at this early stage of remote MCP server adoption, the Claude Desktop application doesn't support remote server URLs. The following example works around this with a local proxy server, [supergateway](https://github.com/supercorp-ai/supergateway), that forwards requests to the remote MCP server with your API key.
 
 > [!WARNING]
 >
 > [supergateway](https://github.com/supercorp-ai/supergateway) is an open-source third-party tool. Use at your own risk.
 
-1. Open [Claude Desktop](https://claude.ai/download) and go to **Settings**.
+**1. Open Claude Desktop settings**
 
-2. On the **Developer** tab, click **Edit Config** to open the configuration file.
+Open [Claude Desktop](https://claude.ai/download) and go to **Settings**.
 
-3. Add the following configuration:
+**2. Edit the config file**
 
-   ```json theme={null}
-   {
-     "mcpServers": {
-       "Assistant over supergateway": {
-         "command": "npx",
-         "args": [
-           "-y",
-           "supergateway",
-           "--streamableHttp",
-           "https://<YOUR_PINECONE_ASSISTANT_HOST>/mcp/assistants/<YOUR_ASSISTANT_NAME>",
-           "--header",
-           "Authorization: Bearer <YOUR_PINECONE_API_KEY>"
-         ]
-       }
-     }
-   }
-   ```
+On the **Developer** tab, click **Edit Config** to open the configuration file.
 
-   Replace `<YOUR_PINECONE_API_KEY>` with your Pinecone API key and `<YOUR_PINECONE_ASSISTANT_HOST>` with your Pinecone Assistant host.
+**3. Add the configuration**
 
-4. Save the configuration file and restart Claude Desktop.
+```json theme={null}
+{
+  "mcpServers": {
+    "Assistant over supergateway": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "supergateway",
+        "--streamableHttp",
+        "https://<YOUR_PINECONE_ASSISTANT_HOST>/mcp/assistants/<YOUR_ASSISTANT_NAME>",
+        "--header",
+        "Authorization: Bearer <YOUR_PINECONE_API_KEY>"
+      ]
+    }
+  }
+}
+```
 
-5. From the new chat screen, you should see a hammer (MCP) icon appear with the new MCP server available.
+Replace `<YOUR_PINECONE_API_KEY>` with your Pinecone API key, `<YOUR_PINECONE_ASSISTANT_HOST>` with your Pinecone Assistant host, and `<YOUR_ASSISTANT_NAME>` with your assistant's name.
+
+**4. Restart Claude Desktop**
+
+Save the configuration file and restart Claude Desktop.
+
+From the new chat screen, a hammer (MCP) icon appears with the new MCP server available.
 
 ### Use with Cursor
 
 You can configure Cursor to use your assistant's remote MCP server directly through the `.cursor/mcp.json` configuration file.
 
-1. Open [Cursor](https://www.cursor.com/) and create a `.cursor` directory in your project root if it doesn't exist.
+**1. Create the .cursor directory**
 
-2. Open `.cursor/mcp.json` (create it if necessary). To learn more, refer to [Cursor's MCP documentation](https://docs.cursor.com/context/mcp).
+Open [Cursor](https://www.cursor.com/) and create a `.cursor` directory in your project root if it doesn't exist.
 
-3. Add the following configuration:
+**2. Open the config file**
 
-   ```json theme={null}
-   {
-     "mcpServers": {
-       "pinecone-assistant": {
-         "url": "https://<YOUR_PINECONE_ASSISTANT_HOST>/mcp/assistants/<YOUR_ASSISTANT_NAME>",
-         "headers": {
-           "Authorization": "Bearer <YOUR_PINECONE_API_KEY>"
-         }
-       }
-     }
-   }
-   ```
+Open `.cursor/mcp.json` (create it if necessary). To learn more, refer to [Cursor's MCP documentation](https://docs.cursor.com/context/mcp).
 
-   Replace `<YOUR_PINECONE_API_KEY>` with your Pinecone API key, `<YOUR_PINECONE_ASSISTANT_HOST>` with your Pinecone Assistant host, and `<YOUR_ASSISTANT_NAME>` with your assistant's name.
+**3. Add the configuration**
 
-4. Save the configuration file.
+```json theme={null}
+{
+  "mcpServers": {
+    "pinecone-assistant": {
+      "url": "https://<YOUR_PINECONE_ASSISTANT_HOST>/mcp/assistants/<YOUR_ASSISTANT_NAME>",
+      "headers": {
+        "Authorization": "Bearer <YOUR_PINECONE_API_KEY>"
+      }
+    }
+  }
+}
+```
 
-5. The MCP server tools should now be available in Cursor's chat interface.
+Replace `<YOUR_PINECONE_API_KEY>` with your Pinecone API key, `<YOUR_PINECONE_ASSISTANT_HOST>` with your Pinecone Assistant host, and `<YOUR_ASSISTANT_NAME>` with your assistant's name.
+
+Save the configuration file.
+
+The MCP server tools are now available in Cursor's chat interface.
 
 ### Use with LangChain
 
-You can use the [LangChain MCP client](https://github.com/langchain-ai/langchain-mcp-adapters) to integrate with LangChain to create a powerful multi-agent workflow.
+You can use the [LangChain MCP client](https://github.com/langchain-ai/langchain-mcp-adapters) to connect your assistants to a LangChain multi-agent workflow.
 
-For example, the following code integrates Langchain with two assistants, one called `ai-news` and the other called `industry-reports`:
+For example, the following code integrates LangChain with two assistants, one called `ai-news` and the other called `industry-reports`:
 
 ```python Python theme={null}
-# Example code for integrating with LangChain
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from langgraph.prebuilt import create_react_agent
 
@@ -78203,106 +78174,112 @@ For the most up-to-date information on the local MCP server, see the [Pinecone A
 
 ### Start the MCP server
 
+**1. Pull the Docker image**
+
 Download the `assistant-mcp` Docker image:
 
 ```bash theme={null}
 docker pull ghcr.io/pinecone-io/assistant-mcp
 ```
 
+**2. Start the server**
+
 Start the MCP server, providing your Pinecone API key and Pinecone Assistant host:
 
 ```bash theme={null}
 docker run -i --rm \
-  -e PINECONE_API_KEY=<PINECONE_API_KEY> \
-  -e PINECONE_ASSISTANT_HOST=<PINECONE_ASSISTANT_HOST> \
+  -e PINECONE_API_KEY=<YOUR_PINECONE_API_KEY> \
+  -e PINECONE_ASSISTANT_HOST=<YOUR_PINECONE_ASSISTANT_HOST> \
   pinecone/assistant-mcp
 ```
 
 ### Use with Claude Desktop
 
-1. Open [Claude Desktop](https://claude.ai/download) and go to **Settings**.
+**1. Open Claude Desktop settings**
 
-2. On the **Developer** tab, click **Edit Config** to open the configuration file.
+Open [Claude Desktop](https://claude.ai/download) and go to **Settings**.
 
-3. Add the following configuration:
+**2. Edit the config file**
 
-   ```json theme={null}
-   {
-     "mcpServers": {
-       "pinecone-assistant": {
-         "command": "docker",
-         "args": [
-           "run", 
-           "-i", 
-           "--rm", 
-           "-e", 
-           "PINECONE_API_KEY", 
-           "-e", 
-           "PINECONE_ASSISTANT_HOST", 
-           "pinecone/assistant-mcp"
-         ],
-         "env": {
-           "PINECONE_API_KEY": "<YOUR_PINECONE_API_KEY>",
-           "PINECONE_ASSISTANT_HOST": "<YOUR_PINECONE_ASSISTANT_HOST>"
-         }
-       }
-     }
-   }
-   ```
+On the **Developer** tab, click **Edit Config** to open the configuration file.
 
-   Replace `<YOUR_PINECONE_API_KEY>` with your Pinecone API key and `<YOUR_PINECONE_ASSISTANT_HOST>` with your Pinecone Assistant host.
+**3. Add the configuration**
 
-4. Save the configuration file and restart Claude Desktop.
+```json theme={null}
+{
+  "mcpServers": {
+    "pinecone-assistant": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "PINECONE_API_KEY",
+        "-e",
+        "PINECONE_ASSISTANT_HOST",
+        "pinecone/assistant-mcp"
+      ],
+      "env": {
+        "PINECONE_API_KEY": "<YOUR_PINECONE_API_KEY>",
+        "PINECONE_ASSISTANT_HOST": "<YOUR_PINECONE_ASSISTANT_HOST>"
+      }
+    }
+  }
+}
+```
 
-5. From the new chat screen, you should see a hammer (MCP) icon appear with the new MCP server available.
+Replace `<YOUR_PINECONE_API_KEY>` with your Pinecone API key and `<YOUR_PINECONE_ASSISTANT_HOST>` with your Pinecone Assistant host.
+
+**4. Restart Claude Desktop**
+
+Save the configuration file and restart Claude Desktop.
+
+From the new chat screen, a hammer (MCP) icon appears with the new MCP server available.
 
 ### Use with Cursor
 
-1. Open [Cursor](https://www.cursor.com/) and create a `.cursor` directory in your project root if it doesn't exist.
+**1. Create the .cursor directory**
 
-2. Open `.cursor/mcp.json` (create it if necessary). To learn more, refer to [Cursor's MCP documentation](https://docs.cursor.com/context/mcp).
+Open [Cursor](https://www.cursor.com/) and create a `.cursor` directory in your project root if it doesn't exist.
 
-3. Add the following configuration:
+**2. Open the config file**
 
-   ```json theme={null}
-   {
-     "mcpServers": {
-       "pinecone-assistant": {
-         "command": "docker",
-         "args": [
-           "run", 
-           "-i", 
-           "--rm", 
-           "-e", 
-           "PINECONE_API_KEY", 
-           "-e", 
-           "PINECONE_ASSISTANT_HOST", 
-           "pinecone/assistant-mcp"
-         ],
-         "env": {
-           "PINECONE_API_KEY": "<YOUR_PINECONE_API_KEY>",
-           "PINECONE_ASSISTANT_HOST": "<YOUR_PINECONE_ASSISTANT_HOST>"
-         }
-       }
-     }
-   }
-   ```
+Open `.cursor/mcp.json` (create it if necessary). To learn more, refer to [Cursor's MCP documentation](https://docs.cursor.com/context/mcp).
 
-   Replace `<YOUR_PINECONE_API_KEY>` with your Pinecone API key and `<YOUR_PINECONE_ASSISTANT_HOST>` with your Pinecone Assistant host.
+**3. Add the configuration**
 
-4. Save the configuration file.
+```json theme={null}
+{
+  "mcpServers": {
+    "pinecone-assistant": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "PINECONE_API_KEY",
+        "-e",
+        "PINECONE_ASSISTANT_HOST",
+        "pinecone/assistant-mcp"
+      ],
+      "env": {
+        "PINECONE_API_KEY": "<YOUR_PINECONE_API_KEY>",
+        "PINECONE_ASSISTANT_HOST": "<YOUR_PINECONE_ASSISTANT_HOST>"
+      }
+    }
+  }
+}
+```
 
-## Next Steps
+Replace `<YOUR_PINECONE_API_KEY>` with your Pinecone API key and `<YOUR_PINECONE_ASSISTANT_HOST>` with your Pinecone Assistant host.
 
-* Visit the [Pinecone Assistant MCP Server repository](https://github.com/pinecone-io/assistant-mcp) for detailed installation and usage instructions
-
-* Learn about [Model Context Protocol](https://modelcontextprotocol.io/) and how it enables AI agents to interact with tools and data
-
-* Explore [retrieve context snippets](/guides/assistant/retrieve-context-snippets) to understand the underlying API functionality
+Save the configuration file.
 
 
-# Multimodal context for assistants
-Source: https://docs.pinecone.io/guides/assistant/multimodal
+# Multimodal context
+Source: https://docs.pinecone.io/guides/assistant/multimodal-context
 
 Enable multimodal PDF context in Pinecone Assistant to analyze charts, images, and diagrams using OCR and visual understanding for RAG.
 
@@ -78393,7 +78370,7 @@ AssistantModel(name='example-assistant-multimodal', status='Ready', region='us',
 
 > [!NOTE]
 >
-> You don't need to create a new assistant to use multimodal context. Existing assistants can enable multimodal context for newly uploaded PDFs, as described in [the next section](#2-upload-a-multimodal-pdf).
+> You don't need to create a new assistant to use multimodal context. Existing assistants can enable multimodal context for newly uploaded PDFs, as described in [the next section](#upload-a-multimodal-pdf).
 
 ### 2. Upload a multimodal PDF
 
@@ -78403,9 +78380,9 @@ To enable multimodal context for a PDF, when [uploading the file](/reference/api
 >
 > To improve retrieval accuracy for images found in uploaded PDFs, include relevant contextual text on the same page as each image. For example:
 >
-> * **Graphs and charts**: Include nearby text explaining the experiment, methodology, or data being visualized.
-> * **Diagrams**: Add descriptive labels or explanations adjacent to technical diagrams.
-> * **Tables**: Provide context about what the data represents and any relevant methodology.
+> * Graphs and charts: Include nearby text explaining the experiment, methodology, or data being visualized.
+> * Diagrams: Add descriptive labels or explanations adjacent to technical diagrams.
+> * Tables: Provide context about what the data represents and any relevant methodology.
 >
 > The assistant uses surrounding text when generating captions that are later passed to the LLM, so placing relevant context near images improves caption quality and retrieval accuracy.
 
@@ -78467,7 +78444,7 @@ Now, [chat with your assistant](/reference/api/2025-10/assistant/chat_assistant)
 
 > [!NOTE]
 >
-> Sending image-related context to the LLM (whether captions, base64 data, or both) increases token usage. Learn about [monitoring spend and usage](/guides/assistant/admin/monitor-spend-and-usage).
+> Sending image-related context to the LLM (whether captions, base64 data, or both) increases token usage. Learn about [monitoring usage and cost](/guides/assistant/admin/monitor-usage-and-cost).
 
 ```python Python theme={null}
 from pinecone import Pinecone
@@ -78564,7 +78541,7 @@ ChatResponse(id='00000000000000000fe49626f3ee5164', model='gpt-4o-2024-11-20', f
 
 > [!WARNING]
 >
-> If your assistant uses multimodal context snippets to generate a response, no [highlights](/guides/assistant/chat-with-assistant#include-citation-highlights-in-the-response) are returned—even when `include_highlights` is true.
+> If your assistant uses multimodal context snippets to generate a response, no [highlights](/guides/assistant/chat-standard-interface#include-citation-highlights-in-the-response) are returned, even when `include_highlights` is true.
 
 ### 4. Query for context
 
@@ -78695,7 +78672,7 @@ Pinecone Assistant answers questions about your proprietary data. You upload fil
 >
 > Supported file types, metadata, and how files are processed
 
-> [card] [Chat with an assistant](/guides/assistant/chat-with-assistant)
+> [card] [Chat with an assistant](/guides/assistant/chat-standard-interface)
 >
 > Ask questions and get grounded answers with citations
 
@@ -78729,9 +78706,9 @@ These steps outline the Pinecone Assistant workflow, which you can follow in the
 
 1. [Create an assistant](/guides/assistant/create-assistant) to answer questions about your documents.
 2. [Upload documents](/guides/assistant/upload-files) to your assistant. Your assistant manages chunking, embedding, and storage for you.
-3. [Chat with your assistant](/guides/assistant/chat-with-assistant) and receive responses as a JSON object or as a text stream. For each chat, your assistant queries a large language model (LLM) with context from your documents, so the LLM's responses are grounded in them.
+3. [Chat with your assistant](/guides/assistant/chat-standard-interface) and receive responses as a JSON object or as a text stream. For each chat, your assistant queries a large language model (LLM) with context from your documents, so the LLM's responses are grounded in them.
 4. [Evaluate the assistant's responses](/guides/assistant/evaluation-overview) for correctness and completeness.
-5. [Add instructions](/guides/assistant/manage-assistants#add-instructions-to-an-assistant) to tailor your assistant's behavior and responses to specific use cases or requirements. [Filter chat by file metadata](/guides/assistant/chat-with-assistant#filter-chat-with-metadata) to reduce latency and improve the accuracy of responses.
+5. [Add instructions](/guides/assistant/manage-assistants#add-instructions-to-an-assistant) to tailor your assistant's behavior and responses to specific use cases or requirements. [Filter chat by file metadata](/guides/assistant/chat-standard-interface#filter-chat-with-metadata) to reduce latency and improve the accuracy of responses.
 6. [Retrieve context snippets](/guides/assistant/retrieve-context-snippets) to understand what relevant data snippets Pinecone Assistant is using to generate responses. You can use the retrieved snippets with your own LLM, RAG application, or agentic workflow.
 
 To try these steps with the Python or Node.js SDK, see the [SDK quickstart](/guides/assistant/quickstart/sdk-quickstart). To learn how Pinecone Assistant processes files and generates answers, see [Assistant architecture](/reference/architecture/assistant-architecture).
@@ -78770,7 +78747,7 @@ Pricing and limits vary based on [subscription plan](https://www.pinecone.io/pri
 
 ## Pricing
 
-Pinecone Assistant usage is billed monthly. Costs can include:
+Pinecone bills Assistant usage monthly. Costs can include:
 
 * [Minimum usage](#minimum-usage) (Builder, Standard, and Enterprise plans)
 * [Ingestion](#ingestion) (file uploads)
@@ -78812,13 +78789,13 @@ The minimum is a commitment you grow into rather than an extra charge. Once your
 
 ### Ingestion
 
-When you upload or replace files for an assistant, usage is measured in **ingestion units**. One ingestion unit is approximately **400 tokens** (\~300 words); exact counts can vary by document.
+When you upload or replace files for an assistant, usage is measured in ingestion units. One ingestion unit is approximately 400 tokens (\~300 words); exact counts can vary by document.
 
 | Processing path | Rate (per ingestion unit) |
 | - | - |
 | Standard file ingestion | \$0.0005 |
 
-*Multimodal PDF processing uses the same ingestion unit; it's billed at about **twice** the standard per-unit rate. For current rates, see [Pricing](https://www.pinecone.io/pricing/).*
+*Multimodal PDF processing uses the same ingestion unit; it's billed at about twice the standard per-unit rate. For current rates, see [Pricing](https://www.pinecone.io/pricing/).*
 
 | Plan | File uploads (ingestion units) |
 | - | - |
@@ -78827,21 +78804,21 @@ When you upload or replace files for an assistant, usage is measured in **ingest
 | Standard | Pay per unit at the rate above |
 | Enterprise | Pay per unit at the rate above |
 
-Multimodal ingestion applies to content processed through the [multimodal PDF](/guides/assistant/multimodal) path. Standard ingestion applies to other supported file types.
+Multimodal ingestion applies to content processed through the [multimodal PDF](/guides/assistant/multimodal-context) path. Standard ingestion applies to other supported file types.
 
-Usage and invoices reflect a single ingestion usage line item. With [API version](/reference/api/versioning) `2026-04` or later, a completed file-ingestion operation may include **`ingestion_units`**. Use [Describe an operation](/reference/api/latest/assistant/describe_operation) or [Track file operations](/guides/assistant/manage-files#track-file-operations) for details.
+Usage and invoices reflect a single ingestion usage line item. With [API version](/reference/api/versioning) `2026-04` or later, a completed file-ingestion operation may include `ingestion_units`. Use [Describe an operation](/reference/api/latest/assistant/describe_operation) or [Track file operations](/guides/assistant/manage-files#track-file-operations) for details.
 
 ### Tokens
 
-For paid plans, you are charged for the number of tokens used by each assistant. [Ingestion](#ingestion) is billed separately from chat and context retrieval tokens.
+For paid plans, you're charged for the number of tokens used by each assistant. [Ingestion](#ingestion) is billed separately from chat and context retrieval tokens.
 
 #### Chat tokens
 
-[Chatting with an assistant](/guides/assistant/chat-with-assistant) involves both input and output tokens:
+[Chatting with an assistant](/guides/assistant/chat-standard-interface) involves both input and output tokens:
 
-* **Input tokens** are based on the messages sent to the assistant and the context snippets retrieved from the assistant and sent to a model. Messages sent to the assistant can include messages from the [chat history](/guides/assistant/chat-with-assistant#provide-conversation-history) in addition to the newest message.
+* Input tokens are based on the messages sent to the assistant and the context snippets retrieved from the assistant and sent to a model. Messages sent to the assistant can include messages from the [chat history](/guides/assistant/chat-standard-interface#provide-conversation-history) in addition to the newest message.
 
-* **Output tokens** are based on the answer from the model.
+* Output tokens are based on the answer from the model.
 
 | Plan | Input token rate | Output token rate |
 | - | - | - |
@@ -78852,11 +78829,11 @@ For paid plans, you are charged for the number of tokens used by each assistant.
 
 > [!NOTE]
 >
-> Chat input tokens appear as "Assistants Input Tokens" on invoices and `prompt_tokens` in API responses. Chat output tokens appear as "Assistants Output Tokens" on invoices and `completion_tokens` in API responses.
+> Chat input tokens appear as **Assistants Input Tokens** on invoices and `prompt_tokens` in API responses. Chat output tokens appear as **Assistants Output Tokens** on invoices and `completion_tokens` in API responses.
 
 #### Context tokens
 
-When you [retrieve context snippets](/guides/assistant/context-snippets-overview), tokens are based on the messages sent to the assistant and the context snippets retrieved from the assistant. Messages sent to the assistant can include messages from the [chat history](/guides/assistant/chat-with-assistant#provide-conversation-history) in addition to the newest message.
+When you [retrieve context snippets](/guides/assistant/context-snippets-overview), tokens are based on the messages sent to the assistant and the context snippets retrieved from the assistant. Messages sent to the assistant can include messages from the [chat history](/guides/assistant/chat-standard-interface#provide-conversation-history) in addition to the newest message.
 
 | Plan | Token rate |
 | - | - |
@@ -78873,8 +78850,8 @@ When you [retrieve context snippets](/guides/assistant/context-snippets-overview
 
 [Evaluating responses](/guides/assistant/evaluation-overview) involves both input and output tokens:
 
-* **Input tokens** are based on two requests to a model: The first request contains a question, answer, and ground truth answer, and the second request contains the same details plus generated facts returned by the model for the first request.
-* **Output tokens** are based on two responses from a model: The first response contains generated facts, and the second response contains evaluation metrics.
+* Input tokens are based on two requests to a model: The first request contains a question, answer, and ground truth answer, and the second request contains the same details plus generated facts returned by the model for the first request.
+* Output tokens are based on two responses from a model: The first response contains generated facts, and the second response contains evaluation metrics.
 
 | Plan | Input token rate | Output token rate |
 | - | - | - |
@@ -78889,7 +78866,7 @@ When you [retrieve context snippets](/guides/assistant/context-snippets-overview
 
 ### Storage
 
-For paid plans, you are charged for the size of each assistant.
+For paid plans, you're charged for the size of each assistant.
 
 | Plan | Storage rate |
 | - | - |
@@ -78918,7 +78895,7 @@ Object limits are restrictions on the number or size of assistant-related object
 | File size (.pdf) | 10 MB | 50 MB | 100 MB | 100 MB |
 | Metadata size per file | 16 KB | 16 KB | 16 KB | 16 KB |
 
-Additionally, the following limits apply to [multimodal PDFs](/guides/assistant/multimodal) (currently in [public preview](/release-notes/feature-availability)):
+Additionally, the following limits apply to [multimodal PDFs](/guides/assistant/multimodal-context) (currently in [public preview](/release-notes/feature-availability)):
 
 Multimodal PDF processing uses the same [ingestion unit](/guides/assistant/pricing-and-limits#ingestion) as standard uploads; it's billed at about **twice** the standard per-unit rate (see [Pricing and limits](/guides/assistant/pricing-and-limits)). Object and rate limits for assistants also apply—see [#limits](/guides/assistant/pricing-and-limits#limits) and [#rate-limits](/guides/assistant/pricing-and-limits#rate-limits).
 
@@ -79105,7 +79082,7 @@ while (status === 'Initializing') {
 
 ## 4. Upload a file
 
-[Download the sample file](https://s22.q4cdn.com/959853165/files/doc_financials/2023/ar/Netflix-10-K-01262024.pdf), a Netflix 10-K filing, to your local device. Then [upload it](/reference/api/latest/assistant/upload_file) to your assistant, replacing `/path/to/` with the folder you saved it in. The `metadata` is optional. It's returned with each citation, and you can use it to [filter which files the assistant uses](/guides/assistant/chat-with-assistant#filter-chat-with-metadata).
+[Download the sample file](https://s22.q4cdn.com/959853165/files/doc_financials/2023/ar/Netflix-10-K-01262024.pdf), a Netflix 10-K filing, to your local device. Then [upload it](/reference/api/latest/assistant/upload_file) to your assistant, replacing `/path/to/` with the folder you saved it in. The `metadata` is optional. It's returned with each citation, and you can use it to [filter which files the assistant uses](/guides/assistant/chat-standard-interface#filter-chat-with-metadata).
 
 The assistant has to process the file before it can answer questions about it, which can take a few minutes. The Python SDK waits until processing finishes. The Node.js SDK returns an operation, so the example checks the operation's status until it's `Completed`.
 
@@ -79228,7 +79205,7 @@ await pc.assistants.delete('example-assistant');
 ## Next steps
 
 * [Evaluate the assistant's answers](/guides/assistant/evaluate-answers) against a ground truth answer (Standard and Enterprise plans).
-* [Choose a model, stream responses, and filter by metadata](/guides/assistant/chat-with-assistant) when you chat with an assistant.
+* [Choose a model, stream responses, and filter by metadata](/guides/assistant/chat-standard-interface) when you chat with an assistant.
 * [Retrieve context snippets](/guides/assistant/retrieve-context-snippets) to use with your own LLM.
 * Explore a [sample app](/examples/sample-apps/pinecone-assistant) built on Pinecone Assistant.
 
@@ -79238,15 +79215,15 @@ Source: https://docs.pinecone.io/guides/assistant/retrieve-context-snippets
 
 Retrieve context snippets and citations from a Pinecone Assistant to power your own LLM, RAG application, or agentic workflow with signed URLs.
 
-This page shows you how to [retrieve context snippets](/guides/assistant/context-snippets-overview).
+Retrieve [context snippets](/guides/assistant/context-snippets-overview) and citations from an assistant to use with your own LLM, RAG application, or agentic workflow.
 
 > [!TIP]
 >
 > To try this in your browser, use the [Pinecone Assistant - Context colab notebook](https://colab.research.google.com/drive/1AD4QWsXBG1FQRwq-ModlaggR7Cx7NJCz).
 
-## Retrieve context snippets from an assistant
+## Retrieve snippets with the API or an SDK
 
-You can [retrieve context snippets](/reference/api/latest/assistant/context_assistant) from an assistant, as in the following example:
+To retrieve context snippets from an assistant, call [`context`](/reference/api/latest/assistant/context_assistant):
 
 ```python Python theme={null}
 from pinecone import Pinecone
@@ -79288,9 +79265,9 @@ curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME/context"
 }'
 ```
 
-The example above returns a JSON object like the following:
+The example above returns a response like the following:
 
-```json JSON theme={null}
+```json Response theme={null}
 {
     "snippets":
     [
@@ -79382,7 +79359,7 @@ Upload local files to a Pinecone assistant with Python, JavaScript, or curl, tra
 
 ## Upload a local file
 
-You can [upload a file to your assistant](/reference/api/latest/assistant/upload_file) from your local device, as in the following example.
+To upload a file from your local device, call [`upload_file`](/reference/api/latest/assistant/upload_file):
 
 ```python Python theme={null}
 from pinecone import Pinecone
@@ -79426,7 +79403,7 @@ curl -X POST "https://prod-1-data.ke.pinecone.io/assistant/files/$ASSISTANT_NAME
   -F "file=@$LOCAL_FILE_PATH"
 ```
 
-File uploads are billed in [ingestion units](/guides/assistant/pricing-and-limits#ingestion). With [API version](/reference/api/versioning) `2026-04` or later, upload, upsert, and delete responses return an operation object. Poll [Describe an operation](/reference/api/latest/assistant/describe_operation) or [List operations](/reference/api/latest/assistant/list_operations) to track progress; when a file-ingestion operation completes, `ingestion_units` may be present on the operation. See [Track file operations](/guides/assistant/manage-files#track-file-operations).
+File uploads are billed in [ingestion units](/guides/assistant/pricing-and-limits#ingestion). With [API version](/reference/api/versioning) `2026-04` or later, upload, upsert, and delete responses return an operation object. Poll [Describe an operation](/reference/api/latest/assistant/describe_operation) or [List operations](/reference/api/latest/assistant/list_operations) to track progress. When a file-ingestion operation completes, `ingestion_units` may be present on the operation. See [Track file operations](/guides/assistant/manage-files#track-file-operations).
 
 Upload is asynchronous, and it may take several minutes for your assistant to process your file. The Python SDK waits until processing finishes before it returns. The Node.js SDK and the API return an operation, which you can [track](/guides/assistant/manage-files#track-file-operations) until it's no longer `Processing`, as the Node.js example does. You can also [check the status of your file](/guides/assistant/manage-files#get-the-status-of-a-file).
 
@@ -79476,7 +79453,7 @@ curl -X POST "https://prod-1-data.ke.pinecone.io/assistant/files/$ASSISTANT_NAME
     -F 'metadata={"published": "2024-01-01", "document_type": "manuscript"}'
 ```
 
-When a file is uploaded with metadata, you can use the metadata to [filter a list of files](/guides/assistant/manage-files#view-a-filtered-list-of-files) and [filter chat responses](/guides/assistant/chat-with-assistant#filter-chat-with-metadata).
+When a file is uploaded with metadata, you can use the metadata to [filter a list of files](/guides/assistant/manage-files#view-a-filtered-list-of-files) and [filter chat responses](/guides/assistant/chat-standard-interface#filter-chat-with-metadata).
 
 ## Upsert a file
 
@@ -79521,7 +79498,7 @@ curl -X PUT "https://prod-1-data.ke.pinecone.io/assistant/files/$ASSISTANT_NAME/
 
 ## Upload a PDF with multimodal context
 
-Assistants can gather context from images contained in PDF files. To learn more about this feature, see [Multimodal context for assistants](/guides/assistant/multimodal).
+Assistants can gather context from images contained in PDF files. To learn more about this feature, see [Multimodal context](/guides/assistant/multimodal-context).
 
 ## Upload from a binary stream
 
@@ -82966,7 +82943,7 @@ Object limits are restrictions on the number or size of assistant-related object
 | File size (.pdf) | 10 MB | 50 MB | 100 MB | 100 MB |
 | Metadata size per file | 16 KB | 16 KB | 16 KB | 16 KB |
 
-Additionally, the following limits apply to [multimodal PDFs](/guides/assistant/multimodal) (currently in [public preview](/release-notes/feature-availability)):
+Additionally, the following limits apply to [multimodal PDFs](/guides/assistant/multimodal-context) (currently in [public preview](/release-notes/feature-availability)):
 
 Multimodal PDF processing uses the same [ingestion unit](/guides/assistant/pricing-and-limits#ingestion) as standard uploads; it's billed at about **twice** the standard per-unit rate (see [Pricing and limits](/guides/assistant/pricing-and-limits)). Object and rate limits for assistants also apply—see [#limits](/guides/assistant/pricing-and-limits#limits) and [#rate-limits](/guides/assistant/pricing-and-limits#rate-limits).
 
@@ -83114,36 +83091,11 @@ When a [document is uploaded](/guides/assistant/manage-files), the assistant pro
 
 ## Data retrieval
 
-During a [chat](/guides/assistant/chat-with-assistant), the assistant processes the message to formulate relevant search queries, which are used to query the index and identify the most relevant chunks from the uploaded content.
+During a [chat](/guides/assistant/chat-standard-interface), the assistant processes the message to formulate relevant search queries, which are used to query the index and identify the most relevant chunks from the uploaded content.
 
 ## Response generation
 
 After retrieving these chunks, the assistant performs a ranking step to determine which information is most relevant. This [context](/guides/assistant/context-snippets-overview), along with the chat history and [assistant instructions](/guides/assistant/manage-assistants#add-instructions-to-an-assistant), is then used by a large language model (LLM) to generate responses that are informed by your documents.
-
-
-# Assistant examples
-Source: https://docs.pinecone.io/examples/assistant
-
-Notebooks and Next.js sample apps for Pinecone Assistant: quickstart, context snippet retrieval, and a full-stack chat UI with citations.
-
-## [Quickstart](https://colab.research.google.com/github/pinecone-io/examples/blob/master/docs/assistant-quickstart.ipynb)
-
-Get started with Pinecone Assistant
-
-Python
-
-## [Retrieve context snippets](https://colab.research.google.com/github/pinecone-io/examples/blob/master/docs/assistant-retrieve-context-snippets.ipynb)
-
-Retrieve relevant information snippets for your queries
-
-Python
-
-## [Pinecone Assistant](/examples/sample-apps/pinecone-assistant)
-
-Connect your existing Pinecone Assistant to a chat interface with citations and file references.
-
-![](/images/examples/nextjs.svg)
-NextJS
 
 
 # Create an API key
@@ -84047,7 +83999,7 @@ Object limits are restrictions on the number or size of assistant-related object
 | File size (.pdf) | 10 MB | 50 MB | 100 MB | 100 MB |
 | Metadata size per file | 16 KB | 16 KB | 16 KB | 16 KB |
 
-Additionally, the following limits apply to [multimodal PDFs](/guides/assistant/multimodal) (currently in [public preview](/release-notes/feature-availability)):
+Additionally, the following limits apply to [multimodal PDFs](/guides/assistant/multimodal-context) (currently in [public preview](/release-notes/feature-availability)):
 
 Multimodal PDF processing uses the same [ingestion unit](/guides/assistant/pricing-and-limits#ingestion) as standard uploads; it's billed at about **twice** the standard per-unit rate (see [Pricing and limits](/guides/assistant/pricing-and-limits)). Object and rate limits for assistants also apply—see [#limits](/guides/assistant/pricing-and-limits#limits) and [#rate-limits](/guides/assistant/pricing-and-limits#rate-limits).
 
@@ -84195,7 +84147,7 @@ When a [document is uploaded](/guides/assistant/manage-files), the assistant pro
 
 ## Data retrieval
 
-During a [chat](/guides/assistant/chat-with-assistant), the assistant processes the message to formulate relevant search queries, which are used to query the index and identify the most relevant chunks from the uploaded content.
+During a [chat](/guides/assistant/chat-standard-interface), the assistant processes the message to formulate relevant search queries, which are used to query the index and identify the most relevant chunks from the uploaded content.
 
 ## Response generation
 
@@ -84575,6 +84527,31 @@ Source: https://docs.pinecone.io/api-reference/tasks/list-tasks-project-wide-pag
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /tasks
 Task records across the project, newest first. Filter by workflow, state, or context, and page with `limit` plus `page` or `offset`.
+
+# Assistant examples
+Source: https://docs.pinecone.io/examples/assistant
+
+Notebooks and Next.js sample apps for Pinecone Assistant: quickstart, context snippet retrieval, and a full-stack chat UI with citations.
+
+## [Quickstart](https://colab.research.google.com/github/pinecone-io/examples/blob/master/docs/assistant-quickstart.ipynb)
+
+Get started with Pinecone Assistant
+
+Python
+
+## [Retrieve context snippets](https://colab.research.google.com/github/pinecone-io/examples/blob/master/docs/assistant-retrieve-context-snippets.ipynb)
+
+Retrieve relevant information snippets for your queries
+
+Python
+
+## [Pinecone Assistant](/examples/sample-apps/pinecone-assistant)
+
+Connect your existing Pinecone Assistant to a chat interface with citations and file references.
+
+![](/images/examples/nextjs.svg)
+NextJS
+
 
 # Deploy Nexus BYOC
 Source: https://docs.pinecone.io/guides/nexus/byoc/deploy
@@ -87892,7 +87869,7 @@ Customers on the [Standard plan](https://www.pinecone.io/pricing/) can now have 
 
 ### Pinecone Assistant JSON mode and EU region deployment
 
-Pinecone Assistant can now [return a JSON response](/guides/assistant/chat-with-assistant#json-response).
+Pinecone Assistant can now [return a JSON response](/guides/assistant/chat-standard-interface#json-response).
 
 ***
 
@@ -88146,7 +88123,7 @@ Added the `metrics_alignment` operation, which provides a way to [evaluate the c
 
 ***
 
-When using Pinecone Assistant, you can now [choose an LLM](/guides/assistant/chat-with-assistant#choose-a-model-for-your-assistant) for the assistant to use and [filter the assistant's responses by metadata](/guides/assistant/chat-with-assistant#filter-chat-with-metadata).
+When using Pinecone Assistant, you can now [choose an LLM](/guides/assistant/chat-standard-interface#choose-a-model) for the assistant to use and [filter the assistant's responses by metadata](/guides/assistant/chat-standard-interface#filter-chat-with-metadata).
 
 **2024-09-18**
 
@@ -88578,7 +88555,7 @@ Added a new guide to help you [test Pinecone at production scale](/guides/optimi
 
 Pinecone Assistant now supports the GPT-5 model. To use it, set `model` to `gpt-5` when [chatting with your assistant](/reference/api/latest/assistant/chat_assistant).
 
-For more information, see [Chat with Assistant](/guides/assistant/chat-with-assistant#choose-a-model) and [Chat through the OpenAI-compatible interface](/guides/assistant/chat-through-the-openai-compatible-interface#choose-a-model).
+For more information, see [Chat with Assistant](/guides/assistant/chat-standard-interface#choose-a-model) and [Chat through the OpenAI-compatible interface](/guides/assistant/chat-openai-compatible-interface#choose-a-model).
 
 **2025-12-12**
 
@@ -88735,7 +88712,7 @@ Released [v2.0.0](https://github.com/pinecone-io/terraform-provider-pinecone/rel
 
 ### Multimodal context for assistants
 
-Assistants can now gather context from images in PDF files. To learn more, see [Multimodal context for assistants](/guides/assistant/multimodal). This feature is in [public preview](/release-notes/feature-availability).
+Assistants can now gather context from images in PDF files. To learn more, see [Multimodal context for assistants](/guides/assistant/multimodal-context). This feature is in [public preview](/release-notes/feature-availability).
 
 **2025-08-29**
 
@@ -88861,7 +88838,7 @@ Go SDK `v4.0.1` expands the [`DescribeIndex`](/guides/production/configure-priva
 
 ### Released Node.js SDK v6.1.1
 
-Released [`v6.1.1`](https://github.com/pinecone-io/pinecone-ts-client/releases/tag/v6.1.1) of the [Pinecone Node.js SDK](/reference/sdks/node/overview). This version adds support for [setting the sampling temperature](/guides/assistant/chat-with-assistant#set-the-sampling-temperature) for an assistant, and expands the [`describeIndex`](/guides/production/configure-private-endpoints#read-and-write-data) response to include the `private_host` value for connecting to indexes with a private endpoint.
+Released [`v6.1.1`](https://github.com/pinecone-io/pinecone-ts-client/releases/tag/v6.1.1) of the [Pinecone Node.js SDK](/reference/sdks/node/overview). This version adds support for [setting the sampling temperature](/guides/assistant/chat-standard-interface#set-the-sampling-temperature) for an assistant, and expands the [`describeIndex`](/guides/production/configure-private-endpoints#read-and-write-data) response to include the `private_host` value for connecting to indexes with a private endpoint.
 
 **2025-06-12**
 
@@ -88879,7 +88856,7 @@ Released [`v5.1.0`](https://github.com/pinecone-io/pinecone-java-client/releases
 
 ### Released Node.js SDK v6.1.0
 
-Released [`v6.1.0`](https://github.com/pinecone-io/pinecone-ts-client/releases/tag/v6.1.0) of the [Pinecone Node.js SDK](/reference/sdks/node/overview). This version adds support for [controlling the context snippets sent to the LLM](/guides/assistant/chat-with-assistant#control-the-context-snippets-sent-to-the-llm) by an assistant.
+Released [`v6.1.0`](https://github.com/pinecone-io/pinecone-ts-client/releases/tag/v6.1.0) of the [Pinecone Node.js SDK](/reference/sdks/node/overview). This version adds support for [controlling the context snippets sent to the LLM](/guides/assistant/chat-standard-interface#control-the-context-size) by an assistant.
 
 **2025-05-29**
 
@@ -89028,7 +89005,7 @@ You can now use the "Copy page" options at the top of every page of the Pinecone
 
 ### Control the context snippets the assistant sends to the LLM
 
-You can [control the context snippets sent to the LLM](/guides/assistant/chat-with-assistant#control-the-context-snippets-sent-to-the-llm) by setting `context_options` in the request.
+You can [control the context snippets sent to the LLM](/guides/assistant/chat-standard-interface#control-the-context-size) by setting `context_options` in the request.
 
 **2025-03-24**
 
@@ -89114,7 +89091,7 @@ Added the [Box](/integrations/box) and [Cloudera AI](/integrations/cloudera) int
 
 ### Citation highlights in assistant responses
 
-You can now include [highlights](/guides/assistant/chat-with-assistant#include-citation-highlights-in-the-response) in an assistant's citations. Highlights are the specific parts of the document that the assistant used to generate the response.
+You can now include [highlights](/guides/assistant/chat-standard-interface#include-citation-highlights-in-the-response) in an assistant's citations. Highlights are the specific parts of the document that the assistant used to generate the response.
 
 Citation highlights are available in the Pinecone console or API versions `2025-04` and later.
 
@@ -89345,7 +89322,7 @@ If you need to migrate a larger index, [contact Support](https://app.pinecone.io
 
 Pinecone Assistant now supports Google's Gemini 3.5 Flash model. To use this model, set `model: "gemini-3.5-flash"` in your [chat](/reference/api/latest/assistant/chat_assistant) requests.
 
-For more information, see [Choose a model](/guides/assistant/chat-with-assistant#choose-a-model).
+For more information, see [Choose a model](/guides/assistant/chat-standard-interface#choose-a-model).
 
 **2026-09-15**
 
@@ -89353,7 +89330,7 @@ For more information, see [Choose a model](/guides/assistant/chat-with-assistant
 
 Google has [deprecated](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/model-versions#retired-models) the Gemini 2.5 Pro model, and OpenAI has [deprecated](https://platform.openai.com/docs/deprecations) o4-mini. Pinecone Assistant automatically routes all chat requests that specify `gemini-2.5-pro` to Gemini 3.5 Flash, and all chat requests that specify `o4-mini` to GPT-5, at the same price. No code changes are required.
 
-To update your code to explicitly use the newer models, set `model: "gemini-3.5-flash"` or `model: "gpt-5"` in your chat requests. For more information, see [Choose a model](/guides/assistant/chat-with-assistant#choose-a-model).
+To update your code to explicitly use the newer models, set `model: "gemini-3.5-flash"` or `model: "gpt-5"` in your chat requests. For more information, see [Choose a model](/guides/assistant/chat-standard-interface#choose-a-model).
 
 **2026-09-13**
 
@@ -89697,7 +89674,7 @@ Full HIPAA compliance remains included with the Enterprise plan. To enable the a
 
 Anthropic has [deprecated](https://platform.claude.com/docs/en/about-claude/model-deprecations) the Claude 3.5 Sonnet and Claude 3.7 Sonnet models. Pinecone Assistant automatically routes all chat requests that specify `claude-3-5-sonnet` or `claude-3-7-sonnet` to Claude Sonnet 4.5, which provides enhanced intelligence at the same price. No code changes are required.
 
-To update your code to explicitly use Claude Sonnet 4.5, set `model: "claude-sonnet-4-5"` in your chat requests. For more information, see [Choose a model](/guides/assistant/chat-with-assistant#choose-a-model).
+To update your code to explicitly use Claude Sonnet 4.5, set `model: "claude-sonnet-4-5"` in your chat requests. For more information, see [Choose a model](/guides/assistant/chat-standard-interface#choose-a-model).
 
 **2026-01-28**
 
@@ -89713,7 +89690,7 @@ For more information, see the [Assistant quickstart for n8n](/guides/assistant/q
 
 Pinecone Assistant now supports Anthropic's Claude Sonnet 4.5 model. To use this model, set `model: "claude-sonnet-4-5"` in your [chat](/reference/api/latest/assistant/chat_assistant) requests. In the Pinecone console, Claude Sonnet 4.5 is also available as a selection in the **Chat model** dropdown menu in the playground for each assistant.
 
-For more information, see [Choose a model](/guides/assistant/chat-with-assistant#choose-a-model).
+For more information, see [Choose a model](/guides/assistant/chat-standard-interface#choose-a-model).
 
 **2026-01-23**
 

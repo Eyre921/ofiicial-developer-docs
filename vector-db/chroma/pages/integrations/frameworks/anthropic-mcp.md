@@ -39,9 +39,11 @@ Before setting up the Chroma MCP server, ensure you have:
 
 1. Open Claude Desktop
 2. Click on the Claude menu and select "Settings..."
-   <img alt="mcp-settings" />
+
+   ![mcp-settings](https://mintcdn.com/chroma-8943dec5/N-xA4EbmHOvIcCcs/images/mcp-settings.png?fit=max\&auto=format\&n=N-xA4EbmHOvIcCcs\&q=85\&s=513ffa4d5c06e809ef6e8beec3ddf196)
 3. Click on "Developer" in the left sidebar
-   <img alt="mcp-developer" />
+
+   ![mcp-developer](https://mintcdn.com/chroma-8943dec5/N-xA4EbmHOvIcCcs/images/mcp-developer.png?fit=max\&auto=format\&n=N-xA4EbmHOvIcCcs\&q=85\&s=0fcf75b8002a6a8b18175f9d7a1022dd)
 4. Click "Edit Config" to open your configuration file
 
 Add the following configuration:
@@ -72,9 +74,11 @@ Replace `/path/to/your/data/directory` with where you want Chroma to store its d
 
 1. Restart Claude Desktop completely
 2. Look for the hammer icon in the bottom right of your chat input
-   <img alt="mcp-hammer" />
+
+   ![mcp-hammer](https://mintcdn.com/chroma-8943dec5/N-xA4EbmHOvIcCcs/images/mcp-hammer.png?fit=max\&auto=format\&n=N-xA4EbmHOvIcCcs\&q=85\&s=96de00de0e22d9e1aa555b6d7dbee71b)
 3. Click it to see available Chroma tools
-   <img alt="mcp-tools" />
+
+   ![mcp-tools](https://mintcdn.com/chroma-8943dec5/N-xA4EbmHOvIcCcs/images/mcp-tools.png?fit=max\&auto=format\&n=N-xA4EbmHOvIcCcs\&q=85\&s=e841dab95748f12640c2e01e67727b0c)
 
 If you don't see the tools, check the logs at:
 
@@ -295,7 +299,7 @@ At any point if the user references previous chats or memory, check chroma for s
 Try to use retrieved information where possible.
 ```
 
-<img alt="mcp-instructions" />
+![mcp-instructions](https://mintcdn.com/chroma-8943dec5/N-xA4EbmHOvIcCcs/images/mcp-instructions.png?fit=max\&auto=format\&n=N-xA4EbmHOvIcCcs\&q=85\&s=40c9ac8886786f31cc711a13ca3003cf)
 
 This prompt instructs Claude to:
 
@@ -320,7 +324,7 @@ Claude will:
 3. Add metadata like timestamps and detected topics
 4. Store everything in your Chroma collection
 
-<img alt="mcp-store" />
+![mcp-store](https://mintcdn.com/chroma-8943dec5/N-xA4EbmHOvIcCcs/images/mcp-store.png?fit=max\&auto=format\&n=N-xA4EbmHOvIcCcs\&q=85\&s=a3bd10ad38dbd6bdd546bbde0c7206f9)
 
 Later, you can access past conversations naturally:
 
@@ -334,7 +338,7 @@ Claude will:
 2. Filter by timestamp metadata for last week's discussions
 3. Incorporate the relevant historical context into its response
 
-<img alt="mcp-search" />
+![mcp-search](https://mintcdn.com/chroma-8943dec5/N-xA4EbmHOvIcCcs/images/mcp-search.png?fit=max\&auto=format\&n=N-xA4EbmHOvIcCcs\&q=85\&s=c63db6894ec27a918b81f105df5ac058)
 
 This setup is particularly useful for:
 

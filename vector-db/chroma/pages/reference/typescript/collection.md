@@ -14,31 +14,31 @@ Gets the total number of records in the collection
 
 Adds new records to the collection.
 
-<ParamField type="string[]" />
+**ids** `string[]` *required*
 
-<ParamField type="Embeddings" />
+**embeddings** `Embeddings`
 
-<ParamField type="Metadata[]" />
+**metadatas** `Metadata[]`
 
-<ParamField type="string[]" />
+**documents** `string[]`
 
-<ParamField type="string[]" />
+**uris** `string[]`
 
 ### get
 
 Retrieves records from the collection based on filters.
 
-<ParamField type="string[]" />
+**ids** `string[]`
 
-<ParamField type="Where" />
+**where** `Where`
 
-<ParamField type="number" />
+**limit** `number`
 
-<ParamField type="number" />
+**offset** `number`
 
-<ParamField type="WhereDocument" />
+**whereDocument** `WhereDocument`
 
-<ParamField type="Include[]" />
+**include** `Include[]`
 
 **Returns:** Promise resolving to matching records
 
@@ -46,7 +46,7 @@ Retrieves records from the collection based on filters.
 
 Retrieves a preview of records from the collection.
 
-<ParamField type="number" />
+**limit** `number`
 
 **Returns:** Promise resolving to a sample of records
 
@@ -54,21 +54,21 @@ Retrieves a preview of records from the collection.
 
 Performs similarity search on the collection.
 
-<ParamField type="Embeddings" />
+**queryEmbeddings** `Embeddings`
 
-<ParamField type="string[]" />
+**queryTexts** `string[]`
 
-<ParamField type="string[]" />
+**queryURIs** `string[]`
 
-<ParamField type="string[]" />
+**ids** `string[]`
 
-<ParamField type="number" />
+**nResults** `number`
 
-<ParamField type="Where" />
+**where** `Where`
 
-<ParamField type="WhereDocument" />
+**whereDocument** `WhereDocument`
 
-<ParamField type="Include[]" />
+**include** `Include[]`
 
 **Returns:** Promise resolving to similar records ranked by distance
 
@@ -76,59 +76,59 @@ Performs similarity search on the collection.
 
 Modifies collection properties like name, metadata, or configuration.
 
-<ParamField type="string" />
+**name** `string`
 
-<ParamField type="CollectionMetadata" />
+**metadata** `CollectionMetadata`
 
-<ParamField type="UpdateCollectionConfiguration" />
+**configuration** `UpdateCollectionConfiguration`
 
 ### update
 
 Updates existing records in the collection.
 
-<ParamField type="string[]" />
+**ids** `string[]` *required*
 
-<ParamField type="Embeddings" />
+**embeddings** `Embeddings`
 
-<ParamField type="Metadata[]" />
+**metadatas** `Metadata[]`
 
-<ParamField type="string[]" />
+**documents** `string[]`
 
-<ParamField type="string[]" />
+**uris** `string[]`
 
 ### upsert
 
 Inserts new records or updates existing ones (upsert operation).
 
-<ParamField type="string[]" />
+**ids** `string[]` *required*
 
-<ParamField type="Embeddings" />
+**embeddings** `Embeddings`
 
-<ParamField type="Metadata[]" />
+**metadatas** `Metadata[]`
 
-<ParamField type="string[]" />
+**documents** `string[]`
 
-<ParamField type="string[]" />
+**uris** `string[]`
 
 ### delete
 
 Deletes records from the collection based on filters.
 
-<ParamField type="string[]" />
+**ids** `string[]`
 
-<ParamField type="Where" />
+**where** `Where`
 
-<ParamField type="WhereDocument" />
+**whereDocument** `WhereDocument`
 
 ### search
 
 Performs hybrid search on the collection using expression builders.
 
-<ParamField type="SearchLike | SearchLike[]">
-  Single search payload or array of payloads
-</ParamField>
+**searches** `SearchLike | SearchLike[]` *required*
 
-<ParamField type="ReadLevel" />
+Single search payload or array of payloads
+
+**readLevel** `ReadLevel`
 
 **Returns:** Promise resolving to column-major search results
 
@@ -140,36 +140,36 @@ Performs hybrid search on the collection using expression builders.
 
 Result class for get operations, containing retrieved records.
 
-<span>Properties</span>
+Properties
 
-<ParamField type="(string | null)[]" />
+**documents** `(string | null)[]`
 
-<ParamField type="Embeddings" />
+**embeddings** `Embeddings`
 
-<ParamField type="string[]" />
+**ids** `string[]`
 
-<ParamField type="Include[]" />
+**include** `Include[]`
 
-<ParamField type="(TMeta | null)[]" />
+**metadatas** `(TMeta | null)[]`
 
-<ParamField type="(string | null)[]" />
+**uris** `(string | null)[]`
 
 ### QueryResult
 
 Result class for query operations, containing search results.
 
-<span>Properties</span>
+Properties
 
-<ParamField type="(number | null)[][]" />
+**distances** `(number | null)[][]`
 
-<ParamField type="(string | null)[][]" />
+**documents** `(string | null)[][]`
 
-<ParamField type="(Embedding | null)[][]" />
+**embeddings** `(Embedding | null)[][]`
 
-<ParamField type="string[][]" />
+**ids** `string[][]`
 
-<ParamField type="Include[]" />
+**include** `Include[]`
 
-<ParamField type="(TMeta | null)[][]" />
+**metadatas** `(TMeta | null)[][]`
 
-<ParamField type="(string | null)[][]" />
+**uris** `(string | null)[][]`

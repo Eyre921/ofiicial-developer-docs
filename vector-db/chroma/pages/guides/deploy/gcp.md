@@ -6,9 +6,7 @@ path: guides/deploy/gcp
 
 Deploy Chroma on Google Cloud Platform using Terraform.
 
-<Callout>
-  Chroma Cloud, our fully managed hosted service is here. [Sign up for free](https://trychroma.com/signup?utm_source=docs-gcp).
-</Callout>
+Chroma Cloud, our fully managed hosted service is here. [Sign up for free](https://trychroma.com/signup?utm_source=docs-gcp).
 
 ## A Simple GCP Deployment
 
@@ -19,30 +17,24 @@ For convenience, we have
 provided a very simple Terraform configuration to experiment with
 deploying Chroma to Google Compute Engine.
 
-<Danger>
-  Chroma and its underlying database [need at least 2GB of RAM](/guides/performance/single-node#results-summary),
-  which means it won't fit on the instances provided as part of the
-  GCP "always free" tier. This template uses an [`e2-small`](https://cloud.google.com/compute/docs/general-purpose-machines#e2_machine_types) instance, which
-  costs about two cents an hour, or \$15 for a full month, and gives you 2GiB of memory. If you follow these
-  instructions, GCP will bill you accordingly.
-</Danger>
+Chroma and its underlying database [need at least 2GB of RAM](/guides/performance/single-node#results-summary),
+which means it won't fit on the instances provided as part of the
+GCP "always free" tier. This template uses an [`e2-small`](https://cloud.google.com/compute/docs/general-purpose-machines#e2_machine_types) instance, which
+costs about two cents an hour, or \$15 for a full month, and gives you 2GiB of memory. If you follow these
+instructions, GCP will bill you accordingly.
 
-<Danger>
-  In this guide we show you how to secure your endpoint using [Chroma's
-  native authentication support](./gcp#authentication-with-gcp). Alternatively, you can put it behind
-  [GCP API Gateway](https://cloud.google.com/api-gateway/docs) or add your own
-  authenticating proxy. This basic stack doesn't support any kind of authentication;
-  anyone who knows your server IP will be able to add and query for
-  embeddings.
-</Danger>
+In this guide we show you how to secure your endpoint using [Chroma's
+native authentication support](./gcp#authentication-with-gcp). Alternatively, you can put it behind
+[GCP API Gateway](https://cloud.google.com/api-gateway/docs) or add your own
+authenticating proxy. This basic stack doesn't support any kind of authentication;
+anyone who knows your server IP will be able to add and query for
+embeddings.
 
-<Danger>
-  By default, this template saves all data on a single
-  volume. When you delete or replace it, the data will disappear. For
-  serious production use (with high availability, backups, etc.) please
-  read and understand the Terraform template and use it as a basis
-  for what you need, or reach out to the Chroma team for assistance.
-</Danger>
+By default, this template saves all data on a single
+volume. When you delete or replace it, the data will disappear. For
+serious production use (with high availability, backups, etc.) please
+read and understand the Terraform template and use it as a basis
+for what you need, or reach out to the Chroma team for assistance.
 
 ### Step 1: Set up your GCP credentials
 
@@ -113,62 +105,58 @@ terraform output -raw chroma_instance_ip
 
 ### Step 5: Chroma Client Set-Up
 
-<Tabs>
-  <Tab title="Python" icon="python">
-    Once your Compute Engine instance is up and running with Chroma, all
-    you need to do is configure your `HttpClient` to use the server's IP address and port
-    `8000`. Since you are running a Chroma server on Azure, our [thin-client package](./python-thin-client) may be enough for your application.
+> [tab] Python
+>
+> Once your Compute Engine instance is up and running with Chroma, all
+> you need to do is configure your `HttpClient` to use the server's IP address and port
+> `8000`. Since you are running a Chroma server on Azure, our [thin-client package](./python-thin-client) may be enough for your application.
+>
+> ```python theme={null}
+> import chromadb
+>
+> chroma_client = chromadb.HttpClient(
+>     host="<Your Chroma instance IP>",
+>     port=8000
+> )
+> chroma_client.heartbeat()
+> ```
 
-    ```python theme={null}
-    import chromadb
+> [tab] TypeScript
+>
+> Once your Compute Engine instance is up and running with Chroma, all
+> you need to do is configure your `ChromaClient` to use the server's IP address and port
+> `8000`.
+>
+> ```typescript theme={null}
+> import { ChromaClient } from "chromadb";
+>
+> const chromaClient = new ChromaClient({
+>   host: "<Your Chroma instance IP>",
+>   port: 8000,
+> });
+> chromaClient.heartbeat();
+> ```
 
-    chroma_client = chromadb.HttpClient(
-        host="<Your Chroma instance IP>",
-        port=8000
-    )
-    chroma_client.heartbeat()
-    ```
-  </Tab>
-
-  <Tab title="TypeScript" icon="js">
-    Once your Compute Engine instance is up and running with Chroma, all
-    you need to do is configure your `ChromaClient` to use the server's IP address and port
-    `8000`.
-
-    ```typescript theme={null}
-    import { ChromaClient } from "chromadb";
-
-    const chromaClient = new ChromaClient({
-      host: "<Your Chroma instance IP>",
-      port: 8000,
-    });
-    chromaClient.heartbeat();
-    ```
-  </Tab>
-
-  <Tab title="Rust" icon="rust">
-    Once your Compute Engine instance is up and running with Chroma, you can point the Rust client at the server's address and port `8000`.
-
-    ```rust theme={null}
-    use chroma::{ChromaHttpClient, ChromaHttpClientOptions};
-
-    let mut options = ChromaHttpClientOptions::default();
-    options.endpoint = "http://<Your Chroma instance IP>:8000".parse()?;
-
-    let chroma_client = ChromaHttpClient::new(options);
-    chroma_client.heartbeat().await?;
-    ```
-  </Tab>
-</Tabs>
+> [tab] Rust
+>
+> Once your Compute Engine instance is up and running with Chroma, you can point the Rust client at the server's address and port `8000`.
+>
+> ```rust theme={null}
+> use chroma::{ChromaHttpClient, ChromaHttpClientOptions};
+>
+> let mut options = ChromaHttpClientOptions::default();
+> options.endpoint = "http://<Your Chroma instance IP>:8000".parse()?;
+>
+> let chroma_client = ChromaHttpClient::new(options);
+> chroma_client.heartbeat().await?;
+> ```
 
 ### Step 5: Clean Up (optional).
 
 To destroy the stack and remove all GCP resources, use the `terraform destroy` command.
 
-<Danger>
-  This will destroy all the data in your Chroma database,
-  unless you've taken a snapshot or otherwise backed it up.
-</Danger>
+This will destroy all the data in your Chroma database,
+unless you've taken a snapshot or otherwise backed it up.
 
 ```terminal theme={null}
 terraform destroy -var-file chroma.tfvars

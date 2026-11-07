@@ -6,9 +6,11 @@ path: guides/assistant/manage-assistants
 
 List, describe, update, and delete Pinecone assistants and check assistant status using the API, Python SDK, Node.js SDK, or Pinecone console.
 
+After you [create an assistant](/guides/assistant/create-assistant), you can list your assistants, check an assistant's status, change its chat model, update its instructions, and delete assistants you no longer need.
+
 ## List assistants for a project
 
-You can [get the name, status, and metadata for each assistant](/reference/api/latest/assistant/list_assistants) in your project as in the following example:
+To list the assistants in your project, call [`list`](/reference/api/latest/assistant/list_assistants):
 
 ```python Python theme={null}
 from pinecone import Pinecone
@@ -37,7 +39,7 @@ curl -X GET "https://api.pinecone.io/assistant/assistants" \
 
 This operation returns a response like the following:
 
-```JSON theme={null}
+```json Response theme={null}
 {
   "assistants": [
     {
@@ -60,7 +62,7 @@ You can use the `name` value to [check the status of an assistant](/guides/assis
 
 ## Get the status of an assistant
 
-You can [get the status and metadata for your assistant](/reference/api/latest/assistant/describe_assistant) as in the following example:
+To get an assistant's status and metadata, call [`describe`](/reference/api/latest/assistant/describe_assistant):
 
 ```python Python theme={null}
 from pinecone import Pinecone
@@ -90,7 +92,7 @@ curl -X GET "https://api.pinecone.io/assistant/assistants/$ASSISTANT_NAME" \
 
 This operation returns a response like the following:
 
-```JSON theme={null}
+```json Response theme={null}
 {
   "name": "example-assistant",
   "instructions": "Use American English for spelling and grammar.",
@@ -123,13 +125,13 @@ The chat model is the underlying large language model (LLM) that powers the assi
 
 ## Add instructions to an assistant
 
-You can [add or update the instructions](/reference/api/latest/assistant/update_assistant) for an existing assistant. Instructions are a short description or directive for the assistant to apply to all of its responses. For example, you can update the instructions to reflect the assistant's role or purpose.
+Instructions are a short directive the assistant applies to all of its responses, for example to reflect its role or purpose.
 
 > [!NOTE]
 >
 > Instructions (maximum size 16 KB) are included in every chat API call. Longer instructions increase input token costs for each request and consume more of the LLM's context window, reducing available space for retrieved context and conversation history.
 
-For example:
+To add or update an assistant's instructions, call [`update`](/reference/api/latest/assistant/update_assistant):
 
 ```python Python theme={null}
 from pinecone import Pinecone
@@ -169,7 +171,7 @@ curl -X PATCH "https://api.pinecone.io/assistant/assistants/example-assistant" \
 
 The example above returns a result like the following:
 
-```JSON theme={null}
+```json Response theme={null}
 {
     "name":"example-assistant",
     "instructions":"Use American English for spelling and grammar.",
@@ -186,7 +188,7 @@ The example above returns a result like the following:
 
 ## Delete an assistant
 
-You can [delete an assistant](/reference/api/latest/assistant/delete_assistant) as in the following example:
+To delete an assistant, call [`delete`](/reference/api/latest/assistant/delete_assistant):
 
 > [!WARNING]
 >

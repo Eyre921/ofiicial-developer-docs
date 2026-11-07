@@ -8,43 +8,41 @@ Chroma provides a convenient wrapper around Chroma Cloud's Splade sparse embeddi
 
 Sparse embeddings are useful for retrieval tasks where you want to match on specific keywords or terms, rather than semantic similarity.
 
-<Tabs>
-  <Tab title="Python" icon="python">
-    This embedding function relies on the `httpx` python package, which you can install with `pip install httpx`.
+> [tab] Python
+>
+> This embedding function relies on the `httpx` python package, which you can install with `pip install httpx`.
+>
+> ```python theme={null}
+> from chromadb.utils.embedding_functions import ChromaCloudSpladeEmbeddingFunction, ChromaCloudSpladeEmbeddingModel
+> import os
+>
+> os.environ["CHROMA_API_KEY"] = "YOUR_API_KEY"
+> splade_ef = ChromaCloudSpladeEmbeddingFunction(
+>     model=ChromaCloudSpladeEmbeddingModel.SPLADE_PP_EN_V1
+> )
+>
+> texts = ["Hello, world!", "How are you?"]
+> sparse_embeddings = splade_ef(texts)
+> ```
+>
+> You can optionally pass in a `model` argument. By default, Chroma uses `prithivida/Splade_PP_en_v1`.
 
-    ```python theme={null}
-    from chromadb.utils.embedding_functions import ChromaCloudSpladeEmbeddingFunction, ChromaCloudSpladeEmbeddingModel
-    import os
+> [tab] TypeScript
+>
+> ```typescript theme={null}
+> // npm install @chroma-core/chroma-cloud-splade
+>
+> import { ChromaCloudSpladeEmbeddingFunction, ChromaCloudSpladeEmbeddingModel } from "@chroma-core/chroma-cloud-splade";
+>
+> const embedder = new ChromaCloudSpladeEmbeddingFunction({
+>   apiKeyEnvVar: "CHROMA_API_KEY", // Or set CHROMA_API_KEY env var
+>   model: ChromaCloudSpladeEmbeddingModel.SPLADE_PP_EN_V1,
+> });
+>
+> // use directly
+> const sparseEmbeddings = await embedder.generate(["document1", "document2"]);
+> ```
 
-    os.environ["CHROMA_API_KEY"] = "YOUR_API_KEY"
-    splade_ef = ChromaCloudSpladeEmbeddingFunction(
-        model=ChromaCloudSpladeEmbeddingModel.SPLADE_PP_EN_V1
-    )
-
-    texts = ["Hello, world!", "How are you?"]
-    sparse_embeddings = splade_ef(texts)
-    ```
-
-    You can optionally pass in a `model` argument. By default, Chroma uses `prithivida/Splade_PP_en_v1`.
-  </Tab>
-
-  <Tab title="TypeScript" icon="js">
-    ```typescript theme={null}
-    // npm install @chroma-core/chroma-cloud-splade
-
-    import { ChromaCloudSpladeEmbeddingFunction, ChromaCloudSpladeEmbeddingModel } from "@chroma-core/chroma-cloud-splade";
-
-    const embedder = new ChromaCloudSpladeEmbeddingFunction({
-      apiKeyEnvVar: "CHROMA_API_KEY", // Or set CHROMA_API_KEY env var
-      model: ChromaCloudSpladeEmbeddingModel.SPLADE_PP_EN_V1,
-    });
-
-    // use directly
-    const sparseEmbeddings = await embedder.generate(["document1", "document2"]);
-    ```
-  </Tab>
-
-  <Tab title="HTTP" icon="terminal">
-    To use the Chroma Cloud Embedding API directly, see the [Generate Sparse Embeddings API reference](/reference/embeddings-api/generate-sparse-embeddings) for detailed request and response formats.
-  </Tab>
-</Tabs>
+> [tab] HTTP
+>
+> To use the Chroma Cloud Embedding API directly, see the [Generate Sparse Embeddings API reference](/reference/embeddings-api/generate-sparse-embeddings) for detailed request and response formats.

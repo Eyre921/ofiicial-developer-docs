@@ -9,36 +9,30 @@ path: reference/overview
 Chroma currently maintains first party clients for Python, Typescript, and Rust.
 For other languages, the Chroma community built and mantains open source clients.
 
-<Columns>
-  <Card title="Python" icon="python" href="/reference/python/client" />
+> [card] [Python](/reference/python/client)
 
-  <Card title="TypeScript" icon="js" href="/reference/typescript" />
+> [card] [TypeScript](/reference/typescript)
 
-  <Card title="Rust" icon="rust" href="https://docs.rs/chroma/latest/chroma/" />
-</Columns>
+> [card] [Rust](https://docs.rs/chroma/latest/chroma/)
 
 ## Beta SDKs
 
 Chroma has beta SDKs for local vector search for Android and iOS devices.
 
-<Columns>
-  <Card title="Kotlin (Android)" icon="android" href="https://github.com/chroma-core/chroma-android" />
+> [card] [Kotlin (Android)](https://github.com/chroma-core/chroma-android)
 
-  <Card title="Swift (iOS/macOS)" icon="apple" href="https://github.com/chroma-core/chroma-swift" />
-</Columns>
+> [card] [Swift (iOS/macOS)](https://github.com/chroma-core/chroma-swift)
 
 ## APIs
 
-<Columns>
-  <Card title="Chroma API" href="/reference/chroma-api/">
-    Programmatically access self-hosted deployments and Cloud databases.
-  </Card>
+> [card] [Chroma API](/reference/chroma-api/)
+>
+> Programmatically access self-hosted deployments and Cloud databases.
 
-  <Card title="Sync API" href="/reference/sync-api/">
-    Sync Github repositories and Websites to Chroma Cloud collections.
-  </Card>
+> [card] [Sync API](/reference/sync-api/)
+>
+> Sync Github repositories and Websites to Chroma Cloud collections.
 
-  <Card title="Embeddings API" href="/reference/embeddings-api/">
-    Generate dense and sparse embeddings using your Chroma Cloud API key
-  </Card>
-</Columns>
+> [card] [Embeddings API](/reference/embeddings-api/)
+>
+> Generate dense and sparse embeddings using your Chroma Cloud API key

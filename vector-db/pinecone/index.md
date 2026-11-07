@@ -1,6 +1,6 @@
 # vector-db/pinecone 文档索引
 
-> 共 586 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 587 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## admin
@@ -110,18 +110,19 @@
 
 - `guides/agents/build-a-knowledge-agent` — [Build a knowledge retrieval agent](pages/guides/agents/build-a-knowledge-agent.md) · [原文](https://docs.pinecone.io/guides/agents/build-a-knowledge-agent)
 - `guides/agents/mcp-server` — [Use the Pinecone MCP server](pages/guides/agents/mcp-server.md) · [原文](https://docs.pinecone.io/guides/agents/mcp-server)
-- `guides/assistant/admin/monitor-spend-and-usage` — [Monitor usage and cost](pages/guides/assistant/admin/monitor-spend-and-usage.md) · [原文](https://docs.pinecone.io/guides/assistant/admin/monitor-spend-and-usage)
-- `guides/assistant/chat-through-the-openai-compatible-interface` — [Chat through the OpenAI-compatible interface](pages/guides/assistant/chat-through-the-openai-compatible-interface.md) · [原文](https://docs.pinecone.io/guides/assistant/chat-through-the-openai-compatible-interface)
-- `guides/assistant/chat-with-assistant` — [Chat through the standard interface](pages/guides/assistant/chat-with-assistant.md) · [原文](https://docs.pinecone.io/guides/assistant/chat-with-assistant)
+- `guides/assistant/admin/monitor-usage-and-cost` — [Monitor usage and cost](pages/guides/assistant/admin/monitor-usage-and-cost.md) · [原文](https://docs.pinecone.io/guides/assistant/admin/monitor-usage-and-cost)
+- `guides/assistant/chat-openai-compatible-interface` — [Chat through the OpenAI-compatible interface](pages/guides/assistant/chat-openai-compatible-interface.md) · [原文](https://docs.pinecone.io/guides/assistant/chat-openai-compatible-interface)
+- `guides/assistant/chat-standard-interface` — [Chat through the standard interface](pages/guides/assistant/chat-standard-interface.md) · [原文](https://docs.pinecone.io/guides/assistant/chat-standard-interface)
 - `guides/assistant/context-snippets-overview` — [Context snippets overview](pages/guides/assistant/context-snippets-overview.md) · [原文](https://docs.pinecone.io/guides/assistant/context-snippets-overview)
 - `guides/assistant/create-assistant` — [Create an assistant](pages/guides/assistant/create-assistant.md) · [原文](https://docs.pinecone.io/guides/assistant/create-assistant)
 - `guides/assistant/evaluate-answers` — [Evaluate answers](pages/guides/assistant/evaluate-answers.md) · [原文](https://docs.pinecone.io/guides/assistant/evaluate-answers)
 - `guides/assistant/evaluation-overview` — [Evaluation overview](pages/guides/assistant/evaluation-overview.md) · [原文](https://docs.pinecone.io/guides/assistant/evaluation-overview)
-- `guides/assistant/files-overview` — [Files in Pinecone Assistant](pages/guides/assistant/files-overview.md) · [原文](https://docs.pinecone.io/guides/assistant/files-overview)
+- `guides/assistant/file-metadata` — [File metadata](pages/guides/assistant/file-metadata.md) · [原文](https://docs.pinecone.io/guides/assistant/file-metadata)
+- `guides/assistant/files-overview` — [Files overview](pages/guides/assistant/files-overview.md) · [原文](https://docs.pinecone.io/guides/assistant/files-overview)
 - `guides/assistant/manage-assistants` — [Manage assistants](pages/guides/assistant/manage-assistants.md) · [原文](https://docs.pinecone.io/guides/assistant/manage-assistants)
 - `guides/assistant/manage-files` — [Manage files](pages/guides/assistant/manage-files.md) · [原文](https://docs.pinecone.io/guides/assistant/manage-files)
-- `guides/assistant/mcp-server` — [Use an Assistant MCP server](pages/guides/assistant/mcp-server.md) · [原文](https://docs.pinecone.io/guides/assistant/mcp-server)
-- `guides/assistant/multimodal` — [Multimodal context for assistants](pages/guides/assistant/multimodal.md) · [原文](https://docs.pinecone.io/guides/assistant/multimodal)
+- `guides/assistant/mcp-server` — [Use the Pinecone Assistant MCP server](pages/guides/assistant/mcp-server.md) · [原文](https://docs.pinecone.io/guides/assistant/mcp-server)
+- `guides/assistant/multimodal-context` — [Multimodal context](pages/guides/assistant/multimodal-context.md) · [原文](https://docs.pinecone.io/guides/assistant/multimodal-context)
 - `guides/assistant/overview` — [Pinecone Assistant](pages/guides/assistant/overview.md) · [原文](https://docs.pinecone.io/guides/assistant/overview)
 - `guides/assistant/pricing-and-limits` — [Pinecone Assistant pricing and limits](pages/guides/assistant/pricing-and-limits.md) · [原文](https://docs.pinecone.io/guides/assistant/pricing-and-limits)
 - `guides/assistant/quickstart/n8n-quickstart` — [Pinecone Assistant: n8n quickstart](pages/guides/assistant/quickstart/n8n-quickstart.md) · [原文](https://docs.pinecone.io/guides/assistant/quickstart/n8n-quickstart)

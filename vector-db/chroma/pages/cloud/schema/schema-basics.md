@@ -44,70 +44,64 @@ Chroma uses two reserved key names:
 
 **`K.EMBEDDING`** (`#embedding`) stores dense vector embeddings with Vector Index enabled, sourcing from `K.DOCUMENT`. This enables semantic similarity search.
 
-<Callout>
-  Use `K.DOCUMENT` and `K.EMBEDDING` in your code (they correspond to internal keys `#document` and `#embedding`). These special keys are automatically configured and cannot be manually modified. See the [Search API field reference](../search-api/pagination-selection#available-fields) for more details.
-</Callout>
+Use `K.DOCUMENT` and `K.EMBEDDING` in your code (they correspond to internal keys `#document` and `#embedding`). These special keys are automatically configured and cannot be manually modified. See the [Search API field reference](../search-api/pagination-selection#available-fields) for more details.
 
 ### Example: Using Defaults
 
-<CodeGroup>
-  ```python Python theme={null}
-  # Without Schema - uses defaults from table above
-  collection = client.create_collection(name="my_collection")
+```python Python theme={null}
+# Without Schema - uses defaults from table above
+collection = client.create_collection(name="my_collection")
 
-  collection.add(
-      ids=["id1"],
-      documents=["Some text"],    # FTS index
-      embeddings=[[1.0, 2.0]],    # Vector index
-      metadatas=[{
-          "category": "science",  # String inverted index
-          "year": 2024,           # Int inverted index
-          "score": 0.95,          # Float inverted index
-          "published": True       # Bool inverted index
-      }]
-  )
-  ```
-
-  ```typescript TypeScript theme={null}
-  // Without Schema - uses defaults from table above
-  const collection = await client.createCollection({ name: "my_collection" });
-
-  await collection.add({
-    ids: ["id1"],
-    documents: ["Some text"],
-    metadatas: [{
-      category: "science",  // String inverted index
-      year: 2024,           // Int inverted index
-      score: 0.95,          // Float inverted index
-      published: true       // Bool inverted index
+collection.add(
+    ids=["id1"],
+    documents=["Some text"],    # FTS index
+    embeddings=[[1.0, 2.0]],    # Vector index
+    metadatas=[{
+        "category": "science",  # String inverted index
+        "year": 2024,           # Int inverted index
+        "score": 0.95,          # Float inverted index
+        "published": True       # Bool inverted index
     }]
-  });
-  ```
-</CodeGroup>
+)
+```
+
+```typescript TypeScript theme={null}
+// Without Schema - uses defaults from table above
+const collection = await client.createCollection({ name: "my_collection" });
+
+await collection.add({
+  ids: ["id1"],
+  documents: ["Some text"],
+  metadatas: [{
+    category: "science",  // String inverted index
+    year: 2024,           // Int inverted index
+    score: 0.95,          // Float inverted index
+    published: true       // Bool inverted index
+  }]
+});
+```
 
 ## Creating Schema Objects
 
 Create a Schema object to customize index configuration:
 
-<CodeGroup>
-  ```python Python theme={null}
-  from chromadb import Schema
+```python Python theme={null}
+from chromadb import Schema
 
-  # Create an empty schema (starts with defaults)
-  schema = Schema()
+# Create an empty schema (starts with defaults)
+schema = Schema()
 
-  # The schema is now ready to be configured
-  ```
+# The schema is now ready to be configured
+```
 
-  ```typescript TypeScript theme={null}
-  import { Schema } from 'chromadb';
+```typescript TypeScript theme={null}
+import { Schema } from 'chromadb';
 
-  // Create an empty schema (starts with defaults)
-  const schema = new Schema();
+// Create an empty schema (starts with defaults)
+const schema = new Schema();
 
-  // The schema is now ready to be configured
-  ```
-</CodeGroup>
+// The schema is now ready to be configured
+```
 
 ## Creating Indexes
 
@@ -124,90 +118,84 @@ The method returns the Schema object, enabling method chaining.
 
 Create indexes that apply globally. This example shows configuring the vector index with custom settings:
 
-<CodeGroup>
-  ```python Python theme={null}
-  from chromadb import Schema, VectorIndexConfig
-  from chromadb.utils.embedding_functions import OpenAIEmbeddingFunction
+```python Python theme={null}
+from chromadb import Schema, VectorIndexConfig
+from chromadb.utils.embedding_functions import OpenAIEmbeddingFunction
 
-  schema = Schema()
+schema = Schema()
 
-  # Configure vector index with custom embedding function
-  embedding_function = OpenAIEmbeddingFunction(
-      api_key_env_var="OPENAI_API_KEY",
-      model_name="text-embedding-3-small"
-  )
+# Configure vector index with custom embedding function
+embedding_function = OpenAIEmbeddingFunction(
+    api_key_env_var="OPENAI_API_KEY",
+    model_name="text-embedding-3-small"
+)
 
-  schema.create_index(config=VectorIndexConfig(
-      space="cosine",
-      embedding_function=embedding_function
-  ))
-  ```
+schema.create_index(config=VectorIndexConfig(
+    space="cosine",
+    embedding_function=embedding_function
+))
+```
 
-  ```typescript TypeScript theme={null}
-  import { Schema, VectorIndexConfig } from 'chromadb';
-  import { OpenAIEmbeddingFunction } from '@chroma-core/openai';
+```typescript TypeScript theme={null}
+import { Schema, VectorIndexConfig } from 'chromadb';
+import { OpenAIEmbeddingFunction } from '@chroma-core/openai';
 
-  const schema = new Schema();
+const schema = new Schema();
 
-  // Configure vector index with custom embedding function
-  const embeddingFunction = new OpenAIEmbeddingFunction({
-    apiKeyEnvVar: "OPENAI_API_KEY",
-    modelName: "text-embedding-3-small"
-  });
+// Configure vector index with custom embedding function
+const embeddingFunction = new OpenAIEmbeddingFunction({
+  apiKeyEnvVar: "OPENAI_API_KEY",
+  modelName: "text-embedding-3-small"
+});
 
-  schema.createIndex(new VectorIndexConfig({
-    space: "cosine",
-    embeddingFunction: embeddingFunction
-  }));
-  ```
-</CodeGroup>
+schema.createIndex(new VectorIndexConfig({
+  space: "cosine",
+  embeddingFunction: embeddingFunction
+}));
+```
 
 ### Creating Key-Specific Indexes
 
 Configure indexes for specific metadata fields. This example shows configuring the sparse vector index with custom settings:
 
-<CodeGroup>
-  ```python Python theme={null}
-  from chromadb import Schema, SparseVectorIndexConfig, K
-  from chromadb.utils.embedding_functions import ChromaCloudSpladeEmbeddingFunction
+```python Python theme={null}
+from chromadb import Schema, SparseVectorIndexConfig, K
+from chromadb.utils.embedding_functions import ChromaCloudSpladeEmbeddingFunction
 
-  schema = Schema()
+schema = Schema()
 
-  # Add sparse vector index for a specific key (required for hybrid search)
-  sparse_ef = ChromaCloudSpladeEmbeddingFunction()
-  schema.create_index(
-      config=SparseVectorIndexConfig(
-          source_key=K.DOCUMENT,
-          embedding_function=sparse_ef
-      ),
-      key="sparse_embedding"
-  )
-  ```
+# Add sparse vector index for a specific key (required for hybrid search)
+sparse_ef = ChromaCloudSpladeEmbeddingFunction()
+schema.create_index(
+    config=SparseVectorIndexConfig(
+        source_key=K.DOCUMENT,
+        embedding_function=sparse_ef
+    ),
+    key="sparse_embedding"
+)
+```
 
-  ```typescript TypeScript theme={null}
-  import { Schema, SparseVectorIndexConfig, K } from 'chromadb';
-  import { ChromaCloudSpladeEmbeddingFunction } from '@chroma-core/chroma-cloud-splade';
+```typescript TypeScript theme={null}
+import { Schema, SparseVectorIndexConfig, K } from 'chromadb';
+import { ChromaCloudSpladeEmbeddingFunction } from '@chroma-core/chroma-cloud-splade';
 
-  const schema = new Schema();
+const schema = new Schema();
 
-  // Add sparse vector index for a specific key (required for hybrid search)
-  const sparseEf = new ChromaCloudSpladeEmbeddingFunction({
-    apiKeyEnvVar: "CHROMA_API_KEY"
-  });
+// Add sparse vector index for a specific key (required for hybrid search)
+const sparseEf = new ChromaCloudSpladeEmbeddingFunction({
+  apiKeyEnvVar: "CHROMA_API_KEY"
+});
 
-  schema.createIndex(
-    new SparseVectorIndexConfig({
-      sourceKey: K.DOCUMENT,
-      embeddingFunction: sparseEf
-    }),
-    "sparse_embedding"
-  );
-  ```
-</CodeGroup>
+schema.createIndex(
+  new SparseVectorIndexConfig({
+    sourceKey: K.DOCUMENT,
+    embeddingFunction: sparseEf
+  }),
+  "sparse_embedding"
+);
+```
 
-<Callout>
-  This example uses `ChromaCloudSpladeEmbeddingFunction`, but you can use other sparse embedding functions like `HuggingFaceSparseEmbeddingFunction` or `FastembedSparseEmbeddingFunction` depending on your needs.
-</Callout>
+This example uses `ChromaCloudSpladeEmbeddingFunction`, but you can use other sparse embedding functions like `HuggingFaceSparseEmbeddingFunction` or `FastembedSparseEmbeddingFunction` depending on your needs.
 
 ## Disabling Indexes
 
@@ -222,105 +210,95 @@ Returns the Schema object for method chaining.
 
 ### Examples
 
-<CodeGroup>
-  ```python Python theme={null}
-  from chromadb import Schema, StringInvertedIndexConfig, IntInvertedIndexConfig
+```python Python theme={null}
+from chromadb import Schema, StringInvertedIndexConfig, IntInvertedIndexConfig
 
-  schema = Schema()
+schema = Schema()
 
-  # Disable string inverted index globally
-  schema.delete_index(config=StringInvertedIndexConfig())
+# Disable string inverted index globally
+schema.delete_index(config=StringInvertedIndexConfig())
 
-  # Disable int inverted index for a specific key
-  schema.delete_index(config=IntInvertedIndexConfig(), key="unimportant_count")
+# Disable int inverted index for a specific key
+schema.delete_index(config=IntInvertedIndexConfig(), key="unimportant_count")
 
-  # Disable all indexes for a specific key
-  schema.delete_index(key="temporary_field")
-  ```
+# Disable all indexes for a specific key
+schema.delete_index(key="temporary_field")
+```
 
-  ```typescript TypeScript theme={null}
-  import { Schema, StringInvertedIndexConfig, IntInvertedIndexConfig } from 'chromadb';
+```typescript TypeScript theme={null}
+import { Schema, StringInvertedIndexConfig, IntInvertedIndexConfig } from 'chromadb';
 
-  const schema = new Schema();
+const schema = new Schema();
 
-  // Disable string inverted index globally
-  schema.deleteIndex(new StringInvertedIndexConfig());
+// Disable string inverted index globally
+schema.deleteIndex(new StringInvertedIndexConfig());
 
-  // Disable int inverted index for a specific key
-  schema.deleteIndex(new IntInvertedIndexConfig(), "unimportant_count");
+// Disable int inverted index for a specific key
+schema.deleteIndex(new IntInvertedIndexConfig(), "unimportant_count");
 
-  // Disable all indexes for a specific key
-  schema.deleteIndex(undefined, "temporary_field");
-  ```
-</CodeGroup>
+// Disable all indexes for a specific key
+schema.deleteIndex(undefined, "temporary_field");
+```
 
-<Callout>
-  **Note:** Not all indexes can be deleted. Vector indexes currently cannot be disabled.
-</Callout>
+**Note:** Not all indexes can be deleted. Vector indexes currently cannot be disabled.
 
-<Callout>
-  **Array metadata and indexes:** Array metadata (e.g. `[1, 2, 3]` or `["action", "comedy"]`) shares the same inverted index as its scalar counterpart. Disabling `IntInvertedIndexConfig` will also prevent `$contains` and `$not_contains` queries on integer arrays, and similarly for other types.
-</Callout>
+**Array metadata and indexes:** Array metadata (e.g. `[1, 2, 3]` or `["action", "comedy"]`) shares the same inverted index as its scalar counterpart. Disabling `IntInvertedIndexConfig` will also prevent `$contains` and `$not_contains` queries on integer arrays, and similarly for other types.
 
 ## Method Chaining
 
 Both `create_index()` and `delete_index()` return the Schema object, enabling fluent method chaining:
 
-<CodeGroup>
-  ```python Python theme={null}
-  from chromadb import Schema, StringInvertedIndexConfig, IntInvertedIndexConfig
+```python Python theme={null}
+from chromadb import Schema, StringInvertedIndexConfig, IntInvertedIndexConfig
 
-  schema = (Schema()
-      .delete_index(config=StringInvertedIndexConfig())  # Disable globally
-      .create_index(config=StringInvertedIndexConfig(), key="category")  # Enable for category
-      .create_index(config=StringInvertedIndexConfig(), key="tags")  # Enable for tags
-      .delete_index(config=IntInvertedIndexConfig()))  # Disable int indexing
-  ```
+schema = (Schema()
+    .delete_index(config=StringInvertedIndexConfig())  # Disable globally
+    .create_index(config=StringInvertedIndexConfig(), key="category")  # Enable for category
+    .create_index(config=StringInvertedIndexConfig(), key="tags")  # Enable for tags
+    .delete_index(config=IntInvertedIndexConfig()))  # Disable int indexing
+```
 
-  ```typescript TypeScript theme={null}
-  import { Schema, StringInvertedIndexConfig, IntInvertedIndexConfig } from 'chromadb';
+```typescript TypeScript theme={null}
+import { Schema, StringInvertedIndexConfig, IntInvertedIndexConfig } from 'chromadb';
 
-  const schema = new Schema()
-    .deleteIndex(new StringInvertedIndexConfig())  // Disable globally
-    .createIndex(new StringInvertedIndexConfig(), "category")  // Enable for category
-    .createIndex(new StringInvertedIndexConfig(), "tags")  // Enable for tags
-    .deleteIndex(new IntInvertedIndexConfig());  // Disable int indexing
-  ```
-</CodeGroup>
+const schema = new Schema()
+  .deleteIndex(new StringInvertedIndexConfig())  // Disable globally
+  .createIndex(new StringInvertedIndexConfig(), "category")  // Enable for category
+  .createIndex(new StringInvertedIndexConfig(), "tags")  // Enable for tags
+  .deleteIndex(new IntInvertedIndexConfig());  // Disable int indexing
+```
 
 ## Using Schema with Collections
 
 Pass the configured schema to `create_collection()` or `get_or_create_collection()`:
 
-<CodeGroup>
-  ```python Python theme={null}
-  # Create collection with schema
-  collection = client.create_collection(
-      name="my_collection",
-      schema=schema
-  )
+```python Python theme={null}
+# Create collection with schema
+collection = client.create_collection(
+    name="my_collection",
+    schema=schema
+)
 
-  # Or use get_or_create_collection
-  collection = client.get_or_create_collection(
-      name="my_collection",
-      schema=schema
-  )
-  ```
+# Or use get_or_create_collection
+collection = client.get_or_create_collection(
+    name="my_collection",
+    schema=schema
+)
+```
 
-  ```typescript TypeScript theme={null}
-  // Create collection with schema
-  const collection = await client.createCollection({
-    name: "my_collection",
-    schema: schema
-  });
+```typescript TypeScript theme={null}
+// Create collection with schema
+const collection = await client.createCollection({
+  name: "my_collection",
+  schema: schema
+});
 
-  // Or use getOrCreateCollection
-  const collection = await client.getOrCreateCollection({
-    name: "my_collection",
-    schema: schema
-  });
-  ```
-</CodeGroup>
+// Or use getOrCreateCollection
+const collection = await client.getOrCreateCollection({
+  name: "my_collection",
+  schema: schema
+});
+```
 
 ### Schema Persistence
 

@@ -10,15 +10,15 @@ You can [retrieve the context snippets](/guides/assistant/retrieve-context-snipp
 
 ## Use cases
 
-Retrieving context snippets is useful for performing tasks like the following:
+Retrieve context snippets to:
 
-* Understanding what relevant data snippets Pinecone Assistant is providing to the LLM for chat generation.
-* Using the retrieved snippets with your own LLM.
-* Using the retrieved snippets with your own RAG application or agentic workflow.
+* Understand what relevant data snippets Pinecone Assistant provides to the LLM for chat generation.
+* Use the retrieved snippets with your own LLM.
+* Use the retrieved snippets with your own RAG application or agentic workflow.
 
 ## SDK support
 
-The Pinecone [Python SDK](/reference/sdks/python/overview) and [Node.js SDK](/reference/sdks/node/overview) provide convenient programmatic access to [retrieve context snippets](/reference/api/latest/assistant/context_assistant).
+The Pinecone [Python SDK](/reference/sdks/python/overview) and [Node.js SDK](/reference/sdks/node/overview) can [retrieve context snippets](/reference/api/latest/assistant/context_assistant).
 
 ## Pricing
 

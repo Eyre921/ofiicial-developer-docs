@@ -24,7 +24,7 @@ Object limits are restrictions on the number or size of assistant-related object
 | File size (.pdf) | 10 MB | 50 MB | 100 MB | 100 MB |
 | Metadata size per file | 16 KB | 16 KB | 16 KB | 16 KB |
 
-Additionally, the following limits apply to [multimodal PDFs](/guides/assistant/multimodal) (currently in [public preview](/release-notes/feature-availability)):
+Additionally, the following limits apply to [multimodal PDFs](/guides/assistant/multimodal-context) (currently in [public preview](/release-notes/feature-availability)):
 
 Multimodal PDF processing uses the same [ingestion unit](/guides/assistant/pricing-and-limits#ingestion) as standard uploads; it's billed at about **twice** the standard per-unit rate (see [Pricing and limits](/guides/assistant/pricing-and-limits)). Object and rate limits for assistants also apply—see [#limits](/guides/assistant/pricing-and-limits#limits) and [#rate-limits](/guides/assistant/pricing-and-limits#rate-limits).
 

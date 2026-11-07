@@ -8,71 +8,69 @@ Chroma provides a convenient wrapper around Google's Generative AI embedding API
 
 You can get an API key by signing up for an account at [Google AI Studio](https://aistudio.google.com/).
 
-<Tabs>
-  <Tab title="Python" icon="python">
-    This embedding function relies on the `google-genai` python package, which you can install with `pip install google-genai`.
+> [tab] Python
+>
+> This embedding function relies on the `google-genai` python package, which you can install with `pip install google-genai`.
+>
+> ```python theme={null}
+> import chromadb.utils.embedding_functions as embedding_functions
+>
+> # The GoogleGeminiEmbeddingFunction expects the API key in the GEMINI_API_KEY environment variable.
+> google_ef = embedding_functions.GoogleGeminiEmbeddingFunction(
+>     model_name="gemini-embedding-001",
+>     task_type="RETRIEVAL_DOCUMENT",
+> )
+> google_ef(["document1", "document2"])
+>
+> # pass documents to query for .add and .query
+> collection = client.create_collection(name="name", embedding_function=google_ef)
+> collection = client.get_collection(name="name", embedding_function=google_ef)
+> ```
+>
+> You can optionally specify the `dimension` parameter to control the output dimensionality of the embeddings (supported range: 128–3072):
+>
+> ```python theme={null}
+> google_ef = embedding_functions.GoogleGeminiEmbeddingFunction(
+>     model_name="gemini-embedding-001",
+>     task_type="RETRIEVAL_DOCUMENT",
+>     dimension=768,
+> )
+> ```
+>
+> You can view a more [complete example](https://github.com/chroma-core/chroma/tree/main/examples/gemini) chatting over documents with Gemini embedding and language models.
+>
+> For more info - please visit the [official Google docs](https://ai.google.dev/gemini-api/docs/embeddings).
 
-    ```python theme={null}
-    import chromadb.utils.embedding_functions as embedding_functions
-
-    # The GoogleGeminiEmbeddingFunction expects the API key in the GEMINI_API_KEY environment variable.
-    google_ef = embedding_functions.GoogleGeminiEmbeddingFunction(
-        model_name="gemini-embedding-001",
-        task_type="RETRIEVAL_DOCUMENT",
-    )
-    google_ef(["document1", "document2"])
-
-    # pass documents to query for .add and .query
-    collection = client.create_collection(name="name", embedding_function=google_ef)
-    collection = client.get_collection(name="name", embedding_function=google_ef)
-    ```
-
-    You can optionally specify the `dimension` parameter to control the output dimensionality of the embeddings (supported range: 128–3072):
-
-    ```python theme={null}
-    google_ef = embedding_functions.GoogleGeminiEmbeddingFunction(
-        model_name="gemini-embedding-001",
-        task_type="RETRIEVAL_DOCUMENT",
-        dimension=768,
-    )
-    ```
-
-    You can view a more [complete example](https://github.com/chroma-core/chroma/tree/main/examples/gemini) chatting over documents with Gemini embedding and language models.
-
-    For more info - please visit the [official Google docs](https://ai.google.dev/gemini-api/docs/embeddings).
-  </Tab>
-
-  <Tab title="TypeScript" icon="js">
-    ```typescript theme={null}
-    // npm install @chroma-core/google-gemini
-
-    import { ChromaClient } from "chromadb";
-    import { GoogleGeminiEmbeddingFunction } from "@chroma-core/google-gemini";
-
-    const embedder = new GoogleGeminiEmbeddingFunction({
-      apiKey: "<YOUR API KEY>",
-      modelName: "gemini-embedding-001",
-    });
-
-    // use directly
-    const embeddings = await embedder.generate(["document1", "document2"]);
-
-    // pass documents to query for .add and .query
-    const collection = await client.createCollection({
-      name: "name",
-      embeddingFunction: embedder,
-    });
-    const collectionGet = await client.getCollection({
-      name: "name",
-      embeddingFunction: embedder,
-    });
-    ```
-
-    You can view a more [complete example using Node](https://github.com/chroma-core/chroma/blob/main/clients/js/examples/node/app.js).
-
-    For more info - please visit the [official Google docs](https://ai.google.dev/gemini-api/docs/embeddings).
-  </Tab>
-</Tabs>
+> [tab] TypeScript
+>
+> ```typescript theme={null}
+> // npm install @chroma-core/google-gemini
+>
+> import { ChromaClient } from "chromadb";
+> import { GoogleGeminiEmbeddingFunction } from "@chroma-core/google-gemini";
+>
+> const embedder = new GoogleGeminiEmbeddingFunction({
+>   apiKey: "<YOUR API KEY>",
+>   modelName: "gemini-embedding-001",
+> });
+>
+> // use directly
+> const embeddings = await embedder.generate(["document1", "document2"]);
+>
+> // pass documents to query for .add and .query
+> const collection = await client.createCollection({
+>   name: "name",
+>   embeddingFunction: embedder,
+> });
+> const collectionGet = await client.getCollection({
+>   name: "name",
+>   embeddingFunction: embedder,
+> });
+> ```
+>
+> You can view a more [complete example using Node](https://github.com/chroma-core/chroma/blob/main/clients/js/examples/node/app.js).
+>
+> For more info - please visit the [official Google docs](https://ai.google.dev/gemini-api/docs/embeddings).
 
 ## Multimodal Embeddings
 
@@ -117,64 +115,62 @@ The agent uses a `semantic_search` tool to query the collection, and can actuall
 
 #### Setup
 
-<Steps>
-  <Step>
-    [Log in](https://trychroma.com/login) to your Chroma Cloud account. If you don't have one yet, you can [sign up](https://trychroma.com/signup). You will get free credits that should be more than enough for running this project.
-  </Step>
+**Step 1**
 
-  <Step>
-    Use the "Create Database" button on the top right of the Chroma Cloud dashboard, and name your DB `multimodal-video-search` (or any name of your choice). If you're a first-time user, you will be greeted with the "Create Database" modal after creating your account.
-  </Step>
+[Log in](https://trychroma.com/login) to your Chroma Cloud account. If you don't have one yet, you can [sign up](https://trychroma.com/signup). You will get free credits that should be more than enough for running this project.
 
-  <Step>
-    Once your database is created, choose the "Settings" tab. At the bottom of the page, choose the `.env` tab. Create an API key, and copy the environment variables you will need for running the project: `CHROMA_API_KEY`, `CHROMA_TENANT`, and `CHROMA_DATABASE`.
-  </Step>
+**Step 2**
 
-  <Step>
-    Clone the [Chroma Cookbooks](https://github.com/chroma-core/chroma-cookbooks) repo:
+Use the "Create Database" button on the top right of the Chroma Cloud dashboard, and name your DB `multimodal-video-search` (or any name of your choice). If you're a first-time user, you will be greeted with the "Create Database" modal after creating your account.
 
-    ```terminal theme={null}
-    git clone https://github.com/chroma-core/chroma-cookbooks.git
-    ```
-  </Step>
+**Step 3**
 
-  <Step>
-    Navigate to the `multimodal-video-search` directory, and create a `.env` file at its root:
+Once your database is created, choose the "Settings" tab. At the bottom of the page, choose the `.env` tab. Create an API key, and copy the environment variables you will need for running the project: `CHROMA_API_KEY`, `CHROMA_TENANT`, and `CHROMA_DATABASE`.
 
-    ```terminal theme={null}
-    cd chroma-cookbooks/multimodal-video-search
-    touch .env
-    ```
-  </Step>
+**Step 4**
 
-  <Step>
-    To run this project, you will also need a [Google AI API key](https://aistudio.google.com/) with access to `gemini-embedding-2-preview`. Set it in your `.env` file along with the Chroma credentials:
+Clone the [Chroma Cookbooks](https://github.com/chroma-core/chroma-cookbooks) repo:
 
-    ```text theme={null}
-    GEMINI_API_KEY=<YOUR GEMINI API KEY>
-    CHROMA_HOST=api.trychroma.com
-    CHROMA_API_KEY=<YOUR CHROMA API KEY>
-    CHROMA_TENANT=<YOUR CHROMA TENANT>
-    CHROMA_DATABASE=multimodal-video-search
-    ```
-  </Step>
+```terminal theme={null}
+git clone https://github.com/chroma-core/chroma-cookbooks.git
+```
 
-  <Step>
-    This project uses [uv](https://github.com/astral-sh/uv) for package management. Install dependencies:
+**Step 5**
 
-    ```terminal theme={null}
-    uv sync
-    ```
-  </Step>
+Navigate to the `multimodal-video-search` directory, and create a `.env` file at its root:
 
-  <Step>
-    You'll also need `ffmpeg` for video processing:
+```terminal theme={null}
+cd chroma-cookbooks/multimodal-video-search
+touch .env
+```
 
-    ```terminal theme={null}
-    brew install ffmpeg
-    ```
-  </Step>
-</Steps>
+**Step 6**
+
+To run this project, you will also need a [Google AI API key](https://aistudio.google.com/) with access to `gemini-embedding-2-preview`. Set it in your `.env` file along with the Chroma credentials:
+
+```text theme={null}
+GEMINI_API_KEY=<YOUR GEMINI API KEY>
+CHROMA_HOST=api.trychroma.com
+CHROMA_API_KEY=<YOUR CHROMA API KEY>
+CHROMA_TENANT=<YOUR CHROMA TENANT>
+CHROMA_DATABASE=multimodal-video-search
+```
+
+**Step 7**
+
+This project uses [uv](https://github.com/astral-sh/uv) for package management. Install dependencies:
+
+```terminal theme={null}
+uv sync
+```
+
+**Step 8**
+
+You'll also need `ffmpeg` for video processing:
+
+```terminal theme={null}
+brew install ffmpeg
+```
 
 #### Running the Project
 

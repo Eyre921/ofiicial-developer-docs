@@ -6,91 +6,89 @@ path: integrations/embedding-models/superlinked
 
 [Superlinked](https://superlinked.com) is a self-hosted inference engine (SIE) for embedding, reranking, and extraction. The `sie-chroma` package exposes SIE as a Chroma `EmbeddingFunction`, giving you access to 85+ dense and sparse text embedding models from a single endpoint. You need a running SIE instance; see the [Superlinked quickstart](https://superlinked.com/docs) for deployment options.
 
-<Tabs>
-  <Tab title="Python" icon="python">
-    Install the `sie-chroma` package:
+> [tab] Python
+>
+> Install the `sie-chroma` package:
+>
+> ```bash theme={null}
+> pip install sie-chroma
+> ```
+>
+> Use `SIEEmbeddingFunction` for dense embeddings:
+>
+> ```python theme={null}
+> import chromadb
+> from sie_chroma import SIEEmbeddingFunction
+>
+> embedding_function = SIEEmbeddingFunction(
+>     base_url="http://localhost:8080",
+>     model="BAAI/bge-m3",
+> )
+>
+> client = chromadb.Client()
+> collection = client.create_collection(
+>     name="documents",
+>     embedding_function=embedding_function,
+> )
+>
+> collection.add(
+>     documents=[
+>         "Machine learning is a subset of artificial intelligence.",
+>         "Neural networks are inspired by biological neurons.",
+>         "Deep learning uses multiple layers of neural networks.",
+>     ],
+>     ids=["doc1", "doc2", "doc3"],
+> )
+>
+> results = collection.query(query_texts=["What is deep learning?"], n_results=2)
+> ```
+>
+> For hybrid search on Chroma Cloud, `SIESparseEmbeddingFunction` returns learned sparse vectors (SPLADE / BGE-M3) as `dict[int, float]`:
+>
+> ```python theme={null}
+> from sie_chroma import SIESparseEmbeddingFunction
+>
+> sparse_ef = SIESparseEmbeddingFunction(
+>     base_url="http://localhost:8080",
+>     model="naver/splade-v3",
+> )
+> ```
 
-    ```bash theme={null}
-    pip install sie-chroma
-    ```
-
-    Use `SIEEmbeddingFunction` for dense embeddings:
-
-    ```python theme={null}
-    import chromadb
-    from sie_chroma import SIEEmbeddingFunction
-
-    embedding_function = SIEEmbeddingFunction(
-        base_url="http://localhost:8080",
-        model="BAAI/bge-m3",
-    )
-
-    client = chromadb.Client()
-    collection = client.create_collection(
-        name="documents",
-        embedding_function=embedding_function,
-    )
-
-    collection.add(
-        documents=[
-            "Machine learning is a subset of artificial intelligence.",
-            "Neural networks are inspired by biological neurons.",
-            "Deep learning uses multiple layers of neural networks.",
-        ],
-        ids=["doc1", "doc2", "doc3"],
-    )
-
-    results = collection.query(query_texts=["What is deep learning?"], n_results=2)
-    ```
-
-    For hybrid search on Chroma Cloud, `SIESparseEmbeddingFunction` returns learned sparse vectors (SPLADE / BGE-M3) as `dict[int, float]`:
-
-    ```python theme={null}
-    from sie_chroma import SIESparseEmbeddingFunction
-
-    sparse_ef = SIESparseEmbeddingFunction(
-        base_url="http://localhost:8080",
-        model="naver/splade-v3",
-    )
-    ```
-  </Tab>
-
-  <Tab title="TypeScript" icon="js">
-    ```bash theme={null}
-    npm install @superlinked/sie-chroma
-    ```
-
-    ```typescript theme={null}
-    import { ChromaClient } from "chromadb";
-    import { SIEEmbeddingFunction } from "@superlinked/sie-chroma";
-
-    const embedder = new SIEEmbeddingFunction({
-      baseUrl: "http://localhost:8080",
-      model: "BAAI/bge-m3",
-    });
-
-    const client = new ChromaClient();
-    const collection = await client.createCollection({
-      name: "documents",
-      embeddingFunction: embedder,
-    });
-
-    await collection.add({
-      ids: ["doc1", "doc2", "doc3"],
-      documents: [
-        "Machine learning is a subset of artificial intelligence.",
-        "Neural networks are inspired by biological neurons.",
-        "Deep learning uses multiple layers of neural networks.",
-      ],
-    });
-
-    const results = await collection.query({
-      queryTexts: ["What is deep learning?"],
-      nResults: 2,
-    });
-    ```
-  </Tab>
-</Tabs>
+> [tab] TypeScript
+>
+> ```bash theme={null}
+> npm install @superlinked/sie-chroma
+> ```
+>
+> ```typescript theme={null}
+> import { ChromaClient } from "chromadb";
+> import { SIEEmbeddingFunction } from "@superlinked/sie-chroma";
+>
+> const embedder = new SIEEmbeddingFunction({
+>   baseUrl: "http://localhost:8080",
+>   model: "BAAI/bge-m3",
+> });
+>
+> const client = new ChromaClient();
+> const collection = await client.createCollection({
+>   name: "documents",
+>   embeddingFunction: embedder,
+> });
+>
+> await collection.add({
+>   ids: ["doc1", "doc2", "doc3"],
+>   documents: [
+>     "Machine learning is a subset of artificial intelligence.",
+>     "Neural networks are inspired by biological neurons.",
+>     "Deep learning uses multiple layers of neural networks.",
+>   ],
+> });
+>
+> const results = await collection.query({
+>   queryTexts: ["What is deep learning?"],
+>   nResults: 2,
+> });
+> ```
 
 ## Multimodal
 

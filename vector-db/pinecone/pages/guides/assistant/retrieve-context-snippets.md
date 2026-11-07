@@ -6,15 +6,15 @@ path: guides/assistant/retrieve-context-snippets
 
 Retrieve context snippets and citations from a Pinecone Assistant to power your own LLM, RAG application, or agentic workflow with signed URLs.
 
-This page shows you how to [retrieve context snippets](/guides/assistant/context-snippets-overview).
+Retrieve [context snippets](/guides/assistant/context-snippets-overview) and citations from an assistant to use with your own LLM, RAG application, or agentic workflow.
 
 > [!TIP]
 >
 > To try this in your browser, use the [Pinecone Assistant - Context colab notebook](https://colab.research.google.com/drive/1AD4QWsXBG1FQRwq-ModlaggR7Cx7NJCz).
 
-## Retrieve context snippets from an assistant
+## Retrieve snippets with the API or an SDK
 
-You can [retrieve context snippets](/reference/api/latest/assistant/context_assistant) from an assistant, as in the following example:
+To retrieve context snippets from an assistant, call [`context`](/reference/api/latest/assistant/context_assistant):
 
 ```python Python theme={null}
 from pinecone import Pinecone
@@ -56,9 +56,9 @@ curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME/context"
 }'
 ```
 
-The example above returns a JSON object like the following:
+The example above returns a response like the following:
 
-```json JSON theme={null}
+```json Response theme={null}
 {
     "snippets":
     [

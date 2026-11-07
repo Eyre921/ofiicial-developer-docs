@@ -60,226 +60,212 @@ Here's how a typical retrieval pipeline is built:
 
 ### Step 1: Embed our Knowledge Base and Store it in a Chroma Collection
 
-<Tabs>
-  <Tab title="Python" icon="python">
-    Install Chroma:
+> [tab] Python
+>
+> Install Chroma:
+>
+> > [tab] pip
+> >
+> > ```terminal theme={null}
+> > pip install chromadb
+> > ```
+>
+> > [tab] poetry
+> >
+> > ```terminal theme={null}
+> > poetry add chromadb
+> > ```
+>
+> > [tab] uv
+> >
+> > ```terminal theme={null}
+> > uv pip install chromadb
+> > ```
+>
+> Chroma embeds and stores information in a single operation.
+>
+> ```python theme={null}
+> import chromadb
+>
+> client = chromadb.Client()
+> customer_support_collection = client.create_collection(
+>     name="customer support"
+> )
+>
+> customer_support_collection.add(
+>    ids=["1", "2", "3"],
+>    documents=[
+>       "Toothbrushes can be returned up to 360 days after purchase if unopened.",
+>       "Shipping is free of charge for all orders.",
+>       "Shipping normally takes 2-3 business days"
+>    ]
+> )
+> ```
 
-    <Tabs>
-      <Tab title="pip">
-        ```terminal theme={null}
-        pip install chromadb
-        ```
-      </Tab>
-
-      <Tab title="poetry">
-        ```terminal theme={null}
-        poetry add chromadb
-        ```
-      </Tab>
-
-      <Tab title="uv">
-        ```terminal theme={null}
-        uv pip install chromadb
-        ```
-      </Tab>
-    </Tabs>
-
-    Chroma embeds and stores information in a single operation.
-
-    ```python theme={null}
-    import chromadb
-
-    client = chromadb.Client()
-    customer_support_collection = client.create_collection(
-        name="customer support"
-    )
-
-    customer_support_collection.add(
-       ids=["1", "2", "3"],
-       documents=[
-          "Toothbrushes can be returned up to 360 days after purchase if unopened.",
-          "Shipping is free of charge for all orders.",
-          "Shipping normally takes 2-3 business days"
-       ]
-    )
-    ```
-  </Tab>
-
-  <Tab title="TypeScript" icon="js">
-    Install Chroma:
-
-    <Tabs>
-      <Tab title="npm">
-        ```terminal theme={null}
-        npm install chromadb @chroma-core/default-embed
-        ```
-      </Tab>
-
-      <Tab title="pnpm">
-        ```terminal theme={null}
-        pnpm add chromadb @chroma-core/default-embed
-        ```
-      </Tab>
-
-      <Tab title="yarn">
-        ```terminal theme={null}
-        yarn add chromadb @chroma-core/default-embed
-        ```
-      </Tab>
-
-      <Tab title="bun">
-        ```terminal theme={null}
-        bun add chromadb @chroma-core/default-embed
-        ```
-      </Tab>
-    </Tabs>
-
-    Run a Chroma server locally:
-
-    ```terminal theme={null}
-    chroma run
-    ```
-
-    Chroma embeds and stores information in a single operation.
-
-    ```typescript theme={null}
-    import { ChromaClient } from "chromadb";
-
-    const client = new ChromaClient();
-    const customer_support_collection = await client.createCollection({
-      name: "customer support",
-    });
-
-    await customer_support_collection.add({
-      ids: ["1", "2", "3"],
-      documents: [
-        "Toothbrushes can be returned up to 360 days after purchase if unopened.",
-        "Shipping is free of charge for all orders.",
-        "Shipping normally takes 2-3 business days",
-      ],
-    });
-    ```
-  </Tab>
-</Tabs>
+> [tab] TypeScript
+>
+> Install Chroma:
+>
+> > [tab] npm
+> >
+> > ```terminal theme={null}
+> > npm install chromadb @chroma-core/default-embed
+> > ```
+>
+> > [tab] pnpm
+> >
+> > ```terminal theme={null}
+> > pnpm add chromadb @chroma-core/default-embed
+> > ```
+>
+> > [tab] yarn
+> >
+> > ```terminal theme={null}
+> > yarn add chromadb @chroma-core/default-embed
+> > ```
+>
+> > [tab] bun
+> >
+> > ```terminal theme={null}
+> > bun add chromadb @chroma-core/default-embed
+> > ```
+>
+> Run a Chroma server locally:
+>
+> ```terminal theme={null}
+> chroma run
+> ```
+>
+> Chroma embeds and stores information in a single operation.
+>
+> ```typescript theme={null}
+> import { ChromaClient } from "chromadb";
+>
+> const client = new ChromaClient();
+> const customer_support_collection = await client.createCollection({
+>   name: "customer support",
+> });
+>
+> await customer_support_collection.add({
+>   ids: ["1", "2", "3"],
+>   documents: [
+>     "Toothbrushes can be returned up to 360 days after purchase if unopened.",
+>     "Shipping is free of charge for all orders.",
+>     "Shipping normally takes 2-3 business days",
+>   ],
+> });
+> ```
 
 ### Step 2: Process the User's Query
 
 Similarly, Chroma handles the embedding of queries for you out-of-the-box.
 
-<CodeGroup>
-  ```python Python theme={null}
-  user_query = "What is your return policy for tooth brushes?"
+```python Python theme={null}
+user_query = "What is your return policy for tooth brushes?"
 
-  context = customer_support_collection.query(
-      queryTexts=[user_query],
-      n_results=1
-  )['documents'][0]
+context = customer_support_collection.query(
+    queryTexts=[user_query],
+    n_results=1
+)['documents'][0]
 
-  print(context) # Toothbrushes can be returned up to 360 days after purchase if unopened.
-  ```
+print(context) # Toothbrushes can be returned up to 360 days after purchase if unopened.
+```
 
-  ```typescript TypeScript theme={null}
-  const user_query = "What is your return policy for tooth brushes?";
+```typescript TypeScript theme={null}
+const user_query = "What is your return policy for tooth brushes?";
 
-  const context = (
-    await customer_support_collection.query({
-      queryTexts: [user_query],
-      n_results: 1,
-    })
-  ).documents[0];
+const context = (
+  await customer_support_collection.query({
+    queryTexts: [user_query],
+    n_results: 1,
+  })
+).documents[0];
 
-  console.log(context); // Toothbrushes can be returned up to 360 days after purchase if unopened.
-  ```
-</CodeGroup>
+console.log(context); // Toothbrushes can be returned up to 360 days after purchase if unopened.
+```
 
 ### Step 3: Generate the AI Response
 
 With the result from Chroma, we can build the correct context for an AI model.
 
-<Tabs>
-  <Tab title="OpenAI">
-    <CodeGroup>
-      ```python Python theme={null}
-      import os
-      import openai
+> [tab] OpenAI
+>
+> ```python Python theme={null}
+> import os
+> import openai
+>
+> openai.api_key = os.getenv("OPENAI_API_KEY")
+>
+> prompt = f"{user_query}. Use this as context for answering: {context}"
+>
+> response = openai.ChatCompletion.create(
+>     model="gpt-4o",
+>     messages=[
+>         {"role": "system", "content": "You are a helpful assistant"},
+>         {"role": "user", "content": prompt}
+>     ]
+> )
+> ```
+>
+> ```typescript TypeScript theme={null}
+> import OpenAI from "openai";
+>
+> const openai = new OpenAI({
+>   apiKey: process.env.OPENAI_API_KEY,
+> });
+>
+> const prompt = `${userQuery}. Use this as context for answering: ${context}`;
+>
+> const response = await openai.chat.completions.create({
+>   model: "gpt-4o",
+>   messages: [
+>     { role: "system", content: "You are a helpful assistant" },
+>     { role: "user", content: prompt },
+>   ],
+> });
+> ```
 
-      openai.api_key = os.getenv("OPENAI_API_KEY")
-
-      prompt = f"{user_query}. Use this as context for answering: {context}"
-
-      response = openai.ChatCompletion.create(
-          model="gpt-4o",
-          messages=[
-              {"role": "system", "content": "You are a helpful assistant"},
-              {"role": "user", "content": prompt}
-          ]
-      )
-      ```
-
-      ```typescript TypeScript theme={null}
-      import OpenAI from "openai";
-
-      const openai = new OpenAI({
-        apiKey: process.env.OPENAI_API_KEY,
-      });
-
-      const prompt = `${userQuery}. Use this as context for answering: ${context}`;
-
-      const response = await openai.chat.completions.create({
-        model: "gpt-4o",
-        messages: [
-          { role: "system", content: "You are a helpful assistant" },
-          { role: "user", content: prompt },
-        ],
-      });
-      ```
-    </CodeGroup>
-  </Tab>
-
-  <Tab title="Anthropic">
-    <CodeGroup>
-      ```python Python theme={null}
-      import os
-      import anthropic
-
-      client = anthropic.Anthropic(
-          api_key=os.getenv("ANTHROPIC_API_KEY")
-      )
-
-      prompt = f"{user_query}. Use this as context for answering: {context}"
-
-      response = client.messages.create(
-          model="claude-sonnet-5",
-          max_tokens=1024,
-          messages=[
-              {"role": "user", "content": prompt}
-          ]
-      )
-      ```
-
-      ```typescript TypeScript theme={null}
-      import Anthropic from "@anthropic-ai/sdk";
-
-      const client = new Anthropic({
-        apiKey: process.env.ANTHROPIC_API_KEY,
-      });
-
-      const prompt = `${userQuery}. Use this as context for answering: ${context}`;
-
-      const response = await client.messages.create({
-        model: "claude-sonnet-5",
-        max_tokens: 1024,
-        messages: [
-          {
-            role: "user",
-            content: prompt,
-          },
-        ],
-      });
-      ```
-    </CodeGroup>
-  </Tab>
-</Tabs>
+> [tab] Anthropic
+>
+> ```python Python theme={null}
+> import os
+> import anthropic
+>
+> client = anthropic.Anthropic(
+>     api_key=os.getenv("ANTHROPIC_API_KEY")
+> )
+>
+> prompt = f"{user_query}. Use this as context for answering: {context}"
+>
+> response = client.messages.create(
+>     model="claude-sonnet-5",
+>     max_tokens=1024,
+>     messages=[
+>         {"role": "user", "content": prompt}
+>     ]
+> )
+> ```
+>
+> ```typescript TypeScript theme={null}
+> import Anthropic from "@anthropic-ai/sdk";
+>
+> const client = new Anthropic({
+>   apiKey: process.env.ANTHROPIC_API_KEY,
+> });
+>
+> const prompt = `${userQuery}. Use this as context for answering: ${context}`;
+>
+> const response = await client.messages.create({
+>   model: "claude-sonnet-5",
+>   max_tokens: 1024,
+>   messages: [
+>     {
+>       role: "user",
+>       content: prompt,
+>     },
+>   ],
+> });
+> ```
 
 There's a lot left to consider, but the core building blocks are here. Some next steps to consider:
 

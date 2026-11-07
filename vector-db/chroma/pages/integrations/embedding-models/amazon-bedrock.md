@@ -22,6 +22,4 @@ embeddings = bedrock_ef(texts)
 
 You can pass in an optional model\_name argument, which lets you choose which Amazon Bedrock embedding model to use. By default, Chroma uses amazon.titan-embed-text-v1.
 
-<Callout>
-  Visit Amazon Bedrock [documentation](https://docs.aws.amazon.com/bedrock/) for more information on available models and configuration.
-</Callout>
+Visit Amazon Bedrock [documentation](https://docs.aws.amazon.com/bedrock/) for more information on available models and configuration.

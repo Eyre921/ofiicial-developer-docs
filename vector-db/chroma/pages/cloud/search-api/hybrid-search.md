@@ -6,9 +6,7 @@ path: cloud/search-api/hybrid-search
 
 Learn how to combine multiple ranking strategies using Reciprocal Rank Fusion (RRF). RRF is ideal for hybrid search scenarios where you want to merge results from different ranking methods (e.g., dense and sparse embeddings).
 
-<Callout>
-  **Prerequisites:** To use hybrid search with sparse embeddings, you must first configure a sparse vector index in your collection schema. See [Sparse Vector Search Setup](../schema/sparse-vector-search) for configuration instructions.
-</Callout>
+**Prerequisites:** To use hybrid search with sparse embeddings, you must first configure a sparse vector index in your collection schema. See [Sparse Vector Search Setup](../schema/sparse-vector-search) for configuration instructions.
 
 ## Understanding RRF
 
@@ -30,33 +28,29 @@ Where:
 
 The score is negative because Chroma uses ascending order (lower scores = better matches).
 
-<Callout>
-  **Important:** The legacy `query` API outputs *distances*, whereas RRF uses *scores*
-</Callout>
+**Important:** The legacy `query` API outputs *distances*, whereas RRF uses *scores*
 
-<CodeGroup>
-  ```python Python theme={null}
-  # Example: How RRF calculates scores
-  # Document A: rank 0 in first Knn, rank 2 in second Knn
-  # Document B: rank 1 in first Knn, rank 0 in second Knn
+```python Python theme={null}
+# Example: How RRF calculates scores
+# Document A: rank 0 in first Knn, rank 2 in second Knn
+# Document B: rank 1 in first Knn, rank 0 in second Knn
 
-  # With equal weights (1.0, 1.0) and k=60:
-  # Document A score = -(1.0/(60+0) + 1.0/(60+2)) = -(0.0167 + 0.0161) = -0.0328
-  # Document B score = -(1.0/(60+1) + 1.0/(60+0)) = -(0.0164 + 0.0167) = -0.0331
-  # Document A ranks higher (smaller negative score)
-  ```
+# With equal weights (1.0, 1.0) and k=60:
+# Document A score = -(1.0/(60+0) + 1.0/(60+2)) = -(0.0167 + 0.0161) = -0.0328
+# Document B score = -(1.0/(60+1) + 1.0/(60+0)) = -(0.0164 + 0.0167) = -0.0331
+# Document A ranks higher (smaller negative score)
+```
 
-  ```typescript TypeScript theme={null}
-  // Example: How RRF calculates scores
-  // Document A: rank 0 in first Knn, rank 2 in second Knn
-  // Document B: rank 1 in first Knn, rank 0 in second Knn
+```typescript TypeScript theme={null}
+// Example: How RRF calculates scores
+// Document A: rank 0 in first Knn, rank 2 in second Knn
+// Document B: rank 1 in first Knn, rank 0 in second Knn
 
-  // With equal weights (1.0, 1.0) and k=60:
-  // Document A score = -(1.0/(60+0) + 1.0/(60+2)) = -(0.0167 + 0.0161) = -0.0328
-  // Document B score = -(1.0/(60+1) + 1.0/(60+0)) = -(0.0164 + 0.0167) = -0.0331
-  // Document A ranks higher (smaller negative score)
-  ```
-</CodeGroup>
+// With equal weights (1.0, 1.0) and k=60:
+// Document A score = -(1.0/(60+0) + 1.0/(60+2)) = -(0.0167 + 0.0161) = -0.0328
+// Document B score = -(1.0/(60+1) + 1.0/(60+0)) = -(0.0164 + 0.0167) = -0.0331
+// Document A ranks higher (smaller negative score)
+```
 
 ## Rrf Parameters
 
@@ -74,153 +68,147 @@ The score is negative because Chroma uses ascending order (lower scores = better
 | **RRF** | Different score scales (e.g., dense + sparse) | Scale-agnostic, robust to outliers | Requires `return_rank=True` |
 | **Linear Combination** | Same score scales | Simple, preserves distances | Sensitive to scale differences |
 
-<CodeGroup>
-  ```python Python theme={null}
-  # RRF - works well with different scales
-  rrf = Rrf([
-      Knn(query="machine learning", return_rank=True),      # Dense embeddings
-      Knn(query="machine learning", key="sparse_embedding", return_rank=True)  # Sparse embeddings
-  ])
+```python Python theme={null}
+# RRF - works well with different scales
+rrf = Rrf([
+    Knn(query="machine learning", return_rank=True),      # Dense embeddings
+    Knn(query="machine learning", key="sparse_embedding", return_rank=True)  # Sparse embeddings
+])
 
-  # Linear combination - better when scales are similar
-  linear = Knn(query="machine learning") * 0.7 + Knn(query="deep learning") * 0.3
-  ```
+# Linear combination - better when scales are similar
+linear = Knn(query="machine learning") * 0.7 + Knn(query="deep learning") * 0.3
+```
 
-  ```typescript TypeScript theme={null}
-  // RRF - works well with different scales
-  const rrf = Rrf({
-    ranks: [
-      Knn({ query: "machine learning", returnRank: true }),      // Dense embeddings
-      Knn({ query: "machine learning", key: "sparse_embedding", returnRank: true })  // Sparse embeddings
-    ]
-  });
+```typescript TypeScript theme={null}
+// RRF - works well with different scales
+const rrf = Rrf({
+  ranks: [
+    Knn({ query: "machine learning", returnRank: true }),      // Dense embeddings
+    Knn({ query: "machine learning", key: "sparse_embedding", returnRank: true })  // Sparse embeddings
+  ]
+});
 
-  // Linear combination - better when scales are similar
-  const linear = Knn({ query: "machine learning" }).multiply(0.7)
-    .add(Knn({ query: "deep learning" }).multiply(0.3));
-  ```
+// Linear combination - better when scales are similar
+const linear = Knn({ query: "machine learning" }).multiply(0.7)
+  .add(Knn({ query: "deep learning" }).multiply(0.3));
+```
 
-  ```rust Rust theme={null}
-  use chroma::types::{rrf, Key, QueryVector, RankExpr};
+```rust Rust theme={null}
+use chroma::types::{rrf, Key, QueryVector, RankExpr};
 
-  let dense = RankExpr::Knn {
-      query: QueryVector::Dense(vec![0.1, 0.2, 0.3]),
-      key: Key::Embedding,
-      limit: 100,
-      default: None,
-      return_rank: true,
-  };
-  let sparse = RankExpr::Knn {
-      query: QueryVector::Dense(vec![0.1, 0.2, 0.3]),
-      key: Key::field("sparse_embedding"),
-      limit: 100,
-      default: None,
-      return_rank: true,
-  };
+let dense = RankExpr::Knn {
+    query: QueryVector::Dense(vec![0.1, 0.2, 0.3]),
+    key: Key::Embedding,
+    limit: 100,
+    default: None,
+    return_rank: true,
+};
+let sparse = RankExpr::Knn {
+    query: QueryVector::Dense(vec![0.1, 0.2, 0.3]),
+    key: Key::field("sparse_embedding"),
+    limit: 100,
+    default: None,
+    return_rank: true,
+};
 
-  let rrf_rank = rrf(vec![dense, sparse], Some(60), None, false)?;
-  ```
-</CodeGroup>
+let rrf_rank = rrf(vec![dense, sparse], Some(60), None, false)?;
+```
 
 ## The return\_rank Requirement
 
 RRF requires rank positions (0, 1, 2...) not distance scores. Always set `return_rank=True` on all Knn expressions used in RRF.
 
-<CodeGroup>
-  ```python Python theme={null}
-  # CORRECT - returns rank positions
-  rrf = Rrf([
-      Knn(query="artificial intelligence", return_rank=True),  # Returns: 0, 1, 2, 3...
-      Knn(query="artificial intelligence", key="sparse_embedding", return_rank=True)
-  ])
+```python Python theme={null}
+# CORRECT - returns rank positions
+rrf = Rrf([
+    Knn(query="artificial intelligence", return_rank=True),  # Returns: 0, 1, 2, 3...
+    Knn(query="artificial intelligence", key="sparse_embedding", return_rank=True)
+])
 
-  # INCORRECT - returns distances
-  rrf = Rrf([
-      Knn(query="artificial intelligence"),  # Returns: 0.23, 0.45, 0.67... (distances)
-      Knn(query="artificial intelligence", key="sparse_embedding")
-  ])
-  # This will produce incorrect results!
-  ```
+# INCORRECT - returns distances
+rrf = Rrf([
+    Knn(query="artificial intelligence"),  # Returns: 0.23, 0.45, 0.67... (distances)
+    Knn(query="artificial intelligence", key="sparse_embedding")
+])
+# This will produce incorrect results!
+```
 
-  ```typescript TypeScript theme={null}
-  // CORRECT - returns rank positions
-  const rrf1 = Rrf({
-    ranks: [
-      Knn({ query: "artificial intelligence", returnRank: true }),  // Returns: 0, 1, 2, 3...
-      Knn({ query: "artificial intelligence", key: "sparse_embedding", returnRank: true })
-    ]
-  });
+```typescript TypeScript theme={null}
+// CORRECT - returns rank positions
+const rrf1 = Rrf({
+  ranks: [
+    Knn({ query: "artificial intelligence", returnRank: true }),  // Returns: 0, 1, 2, 3...
+    Knn({ query: "artificial intelligence", key: "sparse_embedding", returnRank: true })
+  ]
+});
 
-  // INCORRECT - returns distances
-  const rrf2 = Rrf({
-    ranks: [
-      Knn({ query: "artificial intelligence" }),  // Returns: 0.23, 0.45, 0.67... (distances)
-      Knn({ query: "artificial intelligence", key: "sparse_embedding" })
-    ]
-  });
-  // This will produce incorrect results!
-  ```
-</CodeGroup>
+// INCORRECT - returns distances
+const rrf2 = Rrf({
+  ranks: [
+    Knn({ query: "artificial intelligence" }),  // Returns: 0.23, 0.45, 0.67... (distances)
+    Knn({ query: "artificial intelligence", key: "sparse_embedding" })
+  ]
+});
+// This will produce incorrect results!
+```
 
 ## Weight Configuration
 
-<CodeGroup>
-  ```python Python theme={null}
-  # Equal weights (default) - each ranking equally important
-  rrf = Rrf([
-      Knn(query="neural networks", return_rank=True),
-      Knn(query="neural networks", key="sparse_embedding", return_rank=True)
-  ])  # Implicit weights: [1.0, 1.0]
+```python Python theme={null}
+# Equal weights (default) - each ranking equally important
+rrf = Rrf([
+    Knn(query="neural networks", return_rank=True),
+    Knn(query="neural networks", key="sparse_embedding", return_rank=True)
+])  # Implicit weights: [1.0, 1.0]
 
-  # Custom weights - adjust relative importance
-  rrf = Rrf(
-      ranks=[
-          Knn(query="neural networks", return_rank=True),
-          Knn(query="neural networks", key="sparse_embedding", return_rank=True)
-      ],
-      weights=[3.0, 1.0]  # Dense 3x more important than sparse
-  )
-
-  # Normalized weights - ensures weights sum to 1.0
-  rrf = Rrf(
-      ranks=[
-          Knn(query="neural networks", return_rank=True),
-          Knn(query="neural networks", key="sparse_embedding", return_rank=True)
-      ],
-      weights=[75, 25],     # Will be normalized to [0.75, 0.25]
-      normalize=True
-  )
-  ```
-
-  ```typescript TypeScript theme={null}
-  // Equal weights (default) - each ranking equally important
-  const rrf1 = Rrf({
-    ranks: [
-      Knn({ query: "neural networks", returnRank: true }),
-      Knn({ query: "neural networks", key: "sparse_embedding", returnRank: true })
-    ]
-  });  // Implicit weights: [1.0, 1.0]
-
-  // Custom weights - adjust relative importance
-  const rrf2 = Rrf({
-    ranks: [
-      Knn({ query: "neural networks", returnRank: true }),
-      Knn({ query: "neural networks", key: "sparse_embedding", returnRank: true })
+# Custom weights - adjust relative importance
+rrf = Rrf(
+    ranks=[
+        Knn(query="neural networks", return_rank=True),
+        Knn(query="neural networks", key="sparse_embedding", return_rank=True)
     ],
-    weights: [3.0, 1.0]  // Dense 3x more important than sparse
-  });
+    weights=[3.0, 1.0]  # Dense 3x more important than sparse
+)
 
-  // Normalized weights - ensures weights sum to 1.0
-  const rrf3 = Rrf({
-    ranks: [
-      Knn({ query: "neural networks", returnRank: true }),
-      Knn({ query: "neural networks", key: "sparse_embedding", returnRank: true })
+# Normalized weights - ensures weights sum to 1.0
+rrf = Rrf(
+    ranks=[
+        Knn(query="neural networks", return_rank=True),
+        Knn(query="neural networks", key="sparse_embedding", return_rank=True)
     ],
-    weights: [75, 25],     // Will be normalized to [0.75, 0.25]
-    normalize: true
-  });
-  ```
-</CodeGroup>
+    weights=[75, 25],     # Will be normalized to [0.75, 0.25]
+    normalize=True
+)
+```
+
+```typescript TypeScript theme={null}
+// Equal weights (default) - each ranking equally important
+const rrf1 = Rrf({
+  ranks: [
+    Knn({ query: "neural networks", returnRank: true }),
+    Knn({ query: "neural networks", key: "sparse_embedding", returnRank: true })
+  ]
+});  // Implicit weights: [1.0, 1.0]
+
+// Custom weights - adjust relative importance
+const rrf2 = Rrf({
+  ranks: [
+    Knn({ query: "neural networks", returnRank: true }),
+    Knn({ query: "neural networks", key: "sparse_embedding", returnRank: true })
+  ],
+  weights: [3.0, 1.0]  // Dense 3x more important than sparse
+});
+
+// Normalized weights - ensures weights sum to 1.0
+const rrf3 = Rrf({
+  ranks: [
+    Knn({ query: "neural networks", returnRank: true }),
+    Knn({ query: "neural networks", key: "sparse_embedding", returnRank: true })
+  ],
+  weights: [75, 25],     // Will be normalized to [0.75, 0.25]
+  normalize: true
+});
+```
 
 ## The k Parameter
 
@@ -230,120 +218,116 @@ The `k` parameter controls how much emphasis is placed on top-ranked results:
 * **Default k (60)**: Balanced emphasis (standard in literature)
 * **Large k (e.g., 100+)**: More uniform weighting across ranks
 
-<CodeGroup>
-  ```python Python theme={null}
-  # Small k - top results heavily weighted
-  rrf = Rrf(ranks=[...], k=10)
-  # Rank 0 gets weight/(10+0) = weight/10
-  # Rank 10 gets weight/(10+10) = weight/20 (half as important)
+```python Python theme={null}
+# Small k - top results heavily weighted
+rrf = Rrf(ranks=[...], k=10)
+# Rank 0 gets weight/(10+0) = weight/10
+# Rank 10 gets weight/(10+10) = weight/20 (half as important)
 
-  # Default k - balanced
-  rrf = Rrf(ranks=[...], k=60)
-  # Rank 0 gets weight/(60+0) = weight/60
-  # Rank 10 gets weight/(60+10) = weight/70 (still significant)
+# Default k - balanced
+rrf = Rrf(ranks=[...], k=60)
+# Rank 0 gets weight/(60+0) = weight/60
+# Rank 10 gets weight/(60+10) = weight/70 (still significant)
 
-  # Large k - more uniform
-  rrf = Rrf(ranks=[...], k=200)
-  # Rank 0 gets weight/(200+0) = weight/200
-  # Rank 10 gets weight/(200+10) = weight/210 (almost equal importance)
-  ```
+# Large k - more uniform
+rrf = Rrf(ranks=[...], k=200)
+# Rank 0 gets weight/(200+0) = weight/200
+# Rank 10 gets weight/(200+10) = weight/210 (almost equal importance)
+```
 
-  ```typescript TypeScript theme={null}
-  // Small k - top results heavily weighted
-  const rrf1 = Rrf({ ranks: [...], k: 10 });
-  // Rank 0 gets weight/(10+0) = weight/10
-  // Rank 10 gets weight/(10+10) = weight/20 (half as important)
+```typescript TypeScript theme={null}
+// Small k - top results heavily weighted
+const rrf1 = Rrf({ ranks: [...], k: 10 });
+// Rank 0 gets weight/(10+0) = weight/10
+// Rank 10 gets weight/(10+10) = weight/20 (half as important)
 
-  // Default k - balanced
-  const rrf2 = Rrf({ ranks: [...], k: 60 });
-  // Rank 0 gets weight/(60+0) = weight/60
-  // Rank 10 gets weight/(60+10) = weight/70 (still significant)
+// Default k - balanced
+const rrf2 = Rrf({ ranks: [...], k: 60 });
+// Rank 0 gets weight/(60+0) = weight/60
+// Rank 10 gets weight/(60+10) = weight/70 (still significant)
 
-  // Large k - more uniform
-  const rrf3 = Rrf({ ranks: [...], k: 200 });
-  // Rank 0 gets weight/(200+0) = weight/200
-  // Rank 10 gets weight/(200+10) = weight/210 (almost equal importance)
-  ```
-</CodeGroup>
+// Large k - more uniform
+const rrf3 = Rrf({ ranks: [...], k: 200 });
+// Rank 0 gets weight/(200+0) = weight/200
+// Rank 10 gets weight/(200+10) = weight/210 (almost equal importance)
+```
 
 ## Common Use Case: Dense + Sparse
 
 The most common RRF use case is combining dense semantic embeddings with sparse keyword embeddings.
 
-<CodeGroup>
-  ```python Python theme={null}
-  from chromadb import Search, K, Knn, Rrf
+```python Python theme={null}
+from chromadb import Search, K, Knn, Rrf
 
-  # Dense semantic embeddings
-  dense_rank = Knn(
-      query="machine learning research",  # Text query for dense embeddings
-      key="#embedding",          # Default embedding field
-      return_rank=True,
-      limit=200                  # Consider top 200 candidates
-  )
+# Dense semantic embeddings
+dense_rank = Knn(
+    query="machine learning research",  # Text query for dense embeddings
+    key="#embedding",          # Default embedding field
+    return_rank=True,
+    limit=200                  # Consider top 200 candidates
+)
 
-  # Sparse keyword embeddings
-  sparse_rank = Knn(
-      query="machine learning research",  # Text query for sparse embeddings
-      key="sparse_embedding",    # Metadata field for sparse vectors
-      return_rank=True,
-      limit=200
-  )
+# Sparse keyword embeddings
+sparse_rank = Knn(
+    query="machine learning research",  # Text query for sparse embeddings
+    key="sparse_embedding",    # Metadata field for sparse vectors
+    return_rank=True,
+    limit=200
+)
 
-  # Combine with RRF
-  hybrid_rank = Rrf(
-      ranks=[dense_rank, sparse_rank],
-      weights=[0.7, 0.3],       # 70% semantic, 30% keyword
-      k=60
-  )
+# Combine with RRF
+hybrid_rank = Rrf(
+    ranks=[dense_rank, sparse_rank],
+    weights=[0.7, 0.3],       # 70% semantic, 30% keyword
+    k=60
+)
 
-  # Use in search
-  search = (Search()
-      .where(K("status") == "published")  # Optional filtering
-      .rank(hybrid_rank)
-      .limit(20)
-      .select(K.DOCUMENT, K.SCORE, "title")
-  )
-
-  results = collection.search(search)
-  ```
-
-  ```typescript TypeScript theme={null}
-  import { Search, K, Knn, Rrf } from 'chromadb';
-
-  // Dense semantic embeddings
-  const denseRank = Knn({
-    query: "machine learning research",  // Text query for dense embeddings
-    key: "#embedding",         // Default embedding field
-    returnRank: true,
-    limit: 200                 // Consider top 200 candidates
-  });
-
-  // Sparse keyword embeddings
-  const sparseRank = Knn({
-    query: "machine learning research",  // Text query for sparse embeddings
-    key: "sparse_embedding",   // Metadata field for sparse vectors
-    returnRank: true,
-    limit: 200
-  });
-
-  // Combine with RRF
-  const hybridRank = Rrf({
-    ranks: [denseRank, sparseRank],
-    weights: [0.7, 0.3],       // 70% semantic, 30% keyword
-    k: 60
-  });
-
-  // Use in search
-  const search = new Search()
-    .where(K("status").eq("published"))  // Optional filtering
-    .rank(hybridRank)
+# Use in search
+search = (Search()
+    .where(K("status") == "published")  # Optional filtering
+    .rank(hybrid_rank)
     .limit(20)
-    .select(K.DOCUMENT, K.SCORE, "title");
+    .select(K.DOCUMENT, K.SCORE, "title")
+)
 
-  const results = await collection.search(search);
-  ```
-</CodeGroup>
+results = collection.search(search)
+```
+
+```typescript TypeScript theme={null}
+import { Search, K, Knn, Rrf } from 'chromadb';
+
+// Dense semantic embeddings
+const denseRank = Knn({
+  query: "machine learning research",  // Text query for dense embeddings
+  key: "#embedding",         // Default embedding field
+  returnRank: true,
+  limit: 200                 // Consider top 200 candidates
+});
+
+// Sparse keyword embeddings
+const sparseRank = Knn({
+  query: "machine learning research",  // Text query for sparse embeddings
+  key: "sparse_embedding",   // Metadata field for sparse vectors
+  returnRank: true,
+  limit: 200
+});
+
+// Combine with RRF
+const hybridRank = Rrf({
+  ranks: [denseRank, sparseRank],
+  weights: [0.7, 0.3],       // 70% semantic, 30% keyword
+  k: 60
+});
+
+// Use in search
+const search = new Search()
+  .where(K("status").eq("published"))  // Optional filtering
+  .rank(hybridRank)
+  .limit(20)
+  .select(K.DOCUMENT, K.SCORE, "title");
+
+const results = await collection.search(search);
+```
 
 ## Edge Cases and Important Behavior
 
@@ -351,27 +335,25 @@ The most common RRF use case is combining dense semantic embeddings with sparse 
 
 Each Knn component in RRF operates on the documents that pass the filter. The number of results from each component is the minimum of its `limit` parameter and the number of filtered documents. RRF handles varying result counts gracefully - documents from any ranking are scored.
 
-<CodeGroup>
-  ```python Python theme={null}
-  # Each Knn operates on filtered documents
-  # Results per Knn = min(limit, number of documents passing filter)
-  rrf = Rrf([
-      Knn(query="quantum computing", return_rank=True, limit=100),
-      Knn(query="quantum computing", key="sparse_embedding", return_rank=True, limit=100)
-  ])
-  ```
+```python Python theme={null}
+# Each Knn operates on filtered documents
+# Results per Knn = min(limit, number of documents passing filter)
+rrf = Rrf([
+    Knn(query="quantum computing", return_rank=True, limit=100),
+    Knn(query="quantum computing", key="sparse_embedding", return_rank=True, limit=100)
+])
+```
 
-  ```typescript TypeScript theme={null}
-  // Each Knn operates on filtered documents
-  // Results per Knn = min(limit, number of documents passing filter)
-  const rrf = Rrf({
-    ranks: [
-      Knn({ query: "quantum computing", returnRank: true, limit: 100 }),
-      Knn({ query: "quantum computing", key: "sparse_embedding", returnRank: true, limit: 100 })
-    ]
-  });
-  ```
-</CodeGroup>
+```typescript TypeScript theme={null}
+// Each Knn operates on filtered documents
+// Results per Knn = min(limit, number of documents passing filter)
+const rrf = Rrf({
+  ranks: [
+    Knn({ query: "quantum computing", returnRank: true, limit: 100 }),
+    Knn({ query: "quantum computing", key: "sparse_embedding", returnRank: true, limit: 100 })
+  ]
+});
+```
 
 ### Minimum Requirements
 
@@ -383,154 +365,148 @@ Each Knn component in RRF operates on the documents that pass the filter. The nu
 
 Documents must appear in at least one component ranking to be scored. To include documents that don't appear in a specific Knn's results, set the `default` parameter on that Knn:
 
-<CodeGroup>
-  ```python Python theme={null}
-  # Without default: only documents in BOTH rankings are scored
-  rrf = Rrf([
-      Knn(query="deep learning", return_rank=True, limit=100),
-      Knn(query="deep learning", key="sparse_embedding", return_rank=True, limit=100)
-  ])
+```python Python theme={null}
+# Without default: only documents in BOTH rankings are scored
+rrf = Rrf([
+    Knn(query="deep learning", return_rank=True, limit=100),
+    Knn(query="deep learning", key="sparse_embedding", return_rank=True, limit=100)
+])
 
-  # With default: documents in EITHER ranking can be scored
-  rrf = Rrf([
-      Knn(query="deep learning", return_rank=True, limit=100, default=1000),
-      Knn(query="deep learning", key="sparse_embedding", return_rank=True, limit=100, default=1000)
-  ])
-  # Documents missing from one ranking get default rank of 1000
-  ```
+# With default: documents in EITHER ranking can be scored
+rrf = Rrf([
+    Knn(query="deep learning", return_rank=True, limit=100, default=1000),
+    Knn(query="deep learning", key="sparse_embedding", return_rank=True, limit=100, default=1000)
+])
+# Documents missing from one ranking get default rank of 1000
+```
 
-  ```typescript TypeScript theme={null}
-  // Without default: only documents in BOTH rankings are scored
-  const rrf1 = Rrf({
-    ranks: [
-      Knn({ query: "deep learning", returnRank: true, limit: 100 }),
-      Knn({ query: "deep learning", key: "sparse_embedding", returnRank: true, limit: 100 })
-    ]
-  });
+```typescript TypeScript theme={null}
+// Without default: only documents in BOTH rankings are scored
+const rrf1 = Rrf({
+  ranks: [
+    Knn({ query: "deep learning", returnRank: true, limit: 100 }),
+    Knn({ query: "deep learning", key: "sparse_embedding", returnRank: true, limit: 100 })
+  ]
+});
 
-  // With default: documents in EITHER ranking can be scored
-  const rrf2 = Rrf({
-    ranks: [
-      Knn({ query: "deep learning", returnRank: true, limit: 100, default: 1000 }),
-      Knn({ query: "deep learning", key: "sparse_embedding", returnRank: true, limit: 100, default: 1000 })
-    ]
-  });
-  // Documents missing from one ranking get default rank of 1000
-  ```
-</CodeGroup>
+// With default: documents in EITHER ranking can be scored
+const rrf2 = Rrf({
+  ranks: [
+    Knn({ query: "deep learning", returnRank: true, limit: 100, default: 1000 }),
+    Knn({ query: "deep learning", key: "sparse_embedding", returnRank: true, limit: 100, default: 1000 })
+  ]
+});
+// Documents missing from one ranking get default rank of 1000
+```
 
 ### RRF as a Convenience Wrapper
 
 `Rrf` is a convenience class that constructs the underlying ranking expression. You can manually build the same expression if needed:
 
-<CodeGroup>
-  ```python Python theme={null}
-  # Using Rrf wrapper (recommended)
-  rrf = Rrf(
-      ranks=[rank1, rank2],
-      weights=[0.7, 0.3],
-      k=60
-  )
+```python Python theme={null}
+# Using Rrf wrapper (recommended)
+rrf = Rrf(
+    ranks=[rank1, rank2],
+    weights=[0.7, 0.3],
+    k=60
+)
 
-  # Manual construction (equivalent)
-  # RRF formula: -sum(weight_i / (k + rank_i))
-  manual_rrf = -0.7 / (60 + rank1) - 0.3 / (60 + rank2)
+# Manual construction (equivalent)
+# RRF formula: -sum(weight_i / (k + rank_i))
+manual_rrf = -0.7 / (60 + rank1) - 0.3 / (60 + rank2)
 
-  # Both produce the same ranking expression
-  ```
+# Both produce the same ranking expression
+```
 
-  ```typescript TypeScript theme={null}
-  // Using Rrf wrapper (recommended)
-  const rrf = Rrf({
-    ranks: [rank1, rank2],
-    weights: [0.7, 0.3],
-    k: 60
-  });
+```typescript TypeScript theme={null}
+// Using Rrf wrapper (recommended)
+const rrf = Rrf({
+  ranks: [rank1, rank2],
+  weights: [0.7, 0.3],
+  k: 60
+});
 
-  // Manual construction (equivalent)
-  // RRF formula: -sum(weight_i / (k + rank_i))
-  const manualRrf = Val(-0.7).divide(Val(60).add(rank1))
-    .subtract(Val(0.3).divide(Val(60).add(rank2)));
+// Manual construction (equivalent)
+// RRF formula: -sum(weight_i / (k + rank_i))
+const manualRrf = Val(-0.7).divide(Val(60).add(rank1))
+  .subtract(Val(0.3).divide(Val(60).add(rank2)));
 
-  // Both produce the same ranking expression
-  ```
-</CodeGroup>
+// Both produce the same ranking expression
+```
 
 ## Complete Example
 
 Here's a practical example showing RRF with filtering and result processing:
 
-<CodeGroup>
-  ```python Python theme={null}
-  from chromadb import Search, K, Knn, Rrf
+```python Python theme={null}
+from chromadb import Search, K, Knn, Rrf
 
-  # Create RRF ranking with text query
-  hybrid_rank = Rrf(
-      ranks=[
-          Knn(query="machine learning applications", return_rank=True, limit=300),
-          Knn(query="machine learning applications", key="sparse_embedding", return_rank=True, limit=300)
-      ],
-      weights=[2.0, 1.0],  # Dense 2x more important
-      k=60
-  )
-
-  # Build complete search
-  search = (Search()
-      .where(
-          (K("language") == "en") &
-          (K("year") >= 2020)
-      )
-      .rank(hybrid_rank)
-      .limit(10)
-      .select(K.DOCUMENT, K.SCORE, "title", "year")
-  )
-
-  # Execute and process results
-  results = collection.search(search)
-  rows = results.rows()[0]  # Get first (and only) search results
-
-  for i, row in enumerate(rows, 1):
-      print(f"{i}. {row['metadata']['title']} ({row['metadata']['year']})")
-      print(f"   RRF Score: {row['score']:.4f}")
-      print(f"   Preview: {row['document'][:100]}...")
-      print()
-  ```
-
-  ```typescript TypeScript theme={null}
-  import { Search, K, Knn, Rrf } from 'chromadb';
-
-  // Create RRF ranking with text query
-  const hybridRank = Rrf({
-    ranks: [
-      Knn({ query: "machine learning applications", returnRank: true, limit: 300 }),
-      Knn({ query: "machine learning applications", key: "sparse_embedding", returnRank: true, limit: 300 })
+# Create RRF ranking with text query
+hybrid_rank = Rrf(
+    ranks=[
+        Knn(query="machine learning applications", return_rank=True, limit=300),
+        Knn(query="machine learning applications", key="sparse_embedding", return_rank=True, limit=300)
     ],
-    weights: [2.0, 1.0],  // Dense 2x more important
-    k: 60
-  });
+    weights=[2.0, 1.0],  # Dense 2x more important
+    k=60
+)
 
-  // Build complete search
-  const search = new Search()
+# Build complete search
+search = (Search()
     .where(
-      K("language").eq("en")
-        .and(K("year").gte(2020))
+        (K("language") == "en") &
+        (K("year") >= 2020)
     )
-    .rank(hybridRank)
+    .rank(hybrid_rank)
     .limit(10)
-    .select(K.DOCUMENT, K.SCORE, "title", "year");
+    .select(K.DOCUMENT, K.SCORE, "title", "year")
+)
 
-  // Execute and process results
-  const results = await collection.search(search);
-  const rows = results.rows()[0];  // Get first (and only) search results
+# Execute and process results
+results = collection.search(search)
+rows = results.rows()[0]  # Get first (and only) search results
 
-  for (const [i, row] of rows.entries()) {
-    console.log(`${i+1}. ${row.metadata?.title} (${row.metadata?.year})`);
-    console.log(`   RRF Score: ${row.score?.toFixed(4)}`);
-    console.log(`   Preview: ${row.document?.substring(0, 100)}...`);
-    console.log();
-  }
-  ```
-</CodeGroup>
+for i, row in enumerate(rows, 1):
+    print(f"{i}. {row['metadata']['title']} ({row['metadata']['year']})")
+    print(f"   RRF Score: {row['score']:.4f}")
+    print(f"   Preview: {row['document'][:100]}...")
+    print()
+```
+
+```typescript TypeScript theme={null}
+import { Search, K, Knn, Rrf } from 'chromadb';
+
+// Create RRF ranking with text query
+const hybridRank = Rrf({
+  ranks: [
+    Knn({ query: "machine learning applications", returnRank: true, limit: 300 }),
+    Knn({ query: "machine learning applications", key: "sparse_embedding", returnRank: true, limit: 300 })
+  ],
+  weights: [2.0, 1.0],  // Dense 2x more important
+  k: 60
+});
+
+// Build complete search
+const search = new Search()
+  .where(
+    K("language").eq("en")
+      .and(K("year").gte(2020))
+  )
+  .rank(hybridRank)
+  .limit(10)
+  .select(K.DOCUMENT, K.SCORE, "title", "year");
+
+// Execute and process results
+const results = await collection.search(search);
+const rows = results.rows()[0];  // Get first (and only) search results
+
+for (const [i, row] of rows.entries()) {
+  console.log(`${i+1}. ${row.metadata?.title} (${row.metadata?.year})`);
+  console.log(`   RRF Score: ${row.score?.toFixed(4)}`);
+  console.log(`   Preview: ${row.document?.substring(0, 100)}...`);
+  console.log();
+}
+```
 
 Example output:
 

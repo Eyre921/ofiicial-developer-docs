@@ -22,300 +22,292 @@ pip install chromadb contextual-client
 
 #### Parse documents and store in Chroma
 
-<Tabs>
-  <Tab title="Python" icon="python">
-    ```python theme={null}
-    from contextual import ContextualAI
-    import chromadb
-    from chromadb.utils import embedding_functions
+> [tab] Python
+>
+> ```python theme={null}
+> from contextual import ContextualAI
+> import chromadb
+> from chromadb.utils import embedding_functions
+>
+> # Initialize clients
+> contextual_client = ContextualAI(api_key=os.environ["CONTEXTUAL_AI_API_KEY"])
+> chroma_client = chromadb.EphemeralClient()
+>
+> # Parse document
+> with open("document.pdf", "rb") as f:
+>     parse_response = contextual_client.parse.create(
+>         raw_file=f,
+>         parse_mode="standard",
+>         enable_document_hierarchy=True
+>     )
+>
+> # Monitor job status (Parse API is asynchronous)
+> import asyncio
+>
+> async def wait_for_job_async(job_id, max_attempts=20, interval=30.0):
+>     """Asynchronously poll until job is ready, exiting early if possible."""
+>     for attempt in range(max_attempts):
+>         status = await asyncio.to_thread(contextual_client.parse.job_status, job_id)
+>         if status.status == "completed":
+>             return True
+>         elif status.status == "failed":
+>             raise Exception("Parse job failed")
+>         await asyncio.sleep(interval)
+>     return True  # give up but don't fail hard
+>
+> asyncio.run(wait_for_job_async(parse_response.job_id))
+>
+> # Get results after job completion
+> results = contextual_client.parse.job_results(
+>     parse_response.job_id,
+>     output_types=['blocks-per-page']
+> )
+>
+> # Create Chroma collection
+> openai_ef = embedding_functions.OpenAIEmbeddingFunction(
+>     api_key=os.environ["OPENAI_API_KEY"],
+>     model_name="text-embedding-3-small"
+> )
+>
+> # Create or get existing collection
+> collection = chroma_client.get_or_create_collection(
+>     name="documents",
+>     embedding_function=openai_ef
+> )
+>
+> # Add parsed content to Chroma
+> texts, metadatas, ids = [], [], []
+>
+> for page in results.pages:
+>     for block in page.blocks:
+>         if block.type in ['text', 'heading', 'table']:
+>             texts.append(block.markdown)
+>             metadatas.append({
+>                 "page": page.index + 1,
+>                 "block_type": block.type
+>             })
+>             ids.append(f"block_{block.id}")
+>
+> collection.add(
+>     documents=texts,
+>     metadatas=metadatas,
+>     ids=ids
+> )
+> ```
 
-    # Initialize clients
-    contextual_client = ContextualAI(api_key=os.environ["CONTEXTUAL_AI_API_KEY"])
-    chroma_client = chromadb.EphemeralClient()
-
-    # Parse document
-    with open("document.pdf", "rb") as f:
-        parse_response = contextual_client.parse.create(
-            raw_file=f,
-            parse_mode="standard",
-            enable_document_hierarchy=True
-        )
-
-    # Monitor job status (Parse API is asynchronous)
-    import asyncio
-
-    async def wait_for_job_async(job_id, max_attempts=20, interval=30.0):
-        """Asynchronously poll until job is ready, exiting early if possible."""
-        for attempt in range(max_attempts):
-            status = await asyncio.to_thread(contextual_client.parse.job_status, job_id)
-            if status.status == "completed":
-                return True
-            elif status.status == "failed":
-                raise Exception("Parse job failed")
-            await asyncio.sleep(interval)
-        return True  # give up but don't fail hard
-
-    asyncio.run(wait_for_job_async(parse_response.job_id))
-
-    # Get results after job completion
-    results = contextual_client.parse.job_results(
-        parse_response.job_id,
-        output_types=['blocks-per-page']
-    )
-
-    # Create Chroma collection
-    openai_ef = embedding_functions.OpenAIEmbeddingFunction(
-        api_key=os.environ["OPENAI_API_KEY"],
-        model_name="text-embedding-3-small"
-    )
-
-    # Create or get existing collection
-    collection = chroma_client.get_or_create_collection(
-        name="documents",
-        embedding_function=openai_ef
-    )
-
-    # Add parsed content to Chroma
-    texts, metadatas, ids = [], [], []
-
-    for page in results.pages:
-        for block in page.blocks:
-            if block.type in ['text', 'heading', 'table']:
-                texts.append(block.markdown)
-                metadatas.append({
-                    "page": page.index + 1,
-                    "block_type": block.type
-                })
-                ids.append(f"block_{block.id}")
-
-    collection.add(
-        documents=texts,
-        metadatas=metadatas,
-        ids=ids
-    )
-    ```
-  </Tab>
-
-  <Tab title="TypeScript" icon="js">
-    ```typescript theme={null}
-    import ContextualAI, { toFile } from "contextual-client";
-    import { ChromaClient, OpenAIEmbeddingFunction } from "chromadb";
-    import fs from "node:fs";
-
-    const contextual = new ContextualAI({
-      apiKey: process.env.CONTEXTUAL_AI_API_KEY!,
-    });
-    const chroma = new ChromaClient();
-    const embedder = new OpenAIEmbeddingFunction({
-      apiKey: process.env.OPENAI_API_KEY!,
-      model: "text-embedding-3-small",
-    });
-
-    const parseRes = await contextual.parse.create({
-      raw_file: await toFile(fs.createReadStream("document.pdf"), "document.pdf", {
-        type: "application/pdf",
-      }),
-      parse_mode: "standard",
-      enable_document_hierarchy: true,
-    });
-
-    // Monitor job status (Parse API is asynchronous)
-    async function waitForJob(
-      jobId: string,
-      maxAttempts = 20,
-      interval = 30000
-    ): Promise<void> {
-      for (let attempt = 0; attempt < maxAttempts; attempt++) {
-        const s = await contextual.parse.jobStatus(jobId);
-        if (s.status === "completed") return;
-        if (s.status === "failed") throw new Error("Parse job failed");
-        await new Promise((r) => setTimeout(r, interval));
-      }
-    }
-
-    await waitForJob(parseRes.job_id);
-
-    // Get results after job completion
-    const results = await contextual.parse.jobResults(parseRes.job_id, {
-      output_types: ["blocks-per-page"],
-    });
-
-    // Create or get existing collection
-    const collection = await chroma.getOrCreateCollection({
-      name: "documents",
-      embeddingFunction: embedder,
-    });
-
-    // Add parsed content to Chroma
-    const texts: string[] = [];
-    const metadatas: Array<Record<string, string | number | boolean | null>> = [];
-    const ids: string[] = [];
-
-    for (const page of results.pages ?? []) {
-      for (const block of page.blocks ?? []) {
-        if (["text", "heading", "table"].includes(block.type)) {
-          texts.push(block.markdown);
-          metadatas.push({ page: (page.index ?? 0) + 1, block_type: block.type });
-          ids.push(`block_${block.id}`);
-        }
-      }
-    }
-
-    await collection.add({ documents: texts, metadatas, ids });
-    ```
-
-    > Note: If your Chroma JS package does not expose `OpenAIEmbeddingFunction`, define a small embedder using the OpenAI SDK instead:
-
-    ```typescript theme={null}
-    import OpenAI from "openai";
-    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
-    const embedder = {
-      generate: async (texts: string[]) => {
-        const res = await openai.embeddings.create({
-          model: "text-embedding-3-small",
-          input: texts,
-        });
-        return res.data.map((d) => d.embedding);
-      },
-    } as any;
-    ```
-  </Tab>
-</Tabs>
+> [tab] TypeScript
+>
+> ```typescript theme={null}
+> import ContextualAI, { toFile } from "contextual-client";
+> import { ChromaClient, OpenAIEmbeddingFunction } from "chromadb";
+> import fs from "node:fs";
+>
+> const contextual = new ContextualAI({
+>   apiKey: process.env.CONTEXTUAL_AI_API_KEY!,
+> });
+> const chroma = new ChromaClient();
+> const embedder = new OpenAIEmbeddingFunction({
+>   apiKey: process.env.OPENAI_API_KEY!,
+>   model: "text-embedding-3-small",
+> });
+>
+> const parseRes = await contextual.parse.create({
+>   raw_file: await toFile(fs.createReadStream("document.pdf"), "document.pdf", {
+>     type: "application/pdf",
+>   }),
+>   parse_mode: "standard",
+>   enable_document_hierarchy: true,
+> });
+>
+> // Monitor job status (Parse API is asynchronous)
+> async function waitForJob(
+>   jobId: string,
+>   maxAttempts = 20,
+>   interval = 30000
+> ): Promise<void> {
+>   for (let attempt = 0; attempt < maxAttempts; attempt++) {
+>     const s = await contextual.parse.jobStatus(jobId);
+>     if (s.status === "completed") return;
+>     if (s.status === "failed") throw new Error("Parse job failed");
+>     await new Promise((r) => setTimeout(r, interval));
+>   }
+> }
+>
+> await waitForJob(parseRes.job_id);
+>
+> // Get results after job completion
+> const results = await contextual.parse.jobResults(parseRes.job_id, {
+>   output_types: ["blocks-per-page"],
+> });
+>
+> // Create or get existing collection
+> const collection = await chroma.getOrCreateCollection({
+>   name: "documents",
+>   embeddingFunction: embedder,
+> });
+>
+> // Add parsed content to Chroma
+> const texts: string[] = [];
+> const metadatas: Array<Record<string, string | number | boolean | null>> = [];
+> const ids: string[] = [];
+>
+> for (const page of results.pages ?? []) {
+>   for (const block of page.blocks ?? []) {
+>     if (["text", "heading", "table"].includes(block.type)) {
+>       texts.push(block.markdown);
+>       metadatas.push({ page: (page.index ?? 0) + 1, block_type: block.type });
+>       ids.push(`block_${block.id}`);
+>     }
+>   }
+> }
+>
+> await collection.add({ documents: texts, metadatas, ids });
+> ```
+>
+> > Note: If your Chroma JS package does not expose `OpenAIEmbeddingFunction`, define a small embedder using the OpenAI SDK instead:
+>
+> ```typescript theme={null}
+> import OpenAI from "openai";
+> const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
+> const embedder = {
+>   generate: async (texts: string[]) => {
+>     const res = await openai.embeddings.create({
+>       model: "text-embedding-3-small",
+>       input: texts,
+>     });
+>     return res.data.map((d) => d.embedding);
+>   },
+> } as any;
+> ```
 
 #### Query Chroma and rerank results with custom instructions
 
-<Tabs>
-  <Tab title="Python" icon="python">
-    ```python theme={null}
-    # Query Chroma
-    query = "What are the key findings?"
-    results = collection.query(
-        query_texts=[query],
-        n_results=10
-    )
+> [tab] Python
+>
+> ```python theme={null}
+> # Query Chroma
+> query = "What are the key findings?"
+> results = collection.query(
+>     query_texts=[query],
+>     n_results=10
+> )
+>
+> # Rerank with instruction-following
+> rerank_response = contextual_client.rerank.create(
+>     query=query,
+>     documents=results['documents'][0],
+>     metadata=[str(m) for m in results['metadatas'][0]],
+>     model="ctxl-rerank-v2-instruct-multilingual",
+>     instruction="Prioritize recent documents. Technical details and specific findings should rank higher than general information."
+> )
+>
+> # Get top documents
+> top_docs = [
+>     results['documents'][0][r.index]
+>     for r in rerank_response.results[:5]
+> ]
+> ```
 
-    # Rerank with instruction-following
-    rerank_response = contextual_client.rerank.create(
-        query=query,
-        documents=results['documents'][0],
-        metadata=[str(m) for m in results['metadatas'][0]],
-        model="ctxl-rerank-v2-instruct-multilingual",
-        instruction="Prioritize recent documents. Technical details and specific findings should rank higher than general information."
-    )
-
-    # Get top documents
-    top_docs = [
-        results['documents'][0][r.index]
-        for r in rerank_response.results[:5]
-    ]
-    ```
-  </Tab>
-
-  <Tab title="TypeScript" icon="js">
-    ```typescript theme={null}
-    const query = "What are the key findings?";
-    const q = await collection.query({ queryTexts: [query], nResults: 10 });
-    const docs: string[] = (q.documents?.[0] ?? []).filter(
-      (d): d is string => typeof d === "string"
-    );
-
-    const rerankResponse = await contextual.rerank.create({
-      query,
-      documents: docs,
-      metadata: (q.metadatas?.[0] ?? []).map((m) => JSON.stringify(m)),
-      model: "ctxl-rerank-v2-instruct-multilingual",
-      instruction:
-        "Prioritize recent documents. Technical details and specific findings should rank higher than general information.",
-    });
-
-    const topDocsAll = rerankResponse.results
-      .slice(0, 5)
-      .map((r: { index: number }) => (q.documents?.[0] ?? [])[r.index]);
-    const topDocs: string[] = topDocsAll.filter(
-      (d): d is string => typeof d === "string"
-    );
-    ```
-  </Tab>
-</Tabs>
+> [tab] TypeScript
+>
+> ```typescript theme={null}
+> const query = "What are the key findings?";
+> const q = await collection.query({ queryTexts: [query], nResults: 10 });
+> const docs: string[] = (q.documents?.[0] ?? []).filter(
+>   (d): d is string => typeof d === "string"
+> );
+>
+> const rerankResponse = await contextual.rerank.create({
+>   query,
+>   documents: docs,
+>   metadata: (q.metadatas?.[0] ?? []).map((m) => JSON.stringify(m)),
+>   model: "ctxl-rerank-v2-instruct-multilingual",
+>   instruction:
+>     "Prioritize recent documents. Technical details and specific findings should rank higher than general information.",
+> });
+>
+> const topDocsAll = rerankResponse.results
+>   .slice(0, 5)
+>   .map((r: { index: number }) => (q.documents?.[0] ?? [])[r.index]);
+> const topDocs: string[] = topDocsAll.filter(
+>   (d): d is string => typeof d === "string"
+> );
+> ```
 
 #### Generate grounded response
 
-<Tabs>
-  <Tab title="Python" icon="python">
-    ```python theme={null}
-    # Generate grounded response
-    generate_response = contextual_client.generate.create(
-        messages=[{
-            "role": "user",
-            "content": query
-        }],
-        knowledge=top_docs,
-        model="v1",  # Supported models: v1, v2
-        avoid_commentary=False,
-        temperature=0.7
-    )
+> [tab] Python
+>
+> ```python theme={null}
+> # Generate grounded response
+> generate_response = contextual_client.generate.create(
+>     messages=[{
+>         "role": "user",
+>         "content": query
+>     }],
+>     knowledge=top_docs,
+>     model="v1",  # Supported models: v1, v2
+>     avoid_commentary=False,
+>     temperature=0.7
+> )
+>
+> print("Response:", generate_response.response)
+> ```
 
-    print("Response:", generate_response.response)
-    ```
-  </Tab>
-
-  <Tab title="TypeScript" icon="js">
-    ```typescript theme={null}
-    const generateResponse = await contextual.generate.create({
-      messages: [{ role: "user", content: query }],
-      knowledge: topDocs,
-      model: "v1", // Supported models: v1, v2
-      avoid_commentary: false,
-      temperature: 0.7,
-    });
-
-    console.log("Response:", generateResponse.response);
-    ```
-  </Tab>
-</Tabs>
+> [tab] TypeScript
+>
+> ```typescript theme={null}
+> const generateResponse = await contextual.generate.create({
+>   messages: [{ role: "user", content: query }],
+>   knowledge: topDocs,
+>   model: "v1", // Supported models: v1, v2
+>   avoid_commentary: false,
+>   temperature: 0.7,
+> });
+>
+> console.log("Response:", generateResponse.response);
+> ```
 
 #### Evaluate response quality with LMUnit
 
-<Tabs>
-  <Tab title="Python" icon="python">
-    ```python theme={null}
-    # Evaluate generated response quality
-    lmunit_response = contextual_client.lmunit.create(
-        query=query,
-        response=generate_response.response,
-        unit_test="The response should be technically accurate and cite specific findings"
-    )
+> [tab] Python
+>
+> ```python theme={null}
+> # Evaluate generated response quality
+> lmunit_response = contextual_client.lmunit.create(
+>     query=query,
+>     response=generate_response.response,
+>     unit_test="The response should be technically accurate and cite specific findings"
+> )
+>
+> print(f"Quality Score: {lmunit_response.score}")
+>
+> # Score interpretation (continuous scale 1-5):
+> # 5 = Excellent - Fully satisfies criteria
+> # 4 = Good - Minor issues
+> # 3 = Acceptable - Some issues
+> # 2 = Poor - Significant issues
+> # 1 = Unacceptable - Fails criteria
+> ```
 
-    print(f"Quality Score: {lmunit_response.score}")
-
-    # Score interpretation (continuous scale 1-5):
-    # 5 = Excellent - Fully satisfies criteria
-    # 4 = Good - Minor issues
-    # 3 = Acceptable - Some issues
-    # 2 = Poor - Significant issues
-    # 1 = Unacceptable - Fails criteria
-    ```
-  </Tab>
-
-  <Tab title="TypeScript" icon="js">
-    ```typescript theme={null}
-    const lmunitResponse = await contextual.lmUnit.create({
-      query,
-      response: generateResponse.response,
-      unit_test:
-        "The response should be technically accurate and cite specific findings",
-    });
-
-    console.log("Quality Score:", lmunitResponse.score);
-    // Score interpretation (continuous scale 1-5):
-    // 5 = Excellent - Fully satisfies criteria
-    // 4 = Good - Minor issues
-    // 3 = Acceptable - Some issues
-    // 2 = Poor - Significant issues
-    // 1 = Unacceptable - Fails criteria
-    ```
-  </Tab>
-</Tabs>
+> [tab] TypeScript
+>
+> ```typescript theme={null}
+> const lmunitResponse = await contextual.lmUnit.create({
+>   query,
+>   response: generateResponse.response,
+>   unit_test:
+>     "The response should be technically accurate and cite specific findings",
+> });
+>
+> console.log("Quality Score:", lmunitResponse.score);
+> // Score interpretation (continuous scale 1-5):
+> // 5 = Excellent - Fully satisfies criteria
+> // 4 = Good - Minor issues
+> // 3 = Acceptable - Some issues
+> // 2 = Poor - Significant issues
+> // 1 = Unacceptable - Fails criteria
+> ```
 
 ## Advanced Usage
 

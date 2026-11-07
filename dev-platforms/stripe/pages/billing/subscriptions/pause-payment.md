@@ -137,6 +137,10 @@ curl https://api.stripe.com/v1/invoices/{{INVOICE_ID}} \
   -d auto_advance=true
 ```
 
+### Use Workflows to resume automatic collection on draft invoices 
+
+To resume automatic collection on draft invoices without writing code, use [Workflows](https://docs.stripe.com/workflows.md) with the [Resume automatic collection on draft subscription invoices](https://dashboard.stripe.com/workflows/create?workflow=eyJkZWVwX2xpbmtfdmVyc2lvbiI6MSwibmFtZSI6IlJlc3VtZSBhdXRvbWF0aWMgY29sbGVjdGlvbiBvbiBkcmFmdCBzdWJzY3JpcHRpb24gaW52b2ljZXMiLCJkZWZpbml0aW9uIjoiQ3BFRUVuc0tEV3hwYzNSZmFXNTJiMmxqWlhNUUFScG9DaDl6ZEhKcGNHVXVZWEJwWDJOaGJHeGZaMlYwWDNZeFgybHVkbTlwWTJWekVrVUtNQW9NYzNWaWMyTnlhWEIwYVc5dUVpQWFIaVI3ZXlCMGNtbG5aMlZ5TG5OMVluTmpjbWx3ZEdsdmJsOXBaQ0I5ZlFvUkNnWnpkR0YwZFhNU0J4b0ZaSEpoWm5RU2tnRUtDR1p2Y2w5bFlXTm9FQVF5Z3dFS0UzTjBaWEJ6TG14cGMzUmZhVzUyYjJsalpYTVlBU0pxQ2hGMWNHUmhkR1ZmWVc1ZmFXNTJiMmxqWlJBQkdsTUtJM04wY21sd1pTNWhjR2xmWTJGc2JGOXdiM04wWDNZeFgybHVkbTlwWTJWelgybGtFaXdLRmdvQ2FXUVNFQm9PSkh0N0lHbDBaVzB1YVdRZ2ZYMEtFZ29NWVhWMGIxOWhaSFpoYm1ObEVnSWdBUnI4QVFnQkd2Y0JDdlFCQ2d0cWMyOXVYM05qYUdWdFlSTGtBUW9RQ2dSMGVYQmxFZ2dhQm05aWFtVmpkQXFzQVFvS2NISnZjR1Z5ZEdsbGN4S2RBU3FhQVFxWEFRb1BjM1ZpYzJOeWFYQjBhVzl1WDJsa0VvTUJLb0FCQ2hBS0JIUjVjR1VTQ0JvR2MzUnlhVzVuQ2xBS0MyUmxjMk55YVhCMGFXOXVFa0VhUDFOMVluTmpjbWx3ZEdsdmJpQjNhRzl6WlNCd1lYbHRaVzUwSUdOdmJHeGxZM1JwYjI0Z2VXOTFJR2hoZG1VZ1lXeHlaV0ZrZVNCeVpYTjFiV1ZrTGdvYUNnVnNZV0psYkJJUkdnOVRkV0p6WTNKcGNIUnBiMjRnU1VRS0lRb0ljbVZ4ZFdseVpXUVNGVElUQ2hFYUQzTjFZbk5qY21sd2RHbHZibDlwWkJJUk1qQXlOaTB3T1Mwek1DNWxibVJwZG1VIiwic3RyaXBlX2FwaV92ZXJzaW9uIjoiMjAyNi0wOS0zMC5lbmRpdmUifQ) template. After you resume payment collection on the subscription, run the workflow with its subscription ID. It finds the subscription’s draft invoices and sets `auto_advance` to `true` on each one. This workflow collects payment for every invoice created while collection was paused. Use this workflow only if you paused collection with **Keep invoices as drafts**, and you want to charge the customer for those periods.
+
 ## See also
 
 - [Pause subscriptions](https://docs.stripe.com/billing/subscriptions/pause.md)

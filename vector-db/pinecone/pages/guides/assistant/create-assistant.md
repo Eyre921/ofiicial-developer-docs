@@ -6,16 +6,16 @@ path: guides/assistant/create-assistant
 
 Create a Pinecone Assistant with custom instructions, metadata, and region settings using the API, Python SDK, Node.js SDK, or console.
 
-This page shows you how to create an [assistant](/guides/assistant/overview).
+An assistant answers questions grounded in the files you give it. Create one with a name and, optionally, instructions, metadata, and a region, then [upload files](/guides/assistant/upload-files) and [chat with it](/guides/assistant/chat-standard-interface).
 
-You can [create an assistant](/reference/api/latest/assistant/create_assistant) with the following parameters:
+## Create an assistant with the API or an SDK
+
+To create an assistant, call [`create`](/reference/api/latest/assistant/create_assistant) with a `name` and, optionally, `instructions`, `metadata`, and a `region`:
 
 * `name`: A name for the assistant, unique within the project.
 * `instructions`: A directive the assistant applies to every response it gives.
 * `metadata`: Optional key-value pairs, up to 16 KB, that help you organize assistants.
 * `region`: Where the assistant is deployed, `us` (default) or `eu`. You can't change it later.
-
-The Python SDK waits until the assistant is ready before it returns. The Node.js SDK and the API return right away, while the assistant's status is still `Initializing`. To find out when it's ready, [get the status of the assistant](/guides/assistant/manage-assistants#get-the-status-of-an-assistant).
 
 ```python Python theme={null}
 from pinecone import Pinecone
@@ -63,4 +63,8 @@ curl "https://api.pinecone.io/assistant/assistants" \
 
 > [!TIP]
 >
-> You can create an assistant using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant/-/files).
+> You can also create an assistant in the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant/-/files).
+
+## Check when the assistant is ready
+
+The Python SDK waits until the assistant is ready before it returns. The Node.js SDK and the API return right away, while the assistant's status is still `Initializing`. To find out when it's ready, [get the status of the assistant](/guides/assistant/manage-assistants#get-the-status-of-an-assistant).

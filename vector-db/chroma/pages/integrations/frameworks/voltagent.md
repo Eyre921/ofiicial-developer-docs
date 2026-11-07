@@ -6,45 +6,39 @@ path: integrations/frameworks/voltagent
 
 [VoltAgent](https://github.com/VoltAgent/voltagent) is an open-source TypeScript framework for building AI agents with modular tools, LLM orchestration, and flexible multi-agent systems. It features a built-in, n8n-style observability console that lets you visually inspect agent behavior, trace actions, and debug with ease.
 
-<Callout>
-  You can find the complete example code at: [VoltAgent with Chroma Example](https://github.com/VoltAgent/voltagent/tree/main/examples/with-chroma)
-</Callout>
+You can find the complete example code at: [VoltAgent with Chroma Example](https://github.com/VoltAgent/voltagent/tree/main/examples/with-chroma)
 
 ## Installation
 
 Create a new VoltAgent project with Chroma integration:
 
-<CodeGroup>
-  ```bash npm theme={null}
-  npm create voltagent-app@latest -- --example with-chroma
-  ```
+```bash npm theme={null}
+npm create voltagent-app@latest -- --example with-chroma
+```
 
-  ```bash pnpm theme={null}
-  pnpm create voltagent-app --example=with-chroma
-  ```
+```bash pnpm theme={null}
+pnpm create voltagent-app --example=with-chroma
+```
 
-  ```bash yarn theme={null}
-  yarn create voltagent-app --example=with-chroma
-  ```
-</CodeGroup>
+```bash yarn theme={null}
+yarn create voltagent-app --example=with-chroma
+```
 
 This creates a complete VoltAgent + Chroma setup with sample data and two different agent configurations.
 
 Install the dependencies:
 
-<CodeGroup>
-  ```bash npm theme={null}
-  npm install
-  ```
+```bash npm theme={null}
+npm install
+```
 
-  ```bash pnpm theme={null}
-  pnpm install
-  ```
+```bash pnpm theme={null}
+pnpm install
+```
 
-  ```bash yarn theme={null}
-  yarn install
-  ```
-</CodeGroup>
+```bash yarn theme={null}
+yarn install
+```
 
 Next, you'll need to launch a Chroma server instance.
 
@@ -113,9 +107,7 @@ Chroma server started easily with npm run chroma run (no Docker/Python needed!)
 ══════════════════════════════════════════════════
 ```
 
-<Callout>
-  Refer to official [VoltAgent docs](https://voltagent.dev/docs/) for more info.
-</Callout>
+Refer to official [VoltAgent docs](https://voltagent.dev/docs/) for more info.
 
 ## Interact with Your Agents
 
@@ -439,6 +431,4 @@ if (references) {
 
 This integration provides a solid foundation for adding semantic search capabilities to your VoltAgent applications. The combination of VoltAgent's flexible architecture and Chroma's powerful vector search creates a robust RAG system that can handle real-world knowledge retrieval needs.
 
-<Callout>
-  For more information on how to use VoltAgent with Chroma, see the [VoltAgent docs](https://voltagent.dev/docs/rag/chroma/).
-</Callout>
+For more information on how to use VoltAgent with Chroma, see the [VoltAgent docs](https://voltagent.dev/docs/rag/chroma/).

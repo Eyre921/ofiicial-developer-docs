@@ -22,7 +22,7 @@ When a [document is uploaded](/guides/assistant/manage-files), the assistant pro
 
 ## Data retrieval
 
-During a [chat](/guides/assistant/chat-with-assistant), the assistant processes the message to formulate relevant search queries, which are used to query the index and identify the most relevant chunks from the uploaded content.
+During a [chat](/guides/assistant/chat-standard-interface), the assistant processes the message to formulate relevant search queries, which are used to query the index and identify the most relevant chunks from the uploaded content.
 
 ## Response generation
 

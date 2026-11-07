@@ -74,7 +74,7 @@ while (status === 'Initializing') {
 
 ## 4. Upload a file
 
-[Download the sample file](https://s22.q4cdn.com/959853165/files/doc_financials/2023/ar/Netflix-10-K-01262024.pdf), a Netflix 10-K filing, to your local device. Then [upload it](/reference/api/latest/assistant/upload_file) to your assistant, replacing `/path/to/` with the folder you saved it in. The `metadata` is optional. It's returned with each citation, and you can use it to [filter which files the assistant uses](/guides/assistant/chat-with-assistant#filter-chat-with-metadata).
+[Download the sample file](https://s22.q4cdn.com/959853165/files/doc_financials/2023/ar/Netflix-10-K-01262024.pdf), a Netflix 10-K filing, to your local device. Then [upload it](/reference/api/latest/assistant/upload_file) to your assistant, replacing `/path/to/` with the folder you saved it in. The `metadata` is optional. It's returned with each citation, and you can use it to [filter which files the assistant uses](/guides/assistant/chat-standard-interface#filter-chat-with-metadata).
 
 The assistant has to process the file before it can answer questions about it, which can take a few minutes. The Python SDK waits until processing finishes. The Node.js SDK returns an operation, so the example checks the operation's status until it's `Completed`.
 
@@ -197,6 +197,6 @@ await pc.assistants.delete('example-assistant');
 ## Next steps
 
 * [Evaluate the assistant's answers](/guides/assistant/evaluate-answers) against a ground truth answer (Standard and Enterprise plans).
-* [Choose a model, stream responses, and filter by metadata](/guides/assistant/chat-with-assistant) when you chat with an assistant.
+* [Choose a model, stream responses, and filter by metadata](/guides/assistant/chat-standard-interface) when you chat with an assistant.
 * [Retrieve context snippets](/guides/assistant/retrieve-context-snippets) to use with your own LLM.
 * Explore a [sample app](/examples/sample-apps/pinecone-assistant) built on Pinecone Assistant.

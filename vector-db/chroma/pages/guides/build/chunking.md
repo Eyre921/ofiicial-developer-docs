@@ -88,9 +88,7 @@ drops (indicating a topic shift). This process can also be driven by an LLM
 alternatively. This method is more computationally expensive but can produce
 more coherent chunks when documents lack clear structural markers.
 
-<Callout>
-  Learn more about different strategies in our [chunking research report](https://research.trychroma.com/evaluating-chunking)
-</Callout>
+Learn more about different strategies in our [chunking research report](https://research.trychroma.com/evaluating-chunking)
 
 ## Chunking Text
 
@@ -100,31 +98,29 @@ for this strategy. It tries to split at natural boundaries (paragraphs first,
 then sentences, then words) while respecting size limits and adding overlap
 to preserve context across boundaries.
 
-<CodeGroup>
-  ```python Python theme={null}
-  from langchain.text_splitter import RecursiveCharacterTextSplitter
+```python Python theme={null}
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 
-  splitter = RecursiveCharacterTextSplitter(
-      chunk_size=500,
-      chunk_overlap=50,
-      separators=["\n\n", "\n", ". ", " "]
-  )
+splitter = RecursiveCharacterTextSplitter(
+    chunk_size=500,
+    chunk_overlap=50,
+    separators=["\n\n", "\n", ". ", " "]
+)
 
-  chunks = splitter.split_text(document)
-  ```
+chunks = splitter.split_text(document)
+```
 
-  ```typescript TypeScript theme={null}
-  import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
+```typescript TypeScript theme={null}
+import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 
-  const splitter = new RecursiveCharacterTextSplitter({
-      chunkSize: 500,
-      chunkOverlap: 50,
-      separators: ["\n\n", "\n", ". ", " "]
-  });
+const splitter = new RecursiveCharacterTextSplitter({
+    chunkSize: 500,
+    chunkOverlap: 50,
+    separators: ["\n\n", "\n", ". ", " "]
+});
 
-  const chunks = await splitter.splitText(document);
-  ```
-</CodeGroup>
+const chunks = await splitter.splitText(document);
+```
 
 When chunking Markdown files, we can take advantage of their structure. For example,
 we can split by headers - try to split by `h2` headers, and recursively try inner
@@ -136,26 +132,24 @@ append at the top the path from the document's `h1` to this chunk.
 
 LangChain's `MarkdownHeaderTextSplitter` splits by section and captures the header hierarchy as metadata.
 
-<CodeGroup>
-  ```python Python theme={null}
-  from langchain.text_splitter import MarkdownHeaderTextSplitter
+```python Python theme={null}
+from langchain.text_splitter import MarkdownHeaderTextSplitter
 
-  splitter = MarkdownHeaderTextSplitter(
-      headers_to_split_on=[("#", "h1"), ("##", "h2"), ("###", "h3")]
-  )
-  chunks = splitter.split_text(markdown_doc)
-  ```
+splitter = MarkdownHeaderTextSplitter(
+    headers_to_split_on=[("#", "h1"), ("##", "h2"), ("###", "h3")]
+)
+chunks = splitter.split_text(markdown_doc)
+```
 
-  ```typescript TypeScript theme={null}
-  import { MarkdownHeaderTextSplitter } from "langchain/text_splitter";
+```typescript TypeScript theme={null}
+import { MarkdownHeaderTextSplitter } from "langchain/text_splitter";
 
-  const splitter = new MarkdownHeaderTextSplitter({
-      headersToSplitOn: [["#", "h1"], ["##", "h2"], ["###", "h3"]]
-  });
+const splitter = new MarkdownHeaderTextSplitter({
+    headersToSplitOn: [["#", "h1"], ["##", "h2"], ["###", "h3"]]
+});
 
-  const chunks = await splitter.splitText(markdownDoc);
-  ```
-</CodeGroup>
+const chunks = await splitter.splitText(markdownDoc);
+```
 
 Each chunk includes the path to it from the document's `h1` header:
 
@@ -168,22 +162,20 @@ Each chunk includes the path to it from the document's `h1` header:
 
 We can leverage it to add this context for each chunk:
 
-<CodeGroup>
-  ```python Python theme={null}
-  def contextualize(chunk) -> str:
-      headers = [chunk.metadata.get(f"h{i}") for i in range(1, 4)]
-      path = " > ".join(h for h in headers if h)
-      return f"[{path}]\n\n{chunk.page_content}" if path else chunk.page_content
-  ```
+```python Python theme={null}
+def contextualize(chunk) -> str:
+    headers = [chunk.metadata.get(f"h{i}") for i in range(1, 4)]
+    path = " > ".join(h for h in headers if h)
+    return f"[{path}]\n\n{chunk.page_content}" if path else chunk.page_content
+```
 
-  ```typescript TypeScript theme={null}
-  function contextualize(chunk: Document): string {
-      const headers = [1, 2, 3].map(i => chunk.metadata[`h${i}`]).filter(Boolean);
-      const path = headers.join(" > ");
-      return path ? `[${path}]\n\n${chunk.pageContent}` : chunk.pageContent;
-  }
-  ```
-</CodeGroup>
+```typescript TypeScript theme={null}
+function contextualize(chunk: Document): string {
+    const headers = [1, 2, 3].map(i => chunk.metadata[`h${i}`]).filter(Boolean);
+    const path = headers.join(" > ");
+    return path ? `[${path}]\n\n${chunk.pageContent}` : chunk.pageContent;
+}
+```
 
 ## Chunking Code
 
@@ -216,86 +208,78 @@ Each node represents a construct of the language we work with, which is exactly 
 
 Let's examine a small example of using `tree-sitter` to parse Python files. To being, we'll set up `tree-sitter` and a parser for Python files:
 
-<Tabs>
-  <Tab title="Python" icon="python">
-    ```bash theme={null}
-    pip install tree-sitter tree-sitter-python
-    ```
-  </Tab>
+> [tab] Python
+>
+> ```bash theme={null}
+> pip install tree-sitter tree-sitter-python
+> ```
 
-  <Tab title="TypeScript" icon="js">
-    ```bash theme={null}
-    npm install tree-sitter tree-sitter-python
-    ```
-  </Tab>
-</Tabs>
+> [tab] TypeScript
+>
+> ```bash theme={null}
+> npm install tree-sitter tree-sitter-python
+> ```
 
-<CodeGroup>
-  ```python Python theme={null}
-  from tree_sitter import Language, Parser
-  import tree_sitter_python as tspython
+```python Python theme={null}
+from tree_sitter import Language, Parser
+import tree_sitter_python as tspython
 
-  # Use Python grammar
-  python_language = Language(tspython.language())
+# Use Python grammar
+python_language = Language(tspython.language())
 
-  # Set up the parser
-  parser = Parser(python_language)
-  ```
+# Set up the parser
+parser = Parser(python_language)
+```
 
-  ```typescript TypeScript theme={null}
-  import Parser from "tree-sitter";
-  import Python from "tree-sitter-python";
+```typescript TypeScript theme={null}
+import Parser from "tree-sitter";
+import Python from "tree-sitter-python";
 
-  const parser = new Parser();
-  parser.setLanguage(Python);
-  ```
-</CodeGroup>
+const parser = new Parser();
+parser.setLanguage(Python);
+```
 
 Using the parser, we can process the code snippet from our small example:
 
-<CodeGroup>
-  ```python Python theme={null}
-  source_code = b"""
-  class MyClass:
-      def say_hello(self, name: str) -> None:
-          print(f"Hello {name}")
-  """
+```python Python theme={null}
+source_code = b"""
+class MyClass:
+    def say_hello(self, name: str) -> None:
+        print(f"Hello {name}")
+"""
 
-  tree = parser.parse(source_code)
-  root = tree.root_node
-  ```
+tree = parser.parse(source_code)
+root = tree.root_node
+```
 
-  ```typescript TypeScript theme={null}
-  const sourceCode = `
-  class MyClass:
-      def say_hello(self, name: str) -> None:
-          print(f"Hello {name}")
-  `;
+```typescript TypeScript theme={null}
+const sourceCode = `
+class MyClass:
+    def say_hello(self, name: str) -> None:
+        print(f"Hello {name}")
+`;
 
-  const tree = parser.parse(sourceCode);
-  const root = tree.rootNode;
-  ```
-</CodeGroup>
+const tree = parser.parse(sourceCode);
+const root = tree.rootNode;
+```
 
 The root node encompasses the entire source code. Its first child is the `class_definition` node, spanning lines 1-3. If we explore further down the tree, we will find the `function_definition` node, which spans lines 2-3.
 
-<CodeGroup>
-  ```python Python theme={null}
-  print(root.children[0])
-  # <Node type=class_definition, start_point=(1, 0), end_point=(3, 30)>
+```python Python theme={null}
+print(root.children[0])
+# <Node type=class_definition, start_point=(1, 0), end_point=(3, 30)>
 
-  print(root.children[0].children[3].children[0])
-  # <Node type=function_definition, start_point=(2, 4), end_point=(3, 30)>
-  ```
+print(root.children[0].children[3].children[0])
+# <Node type=function_definition, start_point=(2, 4), end_point=(3, 30)>
+```
 
-  ```typescript TypeScript theme={null}
-  console.log(root.children[0].type);
-  // class_definition
+```typescript TypeScript theme={null}
+console.log(root.children[0].type);
+// class_definition
 
-  console.log(root.children[0].children[3].children[0].type);
-  // function_definition
-  ```
-</CodeGroup>
+console.log(root.children[0].children[3].children[0].type);
+// function_definition
+```
 
 ### Recursively Exploring an AST
 
@@ -303,98 +287,96 @@ We can write a function, that given source code, parses it using the `tree-sitte
 
 We can also use the nodes' `start_byte` and `end_byte` fields to get back the code each node represents. `tree-sitter` can also give us the line numbers each node spans, which we can save in chunks' metadata:
 
-<CodeGroup>
-  ```python Python theme={null}
-  from uuid import uuid4
+```python Python theme={null}
+from uuid import uuid4
 
-  def parse_code(file_path: str) -> list[Chunk]:
-      with open(file_path, "rb") as f:
-          source_code = f.read()
+def parse_code(file_path: str) -> list[Chunk]:
+    with open(file_path, "rb") as f:
+        source_code = f.read()
 
-      tree = parser.parse(source_code)
-      root = tree.root_node
+    tree = parser.parse(source_code)
+    root = tree.root_node
 
-      target_types = ['function_definition', 'class_definition']
+    target_types = ['function_definition', 'class_definition']
 
-      def collect_nodes(node: Node) -> list[Node]:
-          result: list[Node] = []
+    def collect_nodes(node: Node) -> list[Node]:
+        result: list[Node] = []
 
-          if node.type in target_types:
-              result.append(node)
-          else:
-              for child in node.children:
-                  result.extend(collect_nodes(child))
+        if node.type in target_types:
+            result.append(node)
+        else:
+            for child in node.children:
+                result.extend(collect_nodes(child))
 
-          return result
+        return result
 
-      nodes = collect_nodes(root)
-      chunks = []
+    nodes = collect_nodes(root)
+    chunks = []
 
-      for node in nodes:
-          name_node = node.child_by_field_name("name")
-          symbol = source_code[name_node.start_byte:name_node.end_byte].decode()
-          chunk = Chunk(
-              id=str(uuid4()),
-              content=source_code[node.start_byte : node.end_byte].decode("utf-8"),
-              start_line=node.start_point[0],
-              end_line=node.end_point[0],
-              path=file_path,
-          )
-          chunks.append(chunk)
+    for node in nodes:
+        name_node = node.child_by_field_name("name")
+        symbol = source_code[name_node.start_byte:name_node.end_byte].decode()
+        chunk = Chunk(
+            id=str(uuid4()),
+            content=source_code[node.start_byte : node.end_byte].decode("utf-8"),
+            start_line=node.start_point[0],
+            end_line=node.end_point[0],
+            path=file_path,
+        )
+        chunks.append(chunk)
 
-      return chunks
-  ```
+    return chunks
+```
 
-  ```typescript TypeScript theme={null}
-  import fs from "fs";
-  import type Parser from "tree-sitter";
-  import { v4 as uuid } from "uuid";
+```typescript TypeScript theme={null}
+import fs from "fs";
+import type Parser from "tree-sitter";
+import { v4 as uuid } from "uuid";
 
-  export function parseCode(filePath: string, parser: Parser): Chunk[] {
-      const sourceCode = fs.readFileSync(filePath, "utf8");
+export function parseCode(filePath: string, parser: Parser): Chunk[] {
+    const sourceCode = fs.readFileSync(filePath, "utf8");
 
-      const tree = parser.parse(sourceCode);
-      const root = tree.rootNode;
+    const tree = parser.parse(sourceCode);
+    const root = tree.rootNode;
 
-      const targetTypes = ["function_definition", "class_definition"];
+    const targetTypes = ["function_definition", "class_definition"];
 
-      function collectNodes(node: Parser.SyntaxNode): Parser.SyntaxNode[] {
-          const result: Parser.SyntaxNode[] = [];
+    function collectNodes(node: Parser.SyntaxNode): Parser.SyntaxNode[] {
+        const result: Parser.SyntaxNode[] = [];
 
-          if (targetTypes.includes(node.type)) {
-              result.push(node);
-          } else {
-              for (const child of node.children) {
-                  result.push(...collectNodes(child));
-              }
-          }
+        if (targetTypes.includes(node.type)) {
+            result.push(node);
+        } else {
+            for (const child of node.children) {
+                result.push(...collectNodes(child));
+            }
+        }
 
-          return result;
-      }
+        return result;
+    }
 
-      const nodes = collectNodes(root);
-      const chunks: Chunk[] = [];
+    const nodes = collectNodes(root);
+    const chunks: Chunk[] = [];
 
-      for (const node of nodes) {
-          const nameNode = node.childForFieldName("name");
-          if (!nameNode) continue;
+    for (const node of nodes) {
+        const nameNode = node.childForFieldName("name");
+        if (!nameNode) continue;
 
-          const symbol = sourceCode.slice(nameNode.startIndex, nameNode.endIndex);
+        const symbol = sourceCode.slice(nameNode.startIndex, nameNode.endIndex);
 
-          chunks.push({
-              id: uuid(),
-              content: sourceCode.slice(node.startIndex, node.endIndex),
-              start_line: node.startPosition.row,
-              end_line: node.endPosition.row,
-              path: filePath,
-          });
-      }
+        chunks.push({
+            id: uuid(),
+            content: sourceCode.slice(node.startIndex, node.endIndex),
+            start_line: node.startPosition.row,
+            end_line: node.endPosition.row,
+            path: filePath,
+        });
+    }
 
-      return chunks;
-  }
+    return chunks;
+}
 
-  ```
-</CodeGroup>
+```
 
 If the chunks this method produces are still too large, we can default to splitting them by line spans. If we ever need to reconstruct them, we can use the line-number metadata fields.
 
@@ -404,112 +386,104 @@ To evaluate your chunking strategy, test it against real queries and measure how
 
 Create a set of test queries with ground truth: each query maps to the chunk(s) that should be retrieved for it:
 
-<CodeGroup>
-  ```python Python theme={null}
-  test_queries = [
-      {
-          "query": "What's the default connection timeout?",
-          "expected_chunks": ["chunk-3"],
-      },
-      {
-          "query": "How do I authenticate with OAuth?",
-          "expected_chunks": ["chunk-1", "chunk-2"],
-      },
-      # ...
-  ]
-  ```
+```python Python theme={null}
+test_queries = [
+    {
+        "query": "What's the default connection timeout?",
+        "expected_chunks": ["chunk-3"],
+    },
+    {
+        "query": "How do I authenticate with OAuth?",
+        "expected_chunks": ["chunk-1", "chunk-2"],
+    },
+    # ...
+]
+```
 
-  ```typescript TypeScript theme={null}
-  const testQueries = [
-      {
-          query: "What's the default connection timeout?",
-          expected_chunks: ["chunk-3"],
-      },
-      {
-          query: "How do I authenticate with OAuth?",
-          expected_chunks: ["chunk-1", "chunk-2"],
-      },
-      // ...
-  ]
-  ```
-</CodeGroup>
+```typescript TypeScript theme={null}
+const testQueries = [
+    {
+        query: "What's the default connection timeout?",
+        expected_chunks: ["chunk-3"],
+    },
+    {
+        query: "How do I authenticate with OAuth?",
+        expected_chunks: ["chunk-1", "chunk-2"],
+    },
+    // ...
+]
+```
 
 The key metrics you will measure are:
 
 * **Recall\@k**: Of your test queries, what percentage have the correct chunk in the top `k` results?
 
-<CodeGroup>
-  ```python Python theme={null}
-  def recall_at_k(results: list[str], expected: list[str], k: int) -> float:
-      top_k = set(results[:k])
-      return len(top_k & set(expected)) / len(expected)
-  ```
+```python Python theme={null}
+def recall_at_k(results: list[str], expected: list[str], k: int) -> float:
+    top_k = set(results[:k])
+    return len(top_k & set(expected)) / len(expected)
+```
 
-  ```typescript TypeScript theme={null}
-  function recallAtK(results: string[], expected: string[], k: number): number {
-      const topK = new Set(results.slice(0, k));
-      return [...topK].filter(x => expected.includes(x)).length / expected.length;
-  }
-  ```
-</CodeGroup>
+```typescript TypeScript theme={null}
+function recallAtK(results: string[], expected: string[], k: number): number {
+    const topK = new Set(results.slice(0, k));
+    return [...topK].filter(x => expected.includes(x)).length / expected.length;
+}
+```
 
 * **Mean Reciprocal Rank (MRR)** - Where does the first correct chunk appear? (Higher is better)
 
-<CodeGroup>
-  ```python Python theme={null}
-  def mrr(results: list[str], expected: list[str]) -> float:
-      for i, chunk_id in enumerate(results):
-          if chunk_id in expected:
-              return 1 / (i + 1)
-      return 0
-  ```
+```python Python theme={null}
+def mrr(results: list[str], expected: list[str]) -> float:
+    for i, chunk_id in enumerate(results):
+        if chunk_id in expected:
+            return 1 / (i + 1)
+    return 0
+```
 
-  ```typescript TypeScript theme={null}
-  function mrr(results: string[], expected: string[]): number {
-      for (let i = 0; i < results.length; i++) {
-          if (expected.includes(results[i])) {
-              return 1 / (i + 1);
-          }
-      }
-      return 0;
-  }
-  ```
-</CodeGroup>
+```typescript TypeScript theme={null}
+function mrr(results: string[], expected: string[]): number {
+    for (let i = 0; i < results.length; i++) {
+        if (expected.includes(results[i])) {
+            return 1 / (i + 1);
+        }
+    }
+    return 0;
+}
+```
 
 Then test your queries against the chunks in your collection:
 
-<CodeGroup>
-  ```python Python theme={null}
-  k = 10
+```python Python theme={null}
+k = 10
 
-  results = collection.query(
-      query_texts=[test_case["query"] for test_case in test_queries],
-      n_results=k
-  )
+results = collection.query(
+    query_texts=[test_case["query"] for test_case in test_queries],
+    n_results=k
+)
 
-  metrics = [
-      {
-          "recall": recall_at_k(chunk_ids, test_queries[i]["expected_chunks"], k),
-          "mrr": mrr(chunk_ids, test_queries[i]["expected_chunks"])
-      }
-      for i, chunk_ids in enumerate(results["ids"])
-  ]
-  ```
+metrics = [
+    {
+        "recall": recall_at_k(chunk_ids, test_queries[i]["expected_chunks"], k),
+        "mrr": mrr(chunk_ids, test_queries[i]["expected_chunks"])
+    }
+    for i, chunk_ids in enumerate(results["ids"])
+]
+```
 
-  ```typescript TypeScript theme={null}
-  const k = 10;
+```typescript TypeScript theme={null}
+const k = 10;
 
-  const results = collection.query({
-      query_texts: testQueries.map(testCase => testCase.query),
-      n_results: k,
-  });
+const results = collection.query({
+    query_texts: testQueries.map(testCase => testCase.query),
+    n_results: k,
+});
 
-  const metrics = results.ids.map((chunkIds: string[], i: number) => ({
-      recall: recallAtK(chunkIds, testQueries[i].expected_chunks, k),
-      mrr: mrr(chunkIds, testQueries[i].expected_chunks),
-  }));
-  ```
-</CodeGroup>
+const metrics = results.ids.map((chunkIds: string[], i: number) => ({
+    recall: recallAtK(chunkIds, testQueries[i].expected_chunks, k),
+    mrr: mrr(chunkIds, testQueries[i].expected_chunks),
+}));
+```
 
 If you see:
 

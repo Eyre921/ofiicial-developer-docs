@@ -10,41 +10,39 @@ Control how many results to return and which fields to include in your search re
 
 Use `limit()` to control how many results to return and `offset` to skip results for pagination.
 
-<CodeGroup>
-  ```python Python theme={null}
-  from chromadb import Search
+```python Python theme={null}
+from chromadb import Search
 
-  # Limit results
-  search = Search().limit(10)  # Return top 10 results
+# Limit results
+search = Search().limit(10)  # Return top 10 results
 
-  # Pagination with offset
-  search = Search().limit(10, offset=20)  # Skip first 20, return next 10
+# Pagination with offset
+search = Search().limit(10, offset=20)  # Skip first 20, return next 10
 
-  # No limit - returns all matching results
-  search = Search()  # Be careful with large collections!
-  ```
+# No limit - returns all matching results
+search = Search()  # Be careful with large collections!
+```
 
-  ```typescript TypeScript theme={null}
-  import { Search } from 'chromadb';
+```typescript TypeScript theme={null}
+import { Search } from 'chromadb';
 
-  // Limit results
-  const search1 = new Search().limit(10);  // Return top 10 results
+// Limit results
+const search1 = new Search().limit(10);  // Return top 10 results
 
-  // Pagination with offset
-  const search2 = new Search().limit(10, 20);  // Skip first 20, return next 10
+// Pagination with offset
+const search2 = new Search().limit(10, 20);  // Skip first 20, return next 10
 
-  // No limit - returns all matching results
-  const search3 = new Search();  // Be careful with large collections!
-  ```
+// No limit - returns all matching results
+const search3 = new Search();  // Be careful with large collections!
+```
 
-  ```rust Rust theme={null}
-  use chroma::types::SearchPayload;
+```rust Rust theme={null}
+use chroma::types::SearchPayload;
 
-  let search = SearchPayload::default().limit(Some(10), 0);
-  let search = SearchPayload::default().limit(Some(10), 20);
-  let search = SearchPayload::default();
-  ```
-</CodeGroup>
+let search = SearchPayload::default().limit(Some(10), 0);
+let search = SearchPayload::default().limit(Some(10), 20);
+let search = SearchPayload::default();
+```
 
 ## Limit Parameters
 
@@ -53,141 +51,133 @@ Use `limit()` to control how many results to return and `offset` to skip results
 | `limit` | int or None | `None` | Maximum results to return (`None` = no limit) |
 | `offset` | int | `0` | Number of results to skip (for pagination) |
 
-<Callout>
-  For Chroma Cloud users: The actual number of results returned will be capped by your quota limits, regardless of the `limit` value specified. This applies even when no limit is set.
-</Callout>
+For Chroma Cloud users: The actual number of results returned will be capped by your quota limits, regardless of the `limit` value specified. This applies even when no limit is set.
 
 ## Pagination Patterns
 
-<CodeGroup>
-  ```python Python theme={null}
-  # Page through results (0-indexed)
-  page_size = 10
+```python Python theme={null}
+# Page through results (0-indexed)
+page_size = 10
 
-  # Page 0: Results 1-10
-  page_0 = Search().limit(page_size, offset=0)
+# Page 0: Results 1-10
+page_0 = Search().limit(page_size, offset=0)
 
-  # Page 1: Results 11-20
-  page_1 = Search().limit(page_size, offset=10)
+# Page 1: Results 11-20
+page_1 = Search().limit(page_size, offset=10)
 
-  # Page 2: Results 21-30
-  page_2 = Search().limit(page_size, offset=20)
+# Page 2: Results 21-30
+page_2 = Search().limit(page_size, offset=20)
 
-  # General formula
-  def get_page(page_number, page_size=10):
-      return Search().limit(page_size, offset=page_number * page_size)
-  ```
+# General formula
+def get_page(page_number, page_size=10):
+    return Search().limit(page_size, offset=page_number * page_size)
+```
 
-  ```typescript TypeScript theme={null}
-  // Page through results (0-indexed)
-  const pageSize = 10;
+```typescript TypeScript theme={null}
+// Page through results (0-indexed)
+const pageSize = 10;
 
-  // Page 0: Results 1-10
-  const page0 = new Search().limit(pageSize, 0);
+// Page 0: Results 1-10
+const page0 = new Search().limit(pageSize, 0);
 
-  // Page 1: Results 11-20
-  const page1 = new Search().limit(pageSize, 10);
+// Page 1: Results 11-20
+const page1 = new Search().limit(pageSize, 10);
 
-  // Page 2: Results 21-30
-  const page2 = new Search().limit(pageSize, 20);
+// Page 2: Results 21-30
+const page2 = new Search().limit(pageSize, 20);
 
-  // General formula
-  function getPage(pageNumber: number, pageSize = 10) {
-    return new Search().limit(pageSize, pageNumber * pageSize);
-  }
-  ```
+// General formula
+function getPage(pageNumber: number, pageSize = 10) {
+  return new Search().limit(pageSize, pageNumber * pageSize);
+}
+```
 
-  ```rust Rust theme={null}
-  use chroma::types::SearchPayload;
+```rust Rust theme={null}
+use chroma::types::SearchPayload;
 
-  let page_size = 10;
+let page_size = 10;
 
-  // Page 0: Results 1-10
-  let page_0 = SearchPayload::default().limit(Some(page_size), 0);
+// Page 0: Results 1-10
+let page_0 = SearchPayload::default().limit(Some(page_size), 0);
 
-  // Page 1: Results 11-20
-  let page_1 = SearchPayload::default().limit(Some(page_size), 10);
+// Page 1: Results 11-20
+let page_1 = SearchPayload::default().limit(Some(page_size), 10);
 
-  // Page 2: Results 21-30
-  let page_2 = SearchPayload::default().limit(Some(page_size), 20);
+// Page 2: Results 21-30
+let page_2 = SearchPayload::default().limit(Some(page_size), 20);
 
-  // General Formula
-  fn get_page(page_number: usize, page_size: usize) -> SearchPayload {
-      SearchPayload::default().limit(Some(page_size), page_number * page_size)
-  }
-  ```
-</CodeGroup>
+// General Formula
+fn get_page(page_number: usize, page_size: usize) -> SearchPayload {
+    SearchPayload::default().limit(Some(page_size), page_number * page_size)
+}
+```
 
-<Callout>
-  Pagination uses 0-based indexing. The first page is page 0, not page 1.
-</Callout>
+Pagination uses 0-based indexing. The first page is page 0, not page 1.
 
 ## Field Selection with Select
 
 Control which fields are returned in your results to optimize data transfer and processing.
 
-<CodeGroup>
-  ```python Python theme={null}
-  from chromadb import Search, K
+```python Python theme={null}
+from chromadb import Search, K
 
-  # Default - returns IDs only
-  search = Search()
+# Default - returns IDs only
+search = Search()
 
-  # Select specific fields
-  search = Search().select(K.DOCUMENT, K.SCORE)
+# Select specific fields
+search = Search().select(K.DOCUMENT, K.SCORE)
 
-  # Select metadata fields
-  search = Search().select("title", "author", "date")
+# Select metadata fields
+search = Search().select("title", "author", "date")
 
-  # Mix predefined and metadata fields
-  search = Search().select(K.DOCUMENT, K.SCORE, "title", "author")
+# Mix predefined and metadata fields
+search = Search().select(K.DOCUMENT, K.SCORE, "title", "author")
 
-  # Select all available fields
-  search = Search().select_all()
-  # Returns: IDs, documents, embeddings, metadata, scores
-  ```
+# Select all available fields
+search = Search().select_all()
+# Returns: IDs, documents, embeddings, metadata, scores
+```
 
-  ```typescript TypeScript theme={null}
-  import { Search, K } from 'chromadb';
+```typescript TypeScript theme={null}
+import { Search, K } from 'chromadb';
 
-  // Default - returns IDs only
-  const search1 = new Search();
+// Default - returns IDs only
+const search1 = new Search();
 
-  // Select specific fields
-  const search2 = new Search().select(K.DOCUMENT, K.SCORE);
+// Select specific fields
+const search2 = new Search().select(K.DOCUMENT, K.SCORE);
 
-  // Select metadata fields
-  const search3 = new Search().select("title", "author", "date");
+// Select metadata fields
+const search3 = new Search().select("title", "author", "date");
 
-  // Mix predefined and metadata fields
-  const search4 = new Search().select(K.DOCUMENT, K.SCORE, "title", "author");
+// Mix predefined and metadata fields
+const search4 = new Search().select(K.DOCUMENT, K.SCORE, "title", "author");
 
-  // Select all available fields
-  const search5 = new Search().selectAll();
-  // Returns: IDs, documents, embeddings, metadata, scores
-  ```
+// Select all available fields
+const search5 = new Search().selectAll();
+// Returns: IDs, documents, embeddings, metadata, scores
+```
 
-  ```rust Rust theme={null}
-  // Default - returns IDs only
-  use chroma::types::{Key, SearchPayload};
+```rust Rust theme={null}
+// Default - returns IDs only
+use chroma::types::{Key, SearchPayload};
 
-  let search = SearchPayload::default(); // IDs only
+let search = SearchPayload::default(); // IDs only
 
-  // Select specific fields
-  let search = SearchPayload::default().select([Key::Document, Key::Score]);
+// Select specific fields
+let search = SearchPayload::default().select([Key::Document, Key::Score]);
 
-  // Select metadata fields
-  let search = SearchPayload::default().select([Key::field("title"), Key::field("author")]);
+// Select metadata fields
+let search = SearchPayload::default().select([Key::field("title"), Key::field("author")]);
 
-  // Mix predefined and metadata fields
-  let search = SearchPayload::default().select([
-      Key::Document,
-      Key::Score,
-      Key::field("title"),
-      Key::field("author"),
-  ]);
-  ```
-</CodeGroup>
+// Mix predefined and metadata fields
+let search = SearchPayload::default().select([
+    Key::Document,
+    Key::Score,
+    Key::field("title"),
+    Key::field("author"),
+]);
+```
 
 ## Selectable Fields
 
@@ -200,11 +190,9 @@ Control which fields are returned in your results to optimize data transfer and 
 | `K.SCORE` | `#score` | `.select(K.SCORE)` | Search scores (when ranking is used) |
 | `"field_name"` | (user-defined) | `.select("title", "author")` | Specific metadata fields |
 
-<Callout>
-  **Field constants:** `K.*` constants (e.g., `K.DOCUMENT`, `K.EMBEDDING`, `K.ID`) correspond to internal keys with `#` prefix (e.g., `#document`, `#embedding`, `#id`). Use the `K.*` constants in queries. Internal keys like `#document` and `#embedding` are used in schema configuration, while `#metadata` and `#score` are query-only fields not used in schema.
+**Field constants:** `K.*` constants (e.g., `K.DOCUMENT`, `K.EMBEDDING`, `K.ID`) correspond to internal keys with `#` prefix (e.g., `#document`, `#embedding`, `#id`). Use the `K.*` constants in queries. Internal keys like `#document` and `#embedding` are used in schema configuration, while `#metadata` and `#score` are query-only fields not used in schema.
 
-  When selecting specific metadata fields (e.g., "title"), they appear directly in the metadata dict. Using `K.METADATA` returns ALL metadata fields at once.
-</Callout>
+When selecting specific metadata fields (e.g., "title"), they appear directly in the metadata dict. Using `K.METADATA` returns ALL metadata fields at once.
 
 ## Performance Considerations
 
@@ -215,35 +203,33 @@ Selecting fewer fields improves performance by reducing data transfer:
 * **Heavy**: Including documents and embeddings - larger payloads
 * **Maximum**: `select_all()` - returns everything
 
-<CodeGroup>
-  ```python Python theme={null}
-  # Fast - minimal data
-  search = Search().limit(100)  # IDs only
+```python Python theme={null}
+# Fast - minimal data
+search = Search().limit(100)  # IDs only
 
-  # Moderate - just what you need
-  search = Search().limit(100).select(K.SCORE, "title", "date")
+# Moderate - just what you need
+search = Search().limit(100).select(K.SCORE, "title", "date")
 
-  # Slower - large fields
-  search = Search().limit(100).select(K.DOCUMENT, K.EMBEDDING)
+# Slower - large fields
+search = Search().limit(100).select(K.DOCUMENT, K.EMBEDDING)
 
-  # Slowest - everything
-  search = Search().limit(100).select_all()
-  ```
+# Slowest - everything
+search = Search().limit(100).select_all()
+```
 
-  ```typescript TypeScript theme={null}
-  // Fast - minimal data
-  const search1 = new Search().limit(100);  // IDs only
+```typescript TypeScript theme={null}
+// Fast - minimal data
+const search1 = new Search().limit(100);  // IDs only
 
-  // Moderate - just what you need
-  const search2 = new Search().limit(100).select(K.SCORE, "title", "date");
+// Moderate - just what you need
+const search2 = new Search().limit(100).select(K.SCORE, "title", "date");
 
-  // Slower - large fields
-  const search3 = new Search().limit(100).select(K.DOCUMENT, K.EMBEDDING);
+// Slower - large fields
+const search3 = new Search().limit(100).select(K.DOCUMENT, K.EMBEDDING);
 
-  // Slowest - everything
-  const search4 = new Search().limit(100).selectAll();
-  ```
-</CodeGroup>
+// Slowest - everything
+const search4 = new Search().limit(100).selectAll();
+```
 
 ## Edge Cases
 
@@ -251,19 +237,17 @@ Selecting fewer fields improves performance by reducing data transfer:
 
 Without a limit, the search attempts to return all matching results, but will be capped by quota limits in Chroma Cloud.
 
-<CodeGroup>
-  ```python Python theme={null}
-  # Attempts to return ALL matching documents
-  search = Search().where(K("status") == "active")  # No limit()
-  # Chroma Cloud: Results capped by quota
-  ```
+```python Python theme={null}
+# Attempts to return ALL matching documents
+search = Search().where(K("status") == "active")  # No limit()
+# Chroma Cloud: Results capped by quota
+```
 
-  ```typescript TypeScript theme={null}
-  // Attempts to return ALL matching documents
-  const search = new Search().where(K("status").eq("active"));  // No limit()
-  // Chroma Cloud: Results capped by quota
-  ```
-</CodeGroup>
+```typescript TypeScript theme={null}
+// Attempts to return ALL matching documents
+const search = new Search().where(K("status").eq("active"));  // No limit()
+// Chroma Cloud: Results capped by quota
+```
 
 ### Empty Results
 
@@ -273,117 +257,113 @@ When no documents match, results will have empty lists/arrays.
 
 Selecting non-existent metadata fields simply omits them from the results - they won't appear in the metadata dict.
 
-<CodeGroup>
-  ```python Python theme={null}
-  # If "non_existent_field" doesn't exist
-  search = Search().select("title", "non_existent_field")
+```python Python theme={null}
+# If "non_existent_field" doesn't exist
+search = Search().select("title", "non_existent_field")
 
-  # Result metadata will only contain "title" if it exists
-  # "non_existent_field" will not appear in the metadata dict at all
-  ```
+# Result metadata will only contain "title" if it exists
+# "non_existent_field" will not appear in the metadata dict at all
+```
 
-  ```typescript TypeScript theme={null}
-  // If "non_existent_field" doesn't exist
-  const search = new Search().select("title", "non_existent_field");
+```typescript TypeScript theme={null}
+// If "non_existent_field" doesn't exist
+const search = new Search().select("title", "non_existent_field");
 
-  // Result metadata will only contain "title" if it exists
-  // "non_existent_field" will not appear in the metadata object at all
-  ```
-</CodeGroup>
+// Result metadata will only contain "title" if it exists
+// "non_existent_field" will not appear in the metadata object at all
+```
 
 ## Complete Example
 
 Here's a practical example combining pagination with field selection:
 
-<CodeGroup>
-  ```python Python theme={null}
-  from chromadb import Search, K, Knn
+```python Python theme={null}
+from chromadb import Search, K, Knn
 
-  # Paginated search with field selection
-  def search_with_pagination(collection, query_text, page_size=20):
-      current_page = 0
+# Paginated search with field selection
+def search_with_pagination(collection, query_text, page_size=20):
+    current_page = 0
 
-      while True:
-          search = (Search()
-              .where(K("status") == "published")
-              .rank(Knn(query=query_text))
-              .limit(page_size, offset=current_page * page_size)
-              .select(K.DOCUMENT, K.SCORE, "title", "author", "date")
-          )
+    while True:
+        search = (Search()
+            .where(K("status") == "published")
+            .rank(Knn(query=query_text))
+            .limit(page_size, offset=current_page * page_size)
+            .select(K.DOCUMENT, K.SCORE, "title", "author", "date")
+        )
 
-          results = collection.search(search)
-          rows = results.rows()[0]  # Get first (and only) search results
+        results = collection.search(search)
+        rows = results.rows()[0]  # Get first (and only) search results
 
-          if not rows:  # No more results
-              break
+        if not rows:  # No more results
+            break
 
-          print(f"\n--- Page {current_page + 1} ---")
-          for i, row in enumerate(rows, 1):
-              print(f"{i}. {row['metadata']['title']} by {row['metadata']['author']}")
-              print(f"   Score: {row['score']:.3f}, Date: {row['metadata']['date']}")
-              print(f"   Preview: {row['document'][:100]}...")
+        print(f"\n--- Page {current_page + 1} ---")
+        for i, row in enumerate(rows, 1):
+            print(f"{i}. {row['metadata']['title']} by {row['metadata']['author']}")
+            print(f"   Score: {row['score']:.3f}, Date: {row['metadata']['date']}")
+            print(f"   Preview: {row['document'][:100]}...")
 
-          # Check if we want to continue
-          user_input = input("\nPress Enter for next page, or 'q' to quit: ")
-          if user_input.lower() == 'q':
-              break
+        # Check if we want to continue
+        user_input = input("\nPress Enter for next page, or 'q' to quit: ")
+        if user_input.lower() == 'q':
+            break
 
-          current_page += 1
-  ```
+        current_page += 1
+```
 
-  ```typescript TypeScript theme={null}
-  import { Search, K, Knn, type Collection } from 'chromadb';
-  import * as readline from 'readline';
+```typescript TypeScript theme={null}
+import { Search, K, Knn, type Collection } from 'chromadb';
+import * as readline from 'readline';
 
-  // Paginated search with field selection
-  async function searchWithPagination(
-    collection: Collection,
-    queryText: string,
-    pageSize = 20
-  ) {
-    let currentPage = 0;
-    const rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout
-    });
+// Paginated search with field selection
+async function searchWithPagination(
+  collection: Collection,
+  queryText: string,
+  pageSize = 20
+) {
+  let currentPage = 0;
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
 
-    while (true) {
-      const search = new Search()
-        .where(K("status").eq("published"))
-        .rank(Knn({ query: queryText }))
-        .limit(pageSize, currentPage * pageSize)
-        .select(K.DOCUMENT, K.SCORE, "title", "author", "date");
+  while (true) {
+    const search = new Search()
+      .where(K("status").eq("published"))
+      .rank(Knn({ query: queryText }))
+      .limit(pageSize, currentPage * pageSize)
+      .select(K.DOCUMENT, K.SCORE, "title", "author", "date");
 
-      const results = await collection.search(search);
-      const rows = results.rows()[0];  // Get first (and only) search results
+    const results = await collection.search(search);
+    const rows = results.rows()[0];  // Get first (and only) search results
 
-      if (!rows || rows.length === 0) {  // No more results
-        break;
-      }
-
-      console.log(`\n--- Page ${currentPage + 1} ---`);
-      for (const [i, row] of rows.entries()) {
-        console.log(`${i+1}. ${row.metadata?.title} by ${row.metadata?.author}`);
-        console.log(`   Score: ${row.score?.toFixed(3)}, Date: ${row.metadata?.date}`);
-        console.log(`   Preview: ${row.document?.substring(0, 100)}...`);
-      }
-
-      // Check if we want to continue
-      const userInput = await new Promise<string>(resolve => {
-        rl.question("\nPress Enter for next page, or 'q' to quit: ", resolve);
-      });
-
-      if (userInput.toLowerCase() === 'q') {
-        break;
-      }
-
-      currentPage += 1;
+    if (!rows || rows.length === 0) {  // No more results
+      break;
     }
 
-    rl.close();
+    console.log(`\n--- Page ${currentPage + 1} ---`);
+    for (const [i, row] of rows.entries()) {
+      console.log(`${i+1}. ${row.metadata?.title} by ${row.metadata?.author}`);
+      console.log(`   Score: ${row.score?.toFixed(3)}, Date: ${row.metadata?.date}`);
+      console.log(`   Preview: ${row.document?.substring(0, 100)}...`);
+    }
+
+    // Check if we want to continue
+    const userInput = await new Promise<string>(resolve => {
+      rl.question("\nPress Enter for next page, or 'q' to quit: ", resolve);
+    });
+
+    if (userInput.toLowerCase() === 'q') {
+      break;
+    }
+
+    currentPage += 1;
   }
-  ```
-</CodeGroup>
+
+  rl.close();
+}
+```
 
 ## Tips and Best Practices
 
